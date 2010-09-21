@@ -1,0 +1,967 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0015)the:family:pack -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+ <head>
+  <title>TFP Database Design</title>
+  <meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1"/>
+  <meta name="Author" content="Nick Matthews"/>
+  <meta name="Keywords" content="?"/>
+  <meta name="Description" content="?"/>
+  <link rel='stylesheet' type='text/css' href='tfp.css' />
+  <style type="text/css">
+
+   table, td, th {
+    border: black 1px solid;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+   }
+
+   th {
+    background-color: #eef;
+    white-space: nowrap;
+   }
+
+   td.nw {white-space: nowrap;}
+
+   td.filler {text-align: right; font-size: x-small;}
+
+   table.index {
+    background-color: #eee;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 2em;
+    text-align: center;
+    font-weight: bold;
+    font-size: small;
+   }
+
+   table.index td {
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+   }
+
+   table.index td:hover { background-color: #ccf; }
+   table.index td.na:hover { background-color: #eee; }
+
+   table.index a:link, table.index a:visited { color: blue; }
+
+   tr.head {
+    background-color: #eee;
+   }
+
+   div.tfp td {
+    color: red;
+   }
+  </style>
+</head>
+<body>
+
+<h1><a  href="index.htm"><img id="logo" src="tfp5.gif" alt="Logo" /></a>The Family Pack<br/>Database Design V0.0.6</h1>
+
+<div id="page">
+
+<div id="menu">
+  <a  href="index.htm">Home</a>
+  <a  href="manual0-0.htm">TFP Manual</a>
+  <a  href="database.htm">Database</a>
+  <a  href="dbdesign.htm" class="level1 thispage">Definitions</a>
+  <a  href="dbdiagram.htm" class="level1">Diagram</a>
+  <a  href="common.htm">Common Data</a>
+  <a  href="develop.htm">Development</a>
+</div>
+
+<div id="content">
+
+  <table frame="box" rules="all" class="index">
+   <tr>
+    <td><a href="#Attribute">Attribute</a></td>
+    <td><a href="#AttributeType">AttributeType</a></td>
+    <td><a href="#CitationPart">CitationPart</a></td>
+    <td><a href="#CitationPartType">CitationPartType</a></td>
+    <td><a href="#Contact">Contact</a></td>
+    <td><a href="#ContactType">ContactType</a></td>
+   </tr>
+   <tr>
+    <td><a href="#Date">Date</a></td>
+    <td><a href="#Event">Event</a></td>
+    <td><a href="#EventType">EventType</a></td>
+    <td><a href="#EventTypeRole">EventTypeRole</a></td>
+    <td><a href="#Family">Family</a></td>
+    <td><a href="#FamilyIndividual">FamilyIndividual</a></td>
+   </tr>
+   <tr>
+    <td><a href="#Individual">Individual</a></td>
+    <td><a href="#Persona">Persona</a></td>
+    <td><a href="#PersonaEvent">PersonaEvent</a></td>
+    <td><a href="#IndividualPersona">IndividualPersona</a></td>
+    <td><a href="#Place">Place</a></td>
+    <td><a href="#PlacePart">PlacePart</a></td>
+   </tr>
+   <tr>
+    <td><a href="#PlacePartType">PlacePartType</a></td>
+    <td><a href="#Reference">Reference</a></td>
+    <td><a href="#ReferenceEntity">ReferenceEntity</a></td>
+    <td><a href="#Repository">Repository</a></td>
+    <td><a href="#RepositorySource">RepositorySource</a></td>
+    <td><a href="#Researcher">Researcher</a></td>
+   </tr>
+   <tr>
+    <td><a href="#Source">Source</a></td>
+    <td><a href="#SourceGroup">SourceGroup</a></td>
+    <td><a href="#SourceGroupSource">SourceGroupSource</a></td>
+    <td><a href="#User">User</a></td>
+    <td><a href="#Version">Version</a></td>
+    <td colspan='0' class="na">&nbsp;</td>
+   </tr>
+   <!-- <td colspan='0' class="na">&nbsp;</td> -->
+  </table>
+
+  <table cellpadding="4" frame="box" rules="all">
+   <thead>
+    <tr>
+     <th>Table Name<br/>field name</th>
+     <th>Type</th>
+     <th>Description</th>
+    </tr>
+   </thead>
+   <tbody>
+    <tr id="Attribute">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>Attribute</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying an Attribute</td>
+    </tr>
+    <tr>
+     <td>per_id</td>
+     <td>Integer</td>
+     <td>Pointer to a Person ID</td>
+    </tr>
+    <tr>
+     <td>type_id</td>
+     <td>Integer</td>
+     <td>Unique identifier that indicates to which Attribute Type this event belongs.</td>
+    </tr>
+    <tr>
+     <td>val</td>
+     <td>Text</td>
+     <td>The value of the Attribute, such as "Butcher" where type_id points to "Occupation" or "John" where type_id points to "Given name".</td>
+    </tr>
+    <tr>
+     <td>sequence</td>
+     <td>Integer</td>
+     <td>If not zero, then a number to show a name's position in the full name</td>
+    </tr>
+
+    <tr id="AttributeType">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>AttributeType</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying an Attribute</td>
+    </tr>
+    <tr>
+     <td>grp</td>
+     <td>Integer</td>
+     <td>Holds 0=Unstated, 1=Name part, 2=Title, 3=Occupation, 100=Other</td>
+    </tr>
+    <tr>
+     <td>name</td>
+     <td>Text</td>
+     <td>Name of the Attribute Type</td>
+    </tr>
+
+    <tr id="CitationPart">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>CitationPart</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Int PK</td>
+     <td>Unique key identifying a Citation Part</td>
+    </tr>
+    <tr>
+     <td>source_id</td>
+     <td>Int</td>
+     <td>The unique key in Source for which this is a citation part.</td>
+    </tr>
+    <tr>
+     <td>type_id</td>
+     <td>Int</td>
+     <td>The unique key in Citation Part Type that identifies the type of citation part that this is, such as Publication City, Author, or Title.</td>
+    </tr>
+    <tr>
+     <td>val</td>
+     <td>Text</td>
+     <td>The actual value of this citation part, such as Baltimore, Thomas Smith, or Wills of Prince George’s County, Maryland 1695-1710</td>
+    </tr>
+
+    <tr id="CitationPartType">
+     <td colspan="4" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>CitationPartType</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Int PK</td>
+     <td>Unique key identifying a Citation Part Type</td>
+    </tr>
+    <tr>
+     <td>name</td>
+     <td>Text</td>
+     <td>The actual name of the citation part, such as author, compiler, editor, transcriber, or place of publication.  There are more than a hundred different citation parts.</td>
+    </tr>
+
+    <tr id="Contact">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>Contact</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying an Contact.</td>
+    </tr>
+    <tr>
+     <td>ind_id</td>
+     <td>Integer</td>
+     <td>Pointer to an Indivdual record that this is a contact for.</td>
+    </tr>
+    <tr>
+     <td>res_id</td>
+     <td>Integer</td>
+     <td>Pointer to a Researcher record that this is a contact for.</td>
+    </tr>
+    <tr>
+     <td>repos_id</td>
+     <td>Integer</td>
+     <td>Pointer to a Repository record that this is a contact for.</td>
+    </tr>
+    <tr>
+     <td>type_id</td>
+     <td>Integer</td>
+     <td>Pointer to a ContactType for this contact.</td>
+    </tr>
+    <tr>
+     <td>val</td>
+     <td>Text</td>
+     <td>The Contact details, place ID, Telephone number, email address etc.</td>
+    </tr>
+
+    <tr id="ContactType">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>ContactType</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying an ContactType</td>
+    </tr>
+    <tr>
+     <td>name</td>
+     <td>Text</td>
+     <td>Name of the Contact Type. ie Address (Place ID), Phone, email, VoIP (Skype) etc.</td>
+    </tr>
+
+    <tr id="Date">
+     <td colspan="4" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>Date</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a Date.</td>
+    </tr>
+    <tr>
+     <td>jdn</td>
+     <td>Integer</td>
+     <td>The start date of a range, stored as a Julian day number.</td>
+    </tr>
+    <tr>
+     <td>range</td>
+     <td>Integer</td>
+     <td>The inclusive number of days in the date range. A value of 0 indicates a range of 1 day</td>
+    </tr>
+    <tr>
+     <td>type</td>
+     <td>Integer</td>
+     <td>
+      A collection of flags indicating the type of dates held:<br/>
+      1=About, 2=Before, 4=After.
+     </td>
+    </tr>
+    <tr>
+     <td>desc</td>
+     <td>Text</td>
+     <td>A text representation of the date in addition or in place of the date number</td>
+    </tr>
+    <tr>
+     <td>record_sch</td>
+     <td>Integer</td>
+     <td>A number indicating the date scheme used to record the date,<br/>Unstated, Unknown, Unlisted, Gregorian, Julian, English, Scottish etc</td>
+    </tr>
+    <tr>
+     <td>display_sch</td>
+     <td>Integer</td>
+     <td>A number indicating the default date scheme used for the date display,<br/>Unstated, Unknown, Unlisted, Gregorian, Julian, English, Scottish etc</td>
+    </tr>
+
+    <tr id="Event">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>Event</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying an Event</td>
+    </tr>
+    <tr>
+     <td>type_id</td>
+     <td>Integer</td>
+     <td>Unique identifier that indicates to which Event Type this event belongs.</td>
+    </tr>
+    <tr>
+     <td>val</td>
+     <td>Text</td>
+     <td>The name of the Event, such as "Marriage of John Smith and Mary Jones".</td>
+    </tr>
+    <tr>
+     <td>date1_id</td>
+     <td>Integer</td>
+     <td>The point date associated with the Event.</td>
+    </tr>
+    <tr>
+     <td>date2_id</td>
+     <td>Integer</td>
+     <td>The optional second date if a date range is associated with the Event.</td>
+    </tr>
+    <tr>
+     <td>place_id</td>
+     <td>Integer</td>
+     <td>Unique identifier in Place that indicates where this Event took place.</td>
+    </tr>
+
+    <tr id="EventType">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>EventType</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a Event Type</td>
+    </tr>
+    <tr>
+     <td>grp</td>
+     <td>Integer</td>
+     <td>Holds 0=Unstated, 1=Birth, 2=Nr Birth (Baptism), 3=Marriage, 4=Family, 5=Death, 6=Nr Death (Burial), 7=Other</td>
+    </tr>
+    <tr>
+     <td>name</td>
+     <td>Text</td>
+     <td>The name of this event type.  An example might be Marriage or Burial, or Battle.</td>
+    </tr>
+
+    <tr id="EventTypeRole">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>EventTypeRole</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a Event Type Role</td>
+    </tr>
+    <tr>
+     <td>type_id</td>
+     <td>Integer</td>
+     <td>Unique key that identifies the Event Type to which these members belong.</td>
+    </tr>
+    <tr>
+     <td>name</td>
+     <td>Text</td>
+     <td>The value that distinguishes the different members of the event type, such as role (bride, groom, witness).</td>
+    </tr>
+
+    <tr id="Family">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>Family</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td class="nw">Integer PK</td>
+     <td>Unique key identifying a Family</td>
+    </tr>
+    <tr>
+     <td>husd_id</td>
+     <td>Integer</td>
+     <td>Pointer to the Individual who is the male partner</td>
+    </tr>
+    <tr>
+     <td>wife_id</td>
+     <td>Integer</td>
+     <td>Pointer to the Individual who is the female partner</td>
+    </tr>
+    <tr>
+     <td>event_id</td>
+     <td>Integer</td>
+     <td>Pointer to the family union (marriage) Event</td>
+    </tr>
+
+    <tr id="FamilyIndividual">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>FamilyIndividual</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a FamilyIndividual</td>
+    </tr>
+    <tr>
+     <td>fam_id</td>
+     <td>Integer</td>
+     <td>Pointer to the Family that the Individual is a child of.</td>
+    </tr>
+    <tr>
+     <td>ind_id</td>
+     <td>Integer</td>
+     <td>Pointer to the Individual</td>
+    </tr>
+    <tr>
+     <td>sequence</td>
+     <td>Integer</td>
+     <td>Sequence of the child Individuals in the Family, normally in age order</td>
+    </tr>
+
+    <tr id="Individual">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>Individual</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying an Individual</td>
+    </tr>
+    <tr>
+     <td>surname</td>
+     <td>Text</td>
+     <td>The surname name that this Individual is known by. NOTE: Redundant field created from Persona/Attributes</td>
+    </tr>
+    <tr>
+     <td>given</td>
+     <td>Text</td>
+     <td>The given name or names for this Individual. NOTE: Redundant field created from Persona/Attributes</td>
+    </tr>
+    <tr>
+     <td>birth_jdn</td>
+     <td>Integer</td>
+     <td>The birth Julian Day Number, used for sorting individuals. NOTE: Redundant field created from default Events</td>
+    </tr>
+    <tr>
+     <td>epitaph</td>
+     <td>Text</td>
+     <td>The short date epitaph string ie (1914 - 1987). NOTE: Redundant field created from default Events</td>
+    </tr>
+    <tr>
+     <td>sex</td>
+     <td>Integer</td>
+     <td>This holds 0=Unstated, 1=Male, 2=Female and 3=Unknown</td>
+    </tr>
+    <tr>
+     <td>fam_id</td>
+     <td>Integer</td>
+     <td>Pointer to the default (preferred) Family ID</td>
+    </tr>
+    <tr>
+     <td>per_id</td>
+     <td>Integer</td>
+     <td>Pointer to the default Persona.</td>
+    </tr>
+    <tr>
+     <td>birth_id</td>
+     <td>Integer</td>
+     <td>Pointer to the default (preferred) birth event ID</td>
+    </tr>
+    <tr>
+     <td>nr_birth_id</td>
+     <td>Integer</td>
+     <td>Pointer to the default (preferred) naming (christening) event ID</td>
+    </tr>
+    <tr>
+     <td>death_id</td>
+     <td>Integer</td>
+     <td>Pointer to the default (preferred) death event ID</td>
+    </tr>
+    <tr>
+     <td>nr_death_id</td>
+     <td>Integer</td>
+     <td>Pointer to the default (preferred) funeral (burial) event ID</td>
+    </tr>
+    <tr>
+     <td>occ_id</td>
+     <td>Integer</td>
+     <td>Pointer to the default (preferred) occupation attribute ID</td>
+    </tr>
+
+    <tr id="Persona">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>Persona</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a Persona.</td>
+    </tr>
+    <tr>
+     <td>sex</td>
+     <td>Integer</td>
+     <td>This holds 0=Unstated, 1=Male, 2=Female and 3=Unknown</td>
+    </tr>
+    <tr>
+     <td>note</td>
+     <td>Text</td>
+     <td>Any narrative necessary to distinguish this person.</td>
+    </tr>
+
+    <tr id="PersonaEvent">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>PersonaEvent</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td class="nw">Integer PK</td>
+     <td>Unique key identifying an PersonaEvent.</td>
+    </tr>
+    <tr>
+     <td>per_id</td>
+     <td>Integer</td>
+     <td>Pointer to a Persona</td>
+    </tr>
+    <tr>
+     <td>event_id</td>
+     <td>Integer</td>
+     <td>Pointer to the Event</td>
+    </tr>
+    <tr>
+     <td>role_id</td>
+     <td>Integer</td>
+     <td>Points to the role played by the Person</td>
+    </tr>
+    <tr>
+     <td>note</td>
+     <td>Text</td>
+     <td>Optional note that relates to the Persona</td>
+    </tr>
+
+    <tr id="IndividualPersona">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>IndividualPersona</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td class="nw">Integer PK</td>
+     <td>Unique key identifying an IndividualPersona.</td>
+    </tr>
+    <tr>
+     <td>per_id</td>
+     <td>Integer</td>
+     <td>Pointer to a Persona</td>
+    </tr>
+    <tr>
+     <td>ind_id</td>
+     <td>Integer</td>
+     <td>Pointer to an Individual</td>
+    </tr>
+    <tr>
+     <td>note</td>
+     <td>Text</td>
+     <td>Optional note that relates to the Persona - Individual link</td>
+    </tr>
+
+    <tr id="Place">
+     <td colspan="4" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>Place</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a Place</td>
+    </tr>
+    <tr>
+     <td>date1_id</td>
+     <td>Integer</td>
+     <td>A pointer to a Date when this Place was first recorded or the boundry set</td>
+    </tr>
+    <tr>
+     <td>date2_id</td>
+     <td>Integer</td>
+     <td>A pointer to a Date when this Place is no longer recongnised or the boundry was changed</td>
+    </tr>
+
+    <tr id="PlacePart">
+     <td colspan="4" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>PlacePart</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a PlacePart</td>
+    </tr>
+    <tr>
+     <td>type_id</td>
+     <td>Integer</td>
+     <td>A pointer to a PlacePartType that identifies the type of PlacePart this is.<br/>ie Town, Parish, County</td>
+    </tr>
+    <tr>
+     <td>place_id</td>
+     <td>Integer</td>
+     <td>A pointer to a Place that this forms a part of</td>
+    </tr>
+    <tr>
+     <td>val</td>
+     <td>Text</td>
+     <td>The actual name of the place part</td>
+    </tr>
+    <tr>
+     <td>sequence</td>
+     <td>Integer</td>
+     <td>A number to show the place parts position in the full place name (ie address)</td>
+    </tr>
+
+    <tr id="PlacePartType">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>PlacePartType</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a PlacePartType</td>
+    </tr>
+    <tr>
+     <td>name</td>
+     <td>Text</td>
+     <td>The name of the PlacePart, such as Town, Country etc.</td>
+    </tr>
+
+    <tr id="Reference">
+     <td colspan="4" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>Reference</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a Reference record</td>
+    </tr>
+    <tr>
+     <td>title</td>
+     <td>Text</td>
+     <td>Title of the reference doucument</td>
+    </tr>
+    <tr>
+     <td>statement</td>
+     <td>Text</td>
+     <td>
+      An XML document containing a statement whuch may include a Transcription,
+      Translation, Summary of a Source or simple text statement.
+     </td>
+    </tr>
+
+    <tr id="ReferenceEntity">
+     <td colspan="4" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>ReferenceEntity</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a ReferenceEntity</td>
+    </tr>
+    <tr>
+     <td>ref_id</td>
+     <td>Integer</td>
+     <td>Pointer to the Reference record</td>
+    </tr>
+    <tr>
+     <td>entity_type</td>
+     <td>Integer</td>
+     <td>A value indicating the Entity type, 1=Source, 2=Event, 3=Place, 4=Date, 5=Persona, 6=Attribute</td>
+    </tr>
+    <tr>
+     <td>entity_id</td>
+     <td>Integer</td>
+     <td>Pointer to the Entity record</td>
+    </tr>
+
+    <tr id="Repository">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>Repository</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a Repository</td>
+    </tr>
+    <tr>
+     <td>name</td>
+     <td>Text</td>
+     <td>The full name of the Repository.  May be an institution or an individual</td>
+    </tr>
+    <tr>
+     <td>access</td>
+     <td>Text</td>
+     <td>Details of access, such as the hours that the Repository is open to the public.</td>
+    </tr>
+    <tr>
+     <td>comments</td>
+     <td>Text</td>
+     <td>Any pertinent comments about the repository, such as the need to obtain a researcher’s card, restrictions on the use of laptops, etc</td>
+    </tr>
+
+    <tr id="RepositorySource">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>RepositorySource</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a Repository Source
+         <i>Not required by GDM</i></td>
+    </tr>
+    <tr>
+     <td>repos_id</td>
+     <td>Integer</td>
+     <td>Unique key that identifies a specific Repository.</td>
+    </tr>
+    <tr>
+     <td>source_id</td>
+     <td>Integer</td>
+     <td>Unique key that identifies a specific Source.</td>
+    </tr>
+    <tr>
+     <td>call_num</td>
+     <td>Text</td>
+     <td>Optional, the unique call number for a particular Source in a particular Repository.</td>
+    </tr>
+    <tr>
+     <td>desc</td>
+     <td>Text</td>
+     <td>Optional notes about the particular Source in the Repository, such as notes describing the condition of the copy represented by the particular call number.</td>
+    </tr>
+
+    <tr id="Researcher">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>Researcher</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Int PK</td>
+     <td>Unique key identifying a Researcher</td>
+    </tr>
+    <tr>
+     <td>name</td>
+     <td>Text</td>
+     <td>The full name of the researcher.</td>
+    </tr>
+    <tr>
+     <td>comments</td>
+     <td>Text</td>
+     <td>Optional comments about the researcher</td>
+    </tr>
+
+    <tr id="Source">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>Source</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a Source</td>
+    </tr>
+    <tr>
+     <td>higher_id</td>
+     <td>Integer</td>
+     <td>Unique key that identifies the next higher level Source associated with this Source.</td>
+    </tr>
+    <tr>
+     <td>sub_place_id</td>
+     <td>Integer</td>
+     <td>Unique key that identifies the Place of the subject of this Source.</td>
+    </tr>
+    <tr>
+     <td>sub_date_id</td>
+     <td>Integer</td>
+     <td>Optional, the date associated with this Source.</td>
+    </tr>
+    <tr>
+     <td>loc_place_id</td>
+     <td>Integer</td>
+     <td>Unique key that identifies the Place of the location or jurisdiction of the record.</td>
+    </tr>
+    <tr>
+     <td>res_id</td>
+     <td>Integer</td>
+     <td>Unique key in Researcher that identifies the person who gathered this Source record.</td>
+    </tr>
+    <tr>
+     <td>comments</td>
+     <td>Text</td>
+     <td>Any comments about the Source.</td>
+    </tr>
+
+    <tr id="SourceGroup">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>SourceGroup</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a SourceGroup</td>
+    </tr>
+    <tr>
+     <td>name</td>
+     <td>Text</td>
+     <td>The name of this SourceGroup. An example might be Will or Census, or Tombstone.</td>
+    </tr>
+
+    <tr id="SourceGroupSource">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>SourceGroupSource</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a SourceGroupSource</td>
+    </tr>
+    <tr>
+     <td>source_id</td>
+     <td>Integer</td>
+     <td>Unique key that identifies the Source associated with this Source.</td>
+    </tr>
+    <tr>
+     <td>group_id</td>
+     <td>Integer</td>
+     <td>Unique key identifying a SourceGroup</td>
+    </tr>
+
+    <tr id="User">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>User</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a User</td>
+    </tr>
+    <tr>
+     <td>res_id</td>
+     <td>Integer</td>
+     <td>A pointer to a Researcher corresponding to the User.</td>
+    </tr>
+    <tr>
+     <td>fam_id</td>
+     <td>Integer</td>
+     <td>A pointer to a default or home Family.</td>
+    </tr>
+
+    <tr id="Version">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>Version</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a Version record, although only one record is used</td>
+    </tr>
+    <tr>
+     <td>major</td>
+     <td>Integer</td>
+     <td>The Major version number. A change to this indicates a major change in the Database structure</td>
+    </tr>
+    <tr>
+     <td>minor</td>
+     <td>Integer</td>
+     <td>The Minor version number. A change to this number indicates a possible non-reversable change</td>
+    </tr>
+    <tr>
+     <td>revision</td>
+     <td>Integer</td>
+     <td>The Revision number. Changes to this number are reversable (ie it does not need to match the program)</td>
+    </tr>
+
+   </tbody>
+  </table>
+  <br />
+</div>
+
+<hr />
+<div id='valid'>
+  <p>
+    <a href="http://validator.w3.org/check?uri=referer"><img
+        src="valid-xhtml10-blue.png"
+        alt="Valid XHTML 1.0 Strict" height="31" width="88" /></a>
+  </p>
+</div>
+
+<div id='create-date'><p> 7<sup>th</sup> September 2010</p></div>
+
+</div>
+</body>
+</html>
