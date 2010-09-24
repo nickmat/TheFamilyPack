@@ -21,7 +21,7 @@ h1 {
 
 #page {
  position: relative;
- margin-top: 40px;
+ margin-top: 20px;
  padding-top: 0px;
 }
 
@@ -85,7 +85,8 @@ div.database #content {
 }
 
 blockquote {
- margin: -10px 0 -10px 35%;
+/* margin: -10px 0 -10px 35%; */
+ margin: 0 0 0 35%;
  font: italic 0.9em "Times New Roman", serif;
  text-align: justify;
  padding: 10px;
