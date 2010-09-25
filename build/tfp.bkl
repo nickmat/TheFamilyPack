@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Name:        tfp.bkl
+ * Project:     The Family Pack: Genealogy data storage and display program.
+ * Purpose:     The main bakefile source for building the tfp project
+ * Author:      Nick Matthews
+ * Modified by:
+ * Created:     23rd February 2009
+ * RCS-ID:      $Id$
+ * Copyright:   Copyright (c) 2005 - 2009, Nick Matthews.
+ * Licence:     GNU GPLv3
+ *
+ *  The Family Pack is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The Family Pack is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with The Family Pack.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+-->
+
+<makefile>
+
+  <set var="WX_MONOLITHIC">0</set>
+  <set var="WX_UNICODE">1</set>
+  <set var="WX_SHARED">0</set>
+
+  <include file="presets/wx.bkl"/>
+
+  <set var="BUILD_DIR"></set>
+  <set var="REL_ROOT">../..</set>
+  <set var="LOCAL_LIB">$(REL_ROOT)/../lib/$(BUILD_DIR)</set>
+  <if cond="BUILD_DIR==''">
+    <set var="REL_ROOT">..</set>
+    <set var="LOCAL_LIB">$(REL_ROOT)/../lib</set>
+  </if>
+  <set var="LOCAL_SRC">$(REL_ROOT)/src</set>
+  <set var="LOCAL_INC">$(REL_ROOT)/include</set>
+  <set var="LOCAL_TESTS">$(REL_ROOT)/tests</set>
+  <set var="LOCAL_SAMP">$(REL_ROOT)/sample</set>
+  <set var="CPPUNIT_DIR">$(DOLLAR)($(ENV_VAR)CPPUNIT)</set>
+
+
+  <exe id="tfp" template="wxgui,wxlike">
+    <app-type>gui</app-type>
+    <runtime-libs>dynamic</runtime-libs>
+
+    <sources>$(LOCAL_SRC)/tfpApp.cpp</sources>
+    <sources>$(LOCAL_SRC)/tfpFrame.cpp</sources>
+    <sources>$(LOCAL_SRC)/tfpVersion.cpp</sources>
+
+    <headers>$(LOCAL_SRC)/tfpApp.h</headers>
+    <headers>$(LOCAL_SRC)/tfpFrame.h</headers>
+    <headers>$(LOCAL_SRC)/tfpVersion.h</headers>
+
+    <win32-res>$(LOCAL_SRC)/tfp.rc</win32-res>
+    
+    <include>$(LOCAL_INC)</include>
+    <include>$(LOCAL_SRC)</include>
+
+    <sources>$(LOCAL_SRC)/dummy.cpp</sources>
+    <precomp-headers-gen>$(LOCAL_SRC)/dummy.cpp</precomp-headers-gen>
+    <precomp-headers-location>$(LOCAL_INC)</precomp-headers-location>
+    <precomp-headers-header>wx/wxprec.h</precomp-headers-header>
+    <precomp-headers>on</precomp-headers>
+    <precomp-headers-file>wxprec_$(id)</precomp-headers-file>
+
+    <lib-path>$(LOCAL_LIB)</lib-path>
+    <wx-lib>html</wx-lib>
+    <wx-lib>adv</wx-lib>
+    <wx-lib>core</wx-lib>
+    <wx-lib>base</wx-lib>
+  </exe>
+
+</makefile>
+
