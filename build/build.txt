@@ -1,0 +1,22 @@
+Build Instructions
+~~~~~~~~~~~~~~~~~~
+
+The build process has only been tested on Windows and MS Visual C++ so far.
+
+1) Download and install wxWidgets version 2.9.1 or later
+
+2) Ensure the environment variable WXWIN is set to wxWidgets root folder.
+
+3) Download and install Bakefile version 0.2.8 or later
+
+4) Run the batch file built-XXX.bat from the build folder, where XXX matches
+    the version of MS Visual C++ you are running.
+
+5) Open the folder created by the batch file and open the tfp.sln file in 
+    MS Visual C++.
+
+If you are using MS Visual C++ 2008 and wxWidgets 2.9.x then you can skip
+items (3) and (4) and use the files provided in build\vc9-wx29
+
+If anyone successfully builds the project with other compilers or OS's then
+please drop me a line to let me know how you got on.
