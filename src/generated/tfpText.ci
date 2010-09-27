@@ -1,0 +1,67 @@
+/* ..\..\src\generated\tfpText.ci - File created by file2cpp */
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Name:        tfpText.f2c
+ * Project:     The Family Pack: Genealogy data storage and display program.
+ * Purpose:     Screen texts collected from files. Format file for file2cpp.
+ * Author:      Nick Matthews
+ * Modified by:
+ * Created:     26 September 2010
+ * RCS-ID:      $Id:$
+ * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Website:     http://thefamilypack.org
+ * Licence:     GNU GPLv3
+ *
+ *  The Family Pack is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The Family Pack is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with The Family Pack.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+*/
+
+static const wxChar* s_startup_htm =  /* startup.htm */
+ wxT("<html>\n")
+ wxT("<head>\n")
+ wxT("<title>The Family Pack StartUp</title>\n")
+ wxT("</head>\n")
+ wxT("<body>\n")
+ wxT("<table width=100%% bgcolor=#e0e0f0>\n")
+ wxT("<tr>\n")
+ wxT("<td>\n")
+ wxT("<img src=memory:logo6.bmp>\n")
+ wxT("</td>\n")
+ wxT("<td align=center>\n")
+ wxT("<font size=+4><b>The Family Pack</b></font>\n")
+ wxT("</td>\n")
+ wxT("</tr>\n")
+ wxT("</table>\n")
+ wxT("<center>\n")
+ wxT("<p>\n")
+ wxT("<br>\n")
+ wxT("Actions:-<br>\n")
+ wxT("<br>\n")
+ wxT("<a href=:Open>Open an exiting Database</a><br>\n")
+ wxT("<br>\n")
+ wxT("<a href=:New>Create a new Database</a><br>\n")
+ wxT("<br>\n")
+ wxT("<a href=:Import>Import a GEDCOM file</a><br>\n")
+ wxT("</p>\n")
+ wxT("</center>\n")
+ wxT("<p>\n")
+ wxT("TFP %s<br>\n")
+ wxT("<a href=!http://thefamilypack.org>http://thefamilypack.org</a>\n")
+ wxT("</p>\n")
+ wxT("</body>\n")
+ wxT("</html>\n");
+
+/* End of tfpText.f2c */

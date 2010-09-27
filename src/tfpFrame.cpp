@@ -51,6 +51,7 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_HELP_WEB_HOME, TfpFrame::OnHelpWebHome )
     EVT_MENU( wxID_EXIT, TfpFrame::OnQuit )
     EVT_MENU( wxID_ABOUT, TfpFrame::OnAbout )
+    EVT_HTML_LINK_CLICKED( wxID_ANY, TfpFrame::OnHtmlLinkClicked )
     EVT_CLOSE( TfpFrame::OnCloseWindow )
 END_EVENT_TABLE()
 
@@ -87,7 +88,8 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
 
     m_prn = new wxHtmlEasyPrinting( "Easy Printing Demo", this );
 
-    m_html->SetPage( "<html><body>This is a test</body></html>" );
+//    m_html->SetPage( "<html><body>This is a test</body></html>" );
+    m_html->LoadPage( wxT("memory:startup.htm") );
 }
 
 // frame destructor
@@ -147,6 +149,29 @@ void TfpFrame::OnAbout( wxCommandEvent& WXUNUSED(event) )
         wxOK | wxICON_INFORMATION,
         this
     );
+}
+
+void TfpFrame::OnHtmlLinkClicked( wxHtmlLinkEvent &event )
+{
+    wxString href = event.GetLinkInfo().GetHref().c_str();
+
+    switch( (wxChar) href.GetChar( 0 ) )
+    {
+    case ':': // Program Commands
+        if( href == wxT(":New") ) {
+            NewFile();
+        } else if( href == wxT(":Open") ) {
+            OpenFile();
+        } else if( href == wxT(":Import") ) {
+            ImportGedcom();
+        } else {
+            wxMessageBox( wxT("Error: Invalid Command"), wxT("Link Error") );
+        }
+        break;
+    case '!':  // Display in external browser
+        wxLaunchDefaultBrowser( href.Mid( 1 ) );
+        break;
+    }
 }
 
 

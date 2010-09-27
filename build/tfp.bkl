@@ -33,6 +33,11 @@
   <set var="WX_SHARED">0</set>
 
   <include file="presets/wx.bkl"/>
+  
+  <set var="FORMAT_MSVC_PROJECT">
+    <if cond="FORMAT in ['msvc6prj','msvs2003prj''msvs2005prj','msvs2008prj','msvs2010prj']">1</if>
+    <if cond="FORMAT not in ['msvc6prj','msvs2003prj''msvs2005prj','msvs2008prj','msvs2010prj']">0</if>
+  </set>
 
   <set var="BUILD_DIR"></set>
   <set var="REL_ROOT">../..</set>
@@ -47,6 +52,19 @@
   <set var="LOCAL_SAMP">$(REL_ROOT)/sample</set>
   <set var="CPPUNIT_DIR">$(DOLLAR)($(ENV_VAR)CPPUNIT)</set>
 
+  <if cond="FORMAT_MSVC_PROJECT=='0'">
+
+    <action id="$(LOCAL_SRC)/generated/tfpText.ci">
+      <command>file2cpp -v -o $(LOCAL_SRC)/generated/tfpText.ci $(LOCAL_SRC)/tfpText.f2c</command>
+      <depends-on-file>$(LOCAL_SRC)/tfpText.f2c</depends-on-file>
+      <depends-on-file>$(LOCAL_SRC)/startup.htm</depends-on-file>
+    </action>
+
+    <action id="$(LOCAL_SRC)/tfpMemory.cpp">
+      <depends-on-file>$(LOCAL_SRC)/generated/tfpText.ci</depends-on-file>
+    </action>
+  
+  </if>
 
   <exe id="tfp" template="wxgui,wxlike">
     <app-type>gui</app-type>
@@ -54,10 +72,14 @@
 
     <sources>$(LOCAL_SRC)/tfpApp.cpp</sources>
     <sources>$(LOCAL_SRC)/tfpFrame.cpp</sources>
+    <sources>$(LOCAL_SRC)/tfpMemory.cpp</sources>
     <sources>$(LOCAL_SRC)/tfpVersion.cpp</sources>
+    
+ <!--   <headers>$(LOCAL_SRC)/generated/tfpText.ci</headers> -->
 
     <headers>$(LOCAL_SRC)/tfpApp.h</headers>
     <headers>$(LOCAL_SRC)/tfpFrame.h</headers>
+    <headers>$(LOCAL_SRC)/tfpMemory.h</headers>
     <headers>$(LOCAL_SRC)/tfpVersion.h</headers>
 
     <win32-res>$(LOCAL_SRC)/tfp.rc</win32-res>

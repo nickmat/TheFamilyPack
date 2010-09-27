@@ -1,0 +1,33 @@
+        <Filter
+            Name="Processed Files"
+            >
+            <File
+                RelativePath="..\..\src\startup.htm"
+                DeploymentContent="true"
+                >
+            </File>
+            <File
+                RelativePath="..\..\src\tfpText.f2c"
+                >
+                <FileConfiguration
+                    Name="Release|Win32"
+                    >
+                    <Tool
+                        Name="VCCustomBuildTool"
+                        CommandLine="file2cpp -v -o ..\..\src\generated\tfpText.ci ..\..\src\tfpText.f2c&#x0D;&#x0A;"
+                        AdditionalDependencies="..\..\src\startup.htm"
+                        Outputs="..\..\src\generated\tfpText.c"
+                    />
+                </FileConfiguration>
+                <FileConfiguration
+                    Name="Debug|Win32"
+                    >
+                    <Tool
+                        Name="VCCustomBuildTool"
+                        CommandLine="file2cpp -v -o ..\..\src\generated\tfpText.ci ..\..\src\tfpText.f2c&#x0D;&#x0A;"
+                        AdditionalDependencies="..\..\src\startup.htm"
+                        Outputs="..\..\src\generated\tfpText.c"
+                    />
+                </FileConfiguration>
+            </File>
+        </Filter>

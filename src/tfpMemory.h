@@ -1,10 +1,10 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        tfpApp.h
+ * Name:        tfpMemory.h
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Program App class
+ * Purpose:     Load image and text files into memory filesystem.
  * Author:      Nick Matthews
  * Modified by:
- * Created:     24 September 2010
+ * Created:     26 September 2010
  * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2010, Nick Matthews.
  * Website:     http://thefamilypack.org
@@ -27,48 +27,9 @@
 
 */
 
-#include "wx/wxprec.h"
+#ifndef   TFPMEMORY_H
+#define   TFPMEMORY_H
 
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
+extern void tfpLoadMemoryFiles();
 
-#ifndef WX_PRECOMP
-#include "wx/wx.h"
-#endif
-
-
-#include "tfpApp.h"
-#include "tfpFrame.h"
-#include "tfpMemory.h"
-
-IMPLEMENT_APP(TfpApp)
-
-TfpApp::TfpApp()
-{
-
-}
-
-bool TfpApp::OnInit()
-{
-    wxImage::AddHandler( new wxPNGHandler );
-    wxImage::AddHandler( new wxJPEGHandler );
-    wxImage::AddHandler( new wxGIFHandler );
-    wxImage::AddHandler( new wxXPMHandler );
-	tfpLoadMemoryFiles();
-
-    TfpFrame* frame = new TfpFrame( wxT("The Family Pack"), wxDefaultPosition, wxSize( 640, 480 ) );
-    frame->Show(true);
-
-    SetTopWindow( frame );
-
-    return true;
-}
-
-
-int TfpApp::OnExit()
-{
-	return 0;
-}
-
-// End of tfpApp.cpp file
+#endif // TFPMEMORY_H

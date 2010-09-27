@@ -18,5 +18,27 @@ The build process has only been tested on Windows and MS Visual C++ so far.
 If you are using MS Visual C++ 2008 and wxWidgets 2.9.x then you can skip
 items (3) and (4) and use the files provided in build\vc9-wx29
 
+TFP creates some source files using the custom utility program file2cpp. The 
+source for this program is provided in the utils/file2cpp folder. Since the
+generated files are supplied ready made, the utility is only needed if the
+input files are changed. 
+
+Unfortunately, bakefile can't put the file dependencies into the Visual C++
+project files, so if you want to change the input files you have the 
+following options: 
+
+    If the changes are minor, make the changes by hand, remembering to change
+    both source and generated files.
+    
+    Create the file2cpp program and use either nmake on the commandline or
+    the files provided in build\vc9-wx29.
+    
+    Create the file2cpp program and required project file. Modify the 
+    tfp.vcproj file by inserting the text found in the 
+    tfp_tfp-vcproj-processed-files.txt file. Examine the provided 
+    build\vc9-wx29\tfp.vcproj file to see where it should go.
+    
 If anyone successfully builds the project with other compilers or OS's then
 please drop me a line to let me know how you got on.
+
+$ID:$

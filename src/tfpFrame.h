@@ -57,6 +57,8 @@ public:
     void OnHelpWebHome( wxCommandEvent& event );
     void OnAbout( wxCommandEvent& event );
     void OnQuit( wxCommandEvent& event );
+
+    void OnHtmlLinkClicked( wxHtmlLinkEvent& event );
     void OnCloseWindow( wxCloseEvent& event );
 
     void NewFile();

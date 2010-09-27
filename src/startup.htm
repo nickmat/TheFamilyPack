@@ -1,13 +1,14 @@
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        tfpApp.h
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Name:        startup.htm
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Program App class
+ * Purpose:     The initial splash screen displayed by wxHtmCtrl
  * Author:      Nick Matthews
  * Modified by:
- * Created:     24 September 2010
+ * Created:     26 September 2010
  * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2010, Nick Matthews.
  * Website:     http://thefamilypack.org
+ * Licence:     GNU GPLv3
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -24,51 +25,40 @@
  *  along with The Family Pack.  If not, see <http://www.gnu.org/licenses/>.
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+-->
 
-*/
-
-#include "wx/wxprec.h"
-
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
-
-#ifndef WX_PRECOMP
-#include "wx/wx.h"
-#endif
-
-
-#include "tfpApp.h"
-#include "tfpFrame.h"
-#include "tfpMemory.h"
-
-IMPLEMENT_APP(TfpApp)
-
-TfpApp::TfpApp()
-{
-
-}
-
-bool TfpApp::OnInit()
-{
-    wxImage::AddHandler( new wxPNGHandler );
-    wxImage::AddHandler( new wxJPEGHandler );
-    wxImage::AddHandler( new wxGIFHandler );
-    wxImage::AddHandler( new wxXPMHandler );
-	tfpLoadMemoryFiles();
-
-    TfpFrame* frame = new TfpFrame( wxT("The Family Pack"), wxDefaultPosition, wxSize( 640, 480 ) );
-    frame->Show(true);
-
-    SetTopWindow( frame );
-
-    return true;
-}
-
-
-int TfpApp::OnExit()
-{
-	return 0;
-}
-
-// End of tfpApp.cpp file
+<html>
+ <head>
+  <title>The Family Pack StartUp</title>
+ </head>
+ <body>
+  <!-- Double up on % characters as this is used by wxString::Format -->
+  <table width=100%% bgcolor=#e0e0f0>
+   <tr>
+    <td>
+     <img src=memory:logo6.bmp>
+    </td>
+    <td align=center>
+     <font size=+4><b>The Family Pack</b></font>
+    </td>
+   </tr>
+  </table>
+  <center>
+   <p>
+    <br>
+    Actions:-<br>
+    <br>
+    <a href=:Open>Open an exiting Database</a><br>
+    <br>
+    <a href=:New>Create a new Database</a><br>
+    <br>
+    <a href=:Import>Import a GEDCOM file</a><br>
+   </p>
+  </center>
+  <p>
+   <!-- The version number string added here -->
+   TFP %s<br>
+   <a href=!http://thefamilypack.org>http://thefamilypack.org</a>
+  </p>
+ </body>
+</html>
