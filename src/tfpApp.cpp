@@ -49,13 +49,16 @@ TfpApp::TfpApp()
 
 }
 
+/*! This is where all the application initialisation is carried out.
+    Function ends by creating the programs main frame and making it visible.
+*/
 bool TfpApp::OnInit()
 {
     wxImage::AddHandler( new wxPNGHandler );
     wxImage::AddHandler( new wxJPEGHandler );
     wxImage::AddHandler( new wxGIFHandler );
     wxImage::AddHandler( new wxXPMHandler );
-	tfpLoadMemoryFiles();
+    tfpLoadMemoryFiles();
 
     TfpFrame* frame = new TfpFrame( wxT("The Family Pack"), wxDefaultPosition, wxSize( 640, 480 ) );
     frame->Show(true);
@@ -65,10 +68,11 @@ bool TfpApp::OnInit()
     return true;
 }
 
-
+/*! Called on application shutdown. Returns 0 to allow continued shutdown.
+*/
 int TfpApp::OnExit()
 {
-	return 0;
+    return 0;
 }
 
 // End of tfpApp.cpp file

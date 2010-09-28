@@ -56,9 +56,13 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
 END_EVENT_TABLE()
 
 
-// frame constructor
+/*! \brief Frame constructor.
+ *
+ *  Create the window Icon, Menu bar, Status bar and Html control.
+ *  Set the window to display the splash screen.
+ */
 TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& size )
-        : wxFrame( (wxFrame*) NULL, wxID_ANY, title, pos, size )
+    : wxFrame( (wxFrame*) NULL, wxID_ANY, title, pos, size )
 {
     // Set frames Icon
     SetIcon( wxIcon( wxT("tfp") ) );
@@ -81,57 +85,75 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     m_menuClosedDB->Append( menuInitHelp, wxT("&Help") );
     SetMenuBar( m_menuClosedDB );
 
-    CreateStatusBar();
+    CreateStatusBar( 1 );
 
     m_html = new wxHtmlWindow( this );
     m_html->SetRelatedStatusBar( 0 );
 
     m_prn = new wxHtmlEasyPrinting( "Easy Printing Demo", this );
 
-//    m_html->SetPage( "<html><body>This is a test</body></html>" );
-    m_html->LoadPage( wxT("memory:startup.htm") );
+    m_html->LoadPage( "memory:startup.htm" );
 }
 
-// frame destructor
+/*! \brief Frame destructor.
+ */
 TfpFrame::~TfpFrame()
 {
-    delete m_prn;
-    m_prn = (wxHtmlEasyPrinting*) NULL;
+    wxDELETE( m_prn );
 }
 
-void TfpFrame::OnCloseWindow( wxCloseEvent& WXUNUSED(event) )
+/*! \brief Called on a Close Window event.
+ */
+void TfpFrame::OnCloseWindow( wxCloseEvent& event )
 {
     this->Destroy();
 }
 
-void TfpFrame::OnNewFile( wxCommandEvent& WXUNUSED(event) )
+/*! \brief Called on a New File menu option event.
+ */
+void TfpFrame::OnNewFile( wxCommandEvent& event )
 {
     NewFile();
 }
 
-void TfpFrame::OnOpenFile( wxCommandEvent& WXUNUSED(event) )
+/*! \brief Called on an Open File menu option event.
+ */
+void TfpFrame::OnOpenFile( wxCommandEvent& event )
 {
     OpenFile();
 }
 
-void TfpFrame::OnImportGedcom( wxCommandEvent& WXUNUSED(event) )
+/*! \brief Called on a Inport GEDCOM File menu option event.
+ */
+void TfpFrame::OnImportGedcom( wxCommandEvent& event )
 {
     ImportGedcom();
 }
 
-
-void TfpFrame::OnQuit( wxCommandEvent& WXUNUSED(event) )
+/*! \brief Called on an Exit Application menu option event.
+ */
+void TfpFrame::OnQuit( wxCommandEvent& event )
 {
     // true is to force the frame to close
     Close( true );
 }
 
-void TfpFrame::OnHelpWebHome( wxCommandEvent& WXUNUSED(event) )
+/*! \brief Called on a Help, TFP Website menu option event.
+ *
+ */
+void TfpFrame::OnHelpWebHome( wxCommandEvent& event )
 {
-	wxLaunchDefaultBrowser( wxT("http://thefamilypack.org") );
+    wxLaunchDefaultBrowser( wxT("http://thefamilypack.org") );
 }
 
-void TfpFrame::OnAbout( wxCommandEvent& WXUNUSED(event) )
+/*! \brief Called on a Help, About menu option event.
+ *
+ *  Displays a message box with the current TFP version number,
+ *  wxWidgets version number, the compiler name and version and
+ *  operating system description.
+ *
+ */
+void TfpFrame::OnAbout( wxCommandEvent& event )
 {
     wxMessageBox(
         wxString::Format(
@@ -151,7 +173,18 @@ void TfpFrame::OnAbout( wxCommandEvent& WXUNUSED(event) )
     );
 }
 
-void TfpFrame::OnHtmlLinkClicked( wxHtmlLinkEvent &event )
+/*! \brief Called on a link in the html control being clicked.
+ *
+ *  Decodes the href string of the clicked link. If the first
+ *  character of the href string is:-
+ *
+ *  ':' then the remainder of the string is a command.
+ *
+ *  '!' then the remainder of the string is a web address to be
+ *  passed to the default external browser.
+ *  
+ */
+void TfpFrame::OnHtmlLinkClicked( wxHtmlLinkEvent& event )
 {
     wxString href = event.GetLinkInfo().GetHref().c_str();
 

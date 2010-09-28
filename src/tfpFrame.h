@@ -24,7 +24,6 @@
  *  along with The Family Pack.  If not, see <http://www.gnu.org/licenses/>.
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
 */
 
 #ifndef TFPFRAME_H
@@ -34,7 +33,14 @@
 
 class wxHtmlEasyPrinting;
 
-// Define a new frame type: this is going to be our main frame
+
+/*! \brief The main application frame.
+ *
+ *  This is a wxHtml control, so all our main program
+ *  display will be html pages written directly from the database by the
+ *  application. The hypertext links will be used as a simple text code to
+ *  interpret the users commands.
+ */
 class TfpFrame : public wxFrame
 {
 private:
@@ -61,6 +67,7 @@ public:
     void OnHtmlLinkClicked( wxHtmlLinkEvent& event );
     void OnCloseWindow( wxCloseEvent& event );
 
+private:
     void NewFile();
     void OpenFile();
     void ImportGedcom();
@@ -72,10 +79,8 @@ enum
     tfpID_NEW_FILE = wxID_HIGHEST+1,
     tfpID_OPEN_FILE,
     tfpID_IMPORT_GEDCOM,
-	tfpID_HELP_WEB_HOME
+    tfpID_HELP_WEB_HOME
 };
-
-extern TfpFrame* GetMainFrame();
 
 #endif // TFPFRAME_H
 

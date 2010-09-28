@@ -37,4 +37,11 @@
  #include "wx/msw/msvcrt.h"
 #endif
 
+/*! \file dummy.cpp
+    \brief Used only to create pre-complied headers.
+
+    This dummy file is included in order that pre-compiled headers can
+    be created. It serves no other function.
+*/
+
 // End of dummy.cpp

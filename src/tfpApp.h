@@ -30,17 +30,15 @@
 #ifndef TFPAPP_H
 #define TFPAPP_H
 
-// The application class
+//! The application class. As required by wxWidgets.
 class TfpApp : public wxApp
 {
 private:
 
 public:
-	TfpApp();
-
-    virtual bool OnInit();    // Called on application startup
-
-	virtual int OnExit();     // Called on application exit
+    TfpApp();
+    virtual bool OnInit();
+    virtual int OnExit();
 
 };
 

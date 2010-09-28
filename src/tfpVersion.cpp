@@ -41,18 +41,23 @@
 
 #define VERSION   wxT("0.3.0.1 alpha")
 
-
+/*! A string containing the current version number.
+ */
 const wxChar* tfpVersion = VERSION;
 
+/*! A string containing a long hand version name and copyright message.
+ */
 const wxChar* tfpTitle = wxT("The Family Pack - Version ") VERSION wxT("\n")
                          wxT("Copyright (c) 2010 Nick Matthews\n\n");
 
-/***************************************************************************
+/*************************************************************************//**
+
+ \file
 
  Program: The Family Pack.  Store and display genealogical data.
 
  Source code revision history
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
  27apr05  v0.1.0    Initial version of "The Family" for DOS. Not released.
                     Writes family tree charts in HTML from a given GEDCOM file.
 
@@ -62,8 +67,8 @@ const wxChar* tfpTitle = wxT("The Family Pack - Version ") VERSION wxT("\n")
 
  Active   v0.3.0.1  First public alpha version
 
+
 Routemap
-~~~~~~~~
 
  v0.3.0.x     Alpha versions developing a working database definition
 
@@ -87,12 +92,15 @@ Routemap
 
 ***************************************************************************/
 
+/*! Returns a string representing the compiler name and version.
+ *  Only working for Visual C++ so far.
+ */
 wxString tfpGetCompilerVersion()
 {
 #ifdef __VISUALC__
-	return wxString::Format( wxT("Visual C++ version %d"), __VISUALC__ );
+    return wxString::Format( wxT("Visual C++ version %d"), __VISUALC__ );
 #else
-	return wxT("Unknown compiler");
+    return wxT("Unknown compiler");
 #endif
 }
 

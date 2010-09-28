@@ -45,6 +45,8 @@
 #include "logo6.xpm"
 #include "generated/tfpText.ci"
 
+/*! \brief Create the memory file system and read in the memory files.
+ */
 void tfpLoadMemoryFiles()
 {
     wxFileSystem::AddHandler( new wxMemoryFSHandler );
