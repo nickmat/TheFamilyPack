@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+
+<makefile>
+<!--
+  <exe id="calTest" template="wxconsole,wxlike">
+    <app-type>console</app-type>
+    <runtime-libs>dynamic</runtime-libs>
+
+    <sources>$(LOCAL_TEST)/cal/calTest.cpp</sources>
+    <include>$(LOCAL_INC)</include>
+    <lib-path>$(LOCAL_LIB)</lib-path>
+    <library>calendar</library>
+    <wx-lib>base</wx-lib>
+    <ldflags>/NODEFAULTLIB:$(IGNORE_LIB)</ldflags>
+  </exe>
+
+  <exe id="calCalc" template="wxconsole,wxlike">
+    <app-type>console</app-type>
+    <runtime-libs>dynamic</runtime-libs>
+
+    <sources>$(LOCAL_TEST)/cal/calCalc.cpp</sources>
+    <include>$(LOCAL_INC)</include>
+    <lib-path>$(LOCAL_LIB)</lib-path>
+    <library>calendar</library>
+    <wx-lib>base</wx-lib>
+    <ldflags>/NODEFAULTLIB:$(IGNORE_LIB)</ldflags>
+  </exe>
+-->
+
+  <lib id="calendar" template="wx-lib,wxlike">
+    <libname>$(LOCAL_LIB)/calendar$(WXLIBPOSTFIX)</libname>
+    <sources>$(LOCAL_SRC)/cal/calendar.cpp</sources>
+    <sources>$(LOCAL_SRC)/cal/calGregorian.cpp</sources>
+    <sources>$(LOCAL_SRC)/cal/calJDay.cpp</sources>
+    <sources>$(LOCAL_SRC)/cal/calJulian.cpp</sources>
+    <sources>$(LOCAL_SRC)/cal/calLatin.cpp</sources>
+    <headers>$(LOCAL_INC)/cal/calendar.h</headers>
+    <headers>$(LOCAL_SRC)/cal/calCommon.h</headers>
+    <headers>$(LOCAL_SRC)/cal/calGregorian.h</headers>
+    <headers>$(LOCAL_SRC)/cal/calJDay.h</headers>
+    <headers>$(LOCAL_SRC)/cal/calJulian.h</headers>
+    <headers>$(LOCAL_SRC)/cal/calLatin.h</headers>
+    <include>$(LOCAL_INC)/cal</include>
+    <include>$(LOCAL_INC)</include>
+
+    <sources>$(LOCAL_SRC)/dummy.cpp</sources>
+    <precomp-headers-gen>$(LOCAL_SRC)/dummy.cpp</precomp-headers-gen>
+    <precomp-headers-location>$(LOCAL_INC)</precomp-headers-location>
+    <precomp-headers-header>wx/wxprec.h</precomp-headers-header>
+    <precomp-headers>on</precomp-headers>
+    <precomp-headers-file>wxprec_$(id)</precomp-headers-file>
+
+  </lib>
+
+</makefile>
+

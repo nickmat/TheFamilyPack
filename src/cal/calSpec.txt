@@ -1,0 +1,132 @@
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Project: TFP  The Family Pack for wxWidgets *  Written by: Nick Matthews  *
+ *  Module: cal - The Calendar Library Spec.   *  Date Started: 18 Oct 2008  *
+ *    File: calSpec.txt        Type: Text file *  Date Revised: 22 Oct 2008  *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+    Copyright (c) 2008, Nick Matthews
+
+This Calendar Library (cal) has been designed for use with "The Family Pack" 
+application but it is designed to be quite independant. So, for instance, a
+Julian Day Number (JDN) of zero has a special meaning within TFP (date not 
+known or required), but cal treats it as just another day at the office 
+(1 Jan 4713 BCE).
+
+The library is based around julian days, the system used by astronomers to 
+mark time since midday Monday 1st January 4713 B.C.E. (Julian Calendar). The 
+fractional of the day day is used to denote the time of day, so the day 
+comencing Midnight on Tuesday 2nd January 4713 B.C.E. would given as JD 0.5
+and Sunday 19th September 1948 C.E. (Gregorian Calendar) is JD 2432313.5.
+
+Because TFP does not normaly record the time of day, the fractional part of 
+the day is ignored and the day number for the day starting at midday is used
+for the whole day. To emphasize the different convention, they are labeled as
+Julian Day Numbers (JDN). So the day Sunday 19th September 1948 C.E. (Gregorian 
+Calendar) is recorded as JDN 2432314.
+
+The cal library interface consists of a few C++ functions. These are detailed
+in the header file calendar.h and normally these are suffcient. They mainly 
+convert strings to and from JDN values. The functions use an enumeration of
+Calendar Schemes to indicate the scheme being converted. The definition of
+a scheme is much broader than is normally associated with calendars. The 
+Gregorian Calendar was first introduced in 1582 but the change over was carried
+out over serveral centuries in different countries. Also, the date of the new 
+year could vary from place to place. All these different variations have been 
+given Calender Scheme names, such as "English Calendar" where the change over
+from Julian to Gregorian occured in Sep 1752 where the 2nd was follows by the 
+14th, and between the 12th centry and the change over date, new year was on the
+25th March. The Scottish Scheme is similar the English but the new year was
+always on 1st January.
+
+The Calendar sub-system currently copes with the following types
+
+CALENDAR_SCH_Unstated          No attempt at classifing the calendar system
+                               has been made.
+CALENDAR_SCH_Unknown           The precise calendar system used is
+                               undetermined.
+CALENDAR_SCH_Unlisted          The calendar system is known but not currently
+                               supported.
+
+    The above system types may be used in TFP. In all cases a text discription
+    of the date can be recorded and will be displayed where possible. However,
+    no calculations can be carried out on these dates and they cannot be
+    sorted.
+
+
+CALENDAR_SCH_JulianDay         The calendar system used internally by TFP.
+
+    Julian Day                 JD = JDN - 0.5
+
+    The Julian Day starting at midday. JDN 0 represents the day starting at
+    midday 24 Nov -4713 Gregorian (a Monday). Although the calendar library can correctly
+    handle JDN 0 and negative JD Numbers, TFP has a special meaning for jdn 0.
+    So for all practical purposes, JD 1 is the earliest date available.
+
+
+CALENDAR_SCH_ModJulianDay
+
+    Modified Julian Day        MJD = JDN - 2400001
+
+    A shortened version of the Julian Day, included for completeness.
+
+
+CALENDAR_SCH_Julian
+
+    Julian Calendar            1 Jan 1 = JDN 1721424
+
+    The main dating system used in the western world from the Roman times until
+    it was replaced by the Gregorian Calendar from 1582. Dates around the
+    change over where often labeled "Old Style" or OS.
+
+CALENDAR_SCH_Gregorian         1 Jan 1 = JDN 1721426
+
+    Gregorian Calendar
+
+
+CALENDAR_SCH_Catholic,
+
+    Catholic Calendar
+
+    4 Oct 1582 (Julian) followed by 15 Oct 1582 (Gregorian)
+
+    JDN 2299171 ->  4 Oct 1582 (Old Style)
+    JDN 2299172 -> 15 Oct 1582 (New Style)
+
+    The Catholic Calendar uses the Julian Calender up to 4 Oct 1582 (Julian),
+    and the Gregorian Calendar there after. Meaning that Thur 4 Oct 1582
+    (Catholic) is followed by Fri 15 Oct 1582 (Catholic) and October for that
+    year held only 21 days.
+
+CALENDAR_SCH_English,
+
+    New year falls on March 25th between 1100(?) and 1752
+    JDN 2361221 ->  2 Sep 1752 (Old Style)
+    JDN 2361222 -> 14 Sep 1752 (New Style)
+    Scheme also used by British Overseas Territories
+
+CALENDAR_SCH_Scottish,
+
+    New year always 1 Jan (otherwise same as English)
+    JDN 2361221 ->  2 Sep 1752 (Old Style)
+    JDN 2361222 -> 14 Sep 1752 (New Style)
+
+CALENDAR_SCH_Swedish,
+CALENDAR_SCH_FrenchRevolution
+
+
+
+Imprecise or uncertain dates are held as a date range. In fact all dates in TFP
+are held as a date range, but where the date is known it is a range of one day.
+This range of possible dates should not be confused with a fixed date range
+where, for example, an event is held over a period of time. In this case both
+the start and the end dates may themselves be uncertain.
+
+
+Examples of date ranges (in latin format)
+
+day Mon year                           day Mon year - day Mon year
+Mon year                               1 Mon year - lastday Mon year
+year                                   1 Jan year - lastday Dec year
+year1 - year2                          1 Jan year1 - lastday Dec year2
+Mon1 year1 - Mon2 year2                1 Mon1 year1 - lastday Mon2 year2
+day1 Mon1 year1 - day2 Mon2 year2      day1 Mon1 year1 - day2 Mon2 year2

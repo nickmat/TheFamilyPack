@@ -75,8 +75,6 @@
     <sources>$(LOCAL_SRC)/tfpMemory.cpp</sources>
     <sources>$(LOCAL_SRC)/tfpVersion.cpp</sources>
     
- <!--   <headers>$(LOCAL_SRC)/generated/tfpText.ci</headers> -->
-
     <headers>$(LOCAL_SRC)/tfpApp.h</headers>
     <headers>$(LOCAL_SRC)/tfpFrame.h</headers>
     <headers>$(LOCAL_SRC)/tfpMemory.h</headers>
@@ -95,11 +93,14 @@
     <precomp-headers-file>wxprec_$(id)</precomp-headers-file>
 
     <lib-path>$(LOCAL_LIB)</lib-path>
+    <library>calendar</library>
     <wx-lib>html</wx-lib>
     <wx-lib>adv</wx-lib>
     <wx-lib>core</wx-lib>
     <wx-lib>base</wx-lib>
   </exe>
+
+  <include file="calendar.bkl"/>
 
 </makefile>
 
