@@ -34,11 +34,11 @@ h1 {
  top: 0;
  left: 0;
  width: 170px;
- line-height: 200%;
- font-size: 11px;
+ line-height: 180%;
+ font-size: 12px;
 }
 
-#menu a {
+#menu a.m-item {
  display: block;
  margin-top: 5px;
  margin-left: 20px;
@@ -62,17 +62,28 @@ h1 {
  color: #840;
 }
 
-#menu a:hover, #menu a.hover:link, #menu a.hover:visited, #menu a.hover:active {
+#menu  a.m-item:hover, #menu a.hover:link, #menu a.hover:visited, #menu a.hover:active {
  background-color: #eee;
  background-image:url(smallheart.gif);
  background-repeat: no-repeat;
  background-position: left;
 }
 
-#menu a.thispage {
+#menu  a.m-item:hover, #menu a.hover:link, #menu a.hover:visited, #menu a.hover:active {
+ background-color: #eee;
+ background-image:url(smallheart.gif);
+ background-repeat: no-repeat;
+ background-position: left;
+}
+
+#menu a.thispage, #menu  a.thispage:hover {
  background-image:url(smallspade.gif);
  background-repeat: no-repeat;
  background-position: left;
+}
+
+#menu img { 
+ border-style: none; 
 }
 
 #content {
