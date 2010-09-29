@@ -1,3 +1,0 @@
-doxygen tfp.doxy
-
-pause
