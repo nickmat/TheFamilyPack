@@ -5,6 +5,7 @@
  * Purpose:     The main bakefile source for building the tfp project
  * Author:      Nick Matthews
  * Modified by:
+ * Website:     http://thefamilypack.org
  * Created:     23rd February 2009
  * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2005 - 2009, Nick Matthews.
@@ -101,6 +102,7 @@
   </exe>
 
   <include file="calendar.bkl"/>
+  <include file="tests.bkl"/>
 
 </makefile>
 

@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        calendar.bkl
+ * Name:        tests.bkl
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     The bakefile source for building the calendar library.
+ * Purpose:     The bakefile source for building the tests program.
  * Author:      Nick Matthews
  * Modified by:
  * Website:     http://thefamilypack.org
- * Created:     28th September 2010
+ * Created:     30th September 2010
  * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2005 - 2009, Nick Matthews.
  * Licence:     GNU GPLv3
@@ -29,30 +29,37 @@
 
 <makefile>
 
-  <lib id="calendar" template="wx-lib,wxlike">
-    <libname>$(LOCAL_LIB)/calendar$(WXLIBPOSTFIX)</libname>
-    <sources>$(LOCAL_SRC)/cal/calendar.cpp</sources>
-    <sources>$(LOCAL_SRC)/cal/calGregorian.cpp</sources>
-    <sources>$(LOCAL_SRC)/cal/calJDay.cpp</sources>
-    <sources>$(LOCAL_SRC)/cal/calJulian.cpp</sources>
-    <sources>$(LOCAL_SRC)/cal/calLatin.cpp</sources>
-    <headers>$(LOCAL_INC)/cal/calendar.h</headers>
-    <headers>$(LOCAL_SRC)/cal/calCommon.h</headers>
-    <headers>$(LOCAL_SRC)/cal/calGregorian.h</headers>
-    <headers>$(LOCAL_SRC)/cal/calJDay.h</headers>
-    <headers>$(LOCAL_SRC)/cal/calJulian.h</headers>
-    <headers>$(LOCAL_SRC)/cal/calLatin.h</headers>
-    <include>$(LOCAL_INC)/cal</include>
-    <include>$(LOCAL_INC)</include>
+  <exe id="tests" template="wxconsole,wxlike">
+    <app-type>console</app-type>
+    <runtime-libs>dynamic</runtime-libs>
 
-    <sources>$(LOCAL_SRC)/dummy.cpp</sources>
-    <precomp-headers-gen>$(LOCAL_SRC)/dummy.cpp</precomp-headers-gen>
+    <sources>$(LOCAL_TESTS)/test.cpp</sources>
+    <sources>$(LOCAL_TESTS)/cal/testCalendar.cpp</sources>
+
+    <headers>$(LOCAL_TESTS)/testprec.h</headers>
+
+    <!-- <win32-res>$(LOCAL_SRC)/tests.rc</win32-res> -->
+    
+    <include>$(LOCAL_INC)</include>
+    <include>$(LOCAL_TESTS)</include>
+    <include>$(CPPUNIT_DIR)/include</include>
+
+    <sources>$(LOCAL_TESTS)/dummy.cpp</sources>
+    <precomp-headers-gen>$(LOCAL_TESTS)/dummy.cpp</precomp-headers-gen>
     <precomp-headers-location>$(LOCAL_INC)</precomp-headers-location>
-    <precomp-headers-header>wx/wxprec.h</precomp-headers-header>
+    <precomp-headers-header>testprec.h</precomp-headers-header>
     <precomp-headers>on</precomp-headers>
     <precomp-headers-file>wxprec_$(id)</precomp-headers-file>
 
-  </lib>
+    <lib-path>$(LOCAL_LIB)</lib-path>
+    <lib-path>$(CPPUNIT_DIR)/lib</lib-path>
+    <library>calendar</library>
+    <sys-lib>$(substituteFromDict(WX_DEBUG,{'0':'cppunit','1':'cppunitd'}))</sys-lib>
+
+    <wx-lib>core</wx-lib>
+    <wx-lib>base</wx-lib>
+    <wx-lib>net</wx-lib>
+  </exe>
 
 </makefile>
 
