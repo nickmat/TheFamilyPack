@@ -92,7 +92,7 @@ h1 {
 }
 
 div.database #content {
- min-height: 300px;  /* adjust this when menu height changes */
+ min-height: 500px;  /* adjust this when menu height changes */
 }
 
 blockquote {
