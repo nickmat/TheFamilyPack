@@ -23,7 +23,6 @@
  *  along with The Family Pack.  If not, see <http://www.gnu.org/licenses/>.
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
 */
 
 #include "wx/wxprec.h"
@@ -44,55 +43,55 @@
 #include "calGregorian.h"
 
 const wxString CalendarSchemeName[] = {
-	wxT("Unstated"),
-	wxT("Unknown"),
-	wxT("Unlisted"),
-	wxT("Julian Day Number"),
-	wxT("Julian Day"),
-	wxT("Modified Julian Day"),
-	wxT("Rata Die"),
-	wxT("Julian"),
-	wxT("Gregorian"),
-	wxT("Swedish"),
-	wxT("Catholic"),
-	wxT("English"),
-	wxT("Scottish"),
-	wxT("French Revolutionary")
+    wxT("Unstated"),
+    wxT("Unknown"),
+    wxT("Unlisted"),
+    wxT("Julian Day Number"),
+    wxT("Julian Day"),
+    wxT("Modified Julian Day"),
+    wxT("Rata Die"),
+    wxT("Julian"),
+    wxT("Gregorian"),
+    wxT("Catholic"),
+    wxT("English"),
+    wxT("Scottish"),
+    wxT("Swedish"),
+    wxT("French Revolutionary")
 };
 
 const wxString CalendarSchemeAbrev[] = {
-	wxT("Us"),
-	wxT("Uk"),
-	wxT("Ul"),
-	wxT("JDN"),
-	wxT("JD"),
-	wxT("MJD"),
-	wxT("RD"),
-	wxT("J"),
-	wxT("G"),
-	wxT("Swed"),
-	wxT("Cath"),
-	wxT("Eng"),
-	wxT("Scot"),
-	wxT("FR")
+    wxT("Us"),
+    wxT("Uk"),
+    wxT("Ul"),
+    wxT("JDN"),
+    wxT("JD"),
+    wxT("MJD"),
+    wxT("RD"),
+    wxT("J"),
+    wxT("G"),
+    wxT("Cath"),
+    wxT("Eng"),
+    wxT("Scot"),
+    wxT("Swed"),
+    wxT("FR")
 };
 
-// Helper function. 
+// Helper function.
 // Integer function to return floor( a / b )
 long FDiv( long a, long b )
 {
     long q = a / b;
-	if( a % b < 0 ) --q;
-	return q;
+    if( a % b < 0 ) --q;
+    return q;
 }
 
-// Helper function. 
+// Helper function.
 // Integer function to return positive value of ( a % b )
 long PMod( long a, long b )
 {
-	long r = a % b;
-	if( r < 0 ) r += b;
-	return r;
+    long r = a % b;
+    if( r < 0 ) r += b;
+    return r;
 }
 
 
@@ -122,33 +121,33 @@ int calLastDayInMonth( int month, int year, CalendarScheme scheme )
 
 bool calYearFromJdn( int& year, long jdn, CalendarScheme scheme )
 {
-	int day, month;
+    int day, month;
 
     switch( scheme )
     {
     case CALENDAR_SCH_Gregorian:
         calGregorianFromJdn( jdn, day, month, year );
-		return true;
+        return true;
     case CALENDAR_SCH_Julian:
         calJulianFromJdn( jdn, day, month, year );
-		return true;
-	}
-	return false;
+        return true;
+    }
+    return false;
 }
 
 wxString calStrFromJdn( long jdn, CalendarScheme scheme )
 {
-	wxString str;
+    wxString str;
 
     switch( scheme )
     {
     case CALENDAR_SCH_Gregorian:
     case CALENDAR_SCH_Julian:
         return calLatinStrFromJdn( jdn, scheme );
-	case CALENDAR_SCH_JulianDayNumber:
-	case CALENDAR_SCH_JulianDay:
-	case CALENDAR_SCH_ModJulianDay:
-	case CALENDAR_SCH_RataDie:
+    case CALENDAR_SCH_JulianDayNumber:
+    case CALENDAR_SCH_JulianDay:
+    case CALENDAR_SCH_ModJulianDay:
+    case CALENDAR_SCH_RataDie:
         return calJDayStrFromJdn( jdn, scheme );
     case CALENDAR_SCH_Unstated:
         return wxT("Unstated");
@@ -162,69 +161,69 @@ wxString calStrFromJdn( long jdn, CalendarScheme scheme )
 
 wxString calStrFromJdnRange( long jdn1, long jdn2, CalendarScheme scheme )
 {
-	// Format: dd mmm... yyyy
-	// Format: nnnnnnn
-	if( jdn1 == jdn2 )
-	{
-		return calStrFromJdn( jdn1, scheme );
-	}
+    // Format: dd mmm... yyyy
+    // Format: nnnnnnn
+    if( jdn1 == jdn2 )
+    {
+        return calStrFromJdn( jdn1, scheme );
+    }
 
-	wxString str;
+    wxString str;
 
     switch( scheme )
     {
     case CALENDAR_SCH_Gregorian:
     case CALENDAR_SCH_Julian:
         return calLatinStrFromJdnRange( jdn1, jdn2, scheme );
-	case CALENDAR_SCH_JulianDayNumber:
-	case CALENDAR_SCH_JulianDay:
-	case CALENDAR_SCH_ModJulianDay:
-	case CALENDAR_SCH_RataDie:
+    case CALENDAR_SCH_JulianDayNumber:
+    case CALENDAR_SCH_JulianDay:
+    case CALENDAR_SCH_ModJulianDay:
+    case CALENDAR_SCH_RataDie:
         return calJDayStrFromJdnRange( jdn1, jdn2, scheme );
     }
-	// Use the defaults from the single jdn version
-	return calStrFromJdn( jdn1, scheme );
+    // Use the defaults from the single jdn version
+    return calStrFromJdn( jdn1, scheme );
 }
 
 bool calStrToJdn( long& jdn, const wxString& str, CalendarScheme scheme )
 {
-	switch( scheme )
-	{
+    switch( scheme )
+    {
     case CALENDAR_SCH_Julian:
     case CALENDAR_SCH_Gregorian:
         return calLatinStrToJdn( jdn, str, scheme );
-	case CALENDAR_SCH_JulianDayNumber:
-	case CALENDAR_SCH_JulianDay:
-	case CALENDAR_SCH_ModJulianDay:
-	case CALENDAR_SCH_RataDie:
+    case CALENDAR_SCH_JulianDayNumber:
+    case CALENDAR_SCH_JulianDay:
+    case CALENDAR_SCH_ModJulianDay:
+    case CALENDAR_SCH_RataDie:
         return calJDayStrToJdn( jdn, str, scheme );
-	}
-	return false;
+    }
+    return false;
 }
 
-bool calStrToJdnRange( 
+bool calStrToJdnRange(
     long& jdn1, long& jdn2, const wxString& str, CalendarScheme scheme )
 {
-	bool ret;
+    bool ret;
 
-	switch( scheme )
-	{
+    switch( scheme )
+    {
     case CALENDAR_SCH_Julian:
     case CALENDAR_SCH_Gregorian:
         ret = calLatinStrToJdnRange( jdn1, jdn2, str, scheme );
-		break;
-	case CALENDAR_SCH_JulianDayNumber:
-	case CALENDAR_SCH_JulianDay:
-	case CALENDAR_SCH_ModJulianDay:
-	case CALENDAR_SCH_RataDie:
+        break;
+    case CALENDAR_SCH_JulianDayNumber:
+    case CALENDAR_SCH_JulianDay:
+    case CALENDAR_SCH_ModJulianDay:
+    case CALENDAR_SCH_RataDie:
         ret = calJDayStrToJdnRange( jdn1, jdn2, str, scheme );
-		break;
-	default:
-    	jdn1 = jdn2 = 0;
-		ret = false;
-	}
+        break;
+    default:
+        jdn1 = jdn2 = 0;
+        ret = false;
+    }
 
-	return ret;
+    return ret;
 }
 
 // End of Calendar.cpp

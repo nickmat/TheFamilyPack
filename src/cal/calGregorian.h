@@ -23,7 +23,6 @@
  *  along with The Family Pack.  If not, see <http://www.gnu.org/licenses/>.
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
 */
 
 #ifndef CALGREGORIAN_H
@@ -34,7 +33,5 @@ extern bool calGregorianIsLeapYear( int year );
 extern int calGregorianLastDayInMonth( int month, int year );
 extern bool calGregorianToJdn( long& jdn, int day, int month, int year );
 extern void calGregorianFromJdn( long jdn, int& day, int& month, int& year );
-//extern wxString calGregorianStrFromJdn( long jdn );
-
 
 #endif // CALGREGORIAN_H

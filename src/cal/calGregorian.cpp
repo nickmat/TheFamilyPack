@@ -23,7 +23,6 @@
  *  along with The Family Pack.  If not, see <http://www.gnu.org/licenses/>.
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
 */
 
 #include "wx/wxprec.h"
@@ -45,12 +44,16 @@
 
 #define BASEDATE_Gregorian 1721060L
 
+/*! Returns true if the year is a leap year in the Gregorian Calendar.
+ */
 bool calGregorianIsLeapYear( int year )
 {
     return ( year%4 == 0 && year%100 != 0 ) || year%400 == 0;
 }
 
-
+/*! Returns the last day of the month for the give month and year
+ *  in the Gregorian Calendar.
+ */
 int calGregorianLastDayInMonth( int month, int year )
 {
     if( calGregorianIsLeapYear( year ) )
@@ -60,11 +63,13 @@ int calGregorianLastDayInMonth( int month, int year )
     return calLatinLengthOfMonth[0][month-1];
 }
 
-
+/*! Sets jdn to the Julian Day Number for the given day, month and year
+ *  in the Gregorian Calendar. Always returns true.
+ */
 bool calGregorianToJdn( long& jdn, int day, int month, int year )
 {
-    jdn = 
-		FDiv( year, 400 )*146097L          //     days in 400 year cycles
+    jdn =
+        FDiv( year, 400 )*146097L          //     days in 400 year cycles
         + (PMod( year, 400 )/100)*36524L   // - 1 days in 100 year cycles
         + (PMod( year, 100 )/4)*1461       // + 1 days in 4 year cycles
         + PMod( year, 4 )*365              // + 1 days in year
@@ -83,16 +88,18 @@ bool calGregorianToJdn( long& jdn, int day, int month, int year )
     return true;
 }
 
-
+/*! Splits the given Julian Day Number date into the day, month and year
+ *  for the Gregorian Calendar.
+ */
 void calGregorianFromJdn( long date, int& day, int& month, int& year )
 {
     date -= BASEDATE_Gregorian;
     year = (int) FDiv( date, 146097L ) * 400;
     date = PMod( date, 146097L );
 
-	if( date < 60 ) 
+    if( date < 60 )
     {
-        if( date < 31 ) 
+        if( date < 31 )
         {
             month = 1;
             day = (int) date + 1;
@@ -106,9 +113,9 @@ void calGregorianFromJdn( long date, int& day, int& month, int& year )
     year += (int) ((date/36524L) * 100);
     date %= 36524L;
 
-	if( date < 59 ) // Note, this is not a leap year
+    if( date < 59 ) // Note, this is not a leap year
     {
-        if( date < 31 ) 
+        if( date < 31 )
         {
             month = 1;
             day = (int) date + 1;
@@ -122,14 +129,14 @@ void calGregorianFromJdn( long date, int& day, int& month, int& year )
     year += (int) (date/1461) * 4;
     date %= 1461;
 
-	if( date < 60 ) 
+    if( date < 60 )
     {
-        if( date < 31 ) 
+        if( date < 31 )
         {
             month = 1;
             day = (int) date + 1;
             return;
-        } 
+        }
         month = 2;
         day = (int) date - 30;
         return;
@@ -141,15 +148,5 @@ void calGregorianFromJdn( long date, int& day, int& month, int& year )
     while( (int) date >= calLatinDiy[month+1] ) month++;
     day = (int) date - calLatinDiy[month] + 1;
 }
-#if 0
-wxString calGregorianStrFromJdn( long jdn )
-{
-    wxString str;
-    int day, month, year;
 
-    calGregorianFromJdn( jdn, day, month, year );
-    str << day << wxT(" ") << MonthName[0][month-1] << wxT(" ") << year;
-    return str;
-}
-#endif
 // End of calGregorian.cpp

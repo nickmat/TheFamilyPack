@@ -6,6 +6,7 @@
 
     Copyright (c) 2008, Nick Matthews
 
+
 This Calendar Library (cal) has been designed for use with "The Family Pack" 
 application but it is designed to be quite independant. So, for instance, a
 Julian Day Number (JDN) of zero has a special meaning within TFP (date not 

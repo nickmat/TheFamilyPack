@@ -23,7 +23,6 @@
  *  along with The Family Pack.  If not, see <http://www.gnu.org/licenses/>.
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
 */
 
 #include "wx/wxprec.h"
@@ -41,14 +40,19 @@
 #include "calendar.h"
 #include "calJDay.h"
 
+/*! Modified Julian Day, a shorter version of Julian Days.
+ */
 #define BASEDATE_ModJulianDay  2400001L
 
-// Rata Die (Fixed Date) has 1 Jan 1 (G) as day 1 (31 Dec 0 (G) as day 0)
-// and is defined in "Calendrical Calculations" by Nachum Dershowitz and
-// Edward M. Reingold. It is used as the fixed date in their algorithms.
+/*! Rata Die (Fixed Date) has 1 Jan 1 (G) as day 1 (31 Dec 0 (G) as day 0)
+ *  and is defined in "Calendrical Calculations" by Nachum Dershowitz and
+ *  Edward M. Reingold. It is used as the fixed date in their algorithms.
+ */
 #define BASEDATE_RataDie       1721425L
 
-// Return the string representing the jdn in the given scheme
+/*! Return the string representing the jdn in the given scheme.
+ *  The scheme is one which is represented by a single number.
+ */
 wxString calJDayStrFromJdn( long jdn, CalendarScheme scheme )
 {
     wxString str;
@@ -71,7 +75,9 @@ wxString calJDayStrFromJdn( long jdn, CalendarScheme scheme )
     return wxEmptyString;
 }
 
-// Return the string representing the jdn range in the given scheme
+/*! Return the string representing the jdn range in the given scheme.
+ *  The scheme is one which is represented by a single number.
+ */
 wxString calJDayStrFromJdnRange( long jdn1, long jdn2, CalendarScheme scheme )
 {
     wxString str;
@@ -98,7 +104,9 @@ wxString calJDayStrFromJdnRange( long jdn1, long jdn2, CalendarScheme scheme )
     return wxEmptyString;
 }
 
-// Parse the string and obtain its jdn for the given scheme
+/*! Parse the string and obtain its jdn for the given scheme.
+ *  The scheme is one which is represented by a single number.
+ */
 bool calJDayStrToJdn( long& jdn, const wxString& str, CalendarScheme scheme )
 {
     bool ret;
@@ -128,8 +136,11 @@ bool calJDayStrToJdn( long& jdn, const wxString& str, CalendarScheme scheme )
     return false;
 }
 
-// Parse the string and obtain its jdn range for the given scheme
-// Expected format:  nnnnn - nnnnn
+/*! Parse the string and obtain its jdn range for the given scheme.
+ *  The scheme is one which is represented by a single number.
+ *
+ *  Expected format:  nnnnn - nnnnn
+ */
 bool calJDayStrToJdnRange(
     long& jdn1, long& jdn2, const wxString& str, CalendarScheme scheme )
 {

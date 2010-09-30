@@ -23,7 +23,6 @@
  *  along with The Family Pack.  If not, see <http://www.gnu.org/licenses/>.
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
 */
 
 #ifndef CALLATIN_H
@@ -36,14 +35,14 @@ extern wxString calMonthName[3][12];
 // Return the month number 1-12 for correct match, or zero if no match
 extern int calLatinLookUpMonth( const wxString str );
 
-// Parse a Latin style date string in the format:  dd mmm... yyyy 
+// Parse a Latin style date string in the format:  dd mmm... yyyy
 // and update day, month and year arguments. Returns true on success
 extern bool calLatinFromStr( const wxString& str, int& day, int& month, int& year );
 
 // Given the day month year and scheme, calculate the jdn.
 // Returns true on success
-extern bool calLatinToJdn( 
-	long& jdn, int day, int month, int year, CalendarScheme scheme );
+extern bool calLatinToJdn(
+    long& jdn, int day, int month, int year, CalendarScheme scheme );
 
 // Return the string representing the jdn in the given scheme
 extern wxString calLatinStrFromJdn( long jdn, CalendarScheme scheme );
@@ -52,11 +51,11 @@ extern wxString calLatinStrFromJdn( long jdn, CalendarScheme scheme );
 extern wxString calLatinStrFromJdnRange(
     long jdn1, long jdn2, CalendarScheme scheme );
 
-// Parse the string and obtain its jdn for the given scheme 
+// Parse the string and obtain its jdn for the given scheme
 extern bool calLatinStrToJdn( long& jdn, const wxString& str, CalendarScheme scheme );
 
-// Parse the string and obtain its jdn range for the given scheme 
-extern bool calLatinStrToJdnRange( 
+// Parse the string and obtain its jdn range for the given scheme
+extern bool calLatinStrToJdnRange(
     long& jdn1, long& jdn2, const wxString& str, CalendarScheme scheme );
 
 #endif // CALLATIN_H

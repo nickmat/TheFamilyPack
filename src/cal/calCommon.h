@@ -29,9 +29,6 @@
 #ifndef CALCOMMON_H
 #define CALCOMMON_H
 
-/*! \brief Common internal calendar functions.
-*/
-
 //! Integer function to return floor( a / b )
 extern long FDiv( long a, long b );
 

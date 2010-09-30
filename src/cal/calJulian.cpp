@@ -23,7 +23,6 @@
  *  along with The Family Pack.  If not, see <http://www.gnu.org/licenses/>.
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
 */
 
 #include "wx/wxprec.h"
@@ -47,11 +46,16 @@
 
 #define BASEDATE_Julian    1721058L
 
+/*! Returns true if the year is a leap year in the Julian Calendar.
+ */
 bool calJulianIsLeapYear( int year )
 {
     return ( year % 4 ) == 0;
 }
 
+/*! Returns the last day of the month for the give month and year
+ *  in the Julian Calendar.
+ */
 int calJulianLastDayInMonth( int month, int year )
 {
     if( calJulianIsLeapYear( year ) )
@@ -61,28 +65,34 @@ int calJulianLastDayInMonth( int month, int year )
     return calLatinLengthOfMonth[0][month-1];
 }
 
+/*! Sets jdn to the Julian Day Number for the given day, month and year
+ *  in the Julian Calendar. Always returns true.
+ */
 bool calJulianToJdn( long& jdn, int day, int month, int year )
 {
-    jdn = 
-		FDiv(year,4)*1461 + PMod(year,4)*365 
-		+ calLatinDiy[month] + day + BASEDATE_Julian;
+    jdn =
+        FDiv(year,4)*1461 + PMod(year,4)*365
+        + calLatinDiy[month] + day + BASEDATE_Julian;
 
-	// Adjust if in the 1st 2 months of 4 year cycle
+    // Adjust if in the 1st 2 months of 4 year cycle
     if( month < 3 && (year%4) == 0 ) --jdn;
 
     return true;
 }
 
+/*! Splits the given Julian Day Number date into the day, month and year
+ *  for the Julian Calendar.
+ */
 void calJulianFromJdn( long date, int& day, int& month, int& year )
 {
     date -= BASEDATE_Julian;
 
-	year = (int) FDiv( date, 1461 ) * 4;
-	date = PMod( date, 1461 );
+    year = (int) FDiv( date, 1461 ) * 4;
+    date = PMod( date, 1461 );
 
-    if( date < 60 ) 
+    if( date < 60 )
     {
-        if( date < 31 ) 
+        if( date < 31 )
         {
             month = 1;
             day = (int) date + 1;
@@ -99,15 +109,5 @@ void calJulianFromJdn( long date, int& day, int& month, int& year )
     while( date >= (long) calLatinDiy[month+1] ) month++;
     day = (int) date - calLatinDiy[month] + 1;
 }
-#if 0
-wxString calJulianStrFromJdn( long jdn )
-{
-    wxString str;
-    int day, month, year;
 
-    calJulianFromJdn( jdn, day, month, year );
-    str << day << wxT(" ") << MonthName[0][month-1] << wxT(" ") << year;
-    return str;
-}
-#endif
 // End of calJulian.cpp
