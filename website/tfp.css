@@ -17,6 +17,7 @@ h1 {
  background: 8px 8px #eef;
  text-align: center;
  padding: 8px 15px 8px 20px;
+ border-bottom: 3px solid #ddf;
 }
 
 #page {
@@ -86,9 +87,14 @@ h1 {
  border-style: none; 
 }
 
-#content {
+div#content {
  margin: 0 20px 0 185px;
  min-height: 200px;  /* adjust this when menu height changes */
+}
+
+div.diag {
+ margin-top: 1em;
+ text-align: center;
 }
 
 div.database #content {
@@ -96,7 +102,6 @@ div.database #content {
 }
 
 blockquote {
-/* margin: -10px 0 -10px 35%; */
  margin: 0 0 0 35%;
  font: italic 0.9em "Times New Roman", serif;
  text-align: justify;
