@@ -50,6 +50,46 @@
  */
 #define BASEDATE_RataDie       1721425L
 
+/*! Convert a julian day number into an integer format date of the given scheme.
+ *  Returns true if successful, false otherwise.
+ */
+bool CalConvertFromJdn( long& num, long jdn, CalendarScheme scheme )
+{
+    switch( scheme )
+    {
+    case CALENDAR_SCH_JulianDayNumber:
+        num = jdn;
+        return true;
+    case CALENDAR_SCH_ModJulianDay:
+        num = jdn - BASEDATE_ModJulianDay;
+        return true;
+    case CALENDAR_SCH_RataDie:
+        num = jdn - BASEDATE_RataDie;
+        return true;
+    }
+    return false;
+}
+
+/*! Convert a date in integer format of given scheme into a julian day number.
+ *  Returns true if successful, false otherwise.
+ */
+extern bool CalConvertToJdn( long& jdn, long num, CalendarScheme scheme )
+{
+    switch( scheme )
+    {
+    case CALENDAR_SCH_JulianDayNumber:
+        jdn = num;
+        return true;
+    case CALENDAR_SCH_ModJulianDay:
+        jdn = num + BASEDATE_ModJulianDay;
+        return true;
+    case CALENDAR_SCH_RataDie:
+        jdn = num + BASEDATE_RataDie;
+        return true;
+    }
+    return false;
+}
+
 /*! Return the string representing the jdn in the given scheme.
  *  The scheme is one which is represented by a single number.
  */

@@ -28,6 +28,12 @@
 #ifndef CALENDAR_H
 #define CALENDAR_H
 
+/*! struct to hold a day, month and year
+ */
+struct DMYDate {
+    int day; int month; int year;
+};
+
 enum CalendarScheme {
 
     /*! Unstated: Us
@@ -166,6 +172,18 @@ extern const wxString CalendarSchemeName[];
 /*! Array of scheme abreviations
  */
 extern const wxString CalendarSchemeAbrev[];
+
+/*! Convert a julian day number into an integer format date of the given scheme.
+ *  Returns true if successful, false otherwise.
+ */
+// See cal/calJDay.cpp
+extern bool CalConvertFromJdn( long& num, long jdn, CalendarScheme scheme );
+
+/*! Convert a date in integer format of given scheme into a julian day number.
+ *  Returns true if successful, false otherwise.
+ */
+// See cal/calJDay.cpp
+extern bool CalConvertToJdn( long& jdn, long num, CalendarScheme scheme );
 
 /*! Returns true if year is a leap year and false if not,
  * or the calendar scheme does not support leap years.
