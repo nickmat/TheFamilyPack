@@ -42,18 +42,18 @@
 #include <wx/cmdline.h>
 #include <wx/tokenzr.h>
 
-#define VERSION   wxT("0.3.0")
-#define PROGNAME  wxT("file2cpp")
+#define VERSION   "0.3.1"
+#define PROGNAME  "file2cpp"
 
 const wxString g_version = VERSION;
 const wxString g_progName = PROGNAME;
 
 #ifdef NDEBUG
-const wxString g_title = PROGNAME wxT(" - Version ") VERSION wxT("\n")
-                         wxT("Copyright (c) 2009 Nick Matthews\n\n");
+const wxString g_title = PROGNAME " - Version " VERSION "\n"
+                         "Copyright (c) 2009 Nick Matthews\n\n";
 #else
-const wxString g_title = PROGNAME wxT(" - Version ") VERSION wxT(" Debug\n")
-                         wxT("Copyright (c) 2009 Nick Matthews\n\n");
+const wxString g_title = PROGNAME " - Version " VERSION " Debug\n"
+                         "Copyright (c) 2009 Nick Matthews\n\n";
 #endif
 
 bool g_verbose = false;
@@ -107,13 +107,13 @@ bool FindFile( wxFileName& name );
 int main( int argc, char** argv )
 {
     static const wxCmdLineEntryDesc desc[] = {
-        { wxCMD_LINE_SWITCH, wxT("h"), wxT("help"), wxT("show this help message"),
+        { wxCMD_LINE_SWITCH, "h", "help", "show this help message",
             wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP },
-        { wxCMD_LINE_SWITCH, wxT("v"), wxT("verbose"), wxT("be verbose") },
-        { wxCMD_LINE_SWITCH, wxT("q"), wxT("quiet"),   wxT("be quiet") },
-        { wxCMD_LINE_OPTION, wxT("o"), wxT("output"),  wxT("output file") },
-        { wxCMD_LINE_OPTION, wxT("I"), wxT("include"),   wxT("include paths") },
-        { wxCMD_LINE_PARAM,  NULL, NULL, wxT("format file"),
+        { wxCMD_LINE_SWITCH, "v", "verbose", "be verbose" },
+        { wxCMD_LINE_SWITCH, "q", "quiet",   "be quiet" },
+        { wxCMD_LINE_OPTION, "o", "output",  "output file" },
+        { wxCMD_LINE_OPTION, "I", "include",   "include paths" },
+        { wxCMD_LINE_PARAM,  NULL, NULL, "format file",
             wxCMD_LINE_VAL_STRING, wxCMD_LINE_OPTION_MANDATORY },
         { wxCMD_LINE_NONE }
     };
@@ -136,58 +136,58 @@ int main( int argc, char** argv )
         return EXIT_FAILURE;
     }
 
-    if( parser.Found( wxT("q") ) ) g_quiet = true;
-    if( parser.Found( wxT("v") ) ) g_verbose = true;
+    if( parser.Found( "q" ) ) g_quiet = true;
+    if( parser.Found( "v" ) ) g_verbose = true;
 
     if( ! g_quiet ) wxPrintf( g_title );
 
     wxFileName inName( parser.GetParam() );
     if( !inName.FileExists() ) {
-        fprintf( stderr, "Input file \"%s\" not found.\n", inName.GetFullPath().ToUTF8() );
+        wxPrintf( "Input file \"%s\" not found.\n", inName.GetFullPath() );
         return EXIT_FAILURE;
     }
     wxTextFile inFile;
     if( !inFile.Open( inName.GetFullPath() ) ) {
-        fprintf( stderr, "Can not read input file \"%s\".\n", inName.GetFullPath().ToUTF8() );
+        wxPrintf( "Can not read input file \"%s\".\n", inName.GetFullPath() );
         return EXIT_FAILURE;
     }
     if( g_verbose ) {
-        wxPrintf( wxT("Reading format file \"%s\".\n"), inName.GetFullPath() );
+        wxPrintf( "Reading format file \"%s\".\n", inName.GetFullPath() );
     }
 
     // Get a list of paths to look for included files
     g_incPaths.Add( inName.GetPath() );
     wxString incPath;
-    parser.Found( wxT("I"), &incPath );
+    parser.Found("I", &incPath );
     if( !incPath.empty() ) {
         AddToIncPaths( incPath );
     }
 
     // Form the output file name
     wxString outNameStr;
-    parser.Found( wxT("o"), &outNameStr );
+    parser.Found( "o", &outNameStr );
     wxFileName outName;
     if( outNameStr.IsEmpty() ) {
         outName = inName;
-        outName.SetExt( wxT("cpp") );
+        outName.SetExt( "cpp" );
     } else {
         outName = outNameStr;
         if( outName.HasExt() == false ) {
-            outName.SetExt( wxT("cpp") );
+            outName.SetExt( "cpp" );
         }
     }
     wxFFile outFile;
-    if( ! outFile.Open( outName.GetFullPath(), wxT("w") ) ) {
-        fprintf( stderr, "Can not open output file \"%s\".\n", outName.GetFullPath().ToUTF8() );
+    if( ! outFile.Open( outName.GetFullPath(), "w" ) ) {
+        wxPrintf( "Can not open output file \"%s\".\n", outName.GetFullPath() );
         return EXIT_FAILURE;
     }
     if( g_verbose ) {
-        wxPrintf( wxT("Writing output file \"%s\".\n"), outName.GetFullPath() );
+        wxPrintf( "Writing output file \"%s\".\n", outName.GetFullPath() );
     }
     wxString heading = wxString::Format( 
-        wxT("/* %s - File created by %s */\n\n"), 
-        outName.GetFullPath().c_str(),
-        g_progName.c_str()
+        "/* %s - File created by %s */\n\n", 
+        outName.GetFullPath(),
+        g_progName
     );
     outFile.Write( heading );
 
@@ -209,16 +209,16 @@ int ProccessInFile( wxTextFile& inFile, wxFFile& outFile )
         end = line.end();
         for( it = line.begin() ; it != end ; it++ ) {
             if( skip != SKIP_NONE ) {
-                if( skip == SKIP_DATA && *it == wxT('}') ) skip = SKIP_NONE;
+                if( skip == SKIP_DATA && *it == '}' ) skip = SKIP_NONE;
                 if( skip == SKIP_TEXT_POST && IsPostfixTerminator(*it) ) {
                     out += *it;
                     skip = SKIP_NONE;
                 }
-                if( skip == SKIP_TEXT_END && *it == wxT('"') ) skip = SKIP_TEXT_POST;
-                if( skip == SKIP_TEXT_BEG && *it == wxT('"') ) skip = SKIP_TEXT_END;
+                if( skip == SKIP_TEXT_END && *it == '"' ) skip = SKIP_TEXT_POST;
+                if( skip == SKIP_TEXT_BEG && *it == '"' ) skip = SKIP_TEXT_END;
                 continue;
             }
-            if( *it == wxT('\\') && it+1 == end ) {
+            if( *it == '\\' && it+1 == end ) {
                 out += *it;
                 extendLine = true;
                 break;
@@ -228,8 +228,8 @@ int ProccessInFile( wxTextFile& inFile, wxFFile& outFile )
                 continue;
             }
             if( inCComment ) {
-                if( *it == wxT('*') && it+1 != end && *(it+1) == wxT('/') ) {
-                    out += wxT("*/");
+                if( *it == '*' && it+1 != end && *(it+1) == '/' ) {
+                    out += "*/";
                     inCComment = false;
                     it++;
                     continue;
@@ -238,70 +238,70 @@ int ProccessInFile( wxTextFile& inFile, wxFFile& outFile )
                 continue;
             }
             if( inSQuote ) {
-                if( *it == wxT('\\') ) {         // already tested for \newline
-                    if( *(it+1) == wxT('\\') ) {
-                        out += wxT("\\\\");
+                if( *it == '\\' ) {         // already tested for \newline
+                    if( *(it+1) == '\\' ) {
+                        out += "\\\\";
                         it++;
                         continue;
                     }
-                    if( *(it+1) == wxT('\'') ) {
-                        out += wxT("\\'");
+                    if( *(it+1) == '\'' ) {
+                        out += "\\'";
                         it++;
                         continue;
                     }
                 }
-                if( *it == wxT('\'') ) {
+                if( *it == '\'' ) {
                     inSQuote = false;
                 }
                 out += *it;
                 continue;
             }
             if( inDQuote ) {
-                if( *it == wxT('\\') ) {         // already tested for \newline
-                    if( *(it+1) == wxT('\\') ) {
-                        out += wxT("\\\\");
+                if( *it == '\\' ) {         // already tested for \newline
+                    if( *(it+1) == '\\' ) {
+                        out += "\\\\";
                         it++;
                         continue;
                     }
-                    if( *(it+1) == wxT('"') ) {
-                        out += wxT("\\\"");
+                    if( *(it+1) == '"' ) {
+                        out += "\\\"";
                         it++;
                         continue;
                     }
                 }
-                if( *it == wxT('"') ) {
+                if( *it == '"' ) {
                     inDQuote = false;
                 }
                 out += *it;
                 continue;
             }
-            if( *it == wxT('@') ) {
+            if( *it == '@' ) {
                 outFile.Write( out );
                 out = wxEmptyString;
                 skip = DoAtCommand( outFile, it, end );
                 continue;
             }
-            if( *it == wxT('/') && it+1 != end && *(it+1) == wxT('*') ) {
-                out += wxT("/*");
+            if( *it == '/' && it+1 != end && *(it+1) == '*' ) {
+                out += "/*";
                 inCComment = true;
                 it++;
                 continue;
             }
-            if( *it == wxT('/') && it+1 != end && *(it+1) == wxT('/') ) {
-                out += wxT("//");
+            if( *it == '/' && it+1 != end && *(it+1) == '/' ) {
+                out += "//";
                 inLComment = true;
                 it++;
                 continue;
             }
             out += *it;
-            if( *it == wxT('\'') ) {
+            if( *it == '\'' ) {
                 inSQuote = true;
             }
-            if( *it == wxT('"') ) {
+            if( *it == '"' ) {
                 inDQuote = true;
             }
         }
-        out += wxT('\n');
+        out += '\n';
         outFile.Write( out );
         out = wxEmptyString;
         if( extendLine ) {
@@ -322,41 +322,41 @@ SkipType DoAtCommand( wxFFile& outFile, cit_t it, cit_t end )
     wxString out;
 
     if( ++it == end ) return SKIP_NONE;
-    if( *it == wxT('{') ) {
-        exitch = wxT('}');
-        outf = wxT("{ /* %s */\n");
+    if( *it == '{' ) {
+        exitch = '}';
+        outf = "{ /* %s */\n";
     } else {
-        if( *it == wxT('(') ) {
+        if( *it == '(' ) {
             // Trim text file content specifier
             while( ++it != end ) {
-                if( *it == wxT(')') ) {
+                if( *it == ')' ) {
                     it++;
                     break;
                 }
-                switch( *it ) {
-                case wxT('r'):
+                switch( (wxChar) *it ) {
+                case 'r':
                     mod.trimR = true;
                     break;
-                case wxT('l'):
+                case 'l':
                     mod.trimL = true;
                     break;
-                case wxT('m'):
+                case 'm':
                     mod.mline = true;
                     break;
-                case wxT('c'):
+                case 'c':
                     mod.compact = true;
                     break;
-                case wxT('.'):
-                    if( Compare( it, end, wxT(".c") ) ) {
+                case '.':
+                    if( Compare( it, end, ".c" ) ) {
                         mod.remove = FCOMMENT_C;
                         it++;
-                    } else if( Compare( it, end, wxT(".cpp") ) ) {
+                    } else if( Compare( it, end, ".cpp" ) ) {
                         mod.remove = FCOMMENT_CPP;
                         it += 3;
-                    } else if( Compare( it, end, wxT(".xml") ) ) {
+                    } else if( Compare( it, end, ".xml" ) ) {
                         mod.remove = FCOMMENT_XML;
                         it += 3;
-                    } else if( Compare( it, end, wxT(".tcl") ) ) {
+                    } else if( Compare( it, end, ".tcl" ) ) {
                         mod.remove = FCOMMENT_TCL;
                         it += 3;
                     } 
@@ -365,13 +365,13 @@ SkipType DoAtCommand( wxFFile& outFile, cit_t it, cit_t end )
             }
         }
         while( it != end ) {
-            if( *it == wxT('"') ) break;
+            if( *it == '"' ) break;
             mod.prefix += *it;
             it++;
         }
         if( it == end ) return SKIP_NONE;
-        exitch = wxT('"');
-        outf = wxT(" /* %s */");
+        exitch = '"';
+        outf = " /* %s */";
     }
 
     while( ++it != end ) {
@@ -380,9 +380,9 @@ SkipType DoAtCommand( wxFFile& outFile, cit_t it, cit_t end )
         fname += *it;
     }
     outFile.Write( wxString::Format( outf, fname.c_str() ) );
-    if( exitch == wxT('}') ) {
+    if( exitch == '}' ) {
         OutputData( fname, outFile );
-        outFile.Write( wxT("\n}") );
+        outFile.Write( "\n}" );
         return SKIP_DATA;
     }
     while( ++it != end ) {
@@ -398,12 +398,12 @@ void OutputData( wxString& filename, wxFFile& outFile )
 {
     wxFileName dataName = filename; // TODO: use Include path to find file
     wxFFile dataFile;
-    if( !dataFile.Open( dataName.GetFullPath(), wxT("rb") ) ) {
-        fprintf( stderr, "Can not open data file \"%s\".\n", dataName.GetFullPath().ToUTF8() );
+    if( !dataFile.Open( dataName.GetFullPath(), "rb" ) ) {
+        wxPrintf( "Can not open data file \"%s\".\n", dataName.GetFullPath() );
         exit( EXIT_FAILURE );
     }
     if( g_verbose ) {
-        wxPrintf( wxT("Formating data file \"%s\".\n"), dataName.GetFullPath() );
+        wxPrintf( "Formating data file \"%s\".\n", dataName.GetFullPath() );
     }
 
     int ch, i;
@@ -427,16 +427,16 @@ void OutputText( wxString& filename, wxFFile& outFile, TextMod& mod )
 {
     wxFileName textName = filename; // TODO: use Include path to find file
     if( FindFile( textName ) == false ) {
-        fprintf( stderr, "Can not find text file \"%s\".\n", textName.GetFullPath().ToUTF8() );
+        wxPrintf( "Can not find text file \"%s\".\n", textName.GetFullPath() );
         exit( EXIT_FAILURE );
     }
     wxTextFile textFile;
     if( !textFile.Open( textName.GetFullPath() ) ) {
-        fprintf( stderr, "Can not read text file \"%s\".\n", textName.GetFullPath().ToUTF8() );
+        wxPrintf( "Can not read text file \"%s\".\n", textName.GetFullPath() );
         exit( EXIT_FAILURE );
     }
     if( g_verbose ) {
-        wxPrintf( wxT("Formating text file \"%s\".\n"), textName.GetFullPath() );
+        wxPrintf( "Formating text file \"%s\".\n", textName.GetFullPath() );
     }
 
     bool emptyblock = true;
@@ -475,52 +475,52 @@ void OutputText( wxString& filename, wxFFile& outFile, TextMod& mod )
         out.Empty();
         for( it = line.begin() ; it != end ; it++ ) {
             if( skipC ) {
-                if( *it == wxT('*') && Compare( it, end, wxT("*/") ) ) {
+                if( *it == '*' && Compare( it, end, "*/" ) ) {
                     it++; // step over second character
                     skipC = false;
                 }
                 continue;
             }
             if( skipXml ) {
-                if( *it == wxT('-') && Compare( it, end, wxT("-->") ) ) {
+                if( *it == '-' && Compare( it, end, "-->" ) ) {
                     it++;it++; // step over 2nd & 3rd character
                     skipXml = false;
                 }
                 continue;
             }
-            if( *it == wxT('\"') || *it == wxT('\\') ) {
-                out += wxT('\\');
+            if( *it == '\"' || *it == '\\' ) {
+                out += '\\';
             }
-            if( *it == wxT('\t') ) {
-                out += wxT("\\t");
+            if( *it == '\t' ) {
+                out += "\\t";
                 continue;
             }
-            if( lookSQuote && !inDQuote && *it == wxT('\'') ) {
+            if( lookSQuote && !inDQuote && *it == '\'' ) {
                 inSQuote = inSQuote ? false : true;
             }
-            if( lookDQuote && !inSQuote && *it == wxT('"') ) {
+            if( lookDQuote && !inSQuote && *it == '"' ) {
                 inDQuote = inDQuote ? false : true;
             }
-            if( ignoreC && *it == wxT('/') && !inDQuote && !inSQuote ) {
-                if( Compare( it, end, wxT("/*") ) == true ) {
+            if( ignoreC && *it == '/' && !inDQuote && !inSQuote ) {
+                if( Compare( it, end, "/*" ) == true ) {
                     skipC = true;
                     continue;
                 }
-                if( Compare( it, end, wxT("//") ) == true ) {
+                if( Compare( it, end, "//" ) == true ) {
                     break;
                 }
             }
-            if( ignoreXml && *it == wxT('<') && !inDQuote && !inSQuote ) {
-                if( Compare( it, end, wxT("<!--") ) == true ) {
+            if( ignoreXml && *it == '<' && !inDQuote && !inSQuote ) {
+                if( Compare( it, end, "<!--" ) == true ) {
                     skipXml = true;
                     continue;
                 }
             }
-            if( ignoreTcl && *it == wxT('#') && !inDQuote && !inSQuote ) {
+            if( ignoreTcl && *it == '#' && !inDQuote && !inSQuote ) {
                 break;
             }
             out += *it;
-        }
+       }
         if( mod.trimR ) out.Trim();
         if( mod.compact && out.IsEmpty() ) {
             continue;
@@ -533,16 +533,16 @@ void OutputText( wxString& filename, wxFFile& outFile, TextMod& mod )
         }
         if( mod.trimL ) out.Trim( false );
         outFile.Write( 
-            wxT("\n ") + mod.prefix + wxT("\"") 
+            "\n " + mod.prefix + "\"" 
             + out 
-            + wxT("\\n\"") + mod.postfix 
+            + "\\n\"" + mod.postfix 
         );
     }
 }
 
 bool IsPostfixTerminator( wxChar ch )
 {
-    return wxIsspace( ch ) || ch == wxT(';') || ch == wxT(',');
+    return wxIsspace( ch ) || ch == ';' || ch == ',';
 }
 
 bool Compare( cit_t it, cit_t end, const wxString& str )
@@ -556,7 +556,7 @@ bool Compare( cit_t it, cit_t end, const wxString& str )
 
 void AddToIncPaths( wxString& incPath )
 {
-    wxStringTokenizer tkz( incPath, wxT(";"), wxTOKEN_STRTOK );
+    wxStringTokenizer tkz( incPath, ";", wxTOKEN_STRTOK );
     while( tkz.HasMoreTokens() ) {
         g_incPaths.Add( tkz.GetNextToken() );
     }

@@ -94,10 +94,10 @@ ____________________________________________________
 "world"!
 ____________________________________________________
 
-    Command line >File2c test.f2c
-    produces the file: test.c
+    Command line >file2cpp test.f2c
+    produces the file: test.cpp
 ____________________________________________________
-/* G:\X\TFP03\UTILS\FILE2CPP\test.c - File created by File2c D0.10 */
+/* test.cpp - File created by file2cpp */
 
 /* A test of @{test.txt} and @(rc)L"test.txt" files */
 
@@ -112,7 +112,6 @@ size_t sizeof_test_txt = sizeof(test_txt);
 const wchar_t* test =  /* test.txt */
  L" Hello\n"
  L"\"world\"!\n"
- L"\n";
 ____________________________________________________
 
 Command Line Switches:

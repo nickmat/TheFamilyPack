@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        calendar.bkl
+ * Name:        utils.bkl
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     The bakefile source for building the calendar library.
  * Author:      Nick Matthews
@@ -29,30 +29,24 @@
 
 <makefile>
 
-  <lib id="calendar" template="wx-lib,wxlike">
-    <libname>$(LOCAL_LIB)/calendar$(WXLIBPOSTFIX)</libname>
-    <sources>$(LOCAL_SRC)/cal/calendar.cpp</sources>
-    <sources>$(LOCAL_SRC)/cal/calGregorian.cpp</sources>
-    <sources>$(LOCAL_SRC)/cal/calJDay.cpp</sources>
-    <sources>$(LOCAL_SRC)/cal/calJulian.cpp</sources>
-    <sources>$(LOCAL_SRC)/cal/calLatin.cpp</sources>
-    <headers>$(LOCAL_INC)/cal/calendar.h</headers>
-    <headers>$(LOCAL_SRC)/cal/calCommon.h</headers>
-    <headers>$(LOCAL_SRC)/cal/calGregorian.h</headers>
-    <headers>$(LOCAL_SRC)/cal/calJDay.h</headers>
-    <headers>$(LOCAL_SRC)/cal/calJulian.h</headers>
-    <headers>$(LOCAL_SRC)/cal/calLatin.h</headers>
-    <include>$(LOCAL_INC)/cal</include>
+  <exe id="calcalc" template="wxconsole,wxlike">
+    <app-type>console</app-type>
+    <runtime-libs>dynamic</runtime-libs>
+
+    <sources>$(LOCAL_UTIL)/cal/calCalc.cpp</sources>
     <include>$(LOCAL_INC)</include>
+    <lib-path>$(LOCAL_LIB)</lib-path>
+    <library>calendar</library>
+    <wx-lib>base</wx-lib>
+  </exe>
 
-    <sources>$(LOCAL_SRC)/dummy.cpp</sources>
-    <precomp-headers-gen>$(LOCAL_SRC)/dummy.cpp</precomp-headers-gen>
-    <precomp-headers-location>$(LOCAL_INC)</precomp-headers-location>
-    <precomp-headers-header>wx/wxprec.h</precomp-headers-header>
-    <precomp-headers>on</precomp-headers>
-    <precomp-headers-file>wxprec_$(id)</precomp-headers-file>
+  <exe id="file2cpp" template="wxconsole,wxlike">
+    <app-type>console</app-type>
+    <runtime-libs>dynamic</runtime-libs>
 
-  </lib>
+    <sources>$(LOCAL_UTIL)/file2cpp/fcMain.cpp</sources>
+    <wx-lib>base</wx-lib>
+  </exe>
 
 </makefile>
 

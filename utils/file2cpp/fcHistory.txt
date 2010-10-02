@@ -28,6 +28,9 @@
    Revision History
    ~~~~~~~~~~~~~~~~
    
+ 2oct10  v0.3.1
+   Modification to strings to enable wxWidgets v2.9.0 compile.
+   
  6oct09  v0.3.0
    Program renamed file2cpp to avoid confusion with the GNU program file2c.
    Complete rewrite as a C++ wxWidgets console program. The Format (input) 

@@ -104,6 +104,7 @@
 
   <include file="calendar.bkl"/>
   <include file="tests.bkl"/>
+  <include file="utils.bkl"/>
 
 </makefile>
 
