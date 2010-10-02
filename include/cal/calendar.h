@@ -114,7 +114,7 @@ enum CalendarScheme {
      */
     CALENDAR_SCH_Gregorian,
 
-    /*! Catholic Calendar: Cath. NOT YET AVAILABLE
+    /*! Catholic Calendar: Cath. [NOT YET AVAILABLE]
      *
      *  4 Oct 1582 (Julian) followed by 15 Oct 1582 (Gregorian).
      *
@@ -130,7 +130,7 @@ enum CalendarScheme {
      */
     CALENDAR_SCH_Catholic,
 
-    /*! English Calendar: Eng. NOT YET AVAILABLE
+    /*! English Calendar: Eng. [NOT YET AVAILABLE]
      *
      *  2 Sep 1752 (Julian) followed by 15 Sep 1752 (Gregorian).
      *
@@ -143,19 +143,19 @@ enum CalendarScheme {
      */
     CALENDAR_SCH_English,
 
-    /*! Scottish Calendar: Scot. NOT YET AVAILABLE
+    /*! Scottish Calendar: Scot. [NOT YET AVAILABLE]
      *
      *  As English Calendar except new year always falls on 1st Jan.
      */
     CALENDAR_SCH_Scottish,
 
-    /*! Swedish Calendar: Swed.  NOT YET AVAILABLE
+    /*! Swedish Calendar: Swed.  [NOT YET AVAILABLE]
      *
      *  Sweden attempted a slow change over from Julian to Gregorian calendar.
      */
     CALENDAR_SCH_Swedish,
 
-    /*! French Revolution Calendar: FR.  NOT YET AVAILABLE
+    /*! French Revolution Calendar: FR.  [NOT YET AVAILABLE]
      *
      *  Short lived attempt to rationalise the calendar after the French Revolution.
      */
@@ -173,17 +173,45 @@ extern const wxString CalendarSchemeName[];
  */
 extern const wxString CalendarSchemeAbrev[];
 
-/*! Convert a julian day number into an integer format date of the given scheme.
- *  Returns true if successful, false otherwise.
- */
-// See cal/calJDay.cpp
-extern bool CalConvertFromJdn( long& num, long jdn, CalendarScheme scheme );
-
-/*! Convert a date in integer format of given scheme into a julian day number.
+/*! Convert a date in integer format for a given scheme
+ *  into a julian day number.
  *  Returns true if successful, false otherwise.
  */
 // See cal/calJDay.cpp
 extern bool CalConvertToJdn( long& jdn, long num, CalendarScheme scheme );
+
+/*! Convert a date in floating (double) format for a given scheme
+ *  into a julian day number.
+ *  Returns true if successful, false otherwise.
+ */
+// See cal/calJDay.cpp
+extern bool CalConvertToJdn( long& jdn, double num, CalendarScheme scheme );
+
+/*! Convert a date in day, month, year format for a given scheme 
+ *  into a julian day number.
+ *  Returns true if successful, false otherwise.
+ */
+extern bool CalConvertToJdn( long& jdn, const DMYDate& dmy, CalendarScheme scheme );
+
+/*! Convert a julian day number into an integer format date 
+ *  for the given scheme.
+ *  Returns true if successful, false otherwise.
+ */
+// See cal/calJDay.cpp
+extern bool CalConvertFromJdn( long jdn, long& num, CalendarScheme scheme );
+
+/*! Convert a julian day number into an floating (double) format date 
+ *  for the given scheme.
+ *  Returns true if successful, false otherwise.
+ */
+// See cal/calJDay.cpp
+extern bool CalConvertFromJdn( long jdn, double& num, CalendarScheme scheme );
+
+/*! Convert a julian day number into a day, month, year format date 
+ *  for the given scheme.
+ *  Returns true if successful, false otherwise.
+ */
+extern bool CalConvertFromJdn( long jdn, DMYDate& dmy, CalendarScheme scheme );
 
 /*! Returns true if year is a leap year and false if not,
  * or the calendar scheme does not support leap years.

@@ -53,7 +53,7 @@
 /*! Convert a julian day number into an integer format date of the given scheme.
  *  Returns true if successful, false otherwise.
  */
-bool CalConvertFromJdn( long& num, long jdn, CalendarScheme scheme )
+bool CalConvertFromJdn( long jdn, long& num, CalendarScheme scheme )
 {
     switch( scheme )
     {
@@ -65,6 +65,21 @@ bool CalConvertFromJdn( long& num, long jdn, CalendarScheme scheme )
         return true;
     case CALENDAR_SCH_RataDie:
         num = jdn - BASEDATE_RataDie;
+        return true;
+    }
+    return false;
+}
+
+/*! Convert a julian day number into an floating (double) format date 
+ *  for the given scheme.
+ *  Returns true if successful, false otherwise.
+ */
+bool CalConvertFromJdn( long jdn, double& num, CalendarScheme scheme )
+{
+    switch( scheme )
+    {
+    case CALENDAR_SCH_JulianDay:
+        num = ((double) jdn) - 0.5;
         return true;
     }
     return false;
@@ -89,6 +104,22 @@ extern bool CalConvertToJdn( long& jdn, long num, CalendarScheme scheme )
     }
     return false;
 }
+
+/*! Convert a date in floating (double) format for a given scheme
+ *  into a julian day number.
+ *  Returns true if successful, false otherwise.
+ */
+bool CalConvertToJdn( long& jdn, double num, CalendarScheme scheme )
+{
+    switch( scheme )
+    {
+    case CALENDAR_SCH_JulianDay:
+        jdn = (long) ( num + 0.5 );
+        return true;
+    }
+    return false;
+}
+
 
 /*! Return the string representing the jdn in the given scheme.
  *  The scheme is one which is represented by a single number.

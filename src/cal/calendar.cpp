@@ -94,6 +94,37 @@ long PMod( long a, long b )
     return r;
 }
 
+/*! Convert a date in day, month, year format for a given scheme 
+ *  into a julian day number.
+ *  Returns true if successful, false otherwise.
+ */
+bool CalConvertToJdn( long& jdn, const DMYDate& dmy, CalendarScheme scheme )
+{
+    switch( scheme )
+    {
+    case CALENDAR_SCH_Gregorian:
+        return calGregorianToJdn( jdn, dmy );
+    case CALENDAR_SCH_Julian:
+        return calJulianToJdn( jdn, dmy );
+    }
+    return false;
+}
+
+/*! Convert a julian day number into a day, month, year format date 
+ *  for the given scheme.
+ *  Returns true if successful, false otherwise.
+ */
+bool CalConvertFromJdn( long jdn, DMYDate& dmy, CalendarScheme scheme )
+{
+    switch( scheme )
+    {
+    case CALENDAR_SCH_Gregorian:
+        return calGregorianFromJdn( jdn, dmy );
+    case CALENDAR_SCH_Julian:
+        return calJulianFromJdn( jdn, dmy );
+    }
+    return false;
+}
 
 bool calIsLeapYear( int year, CalendarScheme scheme )
 {
@@ -121,18 +152,22 @@ int calLastDayInMonth( int month, int year, CalendarScheme scheme )
 
 bool calYearFromJdn( int& year, long jdn, CalendarScheme scheme )
 {
-    int day, month;
+    DMYDate dmy;
+    bool ret;
 
     switch( scheme )
     {
     case CALENDAR_SCH_Gregorian:
-        calGregorianFromJdn( jdn, day, month, year );
-        return true;
+        ret = calGregorianFromJdn( jdn, dmy );
+        break;
     case CALENDAR_SCH_Julian:
-        calJulianFromJdn( jdn, day, month, year );
-        return true;
+        ret = calJulianFromJdn( jdn, dmy );
+        break;
+    default:
+        return false;
     }
-    return false;
+    year = dmy.year;
+    return ret;
 }
 
 wxString calStrFromJdn( long jdn, CalendarScheme scheme )

@@ -34,8 +34,10 @@ extern bool calJulianIsLeapYear( int year );
 extern int calJulianLastDayInMonth( int month, int year );
 
 extern bool calJulianToJdn( long& jdn, int day, int month, int year );
+extern bool calJulianToJdn( long& jdn, const DMYDate& dmy );
 
-extern void calJulianFromJdn( long jdn, int& day, int& month, int& year );
+extern bool calJulianFromJdn( long jdn, int& day, int& month, int& year );
+extern bool calJulianFromJdn( long jdn, DMYDate& dmy );
 
 
 #endif // CALJULIAN_H

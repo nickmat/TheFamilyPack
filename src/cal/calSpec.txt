@@ -6,7 +6,6 @@
 
     Copyright (c) 2008, Nick Matthews
 
-
 This Calendar Library (cal) has been designed for use with "The Family Pack" 
 application but it is designed to be quite independant. So, for instance, a
 Julian Day Number (JDN) of zero has a special meaning within TFP (date not 
@@ -66,7 +65,7 @@ CALENDAR_SCH_JulianDay         The calendar system used internally by TFP.
 
 CALENDAR_SCH_ModJulianDay
 
-    Modified Julian Day        MJD = JDN - 2400001
+    Modified Julian Day:        MJD = JDN - 2400001
 
     A shortened version of the Julian Day, included for completeness.
 
