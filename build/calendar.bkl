@@ -54,5 +54,16 @@
 
   </lib>
 
+  <exe id="calcalc" template="wxconsole,wxlike">
+    <app-type>console</app-type>
+    <runtime-libs>dynamic</runtime-libs>
+
+    <sources>$(LOCAL_UTIL)/cal/calCalc.cpp</sources>
+    <include>$(LOCAL_INC)</include>
+    <lib-path>$(LOCAL_LIB)</lib-path>
+    <library>calendar</library>
+    <wx-lib>base</wx-lib>
+  </exe>
+
 </makefile>
 

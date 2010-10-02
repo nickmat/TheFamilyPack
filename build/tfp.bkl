@@ -51,6 +51,7 @@
   <set var="LOCAL_INC">$(REL_ROOT)/include</set>
   <set var="LOCAL_TESTS">$(REL_ROOT)/tests</set>
   <set var="LOCAL_SAMP">$(REL_ROOT)/sample</set>
+  <set var="LOCAL_UTIL">$(REL_ROOT)/utils</set>
   <set var="CPPUNIT_DIR">$(DOLLAR)($(ENV_VAR)CPPUNIT)</set>
 
   <if cond="FORMAT_MSVC_PROJECT=='0'">
