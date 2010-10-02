@@ -28,7 +28,7 @@
 #ifndef CALGREGORIAN_H
 #define CALGREGORIAN_H
 
-struct DMYDate;
+class DMYDate;
 
 // Gregorian (New Style)
 extern bool calGregorianIsLeapYear( int year );

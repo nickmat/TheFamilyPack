@@ -98,7 +98,7 @@ long PMod( long a, long b )
  *  into a julian day number.
  *  Returns true if successful, false otherwise.
  */
-bool CalConvertToJdn( long& jdn, const DMYDate& dmy, CalendarScheme scheme )
+bool calConvertToJdn( long& jdn, const DMYDate& dmy, CalendarScheme scheme )
 {
     switch( scheme )
     {
@@ -114,7 +114,7 @@ bool CalConvertToJdn( long& jdn, const DMYDate& dmy, CalendarScheme scheme )
  *  for the given scheme.
  *  Returns true if successful, false otherwise.
  */
-bool CalConvertFromJdn( long jdn, DMYDate& dmy, CalendarScheme scheme )
+bool calConvertFromJdn( long jdn, DMYDate& dmy, CalendarScheme scheme )
 {
     switch( scheme )
     {

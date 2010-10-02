@@ -28,11 +28,22 @@
 #ifndef CALENDAR_H
 #define CALENDAR_H
 
-/*! struct to hold a day, month and year
+/*! class to hold a day, month and year
  */
-struct DMYDate {
+class DMYDate {
+public:
     int day; int month; int year;
 };
+
+inline bool operator==(const DMYDate& d1, const DMYDate& d2)
+{
+    return d1.day == d2.day && d1.month == d2.month && d1.year == d2.year;
+}
+
+inline bool operator!=(const DMYDate& d1, const DMYDate& d2)
+{
+    return !(d1 == d2);
+}
 
 enum CalendarScheme {
 
@@ -178,40 +189,40 @@ extern const wxString CalendarSchemeAbrev[];
  *  Returns true if successful, false otherwise.
  */
 // See cal/calJDay.cpp
-extern bool CalConvertToJdn( long& jdn, long num, CalendarScheme scheme );
+extern bool calConvertToJdn( long& jdn, long num, CalendarScheme scheme );
 
 /*! Convert a date in floating (double) format for a given scheme
  *  into a julian day number.
  *  Returns true if successful, false otherwise.
  */
 // See cal/calJDay.cpp
-extern bool CalConvertToJdn( long& jdn, double num, CalendarScheme scheme );
+extern bool calConvertToJdn( long& jdn, double num, CalendarScheme scheme );
 
 /*! Convert a date in day, month, year format for a given scheme 
  *  into a julian day number.
  *  Returns true if successful, false otherwise.
  */
-extern bool CalConvertToJdn( long& jdn, const DMYDate& dmy, CalendarScheme scheme );
+extern bool calConvertToJdn( long& jdn, const DMYDate& dmy, CalendarScheme scheme );
 
 /*! Convert a julian day number into an integer format date 
  *  for the given scheme.
  *  Returns true if successful, false otherwise.
  */
 // See cal/calJDay.cpp
-extern bool CalConvertFromJdn( long jdn, long& num, CalendarScheme scheme );
+extern bool calConvertFromJdn( long jdn, long& num, CalendarScheme scheme );
 
 /*! Convert a julian day number into an floating (double) format date 
  *  for the given scheme.
  *  Returns true if successful, false otherwise.
  */
 // See cal/calJDay.cpp
-extern bool CalConvertFromJdn( long jdn, double& num, CalendarScheme scheme );
+extern bool calConvertFromJdn( long jdn, double& num, CalendarScheme scheme );
 
 /*! Convert a julian day number into a day, month, year format date 
  *  for the given scheme.
  *  Returns true if successful, false otherwise.
  */
-extern bool CalConvertFromJdn( long jdn, DMYDate& dmy, CalendarScheme scheme );
+extern bool calConvertFromJdn( long jdn, DMYDate& dmy, CalendarScheme scheme );
 
 /*! Returns true if year is a leap year and false if not,
  * or the calendar scheme does not support leap years.

@@ -32,7 +32,7 @@ extern int calLatinDiy[];
 extern int calLatinLengthOfMonth[3][12];
 extern wxString calMonthName[3][12];
 
-struct DMYDate;
+class DMYDate;
 
 // Return the month number 1-12 for correct match, or zero if no match
 extern int calLatinLookUpMonth( const wxString str );

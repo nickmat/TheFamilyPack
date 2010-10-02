@@ -53,7 +53,7 @@
 /*! Convert a julian day number into an integer format date of the given scheme.
  *  Returns true if successful, false otherwise.
  */
-bool CalConvertFromJdn( long jdn, long& num, CalendarScheme scheme )
+bool calConvertFromJdn( long jdn, long& num, CalendarScheme scheme )
 {
     switch( scheme )
     {
@@ -74,7 +74,7 @@ bool CalConvertFromJdn( long jdn, long& num, CalendarScheme scheme )
  *  for the given scheme.
  *  Returns true if successful, false otherwise.
  */
-bool CalConvertFromJdn( long jdn, double& num, CalendarScheme scheme )
+bool calConvertFromJdn( long jdn, double& num, CalendarScheme scheme )
 {
     switch( scheme )
     {
@@ -88,7 +88,7 @@ bool CalConvertFromJdn( long jdn, double& num, CalendarScheme scheme )
 /*! Convert a date in integer format of given scheme into a julian day number.
  *  Returns true if successful, false otherwise.
  */
-extern bool CalConvertToJdn( long& jdn, long num, CalendarScheme scheme )
+extern bool calConvertToJdn( long& jdn, long num, CalendarScheme scheme )
 {
     switch( scheme )
     {
@@ -109,7 +109,7 @@ extern bool CalConvertToJdn( long& jdn, long num, CalendarScheme scheme )
  *  into a julian day number.
  *  Returns true if successful, false otherwise.
  */
-bool CalConvertToJdn( long& jdn, double num, CalendarScheme scheme )
+bool calConvertToJdn( long& jdn, double num, CalendarScheme scheme )
 {
     switch( scheme )
     {
