@@ -1,14 +1,14 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        tfpApp.h
+ * Name:        recIndividual.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Program App class
+ * Purpose:     Manage SQLite3 Family, FamilyIndividual, Individual and 
+ *              IndividualPersona records.
  * Author:      Nick Matthews
  * Modified by:
  * Website:     http://thefamilypack.org
- * Created:     24 September 2010
+ * Created:     3 October 2010
  * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2010, Nick Matthews.
- * Website:     http://thefamilypack.org
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -38,42 +38,9 @@
 #include "wx/wx.h"
 #endif
 
+#include <wx/wxsqlite3.h>
 
-#include "tfpApp.h"
-#include "tfpFrame.h"
-#include "tfpMemory.h"
+#include "recDatabase.h"
 
-IMPLEMENT_APP(TfpApp)
 
-TfpApp::TfpApp()
-{
-
-}
-
-/*! This is where all the application initialisation is carried out.
-    Function ends by creating the programs main frame and making it visible.
-*/
-bool TfpApp::OnInit()
-{
-    wxImage::AddHandler( new wxPNGHandler );
-    wxImage::AddHandler( new wxJPEGHandler );
-    wxImage::AddHandler( new wxGIFHandler );
-    wxImage::AddHandler( new wxXPMHandler );
-    tfpLoadMemoryFiles();
-
-    TfpFrame* frame = new TfpFrame( wxT("The Family Pack"), wxDefaultPosition, wxSize( 640, 480 ) );
-    frame->Show(true);
-
-    SetTopWindow( frame );
-
-    return true;
-}
-
-/*! Called on application shutdown. Returns 0 to allow continued shutdown.
-*/
-int TfpApp::OnExit()
-{
-    return 0;
-}
-
-// End of tfpApp.cpp file
+// End of recIndividual.cpp file
