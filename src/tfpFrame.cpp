@@ -45,6 +45,7 @@
 #include "tfpFrame.h"
 #include "tfpApp.h"
 #include "tfpVersion.h"
+#include "rec/recDatabase.h"
 
 BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_NEW_FILE, TfpFrame::OnNewFile )
@@ -67,24 +68,24 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     : wxFrame( (wxFrame*) NULL, wxID_ANY, title, pos, size )
 {
     // Set frames Icon
-    SetIcon( wxIcon( wxT("tfp") ) );
+    SetIcon( wxIcon( "tfp" ) );
 
     wxMenu *menuInitFile = new wxMenu;
-    menuInitFile->Append( tfpID_NEW_FILE, wxT("&New File\tCtrl-N") );
-    menuInitFile->Append( tfpID_OPEN_FILE, wxT("&Open File\tCtrl-O") );
+    menuInitFile->Append( tfpID_NEW_FILE, _("&New File\tCtrl-N") );
+    menuInitFile->Append( tfpID_OPEN_FILE, _("&Open File\tCtrl-O") );
     menuInitFile->AppendSeparator();
-    menuInitFile->Append( tfpID_IMPORT_GEDCOM, wxT("&Import GEDCOM file") );
+    menuInitFile->Append( tfpID_IMPORT_GEDCOM, _("&Import GEDCOM file") );
     menuInitFile->AppendSeparator();
-    menuInitFile->Append( wxID_EXIT, wxT("E&xit") );
+    menuInitFile->Append( wxID_EXIT, _("E&xit") );
 
     wxMenu *menuInitHelp = new wxMenu;
-    menuInitHelp->Append( tfpID_HELP_WEB_HOME, wxT("The Family Pack &Website") );
-    menuInitHelp->Append( wxID_ABOUT, wxT("&About \"The Family Pack\"") );
+    menuInitHelp->Append( tfpID_HELP_WEB_HOME, _("The Family Pack &Website") );
+    menuInitHelp->Append( wxID_ABOUT, _("&About \"The Family Pack\"") );
 
     // Menu bar for use with closed database
     m_menuClosedDB = new wxMenuBar;
-    m_menuClosedDB->Append( menuInitFile, wxT("&File") );
-    m_menuClosedDB->Append( menuInitHelp, wxT("&Help") );
+    m_menuClosedDB->Append( menuInitFile, _("&File") );
+    m_menuClosedDB->Append( menuInitHelp, _("&Help") );
     SetMenuBar( m_menuClosedDB );
 
     CreateStatusBar( 1 );
@@ -92,7 +93,7 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     m_html = new wxHtmlWindow( this );
     m_html->SetRelatedStatusBar( 0 );
 
-    m_prn = new wxHtmlEasyPrinting( "Easy Printing Demo", this );
+    m_prn = new wxHtmlEasyPrinting( _("Easy Printing Demo"), this );
 
     m_html->LoadPage( "memory:startup.htm" );
 }
@@ -145,7 +146,7 @@ void TfpFrame::OnQuit( wxCommandEvent& event )
  */
 void TfpFrame::OnHelpWebHome( wxCommandEvent& event )
 {
-    wxLaunchDefaultBrowser( wxT("http://thefamilypack.org") );
+    wxLaunchDefaultBrowser( "http://thefamilypack.org" );
 }
 
 /*! \brief Called on a Help, About menu option event.
@@ -159,10 +160,10 @@ void TfpFrame::OnAbout( wxCommandEvent& event )
 {
     wxMessageBox(
         wxString::Format(
-            wxT("%s")
-            wxT("Built with %s and SQLite %s\n")
-            wxT("by %s\n")
-            wxT("running under %s."),
+            _("%s"
+            "Built with %s and SQLite %s\n"
+            "by %s\n"
+            "running under %s."),
 
             tfpTitle,
             wxVERSION_STRING,
@@ -170,7 +171,7 @@ void TfpFrame::OnAbout( wxCommandEvent& event )
             tfpGetCompilerVersion(),
             wxGetOsDescription().c_str()
         ),
-        wxT("About The Family Pack"),
+        _("About The Family Pack"),
         wxOK | wxICON_INFORMATION,
         this
     );
@@ -194,14 +195,14 @@ void TfpFrame::OnHtmlLinkClicked( wxHtmlLinkEvent& event )
     switch( (wxChar) href.GetChar( 0 ) )
     {
     case ':': // Program Commands
-        if( href == wxT(":New") ) {
+        if( href == ":New" ) {
             NewFile();
-        } else if( href == wxT(":Open") ) {
+        } else if( href == ":Open" ) {
             OpenFile();
-        } else if( href == wxT(":Import") ) {
+        } else if( href == ":Import" ) {
             ImportGedcom();
         } else {
-            wxMessageBox( wxT("Error: Invalid Command"), wxT("Link Error") );
+            wxMessageBox( _("Error: Invalid Command"), _("Link Error") );
         }
         break;
     case '!':  // Display in external browser
@@ -213,7 +214,23 @@ void TfpFrame::OnHtmlLinkClicked( wxHtmlLinkEvent& event )
 
 void TfpFrame::NewFile()
 {
-    wxMessageBox( wxT("Not yet implimented"), wxT("NewFile") );
+//    wxMessageBox( wxT("Not yet implimented"), wxT("NewFile") );
+    wxString caption = _("Create TFP Database");
+    wxString wildcard = _("TFP Database (*.tfpd)|*.tfpd");
+    wxString defaultDir = ".";
+    wxString defaultFName = wxEmptyString;
+
+    wxFileDialog dialog( this, caption, defaultDir, defaultFName, wildcard, wxFD_OPEN );
+    if( dialog.ShowModal() == wxID_OK )
+    {
+        wxString path = dialog.GetPath();
+        unsigned flags = recDb::CREATE_DB_STD_EXT | recDb::CREATE_DB_ENUM_FN;
+        if( recDb::CreateDb( path, flags ) == true )
+        {
+//            SetDatabaseOpen( path, true );
+//            DisplayHtmPage( wxT("F1") );
+        }
+    }
 }
 
 void TfpFrame::OpenFile()

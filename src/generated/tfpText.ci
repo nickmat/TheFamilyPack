@@ -50,7 +50,7 @@ static const wxChar* s_startup_htm =  /* startup.htm */
  wxT("<br>\n")
  wxT("Actions:-<br>\n")
  wxT("<br>\n")
- wxT("<a href=:Open>Open an exiting Database</a><br>\n")
+ wxT("<a href=:Open>Open an existing Database</a><br>\n")
  wxT("<br>\n")
  wxT("<a href=:New>Create a new Database</a><br>\n")
  wxT("<br>\n")

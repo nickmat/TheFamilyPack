@@ -30,5 +30,49 @@
 #ifndef RECDATABASE_H
 #define RECDATABASE_H
 
+// If the compiler can't cope with 64 bit ints
+//#define ID_LONG
+#ifdef ID_LONG
+ typedef long            id_t;
+ #define ID              "%ld"
+ #define GET_ID( id )    (id.GetLo())
+ #define IDtoLong( id )  (id)
+#else
+ typedef wxLongLong      id_t;
+ #define ID              "%lld"
+ #define GET_ID( id )    (id)
+ #define IDtoLong( id )  (id.GetLo())
+#endif
+
+
+class wxSQLite3Database;
+
+class recDb {
+public:
+    enum CreateFlags {
+        CREATE_DB_STD_EXT = 0x0001,
+        CREATE_DB_ENUM_FN = 0x0002
+    };
+private:
+    static wxSQLite3Database* m_db;
+
+public:
+    id_t   f_id;
+
+    recDb() : f_id(0) {}
+    recDb( id_t id ) { f_id = id; Read(); }
+
+    static bool CreateDb( wxString& fname, unsigned flags );
+    //static void SetDb( wxSQLite3Database* db ) { m_db = db; }
+    static wxSQLite3Database* GetDb() { return m_db; }
+
+    virtual const wxString GetTableName() const = 0;
+    virtual void Clear() = 0;
+    virtual void Save() = 0;
+    virtual bool Read() = 0;
+
+    bool Delete() { Delete( f_id ); }
+    bool Delete( id_t id );
+};
 
 #endif // RECDATABASE_H

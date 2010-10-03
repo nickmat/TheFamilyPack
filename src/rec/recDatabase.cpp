@@ -37,11 +37,67 @@
 #include "wx/wx.h"
 #endif
 
+#include <wx/filename.h>
+
 #include <wx/wxsqlite3.h>
 
 #include "recDatabase.h"
 
 // SQL script to create new database
 #include "generated/recSql.ci"
+
+wxSQLite3Database* recDb::m_db = new wxSQLite3Database();
+
+bool recDb::CreateDb( wxString& fname, unsigned flags )
+{
+    wxFileName dbfile( fname );
+
+    if( flags & CREATE_DB_STD_EXT ) {
+        dbfile.SetExt( "tfpd" );
+    }
+
+    if( flags & CREATE_DB_ENUM_FN ) {
+        wxString fn = dbfile.GetName();
+        wxString nfn;
+
+        for( int i = 2 ; dbfile.FileExists() == true ; i++ ) {
+            nfn.Printf( "%s(%d)", fn.c_str(), i );
+            dbfile.SetName( nfn );
+        }
+    } else {
+        if( dbfile.FileExists() == true ) {
+            wxMessageBox( _("File already exists"), _("Open Database") );
+            // TODO: replace existing file
+            return false;
+        }
+    }
+
+    if( m_db->IsOpen() ) {
+        wxMessageBox( _("Database already open"), _("Open Database") );
+        return false;
+    }
+
+	fname = dbfile.GetFullPath();
+    m_db->Open( fname );
+
+    m_db->ExecuteUpdate( createdb );
+    return true;
+}
+
+bool recDb::Delete( id_t id )
+{
+    if( id == 0 ) {
+        return false;
+    }
+
+    wxSQLite3StatementBuffer sql;
+    sql.Format( "DELETE FROM %q WHERE id="ID";", GetTableName(), id );
+
+    if( m_db->ExecuteUpdate( sql ) != 1 ) {
+        return false;
+    }
+    return true;
+}
+
 
 // End of recDatabase.cpp file
