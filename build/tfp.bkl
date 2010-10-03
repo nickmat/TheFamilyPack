@@ -95,6 +95,7 @@
     <precomp-headers-file>wxprec_$(id)</precomp-headers-file>
 
     <lib-path>$(LOCAL_LIB)</lib-path>
+    <library>wxsqlite3</library>
     <library>calendar</library>
     <wx-lib>html</wx-lib>
     <wx-lib>adv</wx-lib>
@@ -105,6 +106,7 @@
   <include file="calendar.bkl"/>
   <include file="tests.bkl"/>
   <include file="utils.bkl"/>
+  <include file="wxsqlite3_tfp.bkl"/>
 
 </makefile>
 

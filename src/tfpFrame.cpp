@@ -40,6 +40,8 @@
 #include "wx/html/htmlwin.h"
 #include "wx/html/htmprint.h"
 
+#include "wx/wxsqlite3.h"
+
 #include "tfpFrame.h"
 #include "tfpApp.h"
 #include "tfpVersion.h"
@@ -158,12 +160,13 @@ void TfpFrame::OnAbout( wxCommandEvent& event )
     wxMessageBox(
         wxString::Format(
             wxT("%s")
-            wxT("Built with %s\n")
+            wxT("Built with %s and SQLite %s\n")
             wxT("by %s\n")
             wxT("running under %s."),
 
             tfpTitle,
             wxVERSION_STRING,
+            wxSQLite3Database::GetVersion(),
             tfpGetCompilerVersion(),
             wxGetOsDescription().c_str()
         ),

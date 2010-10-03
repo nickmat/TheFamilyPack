@@ -16,7 +16,7 @@
                         Name="VCCustomBuildTool"
                         CommandLine="file2cpp -v -o ..\..\src\generated\tfpText.ci ..\..\src\tfpText.f2c&#x0D;&#x0A;"
                         AdditionalDependencies="..\..\src\startup.htm"
-                        Outputs="..\..\src\generated\tfpText.c"
+                        Outputs="..\..\src\generated\tfpText.ci"
                     />
                 </FileConfiguration>
                 <FileConfiguration
@@ -26,7 +26,7 @@
                         Name="VCCustomBuildTool"
                         CommandLine="file2cpp -v -o ..\..\src\generated\tfpText.ci ..\..\src\tfpText.f2c&#x0D;&#x0A;"
                         AdditionalDependencies="..\..\src\startup.htm"
-                        Outputs="..\..\src\generated\tfpText.c"
+                        Outputs="..\..\src\generated\tfpText.ci"
                     />
                 </FileConfiguration>
             </File>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<makefile>
+
+  <lib id="wxsqlite3" template="wx-lib,wxlike">
+    <libname>$(LOCAL_LIB)/wxsqlite3$(WXLIBPOSTFIX)</libname>
+    <sources>$(REL_ROOT)/3rdparty/wxsqlite3/wxsqlite3.cpp</sources>
+    <sources>$(REL_ROOT)/3rdparty/wxsqlite3/sqlite3.c</sources>
+    <headers>$(REL_ROOT)/3rdparty/wxsqlite3/sqlite3.h</headers>
+    <headers>$(REL_ROOT)/3rdparty/wxsqlite3/sqlite3ext.h</headers>
+    <headers>$(LOCAL_INC)/wx/wxsqlite3.h</headers>
+    <headers>$(LOCAL_INC)/wx/wxsqlite3def.h</headers>
+    <headers>$(LOCAL_INC)/wx/wxsqlite3dyn.h</headers>
+    <headers>$(LOCAL_INC)/wx/wxsqlite3opt.h</headers>
+    <include>$(LOCAL_INC)</include>
+  </lib>
+
+</makefile>
+
