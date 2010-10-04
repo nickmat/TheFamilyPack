@@ -44,28 +44,28 @@ public:
         CREATE_DB_STD_EXT = 0x0001,
         CREATE_DB_ENUM_FN = 0x0002
     };
-private:
-    static wxSQLite3Database* m_db;
+protected:
+    static wxSQLite3Database* s_db;
 
 public:
     id_t   f_id;
 
-    recDb() : f_id(0) {}
+    recDb() {}
     recDb( id_t id ) { f_id = id; Read(); }
 
-    static void SetDb( wxSQLite3Database* db ) { m_db = db; }
-    static wxSQLite3Database* GetDb() { return m_db; }
+    static void SetDb( wxSQLite3Database* db ) { s_db = db; }
+    static wxSQLite3Database* GetDb() { return s_db; }
     static bool CreateDb( wxString& fname, unsigned flags );
     static bool OpenDb( const wxString& fname );
-    static void CloseDb() { m_db->Close(); }
+    static void CloseDb() { s_db->Close(); }
 
-    virtual const wxString GetTableName() const = 0;
+    virtual const char* GetTableName() const = 0;
     virtual void Clear() = 0;
     virtual void Save() = 0;
     virtual bool Read() = 0;
 
-    bool Delete() { Delete( f_id ); }
-    bool Delete( id_t id );
+    static bool DeleteRecord( const char* table, id_t id );
+    bool Delete() { return DeleteRecord( GetTableName(), f_id ); }
 };
 
 #endif // RECDATABASE_H

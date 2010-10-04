@@ -30,5 +30,49 @@
 #ifndef RECDATE_H
 #define RECDATE_H
 
+#include "recDatabase.h"
+#include "cal/calendar.h"
+
+class recDate : public recDb {
+    static const char* s_tableName;
+public:
+	enum TypeFlag {
+		FLG_NULL   = 0x00, 
+		FLG_AFTER  = 0x01, 
+		FLG_RANGE  = 0x02, 
+		FLG_BEFORE = 0x04
+	};
+
+	enum TypePrefix {
+		PREF_Unstated = 0,
+		PREF_After,
+		PREF_On,
+		PREF_OrAfter,
+		PREF_Before,
+		PREF_Not,
+		PREF_OrBefore,
+		PREF_About,
+		PREF_Max
+	};
+	static const wxString s_prefStr[PREF_Max];
+	static const wxString s_prefFormat[PREF_Max];
+
+	long            f_jdn;
+	long            f_range;
+    unsigned        f_type;         // Set with RecDate::TypeFlag
+    wxString        f_desc;
+    CalendarScheme  f_record_sch;   // Original convertion scheme
+    CalendarScheme  f_display_sch;  // Default display scheme
+	                                // See cal/calendar.h for values
+    recDate() {}
+    recDate( id_t id ) : recDb(id) {}
+
+    const char* GetTableName() { return s_tableName; }
+	void Clear();
+    void Save();
+    bool Read();
+
+    static bool Delete( id_t id ) { return DeleteRecord( s_tableName, id ); }
+};
 
 #endif // RECDATE_H

@@ -46,7 +46,7 @@
 // SQL script to create new database
 #include "generated/recSql.ci"
 
-wxSQLite3Database* recDb::m_db = NULL;
+wxSQLite3Database* recDb::s_db = NULL;
 
 bool recDb::CreateDb( wxString& fname, unsigned flags )
 {
@@ -72,43 +72,43 @@ bool recDb::CreateDb( wxString& fname, unsigned flags )
         }
     }
 
-    if( m_db->IsOpen() ) {
+    if( s_db->IsOpen() ) {
         wxMessageBox( _("Database already open"), _("Open Database") );
         return false;
     }
 
 	fname = dbfile.GetFullPath();
-    m_db->Open( fname );
+    s_db->Open( fname );
 
-    m_db->Begin();
-    m_db->ExecuteUpdate( createdb );
-    m_db->Commit();
+    s_db->Begin();
+    s_db->ExecuteUpdate( createdb );
+    s_db->Commit();
     return true;
 }
 
 bool recDb::OpenDb( const wxString& fname )
 {
-    if( m_db->IsOpen() ) {
+    if( s_db->IsOpen() ) {
         wxMessageBox( _("Database already open"), _("Open Database") );
         return false;
     }
 
-    m_db->Open( fname );
+    s_db->Open( fname );
     return true;
 }
 
 
 
-bool recDb::Delete( id_t id )
+bool recDb::DeleteRecord( const char* name, id_t id )
 {
     if( id == 0 ) {
         return false;
     }
 
     wxSQLite3StatementBuffer sql;
-    sql.Format( "DELETE FROM %q WHERE id="ID";", GetTableName(), id );
+    sql.Format( "DELETE FROM %q WHERE id="ID";", name, id );
 
-    if( m_db->ExecuteUpdate( sql ) != 1 ) {
+    if( s_db->ExecuteUpdate( sql ) != 1 ) {
         return false;
     }
     return true;

@@ -40,6 +40,110 @@
 #include <wx/wxsqlite3.h>
 
 #include "recDatabase.h"
+#include "recDate.h"
 
+//WX_DEFINE_OBJARRAY( ArrDate );
+
+const char* recDate::s_tableName = "Date";
+
+const wxString recDate::s_prefStr[recDate::PREF_Max] = {
+    _("Unstated"),       // PREF_Unstated
+    _("After"),          // PREF_After
+    _("On"),             // PREF_On
+    _("On or After"),    // PREF_OrAfter
+    _("Before"),         // PREF_Before
+    _("Not"),            // PREF_Not
+    _("On or Before"),   // PREF_OrBefore
+	_("About")           // PREF_About
+};
+
+const wxString recDate::s_prefFormat[recDate::PREF_Max] = {
+    _("%s"),          // PREF_Unstated
+    _("aft %s"),      // PREF_After
+    _("%s"),          // PREF_On
+    _("%s or aft"),   // PREF_OrAfter
+    _("bef %s"),      // PREF_Before
+    _("not %s"),      // PREF_Not
+    _("%s or bef"),   // PREF_OrBefore
+	_("abt %s")       // PREF_About
+};
+
+
+void recDate::Clear()
+{
+    f_jdn = 0;
+    f_range = 0;
+    f_type = FLG_NULL;
+    f_desc = wxEmptyString;
+    f_record_sch = CALENDAR_SCH_Unstated;
+    f_display_sch = CALENDAR_SCH_Unstated;
+}
+
+void recDate::Save()
+{
+	wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+	if( f_id == 0 )
+	{
+		// Add new record
+	    sql.Format( 
+		    "INSERT INTO Date (jdn, range, type, desc, record_sch, display_sch) "
+            "VALUES (%ld, %ld, %u, '%q', %d, %d);",
+            f_jdn, f_range, f_type, f_desc, f_record_sch, f_display_sch
+	    );
+    	s_db->ExecuteUpdate( sql );
+        f_id = GET_ID( s_db->GetLastRowId() );
+	} else {
+        // Does record exist
+        sql.Format( "SELECT id FROM Date WHERE id="ID";", f_id );
+        result = s_db->GetTable( sql );
+        if( result.GetRowCount() == 0 )
+        {
+            // Add new record
+	        sql.Format( 
+		        "INSERT INTO Date (id, jdn, range, type, desc, record_sch, display_sch) "
+                "VALUES ("ID", %ld, %ld, %u, '%q', %d, %d);",
+                f_id, f_jdn, f_range, f_type, f_desc, f_record_sch, f_display_sch
+	        );
+        } else {
+    		// Update existing record
+            sql.Format( 
+                "UPDATE Date SET jdn=%ld, range=%ld, type=%u, desc='%q', record_sch=%d, display_sch=%d "
+                "WHERE id="ID";", 
+                f_jdn, f_range, f_type, f_desc, f_record_sch, f_display_sch, f_id
+            );
+        }
+    	s_db->ExecuteUpdate( sql );
+	}
+}
+
+bool recDate::Read()
+{
+	wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( f_id == 0 ) {
+		Clear();
+        return false;
+    }
+
+	sql.Format( "SELECT * FROM Date WHERE id="ID";", f_id );
+    result = s_db->GetTable( sql );
+
+    if( result.GetRowCount() != 1 ) 
+    {
+		Clear();
+        return false;
+    }
+    result.SetRow( 0 ); 
+    f_jdn         = result.GetInt( 1 );
+    f_range       = result.GetInt( 2 );
+    f_type        = (TypeFlag) result.GetInt( 3 );
+    f_desc        = result.GetAsString( 4 );
+    f_record_sch  = (CalendarScheme) result.GetInt( 5 );
+    f_display_sch = (CalendarScheme) result.GetInt( 6 );
+	return true;
+}
 
 // End of recDate.cpp file
