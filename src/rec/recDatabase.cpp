@@ -86,6 +86,19 @@ bool recDb::CreateDb( wxString& fname, unsigned flags )
     return true;
 }
 
+bool recDb::OpenDb( const wxString& fname )
+{
+    if( m_db->IsOpen() ) {
+        wxMessageBox( _("Database already open"), _("Open Database") );
+        return false;
+    }
+
+    m_db->Open( fname );
+    return true;
+}
+
+
+
 bool recDb::Delete( id_t id )
 {
     if( id == 0 ) {

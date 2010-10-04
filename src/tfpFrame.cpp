@@ -457,7 +457,22 @@ void TfpFrame::NewFile()
 
 void TfpFrame::OpenFile()
 {
-    wxMessageBox( wxT("Not yet implimented"), wxT("OpenFile") );
+//    wxMessageBox( wxT("Not yet implimented"), wxT("OpenFile") );
+    wxString caption = _("Select TFP Database");
+    wxString wildcard = _("TFP Database (*.tfpd)|*.tfpd");
+    wxString defaultDir = ".";
+    wxString defaultFName = wxEmptyString;
+
+    wxFileDialog dialog( this, caption, defaultDir, defaultFName, wildcard, wxFD_OPEN );
+    if( dialog.ShowModal() == wxID_OK )
+    {
+        wxString path = dialog.GetPath();
+        if( recDb::OpenDb( path ) == true )
+        {
+            SetDatabaseOpen( path, true );
+            DisplayHtmPage( wxT("F1") );
+        }
+    }
 }
 
 void TfpFrame::ImportGedcom()

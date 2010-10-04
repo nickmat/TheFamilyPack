@@ -56,6 +56,7 @@ public:
     static void SetDb( wxSQLite3Database* db ) { m_db = db; }
     static wxSQLite3Database* GetDb() { return m_db; }
     static bool CreateDb( wxString& fname, unsigned flags );
+    static bool OpenDb( const wxString& fname );
     static void CloseDb() { m_db->Close(); }
 
     virtual const wxString GetTableName() const = 0;
