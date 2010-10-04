@@ -37,23 +37,46 @@
 #include "wx/wx.h"
 #endif
 
-#include "wx/html/htmlwin.h"
-#include "wx/html/htmprint.h"
+#include <wx/html/htmlwin.h>
+#include <wx/html/htmprint.h>
 
-#include "wx/wxsqlite3.h"
+#include <wx/wxsqlite3.h>
 
 #include "tfpFrame.h"
 #include "tfpApp.h"
 #include "tfpVersion.h"
 #include "rec/recDatabase.h"
 
+#include "img/forward.xpm"
+#include "img/back.xpm"
+#include "img/find.xpm"
+#include "img/home.xpm"
+
 BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
+    EVT_MENU( tfpID_NEW_WINDOW, TfpFrame::OnNewWindow )
     EVT_MENU( tfpID_NEW_FILE, TfpFrame::OnNewFile )
     EVT_MENU( tfpID_OPEN_FILE, TfpFrame::OnOpenFile )
+    EVT_MENU( tfpID_CLOSE_FILE, TfpFrame::OnCloseFile )
     EVT_MENU( tfpID_IMPORT_GEDCOM, TfpFrame::OnImportGedcom )
-    EVT_MENU( tfpID_HELP_WEB_HOME, TfpFrame::OnHelpWebHome )
+    EVT_MENU( tfpID_EXPORT_HTML, TfpFrame::OnExportHtml )
+    EVT_MENU( tfpID_PRINT, TfpFrame::OnPrint )
+    EVT_MENU( tfpID_PREVIEW, TfpFrame::OnPreview )
+    EVT_MENU( tfpID_PAGE_SETUP, TfpFrame::OnPageSetup )
     EVT_MENU( wxID_EXIT, TfpFrame::OnQuit )
+    EVT_MENU( tfpID_EDIT_INDIVIDUAL, TfpFrame::OnEditIndividual )
+    EVT_MENU( tfpID_EDIT_REFERENCE, TfpFrame::OnEditReference )
+    EVT_MENU( tfpID_FIND_FAMILY_ID, TfpFrame::OnFindFamilyID )
+    EVT_MENU( tfpID_FIND_INDIVIDUAL_ID, TfpFrame::OnFindIndividualID )
+    EVT_MENU( tfpID_LIST_SURNAME_INDEX, TfpFrame::OnListIndex )
+    EVT_MENU( tfpID_LIST_NAMES, TfpFrame::OnListNames )
+    EVT_MENU( tfpID_LIST_INDIVIDUALS, TfpFrame::OnListIndividuals )
+    EVT_MENU( tfpID_PED_CHART, TfpFrame::OnPedChart )
+    EVT_MENU( tfpID_DESC_CHART, TfpFrame::OnDescChart )
+    EVT_MENU( tfpID_HELP_WEB_HOME, TfpFrame::OnHelpWebHome )
     EVT_MENU( wxID_ABOUT, TfpFrame::OnAbout )
+    EVT_MENU( tfpID_FIND_BACK, TfpFrame::OnFindBack )
+    EVT_MENU( tfpID_FIND_FORWARD, TfpFrame::OnFindForward )
+    EVT_MENU( tfpID_GOTO_HOME, TfpFrame::OnHome )
     EVT_HTML_LINK_CLICKED( wxID_ANY, TfpFrame::OnHtmlLinkClicked )
     EVT_CLOSE( TfpFrame::OnCloseWindow )
 END_EVENT_TABLE()
@@ -70,6 +93,54 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     // Set frames Icon
     SetIcon( wxIcon( "tfp" ) );
 
+    // create a menu bar for use with an open database
+    wxMenu *menuFile = new wxMenu;
+    menuFile->Append( tfpID_NEW_WINDOW, _("New &Window\tCtrl-W") );
+    menuFile->AppendSeparator();
+    menuFile->Append( tfpID_NEW_FILE, _("&New Database\tCtrl-N") );
+    menuFile->Append( tfpID_OPEN_FILE, _("&Open Database\tCtrl-O") );
+    menuFile->Append( tfpID_CLOSE_FILE, _("&Close Database") );
+    menuFile->AppendSeparator();
+    menuFile->Append( tfpID_IMPORT_GEDCOM, _("&Import GEDCOM file") );
+    menuFile->AppendSeparator();
+    menuFile->Append( tfpID_EXPORT_HTML, _("&Export HTML files") );
+    menuFile->AppendSeparator();
+    menuFile->Append( tfpID_PRINT, _("&Print...\tCtrl-P") );
+    menuFile->Append( tfpID_PREVIEW, _("Pre&view\tCtrl-Shift-P") );
+    menuFile->Append( tfpID_PAGE_SETUP, _("Page Set&up...") );
+    menuFile->AppendSeparator();
+    menuFile->Append( wxID_EXIT, _("E&xit") );
+
+    wxMenu* menuEdit = new wxMenu;
+    menuEdit->Append( tfpID_EDIT_INDIVIDUAL, _("&Individual") );
+    menuEdit->Append( tfpID_EDIT_REFERENCE, _("&Reference") );
+
+    wxMenu* menuFind = new wxMenu;
+    menuFind->Append( tfpID_FIND_FAMILY_ID, _("&Family ID...") );
+    menuFind->Append( tfpID_FIND_INDIVIDUAL_ID, _("&Individual ID...") );
+
+    wxMenu* menuList = new wxMenu;
+    menuList->Append( tfpID_LIST_SURNAME_INDEX, _("&Surname Index\tCtrl-I") );
+    menuList->Append( tfpID_LIST_NAMES, _("&Names\tCtrl-N") );
+    menuList->Append( tfpID_LIST_INDIVIDUALS, _("&Individuals\tCtrl-N") );
+
+    wxMenu* menuChart = new wxMenu;
+    menuChart->Append( tfpID_PED_CHART, _("&Pedigree...") );
+    menuChart->Append( tfpID_DESC_CHART, _("&Descendant...") );
+
+    wxMenu *menuHelp = new wxMenu;
+    menuHelp->Append( tfpID_HELP_WEB_HOME, _("The Family Pack &Website") );
+    menuHelp->Append( wxID_ABOUT, _("&About \"The Family Pack\"") );
+
+    m_menuOpenDB = new wxMenuBar;
+    m_menuOpenDB->Append( menuFile, _("&File") );
+    m_menuOpenDB->Append( menuEdit, _("&Edit") );
+    m_menuOpenDB->Append( menuFind, _("F&ind") );
+    m_menuOpenDB->Append( menuList, _("&List") );
+    m_menuOpenDB->Append( menuChart, _("&Chart") );
+    m_menuOpenDB->Append( menuHelp, _("&Help") );
+
+    // Menu bar for use with closed database
     wxMenu *menuInitFile = new wxMenu;
     menuInitFile->Append( tfpID_NEW_FILE, _("&New File\tCtrl-N") );
     menuInitFile->Append( tfpID_OPEN_FILE, _("&Open File\tCtrl-O") );
@@ -82,16 +153,33 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     menuInitHelp->Append( tfpID_HELP_WEB_HOME, _("The Family Pack &Website") );
     menuInitHelp->Append( wxID_ABOUT, _("&About \"The Family Pack\"") );
 
-    // Menu bar for use with closed database
     m_menuClosedDB = new wxMenuBar;
     m_menuClosedDB->Append( menuInitFile, _("&File") );
     m_menuClosedDB->Append( menuInitHelp, _("&Help") );
     SetMenuBar( m_menuClosedDB );
 
-    CreateStatusBar( 1 );
+    // Add toolbar
+    m_toolbar = new wxToolBar( this, wxID_ANY );
+    wxBitmap bmpForward( forward_xpm );
+    wxBitmap bmpBack( back_xpm );
+    wxBitmap bmpFind( find_xpm );
+    wxBitmap bmpHome( home_xpm );
+    m_toolbar->AddTool( tfpID_FIND_BACK, _("Back"), bmpBack );
+    m_toolbar->AddTool( tfpID_FIND_FORWARD, _("Forward"), bmpForward );
+    m_toolbar->AddSeparator();
+    m_toolbar->AddTool( tfpID_LIST_SURNAME_INDEX, _("Index"), bmpFind );
+    m_toolbar->AddSeparator();
+    m_toolbar->AddTool( tfpID_GOTO_HOME, _("Home"), bmpHome );
+    m_toolbar->Realize();
+    SetToolBar( m_toolbar );
+
+    CreateStatusBar();
 
     m_html = new wxHtmlWindow( this );
     m_html->SetRelatedStatusBar( 0 );
+
+    m_dbname = wxEmptyString;
+    SetDatabaseOpen( m_dbname, false );
 
     m_prn = new wxHtmlEasyPrinting( _("Easy Printing Demo"), this );
 
@@ -103,13 +191,19 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
 TfpFrame::~TfpFrame()
 {
     wxDELETE( m_prn );
+	if( GetMenuBar() != m_menuOpenDB ) {
+        wxDELETE( m_menuOpenDB );
+	}
+	if( GetMenuBar() != m_menuClosedDB ) {
+		wxDELETE( m_menuClosedDB );
+	}
 }
 
-/*! \brief Called on a Close Window event.
+/*! \brief Called on a New Window menu option event.
  */
-void TfpFrame::OnCloseWindow( wxCloseEvent& event )
+void TfpFrame::OnNewWindow( wxCommandEvent& event )
 {
-    this->Destroy();
+    wxMessageBox( wxT("Not yet implimented"), wxT("OnNewWindow") );
 }
 
 /*! \brief Called on a New File menu option event.
@@ -126,11 +220,46 @@ void TfpFrame::OnOpenFile( wxCommandEvent& event )
     OpenFile();
 }
 
+/*! \brief Called on a Close File menu option event.
+ */
+void TfpFrame::OnCloseFile( wxCommandEvent& event )
+{
+    wxMessageBox( wxT("Not yet implimented"), wxT("OnCloseFile") );
+}
+
 /*! \brief Called on a Inport GEDCOM File menu option event.
  */
 void TfpFrame::OnImportGedcom( wxCommandEvent& event )
 {
     ImportGedcom();
+}
+
+/*! \brief Called on a Export Html menu option event.
+ */
+void TfpFrame::OnExportHtml( wxCommandEvent& event )
+{
+    wxMessageBox( wxT("Not yet implimented"), wxT("OnExportHtml") );
+}
+
+/*! \brief Called on a Print menu option event.
+ */
+void TfpFrame::OnPrint( wxCommandEvent& event )
+{
+    wxMessageBox( wxT("Not yet implimented"), wxT("OnPrint") );
+}
+
+/*! \brief Called on a Print Preview menu option event.
+ */
+void TfpFrame::OnPreview( wxCommandEvent& event )
+{
+    wxMessageBox( wxT("Not yet implimented"), wxT("OnPreview") );
+}
+
+/*! \brief Called on a  Page Setup menu option event.
+ */
+void TfpFrame::OnPageSetup( wxCommandEvent& event )
+{
+    wxMessageBox( wxT("Not yet implimented"), wxT("OnPageSetup") );
 }
 
 /*! \brief Called on an Exit Application menu option event.
@@ -139,6 +268,69 @@ void TfpFrame::OnQuit( wxCommandEvent& event )
 {
     // true is to force the frame to close
     Close( true );
+}
+
+/*! \brief Called on a Edit Individual menu option event.
+ */
+void TfpFrame::OnEditIndividual( wxCommandEvent& event )
+{
+    wxMessageBox( wxT("Not yet implimented"), wxT("OnEditIndividual") );
+}
+
+/*! \brief Called on a Edit Reference menu option event.
+ */
+void TfpFrame::OnEditReference( wxCommandEvent& event )
+{
+    wxMessageBox( wxT("Not yet implimented"), wxT("OnEditReference") );
+}
+
+/*! \brief Called on a Find Family ID menu option event.
+ */
+void TfpFrame::OnFindFamilyID( wxCommandEvent& event )
+{
+    wxMessageBox( wxT("Not yet implimented"), wxT("OnFindFamilyID") );
+}
+
+/*! \brief Called on a Find Individual ID menu option event.
+ */
+void TfpFrame::OnFindIndividualID( wxCommandEvent& event )
+{
+    wxMessageBox( wxT("Not yet implimented"), wxT("OnFindIndividualID") );
+}
+
+/*! \brief Called on a List Index menu option event.
+ */
+void TfpFrame::OnListIndex( wxCommandEvent& event )
+{
+    wxMessageBox( wxT("Not yet implimented"), wxT("OnListIndex") );
+}
+
+/*! \brief Called on a List Names menu option event.
+ */
+void TfpFrame::OnListNames( wxCommandEvent& event )
+{
+    wxMessageBox( wxT("Not yet implimented"), wxT("OnListNames") );
+}
+
+/*! \brief Called on a  List Individuals menu option event.
+ */
+void TfpFrame::OnListIndividuals( wxCommandEvent& event )
+{
+    wxMessageBox( wxT("Not yet implimented"), wxT("OnListIndividuals") );
+}
+
+/*! \brief Called on a Pedigree Chart menu option event.
+ */
+void TfpFrame::OnPedChart( wxCommandEvent& event )
+{
+    wxMessageBox( wxT("Not yet implimented"), wxT("OnPedChart") );
+}
+
+/*! \brief Called on a Descendant Chart menu option event.
+ */
+void TfpFrame::OnDescChart( wxCommandEvent& event )
+{
+    wxMessageBox( wxT("Not yet implimented"), wxT("OnDescChart") );
 }
 
 /*! \brief Called on a Help, TFP Website menu option event.
@@ -177,6 +369,27 @@ void TfpFrame::OnAbout( wxCommandEvent& event )
     );
 }
 
+/*! \brief Called on a Find Back button option event.
+ */
+void TfpFrame::OnFindBack( wxCommandEvent& event )
+{
+    wxMessageBox( wxT("Not yet implimented"), wxT("OnFindBack") );
+}
+
+/*! \brief Called on a Find Forward button option event.
+ */
+void TfpFrame::OnFindForward( wxCommandEvent& event )
+{
+    wxMessageBox( wxT("Not yet implimented"), wxT("OnFindForward") );
+}
+
+/*! \brief Called on a Home button option event.
+ */
+void TfpFrame::OnHome( wxCommandEvent& event )
+{
+    wxMessageBox( wxT("Not yet implimented"), wxT("OnHome") );
+}
+
 /*! \brief Called on a link in the html control being clicked.
  *
  *  Decodes the href string of the clicked link. If the first
@@ -211,10 +424,16 @@ void TfpFrame::OnHtmlLinkClicked( wxHtmlLinkEvent& event )
     }
 }
 
+/*! \brief Called on a Close Window event.
+ */
+void TfpFrame::OnCloseWindow( wxCloseEvent& event )
+{
+    this->Destroy();
+}
+
 
 void TfpFrame::NewFile()
 {
-//    wxMessageBox( wxT("Not yet implimented"), wxT("NewFile") );
     wxString caption = _("Create TFP Database");
     wxString wildcard = _("TFP Database (*.tfpd)|*.tfpd");
     wxString defaultDir = ".";
@@ -227,8 +446,8 @@ void TfpFrame::NewFile()
         unsigned flags = recDb::CREATE_DB_STD_EXT | recDb::CREATE_DB_ENUM_FN;
         if( recDb::CreateDb( path, flags ) == true )
         {
-//            SetDatabaseOpen( path, true );
-//            DisplayHtmPage( wxT("F1") );
+            SetDatabaseOpen( path, true );
+            DisplayHtmPage( "F1" );
         }
     }
 }
@@ -241,6 +460,53 @@ void TfpFrame::OpenFile()
 void TfpFrame::ImportGedcom()
 {
     wxMessageBox( wxT("Not yet implimented"), wxT("ImportGedcom") );
+}
+
+void TfpFrame::SetDatabaseOpen( wxString& path, bool open )
+{
+    if( open ) {
+        wxFileName dbfile( path );
+        m_dbname = wxString::Format( "TFP: %s, %%s", dbfile.GetName().c_str() );
+        m_html->SetRelatedFrame( this, m_dbname );
+        SetMenuBar( m_menuOpenDB );
+        m_toolbar->EnableTool( tfpID_LIST_SURNAME_INDEX, true );
+        m_toolbar->EnableTool( tfpID_GOTO_HOME, true );
+    } else {
+        m_dbname = wxEmptyString;
+        m_html->SetRelatedFrame( this, "The Family Pack" );
+        SetMenuBar( m_menuClosedDB );
+        m_toolbar->EnableTool( tfpID_LIST_SURNAME_INDEX, false );
+        m_toolbar->EnableTool( tfpID_GOTO_HOME, false );
+        m_back.clear();
+        m_toolbar->EnableTool( tfpID_FIND_BACK, false );
+        m_forward.clear();
+        m_toolbar->EnableTool( tfpID_FIND_FORWARD, false );
+    }
+}
+
+bool TfpFrame::DisplayHtmPage( const wxString& name )
+{
+    wxString text = GetDisplayText( name );
+    if( text != wxEmptyString )
+    {
+        m_back.push_back( name );
+        if( m_back.size() > 1 ) {
+            m_toolbar->EnableTool( tfpID_FIND_BACK, true );
+        }
+        if( m_forward.size() == 0 ) {
+            m_forward.clear();
+            m_toolbar->EnableTool( tfpID_FIND_FORWARD, false );
+        }
+        m_html->SetPage( text );
+        return true;
+    }
+    return false;
+}
+
+wxString TfpFrame::GetDisplayText( const wxString& name )
+{
+    return "<html><head><title>Family</title></head><body>Text for "
+        + name + "</body></html>";
 }
 
 // End of tfpFrame.cpp file

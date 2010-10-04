@@ -46,7 +46,7 @@
 // SQL script to create new database
 #include "generated/recSql.ci"
 
-wxSQLite3Database* recDb::m_db = new wxSQLite3Database();
+wxSQLite3Database* recDb::m_db = NULL;
 
 bool recDb::CreateDb( wxString& fname, unsigned flags )
 {
@@ -80,7 +80,9 @@ bool recDb::CreateDb( wxString& fname, unsigned flags )
 	fname = dbfile.GetFullPath();
     m_db->Open( fname );
 
+    m_db->Begin();
     m_db->ExecuteUpdate( createdb );
+    m_db->Commit();
     return true;
 }
 

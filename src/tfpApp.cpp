@@ -38,16 +38,17 @@
 #include "wx/wx.h"
 #endif
 
+#include <wx/wxsqlite3.h>
 
 #include "tfpApp.h"
 #include "tfpFrame.h"
 #include "tfpMemory.h"
+#include "rec/recDatabase.h"
 
 IMPLEMENT_APP(TfpApp)
 
 TfpApp::TfpApp()
-{
-
+{ 
 }
 
 /*! This is where all the application initialisation is carried out.
@@ -61,6 +62,8 @@ bool TfpApp::OnInit()
     wxImage::AddHandler( new wxXPMHandler );
     tfpLoadMemoryFiles();
 
+    recDb::SetDb( new wxSQLite3Database() );
+
     TfpFrame* frame = new TfpFrame( wxT("The Family Pack"), wxDefaultPosition, wxSize( 640, 480 ) );
     frame->Show(true);
 
@@ -73,6 +76,7 @@ bool TfpApp::OnInit()
 */
 int TfpApp::OnExit()
 {
+    delete recDb::GetDb();
     return 0;
 }
 
