@@ -53,9 +53,10 @@ public:
     recDb() : f_id(0) {}
     recDb( id_t id ) { f_id = id; Read(); }
 
-    static bool CreateDb( wxString& fname, unsigned flags );
     static void SetDb( wxSQLite3Database* db ) { m_db = db; }
     static wxSQLite3Database* GetDb() { return m_db; }
+    static bool CreateDb( wxString& fname, unsigned flags );
+    static void CloseDb() { m_db->Close(); }
 
     virtual const wxString GetTableName() const = 0;
     virtual void Clear() = 0;

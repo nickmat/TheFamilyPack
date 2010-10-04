@@ -224,7 +224,10 @@ void TfpFrame::OnOpenFile( wxCommandEvent& event )
  */
 void TfpFrame::OnCloseFile( wxCommandEvent& event )
 {
-    wxMessageBox( wxT("Not yet implimented"), wxT("OnCloseFile") );
+    recDb::CloseDb();
+    m_dbname = wxEmptyString;
+    SetDatabaseOpen( m_dbname, false );
+    m_html->LoadPage( wxT("memory:startup.htm") );
 }
 
 /*! \brief Called on a Inport GEDCOM File menu option event.
