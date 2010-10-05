@@ -37,14 +37,8 @@
 #include "wx/wx.h"
 #endif
 
-#include <wx/wxsqlite3.h>
-
-#include "recDatabase.h"
-#include "recDate.h"
-
-//WX_DEFINE_OBJARRAY( ArrDate );
-
-const char* recDate::s_tableName = "Date";
+#include <rec/recDatabase.h>
+#include <rec/recDate.h>
 
 const wxString recDate::s_prefStr[recDate::PREF_Max] = {
     _("Unstated"),       // PREF_Unstated
@@ -90,7 +84,7 @@ void recDate::Save()
 	    sql.Format( 
 		    "INSERT INTO Date (jdn, range, type, desc, record_sch, display_sch) "
             "VALUES (%ld, %ld, %u, '%q', %d, %d);",
-            f_jdn, f_range, f_type, f_desc, f_record_sch, f_display_sch
+            f_jdn, f_range, f_type, UTF8_(f_desc), f_record_sch, f_display_sch
 	    );
     	s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -104,14 +98,14 @@ void recDate::Save()
 	        sql.Format( 
 		        "INSERT INTO Date (id, jdn, range, type, desc, record_sch, display_sch) "
                 "VALUES ("ID", %ld, %ld, %u, '%q', %d, %d);",
-                f_id, f_jdn, f_range, f_type, f_desc, f_record_sch, f_display_sch
+                f_id, f_jdn, f_range, f_type, UTF8_(f_desc), f_record_sch, f_display_sch
 	        );
         } else {
     		// Update existing record
             sql.Format( 
                 "UPDATE Date SET jdn=%ld, range=%ld, type=%u, desc='%q', record_sch=%d, display_sch=%d "
                 "WHERE id="ID";", 
-                f_jdn, f_range, f_type, f_desc, f_record_sch, f_display_sch, f_id
+                f_jdn, f_range, f_type, UTF8_(f_desc), f_record_sch, f_display_sch, f_id
             );
         }
     	s_db->ExecuteUpdate( sql );

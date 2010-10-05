@@ -66,16 +66,6 @@
       <depends-on-file>$(LOCAL_SRC)/generated/tfpText.ci</depends-on-file>
     </action>
   
-    <action id="$(LOCAL_SRC)/rec/generated/recSql.ci">
-      <command>file2cpp -v -o $(LOCAL_SRC)/rec/generated/recSql.ci $(LOCAL_SRC)/rec/recSql.f2c</command>
-      <depends-on-file>$(LOCAL_SRC)/rec/recSql.f2c</depends-on-file>
-      <depends-on-file>$(LOCAL_SRC)/rec/recCreate.sql</depends-on-file>
-    </action>
-
-    <action id="$(LOCAL_SRC)/rec/recDatabase.cpp">
-      <depends-on-file>$(LOCAL_SRC)/rec/generated/recSql.ci</depends-on-file>
-    </action>
-  
   </if>
 
   <exe id="tfp" template="wxgui,wxlike">
@@ -86,25 +76,11 @@
     <sources>$(LOCAL_SRC)/tfpFrame.cpp</sources>
     <sources>$(LOCAL_SRC)/tfpMemory.cpp</sources>
     <sources>$(LOCAL_SRC)/tfpVersion.cpp</sources>
-    <sources>$(LOCAL_SRC)/rec/recDatabase.cpp</sources>
-    <sources>$(LOCAL_SRC)/rec/recDate.cpp</sources>
-    <sources>$(LOCAL_SRC)/rec/recEvent.cpp</sources>
-    <sources>$(LOCAL_SRC)/rec/recIndividual.cpp</sources>
-    <sources>$(LOCAL_SRC)/rec/recPersona.cpp</sources>
-    <sources>$(LOCAL_SRC)/rec/recPlace.cpp</sources>
-    <sources>$(LOCAL_SRC)/rec/recReference.cpp</sources>
     
     <headers>$(LOCAL_SRC)/tfpApp.h</headers>
     <headers>$(LOCAL_SRC)/tfpFrame.h</headers>
     <headers>$(LOCAL_SRC)/tfpMemory.h</headers>
     <headers>$(LOCAL_SRC)/tfpVersion.h</headers>
-    <headers>$(LOCAL_SRC)/rec/recDatabase.h</headers>
-    <headers>$(LOCAL_SRC)/rec/recDate.h</headers>
-    <headers>$(LOCAL_SRC)/rec/recEvent.h</headers>
-    <headers>$(LOCAL_SRC)/rec/recIndividual.h</headers>
-    <headers>$(LOCAL_SRC)/rec/recPersona.h</headers>
-    <headers>$(LOCAL_SRC)/rec/recPlace.h</headers>
-    <headers>$(LOCAL_SRC)/rec/recReference.h</headers>
 
     <win32-res>$(LOCAL_SRC)/tfp.rc</win32-res>
     
@@ -119,8 +95,9 @@
     <precomp-headers-file>wxprec_$(id)</precomp-headers-file>
 
     <lib-path>$(LOCAL_LIB)</lib-path>
-    <library>wxsqlite3</library>
     <library>calendar</library>
+    <library>wxsqlite3</library>
+    <library>rec</library>
     <wx-lib>html</wx-lib>
     <wx-lib>adv</wx-lib>
     <wx-lib>core</wx-lib>
@@ -131,6 +108,7 @@
   <include file="tests.bkl"/>
   <include file="utils.bkl"/>
   <include file="wxsqlite3_tfp.bkl"/>
+  <include file="rec.bkl"/>
 
 </makefile>
 

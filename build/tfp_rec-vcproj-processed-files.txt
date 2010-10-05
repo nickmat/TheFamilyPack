@@ -2,21 +2,21 @@
             Name="Processed Files"
             >
             <File
-                RelativePath="..\..\src\startup.htm"
+                RelativePath="..\..\src\rec\recCreate.sql"
                 DeploymentContent="true"
                 >
             </File>
             <File
-                RelativePath="..\..\src\tfpText.f2c"
+                RelativePath="..\..\src\rec\recSql.f2c"
                 >
                 <FileConfiguration
                     Name="Release|Win32"
                     >
                     <Tool
                         Name="VCCustomBuildTool"
-                        CommandLine="file2cpp -v -o ..\..\src\generated\tfpText.ci ..\..\src\tfpText.f2c&#x0D;&#x0A;"
-                        AdditionalDependencies="..\..\src\startup.htm"
-                        Outputs="..\..\src\generated\tfpText.ci"
+                        CommandLine="file2cpp -v -o ..\..\src\rec\generated\recSql.ci ..\..\src\rec\recSql.f2c&#x0D;&#x0A;"
+                        AdditionalDependencies="..\..\src\rec\recCreate.sql"
+                        Outputs="..\..\src\rec\generated\recSql.ci"
                     />
                 </FileConfiguration>
                 <FileConfiguration
@@ -24,9 +24,9 @@
                     >
                     <Tool
                         Name="VCCustomBuildTool"
-                        CommandLine="file2cpp -v -o ..\..\src\generated\tfpText.ci ..\..\src\tfpText.f2c&#x0D;&#x0A;"
-                        AdditionalDependencies="..\..\src\startup.htm"
-                        Outputs="..\..\src\generated\tfpText.ci"
+                        CommandLine="file2cpp -v -o ..\..\src\rec\generated\recSql.ci ..\..\src\rec\recSql.f2c&#x0D;&#x0A;"
+                        AdditionalDependencies="..\..\src\rec\recCreate.sql"
+                        Outputs="..\..\src\rec\generated\recSql.ci"
                     />
                 </FileConfiguration>
             </File>

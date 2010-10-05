@@ -35,8 +35,9 @@ typedef wxLongLong      id_t;
 #define ID              "%lld"
 #define GET_ID( id )    (id)
 #define IDtoLong( id )  (id.GetLo())
+#define UTF8_(s) ((const char*)(s).utf8_str())
 
-class wxSQLite3Database;
+#include <wx/wxsqlite3.h>
 
 class recDb {
 public:
@@ -46,6 +47,8 @@ public:
     };
 protected:
     static wxSQLite3Database* s_db;
+    static bool DeleteRecord( const char* table, id_t id );
+    static bool RecordExists( const char* table, id_t id ); 
 
 public:
     id_t   f_id;
@@ -59,13 +62,34 @@ public:
     static bool OpenDb( const wxString& fname );
     static void CloseDb() { s_db->Close(); }
 
+    /*! Return a the table name. 
+     */
     virtual const char* GetTableName() const = 0;
-    virtual void Clear() = 0;
-    virtual void Save() = 0;
-    virtual bool Read() = 0;
 
-    static bool DeleteRecord( const char* table, id_t id );
-    bool Delete() { return DeleteRecord( GetTableName(), f_id ); }
+    /*! Clear all data to default values.
+     */
+    virtual void Clear() = 0;
+
+    /*! If the id field is zero, a new record is created and the id field
+     *  is updated with the new value. If the id field is not zero, the 
+     *  database is checked to see if the record already exists - if it 
+     *  does it is updated - if not it is created.
+     */
+    virtual void Save() = 0;
+
+    /*! If the record does not exist, all fields are cleared and the function
+     *  returns false; If the record exists, the fields are updated and the
+     *  function returns true.
+     */
+    virtual bool Read() = 0;
 };
+
+#define TABLE_NAME_MEMBERS( T )                                        \
+    const char* GetTableName() const { return (T); }                   \
+    bool Delete() { return DeleteRecord( (T), f_id ); }                \
+    static bool Delete( id_t id ) { return DeleteRecord( (T), id ); }  \
+    bool Exists() { return RecordExists( (T), f_id ); }                \
+    static bool Exists( id_t id ) { return RecordExists( (T), id ); }
+
 
 #endif // RECDATABASE_H

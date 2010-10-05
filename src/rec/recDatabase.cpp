@@ -39,9 +39,7 @@
 
 #include <wx/filename.h>
 
-#include <wx/wxsqlite3.h>
-
-#include "recDatabase.h"
+#include <rec/recDatabase.h>
 
 // SQL script to create new database
 #include "generated/recSql.ci"
@@ -109,6 +107,22 @@ bool recDb::DeleteRecord( const char* name, id_t id )
     sql.Format( "DELETE FROM %q WHERE id="ID";", name, id );
 
     if( s_db->ExecuteUpdate( sql ) != 1 ) {
+        return false;
+    }
+    return true;
+}
+
+
+bool recDb::RecordExists( const char* name, id_t id )
+{
+    if( id == 0 ) {
+        return false;
+    }
+
+    wxSQLite3StatementBuffer sql;
+    sql.Format( "SELECT COUNT(*) FROM %q WHERE id="ID";", name, id );
+
+    if( s_db->ExecuteScalar( sql ) != 1 ) {
         return false;
     }
     return true;

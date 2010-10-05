@@ -38,9 +38,7 @@
 #include "wx/wx.h"
 #endif
 
-#include <wx/wxsqlite3.h>
-
-#include "recDatabase.h"
+#include <rec/recDatabase.h>
 
 
 // End of recEvent.cpp file

@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        calendar.bkl
+ * Name:        rec.bkl
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     The bakefile source for building the calendar library.
+ * Purpose:     The bakefile source for building the database library.
  * Author:      Nick Matthews
  * Modified by:
  * Website:     http://thefamilypack.org
- * Created:     28th September 2010
+ * Created:     5th October 2010
  * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2010, Nick Matthews.
  * Licence:     GNU GPLv3
@@ -29,20 +29,38 @@
 
 <makefile>
 
-  <lib id="calendar" template="wx-lib,wxlike">
-    <libname>$(LOCAL_LIB)/calendar$(WXLIBPOSTFIX)</libname>
-    <sources>$(LOCAL_SRC)/cal/calendar.cpp</sources>
-    <sources>$(LOCAL_SRC)/cal/calGregorian.cpp</sources>
-    <sources>$(LOCAL_SRC)/cal/calJDay.cpp</sources>
-    <sources>$(LOCAL_SRC)/cal/calJulian.cpp</sources>
-    <sources>$(LOCAL_SRC)/cal/calLatin.cpp</sources>
-    <headers>$(LOCAL_INC)/cal/calendar.h</headers>
-    <headers>$(LOCAL_SRC)/cal/calCommon.h</headers>
-    <headers>$(LOCAL_SRC)/cal/calGregorian.h</headers>
-    <headers>$(LOCAL_SRC)/cal/calJDay.h</headers>
-    <headers>$(LOCAL_SRC)/cal/calJulian.h</headers>
-    <headers>$(LOCAL_SRC)/cal/calLatin.h</headers>
-    <include>$(LOCAL_INC)/cal</include>
+  <if cond="FORMAT_MSVC_PROJECT=='0'">
+
+    <action id="$(LOCAL_SRC)/rec/generated/recSql.ci">
+      <command>file2cpp -v -o $(LOCAL_SRC)/rec/generated/recSql.ci $(LOCAL_SRC)/rec/recSql.f2c</command>
+      <depends-on-file>$(LOCAL_SRC)/rec/recSql.f2c</depends-on-file>
+      <depends-on-file>$(LOCAL_SRC)/rec/recCreate.sql</depends-on-file>
+    </action>
+
+    <action id="$(LOCAL_SRC)/rec/recDatabase.cpp">
+      <depends-on-file>$(LOCAL_SRC)/rec/generated/recSql.ci</depends-on-file>
+    </action>
+  
+  </if>
+
+  <lib id="rec" template="wx-lib,wxlike">
+    <libname>$(LOCAL_LIB)/rec$(WXLIBPOSTFIX)</libname>
+    <sources>$(LOCAL_SRC)/rec/recDatabase.cpp</sources>
+    <sources>$(LOCAL_SRC)/rec/recDate.cpp</sources>
+    <sources>$(LOCAL_SRC)/rec/recEvent.cpp</sources>
+    <sources>$(LOCAL_SRC)/rec/recIndividual.cpp</sources>
+    <sources>$(LOCAL_SRC)/rec/recPersona.cpp</sources>
+    <sources>$(LOCAL_SRC)/rec/recPlace.cpp</sources>
+    <sources>$(LOCAL_SRC)/rec/recReference.cpp</sources>
+
+    <headers>$(LOCAL_INC)/rec/recDatabase.h</headers>
+    <headers>$(LOCAL_INC)/rec/recDate.h</headers>
+    <headers>$(LOCAL_INC)/rec/recEvent.h</headers>
+    <headers>$(LOCAL_INC)/rec/recIndividual.h</headers>
+    <headers>$(LOCAL_INC)/rec/recPersona.h</headers>
+    <headers>$(LOCAL_INC)/rec/recPlace.h</headers>
+    <headers>$(LOCAL_INC)/rec/recReference.h</headers>
+    <include>$(LOCAL_INC)/rec</include>
     <include>$(LOCAL_INC)</include>
 
     <sources>$(LOCAL_SRC)/dummy.cpp</sources>

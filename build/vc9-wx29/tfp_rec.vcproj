@@ -9,8 +9,8 @@
 <VisualStudioProject
     ProjectType="Visual C++"
     Version="9.00"
-    Name="tfp"
-    ProjectGUID="{8BCB6856-802F-5FF6-8D8C-DB72222DF9DF}"
+    Name="rec"
+    ProjectGUID="{1A037570-C3CC-5D6A-9C10-F55F1A29680C}"
     >
     <Platforms>
         <Platform
@@ -24,8 +24,8 @@
         <Configuration
             Name="Release|Win32"
             OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-            IntermediateDirectory="$(SolutionDir)$(ConfigurationName)\tfp"
-            ConfigurationType="1"
+            IntermediateDirectory="$(SolutionDir)$(ConfigurationName)\rec"
+            ConfigurationType="4"
             UseOfMFC="0"
             ATLMinimizesCRunTimeLibraryUsage="false"
             CharacterSet="1"
@@ -44,23 +44,23 @@
             />
             <Tool
                 Name="VCMIDLTool"
-                PreprocessorDefinitions="WIN32;_UNICODE;__WXMSW__;_WINDOWS"
-                AdditionalIncludeDirectories="$(WXWIN)\lib\vc_lib\mswu;$(WXWIN)\include;..\..\include;..\..\src"
+                PreprocessorDefinitions="WIN32;_LIB;_UNICODE;__WXMSW__"
+                AdditionalIncludeDirectories="$(WXWIN)\lib\vc_lib\mswu;$(WXWIN)\include;..\..\include\rec;..\..\include"
             />
             <Tool
                 Name="VCCLCompilerTool"
                 AdditionalOptions="/MP"
                 Optimization="2"
-                AdditionalIncludeDirectories="$(WXWIN)\lib\vc_lib\mswu;$(WXWIN)\include;..\..\include;..\..\src"
-                PreprocessorDefinitions="WIN32;_UNICODE;__WXMSW__;_WINDOWS"
+                AdditionalIncludeDirectories="$(WXWIN)\lib\vc_lib\mswu;$(WXWIN)\include;..\..\include\rec;..\..\include"
+                PreprocessorDefinitions="WIN32;_LIB;_UNICODE;__WXMSW__"
                 ExceptionHandling="1"
                 RuntimeLibrary="2"
                 RuntimeTypeInfo="true"
                 UsePrecompiledHeader="2"
                 PrecompiledHeaderThrough="wx/wxprec.h"
-                PrecompiledHeaderFile="$(SolutionDir)$(ConfigurationName)\wxprec_tfp.pch"
-                ObjectFile="$(SolutionDir)$(ConfigurationName)\tfp\"
-                ProgramDataBaseFileName="$(SolutionDir)$(ConfigurationName)\tfp.pdb"
+                PrecompiledHeaderFile="$(SolutionDir)$(ConfigurationName)\wxprec_rec.pch"
+                ObjectFile="$(SolutionDir)$(ConfigurationName)\rec\"
+                ProgramDataBaseFileName="$(SolutionDir)$(ConfigurationName)\../../../lib/vc9/recu.pdb"
                 WarningLevel="3"
                 SuppressStartupBanner="true"
                 DebugInformationFormat="0"
@@ -70,25 +70,17 @@
             />
             <Tool
                 Name="VCResourceCompilerTool"
-                PreprocessorDefinitions="_UNICODE;__WXMSW__;_WINDOWS"
+                PreprocessorDefinitions="_UNICODE;__WXMSW__"
                 Culture="1033"
-                AdditionalIncludeDirectories="$(WXWIN)\lib\vc_lib\mswu;$(WXWIN)\include;..\..\include;..\..\src"
+                AdditionalIncludeDirectories="$(WXWIN)\lib\vc_lib\mswu;$(WXWIN)\include;..\..\include\rec;..\..\include"
             />
             <Tool
                 Name="VCPreLinkEventTool"
             />
             <Tool
-                Name="VCLinkerTool"
-                AdditionalOptions=""
-                AdditionalDependencies="$(SolutionDir)$(ConfigurationName)\../../../lib/vc9/calendaru.lib $(SolutionDir)$(ConfigurationName)\../../../lib/vc9/wxsqlite3u.lib $(SolutionDir)$(ConfigurationName)\../../../lib/vc9/recu.lib wxmsw29u_html.lib wxmsw29u_adv.lib wxmsw29u_core.lib wxbase29u.lib wxtiff.lib wxjpeg.lib wxpng.lib wxzlib.lib wxregexu.lib wxexpat.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib"
-                OutputFile="$(SolutionDir)$(ConfigurationName)\tfp.exe"
-                LinkIncremental="1"
+                Name="VCLibrarianTool"
+                OutputFile="$(SolutionDir)$(ConfigurationName)\../../../lib/vc9/recu.lib"
                 SuppressStartupBanner="true"
-                AdditionalLibraryDirectories="$(WXWIN)\lib\vc_lib;..\..\..\lib\vc9"
-                GenerateManifest="true"
-                ProgramDatabaseFile="$(SolutionDir)$(ConfigurationName)\tfp.pdb"
-                SubSystem="2"
-                TargetMachine="1"
             />
             <Tool
                 Name="VCALinkTool"
@@ -101,14 +93,11 @@
             />
             <Tool
                 Name="VCBscMakeTool"
-                OutputFile="$(SolutionDir)$(ConfigurationName)\tfp_tfp.bsc"
+                OutputFile="$(SolutionDir)$(ConfigurationName)\tfp_rec.bsc"
                 SuppressStartupBanner="true"
             />
             <Tool
                 Name="VCFxCopTool"
-            />
-            <Tool
-                Name="VCAppVerifierTool"
             />
             <Tool
                 Name="VCPostBuildEventTool"
@@ -117,8 +106,8 @@
         <Configuration
             Name="Debug|Win32"
             OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-            IntermediateDirectory="$(SolutionDir)$(ConfigurationName)\tfp"
-            ConfigurationType="1"
+            IntermediateDirectory="$(SolutionDir)$(ConfigurationName)\rec"
+            ConfigurationType="4"
             UseOfMFC="0"
             ATLMinimizesCRunTimeLibraryUsage="false"
             CharacterSet="1"
@@ -137,15 +126,15 @@
             />
             <Tool
                 Name="VCMIDLTool"
-                PreprocessorDefinitions="WIN32;_UNICODE;__WXDEBUG__;__WXMSW__;_DEBUG;_WINDOWS"
-                AdditionalIncludeDirectories="$(WXWIN)\lib\vc_lib\mswud;$(WXWIN)\include;..\..\include;..\..\src"
+                PreprocessorDefinitions="WIN32;_LIB;_UNICODE;__WXDEBUG__;__WXMSW__;_DEBUG"
+                AdditionalIncludeDirectories="$(WXWIN)\lib\vc_lib\mswud;$(WXWIN)\include;..\..\include\rec;..\..\include"
             />
             <Tool
                 Name="VCCLCompilerTool"
                 AdditionalOptions="/MP"
                 Optimization="0"
-                AdditionalIncludeDirectories="$(WXWIN)\lib\vc_lib\mswud;$(WXWIN)\include;..\..\include;..\..\src"
-                PreprocessorDefinitions="WIN32;_UNICODE;__WXDEBUG__;__WXMSW__;_DEBUG;_WINDOWS"
+                AdditionalIncludeDirectories="$(WXWIN)\lib\vc_lib\mswud;$(WXWIN)\include;..\..\include\rec;..\..\include"
+                PreprocessorDefinitions="WIN32;_LIB;_UNICODE;__WXDEBUG__;__WXMSW__;_DEBUG"
                 ExceptionHandling="1"
                 BasicRuntimeChecks="3"
                 RuntimeLibrary="3"
@@ -153,9 +142,9 @@
                 RuntimeTypeInfo="true"
                 UsePrecompiledHeader="2"
                 PrecompiledHeaderThrough="wx/wxprec.h"
-                PrecompiledHeaderFile="$(SolutionDir)$(ConfigurationName)\wxprec_tfp.pch"
-                ObjectFile="$(SolutionDir)$(ConfigurationName)\tfp\"
-                ProgramDataBaseFileName="$(SolutionDir)$(ConfigurationName)\tfp.pdb"
+                PrecompiledHeaderFile="$(SolutionDir)$(ConfigurationName)\wxprec_rec.pch"
+                ObjectFile="$(SolutionDir)$(ConfigurationName)\rec\"
+                ProgramDataBaseFileName="$(SolutionDir)$(ConfigurationName)\../../../lib/vc9/recud.pdb"
                 WarningLevel="3"
                 SuppressStartupBanner="true"
                 DebugInformationFormat="3"
@@ -165,26 +154,17 @@
             />
             <Tool
                 Name="VCResourceCompilerTool"
-                PreprocessorDefinitions="_UNICODE;__WXDEBUG__;__WXMSW__;_DEBUG;_WINDOWS"
+                PreprocessorDefinitions="_UNICODE;__WXDEBUG__;__WXMSW__;_DEBUG"
                 Culture="1033"
-                AdditionalIncludeDirectories="$(WXWIN)\lib\vc_lib\mswud;$(WXWIN)\include;..\..\include;..\..\src"
+                AdditionalIncludeDirectories="$(WXWIN)\lib\vc_lib\mswud;$(WXWIN)\include;..\..\include\rec;..\..\include"
             />
             <Tool
                 Name="VCPreLinkEventTool"
             />
             <Tool
-                Name="VCLinkerTool"
-                AdditionalOptions=""
-                AdditionalDependencies="$(SolutionDir)$(ConfigurationName)\../../../lib/vc9/calendarud.lib $(SolutionDir)$(ConfigurationName)\../../../lib/vc9/wxsqlite3ud.lib $(SolutionDir)$(ConfigurationName)\../../../lib/vc9/recud.lib wxmsw29ud_html.lib wxmsw29ud_adv.lib wxmsw29ud_core.lib wxbase29ud.lib wxtiffd.lib wxjpegd.lib wxpngd.lib wxzlibd.lib wxregexud.lib wxexpatd.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib"
-                OutputFile="$(SolutionDir)$(ConfigurationName)\tfp.exe"
-                LinkIncremental="2"
+                Name="VCLibrarianTool"
+                OutputFile="$(SolutionDir)$(ConfigurationName)\../../../lib/vc9/recud.lib"
                 SuppressStartupBanner="true"
-                AdditionalLibraryDirectories="$(WXWIN)\lib\vc_lib;..\..\..\lib\vc9"
-                GenerateManifest="true"
-                GenerateDebugInformation="true"
-                ProgramDatabaseFile="$(SolutionDir)$(ConfigurationName)\tfp.pdb"
-                SubSystem="2"
-                TargetMachine="1"
             />
             <Tool
                 Name="VCALinkTool"
@@ -197,14 +177,11 @@
             />
             <Tool
                 Name="VCBscMakeTool"
-                OutputFile="$(SolutionDir)$(ConfigurationName)\tfp_tfp.bsc"
+                OutputFile="$(SolutionDir)$(ConfigurationName)\tfp_rec.bsc"
                 SuppressStartupBanner="true"
             />
             <Tool
                 Name="VCFxCopTool"
-            />
-            <Tool
-                Name="VCAppVerifierTool"
             />
             <Tool
                 Name="VCPostBuildEventTool"
@@ -241,19 +218,31 @@
                 </FileConfiguration>
             </File>
             <File
-                RelativePath="..\..\src\tfpApp.cpp"
+                RelativePath="..\..\src\rec\recDatabase.cpp"
                 >
             </File>
             <File
-                RelativePath="..\..\src\tfpFrame.cpp"
+                RelativePath="..\..\src\rec\recDate.cpp"
                 >
             </File>
             <File
-                RelativePath="..\..\src\tfpMemory.cpp"
+                RelativePath="..\..\src\rec\recEvent.cpp"
                 >
             </File>
             <File
-                RelativePath="..\..\src\tfpVersion.cpp"
+                RelativePath="..\..\src\rec\recIndividual.cpp"
+                >
+            </File>
+            <File
+                RelativePath="..\..\src\rec\recPersona.cpp"
+                >
+            </File>
+            <File
+                RelativePath="..\..\src\rec\recPlace.cpp"
+                >
+            </File>
+            <File
+                RelativePath="..\..\src\rec\recReference.cpp"
                 >
             </File>
         </Filter>
@@ -263,29 +252,31 @@
             UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
             >
             <File
-                RelativePath="..\..\src\tfpApp.h"
+                RelativePath="..\..\include\rec\recDatabase.h"
                 >
             </File>
             <File
-                RelativePath="..\..\src\tfpFrame.h"
+                RelativePath="..\..\include\rec\recDate.h"
                 >
             </File>
             <File
-                RelativePath="..\..\src\tfpMemory.h"
+                RelativePath="..\..\include\rec\recEvent.h"
                 >
             </File>
             <File
-                RelativePath="..\..\src\tfpVersion.h"
+                RelativePath="..\..\include\rec\recIndividual.h"
                 >
             </File>
-        </Filter>
-        <Filter
-            Name="Resource Files"
-            Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
-            UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
-            >
             <File
-                RelativePath="..\..\src\tfp.rc"
+                RelativePath="..\..\include\rec\recPersona.h"
+                >
+            </File>
+            <File
+                RelativePath="..\..\include\rec\recPlace.h"
+                >
+            </File>
+            <File
+                RelativePath="..\..\include\rec\recReference.h"
                 >
             </File>
         </Filter>
@@ -293,21 +284,21 @@
             Name="Processed Files"
             >
             <File
-                RelativePath="..\..\src\startup.htm"
+                RelativePath="..\..\src\rec\recCreate.sql"
                 DeploymentContent="true"
                 >
             </File>
             <File
-                RelativePath="..\..\src\tfpText.f2c"
+                RelativePath="..\..\src\rec\recSql.f2c"
                 >
                 <FileConfiguration
                     Name="Release|Win32"
                     >
                     <Tool
                         Name="VCCustomBuildTool"
-                        CommandLine="file2cpp -v -o ..\..\src\generated\tfpText.ci ..\..\src\tfpText.f2c&#x0D;&#x0A;"
-                        AdditionalDependencies="..\..\src\startup.htm"
-                        Outputs="..\..\src\generated\tfpText.ci"
+                        CommandLine="file2cpp -v -o ..\..\src\rec\generated\recSql.ci ..\..\src\rec\recSql.f2c&#x0D;&#x0A;"
+                        AdditionalDependencies="..\..\src\rec\recCreate.sql"
+                        Outputs="..\..\src\rec\generated\recSql.ci"
                     />
                 </FileConfiguration>
                 <FileConfiguration
@@ -315,9 +306,9 @@
                     >
                     <Tool
                         Name="VCCustomBuildTool"
-                        CommandLine="file2cpp -v -o ..\..\src\generated\tfpText.ci ..\..\src\tfpText.f2c&#x0D;&#x0A;"
-                        AdditionalDependencies="..\..\src\startup.htm"
-                        Outputs="..\..\src\generated\tfpText.ci"
+                        CommandLine="file2cpp -v -o ..\..\src\rec\generated\recSql.ci ..\..\src\rec\recSql.f2c&#x0D;&#x0A;"
+                        AdditionalDependencies="..\..\src\rec\recCreate.sql"
+                        Outputs="..\..\src\rec\generated\recSql.ci"
                     />
                 </FileConfiguration>
             </File>

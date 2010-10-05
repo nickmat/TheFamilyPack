@@ -34,7 +34,6 @@
 #include "cal/calendar.h"
 
 class recDate : public recDb {
-    static const char* s_tableName;
 public:
 	enum TypeFlag {
 		FLG_NULL   = 0x00, 
@@ -67,12 +66,33 @@ public:
     recDate() {}
     recDate( id_t id ) : recDb(id) {}
 
-    const char* GetTableName() { return s_tableName; }
 	void Clear();
     void Save();
     bool Read();
-
-    static bool Delete( id_t id ) { return DeleteRecord( s_tableName, id ); }
+    TABLE_NAME_MEMBERS( "Date" );
 };
+
+/*! The two entities are equal, ignoring the record id.
+ */
+inline bool recEquivalent( const recDate& d1, const recDate& d2 )
+{
+    return
+        d1.f_jdn == d2.f_jdn && 
+        d1.f_range == d2.f_range &&
+        d1.f_type == d2.f_type &&
+        d1.f_desc == d2.f_desc &&
+        d1.f_record_sch == d2.f_record_sch &&
+        d1.f_display_sch == d2.f_display_sch;
+}
+
+inline bool operator==( const recDate& d1, const recDate& d2 )
+{
+    return recEquivalent( d1, d2 ) && d1.f_id == d2.f_id;
+}
+
+inline bool operator!=( const recDate& d1, const recDate& d2 )
+{
+    return !(d1 == d2);
+}
 
 #endif // RECDATE_H
