@@ -95,8 +95,6 @@ bool recDb::OpenDb( const wxString& fname )
     return true;
 }
 
-
-
 bool recDb::DeleteRecord( const char* name, id_t id )
 {
     if( id == 0 ) {
@@ -111,7 +109,6 @@ bool recDb::DeleteRecord( const char* name, id_t id )
     }
     return true;
 }
-
 
 bool recDb::RecordExists( const char* name, id_t id )
 {

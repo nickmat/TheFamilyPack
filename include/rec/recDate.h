@@ -69,6 +69,23 @@ public:
 	void Clear();
     void Save();
     bool Read();
+    /*! Impliments the member functions:
+     *
+     *  // Returns table name string.\n
+     *  const char* GetTableName() const;
+     *
+     *  // Delete the current record.\n
+     *  bool Delete();
+     *
+     *  // Return true if current record exists.\n
+     *  bool Exists();
+     *
+     *  // Delete the given record, static function.\n
+     *  static bool Delete( id_t id );
+     *
+     *  // Return true if given record exists, static function.\n
+     *  static bool Exists( id_t id );
+     */
     TABLE_NAME_MEMBERS( "Date" );
 };
 

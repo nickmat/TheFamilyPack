@@ -47,19 +47,42 @@ public:
     };
 protected:
     static wxSQLite3Database* s_db;
+
+    /*! Delete the given record in the given table.
+     */
     static bool DeleteRecord( const char* table, id_t id );
+
+    /*! Return true if the given record exists in the given table.
+     */
     static bool RecordExists( const char* table, id_t id ); 
 
 public:
     id_t   f_id;
 
+    /*! Default constructor, does nothing. */
     recDb() {}
+    /*! Constructor with id, reads the record for the given id. */
     recDb( id_t id ) { f_id = id; Read(); }
 
     static void SetDb( wxSQLite3Database* db ) { s_db = db; }
     static wxSQLite3Database* GetDb() { return s_db; }
+
+    /*! Creates a new database with the given filename. If the flag
+     *  CREATE_DB_STD_EXT is set, the standard file extension ".tfpd"
+     *  is used. If CREATE_DB_ENUM_FN is set, then if the filename 
+     *  already exists then a new name is created by appending (n) to
+     *  the name, where n is the lowest number (starting from 2) that
+     *  gives a unique name.
+     */
     static bool CreateDb( wxString& fname, unsigned flags );
+
+    /*! Opens an existing database file, providing there is not an existing 
+     *  database open and the file exists.
+     */
     static bool OpenDb( const wxString& fname );
+
+    /*! Closes the existing database file.
+     */
     static void CloseDb() { s_db->Close(); }
 
     /*! Return a the table name. 
