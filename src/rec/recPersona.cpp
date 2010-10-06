@@ -37,7 +37,72 @@
 #include "wx/wx.h"
 #endif
 
-#include <rec/recDatabase.h>
+#include <rec/recPersona.h>
 
+
+void recPersona::Clear()
+{
+    f_sex  = SEX_Unstated;
+    f_note = wxEmptyString;
+}
+
+void recPersona::Save()
+{
+	wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+	if( f_id == 0 )
+	{
+		// Add new record
+	    sql.Format( 
+		    "INSERT INTO Persona (sex, note) VALUES (%u, '%q');",
+            f_sex, UTF8_(f_note)
+	    );
+    	s_db->ExecuteUpdate( sql );
+        f_id = GET_ID( s_db->GetLastRowId() );
+	} else {
+        // Does record exist
+        if( !Exists() )
+        {
+            // Add new record
+	        sql.Format( 
+		        "INSERT INTO Persona (id, sex, note) "
+                "VALUES ("ID", %u, '%q');",
+                f_id, f_sex, UTF8_(f_note)
+	        );
+        } else {
+    		// Update existing record
+            sql.Format( 
+                "UPDATE Persona SET sex=%u, note='%q' WHERE id="ID";", 
+                f_sex, UTF8_(f_note), f_id
+            );
+        }
+    	s_db->ExecuteUpdate( sql );
+	}
+}
+
+bool recPersona::Read()
+{
+	wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( f_id == 0 ) {
+		Clear();
+        return false;
+    }
+
+	sql.Format( "SELECT sex, note FROM Persona WHERE id="ID";", f_id );
+    result = s_db->GetTable( sql );
+
+    if( result.GetRowCount() != 1 ) 
+    {
+		Clear();
+        return false;
+    }
+    result.SetRow( 0 ); 
+    f_sex  = (Sex) result.GetInt( 0 );
+    f_note = result.GetAsString( 1 );
+	return true;
+}
 
 // End of recPersona.cpp file

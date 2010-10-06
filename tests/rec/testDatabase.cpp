@@ -40,10 +40,10 @@
 #include <wx/sstream.h>
 #include <wx/filefn.h>
 
-#include <rec/recDatabase.h>
 #include <cal/calendar.h>
 #include <rec/recDate.h>
 #include <rec/recPlace.h>
+#include <rec/recPersona.h>
 
 // ----------------------------------------------------------------------------
 // test class
@@ -201,10 +201,10 @@ void RecTestCase::TestDatabase()
     pp2.Read();  
     CPPUNIT_ASSERT( pp1 == pp2 );
 
-    pp2.f_type_id = 4;
-    pp2.f_place_id = 5;
-    pp2.f_val = "Bluebell View";
-    pp2.f_sequence = 3;
+    pp1.f_type_id = 4;
+    pp1.f_place_id = 5;
+    pp1.f_val = "Bluebell View";
+    pp1.f_sequence = 3;
     // f_id = 1 which exists, so amend record leaving f_id to old value.
     pp1.Save();
     CPPUNIT_ASSERT( pp1.f_id == id );
@@ -249,7 +249,7 @@ void RecTestCase::TestDatabase()
     ppt2.Read();  
     CPPUNIT_ASSERT( ppt1 == ppt2 );
 
-    ppt2.f_name = "Village";
+    ppt1.f_name = "Village";
     // f_id = 1 which exists, so amend record leaving f_id to old value.
     ppt1.Save();
     CPPUNIT_ASSERT( ppt1.f_id == id );
@@ -276,6 +276,53 @@ void RecTestCase::TestDatabase()
     CPPUNIT_ASSERT( recPlacePartType::Exists( 999 ) == true );
     recPlacePartType::Delete( 999 );
     CPPUNIT_ASSERT( recPlacePartType::Exists( 999 ) == false );
+
+    //----------------------------------
+    //    Test recPersona Records.
+    //----------------------------------
+    recPersona persona1;
+    persona1.f_id = 0;
+
+    persona1.f_sex = SEX_Male;
+    persona1.f_note = "Someone";
+    // f_id = 0 so create new record and set f_id to new value.
+    persona1.Save();
+    id = persona1.f_id;
+    CPPUNIT_ASSERT( id == 1 );
+
+    recPersona persona2;
+    persona2.f_id = persona1.f_id;
+    persona2.Read();  
+    CPPUNIT_ASSERT( persona1 == persona2 );
+
+    persona1.f_sex = SEX_Female;
+    persona1.f_note = "Another one";
+    // f_id = 1 which exists, so amend record leaving f_id to old value.
+    persona1.Save();
+    CPPUNIT_ASSERT( persona1.f_id == id );
+    persona2.Read();
+    CPPUNIT_ASSERT( persona1 == persona2 );
+
+    persona1.f_id = 999;
+    persona1.f_note = "Not wanted";
+    // f_id = 999 which doesn't exists, so create new record with no change to f_id.
+    persona1.Save();
+    CPPUNIT_ASSERT( persona1.f_id == 999 );
+    persona2.f_id = persona1.f_id;
+    persona2.Read();
+    CPPUNIT_ASSERT( persona1 == persona2 );
+
+    persona1.f_id = 0;
+    persona1.f_note = "Nor this";
+    persona1.Save();
+    CPPUNIT_ASSERT( persona1.f_id != 0 );
+    CPPUNIT_ASSERT( persona1.Exists() == true );
+    persona1.Delete();
+    CPPUNIT_ASSERT( persona1.Exists() == false );
+
+    CPPUNIT_ASSERT( recPersona::Exists( 999 ) == true );
+    recPersona::Delete( 999 );
+    CPPUNIT_ASSERT( recPersona::Exists( 999 ) == false );
 
     //---------------------------
     //    Done.

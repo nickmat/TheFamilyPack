@@ -30,6 +30,8 @@
 #ifndef RECDATABASE_H
 #define RECDATABASE_H
 
+#include <wx/wxsqlite3.h>
+
 // Some helpful defines
 typedef wxLongLong      id_t;
 #define ID              "%lld"
@@ -37,7 +39,8 @@ typedef wxLongLong      id_t;
 #define IDtoLong( id )  (id.GetLo())
 #define UTF8_(s) ((const char*)(s).utf8_str())
 
-#include <wx/wxsqlite3.h>
+enum Sex { SEX_Unstated, SEX_Male, SEX_Female, SEX_Unknown };
+extern wxString recGetSexStr( Sex sex );
 
 class recDb {
 public:
@@ -113,6 +116,5 @@ public:
     static bool Delete( id_t id ) { return DeleteRecord( (T), id ); }  \
     bool Exists() { return RecordExists( (T), f_id ); }                \
     static bool Exists( id_t id ) { return RecordExists( (T), id ); }
-
 
 #endif // RECDATABASE_H

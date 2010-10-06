@@ -125,4 +125,13 @@ bool recDb::RecordExists( const char* name, id_t id )
     return true;
 }
 
+wxString recGetSexStr( Sex sex )
+{
+	static wxString sexarray[] = {
+		_("Unstated"), _("Male"), _("Female"), _("Unknown")
+	};
+	return sexarray[sex];
+}
+
+
 // End of recDatabase.cpp file

@@ -30,5 +30,37 @@
 #ifndef RECPERSONA_H
 #define RECPERSONA_H
 
+#include <rec/recDatabase.h>
+
+class recPersona : public recDb {
+public:
+    Sex      f_sex;
+    wxString f_note;
+
+    recPersona() {}
+    recPersona( id_t id ) : recDb(id) {}
+
+	void Clear();
+    void Save();
+    bool Read();
+    TABLE_NAME_MEMBERS( "Persona" );
+};
+
+inline bool recEquivalent( const recPersona& r1, const recPersona& r2 )
+{
+    return
+        r1.f_sex  == r2.f_sex  &&
+        r1.f_note == r2.f_note;
+}
+
+inline bool operator==( const recPersona& r1, const recPersona& r2 )
+{
+    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
+}
+
+inline bool operator!=( const recPersona& r1, const recPersona& r2 )
+{
+    return !(r1 == r2);
+}
 
 #endif // RECPERSONA_H
