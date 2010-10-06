@@ -125,5 +125,4 @@ bool recDb::RecordExists( const char* name, id_t id )
     return true;
 }
 
-
 // End of recDatabase.cpp file

@@ -30,8 +30,8 @@
 #ifndef RECDATE_H
 #define RECDATE_H
 
-#include "recDatabase.h"
-#include "cal/calendar.h"
+#include <rec/recDatabase.h>
+#include <cal/calendar.h>
 
 class recDate : public recDb {
 public:

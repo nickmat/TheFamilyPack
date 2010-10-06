@@ -43,6 +43,7 @@
 #include <rec/recDatabase.h>
 #include <cal/calendar.h>
 #include <rec/recDate.h>
+#include <rec/recPlace.h>
 
 // ----------------------------------------------------------------------------
 // test class
@@ -71,6 +72,7 @@ CPPUNIT_TEST_SUITE_NAMED_REGISTRATION( RecTestCase, "RecTestCase" );
 
 void RecTestCase::TestDatabase()
 {
+    id_t id;
     wxString fname = "./TestDb.tfpd";
     wxRemoveFile( fname );
     recDb::SetDb( new wxSQLite3Database() );
@@ -91,7 +93,7 @@ void RecTestCase::TestDatabase()
     date1.f_display_sch = CALENDAR_SCH_Gregorian;
     // f_id = 0 so create new record and set f_id to new value.
     date1.Save();
-    id_t id = date1.f_id;
+    id = date1.f_id;
     CPPUNIT_ASSERT( id == 1 );
 
     recDate date2;
@@ -131,6 +133,149 @@ void RecTestCase::TestDatabase()
     CPPUNIT_ASSERT( recDate::Exists( 999 ) == true );
     recDate::Delete( 999 );
     CPPUNIT_ASSERT( recDate::Exists( 999 ) == false );
+
+    //---------------------------
+    //    Test Place Records.
+    //---------------------------
+    recPlace place1;
+    place1.f_id = 0;
+
+    place1.f_date1_id = 3;
+    place1.f_date2_id = 7;
+    // f_id = 0 so create new record and set f_id to new value.
+    place1.Save();
+    id = place1.f_id;
+    CPPUNIT_ASSERT( id == 1 );
+
+    recPlace place2;
+    place2.f_id = place1.f_id;
+    place2.Read();  
+    CPPUNIT_ASSERT( place1 == place2 );
+
+    place1.f_date1_id = 10;
+    place1.f_date2_id = 11;
+    // f_id = 1 which exists, so amend record leaving f_id to old value.
+    place1.Save();
+    CPPUNIT_ASSERT( place1.f_id == id );
+    place2.Read();
+    CPPUNIT_ASSERT( place1 == place2 );
+
+    place1.f_id = 999;
+    place1.f_date1_id = 22;
+    // f_id = 999 which doesn't exists, so create new record with no change to f_id.
+    place1.Save();
+    CPPUNIT_ASSERT( place1.f_id == 999 );
+    place2.f_id = place1.f_id;
+    place2.Read();
+    CPPUNIT_ASSERT( place1 == place2 );
+
+    place1.f_id = 0;
+    place1.f_date1_id = 33;
+    place1.Save();
+    CPPUNIT_ASSERT( place1.f_id != 0 );
+    CPPUNIT_ASSERT( place1.Exists() == true );
+    place1.Delete();
+    CPPUNIT_ASSERT( place1.Exists() == false );
+
+    CPPUNIT_ASSERT( recPlace::Exists( 999 ) == true );
+    recPlace::Delete( 999 );
+    CPPUNIT_ASSERT( recPlace::Exists( 999 ) == false );
+
+    //---------------------------
+    //    Test PlacePart Records.
+    //---------------------------
+    recPlacePart pp1;
+    pp1.f_id = 0;
+
+    pp1.f_type_id = 3;
+    pp1.f_place_id = 7;
+    pp1.f_val = "74 High St";
+    pp1.f_sequence = 1;
+    // f_id = 0 so create new record and set f_id to new value.
+    pp1.Save();
+    id = pp1.f_id;
+    CPPUNIT_ASSERT( id == 1 );
+
+    recPlacePart pp2;
+    pp2.f_id = pp1.f_id;
+    pp2.Read();  
+    CPPUNIT_ASSERT( pp1 == pp2 );
+
+    pp2.f_type_id = 4;
+    pp2.f_place_id = 5;
+    pp2.f_val = "Bluebell View";
+    pp2.f_sequence = 3;
+    // f_id = 1 which exists, so amend record leaving f_id to old value.
+    pp1.Save();
+    CPPUNIT_ASSERT( pp1.f_id == id );
+    pp2.Read();
+    CPPUNIT_ASSERT( pp1 == pp2 );
+
+    pp1.f_id = 999;
+    pp1.f_val = "Shouldn't be here";
+    // f_id = 999 which doesn't exists, so create new record with no change to f_id.
+    pp1.Save();
+    CPPUNIT_ASSERT( pp1.f_id == 999 );
+    pp2.f_id = pp1.f_id;
+    pp2.Read();
+    CPPUNIT_ASSERT( pp1 == pp2 );
+
+    pp1.f_id = 0;
+    pp1.f_val = "more errors";
+    pp1.Save();
+    CPPUNIT_ASSERT( pp1.f_id != 0 );
+    CPPUNIT_ASSERT( pp1.Exists() == true );
+    pp1.Delete();
+    CPPUNIT_ASSERT( pp1.Exists() == false );
+
+    CPPUNIT_ASSERT( recPlacePart::Exists( 999 ) == true );
+    recPlacePart::Delete( 999 );
+    CPPUNIT_ASSERT( recPlacePart::Exists( 999 ) == false );
+
+    //----------------------------------
+    //    Test recPlacePartType Records.
+    //----------------------------------
+    recPlacePartType ppt1;
+    ppt1.f_id = 0;
+
+    ppt1.f_name = "Town";
+    // f_id = 0 so create new record and set f_id to new value.
+    ppt1.Save();
+    id = ppt1.f_id;
+    CPPUNIT_ASSERT( id == 1 );
+
+    recPlacePartType ppt2;
+    ppt2.f_id = ppt1.f_id;
+    ppt2.Read();  
+    CPPUNIT_ASSERT( ppt1 == ppt2 );
+
+    ppt2.f_name = "Village";
+    // f_id = 1 which exists, so amend record leaving f_id to old value.
+    ppt1.Save();
+    CPPUNIT_ASSERT( ppt1.f_id == id );
+    ppt2.Read();
+    CPPUNIT_ASSERT( ppt1 == ppt2 );
+
+    ppt1.f_id = 999;
+    ppt1.f_name = "Parish";
+    // f_id = 999 which doesn't exists, so create new record with no change to f_id.
+    ppt1.Save();
+    CPPUNIT_ASSERT( ppt1.f_id == 999 );
+    ppt2.f_id = ppt1.f_id;
+    ppt2.Read();
+    CPPUNIT_ASSERT( ppt1 == ppt2 );
+
+    ppt1.f_id = 0;
+    ppt1.f_name = "County";
+    ppt1.Save();
+    CPPUNIT_ASSERT( ppt1.f_id != 0 );
+    CPPUNIT_ASSERT( ppt1.Exists() == true );
+    ppt1.Delete();
+    CPPUNIT_ASSERT( ppt1.Exists() == false );
+
+    CPPUNIT_ASSERT( recPlacePartType::Exists( 999 ) == true );
+    recPlacePartType::Delete( 999 );
+    CPPUNIT_ASSERT( recPlacePartType::Exists( 999 ) == false );
 
     //---------------------------
     //    Done.

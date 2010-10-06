@@ -31,4 +31,106 @@
 #define RECPLACE_H
 
 
+#include <rec/recDatabase.h>
+
+class recPlace : public recDb {
+public:
+    id_t  f_date1_id;
+    id_t  f_date2_id;
+
+    recPlace() {}
+    recPlace( id_t id ) : recDb(id) {}
+
+	void Clear();
+    void Save();
+    bool Read();
+    TABLE_NAME_MEMBERS( "Place" );
+};
+
+/*! The two entities are equal, ignoring the record id.
+ */
+inline bool recEquivalent( const recPlace& r1, const recPlace& r2 )
+{
+    return
+        r1.f_date1_id == r2.f_date1_id &&
+        r1.f_date2_id == r2.f_date2_id;
+}
+
+inline bool operator==( const recPlace& r1, const recPlace& r2 )
+{
+    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
+}
+
+inline bool operator!=( const recPlace& r1, const recPlace& r2 )
+{
+    return !(r1 == r2);
+}
+
+
+class recPlacePart : public recDb {
+public:
+    id_t     f_type_id;
+    id_t     f_place_id;
+    wxString f_val;
+    int      f_sequence;
+
+    recPlacePart() {}
+    recPlacePart( id_t id ) : recDb(id) {}
+
+	void Clear();
+    void Save();
+    bool Read();
+    TABLE_NAME_MEMBERS( "PlacePart" );
+};
+
+inline bool recEquivalent( const recPlacePart& r1, const recPlacePart& r2 )
+{
+    return
+        r1.f_type_id  == r2.f_type_id  &&
+        r1.f_place_id == r2.f_place_id &&
+        r1.f_val      == r2.f_val      &&
+        r1.f_sequence == r2.f_sequence;
+}
+
+inline bool operator==( const recPlacePart& r1, const recPlacePart& r2 )
+{
+    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
+}
+
+inline bool operator!=( const recPlacePart& r1, const recPlacePart& r2 )
+{
+    return !(r1 == r2);
+}
+
+
+class recPlacePartType : public recDb {
+public:
+    wxString f_name;
+
+    recPlacePartType() {}
+    recPlacePartType( id_t id ) : recDb(id) {}
+
+	void Clear();
+    void Save();
+    bool Read();
+    TABLE_NAME_MEMBERS( "PlacePartType" );
+};
+
+inline bool recEquivalent( const recPlacePartType& r1, const recPlacePartType& r2 )
+{
+    return
+        r1.f_name == r2.f_name;
+}
+
+inline bool operator==( const recPlacePartType& r1, const recPlacePartType& r2 )
+{
+    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
+}
+
+inline bool operator!=( const recPlacePartType& r1, const recPlacePartType& r2 )
+{
+    return !(r1 == r2);
+}
+
+
 #endif // RECPLACE_H

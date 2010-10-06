@@ -37,7 +37,6 @@
 #include "wx/wx.h"
 #endif
 
-#include <rec/recDatabase.h>
 #include <rec/recDate.h>
 
 const wxString recDate::s_prefStr[recDate::PREF_Max] = {
@@ -90,9 +89,7 @@ void recDate::Save()
         f_id = GET_ID( s_db->GetLastRowId() );
 	} else {
         // Does record exist
-        sql.Format( "SELECT id FROM Date WHERE id="ID";", f_id );
-        result = s_db->GetTable( sql );
-        if( result.GetRowCount() == 0 )
+        if( !Exists() )
         {
             // Add new record
 	        sql.Format( 

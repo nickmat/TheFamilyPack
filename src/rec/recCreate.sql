@@ -47,11 +47,11 @@ CREATE TABLE AttributeType (
 );
 
 /* matches enum StdAttributeType */
-INSERT INTO AttributeType (grp, name) VALUES(1,'Given name');
-INSERT INTO AttributeType (grp, name) VALUES(1,'Surname');
-INSERT INTO AttributeType (grp, name) VALUES(1,'Post name');
-INSERT INTO AttributeType (grp, name) VALUES(3,'Occupation');
-INSERT INTO AttributeType (id, grp, name) VALUES(10000,0,' ');
+INSERT INTO AttributeType (id) VALUES(0);
+INSERT INTO AttributeType (id, grp, name) VALUES(-1, 1,'Given name');
+INSERT INTO AttributeType (id, grp, name) VALUES(-2, 1,'Surname');
+INSERT INTO AttributeType (id, grp, name) VALUES(-3, 1,'Post name');
+INSERT INTO AttributeType (id, grp, name) VALUES(-4, 3,'Occupation');
 
 CREATE TABLE CitationPart (
   id INTEGER PRIMARY KEY,
@@ -119,76 +119,76 @@ CREATE TABLE EventTypeRole (
   name TEXT
 );
 
-INSERT INTO EventType (grp, name) VALUES(1, 'Birth');
-INSERT INTO EventTypeRole (type_id, name) VALUES(1, 'New born');
-INSERT INTO EventTypeRole (type_id, name) VALUES(1, 'Mother');
-INSERT INTO EventTypeRole (type_id, name) VALUES(1, 'Midwife');
-INSERT INTO EventTypeRole (type_id, name) VALUES(1, 'Present');
+INSERT INTO EventType (id) VALUES(0);
+INSERT INTO EventTypeRole (id) VALUES(0);
 
-INSERT INTO EventType (grp, name) VALUES(2, 'Baptism');
-INSERT INTO EventTypeRole (type_id, name) VALUES(2, 'Baptised');
-INSERT INTO EventTypeRole (type_id, name) VALUES(2, 'Parent');
-INSERT INTO EventTypeRole (type_id, name) VALUES(2, 'God Parent');
-INSERT INTO EventTypeRole (type_id, name) VALUES(2, 'Officiator');
-INSERT INTO EventTypeRole (type_id, name) VALUES(2, 'Present');
+INSERT INTO EventType (id, grp, name) VALUES(-1, 1, 'Birth');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-1, -1, 'New born');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-2, -1, 'Mother');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-3, -1, 'Midwife');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-4, -1, 'Present');
 
-INSERT INTO EventType (grp, name) VALUES(3, 'Marriage');
-INSERT INTO EventTypeRole (type_id, name) VALUES(3, 'Groom');
-INSERT INTO EventTypeRole (type_id, name) VALUES(3, 'Bride');
-INSERT INTO EventTypeRole (type_id, name) VALUES(3, 'Officiator');
-INSERT INTO EventTypeRole (type_id, name) VALUES(3, 'Witness');
-INSERT INTO EventTypeRole (type_id, name) VALUES(3, 'Present');
+INSERT INTO EventType (id, grp, name) VALUES(-2, 2, 'Baptism');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-5, -2, 'Baptised');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-6, -2, 'Parent');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-7, -2, 'God Parent');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-8, -2, 'Officiator');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-9, -2, 'Present');
 
-INSERT INTO EventType (grp, name) VALUES(5, 'Death');
-INSERT INTO EventTypeRole (type_id, name) VALUES(4, 'Died');
-INSERT INTO EventTypeRole (type_id, name) VALUES(4, 'Present');
+INSERT INTO EventType (id, grp, name) VALUES(-3, 3, 'Marriage');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-10, -3, 'Groom');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-11, -3, 'Bride');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-12, -3, 'Officiator');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-13, -3, 'Witness');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-14, -3, 'Present');
 
-INSERT INTO EventType (grp, name) VALUES(6, 'Burial');
-INSERT INTO EventTypeRole (type_id, name) VALUES(5, 'Deceased');
-INSERT INTO EventTypeRole (type_id, name) VALUES(5, 'Officiator');
-INSERT INTO EventTypeRole (type_id, name) VALUES(5, 'Present');
+INSERT INTO EventType (id, grp, name) VALUES(-4, 5, 'Death');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-15, -4, 'Died');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-16, -4, 'Present');
 
-INSERT INTO EventType (grp, name) VALUES(7, 'Adult Baptism');
-INSERT INTO EventTypeRole (type_id, name) VALUES(6, 'Baptised');
-INSERT INTO EventTypeRole (type_id, name) VALUES(6, 'Officiator');
-INSERT INTO EventTypeRole (type_id, name) VALUES(6, 'Present');
+INSERT INTO EventType (id, grp, name) VALUES(-5, 6, 'Burial');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-17, -5, 'Deceased');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-18, -5, 'Officiator');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-19, -5, 'Present');
 
-INSERT INTO EventType (grp, name) VALUES(7, 'Census');
-INSERT INTO EventTypeRole (type_id, name) VALUES(7, 'Listed');
+INSERT INTO EventType (id, grp, name) VALUES(-6, 7, 'Adult Baptism');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-20, -6, 'Baptised');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-21, -6, 'Officiator');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-22, -6, 'Present');
 
-INSERT INTO EventType (grp, name) VALUES(7, 'Confirmation');
-INSERT INTO EventTypeRole (type_id, name) VALUES(8, 'Confirmed');
-INSERT INTO EventTypeRole (type_id, name) VALUES(8, 'Officiator');
-INSERT INTO EventTypeRole (type_id, name) VALUES(8, 'Present');
+INSERT INTO EventType (id, grp, name) VALUES(-7, 7, 'Census');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-23, -7, 'Listed');
 
-INSERT INTO EventType (grp, name) VALUES(7, 'Divorce');
-INSERT INTO EventTypeRole (type_id, name) VALUES(9, 'Husband');
-INSERT INTO EventTypeRole (type_id, name) VALUES(9, 'Wife');
+INSERT INTO EventType (id, grp, name) VALUES(-8, 7, 'Confirmation');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-24, -8, 'Confirmed');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-25, -8, 'Officiator');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-26, -8, 'Present');
 
-INSERT INTO EventType (grp, name) VALUES(7, 'Emigration');
-INSERT INTO EventTypeRole (type_id, name) VALUES(10, 'Emigrant');
+INSERT INTO EventType (id, grp, name) VALUES(-9, 7, 'Divorce');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-27, -9, 'Husband');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-28, -9, 'Wife');
 
-INSERT INTO EventType (grp, name) VALUES(7, 'Immigration');
-INSERT INTO EventTypeRole (type_id, name) VALUES(11, 'Immigrant');
+INSERT INTO EventType (id, grp, name) VALUES(-10, 7, 'Emigration');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-29, -10, 'Emigrant');
 
-INSERT INTO EventType (grp, name) VALUES(7, 'Graduation');
-INSERT INTO EventTypeRole (type_id, name) VALUES(12, 'Graduate');
-INSERT INTO EventTypeRole (type_id, name) VALUES(12, 'Present');
+INSERT INTO EventType (id, grp, name) VALUES(-11, 7, 'Immigration');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-30, -11, 'Immigrant');
 
-INSERT INTO EventType (grp, name) VALUES(7, 'Probate');
-INSERT INTO EventTypeRole (type_id, name) VALUES(13, 'Deceased');
-INSERT INTO EventTypeRole (type_id, name) VALUES(13, 'Executor');
-INSERT INTO EventTypeRole (type_id, name) VALUES(13, 'Adjudicator');
+INSERT INTO EventType (id, grp, name) VALUES(-12, 7, 'Graduation');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-31, -12, 'Graduate');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-32, -12, 'Present');
 
-INSERT INTO EventType (grp, name) VALUES(7, 'Will');
-INSERT INTO EventTypeRole (type_id, name) VALUES(14, 'Deceased');
-INSERT INTO EventTypeRole (type_id, name) VALUES(14, 'Executor');
-INSERT INTO EventTypeRole (type_id, name) VALUES(14, 'Beneficiary');
-INSERT INTO EventTypeRole (type_id, name) VALUES(14, 'Solicitor');
-INSERT INTO EventTypeRole (type_id, name) VALUES(14, 'Witness');
+INSERT INTO EventType (id, grp, name) VALUES(-13, 7, 'Probate');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-33, -13, 'Deceased');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-34, -13, 'Executor');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-35, -13, 'Adjudicator');
 
-INSERT INTO EventType (id, grp, name) VALUES(10000, 0, ' ');
-INSERT INTO EventTypeRole (id, type_id, name) VALUES(10000, 0, ' ');
+INSERT INTO EventType (id, grp, name) VALUES(-14, 7, 'Will');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-36, -14, 'Deceased');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-37, -14, 'Executor');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-38, -14, 'Beneficiary');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-39, -14, 'Solicitor');
+INSERT INTO EventTypeRole (id, type_id, name) VALUES(-40, -14, 'Witness');
 
 CREATE TABLE Family (
   id INTEGER PRIMARY KEY,
@@ -260,8 +260,8 @@ CREATE TABLE PlacePartType (
   name TEXT
 );
 
-INSERT INTO PlacePartType (name) VALUES('Address');
-INSERT INTO PlacePartType (id, name) VALUES(10000,' ');
+INSERT INTO PlacePartType (id) VALUES(0);
+INSERT INTO PlacePartType (id, name) VALUES(-1, 'Address');
 
 CREATE TABLE Reference (
   id INTEGER PRIMARY KEY,
@@ -332,6 +332,6 @@ CREATE TABLE Version (
 );
 
 /* The Version table has only this one row */
-INSERT INTO Version (major, minor, revision) VALUES(0, 0, 6);
+INSERT INTO Version (id, major, minor, revision) VALUES(1, 0, 0, 6);
 
 /* End of create.sql */
