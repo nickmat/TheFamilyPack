@@ -324,6 +324,104 @@ void RecTestCase::TestDatabase()
     recPersona::Delete( 999 );
     CPPUNIT_ASSERT( recPersona::Exists( 999 ) == false );
 
+    //----------------------------------
+    //    Test recAttribute Records.
+    //----------------------------------
+    recAttribute attr1;
+    attr1.f_id = 0;
+
+    attr1.f_per_id = 1;
+    attr1.f_type_id = -2;
+    attr1.f_val = "Matthews";
+    attr1.f_sequence = 3;
+    // f_id = 0 so create new record and set f_id to new value.
+    attr1.Save();
+    id = attr1.f_id;
+    CPPUNIT_ASSERT( id == 1 );
+
+    recAttribute attr2;
+    attr2.f_id = attr1.f_id;
+    attr2.Read();  
+    CPPUNIT_ASSERT( attr1 == attr2 );
+
+    attr1.f_per_id = 2;
+    attr1.f_type_id = -1;
+    attr1.f_val = "Nick";
+    attr1.f_sequence = 1;
+    // f_id = 1 which exists, so amend record leaving f_id to old value.
+    attr1.Save();
+    CPPUNIT_ASSERT( attr1.f_id == id );
+    attr2.Read();
+    CPPUNIT_ASSERT( attr1 == attr2 );
+
+    attr1.f_id = 999;
+    attr1.f_val = "Anything";
+    // f_id = 999 which doesn't exists, so create new record with no change to f_id.
+    attr1.Save();
+    CPPUNIT_ASSERT( attr1.f_id == 999 );
+    attr2.f_id = attr1.f_id;
+    attr2.Read();
+    CPPUNIT_ASSERT( attr1 == attr2 );
+
+    attr1.f_id = 0;
+    attr1.f_val = "More";
+    attr1.Save();
+    CPPUNIT_ASSERT( attr1.f_id != 0 );
+    CPPUNIT_ASSERT( attr1.Exists() == true );
+    attr1.Delete();
+    CPPUNIT_ASSERT( attr1.Exists() == false );
+
+    CPPUNIT_ASSERT( recAttribute::Exists( 999 ) == true );
+    recAttribute::Delete( 999 );
+    CPPUNIT_ASSERT( recAttribute::Exists( 999 ) == false );
+
+    //----------------------------------
+    //    Test recAttributeType Records.
+    //----------------------------------
+    recAttributeType attrtype1;
+    attrtype1.f_id = 0;
+
+    attrtype1.f_grp = recAttributeType::ATYPE_Grp_Name;
+    attrtype1.f_name = "Surname";
+    // f_id = 0 so create new record and set f_id to new value.
+    attrtype1.Save();
+    id = attrtype1.f_id;
+    CPPUNIT_ASSERT( id == 1 );
+
+    recAttributeType attrtype2;
+    attrtype2.f_id = attrtype1.f_id;
+    attrtype2.Read();  
+    CPPUNIT_ASSERT( attrtype1 == attrtype2 );
+
+    attrtype1.f_grp = recAttributeType::ATYPE_Grp_Occ;
+    attrtype1.f_name = "Bricklayer";
+    // f_id = 1 which exists, so amend record leaving f_id to old value.
+    attrtype1.Save();
+    CPPUNIT_ASSERT( attrtype1.f_id == id );
+    attrtype2.Read();
+    CPPUNIT_ASSERT( attrtype1 == attrtype2 );
+
+    attrtype1.f_id = 999;
+    attrtype1.f_name = "Not wanted";
+    // f_id = 999 which doesn't exists, so create new record with no change to f_id.
+    attrtype1.Save();
+    CPPUNIT_ASSERT( attrtype1.f_id == 999 );
+    attrtype2.f_id = attrtype1.f_id;
+    attrtype2.Read();
+    CPPUNIT_ASSERT( attrtype1 == attrtype2 );
+
+    attrtype1.f_id = 0;
+    attrtype1.f_name = "Nor this";
+    attrtype1.Save();
+    CPPUNIT_ASSERT( attrtype1.f_id != 0 );
+    CPPUNIT_ASSERT( attrtype1.Exists() == true );
+    attrtype1.Delete();
+    CPPUNIT_ASSERT( attrtype1.Exists() == false );
+
+    CPPUNIT_ASSERT( recAttributeType::Exists( 999 ) == true );
+    recAttributeType::Delete( 999 );
+    CPPUNIT_ASSERT( recAttributeType::Exists( 999 ) == false );
+
     //---------------------------
     //    Done.
     //---------------------------

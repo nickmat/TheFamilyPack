@@ -63,4 +63,79 @@ inline bool operator!=( const recPersona& r1, const recPersona& r2 )
     return !(r1 == r2);
 }
 
+//----------------------------------------------------------
+
+class recAttribute : public recDb {
+public:
+    id_t      f_per_id;
+    id_t      f_type_id;
+    wxString  f_val;
+    unsigned  f_sequence;
+
+    recAttribute() {}
+    recAttribute( id_t id ) : recDb(id) {}
+
+	void Clear();
+    void Save();
+    bool Read();
+    TABLE_NAME_MEMBERS( "Attribute" );
+};
+
+inline bool recEquivalent( const recAttribute& r1, const recAttribute& r2 )
+{
+    return
+        r1.f_per_id   == r2.f_per_id   &&
+        r1.f_type_id  == r2.f_type_id  &&
+        r1.f_val      == r2.f_val      &&
+        r1.f_sequence == r2.f_sequence;
+}
+
+inline bool operator==( const recAttribute& r1, const recAttribute& r2 )
+{
+    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
+}
+
+inline bool operator!=( const recAttribute& r1, const recAttribute& r2 )
+{
+    return !(r1 == r2);
+}
+
+//----------------------------------------------------------
+
+class recAttributeType : public recDb {
+public:
+	enum ATYPE_Grp { 
+		ATYPE_Grp_Unstated, ATYPE_Grp_Name, ATYPE_Grp_Title, 
+		ATYPE_Grp_Occ, ATYPE_Grp_Other
+	};
+
+	ATYPE_Grp f_grp;
+    wxString  f_name;
+
+    recAttributeType() {}
+    recAttributeType( id_t id ) : recDb(id) {}
+
+	void Clear();
+    void Save();
+    bool Read();
+    TABLE_NAME_MEMBERS( "AttributeType" );
+};
+
+inline bool recEquivalent( const recAttributeType& r1, const recAttributeType& r2 )
+{
+    return
+        r1.f_grp   == r2.f_grp &&
+        r1.f_name == r2.f_name;
+}
+
+inline bool operator==( const recAttributeType& r1, const recAttributeType& r2 )
+{
+    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
+}
+
+inline bool operator!=( const recAttributeType& r1, const recAttributeType& r2 )
+{
+    return !(r1 == r2);
+}
+
 #endif // RECPERSONA_H

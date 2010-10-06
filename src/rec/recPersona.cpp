@@ -105,4 +105,143 @@ bool recPersona::Read()
 	return true;
 }
 
+//----------------------------------------------------------
+
+void recAttribute::Clear()
+{
+    f_per_id   = 0;
+    f_type_id  = 0;
+    f_val      = wxEmptyString;
+    f_sequence = 0;
+}
+
+void recAttribute::Save()
+{
+	wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+	if( f_id == 0 )
+	{
+		// Add new record
+	    sql.Format( 
+		    "INSERT INTO Attribute (per_id, type_id, val, sequence)"
+			"VALUES ("ID", "ID", '%q', %u);",
+            f_per_id, f_type_id, UTF8_(f_val), f_sequence
+	    );
+    	s_db->ExecuteUpdate( sql );
+        f_id = GET_ID( s_db->GetLastRowId() );
+	} else {
+        // Does record exist
+        if( !Exists() )
+        {
+            // Add new record
+	        sql.Format( 
+				"INSERT INTO Attribute (id, per_id, type_id, val, sequence)"
+				"VALUES ("ID", "ID", "ID", '%q', %u);",
+				f_id, f_per_id, f_type_id, UTF8_(f_val), f_sequence
+	        );
+        } else {
+    		// Update existing record
+            sql.Format( 
+                "UPDATE Attribute SET per_id="ID", type_id="ID", val='%q', sequence=%u WHERE id="ID";", 
+				f_per_id, f_type_id, UTF8_(f_val), f_sequence, f_id
+            );
+        }
+    	s_db->ExecuteUpdate( sql );
+	}
+}
+
+bool recAttribute::Read()
+{
+	wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( f_id == 0 ) {
+		Clear();
+        return false;
+    }
+
+	sql.Format( "SELECT * FROM Attribute WHERE id="ID";", f_id );
+    result = s_db->GetTable( sql );
+
+    if( result.GetRowCount() != 1 ) 
+    {
+		Clear();
+        return false;
+    }
+    result.SetRow( 0 ); 
+    f_per_id   = GET_ID( result.GetInt64( 1 ) );
+    f_type_id  = GET_ID( result.GetInt64( 2 ) );
+    f_val      = result.GetAsString( 3 );
+    f_sequence = (unsigned) result.GetInt( 4 );
+	return true;
+}
+
+//----------------------------------------------------------
+
+void recAttributeType::Clear()
+{
+    f_grp  = ATYPE_Grp_Unstated;
+    f_name = wxEmptyString;
+}
+
+void recAttributeType::Save()
+{
+	wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+	if( f_id == 0 )
+	{
+		// Add new record
+	    sql.Format( 
+		    "INSERT INTO AttributeType (grp, name) VALUES (%u, '%q');",
+            f_grp, UTF8_(f_name)
+	    );
+    	s_db->ExecuteUpdate( sql );
+        f_id = GET_ID( s_db->GetLastRowId() );
+	} else {
+        // Does record exist
+        if( !Exists() )
+        {
+            // Add new record
+	        sql.Format( 
+		        "INSERT INTO AttributeType (id, grp, name) "
+                "VALUES ("ID", %u, '%q');",
+                f_id, f_grp, UTF8_(f_name)
+	        );
+        } else {
+    		// Update existing record
+            sql.Format( 
+                "UPDATE AttributeType SET grp=%u, name='%q' WHERE id="ID";", 
+                f_grp, UTF8_(f_name), f_id
+            );
+        }
+    	s_db->ExecuteUpdate( sql );
+	}
+}
+
+bool recAttributeType::Read()
+{
+	wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( f_id == 0 ) {
+		Clear();
+        return false;
+    }
+
+	sql.Format( "SELECT grp, name FROM AttributeType WHERE id="ID";", f_id );
+    result = s_db->GetTable( sql );
+
+    if( result.GetRowCount() != 1 ) 
+    {
+		Clear();
+        return false;
+    }
+    result.SetRow( 0 ); 
+    f_grp  = (ATYPE_Grp) result.GetInt( 0 );
+    f_name = result.GetAsString( 1 );
+	return true;
+}
+
 // End of recPersona.cpp file
