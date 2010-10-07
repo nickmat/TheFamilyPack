@@ -31,5 +31,164 @@
 #ifndef RECINDIVIDUAL_H
 #define RECINDIVIDUAL_H
 
+#include <rec/recDatabase.h>
+
+class recIndividual : public recDb {
+public:
+    wxString f_surname;
+    wxString f_given;
+    long     f_birth_jdn;
+    wxString f_epitaph;
+    Sex      f_sex;
+    id_t     f_fam_id;
+    id_t     f_per_id;
+    id_t     f_birth_id;
+    id_t     f_nr_birth_id;
+    id_t     f_death_id;
+    id_t     f_nr_death_id;
+    id_t     f_occ_id;
+
+    recIndividual() {}
+    recIndividual( id_t id ) : recDb(id) {}
+
+	void Clear();
+    void Save();
+    bool Read();
+    TABLE_NAME_MEMBERS( "Individual" );
+};
+
+inline bool recEquivalent( const recIndividual& r1, const recIndividual& r2 )
+{
+    return
+        r1.f_surname     == r2.f_surname      &&
+        r1.f_given       == r2.f_given        &&
+        r1.f_birth_jdn   == r2.f_birth_jdn    &&
+        r1.f_epitaph     == r2.f_epitaph      &&
+        r1.f_sex         == r2.f_sex          &&
+        r1.f_fam_id      == r2.f_fam_id       &&
+        r1.f_per_id      == r2.f_per_id       &&
+        r1.f_birth_id    == r2.f_birth_id     &&
+        r1.f_nr_birth_id == r2.f_nr_birth_id  &&
+        r1.f_death_id    == r2.f_death_id     &&
+        r1.f_nr_death_id == r2.f_nr_death_id  &&
+        r1.f_occ_id      == r2.f_occ_id;
+}
+
+inline bool operator==( const recIndividual& r1, const recIndividual& r2 )
+{
+    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
+}
+
+inline bool operator!=( const recIndividual& r1, const recIndividual& r2 )
+{
+    return !(r1 == r2);
+}
+
+//----------------------------------------------------------
+
+class recIndividualPersona : public recDb {
+public:
+    id_t     f_per_id;
+    id_t     f_ind_id;
+    wxString f_note;
+
+    recIndividualPersona() {}
+    recIndividualPersona( id_t id ) : recDb(id) {}
+
+	void Clear();
+    void Save();
+    bool Read();
+    TABLE_NAME_MEMBERS( "IndividualPersona" );
+};
+
+inline bool recEquivalent( const recIndividualPersona& r1, const recIndividualPersona& r2 )
+{
+    return
+        r1.f_per_id == r2.f_per_id  &&
+        r1.f_ind_id == r2.f_ind_id  &&
+        r1.f_note   == r2.f_note;
+}
+
+inline bool operator==( const recIndividualPersona& r1, const recIndividualPersona& r2 )
+{
+    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
+}
+
+inline bool operator!=( const recIndividualPersona& r1, const recIndividualPersona& r2 )
+{
+    return !(r1 == r2);
+}
+
+//----------------------------------------------------------
+
+class recFamily : public recDb {
+public:
+    id_t     f_husb_id;
+    id_t     f_wife_id;
+    id_t     f_event_id;
+
+    recFamily() {}
+    recFamily( id_t id ) : recDb(id) {}
+
+	void Clear();
+    void Save();
+    bool Read();
+    TABLE_NAME_MEMBERS( "Family" );
+};
+
+inline bool recEquivalent( const recFamily& r1, const recFamily& r2 )
+{
+    return
+        r1.f_husb_id  == r2.f_husb_id  &&
+        r1.f_wife_id  == r2.f_wife_id  &&
+        r1.f_event_id == r2.f_event_id;
+}
+
+inline bool operator==( const recFamily& r1, const recFamily& r2 )
+{
+    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
+}
+
+inline bool operator!=( const recFamily& r1, const recFamily& r2 )
+{
+    return !(r1 == r2);
+}
+
+//----------------------------------------------------------
+
+class recFamilyIndividual : public recDb {
+public:
+    id_t     f_fam_id;
+    id_t     f_ind_id;
+    unsigned f_sequence;
+
+    recFamilyIndividual() {}
+    recFamilyIndividual( id_t id ) : recDb(id) {}
+
+	void Clear();
+    void Save();
+    bool Read();
+    TABLE_NAME_MEMBERS( "FamilyIndividual" );
+};
+
+inline bool recEquivalent( const recFamilyIndividual& r1, const recFamilyIndividual& r2 )
+{
+    return
+        r1.f_fam_id   == r2.f_fam_id  &&
+        r1.f_ind_id   == r2.f_ind_id  &&
+        r1.f_sequence == r2.f_sequence;
+}
+
+inline bool operator==( const recFamilyIndividual& r1, const recFamilyIndividual& r2 )
+{
+    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
+}
+
+inline bool operator!=( const recFamilyIndividual& r1, const recFamilyIndividual& r2 )
+{
+    return !(r1 == r2);
+}
+
+//----------------------------------------------------------
 
 #endif // RECINDIVIDUAL_H

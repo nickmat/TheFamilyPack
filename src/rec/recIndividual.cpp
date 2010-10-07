@@ -38,7 +38,330 @@
 #include "wx/wx.h"
 #endif
 
-#include <rec/recDatabase.h>
+#include <rec/recIndividual.h>
 
+void recIndividual::Clear()
+{
+    f_surname     = wxEmptyString;
+    f_given       = wxEmptyString;
+    f_birth_jdn   = 0;
+    f_epitaph     = wxEmptyString;
+    f_sex         = SEX_Unstated;
+    f_fam_id      = 0;
+    f_per_id      = 0;
+    f_birth_id    = 0;
+    f_nr_birth_id = 0;
+    f_death_id    = 0;
+    f_nr_death_id = 0;
+    f_occ_id      = 0;
+}
+
+void recIndividual::Save()
+{
+	wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+	if( f_id == 0 )
+	{
+		// Add new record
+	    sql.Format( 
+            "INSERT INTO Individual (surname, given, birth_jdn, epitaph, sex, "
+            "fam_id, per_id, birth_id, nr_birth_id, "
+            "death_id, nr_death_id, occ_id) VALUES "
+            "('%q', '%q', %ld, '%q', %u, "ID", "ID", "ID", "ID", "ID", "ID", "ID");",
+            UTF8_(f_surname), UTF8_(f_given), f_birth_jdn, UTF8_(f_epitaph),
+            f_sex, f_fam_id, f_per_id, f_birth_id, f_nr_birth_id,
+            f_death_id, f_nr_death_id, f_occ_id
+	    );
+    	s_db->ExecuteUpdate( sql );
+        f_id = GET_ID( s_db->GetLastRowId() );
+	} else {
+        // Does record exist
+        if( !Exists() )
+        {
+            // Add new record
+	        sql.Format( 
+                "INSERT INTO Individual (id, surname, given, birth_jdn, epitaph, "
+                "sex, fam_id, per_id, birth_id, "
+                "nr_birth_id, death_id, nr_death_id, occ_id) "
+                "VALUES ("ID", '%q', '%q', %ld, '%q', %u, "ID", "ID", "ID", "ID", "ID", "ID", "ID");",
+                f_id, UTF8_(f_surname), UTF8_(f_given), f_birth_jdn, UTF8_(f_epitaph),
+                f_sex, f_fam_id, f_per_id, f_birth_id, f_nr_birth_id,
+                f_death_id, f_nr_death_id, f_occ_id
+	        );
+        } else {
+    		// Update existing record
+            sql.Format( 
+                "UPDATE Individual SET surname='%q', given='%q', birth_jdn=%ld, "
+                "epitaph='%q', sex=%u, fam_id="ID", per_id="ID", birth_id="ID", "
+                "nr_birth_id="ID", death_id="ID", nr_death_id="ID", occ_id="ID" WHERE id="ID";",
+                UTF8_(f_surname), UTF8_(f_given), f_birth_jdn, UTF8_(f_epitaph),
+                f_sex, f_fam_id, f_per_id, f_birth_id, f_nr_birth_id, 
+                f_death_id, f_nr_death_id, f_occ_id, f_id
+            );
+        }
+    	s_db->ExecuteUpdate( sql );
+	}
+}
+
+bool recIndividual::Read()
+{
+	wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( f_id == 0 ) {
+		Clear();
+        return false;
+    }
+
+    sql.Format(
+        "SELECT surname, given, birth_jdn, epitaph, sex, fam_id, per_id, "
+        "birth_id, nr_birth_id, death_id, nr_death_id, occ_id "
+        "FROM Individual WHERE id="ID";", f_id 
+    );
+    result = s_db->GetTable( sql );
+
+    if( result.GetRowCount() != 1 ) 
+    {
+		Clear();
+        return false;
+    }
+    result.SetRow( 0 ); 
+    f_surname     = result.GetAsString( 0 );
+    f_given       = result.GetAsString( 1 );
+    f_birth_jdn   = result.GetInt( 2 );
+    f_epitaph     = result.GetAsString( 3 );
+    f_sex         = (Sex) result.GetInt( 4 );
+    f_fam_id      = GET_ID( result.GetInt64( 5 ) );
+    f_per_id      = GET_ID( result.GetInt64( 6 ) );
+    f_birth_id    = GET_ID( result.GetInt64( 7 ) );
+    f_nr_birth_id = GET_ID( result.GetInt64( 8 ) );
+    f_death_id    = GET_ID( result.GetInt64( 9 ) );
+    f_nr_death_id = GET_ID( result.GetInt64( 10 ) );
+    f_occ_id      = GET_ID( result.GetInt64( 11 ) );
+	return true;
+}
+
+//----------------------------------------------------------
+
+void recIndividualPersona::Clear()
+{
+    f_per_id = 0;
+    f_ind_id = 0;
+    f_note   = wxEmptyString;
+}
+
+void recIndividualPersona::Save()
+{
+	wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+	if( f_id == 0 )
+	{
+		// Add new record
+	    sql.Format( 
+            "INSERT INTO IndividualPersona (per_id, ind_id, note) "
+            "VALUES ("ID", "ID", '%q');",
+            f_per_id, f_ind_id, UTF8_(f_note)
+	    );
+    	s_db->ExecuteUpdate( sql );
+        f_id = GET_ID( s_db->GetLastRowId() );
+	} else {
+        // Does record exist
+        if( !Exists() )
+        {
+            // Add new record
+	        sql.Format( 
+                "INSERT INTO IndividualPersona (id, per_id, ind_id, note) "
+                "VALUES ("ID", "ID", "ID", '%q');",
+                f_id, f_per_id, f_ind_id, UTF8_(f_note)
+	        );
+        } else {
+    		// Update existing record
+            sql.Format( 
+                "UPDATE IndividualPersona SET per_id="ID", ind_id="ID", note='%q' "
+                "WHERE id="ID";",
+                f_per_id, f_ind_id, UTF8_(f_note), f_id
+            );
+        }
+    	s_db->ExecuteUpdate( sql );
+	}
+}
+
+bool recIndividualPersona::Read()
+{
+	wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( f_id == 0 ) {
+		Clear();
+        return false;
+    }
+
+    sql.Format(
+        "SELECT per_id, ind_id, note FROM IndividualPersona "
+        "WHERE id="ID";", f_id
+    );
+    result = s_db->GetTable( sql );
+
+    if( result.GetRowCount() != 1 ) 
+    {
+		Clear();
+        return false;
+    }
+    result.SetRow( 0 ); 
+    f_per_id = GET_ID( result.GetInt64( 0 ) );
+    f_ind_id = GET_ID( result.GetInt64( 1 ) );
+    f_note   = result.GetAsString( 2 );
+	return true;
+}
+
+//----------------------------------------------------------
+
+void recFamily::Clear()
+{
+    f_husb_id  = 0;
+    f_wife_id  = 0;
+    f_event_id = 0;
+}
+
+void recFamily::Save()
+{
+	wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+	if( f_id == 0 )
+	{
+		// Add new record
+	    sql.Format( 
+            "INSERT INTO Family (husb_id, wife_id, event_id) "
+            "VALUES ("ID", "ID", "ID");",
+            f_husb_id, f_wife_id, f_event_id
+	    );
+    	s_db->ExecuteUpdate( sql );
+        f_id = GET_ID( s_db->GetLastRowId() );
+	} else {
+        // Does record exist
+        if( !Exists() )
+        {
+            // Add new record
+	        sql.Format( 
+                "INSERT INTO Family (id, husb_id, wife_id, event_id) "
+                "VALUES ("ID", "ID", "ID", "ID");",
+                f_id, f_husb_id, f_wife_id, f_event_id
+	        );
+        } else {
+    		// Update existing record
+            sql.Format( 
+                "UPDATE Family SET husb_id="ID", wife_id="ID", event_id="ID" "
+                "WHERE id="ID";",
+                f_husb_id, f_wife_id, f_event_id, f_id
+            );
+        }
+    	s_db->ExecuteUpdate( sql );
+	}
+}
+
+bool recFamily::Read()
+{
+	wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( f_id == 0 ) {
+		Clear();
+        return false;
+    }
+
+    sql.Format( 
+        "SELECT husb_id, wife_id, event_id FROM Family WHERE id="ID";",
+        f_id
+    );
+    result = s_db->GetTable( sql );
+
+    if( result.GetRowCount() != 1 ) 
+    {
+		Clear();
+        return false;
+    }
+    result.SetRow( 0 ); 
+    f_husb_id  = GET_ID( result.GetInt64( 0 ) );
+    f_wife_id  = GET_ID( result.GetInt64( 1 ) );
+    f_event_id = GET_ID( result.GetInt64( 2 ) );
+	return true;
+}
+
+//----------------------------------------------------------
+
+void recFamilyIndividual::Clear()
+{
+    f_ind_id   = 0;
+    f_fam_id   = 0;
+    f_sequence = 0;
+}
+
+void recFamilyIndividual::Save()
+{
+	wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+	if( f_id == 0 )
+	{
+		// Add new record
+	    sql.Format( 
+            "INSERT INTO FamilyIndividual (fam_id, ind_id, sequence) "
+            "VALUES ("ID", "ID", %u);",
+            f_fam_id, f_ind_id, f_sequence
+	    );
+    	s_db->ExecuteUpdate( sql );
+        f_id = GET_ID( s_db->GetLastRowId() );
+	} else {
+        // Does record exist
+        if( !Exists() )
+        {
+            // Add new record
+	        sql.Format( 
+                "INSERT INTO FamilyIndividual (id, fam_id, ind_id, sequence) "
+                "VALUES ("ID", "ID", "ID", %u);",
+                f_id, f_fam_id, f_ind_id, f_sequence
+	        );
+        } else {
+    		// Update existing record
+            sql.Format( 
+                "UPDATE FamilyIndividual SET fam_id="ID", ind_id="ID", sequence=%u "
+                "WHERE id="ID";",
+                f_fam_id, f_ind_id, f_sequence, f_id
+            );
+        }
+    	s_db->ExecuteUpdate( sql );
+	}
+}
+
+bool recFamilyIndividual::Read()
+{
+	wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( f_id == 0 ) {
+		Clear();
+        return false;
+    }
+
+    sql.Format( 
+        "SELECT ind_id, fam_id, sequence FROM FamilyIndividual "
+        "WHERE id="ID";", f_id 
+    );
+    result = s_db->GetTable( sql );
+
+    if( result.GetRowCount() != 1 ) 
+    {
+		Clear();
+        return false;
+    }
+    result.SetRow( 0 ); 
+    f_ind_id   = GET_ID( result.GetInt64( 0 ) );
+    f_fam_id   = GET_ID( result.GetInt64( 1 ) );
+    f_sequence = (unsigned) result.GetInt( 2 );
+	return true;
+}
 
 // End of recIndividual.cpp file
