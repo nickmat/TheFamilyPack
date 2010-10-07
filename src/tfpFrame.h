@@ -4,10 +4,10 @@
  * Purpose:     TfpFrame class header.
  * Author:      Nick Matthews
  * Modified by:
+ * Website:     http://thefamilypack.org
  * Created:     24 September 2010
  * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2010, Nick Matthews.
- * Website:     http://thefamilypack.org
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify

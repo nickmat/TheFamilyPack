@@ -40,12 +40,12 @@
 #include <wx/html/htmlwin.h>
 #include <wx/html/htmprint.h>
 
-#include <wx/wxsqlite3.h>
+#include <rec/recDatabase.h>
 
 #include "tfpFrame.h"
 #include "tfpApp.h"
 #include "tfpVersion.h"
-#include "rec/recDatabase.h"
+#include "tfpWr.h"
 
 #include "img/forward.xpm"
 #include "img/back.xpm"
@@ -523,8 +523,34 @@ bool TfpFrame::DisplayHtmPage( const wxString& name )
 
 wxString TfpFrame::GetDisplayText( const wxString& name )
 {
-    return "<html><head><title>Family</title></head><body>Text for "
-        + name + "</body></html>";
+    wxLongLong_t num;
+    bool success;
+    wxString text;
+
+    switch( (wxChar) name.GetChar( 0 ) )
+    {
+    case 'F':  // Family reference
+        if( name.GetChar( 1 ) == 'I' ) {
+            success = name.Mid(2).ToLongLong( &num );
+            if( !success || num < 1 ) {
+                wxMessageBox( _("Error: Invalid Individual ID link"), _("Family Link") );
+                return wxEmptyString;
+            }
+            text = tfpWriteIndFamilyPage( num );
+            break;
+        }
+        success = name.Mid(1).ToLongLong( &num );
+        if( !success || num < 1 ) {
+            wxMessageBox( _("Error: Invalid Family ID link"), _("Family Link") );
+            return wxEmptyString;
+        }
+        text = tfpWriteFamilyPage( num );
+        break;
+    default:
+        wxMessageBox( _("Error: Invalid link reference"), _("Link Error") );
+        return wxEmptyString;
+    }
+    return text;
 }
 
 // End of tfpFrame.cpp file

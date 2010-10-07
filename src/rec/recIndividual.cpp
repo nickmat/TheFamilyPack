@@ -142,6 +142,16 @@ bool recIndividual::Read()
 	return true;
 }
 
+id_t recIndividual::GetDefaultFamily( id_t id )
+{
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3ResultSet result;
+
+    sql.Format( "SELECT fam_id FROM Individual WHERE id="ID";", id );
+    result = s_db->ExecuteQuery( sql );
+    return GET_ID( result.GetInt64( 0 ) );
+}
+
 //----------------------------------------------------------
 
 void recIndividualPersona::Clear()

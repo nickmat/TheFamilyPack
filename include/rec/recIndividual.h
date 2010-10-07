@@ -55,6 +55,8 @@ public:
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "Individual" );
+
+    static id_t GetDefaultFamily( id_t id );
 };
 
 inline bool recEquivalent( const recIndividual& r1, const recIndividual& r2 )

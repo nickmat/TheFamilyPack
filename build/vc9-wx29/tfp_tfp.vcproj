@@ -256,6 +256,22 @@
                 RelativePath="..\..\src\tfpVersion.cpp"
                 >
             </File>
+            <File
+                RelativePath="..\..\src\tfpWrChart.cpp"
+                >
+            </File>
+            <File
+                RelativePath="..\..\src\tfpWrFamily.cpp"
+                >
+            </File>
+            <File
+                RelativePath="..\..\src\tfpWrIndividual.cpp"
+                >
+            </File>
+            <File
+                RelativePath="..\..\src\tfpWrName.cpp"
+                >
+            </File>
         </Filter>
         <Filter
             Name="Header Files"
@@ -276,6 +292,10 @@
             </File>
             <File
                 RelativePath="..\..\src\tfpVersion.h"
+                >
+            </File>
+            <File
+                RelativePath="..\..\src\tfpWr.h"
                 >
             </File>
         </Filter>
