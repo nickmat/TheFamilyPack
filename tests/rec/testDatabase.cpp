@@ -45,6 +45,7 @@
 #include <rec/recPlace.h>
 #include <rec/recPersona.h>
 #include <rec/recEvent.h>
+#include <rec/recReference.h>
 
 // ----------------------------------------------------------------------------
 // test class
@@ -69,6 +70,8 @@ private:
         CPPUNIT_TEST( TestEventType );
         CPPUNIT_TEST( TestEventTypeRole );
         CPPUNIT_TEST( TestPersonaEvent );
+        CPPUNIT_TEST( TestReference );
+        CPPUNIT_TEST( TestReferenceEntity );
         CPPUNIT_TEST( TestShutdown );
     CPPUNIT_TEST_SUITE_END();
 
@@ -84,6 +87,8 @@ private:
     void TestEventType();
     void TestEventTypeRole();
     void TestPersonaEvent();
+    void TestReference();
+    void TestReferenceEntity();
     void TestShutdown();
 
     DECLARE_NO_COPY_CLASS(RecTestCase)
@@ -665,6 +670,106 @@ void RecTestCase::TestPersonaEvent()
     CPPUNIT_ASSERT( recPersonaEvent::Exists( 999 ) == true );
     recPersonaEvent::Delete( 999 );
     CPPUNIT_ASSERT( recPersonaEvent::Exists( 999 ) == false );
+}
+
+void RecTestCase::TestReference()
+{
+    id_t id;
+
+    recReference record1;
+    record1.f_id = 0;
+
+    record1.f_title = "A Good Start";
+    record1.f_statement = "Lots of facts and figures";
+    // f_id = 0 so create new record and set f_id to new value.
+    record1.Save();
+    id = record1.f_id;
+    CPPUNIT_ASSERT( id == 1 );
+
+    recReference record2;
+    record2.f_id = record1.f_id;
+    record2.Read();  
+    CPPUNIT_ASSERT( record1 == record2 );
+
+    record1.f_title = "Routine Stuff";
+    record1.f_statement = "Mundane bits and pieces";
+    // f_id = 1 which exists, so amend record leaving f_id to old value.
+    record1.Save();
+    CPPUNIT_ASSERT( record1.f_id == id );
+    record2.Read();
+    CPPUNIT_ASSERT( record1 == record2 );
+
+    record1.f_id = 999;
+    record1.f_statement = "Not wanted";
+    // f_id = 999 which doesn't exists, so create new record with no change to f_id.
+    record1.Save();
+    CPPUNIT_ASSERT( record1.f_id == 999 );
+    record2.f_id = record1.f_id;
+    record2.Read();
+    CPPUNIT_ASSERT( record1 == record2 );
+
+    record1.f_id = 0;
+    record1.f_statement = "Nor this";
+    record1.Save();
+    CPPUNIT_ASSERT( record1.f_id != 0 );
+    CPPUNIT_ASSERT( record1.Exists() == true );
+    record1.Delete();
+    CPPUNIT_ASSERT( record1.Exists() == false );
+
+    CPPUNIT_ASSERT( recReference::Exists( 999 ) == true );
+    recReference::Delete( 999 );
+    CPPUNIT_ASSERT( recReference::Exists( 999 ) == false );
+}
+
+void RecTestCase::TestReferenceEntity()
+{
+    id_t id;
+
+    recReferenceEntity record1;
+    record1.f_id = 0;
+
+    record1.f_ref_id = 3;
+    record1.f_entity_type = recReferenceEntity::TYPE_Persona;
+    record1.f_entity_id = 5;
+    // f_id = 0 so create new record and set f_id to new value.
+    record1.Save();
+    id = record1.f_id;
+    CPPUNIT_ASSERT( id == 1 );
+
+    recReferenceEntity record2;
+    record2.f_id = record1.f_id;
+    record2.Read();  
+    CPPUNIT_ASSERT( record1 == record2 );
+
+    record1.f_ref_id = 10;
+    record1.f_entity_type = recReferenceEntity::TYPE_Attribute;
+    record1.f_entity_id = 11;
+    // f_id = 1 which exists, so amend record leaving f_id to old value.
+    record1.Save();
+    CPPUNIT_ASSERT( record1.f_id == id );
+    record2.Read();
+    CPPUNIT_ASSERT( record1 == record2 );
+
+    record1.f_id = 999;
+    record1.f_entity_id = 8888;
+    // f_id = 999 which doesn't exists, so create new record with no change to f_id.
+    record1.Save();
+    CPPUNIT_ASSERT( record1.f_id == 999 );
+    record2.f_id = record1.f_id;
+    record2.Read();
+    CPPUNIT_ASSERT( record1 == record2 );
+
+    record1.f_id = 0;
+    record1.f_entity_id = 7777;
+    record1.Save();
+    CPPUNIT_ASSERT( record1.f_id != 0 );
+    CPPUNIT_ASSERT( record1.Exists() == true );
+    record1.Delete();
+    CPPUNIT_ASSERT( record1.Exists() == false );
+
+    CPPUNIT_ASSERT( recReferenceEntity::Exists( 999 ) == true );
+    recReferenceEntity::Delete( 999 );
+    CPPUNIT_ASSERT( recReferenceEntity::Exists( 999 ) == false );
 }
 
 void RecTestCase::TestShutdown()
