@@ -421,6 +421,25 @@ void TfpFrame::OnHtmlLinkClicked( wxHtmlLinkEvent& event )
             wxMessageBox( _("Error: Invalid Command"), _("Link Error") );
         }
         break;
+    case '$':  // Context Commands
+        switch( (wxChar) href.GetChar( 1 ) )
+        {
+        case 'I': // Edit the given individual (create if 0)
+            switch( (wxChar) href.GetChar( 2 ) )
+            {
+            case 'H': case 'W':
+                AddNewSpouse( href.Mid(2) );
+                break;
+            case 'F': case 'M':
+                AddNewParent( href.Mid(2) );
+                break;
+            }
+            break;
+        case 'M': // Create a popup menu
+            DoHtmCtxMenu( href.Mid(2) );
+            break;
+        }
+        break;
     case '!':  // Display in external browser
         wxLaunchDefaultBrowser( href.Mid( 1 ) );
         break;
@@ -552,6 +571,22 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
     }
     return text;
 }
+
+void TfpFrame::DoHtmCtxMenu( const wxString& ref )
+{
+    wxMessageBox( _("Not yet implimented ")+ref, _("DoHtmCtxMenu") );
+}
+
+void TfpFrame::AddNewSpouse( const wxString& ref )
+{
+    wxMessageBox( _("Not yet implimented ")+ref, _("AddNewSpouse") );
+}
+
+void TfpFrame::AddNewParent( const wxString& ref )
+{
+    wxMessageBox( _("Not yet implimented ")+ref, _("AddNewParent") );
+}
+
 
 // End of tfpFrame.cpp file
 

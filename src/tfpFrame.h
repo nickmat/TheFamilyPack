@@ -103,6 +103,11 @@ private:
     void SetDatabaseOpen( wxString& path, bool open );
     bool DisplayHtmPage( const wxString& name );
     wxString GetDisplayText( const wxString& name );
+
+    void DoHtmCtxMenu( const wxString& ref );
+
+    void AddNewSpouse( const wxString& ref );
+    void AddNewParent( const wxString& ref );
 };
 
 enum
