@@ -203,12 +203,12 @@ wxString tfpWriteFamilyPage( id_t famID )
     if( husbFam.f_husb_id != 0 || husbFam.f_wife_id != 0 )
     {
         htm << wxT("&nbsp<a href=CP") << fam.f_husb_id
-            << wxT("><img src=memory:pcht.xpm></a>");
+            << wxT("><img src=memory:pcht.bmp></a>");
     }
     if( kids.size() > 0 )
     {
         htm << wxT("&nbsp;<a href=CD") << fam.f_husb_id
-            << wxT("><img src=memory:dcht.xpm></a>");
+            << wxT("><img src=memory:dcht.bmp></a>");
     }
     htm << wxT("</td>");
 
@@ -228,11 +228,11 @@ wxString tfpWriteFamilyPage( id_t famID )
     if( wifeFam.f_husb_id != 0 || wifeFam.f_wife_id != 0 )
     {
         htm << wxT("&nbsp<a href=CP") << fam.f_wife_id
-            << wxT("><img src=memory:pcht.xpm></a>");
+            << wxT("><img src=memory:pcht.bmp></a>");
     }
     if( kids.size() > 0 ) {
         htm << wxT("&nbsp<a href=CD") << fam.f_wife_id
-            << wxT("><img src=memory:dcht.xpm></a>");
+            << wxT("><img src=memory:dcht.bmp></a>");
     }
     htm << wxT("</td><td align=right width=80>");
 

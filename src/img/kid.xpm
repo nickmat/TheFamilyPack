@@ -1,0 +1,23 @@
+/* XPM */
+static const char * kid_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"16 15 2 1",
+"x c Black",
+"  c None",
+/* pixels */
+"      xxx       ",
+"     xxxxx      ",
+"    xxxxxxx     ",
+"    xxxxxxx     ",
+"    xxxxxxx     ",
+"     xxxxx      ",
+"  xxx xxx xxx   ",
+" xxxxxxxxxxxxx  ",
+"xxxxxxxxxxxxxxx ",
+"xxxxxxxxxxxxxxx ",
+"xxxxxxxxxxxxxxx ",
+" xxxxx x xxxxx  ",
+"  xxx  x  xxx   ",
+"      xxx       ",
+"     xxxxx      "
+};

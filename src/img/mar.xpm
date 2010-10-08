@@ -1,0 +1,23 @@
+/* XPM */
+static const char * mar_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"16 15 2 1",
+"x c Red",
+"  c None",
+/* pixels */
+"  xxxx   xxxx   ",
+" xxxxxx xxxxxx  ",
+"xxxxxxx xxxxxxx ",
+"xxxxxxxxxxxxxxx ",
+"xxxxxxxxxxxxxxx ",
+"xxxxxxxxxxxxxxx ",
+"xxxxxxxxxxxxxxx ",
+" xxxxxxxxxxxxx  ",
+" xxxxxxxxxxxxx  ",
+"  xxxxxxxxxxx   ",
+"   xxxxxxxxx    ",
+"    xxxxxxx     ",
+"     xxxxx      ",
+"      xxx       ",
+"       x        "
+};

@@ -1,0 +1,27 @@
+/* XPM */
+static const char * fam_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"16 15 6 1",
+". c Black",
+"X c #FF8040",
+"Y c #00FFFF",
+"Z c #FFFF00",
+"W c #00FF00",
+"  c None",
+/* pixels */
+"     ...        ",
+"    .XXX.       ",
+"   .XXXXX....   ",
+"   .XXXXX.YYY.  ",
+"    .XXX.YYYYY. ",
+"     ....YYYYY. ",
+"    ......YYY.  ",
+"  ..XXXXX....   ",
+" .XXXXXX..YYY.. ",
+".XXXXXX.YYY..YY.",
+"...XXX.YYY.ZZ.YY",
+".WW.....YY.ZZ.YY",
+".WWWWWWW.YY..YYY",
+"..WWWWWW.Y....YY",
+".X......Y.ZZZZ.Y"
+};

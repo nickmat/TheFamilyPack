@@ -1,0 +1,23 @@
+/* XPM */
+static const char * sib_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"16 15 2 1",
+"x c Black",
+"  c None",
+/* pixels */
+"       x        ",
+"      xxx       ",
+"     xxxxx      ",
+"    xxxxxxx     ",
+"   xxxxxxxxx    ",
+"  xxxxxxxxxxx   ",
+" xxxxxxxxxxxxx  ",
+" xxxxxxxxxxxxx  ",
+"xxxxxxxxxxxxxxx ",
+"xxxxxxxxxxxxxxx ",
+"xxxxxxxxxxxxxxx ",
+"xxxxxx x xxxxxx ",
+" xxxx  x  xxxx  ",
+"      xxx       ",
+"     xxxxx      "
+};
