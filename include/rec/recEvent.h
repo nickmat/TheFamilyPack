@@ -48,6 +48,9 @@ public:
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "Event" );
+
+    wxString GetDetailStr() const;
+    static wxString GetDetailStr( id_t id );
 };
 
 inline bool recEquivalent( const recEvent& r1, const recEvent& r2 )

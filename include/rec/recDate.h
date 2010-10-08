@@ -87,6 +87,9 @@ public:
      *  static bool Exists( id_t id );
      */
     TABLE_NAME_MEMBERS( "Date" );
+
+    wxString GetStr() const;
+    static wxString GetStr( id_t id );
 };
 
 /*! The two entities are equal, ignoring the record id.

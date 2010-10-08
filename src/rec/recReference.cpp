@@ -42,6 +42,7 @@
 
 void recReference::Clear()
 {
+    f_id = 0;
     f_title     = wxEmptyString;
     f_statement = wxEmptyString;
 }
@@ -110,6 +111,7 @@ bool recReference::Read()
 
 void recReferenceEntity::Clear()
 {
+    f_id = 0;
     f_ref_id      = 0;
     f_entity_type = TYPE_Unstated;
     f_entity_id   = 0;

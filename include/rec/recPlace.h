@@ -45,6 +45,9 @@ public:
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "Place" );
+
+    wxString GetAddressStr() const { return GetAddressStr( f_id ); }
+    static wxString GetAddressStr( id_t id );
 };
 
 /*! The two entities are equal, ignoring the record id.

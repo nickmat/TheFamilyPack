@@ -39,9 +39,12 @@
 #endif
 
 #include <rec/recEvent.h>
+#include <rec/recDate.h>
+#include <rec/recPlace.h>
 
 void recEvent::Clear()
 {
+    f_id = 0;
     f_type_id  = 0;
     f_val      = wxEmptyString;
     f_date1_id = 0;
@@ -113,11 +116,31 @@ bool recEvent::Read()
 	return true;
 }
 
+wxString recEvent::GetDetailStr() const
+{
+    wxString str;
+    str << recDate::GetStr( f_date1_id );
+    if( !str.empty() ) {
+        str << ", ";
+    }
+    str << recPlace::GetAddressStr( f_place_id );
+    return str;
+}
+
+wxString recEvent::GetDetailStr( id_t id )
+{
+    recEvent e;
+    e.f_id = id;
+    e.Read();
+    return e.GetDetailStr();
+}
+
 //----------------------------------------------------------
 
 
 void recEventType::Clear()
 {
+    f_id = 0;
 	f_grp  = ETYPE_Grp_Unstated;
     f_name = wxEmptyString;
 }
@@ -185,6 +208,7 @@ bool recEventType::Read()
 
 void recEventTypeRole::Clear()
 {
+    f_id = 0;
 	f_type_id = 0;
     f_name    = wxEmptyString;
 }
@@ -253,6 +277,7 @@ bool recEventTypeRole::Read()
 
 void recPersonaEvent::Clear()
 {
+    f_id = 0;
 	f_per_id   = 0;
 	f_event_id = 0;
 	f_role_id  = 0;

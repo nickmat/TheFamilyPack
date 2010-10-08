@@ -42,6 +42,7 @@
 
 void recPersona::Clear()
 {
+    f_id = 0;
     f_sex  = SEX_Unstated;
     f_note = wxEmptyString;
 }
@@ -109,6 +110,7 @@ bool recPersona::Read()
 
 void recAttribute::Clear()
 {
+    f_id = 0;
     f_per_id   = 0;
     f_type_id  = 0;
     f_val      = wxEmptyString;
@@ -177,10 +179,27 @@ bool recAttribute::Read()
 	return true;
 }
 
+wxString recAttribute::GetValue( id_t id )
+{
+	if( id == 0 ) return wxEmptyString;
+
+	wxSQLite3StatementBuffer sql;
+	sql.Format( "SELECT val FROM Attribute WHERE id="ID";", id );
+    wxSQLite3Table result = s_db->GetTable( sql );
+
+    if( result.GetRowCount() == 0 ) 
+    {
+        return wxEmptyString;
+    }
+	return result.GetAsString( 0 );
+}
+
+
 //----------------------------------------------------------
 
 void recAttributeType::Clear()
 {
+    f_id = 0;
     f_grp  = ATYPE_Grp_Unstated;
     f_name = wxEmptyString;
 }

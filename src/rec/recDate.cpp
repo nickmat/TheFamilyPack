@@ -64,6 +64,7 @@ const wxString recDate::s_prefFormat[recDate::PREF_Max] = {
 
 void recDate::Clear()
 {
+    f_id = 0;
     f_jdn = 0;
     f_range = 0;
     f_type = FLG_NULL;
@@ -135,6 +136,26 @@ bool recDate::Read()
     f_record_sch  = (CalendarScheme) result.GetInt( 5 );
     f_display_sch = (CalendarScheme) result.GetInt( 6 );
 	return true;
+}
+
+wxString recDate::GetStr() const
+{
+    if( f_jdn == 0 )
+    {
+        return f_desc;
+    }
+    return wxString::Format( 
+        s_prefFormat[f_type],
+        calStrFromJdnRange( f_jdn, f_jdn + f_range, f_display_sch )
+    );
+}
+
+wxString recDate::GetStr( id_t id )
+{
+    recDate d;
+    d.f_id = id;
+    d.Read();
+    return d.GetStr();
 }
 
 // End of recDate.cpp file

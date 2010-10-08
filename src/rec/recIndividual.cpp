@@ -39,9 +39,12 @@
 #endif
 
 #include <rec/recIndividual.h>
+#include <rec/recDate.h>
+#include <rec/recEvent.h>
 
 void recIndividual::Clear()
 {
+    f_id = 0;
     f_surname     = wxEmptyString;
     f_given       = wxEmptyString;
     f_birth_jdn   = 0;
@@ -152,10 +155,61 @@ id_t recIndividual::GetDefaultFamily( id_t id )
     return GET_ID( result.GetInt64( 0 ) );
 }
 
+wxString recIndividual::GetFullName( id_t id )
+{
+    wxString str;
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3ResultSet result;
+
+    sql.Format( "SELECT surname, given FROM Individual WHERE id="ID";", id );
+    result = s_db->ExecuteQuery( sql );
+    str << result.GetAsString( 1 ) << " " << result.GetAsString( 0 );
+    return str;
+}
+
+wxString recIndividual::GetDateEpitaph( id_t id )
+{
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3ResultSet result;
+
+    sql.Format( "SELECT epitaph FROM Individual WHERE id="ID";", id );
+    result = s_db->ExecuteQuery( sql );
+    return result.GetAsString( 0 );
+}
+
+
+recFamilyList recIndividual::GetFamilyList( id_t ind )
+{
+    recFamilyList families;
+    recFamily family;
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( ind == 0 ) return families;
+
+    sql.Format(
+        "SELECT id, husb_id, wife_id, event_id FROM Family "
+        "WHERE husb_id="ID" OR wife_id="ID";",
+        ind, ind
+    );
+    result = s_db->GetTable( sql );
+
+    for( int i = 0 ; i < result.GetRowCount() ; i++ ) {
+        result.SetRow( i );
+        family.f_id = GET_ID( result.GetInt64( 0 ) );
+        family.f_husb_id = GET_ID( result.GetInt64( 1 ) );
+        family.f_wife_id = GET_ID( result.GetInt64( 2 ) );
+        family.f_event_id = GET_ID( result.GetInt64( 3 ) );
+        families.push_back( family );
+    }
+    return families;
+}
+
 //----------------------------------------------------------
 
 void recIndividualPersona::Clear()
 {
+    f_id = 0;
     f_per_id = 0;
     f_ind_id = 0;
     f_note   = wxEmptyString;
@@ -230,6 +284,7 @@ bool recIndividualPersona::Read()
 
 void recFamily::Clear()
 {
+    f_id = 0;
     f_husb_id  = 0;
     f_wife_id  = 0;
     f_event_id = 0;
@@ -300,10 +355,49 @@ bool recFamily::Read()
 	return true;
 }
 
+bool recFamily::ReadParents( id_t ind )
+{
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3ResultSet result;
+
+    sql.Format(
+        "SELECT fam_id FROM FamilyIndividual WHERE ind_id="ID";", ind
+    );
+    result = s_db->ExecuteQuery( sql );
+    f_id =  GET_ID( result.GetInt64( 0 ) );
+    return Read();
+}
+
+recIndividualList recFamily::GetChildren( id_t fam )
+{
+    recIndividualList children;
+    recIndividual ind;
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( fam == 0 ) return children;
+
+    sql.Format(
+        "SELECT ind_id FROM FamilyIndividual WHERE fam_id="ID" "
+        "ORDER BY sequence ASC;", fam
+    );
+    result = s_db->GetTable( sql );
+
+    for( int i = 0 ; i < result.GetRowCount() ; i++ )
+    {
+        result.SetRow( i );
+        ind.f_id = GET_ID( result.GetInt64( 0 ) );
+        ind.Read();
+        children.push_back( ind );
+    }
+    return children;
+}
+
 //----------------------------------------------------------
 
 void recFamilyIndividual::Clear()
 {
+    f_id = 0;
     f_ind_id   = 0;
     f_fam_id   = 0;
     f_sequence = 0;

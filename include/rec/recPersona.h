@@ -79,6 +79,8 @@ public:
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "Attribute" );
+
+    static wxString GetValue( id_t id );
 };
 
 inline bool recEquivalent( const recAttribute& r1, const recAttribute& r2 )

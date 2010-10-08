@@ -42,6 +42,7 @@
 
 void recPlace::Clear()
 {
+    f_id = 0;
     f_date1_id = 0;
     f_date2_id = 0;
 }
@@ -105,8 +106,39 @@ bool recPlace::Read()
 	return true;
 }
 
+wxString recPlace::GetAddressStr( id_t id )
+{
+	wxString str;
+	wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    sql.Format(
+        "SELECT val FROM PlacePart WHERE place_id="ID" "
+        "ORDER BY sequence;", id
+    );
+    result = s_db->GetTable( sql );
+
+    if( result.GetRowCount() > 0 )
+	{
+        for( int row = 0 ; row < result.GetRowCount() ; row++ )
+		{
+            if( row > 0 )
+            {
+                str << wxT(", ");
+            }
+            result.SetRow( row );
+            str << result.GetAsString( 0 );
+		}
+    }
+    return str;
+}
+
+
+//----------------------------------------------------------
+
 void recPlacePart::Clear()
 {
+    f_id = 0;
     f_type_id  = 0;
     f_place_id = 0;
     f_val      = wxEmptyString;
@@ -178,6 +210,7 @@ bool recPlacePart::Read()
 
 void recPlacePartType::Clear()
 {
+    f_id = 0;
     f_name = wxEmptyString;
 }
 

@@ -31,7 +31,13 @@
 #ifndef RECINDIVIDUAL_H
 #define RECINDIVIDUAL_H
 
+#include <wx/vector.h>
 #include <rec/recDatabase.h>
+
+class recFamily;
+class recIndividual;
+typedef wxVector< recFamily >  recFamilyList;
+typedef wxVector< recIndividual >  recIndividualList;
 
 class recIndividual : public recDb {
 public:
@@ -56,7 +62,19 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "Individual" );
 
+    wxString GetFullName() { return f_given + " " + f_surname; }
+
     static id_t GetDefaultFamily( id_t id );
+    static wxString GetFullName( id_t id );
+    static wxString GetDateEpitaph( id_t id );
+
+    static recFamilyList GetFamilyList( id_t ind );
+    recFamilyList GetFamilyList() const { return GetFamilyList( f_id ); }
+
+//    wxString GetName() const { return GetName( f_id ); }
+//    static wxString GetName( id_t ind );
+//    wxString GetDateEpitaph() const { return GetDateEpitaph( f_id ); }
+//    static wxString GetDateEpitaph( id_t ind );
 };
 
 inline bool recEquivalent( const recIndividual& r1, const recIndividual& r2 )
@@ -85,6 +103,7 @@ inline bool operator!=( const recIndividual& r1, const recIndividual& r2 )
 {
     return !(r1 == r2);
 }
+
 
 //----------------------------------------------------------
 
@@ -136,6 +155,10 @@ public:
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "Family" );
+
+    bool ReadParents( id_t ind );
+    static recIndividualList GetChildren( id_t fam );
+    recIndividualList GetChildren() const { return GetChildren( f_id ); }
 };
 
 inline bool recEquivalent( const recFamily& r1, const recFamily& r2 )
@@ -155,6 +178,7 @@ inline bool operator!=( const recFamily& r1, const recFamily& r2 )
 {
     return !(r1 == r2);
 }
+
 
 //----------------------------------------------------------
 
