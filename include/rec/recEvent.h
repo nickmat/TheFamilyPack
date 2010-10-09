@@ -50,7 +50,11 @@ public:
     TABLE_NAME_MEMBERS( "Event" );
 
     wxString GetDetailStr() const;
+    wxString GetTypeStr() const;
+    wxString GetDateStr() const;
+    wxString GetAddressStr() const;
     static wxString GetDetailStr( id_t id );
+
 };
 
 inline bool recEquivalent( const recEvent& r1, const recEvent& r2 )
@@ -77,9 +81,23 @@ inline bool operator!=( const recEvent& r1, const recEvent& r2 )
 class recEventType : public recDb {
 public:
 	enum ETYPE_Grp {
-		ETYPE_Grp_Unstated, ETYPE_Grp_Birth, ETYPE_Grp_Nr_Birth, 
-		ETYPE_Grp_Union, ETYPE_Grp_Family, ETYPE_Grp_Death, 
-        ETYPE_Grp_Nr_Death, ETYPE_Grp_Other
+		ETYPE_Grp_Unstated, 
+        ETYPE_Grp_Birth, 
+        ETYPE_Grp_Nr_Birth, 
+		ETYPE_Grp_Union, 
+        ETYPE_Grp_Family, 
+        ETYPE_Grp_Death, 
+        ETYPE_Grp_Nr_Death, 
+        ETYPE_Grp_Other
+	};
+	enum ETYPE_Std {  // predefined entries, match with recCreate.sql 
+		ET_Unstated = 0,
+        ET_Birth = -1,	
+        ET_Baptism = -2,
+        ET_Marriage = -3,
+        ET_Death = -4,
+		ET_Burial = -5,
+		ET_MAX = 6 // Size of list 
 	};
 
     ETYPE_Grp f_grp;
@@ -92,6 +110,8 @@ public:
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "EventType" );
+
+    static wxString GetTypeStr( id_t id );
 };
 
 inline bool recEquivalent( const recEventType& r1, const recEventType& r2 )
@@ -114,6 +134,13 @@ inline bool operator!=( const recEventType& r1, const recEventType& r2 )
 
 class recEventTypeRole : public recDb {
 public:
+	enum Role {  // predefined entries, only given if reqired by the program
+		ROLE_Unstated      = 0,
+		ROLE_Birth_NewBorn = -1, 
+		ROLE_Death_Died    = -15,
+		ROLE_MAX           = 3 // size of list
+	};
+
     id_t      f_type_id;
     wxString  f_name;
 

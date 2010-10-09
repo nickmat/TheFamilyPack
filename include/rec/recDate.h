@@ -88,7 +88,9 @@ public:
      */
     TABLE_NAME_MEMBERS( "Date" );
 
-    wxString GetStr() const;
+    void SetDefaults();
+	bool SetDate( const wxString& str, CalendarScheme sch = CALENDAR_SCH_Unstated );
+    wxString GetStr( CalendarScheme sch = CALENDAR_SCH_Unstated ) const;
     static wxString GetStr( id_t id );
 };
 

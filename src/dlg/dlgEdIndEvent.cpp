@@ -37,5 +37,90 @@
 #include "wx/wx.h"
 #endif
 
+#include "dlgEdIndEvent.h"
+
+dlgEditIndEvent::dlgEditIndEvent( wxWindow* parent )
+    : fbDlgEditIndEvent( parent )
+{
+	m_pEvent = NULL;
+}
+
+bool dlgEditIndEvent::TransferDataToWindow()
+{
+	wxASSERT( m_pEvent != NULL );
+	if( m_pEvent == NULL ) return false;
+
+	m_staticTextType->SetLabel( m_pEvent->GetTypeStr() );
+	if( m_pEvent->f_date1_id == 0 ) {
+		m_date1.SetDefaults();
+		m_date1.Save();
+	} else {
+		m_date1.f_id = m_pEvent->f_date1_id;
+		m_date1.Read();
+	}
+    m_textCtrlDate->SetValue( m_date1.GetStr() );
+	if( m_pEvent->f_place_id == 0 ) {
+		m_place.Clear();
+		m_place.Save();
+	} else {
+		m_place.f_id = m_pEvent->f_place_id;
+		m_place.Read();
+	}
+    m_textCtrlAddr->SetValue( m_place.GetAddressStr() );
+
+	return true;
+}
+
+bool dlgEditIndEvent::TransferDataFromWindow()
+{
+	wxASSERT( m_pEvent != NULL );
+	if( m_pEvent == NULL ) return false;
+
+    wxString str = m_textCtrlDate->GetValue();
+	if( str.IsEmpty() ) {
+		m_date1.Delete();
+		m_pEvent->f_date1_id = 0;
+	} else {
+		m_date1.SetDate( str );
+		m_date1.Save();
+		m_pEvent->f_date1_id = m_date1.f_id;
+	}
+
+    str = m_textCtrlAddr->GetValue();
+	if( str.IsEmpty() ) {
+		m_place.Delete();
+		m_pEvent->f_place_id = 0;
+	} else {
+		m_place.SetAddress( str );
+		m_place.Save();
+		m_pEvent->f_place_id = m_place.f_id;
+	}
+
+	if( m_pEvent->f_date1_id == 0 && m_pEvent->f_place_id == 0 ) {
+		m_pEvent->Delete();
+		m_pEvent->Clear();
+	} else {
+		m_pEvent->Save();
+	}
+
+	return true;
+}
+
+void dlgEditIndEvent::OnDateButton( wxCommandEvent& event )
+{
+	wxMessageBox( 
+		wxT("Not yet implimented\nDate"), 
+		wxT("OnDateButton")
+	);
+}
+
+void dlgEditIndEvent::OnAddrButton( wxCommandEvent& event )
+{
+	wxMessageBox( 
+		wxT("Not yet implimented\nAddress"), 
+		wxT("OnAddrButton")
+	);
+}
+
 
 // End of dlgEdIndEvent.cpp file

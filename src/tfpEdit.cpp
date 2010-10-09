@@ -37,4 +37,59 @@
 #include "wx/wx.h"
 #endif
 
+#include <rec/recIndividual.h>
+
+#include "tfpEdit.h"
+#include "dlg/dlgEdIndividual.h"
+
+bool tfpAddNewSpouse( id_t indID, Sex sex )
+{
+	const wxString savepoint = wxT("AddNewSpouse");
+    bool ret = false;
+    recDb::Savepoint( savepoint );
+
+    recIndividual ind, spouse;
+    ind.f_id = indID;
+    ind.Read();
+    spouse.Clear();
+    spouse.Save();
+    recFamily fam;
+    fam.f_id = ind.f_fam_id;
+    fam.Read();
+    if( sex == SEX_Female ) {    // Add Spouse to Wife
+        if( fam.f_husb_id != 0 ) { // More than one Husb
+            fam.Clear();
+            fam.f_wife_id = ind.f_id;
+        }
+        spouse.f_sex = SEX_Male;
+        fam.f_husb_id = spouse.f_id;
+    } else {                     // Add Spouse to Husb
+        if( fam.f_wife_id != 0 ) { // More than one wife
+            fam.Clear();
+            fam.f_husb_id = ind.f_id;
+        }
+        spouse.f_sex = SEX_Female;
+        fam.f_wife_id = spouse.f_id;
+    }
+    fam.Save();
+    spouse.f_fam_id = fam.f_id;
+    spouse.Save();
+
+    dlgEditIndividual* dialog = new dlgEditIndividual( NULL );
+
+    dialog->SetIndividualID( spouse.f_id );
+
+    if( dialog->ShowModal() == wxID_OK ) {
+		recDb::ReleaseSavepoint( savepoint );
+        ret = true;
+    } else {
+		recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+
+    return ret;
+}
+
+
+
 // End of tfpEdit.cpp file

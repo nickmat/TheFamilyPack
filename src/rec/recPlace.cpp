@@ -106,6 +106,27 @@ bool recPlace::Read()
 	return true;
 }
 
+void recPlace::SetAddress( id_t placeID, const wxString& str )
+{
+	recPlacePartList ppList = GetPlaceParts( placeID );
+	if( ppList.size() == 0 )
+	{
+		recPlacePart pp;
+		pp.Clear();
+		pp.f_type_id = recPlacePartType::TYPE_Address;
+		pp.f_place_id = placeID;
+		pp.f_val = str;
+		pp.Save();
+	} else {
+		ppList[0].f_type_id = recPlacePartType::TYPE_Address;
+		ppList[0].f_val = str;
+		ppList[0].Save();
+		for( size_t i = 1 ; i < ppList.size() ; i++ ) {
+			ppList[i].Delete();
+		}
+	}
+}
+
 wxString recPlace::GetAddressStr( id_t id )
 {
 	wxString str;
@@ -131,6 +152,33 @@ wxString recPlace::GetAddressStr( id_t id )
 		}
     }
     return str;
+}
+
+recPlacePartList recPlace::GetPlaceParts( id_t placeID )
+{
+	wxString str;
+	wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+	recPlacePart pp;
+	recPlacePartList ppList;
+
+    sql.Format(
+        "SELECT * FROM PlacePart WHERE place_id="ID" ORDER BY sequence;",
+        placeID
+    );
+    result = s_db->GetTable( sql );
+
+    for( int row = 0 ; row < result.GetRowCount() ; row++ )
+	{
+        result.SetRow( row );
+		pp.f_id       = GET_ID( result.GetInt64( 0 ) );
+        pp.f_type_id  = GET_ID( result.GetInt64( 1 ) );
+        pp.f_place_id = GET_ID( result.GetInt64( 2 ) );
+        pp.f_val      = result.GetAsString( 3 );
+        pp.f_sequence = result.GetInt( 4 );
+        ppList.push_back( pp );
+	}
+    return ppList;
 }
 
 

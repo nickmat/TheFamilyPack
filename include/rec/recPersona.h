@@ -30,7 +30,13 @@
 #ifndef RECPERSONA_H
 #define RECPERSONA_H
 
+#include <wx/vector.h>
 #include <rec/recDatabase.h>
+
+class recPersona;
+class recAttribute;
+typedef wxVector< recPersona >  recPersonaList;
+typedef wxVector< recAttribute >  recAttributeList;
 
 class recPersona : public recDb {
 public:
@@ -44,6 +50,11 @@ public:
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "Persona" );
+
+    static wxString GetSurname( id_t id );
+    static wxString GetGivenName( id_t id );
+	static recAttributeList ReadAttributes( id_t perID );
+    recAttributeList ReadAttributes() const { return ReadAttributes( f_id ); }
 };
 
 inline bool recEquivalent( const recPersona& r1, const recPersona& r2 )
@@ -65,6 +76,16 @@ inline bool operator!=( const recPersona& r1, const recPersona& r2 )
 
 //----------------------------------------------------------
 
+enum StdAttrType  // These match the create.sql file
+{
+    ATTR_TYPE_Unstated   = 0,
+    ATTR_TYPE_Given_name = -1,
+    ATTR_TYPE_Surname    = -2,
+    ATTR_TYPE_Post_name  = -3,
+	ATTR_TYPE_Occupation = -4,
+    ATTR_TYPE_Max        = 5
+};
+
 class recAttribute : public recDb {
 public:
     id_t      f_per_id;
@@ -81,6 +102,7 @@ public:
     TABLE_NAME_MEMBERS( "Attribute" );
 
     static wxString GetValue( id_t id );
+	static recAttributeList ConvertStrToList( const wxString& str, id_t type = ATTR_TYPE_Given_name );
 };
 
 inline bool recEquivalent( const recAttribute& r1, const recAttribute& r2 )

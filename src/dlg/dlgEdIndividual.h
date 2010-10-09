@@ -30,4 +30,47 @@
 #ifndef DLGEDINDIVIDUAL_H
 #define DLGEDINDIVIDUAL_H
 
+#include <rec/recIndividual.h>
+#include <rec/recPersona.h>
+#include <rec/recEvent.h>
+
+#include "fbDlg.h"
+
+class dlgEditIndividual : public fbDlgEditIndividual
+{
+    DECLARE_CLASS( dlgEditIndividual )
+    DECLARE_EVENT_TABLE()
+
+public:
+	dlgEditIndividual( wxWindow* parent );
+
+	void SetIndividualID( id_t indID ) { m_individual.f_id = indID; }
+	void SetFamilyID( id_t famID ) { m_fam_id = famID; }
+	void SetSex( Sex sex ) { m_sex = sex; }
+	void SetSurname( const wxString& name ) { m_surname = name; }
+	id_t GetIndividualID() const { return m_individual.f_id; }
+	id_t GetFamilyID() const { return m_fam_id; }
+
+private:
+    bool TransferDataToWindow();
+    bool TransferDataFromWindow();
+
+    void OnEventActivated( wxListEvent& event );
+
+    void UpdateEventDetails();
+
+	id_t           m_fam_id;
+	Sex            m_sex;
+
+	recIndividual  m_individual;
+	recPersona     m_persona;
+	wxString       m_surname;
+	wxString       m_given;
+	recAttribute   m_occAttr;
+	recEvent       m_birthEvent;
+	recEvent       m_nrbirthEvent;
+	recEvent       m_deathEvent;
+	recEvent       m_nrdeathEvent;
+};
+
 #endif // DLGEDINDIVIDUAL_H

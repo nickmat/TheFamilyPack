@@ -120,6 +120,8 @@ public:
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "IndividualPersona" );
+
+    bool Find();
 };
 
 inline bool recEquivalent( const recIndividualPersona& r1, const recIndividualPersona& r2 )

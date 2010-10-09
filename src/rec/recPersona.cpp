@@ -37,6 +37,8 @@
 #include "wx/wx.h"
 #endif
 
+#include <wx/tokenzr.h>
+
 #include <rec/recPersona.h>
 
 
@@ -105,6 +107,91 @@ bool recPersona::Read()
     f_note = result.GetAsString( 1 );
 	return true;
 }
+
+wxString recPersona::GetSurname( id_t id )
+{
+	wxString str;
+	wxSQLite3StatementBuffer sql;
+
+	sql.Format( 
+		"SELECT val FROM Attribute WHERE per_id="ID" AND type_id=2 "
+		"ORDER BY sequence;", id
+	);
+    wxSQLite3Table result = s_db->GetTable( sql );
+
+    if( result.GetRowCount() > 0 )
+	{
+        for( int row = 0 ; row < result.GetRowCount() ; row++ )
+		{
+            if( row > 0 )
+            {
+                str << " ";
+            }
+            result.SetRow( row );
+            str << result.GetAsString( 0 );
+		}
+    }
+    return str;
+}
+	
+wxString recPersona::GetGivenName( id_t id )
+{
+	wxString str;
+	wxSQLite3StatementBuffer sql;
+
+	sql.Format( 
+		"SELECT val FROM Attribute WHERE per_id="ID" "
+		"AND (type_id=1 OR type_id=3) "
+		"ORDER BY sequence;", id
+	);
+    wxSQLite3Table result = s_db->GetTable( sql );
+
+    if( result.GetRowCount() > 0 )
+	{
+        for( int row = 0 ; row < result.GetRowCount() ; row++ )
+		{
+            if( row > 0 )
+            {
+                str << " ";
+            }
+            result.SetRow( row );
+            str << result.GetAsString( 0 );
+		}
+    }
+    return str;
+}
+
+recAttributeList recPersona::ReadAttributes( id_t perID )
+{
+	recAttributeList list;
+	recAttribute record;
+	wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( perID == 0 ) {
+        return list;
+    }
+
+	sql.Format( 
+		"SELECT id, type_id, val, sequence FROM Attribute "
+		"WHERE per_id="ID" ORDER BY sequence;", perID 
+    );
+    result = s_db->GetTable( sql );
+
+    list.reserve( result.GetRowCount() );
+	record.f_per_id = perID;
+    for( int i = 0 ; i < result.GetRowCount() ; i++ )
+    {
+        result.SetRow( i );
+		record.f_id = GET_ID( result.GetInt64( 0 ) );
+		record.f_type_id = GET_ID( result.GetInt64( 1 ) );
+		record.f_val = result.GetAsString( 2 );
+		record.f_sequence = (unsigned) result.GetInt( 3 );
+        list.push_back( record );
+    }
+	return list;
+}
+
 
 //----------------------------------------------------------
 
@@ -192,6 +279,26 @@ wxString recAttribute::GetValue( id_t id )
         return wxEmptyString;
     }
 	return result.GetAsString( 0 );
+}
+
+/*! Takes a space delimited list from str and converts it to a list of
+ *  of Attributes in sequencial order of given type.
+ */
+recAttributeList recAttribute::ConvertStrToList( 
+    const wxString& str, id_t type )
+{
+	recAttributeList list;
+	recAttribute attr;
+	attr.Clear();
+	attr.f_type_id = type;
+
+	wxStringTokenizer tk( str );
+	while( tk.HasMoreTokens() ) {
+		attr.f_val = tk.GetNextToken();
+		++attr.f_sequence;
+		list.push_back( attr );
+	}
+	return list;
 }
 
 

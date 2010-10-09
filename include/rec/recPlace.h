@@ -31,7 +31,11 @@
 #define RECPLACE_H
 
 
+#include <wx/vector.h>
 #include <rec/recDatabase.h>
+
+class recPlacePart;
+typedef wxVector< recPlacePart >  recPlacePartList;
 
 class recPlace : public recDb {
 public:
@@ -46,8 +50,14 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "Place" );
 
+    void SetAddress( const wxString& str ) { return SetAddress( f_id, str ); }
+    static void SetAddress( id_t placeID, const wxString& str );
+
     wxString GetAddressStr() const { return GetAddressStr( f_id ); }
     static wxString GetAddressStr( id_t id );
+
+	recPlacePartList GetPlaceParts() const { return GetPlaceParts( f_id ); }
+	static recPlacePartList GetPlaceParts( id_t placeID );
 };
 
 /*! The two entities are equal, ignoring the record id.
@@ -108,6 +118,11 @@ inline bool operator!=( const recPlacePart& r1, const recPlacePart& r2 )
 
 class recPlacePartType : public recDb {
 public:
+	enum Type {
+		TYPE_Address = -1,
+		TYPE_MAX = 1  // Number of entries
+	};
+
     wxString f_name;
 
     recPlacePartType() {}

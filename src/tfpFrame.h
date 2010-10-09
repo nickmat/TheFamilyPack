@@ -103,6 +103,7 @@ private:
     void SetDatabaseOpen( wxString& path, bool open );
     bool DisplayHtmPage( const wxString& name );
     wxString GetDisplayText( const wxString& name );
+    void RefreshHtmPage();
 
     void DoHtmCtxMenu( const wxString& ref );
 

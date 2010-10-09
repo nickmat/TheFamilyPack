@@ -88,6 +88,15 @@ public:
      */
     static void CloseDb() { s_db->Close(); }
 
+    static void Begin() { s_db->Begin(); }
+    static void Commit() { s_db->Commit(); }
+    static void Rollback() { s_db->Rollback(); }
+    static void Savepoint( const wxString& str ) { s_db->Savepoint( str ); }
+    static void ReleaseSavepoint( const wxString& str ) 
+        { s_db->ReleaseSavepoint( str ); }
+    static void Rollback( const wxString& str ) { s_db->Rollback( str ); }
+
+
     /*! Return a the table name. 
      */
     virtual const char* GetTableName() const = 0;

@@ -127,6 +127,26 @@ wxString recEvent::GetDetailStr() const
     return str;
 }
 
+wxString recEvent::GetTypeStr() const
+{
+    return recEventType::GetTypeStr( f_type_id );
+}
+
+wxString recEvent::GetDateStr() const
+{
+    wxString str;
+    str << recDate::GetStr( f_date1_id );
+    if( f_date2_id != 0 ) {
+        str << _(" To ") << recDate::GetStr( f_date2_id );
+    }
+    return str;
+}
+
+wxString recEvent::GetAddressStr() const
+{
+    return recPlace::GetAddressStr( f_place_id );
+}
+
 wxString recEvent::GetDetailStr( id_t id )
 {
     recEvent e;
@@ -201,6 +221,14 @@ bool recEventType::Read()
 	f_grp = (ETYPE_Grp) result.GetInt( 0 );
     f_name = result.GetAsString( 1 );
 	return true;
+}
+
+wxString recEventType::GetTypeStr( id_t id )
+{
+    recEventType et;
+    et.f_id = id;
+    et.Read();
+    return et.f_name;
 }
 
 //----------------------------------------------------------

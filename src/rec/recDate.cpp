@@ -138,15 +138,44 @@ bool recDate::Read()
 	return true;
 }
 
-wxString recDate::GetStr() const
+void recDate::SetDefaults()
 {
+	// TODO: The default record/display scheme should be a system setting.
+    Clear();
+    f_record_sch = CALENDAR_SCH_Gregorian;
+    f_display_sch = CALENDAR_SCH_Gregorian;
+}
+
+bool recDate::SetDate( const wxString& str, CalendarScheme scheme )
+{
+	long beg, end;
+	if( scheme == CALENDAR_SCH_Unstated ) scheme = f_record_sch;
+    bool ret = calStrToJdnRange( beg, end, str, scheme );
+	if( ret == true )
+	{
+		f_jdn = beg;
+		f_range = end - beg;
+		f_record_sch = scheme;
+		f_desc = wxEmptyString;
+	} else {
+		f_jdn = 0;
+		f_range = 0;
+		f_record_sch = scheme;
+		f_desc = str;
+	}
+	return ret;
+}
+
+wxString recDate::GetStr( CalendarScheme scheme ) const
+{
+	if( scheme == CALENDAR_SCH_Unstated ) scheme = f_display_sch;
     if( f_jdn == 0 )
     {
         return f_desc;
     }
     return wxString::Format( 
         s_prefFormat[f_type],
-        calStrFromJdnRange( f_jdn, f_jdn + f_range, f_display_sch )
+        calStrFromJdnRange( f_jdn, f_jdn + f_range, scheme )
     );
 }
 

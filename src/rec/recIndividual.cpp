@@ -280,6 +280,31 @@ bool recIndividualPersona::Read()
 	return true;
 }
 
+/*! Given the per_id and ind_id settings, find the matching record
+ *  and read in the full record.
+ */
+bool recIndividualPersona::Find()
+{
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( f_per_id == 0 || f_ind_id == 0 ) return false; // Only find single record
+
+    sql.Format(
+        "SELECT id, note FROM IndividualPersona "
+        "WHERE per_id="ID" AND ind_id="ID";",
+        f_per_id, f_ind_id
+    );
+    result = s_db->GetTable( sql );
+
+    if( result.GetRowCount() != 1 ) return false;
+    result.SetRow( 0 );
+    f_id   = GET_ID( result.GetInt64( 0 ) );
+    f_note = result.GetAsString( 1 );
+    return true;
+}
+
+
 //----------------------------------------------------------
 
 void recFamily::Clear()

@@ -30,6 +30,9 @@
 #ifndef TFPEDIT_H
 #define TFPEDIT_H
 
+#include <rec/recDatabase.h>
+
+extern bool tfpAddNewSpouse( id_t indID, Sex sex );
 
 #endif // TFPEDIT_H
 

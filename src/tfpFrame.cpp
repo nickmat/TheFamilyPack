@@ -45,6 +45,7 @@
 #include "tfpFrame.h"
 #include "tfpApp.h"
 #include "tfpVersion.h"
+#include "tfpEdit.h"
 #include "tfpWr.h"
 
 #include "img/forward.xpm"
@@ -572,6 +573,16 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
     return text;
 }
 
+void TfpFrame::RefreshHtmPage()
+{
+    size_t cnt = m_back.GetCount();
+    if( cnt > 0 ) {
+        wxString name = m_back[ cnt - 1 ];
+        m_html->SetPage( GetDisplayText( name ) );
+    }
+}
+
+
 void TfpFrame::DoHtmCtxMenu( const wxString& ref )
 {
     wxMessageBox( _("Not yet implimented ")+ref, _("DoHtmCtxMenu") );
@@ -579,7 +590,16 @@ void TfpFrame::DoHtmCtxMenu( const wxString& ref )
 
 void TfpFrame::AddNewSpouse( const wxString& ref )
 {
-    wxMessageBox( _("Not yet implimented ")+ref, _("AddNewSpouse") );
+    wxLongLong_t indID;
+    ref.Mid( 1 ).ToLongLong( &indID );
+    Sex sex = ( ref.GetChar(0) == 'W' ) ? SEX_Female : SEX_Male;
+    recDb::Begin();
+    if( tfpAddNewSpouse( indID, sex ) == true ) {
+        recDb::Commit();
+        RefreshHtmPage();
+    } else {
+        recDb::Rollback();
+    }
 }
 
 void TfpFrame::AddNewParent( const wxString& ref )
