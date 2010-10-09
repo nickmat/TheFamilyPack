@@ -1,11 +1,11 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        tfpMemory.h
+ * Name:        dlgEdFamily.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Load image and text files into memory filesystem.
+ * Purpose:     Edit database Family entity dialog.
  * Author:      Nick Matthews
  * Modified by:
  * Website:     http://thefamilypack.org
- * Created:     26 September 2010
+ * Created:     9 October 2010
  * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2010, Nick Matthews.
  * Licence:     GNU GPLv3
@@ -27,9 +27,15 @@
 
 */
 
-#ifndef   TFPMEMORY_H
-#define   TFPMEMORY_H
+#include "wx/wxprec.h"
 
-extern void tfpLoadMemoryFiles();
+#ifdef __BORLANDC__
+#pragma hdrstop
+#endif
 
-#endif // TFPMEMORY_H
+#ifndef WX_PRECOMP
+#include "wx/wx.h"
+#endif
+
+
+// End of dlgEdFamily.cpp

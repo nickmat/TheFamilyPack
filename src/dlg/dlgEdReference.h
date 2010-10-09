@@ -1,11 +1,11 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        tfpMemory.h
+ * Name:        dlgEdReference.h
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Load image and text files into memory filesystem.
+ * Purpose:     Edit database Reference entity dialog header.
  * Author:      Nick Matthews
  * Modified by:
  * Website:     http://thefamilypack.org
- * Created:     26 September 2010
+ * Created:     9 October 2010
  * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2010, Nick Matthews.
  * Licence:     GNU GPLv3
@@ -27,9 +27,8 @@
 
 */
 
-#ifndef   TFPMEMORY_H
-#define   TFPMEMORY_H
+#ifndef DLGEDREFERENCE_H
+#define DLGEDREFERENCE_H
 
-extern void tfpLoadMemoryFiles();
 
-#endif // TFPMEMORY_H
+#endif // DLGEDREFERENCE_H

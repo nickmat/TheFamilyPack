@@ -1,11 +1,11 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        tfpMemory.h
+ * Name:        tfpListCtrlInd.h
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Load image and text files into memory filesystem.
+ * Purpose:     List control to select Individual header.
  * Author:      Nick Matthews
  * Modified by:
  * Website:     http://thefamilypack.org
- * Created:     26 September 2010
+ * Created:     9 October 2010
  * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2010, Nick Matthews.
  * Licence:     GNU GPLv3
@@ -27,9 +27,32 @@
 
 */
 
-#ifndef   TFPMEMORY_H
-#define   TFPMEMORY_H
+#ifndef TFPLISTCTRLIND_H
+#define TFPLISTCTRLIND_H
 
-extern void tfpLoadMemoryFiles();
+#include <wx/listctrl.h>
 
-#endif // TFPMEMORY_H
+class wxSQLite3Table;
+
+class tfpListCtrlIndividuals : public wxListCtrl
+{
+public:
+    tfpListCtrlIndividuals(
+        wxWindow *parent,
+        wxWindowID id = wxID_ANY,
+        const wxPoint& pos = wxDefaultPosition,
+        const wxSize& size = wxDefaultSize,
+        long style = wxLC_ICON,
+        const wxValidator& validator = wxDefaultValidator,
+        const wxString& name = wxListCtrlNameStr
+    ) : wxListCtrl( parent, id, pos, size, style, validator, name ) {}
+
+    void SetTable( wxSQLite3Table* table ) { mp_table = table; }
+
+private:
+//    virtual wxString OnGetItemText( long item, long column ) const;
+
+    wxSQLite3Table* mp_table;
+};
+
+#endif // TFPLISTCTRLIND_H

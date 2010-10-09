@@ -80,7 +80,7 @@
             <Tool
                 Name="VCLinkerTool"
                 AdditionalOptions=""
-                AdditionalDependencies="$(SolutionDir)$(ConfigurationName)\../../../lib/vc9/calendaru.lib $(SolutionDir)$(ConfigurationName)\../../../lib/vc9/wxsqlite3u.lib $(SolutionDir)$(ConfigurationName)\../../../lib/vc9/recu.lib wxmsw29u_html.lib wxmsw29u_adv.lib wxmsw29u_core.lib wxbase29u.lib wxtiff.lib wxjpeg.lib wxpng.lib wxzlib.lib wxregexu.lib wxexpat.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib"
+                AdditionalDependencies="$(SolutionDir)$(ConfigurationName)\../../../lib/vc9/calendaru.lib $(SolutionDir)$(ConfigurationName)\../../../lib/vc9/wxsqlite3u.lib $(SolutionDir)$(ConfigurationName)\../../../lib/vc9/recu.lib wxmsw29u_richtext.lib wxmsw29u_html.lib wxmsw29u_adv.lib wxmsw29u_core.lib wxbase29u.lib wxtiff.lib wxjpeg.lib wxpng.lib wxzlib.lib wxregexu.lib wxexpat.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib"
                 OutputFile="$(SolutionDir)$(ConfigurationName)\tfp.exe"
                 LinkIncremental="1"
                 SuppressStartupBanner="true"
@@ -175,7 +175,7 @@
             <Tool
                 Name="VCLinkerTool"
                 AdditionalOptions=""
-                AdditionalDependencies="$(SolutionDir)$(ConfigurationName)\../../../lib/vc9/calendarud.lib $(SolutionDir)$(ConfigurationName)\../../../lib/vc9/wxsqlite3ud.lib $(SolutionDir)$(ConfigurationName)\../../../lib/vc9/recud.lib wxmsw29ud_html.lib wxmsw29ud_adv.lib wxmsw29ud_core.lib wxbase29ud.lib wxtiffd.lib wxjpegd.lib wxpngd.lib wxzlibd.lib wxregexud.lib wxexpatd.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib"
+                AdditionalDependencies="$(SolutionDir)$(ConfigurationName)\../../../lib/vc9/calendarud.lib $(SolutionDir)$(ConfigurationName)\../../../lib/vc9/wxsqlite3ud.lib $(SolutionDir)$(ConfigurationName)\../../../lib/vc9/recud.lib wxmsw29ud_richtext.lib wxmsw29ud_html.lib wxmsw29ud_adv.lib wxmsw29ud_core.lib wxbase29ud.lib wxtiffd.lib wxjpegd.lib wxpngd.lib wxzlibd.lib wxregexud.lib wxexpatd.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib"
                 OutputFile="$(SolutionDir)$(ConfigurationName)\tfp.exe"
                 LinkIncremental="2"
                 SuppressStartupBanner="true"
@@ -221,6 +221,34 @@
             UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
             >
             <File
+                RelativePath="..\..\src\dlg\dlgEdEvent.cpp"
+                >
+            </File>
+            <File
+                RelativePath="..\..\src\dlg\dlgEdFamily.cpp"
+                >
+            </File>
+            <File
+                RelativePath="..\..\src\dlg\dlgEdIndEvent.cpp"
+                >
+            </File>
+            <File
+                RelativePath="..\..\src\dlg\dlgEdIndividual.cpp"
+                >
+            </File>
+            <File
+                RelativePath="..\..\src\dlg\dlgEdPersona.cpp"
+                >
+            </File>
+            <File
+                RelativePath="..\..\src\dlg\dlgEdReference.cpp"
+                >
+            </File>
+            <File
+                RelativePath="..\..\src\dlg\dlgSelIndividual.cpp"
+                >
+            </File>
+            <File
                 RelativePath="..\..\src\dummy.cpp"
                 >
                 <FileConfiguration
@@ -241,7 +269,15 @@
                 </FileConfiguration>
             </File>
             <File
+                RelativePath="..\..\src\dlg\fbDlg.cpp"
+                >
+            </File>
+            <File
                 RelativePath="..\..\src\tfpApp.cpp"
+                >
+            </File>
+            <File
+                RelativePath="..\..\src\tfpEdit.cpp"
                 >
             </File>
             <File
@@ -279,11 +315,51 @@
             UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
             >
             <File
+                RelativePath="..\..\src\dlg\dlgEdEvent.h"
+                >
+            </File>
+            <File
+                RelativePath="..\..\src\dlg\dlgEdFamily.h"
+                >
+            </File>
+            <File
+                RelativePath="..\..\src\dlg\dlgEdIndEvent.h"
+                >
+            </File>
+            <File
+                RelativePath="..\..\src\dlg\dlgEdIndividual.h"
+                >
+            </File>
+            <File
+                RelativePath="..\..\src\dlg\dlgEdPersona.h"
+                >
+            </File>
+            <File
+                RelativePath="..\..\src\dlg\dlgEdReference.h"
+                >
+            </File>
+            <File
+                RelativePath="..\..\src\dlg\dlgSelIndividual.h"
+                >
+            </File>
+            <File
+                RelativePath="..\..\src\dlg\fbDlg.h"
+                >
+            </File>
+            <File
                 RelativePath="..\..\src\tfpApp.h"
                 >
             </File>
             <File
+                RelativePath="..\..\src\tfpEdit.h"
+                >
+            </File>
+            <File
                 RelativePath="..\..\src\tfpFrame.h"
+                >
+            </File>
+            <File
+                RelativePath="..\..\src\dlg\tfpListCtrlInd.h"
                 >
             </File>
             <File
