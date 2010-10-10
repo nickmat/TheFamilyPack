@@ -64,17 +64,16 @@ public:
 
     wxString GetFullName() { return f_given + " " + f_surname; }
 
-    static id_t GetDefaultFamily( id_t id );
+    static id_t GetDefaultFamily( id_t id ) {
+		return ExecuteID( "SELECT fam_id FROM Individual WHERE id="ID";", id ); 
+    }
     static wxString GetFullName( id_t id );
     static wxString GetDateEpitaph( id_t id );
 
     static recFamilyList GetFamilyList( id_t ind );
     recFamilyList GetFamilyList() const { return GetFamilyList( f_id ); }
-
-//    wxString GetName() const { return GetName( f_id ); }
-//    static wxString GetName( id_t ind );
-//    wxString GetDateEpitaph() const { return GetDateEpitaph( f_id ); }
-//    static wxString GetDateEpitaph( id_t ind );
+    static recFamilyList GetParentList( id_t indID );
+    recFamilyList GetParentList() const { return GetParentList( f_id ); }
 };
 
 inline bool recEquivalent( const recIndividual& r1, const recIndividual& r2 )
@@ -197,6 +196,8 @@ public:
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "FamilyIndividual" );
+
+    bool Find();
 };
 
 inline bool recEquivalent( const recFamilyIndividual& r1, const recFamilyIndividual& r2 )

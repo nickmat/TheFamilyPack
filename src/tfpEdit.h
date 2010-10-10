@@ -32,7 +32,13 @@
 
 #include <rec/recDatabase.h>
 
+extern bool tfpEditFamily( id_t famID );
+extern bool tfpEditIndividual( id_t indID );
+extern bool tfpAddNewParent( id_t indID, Sex sex );
 extern bool tfpAddNewSpouse( id_t indID, Sex sex );
+extern id_t tfpAddNewChild( id_t famID, Sex sex );
+extern bool tfpAddExistSpouse( id_t indID, Sex sex );
+extern bool tfpAddExistChild( id_t famID, Sex sex );
 
 #endif // TFPEDIT_H
 

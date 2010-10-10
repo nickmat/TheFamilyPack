@@ -31,8 +31,24 @@
 
 #include <rec/recDatabase.h>
 
+// See tfpWrName.cpp
+enum WrIndex { WrIndex_Individual, WrIndex_Persona };
+extern wxString tfpWritePersonIndex( WrIndex type = WrIndex_Individual );
+extern wxString tfpWritePersonList( 
+	const wxString& surname, WrIndex type = WrIndex_Individual );
+
 // See tfpWrFamily.cpp
 extern wxString tfpWriteFamilyPage( id_t famID );
 extern wxString tfpWriteIndFamilyPage( id_t indID );
+
+// See tfpWrIndividual.cpp
+extern wxString tfpWriteIndividualPage( id_t indID );
+
+// See tfpWrChart.cpp
+extern wxString tfpCreatePedChart( id_t indID );
+extern wxString tfpCreateDescChart( id_t indID );
+
+// See tfpWrReference.cpp
+//extern wxString tfpWriteReferencePage( id_t refID );
 
 #endif // TFPWR_H

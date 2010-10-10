@@ -36,5 +36,14 @@
 #include "wx/wx.h"
 #endif
 
+#include "tfpWr.h"
+
+wxString tfpWriteIndividualPage( id_t indID )
+{
+    return 
+        "<html><head><title>tfpWriteIndividualPage</title></head>"
+        "<body>Not yet done - tfpWriteIndividualPage</body></html>";
+}
+
 
 // End of tfpWrIndividual.cpp Source

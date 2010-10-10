@@ -40,7 +40,7 @@
 #include <wx/html/htmlwin.h>
 #include <wx/html/htmprint.h>
 
-#include <rec/recDatabase.h>
+#include <rec/recIndividual.h>
 
 #include "tfpFrame.h"
 #include "tfpApp.h"
@@ -79,6 +79,7 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_FIND_FORWARD, TfpFrame::OnFindForward )
     EVT_MENU( tfpID_GOTO_HOME, TfpFrame::OnHome )
     EVT_HTML_LINK_CLICKED( wxID_ANY, TfpFrame::OnHtmlLinkClicked )
+    EVT_MENU_RANGE( tfpID_HCTXMENU_BEG, tfpID_HCTXMENU_END, TfpFrame::OnHtmCtxMenu )
     EVT_CLOSE( TfpFrame::OnCloseWindow )
 END_EVENT_TABLE()
 
@@ -377,21 +378,46 @@ void TfpFrame::OnAbout( wxCommandEvent& event )
  */
 void TfpFrame::OnFindBack( wxCommandEvent& event )
 {
-    wxMessageBox( wxT("Not yet implimented"), wxT("OnFindBack") );
+    size_t ind = m_back.size();
+
+    if( ind > 1 ) {
+        --ind;
+        m_forward.push_back( m_back[ind] );
+        m_toolbar->EnableTool( tfpID_FIND_FORWARD, true );
+        m_back.pop_back();
+        if( ind == 1 ) {
+            m_toolbar->EnableTool( tfpID_FIND_BACK, false );
+        }
+        RefreshHtmPage();
+    }
 }
 
 /*! \brief Called on a Find Forward button option event.
  */
 void TfpFrame::OnFindForward( wxCommandEvent& event )
 {
-    wxMessageBox( wxT("Not yet implimented"), wxT("OnFindForward") );
+//    wxMessageBox( wxT("Not yet implimented"), wxT("OnFindForward") );
+    size_t ind = m_forward.size();
+    if( ind > 0 )
+    {
+        --ind;
+        m_back.push_back( m_forward[ind] );
+        if( m_back.size() > 1 ) {
+            m_toolbar->EnableTool( tfpID_FIND_BACK, true );
+        }
+        m_forward.pop_back();
+        if( ind == 0 ) {
+            m_toolbar->EnableTool( tfpID_FIND_FORWARD, false );
+        }
+        RefreshHtmPage();
+    }
 }
 
 /*! \brief Called on a Home button option event.
  */
 void TfpFrame::OnHome( wxCommandEvent& event )
 {
-    wxMessageBox( wxT("Not yet implimented"), wxT("OnHome") );
+    DisplayHtmPage( "F1" );
 }
 
 /*! \brief Called on a link in the html control being clicked.
@@ -444,6 +470,58 @@ void TfpFrame::OnHtmlLinkClicked( wxHtmlLinkEvent& event )
     case '!':  // Display in external browser
         wxLaunchDefaultBrowser( href.Mid( 1 ) );
         break;
+    default:   // Display the given reference
+        DisplayHtmPage( href );
+    }
+}
+
+void TfpFrame::OnHtmCtxMenu( wxCommandEvent& event )
+{
+    bool ret = false;
+    Sex sex;
+    wxLongLong_t id;
+    m_ctxmenuref.Mid(1).ToLongLong( &id );
+
+    recDb::Begin();
+    try {
+        switch( event.GetId() )
+        {
+        case tfpID_HCTXMENU_EDIT_FAMILY:
+            ret = tfpEditFamily( id );
+            break;
+        case tfpID_HCTXMENU_EDIT_INDIVIDUAL:
+            ret = tfpEditIndividual( id );
+            break;
+        case tfpID_HCTXMENU_EDIT_NEW_SON:
+            if( tfpAddNewChild( id, SEX_Male ) != 0 ) ret = true;
+            break;
+        case tfpID_HCTXMENU_EDIT_NEW_DAUR:
+            if( tfpAddNewChild( id, SEX_Female ) != 0 ) ret = true;
+            break;
+        case tfpID_HCTXMENU_EDIT_EXIST_SON:
+            ret = tfpAddExistChild( id, SEX_Male );
+            break;
+        case tfpID_HCTXMENU_EDIT_EXIST_DAUR:
+            ret = tfpAddExistChild( id, SEX_Female );
+            break;
+        case tfpID_HCTXMENU_EDIT_NEW_SPOUSE:
+            sex = ( m_ctxmenuref.GetChar(0) == 'H' ) ? SEX_Female : SEX_Male;
+            ret = tfpAddNewSpouse( id, sex );
+            break;
+        case tfpID_HCTXMENU_EDIT_EXIST_SPOUSE:
+            sex = ( m_ctxmenuref.GetChar(0) == 'H' ) ? SEX_Female : SEX_Male;
+            ret = tfpAddExistSpouse( id, sex );
+            break;
+        }
+        if( ret == true ) {
+            recDb::Commit();
+            RefreshHtmPage();
+        } else {
+            recDb::Rollback();
+        }
+    } catch( wxSQLite3Exception& e ) {
+        recDb::ErrorMessage( e );
+        recDb::Rollback();
     }
 }
 
@@ -531,7 +609,7 @@ bool TfpFrame::DisplayHtmPage( const wxString& name )
         if( m_back.size() > 1 ) {
             m_toolbar->EnableTool( tfpID_FIND_BACK, true );
         }
-        if( m_forward.size() == 0 ) {
+        if( m_forward.size() != 0 ) {
             m_forward.clear();
             m_toolbar->EnableTool( tfpID_FIND_FORWARD, false );
         }
@@ -566,8 +644,48 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
         }
         text = tfpWriteFamilyPage( num );
         break;
+    case 'I':  // Individual reference
+        success = name.Mid(1).ToLongLong( &num );
+        if( !success || num < 1 ) {
+            wxMessageBox( wxT("Error: Invalid Individual ID link"), wxT("Family Link") );
+            return wxEmptyString;
+        }
+        text = tfpWriteIndividualPage( num );
+        break;
+    case 'N':  // Name index
+        if( name == wxT("N") ) {
+            text = tfpWritePersonIndex();
+        } else if( name == wxT("N*") ) {
+            text = tfpWritePersonList( wxEmptyString );
+        } else {
+            text = tfpWritePersonList( name.Mid( 1 ) );
+        }
+        break;
+    case 'C':  // Chart reference
+        name.Mid(2).ToLongLong( &num );
+        switch( (wxChar) name.GetChar( 1 ) )
+        {
+        case 'D':
+            text = tfpCreateDescChart( (unsigned) num );
+            break;
+        case 'P':
+            text = tfpCreatePedChart( (unsigned) num );
+            break;
+        default:
+            wxMessageBox( wxT("Error: Invalid Chart link reference"), wxT("Link Error") );
+            return wxEmptyString;
+        }
+        break;
+	case 'R':  // Reference Document
+        success = name.Mid(1).ToLongLong( &num );
+        if( !success || num < 1 ) {
+            wxMessageBox( wxT("Error: Invalid Reference Document ID link"), wxT("Link Error") );
+            return wxEmptyString;
+        }
+        wxMessageBox( wxT("Error: Invalid Chart link reference"), wxT("Link Error") );
+        return wxEmptyString;
     default:
-        wxMessageBox( _("Error: Invalid link reference"), _("Link Error") );
+        wxMessageBox( _("Not yet implimented ")+name, _("tfpWriteReferencePage") );
         return wxEmptyString;
     }
     return text;
@@ -585,7 +703,112 @@ void TfpFrame::RefreshHtmPage()
 
 void TfpFrame::DoHtmCtxMenu( const wxString& ref )
 {
-    wxMessageBox( _("Not yet implimented ")+ref, _("DoHtmCtxMenu") );
+//    wxMessageBox( _("Not yet implimented ")+ref, _("DoHtmCtxMenu") );
+    int count;
+    m_ctxmenuref = ref;
+    wxMenu* menu = new wxMenu;
+
+    switch( (wxChar) ref.GetChar( 0 ) )
+    {
+    case 'F': // Edit family record or children
+        menu->Append( tfpID_HCTXMENU_EDIT_FAMILY, wxT("Edit Family") );
+        menu->AppendSeparator();
+        menu->Append( tfpID_HCTXMENU_EDIT_NEW_SON, wxT("Add new Son") );
+        menu->Append( tfpID_HCTXMENU_EDIT_NEW_DAUR, wxT("Add new Daughter") );
+        menu->AppendSeparator();
+        menu->Append( tfpID_HCTXMENU_EDIT_EXIST_SON, wxT("Add existing son") );
+        menu->Append( tfpID_HCTXMENU_EDIT_EXIST_DAUR, wxT("Add existing Daughter") );
+        break;
+    case 'H': case 'W': // Edit a Husb or Wife Individual
+        menu->Append( tfpID_HCTXMENU_EDIT_INDIVIDUAL, wxT("Edit Individual") );
+        menu->AppendSeparator();
+        menu->Append( tfpID_HCTXMENU_EDIT_NEW_SPOUSE, wxT("Add new spouse") );
+        menu->Append( tfpID_HCTXMENU_EDIT_EXIST_SPOUSE, wxT("Add existing spouse") );
+        break;
+    case 'R':
+        // Parents, Spouses (Marriage), Siblings, and Children
+        // List individuals and jump to the selected individuals family
+        m_ctxmenuIDs.empty();
+        count = AddFamiliesToMenu( ref, menu, tfpID_INDMENU_BEG );
+        break;
+    default:
+        delete menu;
+        wxMessageBox( wxT("Error: \"") + ref + wxT("\" Unknown Menu"), wxT("Link Error") );
+        return;
+    }
+
+    PopupMenu( menu );
+    delete menu;
+}
+
+int TfpFrame::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )
+{
+    recFamilyList families;
+    size_t c = 0, i, j;
+    recIndividualList inds;
+    wxLongLong_t indID;
+    ref.Mid( 1 ).ToLongLong( &indID );
+
+    menu->Append( cmd_ID + c, wxT("Family") );
+    m_ctxmenuIDs.push_back( recIndividual::GetDefaultFamily( indID ) );
+    c++;
+
+    wxMenu* parmenu = new wxMenu;
+    menu->AppendSubMenu( parmenu, wxT("Parents") );
+    families = recIndividual::GetParentList( indID );
+    for( i = 0 ; i < families.size() ; i++ ) {
+        if( families[i].f_husb_id != 0 ) {
+            parmenu->Append( cmd_ID + c, recIndividual::GetFullName( families[i].f_husb_id ) );
+        }
+        if( families[i].f_wife_id != 0 ) {
+            parmenu->Append( cmd_ID + c, recIndividual::GetFullName( families[i].f_wife_id ) );
+        }
+        m_ctxmenuIDs.push_back( families[i].f_id );
+        c++;
+    }
+
+    wxMenu* sibmenu = new wxMenu;
+    menu->AppendSubMenu( sibmenu, wxT("Siblings") );
+    for( i = 0 ; i < families.size() ; i++ ) {
+        inds = families[i].GetChildren();
+        for( j = 0 ; j < inds.size() ; j++ ) {
+            if( inds[j].f_id == indID ) continue;
+            sibmenu->Append( cmd_ID + c, inds[j].GetFullName() );
+            m_ctxmenuIDs.push_back( inds[j].f_fam_id );
+            c++;
+        }
+        inds.empty();
+    }
+
+    wxMenu* marmenu = new wxMenu;
+    menu->AppendSubMenu( marmenu, wxT("Spouses") );
+    families.empty();
+    families = recIndividual::GetFamilyList( indID );
+    for( i = 0 ; i < families.size() ; i++ ) {
+        if( families[i].f_husb_id != 0 && families[i].f_husb_id != indID ) {
+            marmenu->Append( cmd_ID + c, recIndividual::GetFullName( families[i].f_husb_id ) );
+        }
+        if( families[i].f_wife_id != 0 && families[i].f_wife_id != indID ) {
+            marmenu->Append( cmd_ID + c, recIndividual::GetFullName( families[i].f_wife_id ) );
+        }
+        m_ctxmenuIDs.push_back( families[i].f_id );
+        c++;
+    }
+
+    wxMenu* kidmenu = new wxMenu;
+    menu->AppendSubMenu( kidmenu, wxT("Children") );
+    for( i = 0 ; i < families.size() ; i++ ) {
+        inds.empty();
+        inds = families[i].GetChildren();
+        for( j = 0 ; j < inds.size() ; j++ ) {
+            kidmenu->Append( cmd_ID + c, inds[j].GetFullName() );
+            m_ctxmenuIDs.push_back( inds[j].f_fam_id );
+            c++;
+        }
+    }
+    families.clear();
+    inds.clear();
+    return c;
 }
 
 void TfpFrame::AddNewSpouse( const wxString& ref )
@@ -604,7 +827,16 @@ void TfpFrame::AddNewSpouse( const wxString& ref )
 
 void TfpFrame::AddNewParent( const wxString& ref )
 {
-    wxMessageBox( _("Not yet implimented ")+ref, _("AddNewParent") );
+    wxLongLong_t indID;
+    ref.Mid( 1 ).ToLongLong( &indID );
+    Sex sex = ( ref.GetChar(0) == 'F' ) ? SEX_Female : SEX_Male;
+    recDb::Begin();
+    if( tfpAddNewParent( indID, sex ) == true ) {
+        recDb::Commit();
+        RefreshHtmPage();
+    } else {
+        recDb::Rollback();
+    }
 }
 
 

@@ -145,16 +145,6 @@ bool recIndividual::Read()
 	return true;
 }
 
-id_t recIndividual::GetDefaultFamily( id_t id )
-{
-    wxSQLite3StatementBuffer sql;
-    wxSQLite3ResultSet result;
-
-    sql.Format( "SELECT fam_id FROM Individual WHERE id="ID";", id );
-    result = s_db->ExecuteQuery( sql );
-    return GET_ID( result.GetInt64( 0 ) );
-}
-
 wxString recIndividual::GetFullName( id_t id )
 {
     wxString str;
@@ -203,6 +193,34 @@ recFamilyList recIndividual::GetFamilyList( id_t ind )
         families.push_back( family );
     }
     return families;
+}
+
+recFamilyList recIndividual::GetParentList( id_t indID )
+{
+    recFamily parent;
+    recFamilyList parents;
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( indID == 0 ) return parents;
+
+    sql.Format(
+        "SELECT F.id, F.husb_id, F.wife_id, F.event_id "
+		"FROM Family F, FamilyIndividual FI "
+        "WHERE F.id=FI.fam_id AND FI.ind_id="ID";",
+        indID
+    );
+    result = s_db->GetTable( sql );
+
+    for( int i = 0 ; i < result.GetRowCount() ; i++ ) {
+        result.SetRow( i );
+        parent.f_id = GET_ID( result.GetInt64( 0 ) );
+        parent.f_husb_id = GET_ID( result.GetInt64( 1 ) );
+        parent.f_wife_id = GET_ID( result.GetInt64( 2 ) );
+        parent.f_event_id = GET_ID( result.GetInt64( 3 ) );
+        parents.push_back( parent );
+    }
+    return parents;
 }
 
 //----------------------------------------------------------
@@ -491,6 +509,32 @@ bool recFamilyIndividual::Read()
     f_fam_id   = GET_ID( result.GetInt64( 1 ) );
     f_sequence = (unsigned) result.GetInt( 2 );
 	return true;
+}
+
+bool recFamilyIndividual::Find()
+{
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( f_fam_id == 0 || f_ind_id == 0 ) return false; // Only find single record
+
+    sql.Format(
+        "SELECT id, sequence FROM FamilyIndividual "
+        "WHERE fam_id="ID" AND ind_id="ID";",
+        f_fam_id, f_ind_id
+    );
+    result = s_db->GetTable( sql );
+
+    if( result.GetRowCount() == 0 ) {
+        f_id = 0;
+        f_sequence = 0;
+        return true;
+    }
+    result.SetRow( 0 );
+    f_id = GET_ID( result.GetInt64( 0 ) );
+    f_sequence = (unsigned) result.GetInt( 1 );
+    if( result.GetRowCount() != 1 ) return false;
+    return true;
 }
 
 // End of recIndividual.cpp file

@@ -71,7 +71,7 @@ wxString tfpWriteFamilyPage( id_t famID )
     // Husband's Father
     if( fam.f_husb_id != 0 ) {
         if( husbFam.f_husb_id == 0 ) {
-            htm << wxT("<a href=$IF") << fam.f_husb_id
+            htm << wxT("<a href=$IM") << fam.f_husb_id
                 << wxT("><img src=memory:edit.bmp></a>");
         } else {
             htm << wxT("<b><a href=F") << husbFam.f_id << wxT(">")
@@ -87,7 +87,7 @@ wxString tfpWriteFamilyPage( id_t famID )
     // Wife's Father
     if( fam.f_wife_id != 0 ) {
         if( wifeFam.f_husb_id == 0 ) {
-            htm << wxT("<a href=$IF") << fam.f_wife_id
+            htm << wxT("<a href=$IM") << fam.f_wife_id
                 << wxT("><img src=memory:edit.bmp></a>");
         } else {
             htm << wxT("<b><a href='F") << wifeFam.f_id << wxT("'>")
@@ -101,7 +101,7 @@ wxString tfpWriteFamilyPage( id_t famID )
     // Husband's Mother
     if( fam.f_husb_id != 0 ) {
         if( husbFam.f_wife_id == 0 ) {
-            htm << wxT("<a href=$IM") << fam.f_husb_id
+            htm << wxT("<a href=$IF") << fam.f_husb_id
                 << wxT("><img src=memory:edit.bmp></a>");
         } else {
             htm << wxT("<b><a href=F") << husbFam.f_id << wxT(">")
@@ -117,7 +117,7 @@ wxString tfpWriteFamilyPage( id_t famID )
     // Wife's Mother
     if( fam.f_wife_id != 0 ) {
         if( wifeFam.f_wife_id == 0 ) {
-            htm << wxT("<a href=$IM") << fam.f_wife_id
+            htm << wxT("<a href=$IF") << fam.f_wife_id
                 << wxT("><img src=memory:edit.bmp></a>");
         } else {
             htm << wxT("<b><a href='F") << wifeFam.f_id << wxT("'>")
@@ -136,7 +136,7 @@ wxString tfpWriteFamilyPage( id_t famID )
     // Family spouses
     htm << wxT("<table border=1><tr><td colspan=2 align=center width=270>");
     if( fam.f_husb_id == 0 ) {
-        htm << wxT("<a href=$IW") << fam.f_wife_id 
+        htm << wxT("<a href=$IH") << fam.f_wife_id 
             << wxT("><img src=memory:edit.bmp></a>");
     } else {
         htm << wxT("<font size=+1><b>") 
@@ -146,7 +146,7 @@ wxString tfpWriteFamilyPage( id_t famID )
     }
     htm << wxT("</td><td colspan=2 align=center width=270>");
     if( fam.f_wife_id == 0 ) {
-        htm << wxT("<a href=$IH") << fam.f_husb_id 
+        htm << wxT("<a href=$IW") << fam.f_husb_id 
             << wxT("><img src=memory:edit.bmp></a>");
     } else {
         htm << wxT("<font size=+1><b>") 

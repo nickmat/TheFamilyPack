@@ -36,5 +36,21 @@
 #include "wx/wx.h"
 #endif
 
+#include "tfpWr.h"
+
+wxString tfpCreatePedChart( id_t indID )
+{
+    return 
+        "<html><head><title>tfpCreatePedChart</title></head>"
+        "<body>Not yet done - tfpCreatePedChart</body></html>";
+}
+
+wxString tfpCreateDescChart( id_t indID )
+{
+    return 
+        "<html><head><title>tfpCreateDescChart</title></head>"
+        "<body>Not yet done - tfpCreateDescChart</body></html>";
+}
+
 
 // End of tfpWrChart.cpp Source

@@ -95,6 +95,13 @@ bool recDb::OpenDb( const wxString& fname )
     return true;
 }
 
+void recDb::ErrorMessage( wxSQLite3Exception& e )
+{
+    wxString err;
+    err << e.GetErrorCode() << ": " << e.GetMessage();
+    wxMessageBox( err, _("Database Error") );
+}
+
 bool recDb::DeleteRecord( const char* name, id_t id )
 {
     if( id == 0 ) {
@@ -124,6 +131,22 @@ bool recDb::RecordExists( const char* name, id_t id )
     }
     return true;
 }
+
+id_t recDb::ExecuteID( const wxSQLite3StatementBuffer& sql )
+{
+    wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
+    return GET_ID( result.GetInt64( 0 ) );
+}
+
+id_t recDb::ExecuteID( const char* format, id_t id )
+{
+    wxSQLite3StatementBuffer sql;
+    sql.Format( format, id );
+
+    wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
+    return GET_ID( result.GetInt64( 0 ) );
+}
+
 
 wxString recGetSexStr( Sex sex )
 {

@@ -30,6 +30,7 @@
 #ifndef RECDATABASE_H
 #define RECDATABASE_H
 
+#include <wx/vector.h>
 #include <wx/wxsqlite3.h>
 
 // Some helpful defines
@@ -38,6 +39,8 @@ typedef wxLongLong      id_t;
 #define GET_ID( id )    (id)
 #define IDtoLong( id )  (id.GetLo())
 #define UTF8_(s) ((const char*)(s).utf8_str())
+
+typedef wxVector< id_t >  recIdList;
 
 enum Sex { SEX_Unstated, SEX_Male, SEX_Female, SEX_Unknown };
 extern wxString recGetSexStr( Sex sex );
@@ -91,6 +94,7 @@ public:
     static void Begin() { s_db->Begin(); }
     static void Commit() { s_db->Commit(); }
     static void Rollback() { s_db->Rollback(); }
+    static void ErrorMessage( wxSQLite3Exception& e );
     static void Savepoint( const wxString& str ) { s_db->Savepoint( str ); }
     static void ReleaseSavepoint( const wxString& str ) 
         { s_db->ReleaseSavepoint( str ); }
@@ -117,6 +121,9 @@ public:
      *  function returns true.
      */
     virtual bool Read() = 0;
+
+    static id_t ExecuteID( const wxSQLite3StatementBuffer& sql );
+    static id_t ExecuteID( const char* format, id_t id );
 };
 
 #define TABLE_NAME_MEMBERS( T )                                        \

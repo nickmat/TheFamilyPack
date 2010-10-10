@@ -36,5 +36,22 @@
 #include "wx/wx.h"
 #endif
 
+#include "tfpWr.h"
+
+wxString tfpWritePersonIndex( WrIndex type )
+{
+    return 
+        "<html><head><title>tfpWritePersonIndex</title></head>"
+        "<body>Not yet done - tfpWritePersonIndex</body></html>";
+}
+
+wxString tfpWritePersonList( 
+	const wxString& surname, WrIndex type )
+{
+    return 
+        "<html><head><title>tfpWritePersonList</title></head>"
+        "<body>Not yet done - tfpWritePersonList</body></html>";
+}
+
 
 // End of tfpWrName.cpp Source

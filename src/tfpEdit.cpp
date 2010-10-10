@@ -42,6 +42,67 @@
 #include "tfpEdit.h"
 #include "dlg/dlgEdIndividual.h"
 
+bool tfpEditFamily( id_t famID )
+{
+    wxMessageBox( wxT("Not yet implimented"), wxT("tfpEditFamily") );
+    return false;
+}
+
+bool tfpEditIndividual( id_t indID )
+{
+    wxMessageBox( wxT("Not yet implimented"), wxT("tfpEditIndividual") );
+    return false;
+}
+
+bool tfpAddNewParent( id_t indID, Sex sex )
+{
+	const wxString savepoint = wxT("AddNewParent");
+    bool ret = false;
+    recDb::Savepoint( savepoint );
+    dlgEditIndividual* dialog = new dlgEditIndividual( NULL );
+
+    recIndividual ind, parent;
+    ind.f_id = indID;
+    ind.Read();
+    parent.Clear();
+    parent.Save();
+    recFamily fam;
+    fam.ReadParents( indID );
+
+    if( sex == SEX_Female ) {  // Add Mother
+        wxASSERT( fam.f_wife_id == 0 );
+        fam.f_wife_id = parent.f_id;
+        dialog->SetSex( SEX_Female );
+    } else {                   // Add Father
+        wxASSERT( fam.f_husb_id == 0 );
+        fam.f_husb_id = parent.f_id;
+        dialog->SetSex( SEX_Male );
+        dialog->SetSurname( ind.f_surname );
+    }
+    fam.Save();
+    recFamilyIndividual fi;
+    fi.f_fam_id = fam.f_id;
+    fi.f_ind_id = indID;
+    fi.Find();
+    if( fi.f_id == 0 ) {
+        fi.f_sequence = 1;
+        fi.Save();
+    }
+
+    dialog->SetIndividualID( parent.f_id );
+    dialog->SetFamilyID( fam.f_id );
+
+    if( dialog->ShowModal() == wxID_OK ) {
+		recDb::ReleaseSavepoint( savepoint );
+        ret = true;
+    } else {
+		recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+
+    return ret;
+}
+
 bool tfpAddNewSpouse( id_t indID, Sex sex )
 {
 	const wxString savepoint = wxT("AddNewSpouse");
@@ -56,20 +117,20 @@ bool tfpAddNewSpouse( id_t indID, Sex sex )
     recFamily fam;
     fam.f_id = ind.f_fam_id;
     fam.Read();
-    if( sex == SEX_Female ) {    // Add Spouse to Wife
-        if( fam.f_husb_id != 0 ) { // More than one Husb
-            fam.Clear();
-            fam.f_wife_id = ind.f_id;
-        }
-        spouse.f_sex = SEX_Male;
-        fam.f_husb_id = spouse.f_id;
-    } else {                     // Add Spouse to Husb
+    if( sex == SEX_Female ) {    // Add Wife
         if( fam.f_wife_id != 0 ) { // More than one wife
             fam.Clear();
             fam.f_husb_id = ind.f_id;
         }
         spouse.f_sex = SEX_Female;
         fam.f_wife_id = spouse.f_id;
+    } else {                     // Add Husb
+        if( fam.f_husb_id != 0 ) { // More than one Husb
+            fam.Clear();
+            fam.f_wife_id = ind.f_id;
+        }
+        spouse.f_sex = SEX_Male;
+        fam.f_husb_id = spouse.f_id;
     }
     fam.Save();
     spouse.f_fam_id = fam.f_id;
@@ -90,6 +151,22 @@ bool tfpAddNewSpouse( id_t indID, Sex sex )
     return ret;
 }
 
+id_t tfpAddNewChild( id_t famID, Sex sex )
+{
+    wxMessageBox( wxT("Not yet implimented"), wxT("tfpAddNewChild") );
+    return 0;
+}
 
+bool tfpAddExistSpouse( id_t indID, Sex sex )
+{
+    wxMessageBox( wxT("Not yet implimented"), wxT("tfpAddExistSpouse") );
+    return false;
+}
+
+bool tfpAddExistChild( id_t famID, Sex sex )
+{
+    wxMessageBox( wxT("Not yet implimented"), wxT("tfpAddExistChild") );
+    return false;
+}
 
 // End of tfpEdit.cpp file

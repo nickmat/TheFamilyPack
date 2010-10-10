@@ -29,7 +29,8 @@
 #ifndef TFPFRAME_H
 #define TFPFRAME_H
 
-#include "wx/html/htmlwin.h"
+#include <wx/html/htmlwin.h>
+#include <rec/recDatabase.h>
 
 class wxHtmlEasyPrinting;
 
@@ -54,6 +55,8 @@ private:
     wxHtmlWindow*       m_html;
     wxHtmlEasyPrinting* m_prn;
     wxString            m_dbname;
+    wxString            m_ctxmenuref;
+    recIdList           m_ctxmenuIDs;
 
 public:
     // ctor and dtor
@@ -93,6 +96,8 @@ public:
     void OnHome( wxCommandEvent& event );
 
     void OnHtmlLinkClicked( wxHtmlLinkEvent& event );
+    void OnHtmCtxMenu( wxCommandEvent& event );
+
     void OnCloseWindow( wxCloseEvent& event );
 
 private:
@@ -106,10 +111,13 @@ private:
     void RefreshHtmPage();
 
     void DoHtmCtxMenu( const wxString& ref );
+    int AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID );
 
     void AddNewSpouse( const wxString& ref );
     void AddNewParent( const wxString& ref );
 };
+
+#define tfpMAX_MENU_ITEMS 50
 
 enum
 {
@@ -135,7 +143,19 @@ enum
     tfpID_HELP_WEB_HOME,
     tfpID_FIND_BACK,
     tfpID_FIND_FORWARD,
-    tfpID_GOTO_HOME
+    tfpID_GOTO_HOME,
+    tfpID_HCTXMENU_BEG,
+    tfpID_HCTXMENU_EDIT_FAMILY,
+    tfpID_HCTXMENU_EDIT_NEW_SON,
+    tfpID_HCTXMENU_EDIT_NEW_DAUR,
+    tfpID_HCTXMENU_EDIT_EXIST_SON,
+    tfpID_HCTXMENU_EDIT_EXIST_DAUR,
+    tfpID_HCTXMENU_EDIT_INDIVIDUAL,
+    tfpID_HCTXMENU_EDIT_NEW_SPOUSE,
+    tfpID_HCTXMENU_EDIT_EXIST_SPOUSE,
+    tfpID_HCTXMENU_END,
+    tfpID_INDMENU_BEG,
+    tfpID_INDMENU_END = tfpID_INDMENU_BEG + tfpMAX_MENU_ITEMS
 };
 
 #endif // TFPFRAME_H
