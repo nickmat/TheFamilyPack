@@ -92,6 +92,7 @@ public:
 	bool SetDate( const wxString& str, CalendarScheme sch = CALENDAR_SCH_Unstated );
     wxString GetStr( CalendarScheme sch = CALENDAR_SCH_Unstated ) const;
     static wxString GetStr( id_t id );
+	int GetYear( CalendarScheme sch = CALENDAR_SCH_Unstated );
 };
 
 /*! The two entities are equal, ignoring the record id.

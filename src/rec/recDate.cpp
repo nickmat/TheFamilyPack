@@ -187,4 +187,18 @@ wxString recDate::GetStr( id_t id )
     return d.GetStr();
 }
 
+int recDate::GetYear( CalendarScheme scheme )
+{
+	int year;
+
+	if( f_jdn == 0  )
+	{
+		return 0;
+	}
+	if( scheme == CALENDAR_SCH_Unstated ) scheme = f_display_sch;
+    calYearFromJdn( year, f_jdn+(f_range/2), scheme );
+	return year;
+}
+
+
 // End of recDate.cpp file

@@ -64,6 +64,8 @@ void recIndividual::Save()
 	wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
 
+    UpdateDateEpitaph(); // Ensure date epitaph is up todate
+
 	if( f_id == 0 )
 	{
 		// Add new record
@@ -145,6 +147,57 @@ bool recIndividual::Read()
 	return true;
 }
 
+void recIndividual::UpdateDateEpitaph()
+{
+    id_t date_id;
+    recEvent event;
+    recDate date;
+    wxString epi;
+
+    epi << wxT("(");
+
+    event.f_id = f_birth_id;
+    event.Read();
+    date_id = event.f_date1_id;
+    if( date_id == 0 ) {
+        event.f_id = f_nr_birth_id;
+        event.Read();
+        date_id = event.f_date1_id;
+    }
+
+    date.f_id = date_id;
+    if( date.Read() == true && date.f_jdn != 0 )
+    {
+        epi << date.GetYear();
+    } else {
+        epi << wxT(" ");
+    }
+    f_birth_jdn = date.f_jdn;
+
+    epi << wxT(" - ");
+
+    event.f_id = f_death_id;
+    event.Read();
+    date_id = event.f_date1_id;
+    if( date_id == 0 ) {
+        event.f_id = f_nr_death_id;
+        event.Read();
+        date_id = event.f_date1_id;
+    }
+
+    date.f_id = date_id;
+    if( date.Read() == true && date.f_jdn != 0 )
+    {
+        epi << date.GetYear();
+    } else {
+        epi << wxT(" ");
+    }
+
+    epi << wxT(")");
+    f_epitaph = epi;
+}
+
+
 wxString recIndividual::GetFullName( id_t id )
 {
     wxString str;
@@ -155,6 +208,16 @@ wxString recIndividual::GetFullName( id_t id )
     result = s_db->ExecuteQuery( sql );
     str << result.GetAsString( 1 ) << " " << result.GetAsString( 0 );
     return str;
+}
+
+wxString recIndividual::GetSurname( id_t id )
+{
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3ResultSet result;
+
+    sql.Format( "SELECT surname FROM Individual WHERE id="ID";", id );
+    result = s_db->ExecuteQuery( sql );
+    return result.GetAsString( 0 );
 }
 
 wxString recIndividual::GetDateEpitaph( id_t id )
@@ -434,6 +497,17 @@ recIndividualList recFamily::GetChildren( id_t fam )
         children.push_back( ind );
     }
     return children;
+}
+
+unsigned recFamily::GetChildNextSequence( id_t famID )
+{
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "SELECT MAX(sequence) FROM FamilyIndividual WHERE fam_id="ID";",
+        famID
+    );
+    return (unsigned) s_db->ExecuteScalar( sql ) + 1;
 }
 
 //----------------------------------------------------------

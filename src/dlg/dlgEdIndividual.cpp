@@ -224,7 +224,7 @@ bool dlgEditIndividual::TransferDataFromWindow()
         m_individual.f_occ_id = 0;
     } else {
         m_occAttr.f_per_id = m_persona.f_id;
-        m_occAttr.f_type_id = 4;
+        m_occAttr.f_type_id = ATTR_TYPE_Occupation;
         m_occAttr.f_val = str;
         m_occAttr.Save();
         m_individual.f_occ_id = m_occAttr.f_id;

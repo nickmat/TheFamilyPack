@@ -62,12 +62,14 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "Individual" );
 
+    void UpdateDateEpitaph();
     wxString GetFullName() { return f_given + " " + f_surname; }
 
     static id_t GetDefaultFamily( id_t id ) {
 		return ExecuteID( "SELECT fam_id FROM Individual WHERE id="ID";", id ); 
     }
     static wxString GetFullName( id_t id );
+    static wxString GetSurname( id_t id );
     static wxString GetDateEpitaph( id_t id );
 
     static recFamilyList GetFamilyList( id_t ind );
@@ -160,6 +162,7 @@ public:
     bool ReadParents( id_t ind );
     static recIndividualList GetChildren( id_t fam );
     recIndividualList GetChildren() const { return GetChildren( f_id ); }
+    static unsigned GetChildNextSequence( id_t id );
 };
 
 inline bool recEquivalent( const recFamily& r1, const recFamily& r2 )

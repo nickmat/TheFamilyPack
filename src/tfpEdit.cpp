@@ -48,11 +48,64 @@ bool tfpEditFamily( id_t famID )
     return false;
 }
 
-bool tfpEditIndividual( id_t indID )
+bool tfpEditIndividual( id_t indID  )
 {
-    wxMessageBox( wxT("Not yet implimented"), wxT("tfpEditIndividual") );
-    return false;
+	const wxString savepoint = "EdInd";
+	bool ret = false;
+	dlgEditIndividual* dialog = new dlgEditIndividual( NULL );
+	recDb::Savepoint( savepoint );
+
+	dialog->SetIndividualID( indID );
+
+	if( dialog->ShowModal() == wxID_OK ) {
+		recDb::ReleaseSavepoint( savepoint );
+		ret = true;
+	} else {
+		recDb::Rollback( savepoint );
+	}
+	dialog->Destroy();
+	return ret;
 }
+
+id_t tfpAddIndividual( id_t famID, Sex sex, const wxString& surname )
+{
+	const wxString savepoint = "AddInd";
+	id_t ret = 0;
+	dlgEditIndividual* dialog = new dlgEditIndividual( NULL );
+	recDb::Savepoint( savepoint );
+
+	recIndividual ind;
+	ind.Clear();
+	ind.Save();
+
+	if( famID != 0 ) {
+    	recFamily fam;
+		fam.f_id = famID;
+		fam.Read();
+		if( sex == SEX_Female ) {
+            fam.f_wife_id = ind.f_id;
+		} else {
+			fam.f_husb_id = ind.f_id;
+		}
+		fam.Save();
+	} // else let dialog create new Family record
+
+	dialog->SetIndividualID( ind.f_id );
+	dialog->SetFamilyID( famID );
+	dialog->SetSex( sex );
+	dialog->SetSurname( surname );
+
+	if( dialog->ShowModal() == wxID_OK ) {
+		recDb::ReleaseSavepoint( savepoint );
+		ret = ind.f_id;
+	} else {
+		recDb::Rollback( savepoint );
+	}
+	dialog->Destroy();
+	return ret;
+}
+
+
 
 bool tfpAddNewParent( id_t indID, Sex sex )
 {
@@ -153,8 +206,31 @@ bool tfpAddNewSpouse( id_t indID, Sex sex )
 
 id_t tfpAddNewChild( id_t famID, Sex sex )
 {
-    wxMessageBox( wxT("Not yet implimented"), wxT("tfpAddNewChild") );
-    return 0;
+	const wxString savepoint = "AddNewChild";
+	id_t indID = 0;
+	dlgEditIndividual* dialog = new dlgEditIndividual( NULL );
+	recDb::Savepoint( savepoint );
+
+	wxString surname;
+	recFamily fam;
+	fam.f_id = famID;
+	fam.Read();
+	surname = recIndividual::GetSurname( fam.f_husb_id );
+
+	indID = tfpAddIndividual( 0, sex, surname );
+	if( indID != 0 ) {
+        recFamilyIndividual fi;
+		fi.Clear();
+        fi.f_fam_id = famID;
+		fi.f_ind_id = indID;
+		fi.f_sequence = recFamily::GetChildNextSequence( famID );
+		fi.Save();
+		recDb::ReleaseSavepoint( savepoint );
+	} else {
+		recDb::Rollback( savepoint );
+	}
+
+	return indID;
 }
 
 bool tfpAddExistSpouse( id_t indID, Sex sex )

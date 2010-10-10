@@ -114,7 +114,7 @@ wxString recPersona::GetSurname( id_t id )
 	wxSQLite3StatementBuffer sql;
 
 	sql.Format( 
-		"SELECT val FROM Attribute WHERE per_id="ID" AND type_id=2 "
+		"SELECT val FROM Attribute WHERE per_id="ID" AND type_id=-2 "
 		"ORDER BY sequence;", id
 	);
     wxSQLite3Table result = s_db->GetTable( sql );
@@ -141,7 +141,7 @@ wxString recPersona::GetGivenName( id_t id )
 
 	sql.Format( 
 		"SELECT val FROM Attribute WHERE per_id="ID" "
-		"AND (type_id=1 OR type_id=3) "
+		"AND (type_id=-1 OR type_id=-3) "
 		"ORDER BY sequence;", id
 	);
     wxSQLite3Table result = s_db->GetTable( sql );
