@@ -279,7 +279,23 @@ void TfpFrame::OnQuit( wxCommandEvent& event )
  */
 void TfpFrame::OnEditIndividual( wxCommandEvent& event )
 {
-    wxMessageBox( wxT("Not yet implimented"), wxT("OnEditIndividual") );
+//    wxMessageBox( wxT("Not yet implimented"), wxT("OnEditIndividual") );
+    id_t id = 0;
+    recDb::Begin();
+    try {
+        id = tfpAddIndividual( 0, SEX_Male );
+        if( id != 0 ) {
+            recDb::Commit();
+            wxString str;
+            str << "FI" << id;
+            DisplayHtmPage( str );
+        } else {
+            recDb::Rollback();
+        }
+    } catch( wxSQLite3Exception& e ) {
+        recDb::ErrorMessage( e );
+        recDb::Rollback();
+    }
 }
 
 /*! \brief Called on a Edit Reference menu option event.
