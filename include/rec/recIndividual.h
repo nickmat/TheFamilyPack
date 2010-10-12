@@ -58,7 +58,7 @@ public:
     id_t     f_occ_id;
 
     recIndividual() {}
-    recIndividual( id_t id ) : recDb(id) {}
+    recIndividual( id_t id ) : recDb(id) { Read(); }
 
 	void Clear();
     void Save();
@@ -163,7 +163,7 @@ public:
     id_t     f_event_id;
 
     recFamily() {}
-    recFamily( id_t id ) : recDb(id) {}
+    recFamily( id_t id ) : recDb(id) { Read(); }
 
 	void Clear();
     void Save();
@@ -173,6 +173,8 @@ public:
     bool ReadParents( id_t ind );
     static recIndividualList GetChildren( id_t fam );
     recIndividualList GetChildren() const { return GetChildren( f_id ); }
+    static recIdList GetChildrenIds( id_t fam );
+    recIdList GetChildrenIds() const { return GetChildrenIds( f_id ); }
     static unsigned GetChildNextSequence( id_t id );
     recFamIndVec GetChildLinks() { return GetChildLinks( f_id ); }
 	static recFamIndVec GetChildLinks( id_t famID );

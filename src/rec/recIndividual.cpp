@@ -546,6 +546,28 @@ recIndividualList recFamily::GetChildren( id_t fam )
     return children;
 }
 
+recIdList recFamily::GetChildrenIds( id_t fam )
+{
+    recIdList children;
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( fam == 0 ) return children;
+
+    sql.Format(
+        "SELECT ind_id FROM FamilyIndividual WHERE fam_id="ID" "
+        "ORDER BY sequence ASC;", fam
+    );
+    result = s_db->GetTable( sql );
+
+    for( int i = 0 ; i < result.GetRowCount() ; i++ )
+    {
+        result.SetRow( i );
+        children.push_back( GET_ID( result.GetInt64( 0 ) ) );
+    }
+    return children;
+}
+
 unsigned recFamily::GetChildNextSequence( id_t famID )
 {
     wxSQLite3StatementBuffer sql;

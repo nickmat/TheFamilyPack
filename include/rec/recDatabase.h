@@ -68,7 +68,7 @@ public:
     /*! Default constructor, does nothing. */
     recDb() {}
     /*! Constructor with id, reads the record for the given id. */
-    recDb( id_t id ) { f_id = id; Read(); }
+    recDb( id_t id ) : f_id(id) {}
 
     static void SetDb( wxSQLite3Database* db ) { s_db = db; }
     static wxSQLite3Database* GetDb() { return s_db; }
