@@ -106,11 +106,14 @@ bool dlgEditFamily::TransferDataToWindow()
 
     m_childlinks = m_family.GetChildLinks();
 	wxArrayString list;
-	for( size_t i = 0 ; i < m_childlinks.size() ; i++ )
-	{
-		list.Add( recIndividual::GetFullName( m_childlinks[i].f_ind_id ) );
-	}
-	m_listChild->InsertItems( list, 0 );
+    if( m_childlinks.size() > 0 )
+    {
+	    for( size_t i = 0 ; i < m_childlinks.size() ; i++ )
+	    {
+		    list.Add( recIndividual::GetFullName( m_childlinks[i].f_ind_id ) );
+	    }
+	    m_listChild->InsertItems( list, 0 );
+    }
     return true;
 }
 

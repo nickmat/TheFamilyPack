@@ -317,6 +317,22 @@ wxSQLite3ResultSet recIndividual::GetNameList( wxString surname )
 	return s_db->ExecuteQuery( sql );
 }
 
+wxSQLite3Table recIndividual::GetNameTable( Sex sex )
+{
+    wxSQLite3StatementBuffer sql;
+
+    if( sex == SEX_Unstated ) {
+        sql.Format(
+            "SELECT id, surname, given, epitaph, sex, fam_id FROM Individual "
+		    "ORDER BY surname, given;" );
+    } else {
+        sql.Format(
+            "SELECT id, surname, given, epitaph, sex, fam_id FROM Individual "
+		    "WHERE sex=%d ORDER BY surname, given;", sex );
+    }
+    return s_db->GetTable( sql );
+}
+
 //----------------------------------------------------------
 
 void recIndividualPersona::Clear()

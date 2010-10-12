@@ -50,7 +50,7 @@ public:
     void SetTable( wxSQLite3Table* table ) { mp_table = table; }
 
 private:
-//    virtual wxString OnGetItemText( long item, long column ) const;
+    virtual wxString OnGetItemText( long item, long column ) const;
 
     wxSQLite3Table* mp_table;
 };

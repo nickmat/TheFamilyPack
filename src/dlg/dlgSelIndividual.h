@@ -30,5 +30,27 @@
 #ifndef DLGSELINDIVIDUAL_H
 #define DLGSELINDIVIDUAL_H
 
+#include <rec/recDatabase.h>
+
+#include "fbDlg.h"
+
+class dlgSelectIndividual : public fbDlgSelectIndividual
+{
+public:
+	/** Constructor */
+	dlgSelectIndividual( wxWindow* parent );
+	
+	bool CreateTable( Sex sex = SEX_Unstated );
+	id_t GetSelectedID();
+
+protected:
+	// Handlers for fbDlgSelectIndividual events.
+	void OnIdle( wxIdleEvent& event );
+	void OnIndividualSelected( wxListEvent& event );
+
+
+	wxSQLite3Table m_table;
+	long           m_count;
+};
 
 #endif // DLGSELINDIVIDUAL_H

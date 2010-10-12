@@ -97,12 +97,9 @@ wxString tfpWritePersonIndex( WrIndex type )
     return htm;
 }
 
-wxString tfpWritePersonList( 
-	const wxString& surname, WrIndex type )
+wxString tfpWritePersonList( const wxString& surname, WrIndex type )
 {
 	wxString htm;
-
-	wxSQLite3ResultSet result;
 
 	if( type != WrIndex_Individual ) {
 		return wxT("<html><head><title>Name List</title></head><body>")
@@ -111,8 +108,8 @@ wxString tfpWritePersonList(
     htm << wxT("<html><head><title>Name List</title></head><body>")
         << wxT("<center><h1>") << surname << wxT("</h1>");
 
-    result = recIndividual::GetNameList( surname );
-	id_t indID;
+    wxSQLite3ResultSet result = recIndividual::GetNameList( surname );
+
     if( result.GetColumnCount() > 0 )
 	{
 		htm << wxT("<table border=1>");

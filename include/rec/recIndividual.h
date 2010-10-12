@@ -86,6 +86,7 @@ public:
         );
     }
     static wxSQLite3ResultSet GetNameList( wxString name );
+    static wxSQLite3Table GetNameTable( Sex sex );
 };
 
 inline bool recEquivalent( const recIndividual& r1, const recIndividual& r2 )

@@ -42,6 +42,23 @@
 #include "tfpEdit.h"
 #include "dlg/dlgEdFamily.h"
 #include "dlg/dlgEdIndividual.h"
+#include "dlg/dlgSelIndividual.h"
+
+
+static id_t tfpPickIndividual( Sex sex )
+{
+	id_t indID = 0;
+    dlgSelectIndividual* dialog = new dlgSelectIndividual( NULL );
+
+	if( dialog->CreateTable( sex ) == true ) {
+		if( dialog->ShowModal() == wxID_OK ) {
+			indID = dialog->GetSelectedID();
+		}
+	}
+    dialog->Destroy();
+	return indID;
+}
+
 
 bool tfpEditFamily( id_t famID )
 {
@@ -251,14 +268,105 @@ id_t tfpAddNewChild( id_t famID, Sex sex )
 
 bool tfpAddExistSpouse( id_t indID, Sex sex )
 {
-    wxMessageBox( wxT("Not yet implimented"), wxT("tfpAddExistSpouse") );
-    return false;
+	const wxString savepoint = wxT("AddExistSpouse");
+    bool ret = false;
+	recDb::Savepoint( savepoint );
+
+    recIndividual ind, spouse;
+    ind.f_id = indID;
+    ind.Read();
+    recFamily fam;
+    fam.f_id = ind.f_fam_id;
+    fam.Read();
+    if( sex == SEX_Male ) {
+        spouse.f_id = tfpPickIndividual( SEX_Male );
+        if( spouse.f_id != 0 ) {
+            spouse.Read();
+            if( fam.f_husb_id == 0 ) { // No husband yet
+                fam.f_husb_id = spouse.f_id;
+
+                recFamily spouseFam;
+                spouseFam.f_id = spouse.f_fam_id;
+                spouseFam.Read();
+                if( spouseFam.f_wife_id == 0 ) {
+                    // We have two families but only need one.
+                    recFamily::Delete( spouse.f_fam_id );
+                    spouse.f_fam_id = ind.f_fam_id;
+                }
+
+            } else {
+                fam.f_id = spouse.f_fam_id;
+                fam.Read();
+                if( fam.f_wife_id == 0 ) { // Spouse has no wife yet
+                    fam.f_wife_id = ind.f_id;
+                } else { // Create a new family
+                    fam.Clear();
+                    fam.f_wife_id = ind.f_id;
+                    fam.f_husb_id = spouse.f_id;
+                }
+            }
+        }
+    } else { // SEX_Male
+        spouse.f_id = tfpPickIndividual( SEX_Female );
+        if( spouse.f_id != 0 ) {
+            spouse.Read();
+            if( fam.f_wife_id == 0 ) { // No wives yet
+                fam.f_wife_id = spouse.f_id;
+                recFamily spouseFam;
+                spouseFam.f_id = spouse.f_fam_id;
+                spouseFam.Read();
+                if( spouseFam.f_husb_id == 0 ) {
+                    // We have two families but only need one.
+                    recFamily::Delete( spouse.f_fam_id );
+                    spouse.f_fam_id = ind.f_fam_id;
+                }
+            } else {
+                fam.f_id = spouse.f_fam_id;
+                fam.Read();
+                if( fam.f_husb_id == 0 ) { // Spouse has no husband yet
+                    fam.f_husb_id = ind.f_id;
+                } else { // Create a new family
+                    fam.Clear();
+                    fam.f_husb_id = ind.f_id;
+                    fam.f_wife_id = spouse.f_id;
+                }
+            }
+        }
+    }
+    if( spouse.f_id != 0 ) {
+        ret = true;
+        fam.Save();
+		recDb::ReleaseSavepoint( savepoint );
+    } else {
+		recDb::Rollback( savepoint );
+    }
+
+    return ret;
 }
 
 bool tfpAddExistChild( id_t famID, Sex sex )
 {
-    wxMessageBox( wxT("Not yet implimented"), wxT("tfpAddExistChild") );
-    return false;
+//    wxMessageBox( wxT("Not yet implimented"), wxT("tfpAddExistChild") );
+//    return false;
+	const wxString savepoint = "AddExistingChild";
+    bool ret = false;
+	recDb::Savepoint( savepoint );
+
+	id_t indID = tfpPickIndividual( sex );
+	if( indID != 0 ) {
+        recFamilyIndividual fi;
+		fi.Clear();
+        fi.f_fam_id = famID;
+		fi.f_ind_id = indID;
+		fi.f_sequence = recFamily::GetChildNextSequence( famID );
+		fi.Save();
+        ret = true;
+		recDb::ReleaseSavepoint( savepoint );
+	} else {
+		recDb::Rollback( savepoint );
+	}
+
+	return ret;
 }
 
 // End of tfpEdit.cpp file
