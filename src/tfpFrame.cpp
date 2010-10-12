@@ -323,7 +323,8 @@ void TfpFrame::OnFindIndividualID( wxCommandEvent& event )
  */
 void TfpFrame::OnListIndex( wxCommandEvent& event )
 {
-    wxMessageBox( wxT("Not yet implimented"), wxT("OnListIndex") );
+//    wxMessageBox( wxT("Not yet implimented"), wxT("OnListIndex") );
+    DisplayHtmPage( "N" );
 }
 
 /*! \brief Called on a List Names menu option event.

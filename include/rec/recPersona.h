@@ -103,6 +103,11 @@ public:
 
     static wxString GetValue( id_t id );
 	static recAttributeList ConvertStrToList( const wxString& str, id_t type = ATTR_TYPE_Given_name );
+    static wxSQLite3ResultSet GetSurnameList() {
+        return s_db->ExecuteQuery( 
+            "SELECT val FROM Attribute WHERE type_id=-2 GROUP BY val;"
+        );
+    }
 };
 
 inline bool recEquivalent( const recAttribute& r1, const recAttribute& r2 )

@@ -79,6 +79,13 @@ public:
     recFamilyList GetFamilyList() const { return GetFamilyList( f_id ); }
     static recFamilyList GetParentList( id_t indID );
     recFamilyList GetParentList() const { return GetParentList( f_id ); }
+
+    static wxSQLite3ResultSet GetSurnameList() {
+        return s_db->ExecuteQuery( 
+            "SELECT surname FROM Individual GROUP BY surname;"
+        );
+    }
+    static wxSQLite3ResultSet GetNameList( wxString name );
 };
 
 inline bool recEquivalent( const recIndividual& r1, const recIndividual& r2 )

@@ -36,21 +36,107 @@
 #include "wx/wx.h"
 #endif
 
+#include <rec/recIndividual.h>
+#include <rec/recPersona.h>
+
 #include "tfpWr.h"
 
 wxString tfpWritePersonIndex( WrIndex type )
 {
-    return 
-        "<html><head><title>tfpWritePersonIndex</title></head>"
-        "<body>Not yet done - tfpWritePersonIndex</body></html>";
+	wxSQLite3ResultSet result;
+
+	if( type == WrIndex_Individual ) {
+        result = recIndividual::GetSurnameList();
+	} else { // type == WrIndex_Persona
+        result = recAttribute::GetSurnameList();
+	}
+
+	wxString htm = 
+		wxT("<html><head><title>Surname Index</title></head><body>")
+		wxT("<center><h1>Surname Index</h1>");
+
+    if( result.GetColumnCount() > 0 )
+	{
+        wxChar letter = wxChar('/0');
+        wxString name = wxEmptyString;
+        int count = 1;
+        bool row1st = true;
+
+		htm << wxT("<table border=1>");
+        while( result.NextRow() )
+		{
+            name = result.GetAsString( 0 );
+            if( name.GetChar(0) != letter )
+            {
+                letter = name.GetChar(0);
+                if( row1st == true )
+                {
+                    row1st = false;
+                } else {
+                    // End prevous line
+                    htm << wxT("</tr>");
+                }
+                // Start new line
+                htm << wxT("<tr><td><a href='N") << letter << wxT("'><b>") << letter << wxT("</b></a></td><td>");
+                count = 1;
+            }
+            if( count != 1 )
+            {
+                htm << wxT(", ");
+            }
+            htm << wxT("<a href='N") << name << wxT("'><b>") << name << wxT("</b></a>");
+            count++;
+		}
+		htm << wxT("</tr></table>");
+    } else {
+        htm << wxT("No Names found!");
+    }
+
+    htm << wxT("</center></body></html>");
+
+    return htm;
 }
 
 wxString tfpWritePersonList( 
 	const wxString& surname, WrIndex type )
 {
-    return 
-        "<html><head><title>tfpWritePersonList</title></head>"
-        "<body>Not yet done - tfpWritePersonList</body></html>";
+	wxString htm;
+
+	wxSQLite3ResultSet result;
+
+	if( type != WrIndex_Individual ) {
+		return wxT("<html><head><title>Name List</title></head><body>")
+			wxT("<center><h1>Persona Name List Not Yet Done</h1></center></body></html>");
+	}
+    htm << wxT("<html><head><title>Name List</title></head><body>")
+        << wxT("<center><h1>") << surname << wxT("</h1>");
+
+    result = recIndividual::GetNameList( surname );
+	id_t indID;
+    if( result.GetColumnCount() > 0 )
+	{
+		htm << wxT("<table border=1>");
+        while( result.NextRow() )
+		{
+            htm << wxT("<tr><td><a href='F") 
+				<< result.GetAsString( 3 ) 
+				<< wxT("'><b>")
+
+			    << result.GetAsString( 1 ) << wxT(" ")
+				<< result.GetAsString( 0 )
+
+			    << wxT("</b></a> ")
+				<< result.GetAsString( 2 )
+				<< wxT("</td></tr>");
+		}
+		htm << wxT("</table>");
+    } else {
+        htm << wxT("No Names found!");
+    }
+
+    htm << wxT("</center></body></html>");
+
+    return htm;
 }
 
 
