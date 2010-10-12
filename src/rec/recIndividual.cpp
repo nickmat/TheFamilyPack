@@ -510,6 +510,33 @@ unsigned recFamily::GetChildNextSequence( id_t famID )
     return (unsigned) s_db->ExecuteScalar( sql ) + 1;
 }
 
+recFamIndVec recFamily::GetChildLinks( id_t famID )
+{
+    recFamIndVec ChildLinks;
+    recFamilyIndividual fi;
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( famID == 0 ) return ChildLinks;
+
+    sql.Format(
+        "SELECT id, ind_id, sequence FROM FamilyIndividual WHERE fam_id="ID" "
+        "ORDER BY sequence ASC;", famID
+    );
+    result = s_db->GetTable( sql );
+
+	fi.f_fam_id = famID;
+    for( int i = 0 ; i < result.GetRowCount() ; i++ )
+    {
+        result.SetRow( i );
+        fi.f_id = GET_ID( result.GetInt64( 0 ) );
+		fi.f_ind_id = GET_ID( result.GetInt64( 1 ) );
+        fi.f_sequence = (unsigned) result.GetInt( 2 );
+        ChildLinks.push_back( fi );
+    }
+    return ChildLinks;
+}
+
 //----------------------------------------------------------
 
 void recFamilyIndividual::Clear()

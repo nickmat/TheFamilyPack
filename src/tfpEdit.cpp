@@ -40,12 +40,28 @@
 #include <rec/recIndividual.h>
 
 #include "tfpEdit.h"
+#include "dlg/dlgEdFamily.h"
 #include "dlg/dlgEdIndividual.h"
 
 bool tfpEditFamily( id_t famID )
 {
-    wxMessageBox( wxT("Not yet implimented"), wxT("tfpEditFamily") );
-    return false;
+//    wxMessageBox( wxT("Not yet implimented"), wxT("tfpEditFamily") );
+//    return false;
+	const wxString savepoint = "EdFam";
+	bool ret = false;
+
+	dlgEditFamily* dialog = new dlgEditFamily( NULL );
+	dialog->SetFamilyID( famID );
+
+	recDb::Savepoint( savepoint );
+	if( dialog->ShowModal() == wxID_OK ) {
+		recDb::ReleaseSavepoint( savepoint );
+		ret = true;
+	} else {
+		recDb::Rollback( savepoint );
+	}
+	dialog->Destroy();
+	return ret;
 }
 
 bool tfpEditIndividual( id_t indID  )

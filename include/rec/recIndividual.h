@@ -34,10 +34,13 @@
 #include <wx/vector.h>
 #include <rec/recDatabase.h>
 
-class recFamily;
 class recIndividual;
-typedef wxVector< recFamily >  recFamilyList;
 typedef wxVector< recIndividual >  recIndividualList;
+class recFamily;
+typedef wxVector< recFamily >  recFamilyList;
+class recFamilyIndividual;
+typedef wxVector< recFamilyIndividual >  recFamIndVec;
+
 
 class recIndividual : public recDb {
 public:
@@ -163,6 +166,8 @@ public:
     static recIndividualList GetChildren( id_t fam );
     recIndividualList GetChildren() const { return GetChildren( f_id ); }
     static unsigned GetChildNextSequence( id_t id );
+    recFamIndVec GetChildLinks() { return GetChildLinks( f_id ); }
+	static recFamIndVec GetChildLinks( id_t famID );
 };
 
 inline bool recEquivalent( const recFamily& r1, const recFamily& r2 )

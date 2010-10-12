@@ -30,4 +30,62 @@
 #ifndef  DLGEDITFAMILY_H
 #define  DLGEDITFAMILY_H
 
+#include <rec/recIndividual.h>
+
+#include "fbDlg.h"
+
+class dlgEditFamily : public fbDlgEditFamily
+{
+    DECLARE_CLASS( dlgEditFamily )
+    DECLARE_EVENT_TABLE()
+
+protected:
+	enum {
+		tfpID_DLGEDFAM_EDIT = 1100,
+		tfpID_DLGEDFAM_REMOVE,
+		tfpID_DLGEDFAM_DELETE,
+		tfpID_DLGEDFAM_ADDNEW,
+		tfpID_DLGEDFAM_ADDEXIST,
+		tfpID_DLGEDFAM_ADDNEWSON,
+		tfpID_DLGEDFAM_ADDNEWDAUR,
+		tfpID_DLGEDFAM_ADDEXISTSON,
+		tfpID_DLGEDFAM_ADDEXISTDAUR,
+	};
+public:
+	dlgEditFamily( wxWindow* parent );
+
+	void SetFamilyID( id_t famID ) { m_family.f_id = famID; }
+	void SetChildID( id_t childID ) { m_child = childID; }
+
+private:
+    bool TransferDataToWindow();
+    bool TransferDataFromWindow();
+
+    void OnHusbButton( wxCommandEvent& event );
+    void OnWifeButton( wxCommandEvent& event );
+    void OnMarriageButton( wxCommandEvent& event );
+	void EditIDMenu( id_t editID );
+    void OnEditID( wxCommandEvent& event );
+    void OnRemoveID( wxCommandEvent& event );
+    void OnDeleteID( wxCommandEvent& event );
+    void OnAddExistID( wxCommandEvent& event );
+
+	void OnAddChildButton( wxCommandEvent& event );
+    void OnAddChild( wxCommandEvent& event );
+
+    void OnEditButton( wxCommandEvent& event );
+    void OnDeleteButton( wxCommandEvent& event );
+    void OnUpButton( wxCommandEvent& event );
+    void OnDownButton( wxCommandEvent& event );
+
+	enum EDBUT_Type { EDBUT_Husb, EDBUT_Wife, EDBUT_Marr };
+
+	id_t           m_child;
+	EDBUT_Type     m_editbutton;
+
+	recFamily      m_family;
+	recFamIndVec   m_childlinks;
+
+};
+
 #endif // DLGEDITFAMILY_H
