@@ -37,13 +37,14 @@
 class recPlacePart;
 typedef wxVector< recPlacePart >  recPlacePartList;
 
-class recPlace : public recDb {
+class recPlace : public recDb 
+{
 public:
     id_t  f_date1_id;
     id_t  f_date2_id;
 
     recPlace() {}
-    recPlace( id_t id ) : recDb(id) {}
+    recPlace( id_t id ) : recDb(id) { Read(); }
 
 	void Clear();
     void Save();
@@ -79,8 +80,11 @@ inline bool operator!=( const recPlace& r1, const recPlace& r2 )
     return !(r1 == r2);
 }
 
+//----------------------------------------------------------
 
-class recPlacePart : public recDb {
+
+class recPlacePart : public recDb 
+{
 public:
     id_t     f_type_id;
     id_t     f_place_id;
@@ -88,7 +92,7 @@ public:
     int      f_sequence;
 
     recPlacePart() {}
-    recPlacePart( id_t id ) : recDb(id) {}
+    recPlacePart( id_t id ) : recDb(id) { Read(); }
 
 	void Clear();
     void Save();
@@ -115,8 +119,11 @@ inline bool operator!=( const recPlacePart& r1, const recPlacePart& r2 )
     return !(r1 == r2);
 }
 
+//----------------------------------------------------------
 
-class recPlacePartType : public recDb {
+
+class recPlacePartType : public recDb 
+{
 public:
 	enum Type {
 		TYPE_Address = -1,
@@ -126,7 +133,7 @@ public:
     wxString f_name;
 
     recPlacePartType() {}
-    recPlacePartType( id_t id ) : recDb(id) {}
+    recPlacePartType( id_t id ) : recDb(id) { Read(); }
 
 	void Clear();
     void Save();

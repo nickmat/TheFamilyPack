@@ -149,11 +149,37 @@ wxString recEvent::GetAddressStr() const
 
 wxString recEvent::GetDetailStr( id_t id )
 {
-    recEvent e;
-    e.f_id = id;
-    e.Read();
+    recEvent e( id );
     return e.GetDetailStr();
 }
+
+wxString recEvent::GetTypeStr( id_t id )
+{
+    id_t typeID = ExecuteID(
+        "SELECT type_id FROM Event WHERE id="ID";", id
+    );
+    return recEventType::GetTypeStr( typeID );
+}
+
+wxString recEvent::GetValue( id_t id )
+{
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3ResultSet result;
+
+    sql.Format( "SELECT val FROM Event WHERE id="ID";", id );
+    result = s_db->ExecuteQuery( sql );
+    return result.GetAsString( 0 );
+}
+
+id_t recEvent::FindReference( id_t eventID )
+{
+    return ExecuteID(
+        "SELECT ref_id FROM ReferenceEntity "
+        "WHERE entity_type=2 AND entity_id="ID";",
+        eventID
+    );
+}
+
 
 //----------------------------------------------------------
 
@@ -225,9 +251,7 @@ bool recEventType::Read()
 
 wxString recEventType::GetTypeStr( id_t id )
 {
-    recEventType et;
-    et.f_id = id;
-    et.Read();
+    recEventType et( id );
     return et.f_name;
 }
 

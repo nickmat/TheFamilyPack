@@ -31,9 +31,15 @@
 #ifndef RECEVENT_H
 #define RECEVENT_H
 
+#include <wx/vector.h>
 #include <rec/recDatabase.h>
 
-class recEvent : public recDb {
+class recPersonaEvent;
+typedef wxVector< recPersonaEvent >  recPersonaEventVec;
+
+
+class recEvent : public recDb 
+{
 public:
     id_t     f_type_id;
     wxString f_val;
@@ -42,7 +48,7 @@ public:
     id_t     f_place_id;
 
     recEvent() {}
-    recEvent( id_t id ) : recDb(id) {}
+    recEvent( id_t id ) : recDb(id) { Read(); }
 
 	void Clear();
     void Save();
@@ -54,7 +60,11 @@ public:
     wxString GetDateStr() const;
     wxString GetAddressStr() const;
     static wxString GetDetailStr( id_t id );
+    static wxString GetTypeStr( id_t id );
+    static wxString GetValue( id_t id );
 
+	id_t FindReference() const { return FindReference( f_id ); }
+	static id_t FindReference( id_t eventID );
 };
 
 inline bool recEquivalent( const recEvent& r1, const recEvent& r2 )
@@ -77,8 +87,11 @@ inline bool operator!=( const recEvent& r1, const recEvent& r2 )
     return !(r1 == r2);
 }
 
+//----------------------------------------------------------
 
-class recEventType : public recDb {
+
+class recEventType : public recDb 
+{
 public:
 	enum ETYPE_Grp {
 		ETYPE_Grp_Unstated, 
@@ -104,7 +117,7 @@ public:
     wxString  f_name;
 
     recEventType() {}
-    recEventType( id_t id ) : recDb(id) {}
+    recEventType( id_t id ) : recDb(id) { Read(); }
 
 	void Clear();
     void Save();
@@ -131,8 +144,11 @@ inline bool operator!=( const recEventType& r1, const recEventType& r2 )
     return !(r1 == r2);
 }
 
+//----------------------------------------------------------
 
-class recEventTypeRole : public recDb {
+
+class recEventTypeRole : public recDb 
+{
 public:
 	enum Role {  // predefined entries, only given if reqired by the program
 		ROLE_Unstated      = 0,
@@ -145,12 +161,14 @@ public:
     wxString  f_name;
 
     recEventTypeRole() {}
-    recEventTypeRole( id_t id ) : recDb(id) {}
+    recEventTypeRole( id_t id ) : recDb(id) { Read(); }
 
 	void Clear();
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "EventTypeRole" );
+
+	static wxString GetName( id_t roleID );
 };
 
 inline bool recEquivalent( const recEventTypeRole& r1, const recEventTypeRole& r2 )
@@ -170,7 +188,11 @@ inline bool operator!=( const recEventTypeRole& r1, const recEventTypeRole& r2 )
     return !(r1 == r2);
 }
 
-class recPersonaEvent : public recDb {
+//----------------------------------------------------------
+
+
+class recPersonaEvent : public recDb 
+{
 public:
     id_t     f_per_id;
     id_t     f_event_id;
@@ -178,7 +200,7 @@ public:
     wxString f_note;
 
     recPersonaEvent() {}
-    recPersonaEvent( id_t id ) : recDb(id) {}
+    recPersonaEvent( id_t id ) : recDb(id) { Read(); }
 
 	void Clear();
     void Save();

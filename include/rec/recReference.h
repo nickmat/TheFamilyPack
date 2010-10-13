@@ -32,13 +32,14 @@
 
 #include <rec/recDatabase.h>
 
-class recReference : public recDb {
+class recReference : public recDb
+{
 public:
     wxString f_title;
     wxString f_statement;
 
     recReference() {}
-    recReference( id_t id ) : recDb(id) {}
+    recReference( id_t id ) : recDb(id) { Read(); }
 
 	void Clear();
     void Save();
@@ -65,7 +66,8 @@ inline bool operator!=( const recReference& r1, const recReference& r2 )
 
 //----------------------------------------------------------
 
-class recReferenceEntity : public recDb {
+class recReferenceEntity : public recDb 
+{
 public:
     enum Type {
         TYPE_Unstated,
@@ -83,7 +85,7 @@ public:
     id_t  f_entity_id;
 
     recReferenceEntity() {}
-    recReferenceEntity( id_t id ) : recDb(id) {}
+    recReferenceEntity( id_t id ) : recDb(id) { Read(); }
 
 	void Clear();
     void Save();

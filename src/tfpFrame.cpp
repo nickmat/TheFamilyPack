@@ -80,6 +80,7 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_GOTO_HOME, TfpFrame::OnHome )
     EVT_HTML_LINK_CLICKED( wxID_ANY, TfpFrame::OnHtmlLinkClicked )
     EVT_MENU_RANGE( tfpID_HCTXMENU_BEG, tfpID_HCTXMENU_END, TfpFrame::OnHtmCtxMenu )
+    EVT_MENU_RANGE( tfpID_INDMENU_BEG, tfpID_INDMENU_END, TfpFrame::OnHtmIndMenu )
     EVT_CLOSE( TfpFrame::OnCloseWindow )
 END_EVENT_TABLE()
 
@@ -539,6 +540,12 @@ void TfpFrame::OnHtmCtxMenu( wxCommandEvent& event )
         recDb::ErrorMessage( e );
         recDb::Rollback();
     }
+}
+
+void TfpFrame::OnHtmIndMenu( wxCommandEvent& event )
+{
+    size_t i = event.GetId() - tfpID_INDMENU_BEG;
+    DisplayHtmPage( wxString::Format( wxT("F%ld"), m_ctxmenuIDs[i] ) );
 }
 
 /*! \brief Called on a Close Window event.

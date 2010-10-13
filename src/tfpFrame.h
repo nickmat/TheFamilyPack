@@ -97,6 +97,7 @@ public:
 
     void OnHtmlLinkClicked( wxHtmlLinkEvent& event );
     void OnHtmCtxMenu( wxCommandEvent& event );
+    void OnHtmIndMenu( wxCommandEvent& event );
 
     void OnCloseWindow( wxCloseEvent& event );
 

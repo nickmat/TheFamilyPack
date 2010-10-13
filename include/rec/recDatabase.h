@@ -45,7 +45,9 @@ typedef wxVector< id_t >  recIdList;
 enum Sex { SEX_Unstated, SEX_Male, SEX_Female, SEX_Unknown };
 extern wxString recGetSexStr( Sex sex );
 
-class recDb {
+
+class recDb 
+{
 public:
     enum CreateFlags {
         CREATE_DB_STD_EXT = 0x0001,

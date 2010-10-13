@@ -286,6 +286,37 @@ recFamilyList recIndividual::GetParentList( id_t indID )
     return parents;
 }
 
+recPersonaEventVec recIndividual::GetPersonaEventVec( id_t id )
+{
+	recPersonaEvent pe;
+	recPersonaEventVec peList;
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( id == 0 ) return peList;
+
+    sql.Format(
+        "SELECT PE.id, PE.per_id, PE.event_id, PE.role_id, PE.note "
+		"FROM IndividualPersona IP, PersonaEvent PE "
+		"WHERE IP.per_id=PE.per_id AND IP.ind_id="ID";",
+        id
+    );
+    result = s_db->GetTable( sql );
+
+    for( int i = 0 ; i < result.GetRowCount() ; i++ ) {
+        result.SetRow( i );
+        pe.f_id = GET_ID( result.GetInt64( 0 ) );
+		pe.f_per_id = GET_ID( result.GetInt64( 1 ) );
+        pe.f_event_id = GET_ID( result.GetInt64( 2 ) );
+        pe.f_role_id = GET_ID( result.GetInt64( 3 ) );
+        pe.f_note = result.GetAsString( 4 );
+        peList.push_back( pe );
+    }
+
+	return peList;
+}
+
+
 wxSQLite3ResultSet recIndividual::GetNameList( wxString surname )
 {
 	wxSQLite3StatementBuffer sql;

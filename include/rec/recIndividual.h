@@ -33,6 +33,7 @@
 
 #include <wx/vector.h>
 #include <rec/recDatabase.h>
+#include <rec/recEvent.h>
 
 class recIndividual;
 typedef wxVector< recIndividual >  recIndividualList;
@@ -42,7 +43,8 @@ class recFamilyIndividual;
 typedef wxVector< recFamilyIndividual >  recFamIndVec;
 
 
-class recIndividual : public recDb {
+class recIndividual : public recDb 
+{
 public:
     wxString f_surname;
     wxString f_given;
@@ -79,6 +81,10 @@ public:
     recFamilyList GetFamilyList() const { return GetFamilyList( f_id ); }
     static recFamilyList GetParentList( id_t indID );
     recFamilyList GetParentList() const { return GetParentList( f_id ); }
+
+    recPersonaEventVec GetPersonaEventVec() const 
+        { return GetPersonaEventVec( f_id ); }
+    static recPersonaEventVec GetPersonaEventVec( id_t id );
 
     static wxSQLite3ResultSet GetSurnameList() {
         return s_db->ExecuteQuery( 
@@ -119,14 +125,15 @@ inline bool operator!=( const recIndividual& r1, const recIndividual& r2 )
 
 //----------------------------------------------------------
 
-class recIndividualPersona : public recDb {
+class recIndividualPersona : public recDb
+{
 public:
     id_t     f_per_id;
     id_t     f_ind_id;
     wxString f_note;
 
     recIndividualPersona() {}
-    recIndividualPersona( id_t id ) : recDb(id) {}
+    recIndividualPersona( id_t id ) : recDb(id) { Read(); }
 
 	void Clear();
     void Save();
@@ -156,7 +163,8 @@ inline bool operator!=( const recIndividualPersona& r1, const recIndividualPerso
 
 //----------------------------------------------------------
 
-class recFamily : public recDb {
+class recFamily : public recDb 
+{
 public:
     id_t     f_husb_id;
     id_t     f_wife_id;
@@ -201,14 +209,15 @@ inline bool operator!=( const recFamily& r1, const recFamily& r2 )
 
 //----------------------------------------------------------
 
-class recFamilyIndividual : public recDb {
+class recFamilyIndividual : public recDb 
+{
 public:
     id_t     f_fam_id;
     id_t     f_ind_id;
     unsigned f_sequence;
 
     recFamilyIndividual() {}
-    recFamilyIndividual( id_t id ) : recDb(id) {}
+    recFamilyIndividual( id_t id ) : recDb(id) { Read(); }
 
 	void Clear();
     void Save();

@@ -33,7 +33,8 @@
 #include <rec/recDatabase.h>
 #include <cal/calendar.h>
 
-class recDate : public recDb {
+class recDate : public recDb 
+{
 public:
 	enum TypeFlag {
 		FLG_NULL   = 0x00, 
@@ -64,7 +65,7 @@ public:
     CalendarScheme  f_display_sch;  // Default display scheme
 	                                // See cal/calendar.h for values
     recDate() {}
-    recDate( id_t id ) : recDb(id) {}
+    recDate( id_t id ) : recDb(id) { Read(); }
 
 	void Clear();
     void Save();

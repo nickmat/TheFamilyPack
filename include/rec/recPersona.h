@@ -38,13 +38,14 @@ class recAttribute;
 typedef wxVector< recPersona >  recPersonaList;
 typedef wxVector< recAttribute >  recAttributeList;
 
-class recPersona : public recDb {
+class recPersona : public recDb
+{
 public:
     Sex      f_sex;
     wxString f_note;
 
     recPersona() {}
-    recPersona( id_t id ) : recDb(id) {}
+    recPersona( id_t id ) : recDb(id) { Read(); }
 
 	void Clear();
     void Save();
@@ -86,7 +87,8 @@ enum StdAttrType  // These match the create.sql file
     ATTR_TYPE_Max        = 5
 };
 
-class recAttribute : public recDb {
+class recAttribute : public recDb
+{
 public:
     id_t      f_per_id;
     id_t      f_type_id;
@@ -94,7 +96,7 @@ public:
     unsigned  f_sequence;
 
     recAttribute() {}
-    recAttribute( id_t id ) : recDb(id) {}
+    recAttribute( id_t id ) : recDb(id) { Read(); }
 
 	void Clear();
     void Save();
@@ -131,7 +133,8 @@ inline bool operator!=( const recAttribute& r1, const recAttribute& r2 )
 
 //----------------------------------------------------------
 
-class recAttributeType : public recDb {
+class recAttributeType : public recDb 
+{
 public:
 	enum ATYPE_Grp { 
 		ATYPE_Grp_Unstated, ATYPE_Grp_Name, ATYPE_Grp_Title, 
@@ -142,7 +145,7 @@ public:
     wxString  f_name;
 
     recAttributeType() {}
-    recAttributeType( id_t id ) : recDb(id) {}
+    recAttributeType( id_t id ) : recDb(id) { Read(); }
 
 	void Clear();
     void Save();
