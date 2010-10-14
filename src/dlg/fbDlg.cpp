@@ -20,14 +20,10 @@
 
 #include "fbDlg.h"
 
-#include "../img/ed/bold.xpm"
 #include "../img/ed/copy.xpm"
 #include "../img/ed/cut.xpm"
-#include "../img/ed/font.xpm"
-#include "../img/ed/italic.xpm"
 #include "../img/ed/paste.xpm"
 #include "../img/ed/redo.xpm"
-#include "../img/ed/underline.xpm"
 #include "../img/ed/undo.xpm"
 
 ///////////////////////////////////////////////////////////////////////////
@@ -339,7 +335,6 @@ fbDlgEditIndEvent::fbDlgEditIndEvent( wxWindow* parent, wxWindowID id, const wxS
 	
 	this->SetSizer( bSizer11 );
 	this->Layout();
-	bSizer11->Fit( this );
 	
 	// Connect Events
 	m_buttonDate->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditIndEvent::OnDateButton ), NULL, this );
@@ -489,7 +484,6 @@ fbDlgEditPersona::fbDlgEditPersona( wxWindow* parent, wxWindowID id, const wxStr
 	
 	this->SetSizer( bSizer20 );
 	this->Layout();
-	bSizer20->Fit( this );
 	
 	// Connect Events
 	m_buttonIndLink->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditPersona::OnIndLinkButton ), NULL, this );
@@ -735,12 +729,6 @@ fbDlgEditReference::fbDlgEditReference( wxWindow* parent, wxWindowID id, const w
 	m_toolBar1->AddSeparator(); 
 	m_toolBar1->AddTool( tfpID_EDREF_OnUndo, _("tool"), wxBitmap( undo_xpm ), wxNullBitmap, wxITEM_NORMAL, _("Undo"), wxEmptyString ); 
 	m_toolBar1->AddTool( tfpID_EDREF_OnRedo, _("tool"), wxBitmap( redo_xpm ), wxNullBitmap, wxITEM_NORMAL, _("Redo"), wxEmptyString ); 
-	m_toolBar1->AddSeparator(); 
-	m_toolBar1->AddTool( tfpID_EDREF_OnBold, _("tool"), wxBitmap( bold_xpm ), wxNullBitmap, wxITEM_NORMAL, _("Bold"), wxEmptyString ); 
-	m_toolBar1->AddTool( tfpID_EDREF_OnItalic, _("tool"), wxBitmap( italic_xpm ), wxNullBitmap, wxITEM_NORMAL, _("Italic"), wxEmptyString ); 
-	m_toolBar1->AddTool( tfpID_EDREF_OnUnderline, _("tool"), wxBitmap( underline_xpm ), wxNullBitmap, wxITEM_NORMAL, _("Underline"), wxEmptyString ); 
-	m_toolBar1->AddSeparator(); 
-	m_toolBar1->AddTool( tfpID_EDREF_OnFont, _("tool"), wxBitmap( font_xpm ), wxNullBitmap, wxITEM_NORMAL, _("Font"), wxEmptyString ); 
 	m_toolBar1->Realize();
 	
 	bSizer20->Add( m_toolBar1, 0, wxEXPAND, 5 );
@@ -752,8 +740,8 @@ fbDlgEditReference::fbDlgEditReference( wxWindow* parent, wxWindowID id, const w
 	wxBoxSizer* bSizer39;
 	bSizer39 = new wxBoxSizer( wxVERTICAL );
 	
-	m_richText = new wxRichTextCtrl( m_panel7, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0|wxVSCROLL|wxHSCROLL|wxNO_BORDER|wxWANTS_CHARS );
-	bSizer39->Add( m_richText, 1, wxEXPAND | wxALL, 5 );
+	m_textCtrl12 = new wxTextCtrl( m_panel7, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxTE_DONTWRAP|wxTE_MULTILINE );
+	bSizer39->Add( m_textCtrl12, 1, wxALL|wxEXPAND, 5 );
 	
 	m_panel7->SetSizer( bSizer39 );
 	m_panel7->Layout();
@@ -829,10 +817,6 @@ fbDlgEditReference::fbDlgEditReference( wxWindow* parent, wxWindowID id, const w
 	this->Connect( tfpID_EDREF_OnPaste, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbDlgEditReference::OnTool ) );
 	this->Connect( tfpID_EDREF_OnUndo, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbDlgEditReference::OnTool ) );
 	this->Connect( tfpID_EDREF_OnRedo, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbDlgEditReference::OnTool ) );
-	this->Connect( tfpID_EDREF_OnBold, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbDlgEditReference::OnTool ) );
-	this->Connect( tfpID_EDREF_OnItalic, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbDlgEditReference::OnTool ) );
-	this->Connect( tfpID_EDREF_OnUnderline, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbDlgEditReference::OnTool ) );
-	this->Connect( tfpID_EDREF_OnFont, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbDlgEditReference::OnTool ) );
 	m_buttonAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditReference::OnAddButton ), NULL, this );
 	m_buttonEdit->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditReference::OnEditButton ), NULL, this );
 	m_buttonDel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditReference::OnDeleteButton ), NULL, this );
@@ -848,10 +832,6 @@ fbDlgEditReference::~fbDlgEditReference()
 	this->Disconnect( tfpID_EDREF_OnPaste, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbDlgEditReference::OnTool ) );
 	this->Disconnect( tfpID_EDREF_OnUndo, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbDlgEditReference::OnTool ) );
 	this->Disconnect( tfpID_EDREF_OnRedo, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbDlgEditReference::OnTool ) );
-	this->Disconnect( tfpID_EDREF_OnBold, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbDlgEditReference::OnTool ) );
-	this->Disconnect( tfpID_EDREF_OnItalic, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbDlgEditReference::OnTool ) );
-	this->Disconnect( tfpID_EDREF_OnUnderline, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbDlgEditReference::OnTool ) );
-	this->Disconnect( tfpID_EDREF_OnFont, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbDlgEditReference::OnTool ) );
 	m_buttonAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditReference::OnAddButton ), NULL, this );
 	m_buttonEdit->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditReference::OnEditButton ), NULL, this );
 	m_buttonDel->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditReference::OnDeleteButton ), NULL, this );

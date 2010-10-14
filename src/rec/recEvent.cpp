@@ -255,6 +255,39 @@ wxString recEventType::GetTypeStr( id_t id )
     return et.f_name;
 }
 
+recEventTypeVec recEventType::ReadAll()
+{
+    recEventType record;
+
+    wxSQLite3Table table = s_db->GetTable( "SELECT id, grp, name FROM EventType;" );
+
+    recEventTypeVec vec( table.GetRowCount() );
+    for( int i = 0 ; i < table.GetRowCount() ; i++ )
+    {
+        table.SetRow( i );
+        record.f_id = GET_ID( table.GetInt64( 0 ) );
+		record.f_grp = (ETYPE_Grp) table.GetInt( 1 );
+        record.f_name = table.GetAsString( 2 );
+        vec.push_back( record );
+    }
+	return vec;
+}
+
+id_t recEventType::Select()
+{
+	recEventTypeVec array = recEventType::ReadAll();
+    wxArrayString list;
+    for( size_t i = 0 ; i < array.size() ; i++ )
+    {
+        list.Add( array[i].f_name );
+    }
+
+    int index = wxGetSingleChoiceIndex( wxEmptyString, wxT("Select Event Type"), list );
+    if( index < 0 ) return 0;
+	return array[index].f_id;
+}
+
+
 //----------------------------------------------------------
 
 

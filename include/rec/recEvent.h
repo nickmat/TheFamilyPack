@@ -36,6 +36,8 @@
 
 class recPersonaEvent;
 typedef wxVector< recPersonaEvent >  recPersonaEventVec;
+class recEventType;
+typedef wxVector< recEventType >  recEventTypeVec;
 
 
 class recEvent : public recDb 
@@ -125,6 +127,9 @@ public:
     TABLE_NAME_MEMBERS( "EventType" );
 
     static wxString GetTypeStr( id_t id );
+
+	static recEventTypeVec ReadAll();
+	static id_t Select();
 };
 
 inline bool recEquivalent( const recEventType& r1, const recEventType& r2 )

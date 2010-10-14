@@ -107,7 +107,48 @@ bool recReference::Read()
 	return true;
 }
 
+recRefEntVec recReference::ReadReferenceEntitys()
+{
+    recRefEntVec vec;
+    recReferenceEntity record;
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( f_id == 0 ) {
+        return vec;
+    }
+
+    sql.Format(
+        "SELECT * FROM ReferenceEntity WHERE ref_id="ID";", f_id );
+    result = s_db->GetTable( sql );
+
+    vec.reserve( result.GetRowCount() );
+    record.f_ref_id = f_id;
+    for( int i = 0 ; i < result.GetRowCount() ; i++ )
+    {
+        result.SetRow( i );
+        record.f_id = GET_ID( result.GetInt64( 0 ) );
+        record.f_entity_type = (recReferenceEntity::Type) result.GetInt( 2 );
+        record.f_entity_id = GET_ID( result.GetInt64( 3 ) );
+        vec.push_back( record );
+    }
+    return vec;
+}
+
+
 //----------------------------------------------------------
+
+const wxString recReferenceEntity::sm_typeStr[recReferenceEntity::TYPE_MAX] = {
+    wxT(""),           // TYPE_Unstated
+    wxT("Source"),     // TYPE_Source
+    wxT("Event"),      // TYPE_Event
+    wxT("Place"),      // TYPE_Place
+    wxT("Date"),       // TYPE_Date
+    wxT("Persona"),    // TYPE_Persona
+    wxT("Attribute")//,  // TYPE_Attribute
+//    wxT("Role")        // TYPE_Role
+};
+
 
 void recReferenceEntity::Clear()
 {

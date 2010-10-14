@@ -43,6 +43,7 @@
 #include "dlg/dlgEdFamily.h"
 #include "dlg/dlgEdIndividual.h"
 #include "dlg/dlgSelIndividual.h"
+#include "dlg/dlgEdReference.h"
 
 
 static id_t tfpPickIndividual( Sex sex )
@@ -62,8 +63,6 @@ static id_t tfpPickIndividual( Sex sex )
 
 bool tfpEditFamily( id_t famID )
 {
-//    wxMessageBox( wxT("Not yet implimented"), wxT("tfpEditFamily") );
-//    return false;
 	const wxString savepoint = "EdFam";
 	bool ret = false;
 
@@ -89,6 +88,25 @@ bool tfpEditIndividual( id_t indID  )
 	recDb::Savepoint( savepoint );
 
 	dialog->SetIndividualID( indID );
+
+	if( dialog->ShowModal() == wxID_OK ) {
+		recDb::ReleaseSavepoint( savepoint );
+		ret = true;
+	} else {
+		recDb::Rollback( savepoint );
+	}
+	dialog->Destroy();
+	return ret;
+}
+
+bool tfpEditReference( id_t refID  )
+{
+	const wxString savepoint = "EdRef";
+	bool ret = false;
+	dlgEditReference* dialog = new dlgEditReference( NULL );
+	recDb::Savepoint( savepoint );
+
+	dialog->SetID( refID );
 
 	if( dialog->ShowModal() == wxID_OK ) {
 		recDb::ReleaseSavepoint( savepoint );
@@ -346,8 +364,6 @@ bool tfpAddExistSpouse( id_t indID, Sex sex )
 
 bool tfpAddExistChild( id_t famID, Sex sex )
 {
-//    wxMessageBox( wxT("Not yet implimented"), wxT("tfpAddExistChild") );
-//    return false;
 	const wxString savepoint = "AddExistingChild";
     bool ret = false;
 	recDb::Savepoint( savepoint );

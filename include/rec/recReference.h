@@ -30,7 +30,11 @@
 #ifndef RECREFERENCE_H
 #define RECREFERENCE_H
 
+#include <wx/vector.h>
 #include <rec/recDatabase.h>
+
+class recReferenceEntity;
+typedef wxVector< recReferenceEntity >  recRefEntVec;
 
 class recReference : public recDb
 {
@@ -45,6 +49,8 @@ public:
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "Reference" );
+
+    recRefEntVec ReadReferenceEntitys();
 };
 
 inline bool recEquivalent( const recReference& r1, const recReference& r2 )
@@ -79,6 +85,7 @@ public:
         TYPE_Attribute,
         TYPE_MAX
     };
+    static const wxString sm_typeStr[TYPE_MAX];
 
     id_t  f_ref_id;
     Type  f_entity_type;
@@ -91,6 +98,9 @@ public:
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "ReferenceEntity" );
+
+    wxString GetTypeStr() { return sm_typeStr[f_entity_type]; }
+    static wxString GetTypeStr( Type etype ) { return sm_typeStr[etype]; }
 };
 
 inline bool recEquivalent( const recReferenceEntity& r1, const recReferenceEntity& r2 )

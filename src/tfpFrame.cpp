@@ -39,6 +39,7 @@
 
 #include <wx/html/htmlwin.h>
 #include <wx/html/htmprint.h>
+#include <wx/numdlg.h>
 
 #include <rec/recIndividual.h>
 
@@ -303,7 +304,30 @@ void TfpFrame::OnEditIndividual( wxCommandEvent& event )
  */
 void TfpFrame::OnEditReference( wxCommandEvent& event )
 {
-    wxMessageBox( wxT("Not yet implimented"), wxT("OnEditReference") );
+//    wxMessageBox( wxT("Not yet implimented"), wxT("OnEditReference") );
+    long num = wxGetNumberFromUser(
+        wxT("Enter the Reference ID or 0 for new Reference"),
+
+        wxT("Reference ID:"),
+        wxT("Edit Reference"),
+        (long) 0, (long) 0, (long) INT_MAX
+    );
+    if( num < 0 ) return;
+
+    recDb::Begin();
+    try {
+        bool ret = tfpEditReference( (id_t) num );
+        if( ret == true ) {
+            recDb::Commit();
+            RefreshHtmPage();
+        } else {
+            recDb::Rollback();
+        }
+    }
+    catch( wxSQLite3Exception& e ) {
+        recDb::ErrorMessage( e );
+        recDb::Rollback();
+    } 
 }
 
 /*! \brief Called on a Find Family ID menu option event.

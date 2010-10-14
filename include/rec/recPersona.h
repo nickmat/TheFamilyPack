@@ -54,6 +54,9 @@ public:
 
     static wxString GetSurname( id_t id );
     static wxString GetGivenName( id_t id );
+    static wxString GetFullName( id_t id ) 
+        { return GetGivenName( id ) + " " + GetSurname( id ); }
+    wxString GetFullName() const { return GetFullName( f_id ); }
 	static recAttributeList ReadAttributes( id_t perID );
     recAttributeList ReadAttributes() const { return ReadAttributes( f_id ); }
 };

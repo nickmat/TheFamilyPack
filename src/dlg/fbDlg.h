@@ -33,7 +33,6 @@ class tfpListCtrlIndividuals;
 #include <wx/listctrl.h>
 #include <wx/notebook.h>
 #include <wx/toolbar.h>
-#include <wx/richtext/richtextctrl.h>
 #include <wx/splitter.h>
 
 ///////////////////////////////////////////////////////////////////////////
@@ -176,7 +175,7 @@ class fbDlgEditIndEvent : public wxDialog
 	
 	public:
 		
-		fbDlgEditIndEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+		fbDlgEditIndEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 322,167 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
 		~fbDlgEditIndEvent();
 	
 };
@@ -238,7 +237,7 @@ class fbDlgEditPersona : public wxDialog
 	
 	public:
 		
-		fbDlgEditPersona( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Persona"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+		fbDlgEditPersona( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Persona"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 407,348 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
 		~fbDlgEditPersona();
 	
 };
@@ -331,10 +330,6 @@ class fbDlgEditReference : public wxDialog
 			tfpID_EDREF_OnPaste,
 			tfpID_EDREF_OnUndo,
 			tfpID_EDREF_OnRedo,
-			tfpID_EDREF_OnBold,
-			tfpID_EDREF_OnItalic,
-			tfpID_EDREF_OnUnderline,
-			tfpID_EDREF_OnFont,
 		};
 		
 		wxStaticText* m_staticText1;
@@ -344,7 +339,7 @@ class fbDlgEditReference : public wxDialog
 		wxToolBar* m_toolBar1;
 		wxSplitterWindow* m_splitter1;
 		wxPanel* m_panel7;
-		wxRichTextCtrl* m_richText;
+		wxTextCtrl* m_textCtrl12;
 		wxPanel* m_panel8;
 		wxListCtrl* m_listEntities;
 		wxButton* m_buttonAdd;
