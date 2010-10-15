@@ -37,5 +37,228 @@
 #include "wx/wx.h"
 #endif
 
+#include <wx/tokenzr.h>
+
+#include <rec/recIndividual.h>
+
+#include "dlgEdPersona.h"
+//#include "tfpDlgAttr.h"
+//#include "dlgStd.h"
+#include "tfpEdit.h"
+
+
+
+dlgEditPersona::dlgEditPersona( wxWindow* parent ) : fbDlgEditPersona( parent )
+{
+    wxListItem itemCol;
+	itemCol.SetText( wxT("Type") );
+	m_listAttr->InsertColumn( 0, itemCol );
+	itemCol.SetText( wxT("Value") );
+	m_listAttr->InsertColumn( 1, itemCol );
+
+	m_persona.Clear();
+	m_defaultAttr = false;
+}
+
+bool dlgEditPersona::TransferDataToWindow()
+{
+	if( m_persona.f_id == 0 ) {
+		m_persona.Save();
+	} else {
+		m_persona.Read();
+	}
+
+	m_choiceSex->SetSelection( (int) m_persona.f_sex );
+	m_textCtrlNote->SetValue(  m_persona.f_note );
+
+	m_indLinks = m_persona.GetIndividualIDs();
+	m_staticIndId->SetLabel( GetIndLinksString() );
+
+	if( m_defaultAttr == true ) {
+        m_staticPerName->SetLabel( m_name );
+		recAttribute attribute;
+		int seq = 0;
+		attribute.Clear();
+		attribute.f_sequence = 0;
+		wxStringTokenizer tk( m_name );
+		while( tk.HasMoreTokens() ) {
+			attribute.Clear();
+			attribute.f_per_id = m_persona.f_id;
+			attribute.f_val = tk.GetNextToken();
+			attribute.f_type_id = tk.HasMoreTokens() ? 
+				ATTR_TYPE_Given_name : ATTR_TYPE_Surname;
+			attribute.f_sequence = ++seq;
+			attribute.Save();
+
+			m_attributes.push_back( attribute );
+		}
+	} else {
+        m_staticPerName->SetLabel( m_persona.GetFullName() );
+	}
+
+	m_attributes = m_persona.ReadAttributes();
+	for( size_t i = 0 ; i < m_attributes.size() ; i++ ) {
+		m_listAttr->InsertItem( i, recAttributeType::GetTypeStr( m_attributes[i].f_type_id ) );
+		m_listAttr->SetItem( i, COL_Value, m_attributes[i].f_val );
+	}
+
+	return true;
+}
+
+bool dlgEditPersona::TransferDataFromWindow()
+{
+	m_persona.f_sex = (Sex) m_choiceSex->GetSelection();
+	m_persona.f_note = m_textCtrlNote->GetValue();
+    m_persona.Save();
+
+	for( size_t i = 0 ; i < m_attributes.size() ; i++ ) {
+		m_attributes[i].f_sequence = i + 1;
+		m_attributes[i].Save();
+	}
+    return true;
+}
+
+void dlgEditPersona::OnIndLinkButton( wxCommandEvent& event )
+{
+    id_t indID = tfpPickIndividual();
+    if( indID == 0 ) return;
+
+    recIndividualPersona ip;
+    ip.Clear();
+    ip.f_per_id = m_persona.f_id;
+    ip.f_ind_id = indID;
+    ip.Save();
+
+    wxString ind;
+	ind << "I " << indID;
+    m_staticIndId->SetLabel( ind );
+}
+
+void dlgEditPersona::OnIndCreateButton( wxCommandEvent& event )
+{
+	wxMessageBox( 
+		wxT("Not yet implimented\nDate"), 
+		wxT("OnIndCreateButton")
+	);
+	// TODO: Add code
+}
+
+void dlgEditPersona::OnAddButton( wxCommandEvent& event )
+{
+	wxMessageBox( 
+		"Not yet implimented\nDate", 
+		"OnAddButton"
+	);
+	// TODO: Edit code
+#if 0
+    recAttribute attr;
+	attr.Clear();
+	attr.f_per_id = m_persona.f_id;
+
+	AttrEntryDlg* dialog = new AttrEntryDlg( NULL );
+	dialog->SetAttribute( &attr );
+
+	if( dialog->ShowModal() == wxID_OK ) {
+		int row = m_attributes.GetCount();
+		m_listAttr->InsertItem( row, RecAttributeType::GetTypeString( attr.type_id ) );
+		m_listAttr->SetItem( row, COL_Value, attr.val );
+		m_attributes.Add( attr );
+	}
+	dialog->Destroy();
+#endif
+}
+
+void dlgEditPersona::OnEditButton( wxCommandEvent& event )
+{
+	wxMessageBox( 
+		"Not yet implimented\nDate", 
+		"OnEditButton"
+	);
+	// TODO: Edit code
+#if 0
+	long row = m_listAttr->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	if( row >= 0 ) {
+		AttrEntryDlg* dialog = new AttrEntryDlg( NULL );
+		dialog->SetAttribute( &m_attributes[row] );
+
+		if( dialog->ShowModal() == wxID_OK ) {
+			m_listAttr->SetItem( row, COL_Type, RecAttributeType::GetTypeString( m_attributes[row].type_id ) );
+			m_listAttr->SetItem( row, COL_Value, m_attributes[row].val );
+		}
+		dialog->Destroy();
+	} else {
+        wxMessageBox( wxT("No row selected"), wxT("Edit Attribute") );
+    }
+#endif
+}
+
+void dlgEditPersona::OnDeleteButton( wxCommandEvent& event )
+{
+	long row = m_listAttr->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	if( row >= 0 ) {
+		m_listAttr->DeleteItem( row );
+		m_attributes[row].Delete();
+		m_attributes.erase( m_attributes.begin() + row );
+    } else {
+        wxMessageBox( wxT("No row selected"), wxT("Delete Attribute") );
+    }
+}
+
+void dlgEditPersona::OnUpButton( wxCommandEvent& event )
+{
+	long row = m_listAttr->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	if( row < 0 ) {
+        wxMessageBox( wxT("Row not selected"), wxT("Attribute Up") );
+        return;
+    }
+    if( row > 0 ) {
+		recAttribute attr = m_attributes[row];
+		m_attributes[row] = m_attributes[row-1];
+		m_attributes[row-1] = attr;
+
+		m_listAttr->SetItem( row, COL_Type, recAttributeType::GetTypeStr( m_attributes[row].f_type_id ) );
+		m_listAttr->SetItem( row, COL_Value, m_attributes[row].f_val );
+        --row;
+		m_listAttr->SetItem( row, COL_Type, recAttributeType::GetTypeStr( m_attributes[row].f_type_id ) );
+		m_listAttr->SetItem( row, COL_Value, m_attributes[row].f_val );
+		
+		m_listAttr->SetItemState( row, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+	}
+}
+
+void dlgEditPersona::OnDownButton( wxCommandEvent& event )
+{
+	long row = m_listAttr->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	if( row < 0 ) {
+        wxMessageBox( wxT("Row not selected"), wxT("OnUpButton") );
+        return;
+    }
+    if( row < (long) m_listAttr->GetItemCount() - 1 ) {
+		recAttribute attr = m_attributes[row];
+		m_attributes[row] = m_attributes[row+1];
+		m_attributes[row+1] = attr;
+
+		m_listAttr->SetItem( row, COL_Type, recAttributeType::GetTypeStr( m_attributes[row].f_type_id ) );
+		m_listAttr->SetItem( row, COL_Value, m_attributes[row].f_val );
+		row++;
+		m_listAttr->SetItem( row, COL_Type, recAttributeType::GetTypeStr( m_attributes[row].f_type_id ) );
+		m_listAttr->SetItem( row, COL_Value, m_attributes[row].f_val );
+
+		m_listAttr->SetItemState( row, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+	}
+}
+
+wxString dlgEditPersona::GetIndLinksString() const
+{
+	wxString txt;
+
+	for( size_t i = 0 ; i < m_indLinks.size() ; i++ ) {
+		if( i > 0 ) {
+			txt << wxT(", ");
+		}
+		txt << wxT("I ") << m_indLinks[i];
+	}
+	return txt;
+}
 
 // End of dlgEdPersona.cpp file

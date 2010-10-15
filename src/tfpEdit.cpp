@@ -46,7 +46,7 @@
 #include "dlg/dlgEdReference.h"
 
 
-static id_t tfpPickIndividual( Sex sex )
+id_t tfpPickIndividual( Sex sex )
 {
 	id_t indID = 0;
     dlgSelectIndividual* dialog = new dlgSelectIndividual( NULL );

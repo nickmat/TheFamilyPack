@@ -192,6 +192,29 @@ recAttributeList recPersona::ReadAttributes( id_t perID )
 	return list;
 }
 
+recIdVec recPersona::GetIndividualIDs( id_t perID )
+{
+	recIdVec vec;
+	wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( perID == 0 ) {
+        return vec;
+    }
+
+	sql.Format( 
+		"SELECT ind_id FROM IndividualPersona WHERE per_id="ID" ORDER BY ind_id;", 
+		perID 
+	);
+    result = s_db->GetTable( sql );
+
+    for( int i = 0 ; i < result.GetRowCount() ; i++ ) {
+        result.SetRow( i );
+		vec.push_back( GET_ID( result.GetInt64( 0 ) ) );
+    }
+	return vec;
+}
+
 
 //----------------------------------------------------------
 
@@ -368,6 +391,12 @@ bool recAttributeType::Read()
     f_grp  = (ATYPE_Grp) result.GetInt( 0 );
     f_name = result.GetAsString( 1 );
 	return true;
+}
+
+wxString recAttributeType::GetTypeStr( id_t id )
+{
+    recAttributeType at( id );
+    return at.f_name;
 }
 
 // End of recPersona.cpp file

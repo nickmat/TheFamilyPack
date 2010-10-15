@@ -41,6 +41,7 @@ typedef wxLongLong      id_t;
 #define UTF8_(s) ((const char*)(s).utf8_str())
 
 typedef wxVector< id_t >  recIdList;
+typedef wxVector< id_t >  recIdVec;
 
 enum Sex { SEX_Unstated, SEX_Male, SEX_Female, SEX_Unknown };
 extern wxString recGetSexStr( Sex sex );

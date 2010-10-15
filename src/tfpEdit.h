@@ -42,5 +42,7 @@ extern id_t tfpAddNewChild( id_t famID, Sex sex );
 extern bool tfpAddExistSpouse( id_t indID, Sex sex );
 extern bool tfpAddExistChild( id_t famID, Sex sex );
 
+extern id_t tfpPickIndividual( Sex sex = SEX_Unstated );
+
 #endif // TFPEDIT_H
 

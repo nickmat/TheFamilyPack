@@ -59,6 +59,9 @@ public:
     wxString GetFullName() const { return GetFullName( f_id ); }
 	static recAttributeList ReadAttributes( id_t perID );
     recAttributeList ReadAttributes() const { return ReadAttributes( f_id ); }
+
+    static recIdVec GetIndividualIDs( id_t perID );
+    recIdVec GetIndividualIDs() const { return GetIndividualIDs( f_id ); }
 };
 
 inline bool recEquivalent( const recPersona& r1, const recPersona& r2 )
@@ -154,6 +157,8 @@ public:
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "AttributeType" );
+
+    static wxString GetTypeStr( id_t id );
 };
 
 inline bool recEquivalent( const recAttributeType& r1, const recAttributeType& r2 )

@@ -30,5 +30,48 @@
 #ifndef DLGEDPERSONA_H
 #define DLGEDPERSONA_H
 
+#include <rec/recPersona.h>
+
+#include "fbDlg.h"
+#include "dlgEdReference.h"
+
+
+class dlgEditPersona : public fbDlgEditPersona
+{
+	enum Columns {
+		COL_Type, COL_Value, COL_MAX
+	};
+public:
+	dlgEditPersona( wxWindow* parent );
+
+	void SetData( id_t perID = 0 ) { m_persona.f_id = perID; }
+	void SetDefault( wxString& name ) {
+		m_defaultAttr = true; m_name = name; 
+	}
+
+	recPersona* GetPersona() { return &m_persona; } 
+	recAttributeList GetAttributes() const { return m_attributes; }
+
+private:
+    bool TransferDataToWindow();
+    bool TransferDataFromWindow();
+
+    void OnIndLinkButton( wxCommandEvent& event );
+    void OnIndCreateButton( wxCommandEvent& event );
+
+	void OnAddButton( wxCommandEvent& event );
+    void OnEditButton( wxCommandEvent& event );
+    void OnDeleteButton( wxCommandEvent& event );
+    void OnUpButton( wxCommandEvent& event );
+    void OnDownButton( wxCommandEvent& event );
+
+	wxString GetIndLinksString() const;
+
+	recPersona        m_persona;
+	recIdVec          m_indLinks;
+	recAttributeList  m_attributes;
+	bool              m_defaultAttr;
+	wxString          m_name;
+};
 
 #endif // DLGEDPERSONA_H

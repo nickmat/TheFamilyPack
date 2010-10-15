@@ -44,6 +44,7 @@
 
 #include "dlgEdReference.h"
 #include "dlgEdEvent.h"
+#include "dlgEdPersona.h"
 
 //WX_DEFINE_OBJARRAY( TfpEntities );
 
@@ -472,11 +473,11 @@ void dlgEditReference::OnNewDate( wxCommandEvent& event )
 
 void dlgEditReference::OnNewPersona( wxCommandEvent& event )
 {
-	wxMessageBox( 
-		"Not yet implimented",
-		"OnNewPersona"
-	);
-#if 0
+//	wxMessageBox( 
+//		"Not yet implimented",
+//		"OnNewPersona"
+//	);
+
     const wxString savepoint = "RefPer";
     dlgEditPersona* dialog = new dlgEditPersona( NULL );
 
@@ -519,7 +520,6 @@ void dlgEditReference::OnNewPersona( wxCommandEvent& event )
         recDb::Rollback( savepoint );
     }
     dialog->Destroy();
-#endif
 }
 
 void dlgEditReference::OnNewAttribute( wxCommandEvent& event )
