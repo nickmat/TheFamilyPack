@@ -43,6 +43,7 @@
 #include <rec/recEvent.h>
 
 #include "dlgEdReference.h"
+#include "dlgEdEvent.h"
 
 //WX_DEFINE_OBJARRAY( TfpEntities );
 
@@ -344,32 +345,6 @@ void dlgEditReference::DoRedo()
 	// TODO: Implement DoRedo
 }
 
-#if 0
-void DlgEditReference::DoBold()
-{
-    m_richText->ApplyBoldToSelection();
-}
-
-void DlgEditReference::DoItalic()
-{
-    m_richText->ApplyItalicToSelection();
-}
-
-void DlgEditReference::DoUnderline()
-{
-    m_richText->ApplyUnderlineToSelection();
-}
-
-void DlgEditReference::DoFont()
-{
-	wxMessageBox( 
-		wxT("Not yet implimented"), 
-		wxT("DoFont")
-	);
-	// TODO: Implement DoFont
-}
-#endif
-
 void dlgEditReference::OnNewSource( wxCommandEvent& event )
 {
 	wxMessageBox( 
@@ -380,14 +355,9 @@ void dlgEditReference::OnNewSource( wxCommandEvent& event )
 
 void dlgEditReference::OnNewEvent( wxCommandEvent& cmnd_event )
 {
-	wxMessageBox( 
-		"Not yet implimented",
-		"OnNewDate"
-	);
-#if 0
     const wxString savepoint = "RefEvent";
     id_t type = recEventType::Select();
-    if( type <= 0 ) return;
+    if( type == 0 ) return;
 
     dlgEditEvent* dialog = new dlgEditEvent( NULL );
 
@@ -416,7 +386,6 @@ void dlgEditReference::OnNewEvent( wxCommandEvent& cmnd_event )
         recDb::Rollback( savepoint );
     }
     dialog->Destroy();
-#endif
 }
 
 void dlgEditReference::OnNewRole( wxCommandEvent& event )
@@ -693,11 +662,6 @@ void dlgEditReference::DoEditAttribute( id_t id, long row )
 
 void dlgEditReference::DoEditEvent( id_t id, long row )
 {
-	wxMessageBox( 
-		"Not yet implimented",
-		"DoEditEvent"
-	);
-#if 0
     const wxString savepoint = "RefEdEvent";
     dlgEditEvent* dialog = new dlgEditEvent( NULL );
 
@@ -713,7 +677,6 @@ void dlgEditReference::DoEditEvent( id_t id, long row )
         recDb::Rollback( savepoint );
     }
     dialog->Destroy();
-#endif
 }
 
 // End of dlgEdReference.cpp file

@@ -180,6 +180,27 @@ id_t recEvent::FindReference( id_t eventID )
     );
 }
 
+recPersonaEventVec recEvent::GetPersonaEvents()
+{
+    recPersonaEvent record;
+	wxSQLite3StatementBuffer sql;
+
+	sql.Format( "SELECT * FROM PersonaEvent WHERE event_id="ID";", f_id );
+    wxSQLite3Table table = s_db->GetTable( sql );
+
+    recPersonaEventVec vec( table.GetRowCount() );
+    record.f_event_id = f_id;
+    for( int i = 0 ; i < table.GetRowCount() ; i++ )
+    {
+        table.SetRow( i );
+        record.f_id = GET_ID( table.GetInt64( 0 ) );
+        record.f_per_id = GET_ID( table.GetInt64( 1 ) );
+        record.f_role_id = GET_ID( table.GetInt64( 3 ) );
+        record.f_note = table.GetAsString( 4 );
+        vec.push_back( record );
+    }
+	return vec;
+}
 
 //----------------------------------------------------------
 
@@ -257,34 +278,37 @@ wxString recEventType::GetTypeStr( id_t id )
 
 recEventTypeVec recEventType::ReadAll()
 {
-    recEventType record;
+    wxSQLite3Table table = s_db->GetTable( 
+        "SELECT id, grp, name FROM EventType ORDER BY id DESC;"
+    );
 
-    wxSQLite3Table table = s_db->GetTable( "SELECT id, grp, name FROM EventType;" );
-
-    recEventTypeVec vec( table.GetRowCount() );
+    recEventType et;
+    recEventTypeVec vec;
     for( int i = 0 ; i < table.GetRowCount() ; i++ )
     {
         table.SetRow( i );
-        record.f_id = GET_ID( table.GetInt64( 0 ) );
-		record.f_grp = (ETYPE_Grp) table.GetInt( 1 );
-        record.f_name = table.GetAsString( 2 );
-        vec.push_back( record );
+        et.f_id = GET_ID( table.GetInt64( 0 ) );
+		et.f_grp = (ETYPE_Grp) table.GetInt( 1 );
+        et.f_name = table.GetAsString( 2 );
+        if( et.f_id != 0 ) {
+            vec.push_back( et );
+        }
     }
 	return vec;
 }
 
 id_t recEventType::Select()
 {
-	recEventTypeVec array = recEventType::ReadAll();
+	recEventTypeVec vec = recEventType::ReadAll();
     wxArrayString list;
-    for( size_t i = 0 ; i < array.size() ; i++ )
+    for( size_t i = 0 ; i < vec.size() ; i++ )
     {
-        list.Add( array[i].f_name );
+        list.Add( vec[i].f_name );
     }
 
-    int index = wxGetSingleChoiceIndex( wxEmptyString, wxT("Select Event Type"), list );
+    int index = wxGetSingleChoiceIndex( wxEmptyString, _("Select Event Type"), list );
     if( index < 0 ) return 0;
-	return array[index].f_id;
+	return vec[index].f_id;
 }
 
 

@@ -67,6 +67,8 @@ public:
 
 	id_t FindReference() const { return FindReference( f_id ); }
 	static id_t FindReference( id_t eventID );
+
+	recPersonaEventVec GetPersonaEvents();
 };
 
 inline bool recEquivalent( const recEvent& r1, const recEvent& r2 )
