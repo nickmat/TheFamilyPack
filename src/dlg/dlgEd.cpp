@@ -39,11 +39,11 @@
 
 #include <rec/recIndividual.h>
 
-#include "tfpEdit.h"
-#include "dlg/dlgEdFamily.h"
-#include "dlg/dlgEdIndividual.h"
-#include "dlg/dlgSelIndividual.h"
-#include "dlg/dlgEdReference.h"
+#include "dlgEd.h"
+#include "dlgEdFamily.h"
+#include "dlgEdIndividual.h"
+#include "dlgSelIndividual.h"
+#include "dlgEdReference.h"
 
 
 id_t tfpPickIndividual( Sex sex )

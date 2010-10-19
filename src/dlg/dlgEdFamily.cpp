@@ -41,7 +41,7 @@
 #include <rec/recEvent.h>
 
 #include "dlgEdFamily.h"
-#include "tfpEdit.h"
+#include "dlgEd.h"
 
 IMPLEMENT_CLASS( dlgEditFamily, wxDialog )
 

@@ -44,7 +44,7 @@
 #include "dlgEdPersona.h"
 //#include "tfpDlgAttr.h"
 //#include "dlgStd.h"
-#include "tfpEdit.h"
+#include "dlgEd.h"
 
 
 

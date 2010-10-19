@@ -46,8 +46,8 @@
 #include "tfpFrame.h"
 #include "tfpApp.h"
 #include "tfpVersion.h"
-#include "tfpEdit.h"
 #include "tfpWr.h"
+#include "dlg/dlgEd.h"
 
 #include "img/forward.xpm"
 #include "img/back.xpm"
