@@ -72,11 +72,14 @@
     <app-type>gui</app-type>
     <runtime-libs>dynamic</runtime-libs>
 
+    <sources>$(LOCAL_SRC)/dlg/dlgEdAttribute.cpp</sources>
+    <sources>$(LOCAL_SRC)/dlg/dlgEdDate.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgEdEvent.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgEdFamily.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgEdIndEvent.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgEdIndividual.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgEdPersona.cpp</sources>
+    <sources>$(LOCAL_SRC)/dlg/dlgEdPlace.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgEdReference.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgSelIndividual.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/fbDlg.cpp</sources>
@@ -90,11 +93,14 @@
     <sources>$(LOCAL_SRC)/tfpWrIndividual.cpp</sources>
     <sources>$(LOCAL_SRC)/tfpWrName.cpp</sources>
     
+    <headers>$(LOCAL_SRC)/dlg/dlgEdAttribute.h</headers>
+    <headers>$(LOCAL_SRC)/dlg/dlgEdDate.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgEdEvent.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgEdFamily.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgEdIndEvent.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgEdIndividual.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgEdPersona.h</headers>
+    <headers>$(LOCAL_SRC)/dlg/dlgEdPlace.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgEdReference.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgSelIndividual.h</headers>
     <headers>$(LOCAL_SRC)/dlg/fbDlg.h</headers>

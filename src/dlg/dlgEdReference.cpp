@@ -473,11 +473,6 @@ void dlgEditReference::OnNewDate( wxCommandEvent& event )
 
 void dlgEditReference::OnNewPersona( wxCommandEvent& event )
 {
-//	wxMessageBox( 
-//		"Not yet implimented",
-//		"OnNewPersona"
-//	);
-
     const wxString savepoint = "RefPer";
     dlgEditPersona* dialog = new dlgEditPersona( NULL );
 

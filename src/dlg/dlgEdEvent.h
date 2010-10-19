@@ -38,7 +38,7 @@
 /** Implementing fbDlgEditEvent */
 class dlgEditEvent : public fbDlgEditEvent
 {
-    DECLARE_CLASS( DlgEditEvent )
+    DECLARE_CLASS( dlgEditEvent )
     DECLARE_EVENT_TABLE()
 
 	enum Columns {
