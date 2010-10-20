@@ -91,6 +91,8 @@ public:
 
     void SetDefaults();
 	bool SetDate( const wxString& str, CalendarScheme sch = CALENDAR_SCH_Unstated );
+    wxString GetJdnStr( CalendarScheme sch = CALENDAR_SCH_Unstated ) const;
+    static wxString GetJdnStr( id_t id );
     wxString GetStr( CalendarScheme sch = CALENDAR_SCH_Unstated ) const;
     static wxString GetStr( id_t id );
 	int GetYear( CalendarScheme sch = CALENDAR_SCH_Unstated );

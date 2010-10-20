@@ -181,6 +181,45 @@ class fbDlgEditIndEvent : public wxDialog
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/// Class fbDlgEditDate
+///////////////////////////////////////////////////////////////////////////////
+class fbDlgEditDate : public wxDialog 
+{
+	private:
+	
+	protected:
+		enum
+		{
+			tfpID_EDINDEV_DATE = 1000,
+		};
+		
+		wxStaticText* m_staticTextId;
+		wxStaticText* m_staticTextOutput;
+		wxStaticText* m_staticText15;
+		wxTextCtrl* m_textCtrlDate;
+		wxStaticText* m_staticText16;
+		wxChoice* m_choiceType;
+		wxStaticText* m_staticText40;
+		wxChoice* m_choiceOriginal;
+		wxStaticText* m_staticText41;
+		wxChoice* m_choiceDisplay;
+		wxStaticLine* m_staticline1;
+		
+		wxButton* m_buttonSave;
+		wxButton* m_buttonCancel;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void SetStaticDate( wxIdleEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		fbDlgEditDate( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Date"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 300,235 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+		~fbDlgEditDate();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
 /// Class fbDlgEditPlace
 ///////////////////////////////////////////////////////////////////////////////
 class fbDlgEditPlace : public wxDialog 

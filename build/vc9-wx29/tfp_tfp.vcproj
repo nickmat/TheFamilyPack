@@ -221,6 +221,18 @@
             UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
             >
             <File
+                RelativePath="..\..\src\dlg\dlgEd.cpp"
+                >
+            </File>
+            <File
+                RelativePath="..\..\src\dlg\dlgEdAttribute.cpp"
+                >
+            </File>
+            <File
+                RelativePath="..\..\src\dlg\dlgEdDate.cpp"
+                >
+            </File>
+            <File
                 RelativePath="..\..\src\dlg\dlgEdEvent.cpp"
                 >
             </File>
@@ -238,6 +250,10 @@
             </File>
             <File
                 RelativePath="..\..\src\dlg\dlgEdPersona.cpp"
+                >
+            </File>
+            <File
+                RelativePath="..\..\src\dlg\dlgEdPlace.cpp"
                 >
             </File>
             <File
@@ -277,10 +293,6 @@
                 >
             </File>
             <File
-                RelativePath="..\..\src\tfpEdit.cpp"
-                >
-            </File>
-            <File
                 RelativePath="..\..\src\tfpFrame.cpp"
                 >
             </File>
@@ -315,6 +327,18 @@
             UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
             >
             <File
+                RelativePath="..\..\src\dlg\dlgEd.h"
+                >
+            </File>
+            <File
+                RelativePath="..\..\src\dlg\dlgEdAttribute.h"
+                >
+            </File>
+            <File
+                RelativePath="..\..\src\dlg\dlgEdDate.h"
+                >
+            </File>
+            <File
                 RelativePath="..\..\src\dlg\dlgEdEvent.h"
                 >
             </File>
@@ -335,6 +359,10 @@
                 >
             </File>
             <File
+                RelativePath="..\..\src\dlg\dlgEdPlace.h"
+                >
+            </File>
+            <File
                 RelativePath="..\..\src\dlg\dlgEdReference.h"
                 >
             </File>
@@ -348,10 +376,6 @@
             </File>
             <File
                 RelativePath="..\..\src\tfpApp.h"
-                >
-            </File>
-            <File
-                RelativePath="..\..\src\tfpEdit.h"
                 >
             </File>
             <File

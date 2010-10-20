@@ -45,6 +45,8 @@
 #include "dlgEdReference.h"
 #include "dlgEdEvent.h"
 #include "dlgEdPersona.h"
+#include "dlgEdPlace.h"
+#include "dlgEdDate.h"
 
 //WX_DEFINE_OBJARRAY( TfpEntities );
 
@@ -69,8 +71,8 @@ END_EVENT_TABLE()
 dlgEditReference::dlgEditReference( wxWindow* parent )
     : fbDlgEditReference( parent )
 {
-	m_listEntities->InsertColumn( COL_Type, wxT("Type") );
-	m_listEntities->InsertColumn( COL_Value, wxT("Value") );
+	m_listEntities->InsertColumn( COL_Type, _("Type") );
+	m_listEntities->InsertColumn( COL_Value, _("Value") );
 }
 
 bool dlgEditReference::TransferDataToWindow()
@@ -120,7 +122,7 @@ bool dlgEditReference::TransferDataToWindow()
             m_listEntities->SetItem( i, COL_Value, recEvent::GetValue( entID ) );
             break;
         default:
-	        m_listEntities->SetItem( i, COL_Value, wxT("Unknown Reference Entity") );
+	        m_listEntities->SetItem( i, COL_Value, _("Unknown Reference Entity") );
         }
     }
     return true;
@@ -144,23 +146,19 @@ void dlgEditReference::OnTool( wxCommandEvent& event )
     case tfpID_EDREF_OnPaste:     DoPaste();     break;
     case tfpID_EDREF_OnUndo:      DoUndo();      break;
     case tfpID_EDREF_OnRedo:      DoRedo();      break;
-//    case tfpID_EDREF_OnBold:      DoBold();      break;
-//    case tfpID_EDREF_OnItalic:    DoItalic();    break;
-//    case tfpID_EDREF_OnUnderline: DoUnderline(); break;
-//    case tfpID_EDREF_OnFont:      DoFont();      break;
     }
 }
 
 void dlgEditReference::OnAddButton( wxCommandEvent& event )
 {
     wxMenu* menu = new wxMenu;
-    menu->Append( ID_EDREF_NEW_SOURCE, wxT("&Source") );
-    menu->Append( ID_EDREF_NEW_EVENT, wxT("&Event") );
-    menu->Append( ID_EDREF_NEW_PLACE, wxT("P&lace") );
-    menu->Append( ID_EDREF_NEW_DATE, wxT("&Date") );
-    menu->Append( ID_EDREF_NEW_PER, wxT("&Persona") );
-    menu->Append( ID_EDREF_NEW_ATTR, wxT("&Attribute") );
-    menu->Append( ID_EDREF_NEW_ROLE, wxT("&Role") );
+    menu->Append( ID_EDREF_NEW_SOURCE, _("&Source") );
+    menu->Append( ID_EDREF_NEW_EVENT, _("&Event") );
+    menu->Append( ID_EDREF_NEW_PLACE, _("P&lace") );
+    menu->Append( ID_EDREF_NEW_DATE, _("&Date") );
+    menu->Append( ID_EDREF_NEW_PER, _("&Persona") );
+    menu->Append( ID_EDREF_NEW_ATTR, _("&Attribute") );
+    menu->Append( ID_EDREF_NEW_ROLE, _("&Role") );
     PopupMenu( menu );
     delete menu;
 }
@@ -169,7 +167,7 @@ void dlgEditReference::OnEditButton( wxCommandEvent& event )
 {
 	long row = m_listEntities->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
-        wxMessageBox( wxT("No row selected"), wxT("Edit Entity") );
+        wxMessageBox( _("No row selected"), _("Edit Entity") );
         return;
     }
     id_t id = m_entities[row].rec.f_entity_id;
@@ -190,7 +188,7 @@ void dlgEditReference::OnDeleteButton( wxCommandEvent& event )
 {
 	long row = m_listEntities->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
-        wxMessageBox( wxT("No row selected"), wxT("Edit Entity") );
+        wxMessageBox( _("No row selected"), _("Edit Entity") );
         return;
     }
     id_t reID = m_entities[row].rec.f_id;
@@ -227,7 +225,7 @@ void dlgEditReference::OnDeleteButton( wxCommandEvent& event )
         recReferenceEntity::Delete( reID );
         break;
     default:
-        wxMessageBox( wxT("Element cannot be deleted"), wxT("Delete") );
+        wxMessageBox( _("Element cannot be deleted"), _("Delete") );
         return;
     }
     m_listEntities->DeleteItem( row );
@@ -399,15 +397,9 @@ void dlgEditReference::OnNewRole( wxCommandEvent& event )
 
 void dlgEditReference::OnNewPlace( wxCommandEvent& event )
 {
-	wxMessageBox( 
-		"Not yet implimented",
-		"OnNewDate"
-	);
-#if 0
     const wxString savepoint = "RefPlace";
-    PlaceEntryDlg* dialog = new PlaceEntryDlg( NULL );
+    dlgEditPlace* dialog = new dlgEditPlace( NULL );
 
-    dialog->SetData();
     dialog->SetText( m_textCtrl12->GetStringSelection() );
 
     recDb::Savepoint( savepoint );
@@ -431,20 +423,19 @@ void dlgEditReference::OnNewPlace( wxCommandEvent& event )
         recDb::Rollback( savepoint );
     }
     dialog->Destroy();
-#endif
 }
 
 void dlgEditReference::OnNewDate( wxCommandEvent& event )
 {
+#if 0
 	wxMessageBox( 
 		"Not yet implimented",
 		"OnNewDate"
 	);
-#if 0
+#endif
     const wxString savepoint = "RefDate";
-    DateEntryDlg* dialog = new DateEntryDlg( NULL );
+    dlgEditDate* dialog = new dlgEditDate( NULL );
 
-    dialog->SetID( 0 );
     dialog->SetText( m_textCtrl12->GetStringSelection() );
 
     recDb::Savepoint( savepoint );
@@ -468,7 +459,6 @@ void dlgEditReference::OnNewDate( wxCommandEvent& event )
         recDb::Rollback( savepoint );
     }
     dialog->Destroy();
-#endif
 }
 
 void dlgEditReference::OnNewPersona( wxCommandEvent& event )
@@ -527,15 +517,15 @@ void dlgEditReference::OnNewAttribute( wxCommandEvent& event )
 
 void dlgEditReference::DoEditDate( id_t id, long row )
 {
+#if 0
 	wxMessageBox( 
 		"Not yet implimented",
 		"DoEditDate"
 	);
-#if 0
+#endif
     const wxString savepoint = "RefEdDate";
-    DateEntryDlg* dialog = new DateEntryDlg( NULL );
+    dlgEditDate* dialog = new dlgEditDate( NULL, id );
 
-    dialog->SetID( id );
     recDb::Savepoint( savepoint );
     if( dialog->ShowModal() == wxID_OK )
     {
@@ -545,20 +535,19 @@ void dlgEditReference::DoEditDate( id_t id, long row )
         recDb::Rollback( savepoint );
     }
     dialog->Destroy();
-#endif
 }
 
 void dlgEditReference::DoEditPlace( id_t id, long row )
 {
+#if 0
 	wxMessageBox( 
 		"Not yet implimented",
 		"DoEditPlace"
 	);
-#if 0
+#endif
     const wxString savepoint = "RefEdPlace";
-    PlaceEntryDlg* dialog = new PlaceEntryDlg( NULL );
+    dlgEditPlace* dialog = new dlgEditPlace( NULL, id );
 
-    dialog->SetData( id );
     recDb::Savepoint( savepoint );
     if( dialog->ShowModal() == wxID_OK )
     {
@@ -568,7 +557,6 @@ void dlgEditReference::DoEditPlace( id_t id, long row )
         recDb::Rollback( savepoint );
     }
     dialog->Destroy();
-#endif
 }
 
 void dlgEditReference::DoEditPersona( id_t id, long row )

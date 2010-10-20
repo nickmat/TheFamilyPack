@@ -39,6 +39,11 @@ class dlgEditPlace : public fbDlgEditPlace
 public:
 	dlgEditPlace( wxWindow* parent, id_t id = 0 );
 
+	void SetText( const wxString& text ) { m_text = text; }
+
+	wxString GetText() const { return m_text; }
+	recPlace* GetPlace() { return &m_place; }
+
 private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
