@@ -188,11 +188,6 @@ class fbDlgEditDate : public wxDialog
 	private:
 	
 	protected:
-		enum
-		{
-			tfpID_EDINDEV_DATE = 1000,
-		};
-		
 		wxStaticText* m_staticTextId;
 		wxStaticText* m_staticTextOutput;
 		wxStaticText* m_staticText15;
@@ -216,6 +211,32 @@ class fbDlgEditDate : public wxDialog
 		
 		fbDlgEditDate( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Date"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 300,235 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
 		~fbDlgEditDate();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class fbDlgEditAttribute
+///////////////////////////////////////////////////////////////////////////////
+class fbDlgEditAttribute : public wxDialog 
+{
+	private:
+	
+	protected:
+		wxStaticText* m_staticTextId;
+		wxStaticText* m_staticTextPersona;
+		wxStaticText* m_staticText3;
+		wxChoice* m_choiceType;
+		wxStaticText* m_staticText4;
+		wxTextCtrl* m_textCtrlValue;
+		wxStaticLine* m_staticline1;
+		
+		wxButton* m_buttonSave;
+		wxButton* m_buttonCancel;
+	
+	public:
+		
+		fbDlgEditAttribute( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Attribute"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 300,160 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+		~fbDlgEditAttribute();
 	
 };
 

@@ -39,4 +39,48 @@
 
 #include "dlgEdAttribute.h"
 
+dlgEditAttribute::dlgEditAttribute( wxWindow* parent, id_t id ) 
+    : fbDlgEditAttribute( parent )
+{
+    m_persona = 0;
+    m_attr.f_id = id;
+    m_attr.Read();
+}
+
+bool dlgEditAttribute::TransferDataToWindow()
+{
+	if( m_attr.f_id == 0 )
+	{
+		m_attr.Clear();
+        m_attr.f_per_id = m_persona;
+		m_attr.Save();
+	} else {
+		m_attr.Read();
+        wxASSERT( m_attr.f_per_id == m_persona );
+		m_text = m_attr.f_val;
+	}
+    m_textCtrlValue->SetValue( m_text );
+
+    wxString idStr = wxString::Format( "A "ID":", m_attr.f_id );
+    m_staticTextId->SetLabel( idStr );
+    wxString perStr = wxString::Format( "P "ID, m_attr.f_per_id );
+    m_staticTextPersona->SetLabel( perStr );
+
+    m_typeList = recAttributeType::GetTypeList();
+    for( size_t i = 0 ; i < m_typeList.size() ; i++ ) {
+        m_choiceType->Append( m_typeList[i].f_name );
+    }
+	return true;
+}
+
+bool dlgEditAttribute::TransferDataFromWindow()
+{
+    int type = m_choiceType->GetSelection();
+    m_attr.f_type_id = m_typeList[type].f_id;
+    m_attr.f_val = m_textCtrlValue->GetValue();
+
+	m_attr.Save();
+	return true;
+}
+
 // End of dlgEdAttribute.cpp file

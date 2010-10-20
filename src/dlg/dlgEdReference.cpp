@@ -47,6 +47,7 @@
 #include "dlgEdPersona.h"
 #include "dlgEdPlace.h"
 #include "dlgEdDate.h"
+#include "dlgEdAttribute.h"
 
 //WX_DEFINE_OBJARRAY( TfpEntities );
 
@@ -509,20 +510,42 @@ void dlgEditReference::OnNewPersona( wxCommandEvent& event )
 
 void dlgEditReference::OnNewAttribute( wxCommandEvent& event )
 {
+#if 0
 	wxMessageBox( 
 		wxT("Not yet implimented"), 
 		wxT("OnNewAttribute")
 	);
+#endif
+    const wxString savepoint = "RefAttr";
+    dlgEditAttribute* dialog = new dlgEditAttribute( NULL );
+
+    dialog->SetText( m_textCtrl12->GetStringSelection() );
+
+    recDb::Savepoint( savepoint );
+    if( dialog->ShowModal() == wxID_OK )
+    {
+        recDb::ReleaseSavepoint( savepoint );
+        int row = m_entities.size();
+        TfpEntity entity;
+        entity.rec.Clear();
+        entity.owner = 0;
+        entity.rec.f_ref_id = m_reference.f_id;
+        entity.rec.f_entity_type = recReferenceEntity::TYPE_Attribute;
+        entity.rec.f_entity_id = dialog->GetAttribute()->f_id;
+        entity.rec.Save();
+        m_entities.push_back( entity );
+
+		m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
+        m_listEntities->SetItem( row, COL_Value, dialog->GetAttribute()->f_val );
+    } else {
+        // Dialog Cancelled
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
 }
 
 void dlgEditReference::DoEditDate( id_t id, long row )
 {
-#if 0
-	wxMessageBox( 
-		"Not yet implimented",
-		"DoEditDate"
-	);
-#endif
     const wxString savepoint = "RefEdDate";
     dlgEditDate* dialog = new dlgEditDate( NULL, id );
 
@@ -539,12 +562,6 @@ void dlgEditReference::DoEditDate( id_t id, long row )
 
 void dlgEditReference::DoEditPlace( id_t id, long row )
 {
-#if 0
-	wxMessageBox( 
-		"Not yet implimented",
-		"DoEditPlace"
-	);
-#endif
     const wxString savepoint = "RefEdPlace";
     dlgEditPlace* dialog = new dlgEditPlace( NULL, id );
 
@@ -616,31 +633,24 @@ void dlgEditReference::DoEditPersona( id_t id, long row )
 
 void dlgEditReference::DoEditAttribute( id_t id, long row )
 {
+#if 0
 	wxMessageBox( 
 		"Not yet implimented",
 		"DoEditAttribute"
 	);
-#if 0
+#endif
     const wxString savepoint = "RefEdAttr";
-    AttrEntryDlg* dialog = new AttrEntryDlg( NULL );
-    recAttribute attr;
-
-    attr.Clear();
-    attr.f_id = id;
-    attr.Read();
-    dialog->SetAttribute( &attr );
+    dlgEditAttribute* dialog = new dlgEditAttribute( NULL, id );
 
     recDb::Savepoint( savepoint );
     if( dialog->ShowModal() == wxID_OK )
     {
         recDb::ReleaseSavepoint( savepoint );
-        attr.Save();
-        m_listEntities->SetItem( row, COL_Value, attr.f_val );
+        m_listEntities->SetItem( row, COL_Value, dialog->GetAttribute()->f_val );
     } else {
         recDb::Rollback( savepoint );
     }
     dialog->Destroy();
-#endif
 }
 
 void dlgEditReference::DoEditEvent( id_t id, long row )

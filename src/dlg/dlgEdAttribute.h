@@ -30,5 +30,29 @@
 #ifndef DLGEDATTRIBUTE_H
 #define DLGEDATTRIBUTE_H
 
+#include <rec/recPersona.h>
+
+#include "fbDlg.h"
+
+class dlgEditAttribute : public fbDlgEditAttribute
+{
+public:
+	dlgEditAttribute( wxWindow* parent, id_t attID = 0 );
+
+	void SetText( const wxString& text ) { m_text = text; }
+    void SetPersona( id_t perID ) { m_persona = perID; }
+
+	wxString GetText() const { return m_text; }
+	recAttribute* GetAttribute() { return &m_attr; }
+
+private:
+    bool TransferDataToWindow();
+    bool TransferDataFromWindow();
+
+    id_t         m_persona;
+	recAttribute m_attr;
+    wxString     m_text;
+    recAttributeTypeVec  m_typeList;
+};
 
 #endif // DLGEDATTRIBUTE_H

@@ -35,8 +35,10 @@
 
 class recPersona;
 class recAttribute;
+class recAttributeType;
 typedef wxVector< recPersona >  recPersonaList;
 typedef wxVector< recAttribute >  recAttributeList;
+typedef wxVector< recAttributeType >  recAttributeTypeVec;
 
 class recPersona : public recDb
 {
@@ -159,6 +161,8 @@ public:
     TABLE_NAME_MEMBERS( "AttributeType" );
 
     static wxString GetTypeStr( id_t id );
+
+    static recAttributeTypeVec GetTypeList();
 };
 
 inline bool recEquivalent( const recAttributeType& r1, const recAttributeType& r2 )

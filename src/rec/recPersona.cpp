@@ -399,4 +399,45 @@ wxString recAttributeType::GetTypeStr( id_t id )
     return at.f_name;
 }
 
+recAttributeTypeVec recAttributeType::GetTypeList()
+{
+    recAttributeType at;
+    recAttributeTypeVec list;
+	wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+    int i;
+
+    // Put standard entries in list.
+	sql.Format( 
+        "SELECT id, grp, name FROM AttributeType "
+        "WHERE id<0 ORDER BY id DESC;" 
+    );
+    result = s_db->GetTable( sql );
+
+    for( i = 0 ; i < result.GetRowCount() ; i++ ) {
+        result.SetRow( i );
+        at.f_id = GET_ID( result.GetInt64( 0 ) );
+        at.f_grp = (ATYPE_Grp) result.GetInt( 1 );
+        at.f_name = result.GetAsString( 2 );
+		list.push_back( at );
+    }
+
+    // Put user entries in list.
+    sql.Format( 
+        "SELECT id, grp, name FROM AttributeType "
+        "WHERE id>0 ORDER BY id ASC;" 
+    );
+    result = s_db->GetTable( sql );
+
+    for( i = 0 ; i < result.GetRowCount() ; i++ ) {
+        result.SetRow( i );
+        at.f_id = GET_ID( result.GetInt64( 0 ) );
+        at.f_grp = (ATYPE_Grp) result.GetInt( 1 );
+        at.f_name = result.GetAsString( 2 );
+		list.push_back( at );
+    }
+
+    return list;
+}
+
 // End of recPersona.cpp file
