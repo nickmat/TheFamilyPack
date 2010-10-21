@@ -66,7 +66,7 @@ BEGIN_EVENT_TABLE( dlgEditReference, wxDialog )
     EVT_MENU( ID_EDREF_NEW_DATE,   dlgEditReference::OnNewDate )
     EVT_MENU( ID_EDREF_NEW_PER,    dlgEditReference::OnNewPersona )
     EVT_MENU( ID_EDREF_NEW_ATTR,   dlgEditReference::OnNewAttribute )
-    EVT_MENU( ID_EDREF_NEW_ROLE,   dlgEditReference::OnNewRole )
+//    EVT_MENU( ID_EDREF_NEW_ROLE,   dlgEditReference::OnNewRole )
 END_EVENT_TABLE()
 
 dlgEditReference::dlgEditReference( wxWindow* parent )
@@ -159,7 +159,6 @@ void dlgEditReference::OnAddButton( wxCommandEvent& event )
     menu->Append( ID_EDREF_NEW_DATE, _("&Date") );
     menu->Append( ID_EDREF_NEW_PER, _("&Persona") );
     menu->Append( ID_EDREF_NEW_ATTR, _("&Attribute") );
-    menu->Append( ID_EDREF_NEW_ROLE, _("&Role") );
     PopupMenu( menu );
     delete menu;
 }
@@ -271,27 +270,6 @@ void dlgEditReference::OnUpButton( wxCommandEvent& event )
 
 void dlgEditReference::OnDownButton( wxCommandEvent& event )
 {
-#if 0
-	wxMessageBox( 
-		wxT("Not yet implimented"), 
-		wxT("OnDownButton")
-	);
-	// TODO: Implement OnDownButton
-    wxArrayInt rows = m_grid->GetSelectedRows();
-    if( rows.GetCount() != 1 )
-    {
-        wxMessageBox( wxT("Single row not selected"), wxT("OnUpButton") );
-        return;
-    }
-    int row = rows[0];
-    EntGridTable* table = (EntGridTable*) m_grid->GetTable();
-    table->MoveRowDown( row );
-    if( row != table->GetNumberRows() - 1 )
-    {
-        m_grid->SelectRow( row + 1 );
-        m_grid->MakeCellVisible( row + 1, 0 );
-    }
-#endif
 	long row = m_listEntities->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
         wxMessageBox( _("No row selected"), _("Edit Entity") );
@@ -318,42 +296,41 @@ void dlgEditReference::DoCut()
 		wxT("DoCut")
 	);
 	// TODO: Implement DoCut
+    m_textCtrl12->Cut();
 }
 
 void dlgEditReference::DoCopy()
 {
+#if 0
 	wxMessageBox( 
 		wxT("Not yet implimented"), 
 		wxT("DoCopy")
 	);
 	// TODO: Implement DoCopy
+#endif
+    m_textCtrl12->Copy();
 }
 
 void dlgEditReference::DoPaste()
 {
+#if 0
 	wxMessageBox( 
 		wxT("Not yet implimented"), 
 		wxT("DoPaste")
 	);
 	// TODO: Implement DoPaste
+#endif
+    m_textCtrl12->Paste();
 }
 
 void dlgEditReference::DoUndo()
 {
-	wxMessageBox( 
-		wxT("Not yet implimented"), 
-		wxT("DoUndo")
-	);
-	// TODO: Implement DoUndo
+    m_textCtrl12->Undo();
 }
 
 void dlgEditReference::DoRedo()
 {
-	wxMessageBox( 
-		wxT("Not yet implimented"), 
-		wxT("DoRedo")
-	);
-	// TODO: Implement DoRedo
+    m_textCtrl12->Redo();
 }
 
 void dlgEditReference::OnNewSource( wxCommandEvent& event )
@@ -397,14 +374,6 @@ void dlgEditReference::OnNewEvent( wxCommandEvent& cmnd_event )
         recDb::Rollback( savepoint );
     }
     dialog->Destroy();
-}
-
-void dlgEditReference::OnNewRole( wxCommandEvent& event )
-{
-	wxMessageBox( 
-		wxT("Not yet implimented"), 
-		wxT("OnNewRole")
-	);
 }
 
 void dlgEditReference::OnNewPlace( wxCommandEvent& event )
@@ -577,12 +546,6 @@ void dlgEditReference::DoEditPlace( id_t id, long row )
 
 void dlgEditReference::DoEditPersona( id_t id, long row )
 {
-#if 0
-	wxMessageBox( 
-		wxT("Not yet implimented"), 
-		wxT("DoEditPersona")
-	);
-#endif
     const wxString savepoint = "RefEdPer";
     recAttribute attr;
     size_t i = 0;

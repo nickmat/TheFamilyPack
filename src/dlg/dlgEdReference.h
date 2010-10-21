@@ -58,8 +58,7 @@ protected:
         ID_EDREF_NEW_PLACE,
         ID_EDREF_NEW_DATE,
         ID_EDREF_NEW_PER,
-        ID_EDREF_NEW_ATTR,
-        ID_EDREF_NEW_ROLE
+        ID_EDREF_NEW_ATTR
     };
 
     bool TransferDataToWindow();
@@ -85,7 +84,6 @@ protected:
     void OnNewDate( wxCommandEvent& event );
     void OnNewPersona( wxCommandEvent& event );
     void OnNewAttribute( wxCommandEvent& event );
-    void OnNewRole( wxCommandEvent& event );
 
     void DoEditDate( id_t id, long row );
     void DoEditPlace( id_t id, long row );
