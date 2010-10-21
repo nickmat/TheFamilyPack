@@ -426,7 +426,7 @@ class fbDlgEditReference : public wxDialog
 		wxToolBar* m_toolBar1;
 		wxSplitterWindow* m_splitter1;
 		wxPanel* m_panel7;
-		wxTextCtrl* m_textCtrl12;
+		wxTextCtrl* m_textCtrlStatement;
 		wxPanel* m_panel8;
 		wxListCtrl* m_listEntities;
 		wxButton* m_buttonAdd;

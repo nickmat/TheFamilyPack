@@ -224,7 +224,7 @@ fbDlgEditIndividual::fbDlgEditIndividual( wxWindow* parent, wxWindowID id, const
 	m_panel1->SetSizer( fgSizer2 );
 	m_panel1->Layout();
 	fgSizer2->Fit( m_panel1 );
-	m_notebook1->AddPage( m_panel1, _("Attributes"), true );
+	m_notebook1->AddPage( m_panel1, _("Attributes"), false );
 	m_panel3 = new wxPanel( m_notebook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer26;
 	bSizer26 = new wxBoxSizer( wxHORIZONTAL );
@@ -237,7 +237,7 @@ fbDlgEditIndividual::fbDlgEditIndividual( wxWindow* parent, wxWindowID id, const
 	m_panel3->SetSizer( bSizer26 );
 	m_panel3->Layout();
 	bSizer26->Fit( m_panel3 );
-	m_notebook1->AddPage( m_panel3, _("Events"), false );
+	m_notebook1->AddPage( m_panel3, _("Events"), true );
 	
 	bSizer21->Add( m_notebook1, 1, wxEXPAND | wxALL, 5 );
 	
@@ -945,8 +945,8 @@ fbDlgEditReference::fbDlgEditReference( wxWindow* parent, wxWindowID id, const w
 	wxBoxSizer* bSizer39;
 	bSizer39 = new wxBoxSizer( wxVERTICAL );
 	
-	m_textCtrl12 = new wxTextCtrl( m_panel7, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxTE_DONTWRAP|wxTE_MULTILINE );
-	bSizer39->Add( m_textCtrl12, 1, wxALL|wxEXPAND, 5 );
+	m_textCtrlStatement = new wxTextCtrl( m_panel7, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxTE_DONTWRAP|wxTE_MULTILINE );
+	bSizer39->Add( m_textCtrlStatement, 1, wxALL|wxEXPAND, 5 );
 	
 	m_panel7->SetSizer( bSizer39 );
 	m_panel7->Layout();

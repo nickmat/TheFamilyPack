@@ -49,7 +49,6 @@
 #include "dlgEdDate.h"
 #include "dlgEdAttribute.h"
 
-//WX_DEFINE_OBJARRAY( TfpEntities );
 
 int tfpGetEntityIndex( TfpEntities* array, int ind )
 {
@@ -66,7 +65,6 @@ BEGIN_EVENT_TABLE( dlgEditReference, wxDialog )
     EVT_MENU( ID_EDREF_NEW_DATE,   dlgEditReference::OnNewDate )
     EVT_MENU( ID_EDREF_NEW_PER,    dlgEditReference::OnNewPersona )
     EVT_MENU( ID_EDREF_NEW_ATTR,   dlgEditReference::OnNewAttribute )
-//    EVT_MENU( ID_EDREF_NEW_ROLE,   dlgEditReference::OnNewRole )
 END_EVENT_TABLE()
 
 dlgEditReference::dlgEditReference( wxWindow* parent )
@@ -89,7 +87,7 @@ bool dlgEditReference::TransferDataToWindow()
     m_staticRefID->SetLabel( str  );
 
     m_textCtrlTitle->SetValue( m_reference.f_title );
-    m_textCtrl12->SetValue(  m_reference.f_statement );
+    m_textCtrlStatement->SetValue(  m_reference.f_statement );
 
     recRefEntVec  evid_ents;
     evid_ents = m_reference.ReadReferenceEntitys();
@@ -132,7 +130,7 @@ bool dlgEditReference::TransferDataToWindow()
 bool dlgEditReference::TransferDataFromWindow()
 {
     m_reference.f_title = m_textCtrlTitle->GetValue();
-    m_reference.f_statement = m_textCtrl12->GetValue();
+    m_reference.f_statement = m_textCtrlStatement->GetValue();
 
     m_reference.Save();
     return true;
@@ -150,6 +148,31 @@ void dlgEditReference::OnTool( wxCommandEvent& event )
     }
 }
 
+void dlgEditReference::DoCut()
+{
+    m_textCtrlStatement->Cut();
+}
+
+void dlgEditReference::DoCopy()
+{
+    m_textCtrlStatement->Copy();
+}
+
+void dlgEditReference::DoPaste()
+{
+    m_textCtrlStatement->Paste();
+}
+
+void dlgEditReference::DoUndo()
+{
+    m_textCtrlStatement->Undo();
+}
+
+void dlgEditReference::DoRedo()
+{
+    m_textCtrlStatement->Redo();
+}
+
 void dlgEditReference::OnAddButton( wxCommandEvent& event )
 {
     wxMenu* menu = new wxMenu;
@@ -161,176 +184,6 @@ void dlgEditReference::OnAddButton( wxCommandEvent& event )
     menu->Append( ID_EDREF_NEW_ATTR, _("&Attribute") );
     PopupMenu( menu );
     delete menu;
-}
-
-void dlgEditReference::OnEditButton( wxCommandEvent& event )
-{
-	long row = m_listEntities->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-    if( row < 0 ) {
-        wxMessageBox( _("No row selected"), _("Edit Entity") );
-        return;
-    }
-    id_t id = m_entities[row].rec.f_entity_id;
-    switch( m_entities[row].rec.f_entity_type )
-    {
-    case recReferenceEntity::TYPE_Date:      DoEditDate( id, row );      break;
-    case recReferenceEntity::TYPE_Place:     DoEditPlace( id, row );     break;
-    case recReferenceEntity::TYPE_Persona:   DoEditPersona( id, row );   break;
-    case recReferenceEntity::TYPE_Attribute: DoEditAttribute( id, row ); break;
-    case recReferenceEntity::TYPE_Event:     DoEditEvent( id, row );     break;
-    default:
-        wxMessageBox( _("Element cannot be edited"), _("Edit") );
-        return;
-    }
-}
-
-void dlgEditReference::OnDeleteButton( wxCommandEvent& event )
-{
-	long row = m_listEntities->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-    if( row < 0 ) {
-        wxMessageBox( _("No row selected"), _("Edit Entity") );
-        return;
-    }
-    id_t reID = m_entities[row].rec.f_id;
-    id_t entID = m_entities[row].rec.f_entity_id;
-    recReferenceEntity::Type type = m_entities[row].rec.f_entity_type;
-    switch( type )
-    {
-    case recReferenceEntity::TYPE_Date:
-        recDate::Delete( entID );
-        recReferenceEntity::Delete( reID );
-        break;
-    case recReferenceEntity::TYPE_Place:
-        {
-            recPlacePartList arr_pp = recPlace::GetPlaceParts( entID );
-            for( size_t i = 0 ; i < arr_pp.size() ; i++ ) {
-                arr_pp[i].Delete();
-            }
-            recPlace::Delete( entID );
-            recReferenceEntity::Delete( reID );
-        }
-        break;
-    case recReferenceEntity::TYPE_Persona:
-        {
-            recAttributeList arrAttr = recPersona::ReadAttributes( entID );
-            for( size_t i = 0 ; i < arrAttr.size() ; i++ ) {
-                arrAttr[i].Delete();
-            }
-            recPersona::Delete( entID );
-            recReferenceEntity::Delete( reID );
-        }
-        break;
-    case recReferenceEntity::TYPE_Attribute:
-        recAttribute::Delete( entID );
-        recReferenceEntity::Delete( reID );
-        break;
-    default:
-        wxMessageBox( _("Element cannot be deleted"), _("Delete") );
-        return;
-    }
-    m_listEntities->DeleteItem( row );
-    m_entities.erase( m_entities.begin() + row );
-    // Remove list rows that are owned by entID (Persona only?)
-    if( type == recReferenceEntity::TYPE_Persona ) {
-        size_t i = 0;
-        while( i < m_entities.size() ) {
-            if( m_entities[i].rec.f_entity_type == recReferenceEntity::TYPE_Attribute
-                && m_entities[i].owner == entID ) 
-            {
-                recAttribute::Delete( m_entities[i].rec.f_entity_id );
-                recReferenceEntity::Delete( m_entities[i].rec.f_id );
-                m_listEntities->DeleteItem( i );
-                m_entities.erase( m_entities.begin() + i );
-            } else {
-                i++;
-            }
-        }
-    }
-}
-
-void dlgEditReference::OnUpButton( wxCommandEvent& event )
-{
-	long row = m_listEntities->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-    if( row < 0 ) {
-        wxMessageBox( _("No row selected"), _("Edit Entity") );
-        return;
-    }
-    if( row != 0 ) {
-        TfpEntity temp = m_entities[row];
-        m_entities[row] = m_entities[row-1];
-        m_entities[row-1] = temp;
-
-        m_listEntities->DeleteItem( row );
-        InsertListItem( row-1, m_entities[row-1] );
-        long state = wxLIST_STATE_SELECTED;
-        m_listEntities->SetItemState( row-1, state, state );
-        m_listEntities->EnsureVisible( row-1 );
-    }
-}
-
-void dlgEditReference::OnDownButton( wxCommandEvent& event )
-{
-	long row = m_listEntities->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-    if( row < 0 ) {
-        wxMessageBox( _("No row selected"), _("Edit Entity") );
-        return;
-    }
-    if( row < m_listEntities->GetItemCount()-1 ) {
-        TfpEntity temp = m_entities[row];
-        m_entities[row] = m_entities[row+1];
-        m_entities[row+1] = temp;
-
-        m_listEntities->DeleteItem( row );
-        InsertListItem( row+1, m_entities[row+1] );
-        long state = wxLIST_STATE_SELECTED;
-        m_listEntities->SetItemState( row+1, state, state );
-        m_listEntities->EnsureVisible( row+1 );
-    }
-}
-
-
-void dlgEditReference::DoCut()
-{
-	wxMessageBox( 
-		wxT("Not yet implimented"), 
-		wxT("DoCut")
-	);
-	// TODO: Implement DoCut
-    m_textCtrl12->Cut();
-}
-
-void dlgEditReference::DoCopy()
-{
-#if 0
-	wxMessageBox( 
-		wxT("Not yet implimented"), 
-		wxT("DoCopy")
-	);
-	// TODO: Implement DoCopy
-#endif
-    m_textCtrl12->Copy();
-}
-
-void dlgEditReference::DoPaste()
-{
-#if 0
-	wxMessageBox( 
-		wxT("Not yet implimented"), 
-		wxT("DoPaste")
-	);
-	// TODO: Implement DoPaste
-#endif
-    m_textCtrl12->Paste();
-}
-
-void dlgEditReference::DoUndo()
-{
-    m_textCtrl12->Undo();
-}
-
-void dlgEditReference::DoRedo()
-{
-    m_textCtrl12->Redo();
 }
 
 void dlgEditReference::OnNewSource( wxCommandEvent& event )
@@ -350,7 +203,7 @@ void dlgEditReference::OnNewEvent( wxCommandEvent& cmnd_event )
     dlgEditEvent* dialog = new dlgEditEvent( NULL );
 
     dialog->SetData( type );
-    dialog->GetEvent()->f_val = m_textCtrl12->GetStringSelection();
+    dialog->GetEvent()->f_val = m_textCtrlStatement->GetStringSelection();
     dialog->SetEntities( &m_entities );
 
     recDb::Savepoint( savepoint );
@@ -381,7 +234,7 @@ void dlgEditReference::OnNewPlace( wxCommandEvent& event )
     const wxString savepoint = "RefPlace";
     dlgEditPlace* dialog = new dlgEditPlace( NULL );
 
-    dialog->SetText( m_textCtrl12->GetStringSelection() );
+    dialog->SetText( m_textCtrlStatement->GetStringSelection() );
 
     recDb::Savepoint( savepoint );
     if( dialog->ShowModal() == wxID_OK )
@@ -411,7 +264,7 @@ void dlgEditReference::OnNewDate( wxCommandEvent& event )
     const wxString savepoint = "RefDate";
     dlgEditDate* dialog = new dlgEditDate( NULL );
 
-    dialog->SetText( m_textCtrl12->GetStringSelection() );
+    dialog->SetText( m_textCtrlStatement->GetStringSelection() );
 
     recDb::Savepoint( savepoint );
     if( dialog->ShowModal() == wxID_OK )
@@ -442,7 +295,7 @@ void dlgEditReference::OnNewPersona( wxCommandEvent& event )
     dlgEditPersona* dialog = new dlgEditPersona( NULL );
 
     dialog->SetData();
-    dialog->SetDefault( m_textCtrl12->GetStringSelection() );
+    dialog->SetDefault( m_textCtrlStatement->GetStringSelection() );
 
     recDb::Savepoint( savepoint );
     if( dialog->ShowModal() == wxID_OK )
@@ -487,7 +340,7 @@ void dlgEditReference::OnNewAttribute( wxCommandEvent& event )
     const wxString savepoint = "RefAttr";
     dlgEditAttribute* dialog = new dlgEditAttribute( NULL );
 
-    dialog->SetText( m_textCtrl12->GetStringSelection() );
+    dialog->SetText( m_textCtrlStatement->GetStringSelection() );
 
     recDb::Savepoint( savepoint );
     if( dialog->ShowModal() == wxID_OK )
@@ -510,6 +363,27 @@ void dlgEditReference::OnNewAttribute( wxCommandEvent& event )
         recDb::Rollback( savepoint );
     }
     dialog->Destroy();
+}
+
+void dlgEditReference::OnEditButton( wxCommandEvent& event )
+{
+	long row = m_listEntities->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row < 0 ) {
+        wxMessageBox( _("No row selected"), _("Edit Entity") );
+        return;
+    }
+    id_t id = m_entities[row].rec.f_entity_id;
+    switch( m_entities[row].rec.f_entity_type )
+    {
+    case recReferenceEntity::TYPE_Date:      DoEditDate( id, row );      break;
+    case recReferenceEntity::TYPE_Place:     DoEditPlace( id, row );     break;
+    case recReferenceEntity::TYPE_Persona:   DoEditPersona( id, row );   break;
+    case recReferenceEntity::TYPE_Attribute: DoEditAttribute( id, row ); break;
+    case recReferenceEntity::TYPE_Event:     DoEditEvent( id, row );     break;
+    default:
+        wxMessageBox( _("Element cannot be edited"), _("Edit") );
+        return;
+    }
 }
 
 void dlgEditReference::DoEditDate( id_t id, long row )
@@ -625,6 +499,110 @@ void dlgEditReference::DoEditEvent( id_t id, long row )
         recDb::Rollback( savepoint );
     }
     dialog->Destroy();
+}
+
+void dlgEditReference::OnDeleteButton( wxCommandEvent& event )
+{
+	long row = m_listEntities->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row < 0 ) {
+        wxMessageBox( _("No row selected"), _("Edit Entity") );
+        return;
+    }
+    id_t reID = m_entities[row].rec.f_id;
+    id_t entID = m_entities[row].rec.f_entity_id;
+    recReferenceEntity::Type type = m_entities[row].rec.f_entity_type;
+    switch( type )
+    {
+    case recReferenceEntity::TYPE_Date:
+        recDate::Delete( entID );
+        recReferenceEntity::Delete( reID );
+        break;
+    case recReferenceEntity::TYPE_Place:
+        {
+            recPlacePartList arr_pp = recPlace::GetPlaceParts( entID );
+            for( size_t i = 0 ; i < arr_pp.size() ; i++ ) {
+                arr_pp[i].Delete();
+            }
+            recPlace::Delete( entID );
+            recReferenceEntity::Delete( reID );
+        }
+        break;
+    case recReferenceEntity::TYPE_Persona:
+        {
+            recAttributeList arrAttr = recPersona::ReadAttributes( entID );
+            for( size_t i = 0 ; i < arrAttr.size() ; i++ ) {
+                arrAttr[i].Delete();
+            }
+            recPersona::Delete( entID );
+            recReferenceEntity::Delete( reID );
+        }
+        break;
+    case recReferenceEntity::TYPE_Attribute:
+        recAttribute::Delete( entID );
+        recReferenceEntity::Delete( reID );
+        break;
+    default:
+        wxMessageBox( _("Element cannot be deleted"), _("Delete") );
+        return;
+    }
+    m_listEntities->DeleteItem( row );
+    m_entities.erase( m_entities.begin() + row );
+    // Remove list rows that are owned by entID (Persona only?)
+    if( type == recReferenceEntity::TYPE_Persona ) {
+        size_t i = 0;
+        while( i < m_entities.size() ) {
+            if( m_entities[i].rec.f_entity_type == recReferenceEntity::TYPE_Attribute
+                && m_entities[i].owner == entID ) 
+            {
+                recAttribute::Delete( m_entities[i].rec.f_entity_id );
+                recReferenceEntity::Delete( m_entities[i].rec.f_id );
+                m_listEntities->DeleteItem( i );
+                m_entities.erase( m_entities.begin() + i );
+            } else {
+                i++;
+            }
+        }
+    }
+}
+
+void dlgEditReference::OnUpButton( wxCommandEvent& event )
+{
+	long row = m_listEntities->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row < 0 ) {
+        wxMessageBox( _("No row selected"), _("Edit Entity") );
+        return;
+    }
+    if( row != 0 ) {
+        TfpEntity temp = m_entities[row];
+        m_entities[row] = m_entities[row-1];
+        m_entities[row-1] = temp;
+
+        m_listEntities->DeleteItem( row );
+        InsertListItem( row-1, m_entities[row-1] );
+        long state = wxLIST_STATE_SELECTED;
+        m_listEntities->SetItemState( row-1, state, state );
+        m_listEntities->EnsureVisible( row-1 );
+    }
+}
+
+void dlgEditReference::OnDownButton( wxCommandEvent& event )
+{
+	long row = m_listEntities->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row < 0 ) {
+        wxMessageBox( _("No row selected"), _("Edit Entity") );
+        return;
+    }
+    if( row < m_listEntities->GetItemCount()-1 ) {
+        TfpEntity temp = m_entities[row];
+        m_entities[row] = m_entities[row+1];
+        m_entities[row+1] = temp;
+
+        m_listEntities->DeleteItem( row );
+        InsertListItem( row+1, m_entities[row+1] );
+        long state = wxLIST_STATE_SELECTED;
+        m_listEntities->SetItemState( row+1, state, state );
+        m_listEntities->EnsureVisible( row+1 );
+    }
 }
 
 void dlgEditReference::InsertListItem( long row, const TfpEntity& ent )
