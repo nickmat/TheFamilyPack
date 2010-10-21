@@ -251,37 +251,32 @@ void dlgEditReference::OnDeleteButton( wxCommandEvent& event )
 
 void dlgEditReference::OnUpButton( wxCommandEvent& event )
 {
-	wxMessageBox( 
-		wxT("Not yet implimented"), 
-		wxT("OnUpButton")
-	);
-	// TODO: Implement OnUpButton
-#if 0
-    wxArrayInt rows = m_grid->GetSelectedRows();
-    if( rows.GetCount() != 1 )
-    {
-        wxMessageBox( wxT("Single row not selected"), wxT("OnUpButton") );
+	long row = m_listEntities->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row < 0 ) {
+        wxMessageBox( _("No row selected"), _("Edit Entity") );
         return;
     }
-    int row = rows[0];
-    EntGridTable* table = (EntGridTable*) m_grid->GetTable();
-    table->MoveRowUp( row );
-    if( row != 0 )
-    {
-        m_grid->SelectRow( row - 1 );
-        m_grid->MakeCellVisible( row - 1, 0 );
+    if( row != 0 ) {
+        TfpEntity temp = m_entities[row];
+        m_entities[row] = m_entities[row-1];
+        m_entities[row-1] = temp;
+
+        m_listEntities->DeleteItem( row );
+        InsertListItem( row-1, m_entities[row-1] );
+        long state = wxLIST_STATE_SELECTED;
+        m_listEntities->SetItemState( row-1, state, state );
+        m_listEntities->EnsureVisible( row-1 );
     }
-#endif
 }
 
 void dlgEditReference::OnDownButton( wxCommandEvent& event )
 {
+#if 0
 	wxMessageBox( 
 		wxT("Not yet implimented"), 
 		wxT("OnDownButton")
 	);
 	// TODO: Implement OnDownButton
-#if 0
     wxArrayInt rows = m_grid->GetSelectedRows();
     if( rows.GetCount() != 1 )
     {
@@ -297,6 +292,22 @@ void dlgEditReference::OnDownButton( wxCommandEvent& event )
         m_grid->MakeCellVisible( row + 1, 0 );
     }
 #endif
+	long row = m_listEntities->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row < 0 ) {
+        wxMessageBox( _("No row selected"), _("Edit Entity") );
+        return;
+    }
+    if( row < m_listEntities->GetItemCount()-1 ) {
+        TfpEntity temp = m_entities[row];
+        m_entities[row] = m_entities[row+1];
+        m_entities[row+1] = temp;
+
+        m_listEntities->DeleteItem( row );
+        InsertListItem( row+1, m_entities[row+1] );
+        long state = wxLIST_STATE_SELECTED;
+        m_listEntities->SetItemState( row+1, state, state );
+        m_listEntities->EnsureVisible( row+1 );
+    }
 }
 
 
@@ -428,12 +439,6 @@ void dlgEditReference::OnNewPlace( wxCommandEvent& event )
 
 void dlgEditReference::OnNewDate( wxCommandEvent& event )
 {
-#if 0
-	wxMessageBox( 
-		"Not yet implimented",
-		"OnNewDate"
-	);
-#endif
     const wxString savepoint = "RefDate";
     dlgEditDate* dialog = new dlgEditDate( NULL );
 
@@ -510,12 +515,6 @@ void dlgEditReference::OnNewPersona( wxCommandEvent& event )
 
 void dlgEditReference::OnNewAttribute( wxCommandEvent& event )
 {
-#if 0
-	wxMessageBox( 
-		wxT("Not yet implimented"), 
-		wxT("OnNewAttribute")
-	);
-#endif
     const wxString savepoint = "RefAttr";
     dlgEditAttribute* dialog = new dlgEditAttribute( NULL );
 
@@ -578,67 +577,60 @@ void dlgEditReference::DoEditPlace( id_t id, long row )
 
 void dlgEditReference::DoEditPersona( id_t id, long row )
 {
+#if 0
 	wxMessageBox( 
 		wxT("Not yet implimented"), 
 		wxT("DoEditPersona")
 	);
-#if 0
-    const wxString savepoint = wxT("RefEdPer");
-    RecAttribute attr;
+#endif
+    const wxString savepoint = "RefEdPer";
+    recAttribute attr;
     size_t i = 0;
 
-    DlgEditPersona* dialog = new DlgEditPersona( NULL );
+    dlgEditPersona* dialog = new dlgEditPersona( NULL );
     dialog->SetData( id );
-    g_db->Savepoint( savepoint );
+    recDb::Savepoint( savepoint );
     if( dialog->ShowModal() == wxID_OK )
     {
-        g_db->ReleaseSavepoint( savepoint );
+        recDb::ReleaseSavepoint( savepoint );
         // remove the attributes
-        while( i < m_entities.GetCount() )  {
-            if( m_entities[i].rec.entity_type == RecReferenceEntity::TYPE_Attribute
+        while( i < m_entities.size() )  {
+            if( m_entities[i].rec.f_entity_type == recReferenceEntity::TYPE_Attribute
                 && m_entities[i].owner == id )
             {
 				m_entities[i].rec.Delete();
-                m_entities.Detach( i );
-                m_grid->DeleteRows( i );
-                if( i < row ) --row;
+                m_entities.erase( m_entities.begin() + i );
+                m_listEntities->DeleteItem( i );
+                if( (long) i < row ) --row;
             } else {
                 i++;
             }
         }
         // Put the Attributes back
-        ArrAttribute attrs = dialog->GetAttributes();
-        for( i = 0 ; i < attrs.GetCount() ; i++ ) {
+        recAttributeList attrs = dialog->GetAttributes();
+        for( i = 0 ; i < attrs.size() ; i++ ) {
             row++;
-            m_grid->InsertRows( row );
-            m_grid->SetCellValue( row, COL_Type,
-                RecReferenceEntity::sm_typeStr[RecReferenceEntity::TYPE_Attribute] );
-            m_grid->SetCellValue( row, COL_Value, attrs[i].val );
 
-            Entity entity;
+            TfpEntity entity;
             entity.rec.Clear();
             entity.owner = id;
-            entity.rec.ref_id = m_reference.id;
-            entity.rec.entity_type = RecReferenceEntity::TYPE_Attribute;
-            entity.rec.entity_id = attrs[i].id;
+            entity.rec.f_ref_id = m_reference.f_id;
+            entity.rec.f_entity_type = recReferenceEntity::TYPE_Attribute;
+            entity.rec.f_entity_id = attrs[i].f_id;
             entity.rec.Save();
-            m_entities.Add( entity );
+            m_entities.push_back( entity );
+
+    		m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
+            m_listEntities->SetItem( row, COL_Value, attrs[i].f_val );
         }
     } else {
-        g_db->Rollback( savepoint );
+        recDb::Rollback( savepoint );
     }
     dialog->Destroy();
-#endif
 }
 
 void dlgEditReference::DoEditAttribute( id_t id, long row )
 {
-#if 0
-	wxMessageBox( 
-		"Not yet implimented",
-		"DoEditAttribute"
-	);
-#endif
     const wxString savepoint = "RefEdAttr";
     dlgEditAttribute* dialog = new dlgEditAttribute( NULL, id );
 
@@ -670,6 +662,34 @@ void dlgEditReference::DoEditEvent( id_t id, long row )
         recDb::Rollback( savepoint );
     }
     dialog->Destroy();
+}
+
+void dlgEditReference::InsertListItem( long row, const TfpEntity& ent )
+{
+    wxString str;
+    switch( ent.rec.f_entity_type )
+    {
+    case recReferenceEntity::TYPE_Event:
+        str = recEvent::GetValue( ent.rec.f_entity_id );
+        break;
+    case recReferenceEntity::TYPE_Place:
+        str = recPlace::GetAddressStr( ent.rec.f_entity_id );
+        break;
+    case recReferenceEntity::TYPE_Date:
+        str = recDate::GetStr( ent.rec.f_entity_id );
+        break;
+    case recReferenceEntity::TYPE_Persona:
+        str = recPersona::GetFullName( ent.rec.f_entity_id );
+        break;
+    case recReferenceEntity::TYPE_Attribute:
+        str = recAttribute::GetValue( ent.rec.f_entity_id );
+        break;
+    default:
+        str = _("Unknown entity type.");
+    }
+    TfpEntity entity = ent;
+	m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
+    m_listEntities->SetItem( row, COL_Value, str );
 }
 
 // End of dlgEdReference.cpp file

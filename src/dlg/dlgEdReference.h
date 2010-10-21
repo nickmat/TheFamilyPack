@@ -42,7 +42,6 @@ struct TfpEntity {
 };
 
 typedef wxVector< TfpEntity >  TfpEntities;
-//WX_DECLARE_OBJARRAY( TfpEntity, TfpEntities );
 
 extern int tfpGetEntityIndex( TfpEntities* array, int ind );
 
@@ -79,10 +78,6 @@ protected:
 	void DoPaste();
 	void DoUndo();
 	void DoRedo();
-//	void DoBold();
-//	void DoItalic();
-//	void DoUnderline();
-//	void DoFont();
 
     void OnNewSource( wxCommandEvent& event );
     void OnNewEvent( wxCommandEvent& event );
@@ -105,6 +100,8 @@ public:
     void SetID( id_t id ) { m_reference.f_id = id; }
 
 private:
+    void InsertListItem( long row, const TfpEntity& ent );
+
     recReference  m_reference;
     TfpEntities   m_entities;
 };
