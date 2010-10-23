@@ -102,10 +102,10 @@ CREATE TABLE Event (
   id INTEGER PRIMARY KEY,
   title TEXT,
   type_id INTEGER,
-  note TEXT,
   date1_id INTEGER,
   date2_id INTEGER,
-  place_id INTEGER
+  place_id INTEGER,
+  note TEXT
 );
 
 CREATE TABLE EventType (
@@ -283,7 +283,7 @@ CREATE TABLE ReferenceEntity (
   id INTEGER PRIMARY KEY,
   ref_id INTEGER,
   entity_type INTEGER,
-  entity_id INTEGER
+  entity_id INTEGER,
   sequence INTEGER
 );
 

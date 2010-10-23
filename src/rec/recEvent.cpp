@@ -63,7 +63,7 @@ void recEvent::Save()
 		// Add new record
 	    sql.Format( 
 		    "INSERT INTO Event (title, type_id, date1_id, date2_id, place_id, note) "
-            "VALUES ("ID", '%q', "ID", "ID", "ID");",
+            "VALUES ('%q', "ID", "ID", "ID", "ID", '%q');",
             UTF8_(f_title), f_type_id, f_date1_id, f_date2_id, f_place_id, UTF8_(f_note)
 	    );
     	s_db->ExecuteUpdate( sql );
@@ -75,7 +75,7 @@ void recEvent::Save()
             // Add new record
 	        sql.Format( 
 		        "INSERT INTO Event (id, title, type_id, date1_id, date2_id, place_id, note) "
-                "VALUES ("ID", "ID", '%q', "ID", "ID", "ID");",
+                "VALUES ("ID", '%q', "ID", "ID", "ID", "ID", '%q');",
                 f_id, UTF8_(f_title), f_type_id, f_date1_id, f_date2_id, f_place_id, UTF8_(f_note)
 	        );
         } else {

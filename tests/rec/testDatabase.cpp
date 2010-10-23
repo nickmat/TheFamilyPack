@@ -742,6 +742,7 @@ void RecTestCase::TestReferenceEntity()
     record1.f_ref_id = 3;
     record1.f_entity_type = recReferenceEntity::TYPE_Persona;
     record1.f_entity_id = 5;
+    record1.f_sequence = 1;
     // f_id = 0 so create new record and set f_id to new value.
     record1.Save();
     id = record1.f_id;
@@ -755,6 +756,7 @@ void RecTestCase::TestReferenceEntity()
     record1.f_ref_id = 10;
     record1.f_entity_type = recReferenceEntity::TYPE_Attribute;
     record1.f_entity_id = 11;
+    record1.f_sequence = 2;
     // f_id = 1 which exists, so amend record leaving f_id to old value.
     record1.Save();
     CPPUNIT_ASSERT( record1.f_id == id );
