@@ -482,11 +482,12 @@ void RecTestCase::TestEvent()
     recEvent record1;
     record1.f_id = 0;
 
+    record1.f_title = "Marriage";
     record1.f_type_id = 2;
-    record1.f_val = "Marriage";
     record1.f_date1_id = 3;
     record1.f_date2_id = 4;
     record1.f_place_id = 5;
+    record1.f_note = "Good one";
     // f_id = 0 so create new record and set f_id to new value.
     record1.Save();
     id = record1.f_id;
@@ -497,11 +498,12 @@ void RecTestCase::TestEvent()
     record2.Read();  
     CPPUNIT_ASSERT( record1 == record2 );
 
+    record1.f_title = "Birth";
     record1.f_type_id = 20;
-    record1.f_val = "Birth";
     record1.f_date1_id = 15;
     record1.f_date2_id = 16;
     record1.f_place_id = 17;
+    record1.f_note = "And another";
     // f_id = 1 which exists, so amend record leaving f_id to old value.
     record1.Save();
     CPPUNIT_ASSERT( record1.f_id == id );
@@ -509,7 +511,7 @@ void RecTestCase::TestEvent()
     CPPUNIT_ASSERT( record1 == record2 );
 
     record1.f_id = 999;
-    record1.f_val = "Not wanted";
+    record1.f_title = "Not wanted";
     // f_id = 999 which doesn't exists, so create new record with no change to f_id.
     record1.Save();
     CPPUNIT_ASSERT( record1.f_id == 999 );
@@ -518,7 +520,7 @@ void RecTestCase::TestEvent()
     CPPUNIT_ASSERT( record1 == record2 );
 
     record1.f_id = 0;
-    record1.f_val = "Nor this";
+    record1.f_title = "Nor this";
     record1.Save();
     CPPUNIT_ASSERT( record1.f_id != 0 );
     CPPUNIT_ASSERT( record1.Exists() == true );

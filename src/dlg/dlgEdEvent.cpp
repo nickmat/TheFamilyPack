@@ -83,7 +83,7 @@ bool dlgEditEvent::TransferDataToWindow()
     }
 
     m_staticType->SetLabel( m_etype.f_name );
-    m_textCtrlTitle->SetValue( m_event.f_val );
+    m_textCtrlTitle->SetValue( m_event.f_title );
     m_textCtrlDateBeg->SetValue( recDate::GetStr( m_event.f_date1_id ) );
     m_textCtrlDateEnd->SetValue( recDate::GetStr( m_event.f_date2_id ) );
     m_textCtrlPlace->SetValue( recPlace::GetAddressStr( m_event.f_place_id ) );
@@ -100,7 +100,7 @@ bool dlgEditEvent::TransferDataToWindow()
 
 bool dlgEditEvent::TransferDataFromWindow()
 {
-    m_event.f_val = m_textCtrlTitle->GetValue();
+    m_event.f_title = m_textCtrlTitle->GetValue();
     m_event.Save();
 
     return true;

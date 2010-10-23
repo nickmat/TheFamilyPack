@@ -44,12 +44,13 @@
 
 void recEvent::Clear()
 {
-    f_id = 0;
+    f_id       = 0;
+    f_title    = wxEmptyString;
     f_type_id  = 0;
-    f_val      = wxEmptyString;
     f_date1_id = 0;
     f_date2_id = 0;
     f_place_id = 0;
+    f_note     = wxEmptyString;
 }
 
 void recEvent::Save()
@@ -61,9 +62,9 @@ void recEvent::Save()
 	{
 		// Add new record
 	    sql.Format( 
-		    "INSERT INTO Event (type_id, val, date1_id, date2_id, place_id) "
+		    "INSERT INTO Event (title, type_id, date1_id, date2_id, place_id, note) "
             "VALUES ("ID", '%q', "ID", "ID", "ID");",
-            f_type_id, UTF8_(f_val), f_date1_id, f_date2_id, f_place_id
+            UTF8_(f_title), f_type_id, f_date1_id, f_date2_id, f_place_id, UTF8_(f_note)
 	    );
     	s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -73,16 +74,16 @@ void recEvent::Save()
         {
             // Add new record
 	        sql.Format( 
-		        "INSERT INTO Event (id, type_id, val, date1_id, date2_id, place_id) "
+		        "INSERT INTO Event (id, title, type_id, date1_id, date2_id, place_id, note) "
                 "VALUES ("ID", "ID", '%q', "ID", "ID", "ID");",
-                f_id, f_type_id, UTF8_(f_val), f_date1_id, f_date2_id, f_place_id
+                f_id, UTF8_(f_title), f_type_id, f_date1_id, f_date2_id, f_place_id, UTF8_(f_note)
 	        );
         } else {
     		// Update existing record
             sql.Format( 
-                "UPDATE Event SET type_id="ID", val='%q', date1_id="ID", date2_id="ID", place_id="ID" "
+                "UPDATE Event SET title='%q', type_id="ID", date1_id="ID", date2_id="ID", place_id="ID", note='%q' "
                 "WHERE id="ID";", 
-                f_type_id, UTF8_(f_val), f_date1_id, f_date2_id, f_place_id, f_id
+                UTF8_(f_title), f_type_id, f_date1_id, f_date2_id, f_place_id, UTF8_(f_note), f_id
             );
         }
     	s_db->ExecuteUpdate( sql );
@@ -99,7 +100,7 @@ bool recEvent::Read()
         return false;
     }
 
-	sql.Format( "SELECT * FROM Event WHERE id="ID";", f_id );
+	sql.Format( "SELECT title, type_id, date1_id, date2_id, place_id, note FROM Event WHERE id="ID";", f_id );
     result = s_db->GetTable( sql );
 
     if( result.GetRowCount() != 1 ) 
@@ -108,11 +109,12 @@ bool recEvent::Read()
         return false;
     }
     result.SetRow( 0 ); 
-    f_type_id  = GET_ID( result.GetInt64( 1 ) );;
-    f_val      = result.GetAsString( 2 );
-    f_date1_id = GET_ID( result.GetInt64( 3 ) );;
-    f_date2_id = GET_ID( result.GetInt64( 4 ) );;
-    f_place_id = GET_ID( result.GetInt64( 5 ) );;
+    f_title    = result.GetAsString( 0 );
+    f_type_id  = GET_ID( result.GetInt64( 1 ) );
+    f_date1_id = GET_ID( result.GetInt64( 2 ) );
+    f_date2_id = GET_ID( result.GetInt64( 3 ) );
+    f_place_id = GET_ID( result.GetInt64( 4 ) );
+    f_note     = result.GetAsString( 5 );
 	return true;
 }
 
@@ -161,12 +163,22 @@ wxString recEvent::GetTypeStr( id_t id )
     return recEventType::GetTypeStr( typeID );
 }
 
-wxString recEvent::GetValue( id_t id )
+wxString recEvent::GetTitle( id_t id )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3ResultSet result;
 
-    sql.Format( "SELECT val FROM Event WHERE id="ID";", id );
+    sql.Format( "SELECT title FROM Event WHERE id="ID";", id );
+    result = s_db->ExecuteQuery( sql );
+    return result.GetAsString( 0 );
+}
+
+wxString recEvent::GetNote( id_t id )
+{
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3ResultSet result;
+
+    sql.Format( "SELECT note FROM Event WHERE id="ID";", id );
     result = s_db->ExecuteQuery( sql );
     return result.GetAsString( 0 );
 }

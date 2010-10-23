@@ -45,11 +45,12 @@ typedef wxVector< recEventTypeRole >  recEventTypeRoleVec;
 class recEvent : public recDb 
 {
 public:
+    wxString f_title;
     id_t     f_type_id;
-    wxString f_val;
     id_t     f_date1_id;
     id_t     f_date2_id;
     id_t     f_place_id;
+    wxString f_note;
 
     recEvent() {}
     recEvent( id_t id ) : recDb(id) { Read(); }
@@ -65,7 +66,8 @@ public:
     wxString GetAddressStr() const;
     static wxString GetDetailStr( id_t id );
     static wxString GetTypeStr( id_t id );
-    static wxString GetValue( id_t id );
+    static wxString GetTitle( id_t id );
+    static wxString GetNote( id_t id );
 
 	id_t FindReference() const { return FindReference( f_id ); }
 	static id_t FindReference( id_t eventID );
@@ -76,11 +78,12 @@ public:
 inline bool recEquivalent( const recEvent& r1, const recEvent& r2 )
 {
     return
+        r1.f_title    == r2.f_title    &&
         r1.f_type_id  == r2.f_type_id  &&
-        r1.f_val      == r2.f_val      &&
         r1.f_date1_id == r2.f_date1_id &&
         r1.f_date2_id == r2.f_date2_id &&
-        r1.f_place_id == r2.f_place_id;
+        r1.f_place_id == r2.f_place_id &&
+        r1.f_note     == r2.f_note;
 }
 
 inline bool operator==( const recEvent& r1, const recEvent& r2 )
@@ -100,23 +103,24 @@ class recEventType : public recDb
 {
 public:
 	enum ETYPE_Grp {
-		ETYPE_Grp_Unstated, 
-        ETYPE_Grp_Birth, 
-        ETYPE_Grp_Nr_Birth, 
-		ETYPE_Grp_Union, 
-        ETYPE_Grp_Family, 
-        ETYPE_Grp_Death, 
-        ETYPE_Grp_Nr_Death, 
-        ETYPE_Grp_Other
+		ETYPE_Grp_Unstated, // 0
+        ETYPE_Grp_Other,    // 1
+        ETYPE_Grp_Birth,    // 2
+        ETYPE_Grp_Death,    // 3
+		ETYPE_Grp_Union,    // 4
+        ETYPE_Grp_Nr_Birth, // 5
+        ETYPE_Grp_Nr_Death, // 6
+        ETYPE_Grp_Family,   // 7
+        ETYPE_Grp_MAX       // 8
 	};
 	enum ETYPE_Std {  // predefined entries, match with recCreate.sql 
 		ET_Unstated = 0,
-        ET_Birth = -1,	
-        ET_Baptism = -2,
+        ET_Birth    = -1,	
+        ET_Death    = -2,
         ET_Marriage = -3,
-        ET_Death = -4,
-		ET_Burial = -5,
-		ET_MAX = 6 // Size of list 
+        ET_Baptism  = -4,
+		ET_Burial   = -5,
+		ET_MAX      = 6     // Size of list 
 	};
 
     ETYPE_Grp f_grp;

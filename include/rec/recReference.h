@@ -87,9 +87,10 @@ public:
     };
     static const wxString sm_typeStr[TYPE_MAX];
 
-    id_t  f_ref_id;
-    Type  f_entity_type;
-    id_t  f_entity_id;
+    id_t     f_ref_id;
+    Type     f_entity_type;
+    id_t     f_entity_id;
+    unsigned f_sequence;
 
     recReferenceEntity() {}
     recReferenceEntity( id_t id ) : recDb(id) { Read(); }

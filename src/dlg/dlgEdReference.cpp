@@ -118,7 +118,7 @@ bool dlgEditReference::TransferDataToWindow()
             }
             break;
         case recReferenceEntity::TYPE_Event:
-            m_listEntities->SetItem( i, COL_Value, recEvent::GetValue( entID ) );
+            m_listEntities->SetItem( i, COL_Value, recEvent::GetTitle( entID ) );
             break;
         default:
 	        m_listEntities->SetItem( i, COL_Value, _("Unknown Reference Entity") );
@@ -203,7 +203,7 @@ void dlgEditReference::OnNewEvent( wxCommandEvent& cmnd_event )
     dlgEditEvent* dialog = new dlgEditEvent( NULL );
 
     dialog->SetData( type );
-    dialog->GetEvent()->f_val = m_textCtrlStatement->GetStringSelection();
+    dialog->GetEvent()->f_title = m_textCtrlStatement->GetStringSelection();
     dialog->SetEntities( &m_entities );
 
     recDb::Savepoint( savepoint );
@@ -221,7 +221,7 @@ void dlgEditReference::OnNewEvent( wxCommandEvent& cmnd_event )
         m_entities.push_back( entity );
 
 		m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
-        m_listEntities->SetItem( row, COL_Value, dialog->GetEvent()->f_val );
+        m_listEntities->SetItem( row, COL_Value, dialog->GetEvent()->f_title );
     } else {
         // Dialog Cancelled
         recDb::Rollback( savepoint );
@@ -494,7 +494,7 @@ void dlgEditReference::DoEditEvent( id_t id, long row )
     if( dialog->ShowModal() == wxID_OK )
     {
         recDb::ReleaseSavepoint( savepoint );
-        m_listEntities->SetItem( row, COL_Value, dialog->GetEvent()->f_val );
+        m_listEntities->SetItem( row, COL_Value, dialog->GetEvent()->f_title );
     } else {
         recDb::Rollback( savepoint );
     }
@@ -611,7 +611,7 @@ void dlgEditReference::InsertListItem( long row, const TfpEntity& ent )
     switch( ent.rec.f_entity_type )
     {
     case recReferenceEntity::TYPE_Event:
-        str = recEvent::GetValue( ent.rec.f_entity_id );
+        str = recEvent::GetTitle( ent.rec.f_entity_id );
         break;
     case recReferenceEntity::TYPE_Place:
         str = recPlace::GetAddressStr( ent.rec.f_entity_id );

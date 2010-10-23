@@ -168,7 +168,7 @@ wxString tfpWriteIndividualPage( id_t indID )
 		htm << wxT("<tr><td align=right>")
             << recEventTypeRole::GetName( peList[i].f_role_id )
             << wxT(":</td><td><b>")
-			<< recEvent::GetValue( peList[i].f_event_id );
+			<< recEvent::GetTitle( peList[i].f_event_id );
 		if( refID != 0 ) {
     		htm << wxT(" <a href=R") << refID 
 	    		<< wxT("><img src=memory:ref.bmp></a>");
