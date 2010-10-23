@@ -403,6 +403,39 @@ class fbDlgEditEvent : public wxDialog
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/// Class fbDlgEditRole
+///////////////////////////////////////////////////////////////////////////////
+class fbDlgEditRole : public wxDialog 
+{
+	private:
+	
+	protected:
+		wxStaticText* m_staticText1;
+		wxStaticText* m_staticTextEvent;
+		wxButton* m_buttonPersona;
+		wxTextCtrl* m_textCtrlPersona;
+		wxButton* m_buttonRole;
+		wxTextCtrl* m_textCtrlRole;
+		wxStaticText* m_staticText2;
+		wxTextCtrl* m_textCtrlNote;
+		wxStaticLine* m_staticline1;
+		
+		wxButton* m_buttonSave;
+		wxButton* m_buttonCancel;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnPersonaButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnRoleButton( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		fbDlgEditRole( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Persona's Role"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 350,231 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+		~fbDlgEditRole();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
 /// Class fbDlgEditReference
 ///////////////////////////////////////////////////////////////////////////////
 class fbDlgEditReference : public wxDialog 

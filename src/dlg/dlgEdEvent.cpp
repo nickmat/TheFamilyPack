@@ -42,6 +42,7 @@
 #include <rec/recPersona.h>
 
 #include "dlgEdEvent.h"
+#include "dlgEdRole.h"
 
 #define ID_DATE_MENU_START  20000
 #define ID_PLACE_MENU_START 21000
@@ -197,40 +198,59 @@ void dlgEditEvent::OnPlaceSelect( wxCommandEvent& event )
 
 void dlgEditEvent::OnAddButton( wxCommandEvent& event )
 {
-	wxMessageBox( 
-		wxT("Not yet implimented\nDate"), 
-		wxT("OnEditButton")
-	);
-#if 0
-    recEventTypeRole role;
-    role.Clear();
-
-    RoleEntryDlg* dialog = new RoleEntryDlg( NULL );
-    dialog->SetData( m_event.id );
-    dialog->SetEventType( &m_etype );
+    const wxString savepoint = "EvtRole";
+    dlgEditRole* dialog = new dlgEditRole( NULL, m_event.f_id );
     dialog->SetEntities( mp_entities );
 
+    recDb::Savepoint( savepoint );
     if( dialog->ShowModal() == wxID_OK )
     {
+        recDb::ReleaseSavepoint( savepoint );
         recPersonaEvent* pe = dialog->GetPersonaEvent();
-        pe->Save();
         int row = m_pes.size();
-		m_listPersona->InsertItem( row, RecPersona::GetName( pe->per_id ) );
-		m_listPersona->SetItem( row, COL_Role, recEventTypeRole::GetName( pe->role_id ) );
-		m_listPersona->SetItem( row, COL_Note, pe->note );
+		m_listPersona->InsertItem( row, recPersona::GetFullName( pe->f_per_id ) );
+		m_listPersona->SetItem( row, COL_Role, recEventTypeRole::GetName( pe->f_role_id ) );
+		m_listPersona->SetItem( row, COL_Note, pe->f_note );
         m_pes.push_back( *pe );
+    } else {
+        // Dialog Cancelled
+        recDb::Rollback( savepoint );
     }
     dialog->Destroy();
-#endif
 }
 
 void dlgEditEvent::OnEditButton( wxCommandEvent& event )
 {
+#if 0
 	wxMessageBox( 
 		wxT("Not yet implimented\nDate"), 
 		wxT("OnEditButton")
 	);
 	// TODO: Implement OnEditButton
+#endif
+    const wxString savepoint = "EvtEdRole";
+	long row = m_listPersona->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row < 0 ) {
+        wxMessageBox( _("No row selected"), _("Edit Personas") );
+        return;
+    }
+    id_t id = m_pes[row].f_id;
+    dlgEditRole* dialog = new dlgEditRole( NULL, m_event.f_id, id );
+    dialog->SetEntities( mp_entities );
+
+    recDb::Savepoint( savepoint );
+    if( dialog->ShowModal() == wxID_OK )
+    {
+        recDb::ReleaseSavepoint( savepoint );
+        recPersonaEvent* pe = dialog->GetPersonaEvent();
+		m_listPersona->SetItem( row, COL_Role, recEventTypeRole::GetName( pe->f_role_id ) );
+		m_listPersona->SetItem( row, COL_Note, pe->f_note );
+        m_pes[row] = *pe;
+    } else {
+        // Dialog Cancelled
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
 }
 
 void dlgEditEvent::OnDeleteButton( wxCommandEvent& event )

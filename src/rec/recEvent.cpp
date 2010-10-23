@@ -311,6 +311,30 @@ id_t recEventType::Select()
 	return vec[index].f_id;
 }
 
+// Return an vector of roles for this type of event
+recEventTypeRoleVec recEventType::GetRoles( id_t typeID )
+{
+    recEventTypeRole record;
+    recEventTypeRoleVec vec;
+	wxSQLite3StatementBuffer sql;
+
+	sql.Format(
+        "SELECT id, name FROM EventTypeRole WHERE type_id="ID";", 
+        typeID
+    );
+    wxSQLite3Table table = s_db->GetTable( sql );
+
+    record.f_type_id = typeID;
+    for( int i = 0 ; i < table.GetRowCount() ; i++ )
+    {
+        table.SetRow( i );
+        record.f_id = GET_ID( table.GetInt64( 0 ) );
+        record.f_name = table.GetAsString( 1 );
+        vec.push_back( record );
+    }
+	return vec;
+}
+
 
 //----------------------------------------------------------
 

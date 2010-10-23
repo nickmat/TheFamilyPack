@@ -38,6 +38,8 @@ class recPersonaEvent;
 typedef wxVector< recPersonaEvent >  recPersonaEventVec;
 class recEventType;
 typedef wxVector< recEventType >  recEventTypeVec;
+class recEventTypeRole;
+typedef wxVector< recEventTypeRole >  recEventTypeRoleVec;
 
 
 class recEvent : public recDb 
@@ -132,6 +134,7 @@ public:
 
 	static recEventTypeVec ReadAll();
 	static id_t Select();
+    static recEventTypeRoleVec GetRoles( id_t typeID );
 };
 
 inline bool recEquivalent( const recEventType& r1, const recEventType& r2 )
