@@ -42,6 +42,7 @@
 #include <wx/numdlg.h>
 
 #include <rec/recIndividual.h>
+#include <rec/recVersion.h>
 
 #include "tfpFrame.h"
 #include "tfpApp.h"
@@ -399,11 +400,13 @@ void TfpFrame::OnAbout( wxCommandEvent& event )
     wxMessageBox(
         wxString::Format(
             _("%s"
+            "For TFP Database Version %s.\n"
             "Built with %s and SQLite %s\n"
             "by %s\n"
             "running under %s."),
 
             tfpTitle,
+            recVersionStr,
             wxVERSION_STRING,
             wxSQLite3Database::GetVersion(),
             tfpGetCompilerVersion(),
@@ -602,7 +605,6 @@ void TfpFrame::NewFile()
 
 void TfpFrame::OpenFile()
 {
-//    wxMessageBox( wxT("Not yet implimented"), wxT("OpenFile") );
     wxString caption = _("Select TFP Database");
     wxString wildcard = _("TFP Database (*.tfpd)|*.tfpd");
     wxString defaultDir = ".";

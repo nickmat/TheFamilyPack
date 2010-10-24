@@ -245,6 +245,10 @@
                 RelativePath="..\..\src\rec\recReference.cpp"
                 >
             </File>
+            <File
+                RelativePath="..\..\src\rec\recVersion.cpp"
+                >
+            </File>
         </Filter>
         <Filter
             Name="Header Files"
@@ -277,6 +281,10 @@
             </File>
             <File
                 RelativePath="..\..\include\rec\recReference.h"
+                >
+            </File>
+            <File
+                RelativePath="..\..\include\rec\recVersion.h"
                 >
             </File>
         </Filter>

@@ -94,6 +94,10 @@ public:
      */
     static void CloseDb() { s_db->Close(); }
 
+    /*! Returns true if the database is currently open.
+    */
+    static bool IsOpen() { return s_db->IsOpen(); }
+
     static void Begin() { s_db->Begin(); }
     static void Commit() { s_db->Commit(); }
     static void Rollback() { s_db->Rollback(); }

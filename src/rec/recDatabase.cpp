@@ -40,6 +40,7 @@
 #include <wx/filename.h>
 
 #include <rec/recDatabase.h>
+#include <rec/recVersion.h>
 
 // SQL script to create new database
 #include "generated/recSql.ci"
@@ -64,14 +65,14 @@ bool recDb::CreateDb( wxString& fname, unsigned flags )
         }
     } else {
         if( dbfile.FileExists() == true ) {
-            wxMessageBox( _("File already exists"), _("Open Database") );
+            wxMessageBox( _("File already exists"), _("Create Database") );
             // TODO: replace existing file
             return false;
         }
     }
 
     if( s_db->IsOpen() ) {
-        wxMessageBox( _("Database already open"), _("Open Database") );
+        wxMessageBox( _("Database already open"), _("Create Database") );
         return false;
     }
 
@@ -86,12 +87,21 @@ bool recDb::CreateDb( wxString& fname, unsigned flags )
 
 bool recDb::OpenDb( const wxString& fname )
 {
-    if( s_db->IsOpen() ) {
+    if( IsOpen() ) {
         wxMessageBox( _("Database already open"), _("Open Database") );
         return false;
     }
 
     s_db->Open( fname );
+    recVersion version(1);
+    if( !version.IsEqual( recVersionMajor, recVersionMinor, recVersionRevision ) ) {
+        wxMessageBox(
+            _("Unrecognised Database Version"),
+            _("Open Database")
+        );
+        CloseDb();
+        return false;
+    }
     return true;
 }
 

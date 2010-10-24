@@ -52,6 +52,7 @@
     <sources>$(LOCAL_SRC)/rec/recPersona.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recPlace.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recReference.cpp</sources>
+    <sources>$(LOCAL_SRC)/rec/recVersion.cpp</sources>
 
     <headers>$(LOCAL_INC)/rec/recDatabase.h</headers>
     <headers>$(LOCAL_INC)/rec/recDate.h</headers>
@@ -60,6 +61,7 @@
     <headers>$(LOCAL_INC)/rec/recPersona.h</headers>
     <headers>$(LOCAL_INC)/rec/recPlace.h</headers>
     <headers>$(LOCAL_INC)/rec/recReference.h</headers>
+    <headers>$(LOCAL_INC)/rec/recVersion.h</headers>
     <include>$(LOCAL_INC)/rec</include>
     <include>$(LOCAL_INC)</include>
 
