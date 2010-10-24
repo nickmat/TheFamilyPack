@@ -165,10 +165,10 @@ class recEventTypeRole : public recDb
 {
 public:
 	enum Role {  // predefined entries, only given if reqired by the program
-		ROLE_Unstated      = 0,
-		ROLE_Birth_NewBorn = -1, 
-		ROLE_Death_Died    = -15,
-		ROLE_MAX           = 3 // size of list
+		ROLE_Unstated   = 0,
+		ROLE_Birth_Born = -1, 
+		ROLE_Death_Died = -5,
+		ROLE_MAX        = 3 // size of list
 	};
 
     id_t      f_type_id;

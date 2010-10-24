@@ -324,6 +324,10 @@
                 RelativePath="..\..\src\tfpWrName.cpp"
                 >
             </File>
+            <File
+                RelativePath="..\..\src\tfpWrReference.cpp"
+                >
+            </File>
         </Filter>
         <Filter
             Name="Header Files"

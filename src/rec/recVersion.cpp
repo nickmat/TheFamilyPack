@@ -128,7 +128,9 @@ bool recVersion::IsEqual( int major, int minor, int revision ) const
 bool recVersion::IsMoreThan( int major, int minor, int revision ) const
 {
     if( f_major > major ) return true;
+    if( f_major < major ) return false;
     if( f_minor > minor ) return true;
+    if( f_minor < minor ) return false;
     if( f_revision > revision ) return true;
     return false;
 }
@@ -136,7 +138,9 @@ bool recVersion::IsMoreThan( int major, int minor, int revision ) const
 bool recVersion::IsLessThan( int major, int minor, int revision ) const
 {
     if( f_major < major ) return true;
+    if( f_major > major ) return false;
     if( f_minor < minor ) return true;
+    if( f_minor > minor ) return false;
     if( f_revision < revision ) return true;
     return false;
 }

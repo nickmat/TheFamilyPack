@@ -49,6 +49,7 @@ extern wxString tfpCreatePedChart( id_t indID );
 extern wxString tfpCreateDescChart( id_t indID );
 
 // See tfpWrReference.cpp
-//extern wxString tfpWriteReferencePage( id_t refID );
+extern wxString tfpWriteReferenceIndex();
+extern wxString tfpWriteReferencePage( id_t refID );
 
 #endif // TFPWR_H

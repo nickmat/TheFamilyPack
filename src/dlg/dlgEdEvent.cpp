@@ -73,9 +73,9 @@ void dlgEditEvent::SetData( id_t typeID, id_t eventID )
 bool dlgEditEvent::TransferDataToWindow()
 {
     if( m_event.f_id == 0 ) {
-        m_event.Save();
         m_etype.Read();
         m_event.f_type_id = m_etype.f_id;
+        m_event.Save();
     } else {
         m_event.Read();
         m_etype.f_id = m_event.f_type_id;

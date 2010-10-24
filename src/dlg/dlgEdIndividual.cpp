@@ -245,7 +245,7 @@ void dlgEditIndividual::OnEventActivated( wxListEvent& event )
 	case 0:
 		pEvent = &m_birthEvent;
 		typeID = recEventType::ET_Birth;
-		roleID = recEventTypeRole::ROLE_Birth_NewBorn;
+		roleID = recEventTypeRole::ROLE_Birth_Born;
 		pEventID = &m_individual.f_birth_id;
 		break;
 	case 1:

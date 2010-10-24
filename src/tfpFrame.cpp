@@ -672,7 +672,6 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
 {
     wxLongLong_t num;
     bool success;
-    wxString text;
 
     switch( (wxChar) name.GetChar( 0 ) )
     {
@@ -683,61 +682,57 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
                 wxMessageBox( _("Error: Invalid Individual ID link"), _("Family Link") );
                 return wxEmptyString;
             }
-            text = tfpWriteIndFamilyPage( num );
-            break;
+            return tfpWriteIndFamilyPage( num );
         }
         success = name.Mid(1).ToLongLong( &num );
         if( !success || num < 1 ) {
             wxMessageBox( _("Error: Invalid Family ID link"), _("Family Link") );
             return wxEmptyString;
         }
-        text = tfpWriteFamilyPage( num );
-        break;
+        return tfpWriteFamilyPage( num );
     case 'I':  // Individual reference
         success = name.Mid(1).ToLongLong( &num );
         if( !success || num < 1 ) {
-            wxMessageBox( wxT("Error: Invalid Individual ID link"), wxT("Family Link") );
+            wxMessageBox( _("Error: Invalid Individual ID link"), _("Family Link") );
             return wxEmptyString;
         }
-        text = tfpWriteIndividualPage( num );
-        break;
+        return tfpWriteIndividualPage( num );
     case 'N':  // Name index
-        if( name == wxT("N") ) {
-            text = tfpWritePersonIndex();
-        } else if( name == wxT("N*") ) {
-            text = tfpWritePersonList( wxEmptyString );
-        } else {
-            text = tfpWritePersonList( name.Mid( 1 ) );
+        if( name == "N" ) {
+            return tfpWritePersonIndex();
         }
-        break;
+        if( name == "N*" ) {
+            return tfpWritePersonList( wxEmptyString );
+        } 
+        return tfpWritePersonList( name.Mid( 1 ) );
     case 'C':  // Chart reference
-        name.Mid(2).ToLongLong( &num );
+        success = name.Mid(2).ToLongLong( &num );
+        if( !success || num < 1 ) {
+            wxMessageBox( _("Error: Invalid Individual ID link"), _("Chart Link") );
+            return wxEmptyString;
+        }
         switch( (wxChar) name.GetChar( 1 ) )
         {
         case 'D':
-            text = tfpCreateDescChart( (unsigned) num );
-            break;
+            return tfpCreateDescChart( num );
         case 'P':
-            text = tfpCreatePedChart( (unsigned) num );
-            break;
-        default:
-            wxMessageBox( wxT("Error: Invalid Chart link reference"), wxT("Link Error") );
-            return wxEmptyString;
+            return tfpCreatePedChart( num );
         }
-        break;
+        wxMessageBox( _("Error: Invalid Chart link reference"), _("Link Error") );
+        return wxEmptyString;
 	case 'R':  // Reference Document
+        if( name == "R" ) {
+            return tfpWriteReferenceIndex();
+        } 
         success = name.Mid(1).ToLongLong( &num );
         if( !success || num < 1 ) {
-            wxMessageBox( wxT("Error: Invalid Reference Document ID link"), wxT("Link Error") );
+            wxMessageBox( _("Error: Invalid Reference Document ID link"), _("Link Error") );
             return wxEmptyString;
         }
-        wxMessageBox( wxT("Error: Invalid Chart link reference"), wxT("Link Error") );
-        return wxEmptyString;
-    default:
-        wxMessageBox( _("Not yet implimented ")+name, _("tfpWriteReferencePage") );
-        return wxEmptyString;
+        return tfpWriteReferencePage( num );
     }
-    return text;
+    wxMessageBox( _("Error: Invalid Display Name ")+name, _("GetDisplayText") );
+    return wxEmptyString;
 }
 
 void TfpFrame::RefreshHtmPage()

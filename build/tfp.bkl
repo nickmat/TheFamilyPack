@@ -93,6 +93,7 @@
     <sources>$(LOCAL_SRC)/tfpWrFamily.cpp</sources>
     <sources>$(LOCAL_SRC)/tfpWrIndividual.cpp</sources>
     <sources>$(LOCAL_SRC)/tfpWrName.cpp</sources>
+    <sources>$(LOCAL_SRC)/tfpWrReference.cpp</sources>
     
     <headers>$(LOCAL_SRC)/dlg/dlgEd.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgEdAttribute.h</headers>
