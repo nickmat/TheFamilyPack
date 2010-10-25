@@ -84,6 +84,7 @@ public:
     void OnListIndex( wxCommandEvent& event );
     void OnListNames( wxCommandEvent& event );
     void OnListIndividuals( wxCommandEvent& event );
+    void OnListReferences( wxCommandEvent& event );
 
     void OnPedChart( wxCommandEvent& event );
     void OnDescChart( wxCommandEvent& event );
@@ -139,6 +140,7 @@ enum
     tfpID_LIST_SURNAME_INDEX,
     tfpID_LIST_NAMES,
 	tfpID_LIST_INDIVIDUALS,
+	tfpID_LIST_REFERENCES,
     tfpID_PED_CHART,
     tfpID_DESC_CHART,
     tfpID_HELP_WEB_HOME,

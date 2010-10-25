@@ -73,6 +73,7 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_LIST_SURNAME_INDEX, TfpFrame::OnListIndex )
     EVT_MENU( tfpID_LIST_NAMES, TfpFrame::OnListNames )
     EVT_MENU( tfpID_LIST_INDIVIDUALS, TfpFrame::OnListIndividuals )
+    EVT_MENU( tfpID_LIST_REFERENCES, TfpFrame::OnListReferences )
     EVT_MENU( tfpID_PED_CHART, TfpFrame::OnPedChart )
     EVT_MENU( tfpID_DESC_CHART, TfpFrame::OnDescChart )
     EVT_MENU( tfpID_HELP_WEB_HOME, TfpFrame::OnHelpWebHome )
@@ -125,9 +126,10 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     menuFind->Append( tfpID_FIND_INDIVIDUAL_ID, _("&Individual ID...") );
 
     wxMenu* menuList = new wxMenu;
-    menuList->Append( tfpID_LIST_SURNAME_INDEX, _("&Surname Index\tCtrl-I") );
-    menuList->Append( tfpID_LIST_NAMES, _("&Names\tCtrl-N") );
-    menuList->Append( tfpID_LIST_INDIVIDUALS, _("&Individuals\tCtrl-N") );
+    menuList->Append( tfpID_LIST_SURNAME_INDEX, _("&Surname Index\tAlt-S") );
+    menuList->Append( tfpID_LIST_NAMES, _("&Names\tAlt-N") );
+    menuList->Append( tfpID_LIST_INDIVIDUALS, _("&Individuals\tAlt-I") );
+    menuList->Append( tfpID_LIST_REFERENCES, _("&References\tAlt-R") );
 
     wxMenu* menuChart = new wxMenu;
     menuChart->Append( tfpID_PED_CHART, _("&Pedigree...") );
@@ -364,6 +366,13 @@ void TfpFrame::OnListNames( wxCommandEvent& event )
 void TfpFrame::OnListIndividuals( wxCommandEvent& event )
 {
     wxMessageBox( wxT("Not yet implimented"), wxT("OnListIndividuals") );
+}
+
+/*! \brief Called on a List Index menu option event.
+ */
+void TfpFrame::OnListReferences( wxCommandEvent& event )
+{
+    DisplayHtmPage( "R" );
 }
 
 /*! \brief Called on a Pedigree Chart menu option event.

@@ -51,6 +51,7 @@ public:
     TABLE_NAME_MEMBERS( "Reference" );
 
     recRefEntVec ReadReferenceEntitys();
+    static wxSQLite3ResultSet GetTitleList();
 };
 
 inline bool recEquivalent( const recReference& r1, const recReference& r2 )

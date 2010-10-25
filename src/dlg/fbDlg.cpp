@@ -1028,6 +1028,8 @@ fbDlgEditReference::fbDlgEditReference( wxWindow* parent, wxWindowID id, const w
 	bSizer39 = new wxBoxSizer( wxVERTICAL );
 	
 	m_textCtrlStatement = new wxTextCtrl( m_panel7, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxTE_DONTWRAP|wxTE_MULTILINE );
+	m_textCtrlStatement->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 76, 90, 90, false, wxEmptyString ) );
+	
 	bSizer39->Add( m_textCtrlStatement, 1, wxALL|wxEXPAND, 5 );
 	
 	m_panel7->SetSizer( bSizer39 );

@@ -44,38 +44,36 @@ wxString tfpWriteReferenceIndex()
 {
 	wxString htm;
 
-	htm = "<html><head><title>Name List</title></head><body>"
-		  "<center><h1>Persona Name List Not Yet Done</h1></center></body></html>";
-
 #if 0
-    htm << wxT("<html><head><title>Name List</title></head><body>")
-        << wxT("<center><h1>") << surname << wxT("</h1>");
+	htm = "<html><head><title>Reference List</title></head><body>"
+		  "<center><h1>Reference List Not Yet Done</h1></center></body></html>";
+#endif
 
-    wxSQLite3ResultSet result = recIndividual::GetNameList( surname );
+    htm << wxT("<html><head><title>Reference List</title></head><body>")
+        << wxT("<center><h1>Reference List</h1>");
+
+    wxSQLite3ResultSet result = recReference::GetTitleList();
 
     if( result.GetColumnCount() > 0 )
 	{
 		htm << wxT("<table border=1>");
         while( result.NextRow() )
 		{
-            htm << wxT("<tr><td><a href='F") 
-				<< result.GetAsString( 3 ) 
-				<< wxT("'><b>")
-
-			    << result.GetAsString( 1 ) << wxT(" ")
-				<< result.GetAsString( 0 )
-
-			    << wxT("</b></a> ")
-				<< result.GetAsString( 2 )
-				<< wxT("</td></tr>");
+            htm << "<tr><td><a href='R"
+				<< result.GetAsString( 0 ) 
+				<< "'><b>R"
+				<< result.GetAsString( 0 ) 
+                << "</b> </td><td> "
+			    << result.GetAsString( 1 )
+				<< "</td></tr>";
 		}
 		htm << wxT("</table>");
     } else {
-        htm << wxT("No Names found!");
+        htm << wxT("No References found!");
     }
 
     htm << wxT("</center></body></html>");
-#endif
+
     return htm;
 }
 

@@ -138,6 +138,14 @@ recRefEntVec recReference::ReadReferenceEntitys()
     return vec;
 }
 
+wxSQLite3ResultSet recReference::GetTitleList()
+{
+	wxSQLite3StatementBuffer sql;
+	sql.Format(
+        "SELECT id, title FROM Reference ORDER BY id;"
+	);
+	return s_db->ExecuteQuery( sql );
+}
 
 //----------------------------------------------------------
 
