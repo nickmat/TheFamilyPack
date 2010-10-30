@@ -119,7 +119,8 @@ recRefEntVec recReference::ReadReferenceEntitys()
     }
 
     sql.Format(
-        "SELECT id, entity_type, entity_id, sequence FROM ReferenceEntity WHERE ref_id="ID";",
+        "SELECT id, entity_type, entity_id, sequence FROM ReferenceEntity "
+        "WHERE ref_id="ID" ORDER BY sequence;",
         f_id
     );
     result = s_db->GetTable( sql );

@@ -131,8 +131,11 @@ bool dlgEditReference::TransferDataFromWindow()
 {
     m_reference.f_title = m_textCtrlTitle->GetValue();
     m_reference.f_statement = m_textCtrlStatement->GetValue();
-
     m_reference.Save();
+    for( size_t i = 0 ; i < m_entities.size() ; i++ ) {
+        m_entities[i].rec.f_sequence = i+1;
+        m_entities[i].rec.Save();
+    }
     return true;
 }
 
