@@ -44,6 +44,15 @@ const int recVersionMinor    = 0;
 const int recVersionRevision = 7;
 const wxChar* recVersionStr  = wxT("0.0.7");
 
+
+recVersion::recVersion( const recVersion& v )
+{
+    f_id       = v.f_id;
+    f_major    = v.f_major;
+    f_minor    = v.f_minor;
+    f_revision = v.f_revision;
+}
+
 void recVersion::Clear()
 {
     f_id       = 0;

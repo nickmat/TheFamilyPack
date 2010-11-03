@@ -41,6 +41,12 @@
 
 #include <rec/recPersona.h>
 
+recPersona::recPersona( const recPersona& p )
+{
+    f_id   = p.f_id;
+    f_sex  = p.f_sex;
+    f_note = p.f_note;
+}
 
 void recPersona::Clear()
 {
@@ -336,9 +342,16 @@ recAttributeList recAttribute::ConvertStrToList(
 
 //----------------------------------------------------------
 
+recAttributeType::recAttributeType( const recAttributeType& at )
+{
+    f_id   = at.f_id;
+    f_grp  = at.f_grp;
+    f_name = at.f_name;
+}
+
 void recAttributeType::Clear()
 {
-    f_id = 0;
+    f_id   = 0;
     f_grp  = ATYPE_Grp_Unstated;
     f_name = wxEmptyString;
 }

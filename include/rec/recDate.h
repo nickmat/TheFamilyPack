@@ -66,6 +66,7 @@ public:
 	                                // See cal/calendar.h for values
     recDate() {}
     recDate( id_t id ) : recDb(id) { Read(); }
+    recDate( const recDate& date );
 
 	void Clear();
     void Save();

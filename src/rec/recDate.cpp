@@ -61,15 +61,25 @@ const wxString recDate::s_prefFormat[recDate::PREF_Max] = {
 	_("abt %s")       // PREF_About
 };
 
+recDate::recDate( const recDate& d )
+{
+    f_id          = d.f_id;
+    f_jdn         = d.f_jdn;
+    f_range       = d.f_range;
+    f_type        = d.f_type;
+    f_desc        = d.f_desc;
+    f_record_sch  = d.f_record_sch;
+    f_display_sch = d.f_display_sch;
+}
 
 void recDate::Clear()
 {
-    f_id = 0;
-    f_jdn = 0;
-    f_range = 0;
-    f_type = FLG_NULL;
-    f_desc = wxEmptyString;
-    f_record_sch = CALENDAR_SCH_Unstated;
+    f_id          = 0;
+    f_jdn         = 0;
+    f_range       = 0;
+    f_type        = FLG_NULL;
+    f_desc        = wxEmptyString;
+    f_record_sch  = CALENDAR_SCH_Unstated;
     f_display_sch = CALENDAR_SCH_Unstated;
 }
 

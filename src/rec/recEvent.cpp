@@ -42,6 +42,17 @@
 #include <rec/recDate.h>
 #include <rec/recPlace.h>
 
+recEvent::recEvent( const recEvent& e )
+{
+    f_id       = e.f_id;
+    f_title    = e.f_title;
+    f_type_id  = e.f_type_id;
+    f_date1_id = e.f_date1_id;
+    f_date2_id = e.f_date2_id;
+    f_place_id = e.f_place_id;
+    f_note     = e.f_note;
+}
+
 void recEvent::Clear()
 {
     f_id       = 0;
@@ -216,10 +227,16 @@ recPersonaEventVec recEvent::GetPersonaEvents()
 
 //----------------------------------------------------------
 
+recEventType::recEventType( const recEventType& et )
+{
+    f_id   = et.f_id;
+    f_grp  = et.f_grp;
+    f_name = et.f_name;
+}
 
 void recEventType::Clear()
 {
-    f_id = 0;
+    f_id   = 0;
 	f_grp  = ETYPE_Grp_Unstated;
     f_name = wxEmptyString;
 }
@@ -351,9 +368,16 @@ recEventTypeRoleVec recEventType::GetRoles( id_t typeID )
 //----------------------------------------------------------
 
 
+recEventTypeRole::recEventTypeRole( const recEventTypeRole& etr )
+{
+    f_id      = etr.f_id;
+    f_type_id = etr.f_type_id;
+    f_name    = etr.f_name;
+}
+
 void recEventTypeRole::Clear()
 {
-    f_id = 0;
+    f_id      = 0;
 	f_type_id = 0;
     f_name    = wxEmptyString;
 }
@@ -420,9 +444,18 @@ bool recEventTypeRole::Read()
 //----------------------------------------------------------
 
 
+recPersonaEvent::recPersonaEvent( const recPersonaEvent& pe )
+{
+    f_id       = pe.f_id;
+    f_per_id   = pe.f_per_id;
+    f_event_id = pe.f_event_id;
+    f_role_id  = pe.f_role_id;
+    f_note     = pe.f_note;
+}
+
 void recPersonaEvent::Clear()
 {
-    f_id = 0;
+    f_id       = 0;
 	f_per_id   = 0;
 	f_event_id = 0;
 	f_role_id  = 0;

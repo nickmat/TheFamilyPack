@@ -40,9 +40,16 @@
 #include <rec/recPlace.h>
 
 
+recPlace::recPlace( const recPlace& p )
+{
+    f_id       = p.f_id;
+    f_date1_id = p.f_date1_id;
+    f_date2_id = p.f_date2_id;
+}
+
 void recPlace::Clear()
 {
-    f_id = 0;
+    f_id       = 0;
     f_date1_id = 0;
     f_date2_id = 0;
 }
@@ -184,9 +191,18 @@ recPlacePartList recPlace::GetPlaceParts( id_t placeID )
 
 //----------------------------------------------------------
 
+recPlacePart::recPlacePart( const recPlacePart& pp )
+{
+    f_id       = pp.f_id;
+    f_type_id  = pp.f_type_id;
+    f_place_id = pp.f_place_id;
+    f_val      = pp.f_val;
+    f_sequence = pp.f_sequence;
+}
+
 void recPlacePart::Clear()
 {
-    f_id = 0;
+    f_id       = 0;
     f_type_id  = 0;
     f_place_id = 0;
     f_val      = wxEmptyString;
@@ -256,9 +272,17 @@ bool recPlacePart::Read()
 	return true;
 }
 
+//----------------------------------------------------------
+
+recPlacePartType::recPlacePartType( const recPlacePartType& ppt )
+{
+    f_id   = ppt.f_id;
+    f_name = ppt.f_name;
+}
+
 void recPlacePartType::Clear()
 {
-    f_id = 0;
+    f_id   = 0;
     f_name = wxEmptyString;
 }
 

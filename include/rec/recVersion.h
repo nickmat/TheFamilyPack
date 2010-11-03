@@ -48,6 +48,7 @@ public:
 
     recVersion() {}
     recVersion( id_t id ) : recDb(id) { Read(); }
+    recVersion( const recVersion& ver );
 
 	void Clear();
     void Save();

@@ -54,6 +54,7 @@ public:
 
     recEvent() {}
     recEvent( id_t id ) : recDb(id) { Read(); }
+    recEvent( const recEvent& event );
 
 	void Clear();
     void Save();
@@ -128,6 +129,7 @@ public:
 
     recEventType() {}
     recEventType( id_t id ) : recDb(id) { Read(); }
+    recEventType( const recEventType& et );
 
 	void Clear();
     void Save();
@@ -176,6 +178,7 @@ public:
 
     recEventTypeRole() {}
     recEventTypeRole( id_t id ) : recDb(id) { Read(); }
+    recEventTypeRole( const recEventTypeRole& etr );
 
 	void Clear();
     void Save();
@@ -215,6 +218,7 @@ public:
 
     recPersonaEvent() {}
     recPersonaEvent( id_t id ) : recDb(id) { Read(); }
+    recPersonaEvent( const recPersonaEvent& pe );
 
 	void Clear();
     void Save();

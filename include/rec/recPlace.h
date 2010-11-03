@@ -45,6 +45,7 @@ public:
 
     recPlace() {}
     recPlace( id_t id ) : recDb(id) { Read(); }
+    recPlace( const recPlace& place );
 
 	void Clear();
     void Save();
@@ -93,6 +94,7 @@ public:
 
     recPlacePart() {}
     recPlacePart( id_t id ) : recDb(id) { Read(); }
+    recPlacePart( const recPlacePart& pp );
 
 	void Clear();
     void Save();
@@ -134,6 +136,7 @@ public:
 
     recPlacePartType() {}
     recPlacePartType( id_t id ) : recDb(id) { Read(); }
+    recPlacePartType( const recPlacePartType& ppt );
 
 	void Clear();
     void Save();

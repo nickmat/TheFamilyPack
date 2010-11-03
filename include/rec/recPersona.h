@@ -48,6 +48,7 @@ public:
 
     recPersona() {}
     recPersona( id_t id ) : recDb(id) { Read(); }
+    recPersona( const recPersona& persona );
 
 	void Clear();
     void Save();
@@ -155,6 +156,7 @@ public:
 
     recAttributeType() {}
     recAttributeType( id_t id ) : recDb(id) { Read(); }
+    recAttributeType( const recAttributeType& at );
 
 	void Clear();
     void Save();

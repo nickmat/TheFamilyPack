@@ -61,6 +61,7 @@ public:
 
     recIndividual() {}
     recIndividual( id_t id ) : recDb(id) { Read(); }
+    recIndividual( const recIndividual& ind );
 
 	void Clear();
     void Save();
@@ -134,6 +135,7 @@ public:
 
     recIndividualPersona() {}
     recIndividualPersona( id_t id ) : recDb(id) { Read(); }
+    recIndividualPersona( const recIndividualPersona& ip );
 
 	void Clear();
     void Save();
@@ -172,6 +174,7 @@ public:
 
     recFamily() {}
     recFamily( id_t id ) : recDb(id) { Read(); }
+    recFamily( const recFamily& family );
 
 	void Clear();
     void Save();
@@ -218,6 +221,7 @@ public:
 
     recFamilyIndividual() {}
     recFamilyIndividual( id_t id ) : recDb(id) { Read(); }
+    recFamilyIndividual( const recFamilyIndividual& fi );
 
 	void Clear();
     void Save();

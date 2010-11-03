@@ -42,9 +42,27 @@
 #include <rec/recDate.h>
 #include <rec/recEvent.h>
 
+
+recIndividual::recIndividual( const recIndividual& i )
+{
+    f_id          = i.f_id;
+    f_surname     = i.f_surname;
+    f_given       = i.f_given;
+    f_birth_jdn   = i.f_birth_jdn;
+    f_epitaph     = i.f_epitaph;
+    f_sex         = i.f_sex;
+    f_fam_id      = i.f_fam_id;
+    f_per_id      = i.f_per_id;
+    f_birth_id    = i.f_birth_id;
+    f_nr_birth_id = i.f_nr_birth_id;
+    f_death_id    = i.f_death_id;
+    f_nr_death_id = i.f_nr_death_id;
+    f_occ_id      = i.f_occ_id;
+}
+
 void recIndividual::Clear()
 {
-    f_id = 0;
+    f_id          = 0;
     f_surname     = wxEmptyString;
     f_given       = wxEmptyString;
     f_birth_jdn   = 0;
@@ -366,9 +384,17 @@ wxSQLite3Table recIndividual::GetNameTable( Sex sex )
 
 //----------------------------------------------------------
 
+recIndividualPersona::recIndividualPersona( const recIndividualPersona& ip )
+{
+    f_id     = ip.f_id;
+    f_per_id = ip.f_per_id;
+    f_ind_id = ip.f_ind_id;
+    f_note   = ip.f_note;
+}
+
 void recIndividualPersona::Clear()
 {
-    f_id = 0;
+    f_id     = 0;
     f_per_id = 0;
     f_ind_id = 0;
     f_note   = wxEmptyString;
@@ -466,9 +492,17 @@ bool recIndividualPersona::Find()
 
 //----------------------------------------------------------
 
+recFamily::recFamily( const recFamily& f )
+{
+    f_id       = f.f_id;
+    f_husb_id  = f.f_husb_id;
+    f_wife_id  = f.f_wife_id;
+    f_event_id = f.f_event_id;
+}
+
 void recFamily::Clear()
 {
-    f_id = 0;
+    f_id       = 0;
     f_husb_id  = 0;
     f_wife_id  = 0;
     f_event_id = 0;
@@ -639,9 +673,17 @@ recFamIndVec recFamily::GetChildLinks( id_t famID )
 
 //----------------------------------------------------------
 
+recFamilyIndividual::recFamilyIndividual( const recFamilyIndividual& fi )
+{
+    f_id       = fi.f_id;
+    f_ind_id   = fi.f_ind_id;
+    f_fam_id   = fi.f_fam_id;
+    f_sequence = fi.f_sequence;
+}
+
 void recFamilyIndividual::Clear()
 {
-    f_id = 0;
+    f_id       = 0;
     f_ind_id   = 0;
     f_fam_id   = 0;
     f_sequence = 0;

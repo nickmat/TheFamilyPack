@@ -44,6 +44,7 @@ public:
 
     recReference() {}
     recReference( id_t id ) : recDb(id) { Read(); }
+    recReference( const recReference& ref );
 
 	void Clear();
     void Save();
@@ -95,6 +96,7 @@ public:
 
     recReferenceEntity() {}
     recReferenceEntity( id_t id ) : recDb(id) { Read(); }
+    recReferenceEntity( const recReferenceEntity& re );
 
 	void Clear();
     void Save();

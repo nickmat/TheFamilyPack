@@ -40,9 +40,16 @@
 #include <rec/recReference.h>
 
 
+recReference::recReference( const recReference& r )
+{
+    f_id        = r.f_id;
+    f_title     = r.f_title;
+    f_statement = r.f_statement;
+}
+
 void recReference::Clear()
 {
-    f_id = 0;
+    f_id        = 0;
     f_title     = wxEmptyString;
     f_statement = wxEmptyString;
 }
@@ -161,6 +168,14 @@ const wxString recReferenceEntity::sm_typeStr[recReferenceEntity::TYPE_MAX] = {
 //    wxT("Role")        // TYPE_Role
 };
 
+recReferenceEntity::recReferenceEntity( const recReferenceEntity& re )
+{
+    f_id          = re.f_id;
+    f_ref_id      = re.f_ref_id;
+    f_entity_type = re.f_entity_type;
+    f_entity_id   = re.f_entity_id;
+    f_sequence    = re.f_sequence;
+}
 
 void recReferenceEntity::Clear()
 {
