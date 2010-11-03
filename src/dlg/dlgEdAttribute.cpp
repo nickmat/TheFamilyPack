@@ -56,7 +56,7 @@ bool dlgEditAttribute::TransferDataToWindow()
 		m_attr.Save();
 	} else {
 		m_attr.Read();
-        wxASSERT( m_attr.f_per_id == m_persona );
+        m_persona = m_attr.f_per_id;
 		m_text = m_attr.f_val;
 	}
     m_textCtrlValue->SetValue( m_text );
@@ -69,6 +69,9 @@ bool dlgEditAttribute::TransferDataToWindow()
     m_typeList = recAttributeType::GetTypeList();
     for( size_t i = 0 ; i < m_typeList.size() ; i++ ) {
         m_choiceType->Append( m_typeList[i].f_name );
+        if( m_attr.f_type_id == m_typeList[i].f_id ) {
+            m_choiceType->SetSelection( (int) i );
+        }
     }
 	return true;
 }
@@ -76,7 +79,11 @@ bool dlgEditAttribute::TransferDataToWindow()
 bool dlgEditAttribute::TransferDataFromWindow()
 {
     int type = m_choiceType->GetSelection();
-    m_attr.f_type_id = m_typeList[type].f_id;
+    if( type < 0 ) {
+        m_attr.f_type_id = 0;
+    } else {
+        m_attr.f_type_id = m_typeList[type].f_id;
+    }
     m_attr.f_val = m_textCtrlValue->GetValue();
 
 	m_attr.Save();

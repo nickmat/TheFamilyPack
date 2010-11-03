@@ -42,8 +42,7 @@
 #include <rec/recIndividual.h>
 
 #include "dlgEdPersona.h"
-//#include "tfpDlgAttr.h"
-//#include "dlgStd.h"
+#include "dlgEdAttribute.h"
 #include "dlgEd.h"
 
 
@@ -145,36 +144,48 @@ void dlgEditPersona::OnIndCreateButton( wxCommandEvent& event )
 
 void dlgEditPersona::OnAddButton( wxCommandEvent& event )
 {
-	wxMessageBox( 
-		"Not yet implimented\nDate", 
-		"OnAddButton"
-	);
-	// TODO: Edit code
-#if 0
-    recAttribute attr;
-	attr.Clear();
-	attr.f_per_id = m_persona.f_id;
+    const wxString savepoint = "PerAddAttr";
+	dlgEditAttribute* dialog = new dlgEditAttribute( NULL );
+	dialog->SetPersona( m_persona.f_id );
 
-	AttrEntryDlg* dialog = new AttrEntryDlg( NULL );
-	dialog->SetAttribute( &attr );
-
-	if( dialog->ShowModal() == wxID_OK ) {
-		int row = m_attributes.GetCount();
-		m_listAttr->InsertItem( row, RecAttributeType::GetTypeString( attr.type_id ) );
-		m_listAttr->SetItem( row, COL_Value, attr.val );
-		m_attributes.Add( attr );
-	}
-	dialog->Destroy();
-#endif
+    recDb::Savepoint( savepoint );
+    if( dialog->ShowModal() == wxID_OK )
+    {
+        recDb::ReleaseSavepoint( savepoint );
+        recAttribute* attr = dialog->GetAttribute();
+        int row = m_attributes.size();
+		m_listAttr->InsertItem( row, recAttributeType::GetTypeStr( attr->f_type_id ) );
+		m_listAttr->SetItem( row, COL_Value, attr->f_val );
+		m_attributes.push_back( *attr );
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
 }
 
 void dlgEditPersona::OnEditButton( wxCommandEvent& event )
 {
-	wxMessageBox( 
-		"Not yet implimented\nDate", 
-		"OnEditButton"
-	);
-	// TODO: Edit code
+	long row = m_listAttr->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row < 0 ) {
+        wxMessageBox( _("No row selected"), _("Edit Attribute") );
+        return;
+    }
+
+    const wxString savepoint = "PerEdAttr";
+    dlgEditAttribute* dialog = new dlgEditAttribute( NULL, m_attributes[row].f_id );
+
+    recDb::Savepoint( savepoint );
+    if( dialog->ShowModal() == wxID_OK )
+    {
+        recDb::ReleaseSavepoint( savepoint );
+        recAttribute* attr = dialog->GetAttribute();
+		m_listAttr->SetItem( row, COL_Type, recAttributeType::GetTypeStr( attr->f_type_id ) );
+		m_listAttr->SetItem( row, COL_Value, attr->f_val );
+        m_attributes[row] = *attr;
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
 #if 0
 	long row = m_listAttr->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	if( row >= 0 ) {

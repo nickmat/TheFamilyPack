@@ -105,6 +105,7 @@ public:
 
     recAttribute() {}
     recAttribute( id_t id ) : recDb(id) { Read(); }
+    recAttribute( const recAttribute& attr );
 
 	void Clear();
     void Save();

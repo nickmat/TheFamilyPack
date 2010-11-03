@@ -218,9 +218,18 @@ recIdVec recPersona::GetIndividualIDs( id_t perID )
 
 //----------------------------------------------------------
 
+recAttribute::recAttribute( const recAttribute& attr )
+{
+    f_id       = attr.f_id;
+    f_per_id   = attr.f_per_id;
+    f_type_id  = attr.f_type_id;
+    f_val      = attr.f_val;
+    f_sequence = attr.f_sequence;
+}
+
 void recAttribute::Clear()
 {
-    f_id = 0;
+    f_id       = 0;
     f_per_id   = 0;
     f_type_id  = 0;
     f_val      = wxEmptyString;
