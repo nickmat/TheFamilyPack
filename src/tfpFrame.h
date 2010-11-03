@@ -117,6 +117,7 @@ private:
 
     void AddNewSpouse( const wxString& ref );
     void AddNewParent( const wxString& ref );
+    void EditReference( const wxString& ref );
 };
 
 #define tfpMAX_MENU_ITEMS 50

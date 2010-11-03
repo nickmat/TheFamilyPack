@@ -133,8 +133,11 @@ bool dlgEditReference::TransferDataFromWindow()
     m_reference.f_statement = m_textCtrlStatement->GetValue();
     m_reference.Save();
     for( size_t i = 0 ; i < m_entities.size() ; i++ ) {
-        m_entities[i].rec.f_sequence = i+1;
-        m_entities[i].rec.Save();
+        recReferenceEntity* re = &m_entities[i].rec;
+        if( re->f_sequence != i+1 ) {
+            re->f_sequence = i+1;
+            re->Save();
+        }
     }
     return true;
 }
@@ -458,7 +461,8 @@ void dlgEditReference::DoEditPersona( id_t id, long row )
             entity.rec.f_entity_type = recReferenceEntity::TYPE_Attribute;
             entity.rec.f_entity_id = attrs[i].f_id;
             entity.rec.Save();
-            m_entities.push_back( entity );
+            m_entities.insert( m_entities.begin()+row, entity );
+//            m_entities.push_back( entity );
 
     		m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
             m_listEntities->SetItem( row, COL_Value, attrs[i].f_val );

@@ -44,19 +44,14 @@ wxString tfpWriteReferenceIndex()
 {
 	wxString htm;
 
-#if 0
-	htm = "<html><head><title>Reference List</title></head><body>"
-		  "<center><h1>Reference List Not Yet Done</h1></center></body></html>";
-#endif
-
-    htm << wxT("<html><head><title>Reference List</title></head><body>")
-        << wxT("<center><h1>Reference List</h1>");
+    htm << "<html><head><title>Reference List</title></head><body>"
+           "<center><h1>Reference List</h1>";
 
     wxSQLite3ResultSet result = recReference::GetTitleList();
 
     if( result.GetColumnCount() > 0 )
 	{
-		htm << wxT("<table border=1>");
+		htm << "<table border=1>";
         while( result.NextRow() )
 		{
             htm << "<tr><td><a href='R"
@@ -67,12 +62,12 @@ wxString tfpWriteReferenceIndex()
 			    << result.GetAsString( 1 )
 				<< "</td></tr>";
 		}
-		htm << wxT("</table>");
+		htm << "</table>";
     } else {
-        htm << wxT("No References found!");
+        htm << "No References found!";
     }
 
-    htm << wxT("</center></body></html>");
+    htm << "</center></body></html>";
 
     return htm;
 }
@@ -82,11 +77,14 @@ wxString tfpWriteReferencePage( id_t refID )
     wxString htm;
     recReference ref(refID);
 
-    htm << wxT("<html><head><title>R") << refID
-        << wxT("</title></head><body><h1>") << ref.f_title
-        << wxT("</h1>\n<pre>")
+    htm << "<html><head><title>R" << refID
+        << "</title></head><body><h1>" << ref.f_title
+        << "</h1>\n<pre>"
         << ref.f_statement
-        << wxT("</pre></body></html>");
+        << "</pre>"
+        << "<a href=$R" << refID
+        << "><img src=memory:edit.bmp></a>"
+        << "</body></html>";
 
     return htm;
 }

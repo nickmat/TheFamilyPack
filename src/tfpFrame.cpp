@@ -518,6 +518,9 @@ void TfpFrame::OnHtmlLinkClicked( wxHtmlLinkEvent& event )
         case 'M': // Create a popup menu
             DoHtmCtxMenu( href.Mid(2) );
             break;
+        case 'R': // Edit reference record
+            EditReference( href.Mid(2) );
+            break;
         }
         break;
     case '!':  // Display in external browser
@@ -892,6 +895,18 @@ void TfpFrame::AddNewParent( const wxString& ref )
     }
 }
 
+void TfpFrame::EditReference( const wxString& ref )
+{
+    wxLongLong_t refID;
+    ref.ToLongLong( &refID );
+    recDb::Begin();
+    if( tfpEditReference( refID ) == true ) {
+        recDb::Commit();
+        RefreshHtmPage();
+    } else {
+        recDb::Rollback();
+    }
+}
 
 // End of tfpFrame.cpp file
 
