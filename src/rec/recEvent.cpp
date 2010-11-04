@@ -205,13 +205,13 @@ id_t recEvent::FindReference( id_t eventID )
 
 recPersonaEventVec recEvent::GetPersonaEvents()
 {
+    recPersonaEventVec vec;
     recPersonaEvent record;
 	wxSQLite3StatementBuffer sql;
 
 	sql.Format( "SELECT * FROM PersonaEvent WHERE event_id="ID";", f_id );
     wxSQLite3Table table = s_db->GetTable( sql );
 
-    recPersonaEventVec vec( table.GetRowCount() );
     record.f_event_id = f_id;
     for( int i = 0 ; i < table.GetRowCount() ; i++ )
     {

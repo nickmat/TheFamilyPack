@@ -105,13 +105,13 @@ class recEventType : public recDb
 public:
 	enum ETYPE_Grp {
 		ETYPE_Grp_Unstated, // 0
-        ETYPE_Grp_Other,    // 1
-        ETYPE_Grp_Birth,    // 2
-        ETYPE_Grp_Death,    // 3
-		ETYPE_Grp_Union,    // 4
-        ETYPE_Grp_Nr_Birth, // 5
+        ETYPE_Grp_Birth,    // 1
+        ETYPE_Grp_Nr_Birth, // 2
+		ETYPE_Grp_Union,    // 3
+        ETYPE_Grp_Family,   // 4
+        ETYPE_Grp_Death,    // 5
         ETYPE_Grp_Nr_Death, // 6
-        ETYPE_Grp_Family,   // 7
+        ETYPE_Grp_Other,    // 7
         ETYPE_Grp_MAX       // 8
 	};
 	enum ETYPE_Std {  // predefined entries, match with recCreate.sql 
