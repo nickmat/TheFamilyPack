@@ -4,6 +4,27 @@
 <title>The Family Pack - Database: Dates</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel='stylesheet' type='text/css' href='../tfp.css' />
+<style type="text/css">
+ table.flags {
+  display: inline-table;
+  float: right;
+  border: 2px solid black;
+  border-collapse: collapse;
+  margin-left: 1em;
+ }
+ table.flags td, table.flags th {
+  border: 1px solid black;
+  padding: 2px 5px;
+ }
+ table.flags th {
+  background-color: #fed;
+ }
+ span.field {
+  font-family: courier, monospace;
+  font-size: larger;
+  font-weight: bold;
+ }
+</style>
 </head>
 <body>
 
@@ -52,7 +73,30 @@
 <div class="diag"><img src='tfp-date.png' alt='Date Subsystem' /></div>
 <h2>Dates</h2>
 <p>
- Dates, along with Places, are the entities that ground the genealogist in the real world. Because dates are so central it's worth putting the effort into getting it right.
+ The Date entity is used to record a single day in history, a day being the shortest period of time that the database can record. The simplest way for a computer to keep track of time is to count the number of days from a fixed point in history, the starting point for the database is Monday 1st January 4713 B.C.E. (Julian). This is day zero for the julian day, the astrological day numbering system. So good news for those of you who can trace their family back the the Ancient Egyptians.
+</p>
+<p>
+ The date entity copes with uncertainty by recording both a date <span class="field">[jdn]</span> and a range <span class="field">[range]</span> of days which my be zero. It is probably easier to consider the entity as a start date <span class="field">[jdn]</span> and end date <span class="field">[jdn+range]</span>. The set of flags <span class="field">[type]</span>, "<b>B</b>efore", "<b>O</b>n" and "<b>A</b>fter" are used to indicate how the start and end dates are to be interpreted.
+</p>
+<p>
+<table class="flags">
+ <tr><th>B</th><th>O</th><th>A</th><th>Style</th></tr>
+ <tr><td>0</td><td>0</td><td>0</td><td>Invalid date</td></tr>
+ <tr><td>0</td><td>0</td><td>1</td><td>After 19 Sep 1948</td></tr>
+ <tr><td>0</td><td>1</td><td>0</td><td>On 19 Sep 1948</td></tr>
+ <tr><td>0</td><td>1</td><td>1</td><td>On 19 Sep 1948 or after</td></tr>
+ <tr><td>1</td><td>0</td><td>0</td><td>Before 19 Sep 1948</td></tr>
+ <tr><td>1</td><td>0</td><td>1</td><td>Not 19 Sep 1948</td></tr>
+ <tr><td>1</td><td>1</td><td>0</td><td>On 19 Sep 1948 or before</td></tr>
+ <tr><td>1</td><td>1</td><td>1</td><td>About 19 Sep 1948</td></tr>
+</table>
+ Consider the time line is divided into three sections by the start and finish dates. The type flags are used to indicate how these periods are interpreted. These flags can be used in combination - but where the central period is not zero and the About flag is set this may lead to some ambiguity. So the assumption is made that in these cases that the central period is more likely than the other (Before or After) periods.
+</p>
+<p>
+ The database will keep a record of the calendar scheme that the date was originally recorded in <span class="field">[record_sch]</span> (where known) as well as the preferred scheme normally used to display the date <span class="field">[display_sch]</span>. The concept of a calendar scheme covers the Julian and Gregory calendars as well as the short lived French Revolutionary Calender and other world styles. It will also extend the concept to country schemes, which will cover the change over from the Julian to Gregory calendar. So the English Calendar scheme which follows the Julian Calendar up until 2nd September 1752, when the change over to the Gregorian Calendar occurs. It will also take into account the 25th March new year in England.   
+</p>
+<p>
+ There may be occasions when it is not possible to interpret a particular date, either because the system does not yet cater for that scheme or the scheme cannot be determined. In this case the scheme is held as a text description <span class="field">[desc]</span>. Such dates cannot be sorted and so will normally appear at the beginning of date sorted lists.
 </p>
 
 </div>
