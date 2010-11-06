@@ -61,7 +61,7 @@
 </head>
 <body>
 
-<h1><a  href="../index.htm"><img id="logo" src="../tfp5.gif" alt="Logo" /></a>The Family Pack<br/>Database Design V0.0.6</h1>
+<h1><a  href="../index.htm"><img id="logo" src="../tfp5.gif" alt="Logo" /></a>The Family Pack<br/>Database Design V0.0.7</h1>
 
 <div id="page" class="database">
 
@@ -234,7 +234,7 @@
     <tr>
      <td>val</td>
      <td>Text</td>
-     <td>The actual value of this citation part, such as Baltimore, Thomas Smith, or Wills of Prince George’s County, Maryland 1695-1710</td>
+     <td>The actual value of this citation part, such as Baltimore, Thomas Smith, or Wills of Prince George's County, Maryland 1695-1710</td>
     </tr>
 
     <tr id="CitationPartType">
@@ -365,14 +365,14 @@
      <td>Unique key identifying an Event</td>
     </tr>
     <tr>
+     <td>title</td>
+     <td>Text</td>
+     <td>The name of the Event, such as "Marriage of John Smith and Mary Jones".</td>
+    </tr>
+    <tr>
      <td>type_id</td>
      <td>Integer</td>
      <td>Unique identifier that indicates to which Event Type this event belongs.</td>
-    </tr>
-    <tr>
-     <td>val</td>
-     <td>Text</td>
-     <td>The name of the Event, such as "Marriage of John Smith and Mary Jones".</td>
     </tr>
     <tr>
      <td>date1_id</td>
@@ -388,6 +388,11 @@
      <td>place_id</td>
      <td>Integer</td>
      <td>Unique identifier in Place that indicates where this Event took place.</td>
+    </tr>
+    <tr>
+     <td>note</td>
+     <td>Text</td>
+     <td>Optional note that relates to the Event.</td>
     </tr>
 
     <tr id="EventType">
@@ -762,6 +767,11 @@
      <td>entity_id</td>
      <td>Integer</td>
      <td>Pointer to the Entity record</td>
+    </tr>
+    <tr>
+     <td>sequence</td>
+     <td>Integer</td>
+     <td>A number to give an entity's position in the list of a reference's entities</td>
     </tr>
 
     <tr id="Repository">
