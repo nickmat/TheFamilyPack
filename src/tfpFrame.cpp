@@ -584,7 +584,7 @@ void TfpFrame::OnHtmCtxMenu( wxCommandEvent& event )
 void TfpFrame::OnHtmIndMenu( wxCommandEvent& event )
 {
     size_t i = event.GetId() - tfpID_INDMENU_BEG;
-    DisplayHtmPage( wxString::Format( wxT("F%ld"), m_ctxmenuIDs[i] ) );
+    DisplayHtmPage( wxString::Format( "F"ID, m_ctxmenuIDs[i] ) );
 }
 
 /*! \brief Called on a Close Window event.
@@ -804,6 +804,7 @@ int TfpFrame::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )
     recIndividualList inds;
     wxLongLong_t indID;
     ref.Mid( 1 ).ToLongLong( &indID );
+    m_ctxmenuIDs.clear();
 
     menu->Append( cmd_ID + c, wxT("Family") );
     m_ctxmenuIDs.push_back( recIndividual::GetDefaultFamily( indID ) );

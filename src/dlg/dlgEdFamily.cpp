@@ -170,7 +170,7 @@ void dlgEditFamily::OnEditID( wxCommandEvent& event )
 	switch( m_editbutton )
 	{
 	case EDBUT_Husb: 
-        if( m_family.f_husb_id == 0 )	{
+        if( m_family.f_husb_id == 0 ) {
 			// Add Husband
 			ret = tfpAddIndividual( m_family.f_id, SEX_Male );
 			m_family.f_husb_id = ret;
@@ -183,7 +183,7 @@ void dlgEditFamily::OnEditID( wxCommandEvent& event )
         );
 		break;
 	case EDBUT_Wife: 
-        if( m_family.f_wife_id == 0 )	{
+        if( m_family.f_wife_id == 0 ) {
 			// Add Wife
 			ret = tfpAddIndividual( m_family.f_id, SEX_Female );
 			m_family.f_wife_id = ret;
@@ -196,9 +196,15 @@ void dlgEditFamily::OnEditID( wxCommandEvent& event )
         );
 		break;
 	case EDBUT_Marr: 
-		// TODO:
-		wxMessageBox( wxT("Not yet implimented"), wxT("OnEditID") );
-		return;
+        if( m_family.f_event_id == 0 ) {
+            // Add marriage
+            ret = tfpAddMarriageEvent( m_family.f_id ); 
+            m_family.f_event_id = ret;
+        } else {
+            // Edit marriage
+		wxMessageBox( wxT("NYI Edit Marriage"), wxT("OnEditID") );
+        }
+        break;
 	}
 }
 
@@ -216,8 +222,9 @@ void dlgEditFamily::OnDeleteID( wxCommandEvent& event )
 
 void dlgEditFamily::OnAddExistID( wxCommandEvent& event )
 {
-	// TODO:
-    wxMessageBox( wxT("Not yet implimented"), wxT("OnAddExistID") );
+    m_family.f_event_id = tfpGetExistingMarriageEvent( m_family.f_id );
+	wxString str = recEvent::GetDetailStr( m_family.f_event_id );
+	m_staticMarrEvent->SetLabel( str  );
 }
 
 

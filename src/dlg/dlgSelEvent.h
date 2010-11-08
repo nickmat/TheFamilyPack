@@ -1,11 +1,11 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        tfpEdit.h
+ * Name:        dlgSelEvent.h
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Functions to edit the database header.
+ * Purpose:     Select Event record from list dialog header.
  * Author:      Nick Matthews
  * Modified by:
  * Website:     http://thefamilypack.org
- * Created:     9 October 2010
+ * Created:     6 November 2010
  * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2010, Nick Matthews.
  * Licence:     GNU GPLv3
@@ -27,24 +27,32 @@
 
 */
 
-#ifndef TFPEDIT_H
-#define TFPEDIT_H
+#ifndef DLGSELEVENT_H
+#define DLGSELEVENT_H
 
 #include <rec/recDatabase.h>
 
-extern bool tfpEditFamily( id_t famID );
-extern bool tfpEditIndividual( id_t indID );
-extern bool tfpEditReference( id_t refID  );
-extern id_t tfpAddIndividual( id_t famID, Sex sex, const wxString& surname = wxEmptyString );
-extern bool tfpAddNewParent( id_t indID, Sex sex );
-extern bool tfpAddNewSpouse( id_t indID, Sex sex );
-extern id_t tfpAddNewChild( id_t famID, Sex sex );
-extern bool tfpAddExistSpouse( id_t indID, Sex sex );
-extern bool tfpAddExistChild( id_t famID, Sex sex );
-extern id_t tfpAddMarriageEvent( id_t famID );
-extern id_t tfpGetExistingMarriageEvent( id_t famID );
+#include "fbDlg.h"
 
-extern id_t tfpPickIndividual( Sex sex = SEX_Unstated );
 
-#endif // TFPEDIT_H
+class dlgSelectEvent : public fbDlgSelectEvent
+{
+    enum {
+        COL_ID, COL_Title, COL_Date, COL_Place, COL_MAX
+    };
+public:
+	/** Constructor */
+	dlgSelectEvent( wxWindow* parent );
+	
+	bool CreateMarriageTable( id_t famID );
+	id_t GetSelectedID();
 
+protected:
+	// Handlers for fbDlgSelectEvent events.
+	void OnIdle( wxIdleEvent& event );
+
+	wxArrayString  m_table;
+	size_t         m_count;
+};
+
+#endif // DLGSELEVENT_H

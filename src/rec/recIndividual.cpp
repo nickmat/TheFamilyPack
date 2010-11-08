@@ -40,6 +40,7 @@
 
 #include <rec/recIndividual.h>
 #include <rec/recDate.h>
+#include <rec/recPlace.h>
 #include <rec/recEvent.h>
 
 
@@ -334,6 +335,34 @@ recPersonaEventVec recIndividual::GetPersonaEventVec( id_t id )
 	return peList;
 }
 
+wxArrayString recIndividual::GetEventIdList( id_t indID, id_t etrID )
+{
+    wxArrayString list;
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( indID == 0 ) return list;
+
+    sql.Format(
+        "SELECT id, title, date1_id, place_id FROM Event "
+        "WHERE id=("
+        "SELECT event_id FROM PersonaEvent INNER JOIN "
+        "(SELECT per_id AS ipp FROM IndividualPersona WHERE ind_id="ID") Mip "
+        "ON per_id=Mip.ipp WHERE role_id=%d"
+        ");",
+        indID, etrID
+    );
+    result = s_db->GetTable( sql );
+
+    for( int i = 0 ; i < result.GetRowCount() ; i++ ) {
+        result.SetRow( i );
+        list.Add( result.GetAsString( 0 ) );
+        list.Add( result.GetAsString( 1 ) );
+        list.Add( recDate::GetStr( GET_ID( result.GetInt64( 2 ) ) ) );
+        list.Add( recPlace::GetAddressStr( GET_ID( result.GetInt64( 3 ) ) ) );
+    }
+    return list;
+}
 
 wxSQLite3ResultSet recIndividual::GetNameList( wxString surname )
 {
@@ -669,6 +698,47 @@ recFamIndVec recFamily::GetChildLinks( id_t famID )
         ChildLinks.push_back( fi );
     }
     return ChildLinks;
+}
+
+wxArrayString recFamily::GetMarriageEventTable() const
+{
+    wxArrayString list;
+    if( f_id == 0 ) return list;
+    if( f_husb_id == 0 && f_wife_id == 0 ) return list;
+    if( f_husb_id == 0 ) {
+        return recIndividual::GetEventIdList( f_wife_id, recEventTypeRole::ROLE_Marriage_Bride );
+    }
+    if( f_wife_id == 0 ) {
+        return recIndividual::GetEventIdList( f_husb_id, recEventTypeRole::ROLE_Marriage_Groom );
+    }
+
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+    sql.Format(
+        "SELECT id, title, date1_id, place_id FROM Event "
+        "WHERE id=("
+        "SELECT event_id FROM PersonaEvent INNER JOIN "
+        "(SELECT per_id AS ipp FROM IndividualPersona WHERE ind_id="ID") Mip "
+        "ON per_id=Mip.ipp WHERE role_id=%d "
+        "INTERSECT "
+        "SELECT event_id FROM PersonaEvent INNER JOIN "
+        "(SELECT per_id AS ipp FROM IndividualPersona WHERE ind_id="ID") Fip "
+        "ON per_id=Fip.ipp WHERE role_id=%d"
+        ");",
+        f_husb_id, recEventTypeRole::ROLE_Marriage_Groom,
+        f_wife_id, recEventTypeRole::ROLE_Marriage_Bride
+    );
+    result = s_db->GetTable( sql );
+
+    for( int i = 0 ; i < result.GetRowCount() ; i++ )
+    {
+        result.SetRow( i );
+        list.Add( result.GetAsString( 0 ) );
+        list.Add( result.GetAsString( 1 ) );
+        list.Add( recDate::GetStr( GET_ID( result.GetInt64( 2 ) ) ) );
+        list.Add( recPlace::GetAddressStr( GET_ID( result.GetInt64( 3 ) ) ) );
+    }
+    return list;
 }
 
 //----------------------------------------------------------

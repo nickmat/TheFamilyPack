@@ -43,6 +43,7 @@
 #include "dlgEdFamily.h"
 #include "dlgEdIndividual.h"
 #include "dlgSelIndividual.h"
+#include "dlgSelEvent.h"
 #include "dlgEdReference.h"
 
 
@@ -383,6 +384,26 @@ bool tfpAddExistChild( id_t famID, Sex sex )
 	}
 
 	return ret;
+}
+
+id_t tfpGetExistingMarriageEvent( id_t famID )
+{
+    id_t eventID = 0;
+	dlgSelectEvent* dialog = new dlgSelectEvent( NULL );
+    if( dialog->CreateMarriageTable( famID ) ) {
+	    if( dialog->ShowModal() == wxID_OK ) {
+		    eventID = dialog->GetSelectedID();
+	    }
+
+    }
+    dialog->Destroy();
+    return eventID;
+}
+
+id_t tfpAddMarriageEvent( id_t famID )
+{
+    wxMessageBox( wxT("NYI Add Marriage Event"), wxT("tfpAddMarriageEvent") );
+    return 0;
 }
 
 // End of tfpEdit.cpp file

@@ -10,6 +10,7 @@
 
 #include <wx/intl.h>
 
+class dlgStrTableCtrl;
 class tfpListCtrlIndividuals;
 
 #include <wx/string.h>
@@ -330,32 +331,6 @@ class fbDlgEditPersona : public wxDialog
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class fbDlgSelectIndividual
-///////////////////////////////////////////////////////////////////////////////
-class fbDlgSelectIndividual : public wxDialog 
-{
-	private:
-	
-	protected:
-		tfpListCtrlIndividuals* m_listInd;
-		wxStaticLine* m_staticline6;
-		
-		wxButton* m_buttonSave;
-		wxButton* m_buttonCancel;
-		
-		// Virtual event handlers, overide them in your derived class
-		virtual void OnIdle( wxIdleEvent& event ) { event.Skip(); }
-		virtual void OnIndividualSelected( wxListEvent& event ) { event.Skip(); }
-		
-	
-	public:
-		
-		fbDlgSelectIndividual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Select Individual"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 485,269 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
-		~fbDlgSelectIndividual();
-	
-};
-
-///////////////////////////////////////////////////////////////////////////////
 /// Class fbDlgEditEvent
 ///////////////////////////////////////////////////////////////////////////////
 class fbDlgEditEvent : public wxDialog 
@@ -491,6 +466,57 @@ class fbDlgEditReference : public wxDialog
 			m_splitter1->SetSashPosition( 186 );
 			m_splitter1->Disconnect( wxEVT_IDLE, wxIdleEventHandler( fbDlgEditReference::m_splitter1OnIdle ), NULL, this );
 		}
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class fbDlgSelectIndividual
+///////////////////////////////////////////////////////////////////////////////
+class fbDlgSelectIndividual : public wxDialog 
+{
+	private:
+	
+	protected:
+		tfpListCtrlIndividuals* m_listInd;
+		wxStaticLine* m_staticline6;
+		
+		wxButton* m_buttonSave;
+		wxButton* m_buttonCancel;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnIdle( wxIdleEvent& event ) { event.Skip(); }
+		virtual void OnIndividualSelected( wxListEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		fbDlgSelectIndividual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Select Individual"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 485,269 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+		~fbDlgSelectIndividual();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class fbDlgSelectEvent
+///////////////////////////////////////////////////////////////////////////////
+class fbDlgSelectEvent : public wxDialog 
+{
+	private:
+	
+	protected:
+		dlgStrTableCtrl* m_listEvent;
+		wxStaticLine* m_staticline;
+		
+		wxButton* m_buttonSelect;
+		wxButton* m_buttonCancel;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnIdle( wxIdleEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		fbDlgSelectEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Select Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 485,269 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+		~fbDlgSelectEvent();
 	
 };
 

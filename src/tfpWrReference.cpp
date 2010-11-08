@@ -37,6 +37,7 @@
 #endif
 
 #include <rec/recReference.h>
+#include <rec/recPersona.h>
 
 #include "tfpWr.h"
 
@@ -76,6 +77,8 @@ wxString tfpWriteReferencePage( id_t refID )
 {
     wxString htm;
     recReference ref(refID);
+    recRefEntVec re = ref.ReadReferenceEntitys();
+    recIdVec indIDs;
 
     htm << "<html><head><title>R" << refID
         << "</title></head><body><h1>" << ref.f_title
@@ -83,8 +86,20 @@ wxString tfpWriteReferencePage( id_t refID )
         << ref.f_statement
         << "</pre>"
         << "<a href=$R" << refID
-        << "><img src=memory:edit.bmp></a>"
-        << "</body></html>";
+        << "><img src=memory:edit.bmp></a><br>";
+        for( size_t i = 0 ; i < re.size() ; i++ ) {
+            if( re[i].f_entity_type == recReferenceEntity::TYPE_Persona ) {
+                id_t perID = re[i].f_entity_id;
+                htm << recPersona::GetFullName( perID );
+                indIDs = recPersona::GetIndividualIDs( perID );
+                for( size_t j = 0 ; j < indIDs.size() ; j++ ) {
+                    htm << " <a href=I" << indIDs[j]
+                        << "><img src=memory:ind.bmp></a>";
+                }
+                htm << "<br>";
+            }
+        }
+    htm << "</body></html>";
 
     return htm;
 }

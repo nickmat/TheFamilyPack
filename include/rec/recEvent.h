@@ -74,6 +74,7 @@ public:
 	static id_t FindReference( id_t eventID );
 
 	recPersonaEventVec GetPersonaEvents();
+
 };
 
 inline bool recEquivalent( const recEvent& r1, const recEvent& r2 )
@@ -167,10 +168,12 @@ class recEventTypeRole : public recDb
 {
 public:
 	enum Role {  // predefined entries, only given if reqired by the program
-		ROLE_Unstated   = 0,
-		ROLE_Birth_Born = -1, 
-		ROLE_Death_Died = -5,
-		ROLE_MAX        = 3 // size of list
+		ROLE_Unstated       = 0,
+		ROLE_Birth_Born     = -1, 
+		ROLE_Death_Died     = -5,
+        ROLE_Marriage_Groom = -7,
+        ROLE_Marriage_Bride = -8,
+		ROLE_MAX            = 5 // size of list
 	};
 
     id_t      f_type_id;

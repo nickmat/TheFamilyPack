@@ -87,6 +87,9 @@ public:
         { return GetPersonaEventVec( f_id ); }
     static recPersonaEventVec GetPersonaEventVec( id_t id );
 
+    wxArrayString GetEventIdList( id_t etrID ) const { GetEventIdList( f_id, etrID ); }
+    static wxArrayString GetEventIdList( id_t indID, id_t etrID );
+
     static wxSQLite3ResultSet GetSurnameList() {
         return s_db->ExecuteQuery( 
             "SELECT surname FROM Individual GROUP BY surname;"
@@ -189,6 +192,8 @@ public:
     static unsigned GetChildNextSequence( id_t id );
     recFamIndVec GetChildLinks() { return GetChildLinks( f_id ); }
 	static recFamIndVec GetChildLinks( id_t famID );
+
+    wxArrayString GetMarriageEventTable() const;
 };
 
 inline bool recEquivalent( const recFamily& r1, const recFamily& r2 )
