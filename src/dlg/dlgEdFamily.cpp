@@ -41,6 +41,7 @@
 #include <rec/recEvent.h>
 
 #include "dlgEdFamily.h"
+#include "dlgEdIndEvent.h"
 #include "dlgEd.h"
 
 IMPLEMENT_CLASS( dlgEditFamily, wxDialog )
@@ -209,7 +210,13 @@ void dlgEditFamily::OnEditID( wxCommandEvent& event )
             m_family.f_event_id = ret;
         } else {
             // Edit marriage
-		wxMessageBox( wxT("NYI Edit Marriage"), wxT("OnEditID") );
+		    //wxMessageBox( wxT("NYI Edit Marriage"), wxT("OnEditID") );
+            if( EditEvent( &ret ) ) {
+                m_family.f_event_id = ret;
+                m_staticMarrEvent->SetLabel(
+                    recEvent::GetDetailStr( ret )
+                );
+            }
         }
         break;
 	}
@@ -396,5 +403,42 @@ void dlgEditFamily::OnDownButton( wxCommandEvent& event )
 	);
 	m_listChild->SetSelection( item + 1 );
 }
+
+
+bool dlgEditFamily::EditEvent( id_t* pEventID )
+{
+	const wxString savepoint = "EdFamEvent";
+	bool ret = false;
+    dlgEditFamEvent* dialog = new dlgEditFamEvent( 
+        NULL, m_family.f_event_id, recEventType::ETYPE_Grp_Union 
+    );
+	recDb::Savepoint( savepoint );
+
+	if( dialog->ShowModal() == wxID_OK ) {
+		recDb::ReleaseSavepoint( savepoint );
+		ret = true;
+        *pEventID = dialog->GetEventID();
+        recPersonaEvent pe(0);
+        pe.f_per_id = m_family.f_husb_id;
+        pe.f_event_id = dialog->GetEventID();
+        pe.f_role_id = recEventTypeRole::ROLE_Marriage_Groom;
+        if( pe.LinkExists() == false ) {
+            pe.Save();
+        }
+        pe.Clear();
+        pe.f_per_id = m_family.f_wife_id;
+        pe.f_event_id = dialog->GetEventID();
+        pe.f_role_id = recEventTypeRole::ROLE_Marriage_Bride;
+        if( pe.LinkExists() == false ) {
+            pe.Save();
+        }
+	} else {
+		recDb::Rollback( savepoint );
+        *pEventID = m_family.f_event_id;
+	}
+	dialog->Destroy();
+	return ret;
+}
+
 
 // End of dlgEdFamily.cpp

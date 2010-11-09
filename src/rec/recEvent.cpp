@@ -546,4 +546,23 @@ bool recPersonaEvent::Read()
 	return true;
 }
 
+bool recPersonaEvent::LinkExists() const
+{
+    if( f_per_id == 0 || f_event_id == 0 || f_role_id == 0 ) {
+        return false;
+    }
+
+    wxSQLite3StatementBuffer sql;
+    sql.Format( 
+        "SELECT COUNT(*) FROM PersonaEvent "
+        "WHERE per_id="ID" AND event_id="ID" AND role_id="ID";", 
+        f_per_id, f_event_id, f_role_id
+    );
+
+    if( s_db->ExecuteScalar( sql ) == 0 ) {
+        return false;
+    }
+    return true;
+}
+
 // End of recEvent.cpp file

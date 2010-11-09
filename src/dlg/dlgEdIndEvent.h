@@ -55,12 +55,18 @@ private:
 	recPlace  m_place;
 };
 
+//-----------------------------------------------------
+//      dlgEditFamEvent
+//-----------------------------------------------------
+
 class dlgEditFamEvent : public fbDlgEditFamEvent
 {
 public:
 	dlgEditFamEvent( 
         wxWindow* parent, id_t eventID,
         recEventType::ETYPE_Grp grp = recEventType::ETYPE_Grp_Unstated );
+
+    id_t GetEventID() const { return m_event.f_id; }
 
 private:
     bool TransferDataToWindow();

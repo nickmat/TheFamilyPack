@@ -230,6 +230,11 @@ public:
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "PersonaEvent" );
+
+    /*! Return true if a record exists that matches the 
+     *  f_per_id, f_event_id and f_role_id.
+     */  
+    bool LinkExists() const;
 };
 
 inline bool recEquivalent( const recPersonaEvent& r1, const recPersonaEvent& r2 )

@@ -39,6 +39,8 @@ class dlgEditFamily : public fbDlgEditFamily
     DECLARE_CLASS( dlgEditFamily )
     DECLARE_EVENT_TABLE()
 
+	enum EDBUT_Type { EDBUT_Husb, EDBUT_Wife, EDBUT_Marr };
+
 protected:
 	enum {
 		tfpID_DLGEDFAM_EDIT = 1100,
@@ -78,7 +80,7 @@ private:
     void OnUpButton( wxCommandEvent& event );
     void OnDownButton( wxCommandEvent& event );
 
-	enum EDBUT_Type { EDBUT_Husb, EDBUT_Wife, EDBUT_Marr };
+    bool EditEvent( id_t* pEventID );
 
 	id_t           m_child;
 	EDBUT_Type     m_editbutton;
