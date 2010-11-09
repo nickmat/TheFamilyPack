@@ -225,6 +225,27 @@ recPersonaEventVec recEvent::GetPersonaEvents()
 	return vec;
 }
 
+bool recEvent::DeleteFromDb( id_t id )
+{
+	wxSQLite3StatementBuffer sql;
+
+    // TODO: Ensure Event is removed from reference statement.
+	sql.Format( 
+        "UPDATE Family SET event_id=0 WHERE event_id="ID";"
+        "UPDATE Individual SET birth_id=0 WHERE birth_id="ID";"
+        "UPDATE Individual SET nr_birth_id=0 WHERE nr_birth_id="ID";"
+        "UPDATE Individual SET death_id=0 WHERE death_id="ID";"
+        "UPDATE Individual SET nr_death_id=0 WHERE nr_death_id="ID";"
+        "DELETE FROM PersonaEvent WHERE event_id="ID";"
+        "DELETE FROM ReferenceEntity "
+             "WHERE entity_type=2 AND entity_id="ID";"
+        "DELETE FROM Event WHERE id="ID";",
+        id, id, id, id, id, id, id, id
+    );
+    s_db->ExecuteUpdate( sql );
+    return true;
+}
+
 //----------------------------------------------------------
 
 recEventType::recEventType( const recEventType& et )

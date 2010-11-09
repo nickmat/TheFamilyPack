@@ -55,5 +55,24 @@ private:
 	recPlace  m_place;
 };
 
+class dlgEditFamEvent : public fbDlgEditFamEvent
+{
+public:
+	dlgEditFamEvent( 
+        wxWindow* parent, id_t eventID,
+        recEventType::ETYPE_Grp grp = recEventType::ETYPE_Grp_Unstated );
+
+private:
+    bool TransferDataToWindow();
+    bool TransferDataFromWindow();
+
+    void OnTypeButton( wxCommandEvent& event );
+	void OnDateButton( wxCommandEvent& event );
+	void OnAddrButton( wxCommandEvent& event );
+
+    recEventType::ETYPE_Grp m_grp;
+	recEvent  m_event;
+};
+
 
 #endif // DLGEDINDEVENT_H

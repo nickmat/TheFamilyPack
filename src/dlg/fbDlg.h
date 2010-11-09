@@ -520,4 +520,43 @@ class fbDlgSelectEvent : public wxDialog
 	
 };
 
+///////////////////////////////////////////////////////////////////////////////
+/// Class fbDlgEditFamEvent
+///////////////////////////////////////////////////////////////////////////////
+class fbDlgEditFamEvent : public wxDialog 
+{
+	private:
+	
+	protected:
+		wxStaticText* m_staticText1;
+		wxTextCtrl* m_textCtrlTitle;
+		wxStaticText* m_staticText2;
+		wxTextCtrl* m_textCtrlType;
+		wxButton* m_buttonType;
+		wxStaticText* m_staticText3;
+		wxTextCtrl* m_textCtrlDate;
+		wxButton* m_buttonDate;
+		wxStaticText* m_staticText4;
+		wxTextCtrl* m_textCtrlAddr;
+		wxButton* m_buttonAddr;
+		wxStaticText* m_staticText5;
+		wxTextCtrl* m_textCtrlNote;
+		wxStaticLine* m_staticline1;
+		
+		wxButton* m_buttonSave;
+		wxButton* m_buttonCancel;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnTypeButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDateButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAddrButton( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		fbDlgEditFamEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 322,284 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+		~fbDlgEditFamEvent();
+	
+};
+
 #endif //__fbDlg__

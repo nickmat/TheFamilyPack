@@ -136,6 +136,8 @@ void recPlace::SetAddress( id_t placeID, const wxString& str )
 
 wxString recPlace::GetAddressStr( id_t id )
 {
+    if( id == 0 ) return wxEmptyString;
+
 	wxString str;
 	wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;

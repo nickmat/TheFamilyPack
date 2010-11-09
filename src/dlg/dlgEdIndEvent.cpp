@@ -122,5 +122,68 @@ void dlgEditIndEvent::OnAddrButton( wxCommandEvent& event )
 	);
 }
 
+//-----------------------------------------------------
+//      dlgEditFamEvent
+//-----------------------------------------------------
+
+dlgEditFamEvent::dlgEditFamEvent( 
+    wxWindow* parent, id_t eventID, recEventType::ETYPE_Grp grp
+    ) : fbDlgEditFamEvent(parent), m_grp(grp)
+{
+    m_event.f_id = eventID;
+}
+
+
+bool dlgEditFamEvent::TransferDataToWindow()
+{
+    if( m_event.f_id == 0 ) {
+        m_event.Clear();
+        m_event.Save();
+    } else {
+        m_event.Read();
+    }
+    m_textCtrlTitle->SetValue( m_event.f_title );
+    m_textCtrlType->SetValue( recEventType::GetTypeStr( m_event.f_type_id ) );
+    m_textCtrlDate->SetValue( recDate::GetStr( m_event.f_date1_id ) );
+    m_textCtrlAddr->SetValue( recPlace::GetAddressStr( m_event.f_place_id ) );
+    m_textCtrlNote->SetValue( m_event.f_note );
+
+	return true;
+}
+
+
+bool dlgEditFamEvent::TransferDataFromWindow()
+{
+    m_event.f_title = m_textCtrlTitle->GetValue();
+    m_event.f_note = m_textCtrlNote->GetValue();
+    m_event.Save();
+
+	return true;
+}
+
+void dlgEditFamEvent::OnTypeButton( wxCommandEvent& event )
+{
+	wxMessageBox( 
+		wxT("Not yet implimented\nType"), 
+		wxT("OnTypeButton")
+	);
+}
+
+void dlgEditFamEvent::OnDateButton( wxCommandEvent& event )
+{
+	wxMessageBox( 
+		wxT("Not yet implimented\nDate"), 
+		wxT("OnDateButton")
+	);
+}
+
+void dlgEditFamEvent::OnAddrButton( wxCommandEvent& event )
+{
+	wxMessageBox( 
+		wxT("Not yet implimented\nAddress"), 
+		wxT("OnAddrButton")
+	);
+}
+
 
 // End of dlgEdIndEvent.cpp file

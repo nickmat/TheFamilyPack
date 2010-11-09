@@ -75,6 +75,9 @@ public:
 
 	recPersonaEventVec GetPersonaEvents();
 
+    // Delete Event and remove all references to it.
+    bool DeleteFromDb() { return DeleteFromDb( f_id ); }
+    static bool DeleteFromDb( id_t id );
 };
 
 inline bool recEquivalent( const recEvent& r1, const recEvent& r2 )

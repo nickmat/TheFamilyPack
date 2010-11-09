@@ -155,6 +155,13 @@ void dlgEditFamily::EditIDMenu( id_t editID )
         menu->Append( tfpID_DLGEDFAM_EDIT,     _("&Edit") );
         menu->Append( tfpID_DLGEDFAM_REMOVE,   _("&Remove") );
         menu->Append( tfpID_DLGEDFAM_DELETE,   _("&Delete") );
+        if( m_editbutton == EDBUT_Marr ) {
+            if( recEvent::FindReference( m_family.f_event_id ) == 0 ) {
+                menu->Enable( tfpID_DLGEDFAM_REMOVE, false );
+            } else {
+                menu->Enable( tfpID_DLGEDFAM_DELETE, false );
+            }
+        }
 	} else {
         menu->Append( tfpID_DLGEDFAM_ADDNEW,   _("Add &New") );
         menu->Append( tfpID_DLGEDFAM_ADDEXIST, _("Add &Existing") );
@@ -210,21 +217,91 @@ void dlgEditFamily::OnEditID( wxCommandEvent& event )
 
 void dlgEditFamily::OnRemoveID( wxCommandEvent& event )
 {
-	// TODO:
-    wxMessageBox( wxT("Not yet implimented"), wxT("OnRemoveID") );
+	switch( m_editbutton )
+	{
+	case EDBUT_Husb: 
+        m_family.f_husb_id = 0;
+        m_staticHusbName->SetLabel( wxEmptyString );
+        break;
+	case EDBUT_Wife: 
+        m_family.f_wife_id = 0;
+        m_staticWifeName->SetLabel( wxEmptyString );
+        break;
+	case EDBUT_Marr: 
+        m_family.f_event_id = 0;
+        m_staticMarrEvent->SetLabel( wxEmptyString );
+        break;
+	}
 }
 
 void dlgEditFamily::OnDeleteID( wxCommandEvent& event )
 {
-	// TODO:
-    wxMessageBox( wxT("Not yet implimented"), wxT("OnDeleteID") );
+    wxString mes;
+    id_t id;
+
+	switch( m_editbutton )
+	{
+	case EDBUT_Husb: 
+        // TODO:
+       wxMessageBox( 
+           wxT("NYI for Delete Husband"), 
+           wxT("OnDeleteID") );
+        break;
+	case EDBUT_Wife: 
+        // TODO:
+       wxMessageBox( 
+           wxT("NYI for Delete Wife"), 
+           wxT("OnDeleteID") );
+        break;
+	case EDBUT_Marr:
+        id = recEvent::FindReference( m_family.f_event_id );
+        if( id == 0 ) {
+            if( !recEvent::DeleteFromDb( m_family.f_event_id ) ) {
+                mes << _("Unable to delete E")
+                    << m_family.f_event_id << "\n"
+                    << _(" from database");
+                wxMessageBox( mes, _("Delete Marriage Event") );
+            }
+        } else {
+            mes << _("Event is owned by Reference R")
+                << id << ".\n"
+                << _("Edit Reference to delete Event E")
+                << m_family.f_event_id;
+            wxMessageBox( mes, _("Delete Marriage Event") );
+        }
+        break;
+	}
 }
 
 void dlgEditFamily::OnAddExistID( wxCommandEvent& event )
 {
-    m_family.f_event_id = tfpGetExistingMarriageEvent( m_family.f_id );
-	wxString str = recEvent::GetDetailStr( m_family.f_event_id );
-	m_staticMarrEvent->SetLabel( str  );
+	switch( m_editbutton )
+	{
+	case EDBUT_Husb: 
+        // TODO:
+       wxMessageBox( 
+           wxT("NYI for Add Existing Husband"), 
+           wxT("OnAddExistID") );
+        break;
+	case EDBUT_Wife: 
+        // TODO:
+       wxMessageBox( 
+           wxT("NYI for Add Existing Wife"), 
+           wxT("OnAddExistID") );
+        break;
+	case EDBUT_Marr: 
+        id_t id = tfpGetExistingMarriageEvent( m_family.f_id );
+        if( id == 0 ) {
+            wxMessageBox( 
+                _("Unable to find suitabe event"),
+                _("Add Marriage Event") 
+            );
+            return;
+        }
+        m_family.f_event_id = id;
+        m_staticMarrEvent->SetLabel( recEvent::GetDetailStr( id ) );
+        break;
+	}
 }
 
 
