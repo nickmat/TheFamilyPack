@@ -162,19 +162,23 @@ wxString tfpWriteIndividualPage( id_t indID )
 		}
 	}
 
-	recPersonaEventVec peList = ind.GetPersonaEventVec();
-	for( i = 0 ; i < peList.size() ; i++ ) {
-		id_t refID = recEvent::FindReference( peList[i].f_event_id );
+	wxSQLite3Table eTable = ind.GetEventsTable();
+    for( i = 0 ; i < (size_t) eTable.GetRowCount() ; i++ ) {
+        eTable.SetRow( i );
+        id_t eventID = GET_ID( eTable.GetInt64( 0 ) );
+        id_t roleID = GET_ID( eTable.GetInt64( 1 ) );
+		id_t refID = recEvent::FindReference( eventID );
+
 		htm << wxT("<tr><td align=right>")
-            << recEventTypeRole::GetName( peList[i].f_role_id )
+            << recEventTypeRole::GetName( roleID )
             << wxT(":</td><td><b>")
-			<< recEvent::GetTitle( peList[i].f_event_id );
+			<< recEvent::GetTitle( eventID );
 		if( refID != 0 ) {
     		htm << wxT(" <a href=R") << refID 
 	    		<< wxT("><img src=memory:ref.bmp></a>");
 		}
 		htm << wxT("<br>")
-			<< recEvent::GetDetailStr( peList[i].f_event_id )
+			<< recEvent::GetDetailStr( eventID )
 			<< wxT("</b></td></tr>");
 	}
 

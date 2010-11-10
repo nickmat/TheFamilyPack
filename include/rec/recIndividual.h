@@ -87,8 +87,11 @@ public:
         { return GetPersonaEventVec( f_id ); }
     static recPersonaEventVec GetPersonaEventVec( id_t id );
 
-    wxArrayString GetEventIdList( id_t etrID ) const { GetEventIdList( f_id, etrID ); }
-    static wxArrayString GetEventIdList( id_t indID, id_t etrID );
+    wxSQLite3Table GetEventsTable() const { return GetEventsTable( f_id ); }
+    static wxSQLite3Table GetEventsTable( id_t id );
+
+    wxArrayString GetEventIdStrList( id_t etrID ) const { GetEventIdStrList( f_id, etrID ); }
+    static wxArrayString GetEventIdStrList( id_t indID, id_t etrID );
 
     static wxSQLite3ResultSet GetSurnameList() {
         return s_db->ExecuteQuery( 

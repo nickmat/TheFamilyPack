@@ -335,7 +335,21 @@ recPersonaEventVec recIndividual::GetPersonaEventVec( id_t id )
 	return peList;
 }
 
-wxArrayString recIndividual::GetEventIdList( id_t indID, id_t etrID )
+wxSQLite3Table recIndividual::GetEventsTable( id_t id )
+{
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "SELECT DISTINCT event_id, role_id FROM PersonaEvent "
+        "INNER JOIN "
+        "(SELECT per_id FROM IndividualPersona WHERE ind_id="ID") "
+        "USING(per_id);",
+        id
+    );
+    return s_db->GetTable( sql );
+}
+
+wxArrayString recIndividual::GetEventIdStrList( id_t indID, id_t etrID )
 {
     wxArrayString list;
     wxSQLite3StatementBuffer sql;
@@ -706,10 +720,10 @@ wxArrayString recFamily::GetMarriageEventTable() const
     if( f_id == 0 ) return list;
     if( f_husb_id == 0 && f_wife_id == 0 ) return list;
     if( f_husb_id == 0 ) {
-        return recIndividual::GetEventIdList( f_wife_id, recEventTypeRole::ROLE_Marriage_Bride );
+        return recIndividual::GetEventIdStrList( f_wife_id, recEventTypeRole::ROLE_Marriage_Bride );
     }
     if( f_wife_id == 0 ) {
-        return recIndividual::GetEventIdList( f_husb_id, recEventTypeRole::ROLE_Marriage_Groom );
+        return recIndividual::GetEventIdStrList( f_husb_id, recEventTypeRole::ROLE_Marriage_Groom );
     }
 
     wxSQLite3StatementBuffer sql;
