@@ -3,7 +3,7 @@
 <head>
 <title>The Family Pack - Database: Dates</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel='stylesheet' type='text/css' href='../tfp.css' />
+<link rel='stylesheet' type='text/css' href='../../tfp.css' />
 <style type="text/css">
  table.flags {
   display: inline-table;
@@ -28,24 +28,26 @@
 </head>
 <body>
 
-<h1><a  href="../index.htm"><img id="logo" src="../tfp5.gif" alt="Logo" /></a>The Family Pack<br/>Database: Dates</h1>
+<h1><a  href="../../index.htm"><img id="logo" src="../../tfp5.gif" alt="Logo" /></a>The Family Pack<br/>Database: Dates</h1>
 
 <div id="page" class="database">
 
 <div id="menu">
-  <a href="../index.htm" class="m-item">Home</a>
-  <a href="../man/manual0-0.htm" class="m-item">TFP Manual</a>
-  <a href="database.htm" class="m-item">Database</a>
-  <a href="dbdesign.htm" class="m-item level1">Definitions</a>
-  <a href="dbdiagram.htm" class="m-item level1">Diagram</a>
-  <a href="dates.htm" class="m-item level1 thispage">Dates</a>
-  <a href="places.htm" class="m-item level1">Places</a>
-  <a href="personas.htm" class="m-item level1">Personas</a>
-  <a href="events.htm" class="m-item level1">Events</a>
-  <a href="individuals.htm" class="m-item level1">Individuals</a>
-  <a href="references.htm" class="m-item level1">References</a>
-  <a href="../com/common.htm" class="m-item">Common Data</a>
-  <a href="../dev/develop.htm" class="m-item">Development</a>
+  <a href="../../index.htm" class="m-item">Home</a>
+  <a href="../../man/manual0-0.htm" class="m-item">TFP Manual</a>
+    <a href="../database.htm" class="m-item">Database</a>
+    <a href="../dbdesign.htm" class="m-item level1">Definitions</a>
+    <a href="../dbdiagram.htm" class="m-item level1">Diagram</a>
+    <a href="../admin/admin.htm" class="m-item level1">Administration</a>
+    <a href="../evid/evidence.htm" class="m-item level1">Evidence</a>
+    <a href="conclusions.htm" class="m-item level1">Conclusions</a>
+      <a href="dates.htm" class="m-item level2 thispage">Dates</a>
+      <a href="places.htm" class="m-item level2">Places</a>
+      <a href="personas.htm" class="m-item level2">Personas</a>
+      <a href="events.htm" class="m-item level2">Events</a>
+      <a href="individuals.htm" class="m-item level2">Individuals</a>
+  <a href="../../com/common.htm" class="m-item">Common Data</a>
+  <a href="../../dev/develop.htm" class="m-item">Development</a>
   <p style="text-align: center;">
     The project page at<br />
     <a href="http://sourceforge.net/projects/thefamilypack">
@@ -89,7 +91,7 @@
  Consider the time line is divided into three sections by the start and finish dates. The type flags are used to indicate how these periods are interpreted. These flags can be used in combination - but where the central period is not zero and the On flag is set this may lead to some ambiguity. So the assumption is made that in these cases that the central period is more likely than the other (Before or After) periods.
 </p>
 <p>
- The database will keep a record of the calendar scheme that the date was originally recorded in <span class="field">[record_sch]</span> (where known) as well as the preferred scheme normally used to display the date <span class="field">[display_sch]</span>. The concept of a calendar scheme covers the Julian and Gregory calendars as well as the short lived French Revolutionary Calender and other world styles. It will also extend the concept to country schemes, which will cover the change over from the Julian to Gregory calendar. So the English Calendar scheme which follows the Julian Calendar up until 2nd September 1752, when the change over to the Gregorian Calendar occurs. It will also take into account the 25th March new year in England.   
+ The database will keep a record of the calendar scheme that the date was originally recorded in <span class="field">[record_sch]</span> (where known) as well as the preferred scheme normally used to display the date <span class="field">[display_sch]</span>. The concept of a calendar scheme covers the Julian and Gregory calendars as well as the short lived French Revolutionary Calender and other world styles. It will also extend the concept to country schemes, which will cover the change over from the Julian to Gregory calendar. So the English Calendar scheme which follows the Julian Calendar up until 2nd September 1752, when the change over to the Gregorian Calendar occurs. It will also take into account the 25th March new year in England.
 </p>
 <p>
  There may be occasions when it is not possible to interpret a particular date, either because the system does not yet cater for that scheme or the scheme cannot be determined. In this case the scheme is held as a text description <span class="field">[desc]</span>. Such dates cannot be sorted and so will normally appear at the beginning of date sorted lists.
@@ -101,7 +103,7 @@
 <div id='valid'>
   <p>
     <a href="http://validator.w3.org/check?uri=referer"><img
-        src="../valid-xhtml10-blue.png"
+        src="../../valid-xhtml10-blue.png"
         alt="Valid XHTML 1.0 Strict" height="31" width="88" /></a>
   </p>
 </div>

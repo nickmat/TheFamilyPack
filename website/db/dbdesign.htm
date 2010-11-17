@@ -68,15 +68,12 @@
 <div id="menu">
   <a href="../index.htm" class="m-item">Home</a>
   <a href="../man/manual0-0.htm" class="m-item">TFP Manual</a>
-  <a href="database.htm" class="m-item">Database</a>
-  <a href="dbdesign.htm" class="m-item level1 thispage">Definitions</a>
-  <a href="dbdiagram.htm" class="m-item level1">Diagram</a>
-  <a href="dates.htm" class="m-item level1">Dates</a>
-  <a href="places.htm" class="m-item level1">Places</a>
-  <a href="personas.htm" class="m-item level1">Personas</a>
-  <a href="events.htm" class="m-item level1">Events</a>
-  <a href="individuals.htm" class="m-item level1">Individuals</a>
-  <a href="references.htm" class="m-item level1">References</a>
+    <a href="database.htm" class="m-item">Database</a>
+    <a href="dbdesign.htm" class="m-item level1 thispage">Definitions</a>
+    <a href="dbdiagram.htm" class="m-item level1">Diagram</a>
+    <a href="admin/admin.htm" class="m-item level1">Administration</a>
+    <a href="evid/evidence.htm" class="m-item level1">Evidence</a>
+    <a href="conc/conclusions.htm" class="m-item level1">Conclusions</a>
   <a href="../com/common.htm" class="m-item">Common Data</a>
   <a href="../dev/develop.htm" class="m-item">Development</a>
   <p style="text-align: center;">
@@ -92,7 +89,7 @@
 
 <div id="content">
 
-<blockquote>
+<blockquote class="short">
 <p>
  The goal is to transform data into information, and information into insight.
 </p>
@@ -111,31 +108,31 @@
    <tr>
     <td><a href="#Date">Date</a></td>
     <td><a href="#Event">Event</a></td>
+    <td><a href="#EventPersona">EventPersona</a></td>
     <td><a href="#EventType">EventType</a></td>
     <td><a href="#EventTypeRole">EventTypeRole</a></td>
     <td><a href="#Family">Family</a></td>
-    <td><a href="#FamilyIndividual">FamilyIndividual</a></td>
    </tr>
    <tr>
+    <td><a href="#FamilyIndividual">FamilyIndividual</a></td>
     <td><a href="#Individual">Individual</a></td>
-    <td><a href="#Persona">Persona</a></td>
-    <td><a href="#PersonaEvent">PersonaEvent</a></td>
     <td><a href="#IndividualPersona">IndividualPersona</a></td>
+    <td><a href="#Name">Name</a></td>
+    <td><a href="#NameType">NameType</a></td>
+    <td><a href="#Persona">Persona</a></td>
+   </tr>
+   <tr>
     <td><a href="#Place">Place</a></td>
     <td><a href="#PlacePart">PlacePart</a></td>
-   </tr>
-   <tr>
     <td><a href="#PlacePartType">PlacePartType</a></td>
     <td><a href="#Reference">Reference</a></td>
     <td><a href="#ReferenceEntity">ReferenceEntity</a></td>
     <td><a href="#Repository">Repository</a></td>
-    <td><a href="#RepositorySource">RepositorySource</a></td>
-    <td><a href="#Researcher">Researcher</a></td>
    </tr>
    <tr>
+    <td><a href="#RepositorySource">RepositorySource</a></td>
+    <td><a href="#Researcher">Researcher</a></td>
     <td><a href="#Source">Source</a></td>
-    <td><a href="#SourceGroup">SourceGroup</a></td>
-    <td><a href="#SourceGroupSource">SourceGroupSource</a></td>
     <td><a href="#User">User</a></td>
     <td><a href="#Version">Version</a></td>
     <td colspan='0' class="na">&nbsp;</td>
@@ -152,6 +149,7 @@
     </tr>
    </thead>
    <tbody>
+
     <tr id="Attribute">
      <td colspan="3" class="filler"><a href="#">Top</a></td>
     </tr>
@@ -171,17 +169,12 @@
     <tr>
      <td>type_id</td>
      <td>Integer</td>
-     <td>Unique identifier that indicates to which Attribute Type this event belongs.</td>
+     <td>Unique identifier that indicates to which AttributeType this attribute belongs.</td>
     </tr>
     <tr>
      <td>val</td>
      <td>Text</td>
-     <td>The value of the Attribute, such as "Butcher" where type_id points to "Occupation" or "John" where type_id points to "Given name".</td>
-    </tr>
-    <tr>
-     <td>sequence</td>
-     <td>Integer</td>
-     <td>If not zero, then a number to show a name's position in the full name</td>
+     <td>The value of the Attribute, such as "Butcher" where type_id points to "Occupation".</td>
     </tr>
 
     <tr id="AttributeType">
@@ -198,7 +191,7 @@
     <tr>
      <td>grp</td>
      <td>Integer</td>
-     <td>Holds 0=Unstated, 1=Name part, 2=Title, 3=Occupation, 100=Other</td>
+     <td>Holds 0=Unstated, 1=Occupation, 100=Other</td>
     </tr>
     <tr>
      <td>name</td>
@@ -366,6 +359,11 @@
      <td>The name of the Event, such as "Marriage of John Smith and Mary Jones".</td>
     </tr>
     <tr>
+     <td>sort_jdn</td>
+     <td>Integer</td>
+     <td>Redundant field calulated from dates and event type group, used to sort events.</td>
+    </tr>
+    <tr>
      <td>type_id</td>
      <td>Integer</td>
      <td>Unique identifier that indicates to which Event Type this event belongs.</td>
@@ -389,6 +387,38 @@
      <td>note</td>
      <td>Text</td>
      <td>Optional note that relates to the Event.</td>
+    </tr>
+
+    <tr id="EventPersona">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>EventPersona</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td class="nw">Integer PK</td>
+     <td>Unique key identifying an EventPersona.</td>
+    </tr>
+    <tr>
+     <td>event_id</td>
+     <td>Integer</td>
+     <td>Pointer to the Event</td>
+    </tr>
+    <tr>
+     <td>per_id</td>
+     <td>Integer</td>
+     <td>Pointer to a Persona</td>
+    </tr>
+    <tr>
+     <td>role_id</td>
+     <td>Integer</td>
+     <td>Points to the role played by the Person</td>
+    </tr>
+    <tr>
+     <td>note</td>
+     <td>Text</td>
+     <td>Optional note that relates to the Persona</td>
     </tr>
 
     <tr id="EventType">
@@ -428,6 +458,16 @@
      <td>type_id</td>
      <td>Integer</td>
      <td>Unique key that identifies the Event Type to which these members belong.</td>
+    </tr>
+    <tr>
+     <td>prime</td>
+     <td>Integer</td>
+     <td>Flag, 1=Primary role, ie the new born for birth or bride and groom in wedding.</td>
+    </tr>
+    <tr>
+     <td>official</td>
+     <td>Integer</td>
+     <td>Flag, 1=Official role, ie Registrar for certificate or clergy for church service.</td>
     </tr>
     <tr>
      <td>name</td>
@@ -561,60 +601,6 @@
      <td>Pointer to the default (preferred) occupation attribute ID</td>
     </tr>
 
-    <tr id="Persona">
-     <td colspan="3" class="filler"><a href="#">Top</a></td>
-    </tr>
-    <tr class="head">
-     <td colspan="3"><b>Persona</b></td>
-    </tr>
-    <tr>
-     <td>id</td>
-     <td>Integer PK</td>
-     <td>Unique key identifying a Persona.</td>
-    </tr>
-    <tr>
-     <td>sex</td>
-     <td>Integer</td>
-     <td>This holds 0=Unstated, 1=Male, 2=Female and 3=Unknown</td>
-    </tr>
-    <tr>
-     <td>note</td>
-     <td>Text</td>
-     <td>Any narrative necessary to distinguish this person.</td>
-    </tr>
-
-    <tr id="PersonaEvent">
-     <td colspan="3" class="filler"><a href="#">Top</a></td>
-    </tr>
-    <tr class="head">
-     <td colspan="3"><b>PersonaEvent</b></td>
-    </tr>
-    <tr>
-     <td>id</td>
-     <td class="nw">Integer PK</td>
-     <td>Unique key identifying an PersonaEvent.</td>
-    </tr>
-    <tr>
-     <td>per_id</td>
-     <td>Integer</td>
-     <td>Pointer to a Persona</td>
-    </tr>
-    <tr>
-     <td>event_id</td>
-     <td>Integer</td>
-     <td>Pointer to the Event</td>
-    </tr>
-    <tr>
-     <td>role_id</td>
-     <td>Integer</td>
-     <td>Points to the role played by the Person</td>
-    </tr>
-    <tr>
-     <td>note</td>
-     <td>Text</td>
-     <td>Optional note that relates to the Persona</td>
-    </tr>
-
     <tr id="IndividualPersona">
      <td colspan="3" class="filler"><a href="#">Top</a></td>
     </tr>
@@ -640,6 +626,82 @@
      <td>note</td>
      <td>Text</td>
      <td>Optional note that relates to the Persona - Individual link</td>
+    </tr>
+
+    <tr id="Name">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>Name</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a Name</td>
+    </tr>
+    <tr>
+     <td>per_id</td>
+     <td>Integer</td>
+     <td>Pointer to a Person ID</td>
+    </tr>
+    <tr>
+     <td>type_id</td>
+     <td>Integer</td>
+     <td>Identifier that indicates to which NameType this name belongs.</td>
+    </tr>
+    <tr>
+     <td>val</td>
+     <td>Text</td>
+     <td>The value of the Name, such as "John" where type_id points to "Given name".</td>
+    </tr>
+    <tr>
+     <td>sequence</td>
+     <td>Integer</td>
+     <td>A number to show a name's position in the full name</td>
+    </tr>
+
+    <tr id="NameType">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>NameType</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a NameType</td>
+    </tr>
+    <tr>
+     <td>grp</td>
+     <td>Integer</td>
+     <td>Holds 0=Unstated, 1=Name part, 2=Title</td>
+    </tr>
+    <tr>
+     <td>name</td>
+     <td>Text</td>
+     <td>Name of the NameType, ie "Give name" or "Rank"</td>
+    </tr>
+
+    <tr id="Persona">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>Persona</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a Persona.</td>
+    </tr>
+    <tr>
+     <td>sex</td>
+     <td>Integer</td>
+     <td>This holds 0=Unstated, 1=Male, 2=Female and 3=Unknown</td>
+    </tr>
+    <tr>
+     <td>note</td>
+     <td>Text</td>
+     <td>Any narrative necessary to distinguish this person.</td>
     </tr>
 
     <tr id="Place">
@@ -869,14 +931,19 @@
      <td>Unique key that identifies the next higher level Source associated with this Source.</td>
     </tr>
     <tr>
+     <td>sub_date1_id</td>
+     <td>Integer</td>
+     <td>Optional, the start or only date associated with this Source.</td>
+    </tr>
+    <tr>
+     <td>sub_date2_id</td>
+     <td>Integer</td>
+     <td>Optional, the end date associated with this Source.</td>
+    </tr>
+    <tr>
      <td>sub_place_id</td>
      <td>Integer</td>
      <td>Unique key that identifies the Place of the subject of this Source.</td>
-    </tr>
-    <tr>
-     <td>sub_date_id</td>
-     <td>Integer</td>
-     <td>Optional, the date associated with this Source.</td>
     </tr>
     <tr>
      <td>loc_place_id</td>
@@ -892,45 +959,6 @@
      <td>comments</td>
      <td>Text</td>
      <td>Any comments about the Source.</td>
-    </tr>
-
-    <tr id="SourceGroup">
-     <td colspan="3" class="filler"><a href="#">Top</a></td>
-    </tr>
-    <tr class="head">
-     <td colspan="3"><b>SourceGroup</b></td>
-    </tr>
-    <tr>
-     <td>id</td>
-     <td>Integer PK</td>
-     <td>Unique key identifying a SourceGroup</td>
-    </tr>
-    <tr>
-     <td>name</td>
-     <td>Text</td>
-     <td>The name of this SourceGroup. An example might be Will or Census, or Tombstone.</td>
-    </tr>
-
-    <tr id="SourceGroupSource">
-     <td colspan="3" class="filler"><a href="#">Top</a></td>
-    </tr>
-    <tr class="head">
-     <td colspan="3"><b>SourceGroupSource</b></td>
-    </tr>
-    <tr>
-     <td>id</td>
-     <td>Integer PK</td>
-     <td>Unique key identifying a SourceGroupSource</td>
-    </tr>
-    <tr>
-     <td>source_id</td>
-     <td>Integer</td>
-     <td>Unique key that identifies the Source associated with this Source.</td>
-    </tr>
-    <tr>
-     <td>group_id</td>
-     <td>Integer</td>
-     <td>Unique key identifying a SourceGroup</td>
     </tr>
 
     <tr id="User">
