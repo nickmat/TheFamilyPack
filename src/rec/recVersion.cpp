@@ -41,8 +41,8 @@
 
 const int recVersionMajor    = 0;
 const int recVersionMinor    = 0;
-const int recVersionRevision = 7;
-const wxChar* recVersionStr  = wxT("0.0.7");
+const int recVersionRevision = 8;
+const wxChar* recVersionStr  = wxT("0.0.8");
 
 
 recVersion::recVersion( const recVersion& v )
@@ -63,73 +63,73 @@ void recVersion::Clear()
 
 void recVersion::Save()
 {
-	wxSQLite3StatementBuffer sql;
+    wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
 
-	if( f_id == 0 )
-	{
-		// Add new record
-	    sql.Format( 
-		    "INSERT INTO Version (major, minor, revision) "
+    if( f_id == 0 )
+    {
+        // Add new record
+        sql.Format(
+            "INSERT INTO Version (major, minor, revision) "
             "VALUES (%d, %d, %d);",
             f_major, f_minor, f_revision
-	    );
-    	s_db->ExecuteUpdate( sql );
+        );
+        s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
-	} else {
+    } else {
         // Does record exist
         if( !Exists() )
         {
             // Add new record
-	        sql.Format( 
-		        "INSERT INTO Version (id, major, minor, revision) "
+            sql.Format(
+                "INSERT INTO Version (id, major, minor, revision) "
                 "VALUES ("ID", %d, %d, %d);",
                 f_id, f_major, f_minor, f_revision
-	        );
+            );
         } else {
-    		// Update existing record
-            sql.Format( 
+            // Update existing record
+            sql.Format(
                 "UPDATE Version SET major=%d, minor=%d, revision=%d "
-                "WHERE id="ID";", 
+                "WHERE id="ID";",
                 f_major, f_minor, f_revision, f_id
             );
         }
-    	s_db->ExecuteUpdate( sql );
-	}
+        s_db->ExecuteUpdate( sql );
+    }
 }
 
 bool recVersion::Read()
 {
-	wxSQLite3StatementBuffer sql;
+    wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
 
     if( f_id == 0 ) {
-		Clear();
+        Clear();
         return false;
     }
 
-	sql.Format(
+    sql.Format(
         "SELECT major, minor, revision FROM Version WHERE id="ID";",
         f_id
     );
     result = s_db->GetTable( sql );
 
-    if( result.GetRowCount() != 1 ) 
+    if( result.GetRowCount() != 1 )
     {
-		Clear();
+        Clear();
         return false;
     }
-    result.SetRow( 0 ); 
+    result.SetRow( 0 );
     f_major    = result.GetInt( 0 );
     f_minor    = result.GetInt( 1 );
     f_revision = result.GetInt( 2 );
-	return true;
+    return true;
 }
 
 bool recVersion::IsEqual( int major, int minor, int revision ) const
 {
     return
-        f_major    == major   && 
+        f_major    == major   &&
         f_minor    == minor   &&
         f_revision == revision;
 }

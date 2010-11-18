@@ -71,88 +71,88 @@ END_EVENT_TABLE()
 
 dlgEditFamily::dlgEditFamily( wxWindow* parent ) : fbDlgEditFamily( parent )
 {
-	m_child = 0;
+    m_child = 0;
     m_family.Clear();
 }
 
 bool dlgEditFamily::TransferDataToWindow()
 {
-	if( m_family.f_id == 0 ) {
-		m_family.Save();
-	} else {
-	    m_family.Read();
-	}
-	if( m_child > 0 ) {
-		recFamilyIndividual fi;
-		fi.Clear();
-		fi.f_fam_id = m_family.f_id;
-		fi.f_ind_id = m_child;
-		fi.f_sequence = 1;
-		fi.Save();
-	}
-    
-	wxString str;
+    if( m_family.f_id == 0 ) {
+        m_family.Save();
+    } else {
+        m_family.Read();
+    }
+    if( m_child > 0 ) {
+        recFamilyIndividual fi;
+        fi.Clear();
+        fi.f_fam_id = m_family.f_id;
+        fi.f_ind_id = m_child;
+        fi.f_sequence = 1;
+        fi.Save();
+    }
 
-	str << wxT("F") << m_family.f_id;
-	m_staticFamID->SetLabel( str  );
+    wxString str;
 
-	str = recIndividual::GetFullName( m_family.f_husb_id );
-	m_staticHusbName->SetLabel( str  );
+    str << wxT("F") << m_family.f_id;
+    m_staticFamID->SetLabel( str  );
 
-	str = recIndividual::GetFullName( m_family.f_wife_id );
-	m_staticWifeName->SetLabel( str  );
+    str = recIndividual::GetFullName( m_family.f_husb_id );
+    m_staticHusbName->SetLabel( str  );
 
-	str = recEvent::GetDetailStr( m_family.f_event_id );
-	m_staticMarrEvent->SetLabel( str  );
+    str = recIndividual::GetFullName( m_family.f_wife_id );
+    m_staticWifeName->SetLabel( str  );
+
+    str = recEvent::GetDetailStr( m_family.f_event_id );
+    m_staticMarrEvent->SetLabel( str  );
 
     m_childlinks = m_family.GetChildLinks();
-	wxArrayString list;
+    wxArrayString list;
     if( m_childlinks.size() > 0 )
     {
-	    for( size_t i = 0 ; i < m_childlinks.size() ; i++ )
-	    {
-		    list.Add( recIndividual::GetFullName( m_childlinks[i].f_ind_id ) );
-	    }
-	    m_listChild->InsertItems( list, 0 );
+        for( size_t i = 0 ; i < m_childlinks.size() ; i++ )
+        {
+            list.Add( recIndividual::GetFullName( m_childlinks[i].f_ind_id ) );
+        }
+        m_listChild->InsertItems( list, 0 );
     }
     return true;
 }
 
 bool dlgEditFamily::TransferDataFromWindow()
 {
-	m_family.Save();
-	for( size_t i = 0 ; i < m_childlinks.size() ; i++ ) {
-		m_childlinks[i].f_sequence = i+1;
-		m_childlinks[i].Save();
-	}
-	return true;
+    m_family.Save();
+    for( size_t i = 0 ; i < m_childlinks.size() ; i++ ) {
+        m_childlinks[i].f_sequence = i+1;
+        m_childlinks[i].Save();
+    }
+    return true;
 
 }
 
 void dlgEditFamily::OnHusbButton( wxCommandEvent& event )
 {
     m_editbutton = EDBUT_Husb;
-	EditIDMenu( m_family.f_husb_id );
+    EditIDMenu( m_family.f_husb_id );
 }
 
 void dlgEditFamily::OnWifeButton( wxCommandEvent& event )
 {
     m_editbutton = EDBUT_Wife;
-	EditIDMenu( m_family.f_wife_id );
+    EditIDMenu( m_family.f_wife_id );
 }
 
 void dlgEditFamily::OnMarriageButton( wxCommandEvent& event )
 {
     m_editbutton = EDBUT_Marr;
-	EditIDMenu( m_family.f_event_id );
+    EditIDMenu( m_family.f_event_id );
 }
 
 void dlgEditFamily::EditIDMenu( id_t editID )
 {
-	wxMenu* menu = new wxMenu;
+    wxMenu* menu = new wxMenu;
 
-	if( editID != 0 )
-	{
+    if( editID != 0 )
+    {
         menu->Append( tfpID_DLGEDFAM_EDIT,     _("&Edit") );
         menu->Append( tfpID_DLGEDFAM_REMOVE,   _("&Remove") );
         menu->Append( tfpID_DLGEDFAM_DELETE,   _("&Delete") );
@@ -163,54 +163,54 @@ void dlgEditFamily::EditIDMenu( id_t editID )
                 menu->Enable( tfpID_DLGEDFAM_DELETE, false );
             }
         }
-	} else {
+    } else {
         menu->Append( tfpID_DLGEDFAM_ADDNEW,   _("Add &New") );
         menu->Append( tfpID_DLGEDFAM_ADDEXIST, _("Add &Existing") );
-	}
-	PopupMenu( menu );
-	delete menu;
+    }
+    PopupMenu( menu );
+    delete menu;
 }
 
 void dlgEditFamily::OnEditID( wxCommandEvent& event )
 {
-	id_t ret;
+    id_t ret;
 
-	switch( m_editbutton )
-	{
-	case EDBUT_Husb: 
+    switch( m_editbutton )
+    {
+    case EDBUT_Husb:
         if( m_family.f_husb_id == 0 ) {
-			// Add Husband
-			ret = tfpAddIndividual( m_family.f_id, SEX_Male );
-			m_family.f_husb_id = ret;
-		} else {
-			// Edit Husband
-			tfpEditIndividual( m_family.f_husb_id );
-		}
-		m_staticHusbName->SetLabel( 
-            recIndividual::GetFullName( m_family.f_husb_id ) 
+            // Add Husband
+            ret = tfpAddIndividual( m_family.f_id, SEX_Male );
+            m_family.f_husb_id = ret;
+        } else {
+            // Edit Husband
+            tfpEditIndividual( m_family.f_husb_id );
+        }
+        m_staticHusbName->SetLabel(
+            recIndividual::GetFullName( m_family.f_husb_id )
         );
-		break;
-	case EDBUT_Wife: 
+        break;
+    case EDBUT_Wife:
         if( m_family.f_wife_id == 0 ) {
-			// Add Wife
-			ret = tfpAddIndividual( m_family.f_id, SEX_Female );
-			m_family.f_wife_id = ret;
-		} else {
-			// Edit Wife
-			tfpEditIndividual( m_family.f_wife_id );
-		}
-		m_staticWifeName->SetLabel( 
-            recIndividual::GetFullName( m_family.f_wife_id ) 
+            // Add Wife
+            ret = tfpAddIndividual( m_family.f_id, SEX_Female );
+            m_family.f_wife_id = ret;
+        } else {
+            // Edit Wife
+            tfpEditIndividual( m_family.f_wife_id );
+        }
+        m_staticWifeName->SetLabel(
+            recIndividual::GetFullName( m_family.f_wife_id )
         );
-		break;
-	case EDBUT_Marr: 
+        break;
+    case EDBUT_Marr:
         if( m_family.f_event_id == 0 ) {
             // Add marriage
-            ret = tfpAddMarriageEvent( m_family.f_id ); 
+            ret = tfpAddMarriageEvent( m_family.f_id );
             m_family.f_event_id = ret;
         } else {
             // Edit marriage
-		    //wxMessageBox( wxT("NYI Edit Marriage"), wxT("OnEditID") );
+            //wxMessageBox( wxT("NYI Edit Marriage"), wxT("OnEditID") );
             if( EditEvent( &ret ) ) {
                 m_family.f_event_id = ret;
                 m_staticMarrEvent->SetLabel(
@@ -219,26 +219,26 @@ void dlgEditFamily::OnEditID( wxCommandEvent& event )
             }
         }
         break;
-	}
+    }
 }
 
 void dlgEditFamily::OnRemoveID( wxCommandEvent& event )
 {
-	switch( m_editbutton )
-	{
-	case EDBUT_Husb: 
+    switch( m_editbutton )
+    {
+    case EDBUT_Husb:
         m_family.f_husb_id = 0;
         m_staticHusbName->SetLabel( wxEmptyString );
         break;
-	case EDBUT_Wife: 
+    case EDBUT_Wife:
         m_family.f_wife_id = 0;
         m_staticWifeName->SetLabel( wxEmptyString );
         break;
-	case EDBUT_Marr: 
+    case EDBUT_Marr:
         m_family.f_event_id = 0;
         m_staticMarrEvent->SetLabel( wxEmptyString );
         break;
-	}
+    }
 }
 
 void dlgEditFamily::OnDeleteID( wxCommandEvent& event )
@@ -246,21 +246,21 @@ void dlgEditFamily::OnDeleteID( wxCommandEvent& event )
     wxString mes;
     id_t id;
 
-	switch( m_editbutton )
-	{
-	case EDBUT_Husb: 
+    switch( m_editbutton )
+    {
+    case EDBUT_Husb:
         // TODO:
-       wxMessageBox( 
-           wxT("NYI for Delete Husband"), 
+       wxMessageBox(
+           wxT("NYI for Delete Husband"),
            wxT("OnDeleteID") );
         break;
-	case EDBUT_Wife: 
+    case EDBUT_Wife:
         // TODO:
-       wxMessageBox( 
-           wxT("NYI for Delete Wife"), 
+       wxMessageBox(
+           wxT("NYI for Delete Wife"),
            wxT("OnDeleteID") );
         break;
-	case EDBUT_Marr:
+    case EDBUT_Marr:
         id = recEvent::FindReference( m_family.f_event_id );
         if( id == 0 ) {
             if( !recEvent::DeleteFromDb( m_family.f_event_id ) ) {
@@ -277,44 +277,44 @@ void dlgEditFamily::OnDeleteID( wxCommandEvent& event )
             wxMessageBox( mes, _("Delete Marriage Event") );
         }
         break;
-	}
+    }
 }
 
 void dlgEditFamily::OnAddExistID( wxCommandEvent& event )
 {
-	switch( m_editbutton )
-	{
-	case EDBUT_Husb: 
+    switch( m_editbutton )
+    {
+    case EDBUT_Husb:
         // TODO:
-       wxMessageBox( 
-           wxT("NYI for Add Existing Husband"), 
+       wxMessageBox(
+           wxT("NYI for Add Existing Husband"),
            wxT("OnAddExistID") );
         break;
-	case EDBUT_Wife: 
+    case EDBUT_Wife:
         // TODO:
-       wxMessageBox( 
-           wxT("NYI for Add Existing Wife"), 
+       wxMessageBox(
+           wxT("NYI for Add Existing Wife"),
            wxT("OnAddExistID") );
         break;
-	case EDBUT_Marr: 
+    case EDBUT_Marr:
         id_t id = tfpGetExistingMarriageEvent( m_family.f_id );
         if( id == 0 ) {
-            wxMessageBox( 
+            wxMessageBox(
                 _("Unable to find suitabe event"),
-                _("Add Marriage Event") 
+                _("Add Marriage Event")
             );
             return;
         }
         m_family.f_event_id = id;
         m_staticMarrEvent->SetLabel( recEvent::GetDetailStr( id ) );
         break;
-	}
+    }
 }
 
 
 void dlgEditFamily::OnAddChildButton( wxCommandEvent& event )
 {
-	wxMenu* menu = new wxMenu;
+    wxMenu* menu = new wxMenu;
 
     menu->Append( tfpID_DLGEDFAM_ADDNEWSON,    _("Add New &Son") );
     menu->Append( tfpID_DLGEDFAM_ADDNEWDAUR,   _("Add New &Daughter") );
@@ -322,103 +322,103 @@ void dlgEditFamily::OnAddChildButton( wxCommandEvent& event )
     menu->Append( tfpID_DLGEDFAM_ADDEXISTSON,  _("Add &Existing Son") );
     menu->Append( tfpID_DLGEDFAM_ADDEXISTDAUR, _("Add E&xisting Daughter") );
 
-	PopupMenu( menu );
-	delete menu;
+    PopupMenu( menu );
+    delete menu;
 }
 
 void dlgEditFamily::OnAddChild( wxCommandEvent& event )
 {
-	id_t ret = 0;
+    id_t ret = 0;
 
-	switch( event.GetId() ) 
-	{
-	case tfpID_DLGEDFAM_ADDNEWSON:
-		ret = tfpAddNewChild( m_family.f_id, SEX_Male );
-		break;
-	case tfpID_DLGEDFAM_ADDNEWDAUR:
-		ret = tfpAddNewChild( m_family.f_id, SEX_Female );
-		break;
-	case tfpID_DLGEDFAM_ADDEXISTSON:
-	case tfpID_DLGEDFAM_ADDEXISTDAUR:
-		// TODO:
-		wxMessageBox( _("Not yet implimented"), _("OnAddChild") );
-		return;
-	}
+    switch( event.GetId() )
+    {
+    case tfpID_DLGEDFAM_ADDNEWSON:
+        ret = tfpAddNewChild( m_family.f_id, SEX_Male );
+        break;
+    case tfpID_DLGEDFAM_ADDNEWDAUR:
+        ret = tfpAddNewChild( m_family.f_id, SEX_Female );
+        break;
+    case tfpID_DLGEDFAM_ADDEXISTSON:
+    case tfpID_DLGEDFAM_ADDEXISTDAUR:
+        // TODO:
+        wxMessageBox( _("Not yet implimented"), _("OnAddChild") );
+        return;
+    }
 
-	if( ret != 0 ) {
-		recFamilyIndividual fi;
-		fi.Clear();
-		fi.f_fam_id = m_family.f_id;
-		fi.f_ind_id = ret;
-		fi.Find();
-		m_childlinks.push_back( fi );
-		m_listChild->Append( recIndividual::GetFullName( ret ) );
-	}
+    if( ret != 0 ) {
+        recFamilyIndividual fi;
+        fi.Clear();
+        fi.f_fam_id = m_family.f_id;
+        fi.f_ind_id = ret;
+        fi.Find();
+        m_childlinks.push_back( fi );
+        m_listChild->Append( recIndividual::GetFullName( ret ) );
+    }
 }
 
 void dlgEditFamily::OnEditButton( wxCommandEvent& event )
 {
-	// TODO:
+    // TODO:
     wxMessageBox( wxT("Not yet implimented"), wxT("OnEditButton") );
 }
 
 void dlgEditFamily::OnDeleteButton( wxCommandEvent& event )
 {
-	// TODO:
+    // TODO:
     wxMessageBox( wxT("Not yet implimented"), wxT("OnDeleteButton") );
 }
 
 void dlgEditFamily::OnUpButton( wxCommandEvent& event )
 {
-	int item = m_listChild->GetSelection();
-	if( item == wxNOT_FOUND || item == 0 ) {
-		return;
-	}
+    int item = m_listChild->GetSelection();
+    if( item == wxNOT_FOUND || item == 0 ) {
+        return;
+    }
 
     recFamilyIndividual fi = m_childlinks[item];
     m_childlinks[item] = m_childlinks[item-1];
     m_childlinks[item-1] = fi;
 
-	m_listChild->Delete( item );
-	m_listChild->Insert( 
-		recIndividual::GetFullName( m_childlinks[item-1].f_ind_id ), item - 1 
-	);
-	m_listChild->SetSelection( item - 1 );
+    m_listChild->Delete( item );
+    m_listChild->Insert(
+        recIndividual::GetFullName( m_childlinks[item-1].f_ind_id ), item - 1
+    );
+    m_listChild->SetSelection( item - 1 );
 }
 
 void dlgEditFamily::OnDownButton( wxCommandEvent& event )
 {
-	int item = m_listChild->GetSelection();
-	if( item == wxNOT_FOUND || item == m_listChild->GetCount() - 1 ) {
-		return;
-	}
+    int item = m_listChild->GetSelection();
+    if( item == wxNOT_FOUND || item == m_listChild->GetCount() - 1 ) {
+        return;
+    }
 
     recFamilyIndividual fi = m_childlinks[item];
     m_childlinks[item] = m_childlinks[item+1];
     m_childlinks[item+1] = fi;
 
-	m_listChild->Delete( item );
-	m_listChild->Insert( 
-		recIndividual::GetFullName( m_childlinks[item+1].f_ind_id ), item + 1 
-	);
-	m_listChild->SetSelection( item + 1 );
+    m_listChild->Delete( item );
+    m_listChild->Insert(
+        recIndividual::GetFullName( m_childlinks[item+1].f_ind_id ), item + 1
+    );
+    m_listChild->SetSelection( item + 1 );
 }
 
 
 bool dlgEditFamily::EditEvent( id_t* pEventID )
 {
-	const wxString savepoint = "EdFamEvent";
-	bool ret = false;
-    dlgEditFamEvent* dialog = new dlgEditFamEvent( 
-        NULL, m_family.f_event_id, recEventType::ETYPE_Grp_Union 
+    const wxString savepoint = "EdFamEvent";
+    bool ret = false;
+    dlgEditFamEvent* dialog = new dlgEditFamEvent(
+        NULL, m_family.f_event_id, recEventType::ETYPE_Grp_Union
     );
-	recDb::Savepoint( savepoint );
+    recDb::Savepoint( savepoint );
 
-	if( dialog->ShowModal() == wxID_OK ) {
-		recDb::ReleaseSavepoint( savepoint );
-		ret = true;
+    if( dialog->ShowModal() == wxID_OK ) {
+        recDb::ReleaseSavepoint( savepoint );
+        ret = true;
         *pEventID = dialog->GetEventID();
-        recPersonaEvent pe(0);
+        recEventPersona pe(0);
         pe.f_per_id = m_family.f_husb_id;
         pe.f_event_id = dialog->GetEventID();
         pe.f_role_id = recEventTypeRole::ROLE_Marriage_Groom;
@@ -432,12 +432,12 @@ bool dlgEditFamily::EditEvent( id_t* pEventID )
         if( pe.LinkExists() == false ) {
             pe.Save();
         }
-	} else {
-		recDb::Rollback( savepoint );
+    } else {
+        recDb::Rollback( savepoint );
         *pEventID = m_family.f_event_id;
-	}
-	dialog->Destroy();
-	return ret;
+    }
+    dialog->Destroy();
+    return ret;
 }
 
 

@@ -39,6 +39,7 @@ typedef wxLongLong      id_t;
 #define GET_ID( id )    (id)
 #define IDtoLong( id )  (id.GetLo())
 #define UTF8_(s) ((const char*)(s).utf8_str())
+#define BOOL_(i) ( (i) ? 1 : 0 )
 
 typedef wxVector< id_t >  recIdList;
 typedef wxVector< id_t >  recIdVec;

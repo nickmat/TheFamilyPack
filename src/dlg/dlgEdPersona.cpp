@@ -72,7 +72,7 @@ bool dlgEditPersona::TransferDataToWindow()
 
 	m_indLinks = m_persona.GetIndividualIDs();
 	m_staticIndId->SetLabel( GetIndLinksString() );
-
+#if 0
 	if( m_defaultAttr == true ) {
         m_staticPerName->SetLabel( m_name );
 		recAttribute attribute;
@@ -94,7 +94,7 @@ bool dlgEditPersona::TransferDataToWindow()
 	} else {
         m_staticPerName->SetLabel( m_persona.GetFullName() );
 	}
-
+#endif
 	m_attributes = m_persona.ReadAttributes();
 	for( size_t i = 0 ; i < m_attributes.size() ; i++ ) {
 		m_listAttr->InsertItem( i, recAttributeType::GetTypeStr( m_attributes[i].f_type_id ) );
@@ -109,11 +109,12 @@ bool dlgEditPersona::TransferDataFromWindow()
 	m_persona.f_sex = (Sex) m_choiceSex->GetSelection();
 	m_persona.f_note = m_textCtrlNote->GetValue();
     m_persona.Save();
-
+#if 0
 	for( size_t i = 0 ; i < m_attributes.size() ; i++ ) {
 		m_attributes[i].f_sequence = i + 1;
 		m_attributes[i].Save();
 	}
+#endif
     return true;
 }
 

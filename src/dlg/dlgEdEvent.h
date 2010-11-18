@@ -41,45 +41,45 @@ class dlgEditEvent : public fbDlgEditEvent
     DECLARE_CLASS( dlgEditEvent )
     DECLARE_EVENT_TABLE()
 
-	enum Columns {
-		COL_Persona, COL_Role, COL_Note, COL_MAX
-	};
-	enum EvDate { EV_DATE_Beg, EV_DATE_End };
+    enum Columns {
+        COL_Persona, COL_Role, COL_Note, COL_MAX
+    };
+    enum EvDate { EV_DATE_Beg, EV_DATE_End };
 
 public:
-	/** Constructor */
-	dlgEditEvent( wxWindow* parent );
-	
-	void SetData( id_t typeID, id_t eventID = 0 );
-	void SetEntities( TfpEntities* entities ) { mp_entities = entities; }
-	recEvent* GetEvent() { return &m_event; } 
+    /** Constructor */
+    dlgEditEvent( wxWindow* parent );
+
+    void SetData( id_t typeID, id_t eventID = 0 );
+    void SetEntities( TfpEntities* entities ) { mp_entities = entities; }
+    recEvent* GetEvent() { return &m_event; }
 
 protected:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
 
-	// Handlers for fbDlgEditEvent events.
-	void OnDateBegButton( wxCommandEvent& event ); // Overide base
-	void OnDateEndButton( wxCommandEvent& event ); // Overide base
-	void DateSelectButton( EvDate button );
-	void OnDateSelect( wxCommandEvent& event );
-	void OnPlaceButton( wxCommandEvent& event );   // Overide base
+    // Handlers for fbDlgEditEvent events.
+    void OnDateBegButton( wxCommandEvent& event ); // Overide base
+    void OnDateEndButton( wxCommandEvent& event ); // Overide base
+    void DateSelectButton( EvDate button );
+    void OnDateSelect( wxCommandEvent& event );
+    void OnPlaceButton( wxCommandEvent& event );   // Overide base
     void OnPlaceSelect( wxCommandEvent& event );
-	void OnAddButton( wxCommandEvent& event );     // Overide base
-	void OnEditButton( wxCommandEvent& event );    // Overide base
-	void OnDeleteButton( wxCommandEvent& event );  // Overide base
-	void OnUpButton( wxCommandEvent& event );      // Overide base
-	void OnDownButton( wxCommandEvent& event );    // Overide base
+    void OnAddButton( wxCommandEvent& event );     // Overide base
+    void OnEditButton( wxCommandEvent& event );    // Overide base
+    void OnDeleteButton( wxCommandEvent& event );  // Overide base
+    void OnUpButton( wxCommandEvent& event );      // Overide base
+    void OnDownButton( wxCommandEvent& event );    // Overide base
 
 
 private:
-	recEvent           m_event;
+    recEvent           m_event;
     recEventType       m_etype;
-	recPersonaEventVec m_pes;
+    recEventPersonaVec m_pes;
 
     TfpEntities*       mp_entities;
 
-	EvDate             m_dateButton;
+    EvDate             m_dateButton;
 };
 
 #endif // DLGEDEVENT_H

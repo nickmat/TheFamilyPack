@@ -1,7 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Name:        recIndividual.h
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Manage SQLite3 Family, FamilyIndividual, Individual and 
+ * Purpose:     Manage SQLite3 Family, FamilyIndividual, Individual and
  *              IndividualPersona records.
  * Author:      Nick Matthews
  * Modified by:
@@ -43,7 +43,7 @@ class recFamilyIndividual;
 typedef wxVector< recFamilyIndividual >  recFamIndVec;
 
 
-class recIndividual : public recDb 
+class recIndividual : public recDb
 {
 public:
     wxString f_surname;
@@ -63,7 +63,7 @@ public:
     recIndividual( id_t id ) : recDb(id) { Read(); }
     recIndividual( const recIndividual& ind );
 
-	void Clear();
+    void Clear();
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "Individual" );
@@ -72,7 +72,7 @@ public:
     wxString GetFullName() { return f_given + " " + f_surname; }
 
     static id_t GetDefaultFamily( id_t id ) {
-		return ExecuteID( "SELECT fam_id FROM Individual WHERE id="ID";", id ); 
+        return ExecuteID( "SELECT fam_id FROM Individual WHERE id="ID";", id );
     }
     static wxString GetFullName( id_t id );
     static wxString GetSurname( id_t id );
@@ -83,9 +83,9 @@ public:
     static recFamilyList GetParentList( id_t indID );
     recFamilyList GetParentList() const { return GetParentList( f_id ); }
 
-    recPersonaEventVec GetPersonaEventVec() const 
-        { return GetPersonaEventVec( f_id ); }
-    static recPersonaEventVec GetPersonaEventVec( id_t id );
+    recEventPersonaVec GetEventPersonaVec() const
+        { return GetEventPersonaVec( f_id ); }
+    static recEventPersonaVec GetEventPersonaVec( id_t id );
 
     wxSQLite3Table GetEventsTable() const { return GetEventsTable( f_id ); }
     static wxSQLite3Table GetEventsTable( id_t id );
@@ -94,7 +94,7 @@ public:
     static wxArrayString GetEventIdStrList( id_t indID, id_t etrID );
 
     static wxSQLite3ResultSet GetSurnameList() {
-        return s_db->ExecuteQuery( 
+        return s_db->ExecuteQuery(
             "SELECT surname FROM Individual GROUP BY surname;"
         );
     }
@@ -143,7 +143,7 @@ public:
     recIndividualPersona( id_t id ) : recDb(id) { Read(); }
     recIndividualPersona( const recIndividualPersona& ip );
 
-	void Clear();
+    void Clear();
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "IndividualPersona" );
@@ -171,7 +171,7 @@ inline bool operator!=( const recIndividualPersona& r1, const recIndividualPerso
 
 //----------------------------------------------------------
 
-class recFamily : public recDb 
+class recFamily : public recDb
 {
 public:
     id_t     f_husb_id;
@@ -182,7 +182,7 @@ public:
     recFamily( id_t id ) : recDb(id) { Read(); }
     recFamily( const recFamily& family );
 
-	void Clear();
+    void Clear();
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "Family" );
@@ -194,7 +194,7 @@ public:
     recIdList GetChildrenIds() const { return GetChildrenIds( f_id ); }
     static unsigned GetChildNextSequence( id_t id );
     recFamIndVec GetChildLinks() { return GetChildLinks( f_id ); }
-	static recFamIndVec GetChildLinks( id_t famID );
+    static recFamIndVec GetChildLinks( id_t famID );
 
     wxArrayString GetMarriageEventTable() const;
 };
@@ -220,7 +220,7 @@ inline bool operator!=( const recFamily& r1, const recFamily& r2 )
 
 //----------------------------------------------------------
 
-class recFamilyIndividual : public recDb 
+class recFamilyIndividual : public recDb
 {
 public:
     id_t     f_fam_id;
@@ -231,7 +231,7 @@ public:
     recFamilyIndividual( id_t id ) : recDb(id) { Read(); }
     recFamilyIndividual( const recFamilyIndividual& fi );
 
-	void Clear();
+    void Clear();
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "FamilyIndividual" );

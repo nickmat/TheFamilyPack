@@ -70,7 +70,7 @@ private:
         CPPUNIT_TEST( TestEvent );
         CPPUNIT_TEST( TestEventType );
         CPPUNIT_TEST( TestEventTypeRole );
-        CPPUNIT_TEST( TestPersonaEvent );
+        CPPUNIT_TEST( TestEventPersona );
         CPPUNIT_TEST( TestReference );
         CPPUNIT_TEST( TestReferenceEntity );
         CPPUNIT_TEST( TestIndividual );
@@ -91,7 +91,7 @@ private:
     void TestEvent();
     void TestEventType();
     void TestEventTypeRole();
-    void TestPersonaEvent();
+    void TestEventPersona();
     void TestReference();
     void TestReferenceEntity();
     void TestIndividual();
@@ -138,7 +138,7 @@ void RecTestCase::TestDate()
 
     recDate date2;
     date2.f_id = date1.f_id;
-    date2.Read();  
+    date2.Read();
     CPPUNIT_ASSERT( date1 == date2 );
 
     date1.f_jdn = 2432999L;
@@ -191,7 +191,7 @@ void RecTestCase::TestPlace()
 
     recPlace place2;
     place2.f_id = place1.f_id;
-    place2.Read();  
+    place2.Read();
     CPPUNIT_ASSERT( place1 == place2 );
 
     place1.f_date1_id = 10;
@@ -242,7 +242,7 @@ void RecTestCase::TestPlacePart()
 
     recPlacePart pp2;
     pp2.f_id = pp1.f_id;
-    pp2.Read();  
+    pp2.Read();
     CPPUNIT_ASSERT( pp1 == pp2 );
 
     pp1.f_type_id = 4;
@@ -292,7 +292,7 @@ void RecTestCase::TestPlacePartType()
 
     recPlacePartType ppt2;
     ppt2.f_id = ppt1.f_id;
-    ppt2.Read();  
+    ppt2.Read();
     CPPUNIT_ASSERT( ppt1 == ppt2 );
 
     ppt1.f_name = "Village";
@@ -340,7 +340,7 @@ void RecTestCase::TestPersona()
 
     recPersona persona2;
     persona2.f_id = persona1.f_id;
-    persona2.Read();  
+    persona2.Read();
     CPPUNIT_ASSERT( persona1 == persona2 );
 
     persona1.f_sex = SEX_Female;
@@ -383,7 +383,7 @@ void RecTestCase::TestAttribute()
     attr1.f_per_id = 1;
     attr1.f_type_id = -2;
     attr1.f_val = "Matthews";
-    attr1.f_sequence = 3;
+//    attr1.f_sequence = 3;
     // f_id = 0 so create new record and set f_id to new value.
     attr1.Save();
     id = attr1.f_id;
@@ -391,13 +391,13 @@ void RecTestCase::TestAttribute()
 
     recAttribute attr2;
     attr2.f_id = attr1.f_id;
-    attr2.Read();  
+    attr2.Read();
     CPPUNIT_ASSERT( attr1 == attr2 );
 
     attr1.f_per_id = 2;
     attr1.f_type_id = -1;
     attr1.f_val = "Nick";
-    attr1.f_sequence = 1;
+//    attr1.f_sequence = 1;
     // f_id = 1 which exists, so amend record leaving f_id to old value.
     attr1.Save();
     CPPUNIT_ASSERT( attr1.f_id == id );
@@ -433,8 +433,8 @@ void RecTestCase::TestAttributeType()
     recAttributeType attrtype1;
     attrtype1.f_id = 0;
 
-    attrtype1.f_grp = recAttributeType::ATYPE_Grp_Name;
-    attrtype1.f_name = "Surname";
+    attrtype1.f_grp = recAttributeType::ATYPE_Grp_Other;
+    attrtype1.f_name = "Hair colour";
     // f_id = 0 so create new record and set f_id to new value.
     attrtype1.Save();
     id = attrtype1.f_id;
@@ -442,7 +442,7 @@ void RecTestCase::TestAttributeType()
 
     recAttributeType attrtype2;
     attrtype2.f_id = attrtype1.f_id;
-    attrtype2.Read();  
+    attrtype2.Read();
     CPPUNIT_ASSERT( attrtype1 == attrtype2 );
 
     attrtype1.f_grp = recAttributeType::ATYPE_Grp_Occ;
@@ -483,6 +483,7 @@ void RecTestCase::TestEvent()
     record1.f_id = 0;
 
     record1.f_title = "Marriage";
+    record1.f_sort_jdn = 2432999L;
     record1.f_type_id = 2;
     record1.f_date1_id = 3;
     record1.f_date2_id = 4;
@@ -495,10 +496,11 @@ void RecTestCase::TestEvent()
 
     recEvent record2;
     record2.f_id = record1.f_id;
-    record2.Read();  
+    record2.Read();
     CPPUNIT_ASSERT( record1 == record2 );
 
     record1.f_title = "Birth";
+    record1.f_sort_jdn = 2433111L;
     record1.f_type_id = 20;
     record1.f_date1_id = 15;
     record1.f_date2_id = 16;
@@ -548,7 +550,7 @@ void RecTestCase::TestEventType()
 
     recEventType record2;
     record2.f_id = record1.f_id;
-    record2.Read();  
+    record2.Read();
     CPPUNIT_ASSERT( record1 == record2 );
 
     record1.f_grp = recEventType::ETYPE_Grp_Nr_Birth;
@@ -582,13 +584,15 @@ void RecTestCase::TestEventType()
 }
 
 void RecTestCase::TestEventTypeRole()
-{ 
+{
     id_t id;
 
     recEventTypeRole record1;
     record1.f_id = 0;
 
     record1.f_type_id = 3;
+    record1.f_prime = true;
+    record1.f_official = false;
     record1.f_name = "Bride";
     // f_id = 0 so create new record and set f_id to new value.
     record1.Save();
@@ -597,7 +601,7 @@ void RecTestCase::TestEventTypeRole()
 
     recEventTypeRole record2;
     record2.f_id = record1.f_id;
-    record2.Read();  
+    record2.Read();
     CPPUNIT_ASSERT( record1 == record2 );
 
     record1.f_type_id = 4;
@@ -630,11 +634,11 @@ void RecTestCase::TestEventTypeRole()
     CPPUNIT_ASSERT( recEventTypeRole::Exists( 999 ) == false );
 }
 
-void RecTestCase::TestPersonaEvent()
+void RecTestCase::TestEventPersona()
 {
     id_t id;
 
-    recPersonaEvent record1;
+    recEventPersona record1;
     record1.f_id = 0;
 
     record1.f_per_id = 3;
@@ -646,9 +650,9 @@ void RecTestCase::TestPersonaEvent()
     id = record1.f_id;
     CPPUNIT_ASSERT( id == 1 );
 
-    recPersonaEvent record2;
+    recEventPersona record2;
     record2.f_id = record1.f_id;
-    record2.Read();  
+    record2.Read();
     CPPUNIT_ASSERT( record1 == record2 );
 
     record1.f_per_id = 19;
@@ -678,9 +682,9 @@ void RecTestCase::TestPersonaEvent()
     record1.Delete();
     CPPUNIT_ASSERT( record1.Exists() == false );
 
-    CPPUNIT_ASSERT( recPersonaEvent::Exists( 999 ) == true );
-    recPersonaEvent::Delete( 999 );
-    CPPUNIT_ASSERT( recPersonaEvent::Exists( 999 ) == false );
+    CPPUNIT_ASSERT( recEventPersona::Exists( 999 ) == true );
+    recEventPersona::Delete( 999 );
+    CPPUNIT_ASSERT( recEventPersona::Exists( 999 ) == false );
 }
 
 void RecTestCase::TestReference()
@@ -699,7 +703,7 @@ void RecTestCase::TestReference()
 
     recReference record2;
     record2.f_id = record1.f_id;
-    record2.Read();  
+    record2.Read();
     CPPUNIT_ASSERT( record1 == record2 );
 
     record1.f_title = "Routine Stuff";
@@ -750,7 +754,7 @@ void RecTestCase::TestReferenceEntity()
 
     recReferenceEntity record2;
     record2.f_id = record1.f_id;
-    record2.Read();  
+    record2.Read();
     CPPUNIT_ASSERT( record1 == record2 );
 
     record1.f_ref_id = 10;
@@ -811,7 +815,7 @@ void RecTestCase::TestIndividual()
 
     recIndividual record2;
     record2.f_id = record1.f_id;
-    record2.Read();  
+    record2.Read();
     CPPUNIT_ASSERT( record1 == record2 );
 
     record1.f_surname     = "Bloggs";
@@ -871,7 +875,7 @@ void RecTestCase::TestIndividualPersona()
 
     recIndividualPersona record2;
     record2.f_id = record1.f_id;
-    record2.Read();  
+    record2.Read();
     CPPUNIT_ASSERT( record1 == record2 );
 
     record1.f_per_id = 20;
@@ -922,7 +926,7 @@ void RecTestCase::TestFamily()
 
     recFamily record2;
     record2.f_id = record1.f_id;
-    record2.Read();  
+    record2.Read();
     CPPUNIT_ASSERT( record1 == record2 );
 
     record1.f_husb_id  = 16;
@@ -973,7 +977,7 @@ void RecTestCase::TestFamilyIndividual()
 
     recFamilyIndividual record2;
     record2.f_id = record1.f_id;
-    record2.Read();  
+    record2.Read();
     CPPUNIT_ASSERT( record1 == record2 );
 
     record1.f_ind_id   = 11;

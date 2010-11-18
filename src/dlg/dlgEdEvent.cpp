@@ -59,9 +59,9 @@ END_EVENT_TABLE()
 
 dlgEditEvent::dlgEditEvent( wxWindow* parent ) : fbDlgEditEvent( parent )
 {
-	m_listPersona->InsertColumn( 0, wxT("Persona") );
-	m_listPersona->InsertColumn( 1, wxT("Role") );
-	m_listPersona->InsertColumn( 2, wxT("Note") );
+    m_listPersona->InsertColumn( 0, wxT("Persona") );
+    m_listPersona->InsertColumn( 1, wxT("Role") );
+    m_listPersona->InsertColumn( 2, wxT("Note") );
 }
 
 void dlgEditEvent::SetData( id_t typeID, id_t eventID )
@@ -88,11 +88,11 @@ bool dlgEditEvent::TransferDataToWindow()
     m_textCtrlDateEnd->SetValue( recDate::GetStr( m_event.f_date2_id ) );
     m_textCtrlPlace->SetValue( recPlace::GetAddressStr( m_event.f_place_id ) );
 
-    m_pes = m_event.GetPersonaEvents();
+    m_pes = m_event.GetEventPersonas();
     for( size_t i = 0 ; i < m_pes.size() ; i++ ) {
-		m_listPersona->InsertItem( i, recPersona::GetFullName( m_pes[i].f_per_id ) );
-		m_listPersona->SetItem( i, COL_Role, recEventTypeRole::GetName( m_pes[i].f_role_id ) );
-		m_listPersona->SetItem( i, COL_Note, m_pes[i].f_note );
+        m_listPersona->InsertItem( i, recPersona::GetFullName( m_pes[i].f_per_id ) );
+        m_listPersona->SetItem( i, COL_Role, recEventTypeRole::GetName( m_pes[i].f_role_id ) );
+        m_listPersona->SetItem( i, COL_Note, m_pes[i].f_note );
     }
 
     return true;
@@ -142,10 +142,10 @@ void dlgEditEvent::DateSelectButton( EvDate button )
 void dlgEditEvent::OnDateSelect( wxCommandEvent& event )
 {
     size_t i = event.GetId() - ID_DATE_MENU_START;
-    wxTextCtrl* textCtrlDate = 
-		( m_dateButton == EV_DATE_Beg ) ? m_textCtrlDateBeg : m_textCtrlDateEnd;
+    wxTextCtrl* textCtrlDate =
+        ( m_dateButton == EV_DATE_Beg ) ? m_textCtrlDateBeg : m_textCtrlDateEnd;
 
-	if( i == 0 ) {
+    if( i == 0 ) {
         textCtrlDate->SetValue( wxT("TODO: Get New Date") );
     } else {
         int entry = tfpGetEntityIndex( mp_entities, i );
@@ -206,11 +206,11 @@ void dlgEditEvent::OnAddButton( wxCommandEvent& event )
     if( dialog->ShowModal() == wxID_OK )
     {
         recDb::ReleaseSavepoint( savepoint );
-        recPersonaEvent* pe = dialog->GetPersonaEvent();
+        recEventPersona* pe = dialog->GetEventPersona();
         int row = m_pes.size();
-		m_listPersona->InsertItem( row, recPersona::GetFullName( pe->f_per_id ) );
-		m_listPersona->SetItem( row, COL_Role, recEventTypeRole::GetName( pe->f_role_id ) );
-		m_listPersona->SetItem( row, COL_Note, pe->f_note );
+        m_listPersona->InsertItem( row, recPersona::GetFullName( pe->f_per_id ) );
+        m_listPersona->SetItem( row, COL_Role, recEventTypeRole::GetName( pe->f_role_id ) );
+        m_listPersona->SetItem( row, COL_Note, pe->f_note );
         m_pes.push_back( *pe );
     } else {
         // Dialog Cancelled
@@ -222,14 +222,14 @@ void dlgEditEvent::OnAddButton( wxCommandEvent& event )
 void dlgEditEvent::OnEditButton( wxCommandEvent& event )
 {
 #if 0
-	wxMessageBox( 
-		wxT("Not yet implimented\nDate"), 
-		wxT("OnEditButton")
-	);
-	// TODO: Implement OnEditButton
+    wxMessageBox(
+        wxT("Not yet implimented\nDate"),
+        wxT("OnEditButton")
+    );
+    // TODO: Implement OnEditButton
 #endif
     const wxString savepoint = "EvtEdRole";
-	long row = m_listPersona->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    long row = m_listPersona->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
         wxMessageBox( _("No row selected"), _("Edit Personas") );
         return;
@@ -242,9 +242,9 @@ void dlgEditEvent::OnEditButton( wxCommandEvent& event )
     if( dialog->ShowModal() == wxID_OK )
     {
         recDb::ReleaseSavepoint( savepoint );
-        recPersonaEvent* pe = dialog->GetPersonaEvent();
-		m_listPersona->SetItem( row, COL_Role, recEventTypeRole::GetName( pe->f_role_id ) );
-		m_listPersona->SetItem( row, COL_Note, pe->f_note );
+        recEventPersona* pe = dialog->GetEventPersona();
+        m_listPersona->SetItem( row, COL_Role, recEventTypeRole::GetName( pe->f_role_id ) );
+        m_listPersona->SetItem( row, COL_Note, pe->f_note );
         m_pes[row] = *pe;
     } else {
         // Dialog Cancelled
@@ -255,29 +255,29 @@ void dlgEditEvent::OnEditButton( wxCommandEvent& event )
 
 void dlgEditEvent::OnDeleteButton( wxCommandEvent& event )
 {
-	wxMessageBox( 
-		wxT("Not yet implimented\nDate"), 
-		wxT("OnDeleteButton")
-	);
-	// TODO: Implement OnDeleteButton
+    wxMessageBox(
+        wxT("Not yet implimented\nDate"),
+        wxT("OnDeleteButton")
+    );
+    // TODO: Implement OnDeleteButton
 }
 
 void dlgEditEvent::OnUpButton( wxCommandEvent& event )
 {
-	wxMessageBox( 
-		wxT("Not yet implimented\nDate"), 
-		wxT("OnUpButton")
-	);
-	// TODO: Implement OnUpButton
+    wxMessageBox(
+        wxT("Not yet implimented\nDate"),
+        wxT("OnUpButton")
+    );
+    // TODO: Implement OnUpButton
 }
 
 void dlgEditEvent::OnDownButton( wxCommandEvent& event )
 {
-	wxMessageBox( 
-		wxT("Not yet implimented\nDate"), 
-		wxT("OnDownButton")
-	);
-	// TODO: Implement OnDownButton
+    wxMessageBox(
+        wxT("Not yet implimented\nDate"),
+        wxT("OnDownButton")
+    );
+    // TODO: Implement OnDownButton
 }
 
 // End of dlgEdEvent.cpp file

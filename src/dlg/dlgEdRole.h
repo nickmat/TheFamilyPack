@@ -41,22 +41,22 @@ class dlgEditRole : public fbDlgEditRole
     DECLARE_EVENT_TABLE()
 
 public:
-	dlgEditRole( wxWindow* parent, id_t eventID, id_t id = 0 );
+    dlgEditRole( wxWindow* parent, id_t eventID, id_t id = 0 );
 
     void SetEntities( TfpEntities* entities ) { m_entities = entities; }
 
-    recPersonaEvent* GetPersonaEvent() { return &m_pe; }
+    recEventPersona* GetEventPersona() { return &m_pe; }
 
 private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
 
-	void OnPersonaButton( wxCommandEvent& event );
+    void OnPersonaButton( wxCommandEvent& event );
     void OnPersonaSelect( wxCommandEvent& event );
     void OnRoleButton( wxCommandEvent& event );
     void OnRoleSelect( wxCommandEvent& event );
 
-    recPersonaEvent  m_pe;
+    recEventPersona  m_pe;
     recEvent         m_event;
 
     TfpEntities*        m_entities;
