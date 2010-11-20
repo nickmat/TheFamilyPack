@@ -90,4 +90,55 @@ bool dlgEditAttribute::TransferDataFromWindow()
 	return true;
 }
 
+dlgEditName::dlgEditName( wxWindow* parent, id_t id ) 
+    : fbDlgEditName( parent )
+{
+    m_persona = 0;
+    m_name.f_id = id;
+    m_name.Read();
+}
+
+bool dlgEditName::TransferDataToWindow()
+{
+	if( m_name.f_id == 0 )
+	{
+		m_name.Clear();
+        m_name.f_per_id = m_persona;
+		m_name.Save();
+	} else {
+		m_name.Read();
+        m_persona = m_name.f_per_id;
+		m_text = m_name.f_val;
+	}
+    m_textCtrlValue->SetValue( m_text );
+
+    wxString idStr = wxString::Format( "A "ID":", m_name.f_id );
+    m_staticTextId->SetLabel( idStr );
+    wxString perStr = wxString::Format( "P "ID, m_name.f_per_id );
+    m_staticTextPersona->SetLabel( perStr );
+
+    m_typeList = recNameType::GetTypeList();
+    for( size_t i = 0 ; i < m_typeList.size() ; i++ ) {
+        m_choiceType->Append( m_typeList[i].f_name );
+        if( m_name.f_type_id == m_typeList[i].f_id ) {
+            m_choiceType->SetSelection( (int) i );
+        }
+    }
+	return true;
+}
+
+bool dlgEditName::TransferDataFromWindow()
+{
+    int type = m_choiceType->GetSelection();
+    if( type < 0 ) {
+        m_name.f_type_id = 0;
+    } else {
+        m_name.f_type_id = m_typeList[type].f_id;
+    }
+    m_name.f_val = m_textCtrlValue->GetValue();
+
+	m_name.Save();
+	return true;
+}
+
 // End of dlgEdAttribute.cpp file

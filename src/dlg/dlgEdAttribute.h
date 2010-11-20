@@ -55,4 +55,25 @@ private:
     recAttributeTypeVec  m_typeList;
 };
 
+class dlgEditName : public fbDlgEditName
+{
+public:
+	dlgEditName( wxWindow* parent, id_t attID = 0 );
+
+	void SetText( const wxString& text ) { m_text = text; }
+    void SetPersona( id_t perID ) { m_persona = perID; }
+
+	wxString GetText() const { return m_text; }
+	recName* GetName() { return &m_name; }
+
+private:
+    bool TransferDataToWindow();
+    bool TransferDataFromWindow();
+
+    id_t            m_persona;
+	recName         m_name;
+    wxString        m_text;
+    recNameTypeVec  m_typeList;
+};
+
 #endif // DLGEDATTRIBUTE_H

@@ -51,8 +51,10 @@ dlgEditPersona::dlgEditPersona( wxWindow* parent ) : fbDlgEditPersona( parent )
 {
     wxListItem itemCol;
 	itemCol.SetText( wxT("Type") );
+	m_listName->InsertColumn( 0, itemCol );
 	m_listAttr->InsertColumn( 0, itemCol );
 	itemCol.SetText( wxT("Value") );
+	m_listName->InsertColumn( 1, itemCol );
 	m_listAttr->InsertColumn( 1, itemCol );
 
 	m_persona.Clear();
@@ -72,29 +74,34 @@ bool dlgEditPersona::TransferDataToWindow()
 
 	m_indLinks = m_persona.GetIndividualIDs();
 	m_staticIndId->SetLabel( GetIndLinksString() );
-#if 0
+
 	if( m_defaultAttr == true ) {
         m_staticPerName->SetLabel( m_name );
-		recAttribute attribute;
+		recName name;
 		int seq = 0;
-		attribute.Clear();
-		attribute.f_sequence = 0;
+		name.Clear();
+		name.f_sequence = 0;
 		wxStringTokenizer tk( m_name );
 		while( tk.HasMoreTokens() ) {
-			attribute.Clear();
-			attribute.f_per_id = m_persona.f_id;
-			attribute.f_val = tk.GetNextToken();
-			attribute.f_type_id = tk.HasMoreTokens() ? 
-				ATTR_TYPE_Given_name : ATTR_TYPE_Surname;
-			attribute.f_sequence = ++seq;
-			attribute.Save();
-
-			m_attributes.push_back( attribute );
+			name.Clear();
+			name.f_per_id = m_persona.f_id;
+			name.f_val = tk.GetNextToken();
+			name.f_type_id = tk.HasMoreTokens() ? 
+				NAME_TYPE_Given_name : NAME_TYPE_Surname;
+			name.f_sequence = ++seq;
+			name.Save();
+//			m_names.push_back( name );
 		}
 	} else {
         m_staticPerName->SetLabel( m_persona.GetFullName() );
 	}
-#endif
+
+	m_names = m_persona.ReadNames();
+	for( size_t i = 0 ; i < m_names.size() ; i++ ) {
+		m_listName->InsertItem( i, recNameType::GetTypeStr( m_names[i].f_type_id ) );
+		m_listName->SetItem( i, COL_Value, m_names[i].f_val );
+	}
+
 	m_attributes = m_persona.ReadAttributes();
 	for( size_t i = 0 ; i < m_attributes.size() ; i++ ) {
 		m_listAttr->InsertItem( i, recAttributeType::GetTypeStr( m_attributes[i].f_type_id ) );
@@ -109,12 +116,16 @@ bool dlgEditPersona::TransferDataFromWindow()
 	m_persona.f_sex = (Sex) m_choiceSex->GetSelection();
 	m_persona.f_note = m_textCtrlNote->GetValue();
     m_persona.Save();
-#if 0
+
+	for( size_t i = 0 ; i < m_names.size() ; i++ ) {
+		m_names[i].f_sequence = i + 1;
+		m_names[i].Save();
+	}
+
 	for( size_t i = 0 ; i < m_attributes.size() ; i++ ) {
-		m_attributes[i].f_sequence = i + 1;
 		m_attributes[i].Save();
 	}
-#endif
+
     return true;
 }
 
@@ -143,7 +154,133 @@ void dlgEditPersona::OnIndCreateButton( wxCommandEvent& event )
 	// TODO: Add code
 }
 
-void dlgEditPersona::OnAddButton( wxCommandEvent& event )
+void dlgEditPersona::OnNameAddButton( wxCommandEvent& event )
+{
+    const wxString savepoint = "PerAddName";
+	dlgEditName* dialog = new dlgEditName( NULL );
+	dialog->SetPersona( m_persona.f_id );
+
+    recDb::Savepoint( savepoint );
+    if( dialog->ShowModal() == wxID_OK )
+    {
+        recDb::ReleaseSavepoint( savepoint );
+        recName* name = dialog->GetName();
+        int row = m_names.size();
+		m_listName->InsertItem( row, recNameType::GetTypeStr( name->f_type_id ) );
+		m_listName->SetItem( row, COL_Value, name->f_val );
+		m_names.push_back( *name );
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+}
+
+void dlgEditPersona::OnNameEditButton( wxCommandEvent& event )
+{
+#if 0
+	wxMessageBox( 
+		wxT("Not yet implimented"), 
+		wxT("OnNameEditButton")
+	);
+#endif
+	long row = m_listName->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row < 0 ) {
+        wxMessageBox( _("No row selected"), _("Edit Name") );
+        return;
+    }
+
+    const wxString savepoint = "PerEdName";
+    dlgEditName* dialog = new dlgEditName( NULL, m_names[row].f_id );
+
+    recDb::Savepoint( savepoint );
+    if( dialog->ShowModal() == wxID_OK )
+    {
+        recDb::ReleaseSavepoint( savepoint );
+        recName* name = dialog->GetName();
+		m_listName->SetItem( row, COL_Type, recNameType::GetTypeStr( name->f_type_id ) );
+		m_listName->SetItem( row, COL_Value, name->f_val );
+        m_names[row] = *name;
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+}
+
+void dlgEditPersona::OnNameDeleteButton( wxCommandEvent& event )
+{
+#if 0
+	wxMessageBox( 
+		wxT("Not yet implimented"), 
+		wxT("OnNameDeleteButton")
+	);
+#endif
+	long row = m_listName->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	if( row >= 0 ) {
+		m_listName->DeleteItem( row );
+		m_names[row].Delete();
+		m_names.erase( m_names.begin() + row );
+    } else {
+        wxMessageBox( wxT("No row selected"), wxT("Delete Name") );
+    }
+}
+
+void dlgEditPersona::OnNameUpButton( wxCommandEvent& event )
+{
+#if 0
+	wxMessageBox( 
+		wxT("Not yet implimented"), 
+		wxT("OnNameUpButton")
+	);
+#endif
+	long row = m_listName->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	if( row < 0 ) {
+        wxMessageBox( wxT("Row not selected"), wxT("Name Up") );
+        return;
+    }
+    if( row > 0 ) {
+		recName attr = m_names[row];
+		m_names[row] = m_names[row-1];
+		m_names[row-1] = attr;
+
+		m_listName->SetItem( row, COL_Type, recNameType::GetTypeStr( m_names[row].f_type_id ) );
+		m_listName->SetItem( row, COL_Value, m_names[row].f_val );
+        --row;
+		m_listName->SetItem( row, COL_Type, recNameType::GetTypeStr( m_names[row].f_type_id ) );
+		m_listName->SetItem( row, COL_Value, m_names[row].f_val );
+		
+		m_listName->SetItemState( row, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+	}
+}
+
+void dlgEditPersona::OnNameDownButton( wxCommandEvent& event )
+{
+#if 0
+	wxMessageBox( 
+		wxT("Not yet implimented"), 
+		wxT("OnNameDownButton")
+	);
+#endif
+	long row = m_listName->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	if( row < 0 ) {
+        wxMessageBox( wxT("Row not selected"), wxT("Name Up") );
+        return;
+    }
+    if( row < (long) m_listName->GetItemCount() - 1 ) {
+		recName name = m_names[row];
+		m_names[row] = m_names[row+1];
+		m_names[row+1] = name;
+
+		m_listName->SetItem( row, COL_Type, recNameType::GetTypeStr( m_names[row].f_type_id ) );
+		m_listName->SetItem( row, COL_Value, m_names[row].f_val );
+		row++;
+		m_listName->SetItem( row, COL_Type, recNameType::GetTypeStr( m_names[row].f_type_id ) );
+		m_listName->SetItem( row, COL_Value, m_names[row].f_val );
+
+		m_listName->SetItemState( row, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+	}
+}
+
+void dlgEditPersona::OnAttrAddButton( wxCommandEvent& event )
 {
     const wxString savepoint = "PerAddAttr";
 	dlgEditAttribute* dialog = new dlgEditAttribute( NULL );
@@ -164,7 +301,7 @@ void dlgEditPersona::OnAddButton( wxCommandEvent& event )
     dialog->Destroy();
 }
 
-void dlgEditPersona::OnEditButton( wxCommandEvent& event )
+void dlgEditPersona::OnAttrEditButton( wxCommandEvent& event )
 {
 	long row = m_listAttr->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
@@ -204,7 +341,7 @@ void dlgEditPersona::OnEditButton( wxCommandEvent& event )
 #endif
 }
 
-void dlgEditPersona::OnDeleteButton( wxCommandEvent& event )
+void dlgEditPersona::OnAttrDeleteButton( wxCommandEvent& event )
 {
 	long row = m_listAttr->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	if( row >= 0 ) {
@@ -216,7 +353,7 @@ void dlgEditPersona::OnDeleteButton( wxCommandEvent& event )
     }
 }
 
-void dlgEditPersona::OnUpButton( wxCommandEvent& event )
+void dlgEditPersona::OnAttrUpButton( wxCommandEvent& event )
 {
 	long row = m_listAttr->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	if( row < 0 ) {
@@ -238,7 +375,7 @@ void dlgEditPersona::OnUpButton( wxCommandEvent& event )
 	}
 }
 
-void dlgEditPersona::OnDownButton( wxCommandEvent& event )
+void dlgEditPersona::OnAttrDownButton( wxCommandEvent& event )
 {
 	long row = m_listAttr->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	if( row < 0 ) {

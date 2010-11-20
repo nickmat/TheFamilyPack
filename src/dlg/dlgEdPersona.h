@@ -59,16 +59,23 @@ private:
     void OnIndLinkButton( wxCommandEvent& event );
     void OnIndCreateButton( wxCommandEvent& event );
 
-	void OnAddButton( wxCommandEvent& event );
-    void OnEditButton( wxCommandEvent& event );
-    void OnDeleteButton( wxCommandEvent& event );
-    void OnUpButton( wxCommandEvent& event );
-    void OnDownButton( wxCommandEvent& event );
+	void OnNameAddButton( wxCommandEvent& event );
+    void OnNameEditButton( wxCommandEvent& event );
+    void OnNameDeleteButton( wxCommandEvent& event );
+    void OnNameUpButton( wxCommandEvent& event );
+    void OnNameDownButton( wxCommandEvent& event );
+
+	void OnAttrAddButton( wxCommandEvent& event );
+    void OnAttrEditButton( wxCommandEvent& event );
+    void OnAttrDeleteButton( wxCommandEvent& event );
+    void OnAttrUpButton( wxCommandEvent& event );
+    void OnAttrDownButton( wxCommandEvent& event );
 
 	wxString GetIndLinksString() const;
 
 	recPersona        m_persona;
 	recIdVec          m_indLinks;
+    recNameList       m_names;
 	recAttributeList  m_attributes;
 	bool              m_defaultAttr;
 	wxString          m_name;
