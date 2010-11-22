@@ -118,24 +118,28 @@
     <td><a href="#Individual">Individual</a></td>
     <td><a href="#IndividualPersona">IndividualPersona</a></td>
     <td><a href="#Name">Name</a></td>
-    <td><a href="#NameStyle">NameStyle</a></td>
-    <td><a href="#NameType">NameType</a></td>
+    <td><a href="#NamePart">NamePart</a></td>
+    <td><a href="#NamePartType">NamePartType</a></td>
    </tr>
    <tr>
+    <td><a href="#NameStyle">NameStyle</a></td>
     <td><a href="#Persona">Persona</a></td>
     <td><a href="#Place">Place</a></td>
     <td><a href="#PlacePart">PlacePart</a></td>
     <td><a href="#PlacePartType">PlacePartType</a></td>
     <td><a href="#Reference">Reference</a></td>
-    <td><a href="#ReferenceEntity">ReferenceEntity</a></td>
    </tr>
    <tr>
+    <td><a href="#ReferenceEntity">ReferenceEntity</a></td>
     <td><a href="#Repository">Repository</a></td>
     <td><a href="#RepositorySource">RepositorySource</a></td>
     <td><a href="#Researcher">Researcher</a></td>
     <td><a href="#Source">Source</a></td>
     <td><a href="#User">User</a></td>
+   </tr>
+   <tr>
     <td><a href="#Version">Version</a></td>
+    <td colspan='0' class="na">&nbsp;</td>
    </tr>
    <!-- <td colspan='0' class="na">&nbsp;</td> -->
   </table>
@@ -637,17 +641,39 @@
     <tr>
      <td>id</td>
      <td>Integer PK</td>
-     <td>Unique key identifying a Name</td>
+     <td>Unique key identifying a Name.</td>
     </tr>
     <tr>
      <td>per_id</td>
      <td>Integer</td>
-     <td>Pointer to a Person ID</td>
+     <td>Pointer to a Person ID.</td>
+    </tr>
+    <tr>
+     <td>style_id</td>
+     <td>Integer</td>
+     <td>Identifier that indicates to which NameStyle this name belongs.</td>
+    </tr>
+
+    <tr id="NamePart">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>NamePart</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a NamePart.</td>
+    </tr>
+    <tr>
+     <td>name_id</td>
+     <td>Integer</td>
+     <td>Pointer to the Name ID that this part belongs to.</td>
     </tr>
     <tr>
      <td>type_id</td>
      <td>Integer</td>
-     <td>Identifier that indicates to which NameType this name belongs.</td>
+     <td>Identifier that indicates to which NamePartType this name belongs.</td>
     </tr>
     <tr>
      <td>val</td>
@@ -658,6 +684,28 @@
      <td>sequence</td>
      <td>Integer</td>
      <td>A number to show a name's position in the full name</td>
+    </tr>
+
+    <tr id="NamePartType">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>NamePartType</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a NamePartType.</td>
+    </tr>
+    <tr>
+     <td>grp</td>
+     <td>Integer</td>
+     <td>Holds 0=Unstated, 1=Name part, 2=Title</td>
+    </tr>
+    <tr>
+     <td>name</td>
+     <td>Text</td>
+     <td>Name of the NamePartType, ie "Given name" or "Rank"</td>
     </tr>
 
     <tr id="NameStyle">
@@ -675,28 +723,6 @@
      <td>name</td>
      <td>Text</td>
      <td>Name of the NameStyle, ie "Birth name" or "Married name"</td>
-    </tr>
-
-    <tr id="NameType">
-     <td colspan="3" class="filler"><a href="#">Top</a></td>
-    </tr>
-    <tr class="head">
-     <td colspan="3"><b>NameType</b></td>
-    </tr>
-    <tr>
-     <td>id</td>
-     <td>Integer PK</td>
-     <td>Unique key identifying a NameType</td>
-    </tr>
-    <tr>
-     <td>grp</td>
-     <td>Integer</td>
-     <td>Holds 0=Unstated, 1=Name part, 2=Title</td>
-    </tr>
-    <tr>
-     <td>name</td>
-     <td>Text</td>
-     <td>Name of the NameType, ie "Given name" or "Rank"</td>
     </tr>
 
     <tr id="Persona">
