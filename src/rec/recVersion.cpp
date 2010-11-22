@@ -42,7 +42,8 @@
 const int recVersionMajor    = 0;
 const int recVersionMinor    = 0;
 const int recVersionRevision = 8;
-const wxChar* recVersionStr  = wxT("0.0.8");
+const int recVersionTest     = 2;
+const wxChar* recVersionStr  = wxT("0.0.8.2");
 
 
 recVersion::recVersion( const recVersion& v )
@@ -70,9 +71,9 @@ void recVersion::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO Version (major, minor, revision) "
-            "VALUES (%d, %d, %d);",
-            f_major, f_minor, f_revision
+            "INSERT INTO Version (major, minor, revision, test) "
+            "VALUES (%d, %d, %d, %d);",
+            f_major, f_minor, f_revision, f_test
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -82,16 +83,16 @@ void recVersion::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO Version (id, major, minor, revision) "
-                "VALUES ("ID", %d, %d, %d);",
-                f_id, f_major, f_minor, f_revision
+                "INSERT INTO Version (id, major, minor, revision, test) "
+                "VALUES ("ID", %d, %d, %d, %d);",
+                f_id, f_major, f_minor, f_revision, f_test
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE Version SET major=%d, minor=%d, revision=%d "
+                "UPDATE Version SET major=%d, minor=%d, revision=%d, test=%d "
                 "WHERE id="ID";",
-                f_major, f_minor, f_revision, f_id
+                f_major, f_minor, f_revision, f_test, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -109,7 +110,7 @@ bool recVersion::Read()
     }
 
     sql.Format(
-        "SELECT major, minor, revision FROM Version WHERE id="ID";",
+        "SELECT major, minor, revision, test FROM Version WHERE id="ID";",
         f_id
     );
     result = s_db->GetTable( sql );
@@ -123,34 +124,40 @@ bool recVersion::Read()
     f_major    = result.GetInt( 0 );
     f_minor    = result.GetInt( 1 );
     f_revision = result.GetInt( 2 );
+    f_test     = result.GetInt( 3 );
     return true;
 }
 
-bool recVersion::IsEqual( int major, int minor, int revision ) const
+bool recVersion::IsEqual( int major, int minor, int revision, int test ) const
 {
     return
-        f_major    == major   &&
-        f_minor    == minor   &&
-        f_revision == revision;
+        f_major    == major    &&
+        f_minor    == minor    &&
+        f_revision == revision &&
+        f_test     == test;
 }
 
-bool recVersion::IsMoreThan( int major, int minor, int revision ) const
+bool recVersion::IsMoreThan( int major, int minor, int revision, int test ) const
 {
     if( f_major > major ) return true;
     if( f_major < major ) return false;
     if( f_minor > minor ) return true;
     if( f_minor < minor ) return false;
     if( f_revision > revision ) return true;
+    if( f_revision < revision ) return false;
+    if( f_test > test ) return true;
     return false;
 }
 
-bool recVersion::IsLessThan( int major, int minor, int revision ) const
+bool recVersion::IsLessThan( int major, int minor, int revision, int test ) const
 {
     if( f_major < major ) return true;
     if( f_major > major ) return false;
     if( f_minor < minor ) return true;
     if( f_minor > minor ) return false;
     if( f_revision < revision ) return true;
+    if( f_revision > revision ) return false;
+    if( f_test < test ) return true;
     return false;
 }
 

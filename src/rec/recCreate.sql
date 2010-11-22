@@ -249,8 +249,20 @@ CREATE TABLE Name (
   per_id INTEGER,
   type_id INTEGER,
   val TEXT,
+  style_id INTEGER,
   sequence INTEGER
 );
+
+CREATE TABLE NameStyle (
+  id INTEGER PRIMARY KEY,
+  name TEXT
+);
+
+/* matches enum StdNameStyle */
+INSERT INTO NameStyle (id, name) VALUES(0,'');
+INSERT INTO NameStyle (id, name) VALUES(-1,'Birth name');
+INSERT INTO NameStyle (id, name) VALUES(-2,'Married name');
+INSERT INTO NameStyle (id, name) VALUES(-3,'Alias');
 
 CREATE TABLE NameType (
   id INTEGER PRIMARY KEY,
@@ -348,7 +360,8 @@ CREATE TABLE Version (
   id INTEGER PRIMARY KEY,
   major INTEGER,
   minor INTEGER,
-  revision INTEGER
+  revision INTEGER,
+  test INTEGER
 );
 
 /* The Version table has only this one row */

@@ -6,31 +6,36 @@ Rename PersonaEvent to EventPersona
   Reorder fields
 
 Event
-  Added sort_jdn (int) 
+  Added sort_jdn (int)
     Redudundant info to speed up sorting event order.
       Calulated from dates and the type's grp.
-  
+
 EventTypeRole
   Added prime (bool)
     To indicate this is a key role
   Added official (bool)
-    To indicate this is an offical role. 
+    To indicate this is an offical role.
     This is so that an individual can separate work
       roles from relationship roles.
-        
+
 Add Name table
+
+Add NameStyle table
 
 Add NameType table
 
 Attribute
   Remove sequence
-  
+
 Source
   Rename sub_date_id to sub_date1_id
   Add sub_date2_id
   Reorder fields
-  
+
 Remove SourceGroup
 
 Remove SourceGroupSource
+
+Version
+  Add test field
 

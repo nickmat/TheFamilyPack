@@ -37,11 +37,13 @@ class recPersona;
 class recAttribute;
 class recAttributeType;
 class recName;
+class recNameStyle;
 class recNameType;
 typedef wxVector< recPersona >  recPersonaList;
 typedef wxVector< recAttribute >  recAttributeList;
 typedef wxVector< recAttributeType >  recAttributeTypeVec;
 typedef wxVector< recName >  recNameList;
+typedef wxVector< recNameStyle >  recNameStyleVec;
 typedef wxVector< recNameType >  recNameTypeVec;
 
 class recPersona : public recDb
@@ -198,6 +200,7 @@ public:
     id_t      f_per_id;
     id_t      f_type_id;
     wxString  f_val;
+    id_t      f_style_id;
     unsigned  f_sequence;
 
     recName() {}
@@ -224,6 +227,7 @@ inline bool recEquivalent( const recName& r1, const recName& r2 )
         r1.f_per_id   == r2.f_per_id   &&
         r1.f_type_id  == r2.f_type_id  &&
         r1.f_val      == r2.f_val      &&
+        r1.f_style_id == r2.f_style_id &&
         r1.f_sequence == r2.f_sequence;
 }
 
@@ -233,6 +237,43 @@ inline bool operator==( const recName& r1, const recName& r2 )
 }
 
 inline bool operator!=( const recName& r1, const recName& r2 )
+{
+    return !(r1 == r2);
+}
+
+//----------------------------------------------------------
+
+class recNameStyle : public recDb 
+{
+public:
+    wxString  f_name;
+
+    recNameStyle() {}
+    recNameStyle( id_t id ) : recDb(id) { Read(); }
+    recNameStyle( const recNameStyle& at );
+
+	void Clear();
+    void Save();
+    bool Read();
+    TABLE_NAME_MEMBERS( "NameStyle" );
+
+    static wxString GetStyleStr( id_t id );
+
+    static recNameStyleVec GetStyleList();
+};
+
+inline bool recEquivalent( const recNameStyle& r1, const recNameStyle& r2 )
+{
+    return
+        r1.f_name == r2.f_name;
+}
+
+inline bool operator==( const recNameStyle& r1, const recNameStyle& r2 )
+{
+    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
+}
+
+inline bool operator!=( const recNameStyle& r1, const recNameStyle& r2 )
 {
     return !(r1 == r2);
 }

@@ -94,7 +94,9 @@ bool recDb::OpenDb( const wxString& fname )
 
     s_db->Open( fname );
     recVersion version(1);
-    if( !version.IsEqual( recVersionMajor, recVersionMinor, recVersionRevision ) ) {
+    if( !version.IsEqual( 
+        recVersionMajor, recVersionMinor, recVersionRevision, recVersionTest
+    ) ) {
         wxMessageBox(
             _("Unrecognised Database Version"),
             _("Open Database")

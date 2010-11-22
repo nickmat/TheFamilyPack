@@ -477,6 +477,7 @@ recName::recName( const recName& n )
     f_per_id   = n.f_per_id;
     f_type_id  = n.f_type_id;
     f_val      = n.f_val;
+    f_style_id = n.f_style_id;
     f_sequence = n.f_sequence;
 }
 
@@ -486,6 +487,7 @@ void recName::Clear()
     f_per_id   = 0;
     f_type_id  = 0;
     f_val      = wxEmptyString;
+    f_style_id = 0;
     f_sequence = 0;
 }
 
@@ -498,9 +500,9 @@ void recName::Save()
 	{
 		// Add new record
 	    sql.Format( 
-		    "INSERT INTO Name (per_id, type_id, val, sequence)"
-			"VALUES ("ID", "ID", '%q', %u);",
-            f_per_id, f_type_id, UTF8_(f_val), f_sequence
+		    "INSERT INTO Name (per_id, type_id, val, style_id, sequence)"
+			"VALUES ("ID", "ID", '%q', "ID", %u);",
+            f_per_id, f_type_id, UTF8_(f_val), f_style_id, f_sequence
 	    );
     	s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -510,15 +512,15 @@ void recName::Save()
         {
             // Add new record
 	        sql.Format( 
-				"INSERT INTO Name (id, per_id, type_id, val, sequence)"
+				"INSERT INTO Name (id, per_id, type_id, val, style_id, sequence)"
 				"VALUES ("ID", "ID", "ID", '%q', %u);",
-				f_id, f_per_id, f_type_id, UTF8_(f_val), f_sequence
+				f_id, f_per_id, f_type_id, UTF8_(f_val), f_style_id, f_sequence
 	        );
         } else {
     		// Update existing record
             sql.Format( 
-                "UPDATE Name SET per_id="ID", type_id="ID", val='%q', sequence=%u WHERE id="ID";", 
-				f_per_id, f_type_id, UTF8_(f_val), f_sequence, f_id
+                "UPDATE Name SET per_id="ID", type_id="ID", val='%q', style_id="ID", sequence=%u WHERE id="ID";", 
+				f_per_id, f_type_id, UTF8_(f_val), f_style_id, f_sequence, f_id
             );
         }
     	s_db->ExecuteUpdate( sql );
@@ -535,7 +537,11 @@ bool recName::Read()
         return false;
     }
 
-	sql.Format( "SELECT * FROM Name WHERE id="ID";", f_id );
+	sql.Format(
+        "SELECT per_id, type_id, val, style_id, sequence "
+        "FROM Name WHERE id="ID";",
+        f_id
+    );
     result = s_db->GetTable( sql );
 
     if( result.GetRowCount() != 1 ) 
@@ -544,9 +550,10 @@ bool recName::Read()
         return false;
     }
     result.SetRow( 0 ); 
-    f_per_id   = GET_ID( result.GetInt64( 1 ) );
-    f_type_id  = GET_ID( result.GetInt64( 2 ) );
-    f_val      = result.GetAsString( 3 );
+    f_per_id   = GET_ID( result.GetInt64( 0 ) );
+    f_type_id  = GET_ID( result.GetInt64( 1 ) );
+    f_val      = result.GetAsString( 2 );
+    f_style_id = GET_ID( result.GetInt64( 3 ) );
     f_sequence = (unsigned) result.GetInt( 4 );
 	return true;
 }
@@ -584,6 +591,123 @@ recNameList recName::ConvertStrToList(
 		list.push_back( name );
 	}
 	return list;
+}
+
+//----------------------------------------------------------
+
+recNameStyle::recNameStyle( const recNameStyle& at )
+{
+    f_id   = at.f_id;
+    f_name = at.f_name;
+}
+
+void recNameStyle::Clear()
+{
+    f_id   = 0;
+    f_name = wxEmptyString;
+}
+
+void recNameStyle::Save()
+{
+	wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+	if( f_id == 0 )
+	{
+		// Add new record
+	    sql.Format( 
+		    "INSERT INTO NameStyle (name) VALUES ('%q');",
+            UTF8_(f_name)
+	    );
+    	s_db->ExecuteUpdate( sql );
+        f_id = GET_ID( s_db->GetLastRowId() );
+	} else {
+        // Does record exist
+        if( !Exists() )
+        {
+            // Add new record
+	        sql.Format( 
+		        "INSERT INTO NameStyle (id, name) "
+                "VALUES ("ID", '%q');",
+                f_id, UTF8_(f_name)
+	        );
+        } else {
+    		// Update existing record
+            sql.Format( 
+                "UPDATE NameStyle SET name='%q' WHERE id="ID";", 
+                UTF8_(f_name), f_id
+            );
+        }
+    	s_db->ExecuteUpdate( sql );
+	}
+}
+
+bool recNameStyle::Read()
+{
+	wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( f_id == 0 ) {
+		Clear();
+        return false;
+    }
+
+	sql.Format( "SELECT name FROM NameStyle WHERE id="ID";", f_id );
+    result = s_db->GetTable( sql );
+
+    if( result.GetRowCount() != 1 ) 
+    {
+		Clear();
+        return false;
+    }
+    result.SetRow( 0 ); 
+    f_name = result.GetAsString( 0 );
+	return true;
+}
+
+wxString recNameStyle::GetStyleStr( id_t id )
+{
+    recNameStyle at( id );
+    return at.f_name;
+}
+
+recNameStyleVec recNameStyle::GetStyleList()
+{
+    recNameStyle at;
+    recNameStyleVec list;
+	wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+    int i;
+
+    // Put standard entries in list.
+	sql.Format( 
+        "SELECT id, name FROM NameStyle "
+        "WHERE id<0 ORDER BY id DESC;" 
+    );
+    result = s_db->GetTable( sql );
+
+    for( i = 0 ; i < result.GetRowCount() ; i++ ) {
+        result.SetRow( i );
+        at.f_id = GET_ID( result.GetInt64( 0 ) );
+        at.f_name = result.GetAsString( 1 );
+		list.push_back( at );
+    }
+
+    // Put user entries in list.
+    sql.Format( 
+        "SELECT id, name FROM NameStyle "
+        "WHERE id>0 ORDER BY id ASC;" 
+    );
+    result = s_db->GetTable( sql );
+
+    for( i = 0 ; i < result.GetRowCount() ; i++ ) {
+        result.SetRow( i );
+        at.f_id = GET_ID( result.GetInt64( 0 ) );
+        at.f_name = result.GetAsString( 1 );
+		list.push_back( at );
+    }
+
+    return list;
 }
 
 //----------------------------------------------------------
