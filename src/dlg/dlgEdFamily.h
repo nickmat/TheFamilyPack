@@ -39,25 +39,25 @@ class dlgEditFamily : public fbDlgEditFamily
     DECLARE_CLASS( dlgEditFamily )
     DECLARE_EVENT_TABLE()
 
-	enum EDBUT_Type { EDBUT_Husb, EDBUT_Wife, EDBUT_Marr };
+    enum EDBUT_Type { EDBUT_Husb, EDBUT_Wife, EDBUT_Marr };
 
 protected:
-	enum {
-		tfpID_DLGEDFAM_EDIT = 1100,
-		tfpID_DLGEDFAM_REMOVE,
-		tfpID_DLGEDFAM_DELETE,
-		tfpID_DLGEDFAM_ADDNEW,
-		tfpID_DLGEDFAM_ADDEXIST,
-		tfpID_DLGEDFAM_ADDNEWSON,
-		tfpID_DLGEDFAM_ADDNEWDAUR,
-		tfpID_DLGEDFAM_ADDEXISTSON,
-		tfpID_DLGEDFAM_ADDEXISTDAUR,
-	};
+    enum {
+        tfpID_DLGEDFAM_EDIT = 1100,
+        tfpID_DLGEDFAM_REMOVE,
+        tfpID_DLGEDFAM_DELETE,
+        tfpID_DLGEDFAM_ADDNEW,
+        tfpID_DLGEDFAM_ADDEXIST,
+        tfpID_DLGEDFAM_ADDNEWSON,
+        tfpID_DLGEDFAM_ADDNEWDAUR,
+        tfpID_DLGEDFAM_ADDEXISTSON,
+        tfpID_DLGEDFAM_ADDEXISTDAUR,
+    };
 public:
-	dlgEditFamily( wxWindow* parent );
+    dlgEditFamily( wxWindow* parent );
 
-	void SetFamilyID( id_t famID ) { m_family.f_id = famID; }
-	void SetChildID( id_t childID ) { m_child = childID; }
+    void SetFamilyID( id_t famID ) { m_family.f_id = famID; }
+    void SetChildID( id_t childID ) { m_child = childID; }
 
 private:
     bool TransferDataToWindow();
@@ -66,13 +66,13 @@ private:
     void OnHusbButton( wxCommandEvent& event );
     void OnWifeButton( wxCommandEvent& event );
     void OnMarriageButton( wxCommandEvent& event );
-	void EditIDMenu( id_t editID );
+    void EditIDMenu( id_t editID );
     void OnEditID( wxCommandEvent& event );
     void OnRemoveID( wxCommandEvent& event );
     void OnDeleteID( wxCommandEvent& event );
     void OnAddExistID( wxCommandEvent& event );
 
-	void OnAddChildButton( wxCommandEvent& event );
+    void OnAddChildButton( wxCommandEvent& event );
     void OnAddChild( wxCommandEvent& event );
 
     void OnEditButton( wxCommandEvent& event );
@@ -82,11 +82,11 @@ private:
 
     bool EditEvent( id_t* pEventID );
 
-	id_t           m_child;
-	EDBUT_Type     m_editbutton;
+    id_t           m_child;
+    EDBUT_Type     m_editbutton;
 
-	recFamily      m_family;
-	recFamIndVec   m_childlinks;
+    recFamily      m_family;
+    recFamIndVec   m_childlinks;
 
 };
 

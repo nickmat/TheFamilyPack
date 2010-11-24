@@ -511,7 +511,7 @@ fbDlgEditAttribute::~fbDlgEditAttribute()
 {
 }
 
-fbDlgEditName::fbDlgEditName( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+fbDlgEditNamePart::fbDlgEditNamePart( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
 	
@@ -575,7 +575,7 @@ fbDlgEditName::fbDlgEditName( wxWindow* parent, wxWindowID id, const wxString& t
 	this->Layout();
 }
 
-fbDlgEditName::~fbDlgEditName()
+fbDlgEditNamePart::~fbDlgEditNamePart()
 {
 }
 

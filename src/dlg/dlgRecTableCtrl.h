@@ -70,8 +70,8 @@ public:
     ) : wxListCtrl( parent, id, pos, size, style, validator, name ),
         m_width(0), m_strTable(NULL) {}
 
-    void SetTable( wxArrayString* table, size_t width ) { 
-        m_strTable = table; m_width = width; 
+    void SetTable( wxArrayString* table, size_t width ) {
+        m_strTable = table; m_width = width;
     }
 
 private:

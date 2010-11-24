@@ -64,19 +64,19 @@ protected:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
 
-	// Handlers for fbDlgEditReference events.
-	void OnTool( wxCommandEvent& event );
-	void OnAddButton( wxCommandEvent& event );
-	void OnEditButton( wxCommandEvent& event );
-	void OnDeleteButton( wxCommandEvent& event );
-	void OnUpButton( wxCommandEvent& event );
-	void OnDownButton( wxCommandEvent& event );
+    // Handlers for fbDlgEditReference events.
+    void OnTool( wxCommandEvent& event );
+    void OnAddButton( wxCommandEvent& event );
+    void OnEditButton( wxCommandEvent& event );
+    void OnDeleteButton( wxCommandEvent& event );
+    void OnUpButton( wxCommandEvent& event );
+    void OnDownButton( wxCommandEvent& event );
 
-	void DoCut();
-	void DoCopy();
-	void DoPaste();
-	void DoUndo();
-	void DoRedo();
+    void DoCut();
+    void DoCopy();
+    void DoPaste();
+    void DoUndo();
+    void DoRedo();
 
     void OnNewSource( wxCommandEvent& event );
     void OnNewEvent( wxCommandEvent& event );
@@ -92,8 +92,8 @@ protected:
     void DoEditEvent( id_t id, long row );
 
 public:
-	/** Constructor */
-	dlgEditReference( wxWindow* parent );
+    /** Constructor */
+    dlgEditReference( wxWindow* parent );
 
     void SetID( id_t id ) { m_reference.f_id = id; }
 

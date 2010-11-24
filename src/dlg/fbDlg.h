@@ -242,9 +242,9 @@ class fbDlgEditAttribute : public wxDialog
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class fbDlgEditName
+/// Class fbDlgEditNamePart
 ///////////////////////////////////////////////////////////////////////////////
-class fbDlgEditName : public wxDialog 
+class fbDlgEditNamePart : public wxDialog 
 {
 	private:
 	
@@ -262,8 +262,8 @@ class fbDlgEditName : public wxDialog
 	
 	public:
 		
-		fbDlgEditName( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Name Part"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 300,160 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
-		~fbDlgEditName();
+		fbDlgEditNamePart( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Name Part"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 300,160 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+		~fbDlgEditNamePart();
 	
 };
 

@@ -52,7 +52,7 @@ BEGIN_EVENT_TABLE( dlgEditRole, wxDialog )
 END_EVENT_TABLE()
 
 
-dlgEditRole::dlgEditRole( wxWindow* parent, id_t eventID, id_t id ) 
+dlgEditRole::dlgEditRole( wxWindow* parent, id_t eventID, id_t id )
     : fbDlgEditRole( parent )
 {
     m_event.f_id = eventID;
@@ -63,22 +63,22 @@ dlgEditRole::dlgEditRole( wxWindow* parent, id_t eventID, id_t id )
 bool dlgEditRole::TransferDataToWindow()
 {
     if( m_event.f_id == 0 ) {
-	    wxMessageBox( 
-		    _("No Event ID given"), 
-		    _("Edit Role Dialog")
-	    );
+        wxMessageBox(
+            _("No Event ID given"),
+            _("Edit Role Dialog")
+        );
         return false;
     }
     m_event.Read();
     m_roles = recEventType::GetRoles( m_event.f_type_id );
     if( m_pe.f_id == 0 ) {
-		m_pe.Clear();
-		m_pe.Save();
+        m_pe.Clear();
+        m_pe.Save();
         m_pe.f_event_id = m_event.f_id;
-	} else {
-		m_pe.Read();
+    } else {
+        m_pe.Read();
         wxASSERT( m_event.f_id == m_pe.f_event_id );
-	}
+    }
 
     m_staticTextEvent->SetLabel( m_event.f_title );
     if( m_pe.f_per_id != 0 ) {
@@ -95,8 +95,8 @@ bool dlgEditRole::TransferDataFromWindow()
 {
     m_pe.f_note = m_textCtrlNote->GetValue();
 
-	m_pe.Save();
-	return true;
+    m_pe.Save();
+    return true;
 }
 
 void dlgEditRole::OnPersonaButton( wxCommandEvent& event )

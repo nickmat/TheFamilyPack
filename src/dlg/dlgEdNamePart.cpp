@@ -1,11 +1,11 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        dlgEdAttribute.cpp
+ * Name:        dlgEdNamePart.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Edit database Attribute entity dialog.
+ * Purpose:     Edit database Name Part entity dialog.
  * Author:      Nick Matthews
  * Modified by:
  * Website:     http://thefamilypack.org
- * Created:     9 October 2010
+ * Created:     24 November 2010
  * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2010, Nick Matthews.
  * Licence:     GNU GPLv3
@@ -37,57 +37,65 @@
 #include "wx/wx.h"
 #endif
 
-#include "dlgEdAttribute.h"
+#include "dlgEdNamePart.h"
 
-dlgEditAttribute::dlgEditAttribute( wxWindow* parent, id_t id )
-    : fbDlgEditAttribute( parent )
+dlgEditNamePart::dlgEditNamePart( wxWindow* parent, id_t nameID )
+    : fbDlgEditNamePart( parent )
 {
     m_persona = 0;
-    m_attr.f_id = id;
-    m_attr.Read();
+    m_name.f_id = nameID;
+    m_name.Read();
 }
 
-bool dlgEditAttribute::TransferDataToWindow()
+bool dlgEditNamePart::TransferDataToWindow()
 {
-    if( m_attr.f_id == 0 )
+    wxMessageBox( wxT("Needs rewrite"), wxT("dlgEditName") );
+    return false;
+#if 0
+    if( m_name.f_id == 0 )
     {
-        m_attr.Clear();
-        m_attr.f_per_id = m_persona;
-        m_attr.Save();
+        m_name.Clear();
+        m_name.f_per_id = m_persona;
+        m_name.Save();
     } else {
-        m_attr.Read();
-        m_persona = m_attr.f_per_id;
-        m_text = m_attr.f_val;
+        m_name.Read();
+        m_persona = m_name.f_per_id;
+        m_text = m_name.f_val;
     }
     m_textCtrlValue->SetValue( m_text );
 
-    wxString idStr = wxString::Format( "A "ID":", m_attr.f_id );
+    wxString idStr = wxString::Format( "A "ID":", m_name.f_id );
     m_staticTextId->SetLabel( idStr );
-    wxString perStr = wxString::Format( "P "ID, m_attr.f_per_id );
+    wxString perStr = wxString::Format( "P "ID, m_name.f_per_id );
     m_staticTextPersona->SetLabel( perStr );
 
-    m_typeList = recAttributeType::GetTypeList();
+    m_typeList = recNameType::GetTypeList();
     for( size_t i = 0 ; i < m_typeList.size() ; i++ ) {
         m_choiceType->Append( m_typeList[i].f_name );
-        if( m_attr.f_type_id == m_typeList[i].f_id ) {
+        if( m_name.f_type_id == m_typeList[i].f_id ) {
             m_choiceType->SetSelection( (int) i );
         }
     }
     return true;
+#endif
 }
 
-bool dlgEditAttribute::TransferDataFromWindow()
+bool dlgEditNamePart::TransferDataFromWindow()
 {
+    wxMessageBox( wxT("Needs rewrite"), wxT("dlgEditName") );
+    return false;
+#if 0
     int type = m_choiceType->GetSelection();
     if( type < 0 ) {
-        m_attr.f_type_id = 0;
+        m_name.f_type_id = 0;
     } else {
-        m_attr.f_type_id = m_typeList[type].f_id;
+        m_name.f_type_id = m_typeList[type].f_id;
     }
-    m_attr.f_val = m_textCtrlValue->GetValue();
+    m_name.f_val = m_textCtrlValue->GetValue();
 
-    m_attr.Save();
+    m_name.Save();
     return true;
+#endif
 }
 
-// End of dlgEdAttribute.cpp file
+// End of dlgEditNamePart.cpp file

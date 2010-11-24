@@ -38,19 +38,19 @@
 
 class dlgEditPersona : public fbDlgEditPersona
 {
-	enum Columns {
-		COL_Type, COL_Value, COL_MAX
-	};
+    enum Columns {
+        COL_Type, COL_Value, COL_MAX
+    };
 public:
-	dlgEditPersona( wxWindow* parent );
+    dlgEditPersona( wxWindow* parent );
 
-	void SetData( id_t perID = 0 ) { m_persona.f_id = perID; }
-	void SetDefault( wxString& name ) {
-		m_defaultAttr = true; m_name = name; 
-	}
+    void SetData( id_t perID = 0 ) { m_persona.f_id = perID; }
+    void SetDefault( wxString& name ) {
+        m_defaultAttr = true; m_name = name;
+    }
 
-	recPersona* GetPersona() { return &m_persona; } 
-	recAttributeList GetAttributes() const { return m_attributes; }
+    recPersona* GetPersona() { return &m_persona; }
+    recAttributeList GetAttributes() const { return m_attributes; }
 
 private:
     bool TransferDataToWindow();
@@ -59,26 +59,26 @@ private:
     void OnIndLinkButton( wxCommandEvent& event );
     void OnIndCreateButton( wxCommandEvent& event );
 
-	void OnNameAddButton( wxCommandEvent& event );
+    void OnNameAddButton( wxCommandEvent& event );
     void OnNameEditButton( wxCommandEvent& event );
     void OnNameDeleteButton( wxCommandEvent& event );
     void OnNameUpButton( wxCommandEvent& event );
     void OnNameDownButton( wxCommandEvent& event );
 
-	void OnAttrAddButton( wxCommandEvent& event );
+    void OnAttrAddButton( wxCommandEvent& event );
     void OnAttrEditButton( wxCommandEvent& event );
     void OnAttrDeleteButton( wxCommandEvent& event );
     void OnAttrUpButton( wxCommandEvent& event );
     void OnAttrDownButton( wxCommandEvent& event );
 
-	wxString GetIndLinksString() const;
+    wxString GetIndLinksString() const;
 
-	recPersona        m_persona;
-	recIdVec          m_indLinks;
+    recPersona        m_persona;
+    recIdVec          m_indLinks;
     recNamePartVec    m_names;
-	recAttributeList  m_attributes;
-	bool              m_defaultAttr;
-	wxString          m_name;
+    recAttributeList  m_attributes;
+    bool              m_defaultAttr;
+    wxString          m_name;
 };
 
 #endif // DLGEDPERSONA_H

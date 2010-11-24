@@ -18,7 +18,7 @@
         />
     </Platforms>
     <ToolFiles>
-        
+
     </ToolFiles>
     <Configurations>
         <Configuration
@@ -212,7 +212,7 @@
         </Configuration>
     </Configurations>
     <References>
-        
+
     </References>
     <Files>
         <Filter
@@ -246,6 +246,14 @@
             </File>
             <File
                 RelativePath="..\..\src\dlg\dlgEdIndividual.cpp"
+                >
+            </File>
+            <File
+                RelativePath="..\..\src\dlg\dlgEdName.cpp"
+                >
+            </File>
+            <File
+                RelativePath="..\..\src\dlg\dlgEdNamePart.cpp"
                 >
             </File>
             <File
@@ -371,6 +379,14 @@
                 >
             </File>
             <File
+                RelativePath="..\..\src\dlg\dlgEdName.h"
+                >
+            </File>
+            <File
+                RelativePath="..\..\src\dlg\dlgEdNamePart.h"
+                >
+            </File>
+            <File
                 RelativePath="..\..\src\dlg\dlgEdPersona.h"
                 >
             </File>
@@ -472,7 +488,7 @@
         </Filter>
     </Files>
     <Globals>
-        
+
     </Globals>
 </VisualStudioProject>
 

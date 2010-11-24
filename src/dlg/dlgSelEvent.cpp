@@ -44,47 +44,47 @@
 dlgSelectEvent::dlgSelectEvent( wxWindow* parent )
     : fbDlgSelectEvent( parent )
 {
-	m_count = 0;
-	m_listEvent->InsertColumn( 0, _("ID") );
-	m_listEvent->InsertColumn( 1, _("Title") );
-	m_listEvent->InsertColumn( 2, _("Date") );
-	m_listEvent->InsertColumn( 3, _("Place") );
+    m_count = 0;
+    m_listEvent->InsertColumn( 0, _("ID") );
+    m_listEvent->InsertColumn( 1, _("Title") );
+    m_listEvent->InsertColumn( 2, _("Date") );
+    m_listEvent->InsertColumn( 3, _("Place") );
 }
 
 void dlgSelectEvent::OnIdle( wxIdleEvent& event )
 {
-	if( m_listEvent->GetSelectedItemCount() > 0 ) {
-		m_buttonSelect->Enable( true );
-	} else {
-		m_buttonSelect->Enable( false );
-	}
+    if( m_listEvent->GetSelectedItemCount() > 0 ) {
+        m_buttonSelect->Enable( true );
+    } else {
+        m_buttonSelect->Enable( false );
+    }
 }
 
-id_t dlgSelectEvent::GetSelectedID() 
+id_t dlgSelectEvent::GetSelectedID()
 {
-	if( m_count > 0 && m_listEvent->GetSelectedItemCount() > 0 ) {
+    if( m_count > 0 && m_listEvent->GetSelectedItemCount() > 0 ) {
         long row = m_listEvent->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 
         wxLongLong_t id;
         if( !m_table[row*COL_MAX].ToLongLong( &id ) ) {
             return 0;
         }
-		return id;
-	}
-	return 0;
+        return id;
+    }
+    return 0;
 }
 
 bool dlgSelectEvent::CreateMarriageTable( id_t famID )
 {
     recFamily fam(famID);
     m_table = fam.GetMarriageEventTable();
-	m_count = m_table.size() / COL_MAX;
+    m_count = m_table.size() / COL_MAX;
 
-	if( m_count == 0 ) return false;
+    if( m_count == 0 ) return false;
 
-	m_listEvent->SetTable( &m_table, COL_MAX );
-	m_listEvent->SetItemCount( m_count );
-    return true; 
+    m_listEvent->SetTable( &m_table, COL_MAX );
+    m_listEvent->SetItemCount( m_count );
+    return true;
 }
 
 

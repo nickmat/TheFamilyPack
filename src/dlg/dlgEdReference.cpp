@@ -70,8 +70,8 @@ END_EVENT_TABLE()
 dlgEditReference::dlgEditReference( wxWindow* parent )
     : fbDlgEditReference( parent )
 {
-	m_listEntities->InsertColumn( COL_Type, _("Type") );
-	m_listEntities->InsertColumn( COL_Value, _("Value") );
+    m_listEntities->InsertColumn( COL_Type, _("Type") );
+    m_listEntities->InsertColumn( COL_Value, _("Value") );
 }
 
 bool dlgEditReference::TransferDataToWindow()
@@ -98,7 +98,7 @@ bool dlgEditReference::TransferDataToWindow()
         id_t entID = entity.rec.f_entity_id;
         entity.owner = 0;
         m_entities.push_back( entity );
-		m_listEntities->InsertItem( i, entity.rec.GetTypeStr() );
+        m_listEntities->InsertItem( i, entity.rec.GetTypeStr() );
         switch( entity.rec.f_entity_type )
         {
         case recReferenceEntity::TYPE_Date:
@@ -121,7 +121,7 @@ bool dlgEditReference::TransferDataToWindow()
             m_listEntities->SetItem( i, COL_Value, recEvent::GetTitle( entID ) );
             break;
         default:
-	        m_listEntities->SetItem( i, COL_Value, _("Unknown Reference Entity") );
+            m_listEntities->SetItem( i, COL_Value, _("Unknown Reference Entity") );
         }
     }
     return true;
@@ -194,10 +194,10 @@ void dlgEditReference::OnAddButton( wxCommandEvent& event )
 
 void dlgEditReference::OnNewSource( wxCommandEvent& event )
 {
-	wxMessageBox( 
-		wxT("Not yet implimented"), 
-		wxT("OnNewSource")
-	);
+    wxMessageBox(
+        wxT("Not yet implimented"),
+        wxT("OnNewSource")
+    );
 }
 
 void dlgEditReference::OnNewEvent( wxCommandEvent& cmnd_event )
@@ -226,7 +226,7 @@ void dlgEditReference::OnNewEvent( wxCommandEvent& cmnd_event )
         entity.rec.Save();
         m_entities.push_back( entity );
 
-		m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
+        m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
         m_listEntities->SetItem( row, COL_Value, dialog->GetEvent()->f_title );
     } else {
         // Dialog Cancelled
@@ -256,7 +256,7 @@ void dlgEditReference::OnNewPlace( wxCommandEvent& event )
         entity.rec.Save();
         m_entities.push_back( entity );
 
-		m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
+        m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
         m_listEntities->SetItem( row, COL_Value, dialog->GetPlace()->GetAddressStr() );
     } else {
         // Dialog Cancelled
@@ -286,7 +286,7 @@ void dlgEditReference::OnNewDate( wxCommandEvent& event )
         entity.rec.Save();
         m_entities.push_back( entity );
 
-		m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
+        m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
         m_listEntities->SetItem( row, COL_Value, dialog->GetDate()->GetStr() );
     } else {
         // Dialog Cancelled
@@ -317,7 +317,7 @@ void dlgEditReference::OnNewPersona( wxCommandEvent& event )
         entity.rec.Save();
         m_entities.push_back( entity );
 
-		m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
+        m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
         m_listEntities->SetItem( row, COL_Value, dialog->GetPersona()->GetFullName() );
 
         // Add attributes
@@ -331,7 +331,7 @@ void dlgEditReference::OnNewPersona( wxCommandEvent& event )
             entity.rec.Save();
             m_entities.push_back( entity );
 
-    		m_listEntities->InsertItem( row+i, entity.rec.GetTypeStr() );
+            m_listEntities->InsertItem( row+i, entity.rec.GetTypeStr() );
             m_listEntities->SetItem( row+i, COL_Value, aa[i].f_val );
         }
     } else {
@@ -362,7 +362,7 @@ void dlgEditReference::OnNewAttribute( wxCommandEvent& event )
         entity.rec.Save();
         m_entities.push_back( entity );
 
-		m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
+        m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
         m_listEntities->SetItem( row, COL_Value, dialog->GetAttribute()->f_val );
     } else {
         // Dialog Cancelled
@@ -373,7 +373,7 @@ void dlgEditReference::OnNewAttribute( wxCommandEvent& event )
 
 void dlgEditReference::OnEditButton( wxCommandEvent& event )
 {
-	long row = m_listEntities->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    long row = m_listEntities->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
         wxMessageBox( _("No row selected"), _("Edit Entity") );
         return;
@@ -441,7 +441,7 @@ void dlgEditReference::DoEditPersona( id_t id, long row )
             if( m_entities[i].rec.f_entity_type == recReferenceEntity::TYPE_Attribute
                 && m_entities[i].owner == id )
             {
-				m_entities[i].rec.Delete();
+                m_entities[i].rec.Delete();
                 m_entities.erase( m_entities.begin() + i );
                 m_listEntities->DeleteItem( i );
                 if( (long) i < row ) --row;
@@ -464,7 +464,7 @@ void dlgEditReference::DoEditPersona( id_t id, long row )
             m_entities.insert( m_entities.begin()+row, entity );
 //            m_entities.push_back( entity );
 
-    		m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
+            m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
             m_listEntities->SetItem( row, COL_Value, attrs[i].f_val );
         }
     } else {
@@ -510,7 +510,7 @@ void dlgEditReference::DoEditEvent( id_t id, long row )
 
 void dlgEditReference::OnDeleteButton( wxCommandEvent& event )
 {
-	long row = m_listEntities->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    long row = m_listEntities->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
         wxMessageBox( _("No row selected"), _("Edit Entity") );
         return;
@@ -559,7 +559,7 @@ void dlgEditReference::OnDeleteButton( wxCommandEvent& event )
         size_t i = 0;
         while( i < m_entities.size() ) {
             if( m_entities[i].rec.f_entity_type == recReferenceEntity::TYPE_Attribute
-                && m_entities[i].owner == entID ) 
+                && m_entities[i].owner == entID )
             {
                 recAttribute::Delete( m_entities[i].rec.f_entity_id );
                 recReferenceEntity::Delete( m_entities[i].rec.f_id );
@@ -574,7 +574,7 @@ void dlgEditReference::OnDeleteButton( wxCommandEvent& event )
 
 void dlgEditReference::OnUpButton( wxCommandEvent& event )
 {
-	long row = m_listEntities->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    long row = m_listEntities->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
         wxMessageBox( _("No row selected"), _("Edit Entity") );
         return;
@@ -594,7 +594,7 @@ void dlgEditReference::OnUpButton( wxCommandEvent& event )
 
 void dlgEditReference::OnDownButton( wxCommandEvent& event )
 {
-	long row = m_listEntities->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    long row = m_listEntities->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
         wxMessageBox( _("No row selected"), _("Edit Entity") );
         return;
@@ -636,7 +636,7 @@ void dlgEditReference::InsertListItem( long row, const TfpEntity& ent )
         str = _("Unknown entity type.");
     }
     TfpEntity entity = ent;
-	m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
+    m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
     m_listEntities->SetItem( row, COL_Value, str );
 }
 

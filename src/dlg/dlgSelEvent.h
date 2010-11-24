@@ -41,18 +41,18 @@ class dlgSelectEvent : public fbDlgSelectEvent
         COL_ID, COL_Title, COL_Date, COL_Place, COL_MAX
     };
 public:
-	/** Constructor */
-	dlgSelectEvent( wxWindow* parent );
-	
-	bool CreateMarriageTable( id_t famID );
-	id_t GetSelectedID();
+    /** Constructor */
+    dlgSelectEvent( wxWindow* parent );
+
+    bool CreateMarriageTable( id_t famID );
+    id_t GetSelectedID();
 
 protected:
-	// Handlers for fbDlgSelectEvent events.
-	void OnIdle( wxIdleEvent& event );
+    // Handlers for fbDlgSelectEvent events.
+    void OnIdle( wxIdleEvent& event );
 
-	wxArrayString  m_table;
-	size_t         m_count;
+    wxArrayString  m_table;
+    size_t         m_count;
 };
 
 #endif // DLGSELEVENT_H

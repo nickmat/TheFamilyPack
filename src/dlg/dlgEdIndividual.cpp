@@ -142,7 +142,7 @@ bool dlgEditIndividual::TransferDataToWindow()
 }
 
 bool dlgEditIndividual::TransferDataFromWindow()
-{    
+{
 //    wxMessageBox( wxT("TransferDataFromWindow Needs rewrite"), wxT("dlgEditIndividual") );
 //    return false;
 

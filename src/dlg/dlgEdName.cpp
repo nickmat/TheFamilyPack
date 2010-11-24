@@ -1,11 +1,11 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        dlgSelIndividual.h
+ * Name:        dlgEdName.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Select Individual record from list dialog header.
+ * Purpose:     Edit database Name entity dialog.
  * Author:      Nick Matthews
  * Modified by:
  * Website:     http://thefamilypack.org
- * Created:     9 October 2010
+ * Created:     24 November 2010
  * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2010, Nick Matthews.
  * Licence:     GNU GPLv3
@@ -27,30 +27,16 @@
 
 */
 
-#ifndef DLGSELINDIVIDUAL_H
-#define DLGSELINDIVIDUAL_H
+#include "wx/wxprec.h"
 
-#include <rec/recDatabase.h>
+#ifdef __BORLANDC__
+#pragma hdrstop
+#endif
 
-#include "fbDlg.h"
+#ifndef WX_PRECOMP
+#include "wx/wx.h"
+#endif
 
-class dlgSelectIndividual : public fbDlgSelectIndividual
-{
-public:
-    /** Constructor */
-    dlgSelectIndividual( wxWindow* parent );
+#include "dlgEdName.h"
 
-    bool CreateTable( Sex sex = SEX_Unstated );
-    id_t GetSelectedID();
-
-protected:
-    // Handlers for fbDlgSelectIndividual events.
-    void OnIdle( wxIdleEvent& event );
-    void OnIndividualSelected( wxListEvent& event );
-
-
-    wxSQLite3Table m_table;
-    long           m_count;
-};
-
-#endif // DLGSELINDIVIDUAL_H
+// End of dlgEdName.cpp file

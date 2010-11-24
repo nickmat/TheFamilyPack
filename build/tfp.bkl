@@ -79,6 +79,8 @@
     <sources>$(LOCAL_SRC)/dlg/dlgEdFamily.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgEdIndEvent.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgEdIndividual.cpp</sources>
+    <sources>$(LOCAL_SRC)/dlg/dlgEdName.cpp</sources>
+    <sources>$(LOCAL_SRC)/dlg/dlgEdNamePart.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgEdPersona.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgEdPlace.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgEdReference.cpp</sources>
@@ -104,6 +106,8 @@
     <headers>$(LOCAL_SRC)/dlg/dlgEdFamily.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgEdIndEvent.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgEdIndividual.h</headers>
+    <headers>$(LOCAL_SRC)/dlg/dlgEdName.h</headers>
+    <headers>$(LOCAL_SRC)/dlg/dlgEdNamePart.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgEdPersona.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgEdPlace.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgEdReference.h</headers>

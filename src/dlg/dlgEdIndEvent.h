@@ -39,20 +39,20 @@
 class dlgEditIndEvent : public fbDlgEditIndEvent
 {
 public:
-	dlgEditIndEvent( wxWindow* parent );
+    dlgEditIndEvent( wxWindow* parent );
 
-	void SetEvent( recEvent* pEvent ) { m_pEvent = pEvent; }
+    void SetEvent( recEvent* pEvent ) { m_pEvent = pEvent; }
 
 private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
 
-	void OnDateButton( wxCommandEvent& event );
-	void OnAddrButton( wxCommandEvent& event );
+    void OnDateButton( wxCommandEvent& event );
+    void OnAddrButton( wxCommandEvent& event );
 
-	recEvent* m_pEvent;
-	recDate   m_date1;
-	recPlace  m_place;
+    recEvent* m_pEvent;
+    recDate   m_date1;
+    recPlace  m_place;
 };
 
 //-----------------------------------------------------
@@ -62,7 +62,7 @@ private:
 class dlgEditFamEvent : public fbDlgEditFamEvent
 {
 public:
-	dlgEditFamEvent( 
+    dlgEditFamEvent(
         wxWindow* parent, id_t eventID,
         recEventType::ETYPE_Grp grp = recEventType::ETYPE_Grp_Unstated );
 
@@ -73,11 +73,11 @@ private:
     bool TransferDataFromWindow();
 
     void OnTypeButton( wxCommandEvent& event );
-	void OnDateButton( wxCommandEvent& event );
-	void OnAddrButton( wxCommandEvent& event );
+    void OnDateButton( wxCommandEvent& event );
+    void OnAddrButton( wxCommandEvent& event );
 
     recEventType::ETYPE_Grp m_grp;
-	recEvent  m_event;
+    recEvent  m_event;
 };
 
 

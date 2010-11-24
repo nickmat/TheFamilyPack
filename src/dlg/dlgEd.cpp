@@ -49,119 +49,119 @@
 
 id_t tfpPickIndividual( Sex sex )
 {
-	id_t indID = 0;
+    id_t indID = 0;
     dlgSelectIndividual* dialog = new dlgSelectIndividual( NULL );
 
-	if( dialog->CreateTable( sex ) == true ) {
-		if( dialog->ShowModal() == wxID_OK ) {
-			indID = dialog->GetSelectedID();
-		}
-	}
+    if( dialog->CreateTable( sex ) == true ) {
+        if( dialog->ShowModal() == wxID_OK ) {
+            indID = dialog->GetSelectedID();
+        }
+    }
     dialog->Destroy();
-	return indID;
+    return indID;
 }
 
 
 bool tfpEditFamily( id_t famID )
 {
-	const wxString savepoint = "EdFam";
-	bool ret = false;
+    const wxString savepoint = "EdFam";
+    bool ret = false;
 
-	dlgEditFamily* dialog = new dlgEditFamily( NULL );
-	dialog->SetFamilyID( famID );
+    dlgEditFamily* dialog = new dlgEditFamily( NULL );
+    dialog->SetFamilyID( famID );
 
-	recDb::Savepoint( savepoint );
-	if( dialog->ShowModal() == wxID_OK ) {
-		recDb::ReleaseSavepoint( savepoint );
-		ret = true;
-	} else {
-		recDb::Rollback( savepoint );
-	}
-	dialog->Destroy();
-	return ret;
+    recDb::Savepoint( savepoint );
+    if( dialog->ShowModal() == wxID_OK ) {
+        recDb::ReleaseSavepoint( savepoint );
+        ret = true;
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+    return ret;
 }
 
 bool tfpEditIndividual( id_t indID  )
 {
-	const wxString savepoint = "EdInd";
-	bool ret = false;
-	dlgEditIndividual* dialog = new dlgEditIndividual( NULL );
-	recDb::Savepoint( savepoint );
+    const wxString savepoint = "EdInd";
+    bool ret = false;
+    dlgEditIndividual* dialog = new dlgEditIndividual( NULL );
+    recDb::Savepoint( savepoint );
 
-	dialog->SetIndividualID( indID );
+    dialog->SetIndividualID( indID );
 
-	if( dialog->ShowModal() == wxID_OK ) {
-		recDb::ReleaseSavepoint( savepoint );
-		ret = true;
-	} else {
-		recDb::Rollback( savepoint );
-	}
-	dialog->Destroy();
-	return ret;
+    if( dialog->ShowModal() == wxID_OK ) {
+        recDb::ReleaseSavepoint( savepoint );
+        ret = true;
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+    return ret;
 }
 
 bool tfpEditReference( id_t refID  )
 {
-	const wxString savepoint = "EdRef";
-	bool ret = false;
-	dlgEditReference* dialog = new dlgEditReference( NULL );
-	recDb::Savepoint( savepoint );
+    const wxString savepoint = "EdRef";
+    bool ret = false;
+    dlgEditReference* dialog = new dlgEditReference( NULL );
+    recDb::Savepoint( savepoint );
 
-	dialog->SetID( refID );
+    dialog->SetID( refID );
 
-	if( dialog->ShowModal() == wxID_OK ) {
-		recDb::ReleaseSavepoint( savepoint );
-		ret = true;
-	} else {
-		recDb::Rollback( savepoint );
-	}
-	dialog->Destroy();
-	return ret;
+    if( dialog->ShowModal() == wxID_OK ) {
+        recDb::ReleaseSavepoint( savepoint );
+        ret = true;
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+    return ret;
 }
 
 id_t tfpAddIndividual( id_t famID, Sex sex, const wxString& surname )
 {
-	const wxString savepoint = "AddInd";
-	id_t ret = 0;
-	dlgEditIndividual* dialog = new dlgEditIndividual( NULL );
-	recDb::Savepoint( savepoint );
+    const wxString savepoint = "AddInd";
+    id_t ret = 0;
+    dlgEditIndividual* dialog = new dlgEditIndividual( NULL );
+    recDb::Savepoint( savepoint );
 
-	recIndividual ind;
-	ind.Clear();
-	ind.Save();
+    recIndividual ind;
+    ind.Clear();
+    ind.Save();
 
-	if( famID != 0 ) {
-    	recFamily fam;
-		fam.f_id = famID;
-		fam.Read();
-		if( sex == SEX_Female ) {
+    if( famID != 0 ) {
+        recFamily fam;
+        fam.f_id = famID;
+        fam.Read();
+        if( sex == SEX_Female ) {
             fam.f_wife_id = ind.f_id;
-		} else {
-			fam.f_husb_id = ind.f_id;
-		}
-		fam.Save();
-	} // else let dialog create new Family record
+        } else {
+            fam.f_husb_id = ind.f_id;
+        }
+        fam.Save();
+    } // else let dialog create new Family record
 
-	dialog->SetIndividualID( ind.f_id );
-	dialog->SetFamilyID( famID );
-	dialog->SetSex( sex );
-	dialog->SetSurname( surname );
+    dialog->SetIndividualID( ind.f_id );
+    dialog->SetFamilyID( famID );
+    dialog->SetSex( sex );
+    dialog->SetSurname( surname );
 
-	if( dialog->ShowModal() == wxID_OK ) {
-		recDb::ReleaseSavepoint( savepoint );
-		ret = ind.f_id;
-	} else {
-		recDb::Rollback( savepoint );
-	}
-	dialog->Destroy();
-	return ret;
+    if( dialog->ShowModal() == wxID_OK ) {
+        recDb::ReleaseSavepoint( savepoint );
+        ret = ind.f_id;
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+    return ret;
 }
 
 
 
 bool tfpAddNewParent( id_t indID, Sex sex )
 {
-	const wxString savepoint = wxT("AddNewParent");
+    const wxString savepoint = wxT("AddNewParent");
     bool ret = false;
     recDb::Savepoint( savepoint );
     dlgEditIndividual* dialog = new dlgEditIndividual( NULL );
@@ -198,10 +198,10 @@ bool tfpAddNewParent( id_t indID, Sex sex )
     dialog->SetFamilyID( fam.f_id );
 
     if( dialog->ShowModal() == wxID_OK ) {
-		recDb::ReleaseSavepoint( savepoint );
+        recDb::ReleaseSavepoint( savepoint );
         ret = true;
     } else {
-		recDb::Rollback( savepoint );
+        recDb::Rollback( savepoint );
     }
     dialog->Destroy();
 
@@ -210,7 +210,7 @@ bool tfpAddNewParent( id_t indID, Sex sex )
 
 bool tfpAddNewSpouse( id_t indID, Sex sex )
 {
-	const wxString savepoint = wxT("AddNewSpouse");
+    const wxString savepoint = wxT("AddNewSpouse");
     bool ret = false;
     recDb::Savepoint( savepoint );
 
@@ -246,10 +246,10 @@ bool tfpAddNewSpouse( id_t indID, Sex sex )
     dialog->SetIndividualID( spouse.f_id );
 
     if( dialog->ShowModal() == wxID_OK ) {
-		recDb::ReleaseSavepoint( savepoint );
+        recDb::ReleaseSavepoint( savepoint );
         ret = true;
     } else {
-		recDb::Rollback( savepoint );
+        recDb::Rollback( savepoint );
     }
     dialog->Destroy();
 
@@ -258,38 +258,38 @@ bool tfpAddNewSpouse( id_t indID, Sex sex )
 
 id_t tfpAddNewChild( id_t famID, Sex sex )
 {
-	const wxString savepoint = "AddNewChild";
-	id_t indID = 0;
-	dlgEditIndividual* dialog = new dlgEditIndividual( NULL );
-	recDb::Savepoint( savepoint );
+    const wxString savepoint = "AddNewChild";
+    id_t indID = 0;
+    dlgEditIndividual* dialog = new dlgEditIndividual( NULL );
+    recDb::Savepoint( savepoint );
 
-	wxString surname;
-	recFamily fam;
-	fam.f_id = famID;
-	fam.Read();
-	surname = recIndividual::GetSurname( fam.f_husb_id );
+    wxString surname;
+    recFamily fam;
+    fam.f_id = famID;
+    fam.Read();
+    surname = recIndividual::GetSurname( fam.f_husb_id );
 
-	indID = tfpAddIndividual( 0, sex, surname );
-	if( indID != 0 ) {
+    indID = tfpAddIndividual( 0, sex, surname );
+    if( indID != 0 ) {
         recFamilyIndividual fi;
-		fi.Clear();
+        fi.Clear();
         fi.f_fam_id = famID;
-		fi.f_ind_id = indID;
-		fi.f_sequence = recFamily::GetChildNextSequence( famID );
-		fi.Save();
-		recDb::ReleaseSavepoint( savepoint );
-	} else {
-		recDb::Rollback( savepoint );
-	}
+        fi.f_ind_id = indID;
+        fi.f_sequence = recFamily::GetChildNextSequence( famID );
+        fi.Save();
+        recDb::ReleaseSavepoint( savepoint );
+    } else {
+        recDb::Rollback( savepoint );
+    }
 
-	return indID;
+    return indID;
 }
 
 bool tfpAddExistSpouse( id_t indID, Sex sex )
 {
-	const wxString savepoint = wxT("AddExistSpouse");
+    const wxString savepoint = wxT("AddExistSpouse");
     bool ret = false;
-	recDb::Savepoint( savepoint );
+    recDb::Savepoint( savepoint );
 
     recIndividual ind, spouse;
     ind.f_id = indID;
@@ -355,9 +355,9 @@ bool tfpAddExistSpouse( id_t indID, Sex sex )
     if( spouse.f_id != 0 ) {
         ret = true;
         fam.Save();
-		recDb::ReleaseSavepoint( savepoint );
+        recDb::ReleaseSavepoint( savepoint );
     } else {
-		recDb::Rollback( savepoint );
+        recDb::Rollback( savepoint );
     }
 
     return ret;
@@ -365,35 +365,35 @@ bool tfpAddExistSpouse( id_t indID, Sex sex )
 
 bool tfpAddExistChild( id_t famID, Sex sex )
 {
-	const wxString savepoint = "AddExistingChild";
+    const wxString savepoint = "AddExistingChild";
     bool ret = false;
-	recDb::Savepoint( savepoint );
+    recDb::Savepoint( savepoint );
 
-	id_t indID = tfpPickIndividual( sex );
-	if( indID != 0 ) {
+    id_t indID = tfpPickIndividual( sex );
+    if( indID != 0 ) {
         recFamilyIndividual fi;
-		fi.Clear();
+        fi.Clear();
         fi.f_fam_id = famID;
-		fi.f_ind_id = indID;
-		fi.f_sequence = recFamily::GetChildNextSequence( famID );
-		fi.Save();
+        fi.f_ind_id = indID;
+        fi.f_sequence = recFamily::GetChildNextSequence( famID );
+        fi.Save();
         ret = true;
-		recDb::ReleaseSavepoint( savepoint );
-	} else {
-		recDb::Rollback( savepoint );
-	}
+        recDb::ReleaseSavepoint( savepoint );
+    } else {
+        recDb::Rollback( savepoint );
+    }
 
-	return ret;
+    return ret;
 }
 
 id_t tfpGetExistingMarriageEvent( id_t famID )
 {
     id_t eventID = 0;
-	dlgSelectEvent* dialog = new dlgSelectEvent( NULL );
+    dlgSelectEvent* dialog = new dlgSelectEvent( NULL );
     if( dialog->CreateMarriageTable( famID ) ) {
-	    if( dialog->ShowModal() == wxID_OK ) {
-		    eventID = dialog->GetSelectedID();
-	    }
+        if( dialog->ShowModal() == wxID_OK ) {
+            eventID = dialog->GetSelectedID();
+        }
 
     }
     dialog->Destroy();

@@ -37,43 +37,22 @@
 class dlgEditAttribute : public fbDlgEditAttribute
 {
 public:
-	dlgEditAttribute( wxWindow* parent, id_t attID = 0 );
+    dlgEditAttribute( wxWindow* parent, id_t attID = 0 );
 
-	void SetText( const wxString& text ) { m_text = text; }
+    void SetText( const wxString& text ) { m_text = text; }
     void SetPersona( id_t perID ) { m_persona = perID; }
 
-	wxString GetText() const { return m_text; }
-	recAttribute* GetAttribute() { return &m_attr; }
+    wxString GetText() const { return m_text; }
+    recAttribute* GetAttribute() { return &m_attr; }
 
 private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
 
     id_t         m_persona;
-	recAttribute m_attr;
+    recAttribute m_attr;
     wxString     m_text;
     recAttributeTypeVec  m_typeList;
-};
-
-class dlgEditName : public fbDlgEditName
-{
-public:
-	dlgEditName( wxWindow* parent, id_t attID = 0 );
-
-	void SetText( const wxString& text ) { m_text = text; }
-    void SetPersona( id_t perID ) { m_persona = perID; }
-
-	wxString GetText() const { return m_text; }
-	recName* GetName() { return &m_name; }
-
-private:
-    bool TransferDataToWindow();
-    bool TransferDataFromWindow();
-
-    id_t            m_persona;
-	recName         m_name;
-    wxString        m_text;
-    recNamePartTypeVec  m_typeList;
 };
 
 #endif // DLGEDATTRIBUTE_H

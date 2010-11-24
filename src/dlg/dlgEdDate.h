@@ -39,19 +39,19 @@ class dlgEditDate : public fbDlgEditDate
     static CalendarScheme scheme[];
     static int sch_list[CALENDAR_SCH_Max];
 public:
-	dlgEditDate( wxWindow* parent, id_t id = 0 );
+    dlgEditDate( wxWindow* parent, id_t id = 0 );
 
-	void SetText( const wxString& text ) { m_text = text; }
+    void SetText( const wxString& text ) { m_text = text; }
 
-	wxString GetText() const { return m_text; }
-	recDate* GetDate() { return &m_date; }
+    wxString GetText() const { return m_text; }
+    recDate* GetDate() { return &m_date; }
 
 private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
     void SetStaticDate( wxIdleEvent& event );
 
-	recDate   m_date;
+    recDate   m_date;
     wxString  m_text;
     wxString  m_output;
 };

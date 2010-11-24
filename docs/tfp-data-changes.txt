@@ -20,9 +20,11 @@ EventTypeRole
 
 Add Name table
 
-Add NameStyle table
+Add NamePart table
 
-Add NameType table
+Add NamePartType table
+
+Add NameStyle table
 
 Attribute
   Remove sequence
@@ -39,13 +41,4 @@ Remove SourceGroupSource
 Version
   Add test field
 
-/* Test 3 */
-
-Rename Name to NamePart
-  Remove per_id and style_id fields
-  Add name_id
-
-Rename NameType to NamePartType
-
-Add Name
 

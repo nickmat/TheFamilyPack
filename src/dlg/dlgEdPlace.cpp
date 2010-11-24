@@ -39,7 +39,7 @@
 
 #include "dlgEdPlace.h"
 
-dlgEditPlace::dlgEditPlace( wxWindow* parent, id_t id ) 
+dlgEditPlace::dlgEditPlace( wxWindow* parent, id_t id )
     : fbDlgEditPlace( parent )
 {
     m_place.f_id = id;
@@ -49,19 +49,19 @@ dlgEditPlace::dlgEditPlace( wxWindow* parent, id_t id )
 
 bool dlgEditPlace::TransferDataToWindow()
 {
-	if( m_place.f_id == 0 )
-	{
-		m_place.Clear();
-		m_place.Save();
-	} else {
-		m_place.Read();
-		m_text = m_place.GetAddressStr();
-	}
+    if( m_place.f_id == 0 )
+    {
+        m_place.Clear();
+        m_place.Save();
+    } else {
+        m_place.Read();
+        m_text = m_place.GetAddressStr();
+    }
 
-	wxTextCtrl* textCtrl = (wxTextCtrl*) FindWindow( tfpID_EDPLACE_ADDR );
+    wxTextCtrl* textCtrl = (wxTextCtrl*) FindWindow( tfpID_EDPLACE_ADDR );
     textCtrl->SetValue( m_text );
 
-	return true;
+    return true;
 }
 
 bool dlgEditPlace::TransferDataFromWindow()
@@ -69,27 +69,27 @@ bool dlgEditPlace::TransferDataFromWindow()
     wxTextCtrl* textCtrl = (wxTextCtrl*) FindWindow( tfpID_EDPLACE_ADDR );
     m_text = textCtrl->GetValue();
 
-	m_place.Save();
+    m_place.Save();
 
-	recPlacePartList ppVec = m_place.GetPlaceParts();
-	if( ppVec.size() == 0 )
-	{
-		recPlacePart pp;
-		pp.Clear();
-		pp.f_type_id = recPlacePartType::TYPE_Address;
-		pp.f_place_id = m_place.f_id;
-		pp.f_val = m_text;
-		pp.Save();
-	} else {
-		ppVec[0].f_type_id = recPlacePartType::TYPE_Address;
-		ppVec[0].f_val = m_text;
-		ppVec[0].Save();
-		for( size_t i = 1 ; i < ppVec.size() ; i++ ) {
-			ppVec[i].Delete();
-		}
-	}
+    recPlacePartList ppVec = m_place.GetPlaceParts();
+    if( ppVec.size() == 0 )
+    {
+        recPlacePart pp;
+        pp.Clear();
+        pp.f_type_id = recPlacePartType::TYPE_Address;
+        pp.f_place_id = m_place.f_id;
+        pp.f_val = m_text;
+        pp.Save();
+    } else {
+        ppVec[0].f_type_id = recPlacePartType::TYPE_Address;
+        ppVec[0].f_val = m_text;
+        ppVec[0].Save();
+        for( size_t i = 1 ; i < ppVec.size() ; i++ ) {
+            ppVec[i].Delete();
+        }
+    }
 
-	return true;
+    return true;
 }
 
 

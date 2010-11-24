@@ -43,13 +43,13 @@
 #include "dlgRecTableCtrl.h"
 
 
-wxString dlgRecTableCtrl::OnGetItemText( long item, long column ) const 
+wxString dlgRecTableCtrl::OnGetItemText( long item, long column ) const
 {
     m_table->SetRow( item );
     return m_table->GetAsString( column );
 }
 
-wxString dlgStrTableCtrl::OnGetItemText( long item, long column ) const 
+wxString dlgStrTableCtrl::OnGetItemText( long item, long column ) const
 {
     return m_strTable->Item( m_width * item + column );
 }

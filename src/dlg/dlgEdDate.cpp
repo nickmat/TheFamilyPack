@@ -63,7 +63,7 @@ int dlgEditDate::sch_list[CALENDAR_SCH_Max] = {
     0,   // CALENDAR_SCH_FrenchRevolution
 };
 
-dlgEditDate::dlgEditDate( wxWindow* parent, id_t id ) 
+dlgEditDate::dlgEditDate( wxWindow* parent, id_t id )
     : fbDlgEditDate( parent )
 {
     m_date.f_id = id;
@@ -72,18 +72,18 @@ dlgEditDate::dlgEditDate( wxWindow* parent, id_t id )
 
 bool dlgEditDate::TransferDataToWindow()
 {
-	if( m_date.f_id == 0 )
-	{
-		m_date.Clear();
-		m_date.Save();
+    if( m_date.f_id == 0 )
+    {
+        m_date.Clear();
+        m_date.Save();
         // TODO: This needs to be set up using a particular convention
         m_date.f_type = recDate::PREF_On;
         m_date.f_record_sch = CALENDAR_SCH_Gregorian;
         m_date.f_display_sch = CALENDAR_SCH_Gregorian;
-	} else {
-		m_date.Read();
-		m_text = m_date.GetJdnStr();
-	}
+    } else {
+        m_date.Read();
+        m_text = m_date.GetJdnStr();
+    }
     m_textCtrlDate->SetValue( m_text );
 
     wxString idStr = wxString::Format( "D "ID":", m_date.f_id );
@@ -92,7 +92,7 @@ bool dlgEditDate::TransferDataToWindow()
     m_choiceOriginal->SetSelection( sch_list[m_date.f_record_sch] );
     m_choiceDisplay->SetSelection( sch_list[m_date.f_display_sch] );
 
-	return true;
+    return true;
 }
 
 bool dlgEditDate::TransferDataFromWindow()
@@ -102,8 +102,8 @@ bool dlgEditDate::TransferDataFromWindow()
     m_date.f_display_sch = scheme[ m_choiceDisplay->GetSelection() ];
     m_date.SetDate( m_textCtrlDate->GetValue() );
 
-	m_date.Save();
-	return true;
+    m_date.Save();
+    return true;
 }
 
 void dlgEditDate::SetStaticDate( wxIdleEvent& event )
