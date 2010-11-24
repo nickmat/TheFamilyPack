@@ -18,7 +18,7 @@
         />
     </Platforms>
     <ToolFiles>
-        
+
     </ToolFiles>
     <Configurations>
         <Configuration
@@ -189,7 +189,7 @@
         </Configuration>
     </Configurations>
     <References>
-        
+
     </References>
     <Files>
         <Filter
@@ -234,6 +234,10 @@
                 >
             </File>
             <File
+                RelativePath="..\..\src\rec\recName.cpp"
+                >
+            </File>
+            <File
                 RelativePath="..\..\src\rec\recPersona.cpp"
                 >
             </File>
@@ -243,6 +247,10 @@
             </File>
             <File
                 RelativePath="..\..\src\rec\recReference.cpp"
+                >
+            </File>
+            <File
+                RelativePath="..\..\src\rec\recSource.cpp"
                 >
             </File>
             <File
@@ -272,6 +280,10 @@
                 >
             </File>
             <File
+                RelativePath="..\..\include\rec\recName.h"
+                >
+            </File>
+            <File
                 RelativePath="..\..\include\rec\recPersona.h"
                 >
             </File>
@@ -281,6 +293,10 @@
             </File>
             <File
                 RelativePath="..\..\include\rec\recReference.h"
+                >
+            </File>
+            <File
+                RelativePath="..\..\include\rec\recSource.h"
                 >
             </File>
             <File
@@ -323,7 +339,7 @@
         </Filter>
     </Files>
     <Globals>
-        
+
     </Globals>
 </VisualStudioProject>
 

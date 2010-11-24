@@ -81,15 +81,19 @@ bool dlgEditIndividual::TransferDataToWindow()
         m_persona.f_sex = m_individual.f_sex;
         m_persona.Save();
         m_individual.f_per_id = m_persona.f_id;
+        m_name.Clear();
+        m_name.f_per_id = m_persona.f_id;
+        m_name.Save();
     } else {
         m_persona.f_id = m_individual.f_per_id;
         m_persona.Read();
+        m_name.FindPersona( m_persona.f_id );
     }
-    wxString name = recPersona::GetSurname( m_individual.f_per_id );
+    wxString name = m_name.GetNamePart( NAME_TYPE_Surname ); //recPersona::GetSurname( m_individual.f_per_id );
     if( name != wxEmptyString ) {
         m_surname = name;
     }
-    m_given = recPersona::GetGivenName( m_individual.f_per_id );
+    m_given = m_name.GetNamePart( NAME_TYPE_Given_name ); //recPersona::GetGivenName( m_individual.f_per_id );
     if( m_individual.f_sex == SEX_Unstated ) {
         m_individual.f_sex = m_sex;
     }
@@ -139,14 +143,17 @@ bool dlgEditIndividual::TransferDataToWindow()
 
 bool dlgEditIndividual::TransferDataFromWindow()
 {    
-    recNameList exist;
-    recNameList names;
+//    wxMessageBox( wxT("TransferDataFromWindow Needs rewrite"), wxT("dlgEditIndividual") );
+//    return false;
+
+    recNamePartVec exist;
+    recNamePartVec names;
     int seq = 1;
-    recName name;
+    recNamePart np;
     id_t ud_surname = 0;
 
     exist = m_persona.ReadNames();
-    names = recName::ConvertStrToList( m_textGiven->GetValue() );
+    names = recNamePart::ConvertStrToList( m_textGiven->GetValue() );
 
     size_t ecount = exist.size();
     size_t ncount = names.size();
@@ -170,26 +177,26 @@ bool dlgEditIndividual::TransferDataFromWindow()
         }
     }
     while( n < ncount ) {
-        name.Clear();
-        name.f_per_id = m_persona.f_id;
-        name.f_type_id = NAME_TYPE_Given_name;
-        name.f_val = names[n++].f_val;
-        name.f_sequence = seq++;
-        name.Save();
+        np.Clear();
+        np.f_name_id = m_name.f_id;
+        np.f_type_id = NAME_TYPE_Given_name;
+        np.f_val = names[n++].f_val;
+        np.f_sequence = seq++;
+        np.Save();
     }
 
-    name.Clear();
+    np.Clear();
     if( ud_surname == 0 ) {
-        name.f_per_id = m_persona.f_id;
-        name.f_type_id = NAME_TYPE_Surname;
-        name.f_val = m_textSurname->GetValue();
-        ud_surname = name.f_id;
+        np.f_name_id = m_name.f_id;
+        np.f_type_id = NAME_TYPE_Surname;
+        np.f_val = m_textSurname->GetValue();
+        ud_surname = np.f_id;
     } else {
-        name.f_id = ud_surname;
-        name.Read();
+        np.f_id = ud_surname;
+        np.Read();
     }
-    name.f_sequence = seq++;
-    name.Save();
+    np.f_sequence = seq++;
+    np.Save();
     m_persona.f_sex = (Sex) m_choiceSex->GetSelection();
     m_persona.Save();
 

@@ -73,7 +73,7 @@ private:
     id_t            m_persona;
 	recName         m_name;
     wxString        m_text;
-    recNameTypeVec  m_typeList;
+    recNamePartTypeVec  m_typeList;
 };
 
 #endif // DLGEDATTRIBUTE_H

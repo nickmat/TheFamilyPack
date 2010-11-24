@@ -48,7 +48,7 @@ wxString tfpWritePersonIndex( WrIndex type )
 	if( type == WrIndex_Individual ) {
         result = recIndividual::GetSurnameList();
 	} else { // type == WrIndex_Persona
-        result = recName::GetSurnameList();
+        result = recNamePart::GetSurnameList();
 	}
 
 	wxString htm = 

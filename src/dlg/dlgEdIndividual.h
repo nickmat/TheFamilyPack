@@ -64,6 +64,7 @@ private:
 
 	recIndividual  m_individual;
 	recPersona     m_persona;
+    recName        m_name;
 	wxString       m_surname;
 	wxString       m_given;
 	recAttribute   m_occAttr;

@@ -100,7 +100,10 @@ dlgEditName::dlgEditName( wxWindow* parent, id_t id )
 
 bool dlgEditName::TransferDataToWindow()
 {
-	if( m_name.f_id == 0 )
+    wxMessageBox( wxT("Needs rewrite"), wxT("dlgEditName") );
+    return false;
+#if 0
+    if( m_name.f_id == 0 )
 	{
 		m_name.Clear();
         m_name.f_per_id = m_persona;
@@ -125,10 +128,14 @@ bool dlgEditName::TransferDataToWindow()
         }
     }
 	return true;
+#endif
 }
 
 bool dlgEditName::TransferDataFromWindow()
 {
+    wxMessageBox( wxT("Needs rewrite"), wxT("dlgEditName") );
+    return false;
+#if 0
     int type = m_choiceType->GetSelection();
     if( type < 0 ) {
         m_name.f_type_id = 0;
@@ -139,6 +146,7 @@ bool dlgEditName::TransferDataFromWindow()
 
 	m_name.Save();
 	return true;
+#endif
 }
 
 // End of dlgEdAttribute.cpp file

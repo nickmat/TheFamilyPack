@@ -488,46 +488,51 @@ void TfpFrame::OnHtmlLinkClicked( wxHtmlLinkEvent& event )
 {
     wxString href = event.GetLinkInfo().GetHref().c_str();
 
-    switch( (wxChar) href.GetChar( 0 ) )
-    {
-    case ':': // Program Commands
-        if( href == ":New" ) {
-            NewFile();
-        } else if( href == ":Open" ) {
-            OpenFile();
-        } else if( href == ":Import" ) {
-            ImportGedcom();
-        } else {
-            wxMessageBox( _("Error: Invalid Command"), _("Link Error") );
-        }
-        break;
-    case '$':  // Context Commands
-        switch( (wxChar) href.GetChar( 1 ) )
+    try {
+        switch( (wxChar) href.GetChar( 0 ) )
         {
-        case 'I': // Edit the given individual (create if 0)
-            switch( (wxChar) href.GetChar( 2 ) )
+        case ':': // Program Commands
+            if( href == ":New" ) {
+                NewFile();
+            } else if( href == ":Open" ) {
+                OpenFile();
+            } else if( href == ":Import" ) {
+                ImportGedcom();
+            } else {
+                wxMessageBox( _("Error: Invalid Command"), _("Link Error") );
+            }
+            break;
+        case '$':  // Context Commands
+            switch( (wxChar) href.GetChar( 1 ) )
             {
-            case 'H': case 'W':
-                AddNewSpouse( href.Mid(2) );
+            case 'I': // Edit the given individual (create if 0)
+                switch( (wxChar) href.GetChar( 2 ) )
+                {
+                case 'H': case 'W':
+                    AddNewSpouse( href.Mid(2) );
+                    break;
+                case 'F': case 'M':
+                    AddNewParent( href.Mid(2) );
+                    break;
+                }
                 break;
-            case 'F': case 'M':
-                AddNewParent( href.Mid(2) );
+            case 'M': // Create a popup menu
+                DoHtmCtxMenu( href.Mid(2) );
+                break;
+            case 'R': // Edit reference record
+                EditReference( href.Mid(2) );
                 break;
             }
             break;
-        case 'M': // Create a popup menu
-            DoHtmCtxMenu( href.Mid(2) );
+        case '!':  // Display in external browser
+            wxLaunchDefaultBrowser( href.Mid( 1 ) );
             break;
-        case 'R': // Edit reference record
-            EditReference( href.Mid(2) );
-            break;
+        default:   // Display the given reference
+            DisplayHtmPage( href );
         }
-        break;
-    case '!':  // Display in external browser
-        wxLaunchDefaultBrowser( href.Mid( 1 ) );
-        break;
-    default:   // Display the given reference
-        DisplayHtmPage( href );
+    } catch( wxSQLite3Exception& e ) {
+        recDb::ErrorMessage( e );
+        recDb::Rollback();
     }
 }
 

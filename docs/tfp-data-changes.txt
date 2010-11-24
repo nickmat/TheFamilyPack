@@ -39,3 +39,13 @@ Remove SourceGroupSource
 Version
   Add test field
 
+/* Test 3 */
+
+Rename Name to NamePart
+  Remove per_id and style_id fields
+  Add name_id
+
+Rename NameType to NamePartType
+
+Add Name
+

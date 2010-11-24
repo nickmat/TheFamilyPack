@@ -75,7 +75,7 @@ private:
 
 	recPersona        m_persona;
 	recIdVec          m_indLinks;
-    recNameList       m_names;
+    recNamePartVec    m_names;
 	recAttributeList  m_attributes;
 	bool              m_defaultAttr;
 	wxString          m_name;
