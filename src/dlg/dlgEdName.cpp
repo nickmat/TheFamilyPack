@@ -83,6 +83,10 @@ bool dlgEditName::TransferDataToWindow()
         m_staticName->SetLabel( m_name.GetFullName() );
     }
 
+    wxString nID( "N" );
+    nID << m_name.f_id;
+    m_staticNameID->SetLabel( nID );
+
     m_styles = recNameStyle::GetStyleList();
     for( size_t i = 0 ; i < m_styles.size() ; i++ ) {
         m_choiceStyle->Append( m_styles[i].f_name );
