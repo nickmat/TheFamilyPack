@@ -119,6 +119,20 @@ bool recName::Read()
 	return true;
 }
 
+void recName::AddNameParts( wxString& nameStr ) const
+{
+	recNamePart part(0);
+    part.f_name_id = f_id;
+
+	wxStringTokenizer tk( nameStr );
+	while( tk.HasMoreTokens() ) {
+		part.f_val = tk.GetNextToken();
+        part.f_type_id = tk.HasMoreTokens() ? NAME_TYPE_Given_name : NAME_TYPE_Surname;
+		++part.f_sequence;
+        part.Save();
+	}
+}
+
 bool recName::FindPersona( id_t perID, id_t styleID )
 {
 	wxSQLite3StatementBuffer sql;
@@ -166,6 +180,89 @@ wxString recName::GetNamePart( id_t nptID )
 	return str;
 }
 
+wxString recName::GetSurname( id_t id )
+{
+	wxString str;
+	wxSQLite3StatementBuffer sql;
+
+	sql.Format( 
+		"SELECT val FROM NamePart WHERE name_id="ID" AND type_id=-2 "
+		"ORDER BY sequence;", 
+        id
+	);
+    wxSQLite3Table result = s_db->GetTable( sql );
+
+    if( result.GetRowCount() > 0 )
+	{
+        for( int row = 0 ; row < result.GetRowCount() ; row++ )
+		{
+            if( row > 0 )
+            {
+                str << " ";
+            }
+            result.SetRow( row );
+            str << result.GetAsString( 0 );
+		}
+    }
+    return str;
+}
+	
+wxString recName::GetGivenName( id_t id )
+{
+	wxString str;
+	wxSQLite3StatementBuffer sql;
+
+	sql.Format( 
+		"SELECT val FROM NamePart WHERE name_id="ID" AND (type_id=-1 OR type_id=-3) "
+		"ORDER BY sequence;", id
+	);
+    wxSQLite3Table result = s_db->GetTable( sql );
+
+    if( result.GetRowCount() > 0 )
+	{
+        for( int row = 0 ; row < result.GetRowCount() ; row++ )
+		{
+            if( row > 0 )
+            {
+                str << " ";
+            }
+            result.SetRow( row );
+            str << result.GetAsString( 0 );
+		}
+    }
+    return str;
+}
+
+recNamePartVec recName::GetParts( id_t nameID )
+{
+	recNamePartVec list;
+	recNamePart part;
+	wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( nameID == 0 ) {
+        return list;
+    }
+
+	sql.Format( 
+		"SELECT id, type_id, val, sequence FROM NamePart "
+        "WHERE name_id="ID" ORDER BY sequence;",
+        nameID 
+    );
+    result = s_db->GetTable( sql );
+
+    part.f_name_id = nameID;
+    for( int i = 0 ; i < result.GetRowCount() ; i++ )
+    {
+        result.SetRow( i );
+		part.f_id = GET_ID( result.GetInt64( 0 ) );
+		part.f_type_id = GET_ID( result.GetInt64( 1 ) );
+        part.f_val      = result.GetAsString( 2 );
+        part.f_sequence = (unsigned) result.GetInt( 3 );
+        list.push_back( part );
+    }
+	return list;
+}
 
 #if 0
 wxString recName::GetValue( id_t id )
@@ -203,6 +300,7 @@ recNameList recName::ConvertStrToList(
 	return list;
 }
 #endif
+
 
 //----------------------------------------------------------
 
@@ -536,7 +634,7 @@ recNameStyleVec recNameStyle::GetStyleList()
     // Put standard entries in list.
 	sql.Format( 
         "SELECT id, name FROM NameStyle "
-        "WHERE id<0 ORDER BY id DESC;" 
+        "WHERE id<=0 ORDER BY id DESC;" 
     );
     result = s_db->GetTable( sql );
 

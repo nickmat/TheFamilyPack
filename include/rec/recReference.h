@@ -83,9 +83,10 @@ public:
         TYPE_Event,      // 2
         TYPE_Place,      // 3
         TYPE_Date,       // 4
-        TYPE_Persona,    // 5
-        TYPE_Attribute,  // 6
-        TYPE_MAX         // 7
+        TYPE_Name,       // 5
+        TYPE_Persona,    // 6
+        TYPE_Attribute,  // 7
+        TYPE_MAX         // 8
     };
     static const wxString sm_typeStr[TYPE_MAX];
 

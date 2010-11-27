@@ -44,6 +44,7 @@ typedef wxVector< recAttributeType >  recAttributeTypeVec;
 class recPersona : public recDb
 {
 public:
+    id_t     f_name_id;
     Sex      f_sex;
     wxString f_note;
 
@@ -63,8 +64,8 @@ public:
     wxString GetFullName() const { return GetFullName( f_id ); }
 	static recAttributeList ReadAttributes( id_t perID );
     recAttributeList ReadAttributes() const { return ReadAttributes( f_id ); }
-	static recNamePartVec ReadNames( id_t perID );
-    recNamePartVec ReadNames() const { return ReadNames( f_id ); }
+	static recNameVec ReadNames( id_t perID );
+    recNameVec ReadNames() const { return ReadNames( f_id ); }
 
     static recIdVec GetIndividualIDs( id_t perID );
     recIdVec GetIndividualIDs() const { return GetIndividualIDs( f_id ); }
@@ -73,8 +74,9 @@ public:
 inline bool recEquivalent( const recPersona& r1, const recPersona& r2 )
 {
     return
-        r1.f_sex  == r2.f_sex  &&
-        r1.f_note == r2.f_note;
+        r1.f_name_id == r2.f_name_id &&
+        r1.f_sex     == r2.f_sex     &&
+        r1.f_note    == r2.f_note;
 }
 
 inline bool operator==( const recPersona& r1, const recPersona& r2 )

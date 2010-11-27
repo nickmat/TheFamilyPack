@@ -152,7 +152,7 @@ bool dlgEditIndividual::TransferDataFromWindow()
     recNamePart np;
     id_t ud_surname = 0;
 
-    exist = m_persona.ReadNames();
+    exist = m_name.GetParts();
     names = recNamePart::ConvertStrToList( m_textGiven->GetValue() );
 
     size_t ecount = exist.size();

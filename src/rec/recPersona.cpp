@@ -37,22 +37,23 @@
 #include "wx/wx.h"
 #endif
 
-#include <wx/tokenzr.h>
 
 #include <rec/recPersona.h>
 
 recPersona::recPersona( const recPersona& p )
 {
-    f_id   = p.f_id;
-    f_sex  = p.f_sex;
-    f_note = p.f_note;
+    f_id      = p.f_id;
+    f_name_id = p.f_name_id;
+    f_sex     = p.f_sex;
+    f_note    = p.f_note;
 }
 
 void recPersona::Clear()
 {
-    f_id = 0;
-    f_sex  = SEX_Unstated;
-    f_note = wxEmptyString;
+    f_id      = 0;
+    f_name_id = 0;
+    f_sex     = SEX_Unstated;
+    f_note    = wxEmptyString;
 }
 
 void recPersona::Save()
@@ -64,8 +65,8 @@ void recPersona::Save()
 	{
 		// Add new record
 	    sql.Format( 
-		    "INSERT INTO Persona (sex, note) VALUES (%u, '%q');",
-            f_sex, UTF8_(f_note)
+		    "INSERT INTO Persona (name_id, sex, note) VALUES ("ID", %u, '%q');",
+            f_name_id, f_sex, UTF8_(f_note)
 	    );
     	s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -75,15 +76,15 @@ void recPersona::Save()
         {
             // Add new record
 	        sql.Format( 
-		        "INSERT INTO Persona (id, sex, note) "
-                "VALUES ("ID", %u, '%q');",
-                f_id, f_sex, UTF8_(f_note)
+		        "INSERT INTO Persona (id, name_id, sex, note) "
+                "VALUES ("ID", "ID", %u, '%q');",
+                f_id, f_name_id, f_sex, UTF8_(f_note)
 	        );
         } else {
     		// Update existing record
             sql.Format( 
-                "UPDATE Persona SET sex=%u, note='%q' WHERE id="ID";", 
-                f_sex, UTF8_(f_note), f_id
+                "UPDATE Persona SET name_id="ID", sex=%u, note='%q' WHERE id="ID";", 
+                f_name_id, f_sex, UTF8_(f_note), f_id
             );
         }
     	s_db->ExecuteUpdate( sql );
@@ -100,7 +101,7 @@ bool recPersona::Read()
         return false;
     }
 
-	sql.Format( "SELECT sex, note FROM Persona WHERE id="ID";", f_id );
+	sql.Format( "SELECT name_id, sex, note FROM Persona WHERE id="ID";", f_id );
     result = s_db->GetTable( sql );
 
     if( result.GetRowCount() != 1 ) 
@@ -109,8 +110,9 @@ bool recPersona::Read()
         return false;
     }
     result.SetRow( 0 ); 
-    f_sex  = (Sex) result.GetInt( 0 );
-    f_note = result.GetAsString( 1 );
+	f_name_id = GET_ID( result.GetInt64( 0 ) );
+    f_sex  = (Sex) result.GetInt( 1 );
+    f_note = result.GetAsString( 2 );
 	return true;
 }
 
@@ -121,7 +123,7 @@ wxString recPersona::GetSurname( id_t id )
 
 	sql.Format( 
 		"SELECT val FROM NamePart "
-        "WHERE name_id=(SELECT id FROM Name WHERE per_id="ID") AND type_id=-2 "
+        "WHERE name_id=(SELECT name_id FROM Persona WHERE id="ID") AND type_id=-2 "
 		"ORDER BY sequence;", 
         id
 	);
@@ -149,7 +151,7 @@ wxString recPersona::GetGivenName( id_t id )
 
 	sql.Format( 
 		"SELECT val FROM NamePart "
-        "WHERE name_id=(SELECT id FROM Name WHERE per_id="ID") "
+        "WHERE name_id=(SELECT name_id FROM Persona WHERE id="ID") "
 		"AND (type_id=-1 OR type_id=-3) "
 		"ORDER BY sequence;", id
 	);
@@ -200,10 +202,11 @@ recAttributeList recPersona::ReadAttributes( id_t perID )
 	return list;
 }
 
-recNamePartVec recPersona::ReadNames( id_t perID )
+
+recNameVec recPersona::ReadNames( id_t perID )
 {
-	recNamePartVec list;
-	recNamePart record;
+	recNameVec list;
+	recName name;
 	wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
 
@@ -212,23 +215,20 @@ recNamePartVec recPersona::ReadNames( id_t perID )
     }
 
 	sql.Format( 
-		"SELECT id, name_id, type_id, val, sequence FROM NamePart "
-		"WHERE name_id=(SELECT id FROM Name WHERE per_id="ID") "
-        "ORDER BY sequence;",
+		"SELECT id, style_id FROM Name WHERE per_id="ID" "
+        "ORDER BY style_id;",
         perID 
     );
     result = s_db->GetTable( sql );
 
+    name.f_per_id = perID;
     list.reserve( result.GetRowCount() );
     for( int i = 0 ; i < result.GetRowCount() ; i++ )
     {
         result.SetRow( i );
-		record.f_id = GET_ID( result.GetInt64( 0 ) );
-		record.f_name_id = GET_ID( result.GetInt64( 1 ) );
-		record.f_type_id = GET_ID( result.GetInt64( 2 ) );
-		record.f_val = result.GetAsString( 3 );
-		record.f_sequence = (unsigned) result.GetInt( 4 );
-        list.push_back( record );
+		name.f_id = GET_ID( result.GetInt64( 0 ) );
+		name.f_style_id = GET_ID( result.GetInt64( 1 ) );
+        list.push_back( name );
     }
 	return list;
 }

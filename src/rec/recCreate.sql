@@ -31,6 +31,9 @@
    can only be used by tools created with SQLite version 3.3.0 or later
    (released Jan 2006) */
 PRAGMA legacy_file_format=OFF;
+PRAGMA foreign_keys=ON; 
+
+BEGIN;
 
 CREATE TABLE Attribute (
   id INTEGER PRIMARY KEY,
@@ -246,43 +249,44 @@ CREATE TABLE IndividualPersona (
 
 CREATE TABLE Name (
   id INTEGER PRIMARY KEY,
-  per_id INTEGER,
-  style_id INTEGER
+  per_id INTEGER NOT NULL,
+  style_id INTEGER NOT NULL REFERENCES NameStyle(id)
 );
 
 CREATE TABLE NamePart (
   id INTEGER PRIMARY KEY,
-  name_id INTEGER,
-  type_id INTEGER,
+  name_id INTEGER NOT NULL REFERENCES Name(id),
+  type_id INTEGER NOT NULL REFERENCES NamePartType(id),
   val TEXT,
-  sequence INTEGER
+  sequence INTEGER NOT NULL
 );
 
 CREATE TABLE NamePartType (
   id INTEGER PRIMARY KEY,
-  grp INTEGER,
-  name TEXT
+  grp INTEGER NOT NULL,
+  name TEXT NOT NULL
 );
 
 /* matches enum StdNameType */
-INSERT INTO NamePartType (id) VALUES(0);
-INSERT INTO NamePartType (id, grp, name) VALUES(-1, 1,'Given name');
-INSERT INTO NamePartType (id, grp, name) VALUES(-2, 1,'Surname');
-INSERT INTO NamePartType (id, grp, name) VALUES(-3, 1,'Post name');
+INSERT INTO NamePartType (id, grp, name) VALUES( 0, 0, '');
+INSERT INTO NamePartType (id, grp, name) VALUES(-1, 1, 'Given name');
+INSERT INTO NamePartType (id, grp, name) VALUES(-2, 1, 'Surname');
+INSERT INTO NamePartType (id, grp, name) VALUES(-3, 1, 'Post name');
 
 CREATE TABLE NameStyle (
   id INTEGER PRIMARY KEY,
-  name TEXT
+  name TEXT NOT NULL
 );
 
 /* matches enum recNameStyle::Style */
-INSERT INTO NameStyle (id, name) VALUES(0,'');
+INSERT INTO NameStyle (id, name) VALUES(0,'Default');
 INSERT INTO NameStyle (id, name) VALUES(-1,'Birth name');
 INSERT INTO NameStyle (id, name) VALUES(-2,'Married name');
 INSERT INTO NameStyle (id, name) VALUES(-3,'Alias');
 
 CREATE TABLE Persona (
   id INTEGER PRIMARY KEY,
+  name_id INTEGER,
   sex INTEGER,
   note TEXT
 );
@@ -370,6 +374,8 @@ CREATE TABLE Version (
 );
 
 /* The Version table has only this one row */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 8, 3);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 8, 0);
+
+COMMIT;
 
 /* End of create.sql */

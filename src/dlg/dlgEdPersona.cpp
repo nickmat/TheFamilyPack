@@ -58,7 +58,7 @@ dlgEditPersona::dlgEditPersona( wxWindow* parent ) : fbDlgEditPersona( parent )
     m_listAttr->InsertColumn( 1, itemCol );
 
     m_persona.Clear();
-    m_defaultAttr = false;
+    m_defaultName = false;
 }
 
 bool dlgEditPersona::TransferDataToWindow()
@@ -75,32 +75,20 @@ bool dlgEditPersona::TransferDataToWindow()
     m_indLinks = m_persona.GetIndividualIDs();
     m_staticIndId->SetLabel( GetIndLinksString() );
 
-    if( m_defaultAttr == true ) {
-        m_staticPerName->SetLabel( m_name );
+    if( m_defaultName == true ) {
+        m_staticPerName->SetLabel( m_nameStr );
         recName name(0);
         name.f_per_id = m_persona.f_id;
         name.Save();
-        recNamePart np;
-        int seq = 0;
-        wxStringTokenizer tk( m_name );
-        while( tk.HasMoreTokens() ) {
-            np.Clear();
-            np.f_name_id = name.f_id;
-            np.f_val = tk.GetNextToken();
-            np.f_type_id = tk.HasMoreTokens() ?
-                NAME_TYPE_Given_name : NAME_TYPE_Surname;
-            np.f_sequence = ++seq;
-            np.Save();
-            m_names.push_back( np );
-        }
+        name.AddNameParts( m_nameStr );
     } else {
         m_staticPerName->SetLabel( m_persona.GetFullName() );
     }
 
     m_names = m_persona.ReadNames();
     for( size_t i = 0 ; i < m_names.size() ; i++ ) {
-        m_listName->InsertItem( i, recNamePartType::GetTypeStr( m_names[i].f_type_id ) );
-        m_listName->SetItem( i, COL_Value, m_names[i].f_val );
+        m_listName->InsertItem( i, recNameStyle::GetStyleStr( m_names[i].f_style_id ) );
+        m_listName->SetItem( i, COL_Value, m_names[i].GetFullName() );
     }
 
     m_attributes = m_persona.ReadAttributes();
@@ -118,6 +106,7 @@ bool dlgEditPersona::TransferDataFromWindow()
     m_persona.f_note = m_textCtrlNote->GetValue();
     m_persona.Save();
 
+#if 0
     for( size_t i = 0 ; i < m_names.size() ; i++ ) {
         m_names[i].f_sequence = i + 1;
         m_names[i].Save();
@@ -126,7 +115,7 @@ bool dlgEditPersona::TransferDataFromWindow()
     for( size_t i = 0 ; i < m_attributes.size() ; i++ ) {
         m_attributes[i].Save();
     }
-
+#endif
     return true;
 }
 

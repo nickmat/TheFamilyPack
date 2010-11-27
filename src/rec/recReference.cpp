@@ -158,14 +158,15 @@ wxSQLite3ResultSet recReference::GetTitleList()
 //----------------------------------------------------------
 
 const wxString recReferenceEntity::sm_typeStr[recReferenceEntity::TYPE_MAX] = {
-    wxT(""),           // TYPE_Unstated
-    wxT("Source"),     // TYPE_Source
-    wxT("Event"),      // TYPE_Event
-    wxT("Place"),      // TYPE_Place
-    wxT("Date"),       // TYPE_Date
-    wxT("Persona"),    // TYPE_Persona
-    wxT("Attribute")//,  // TYPE_Attribute
-//    wxT("Role")        // TYPE_Role
+    _("Default"),    // TYPE_Unstated
+    _("Source"),     // TYPE_Source
+    _("Event"),      // TYPE_Event
+    _("Place"),      // TYPE_Place
+    _("Date"),       // TYPE_Date
+    _("Name"),       // TYPE_Name
+    _("Persona"),    // TYPE_Persona
+    _("Attribute")//,  // TYPE_Attribute
+//    _("Role")        // TYPE_Role
 };
 
 recReferenceEntity::recReferenceEntity( const recReferenceEntity& re )

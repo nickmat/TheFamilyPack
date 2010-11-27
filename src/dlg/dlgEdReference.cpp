@@ -47,6 +47,7 @@
 #include "dlgEdPersona.h"
 #include "dlgEdPlace.h"
 #include "dlgEdDate.h"
+#include "dlgEdName.h"
 #include "dlgEdAttribute.h"
 
 
@@ -63,6 +64,7 @@ BEGIN_EVENT_TABLE( dlgEditReference, wxDialog )
     EVT_MENU( ID_EDREF_NEW_EVENT,  dlgEditReference::OnNewEvent )
     EVT_MENU( ID_EDREF_NEW_PLACE,  dlgEditReference::OnNewPlace )
     EVT_MENU( ID_EDREF_NEW_DATE,   dlgEditReference::OnNewDate )
+    EVT_MENU( ID_EDREF_NEW_NAME,   dlgEditReference::OnNewName )
     EVT_MENU( ID_EDREF_NEW_PER,    dlgEditReference::OnNewPersona )
     EVT_MENU( ID_EDREF_NEW_ATTR,   dlgEditReference::OnNewAttribute )
 END_EVENT_TABLE()
@@ -103,6 +105,9 @@ bool dlgEditReference::TransferDataToWindow()
         {
         case recReferenceEntity::TYPE_Date:
             m_listEntities->SetItem( i, COL_Value, recDate::GetStr( entID ) );
+            break;
+        case recReferenceEntity::TYPE_Name:
+            m_listEntities->SetItem( i, COL_Value, recName::GetFullName( entID ) );
             break;
         case recReferenceEntity::TYPE_Place:
             m_listEntities->SetItem( i, COL_Value, recPlace::GetAddressStr( entID ) );
@@ -186,6 +191,7 @@ void dlgEditReference::OnAddButton( wxCommandEvent& event )
     menu->Append( ID_EDREF_NEW_EVENT, _("&Event") );
     menu->Append( ID_EDREF_NEW_PLACE, _("P&lace") );
     menu->Append( ID_EDREF_NEW_DATE, _("&Date") );
+    menu->Append( ID_EDREF_NEW_NAME, _("&Name") );
     menu->Append( ID_EDREF_NEW_PER, _("&Persona") );
     menu->Append( ID_EDREF_NEW_ATTR, _("&Attribute") );
     PopupMenu( menu );
@@ -295,6 +301,36 @@ void dlgEditReference::OnNewDate( wxCommandEvent& event )
     dialog->Destroy();
 }
 
+void dlgEditReference::OnNewName( wxCommandEvent& event )
+{
+    const wxString savepoint = "RefName";
+    dlgEditName* dialog = new dlgEditName( NULL );
+
+    dialog->SetDefault( m_textCtrlStatement->GetStringSelection() );
+
+    recDb::Savepoint( savepoint );
+    if( dialog->ShowModal() == wxID_OK )
+    {
+        recDb::ReleaseSavepoint( savepoint );
+        int row = m_entities.size();
+        TfpEntity entity;
+        entity.rec.Clear();
+        entity.owner = 0;
+        entity.rec.f_ref_id = m_reference.f_id;
+        entity.rec.f_entity_type = recReferenceEntity::TYPE_Name;
+        entity.rec.f_entity_id = dialog->GetName()->f_id;
+        entity.rec.Save();
+        m_entities.push_back( entity );
+
+        m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
+        m_listEntities->SetItem( row, COL_Value, dialog->GetName()->GetFullName() );
+    } else {
+        // Dialog Cancelled
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+}
+
 void dlgEditReference::OnNewPersona( wxCommandEvent& event )
 {
     const wxString savepoint = "RefPer";
@@ -383,6 +419,7 @@ void dlgEditReference::OnEditButton( wxCommandEvent& event )
     {
     case recReferenceEntity::TYPE_Date:      DoEditDate( id, row );      break;
     case recReferenceEntity::TYPE_Place:     DoEditPlace( id, row );     break;
+    case recReferenceEntity::TYPE_Name :     DoEditName( id, row );      break;
     case recReferenceEntity::TYPE_Persona:   DoEditPersona( id, row );   break;
     case recReferenceEntity::TYPE_Attribute: DoEditAttribute( id, row ); break;
     case recReferenceEntity::TYPE_Event:     DoEditEvent( id, row );     break;
@@ -418,6 +455,23 @@ void dlgEditReference::DoEditPlace( id_t id, long row )
     {
         recDb::ReleaseSavepoint( savepoint );
         m_listEntities->SetItem( row, COL_Value, dialog->GetPlace()->GetAddressStr() );
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+}
+
+void dlgEditReference::DoEditName( id_t id, long row )
+{
+    const wxString savepoint = "RefEdName";
+    dlgEditName* dialog = new dlgEditName( NULL );
+    dialog->SetData( id );
+
+    recDb::Savepoint( savepoint );
+    if( dialog->ShowModal() == wxID_OK )
+    {
+        recDb::ReleaseSavepoint( savepoint );
+        m_listEntities->SetItem( row, COL_Value, dialog->GetName()->GetFullName() );
     } else {
         recDb::Rollback( savepoint );
     }

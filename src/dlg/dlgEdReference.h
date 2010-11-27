@@ -57,6 +57,7 @@ protected:
         ID_EDREF_NEW_EVENT,
         ID_EDREF_NEW_PLACE,
         ID_EDREF_NEW_DATE,
+        ID_EDREF_NEW_NAME,
         ID_EDREF_NEW_PER,
         ID_EDREF_NEW_ATTR
     };
@@ -82,13 +83,15 @@ protected:
     void OnNewEvent( wxCommandEvent& event );
     void OnNewPlace( wxCommandEvent& event );
     void OnNewDate( wxCommandEvent& event );
+    void OnNewName( wxCommandEvent& event );
     void OnNewPersona( wxCommandEvent& event );
     void OnNewAttribute( wxCommandEvent& event );
 
     void DoEditDate( id_t id, long row );
     void DoEditPlace( id_t id, long row );
-    void DoEditPersona( id_t id, long row );
+    void DoEditName( id_t id, long row );
     void DoEditAttribute( id_t id, long row );
+    void DoEditPersona( id_t id, long row );
     void DoEditEvent( id_t id, long row );
 
 public:

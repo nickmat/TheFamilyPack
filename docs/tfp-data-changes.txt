@@ -29,6 +29,9 @@ Add NameStyle table
 Attribute
   Remove sequence
 
+Persona
+  Add name_id field
+
 Source
   Rename sub_date_id to sub_date1_id
   Add sub_date2_id

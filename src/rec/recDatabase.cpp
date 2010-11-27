@@ -78,10 +78,7 @@ bool recDb::CreateDb( wxString& fname, unsigned flags )
 
 	fname = dbfile.GetFullPath();
     s_db->Open( fname );
-
-    s_db->Begin();
     s_db->ExecuteUpdate( createdb );
-    s_db->Commit();
     return true;
 }
 

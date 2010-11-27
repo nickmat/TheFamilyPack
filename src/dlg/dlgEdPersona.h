@@ -46,7 +46,7 @@ public:
 
     void SetData( id_t perID = 0 ) { m_persona.f_id = perID; }
     void SetDefault( wxString& name ) {
-        m_defaultAttr = true; m_name = name;
+        m_defaultName = true; m_nameStr = name;
     }
 
     recPersona* GetPersona() { return &m_persona; }
@@ -75,10 +75,10 @@ private:
 
     recPersona        m_persona;
     recIdVec          m_indLinks;
-    recNamePartVec    m_names;
+    recNameVec        m_names;
     recAttributeList  m_attributes;
-    bool              m_defaultAttr;
-    wxString          m_name;
+    bool              m_defaultName;
+    wxString          m_nameStr;
 };
 
 #endif // DLGEDPERSONA_H

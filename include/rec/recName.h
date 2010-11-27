@@ -37,7 +37,7 @@ class recName;
 class recNameStyle;
 class recNamePart;
 class recNamePartType;
-typedef wxVector< recName >  recNameList;
+typedef wxVector< recName >  recNameVec;
 typedef wxVector< recNameStyle >  recNameStyleVec;
 typedef wxVector< recNamePart >  recNamePartVec;
 typedef wxVector< recNamePartType >  recNamePartTypeVec;
@@ -68,10 +68,23 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "Name" );
 
+    void AddNameParts( wxString& nameStr ) const;
+//    void UpdateNameParts( wxString& nameStr );
+//    bool RemoveNameParts();
+
     bool FindPersona( id_t perID, id_t styleID = 0 );
     wxString GetNamePart( id_t nptID );
 //    static wxString GetValue( id_t id );
 //	static recNameList ConvertStrToList( const wxString& str, id_t type = NAME_TYPE_Given_name );
+
+    static wxString GetSurname( id_t id );
+    static wxString GetGivenName( id_t id );
+    static wxString GetFullName( id_t id ) 
+        { return GetGivenName( id ) + " " + GetSurname( id ); }
+    wxString GetFullName() const { return GetFullName( f_id ); }
+
+    static recNamePartVec GetParts( id_t nameID );
+    recNamePartVec GetParts() const { return GetParts( f_id ); }
 };
 
 inline bool recEquivalent( const recName& r1, const recName& r2 )
@@ -188,7 +201,7 @@ class recNameStyle : public recDb
 {
 public:
     enum Style {
-        NS_Stated = 0,
+        NS_Default = 0,
         NS_Birth  = -1,
         NS_Married = -2,
         NS_Alias   = -3,

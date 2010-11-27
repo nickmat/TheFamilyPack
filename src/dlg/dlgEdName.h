@@ -34,4 +34,37 @@
 
 #include "fbDlg.h"
 
+class dlgEditName : public fbDlgEditName
+{
+    enum Columns {
+        COL_Type, COL_Value, COL_MAX
+    };
+public:
+    dlgEditName( wxWindow* parent );
+
+    void SetData( id_t nameID = 0 ) { m_name.f_id = nameID; }
+    void SetDefault( wxString& name ) {
+        m_haveName = true; m_nameStr = name;
+    }
+
+    recName* GetName() { return &m_name; }
+
+private:
+    bool TransferDataToWindow();
+    bool TransferDataFromWindow();
+
+    void OnNameAddButton( wxCommandEvent& event );
+    void OnNameEditButton( wxCommandEvent& event );
+    void OnNameDeleteButton( wxCommandEvent& event );
+    void OnNameUpButton( wxCommandEvent& event );
+    void OnNameDownButton( wxCommandEvent& event );
+
+    bool              m_haveName; // was m_defaultAttr
+    wxString          m_nameStr;
+
+    recName           m_name;
+    recNamePartVec    m_parts;
+    recNameStyleVec   m_styles;
+};
+
 #endif // DLGEDNAME_H
