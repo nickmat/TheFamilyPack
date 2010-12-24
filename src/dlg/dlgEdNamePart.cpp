@@ -39,18 +39,41 @@
 
 #include "dlgEdNamePart.h"
 
-dlgEditNamePart::dlgEditNamePart( wxWindow* parent, id_t nameID )
+dlgEditNamePart::dlgEditNamePart( wxWindow* parent )
     : fbDlgEditNamePart( parent )
 {
-    m_persona = 0;
-    m_name.f_id = nameID;
-    m_name.Read();
+    m_np.Clear();
+    m_types = recNamePartType::GetTypeList();
 }
 
 bool dlgEditNamePart::TransferDataToWindow()
 {
+#if 0
     wxMessageBox( wxT("Needs rewrite"), wxT("dlgEditName") );
     return false;
+#endif
+    if( m_np.f_id == 0 ) {
+        m_np.Save();
+    } else {
+        m_np.Read();
+    }
+
+    wxString idStr = wxString::Format( "NP "ID":", m_np.f_id );
+    m_staticTextId->SetLabel( idStr );
+    wxString nameIdStr = wxString::Format( "N "ID, m_np.f_name_id );
+    m_staticTextPersona->SetLabel( nameIdStr );
+
+    for( size_t i = 0 ; i < m_types.size() ; i++ ) {
+        m_choiceType->Append( m_types[i].f_name );
+        if( m_np.f_type_id == m_types[i].f_id ) {
+            m_choiceType->SetSelection( (int) i );
+        }
+    }
+
+    m_textCtrlValue->SetValue( m_np.f_val );
+
+    return true;
+
 #if 0
     if( m_name.f_id == 0 )
     {
@@ -82,8 +105,19 @@ bool dlgEditNamePart::TransferDataToWindow()
 
 bool dlgEditNamePart::TransferDataFromWindow()
 {
-    wxMessageBox( wxT("Needs rewrite"), wxT("dlgEditName") );
-    return false;
+//    wxMessageBox( wxT("Needs rewrite"), wxT("dlgEditName") );
+//    return false;
+
+    int type = m_choiceType->GetSelection();
+    if( type < 0 ) {
+        m_np.f_type_id = 0;
+    } else {
+        m_np.f_type_id = m_types[type].f_id;
+    }
+    m_np.f_val = m_textCtrlValue->GetValue();
+    m_np.Save();
+    return true;
+
 #if 0
     int type = m_choiceType->GetSelection();
     if( type < 0 ) {

@@ -119,13 +119,14 @@ bool recName::Read()
 	return true;
 }
 
-void recName::AddNameParts( wxString& nameStr ) const
+void recName::AddNameParts( const wxString& nameStr ) const
 {
 	recNamePart part(0);
     part.f_name_id = f_id;
 
 	wxStringTokenizer tk( nameStr );
 	while( tk.HasMoreTokens() ) {
+        part.f_id = 0;
 		part.f_val = tk.GetNextToken();
         part.f_type_id = tk.HasMoreTokens() ? NAME_TYPE_Given_name : NAME_TYPE_Surname;
 		++part.f_sequence;

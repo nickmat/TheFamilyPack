@@ -285,6 +285,10 @@
                 >
             </File>
             <File
+                RelativePath="..\..\src\dlg\dlgSelect.cpp"
+                >
+            </File>
+            <File
                 RelativePath="..\..\src\dummy.cpp"
                 >
                 <FileConfiguration
@@ -412,6 +416,10 @@
             </File>
             <File
                 RelativePath="..\..\src\dlg\dlgSelIndividual.h"
+                >
+            </File>
+            <File
+                RelativePath="..\..\src\dlg\dlgSelect.h"
                 >
             </File>
             <File

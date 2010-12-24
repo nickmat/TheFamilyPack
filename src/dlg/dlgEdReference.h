@@ -80,19 +80,19 @@ protected:
     void DoRedo();
 
     void OnNewSource( wxCommandEvent& event );
-    void OnNewEvent( wxCommandEvent& event );
-    void OnNewPlace( wxCommandEvent& event );
     void OnNewDate( wxCommandEvent& event );
-    void OnNewName( wxCommandEvent& event );
+    void OnNewPlace( wxCommandEvent& event );
     void OnNewPersona( wxCommandEvent& event );
+    void OnNewEvent( wxCommandEvent& event );
     void OnNewAttribute( wxCommandEvent& event );
+    void OnNewName( wxCommandEvent& event );
 
     void DoEditDate( id_t id, long row );
     void DoEditPlace( id_t id, long row );
-    void DoEditName( id_t id, long row );
-    void DoEditAttribute( id_t id, long row );
     void DoEditPersona( id_t id, long row );
     void DoEditEvent( id_t id, long row );
+    void DoEditAttribute( id_t id, long row );
+    void DoEditName( id_t id, long row );
 
 public:
     /** Constructor */
@@ -102,6 +102,9 @@ public:
 
 private:
     void InsertListItem( long row, const TfpEntity& ent );
+
+    id_t SelectPersona();
+    id_t SelectName();
 
     recReference  m_reference;
     TfpEntities   m_entities;

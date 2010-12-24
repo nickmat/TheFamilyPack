@@ -42,6 +42,7 @@
 #include <rec/recIndividual.h>
 
 #include "dlgEdPersona.h"
+#include "dlgEdName.h"
 #include "dlgEdAttribute.h"
 #include "dlgEd.h"
 
@@ -58,7 +59,6 @@ dlgEditPersona::dlgEditPersona( wxWindow* parent ) : fbDlgEditPersona( parent )
     m_listAttr->InsertColumn( 1, itemCol );
 
     m_persona.Clear();
-    m_defaultName = false;
 }
 
 bool dlgEditPersona::TransferDataToWindow()
@@ -68,22 +68,14 @@ bool dlgEditPersona::TransferDataToWindow()
     } else {
         m_persona.Read();
     }
+    m_nameStr = recName::GetFullName( m_persona.f_name_id );
+    m_staticPerName->SetLabel( m_nameStr );
 
     m_choiceSex->SetSelection( (int) m_persona.f_sex );
     m_textCtrlNote->SetValue(  m_persona.f_note );
 
     m_indLinks = m_persona.GetIndividualIDs();
     m_staticIndId->SetLabel( GetIndLinksString() );
-
-    if( m_defaultName == true ) {
-        m_staticPerName->SetLabel( m_nameStr );
-        recName name(0);
-        name.f_per_id = m_persona.f_id;
-        name.Save();
-        name.AddNameParts( m_nameStr );
-    } else {
-        m_staticPerName->SetLabel( m_persona.GetFullName() );
-    }
 
     m_names = m_persona.ReadNames();
     for( size_t i = 0 ; i < m_names.size() ; i++ ) {
@@ -106,16 +98,6 @@ bool dlgEditPersona::TransferDataFromWindow()
     m_persona.f_note = m_textCtrlNote->GetValue();
     m_persona.Save();
 
-#if 0
-    for( size_t i = 0 ; i < m_names.size() ; i++ ) {
-        m_names[i].f_sequence = i + 1;
-        m_names[i].Save();
-    }
-
-    for( size_t i = 0 ; i < m_attributes.size() ; i++ ) {
-        m_attributes[i].Save();
-    }
-#endif
     return true;
 }
 
@@ -146,11 +128,12 @@ void dlgEditPersona::OnIndCreateButton( wxCommandEvent& event )
 
 void dlgEditPersona::OnNameAddButton( wxCommandEvent& event )
 {
-    wxMessageBox( wxT("OnNameAddButton Needs rewrite"), wxT("dlgEditPersona") );
 #if 0
+    wxMessageBox( wxT("OnNameAddButton Needs rewrite"), wxT("dlgEditPersona") );
+#endif
     const wxString savepoint = "PerAddName";
     dlgEditName* dialog = new dlgEditName( NULL );
-    dialog->SetPersona( m_persona.f_id );
+    dialog->SetPersonaID( m_persona.f_id );
 
     recDb::Savepoint( savepoint );
     if( dialog->ShowModal() == wxID_OK )
@@ -158,14 +141,13 @@ void dlgEditPersona::OnNameAddButton( wxCommandEvent& event )
         recDb::ReleaseSavepoint( savepoint );
         recName* name = dialog->GetName();
         int row = m_names.size();
-        m_listName->InsertItem( row, recNamePartType::GetTypeStr( name->f_type_id ) );
-        m_listName->SetItem( row, COL_Value, name->f_val );
+        m_listName->InsertItem( row, recNameStyle::GetStyleStr( name->f_style_id ) );
+        m_listName->SetItem( row, COL_Value, name->GetFullName() );
         m_names.push_back( *name );
     } else {
         recDb::Rollback( savepoint );
     }
     dialog->Destroy();
-#endif
 }
 
 void dlgEditPersona::OnNameEditButton( wxCommandEvent& event )
@@ -265,7 +247,7 @@ void dlgEditPersona::OnAttrAddButton( wxCommandEvent& event )
 {
     const wxString savepoint = "PerAddAttr";
     dlgEditAttribute* dialog = new dlgEditAttribute( NULL );
-    dialog->SetPersona( m_persona.f_id );
+    dialog->SetPersonaID( m_persona.f_id );
 
     recDb::Savepoint( savepoint );
     if( dialog->ShowModal() == wxID_OK )
@@ -291,7 +273,8 @@ void dlgEditPersona::OnAttrEditButton( wxCommandEvent& event )
     }
 
     const wxString savepoint = "PerEdAttr";
-    dlgEditAttribute* dialog = new dlgEditAttribute( NULL, m_attributes[row].f_id );
+    dlgEditAttribute* dialog = new dlgEditAttribute( NULL );
+    dialog->SetAttributeID( m_attributes[row].f_id );
 
     recDb::Savepoint( savepoint );
     if( dialog->ShowModal() == wxID_OK )

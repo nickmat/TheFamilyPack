@@ -83,9 +83,9 @@ public:
         TYPE_Event,      // 2
         TYPE_Place,      // 3
         TYPE_Date,       // 4
-        TYPE_Name,       // 5
-        TYPE_Persona,    // 6
-        TYPE_Attribute,  // 7
+        TYPE_Persona,    // 5
+        TYPE_Attribute,  // 6
+        TYPE_Name,       // 7
         TYPE_MAX         // 8
     };
     static const wxString sm_typeStr[TYPE_MAX];
@@ -106,6 +106,8 @@ public:
 
     wxString GetTypeStr() { return sm_typeStr[f_entity_type]; }
     static wxString GetTypeStr( Type etype ) { return sm_typeStr[etype]; }
+
+//    static wxArrayString GetNameTable( id_t refID );
 };
 
 inline bool recEquivalent( const recReferenceEntity& r1, const recReferenceEntity& r2 )

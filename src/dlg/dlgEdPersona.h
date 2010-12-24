@@ -44,13 +44,9 @@ class dlgEditPersona : public fbDlgEditPersona
 public:
     dlgEditPersona( wxWindow* parent );
 
-    void SetData( id_t perID = 0 ) { m_persona.f_id = perID; }
-    void SetDefault( wxString& name ) {
-        m_defaultName = true; m_nameStr = name;
-    }
+    void SetPersonaID( id_t perID ) { m_persona.f_id = perID; }
 
     recPersona* GetPersona() { return &m_persona; }
-    recAttributeList GetAttributes() const { return m_attributes; }
 
 private:
     bool TransferDataToWindow();
@@ -77,7 +73,7 @@ private:
     recIdVec          m_indLinks;
     recNameVec        m_names;
     recAttributeList  m_attributes;
-    bool              m_defaultName;
+
     wxString          m_nameStr;
 };
 

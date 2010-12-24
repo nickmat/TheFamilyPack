@@ -38,6 +38,7 @@
 #endif
 
 #include <rec/recReference.h>
+#include <rec/recName.h>
 
 
 recReference::recReference( const recReference& r )
@@ -163,9 +164,9 @@ const wxString recReferenceEntity::sm_typeStr[recReferenceEntity::TYPE_MAX] = {
     _("Event"),      // TYPE_Event
     _("Place"),      // TYPE_Place
     _("Date"),       // TYPE_Date
-    _("Name"),       // TYPE_Name
     _("Persona"),    // TYPE_Persona
-    _("Attribute")//,  // TYPE_Attribute
+    _("Attribute"),  // TYPE_Attribute
+    _("Name")//,       // TYPE_Name
 //    _("Role")        // TYPE_Role
 };
 
@@ -256,5 +257,24 @@ bool recReferenceEntity::Read()
     f_sequence    = (unsigned) result.GetInt( 3 );
 	return true;
 }
+#if 0
+wxArrayString recReferenceEntity::GetNameTable( id_t refID )
+{
+    wxArrayString list;
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3ResultSet result;
 
+    sql.Format(
+        "SELECT entity_id FROM ReferenceEntity WHERE ref_id="ID" AND entity_type=7;",
+        refID
+    );
+    result = s_db->ExecuteQuery( sql );
+    while( result.NextRow() ) {
+        id_t id = GET_ID( result.GetInt64( 0 ) );
+        list.Add( result.GetAsString( 0 ) );
+        list.Add( recName::GetFullName( id ) );
+    }
+    return list;
+}
+#endif
 // End of recReference.cpp file

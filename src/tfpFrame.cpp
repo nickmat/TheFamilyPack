@@ -634,7 +634,7 @@ void TfpFrame::OpenFile()
         if( recDb::OpenDb( path ) == true )
         {
             SetDatabaseOpen( path, true );
-            DisplayHtmPage( wxT("F1") );
+            DisplayHtmPage( wxT("R") );
         }
     }
 }

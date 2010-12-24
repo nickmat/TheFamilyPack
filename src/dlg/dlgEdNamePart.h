@@ -37,22 +37,23 @@
 class dlgEditNamePart : public fbDlgEditNamePart
 {
 public:
-    dlgEditNamePart( wxWindow* parent, id_t nameID = 0 );
+    dlgEditNamePart( wxWindow* parent );
 
-    void SetText( const wxString& text ) { m_text = text; }
-    void SetPersona( id_t perID ) { m_persona = perID; }
+    void SetNamePartID( id_t npID ) { m_np.f_id = npID; }
+    void SetNameID( id_t nameID ) { m_np.f_name_id = nameID; }
+    void SetValue( const wxString& val ) { m_np.f_val = val; }
 
-    wxString GetText() const { return m_text; }
-    recName* GetName() { return &m_name; }
+//    wxString GetText() const { return m_text; }
+    recNamePart* GetNamePart() { return &m_np; }
 
 private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
 
-    id_t            m_persona;
-    recName         m_name;
-    wxString        m_text;
-    recNamePartTypeVec  m_typeList;
+//    id_t            m_persona;
+    recNamePart  m_np;
+//    wxString        m_text;
+    recNamePartTypeVec  m_types;
 };
 
 #endif // DLGEDNAMEPART_H

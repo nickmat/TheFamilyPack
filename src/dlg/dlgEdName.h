@@ -47,17 +47,23 @@ public:
         m_haveName = true; m_nameStr = name;
     }
 
+    void SetID( id_t nameID = 0 ) { m_name.f_id = nameID; }
+    void SetPersonaID( id_t perID = 0 ) { m_name.f_per_id = perID; }
+    void CreateName( const wxString name ) {
+        m_haveName = true; m_nameStr = name;
+    }
+
     recName* GetName() { return &m_name; }
 
 private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
 
-    void OnNameAddButton( wxCommandEvent& event );
-    void OnNameEditButton( wxCommandEvent& event );
-    void OnNameDeleteButton( wxCommandEvent& event );
-    void OnNameUpButton( wxCommandEvent& event );
-    void OnNameDownButton( wxCommandEvent& event );
+    void OnPartAddButton( wxCommandEvent& event );
+    void OnPartEditButton( wxCommandEvent& event );
+    void OnPartDeleteButton( wxCommandEvent& event );
+    void OnPartUpButton( wxCommandEvent& event );
+    void OnPartDownButton( wxCommandEvent& event );
 
     bool              m_haveName; // was m_defaultAttr
     wxString          m_nameStr;

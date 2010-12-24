@@ -68,7 +68,7 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "Name" );
 
-    void AddNameParts( wxString& nameStr ) const;
+    void AddNameParts( const wxString& nameStr ) const;
 //    void UpdateNameParts( wxString& nameStr );
 //    bool RemoveNameParts();
 

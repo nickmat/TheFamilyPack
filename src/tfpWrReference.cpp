@@ -59,7 +59,7 @@ wxString tfpWriteReferenceIndex()
 				<< result.GetAsString( 0 ) 
 				<< "'><b>R"
 				<< result.GetAsString( 0 ) 
-                << "</b> </td><td> "
+                << "</b></a> </td><td> "
 			    << result.GetAsString( 1 )
 				<< "</td></tr>";
 		}

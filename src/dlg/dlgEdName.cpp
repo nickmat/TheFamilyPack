@@ -40,14 +40,15 @@
 #include <wx/tokenzr.h>
 
 #include "dlgEdName.h"
+#include "dlgEdNamePart.h"
 
 dlgEditName::dlgEditName( wxWindow* parent ) : fbDlgEditName( parent )
 {
     wxListItem itemCol;
     itemCol.SetText( wxT("Type") );
-    m_listName->InsertColumn( 0, itemCol );
+    m_listParts->InsertColumn( 0, itemCol );
     itemCol.SetText( wxT("Value") );
-    m_listName->InsertColumn( 1, itemCol );
+    m_listParts->InsertColumn( 1, itemCol );
 
     m_name.Clear();
     m_haveName = false;
@@ -57,31 +58,13 @@ bool dlgEditName::TransferDataToWindow()
 {
     if( m_name.f_id == 0 ) {
         m_name.Save();
+        if( m_haveName == true ) {
+            m_name.AddNameParts( m_nameStr );
+        }
     } else {
         m_name.Read();
     }
-
-
-    if( m_haveName == true ) {
-        m_staticName->SetLabel( m_nameStr );
-//        recName name(0);
-//        name.Save();
-        recNamePart np;
-        int seq = 0;
-        wxStringTokenizer tk( m_nameStr );
-        while( tk.HasMoreTokens() ) {
-            np.Clear();
-            np.f_name_id = m_name.f_id;
-            np.f_val = tk.GetNextToken();
-            np.f_type_id = tk.HasMoreTokens() ?
-                NAME_TYPE_Given_name : NAME_TYPE_Surname;
-            np.f_sequence = ++seq;
-            np.Save();
-            m_parts.push_back( np );
-        }
-    } else {
-        m_staticName->SetLabel( m_name.GetFullName() );
-    }
+    m_staticName->SetLabel( m_name.GetFullName() );
 
     wxString nID( "N" );
     nID << m_name.f_id;
@@ -97,8 +80,8 @@ bool dlgEditName::TransferDataToWindow()
 
     m_parts = m_name.GetParts();
     for( size_t i = 0 ; i < m_parts.size() ; i++ ) {
-        m_listName->InsertItem( i, recNamePartType::GetTypeStr( m_parts[i].f_type_id ) );
-        m_listName->SetItem( i, COL_Value, m_parts[i].f_val );
+        m_listParts->InsertItem( i, recNamePartType::GetTypeStr( m_parts[i].f_type_id ) );
+        m_listParts->SetItem( i, COL_Value, m_parts[i].f_val );
     }
 
     return true;
@@ -109,12 +92,36 @@ bool dlgEditName::TransferDataFromWindow()
     int i = m_choiceStyle->GetSelection();
     m_name.f_style_id = m_styles[i].f_id;
     m_name.Save();
+    int seq = 0;
+    for( size_t i = 0 ; m_parts.size() ; i++ ) {
+        m_parts[i].f_sequence = ++seq;
+        m_parts[i].Save();
+    }
     return true;
 }
 
-void dlgEditName::OnNameAddButton( wxCommandEvent& event )
+void dlgEditName::OnPartAddButton( wxCommandEvent& event )
 {
-    wxMessageBox( wxT("OnNameAddButton Needs rewrite"), wxT("dlgEditName") );
+//    wxMessageBox( wxT("OnNameAddButton Needs rewrite"), wxT("dlgEditName") );
+
+    const wxString savepoint = "NameAddPart";
+    dlgEditNamePart* dialog = new dlgEditNamePart( NULL );
+    dialog->SetNameID( m_name.f_id );
+
+    recDb::Savepoint( savepoint );
+    if( dialog->ShowModal() == wxID_OK )
+    {
+        recDb::ReleaseSavepoint( savepoint );
+        recNamePart* np = dialog->GetNamePart();
+        int row = m_parts.size();
+        m_listParts->InsertItem( row, recNamePartType::GetTypeStr( np->f_type_id ) );
+        m_listParts->SetItem( row, COL_Value, np->f_val );
+        m_parts.push_back( *np );
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+
 #if 0
     const wxString savepoint = "PerAddName";
     dlgEditName* dialog = new dlgEditName( NULL );
@@ -136,7 +143,7 @@ void dlgEditName::OnNameAddButton( wxCommandEvent& event )
 #endif
 }
 
-void dlgEditName::OnNameEditButton( wxCommandEvent& event )
+void dlgEditName::OnPartEditButton( wxCommandEvent& event )
 {
     wxMessageBox( wxT("OnNameAddButton Needs rewrite"), wxT("dlgEditName") );
 #if 0
@@ -164,7 +171,7 @@ void dlgEditName::OnNameEditButton( wxCommandEvent& event )
 #endif
 }
 
-void dlgEditName::OnNameDeleteButton( wxCommandEvent& event )
+void dlgEditName::OnPartDeleteButton( wxCommandEvent& event )
 {
     wxMessageBox( wxT("OnNameDeleteButton Needs rewrite"), wxT("dlgEditName") );
 #if 0
@@ -179,7 +186,7 @@ void dlgEditName::OnNameDeleteButton( wxCommandEvent& event )
 #endif
 }
 
-void dlgEditName::OnNameUpButton( wxCommandEvent& event )
+void dlgEditName::OnPartUpButton( wxCommandEvent& event )
 {
     wxMessageBox( wxT("OnNameUpButton Needs rewrite"), wxT("dlgEditName") );
 #if 0
@@ -204,7 +211,7 @@ void dlgEditName::OnNameUpButton( wxCommandEvent& event )
 #endif
 }
 
-void dlgEditName::OnNameDownButton( wxCommandEvent& event )
+void dlgEditName::OnPartDownButton( wxCommandEvent& event )
 {
     wxMessageBox( wxT("OnNameDownButton Needs rewrite"), wxT("dlgEditName") );
 #if 0

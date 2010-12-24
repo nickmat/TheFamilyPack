@@ -39,27 +39,20 @@
 
 #include "dlgEdAttribute.h"
 
-dlgEditAttribute::dlgEditAttribute( wxWindow* parent, id_t id )
+dlgEditAttribute::dlgEditAttribute( wxWindow* parent )
     : fbDlgEditAttribute( parent )
 {
-    m_persona = 0;
-    m_attr.f_id = id;
-    m_attr.Read();
+    m_attr.Clear();
 }
 
 bool dlgEditAttribute::TransferDataToWindow()
 {
-    if( m_attr.f_id == 0 )
-    {
-        m_attr.Clear();
-        m_attr.f_per_id = m_persona;
+    if( m_attr.f_id == 0 ) {
         m_attr.Save();
     } else {
         m_attr.Read();
-        m_persona = m_attr.f_per_id;
-        m_text = m_attr.f_val;
     }
-    m_textCtrlValue->SetValue( m_text );
+    m_textCtrlValue->SetValue( m_attr.f_val );
 
     wxString idStr = wxString::Format( "A "ID":", m_attr.f_id );
     m_staticTextId->SetLabel( idStr );

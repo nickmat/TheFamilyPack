@@ -37,21 +37,21 @@
 class dlgEditAttribute : public fbDlgEditAttribute
 {
 public:
-    dlgEditAttribute( wxWindow* parent, id_t attID = 0 );
+    dlgEditAttribute( wxWindow* parent );
 
-    void SetText( const wxString& text ) { m_text = text; }
-    void SetPersona( id_t perID ) { m_persona = perID; }
+    void SetAttributeID( id_t id ) { m_attr.f_id = id; }
+    void SetPersonaID( id_t perID ) { m_attr.f_per_id = perID; }
+    void SetTypeID( id_t typeID ) { m_attr.f_type_id = typeID; }
+    void SetValue( const wxString& val ) { m_attr.f_val = val; }
 
-    wxString GetText() const { return m_text; }
+    wxString GetText() const { return m_attr.f_val; }
     recAttribute* GetAttribute() { return &m_attr; }
 
 private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
 
-    id_t         m_persona;
     recAttribute m_attr;
-    wxString     m_text;
     recAttributeTypeVec  m_typeList;
 };
 

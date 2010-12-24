@@ -372,23 +372,23 @@ class fbDlgEditName : public wxDialog
 		wxStaticText* m_staticNameID;
 		wxStaticText* m_staticText1a;
 		wxChoice* m_choiceStyle;
-		wxListCtrl* m_listName;
-		wxButton* m_buttonNameAdd;
-		wxButton* m_buttonNameEdit;
-		wxButton* m_buttonNameDel;
-		wxButton* m_buttonNameUp;
-		wxButton* m_buttonNameDn;
+		wxListCtrl* m_listParts;
+		wxButton* m_buttonPartAdd;
+		wxButton* m_buttonPartEdit;
+		wxButton* m_buttonPartDel;
+		wxButton* m_buttonPartUp;
+		wxButton* m_buttonPartDn;
 		wxStaticLine* m_staticline1;
 		
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
 		
 		// Virtual event handlers, overide them in your derived class
-		virtual void OnNameAddButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnNameEditButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnNameDeleteButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnNameUpButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnNameDownButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnPartAddButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnPartEditButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnPartDeleteButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnPartUpButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnPartDownButton( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:
@@ -585,6 +585,31 @@ class fbDlgSelectEvent : public wxDialog
 		
 		fbDlgSelectEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Select Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 485,269 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
 		~fbDlgSelectEvent();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class fbDlgSelect
+///////////////////////////////////////////////////////////////////////////////
+class fbDlgSelect : public wxDialog 
+{
+	private:
+	
+	protected:
+		dlgStrTableCtrl* m_listCtrl;
+		wxStaticLine* m_staticline;
+		
+		wxButton* m_buttonSelect;
+		wxButton* m_buttonCancel;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnIdle( wxIdleEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		fbDlgSelect( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Select"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 485,269 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+		~fbDlgSelect();
 	
 };
 

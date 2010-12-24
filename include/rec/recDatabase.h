@@ -30,6 +30,8 @@
 #ifndef RECDATABASE_H
 #define RECDATABASE_H
 
+#include <vector>
+
 #include <wx/vector.h>
 #include <wx/wxsqlite3.h>
 
@@ -42,7 +44,7 @@ typedef wxLongLong      id_t;
 #define BOOL_(i) ( (i) ? 1 : 0 )
 
 typedef wxVector< id_t >  recIdList;
-typedef wxVector< id_t >  recIdVec;
+typedef std::vector< id_t >  recIdVec;
 
 enum Sex { SEX_Unstated, SEX_Male, SEX_Female, SEX_Unknown };
 extern wxString recGetSexStr( Sex sex );
