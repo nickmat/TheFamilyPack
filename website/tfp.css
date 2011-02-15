@@ -112,13 +112,6 @@ a.m-item:hover, a.m-item.hover:link, a.m-item.hover:visited, a.m-item.hover:acti
  background-position: left;
 }
 
-a.m-item:hover, a.m-item.hover:link, a.m-item.hover:visited, a.m-item.hover:active {
- background-color: #eee;
- background-image:url(smallheart.gif);
- background-repeat: no-repeat;
- background-position: left;
-}
-
 a.thispage, a.thispage:hover {
  background-image:url(smallspade.gif);
  background-repeat: no-repeat;
