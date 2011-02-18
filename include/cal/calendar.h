@@ -260,4 +260,15 @@ extern bool calStrToJdn( long& jdn, const wxString& str, CalendarScheme scheme )
 extern bool calStrToJdnRange(
     long& jdn1, long& jdn2, const wxString& str, CalendarScheme scheme );
 
+/*! Subtract the age in dmy from the given jdn range for the given scheme.
+ *  If age.day == -1 then expand the range to include all possible dates
+ *  for the given age.month and age.year.
+ *  If age.month == -1 then expand the range to include all possible dates
+ *  for the given age.year.
+ *  If successful updates jdn1 and jdn2 and returns true. 
+ *  If unsuccessful returns false.
+ */
+extern bool calSubAgeFromJdnRange( 
+    long& jdn1, long& jdn2, const DMYDate& dmy, CalendarScheme scheme );
+
 #endif // CALENDAR_H

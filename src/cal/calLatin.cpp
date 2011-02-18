@@ -148,7 +148,8 @@ bool calLatinFromJdn( long jdn, DMYDate& dmy, CalendarScheme scheme )
     return false;
 }
 
-bool calLatinToJdn( long& jdn, int d, int m, int y, CalendarScheme scheme ) {
+bool calLatinToJdn( long& jdn, int d, int m, int y, CalendarScheme scheme ) 
+{
     DMYDate dmy; 
     
     dmy.day = d; 
@@ -162,7 +163,6 @@ bool calLatinToJdn( long& jdn, int d, int m, int y, CalendarScheme scheme ) {
  */
 wxString calLatinStrFromJdn( long jdn, CalendarScheme scheme )
 {
-//    int day, month, year;
     DMYDate dmy;
     wxString str;
 
@@ -237,7 +237,6 @@ wxString calLatinStrFromJdnRange( long jdn1, long jdn2, CalendarScheme scheme )
  */
 bool calLatinStrToJdn( long& jdn, const wxString& str, CalendarScheme scheme )
 {
-//    int day, month, year;
     DMYDate dmy;
 
     if( calLatinFromStr( str, dmy ) == false )
@@ -267,7 +266,6 @@ bool calLatinStrToJdnRange(
     if( count == 3 && tokens[1] == wxT("-") )
     {
         if( tokens[0].ToLong( &year ) == false ) return false;
-//        ret1 = calLatinToJdn( jdn1, 1, 1, year, scheme );
         ret1 = calLatinToJdn( jdn1, 1, 1, year, scheme );
         if( tokens[2].ToLong( &year ) == false ) return false;
         ret2 = calLatinToJdn( jdn2, 31, 12, year, scheme );
@@ -339,6 +337,64 @@ bool calLatinStrToJdnRange(
         jdn1 = jdn2;
         jdn2 = temp;
     }
+    return true;
+}
+
+/*! Subtract the age in dmy from the given jdn range for the given scheme.
+ *  If age.day == -1 then expand the range to include all possible dates
+ *  for the given age.month and age.year.
+ *  If age.month == -1 then expand the range to include all possible dates
+ *  for the given age.year.
+ *  If successful updates jdn1 and jdn2 and returns true. 
+ *  If unsuccessful returns false.
+ */
+bool calLatinSubAgeFromJdnRange(
+    long& jdn1, long& jdn2, const DMYDate& age, CalendarScheme scheme )
+{
+    DMYDate dmy;
+    long n1, n2;
+    
+    wxASSERT( age.year >= 0 );
+    if( !calConvertFromJdn( jdn1, dmy, scheme ) ) return false;
+    dmy.year -= age.year;
+    if( age.month > -1 ) {
+        dmy.month -= age.month + ( (age.day > -1) ? 0 : 1 );
+        while( dmy.month < 1 ) {
+            --dmy.year;
+            dmy.month += 12;
+        }
+        if( age.day > -1 ) {
+            dmy.day -= age.day + 1;
+            while( dmy.day < 1 ) {
+                --dmy.month;
+                dmy.day += calLastDayInMonth( dmy.month, dmy.year, scheme );
+            }
+        }
+    } else {
+        --dmy.year;
+    }
+    if( !calConvertToJdn( n1, dmy, scheme ) ) return false;
+    n1++;
+    if( !calConvertFromJdn( jdn2, dmy, scheme ) ) return false;
+    dmy.year -= age.year;
+    if( age.month > -1 ) {
+        dmy.month -= age.month;
+        while( dmy.month < 1 ) {
+            --dmy.year;
+            dmy.month += 12;
+        }
+        if( age.day > -1 ) {
+            dmy.day -= age.day;
+            while( dmy.day < 1 ) {
+                --dmy.month;
+                dmy.day += calLastDayInMonth( dmy.month, dmy.year, scheme );
+            }
+        }
+    }
+    if( !calConvertToJdn( n2, dmy, scheme ) ) return false;
+    // Only update jdn's now we know there's no errors.
+    jdn1 = n1;
+    jdn2 = n2;
     return true;
 }
 

@@ -261,4 +261,22 @@ bool calStrToJdnRange(
     return ret;
 }
 
-// End of Calendar.cpp
+bool calSubAgeFromJdnRange(
+    long& jdn1, long& jdn2, const DMYDate& dmy, CalendarScheme scheme )
+{
+    bool ret;
+
+    switch( scheme )
+    {
+    case CALENDAR_SCH_Julian:
+    case CALENDAR_SCH_Gregorian:
+        ret = calLatinSubAgeFromJdnRange( jdn1, jdn2, dmy, scheme );
+        break;
+    default:
+        ret = false;
+    }
+
+    return ret;
+}
+
+// End of calendar.cpp
