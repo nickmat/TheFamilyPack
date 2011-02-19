@@ -352,6 +352,7 @@ void dlgEditReference::OnNewEvent( wxCommandEvent& cmnd_event )
     dialog->SetData( type );
     dialog->GetEvent()->f_title = m_textCtrlStatement->GetStringSelection();
     dialog->SetEntities( &m_entities );
+    dialog->SetDateStrings( GetDateEntityStringVec() );
 
     recDb::Savepoint( savepoint );
     if( dialog->ShowModal() == wxID_OK )
@@ -558,6 +559,7 @@ void dlgEditReference::DoEditEvent( id_t id, long row )
 
     dialog->SetData( 0, id );
     dialog->SetEntities( &m_entities );
+    dialog->SetDateStrings( GetDateEntityStringVec() );
 
     recDb::Savepoint( savepoint );
     if( dialog->ShowModal() == wxID_OK )
@@ -799,5 +801,20 @@ id_t dlgEditReference::SelectName()
     dialog->Destroy();
     return nameID;
 }
+
+TfpEntityStringVec dlgEditReference::GetDateEntityStringVec()
+{
+    TfpEntityString estr;
+    TfpEntityStringVec list;
+    for( size_t i = 0 ; i < m_entities.size() ; i++ ) {
+        if( m_entities[i].rec.f_entity_type == recReferenceEntity::TYPE_Date ) {
+            estr.m_str = recDate::GetStr( m_entities[i].rec.f_entity_id );
+            estr.m_index = i;
+            list.push_back( estr );
+        }
+    }
+    return list;
+}
+
 
 // End of dlgEdReference.cpp file

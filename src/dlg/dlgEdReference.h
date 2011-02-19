@@ -30,6 +30,8 @@
 #ifndef DLGEDREFERENCE_H
 #define DLGEDREFERENCE_H
 
+#include <vector>
+
 #include <wx/vector.h>
 #include <rec/recReference.h>
 
@@ -44,6 +46,13 @@ struct TfpEntity {
 typedef wxVector< TfpEntity >  TfpEntities;
 
 extern int tfpGetEntityIndex( TfpEntities* array, int ind );
+
+struct TfpEntityString {
+    wxString m_str;
+    size_t   m_index;
+};
+
+typedef std::vector< TfpEntityString > TfpEntityStringVec;
 
 class dlgEditReference : public fbDlgEditReference
 {
@@ -105,6 +114,8 @@ private:
 
     id_t SelectPersona();
     id_t SelectName();
+
+    TfpEntityStringVec GetDateEntityStringVec();
 
     recReference  m_reference;
     TfpEntities   m_entities;

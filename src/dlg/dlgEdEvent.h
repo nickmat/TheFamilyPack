@@ -52,6 +52,7 @@ public:
 
     void SetData( id_t typeID, id_t eventID = 0 );
     void SetEntities( TfpEntities* entities ) { mp_entities = entities; }
+    void SetDateStrings( TfpEntityStringVec strs ) { m_dateStrings = strs; }
     recEvent* GetEvent() { return &m_event; }
 
 protected:
@@ -63,6 +64,7 @@ protected:
     void OnDateEndButton( wxCommandEvent& event ); // Overide base
     void DateSelectButton( EvDate button );
     void OnDateSelect( wxCommandEvent& event );
+    void OnAgeSelect( wxCommandEvent& event );
     void OnPlaceButton( wxCommandEvent& event );   // Overide base
     void OnPlaceSelect( wxCommandEvent& event );
     void OnAddButton( wxCommandEvent& event );     // Overide base
@@ -78,6 +80,7 @@ private:
     recEventPersonaVec m_pes;
 
     TfpEntities*       mp_entities;
+    TfpEntityStringVec m_dateStrings;
 
     EvDate             m_dateButton;
 };

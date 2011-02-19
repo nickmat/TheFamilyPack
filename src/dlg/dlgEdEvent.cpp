@@ -45,6 +45,7 @@
 #include "dlgEdRole.h"
 
 #define ID_DATE_MENU_START  20000
+#define ID_AGE_MENU_START  20500
 #define ID_PLACE_MENU_START 21000
 #define ID_ROLE_MENU_START  22000
 
@@ -53,6 +54,7 @@ IMPLEMENT_CLASS( dlgEditEvent, wxDialog )
 
 BEGIN_EVENT_TABLE( dlgEditEvent, wxDialog )
     EVT_MENU_RANGE( ID_DATE_MENU_START, ID_DATE_MENU_START+100, dlgEditEvent::OnDateSelect )
+    EVT_MENU_RANGE( ID_AGE_MENU_START, ID_AGE_MENU_START+100, dlgEditEvent::OnAgeSelect )
     EVT_MENU_RANGE( ID_PLACE_MENU_START, ID_PLACE_MENU_START+100, dlgEditEvent::OnPlaceSelect )
 END_EVENT_TABLE()
 
@@ -121,21 +123,29 @@ void dlgEditEvent::DateSelectButton( EvDate button )
 {
     m_dateButton = button;
     wxMenu* dmenu = new wxMenu;
+    wxMenu* amenu = new wxMenu;
     size_t m = 0;
-    dmenu->Append( ID_DATE_MENU_START + m++, wxT("Create new") );
-    for( size_t i = 0 ; i < mp_entities->size() ; i++ ) {
+    dmenu->Append( ID_DATE_MENU_START, wxT("Create new") );
+    dmenu->Append( ID_DATE_MENU_START + 1, wxT("From age at"), amenu );
+//    size_t maxEntries = wxMin( 98, mp_entities->size() );
+    for( size_t i = 0 ; i < m_dateStrings.size() ; i++ ) {
+        dmenu->Append( ID_DATE_MENU_START + 2, m_dateStrings[i].m_str );
+        amenu->Append( ID_AGE_MENU_START, m_dateStrings[i].m_str );
+
+#if 0
         if( (*mp_entities)[i].rec.f_entity_type == recReferenceEntity::TYPE_Date ) {
-            dmenu->Append(
-                ID_DATE_MENU_START + m,
-                recDate::GetStr( (*mp_entities)[i].rec.f_entity_id )
-            );
+            wxString dstr = recDate::GetStr( (*mp_entities)[i].rec.f_entity_id );
+            dmenu->Append( ID_DATE_MENU_START + 2, dstr );
+            amenu->Append( ID_AGE_MENU_START, dstr );
             (*mp_entities)[i].index = m;
             m++;
         } else {
             (*mp_entities)[i].index = -1;
         }
+#endif
     }
     PopupMenu( dmenu );
+    delete amenu;
     delete dmenu;
 }
 
@@ -148,8 +158,28 @@ void dlgEditEvent::OnDateSelect( wxCommandEvent& event )
     if( i == 0 ) {
         textCtrlDate->SetValue( wxT("TODO: Get New Date") );
     } else {
-        int entry = tfpGetEntityIndex( mp_entities, i );
-        id_t dateID = (*mp_entities)[entry].rec.f_entity_id;
+        textCtrlDate->SetValue( m_dateStrings[i-2].m_str );
+        id_t dateID = m_dateStrings[i-2].m_index;
+        if( m_dateButton == EV_DATE_Beg ) {
+            m_event.f_date1_id = dateID;
+        } else {
+            m_event.f_date2_id = dateID;
+        }
+    }
+}
+
+void dlgEditEvent::OnAgeSelect( wxCommandEvent& event )
+{
+    size_t i = event.GetId() - ID_AGE_MENU_START;
+    wxTextCtrl* textCtrlDate =
+        ( m_dateButton == EV_DATE_Beg ) ? m_textCtrlDateBeg : m_textCtrlDateEnd;
+
+    if( i == 0 ) {
+        textCtrlDate->SetValue( wxT("TODO: Set Date from age") );
+    } else {
+//        int entry = tfpGetEntityIndex( mp_entities, i );
+//        id_t dateID = (*mp_entities)[entry].rec.f_entity_id;
+        id_t dateID = m_dateStrings[i].m_index;
         textCtrlDate->SetValue( recDate::GetStr( dateID ) );
 
         if( m_dateButton == EV_DATE_Beg ) {
