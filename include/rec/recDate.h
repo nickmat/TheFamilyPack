@@ -67,6 +67,7 @@ public:
     recDate() {}
     recDate( id_t id ) : recDb(id) { Read(); }
     recDate( const recDate& date );
+    recDate( const recDate& date, int ageY, int ageM = -1, int ageD = -1 );
 
 	void Clear();
     void Save();
