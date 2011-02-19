@@ -1,6 +1,6 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Name:        calCalc.cpp
- * Project:     Cal: A general purpose calendar library.
+ * Project:     CalCalc: Program to test calendar (cal) library.
  * Purpose:     Commandline Calendar Calculator for testing library.
  * Author:      Nick Matthews
  * Modified by:
@@ -41,6 +41,22 @@
 
 #include "cal/calendar.h"
 
+#define VERSION   "0.4.0"
+#define PROGNAME  "CalCalc"
+#define COPYRIGHT  "2008-2011 Nick Matthews"
+
+const wxString g_version = VERSION;
+const wxString g_progName = PROGNAME;
+const wxString g_copyright = COPYRIGHT;
+
+#ifdef _DEBUG
+const wxString g_title = PROGNAME " - Version " VERSION " Debug\n"
+                         "Copyright (c) " COPYRIGHT "\n\n";
+#else
+const wxString g_title = PROGNAME " - Version " VERSION "\n"
+                         "Copyright (c) " COPYRIGHT "\n\n";
+#endif
+
 /*! True if in range mode, false if in single day mode.
  */
 bool g_range = false;
@@ -60,14 +76,16 @@ void ccUse()
 	wxPrintf(
 		wxT("\n")
 		wxT("Enter one of the following commands:-\n")
-		wxT("x date      Enter the date to convert.\n")
-		wxT("a age date  Enter age & date to convert to birth date range.\n")
-		wxT("range       Set to enter and display a date range.\n")
-		wxT("single      Set to enter and display a single date.\n")
-		wxT("from sch    Set the entered scheme type (see below).\n")
-		wxT("to sch      Set the scheme type to convert to.\n")
-		wxT("help        Display this screen.\n")
-		wxT("exit        Exit the program.\n")
+		wxT("x date         Enter the date to convert.\n")
+		wxT("a age date     Enter age in years & date to convert to birth date range.\n")
+		wxT("am age date    Enter age in months & date to convert to birth date range.\n")
+		wxT("sub d m y date Enter days, months and years to subtract from date.\n")
+		wxT("range          Set to enter and display a date range.\n")
+		wxT("single         Set to enter and display a single date.\n")
+		wxT("from sch       Set the entered scheme type (see below).\n")
+		wxT("to sch         Set the scheme type to convert to.\n")
+		wxT("help           Display this screen.\n")
+		wxT("exit           Exit the program.\n")
 		wxT("\n")
 		wxT("sch can be one of the following:-\n")
 		wxT("us          Unstated\n")
@@ -126,38 +144,121 @@ void ccConvertDate( wxString& date )
 	}
 }
 
-/*! Calculate a date range given an age and a single date.
+/*! Calculate a date range given an age in years and a single date.
  */
 void ccAgeDateToRange( wxString& line )
 {
   	wxStringTokenizer tkz;
     wxString token;
-	long age, jdn, jdn1, jdn2;
-    DMYDate dmy;
+	long jdn1, jdn2, year;
+    DMYDate age;
 	wxString adate;
 	bool ret;
 
     tkz.SetString( line );
     token = tkz.GetNextToken();
-	token.ToLong( &age );
+	token.ToLong( &year );
+    age.year = (int) year;
+    age.day = age.month = -1;
 	token = tkz.GetString();
 	token.Trim();  // Get rid of newline
 
-    ret = calStrToJdn( jdn, token, g_from );
-	if( ret == false ) return;
-    ret = calConvertFromJdn( jdn, dmy, g_from );
-	if( ret == false ) return;
-	dmy.year -= age;
-	ret = calConvertToJdn( jdn2, dmy, g_from );
-	if( ret == false ) return;
-	--dmy.year;
-	ret = calConvertToJdn( jdn1, dmy, g_from );
-	if( ret == false ) return;
-	++jdn1;
+    if( g_range == true ) {
+        ret = calStrToJdnRange( jdn1, jdn2, token, g_from );
+       	if( ret == false ) return;
+    } else {
+        ret = calStrToJdn( jdn1, token, g_from );
+       	if( ret == false ) return;
+        jdn2 = jdn1;
+    }
+    ret = calSubAgeFromJdnRange( jdn1, jdn2, age, g_from );
 	adate = calStrFromJdnRange( jdn1, jdn2, g_to );
 	wxPrintf( 
 		wxT("%ld yrs on %s (%s) -> %ld - %ld -> %s (%s)\n"),
-		age, token.c_str(), CalendarSchemeAbrev[g_from].c_str(),
+        year, token.c_str(), CalendarSchemeAbrev[g_from].c_str(),
+		jdn1, jdn2,
+		adate.c_str(), CalendarSchemeAbrev[g_to].c_str()
+	);
+}
+
+/*! Calculate a date range given an age in months and a single date.
+ */
+void ccAgeMonthsDateToRange( wxString& line )
+{
+  	wxStringTokenizer tkz;
+    wxString token;
+	long jdn1, jdn2, month;
+    DMYDate age;
+	wxString adate;
+	bool ret;
+
+    tkz.SetString( line );
+    token = tkz.GetNextToken();
+	token.ToLong( &month );
+    age.year = (int) month / 12;
+    age.month = (int) month % 12;
+    age.day = -1;
+	token = tkz.GetString();
+	token.Trim();  // Get rid of newline
+
+    if( g_range == true ) {
+        ret = calStrToJdnRange( jdn1, jdn2, token, g_from );
+       	if( ret == false ) return;
+    } else {
+        ret = calStrToJdn( jdn1, token, g_from );
+       	if( ret == false ) return;
+        jdn2 = jdn1;
+    }
+    ret = calSubAgeFromJdnRange( jdn1, jdn2, age, g_from );
+	adate = calStrFromJdnRange( jdn1, jdn2, g_to );
+	wxPrintf( 
+		wxT("%ld mths on %s (%s) -> %ld - %ld -> %s (%s)\n"),
+        month, token.c_str(), CalendarSchemeAbrev[g_from].c_str(),
+		jdn1, jdn2,
+		adate.c_str(), CalendarSchemeAbrev[g_to].c_str()
+	);
+}
+
+/*! Calculate a date range given an age in days months and years and a single date.
+ */
+void ccAgeDMYDateToRange( wxString& line )
+{
+  	wxStringTokenizer tkz;
+    wxString token;
+	long jdn1, jdn2, day, month, year;
+    DMYDate age;
+	wxString adate;
+	bool ret;
+
+    tkz.SetString( line );
+    token = tkz.GetNextToken();
+	token.ToLong( &day );
+    age.day = (int) day;
+
+    token = tkz.GetNextToken();
+	token.ToLong( &month );
+    age.month = (int) month;
+
+    token = tkz.GetNextToken();
+    token.ToLong( &year );
+    age.year = (int) year;
+
+    token = tkz.GetString();
+	token.Trim();  // Get rid of newline
+
+    if( g_range == true ) {
+        ret = calStrToJdnRange( jdn1, jdn2, token, g_from );
+       	if( ret == false ) return;
+    } else {
+        ret = calStrToJdn( jdn1, token, g_from );
+       	if( ret == false ) return;
+        jdn2 = jdn1;
+    }
+    ret = calSubAgeFromJdnRange( jdn1, jdn2, age, g_from );
+	adate = calStrFromJdnRange( jdn1, jdn2, g_to );
+	wxPrintf( 
+		wxT("%ldd %ldm %ldy from %s (%s) -> %ld - %ld -> %s (%s)\n"),
+        day, month, year, token.c_str(), CalendarSchemeAbrev[g_from].c_str(),
 		jdn1, jdn2,
 		adate.c_str(), CalendarSchemeAbrev[g_to].c_str()
 	);
@@ -214,6 +315,14 @@ int ccEval()
 			ccAgeDateToRange( tkz.GetString() );
 			continue;
 		}
+		if( token == wxT("am") ) {
+			ccAgeMonthsDateToRange( tkz.GetString() );
+			continue;
+		}
+		if( token == wxT("sub") ) {
+			ccAgeDMYDateToRange( tkz.GetString() );
+			continue;
+		}
 		if( token == wxT("range") )	{
 			g_range = true;
             continue;
@@ -252,11 +361,7 @@ int main()
 {
 	int ret = 0;
 	if( wxInitialize() == false ) return 1;
-	wxPrintf( 
-		wxT("CalCalc: the Calendar Calculator v0.3.0\n") 
-		wxT("Copyright (c) 2008-2010 Nick Matthews\n") 
-		wxT("\n") 
-	);
+	wxPrintf( g_title );
     ret = ccEval();
 	wxUninitialize();
     return ret;

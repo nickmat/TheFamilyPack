@@ -1,0 +1,42 @@
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Name:        ccHistory.txt
+ * Project:     CalCalc: Program to test calendar (cal) library.
+ * Purpose:     Program revision history
+ * Author:      Nick Matthews
+ * Modified by:
+ * Created:     18 February 2011
+ * RCS-ID:      $Id$
+ * Copyright:   Copyright (c) 2011, Nick Matthews.
+ * Licence:     GNU GPLv3
+ *
+ *  CalCalc is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  CalCalc is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with CalCalc.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
+   Revision History
+   ~~~~~~~~~~~~~~~~
+   
+18feb11  v0.4.0
+   Added Age and date calclation commands "am" and "sub".
+   Command "a" now works with date ranges.
+   
+ 2oct10  v0.3.0 
+   First release (Source only).
+   
+   Command line Calendar conversion and calulations, used to test the Calendar
+   function library.
+   
+
+End of ccHistory.txt file.
