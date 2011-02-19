@@ -55,11 +55,14 @@ private:
         CPPUNIT_TEST( TestTable );
         CPPUNIT_TEST( TestJulian );
         CPPUNIT_TEST( TestGregorian );
+        CPPUNIT_TEST( TestSubtract );
     CPPUNIT_TEST_SUITE_END();
 
     void TestTable();
     void TestJulian();
     void TestGregorian();
+
+    void TestSubtract();
 
     DECLARE_NO_COPY_CLASS(CalTestCase)
 };
@@ -285,6 +288,61 @@ void CalTestCase::TestGregorian()
 			}
         }
     }
+}
+
+void CalTestCase::TestSubtract()
+{
+    long jdn1, jdn2;
+    DMYDate age;
+    CalendarScheme sch = CALENDAR_SCH_Gregorian;
+
+    jdn1 = jdn2 = 2455611; // 18 Feb 2011 (G)
+    age.day = age.month = -1;
+    age.year = 62;
+    CPPUNIT_ASSERT( calSubAgeFromJdnRange( jdn1, jdn2, age, sch ) );
+    CPPUNIT_ASSERT( jdn1 == 2432601 );  // 19 Feb 1948 (G)
+    CPPUNIT_ASSERT( jdn2 == 2432966 );  // 18 Feb 1949 (G)
+
+    jdn1 = jdn2 = 2455459; // 19 Sep 2010 (G)
+    age.day = age.month = -1;
+    age.year = 62;
+    CPPUNIT_ASSERT( calSubAgeFromJdnRange( jdn1, jdn2, age, sch ) );
+    CPPUNIT_ASSERT( jdn1 == 2432449 );  // 20 Sep 1947 (G)
+    CPPUNIT_ASSERT( jdn2 == 2432814 );  // 19 Sep 1948 (G)
+
+    jdn1 = jdn2 = 2455458; // 18 Sep 2010 (G)
+    age.day = age.month = -1;
+    age.year = 61;
+    CPPUNIT_ASSERT( calSubAgeFromJdnRange( jdn1, jdn2, age, sch ) );
+    CPPUNIT_ASSERT( jdn1 == 2432814 );  // 19 Sep 1948 (G)
+    CPPUNIT_ASSERT( jdn2 == 2433178 );  // 18 Sep 1949 (G)
+
+    jdn1 = jdn2 = 2432814; // 19 Sep 1948 (G)
+    age.day = -1;
+    age.month = 10;
+    age.year = 0;
+    CPPUNIT_ASSERT( calSubAgeFromJdnRange( jdn1, jdn2, age, sch ) );
+    CPPUNIT_ASSERT( jdn1 == 2432479 );  // 20 Oct 1947 (G)
+    CPPUNIT_ASSERT( jdn2 == 2432509 );  // 19 Nov 1947 (G)
+
+    jdn1 = 2432613; // 2 Mar 1948 (G)
+    jdn2 = 2432978; // 2 Mar 1949 (G)
+    age.day = 4;
+    age.month = 0;
+    age.year = 0;
+    CPPUNIT_ASSERT( calSubAgeFromJdnRange( jdn1, jdn2, age, sch ) );
+    CPPUNIT_ASSERT( jdn1 == 2432609 );  // 27 Feb 1948 (G)
+    CPPUNIT_ASSERT( jdn2 == 2432974 );  // 26 Feb 1949 (G)
+
+    jdn1 = 2455612; // 19 Feb 2011 (G)
+    jdn2 = 2455612; // 19 Feb 2011 (G)
+    age.day = 12;
+    age.month = 11;
+    age.year = 10;
+    CPPUNIT_ASSERT( calSubAgeFromJdnRange( jdn1, jdn2, age, sch ) );
+    CPPUNIT_ASSERT( jdn1 == 2451611 );  // 7 Mar 2000 (G)
+    CPPUNIT_ASSERT( jdn2 == 2451611 );  // 7 Mar 2000 (G)
+
 }
 
 // End of testCalendar.cpp
