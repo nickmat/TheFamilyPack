@@ -32,6 +32,8 @@
  */
 class DMYDate {
 public:
+    void SetDMY( int d, int m, int y ) { day = d; month = m; year = y; }
+
     int day; int month; int year;
 };
 
@@ -270,5 +272,16 @@ extern bool calStrToJdnRange(
  */
 extern bool calSubAgeFromJdnRange( 
     long& jdn1, long& jdn2, const DMYDate& dmy, CalendarScheme scheme );
+
+enum CalendarAgeUnit {
+    CALENDAR_AGE_Unstated,
+    CALENDAR_AGE_Year,
+    CALENDAR_AGE_Month,
+    CALENDAR_AGE_Week,
+    CALENDAR_AGE_Day
+};
+
+extern bool calSubAgeFromJdnRange( 
+    long& jdn1, long& jdn2, int age, CalendarAgeUnit unit, CalendarScheme scheme );
 
 #endif // CALENDAR_H

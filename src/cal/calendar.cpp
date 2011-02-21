@@ -264,19 +264,39 @@ bool calStrToJdnRange(
 bool calSubAgeFromJdnRange(
     long& jdn1, long& jdn2, const DMYDate& dmy, CalendarScheme scheme )
 {
-    bool ret;
-
     switch( scheme )
     {
     case CALENDAR_SCH_Julian:
     case CALENDAR_SCH_Gregorian:
-        ret = calLatinSubAgeFromJdnRange( jdn1, jdn2, dmy, scheme );
-        break;
-    default:
-        ret = false;
+        return calLatinSubAgeFromJdnRange( jdn1, jdn2, dmy, scheme );
     }
 
-    return ret;
+    return false;
+}
+
+extern bool calSubAgeFromJdnRange( 
+    long& jdn1, long& jdn2, int age, CalendarAgeUnit unit, CalendarScheme scheme )
+{
+    DMYDate dmy;
+
+    switch( unit ) 
+    {
+    case CALENDAR_AGE_Year:
+        dmy.SetDMY( -1, -1, age );
+        return calSubAgeFromJdnRange( jdn1, jdn2, dmy, scheme );
+    case CALENDAR_AGE_Month:
+        dmy.SetDMY( -1, age, 0 );
+        return calSubAgeFromJdnRange( jdn1, jdn2, dmy, scheme );
+    case CALENDAR_AGE_Week:
+        jdn1 -= ( age + 1 ) * 7 - 1;
+        jdn2 -= age * 7;
+        return true;
+    case CALENDAR_AGE_Day:
+        jdn1 -= age;
+        jdn2 -= age;
+        return true;
+    }
+    return false;
 }
 
 // End of calendar.cpp
