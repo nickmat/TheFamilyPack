@@ -67,7 +67,6 @@ public:
     recDate() {}
     recDate( id_t id ) : recDb(id) { Read(); }
     recDate( const recDate& date );
-    recDate( const recDate& date, int ageY, int ageM = -1, int ageD = -1 );
 
 	void Clear();
     void Save();
@@ -98,6 +97,8 @@ public:
     wxString GetStr( CalendarScheme sch = CALENDAR_SCH_Unstated ) const;
     static wxString GetStr( id_t id );
 	int GetYear( CalendarScheme sch = CALENDAR_SCH_Unstated );
+
+
 };
 
 /*! The two entities are equal, ignoring the record id.

@@ -72,29 +72,6 @@ recDate::recDate( const recDate& d )
     f_display_sch = d.f_display_sch;
 }
 
-recDate::recDate( const recDate& d, int ageY, int ageM, int ageD )
-{
-    long jdn1, jdn2;
-    DMYDate age;
-
-    jdn1 = d.f_jdn;
-    jdn2 = d.f_jdn + d.f_range;
-    age.year = ageY;
-    age.month = ageM;
-    age.day = ageD;
-    // Don't bother checking for errors, if there is we end up 
-    // with a clone of d anyway. 
-    calSubAgeFromJdnRange( jdn1, jdn2, age, d.f_display_sch ); 
-    
-    f_id          = d.f_id;
-    f_jdn         = jdn1;
-    f_range       = jdn2 - jdn1;
-    f_type        = d.f_type;
-    f_desc        = d.f_desc;
-    f_record_sch  = d.f_record_sch;
-    f_display_sch = d.f_display_sch;
-}
-
 void recDate::Clear()
 {
     f_id          = 0;
