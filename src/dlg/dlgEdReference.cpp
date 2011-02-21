@@ -808,8 +808,10 @@ TfpEntityStringVec dlgEditReference::GetDateEntityStringVec()
     TfpEntityStringVec list;
     for( size_t i = 0 ; i < m_entities.size() ; i++ ) {
         if( m_entities[i].rec.f_entity_type == recReferenceEntity::TYPE_Date ) {
-            estr.m_str = recDate::GetStr( m_entities[i].rec.f_entity_id );
+            id_t id = m_entities[i].rec.f_entity_id;
+            estr.m_str = recDate::GetStr( id );
             estr.m_index = i;
+            estr.m_id = id;
             list.push_back( estr );
         }
     }

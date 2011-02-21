@@ -49,7 +49,8 @@ extern int tfpGetEntityIndex( TfpEntities* array, int ind );
 
 struct TfpEntityString {
     wxString m_str;
-    size_t   m_index;
+    int      m_index;
+    id_t     m_id;
 };
 
 typedef std::vector< TfpEntityString > TfpEntityStringVec;

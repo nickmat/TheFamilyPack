@@ -63,6 +63,10 @@ int dlgEditDate::sch_list[CALENDAR_SCH_Max] = {
     0,   // CALENDAR_SCH_FrenchRevolution
 };
 
+//===========================================================================
+//       dlgEditDate
+//===========================================================================
+
 dlgEditDate::dlgEditDate( wxWindow* parent, id_t id )
     : fbDlgEditDate( parent )
 {
@@ -126,6 +130,87 @@ void dlgEditDate::SetStaticDate( wxIdleEvent& event )
     }
 }
 
+//===========================================================================
+//       dlgEditDateFromAge
+//===========================================================================
 
+dlgEditDateFromAge::dlgEditDateFromAge( wxWindow* parent, id_t id )
+    : fbDlgEditDateFromAge( parent )
+{
+    m_base.f_id = id;
+    m_base.Read();
+    m_basestr = m_base.GetStr();
+}
+
+bool dlgEditDateFromAge::TransferDataToWindow()
+{
+    m_textCtrlBaseDate->SetValue( m_basestr );
+
+    m_date.Clear();
+    m_date.Save();
+    // TODO: This needs to be set up using a particular convention
+    m_date.f_type = recDate::PREF_On;
+    m_date.f_record_sch = CALENDAR_SCH_Gregorian;
+    m_date.f_display_sch = CALENDAR_SCH_Gregorian;
+
+    wxString idStr = wxString::Format( "D"ID":", m_date.f_id );
+    m_staticTextId->SetLabel( idStr );
+    m_choiceType->SetSelection( m_date.f_type );
+    m_choiceDisplay->SetSelection( dlgEditDate::sch_list[m_date.f_display_sch] );
+
+    return true;
+}
+
+bool dlgEditDateFromAge::TransferDataFromWindow()
+{
+    CalcDate();
+    m_date.Save();
+    return true;
+}
+
+void dlgEditDateFromAge::SetStaticDate( wxIdleEvent& event )
+{
+    CalcDate();
+
+    wxString str;
+    if( m_date.f_jdn != 0 ) {
+        str = m_date.GetStr();
+    } else {
+        str = "*";
+    }
+    if( str != m_output ) {
+        m_staticTextOutput->SetLabel( str );
+        m_output = str;
+    }
+}
+
+void dlgEditDateFromAge::CalcDate()
+{
+    m_date.f_type = m_choiceType->GetSelection();
+    m_date.f_record_sch = dlgEditDate::scheme[ m_choiceDisplay->GetSelection() ];
+    m_date.f_display_sch = m_date.f_record_sch;
+    m_date.SetDate( m_textCtrlBaseDate->GetValue() );
+    long jdn2 = m_date.f_jdn + m_date.f_range;
+    wxString agestr = m_textCtrlAge->GetValue();
+    long age = 0;
+    agestr.ToLong( &age );
+    int unit = m_radioBoxUnits->GetSelection();
+    switch( unit )
+    {
+    case 0: 
+        calSubAgeFromJdnRange( m_date.f_jdn, jdn2, (int) age, CALENDAR_AGE_Year, m_date.f_display_sch );
+        break;
+    case 1: 
+        calSubAgeFromJdnRange( m_date.f_jdn, jdn2, (int) age, CALENDAR_AGE_Month, m_date.f_display_sch );
+        break;
+    case 2: 
+        calSubAgeFromJdnRange( m_date.f_jdn, jdn2, (int) age, CALENDAR_AGE_Week, m_date.f_display_sch );
+        break;
+    case 3: 
+        calSubAgeFromJdnRange( m_date.f_jdn, jdn2, (int) age, CALENDAR_AGE_Day, m_date.f_display_sch );
+        break;
+    }
+    m_date.f_range = jdn2 - m_date.f_jdn;
+}
 
 // End of dlgEdDate.cpp file

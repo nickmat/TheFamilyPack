@@ -36,9 +36,10 @@
 
 class dlgEditDate : public fbDlgEditDate
 {
+public:
     static CalendarScheme scheme[];
     static int sch_list[CALENDAR_SCH_Max];
-public:
+
     dlgEditDate( wxWindow* parent, id_t id = 0 );
 
     void SetText( const wxString& text ) { m_text = text; }
@@ -53,6 +54,29 @@ private:
 
     recDate   m_date;
     wxString  m_text;
+    wxString  m_output;
+};
+
+/*! dlgEditDateFromAge
+ *  This dialog creates a new date from an old one plus an age value.
+ *  It cannot be used to edit an existing date.
+ */
+class dlgEditDateFromAge : public fbDlgEditDateFromAge
+{
+public:
+    dlgEditDateFromAge( wxWindow* parent, id_t id = 0 );
+
+    recDate* GetDate() { return &m_date; }
+
+private:
+    bool TransferDataToWindow();
+    bool TransferDataFromWindow();
+    void SetStaticDate( wxIdleEvent& event );
+    void CalcDate();
+
+    recDate   m_base;
+    recDate   m_date;
+    wxString  m_basestr;
     wxString  m_output;
 };
 

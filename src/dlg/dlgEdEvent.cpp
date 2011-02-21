@@ -43,6 +43,7 @@
 
 #include "dlgEdEvent.h"
 #include "dlgEdRole.h"
+#include "dlgEdDate.h"
 
 #define ID_DATE_MENU_START  20000
 #define ID_AGE_MENU_START  20500
@@ -170,24 +171,34 @@ void dlgEditEvent::OnDateSelect( wxCommandEvent& event )
 
 void dlgEditEvent::OnAgeSelect( wxCommandEvent& event )
 {
+    const wxString savepoint = "EvtDateAge";
     size_t i = event.GetId() - ID_AGE_MENU_START;
     wxTextCtrl* textCtrlDate =
         ( m_dateButton == EV_DATE_Beg ) ? m_textCtrlDateBeg : m_textCtrlDateEnd;
 
-    if( i == 0 ) {
-        textCtrlDate->SetValue( wxT("TODO: Set Date from age") );
-    } else {
-//        int entry = tfpGetEntityIndex( mp_entities, i );
-//        id_t dateID = (*mp_entities)[entry].rec.f_entity_id;
-        id_t dateID = m_dateStrings[i].m_index;
-        textCtrlDate->SetValue( recDate::GetStr( dateID ) );
+    dlgEditDateFromAge* dialog = 
+        new dlgEditDateFromAge( NULL, m_dateStrings[i].m_id );
 
+    recDb::Savepoint( savepoint );
+    if( dialog->ShowModal() == wxID_OK )
+    {
+        recDb::ReleaseSavepoint( savepoint );
+        TfpEntityString es;
+        es.m_str = dialog->GetDate()->GetStr();
+        es.m_id = dialog->GetDate()->f_id;
+        es.m_index = -1;
+        m_dateStrings.push_back( es );
+        textCtrlDate->SetValue( es.m_str );
         if( m_dateButton == EV_DATE_Beg ) {
-            m_event.f_date1_id = dateID;
+            m_event.f_date1_id = es.m_id;
         } else {
-            m_event.f_date2_id = dateID;
+            m_event.f_date2_id = es.m_id;
         }
+    } else {
+        // Dialog Cancelled
+        recDb::Rollback( savepoint );
     }
+    dialog->Destroy();
 }
 
 void dlgEditEvent::OnPlaceButton( wxCommandEvent& event )

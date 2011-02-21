@@ -33,6 +33,7 @@ class tfpListCtrlIndividuals;
 #include <wx/icon.h>
 #include <wx/listctrl.h>
 #include <wx/notebook.h>
+#include <wx/radiobox.h>
 #include <wx/toolbar.h>
 #include <wx/splitter.h>
 
@@ -176,7 +177,7 @@ class fbDlgEditIndEvent : public wxDialog
 	
 	public:
 		
-		fbDlgEditIndEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 322,167 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+		fbDlgEditIndEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 322,167 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxSYSTEM_MENU );
 		~fbDlgEditIndEvent();
 	
 };
@@ -212,6 +213,41 @@ class fbDlgEditDate : public wxDialog
 		
 		fbDlgEditDate( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Date"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 300,235 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
 		~fbDlgEditDate();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class fbDlgEditDateFromAge
+///////////////////////////////////////////////////////////////////////////////
+class fbDlgEditDateFromAge : public wxDialog 
+{
+	private:
+	
+	protected:
+		wxStaticText* m_staticTextId;
+		wxStaticText* m_staticTextOutput;
+		wxStaticText* m_staticText2;
+		wxTextCtrl* m_textCtrlBaseDate;
+		wxStaticText* m_staticText3;
+		wxChoice* m_choiceType;
+		wxStaticText* m_staticText4;
+		wxChoice* m_choiceDisplay;
+		wxStaticText* m_staticText5;
+		wxTextCtrl* m_textCtrlAge;
+		wxRadioBox* m_radioBoxUnits;
+		wxStaticLine* m_staticline1;
+		
+		wxButton* m_buttonSave;
+		wxButton* m_buttonCancel;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void SetStaticDate( wxIdleEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		fbDlgEditDateFromAge( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Date from Age"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 264,275 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxSYSTEM_MENU );
+		~fbDlgEditDateFromAge();
 	
 };
 
