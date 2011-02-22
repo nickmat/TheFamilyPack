@@ -77,6 +77,7 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_PED_CHART, TfpFrame::OnPedChart )
     EVT_MENU( tfpID_DESC_CHART, TfpFrame::OnDescChart )
     EVT_MENU( tfpID_HELP_WEB_HOME, TfpFrame::OnHelpWebHome )
+    EVT_MENU( tfpID_HELP_ABOUT_DB, TfpFrame::OnAboutDatabase )
     EVT_MENU( wxID_ABOUT, TfpFrame::OnAbout )
     EVT_MENU( tfpID_FIND_BACK, TfpFrame::OnFindBack )
     EVT_MENU( tfpID_FIND_FORWARD, TfpFrame::OnFindForward )
@@ -137,6 +138,7 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
 
     wxMenu *menuHelp = new wxMenu;
     menuHelp->Append( tfpID_HELP_WEB_HOME, _("The Family Pack &Website") );
+    menuHelp->Append( tfpID_HELP_ABOUT_DB, _("About &Database") );
     menuHelp->Append( wxID_ABOUT, _("&About \"The Family Pack\"") );
 
     m_menuOpenDB = new wxMenuBar;
@@ -185,8 +187,8 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     m_html = new wxHtmlWindow( this );
     m_html->SetRelatedStatusBar( 0 );
 
-    m_dbname = wxEmptyString;
-    SetDatabaseOpen( m_dbname, false );
+    m_dbTitleFmt = wxEmptyString;
+    SetDatabaseOpen( m_dbTitleFmt, false );
 
     m_prn = new wxHtmlEasyPrinting( _("Easy Printing Demo"), this );
 
@@ -232,8 +234,8 @@ void TfpFrame::OnOpenFile( wxCommandEvent& event )
 void TfpFrame::OnCloseFile( wxCommandEvent& event )
 {
     recDb::CloseDb();
-    m_dbname = wxEmptyString;
-    SetDatabaseOpen( m_dbname, false );
+    m_dbTitleFmt = wxEmptyString;
+    SetDatabaseOpen( m_dbTitleFmt, false );
     m_html->LoadPage( wxT("memory:startup.htm") );
 }
 
@@ -422,6 +424,24 @@ void TfpFrame::OnAbout( wxCommandEvent& event )
             wxGetOsDescription().c_str()
         ),
         _("About The Family Pack"),
+        wxOK | wxICON_INFORMATION,
+        this
+    );
+}
+
+/*! \brief Called on a Help, About Database menu option event.
+ *
+ *  Displays a message box with information about the currently.
+ *  open database.
+ */
+void TfpFrame::OnAboutDatabase( wxCommandEvent& event )
+{
+    wxMessageBox(
+        wxString::Format(
+            _("Database \"%s\"\nVersion %s"),
+            m_dbFileName, recVersion::GetVersionStr()
+        ),
+        _("About TFP Database"),
         wxOK | wxICON_INFORMATION,
         this
     );
@@ -648,13 +668,15 @@ void TfpFrame::SetDatabaseOpen( wxString& path, bool open )
 {
     if( open ) {
         wxFileName dbfile( path );
-        m_dbname = wxString::Format( "TFP: %s, %%s", dbfile.GetName().c_str() );
-        m_html->SetRelatedFrame( this, m_dbname );
+        m_dbFileName = dbfile.GetFullPath();
+        m_dbTitleFmt = wxString::Format( "TFP: %s, %%s", m_dbFileName.c_str() );
+        m_html->SetRelatedFrame( this, m_dbTitleFmt );
         SetMenuBar( m_menuOpenDB );
         m_toolbar->EnableTool( tfpID_LIST_SURNAME_INDEX, true );
         m_toolbar->EnableTool( tfpID_GOTO_HOME, true );
     } else {
-        m_dbname = wxEmptyString;
+        m_dbFileName = wxEmptyString;
+        m_dbTitleFmt = wxEmptyString;
         m_html->SetRelatedFrame( this, "The Family Pack" );
         SetMenuBar( m_menuClosedDB );
         m_toolbar->EnableTool( tfpID_LIST_SURNAME_INDEX, false );

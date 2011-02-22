@@ -43,7 +43,7 @@ const int recVersionMajor    = 0;
 const int recVersionMinor    = 0;
 const int recVersionRevision = 8;
 const int recVersionTest     = 0;
-const wxChar* recVersionStr  = wxT("0.0.8.0");
+const wxChar* recVersionStr  = wxS("0.0.8.0");
 
 
 recVersion::recVersion( const recVersion& v )
@@ -127,6 +127,16 @@ bool recVersion::Read()
     f_test     = result.GetInt( 3 );
     return true;
 }
+
+wxString recVersion::GetVersionStr()
+{
+    recVersion v(1);
+    return wxString::Format( 
+        "%d.%d.%d.%d",
+        v.f_major, v.f_minor, v.f_revision, v.f_test
+    );
+}
+
 
 bool recVersion::IsEqual( int major, int minor, int revision, int test ) const
 {

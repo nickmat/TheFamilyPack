@@ -57,6 +57,8 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "Version" );
 
+    static wxString GetVersionStr();
+
     bool IsEqual( int major, int minor, int revision, int test = 0 ) const;
     bool IsMoreThan( int major, int minor, int revision, int test = 0 ) const;
     bool IsLessThan( int major, int minor, int revision, int test = 0 ) const;

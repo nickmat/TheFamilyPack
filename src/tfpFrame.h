@@ -54,7 +54,8 @@ private:
     wxArrayString       m_forward;
     wxHtmlWindow*       m_html;
     wxHtmlEasyPrinting* m_prn;
-    wxString            m_dbname;
+    wxString            m_dbTitleFmt;
+    wxString            m_dbFileName;
     wxString            m_ctxmenuref;
     recIdList           m_ctxmenuIDs;
 
@@ -90,6 +91,7 @@ public:
     void OnDescChart( wxCommandEvent& event );
 
     void OnHelpWebHome( wxCommandEvent& event );
+    void OnAboutDatabase( wxCommandEvent& event );
     void OnAbout( wxCommandEvent& event );
 
     void OnFindBack( wxCommandEvent& event );
@@ -145,6 +147,7 @@ enum
     tfpID_PED_CHART,
     tfpID_DESC_CHART,
     tfpID_HELP_WEB_HOME,
+    tfpID_HELP_ABOUT_DB,
     tfpID_FIND_BACK,
     tfpID_FIND_FORWARD,
     tfpID_GOTO_HOME,
