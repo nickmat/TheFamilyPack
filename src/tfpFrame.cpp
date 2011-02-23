@@ -54,6 +54,7 @@
 #include "img/back.xpm"
 #include "img/find.xpm"
 #include "img/home.xpm"
+#include "img/ref.xpm"
 
 BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_NEW_WINDOW, TfpFrame::OnNewWindow )
@@ -173,10 +174,12 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     wxBitmap bmpBack( back_xpm );
     wxBitmap bmpFind( find_xpm );
     wxBitmap bmpHome( home_xpm );
+    wxBitmap bmpRef( ref_xpm );
     m_toolbar->AddTool( tfpID_FIND_BACK, _("Back"), bmpBack );
     m_toolbar->AddTool( tfpID_FIND_FORWARD, _("Forward"), bmpForward );
     m_toolbar->AddSeparator();
     m_toolbar->AddTool( tfpID_LIST_SURNAME_INDEX, _("Index"), bmpFind );
+    m_toolbar->AddTool( tfpID_LIST_REFERENCES, _("References"), bmpRef );
     m_toolbar->AddSeparator();
     m_toolbar->AddTool( tfpID_GOTO_HOME, _("Home"), bmpHome );
     m_toolbar->Realize();
@@ -669,7 +672,7 @@ void TfpFrame::SetDatabaseOpen( wxString& path, bool open )
     if( open ) {
         wxFileName dbfile( path );
         m_dbFileName = dbfile.GetFullPath();
-        m_dbTitleFmt = wxString::Format( "TFP: %s, %%s", m_dbFileName.c_str() );
+        m_dbTitleFmt = wxString::Format( "TFP: %s, %%s", dbfile.GetName() );
         m_html->SetRelatedFrame( this, m_dbTitleFmt );
         SetMenuBar( m_menuOpenDB );
         m_toolbar->EnableTool( tfpID_LIST_SURNAME_INDEX, true );
