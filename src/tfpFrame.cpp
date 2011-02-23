@@ -676,6 +676,7 @@ void TfpFrame::SetDatabaseOpen( wxString& path, bool open )
         m_html->SetRelatedFrame( this, m_dbTitleFmt );
         SetMenuBar( m_menuOpenDB );
         m_toolbar->EnableTool( tfpID_LIST_SURNAME_INDEX, true );
+        m_toolbar->EnableTool( tfpID_LIST_REFERENCES, true );
         m_toolbar->EnableTool( tfpID_GOTO_HOME, true );
     } else {
         m_dbFileName = wxEmptyString;
@@ -683,6 +684,7 @@ void TfpFrame::SetDatabaseOpen( wxString& path, bool open )
         m_html->SetRelatedFrame( this, "The Family Pack" );
         SetMenuBar( m_menuClosedDB );
         m_toolbar->EnableTool( tfpID_LIST_SURNAME_INDEX, false );
+        m_toolbar->EnableTool( tfpID_LIST_REFERENCES, false );
         m_toolbar->EnableTool( tfpID_GOTO_HOME, false );
         m_back.clear();
         m_toolbar->EnableTool( tfpID_FIND_BACK, false );
