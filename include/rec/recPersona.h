@@ -30,8 +30,6 @@
 #ifndef RECPERSONA_H
 #define RECPERSONA_H
 
-#include <vector>
-
 #include <rec/recDatabase.h>
 #include <rec/recReference.h>
 #include <rec/recName.h>

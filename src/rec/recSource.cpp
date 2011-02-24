@@ -39,5 +39,103 @@
 
 #include <rec/recSource.h>
 
+recSource::recSource( const recSource& s )
+{
+    f_higher_id    = s.f_higher_id;
+    f_sub_date1_id = s.f_sub_date1_id;
+    f_sub_date2_id = s.f_sub_date2_id;
+    f_sub_place_id = s.f_sub_place_id;
+    f_loc_place_id = s.f_loc_place_id;
+    f_res_id       = s.f_res_id;
+    f_comments     = s.f_comments;
+}
+
+void recSource::Clear()
+{
+    f_higher_id    = 0;
+    f_sub_date1_id = 0;
+    f_sub_date2_id = 0;
+    f_sub_place_id = 0;
+    f_loc_place_id = 0;
+    f_res_id       = 0;
+    f_comments     = wxEmptyString;
+}
+
+void recSource::Save()
+{
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( f_id == 0 )
+    {
+        // Add new record
+        sql.Format(
+            "INSERT INTO Source (higher_id, sub_date1_id, sub_date2_id, "
+            "sub_place_id, loc_place_id, res_id, comments) "
+            "VALUES ("ID", "ID", "ID", "ID", "ID", "ID", '%q');",
+            f_higher_id, f_sub_date1_id, f_sub_date2_id, f_sub_place_id,
+            f_loc_place_id, f_res_id, UTF8_(f_comments)
+        );
+        s_db->ExecuteUpdate( sql );
+        f_id = GET_ID( s_db->GetLastRowId() );
+    } else {
+        // Does record exist
+        if( !Exists() )
+        {
+            // Add new record
+            sql.Format(
+                "INSERT INTO Source (id, higher_id, sub_date1_id, sub_date2_id, "
+                "sub_place_id, loc_place_id, res_id, comments) "
+                "VALUES ("ID", "ID", "ID", "ID", "ID", "ID", "ID", '%q');",
+                f_id, f_higher_id, f_sub_date1_id, f_sub_date2_id, f_sub_place_id,
+                f_loc_place_id, f_res_id, UTF8_(f_comments)
+            );
+        } else {
+            // Update existing record
+            sql.Format(
+                "UPDATE Source SET higher_id="ID", sub_date1_id="ID", sub_date2_id="ID", "
+                "sub_place_id="ID", loc_place_id="ID", res_id="ID", comments='%q' "
+                "WHERE id="ID";",
+                f_higher_id, f_sub_date1_id, f_sub_date2_id, f_sub_place_id,
+                f_loc_place_id, f_res_id, UTF8_(f_comments), f_id
+            );
+        }
+        s_db->ExecuteUpdate( sql );
+    }
+}
+
+bool recSource::Read()
+{
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( f_id == 0 ) {
+        Clear();
+        return false;
+    }
+
+    sql.Format(
+        "SELECT higher_id, sub_date1_id, sub_date2_id, "
+        "sub_place_id, loc_place_id, res_id, comments "
+        "FROM Source WHERE id="ID";",
+        f_id
+    );
+    result = s_db->GetTable( sql );
+
+    if( result.GetRowCount() != 1 )
+    {
+        Clear();
+        return false;
+    }
+    result.SetRow( 0 );
+    f_higher_id    = GET_ID( result.GetInt64( 0 ) );
+    f_sub_date1_id = GET_ID( result.GetInt64( 1 ) );
+    f_sub_date2_id = GET_ID( result.GetInt64( 2 ) );
+    f_sub_place_id = GET_ID( result.GetInt64( 3 ) );
+    f_loc_place_id = GET_ID( result.GetInt64( 4 ) );
+    f_res_id       = GET_ID( result.GetInt64( 5 ) );
+    f_comments     = result.GetAsString( 6 );
+    return true;
+}
 
 // End of recVersion.cpp file

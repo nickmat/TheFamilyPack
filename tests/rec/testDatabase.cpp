@@ -47,6 +47,7 @@
 #include <rec/recEvent.h>
 #include <rec/recReference.h>
 #include <rec/recIndividual.h>
+#include <rec/recSource.h>
 
 // ----------------------------------------------------------------------------
 // test class
@@ -77,6 +78,7 @@ private:
         CPPUNIT_TEST( TestIndividualPersona );
         CPPUNIT_TEST( TestFamily );
         CPPUNIT_TEST( TestFamilyIndividual );
+        CPPUNIT_TEST( TestSource );
         CPPUNIT_TEST( TestShutdown );
     CPPUNIT_TEST_SUITE_END();
 
@@ -98,6 +100,7 @@ private:
     void TestIndividualPersona();
     void TestFamily();
     void TestFamilyIndividual();
+    void TestSource();
     void TestShutdown();
 
     DECLARE_NO_COPY_CLASS(RecTestCase)
@@ -1009,6 +1012,57 @@ void RecTestCase::TestFamilyIndividual()
     CPPUNIT_ASSERT( recFamilyIndividual::Exists( 999 ) == true );
     recFamilyIndividual::Delete( 999 );
     CPPUNIT_ASSERT( recFamilyIndividual::Exists( 999 ) == false );
+}
+
+void RecTestCase::TestSource()
+{
+    id_t id;
+
+    recSource record1;
+    record1.f_id = 0;
+
+    record1.f_higher_id    = 3;
+    record1.f_sub_date1_id = 4;
+    record1.f_sub_date2_id = 5;
+    // f_id = 0 so create new record and set f_id to new value.
+    record1.Save();
+    id = record1.f_id;
+    CPPUNIT_ASSERT( id == 1 );
+
+    recSource record2;
+    record2.f_id = record1.f_id;
+    record2.Read();
+    CPPUNIT_ASSERT( record1 == record2 );
+
+    record1.f_higher_id    = 16;
+    record1.f_sub_date1_id = 15;
+    record1.f_sub_date2_id = 14;
+    // f_id = 1 which exists, so amend record leaving f_id to old value.
+    record1.Save();
+    CPPUNIT_ASSERT( record1.f_id == id );
+    record2.Read();
+    CPPUNIT_ASSERT( record1 == record2 );
+
+    record1.f_id = 999;
+    record1.f_higher_id = 8888;
+    // f_id = 999 which doesn't exists, so create new record with no change to f_id.
+    record1.Save();
+    CPPUNIT_ASSERT( record1.f_id == 999 );
+    record2.f_id = record1.f_id;
+    record2.Read();
+    CPPUNIT_ASSERT( record1 == record2 );
+
+    record1.f_id = 0;
+    record1.f_higher_id = 7777;
+    record1.Save();
+    CPPUNIT_ASSERT( record1.f_id != 0 );
+    CPPUNIT_ASSERT( record1.Exists() == true );
+    record1.Delete();
+    CPPUNIT_ASSERT( record1.Exists() == false );
+
+    CPPUNIT_ASSERT( recSource::Exists( 999 ) == true );
+    recSource::Delete( 999 );
+    CPPUNIT_ASSERT( recSource::Exists( 999 ) == false );
 }
 
 void RecTestCase::TestShutdown()

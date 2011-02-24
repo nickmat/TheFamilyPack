@@ -32,5 +32,54 @@
 
 #include <rec/recDatabase.h>
 
+class recSource;
+typedef std::vector< recSource >  recSourceVec;
+
+
+class recSource : public recDb
+{
+public:
+    id_t     f_higher_id;
+    id_t     f_sub_date1_id;
+    id_t     f_sub_date2_id;
+    id_t     f_sub_place_id;
+    id_t     f_loc_place_id;
+    id_t     f_res_id;
+    wxString f_comments;
+
+    recSource() {}
+    recSource( id_t id ) : recDb(id) { Read(); }
+    recSource( const recSource& source );
+
+    void Clear();
+    void Save();
+    bool Read();
+    TABLE_NAME_MEMBERS( "Source" );
+
+};
+
+inline bool recEquivalent( const recSource& r1, const recSource& r2 )
+{
+    return
+        r1.f_higher_id    == r2.f_higher_id    &&
+        r1.f_sub_date1_id == r2.f_sub_date1_id &&
+        r1.f_sub_date2_id == r2.f_sub_date2_id &&
+        r1.f_sub_place_id == r2.f_sub_place_id &&
+        r1.f_loc_place_id == r2.f_loc_place_id &&
+        r1.f_res_id       == r2.f_res_id       &&
+        r1.f_comments     == r2.f_comments;
+}
+
+inline bool operator==( const recSource& r1, const recSource& r2 )
+{
+    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
+}
+
+inline bool operator!=( const recSource& r1, const recSource& r2 )
+{
+    return !(r1 == r2);
+}
+
+
 
 #endif // RECSOURCE_H

@@ -54,7 +54,7 @@
 #include "img/back.xpm"
 #include "img/find.xpm"
 #include "img/home.xpm"
-#include "img/ref.xpm"
+#include "img/findref.xpm"
 
 BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_NEW_WINDOW, TfpFrame::OnNewWindow )
@@ -173,13 +173,13 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     wxBitmap bmpForward( forward_xpm );
     wxBitmap bmpBack( back_xpm );
     wxBitmap bmpFind( find_xpm );
+    wxBitmap bmpFindref( findref_xpm );
     wxBitmap bmpHome( home_xpm );
-    wxBitmap bmpRef( ref_xpm );
     m_toolbar->AddTool( tfpID_FIND_BACK, _("Back"), bmpBack );
     m_toolbar->AddTool( tfpID_FIND_FORWARD, _("Forward"), bmpForward );
     m_toolbar->AddSeparator();
     m_toolbar->AddTool( tfpID_LIST_SURNAME_INDEX, _("Index"), bmpFind );
-    m_toolbar->AddTool( tfpID_LIST_REFERENCES, _("References"), bmpRef );
+    m_toolbar->AddTool( tfpID_LIST_REFERENCES, _("References"), bmpFindref );
     m_toolbar->AddSeparator();
     m_toolbar->AddTool( tfpID_GOTO_HOME, _("Home"), bmpHome );
     m_toolbar->Realize();
@@ -657,7 +657,7 @@ void TfpFrame::OpenFile()
         if( recDb::OpenDb( path ) == true )
         {
             SetDatabaseOpen( path, true );
-            DisplayHtmPage( wxT("R") );
+            DisplayHtmPage( wxT("F1") );
         }
     }
 }
