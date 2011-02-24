@@ -50,7 +50,7 @@ enum Sex { SEX_Unstated, SEX_Male, SEX_Female, SEX_Unknown };
 extern wxString recGetSexStr( Sex sex );
 
 
-class recDb 
+class recDb
 {
 public:
     enum CreateFlags {
@@ -66,7 +66,7 @@ protected:
 
     /*! Return true if the given record exists in the given table.
      */
-    static bool RecordExists( const char* table, id_t id ); 
+    static bool RecordExists( const char* table, id_t id );
 
 public:
     id_t   f_id;
@@ -81,14 +81,14 @@ public:
 
     /*! Creates a new database with the given filename. If the flag
      *  CREATE_DB_STD_EXT is set, the standard file extension ".tfpd"
-     *  is used. If CREATE_DB_ENUM_FN is set, then if the filename 
+     *  is used. If CREATE_DB_ENUM_FN is set, then if the filename
      *  already exists then a new name is created by appending (n) to
      *  the name, where n is the lowest number (starting from 2) that
      *  gives a unique name.
      */
     static bool CreateDb( wxString& fname, unsigned flags );
 
-    /*! Opens an existing database file, providing there is not an existing 
+    /*! Opens an existing database file, providing there is not an existing
      *  database open and the file exists.
      */
     static bool OpenDb( const wxString& fname );
@@ -106,12 +106,12 @@ public:
     static void Rollback() { s_db->Rollback(); }
     static void ErrorMessage( wxSQLite3Exception& e );
     static void Savepoint( const wxString& str ) { s_db->Savepoint( str ); }
-    static void ReleaseSavepoint( const wxString& str ) 
+    static void ReleaseSavepoint( const wxString& str )
         { s_db->ReleaseSavepoint( str ); }
     static void Rollback( const wxString& str ) { s_db->Rollback( str ); }
 
 
-    /*! Return a the table name. 
+    /*! Return a the table name.
      */
     virtual const char* GetTableName() const = 0;
 
@@ -120,8 +120,8 @@ public:
     virtual void Clear() = 0;
 
     /*! If the id field is zero, a new record is created and the id field
-     *  is updated with the new value. If the id field is not zero, the 
-     *  database is checked to see if the record already exists - if it 
+     *  is updated with the new value. If the id field is not zero, the
+     *  database is checked to see if the record already exists - if it
      *  does it is updated - if not it is created.
      */
     virtual void Save() = 0;

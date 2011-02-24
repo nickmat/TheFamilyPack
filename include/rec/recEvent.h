@@ -31,15 +31,17 @@
 #ifndef RECEVENT_H
 #define RECEVENT_H
 
-#include <wx/vector.h>
+#include <vector>
+
 #include <rec/recDatabase.h>
+#include <rec/recReference.h>
 
 class recEventPersona;
-typedef wxVector< recEventPersona >  recEventPersonaVec;
+typedef std::vector< recEventPersona >  recEventPersonaVec;
 class recEventType;
-typedef wxVector< recEventType >  recEventTypeVec;
+typedef std::vector< recEventType >  recEventTypeVec;
 class recEventTypeRole;
-typedef wxVector< recEventTypeRole >  recEventTypeRoleVec;
+typedef std::vector< recEventTypeRole >  recEventTypeRoleVec;
 
 
 class recEvent : public recDb
@@ -71,8 +73,10 @@ public:
     static wxString GetTitle( id_t id );
     static wxString GetNote( id_t id );
 
-    id_t FindReference() const { return FindReference( f_id ); }
-    static id_t FindReference( id_t eventID );
+    id_t FindReferenceID() const { return FindReferenceID( f_id ); }
+    static id_t FindReferenceID( id_t eventID ) {
+        return recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, eventID );
+    }
 
     recEventPersonaVec GetEventPersonas();
 

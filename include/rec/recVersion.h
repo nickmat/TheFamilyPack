@@ -40,11 +40,11 @@ extern const int recVersionTest;
 extern const wxChar* recVersionStr;
 
 
-class recVersion : public recDb 
+class recVersion : public recDb
 {
 public:
-	int  f_major;
-	int  f_minor;
+    int  f_major;
+    int  f_minor;
     int  f_revision;
     int  f_test;
 
@@ -52,7 +52,7 @@ public:
     recVersion( id_t id ) : recDb(id) { Read(); }
     recVersion( const recVersion& ver );
 
-	void Clear();
+    void Clear();
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "Version" );
@@ -69,7 +69,7 @@ public:
 inline bool recEquivalent( const recVersion& r1, const recVersion& r2 )
 {
     return
-        r1.f_major    == r2.f_major    && 
+        r1.f_major    == r2.f_major    &&
         r1.f_minor    == r2.f_minor    &&
         r1.f_revision == r2.f_revision &&
         r1.f_test     == r2.f_test;

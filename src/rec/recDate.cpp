@@ -47,7 +47,7 @@ const wxString recDate::s_prefStr[recDate::PREF_Max] = {
     _("Before"),         // PREF_Before
     _("Not"),            // PREF_Not
     _("On or Before"),   // PREF_OrBefore
-	_("About")           // PREF_About
+    _("About")           // PREF_About
 };
 
 const wxString recDate::s_prefFormat[recDate::PREF_Max] = {
@@ -58,7 +58,7 @@ const wxString recDate::s_prefFormat[recDate::PREF_Max] = {
     _("bef %s"),      // PREF_Before
     _("not %s"),      // PREF_Not
     _("%s or bef"),   // PREF_OrBefore
-	_("abt %s")       // PREF_About
+    _("abt %s")       // PREF_About
 };
 
 recDate::recDate( const recDate& d )
@@ -85,72 +85,72 @@ void recDate::Clear()
 
 void recDate::Save()
 {
-	wxSQLite3StatementBuffer sql;
+    wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
 
-	if( f_id == 0 )
-	{
-		// Add new record
-	    sql.Format( 
-		    "INSERT INTO Date (jdn, range, type, desc, record_sch, display_sch) "
+    if( f_id == 0 )
+    {
+        // Add new record
+        sql.Format(
+            "INSERT INTO Date (jdn, range, type, desc, record_sch, display_sch) "
             "VALUES (%ld, %ld, %u, '%q', %d, %d);",
             f_jdn, f_range, f_type, UTF8_(f_desc), f_record_sch, f_display_sch
-	    );
-    	s_db->ExecuteUpdate( sql );
+        );
+        s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
-	} else {
+    } else {
         // Does record exist
         if( !Exists() )
         {
             // Add new record
-	        sql.Format( 
-		        "INSERT INTO Date (id, jdn, range, type, desc, record_sch, display_sch) "
+            sql.Format(
+                "INSERT INTO Date (id, jdn, range, type, desc, record_sch, display_sch) "
                 "VALUES ("ID", %ld, %ld, %u, '%q', %d, %d);",
                 f_id, f_jdn, f_range, f_type, UTF8_(f_desc), f_record_sch, f_display_sch
-	        );
+            );
         } else {
-    		// Update existing record
-            sql.Format( 
+            // Update existing record
+            sql.Format(
                 "UPDATE Date SET jdn=%ld, range=%ld, type=%u, desc='%q', record_sch=%d, display_sch=%d "
-                "WHERE id="ID";", 
+                "WHERE id="ID";",
                 f_jdn, f_range, f_type, UTF8_(f_desc), f_record_sch, f_display_sch, f_id
             );
         }
-    	s_db->ExecuteUpdate( sql );
-	}
+        s_db->ExecuteUpdate( sql );
+    }
 }
 
 bool recDate::Read()
 {
-	wxSQLite3StatementBuffer sql;
+    wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
 
     if( f_id == 0 ) {
-		Clear();
+        Clear();
         return false;
     }
 
-	sql.Format( "SELECT * FROM Date WHERE id="ID";", f_id );
+    sql.Format( "SELECT * FROM Date WHERE id="ID";", f_id );
     result = s_db->GetTable( sql );
 
-    if( result.GetRowCount() != 1 ) 
+    if( result.GetRowCount() != 1 )
     {
-		Clear();
+        Clear();
         return false;
     }
-    result.SetRow( 0 ); 
+    result.SetRow( 0 );
     f_jdn         = result.GetInt( 1 );
     f_range       = result.GetInt( 2 );
     f_type        = (TypeFlag) result.GetInt( 3 );
     f_desc        = result.GetAsString( 4 );
     f_record_sch  = (CalendarScheme) result.GetInt( 5 );
     f_display_sch = (CalendarScheme) result.GetInt( 6 );
-	return true;
+    return true;
 }
 
 void recDate::SetDefaults()
 {
-	// TODO: The default record/display scheme should be a system setting.
+    // TODO: The default record/display scheme should be a system setting.
     Clear();
     f_record_sch = CALENDAR_SCH_Gregorian;
     f_display_sch = CALENDAR_SCH_Gregorian;
@@ -158,27 +158,27 @@ void recDate::SetDefaults()
 
 bool recDate::SetDate( const wxString& str, CalendarScheme scheme )
 {
-	long beg, end;
-	if( scheme == CALENDAR_SCH_Unstated ) scheme = f_record_sch;
+    long beg, end;
+    if( scheme == CALENDAR_SCH_Unstated ) scheme = f_record_sch;
     bool ret = calStrToJdnRange( beg, end, str, scheme );
-	if( ret == true )
-	{
-		f_jdn = beg;
-		f_range = end - beg;
-		f_record_sch = scheme;
-		f_desc = wxEmptyString;
-	} else {
-		f_jdn = 0;
-		f_range = 0;
-		f_record_sch = scheme;
-		f_desc = str;
-	}
-	return ret;
+    if( ret == true )
+    {
+        f_jdn = beg;
+        f_range = end - beg;
+        f_record_sch = scheme;
+        f_desc = wxEmptyString;
+    } else {
+        f_jdn = 0;
+        f_range = 0;
+        f_record_sch = scheme;
+        f_desc = str;
+    }
+    return ret;
 }
 
 wxString recDate::GetJdnStr( CalendarScheme scheme ) const
 {
-	if( scheme == CALENDAR_SCH_Unstated ) scheme = f_display_sch;
+    if( scheme == CALENDAR_SCH_Unstated ) scheme = f_display_sch;
     if( f_jdn == 0 )
     {
         return f_desc;
@@ -194,12 +194,12 @@ wxString recDate::GetJdnStr( id_t id )
 
 wxString recDate::GetStr( CalendarScheme scheme ) const
 {
-	if( scheme == CALENDAR_SCH_Unstated ) scheme = f_display_sch;
+    if( scheme == CALENDAR_SCH_Unstated ) scheme = f_display_sch;
     if( f_jdn == 0 )
     {
         return f_desc;
     }
-    return wxString::Format( 
+    return wxString::Format(
         s_prefFormat[f_type],
         calStrFromJdnRange( f_jdn, f_jdn + f_range, scheme )
     );
@@ -213,15 +213,15 @@ wxString recDate::GetStr( id_t id )
 
 int recDate::GetYear( CalendarScheme scheme )
 {
-	int year;
+    int year;
 
-	if( f_jdn == 0  )
-	{
-		return 0;
-	}
-	if( scheme == CALENDAR_SCH_Unstated ) scheme = f_display_sch;
+    if( f_jdn == 0  )
+    {
+        return 0;
+    }
+    if( scheme == CALENDAR_SCH_Unstated ) scheme = f_display_sch;
     calYearFromJdn( year, f_jdn+(f_range/2), scheme );
-	return year;
+    return year;
 }
 
 

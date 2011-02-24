@@ -349,6 +349,20 @@ wxSQLite3Table recIndividual::GetEventsTable( id_t id )
     return s_db->GetTable( sql );
 }
 
+wxSQLite3Table recIndividual::GetAttributesTable( id_t id )
+{
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "SELECT DISTINCT id, type_id, val FROM Attribute "
+        "INNER JOIN "
+        "(SELECT per_id FROM IndividualPersona WHERE ind_id="ID") "
+        "USING(per_id);",
+        id
+    );
+    return s_db->GetTable( sql );
+}
+
 wxArrayString recIndividual::GetEventIdStrList( id_t indID, id_t etrID )
 {
     wxArrayString list;
@@ -382,15 +396,13 @@ wxSQLite3ResultSet recIndividual::GetNameList( wxString surname )
 {
     wxSQLite3StatementBuffer sql;
 
-    if( surname.length() == 0 )
-    {
+    if( surname.length() == 0 ) {
         // Full list
         sql.Format(
             "SELECT surname, given, epitaph, fam_id FROM Individual "
             "ORDER BY surname, given, birth_jdn;"
         );
-    } else if( surname.length() == 1 )
-    {
+    } else if( surname.length() == 1 ) {
         // Name beginning with letter
         wxString name = surname + wxT("%");
         sql.Format(
@@ -416,11 +428,13 @@ wxSQLite3Table recIndividual::GetNameTable( Sex sex )
     if( sex == SEX_Unstated ) {
         sql.Format(
             "SELECT id, surname, given, epitaph, sex, fam_id FROM Individual "
-            "ORDER BY surname, given;" );
+            "ORDER BY surname, given;"
+        );
     } else {
         sql.Format(
             "SELECT id, surname, given, epitaph, sex, fam_id FROM Individual "
-            "WHERE sex=%d ORDER BY surname, given;", sex );
+            "WHERE sex=%d ORDER BY surname, given;", sex
+        );
     }
     return s_db->GetTable( sql );
 }

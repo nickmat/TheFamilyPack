@@ -31,16 +31,17 @@
 #ifndef RECINDIVIDUAL_H
 #define RECINDIVIDUAL_H
 
-#include <wx/vector.h>
+#include <vector>
+
 #include <rec/recDatabase.h>
 #include <rec/recEvent.h>
 
 class recIndividual;
-typedef wxVector< recIndividual >  recIndividualList;
+typedef std::vector< recIndividual >  recIndividualList;
 class recFamily;
-typedef wxVector< recFamily >  recFamilyList;
+typedef std::vector< recFamily >  recFamilyList;
 class recFamilyIndividual;
-typedef wxVector< recFamilyIndividual >  recFamIndVec;
+typedef std::vector< recFamilyIndividual >  recFamIndVec;
 
 
 class recIndividual : public recDb
@@ -89,6 +90,9 @@ public:
 
     wxSQLite3Table GetEventsTable() const { return GetEventsTable( f_id ); }
     static wxSQLite3Table GetEventsTable( id_t id );
+
+    wxSQLite3Table GetAttributesTable() const { return GetAttributesTable( f_id ); }
+    static wxSQLite3Table GetAttributesTable( id_t id );
 
     wxArrayString GetEventIdStrList( id_t etrID ) const { GetEventIdStrList( f_id, etrID ); }
     static wxArrayString GetEventIdStrList( id_t indID, id_t etrID );

@@ -57,62 +57,62 @@ void recReference::Clear()
 
 void recReference::Save()
 {
-	wxSQLite3StatementBuffer sql;
+    wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
 
-	if( f_id == 0 )
-	{
-		// Add new record
-	    sql.Format( 
+    if( f_id == 0 )
+    {
+        // Add new record
+        sql.Format(
             "INSERT INTO Reference (title, statement)"
             "VALUES ('%q', '%q');",
             UTF8_(f_title), UTF8_(f_statement)
-	    );
-    	s_db->ExecuteUpdate( sql );
+        );
+        s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
-	} else {
+    } else {
         // Does record exist
         if( !Exists() )
         {
             // Add new record
-	        sql.Format( 
+            sql.Format(
                 "INSERT INTO Reference (id, title, statement)"
                 "VALUES ("ID", '%q', '%q');",
                 f_id, UTF8_(f_title), UTF8_(f_statement)
-	        );
+            );
         } else {
-    		// Update existing record
-            sql.Format( 
+            // Update existing record
+            sql.Format(
                 "UPDATE Reference SET title='%q', statement='%q' WHERE id="ID";",
                 UTF8_(f_title), UTF8_(f_statement), f_id
             );
         }
-    	s_db->ExecuteUpdate( sql );
-	}
+        s_db->ExecuteUpdate( sql );
+    }
 }
 
 bool recReference::Read()
 {
-	wxSQLite3StatementBuffer sql;
+    wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
 
     if( f_id == 0 ) {
-		Clear();
+        Clear();
         return false;
     }
 
     sql.Format( "SELECT * FROM Reference WHERE id="ID";", f_id );
     result = s_db->GetTable( sql );
 
-    if( result.GetRowCount() != 1 ) 
+    if( result.GetRowCount() != 1 )
     {
-		Clear();
+        Clear();
         return false;
     }
-    result.SetRow( 0 ); 
+    result.SetRow( 0 );
     f_title     = result.GetAsString( 1 );
     f_statement = result.GetAsString( 2 );
-	return true;
+    return true;
 }
 
 recRefEntVec recReference::ReadReferenceEntitys()
@@ -149,11 +149,11 @@ recRefEntVec recReference::ReadReferenceEntitys()
 
 wxSQLite3ResultSet recReference::GetTitleList()
 {
-	wxSQLite3StatementBuffer sql;
-	sql.Format(
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
         "SELECT id, title FROM Reference ORDER BY id;"
-	);
-	return s_db->ExecuteQuery( sql );
+    );
+    return s_db->ExecuteQuery( sql );
 }
 
 //----------------------------------------------------------
@@ -190,73 +190,87 @@ void recReferenceEntity::Clear()
 
 void recReferenceEntity::Save()
 {
-	wxSQLite3StatementBuffer sql;
+    wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
 
-	if( f_id == 0 )
-	{
-		// Add new record
-	    sql.Format( 
+    if( f_id == 0 )
+    {
+        // Add new record
+        sql.Format(
             "INSERT INTO ReferenceEntity "
             "(ref_id, entity_type, entity_id, sequence)"
             "VALUES ("ID", %u, "ID", %u);",
             f_ref_id, f_entity_type, f_entity_id, f_sequence
-	    );
-    	s_db->ExecuteUpdate( sql );
+        );
+        s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
-	} else {
+    } else {
         // Does record exist
         if( !Exists() )
         {
             // Add new record
-	        sql.Format( 
+            sql.Format(
                 "INSERT INTO ReferenceEntity "
                 "(id, ref_id, entity_type, entity_id, sequence)"
                 "VALUES ("ID", "ID", %u, "ID", %u);",
                 f_id, f_ref_id, f_entity_type, f_entity_id, f_sequence
-	        );
+            );
         } else {
-    		// Update existing record
-            sql.Format( 
+            // Update existing record
+            sql.Format(
                 "UPDATE ReferenceEntity SET "
                 "ref_id="ID", entity_type=%u, entity_id="ID", sequence=%u "
                 "WHERE id="ID";",
                 f_ref_id, f_entity_type, f_entity_id, f_sequence, f_id
             );
         }
-    	s_db->ExecuteUpdate( sql );
-	}
+        s_db->ExecuteUpdate( sql );
+    }
 }
 
 bool recReferenceEntity::Read()
 {
-	wxSQLite3StatementBuffer sql;
+    wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
 
     if( f_id == 0 ) {
-		Clear();
+        Clear();
         return false;
     }
 
-    sql.Format( 
+    sql.Format(
         "SELECT ref_id, entity_type, entity_id, sequence "
-        "FROM ReferenceEntity WHERE id="ID";", 
+        "FROM ReferenceEntity WHERE id="ID";",
         f_id
     );
     result = s_db->GetTable( sql );
 
-    if( result.GetRowCount() != 1 ) 
+    if( result.GetRowCount() != 1 )
     {
-		Clear();
+        Clear();
         return false;
     }
-    result.SetRow( 0 ); 
+    result.SetRow( 0 );
     f_ref_id      = GET_ID( result.GetInt64( 0 ) );
     f_entity_type = (Type) result.GetInt( 1 );
     f_entity_id   = GET_ID( result.GetInt64( 2 ) );
     f_sequence    = (unsigned) result.GetInt( 3 );
-	return true;
+    return true;
 }
+
+id_t recReferenceEntity::FindReferenceID( Type type, id_t entityID )
+{
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT ref_id FROM ReferenceEntity "
+        "WHERE entity_type=%d AND entity_id="ID";",
+        (int) type, entityID
+    );
+
+    wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
+    return GET_ID( result.GetInt64( 0 ) );
+}
+
 #if 0
 wxArrayString recReferenceEntity::GetNameTable( id_t refID )
 {

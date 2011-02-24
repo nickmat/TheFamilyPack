@@ -63,7 +63,7 @@ public:
     recName( id_t id ) : recDb(id) { Read(); }
     recName( const recName& attr );
 
-	void Clear();
+    void Clear();
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "Name" );
@@ -75,11 +75,11 @@ public:
     bool FindPersona( id_t perID, id_t styleID = 0 );
     wxString GetNamePart( id_t nptID );
 //    static wxString GetValue( id_t id );
-//	static recNameList ConvertStrToList( const wxString& str, id_t type = NAME_TYPE_Given_name );
+//  static recNameList ConvertStrToList( const wxString& str, id_t type = NAME_TYPE_Given_name );
 
     static wxString GetSurname( id_t id );
     static wxString GetGivenName( id_t id );
-    static wxString GetFullName( id_t id ) 
+    static wxString GetFullName( id_t id )
         { return GetGivenName( id ) + " " + GetSurname( id ); }
     wxString GetFullName() const { return GetFullName( f_id ); }
 
@@ -118,15 +118,15 @@ public:
     recNamePart( id_t id ) : recDb(id) { Read(); }
     recNamePart( const recNamePart& attr );
 
-	void Clear();
+    void Clear();
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "NamePart" );
 
     static wxString GetValue( id_t id );
-	static recNamePartVec ConvertStrToList( const wxString& str, id_t type = NAME_TYPE_Given_name );
+    static recNamePartVec ConvertStrToList( const wxString& str, id_t type = NAME_TYPE_Given_name );
     static wxSQLite3ResultSet GetSurnameList() {
-        return s_db->ExecuteQuery( 
+        return s_db->ExecuteQuery(
             "SELECT val FROM NamePart WHERE type_id=-2 GROUP BY val;"
         );
     }
@@ -153,22 +153,22 @@ inline bool operator!=( const recNamePart& r1, const recNamePart& r2 )
 
 //----------------------------------------------------------
 
-class recNamePartType : public recDb 
+class recNamePartType : public recDb
 {
 public:
-	enum NTYPE_Grp { 
-		NTYPE_Grp_Unstated, NTYPE_Grp_Name, NTYPE_Grp_Title, 
-		NTYPE_Grp_Other
-	};
+    enum NTYPE_Grp {
+        NTYPE_Grp_Unstated, NTYPE_Grp_Name, NTYPE_Grp_Title,
+        NTYPE_Grp_Other
+    };
 
-	NTYPE_Grp f_grp;
+    NTYPE_Grp f_grp;
     wxString  f_name;
 
     recNamePartType() {}
     recNamePartType( id_t id ) : recDb(id) { Read(); }
     recNamePartType( const recNamePartType& at );
 
-	void Clear();
+    void Clear();
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "NameType" );
@@ -197,7 +197,7 @@ inline bool operator!=( const recNamePartType& r1, const recNamePartType& r2 )
 
 //----------------------------------------------------------
 
-class recNameStyle : public recDb 
+class recNameStyle : public recDb
 {
 public:
     enum Style {
@@ -214,7 +214,7 @@ public:
     recNameStyle( id_t id ) : recDb(id) { Read(); }
     recNameStyle( const recNameStyle& at );
 
-	void Clear();
+    void Clear();
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "NameStyle" );

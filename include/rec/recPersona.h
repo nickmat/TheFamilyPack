@@ -30,16 +30,18 @@
 #ifndef RECPERSONA_H
 #define RECPERSONA_H
 
-#include <wx/vector.h>
+#include <vector>
+
 #include <rec/recDatabase.h>
+#include <rec/recReference.h>
 #include <rec/recName.h>
 
 class recPersona;
 class recAttribute;
 class recAttributeType;
-typedef wxVector< recPersona >  recPersonaList;
-typedef wxVector< recAttribute >  recAttributeList;
-typedef wxVector< recAttributeType >  recAttributeTypeVec;
+typedef std::vector< recPersona >  recPersonaList;
+typedef std::vector< recAttribute >  recAttributeList;
+typedef std::vector< recAttributeType >  recAttributeTypeVec;
 
 class recPersona : public recDb
 {
@@ -52,19 +54,19 @@ public:
     recPersona( id_t id ) : recDb(id) { Read(); }
     recPersona( const recPersona& persona );
 
-	void Clear();
+    void Clear();
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "Persona" );
 
     static wxString GetSurname( id_t id );
     static wxString GetGivenName( id_t id );
-    static wxString GetFullName( id_t id ) 
+    static wxString GetFullName( id_t id )
         { return GetGivenName( id ) + " " + GetSurname( id ); }
     wxString GetFullName() const { return GetFullName( f_id ); }
-	static recAttributeList ReadAttributes( id_t perID );
+    static recAttributeList ReadAttributes( id_t perID );
     recAttributeList ReadAttributes() const { return ReadAttributes( f_id ); }
-	static recNameVec ReadNames( id_t perID );
+    static recNameVec ReadNames( id_t perID );
     recNameVec ReadNames() const { return ReadNames( f_id ); }
 
     static recIdVec GetIndividualIDs( id_t perID );
@@ -94,7 +96,7 @@ inline bool operator!=( const recPersona& r1, const recPersona& r2 )
 enum recStdAttrType  // These match the create.sql file
 {
     ATTR_TYPE_Unstated   = 0,
-	ATTR_TYPE_Occupation = -1,
+    ATTR_TYPE_Occupation = -1,
     ATTR_TYPE_Max        = 2
 };
 
@@ -109,13 +111,19 @@ public:
     recAttribute( id_t id ) : recDb(id) { Read(); }
     recAttribute( const recAttribute& attr );
 
-	void Clear();
+    void Clear();
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "Attribute" );
 
     static wxString GetValue( id_t id );
-//	static recAttributeList ConvertStrToList( const wxString& str, id_t type );
+
+    id_t FindReferenceID() const { return FindReferenceID( f_id ); }
+    static id_t FindReferenceID( id_t eventID ) {
+        return recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Attribute, eventID );
+    }
+
+//  static recAttributeList ConvertStrToList( const wxString& str, id_t type );
 };
 
 inline bool recEquivalent( const recAttribute& r1, const recAttribute& r2 )
@@ -138,22 +146,22 @@ inline bool operator!=( const recAttribute& r1, const recAttribute& r2 )
 
 //----------------------------------------------------------
 
-class recAttributeType : public recDb 
+class recAttributeType : public recDb
 {
 public:
-	enum ATYPE_Grp { 
-		ATYPE_Grp_Unstated, ATYPE_Grp_Occ, 
+    enum ATYPE_Grp {
+        ATYPE_Grp_Unstated, ATYPE_Grp_Occ,
         ATYPE_Grp_Other
-	};
+    };
 
-	ATYPE_Grp f_grp;
+    ATYPE_Grp f_grp;
     wxString  f_name;
 
     recAttributeType() {}
     recAttributeType( id_t id ) : recDb(id) { Read(); }
     recAttributeType( const recAttributeType& at );
 
-	void Clear();
+    void Clear();
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "AttributeType" );

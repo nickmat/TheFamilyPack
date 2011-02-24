@@ -33,42 +33,42 @@
 #include <rec/recDatabase.h>
 #include <cal/calendar.h>
 
-class recDate : public recDb 
+class recDate : public recDb
 {
 public:
-	enum TypeFlag {
-		FLG_NULL   = 0x00, 
-		FLG_AFTER  = 0x01, 
-		FLG_RANGE  = 0x02, 
-		FLG_BEFORE = 0x04
-	};
+    enum TypeFlag {
+        FLG_NULL   = 0x00,
+        FLG_AFTER  = 0x01,
+        FLG_RANGE  = 0x02,
+        FLG_BEFORE = 0x04
+    };
 
-	enum TypePrefix {
-		PREF_Unstated = 0,
-		PREF_After,
-		PREF_On,
-		PREF_OrAfter,
-		PREF_Before,
-		PREF_Not,
-		PREF_OrBefore,
-		PREF_About,
-		PREF_Max
-	};
-	static const wxString s_prefStr[PREF_Max];
-	static const wxString s_prefFormat[PREF_Max];
+    enum TypePrefix {
+        PREF_Unstated = 0,
+        PREF_After,
+        PREF_On,
+        PREF_OrAfter,
+        PREF_Before,
+        PREF_Not,
+        PREF_OrBefore,
+        PREF_About,
+        PREF_Max
+    };
+    static const wxString s_prefStr[PREF_Max];
+    static const wxString s_prefFormat[PREF_Max];
 
-	long            f_jdn;
-	long            f_range;
+    long            f_jdn;
+    long            f_range;
     unsigned        f_type;         // Set with RecDate::TypeFlag
     wxString        f_desc;
     CalendarScheme  f_record_sch;   // Original convertion scheme
     CalendarScheme  f_display_sch;  // Default display scheme
-	                                // See cal/calendar.h for values
+                                    // See cal/calendar.h for values
     recDate() {}
     recDate( id_t id ) : recDb(id) { Read(); }
     recDate( const recDate& date );
 
-	void Clear();
+    void Clear();
     void Save();
     bool Read();
     /*! Impliments the member functions:
@@ -91,12 +91,12 @@ public:
     TABLE_NAME_MEMBERS( "Date" );
 
     void SetDefaults();
-	bool SetDate( const wxString& str, CalendarScheme sch = CALENDAR_SCH_Unstated );
+    bool SetDate( const wxString& str, CalendarScheme sch = CALENDAR_SCH_Unstated );
     wxString GetJdnStr( CalendarScheme sch = CALENDAR_SCH_Unstated ) const;
     static wxString GetJdnStr( id_t id );
     wxString GetStr( CalendarScheme sch = CALENDAR_SCH_Unstated ) const;
     static wxString GetStr( id_t id );
-	int GetYear( CalendarScheme sch = CALENDAR_SCH_Unstated );
+    int GetYear( CalendarScheme sch = CALENDAR_SCH_Unstated );
 
 
 };
@@ -106,7 +106,7 @@ public:
 inline bool recEquivalent( const recDate& d1, const recDate& d2 )
 {
     return
-        d1.f_jdn == d2.f_jdn && 
+        d1.f_jdn == d2.f_jdn &&
         d1.f_range == d2.f_range &&
         d1.f_type == d2.f_type &&
         d1.f_desc == d2.f_desc &&

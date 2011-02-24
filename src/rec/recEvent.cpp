@@ -113,7 +113,7 @@ bool recEvent::Read()
         return false;
     }
 
-    sql.Format( 
+    sql.Format(
         "SELECT title, sort_jdn, type_id, date1_id, date2_id, place_id, note "
         "FROM Event WHERE id="ID";",
         f_id
@@ -201,22 +201,13 @@ wxString recEvent::GetNote( id_t id )
     return result.GetAsString( 0 );
 }
 
-id_t recEvent::FindReference( id_t eventID )
-{
-    return ExecuteID(
-        "SELECT ref_id FROM ReferenceEntity "
-        "WHERE entity_type=2 AND entity_id="ID";",
-        eventID
-    );
-}
-
 recEventPersonaVec recEvent::GetEventPersonas()
 {
     recEventPersonaVec vec;
     recEventPersona record;
     wxSQLite3StatementBuffer sql;
 
-    sql.Format( 
+    sql.Format(
         "SELECT id, per_id, role_id, note "
         "FROM EventPersona WHERE event_id="ID";",
         f_id
@@ -466,7 +457,7 @@ bool recEventTypeRole::Read()
         return false;
     }
 
-    sql.Format( 
+    sql.Format(
         "SELECT type_id, prime, official, name "
         "FROM EventTypeRole WHERE id="ID";",
         f_id
@@ -484,6 +475,12 @@ bool recEventTypeRole::Read()
     f_official = result.GetBool( 2 );
     f_name = result.GetAsString( 3 );
     return true;
+}
+
+wxString recEventTypeRole::GetName( id_t roleID )
+{
+    recEventTypeRole role( roleID );
+    return role.f_name;
 }
 
 

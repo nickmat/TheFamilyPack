@@ -157,7 +157,7 @@ void dlgEditFamily::EditIDMenu( id_t editID )
         menu->Append( tfpID_DLGEDFAM_REMOVE,   _("&Remove") );
         menu->Append( tfpID_DLGEDFAM_DELETE,   _("&Delete") );
         if( m_editbutton == EDBUT_Marr ) {
-            if( recEvent::FindReference( m_family.f_event_id ) == 0 ) {
+            if( recEvent::FindReferenceID( m_family.f_event_id ) == 0 ) {
                 menu->Enable( tfpID_DLGEDFAM_REMOVE, false );
             } else {
                 menu->Enable( tfpID_DLGEDFAM_DELETE, false );
@@ -261,7 +261,7 @@ void dlgEditFamily::OnDeleteID( wxCommandEvent& event )
            wxT("OnDeleteID") );
         break;
     case EDBUT_Marr:
-        id = recEvent::FindReference( m_family.f_event_id );
+        id = recEvent::FindReferenceID( m_family.f_event_id );
         if( id == 0 ) {
             if( !recEvent::DeleteFromDb( m_family.f_event_id ) ) {
                 mes << _("Unable to delete E")

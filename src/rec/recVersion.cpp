@@ -131,7 +131,7 @@ bool recVersion::Read()
 wxString recVersion::GetVersionStr()
 {
     recVersion v(1);
-    return wxString::Format( 
+    return wxString::Format(
         "%d.%d.%d.%d",
         v.f_major, v.f_minor, v.f_revision, v.f_test
     );

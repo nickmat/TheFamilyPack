@@ -56,90 +56,90 @@ void recPlace::Clear()
 
 void recPlace::Save()
 {
-	wxSQLite3StatementBuffer sql;
+    wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
 
-	if( f_id == 0 )
-	{
-		// Add new record
-	    sql.Format( 
-		    "INSERT INTO Place (date1_id, date2_id) VALUES ("ID", "ID");",
+    if( f_id == 0 )
+    {
+        // Add new record
+        sql.Format(
+            "INSERT INTO Place (date1_id, date2_id) VALUES ("ID", "ID");",
             f_date1_id, f_date2_id
-	    );
-    	s_db->ExecuteUpdate( sql );
+        );
+        s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
-	} else {
+    } else {
         // Does record exist
         if( !Exists() )
         {
             // Add new record
-	        sql.Format( 
-		        "INSERT INTO Place (id, date1_id, date2_id)"
-			    "VALUES ("ID", "ID", "ID");",
+            sql.Format(
+                "INSERT INTO Place (id, date1_id, date2_id)"
+                "VALUES ("ID", "ID", "ID");",
                 f_id, f_date1_id, f_date2_id
-	        );
+            );
         } else {
-    		// Update existing record
-            sql.Format( 
-                "UPDATE Place SET date1_id="ID", date2_id="ID" WHERE id="ID";", 
+            // Update existing record
+            sql.Format(
+                "UPDATE Place SET date1_id="ID", date2_id="ID" WHERE id="ID";",
                 f_date1_id, f_date2_id, f_id
             );
         }
-    	s_db->ExecuteUpdate( sql );
-	}
+        s_db->ExecuteUpdate( sql );
+    }
 }
 
 bool recPlace::Read()
 {
-	wxSQLite3StatementBuffer sql;
+    wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
 
     if( f_id == 0 ) {
-		Clear();
+        Clear();
         return false;
     }
 
-	sql.Format( "SELECT * FROM Place WHERE id="ID";", f_id );
+    sql.Format( "SELECT * FROM Place WHERE id="ID";", f_id );
     result = s_db->GetTable( sql );
 
-    if( result.GetRowCount() != 1 ) 
+    if( result.GetRowCount() != 1 )
     {
-		Clear();
+        Clear();
         return false;
     }
-    result.SetRow( 0 ); 
+    result.SetRow( 0 );
     f_date1_id = GET_ID( result.GetInt64( 1 ) );
     f_date2_id = GET_ID( result.GetInt64( 2 ) );
-	return true;
+    return true;
 }
 
 void recPlace::SetAddress( id_t placeID, const wxString& str )
 {
-	recPlacePartList ppList = GetPlaceParts( placeID );
-	if( ppList.size() == 0 )
-	{
-		recPlacePart pp;
-		pp.Clear();
-		pp.f_type_id = recPlacePartType::TYPE_Address;
-		pp.f_place_id = placeID;
-		pp.f_val = str;
-		pp.Save();
-	} else {
-		ppList[0].f_type_id = recPlacePartType::TYPE_Address;
-		ppList[0].f_val = str;
-		ppList[0].Save();
-		for( size_t i = 1 ; i < ppList.size() ; i++ ) {
-			ppList[i].Delete();
-		}
-	}
+    recPlacePartList ppList = GetPlaceParts( placeID );
+    if( ppList.size() == 0 )
+    {
+        recPlacePart pp;
+        pp.Clear();
+        pp.f_type_id = recPlacePartType::TYPE_Address;
+        pp.f_place_id = placeID;
+        pp.f_val = str;
+        pp.Save();
+    } else {
+        ppList[0].f_type_id = recPlacePartType::TYPE_Address;
+        ppList[0].f_val = str;
+        ppList[0].Save();
+        for( size_t i = 1 ; i < ppList.size() ; i++ ) {
+            ppList[i].Delete();
+        }
+    }
 }
 
 wxString recPlace::GetAddressStr( id_t id )
 {
     if( id == 0 ) return wxEmptyString;
 
-	wxString str;
-	wxSQLite3StatementBuffer sql;
+    wxString str;
+    wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
 
     sql.Format(
@@ -149,27 +149,27 @@ wxString recPlace::GetAddressStr( id_t id )
     result = s_db->GetTable( sql );
 
     if( result.GetRowCount() > 0 )
-	{
+    {
         for( int row = 0 ; row < result.GetRowCount() ; row++ )
-		{
+        {
             if( row > 0 )
             {
                 str << wxT(", ");
             }
             result.SetRow( row );
             str << result.GetAsString( 0 );
-		}
+        }
     }
     return str;
 }
 
 recPlacePartList recPlace::GetPlaceParts( id_t placeID )
 {
-	wxString str;
-	wxSQLite3StatementBuffer sql;
+    wxString str;
+    wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
-	recPlacePart pp;
-	recPlacePartList ppList;
+    recPlacePart pp;
+    recPlacePartList ppList;
 
     sql.Format(
         "SELECT * FROM PlacePart WHERE place_id="ID" ORDER BY sequence;",
@@ -178,15 +178,15 @@ recPlacePartList recPlace::GetPlaceParts( id_t placeID )
     result = s_db->GetTable( sql );
 
     for( int row = 0 ; row < result.GetRowCount() ; row++ )
-	{
+    {
         result.SetRow( row );
-		pp.f_id       = GET_ID( result.GetInt64( 0 ) );
+        pp.f_id       = GET_ID( result.GetInt64( 0 ) );
         pp.f_type_id  = GET_ID( result.GetInt64( 1 ) );
         pp.f_place_id = GET_ID( result.GetInt64( 2 ) );
         pp.f_val      = result.GetAsString( 3 );
         pp.f_sequence = result.GetInt( 4 );
         ppList.push_back( pp );
-	}
+    }
     return ppList;
 }
 
@@ -213,65 +213,65 @@ void recPlacePart::Clear()
 
 void recPlacePart::Save()
 {
-	wxSQLite3StatementBuffer sql;
+    wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
 
-	if( f_id == 0 )
-	{
-		// Add new record
-	    sql.Format( 
-		    "INSERT INTO PlacePart (type_id, place_id, val, sequence) "
+    if( f_id == 0 )
+    {
+        // Add new record
+        sql.Format(
+            "INSERT INTO PlacePart (type_id, place_id, val, sequence) "
             "VALUES ("ID", "ID", '%q', %u);",
             f_type_id, f_place_id, UTF8_(f_val), f_sequence
-	    );
-    	s_db->ExecuteUpdate( sql );
+        );
+        s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
-	} else {
+    } else {
         // Does record exist
         if( !Exists() )
         {
             // Add new record
-	        sql.Format( 
-		        "INSERT INTO PlacePart (id, type_id, place_id, val, sequence) "
+            sql.Format(
+                "INSERT INTO PlacePart (id, type_id, place_id, val, sequence) "
                 "VALUES ("ID", "ID", "ID", '%q', %u);",
                 f_id, f_type_id, f_place_id, UTF8_(f_val), f_sequence
-	        );
+            );
         } else {
-    		// Update existing record
-            sql.Format( 
+            // Update existing record
+            sql.Format(
                 "UPDATE PlacePart SET type_id="ID", place_id="ID", val='%q', sequence=%u "
-                "WHERE id="ID";", 
+                "WHERE id="ID";",
                 f_type_id, f_place_id, UTF8_(f_val), f_sequence, f_id
             );
         }
-    	s_db->ExecuteUpdate( sql );
-	}
+        s_db->ExecuteUpdate( sql );
+    }
 }
 
 bool recPlacePart::Read()
 {
-	wxSQLite3StatementBuffer sql;
+    wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
 
     if( f_id == 0 ) {
-		Clear();
+        Clear();
         return false;
     }
 
-	sql.Format( "SELECT * FROM PlacePart WHERE id="ID";", f_id );
+    sql.Format( "SELECT * FROM PlacePart WHERE id="ID";", f_id );
     result = s_db->GetTable( sql );
 
-    if( result.GetRowCount() != 1 ) 
+    if( result.GetRowCount() != 1 )
     {
-		Clear();
+        Clear();
         return false;
     }
-    result.SetRow( 0 ); 
+    result.SetRow( 0 );
     f_type_id  = GET_ID( result.GetInt64( 1 ) );
     f_place_id = GET_ID( result.GetInt64( 2 ) );
     f_val      = result.GetAsString( 3 );
     f_sequence = result.GetInt( 4 );
-	return true;
+    return true;
 }
 
 //----------------------------------------------------------
@@ -290,60 +290,60 @@ void recPlacePartType::Clear()
 
 void recPlacePartType::Save()
 {
-	wxSQLite3StatementBuffer sql;
+    wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
 
-	if( f_id == 0 )
-	{
-		// Add new record
-	    sql.Format( 
-		    "INSERT INTO PlacePartType (name) VALUES ('%q');",
+    if( f_id == 0 )
+    {
+        // Add new record
+        sql.Format(
+            "INSERT INTO PlacePartType (name) VALUES ('%q');",
             UTF8_(f_name)
-	    );
-    	s_db->ExecuteUpdate( sql );
+        );
+        s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
-	} else {
+    } else {
         // Does record exist
         if( !Exists() )
         {
             // Add new record
-	        sql.Format( 
-		        "INSERT INTO PlacePartType (id, name)"
-			    "VALUES ("ID", '%q');",
+            sql.Format(
+                "INSERT INTO PlacePartType (id, name)"
+                "VALUES ("ID", '%q');",
                 f_id, UTF8_(f_name)
-	        );
+            );
         } else {
-    		// Update existing record
-            sql.Format( 
-                "UPDATE PlacePartType SET name='%q' WHERE id="ID";", 
+            // Update existing record
+            sql.Format(
+                "UPDATE PlacePartType SET name='%q' WHERE id="ID";",
                 UTF8_(f_name), f_id
             );
         }
-    	s_db->ExecuteUpdate( sql );
-	}
+        s_db->ExecuteUpdate( sql );
+    }
 }
 
 bool recPlacePartType::Read()
 {
-	wxSQLite3StatementBuffer sql;
+    wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
 
     if( f_id == 0 ) {
-		Clear();
+        Clear();
         return false;
     }
 
-	sql.Format( "SELECT * FROM PlacePartType WHERE id="ID";", f_id );
+    sql.Format( "SELECT * FROM PlacePartType WHERE id="ID";", f_id );
     result = s_db->GetTable( sql );
 
-    if( result.GetRowCount() != 1 ) 
+    if( result.GetRowCount() != 1 )
     {
-		Clear();
+        Clear();
         return false;
     }
-    result.SetRow( 0 ); 
+    result.SetRow( 0 );
     f_name = result.GetAsString( 1 );
-	return true;
+    return true;
 }
 
 // End of recPlace.cpp file

@@ -31,7 +31,7 @@
    can only be used by tools created with SQLite version 3.3.0 or later
    (released Jan 2006) */
 PRAGMA legacy_file_format=OFF;
-PRAGMA foreign_keys=ON; 
+PRAGMA foreign_keys=ON;
 
 BEGIN;
 

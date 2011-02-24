@@ -39,14 +39,12 @@
 #include <rec/recIndividual.h>
 #include <rec/recEvent.h>
 #include <rec/recPersona.h>
+#include <rec/recReference.h>
 
 #include "tfpWr.h"
 
 wxString tfpWriteIndividualPage( id_t indID )
 {
-//    return 
-//        "<html><head><title>tfpWriteIndividualPage</title></head>"
-//        "<body>Not yet done - tfpWriteIndividualPage</body></html>";
     wxString htm;
 	size_t i, j, cnt;
 	recIndividual ind( indID );
@@ -162,12 +160,30 @@ wxString tfpWriteIndividualPage( id_t indID )
 		}
 	}
 
-	wxSQLite3Table eTable = ind.GetEventsTable();
+	wxSQLite3Table eTable = ind.GetAttributesTable();
+    for( i = 0 ; i < (size_t) eTable.GetRowCount() ; i++ ) {
+        eTable.SetRow( i );
+        id_t attrID = GET_ID( eTable.GetInt64( 0 ) );
+        id_t typeID = GET_ID( eTable.GetInt64( 1 ) );
+        id_t refID = recAttribute::FindReferenceID( attrID );
+
+        htm << "<tr><td align=right>"
+            << recAttributeType::GetTypeStr( typeID )
+            << wxT(":</td><td><b>")
+            << eTable.GetAsString( 2 );
+		if( refID != 0 ) {
+    		htm << wxT(" <a href=R") << refID 
+	    		<< wxT("><img src=memory:ref.bmp></a>");
+		}
+        htm << "</b></td></tr>";
+    }
+
+	eTable = ind.GetEventsTable();
     for( i = 0 ; i < (size_t) eTable.GetRowCount() ; i++ ) {
         eTable.SetRow( i );
         id_t eventID = GET_ID( eTable.GetInt64( 0 ) );
         id_t roleID = GET_ID( eTable.GetInt64( 1 ) );
-		id_t refID = recEvent::FindReference( eventID );
+        id_t refID = recEvent::FindReferenceID( eventID );
 
 		htm << wxT("<tr><td align=right>")
             << recEventTypeRole::GetName( roleID )
@@ -185,12 +201,6 @@ wxString tfpWriteIndividualPage( id_t indID )
     htm << wxT("</table></center></body></html>");
 
     return htm;
-}
-
-wxString recEventTypeRole::GetName( id_t roleID )
-{
-	recEventTypeRole role( roleID );
-	return role.f_name;
 }
 
 

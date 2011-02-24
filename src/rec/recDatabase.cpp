@@ -76,7 +76,7 @@ bool recDb::CreateDb( wxString& fname, unsigned flags )
         return false;
     }
 
-	fname = dbfile.GetFullPath();
+    fname = dbfile.GetFullPath();
     s_db->Open( fname );
     s_db->ExecuteUpdate( createdb );
     return true;
@@ -91,7 +91,7 @@ bool recDb::OpenDb( const wxString& fname )
 
     s_db->Open( fname );
     recVersion version(1);
-    if( !version.IsEqual( 
+    if( !version.IsEqual(
         recVersionMajor, recVersionMinor, recVersionRevision, recVersionTest
     ) ) {
         wxMessageBox(
@@ -159,10 +159,10 @@ id_t recDb::ExecuteID( const char* format, id_t id )
 
 wxString recGetSexStr( Sex sex )
 {
-	static wxString sexarray[] = {
-		_("Unstated"), _("Male"), _("Female"), _("Unknown")
-	};
-	return sexarray[sex];
+    static wxString sexarray[] = {
+        _("Unstated"), _("Male"), _("Female"), _("Unknown")
+    };
+    return sexarray[sex];
 }
 
 

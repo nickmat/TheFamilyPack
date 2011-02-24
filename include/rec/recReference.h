@@ -30,11 +30,12 @@
 #ifndef RECREFERENCE_H
 #define RECREFERENCE_H
 
-#include <wx/vector.h>
+#include <vector>
+
 #include <rec/recDatabase.h>
 
 class recReferenceEntity;
-typedef wxVector< recReferenceEntity >  recRefEntVec;
+typedef std::vector< recReferenceEntity >  recRefEntVec;
 
 class recReference : public recDb
 {
@@ -46,13 +47,14 @@ public:
     recReference( id_t id ) : recDb(id) { Read(); }
     recReference( const recReference& ref );
 
-	void Clear();
+    void Clear();
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "Reference" );
 
     recRefEntVec ReadReferenceEntitys();
     static wxSQLite3ResultSet GetTitleList();
+
 };
 
 inline bool recEquivalent( const recReference& r1, const recReference& r2 )
@@ -74,7 +76,7 @@ inline bool operator!=( const recReference& r1, const recReference& r2 )
 
 //----------------------------------------------------------
 
-class recReferenceEntity : public recDb 
+class recReferenceEntity : public recDb
 {
 public:
     enum Type {
@@ -99,13 +101,16 @@ public:
     recReferenceEntity( id_t id ) : recDb(id) { Read(); }
     recReferenceEntity( const recReferenceEntity& re );
 
-	void Clear();
+    void Clear();
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "ReferenceEntity" );
 
     wxString GetTypeStr() { return sm_typeStr[f_entity_type]; }
     static wxString GetTypeStr( Type etype ) { return sm_typeStr[etype]; }
+
+
+    static id_t FindReferenceID( Type type, id_t entityID );
 
 //    static wxArrayString GetNameTable( id_t refID );
 };

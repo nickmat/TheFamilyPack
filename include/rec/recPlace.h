@@ -37,7 +37,7 @@
 class recPlacePart;
 typedef wxVector< recPlacePart >  recPlacePartList;
 
-class recPlace : public recDb 
+class recPlace : public recDb
 {
 public:
     id_t  f_date1_id;
@@ -47,7 +47,7 @@ public:
     recPlace( id_t id ) : recDb(id) { Read(); }
     recPlace( const recPlace& place );
 
-	void Clear();
+    void Clear();
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "Place" );
@@ -58,8 +58,8 @@ public:
     wxString GetAddressStr() const { return GetAddressStr( f_id ); }
     static wxString GetAddressStr( id_t id );
 
-	recPlacePartList GetPlaceParts() const { return GetPlaceParts( f_id ); }
-	static recPlacePartList GetPlaceParts( id_t placeID );
+    recPlacePartList GetPlaceParts() const { return GetPlaceParts( f_id ); }
+    static recPlacePartList GetPlaceParts( id_t placeID );
 };
 
 /*! The two entities are equal, ignoring the record id.
@@ -84,7 +84,7 @@ inline bool operator!=( const recPlace& r1, const recPlace& r2 )
 //----------------------------------------------------------
 
 
-class recPlacePart : public recDb 
+class recPlacePart : public recDb
 {
 public:
     id_t     f_type_id;
@@ -96,7 +96,7 @@ public:
     recPlacePart( id_t id ) : recDb(id) { Read(); }
     recPlacePart( const recPlacePart& pp );
 
-	void Clear();
+    void Clear();
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "PlacePart" );
@@ -124,13 +124,13 @@ inline bool operator!=( const recPlacePart& r1, const recPlacePart& r2 )
 //----------------------------------------------------------
 
 
-class recPlacePartType : public recDb 
+class recPlacePartType : public recDb
 {
 public:
-	enum Type {
-		TYPE_Address = -1,
-		TYPE_MAX = 1  // Number of entries
-	};
+    enum Type {
+        TYPE_Address = -1,
+        TYPE_MAX = 1  // Number of entries
+    };
 
     wxString f_name;
 
@@ -138,7 +138,7 @@ public:
     recPlacePartType( id_t id ) : recDb(id) { Read(); }
     recPlacePartType( const recPlacePartType& ppt );
 
-	void Clear();
+    void Clear();
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "PlacePartType" );
