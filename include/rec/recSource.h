@@ -33,8 +33,13 @@
 #include <rec/recDatabase.h>
 
 class recSource;
+class recCitationPartType;
 typedef std::vector< recSource >  recSourceVec;
+typedef std::vector< recCitationPartType >  recCitationPartTypeVec;
 
+//============================================================================
+//                 recSource
+//============================================================================
 
 class recSource : public recDb
 {
@@ -76,6 +81,167 @@ inline bool operator==( const recSource& r1, const recSource& r2 )
 }
 
 inline bool operator!=( const recSource& r1, const recSource& r2 )
+{
+    return !(r1 == r2);
+}
+
+//============================================================================
+//                 recCitationPart
+//============================================================================
+
+class recCitationPart : public recDb
+{
+public:
+    id_t     f_type_id;
+    id_t     f_source_id;
+    wxString f_val;
+
+    recCitationPart() {}
+    recCitationPart( id_t id ) : recDb(id) { Read(); }
+    recCitationPart( const recCitationPart& source );
+
+    void Clear();
+    void Save();
+    bool Read();
+    TABLE_NAME_MEMBERS( "CitationPart" );
+
+};
+
+inline bool recEquivalent( const recCitationPart& r1, const recCitationPart& r2 )
+{
+    return
+        r1.f_type_id   == r2.f_type_id   &&
+        r1.f_source_id == r2.f_source_id &&
+        r1.f_val       == r2.f_val;
+}
+
+inline bool operator==( const recCitationPart& r1, const recCitationPart& r2 )
+{
+    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
+}
+
+inline bool operator!=( const recCitationPart& r1, const recCitationPart& r2 )
+{
+    return !(r1 == r2);
+}
+
+//============================================================================
+//                 recCitationPartType
+//============================================================================
+
+class recCitationPartType : public recDb
+{
+public:
+    wxString  f_name;
+
+    recCitationPartType() {}
+    recCitationPartType( id_t id ) : recDb(id) { Read(); }
+    recCitationPartType( const recCitationPartType& at );
+
+    void Clear();
+    void Save();
+    bool Read();
+    TABLE_NAME_MEMBERS( "CitationPartType" );
+
+    static wxString GetStr( id_t id );
+
+    static recCitationPartTypeVec GetList();
+};
+
+inline bool recEquivalent( const recCitationPartType& r1, const recCitationPartType& r2 )
+{
+    return
+        r1.f_name == r2.f_name;
+}
+
+inline bool operator==( const recCitationPartType& r1, const recCitationPartType& r2 )
+{
+    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
+}
+
+inline bool operator!=( const recCitationPartType& r1, const recCitationPartType& r2 )
+{
+    return !(r1 == r2);
+}
+
+
+//============================================================================
+//                 recRepository
+//============================================================================
+
+class recRepository : public recDb
+{
+public:
+    wxString  f_name;
+    wxString  f_access;
+    wxString  f_comments;
+
+    recRepository() {}
+    recRepository( id_t id ) : recDb(id) { Read(); }
+    recRepository( const recRepository& at );
+
+    void Clear();
+    void Save();
+    bool Read();
+    TABLE_NAME_MEMBERS( "Repository" );
+};
+
+inline bool recEquivalent( const recRepository& r1, const recRepository& r2 )
+{
+    return
+        r1.f_name     == r2.f_name    &&
+        r1.f_access   == r2.f_access  &&
+        r1.f_comments == r2.f_comments;
+}
+
+inline bool operator==( const recRepository& r1, const recRepository& r2 )
+{
+    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
+}
+
+inline bool operator!=( const recRepository& r1, const recRepository& r2 )
+{
+    return !(r1 == r2);
+}
+
+
+//============================================================================
+//                 recRepositorySource
+//============================================================================
+
+class recRepositorySource : public recDb
+{
+public:
+    id_t      f_repos_id;
+    id_t      f_source_id;
+    wxString  f_call_num;
+    wxString  f_desc;
+
+    recRepositorySource() {}
+    recRepositorySource( id_t id ) : recDb(id) { Read(); }
+    recRepositorySource( const recRepositorySource& at );
+
+    void Clear();
+    void Save();
+    bool Read();
+    TABLE_NAME_MEMBERS( "RepositorySource" );
+};
+
+inline bool recEquivalent( const recRepositorySource& r1, const recRepositorySource& r2 )
+{
+    return
+        r1.f_repos_id  == r2.f_repos_id  &&
+        r1.f_source_id == r2.f_source_id &&
+        r1.f_call_num  == r2.f_call_num  &&
+        r1.f_desc      == r2.f_desc;
+}
+
+inline bool operator==( const recRepositorySource& r1, const recRepositorySource& r2 )
+{
+    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
+}
+
+inline bool operator!=( const recRepositorySource& r1, const recRepositorySource& r2 )
 {
     return !(r1 == r2);
 }
