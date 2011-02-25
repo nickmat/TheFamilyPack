@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        recSource.h
+ * Name:        recSource.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Manage the SQLite3 Source record.
  * Author:      Nick Matthews
@@ -517,4 +517,4 @@ bool recRepositorySource::Read()
     return true;
 }
 
-// End of recVersion.cpp file
+// End of recSource.cpp file

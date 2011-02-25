@@ -40,11 +40,12 @@
     <action id="$(LOCAL_SRC)/rec/recDatabase.cpp">
       <depends-on-file>$(LOCAL_SRC)/rec/generated/recSql.ci</depends-on-file>
     </action>
-  
+
   </if>
 
   <lib id="rec" template="wx-lib,wxlike">
     <libname>$(LOCAL_LIB)/rec$(WXLIBPOSTFIX)</libname>
+    <sources>$(LOCAL_SRC)/rec/recContact.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recDatabase.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recDate.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recEvent.cpp</sources>
@@ -54,8 +55,10 @@
     <sources>$(LOCAL_SRC)/rec/recPlace.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recReference.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recSource.cpp</sources>
+    <sources>$(LOCAL_SRC)/rec/recUser.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recVersion.cpp</sources>
 
+    <headers>$(LOCAL_INC)/rec/recContact.h</headers>
     <headers>$(LOCAL_INC)/rec/recDatabase.h</headers>
     <headers>$(LOCAL_INC)/rec/recDate.h</headers>
     <headers>$(LOCAL_INC)/rec/recEvent.h</headers>
@@ -65,6 +68,7 @@
     <headers>$(LOCAL_INC)/rec/recPlace.h</headers>
     <headers>$(LOCAL_INC)/rec/recReference.h</headers>
     <headers>$(LOCAL_INC)/rec/recSource.h</headers>
+    <headers>$(LOCAL_INC)/rec/recUser.h</headers>
     <headers>$(LOCAL_INC)/rec/recVersion.h</headers>
     <include>$(LOCAL_INC)/rec</include>
     <include>$(LOCAL_INC)</include>
