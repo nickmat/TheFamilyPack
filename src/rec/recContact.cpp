@@ -292,7 +292,7 @@ void recResearcher::Save()
             sql.Format(
                 "INSERT INTO Researcher (id, name, comments) "
                 "VALUES ("ID", '%q', '%q');",
-                f_id, UTF8_(f_name), UTF8_(f_access), UTF8_(f_comments)
+                f_id, UTF8_(f_name), UTF8_(f_comments)
             );
         } else {
             // Update existing record
