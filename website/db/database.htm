@@ -49,7 +49,20 @@
  The starting point for this database is the <a href="http://www.ngsgenealogy.org/cs/GenTech_Projects">GenTech Genealogical Data Model</a> which anyone interested in the TFP database would do well to take a look at. However, significant changes have been made and with more to come, the TFP database should be treated in its own right as a separate design.
 </p>
 <p>
- The current status of the database is best described as experimental, the entities in the diagram with a shaded background have been implemented in a test program. Some areas - such as data confidence (what GDM calls Surety) is completely missing. Other areas, like the Places subsystem are in need of a major change. Whilst yet others like the Citation/Source entities are carried over wholesale from the GDM and have yet to be tested in a practical application.
+ The current status of the database is best described as experimental, most of the entities in the diagram have been implemented in a test program. Some areas - such as data confidence (what GDM calls Surety) is completely missing. Other areas, like the Places subsystem are in need of a major change. Whilst yet others like the Citation/Source entities are carried over wholesale from the GDM and have yet to be tested in a practical application.
+</p>
+<p>
+ The database is divided into three broad areas, Administration, Evidence and Conclusions. The administration area is the lest developed, but will be the area where overall genealogy project using the database is organised. The evidence section is where all the factual data is held and is probably the area that is most experimental. The conclusions area is where the collected facts are organised and turned into genealogy trees.
+</p>
+<h2>General Principles</h2>
+<p>
+ The database is being designed for use with the Sqlite3 library, although there are other systems that may be used in the future.
+</p>
+<p>
+ Although SQL is case insensitive, TFP uses the following conventions. SQL keywords are written in UPPER CASE, table names in CamelCase and column names in lower_case with underscores as necessary. Table names are generally written in full whilst column names are often abbreviated.
+</p>
+<p>
+ All tables will include an explicit unique id key field, even when the field is not strictly needed. This helps to provide a uniform interface. Sqlite creates the field implicitly anyway so there is no additional cost in creating it explicitly. All user created records have a positive id's greater than zero. Zero id's are reserved, their meaning depending on the context. Negative id's are used for common data copied from the common database.
 </p>
 </div>
 
