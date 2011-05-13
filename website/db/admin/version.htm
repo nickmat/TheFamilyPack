@@ -32,7 +32,23 @@
 <div class="diag"><img src="tfp-version.png" alt="Version Subsystem" /></div>
 <h2>Version</h2>
 <p>
- Under construction
+ The Version table holds a single row which ties the database to a precise definition. The intention is to allow any program to know what to expect and, if appropriate, update the database. The database specification, in this case, includes the core data, but not other common data.
+</p>
+<h3>major</h3>
+<p>
+ Once the database reaches a point where it is "production ready" and fully usable, the major version number will be set to 1. Thereafter the the major version number will increase only when a significant change is made, one in which data loss may occur when updating an older version.
+</p>
+<h3>minor</h3>
+<p>
+ In general, a program is designed to work with a given major/minor version. If the program detects an older version it may offer the option of updating the database to bring it to a state the program can use. If the database has a higher major/minor version than the program is designed for, the program must reject the file.
+</p>
+<h3>revision</h3>
+<p>
+ Small changes to the database are indicated by increasing the revision number. Typically this will be an addition to the the core data although it may involve other changes. A program may offer to update an older revision, but if the offer is not taken up, it should still work.  
+</p>
+<h3>test</h3>
+<p> 
+ This value is used during development to facilitate making small changes, some of which may be reversed, before the final release of the program version. Databases created or updated by released programs will always have this value set to zero.
 </p>
 
 </div>
