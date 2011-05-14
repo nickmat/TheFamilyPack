@@ -43,7 +43,7 @@ const int recVersionMajor    = 0;
 const int recVersionMinor    = 0;
 const int recVersionRevision = 8;
 const int recVersionTest     = 0;
-const wxChar* recVersionStr  = wxS("0.0.8.0");
+const wxStringCharType* recVersionStr  = wxS("0.0.8.0");
 
 
 recVersion::recVersion( const recVersion& v )

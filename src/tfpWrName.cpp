@@ -57,7 +57,7 @@ wxString tfpWritePersonIndex( WrIndex type )
 
     if( result.GetColumnCount() > 0 )
 	{
-        wxChar letter = wxChar('/0');
+        wxChar letter = wxChar('\0');
         wxString name = wxEmptyString;
         int count = 1;
         bool row1st = true;

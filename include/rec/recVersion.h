@@ -37,7 +37,7 @@ extern const int recVersionMajor;
 extern const int recVersionMinor;
 extern const int recVersionRevision;
 extern const int recVersionTest;
-extern const wxChar* recVersionStr;
+extern const wxStringCharType* recVersionStr;
 
 
 class recVersion : public recDb
