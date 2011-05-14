@@ -44,16 +44,16 @@ typedef std::vector< recCitationPartType >  recCitationPartTypeVec;
 class recSource : public recDb
 {
 public:
-    id_t     f_higher_id;
-    id_t     f_sub_date1_id;
-    id_t     f_sub_date2_id;
-    id_t     f_sub_place_id;
-    id_t     f_loc_place_id;
-    id_t     f_res_id;
+    idt     f_higher_id;
+    idt     f_sub_date1_id;
+    idt     f_sub_date2_id;
+    idt     f_sub_place_id;
+    idt     f_loc_place_id;
+    idt     f_res_id;
     wxString f_comments;
 
     recSource() {}
-    recSource( id_t id ) : recDb(id) { Read(); }
+    recSource( idt id ) : recDb(id) { Read(); }
     recSource( const recSource& source );
 
     void Clear();
@@ -92,12 +92,12 @@ inline bool operator!=( const recSource& r1, const recSource& r2 )
 class recCitationPart : public recDb
 {
 public:
-    id_t     f_type_id;
-    id_t     f_source_id;
+    idt     f_type_id;
+    idt     f_source_id;
     wxString f_val;
 
     recCitationPart() {}
-    recCitationPart( id_t id ) : recDb(id) { Read(); }
+    recCitationPart( idt id ) : recDb(id) { Read(); }
     recCitationPart( const recCitationPart& source );
 
     void Clear();
@@ -135,7 +135,7 @@ public:
     wxString  f_name;
 
     recCitationPartType() {}
-    recCitationPartType( id_t id ) : recDb(id) { Read(); }
+    recCitationPartType( idt id ) : recDb(id) { Read(); }
     recCitationPartType( const recCitationPartType& at );
 
     void Clear();
@@ -143,7 +143,7 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "CitationPartType" );
 
-    static wxString GetStr( id_t id );
+    static wxString GetStr( idt id );
 
     static recCitationPartTypeVec GetList();
 };
@@ -177,7 +177,7 @@ public:
     wxString  f_comments;
 
     recRepository() {}
-    recRepository( id_t id ) : recDb(id) { Read(); }
+    recRepository( idt id ) : recDb(id) { Read(); }
     recRepository( const recRepository& at );
 
     void Clear();
@@ -212,13 +212,13 @@ inline bool operator!=( const recRepository& r1, const recRepository& r2 )
 class recRepositorySource : public recDb
 {
 public:
-    id_t      f_repos_id;
-    id_t      f_source_id;
+    idt      f_repos_id;
+    idt      f_source_id;
     wxString  f_call_num;
     wxString  f_desc;
 
     recRepositorySource() {}
-    recRepositorySource( id_t id ) : recDb(id) { Read(); }
+    recRepositorySource( idt id ) : recDb(id) { Read(); }
     recRepositorySource( const recRepositorySource& at );
 
     void Clear();

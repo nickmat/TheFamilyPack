@@ -40,7 +40,7 @@ public:
     static CalendarScheme scheme[];
     static int sch_list[CALENDAR_SCH_Max];
 
-    dlgEditDate( wxWindow* parent, id_t id = 0 );
+    dlgEditDate( wxWindow* parent, idt id = 0 );
 
     void SetText( const wxString& text ) { m_text = text; }
 
@@ -64,7 +64,7 @@ private:
 class dlgEditDateFromAge : public fbDlgEditDateFromAge
 {
 public:
-    dlgEditDateFromAge( wxWindow* parent, id_t id = 0 );
+    dlgEditDateFromAge( wxWindow* parent, idt id = 0 );
 
     recDate* GetDate() { return &m_date; }
 

@@ -32,19 +32,19 @@
 
 #include <rec/recDatabase.h>
 
-extern bool tfpEditFamily( id_t famID );
-extern bool tfpEditIndividual( id_t indID );
-extern bool tfpEditReference( id_t refID  );
-extern id_t tfpAddIndividual( id_t famID, Sex sex, const wxString& surname = wxEmptyString );
-extern bool tfpAddNewParent( id_t indID, Sex sex );
-extern bool tfpAddNewSpouse( id_t indID, Sex sex );
-extern id_t tfpAddNewChild( id_t famID, Sex sex );
-extern bool tfpAddExistSpouse( id_t indID, Sex sex );
-extern bool tfpAddExistChild( id_t famID, Sex sex );
-extern id_t tfpAddMarriageEvent( id_t famID );
-extern id_t tfpGetExistingMarriageEvent( id_t famID );
+extern bool tfpEditFamily( idt famID );
+extern bool tfpEditIndividual( idt indID );
+extern bool tfpEditReference( idt refID  );
+extern idt tfpAddIndividual( idt famID, Sex sex, const wxString& surname = wxEmptyString );
+extern bool tfpAddNewParent( idt indID, Sex sex );
+extern bool tfpAddNewSpouse( idt indID, Sex sex );
+extern idt tfpAddNewChild( idt famID, Sex sex );
+extern bool tfpAddExistSpouse( idt indID, Sex sex );
+extern bool tfpAddExistChild( idt famID, Sex sex );
+extern idt tfpAddMarriageEvent( idt famID );
+extern idt tfpGetExistingMarriageEvent( idt famID );
 
-extern id_t tfpPickIndividual( Sex sex = SEX_Unstated );
+extern idt tfpPickIndividual( Sex sex = SEX_Unstated );
 
 #endif // TFPEDIT_H
 

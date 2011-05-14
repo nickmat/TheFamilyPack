@@ -111,7 +111,7 @@ void recDb::ErrorMessage( wxSQLite3Exception& e )
     wxMessageBox( err, _("Database Error") );
 }
 
-bool recDb::DeleteRecord( const char* name, id_t id )
+bool recDb::DeleteRecord( const char* name, idt id )
 {
     if( id == 0 ) {
         return false;
@@ -126,7 +126,7 @@ bool recDb::DeleteRecord( const char* name, id_t id )
     return true;
 }
 
-bool recDb::RecordExists( const char* name, id_t id )
+bool recDb::RecordExists( const char* name, idt id )
 {
     if( id == 0 ) {
         return false;
@@ -141,13 +141,13 @@ bool recDb::RecordExists( const char* name, id_t id )
     return true;
 }
 
-id_t recDb::ExecuteID( const wxSQLite3StatementBuffer& sql )
+idt recDb::ExecuteID( const wxSQLite3StatementBuffer& sql )
 {
     wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
     return GET_ID( result.GetInt64( 0 ) );
 }
 
-id_t recDb::ExecuteID( const char* format, id_t id )
+idt recDb::ExecuteID( const char* format, idt id )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format( format, id );

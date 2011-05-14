@@ -37,7 +37,7 @@
 class dlgEditPlace : public fbDlgEditPlace
 {
 public:
-    dlgEditPlace( wxWindow* parent, id_t id = 0 );
+    dlgEditPlace( wxWindow* parent, idt id = 0 );
 
     void SetText( const wxString& text ) { m_text = text; }
 

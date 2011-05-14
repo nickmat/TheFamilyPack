@@ -44,12 +44,12 @@ class dlgEditIndividual : public fbDlgEditIndividual
 public:
     dlgEditIndividual( wxWindow* parent );
 
-    void SetIndividualID( id_t indID ) { m_individual.f_id = indID; }
-    void SetFamilyID( id_t famID ) { m_fam_id = famID; }
+    void SetIndividualID( idt indID ) { m_individual.f_id = indID; }
+    void SetFamilyID( idt famID ) { m_fam_id = famID; }
     void SetSex( Sex sex ) { m_sex = sex; }
     void SetSurname( const wxString& name ) { m_surname = name; }
-    id_t GetIndividualID() const { return m_individual.f_id; }
-    id_t GetFamilyID() const { return m_fam_id; }
+    idt GetIndividualID() const { return m_individual.f_id; }
+    idt GetFamilyID() const { return m_fam_id; }
 
 private:
     bool TransferDataToWindow();
@@ -59,7 +59,7 @@ private:
 
     void UpdateEventDetails();
 
-    id_t           m_fam_id;
+    idt           m_fam_id;
     Sex            m_sex;
 
     recIndividual  m_individual;

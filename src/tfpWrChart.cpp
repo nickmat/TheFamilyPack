@@ -70,11 +70,11 @@ static int GenDChart[100];
 static int GenPChart[100];
 static wxString htm;
 
-static void WrPedCht( id_t indID, Sex sex, int gen );
-static void WrDescCht( id_t indID, int gen );
-static void WrDescLine( id_t indID, id_t spouseID, id_t famID, int gen );
+static void WrPedCht( idt indID, Sex sex, int gen );
+static void WrDescCht( idt indID, int gen );
+static void WrDescLine( idt indID, idt spouseID, idt famID, int gen );
 
-wxString tfpCreatePedChart( id_t indID )
+wxString tfpCreatePedChart( idt indID )
 {
     htm.Clear();
     recIndividual ind(indID);
@@ -82,17 +82,17 @@ wxString tfpCreatePedChart( id_t indID )
     wxString name = ind.GetFullName();
 
     htm << wxT("<html><head><title>Pedigree Chart for ") << name
-		<< wxT("</title></head><body link=black>")
+        << wxT("</title></head><body link=black>")
         << wxT("<h1>Pedigree Chart for ") << name << wxT("</h1>");
 
     WrPedCht( indID, SEX_Unstated, 0 );
 
-	htm << wxT("</body></html>");
+    htm << wxT("</body></html>");
 
-	return htm;
+    return htm;
 }
 
-void WrPedCht( id_t indID, Sex sex, int gen )
+void WrPedCht( idt indID, Sex sex, int gen )
 {
    recIndividual ind( indID );
     if( ind.f_id == 0 ) return;
@@ -103,7 +103,7 @@ void WrPedCht( id_t indID, Sex sex, int gen )
         fam = famList[0];
     }
 
-	// Construct Pedigree Chart
+    // Construct Pedigree Chart
     GenPChart[gen] = HTM_CHART_GIF_BLANK;
     if( fam.f_husb_id != 0 )
     {
@@ -113,13 +113,13 @@ void WrPedCht( id_t indID, Sex sex, int gen )
     if( sex == SEX_Male ) GenPChart[gen-1] = HTM_CHART_GIF_PTOP;
     if( sex == SEX_Female ) GenPChart[gen-1] = HTM_CHART_GIF_PEND;
 
-    // Write out the given person 
-	htm << wxT("<table cellspacing=0 cellpadding=0 border=0><tr>");
+    // Write out the given person
+    htm << wxT("<table cellspacing=0 cellpadding=0 border=0><tr>");
     for( int i = 0 ; i <= gen ; i++ )
     {
         if( i == gen )
         {
-            htm << wxT("<td width=300>&nbsp;&nbsp;<a href=F") 
+            htm << wxT("<td width=300>&nbsp;&nbsp;<a href=F")
 //                << fam.f_id << wxT("><b>")
                 << ind.f_fam_id << wxT("><b>")
                 << ind.f_given << wxT(" ") << ind.f_surname
@@ -127,52 +127,52 @@ void WrPedCht( id_t indID, Sex sex, int gen )
 
             if( gen == 0 )
             {
-				htm << wxT("<td>") << htmChartGif[0] << wxT("</td>");
+                htm << wxT("<td>") << htmChartGif[0] << wxT("</td>");
             }
         } else {
-			htm << wxT("<td>") << htmChartGif[GenPChart[i]] << wxT("</td>");
+            htm << wxT("<td>") << htmChartGif[GenPChart[i]] << wxT("</td>");
         }
     }
-	htm << wxT("</tr></table>");
+    htm << wxT("</tr></table>");
 
     if( sex == SEX_Male ) GenPChart[gen-1] = HTM_CHART_GIF_PUP;
     if( sex == SEX_Female ) GenPChart[gen-1] = HTM_CHART_GIF_BLANK;
-    
+
     GenPChart[gen] = HTM_CHART_GIF_PDN;
     if( fam.f_wife_id != 0 )
-	{
-		WrPedCht( fam.f_wife_id, SEX_Female, gen+1 );
-	}
+    {
+        WrPedCht( fam.f_wife_id, SEX_Female, gen+1 );
+    }
 }
 
 
 
-wxString tfpCreateDescChart( id_t indID )
+wxString tfpCreateDescChart( idt indID )
 {
-	wxString name = recIndividual::GetFullName( indID );
+    wxString name = recIndividual::GetFullName( indID );
     htm.Clear();
 
-    htm << wxT("<html><head><title>Descendant Chart for ") 
-		<< name << wxT("</title></head><body link=black>")
+    htm << wxT("<html><head><title>Descendant Chart for ")
+        << name << wxT("</title></head><body link=black>")
         << wxT("<h1>Descendant Chart for ") << name << wxT("</h1>");
 
     WrDescCht( indID, 0 );
 
-	htm << wxT("</body></html>");
+    htm << wxT("</body></html>");
 
-	return htm;
+    return htm;
 }
 
 // Recursive function which creates Descendants chart
-void WrDescCht( id_t indID, int gen )
+void WrDescCht( idt indID, int gen )
 {
     recIdList children;
     recFamilyList families = recIndividual::GetFamilyList( indID );
     for( size_t i = 0 ; i < families.size() ; i++ )
     {
-        id_t famID = families[i].f_id;
-        id_t dadID = families[i].f_husb_id;
-        id_t mumID = families[i].f_wife_id;
+        idt famID = families[i].f_id;
+        idt dadID = families[i].f_husb_id;
+        idt mumID = families[i].f_wife_id;
 
         if( indID == dadID )
         {
@@ -195,7 +195,7 @@ void WrDescCht( id_t indID, int gen )
         // Add Children, if any
         children = recFamily::GetChildrenIds( famID );
         for( size_t j = 0 ; j < children.size() ; j++ )
-		{
+        {
             if( j == children.size()-1 && i == families.size()-1 )
             {
                 GenDChart[gen] = HTM_CHART_GIF_END;
@@ -203,13 +203,13 @@ void WrDescCht( id_t indID, int gen )
                 GenDChart[gen] = HTM_CHART_GIF_TEE;
             }
             WrDescCht( children[j], gen+1 );
-		}
+        }
     }
 }
 
-void WrDescLine( id_t indID, id_t spouseID, id_t famID, int gen )
+void WrDescLine( idt indID, idt spouseID, idt famID, int gen )
 {
-//	wxSQLite3StatementBuffer sql;
+//  wxSQLite3StatementBuffer sql;
 //    wxSQLite3ResultSet resultInd, resultSpouse;
     int dheight = 0;
 
@@ -217,46 +217,46 @@ void WrDescLine( id_t indID, id_t spouseID, id_t famID, int gen )
 //        "SELECT surname, given, epitaph FROM Individual WHERE id="ID";",
 //        indID
 //    );
-//	resultInd = g_db->ExecuteQuery( sql );
+//  resultInd = g_db->ExecuteQuery( sql );
 
     if( spouseID != 0 )
     {
-//		sql.Format(
-//			"SELECT surname, given, epitaph FROM Individual WHERE id="ID";",
-//			spouseID
-//		);
-//		resultSpouse = g_db->ExecuteQuery( sql );
+//      sql.Format(
+//          "SELECT surname, given, epitaph FROM Individual WHERE id="ID";",
+//          spouseID
+//      );
+//      resultSpouse = g_db->ExecuteQuery( sql );
         dheight = 1;
     }
 
-	htm << wxT("<table cellspacing=0 cellpadding=0 border=0><tr>");
+    htm << wxT("<table cellspacing=0 cellpadding=0 border=0><tr>");
     for( int i = 0 ; i <= gen ; i++ )
     {
         if( i == gen )
         {
-            htm << wxT("<td width=300>&nbsp;&nbsp;<a href=F") 
-				<< famID << wxT("><b>")
+            htm << wxT("<td width=300>&nbsp;&nbsp;<a href=F")
+                << famID << wxT("><b>")
                 << recIndividual::GetFullName( indID )
-                << wxT("</b></a> ") 
+                << wxT("</b></a> ")
                 << recIndividual::GetDateEpitaph( indID );
             if( spouseID != 0 )
             {
-                htm << wxT("<br>&nbsp;&nbsp;&nbsp;m. <b>") 
+                htm << wxT("<br>&nbsp;&nbsp;&nbsp;m. <b>")
                     << recIndividual::GetFullName( spouseID )
                     << wxT("</b> ")
-					<< recIndividual::GetDateEpitaph( spouseID );
-			}
-			htm << wxT("</td>");
+                    << recIndividual::GetDateEpitaph( spouseID );
+            }
+            htm << wxT("</td>");
 
             if( gen == 0 )
             {
-				htm << wxT("<td>") << htmChartGif[0] << wxT("</td>");
+                htm << wxT("<td>") << htmChartGif[0] << wxT("</td>");
             }
         } else {
-			htm << wxT("<td>") << htmChartGif[GenDChart[i]+dheight] << wxT("</td>");
+            htm << wxT("<td>") << htmChartGif[GenDChart[i]+dheight] << wxT("</td>");
         }
     }
-	htm << wxT("</tr></table>");
+    htm << wxT("</tr></table>");
 }
 
 // End of tfpWrChart.cpp Source

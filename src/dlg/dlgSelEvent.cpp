@@ -60,7 +60,7 @@ void dlgSelectEvent::OnIdle( wxIdleEvent& event )
     }
 }
 
-id_t dlgSelectEvent::GetSelectedID()
+idt dlgSelectEvent::GetSelectedID()
 {
     if( m_count > 0 && m_listEvent->GetSelectedItemCount() > 0 ) {
         long row = m_listEvent->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
@@ -74,7 +74,7 @@ id_t dlgSelectEvent::GetSelectedID()
     return 0;
 }
 
-bool dlgSelectEvent::CreateMarriageTable( id_t famID )
+bool dlgSelectEvent::CreateMarriageTable( idt famID )
 {
     recFamily fam(famID);
     m_table = fam.GetMarriageEventTable();

@@ -203,12 +203,12 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
 TfpFrame::~TfpFrame()
 {
     wxDELETE( m_prn );
-	if( GetMenuBar() != m_menuOpenDB ) {
+    if( GetMenuBar() != m_menuOpenDB ) {
         wxDELETE( m_menuOpenDB );
-	}
-	if( GetMenuBar() != m_menuClosedDB ) {
-		wxDELETE( m_menuClosedDB );
-	}
+    }
+    if( GetMenuBar() != m_menuClosedDB ) {
+        wxDELETE( m_menuClosedDB );
+    }
 }
 
 /*! \brief Called on a New Window menu option event.
@@ -290,7 +290,7 @@ void TfpFrame::OnQuit( wxCommandEvent& event )
 void TfpFrame::OnEditIndividual( wxCommandEvent& event )
 {
 //    wxMessageBox( wxT("Not yet implimented"), wxT("OnEditIndividual") );
-    id_t id = 0;
+    idt id = 0;
     recDb::Begin();
     try {
         id = tfpAddIndividual( 0, SEX_Male );
@@ -324,7 +324,7 @@ void TfpFrame::OnEditReference( wxCommandEvent& event )
 
     recDb::Begin();
     try {
-        bool ret = tfpEditReference( (id_t) num );
+        bool ret = tfpEditReference( (idt) num );
         if( ret == true ) {
             recDb::Commit();
             RefreshHtmPage();
@@ -335,7 +335,7 @@ void TfpFrame::OnEditReference( wxCommandEvent& event )
     catch( wxSQLite3Exception& e ) {
         recDb::ErrorMessage( e );
         recDb::Rollback();
-    } 
+    }
 }
 
 /*! \brief Called on a Find Family ID menu option event.
@@ -505,7 +505,7 @@ void TfpFrame::OnHome( wxCommandEvent& event )
  *
  *  '!' then the remainder of the string is a web address to be
  *  passed to the default external browser.
- *  
+ *
  */
 void TfpFrame::OnHtmlLinkClicked( wxHtmlLinkEvent& event )
 {
@@ -747,7 +747,7 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
         }
         if( name == "N*" ) {
             return tfpWritePersonList( wxEmptyString );
-        } 
+        }
         return tfpWritePersonList( name.Mid( 1 ) );
     case 'C':  // Chart reference
         success = name.Mid(2).ToLongLong( &num );
@@ -764,10 +764,10 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
         }
         wxMessageBox( _("Error: Invalid Chart link reference"), _("Link Error") );
         return wxEmptyString;
-	case 'R':  // Reference Document
+    case 'R':  // Reference Document
         if( name == "R" ) {
             return tfpWriteReferenceIndex();
-        } 
+        }
         success = name.Mid(1).ToLongLong( &num );
         if( !success || num < 1 ) {
             wxMessageBox( _("Error: Invalid Reference Document ID link"), _("Link Error") );

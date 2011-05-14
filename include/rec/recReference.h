@@ -44,7 +44,7 @@ public:
     wxString f_statement;
 
     recReference() {}
-    recReference( id_t id ) : recDb(id) { Read(); }
+    recReference( idt id ) : recDb(id) { Read(); }
     recReference( const recReference& ref );
 
     void Clear();
@@ -92,13 +92,13 @@ public:
     };
     static const wxString sm_typeStr[TYPE_MAX];
 
-    id_t     f_ref_id;
+    idt     f_ref_id;
     Type     f_entity_type;
-    id_t     f_entity_id;
+    idt     f_entity_id;
     unsigned f_sequence;
 
     recReferenceEntity() {}
-    recReferenceEntity( id_t id ) : recDb(id) { Read(); }
+    recReferenceEntity( idt id ) : recDb(id) { Read(); }
     recReferenceEntity( const recReferenceEntity& re );
 
     void Clear();
@@ -110,9 +110,9 @@ public:
     static wxString GetTypeStr( Type etype ) { return sm_typeStr[etype]; }
 
 
-    static id_t FindReferenceID( Type type, id_t entityID );
+    static idt FindReferenceID( Type type, idt entityID );
 
-//    static wxArrayString GetNameTable( id_t refID );
+//    static wxArrayString GetNameTable( idt refID );
 };
 
 inline bool recEquivalent( const recReferenceEntity& r1, const recReferenceEntity& r2 )

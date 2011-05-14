@@ -41,7 +41,7 @@ class dlgEditRole : public fbDlgEditRole
     DECLARE_EVENT_TABLE()
 
 public:
-    dlgEditRole( wxWindow* parent, id_t eventID, id_t id = 0 );
+    dlgEditRole( wxWindow* parent, idt eventID, idt id = 0 );
 
     void SetEntities( TfpEntities* entities ) { m_entities = entities; }
 

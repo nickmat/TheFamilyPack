@@ -43,7 +43,7 @@
 
 wxString tfpWriteReferenceIndex()
 {
-	wxString htm;
+    wxString htm;
 
     htm << "<html><head><title>Reference List</title></head><body>"
            "<center><h1>Reference List</h1>";
@@ -51,19 +51,19 @@ wxString tfpWriteReferenceIndex()
     wxSQLite3ResultSet result = recReference::GetTitleList();
 
     if( result.GetColumnCount() > 0 )
-	{
-		htm << "<table border=1>";
+    {
+        htm << "<table border=1>";
         while( result.NextRow() )
-		{
+        {
             htm << "<tr><td><a href='R"
-				<< result.GetAsString( 0 ) 
-				<< "'><b>R"
-				<< result.GetAsString( 0 ) 
+                << result.GetAsString( 0 )
+                << "'><b>R"
+                << result.GetAsString( 0 )
                 << "</b></a> </td><td> "
-			    << result.GetAsString( 1 )
-				<< "</td></tr>";
-		}
-		htm << "</table>";
+                << result.GetAsString( 1 )
+                << "</td></tr>";
+        }
+        htm << "</table>";
     } else {
         htm << "No References found!";
     }
@@ -73,7 +73,7 @@ wxString tfpWriteReferenceIndex()
     return htm;
 }
 
-wxString tfpWriteReferencePage( id_t refID )
+wxString tfpWriteReferencePage( idt refID )
 {
     wxString htm;
     recReference ref(refID);
@@ -89,7 +89,7 @@ wxString tfpWriteReferencePage( id_t refID )
         << "><img src=memory:edit.bmp></a><br>";
         for( size_t i = 0 ; i < re.size() ; i++ ) {
             if( re[i].f_entity_type == recReferenceEntity::TYPE_Persona ) {
-                id_t perID = re[i].f_entity_id;
+                idt perID = re[i].f_entity_id;
                 htm << recPersona::GetFullName( perID );
                 indIDs = recPersona::GetIndividualIDs( perID );
                 for( size_t j = 0 ; j < indIDs.size() ; j++ ) {

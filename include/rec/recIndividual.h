@@ -52,16 +52,16 @@ public:
     long     f_birth_jdn;
     wxString f_epitaph;
     Sex      f_sex;
-    id_t     f_fam_id;
-    id_t     f_per_id;
-    id_t     f_birth_id;
-    id_t     f_nr_birth_id;
-    id_t     f_death_id;
-    id_t     f_nr_death_id;
-    id_t     f_occ_id;
+    idt     f_fam_id;
+    idt     f_per_id;
+    idt     f_birth_id;
+    idt     f_nr_birth_id;
+    idt     f_death_id;
+    idt     f_nr_death_id;
+    idt     f_occ_id;
 
     recIndividual() {}
-    recIndividual( id_t id ) : recDb(id) { Read(); }
+    recIndividual( idt id ) : recDb(id) { Read(); }
     recIndividual( const recIndividual& ind );
 
     void Clear();
@@ -72,30 +72,30 @@ public:
     void UpdateDateEpitaph();
     wxString GetFullName() { return f_given + " " + f_surname; }
 
-    static id_t GetDefaultFamily( id_t id ) {
+    static idt GetDefaultFamily( idt id ) {
         return ExecuteID( "SELECT fam_id FROM Individual WHERE id="ID";", id );
     }
-    static wxString GetFullName( id_t id );
-    static wxString GetSurname( id_t id );
-    static wxString GetDateEpitaph( id_t id );
+    static wxString GetFullName( idt id );
+    static wxString GetSurname( idt id );
+    static wxString GetDateEpitaph( idt id );
 
-    static recFamilyList GetFamilyList( id_t ind );
+    static recFamilyList GetFamilyList( idt ind );
     recFamilyList GetFamilyList() const { return GetFamilyList( f_id ); }
-    static recFamilyList GetParentList( id_t indID );
+    static recFamilyList GetParentList( idt indID );
     recFamilyList GetParentList() const { return GetParentList( f_id ); }
 
     recEventPersonaVec GetEventPersonaVec() const
         { return GetEventPersonaVec( f_id ); }
-    static recEventPersonaVec GetEventPersonaVec( id_t id );
+    static recEventPersonaVec GetEventPersonaVec( idt id );
 
     wxSQLite3Table GetEventsTable() const { return GetEventsTable( f_id ); }
-    static wxSQLite3Table GetEventsTable( id_t id );
+    static wxSQLite3Table GetEventsTable( idt id );
 
     wxSQLite3Table GetAttributesTable() const { return GetAttributesTable( f_id ); }
-    static wxSQLite3Table GetAttributesTable( id_t id );
+    static wxSQLite3Table GetAttributesTable( idt id );
 
-    wxArrayString GetEventIdStrList( id_t etrID ) const { GetEventIdStrList( f_id, etrID ); }
-    static wxArrayString GetEventIdStrList( id_t indID, id_t etrID );
+    wxArrayString GetEventIdStrList( idt etrID ) const { GetEventIdStrList( f_id, etrID ); }
+    static wxArrayString GetEventIdStrList( idt indID, idt etrID );
 
     static wxSQLite3ResultSet GetSurnameList() {
         return s_db->ExecuteQuery(
@@ -139,12 +139,12 @@ inline bool operator!=( const recIndividual& r1, const recIndividual& r2 )
 class recIndividualPersona : public recDb
 {
 public:
-    id_t     f_per_id;
-    id_t     f_ind_id;
+    idt     f_per_id;
+    idt     f_ind_id;
     wxString f_note;
 
     recIndividualPersona() {}
-    recIndividualPersona( id_t id ) : recDb(id) { Read(); }
+    recIndividualPersona( idt id ) : recDb(id) { Read(); }
     recIndividualPersona( const recIndividualPersona& ip );
 
     void Clear();
@@ -178,12 +178,12 @@ inline bool operator!=( const recIndividualPersona& r1, const recIndividualPerso
 class recFamily : public recDb
 {
 public:
-    id_t     f_husb_id;
-    id_t     f_wife_id;
-    id_t     f_event_id;
+    idt     f_husb_id;
+    idt     f_wife_id;
+    idt     f_event_id;
 
     recFamily() {}
-    recFamily( id_t id ) : recDb(id) { Read(); }
+    recFamily( idt id ) : recDb(id) { Read(); }
     recFamily( const recFamily& family );
 
     void Clear();
@@ -191,14 +191,14 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "Family" );
 
-    bool ReadParents( id_t ind );
-    static recIndividualList GetChildren( id_t fam );
+    bool ReadParents( idt ind );
+    static recIndividualList GetChildren( idt fam );
     recIndividualList GetChildren() const { return GetChildren( f_id ); }
-    static recIdList GetChildrenIds( id_t fam );
+    static recIdList GetChildrenIds( idt fam );
     recIdList GetChildrenIds() const { return GetChildrenIds( f_id ); }
-    static unsigned GetChildNextSequence( id_t id );
+    static unsigned GetChildNextSequence( idt id );
     recFamIndVec GetChildLinks() { return GetChildLinks( f_id ); }
-    static recFamIndVec GetChildLinks( id_t famID );
+    static recFamIndVec GetChildLinks( idt famID );
 
     wxArrayString GetMarriageEventTable() const;
 };
@@ -227,12 +227,12 @@ inline bool operator!=( const recFamily& r1, const recFamily& r2 )
 class recFamilyIndividual : public recDb
 {
 public:
-    id_t     f_fam_id;
-    id_t     f_ind_id;
+    idt     f_fam_id;
+    idt     f_ind_id;
     unsigned f_sequence;
 
     recFamilyIndividual() {}
-    recFamilyIndividual( id_t id ) : recDb(id) { Read(); }
+    recFamilyIndividual( idt id ) : recDb(id) { Read(); }
     recFamilyIndividual( const recFamilyIndividual& fi );
 
     void Clear();

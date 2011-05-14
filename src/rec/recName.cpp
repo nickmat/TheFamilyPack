@@ -134,7 +134,7 @@ void recName::AddNameParts( const wxString& nameStr ) const
     }
 }
 
-bool recName::FindPersona( id_t perID, id_t styleID )
+bool recName::FindPersona( idt perID, idt styleID )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -157,7 +157,7 @@ bool recName::FindPersona( id_t perID, id_t styleID )
     return true;
 }
 
-wxString recName::GetNamePart( id_t nptID )
+wxString recName::GetNamePart( idt nptID )
 {
     if( f_id == 0 ) return wxEmptyString;
 
@@ -181,7 +181,7 @@ wxString recName::GetNamePart( id_t nptID )
     return str;
 }
 
-wxString recName::GetSurname( id_t id )
+wxString recName::GetSurname( idt id )
 {
     wxString str;
     wxSQLite3StatementBuffer sql;
@@ -208,7 +208,7 @@ wxString recName::GetSurname( id_t id )
     return str;
 }
 
-wxString recName::GetGivenName( id_t id )
+wxString recName::GetGivenName( idt id )
 {
     wxString str;
     wxSQLite3StatementBuffer sql;
@@ -234,7 +234,7 @@ wxString recName::GetGivenName( id_t id )
     return str;
 }
 
-recNamePartVec recName::GetParts( id_t nameID )
+recNamePartVec recName::GetParts( idt nameID )
 {
     recNamePartVec list;
     recNamePart part;
@@ -266,7 +266,7 @@ recNamePartVec recName::GetParts( id_t nameID )
 }
 
 #if 0
-wxString recName::GetValue( id_t id )
+wxString recName::GetValue( idt id )
 {
     if( id == 0 ) return wxEmptyString;
 
@@ -285,7 +285,7 @@ wxString recName::GetValue( id_t id )
  *  of Attributes in sequencial order of given type.
  */
 recNameList recName::ConvertStrToList(
-    const wxString& str, id_t type )
+    const wxString& str, idt type )
 {
     recNameList list;
     recName name;
@@ -390,7 +390,7 @@ bool recNamePart::Read()
     return true;
 }
 
-wxString recNamePart::GetValue( id_t id )
+wxString recNamePart::GetValue( idt id )
 {
     if( id == 0 ) return wxEmptyString;
 
@@ -409,7 +409,7 @@ wxString recNamePart::GetValue( id_t id )
  *  of Attributes in sequencial order of given type.
  */
 recNamePartVec recNamePart::ConvertStrToList(
-    const wxString& str, id_t type )
+    const wxString& str, idt type )
 {
     recNamePartVec list;
     recNamePart name(0);
@@ -499,7 +499,7 @@ bool recNamePartType::Read()
     return true;
 }
 
-wxString recNamePartType::GetTypeStr( id_t id )
+wxString recNamePartType::GetTypeStr( idt id )
 {
     recNamePartType at( id );
     return at.f_name;
@@ -618,7 +618,7 @@ bool recNameStyle::Read()
     return true;
 }
 
-wxString recNameStyle::GetStyleStr( id_t id )
+wxString recNameStyle::GetStyleStr( idt id )
 {
     recNameStyle at( id );
     return at.f_name;

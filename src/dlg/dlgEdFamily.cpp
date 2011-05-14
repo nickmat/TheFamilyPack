@@ -147,7 +147,7 @@ void dlgEditFamily::OnMarriageButton( wxCommandEvent& event )
     EditIDMenu( m_family.f_event_id );
 }
 
-void dlgEditFamily::EditIDMenu( id_t editID )
+void dlgEditFamily::EditIDMenu( idt editID )
 {
     wxMenu* menu = new wxMenu;
 
@@ -173,7 +173,7 @@ void dlgEditFamily::EditIDMenu( id_t editID )
 
 void dlgEditFamily::OnEditID( wxCommandEvent& event )
 {
-    id_t ret;
+    idt ret;
 
     switch( m_editbutton )
     {
@@ -244,7 +244,7 @@ void dlgEditFamily::OnRemoveID( wxCommandEvent& event )
 void dlgEditFamily::OnDeleteID( wxCommandEvent& event )
 {
     wxString mes;
-    id_t id;
+    idt id;
 
     switch( m_editbutton )
     {
@@ -297,7 +297,7 @@ void dlgEditFamily::OnAddExistID( wxCommandEvent& event )
            wxT("OnAddExistID") );
         break;
     case EDBUT_Marr:
-        id_t id = tfpGetExistingMarriageEvent( m_family.f_id );
+        idt id = tfpGetExistingMarriageEvent( m_family.f_id );
         if( id == 0 ) {
             wxMessageBox(
                 _("Unable to find suitabe event"),
@@ -328,7 +328,7 @@ void dlgEditFamily::OnAddChildButton( wxCommandEvent& event )
 
 void dlgEditFamily::OnAddChild( wxCommandEvent& event )
 {
-    id_t ret = 0;
+    idt ret = 0;
 
     switch( event.GetId() )
     {
@@ -405,7 +405,7 @@ void dlgEditFamily::OnDownButton( wxCommandEvent& event )
 }
 
 
-bool dlgEditFamily::EditEvent( id_t* pEventID )
+bool dlgEditFamily::EditEvent( idt* pEventID )
 {
     const wxString savepoint = "EdFamEvent";
     bool ret = false;

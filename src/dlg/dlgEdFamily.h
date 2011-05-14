@@ -56,8 +56,8 @@ protected:
 public:
     dlgEditFamily( wxWindow* parent );
 
-    void SetFamilyID( id_t famID ) { m_family.f_id = famID; }
-    void SetChildID( id_t childID ) { m_child = childID; }
+    void SetFamilyID( idt famID ) { m_family.f_id = famID; }
+    void SetChildID( idt childID ) { m_child = childID; }
 
 private:
     bool TransferDataToWindow();
@@ -66,7 +66,7 @@ private:
     void OnHusbButton( wxCommandEvent& event );
     void OnWifeButton( wxCommandEvent& event );
     void OnMarriageButton( wxCommandEvent& event );
-    void EditIDMenu( id_t editID );
+    void EditIDMenu( idt editID );
     void OnEditID( wxCommandEvent& event );
     void OnRemoveID( wxCommandEvent& event );
     void OnDeleteID( wxCommandEvent& event );
@@ -80,9 +80,9 @@ private:
     void OnUpButton( wxCommandEvent& event );
     void OnDownButton( wxCommandEvent& event );
 
-    bool EditEvent( id_t* pEventID );
+    bool EditEvent( idt* pEventID );
 
-    id_t           m_child;
+    idt           m_child;
     EDBUT_Type     m_editbutton;
 
     recFamily      m_family;

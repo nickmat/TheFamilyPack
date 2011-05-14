@@ -116,7 +116,7 @@ bool recPersona::Read()
     return true;
 }
 
-wxString recPersona::GetSurname( id_t id )
+wxString recPersona::GetSurname( idt id )
 {
     wxString str;
     wxSQLite3StatementBuffer sql;
@@ -144,7 +144,7 @@ wxString recPersona::GetSurname( id_t id )
     return str;
 }
 
-wxString recPersona::GetGivenName( id_t id )
+wxString recPersona::GetGivenName( idt id )
 {
     wxString str;
     wxSQLite3StatementBuffer sql;
@@ -172,7 +172,7 @@ wxString recPersona::GetGivenName( id_t id )
     return str;
 }
 
-recAttributeList recPersona::ReadAttributes( id_t perID )
+recAttributeList recPersona::ReadAttributes( idt perID )
 {
     recAttributeList list;
     recAttribute record;
@@ -203,7 +203,7 @@ recAttributeList recPersona::ReadAttributes( id_t perID )
 }
 
 
-recNameVec recPersona::ReadNames( id_t perID )
+recNameVec recPersona::ReadNames( idt perID )
 {
     recNameVec list;
     recName name;
@@ -233,7 +233,7 @@ recNameVec recPersona::ReadNames( id_t perID )
     return list;
 }
 
-recIdVec recPersona::GetIndividualIDs( id_t perID )
+recIdVec recPersona::GetIndividualIDs( idt perID )
 {
     recIdVec vec;
     wxSQLite3StatementBuffer sql;
@@ -336,7 +336,7 @@ bool recAttribute::Read()
     return true;
 }
 
-wxString recAttribute::GetValue( id_t id )
+wxString recAttribute::GetValue( idt id )
 {
     if( id == 0 ) return wxEmptyString;
 
@@ -427,7 +427,7 @@ bool recAttributeType::Read()
     return true;
 }
 
-wxString recAttributeType::GetTypeStr( id_t id )
+wxString recAttributeType::GetTypeStr( idt id )
 {
     recAttributeType at( id );
     return at.f_name;

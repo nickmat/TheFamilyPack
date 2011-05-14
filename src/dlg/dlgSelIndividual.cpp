@@ -67,7 +67,7 @@ void dlgSelectIndividual::OnIndividualSelected( wxListEvent& event )
     // TODO: Implement OnIndividualSelected
 }
 
-id_t dlgSelectIndividual::GetSelectedID()
+idt dlgSelectIndividual::GetSelectedID()
 {
     if( m_count > 0 && m_listInd->GetSelectedItemCount() > 0 ) {
         long row = m_listInd->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );

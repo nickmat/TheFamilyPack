@@ -60,8 +60,8 @@ void dlgSelect::OnIdle( wxIdleEvent& event )
     }
 }
 
-void dlgSelect::SetTable( wxArrayString table ) 
-{ 
+void dlgSelect::SetTable( wxArrayString table )
+{
     m_table = table;
     m_count = table.size() / m_width;
 
@@ -74,7 +74,7 @@ long dlgSelect::GetSelectedRow()
     return m_listCtrl->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 }
 
-id_t dlgSelect::GetSelectedID()
+idt dlgSelect::GetSelectedID()
 {
     if( m_count > 0 && m_listCtrl->GetSelectedItemCount() > 0 ) {
         long row = m_listCtrl->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
@@ -94,8 +94,8 @@ id_t dlgSelect::GetSelectedID()
 
 wxString dlgSelectPersona::sm_colHeaders[COL_MAX] = { _("ID"), _("Name") };
 
-dlgSelectPersona::dlgSelectPersona( wxWindow* parent ) 
-    : dlgSelect( parent, sm_colHeaders, COL_MAX ) 
+dlgSelectPersona::dlgSelectPersona( wxWindow* parent )
+    : dlgSelect( parent, sm_colHeaders, COL_MAX )
 {
     SetTitle( _("Select Persona") );
 }
@@ -108,7 +108,7 @@ dlgSelectPersona::dlgSelectPersona( wxWindow* parent )
 
 wxString dlgSelectName::sm_colHeaders[COL_MAX] = { _("ID"), _("Name") };
 #if 0
-bool dlgSelectName::CreateRefNameTable( id_t refID )
+bool dlgSelectName::CreateRefNameTable( idt refID )
 {
     wxArrayString table = recReferenceEntity::GetNameTable( refID );
 

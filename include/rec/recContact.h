@@ -44,14 +44,14 @@ typedef std::vector< recContactType >  recContactTypeVec;
 class recContact : public recDb
 {
 public:
-    id_t     f_type_id;
-    id_t     f_repos_id;
-    id_t     f_res_id;
-    id_t     f_ind_id;
+    idt     f_type_id;
+    idt     f_repos_id;
+    idt     f_res_id;
+    idt     f_ind_id;
     wxString f_val;
 
     recContact() {}
-    recContact( id_t id ) : recDb(id) { Read(); }
+    recContact( idt id ) : recDb(id) { Read(); }
     recContact( const recContact& source );
 
     void Clear();
@@ -91,7 +91,7 @@ public:
     wxString  f_name;
 
     recContactType() {}
-    recContactType( id_t id ) : recDb(id) { Read(); }
+    recContactType( idt id ) : recDb(id) { Read(); }
     recContactType( const recContactType& at );
 
     void Clear();
@@ -99,7 +99,7 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "ContactType" );
 
-    static wxString GetStr( id_t id );
+    static wxString GetStr( idt id );
 
     static recContactTypeVec GetList();
 };
@@ -132,7 +132,7 @@ public:
     wxString  f_comments;
 
     recResearcher() {}
-    recResearcher( id_t id ) : recDb(id) { Read(); }
+    recResearcher( idt id ) : recDb(id) { Read(); }
     recResearcher( const recResearcher& at );
 
     void Clear();

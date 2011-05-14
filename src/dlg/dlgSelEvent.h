@@ -44,8 +44,8 @@ public:
     /** Constructor */
     dlgSelectEvent( wxWindow* parent );
 
-    bool CreateMarriageTable( id_t famID );
-    id_t GetSelectedID();
+    bool CreateMarriageTable( idt famID );
+    idt GetSelectedID();
 
 protected:
     // Handlers for fbDlgSelectEvent events.

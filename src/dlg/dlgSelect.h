@@ -41,9 +41,9 @@ public:
     /** Constructor */
     dlgSelect( wxWindow* parent, wxString* headers, long width );
 
-    void SetTable( wxArrayString table ); 
+    void SetTable( wxArrayString table );
     // Returns the 1st column of the selected row converted to an ID.
-    virtual id_t GetSelectedID();
+    virtual idt GetSelectedID();
     virtual long GetSelectedRow();
 
 protected:
@@ -81,10 +81,10 @@ class dlgSelectName : public dlgSelect
     };
     static wxString sm_colHeaders[COL_MAX];
 public:
-    dlgSelectName( wxWindow* parent ) 
+    dlgSelectName( wxWindow* parent )
         : dlgSelect( parent, sm_colHeaders, COL_MAX ) {}
 
-//    bool CreateRefNameTable( id_t refID );
+//    bool CreateRefNameTable( idt refID );
 };
 
 #endif // DLGSELECT_H

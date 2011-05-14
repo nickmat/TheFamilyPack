@@ -124,7 +124,7 @@ void RecTestCase::TestDbCreate()
 
 void RecTestCase::TestDate()
 {
-    id_t id;
+    idt id;
 
     recDate date1;
     date1.f_id = 0;
@@ -180,7 +180,7 @@ void RecTestCase::TestDate()
 
 void RecTestCase::TestPlace()
 {
-    id_t id;
+    idt id;
 
     recPlace place1;
     place1.f_id = 0;
@@ -229,7 +229,7 @@ void RecTestCase::TestPlace()
 
 void RecTestCase::TestPlacePart()
 {
-    id_t id;
+    idt id;
 
     recPlacePart pp1;
     pp1.f_id = 0;
@@ -282,7 +282,7 @@ void RecTestCase::TestPlacePart()
 
 void RecTestCase::TestPlacePartType()
 {
-    id_t id;
+    idt id;
 
     recPlacePartType ppt1;
     ppt1.f_id = 0;
@@ -329,7 +329,7 @@ void RecTestCase::TestPlacePartType()
 
 void RecTestCase::TestPersona()
 {
-    id_t id;
+    idt id;
 
     recPersona persona1;
     persona1.f_id = 0;
@@ -378,7 +378,7 @@ void RecTestCase::TestPersona()
 
 void RecTestCase::TestAttribute()
 {
-    id_t id;
+    idt id;
 
     recAttribute attr1;
     attr1.f_id = 0;
@@ -431,7 +431,7 @@ void RecTestCase::TestAttribute()
 
 void RecTestCase::TestAttributeType()
 {
-    id_t id;
+    idt id;
 
     recAttributeType attrtype1;
     attrtype1.f_id = 0;
@@ -480,7 +480,7 @@ void RecTestCase::TestAttributeType()
 
 void RecTestCase::TestEvent()
 {
-    id_t id;
+    idt id;
 
     recEvent record1;
     record1.f_id = 0;
@@ -539,7 +539,7 @@ void RecTestCase::TestEvent()
 
 void RecTestCase::TestEventType()
 {
-    id_t id;
+    idt id;
 
     recEventType record1;
     record1.f_id = 0;
@@ -588,7 +588,7 @@ void RecTestCase::TestEventType()
 
 void RecTestCase::TestEventTypeRole()
 {
-    id_t id;
+    idt id;
 
     recEventTypeRole record1;
     record1.f_id = 0;
@@ -639,7 +639,7 @@ void RecTestCase::TestEventTypeRole()
 
 void RecTestCase::TestEventPersona()
 {
-    id_t id;
+    idt id;
 
     recEventPersona record1;
     record1.f_id = 0;
@@ -692,7 +692,7 @@ void RecTestCase::TestEventPersona()
 
 void RecTestCase::TestReference()
 {
-    id_t id;
+    idt id;
 
     recReference record1;
     record1.f_id = 0;
@@ -741,7 +741,7 @@ void RecTestCase::TestReference()
 
 void RecTestCase::TestReferenceEntity()
 {
-    id_t id;
+    idt id;
 
     recReferenceEntity record1;
     record1.f_id = 0;
@@ -794,7 +794,7 @@ void RecTestCase::TestReferenceEntity()
 
 void RecTestCase::TestIndividual()
 {
-    id_t id;
+    idt id;
 
     recIndividual record1;
     record1.f_id = 0;
@@ -863,7 +863,7 @@ void RecTestCase::TestIndividual()
 
 void RecTestCase::TestIndividualPersona()
 {
-    id_t id;
+    idt id;
 
     recIndividualPersona record1;
     record1.f_id = 0;
@@ -914,7 +914,7 @@ void RecTestCase::TestIndividualPersona()
 
 void RecTestCase::TestFamily()
 {
-    id_t id;
+    idt id;
 
     recFamily record1;
     record1.f_id = 0;
@@ -965,7 +965,7 @@ void RecTestCase::TestFamily()
 
 void RecTestCase::TestFamilyIndividual()
 {
-    id_t id;
+    idt id;
 
     recFamilyIndividual record1;
     record1.f_id = 0;
@@ -1016,7 +1016,7 @@ void RecTestCase::TestFamilyIndividual()
 
 void RecTestCase::TestSource()
 {
-    id_t id;
+    idt id;
 
     recSource record1;
     record1.f_id = 0;

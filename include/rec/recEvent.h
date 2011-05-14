@@ -48,15 +48,15 @@ class recEvent : public recDb
 {
 public:
     wxString f_title;
-    id_t     f_type_id;
+    idt     f_type_id;
     long     f_sort_jdn;
-    id_t     f_date1_id;
-    id_t     f_date2_id;
-    id_t     f_place_id;
+    idt     f_date1_id;
+    idt     f_date2_id;
+    idt     f_place_id;
     wxString f_note;
 
     recEvent() {}
-    recEvent( id_t id ) : recDb(id) { Read(); }
+    recEvent( idt id ) : recDb(id) { Read(); }
     recEvent( const recEvent& event );
 
     void Clear();
@@ -68,13 +68,13 @@ public:
     wxString GetTypeStr() const;
     wxString GetDateStr() const;
     wxString GetAddressStr() const;
-    static wxString GetDetailStr( id_t id );
-    static wxString GetTypeStr( id_t id );
-    static wxString GetTitle( id_t id );
-    static wxString GetNote( id_t id );
+    static wxString GetDetailStr( idt id );
+    static wxString GetTypeStr( idt id );
+    static wxString GetTitle( idt id );
+    static wxString GetNote( idt id );
 
-    id_t FindReferenceID() const { return FindReferenceID( f_id ); }
-    static id_t FindReferenceID( id_t eventID ) {
+    idt FindReferenceID() const { return FindReferenceID( f_id ); }
+    static idt FindReferenceID( idt eventID ) {
         return recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, eventID );
     }
 
@@ -82,7 +82,7 @@ public:
 
     // Delete Event and remove all references to it.
     bool DeleteFromDb() { return DeleteFromDb( f_id ); }
-    static bool DeleteFromDb( id_t id );
+    static bool DeleteFromDb( idt id );
 };
 
 inline bool recEquivalent( const recEvent& r1, const recEvent& r2 )
@@ -138,7 +138,7 @@ public:
     wxString  f_name;
 
     recEventType() {}
-    recEventType( id_t id ) : recDb(id) { Read(); }
+    recEventType( idt id ) : recDb(id) { Read(); }
     recEventType( const recEventType& et );
 
     void Clear();
@@ -146,11 +146,11 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "EventType" );
 
-    static wxString GetTypeStr( id_t id );
+    static wxString GetTypeStr( idt id );
 
     static recEventTypeVec ReadAll();
-    static id_t Select();
-    static recEventTypeRoleVec GetRoles( id_t typeID );
+    static idt Select();
+    static recEventTypeRoleVec GetRoles( idt typeID );
 };
 
 inline bool recEquivalent( const recEventType& r1, const recEventType& r2 )
@@ -185,13 +185,13 @@ public:
         ROLE_MAX            = 5 // size of list
     };
 
-    id_t      f_type_id;
+    idt      f_type_id;
     bool      f_prime;
     bool      f_official;
     wxString  f_name;
 
     recEventTypeRole() {}
-    recEventTypeRole( id_t id ) : recDb(id) { Read(); }
+    recEventTypeRole( idt id ) : recDb(id) { Read(); }
     recEventTypeRole( const recEventTypeRole& etr );
 
     void Clear();
@@ -199,7 +199,7 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "EventTypeRole" );
 
-    static wxString GetName( id_t roleID );
+    static wxString GetName( idt roleID );
 };
 
 inline bool recEquivalent( const recEventTypeRole& r1, const recEventTypeRole& r2 )
@@ -227,13 +227,13 @@ inline bool operator!=( const recEventTypeRole& r1, const recEventTypeRole& r2 )
 class recEventPersona : public recDb
 {
 public:
-    id_t     f_event_id;
-    id_t     f_per_id;
-    id_t     f_role_id;
+    idt     f_event_id;
+    idt     f_per_id;
+    idt     f_role_id;
     wxString f_note;
 
     recEventPersona() {}
-    recEventPersona( id_t id ) : recDb(id) { Read(); }
+    recEventPersona( idt id ) : recDb(id) { Read(); }
     recEventPersona( const recEventPersona& pe );
 
     void Clear();

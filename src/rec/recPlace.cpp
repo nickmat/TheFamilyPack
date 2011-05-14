@@ -113,7 +113,7 @@ bool recPlace::Read()
     return true;
 }
 
-void recPlace::SetAddress( id_t placeID, const wxString& str )
+void recPlace::SetAddress( idt placeID, const wxString& str )
 {
     recPlacePartList ppList = GetPlaceParts( placeID );
     if( ppList.size() == 0 )
@@ -134,7 +134,7 @@ void recPlace::SetAddress( id_t placeID, const wxString& str )
     }
 }
 
-wxString recPlace::GetAddressStr( id_t id )
+wxString recPlace::GetAddressStr( idt id )
 {
     if( id == 0 ) return wxEmptyString;
 
@@ -163,7 +163,7 @@ wxString recPlace::GetAddressStr( id_t id )
     return str;
 }
 
-recPlacePartList recPlace::GetPlaceParts( id_t placeID )
+recPlacePartList recPlace::GetPlaceParts( idt placeID )
 {
     wxString str;
     wxSQLite3StatementBuffer sql;

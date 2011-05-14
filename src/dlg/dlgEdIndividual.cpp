@@ -150,7 +150,7 @@ bool dlgEditIndividual::TransferDataFromWindow()
     recNamePartVec names;
     int seq = 1;
     recNamePart np;
-    id_t ud_surname = 0;
+    idt ud_surname = 0;
 
     exist = m_name.GetParts();
     names = recNamePart::ConvertStrToList( m_textGiven->GetValue() );
@@ -244,8 +244,8 @@ bool dlgEditIndividual::TransferDataFromWindow()
 void dlgEditIndividual::OnEventActivated( wxListEvent& event )
 {
     recEvent* pEvent;
-    id_t roleID, typeID;
-    id_t* pEventID;
+    idt roleID, typeID;
+    idt* pEventID;
 
     switch( event.m_itemIndex )
     {

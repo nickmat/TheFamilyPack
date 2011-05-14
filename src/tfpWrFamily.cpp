@@ -43,11 +43,11 @@
 #include "tfpWr.h"
 
 
-wxString tfpWriteFamilyPage( id_t famID )
+wxString tfpWriteFamilyPage( idt famID )
 {
     size_t i;
     wxString htm;
- 
+
     recFamily fam, husbFam, wifeFam;
     recIndividual husb, wife;
 
@@ -97,7 +97,7 @@ wxString tfpWriteFamilyPage( id_t famID )
         }
     }
     htm << wxT("</td></tr><tr><td align=center width=255>");
-   
+
     // Husband's Mother
     if( fam.f_husb_id != 0 ) {
         if( husbFam.f_wife_id == 0 ) {
@@ -105,7 +105,7 @@ wxString tfpWriteFamilyPage( id_t famID )
                 << wxT("><img src=memory:edit.bmp></a>");
         } else {
             htm << wxT("<b><a href=F") << husbFam.f_id << wxT(">")
-                << recIndividual::GetFullName( husbFam.f_wife_id ) 
+                << recIndividual::GetFullName( husbFam.f_wife_id )
                 << wxT("</a></b><br>")
                 << recIndividual::GetDateEpitaph( husbFam.f_wife_id );
         }
@@ -127,7 +127,7 @@ wxString tfpWriteFamilyPage( id_t famID )
         }
     }
     htm << wxT("</td></tr></table><br>&nbsp;");
- 
+
     // Marriage details
     htm << wxT("<table><tr><td align=center width=540>")
         << wxT(" m. ") << recEvent::GetDetailStr( fam.f_event_id )
@@ -136,20 +136,20 @@ wxString tfpWriteFamilyPage( id_t famID )
     // Family spouses
     htm << wxT("<table border=1><tr><td colspan=2 align=center width=270>");
     if( fam.f_husb_id == 0 ) {
-        htm << wxT("<a href=$IH") << fam.f_wife_id 
+        htm << wxT("<a href=$IH") << fam.f_wife_id
             << wxT("><img src=memory:edit.bmp></a>");
     } else {
-        htm << wxT("<font size=+1><b>") 
+        htm << wxT("<font size=+1><b>")
             << recIndividual::GetFullName( fam.f_husb_id )
             << wxT("</b></font><br>")
             << recIndividual::GetDateEpitaph( fam.f_husb_id );
     }
     htm << wxT("</td><td colspan=2 align=center width=270>");
     if( fam.f_wife_id == 0 ) {
-        htm << wxT("<a href=$IW") << fam.f_husb_id 
+        htm << wxT("<a href=$IW") << fam.f_husb_id
             << wxT("><img src=memory:edit.bmp></a>");
     } else {
-        htm << wxT("<font size=+1><b>") 
+        htm << wxT("<font size=+1><b>")
             << recIndividual::GetFullName( fam.f_wife_id )
             << wxT("</b></font><br>")
             << recIndividual::GetDateEpitaph( fam.f_wife_id );
@@ -191,7 +191,7 @@ wxString tfpWriteFamilyPage( id_t famID )
     htm << wxT("<table><tr><td align=left width=80>");
 
     if( fam.f_husb_id != 0 ) {
-        htm << wxT("<a href=$MH") << fam.f_husb_id 
+        htm << wxT("<a href=$MH") << fam.f_husb_id
             << wxT("><img src=memory:menu.bmp></a> <b>I ")
             << fam.f_husb_id << wxT("</b>");
     }
@@ -214,8 +214,8 @@ wxString tfpWriteFamilyPage( id_t famID )
 
     htm << wxT("<td align=center width=160>");
     if( fam.f_id != 0 ) {
-        htm << wxT("<a href=$MF") << fam.f_id 
-            << wxT("><img src=memory:menu.bmp></a> <b>F") 
+        htm << wxT("<a href=$MF") << fam.f_id
+            << wxT("><img src=memory:menu.bmp></a> <b>F")
             << fam.f_id << wxT("</b>");
     }
 
@@ -267,7 +267,7 @@ wxString tfpWriteFamilyPage( id_t famID )
                 if( husbWives[i].f_wife_id == 0 ) {
                     htm << wxT("[Unknown]");
                 } else {
-                    htm	<< recIndividual::GetFullName( husbWives[i].f_wife_id );   //  Name
+                    htm << recIndividual::GetFullName( husbWives[i].f_wife_id );   //  Name
                 }
                 htm << wxT("</a></b>&nbsp;&nbsp;")
                     << recIndividual::GetDateEpitaph( husbWives[i].f_wife_id )
@@ -287,8 +287,8 @@ wxString tfpWriteFamilyPage( id_t famID )
                 } else {
                     htm << recIndividual::GetFullName( wifeHusbs[i].f_husb_id );  //  Name
                 }
-                htm	<< wxT("</a></b>&nbsp;&nbsp;")
-                    << recIndividual::GetDateEpitaph( wifeHusbs[i].f_husb_id ) 
+                htm << wxT("</a></b>&nbsp;&nbsp;")
+                    << recIndividual::GetDateEpitaph( wifeHusbs[i].f_husb_id )
                     << wxT("</td></tr>");
             }
             htm << wxT("</table>");
@@ -302,7 +302,7 @@ wxString tfpWriteFamilyPage( id_t famID )
 }
 
 
-wxString tfpWriteIndFamilyPage( id_t indID )
+wxString tfpWriteIndFamilyPage( idt indID )
 {
     return tfpWriteFamilyPage( recIndividual::GetDefaultFamily( indID ) );
 }

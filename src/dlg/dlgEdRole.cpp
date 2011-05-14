@@ -52,7 +52,7 @@ BEGIN_EVENT_TABLE( dlgEditRole, wxDialog )
 END_EVENT_TABLE()
 
 
-dlgEditRole::dlgEditRole( wxWindow* parent, id_t eventID, id_t id )
+dlgEditRole::dlgEditRole( wxWindow* parent, idt eventID, idt id )
     : fbDlgEditRole( parent )
 {
     m_event.f_id = eventID;
@@ -131,7 +131,7 @@ void dlgEditRole::OnPersonaSelect( wxCommandEvent& event )
         m_textCtrlPersona->SetValue( _("TODO: Get New Persona") );
     } else {
         int entry = tfpGetEntityIndex( m_entities, i );
-        id_t perID = (*m_entities)[entry].rec.f_entity_id;
+        idt perID = (*m_entities)[entry].rec.f_entity_id;
         m_textCtrlPersona->SetValue( recPersona::GetFullName( perID ) );
         m_pe.f_per_id = perID;
     }

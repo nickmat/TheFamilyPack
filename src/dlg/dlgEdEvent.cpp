@@ -67,7 +67,7 @@ dlgEditEvent::dlgEditEvent( wxWindow* parent ) : fbDlgEditEvent( parent )
     m_listPersona->InsertColumn( 2, wxT("Note") );
 }
 
-void dlgEditEvent::SetData( id_t typeID, id_t eventID )
+void dlgEditEvent::SetData( idt typeID, idt eventID )
 {
     m_event.f_id = eventID;
     m_etype.f_id = typeID;
@@ -160,7 +160,7 @@ void dlgEditEvent::OnDateSelect( wxCommandEvent& event )
         textCtrlDate->SetValue( wxT("TODO: Get New Date") );
     } else {
         textCtrlDate->SetValue( m_dateStrings[i-2].m_str );
-        id_t dateID = m_dateStrings[i-2].m_index;
+        idt dateID = m_dateStrings[i-2].m_index;
         if( m_dateButton == EV_DATE_Beg ) {
             m_event.f_date1_id = dateID;
         } else {
@@ -176,7 +176,7 @@ void dlgEditEvent::OnAgeSelect( wxCommandEvent& event )
     wxTextCtrl* textCtrlDate =
         ( m_dateButton == EV_DATE_Beg ) ? m_textCtrlDateBeg : m_textCtrlDateEnd;
 
-    dlgEditDateFromAge* dialog = 
+    dlgEditDateFromAge* dialog =
         new dlgEditDateFromAge( NULL, m_dateStrings[i].m_id );
 
     recDb::Savepoint( savepoint );
@@ -231,7 +231,7 @@ void dlgEditEvent::OnPlaceSelect( wxCommandEvent& event )
         m_textCtrlPlace->SetValue( wxT("TODO: Get New Place") );
     } else {
         int entry = tfpGetEntityIndex( mp_entities, i );
-        id_t placeID = (*mp_entities)[entry].rec.f_entity_id;
+        idt placeID = (*mp_entities)[entry].rec.f_entity_id;
         m_textCtrlPlace->SetValue( recPlace::GetAddressStr( placeID ) );
         m_event.f_place_id = placeID;
     }
@@ -275,7 +275,7 @@ void dlgEditEvent::OnEditButton( wxCommandEvent& event )
         wxMessageBox( _("No row selected"), _("Edit Personas") );
         return;
     }
-    id_t id = m_pes[row].f_id;
+    idt id = m_pes[row].f_id;
     dlgEditRole* dialog = new dlgEditRole( NULL, m_event.f_id, id );
     dialog->SetEntities( mp_entities );
 

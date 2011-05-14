@@ -258,7 +258,7 @@ bool recReferenceEntity::Read()
     return true;
 }
 
-id_t recReferenceEntity::FindReferenceID( Type type, id_t entityID )
+idt recReferenceEntity::FindReferenceID( Type type, idt entityID )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
@@ -272,7 +272,7 @@ id_t recReferenceEntity::FindReferenceID( Type type, id_t entityID )
 }
 
 #if 0
-wxArrayString recReferenceEntity::GetNameTable( id_t refID )
+wxArrayString recReferenceEntity::GetNameTable( idt refID )
 {
     wxArrayString list;
     wxSQLite3StatementBuffer sql;
@@ -284,7 +284,7 @@ wxArrayString recReferenceEntity::GetNameTable( id_t refID )
     );
     result = s_db->ExecuteQuery( sql );
     while( result.NextRow() ) {
-        id_t id = GET_ID( result.GetInt64( 0 ) );
+        idt id = GET_ID( result.GetInt64( 0 ) );
         list.Add( result.GetAsString( 0 ) );
         list.Add( recName::GetFullName( id ) );
     }

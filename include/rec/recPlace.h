@@ -40,11 +40,11 @@ typedef wxVector< recPlacePart >  recPlacePartList;
 class recPlace : public recDb
 {
 public:
-    id_t  f_date1_id;
-    id_t  f_date2_id;
+    idt  f_date1_id;
+    idt  f_date2_id;
 
     recPlace() {}
-    recPlace( id_t id ) : recDb(id) { Read(); }
+    recPlace( idt id ) : recDb(id) { Read(); }
     recPlace( const recPlace& place );
 
     void Clear();
@@ -53,13 +53,13 @@ public:
     TABLE_NAME_MEMBERS( "Place" );
 
     void SetAddress( const wxString& str ) { return SetAddress( f_id, str ); }
-    static void SetAddress( id_t placeID, const wxString& str );
+    static void SetAddress( idt placeID, const wxString& str );
 
     wxString GetAddressStr() const { return GetAddressStr( f_id ); }
-    static wxString GetAddressStr( id_t id );
+    static wxString GetAddressStr( idt id );
 
     recPlacePartList GetPlaceParts() const { return GetPlaceParts( f_id ); }
-    static recPlacePartList GetPlaceParts( id_t placeID );
+    static recPlacePartList GetPlaceParts( idt placeID );
 };
 
 /*! The two entities are equal, ignoring the record id.
@@ -87,13 +87,13 @@ inline bool operator!=( const recPlace& r1, const recPlace& r2 )
 class recPlacePart : public recDb
 {
 public:
-    id_t     f_type_id;
-    id_t     f_place_id;
+    idt     f_type_id;
+    idt     f_place_id;
     wxString f_val;
     int      f_sequence;
 
     recPlacePart() {}
-    recPlacePart( id_t id ) : recDb(id) { Read(); }
+    recPlacePart( idt id ) : recDb(id) { Read(); }
     recPlacePart( const recPlacePart& pp );
 
     void Clear();
@@ -135,7 +135,7 @@ public:
     wxString f_name;
 
     recPlacePartType() {}
-    recPlacePartType( id_t id ) : recDb(id) { Read(); }
+    recPlacePartType( idt id ) : recDb(id) { Read(); }
     recPlacePartType( const recPlacePartType& ppt );
 
     void Clear();

@@ -39,7 +39,7 @@
 
 #include "dlgEdPlace.h"
 
-dlgEditPlace::dlgEditPlace( wxWindow* parent, id_t id )
+dlgEditPlace::dlgEditPlace( wxWindow* parent, idt id )
     : fbDlgEditPlace( parent )
 {
     m_place.f_id = id;

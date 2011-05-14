@@ -103,7 +103,7 @@ bool dlgEditPersona::TransferDataFromWindow()
 
 void dlgEditPersona::OnIndLinkButton( wxCommandEvent& event )
 {
-    id_t indID = tfpPickIndividual();
+    idt indID = tfpPickIndividual();
     if( indID == 0 ) return;
 
     recIndividualPersona ip;

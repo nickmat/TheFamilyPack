@@ -39,7 +39,7 @@
 
 struct TfpEntity {
     recReferenceEntity rec;
-    id_t               owner;
+    idt               owner;
     int                index;  // Temporary index value, -1 if not used
 };
 
@@ -50,7 +50,7 @@ extern int tfpGetEntityIndex( TfpEntities* array, int ind );
 struct TfpEntityString {
     wxString m_str;
     int      m_index;
-    id_t     m_id;
+    idt     m_id;
 };
 
 typedef std::vector< TfpEntityString > TfpEntityStringVec;
@@ -97,24 +97,24 @@ protected:
     void OnNewAttribute( wxCommandEvent& event );
     void OnNewName( wxCommandEvent& event );
 
-    void DoEditDate( id_t id, long row );
-    void DoEditPlace( id_t id, long row );
-    void DoEditPersona( id_t id, long row );
-    void DoEditEvent( id_t id, long row );
-    void DoEditAttribute( id_t id, long row );
-    void DoEditName( id_t id, long row );
+    void DoEditDate( idt id, long row );
+    void DoEditPlace( idt id, long row );
+    void DoEditPersona( idt id, long row );
+    void DoEditEvent( idt id, long row );
+    void DoEditAttribute( idt id, long row );
+    void DoEditName( idt id, long row );
 
 public:
     /** Constructor */
     dlgEditReference( wxWindow* parent );
 
-    void SetID( id_t id ) { m_reference.f_id = id; }
+    void SetID( idt id ) { m_reference.f_id = id; }
 
 private:
     void InsertListItem( long row, const TfpEntity& ent );
 
-    id_t SelectPersona();
-    id_t SelectName();
+    idt SelectPersona();
+    idt SelectName();
 
     TfpEntityStringVec GetDateEntityStringVec();
 

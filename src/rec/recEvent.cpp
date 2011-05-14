@@ -167,21 +167,21 @@ wxString recEvent::GetAddressStr() const
     return recPlace::GetAddressStr( f_place_id );
 }
 
-wxString recEvent::GetDetailStr( id_t id )
+wxString recEvent::GetDetailStr( idt id )
 {
     recEvent e( id );
     return e.GetDetailStr();
 }
 
-wxString recEvent::GetTypeStr( id_t id )
+wxString recEvent::GetTypeStr( idt id )
 {
-    id_t typeID = ExecuteID(
+    idt typeID = ExecuteID(
         "SELECT type_id FROM Event WHERE id="ID";", id
     );
     return recEventType::GetTypeStr( typeID );
 }
 
-wxString recEvent::GetTitle( id_t id )
+wxString recEvent::GetTitle( idt id )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3ResultSet result;
@@ -191,7 +191,7 @@ wxString recEvent::GetTitle( id_t id )
     return result.GetAsString( 0 );
 }
 
-wxString recEvent::GetNote( id_t id )
+wxString recEvent::GetNote( idt id )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3ResultSet result;
@@ -227,7 +227,7 @@ recEventPersonaVec recEvent::GetEventPersonas()
     return vec;
 }
 
-bool recEvent::DeleteFromDb( id_t id )
+bool recEvent::DeleteFromDb( idt id )
 {
     wxSQLite3StatementBuffer sql;
 
@@ -322,7 +322,7 @@ bool recEventType::Read()
     return true;
 }
 
-wxString recEventType::GetTypeStr( id_t id )
+wxString recEventType::GetTypeStr( idt id )
 {
     recEventType et( id );
     return et.f_name;
@@ -349,7 +349,7 @@ recEventTypeVec recEventType::ReadAll()
     return vec;
 }
 
-id_t recEventType::Select()
+idt recEventType::Select()
 {
     recEventTypeVec vec = recEventType::ReadAll();
     wxArrayString list;
@@ -364,7 +364,7 @@ id_t recEventType::Select()
 }
 
 // Return an vector of roles for this type of event
-recEventTypeRoleVec recEventType::GetRoles( id_t typeID )
+recEventTypeRoleVec recEventType::GetRoles( idt typeID )
 {
     recEventTypeRole record;
     recEventTypeRoleVec vec;
@@ -477,7 +477,7 @@ bool recEventTypeRole::Read()
     return true;
 }
 
-wxString recEventTypeRole::GetName( id_t roleID )
+wxString recEventTypeRole::GetName( idt roleID )
 {
     recEventTypeRole role( roleID );
     return role.f_name;

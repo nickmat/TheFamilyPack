@@ -127,7 +127,7 @@ void dlgEditIndEvent::OnAddrButton( wxCommandEvent& event )
 //-----------------------------------------------------
 
 dlgEditFamEvent::dlgEditFamEvent(
-    wxWindow* parent, id_t eventID, recEventType::ETYPE_Grp grp
+    wxWindow* parent, idt eventID, recEventType::ETYPE_Grp grp
     ) : fbDlgEditFamEvent(parent), m_grp(grp)
 {
     m_event.f_id = eventID;

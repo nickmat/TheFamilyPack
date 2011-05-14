@@ -42,11 +42,11 @@ typedef std::vector< recUser >  recUserVec;
 class recUser : public recDb
 {
 public:
-    id_t     f_res_id;
-    id_t     f_fam_id;
+    idt     f_res_id;
+    idt     f_fam_id;
 
     recUser() {}
-    recUser( id_t id ) : recDb(id) { Read(); }
+    recUser( idt id ) : recDb(id) { Read(); }
     recUser( const recUser& user );
 
     void Clear();

@@ -56,11 +56,11 @@ enum recStdNameType  // These match the create.sql file
 class recName : public recDb
 {
 public:
-    id_t      f_per_id;
-    id_t      f_style_id;
+    idt      f_per_id;
+    idt      f_style_id;
 
     recName() {}
-    recName( id_t id ) : recDb(id) { Read(); }
+    recName( idt id ) : recDb(id) { Read(); }
     recName( const recName& attr );
 
     void Clear();
@@ -72,18 +72,18 @@ public:
 //    void UpdateNameParts( wxString& nameStr );
 //    bool RemoveNameParts();
 
-    bool FindPersona( id_t perID, id_t styleID = 0 );
-    wxString GetNamePart( id_t nptID );
-//    static wxString GetValue( id_t id );
-//  static recNameList ConvertStrToList( const wxString& str, id_t type = NAME_TYPE_Given_name );
+    bool FindPersona( idt perID, idt styleID = 0 );
+    wxString GetNamePart( idt nptID );
+//    static wxString GetValue( idt id );
+//  static recNameList ConvertStrToList( const wxString& str, idt type = NAME_TYPE_Given_name );
 
-    static wxString GetSurname( id_t id );
-    static wxString GetGivenName( id_t id );
-    static wxString GetFullName( id_t id )
+    static wxString GetSurname( idt id );
+    static wxString GetGivenName( idt id );
+    static wxString GetFullName( idt id )
         { return GetGivenName( id ) + " " + GetSurname( id ); }
     wxString GetFullName() const { return GetFullName( f_id ); }
 
-    static recNamePartVec GetParts( id_t nameID );
+    static recNamePartVec GetParts( idt nameID );
     recNamePartVec GetParts() const { return GetParts( f_id ); }
 };
 
@@ -109,13 +109,13 @@ inline bool operator!=( const recName& r1, const recName& r2 )
 class recNamePart : public recDb
 {
 public:
-    id_t      f_name_id;
-    id_t      f_type_id;
+    idt      f_name_id;
+    idt      f_type_id;
     wxString  f_val;
     unsigned  f_sequence;
 
     recNamePart() {}
-    recNamePart( id_t id ) : recDb(id) { Read(); }
+    recNamePart( idt id ) : recDb(id) { Read(); }
     recNamePart( const recNamePart& attr );
 
     void Clear();
@@ -123,8 +123,8 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "NamePart" );
 
-    static wxString GetValue( id_t id );
-    static recNamePartVec ConvertStrToList( const wxString& str, id_t type = NAME_TYPE_Given_name );
+    static wxString GetValue( idt id );
+    static recNamePartVec ConvertStrToList( const wxString& str, idt type = NAME_TYPE_Given_name );
     static wxSQLite3ResultSet GetSurnameList() {
         return s_db->ExecuteQuery(
             "SELECT val FROM NamePart WHERE type_id=-2 GROUP BY val;"
@@ -165,7 +165,7 @@ public:
     wxString  f_name;
 
     recNamePartType() {}
-    recNamePartType( id_t id ) : recDb(id) { Read(); }
+    recNamePartType( idt id ) : recDb(id) { Read(); }
     recNamePartType( const recNamePartType& at );
 
     void Clear();
@@ -173,7 +173,7 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "NameType" );
 
-    static wxString GetTypeStr( id_t id );
+    static wxString GetTypeStr( idt id );
 
     static recNamePartTypeVec GetTypeList();
 };
@@ -211,7 +211,7 @@ public:
     wxString  f_name;
 
     recNameStyle() {}
-    recNameStyle( id_t id ) : recDb(id) { Read(); }
+    recNameStyle( idt id ) : recDb(id) { Read(); }
     recNameStyle( const recNameStyle& at );
 
     void Clear();
@@ -219,7 +219,7 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "NameStyle" );
 
-    static wxString GetStyleStr( id_t id );
+    static wxString GetStyleStr( idt id );
 
     static recNameStyleVec GetStyleList();
 };

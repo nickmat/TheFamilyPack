@@ -44,12 +44,12 @@ typedef std::vector< recAttributeType >  recAttributeTypeVec;
 class recPersona : public recDb
 {
 public:
-    id_t     f_name_id;
+    idt     f_name_id;
     Sex      f_sex;
     wxString f_note;
 
     recPersona() {}
-    recPersona( id_t id ) : recDb(id) { Read(); }
+    recPersona( idt id ) : recDb(id) { Read(); }
     recPersona( const recPersona& persona );
 
     void Clear();
@@ -57,17 +57,17 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "Persona" );
 
-    static wxString GetSurname( id_t id );
-    static wxString GetGivenName( id_t id );
-    static wxString GetFullName( id_t id )
+    static wxString GetSurname( idt id );
+    static wxString GetGivenName( idt id );
+    static wxString GetFullName( idt id )
         { return GetGivenName( id ) + " " + GetSurname( id ); }
     wxString GetFullName() const { return GetFullName( f_id ); }
-    static recAttributeList ReadAttributes( id_t perID );
+    static recAttributeList ReadAttributes( idt perID );
     recAttributeList ReadAttributes() const { return ReadAttributes( f_id ); }
-    static recNameVec ReadNames( id_t perID );
+    static recNameVec ReadNames( idt perID );
     recNameVec ReadNames() const { return ReadNames( f_id ); }
 
-    static recIdVec GetIndividualIDs( id_t perID );
+    static recIdVec GetIndividualIDs( idt perID );
     recIdVec GetIndividualIDs() const { return GetIndividualIDs( f_id ); }
 };
 
@@ -101,12 +101,12 @@ enum recStdAttrType  // These match the create.sql file
 class recAttribute : public recDb
 {
 public:
-    id_t      f_per_id;
-    id_t      f_type_id;
+    idt      f_per_id;
+    idt      f_type_id;
     wxString  f_val;
 
     recAttribute() {}
-    recAttribute( id_t id ) : recDb(id) { Read(); }
+    recAttribute( idt id ) : recDb(id) { Read(); }
     recAttribute( const recAttribute& attr );
 
     void Clear();
@@ -114,14 +114,14 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "Attribute" );
 
-    static wxString GetValue( id_t id );
+    static wxString GetValue( idt id );
 
-    id_t FindReferenceID() const { return FindReferenceID( f_id ); }
-    static id_t FindReferenceID( id_t eventID ) {
+    idt FindReferenceID() const { return FindReferenceID( f_id ); }
+    static idt FindReferenceID( idt eventID ) {
         return recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Attribute, eventID );
     }
 
-//  static recAttributeList ConvertStrToList( const wxString& str, id_t type );
+//  static recAttributeList ConvertStrToList( const wxString& str, idt type );
 };
 
 inline bool recEquivalent( const recAttribute& r1, const recAttribute& r2 )
@@ -156,7 +156,7 @@ public:
     wxString  f_name;
 
     recAttributeType() {}
-    recAttributeType( id_t id ) : recDb(id) { Read(); }
+    recAttributeType( idt id ) : recDb(id) { Read(); }
     recAttributeType( const recAttributeType& at );
 
     void Clear();
@@ -164,7 +164,7 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "AttributeType" );
 
-    static wxString GetTypeStr( id_t id );
+    static wxString GetTypeStr( idt id );
 
     static recAttributeTypeVec GetTypeList();
 };

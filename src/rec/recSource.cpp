@@ -300,7 +300,7 @@ bool recCitationPartType::Read()
     return true;
 }
 
-wxString recCitationPartType::GetStr( id_t id )
+wxString recCitationPartType::GetStr( idt id )
 {
     recCitationPartType at( id );
     return at.f_name;
@@ -411,7 +411,7 @@ bool recRepository::Read()
         return false;
     }
 
-    sql.Format( 
+    sql.Format(
         "SELECT name, access, comments FROM Repository WHERE id="ID";",
         f_id
     );
@@ -498,7 +498,7 @@ bool recRepositorySource::Read()
         return false;
     }
 
-    sql.Format( 
+    sql.Format(
         "SELECT repos_id, source_id, call_num, desc FROM RepositorySource WHERE id="ID";",
         f_id
     );

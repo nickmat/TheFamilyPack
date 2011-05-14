@@ -44,7 +44,7 @@ class dlgEditPersona : public fbDlgEditPersona
 public:
     dlgEditPersona( wxWindow* parent );
 
-    void SetPersonaID( id_t perID ) { m_persona.f_id = perID; }
+    void SetPersonaID( idt perID ) { m_persona.f_id = perID; }
 
     recPersona* GetPersona() { return &m_persona; }
 

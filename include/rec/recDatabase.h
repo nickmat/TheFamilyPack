@@ -36,15 +36,14 @@
 #include <wx/wxsqlite3.h>
 
 // Some helpful defines
-typedef wxLongLong      id_t;
+typedef wxLongLong_t    idt;
 #define ID              "%lld"
-#define GET_ID( id )    (id)
-#define IDtoLong( id )  (id.GetLo())
+#define GET_ID( id )    ((id).GetValue())
 #define UTF8_(s) ((const char*)(s).utf8_str())
 #define BOOL_(i) ( (i) ? 1 : 0 )
 
-typedef wxVector< id_t >  recIdList;
-typedef std::vector< id_t >  recIdVec;
+typedef wxVector< idt >  recIdList;
+typedef std::vector< idt >  recIdVec;
 
 enum Sex { SEX_Unstated, SEX_Male, SEX_Female, SEX_Unknown };
 extern wxString recGetSexStr( Sex sex );
@@ -62,19 +61,19 @@ protected:
 
     /*! Delete the given record in the given table.
      */
-    static bool DeleteRecord( const char* table, id_t id );
+    static bool DeleteRecord( const char* table, idt id );
 
     /*! Return true if the given record exists in the given table.
      */
-    static bool RecordExists( const char* table, id_t id );
+    static bool RecordExists( const char* table, idt id );
 
 public:
-    id_t   f_id;
+    idt   f_id;
 
     /*! Default constructor, does nothing. */
     recDb() {}
     /*! Constructor with id, reads the record for the given id. */
-    recDb( id_t id ) : f_id(id) {}
+    recDb( idt id ) : f_id(id) {}
 
     static void SetDb( wxSQLite3Database* db ) { s_db = db; }
     static wxSQLite3Database* GetDb() { return s_db; }
@@ -132,15 +131,15 @@ public:
      */
     virtual bool Read() = 0;
 
-    static id_t ExecuteID( const wxSQLite3StatementBuffer& sql );
-    static id_t ExecuteID( const char* format, id_t id );
+    static idt ExecuteID( const wxSQLite3StatementBuffer& sql );
+    static idt ExecuteID( const char* format, idt id );
 };
 
 #define TABLE_NAME_MEMBERS( T )                                        \
     const char* GetTableName() const { return (T); }                   \
     bool Delete() { return DeleteRecord( (T), f_id ); }                \
-    static bool Delete( id_t id ) { return DeleteRecord( (T), id ); }  \
+    static bool Delete( idt id ) { return DeleteRecord( (T), id ); }  \
     bool Exists() { return RecordExists( (T), f_id ); }                \
-    static bool Exists( id_t id ) { return RecordExists( (T), id ); }
+    static bool Exists( idt id ) { return RecordExists( (T), id ); }
 
 #endif // RECDATABASE_H

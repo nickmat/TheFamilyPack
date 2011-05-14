@@ -39,8 +39,8 @@ class dlgEditNamePart : public fbDlgEditNamePart
 public:
     dlgEditNamePart( wxWindow* parent );
 
-    void SetNamePartID( id_t npID ) { m_np.f_id = npID; }
-    void SetNameID( id_t nameID ) { m_np.f_name_id = nameID; }
+    void SetNamePartID( idt npID ) { m_np.f_id = npID; }
+    void SetNameID( idt nameID ) { m_np.f_name_id = nameID; }
     void SetValue( const wxString& val ) { m_np.f_val = val; }
 
 //    wxString GetText() const { return m_text; }
@@ -50,7 +50,7 @@ private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
 
-//    id_t            m_persona;
+//    idt            m_persona;
     recNamePart  m_np;
 //    wxString        m_text;
     recNamePartTypeVec  m_types;

@@ -168,7 +168,7 @@ bool recIndividual::Read()
 
 void recIndividual::UpdateDateEpitaph()
 {
-    id_t date_id;
+    idt date_id;
     recEvent event;
     recDate date;
     wxString epi;
@@ -217,7 +217,7 @@ void recIndividual::UpdateDateEpitaph()
 }
 
 
-wxString recIndividual::GetFullName( id_t id )
+wxString recIndividual::GetFullName( idt id )
 {
     wxString str;
     wxSQLite3StatementBuffer sql;
@@ -229,7 +229,7 @@ wxString recIndividual::GetFullName( id_t id )
     return str;
 }
 
-wxString recIndividual::GetSurname( id_t id )
+wxString recIndividual::GetSurname( idt id )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3ResultSet result;
@@ -239,7 +239,7 @@ wxString recIndividual::GetSurname( id_t id )
     return result.GetAsString( 0 );
 }
 
-wxString recIndividual::GetDateEpitaph( id_t id )
+wxString recIndividual::GetDateEpitaph( idt id )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3ResultSet result;
@@ -250,7 +250,7 @@ wxString recIndividual::GetDateEpitaph( id_t id )
 }
 
 
-recFamilyList recIndividual::GetFamilyList( id_t ind )
+recFamilyList recIndividual::GetFamilyList( idt ind )
 {
     recFamilyList families;
     recFamily family;
@@ -277,7 +277,7 @@ recFamilyList recIndividual::GetFamilyList( id_t ind )
     return families;
 }
 
-recFamilyList recIndividual::GetParentList( id_t indID )
+recFamilyList recIndividual::GetParentList( idt indID )
 {
     recFamily parent;
     recFamilyList parents;
@@ -305,7 +305,7 @@ recFamilyList recIndividual::GetParentList( id_t indID )
     return parents;
 }
 
-recEventPersonaVec recIndividual::GetEventPersonaVec( id_t id )
+recEventPersonaVec recIndividual::GetEventPersonaVec( idt id )
 {
     recEventPersona pe;
     recEventPersonaVec peList;
@@ -335,7 +335,7 @@ recEventPersonaVec recIndividual::GetEventPersonaVec( id_t id )
     return peList;
 }
 
-wxSQLite3Table recIndividual::GetEventsTable( id_t id )
+wxSQLite3Table recIndividual::GetEventsTable( idt id )
 {
     wxSQLite3StatementBuffer sql;
 
@@ -349,7 +349,7 @@ wxSQLite3Table recIndividual::GetEventsTable( id_t id )
     return s_db->GetTable( sql );
 }
 
-wxSQLite3Table recIndividual::GetAttributesTable( id_t id )
+wxSQLite3Table recIndividual::GetAttributesTable( idt id )
 {
     wxSQLite3StatementBuffer sql;
 
@@ -363,7 +363,7 @@ wxSQLite3Table recIndividual::GetAttributesTable( id_t id )
     return s_db->GetTable( sql );
 }
 
-wxArrayString recIndividual::GetEventIdStrList( id_t indID, id_t etrID )
+wxArrayString recIndividual::GetEventIdStrList( idt indID, idt etrID )
 {
     wxArrayString list;
     wxSQLite3StatementBuffer sql;
@@ -630,7 +630,7 @@ bool recFamily::Read()
     return true;
 }
 
-bool recFamily::ReadParents( id_t ind )
+bool recFamily::ReadParents( idt ind )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3ResultSet result;
@@ -643,7 +643,7 @@ bool recFamily::ReadParents( id_t ind )
     return Read();
 }
 
-recIndividualList recFamily::GetChildren( id_t fam )
+recIndividualList recFamily::GetChildren( idt fam )
 {
     recIndividualList children;
     recIndividual ind;
@@ -668,7 +668,7 @@ recIndividualList recFamily::GetChildren( id_t fam )
     return children;
 }
 
-recIdList recFamily::GetChildrenIds( id_t fam )
+recIdList recFamily::GetChildrenIds( idt fam )
 {
     recIdList children;
     wxSQLite3StatementBuffer sql;
@@ -690,7 +690,7 @@ recIdList recFamily::GetChildrenIds( id_t fam )
     return children;
 }
 
-unsigned recFamily::GetChildNextSequence( id_t famID )
+unsigned recFamily::GetChildNextSequence( idt famID )
 {
     wxSQLite3StatementBuffer sql;
 
@@ -701,7 +701,7 @@ unsigned recFamily::GetChildNextSequence( id_t famID )
     return (unsigned) s_db->ExecuteScalar( sql ) + 1;
 }
 
-recFamIndVec recFamily::GetChildLinks( id_t famID )
+recFamIndVec recFamily::GetChildLinks( idt famID )
 {
     recFamIndVec ChildLinks;
     recFamilyIndividual fi;

@@ -41,7 +41,7 @@ public:
     dlgSelectIndividual( wxWindow* parent );
 
     bool CreateTable( Sex sex = SEX_Unstated );
-    id_t GetSelectedID();
+    idt GetSelectedID();
 
 protected:
     // Handlers for fbDlgSelectIndividual events.

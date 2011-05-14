@@ -207,7 +207,7 @@ bool recContactType::Read()
     return true;
 }
 
-wxString recContactType::GetStr( id_t id )
+wxString recContactType::GetStr( idt id )
 {
     recContactType at( id );
     return at.f_name;
@@ -316,7 +316,7 @@ bool recResearcher::Read()
         return false;
     }
 
-    sql.Format( 
+    sql.Format(
         "SELECT name, comments FROM Researcher WHERE id="ID";",
         f_id
     );

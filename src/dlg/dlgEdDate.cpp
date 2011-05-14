@@ -67,7 +67,7 @@ int dlgEditDate::sch_list[CALENDAR_SCH_Max] = {
 //       dlgEditDate
 //===========================================================================
 
-dlgEditDate::dlgEditDate( wxWindow* parent, id_t id )
+dlgEditDate::dlgEditDate( wxWindow* parent, idt id )
     : fbDlgEditDate( parent )
 {
     m_date.f_id = id;
@@ -134,7 +134,7 @@ void dlgEditDate::SetStaticDate( wxIdleEvent& event )
 //       dlgEditDateFromAge
 //===========================================================================
 
-dlgEditDateFromAge::dlgEditDateFromAge( wxWindow* parent, id_t id )
+dlgEditDateFromAge::dlgEditDateFromAge( wxWindow* parent, idt id )
     : fbDlgEditDateFromAge( parent )
 {
     m_base.f_id = id;
@@ -197,16 +197,16 @@ void dlgEditDateFromAge::CalcDate()
     int unit = m_radioBoxUnits->GetSelection();
     switch( unit )
     {
-    case 0: 
+    case 0:
         calSubAgeFromJdnRange( m_date.f_jdn, jdn2, (int) age, CALENDAR_AGE_Year, m_date.f_display_sch );
         break;
-    case 1: 
+    case 1:
         calSubAgeFromJdnRange( m_date.f_jdn, jdn2, (int) age, CALENDAR_AGE_Month, m_date.f_display_sch );
         break;
-    case 2: 
+    case 2:
         calSubAgeFromJdnRange( m_date.f_jdn, jdn2, (int) age, CALENDAR_AGE_Week, m_date.f_display_sch );
         break;
-    case 3: 
+    case 3:
         calSubAgeFromJdnRange( m_date.f_jdn, jdn2, (int) age, CALENDAR_AGE_Day, m_date.f_display_sch );
         break;
     }

@@ -47,9 +47,9 @@
 #include "dlgEdReference.h"
 
 
-id_t tfpPickIndividual( Sex sex )
+idt tfpPickIndividual( Sex sex )
 {
-    id_t indID = 0;
+    idt indID = 0;
     dlgSelectIndividual* dialog = new dlgSelectIndividual( NULL );
 
     if( dialog->CreateTable( sex ) == true ) {
@@ -62,7 +62,7 @@ id_t tfpPickIndividual( Sex sex )
 }
 
 
-bool tfpEditFamily( id_t famID )
+bool tfpEditFamily( idt famID )
 {
     const wxString savepoint = "EdFam";
     bool ret = false;
@@ -81,7 +81,7 @@ bool tfpEditFamily( id_t famID )
     return ret;
 }
 
-bool tfpEditIndividual( id_t indID  )
+bool tfpEditIndividual( idt indID  )
 {
     const wxString savepoint = "EdInd";
     bool ret = false;
@@ -100,7 +100,7 @@ bool tfpEditIndividual( id_t indID  )
     return ret;
 }
 
-bool tfpEditReference( id_t refID  )
+bool tfpEditReference( idt refID  )
 {
     const wxString savepoint = "EdRef";
     bool ret = false;
@@ -119,10 +119,10 @@ bool tfpEditReference( id_t refID  )
     return ret;
 }
 
-id_t tfpAddIndividual( id_t famID, Sex sex, const wxString& surname )
+idt tfpAddIndividual( idt famID, Sex sex, const wxString& surname )
 {
     const wxString savepoint = "AddInd";
-    id_t ret = 0;
+    idt ret = 0;
     dlgEditIndividual* dialog = new dlgEditIndividual( NULL );
     recDb::Savepoint( savepoint );
 
@@ -159,7 +159,7 @@ id_t tfpAddIndividual( id_t famID, Sex sex, const wxString& surname )
 
 
 
-bool tfpAddNewParent( id_t indID, Sex sex )
+bool tfpAddNewParent( idt indID, Sex sex )
 {
     const wxString savepoint = wxT("AddNewParent");
     bool ret = false;
@@ -208,7 +208,7 @@ bool tfpAddNewParent( id_t indID, Sex sex )
     return ret;
 }
 
-bool tfpAddNewSpouse( id_t indID, Sex sex )
+bool tfpAddNewSpouse( idt indID, Sex sex )
 {
     const wxString savepoint = wxT("AddNewSpouse");
     bool ret = false;
@@ -256,10 +256,10 @@ bool tfpAddNewSpouse( id_t indID, Sex sex )
     return ret;
 }
 
-id_t tfpAddNewChild( id_t famID, Sex sex )
+idt tfpAddNewChild( idt famID, Sex sex )
 {
     const wxString savepoint = "AddNewChild";
-    id_t indID = 0;
+    idt indID = 0;
     dlgEditIndividual* dialog = new dlgEditIndividual( NULL );
     recDb::Savepoint( savepoint );
 
@@ -285,7 +285,7 @@ id_t tfpAddNewChild( id_t famID, Sex sex )
     return indID;
 }
 
-bool tfpAddExistSpouse( id_t indID, Sex sex )
+bool tfpAddExistSpouse( idt indID, Sex sex )
 {
     const wxString savepoint = wxT("AddExistSpouse");
     bool ret = false;
@@ -363,13 +363,13 @@ bool tfpAddExistSpouse( id_t indID, Sex sex )
     return ret;
 }
 
-bool tfpAddExistChild( id_t famID, Sex sex )
+bool tfpAddExistChild( idt famID, Sex sex )
 {
     const wxString savepoint = "AddExistingChild";
     bool ret = false;
     recDb::Savepoint( savepoint );
 
-    id_t indID = tfpPickIndividual( sex );
+    idt indID = tfpPickIndividual( sex );
     if( indID != 0 ) {
         recFamilyIndividual fi;
         fi.Clear();
@@ -386,9 +386,9 @@ bool tfpAddExistChild( id_t famID, Sex sex )
     return ret;
 }
 
-id_t tfpGetExistingMarriageEvent( id_t famID )
+idt tfpGetExistingMarriageEvent( idt famID )
 {
-    id_t eventID = 0;
+    idt eventID = 0;
     dlgSelectEvent* dialog = new dlgSelectEvent( NULL );
     if( dialog->CreateMarriageTable( famID ) ) {
         if( dialog->ShowModal() == wxID_OK ) {
@@ -400,7 +400,7 @@ id_t tfpGetExistingMarriageEvent( id_t famID )
     return eventID;
 }
 
-id_t tfpAddMarriageEvent( id_t famID )
+idt tfpAddMarriageEvent( idt famID )
 {
     wxMessageBox( wxT("NYI Add Marriage Event"), wxT("tfpAddMarriageEvent") );
     return 0;

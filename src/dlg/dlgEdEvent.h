@@ -50,7 +50,7 @@ public:
     /** Constructor */
     dlgEditEvent( wxWindow* parent );
 
-    void SetData( id_t typeID, id_t eventID = 0 );
+    void SetData( idt typeID, idt eventID = 0 );
     void SetEntities( TfpEntities* entities ) { mp_entities = entities; }
     void SetDateStrings( TfpEntityStringVec strs ) { m_dateStrings = strs; }
     recEvent* GetEvent() { return &m_event; }

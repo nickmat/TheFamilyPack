@@ -42,13 +42,13 @@ class dlgEditName : public fbDlgEditName
 public:
     dlgEditName( wxWindow* parent );
 
-    void SetData( id_t nameID = 0 ) { m_name.f_id = nameID; }
+    void SetData( idt nameID = 0 ) { m_name.f_id = nameID; }
     void SetDefault( wxString& name ) {
         m_haveName = true; m_nameStr = name;
     }
 
-    void SetID( id_t nameID = 0 ) { m_name.f_id = nameID; }
-    void SetPersonaID( id_t perID = 0 ) { m_name.f_per_id = perID; }
+    void SetID( idt nameID = 0 ) { m_name.f_id = nameID; }
+    void SetPersonaID( idt perID = 0 ) { m_name.f_per_id = perID; }
     void CreateName( const wxString name ) {
         m_haveName = true; m_nameStr = name;
     }

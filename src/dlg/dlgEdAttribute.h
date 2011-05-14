@@ -39,9 +39,9 @@ class dlgEditAttribute : public fbDlgEditAttribute
 public:
     dlgEditAttribute( wxWindow* parent );
 
-    void SetAttributeID( id_t id ) { m_attr.f_id = id; }
-    void SetPersonaID( id_t perID ) { m_attr.f_per_id = perID; }
-    void SetTypeID( id_t typeID ) { m_attr.f_type_id = typeID; }
+    void SetAttributeID( idt id ) { m_attr.f_id = id; }
+    void SetPersonaID( idt perID ) { m_attr.f_per_id = perID; }
+    void SetTypeID( idt typeID ) { m_attr.f_type_id = typeID; }
     void SetValue( const wxString& val ) { m_attr.f_val = val; }
 
     wxString GetText() const { return m_attr.f_val; }

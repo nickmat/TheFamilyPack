@@ -49,7 +49,7 @@ public:
     int  f_test;
 
     recVersion() {}
-    recVersion( id_t id ) : recDb(id) { Read(); }
+    recVersion( idt id ) : recDb(id) { Read(); }
     recVersion( const recVersion& ver );
 
     void Clear();

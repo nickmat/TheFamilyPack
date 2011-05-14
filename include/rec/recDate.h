@@ -65,7 +65,7 @@ public:
     CalendarScheme  f_display_sch;  // Default display scheme
                                     // See cal/calendar.h for values
     recDate() {}
-    recDate( id_t id ) : recDb(id) { Read(); }
+    recDate( idt id ) : recDb(id) { Read(); }
     recDate( const recDate& date );
 
     void Clear();
@@ -83,19 +83,19 @@ public:
      *  bool Exists();
      *
      *  // Delete the given record, static function.\n
-     *  static bool Delete( id_t id );
+     *  static bool Delete( idt id );
      *
      *  // Return true if given record exists, static function.\n
-     *  static bool Exists( id_t id );
+     *  static bool Exists( idt id );
      */
     TABLE_NAME_MEMBERS( "Date" );
 
     void SetDefaults();
     bool SetDate( const wxString& str, CalendarScheme sch = CALENDAR_SCH_Unstated );
     wxString GetJdnStr( CalendarScheme sch = CALENDAR_SCH_Unstated ) const;
-    static wxString GetJdnStr( id_t id );
+    static wxString GetJdnStr( idt id );
     wxString GetStr( CalendarScheme sch = CALENDAR_SCH_Unstated ) const;
-    static wxString GetStr( id_t id );
+    static wxString GetStr( idt id );
     int GetYear( CalendarScheme sch = CALENDAR_SCH_Unstated );
 
 
