@@ -32,7 +32,14 @@
 <div class="diag"><img src="tfp-contact.png" alt="Contact Subsystem" /></div>
 <h2>Contact</h2>
 <p>
- Under construction
+ A single contact system is used for all entities that are contactable. The ContactType table is prefilled with core data and can be extended by the user as we find more varied ways of contacting each other.
+</p>
+<p>
+ The Contact val(ue) is normally a text string, but in the case of ContactType of "Address", the val(ue) is a place id.
+</p>
+<h3>Researcher</h3>
+<p>
+ Anyone who has had a hand in creating the data in the database and who needs to be credited can be listed in this table. They should be listed here, even if they also appear as an Individual and or as a User.
 </p>
 
 </div>
@@ -49,5 +56,17 @@
 <div id='create-date'><p> 16<sup>th</sup> November 2010</p></div>
 
 </div>
+<!-- Piwik -->
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "https://sourceforge.net/apps/piwik/thefamilypack/" : "http://sourceforge.net/apps/piwik/thefamilypack/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://sourceforge.net/apps/piwik/thefamilypack/piwik.php?idsite=1" style="border:0" alt=""/></p></noscript>
+<!-- End Piwik Tag -->
 </body>
 </html>
