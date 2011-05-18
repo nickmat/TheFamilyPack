@@ -39,11 +39,11 @@
 
 #include <rec/recVersion.h>
 
-const int recVersionMajor    = 0;
-const int recVersionMinor    = 0;
-const int recVersionRevision = 8;
-const int recVersionTest     = 0;
-const wxStringCharType* recVersionStr  = wxS("0.0.8.0");
+const int recVerMajor    = 0;
+const int recVerMinor    = 0;
+const int recVerRevision = 8;
+const int recVerTest     = 1;
+const wxStringCharType* recVerStr = wxS("0.0.8.1");
 
 
 recVersion::recVersion( const recVersion& v )
@@ -140,21 +140,32 @@ wxString recVersion::GetVersionStr()
 
 bool recVersion::IsEqual( int major, int minor, int revision, int test ) const
 {
-    return
-        f_major    == major    &&
-        f_minor    == minor    &&
-        f_revision == revision &&
-        f_test     == test;
+    bool ret = (f_major == major);
+
+    if( minor == -1 ) return ret;
+    ret = ret && (f_minor == minor);
+
+    if( revision == -1 ) return ret;
+    ret = ret && (f_revision == revision);
+
+    if( test == -1 ) return ret;
+    return ret && (f_test == test);
 }
 
 bool recVersion::IsMoreThan( int major, int minor, int revision, int test ) const
 {
     if( f_major > major ) return true;
     if( f_major < major ) return false;
+
+    if( minor == -1 ) return false;
     if( f_minor > minor ) return true;
     if( f_minor < minor ) return false;
+
+    if( revision == -1 ) return false;
     if( f_revision > revision ) return true;
     if( f_revision < revision ) return false;
+
+    if( test == -1 ) return false;
     if( f_test > test ) return true;
     return false;
 }
@@ -163,10 +174,16 @@ bool recVersion::IsLessThan( int major, int minor, int revision, int test ) cons
 {
     if( f_major < major ) return true;
     if( f_major > major ) return false;
+
+    if( minor == -1 ) return false;
     if( f_minor < minor ) return true;
     if( f_minor > minor ) return false;
+
+    if( revision == -1 ) return false;
     if( f_revision < revision ) return true;
     if( f_revision > revision ) return false;
+
+    if( test == -1 ) return false;
     if( f_test < test ) return true;
     return false;
 }

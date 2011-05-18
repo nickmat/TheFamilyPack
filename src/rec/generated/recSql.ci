@@ -80,6 +80,9 @@ static const char* createdb =  /* recCreate.sql */
  "  id INTEGER PRIMARY KEY,\n"
  "  jdn INTEGER,\n"
  "  range INTEGER,\n"
+ "  base_id INTEGER,\n"
+ "  base_unit INTEGER,\n"
+ "  base_style INTEGER,\n"
  "  type INTEGER,\n"
  "  desc TEXT,\n"
  "  record_sch INTEGER,\n"
@@ -317,7 +320,7 @@ static const char* createdb =  /* recCreate.sql */
  "  revision INTEGER,\n"
  "  test INTEGER\n"
  ");\n"
- "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 8, 0);\n"
+ "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 8, 1);\n"
  "COMMIT;\n";
 
 /* End of recSql.f2c */

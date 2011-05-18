@@ -24,7 +24,6 @@
  *  along with The Family Pack.  If not, see <http://www.gnu.org/licenses/>.
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
 */
 
 /* This pragma makes the database more efficient, but means the database
@@ -91,6 +90,9 @@ CREATE TABLE Date (
   id INTEGER PRIMARY KEY,
   jdn INTEGER,
   range INTEGER,
+  base_id INTEGER,
+  base_unit INTEGER,
+  base_style INTEGER,
   type INTEGER,
   desc TEXT,
   record_sch INTEGER,
@@ -374,7 +376,7 @@ CREATE TABLE Version (
 );
 
 /* The Version table has only this one row */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 8, 0);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 8, 1);
 
 COMMIT;
 

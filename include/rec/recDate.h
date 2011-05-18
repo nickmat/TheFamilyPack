@@ -57,8 +57,19 @@ public:
     static const wxString s_prefStr[PREF_Max];
     static const wxString s_prefFormat[PREF_Max];
 
+    enum BaseStyle {
+        BASE_STYLE_Unstated,
+        BASE_STYLE_AgeRoundDown,
+        BASE_STYLE_Max
+    };
+
+    static int      sm_count;       // Limit the number of recusive lookups 
+
     long            f_jdn;
     long            f_range;
+    idt             f_base_id;
+    CalendarAgeUnit f_base_unit;
+    BaseStyle       f_base_style;
     unsigned        f_type;         // Set with RecDate::TypeFlag
     wxString        f_desc;
     CalendarScheme  f_record_sch;   // Original convertion scheme
@@ -98,6 +109,9 @@ public:
     static wxString GetStr( idt id );
     int GetYear( CalendarScheme sch = CALENDAR_SCH_Unstated );
 
+    unsigned GetTypePrefix() const {
+        return f_type & ( FLG_AFTER | FLG_RANGE | FLG_BEFORE ); 
+    }
 
 };
 
@@ -106,11 +120,14 @@ public:
 inline bool recEquivalent( const recDate& d1, const recDate& d2 )
 {
     return
-        d1.f_jdn == d2.f_jdn &&
-        d1.f_range == d2.f_range &&
-        d1.f_type == d2.f_type &&
-        d1.f_desc == d2.f_desc &&
-        d1.f_record_sch == d2.f_record_sch &&
+        d1.f_jdn         == d2.f_jdn        &&
+        d1.f_range       == d2.f_range      &&
+        d1.f_base_id     == d2.f_base_id    &&
+        d1.f_base_unit   == d2.f_base_unit  &&
+        d1.f_base_style  == d2.f_base_style &&
+        d1.f_type        == d2.f_type       &&
+        d1.f_desc        == d2.f_desc       &&
+        d1.f_record_sch  == d2.f_record_sch &&
         d1.f_display_sch == d2.f_display_sch;
 }
 

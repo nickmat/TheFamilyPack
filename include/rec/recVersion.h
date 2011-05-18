@@ -33,11 +33,11 @@
 #include <rec/recDatabase.h>
 
 
-extern const int recVersionMajor;
-extern const int recVersionMinor;
-extern const int recVersionRevision;
-extern const int recVersionTest;
-extern const wxStringCharType* recVersionStr;
+extern const int recVerMajor;
+extern const int recVerMinor;
+extern const int recVerRevision;
+extern const int recVerTest;
+extern const wxStringCharType* recVerStr;
 
 
 class recVersion : public recDb
@@ -59,9 +59,20 @@ public:
 
     static wxString GetVersionStr();
 
-    bool IsEqual( int major, int minor, int revision, int test = 0 ) const;
-    bool IsMoreThan( int major, int minor, int revision, int test = 0 ) const;
-    bool IsLessThan( int major, int minor, int revision, int test = 0 ) const;
+    bool IsEqual( 
+        int major, int minor = -1, int revision = -1, int test = -1 ) const;
+    bool IsMoreThan( 
+        int major, int minor = -1, int revision = -1, int test = -1 ) const;
+    bool IsLessThan( 
+        int major, int minor = -1, int revision = -1, int test = -1 ) const;
+    bool IsEqualMoreThan( 
+        int major, int minor = -1, int revision = -1, int test = -1 ) const {
+            return !IsLessThan( major, minor, revision, test );
+        }
+    bool IsEqualLessThan( 
+        int major, int minor = -1, int revision = -1, int test = -1 ) const {
+            return !IsMoreThan( major, minor, revision, test );
+        }
 };
 
 /*! The two entities are equal, ignoring the record id.

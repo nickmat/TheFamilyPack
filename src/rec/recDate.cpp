@@ -61,11 +61,16 @@ const wxString recDate::s_prefFormat[recDate::PREF_Max] = {
     _("abt %s")       // PREF_About
 };
 
+int recDate::sm_count = 0;
+
 recDate::recDate( const recDate& d )
 {
     f_id          = d.f_id;
     f_jdn         = d.f_jdn;
     f_range       = d.f_range;
+    f_base_id     = d.f_base_id;
+    f_base_unit   = d.f_base_unit;
+    f_base_style  = d.f_base_style;
     f_type        = d.f_type;
     f_desc        = d.f_desc;
     f_record_sch  = d.f_record_sch;
@@ -77,6 +82,9 @@ void recDate::Clear()
     f_id          = 0;
     f_jdn         = 0;
     f_range       = 0;
+    f_base_id     = 0;
+    f_base_unit   = CALENDAR_AGE_Unstated;
+    f_base_style  = BASE_STYLE_Unstated;
     f_type        = FLG_NULL;
     f_desc        = wxEmptyString;
     f_record_sch  = CALENDAR_SCH_Unstated;
@@ -92,9 +100,11 @@ void recDate::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO Date (jdn, range, type, desc, record_sch, display_sch) "
-            "VALUES (%ld, %ld, %u, '%q', %d, %d);",
-            f_jdn, f_range, f_type, UTF8_(f_desc), f_record_sch, f_display_sch
+            "INSERT INTO Date "
+            "(jdn, range, base_id, base_unit, base_style, type, desc, record_sch, display_sch) "
+            "VALUES (%ld, %ld, "ID", %d, %d, %u, '%q', %d, %d);",
+            f_jdn, f_range, f_base_id, f_base_unit, f_base_style, f_type, UTF8_(f_desc), 
+            f_record_sch, f_display_sch
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -104,16 +114,20 @@ void recDate::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO Date (id, jdn, range, type, desc, record_sch, display_sch) "
-                "VALUES ("ID", %ld, %ld, %u, '%q', %d, %d);",
-                f_id, f_jdn, f_range, f_type, UTF8_(f_desc), f_record_sch, f_display_sch
+                "INSERT INTO Date "
+                "(id, jdn, range, base_id, base_unit, base_style, type, desc, record_sch, display_sch) "
+                "VALUES ("ID", %ld, %ld, "ID", %d, %d, %u, '%q', %d, %d);",
+                f_id, f_jdn, f_range, f_base_id, f_base_unit, f_base_style, f_type, UTF8_(f_desc),
+                f_record_sch, f_display_sch
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE Date SET jdn=%ld, range=%ld, type=%u, desc='%q', record_sch=%d, display_sch=%d "
+                "UPDATE Date SET jdn=%ld, range=%ld, base_id="ID", base_unit=%d, "
+                "base_style=%d, type=%u, desc='%q', record_sch=%d, display_sch=%d "
                 "WHERE id="ID";",
-                f_jdn, f_range, f_type, UTF8_(f_desc), f_record_sch, f_display_sch, f_id
+                f_jdn, f_range, f_base_id, f_base_unit, f_base_style, f_type, UTF8_(f_desc), 
+                f_record_sch, f_display_sch, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -130,7 +144,11 @@ bool recDate::Read()
         return false;
     }
 
-    sql.Format( "SELECT * FROM Date WHERE id="ID";", f_id );
+    sql.Format(
+        "SELECT jdn, range, base_id, base_unit, base_style, type, desc, record_sch, display_sch "
+        "FROM Date WHERE id="ID";",
+        f_id
+    );
     result = s_db->GetTable( sql );
 
     if( result.GetRowCount() != 1 )
@@ -139,12 +157,15 @@ bool recDate::Read()
         return false;
     }
     result.SetRow( 0 );
-    f_jdn         = result.GetInt( 1 );
-    f_range       = result.GetInt( 2 );
-    f_type        = (TypeFlag) result.GetInt( 3 );
-    f_desc        = result.GetAsString( 4 );
-    f_record_sch  = (CalendarScheme) result.GetInt( 5 );
-    f_display_sch = (CalendarScheme) result.GetInt( 6 );
+    f_jdn         = result.GetInt( 0 );
+    f_range       = result.GetInt( 1 );
+    f_base_id     = GET_ID( result.GetInt64( 2 ) );
+    f_base_unit   = (CalendarAgeUnit) result.GetInt( 3 );
+    f_base_style  = (BaseStyle) result.GetInt( 4 );
+    f_type        = (TypeFlag) result.GetInt( 5 );
+    f_desc        = result.GetAsString( 6 );
+    f_record_sch  = (CalendarScheme) result.GetInt( 7 );
+    f_display_sch = (CalendarScheme) result.GetInt( 8 );
     return true;
 }
 
@@ -215,14 +236,12 @@ int recDate::GetYear( CalendarScheme scheme )
 {
     int year;
 
-    if( f_jdn == 0  )
-    {
+    if( f_jdn == 0  ) {
         return 0;
     }
     if( scheme == CALENDAR_SCH_Unstated ) scheme = f_display_sch;
     calYearFromJdn( year, f_jdn+(f_range/2), scheme );
     return year;
 }
-
 
 // End of recDate.cpp file

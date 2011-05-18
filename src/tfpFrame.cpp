@@ -420,7 +420,7 @@ void TfpFrame::OnAbout( wxCommandEvent& event )
             "running under %s."),
 
             tfpTitle,
-            recVersionStr,
+            recVerStr,
             wxVERSION_STRING,
             wxSQLite3Database::GetVersion(),
             tfpGetCompilerVersion(),
