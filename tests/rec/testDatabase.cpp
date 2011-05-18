@@ -134,7 +134,7 @@ void RecTestCase::TestDate()
     date1.f_base_unit = CALENDAR_AGE_Unstated;
     date1.f_base_style = recDate::BASE_STYLE_Unstated;
     date1.f_type = recDate::FLG_BEFORE | recDate::FLG_RANGE;
-    date1.f_desc = "Good date";
+    date1.f_descrip = "Good date";
     date1.f_record_sch = CALENDAR_SCH_Gregorian;
     date1.f_display_sch = CALENDAR_SCH_Gregorian;
     // f_id = 0 so create new record and set f_id to new value.
@@ -150,7 +150,7 @@ void RecTestCase::TestDate()
     date1.f_jdn = 2432999L;
     date1.f_range = 12;
     date1.f_type = recDate::FLG_RANGE;
-    date1.f_desc = "Rubbish period";
+    date1.f_descrip = "Rubbish period";
     date1.f_record_sch = CALENDAR_SCH_Julian;
     date1.f_display_sch = CALENDAR_SCH_Julian;
     // f_id = 1 which exists, so amend record leaving f_id to old value.
@@ -160,7 +160,7 @@ void RecTestCase::TestDate()
     CPPUNIT_ASSERT( date1 == date2 );
 
     date1.f_id = 999;
-    date1.f_desc = "whole new start";
+    date1.f_descrip = "whole new start";
     // f_id = 999 which doesn't exists, so create new record with no change to f_id.
     date1.Save();
     CPPUNIT_ASSERT( date1.f_id == 999 );
@@ -169,7 +169,7 @@ void RecTestCase::TestDate()
     CPPUNIT_ASSERT( date1 == date2 );
 
     date1.f_id = 0;
-    date1.f_desc = "This shouldn't be here";
+    date1.f_descrip = "This shouldn't be here";
     date1.Save();
     CPPUNIT_ASSERT( date1.f_id != 0 );
     CPPUNIT_ASSERT( date1.Exists() == true );

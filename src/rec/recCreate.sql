@@ -68,7 +68,7 @@ CREATE TABLE Contact (
   ind_id INTEGER,
   res_id INTEGER,
   repos_id INTEGER,
-  type_id, INTEGER,
+  type_id INTEGER,
   val TEXT
 );
 
@@ -94,7 +94,7 @@ CREATE TABLE Date (
   base_unit INTEGER,
   base_style INTEGER,
   type INTEGER,
-  desc TEXT,
+  descrip TEXT,
   record_sch INTEGER,
   display_sch INTEGER
 );
@@ -376,7 +376,7 @@ CREATE TABLE Version (
 );
 
 /* The Version table has only this one row */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 8, 1);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 8, 2);
 
 COMMIT;
 

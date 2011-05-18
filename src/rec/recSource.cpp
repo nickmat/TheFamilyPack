@@ -439,7 +439,7 @@ recRepositorySource::recRepositorySource( const recRepositorySource& at )
     f_repos_id  = at.f_repos_id;
     f_source_id = at.f_source_id;
     f_call_num  = at.f_call_num;
-    f_desc      = at.f_desc;
+    f_descrip   = at.f_descrip;
 }
 
 void recRepositorySource::Clear()
@@ -448,7 +448,7 @@ void recRepositorySource::Clear()
     f_repos_id  = 0;
     f_source_id = 0;
     f_call_num  = wxEmptyString;
-    f_desc      = wxEmptyString;
+    f_descrip   = wxEmptyString;
 }
 
 void recRepositorySource::Save()
@@ -460,9 +460,9 @@ void recRepositorySource::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO RepositorySource (repos_id, source_id, call_num, desc) "
+            "INSERT INTO RepositorySource (repos_id, source_id, call_num, descrip) "
             "VALUES ("ID", "ID", '%q', '%q');",
-            f_repos_id, f_source_id, UTF8_(f_call_num), UTF8_(f_desc)
+            f_repos_id, f_source_id, UTF8_(f_call_num), UTF8_(f_descrip)
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -472,16 +472,16 @@ void recRepositorySource::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO RepositorySource (id, repos_id, source_id, call_num, desc) "
+                "INSERT INTO RepositorySource (id, repos_id, source_id, call_num, descrip) "
                 "VALUES ("ID", "ID", "ID", '%q', '%q');",
-                f_id, f_repos_id, f_source_id, UTF8_(f_call_num), UTF8_(f_desc)
+                f_id, f_repos_id, f_source_id, UTF8_(f_call_num), UTF8_(f_descrip)
             );
         } else {
             // Update existing record
             sql.Format(
                 "UPDATE RepositorySource SET repos_id="ID", source_id="ID", "
-                "call_num='%q', desc='%q' WHERE id="ID";",
-                f_repos_id, f_source_id, UTF8_(f_call_num), UTF8_(f_desc), f_id
+                "call_num='%q', descrip='%q' WHERE id="ID";",
+                f_repos_id, f_source_id, UTF8_(f_call_num), UTF8_(f_descrip), f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -499,7 +499,7 @@ bool recRepositorySource::Read()
     }
 
     sql.Format(
-        "SELECT repos_id, source_id, call_num, desc FROM RepositorySource WHERE id="ID";",
+        "SELECT repos_id, source_id, call_num, descrip FROM RepositorySource WHERE id="ID";",
         f_id
     );
     result = s_db->GetTable( sql );
@@ -513,7 +513,7 @@ bool recRepositorySource::Read()
     f_repos_id  = GET_ID( result.GetInt64( 0 ) );
     f_source_id = GET_ID( result.GetInt64( 1 ) );
     f_call_num  = result.GetAsString( 2 );
-    f_desc      = result.GetAsString( 3 );
+    f_descrip   = result.GetAsString( 3 );
     return true;
 }
 

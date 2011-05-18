@@ -215,7 +215,7 @@ public:
     idt      f_repos_id;
     idt      f_source_id;
     wxString  f_call_num;
-    wxString  f_desc;
+    wxString  f_descrip;
 
     recRepositorySource() {}
     recRepositorySource( idt id ) : recDb(id) { Read(); }
@@ -233,7 +233,7 @@ inline bool recEquivalent( const recRepositorySource& r1, const recRepositorySou
         r1.f_repos_id  == r2.f_repos_id  &&
         r1.f_source_id == r2.f_source_id &&
         r1.f_call_num  == r2.f_call_num  &&
-        r1.f_desc      == r2.f_desc;
+        r1.f_descrip   == r2.f_descrip;
 }
 
 inline bool operator==( const recRepositorySource& r1, const recRepositorySource& r2 )

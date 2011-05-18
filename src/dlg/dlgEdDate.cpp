@@ -119,7 +119,7 @@ void dlgEditDate::SetStaticDate( wxIdleEvent& event )
     date.SetDate( m_textCtrlDate->GetValue() );
 
     wxString str;
-    if( date.f_desc.IsEmpty() ) {
+    if( date.f_descrip.IsEmpty() ) {
         str = date.GetStr();
     } else {
         str = "*";

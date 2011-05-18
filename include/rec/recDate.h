@@ -71,7 +71,7 @@ public:
     CalendarAgeUnit f_base_unit;
     BaseStyle       f_base_style;
     unsigned        f_type;         // Set with RecDate::TypeFlag
-    wxString        f_desc;
+    wxString        f_descrip;
     CalendarScheme  f_record_sch;   // Original convertion scheme
     CalendarScheme  f_display_sch;  // Default display scheme
                                     // See cal/calendar.h for values
@@ -126,7 +126,7 @@ inline bool recEquivalent( const recDate& d1, const recDate& d2 )
         d1.f_base_unit   == d2.f_base_unit  &&
         d1.f_base_style  == d2.f_base_style &&
         d1.f_type        == d2.f_type       &&
-        d1.f_desc        == d2.f_desc       &&
+        d1.f_descrip     == d2.f_descrip    &&
         d1.f_record_sch  == d2.f_record_sch &&
         d1.f_display_sch == d2.f_display_sch;
 }

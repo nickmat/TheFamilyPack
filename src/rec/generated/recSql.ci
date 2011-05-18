@@ -61,7 +61,7 @@ static const char* createdb =  /* recCreate.sql */
  "  ind_id INTEGER,\n"
  "  res_id INTEGER,\n"
  "  repos_id INTEGER,\n"
- "  type_id, INTEGER,\n"
+ "  type_id INTEGER,\n"
  "  val TEXT\n"
  ");\n"
  "CREATE TABLE ContactType (\n"
@@ -84,7 +84,7 @@ static const char* createdb =  /* recCreate.sql */
  "  base_unit INTEGER,\n"
  "  base_style INTEGER,\n"
  "  type INTEGER,\n"
- "  desc TEXT,\n"
+ "  descrip TEXT,\n"
  "  record_sch INTEGER,\n"
  "  display_sch INTEGER\n"
  ");\n"
@@ -320,7 +320,7 @@ static const char* createdb =  /* recCreate.sql */
  "  revision INTEGER,\n"
  "  test INTEGER\n"
  ");\n"
- "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 8, 1);\n"
+ "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 8, 2);\n"
  "COMMIT;\n";
 
 /* End of recSql.f2c */
