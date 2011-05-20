@@ -261,40 +261,26 @@ bool calStrToJdnRange(
     return ret;
 }
 
-bool calSubAgeFromJdnRange(
-    long& jdn1, long& jdn2, const DMYDate& dmy, CalendarScheme scheme )
+bool calAddToJdn( 
+    long& jdn, long value, CalendarUnit unit, CalendarScheme scheme )
 {
-    switch( scheme )
+    switch( unit )
     {
-    case CALENDAR_SCH_Julian:
-    case CALENDAR_SCH_Gregorian:
-        return calLatinSubAgeFromJdnRange( jdn1, jdn2, dmy, scheme );
-    }
-
-    return false;
-}
-
-extern bool calSubAgeFromJdnRange( 
-    long& jdn1, long& jdn2, int age, CalendarAgeUnit unit, CalendarScheme scheme )
-{
-    DMYDate dmy;
-
-    switch( unit ) 
-    {
-    case CALENDAR_AGE_Year:
-        dmy.SetDMY( -1, -1, age );
-        return calSubAgeFromJdnRange( jdn1, jdn2, dmy, scheme );
-    case CALENDAR_AGE_Month:
-        dmy.SetDMY( -1, age, 0 );
-        return calSubAgeFromJdnRange( jdn1, jdn2, dmy, scheme );
-    case CALENDAR_AGE_Week:
-        jdn1 -= ( age + 1 ) * 7 - 1;
-        jdn2 -= age * 7;
+    case CALENDAR_UNIT_Day:
+        jdn += value;
         return true;
-    case CALENDAR_AGE_Day:
-        jdn1 -= age;
-        jdn2 -= age;
+    case CALENDAR_UNIT_Week:
+        jdn += value * 7;
         return true;
+    case CALENDAR_UNIT_Month:
+    case CALENDAR_UNIT_Year:
+        switch( scheme )
+        {
+        case CALENDAR_SCH_Julian:
+        case CALENDAR_SCH_Gregorian:
+            return calLatinAddToJdn( jdn, value, unit, scheme );
+        }
+        break;
     }
     return false;
 }

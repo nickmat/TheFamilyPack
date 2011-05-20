@@ -131,7 +131,7 @@ void RecTestCase::TestDate()
     date1.f_jdn = 2432814L;
     date1.f_range = 0;
     date1.f_base_id = 0;
-    date1.f_base_unit = CALENDAR_AGE_Unstated;
+    date1.f_base_unit = CALENDAR_UNIT_Unstated;
     date1.f_base_style = recDate::BASE_STYLE_Unstated;
     date1.f_type = recDate::FLG_BEFORE | recDate::FLG_RANGE;
     date1.f_descrip = "Good date";

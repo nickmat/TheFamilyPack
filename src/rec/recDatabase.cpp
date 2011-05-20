@@ -83,7 +83,6 @@ static const char* upgrade0_0_8_1 =
     " (id, jdn, range, base_id, base_unit, base_style, type, descrip, record_sch, display_sch)"
     " SELECT id, jdn, range, base_id, base_unit, base_style, type, desc, record_sch, display_sch FROM OldDate;"
     "DROP TABLE OldDate;"
-
     // These tables have not yet been used so no need to copy data
     "DROP TABLE RepositorySource;"
     "CREATE TABLE RepositorySource (\n"
@@ -173,7 +172,7 @@ static bool UpgradeTest( recVersion& ver )
             recDb::Commit();
         }
         if( ver.f_test == 1 ) {
-            // Upgrade 0.0.8.0 to 0.0.8.1
+            // Upgrade 0.0.8.1 to 0.0.8.2
             recDb::Begin();
             recDb::GetDb()->ExecuteUpdate( upgrade0_0_8_1 );
             ver.f_test = 2;

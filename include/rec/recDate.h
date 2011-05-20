@@ -33,6 +33,8 @@
 #include <rec/recDatabase.h>
 #include <cal/calendar.h>
 
+#define recDate_MAX_RECURSION_COUNT  10
+
 class recDate : public recDb
 {
 public:
@@ -68,7 +70,7 @@ public:
     long            f_jdn;
     long            f_range;
     idt             f_base_id;
-    CalendarAgeUnit f_base_unit;
+    CalendarUnit    f_base_unit;
     BaseStyle       f_base_style;
     unsigned        f_type;         // Set with RecDate::TypeFlag
     wxString        f_descrip;
@@ -109,6 +111,7 @@ public:
     static wxString GetStr( idt id );
     int GetYear( CalendarScheme sch = CALENDAR_SCH_Unstated );
 
+    void GetJdn1Jdn2( long& jdn1, long& jdn2, CalendarScheme scheme ) const;
     unsigned GetTypePrefix() const {
         return f_type & ( FLG_AFTER | FLG_RANGE | FLG_BEFORE ); 
     }

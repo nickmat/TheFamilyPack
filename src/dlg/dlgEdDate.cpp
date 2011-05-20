@@ -198,16 +198,27 @@ void dlgEditDateFromAge::CalcDate()
     switch( unit )
     {
     case 0:
-        calSubAgeFromJdnRange( m_date.f_jdn, jdn2, (int) age, CALENDAR_AGE_Year, m_date.f_display_sch );
+//        calSubAgeFromJdnRange( m_date.f_jdn, jdn2, (int) age, CALENDAR_UNIT_Year, m_date.f_display_sch );
+        calAddToJdn( m_date.f_jdn, -(age+1), CALENDAR_UNIT_Year, m_date.f_display_sch );
+        m_date.f_jdn++;
+        calAddToJdn( jdn2, -age, CALENDAR_UNIT_Year, m_date.f_display_sch );
         break;
     case 1:
-        calSubAgeFromJdnRange( m_date.f_jdn, jdn2, (int) age, CALENDAR_AGE_Month, m_date.f_display_sch );
+//        calSubAgeFromJdnRange( m_date.f_jdn, jdn2, (int) age, CALENDAR_UNIT_Month, m_date.f_display_sch );
+        calAddToJdn( m_date.f_jdn, -(age+1), CALENDAR_UNIT_Month, m_date.f_display_sch );
+        m_date.f_jdn++;
+        calAddToJdn( jdn2, -age, CALENDAR_UNIT_Month, m_date.f_display_sch );
         break;
     case 2:
-        calSubAgeFromJdnRange( m_date.f_jdn, jdn2, (int) age, CALENDAR_AGE_Week, m_date.f_display_sch );
+//        calSubAgeFromJdnRange( m_date.f_jdn, jdn2, (int) age, CALENDAR_UNIT_Week, m_date.f_display_sch );
+        calAddToJdn( m_date.f_jdn, -(age+1), CALENDAR_UNIT_Week, m_date.f_display_sch );
+        m_date.f_jdn++;
+        calAddToJdn( jdn2, -age, CALENDAR_UNIT_Week, m_date.f_display_sch );
         break;
     case 3:
-        calSubAgeFromJdnRange( m_date.f_jdn, jdn2, (int) age, CALENDAR_AGE_Day, m_date.f_display_sch );
+//        calSubAgeFromJdnRange( m_date.f_jdn, jdn2, (int) age, CALENDAR_UNIT_Day, m_date.f_display_sch );
+        calAddToJdn( m_date.f_jdn, -age, CALENDAR_UNIT_Day, m_date.f_display_sch );
+        calAddToJdn( jdn2, -age, CALENDAR_UNIT_Day, m_date.f_display_sch );
         break;
     }
     m_date.f_range = jdn2 - m_date.f_jdn;

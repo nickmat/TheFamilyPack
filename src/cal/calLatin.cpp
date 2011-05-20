@@ -340,62 +340,35 @@ bool calLatinStrToJdnRange(
     return true;
 }
 
-/*! Subtract the age in dmy from the given jdn range for the given scheme.
- *  If age.day == -1 then expand the range to include all possible dates
- *  for the given age.month and age.year.
- *  If age.month == -1 then expand the range to include all possible dates
- *  for the given age.year.
- *  If successful updates jdn1 and jdn2 and returns true. 
- *  If unsuccessful returns false.
+/*! Add to jdn the given value based on the values unit and the given scheme. 
+ *  Returns true if successful, else false.
  */
-bool calLatinSubAgeFromJdnRange(
-    long& jdn1, long& jdn2, const DMYDate& age, CalendarScheme scheme )
+bool calLatinAddToJdn(
+    long& jdn, long value, CalendarUnit unit, CalendarScheme scheme )
 {
     DMYDate dmy;
-    long n1, n2;
-    
-    wxASSERT( age.year >= 0 );
-    if( !calConvertFromJdn( jdn1, dmy, scheme ) ) return false;
-    dmy.year -= age.year;
-    if( age.month > -1 ) {
-        dmy.month -= age.month + ( (age.day > -1) ? 0 : 1 );
-        while( dmy.month < 1 ) {
+    if( !calConvertFromJdn( jdn, dmy, scheme ) ) return false;
+    switch( unit )
+    {
+    case CALENDAR_UNIT_Year:
+        dmy.year += value;
+        break;
+    case CALENDAR_UNIT_Month:
+        dmy.year += value / 12;
+        dmy.month += value % 12;
+        if( dmy.month > 12 ) {
+            dmy.year++;
+            dmy.month -= 12;
+        }
+        if( dmy.month < 1 ) {
             --dmy.year;
             dmy.month += 12;
         }
-        if( age.day > -1 ) {
-            dmy.day -= age.day + 1;
-            while( dmy.day < 1 ) {
-                --dmy.month;
-                dmy.day += calLastDayInMonth( dmy.month, dmy.year, scheme );
-            }
-        }
-    } else {
-        --dmy.year;
+        break;
+    default:
+        return false;
     }
-    if( !calConvertToJdn( n1, dmy, scheme ) ) return false;
-    n1++;
-    if( !calConvertFromJdn( jdn2, dmy, scheme ) ) return false;
-    dmy.year -= age.year;
-    if( age.month > -1 ) {
-        dmy.month -= age.month;
-        while( dmy.month < 1 ) {
-            --dmy.year;
-            dmy.month += 12;
-        }
-        if( age.day > -1 ) {
-            dmy.day -= age.day;
-            while( dmy.day < 1 ) {
-                --dmy.month;
-                dmy.day += calLastDayInMonth( dmy.month, dmy.year, scheme );
-            }
-        }
-    }
-    if( !calConvertToJdn( n2, dmy, scheme ) ) return false;
-    // Only update jdn's now we know there's no errors.
-    jdn1 = n1;
-    jdn2 = n2;
-    return true;
+    return calConvertToJdn( jdn, dmy, scheme );
 }
 
 // End of calJulian.cpp

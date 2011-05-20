@@ -62,7 +62,11 @@ extern bool calLatinStrToJdnRange(
     long& jdn1, long& jdn2, const wxString& str, CalendarScheme scheme );
 
 // Subtract the age in dmy from the jdn range for the given scheme.
-bool calLatinSubAgeFromJdnRange(
-    long& jdn1, long& jdn2, const DMYDate& dmy, CalendarScheme scheme );
+//bool calLatinSubAgeFromJdnRange(
+//    long& jdn1, long& jdn2, const DMYDate& dmy, CalendarScheme scheme );
+
+// Add to jdn the given value based on the values unit and the given scheme. 
+extern bool calLatinAddToJdn(
+    long& jdn, long value, CalendarUnit unit, CalendarScheme scheme );
 
 #endif // CALLATIN_H

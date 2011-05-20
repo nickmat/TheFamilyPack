@@ -41,7 +41,7 @@
 
 #include "cal/calendar.h"
 
-#define VERSION   "0.4.0"
+#define VERSION   "0.4.1"
 #define PROGNAME  "CalCalc"
 #define COPYRIGHT  "2008-2011 Nick Matthews"
 
@@ -79,7 +79,6 @@ void ccUse()
 		wxT("x date         Enter the date to convert.\n")
 		wxT("a age date     Enter age in years & date to convert to birth date range.\n")
 		wxT("am age date    Enter age in months & date to convert to birth date range.\n")
-		wxT("sub d m y date Enter days, months and years to subtract from date.\n")
 		wxT("range          Set to enter and display a date range.\n")
 		wxT("single         Set to enter and display a single date.\n")
 		wxT("from sch       Set the entered scheme type (see below).\n")
@@ -151,15 +150,12 @@ void ccAgeDateToRange( wxString& line )
   	wxStringTokenizer tkz;
     wxString token;
 	long jdn1, jdn2, year;
-    DMYDate age;
 	wxString adate;
 	bool ret;
 
     tkz.SetString( line );
     token = tkz.GetNextToken();
 	token.ToLong( &year );
-    age.year = (int) year;
-    age.day = age.month = -1;
 	token = tkz.GetString();
 	token.Trim();  // Get rid of newline
 
@@ -171,7 +167,11 @@ void ccAgeDateToRange( wxString& line )
        	if( ret == false ) return;
         jdn2 = jdn1;
     }
-    ret = calSubAgeFromJdnRange( jdn1, jdn2, age, g_from );
+
+    ret = calAddToJdn( jdn1, -(year+1), CALENDAR_UNIT_Year, g_from );
+    jdn1++;
+    ret = calAddToJdn( jdn2, -year, CALENDAR_UNIT_Year, g_from );
+
 	adate = calStrFromJdnRange( jdn1, jdn2, g_to );
 	wxPrintf( 
 		wxT("%ld yrs on %s (%s) -> %ld - %ld -> %s (%s)\n"),
@@ -188,16 +188,12 @@ void ccAgeMonthsDateToRange( wxString& line )
   	wxStringTokenizer tkz;
     wxString token;
 	long jdn1, jdn2, month;
-    DMYDate age;
 	wxString adate;
 	bool ret;
 
     tkz.SetString( line );
     token = tkz.GetNextToken();
 	token.ToLong( &month );
-    age.year = (int) month / 12;
-    age.month = (int) month % 12;
-    age.day = -1;
 	token = tkz.GetString();
 	token.Trim();  // Get rid of newline
 
@@ -209,56 +205,15 @@ void ccAgeMonthsDateToRange( wxString& line )
        	if( ret == false ) return;
         jdn2 = jdn1;
     }
-    ret = calSubAgeFromJdnRange( jdn1, jdn2, age, g_from );
+
+    ret = calAddToJdn( jdn1, -(month+1), CALENDAR_UNIT_Month, g_from );
+    jdn1++;
+    ret = calAddToJdn( jdn2, -month, CALENDAR_UNIT_Month, g_from );
+
 	adate = calStrFromJdnRange( jdn1, jdn2, g_to );
 	wxPrintf( 
 		wxT("%ld mths on %s (%s) -> %ld - %ld -> %s (%s)\n"),
         month, token.c_str(), CalendarSchemeAbrev[g_from].c_str(),
-		jdn1, jdn2,
-		adate.c_str(), CalendarSchemeAbrev[g_to].c_str()
-	);
-}
-
-/*! Calculate a date range given an age in days months and years and a single date.
- */
-void ccAgeDMYDateToRange( wxString& line )
-{
-  	wxStringTokenizer tkz;
-    wxString token;
-	long jdn1, jdn2, day, month, year;
-    DMYDate age;
-	wxString adate;
-	bool ret;
-
-    tkz.SetString( line );
-    token = tkz.GetNextToken();
-	token.ToLong( &day );
-    age.day = (int) day;
-
-    token = tkz.GetNextToken();
-	token.ToLong( &month );
-    age.month = (int) month;
-
-    token = tkz.GetNextToken();
-    token.ToLong( &year );
-    age.year = (int) year;
-
-    token = tkz.GetString();
-	token.Trim();  // Get rid of newline
-
-    if( g_range == true ) {
-        ret = calStrToJdnRange( jdn1, jdn2, token, g_from );
-       	if( ret == false ) return;
-    } else {
-        ret = calStrToJdn( jdn1, token, g_from );
-       	if( ret == false ) return;
-        jdn2 = jdn1;
-    }
-    ret = calSubAgeFromJdnRange( jdn1, jdn2, age, g_from );
-	adate = calStrFromJdnRange( jdn1, jdn2, g_to );
-	wxPrintf( 
-		wxT("%ldd %ldm %ldy from %s (%s) -> %ld - %ld -> %s (%s)\n"),
-        day, month, year, token.c_str(), CalendarSchemeAbrev[g_from].c_str(),
 		jdn1, jdn2,
 		adate.c_str(), CalendarSchemeAbrev[g_to].c_str()
 	);
@@ -317,10 +272,6 @@ int ccEval()
 		}
 		if( token == wxT("am") ) {
 			ccAgeMonthsDateToRange( tkz.GetString() );
-			continue;
-		}
-		if( token == wxT("sub") ) {
-			ccAgeDMYDateToRange( tkz.GetString() );
 			continue;
 		}
 		if( token == wxT("range") )	{

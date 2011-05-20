@@ -83,7 +83,7 @@ void recDate::Clear()
     f_jdn         = 0;
     f_range       = 0;
     f_base_id     = 0;
-    f_base_unit   = CALENDAR_AGE_Unstated;
+    f_base_unit   = CALENDAR_UNIT_Unstated;
     f_base_style  = BASE_STYLE_Unstated;
     f_type        = FLG_NULL;
     f_descrip     = wxEmptyString;
@@ -160,7 +160,7 @@ bool recDate::Read()
     f_jdn         = result.GetInt( 0 );
     f_range       = result.GetInt( 1 );
     f_base_id     = GET_ID( result.GetInt64( 2 ) );
-    f_base_unit   = (CalendarAgeUnit) result.GetInt( 3 );
+    f_base_unit   = (CalendarUnit) result.GetInt( 3 );
     f_base_style  = (BaseStyle) result.GetInt( 4 );
     f_type        = (TypeFlag) result.GetInt( 5 );
     f_descrip     = result.GetAsString( 6 );
@@ -234,14 +234,53 @@ wxString recDate::GetStr( idt id )
 
 int recDate::GetYear( CalendarScheme scheme )
 {
+    long jdn, jdn1, jdn2;
     int year;
+    CalendarScheme sch = (scheme == CALENDAR_SCH_Unstated) ? f_display_sch : scheme;
+    sm_count = recDate_MAX_RECURSION_COUNT;
 
-    if( f_jdn == 0  ) {
+    GetJdn1Jdn2( jdn1, jdn2, sch );
+    jdn = ( jdn1 + jdn2 ) / 2;
+    if( jdn == 0  ) {
         return 0;
     }
-    if( scheme == CALENDAR_SCH_Unstated ) scheme = f_display_sch;
-    calYearFromJdn( year, f_jdn+(f_range/2), scheme );
+    calYearFromJdn( year, jdn, sch );
     return year;
+}
+
+void recDate::GetJdn1Jdn2( long& jdn1, long& jdn2, CalendarScheme scheme ) const
+{
+    --sm_count;
+    if( sm_count == 0 ) {
+        wxASSERT( false ); // This shoudn't happen.
+        jdn1 = jdn2 = 0;
+        return;
+    }
+    if( f_base_id == 0 ) {
+        jdn1 = f_jdn;
+        jdn2 = f_jdn + f_range;
+    } else {
+        recDate base( f_base_id );
+        long bjdn1, bjdn2;
+        base.GetJdn1Jdn2( bjdn1, bjdn2, scheme );
+        if( bjdn1 == 0 ) {
+            jdn1 = jdn2 = 0;
+            return;
+        }
+        if( f_base_unit == CALENDAR_UNIT_Day ) {
+            jdn1 = f_jdn + bjdn1;
+            jdn2 = f_jdn + bjdn2 + f_range;
+            return;
+        }
+        switch( f_base_style )
+        {
+        case BASE_STYLE_AgeRoundDown:
+            calAddToJdn( bjdn1, f_jdn + f_range, f_base_unit, scheme );
+            --bjdn1;
+            calAddToJdn( bjdn2, f_jdn, f_base_unit, scheme );
+            break;
+        }
+    }
 }
 
 // End of recDate.cpp file
