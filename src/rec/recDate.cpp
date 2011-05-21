@@ -199,12 +199,14 @@ bool recDate::SetDate( const wxString& str, CalendarScheme scheme )
 
 wxString recDate::GetJdnStr( CalendarScheme scheme ) const
 {
+    long jdn1, jdn2;
     if( scheme == CALENDAR_SCH_Unstated ) scheme = f_display_sch;
-    if( f_jdn == 0 )
+    GetJdn1Jdn2( jdn1, jdn2, scheme );
+    if( jdn1 == 0 )
     {
         return f_descrip;
     }
-    return calStrFromJdnRange( f_jdn, f_jdn + f_range, scheme );
+    return calStrFromJdnRange( jdn1, jdn2, scheme );
 }
 
 wxString recDate::GetJdnStr( idt id )
@@ -215,14 +217,9 @@ wxString recDate::GetJdnStr( idt id )
 
 wxString recDate::GetStr( CalendarScheme scheme ) const
 {
-    if( scheme == CALENDAR_SCH_Unstated ) scheme = f_display_sch;
-    if( f_jdn == 0 )
-    {
-        return f_descrip;
-    }
     return wxString::Format(
         s_prefFormat[f_type],
-        calStrFromJdnRange( f_jdn, f_jdn + f_range, scheme )
+        GetJdnStr( scheme )
     );
 }
 
