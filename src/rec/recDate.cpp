@@ -281,7 +281,7 @@ void recDate::GetJdn1Jdn2( long& jdn1, long& jdn2, unsigned& prefix, CalendarSch
             calAddToJdn( jdn2, -f_jdn, f_base_unit, scheme );
             break;
         }
-        prefix |= base.GetTypePrefix();
+        prefix |= GetTypePrefix();
     }
 }
 
