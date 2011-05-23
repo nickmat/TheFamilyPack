@@ -111,11 +111,11 @@ public:
     static wxString GetStr( idt id );
     int GetYear( CalendarScheme sch = CALENDAR_SCH_Unstated );
 
-    void GetJdn1Jdn2( long& jdn1, long& jdn2, CalendarScheme scheme ) const;
     unsigned GetTypePrefix() const {
         return f_type & ( FLG_AFTER | FLG_RANGE | FLG_BEFORE ); 
     }
-
+private:
+    void GetJdn1Jdn2( long& jdn1, long& jdn2, unsigned& prefix, CalendarScheme scheme ) const;
 };
 
 /*! The two entities are equal, ignoring the record id.

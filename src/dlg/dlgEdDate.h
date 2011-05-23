@@ -64,7 +64,9 @@ private:
 class dlgEditDateFromAge : public fbDlgEditDateFromAge
 {
 public:
-    dlgEditDateFromAge( wxWindow* parent, idt id = 0 );
+    static CalendarUnit unit[];
+
+    dlgEditDateFromAge( wxWindow* parent, idt id );
 
     recDate* GetDate() { return &m_date; }
 

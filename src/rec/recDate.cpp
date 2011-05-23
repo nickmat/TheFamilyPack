@@ -200,8 +200,10 @@ bool recDate::SetDate( const wxString& str, CalendarScheme scheme )
 wxString recDate::GetJdnStr( CalendarScheme scheme ) const
 {
     long jdn1, jdn2;
+    unsigned prefix;
     if( scheme == CALENDAR_SCH_Unstated ) scheme = f_display_sch;
-    GetJdn1Jdn2( jdn1, jdn2, scheme );
+    sm_count = recDate_MAX_RECURSION_COUNT;
+    GetJdn1Jdn2( jdn1, jdn2, prefix, scheme );
     if( jdn1 == 0 )
     {
         return f_descrip;
@@ -217,9 +219,19 @@ wxString recDate::GetJdnStr( idt id )
 
 wxString recDate::GetStr( CalendarScheme scheme ) const
 {
+    long jdn1, jdn2;
+    unsigned prefix;
+    if( scheme == CALENDAR_SCH_Unstated ) scheme = f_display_sch;
+    sm_count = recDate_MAX_RECURSION_COUNT;
+    GetJdn1Jdn2( jdn1, jdn2, prefix, scheme );
+    if( jdn1 == 0 )
+    {
+        return f_descrip;
+    }
+
     return wxString::Format(
-        s_prefFormat[f_type],
-        GetJdnStr( scheme )
+        s_prefFormat[prefix],
+        calStrFromJdnRange( jdn1, jdn2, scheme )
     );
 }
 
@@ -232,11 +244,12 @@ wxString recDate::GetStr( idt id )
 int recDate::GetYear( CalendarScheme scheme )
 {
     long jdn, jdn1, jdn2;
+    unsigned prefix;
     int year;
     CalendarScheme sch = (scheme == CALENDAR_SCH_Unstated) ? f_display_sch : scheme;
     sm_count = recDate_MAX_RECURSION_COUNT;
 
-    GetJdn1Jdn2( jdn1, jdn2, sch );
+    GetJdn1Jdn2( jdn1, jdn2, prefix, sch );
     jdn = ( jdn1 + jdn2 ) / 2;
     if( jdn == 0  ) {
         return 0;
@@ -245,7 +258,7 @@ int recDate::GetYear( CalendarScheme scheme )
     return year;
 }
 
-void recDate::GetJdn1Jdn2( long& jdn1, long& jdn2, CalendarScheme scheme ) const
+void recDate::GetJdn1Jdn2( long& jdn1, long& jdn2, unsigned& prefix, CalendarScheme scheme ) const
 {
     --sm_count;
     if( sm_count == 0 ) {
@@ -256,27 +269,19 @@ void recDate::GetJdn1Jdn2( long& jdn1, long& jdn2, CalendarScheme scheme ) const
     if( f_base_id == 0 ) {
         jdn1 = f_jdn;
         jdn2 = f_jdn + f_range;
+        prefix = GetTypePrefix();
     } else {
         recDate base( f_base_id );
-        long bjdn1, bjdn2;
-        base.GetJdn1Jdn2( bjdn1, bjdn2, scheme );
-        if( bjdn1 == 0 ) {
-            jdn1 = jdn2 = 0;
-            return;
-        }
-        if( f_base_unit == CALENDAR_UNIT_Day ) {
-            jdn1 = f_jdn + bjdn1;
-            jdn2 = f_jdn + bjdn2 + f_range;
-            return;
-        }
+        base.GetJdn1Jdn2( jdn1, jdn2, prefix, scheme );
         switch( f_base_style )
         {
         case BASE_STYLE_AgeRoundDown:
-            calAddToJdn( bjdn1, f_jdn + f_range, f_base_unit, scheme );
-            --bjdn1;
-            calAddToJdn( bjdn2, f_jdn, f_base_unit, scheme );
+            calAddToJdn( jdn1, -(f_jdn+f_range), f_base_unit, scheme );
+            jdn1++;
+            calAddToJdn( jdn2, -f_jdn, f_base_unit, scheme );
             break;
         }
+        prefix |= base.GetTypePrefix();
     }
 }
 
