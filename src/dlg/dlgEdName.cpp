@@ -93,7 +93,7 @@ bool dlgEditName::TransferDataFromWindow()
     m_name.f_style_id = m_styles[i].f_id;
     m_name.Save();
     int seq = 0;
-    for( size_t i = 0 ; m_parts.size() ; i++ ) {
+    for( size_t i = 0 ; i < m_parts.size() ; i++ ) {
         m_parts[i].f_sequence = ++seq;
         m_parts[i].Save();
     }
@@ -102,8 +102,6 @@ bool dlgEditName::TransferDataFromWindow()
 
 void dlgEditName::OnPartAddButton( wxCommandEvent& event )
 {
-//    wxMessageBox( wxT("OnNameAddButton Needs rewrite"), wxT("dlgEditName") );
-
     const wxString savepoint = "NameAddPart";
     dlgEditNamePart* dialog = new dlgEditNamePart( NULL );
     dialog->SetNameID( m_name.f_id );
@@ -121,119 +119,88 @@ void dlgEditName::OnPartAddButton( wxCommandEvent& event )
         recDb::Rollback( savepoint );
     }
     dialog->Destroy();
-
-#if 0
-    const wxString savepoint = "PerAddName";
-    dlgEditName* dialog = new dlgEditName( NULL );
-    dialog->SetPersona( m_persona.f_id );
-
-    recDb::Savepoint( savepoint );
-    if( dialog->ShowModal() == wxID_OK )
-    {
-        recDb::ReleaseSavepoint( savepoint );
-        recName* name = dialog->GetName();
-        int row = m_names.size();
-        m_listName->InsertItem( row, recNamePartType::GetTypeStr( name->f_type_id ) );
-        m_listName->SetItem( row, COL_Value, name->f_val );
-        m_names.push_back( *name );
-    } else {
-        recDb::Rollback( savepoint );
-    }
-    dialog->Destroy();
-#endif
 }
 
 void dlgEditName::OnPartEditButton( wxCommandEvent& event )
 {
-    wxMessageBox( wxT("OnNameAddButton Needs rewrite"), wxT("dlgEditName") );
-#if 0
-    long row = m_listName->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    long row = m_listParts->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
         wxMessageBox( _("No row selected"), _("Edit Name") );
         return;
     }
 
-    const wxString savepoint = "PerEdName";
-    dlgEditName* dialog = new dlgEditName( NULL, m_names[row].f_id );
+    const wxString savepoint = "NameEdPart";
+    dlgEditNamePart* dialog = new dlgEditNamePart( NULL );
+    dialog->SetNamePartID( m_parts[row].f_id );
 
     recDb::Savepoint( savepoint );
     if( dialog->ShowModal() == wxID_OK )
     {
         recDb::ReleaseSavepoint( savepoint );
-        recName* name = dialog->GetName();
-        m_listName->SetItem( row, COL_Type, recNameType::GetTypeStr( name->f_type_id ) );
-        m_listName->SetItem( row, COL_Value, name->f_val );
-        m_names[row] = *name;
+        recNamePart* np = dialog->GetNamePart();
+        m_listParts->SetItem( row, COL_Type, recNamePartType::GetTypeStr( np->f_type_id ) );
+        m_listParts->SetItem( row, COL_Value, np->f_val );
+        m_parts[row] = *np;
     } else {
         recDb::Rollback( savepoint );
     }
     dialog->Destroy();
-#endif
 }
 
 void dlgEditName::OnPartDeleteButton( wxCommandEvent& event )
 {
-    wxMessageBox( wxT("OnNameDeleteButton Needs rewrite"), wxT("dlgEditName") );
-#if 0
-    long row = m_listName->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    long row = m_listParts->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row >= 0 ) {
-        m_listName->DeleteItem( row );
-        m_names[row].Delete();
-        m_names.erase( m_names.begin() + row );
+        m_listParts->DeleteItem( row );
+        m_parts[row].Delete();
+        m_parts.erase( m_parts.begin() + row );
     } else {
         wxMessageBox( wxT("No row selected"), wxT("Delete Name") );
     }
-#endif
 }
 
 void dlgEditName::OnPartUpButton( wxCommandEvent& event )
 {
-    wxMessageBox( wxT("OnNameUpButton Needs rewrite"), wxT("dlgEditName") );
-#if 0
-    long row = m_listName->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    long row = m_listParts->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
-        wxMessageBox( wxT("Row not selected"), wxT("Name Up") );
+        wxMessageBox( wxT("Row not selected"), wxT("NamePart Up") );
         return;
     }
     if( row > 0 ) {
-        recName attr = m_names[row];
-        m_names[row] = m_names[row-1];
-        m_names[row-1] = attr;
+        recNamePart part = m_parts[row];
+        m_parts[row] = m_parts[row-1];
+        m_parts[row-1] = part;
 
-        m_listName->SetItem( row, COL_Type, recNameType::GetTypeStr( m_names[row].f_type_id ) );
-        m_listName->SetItem( row, COL_Value, m_names[row].f_val );
+        m_listParts->SetItem( row, COL_Type, recNamePartType::GetTypeStr( m_parts[row].f_type_id ) );
+        m_listParts->SetItem( row, COL_Value, m_parts[row].f_val );
         --row;
-        m_listName->SetItem( row, COL_Type, recNameType::GetTypeStr( m_names[row].f_type_id ) );
-        m_listName->SetItem( row, COL_Value, m_names[row].f_val );
+        m_listParts->SetItem( row, COL_Type, recNamePartType::GetTypeStr( m_parts[row].f_type_id ) );
+        m_listParts->SetItem( row, COL_Value, m_parts[row].f_val );
 
-        m_listName->SetItemState( row, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+        m_listParts->SetItemState( row, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
     }
-#endif
 }
 
 void dlgEditName::OnPartDownButton( wxCommandEvent& event )
 {
-    wxMessageBox( wxT("OnNameDownButton Needs rewrite"), wxT("dlgEditName") );
-#if 0
-    long row = m_listName->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    long row = m_listParts->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
-        wxMessageBox( wxT("Row not selected"), wxT("Name Up") );
+        wxMessageBox( wxT("Row not selected"), wxT("NamePart Down") );
         return;
     }
-    if( row < (long) m_listName->GetItemCount() - 1 ) {
-        recName name = m_names[row];
-        m_names[row] = m_names[row+1];
-        m_names[row+1] = name;
+    if( row < m_listParts->GetItemCount()-1 ) {
+        recNamePart part = m_parts[row];
+        m_parts[row] = m_parts[row+1];
+        m_parts[row+1] = part;
 
-        m_listName->SetItem( row, COL_Type, recNameType::GetTypeStr( m_names[row].f_type_id ) );
-        m_listName->SetItem( row, COL_Value, m_names[row].f_val );
+        m_listParts->SetItem( row, COL_Type, recNamePartType::GetTypeStr( m_parts[row].f_type_id ) );
+        m_listParts->SetItem( row, COL_Value, m_parts[row].f_val );
         row++;
-        m_listName->SetItem( row, COL_Type, recNameType::GetTypeStr( m_names[row].f_type_id ) );
-        m_listName->SetItem( row, COL_Value, m_names[row].f_val );
+        m_listParts->SetItem( row, COL_Type, recNamePartType::GetTypeStr( m_parts[row].f_type_id ) );
+        m_listParts->SetItem( row, COL_Value, m_parts[row].f_val );
 
-        m_listName->SetItemState( row, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+        m_listParts->SetItemState( row, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
     }
-#endif
 }
 
 

@@ -32,25 +32,24 @@
 
 #include <vector>
 
-#include <wx/vector.h>
 #include <rec/recReference.h>
 
 #include "fbDlg.h"
 
 struct TfpEntity {
     recReferenceEntity rec;
-    idt               owner;
+    idt                owner;
     int                index;  // Temporary index value, -1 if not used
 };
 
-typedef wxVector< TfpEntity >  TfpEntities;
+typedef std::vector< TfpEntity >  TfpEntities;
 
 extern int tfpGetEntityIndex( TfpEntities* array, int ind );
 
 struct TfpEntityString {
     wxString m_str;
     int      m_index;
-    idt     m_id;
+    idt      m_id;
 };
 
 typedef std::vector< TfpEntityString > TfpEntityStringVec;

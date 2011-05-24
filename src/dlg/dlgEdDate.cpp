@@ -195,9 +195,7 @@ void dlgEditDateFromAge::CalcDate()
     m_date.f_type = m_choiceType->GetSelection();
     m_date.f_record_sch = dlgEditDate::scheme[ m_choiceDisplay->GetSelection() ];
     wxString agestr = m_textCtrlAge->GetValue();
-    long age = 0;
-    agestr.ToLong( &age );
-    m_date.f_jdn = age;
+    agestr.ToLong( &m_date.f_jdn );
     m_date.f_base_unit = unit[ m_radioBoxUnits->GetSelection() ];
 }
 

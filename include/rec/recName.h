@@ -30,17 +30,17 @@
 #ifndef RECNAME_H
 #define RECNAME_H
 
-#include <wx/vector.h>
+#include <vector>
 #include <rec/recDatabase.h>
 
 class recName;
 class recNameStyle;
 class recNamePart;
 class recNamePartType;
-typedef wxVector< recName >  recNameVec;
-typedef wxVector< recNameStyle >  recNameStyleVec;
-typedef wxVector< recNamePart >  recNamePartVec;
-typedef wxVector< recNamePartType >  recNamePartTypeVec;
+typedef std::vector< recName >          recNameVec;
+typedef std::vector< recNameStyle >     recNameStyleVec;
+typedef std::vector< recNamePart >      recNamePartVec;
+typedef std::vector< recNamePartType >  recNamePartTypeVec;
 
 //----------------------------------------------------------
 
@@ -202,10 +202,10 @@ class recNameStyle : public recDb
 public:
     enum Style {
         NS_Default = 0,
-        NS_Birth  = -1,
+        NS_Birth   = -1,
         NS_Married = -2,
         NS_Alias   = -3,
-        NS_MAX    = 4
+        NS_MAX     = 4
     };
 
     wxString  f_name;

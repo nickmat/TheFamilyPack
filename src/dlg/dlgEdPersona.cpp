@@ -128,9 +128,6 @@ void dlgEditPersona::OnIndCreateButton( wxCommandEvent& event )
 
 void dlgEditPersona::OnNameAddButton( wxCommandEvent& event )
 {
-#if 0
-    wxMessageBox( wxT("OnNameAddButton Needs rewrite"), wxT("dlgEditPersona") );
-#endif
     const wxString savepoint = "PerAddName";
     dlgEditName* dialog = new dlgEditName( NULL );
     dialog->SetPersonaID( m_persona.f_id );
@@ -152,8 +149,6 @@ void dlgEditPersona::OnNameAddButton( wxCommandEvent& event )
 
 void dlgEditPersona::OnNameEditButton( wxCommandEvent& event )
 {
-    wxMessageBox( wxT("OnNameAddButton Needs rewrite"), wxT("dlgEditPersona") );
-#if 0
     long row = m_listName->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
         wxMessageBox( _("No row selected"), _("Edit Name") );
@@ -161,21 +156,21 @@ void dlgEditPersona::OnNameEditButton( wxCommandEvent& event )
     }
 
     const wxString savepoint = "PerEdName";
-    dlgEditName* dialog = new dlgEditName( NULL, m_names[row].f_id );
+    dlgEditName* dialog = new dlgEditName( NULL );
+    dialog->SetData( m_names[row].f_id );
 
     recDb::Savepoint( savepoint );
     if( dialog->ShowModal() == wxID_OK )
     {
         recDb::ReleaseSavepoint( savepoint );
         recName* name = dialog->GetName();
-        m_listName->SetItem( row, COL_Type, recNameType::GetTypeStr( name->f_type_id ) );
-        m_listName->SetItem( row, COL_Value, name->f_val );
+        m_listName->SetItem( row, COL_Type, recNameStyle::GetStyleStr( name->f_style_id ) );
+        m_listName->SetItem( row, COL_Value, name->GetFullName() );
         m_names[row] = *name;
     } else {
         recDb::Rollback( savepoint );
     }
     dialog->Destroy();
-#endif
 }
 
 void dlgEditPersona::OnNameDeleteButton( wxCommandEvent& event )
