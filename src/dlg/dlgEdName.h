@@ -47,8 +47,8 @@ public:
         m_haveName = true; m_nameStr = name;
     }
 
-    void SetID( idt nameID = 0 ) { m_name.f_id = nameID; }
-    void SetPersonaID( idt perID = 0 ) { m_name.f_per_id = perID; }
+    void SetID( idt nameID ) { m_name.f_id = nameID; }
+    void SetPersonaID( idt perID ) { m_name.f_per_id = perID; }
     void CreateName( const wxString name ) {
         m_haveName = true; m_nameStr = name;
     }

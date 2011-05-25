@@ -71,6 +71,7 @@ public:
     void AddNameParts( const wxString& nameStr ) const;
 //    void UpdateNameParts( wxString& nameStr );
 //    bool RemoveNameParts();
+    bool DeleteAll();
 
     bool FindPersona( idt perID, idt styleID = 0 );
     wxString GetNamePart( idt nptID );

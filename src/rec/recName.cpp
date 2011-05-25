@@ -134,6 +134,19 @@ void recName::AddNameParts( const wxString& nameStr ) const
     }
 }
 
+bool recName::DeleteAll()
+{
+    if( f_id == 0 ) {
+        return false;
+    }
+
+    wxSQLite3StatementBuffer sql;
+    sql.Format( "DELETE FROM NamePart WHERE name_id="ID";", f_id );
+    s_db->ExecuteUpdate( sql );
+
+    return Delete();
+}
+
 bool recName::FindPersona( idt perID, idt styleID )
 {
     wxSQLite3StatementBuffer sql;
