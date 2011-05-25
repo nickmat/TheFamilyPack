@@ -103,6 +103,11 @@ static const char* upgrade0_0_8_1 =
     ");\n"
 ;
 
+static const char* upgrade0_0_8_2 = 
+    "ALTER TABLE Attribute ADD COLUMN sequence INTEGER;\n"
+    "ALTER TABLE Name ADD COLUMN sequence INTEGER;\n"
+;
+
 wxSQLite3Database* recDb::s_db = NULL;
 
 wxString recGetSexStr( Sex sex )
@@ -151,7 +156,7 @@ static bool UpgradeRevision( recVersion& ver )
 static bool UpgradeTest( recVersion& ver ) 
 {
     // We can only deal with version 0,0,8,0
-    if( !ver.IsEqual( 0, 0, 8 ) || ver.IsMoreThan( 0, 0, 8, 1 ) ) {
+    if( !ver.IsEqual( 0, 0, 8 ) || ver.IsMoreThan( 0, 0, 8, 2 ) ) {
         wxMessageBox(
             wxString::Format( 
                 _("Cannot read database version %s file."),
@@ -176,6 +181,14 @@ static bool UpgradeTest( recVersion& ver )
             recDb::Begin();
             recDb::GetDb()->ExecuteUpdate( upgrade0_0_8_1 );
             ver.f_test = 2;
+            ver.Save();
+            recDb::Commit();
+        }
+        if( ver.f_test == 2 ) {
+            // Upgrade 0.0.8.2 to 0.0.8.3
+            recDb::Begin();
+            recDb::GetDb()->ExecuteUpdate( upgrade0_0_8_2 );
+            ver.f_test = 3;
             ver.Save();
             recDb::Commit();
         }

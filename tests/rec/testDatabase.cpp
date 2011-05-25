@@ -389,7 +389,7 @@ void RecTestCase::TestAttribute()
     attr1.f_per_id = 1;
     attr1.f_type_id = -2;
     attr1.f_val = "Matthews";
-//    attr1.f_sequence = 3;
+    attr1.f_sequence = 3;
     // f_id = 0 so create new record and set f_id to new value.
     attr1.Save();
     id = attr1.f_id;
@@ -403,7 +403,7 @@ void RecTestCase::TestAttribute()
     attr1.f_per_id = 2;
     attr1.f_type_id = -1;
     attr1.f_val = "Nick";
-//    attr1.f_sequence = 1;
+    attr1.f_sequence = 1;
     // f_id = 1 which exists, so amend record leaving f_id to old value.
     attr1.Save();
     CPPUNIT_ASSERT( attr1.f_id == id );

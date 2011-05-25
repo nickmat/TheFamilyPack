@@ -38,7 +38,8 @@ CREATE TABLE Attribute (
   id INTEGER PRIMARY KEY,
   per_id INTEGER,
   type_id INTEGER,
-  val TEXT
+  val TEXT,
+  sequence INTEGER
 );
 
 CREATE TABLE AttributeType (
@@ -252,7 +253,8 @@ CREATE TABLE IndividualPersona (
 CREATE TABLE Name (
   id INTEGER PRIMARY KEY,
   per_id INTEGER NOT NULL,
-  style_id INTEGER NOT NULL REFERENCES NameStyle(id)
+  style_id INTEGER NOT NULL REFERENCES NameStyle(id),
+  sequence INTEGER
 );
 
 CREATE TABLE NamePart (
@@ -376,7 +378,7 @@ CREATE TABLE Version (
 );
 
 /* The Version table has only this one row */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 8, 2);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 8, 3);
 
 COMMIT;
 

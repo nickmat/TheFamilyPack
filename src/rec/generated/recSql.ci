@@ -37,7 +37,8 @@ static const char* createdb =  /* recCreate.sql */
  "  id INTEGER PRIMARY KEY,\n"
  "  per_id INTEGER,\n"
  "  type_id INTEGER,\n"
- "  val TEXT\n"
+ "  val TEXT,\n"
+ "  sequence INTEGER\n"
  ");\n"
  "CREATE TABLE AttributeType (\n"
  "  id INTEGER PRIMARY KEY,\n"
@@ -218,7 +219,8 @@ static const char* createdb =  /* recCreate.sql */
  "CREATE TABLE Name (\n"
  "  id INTEGER PRIMARY KEY,\n"
  "  per_id INTEGER NOT NULL,\n"
- "  style_id INTEGER NOT NULL REFERENCES NameStyle(id)\n"
+ "  style_id INTEGER NOT NULL REFERENCES NameStyle(id),\n"
+ "  sequence INTEGER\n"
  ");\n"
  "CREATE TABLE NamePart (\n"
  "  id INTEGER PRIMARY KEY,\n"
@@ -320,7 +322,7 @@ static const char* createdb =  /* recCreate.sql */
  "  revision INTEGER,\n"
  "  test INTEGER\n"
  ");\n"
- "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 8, 2);\n"
+ "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 8, 3);\n"
  "COMMIT;\n";
 
 /* End of recSql.f2c */

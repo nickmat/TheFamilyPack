@@ -46,6 +46,7 @@ recName::recName( const recName& n )
     f_id       = n.f_id;
     f_per_id   = n.f_per_id;
     f_style_id = n.f_style_id;
+    f_sequence = n.f_sequence;
 }
 
 void recName::Clear()
@@ -53,6 +54,7 @@ void recName::Clear()
     f_id       = 0;
     f_per_id   = 0;
     f_style_id = 0;
+    f_sequence = 0;
 }
 
 void recName::Save()
@@ -64,9 +66,9 @@ void recName::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO Name (per_id, style_id)"
-            "VALUES ("ID", "ID");",
-            f_per_id, f_style_id
+            "INSERT INTO Name (per_id, style_id, sequence)"
+            "VALUES ("ID", "ID", %u);",
+            f_per_id, f_style_id, f_sequence
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -76,15 +78,15 @@ void recName::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO Name (id, per_id, style_id)"
-                "VALUES ("ID", "ID", "ID");",
-                f_id, f_per_id, f_style_id
+                "INSERT INTO Name (id, per_id, style_id, sequence)"
+                "VALUES ("ID", "ID", "ID", %u);",
+                f_id, f_per_id, f_style_id, f_sequence
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE Name SET per_id="ID", style_id="ID" WHERE id="ID";",
-                f_per_id, f_style_id, f_id
+                "UPDATE Name SET per_id="ID", style_id="ID", sequence=%u WHERE id="ID";",
+                f_per_id, f_style_id, f_sequence, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -102,7 +104,7 @@ bool recName::Read()
     }
 
     sql.Format(
-        "SELECT per_id, style_id "
+        "SELECT per_id, style_id, sequence "
         "FROM Name WHERE id="ID";",
         f_id
     );
@@ -116,6 +118,7 @@ bool recName::Read()
     result.SetRow( 0 );
     f_per_id   = GET_ID( result.GetInt64( 0 ) );
     f_style_id = GET_ID( result.GetInt64( 1 ) );
+    f_sequence = (unsigned) result.GetInt( 2 );
     return true;
 }
 
@@ -153,7 +156,8 @@ bool recName::FindPersona( idt perID, idt styleID )
     wxSQLite3Table result;
 
     sql.Format(
-        "SELECT id FROM Name WHERE per_id="ID" AND style_id="ID";",
+        "SELECT id FROM Name WHERE per_id="ID" AND style_id="ID" "
+        "ORDER BY sequence;",
         perID, styleID
     );
     result = s_db->GetTable( sql );

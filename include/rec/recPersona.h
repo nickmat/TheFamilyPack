@@ -44,7 +44,7 @@ typedef std::vector< recAttributeType >  recAttributeTypeVec;
 class recPersona : public recDb
 {
 public:
-    idt     f_name_id;
+    idt      f_name_id;
     Sex      f_sex;
     wxString f_note;
 
@@ -101,9 +101,10 @@ enum recStdAttrType  // These match the create.sql file
 class recAttribute : public recDb
 {
 public:
-    idt      f_per_id;
-    idt      f_type_id;
+    idt       f_per_id;
+    idt       f_type_id;
     wxString  f_val;
+    unsigned  f_sequence;
 
     recAttribute() {}
     recAttribute( idt id ) : recDb(id) { Read(); }
@@ -129,7 +130,8 @@ inline bool recEquivalent( const recAttribute& r1, const recAttribute& r2 )
     return
         r1.f_per_id   == r2.f_per_id   &&
         r1.f_type_id  == r2.f_type_id  &&
-        r1.f_val      == r2.f_val;
+        r1.f_val      == r2.f_val      &&
+        r1.f_sequence == r2.f_sequence;
 }
 
 inline bool operator==( const recAttribute& r1, const recAttribute& r2 )

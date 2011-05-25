@@ -184,8 +184,8 @@ recAttributeList recPersona::ReadAttributes( idt perID )
     }
 
     sql.Format(
-        "SELECT id, type_id, val FROM Attribute "
-        "WHERE per_id="ID";", perID
+        "SELECT id, type_id, val, sequence FROM Attribute "
+        "WHERE per_id="ID" ORDER BY sequence;", perID
     );
     result = s_db->GetTable( sql );
 
@@ -194,9 +194,10 @@ recAttributeList recPersona::ReadAttributes( idt perID )
     for( int i = 0 ; i < result.GetRowCount() ; i++ )
     {
         result.SetRow( i );
-        record.f_id = GET_ID( result.GetInt64( 0 ) );
-        record.f_type_id = GET_ID( result.GetInt64( 1 ) );
-        record.f_val = result.GetAsString( 2 );
+        record.f_id       = GET_ID( result.GetInt64( 0 ) );
+        record.f_type_id  = GET_ID( result.GetInt64( 1 ) );
+        record.f_val      = result.GetAsString( 2 );
+        record.f_sequence = (unsigned) result.GetInt( 3 );
         list.push_back( record );
     }
     return list;
@@ -215,8 +216,8 @@ recNameVec recPersona::ReadNames( idt perID )
     }
 
     sql.Format(
-        "SELECT id, style_id FROM Name WHERE per_id="ID" "
-        "ORDER BY style_id;",
+        "SELECT id, style_id, sequence FROM Name WHERE per_id="ID" "
+        "ORDER BY sequence;",
         perID
     );
     result = s_db->GetTable( sql );
@@ -226,8 +227,9 @@ recNameVec recPersona::ReadNames( idt perID )
     for( int i = 0 ; i < result.GetRowCount() ; i++ )
     {
         result.SetRow( i );
-        name.f_id = GET_ID( result.GetInt64( 0 ) );
-        name.f_style_id = GET_ID( result.GetInt64( 1 ) );
+        name.f_id         = GET_ID( result.GetInt64( 0 ) );
+        name.f_style_id   = GET_ID( result.GetInt64( 1 ) );
+        name.f_sequence = (unsigned) result.GetInt( 2 );
         list.push_back( name );
     }
     return list;
@@ -265,6 +267,7 @@ recAttribute::recAttribute( const recAttribute& attr )
     f_per_id   = attr.f_per_id;
     f_type_id  = attr.f_type_id;
     f_val      = attr.f_val;
+    f_sequence = attr.f_sequence;
 }
 
 void recAttribute::Clear()
@@ -273,6 +276,7 @@ void recAttribute::Clear()
     f_per_id   = 0;
     f_type_id  = 0;
     f_val      = wxEmptyString;
+    f_sequence = 0;
 }
 
 void recAttribute::Save()
@@ -284,9 +288,9 @@ void recAttribute::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO Attribute (per_id, type_id, val)"
-            "VALUES ("ID", "ID", '%q');",
-            f_per_id, f_type_id, UTF8_(f_val)
+            "INSERT INTO Attribute (per_id, type_id, val, sequence)"
+            "VALUES ("ID", "ID", '%q', %u);",
+            f_per_id, f_type_id, UTF8_(f_val), f_sequence
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -296,15 +300,15 @@ void recAttribute::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO Attribute (id, per_id, type_id, val)"
-                "VALUES ("ID", "ID", "ID", '%q');",
-                f_id, f_per_id, f_type_id, UTF8_(f_val)
+                "INSERT INTO Attribute (id, per_id, type_id, val, sequence)"
+                "VALUES ("ID", "ID", "ID", '%q', %u);",
+                f_id, f_per_id, f_type_id, UTF8_(f_val), f_sequence
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE Attribute SET per_id="ID", type_id="ID", val='%q' WHERE id="ID";",
-                f_per_id, f_type_id, UTF8_(f_val), f_id
+                "UPDATE Attribute SET per_id="ID", type_id="ID", val='%q', sequence=%u WHERE id="ID";",
+                f_per_id, f_type_id, UTF8_(f_val), f_sequence, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -321,7 +325,7 @@ bool recAttribute::Read()
         return false;
     }
 
-    sql.Format( "SELECT * FROM Attribute WHERE id="ID";", f_id );
+    sql.Format( "SELECT per_id, type_id, val, sequence FROM Attribute WHERE id="ID";", f_id );
     result = s_db->GetTable( sql );
 
     if( result.GetRowCount() != 1 )
@@ -330,9 +334,10 @@ bool recAttribute::Read()
         return false;
     }
     result.SetRow( 0 );
-    f_per_id   = GET_ID( result.GetInt64( 1 ) );
-    f_type_id  = GET_ID( result.GetInt64( 2 ) );
-    f_val      = result.GetAsString( 3 );
+    f_per_id   = GET_ID( result.GetInt64( 0 ) );
+    f_type_id  = GET_ID( result.GetInt64( 1 ) );
+    f_val      = result.GetAsString( 2 );
+    f_sequence = (unsigned) result.GetInt( 3 );
     return true;
 }
 

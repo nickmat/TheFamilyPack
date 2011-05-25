@@ -56,8 +56,9 @@ enum recStdNameType  // These match the create.sql file
 class recName : public recDb
 {
 public:
-    idt      f_per_id;
-    idt      f_style_id;
+    idt       f_per_id;
+    idt       f_style_id;
+    unsigned  f_sequence;
 
     recName() {}
     recName( idt id ) : recDb(id) { Read(); }
@@ -92,7 +93,8 @@ inline bool recEquivalent( const recName& r1, const recName& r2 )
 {
     return
         r1.f_per_id   == r2.f_per_id   &&
-        r1.f_style_id == r2.f_style_id;
+        r1.f_style_id == r2.f_style_id &&
+        r1.f_sequence == r2.f_sequence;
 }
 
 inline bool operator==( const recName& r1, const recName& r2 )
@@ -110,8 +112,8 @@ inline bool operator!=( const recName& r1, const recName& r2 )
 class recNamePart : public recDb
 {
 public:
-    idt      f_name_id;
-    idt      f_type_id;
+    idt       f_name_id;
+    idt       f_type_id;
     wxString  f_val;
     unsigned  f_sequence;
 
