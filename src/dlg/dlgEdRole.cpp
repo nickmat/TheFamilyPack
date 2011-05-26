@@ -82,7 +82,7 @@ bool dlgEditRole::TransferDataToWindow()
 
     m_staticTextEvent->SetLabel( m_event.f_title );
     if( m_pe.f_per_id != 0 ) {
-        m_textCtrlPersona->SetValue( recPersona::GetFullName( m_pe.f_per_id ) );
+        m_textCtrlPersona->SetValue( recPersona::GetNameStr( m_pe.f_per_id ) );
     }
     if( m_pe.f_role_id != 0 ) {
         m_textCtrlRole->SetValue( recEventTypeRole::GetName( m_pe.f_role_id ) );
@@ -109,7 +109,7 @@ void dlgEditRole::OnPersonaButton( wxCommandEvent& event )
             if( (*m_entities)[i].rec.f_entity_type == recReferenceEntity::TYPE_Persona ) {
                 pmenu->Append(
                     ID_PERSONA_MENU_START + m,
-                    recPersona::GetFullName( (*m_entities)[i].rec.f_entity_id )
+                    recPersona::GetNameStr( (*m_entities)[i].rec.f_entity_id )
                 );
                 (*m_entities)[i].index = m;
                 m++;
@@ -132,7 +132,7 @@ void dlgEditRole::OnPersonaSelect( wxCommandEvent& event )
     } else {
         int entry = tfpGetEntityIndex( m_entities, i );
         idt perID = (*m_entities)[entry].rec.f_entity_id;
-        m_textCtrlPersona->SetValue( recPersona::GetFullName( perID ) );
+        m_textCtrlPersona->SetValue( recPersona::GetNameStr( perID ) );
         m_pe.f_per_id = perID;
     }
 }

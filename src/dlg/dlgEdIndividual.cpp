@@ -89,11 +89,11 @@ bool dlgEditIndividual::TransferDataToWindow()
         m_persona.Read();
         m_name.FindPersona( m_persona.f_id );
     }
-    wxString name = m_name.GetNamePart( NAME_TYPE_Surname ); //recPersona::GetSurname( m_individual.f_per_id );
+    wxString name = m_name.GetSurname();
     if( name != wxEmptyString ) {
         m_surname = name;
     }
-    m_given = m_name.GetNamePart( NAME_TYPE_Given_name ); //recPersona::GetGivenName( m_individual.f_per_id );
+    m_given = m_name.GetNamePartStr( NAME_TYPE_Given_name );
     if( m_individual.f_sex == SEX_Unstated ) {
         m_individual.f_sex = m_sex;
     }

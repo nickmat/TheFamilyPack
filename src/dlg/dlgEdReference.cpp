@@ -108,13 +108,13 @@ bool dlgEditReference::TransferDataToWindow()
             m_listEntities->SetItem( i, COL_Value, recDate::GetStr( entID ) );
             break;
         case recReferenceEntity::TYPE_Name:
-            m_listEntities->SetItem( i, COL_Value, recName::GetFullName( entID ) );
+            m_listEntities->SetItem( i, COL_Value, recName::GetNameStr( entID ) );
             break;
         case recReferenceEntity::TYPE_Place:
             m_listEntities->SetItem( i, COL_Value, recPlace::GetAddressStr( entID ) );
             break;
         case recReferenceEntity::TYPE_Persona:
-            m_listEntities->SetItem( i, COL_Value, recPersona::GetFullName( entID ) );
+            m_listEntities->SetItem( i, COL_Value, recPersona::GetNameStr( entID ) );
             break;
         case recReferenceEntity::TYPE_Attribute:
             {
@@ -278,7 +278,7 @@ void dlgEditReference::OnNewPersona( wxCommandEvent& event )
     name.f_per_id = persona.f_id;
     name.Save();
     name.AddNameParts( nameStr );
-    persona.f_name_id = name.f_id;
+//    persona.f_name_id = name.f_id;
     persona.Save();
 
     dlgEditPersona* dialog = new dlgEditPersona( NULL );
@@ -298,7 +298,7 @@ void dlgEditReference::OnNewPersona( wxCommandEvent& event )
         m_entities.push_back( entity );
 
         m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
-        m_listEntities->SetItem( row, COL_Value, dialog->GetPersona()->GetFullName() );
+        m_listEntities->SetItem( row, COL_Value, dialog->GetPersona()->GetNameStr() );
 #if 0
 //    dialog->SetData();
 //    dialog->SetDefault( m_textCtrlStatement->GetStringSelection() );
@@ -439,7 +439,7 @@ void dlgEditReference::OnNewName( wxCommandEvent& event )
         m_entities.push_back( entity );
 
         m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
-        m_listEntities->SetItem( row, COL_Value, dialog->GetName()->GetFullName() );
+        m_listEntities->SetItem( row, COL_Value, dialog->GetName()->GetNameStr() );
     } else {
         // Dialog Cancelled
         recDb::Rollback( savepoint );
@@ -513,7 +513,7 @@ void dlgEditReference::DoEditPersona( idt id, long row )
     if( dialog->ShowModal() == wxID_OK )
     {
         recDb::ReleaseSavepoint( savepoint );
-        m_listEntities->SetItem( row, COL_Value, dialog->GetPersona()->GetFullName() );
+        m_listEntities->SetItem( row, COL_Value, dialog->GetPersona()->GetNameStr() );
 #if 0
         // remove the attributes
         while( i < m_entities.size() )  {
@@ -599,7 +599,7 @@ void dlgEditReference::DoEditName( idt id, long row )
     if( dialog->ShowModal() == wxID_OK )
     {
         recDb::ReleaseSavepoint( savepoint );
-        m_listEntities->SetItem( row, COL_Value, dialog->GetName()->GetFullName() );
+        m_listEntities->SetItem( row, COL_Value, dialog->GetName()->GetNameStr() );
     } else {
         recDb::Rollback( savepoint );
     }
@@ -634,7 +634,7 @@ void dlgEditReference::OnDeleteButton( wxCommandEvent& event )
         break;
     case recReferenceEntity::TYPE_Persona:
         {
-            recAttributeList arrAttr = recPersona::ReadAttributes( entID );
+            recAttributeVec arrAttr = recPersona::ReadAttributes( entID );
             for( size_t i = 0 ; i < arrAttr.size() ; i++ ) {
                 arrAttr[i].Delete();
             }
@@ -725,7 +725,7 @@ void dlgEditReference::InsertListItem( long row, const TfpEntity& ent )
         str = recDate::GetStr( ent.rec.f_entity_id );
         break;
     case recReferenceEntity::TYPE_Persona:
-        str = recPersona::GetFullName( ent.rec.f_entity_id );
+        str = recPersona::GetNameStr( ent.rec.f_entity_id );
         break;
     case recReferenceEntity::TYPE_Attribute:
         str = recAttribute::GetValue( ent.rec.f_entity_id );
@@ -748,7 +748,7 @@ idt dlgEditReference::SelectPersona()
             idt id = m_entities[i].rec.f_entity_id;
             list.push_back( id );
             table.Add( wxString::Format( "Pa"ID, id ) );
-            table.Add( recPersona::GetFullName( id ) );
+            table.Add( recPersona::GetNameStr( id ) );
         }
     }
     if( list.size() == 0 ) {
@@ -780,7 +780,7 @@ idt dlgEditReference::SelectName()
             idt id = m_entities[i].rec.f_entity_id;
             names.push_back( id );
             table.Add( wxString::Format( "N"ID, id ) );
-            table.Add( recName::GetFullName( id ) );
+            table.Add( recName::GetNameStr( id ) );
         }
     }
     if( names.size() == 0 ) {

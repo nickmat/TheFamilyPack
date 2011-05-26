@@ -150,6 +150,54 @@ bool recName::DeleteAll()
     return Delete();
 }
 
+wxString recName::GetNameStr( idt id )
+{
+    if( id == 0 ) return wxEmptyString;
+
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT val FROM NamePart "
+        "WHERE name_id="ID" "
+        "ORDER BY sequence;",
+        id
+    );
+    wxSQLite3Table result = s_db->GetTable( sql );
+
+    wxString str;
+    for( int i = 0 ; i < result.GetRowCount() ; i++ ) {
+        result.SetRow( i );
+        if( i > 0 ) {
+            str << " ";
+        }
+        str << result.GetAsString( 0 );
+    }
+    return str;
+}
+
+wxString recName::GetNamePartStr( idt nameID, idt partID )
+{
+    if( nameID == 0 ) return wxEmptyString;
+
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT val FROM NamePart "
+        "WHERE name_id="ID" AND type_id="ID" "
+        "ORDER BY sequence;",
+        nameID, partID
+    );
+    wxSQLite3Table result = s_db->GetTable( sql );
+
+    wxString str;
+    for( int i = 0 ; i < result.GetRowCount() ; i++ ) {
+        result.SetRow( i );
+        if( i > 0 ) {
+            str << " ";
+        }
+        str << result.GetAsString( 0 );
+    }
+    return str;
+}
+
 bool recName::FindPersona( idt perID, idt styleID )
 {
     wxSQLite3StatementBuffer sql;
@@ -169,86 +217,8 @@ bool recName::FindPersona( idt perID, idt styleID )
     }
     result.SetRow( 0 );
     f_id   = GET_ID( result.GetInt64( 0 ) );
-    f_per_id = perID;
-    f_style_id = styleID;
+    Read();
     return true;
-}
-
-wxString recName::GetNamePart( idt nptID )
-{
-    if( f_id == 0 ) return wxEmptyString;
-
-    wxSQLite3StatementBuffer sql;
-    sql.Format(
-        "SELECT val FROM NamePart "
-        "WHERE name_id="ID" AND type_id="ID" "
-        "ORDER BY sequence;",
-        f_id, nptID
-    );
-    wxSQLite3Table result = s_db->GetTable( sql );
-
-    wxString str;
-    for( int i = 0 ; i < result.GetRowCount() ; i++ ) {
-        result.SetRow( i );
-        if( i > 0 ) {
-            str << " ";
-        }
-        str << result.GetAsString( 0 );
-    }
-    return str;
-}
-
-wxString recName::GetSurname( idt id )
-{
-    wxString str;
-    wxSQLite3StatementBuffer sql;
-
-    sql.Format(
-        "SELECT val FROM NamePart WHERE name_id="ID" AND type_id=-2 "
-        "ORDER BY sequence;",
-        id
-    );
-    wxSQLite3Table result = s_db->GetTable( sql );
-
-    if( result.GetRowCount() > 0 )
-    {
-        for( int row = 0 ; row < result.GetRowCount() ; row++ )
-        {
-            if( row > 0 )
-            {
-                str << " ";
-            }
-            result.SetRow( row );
-            str << result.GetAsString( 0 );
-        }
-    }
-    return str;
-}
-
-wxString recName::GetGivenName( idt id )
-{
-    wxString str;
-    wxSQLite3StatementBuffer sql;
-
-    sql.Format(
-        "SELECT val FROM NamePart WHERE name_id="ID" AND (type_id=-1 OR type_id=-3) "
-        "ORDER BY sequence;", id
-    );
-    wxSQLite3Table result = s_db->GetTable( sql );
-
-    if( result.GetRowCount() > 0 )
-    {
-        for( int row = 0 ; row < result.GetRowCount() ; row++ )
-        {
-            if( row > 0 )
-            {
-                str << " ";
-            }
-            result.SetRow( row );
-            str << result.GetAsString( 0 );
-        }
-    }
-    return str;
 }
 
 recNamePartVec recName::GetParts( idt nameID )
@@ -281,43 +251,6 @@ recNamePartVec recName::GetParts( idt nameID )
     }
     return list;
 }
-
-#if 0
-wxString recName::GetValue( idt id )
-{
-    if( id == 0 ) return wxEmptyString;
-
-    wxSQLite3StatementBuffer sql;
-    sql.Format( "SELECT val FROM Name WHERE id="ID";", id );
-    wxSQLite3Table result = s_db->GetTable( sql );
-
-    if( result.GetRowCount() == 0 )
-    {
-        return wxEmptyString;
-    }
-    return result.GetAsString( 0 );
-}
-
-/*! Takes a space delimited list from str and converts it to a list of
- *  of Attributes in sequencial order of given type.
- */
-recNameList recName::ConvertStrToList(
-    const wxString& str, idt type )
-{
-    recNameList list;
-    recName name;
-    name.Clear();
-    name.f_type_id = type;
-
-    wxStringTokenizer tk( str );
-    while( tk.HasMoreTokens() ) {
-        name.f_val = tk.GetNextToken();
-        ++name.f_sequence;
-        list.push_back( name );
-    }
-    return list;
-}
-#endif
 
 
 //----------------------------------------------------------

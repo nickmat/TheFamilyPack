@@ -290,7 +290,6 @@ INSERT INTO NameStyle (id, name) VALUES(-3,'Alias');
 
 CREATE TABLE Persona (
   id INTEGER PRIMARY KEY,
-  name_id INTEGER,
   sex INTEGER,
   note TEXT
 );
@@ -378,7 +377,7 @@ CREATE TABLE Version (
 );
 
 /* The Version table has only this one row */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 8, 3);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 8, 4);
 
 COMMIT;
 

@@ -248,7 +248,6 @@ static const char* createdb =  /* recCreate.sql */
  "INSERT INTO NameStyle (id, name) VALUES(-3,'Alias');\n"
  "CREATE TABLE Persona (\n"
  "  id INTEGER PRIMARY KEY,\n"
- "  name_id INTEGER,\n"
  "  sex INTEGER,\n"
  "  note TEXT\n"
  ");\n"
@@ -322,7 +321,7 @@ static const char* createdb =  /* recCreate.sql */
  "  revision INTEGER,\n"
  "  test INTEGER\n"
  ");\n"
- "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 8, 3);\n"
+ "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 8, 4);\n"
  "COMMIT;\n";
 
 /* End of recSql.f2c */

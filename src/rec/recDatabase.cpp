@@ -108,6 +108,22 @@ static const char* upgrade0_0_8_2 =
     "ALTER TABLE Name ADD COLUMN sequence INTEGER;\n"
 ;
 
+static const char* upgrade0_0_8_3 = 
+    "BEGIN;\n"
+    "ALTER TABLE Persona RENAME TO OldPersona;\n"
+    "CREATE TABLE Persona (\n"
+    "  id INTEGER PRIMARY KEY,\n"
+    "  sex INTEGER,\n"
+    "  note TEXT\n"
+    ");\n"
+    "INSERT INTO Persona"
+    " (id, sex, note)"
+    " SELECT id, sex, note FROM OldPersona;\n"
+    "DROP TABLE OldPersona;\n"
+    "UPDATE Version SET major=0, minor=0, revision=8, test=4 WHERE id=1;\n"
+    "COMMIT;\n"
+;
+
 wxSQLite3Database* recDb::s_db = NULL;
 
 wxString recGetSexStr( Sex sex )
@@ -156,7 +172,7 @@ static bool UpgradeRevision( recVersion& ver )
 static bool UpgradeTest( recVersion& ver ) 
 {
     // We can only deal with version 0,0,8,0
-    if( !ver.IsEqual( 0, 0, 8 ) || ver.IsMoreThan( 0, 0, 8, 2 ) ) {
+    if( !ver.IsEqual( 0, 0, 8 ) || ver.IsMoreThan( 0, 0, 8, 3 ) ) {
         wxMessageBox(
             wxString::Format( 
                 _("Cannot read database version %s file."),
@@ -191,6 +207,11 @@ static bool UpgradeTest( recVersion& ver )
             ver.f_test = 3;
             ver.Save();
             recDb::Commit();
+        }
+        if( ver.f_test == 3 ) {
+            // Upgrade 0.0.8.3 to 0.0.8.4
+            recDb::GetDb()->ExecuteUpdate( upgrade0_0_8_3 );
+            ver.Read();
         }
     }
     catch( wxSQLite3Exception& e ) {

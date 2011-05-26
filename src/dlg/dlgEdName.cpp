@@ -64,7 +64,7 @@ bool dlgEditName::TransferDataToWindow()
     } else {
         m_name.Read();
     }
-    m_staticName->SetLabel( m_name.GetFullName() );
+    m_staticName->SetLabel( m_name.GetNameStr() );
 
     wxString nID( "N" );
     nID << m_name.f_id;

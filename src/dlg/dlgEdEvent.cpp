@@ -93,7 +93,7 @@ bool dlgEditEvent::TransferDataToWindow()
 
     m_pes = m_event.GetEventPersonas();
     for( size_t i = 0 ; i < m_pes.size() ; i++ ) {
-        m_listPersona->InsertItem( i, recPersona::GetFullName( m_pes[i].f_per_id ) );
+        m_listPersona->InsertItem( i, recPersona::GetNameStr( m_pes[i].f_per_id ) );
         m_listPersona->SetItem( i, COL_Role, recEventTypeRole::GetName( m_pes[i].f_role_id ) );
         m_listPersona->SetItem( i, COL_Note, m_pes[i].f_note );
     }
@@ -249,7 +249,7 @@ void dlgEditEvent::OnAddButton( wxCommandEvent& event )
         recDb::ReleaseSavepoint( savepoint );
         recEventPersona* pe = dialog->GetEventPersona();
         int row = m_pes.size();
-        m_listPersona->InsertItem( row, recPersona::GetFullName( pe->f_per_id ) );
+        m_listPersona->InsertItem( row, recPersona::GetNameStr( pe->f_per_id ) );
         m_listPersona->SetItem( row, COL_Role, recEventTypeRole::GetName( pe->f_role_id ) );
         m_listPersona->SetItem( row, COL_Note, pe->f_note );
         m_pes.push_back( *pe );

@@ -70,20 +70,18 @@ public:
     TABLE_NAME_MEMBERS( "Name" );
 
     void AddNameParts( const wxString& nameStr ) const;
-//    void UpdateNameParts( wxString& nameStr );
-//    bool RemoveNameParts();
     bool DeleteAll();
 
-    bool FindPersona( idt perID, idt styleID = 0 );
-    wxString GetNamePart( idt nptID );
-//    static wxString GetValue( idt id );
-//  static recNameList ConvertStrToList( const wxString& str, idt type = NAME_TYPE_Given_name );
+    static wxString GetNameStr( idt id );
+    wxString GetNameStr() const { return GetNameStr( f_id ); }
+    static wxString GetNamePartStr( idt nameID, idt partID );
+    wxString GetNamePartStr( idt partID ) const
+        { return GetNamePartStr( f_id, partID ); }
+    static wxString GetSurname( idt id ) 
+        { return GetNamePartStr( id, NAME_TYPE_Surname ); }
+    wxString GetSurname() const { return GetNamePartStr( NAME_TYPE_Surname ); }
 
-    static wxString GetSurname( idt id );
-    static wxString GetGivenName( idt id );
-    static wxString GetFullName( idt id )
-        { return GetGivenName( id ) + " " + GetSurname( id ); }
-    wxString GetFullName() const { return GetFullName( f_id ); }
+    bool FindPersona( idt perID, idt styleID = 0 );
 
     static recNamePartVec GetParts( idt nameID );
     recNamePartVec GetParts() const { return GetParts( f_id ); }

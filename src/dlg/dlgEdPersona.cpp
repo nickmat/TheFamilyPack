@@ -68,7 +68,7 @@ bool dlgEditPersona::TransferDataToWindow()
     } else {
         m_persona.Read();
     }
-    m_nameStr = recName::GetFullName( m_persona.f_name_id );
+    m_nameStr = m_persona.GetNameStr();
     m_staticPerName->SetLabel( m_nameStr );
 
     m_choiceSex->SetSelection( (int) m_persona.f_sex );
@@ -80,7 +80,7 @@ bool dlgEditPersona::TransferDataToWindow()
     m_names = m_persona.ReadNames();
     for( size_t i = 0 ; i < m_names.size() ; i++ ) {
         m_listName->InsertItem( i, recNameStyle::GetStyleStr( m_names[i].f_style_id ) );
-        m_listName->SetItem( i, COL_Value, m_names[i].GetFullName() );
+        m_listName->SetItem( i, COL_Value, m_names[i].GetNameStr() );
     }
 
     m_attributes = m_persona.ReadAttributes();
@@ -139,7 +139,7 @@ void dlgEditPersona::OnNameAddButton( wxCommandEvent& event )
         recName* name = dialog->GetName();
         int row = m_names.size();
         m_listName->InsertItem( row, recNameStyle::GetStyleStr( name->f_style_id ) );
-        m_listName->SetItem( row, COL_Value, name->GetFullName() );
+        m_listName->SetItem( row, COL_Value, name->GetNameStr() );
         m_names.push_back( *name );
     } else {
         recDb::Rollback( savepoint );
@@ -165,7 +165,7 @@ void dlgEditPersona::OnNameEditButton( wxCommandEvent& event )
         recDb::ReleaseSavepoint( savepoint );
         recName* name = dialog->GetName();
         m_listName->SetItem( row, COL_Type, recNameStyle::GetStyleStr( name->f_style_id ) );
-        m_listName->SetItem( row, COL_Value, name->GetFullName() );
+        m_listName->SetItem( row, COL_Value, name->GetNameStr() );
         m_names[row] = *name;
     } else {
         recDb::Rollback( savepoint );
@@ -198,10 +198,10 @@ void dlgEditPersona::OnNameUpButton( wxCommandEvent& event )
         m_names[row-1] = attr;
 
         m_listName->SetItem( row, COL_Type, recNameStyle::GetStyleStr( m_names[row].f_style_id ) );
-        m_listName->SetItem( row, COL_Value, m_names[row].GetFullName() );
+        m_listName->SetItem( row, COL_Value, m_names[row].GetNameStr() );
         --row;
         m_listName->SetItem( row, COL_Type, recNameStyle::GetStyleStr( m_names[row].f_style_id ) );
-        m_listName->SetItem( row, COL_Value, m_names[row].GetFullName() );
+        m_listName->SetItem( row, COL_Value, m_names[row].GetNameStr() );
 
         m_listName->SetItemState( row, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
     }
@@ -220,10 +220,10 @@ void dlgEditPersona::OnNameDownButton( wxCommandEvent& event )
         m_names[row+1] = name;
 
         m_listName->SetItem( row, COL_Type, recNameStyle::GetStyleStr( m_names[row].f_style_id ) );
-        m_listName->SetItem( row, COL_Value, m_names[row].GetFullName() );
+        m_listName->SetItem( row, COL_Value, m_names[row].GetNameStr() );
         row++;
         m_listName->SetItem( row, COL_Type, recNameStyle::GetStyleStr( m_names[row].f_style_id ) );
-        m_listName->SetItem( row, COL_Value, m_names[row].GetFullName() );
+        m_listName->SetItem( row, COL_Value, m_names[row].GetNameStr() );
 
         m_listName->SetItemState( row, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
     }

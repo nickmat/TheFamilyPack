@@ -43,7 +43,6 @@
 recPersona::recPersona( const recPersona& p )
 {
     f_id      = p.f_id;
-    f_name_id = p.f_name_id;
     f_sex     = p.f_sex;
     f_note    = p.f_note;
 }
@@ -51,7 +50,6 @@ recPersona::recPersona( const recPersona& p )
 void recPersona::Clear()
 {
     f_id      = 0;
-    f_name_id = 0;
     f_sex     = SEX_Unstated;
     f_note    = wxEmptyString;
 }
@@ -65,8 +63,8 @@ void recPersona::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO Persona (name_id, sex, note) VALUES ("ID", %u, '%q');",
-            f_name_id, f_sex, UTF8_(f_note)
+            "INSERT INTO Persona (sex, note) VALUES (%u, '%q');",
+            f_sex, UTF8_(f_note)
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -76,15 +74,15 @@ void recPersona::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO Persona (id, name_id, sex, note) "
-                "VALUES ("ID", "ID", %u, '%q');",
-                f_id, f_name_id, f_sex, UTF8_(f_note)
+                "INSERT INTO Persona (id, sex, note) "
+                "VALUES ("ID", %u, '%q');",
+                f_id, f_sex, UTF8_(f_note)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE Persona SET name_id="ID", sex=%u, note='%q' WHERE id="ID";",
-                f_name_id, f_sex, UTF8_(f_note), f_id
+                "UPDATE Persona SET sex=%u, note='%q' WHERE id="ID";",
+                f_sex, UTF8_(f_note), f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -101,7 +99,7 @@ bool recPersona::Read()
         return false;
     }
 
-    sql.Format( "SELECT name_id, sex, note FROM Persona WHERE id="ID";", f_id );
+    sql.Format( "SELECT sex, note FROM Persona WHERE id="ID";", f_id );
     result = s_db->GetTable( sql );
 
     if( result.GetRowCount() != 1 )
@@ -110,71 +108,30 @@ bool recPersona::Read()
         return false;
     }
     result.SetRow( 0 );
-    f_name_id = GET_ID( result.GetInt64( 0 ) );
-    f_sex  = (Sex) result.GetInt( 1 );
-    f_note = result.GetAsString( 2 );
+    f_sex  = (Sex) result.GetInt( 0 );
+    f_note = result.GetAsString( 1 );
     return true;
 }
 
-wxString recPersona::GetSurname( idt id )
+idt recPersona::GetDefaultNameID( idt id )
 {
     wxString str;
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "SELECT val FROM NamePart "
-        "WHERE name_id=(SELECT name_id FROM Persona WHERE id="ID") AND type_id=-2 "
-        "ORDER BY sequence;",
+        "SELECT id FROM Name WHERE per_id="ID" ORDER BY sequence;",
         id
     );
     wxSQLite3Table result = s_db->GetTable( sql );
-
-    if( result.GetRowCount() > 0 )
-    {
-        for( int row = 0 ; row < result.GetRowCount() ; row++ )
-        {
-            if( row > 0 )
-            {
-                str << " ";
-            }
-            result.SetRow( row );
-            str << result.GetAsString( 0 );
-        }
+    if( result.GetRowCount() > 0 ) {
+        return GET_ID( result.GetInt64( 0 ) );
     }
-    return str;
+    return 0;
 }
 
-wxString recPersona::GetGivenName( idt id )
+recAttributeVec recPersona::ReadAttributes( idt perID )
 {
-    wxString str;
-    wxSQLite3StatementBuffer sql;
-
-    sql.Format(
-        "SELECT val FROM NamePart "
-        "WHERE name_id=(SELECT name_id FROM Persona WHERE id="ID") "
-        "AND (type_id=-1 OR type_id=-3) "
-        "ORDER BY sequence;", id
-    );
-    wxSQLite3Table result = s_db->GetTable( sql );
-
-    if( result.GetRowCount() > 0 )
-    {
-        for( int row = 0 ; row < result.GetRowCount() ; row++ )
-        {
-            if( row > 0 )
-            {
-                str << " ";
-            }
-            result.SetRow( row );
-            str << result.GetAsString( 0 );
-        }
-    }
-    return str;
-}
-
-recAttributeList recPersona::ReadAttributes( idt perID )
-{
-    recAttributeList list;
+    recAttributeVec list;
     recAttribute record;
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -202,7 +159,6 @@ recAttributeList recPersona::ReadAttributes( idt perID )
     }
     return list;
 }
-
 
 recNameVec recPersona::ReadNames( idt perID )
 {

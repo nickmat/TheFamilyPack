@@ -90,7 +90,7 @@ wxString tfpWriteReferencePage( idt refID )
         for( size_t i = 0 ; i < re.size() ; i++ ) {
             if( re[i].f_entity_type == recReferenceEntity::TYPE_Persona ) {
                 idt perID = re[i].f_entity_id;
-                htm << recPersona::GetFullName( perID );
+                htm << recPersona::GetNameStr( perID );
                 indIDs = recPersona::GetIndividualIDs( perID );
                 for( size_t j = 0 ; j < indIDs.size() ; j++ ) {
                     htm << " <a href=I" << indIDs[j]

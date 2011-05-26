@@ -37,14 +37,13 @@
 class recPersona;
 class recAttribute;
 class recAttributeType;
-typedef std::vector< recPersona >  recPersonaList;
-typedef std::vector< recAttribute >  recAttributeList;
+typedef std::vector< recPersona >        recPersonaVec;
+typedef std::vector< recAttribute >      recAttributeVec;
 typedef std::vector< recAttributeType >  recAttributeTypeVec;
 
 class recPersona : public recDb
 {
 public:
-    idt      f_name_id;
     Sex      f_sex;
     wxString f_note;
 
@@ -57,13 +56,14 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "Persona" );
 
-    static wxString GetSurname( idt id );
-    static wxString GetGivenName( idt id );
-    static wxString GetFullName( idt id )
-        { return GetGivenName( id ) + " " + GetSurname( id ); }
-    wxString GetFullName() const { return GetFullName( f_id ); }
-    static recAttributeList ReadAttributes( idt perID );
-    recAttributeList ReadAttributes() const { return ReadAttributes( f_id ); }
+    static idt GetDefaultNameID( idt id );
+    idt GetDefaultNameID() const { return GetDefaultNameID( f_id ); }
+    static wxString GetNameStr( idt id ) 
+        { return recName::GetNameStr( GetDefaultNameID( id ) ); }
+    wxString GetNameStr() const { return GetNameStr( f_id ); }
+
+    static recAttributeVec ReadAttributes( idt perID );
+    recAttributeVec ReadAttributes() const { return ReadAttributes( f_id ); }
     static recNameVec ReadNames( idt perID );
     recNameVec ReadNames() const { return ReadNames( f_id ); }
 
@@ -74,7 +74,6 @@ public:
 inline bool recEquivalent( const recPersona& r1, const recPersona& r2 )
 {
     return
-        r1.f_name_id == r2.f_name_id &&
         r1.f_sex     == r2.f_sex     &&
         r1.f_note    == r2.f_note;
 }
@@ -121,8 +120,6 @@ public:
     static idt FindReferenceID( idt eventID ) {
         return recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Attribute, eventID );
     }
-
-//  static recAttributeList ConvertStrToList( const wxString& str, idt type );
 };
 
 inline bool recEquivalent( const recAttribute& r1, const recAttribute& r2 )
