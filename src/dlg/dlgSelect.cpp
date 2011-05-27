@@ -46,7 +46,7 @@ dlgSelect::dlgSelect( wxWindow* parent, wxString* headers, long width )
 {
     m_width = width;
     for( long i = 0 ; i < width ; i++ ) {
-        m_listCtrl->InsertColumn( 0, headers[i] );
+        m_listCtrl->InsertColumn( i, headers[i] );
     }
     m_count = 0;
 }
@@ -89,15 +89,51 @@ idt dlgSelect::GetSelectedID()
 }
 
 //-------------------------------------------------------------------------------
-//-------------------[ dlgSelectPersona ]-------------------------------------------
+//-------------------[ dlgSelectPersona ]----------------------------------------
 //-------------------------------------------------------------------------------
 
 wxString dlgSelectPersona::sm_colHeaders[COL_MAX] = { _("ID"), _("Name") };
 
-dlgSelectPersona::dlgSelectPersona( wxWindow* parent )
+dlgSelectPersona::dlgSelectPersona( wxWindow* parent, const wxString& title )
     : dlgSelect( parent, sm_colHeaders, COL_MAX )
 {
-    SetTitle( _("Select Persona") );
+    if( title == wxEmptyString ) {
+        SetTitle( _("Select Persona") );
+    } else {
+        SetTitle( title );
+    }
+}
+
+//-------------------------------------------------------------------------------
+//-------------------[ dlgSelectDate ]-------------------------------------------
+//-------------------------------------------------------------------------------
+
+wxString dlgSelectDate::sm_colHeaders[COL_MAX] = { _("ID"), _("Date") };
+
+dlgSelectDate::dlgSelectDate( wxWindow* parent, const wxString& title )
+    : dlgSelect( parent, sm_colHeaders, COL_MAX )
+{
+    if( title == wxEmptyString ) {
+        SetTitle( _("Select Date") );
+    } else {
+        SetTitle( title );
+    }
+}
+
+//-------------------------------------------------------------------------------
+//-------------------[ dlgSelectPlace ]-------------------------------------------
+//-------------------------------------------------------------------------------
+
+wxString dlgSelectPlace::sm_colHeaders[COL_MAX] = { _("ID"), _("Place") };
+
+dlgSelectPlace::dlgSelectPlace( wxWindow* parent, const wxString& title )
+    : dlgSelect( parent, sm_colHeaders, COL_MAX )
+{
+    if( title == wxEmptyString ) {
+        SetTitle( _("Select Place") );
+    } else {
+        SetTitle( title );
+    }
 }
 
 //-------------------------------------------------------------------------------

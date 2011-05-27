@@ -59,7 +59,7 @@ private:
 //-------------------------------------------------------------------------------
 //-------------------[ dlgSelectPersona ]-------------------------------------------
 //-------------------------------------------------------------------------------
-#
+
 class dlgSelectPersona : public dlgSelect
 {
     enum {
@@ -67,7 +67,35 @@ class dlgSelectPersona : public dlgSelect
     };
     static wxString sm_colHeaders[COL_MAX];
 public:
-    dlgSelectPersona( wxWindow* parent );
+    dlgSelectPersona( wxWindow* parent, const wxString& title = wxEmptyString );
+};
+
+//-------------------------------------------------------------------------------
+//-------------------[ dlgSelectDate ]-------------------------------------------
+//-------------------------------------------------------------------------------
+
+class dlgSelectDate : public dlgSelect
+{
+    enum {
+        COL_ID, COL_Date, COL_MAX
+    };
+    static wxString sm_colHeaders[COL_MAX];
+public:
+    dlgSelectDate( wxWindow* parent, const wxString& title = wxEmptyString );
+};
+
+//-------------------------------------------------------------------------------
+//-------------------[ dlgSelectPlace ]-------------------------------------------
+//-------------------------------------------------------------------------------
+
+class dlgSelectPlace : public dlgSelect
+{
+    enum {
+        COL_ID, COL_Place, COL_MAX
+    };
+    static wxString sm_colHeaders[COL_MAX];
+public:
+    dlgSelectPlace( wxWindow* parent, const wxString& title = wxEmptyString );
 };
 
 //-------------------------------------------------------------------------------
@@ -86,5 +114,7 @@ public:
 
 //    bool CreateRefNameTable( idt refID );
 };
+
+
 
 #endif // DLGSELECT_H

@@ -48,11 +48,11 @@ class recEvent : public recDb
 {
 public:
     wxString f_title;
-    idt     f_type_id;
+    idt      f_type_id;
     long     f_sort_jdn;
-    idt     f_date1_id;
-    idt     f_date2_id;
-    idt     f_place_id;
+    idt      f_date1_id;
+    idt      f_date2_id;
+    idt      f_place_id;
     wxString f_note;
 
     recEvent() {}
@@ -147,6 +147,7 @@ public:
     TABLE_NAME_MEMBERS( "EventType" );
 
     static wxString GetTypeStr( idt id );
+    wxString GetTypeStr() const { return GetTypeStr( f_id ); }
 
     static recEventTypeVec ReadAll();
     static idt Select();

@@ -98,6 +98,20 @@ bool dlgEditPersona::TransferDataFromWindow()
     m_persona.f_note = m_textCtrlNote->GetValue();
     m_persona.Save();
 
+    for( size_t i = 0 ; i < m_names.size() ; i++ ) {
+        if( m_names[i].f_sequence != i+1 ) {
+            m_names[i].f_sequence = i+1;
+            m_names[i].Save();
+        }
+    }
+
+    for( size_t i = 0 ; i < m_attributes.size() ; i++ ) {
+        if( m_attributes[i].f_sequence != i+1 ) {
+            m_attributes[i].f_sequence = i+1;
+            m_attributes[i].Save();
+        }
+    }
+
     return true;
 }
 

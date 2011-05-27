@@ -344,17 +344,99 @@ void dlgEditReference::OnNewPersona( wxCommandEvent& event )
 void dlgEditReference::OnNewEvent( wxCommandEvent& cmnd_event )
 {
     const wxString savepoint = "RefEvent";
-    idt type = recEventType::Select();
-    if( type == 0 ) return;
+    idt typeID = recEventType::Select();
+    if( typeID == 0 ) return;
+
+    bool enddate = false;
+    bool person2 = false;
+    recEventTypeRole::Role role1 = recEventTypeRole::ROLE_Unstated;
+    recEventTypeRole::Role role2 = recEventTypeRole::ROLE_Unstated;
+    recEventType etype( typeID );
+
+    switch( etype.f_grp )
+    {
+    case recEventType::ETYPE_Grp_Birth:
+        role1 = recEventTypeRole::ROLE_Birth_Born;
+        break;
+    case recEventType::ETYPE_Grp_Nr_Birth:
+        break;
+    case recEventType::ETYPE_Grp_Death:
+        role1 = recEventTypeRole::ROLE_Death_Died;
+        break;
+    case recEventType::ETYPE_Grp_Nr_Death:
+        break;
+    case recEventType::ETYPE_Grp_Union:
+        person2 = true;
+        role1 = recEventTypeRole::ROLE_Marriage_Groom;
+        role2 = recEventTypeRole::ROLE_Marriage_Bride;
+        break;
+    case recEventType::ETYPE_Grp_Family:
+        person2 = true;
+        break;
+    default:
+        enddate = true;
+    }
+
+    idt dateID1 = SelectDate();
+    if( dateID1 == 0 ) return;
+    idt dateID2 = 0;
+    if( enddate ) {
+        dateID2 = SelectDate();
+        if( dateID2 == 0 ) return;
+    }
+
+    idt placeID = SelectPlace();
+    if( placeID == 0 ) return;
+
+    wxString title;
+    idt perID1 = SelectPersona();
+    if( perID1 == 0 ) return;
+    idt perID2 = 0;
+    if( person2 ) {
+        perID2 = SelectPersona();
+        if( perID2 == 0 ) return;
+        title = wxString::Format(
+            _("%s of %s and %s"),
+            etype.GetTypeStr(),
+            recPersona::GetNameStr( perID1 ),
+            recPersona::GetNameStr( perID2 )
+        );
+    } else {
+        title = wxString::Format(
+            _("%s of %s"),
+            etype.GetTypeStr(),
+            recPersona::GetNameStr( perID1 )
+        );
+    }
 
     dlgEditEvent* dialog = new dlgEditEvent( NULL );
 
-    dialog->SetData( type );
-    dialog->GetEvent()->f_title = m_textCtrlStatement->GetStringSelection();
+//    dialog->SetData( typeID );
+//    dialog->GetEvent()->f_title = title;
     dialog->SetEntities( &m_entities );
     dialog->SetDateStrings( GetDateEntityStringVec() );
 
     recDb::Savepoint( savepoint );
+    recEvent e(0);
+    e.f_title = title;
+    e.f_type_id = typeID;
+    e.f_date1_id = dateID1;
+    e.f_date2_id = dateID2;
+    e.f_place_id = placeID;
+    e.Save();
+    dialog->SetData( typeID, e.f_id );
+    recEventPersona ep1(0);
+    ep1.f_event_id = e.f_id;
+    ep1.f_per_id = perID1;
+    ep1.f_role_id = role1;
+    ep1.Save();
+    if( person2 ) {
+        recEventPersona ep2(0);
+        ep2.f_event_id = e.f_id;
+        ep2.f_per_id = perID2;
+        ep2.f_role_id = role2;
+        ep2.Save();
+    }
     if( dialog->ShowModal() == wxID_OK )
     {
         recDb::ReleaseSavepoint( savepoint );
@@ -768,6 +850,70 @@ idt dlgEditReference::SelectPersona()
 
     dialog->Destroy();
     return perID;
+}
+
+idt dlgEditReference::SelectDate()
+{
+    idt dateID = 0;
+    recIdVec list;
+    wxArrayString table;
+    for( size_t i = 0 ; i < m_entities.size() ; i++ ) {
+        if( m_entities[i].rec.f_entity_type == recReferenceEntity::TYPE_Date ) {
+            idt id = m_entities[i].rec.f_entity_id;
+            list.push_back( id );
+            table.Add( wxString::Format( "Da"ID, id ) );
+            table.Add( recDate::GetStr( id ) );
+        }
+    }
+    if( list.size() == 0 ) {
+        return 0;
+    }
+    if( list.size() == 1 ) {
+        return list[0];
+    }
+
+    dlgSelectDate* dialog = new dlgSelectDate( NULL );
+    dialog->SetTable( table );
+
+    if( dialog->ShowModal() == wxID_OK ) {
+        long row = dialog->GetSelectedRow();
+        dateID = list[row];
+    }
+
+    dialog->Destroy();
+    return dateID;
+}
+
+idt dlgEditReference::SelectPlace()
+{
+    idt placeID = 0;
+    recIdVec list;
+    wxArrayString table;
+    for( size_t i = 0 ; i < m_entities.size() ; i++ ) {
+        if( m_entities[i].rec.f_entity_type == recReferenceEntity::TYPE_Place ) {
+            idt id = m_entities[i].rec.f_entity_id;
+            list.push_back( id );
+            table.Add( wxString::Format( "P"ID, id ) );
+            table.Add( recPlace::GetAddressStr( id ) );
+        }
+    }
+    if( list.size() == 0 ) {
+        return 0;
+    }
+    if( list.size() == 1 ) {
+        return list[0];
+    }
+
+    dlgSelectPlace* dialog = new dlgSelectPlace( NULL );
+    dialog->SetTable( table );
+
+    if( dialog->ShowModal() == wxID_OK ) {
+        long row = dialog->GetSelectedRow();
+        placeID = list[row];
+    }
+
+    dialog->Destroy();
+    return placeID;
 }
 
 idt dlgEditReference::SelectName()
