@@ -1569,6 +1569,9 @@ fbDlgSelect::fbDlgSelect( wxWindow* parent, wxWindowID id, const wxString& title
 	wxBoxSizer* bSizer3;
 	bSizer3 = new wxBoxSizer( wxHORIZONTAL );
 	
+	m_buttonCreate = new wxButton( this, wxID_ANY, _("Create"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer3->Add( m_buttonCreate, 0, wxALL, 5 );
+	
 	
 	bSizer3->Add( 0, 0, 1, wxEXPAND, 5 );
 	
@@ -1585,12 +1588,14 @@ fbDlgSelect::fbDlgSelect( wxWindow* parent, wxWindowID id, const wxString& title
 	
 	// Connect Events
 	this->Connect( wxEVT_IDLE, wxIdleEventHandler( fbDlgSelect::OnIdle ) );
+	m_buttonCreate->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgSelect::OnCreateButton ), NULL, this );
 }
 
 fbDlgSelect::~fbDlgSelect()
 {
 	// Disconnect Events
 	this->Disconnect( wxEVT_IDLE, wxIdleEventHandler( fbDlgSelect::OnIdle ) );
+	m_buttonCreate->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgSelect::OnCreateButton ), NULL, this );
 	
 }
 

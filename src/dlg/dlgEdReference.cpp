@@ -411,8 +411,6 @@ void dlgEditReference::OnNewEvent( wxCommandEvent& cmnd_event )
 
     dlgEditEvent* dialog = new dlgEditEvent( NULL );
 
-//    dialog->SetData( typeID );
-//    dialog->GetEvent()->f_title = title;
     dialog->SetEntities( &m_entities );
     dialog->SetDateStrings( GetDateEntityStringVec() );
 
@@ -496,7 +494,7 @@ void dlgEditReference::OnNewAttribute( wxCommandEvent& event )
 
 void dlgEditReference::OnNewName( wxCommandEvent& event )
 {
-    idt perID = SelectPersona();
+    idt perID = SelectCreatePersona();
     if( perID == 0 ) {
         return;
     }
@@ -846,6 +844,37 @@ idt dlgEditReference::SelectPersona()
     if( dialog->ShowModal() == wxID_OK ) {
         long row = dialog->GetSelectedRow();
         perID = list[row];
+    }
+
+    dialog->Destroy();
+    return perID;
+}
+
+idt dlgEditReference::SelectCreatePersona()
+{
+    idt perID = 0;
+    recIdVec list;
+    wxArrayString table;
+    for( size_t i = 0 ; i < m_entities.size() ; i++ ) {
+        if( m_entities[i].rec.f_entity_type == recReferenceEntity::TYPE_Persona ) {
+            idt id = m_entities[i].rec.f_entity_id;
+            list.push_back( id );
+            table.Add( wxString::Format( "Pa"ID, id ) );
+            table.Add( recPersona::GetNameStr( id ) );
+        }
+    }
+
+    dlgSelectCreatePersona* dialog = new dlgSelectCreatePersona( NULL );
+    dialog->SetTable( table );
+    dialog->SetCreateButton();
+
+    if( dialog->ShowModal() == wxID_OK ) {
+        if( dialog->GetCreatePressed() == true ) {
+            perID = dialog->GetPersonaID();
+        } else {
+            long row = dialog->GetSelectedRow();
+            perID = list[row];
+        }
     }
 
     dialog->Destroy();

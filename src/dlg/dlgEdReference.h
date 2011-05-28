@@ -113,6 +113,7 @@ private:
     void InsertListItem( long row, const TfpEntity& ent );
 
     idt SelectPersona();
+    idt SelectCreatePersona();
     idt SelectDate();
     idt SelectPlace();
     idt SelectName();

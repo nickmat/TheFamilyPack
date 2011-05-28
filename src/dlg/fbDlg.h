@@ -634,12 +634,14 @@ class fbDlgSelect : public wxDialog
 	protected:
 		dlgStrTableCtrl* m_listCtrl;
 		wxStaticLine* m_staticline;
+		wxButton* m_buttonCreate;
 		
 		wxButton* m_buttonSelect;
 		wxButton* m_buttonCancel;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnIdle( wxIdleEvent& event ) { event.Skip(); }
+		virtual void OnCreateButton( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:

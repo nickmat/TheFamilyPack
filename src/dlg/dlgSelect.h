@@ -42,22 +42,28 @@ public:
     dlgSelect( wxWindow* parent, wxString* headers, long width );
 
     void SetTable( wxArrayString table );
+    void SetCreateButton( bool on = true );
     // Returns the 1st column of the selected row converted to an ID.
     virtual idt GetSelectedID();
     virtual long GetSelectedRow();
+    size_t GetCount() const { return m_count; }
+    bool GetCreatePressed() const { return m_create; }
 
 protected:
     // For fbDlgSelect to enable select button.
     void OnIdle( wxIdleEvent& event );
+    void OnCreateButton( wxCommandEvent& event );
+    void SetCreatePressed( bool on = true ) { m_create = on; }
 
 private:
     wxArrayString  m_table;
     size_t         m_width;
     size_t         m_count;
+    bool           m_create;
 };
 
 //-------------------------------------------------------------------------------
-//-------------------[ dlgSelectPersona ]-------------------------------------------
+//-------------------[ dlgSelectPersona ]----------------------------------------
 //-------------------------------------------------------------------------------
 
 class dlgSelectPersona : public dlgSelect
@@ -68,6 +74,30 @@ class dlgSelectPersona : public dlgSelect
     static wxString sm_colHeaders[COL_MAX];
 public:
     dlgSelectPersona( wxWindow* parent, const wxString& title = wxEmptyString );
+};
+
+//-------------------------------------------------------------------------------
+//-------------------[ dlgSelectCreatePersona ]----------------------------------
+//-------------------------------------------------------------------------------
+
+class dlgSelectCreatePersona : public dlgSelectPersona
+{
+    DECLARE_EVENT_TABLE()
+public:
+    dlgSelectCreatePersona( 
+        wxWindow* parent, const wxString& title = wxEmptyString );
+
+    idt GetPersonaID() const { return m_personaID; }
+protected:
+    enum {
+        ID_SELCREATPER_MALE = 1200,
+        ID_SELCREATPER_FEMALE,
+        ID_SELCREATPER_UNKNOWN
+    };
+    void OnCreateButton( wxCommandEvent& event );
+    void OnCreatePersona( wxCommandEvent& event );
+private:
+    idt  m_personaID;
 };
 
 //-------------------------------------------------------------------------------

@@ -38,6 +38,7 @@
 #endif
 
 #include "rec/recIndividual.h"
+#include "rec/recPersona.h"
 #include "dlgSelect.h"
 #include "dlgRecTableCtrl.h"
 
@@ -49,6 +50,8 @@ dlgSelect::dlgSelect( wxWindow* parent, wxString* headers, long width )
         m_listCtrl->InsertColumn( i, headers[i] );
     }
     m_count = 0;
+    m_buttonCreate->Hide();
+    m_create = false;
 }
 
 void dlgSelect::OnIdle( wxIdleEvent& event )
@@ -60,6 +63,13 @@ void dlgSelect::OnIdle( wxIdleEvent& event )
     }
 }
 
+void dlgSelect::OnCreateButton( wxCommandEvent& event )
+{
+    m_create = true;
+    EndDialog( wxID_OK );
+}
+
+
 void dlgSelect::SetTable( wxArrayString table )
 {
     m_table = table;
@@ -67,6 +77,15 @@ void dlgSelect::SetTable( wxArrayString table )
 
     m_listCtrl->SetTable( &m_table, m_width );
     m_listCtrl->SetItemCount( m_count );
+}
+
+void dlgSelect::SetCreateButton( bool on )
+{
+    if( on ) {
+        m_buttonCreate->Show();
+    } else {
+        m_buttonCreate->Hide();
+    }
 }
 
 long dlgSelect::GetSelectedRow()
@@ -102,6 +121,53 @@ dlgSelectPersona::dlgSelectPersona( wxWindow* parent, const wxString& title )
     } else {
         SetTitle( title );
     }
+}
+
+//-------------------------------------------------------------------------------
+//-------------------[ dlgSelectCreatePersona ]----------------------------------
+//-------------------------------------------------------------------------------
+
+BEGIN_EVENT_TABLE( dlgSelectCreatePersona, wxDialog )
+    EVT_MENU_RANGE( ID_SELCREATPER_MALE, ID_SELCREATPER_UNKNOWN, dlgSelectCreatePersona::OnCreatePersona )
+END_EVENT_TABLE()
+
+dlgSelectCreatePersona::dlgSelectCreatePersona( 
+    wxWindow* parent, const wxString& title )
+    : dlgSelectPersona( parent, title )
+{
+    m_buttonCreate->Show();
+}
+
+void dlgSelectCreatePersona::OnCreateButton( wxCommandEvent& event )
+{
+    wxMenu* menu = new wxMenu;
+    menu->Append( ID_SELCREATPER_MALE, _("Create &Male Persona") );
+    menu->Append( ID_SELCREATPER_FEMALE, _("Create &Female Persona") );
+    menu->Append( ID_SELCREATPER_UNKNOWN, _("Create &Unknown Persona") );
+    PopupMenu( menu );
+    delete menu;
+}
+
+void dlgSelectCreatePersona::OnCreatePersona( wxCommandEvent& event )
+{
+    recPersona per(0);
+    switch( event.GetId() )
+    {
+    case ID_SELCREATPER_MALE:
+        per.f_sex = SEX_Male;
+        break;
+    case ID_SELCREATPER_FEMALE:
+        per.f_sex = SEX_Female;
+        break;
+    case ID_SELCREATPER_UNKNOWN:
+        per.f_sex = SEX_Unknown;
+        break;
+    }
+    per.Save();
+
+    m_personaID = per.f_id;
+    SetCreatePressed();
+    EndDialog( wxID_OK );
 }
 
 //-------------------------------------------------------------------------------
