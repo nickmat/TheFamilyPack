@@ -291,6 +291,7 @@ INSERT INTO NameStyle (id, name) VALUES(-3,'Alias');
 CREATE TABLE Persona (
   id INTEGER PRIMARY KEY,
   sex INTEGER,
+  ref_id INTEGER,
   note TEXT
 );
 
@@ -328,6 +329,13 @@ CREATE TABLE ReferenceEntity (
   entity_type INTEGER,
   entity_id INTEGER,
   sequence INTEGER
+);
+
+CREATE TABLE Relationship (
+  id INTEGER PRIMARY KEY,
+  per1_id INTEGER NOT NULL REFERENCES Persona(id),
+  per2_id INTEGER NOT NULL REFERENCES Persona(id),
+  descrip TEXT NOT NULL
 );
 
 CREATE TABLE Repository (
@@ -377,7 +385,7 @@ CREATE TABLE Version (
 );
 
 /* The Version table has only this one row */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 8, 4);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 0);
 
 COMMIT;
 

@@ -40,6 +40,7 @@
 #include <rec/recPersona.h>
 
 #include "dlgEdRole.h"
+#include "dlgEd.h"
 
 #define ID_PERSONA_MENU_START 30000
 #define ID_ROLE_MENU_START    31000
@@ -47,7 +48,6 @@
 IMPLEMENT_CLASS( dlgEditRole, wxDialog )
 
 BEGIN_EVENT_TABLE( dlgEditRole, wxDialog )
-    EVT_MENU_RANGE( ID_PERSONA_MENU_START, ID_PERSONA_MENU_START+100, dlgEditRole::OnPersonaSelect )
     EVT_MENU_RANGE( ID_ROLE_MENU_START, ID_ROLE_MENU_START+100, dlgEditRole::OnRoleSelect )
 END_EVENT_TABLE()
 
@@ -57,7 +57,6 @@ dlgEditRole::dlgEditRole( wxWindow* parent, idt eventID, idt id )
 {
     m_event.f_id = eventID;
     m_pe.f_id = id;
-    m_entities = NULL;
 }
 
 bool dlgEditRole::TransferDataToWindow()
@@ -101,37 +100,9 @@ bool dlgEditRole::TransferDataFromWindow()
 
 void dlgEditRole::OnPersonaButton( wxCommandEvent& event )
 {
-    wxMenu* pmenu = new wxMenu;
-    pmenu->Append( ID_PERSONA_MENU_START, _("Create new") );
-    if( m_entities != NULL ) {
-        size_t m = 1;
-        for( size_t i = 0 ; i < m_entities->size() ; i++ ) {
-            if( (*m_entities)[i].rec.f_entity_type == recReferenceEntity::TYPE_Persona ) {
-                pmenu->Append(
-                    ID_PERSONA_MENU_START + m,
-                    recPersona::GetNameStr( (*m_entities)[i].rec.f_entity_id )
-                );
-                (*m_entities)[i].index = m;
-                m++;
-            } else {
-                (*m_entities)[i].index = -1;
-            }
-        }
-    }
-    PopupMenu( pmenu );
-    delete pmenu;
-}
-
-void dlgEditRole::OnPersonaSelect( wxCommandEvent& event )
-{
-    size_t i = event.GetId() - ID_PERSONA_MENU_START;
-
-    if( i == 0 )
-    {
-        m_textCtrlPersona->SetValue( _("TODO: Get New Persona") );
-    } else {
-        int entry = tfpGetEntityIndex( m_entities, i );
-        idt perID = (*m_entities)[entry].rec.f_entity_id;
+    idt perID;
+    unsigned style = TFP_SELECT_STYLE_CREATE;
+    if( tfpSelectPersona( &perID, style, m_refID ) ) {
         m_textCtrlPersona->SetValue( recPersona::GetNameStr( perID ) );
         m_pe.f_per_id = perID;
     }

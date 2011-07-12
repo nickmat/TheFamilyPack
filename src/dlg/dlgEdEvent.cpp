@@ -241,7 +241,7 @@ void dlgEditEvent::OnAddButton( wxCommandEvent& event )
 {
     const wxString savepoint = "EvtRole";
     dlgEditRole* dialog = new dlgEditRole( NULL, m_event.f_id );
-    dialog->SetEntities( mp_entities );
+    dialog->SetRefID( m_refID );
 
     recDb::Savepoint( savepoint );
     if( dialog->ShowModal() == wxID_OK )
@@ -277,7 +277,7 @@ void dlgEditEvent::OnEditButton( wxCommandEvent& event )
     }
     idt id = m_pes[row].f_id;
     dlgEditRole* dialog = new dlgEditRole( NULL, m_event.f_id, id );
-    dialog->SetEntities( mp_entities );
+    dialog->SetRefID( m_refID );
 
     recDb::Savepoint( savepoint );
     if( dialog->ShowModal() == wxID_OK )

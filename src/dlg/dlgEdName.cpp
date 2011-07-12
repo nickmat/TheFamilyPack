@@ -41,6 +41,7 @@
 
 #include "dlgEdName.h"
 #include "dlgEdNamePart.h"
+#include "dlgEdPersona.h"
 
 dlgEditName::dlgEditName( wxWindow* parent ) : fbDlgEditName( parent )
 {
@@ -64,7 +65,6 @@ bool dlgEditName::TransferDataToWindow()
     } else {
         m_name.Read();
     }
-    m_staticName->SetLabel( m_name.GetNameStr() );
 
     wxString nID( "N" );
     nID << m_name.f_id;
@@ -77,13 +77,16 @@ bool dlgEditName::TransferDataToWindow()
             m_choiceStyle->SetSelection( (int) i );
         }
     }
+    wxString pID( "Pa" );
+    pID << m_name.f_per_id;
+    m_buttonPersona->SetLabel( pID );
 
     m_parts = m_name.GetParts();
     for( size_t i = 0 ; i < m_parts.size() ; i++ ) {
         m_listParts->InsertItem( i, recNamePartType::GetTypeStr( m_parts[i].f_type_id ) );
         m_listParts->SetItem( i, COL_Value, m_parts[i].f_val );
     }
-
+    UpdateName();
     return true;
 }
 
@@ -98,6 +101,34 @@ bool dlgEditName::TransferDataFromWindow()
         m_parts[i].Save();
     }
     return true;
+}
+
+void dlgEditName::UpdateName()
+{
+    wxString name;
+    for( size_t i = 0 ; i < m_parts.size() ; i++ ) {
+        if( i > 0 ) {
+            name << " ";
+        }
+        name << m_parts[i].f_val;
+    }
+    m_staticName->SetLabel( name );
+}
+
+void dlgEditName::OnPersonaButton( wxCommandEvent& event )
+{
+    const wxString savepoint = "NameEdPer";
+    dlgEditPersona* dialog = new dlgEditPersona( NULL );
+    dialog->SetPersonaID( m_name.f_per_id );
+
+    recDb::Savepoint( savepoint );
+    if( dialog->ShowModal() == wxID_OK )
+    {
+        recDb::ReleaseSavepoint( savepoint );
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
 }
 
 void dlgEditName::OnPartAddButton( wxCommandEvent& event )
@@ -115,7 +146,8 @@ void dlgEditName::OnPartAddButton( wxCommandEvent& event )
         m_listParts->InsertItem( row, recNamePartType::GetTypeStr( np->f_type_id ) );
         m_listParts->SetItem( row, COL_Value, np->f_val );
         m_parts.push_back( *np );
-    } else {
+        UpdateName();
+   } else {
         recDb::Rollback( savepoint );
     }
     dialog->Destroy();
@@ -141,6 +173,7 @@ void dlgEditName::OnPartEditButton( wxCommandEvent& event )
         m_listParts->SetItem( row, COL_Type, recNamePartType::GetTypeStr( np->f_type_id ) );
         m_listParts->SetItem( row, COL_Value, np->f_val );
         m_parts[row] = *np;
+        UpdateName();
     } else {
         recDb::Rollback( savepoint );
     }
@@ -154,6 +187,7 @@ void dlgEditName::OnPartDeleteButton( wxCommandEvent& event )
         m_listParts->DeleteItem( row );
         m_parts[row].Delete();
         m_parts.erase( m_parts.begin() + row );
+        UpdateName();
     } else {
         wxMessageBox( wxT("No row selected"), wxT("Delete Name") );
     }
@@ -178,6 +212,7 @@ void dlgEditName::OnPartUpButton( wxCommandEvent& event )
         m_listParts->SetItem( row, COL_Value, m_parts[row].f_val );
 
         m_listParts->SetItemState( row, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+        UpdateName();
     }
 }
 
@@ -200,6 +235,7 @@ void dlgEditName::OnPartDownButton( wxCommandEvent& event )
         m_listParts->SetItem( row, COL_Value, m_parts[row].f_val );
 
         m_listParts->SetItemState( row, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+        UpdateName();
     }
 }
 

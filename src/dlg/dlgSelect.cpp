@@ -41,17 +41,33 @@
 #include "rec/recPersona.h"
 #include "dlgSelect.h"
 #include "dlgRecTableCtrl.h"
+#include "dlgEdReference.h"
 
-dlgSelect::dlgSelect( wxWindow* parent, wxString* headers, long width )
-    : fbDlgSelect( parent )
+dlgSelect::dlgSelect( 
+    wxWindow* parent, wxString* headers, long width,
+    const wxString& title, unsigned style )
+    : m_create(false), m_unknown(false), fbDlgSelect( parent )
 {
     m_width = width;
     for( long i = 0 ; i < width ; i++ ) {
         m_listCtrl->InsertColumn( i, headers[i] );
     }
     m_count = 0;
-    m_buttonCreate->Hide();
-    m_create = false;
+    if( title == wxEmptyString ) {
+        SetTitle( _("Select item") );
+    } else {
+        SetTitle( title );
+    }
+    if( style & SELSTYLE_CreateButton ){
+        m_buttonCreate->Show();
+    } else {
+        m_buttonCreate->Hide();
+    }
+    if( style & SELSTYLE_CreateButton ){
+         m_buttonUnknown->Show();
+    } else {
+         m_buttonUnknown->Hide();
+    }
 }
 
 void dlgSelect::OnIdle( wxIdleEvent& event )
@@ -66,6 +82,12 @@ void dlgSelect::OnIdle( wxIdleEvent& event )
 void dlgSelect::OnCreateButton( wxCommandEvent& event )
 {
     m_create = true;
+    EndDialog( wxID_OK );
+}
+
+void dlgSelect::OnUnknownButton( wxCommandEvent& event )
+{
+    m_unknown = true;
     EndDialog( wxID_OK );
 }
 
@@ -85,6 +107,15 @@ void dlgSelect::SetCreateButton( bool on )
         m_buttonCreate->Show();
     } else {
         m_buttonCreate->Hide();
+    }
+}
+
+void dlgSelect::SetUnknownButton( bool on )
+{
+    if( on ) {
+        m_buttonUnknown->Show();
+    } else {
+        m_buttonUnknown->Hide();
     }
 }
 
@@ -131,12 +162,6 @@ BEGIN_EVENT_TABLE( dlgSelectCreatePersona, wxDialog )
     EVT_MENU_RANGE( ID_SELCREATPER_MALE, ID_SELCREATPER_UNKNOWN, dlgSelectCreatePersona::OnCreatePersona )
 END_EVENT_TABLE()
 
-dlgSelectCreatePersona::dlgSelectCreatePersona( 
-    wxWindow* parent, const wxString& title )
-    : dlgSelectPersona( parent, title )
-{
-    m_buttonCreate->Show();
-}
 
 void dlgSelectCreatePersona::OnCreateButton( wxCommandEvent& event )
 {
@@ -163,6 +188,7 @@ void dlgSelectCreatePersona::OnCreatePersona( wxCommandEvent& event )
         per.f_sex = SEX_Unknown;
         break;
     }
+    per.f_ref_id = m_referenceID;
     per.Save();
 
     m_personaID = per.f_id;
@@ -176,29 +202,58 @@ void dlgSelectCreatePersona::OnCreatePersona( wxCommandEvent& event )
 
 wxString dlgSelectDate::sm_colHeaders[COL_MAX] = { _("ID"), _("Date") };
 
-dlgSelectDate::dlgSelectDate( wxWindow* parent, const wxString& title )
-    : dlgSelect( parent, sm_colHeaders, COL_MAX )
+//-------------------------------------------------------------------------------
+//-------------------[ dlgSelectDateEx ]-------------------------------------
+//-------------------------------------------------------------------------------
+
+BEGIN_EVENT_TABLE( dlgSelectDateEx, wxDialog )
+    EVT_MENU( ID_SELCREATDATE_Base, dlgSelectDateEx::OnCreateDateBase )
+    EVT_MENU( ID_SELCREATDATE_Age, dlgSelectDateEx::OnCreateDateAge )
+END_EVENT_TABLE()
+
+void dlgSelectDateEx::OnCreateButton( wxCommandEvent& event )
 {
-    if( title == wxEmptyString ) {
-        SetTitle( _("Select Date") );
-    } else {
-        SetTitle( title );
+    wxMenu* menu = new wxMenu;
+    menu->Append( ID_SELCREATDATE_Base, _("Create &New Date") );
+    menu->Append( ID_SELCREATDATE_Age, _("Create Date from &Age") );
+    PopupMenu( menu );
+    delete menu;
+}
+
+void dlgSelectDateEx::OnCreateDateBase( wxCommandEvent& event )
+{
+    wxASSERT( m_dlgEdRef );
+    if( m_dlgEdRef->DoNewDate( &m_dateID ) ) {
+        SetCreatePressed();
+        EndDialog( wxID_OK );
+    }
+}
+
+void dlgSelectDateEx::OnCreateDateAge( wxCommandEvent& event )
+{
+    wxASSERT( m_dlgEdRef );
+    if( m_dlgEdRef->DoNewDateAge( &m_dateID ) ) {
+        SetCreatePressed();
+        EndDialog( wxID_OK );
     }
 }
 
 //-------------------------------------------------------------------------------
-//-------------------[ dlgSelectPlace ]-------------------------------------------
+//-------------------[ dlgSelectPlace ]------------------------------------------
 //-------------------------------------------------------------------------------
 
 wxString dlgSelectPlace::sm_colHeaders[COL_MAX] = { _("ID"), _("Place") };
 
-dlgSelectPlace::dlgSelectPlace( wxWindow* parent, const wxString& title )
-    : dlgSelect( parent, sm_colHeaders, COL_MAX )
+//-------------------------------------------------------------------------------
+//-------------------[ dlgSelectPlaceEx ]------------------------------------------
+//-------------------------------------------------------------------------------
+
+void dlgSelectPlaceEx::OnCreateButton( wxCommandEvent& event )
 {
-    if( title == wxEmptyString ) {
-        SetTitle( _("Select Place") );
-    } else {
-        SetTitle( title );
+    wxASSERT( m_dlgEdRef );
+    if( m_dlgEdRef->DoNewPlace( &m_placeID ) ) {
+        SetCreatePressed();
+        EndDialog( wxID_OK );
     }
 }
 

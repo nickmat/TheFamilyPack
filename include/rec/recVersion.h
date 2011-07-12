@@ -35,7 +35,7 @@
 
 extern const int recVerMajor;
 extern const int recVerMinor;
-extern const int recVerRevision;
+extern const int recVerRev;
 extern const int recVerTest;
 extern const wxStringCharType* recVerStr;
 
@@ -73,6 +73,9 @@ public:
         int major, int minor = -1, int revision = -1, int test = -1 ) const {
             return !IsMoreThan( major, minor, revision, test );
         }
+
+    bool TestForUpgrade();
+    bool DoUpgrade();
 };
 
 /*! The two entities are equal, ignoring the record id.

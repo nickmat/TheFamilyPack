@@ -34,32 +34,47 @@
 
 #include "fbDlg.h"
 
+class dlgEditReference;
+
 
 class dlgSelect : public fbDlgSelect
 {
 public:
+    enum StyleFlags {
+        SELSTYLE_None          = 0x0000,
+        SELSTYLE_CreateButton  = 0x0001,
+        SELSTYLE_UnknownButton = 0x0002,
+    };
+
     /** Constructor */
-    dlgSelect( wxWindow* parent, wxString* headers, long width );
+    dlgSelect( wxWindow* parent, wxString* headers, long width,
+        const wxString& title = wxEmptyString,
+        unsigned style = SELSTYLE_None );
 
     void SetTable( wxArrayString table );
     void SetCreateButton( bool on = true );
+    void SetUnknownButton( bool on = true );
     // Returns the 1st column of the selected row converted to an ID.
     virtual idt GetSelectedID();
     virtual long GetSelectedRow();
     size_t GetCount() const { return m_count; }
     bool GetCreatePressed() const { return m_create; }
+    bool GetUnknownPressed() const { return m_unknown; }
 
 protected:
     // For fbDlgSelect to enable select button.
     void OnIdle( wxIdleEvent& event );
     void OnCreateButton( wxCommandEvent& event );
     void SetCreatePressed( bool on = true ) { m_create = on; }
+    void OnUnknownButton( wxCommandEvent& event );
+    void SetUnknownPressed( bool on = true ) { m_create = on; }
 
 private:
     wxArrayString  m_table;
     size_t         m_width;
     size_t         m_count;
     bool           m_create;
+    bool           m_unknown;
 };
 
 //-------------------------------------------------------------------------------
@@ -85,7 +100,10 @@ class dlgSelectCreatePersona : public dlgSelectPersona
     DECLARE_EVENT_TABLE()
 public:
     dlgSelectCreatePersona( 
-        wxWindow* parent, const wxString& title = wxEmptyString );
+        wxWindow* parent, idt refID, const wxString& title = wxEmptyString )
+        : m_referenceID(refID), m_personaID(0), 
+        dlgSelectPersona( parent, title )
+    {}
 
     idt GetPersonaID() const { return m_personaID; }
 protected:
@@ -97,6 +115,7 @@ protected:
     void OnCreateButton( wxCommandEvent& event );
     void OnCreatePersona( wxCommandEvent& event );
 private:
+    idt  m_referenceID;
     idt  m_personaID;
 };
 
@@ -110,8 +129,45 @@ class dlgSelectDate : public dlgSelect
         COL_ID, COL_Date, COL_MAX
     };
     static wxString sm_colHeaders[COL_MAX];
+
 public:
-    dlgSelectDate( wxWindow* parent, const wxString& title = wxEmptyString );
+    dlgSelectDate( 
+        wxWindow* parent = NULL, 
+        const wxString& title = _("Select Date"),
+        unsigned style = SELSTYLE_None
+    ) : dlgSelect( parent, sm_colHeaders, COL_MAX, title, style ) {}
+    
+};
+
+//-------------------------------------------------------------------------------
+//-------------------[ dlgSelectDateEx ]-------------------------------------
+//-------------------------------------------------------------------------------
+
+class dlgSelectDateEx : public dlgSelectDate
+{
+    DECLARE_EVENT_TABLE()
+
+public:
+    dlgSelectDateEx( 
+        wxWindow* parent, 
+        dlgEditReference* dlgEdRef,
+        const wxString& title, 
+        unsigned style
+    ) : m_dlgEdRef( dlgEdRef ), dlgSelectDate( parent, title, style ) {}
+   
+    idt GetDateID() const { return m_dateID; }
+protected:
+    enum {
+        ID_SELCREATDATE_Base = 1210,
+        ID_SELCREATDATE_Age
+    };
+    void OnCreateButton( wxCommandEvent& event );
+    void OnCreateDateBase( wxCommandEvent& event );
+    void OnCreateDateAge( wxCommandEvent& event );
+
+private:
+    idt               m_dateID;
+    dlgEditReference* m_dlgEdRef;
 };
 
 //-------------------------------------------------------------------------------
@@ -125,7 +181,35 @@ class dlgSelectPlace : public dlgSelect
     };
     static wxString sm_colHeaders[COL_MAX];
 public:
-    dlgSelectPlace( wxWindow* parent, const wxString& title = wxEmptyString );
+    dlgSelectPlace( 
+        wxWindow* parent = NULL, 
+        const wxString& title = _("Select Place"),
+        unsigned style = SELSTYLE_None
+    ) : dlgSelect( parent, sm_colHeaders, COL_MAX, title, style ) {}
+};
+
+//-------------------------------------------------------------------------------
+//-------------------[ dlgSelectPlaceEx ]-------------------------------------
+//-------------------------------------------------------------------------------
+
+class dlgSelectPlaceEx : public dlgSelectPlace
+{
+public:
+    dlgSelectPlaceEx( 
+        wxWindow* parent, 
+        dlgEditReference* dlgEdRef,
+        const wxString& title, 
+        unsigned style
+    ) : m_dlgEdRef( dlgEdRef ), dlgSelectPlace( parent, title, style ) {}
+   
+    idt GetPlaceID() const { return m_placeID; }
+
+protected:
+    void OnCreateButton( wxCommandEvent& event );
+
+private:
+    idt               m_placeID;
+    dlgEditReference* m_dlgEdRef;
 };
 
 //-------------------------------------------------------------------------------

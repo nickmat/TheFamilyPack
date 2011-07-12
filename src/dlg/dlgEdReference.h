@@ -66,8 +66,9 @@ protected:
         ID_EDREF_NEW_EVENT,
         ID_EDREF_NEW_PLACE,
         ID_EDREF_NEW_DATE,
+        ID_EDREF_NEW_DATE_AGE,
         ID_EDREF_NEW_NAME,
-        ID_EDREF_NEW_PER,
+        ID_EDREF_NEW_REL,
         ID_EDREF_NEW_ATTR
     };
 
@@ -90,15 +91,16 @@ protected:
 
     void OnNewSource( wxCommandEvent& event );
     void OnNewDate( wxCommandEvent& event );
+    void OnNewDateAge( wxCommandEvent& event );
     void OnNewPlace( wxCommandEvent& event );
-    void OnNewPersona( wxCommandEvent& event );
+    void OnNewRelationship( wxCommandEvent& event );
     void OnNewEvent( wxCommandEvent& event );
     void OnNewAttribute( wxCommandEvent& event );
     void OnNewName( wxCommandEvent& event );
 
     void DoEditDate( idt id, long row );
     void DoEditPlace( idt id, long row );
-    void DoEditPersona( idt id, long row );
+    void DoEditRelationship( idt id, long row );
     void DoEditEvent( idt id, long row );
     void DoEditAttribute( idt id, long row );
     void DoEditName( idt id, long row );
@@ -109,13 +111,15 @@ public:
 
     void SetID( idt id ) { m_reference.f_id = id; }
 
+    bool  DoNewDate( idt* dateID );
+    bool  DoNewDateAge( idt* dateID );
+    bool  DoNewPlace( idt* placeID );
 private:
     void InsertListItem( long row, const TfpEntity& ent );
 
-    idt SelectPersona();
     idt SelectCreatePersona();
-    idt SelectDate();
-    idt SelectPlace();
+    bool SelectDate( idt* dateID, const wxString& title, unsigned style );
+    bool SelectPlace( idt* placeID, const wxString& title, unsigned style );
     idt SelectName();
 
     TfpEntityStringVec GetDateEntityStringVec();

@@ -45,85 +45,6 @@
 // SQL script to create new database
 #include "generated/recSql.ci"
 
-static const char* upgrade0_0_8_0 = 
-    "ALTER TABLE Date RENAME TO OldDate;\n"
-    "CREATE TABLE Date (\n"
-    "  id INTEGER PRIMARY KEY,\n"
-    "  jdn INTEGER,\n"
-    "  range INTEGER,\n"
-    "  base_id INTEGER,\n"
-    "  base_unit INTEGER,\n"
-    "  base_style INTEGER,\n"
-    "  type INTEGER,\n"
-    "  desc TEXT,\n"
-    "  record_sch INTEGER,\n"
-    "  display_sch INTEGER\n"
-    ");\n"
-    "INSERT INTO Date"
-    " (id, jdn, range, base_id, base_unit, base_style, type, desc, record_sch, display_sch)"
-    " SELECT id, jdn, range, 0, 0, 0, type, desc, record_sch, display_sch FROM OldDate;"
-    "DROP TABLE OldDate;"
-;
-
-static const char* upgrade0_0_8_1 = 
-    "ALTER TABLE Date RENAME TO OldDate;\n"
-    "CREATE TABLE Date (\n"
-    "  id INTEGER PRIMARY KEY,\n"
-    "  jdn INTEGER,\n"
-    "  range INTEGER,\n"
-    "  base_id INTEGER,\n"
-    "  base_unit INTEGER,\n"
-    "  base_style INTEGER,\n"
-    "  type INTEGER,\n"
-    "  descrip TEXT,\n"
-    "  record_sch INTEGER,\n"
-    "  display_sch INTEGER\n"
-    ");\n"
-    "INSERT INTO Date"
-    " (id, jdn, range, base_id, base_unit, base_style, type, descrip, record_sch, display_sch)"
-    " SELECT id, jdn, range, base_id, base_unit, base_style, type, desc, record_sch, display_sch FROM OldDate;"
-    "DROP TABLE OldDate;"
-    // These tables have not yet been used so no need to copy data
-    "DROP TABLE RepositorySource;"
-    "CREATE TABLE RepositorySource (\n"
-    "  id INTEGER PRIMARY KEY,\n"
-    "  repos_id INTEGER,\n"
-    "  source_id INTEGER,\n"
-    "  call_num TEXT,\n"
-    "  descrip TEXT\n"
-    ");\n"
-    "DROP TABLE Contact;"
-    "CREATE TABLE Contact (\n"
-    "  id INTEGER PRIMARY KEY,\n"
-    "  ind_id INTEGER,\n"
-    "  res_id INTEGER,\n"
-    "  repos_id INTEGER,\n"
-    "  type_id TEXT,\n"
-    "  val TEXT\n"
-    ");\n"
-;
-
-static const char* upgrade0_0_8_2 = 
-    "ALTER TABLE Attribute ADD COLUMN sequence INTEGER;\n"
-    "ALTER TABLE Name ADD COLUMN sequence INTEGER;\n"
-;
-
-static const char* upgrade0_0_8_3 = 
-    "BEGIN;\n"
-    "ALTER TABLE Persona RENAME TO OldPersona;\n"
-    "CREATE TABLE Persona (\n"
-    "  id INTEGER PRIMARY KEY,\n"
-    "  sex INTEGER,\n"
-    "  note TEXT\n"
-    ");\n"
-    "INSERT INTO Persona"
-    " (id, sex, note)"
-    " SELECT id, sex, note FROM OldPersona;\n"
-    "DROP TABLE OldPersona;\n"
-    "UPDATE Version SET major=0, minor=0, revision=8, test=4 WHERE id=1;\n"
-    "COMMIT;\n"
-;
-
 wxSQLite3Database* recDb::s_db = NULL;
 
 wxString recGetSexStr( Sex sex )
@@ -133,95 +54,6 @@ wxString recGetSexStr( Sex sex )
     };
     return sexarray[sex];
 }
-static bool UpgradeMajor( recVersion& ver ) 
-{
-    wxMessageBox(
-        wxString::Format( 
-            _("Cannot read database version %s file."),
-            ver.GetVersionStr() 
-        ),
-        _("Upgrade Major")
-    );
-    return false;
-}
-
-static bool UpgradeMinor( recVersion& ver ) 
-{
-    wxMessageBox(
-        wxString::Format( 
-            _("Cannot read database version %s file."),
-            ver.GetVersionStr() 
-        ),
-        _("Upgrade Minor")
-    );
-    return false;
-}
-
-static bool UpgradeRevision( recVersion& ver ) 
-{
-    wxMessageBox(
-        wxString::Format( 
-            _("Cannot read database version %s file."),
-            ver.GetVersionStr() 
-        ),
-        _("Upgrade Revision")
-    );
-    return false;
-}
-
-static bool UpgradeTest( recVersion& ver ) 
-{
-    // We can only deal with version 0,0,8,0
-    if( !ver.IsEqual( 0, 0, 8 ) || ver.IsMoreThan( 0, 0, 8, 3 ) ) {
-        wxMessageBox(
-            wxString::Format( 
-                _("Cannot read database version %s file."),
-                ver.GetVersionStr() 
-            ),
-            _("Upgrade Test")
-        );
-        return false;
-    }
-
-    try {
-        if( ver.f_test == 0 ) {
-            // Upgrade 0.0.8.0 to 0.0.8.1
-            recDb::Begin();
-            recDb::GetDb()->ExecuteUpdate( upgrade0_0_8_0 );
-            ver.f_test = 1;
-            ver.Save();
-            recDb::Commit();
-        }
-        if( ver.f_test == 1 ) {
-            // Upgrade 0.0.8.1 to 0.0.8.2
-            recDb::Begin();
-            recDb::GetDb()->ExecuteUpdate( upgrade0_0_8_1 );
-            ver.f_test = 2;
-            ver.Save();
-            recDb::Commit();
-        }
-        if( ver.f_test == 2 ) {
-            // Upgrade 0.0.8.2 to 0.0.8.3
-            recDb::Begin();
-            recDb::GetDb()->ExecuteUpdate( upgrade0_0_8_2 );
-            ver.f_test = 3;
-            ver.Save();
-            recDb::Commit();
-        }
-        if( ver.f_test == 3 ) {
-            // Upgrade 0.0.8.3 to 0.0.8.4
-            recDb::GetDb()->ExecuteUpdate( upgrade0_0_8_3 );
-            ver.Read();
-        }
-    }
-    catch( wxSQLite3Exception& e ) {
-        recDb::ErrorMessage( e );
-        recDb::Rollback();
-        return false;
-    }
-    return true;
-}
-
 
 bool recDb::CreateDb( wxString& fname, unsigned flags )
 {
@@ -268,31 +100,8 @@ bool recDb::OpenDb( const wxString& fname )
 
     s_db->Open( fname );
     recVersion ver(1);
-    if( !ver.IsEqual( recVerMajor, recVerMinor, recVerRevision, recVerTest ) ) {
-        // Versions differ
-        if( ver.IsEqual( recVerMajor, recVerMinor, recVerRevision ) ) {
-            // Only the test differs.
-            success = UpgradeTest( ver ); // Succeeds if converts to a standard db
-        }
-        if( success && ver.IsLessThan( recVerMajor ) ) {
-            success = UpgradeMajor( ver );
-        }
-        if( success && ver.IsLessThan( recVerMajor, recVerMinor ) ) {
-            success = UpgradeMinor( ver );
-        }
-        if( ver.IsMoreThan(  recVerMajor, recVerMinor ) ) {
-            wxMessageBox(
-                wxString::Format( 
-                    _("Cannot read database version %s file."),
-                    ver.GetVersionStr() 
-                ),
-                _("Open Database")
-            );
-            success = false;
-        }
-        if( success && ver.IsLessThan( recVerMajor, recVerMinor, recVerRevision ) ) {
-            success = UpgradeRevision( ver );
-        }
+    if( !ver.IsEqual( recVerMajor, recVerMinor, recVerRev, recVerTest ) ) {
+        success = ver.DoUpgrade();
     }
     if( success == false ) {
         CloseDb();

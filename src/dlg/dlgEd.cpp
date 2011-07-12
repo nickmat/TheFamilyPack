@@ -45,21 +45,7 @@
 #include "dlgSelIndividual.h"
 #include "dlgSelEvent.h"
 #include "dlgEdReference.h"
-
-
-idt tfpPickIndividual( Sex sex )
-{
-    idt indID = 0;
-    dlgSelectIndividual* dialog = new dlgSelectIndividual( NULL );
-
-    if( dialog->CreateTable( sex ) == true ) {
-        if( dialog->ShowModal() == wxID_OK ) {
-            indID = dialog->GetSelectedID();
-        }
-    }
-    dialog->Destroy();
-    return indID;
-}
+#include "dlgSelect.h"
 
 
 bool tfpEditFamily( idt famID )
@@ -405,5 +391,60 @@ idt tfpAddMarriageEvent( idt famID )
     wxMessageBox( wxT("NYI Add Marriage Event"), wxT("tfpAddMarriageEvent") );
     return 0;
 }
+
+idt tfpPickIndividual( Sex sex )
+{
+    idt indID = 0;
+    dlgSelectIndividual* dialog = new dlgSelectIndividual( NULL );
+
+    if( dialog->CreateTable( sex ) == true ) {
+        if( dialog->ShowModal() == wxID_OK ) {
+            indID = dialog->GetSelectedID();
+        }
+    }
+    dialog->Destroy();
+    return indID;
+}
+
+bool tfpSelectPersona( idt* perID, unsigned style, idt refID )
+{
+    wxASSERT( perID );  // Can't handle NULL pointer
+    recIdVec list = recReference::GetPersonaList( refID );
+    wxArrayString table;
+    for( size_t i = 0 ; i < list.size() ; i++ ) {
+        table.Add( wxString::Format( "Pa"ID, list[i] ) );
+        table.Add( recPersona::GetNameStr( list[i] ) );
+    }
+
+    dlgSelectCreatePersona* dialog = 
+        new dlgSelectCreatePersona( NULL, refID );
+    dialog->SetTable( table );
+    if( style & TFP_SELECT_STYLE_CREATE ) {
+        dialog->SetCreateButton();
+    }
+    if( style & TFP_SELECT_STYLE_UNKNOWN ) {
+        dialog->SetUnknownButton();
+    }
+
+    bool ret;
+    if( dialog->ShowModal() == wxID_OK ) {
+        if( dialog->GetCreatePressed() ) {
+            *perID = dialog->GetPersonaID();
+        } else if( dialog->GetUnknownPressed() ) {
+            *perID = 0;
+        } else {
+            long row = dialog->GetSelectedRow();
+            *perID = list[row];
+        }
+        ret = true;
+    } else {
+        *perID = 0;
+        ret = false;
+    }
+
+    dialog->Destroy();
+    return ret;
+}
+
 
 // End of tfpEdit.cpp file

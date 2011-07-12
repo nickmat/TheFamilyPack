@@ -59,6 +59,9 @@ private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
 
+    void UpdateName();
+
+    void OnPersonaButton( wxCommandEvent& event );
     void OnPartAddButton( wxCommandEvent& event );
     void OnPartEditButton( wxCommandEvent& event );
     void OnPartDeleteButton( wxCommandEvent& event );

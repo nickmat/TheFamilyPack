@@ -52,6 +52,7 @@ public:
 
     void SetData( idt typeID, idt eventID = 0 );
     void SetEntities( TfpEntities* entities ) { mp_entities = entities; }
+    void SetRefID( idt id ) { m_refID = id; }
     void SetDateStrings( TfpEntityStringVec strs ) { m_dateStrings = strs; }
     recEvent* GetEvent() { return &m_event; }
 
@@ -75,14 +76,15 @@ protected:
 
 
 private:
-    recEvent           m_event;
-    recEventType       m_etype;
-    recEventPersonaVec m_pes;
+    recEvent            m_event;
+    recEventType        m_etype;
+    recEventPersonaVec  m_pes;
 
-    TfpEntities*       mp_entities;
-    TfpEntityStringVec m_dateStrings;
+    TfpEntities*        mp_entities;
+    idt                 m_refID;
+    TfpEntityStringVec  m_dateStrings;
 
-    EvDate             m_dateButton;
+    EvDate              m_dateButton;
 };
 
 #endif // DLGEDEVENT_H

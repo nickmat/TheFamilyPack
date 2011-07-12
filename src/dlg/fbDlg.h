@@ -226,14 +226,14 @@ class fbDlgEditDateFromAge : public wxDialog
 	protected:
 		wxStaticText* m_staticTextId;
 		wxStaticText* m_staticTextOutput;
+		wxStaticText* m_staticText5;
+		wxTextCtrl* m_textCtrlAge;
 		wxStaticText* m_staticText2;
 		wxTextCtrl* m_textCtrlBaseDate;
 		wxStaticText* m_staticText3;
 		wxChoice* m_choiceType;
 		wxStaticText* m_staticText4;
 		wxChoice* m_choiceDisplay;
-		wxStaticText* m_staticText5;
-		wxTextCtrl* m_textCtrlAge;
 		wxRadioBox* m_radioBoxUnits;
 		wxStaticLine* m_staticline1;
 		
@@ -408,6 +408,9 @@ class fbDlgEditName : public wxDialog
 		wxStaticText* m_staticNameID;
 		wxStaticText* m_staticText1a;
 		wxChoice* m_choiceStyle;
+		
+		wxStaticText* m_staticText65;
+		wxButton* m_buttonPersona;
 		wxListCtrl* m_listParts;
 		wxButton* m_buttonPartAdd;
 		wxButton* m_buttonPartEdit;
@@ -420,6 +423,7 @@ class fbDlgEditName : public wxDialog
 		wxButton* m_buttonCancel;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnPersonaButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPartAddButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPartEditButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPartDeleteButton( wxCommandEvent& event ) { event.Skip(); }
@@ -635,6 +639,7 @@ class fbDlgSelect : public wxDialog
 		dlgStrTableCtrl* m_listCtrl;
 		wxStaticLine* m_staticline;
 		wxButton* m_buttonCreate;
+		wxButton* m_buttonUnknown;
 		
 		wxButton* m_buttonSelect;
 		wxButton* m_buttonCancel;
@@ -642,6 +647,7 @@ class fbDlgSelect : public wxDialog
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnIdle( wxIdleEvent& event ) { event.Skip(); }
 		virtual void OnCreateButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnUnknownButton( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:

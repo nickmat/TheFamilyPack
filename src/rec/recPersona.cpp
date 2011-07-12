@@ -44,6 +44,7 @@ recPersona::recPersona( const recPersona& p )
 {
     f_id      = p.f_id;
     f_sex     = p.f_sex;
+    f_ref_id  = p.f_ref_id;
     f_note    = p.f_note;
 }
 
@@ -51,6 +52,7 @@ void recPersona::Clear()
 {
     f_id      = 0;
     f_sex     = SEX_Unstated;
+    f_ref_id  = 0;
     f_note    = wxEmptyString;
 }
 
@@ -63,8 +65,8 @@ void recPersona::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO Persona (sex, note) VALUES (%u, '%q');",
-            f_sex, UTF8_(f_note)
+            "INSERT INTO Persona (sex, ref_id, note) VALUES (%u, "ID", '%q');",
+            f_sex, f_ref_id, UTF8_(f_note)
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -74,15 +76,15 @@ void recPersona::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO Persona (id, sex, note) "
-                "VALUES ("ID", %u, '%q');",
-                f_id, f_sex, UTF8_(f_note)
+                "INSERT INTO Persona (id, sex, ref_id, note) "
+                "VALUES ("ID", %u, "ID", '%q');",
+                f_id, f_sex, f_ref_id, UTF8_(f_note)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE Persona SET sex=%u, note='%q' WHERE id="ID";",
-                f_sex, UTF8_(f_note), f_id
+                "UPDATE Persona SET sex=%u, ref_id="ID", note='%q' WHERE id="ID";",
+                f_sex, f_ref_id, UTF8_(f_note), f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -99,7 +101,7 @@ bool recPersona::Read()
         return false;
     }
 
-    sql.Format( "SELECT sex, note FROM Persona WHERE id="ID";", f_id );
+    sql.Format( "SELECT sex, ref_id, note FROM Persona WHERE id="ID";", f_id );
     result = s_db->GetTable( sql );
 
     if( result.GetRowCount() != 1 )
@@ -109,7 +111,8 @@ bool recPersona::Read()
     }
     result.SetRow( 0 );
     f_sex  = (Sex) result.GetInt( 0 );
-    f_note = result.GetAsString( 1 );
+    f_ref_id = GET_ID( result.GetInt64( 1 ) );
+    f_note = result.GetAsString( 2 );
     return true;
 }
 

@@ -338,6 +338,7 @@ void RecTestCase::TestPersona()
     persona1.f_id = 0;
 
     persona1.f_sex = SEX_Male;
+    persona1.f_ref_id = 10;
     persona1.f_note = "Someone";
     // f_id = 0 so create new record and set f_id to new value.
     persona1.Save();
@@ -350,6 +351,7 @@ void RecTestCase::TestPersona()
     CPPUNIT_ASSERT( persona1 == persona2 );
 
     persona1.f_sex = SEX_Female;
+    persona1.f_ref_id = 22;
     persona1.f_note = "Another one";
     // f_id = 1 which exists, so amend record leaving f_id to old value.
     persona1.Save();
@@ -750,7 +752,7 @@ void RecTestCase::TestReferenceEntity()
     record1.f_id = 0;
 
     record1.f_ref_id = 3;
-    record1.f_entity_type = recReferenceEntity::TYPE_Persona;
+    record1.f_entity_type = recReferenceEntity::TYPE_Name;
     record1.f_entity_id = 5;
     record1.f_sequence = 1;
     // f_id = 0 so create new record and set f_id to new value.

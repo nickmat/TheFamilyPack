@@ -61,13 +61,14 @@ int tfpGetEntityIndex( TfpEntities* array, int ind )
 }
 
 BEGIN_EVENT_TABLE( dlgEditReference, wxDialog )
-    EVT_MENU( ID_EDREF_NEW_SOURCE, dlgEditReference::OnNewSource )
-    EVT_MENU( ID_EDREF_NEW_EVENT,  dlgEditReference::OnNewEvent )
-    EVT_MENU( ID_EDREF_NEW_PLACE,  dlgEditReference::OnNewPlace )
-    EVT_MENU( ID_EDREF_NEW_DATE,   dlgEditReference::OnNewDate )
-    EVT_MENU( ID_EDREF_NEW_NAME,   dlgEditReference::OnNewName )
-    EVT_MENU( ID_EDREF_NEW_PER,    dlgEditReference::OnNewPersona )
-    EVT_MENU( ID_EDREF_NEW_ATTR,   dlgEditReference::OnNewAttribute )
+    EVT_MENU( ID_EDREF_NEW_SOURCE,   dlgEditReference::OnNewSource )
+    EVT_MENU( ID_EDREF_NEW_EVENT,    dlgEditReference::OnNewEvent )
+    EVT_MENU( ID_EDREF_NEW_PLACE,    dlgEditReference::OnNewPlace )
+    EVT_MENU( ID_EDREF_NEW_DATE,     dlgEditReference::OnNewDate )
+    EVT_MENU( ID_EDREF_NEW_DATE_AGE, dlgEditReference::OnNewDateAge )
+    EVT_MENU( ID_EDREF_NEW_NAME,     dlgEditReference::OnNewName )
+    EVT_MENU( ID_EDREF_NEW_REL,      dlgEditReference::OnNewRelationship )
+    EVT_MENU( ID_EDREF_NEW_ATTR,     dlgEditReference::OnNewAttribute )
 END_EVENT_TABLE()
 
 dlgEditReference::dlgEditReference( wxWindow* parent )
@@ -113,9 +114,10 @@ bool dlgEditReference::TransferDataToWindow()
         case recReferenceEntity::TYPE_Place:
             m_listEntities->SetItem( i, COL_Value, recPlace::GetAddressStr( entID ) );
             break;
-        case recReferenceEntity::TYPE_Persona:
-            m_listEntities->SetItem( i, COL_Value, recPersona::GetNameStr( entID ) );
-            break;
+// Replace with recRelationship
+//        case recReferenceEntity::TYPE_Persona:
+//            m_listEntities->SetItem( i, COL_Value, recPersona::GetNameStr( entID ) );
+//            break;
         case recReferenceEntity::TYPE_Attribute:
             {
                 recAttribute attribute( entID );
@@ -190,11 +192,12 @@ void dlgEditReference::OnAddButton( wxCommandEvent& event )
     wxMenu* menu = new wxMenu;
     menu->Append( ID_EDREF_NEW_SOURCE, _("&Source") );
     menu->Append( ID_EDREF_NEW_DATE, _("&Date") );
-    menu->Append( ID_EDREF_NEW_PLACE, _("P&lace") );
-    menu->Append( ID_EDREF_NEW_PER, _("&Persona") );
-    menu->Append( ID_EDREF_NEW_EVENT, _("&Event") );
-    menu->Append( ID_EDREF_NEW_ATTR, _("&Attribute") );
+    menu->Append( ID_EDREF_NEW_DATE_AGE, _("Date a&ge") );
+    menu->Append( ID_EDREF_NEW_PLACE, _("&Place") );
     menu->Append( ID_EDREF_NEW_NAME, _("&Name") );
+    menu->Append( ID_EDREF_NEW_ATTR, _("&Attribute") );
+    menu->Append( ID_EDREF_NEW_REL, _("&Relationship") );
+    menu->Append( ID_EDREF_NEW_EVENT, _("&Event") );
     PopupMenu( menu );
     delete menu;
 }
@@ -209,45 +212,115 @@ void dlgEditReference::OnNewSource( wxCommandEvent& event )
 
 void dlgEditReference::OnNewDate( wxCommandEvent& event )
 {
+    idt dateID;
+    DoNewDate( &dateID );
+}
+
+void dlgEditReference::OnNewDateAge( wxCommandEvent& event )
+{
+    idt dateID;
+    DoNewDateAge( &dateID );
+}
+
+bool dlgEditReference::DoNewDate( idt* dateID )
+{
     const wxString savepoint = "RefDate";
+    *dateID = 0;
     dlgEditDate* dialog = new dlgEditDate( NULL );
 
     dialog->SetText( m_textCtrlStatement->GetStringSelection() );
 
+    bool ret;
     recDb::Savepoint( savepoint );
     if( dialog->ShowModal() == wxID_OK )
     {
         recDb::ReleaseSavepoint( savepoint );
+        *dateID = dialog->GetDate()->f_id;
         int row = m_entities.size();
         TfpEntity entity;
         entity.rec.Clear();
         entity.owner = 0;
         entity.rec.f_ref_id = m_reference.f_id;
         entity.rec.f_entity_type = recReferenceEntity::TYPE_Date;
-        entity.rec.f_entity_id = dialog->GetDate()->f_id;
+        entity.rec.f_entity_id = *dateID;
         entity.rec.Save();
         m_entities.push_back( entity );
 
         m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
         m_listEntities->SetItem( row, COL_Value, dialog->GetDate()->GetStr() );
+        ret = true;
     } else {
         // Dialog Cancelled
         recDb::Rollback( savepoint );
+        ret = false;
     }
     dialog->Destroy();
+    return ret;
+}
+
+bool dlgEditReference::DoNewDateAge( idt* dateID )
+{
+    const wxString savepoint = "RefDateAge";
+    recDb::Savepoint( savepoint );
+    idt baseID;
+    unsigned style = dlgSelect::SELSTYLE_CreateButton;
+    if( SelectDate( &baseID, _("Select Base Date"), style ) == false ) {
+        recDb::Rollback( savepoint );
+        return false;
+    }
+
+    *dateID = 0;
+    dlgEditDateFromAge* dialog = new dlgEditDateFromAge( NULL, baseID );
+
+    dialog->SetText( m_textCtrlStatement->GetStringSelection() );
+
+    bool ret;
+    if( dialog->ShowModal() == wxID_OK )
+    {
+        recDb::ReleaseSavepoint( savepoint );
+        *dateID = dialog->GetDate()->f_id;
+        int row = m_entities.size();
+        TfpEntity entity;
+        entity.rec.Clear();
+        entity.owner = 0;
+        entity.rec.f_ref_id = m_reference.f_id;
+        entity.rec.f_entity_type = recReferenceEntity::TYPE_Date;
+        entity.rec.f_entity_id = *dateID;
+        entity.rec.Save();
+        m_entities.push_back( entity );
+
+        m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
+        m_listEntities->SetItem( row, COL_Value, dialog->GetDate()->GetStr() );
+        ret = true;
+    } else {
+        // Dialog Cancelled
+        recDb::Rollback( savepoint );
+        ret = false;
+    }
+    dialog->Destroy();
+    return ret;
 }
 
 void dlgEditReference::OnNewPlace( wxCommandEvent& event )
 {
+    idt placeID;
+    DoNewPlace( &placeID );
+}
+
+bool dlgEditReference::DoNewPlace( idt* placeID )
+{
     const wxString savepoint = "RefPlace";
+    *placeID = 0;
     dlgEditPlace* dialog = new dlgEditPlace( NULL );
 
     dialog->SetText( m_textCtrlStatement->GetStringSelection() );
 
+    bool ret;
     recDb::Savepoint( savepoint );
     if( dialog->ShowModal() == wxID_OK )
     {
         recDb::ReleaseSavepoint( savepoint );
+        *placeID = dialog->GetPlace()->f_id;
         int row = m_entities.size();
         TfpEntity entity;
         entity.rec.Clear();
@@ -260,92 +333,33 @@ void dlgEditReference::OnNewPlace( wxCommandEvent& event )
 
         m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
         m_listEntities->SetItem( row, COL_Value, dialog->GetPlace()->GetAddressStr() );
+        ret = true;
     } else {
         // Dialog Cancelled
         recDb::Rollback( savepoint );
+        ret = false;
     }
     dialog->Destroy();
+    return ret;
 }
 
-void dlgEditReference::OnNewPersona( wxCommandEvent& event )
+void dlgEditReference::OnNewRelationship( wxCommandEvent& event )
 {
-    wxString nameStr = m_textCtrlStatement->GetStringSelection();
-    const wxString savepoint = "RefPer";
-    recDb::Savepoint( savepoint );
-    recPersona persona(0);
-    persona.Save();
-    recName name(0);
-    name.f_per_id = persona.f_id;
-    name.Save();
-    name.AddNameParts( nameStr );
-//    persona.f_name_id = name.f_id;
-    persona.Save();
-
-    dlgEditPersona* dialog = new dlgEditPersona( NULL );
-    dialog->SetPersonaID( persona.f_id );
-
-    if( dialog->ShowModal() == wxID_OK )
-    {
-        recDb::ReleaseSavepoint( savepoint );
-        int row = m_entities.size();
-        TfpEntity entity;
-        entity.rec.Clear();
-        entity.owner = 0;
-        entity.rec.f_ref_id = m_reference.f_id;
-        entity.rec.f_entity_type = recReferenceEntity::TYPE_Persona;
-        entity.rec.f_entity_id = dialog->GetPersona()->f_id;
-        entity.rec.Save();
-        m_entities.push_back( entity );
-
-        m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
-        m_listEntities->SetItem( row, COL_Value, dialog->GetPersona()->GetNameStr() );
-#if 0
-//    dialog->SetData();
-//    dialog->SetDefault( m_textCtrlStatement->GetStringSelection() );
-
-    if( dialog->ShowModal() == wxID_OK )
-    {
-        recDb::ReleaseSavepoint( savepoint );
-        int row = m_entities.size();
-        TfpEntity entity;
-        entity.rec.Clear();
-        entity.owner = 0;
-        entity.rec.f_ref_id = m_reference.f_id;
-        entity.rec.f_entity_type = recReferenceEntity::TYPE_Persona;
-        entity.rec.f_entity_id = dialog->GetPersona()->f_id;
-        entity.rec.Save();
-        m_entities.push_back( entity );
-
-        m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
-        m_listEntities->SetItem( row, COL_Value, dialog->GetPersona()->GetFullName() );
-
-        // Add attributes
-        entity.owner = entity.rec.f_entity_id;
-        recAttributeList aa = dialog->GetAttributes();
-        entity.rec.f_entity_type = recReferenceEntity::TYPE_Attribute;
-        row++;
-        for( size_t i = 0 ; i < aa.size() ; i++ ) {
-            entity.rec.f_id = 0;
-            entity.rec.f_entity_id = aa[i].f_id;
-            entity.rec.Save();
-            m_entities.push_back( entity );
-
-            m_listEntities->InsertItem( row+i, entity.rec.GetTypeStr() );
-            m_listEntities->SetItem( row+i, COL_Value, aa[i].f_val );
-        }
-#endif
-    } else {
-        // Dialog Cancelled
-        recDb::Rollback( savepoint );
-    }
-    dialog->Destroy();
+    wxMessageBox( _("Not yet done"), _("OnNewRelationship") );
 }
 
 void dlgEditReference::OnNewEvent( wxCommandEvent& cmnd_event )
 {
     const wxString savepoint = "RefEvent";
+    // Future selection dialogs will be able to create new "user created" 
+    // items and we will need to be able to roll these back.
+    recDb::Savepoint( savepoint );
+
     idt typeID = recEventType::Select();
-    if( typeID == 0 ) return;
+    if( typeID == 0 ) {
+        recDb::Rollback( savepoint );
+        return;
+    }
 
     bool enddate = false;
     bool person2 = false;
@@ -377,24 +391,38 @@ void dlgEditReference::OnNewEvent( wxCommandEvent& cmnd_event )
         enddate = true;
     }
 
-    idt dateID1 = SelectDate();
-    if( dateID1 == 0 ) return;
+    idt dateID1;
+    unsigned style = dlgSelect::SELSTYLE_CreateButton | dlgSelect::SELSTYLE_UnknownButton;
+    if( SelectDate( &dateID1, _("Select Start Date"), style ) == false ) {
+        recDb::Rollback( savepoint );
+        return;
+    }
     idt dateID2 = 0;
     if( enddate ) {
-        dateID2 = SelectDate();
-        if( dateID2 == 0 ) return;
+        if( SelectDate( &dateID2, _("Select End Date"), style ) == false ) {
+            recDb::Rollback( savepoint );
+            return;
+        }
+    }
+    idt placeID;
+    if( SelectPlace( &placeID, _("Select Place"), style ) == false ) {
+        recDb::Rollback( savepoint );
+        return;
     }
 
-    idt placeID = SelectPlace();
-    if( placeID == 0 ) return;
-
     wxString title;
-    idt perID1 = SelectPersona();
-    if( perID1 == 0 ) return;
+    idt perID1 = SelectCreatePersona();
+    if( perID1 == 0 ) {
+        recDb::Rollback( savepoint );
+        return;
+    }
     idt perID2 = 0;
     if( person2 ) {
-        perID2 = SelectPersona();
-        if( perID2 == 0 ) return;
+        perID2 = SelectCreatePersona();
+        if( perID2 == 0 ) {
+            recDb::Rollback( savepoint );
+            return;
+        }
         title = wxString::Format(
             _("%s of %s and %s"),
             etype.GetTypeStr(),
@@ -412,9 +440,9 @@ void dlgEditReference::OnNewEvent( wxCommandEvent& cmnd_event )
     dlgEditEvent* dialog = new dlgEditEvent( NULL );
 
     dialog->SetEntities( &m_entities );
+    dialog->SetRefID( m_reference.f_id );
     dialog->SetDateStrings( GetDateEntityStringVec() );
 
-    recDb::Savepoint( savepoint );
     recEvent e(0);
     e.f_title = title;
     e.f_type_id = typeID;
@@ -459,13 +487,14 @@ void dlgEditReference::OnNewEvent( wxCommandEvent& cmnd_event )
 
 void dlgEditReference::OnNewAttribute( wxCommandEvent& event )
 {
-    idt perID = SelectPersona();
-    if( perID == 0 ) {
-        return;
-    }
-    const wxString savepoint = "RefAttr";
+    const wxString savepoint = "RefNewAttr";
     recDb::Savepoint( savepoint );
 
+    idt perID = SelectCreatePersona();
+    if( perID == 0 ) {
+        recDb::Rollback( savepoint );
+        return;
+    }
     dlgEditAttribute* dialog = new dlgEditAttribute( NULL );
     dialog->SetPersonaID( perID );
     dialog->SetValue( m_textCtrlStatement->GetStringSelection() );
@@ -494,17 +523,18 @@ void dlgEditReference::OnNewAttribute( wxCommandEvent& event )
 
 void dlgEditReference::OnNewName( wxCommandEvent& event )
 {
+    const wxString savepoint = "RefNewName";
+    recDb::Savepoint( savepoint );
+
     idt perID = SelectCreatePersona();
     if( perID == 0 ) {
+        recDb::Rollback( savepoint );
         return;
     }
-
-    const wxString savepoint = "RefName";
     dlgEditName* dialog = new dlgEditName( NULL );
     dialog->SetPersonaID( perID );
     dialog->CreateName( m_textCtrlStatement->GetStringSelection() );
 
-    recDb::Savepoint( savepoint );
     if( dialog->ShowModal() == wxID_OK )
     {
         recDb::ReleaseSavepoint( savepoint );
@@ -539,7 +569,7 @@ void dlgEditReference::OnEditButton( wxCommandEvent& event )
     {
     case recReferenceEntity::TYPE_Date:      DoEditDate( id, row );      break;
     case recReferenceEntity::TYPE_Place:     DoEditPlace( id, row );     break;
-    case recReferenceEntity::TYPE_Persona:   DoEditPersona( id, row );   break;
+    case recReferenceEntity::TYPE_Relationship: DoEditRelationship( id, row ); break;
     case recReferenceEntity::TYPE_Event:     DoEditEvent( id, row );     break;
     case recReferenceEntity::TYPE_Attribute: DoEditAttribute( id, row ); break;
     case recReferenceEntity::TYPE_Name :     DoEditName( id, row );      break;
@@ -581,55 +611,9 @@ void dlgEditReference::DoEditPlace( idt id, long row )
     dialog->Destroy();
 }
 
-void dlgEditReference::DoEditPersona( idt id, long row )
+void dlgEditReference::DoEditRelationship( idt id, long row )
 {
-    const wxString savepoint = "RefEdPer";
-    recAttribute attr;
-    size_t i = 0;
-
-    dlgEditPersona* dialog = new dlgEditPersona( NULL );
-    dialog->SetPersonaID( id );
-    recDb::Savepoint( savepoint );
-    if( dialog->ShowModal() == wxID_OK )
-    {
-        recDb::ReleaseSavepoint( savepoint );
-        m_listEntities->SetItem( row, COL_Value, dialog->GetPersona()->GetNameStr() );
-#if 0
-        // remove the attributes
-        while( i < m_entities.size() )  {
-            if( m_entities[i].rec.f_entity_type == recReferenceEntity::TYPE_Attribute
-                && m_entities[i].owner == id )
-            {
-                m_entities[i].rec.Delete();
-                m_entities.erase( m_entities.begin() + i );
-                m_listEntities->DeleteItem( i );
-                if( (long) i < row ) --row;
-            } else {
-                i++;
-            }
-        }
-        // Put the Attributes back
-        recAttributeList attrs = dialog->GetAttributes();
-        for( i = 0 ; i < attrs.size() ; i++ ) {
-            row++;
-
-            TfpEntity entity;
-            entity.rec.Clear();
-            entity.owner = id;
-            entity.rec.f_ref_id = m_reference.f_id;
-            entity.rec.f_entity_type = recReferenceEntity::TYPE_Attribute;
-            entity.rec.f_entity_id = attrs[i].f_id;
-            entity.rec.Save();
-            m_entities.insert( m_entities.begin()+row, entity );
-
-            m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
-            m_listEntities->SetItem( row, COL_Value, attrs[i].f_val );
-        }
-#endif
-    } else {
-        recDb::Rollback( savepoint );
-    }
-    dialog->Destroy();
+    wxMessageBox( _("Rewrite needed"), _("DoEditRelationship") );
 }
 
 void dlgEditReference::DoEditEvent( idt id, long row )
@@ -639,6 +623,7 @@ void dlgEditReference::DoEditEvent( idt id, long row )
 
     dialog->SetData( 0, id );
     dialog->SetEntities( &m_entities );
+    dialog->SetRefID( m_reference.f_id );
     dialog->SetDateStrings( GetDateEntityStringVec() );
 
     recDb::Savepoint( savepoint );
@@ -688,6 +673,8 @@ void dlgEditReference::DoEditName( idt id, long row )
 
 void dlgEditReference::OnDeleteButton( wxCommandEvent& event )
 {
+    wxMessageBox( _("Rewrite needed"), _("OnDeleteButton") );
+#if 0
     long row = m_listEntities->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
         wxMessageBox( _("No row selected"), _("Edit Entity") );
@@ -712,7 +699,9 @@ void dlgEditReference::OnDeleteButton( wxCommandEvent& event )
             recReferenceEntity::Delete( reID );
         }
         break;
-    case recReferenceEntity::TYPE_Persona:
+    case recReferenceEntity::TYPE_Relationship:
+        wxMessageBox( _("Rewrite needed"), _("OnDeleteButton") );
+#if 0
         {
             recAttributeVec arrAttr = recPersona::ReadAttributes( entID );
             for( size_t i = 0 ; i < arrAttr.size() ; i++ ) {
@@ -721,6 +710,7 @@ void dlgEditReference::OnDeleteButton( wxCommandEvent& event )
             recPersona::Delete( entID );
             recReferenceEntity::Delete( reID );
         }
+#endif
         break;
     case recReferenceEntity::TYPE_Attribute:
         recAttribute::Delete( entID );
@@ -748,6 +738,7 @@ void dlgEditReference::OnDeleteButton( wxCommandEvent& event )
             }
         }
     }
+#endif
 }
 
 void dlgEditReference::OnUpButton( wxCommandEvent& event )
@@ -804,8 +795,8 @@ void dlgEditReference::InsertListItem( long row, const TfpEntity& ent )
     case recReferenceEntity::TYPE_Date:
         str = recDate::GetStr( ent.rec.f_entity_id );
         break;
-    case recReferenceEntity::TYPE_Persona:
-        str = recPersona::GetNameStr( ent.rec.f_entity_id );
+//    case recReferenceEntity::TYPE_Persona:
+//        str = recPersona::GetNameStr( ent.rec.f_entity_id );
         break;
     case recReferenceEntity::TYPE_Attribute:
         str = recAttribute::GetValue( ent.rec.f_entity_id );
@@ -818,53 +809,18 @@ void dlgEditReference::InsertListItem( long row, const TfpEntity& ent )
     m_listEntities->SetItem( row, COL_Value, str );
 }
 
-idt dlgEditReference::SelectPersona()
-{
-    idt perID = 0;
-    recIdVec list;
-    wxArrayString table;
-    for( size_t i = 0 ; i < m_entities.size() ; i++ ) {
-        if( m_entities[i].rec.f_entity_type == recReferenceEntity::TYPE_Persona ) {
-            idt id = m_entities[i].rec.f_entity_id;
-            list.push_back( id );
-            table.Add( wxString::Format( "Pa"ID, id ) );
-            table.Add( recPersona::GetNameStr( id ) );
-        }
-    }
-    if( list.size() == 0 ) {
-        return 0;
-    }
-    if( list.size() == 1 ) {
-        return list[0];
-    }
-
-    dlgSelectPersona* dialog = new dlgSelectPersona( NULL );
-    dialog->SetTable( table );
-
-    if( dialog->ShowModal() == wxID_OK ) {
-        long row = dialog->GetSelectedRow();
-        perID = list[row];
-    }
-
-    dialog->Destroy();
-    return perID;
-}
-
 idt dlgEditReference::SelectCreatePersona()
 {
     idt perID = 0;
-    recIdVec list;
+    recIdVec list = m_reference.GetPersonaList();
     wxArrayString table;
-    for( size_t i = 0 ; i < m_entities.size() ; i++ ) {
-        if( m_entities[i].rec.f_entity_type == recReferenceEntity::TYPE_Persona ) {
-            idt id = m_entities[i].rec.f_entity_id;
-            list.push_back( id );
-            table.Add( wxString::Format( "Pa"ID, id ) );
-            table.Add( recPersona::GetNameStr( id ) );
-        }
+    for( size_t i = 0 ; i < list.size() ; i++ ) {
+        table.Add( wxString::Format( "Pa"ID, list[i] ) );
+        table.Add( recPersona::GetNameStr( list[i] ) );
     }
 
-    dlgSelectCreatePersona* dialog = new dlgSelectCreatePersona( NULL );
+    dlgSelectCreatePersona* dialog = 
+        new dlgSelectCreatePersona( NULL, m_reference.f_id );
     dialog->SetTable( table );
     dialog->SetCreateButton();
 
@@ -881,9 +837,10 @@ idt dlgEditReference::SelectCreatePersona()
     return perID;
 }
 
-idt dlgEditReference::SelectDate()
+bool dlgEditReference::SelectDate( 
+    idt* dateID, const wxString& title, unsigned style )
 {
-    idt dateID = 0;
+    wxASSERT( dateID );  // Can't handle NULL pointer
     recIdVec list;
     wxArrayString table;
     for( size_t i = 0 ; i < m_entities.size() ; i++ ) {
@@ -894,28 +851,34 @@ idt dlgEditReference::SelectDate()
             table.Add( recDate::GetStr( id ) );
         }
     }
-    if( list.size() == 0 ) {
-        return 0;
-    }
-    if( list.size() == 1 ) {
-        return list[0];
-    }
 
-    dlgSelectDate* dialog = new dlgSelectDate( NULL );
+    dlgSelectDateEx* dialog = new dlgSelectDateEx( NULL, this, title, style );
     dialog->SetTable( table );
 
+    bool ret;
     if( dialog->ShowModal() == wxID_OK ) {
-        long row = dialog->GetSelectedRow();
-        dateID = list[row];
+        if( dialog->GetUnknownPressed() ) {
+            *dateID = 0;
+        } else if( dialog->GetCreatePressed() ) {
+            *dateID = dialog->GetDateID();
+        } else {
+            long row = dialog->GetSelectedRow();
+            *dateID = list[row];
+        }
+        ret = true;
+    } else {
+        *dateID = 0;
+        ret = false;
     }
 
     dialog->Destroy();
-    return dateID;
+    return ret;
 }
 
-idt dlgEditReference::SelectPlace()
+bool dlgEditReference::SelectPlace( 
+    idt* placeID, const wxString& title, unsigned style )
 {
-    idt placeID = 0;
+    wxASSERT( placeID );  // Can't handle NULL pointer
     recIdVec list;
     wxArrayString table;
     for( size_t i = 0 ; i < m_entities.size() ; i++ ) {
@@ -926,23 +889,28 @@ idt dlgEditReference::SelectPlace()
             table.Add( recPlace::GetAddressStr( id ) );
         }
     }
-    if( list.size() == 0 ) {
-        return 0;
-    }
-    if( list.size() == 1 ) {
-        return list[0];
-    }
 
-    dlgSelectPlace* dialog = new dlgSelectPlace( NULL );
+    dlgSelectPlaceEx* dialog = new dlgSelectPlaceEx( NULL, this, title, style );
     dialog->SetTable( table );
 
+    bool ret;
     if( dialog->ShowModal() == wxID_OK ) {
-        long row = dialog->GetSelectedRow();
-        placeID = list[row];
+        if( dialog->GetUnknownPressed() ) {
+            *placeID = 0;
+        } else if( dialog->GetCreatePressed() ) {
+            *placeID = dialog->GetPlaceID();
+        } else {
+            long row = dialog->GetSelectedRow();
+            *placeID = list[row];
+        }
+        ret = true;
+    } else {
+        *placeID = 0;
+        ret = false;
     }
 
     dialog->Destroy();
-    return placeID;
+    return ret;
 }
 
 idt dlgEditReference::SelectName()

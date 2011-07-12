@@ -117,13 +117,14 @@
    </tr>
    <tr>
     <td><a href="#ReferenceEntity">ReferenceEntity</a></td>
+    <td><a href="#Relationship">Relationship</a></td>
     <td><a href="#Repository">Repository</a></td>
     <td><a href="#RepositorySource">RepositorySource</a></td>
     <td><a href="#Researcher">Researcher</a></td>
     <td><a href="#Source">Source</a></td>
-    <td><a href="#User">User</a></td>
    </tr>
    <tr>
+    <td><a href="#User">User</a></td>
     <td><a href="#Version">Version</a></td>
     <td colspan='0' class="na">&nbsp;</td>
    </tr>
@@ -753,6 +754,11 @@
      <td>This holds 0=Unstated, 1=Male, 2=Female and 3=Unknown.</td>
     </tr>
     <tr>
+     <td>ref_id</td>
+     <td>Integer</td>
+     <td>If this persona was created by a reference entity, this identifies the Reference.</td>
+    </tr>
+    <tr>
      <td>note</td>
      <td>Text</td>
      <td>Any narrative necessary to distinguish this person.</td>
@@ -873,7 +879,7 @@
     <tr>
      <td>entity_type</td>
      <td>Integer</td>
-     <td>A value indicating the Entity type, 1=Source, 2=Event, 3=Place, 4=Date, 5=Persona, 6=Attribute</td>
+     <td>A value indicating the Entity type, 1=Source, 2=Event, 3=Place, 4=Date, 5=Relationship, 6=Attribute</td>
     </tr>
     <tr>
      <td>entity_id</td>
@@ -884,6 +890,33 @@
      <td>sequence</td>
      <td>Integer</td>
      <td>A number to give an entity's position in the list of a reference's entities</td>
+    </tr>
+
+    <tr id="Relationship">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>Relationship</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a Relationship.</td>
+    </tr>
+    <tr>
+     <td>per1_id</td>
+     <td>Integer</td>
+     <td>Pointer to the first Persona ID.</td>
+    </tr>
+    <tr>
+     <td>per2_id</td>
+     <td>Integer</td>
+     <td>Pointer to the second Persona ID.</td>
+    </tr>
+    <tr>
+     <td>descrip</td>
+     <td>Text</td>
+     <td>Description of the relationship the first Persona has with the second Persona</td>
     </tr>
 
     <tr id="Repository">

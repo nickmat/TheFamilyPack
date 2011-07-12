@@ -466,11 +466,20 @@ fbDlgEditDateFromAge::fbDlgEditDateFromAge( wxWindow* parent, wxWindowID id, con
 	
 	fgSizer11->Add( m_staticTextOutput, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_staticText2 = new wxStaticText( this, wxID_ANY, _("Age on:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText5 = new wxStaticText( this, wxID_ANY, _("Age:"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT );
+	m_staticText5->Wrap( -1 );
+	fgSizer11->Add( m_staticText5, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT, 5 );
+	
+	m_textCtrlAge = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer11->Add( m_textCtrlAge, 0, wxALL, 5 );
+	
+	m_staticText2 = new wxStaticText( this, wxID_ANY, _("On:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText2->Wrap( -1 );
 	fgSizer11->Add( m_staticText2, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT|wxALL, 5 );
 	
 	m_textCtrlBaseDate = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textCtrlBaseDate->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_3DLIGHT ) );
+	
 	fgSizer11->Add( m_textCtrlBaseDate, 1, wxALIGN_CENTER_VERTICAL|wxALL|wxEXPAND, 5 );
 	
 	m_staticText3 = new wxStaticText( this, wxID_ANY, _("Type:"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -492,13 +501,6 @@ fbDlgEditDateFromAge::fbDlgEditDateFromAge( wxWindow* parent, wxWindowID id, con
 	m_choiceDisplay = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceDisplayNChoices, m_choiceDisplayChoices, 0 );
 	m_choiceDisplay->SetSelection( 3 );
 	fgSizer11->Add( m_choiceDisplay, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
-	
-	m_staticText5 = new wxStaticText( this, wxID_ANY, _("Age:"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT );
-	m_staticText5->Wrap( -1 );
-	fgSizer11->Add( m_staticText5, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT, 5 );
-	
-	m_textCtrlAge = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer11->Add( m_textCtrlAge, 0, wxALL, 5 );
 	
 	bSizer1->Add( fgSizer11, 0, wxEXPAND, 5 );
 	
@@ -1009,6 +1011,16 @@ fbDlgEditName::fbDlgEditName( wxWindow* parent, wxWindowID id, const wxString& t
 	m_choiceStyle->SetSelection( 0 );
 	bSizer1a->Add( m_choiceStyle, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
+	
+	bSizer1a->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	m_staticText65 = new wxStaticText( this, wxID_ANY, _("Persona:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText65->Wrap( -1 );
+	bSizer1a->Add( m_staticText65, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_buttonPersona = new wxButton( this, wxID_ANY, _("Pa0"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer1a->Add( m_buttonPersona, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
 	bSizer->Add( bSizer1a, 0, wxEXPAND, 5 );
 	
 	wxBoxSizer* bSizer2;
@@ -1068,6 +1080,7 @@ fbDlgEditName::fbDlgEditName( wxWindow* parent, wxWindowID id, const wxString& t
 	bSizer->Fit( this );
 	
 	// Connect Events
+	m_buttonPersona->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditName::OnPersonaButton ), NULL, this );
 	m_buttonPartAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditName::OnPartAddButton ), NULL, this );
 	m_buttonPartEdit->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditName::OnPartEditButton ), NULL, this );
 	m_buttonPartDel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditName::OnPartDeleteButton ), NULL, this );
@@ -1078,6 +1091,7 @@ fbDlgEditName::fbDlgEditName( wxWindow* parent, wxWindowID id, const wxString& t
 fbDlgEditName::~fbDlgEditName()
 {
 	// Disconnect Events
+	m_buttonPersona->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditName::OnPersonaButton ), NULL, this );
 	m_buttonPartAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditName::OnPartAddButton ), NULL, this );
 	m_buttonPartEdit->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditName::OnPartEditButton ), NULL, this );
 	m_buttonPartDel->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditName::OnPartDeleteButton ), NULL, this );
@@ -1572,6 +1586,9 @@ fbDlgSelect::fbDlgSelect( wxWindow* parent, wxWindowID id, const wxString& title
 	m_buttonCreate = new wxButton( this, wxID_ANY, _("Create"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer3->Add( m_buttonCreate, 0, wxALL, 5 );
 	
+	m_buttonUnknown = new wxButton( this, wxID_ANY, _("Unknown"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer3->Add( m_buttonUnknown, 0, wxALL, 5 );
+	
 	
 	bSizer3->Add( 0, 0, 1, wxEXPAND, 5 );
 	
@@ -1589,6 +1606,7 @@ fbDlgSelect::fbDlgSelect( wxWindow* parent, wxWindowID id, const wxString& title
 	// Connect Events
 	this->Connect( wxEVT_IDLE, wxIdleEventHandler( fbDlgSelect::OnIdle ) );
 	m_buttonCreate->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgSelect::OnCreateButton ), NULL, this );
+	m_buttonUnknown->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgSelect::OnUnknownButton ), NULL, this );
 }
 
 fbDlgSelect::~fbDlgSelect()
@@ -1596,6 +1614,7 @@ fbDlgSelect::~fbDlgSelect()
 	// Disconnect Events
 	this->Disconnect( wxEVT_IDLE, wxIdleEventHandler( fbDlgSelect::OnIdle ) );
 	m_buttonCreate->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgSelect::OnCreateButton ), NULL, this );
+	m_buttonUnknown->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgSelect::OnUnknownButton ), NULL, this );
 	
 }
 

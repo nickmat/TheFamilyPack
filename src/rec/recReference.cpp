@@ -156,6 +156,25 @@ wxSQLite3ResultSet recReference::GetTitleList()
     return s_db->ExecuteQuery( sql );
 }
 
+recIdVec recReference::GetPersonaList( idt refID )
+{
+    recIdVec vec;
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3ResultSet result;
+
+    sql.Format(
+        "SELECT id FROM Persona WHERE ref_id="ID";",
+        refID
+    );
+    result = s_db->ExecuteQuery( sql );
+
+    while( result.NextRow() ) {
+        vec.push_back( GET_ID( result.GetInt64( 0 ) ) );
+    }
+    return vec;
+}
+
+
 //----------------------------------------------------------
 
 const wxString recReferenceEntity::sm_typeStr[recReferenceEntity::TYPE_MAX] = {

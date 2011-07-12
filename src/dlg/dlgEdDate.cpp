@@ -67,17 +67,16 @@ int dlgEditDate::sch_list[CALENDAR_SCH_Max] = {
 //       dlgEditDate
 //===========================================================================
 
-dlgEditDate::dlgEditDate( wxWindow* parent, idt id )
+dlgEditDate::dlgEditDate( wxWindow* parent, idt dateID )
     : fbDlgEditDate( parent )
 {
-    m_date.f_id = id;
+    m_date.f_id = dateID;
     m_date.Read();
 }
 
 bool dlgEditDate::TransferDataToWindow()
 {
-    if( m_date.f_id == 0 )
-    {
+    if( m_date.f_id == 0 ) {
         m_date.Clear();
         m_date.Save();
         // TODO: This needs to be set up using a particular convention
@@ -141,29 +140,37 @@ CalendarUnit dlgEditDateFromAge::unit[] = {
     CALENDAR_UNIT_Day
 };
 
-dlgEditDateFromAge::dlgEditDateFromAge( wxWindow* parent, idt id )
+dlgEditDateFromAge::dlgEditDateFromAge( wxWindow* parent, idt baseID, idt dateID )
     : fbDlgEditDateFromAge( parent )
 {
-    m_base.f_id = id;
+    m_base.f_id = baseID;
     m_base.Read();
     m_basestr = m_base.GetStr();
+    m_date.f_id = dateID;
+    m_date.Read();
 }
 
 bool dlgEditDateFromAge::TransferDataToWindow()
 {
     m_textCtrlBaseDate->SetValue( m_basestr );
 
-    m_date.Clear();
-    m_date.Save();
-    // TODO: This needs to be set up using a particular convention
-    m_date.f_type = recDate::PREF_On;
-    m_date.f_record_sch = m_base.f_record_sch;
-    m_date.f_display_sch = m_base.f_display_sch;
+    if( m_date.f_id == 0 ) {
+        m_date.Clear();
+        m_date.Save();
+        // TODO: This needs to be set up using a particular convention
+        m_date.f_type = recDate::PREF_On;
+        m_date.f_record_sch = m_base.f_record_sch;
+        m_date.f_display_sch = m_base.f_display_sch;
 
-    m_date.f_range = 1;
-    m_date.f_base_id = m_base.f_id;
-    m_date.f_base_unit = CALENDAR_UNIT_Year;
-    m_date.f_base_style = recDate::BASE_STYLE_AgeRoundDown;
+        m_date.f_range = 1;
+        m_date.f_base_id = m_base.f_id;
+        m_date.f_base_unit = CALENDAR_UNIT_Year;
+        m_date.f_base_style = recDate::BASE_STYLE_AgeRoundDown;
+    } else {
+        m_date.Read();
+        m_text = m_date.GetJdnStr();
+    }
+    m_textCtrlAge->SetValue( m_text );
 
     wxString idStr = wxString::Format( "D"ID":", m_date.f_id );
     m_staticTextId->SetLabel( idStr );

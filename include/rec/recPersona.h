@@ -45,6 +45,7 @@ class recPersona : public recDb
 {
 public:
     Sex      f_sex;
+    idt      f_ref_id;
     wxString f_note;
 
     recPersona() {}
@@ -75,6 +76,7 @@ inline bool recEquivalent( const recPersona& r1, const recPersona& r2 )
 {
     return
         r1.f_sex     == r2.f_sex     &&
+        r1.f_ref_id  == r2.f_ref_id  &&
         r1.f_note    == r2.f_note;
 }
 

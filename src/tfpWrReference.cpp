@@ -77,7 +77,7 @@ wxString tfpWriteReferencePage( idt refID )
 {
     wxString htm;
     recReference ref(refID);
-    recRefEntVec re = ref.ReadReferenceEntitys();
+    recIdVec perIDs = ref.GetPersonaList();
     recIdVec indIDs;
 
     htm << "<html><head><title>R" << refID
@@ -87,18 +87,17 @@ wxString tfpWriteReferencePage( idt refID )
         << "</pre>"
         << "<a href=$R" << refID
         << "><img src=memory:edit.bmp></a><br>";
-        for( size_t i = 0 ; i < re.size() ; i++ ) {
-            if( re[i].f_entity_type == recReferenceEntity::TYPE_Persona ) {
-                idt perID = re[i].f_entity_id;
-                htm << recPersona::GetNameStr( perID );
-                indIDs = recPersona::GetIndividualIDs( perID );
-                for( size_t j = 0 ; j < indIDs.size() ; j++ ) {
-                    htm << " <a href=I" << indIDs[j]
-                        << "><img src=memory:ind.bmp></a>";
-                }
-                htm << "<br>";
-            }
+
+    for( size_t i = 0 ; i < perIDs.size() ; i++ ) {
+        htm << recPersona::GetNameStr( perIDs[i] );
+        indIDs = recPersona::GetIndividualIDs( perIDs[i] );
+        for( size_t j = 0 ; j < indIDs.size() ; j++ ) {
+            htm << " <a href=I" << indIDs[j]
+                << "><img src=memory:ind.bmp></a>";
         }
+        htm << "<br>";
+    }
+
     htm << "</body></html>";
 
     return htm;

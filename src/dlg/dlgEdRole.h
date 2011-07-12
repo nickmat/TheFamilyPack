@@ -43,7 +43,7 @@ class dlgEditRole : public fbDlgEditRole
 public:
     dlgEditRole( wxWindow* parent, idt eventID, idt id = 0 );
 
-    void SetEntities( TfpEntities* entities ) { m_entities = entities; }
+    void SetRefID( idt id ) { m_refID = id; }
 
     recEventPersona* GetEventPersona() { return &m_pe; }
 
@@ -52,14 +52,13 @@ private:
     bool TransferDataFromWindow();
 
     void OnPersonaButton( wxCommandEvent& event );
-    void OnPersonaSelect( wxCommandEvent& event );
     void OnRoleButton( wxCommandEvent& event );
     void OnRoleSelect( wxCommandEvent& event );
 
-    recEventPersona  m_pe;
-    recEvent         m_event;
+    recEventPersona     m_pe;
+    recEvent            m_event;
 
-    TfpEntities*        m_entities;
+    idt                 m_refID;
     recEventTypeRoleVec m_roles;
 };
 
