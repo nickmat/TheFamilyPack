@@ -54,9 +54,11 @@ dlgEditPersona::dlgEditPersona( wxWindow* parent ) : fbDlgEditPersona( parent )
     itemCol.SetText( wxT("Type") );
     m_listName->InsertColumn( 0, itemCol );
     m_listAttr->InsertColumn( 0, itemCol );
+    m_listRel->InsertColumn( 0, itemCol );
     itemCol.SetText( wxT("Value") );
     m_listName->InsertColumn( 1, itemCol );
     m_listAttr->InsertColumn( 1, itemCol );
+    m_listRel->InsertColumn( 1, itemCol );
 
     m_persona.Clear();
 }
@@ -87,6 +89,12 @@ bool dlgEditPersona::TransferDataToWindow()
     for( size_t i = 0 ; i < m_attributes.size() ; i++ ) {
         m_listAttr->InsertItem( i, recAttributeType::GetTypeStr( m_attributes[i].f_type_id ) );
         m_listAttr->SetItem( i, COL_Value, m_attributes[i].f_val );
+    }
+
+    m_relationships = m_persona.ReadRelationships();
+    for( size_t i = 0 ; i < m_relationships.size() ; i++ ) {
+        m_listRel->InsertItem( i, m_relationships[i].GetIdStr() );
+        m_listRel->SetItem( i, COL_Value, m_relationships[i].GetRelOfPersonaStr( m_persona.f_id ) );
     }
 
     return true;

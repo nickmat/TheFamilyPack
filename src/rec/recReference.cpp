@@ -178,15 +178,14 @@ recIdVec recReference::GetPersonaList( idt refID )
 //----------------------------------------------------------
 
 const wxString recReferenceEntity::sm_typeStr[recReferenceEntity::TYPE_MAX] = {
-    _("Default"),    // TYPE_Unstated
-    _("Source"),     // TYPE_Source
-    _("Event"),      // TYPE_Event
-    _("Place"),      // TYPE_Place
-    _("Date"),       // TYPE_Date
-    _("Persona"),    // TYPE_Persona
-    _("Attribute"),  // TYPE_Attribute
-    _("Name")//,       // TYPE_Name
-//    _("Role")        // TYPE_Role
+    _("Default"),      // TYPE_Unstated
+    _("Source"),       // TYPE_Source
+    _("Event"),        // TYPE_Event
+    _("Place"),        // TYPE_Place
+    _("Date"),         // TYPE_Date
+    _("Relationship"), // TYPE_Relationship
+    _("Attribute"),    // TYPE_Attribute
+    _("Name")          // TYPE_Name
 };
 
 recReferenceEntity::recReferenceEntity( const recReferenceEntity& re )

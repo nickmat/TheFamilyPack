@@ -27,16 +27,20 @@
 
    Revision History
    ~~~~~~~~~~~~~~~~
-   
+
+21may11  v0.4.1
+   Removed "sub" command.
+   Internal changes to the way age dates are calculated.
+
 18feb11  v0.4.0
    Added Age and date calclation commands "am" and "sub".
    Command "a" now works with date ranges.
-   
- 2oct10  v0.3.0 
+
+ 2oct10  v0.3.0
    First release (Source only).
-   
+
    Command line Calendar conversion and calulations, used to test the Calendar
    function library.
-   
+
 
 End of ccHistory.txt file.

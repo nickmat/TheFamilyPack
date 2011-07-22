@@ -34,7 +34,7 @@
   <set var="WX_SHARED">0</set>
 
   <include file="presets/wx.bkl"/>
-  
+
   <set var="FORMAT_MSVC_PROJECT">
     <if cond="FORMAT in ['msvc6prj','msvs2003prj''msvs2005prj','msvs2008prj','msvs2010prj']">1</if>
     <if cond="FORMAT not in ['msvc6prj','msvs2003prj''msvs2005prj','msvs2008prj','msvs2010prj']">0</if>
@@ -65,7 +65,7 @@
     <action id="$(LOCAL_SRC)/tfpMemory.cpp">
       <depends-on-file>$(LOCAL_SRC)/generated/tfpText.ci</depends-on-file>
     </action>
-  
+
   </if>
 
   <exe id="tfp" template="wxgui,wxlike">
@@ -84,6 +84,7 @@
     <sources>$(LOCAL_SRC)/dlg/dlgEdPersona.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgEdPlace.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgEdReference.cpp</sources>
+    <sources>$(LOCAL_SRC)/dlg/dlgEdRelationship.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgEdRole.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgRecTableCtrl.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgSelect.cpp</sources>
@@ -99,7 +100,7 @@
     <sources>$(LOCAL_SRC)/tfpWrIndividual.cpp</sources>
     <sources>$(LOCAL_SRC)/tfpWrName.cpp</sources>
     <sources>$(LOCAL_SRC)/tfpWrReference.cpp</sources>
-    
+
     <headers>$(LOCAL_SRC)/dlg/dlgEd.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgEdAttribute.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgEdDate.h</headers>
@@ -112,6 +113,7 @@
     <headers>$(LOCAL_SRC)/dlg/dlgEdPersona.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgEdPlace.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgEdReference.h</headers>
+    <headers>$(LOCAL_SRC)/dlg/dlgEdRelationship.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgEdRole.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgRecTableCtrl.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgSelect.h</headers>
@@ -126,7 +128,7 @@
     <headers>$(LOCAL_SRC)/tfpWr.h</headers>
 
     <win32-res>$(LOCAL_SRC)/tfp.rc</win32-res>
-    
+
     <include>$(LOCAL_INC)</include>
     <include>$(LOCAL_SRC)</include>
 

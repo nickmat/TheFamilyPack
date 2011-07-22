@@ -49,6 +49,7 @@
 #include "dlgEdDate.h"
 #include "dlgEdName.h"
 #include "dlgEdAttribute.h"
+#include "dlgEdRelationship.h"
 #include "dlgSelect.h"
 
 
@@ -114,10 +115,9 @@ bool dlgEditReference::TransferDataToWindow()
         case recReferenceEntity::TYPE_Place:
             m_listEntities->SetItem( i, COL_Value, recPlace::GetAddressStr( entID ) );
             break;
-// Replace with recRelationship
-//        case recReferenceEntity::TYPE_Persona:
-//            m_listEntities->SetItem( i, COL_Value, recPersona::GetNameStr( entID ) );
-//            break;
+        case recReferenceEntity::TYPE_Relationship:
+            m_listEntities->SetItem( i, COL_Value, recRelationship::GetValue1Str( entID ) );
+            break;
         case recReferenceEntity::TYPE_Attribute:
             {
                 recAttribute attribute( entID );
@@ -345,7 +345,43 @@ bool dlgEditReference::DoNewPlace( idt* placeID )
 
 void dlgEditReference::OnNewRelationship( wxCommandEvent& event )
 {
-    wxMessageBox( _("Not yet done"), _("OnNewRelationship") );
+    const wxString savepoint = "RefNewRel";
+    recDb::Savepoint( savepoint );
+
+    idt per1ID = SelectCreatePersona();
+    if( per1ID == 0 ) {
+        recDb::Rollback( savepoint );
+        return;
+    }
+    idt per2ID = SelectCreatePersona();
+    if( per2ID == 0 ) {
+        recDb::Rollback( savepoint );
+        return;
+    }
+    dlgEditRelationship* dialog = new dlgEditRelationship( NULL );
+    dialog->SetPersona1ID( per1ID );
+    dialog->SetPersona2ID( per2ID );
+
+    if( dialog->ShowModal() == wxID_OK )
+    {
+        recDb::ReleaseSavepoint( savepoint );
+        int row = m_entities.size();
+        TfpEntity entity;
+        entity.rec.Clear();
+        entity.owner = 0;
+        entity.rec.f_ref_id = m_reference.f_id;
+        entity.rec.f_entity_type = recReferenceEntity::TYPE_Relationship;
+        entity.rec.f_entity_id = dialog->GetRelationship()->f_id;
+        entity.rec.Save();
+        m_entities.push_back( entity );
+
+        m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
+        m_listEntities->SetItem( row, COL_Value, dialog->GetRelationship()->GetValue1Str() );
+    } else {
+        // Dialog Cancelled
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
 }
 
 void dlgEditReference::OnNewEvent( wxCommandEvent& cmnd_event )
@@ -613,7 +649,21 @@ void dlgEditReference::DoEditPlace( idt id, long row )
 
 void dlgEditReference::DoEditRelationship( idt id, long row )
 {
-    wxMessageBox( _("Rewrite needed"), _("DoEditRelationship") );
+//    wxMessageBox( _("Rewrite needed"), _("DoEditRelationship") );
+
+
+    const wxString savepoint = "RefEdRel";
+    dlgEditRelationship* dialog = new dlgEditRelationship( NULL, id );
+
+    recDb::Savepoint( savepoint );
+    if( dialog->ShowModal() == wxID_OK )
+    {
+        recDb::ReleaseSavepoint( savepoint );
+        m_listEntities->SetItem( row, COL_Value, dialog->GetRelationship()->GetValue1Str() );
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
 }
 
 void dlgEditReference::DoEditEvent( idt id, long row )

@@ -69,12 +69,13 @@ private:
 
     wxString GetIndLinksString() const;
 
-    recPersona        m_persona;
-    recIdVec          m_indLinks;
-    recNameVec        m_names;
-    recAttributeVec   m_attributes;
+    recPersona         m_persona;
+    recIdVec           m_indLinks;
+    recNameVec         m_names;
+    recAttributeVec    m_attributes;
+    recRelationshipVec m_relationships;
 
-    wxString          m_nameStr;
+    wxString           m_nameStr;
 };
 
 #endif // DLGEDPERSONA_H

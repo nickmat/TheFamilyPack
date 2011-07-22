@@ -37,9 +37,11 @@
 class recPersona;
 class recAttribute;
 class recAttributeType;
+class recRelationship;
 typedef std::vector< recPersona >        recPersonaVec;
 typedef std::vector< recAttribute >      recAttributeVec;
 typedef std::vector< recAttributeType >  recAttributeTypeVec;
+typedef std::vector< recRelationship >   recRelationshipVec;
 
 class recPersona : public recDb
 {
@@ -67,6 +69,8 @@ public:
     recAttributeVec ReadAttributes() const { return ReadAttributes( f_id ); }
     static recNameVec ReadNames( idt perID );
     recNameVec ReadNames() const { return ReadNames( f_id ); }
+    static recRelationshipVec ReadRelationships( idt perID );
+    recRelationshipVec ReadRelationships() { return ReadRelationships( f_id ); }
 
     static recIdVec GetIndividualIDs( idt perID );
     recIdVec GetIndividualIDs() const { return GetIndividualIDs( f_id ); }
@@ -183,6 +187,54 @@ inline bool operator==( const recAttributeType& r1, const recAttributeType& r2 )
 }
 
 inline bool operator!=( const recAttributeType& r1, const recAttributeType& r2 )
+{
+    return !(r1 == r2);
+}
+
+//----------------------------------------------------------
+
+class recRelationship : public recDb
+{
+public:
+    idt       f_per1_id;
+    idt       f_per2_id;
+    wxString  f_descrip;
+
+    recRelationship() {}
+    recRelationship( idt id ) : recDb(id) { Read(); }
+    recRelationship( const recRelationship& rel );
+
+    void Clear();
+    void Save();
+    bool Read();
+    TABLE_NAME_MEMBERS( "Relationship" );
+
+    static wxString GetIdStr( idt relID );
+    wxString GetIdStr() const { return GetIdStr( f_id ); }
+
+    wxString GetValue1Str() const;
+    wxString GetValue2Str() const;
+    static wxString GetValue1Str( idt relID );
+    static wxString GetValue2Str( idt relID );
+
+    wxString GetRelOfPersonaStr( idt perID ) const;
+    static wxString GetRelOfPersonaStr( idt perID, idt relID );
+};
+
+inline bool recEquivalent( const recRelationship& r1, const recRelationship& r2 )
+{
+    return
+        r1.f_per1_id == r2.f_per1_id &&
+        r1.f_per2_id == r2.f_per2_id &&
+        r1.f_descrip == r2.f_descrip;
+}
+
+inline bool operator==( const recRelationship& r1, const recRelationship& r2 )
+{
+    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
+}
+
+inline bool operator!=( const recRelationship& r1, const recRelationship& r2 )
 {
     return !(r1 == r2);
 }

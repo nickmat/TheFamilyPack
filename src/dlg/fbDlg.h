@@ -367,6 +367,13 @@ class fbDlgEditPersona : public wxDialog
 		wxButton* m_buttonAttrDel;
 		wxButton* m_buttonAttrUp;
 		wxButton* m_buttonAttrDn;
+		wxPanel* m_panel4;
+		wxListCtrl* m_listRel;
+		wxButton* m_buttonRelAdd;
+		wxButton* m_buttonRelEdit;
+		wxButton* m_buttonRelDel;
+		wxButton* m_buttonRelUp;
+		wxButton* m_buttonRelDn;
 		wxStaticLine* m_staticline1;
 		
 		wxButton* m_buttonSave;
@@ -385,6 +392,11 @@ class fbDlgEditPersona : public wxDialog
 		virtual void OnAttrDeleteButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAttrUpButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAttrDownButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnRelAddButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnRelEditButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnRelDeleteButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnRelUpButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnRelDownButton( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:
@@ -515,6 +527,39 @@ class fbDlgEditRole : public wxDialog
 		
 		fbDlgEditRole( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Persona's Role"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 350,231 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
 		~fbDlgEditRole();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class fbDlgEditRelationship
+///////////////////////////////////////////////////////////////////////////////
+class fbDlgEditRelationship : public wxDialog 
+{
+	private:
+	
+	protected:
+		wxStaticText* m_staticRsNumber;
+		
+		wxButton* m_buttonPersona1;
+		wxTextCtrl* m_textCtrlPersona1;
+		wxStaticText* m_staticText2;
+		wxTextCtrl* m_textCtrlDescrip;
+		wxButton* m_buttonPersona2;
+		wxTextCtrl* m_textCtrlPersona2;
+		wxStaticLine* m_staticline1;
+		
+		wxButton* m_buttonSave;
+		wxButton* m_buttonCancel;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnPersona1Button( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnPersona2Button( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		fbDlgEditRelationship( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Persona's Relationship"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 337,217 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+		~fbDlgEditRelationship();
 	
 };
 

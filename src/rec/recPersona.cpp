@@ -194,6 +194,37 @@ recNameVec recPersona::ReadNames( idt perID )
     return list;
 }
 
+recRelationshipVec recPersona::ReadRelationships( idt perID )
+{
+    recRelationshipVec list;
+    recRelationship rel;
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( perID == 0 ) {
+        return list;
+    }
+
+    sql.Format(
+        "SELECT id, per1_id, per2_id, descrip FROM "
+        "Relationship WHERE per1_id="ID" OR per2_id="ID";",
+        perID, perID
+    );
+    result = s_db->GetTable( sql );
+
+    list.reserve( result.GetRowCount() );
+    for( int i = 0 ; i < result.GetRowCount() ; i++ )
+    {
+        result.SetRow( i );
+        rel.f_id      = GET_ID( result.GetInt64( 0 ) );
+        rel.f_per1_id = GET_ID( result.GetInt64( 1 ) );
+        rel.f_per2_id = GET_ID( result.GetInt64( 2 ) );
+        rel.f_descrip = result.GetAsString( 3 );
+        list.push_back( rel );
+    }
+    return list;
+}
+
 recIdVec recPersona::GetIndividualIDs( idt perID )
 {
     recIdVec vec;
@@ -437,5 +468,153 @@ recAttributeTypeVec recAttributeType::GetTypeList()
 
     return list;
 }
+
+//----------------------------------------------------------
+
+recRelationship::recRelationship( const recRelationship& attr )
+{
+    f_id      = attr.f_id;
+    f_per1_id = attr.f_per1_id;
+    f_per2_id = attr.f_per2_id;
+    f_descrip = attr.f_descrip;
+}
+
+void recRelationship::Clear()
+{
+    f_id      = 0;
+    f_per1_id = 0;
+    f_per2_id = 0;
+    f_descrip = wxEmptyString;
+}
+
+void recRelationship::Save()
+{
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( f_id == 0 )
+    {
+        // Add new record
+        sql.Format(
+            "INSERT INTO Relationship (per1_id, per2_id, descrip)"
+            "VALUES ("ID", "ID", '%q');",
+            f_per1_id, f_per2_id, UTF8_(f_descrip)
+        );
+        s_db->ExecuteUpdate( sql );
+        f_id = GET_ID( s_db->GetLastRowId() );
+    } else {
+        // Does record exist
+        if( !Exists() )
+        {
+            // Add new record
+            sql.Format(
+                "INSERT INTO Relationship (id, per1_id, per2_id, descrip)"
+                "VALUES ("ID", "ID", "ID", '%q', %u);",
+                f_id, f_per1_id, f_per2_id, UTF8_(f_descrip)
+            );
+        } else {
+            // Update existing record
+            sql.Format(
+                "UPDATE Relationship SET per1_id="ID", per2_id="ID", descrip='%q' WHERE id="ID";",
+                f_per1_id, f_per2_id, UTF8_(f_descrip), f_id
+            );
+        }
+        s_db->ExecuteUpdate( sql );
+    }
+}
+
+bool recRelationship::Read()
+{
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( f_id == 0 ) {
+        Clear();
+        return false;
+    }
+
+    sql.Format( "SELECT per1_id, per2_id, descrip FROM Relationship WHERE id="ID";", f_id );
+    result = s_db->GetTable( sql );
+
+    if( result.GetRowCount() != 1 )
+    {
+        Clear();
+        return false;
+    }
+    result.SetRow( 0 );
+    f_per1_id = GET_ID( result.GetInt64( 0 ) );
+    f_per2_id = GET_ID( result.GetInt64( 1 ) );
+    f_descrip = result.GetAsString( 2 );
+    return true;
+}
+
+wxString recRelationship::GetIdStr( idt relID )
+{
+    return wxString::Format( "Rs"ID, relID );
+}
+
+wxString recRelationship::GetValue1Str() const
+{
+    wxString str;
+
+    str << recPersona::GetNameStr( f_per1_id )
+        << _(" is the ")
+        << f_descrip
+        << _(" of ")
+        << recPersona::GetNameStr( f_per2_id );
+
+    return str;
+}
+
+wxString recRelationship::GetValue1Str( idt relID )
+{
+    recRelationship rel(relID);
+    return rel.GetValue1Str();
+}
+
+wxString recRelationship::GetValue2Str() const
+{
+    wxString str;
+
+    str << recPersona::GetNameStr( f_per2_id )
+        << _(" has ")
+        << f_descrip
+        << _(" who is ")
+        << recPersona::GetNameStr( f_per1_id );
+
+    return str;
+}
+
+wxString recRelationship::GetValue2Str( idt relID )
+{
+    recRelationship rel(relID);
+    return rel.GetValue2Str();
+}
+
+wxString recRelationship::GetRelOfPersonaStr( idt perID ) const
+{
+    wxString str;
+
+    if( perID == f_per1_id ) {
+        str << f_descrip
+            << _(" of ")
+            << recPersona::GetNameStr( f_per2_id );
+    } else if( perID == f_per2_id ) {
+        str << f_descrip
+            << _(" is ")
+            << recPersona::GetNameStr( f_per1_id );
+    } else {
+        str << _("None");
+    }
+    return str;
+}
+
+wxString recRelationship::GetRelOfPersonaStr( idt perID, idt relID )
+{
+    recRelationship rel(relID);
+    return rel.GetRelOfPersonaStr( perID );
+}
+
+
 
 // End of recPersona.cpp file
