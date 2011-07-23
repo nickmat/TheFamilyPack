@@ -77,6 +77,9 @@ dlgEditReference::dlgEditReference( wxWindow* parent )
 {
     m_listEntities->InsertColumn( COL_Type, _("Type") );
     m_listEntities->InsertColumn( COL_Value, _("Value") );
+    m_listPersona->InsertColumn( PER_COL_Number, _("Number") );
+    m_listPersona->InsertColumn( PER_COL_Name, _("Name") );
+    m_listPersona->InsertColumn( PER_COL_Individuals, _("Individuals") );
 }
 
 bool dlgEditReference::TransferDataToWindow()
@@ -132,6 +135,15 @@ bool dlgEditReference::TransferDataToWindow()
             m_listEntities->SetItem( i, COL_Value, _("Unknown Reference Entity") );
         }
     }
+    m_listEntities->SetColumnWidth( COL_Value, -1 );
+
+    m_personaIDs = m_reference.GetPersonaList();
+    for( size_t i = 0 ; i < m_personaIDs.size() ; i++ ) {
+        m_listPersona->InsertItem( i, recPersona::GetIdStr( m_personaIDs[i] ) );
+        m_listPersona->SetItem( i, PER_COL_Name, recPersona::GetNameStr( m_personaIDs[i] ) );
+        m_listPersona->SetItem( i, PER_COL_Individuals, recPersona::GetIndividualIdStr( m_personaIDs[i] ) );
+    }
+    m_listPersona->SetColumnWidth( PER_COL_Name, -1 );
     return true;
 }
 
@@ -185,6 +197,48 @@ void dlgEditReference::DoUndo()
 void dlgEditReference::DoRedo()
 {
     m_textCtrlStatement->Redo();
+}
+
+void dlgEditReference::OnPersonaAddButton( wxCommandEvent& event )
+{
+    wxMessageBox(
+        wxT("Not yet implimented"),
+        wxT("OnPersonaAddButton")
+    );
+}
+
+void dlgEditReference::OnPersonaEditButton( wxCommandEvent& event )
+{
+//    wxMessageBox(
+//        wxT("Not yet implimented"),
+//        wxT("OnPersonaEditButton")
+//    );
+    const wxString savepoint = "RefEdPer";
+    long row = m_listPersona->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row < 0 ) {
+        wxMessageBox( _("No row selected"), _("Edit Entity") );
+        return;
+    }
+
+    dlgEditPersona* dialog = new dlgEditPersona( NULL );
+    dialog->SetPersonaID( m_personaIDs[row] );
+
+    recDb::Savepoint( savepoint );
+    if( dialog->ShowModal() == wxID_OK )
+    {
+        recDb::ReleaseSavepoint( savepoint );
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+}
+
+void dlgEditReference::OnPersonaDeleteButton( wxCommandEvent& event )
+{
+    wxMessageBox(
+        wxT("Not yet implimented"),
+        wxT("OnPersonaDeleteButton")
+    );
 }
 
 void dlgEditReference::OnAddButton( wxCommandEvent& event )

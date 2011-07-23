@@ -39,6 +39,7 @@
 
 
 #include <rec/recPersona.h>
+#include <rec/recIndividual.h>
 
 recPersona::recPersona( const recPersona& p )
 {
@@ -132,6 +133,37 @@ idt recPersona::GetDefaultNameID( idt id )
     return 0;
 }
 
+recNameVec recPersona::ReadNames( idt perID )
+{
+    recNameVec list;
+    recName name;
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( perID == 0 ) {
+        return list;
+    }
+
+    sql.Format(
+        "SELECT id, style_id, sequence FROM Name WHERE per_id="ID" "
+        "ORDER BY sequence;",
+        perID
+    );
+    result = s_db->GetTable( sql );
+
+    name.f_per_id = perID;
+    list.reserve( result.GetRowCount() );
+    for( int i = 0 ; i < result.GetRowCount() ; i++ )
+    {
+        result.SetRow( i );
+        name.f_id         = GET_ID( result.GetInt64( 0 ) );
+        name.f_style_id   = GET_ID( result.GetInt64( 1 ) );
+        name.f_sequence = (unsigned) result.GetInt( 2 );
+        list.push_back( name );
+    }
+    return list;
+}
+
 recAttributeVec recPersona::ReadAttributes( idt perID )
 {
     recAttributeVec list;
@@ -163,10 +195,10 @@ recAttributeVec recPersona::ReadAttributes( idt perID )
     return list;
 }
 
-recNameVec recPersona::ReadNames( idt perID )
+recEventPersonaVec recPersona::ReadEventPersonas( idt perID )
 {
-    recNameVec list;
-    recName name;
+    recEventPersonaVec list;
+    recEventPersona record;
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
 
@@ -175,21 +207,21 @@ recNameVec recPersona::ReadNames( idt perID )
     }
 
     sql.Format(
-        "SELECT id, style_id, sequence FROM Name WHERE per_id="ID" "
-        "ORDER BY sequence;",
-        perID
+        "SELECT id, event_id, role_id, note FROM EventPersona "
+        "WHERE per_id="ID";", perID
     );
     result = s_db->GetTable( sql );
 
-    name.f_per_id = perID;
     list.reserve( result.GetRowCount() );
+    record.f_per_id = perID;
     for( int i = 0 ; i < result.GetRowCount() ; i++ )
     {
         result.SetRow( i );
-        name.f_id         = GET_ID( result.GetInt64( 0 ) );
-        name.f_style_id   = GET_ID( result.GetInt64( 1 ) );
-        name.f_sequence = (unsigned) result.GetInt( 2 );
-        list.push_back( name );
+        record.f_id       = GET_ID( result.GetInt64( 0 ) );
+        record.f_event_id = GET_ID( result.GetInt64( 1 ) );
+        record.f_role_id  = GET_ID( result.GetInt64( 2 ) );
+        record.f_note     = result.GetAsString( 3 );
+        list.push_back( record );
     }
     return list;
 }
@@ -246,6 +278,19 @@ recIdVec recPersona::GetIndividualIDs( idt perID )
         vec.push_back( GET_ID( result.GetInt64( 0 ) ) );
     }
     return vec;
+}
+
+wxString recPersona::GetIndividualIdStr( idt perID )
+{
+    recIdVec inds = GetIndividualIDs( perID );
+    wxString str;
+    for( size_t i = 0 ; i < inds.size() ; i++ ) {
+        if( i ) {
+            str << ", ";
+        }
+        str << recIndividual::GetIdStr( inds[i] );
+    }
+    return str;
 }
 
 
@@ -614,7 +659,5 @@ wxString recRelationship::GetRelOfPersonaStr( idt perID, idt relID )
     recRelationship rel(relID);
     return rel.GetRelOfPersonaStr( perID );
 }
-
-
 
 // End of recPersona.cpp file

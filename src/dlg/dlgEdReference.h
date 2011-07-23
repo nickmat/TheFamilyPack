@@ -61,6 +61,9 @@ protected:
     enum Column {
         COL_Type, COL_Value, COL_MAX
     };
+    enum PersonaColumn {
+        PER_COL_Number, PER_COL_Name, PER_COL_Individuals, PER_COL_MAX
+    };
     enum {
         ID_EDREF_NEW_SOURCE = 1100,
         ID_EDREF_NEW_EVENT,
@@ -77,6 +80,11 @@ protected:
 
     // Handlers for fbDlgEditReference events.
     void OnTool( wxCommandEvent& event );
+    // Persona tab buttons
+    void OnPersonaAddButton( wxCommandEvent& event );
+    void OnPersonaEditButton( wxCommandEvent& event );
+    void OnPersonaDeleteButton( wxCommandEvent& event );
+    // Entity tab buttons
     void OnAddButton( wxCommandEvent& event );
     void OnEditButton( wxCommandEvent& event );
     void OnDeleteButton( wxCommandEvent& event );
@@ -126,6 +134,7 @@ private:
 
     recReference  m_reference;
     TfpEntities   m_entities;
+    recIdVec      m_personaIDs;
 };
 
 #endif // DLGEDREFERENCE_H

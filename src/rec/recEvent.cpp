@@ -181,14 +181,41 @@ wxString recEvent::GetTypeStr( idt id )
     return recEventType::GetTypeStr( typeID );
 }
 
-wxString recEvent::GetTitle( idt id )
+wxString recEvent::GetTitle( idt evID )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3ResultSet result;
 
-    sql.Format( "SELECT title FROM Event WHERE id="ID";", id );
+    sql.Format( "SELECT title FROM Event WHERE id="ID";", evID );
     result = s_db->ExecuteQuery( sql );
     return result.GetAsString( 0 );
+}
+
+wxString recEvent::GetDateStr( idt evID )
+{
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3ResultSet result;
+    wxString str;
+
+    sql.Format( "SELECT date1_id, date2_id FROM Event WHERE id="ID";", evID );
+    result = s_db->ExecuteQuery( sql );
+    if( result.Eof() ) return str;
+
+    idt date1ID = GET_ID( result.GetInt64( 0 ) );
+    idt date2ID = GET_ID( result.GetInt64( 1 ) );
+    str << recDate::GetStr( date1ID );
+    if( date2ID != 0 ) {
+        str << _(" To ") << recDate::GetStr( date2ID );
+    }
+    return str;
+}
+
+wxString recEvent::GetAddressStr( idt evID )
+{
+    idt placeID = ExecuteID(
+        "SELECT place_id FROM Event WHERE id="ID";", evID
+    );
+    return recPlace::GetAddressStr( placeID );
 }
 
 wxString recEvent::GetNote( idt id )

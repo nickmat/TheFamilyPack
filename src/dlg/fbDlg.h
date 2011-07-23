@@ -367,6 +367,13 @@ class fbDlgEditPersona : public wxDialog
 		wxButton* m_buttonAttrDel;
 		wxButton* m_buttonAttrUp;
 		wxButton* m_buttonAttrDn;
+		wxPanel* m_panel21;
+		wxListCtrl* m_listEvent;
+		wxButton* m_buttonEventAdd;
+		wxButton* m_buttonEventEdit;
+		wxButton* m_buttonEventDel;
+		wxButton* m_buttonEventUp;
+		wxButton* m_buttonEventDn;
 		wxPanel* m_panel4;
 		wxListCtrl* m_listRel;
 		wxButton* m_buttonRelAdd;
@@ -392,6 +399,11 @@ class fbDlgEditPersona : public wxDialog
 		virtual void OnAttrDeleteButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAttrUpButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAttrDownButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEventAddButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEventEditButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEventDeleteButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEventUpButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEventDownButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRelAddButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRelEditButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRelDeleteButton( wxCommandEvent& event ) { event.Skip(); }
@@ -588,7 +600,14 @@ class fbDlgEditReference : public wxDialog
 		wxSplitterWindow* m_splitter1;
 		wxPanel* m_panel7;
 		wxTextCtrl* m_textCtrlStatement;
-		wxPanel* m_panel8;
+		wxPanel* m_panel11;
+		wxNotebook* m_notebook3;
+		wxPanel* m_panelPersona;
+		wxListCtrl* m_listPersona;
+		wxButton* m_buttonPersonaAdd;
+		wxButton* m_buttonPersonaEdit;
+		wxButton* m_buttonPersonaDel;
+		wxPanel* m_panelEntities;
 		wxListCtrl* m_listEntities;
 		wxButton* m_buttonAdd;
 		wxButton* m_buttonEdit;
@@ -602,6 +621,9 @@ class fbDlgEditReference : public wxDialog
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnTool( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnPersonaAddButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnPersonaEditButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnPersonaDeleteButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAddButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnEditButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDeleteButton( wxCommandEvent& event ) { event.Skip(); }

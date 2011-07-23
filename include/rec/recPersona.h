@@ -33,6 +33,7 @@
 #include <rec/recDatabase.h>
 #include <rec/recReference.h>
 #include <rec/recName.h>
+#include <rec/recEvent.h>
 
 class recPersona;
 class recAttribute;
@@ -59,21 +60,31 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "Persona" );
 
+    static wxString GetIdStr( idt perID ) { return wxString::Format( "Pa"ID, perID ); }
+    wxString GetIdStr() const { return GetIdStr( f_id ); }
+
     static idt GetDefaultNameID( idt id );
     idt GetDefaultNameID() const { return GetDefaultNameID( f_id ); }
     static wxString GetNameStr( idt id ) 
         { return recName::GetNameStr( GetDefaultNameID( id ) ); }
     wxString GetNameStr() const { return GetNameStr( f_id ); }
 
-    static recAttributeVec ReadAttributes( idt perID );
-    recAttributeVec ReadAttributes() const { return ReadAttributes( f_id ); }
     static recNameVec ReadNames( idt perID );
     recNameVec ReadNames() const { return ReadNames( f_id ); }
+
+    static recAttributeVec ReadAttributes( idt perID );
+    recAttributeVec ReadAttributes() const { return ReadAttributes( f_id ); }
+
+    static recEventPersonaVec ReadEventPersonas( idt perID );
+    recEventPersonaVec ReadEventPersonas() const { return ReadEventPersonas( f_id ); }
+
     static recRelationshipVec ReadRelationships( idt perID );
     recRelationshipVec ReadRelationships() { return ReadRelationships( f_id ); }
 
     static recIdVec GetIndividualIDs( idt perID );
     recIdVec GetIndividualIDs() const { return GetIndividualIDs( f_id ); }
+    static wxString GetIndividualIdStr( idt perID );
+    wxString GetIndividualIdStr() const { return GetIndividualIdStr( f_id ); }
 };
 
 inline bool recEquivalent( const recPersona& r1, const recPersona& r2 )

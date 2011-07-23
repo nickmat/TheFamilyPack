@@ -64,14 +64,19 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "Event" );
 
+    static wxString GetIdStr( idt evID ) { return wxString::Format( "E"ID, evID ); }
+    wxString GetIdStr() const { return GetIdStr( f_id ); }
+
     wxString GetDetailStr() const;
     wxString GetTypeStr() const;
     wxString GetDateStr() const;
     wxString GetAddressStr() const;
-    static wxString GetDetailStr( idt id );
-    static wxString GetTypeStr( idt id );
-    static wxString GetTitle( idt id );
-    static wxString GetNote( idt id );
+    static wxString GetDetailStr( idt evID );
+    static wxString GetTypeStr( idt evID );
+    static wxString GetTitle( idt evID );
+    static wxString GetNote( idt evID );
+    static wxString GetDateStr( idt evID );
+    static wxString GetAddressStr( idt evID );
 
     idt FindReferenceID() const { return FindReferenceID( f_id ); }
     static idt FindReferenceID( idt eventID ) {

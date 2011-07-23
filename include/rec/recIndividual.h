@@ -69,6 +69,9 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "Individual" );
 
+    static wxString GetIdStr( idt indID ) { return wxString::Format( "I"ID, indID ); }
+    wxString GetIdStr() const { return GetIdStr( f_id ); }
+
     void UpdateDateEpitaph();
     wxString GetFullName() { return f_given + " " + f_surname; }
 

@@ -60,6 +60,12 @@ dlgEditPersona::dlgEditPersona( wxWindow* parent ) : fbDlgEditPersona( parent )
     m_listAttr->InsertColumn( 1, itemCol );
     m_listRel->InsertColumn( 1, itemCol );
 
+    m_listEvent->InsertColumn( EV_COL_Number, _("Number") );
+    m_listEvent->InsertColumn( EV_COL_Role, _("Role") );
+    m_listEvent->InsertColumn( EV_COL_Title, _("Title") );
+    m_listEvent->InsertColumn( EV_COL_Date, _("Date") );
+    m_listEvent->InsertColumn( EV_COL_Place, _("Place") );
+
     m_persona.Clear();
 }
 
@@ -89,6 +95,15 @@ bool dlgEditPersona::TransferDataToWindow()
     for( size_t i = 0 ; i < m_attributes.size() ; i++ ) {
         m_listAttr->InsertItem( i, recAttributeType::GetTypeStr( m_attributes[i].f_type_id ) );
         m_listAttr->SetItem( i, COL_Value, m_attributes[i].f_val );
+    }
+
+    m_evpers = m_persona.ReadEventPersonas();
+    for( size_t i = 0 ; i < m_evpers.size() ; i++ ) {
+        m_listEvent->InsertItem( i, recEvent::GetIdStr( m_evpers[i].f_event_id ) );
+        m_listEvent->SetItem( i, EV_COL_Role, recEventTypeRole::GetName( m_evpers[i].f_role_id ) );
+        m_listEvent->SetItem( i, EV_COL_Title, recEvent::GetTitle( m_evpers[i].f_event_id ) );
+        m_listEvent->SetItem( i, EV_COL_Date, recEvent::GetDateStr( m_evpers[i].f_event_id ) );
+        m_listEvent->SetItem( i, EV_COL_Place, recEvent::GetAddressStr( m_evpers[i].f_event_id ) );
     }
 
     m_relationships = m_persona.ReadRelationships();
