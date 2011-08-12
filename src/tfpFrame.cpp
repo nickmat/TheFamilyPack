@@ -190,8 +190,7 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     m_html = new wxHtmlWindow( this );
     m_html->SetRelatedStatusBar( 0 );
 
-    m_dbTitleFmt = wxEmptyString;
-    SetDatabaseOpen( m_dbTitleFmt, false );
+    SetNoDatabase();
 
     m_prn = new wxHtmlEasyPrinting( _("Easy Printing Demo"), this );
 
@@ -237,8 +236,7 @@ void TfpFrame::OnOpenFile( wxCommandEvent& event )
 void TfpFrame::OnCloseFile( wxCommandEvent& event )
 {
     recDb::CloseDb();
-    m_dbTitleFmt = wxEmptyString;
-    SetDatabaseOpen( m_dbTitleFmt, false );
+    SetNoDatabase();
     m_html->LoadPage( wxT("memory:startup.htm") );
 }
 
@@ -637,7 +635,7 @@ void TfpFrame::NewFile()
         unsigned flags = recDb::CREATE_DB_STD_EXT | recDb::CREATE_DB_ENUM_FN;
         if( recDb::CreateDb( path, flags ) == true )
         {
-            SetDatabaseOpen( path, true );
+            SetDatabaseOpen( path );
             DisplayHtmPage( "F1" );
         }
     }
@@ -656,7 +654,7 @@ void TfpFrame::OpenFile()
         wxString path = dialog.GetPath();
         if( recDb::OpenDb( path ) == true )
         {
-            SetDatabaseOpen( path, true );
+            SetDatabaseOpen( path );
             DisplayHtmPage( wxT("F1") );
         }
     }
@@ -667,30 +665,31 @@ void TfpFrame::ImportGedcom()
     wxMessageBox( wxT("Not yet implimented"), wxT("ImportGedcom") );
 }
 
-void TfpFrame::SetDatabaseOpen( wxString& path, bool open )
+void TfpFrame::SetDatabaseOpen( wxString& path )
 {
-    if( open ) {
-        wxFileName dbfile( path );
-        m_dbFileName = dbfile.GetFullPath();
-        m_dbTitleFmt = wxString::Format( "TFP: %s, %%s", dbfile.GetName() );
-        m_html->SetRelatedFrame( this, m_dbTitleFmt );
-        SetMenuBar( m_menuOpenDB );
-        m_toolbar->EnableTool( tfpID_LIST_SURNAME_INDEX, true );
-        m_toolbar->EnableTool( tfpID_LIST_REFERENCES, true );
-        m_toolbar->EnableTool( tfpID_GOTO_HOME, true );
-    } else {
-        m_dbFileName = wxEmptyString;
-        m_dbTitleFmt = wxEmptyString;
-        m_html->SetRelatedFrame( this, "The Family Pack" );
-        SetMenuBar( m_menuClosedDB );
-        m_toolbar->EnableTool( tfpID_LIST_SURNAME_INDEX, false );
-        m_toolbar->EnableTool( tfpID_LIST_REFERENCES, false );
-        m_toolbar->EnableTool( tfpID_GOTO_HOME, false );
-        m_back.clear();
-        m_toolbar->EnableTool( tfpID_FIND_BACK, false );
-        m_forward.clear();
-        m_toolbar->EnableTool( tfpID_FIND_FORWARD, false );
-    }
+    wxFileName dbfile( path );
+    m_dbFileName = dbfile.GetFullPath();
+    m_dbTitleFmt = wxString::Format( "TFP: %s, %%s", dbfile.GetName() );
+    m_html->SetRelatedFrame( this, m_dbTitleFmt );
+    SetMenuBar( m_menuOpenDB );
+    m_toolbar->EnableTool( tfpID_LIST_SURNAME_INDEX, true );
+    m_toolbar->EnableTool( tfpID_LIST_REFERENCES, true );
+    m_toolbar->EnableTool( tfpID_GOTO_HOME, true );
+}
+
+void TfpFrame::SetNoDatabase()
+{
+    m_dbFileName = wxEmptyString;
+    m_dbTitleFmt = wxEmptyString;
+    m_html->SetRelatedFrame( this, "%s" );
+    SetMenuBar( m_menuClosedDB );
+    m_toolbar->EnableTool( tfpID_LIST_SURNAME_INDEX, false );
+    m_toolbar->EnableTool( tfpID_LIST_REFERENCES, false );
+    m_toolbar->EnableTool( tfpID_GOTO_HOME, false );
+    m_back.clear();
+    m_toolbar->EnableTool( tfpID_FIND_BACK, false );
+    m_forward.clear();
+    m_toolbar->EnableTool( tfpID_FIND_FORWARD, false );
 }
 
 bool TfpFrame::DisplayHtmPage( const wxString& name )

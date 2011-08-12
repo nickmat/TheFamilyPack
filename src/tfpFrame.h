@@ -109,7 +109,8 @@ private:
     void OpenFile();
     void ImportGedcom();
 
-    void SetDatabaseOpen( wxString& path, bool open );
+    void SetDatabaseOpen( wxString& path );
+    void SetNoDatabase();
     bool DisplayHtmPage( const wxString& name );
     wxString GetDisplayText( const wxString& name );
     void RefreshHtmPage();
