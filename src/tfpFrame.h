@@ -54,7 +54,7 @@ private:
     wxArrayString       m_forward;
     wxHtmlWindow*       m_html;
     wxHtmlEasyPrinting* m_prn;
-    wxString            m_dbTitleFmt;
+//    wxString            m_dbTitleFmt;
     wxString            m_dbFileName;
     wxString            m_ctxmenuref;
     recIdList           m_ctxmenuIDs;

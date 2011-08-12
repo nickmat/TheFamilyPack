@@ -669,8 +669,10 @@ void TfpFrame::SetDatabaseOpen( wxString& path )
 {
     wxFileName dbfile( path );
     m_dbFileName = dbfile.GetFullPath();
-    m_dbTitleFmt = wxString::Format( "TFP: %s, %%s", dbfile.GetName() );
-    m_html->SetRelatedFrame( this, m_dbTitleFmt );
+//    m_dbTitleFmt = wxString::Format( "TFP: %s, %%s", dbfile.GetName() );
+//    m_html->SetRelatedFrame( this, m_dbTitleFmt );
+    wxString fmt( wxString::Format( "TFP: %s, %%s", dbfile.GetName() ) );
+    m_html->SetRelatedFrame( this, fmt );
     SetMenuBar( m_menuOpenDB );
     m_toolbar->EnableTool( tfpID_LIST_SURNAME_INDEX, true );
     m_toolbar->EnableTool( tfpID_LIST_REFERENCES, true );
@@ -680,7 +682,7 @@ void TfpFrame::SetDatabaseOpen( wxString& path )
 void TfpFrame::SetNoDatabase()
 {
     m_dbFileName = wxEmptyString;
-    m_dbTitleFmt = wxEmptyString;
+//    m_dbTitleFmt = wxEmptyString;
     m_html->SetRelatedFrame( this, "%s" );
     SetMenuBar( m_menuClosedDB );
     m_toolbar->EnableTool( tfpID_LIST_SURNAME_INDEX, false );
