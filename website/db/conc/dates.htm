@@ -76,7 +76,15 @@
  The database will keep a record of the calendar scheme that the date was originally recorded in <span class="field">[record_sch]</span> (where known) as well as the preferred scheme normally used to display the date <span class="field">[display_sch]</span>. The concept of a calendar scheme covers the Julian and Gregory calendars as well as the short lived French Revolutionary Calender and other world styles. It will also extend the concept to country schemes, which will cover the change over from the Julian to Gregory calendar. So the English Calendar scheme which follows the Julian Calendar up until 2nd September 1752, when the change over to the Gregorian Calendar occurs. It will also take into account the 25th March new year in England.
 </p>
 <p>
- There may be occasions when it is not possible to interpret a particular date, either because the system does not yet cater for that scheme or the scheme cannot be determined. In this case the scheme is held as a text description <span class="field">[desc]</span>. Such dates cannot be sorted and so will normally appear at the beginning of date sorted lists.
+ There may be occasions when it is not possible to interpret a particular date, either because the system does not yet cater for that scheme or the scheme cannot be determined. In this case the date is held as a text description <span class="field">[desc]</span>. Such dates cannot be sorted and so will normally appear at the beginning of date sorted lists.
+</p>
+
+<h2>Relative Dates</h2>
+<p>
+ Very often documents contain relative dates, commonly in the form of a persons age. In modern western cultures a persons age is invariably given as the age in years on their last birthday. It follows that if you have a document with a persons age and you know when the document was created, you have the persons date of birth to within a year (or if the documents date is uncertain, then that date's range uncertainty range plus a year). By recording a relative date, it is possible to record the exact nature of the original information. Also, if it is found necessary to change the original base date, all relative dates that rely on it will automatically be updated as well. 
+</p>
+<p>
+ A relative date behaves exactly as a fixed date in all respects, including being used as the base date for another relative date. 
 </p>
 
 </div>
