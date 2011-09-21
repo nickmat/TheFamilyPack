@@ -42,6 +42,8 @@
 #include <rec/recDate.h>
 #include <rec/recPlace.h>
 #include <rec/recEvent.h>
+#include <rec/recPersona.h>
+#include <rec/recName.h>
 
 
 recIndividual::recIndividual( const recIndividual& i )
@@ -216,6 +218,16 @@ void recIndividual::UpdateDateEpitaph()
     f_epitaph = epi;
 }
 
+void recIndividual::UpdateNames()
+{
+    if( f_per_id == 0 ) return;
+
+    idt nameID = recPersona::GetDefaultNameID( f_per_id );
+    f_surname = recName::GetSurname( nameID );
+    if( f_surname.length() == 0 ) f_surname = "?";
+    f_given = recName::GetNamePartStr( nameID, NAME_TYPE_Given_name );
+    if( f_given.length() == 0 ) f_given = "?";
+}
 
 wxString recIndividual::GetFullName( idt id )
 {
@@ -437,6 +449,30 @@ wxSQLite3Table recIndividual::GetNameTable( Sex sex )
         );
     }
     return s_db->GetTable( sql );
+}
+
+void recIndividual::AddMissingFamilies()
+{
+    wxSQLite3ResultSet result;
+    recFamily fam(0);
+    recIndividual ind;
+
+    result = s_db->ExecuteQuery( "SELECT id FROM Individual WHERE fam_id=0;" );
+    while( result.NextRow() ) {
+        ind.f_id = GET_ID( result.GetInt64( 0 ) );
+        ind.Read();
+        fam.f_id = 0;
+        if( ind.f_sex == SEX_Female ) {
+            fam.f_husb_id = 0;
+            fam.f_wife_id = ind.f_id;
+        } else {
+            fam.f_husb_id = ind.f_id;
+            fam.f_wife_id = 0;
+        }
+        fam.Save();
+        ind.f_fam_id = fam.f_id;
+        ind.Save();
+    }
 }
 
 //----------------------------------------------------------

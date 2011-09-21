@@ -73,10 +73,14 @@ public:
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     void UpdateDateEpitaph();
+    void UpdateNames();
     wxString GetFullName() { return f_given + " " + f_surname; }
 
     static idt GetDefaultFamily( idt id ) {
         return ExecuteID( "SELECT fam_id FROM Individual WHERE id="ID";", id );
+    }
+    static idt GetDefaultPersonaId( idt id ) {
+        return ExecuteID( "SELECT per_id FROM Individual WHERE id="ID";", id );
     }
     static wxString GetFullName( idt id );
     static wxString GetSurname( idt id );
@@ -107,6 +111,8 @@ public:
     }
     static wxSQLite3ResultSet GetNameList( wxString name );
     static wxSQLite3Table GetNameTable( Sex sex );
+
+    static void AddMissingFamilies();
 };
 
 inline bool recEquivalent( const recIndividual& r1, const recIndividual& r2 )

@@ -66,6 +66,9 @@ wxString tfpWritePersonIndex( WrIndex type )
         while( result.NextRow() )
 		{
             name = result.GetAsString( 0 );
+            if( name.length() == 0 ) {
+                name = "?";
+            }
             if( name.GetChar(0) != letter )
             {
                 letter = name.GetChar(0);

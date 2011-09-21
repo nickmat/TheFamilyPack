@@ -183,12 +183,14 @@ class recEventTypeRole : public recDb
 {
 public:
     enum Role {  // predefined entries, only given if reqired by the program
-        ROLE_Unstated       = 0,
-        ROLE_Birth_Born     = -1,
-        ROLE_Death_Died     = -5,
-        ROLE_Marriage_Groom = -7,
-        ROLE_Marriage_Bride = -8,
-        ROLE_MAX            = 5 // size of list
+        ROLE_Unstated         = 0,
+        ROLE_Birth_Born       = -1,
+        ROLE_Baptism_Baptised = -21,
+        ROLE_Death_Died       = -5,
+        ROLE_Burial_Deceased  = -26,
+        ROLE_Marriage_Groom   = -7,
+        ROLE_Marriage_Bride   = -8,
+        ROLE_MAX              = 7 // size of list
     };
 
     idt      f_type_id;

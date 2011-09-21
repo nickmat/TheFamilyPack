@@ -47,6 +47,7 @@
 #include "tfpFrame.h"
 #include "tfpApp.h"
 #include "tfpVersion.h"
+#include "tfpRd.h"
 #include "tfpWr.h"
 #include "dlg/dlgEd.h"
 
@@ -244,7 +245,12 @@ void TfpFrame::OnCloseFile( wxCommandEvent& event )
  */
 void TfpFrame::OnImportGedcom( wxCommandEvent& event )
 {
-    ImportGedcom();
+    try {
+        ImportGedcom();
+    } catch( wxSQLite3Exception& e ) {
+        recDb::ErrorMessage( e );
+        recDb::Rollback();
+    }
 }
 
 /*! \brief Called on a Export Html menu option event.
@@ -662,15 +668,29 @@ void TfpFrame::OpenFile()
 
 void TfpFrame::ImportGedcom()
 {
-    wxMessageBox( wxT("Not yet implimented"), wxT("ImportGedcom") );
+    wxString caption = _("Select GEDCOM file");
+    wxString wildcard = "GEDCOM (*.ged)|*.ged";
+    wxString defaultDir = ".";
+    wxString defaultFName = wxEmptyString;
+
+    wxFileDialog dialog( this, caption, defaultDir, defaultFName, wildcard, wxFD_OPEN );
+    if( dialog.ShowModal() == wxID_OK )
+    {
+        wxString path = dialog.GetPath();
+        if( tfpReadGedcom( path ) )
+        {
+            SetDatabaseOpen( path );
+            DisplayHtmPage( "F1" );
+        } else {
+            wxMessageBox( _("Error Reading GEDCOM File"), _("Import") );
+        }
+    }
 }
 
 void TfpFrame::SetDatabaseOpen( wxString& path )
 {
     wxFileName dbfile( path );
     m_dbFileName = dbfile.GetFullPath();
-//    m_dbTitleFmt = wxString::Format( "TFP: %s, %%s", dbfile.GetName() );
-//    m_html->SetRelatedFrame( this, m_dbTitleFmt );
     wxString fmt( wxString::Format( "TFP: %s, %%s", dbfile.GetName() ) );
     m_html->SetRelatedFrame( this, fmt );
     SetMenuBar( m_menuOpenDB );
@@ -682,7 +702,6 @@ void TfpFrame::SetDatabaseOpen( wxString& path )
 void TfpFrame::SetNoDatabase()
 {
     m_dbFileName = wxEmptyString;
-//    m_dbTitleFmt = wxEmptyString;
     m_html->SetRelatedFrame( this, "%s" );
     SetMenuBar( m_menuClosedDB );
     m_toolbar->EnableTool( tfpID_LIST_SURNAME_INDEX, false );
