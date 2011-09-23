@@ -48,7 +48,7 @@ const wxChar* tfpVersion = VERSION;
 /*! A string containing a long hand version name and copyright message.
  */
 const wxChar* tfpTitle = wxT("The Family Pack - Version ") VERSION wxT("\n")
-                         wxT("Copyright (c) 2010 Nick Matthews\n\n");
+                         wxT("Copyright (c) 2010, 2011 Nick Matthews\n\n");
 
 /*************************************************************************//**
 

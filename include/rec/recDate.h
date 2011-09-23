@@ -64,6 +64,11 @@ public:
         BASE_STYLE_AgeRoundDown,
         BASE_STYLE_Max
     };
+    enum DatePoint {
+        DATE_POINT_Beg,
+        DATE_POINT_Mid,
+        DATE_POINT_End
+    };
 
     static int      sm_count;       // Limit the number of recusive lookups 
 
@@ -110,6 +115,8 @@ public:
     wxString GetStr( CalendarScheme sch = CALENDAR_SCH_Unstated ) const;
     static wxString GetStr( idt id );
     int GetYear( CalendarScheme sch = CALENDAR_SCH_Unstated );
+    long GetDatePoint( DatePoint dp );
+    static long GetDatePoint( idt id, DatePoint dp );
 
     unsigned GetTypePrefix() const {
         return f_type & ( FLG_AFTER | FLG_RANGE | FLG_BEFORE ); 

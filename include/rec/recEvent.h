@@ -49,7 +49,6 @@ class recEvent : public recDb
 public:
     wxString f_title;
     idt      f_type_id;
-    long     f_sort_jdn;
     idt      f_date1_id;
     idt      f_date2_id;
     idt      f_place_id;
@@ -95,7 +94,6 @@ inline bool recEquivalent( const recEvent& r1, const recEvent& r2 )
     return
         r1.f_title    == r2.f_title    &&
         r1.f_type_id  == r2.f_type_id  &&
-        r1.f_sort_jdn == r2.f_sort_jdn &&
         r1.f_date1_id == r2.f_date1_id &&
         r1.f_date2_id == r2.f_date2_id &&
         r1.f_place_id == r2.f_place_id &&
@@ -235,10 +233,11 @@ inline bool operator!=( const recEventTypeRole& r1, const recEventTypeRole& r2 )
 class recEventPersona : public recDb
 {
 public:
-    idt     f_event_id;
-    idt     f_per_id;
-    idt     f_role_id;
+    idt      f_event_id;
+    idt      f_per_id;
+    idt      f_role_id;
     wxString f_note;
+    int     f_sequence;
 
     recEventPersona() {}
     recEventPersona( idt id ) : recDb(id) { Read(); }
@@ -261,7 +260,8 @@ inline bool recEquivalent( const recEventPersona& r1, const recEventPersona& r2 
         r1.f_event_id == r2.f_event_id &&
         r1.f_per_id   == r2.f_per_id   &&
         r1.f_role_id  == r2.f_role_id  &&
-        r1.f_note     == r2.f_note;
+        r1.f_note     == r2.f_note     &&
+        r1.f_sequence == r2.f_sequence;
 }
 
 inline bool operator==( const recEventPersona& r1, const recEventPersona& r2 )

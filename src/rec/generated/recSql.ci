@@ -92,7 +92,6 @@ static const char* createdb =  /* recCreate.sql */
  "CREATE TABLE Event (\n"
  "  id INTEGER PRIMARY KEY,\n"
  "  title TEXT,\n"
- "  sort_jdn INTEGER,\n"
  "  type_id INTEGER,\n"
  "  date1_id INTEGER,\n"
  "  date2_id INTEGER,\n"
@@ -104,7 +103,8 @@ static const char* createdb =  /* recCreate.sql */
  "  event_id INTEGER,\n"
  "  per_id INTEGER,\n"
  "  role_id INTEGER,\n"
- "  note TEXT\n"
+ "  note TEXT,\n"
+ "  sequence INTEGER\n"
  ");\n"
  "CREATE TABLE EventType (\n"
  "  id INTEGER PRIMARY KEY,\n"
@@ -328,7 +328,7 @@ static const char* createdb =  /* recCreate.sql */
  "  revision INTEGER,\n"
  "  test INTEGER\n"
  ");\n"
- "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 0);\n"
+ "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 1);\n"
  "COMMIT;\n";
 
 /* End of recSql.f2c */

@@ -258,6 +258,37 @@ int recDate::GetYear( CalendarScheme scheme )
     return year;
 }
 
+long recDate::GetDatePoint( DatePoint dp )
+{
+    long jdn, jdn1, jdn2;
+    unsigned prefix;
+    CalendarScheme sch = f_display_sch;
+    sm_count = recDate_MAX_RECURSION_COUNT;
+
+    GetJdn1Jdn2( jdn1, jdn2, prefix, sch );
+    switch( dp )
+    {
+    case DATE_POINT_Beg:
+        jdn = jdn1;
+        break;
+    case DATE_POINT_Mid:
+        jdn = ( jdn1 + jdn2 ) / 2;
+        break;
+    case DATE_POINT_End:
+        jdn = jdn2;
+        break;
+    default:
+        jdn = 0;
+    }
+    return jdn;
+}
+
+long recDate::GetDatePoint( idt id, DatePoint dp )
+{
+    recDate date(id);
+    return date.GetDatePoint( dp );
+}
+
 void recDate::GetJdn1Jdn2( long& jdn1, long& jdn2, unsigned& prefix, CalendarScheme scheme ) const
 {
     --sm_count;

@@ -491,7 +491,6 @@ void RecTestCase::TestEvent()
     record1.f_id = 0;
 
     record1.f_title = "Marriage";
-    record1.f_sort_jdn = 2432999L;
     record1.f_type_id = 2;
     record1.f_date1_id = 3;
     record1.f_date2_id = 4;
@@ -508,7 +507,6 @@ void RecTestCase::TestEvent()
     CPPUNIT_ASSERT( record1 == record2 );
 
     record1.f_title = "Birth";
-    record1.f_sort_jdn = 2433111L;
     record1.f_type_id = 20;
     record1.f_date1_id = 15;
     record1.f_date2_id = 16;
@@ -653,6 +651,7 @@ void RecTestCase::TestEventPersona()
     record1.f_event_id = 4;
     record1.f_role_id = 5;
     record1.f_note = "Good person";
+    record1.f_sequence = 123;
     // f_id = 0 so create new record and set f_id to new value.
     record1.Save();
     id = record1.f_id;
@@ -667,6 +666,7 @@ void RecTestCase::TestEventPersona()
     record1.f_event_id = 18;
     record1.f_role_id = 17;
     record1.f_note = "Who he?";
+    record1.f_sequence = 321;
     // f_id = 1 which exists, so amend record leaving f_id to old value.
     record1.Save();
     CPPUNIT_ASSERT( record1.f_id == id );

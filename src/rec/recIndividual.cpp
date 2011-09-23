@@ -355,7 +355,7 @@ wxSQLite3Table recIndividual::GetEventsTable( idt id )
         "SELECT DISTINCT event_id, role_id FROM EventPersona "
         "INNER JOIN "
         "(SELECT per_id FROM IndividualPersona WHERE ind_id="ID") "
-        "USING(per_id);",
+        "USING(per_id) ORDER BY sequence;",
         id
     );
     return s_db->GetTable( sql );

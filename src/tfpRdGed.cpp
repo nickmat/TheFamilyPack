@@ -46,6 +46,7 @@
 #include "rec/recPersona.h"
 #include "rec/recDate.h"
 #include "rec/recPlace.h"
+#include "rec/recEvent.h"
 #include "cal/calendar.h"
 
 class GedcomFile : public wxTextInputStream
@@ -113,6 +114,7 @@ public:
 
     idt GetPersonaID() const { return m_per.f_id; }
     int GetNameSeq() { return ++m_nameSeq; }
+    wxString GetNameStr() const { return m_per.GetNameStr(); }
 
     void SetIndId( idt indID ) { m_ind.f_id = m_pi.f_ind_id = indID; }
     void SetSex( Sex sex ) { m_ind.f_sex = m_per.f_sex = sex; }
@@ -161,6 +163,8 @@ public:
 
     idt GetHusbPerId() const { return m_husbPerId; }
     idt GetWifePerId() const { return m_wifePerId; }
+    wxString GetHusbNameStr() const { return recPersona::GetNameStr( m_husbPerId ); }
+    wxString GetWifeNameStr() const { return recPersona::GetNameStr( m_wifePerId ); }
 
     void UpdateIndividual( idt* p_perID, idt indID );
     void Save() { m_fam.Save(); }
@@ -325,6 +329,8 @@ static void ReadIndEvent( GedcomFile& ged, GedIndividual& gind, int level )
     recEventPersona ep(0);
     ep.f_event_id = ev.f_id;
     ep.f_per_id = gind.GetPersonaID();
+    wxString titlefmt;
+    recDate::DatePoint dp;
 
     switch( ged.GetTag() )
     {
@@ -332,21 +338,29 @@ static void ReadIndEvent( GedcomFile& ged, GedIndividual& gind, int level )
         ev.f_type_id = recEventType::ET_Birth;
         ep.f_role_id = recEventTypeRole::ROLE_Birth_Born;
         gind.OpSetBirthId( ev.f_id );
+        titlefmt = _("Birth of %s");
+        dp = recDate::DATE_POINT_Beg;
         break;
     case GedcomFile::tagCHR:
         ev.f_type_id = recEventType::ET_Baptism;
         ep.f_role_id = recEventTypeRole::ROLE_Baptism_Baptised;
         gind.OpSetNrBirthId( ev.f_id );
+        titlefmt = _("Baptism of %s");
+        dp = recDate::DATE_POINT_Beg;
         break;
     case GedcomFile::tagDEAT:
         ev.f_type_id = recEventType::ET_Death;
         ep.f_role_id = recEventTypeRole::ROLE_Death_Died;
         gind.OpSetDeathId( ev.f_id );
+        titlefmt = _("Death of %s");
+        dp = recDate::DATE_POINT_End;
         break;
     case GedcomFile::tagBURI:
         ev.f_type_id = recEventType::ET_Burial;
         ep.f_role_id = recEventTypeRole::ROLE_Burial_Deceased;
         gind.OpSetNrDeathId( ev.f_id );
+        titlefmt = _("Burial of %s");
+        dp = recDate::DATE_POINT_End;
         break;
     default:
         return; // do nothing
@@ -370,7 +384,9 @@ static void ReadIndEvent( GedcomFile& ged, GedIndividual& gind, int level )
         }
         cont = ged.ReadNextLine();
     }
+    ev.f_title = wxString::Format( titlefmt, gind.GetNameStr() );
     ev.Save();
+    ep.f_sequence = recDate::GetDatePoint( ev.f_date1_id, dp );
     ep.Save();
 }
 
@@ -409,6 +425,7 @@ static void ReadFamEvent( GedcomFile& ged, GedFamily& gfam, int level )
 {
     recEvent ev(0);
     ev.Save(); // We need the id number
+    wxString titlefmt;
 
     recEventPersona epHusb(0);
     epHusb.f_event_id = ev.f_id;
@@ -425,6 +442,7 @@ static void ReadFamEvent( GedcomFile& ged, GedFamily& gfam, int level )
         epHusb.f_role_id = recEventTypeRole::ROLE_Marriage_Groom;
         epWife.f_role_id = recEventTypeRole::ROLE_Marriage_Bride;
         gfam.SetEventId( ev.f_id );
+        titlefmt = _("Marriage of %s and %s");
         break;
     default:
         return; // do nothing
@@ -449,7 +467,10 @@ static void ReadFamEvent( GedcomFile& ged, GedFamily& gfam, int level )
         cont = ged.ReadNextLine();
     }
 
+    ev.f_title = wxString::Format( titlefmt, gfam.GetHusbNameStr(), gfam.GetWifeNameStr() );
     ev.Save();
+    epHusb.f_sequence = epWife.f_sequence = 
+        recDate::GetDatePoint( ev.f_date1_id, recDate::DATE_POINT_Mid );
     epHusb.Save();
     epWife.Save();
 }

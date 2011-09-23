@@ -370,11 +370,6 @@
      <td>The name of the Event, such as "Marriage of John Smith and Mary Jones".</td>
     </tr>
     <tr>
-     <td>sort_jdn</td>
-     <td>Integer</td>
-     <td>Redundant field calulated from dates and event type group, used to sort events.</td>
-    </tr>
-    <tr>
      <td>type_id</td>
      <td>Integer</td>
      <td>Unique identifier that indicates to which Event Type this event belongs.</td>
@@ -430,6 +425,11 @@
      <td>note</td>
      <td>Text</td>
      <td>Optional note that relates to the Persona</td>
+    <tr>
+     <td>sequence</td>
+     <td>Integer</td>
+     <td>A number to give the sequence of events for a given Persona. May be calulated from the Event date.</td>
+    </tr>
     </tr>
 
     <tr id="EventType">

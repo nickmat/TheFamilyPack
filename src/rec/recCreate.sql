@@ -103,7 +103,6 @@ CREATE TABLE Date (
 CREATE TABLE Event (
   id INTEGER PRIMARY KEY,
   title TEXT,
-  sort_jdn INTEGER,
   type_id INTEGER,
   date1_id INTEGER,
   date2_id INTEGER,
@@ -116,7 +115,8 @@ CREATE TABLE EventPersona (
   event_id INTEGER,
   per_id INTEGER,
   role_id INTEGER,
-  note TEXT
+  note TEXT,
+  sequence INTEGER
 );
 
 CREATE TABLE EventType (
@@ -385,7 +385,7 @@ CREATE TABLE Version (
 );
 
 /* The Version table has only this one row */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 0);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 1);
 
 COMMIT;
 

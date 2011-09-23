@@ -1,47 +1,14 @@
-TFP Database Version 0.0.8
+Changes log for TFP Database
 
-Changes from Version 0.0.7
 
-Rename PersonaEvent to EventPersona
-  Reorder fields
+TFPD-0.0.9.1  22 Sep 2011
 
-Event
-  Added sort_jdn (int)
-    Redudundant info to speed up sorting event order.
-      Calulated from dates and the type's grp.
+ Remove sort_jdm column from Event table.
 
-EventTypeRole
-  Added prime (bool)
-    To indicate this is a key role
-  Added official (bool)
-    To indicate this is an offical role.
-    This is so that an individual can separate work
-      roles from relationship roles.
+ Add sequence column to EventPersona table.
 
-Add Name table
 
-Add NamePart table
+TFPD-0.0.9.0  28 May 2011
 
-Add NamePartType table
-
-Add NameStyle table
-
-Attribute
-  Remove sequence
-
-Persona
-  Add name_id field
-
-Source
-  Rename sub_date_id to sub_date1_id
-  Add sub_date2_id
-  Reorder fields
-
-Remove SourceGroup
-
-Remove SourceGroupSource
-
-Version
-  Add test field
-
+ Base version for creating an upgrade path
 
