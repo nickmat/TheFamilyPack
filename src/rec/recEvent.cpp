@@ -553,7 +553,7 @@ void recEventPersona::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO EventPersona (id, event_id, per_id, role_id, note, sequence) "
-                "VALUES ("ID", "ID", "ID", "ID", '%q');",
+                "VALUES ("ID", "ID", "ID", "ID", '%q', %d);",
                 f_id, f_event_id, f_per_id, f_role_id, UTF8_(f_note), f_sequence
             );
         } else {

@@ -81,11 +81,16 @@ wxString tfpWriteReferencePage( idt refID )
     recIdVec indIDs;
 
     htm << "<html><head><title>R" << refID
-        << "</title></head><body><h1>" << ref.f_title
-        << "</h1>\n<pre>"
-        << ref.f_statement
-        << "</pre>"
-        << "<a href=$R" << refID
+        << "</title></head><body><h1>" << ref.f_title << "</h1>\n";
+
+    if( ref.f_statement.compare( 0, 9, "<!-- HTML" ) == 0 ) {
+        htm << ref.f_statement;
+    } else { // treat as text
+        htm << "<pre>"
+            << ref.f_statement
+            << "</pre>";
+    }
+    htm << "<a href=$R" << refID
         << "><img src=memory:edit.bmp></a><br>";
 
     for( size_t i = 0 ; i < perIDs.size() ; i++ ) {
