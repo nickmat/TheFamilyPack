@@ -56,8 +56,13 @@ public:
         CREATE_DB_STD_EXT = 0x0001,
         CREATE_DB_ENUM_FN = 0x0002
     };
+    enum Environment {
+        ENV_GUI,
+        ENV_CmdLine
+    };
 protected:
     static wxSQLite3Database* s_db;
+    static Environment        s_env;
     static wxString           s_fname;
 
     /*! Delete the given record in the given table.
@@ -76,7 +81,8 @@ public:
     /*! Constructor with id, reads the record for the given id. */
     recDb( idt id ) : f_id(id) {}
 
-    static void SetDb( wxSQLite3Database* db ) { s_db = db; }
+    static void SetDb( wxSQLite3Database* db, Environment env = ENV_GUI ) 
+        { s_db = db; s_env = env; }
     static wxSQLite3Database* GetDb() { return s_db; }
 
     /*! Creates a new database with the given filename. If the flag
@@ -104,6 +110,10 @@ public:
     /*! Returns the full file name of the currently open database.
      */
     static wxString GetFileName() { return s_fname; }
+
+    /*! Output a message for the correct environment
+     */
+    static void Message( const wxString& mess, const wxString& func );
 
     static void Begin() { s_db->Begin(); }
     static void Commit() { s_db->Commit(); }

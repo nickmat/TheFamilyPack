@@ -188,7 +188,7 @@ bool recVersion::IsLessThan( int major, int minor, int revision, int test ) cons
     return false;
 }
 
-static const char* upgrade0_0_9_0 = 
+static const char* upgrade0_0_9_0 =
     "BEGIN;\n"
 
     "ALTER TABLE Event RENAME TO OldEvent;\n"
@@ -224,23 +224,23 @@ static const char* upgrade0_0_9_0 =
     "COMMIT;\n"
     ;
 
-bool recVersion::TestForUpgrade() 
+bool recVersion::TestForUpgrade()
 {
     if( IsLessThan( 0, 0, 9, 0 ) ) {
-        wxMessageBox(
-            wxString::Format( 
+        recDb::Message(
+            wxString::Format(
                 _("Cannot read old database version %s file."),
-                GetVersionStr() 
+                GetVersionStr()
             ),
             _("Upgrade Test")
         );
         return false;
     }
     if( IsMoreThan( recVerMajor, recVerMinor, recVerRev, recVerTest ) ) {
-        wxMessageBox(
-            wxString::Format( 
+        recDb::Message(
+            wxString::Format(
                 _("Cannot read future database version %s file."),
-                GetVersionStr() 
+                GetVersionStr()
             ),
             _("Upgrade Test")
         );
@@ -250,7 +250,7 @@ bool recVersion::TestForUpgrade()
 }
 
 
-bool recVersion::DoUpgrade() 
+bool recVersion::DoUpgrade()
 {
     wxASSERT( f_id == 1 );
     if( TestForUpgrade() == false ) return false;
