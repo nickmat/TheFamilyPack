@@ -58,6 +58,7 @@ public:
     };
 protected:
     static wxSQLite3Database* s_db;
+    static wxString           s_fname;
 
     /*! Delete the given record in the given table.
      */
@@ -94,11 +95,15 @@ public:
 
     /*! Closes the existing database file.
      */
-    static void CloseDb() { s_db->Close(); }
+    static void CloseDb() { s_db->Close(); s_fname = wxEmptyString; }
 
     /*! Returns true if the database is currently open.
     */
     static bool IsOpen() { return s_db->IsOpen(); }
+
+    /*! Returns the full file name of the currently open database.
+     */
+    static wxString GetFileName() { return s_fname; }
 
     static void Begin() { s_db->Begin(); }
     static void Commit() { s_db->Commit(); }

@@ -191,11 +191,15 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     m_html = new wxHtmlWindow( this );
     m_html->SetRelatedStatusBar( 0 );
 
-    SetNoDatabase();
-
     m_prn = new wxHtmlEasyPrinting( _("Easy Printing Demo"), this );
 
-    m_html->LoadPage( "memory:startup.htm" );
+    if( recDb::IsOpen() ) {
+        SetDatabaseOpen( recDb::GetFileName() );
+        DisplayHtmPage( "F1" );
+    } else {
+        SetNoDatabase();
+        m_html->LoadPage( "memory:startup.htm" );
+    }
 }
 
 /*! \brief Frame destructor.

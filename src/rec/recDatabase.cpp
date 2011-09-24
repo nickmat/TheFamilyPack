@@ -46,6 +46,7 @@
 #include "generated/recSql.ci"
 
 wxSQLite3Database* recDb::s_db = NULL;
+wxString           recDb::s_fname;
 
 wxString recGetSexStr( Sex sex )
 {
@@ -97,6 +98,7 @@ bool recDb::OpenDb( const wxString& fname )
         return false;
     }
     bool success = true;
+    s_fname = fname;
 
     s_db->Open( fname );
     recVersion ver(1);
@@ -105,7 +107,7 @@ bool recDb::OpenDb( const wxString& fname )
     }
     if( success == false ) {
         CloseDb();
-    }
+    } 
     return success;
 }
 

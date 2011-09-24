@@ -63,6 +63,11 @@ bool TfpApp::OnInit()
     tfpLoadMemoryFiles();
 
     recDb::SetDb( new wxSQLite3Database() );
+    if( argc > 1 ) {
+        // 1st comand line argument is assumed to be a database file
+        wxString dbFName( argv[1] );
+        recDb::OpenDb( dbFName );
+    }
 
     TfpFrame* frame = new TfpFrame( wxT("The Family Pack"), wxDefaultPosition, wxSize( 640, 480 ) );
     frame->Show(true);
