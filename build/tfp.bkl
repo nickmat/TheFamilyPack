@@ -156,6 +156,9 @@
   <include file="utils.bkl"/>
   <include file="wxsqlite3_tfp.bkl"/>
   <include file="rec.bkl"/>
-
+<!--
+  Private utility program
+  <include file="tfpnick.bkl"/>
+-->
 </makefile>
 

@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        tfpRdGed.cpp
+ * Name:        rec/recGedParse.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Read GEDCOM import files.
  * Author:      Nick Matthews
@@ -38,35 +38,10 @@
 #endif
 
 #include <wx/wfstream.h>
-
-#include <rec/recGedParse.h>
-#include <rec/recIndividual.h>
-
-#include "tfpRd.h"
-
-
-bool tfpReadGedcom( wxString& path )
-{
-    wxFileInputStream input( path );
-    if( input.IsOk() == false ) return false;
-
-    unsigned flags = recDb::CREATE_DB_STD_EXT | recDb::CREATE_DB_ENUM_FN;
-    if( recDb::CreateDb( path, flags ) == false ) return false;
-
-    recGedParse ged( input );
-    ged.Import();
-    ged.CleanUp();
-
-    return true;
-}
-
-
-#if 0
-#include <wx/wfstream.h>
 #include <wx/txtstrm.h>
 #include <wx/tokenzr.h>
 
-#include "tfpRd.h"
+#include "rec/recGedParse.h"
 #include "rec/recIndividual.h"
 #include "rec/recPersona.h"
 #include "rec/recDate.h"
@@ -74,54 +49,6 @@ bool tfpReadGedcom( wxString& path )
 #include "rec/recEvent.h"
 #include "cal/calendar.h"
 
-class GedcomFile : public wxTextInputStream
-{
-public:
-    enum Tag {
-        tagNULL, // Invalid or unset value.
-        tagINDI, /* Index of INDIVIDUAL, a person */
-        tagFAM,  /* Index of FAMILY, a couple and their children */
-        tagNAME, /* NAME, (one of) the name a person is known by */
-        tagSEX,  /* SEX, M for Male, F for Female */
-        tagBIRT, /* BIRTH, birth event */
-        tagCHR,  /* CHRISTENING, christening or baptism event */
-        tagDEAT, /* DEATH, death event */
-        tagBURI, /* BURIAL, burial event */
-        tagOCCU, /* OCCUPATION, Occupation or Profession attribute */
-        tagDATE, /* DATE, a calender day event */
-        tagPLAC, /* PLACE, a place name (Address) */
-        tagFAMS, /* FAMILY_SPOUSE, family in which a person appears as a spouse. */
-        tagFAMC, /* FAMILY_CHILD, family in which a person appears as a child. */
-        tagHUSB, /* HUSBAND, person - male partner in family */
-        tagWIFE, /* WIFE, person - female partner in family */
-        tagMARR, /* MARRIAGE, marriage event */
-        tagCHIL, /* CHILD, person - (one of) child member of family */
-        tag_PRI, /* PRIVATE, person - if Y, details should not be made public */
-        tagTRLR, // TRAILER, required. It specifies the end of the data, use tag_END
-        tag_END  /* _END, end of file */
-    };
-
-    GedcomFile( wxInputStream& input ) : wxTextInputStream( input ),
-        m_lineNum(0), m_level(0), m_index(0), m_tag(tagNULL),
-        m_ref(0) {}
-
-    int GetLevel() const { return m_level; }
-    int GetIndex() const { return m_index; }
-    Tag GetTag() const { return m_tag; }
-    int GetRef() const { return m_ref; }
-    wxString GetText() const { return m_text; }
-
-    bool ReadNextLine();
-
-private:
-    // Current line
-    int      m_lineNum;
-    int      m_level;
-    unsigned m_index;
-    Tag      m_tag;
-    unsigned m_ref;
-    wxString m_text;
-};
 
 class GedIndividual
 {
@@ -195,96 +122,160 @@ public:
     void Save() { m_fam.Save(); }
 };
 
-static void ReadIndi( GedcomFile& ged, int level );
-static void ReadName( GedcomFile& ged, GedIndividual& gind, int level );
-static void ReadSex( GedcomFile& ged, GedIndividual& gind );
-static void ReadIndEvent( GedcomFile& ged, GedIndividual& gind, int level );
-static void ReadIndAttr( GedcomFile& ged, GedIndividual& gind, int level );
-static void ReadFam( GedcomFile& ged, int level );
-static void ReadFamEvent( GedcomFile& ged, GedFamily& gfam, int level );
-static idt ParseEvPlace( GedcomFile& ged, int level );
-static idt ParseEvDate( GedcomFile& ged, int level );
-
-
-bool tfpReadGedcom( wxString& path )
+bool recGedParse::Import()
 {
-    wxFileInputStream input( path );
-    if( input.IsOk() == false ) return false;
-    GedcomFile ged( input );
-
-    unsigned flags = recDb::CREATE_DB_STD_EXT | recDb::CREATE_DB_ENUM_FN;
-    if( recDb::CreateDb( path, flags ) == false ) return false;
-
     recDb::Begin();
-    bool cont = ged.ReadNextLine();
+    bool cont = ReadNextLine();
     while( cont ) {
-        if( ged.GetLevel() == 0 ) {
-            switch( ged.GetTag() )
+        if( m_level == 0 ) {
+            switch( m_tag )
             {
-            case GedcomFile::tagINDI:
-                ReadIndi( ged, 1 );
+            case tagINDI:
+                ReadIndi( 1 );
                 break;
-            case GedcomFile::tagFAM:
-                ReadFam( ged, 1 );
+            case tagFAM:
+                ReadFam( 1 );
                 break;
-            case GedcomFile::tagTRLR:
-            case GedcomFile::tag_END:
+            case tagTRLR:
+            case tag_END:
                 cont = false;
                 break;
             default:
-                cont = ged.ReadNextLine();
+                cont = ReadNextLine();
             }
         } else {
-            cont = ged.ReadNextLine();
+            cont = ReadNextLine();
         }
     }
-    recIndividual::AddMissingFamilies();
     recDb::Commit();
     return true;
 }
 
-static void ReadIndi( GedcomFile& ged, int level )
+void recGedParse::CleanUp()
+{
+    recDb::Begin();
+    recIndividual::AddMissingFamilies();
+    recDb::Commit();
+}
+
+bool recGedParse::ReadNextLine()
+{
+    wxString str;
+    unsigned long num;
+
+    m_lineNum++;
+    m_level = 0;
+    m_index = 0;
+    m_tag = tagNULL;
+    m_ref = 0;
+    m_text.empty();
+
+    if( m_input.GetInputStream().Eof() == true ) {
+        m_tag = tag_END;
+        return false;
+    }
+
+    wxStringTokenizer tk( m_input.ReadLine() );
+    if( tk.HasMoreTokens() == false ) return false;
+
+    str = tk.GetNextToken();
+    if( str.ToULong( &num ) == false ) return false;
+    m_level = (int) num;
+
+    if( tk.HasMoreTokens() == false ) return false;
+    str = tk.GetNextToken();
+
+    if(      str.Cmp( "TRLR" ) == 0 ) m_tag = tag_END;
+    if( m_tag != tagNULL ) return true;
+
+    if( str[0] == wxS('@') )
+    {
+        m_text = str;
+        str.Mid( 2 ).ToULong( &num );
+        m_index = (unsigned) num;
+
+        if( tk.HasMoreTokens() == false ) return false;
+        str = tk.GetNextToken();
+    }
+
+    if(      str.Cmp( "INDI" ) == 0 ) m_tag = tagINDI;
+    else if( str.Cmp( "FAM"  ) == 0 ) m_tag = tagFAM;
+
+    if( m_tag != tagNULL ) return true;
+
+    if(      str.Cmp( "HUSB" ) == 0 ) m_tag = tagHUSB;
+    else if( str.Cmp( "WIFE" ) == 0 ) m_tag = tagWIFE;
+    else if( str.Cmp( "CHIL" ) == 0 ) m_tag = tagCHIL;
+
+    if( m_tag != tagNULL ) {
+        if( tk.HasMoreTokens() == false ) return false;
+        str = tk.GetNextToken();
+        str.Mid( 2 ).ToULong( &num );
+        m_ref = (unsigned) num;
+        return true;
+    }
+
+    if(      str.Cmp( "NAME" ) == 0 ) m_tag = tagNAME;
+    else if( str.Cmp( "SEX"  ) == 0 ) m_tag = tagSEX;
+    else if( str.Cmp( "BIRT" ) == 0 ) m_tag = tagBIRT;
+    else if( str.Cmp( "CHR"  ) == 0 ) m_tag = tagCHR;
+    else if( str.Cmp( "DEAT" ) == 0 ) m_tag = tagDEAT;
+    else if( str.Cmp( "BURI" ) == 0 ) m_tag = tagBURI;
+    else if( str.Cmp( "OCCU" ) == 0 ) m_tag = tagOCCU;
+    else if( str.Cmp( "DATE" ) == 0 ) m_tag = tagDATE;
+    else if( str.Cmp( "PLAC" ) == 0 ) m_tag = tagPLAC;
+    else if( str.Cmp( "FAMS" ) == 0 ) m_tag = tagFAMS;
+    else if( str.Cmp( "FAMC" ) == 0 ) m_tag = tagFAMC;
+    else if( str.Cmp( "MARR" ) == 0 ) m_tag = tagMARR;
+    else if( str.Cmp( "_PRI" ) == 0 ) m_tag = tag_PRI;
+
+    m_text = tk.GetString();
+
+    return true;
+}
+
+void recGedParse::ReadIndi( int level )
 {
     GedIndividual gind;
-    gind.SetIndId( ged.GetIndex() );
+    gind.SetIndId( m_index );
 
-    bool cont = ged.ReadNextLine();
-    while( cont && ged.GetLevel() >= level ) {
-        if( ged.GetLevel() == level ) {
-            switch( ged.GetTag() )
+    bool cont = ReadNextLine();
+    while( cont && m_level >= level ) {
+        if( m_level == level ) {
+            switch( m_tag )
             {
-            case GedcomFile::tagNAME:
-                ReadName( ged, gind, level+1 );
+            case tagNAME:
+                ReadName( gind, level+1 );
                 continue;
-            case GedcomFile::tagSEX:
-                ReadSex( ged, gind );
+            case tagSEX:
+                ReadSex( gind );
                 continue;
-            case GedcomFile::tagBIRT:
-            case GedcomFile::tagCHR:
-            case GedcomFile::tagDEAT:
-            case GedcomFile::tagBURI:
-                ReadIndEvent( ged, gind, level+1 );
+            case tagBIRT:
+            case tagCHR:
+            case tagDEAT:
+            case tagBURI:
+                ReadIndEvent( gind, level+1 );
                 continue;
-            case GedcomFile::tagOCCU:
-                ReadIndAttr( ged, gind, level+1 );
+            case tagOCCU:
+                ReadIndAttr( gind, level+1 );
                 continue;
-            case GedcomFile::tag_END:
+            case tag_END:
                 cont = false;
                 continue;
             }
         }
-        cont = ged.ReadNextLine();
+        cont = ReadNextLine();
     }
     gind.Save();
 }
 
-static void ReadName( GedcomFile& ged, GedIndividual& gind, int level )
+void recGedParse::ReadName( GedIndividual& gind, int level )
 {
     recName name(0);
     name.f_per_id = gind.GetPersonaID();
     name.f_sequence = gind.GetNameSeq();
     name.Save();
-    wxString nameStr = ged.GetText();
+    wxString nameStr = m_text;
     recNamePart np(0);
     np.f_name_id = name.f_id;
     np.f_type_id = NAME_TYPE_Given_name;
@@ -325,13 +316,13 @@ static void ReadName( GedcomFile& ged, GedIndividual& gind, int level )
     if( np.f_val.length() != 0 ) {
         np.Save();
     }
-    ged.ReadNextLine();
+    ReadNextLine();
 }
 
-static void ReadSex( GedcomFile& ged, GedIndividual& gind )
+void recGedParse::ReadSex( GedIndividual& gind )
 {
     Sex sex;
-    wxString text = ged.GetText();
+    wxString text = m_text;
     switch( (wxChar) text.GetChar( 0 ) )
     {
     case 'M':
@@ -344,10 +335,10 @@ static void ReadSex( GedcomFile& ged, GedIndividual& gind )
         sex = SEX_Unknown;
     }
     gind.SetSex( sex );
-    ged.ReadNextLine();
+    ReadNextLine();
 }
 
-static void ReadIndEvent( GedcomFile& ged, GedIndividual& gind, int level )
+void recGedParse::ReadIndEvent( GedIndividual& gind, int level )
 {
     recEvent ev(0);
     ev.Save(); // We need the id number
@@ -357,30 +348,30 @@ static void ReadIndEvent( GedcomFile& ged, GedIndividual& gind, int level )
     wxString titlefmt;
     recDate::DatePoint dp;
 
-    switch( ged.GetTag() )
+    switch( m_tag )
     {
-    case GedcomFile::tagBIRT:
+    case tagBIRT:
         ev.f_type_id = recEventType::ET_Birth;
         ep.f_role_id = recEventTypeRole::ROLE_Birth_Born;
         gind.OpSetBirthId( ev.f_id );
         titlefmt = _("Birth of %s");
         dp = recDate::DATE_POINT_Beg;
         break;
-    case GedcomFile::tagCHR:
+    case tagCHR:
         ev.f_type_id = recEventType::ET_Baptism;
         ep.f_role_id = recEventTypeRole::ROLE_Baptism_Baptised;
         gind.OpSetNrBirthId( ev.f_id );
         titlefmt = _("Baptism of %s");
         dp = recDate::DATE_POINT_Beg;
         break;
-    case GedcomFile::tagDEAT:
+    case tagDEAT:
         ev.f_type_id = recEventType::ET_Death;
         ep.f_role_id = recEventTypeRole::ROLE_Death_Died;
         gind.OpSetDeathId( ev.f_id );
         titlefmt = _("Death of %s");
         dp = recDate::DATE_POINT_End;
         break;
-    case GedcomFile::tagBURI:
+    case tagBURI:
         ev.f_type_id = recEventType::ET_Burial;
         ep.f_role_id = recEventTypeRole::ROLE_Burial_Deceased;
         gind.OpSetNrDeathId( ev.f_id );
@@ -391,23 +382,23 @@ static void ReadIndEvent( GedcomFile& ged, GedIndividual& gind, int level )
         return; // do nothing
     }
 
-    bool cont = ged.ReadNextLine();
-    while( cont && ged.GetLevel() >= level ) {
-        if( ged.GetLevel() == level ) {
-            switch( ged.GetTag() )
+    bool cont = ReadNextLine();
+    while( cont && m_level >= level ) {
+        if( m_level == level ) {
+            switch( m_tag )
             {
-            case GedcomFile::tagDATE:
-                ev.f_date1_id = ParseEvDate( ged, level+1 );
+            case tagDATE:
+                ev.f_date1_id = ParseEvDate( level+1 );
                 break;
-            case GedcomFile::tagPLAC:
-                ev.f_place_id = ParseEvPlace( ged, level+1 );
+            case tagPLAC:
+                ev.f_place_id = ParseEvPlace( level+1 );
                 break;
-            case GedcomFile::tag_END:
+            case tag_END:
                 cont = FALSE;
                 continue;
             }
         }
-        cont = ged.ReadNextLine();
+        cont = ReadNextLine();
     }
     ev.f_title = wxString::Format( titlefmt, gind.GetNameStr() );
     ev.Save();
@@ -415,107 +406,10 @@ static void ReadIndEvent( GedcomFile& ged, GedIndividual& gind, int level )
     ep.Save();
 }
 
-static void ReadIndAttr( GedcomFile& ged, GedIndividual& gind, int level )
-{
-    recAttribute attr(0);
-    attr.Save(); // We need th Attribute id
-    attr.f_per_id = gind.GetPersonaID();
-    switch( ged.GetTag() )
-    {
-    case GedcomFile::tagOCCU:
-        attr.f_type_id = ATTR_TYPE_Occupation;
-        gind.OpSetOccAttrId( attr.f_id );
-        break;
-    default:
-        return; // ignore unrecognised attribute
-    }
-    attr.f_val = ged.GetText();
-
-    bool cont = ged.ReadNextLine();
-    while( cont && ged.GetLevel() >= level ) {
-        if( ged.GetLevel() == level ) {
-            switch( ged.GetTag() )
-            {
-            case GedcomFile::tag_END:
-                cont = false;
-                continue;
-            }
-        }
-        cont = ged.ReadNextLine();
-    }
-    attr.Save();
-}
-
-static void ReadFamEvent( GedcomFile& ged, GedFamily& gfam, int level )
-{
-    recEvent ev(0);
-    ev.Save(); // We need the id number
-    wxString titlefmt;
-
-    recEventPersona epHusb(0);
-    epHusb.f_event_id = ev.f_id;
-    epHusb.f_per_id = gfam.GetHusbPerId();
-
-    recEventPersona epWife(0);
-    epWife.f_event_id = ev.f_id;
-    epWife.f_per_id = gfam.GetWifePerId();
-
-    switch( ged.GetTag() )
-    {
-    case GedcomFile::tagMARR:
-        ev.f_type_id = recEventType::ET_Marriage;
-        epHusb.f_role_id = recEventTypeRole::ROLE_Marriage_Groom;
-        epWife.f_role_id = recEventTypeRole::ROLE_Marriage_Bride;
-        gfam.SetEventId( ev.f_id );
-        titlefmt = _("Marriage of %s and %s");
-        break;
-    default:
-        return; // do nothing
-    }
-
-    bool cont = ged.ReadNextLine();
-    while( cont && ged.GetLevel() >= level ) {
-        if( ged.GetLevel() == level ) {
-            switch( ged.GetTag() )
-            {
-            case GedcomFile::tagDATE:
-                ev.f_date1_id = ParseEvDate( ged, level+1 );
-                break;
-            case GedcomFile::tagPLAC:
-                ev.f_place_id = ParseEvPlace( ged, level+1 );
-                break;
-            case GedcomFile::tag_END:
-                cont = FALSE;
-                continue;
-            }
-        }
-        cont = ged.ReadNextLine();
-    }
-
-    ev.f_title = wxString::Format( titlefmt, gfam.GetHusbNameStr(), gfam.GetWifeNameStr() );
-    ev.Save();
-    epHusb.f_sequence = epWife.f_sequence = 
-        recDate::GetDatePoint( ev.f_date1_id, recDate::DATE_POINT_Mid );
-    epHusb.Save();
-    epWife.Save();
-}
-
-static idt ParseEvPlace( GedcomFile& ged, int level )
-{
-    recPlace place(0);
-    place.Save();
-    recPlacePart pp(0);
-    pp.f_place_id = place.f_id;
-    pp.f_type_id = recPlacePartType::TYPE_Address;
-    pp.f_val = ged.GetText();
-    pp.Save();
-    return place.f_id;
-}
-
-static idt ParseEvDate( GedcomFile& ged, int level )
+idt recGedParse::ParseEvDate( int level )
 {
     recDate date(0);
-    wxString text = ged.GetText();
+    wxString text = m_text;
     static wxString MonName[] = {
         wxT("JAN"), wxT("FEB"), wxT("MAR"), wxT("APR"), wxT("MAY"), wxT("JUN"),
         wxT("JUL"), wxT("AUG"), wxT("SEP"), wxT("OCT"), wxT("NOV"), wxT("DEC")
@@ -537,7 +431,7 @@ static idt ParseEvDate( GedcomFile& ged, int level )
         token.compare( wxT("BET") ) == 0 ||
         token.compare( wxT("INT") ) == 0 )
     {
-        date.f_descrip = ged.GetText();
+        date.f_descrip = m_text;
         date.Save();
         return date.f_id;
     }
@@ -550,7 +444,7 @@ static idt ParseEvDate( GedcomFile& ged, int level )
 
     if( sch == CALENDAR_SCH_Unlisted || sch == CALENDAR_SCH_Unknown ) {
         date.f_record_sch = date.f_display_sch = sch;
-        date.f_descrip = ged.GetText();
+        date.f_descrip = m_text;
         date.Save();
         return date.f_id;
     }
@@ -623,112 +517,133 @@ static idt ParseEvDate( GedcomFile& ged, int level )
     return date.f_id;
 }
 
-static void ReadFam( GedcomFile& ged, int level )
+idt recGedParse::ParseEvPlace( int level )
+{
+    recPlace place(0);
+    place.Save();
+    recPlacePart pp(0);
+    pp.f_place_id = place.f_id;
+    pp.f_type_id = recPlacePartType::TYPE_Address;
+    pp.f_val = m_text;
+    pp.Save();
+    return place.f_id;
+}
+
+void recGedParse::ReadIndAttr( GedIndividual& gind, int level )
+{
+    recAttribute attr(0);
+    attr.Save(); // We need th Attribute id
+    attr.f_per_id = gind.GetPersonaID();
+    switch( m_tag )
+    {
+    case tagOCCU:
+        attr.f_type_id = ATTR_TYPE_Occupation;
+        gind.OpSetOccAttrId( attr.f_id );
+        break;
+    default:
+        return; // ignore unrecognised attribute
+    }
+    attr.f_val = m_text;
+
+    bool cont = ReadNextLine();
+    while( cont && m_level >= level ) {
+        if( m_level == level ) {
+            switch( m_tag )
+            {
+            case tag_END:
+                cont = false;
+                continue;
+            }
+        }
+        cont = ReadNextLine();
+    }
+    attr.Save();
+}
+
+void recGedParse::ReadFam( int level )
 {
     GedFamily gfam;
-    gfam.SetFamId( ged.GetIndex() );
+    gfam.SetFamId( m_index );
 
-    bool cont = ged.ReadNextLine();
-    while( cont && ged.GetLevel() >= level ) {
-        if( ged.GetLevel() == level ) {
-            switch( ged.GetTag() )
+    bool cont = ReadNextLine();
+    while( cont && m_level >= level ) {
+        if( m_level == level ) {
+            switch( m_tag )
             {
-            case GedcomFile::tagHUSB:
-                gfam.SetHusb( ged.GetRef() );
+            case tagHUSB:
+                gfam.SetHusb( m_ref );
                 break;
-            case GedcomFile::tagWIFE:
-                gfam.SetWife( ged.GetRef() );
+            case tagWIFE:
+                gfam.SetWife( m_ref );
                 break;
-            case GedcomFile::tagCHIL:
-                gfam.AddChild( ged.GetRef() );
+            case tagCHIL:
+                gfam.AddChild( m_ref );
                 break;
-            case GedcomFile::tagMARR:
-                ReadFamEvent( ged, gfam, level+1 );
+            case tagMARR:
+                ReadFamEvent( gfam, level+1 );
                 continue;
-            case GedcomFile::tag_END:
+            case tag_END:
                 cont = FALSE;
                 continue;
             }
         }
-        cont = ged.ReadNextLine();
+        cont = ReadNextLine();
     }
     gfam.Save();
 }
 
-bool GedcomFile::ReadNextLine()
+void recGedParse::ReadFamEvent( GedFamily& gfam, int level )
 {
-    wxString str;
-    unsigned long num;
+    recEvent ev(0);
+    ev.Save(); // We need the id number
+    wxString titlefmt;
 
-    m_lineNum++;
-    m_level = 0;
-    m_index = 0;
-    m_tag = tagNULL;
-    m_ref = 0;
-    m_text.empty();
+    recEventPersona epHusb(0);
+    epHusb.f_event_id = ev.f_id;
+    epHusb.f_per_id = gfam.GetHusbPerId();
 
-    if( m_input.Eof() == true ) {
-        m_tag = tag_END;
-        return false;
-    }
+    recEventPersona epWife(0);
+    epWife.f_event_id = ev.f_id;
+    epWife.f_per_id = gfam.GetWifePerId();
 
-    wxStringTokenizer tk( ReadLine() );
-    if( tk.HasMoreTokens() == false ) return false;
-
-    str = tk.GetNextToken();
-    if( str.ToULong( &num ) == false ) return false;
-    m_level = (int) num;
-
-    if( tk.HasMoreTokens() == false ) return false;
-    str = tk.GetNextToken();
-
-    if(      str.Cmp( "TRLR" ) == 0 ) m_tag = tag_END;
-    if( m_tag != tagNULL ) return true;
-
-    if( str[0] == wxS('@') )
+    switch( m_tag )
     {
-        m_text = str;
-        str.Mid( 2 ).ToULong( &num );
-        m_index = (unsigned) num;
-
-        if( tk.HasMoreTokens() == false ) return false;
-        str = tk.GetNextToken();
+    case tagMARR:
+        ev.f_type_id = recEventType::ET_Marriage;
+        epHusb.f_role_id = recEventTypeRole::ROLE_Marriage_Groom;
+        epWife.f_role_id = recEventTypeRole::ROLE_Marriage_Bride;
+        gfam.SetEventId( ev.f_id );
+        titlefmt = _("Marriage of %s and %s");
+        break;
+    default:
+        return; // do nothing
     }
 
-    if(      str.Cmp( "INDI" ) == 0 ) m_tag = tagINDI;
-    else if( str.Cmp( "FAM"  ) == 0 ) m_tag = tagFAM;
-
-    if( m_tag != tagNULL ) return true;
-
-    if(      str.Cmp( "HUSB" ) == 0 ) m_tag = tagHUSB;
-    else if( str.Cmp( "WIFE" ) == 0 ) m_tag = tagWIFE;
-    else if( str.Cmp( "CHIL" ) == 0 ) m_tag = tagCHIL;
-
-    if( m_tag != tagNULL ) {
-        if( tk.HasMoreTokens() == false ) return false;
-        str = tk.GetNextToken();
-        str.Mid( 2 ).ToULong( &num );
-        m_ref = (unsigned) num;
-        return true;
+    bool cont = ReadNextLine();
+    while( cont && m_level >= level ) {
+        if( m_level == level ) {
+            switch( m_tag )
+            {
+            case tagDATE:
+                ev.f_date1_id = ParseEvDate( level+1 );
+                break;
+            case tagPLAC:
+                ev.f_place_id = ParseEvPlace( level+1 );
+                break;
+            case tag_END:
+                cont = FALSE;
+                continue;
+            }
+        }
+        cont = ReadNextLine();
     }
 
-    if(      str.Cmp( "NAME" ) == 0 ) m_tag = tagNAME;
-    else if( str.Cmp( "SEX"  ) == 0 ) m_tag = tagSEX;
-    else if( str.Cmp( "BIRT" ) == 0 ) m_tag = tagBIRT;
-    else if( str.Cmp( "CHR"  ) == 0 ) m_tag = tagCHR;
-    else if( str.Cmp( "DEAT" ) == 0 ) m_tag = tagDEAT;
-    else if( str.Cmp( "BURI" ) == 0 ) m_tag = tagBURI;
-    else if( str.Cmp( "OCCU" ) == 0 ) m_tag = tagOCCU;
-    else if( str.Cmp( "DATE" ) == 0 ) m_tag = tagDATE;
-    else if( str.Cmp( "PLAC" ) == 0 ) m_tag = tagPLAC;
-    else if( str.Cmp( "FAMS" ) == 0 ) m_tag = tagFAMS;
-    else if( str.Cmp( "FAMC" ) == 0 ) m_tag = tagFAMC;
-    else if( str.Cmp( "MARR" ) == 0 ) m_tag = tagMARR;
-    else if( str.Cmp( "_PRI" ) == 0 ) m_tag = tag_PRI;
-
-    m_text = tk.GetString();
-
-    return true;
+    ev.f_title = wxString::Format( titlefmt, gfam.GetHusbNameStr(), gfam.GetWifeNameStr() );
+    ev.Save();
+    epHusb.f_sequence = epWife.f_sequence = 
+        recDate::GetDatePoint( ev.f_date1_id, recDate::DATE_POINT_Mid );
+    epHusb.Save();
+    epWife.Save();
 }
 
 void GedFamily::UpdateIndividual( idt* p_perID, idt indID )
@@ -749,5 +664,5 @@ void GedFamily::AddChild( idt indID )
     fi.f_sequence = ++m_childSeq;
     fi.Save();
 }
-#endif
+
 // End of tfpRdGed.cpp Source

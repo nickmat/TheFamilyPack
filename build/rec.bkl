@@ -49,6 +49,7 @@
     <sources>$(LOCAL_SRC)/rec/recDatabase.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recDate.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recEvent.cpp</sources>
+    <sources>$(LOCAL_SRC)/rec/recGedParse.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recIndividual.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recName.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recPersona.cpp</sources>
@@ -62,6 +63,7 @@
     <headers>$(LOCAL_INC)/rec/recDatabase.h</headers>
     <headers>$(LOCAL_INC)/rec/recDate.h</headers>
     <headers>$(LOCAL_INC)/rec/recEvent.h</headers>
+    <headers>$(LOCAL_INC)/rec/recGedParse.h</headers>
     <headers>$(LOCAL_INC)/rec/recIndividual.h</headers>
     <headers>$(LOCAL_INC)/rec/recName.h</headers>
     <headers>$(LOCAL_INC)/rec/recPersona.h</headers>
