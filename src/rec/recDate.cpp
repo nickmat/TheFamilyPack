@@ -173,6 +173,7 @@ void recDate::SetDefaults()
 {
     // TODO: The default record/display scheme should be a system/user setting.
     Clear();
+    f_type = PREF_On;
     f_record_sch = CALENDAR_SCH_Gregorian;
     f_display_sch = CALENDAR_SCH_Gregorian;
 }

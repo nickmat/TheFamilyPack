@@ -441,7 +441,7 @@ void RecTestCase::TestAttributeType()
     recAttributeType attrtype1;
     attrtype1.f_id = 0;
 
-    attrtype1.f_grp = recAttributeType::ATYPE_Grp_Other;
+    attrtype1.f_grp = recAttributeType::AGRP_Other;
     attrtype1.f_name = "Hair colour";
     // f_id = 0 so create new record and set f_id to new value.
     attrtype1.Save();
@@ -453,7 +453,7 @@ void RecTestCase::TestAttributeType()
     attrtype2.Read();
     CPPUNIT_ASSERT( attrtype1 == attrtype2 );
 
-    attrtype1.f_grp = recAttributeType::ATYPE_Grp_Occ;
+    attrtype1.f_grp = recAttributeType::AGRP_Occ;
     attrtype1.f_name = "Bricklayer";
     // f_id = 1 which exists, so amend record leaving f_id to old value.
     attrtype1.Save();

@@ -107,13 +107,6 @@ inline bool operator!=( const recPersona& r1, const recPersona& r2 )
 
 //----------------------------------------------------------
 
-enum recStdAttrType  // These match the create.sql file
-{
-    ATTR_TYPE_Unstated   = 0,
-    ATTR_TYPE_Occupation = -1,
-    ATTR_TYPE_Max        = 2
-};
-
 class recAttribute : public recDb
 {
 public:
@@ -163,13 +156,20 @@ inline bool operator!=( const recAttribute& r1, const recAttribute& r2 )
 class recAttributeType : public recDb
 {
 public:
-    enum ATYPE_Grp {
-        ATYPE_Grp_Unstated, ATYPE_Grp_Occ,
-        ATYPE_Grp_Other
+    enum AGrp { 
+        AGRP_Unstated,
+        AGRP_Occ,
+        AGRP_Other
+    };
+    enum AType  // These match the create.sql file
+    {
+        ATYPE_Unstated   = 0,
+        ATYPE_Occupation = -1,
+        ATYPE_Max        = 2
     };
 
-    ATYPE_Grp f_grp;
-    wxString  f_name;
+    AGrp     f_grp;
+    wxString f_name;
 
     recAttributeType() {}
     recAttributeType( idt id ) : recDb(id) { Read(); }

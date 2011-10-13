@@ -44,6 +44,7 @@
 wxString tfpWriteReferenceIndex()
 {
     wxString htm;
+    size_t cnt = 0;
 
     htm << "<html><head><title>Reference List</title></head><body>"
            "<center><h1>Reference List</h1>";
@@ -62,8 +63,9 @@ wxString tfpWriteReferenceIndex()
                 << "</b></a> </td><td> "
                 << result.GetAsString( 1 )
                 << "</td></tr>";
+            cnt++;
         }
-        htm << "</table>";
+        htm << "</table><br><br>Total References found: " << cnt;
     } else {
         htm << "No References found!";
     }
@@ -93,7 +95,8 @@ wxString tfpWriteReferencePage( idt refID )
     htm << "<a href=$R" << refID
         << "><img src=memory:edit.bmp></a><br>";
 
-    for( size_t i = 0 ; i < perIDs.size() ; i++ ) {
+    size_t i;
+    for( i = 0 ; i < perIDs.size() ; i++ ) {
         htm << recPersona::GetNameStr( perIDs[i] );
         indIDs = recPersona::GetIndividualIDs( perIDs[i] );
         for( size_t j = 0 ; j < indIDs.size() ; j++ ) {

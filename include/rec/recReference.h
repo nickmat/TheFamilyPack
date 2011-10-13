@@ -94,9 +94,9 @@ public:
     };
     static const wxString sm_typeStr[TYPE_MAX];
 
-    idt     f_ref_id;
+    idt      f_ref_id;
     Type     f_entity_type;
-    idt     f_entity_id;
+    idt      f_entity_id;
     unsigned f_sequence;
 
     recReferenceEntity() {}

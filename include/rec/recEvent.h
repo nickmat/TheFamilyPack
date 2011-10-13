@@ -127,14 +127,24 @@ public:
         ETYPE_Grp_Other,    // 7
         ETYPE_Grp_MAX       // 8
     };
-    enum ETYPE_Std {  // predefined entries, match with recCreate.sql
-        ET_Unstated = 0,
-        ET_Birth    = -1,
-        ET_Death    = -2,
-        ET_Marriage = -3,
-        ET_Baptism  = -4,
-        ET_Burial   = -5,
-        ET_MAX      = 6     // Size of list
+ //   enum ETYPE_Std {  // predefined entries, match with recCreate.sql
+    enum EType {  // predefined entries, match with recCreate.sql
+        ET_Unstated     = 0,
+        ET_Birth        = -1,
+        ET_Death        = -2,
+        ET_Marriage     = -3,
+        ET_Baptism      = -4,
+        ET_Burial       = -5,
+        ET_AdultBaptism = -6,
+        ET_Census       = -7,
+        ET_Confirmation = -8,
+        ET_Divorce      = -9,
+        ET_Emigration   = -10,
+        ET_Immigration  = -11,
+        ET_Graduation   = -12,
+        ET_Probate      = -13,
+        ET_Will         = -14,
+        ET_MAX          = 15     // Size of list
     };
 
     ETYPE_Grp f_grp;
@@ -181,17 +191,22 @@ class recEventTypeRole : public recDb
 {
 public:
     enum Role {  // predefined entries, only given if reqired by the program
-        ROLE_Unstated         = 0,
-        ROLE_Birth_Born       = -1,
-        ROLE_Baptism_Baptised = -21,
-        ROLE_Death_Died       = -5,
-        ROLE_Burial_Deceased  = -26,
-        ROLE_Marriage_Groom   = -7,
-        ROLE_Marriage_Bride   = -8,
-        ROLE_MAX              = 7 // size of list
+        ROLE_Unstated               = 0,
+        ROLE_Birth_Born             = -1,
+        ROLE_Baptism_Baptised       = -21,
+        ROLE_Census_Listed          = -32,
+        ROLE_Death_Died             = -5,
+        ROLE_Burial_Deceased        = -26,
+        ROLE_Marriage_Bride         = -8,
+        ROLE_Marriage_FatherOfBride = -13,
+        ROLE_Marriage_FatherOfGroom = -11,
+        ROLE_Marriage_Groom         = -7,
+        ROLE_Marriage_Officiate     = -9,
+        ROLE_Marriage_Witness       = -9,
+        ROLE_MAX                    = 12 // size of list
     };
 
-    idt      f_type_id;
+    idt       f_type_id;
     bool      f_prime;
     bool      f_official;
     wxString  f_name;
@@ -237,7 +252,7 @@ public:
     idt      f_per_id;
     idt      f_role_id;
     wxString f_note;
-    int     f_sequence;
+    int      f_sequence;
 
     recEventPersona() {}
     recEventPersona( idt id ) : recDb(id) { Read(); }

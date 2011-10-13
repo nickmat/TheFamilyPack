@@ -77,7 +77,7 @@ public:
     idt             f_base_id;
     CalendarUnit    f_base_unit;
     BaseStyle       f_base_style;
-    unsigned        f_type;         // Set with RecDate::TypeFlag
+    unsigned        f_type;         // Set with RecDate::TypePrefix
     wxString        f_descrip;
     CalendarScheme  f_record_sch;   // Original convertion scheme
     CalendarScheme  f_display_sch;  // Default display scheme
@@ -115,8 +115,8 @@ public:
     wxString GetStr( CalendarScheme sch = CALENDAR_SCH_Unstated ) const;
     static wxString GetStr( idt id );
     int GetYear( CalendarScheme sch = CALENDAR_SCH_Unstated );
-    long GetDatePoint( DatePoint dp );
-    static long GetDatePoint( idt id, DatePoint dp );
+    long GetDatePoint( DatePoint dp = DATE_POINT_Mid );
+    static long GetDatePoint( idt id, DatePoint dp = DATE_POINT_Mid );
 
     unsigned GetTypePrefix() const {
         return f_type & ( FLG_AFTER | FLG_RANGE | FLG_BEFORE ); 

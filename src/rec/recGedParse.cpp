@@ -537,7 +537,7 @@ void recGedParse::ReadIndAttr( GedIndividual& gind, int level )
     switch( m_tag )
     {
     case tagOCCU:
-        attr.f_type_id = ATTR_TYPE_Occupation;
+        attr.f_type_id = recAttributeType::ATYPE_Occupation;
         gind.OpSetOccAttrId( attr.f_id );
         break;
     default:

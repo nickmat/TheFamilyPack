@@ -404,7 +404,7 @@ recAttributeType::recAttributeType( const recAttributeType& at )
 void recAttributeType::Clear()
 {
     f_id   = 0;
-    f_grp  = ATYPE_Grp_Unstated;
+    f_grp  = AGRP_Unstated;
     f_name = wxEmptyString;
 }
 
@@ -462,7 +462,7 @@ bool recAttributeType::Read()
         return false;
     }
     result.SetRow( 0 );
-    f_grp  = (ATYPE_Grp) result.GetInt( 0 );
+    f_grp  = (AGrp) result.GetInt( 0 );
     f_name = result.GetAsString( 1 );
     return true;
 }
@@ -491,7 +491,7 @@ recAttributeTypeVec recAttributeType::GetTypeList()
     for( i = 0 ; i < result.GetRowCount() ; i++ ) {
         result.SetRow( i );
         at.f_id = GET_ID( result.GetInt64( 0 ) );
-        at.f_grp = (ATYPE_Grp) result.GetInt( 1 );
+        at.f_grp = (AGrp) result.GetInt( 1 );
         at.f_name = result.GetAsString( 2 );
         list.push_back( at );
     }
@@ -506,7 +506,7 @@ recAttributeTypeVec recAttributeType::GetTypeList()
     for( i = 0 ; i < result.GetRowCount() ; i++ ) {
         result.SetRow( i );
         at.f_id = GET_ID( result.GetInt64( 0 ) );
-        at.f_grp = (ATYPE_Grp) result.GetInt( 1 );
+        at.f_grp = (AGrp) result.GetInt( 1 );
         at.f_name = result.GetAsString( 2 );
         list.push_back( at );
     }
