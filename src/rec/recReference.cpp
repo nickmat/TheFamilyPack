@@ -174,6 +174,16 @@ recIdVec recReference::GetPersonaList( idt refID )
     return vec;
 }
 
+int recReference::GetPersonaCount( idt refID )
+{
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT COUNT(*) FROM Persona WHERE ref_id="ID";",
+        refID
+    );
+    return s_db->ExecuteScalar( sql );
+}
+
 
 //----------------------------------------------------------
 
@@ -275,6 +285,19 @@ bool recReferenceEntity::Read()
     f_sequence    = (unsigned) result.GetInt( 3 );
     return true;
 }
+
+void recReferenceEntity::Create( idt refID, Type type, idt entID, unsigned* pseq )
+{
+    recReferenceEntity re;
+    re.f_id = 0;
+    re.f_ref_id = refID;
+    re.f_entity_type = type;
+    re.f_entity_id = entID;
+    re.f_sequence = ++(*pseq);
+    re.Save();
+}
+
+
 
 idt recReferenceEntity::FindReferenceID( Type type, idt entityID )
 {

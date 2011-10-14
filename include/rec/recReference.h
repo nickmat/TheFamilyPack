@@ -57,6 +57,7 @@ public:
 
     static recIdVec GetPersonaList( idt refID );
     recIdVec GetPersonaList() const { return GetPersonaList( f_id ); }
+    static int GetPersonaCount( idt refID );
 };
 
 inline bool recEquivalent( const recReference& r1, const recReference& r2 )
@@ -108,13 +109,13 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "ReferenceEntity" );
 
+    static void Create( idt refID, Type type, idt entID, unsigned* pseq );
+
     wxString GetTypeStr() { return sm_typeStr[f_entity_type]; }
     static wxString GetTypeStr( Type etype ) { return sm_typeStr[etype]; }
 
 
     static idt FindReferenceID( Type type, idt entityID );
-
-//    static wxArrayString GetNameTable( idt refID );
 };
 
 inline bool recEquivalent( const recReferenceEntity& r1, const recReferenceEntity& r2 )

@@ -375,6 +375,19 @@ wxSQLite3Table recIndividual::GetAttributesTable( idt id )
     return s_db->GetTable( sql );
 }
 
+wxSQLite3Table recIndividual::GetReferencesTable( idt id )
+{
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "SELECT R.id, R.title "
+        "FROM IndividualPersona IP, Persona P, Reference R "
+        "WHERE IP.ind_id="ID" AND IP.per_id=P.id AND P.ref_id=R.id;",
+        id
+    );
+    return s_db->GetTable( sql );
+}
+
 wxArrayString recIndividual::GetEventIdStrList( idt indID, idt etrID )
 {
     wxArrayString list;

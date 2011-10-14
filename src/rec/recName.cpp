@@ -124,6 +124,7 @@ bool recName::Read()
 
 void recName::AddNameParts( const wxString& nameStr ) const
 {
+    // TODO: Action should depend on naming conventions
     recNamePart part(0);
     part.f_name_id = f_id;
 

@@ -198,6 +198,20 @@ wxString tfpWriteIndividualPage( idt indID )
             << wxT("</b></td></tr>");
     }
 
+    eTable = ind.GetReferencesTable();
+    for( i = 0 ; i < (size_t) eTable.GetRowCount() ; i++ ) {
+        eTable.SetRow( i );
+        idt refID = GET_ID( eTable.GetInt64( 0 ) );
+
+        htm << wxT("<tr><td align=right>R")
+            << refID
+            << wxT(":</td><td><b>")
+            << eTable.GetAsString( 1 )
+            << wxT(" <a href=R") << refID
+            << wxT("><img src=memory:ref.bmp></a>")
+            << wxT("</b></td></tr>");
+    }
+
     htm << wxT("</table></center></body></html>");
 
     return htm;

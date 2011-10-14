@@ -49,6 +49,16 @@ wxSQLite3Database* recDb::s_db = NULL;
 recDb::Environment recDb::s_env = recDb::ENV_GUI;
 wxString           recDb::s_fname;
 
+idt recGetID( const wxString& str )
+{
+    idt id = 0;
+    str.ToLongLong( &id );  
+    // TODO: We should be able to test this has worked,
+    // but this is not currently working.
+    // if( !str.ToLongLong( &id ) == false ) return 0;
+    return id;
+}
+
 wxString recGetSexStr( Sex sex )
 {
     static wxString sexarray[] = {

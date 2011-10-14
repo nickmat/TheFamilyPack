@@ -45,6 +45,8 @@ typedef wxLongLong_t    idt;
 typedef wxVector< idt >  recIdList;
 typedef std::vector< idt >  recIdVec;
 
+extern idt recGetID( const wxString& str );
+
 enum Sex { SEX_Unstated, SEX_Male, SEX_Female, SEX_Unknown };
 extern wxString recGetSexStr( Sex sex );
 

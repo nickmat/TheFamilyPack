@@ -101,6 +101,9 @@ public:
     wxSQLite3Table GetAttributesTable() const { return GetAttributesTable( f_id ); }
     static wxSQLite3Table GetAttributesTable( idt id );
 
+    wxSQLite3Table GetReferencesTable() const { return GetReferencesTable( f_id ); }
+    static wxSQLite3Table GetReferencesTable( idt id );
+
     wxArrayString GetEventIdStrList( idt etrID ) const { GetEventIdStrList( f_id, etrID ); }
     static wxArrayString GetEventIdStrList( idt indID, idt etrID );
 

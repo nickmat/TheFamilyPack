@@ -109,6 +109,8 @@ public:
     TABLE_NAME_MEMBERS( "Date" );
 
     void SetDefaults();
+    static idt Create( const wxString& str ); // Using default settings
+
     bool SetDate( const wxString& str, CalendarScheme sch = CALENDAR_SCH_Unstated );
     wxString GetJdnStr( CalendarScheme sch = CALENDAR_SCH_Unstated ) const;
     static wxString GetJdnStr( idt id );

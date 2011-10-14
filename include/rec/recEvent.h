@@ -202,7 +202,7 @@ public:
         ROLE_Marriage_FatherOfGroom = -11,
         ROLE_Marriage_Groom         = -7,
         ROLE_Marriage_Officiate     = -9,
-        ROLE_Marriage_Witness       = -9,
+        ROLE_Marriage_Witness       = -10,
         ROLE_MAX                    = 12 // size of list
     };
 

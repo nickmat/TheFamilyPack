@@ -178,6 +178,15 @@ void recDate::SetDefaults()
     f_display_sch = CALENDAR_SCH_Gregorian;
 }
 
+idt recDate::Create( const wxString& str )
+{
+    recDate date;
+    date.SetDefaults();
+    date.SetDate( str );
+    date.Save();
+    return date.f_id;
+}
+
 bool recDate::SetDate( const wxString& str, CalendarScheme scheme )
 {
     long beg, end;
