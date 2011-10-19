@@ -216,6 +216,13 @@ static const char* createdb =  /* recCreate.sql */
  "  ind_id INTEGER,\n"
  "  note TEXT\n"
  ");\n"
+ "CREATE TABLE LinkPersona (\n"
+ "  id INTEGER PRIMARY KEY,\n"
+ "  ref_per_id INTEGER NOT NULL REFERENCES Persona(id),\n"
+ "  ind_per_id INTEGER NOT NULL REFERENCES Persona(id),\n"
+ "  conf FLOAT NOT NULL,\n"
+ "  comment TEXT\n"
+ ");\n"
  "CREATE TABLE Name (\n"
  "  id INTEGER PRIMARY KEY,\n"
  "  per_id INTEGER NOT NULL,\n"
@@ -328,7 +335,7 @@ static const char* createdb =  /* recCreate.sql */
  "  revision INTEGER,\n"
  "  test INTEGER\n"
  ");\n"
- "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 1);\n"
+ "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 2);\n"
  "COMMIT;\n";
 
 /* End of recSql.f2c */

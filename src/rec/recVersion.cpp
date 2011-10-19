@@ -38,12 +38,16 @@
 #endif
 
 #include <rec/recVersion.h>
+// For updates
+#include <rec/recPersona.h>
+#include <rec/recLink.h>
 
+// This is the database version this program is designed to work with.
 const int recVerMajor    = 0;
 const int recVerMinor    = 0;
 const int recVerRev      = 9;
-const int recVerTest     = 1;
-const wxStringCharType* recVerStr = wxS("0.0.9.1");
+const int recVerTest     = 2;
+const wxStringCharType* recVerStr = wxS("0.0.9.2");
 
 
 recVersion::recVersion( const recVersion& v )
@@ -137,6 +141,16 @@ wxString recVersion::GetVersionStr()
     );
 }
 
+void recVersion::Set( int major, int minor, int revision, int test )
+{
+    recVersion v;
+    v.f_id = 1;
+    v.f_major = major;
+    v.f_minor = minor;
+    v.f_revision = revision;
+    v.f_test = test;
+    v.Save();
+}    
 
 bool recVersion::IsEqual( int major, int minor, int revision, int test ) const
 {
@@ -188,6 +202,35 @@ bool recVersion::IsLessThan( int major, int minor, int revision, int test ) cons
     return false;
 }
 
+bool recVersion::TestForUpgrade()
+{
+    if( IsLessThan( 0, 0, 9, 0 ) ) {
+        recDb::Message(
+            wxString::Format(
+                _("Cannot read old database version %s file."),
+                GetVersionStr()
+            ),
+            _("Upgrade Test")
+        );
+        return false;
+    }
+    if( IsMoreThan( recVerMajor, recVerMinor, recVerRev, recVerTest ) ) {
+        recDb::Message(
+            wxString::Format(
+                _("Cannot read future database version %s file."),
+                GetVersionStr()
+            ),
+            _("Upgrade Test")
+        );
+        return false;
+    }
+    return true;
+}
+
+//============================================================================
+//                 Code to upgrade old versions
+//============================================================================
+
 static const char* upgrade0_0_9_0 =
     "BEGIN;\n"
 
@@ -224,29 +267,38 @@ static const char* upgrade0_0_9_0 =
     "COMMIT;\n"
     ;
 
-bool recVersion::TestForUpgrade()
+static const char* upgrade0_0_9_1 =
+    "CREATE TABLE LinkPersona (\n"
+    "  id INTEGER PRIMARY KEY,\n"
+    "  ref_per_id INTEGER NOT NULL REFERENCES Persona(id),\n"
+    "  ind_per_id INTEGER NOT NULL REFERENCES Persona(id),\n"
+    "  conf FLOAT NOT NULL,\n"
+    "  comment TEXT\n"
+    ");\n"
+    ;
+
+static void UpgradeData0_0_9_1() // To 0.0.9.2
 {
-    if( IsLessThan( 0, 0, 9, 0 ) ) {
-        recDb::Message(
-            wxString::Format(
-                _("Cannot read old database version %s file."),
-                GetVersionStr()
-            ),
-            _("Upgrade Test")
-        );
-        return false;
+    recDb::Begin();
+    recDb::GetDb()->ExecuteUpdate( upgrade0_0_9_1 );
+
+    recLinkPersona lp;
+    const char* query =
+        "SELECT IP.per_id, I.per_id, IP.note "
+        "FROM IndividualPersona IP, Individual I "
+        "WHERE IP.ind_id=I.id AND NOT IP.per_id=I.per_id;"
+        ;
+    wxSQLite3ResultSet result = recDb::GetDb()->ExecuteQuery( query );
+    while( result.NextRow() ) {
+        lp.f_id = 0;
+        lp.f_ref_per_id = GET_ID( result.GetInt64( 0 ) );
+        lp.f_ind_per_id = GET_ID( result.GetInt64( 1 ) );
+        lp.f_conf = 0.999;
+        lp.f_comment = result.GetAsString( 2 );
+        lp.Save();
     }
-    if( IsMoreThan( recVerMajor, recVerMinor, recVerRev, recVerTest ) ) {
-        recDb::Message(
-            wxString::Format(
-                _("Cannot read future database version %s file."),
-                GetVersionStr()
-            ),
-            _("Upgrade Test")
-        );
-        return false;
-    }
-    return true;
+    recVersion::Set( 0, 0, 9, 2);
+    recDb::Commit();
 }
 
 
@@ -257,13 +309,17 @@ bool recVersion::DoUpgrade()
 
     try {
         if( IsEqual( 0, 0, 9, 0 ) ) {
-            recDb::GetDb()->ExecuteUpdate( upgrade0_0_9_0 ); // To 0.0.9.1
+            s_db->ExecuteUpdate( upgrade0_0_9_0 ); // To 0.0.9.1
+            Read();
+        }
+        if( IsEqual( 0, 0, 9, 1 ) ) {
+            UpgradeData0_0_9_1();
             Read();
         }
     }
     catch( wxSQLite3Exception& e ) {
-        recDb::ErrorMessage( e );
-        recDb::Rollback();
+        ErrorMessage( e );
+        Rollback();
         return false;
     }
 

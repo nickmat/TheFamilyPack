@@ -218,6 +218,10 @@
                 </FileConfiguration>
             </File>
             <File
+                RelativePath="..\..\src\rec\recAttribute.cpp"
+                >
+            </File>
+            <File
                 RelativePath="..\..\src\rec\recContact.cpp"
                 >
             </File>
@@ -242,6 +246,10 @@
                 >
             </File>
             <File
+                RelativePath="..\..\src\rec\recLink.cpp"
+                >
+            </File>
+            <File
                 RelativePath="..\..\src\rec\recName.cpp"
                 >
             </File>
@@ -255,6 +263,10 @@
             </File>
             <File
                 RelativePath="..\..\src\rec\recReference.cpp"
+                >
+            </File>
+            <File
+                RelativePath="..\..\src\rec\recRelationship.cpp"
                 >
             </File>
             <File
@@ -276,6 +288,10 @@
             UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
             >
             <File
+                RelativePath="..\..\include\rec\recAttribute.h"
+                >
+            </File>
+            <File
                 RelativePath="..\..\include\rec\recContact.h"
                 >
             </File>
@@ -288,6 +304,10 @@
                 >
             </File>
             <File
+                RelativePath="..\..\include\rec\recDb.h"
+                >
+            </File>
+            <File
                 RelativePath="..\..\include\rec\recEvent.h"
                 >
             </File>
@@ -297,6 +317,10 @@
             </File>
             <File
                 RelativePath="..\..\include\rec\recIndividual.h"
+                >
+            </File>
+            <File
+                RelativePath="..\..\include\rec\recLink.h"
                 >
             </File>
             <File
@@ -313,6 +337,10 @@
             </File>
             <File
                 RelativePath="..\..\include\rec\recReference.h"
+                >
+            </File>
+            <File
+                RelativePath="..\..\include\rec\recRelationship.h"
                 >
             </File>
             <File

@@ -58,6 +58,7 @@ public:
     TABLE_NAME_MEMBERS( "Version" );
 
     static wxString GetVersionStr();
+    static void Set( int major, int minor, int revision, int test );
 
     bool IsEqual( 
         int major, int minor = -1, int revision = -1, int test = -1 ) const;
