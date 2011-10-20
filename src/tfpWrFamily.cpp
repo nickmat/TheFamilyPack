@@ -42,23 +42,25 @@
 
 #include "tfpWr.h"
 
+#define BIRTH    recEventTypeRole::ROLE_Birth_Born
+#define NR_BIRTH recEventType::ETYPE_Grp_Nr_Birth
+#define DEATH    recEventTypeRole::ROLE_Death_Died
+#define NR_DEATH recEventType::ETYPE_Grp_Nr_Death
 
 wxString tfpWriteFamilyPage( idt famID )
 {
     size_t i;
     wxString htm;
 
-    recFamily fam, husbFam, wifeFam;
-    recIndividual husb, wife;
-
-    fam.f_id = famID;
-    fam.Read();
-    husb.f_id = fam.f_husb_id;
-    husb.Read();
+    recFamily fam(famID), husbFam, wifeFam;
+    recIndividual husb( fam.f_husb_id );
+    recIndividual wife( fam.f_wife_id );
     husbFam.ReadParents( husb.f_id );
-    wife.f_id = fam.f_wife_id;
-    wife.Read();
     wifeFam.ReadParents( wife.f_id );
+
+    idt hPerID = husb.GetPersona();
+    idt wPerID = wife.GetPersona();
+
     recIndividualList kids = fam.GetChildren();
     recFamilyList husbWives = recIndividual::GetFamilyList( husb.f_id );
     recFamilyList wifeHusbs = recIndividual::GetFamilyList( wife.f_id );
@@ -156,33 +158,33 @@ wxString tfpWriteFamilyPage( idt famID )
     }
     // Write default Events
     htm << wxT("</td></tr><font size=-1><tr align=left><td width=60><b>Birth</b></td><td width=210>")
-        << recEvent::GetDetailStr( husb.f_birth_id )
+        << recEvent::GetDetailStr( recPersona::GetBirthEvent( hPerID ) )
         << wxT("</td><td width=60><b>Birth</b></td><td width=210>")
-        << recEvent::GetDetailStr( wife.f_birth_id )
+        << recEvent::GetDetailStr( recPersona::GetBirthEvent( wPerID ) )
         << wxT("</td></tr>");
 
     htm << wxT("<tr align=left><td width=60><b>Baptism</b></td><td width=210>")
-        << recEvent::GetDetailStr( husb.f_nr_birth_id )
+        << recEvent::GetDetailStr( recPersona::GetNrBirthEvent( hPerID ) )
         << wxT("</td><td width=60><b>Baptism</b></td><td width=210>")
-        << recEvent::GetDetailStr( wife.f_nr_birth_id )
+        << recEvent::GetDetailStr( recPersona::GetNrBirthEvent( wPerID ) )
         << wxT("</td></tr>");
 
     htm << wxT("<tr align=left><td width=60><b>Death</b></td><td width=210>")
-        << recEvent::GetDetailStr( husb.f_death_id )
+        << recEvent::GetDetailStr( recPersona::GetDeathEvent( hPerID ) )
         << wxT("</td><td width=60><b>Death</b></td><td width=210>")
-        << recEvent::GetDetailStr( wife.f_death_id )
+        << recEvent::GetDetailStr( recPersona::GetDeathEvent( wPerID ) )
         << wxT("</td></tr>");
 
     htm << wxT("<tr align=left><td width=60><b>Burial</b></td><td width=210>")
-        << recEvent::GetDetailStr( husb.f_nr_death_id )
+        << recEvent::GetDetailStr( recPersona::GetNrDeathEvent( hPerID ) )
         << wxT("</td><td width=60><b>Burial</b></td><td width=210>")
-        << recEvent::GetDetailStr( wife.f_nr_death_id )
+        << recEvent::GetDetailStr( recPersona::GetNrDeathEvent( wPerID ) )
         << wxT("</td></tr>");
 
     htm << wxT("<tr align=left><td width=60><b>Occ</b></td><td width=210>")
-        << recAttribute::GetValue( husb.f_occ_id )
+        << recAttribute::GetValue( recPersona::GetOccAttribute( hPerID ) )
         << wxT("</td><td width=60><b>Occ</b></td><td width=210>")
-        << recAttribute::GetValue( wife.f_occ_id )
+        << recAttribute::GetValue( recPersona::GetOccAttribute( wPerID ) )
         << wxT("</td></tr></font>")
 
         << wxT("</table>");

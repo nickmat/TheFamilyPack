@@ -268,6 +268,12 @@ int recDate::GetYear( CalendarScheme scheme )
     return year;
 }
 
+int recDate::GetYear( idt dateID, CalendarScheme sch )
+{
+    recDate d(dateID);
+    return d.GetYear( sch );
+}
+
 long recDate::GetDatePoint( DatePoint dp )
 {
     long jdn, jdn1, jdn2;

@@ -188,6 +188,12 @@ wxString recEvent::GetTitle( idt evID )
     return result.GetAsString( 0 );
 }
 
+idt recEvent::GetDate1ID( idt evID )
+{
+    if( evID == 0 ) return 0;
+    return ExecuteID( "SELECT date1_id FROM Event WHERE id="ID";", evID );
+}
+
 wxString recEvent::GetDateStr( idt evID )
 {
     wxSQLite3StatementBuffer sql;

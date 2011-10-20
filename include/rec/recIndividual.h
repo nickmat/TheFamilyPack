@@ -76,12 +76,16 @@ public:
     void UpdateNames();
     wxString GetFullName() { return f_given + " " + f_surname; }
 
-    static idt GetDefaultFamily( idt id ) {
+    static idt GetDefaultFamily( idt id ) { 
+        if( id == 0 ) return 0;
         return ExecuteID( "SELECT fam_id FROM Individual WHERE id="ID";", id );
     }
-    static idt GetDefaultPersonaId( idt id ) {
-        return ExecuteID( "SELECT per_id FROM Individual WHERE id="ID";", id );
+    static idt GetPersona( idt indID ) {
+        if( indID == 0 ) return 0;
+        return ExecuteID( "SELECT per_id FROM Individual WHERE id="ID";", indID );
     }
+    idt GetPersona() const { return f_per_id; }
+
     static wxString GetFullName( idt id );
     static wxString GetSurname( idt id );
     static wxString GetDateEpitaph( idt id );
@@ -147,7 +151,8 @@ inline bool operator!=( const recIndividual& r1, const recIndividual& r2 )
 
 
 //----------------------------------------------------------
-
+#define USE_IndividualPersona 1
+#if USE_IndividualPersona
 class recIndividualPersona : public recDb
 {
 public:
@@ -184,7 +189,7 @@ inline bool operator!=( const recIndividualPersona& r1, const recIndividualPerso
 {
     return !(r1 == r2);
 }
-
+#endif
 //----------------------------------------------------------
 
 class recFamily : public recDb

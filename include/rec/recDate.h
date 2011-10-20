@@ -117,6 +117,7 @@ public:
     wxString GetStr( CalendarScheme sch = CALENDAR_SCH_Unstated ) const;
     static wxString GetStr( idt id );
     int GetYear( CalendarScheme sch = CALENDAR_SCH_Unstated );
+    static int GetYear( idt id, CalendarScheme sch = CALENDAR_SCH_Unstated );
     long GetDatePoint( DatePoint dp = DATE_POINT_Mid );
     static long GetDatePoint( idt id, DatePoint dp = DATE_POINT_Mid );
 

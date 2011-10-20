@@ -76,6 +76,7 @@ public:
     static wxString GetNote( idt evID );
     static wxString GetDateStr( idt evID );
     static wxString GetAddressStr( idt evID );
+    static idt GetDate1ID( idt evID );
 
     idt FindReferenceID() const { return FindReferenceID( f_id ); }
     static idt FindReferenceID( idt eventID ) {

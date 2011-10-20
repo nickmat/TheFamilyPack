@@ -170,52 +170,7 @@ bool recIndividual::Read()
 
 void recIndividual::UpdateDateEpitaph()
 {
-    idt date_id;
-    recEvent event;
-    recDate date;
-    wxString epi;
-
-    epi << wxT("(");
-
-    event.f_id = f_birth_id;
-    event.Read();
-    date_id = event.f_date1_id;
-    if( date_id == 0 ) {
-        event.f_id = f_nr_birth_id;
-        event.Read();
-        date_id = event.f_date1_id;
-    }
-
-    date.f_id = date_id;
-    if( date.Read() == true && date.f_jdn != 0 )
-    {
-        epi << date.GetYear();
-    } else {
-        epi << wxT(" ");
-    }
-    f_birth_jdn = date.f_jdn;
-
-    epi << wxT(" - ");
-
-    event.f_id = f_death_id;
-    event.Read();
-    date_id = event.f_date1_id;
-    if( date_id == 0 ) {
-        event.f_id = f_nr_death_id;
-        event.Read();
-        date_id = event.f_date1_id;
-    }
-
-    date.f_id = date_id;
-    if( date.Read() == true && date.f_jdn != 0 )
-    {
-        epi << date.GetYear();
-    } else {
-        epi << wxT(" ");
-    }
-
-    epi << wxT(")");
-    f_epitaph = epi;
+    f_epitaph = GetDateEpitaph( GetPersona() );
 }
 
 void recIndividual::UpdateNames()
@@ -489,7 +444,7 @@ void recIndividual::AddMissingFamilies()
 }
 
 //----------------------------------------------------------
-
+#if USE_IndividualPersona
 recIndividualPersona::recIndividualPersona( const recIndividualPersona& ip )
 {
     f_id     = ip.f_id;
@@ -594,7 +549,7 @@ bool recIndividualPersona::Find()
     f_note = result.GetAsString( 1 );
     return true;
 }
-
+#endif
 
 //----------------------------------------------------------
 

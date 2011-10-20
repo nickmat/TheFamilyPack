@@ -40,7 +40,7 @@
 
 #include <rec/recPersona.h>
 #include <rec/recIndividual.h>
-//#include <rec/recDate.h>
+#include <rec/recDate.h>
 
 recPersona::recPersona( const recPersona& p )
 {
@@ -291,6 +291,82 @@ wxString recPersona::GetIndividualIdStr( idt perID )
         }
         str << recIndividual::GetIdStr( inds[i] );
     }
+    return str;
+}
+
+idt recPersona::FindEvent( idt perID, idt roleID )
+{
+    if( perID == 0 || roleID == 0 ) return 0;
+
+    wxSQLite3StatementBuffer sql;
+    sql.Format( 
+        "SELECT event_id FROM EventPersona WHERE per_id="ID" AND role_id ="ID";",
+        perID, roleID
+    );
+    return ExecuteID( sql );
+}
+
+idt recPersona::FindEvent( idt perID, recEventType::ETYPE_Grp grp )
+{
+    if( perID == 0 || grp == recEventType::ETYPE_Grp_Unstated ) return 0;
+
+    wxSQLite3StatementBuffer sql;
+    sql.Format( 
+        "SELECT EP.event_id FROM EventPersona EP "
+        "INNER JOIN "
+        "(SELECT R.id AS rid FROM EventTypeRole R "
+        "  INNER JOIN "
+        "  EventType T ON R.type_id=T.id "
+        "  WHERE T.grp=%d AND R.prime=1) "
+        "ON rid=EP.role_id WHERE EP.per_id="ID" "
+        "ORDER BY EP.sequence;",
+        grp, perID
+    );
+    return ExecuteID( sql );
+}
+
+idt recPersona::FindAttribute( idt perID, idt atypeID )
+{
+    if( perID == 0 || atypeID == 0 ) return 0;
+
+    wxSQLite3StatementBuffer sql;
+    sql.Format( 
+        "SELECT id FROM Attribute WHERE per_id="ID" AND type_id ="ID" "
+        "ORDER BY sequence;",
+        perID, atypeID
+    );
+    // TODO: Return a list to convert into a comma separated string.
+    return ExecuteID( sql );
+}
+
+wxString recPersona::GetDateEpitaph( idt perID )
+{
+    idt bDateID, dDateID;
+
+    bDateID = recEvent::GetDate1ID( GetBirthEvent( perID ) );
+    if( bDateID == 0 ) {
+        bDateID = recEvent::GetDate1ID( GetNrBirthEvent( perID ) );
+    }
+    dDateID = recEvent::GetDate1ID( GetDeathEvent( perID ) );
+    if( dDateID == 0 ) {
+        dDateID = recEvent::GetDate1ID( GetNrDeathEvent( perID ) );
+    }
+    if( bDateID == 0 && dDateID == 0 ) return wxEmptyString;
+
+    wxString str;
+    str << "(";
+    if( bDateID ) {
+        str << recDate::GetYear( bDateID );
+    } else {
+        str << " ";
+    }
+    str << " - ";
+    if( dDateID ) {
+        str << recDate::GetYear( dDateID );
+    } else {
+        str << " ";
+    }
+    str << ")";
     return str;
 }
 
