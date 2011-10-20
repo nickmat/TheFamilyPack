@@ -815,7 +815,6 @@ void TfpFrame::RefreshHtmPage()
 
 void TfpFrame::DoHtmCtxMenu( const wxString& ref )
 {
-//    wxMessageBox( _("Not yet implimented ")+ref, _("DoHtmCtxMenu") );
     int count;
     m_ctxmenuref = ref;
     wxMenu* menu = new wxMenu;
@@ -867,8 +866,10 @@ int TfpFrame::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )
     c++;
 
     wxMenu* parmenu = new wxMenu;
-    menu->AppendSubMenu( parmenu, wxT("Parents") );
+    menu->Append( tfpID_INDMENU_PARENTS, "Parents", parmenu );
+
     families = recIndividual::GetParentList( indID );
+    int items = c;
     for( i = 0 ; i < families.size() ; i++ ) {
         if( families[i].f_husb_id != 0 ) {
             parmenu->Append( cmd_ID + c, recIndividual::GetFullName( families[i].f_husb_id ) );
@@ -879,9 +880,13 @@ int TfpFrame::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )
         m_ctxmenuIDs.push_back( families[i].f_id );
         c++;
     }
+    if( items == c ) {
+        menu->Enable( tfpID_INDMENU_PARENTS, false );
+    }
 
     wxMenu* sibmenu = new wxMenu;
-    menu->AppendSubMenu( sibmenu, wxT("Siblings") );
+    menu->Append( tfpID_INDMENU_SIBLINGS, "Siblings", sibmenu );
+    items = c;
     for( i = 0 ; i < families.size() ; i++ ) {
         inds = families[i].GetChildren();
         for( j = 0 ; j < inds.size() ; j++ ) {
@@ -892,11 +897,15 @@ int TfpFrame::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )
         }
         inds.empty();
     }
+    if( items == c ) {
+        menu->Enable( tfpID_INDMENU_SIBLINGS, false );
+    }
 
     wxMenu* marmenu = new wxMenu;
-    menu->AppendSubMenu( marmenu, wxT("Spouses") );
+    menu->Append( tfpID_INDMENU_SPOUSES, "Spouses", marmenu );
     families.empty();
     families = recIndividual::GetFamilyList( indID );
+    items = c;
     for( i = 0 ; i < families.size() ; i++ ) {
         if( families[i].f_husb_id != 0 && families[i].f_husb_id != indID ) {
             marmenu->Append( cmd_ID + c, recIndividual::GetFullName( families[i].f_husb_id ) );
@@ -907,9 +916,13 @@ int TfpFrame::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )
         m_ctxmenuIDs.push_back( families[i].f_id );
         c++;
     }
+    if( items == c ) {
+        menu->Enable( tfpID_INDMENU_SPOUSES, false );
+    }
 
     wxMenu* kidmenu = new wxMenu;
-    menu->AppendSubMenu( kidmenu, wxT("Children") );
+    menu->Append( tfpID_INDMENU_CHILDREN, "Children", kidmenu );
+    items = c;
     for( i = 0 ; i < families.size() ; i++ ) {
         inds.empty();
         inds = families[i].GetChildren();
@@ -918,6 +931,9 @@ int TfpFrame::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )
             m_ctxmenuIDs.push_back( inds[j].f_fam_id );
             c++;
         }
+    }
+    if( items == c ) {
+        menu->Enable( tfpID_INDMENU_CHILDREN, false );
     }
     families.clear();
     inds.clear();
