@@ -269,7 +269,9 @@ recIdVec recPersona::GetIndividualIDs( idt perID )
     }
 
     sql.Format(
-        "SELECT ind_id FROM IndividualPersona WHERE per_id="ID" ORDER BY ind_id;",
+        "SELECT I.id FROM Individual I, LinkPersona LP "
+        "WHERE LP.ref_per_id="ID" AND I.per_id=LP.ind_per_id "
+        "ORDER BY I.id;",
         perID
     );
     result = s_db->GetTable( sql );
@@ -299,7 +301,7 @@ idt recPersona::FindEvent( idt perID, idt roleID )
     if( perID == 0 || roleID == 0 ) return 0;
 
     wxSQLite3StatementBuffer sql;
-    sql.Format( 
+    sql.Format(
         "SELECT event_id FROM EventPersona WHERE per_id="ID" AND role_id ="ID";",
         perID, roleID
     );
@@ -311,7 +313,7 @@ idt recPersona::FindEvent( idt perID, recEventType::ETYPE_Grp grp )
     if( perID == 0 || grp == recEventType::ETYPE_Grp_Unstated ) return 0;
 
     wxSQLite3StatementBuffer sql;
-    sql.Format( 
+    sql.Format(
         "SELECT EP.event_id FROM EventPersona EP "
         "INNER JOIN "
         "(SELECT R.id AS rid FROM EventTypeRole R "
@@ -330,7 +332,7 @@ idt recPersona::FindAttribute( idt perID, idt atypeID )
     if( perID == 0 || atypeID == 0 ) return 0;
 
     wxSQLite3StatementBuffer sql;
-    sql.Format( 
+    sql.Format(
         "SELECT id FROM Attribute WHERE per_id="ID" AND type_id ="ID" "
         "ORDER BY sequence;",
         perID, atypeID

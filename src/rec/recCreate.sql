@@ -243,13 +243,6 @@ CREATE TABLE Individual (
   occ_id INTEGER
 );
 
-CREATE TABLE IndividualPersona (
-  id INTEGER PRIMARY KEY,
-  per_id INTEGER,
-  ind_id INTEGER,
-  note TEXT
-);
-
 CREATE TABLE LinkPersona (
   id INTEGER PRIMARY KEY,
   ref_per_id INTEGER NOT NULL REFERENCES Persona(id),
@@ -393,7 +386,7 @@ CREATE TABLE Version (
 );
 
 /* The Version table has only this one row */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 2);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 3);
 
 COMMIT;
 

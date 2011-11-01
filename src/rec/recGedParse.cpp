@@ -55,20 +55,19 @@ class GedIndividual
 private:
     recIndividual        m_ind;
     recPersona           m_per;
-    recIndividualPersona m_pi;
     int                  m_nameSeq;
 
 public:
-    GedIndividual() : m_ind(0), m_per(0), m_pi(0), m_nameSeq(0) { 
+    GedIndividual() : m_ind(0), m_per(0), m_nameSeq(0) { 
         m_per.Save(); 
-        m_ind.f_per_id = m_pi.f_per_id = m_per.f_id;
+        m_ind.f_per_id = m_per.f_id;
     }
 
     idt GetPersonaID() const { return m_per.f_id; }
     int GetNameSeq() { return ++m_nameSeq; }
     wxString GetNameStr() const { return m_per.GetNameStr(); }
 
-    void SetIndId( idt indID ) { m_ind.f_id = m_pi.f_ind_id = indID; }
+    void SetIndId( idt indID ) { m_ind.f_id = indID; }
     void SetSex( Sex sex ) { m_ind.f_sex = m_per.f_sex = sex; }
     void OpSetBirthId( idt birthID ) { 
         if( m_ind.f_birth_id == 0 ) m_ind.f_birth_id = birthID;
@@ -86,7 +85,7 @@ public:
         if( m_ind.f_occ_id == 0 ) m_ind.f_occ_id = occID;
     }
 
-    void Save() { m_ind.UpdateNames(); m_ind.Save(); m_pi.Save(); }
+    void Save() { m_ind.UpdateNames(); m_ind.Save(); }
 };
 
 class GedFamily

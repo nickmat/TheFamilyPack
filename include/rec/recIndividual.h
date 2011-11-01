@@ -1,8 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Name:        recIndividual.h
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Manage SQLite3 Family, FamilyIndividual, Individual and
- *              IndividualPersona records.
+ * Purpose:     Manage SQLite3 Family, FamilyIndividual and Individual records.
  * Author:      Nick Matthews
  * Modified by:
  * Website:     http://thefamilypack.org
@@ -76,7 +75,7 @@ public:
     void UpdateNames();
     wxString GetFullName() { return f_given + " " + f_surname; }
 
-    static idt GetDefaultFamily( idt id ) { 
+    static idt GetDefaultFamily( idt id ) {
         if( id == 0 ) return 0;
         return ExecuteID( "SELECT fam_id FROM Individual WHERE id="ID";", id );
     }
@@ -95,21 +94,17 @@ public:
     static recFamilyList GetParentList( idt indID );
     recFamilyList GetParentList() const { return GetParentList( f_id ); }
 
-    recEventPersonaVec GetEventPersonaVec() const
-        { return GetEventPersonaVec( f_id ); }
-    static recEventPersonaVec GetEventPersonaVec( idt id );
+    wxSQLite3Table GetRefEventsTable() const { return GetRefEventsTable( f_per_id ); }
+    static wxSQLite3Table GetRefEventsTable( idt perID );
 
-    wxSQLite3Table GetEventsTable() const { return GetEventsTable( f_id ); }
-    static wxSQLite3Table GetEventsTable( idt id );
+    wxSQLite3Table GetRefAttributesTable() const { return GetRefAttributesTable( f_per_id ); }
+    static wxSQLite3Table GetRefAttributesTable( idt perID );
 
-    wxSQLite3Table GetAttributesTable() const { return GetAttributesTable( f_id ); }
-    static wxSQLite3Table GetAttributesTable( idt id );
+    wxSQLite3Table GetReferencesTable() const { return GetReferencesTable( f_per_id ); }
+    static wxSQLite3Table GetReferencesTable( idt perID );
 
-    wxSQLite3Table GetReferencesTable() const { return GetReferencesTable( f_id ); }
-    static wxSQLite3Table GetReferencesTable( idt id );
-
-    wxArrayString GetEventIdStrList( idt etrID ) const { GetEventIdStrList( f_id, etrID ); }
-    static wxArrayString GetEventIdStrList( idt indID, idt etrID );
+    wxArrayString GetEventIdStrList( idt etrID ) const { GetEventIdStrList( f_per_id, etrID ); }
+    static wxArrayString GetEventIdStrList( idt perID, idt etrID );
 
     static wxSQLite3ResultSet GetSurnameList() {
         return s_db->ExecuteQuery(
@@ -149,47 +144,6 @@ inline bool operator!=( const recIndividual& r1, const recIndividual& r2 )
     return !(r1 == r2);
 }
 
-
-//----------------------------------------------------------
-#define USE_IndividualPersona 1
-#if USE_IndividualPersona
-class recIndividualPersona : public recDb
-{
-public:
-    idt     f_per_id;
-    idt     f_ind_id;
-    wxString f_note;
-
-    recIndividualPersona() {}
-    recIndividualPersona( idt id ) : recDb(id) { Read(); }
-    recIndividualPersona( const recIndividualPersona& ip );
-
-    void Clear();
-    void Save();
-    bool Read();
-    TABLE_NAME_MEMBERS( "IndividualPersona" );
-
-    bool Find();
-};
-
-inline bool recEquivalent( const recIndividualPersona& r1, const recIndividualPersona& r2 )
-{
-    return
-        r1.f_per_id == r2.f_per_id  &&
-        r1.f_ind_id == r2.f_ind_id  &&
-        r1.f_note   == r2.f_note;
-}
-
-inline bool operator==( const recIndividualPersona& r1, const recIndividualPersona& r2 )
-{
-    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
-}
-
-inline bool operator!=( const recIndividualPersona& r1, const recIndividualPersona& r2 )
-{
-    return !(r1 == r2);
-}
-#endif
 //----------------------------------------------------------
 
 class recFamily : public recDb

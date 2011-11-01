@@ -46,8 +46,8 @@
 const int recVerMajor    = 0;
 const int recVerMinor    = 0;
 const int recVerRev      = 9;
-const int recVerTest     = 2;
-const wxStringCharType* recVerStr = wxS("0.0.9.2");
+const int recVerTest     = 3;
+const wxStringCharType* recVerStr = wxS("0.0.9.3");
 
 
 recVersion::recVersion( const recVersion& v )
@@ -258,10 +258,10 @@ static const char* upgrade0_0_9_0 =
     "  note TEXT,\n"
     "  sequence INTEGER\n"
     ");\n"
-    "INSERT INTO EventPersona"
-    " (id, event_id, per_id, role_id, note, sequence)"
-    " SELECT id, event_id, per_id, role_id, note, 0 FROM OldEventPersona;"
-    "DROP TABLE OldEventPersona;"
+    "INSERT INTO EventPersona\n"
+    " (id, event_id, per_id, role_id, note, sequence)\n"
+    " SELECT id, event_id, per_id, role_id, note, 0 FROM OldEventPersona;\n"
+    "DROP TABLE OldEventPersona;\n"
 
     "UPDATE Version SET major=0, minor=0, revision=9, test=1 WHERE id=1;\n"
     "COMMIT;\n"
@@ -301,6 +301,13 @@ static void UpgradeData0_0_9_1() // To 0.0.9.2
     recDb::Commit();
 }
 
+static const char* upgrade0_0_9_2 =
+    "BEGIN;\n"
+    "DROP TABLE IndividualPersona;\n"
+    "UPDATE Version SET major=0, minor=0, revision=9, test=3 WHERE id=1;\n"
+    "COMMIT;\n"
+    ;
+
 
 bool recVersion::DoUpgrade()
 {
@@ -314,6 +321,10 @@ bool recVersion::DoUpgrade()
         }
         if( IsEqual( 0, 0, 9, 1 ) ) {
             UpgradeData0_0_9_1();
+            Read();
+        }
+        if( IsEqual( 0, 0, 9, 2 ) ) {
+            s_db->ExecuteUpdate( upgrade0_0_9_2 ); // To 0.0.9.3
             Read();
         }
     }

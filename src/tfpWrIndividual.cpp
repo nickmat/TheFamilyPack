@@ -160,7 +160,7 @@ wxString tfpWriteIndividualPage( idt indID )
         }
     }
 
-    wxSQLite3Table eTable = ind.GetAttributesTable();
+    wxSQLite3Table eTable = ind.GetRefAttributesTable();
     for( i = 0 ; i < (size_t) eTable.GetRowCount() ; i++ ) {
         eTable.SetRow( i );
         idt attrID = GET_ID( eTable.GetInt64( 0 ) );
@@ -177,8 +177,7 @@ wxString tfpWriteIndividualPage( idt indID )
         }
         htm << "</b></td></tr>";
     }
-
-    eTable = ind.GetEventsTable();
+    eTable = ind.GetRefEventsTable();
     for( i = 0 ; i < (size_t) eTable.GetRowCount() ; i++ ) {
         eTable.SetRow( i );
         idt eventID = GET_ID( eTable.GetInt64( 0 ) );

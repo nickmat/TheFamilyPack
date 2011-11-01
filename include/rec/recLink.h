@@ -48,6 +48,8 @@ public:
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "LinkPersona" );
+
+    bool Find();
 };
 
 /*! The two entities are equal, ignoring the record id.

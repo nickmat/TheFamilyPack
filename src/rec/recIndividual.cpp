@@ -1,8 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Name:        recIndividual.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Manage SQLite3 Family, FamilyIndividual, Individual and
- *              IndividualPersona records.
+ * Purpose:     Manage SQLite3 Family, FamilyIndividual and Individual records.
  * Author:      Nick Matthews
  * Modified by:
  * Website:     http://thefamilypack.org
@@ -272,93 +271,64 @@ recFamilyList recIndividual::GetParentList( idt indID )
     return parents;
 }
 
-recEventPersonaVec recIndividual::GetEventPersonaVec( idt id )
-{
-    recEventPersona pe;
-    recEventPersonaVec peList;
-    wxSQLite3StatementBuffer sql;
-    wxSQLite3Table result;
-
-    if( id == 0 ) return peList;
-
-    sql.Format(
-        "SELECT PE.id, PE.per_id, PE.event_id, PE.role_id, PE.note "
-        "FROM IndividualPersona IP, EventPersona PE "
-        "WHERE IP.per_id=PE.per_id AND IP.ind_id="ID";",
-        id
-    );
-    result = s_db->GetTable( sql );
-
-    for( int i = 0 ; i < result.GetRowCount() ; i++ ) {
-        result.SetRow( i );
-        pe.f_id = GET_ID( result.GetInt64( 0 ) );
-        pe.f_per_id = GET_ID( result.GetInt64( 1 ) );
-        pe.f_event_id = GET_ID( result.GetInt64( 2 ) );
-        pe.f_role_id = GET_ID( result.GetInt64( 3 ) );
-        pe.f_note = result.GetAsString( 4 );
-        peList.push_back( pe );
-    }
-
-    return peList;
-}
-
-wxSQLite3Table recIndividual::GetEventsTable( idt id )
+wxSQLite3Table recIndividual::GetRefEventsTable( idt perID )
 {
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
         "SELECT DISTINCT event_id, role_id FROM EventPersona "
         "INNER JOIN "
-        "(SELECT per_id FROM IndividualPersona WHERE ind_id="ID") "
-        "USING(per_id) ORDER BY sequence;",
-        id
+        "(SELECT ref_per_id FROM LinkPersona WHERE ind_per_id="ID") "
+        "ON EventPersona.per_id=ref_per_id "
+        "ORDER BY EventPersona.sequence;",
+        perID
     );
     return s_db->GetTable( sql );
 }
 
-wxSQLite3Table recIndividual::GetAttributesTable( idt id )
+wxSQLite3Table recIndividual::GetRefAttributesTable( idt perID )
 {
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
         "SELECT DISTINCT id, type_id, val FROM Attribute "
         "INNER JOIN "
-        "(SELECT per_id FROM IndividualPersona WHERE ind_id="ID") "
-        "USING(per_id);",
-        id
+        "(SELECT ref_per_id FROM LinkPersona WHERE ind_per_id="ID") "
+        "ON Attribute.per_id=ref_per_id;",
+        perID
     );
     return s_db->GetTable( sql );
 }
 
-wxSQLite3Table recIndividual::GetReferencesTable( idt id )
+wxSQLite3Table recIndividual::GetReferencesTable( idt perID )
 {
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
         "SELECT R.id, R.title "
-        "FROM IndividualPersona IP, Persona P, Reference R "
-        "WHERE IP.ind_id="ID" AND IP.per_id=P.id AND P.ref_id=R.id;",
-        id
+        "FROM LinkPersona LP, Persona P, Reference R "
+        "WHERE LP.ind_per_id="ID" AND LP.ref_per_id=P.id AND P.ref_id=R.id;",
+        perID
     );
     return s_db->GetTable( sql );
 }
 
-wxArrayString recIndividual::GetEventIdStrList( idt indID, idt etrID )
+wxArrayString recIndividual::GetEventIdStrList( idt perID, idt etrID )
 {
     wxArrayString list;
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
 
-    if( indID == 0 ) return list;
+    if( perID == 0 ) return list;
 
     sql.Format(
         "SELECT id, title, date1_id, place_id FROM Event "
         "WHERE id=("
         "SELECT event_id FROM EventPersona INNER JOIN "
-        "(SELECT per_id AS ipp FROM IndividualPersona WHERE ind_id="ID") Mip "
+        "(SELECT ref_per_id AS ipp FROM LinkPersona WHERE ind_per_id="ID") Mip "
         "ON per_id=Mip.ipp WHERE role_id=%d"
         ");",
-        indID, etrID
+        perID, etrID
     );
     result = s_db->GetTable( sql );
 
@@ -442,114 +412,6 @@ void recIndividual::AddMissingFamilies()
         ind.Save();
     }
 }
-
-//----------------------------------------------------------
-#if USE_IndividualPersona
-recIndividualPersona::recIndividualPersona( const recIndividualPersona& ip )
-{
-    f_id     = ip.f_id;
-    f_per_id = ip.f_per_id;
-    f_ind_id = ip.f_ind_id;
-    f_note   = ip.f_note;
-}
-
-void recIndividualPersona::Clear()
-{
-    f_id     = 0;
-    f_per_id = 0;
-    f_ind_id = 0;
-    f_note   = wxEmptyString;
-}
-
-void recIndividualPersona::Save()
-{
-    wxSQLite3StatementBuffer sql;
-    wxSQLite3Table result;
-
-    if( f_id == 0 )
-    {
-        // Add new record
-        sql.Format(
-            "INSERT INTO IndividualPersona (per_id, ind_id, note) "
-            "VALUES ("ID", "ID", '%q');",
-            f_per_id, f_ind_id, UTF8_(f_note)
-        );
-        s_db->ExecuteUpdate( sql );
-        f_id = GET_ID( s_db->GetLastRowId() );
-    } else {
-        // Does record exist
-        if( !Exists() )
-        {
-            // Add new record
-            sql.Format(
-                "INSERT INTO IndividualPersona (id, per_id, ind_id, note) "
-                "VALUES ("ID", "ID", "ID", '%q');",
-                f_id, f_per_id, f_ind_id, UTF8_(f_note)
-            );
-        } else {
-            // Update existing record
-            sql.Format(
-                "UPDATE IndividualPersona SET per_id="ID", ind_id="ID", note='%q' "
-                "WHERE id="ID";",
-                f_per_id, f_ind_id, UTF8_(f_note), f_id
-            );
-        }
-        s_db->ExecuteUpdate( sql );
-    }
-}
-
-bool recIndividualPersona::Read()
-{
-    wxSQLite3StatementBuffer sql;
-    wxSQLite3Table result;
-
-    if( f_id == 0 ) {
-        Clear();
-        return false;
-    }
-
-    sql.Format(
-        "SELECT per_id, ind_id, note FROM IndividualPersona "
-        "WHERE id="ID";", f_id
-    );
-    result = s_db->GetTable( sql );
-
-    if( result.GetRowCount() != 1 )
-    {
-        Clear();
-        return false;
-    }
-    result.SetRow( 0 );
-    f_per_id = GET_ID( result.GetInt64( 0 ) );
-    f_ind_id = GET_ID( result.GetInt64( 1 ) );
-    f_note   = result.GetAsString( 2 );
-    return true;
-}
-
-/*! Given the per_id and ind_id settings, find the matching record
- *  and read in the full record.
- */
-bool recIndividualPersona::Find()
-{
-    wxSQLite3StatementBuffer sql;
-    wxSQLite3Table result;
-
-    if( f_per_id == 0 || f_ind_id == 0 ) return false; // Only find single record
-
-    sql.Format(
-        "SELECT id, note FROM IndividualPersona "
-        "WHERE per_id="ID" AND ind_id="ID";",
-        f_per_id, f_ind_id
-    );
-    result = s_db->GetTable( sql );
-
-    if( result.GetRowCount() != 1 ) return false;
-    result.SetRow( 0 );
-    f_id   = GET_ID( result.GetInt64( 0 ) );
-    f_note = result.GetAsString( 1 );
-    return true;
-}
-#endif
 
 //----------------------------------------------------------
 
@@ -737,11 +599,13 @@ wxArrayString recFamily::GetMarriageEventTable() const
     wxArrayString list;
     if( f_id == 0 ) return list;
     if( f_husb_id == 0 && f_wife_id == 0 ) return list;
-    if( f_husb_id == 0 ) {
-        return recIndividual::GetEventIdStrList( f_wife_id, recEventTypeRole::ROLE_Marriage_Bride );
+    idt husbPerID = recIndividual::GetPersona( f_husb_id );
+    idt wifePerID = recIndividual::GetPersona( f_wife_id );
+    if( husbPerID == 0 ) {
+        return recIndividual::GetEventIdStrList( wifePerID, recEventTypeRole::ROLE_Marriage_Bride );
     }
-    if( f_wife_id == 0 ) {
-        return recIndividual::GetEventIdStrList( f_husb_id, recEventTypeRole::ROLE_Marriage_Groom );
+    if( wifePerID == 0 ) {
+        return recIndividual::GetEventIdStrList( husbPerID, recEventTypeRole::ROLE_Marriage_Groom );
     }
 
     wxSQLite3StatementBuffer sql;
@@ -749,16 +613,12 @@ wxArrayString recFamily::GetMarriageEventTable() const
     sql.Format(
         "SELECT id, title, date1_id, place_id FROM Event "
         "WHERE id=("
-        "SELECT event_id FROM EventPersona INNER JOIN "
-        "(SELECT per_id AS ipp FROM IndividualPersona WHERE ind_id="ID") Mip "
-        "ON per_id=Mip.ipp WHERE role_id=%d "
+        "SELECT event_id FROM EventPersona WHERE per_id="ID" AND role_id=%d "
         "INTERSECT "
-        "SELECT event_id FROM EventPersona INNER JOIN "
-        "(SELECT per_id AS ipp FROM IndividualPersona WHERE ind_id="ID") Fip "
-        "ON per_id=Fip.ipp WHERE role_id=%d"
+        "SELECT event_id FROM EventPersona WHERE per_id="ID" AND role_id=%d "
         ");",
-        f_husb_id, recEventTypeRole::ROLE_Marriage_Groom,
-        f_wife_id, recEventTypeRole::ROLE_Marriage_Bride
+        husbPerID, recEventTypeRole::ROLE_Marriage_Groom,
+        wifePerID, recEventTypeRole::ROLE_Marriage_Bride
     );
     result = s_db->GetTable( sql );
 

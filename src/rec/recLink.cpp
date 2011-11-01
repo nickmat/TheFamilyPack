@@ -128,4 +128,29 @@ bool recLinkPersona::Read()
     return true;
 }
 
+/*! Given the per_id and ind_id settings, find the matching record
+ *  and read in the full record.
+ */
+bool recLinkPersona::Find()
+{
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( f_ref_per_id == 0 || f_ind_per_id == 0 ) return false; // Only find single record
+
+    sql.Format(
+        "SELECT id, conf, commet FROM LinkPersona "
+        "WHERE ref_per_id="ID" AND ind_per_id="ID";",
+        f_ref_per_id, f_ind_per_id
+    );
+    result = s_db->GetTable( sql );
+
+    if( result.GetRowCount() != 1 ) return false;
+    result.SetRow( 0 );
+    f_id   = GET_ID( result.GetInt64( 0 ) );
+    f_conf = result.GetDouble( 1 );
+    f_comment = result.GetAsString( 2 );
+    return true;
+}
+
 // End of recLink.cpp file

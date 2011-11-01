@@ -119,7 +119,7 @@ public:
 
     static void Begin() { s_db->Begin(); }
     static void Commit() { s_db->Commit(); }
-    static void Rollback() { s_db->Rollback(); }
+    static void Rollback() { if( !s_db->GetAutoCommit() ) s_db->Rollback(); }
     static void ErrorMessage( wxSQLite3Exception& e );
     static void Savepoint( const wxString& str ) { s_db->Savepoint( str ); }
     static void ReleaseSavepoint( const wxString& str )
@@ -155,7 +155,7 @@ public:
 #define TABLE_NAME_MEMBERS( T )                                        \
     const char* GetTableName() const { return (T); }                   \
     bool Delete() { return DeleteRecord( (T), f_id ); }                \
-    static bool Delete( idt id ) { return DeleteRecord( (T), id ); }  \
+    static bool Delete( idt id ) { return DeleteRecord( (T), id ); }   \
     bool Exists() { return RecordExists( (T), f_id ); }                \
     static bool Exists( idt id ) { return RecordExists( (T), id ); }
 

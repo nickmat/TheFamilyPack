@@ -40,6 +40,7 @@
 #include <wx/tokenzr.h>
 
 #include <rec/recIndividual.h>
+#include <rec/recLink.h>
 
 #include "dlgEdPersona.h"
 #include "dlgEdName.h"
@@ -143,15 +144,13 @@ void dlgEditPersona::OnIndLinkButton( wxCommandEvent& event )
     idt indID = tfpPickIndividual();
     if( indID == 0 ) return;
 
-    recIndividualPersona ip;
-    ip.Clear();
-    ip.f_per_id = m_persona.f_id;
-    ip.f_ind_id = indID;
-    ip.Save();
+    recLinkPersona lp(0);
+    lp.f_ref_per_id = m_persona.f_id;
+    lp.f_ind_per_id = recIndividual::GetPersona( indID );
+    lp.f_conf = 0.999;
+    lp.Save();
 
-    wxString ind;
-    ind << "I " << indID;
-    m_staticIndId->SetLabel( ind );
+    m_staticIndId->SetLabel( recIndividual::GetIdStr( indID ) );
 }
 
 void dlgEditPersona::OnIndCreateButton( wxCommandEvent& event )

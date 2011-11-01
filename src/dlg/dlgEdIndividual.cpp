@@ -37,6 +37,8 @@
 #include "wx/wx.h"
 #endif
 
+#include <rec/recLink.h>
+
 #include "dlgEdIndividual.h"
 #include "dlgEdIndEvent.h"
 
@@ -143,9 +145,6 @@ bool dlgEditIndividual::TransferDataToWindow()
 
 bool dlgEditIndividual::TransferDataFromWindow()
 {
-//    wxMessageBox( wxT("TransferDataFromWindow Needs rewrite"), wxT("dlgEditIndividual") );
-//    return false;
-
     recNamePartVec exist;
     recNamePartVec names;
     int seq = 1;
@@ -217,12 +216,11 @@ bool dlgEditIndividual::TransferDataFromWindow()
     m_individual.f_sex = (Sex) m_choiceSex->GetSelection();
     m_individual.f_fam_id = m_fam_id;
 
-    recIndividualPersona ip;
-    ip.Clear();
-    ip.f_per_id = m_persona.f_id;
-    ip.f_ind_id = m_individual.f_id;
-    if( ip.Find() == false ) {
-        ip.Save();
+    recLinkPersona lp(0);
+    lp.f_ref_per_id = m_persona.f_id;
+    lp.f_ind_per_id = m_individual.f_per_id;
+    if( lp.Find() == false ) {
+        lp.Save();
     }
 
     wxString str = m_textOccAttr->GetValue();
