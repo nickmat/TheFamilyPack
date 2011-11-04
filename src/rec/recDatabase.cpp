@@ -99,6 +99,8 @@ bool recDb::CreateDb( wxString& fname, unsigned flags )
     fname = dbfile.GetFullPath();
     s_db->Open( fname );
     s_db->ExecuteUpdate( createdb );
+    dbfile.Normalize();
+    s_fname = dbfile.GetFullPath();
     return true;
 }
 

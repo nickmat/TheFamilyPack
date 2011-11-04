@@ -99,16 +99,16 @@ bool dlgEditIndividual::TransferDataToWindow()
     if( m_individual.f_sex == SEX_Unstated ) {
         m_individual.f_sex = m_sex;
     }
-    m_occAttr.f_id = m_individual.f_occ_id;
-    m_occAttr.Read();
-    m_birthEvent.f_id = m_individual.f_birth_id;
-    m_birthEvent.Read();
-    m_nrbirthEvent.f_id = m_individual.f_nr_birth_id;
-    m_nrbirthEvent.Read();
-    m_deathEvent.f_id = m_individual.f_death_id;
-    m_deathEvent.Read();
-    m_nrdeathEvent.f_id = m_individual.f_nr_death_id;
-    m_nrdeathEvent.Read();
+//    m_occAttr.f_id = m_individual.f_occ_id;
+//    m_occAttr.Read();
+//    m_birthEvent.f_id = m_individual.f_birth_id;
+//    m_birthEvent.Read();
+//    m_nrbirthEvent.f_id = m_individual.f_nr_birth_id;
+//    m_nrbirthEvent.Read();
+//    m_deathEvent.f_id = m_individual.f_death_id;
+//    m_deathEvent.Read();
+//    m_nrdeathEvent.f_id = m_individual.f_nr_death_id;
+//    m_nrdeathEvent.Read();
 
     wxString str;
     str << "I " << m_individual.f_id;
@@ -116,29 +116,29 @@ bool dlgEditIndividual::TransferDataToWindow()
     m_textGiven->SetValue( m_given );
     m_textSurname->SetValue( m_surname );
     m_choiceSex->SetSelection( m_individual.f_sex );
-    m_occAttr.f_id = m_individual.f_occ_id;
-    m_occAttr.Read();
-    m_textOccAttr->SetValue( m_occAttr.f_val );
+//    m_occAttr.f_id = m_individual.f_occ_id;
+//    m_occAttr.Read();
+//    m_textOccAttr->SetValue( m_occAttr.f_val );
 
-    m_listCtrl->InsertItem( 0, _("Birth") );
-    m_listCtrl->SetItem( 0, 1, m_birthEvent.GetDateStr() );
-    m_listCtrl->SetItem( 0, 2, m_birthEvent.GetAddressStr() );
+//    m_listCtrl->InsertItem( 0, _("Birth") );
+//    m_listCtrl->SetItem( 0, 1, m_birthEvent.GetDateStr() );
+//    m_listCtrl->SetItem( 0, 2, m_birthEvent.GetAddressStr() );
 
-    str = m_nrbirthEvent.GetTypeStr();
-    if( str.IsEmpty() ) str = _("Baptism");
-    m_listCtrl->InsertItem( 1, str );
-    m_listCtrl->SetItem( 1, 1, m_nrbirthEvent.GetDateStr() );
-    m_listCtrl->SetItem( 1, 2, m_nrbirthEvent.GetAddressStr() );
+//    str = m_nrbirthEvent.GetTypeStr();
+//    if( str.IsEmpty() ) str = _("Baptism");
+//    m_listCtrl->InsertItem( 1, str );
+//    m_listCtrl->SetItem( 1, 1, m_nrbirthEvent.GetDateStr() );
+//    m_listCtrl->SetItem( 1, 2, m_nrbirthEvent.GetAddressStr() );
 
-    m_listCtrl->InsertItem( 2, _("Death") );
-    m_listCtrl->SetItem( 2, 1, m_deathEvent.GetDateStr() );
-    m_listCtrl->SetItem( 2, 2, m_deathEvent.GetAddressStr() );
+//    m_listCtrl->InsertItem( 2, _("Death") );
+//    m_listCtrl->SetItem( 2, 1, m_deathEvent.GetDateStr() );
+//    m_listCtrl->SetItem( 2, 2, m_deathEvent.GetAddressStr() );
 
-    str = m_nrdeathEvent.GetTypeStr();
-    if( str.IsEmpty() ) str = _("Burial");
-    m_listCtrl->InsertItem( 3, str );
-    m_listCtrl->SetItem( 3, 1, m_nrdeathEvent.GetDateStr() );
-    m_listCtrl->SetItem( 3, 2, m_nrdeathEvent.GetAddressStr() );
+//    str = m_nrdeathEvent.GetTypeStr();
+//    if( str.IsEmpty() ) str = _("Burial");
+//    m_listCtrl->InsertItem( 3, str );
+//    m_listCtrl->SetItem( 3, 1, m_nrdeathEvent.GetDateStr() );
+//    m_listCtrl->SetItem( 3, 2, m_nrdeathEvent.GetAddressStr() );
 
     return true;
 }
@@ -225,14 +225,14 @@ bool dlgEditIndividual::TransferDataFromWindow()
 
     wxString str = m_textOccAttr->GetValue();
     if( str == wxEmptyString ) {
-        m_occAttr.Delete();
-        m_individual.f_occ_id = 0;
+//        m_occAttr.Delete();
+//        m_individual.f_occ_id = 0;
     } else {
-        m_occAttr.f_per_id = m_persona.f_id;
-        m_occAttr.f_type_id = recAttributeType::ATYPE_Occupation;
-        m_occAttr.f_val = str;
-        m_occAttr.Save();
-        m_individual.f_occ_id = m_occAttr.f_id;
+//        m_occAttr.f_per_id = m_persona.f_id;
+//        m_occAttr.f_type_id = recAttributeType::ATYPE_Occupation;
+//        m_occAttr.f_val = str;
+//        m_occAttr.Save();
+//        m_individual.f_occ_id = m_occAttr.f_id;
     }
     m_individual.Save();
 
@@ -241,10 +241,10 @@ bool dlgEditIndividual::TransferDataFromWindow()
 
 void dlgEditIndividual::OnEventActivated( wxListEvent& event )
 {
+#if 0
     recEvent* pEvent;
     idt roleID, typeID;
     idt* pEventID;
-
     switch( event.m_itemIndex )
     {
     case 0:
@@ -302,10 +302,12 @@ void dlgEditIndividual::OnEventActivated( wxListEvent& event )
         recDb::Rollback( savepoint );
     }
     dialog->Destroy();
+#endif
 }
 
 void dlgEditIndividual::UpdateEventDetails()
 {
+#if 0
     m_listCtrl->SetItem( 0, 0, wxT("Birth") );
     m_listCtrl->SetItem( 0, 1, m_birthEvent.GetDateStr() );
     m_listCtrl->SetItem( 0, 2, m_birthEvent.GetAddressStr() );
@@ -325,6 +327,7 @@ void dlgEditIndividual::UpdateEventDetails()
     m_listCtrl->SetItem( 3, 0, str );
     m_listCtrl->SetItem( 3, 1, m_nrdeathEvent.GetDateStr() );
     m_listCtrl->SetItem( 3, 2, m_nrdeathEvent.GetAddressStr() );
+#endif
 }
 
 

@@ -61,7 +61,7 @@
 </head>
 <body>
 
-<h1><a  href="../index.htm"><img id="logo" src="../tfp5.gif" alt="Logo" /></a>The Family Pack<br/>Database Design V0.0.7</h1>
+<h1><a  href="../index.htm"><img id="logo" src="../tfp5.gif" alt="Logo" /></a>The Family Pack<br/>Database Design V0.0.9.3</h1>
 
 <div id="page" class="database">
 
@@ -102,7 +102,7 @@
    <tr>
     <td><a href="#FamilyIndividual">FamilyIndividual</a></td>
     <td><a href="#Individual">Individual</a></td>
-    <td><a href="#IndividualPersona">IndividualPersona</a></td>
+    <td><a href="#LinkPersona">LinkPersona</a></td>
     <td><a href="#Name">Name</a></td>
     <td><a href="#NamePart">NamePart</a></td>
     <td><a href="#NamePartType">NamePartType</a></td>
@@ -554,22 +554,22 @@
     <tr>
      <td>surname</td>
      <td>Text</td>
-     <td>The surname name that this Individual is known by. NOTE: Redundant field created from Persona/Attributes</td>
+     <td>The surname name that this Individual is known by. NOTE: Redundant field created from Persona/Names</td>
     </tr>
     <tr>
      <td>given</td>
      <td>Text</td>
-     <td>The given name or names for this Individual. NOTE: Redundant field created from Persona/Attributes</td>
+     <td>The given name or names for this Individual. NOTE: Redundant field created from Persona/Names</td>
     </tr>
     <tr>
      <td>birth_jdn</td>
      <td>Integer</td>
-     <td>The birth Julian Day Number, used for sorting individuals. NOTE: Redundant field created from default Events</td>
+     <td>The birth Julian Day Number, used for sorting individuals. NOTE: Redundant field created from Events</td>
     </tr>
     <tr>
      <td>epitaph</td>
      <td>Text</td>
-     <td>The short date epitaph string ie (1914 - 1987). NOTE: Redundant field created from default Events</td>
+     <td>The short date epitaph string ie (1914 - 1987). NOTE: Redundant field created from Events</td>
     </tr>
     <tr>
      <td>sex</td>
@@ -586,57 +586,32 @@
      <td>Integer</td>
      <td>Pointer to the default Persona.</td>
     </tr>
-    <tr>
-     <td>birth_id</td>
-     <td>Integer</td>
-     <td>Pointer to the default (preferred) birth event ID</td>
-    </tr>
-    <tr>
-     <td>nr_birth_id</td>
-     <td>Integer</td>
-     <td>Pointer to the default (preferred) naming (christening) event ID</td>
-    </tr>
-    <tr>
-     <td>death_id</td>
-     <td>Integer</td>
-     <td>Pointer to the default (preferred) death event ID</td>
-    </tr>
-    <tr>
-     <td>nr_death_id</td>
-     <td>Integer</td>
-     <td>Pointer to the default (preferred) funeral (burial) event ID</td>
-    </tr>
-    <tr>
-     <td>occ_id</td>
-     <td>Integer</td>
-     <td>Pointer to the default (preferred) occupation attribute ID</td>
-    </tr>
 
-    <tr id="IndividualPersona">
+    <tr id="LinkPersona">
      <td colspan="3" class="filler"><a href="#">Top</a></td>
     </tr>
     <tr class="head">
-     <td colspan="3"><b>IndividualPersona</b></td>
+     <td colspan="3"><b>LinkPersona</b></td>
     </tr>
     <tr>
      <td>id</td>
      <td class="nw">Integer PK</td>
-     <td>Unique key identifying an IndividualPersona.</td>
+     <td>Unique key identifying a LinkPersona record.</td>
     </tr>
     <tr>
-     <td>per_id</td>
+     <td>ref_per_id</td>
      <td>Integer</td>
-     <td>Pointer to a Persona</td>
+     <td>Pointer to a Persona associated with a Reference</td>
     </tr>
     <tr>
-     <td>ind_id</td>
+     <td>ind_per_id</td>
      <td>Integer</td>
-     <td>Pointer to an Individual</td>
+     <td>Pointer to a Persona associated with an Individual</td>
     </tr>
     <tr>
      <td>note</td>
      <td>Text</td>
-     <td>Optional note that relates to the Persona - Individual link</td>
+     <td>Optional note that relates to the Reference Persona - Individual Persona link</td>
     </tr>
 
     <tr id="Name">

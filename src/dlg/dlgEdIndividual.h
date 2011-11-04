@@ -67,11 +67,11 @@ private:
     recName        m_name;
     wxString       m_surname;
     wxString       m_given;
-    recAttribute   m_occAttr;
-    recEvent       m_birthEvent;
-    recEvent       m_nrbirthEvent;
-    recEvent       m_deathEvent;
-    recEvent       m_nrdeathEvent;
+ //   recAttribute   m_occAttr;
+ //   recEvent       m_birthEvent;
+ //   recEvent       m_nrbirthEvent;
+ //   recEvent       m_deathEvent;
+ //   recEvent       m_nrdeathEvent;
 };
 
 #endif // DLGEDINDIVIDUAL_H

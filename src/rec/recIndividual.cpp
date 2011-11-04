@@ -55,11 +55,6 @@ recIndividual::recIndividual( const recIndividual& i )
     f_sex         = i.f_sex;
     f_fam_id      = i.f_fam_id;
     f_per_id      = i.f_per_id;
-    f_birth_id    = i.f_birth_id;
-    f_nr_birth_id = i.f_nr_birth_id;
-    f_death_id    = i.f_death_id;
-    f_nr_death_id = i.f_nr_death_id;
-    f_occ_id      = i.f_occ_id;
 }
 
 void recIndividual::Clear()
@@ -72,11 +67,6 @@ void recIndividual::Clear()
     f_sex         = SEX_Unstated;
     f_fam_id      = 0;
     f_per_id      = 0;
-    f_birth_id    = 0;
-    f_nr_birth_id = 0;
-    f_death_id    = 0;
-    f_nr_death_id = 0;
-    f_occ_id      = 0;
 }
 
 void recIndividual::Save()
@@ -91,12 +81,10 @@ void recIndividual::Save()
         // Add new record
         sql.Format(
             "INSERT INTO Individual (surname, given, birth_jdn, epitaph, sex, "
-            "fam_id, per_id, birth_id, nr_birth_id, "
-            "death_id, nr_death_id, occ_id) VALUES "
-            "('%q', '%q', %ld, '%q', %u, "ID", "ID", "ID", "ID", "ID", "ID", "ID");",
+            "fam_id, per_id) VALUES "
+            "('%q', '%q', %ld, '%q', %u, "ID", "ID");",
             UTF8_(f_surname), UTF8_(f_given), f_birth_jdn, UTF8_(f_epitaph),
-            f_sex, f_fam_id, f_per_id, f_birth_id, f_nr_birth_id,
-            f_death_id, f_nr_death_id, f_occ_id
+            f_sex, f_fam_id, f_per_id
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -107,22 +95,18 @@ void recIndividual::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO Individual (id, surname, given, birth_jdn, epitaph, "
-                "sex, fam_id, per_id, birth_id, "
-                "nr_birth_id, death_id, nr_death_id, occ_id) "
-                "VALUES ("ID", '%q', '%q', %ld, '%q', %u, "ID", "ID", "ID", "ID", "ID", "ID", "ID");",
+                "sex, fam_id, per_id) "
+                "VALUES ("ID", '%q', '%q', %ld, '%q', %u, "ID", "ID");",
                 f_id, UTF8_(f_surname), UTF8_(f_given), f_birth_jdn, UTF8_(f_epitaph),
-                f_sex, f_fam_id, f_per_id, f_birth_id, f_nr_birth_id,
-                f_death_id, f_nr_death_id, f_occ_id
+                f_sex, f_fam_id, f_per_id
             );
         } else {
             // Update existing record
             sql.Format(
                 "UPDATE Individual SET surname='%q', given='%q', birth_jdn=%ld, "
-                "epitaph='%q', sex=%u, fam_id="ID", per_id="ID", birth_id="ID", "
-                "nr_birth_id="ID", death_id="ID", nr_death_id="ID", occ_id="ID" WHERE id="ID";",
+                "epitaph='%q', sex=%u, fam_id="ID", per_id="ID" WHERE id="ID";",
                 UTF8_(f_surname), UTF8_(f_given), f_birth_jdn, UTF8_(f_epitaph),
-                f_sex, f_fam_id, f_per_id, f_birth_id, f_nr_birth_id,
-                f_death_id, f_nr_death_id, f_occ_id, f_id
+                f_sex, f_fam_id, f_per_id, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -140,8 +124,7 @@ bool recIndividual::Read()
     }
 
     sql.Format(
-        "SELECT surname, given, birth_jdn, epitaph, sex, fam_id, per_id, "
-        "birth_id, nr_birth_id, death_id, nr_death_id, occ_id "
+        "SELECT surname, given, birth_jdn, epitaph, sex, fam_id, per_id "
         "FROM Individual WHERE id="ID";", f_id
     );
     result = s_db->GetTable( sql );
@@ -159,17 +142,12 @@ bool recIndividual::Read()
     f_sex         = (Sex) result.GetInt( 4 );
     f_fam_id      = GET_ID( result.GetInt64( 5 ) );
     f_per_id      = GET_ID( result.GetInt64( 6 ) );
-    f_birth_id    = GET_ID( result.GetInt64( 7 ) );
-    f_nr_birth_id = GET_ID( result.GetInt64( 8 ) );
-    f_death_id    = GET_ID( result.GetInt64( 9 ) );
-    f_nr_death_id = GET_ID( result.GetInt64( 10 ) );
-    f_occ_id      = GET_ID( result.GetInt64( 11 ) );
     return true;
 }
 
 void recIndividual::UpdateDateEpitaph()
 {
-    f_epitaph = GetDateEpitaph( GetPersona() );
+    f_epitaph = recPersona::GetDateEpitaph( f_per_id );
 }
 
 void recIndividual::UpdateNames()

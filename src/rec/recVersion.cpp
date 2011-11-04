@@ -46,8 +46,8 @@
 const int recVerMajor    = 0;
 const int recVerMinor    = 0;
 const int recVerRev      = 9;
-const int recVerTest     = 3;
-const wxStringCharType* recVerStr = wxS("0.0.9.3");
+const int recVerTest     = 4;
+const wxStringCharType* recVerStr = wxS("0.0.9.4");
 
 
 recVersion::recVersion( const recVersion& v )
@@ -231,63 +231,65 @@ bool recVersion::TestForUpgrade()
 //                 Code to upgrade old versions
 //============================================================================
 
-static const char* upgrade0_0_9_0 =
-    "BEGIN;\n"
-
-    "ALTER TABLE Event RENAME TO OldEvent;\n"
-    "CREATE TABLE Event (\n"
-    "  id INTEGER PRIMARY KEY,\n"
-    "  title TEXT,\n"
-    "  type_id INTEGER,\n"
-    "  date1_id INTEGER,\n"
-    "  date2_id INTEGER,\n"
-    "  place_id INTEGER,\n"
-    "  note TEXT\n"
-    ");\n"
-    "INSERT INTO Event"
-    " (id, title, type_id, date1_id, date2_id, place_id, note)"
-    " SELECT id, title, type_id, date1_id, date2_id, place_id, note FROM OldEvent;"
-    "DROP TABLE OldEvent;"
-
-    "ALTER TABLE EventPersona RENAME TO OldEventPersona;\n"
-    "CREATE TABLE EventPersona (\n"
-    "  id INTEGER PRIMARY KEY,\n"
-    "  event_id INTEGER,\n"
-    "  per_id INTEGER,\n"
-    "  role_id INTEGER,\n"
-    "  note TEXT,\n"
-    "  sequence INTEGER\n"
-    ");\n"
-    "INSERT INTO EventPersona\n"
-    " (id, event_id, per_id, role_id, note, sequence)\n"
-    " SELECT id, event_id, per_id, role_id, note, 0 FROM OldEventPersona;\n"
-    "DROP TABLE OldEventPersona;\n"
-
-    "UPDATE Version SET major=0, minor=0, revision=9, test=1 WHERE id=1;\n"
-    "COMMIT;\n"
-    ;
-
-static const char* upgrade0_0_9_1 =
-    "CREATE TABLE LinkPersona (\n"
-    "  id INTEGER PRIMARY KEY,\n"
-    "  ref_per_id INTEGER NOT NULL REFERENCES Persona(id),\n"
-    "  ind_per_id INTEGER NOT NULL REFERENCES Persona(id),\n"
-    "  conf FLOAT NOT NULL,\n"
-    "  comment TEXT\n"
-    ");\n"
-    ;
-
-static void UpgradeData0_0_9_1() // To 0.0.9.2
+static void UpgradeTest0_0_9_0to0_0_9_1()
 {
+    char* sql =
+        "ALTER TABLE Event RENAME TO OldEvent;\n"
+        "CREATE TABLE Event (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  title TEXT,\n"
+        "  type_id INTEGER,\n"
+        "  date1_id INTEGER,\n"
+        "  date2_id INTEGER,\n"
+        "  place_id INTEGER,\n"
+        "  note TEXT\n"
+        ");\n"
+        "INSERT INTO Event"
+        " (id, title, type_id, date1_id, date2_id, place_id, note)"
+        " SELECT id, title, type_id, date1_id, date2_id, place_id, note FROM OldEvent;"
+        "DROP TABLE OldEvent;"
+
+        "ALTER TABLE EventPersona RENAME TO OldEventPersona;\n"
+        "CREATE TABLE EventPersona (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  event_id INTEGER,\n"
+        "  per_id INTEGER,\n"
+        "  role_id INTEGER,\n"
+        "  note TEXT,\n"
+        "  sequence INTEGER\n"
+        ");\n"
+        "INSERT INTO EventPersona\n"
+        " (id, event_id, per_id, role_id, note, sequence)\n"
+        " SELECT id, event_id, per_id, role_id, note, 0 FROM OldEventPersona;\n"
+        "DROP TABLE OldEventPersona;\n"
+    ;
     recDb::Begin();
-    recDb::GetDb()->ExecuteUpdate( upgrade0_0_9_1 );
+    recDb::GetDb()->ExecuteUpdate( sql );
+    recVersion::Set( 0, 0, 9, 1 );
+    recDb::Commit();
+}
+
+
+static void UpgradeTest0_0_9_1to0_0_9_2()
+{
+    char* sql =
+        "CREATE TABLE LinkPersona (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  ref_per_id INTEGER NOT NULL REFERENCES Persona(id),\n"
+        "  ind_per_id INTEGER NOT NULL REFERENCES Persona(id),\n"
+        "  conf FLOAT NOT NULL,\n"
+        "  comment TEXT\n"
+        ");\n"
+    ;
+    recDb::Begin();
+    recDb::GetDb()->ExecuteUpdate( sql );
 
     recLinkPersona lp;
-    const char* query =
+    char* query =
         "SELECT IP.per_id, I.per_id, IP.note "
         "FROM IndividualPersona IP, Individual I "
         "WHERE IP.ind_id=I.id AND NOT IP.per_id=I.per_id;"
-        ;
+    ;
     wxSQLite3ResultSet result = recDb::GetDb()->ExecuteQuery( query );
     while( result.NextRow() ) {
         lp.f_id = 0;
@@ -297,16 +299,61 @@ static void UpgradeData0_0_9_1() // To 0.0.9.2
         lp.f_comment = result.GetAsString( 2 );
         lp.Save();
     }
-    recVersion::Set( 0, 0, 9, 2);
+    recVersion::Set( 0, 0, 9, 2 );
     recDb::Commit();
 }
 
-static const char* upgrade0_0_9_2 =
-    "BEGIN;\n"
-    "DROP TABLE IndividualPersona;\n"
-    "UPDATE Version SET major=0, minor=0, revision=9, test=3 WHERE id=1;\n"
-    "COMMIT;\n"
+static void UpgradeTest0_0_9_2to0_0_9_3()
+{
+    char* sql =
+        "DROP TABLE IndividualPersona;\n"
     ;
+    recDb::Begin();
+    recDb::GetDb()->ExecuteUpdate( sql );
+    recVersion::Set( 0, 0, 9, 3 );
+    recDb::Commit();
+}
+
+static void UpgradeTest0_0_9_3to0_0_9_4()
+{
+    char* query =
+        "ALTER TABLE Individual RENAME TO OldIndividual;\n"
+        "CREATE TABLE Individual (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  surname TEXT,\n"
+        "  given TEXT,\n"
+        "  birth_jdn INTEGER,\n"
+        "  epitaph TEXT,\n"
+        "  sex INTEGER,\n"
+        "  fam_id INTEGER,\n"
+        "  per_id INTEGER\n"
+        ");\n"
+        "INSERT INTO Individual\n"
+        " (id, surname, given, birth_jdn, epitaph, sex, fam_id, per_id)"
+        " SELECT id, surname, given, birth_jdn, epitaph, sex, fam_id, per_id"
+        " FROM OldIndividual;\n"
+        "DROP TABLE OldIndividual;\n"
+    ;
+    recDb::Begin();
+    recDb::GetDb()->ExecuteUpdate( query );
+    recVersion::Set( 0, 0, 9, 4 );
+    recDb::Commit();
+}
+
+static void UpgradeRev0_0_9toCurrent( int test )
+{
+    switch( test )
+    {
+    case 0:
+        UpgradeTest0_0_9_0to0_0_9_1();
+    case 1: // Fall thru intended
+        UpgradeTest0_0_9_1to0_0_9_2();
+    case 2:
+        UpgradeTest0_0_9_2to0_0_9_3();
+    case 3:
+        UpgradeTest0_0_9_3to0_0_9_4();
+    }
+}
 
 
 bool recVersion::DoUpgrade()
@@ -315,16 +362,8 @@ bool recVersion::DoUpgrade()
     if( TestForUpgrade() == false ) return false;
 
     try {
-        if( IsEqual( 0, 0, 9, 0 ) ) {
-            s_db->ExecuteUpdate( upgrade0_0_9_0 ); // To 0.0.9.1
-            Read();
-        }
-        if( IsEqual( 0, 0, 9, 1 ) ) {
-            UpgradeData0_0_9_1();
-            Read();
-        }
-        if( IsEqual( 0, 0, 9, 2 ) ) {
-            s_db->ExecuteUpdate( upgrade0_0_9_2 ); // To 0.0.9.3
+        if( IsEqual( 0, 0, 9 ) ) {
+            UpgradeRev0_0_9toCurrent( f_test );
             Read();
         }
     }

@@ -64,33 +64,38 @@ wxString tfpWriteIndividualPage( idt indID )
         << indID << wxT(", ") << recGetSexStr( ind.f_sex )
         << wxT("</b></td></tr>");
 
-    if( ind.f_birth_id != 0 ) {
+    idt id = recPersona::GetBirthEvent( ind.f_per_id );
+    if( id != 0 ) {
         htm << wxT("<tr><td align=right>Birth:</td><td><b>")
-            << recEvent::GetDetailStr( ind.f_birth_id )
+            << recEvent::GetDetailStr( id )
             << wxT("</b></td></tr>");
     }
-    if( ind.f_nr_birth_id != 0 ) {
+    id = recPersona::GetNrBirthEvent( ind.f_per_id );
+    if( id != 0 ) {
         htm << wxT("<tr><td align=right>")
-            << recEvent::GetTypeStr( ind.f_nr_birth_id )
+            << recEvent::GetTypeStr( id )
             << wxT(":</td><td><b>")
-            << recEvent::GetDetailStr( ind.f_nr_birth_id )
+            << recEvent::GetDetailStr( id )
             << wxT("</b></td></tr>");
     }
-    if( ind.f_death_id != 0 ) {
+    id = recPersona::GetDeathEvent( ind.f_per_id );
+    if( id != 0 ) {
         htm << wxT("<tr><td align=right>Death:</td><td><b>")
-            << recEvent::GetDetailStr( ind.f_death_id )
+            << recEvent::GetDetailStr( id )
             << wxT("</b></td></tr>");
     }
-    if( ind.f_nr_death_id != 0 ) {
+    id = recPersona::GetNrDeathEvent( ind.f_per_id );
+    if( id != 0 ) {
         htm << wxT("<tr><td align=right>")
-            << recEvent::GetTypeStr( ind.f_nr_death_id )
+            << recEvent::GetTypeStr( id )
             << wxT(":</td><td><b>")
-            << recEvent::GetDetailStr( ind.f_nr_death_id )
+            << recEvent::GetDetailStr( id )
             << wxT("</b></td></tr>");
     }
-    if( ind.f_occ_id != 0 ) {
+    id = recPersona::GetOccAttribute( ind.f_per_id );
+    if( id != 0 ) {
         htm << wxT("<tr><td align=right>Occupation:</td><td><b>")
-            << recAttribute::GetValue( ind.f_occ_id )
+            << recAttribute::GetValue( id )
             << wxT("</b></td></tr>");
     }
     // Write out Parents

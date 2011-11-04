@@ -69,21 +69,6 @@ public:
 
     void SetIndId( idt indID ) { m_ind.f_id = indID; }
     void SetSex( Sex sex ) { m_ind.f_sex = m_per.f_sex = sex; }
-    void OpSetBirthId( idt birthID ) { 
-        if( m_ind.f_birth_id == 0 ) m_ind.f_birth_id = birthID;
-    }
-    void OpSetNrBirthId( idt nrbirthID ) { 
-        if( m_ind.f_nr_birth_id == 0 ) m_ind.f_nr_birth_id = nrbirthID;
-    }
-    void OpSetDeathId( idt deathID ) { 
-        if( m_ind.f_death_id == 0 ) m_ind.f_death_id = deathID;
-    }
-    void OpSetNrDeathId( idt nrdeathID ) { 
-        if( m_ind.f_nr_death_id == 0 ) m_ind.f_nr_death_id = nrdeathID;
-    }
-    void OpSetOccAttrId( idt occID ) { 
-        if( m_ind.f_occ_id == 0 ) m_ind.f_occ_id = occID;
-    }
 
     void Save() { m_ind.UpdateNames(); m_ind.Save(); }
 };
@@ -352,28 +337,24 @@ void recGedParse::ReadIndEvent( GedIndividual& gind, int level )
     case tagBIRT:
         ev.f_type_id = recEventType::ET_Birth;
         ep.f_role_id = recEventTypeRole::ROLE_Birth_Born;
-        gind.OpSetBirthId( ev.f_id );
         titlefmt = _("Birth of %s");
         dp = recDate::DATE_POINT_Beg;
         break;
     case tagCHR:
         ev.f_type_id = recEventType::ET_Baptism;
         ep.f_role_id = recEventTypeRole::ROLE_Baptism_Baptised;
-        gind.OpSetNrBirthId( ev.f_id );
         titlefmt = _("Baptism of %s");
         dp = recDate::DATE_POINT_Beg;
         break;
     case tagDEAT:
         ev.f_type_id = recEventType::ET_Death;
         ep.f_role_id = recEventTypeRole::ROLE_Death_Died;
-        gind.OpSetDeathId( ev.f_id );
         titlefmt = _("Death of %s");
         dp = recDate::DATE_POINT_End;
         break;
     case tagBURI:
         ev.f_type_id = recEventType::ET_Burial;
         ep.f_role_id = recEventTypeRole::ROLE_Burial_Deceased;
-        gind.OpSetNrDeathId( ev.f_id );
         titlefmt = _("Burial of %s");
         dp = recDate::DATE_POINT_End;
         break;
@@ -537,7 +518,6 @@ void recGedParse::ReadIndAttr( GedIndividual& gind, int level )
     {
     case tagOCCU:
         attr.f_type_id = recAttributeType::ATYPE_Occupation;
-        gind.OpSetOccAttrId( attr.f_id );
         break;
     default:
         return; // ignore unrecognised attribute

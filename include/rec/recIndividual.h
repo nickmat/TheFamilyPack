@@ -51,13 +51,8 @@ public:
     long     f_birth_jdn;
     wxString f_epitaph;
     Sex      f_sex;
-    idt     f_fam_id;
-    idt     f_per_id;
-    idt     f_birth_id;
-    idt     f_nr_birth_id;
-    idt     f_death_id;
-    idt     f_nr_death_id;
-    idt     f_occ_id;
+    idt      f_fam_id;
+    idt      f_per_id;
 
     recIndividual() {}
     recIndividual( idt id ) : recDb(id) { Read(); }
@@ -126,12 +121,7 @@ inline bool recEquivalent( const recIndividual& r1, const recIndividual& r2 )
         r1.f_epitaph     == r2.f_epitaph      &&
         r1.f_sex         == r2.f_sex          &&
         r1.f_fam_id      == r2.f_fam_id       &&
-        r1.f_per_id      == r2.f_per_id       &&
-        r1.f_birth_id    == r2.f_birth_id     &&
-        r1.f_nr_birth_id == r2.f_nr_birth_id  &&
-        r1.f_death_id    == r2.f_death_id     &&
-        r1.f_nr_death_id == r2.f_nr_death_id  &&
-        r1.f_occ_id      == r2.f_occ_id;
+        r1.f_per_id      == r2.f_per_id;
 }
 
 inline bool operator==( const recIndividual& r1, const recIndividual& r2 )

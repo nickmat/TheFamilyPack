@@ -813,11 +813,6 @@ void RecTestCase::TestIndividual()
     record1.f_sex         = SEX_Male;
     record1.f_fam_id      = 4;
     record1.f_per_id      = 5;
-    record1.f_birth_id    = 6;
-    record1.f_nr_birth_id = 7;
-    record1.f_death_id    = 8;
-    record1.f_nr_death_id = 9;
-    record1.f_occ_id      = 10;
     // f_id = 0 so create new record and set f_id to new value.
     record1.Save();
     id = record1.f_id;
@@ -835,11 +830,6 @@ void RecTestCase::TestIndividual()
     record1.f_sex         = SEX_Unknown;
     record1.f_fam_id      = 18;
     record1.f_per_id      = 17;
-    record1.f_birth_id    = 16;
-    record1.f_nr_birth_id = 15;
-    record1.f_death_id    = 14;
-    record1.f_nr_death_id = 13;
-    record1.f_occ_id      = 12;
     // f_id = 1 which exists, so amend record leaving f_id to old value.
     record1.Save();
     CPPUNIT_ASSERT( record1.f_id == id );

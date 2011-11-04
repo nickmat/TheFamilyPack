@@ -235,12 +235,7 @@ CREATE TABLE Individual (
   epitaph TEXT,
   sex INTEGER,
   fam_id INTEGER,
-  per_id INTEGER,
-  birth_id INTEGER,
-  nr_birth_id INTEGER,
-  death_id INTEGER,
-  nr_death_id INTEGER,
-  occ_id INTEGER
+  per_id INTEGER
 );
 
 CREATE TABLE LinkPersona (
@@ -386,7 +381,7 @@ CREATE TABLE Version (
 );
 
 /* The Version table has only this one row */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 3);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 4);
 
 COMMIT;
 
