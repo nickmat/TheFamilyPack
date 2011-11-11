@@ -41,21 +41,14 @@
 
 #include "tfpWr.h"
 
-wxString tfpWritePersonIndex( WrIndex type )
+
+static wxString WriteIndex( wxSQLite3ResultSet& table )
 {
-	wxSQLite3ResultSet result;
-
-	if( type == WrIndex_Individual ) {
-        result = recIndividual::GetSurnameList();
-	} else { // type == WrIndex_Persona
-        result = recNamePart::GetSurnameList();
-	}
-
 	wxString htm = 
-		wxT("<html><head><title>Surname Index</title></head><body>")
-		wxT("<center><h1>Surname Index</h1>");
+		"<html><head><title>Surname Index</title></head><body>"
+		"<center><h1>Surname Index</h1>";
 
-    if( result.GetColumnCount() > 0 )
+    if( table.GetColumnCount() > 0 )
 	{
         wxChar letter = wxChar('\0');
         wxString name = wxEmptyString;
@@ -63,9 +56,9 @@ wxString tfpWritePersonIndex( WrIndex type )
         bool row1st = true;
 
 		htm << wxT("<table border=1>");
-        while( result.NextRow() )
+        while( table.NextRow() )
 		{
-            name = result.GetAsString( 0 );
+            name = table.GetAsString( 0 );
             if( name.length() == 0 ) {
                 name = "?";
             }
@@ -100,14 +93,40 @@ wxString tfpWritePersonIndex( WrIndex type )
     return htm;
 }
 
-wxString tfpWritePersonList( const wxString& surname, WrIndex type )
+wxString tfpWriteIndividualIndex()
+{
+    static wxString htm;
+    static long lastchange(0);
+    if( !htm.IsEmpty() && recDb::GetChange() == lastchange ) {
+        return htm;
+    }
+
+    wxSQLite3ResultSet table = recIndividual::GetSurnameList();
+
+    htm = WriteIndex( table );
+    lastchange = recDb::GetChange();
+    return htm;
+}
+
+wxString tfpWritePersonIndex()
+{
+    static wxString htm;
+    static long lastchange(0);
+    if( !htm.IsEmpty() && recDb::GetChange() == lastchange ) {
+        return htm;
+    }
+
+    wxSQLite3ResultSet table = recNamePart::GetSurnameList();
+
+    htm = WriteIndex( table );
+    lastchange = recDb::GetChange();
+    return htm;
+}
+
+wxString tfpWriteIndividualList( const wxString& surname )
 {
 	wxString htm;
 
-	if( type != WrIndex_Individual ) {
-		return wxT("<html><head><title>Name List</title></head><body>")
-			wxT("<center><h1>Persona Name List Not Yet Done</h1></center></body></html>");
-	}
     htm << wxT("<html><head><title>Name List</title></head><body>")
         << wxT("<center><h1>") << surname << wxT("</h1>");
 
@@ -138,6 +157,5 @@ wxString tfpWritePersonList( const wxString& surname, WrIndex type )
 
     return htm;
 }
-
 
 // End of tfpWrName.cpp Source

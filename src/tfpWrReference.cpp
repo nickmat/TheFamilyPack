@@ -43,16 +43,22 @@
 
 wxString tfpWriteReferenceIndex()
 {
-    wxString htm;
-    size_t cnt = 0;
+    static wxString htm;
+    static long lastchange(0);
 
-    htm << "<html><head><title>Reference List</title></head><body>"
-           "<center><h1>Reference List</h1>";
+    if( !htm.IsEmpty() && recDb::GetChange() == lastchange ) {
+        return htm;
+    }
+
+    htm = "<html><head><title>Reference List</title></head><body>"
+          "<h1>Reference List</h1>";
 
     wxSQLite3ResultSet result = recReference::GetTitleList();
 
+    size_t cnt = 0;
     if( result.GetColumnCount() > 0 )
     {
+#if 0
         htm << "<table border=1>";
         while( result.NextRow() )
         {
@@ -60,18 +66,32 @@ wxString tfpWriteReferenceIndex()
                 << result.GetAsString( 0 )
                 << "'><b>R"
                 << result.GetAsString( 0 )
-                << "</b></a> </td><td> "
+                << "</b></a></td><td> "
                 << result.GetAsString( 1 )
                 << "</td></tr>";
             cnt++;
         }
         htm << "</table><br><br>Total References found: " << cnt;
+#endif
+        while( result.NextRow() )
+        {
+            htm << "<a href='R"
+                << result.GetAsString( 0 )
+                << "'><b>R"
+                << result.GetAsString( 0 )
+                << "</b></a> "
+                << result.GetAsString( 1 )
+                << "<br>";
+            cnt++;
+        }
+        htm << "<br><br>Total References found: " << cnt;
     } else {
         htm << "No References found!";
     }
 
-    htm << "</center></body></html>";
+    htm << "</body></html>";
 
+    lastchange = recDb::GetChange();
     return htm;
 }
 

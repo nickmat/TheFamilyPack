@@ -66,6 +66,7 @@ protected:
     static wxSQLite3Database* s_db;
     static Environment        s_env;
     static wxString           s_fname;
+    static long               s_change;
 
     /*! Delete the given record in the given table.
      */
@@ -113,12 +114,16 @@ public:
      */
     static wxString GetFileName() { return s_fname; }
 
+    /*! Returns the current change value.
+     */
+    static long GetChange() { return s_change; }
+
     /*! Output a message for the correct environment
      */
     static void Message( const wxString& mess, const wxString& func );
 
     static void Begin() { s_db->Begin(); }
-    static void Commit() { s_db->Commit(); }
+    static void Commit() { s_db->Commit(); ++s_change; }
     static void Rollback() { if( !s_db->GetAutoCommit() ) s_db->Rollback(); }
     static void ErrorMessage( wxSQLite3Exception& e );
     static void Savepoint( const wxString& str ) { s_db->Savepoint( str ); }

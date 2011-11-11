@@ -378,7 +378,7 @@ void TfpFrame::OnListNames( wxCommandEvent& event )
  */
 void TfpFrame::OnListIndividuals( wxCommandEvent& event )
 {
-    wxMessageBox( wxT("Not yet implimented"), wxT("OnListIndividuals") );
+    DisplayHtmPage( "N*" );
 }
 
 /*! \brief Called on a List Index menu option event.
@@ -767,12 +767,12 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
         return tfpWriteIndividualPage( num );
     case 'N':  // Name index
         if( name == "N" ) {
-            return tfpWritePersonIndex();
+            return tfpWriteIndividualIndex();
         }
         if( name == "N*" ) {
-            return tfpWritePersonList( wxEmptyString );
+            return tfpWriteIndividualList( wxEmptyString );
         }
-        return tfpWritePersonList( name.Mid( 1 ) );
+        return tfpWriteIndividualList( name.Mid( 1 ) );
     case 'C':  // Chart reference
         success = name.Mid(2).ToLongLong( &num );
         if( !success || num < 1 ) {

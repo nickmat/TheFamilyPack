@@ -32,10 +32,9 @@
 #include <rec/recDatabase.h>
 
 // See tfpWrName.cpp
-enum WrIndex { WrIndex_Individual, WrIndex_Persona };
-extern wxString tfpWritePersonIndex( WrIndex type = WrIndex_Individual );
-extern wxString tfpWritePersonList(
-    const wxString& surname, WrIndex type = WrIndex_Individual );
+extern wxString tfpWriteIndividualIndex();
+extern wxString tfpWritePersonIndex();
+extern wxString tfpWriteIndividualList( const wxString& surname );
 
 // See tfpWrFamily.cpp
 extern wxString tfpWriteFamilyPage( idt famID );
