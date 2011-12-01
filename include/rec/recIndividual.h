@@ -142,7 +142,6 @@ class recFamily : public recDb
 public:
     idt     f_husb_id;
     idt     f_wife_id;
-    idt     f_event_id;
 
     recFamily() {}
     recFamily( idt id ) : recDb(id) { Read(); }
@@ -170,9 +169,8 @@ public:
 inline bool recEquivalent( const recFamily& r1, const recFamily& r2 )
 {
     return
-        r1.f_husb_id  == r2.f_husb_id  &&
-        r1.f_wife_id  == r2.f_wife_id  &&
-        r1.f_event_id == r2.f_event_id;
+        r1.f_husb_id  == r2.f_husb_id &&
+        r1.f_wife_id  == r2.f_wife_id;
 }
 
 inline bool operator==( const recFamily& r1, const recFamily& r2 )

@@ -153,7 +153,7 @@ wxString tfpWriteIndividualPage( idt indID )
 
         // Union event (marriage)
         idt marEvID = families[i].GetMarriageEvent();
-        if( families[i].f_event_id != 0 ) {
+        if( marEvID != 0 ) {
             htm << wxT("<tr><td align=right>")
                 << recEvent::GetTypeStr( marEvID )
                 << wxT(":</td><td><b>")

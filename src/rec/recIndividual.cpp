@@ -215,7 +215,6 @@ recFamilyList recIndividual::GetFamilyList( idt ind )
         family.f_id = GET_ID( result.GetInt64( 0 ) );
         family.f_husb_id = GET_ID( result.GetInt64( 1 ) );
         family.f_wife_id = GET_ID( result.GetInt64( 2 ) );
-        family.f_event_id = GET_ID( result.GetInt64( 3 ) );
         families.push_back( family );
     }
     return families;
@@ -243,7 +242,6 @@ recFamilyList recIndividual::GetParentList( idt indID )
         parent.f_id = GET_ID( result.GetInt64( 0 ) );
         parent.f_husb_id = GET_ID( result.GetInt64( 1 ) );
         parent.f_wife_id = GET_ID( result.GetInt64( 2 ) );
-        parent.f_event_id = GET_ID( result.GetInt64( 3 ) );
         parents.push_back( parent );
     }
     return parents;
@@ -398,7 +396,6 @@ recFamily::recFamily( const recFamily& f )
     f_id       = f.f_id;
     f_husb_id  = f.f_husb_id;
     f_wife_id  = f.f_wife_id;
-    f_event_id = f.f_event_id;
 }
 
 void recFamily::Clear()
@@ -406,7 +403,6 @@ void recFamily::Clear()
     f_id       = 0;
     f_husb_id  = 0;
     f_wife_id  = 0;
-    f_event_id = 0;
 }
 
 void recFamily::Save()
@@ -420,7 +416,7 @@ void recFamily::Save()
         sql.Format(
             "INSERT INTO Family (husb_id, wife_id, event_id) "
             "VALUES ("ID", "ID", "ID");",
-            f_husb_id, f_wife_id, f_event_id
+            f_husb_id, f_wife_id, 0
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -432,14 +428,14 @@ void recFamily::Save()
             sql.Format(
                 "INSERT INTO Family (id, husb_id, wife_id, event_id) "
                 "VALUES ("ID", "ID", "ID", "ID");",
-                f_id, f_husb_id, f_wife_id, f_event_id
+                f_id, f_husb_id, f_wife_id, 0
             );
         } else {
             // Update existing record
             sql.Format(
                 "UPDATE Family SET husb_id="ID", wife_id="ID", event_id="ID" "
                 "WHERE id="ID";",
-                f_husb_id, f_wife_id, f_event_id, f_id
+                f_husb_id, f_wife_id, 0, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -470,14 +466,14 @@ bool recFamily::Read()
     result.SetRow( 0 );
     f_husb_id  = GET_ID( result.GetInt64( 0 ) );
     f_wife_id  = GET_ID( result.GetInt64( 1 ) );
-    f_event_id = GET_ID( result.GetInt64( 2 ) );
     return true;
 }
 
 idt recFamily::GetMarriageEvent() const 
 { 
     return recPersona::GetMarriageEvent( 
-        recIndividual::GetPersona( f_husb_id ), recIndividual::GetPersona( f_wife_id ) 
+        recIndividual::GetPersona( f_husb_id ), 
+        recIndividual::GetPersona( f_wife_id ) 
     );
 }
 

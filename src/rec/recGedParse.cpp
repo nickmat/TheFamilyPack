@@ -93,7 +93,7 @@ public:
         m_fam.f_wife_id = indID;
         UpdateIndividual( &m_wifePerId, indID );
     }
-    void SetEventId( idt eventID ) { m_fam.f_event_id = eventID; }
+//    void SetEventId( idt eventID ) { m_fam.f_event_id = eventID; }
 
     void AddChild( idt indID );
 
@@ -591,7 +591,7 @@ void recGedParse::ReadFamEvent( GedFamily& gfam, int level )
         ev.f_type_id = recEventType::ET_Marriage;
         epHusb.f_role_id = recEventTypeRole::ROLE_Marriage_Groom;
         epWife.f_role_id = recEventTypeRole::ROLE_Marriage_Bride;
-        gfam.SetEventId( ev.f_id );
+//        gfam.SetEventId( ev.f_id );
         titlefmt = _("Marriage of %s and %s");
         break;
     default:

@@ -102,7 +102,7 @@ bool dlgEditFamily::TransferDataToWindow()
     str = recIndividual::GetFullName( m_family.f_wife_id );
     m_staticWifeName->SetLabel( str  );
 
-    str = recEvent::GetDetailStr( m_family.f_event_id );
+    str = recEvent::GetDetailStr( m_family.GetMarriageEvent() );
     m_staticMarrEvent->SetLabel( str  );
 
     m_childlinks = m_family.GetChildLinks();
@@ -144,7 +144,7 @@ void dlgEditFamily::OnWifeButton( wxCommandEvent& event )
 void dlgEditFamily::OnMarriageButton( wxCommandEvent& event )
 {
     m_editbutton = EDBUT_Marr;
-    EditIDMenu( m_family.f_event_id );
+    EditIDMenu( m_family.GetMarriageEvent() );
 }
 
 void dlgEditFamily::EditIDMenu( idt editID )
@@ -157,7 +157,7 @@ void dlgEditFamily::EditIDMenu( idt editID )
         menu->Append( tfpID_DLGEDFAM_REMOVE,   _("&Remove") );
         menu->Append( tfpID_DLGEDFAM_DELETE,   _("&Delete") );
         if( m_editbutton == EDBUT_Marr ) {
-            if( recEvent::FindReferenceID( m_family.f_event_id ) == 0 ) {
+            if( recEvent::FindReferenceID( m_family.GetMarriageEvent() ) == 0 ) {
                 menu->Enable( tfpID_DLGEDFAM_REMOVE, false );
             } else {
                 menu->Enable( tfpID_DLGEDFAM_DELETE, false );
@@ -204,15 +204,15 @@ void dlgEditFamily::OnEditID( wxCommandEvent& event )
         );
         break;
     case EDBUT_Marr:
-        if( m_family.f_event_id == 0 ) {
+        if( m_family.GetMarriageEvent() == 0 ) {
             // Add marriage
             ret = tfpAddMarriageEvent( m_family.f_id );
-            m_family.f_event_id = ret;
+//            m_family.f_event_id = ret;
         } else {
             // Edit marriage
             //wxMessageBox( wxT("NYI Edit Marriage"), wxT("OnEditID") );
             if( EditEvent( &ret ) ) {
-                m_family.f_event_id = ret;
+//                m_family.f_event_id = ret;
                 m_staticMarrEvent->SetLabel(
                     recEvent::GetDetailStr( ret )
                 );
@@ -235,7 +235,7 @@ void dlgEditFamily::OnRemoveID( wxCommandEvent& event )
         m_staticWifeName->SetLabel( wxEmptyString );
         break;
     case EDBUT_Marr:
-        m_family.f_event_id = 0;
+//        m_family.f_event_id = 0;
         m_staticMarrEvent->SetLabel( wxEmptyString );
         break;
     }
@@ -244,7 +244,7 @@ void dlgEditFamily::OnRemoveID( wxCommandEvent& event )
 void dlgEditFamily::OnDeleteID( wxCommandEvent& event )
 {
     wxString mes;
-    idt id;
+    idt id, evID;
 
     switch( m_editbutton )
     {
@@ -261,11 +261,12 @@ void dlgEditFamily::OnDeleteID( wxCommandEvent& event )
            wxT("OnDeleteID") );
         break;
     case EDBUT_Marr:
-        id = recEvent::FindReferenceID( m_family.f_event_id );
+        evID = m_family.GetMarriageEvent();
+        id = recEvent::FindReferenceID( evID );
         if( id == 0 ) {
-            if( !recEvent::DeleteFromDb( m_family.f_event_id ) ) {
+            if( !recEvent::DeleteFromDb( evID ) ) {
                 mes << _("Unable to delete E")
-                    << m_family.f_event_id << "\n"
+                    << evID << "\n"
                     << _(" from database");
                 wxMessageBox( mes, _("Delete Marriage Event") );
             }
@@ -273,7 +274,7 @@ void dlgEditFamily::OnDeleteID( wxCommandEvent& event )
             mes << _("Event is owned by Reference R")
                 << id << ".\n"
                 << _("Edit Reference to delete Event E")
-                << m_family.f_event_id;
+                << evID;
             wxMessageBox( mes, _("Delete Marriage Event") );
         }
         break;
@@ -305,7 +306,6 @@ void dlgEditFamily::OnAddExistID( wxCommandEvent& event )
             );
             return;
         }
-        m_family.f_event_id = id;
         m_staticMarrEvent->SetLabel( recEvent::GetDetailStr( id ) );
         break;
     }
@@ -410,7 +410,7 @@ bool dlgEditFamily::EditEvent( idt* pEventID )
     const wxString savepoint = "EdFamEvent";
     bool ret = false;
     dlgEditFamEvent* dialog = new dlgEditFamEvent(
-        NULL, m_family.f_event_id, recEventType::ETYPE_Grp_Union
+        NULL, m_family.GetMarriageEvent(), recEventType::ETYPE_Grp_Union
     );
     recDb::Savepoint( savepoint );
 
@@ -434,7 +434,7 @@ bool dlgEditFamily::EditEvent( idt* pEventID )
         }
     } else {
         recDb::Rollback( savepoint );
-        *pEventID = m_family.f_event_id;
+        *pEventID = m_family.GetMarriageEvent();
     }
     dialog->Destroy();
     return ret;
