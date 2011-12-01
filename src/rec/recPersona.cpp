@@ -327,6 +327,49 @@ idt recPersona::FindEvent( idt perID, recEventType::ETYPE_Grp grp )
     return ExecuteID( sql );
 }
 
+idt recPersona::FindCommonEvent( idt perID, recEventType::ETYPE_Grp grp, idt secID )
+{
+    if( perID == 0 || grp == recEventType::ETYPE_Grp_Unstated || secID == 0 ) return 0;
+
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result1, result2;
+    sql.Format(
+        "SELECT EP.event_id FROM EventPersona EP "
+        "INNER JOIN "
+        "(SELECT R.id AS rid FROM EventTypeRole R "
+        "  INNER JOIN "
+        "  EventType T ON R.type_id=T.id "
+        "  WHERE T.grp=%d AND R.prime=1) "
+        "ON rid=EP.role_id WHERE EP.per_id="ID" "
+        "ORDER BY EP.sequence;",
+        grp, perID
+    );
+    result1 = s_db->GetTable( sql );
+    sql.Format(
+        "SELECT EP.event_id FROM EventPersona EP "
+        "INNER JOIN "
+        "(SELECT R.id AS rid FROM EventTypeRole R "
+        "  INNER JOIN "
+        "  EventType T ON R.type_id=T.id "
+        "  WHERE T.grp=%d AND R.prime=1) "
+        "ON rid=EP.role_id WHERE EP.per_id="ID" "
+        "ORDER BY EP.sequence;",
+        grp, secID
+    );
+    result2 = s_db->GetTable( sql );
+
+    for( int i = 0 ; i < result1.GetRowCount() ; i++ ) {
+        result1.SetRow( i );
+        for( int j = 0 ; j < result2.GetRowCount() ; j++ ) {
+            result2.SetRow( j );
+            if( result1.GetInt64( 0 ) == result2.GetInt64( 0 ) ) {
+                return GET_ID( result1.GetInt64( 0 ) );
+            }
+        }
+    }
+    return 0;
+}
+
 idt recPersona::FindAttribute( idt perID, idt atypeID )
 {
     if( perID == 0 || atypeID == 0 ) return 0;

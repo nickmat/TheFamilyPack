@@ -97,6 +97,13 @@ public:
     static idt GetDeathEvent( idt id ) { return FindEvent( id, recEventTypeRole::ROLE_Death_Died ); }
     static idt GetNrDeathEvent( idt id ) { return FindEvent( id, recEventType::ETYPE_Grp_Nr_Death ); }
 
+    static idt FindCommonEvent( idt perID, recEventType::ETYPE_Grp grp, idt secID );
+
+    static idt GetMarriageEvent( idt perID, idt spouseID ) {
+        return FindCommonEvent( perID, recEventType::ETYPE_Grp_Union, spouseID ); 
+    }
+    idt GetMarriageEvent( idt spouseID ) const { return GetMarriageEvent( f_id, spouseID ); }
+
     static idt FindAttribute( idt perID, idt atypeID ); 
     idt FindAttribute( idt atypeID ) const { return FindAttribute( f_id, atypeID ); } 
     idt GetOccAttribute() const { return FindAttribute( recAttributeType::ATYPE_Occupation ); }

@@ -132,7 +132,7 @@ wxString tfpWriteFamilyPage( idt famID )
 
     // Marriage details
     htm << wxT("<table><tr><td align=center width=540>")
-        << wxT(" m. ") << recEvent::GetDetailStr( fam.f_event_id )
+        << wxT(" m. ") << recEvent::GetDetailStr( fam.GetMarriageEvent() )
         << wxT("</td></tr></table>");
 
     // Family spouses

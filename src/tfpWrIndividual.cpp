@@ -54,22 +54,26 @@ wxString tfpWriteIndividualPage( idt indID )
         << indID << wxT("</title></head>")
            wxT("<body><center><table width=100%>");
 
+    // Name
     htm << wxT("<tr><td align=right width=120>Name:</td>")
            wxT("<td><font size=+2><b>") << ind.GetFullName()
         << wxT("</b></font> ") << ind.f_epitaph
         << wxT(" <a href=$MR") << indID
         << wxT("><img src=memory:fam.bmp></a></td></tr>");
 
+    // Sex
     htm << wxT("<tr><td align=right>ID, Sex:</td><td><b>I ")
         << indID << wxT(", ") << recGetSexStr( ind.f_sex )
         << wxT("</b></td></tr>");
 
+    // Birth
     idt id = recPersona::GetBirthEvent( ind.f_per_id );
     if( id != 0 ) {
         htm << wxT("<tr><td align=right>Birth:</td><td><b>")
             << recEvent::GetDetailStr( id )
             << wxT("</b></td></tr>");
     }
+    // Near birth
     id = recPersona::GetNrBirthEvent( ind.f_per_id );
     if( id != 0 ) {
         htm << wxT("<tr><td align=right>")
@@ -78,12 +82,14 @@ wxString tfpWriteIndividualPage( idt indID )
             << recEvent::GetDetailStr( id )
             << wxT("</b></td></tr>");
     }
+    // Death
     id = recPersona::GetDeathEvent( ind.f_per_id );
     if( id != 0 ) {
         htm << wxT("<tr><td align=right>Death:</td><td><b>")
             << recEvent::GetDetailStr( id )
             << wxT("</b></td></tr>");
     }
+    // Near death
     id = recPersona::GetNrDeathEvent( ind.f_per_id );
     if( id != 0 ) {
         htm << wxT("<tr><td align=right>")
@@ -92,6 +98,7 @@ wxString tfpWriteIndividualPage( idt indID )
             << recEvent::GetDetailStr( id )
             << wxT("</b></td></tr>");
     }
+    // Occupation
     id = recPersona::GetOccAttribute( ind.f_per_id );
     if( id != 0 ) {
         htm << wxT("<tr><td align=right>Occupation:</td><td><b>")
@@ -102,6 +109,7 @@ wxString tfpWriteIndividualPage( idt indID )
     recFamily parents;
     parents.ReadParents( indID );
     if( parents.f_husb_id != 0 ) {
+        // Father
         htm << wxT("<tr><td align=right>Father:</td><td><b><a href=I")
             << parents.f_husb_id << wxT(">")
             << recIndividual::GetFullName( parents.f_husb_id )
@@ -111,6 +119,7 @@ wxString tfpWriteIndividualPage( idt indID )
             << wxT("><img src=memory:fam.bmp></a></td></tr>");
     }
     if( parents.f_wife_id != 0 ) {
+        // Mother
         htm << wxT("<tr><td align=right>Mother:</td><td><b><a href=I")
             << parents.f_wife_id << wxT(">")
             << recIndividual::GetFullName( parents.f_wife_id )
@@ -132,6 +141,7 @@ wxString tfpWriteIndividualPage( idt indID )
         spouse.f_id = spouseID;
         spouse.Read();
 
+        // Spouse name
         htm << wxT("<tr><td align=right><a href=F")
             << famID << wxT(">Spouse ") << cnt << wxT(":</a></td>")
                wxT("<td><b><a href=I")
@@ -141,14 +151,17 @@ wxString tfpWriteIndividualPage( idt indID )
             << wxT(" <a href=$MR") << spouseID
             << wxT("><img src=memory:fam.bmp></a></td></tr>");
 
+        // Union event (marriage)
+        idt marEvID = families[i].GetMarriageEvent();
         if( families[i].f_event_id != 0 ) {
             htm << wxT("<tr><td align=right>")
-                << recEvent::GetTypeStr( families[i].f_event_id )
+                << recEvent::GetTypeStr( marEvID )
                 << wxT(":</td><td><b>")
-                << recEvent::GetDetailStr( families[i].f_event_id )
+                << recEvent::GetDetailStr( marEvID )
                 << wxT("</b></td></tr>");
         }
 
+        // Children
         recIndividualList children = families[i].GetChildren();
         for( j = 0 ; j < children.size() ; j++ ) {
             if( j == 0 ) {

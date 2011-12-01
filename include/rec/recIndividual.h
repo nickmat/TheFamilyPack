@@ -34,6 +34,7 @@
 
 #include <rec/recDatabase.h>
 #include <rec/recEvent.h>
+#include <rec/recPersona.h>
 
 class recIndividual;
 typedef std::vector< recIndividual >  recIndividualList;
@@ -151,6 +152,8 @@ public:
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "Family" );
+
+    idt GetMarriageEvent() const;
 
     bool ReadParents( idt ind );
     static recIndividualList GetChildren( idt fam );

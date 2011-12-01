@@ -474,6 +474,13 @@ bool recFamily::Read()
     return true;
 }
 
+idt recFamily::GetMarriageEvent() const 
+{ 
+    return recPersona::GetMarriageEvent( 
+        recIndividual::GetPersona( f_husb_id ), recIndividual::GetPersona( f_wife_id ) 
+    );
+}
+
 bool recFamily::ReadParents( idt ind )
 {
     wxSQLite3StatementBuffer sql;
