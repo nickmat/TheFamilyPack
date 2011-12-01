@@ -39,7 +39,11 @@
 
 #include "tfpVersion.h"
 
-#define VERSION   wxT("0.3.0.1 alpha")
+#ifdef _DEBUG
+#define VERSION   wxS("0.3.0.1 alpha debug")
+#else
+#define VERSION   wxS("0.3.0.1 alpha")
+#endif
 
 /*! A string containing the current version number.
  */
@@ -47,8 +51,8 @@ const wxChar* tfpVersion = VERSION;
 
 /*! A string containing a long hand version name and copyright message.
  */
-const wxChar* tfpTitle = wxT("The Family Pack - Version ") VERSION wxT("\n")
-                         wxT("Copyright (c) 2010, 2011 Nick Matthews\n\n");
+const wxChar* tfpTitle = wxS("The Family Pack - Version ") VERSION wxS("\n")
+                         wxS("Copyright (c) 2010, 2011 Nick Matthews\n\n" );
 
 /*************************************************************************//**
 
