@@ -216,8 +216,7 @@ INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-49, -14, 
 CREATE TABLE Family (
   id INTEGER PRIMARY KEY,
   husb_id INTEGER,
-  wife_id INTEGER,
-  event_id INTEGER
+  wife_id INTEGER
 );
 
 CREATE TABLE FamilyIndividual (
@@ -381,7 +380,7 @@ CREATE TABLE Version (
 );
 
 /* The Version table has only this one row */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 4);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 5);
 
 COMMIT;
 

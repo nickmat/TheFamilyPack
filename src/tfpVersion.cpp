@@ -42,7 +42,7 @@
 #ifdef _DEBUG
 #define VERSION   wxS("0.3.0.1 alpha debug")
 #else
-#define VERSION   wxS("0.3.0.1 alpha")
+#define VERSION   wxS("0.3.0.1 alpha release")
 #endif
 
 /*! A string containing the current version number.

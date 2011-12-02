@@ -207,12 +207,10 @@ void dlgEditFamily::OnEditID( wxCommandEvent& event )
         if( m_family.GetMarriageEvent() == 0 ) {
             // Add marriage
             ret = tfpAddMarriageEvent( m_family.f_id );
-//            m_family.f_event_id = ret;
         } else {
             // Edit marriage
             //wxMessageBox( wxT("NYI Edit Marriage"), wxT("OnEditID") );
             if( EditEvent( &ret ) ) {
-//                m_family.f_event_id = ret;
                 m_staticMarrEvent->SetLabel(
                     recEvent::GetDetailStr( ret )
                 );
@@ -235,7 +233,6 @@ void dlgEditFamily::OnRemoveID( wxCommandEvent& event )
         m_staticWifeName->SetLabel( wxEmptyString );
         break;
     case EDBUT_Marr:
-//        m_family.f_event_id = 0;
         m_staticMarrEvent->SetLabel( wxEmptyString );
         break;
     }

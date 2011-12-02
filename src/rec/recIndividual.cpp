@@ -204,7 +204,7 @@ recFamilyList recIndividual::GetFamilyList( idt ind )
     if( ind == 0 ) return families;
 
     sql.Format(
-        "SELECT id, husb_id, wife_id, event_id FROM Family "
+        "SELECT id, husb_id, wife_id FROM Family "
         "WHERE husb_id="ID" OR wife_id="ID";",
         ind, ind
     );
@@ -414,9 +414,9 @@ void recFamily::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO Family (husb_id, wife_id, event_id) "
-            "VALUES ("ID", "ID", "ID");",
-            f_husb_id, f_wife_id, 0
+            "INSERT INTO Family (husb_id, wife_id) "
+            "VALUES ("ID", "ID");",
+            f_husb_id, f_wife_id
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -426,16 +426,16 @@ void recFamily::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO Family (id, husb_id, wife_id, event_id) "
-                "VALUES ("ID", "ID", "ID", "ID");",
-                f_id, f_husb_id, f_wife_id, 0
+                "INSERT INTO Family (id, husb_id, wife_id) "
+                "VALUES ("ID", "ID", "ID");",
+                f_id, f_husb_id, f_wife_id
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE Family SET husb_id="ID", wife_id="ID", event_id="ID" "
+                "UPDATE Family SET husb_id="ID", wife_id="ID" "
                 "WHERE id="ID";",
-                f_husb_id, f_wife_id, 0, f_id
+                f_husb_id, f_wife_id, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -453,7 +453,7 @@ bool recFamily::Read()
     }
 
     sql.Format(
-        "SELECT husb_id, wife_id, event_id FROM Family WHERE id="ID";",
+        "SELECT husb_id, wife_id FROM Family WHERE id="ID";",
         f_id
     );
     result = s_db->GetTable( sql );
