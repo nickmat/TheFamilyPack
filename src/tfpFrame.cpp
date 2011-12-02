@@ -571,7 +571,7 @@ void TfpFrame::OnHtmCtxMenu( wxCommandEvent& event )
 {
     bool ret = false;
     Sex sex;
-    wxLongLong_t id;
+    idt id;
     m_ctxmenuref.Mid(1).ToLongLong( &id );
 
     recDb::Begin();
@@ -909,12 +909,14 @@ int TfpFrame::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )
     for( i = 0 ; i < families.size() ; i++ ) {
         if( families[i].f_husb_id != 0 && families[i].f_husb_id != indID ) {
             marmenu->Append( cmd_ID + c, recIndividual::GetFullName( families[i].f_husb_id ) );
+            m_ctxmenuIDs.push_back( families[i].f_id );
+            c++;
         }
         if( families[i].f_wife_id != 0 && families[i].f_wife_id != indID ) {
             marmenu->Append( cmd_ID + c, recIndividual::GetFullName( families[i].f_wife_id ) );
+            m_ctxmenuIDs.push_back( families[i].f_id );
+            c++;
         }
-        m_ctxmenuIDs.push_back( families[i].f_id );
-        c++;
     }
     if( items == c ) {
         menu->Enable( tfpID_INDMENU_SPOUSES, false );
@@ -942,7 +944,7 @@ int TfpFrame::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )
 
 void TfpFrame::AddNewSpouse( const wxString& ref )
 {
-    wxLongLong_t indID;
+    idt indID;
     ref.Mid( 1 ).ToLongLong( &indID );
     Sex sex = ( ref.GetChar(0) == 'W' ) ? SEX_Female : SEX_Male;
     recDb::Begin();

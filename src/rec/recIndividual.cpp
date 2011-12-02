@@ -230,7 +230,7 @@ recFamilyList recIndividual::GetParentList( idt indID )
     if( indID == 0 ) return parents;
 
     sql.Format(
-        "SELECT F.id, F.husb_id, F.wife_id, F.event_id "
+        "SELECT F.id, F.husb_id, F.wife_id "
         "FROM Family F, FamilyIndividual FI "
         "WHERE F.id=FI.fam_id AND FI.ind_id="ID";",
         indID
@@ -469,11 +469,11 @@ bool recFamily::Read()
     return true;
 }
 
-idt recFamily::GetMarriageEvent() const 
-{ 
-    return recPersona::GetMarriageEvent( 
-        recIndividual::GetPersona( f_husb_id ), 
-        recIndividual::GetPersona( f_wife_id ) 
+idt recFamily::GetMarriageEvent() const
+{
+    return recPersona::GetMarriageEvent(
+        recIndividual::GetPersona( f_husb_id ),
+        recIndividual::GetPersona( f_wife_id )
     );
 }
 

@@ -263,7 +263,7 @@ bool recEvent::DeleteFromDb( idt id )
 
     // TODO: Ensure Event is removed from reference statement.
     sql.Format(
-        "UPDATE Family SET event_id=0 WHERE event_id="ID";"
+//        "UPDATE Family SET event_id=0 WHERE event_id="ID";"
         "UPDATE Individual SET birth_id=0 WHERE birth_id="ID";"
         "UPDATE Individual SET nr_birth_id=0 WHERE nr_birth_id="ID";"
         "UPDATE Individual SET death_id=0 WHERE death_id="ID";"

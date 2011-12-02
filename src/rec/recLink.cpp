@@ -139,7 +139,7 @@ bool recLinkPersona::Find()
     if( f_ref_per_id == 0 || f_ind_per_id == 0 ) return false; // Only find single record
 
     sql.Format(
-        "SELECT id, conf, commet FROM LinkPersona "
+        "SELECT id, conf, comment FROM LinkPersona "
         "WHERE ref_per_id="ID" AND ind_per_id="ID";",
         f_ref_per_id, f_ind_per_id
     );
