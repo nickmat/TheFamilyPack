@@ -42,6 +42,325 @@
 #include "dlgEdIndividual.h"
 #include "dlgEdIndEvent.h"
 
+#include "dlgEdPersona.h"
+#include "dlgEdName.h"
+#include "dlgEdAttribute.h"
+#include "dlgEd.h"
+
+
+
+dlgEditIndPersona::dlgEditIndPersona( wxWindow* parent, idt indID ) 
+    : fbDlgEditIndPersona( parent )
+{
+    wxListItem itemCol;
+    itemCol.SetText( wxT("Type") );
+    m_listName->InsertColumn( 0, itemCol );
+    m_listAttr->InsertColumn( 0, itemCol );
+    m_listRel->InsertColumn( 0, itemCol );
+    itemCol.SetText( wxT("Value") );
+    m_listName->InsertColumn( 1, itemCol );
+    m_listAttr->InsertColumn( 1, itemCol );
+    m_listRel->InsertColumn( 1, itemCol );
+
+    m_listEvent->InsertColumn( EV_COL_Number, _("Number") );
+    m_listEvent->InsertColumn( EV_COL_Role, _("Role") );
+    m_listEvent->InsertColumn( EV_COL_Title, _("Title") );
+    m_listEvent->InsertColumn( EV_COL_Date, _("Date") );
+    m_listEvent->InsertColumn( EV_COL_Place, _("Place") );
+
+    m_persona.Clear();
+    m_individual.Clear();
+    m_individual.f_id = indID;
+}
+
+bool dlgEditIndPersona::TransferDataToWindow()
+{
+    if( m_individual.f_id == 0 ) {
+        m_individual.Save();
+        m_persona.Save();
+        m_individual.f_per_id = m_persona.f_id;
+    } else {
+        m_individual.Read();
+        m_persona.f_id = m_individual.f_per_id;
+        m_persona.Read();
+    }
+
+    m_nameStr = m_persona.GetNameStr();
+    m_staticPerName->SetLabel( m_nameStr );
+    m_staticIndID->SetLabel( m_individual.GetIdStr() );
+    m_staticPerID->SetLabel( m_persona.GetIdStr() );
+
+    m_staticTextEpitaph->SetLabel( m_individual.f_epitaph );
+    m_choiceSex->SetSelection( (int) m_persona.f_sex );
+    m_textCtrlNote->SetValue(  m_persona.f_note );
+
+    m_names = m_persona.ReadNames();
+    for( size_t i = 0 ; i < m_names.size() ; i++ ) {
+        m_listName->InsertItem( i, recNameStyle::GetStyleStr( m_names[i].f_style_id ) );
+        m_listName->SetItem( i, COL_Value, m_names[i].GetNameStr() );
+    }
+
+    m_attributes = m_persona.ReadAttributes();
+    for( size_t i = 0 ; i < m_attributes.size() ; i++ ) {
+        m_listAttr->InsertItem( i, recAttributeType::GetTypeStr( m_attributes[i].f_type_id ) );
+        m_listAttr->SetItem( i, COL_Value, m_attributes[i].f_val );
+    }
+
+    m_evpers = m_persona.ReadEventPersonas();
+    for( size_t i = 0 ; i < m_evpers.size() ; i++ ) {
+        m_listEvent->InsertItem( i, recEvent::GetIdStr( m_evpers[i].f_event_id ) );
+        m_listEvent->SetItem( i, EV_COL_Role, recEventTypeRole::GetName( m_evpers[i].f_role_id ) );
+        m_listEvent->SetItem( i, EV_COL_Title, recEvent::GetTitle( m_evpers[i].f_event_id ) );
+        m_listEvent->SetItem( i, EV_COL_Date, recEvent::GetDateStr( m_evpers[i].f_event_id ) );
+        m_listEvent->SetItem( i, EV_COL_Place, recEvent::GetAddressStr( m_evpers[i].f_event_id ) );
+    }
+
+    m_relationships = m_persona.ReadRelationships();
+    for( size_t i = 0 ; i < m_relationships.size() ; i++ ) {
+        m_listRel->InsertItem( i, m_relationships[i].GetIdStr() );
+        m_listRel->SetItem( i, COL_Value, m_relationships[i].GetRelOfPersonaStr( m_persona.f_id ) );
+    }
+
+    return true;
+}
+
+bool dlgEditIndPersona::TransferDataFromWindow()
+{
+    m_persona.f_sex = (Sex) m_choiceSex->GetSelection();
+    m_persona.f_note = m_textCtrlNote->GetValue();
+    m_persona.Save();
+
+    for( size_t i = 0 ; i < m_names.size() ; i++ ) {
+        if( m_names[i].f_sequence != i+1 ) {
+            m_names[i].f_sequence = i+1;
+            m_names[i].Save();
+        }
+    }
+
+    for( size_t i = 0 ; i < m_attributes.size() ; i++ ) {
+        if( m_attributes[i].f_sequence != i+1 ) {
+            m_attributes[i].f_sequence = i+1;
+            m_attributes[i].Save();
+        }
+    }
+
+    m_individual.Update();
+    m_individual.Save();
+    return true;
+}
+
+void dlgEditIndPersona::OnNameAddButton( wxCommandEvent& event )
+{
+    const wxString savepoint = "PerAddName";
+    dlgEditName* dialog = new dlgEditName( NULL );
+    dialog->SetPersonaID( m_persona.f_id );
+
+    recDb::Savepoint( savepoint );
+    if( dialog->ShowModal() == wxID_OK )
+    {
+        recDb::ReleaseSavepoint( savepoint );
+        recName* name = dialog->GetName();
+        int row = m_names.size();
+        m_listName->InsertItem( row, recNameStyle::GetStyleStr( name->f_style_id ) );
+        m_listName->SetItem( row, COL_Value, name->GetNameStr() );
+        m_names.push_back( *name );
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+}
+
+void dlgEditIndPersona::OnNameEditButton( wxCommandEvent& event )
+{
+    long row = m_listName->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row < 0 ) {
+        wxMessageBox( _("No row selected"), _("Edit Name") );
+        return;
+    }
+
+    const wxString savepoint = "PerEdName";
+    dlgEditName* dialog = new dlgEditName( NULL );
+    dialog->SetData( m_names[row].f_id );
+
+    recDb::Savepoint( savepoint );
+    if( dialog->ShowModal() == wxID_OK )
+    {
+        recDb::ReleaseSavepoint( savepoint );
+        recName* name = dialog->GetName();
+        m_listName->SetItem( row, COL_Type, recNameStyle::GetStyleStr( name->f_style_id ) );
+        m_listName->SetItem( row, COL_Value, name->GetNameStr() );
+        m_names[row] = *name;
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+}
+
+void dlgEditIndPersona::OnNameDeleteButton( wxCommandEvent& event )
+{
+    long row = m_listName->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row >= 0 ) {
+        m_listName->DeleteItem( row );
+        m_names[row].DeleteAll();
+        m_names.erase( m_names.begin() + row );
+    } else {
+        wxMessageBox( wxT("No row selected"), wxT("Delete Name") );
+    }
+}
+
+void dlgEditIndPersona::OnNameUpButton( wxCommandEvent& event )
+{
+    long row = m_listName->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row < 0 ) {
+        wxMessageBox( _("Row not selected"), _("Name Up") );
+        return;
+    }
+    if( row > 0 ) {
+        recName attr = m_names[row];
+        m_names[row] = m_names[row-1];
+        m_names[row-1] = attr;
+
+        m_listName->SetItem( row, COL_Type, recNameStyle::GetStyleStr( m_names[row].f_style_id ) );
+        m_listName->SetItem( row, COL_Value, m_names[row].GetNameStr() );
+        --row;
+        m_listName->SetItem( row, COL_Type, recNameStyle::GetStyleStr( m_names[row].f_style_id ) );
+        m_listName->SetItem( row, COL_Value, m_names[row].GetNameStr() );
+
+        m_listName->SetItemState( row, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+    }
+}
+
+void dlgEditIndPersona::OnNameDownButton( wxCommandEvent& event )
+{
+    long row = m_listName->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row < 0 ) {
+        wxMessageBox( _("Row not selected"), _("Name Down") );
+        return;
+    }
+    if( row < (long) m_listName->GetItemCount() - 1 ) {
+        recName name = m_names[row];
+        m_names[row] = m_names[row+1];
+        m_names[row+1] = name;
+
+        m_listName->SetItem( row, COL_Type, recNameStyle::GetStyleStr( m_names[row].f_style_id ) );
+        m_listName->SetItem( row, COL_Value, m_names[row].GetNameStr() );
+        row++;
+        m_listName->SetItem( row, COL_Type, recNameStyle::GetStyleStr( m_names[row].f_style_id ) );
+        m_listName->SetItem( row, COL_Value, m_names[row].GetNameStr() );
+
+        m_listName->SetItemState( row, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+    }
+}
+
+void dlgEditIndPersona::OnAttrAddButton( wxCommandEvent& event )
+{
+    const wxString savepoint = "PerAddAttr";
+    dlgEditAttribute* dialog = new dlgEditAttribute( NULL );
+    dialog->SetPersonaID( m_persona.f_id );
+
+    recDb::Savepoint( savepoint );
+    if( dialog->ShowModal() == wxID_OK )
+    {
+        recDb::ReleaseSavepoint( savepoint );
+        recAttribute* attr = dialog->GetAttribute();
+        int row = m_attributes.size();
+        m_listAttr->InsertItem( row, recAttributeType::GetTypeStr( attr->f_type_id ) );
+        m_listAttr->SetItem( row, COL_Value, attr->f_val );
+        m_attributes.push_back( *attr );
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+}
+
+void dlgEditIndPersona::OnAttrEditButton( wxCommandEvent& event )
+{
+    long row = m_listAttr->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row < 0 ) {
+        wxMessageBox( _("No row selected"), _("Edit Attribute") );
+        return;
+    }
+
+    const wxString savepoint = "PerEdAttr";
+    dlgEditAttribute* dialog = new dlgEditAttribute( NULL );
+    dialog->SetAttributeID( m_attributes[row].f_id );
+
+    recDb::Savepoint( savepoint );
+    if( dialog->ShowModal() == wxID_OK )
+    {
+        recDb::ReleaseSavepoint( savepoint );
+        recAttribute* attr = dialog->GetAttribute();
+        m_listAttr->SetItem( row, COL_Type, recAttributeType::GetTypeStr( attr->f_type_id ) );
+        m_listAttr->SetItem( row, COL_Value, attr->f_val );
+        m_attributes[row] = *attr;
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+}
+
+void dlgEditIndPersona::OnAttrDeleteButton( wxCommandEvent& event )
+{
+    long row = m_listAttr->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row >= 0 ) {
+        m_listAttr->DeleteItem( row );
+        m_attributes[row].Delete();
+        m_attributes.erase( m_attributes.begin() + row );
+    } else {
+        wxMessageBox( _("No row selected"), _("Delete Attribute") );
+    }
+}
+
+void dlgEditIndPersona::OnAttrUpButton( wxCommandEvent& event )
+{
+    long row = m_listAttr->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row < 0 ) {
+        wxMessageBox( _("Row not selected"), _("Attribute Up") );
+        return;
+    }
+    if( row > 0 ) {
+        recAttribute attr = m_attributes[row];
+        m_attributes[row] = m_attributes[row-1];
+        m_attributes[row-1] = attr;
+
+        m_listAttr->SetItem( row, COL_Type, recAttributeType::GetTypeStr( m_attributes[row].f_type_id ) );
+        m_listAttr->SetItem( row, COL_Value, m_attributes[row].f_val );
+        --row;
+        m_listAttr->SetItem( row, COL_Type, recAttributeType::GetTypeStr( m_attributes[row].f_type_id ) );
+        m_listAttr->SetItem( row, COL_Value, m_attributes[row].f_val );
+
+        m_listAttr->SetItemState( row, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+    }
+}
+
+void dlgEditIndPersona::OnAttrDownButton( wxCommandEvent& event )
+{
+    long row = m_listAttr->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row < 0 ) {
+        wxMessageBox( _("Row not selected"), _("Attribute Down") );
+        return;
+    }
+    if( row < (long) m_listAttr->GetItemCount() - 1 ) {
+        recAttribute attr = m_attributes[row];
+        m_attributes[row] = m_attributes[row+1];
+        m_attributes[row+1] = attr;
+
+        m_listAttr->SetItem( row, COL_Type, recAttributeType::GetTypeStr( m_attributes[row].f_type_id ) );
+        m_listAttr->SetItem( row, COL_Value, m_attributes[row].f_val );
+        row++;
+        m_listAttr->SetItem( row, COL_Type, recAttributeType::GetTypeStr( m_attributes[row].f_type_id ) );
+        m_listAttr->SetItem( row, COL_Value, m_attributes[row].f_val );
+
+        m_listAttr->SetItemState( row, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+    }
+}
+
+
+//============================================================================
+//                 Original dlgEditIndividual dialog
+//============================================================================
+
+
 IMPLEMENT_CLASS( dlgEditIndividual, wxDialog )
 
 BEGIN_EVENT_TABLE( dlgEditIndividual, wxDialog )

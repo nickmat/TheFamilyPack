@@ -209,10 +209,6 @@ void dlgEditReference::OnPersonaAddButton( wxCommandEvent& event )
 
 void dlgEditReference::OnPersonaEditButton( wxCommandEvent& event )
 {
-//    wxMessageBox(
-//        wxT("Not yet implimented"),
-//        wxT("OnPersonaEditButton")
-//    );
     const wxString savepoint = "RefEdPer";
     long row = m_listPersona->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {

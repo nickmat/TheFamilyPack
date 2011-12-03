@@ -42,6 +42,7 @@
 #include "dlgEd.h"
 #include "dlgEdFamily.h"
 #include "dlgEdIndividual.h"
+#include "dlgEdPersona.h"
 #include "dlgSelIndividual.h"
 #include "dlgSelEvent.h"
 #include "dlgEdReference.h"
@@ -71,6 +72,21 @@ bool tfpEditIndividual( idt indID  )
 {
     const wxString savepoint = "EdInd";
     bool ret = false;
+    dlgEditIndPersona* dialog = new dlgEditIndPersona( NULL, indID );
+    recDb::Savepoint( savepoint );
+
+    if( dialog->ShowModal() == wxID_OK ) {
+        recDb::ReleaseSavepoint( savepoint );
+        ret = true;
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+    return ret;
+
+#if 0
+    const wxString savepoint = "EdInd";
+    bool ret = false;
     dlgEditIndividual* dialog = new dlgEditIndividual( NULL );
     recDb::Savepoint( savepoint );
 
@@ -84,6 +100,7 @@ bool tfpEditIndividual( idt indID  )
     }
     dialog->Destroy();
     return ret;
+#endif
 }
 
 bool tfpEditReference( idt refID  )

@@ -161,6 +161,21 @@ void recIndividual::UpdateNames()
     if( f_given.length() == 0 ) f_given = "?";
 }
 
+void recIndividual::Update()
+{
+    recPersona per( f_per_id );
+
+    f_epitaph = per.GetDateEpitaph();
+
+    idt nameID = per.GetDefaultNameID();
+    f_surname = recName::GetSurname( nameID );
+    if( f_surname.length() == 0 ) f_surname = "?";
+    f_given = recName::GetNamePartStr( nameID, NAME_TYPE_Given_name );
+    if( f_given.length() == 0 ) f_given = "?";
+
+    f_sex = per.f_sex;
+}
+
 wxString recIndividual::GetFullName( idt id )
 {
     wxString str;

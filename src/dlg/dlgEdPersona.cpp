@@ -79,6 +79,7 @@ bool dlgEditPersona::TransferDataToWindow()
     }
     m_nameStr = m_persona.GetNameStr();
     m_staticPerName->SetLabel( m_nameStr );
+    m_staticPerID->SetLabel( m_persona.GetIdStr() );
 
     m_choiceSex->SetSelection( (int) m_persona.f_sex );
     m_textCtrlNote->SetValue(  m_persona.f_note );

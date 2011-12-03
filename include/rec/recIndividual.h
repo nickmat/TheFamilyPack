@@ -69,6 +69,7 @@ public:
 
     void UpdateDateEpitaph();
     void UpdateNames();
+    void Update();
     wxString GetFullName() { return f_given + " " + f_surname; }
 
     static idt GetDefaultFamily( idt id ) {
