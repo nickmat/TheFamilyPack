@@ -39,6 +39,125 @@
 
 #include <rec/recLink.h>
 
+//============================================================================
+//                 recLinkEvent
+//============================================================================
+
+recLinkEvent::recLinkEvent( const recLinkEvent& d )
+{
+    f_id          = d.f_id;
+    f_ref_event_id  = d.f_ref_event_id;
+    f_ind_event_id  = d.f_ind_event_id;
+    f_comment     = d.f_comment;
+}
+
+void recLinkEvent::Clear()
+{
+    f_id          = 0;
+    f_ref_event_id  = 0;
+    f_ind_event_id  = 0;
+    f_comment     = wxEmptyString;
+}
+
+void recLinkEvent::Save()
+{
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( f_id == 0 )
+    {
+        // Add new record
+        sql.Format(
+            "INSERT INTO LinkEvent "
+            "(ref_event_id, ind_event_id, comment) "
+            "VALUES ("ID", "ID", '%q');",
+            f_ref_event_id, f_ind_event_id, UTF8_(f_comment)
+        );
+        s_db->ExecuteUpdate( sql );
+        f_id = GET_ID( s_db->GetLastRowId() );
+    } else {
+        // Does record exist
+        if( !Exists() )
+        {
+            // Add new record
+            sql.Format(
+                "INSERT INTO LinkEvent "
+                "(id, ref_event_id, ind_event_id, comment) "
+                "VALUES ("ID", "ID", "ID", '%q');",
+                f_id, f_ref_event_id, f_ind_event_id, f_comment
+            );
+        } else {
+            // Update existing record
+            sql.Format(
+                "UPDATE LinkEvent SET ref_event_id="ID", ind_event_id="ID", "
+                "comment='%q' "
+                "WHERE id="ID";",
+                f_ref_event_id, f_ind_event_id,
+                UTF8_(f_comment), f_id
+            );
+        }
+        s_db->ExecuteUpdate( sql );
+    }
+}
+
+bool recLinkEvent::Read()
+{
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( f_id == 0 ) {
+        Clear();
+        return false;
+    }
+
+    sql.Format(
+        "SELECT ref_event_id, ind_event_id, comment "
+        "FROM LinkEvent WHERE id="ID";",
+        f_id
+    );
+    result = s_db->GetTable( sql );
+
+    if( result.GetRowCount() != 1 )
+    {
+        Clear();
+        return false;
+    }
+    result.SetRow( 0 );
+    f_ref_event_id  = GET_ID( result.GetInt64( 0 ) );
+    f_ind_event_id  = GET_ID( result.GetInt64( 1 ) );
+    f_comment     = result.GetAsString( 2 );
+    return true;
+}
+
+/*! Given the per_id and ind_id settings, find the matching record
+ *  and read in the full record.
+ */
+bool recLinkEvent::Find()
+{
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( f_ind_event_id == 0 ) return false; // Only find single record
+
+    sql.Format(
+        "SELECT id, comment FROM LinkEvent "
+        "WHERE ref_event_id="ID" AND ind_event_id="ID";",
+        f_ref_event_id, f_ind_event_id
+    );
+    result = s_db->GetTable( sql );
+
+    if( result.GetRowCount() != 1 ) return false;
+    result.SetRow( 0 );
+    f_id   = GET_ID( result.GetInt64( 0 ) );
+    f_comment = result.GetAsString( 1 );
+    return true;
+}
+
+
+//============================================================================
+//                 recLinkPersona
+//============================================================================
+
 recLinkPersona::recLinkPersona( const recLinkPersona& d )
 {
     f_id          = d.f_id;

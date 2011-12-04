@@ -68,6 +68,7 @@ protected:
     static wxString           s_fname;
     static long               s_change;
 
+public:
     /*! Delete the given record in the given table.
      */
     static bool DeleteRecord( const char* table, idt id );
@@ -76,7 +77,6 @@ protected:
      */
     static bool RecordExists( const char* table, idt id );
 
-public:
     idt   f_id;
 
     /*! Default constructor, does nothing. */

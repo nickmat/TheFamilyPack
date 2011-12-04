@@ -46,8 +46,8 @@
 const int recVerMajor    = 0;
 const int recVerMinor    = 0;
 const int recVerRev      = 9;
-const int recVerTest     = 5;
-const wxStringCharType* recVerStr = wxS("0.0.9.5");
+const int recVerTest     = 6;
+const wxStringCharType* recVerStr = wxS("0.0.9.6");
 
 
 recVersion::recVersion( const recVersion& v )
@@ -361,6 +361,42 @@ static void UpgradeTest0_0_9_4to0_0_9_5()
     recDb::Commit();
 }
 
+static void UpgradeTest0_0_9_5to0_0_9_6()
+{
+    char* sql =
+        "CREATE TABLE LinkEvent (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  ref_event_id INTEGER NOT NULL REFERENCES Event(id),\n"
+        "  ind_event_id INTEGER NOT NULL REFERENCES Event(id),\n"
+        "  comment TEXT\n"
+        ");\n"
+    ;
+    recDb::Begin();
+    recDb::GetDb()->ExecuteUpdate( sql );
+
+    sql = "CREATE TEMP TABLE EventIdList AS SELECT id FROM Event;";
+    recDb::GetDb()->ExecuteUpdate( sql );
+
+    char* query =
+        "SELECT entity_id FROM ReferenceEntity WHERE entity_type=2;"
+    ;
+    wxSQLite3ResultSet result = recDb::GetDb()->ExecuteQuery( query );
+    while( result.NextRow() ) {
+        recDb::DeleteRecord( "EventIdList", GET_ID( result.GetInt64( 0 ) ) );
+    }
+
+    sql = 
+        "INSERT INTO LinkEvent\n"
+        " (ref_event_id, ind_event_id, comment)\n"
+        " SELECT id, 0, '' FROM EventIdList;\n"
+        "DROP TABLE EventIdList;\n"
+    ;
+    recDb::GetDb()->ExecuteUpdate( sql );
+
+    recVersion::Set( 0, 0, 9, 6 );
+    recDb::Commit();
+}
+
 static void UpgradeRev0_0_9toCurrent( int test )
 {
     switch( test )
@@ -375,6 +411,8 @@ static void UpgradeRev0_0_9toCurrent( int test )
         UpgradeTest0_0_9_3to0_0_9_4();
     case 4:
         UpgradeTest0_0_9_4to0_0_9_5();
+    case 5:
+        UpgradeTest0_0_9_5to0_0_9_6();
     }
 }
 
