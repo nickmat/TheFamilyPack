@@ -284,7 +284,7 @@ fbDlgCreateIndividual::fbDlgCreateIndividual( wxWindow* parent, wxWindowID id, c
 	m_staticText11->Wrap( -1 );
 	bSizer1->Add( m_staticText11, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_staticIndID = new wxStaticText( this, tfpID_EDIND_IND_ID, _("I 0"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticIndID = new wxStaticText( this, wxID_ANY, _("I 0"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticIndID->Wrap( -1 );
 	m_staticIndID->SetFont( wxFont( 11, 72, 90, 92, false, wxEmptyString ) );
 	
@@ -308,25 +308,32 @@ fbDlgCreateIndividual::fbDlgCreateIndividual( wxWindow* parent, wxWindowID id, c
 	bSizer->Add( bSizer1, 0, wxEXPAND, 5 );
 	
 	wxFlexGridSizer* fgSizer2;
-	fgSizer2 = new wxFlexGridSizer( 2, 2, 0, 0 );
+	fgSizer2 = new wxFlexGridSizer( 3, 2, 0, 0 );
 	fgSizer2->AddGrowableCol( 1 );
-	fgSizer2->AddGrowableRow( 0 );
-	fgSizer2->SetFlexibleDirection( wxHORIZONTAL );
+	fgSizer2->AddGrowableRow( 2 );
+	fgSizer2->SetFlexibleDirection( wxBOTH );
 	fgSizer2->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_NONE );
 	
 	m_staticText21 = new wxStaticText( this, wxID_ANY, _("Given Name:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText21->Wrap( -1 );
-	fgSizer2->Add( m_staticText21, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT|wxALL, 5 );
+	fgSizer2->Add( m_staticText21, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT|wxTOP|wxBOTTOM|wxLEFT, 5 );
 	
 	m_textGiven = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 200,-1 ), 0 );
 	fgSizer2->Add( m_textGiven, 0, wxALIGN_CENTER_VERTICAL|wxALL|wxEXPAND, 5 );
 	
 	m_staticText22 = new wxStaticText( this, wxID_ANY, _("Surname:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText22->Wrap( -1 );
-	fgSizer2->Add( m_staticText22, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT|wxALL, 5 );
+	fgSizer2->Add( m_staticText22, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT|wxTOP|wxBOTTOM|wxLEFT, 5 );
 	
-	m_textSurname = new wxTextCtrl( this, tfpID_EDIND_GIVEN, wxEmptyString, wxDefaultPosition, wxSize( 200,-1 ), 0 );
+	m_textSurname = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 200,-1 ), 0 );
 	fgSizer2->Add( m_textSurname, 1, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
+	
+	m_staticText23 = new wxStaticText( this, wxID_ANY, _("Note:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText23->Wrap( -1 );
+	fgSizer2->Add( m_staticText23, 0, wxALIGN_RIGHT|wxTOP|wxBOTTOM|wxLEFT, 5 );
+	
+	m_textNote = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 200,-1 ), wxTE_MULTILINE );
+	fgSizer2->Add( m_textNote, 0, wxALL|wxEXPAND, 5 );
 	
 	bSizer->Add( fgSizer2, 1, wxEXPAND, 5 );
 	

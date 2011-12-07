@@ -47,15 +47,15 @@ public:
 
     void SetSex( Sex sex ) { m_sex = sex; }
     void SetSurname( const wxString& name ) { m_surname = name; }
+
     idt GetIndividualID() const { return m_individual.f_id; }
 
 private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
 
-    wxString       m_surname;
-    wxString       m_given;
     Sex            m_sex;
+    wxString       m_surname;
 
     recIndividual  m_individual;
     recPersona     m_persona;

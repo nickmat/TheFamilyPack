@@ -144,12 +144,6 @@ class fbDlgCreateIndividual : public wxDialog
 	private:
 	
 	protected:
-		enum
-		{
-			tfpID_EDIND_IND_ID = 1000,
-			tfpID_EDIND_GIVEN
-		};
-		
 		wxStaticText* m_staticText11;
 		wxStaticText* m_staticIndID;
 		wxStaticText* m_staticText12;
@@ -158,13 +152,15 @@ class fbDlgCreateIndividual : public wxDialog
 		wxTextCtrl* m_textGiven;
 		wxStaticText* m_staticText22;
 		wxTextCtrl* m_textSurname;
+		wxStaticText* m_staticText23;
+		wxTextCtrl* m_textNote;
 		wxStaticLine* m_staticline1;
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
 	
 	public:
 		
-		fbDlgCreateIndividual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Create Individual"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 402,177 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxSYSTEM_MENU ); 
+		fbDlgCreateIndividual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Create Individual"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 400,221 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxSYSTEM_MENU ); 
 		~fbDlgCreateIndividual();
 	
 };

@@ -69,7 +69,6 @@ bool dlgCreateIndividual::TransferDataToWindow()
 
     m_staticIndID->SetLabel( m_individual.GetIdStr() );
     m_choiceSex->SetSelection( m_sex );
-    m_textGiven->SetValue( m_given );
     m_textSurname->SetValue( m_surname );
     return true;
 }
@@ -77,6 +76,7 @@ bool dlgCreateIndividual::TransferDataToWindow()
 bool dlgCreateIndividual::TransferDataFromWindow()
 {
     m_persona.f_sex = (Sex) m_choiceSex->GetSelection();
+    m_persona.f_note = m_textNote->GetValue();
     m_persona.Save();
 
     m_name.f_per_id = m_persona.f_id;
