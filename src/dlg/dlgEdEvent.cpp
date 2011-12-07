@@ -60,8 +60,12 @@ BEGIN_EVENT_TABLE( dlgEditEvent, wxDialog )
 END_EVENT_TABLE()
 
 
-dlgEditEvent::dlgEditEvent( wxWindow* parent ) : fbDlgEditEvent( parent )
+dlgEditEvent::dlgEditEvent( wxWindow* parent ) 
+    : mp_entities(NULL), m_refID(0), m_dateButton(EV_DATE_Beg), fbDlgEditEvent( parent )
 {
+    m_event.Clear();
+    m_etype.Clear();
+
     m_listPersona->InsertColumn( 0, wxT("Persona") );
     m_listPersona->InsertColumn( 1, wxT("Role") );
     m_listPersona->InsertColumn( 2, wxT("Note") );
@@ -203,33 +207,38 @@ void dlgEditEvent::OnAgeSelect( wxCommandEvent& event )
 
 void dlgEditEvent::OnPlaceButton( wxCommandEvent& event )
 {
-    wxMenu* pmenu = new wxMenu;
-    size_t m = 0;
-    pmenu->Append( ID_PLACE_MENU_START + m++, wxT("Create new") );
-    for( size_t i = 0 ; i < mp_entities->size() ; i++ ) {
-        if( (*mp_entities)[i].rec.f_entity_type == recReferenceEntity::TYPE_Place ) {
-            pmenu->Append(
-                ID_PLACE_MENU_START + m,
-                recPlace::GetAddressStr( (*mp_entities)[i].rec.f_entity_id )
-            );
-            (*mp_entities)[i].index = m;
-            m++;
-        } else {
-            (*mp_entities)[i].index = -1;
+    if( mp_entities ) {
+        wxMenu* pmenu = new wxMenu;
+        size_t m = 0;
+        pmenu->Append( ID_PLACE_MENU_START + m++, wxT("Create new") );
+        for( size_t i = 0 ; i < mp_entities->size() ; i++ ) {
+            if( (*mp_entities)[i].rec.f_entity_type == recReferenceEntity::TYPE_Place ) {
+                pmenu->Append(
+                    ID_PLACE_MENU_START + m,
+                    recPlace::GetAddressStr( (*mp_entities)[i].rec.f_entity_id )
+                );
+                (*mp_entities)[i].index = m;
+                m++;
+            } else {
+                (*mp_entities)[i].index = -1;
+            }
         }
+        PopupMenu( pmenu );
+        delete pmenu;
+    } else {
+        // TODO:
+        wxMessageBox( wxT("Not yet implimented"), wxT("OnPlaceButton") );
     }
-    PopupMenu( pmenu );
-    delete pmenu;
 }
 
 void dlgEditEvent::OnPlaceSelect( wxCommandEvent& event )
 {
     size_t i = event.GetId() - ID_PLACE_MENU_START;
 
-    if( i == 0 )
-    {
+    if( i == 0 ) {
         m_textCtrlPlace->SetValue( wxT("TODO: Get New Place") );
     } else {
+        wxASSERT( mp_entities != NULL );
         int entry = tfpGetEntityIndex( mp_entities, i );
         idt placeID = (*mp_entities)[entry].rec.f_entity_id;
         m_textCtrlPlace->SetValue( recPlace::GetAddressStr( placeID ) );
@@ -244,8 +253,7 @@ void dlgEditEvent::OnAddButton( wxCommandEvent& event )
     dialog->SetRefID( m_refID );
 
     recDb::Savepoint( savepoint );
-    if( dialog->ShowModal() == wxID_OK )
-    {
+    if( dialog->ShowModal() == wxID_OK ) {
         recDb::ReleaseSavepoint( savepoint );
         recEventPersona* pe = dialog->GetEventPersona();
         int row = m_pes.size();

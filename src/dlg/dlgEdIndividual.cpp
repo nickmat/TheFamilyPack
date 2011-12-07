@@ -355,6 +355,109 @@ void dlgEditIndPersona::OnAttrDownButton( wxCommandEvent& event )
     }
 }
 
+void dlgEditIndPersona::OnEventAddButton( wxCommandEvent& event )
+{
+    const wxString savepoint = "PerEdEvent";
+    recDb::Savepoint( savepoint );
+
+    idt typeID = recEventType::Select( recEventType::SF_Individual );
+    if( typeID == 0 ) {
+        recDb::Rollback( savepoint );
+        return;
+    }
+    idt roleID = recEventTypeRole::Select( typeID, recEventTypeRole::SF_Prime );
+    if( roleID == 0 ) {
+        recDb::Rollback( savepoint );
+        return;
+    }
+    dlgEditIndEvent* dialog = new dlgEditIndEvent( NULL );
+    dialog->SetEventType( typeID );
+    dialog->SetEventTitle( wxString::Format( 
+        _("%s of %s"), recEventType::GetTypeStr( typeID ), m_individual.GetFullName()
+    ) );
+
+    if( dialog->ShowModal() == wxID_OK )
+    {
+        idt eventID = dialog->GetEventID();
+        recLinkEvent le(0);
+        le.f_ind_event_id = eventID;
+        le.Save();
+        recEventPersona ep(0);
+        ep.f_event_id = eventID;
+        ep.f_per_id = m_persona.f_id;
+        ep.f_role_id = roleID;
+        ep.f_sequence = recEvent::GetDatePoint( eventID );
+        ep.Save();
+
+        recDb::ReleaseSavepoint( savepoint );
+        int row = m_evpers.size();
+        m_listEvent->InsertItem( row, recEvent::GetIdStr( eventID ) );
+        m_listEvent->SetItem( row, EV_COL_Role, recEventTypeRole::GetName( roleID ) );
+        m_listEvent->SetItem( row, EV_COL_Title, recEvent::GetTitle( eventID ) );
+        m_listEvent->SetItem( row, EV_COL_Date, recEvent::GetDateStr( eventID ) );
+        m_listEvent->SetItem( row, EV_COL_Place, recEvent::GetAddressStr( eventID ) );
+        m_evpers.push_back( ep );
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+}
+
+void dlgEditIndPersona::OnEventEditButton( wxCommandEvent& event )
+{
+    // TODO:
+    wxMessageBox( wxT("Not yet implimented"), wxT("OnEventEditButton") );
+}
+
+void dlgEditIndPersona::OnEventDeleteButton( wxCommandEvent& event )
+{
+    // TODO:
+    wxMessageBox( wxT("Not yet implimented"), wxT("OnEventDeleteButton") );
+}
+
+void dlgEditIndPersona::OnEventUpButton( wxCommandEvent& event )
+{
+    // TODO:
+    wxMessageBox( wxT("Not yet implimented"), wxT("OnEventUpButton") );
+}
+
+void dlgEditIndPersona::OnEventDownButton( wxCommandEvent& event )
+{
+    // TODO:
+    wxMessageBox( wxT("Not yet implimented"), wxT("OnEventDownButton") );
+}
+
+void dlgEditIndPersona::OnRelAddButton( wxCommandEvent& event )
+{
+    // TODO:
+    wxMessageBox( wxT("Not yet implimented"), wxT("OnRelAddButton") );
+}
+
+void dlgEditIndPersona::OnRelEditButton( wxCommandEvent& event )
+{
+    // TODO:
+    wxMessageBox( wxT("Not yet implimented"), wxT("OnRelEditButton") );
+}
+
+void dlgEditIndPersona::OnRelDeleteButton( wxCommandEvent& event )
+{
+    // TODO:
+    wxMessageBox( wxT("Not yet implimented"), wxT("OnRelDeleteButton") );
+}
+
+void dlgEditIndPersona::OnRelUpButton( wxCommandEvent& event )
+{
+    // TODO:
+    wxMessageBox( wxT("Not yet implimented"), wxT("OnRelUpButton") );
+}
+
+void dlgEditIndPersona::OnRelDownButton( wxCommandEvent& event )
+{
+    // TODO:
+    wxMessageBox( wxT("Not yet implimented"), wxT("OnRelDownButton") );
+}
+
+
 
 //============================================================================
 //                 Original dlgEditIndividual dialog

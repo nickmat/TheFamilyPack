@@ -69,6 +69,18 @@ private:
     void OnAttrUpButton( wxCommandEvent& event );
     void OnAttrDownButton( wxCommandEvent& event );
 
+    void OnEventAddButton( wxCommandEvent& event );
+    void OnEventEditButton( wxCommandEvent& event );
+    void OnEventDeleteButton( wxCommandEvent& event );
+    void OnEventUpButton( wxCommandEvent& event );
+    void OnEventDownButton( wxCommandEvent& event );
+
+    void OnRelAddButton( wxCommandEvent& event );
+    void OnRelEditButton( wxCommandEvent& event );
+    void OnRelDeleteButton( wxCommandEvent& event );
+    void OnRelUpButton( wxCommandEvent& event );
+    void OnRelDownButton( wxCommandEvent& event );
+
     recIndividual      m_individual;
     recPersona         m_persona;
     recNameVec         m_names;

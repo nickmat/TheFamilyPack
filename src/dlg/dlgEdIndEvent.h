@@ -41,16 +41,19 @@ class dlgEditIndEvent : public fbDlgEditIndEvent
 public:
     dlgEditIndEvent( wxWindow* parent );
 
-    void SetEvent( recEvent* pEvent ) { m_pEvent = pEvent; }
+    void SetEventType( idt typeID ) { m_event.f_type_id = typeID; }
+    void SetEventTitle( const wxString& titleStr ) { m_event.f_title = titleStr; }
+
+    idt GetEventID() const { return m_event.f_id; }
 
 private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
 
-    void OnDateButton( wxCommandEvent& event );
+    void OnDate1Button( wxCommandEvent& event );
     void OnAddrButton( wxCommandEvent& event );
 
-    recEvent* m_pEvent;
+    recEvent  m_event;
     recDate   m_date1;
     recPlace  m_place;
 };

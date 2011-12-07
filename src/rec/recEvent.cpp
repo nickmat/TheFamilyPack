@@ -42,6 +42,10 @@
 #include <rec/recDate.h>
 #include <rec/recPlace.h>
 
+//-----------------------------------------------------
+//      recEvent
+//-----------------------------------------------------
+
 recEvent::recEvent( const recEvent& e )
 {
     f_id       = e.f_id;
@@ -257,6 +261,23 @@ recEventPersonaVec recEvent::GetEventPersonas()
     return vec;
 }
 
+long recEvent::GetDatePoint( idt evID )
+{
+    recEvent ev(evID);
+    recEventType::ETYPE_Grp grp = recEventType::GetGroup( ev.f_type_id );
+    switch( grp )
+    {
+    case recEventType::ETYPE_Grp_Birth:
+    case recEventType::ETYPE_Grp_Nr_Birth:
+        return recDate::GetDatePoint( ev.f_date1_id, recDate::DATE_POINT_Beg );
+    case recEventType::ETYPE_Grp_Death:
+    case recEventType::ETYPE_Grp_Nr_Death:
+        return recDate::GetDatePoint( ev.f_date1_id, recDate::DATE_POINT_End );
+    }
+    return recDate::GetDatePoint( ev.f_date1_id );
+}
+
+
 bool recEvent::DeleteFromDb( idt id )
 {
     wxSQLite3StatementBuffer sql;
@@ -278,7 +299,9 @@ bool recEvent::DeleteFromDb( idt id )
     return true;
 }
 
-//----------------------------------------------------------
+//-----------------------------------------------------
+//      recEventType
+//-----------------------------------------------------
 
 recEventType::recEventType( const recEventType& et )
 {
@@ -358,6 +381,12 @@ wxString recEventType::GetTypeStr( idt id )
     return et.f_name;
 }
 
+recEventType::ETYPE_Grp recEventType::GetGroup( idt id )
+{
+    recEventType et( id );
+    return et.f_grp;
+}
+
 recEventTypeVec recEventType::ReadAll()
 {
     wxSQLite3Table table = s_db->GetTable(
@@ -379,9 +408,74 @@ recEventTypeVec recEventType::ReadAll()
     return vec;
 }
 
-idt recEventType::Select()
+recEventTypeVec recEventType::ReadAllIndividual()
 {
-    recEventTypeVec vec = recEventType::ReadAll();
+    wxSQLite3Table table = s_db->GetTable(
+        "SELECT T.id AS type_id, T.grp AS grp, T.name AS type "
+        "FROM EventType T, EventTypeRole R "
+        "WHERE T.id=R.type_id AND R.prime=1 "
+        "GROUP BY T.id HAVING COUNT(T.id)=1 "
+        "ORDER BY T.id DESC;"
+    );
+
+    recEventType et;
+    recEventTypeVec vec;
+    for( int i = 0 ; i < table.GetRowCount() ; i++ )
+    {
+        table.SetRow( i );
+        et.f_id = GET_ID( table.GetInt64( 0 ) );
+        et.f_grp = (ETYPE_Grp) table.GetInt( 1 );
+        et.f_name = table.GetAsString( 2 );
+        if( et.f_id != 0 ) {
+            vec.push_back( et );
+        }
+    }
+    return vec;
+}
+
+recEventTypeVec recEventType::ReadAllFamily()
+{
+    wxSQLite3Table table = s_db->GetTable(
+        "SELECT T.id AS type_id, T.grp AS grp, T.name AS type "
+        "FROM EventType T, EventTypeRole R "
+        "WHERE T.id=R.type_id AND R.prime=1 "
+        "GROUP BY T.id HAVING COUNT(T.id)=2 "
+        "ORDER BY T.id DESC;"
+    );
+
+    recEventType et;
+    recEventTypeVec vec;
+    for( int i = 0 ; i < table.GetRowCount() ; i++ )
+    {
+        table.SetRow( i );
+        et.f_id = GET_ID( table.GetInt64( 0 ) );
+        et.f_grp = (ETYPE_Grp) table.GetInt( 1 );
+        et.f_name = table.GetAsString( 2 );
+        if( et.f_id != 0 ) {
+            vec.push_back( et );
+        }
+    }
+    return vec;
+}
+
+idt recEventType::Select( SelectFilter sf )
+{
+    recEventTypeVec vec;
+    switch( sf )
+    {
+    case SF_All:
+        vec = recEventType::ReadAll();
+        break;
+    case SF_Individual:
+        vec = recEventType::ReadAllIndividual();
+        break;
+    case SF_Family:
+        vec = recEventType::ReadAll();
+        break;
+    default:
+        return 0;
+    }
+
     wxArrayString list;
     for( size_t i = 0 ; i < vec.size() ; i++ )
     {
@@ -401,7 +495,31 @@ recEventTypeRoleVec recEventType::GetRoles( idt typeID )
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "SELECT id, name FROM EventTypeRole WHERE type_id="ID";",
+        "SELECT id, name FROM EventTypeRole WHERE type_id="ID" ORDER BY id DESC;",
+        typeID
+    );
+    wxSQLite3Table table = s_db->GetTable( sql );
+
+    record.f_type_id = typeID;
+    for( int i = 0 ; i < table.GetRowCount() ; i++ )
+    {
+        table.SetRow( i );
+        record.f_id = GET_ID( table.GetInt64( 0 ) );
+        record.f_name = table.GetAsString( 1 );
+        vec.push_back( record );
+    }
+    return vec;
+}
+
+recEventTypeRoleVec recEventType::GetPrimeRoles( idt typeID )
+{
+    recEventTypeRole record;
+    recEventTypeRoleVec vec;
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "SELECT id, name FROM EventTypeRole "
+        "WHERE type_id="ID" AND prime=1 ORDER BY id DESC;",
         typeID
     );
     wxSQLite3Table table = s_db->GetTable( sql );
@@ -418,8 +536,9 @@ recEventTypeRoleVec recEventType::GetRoles( idt typeID )
 }
 
 
-//----------------------------------------------------------
-
+//-----------------------------------------------------
+//      recEventTypeRole
+//-----------------------------------------------------
 
 recEventTypeRole::recEventTypeRole( const recEventTypeRole& etr )
 {
@@ -511,6 +630,40 @@ wxString recEventTypeRole::GetName( idt roleID )
 {
     recEventTypeRole role( roleID );
     return role.f_name;
+}
+
+wxString recEventTypeRole::GetTypeAndRoleStr( idt roleID )
+{
+    recEventTypeRole role( roleID );
+    return recEventType::GetTypeStr( role.f_type_id ) + " - " + role.f_name;
+}
+
+idt recEventTypeRole::Select( idt typeID, SelectFilter sf )
+{
+    recEventTypeRoleVec vec;
+    switch(sf )
+    {
+    case SF_All:
+        vec = recEventType::GetRoles( typeID );
+        break;
+    case SF_Prime:
+        vec = recEventType::GetPrimeRoles( typeID );
+        break;
+    default:
+        return 0;
+    }
+    if( vec.size() == 0 ) return 0;
+    if( vec.size() == 1 ) return vec[0].f_id;
+
+    wxArrayString list;
+    for( size_t i = 0 ; i < vec.size() ; i++ )
+    {
+        list.Add( vec[i].f_name );
+    }
+
+    int index = wxGetSingleChoiceIndex( wxEmptyString, _("Select Event Role"), list );
+    if( index < 0 ) return 0;
+    return vec[index].f_id;
 }
 
 

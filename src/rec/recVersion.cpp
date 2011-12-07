@@ -366,7 +366,7 @@ static void UpgradeTest0_0_9_5to0_0_9_6()
     char* sql =
         "CREATE TABLE LinkEvent (\n"
         "  id INTEGER PRIMARY KEY,\n"
-        "  ref_event_id INTEGER NOT NULL REFERENCES Event(id),\n"
+        "  ref_event_id INTEGER NOT NULL,\n"
         "  ind_event_id INTEGER NOT NULL REFERENCES Event(id),\n"
         "  comment TEXT\n"
         ");\n"

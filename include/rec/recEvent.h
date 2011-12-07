@@ -43,6 +43,9 @@ typedef std::vector< recEventType >  recEventTypeVec;
 class recEventTypeRole;
 typedef std::vector< recEventTypeRole >  recEventTypeRoleVec;
 
+//-----------------------------------------------------
+//      recEvent
+//-----------------------------------------------------
 
 class recEvent : public recDb
 {
@@ -77,6 +80,7 @@ public:
     static wxString GetDateStr( idt evID );
     static wxString GetAddressStr( idt evID );
     static idt GetDate1ID( idt evID );
+    static long GetDatePoint( idt evID );
 
     idt FindReferenceID() const { return FindReferenceID( f_id ); }
     static idt FindReferenceID( idt eventID ) {
@@ -111,8 +115,9 @@ inline bool operator!=( const recEvent& r1, const recEvent& r2 )
     return !(r1 == r2);
 }
 
-//----------------------------------------------------------
-
+//-----------------------------------------------------
+//      recEventType
+//-----------------------------------------------------
 
 class recEventType : public recDb
 {
@@ -147,6 +152,11 @@ public:
         ET_Will         = -14,
         ET_MAX          = 15     // Size of list
     };
+    enum SelectFilter {
+        SF_All,
+        SF_Individual,
+        SF_Family
+    };
 
     ETYPE_Grp f_grp;
     wxString  f_name;
@@ -161,11 +171,16 @@ public:
     TABLE_NAME_MEMBERS( "EventType" );
 
     static wxString GetTypeStr( idt id );
-    wxString GetTypeStr() const { return GetTypeStr( f_id ); }
+    wxString GetTypeStr() const { return f_name; }
+    static ETYPE_Grp GetGroup( idt id );
+    ETYPE_Grp GetGroup() const { return f_grp; }
 
     static recEventTypeVec ReadAll();
-    static idt Select();
+    static recEventTypeVec ReadAllIndividual();
+    static recEventTypeVec ReadAllFamily();
+    static idt Select( SelectFilter sf = SF_All );
     static recEventTypeRoleVec GetRoles( idt typeID );
+    static recEventTypeRoleVec GetPrimeRoles( idt typeID );
 };
 
 inline bool recEquivalent( const recEventType& r1, const recEventType& r2 )
@@ -185,8 +200,10 @@ inline bool operator!=( const recEventType& r1, const recEventType& r2 )
     return !(r1 == r2);
 }
 
-//----------------------------------------------------------
 
+//-----------------------------------------------------
+//      recEventTypeRole
+//-----------------------------------------------------
 
 class recEventTypeRole : public recDb
 {
@@ -206,6 +223,10 @@ public:
         ROLE_Marriage_Witness       = -10,
         ROLE_MAX                    = 12 // size of list
     };
+    enum SelectFilter {
+        SF_All,
+        SF_Prime
+    };
 
     idt       f_type_id;
     bool      f_prime;
@@ -222,6 +243,8 @@ public:
     TABLE_NAME_MEMBERS( "EventTypeRole" );
 
     static wxString GetName( idt roleID );
+    static wxString GetTypeAndRoleStr( idt roleID );
+    static idt Select( idt typeID, SelectFilter sf = SF_All );
 };
 
 inline bool recEquivalent( const recEventTypeRole& r1, const recEventTypeRole& r2 )

@@ -1,15 +1,16 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Sep  8 2010)
+// C++ code generated with wxFormBuilder (version Dec  2 2011)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
 ///////////////////////////////////////////////////////////////////////////
 
-#ifndef __fbDlg__
-#define __fbDlg__
+#ifndef __FBDLG_H__
+#define __FBDLG_H__
 
+#include <wx/artprov.h>
+#include <wx/xrc/xmlres.h>
 #include <wx/intl.h>
-
 class dlgStrTableCtrl;
 class tfpListCtrlIndividuals;
 
@@ -61,7 +62,7 @@ class fbDlgEditFamily : public wxDialog
 			tfpID_EDFAM_EDIT,
 			tfpID_EDFAM_DELETE,
 			tfpID_EDFAM_UP,
-			tfpID_EDFAM_DOWN,
+			tfpID_EDFAM_DOWN
 		};
 		
 		wxStaticText* m_staticText1;
@@ -82,13 +83,12 @@ class fbDlgEditFamily : public wxDialog
 		wxButton* m_buttonUp;
 		wxButton* m_button1Dn;
 		wxStaticLine* m_staticline1;
-		
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
 	
 	public:
 		
-		fbDlgEditFamily( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Family"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 414,354 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+		fbDlgEditFamily( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Family"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 414,354 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbDlgEditFamily();
 	
 };
@@ -108,7 +108,7 @@ class fbDlgEditIndividual : public wxDialog
 			tfpID_EDIND_SEX,
 			tfpID_EDIND_SURNAME,
 			tfpID_EDIND_OCC,
-			tfpID_EDIND_EVENTS,
+			tfpID_EDIND_EVENTS
 		};
 		
 		wxStaticText* m_staticText1;
@@ -121,20 +121,17 @@ class fbDlgEditIndividual : public wxDialog
 		wxChoice* m_choiceSex;
 		wxStaticText* m_staticText42;
 		wxTextCtrl* m_textSurname;
-		
-		
 		wxStaticText* m_staticText43;
 		wxTextCtrl* m_textOccAttr;
 		wxPanel* m_panel3;
 		wxListCtrl* m_listCtrl;
 		wxStaticLine* m_staticline1;
-		
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
 	
 	public:
 		
-		fbDlgEditIndividual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Individual"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxSYSTEM_MENU );
+		fbDlgEditIndividual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Individual"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxSYSTEM_MENU ); 
 		~fbDlgEditIndividual();
 	
 };
@@ -147,18 +144,54 @@ class fbDlgEditIndEvent : public wxDialog
 	private:
 	
 	protected:
+		wxStaticText* m_staticText17;
+		wxStaticText* m_staticType;
+		wxStaticText* m_staticText171;
+		wxTextCtrl* m_textCtrlTitle;
+		wxButton* m_buttonDate1;
+		wxTextCtrl* m_textCtrlDate1;
+		wxButton* m_buttonDate2;
+		wxTextCtrl* m_textCtrlDate2;
+		wxButton* m_buttonAddr;
+		wxTextCtrl* m_textCtrlAddr;
+		wxStaticText* m_staticText1711;
+		wxTextCtrl* m_textCtrlNote;
+		wxStaticLine* m_staticline1;
+		wxButton* m_buttonSave;
+		wxButton* m_buttonCancel;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnDate1Button( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDate2Button( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAddrButton( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		fbDlgEditIndEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 550,320 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxSYSTEM_MENU ); 
+		~fbDlgEditIndEvent();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class fbDlgEditIndEvent1
+///////////////////////////////////////////////////////////////////////////////
+class fbDlgEditIndEvent1 : public wxDialog 
+{
+	private:
+	
+	protected:
 		enum
 		{
 			tfpID_EDINDEV_TYPE = 1000,
 			tfpID_EDINDEV_DATE,
 			tfpID_EDINDEV_DATE_BUT,
 			tfpID_EDINDEV_ADDR,
-			tfpID_EDINDEV_ADDR_BUT,
+			tfpID_EDINDEV_ADDR_BUT
 		};
 		
 		wxStaticText* m_staticText17;
 		wxStaticText* m_staticTextType;
-		
 		wxStaticText* m_staticText15;
 		wxTextCtrl* m_textCtrlDate;
 		wxButton* m_buttonDate;
@@ -166,7 +199,6 @@ class fbDlgEditIndEvent : public wxDialog
 		wxTextCtrl* m_textCtrlAddr;
 		wxButton* m_buttonAddr;
 		wxStaticLine* m_staticline1;
-		
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
 		
@@ -177,8 +209,8 @@ class fbDlgEditIndEvent : public wxDialog
 	
 	public:
 		
-		fbDlgEditIndEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 322,167 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxSYSTEM_MENU );
-		~fbDlgEditIndEvent();
+		fbDlgEditIndEvent1( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 403,167 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxSYSTEM_MENU ); 
+		~fbDlgEditIndEvent1();
 	
 };
 
@@ -201,7 +233,6 @@ class fbDlgEditDate : public wxDialog
 		wxStaticText* m_staticText41;
 		wxChoice* m_choiceDisplay;
 		wxStaticLine* m_staticline1;
-		
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
 		
@@ -211,7 +242,7 @@ class fbDlgEditDate : public wxDialog
 	
 	public:
 		
-		fbDlgEditDate( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Date"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 300,235 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+		fbDlgEditDate( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Date"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 300,235 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbDlgEditDate();
 	
 };
@@ -236,7 +267,6 @@ class fbDlgEditDateFromAge : public wxDialog
 		wxChoice* m_choiceDisplay;
 		wxRadioBox* m_radioBoxUnits;
 		wxStaticLine* m_staticline1;
-		
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
 		
@@ -246,7 +276,7 @@ class fbDlgEditDateFromAge : public wxDialog
 	
 	public:
 		
-		fbDlgEditDateFromAge( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Date from Age"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 264,275 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxSYSTEM_MENU );
+		fbDlgEditDateFromAge( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Date from Age"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 264,275 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxSYSTEM_MENU ); 
 		~fbDlgEditDateFromAge();
 	
 };
@@ -266,13 +296,12 @@ class fbDlgEditAttribute : public wxDialog
 		wxStaticText* m_staticText4;
 		wxTextCtrl* m_textCtrlValue;
 		wxStaticLine* m_staticline1;
-		
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
 	
 	public:
 		
-		fbDlgEditAttribute( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Attribute"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 300,160 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+		fbDlgEditAttribute( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Attribute"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 300,160 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbDlgEditAttribute();
 	
 };
@@ -292,13 +321,12 @@ class fbDlgEditNamePart : public wxDialog
 		wxStaticText* m_staticText4;
 		wxTextCtrl* m_textCtrlValue;
 		wxStaticLine* m_staticline1;
-		
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
 	
 	public:
 		
-		fbDlgEditNamePart( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Name Part"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 300,160 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+		fbDlgEditNamePart( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Name Part"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 300,160 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbDlgEditNamePart();
 	
 };
@@ -313,19 +341,18 @@ class fbDlgEditPlace : public wxDialog
 	protected:
 		enum
 		{
-			tfpID_EDPLACE_ADDR = 1000,
+			tfpID_EDPLACE_ADDR = 1000
 		};
 		
 		wxStaticText* m_staticText16;
 		wxTextCtrl* m_textCtrlAddr;
 		wxStaticLine* m_staticline1;
-		
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
 	
 	public:
 		
-		fbDlgEditPlace( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Place"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 300,110 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+		fbDlgEditPlace( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Place"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 300,110 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbDlgEditPlace();
 	
 };
@@ -340,11 +367,9 @@ class fbDlgEditPersona : public wxDialog
 	protected:
 		wxStaticText* m_staticText1;
 		wxStaticText* m_staticPerName;
-		
 		wxStaticText* m_staticPerID;
 		wxNotebook* m_notebook;
 		wxPanel* m_panel1;
-		
 		wxStaticText* m_staticText11;
 		wxChoice* m_choiceSex;
 		wxStaticText* m_staticText12;
@@ -382,7 +407,6 @@ class fbDlgEditPersona : public wxDialog
 		wxButton* m_buttonRelUp;
 		wxButton* m_buttonRelDn;
 		wxStaticLine* m_staticline1;
-		
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
 		
@@ -413,7 +437,7 @@ class fbDlgEditPersona : public wxDialog
 	
 	public:
 		
-		fbDlgEditPersona( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Persona"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+		fbDlgEditPersona( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Persona"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbDlgEditPersona();
 	
 };
@@ -428,13 +452,11 @@ class fbDlgEditIndPersona : public wxDialog
 	protected:
 		wxStaticText* m_staticText1;
 		wxStaticText* m_staticPerName;
-		
 		wxStaticText* m_staticIndID;
 		wxStaticText* m_staticPerID;
 		wxNotebook* m_notebook;
 		wxPanel* m_panel1;
 		wxStaticText* m_staticTextEpitaph;
-		
 		wxStaticText* m_staticText11;
 		wxChoice* m_choiceSex;
 		wxStaticText* m_staticText12;
@@ -468,7 +490,6 @@ class fbDlgEditIndPersona : public wxDialog
 		wxButton* m_buttonRelUp;
 		wxButton* m_buttonRelDn;
 		wxStaticLine* m_staticline1;
-		
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
 		
@@ -497,7 +518,7 @@ class fbDlgEditIndPersona : public wxDialog
 	
 	public:
 		
-		fbDlgEditIndPersona( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Individual"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+		fbDlgEditIndPersona( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Individual"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbDlgEditIndPersona();
 	
 };
@@ -512,11 +533,9 @@ class fbDlgEditName : public wxDialog
 	protected:
 		wxStaticText* m_staticText1;
 		wxStaticText* m_staticName;
-		
 		wxStaticText* m_staticNameID;
 		wxStaticText* m_staticText1a;
 		wxChoice* m_choiceStyle;
-		
 		wxStaticText* m_staticText65;
 		wxButton* m_buttonPersona;
 		wxListCtrl* m_listParts;
@@ -526,7 +545,6 @@ class fbDlgEditName : public wxDialog
 		wxButton* m_buttonPartUp;
 		wxButton* m_buttonPartDn;
 		wxStaticLine* m_staticline1;
-		
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
 		
@@ -541,7 +559,7 @@ class fbDlgEditName : public wxDialog
 	
 	public:
 		
-		fbDlgEditName( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Name"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+		fbDlgEditName( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Name"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbDlgEditName();
 	
 };
@@ -571,7 +589,6 @@ class fbDlgEditEvent : public wxDialog
 		wxButton* m_buttonUp;
 		wxButton* m_buttonDn;
 		wxStaticLine* m_staticline1;
-		
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
 		
@@ -588,7 +605,7 @@ class fbDlgEditEvent : public wxDialog
 	
 	public:
 		
-		fbDlgEditEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+		fbDlgEditEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbDlgEditEvent();
 	
 };
@@ -610,7 +627,6 @@ class fbDlgEditRole : public wxDialog
 		wxStaticText* m_staticText2;
 		wxTextCtrl* m_textCtrlNote;
 		wxStaticLine* m_staticline1;
-		
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
 		
@@ -621,7 +637,7 @@ class fbDlgEditRole : public wxDialog
 	
 	public:
 		
-		fbDlgEditRole( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Persona's Role"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 350,231 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+		fbDlgEditRole( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Persona's Role"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 400,231 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbDlgEditRole();
 	
 };
@@ -635,7 +651,6 @@ class fbDlgEditRelationship : public wxDialog
 	
 	protected:
 		wxStaticText* m_staticRsNumber;
-		
 		wxButton* m_buttonPersona1;
 		wxTextCtrl* m_textCtrlPersona1;
 		wxStaticText* m_staticText2;
@@ -643,7 +658,6 @@ class fbDlgEditRelationship : public wxDialog
 		wxButton* m_buttonPersona2;
 		wxTextCtrl* m_textCtrlPersona2;
 		wxStaticLine* m_staticline1;
-		
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
 		
@@ -654,7 +668,7 @@ class fbDlgEditRelationship : public wxDialog
 	
 	public:
 		
-		fbDlgEditRelationship( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Persona's Relationship"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 337,217 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+		fbDlgEditRelationship( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Persona's Relationship"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 337,217 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbDlgEditRelationship();
 	
 };
@@ -673,7 +687,7 @@ class fbDlgEditReference : public wxDialog
 			tfpID_EDREF_OnCopy,
 			tfpID_EDREF_OnPaste,
 			tfpID_EDREF_OnUndo,
-			tfpID_EDREF_OnRedo,
+			tfpID_EDREF_OnRedo
 		};
 		
 		wxStaticText* m_staticText1;
@@ -699,7 +713,6 @@ class fbDlgEditReference : public wxDialog
 		wxButton* m_buttonUp;
 		wxButton* m_buttonDn;
 		wxStaticLine* m_staticline1;
-		
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
 		
@@ -717,7 +730,7 @@ class fbDlgEditReference : public wxDialog
 	
 	public:
 		
-		fbDlgEditReference( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Reference"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,500 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+		fbDlgEditReference( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Reference"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,500 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbDlgEditReference();
 		
 		void m_splitter1OnIdle( wxIdleEvent& )
@@ -738,7 +751,6 @@ class fbDlgSelectIndividual : public wxDialog
 	protected:
 		tfpListCtrlIndividuals* m_listInd;
 		wxStaticLine* m_staticline6;
-		
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
 		
@@ -749,7 +761,7 @@ class fbDlgSelectIndividual : public wxDialog
 	
 	public:
 		
-		fbDlgSelectIndividual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Select Individual"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 485,269 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+		fbDlgSelectIndividual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Select Individual"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 485,269 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbDlgSelectIndividual();
 	
 };
@@ -764,7 +776,6 @@ class fbDlgSelectEvent : public wxDialog
 	protected:
 		dlgStrTableCtrl* m_listEvent;
 		wxStaticLine* m_staticline;
-		
 		wxButton* m_buttonSelect;
 		wxButton* m_buttonCancel;
 		
@@ -774,7 +785,7 @@ class fbDlgSelectEvent : public wxDialog
 	
 	public:
 		
-		fbDlgSelectEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Select Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 485,269 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+		fbDlgSelectEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Select Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 485,269 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbDlgSelectEvent();
 	
 };
@@ -791,7 +802,6 @@ class fbDlgSelect : public wxDialog
 		wxStaticLine* m_staticline;
 		wxButton* m_buttonCreate;
 		wxButton* m_buttonUnknown;
-		
 		wxButton* m_buttonSelect;
 		wxButton* m_buttonCancel;
 		
@@ -803,7 +813,7 @@ class fbDlgSelect : public wxDialog
 	
 	public:
 		
-		fbDlgSelect( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Select"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 485,269 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+		fbDlgSelect( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Select"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 485,269 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbDlgSelect();
 	
 };
@@ -830,7 +840,6 @@ class fbDlgEditFamEvent : public wxDialog
 		wxStaticText* m_staticText5;
 		wxTextCtrl* m_textCtrlNote;
 		wxStaticLine* m_staticline1;
-		
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
 		
@@ -842,9 +851,9 @@ class fbDlgEditFamEvent : public wxDialog
 	
 	public:
 		
-		fbDlgEditFamEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 322,284 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+		fbDlgEditFamEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 322,284 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbDlgEditFamEvent();
 	
 };
 
-#endif //__fbDlg__
+#endif //__FBDLG_H__

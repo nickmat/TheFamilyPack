@@ -42,75 +42,82 @@
 dlgEditIndEvent::dlgEditIndEvent( wxWindow* parent )
     : fbDlgEditIndEvent( parent )
 {
-    m_pEvent = NULL;
+//    m_epa.Clear();
+    m_event.Clear();
+    m_date1.Clear();
+    m_place.Clear();
 }
 
 bool dlgEditIndEvent::TransferDataToWindow()
 {
-    wxASSERT( m_pEvent != NULL );
-    if( m_pEvent == NULL ) return false;
+    m_staticType->SetLabel( m_event.GetTypeStr() );
 
-    m_staticTextType->SetLabel( m_pEvent->GetTypeStr() );
-    if( m_pEvent->f_date1_id == 0 ) {
+    m_textCtrlTitle->SetValue( m_event.f_title );
+
+    if( m_event.f_date1_id == 0 ) {
         m_date1.SetDefaults();
         m_date1.Save();
     } else {
-        m_date1.f_id = m_pEvent->f_date1_id;
+        m_date1.f_id = m_event.f_date1_id;
         m_date1.Read();
     }
-    m_textCtrlDate->SetValue( m_date1.GetStr() );
-    if( m_pEvent->f_place_id == 0 ) {
+    m_textCtrlDate1->SetValue( m_date1.GetStr() );
+
+    m_buttonDate2->Enable( false );
+
+    if( m_event.f_place_id == 0 ) {
         m_place.Clear();
         m_place.Save();
     } else {
-        m_place.f_id = m_pEvent->f_place_id;
+        m_place.f_id = m_event.f_place_id;
         m_place.Read();
     }
     m_textCtrlAddr->SetValue( m_place.GetAddressStr() );
+
+    m_textCtrlNote->SetValue( m_event.f_note );
 
     return true;
 }
 
 bool dlgEditIndEvent::TransferDataFromWindow()
 {
-    wxASSERT( m_pEvent != NULL );
-    if( m_pEvent == NULL ) return false;
+    wxASSERT( m_event.f_type_id != 0 );
 
-    wxString str = m_textCtrlDate->GetValue();
+    m_event.f_title = m_textCtrlTitle->GetValue();
+
+    wxString str = m_textCtrlDate1->GetValue();
     if( str.IsEmpty() ) {
         m_date1.Delete();
-        m_pEvent->f_date1_id = 0;
+        m_event.f_date1_id = 0;
     } else {
         m_date1.SetDate( str );
         m_date1.Save();
-        m_pEvent->f_date1_id = m_date1.f_id;
+        m_event.f_date1_id = m_date1.f_id;
     }
+
+    m_event.f_date2_id = 0;
 
     str = m_textCtrlAddr->GetValue();
     if( str.IsEmpty() ) {
         m_place.Delete();
-        m_pEvent->f_place_id = 0;
+        m_event.f_place_id = 0;
     } else {
         m_place.SetAddress( str );
         m_place.Save();
-        m_pEvent->f_place_id = m_place.f_id;
+        m_event.f_place_id = m_place.f_id;
     }
 
-    if( m_pEvent->f_date1_id == 0 && m_pEvent->f_place_id == 0 ) {
-        m_pEvent->Delete();
-        m_pEvent->Clear();
-    } else {
-        m_pEvent->Save();
-    }
+    m_event.f_note = m_textCtrlNote->GetValue();
 
+    m_event.Save();
     return true;
 }
 
-void dlgEditIndEvent::OnDateButton( wxCommandEvent& event )
+void dlgEditIndEvent::OnDate1Button( wxCommandEvent& event )
 {
     wxMessageBox(
         wxT("Not yet implimented\nDate"),
-        wxT("OnDateButton")
+        wxT("OnDate1Button")
     );
 }
 
