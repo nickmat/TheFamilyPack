@@ -137,6 +137,39 @@ class fbDlgEditIndividual : public wxDialog
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/// Class fbDlgCreateIndividual
+///////////////////////////////////////////////////////////////////////////////
+class fbDlgCreateIndividual : public wxDialog 
+{
+	private:
+	
+	protected:
+		enum
+		{
+			tfpID_EDIND_IND_ID = 1000,
+			tfpID_EDIND_GIVEN
+		};
+		
+		wxStaticText* m_staticText11;
+		wxStaticText* m_staticIndID;
+		wxStaticText* m_staticText12;
+		wxChoice* m_choiceSex;
+		wxStaticText* m_staticText21;
+		wxTextCtrl* m_textGiven;
+		wxStaticText* m_staticText22;
+		wxTextCtrl* m_textSurname;
+		wxStaticLine* m_staticline1;
+		wxButton* m_buttonSave;
+		wxButton* m_buttonCancel;
+	
+	public:
+		
+		fbDlgCreateIndividual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Create Individual"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 402,177 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxSYSTEM_MENU ); 
+		~fbDlgCreateIndividual();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
 /// Class fbDlgEditIndEvent
 ///////////////////////////////////////////////////////////////////////////////
 class fbDlgEditIndEvent : public wxDialog 
@@ -170,47 +203,6 @@ class fbDlgEditIndEvent : public wxDialog
 		
 		fbDlgEditIndEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 550,320 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxSYSTEM_MENU ); 
 		~fbDlgEditIndEvent();
-	
-};
-
-///////////////////////////////////////////////////////////////////////////////
-/// Class fbDlgEditIndEvent1
-///////////////////////////////////////////////////////////////////////////////
-class fbDlgEditIndEvent1 : public wxDialog 
-{
-	private:
-	
-	protected:
-		enum
-		{
-			tfpID_EDINDEV_TYPE = 1000,
-			tfpID_EDINDEV_DATE,
-			tfpID_EDINDEV_DATE_BUT,
-			tfpID_EDINDEV_ADDR,
-			tfpID_EDINDEV_ADDR_BUT
-		};
-		
-		wxStaticText* m_staticText17;
-		wxStaticText* m_staticTextType;
-		wxStaticText* m_staticText15;
-		wxTextCtrl* m_textCtrlDate;
-		wxButton* m_buttonDate;
-		wxStaticText* m_staticText16;
-		wxTextCtrl* m_textCtrlAddr;
-		wxButton* m_buttonAddr;
-		wxStaticLine* m_staticline1;
-		wxButton* m_buttonSave;
-		wxButton* m_buttonCancel;
-		
-		// Virtual event handlers, overide them in your derived class
-		virtual void OnDateButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnAddrButton( wxCommandEvent& event ) { event.Skip(); }
-		
-	
-	public:
-		
-		fbDlgEditIndEvent1( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 403,167 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxSYSTEM_MENU ); 
-		~fbDlgEditIndEvent1();
 	
 };
 

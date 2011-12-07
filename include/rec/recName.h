@@ -56,9 +56,9 @@ enum recStdNameType  // These match the create.sql file
 class recName : public recDb
 {
 public:
-    idt       f_per_id;
-    idt       f_style_id;
-    unsigned  f_sequence;
+    idt  f_per_id;
+    idt  f_style_id;
+    int  f_sequence;
 
     recName() {}
     recName( idt id ) : recDb(id) { Read(); }
@@ -69,7 +69,8 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "Name" );
 
-    void AddNameParts( const wxString& nameStr ) const;
+    int AddNameParts( const wxString& nameStr, recStdNameType type = NAME_TYPE_Unstated, int seq = 0 ) const;
+    int AddNamePart( const wxString& nameStr, recStdNameType type, int seq ) const;
     bool DeleteAll();
 
     static wxString GetNameStr( idt id );

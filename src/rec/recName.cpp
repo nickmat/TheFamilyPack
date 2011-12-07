@@ -118,24 +118,47 @@ bool recName::Read()
     result.SetRow( 0 );
     f_per_id   = GET_ID( result.GetInt64( 0 ) );
     f_style_id = GET_ID( result.GetInt64( 1 ) );
-    f_sequence = (unsigned) result.GetInt( 2 );
+    f_sequence = result.GetInt( 2 );
     return true;
 }
 
-void recName::AddNameParts( const wxString& nameStr ) const
+int recName::AddNameParts( const wxString& nameStr, recStdNameType type, int seq ) const
 {
-    // TODO: Action should depend on naming conventions
     recNamePart part(0);
     part.f_name_id = f_id;
+    part.f_sequence = seq;
 
     wxStringTokenizer tk( nameStr );
-    while( tk.HasMoreTokens() ) {
-        part.f_id = 0;
-        part.f_val = tk.GetNextToken();
-        part.f_type_id = tk.HasMoreTokens() ? NAME_TYPE_Given_name : NAME_TYPE_Surname;
-        ++part.f_sequence;
-        part.Save();
+    if( type == NAME_TYPE_Unstated ) {
+        // TODO: Action should depend on naming conventions
+        while( tk.HasMoreTokens() ) {
+            part.f_id = 0;
+            part.f_val = tk.GetNextToken();
+            part.f_type_id = tk.HasMoreTokens() ? NAME_TYPE_Given_name : NAME_TYPE_Surname;
+            ++part.f_sequence;
+            part.Save();
+        }
+    } else {
+        part.f_type_id = type;
+        while( tk.HasMoreTokens() ) {
+            part.f_id = 0;
+            part.f_val = tk.GetNextToken();
+            ++part.f_sequence;
+            part.Save();
+        }
     }
+    return part.f_sequence;
+}
+
+int recName::AddNamePart( const wxString& nameStr, recStdNameType type, int seq ) const
+{
+    recNamePart part(0);
+    part.f_name_id = f_id;
+    part.f_type_id = type;
+    part.f_val = nameStr;
+    part.f_sequence = ++seq;
+    part.Save();
+    return part.f_sequence;
 }
 
 bool recName::DeleteAll()

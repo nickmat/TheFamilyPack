@@ -211,6 +211,34 @@ bool tfpAddNewParent( idt indID, Sex sex )
     return ret;
 }
 
+
+bool tfpCreateNewSpouse( idt famID, Sex sex )
+{
+    const wxString savepoint = wxT("CreateNewSpouse");
+    bool ret = false;
+    recDb::Savepoint( savepoint );
+
+    recFamily family(famID);
+    wxASSERT( family.f_id != 0 );
+    idt* pIndID = ( sex == SEX_Female ) ? &family.f_wife_id : &family.f_husb_id;
+    wxASSERT( *pIndID == 0 );
+
+    dlgCreateIndividual* dialog = new dlgCreateIndividual( NULL, famID );
+    dialog->SetSex( sex );
+
+    if( dialog->ShowModal() == wxID_OK ) {
+        *pIndID = dialog->GetIndividualID();
+        family.Save();
+        recDb::ReleaseSavepoint( savepoint );
+        ret = true;
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+    return ret;
+}
+
+
 bool tfpAddNewSpouse( idt indID, Sex sex )
 {
     const wxString savepoint = wxT("AddNewSpouse");

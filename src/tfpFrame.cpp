@@ -539,7 +539,7 @@ void TfpFrame::OnHtmlLinkClicked( wxHtmlLinkEvent& event )
             case 'I': // Edit the given individual (create if 0)
                 switch( (wxChar) href.GetChar( 2 ) )
                 {
-                case 'H': case 'W':
+                case 'L': case 'R':
                     AddNewSpouse( href.Mid(2) );
                     break;
                 case 'F': case 'M':
@@ -646,6 +646,10 @@ void TfpFrame::NewFile()
         if( recDb::CreateDb( path, flags ) == true )
         {
             SetDatabaseOpen( path );
+            // Kick start with an empty Family
+            recFamily fam(0);
+            fam.f_id = 1;
+            fam.Save();
             DisplayHtmPage( "F1" );
         }
     }
@@ -944,11 +948,11 @@ int TfpFrame::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )
 
 void TfpFrame::AddNewSpouse( const wxString& ref )
 {
-    idt indID;
-    ref.Mid( 1 ).ToLongLong( &indID );
-    Sex sex = ( ref.GetChar(0) == 'W' ) ? SEX_Female : SEX_Male;
+    idt famID;
+    ref.Mid( 1 ).ToLongLong( &famID );
+    Sex sex = ( ref.GetChar(0) == 'R' ) ? SEX_Female : SEX_Male;
     recDb::Begin();
-    if( tfpAddNewSpouse( indID, sex ) == true ) {
+    if( tfpCreateNewSpouse( famID, sex ) == true ) {
         recDb::Commit();
         RefreshHtmPage();
     } else {
