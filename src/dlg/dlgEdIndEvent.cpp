@@ -42,7 +42,6 @@
 dlgEditIndEvent::dlgEditIndEvent( wxWindow* parent )
     : fbDlgEditIndEvent( parent )
 {
-//    m_epa.Clear();
     m_event.Clear();
     m_date1.Clear();
     m_place.Clear();

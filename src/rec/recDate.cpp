@@ -189,18 +189,40 @@ idt recDate::Create( const wxString& str )
 
 bool recDate::SetDate( const wxString& str, CalendarScheme scheme )
 {
+    wxString lstr = str.Lower();
+    lstr.Trim(true);
+    lstr.Trim(false);
+    wxString s = lstr;
+    TypePrefix prefix = PREF_On;
+
+    if( lstr.StartsWith( "aft ", &s ) ) {
+        prefix = PREF_After;
+    } else if( lstr.EndsWith( " or aft", &s ) ) {
+        prefix = PREF_OrAfter;
+    } else if( lstr.StartsWith( "bef ", &s ) ) {
+        prefix = PREF_Before;
+    } else if( lstr.StartsWith( "not ", &s ) ) {
+        prefix = PREF_Not;
+    } else if( lstr.EndsWith( " or bef", &s ) ) {
+        prefix = PREF_OrBefore;
+    } else if( lstr.StartsWith( "abt ", &s ) ) {
+        prefix = PREF_About;
+    }
+
     long beg, end;
     if( scheme == CALENDAR_SCH_Unstated ) scheme = f_record_sch;
-    bool ret = calStrToJdnRange( beg, end, str, scheme );
+    bool ret = calStrToJdnRange( beg, end, s, scheme );
     if( ret == true )
     {
         f_jdn = beg;
         f_range = end - beg;
+        f_type = prefix;
         f_record_sch = scheme;
         f_descrip = wxEmptyString;
     } else {
         f_jdn = 0;
         f_range = 0;
+        f_type = PREF_On;
         f_record_sch = scheme;
         f_descrip = str;
     }
