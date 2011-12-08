@@ -49,6 +49,132 @@
 #include "dlgSelect.h"
 
 
+idt tfpAddNewIndividual( idt famID, Sex sex, const wxString& surname )
+{
+    const wxString savepoint = wxT("CreateNewInd");
+    idt indID = 0;
+    recDb::Savepoint( savepoint );
+
+    recFamily family(famID);
+    if( family.f_id == 0 ) {
+        family.Save();
+        famID = family.f_id;
+    }
+    wxASSERT( family.f_id != 0 );
+    idt* pIndID = ( sex == SEX_Female ) ? &family.f_wife_id : &family.f_husb_id;
+    if( *pIndID != 0 ) {
+        family.f_id = 0;
+        *pIndID = 0;
+        family.Save();
+        famID = family.f_id;
+    }
+
+    dlgCreateIndividual* dialog = new dlgCreateIndividual( NULL, famID );
+    dialog->SetSex( sex );
+    dialog->SetSurname( surname );
+
+    if( dialog->ShowModal() == wxID_OK ) {
+        indID = dialog->GetIndividualID();
+        *pIndID = indID;
+        family.Save();
+        recDb::ReleaseSavepoint( savepoint );
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+    return indID;
+}
+
+idt tfpAddNewChild( idt famID, Sex sex )
+{
+    const wxString savepoint = "AddNewChild";
+    recDb::Savepoint( savepoint );
+
+    // TODO: Allow for other naming systems
+    wxString surname;
+    recFamily family(famID);
+    idt parentID = family.f_husb_id;
+    if( parentID == 0 ) {
+        parentID = family.f_wife_id;
+    }
+    if( parentID ) {
+        surname = recIndividual::GetSurname( parentID );
+    }
+
+    idt indID = tfpAddNewIndividual( 0, sex, surname );
+    if( indID ) {
+        recFamilyIndividual fi(0);
+        fi.f_fam_id = famID;
+        fi.f_ind_id = indID;
+        fi.f_sequence = recFamily::GetChildNextSequence( famID );
+        fi.Save();
+        recDb::ReleaseSavepoint( savepoint );
+    } else {
+        recDb::Rollback( savepoint );
+    }
+
+    return indID;
+}
+
+bool tfpAddNewParent( idt indID, Sex sex )
+{
+    const wxString savepoint = wxT("AddNewParent");
+    bool ret = false;
+    recDb::Savepoint( savepoint );
+
+    idt famID = 0;
+    recFamilyList parents = recIndividual::GetParentList( indID );
+    if( parents.size() == 1 ) {
+        famID = parents[0].f_id;
+    } else if( parents.size() > 1 ) {
+        // TODO: Allow for multiple parents
+        wxASSERT( false );
+        return false;
+    }
+
+    wxString surname;
+    if( sex == SEX_Male ) {
+        surname = recIndividual::GetSurname( indID );
+    }
+
+    idt newIndID = tfpAddNewIndividual( famID, sex, surname );
+    if( newIndID ) {
+        recFamilyIndividual fi(0);
+        fi.f_fam_id = recIndividual::GetDefaultFamily( newIndID );
+        fi.f_ind_id = indID;
+        fi.Find();
+        if( fi.f_id == 0 ) {
+            fi.f_sequence = 1;
+            fi.Save();
+        }
+        recDb::ReleaseSavepoint( savepoint );
+        ret = true;
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    return ret;
+}
+
+bool tfpEditIndividual( idt indID  )
+{
+    const wxString savepoint = "EdInd";
+    bool ret = false;
+    dlgEditIndPersona* dialog = new dlgEditIndPersona( NULL, indID );
+    recDb::Savepoint( savepoint );
+
+    if( dialog->ShowModal() == wxID_OK ) {
+        recDb::ReleaseSavepoint( savepoint );
+        ret = true;
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+    return ret;
+}
+
+
+
+
 bool tfpEditFamily( idt famID )
 {
     const wxString savepoint = "EdFam";
@@ -68,41 +194,6 @@ bool tfpEditFamily( idt famID )
     return ret;
 }
 
-bool tfpEditIndividual( idt indID  )
-{
-    const wxString savepoint = "EdInd";
-    bool ret = false;
-    dlgEditIndPersona* dialog = new dlgEditIndPersona( NULL, indID );
-    recDb::Savepoint( savepoint );
-
-    if( dialog->ShowModal() == wxID_OK ) {
-        recDb::ReleaseSavepoint( savepoint );
-        ret = true;
-    } else {
-        recDb::Rollback( savepoint );
-    }
-    dialog->Destroy();
-    return ret;
-
-#if 0
-    const wxString savepoint = "EdInd";
-    bool ret = false;
-    dlgEditIndividual* dialog = new dlgEditIndividual( NULL );
-    recDb::Savepoint( savepoint );
-
-    dialog->SetIndividualID( indID );
-
-    if( dialog->ShowModal() == wxID_OK ) {
-        recDb::ReleaseSavepoint( savepoint );
-        ret = true;
-    } else {
-        recDb::Rollback( savepoint );
-    }
-    dialog->Destroy();
-    return ret;
-#endif
-}
-
 bool tfpEditReference( idt refID  )
 {
     const wxString savepoint = "EdRef";
@@ -120,200 +211,6 @@ bool tfpEditReference( idt refID  )
     }
     dialog->Destroy();
     return ret;
-}
-
-idt tfpAddIndividual( idt famID, Sex sex, const wxString& surname )
-{
-    const wxString savepoint = "AddInd";
-    idt ret = 0;
-    dlgEditIndividual* dialog = new dlgEditIndividual( NULL );
-    recDb::Savepoint( savepoint );
-
-    recIndividual ind;
-    ind.Clear();
-    ind.Save();
-
-    if( famID != 0 ) {
-        recFamily fam;
-        fam.f_id = famID;
-        fam.Read();
-        if( sex == SEX_Female ) {
-            fam.f_wife_id = ind.f_id;
-        } else {
-            fam.f_husb_id = ind.f_id;
-        }
-        fam.Save();
-    } // else let dialog create new Family record
-
-    dialog->SetIndividualID( ind.f_id );
-    dialog->SetFamilyID( famID );
-    dialog->SetSex( sex );
-    dialog->SetSurname( surname );
-
-    if( dialog->ShowModal() == wxID_OK ) {
-        recDb::ReleaseSavepoint( savepoint );
-        ret = ind.f_id;
-    } else {
-        recDb::Rollback( savepoint );
-    }
-    dialog->Destroy();
-    return ret;
-}
-
-
-
-bool tfpAddNewParent( idt indID, Sex sex )
-{
-    const wxString savepoint = wxT("AddNewParent");
-    bool ret = false;
-    recDb::Savepoint( savepoint );
-    dlgEditIndividual* dialog = new dlgEditIndividual( NULL );
-
-    recIndividual ind, parent;
-    ind.f_id = indID;
-    ind.Read();
-    parent.Clear();
-    parent.Save();
-    recFamily fam;
-    fam.ReadParents( indID );
-
-    if( sex == SEX_Female ) {  // Add Mother
-        wxASSERT( fam.f_wife_id == 0 );
-        fam.f_wife_id = parent.f_id;
-        dialog->SetSex( SEX_Female );
-    } else {                   // Add Father
-        wxASSERT( fam.f_husb_id == 0 );
-        fam.f_husb_id = parent.f_id;
-        dialog->SetSex( SEX_Male );
-        dialog->SetSurname( ind.f_surname );
-    }
-    fam.Save();
-    recFamilyIndividual fi;
-    fi.f_fam_id = fam.f_id;
-    fi.f_ind_id = indID;
-    fi.Find();
-    if( fi.f_id == 0 ) {
-        fi.f_sequence = 1;
-        fi.Save();
-    }
-
-    dialog->SetIndividualID( parent.f_id );
-    dialog->SetFamilyID( fam.f_id );
-
-    if( dialog->ShowModal() == wxID_OK ) {
-        recDb::ReleaseSavepoint( savepoint );
-        ret = true;
-    } else {
-        recDb::Rollback( savepoint );
-    }
-    dialog->Destroy();
-
-    return ret;
-}
-
-
-bool tfpCreateNewSpouse( idt famID, Sex sex )
-{
-    const wxString savepoint = wxT("CreateNewSpouse");
-    bool ret = false;
-    recDb::Savepoint( savepoint );
-
-    recFamily family(famID);
-    wxASSERT( family.f_id != 0 );
-    idt* pIndID = ( sex == SEX_Female ) ? &family.f_wife_id : &family.f_husb_id;
-    wxASSERT( *pIndID == 0 );
-
-    dlgCreateIndividual* dialog = new dlgCreateIndividual( NULL, famID );
-    dialog->SetSex( sex );
-
-    if( dialog->ShowModal() == wxID_OK ) {
-        *pIndID = dialog->GetIndividualID();
-        family.Save();
-        recDb::ReleaseSavepoint( savepoint );
-        ret = true;
-    } else {
-        recDb::Rollback( savepoint );
-    }
-    dialog->Destroy();
-    return ret;
-}
-
-
-bool tfpAddNewSpouse( idt indID, Sex sex )
-{
-    const wxString savepoint = wxT("AddNewSpouse");
-    bool ret = false;
-    recDb::Savepoint( savepoint );
-
-    recIndividual ind, spouse;
-    ind.f_id = indID;
-    ind.Read();
-    spouse.Clear();
-    spouse.Save();
-    recFamily fam;
-    fam.f_id = ind.f_fam_id;
-    fam.Read();
-    if( sex == SEX_Female ) {    // Add Wife
-        if( fam.f_wife_id != 0 ) { // More than one wife
-            fam.Clear();
-            fam.f_husb_id = ind.f_id;
-        }
-        spouse.f_sex = SEX_Female;
-        fam.f_wife_id = spouse.f_id;
-    } else {                     // Add Husb
-        if( fam.f_husb_id != 0 ) { // More than one Husb
-            fam.Clear();
-            fam.f_wife_id = ind.f_id;
-        }
-        spouse.f_sex = SEX_Male;
-        fam.f_husb_id = spouse.f_id;
-    }
-    fam.Save();
-    spouse.f_fam_id = fam.f_id;
-    spouse.Save();
-
-    dlgEditIndividual* dialog = new dlgEditIndividual( NULL );
-
-    dialog->SetIndividualID( spouse.f_id );
-
-    if( dialog->ShowModal() == wxID_OK ) {
-        recDb::ReleaseSavepoint( savepoint );
-        ret = true;
-    } else {
-        recDb::Rollback( savepoint );
-    }
-    dialog->Destroy();
-
-    return ret;
-}
-
-idt tfpAddNewChild( idt famID, Sex sex )
-{
-    const wxString savepoint = "AddNewChild";
-    idt indID = 0;
-    dlgEditIndividual* dialog = new dlgEditIndividual( NULL );
-    recDb::Savepoint( savepoint );
-
-    wxString surname;
-    recFamily fam;
-    fam.f_id = famID;
-    fam.Read();
-    surname = recIndividual::GetSurname( fam.f_husb_id );
-
-    indID = tfpAddIndividual( 0, sex, surname );
-    if( indID != 0 ) {
-        recFamilyIndividual fi;
-        fi.Clear();
-        fi.f_fam_id = famID;
-        fi.f_ind_id = indID;
-        fi.f_sequence = recFamily::GetChildNextSequence( famID );
-        fi.Save();
-        recDb::ReleaseSavepoint( savepoint );
-    } else {
-        recDb::Rollback( savepoint );
-    }
-
-    return indID;
 }
 
 bool tfpAddExistSpouse( idt indID, Sex sex )

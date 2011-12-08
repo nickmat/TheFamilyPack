@@ -32,14 +32,13 @@
 
 #include <rec/recDatabase.h>
 
-extern bool tfpEditFamily( idt famID );
-extern bool tfpEditIndividual( idt indID );
-extern bool tfpEditReference( idt refID  );
-extern idt tfpAddIndividual( idt famID, Sex sex, const wxString& surname = wxEmptyString );
-extern bool tfpAddNewParent( idt indID, Sex sex );
-extern bool tfpAddNewSpouse( idt indID, Sex sex );    // Obsolete, see tfpCreateNewSpouse
-extern bool tfpCreateNewSpouse( idt famID, Sex sex );
+extern idt tfpAddNewIndividual( idt famID, Sex sex, const wxString& surname = wxEmptyString );
 extern idt tfpAddNewChild( idt famID, Sex sex );
+extern bool tfpAddNewParent( idt indID, Sex sex );
+extern bool tfpEditIndividual( idt indID );
+
+extern bool tfpEditFamily( idt famID );
+extern bool tfpEditReference( idt refID  );
 extern bool tfpAddExistSpouse( idt indID, Sex sex );
 extern bool tfpAddExistChild( idt famID, Sex sex );
 extern idt tfpAddMarriageEvent( idt famID );

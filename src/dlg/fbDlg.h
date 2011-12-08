@@ -26,15 +26,15 @@ class tfpListCtrlIndividuals;
 #include <wx/statbox.h>
 #include <wx/statline.h>
 #include <wx/dialog.h>
-#include <wx/textctrl.h>
 #include <wx/choice.h>
+#include <wx/textctrl.h>
+#include <wx/radiobox.h>
 #include <wx/panel.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
 #include <wx/listctrl.h>
 #include <wx/notebook.h>
-#include <wx/radiobox.h>
 #include <wx/toolbar.h>
 #include <wx/splitter.h>
 
@@ -90,49 +90,6 @@ class fbDlgEditFamily : public wxDialog
 		
 		fbDlgEditFamily( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Family"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 414,354 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbDlgEditFamily();
-	
-};
-
-///////////////////////////////////////////////////////////////////////////////
-/// Class fbDlgEditIndividual
-///////////////////////////////////////////////////////////////////////////////
-class fbDlgEditIndividual : public wxDialog 
-{
-	private:
-	
-	protected:
-		enum
-		{
-			tfpID_EDIND_IND_ID = 1000,
-			tfpID_EDIND_GIVEN,
-			tfpID_EDIND_SEX,
-			tfpID_EDIND_SURNAME,
-			tfpID_EDIND_OCC,
-			tfpID_EDIND_EVENTS
-		};
-		
-		wxStaticText* m_staticText1;
-		wxStaticText* m_staticIndID;
-		wxNotebook* m_notebook1;
-		wxPanel* m_panel1;
-		wxStaticText* m_staticText40;
-		wxTextCtrl* m_textGiven;
-		wxStaticText* m_staticText41;
-		wxChoice* m_choiceSex;
-		wxStaticText* m_staticText42;
-		wxTextCtrl* m_textSurname;
-		wxStaticText* m_staticText43;
-		wxTextCtrl* m_textOccAttr;
-		wxPanel* m_panel3;
-		wxListCtrl* m_listCtrl;
-		wxStaticLine* m_staticline1;
-		wxButton* m_buttonSave;
-		wxButton* m_buttonCancel;
-	
-	public:
-		
-		fbDlgEditIndividual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Individual"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxSYSTEM_MENU ); 
-		~fbDlgEditIndividual();
 	
 };
 

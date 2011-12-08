@@ -76,6 +76,8 @@ public:
     void OnQuit( wxCommandEvent& event );
 
     void OnEditIndividual( wxCommandEvent& event );
+    void OnAddNewIndMale( wxCommandEvent& event );
+    void OnAddNewIndFemale( wxCommandEvent& event );
     void OnEditReference( wxCommandEvent& event );
 
     void OnFindFamilyID( wxCommandEvent& event );
@@ -136,7 +138,10 @@ enum
     tfpID_PRINT,
     tfpID_PREVIEW,
     tfpID_PAGE_SETUP,
+    tfpID_EDIT_IND_MENU,
     tfpID_EDIT_INDIVIDUAL,
+    tfpID_EDIT_IND_NEW_MALE,
+    tfpID_EDIT_IND_NEW_FEMALE,
     tfpID_EDIT_REFERENCE,
     tfpID_FIND_FAMILY_ID,
     tfpID_FIND_INDIVIDUAL_ID,

@@ -180,8 +180,7 @@ void dlgEditFamily::OnEditID( wxCommandEvent& event )
     case EDBUT_Husb:
         if( m_family.f_husb_id == 0 ) {
             // Add Husband
-            ret = tfpAddIndividual( m_family.f_id, SEX_Male );
-            m_family.f_husb_id = ret;
+            ret = tfpAddNewIndividual( m_family.f_id, SEX_Male );
         } else {
             // Edit Husband
             tfpEditIndividual( m_family.f_husb_id );
@@ -193,8 +192,7 @@ void dlgEditFamily::OnEditID( wxCommandEvent& event )
     case EDBUT_Wife:
         if( m_family.f_wife_id == 0 ) {
             // Add Wife
-            ret = tfpAddIndividual( m_family.f_id, SEX_Female );
-            m_family.f_wife_id = ret;
+            ret = tfpAddNewIndividual( m_family.f_id, SEX_Female );
         } else {
             // Edit Wife
             tfpEditIndividual( m_family.f_wife_id );

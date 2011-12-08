@@ -120,48 +120,4 @@ private:
     wxString           m_nameStr;
 };
 
-
-//============================================================================
-//                 Original dlgEditIndividual dialog
-//============================================================================
-
-
-class dlgEditIndividual : public fbDlgEditIndividual
-{
-    DECLARE_CLASS( dlgEditIndividual )
-    DECLARE_EVENT_TABLE()
-
-public:
-    dlgEditIndividual( wxWindow* parent );
-
-    void SetIndividualID( idt indID ) { m_individual.f_id = indID; }
-    void SetFamilyID( idt famID ) { m_fam_id = famID; }
-    void SetSex( Sex sex ) { m_sex = sex; }
-    void SetSurname( const wxString& name ) { m_surname = name; }
-    idt GetIndividualID() const { return m_individual.f_id; }
-    idt GetFamilyID() const { return m_fam_id; }
-
-private:
-    bool TransferDataToWindow();
-    bool TransferDataFromWindow();
-
-    void OnEventActivated( wxListEvent& event );
-
-    void UpdateEventDetails();
-
-    idt           m_fam_id;
-    Sex            m_sex;
-
-    recIndividual  m_individual;
-    recPersona     m_persona;
-    recName        m_name;
-    wxString       m_surname;
-    wxString       m_given;
- //   recAttribute   m_occAttr;
- //   recEvent       m_birthEvent;
- //   recEvent       m_nrbirthEvent;
- //   recEvent       m_deathEvent;
- //   recEvent       m_nrdeathEvent;
-};
-
 #endif // DLGEDINDIVIDUAL_H

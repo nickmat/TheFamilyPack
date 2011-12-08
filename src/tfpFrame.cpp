@@ -69,6 +69,8 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_PAGE_SETUP, TfpFrame::OnPageSetup )
     EVT_MENU( wxID_EXIT, TfpFrame::OnQuit )
     EVT_MENU( tfpID_EDIT_INDIVIDUAL, TfpFrame::OnEditIndividual )
+    EVT_MENU( tfpID_EDIT_IND_NEW_MALE, TfpFrame::OnAddNewIndMale )
+    EVT_MENU( tfpID_EDIT_IND_NEW_FEMALE, TfpFrame::OnAddNewIndFemale )
     EVT_MENU( tfpID_EDIT_REFERENCE, TfpFrame::OnEditReference )
     EVT_MENU( tfpID_FIND_FAMILY_ID, TfpFrame::OnFindFamilyID )
     EVT_MENU( tfpID_FIND_INDIVIDUAL_ID, TfpFrame::OnFindIndividualID )
@@ -120,8 +122,14 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     menuFile->AppendSeparator();
     menuFile->Append( wxID_EXIT, _("E&xit") );
 
+    wxMenu* menuEditInd = new wxMenu;
+    menuEditInd->Append( tfpID_EDIT_INDIVIDUAL, _("Existing &Individual..") );
+    menuEditInd->AppendSeparator();
+    menuEditInd->Append( tfpID_EDIT_IND_NEW_MALE, _("Add New &Male...") );
+    menuEditInd->Append( tfpID_EDIT_IND_NEW_FEMALE, _("Add New &Female...") );
+    
     wxMenu* menuEdit = new wxMenu;
-    menuEdit->Append( tfpID_EDIT_INDIVIDUAL, _("&Individual") );
+    menuEdit->Append( tfpID_EDIT_IND_MENU, _("&Individual"), menuEditInd );
     menuEdit->Append( tfpID_EDIT_REFERENCE, _("&Reference") );
 
     wxMenu* menuFind = new wxMenu;
@@ -297,11 +305,39 @@ void TfpFrame::OnQuit( wxCommandEvent& event )
  */
 void TfpFrame::OnEditIndividual( wxCommandEvent& event )
 {
-//    wxMessageBox( wxT("Not yet implimented"), wxT("OnEditIndividual") );
+    wxMessageBox( wxT("Not yet implimented"), wxT("OnEditIndividual") );
+}
+
+/*! \brief Called on a Add New Male Individual menu option event.
+ */
+void TfpFrame::OnAddNewIndMale( wxCommandEvent& event )
+{
     idt id = 0;
     recDb::Begin();
     try {
-        id = tfpAddIndividual( 0, SEX_Male );
+        id = tfpAddNewIndividual( 0, SEX_Male );
+        if( id != 0 ) {
+            recDb::Commit();
+            wxString str;
+            str << "FI" << id;
+            DisplayHtmPage( str );
+        } else {
+            recDb::Rollback();
+        }
+    } catch( wxSQLite3Exception& e ) {
+        recDb::ErrorMessage( e );
+        recDb::Rollback();
+    }
+}
+
+/*! \brief Called on a Add New Female Individual menu option event.
+ */
+void TfpFrame::OnAddNewIndFemale( wxCommandEvent& event )
+{
+    idt id = 0;
+    recDb::Begin();
+    try {
+        id = tfpAddNewIndividual( 0, SEX_Female );
         if( id != 0 ) {
             recDb::Commit();
             wxString str;
@@ -598,7 +634,8 @@ void TfpFrame::OnHtmCtxMenu( wxCommandEvent& event )
             break;
         case tfpID_HCTXMENU_EDIT_NEW_SPOUSE:
             sex = ( m_ctxmenuref.GetChar(0) == 'H' ) ? SEX_Female : SEX_Male;
-            ret = tfpAddNewSpouse( id, sex );
+            id = tfpAddNewIndividual( recIndividual::GetDefaultFamily( id ), sex );
+            if( id ) ret = true;
             break;
         case tfpID_HCTXMENU_EDIT_EXIST_SPOUSE:
             sex = ( m_ctxmenuref.GetChar(0) == 'H' ) ? SEX_Female : SEX_Male;
@@ -952,7 +989,7 @@ void TfpFrame::AddNewSpouse( const wxString& ref )
     ref.Mid( 1 ).ToLongLong( &famID );
     Sex sex = ( ref.GetChar(0) == 'R' ) ? SEX_Female : SEX_Male;
     recDb::Begin();
-    if( tfpCreateNewSpouse( famID, sex ) == true ) {
+    if( tfpAddNewIndividual( famID, sex ) != 0 ) {
         recDb::Commit();
         RefreshHtmPage();
     } else {
