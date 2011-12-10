@@ -130,7 +130,7 @@ static const char* createdb =  /* recCreate.sql */
  "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-6, -2, 0, 0, 'Present');\n"
  "INSERT INTO EventType (id, grp, name) VALUES(-3, 3, 'Marriage');\n"
  "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-7, -3, 1, 0, 'Groom');\n"
- "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-8, -3, 1, 0, 'Bride');\n"
+ "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-8, -3, 2, 0, 'Bride');\n"
  "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-9, -3, 0, 1, 'Officiator');\n"
  "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-10, -3, 0, 0, 'Witness');\n"
  "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-11, -3, 0, 0, 'Father of Groom');\n"
@@ -165,7 +165,7 @@ static const char* createdb =  /* recCreate.sql */
  "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-35, -8, 0, 0, 'Present');\n"
  "INSERT INTO EventType (id, grp, name) VALUES(-9, 7, 'Divorce');\n"
  "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-36, -9, 1, 0, 'Husband');\n"
- "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-37, -9, 1, 0, 'Wife');\n"
+ "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-37, -9, 2, 0, 'Wife');\n"
  "INSERT INTO EventType (id, grp, name) VALUES(-10, 7, 'Emigration');\n"
  "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-38, -10, 1, 0, 'Emigrant');\n"
  "INSERT INTO EventType (id, grp, name) VALUES(-11, 7, 'Immigration');\n"
@@ -329,7 +329,7 @@ static const char* createdb =  /* recCreate.sql */
  "  revision INTEGER,\n"
  "  test INTEGER\n"
  ");\n"
- "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 6);\n"
+ "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 7);\n"
  "COMMIT;\n";
 
 /* End of recSql.f2c */

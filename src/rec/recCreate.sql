@@ -148,7 +148,7 @@ INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-6, -2, 0,
 
 INSERT INTO EventType (id, grp, name) VALUES(-3, 3, 'Marriage');
 INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-7, -3, 1, 0, 'Groom');
-INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-8, -3, 1, 0, 'Bride');
+INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-8, -3, 2, 0, 'Bride');
 INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-9, -3, 0, 1, 'Officiator');
 INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-10, -3, 0, 0, 'Witness');
 INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-11, -3, 0, 0, 'Father of Groom');
@@ -189,7 +189,7 @@ INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-35, -8, 0
 
 INSERT INTO EventType (id, grp, name) VALUES(-9, 7, 'Divorce');
 INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-36, -9, 1, 0, 'Husband');
-INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-37, -9, 1, 0, 'Wife');
+INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-37, -9, 2, 0, 'Wife');
 
 INSERT INTO EventType (id, grp, name) VALUES(-10, 7, 'Emigration');
 INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-38, -10, 1, 0, 'Emigrant');
@@ -387,7 +387,7 @@ CREATE TABLE Version (
 );
 
 /* The Version table has only this one row */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 6);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 7);
 
 COMMIT;
 

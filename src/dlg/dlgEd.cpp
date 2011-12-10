@@ -38,6 +38,7 @@
 #endif
 
 #include <rec/recIndividual.h>
+#include <rec/recLink.h>
 
 #include "dlgEd.h"
 #include "dlgEdFamily.h"
@@ -47,6 +48,7 @@
 #include "dlgSelEvent.h"
 #include "dlgEdReference.h"
 #include "dlgSelect.h"
+#include "dlgEdIndEvent.h"
 
 
 idt tfpAddNewIndividual( idt famID, Sex sex, const wxString& surname )
@@ -328,10 +330,65 @@ idt tfpGetExistingMarriageEvent( idt famID )
     return eventID;
 }
 
-idt tfpAddMarriageEvent( idt famID )
+idt tfpAddMarriageEvent( const recFamily& family )
 {
-    wxMessageBox( wxT("NYI Add Marriage Event"), wxT("tfpAddMarriageEvent") );
-    return 0;
+//    wxMessageBox( wxT("NYI Add Marriage Event"), wxT("tfpAddMarriageEvent") );
+    idt eventID = 0;
+
+    const wxString savepoint = "AddFamEvent";
+    recDb::Savepoint( savepoint );
+
+    idt typeID = recEventType::Select( recEventType::SF_Family );
+    if( typeID == 0 ) {
+        recDb::Rollback( savepoint );
+        return 0;
+    }
+    idt husbRoleID = recEventTypeRole::Select( typeID, recEventTypeRole::SF_Prime1 );
+    if( husbRoleID == 0 ) {
+        recDb::Rollback( savepoint );
+        return 0;
+    }
+    idt wifeRoleID = recEventTypeRole::Select( typeID, recEventTypeRole::SF_Prime2 );
+    if( wifeRoleID == 0 ) {
+        recDb::Rollback( savepoint );
+        return 0;
+    }
+
+    dlgEditIndEvent* dialog = new dlgEditIndEvent( NULL );
+    dialog->SetEventType( typeID );
+    dialog->SetEventTitle( wxString::Format( 
+        _("%s of %s and %s"), 
+        recEventType::GetTypeStr( typeID ), 
+        recIndividual::GetFullName( family.f_husb_id ),
+        recIndividual::GetFullName( family.f_wife_id )
+    ) );
+
+    if( dialog->ShowModal() == wxID_OK )
+    {
+        eventID = dialog->GetEventID();
+        recLinkEvent le(0);
+        le.f_ind_event_id = eventID;
+        le.Save();
+        recEventPersona ep(0);
+        ep.f_event_id = eventID;
+        ep.f_sequence = recEvent::GetDatePoint( eventID );
+        if( family.f_husb_id ) {
+            ep.f_per_id = recIndividual::GetPersona( family.f_husb_id );
+            ep.f_role_id = husbRoleID;
+            ep.Save();
+        }
+        if( family.f_wife_id ) {
+            ep.f_id = 0;
+            ep.f_per_id = recIndividual::GetPersona( family.f_wife_id );
+            ep.f_role_id = wifeRoleID;
+            ep.Save();
+        }
+        recDb::ReleaseSavepoint( savepoint );
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+    return eventID;
 }
 
 idt tfpPickIndividual( Sex sex )

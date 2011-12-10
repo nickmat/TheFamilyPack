@@ -22,19 +22,19 @@ class tfpListCtrlIndividuals;
 #include <wx/settings.h>
 #include <wx/sizer.h>
 #include <wx/button.h>
-#include <wx/listbox.h>
-#include <wx/statbox.h>
-#include <wx/statline.h>
-#include <wx/dialog.h>
-#include <wx/choice.h>
-#include <wx/textctrl.h>
-#include <wx/radiobox.h>
 #include <wx/panel.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
+#include <wx/listbox.h>
 #include <wx/listctrl.h>
 #include <wx/notebook.h>
+#include <wx/statline.h>
+#include <wx/dialog.h>
+#include <wx/statbox.h>
+#include <wx/choice.h>
+#include <wx/textctrl.h>
+#include <wx/radiobox.h>
 #include <wx/toolbar.h>
 #include <wx/splitter.h>
 
@@ -44,6 +44,65 @@ class tfpListCtrlIndividuals;
 /// Class fbDlgEditFamily
 ///////////////////////////////////////////////////////////////////////////////
 class fbDlgEditFamily : public wxDialog 
+{
+	private:
+	
+	protected:
+		wxStaticText* m_staticNames;
+		wxStaticText* m_staticFamID;
+		wxNotebook* m_notebook5;
+		wxPanel* m_panel17;
+		wxButton* m_buttonHusb;
+		wxStaticText* m_staticHusbName;
+		wxButton* m_buttonWife;
+		wxStaticText* m_staticWifeName;
+		wxButton* m_buttonMarr;
+		wxStaticText* m_staticMarrEvent;
+		wxPanel* m_panel211;
+		wxListBox* m_listChild;
+		wxButton* m_buttonAdd;
+		wxButton* m_buttonEdit;
+		wxButton* m_buttonDel;
+		wxButton* m_buttonUp;
+		wxButton* m_button1Dn;
+		wxPanel* m_panel21;
+		wxListCtrl* m_listEvent;
+		wxButton* m_buttonEventAdd;
+		wxButton* m_buttonEventEdit;
+		wxButton* m_buttonEventDel;
+		wxButton* m_buttonEventUp;
+		wxButton* m_buttonEventDn;
+		wxStaticLine* m_staticline1;
+		wxButton* m_buttonSave;
+		wxButton* m_buttonCancel;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnHusbButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnWifeButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnMarriageButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnChildAddButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnChildEditButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnChildDeleteButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnChildUpButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnChildDownButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEventAddButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEventEditButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEventDeleteButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEventUpButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEventDownButton( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		fbDlgEditFamily( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Family"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
+		~fbDlgEditFamily();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class fbDlgEditFamily1
+///////////////////////////////////////////////////////////////////////////////
+class fbDlgEditFamily1 : public wxDialog 
 {
 	private:
 	
@@ -88,8 +147,8 @@ class fbDlgEditFamily : public wxDialog
 	
 	public:
 		
-		fbDlgEditFamily( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Family"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 414,354 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
-		~fbDlgEditFamily();
+		fbDlgEditFamily1( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Family"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 414,354 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
+		~fbDlgEditFamily1();
 	
 };
 

@@ -47,26 +47,16 @@
 IMPLEMENT_CLASS( dlgEditFamily, wxDialog )
 
 BEGIN_EVENT_TABLE( dlgEditFamily, wxDialog )
-    EVT_BUTTON( tfpID_EDFAM_HUSB_BUT, dlgEditFamily::OnHusbButton )
-    EVT_BUTTON( tfpID_EDFAM_WIFE_BUT, dlgEditFamily::OnWifeButton )
-    EVT_BUTTON( tfpID_EDFAM_MARR_BUT, dlgEditFamily::OnMarriageButton )
-
     EVT_MENU( tfpID_DLGEDFAM_EDIT, dlgEditFamily::OnEditID )
     EVT_MENU( tfpID_DLGEDFAM_REMOVE, dlgEditFamily::OnRemoveID )
     EVT_MENU( tfpID_DLGEDFAM_DELETE, dlgEditFamily::OnDeleteID )
     EVT_MENU( tfpID_DLGEDFAM_ADDNEW, dlgEditFamily::OnEditID )
     EVT_MENU( tfpID_DLGEDFAM_ADDEXIST, dlgEditFamily::OnAddExistID )
 
-    EVT_BUTTON( tfpID_EDFAM_ADD,  dlgEditFamily::OnAddChildButton )
     EVT_MENU( tfpID_DLGEDFAM_ADDNEWSON, dlgEditFamily::OnAddChild )
     EVT_MENU( tfpID_DLGEDFAM_ADDNEWDAUR, dlgEditFamily::OnAddChild )
     EVT_MENU( tfpID_DLGEDFAM_ADDEXISTSON, dlgEditFamily::OnAddChild )
     EVT_MENU( tfpID_DLGEDFAM_ADDEXISTDAUR, dlgEditFamily::OnAddChild )
-
-    EVT_BUTTON( tfpID_EDFAM_EDIT, dlgEditFamily::OnEditButton )
-    EVT_BUTTON( tfpID_EDFAM_DELETE,  dlgEditFamily::OnDeleteButton )
-    EVT_BUTTON( tfpID_EDFAM_UP,   dlgEditFamily::OnUpButton )
-    EVT_BUTTON( tfpID_EDFAM_DOWN, dlgEditFamily::OnDownButton )
 END_EVENT_TABLE()
 
 dlgEditFamily::dlgEditFamily( wxWindow* parent ) : fbDlgEditFamily( parent )
@@ -181,6 +171,9 @@ void dlgEditFamily::OnEditID( wxCommandEvent& event )
         if( m_family.f_husb_id == 0 ) {
             // Add Husband
             ret = tfpAddNewIndividual( m_family.f_id, SEX_Male );
+            if( ret ) {
+                m_family.f_husb_id = ret;
+            }
         } else {
             // Edit Husband
             tfpEditIndividual( m_family.f_husb_id );
@@ -193,6 +186,9 @@ void dlgEditFamily::OnEditID( wxCommandEvent& event )
         if( m_family.f_wife_id == 0 ) {
             // Add Wife
             ret = tfpAddNewIndividual( m_family.f_id, SEX_Female );
+            if( ret ) {
+                m_family.f_wife_id = ret;
+            }
         } else {
             // Edit Wife
             tfpEditIndividual( m_family.f_wife_id );
@@ -306,8 +302,42 @@ void dlgEditFamily::OnAddExistID( wxCommandEvent& event )
     }
 }
 
+bool dlgEditFamily::EditEvent( idt* pEventID )
+{
+    const wxString savepoint = "EdFamEvent";
+    bool ret = false;
+    dlgEditFamEvent* dialog = new dlgEditFamEvent(
+        NULL, m_family.GetMarriageEvent(), recEventType::ETYPE_Grp_Union
+    );
+    recDb::Savepoint( savepoint );
 
-void dlgEditFamily::OnAddChildButton( wxCommandEvent& event )
+    if( dialog->ShowModal() == wxID_OK ) {
+        recDb::ReleaseSavepoint( savepoint );
+        ret = true;
+        *pEventID = dialog->GetEventID();
+        recEventPersona pe(0);
+        pe.f_per_id = m_family.f_husb_id;
+        pe.f_event_id = dialog->GetEventID();
+        pe.f_role_id = recEventTypeRole::ROLE_Marriage_Groom;
+        if( pe.LinkExists() == false ) {
+            pe.Save();
+        }
+        pe.Clear();
+        pe.f_per_id = m_family.f_wife_id;
+        pe.f_event_id = dialog->GetEventID();
+        pe.f_role_id = recEventTypeRole::ROLE_Marriage_Bride;
+        if( pe.LinkExists() == false ) {
+            pe.Save();
+        }
+    } else {
+        recDb::Rollback( savepoint );
+        *pEventID = m_family.GetMarriageEvent();
+    }
+    dialog->Destroy();
+    return ret;
+}
+
+void dlgEditFamily::OnChildAddButton( wxCommandEvent& event )
 {
     wxMenu* menu = new wxMenu;
 
@@ -351,19 +381,19 @@ void dlgEditFamily::OnAddChild( wxCommandEvent& event )
     }
 }
 
-void dlgEditFamily::OnEditButton( wxCommandEvent& event )
+void dlgEditFamily::OnChildEditButton( wxCommandEvent& event )
 {
     // TODO:
     wxMessageBox( wxT("Not yet implimented"), wxT("OnEditButton") );
 }
 
-void dlgEditFamily::OnDeleteButton( wxCommandEvent& event )
+void dlgEditFamily::OnChildDeleteButton( wxCommandEvent& event )
 {
     // TODO:
     wxMessageBox( wxT("Not yet implimented"), wxT("OnDeleteButton") );
 }
 
-void dlgEditFamily::OnUpButton( wxCommandEvent& event )
+void dlgEditFamily::OnChildUpButton( wxCommandEvent& event )
 {
     int item = m_listChild->GetSelection();
     if( item == wxNOT_FOUND || item == 0 ) {
@@ -381,7 +411,7 @@ void dlgEditFamily::OnUpButton( wxCommandEvent& event )
     m_listChild->SetSelection( item - 1 );
 }
 
-void dlgEditFamily::OnDownButton( wxCommandEvent& event )
+void dlgEditFamily::OnChildDownButton( wxCommandEvent& event )
 {
     int item = m_listChild->GetSelection();
     if( item == wxNOT_FOUND || item == m_listChild->GetCount() - 1 ) {
@@ -400,40 +430,36 @@ void dlgEditFamily::OnDownButton( wxCommandEvent& event )
 }
 
 
-bool dlgEditFamily::EditEvent( idt* pEventID )
+void dlgEditFamily::OnEventAddButton( wxCommandEvent& event )
 {
-    const wxString savepoint = "EdFamEvent";
-    bool ret = false;
-    dlgEditFamEvent* dialog = new dlgEditFamEvent(
-        NULL, m_family.GetMarriageEvent(), recEventType::ETYPE_Grp_Union
-    );
-    recDb::Savepoint( savepoint );
-
-    if( dialog->ShowModal() == wxID_OK ) {
-        recDb::ReleaseSavepoint( savepoint );
-        ret = true;
-        *pEventID = dialog->GetEventID();
-        recEventPersona pe(0);
-        pe.f_per_id = m_family.f_husb_id;
-        pe.f_event_id = dialog->GetEventID();
-        pe.f_role_id = recEventTypeRole::ROLE_Marriage_Groom;
-        if( pe.LinkExists() == false ) {
-            pe.Save();
-        }
-        pe.Clear();
-        pe.f_per_id = m_family.f_wife_id;
-        pe.f_event_id = dialog->GetEventID();
-        pe.f_role_id = recEventTypeRole::ROLE_Marriage_Bride;
-        if( pe.LinkExists() == false ) {
-            pe.Save();
-        }
-    } else {
-        recDb::Rollback( savepoint );
-        *pEventID = m_family.GetMarriageEvent();
-    }
-    dialog->Destroy();
-    return ret;
+    // TODO:
+    wxMessageBox( wxT("Not yet implimented"), wxT("OnEventAddButton") );
 }
+
+void dlgEditFamily::OnEventEditButton( wxCommandEvent& event )
+{
+    // TODO:
+    wxMessageBox( wxT("Not yet implimented"), wxT("OnEventEditButton") );
+}
+
+void dlgEditFamily::OnEventDeleteButton( wxCommandEvent& event )
+{
+    // TODO:
+    wxMessageBox( wxT("Not yet implimented"), wxT("OnEventDeleteButton") );
+}
+
+void dlgEditFamily::OnEventUpButton( wxCommandEvent& event )
+{
+    // TODO:
+    wxMessageBox( wxT("Not yet implimented"), wxT("OnEventUpButton") );
+}
+
+void dlgEditFamily::OnEventDownButton( wxCommandEvent& event )
+{
+    // TODO:
+    wxMessageBox( wxT("Not yet implimented"), wxT("OnEventDownButton") );
+}
+
 
 
 // End of dlgEdFamily.cpp

@@ -72,15 +72,21 @@ private:
     void OnDeleteID( wxCommandEvent& event );
     void OnAddExistID( wxCommandEvent& event );
 
-    void OnAddChildButton( wxCommandEvent& event );
+    bool EditEvent( idt* pEventID );
+
+    void OnChildAddButton( wxCommandEvent& event );
     void OnAddChild( wxCommandEvent& event );
 
-    void OnEditButton( wxCommandEvent& event );
-    void OnDeleteButton( wxCommandEvent& event );
-    void OnUpButton( wxCommandEvent& event );
-    void OnDownButton( wxCommandEvent& event );
+    void OnChildEditButton( wxCommandEvent& event );
+    void OnChildDeleteButton( wxCommandEvent& event );
+    void OnChildUpButton( wxCommandEvent& event );
+    void OnChildDownButton( wxCommandEvent& event );
 
-    bool EditEvent( idt* pEventID );
+    void OnEventAddButton( wxCommandEvent& event );
+	void OnEventEditButton( wxCommandEvent& event );
+	void OnEventDeleteButton( wxCommandEvent& event );
+	void OnEventUpButton( wxCommandEvent& event );
+	void OnEventDownButton( wxCommandEvent& event );
 
     idt           m_child;
     EDBUT_Type     m_editbutton;

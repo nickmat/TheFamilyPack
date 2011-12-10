@@ -438,8 +438,8 @@ recEventTypeVec recEventType::ReadAllFamily()
     wxSQLite3Table table = s_db->GetTable(
         "SELECT T.id AS type_id, T.grp AS grp, T.name AS type "
         "FROM EventType T, EventTypeRole R "
-        "WHERE T.id=R.type_id AND R.prime=1 "
-        "GROUP BY T.id HAVING COUNT(T.id)=2 "
+        "WHERE T.id=R.type_id AND R.prime=2 "
+        "GROUP BY T.id HAVING COUNT(T.id)=1 "
         "ORDER BY T.id DESC;"
     );
 
@@ -470,7 +470,7 @@ idt recEventType::Select( SelectFilter sf )
         vec = recEventType::ReadAllIndividual();
         break;
     case SF_Family:
-        vec = recEventType::ReadAll();
+        vec = recEventType::ReadAllFamily();
         break;
     default:
         return 0;
@@ -482,6 +482,7 @@ idt recEventType::Select( SelectFilter sf )
         list.Add( vec[i].f_name );
     }
 
+    if( vec.size() == 0 ) return 0;
     int index = wxGetSingleChoiceIndex( wxEmptyString, _("Select Event Type"), list );
     if( index < 0 ) return 0;
     return vec[index].f_id;
@@ -511,17 +512,25 @@ recEventTypeRoleVec recEventType::GetRoles( idt typeID )
     return vec;
 }
 
-recEventTypeRoleVec recEventType::GetPrimeRoles( idt typeID )
+recEventTypeRoleVec recEventType::GetPrimeRoles( idt typeID, int prime )
 {
     recEventTypeRole record;
     recEventTypeRoleVec vec;
     wxSQLite3StatementBuffer sql;
 
-    sql.Format(
-        "SELECT id, name FROM EventTypeRole "
-        "WHERE type_id="ID" AND prime=1 ORDER BY id DESC;",
-        typeID
-    );
+    if( prime == 0 ) {
+        sql.Format(
+            "SELECT id, name FROM EventTypeRole "
+            "WHERE type_id="ID" AND (prime=1 OR prime=2) ORDER BY id DESC;",
+            typeID
+        );
+    } else {
+        sql.Format(
+            "SELECT id, name FROM EventTypeRole "
+            "WHERE type_id="ID" AND prime=%d ORDER BY id DESC;",
+            typeID, prime
+        );
+    }
     wxSQLite3Table table = s_db->GetTable( sql );
 
     record.f_type_id = typeID;
@@ -569,7 +578,7 @@ void recEventTypeRole::Save()
         sql.Format(
             "INSERT INTO EventTypeRole (type_id, prime, official, name) "
             "VALUES ("ID", %d, %d, '%q');",
-            f_type_id, BOOL_(f_prime), BOOL_(f_official), UTF8_(f_name)
+            f_type_id, f_prime, BOOL_(f_official), UTF8_(f_name)
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -581,7 +590,7 @@ void recEventTypeRole::Save()
             sql.Format(
                 "INSERT INTO EventTypeRole (id, type_id, prime, official, name) "
                 "VALUES ("ID", "ID", %d, %d, '%q');",
-                f_id, f_type_id, BOOL_(f_prime), BOOL_(f_official), UTF8_(f_name)
+                f_id, f_type_id, f_prime, BOOL_(f_official), UTF8_(f_name)
             );
         } else {
             // Update existing record
@@ -589,7 +598,7 @@ void recEventTypeRole::Save()
                 "UPDATE EventTypeRole "
                 "SET type_id="ID", prime=%d, official=%d, name='%q' "
                 "WHERE id="ID";",
-                f_type_id, BOOL_(f_prime), BOOL_(f_official), UTF8_(f_name), f_id
+                f_type_id, f_prime, BOOL_(f_official), UTF8_(f_name), f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -620,7 +629,7 @@ bool recEventTypeRole::Read()
     }
     result.SetRow( 0 );
     f_type_id = GET_ID( result.GetInt64( 0 ) );
-    f_prime = result.GetBool( 1 );
+    f_prime = result.GetInt( 1 );
     f_official = result.GetBool( 2 );
     f_name = result.GetAsString( 3 );
     return true;
@@ -648,6 +657,12 @@ idt recEventTypeRole::Select( idt typeID, SelectFilter sf )
         break;
     case SF_Prime:
         vec = recEventType::GetPrimeRoles( typeID );
+        break;
+    case SF_Prime1:
+        vec = recEventType::GetPrimeRoles( typeID, 1 );
+        break;
+    case SF_Prime2:
+        vec = recEventType::GetPrimeRoles( typeID, 2 );
         break;
     default:
         return 0;

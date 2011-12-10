@@ -46,8 +46,8 @@
 const int recVerMajor    = 0;
 const int recVerMinor    = 0;
 const int recVerRev      = 9;
-const int recVerTest     = 6;
-const wxStringCharType* recVerStr = wxS("0.0.9.6");
+const int recVerTest     = 7;
+const wxStringCharType* recVerStr = wxS("0.0.9.7");
 
 
 recVersion::recVersion( const recVersion& v )
@@ -397,6 +397,24 @@ static void UpgradeTest0_0_9_5to0_0_9_6()
     recDb::Commit();
 }
 
+static void UpgradeTest0_0_9_6to0_0_9_7()
+{
+    recDb::Begin();
+
+    recEventTypeRole role(0);
+    role.f_id = -8; // Bride at Marriage
+    role.Read();
+    role.f_prime = 2;
+    role.Save();
+    role.f_id = -37; // Wife at Divorce
+    role.Read();
+    role.f_prime = 2;
+    role.Save();
+
+    recVersion::Set( 0, 0, 9, 7 );
+    recDb::Commit();
+}
+
 static void UpgradeRev0_0_9toCurrent( int test )
 {
     switch( test )
@@ -413,6 +431,8 @@ static void UpgradeRev0_0_9toCurrent( int test )
         UpgradeTest0_0_9_4to0_0_9_5();
     case 5:
         UpgradeTest0_0_9_5to0_0_9_6();
+    case 6:
+        UpgradeTest0_0_9_6to0_0_9_7();
     }
 }
 

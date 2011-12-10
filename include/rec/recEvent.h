@@ -180,7 +180,7 @@ public:
     static recEventTypeVec ReadAllFamily();
     static idt Select( SelectFilter sf = SF_All );
     static recEventTypeRoleVec GetRoles( idt typeID );
-    static recEventTypeRoleVec GetPrimeRoles( idt typeID );
+    static recEventTypeRoleVec GetPrimeRoles( idt typeID, int prime = 0 );
 };
 
 inline bool recEquivalent( const recEventType& r1, const recEventType& r2 )
@@ -225,11 +225,13 @@ public:
     };
     enum SelectFilter {
         SF_All,
-        SF_Prime
+        SF_Prime,
+        SF_Prime1,
+        SF_Prime2
     };
 
     idt       f_type_id;
-    bool      f_prime;
+    int       f_prime;
     bool      f_official;
     wxString  f_name;
 

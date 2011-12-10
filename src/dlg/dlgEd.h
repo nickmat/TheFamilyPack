@@ -32,6 +32,8 @@
 
 #include <rec/recDatabase.h>
 
+class recFamily;
+
 extern idt tfpAddNewIndividual( idt famID, Sex sex, const wxString& surname = wxEmptyString );
 extern idt tfpAddNewChild( idt famID, Sex sex );
 extern bool tfpAddNewParent( idt indID, Sex sex );
@@ -41,7 +43,7 @@ extern bool tfpEditFamily( idt famID );
 extern bool tfpEditReference( idt refID  );
 extern bool tfpAddExistSpouse( idt indID, Sex sex );
 extern bool tfpAddExistChild( idt famID, Sex sex );
-extern idt tfpAddMarriageEvent( idt famID );
+extern idt tfpAddMarriageEvent( const recFamily& family );
 extern idt tfpGetExistingMarriageEvent( idt famID );
 
 extern idt tfpPickIndividual( Sex sex = SEX_Unstated );

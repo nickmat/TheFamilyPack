@@ -339,7 +339,7 @@ idt recPersona::FindCommonEvent( idt perID, recEventType::ETYPE_Grp grp, idt sec
         "(SELECT R.id AS rid FROM EventTypeRole R "
         "  INNER JOIN "
         "  EventType T ON R.type_id=T.id "
-        "  WHERE T.grp=%d AND R.prime=1) "
+        "  WHERE T.grp=%d AND (R.prime=1 OR R.prime=2)) "
         "ON rid=EP.role_id WHERE EP.per_id="ID" "
         "ORDER BY EP.sequence;",
         grp, perID
@@ -351,7 +351,7 @@ idt recPersona::FindCommonEvent( idt perID, recEventType::ETYPE_Grp grp, idt sec
         "(SELECT R.id AS rid FROM EventTypeRole R "
         "  INNER JOIN "
         "  EventType T ON R.type_id=T.id "
-        "  WHERE T.grp=%d AND R.prime=1) "
+        "  WHERE T.grp=%d AND (R.prime=1 OR R.prime=2)) "
         "ON rid=EP.role_id WHERE EP.per_id="ID" "
         "ORDER BY EP.sequence;",
         grp, secID
