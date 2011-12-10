@@ -1,0 +1,11 @@
+The following pages need quotes
+
+db/admin/admin.htm      Administration subsection
+db/admin/version.htm    Version
+db/admin/contact.htm    Contact
+db/evid/evidence.htm    Evidence subsection
+db/evid/sources.htm     Sources
+db/conc/conclsions.htm  Conclusions
+db/conc/places.htm      Places
+map.htm                 Site map
+
