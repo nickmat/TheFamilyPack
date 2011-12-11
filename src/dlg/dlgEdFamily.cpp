@@ -201,6 +201,10 @@ void dlgEditFamily::OnEditID( wxCommandEvent& event )
         if( m_family.GetMarriageEvent() == 0 ) {
             // Add marriage
             ret = tfpAddMarriageEvent( m_family.f_id );
+            if( ret ) {
+                wxString str = recEvent::GetDetailStr( m_family.GetMarriageEvent() );
+                m_staticMarrEvent->SetLabel( str  );
+            }
         } else {
             // Edit marriage
             //wxMessageBox( wxT("NYI Edit Marriage"), wxT("OnEditID") );
@@ -312,7 +316,6 @@ bool dlgEditFamily::EditEvent( idt* pEventID )
     recDb::Savepoint( savepoint );
 
     if( dialog->ShowModal() == wxID_OK ) {
-        recDb::ReleaseSavepoint( savepoint );
         ret = true;
         *pEventID = dialog->GetEventID();
         recEventPersona pe(0);
@@ -329,6 +332,7 @@ bool dlgEditFamily::EditEvent( idt* pEventID )
         if( pe.LinkExists() == false ) {
             pe.Save();
         }
+        recDb::ReleaseSavepoint( savepoint );
     } else {
         recDb::Rollback( savepoint );
         *pEventID = m_family.GetMarriageEvent();
