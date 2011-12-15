@@ -211,7 +211,9 @@ public:
     enum Role {  // predefined entries, only given if reqired by the program
         ROLE_Unstated               = 0,
         ROLE_Birth_Born             = -1,
+        ROLE_Birth_Mother           = -2,
         ROLE_Baptism_Baptised       = -21,
+        ROLE_Baptism_Parent         = -22,
         ROLE_Census_Listed          = -32,
         ROLE_Death_Died             = -5,
         ROLE_Burial_Deceased        = -26,
@@ -278,7 +280,7 @@ public:
     idt      f_per_id;
     idt      f_role_id;
     wxString f_note;
-    int      f_sequence;
+    long     f_sequence;
 
     recEventPersona() {}
     recEventPersona( idt id ) : recDb(id) { Read(); }

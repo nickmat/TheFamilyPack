@@ -227,7 +227,7 @@ void recReferenceEntity::Save()
         sql.Format(
             "INSERT INTO ReferenceEntity "
             "(ref_id, entity_type, entity_id, sequence)"
-            "VALUES ("ID", %u, "ID", %u);",
+            "VALUES ("ID", %u, "ID", %d);",
             f_ref_id, f_entity_type, f_entity_id, f_sequence
         );
         s_db->ExecuteUpdate( sql );
@@ -240,14 +240,14 @@ void recReferenceEntity::Save()
             sql.Format(
                 "INSERT INTO ReferenceEntity "
                 "(id, ref_id, entity_type, entity_id, sequence)"
-                "VALUES ("ID", "ID", %u, "ID", %u);",
+                "VALUES ("ID", "ID", %u, "ID", %d);",
                 f_id, f_ref_id, f_entity_type, f_entity_id, f_sequence
             );
         } else {
             // Update existing record
             sql.Format(
                 "UPDATE ReferenceEntity SET "
-                "ref_id="ID", entity_type=%u, entity_id="ID", sequence=%u "
+                "ref_id="ID", entity_type=%u, entity_id="ID", sequence=%d "
                 "WHERE id="ID";",
                 f_ref_id, f_entity_type, f_entity_id, f_sequence, f_id
             );
@@ -282,11 +282,11 @@ bool recReferenceEntity::Read()
     f_ref_id      = GET_ID( result.GetInt64( 0 ) );
     f_entity_type = (Type) result.GetInt( 1 );
     f_entity_id   = GET_ID( result.GetInt64( 2 ) );
-    f_sequence    = (unsigned) result.GetInt( 3 );
+    f_sequence    = result.GetInt( 3 );
     return true;
 }
 
-void recReferenceEntity::Create( idt refID, Type type, idt entID, unsigned* pseq )
+void recReferenceEntity::Create( idt refID, Type type, idt entID, int* pseq )
 {
     recReferenceEntity re;
     re.f_id = 0;

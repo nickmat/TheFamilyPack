@@ -98,7 +98,7 @@ public:
     idt      f_ref_id;
     Type     f_entity_type;
     idt      f_entity_id;
-    unsigned f_sequence;
+    int      f_sequence;
 
     recReferenceEntity() {}
     recReferenceEntity( idt id ) : recDb(id) { Read(); }
@@ -109,7 +109,7 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "ReferenceEntity" );
 
-    static void Create( idt refID, Type type, idt entID, unsigned* pseq );
+    static void Create( idt refID, Type type, idt entID, int* pseq );
 
     wxString GetTypeStr() { return sm_typeStr[f_entity_type]; }
     static wxString GetTypeStr( Type etype ) { return sm_typeStr[etype]; }

@@ -715,7 +715,7 @@ void recEventPersona::Save()
         // Add new record
         sql.Format(
             "INSERT INTO EventPersona (event_id, per_id, role_id, note, sequence) "
-            "VALUES ("ID", "ID", "ID", '%q', %d);",
+            "VALUES ("ID", "ID", "ID", '%q', %ld);",
             f_event_id, f_per_id, f_role_id, UTF8_(f_note), f_sequence
         );
         s_db->ExecuteUpdate( sql );
@@ -727,14 +727,14 @@ void recEventPersona::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO EventPersona (id, event_id, per_id, role_id, note, sequence) "
-                "VALUES ("ID", "ID", "ID", "ID", '%q', %d);",
+                "VALUES ("ID", "ID", "ID", "ID", '%q', %ld);",
                 f_id, f_event_id, f_per_id, f_role_id, UTF8_(f_note), f_sequence
             );
         } else {
             // Update existing record
             sql.Format(
                 "UPDATE EventPersona SET event_id="ID", per_id="ID", role_id="ID", "
-                "note='%q', sequence=%d "
+                "note='%q', sequence=%ld "
                 "WHERE id="ID";",
                 f_event_id, f_per_id, f_role_id, UTF8_(f_note), f_sequence, f_id
             );
