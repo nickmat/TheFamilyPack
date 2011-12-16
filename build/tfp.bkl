@@ -97,6 +97,7 @@
     <sources>$(LOCAL_SRC)/tfpRdGed.cpp</sources>
     <sources>$(LOCAL_SRC)/tfpVersion.cpp</sources>
     <sources>$(LOCAL_SRC)/tfpWrChart.cpp</sources>
+    <sources>$(LOCAL_SRC)/tfpWrEvent.cpp</sources>
     <sources>$(LOCAL_SRC)/tfpWrFamily.cpp</sources>
     <sources>$(LOCAL_SRC)/tfpWrIndividual.cpp</sources>
     <sources>$(LOCAL_SRC)/tfpWrName.cpp</sources>

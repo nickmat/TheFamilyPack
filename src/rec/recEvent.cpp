@@ -299,6 +299,16 @@ bool recEvent::DeleteFromDb( idt id )
     return true;
 }
 
+wxSQLite3ResultSet recEvent::GetTitleList()
+{
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT id, title FROM Event ORDER BY id;"
+    );
+    return s_db->ExecuteQuery( sql );
+}
+
+
 //-----------------------------------------------------
 //      recEventType
 //-----------------------------------------------------

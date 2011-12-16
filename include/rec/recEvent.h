@@ -88,6 +88,7 @@ public:
     }
 
     recEventPersonaVec GetEventPersonas();
+    static wxSQLite3ResultSet GetTitleList();
 
     // Delete Event and remove all references to it.
     bool DeleteFromDb() { return DeleteFromDb( f_id ); }

@@ -78,6 +78,7 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_LIST_NAMES, TfpFrame::OnListNames )
     EVT_MENU( tfpID_LIST_INDIVIDUALS, TfpFrame::OnListIndividuals )
     EVT_MENU( tfpID_LIST_REFERENCES, TfpFrame::OnListReferences )
+    EVT_MENU( tfpID_LIST_EVENTS, TfpFrame::OnListEvents )
     EVT_MENU( tfpID_PED_CHART, TfpFrame::OnPedChart )
     EVT_MENU( tfpID_DESC_CHART, TfpFrame::OnDescChart )
     EVT_MENU( tfpID_HELP_WEB_HOME, TfpFrame::OnHelpWebHome )
@@ -141,6 +142,7 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     menuList->Append( tfpID_LIST_NAMES, _("&Names\tAlt-N") );
     menuList->Append( tfpID_LIST_INDIVIDUALS, _("&Individuals\tAlt-I") );
     menuList->Append( tfpID_LIST_REFERENCES, _("&References\tAlt-R") );
+    menuList->Append( tfpID_LIST_EVENTS, _("&Events\tAlt-E") );
 
     wxMenu* menuChart = new wxMenu;
     menuChart->Append( tfpID_PED_CHART, _("&Pedigree...") );
@@ -417,11 +419,18 @@ void TfpFrame::OnListIndividuals( wxCommandEvent& event )
     DisplayHtmPage( "N*" );
 }
 
-/*! \brief Called on a List Index menu option event.
+/*! \brief Called on a List References menu option event.
  */
 void TfpFrame::OnListReferences( wxCommandEvent& event )
 {
     DisplayHtmPage( "R" );
+}
+
+/*! \brief Called on a List Events menu option event.
+ */
+void TfpFrame::OnListEvents( wxCommandEvent& event )
+{
+    DisplayHtmPage( "E" );
 }
 
 /*! \brief Called on a Pedigree Chart menu option event.
@@ -839,6 +848,16 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
             return wxEmptyString;
         }
         return tfpWriteReferencePage( num );
+    case 'E':  // Reference Document
+        if( name == "E" ) {
+            return tfpWriteEventIndex();
+        }
+        success = name.Mid(1).ToLongLong( &num );
+        if( !success || num < 1 ) {
+            wxMessageBox( _("Error: Invalid Reference Document ID link"), _("Link Error") );
+            return wxEmptyString;
+        }
+        return tfpWriteEventPage( num );
     }
     wxMessageBox( _("Error: Invalid Display Name ")+name, _("GetDisplayText") );
     return wxEmptyString;
