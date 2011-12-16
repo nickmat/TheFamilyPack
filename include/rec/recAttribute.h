@@ -97,7 +97,8 @@ public:
     {
         ATYPE_Unstated   = 0,
         ATYPE_Occupation = -1,
-        ATYPE_Max        = 2
+        ATYPE_Condition = -2,
+        ATYPE_Max        = 3
     };
 
     AGrp     f_grp;

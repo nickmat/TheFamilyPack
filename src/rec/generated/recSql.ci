@@ -47,6 +47,7 @@ static const char* createdb =  /* recCreate.sql */
  ");\n"
  "INSERT INTO AttributeType (id) VALUES(0);\n"
  "INSERT INTO AttributeType (id, grp, name) VALUES(-1, 1,'Occupation');\n"
+ "INSERT INTO AttributeType (id, grp, name) VALUES(-2, 100,'Condition');\n"
  "CREATE TABLE CitationPart (\n"
  "  id INTEGER PRIMARY KEY,\n"
  "  source_id INTEGER,\n"
@@ -329,7 +330,7 @@ static const char* createdb =  /* recCreate.sql */
  "  revision INTEGER,\n"
  "  test INTEGER\n"
  ");\n"
- "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 7);\n"
+ "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 8);\n"
  "COMMIT;\n";
 
 /* End of recSql.f2c */

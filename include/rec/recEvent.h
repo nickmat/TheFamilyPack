@@ -223,7 +223,7 @@ public:
         ROLE_Marriage_Groom         = -7,
         ROLE_Marriage_Officiate     = -9,
         ROLE_Marriage_Witness       = -10,
-        ROLE_MAX                    = 12 // size of list
+        ROLE_MAX                    = 14 // size of list
     };
     enum SelectFilter {
         SF_All,

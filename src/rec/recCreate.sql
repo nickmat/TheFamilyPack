@@ -51,6 +51,7 @@ CREATE TABLE AttributeType (
 /* matches enum StdAttributeType */
 INSERT INTO AttributeType (id) VALUES(0);
 INSERT INTO AttributeType (id, grp, name) VALUES(-1, 1,'Occupation');
+INSERT INTO AttributeType (id, grp, name) VALUES(-2, 100,'Condition');
 
 CREATE TABLE CitationPart (
   id INTEGER PRIMARY KEY,
@@ -387,7 +388,7 @@ CREATE TABLE Version (
 );
 
 /* The Version table has only this one row */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 7);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 8);
 
 COMMIT;
 
