@@ -83,9 +83,28 @@ wxString tfpWriteEventIndex()
 wxString tfpWriteEventPage( idt eventID )
 {
     wxString htm;
-    htm << "<html><head><title>Event</title></head><body>"
-           "<h1>Event " << recEvent::GetIdStr( eventID ) << "</h1>"
-           "<p>Not yet done</p></body></html>";
+    recEvent eve(eventID);
+
+    htm << "<html><head><title>Event " << eve.GetIdStr() 
+        << "</title></head><body>"
+           "<h1>Event " << eve.GetIdStr() << " " << eve.f_title << "</h1>"
+           "<table><tr><td>Date:</td><td>" << eve.GetDateStr()
+        << "</td></tr><tr><td>Place:</td><td>" << eve.GetAddressStr()
+        << "</td></tr><tr><td>Note:</td><td>" << eve.f_note
+        << "</td></tr></table><br>";
+
+    recEventPersonaVec eps = eve.GetEventPersonas();
+    if( !eps.empty() ) {
+        htm << "<table>";
+        for( size_t i = 0 ; i < eps.size() ; i++ ) {
+            htm << "<tr><td>" << recEventTypeRole::GetName( eps[i].f_role_id )
+                << "</td><td><b>" << recPersona::GetNameStr( eps[i].f_per_id ) 
+                << "</b></td><td>" << eps[i].f_note
+                << " </td></tr>";
+        }
+        htm << "</table>";
+    }
+    htm << "</body></html>";
 
     return htm;
 }

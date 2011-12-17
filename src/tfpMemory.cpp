@@ -69,6 +69,7 @@
 #include "img/mar.xpm"
 #include "img/kid.xpm"
 #include "img/ref.xpm"
+#include "img/event.xpm"
 
 /*! \brief Create the memory file system and read in the memory files.
  */
@@ -126,6 +127,8 @@ void tfpLoadMemoryFiles()
     wxMemoryFSHandler::AddFile( "kid.bmp", kidBitmap, wxBITMAP_TYPE_XPM );
     wxBitmap refBitmap( ref_xpm );
     wxMemoryFSHandler::AddFile( "ref.bmp", refBitmap, wxBITMAP_TYPE_XPM );
+    wxBitmap eveBitmap( event_xpm );
+    wxMemoryFSHandler::AddFile( "eve.bmp", eveBitmap, wxBITMAP_TYPE_XPM );
 }
 
 // End of tfpMemory.cpp file

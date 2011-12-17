@@ -71,7 +71,8 @@ wxString tfpWriteIndividualPage( idt indID )
     if( id != 0 ) {
         htm << wxT("<tr><td align=right>Birth:</td><td><b>")
             << recEvent::GetDetailStr( id )
-            << wxT("</b></td></tr>");
+            << wxT("</b> <a href=E") << id
+            << wxT("><img src=memory:eve.bmp></a></td></tr>");
     }
     // Near birth
     id = recPersona::GetNrBirthEvent( ind.f_per_id );
@@ -80,14 +81,16 @@ wxString tfpWriteIndividualPage( idt indID )
             << recEvent::GetTypeStr( id )
             << wxT(":</td><td><b>")
             << recEvent::GetDetailStr( id )
-            << wxT("</b></td></tr>");
+            << wxT("</b> <a href=E") << id
+            << wxT("><img src=memory:eve.bmp></a></td></tr>");
     }
     // Death
     id = recPersona::GetDeathEvent( ind.f_per_id );
     if( id != 0 ) {
         htm << wxT("<tr><td align=right>Death:</td><td><b>")
             << recEvent::GetDetailStr( id )
-            << wxT("</b></td></tr>");
+            << wxT("</b> <a href=E") << id
+            << wxT("><img src=memory:eve.bmp></a></td></tr>");
     }
     // Near death
     id = recPersona::GetNrDeathEvent( ind.f_per_id );
@@ -96,7 +99,8 @@ wxString tfpWriteIndividualPage( idt indID )
             << recEvent::GetTypeStr( id )
             << wxT(":</td><td><b>")
             << recEvent::GetDetailStr( id )
-            << wxT("</b></td></tr>");
+            << wxT("</b> <a href=E") << id
+            << wxT("><img src=memory:eve.bmp></a></td></tr>");
     }
     // Occupation
     id = recPersona::GetOccAttribute( ind.f_per_id );
@@ -158,7 +162,8 @@ wxString tfpWriteIndividualPage( idt indID )
                 << recEvent::GetTypeStr( marEvID )
                 << wxT(":</td><td><b>")
                 << recEvent::GetDetailStr( marEvID )
-                << wxT("</b></td></tr>");
+                << wxT("</b> <a href=E") << marEvID
+                << wxT("><img src=memory:eve.bmp></a></td></tr>");
         }
 
         // Children
