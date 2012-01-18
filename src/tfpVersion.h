@@ -31,6 +31,7 @@
 #define TFPVERSION_H
 
 extern const wxChar* tfpVersion;
+extern const wxChar* tfpHtmVersion;
 extern const wxChar* tfpTitle;
 
 extern wxString tfpGetCompilerVersion();

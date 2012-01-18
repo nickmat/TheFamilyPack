@@ -27,6 +27,6 @@
 
 */
 
-static const wxChar* s_startup_htm = @(lrc.xml)wxT("startup.htm");
+static const wxChar* s_startup_htm = @(lrc.xml)wxS("startup.htm");
 
 /* End of tfpText.f2c */

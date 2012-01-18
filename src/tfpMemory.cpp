@@ -78,7 +78,7 @@ void tfpLoadMemoryFiles()
     wxFileSystem::AddHandler( new wxMemoryFSHandler );
     wxBitmap logo6Bitmap( logo6_xpm );
     wxMemoryFSHandler::AddFile( "logo6.bmp", logo6Bitmap, wxBITMAP_TYPE_XPM );
-    wxString startupText( wxString::Format( s_startup_htm, tfpVersion ) );
+    wxString startupText( wxString::Format( s_startup_htm, tfpHtmVersion ) );
     wxMemoryFSHandler::AddFile( "startup.htm", startupText );
 
     wxBitmap dsBitmap( ds_xpm );

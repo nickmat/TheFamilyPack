@@ -1,0 +1,11 @@
+
+#if $WCMODS?1:0$
+
+#define TFP_SVNVERSION wxS(" ($WCREV$+)")
+
+#else
+
+#define TFP_SVNVERSION wxS(" ($WCREV$)")
+
+#endif
+
