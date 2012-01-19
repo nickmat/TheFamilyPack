@@ -97,9 +97,20 @@ wxString tfpWriteEventPage( idt eventID )
     if( !eps.empty() ) {
         htm << "<table>";
         for( size_t i = 0 ; i < eps.size() ; i++ ) {
+            recPersona per(eps[i].f_per_id);
             htm << "<tr><td>" << recEventTypeRole::GetName( eps[i].f_role_id )
-                << "</td><td><b>" << recPersona::GetNameStr( eps[i].f_per_id ) 
-                << "</b></td><td>" << eps[i].f_note
+                << "</td><td><b>" << per.GetNameStr() 
+                << "</b>";
+            if( per.f_ref_id ) {
+                htm << " <a href=R" << per.f_ref_id
+                    << "><img src=memory:ref.bmp></a>";
+            } 
+            recIdVec indIDs = per.GetIndividualIDs();
+            for( size_t j = 0 ; j < indIDs.size() ; j++ ) {
+                htm << " <a href=$MR" << indIDs[j]
+                    << "><img src=memory:fam.bmp></a>";
+            }
+            htm << "</td><td>" << eps[i].f_note
                 << " </td></tr>";
         }
         htm << "</table>";

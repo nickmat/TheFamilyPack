@@ -269,13 +269,24 @@ recIdVec recPersona::GetIndividualIDs( idt perID )
     }
 
     sql.Format(
+        "SELECT id FROM Individual WHERE per_id="ID";",
+        perID
+    );
+    idt indID = ExecuteID( sql );
+    if( indID ) {
+        // if persona is attached directly to an Individual
+        // it wont be linked to any other.
+        vec.push_back( indID );
+        return vec;
+    }
+
+    sql.Format(
         "SELECT I.id FROM Individual I, LinkPersona LP "
         "WHERE LP.ref_per_id="ID" AND I.per_id=LP.ind_per_id "
         "ORDER BY I.id;",
         perID
     );
     result = s_db->GetTable( sql );
-
     for( int i = 0 ; i < result.GetRowCount() ; i++ ) {
         result.SetRow( i );
         vec.push_back( GET_ID( result.GetInt64( 0 ) ) );
