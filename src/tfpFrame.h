@@ -50,6 +50,7 @@ private:
     wxMenuBar*          m_menuOpenDB;
     wxMenuBar*          m_menuClosedDB;
     wxToolBar*          m_toolbar;
+    wxTextCtrl*         m_showpage;
     wxArrayString       m_back;
     wxArrayString       m_forward;
     wxHtmlWindow*       m_html;
@@ -99,6 +100,7 @@ public:
     void OnFindBack( wxCommandEvent& event );
     void OnFindForward( wxCommandEvent& event );
     void OnHome( wxCommandEvent& event );
+    void OnShowPage( wxCommandEvent& event );
 
     void OnHtmlLinkClicked( wxHtmlLinkEvent& event );
     void OnHtmCtxMenu( wxCommandEvent& event );
@@ -158,6 +160,7 @@ enum
     tfpID_FIND_BACK,
     tfpID_FIND_FORWARD,
     tfpID_GOTO_HOME,
+    tfpID_SHOW_PAGE,
     tfpID_HCTXMENU_BEG,
     tfpID_HCTXMENU_EDIT_FAMILY,
     tfpID_HCTXMENU_EDIT_NEW_SON,

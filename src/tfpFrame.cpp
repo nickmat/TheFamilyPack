@@ -87,6 +87,7 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_FIND_BACK, TfpFrame::OnFindBack )
     EVT_MENU( tfpID_FIND_FORWARD, TfpFrame::OnFindForward )
     EVT_MENU( tfpID_GOTO_HOME, TfpFrame::OnHome )
+    EVT_TEXT_ENTER( tfpID_SHOW_PAGE, TfpFrame::OnShowPage )
     EVT_HTML_LINK_CLICKED( wxID_ANY, TfpFrame::OnHtmlLinkClicked )
     EVT_MENU_RANGE( tfpID_HCTXMENU_BEG, tfpID_HCTXMENU_END, TfpFrame::OnHtmCtxMenu )
     EVT_MENU_RANGE( tfpID_INDMENU_BEG, tfpID_INDMENU_END, TfpFrame::OnHtmIndMenu )
@@ -181,6 +182,7 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
 
     // Add toolbar
     m_toolbar = new wxToolBar( this, wxID_ANY );
+    m_showpage = new wxTextCtrl( m_toolbar, tfpID_SHOW_PAGE, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER );
     wxBitmap bmpForward( forward_xpm );
     wxBitmap bmpBack( back_xpm );
     wxBitmap bmpFind( find_xpm );
@@ -193,6 +195,8 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     m_toolbar->AddTool( tfpID_LIST_REFERENCES, _("References"), bmpFindref );
     m_toolbar->AddSeparator();
     m_toolbar->AddTool( tfpID_GOTO_HOME, _("Home"), bmpHome );
+    m_toolbar->AddSeparator();
+    m_toolbar->AddControl( m_showpage );
     m_toolbar->Realize();
     SetToolBar( m_toolbar );
 
@@ -203,11 +207,11 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
 
     m_prn = new wxHtmlEasyPrinting( _("Easy Printing Demo"), this );
 
+    SetNoDatabase();
     if( recDb::IsOpen() ) {
         SetDatabaseOpen( recDb::GetFileName() );
         DisplayHtmPage( "F1" );
     } else {
-        SetNoDatabase();
         m_html->LoadPage( "memory:startup.htm" );
     }
 }
@@ -549,6 +553,15 @@ void TfpFrame::OnHome( wxCommandEvent& event )
     DisplayHtmPage( "F1" );
 }
 
+/*! \brief Called on a pressing enter in toolbar text box.
+ */
+void TfpFrame::OnShowPage( wxCommandEvent& event )
+{
+    wxString page = m_showpage->GetValue();
+    m_showpage->SetValue( wxEmptyString );
+    DisplayHtmPage( page );
+}
+
 /*! \brief Called on a link in the html control being clicked.
  *
  *  Decodes the href string of the clicked link. If the first
@@ -715,7 +728,7 @@ void TfpFrame::OpenFile()
         if( recDb::OpenDb( path ) == true )
         {
             SetDatabaseOpen( path );
-            DisplayHtmPage( wxT("F1") );
+            DisplayHtmPage( "F1" );
         }
     }
 }
@@ -751,6 +764,7 @@ void TfpFrame::SetDatabaseOpen( wxString& path )
     m_toolbar->EnableTool( tfpID_LIST_SURNAME_INDEX, true );
     m_toolbar->EnableTool( tfpID_LIST_REFERENCES, true );
     m_toolbar->EnableTool( tfpID_GOTO_HOME, true );
+    m_showpage->Enable( true );
 }
 
 void TfpFrame::SetNoDatabase()
@@ -761,6 +775,7 @@ void TfpFrame::SetNoDatabase()
     m_toolbar->EnableTool( tfpID_LIST_SURNAME_INDEX, false );
     m_toolbar->EnableTool( tfpID_LIST_REFERENCES, false );
     m_toolbar->EnableTool( tfpID_GOTO_HOME, false );
+    m_showpage->Enable( false );
     m_back.clear();
     m_toolbar->EnableTool( tfpID_FIND_BACK, false );
     m_forward.clear();
