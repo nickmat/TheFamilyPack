@@ -52,7 +52,7 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "Relationship" );
 
-    static wxString GetIdStr( idt relID );
+    static wxString GetIdStr( idt relID ) { return wxString::Format( "Rs"ID, relID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     wxString GetValue1Str() const;

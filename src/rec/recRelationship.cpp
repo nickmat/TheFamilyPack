@@ -119,11 +119,6 @@ bool recRelationship::Read()
     return true;
 }
 
-wxString recRelationship::GetIdStr( idt relID )
-{
-    return wxString::Format( "Rs"ID, relID );
-}
-
 wxString recRelationship::GetValue1Str() const
 {
     wxString str;

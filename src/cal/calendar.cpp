@@ -43,37 +43,37 @@
 #include "calGregorian.h"
 
 const wxString CalendarSchemeName[] = {
-    wxT("Unstated"),
-    wxT("Unknown"),
-    wxT("Unlisted"),
-    wxT("Julian Day Number"),
-    wxT("Julian Day"),
-    wxT("Modified Julian Day"),
-    wxT("Rata Die"),
-    wxT("Julian"),
-    wxT("Gregorian"),
-    wxT("Catholic"),
-    wxT("English"),
-    wxT("Scottish"),
-    wxT("Swedish"),
-    wxT("French Revolutionary")
+    _("Unstated"),
+    _("Unknown"),
+    _("Unlisted"),
+    _("Julian Day Number"),
+    _("Julian Day"),
+    _("Modified Julian Day"),
+    _("Rata Die"),
+    _("Julian"),
+    _("Gregorian"),
+    _("Catholic"),
+    _("English"),
+    _("Scottish"),
+    _("Swedish"),
+    _("French Revolutionary")
 };
 
 const wxString CalendarSchemeAbrev[] = {
-    wxT("Us"),
-    wxT("Uk"),
-    wxT("Ul"),
-    wxT("JDN"),
-    wxT("JD"),
-    wxT("MJD"),
-    wxT("RD"),
-    wxT("J"),
-    wxT("G"),
-    wxT("Cath"),
-    wxT("Eng"),
-    wxT("Scot"),
-    wxT("Swed"),
-    wxT("FR")
+    "null", // Unstated
+    "NK",   // Unknown
+    "NL",   // Unlisted
+    "JDN",
+    "JD",
+    "MJD",
+    "RD",
+    "J",
+    "G",
+    "Cath",
+    "Eng",
+    "Scot",
+    "Swed",
+    "FR"
 };
 
 // Helper function.
@@ -185,13 +185,13 @@ wxString calStrFromJdn( long jdn, CalendarScheme scheme )
     case CALENDAR_SCH_RataDie:
         return calJDayStrFromJdn( jdn, scheme );
     case CALENDAR_SCH_Unstated:
-        return wxT("Unstated");
+        return _("Unstated");
     case CALENDAR_SCH_Unknown:
-        return wxT("Unknown");
+        return _("Unknown");
     case CALENDAR_SCH_Unlisted:
-        return wxT("Unlisted");
+        return _("Unlisted");
     }
-    return wxT("Not yet done");
+    return _("Not yet done");
 }
 
 wxString calStrFromJdnRange( long jdn1, long jdn2, CalendarScheme scheme )

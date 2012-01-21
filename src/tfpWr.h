@@ -53,6 +53,8 @@ extern wxString tfpWriteIndividualList( const wxString& surname );
 
 // See tfpWrNote.cpp
 extern wxString tfpWriteDate( idt dateID );
+extern wxString tfpWritePlace( idt placeID );
+extern wxString tfpWriteRelationship( idt rsID );
 
 // See tfpWrReference.cpp
 extern wxString tfpWriteReferenceIndex();

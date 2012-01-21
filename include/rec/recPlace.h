@@ -52,6 +52,9 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "Place" );
 
+    static wxString GetIdStr( idt indID ) { return wxString::Format( "P"ID, indID ); }
+    wxString GetIdStr() const { return GetIdStr( f_id ); }
+
     void SetAddress( const wxString& str ) { return SetAddress( f_id, str ); }
     static void SetAddress( idt placeID, const wxString& str );
 

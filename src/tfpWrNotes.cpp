@@ -37,23 +37,76 @@
 #endif
 
 #include <rec/recDate.h>
+#include <rec/recPlace.h>
+#include <rec/recRelationship.h>
+#include <rec/recPersona.h>
 
 #include "tfpWr.h"
 
+namespace { 
+
+wxString GetHtmDateData( const recDate& date )
+{
+    wxString htm;
+        
+    htm << date.GetStr() << "<br><br>"
+           "Original Scheme: " << CalendarSchemeName[date.f_record_sch] << "<br>"
+           "Display Scheme: " << CalendarSchemeName[date.f_display_sch] << "<br>";
+
+    if( date.f_base_id ) {
+        recDate base( date.f_base_id );
+        htm << "<br>Base on " << base.GetIdStr() << "<br>"
+            << GetHtmDateData( base );
+    }
+    return htm;
+}
+
+} // namespace
+
 wxString tfpWriteDate( idt dateID )
 {
-    static wxString htm;
+    wxString htm;
     recDate date(dateID);
 
     htm << "<html><head><title>Date</title></head><body>"
            "<h1>Date " << date.GetIdStr() << "</h1>"
-        
-           << date.GetStr()
-
-           << "</body></html>";
+        << GetHtmDateData( date );
+       
+    htm << "</body></html>";
 
     return htm;
 }
 
+wxString tfpWritePlace( idt placeID )
+{
+    wxString htm;
+    recPlace place(placeID);
+
+    htm << "<html><head><title>Place</title></head><body>"
+           "<h1>Place " << place.GetIdStr() << "</h1>"
+        << place.GetAddressStr();
+       
+    htm << "</body></html>";
+
+    return htm;
+}
+
+wxString tfpWriteRelationship( idt rsID )
+{
+    wxString htm;
+    recRelationship rs(rsID);
+
+    htm << "<html><head><title>Relationship</title></head><body>"
+           "<h1>Relationship " << rs.GetIdStr() << "</h1>"
+        << recPersona::GetIdStr( rs.f_per1_id ) << " and "
+        << recPersona::GetIdStr( rs.f_per2_id ) << " have the relationship "
+        << rs.f_descrip << ", so:<br><br>"
+        << rs.GetValue1Str() << "<br><br>"
+        << rs.GetValue2Str()
+           
+        << "</body></html>";
+
+    return htm;
+}
 
 // End of tfpWrNote.cpp Source
