@@ -1,11 +1,11 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        tfpWr.h
+ * Name:        tfpWrNotes.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Write screen page functions.
+ * Purpose:     Functions to write html notes to screen.
  * Author:      Nick Matthews
  * Modified by:
  * Website:     http://thefamilypack.org
- * Created:     7 October 2010
+ * Created:     21 January 2012
  * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2010, Nick Matthews.
  * Licence:     GNU GPLv3
@@ -26,36 +26,34 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 */
 
-#ifndef TFPWR_H
-#define TFPWR_H
+#include "wx/wxprec.h"
 
-#include <rec/recDatabase.h>
+#ifdef __BORLANDC__
+#pragma hdrstop
+#endif
 
-// See tfpWrChart.cpp
-extern wxString tfpCreatePedChart( idt indID );
-extern wxString tfpCreateDescChart( idt indID );
+#ifndef WX_PRECOMP
+#include "wx/wx.h"
+#endif
 
-// See tfpWrEvent.cpp
-extern wxString tfpWriteEventIndex();
-extern wxString tfpWriteEventPage( idt refID );
+#include <rec/recDate.h>
 
-// See tfpWrFamily.cpp
-extern wxString tfpWriteFamilyPage( idt famID );
-extern wxString tfpWriteIndFamilyPage( idt indID );
+#include "tfpWr.h"
 
-// See tfpWrIndividual.cpp
-extern wxString tfpWriteIndividualPage( idt indID );
+wxString tfpWriteDate( idt dateID )
+{
+    static wxString htm;
+    recDate date(dateID);
 
-// See tfpWrName.cpp
-extern wxString tfpWriteIndividualIndex();
-extern wxString tfpWritePersonIndex();
-extern wxString tfpWriteIndividualList( const wxString& surname );
+    htm << "<html><head><title>Date</title></head><body>"
+           "<h1>Date " << date.GetIdStr() << "</h1>"
+        
+           << date.GetStr()
 
-// See tfpWrNote.cpp
-extern wxString tfpWriteDate( idt dateID );
+           << "</body></html>";
 
-// See tfpWrReference.cpp
-extern wxString tfpWriteReferenceIndex();
-extern wxString tfpWriteReferencePage( idt refID );
+    return htm;
+}
 
-#endif // TFPWR_H
+
+// End of tfpWrNote.cpp Source

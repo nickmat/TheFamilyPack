@@ -86,6 +86,7 @@
     <sources>$(LOCAL_SRC)/dlg/dlgEdReference.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgEdRelationship.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgEdRole.cpp</sources>
+    <sources>$(LOCAL_SRC)/dlg/dlgNote.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgRecTableCtrl.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgSelect.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgSelEvent.cpp</sources>
@@ -101,6 +102,7 @@
     <sources>$(LOCAL_SRC)/tfpWrFamily.cpp</sources>
     <sources>$(LOCAL_SRC)/tfpWrIndividual.cpp</sources>
     <sources>$(LOCAL_SRC)/tfpWrName.cpp</sources>
+    <sources>$(LOCAL_SRC)/tfpWrNotes.cpp</sources>
     <sources>$(LOCAL_SRC)/tfpWrReference.cpp</sources>
 
     <headers>$(LOCAL_SRC)/dlg/dlgEd.h</headers>
@@ -117,6 +119,7 @@
     <headers>$(LOCAL_SRC)/dlg/dlgEdReference.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgEdRelationship.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgEdRole.h</headers>
+    <headers>$(LOCAL_SRC)/dlg/dlgNote.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgRecTableCtrl.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgSelect.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgSelEvent.h</headers>

@@ -37,6 +37,7 @@ class tfpListCtrlIndividuals;
 #include <wx/radiobox.h>
 #include <wx/toolbar.h>
 #include <wx/splitter.h>
+#include <wx/html/htmlwin.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -819,6 +820,29 @@ class fbDlgSelect : public wxDialog
 		
 		fbDlgSelect( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Select"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 485,269 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbDlgSelect();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class fbDlgNote
+///////////////////////////////////////////////////////////////////////////////
+class fbDlgNote : public wxDialog 
+{
+	private:
+	
+	protected:
+		wxHtmlWindow* m_htmlWin;
+		wxStaticLine* m_staticline;
+		wxButton* m_buttonCancel;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnIdle( wxIdleEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		fbDlgNote( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Note"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 342,215 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
+		~fbDlgNote();
 	
 };
 

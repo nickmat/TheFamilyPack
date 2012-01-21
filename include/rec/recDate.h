@@ -108,6 +108,9 @@ public:
      */
     TABLE_NAME_MEMBERS( "Date" );
 
+    static wxString GetIdStr( idt indID ) { return wxString::Format( "D"ID, indID ); }
+    wxString GetIdStr() const { return GetIdStr( f_id ); }
+
     void SetDefaults();
     static idt Create( const wxString& str ); // Using default settings
 

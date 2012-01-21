@@ -277,6 +277,10 @@
                 >
             </File>
             <File
+                RelativePath="..\..\src\dlg\dlgNote.cpp"
+                >
+            </File>
+            <File
                 RelativePath="..\..\src\dlg\dlgRecTableCtrl.cpp"
                 >
             </File>
@@ -357,6 +361,10 @@
                 >
             </File>
             <File
+                RelativePath="..\..\src\tfpWrNotes.cpp"
+                >
+            </File>
+            <File
                 RelativePath="..\..\src\tfpWrReference.cpp"
                 >
             </File>
@@ -420,6 +428,10 @@
             </File>
             <File
                 RelativePath="..\..\src\dlg\dlgEdRole.h"
+                >
+            </File>
+            <File
+                RelativePath="..\..\src\dlg\dlgNote.h"
                 >
             </File>
             <File

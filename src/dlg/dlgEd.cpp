@@ -49,6 +49,7 @@
 #include "dlgEdReference.h"
 #include "dlgSelect.h"
 #include "dlgEdIndEvent.h"
+#include "dlg/dlgNote.h"
 
 
 idt tfpAddNewIndividual( idt famID, Sex sex, const wxString& surname )
@@ -445,5 +446,14 @@ bool tfpSelectPersona( idt* perID, unsigned style, idt refID )
     return ret;
 }
 
+void tfpDisplayNote( const wxString& text )
+{
+    if( !text.IsEmpty() ) {
+        dlgNote* dialog = new dlgNote( NULL );
+        dialog->SetText( text );
+        dialog->ShowModal();
+        dialog->Destroy();
+    }
+}
 
-// End of tfpEdit.cpp file
+// End of dlgEd.cpp file

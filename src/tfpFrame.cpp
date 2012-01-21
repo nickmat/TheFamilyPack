@@ -559,7 +559,10 @@ void TfpFrame::OnShowPage( wxCommandEvent& event )
 {
     wxString page = m_showpage->GetValue();
     m_showpage->SetValue( wxEmptyString );
-    DisplayHtmPage( page );
+//    DisplayHtmPage( page );
+
+    wxString text = GetDisplayText( page );
+    tfpDisplayNote( text );
 }
 
 /*! \brief Called on a link in the html control being clicked.
@@ -808,6 +811,13 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
 
     switch( (wxChar) name.GetChar( 0 ) )
     {
+    case 'D':  // Individual reference
+        success = name.Mid(1).ToLongLong( &num );
+        if( !success || num < 1 ) {
+            wxMessageBox( _("Error: Invalid Date ID link"), _("Family Link") );
+            return wxEmptyString;
+        }
+        return tfpWriteDate( num );
     case 'F':  // Family reference
         if( name.GetChar( 1 ) == 'I' ) {
             success = name.Mid(2).ToLongLong( &num );
