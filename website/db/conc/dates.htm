@@ -8,22 +8,9 @@
  table.flags {
   display: inline-table;
   float: right;
-  border: 2px solid black;
-  border-collapse: collapse;
   margin-left: 1em;
  }
- table.flags td, table.flags th {
-  border: 1px solid black;
-  padding: 2px 5px;
- }
- table.flags th {
-  background-color: #fed;
- }
- span.field {
-  font-family: courier, monospace;
-  font-size: larger;
-  font-weight: bold;
- }
+
 </style>
 </head>
 <body>
@@ -59,7 +46,7 @@
  The date entity copes with uncertainty by recording both a date <span class="field">[jdn]</span> and a range <span class="field">[range]</span> of days which my be zero. It is probably easier to consider the entity as a start date <span class="field">[jdn]</span> and end date <span class="field">[jdn+range]</span>. The set of flags <span class="field">[type]</span>, "<b>B</b>efore", "<b>O</b>n" and "<b>A</b>fter" are used to indicate how the start and end dates are to be interpreted.
 </p>
 <p>
-<table class="flags">
+<table class="basic flags">
  <tr><th>B</th><th>O</th><th>A</th><th>Style</th></tr>
  <tr><td>0</td><td>0</td><td>0</td><td>Invalid date</td></tr>
  <tr><td>0</td><td>0</td><td>1</td><td>After 19 Sep 1948</td></tr>
@@ -81,10 +68,10 @@
 
 <h2>Relative Dates</h2>
 <p>
- Very often documents contain relative dates, commonly in the form of a persons age. In modern western cultures a persons age is invariably given as the age in years on their last birthday. It follows that if you have a document with a persons age and you know when the document was created, you have the persons date of birth to within a year (or if the documents date is uncertain, then that date's range uncertainty range plus a year). By recording a relative date, it is possible to record the exact nature of the original information. Also, if it is found necessary to change the original base date, all relative dates that rely on it will automatically be updated as well. 
+ Very often documents contain relative dates, commonly in the form of a persons age. In modern western cultures a persons age is invariably given as the age in years on their last birthday. It follows that if you have a document with a persons age and you know when the document was created, you have the persons date of birth to within a year (or if the documents date is uncertain, then that date's range uncertainty range plus a year). By recording a relative date, it is possible to record the exact nature of the original information. Also, if it is found necessary to change the original base date, all relative dates that rely on it will automatically be updated as well.
 </p>
 <p>
- A relative date behaves exactly as a fixed date in all respects, including being used as the base date for another relative date. 
+ A relative date behaves exactly as a fixed date in all respects, including being used as the base date for another relative date.
 </p>
 
 </div>
