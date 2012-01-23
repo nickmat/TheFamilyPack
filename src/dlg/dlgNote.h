@@ -35,14 +35,24 @@
 class dlgNote : public fbDlgNote
 {
 public:
-    dlgNote( wxWindow* parent ) : fbDlgNote( parent ) {}
+    dlgNote( wxWindow* parent ) : m_cond(0), fbDlgNote( parent ) {}
 
-    void SetText( const wxString& text ) { m_text = text; }
+//    void SetText( const wxString& text ) { m_text = text; }
+    bool SetDisplay( const wxString& name );
 
 private:
+    wxString GetBlankDisplay( const wxString& name );
+
     bool TransferDataToWindow();
 
+    void OnIdle( wxIdleEvent& event );
+    void OnHtmlLinkClicked( wxHtmlLinkEvent& event );
+    void OnClose( wxCloseEvent& event );
+
+
+    wxString m_name;
     wxString m_text;
+    long     m_cond;
 };
 
 #endif // DLGNOTE_H

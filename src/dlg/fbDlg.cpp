@@ -2371,13 +2371,17 @@ fbDlgNote::fbDlgNote( wxWindow* parent, wxWindowID id, const wxString& title, co
 	this->Layout();
 	
 	// Connect Events
+	this->Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( fbDlgNote::OnClose ) );
 	this->Connect( wxEVT_IDLE, wxIdleEventHandler( fbDlgNote::OnIdle ) );
+	m_htmlWin->Connect( wxEVT_COMMAND_HTML_LINK_CLICKED, wxHtmlLinkEventHandler( fbDlgNote::OnHtmlLinkClicked ), NULL, this );
 }
 
 fbDlgNote::~fbDlgNote()
 {
 	// Disconnect Events
+	this->Disconnect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( fbDlgNote::OnClose ) );
 	this->Disconnect( wxEVT_IDLE, wxIdleEventHandler( fbDlgNote::OnIdle ) );
+	m_htmlWin->Disconnect( wxEVT_COMMAND_HTML_LINK_CLICKED, wxHtmlLinkEventHandler( fbDlgNote::OnHtmlLinkClicked ), NULL, this );
 	
 }
 

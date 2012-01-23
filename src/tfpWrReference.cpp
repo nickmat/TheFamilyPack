@@ -99,6 +99,7 @@ wxString tfpWriteReferencePage( idt refID )
 {
     wxString htm;
     recReference ref(refID);
+    if( ref.f_id == 0 ) return wxEmptyString;
     recIdVec perIDs = ref.GetPersonaList();
     recIdVec indIDs;
 

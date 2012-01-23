@@ -446,13 +446,12 @@ bool tfpSelectPersona( idt* perID, unsigned style, idt refID )
     return ret;
 }
 
-void tfpDisplayNote( const wxString& text )
+void tfpDisplayNote( wxWindow* parent, const wxString& name )
 {
-    if( !text.IsEmpty() ) {
-        dlgNote* dialog = new dlgNote( NULL );
-        dialog->SetText( text );
-        dialog->ShowModal();
-        dialog->Destroy();
+    if( !name.IsEmpty() ) {
+        dlgNote* dialog = new dlgNote( parent );
+        dialog->SetDisplay( name );
+        dialog->Show();
     }
 }
 

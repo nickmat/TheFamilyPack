@@ -67,6 +67,7 @@ wxString tfpWriteDate( idt dateID )
 {
     wxString htm;
     recDate date(dateID);
+    if( date.f_id == 0 ) return wxEmptyString;
 
     htm << "<html><head><title>Date</title></head><body>"
            "<h1>Date " << date.GetIdStr() << "</h1>"
@@ -81,6 +82,7 @@ wxString tfpWritePlace( idt placeID )
 {
     wxString htm;
     recPlace place(placeID);
+    if( place.f_id == 0 ) return wxEmptyString;
 
     htm << "<html><head><title>Place</title></head><body>"
            "<h1>Place " << place.GetIdStr() << "</h1>"
@@ -95,6 +97,7 @@ wxString tfpWriteRelationship( idt rsID )
 {
     wxString htm;
     recRelationship rs(rsID);
+    if( rs.f_id == 0 ) return wxEmptyString;
 
     htm << "<html><head><title>Relationship</title></head><body>"
            "<h1>Relationship " << rs.GetIdStr() << "</h1>"
@@ -107,6 +110,116 @@ wxString tfpWriteRelationship( idt rsID )
         << "</body></html>";
 
     return htm;
+}
+
+
+wxString tfpGetDisplayText( const wxString& name )
+{
+    wxUniChar uch, uch1;
+    wxLongLong_t num;
+    bool success;
+
+    uch = name.GetChar( 0 );
+    switch( uch.GetValue() )
+    {
+    case 'D':  // Date
+        success = name.Mid(1).ToLongLong( &num );
+        if( !success || num < 1 ) {
+            wxMessageBox( _("Error: Invalid Date ID link"), _("Link Error") );
+            return wxEmptyString;
+        }
+        return tfpWriteDate( num );
+    case 'P':  // Place
+        success = name.Mid(1).ToLongLong( &num );
+        if( !success || num < 1 ) {
+            wxMessageBox( _("Error: Invalid Place ID link"), _("Link Error") );
+            return wxEmptyString;
+        }
+        return tfpWritePlace( num );
+    case 'F':  // Family reference
+        if( name.GetChar( 1 ) == 'I' ) {
+            success = name.Mid(2).ToLongLong( &num );
+            if( !success || num < 1 ) {
+                wxMessageBox( _("Error: Invalid Individual ID link"), _("Link Error") );
+                return wxEmptyString;
+            }
+            return tfpWriteIndFamilyPage( num );
+        }
+        success = name.Mid(1).ToLongLong( &num );
+        if( !success || num < 1 ) {
+            wxMessageBox( _("Error: Invalid Family ID link"), _("Link Error") );
+            return wxEmptyString;
+        }
+        return tfpWriteFamilyPage( num );
+    case 'I':  // Individual reference
+        success = name.Mid(1).ToLongLong( &num );
+        if( !success || num < 1 ) {
+            wxMessageBox( _("Error: Invalid Individual ID link"), _("Link Error") );
+            return wxEmptyString;
+        }
+        return tfpWriteIndividualPage( num );
+    case 'N':  // Name index
+        if( name == "N" ) {
+            return tfpWriteIndividualIndex();
+        }
+        if( name == "N*" ) {
+            return tfpWriteIndividualList( wxEmptyString );
+        }
+        return tfpWriteIndividualList( name.Mid( 1 ) );
+    case 'C':  // Chart reference
+        success = name.Mid(2).ToLongLong( &num );
+        if( !success || num < 1 ) {
+            wxMessageBox( _("Error: Invalid Individual ID link"), _("Link Error") );
+            return wxEmptyString;
+        }
+        switch( (wxChar) name.GetChar( 1 ) )
+        {
+        case 'D':
+            return tfpCreateDescChart( num );
+        case 'P':
+            return tfpCreatePedChart( num );
+        }
+        wxMessageBox( _("Error: Invalid Chart link reference"), _("Link Error") );
+        return wxEmptyString;
+    case 'R':  // Reference Document
+        if( name == "R" ) {
+            return tfpWriteReferenceIndex();
+        }
+        uch1 = name.GetChar( 1 );
+        if( !wxIsdigit( uch1 ) ) {
+            success = name.Mid(2).ToLongLong( &num );
+            if( !success ) {
+                wxMessageBox( _("Error: Invalid ID link"), _("Link Error") );
+                return wxEmptyString;
+            }
+            switch( uch1.GetValue() )
+            {
+            case 's':
+                return tfpWriteRelationship( num );
+            default:
+                wxMessageBox( _("Error: Invalid ID link"), _("Link Error") );
+                return wxEmptyString;
+            }
+        }
+        success = name.Mid(1).ToLongLong( &num );
+        if( !success || num < 1 ) {
+            wxMessageBox( _("Error: Invalid Reference Document ID link"), _("Link Error") );
+            return wxEmptyString;
+        }
+        return tfpWriteReferencePage( num );
+    case 'E':  // Reference Document
+        if( name == "E" ) {
+            return tfpWriteEventIndex();
+        }
+        success = name.Mid(1).ToLongLong( &num );
+        if( !success || num < 1 ) {
+            wxMessageBox( _("Error: Invalid Reference Document ID link"), _("Link Error") );
+            return wxEmptyString;
+        }
+        return tfpWriteEventPage( num );
+    }
+    wxMessageBox( _("Error: Invalid Display Name ")+name, _("Link Error") );
+    return wxEmptyString;
 }
 
 // End of tfpWrNote.cpp Source

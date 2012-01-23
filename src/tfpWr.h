@@ -56,6 +56,8 @@ extern wxString tfpWriteDate( idt dateID );
 extern wxString tfpWritePlace( idt placeID );
 extern wxString tfpWriteRelationship( idt rsID );
 
+extern wxString tfpGetDisplayText( const wxString& name );
+
 // See tfpWrReference.cpp
 extern wxString tfpWriteReferenceIndex();
 extern wxString tfpWriteReferencePage( idt refID );

@@ -84,6 +84,7 @@ wxString tfpWriteEventPage( idt eventID )
 {
     wxString htm;
     recEvent eve(eventID);
+    if( eve.f_id == 0 ) return wxEmptyString;
 
     htm << "<html><head><title>Event " << eve.GetIdStr() 
         << "</title></head><body>"

@@ -30612,7 +30612,7 @@
             <property name="resize">Resizable</property>
             <property name="show">1</property>
             <property name="size">342,215</property>
-            <property name="style">wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER</property>
+            <property name="style">wxCAPTION|wxCLOSE_BOX|wxMAXIMIZE_BOX|wxMINIMIZE_BOX|wxRESIZE_BORDER|wxSYSTEM_MENU</property>
             <property name="subclass"></property>
             <property name="title">Note</property>
             <property name="toolbar_pane">0</property>
@@ -30633,7 +30633,7 @@
             <event name="OnAuiPaneRestore"></event>
             <event name="OnAuiRender"></event>
             <event name="OnChar"></event>
-            <event name="OnClose"></event>
+            <event name="OnClose">OnClose</event>
             <event name="OnEnterWindow"></event>
             <event name="OnEraseBackground"></event>
             <event name="OnHibernate"></event>
@@ -30739,7 +30739,7 @@
                                 <event name="OnEraseBackground"></event>
                                 <event name="OnHtmlCellClicked"></event>
                                 <event name="OnHtmlCellHover"></event>
-                                <event name="OnHtmlLinkClicked"></event>
+                                <event name="OnHtmlLinkClicked">OnHtmlLinkClicked</event>
                                 <event name="OnKeyDown"></event>
                                 <event name="OnKeyUp"></event>
                                 <event name="OnKillFocus"></event>

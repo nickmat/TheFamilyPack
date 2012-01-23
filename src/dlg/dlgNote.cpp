@@ -37,8 +37,31 @@
 #include "wx/wx.h"
 #endif
 
-#include "dlgNote.h"
+#include <rec/recDatabase.h>
 
+#include "dlgNote.h"
+#include "tfpWr.h"
+
+
+bool dlgNote::SetDisplay( const wxString& name )
+{
+    m_name = name;
+    m_cond = recDb::GetChange();
+    m_text = tfpGetDisplayText( name );
+    if( m_text != wxEmptyString ) {
+        return true;
+    }
+    m_text = GetBlankDisplay( name );
+    return false;
+}
+
+wxString dlgNote::GetBlankDisplay( const wxString& name )
+{
+    wxString txt;
+    txt << "<html><head><title>" << name << "</title></head><body>" 
+        << name << " Not Found.</body></html>";
+    return txt;
+}
 
 bool dlgNote::TransferDataToWindow()
 {
@@ -47,5 +70,29 @@ bool dlgNote::TransferDataToWindow()
     return true;
 }
 
+void dlgNote::OnIdle( wxIdleEvent& event )
+{
+    if( m_cond != recDb::GetChange() ) {
+        m_text = tfpGetDisplayText( m_name );
+        m_htmlWin->SetPage( m_text );
+    }
+}
+
+void dlgNote::OnHtmlLinkClicked( wxHtmlLinkEvent& event )
+{
+    wxString link = event.GetLinkInfo().GetHref();
+    wxString text = tfpGetDisplayText( link );
+    if( text != wxEmptyString ) {
+        m_name = link;
+        m_text = text;
+        m_htmlWin->SetPage( text );
+    }
+}
+
+
+void dlgNote::OnClose( wxCloseEvent& event )
+{
+    Destroy();
+}
 
 // End of dlgNote.cpp file
