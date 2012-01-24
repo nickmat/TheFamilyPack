@@ -843,7 +843,7 @@ class fbDlgNote : public wxDialog
 	
 	public:
 		
-		fbDlgNote( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Note"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 342,215 ), long style = wxCAPTION|wxCLOSE_BOX|wxMAXIMIZE_BOX|wxMINIMIZE_BOX|wxRESIZE_BORDER|wxSYSTEM_MENU ); 
+		fbDlgNote( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Note"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 342,215 ), long style = wxCAPTION|wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbDlgNote();
 	
 };

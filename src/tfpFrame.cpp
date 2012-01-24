@@ -615,6 +615,9 @@ void TfpFrame::OnHtmlLinkClicked( wxHtmlLinkEvent& event )
         case '!':  // Display in external browser
             wxLaunchDefaultBrowser( href.Mid( 1 ) );
             break;
+        case '^':  // Display the given reference as a note
+            tfpDisplayNote( this, href.Mid( 1 ) );
+            break;
         default:   // Display the given reference
             DisplayHtmPage( href );
         }
