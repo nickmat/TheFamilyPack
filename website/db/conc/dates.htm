@@ -37,7 +37,7 @@
 <p class="attribute">Ezra Pound</p>
 </blockquote>
 
-<div class="diag"><img src='tfp-date.png' alt='Date Subsystem' /></div>
+<img class='fig' src='tfp-date.png' alt='Date Subsystem' />
 <h2>Dates</h2>
 <p>
  The Date entity is used to record a single day in history, a day being the shortest period of time that the database can record. The simplest way for a computer to keep track of time is to count the number of days from a fixed point in history, the starting point for the database is Monday 1st January 4713 B.C.E. (Julian). This is day zero for the julian day, the astrological day numbering system. So good news for those of you who can trace their family back the the Ancient Egyptians.
@@ -45,7 +45,6 @@
 <p>
  The date entity copes with uncertainty by recording both a date <span class="field">[jdn]</span> and a range <span class="field">[range]</span> of days which my be zero. It is probably easier to consider the entity as a start date <span class="field">[jdn]</span> and end date <span class="field">[jdn+range]</span>. The set of flags <span class="field">[type]</span>, "<b>B</b>efore", "<b>O</b>n" and "<b>A</b>fter" are used to indicate how the start and end dates are to be interpreted.
 </p>
-<p>
 <table class="basic flags">
  <tr><th>B</th><th>O</th><th>A</th><th>Style</th></tr>
  <tr><td>0</td><td>0</td><td>0</td><td>Invalid date</td></tr>
@@ -57,6 +56,7 @@
  <tr><td>1</td><td>1</td><td>0</td><td>On 19 Sep 1948 or before</td></tr>
  <tr><td>1</td><td>1</td><td>1</td><td>About 19 Sep 1948</td></tr>
 </table>
+<p>
  Consider the time line is divided into three sections by the start and finish dates. The type flags are used to indicate how these periods are interpreted. These flags can be used in combination - but where the central period is not zero and the On flag is set this may lead to some ambiguity. So the assumption is made that in these cases that the central period is more likely than the other (Before or After) periods.
 </p>
 <p>
