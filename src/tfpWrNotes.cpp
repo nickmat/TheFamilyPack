@@ -63,6 +63,22 @@ wxString GetHtmDateData( const recDate& date )
 
 } // namespace
 
+wxString tfpWriteAttribute( idt attrID )
+{
+    wxString htm;
+    recAttribute attr(attrID);
+    if( attr.f_id == 0 ) return wxEmptyString;
+
+    htm << "<html><head><title>Place</title></head><body>"
+           "<h1>Attribute " << attr.GetIdStr() << "</h1>"
+        << recAttributeType::GetTypeStr( attr.f_type_id )
+        << ": " << attr.f_val
+       
+        << "</body></html>";
+
+    return htm;
+}
+
 wxString tfpWriteDate( idt dateID )
 {
     wxString htm;
@@ -122,6 +138,28 @@ wxString tfpGetDisplayText( const wxString& name )
     uch = name.GetChar( 0 );
     switch( uch.GetValue() )
     {
+    case 'A':  // Attribute
+        success = name.Mid(1).ToLongLong( &num );
+        if( !success || num < 1 ) {
+            wxMessageBox( _("Error: Invalid Attribute ID link"), _("Link Error") );
+            return wxEmptyString;
+        }
+        return tfpWriteAttribute( num );
+    case 'C':  // Chart reference
+        success = name.Mid(2).ToLongLong( &num );
+        if( !success || num < 1 ) {
+            wxMessageBox( _("Error: Invalid Individual ID link"), _("Link Error") );
+            return wxEmptyString;
+        }
+        switch( (wxChar) name.GetChar( 1 ) )
+        {
+        case 'D':
+            return tfpCreateDescChart( num );
+        case 'P':
+            return tfpCreatePedChart( num );
+        }
+        wxMessageBox( _("Error: Invalid Chart link reference"), _("Link Error") );
+        return wxEmptyString;
     case 'D':  // Date
         success = name.Mid(1).ToLongLong( &num );
         if( !success || num < 1 ) {
@@ -129,13 +167,16 @@ wxString tfpGetDisplayText( const wxString& name )
             return wxEmptyString;
         }
         return tfpWriteDate( num );
-    case 'P':  // Place
+    case 'E':  // Reference Document
+        if( name == "E" ) {
+            return tfpWriteEventIndex();
+        }
         success = name.Mid(1).ToLongLong( &num );
         if( !success || num < 1 ) {
-            wxMessageBox( _("Error: Invalid Place ID link"), _("Link Error") );
+            wxMessageBox( _("Error: Invalid Reference Document ID link"), _("Link Error") );
             return wxEmptyString;
         }
-        return tfpWritePlace( num );
+        return tfpWriteEventPage( num );
     case 'F':  // Family reference
         if( name.GetChar( 1 ) == 'I' ) {
             success = name.Mid(2).ToLongLong( &num );
@@ -166,21 +207,13 @@ wxString tfpGetDisplayText( const wxString& name )
             return tfpWriteIndividualList( wxEmptyString );
         }
         return tfpWriteIndividualList( name.Mid( 1 ) );
-    case 'C':  // Chart reference
-        success = name.Mid(2).ToLongLong( &num );
+    case 'P':  // Place
+        success = name.Mid(1).ToLongLong( &num );
         if( !success || num < 1 ) {
-            wxMessageBox( _("Error: Invalid Individual ID link"), _("Link Error") );
+            wxMessageBox( _("Error: Invalid Place ID link"), _("Link Error") );
             return wxEmptyString;
         }
-        switch( (wxChar) name.GetChar( 1 ) )
-        {
-        case 'D':
-            return tfpCreateDescChart( num );
-        case 'P':
-            return tfpCreatePedChart( num );
-        }
-        wxMessageBox( _("Error: Invalid Chart link reference"), _("Link Error") );
-        return wxEmptyString;
+        return tfpWritePlace( num );
     case 'R':  // Reference Document
         if( name == "R" ) {
             return tfpWriteReferenceIndex();
@@ -207,16 +240,6 @@ wxString tfpGetDisplayText( const wxString& name )
             return wxEmptyString;
         }
         return tfpWriteReferencePage( num );
-    case 'E':  // Reference Document
-        if( name == "E" ) {
-            return tfpWriteEventIndex();
-        }
-        success = name.Mid(1).ToLongLong( &num );
-        if( !success || num < 1 ) {
-            wxMessageBox( _("Error: Invalid Reference Document ID link"), _("Link Error") );
-            return wxEmptyString;
-        }
-        return tfpWriteEventPage( num );
     }
     wxMessageBox( _("Error: Invalid Display Name ")+name, _("Link Error") );
     return wxEmptyString;

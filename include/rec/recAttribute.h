@@ -56,6 +56,9 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "Attribute" );
 
+    static wxString GetIdStr( idt indID ) { return wxString::Format( "A"ID, indID ); }
+    wxString GetIdStr() const { return GetIdStr( f_id ); }
+
     static wxString GetValue( idt id );
 
     idt FindReferenceID() const { return FindReferenceID( f_id ); }
