@@ -134,7 +134,7 @@ public:
         ETYPE_Grp_Other,    // 7
         ETYPE_Grp_MAX       // 8
     };
- //   enum ETYPE_Std {  // predefined entries, match with recCreate.sql
+
     enum EType {  // predefined entries, match with recCreate.sql
         ET_Unstated     = 0,
         ET_Birth        = -1,
@@ -151,7 +151,9 @@ public:
         ET_Graduation   = -12,
         ET_Probate      = -13,
         ET_Will         = -14,
-        ET_MAX          = 15     // Size of list
+        ET_RegBirth     = -15,
+        ET_RegDeath     = -16,
+        ET_MAX          = 17     // Size of list
     };
     enum SelectFilter {
         SF_All,
@@ -213,10 +215,12 @@ public:
         ROLE_Unstated               = 0,
         ROLE_Birth_Born             = -1,
         ROLE_Birth_Mother           = -2,
+        ROLE_RegBirth_Born          = -50,
         ROLE_Baptism_Baptised       = -21,
         ROLE_Baptism_Parent         = -22,
         ROLE_Census_Listed          = -32,
         ROLE_Death_Died             = -5,
+        ROLE_RegDeath_Died          = -55,
         ROLE_Burial_Deceased        = -26,
         ROLE_Marriage_Bride         = -8,
         ROLE_Marriage_FatherOfBride = -13,
@@ -224,7 +228,7 @@ public:
         ROLE_Marriage_Groom         = -7,
         ROLE_Marriage_Officiate     = -9,
         ROLE_Marriage_Witness       = -10,
-        ROLE_MAX                    = 14 // size of list
+        ROLE_MAX                    = 16 // size of list
     };
     enum SelectFilter {
         SF_All,

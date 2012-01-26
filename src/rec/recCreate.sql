@@ -214,6 +214,20 @@ INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-47, -14, 
 INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-48, -14, 0, 1, 'Solicitor');
 INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-49, -14, 0, 0, 'Witness');
 
+INSERT INTO EventType (id, grp, name) VALUES(-15, 2, 'Register Birth');
+INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-50, -15, 1, 0, 'Born');
+INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-51, -15, 0, 0, 'Parent');
+INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-52, -15, 0, 0, 'Registrant');
+INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-53, -15, 0, 1, 'Registrar');
+INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-54, -15, 0, 0, 'Mentioned');
+
+INSERT INTO EventType (id, grp, name) VALUES(-16, 6, 'Register Death');
+INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-55, -16, 1, 0, 'Died');
+INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-56, -16, 0, 0, 'Registrant');
+INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-57, -16, 0, 1, 'Registrar');
+INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-58, -16, 0, 0, 'Mentioned');
+
+
 CREATE TABLE Family (
   id INTEGER PRIMARY KEY,
   husb_id INTEGER,
@@ -388,7 +402,7 @@ CREATE TABLE Version (
 );
 
 /* The Version table has only this one row */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 8);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 9);
 
 COMMIT;
 
