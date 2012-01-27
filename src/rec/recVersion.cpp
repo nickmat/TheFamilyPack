@@ -46,8 +46,8 @@
 const int recVerMajor    = 0;
 const int recVerMinor    = 0;
 const int recVerRev      = 9;
-const int recVerTest     = 9;
-const wxStringCharType* recVerStr = wxS("0.0.9.9");
+const int recVerTest     = 10;
+const wxStringCharType* recVerStr = wxS("0.0.9.10");
 
 
 recVersion::recVersion( const recVersion& v )
@@ -448,6 +448,18 @@ static void UpgradeTest0_0_9_8to0_0_9_9()
     recDb::Commit();
 }
 
+static void UpgradeTest0_0_9_9to0_0_9_10()
+{
+    char* query =
+        "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-59, -3, 3, 0, 'Spouse');\n"
+        "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-60, -15, 0, 0, 'Mother');\n"
+    ;
+    recDb::Begin();
+    recDb::GetDb()->ExecuteUpdate( query );
+    recVersion::Set( 0, 0, 9, 10 );
+    recDb::Commit();
+}
+
 static void UpgradeRev0_0_9toCurrent( int test )
 {
     switch( test )
@@ -470,6 +482,8 @@ static void UpgradeRev0_0_9toCurrent( int test )
         UpgradeTest0_0_9_7to0_0_9_8();
     case 8:
         UpgradeTest0_0_9_8to0_0_9_9();
+    case 9:
+        UpgradeTest0_0_9_9to0_0_9_10();
     }
 }
 

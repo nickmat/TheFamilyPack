@@ -216,6 +216,8 @@ public:
         ROLE_Birth_Born             = -1,
         ROLE_Birth_Mother           = -2,
         ROLE_RegBirth_Born          = -50,
+        ROLE_RegBirth_Parent        = -51,
+        ROLE_RegBirth_Mother        = -60,
         ROLE_Baptism_Baptised       = -21,
         ROLE_Baptism_Parent         = -22,
         ROLE_Census_Listed          = -32,
@@ -227,8 +229,9 @@ public:
         ROLE_Marriage_FatherOfGroom = -11,
         ROLE_Marriage_Groom         = -7,
         ROLE_Marriage_Officiate     = -9,
+        ROLE_Marriage_Spouse        = -59,  // If we don't know their gender.
         ROLE_Marriage_Witness       = -10,
-        ROLE_MAX                    = 16 // size of list
+        ROLE_MAX                    = 18 // size of list
     };
     enum SelectFilter {
         SF_All,
