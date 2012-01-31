@@ -426,4 +426,12 @@ wxString recPersona::GetDateEpitaph( idt perID )
     return str;
 }
 
+int recPersona::CountNames( idt perID )
+{
+    wxSQLite3StatementBuffer sql;
+    sql.Format( "SELECT COUNT(*) FROM Name WHERE per_id="ID";", perID );
+    return s_db->ExecuteScalar( sql );
+}
+
+
 // End of recPersona.cpp file

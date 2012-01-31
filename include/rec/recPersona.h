@@ -111,6 +111,9 @@ public:
 
     static wxString GetDateEpitaph( idt id );
     wxString GetDateEpitaph() const { return GetDateEpitaph( f_id ); }
+
+    static int CountNames( idt id );
+    int CountNames() const { return CountNames( f_id ); }
 };
 
 inline bool recEquivalent( const recPersona& r1, const recPersona& r2 )
