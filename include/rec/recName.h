@@ -62,12 +62,17 @@ public:
 
     recName() {}
     recName( idt id ) : recDb(id) { Read(); }
-    recName( const recName& attr );
+    recName( const recName& name );
 
     void Clear();
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "Name" );
+
+    static idt CreateName( const wxString& nameStr, idt style = 0 );
+
+    static wxString GetIdStr( idt evID ) { return wxString::Format( "N"ID, evID ); }
+    wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     int AddNameParts( const wxString& nameStr, recStdNameType type = NAME_TYPE_Unstated, int seq = 0 ) const;
     int AddNamePart( const wxString& nameStr, recStdNameType type, int seq ) const;

@@ -122,6 +122,15 @@ bool recName::Read()
     return true;
 }
 
+idt recName::CreateName( const wxString& nameStr, idt style )
+{
+    recName name(0);
+    name.f_style_id = style;
+    name.Save();
+    name.AddNameParts( nameStr );
+    return name.f_id;
+}
+
 int recName::AddNameParts( const wxString& nameStr, recStdNameType type, int seq ) const
 {
     recNamePart part(0);
