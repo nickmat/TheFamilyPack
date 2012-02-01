@@ -471,7 +471,7 @@ static void UpgradeTest0_0_9_10to0_0_9_11()
     ;
     recDb::Begin();
     recDb::GetDb()->ExecuteUpdate( query );
-    recVersion::Set( 0, 0, 9, 9 );
+    recVersion::Set( 0, 0, 9, 11 );
     recDb::Commit();
 }
 
