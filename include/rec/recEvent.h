@@ -153,7 +153,8 @@ public:
         ET_Will         = -14,
         ET_RegBirth     = -15,
         ET_RegDeath     = -16,
-        ET_MAX          = 17     // Size of list
+        ET_Resisence    = -17,
+        ET_MAX          = 18     // Size of list
     };
     enum SelectFilter {
         SF_All,
@@ -215,14 +216,10 @@ public:
         ROLE_Unstated               = 0,
         ROLE_Birth_Born             = -1,
         ROLE_Birth_Mother           = -2,
-        ROLE_RegBirth_Born          = -50,
-        ROLE_RegBirth_Parent        = -51,
-        ROLE_RegBirth_Mother        = -60,
         ROLE_Baptism_Baptised       = -21,
         ROLE_Baptism_Parent         = -22,
         ROLE_Census_Listed          = -32,
         ROLE_Death_Died             = -5,
-        ROLE_RegDeath_Died          = -55,
         ROLE_Burial_Deceased        = -26,
         ROLE_Marriage_Bride         = -8,
         ROLE_Marriage_FatherOfBride = -13,
@@ -231,7 +228,15 @@ public:
         ROLE_Marriage_Officiate     = -9,
         ROLE_Marriage_Spouse        = -59,  // If we don't know their gender.
         ROLE_Marriage_Witness       = -10,
-        ROLE_MAX                    = 18 // size of list
+        ROLE_RegBirth_Born          = -50,
+        ROLE_RegBirth_Parent        = -51,
+        ROLE_RegBirth_Mother        = -60,
+        ROLE_RegDeath_Died          = -55,
+        ROLE_Residence_Boarder      = -64,
+        ROLE_Residence_Family       = -61,
+        ROLE_Residence_Lodger       = -63,
+        ROLE_Residence_Visitor      = -62,
+        ROLE_MAX                    = 22 // size of list
     };
     enum SelectFilter {
         SF_All,
