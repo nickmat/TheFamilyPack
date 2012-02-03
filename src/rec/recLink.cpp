@@ -45,18 +45,20 @@
 
 recLinkEvent::recLinkEvent( const recLinkEvent& d )
 {
-    f_id          = d.f_id;
-    f_ref_event_id  = d.f_ref_event_id;
-    f_ind_event_id  = d.f_ind_event_id;
-    f_comment     = d.f_comment;
+    f_id           = d.f_id;
+    f_ref_event_id = d.f_ref_event_id;
+    f_ind_event_id = d.f_ind_event_id;
+    f_conf         = d.f_conf;
+    f_comment      = d.f_comment;
 }
 
 void recLinkEvent::Clear()
 {
-    f_id          = 0;
-    f_ref_event_id  = 0;
-    f_ind_event_id  = 0;
-    f_comment     = wxEmptyString;
+    f_id           = 0;
+    f_ref_event_id = 0;
+    f_ind_event_id = 0;
+    f_conf         = 0;
+    f_comment      = wxEmptyString;
 }
 
 void recLinkEvent::Save()
@@ -69,9 +71,9 @@ void recLinkEvent::Save()
         // Add new record
         sql.Format(
             "INSERT INTO LinkEvent "
-            "(ref_event_id, ind_event_id, comment) "
-            "VALUES ("ID", "ID", '%q');",
-            f_ref_event_id, f_ind_event_id, UTF8_(f_comment)
+            "(ref_event_id, ind_event_id, conf, comment) "
+            "VALUES ("ID", "ID", %f, '%q');",
+            f_ref_event_id, f_ind_event_id, f_conf, UTF8_(f_comment)
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -82,17 +84,17 @@ void recLinkEvent::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO LinkEvent "
-                "(id, ref_event_id, ind_event_id, comment) "
-                "VALUES ("ID", "ID", "ID", '%q');",
-                f_id, f_ref_event_id, f_ind_event_id, f_comment
+                "(id, ref_event_id, ind_event_id, conf, comment) "
+                "VALUES ("ID", "ID", "ID", %f, '%q');",
+                f_id, f_ref_event_id, f_ind_event_id, f_conf, f_comment
             );
         } else {
             // Update existing record
             sql.Format(
                 "UPDATE LinkEvent SET ref_event_id="ID", ind_event_id="ID", "
-                "comment='%q' "
+                "conf=%f, comment='%q' "
                 "WHERE id="ID";",
-                f_ref_event_id, f_ind_event_id,
+                f_ref_event_id, f_ind_event_id, f_conf,
                 UTF8_(f_comment), f_id
             );
         }
@@ -111,7 +113,7 @@ bool recLinkEvent::Read()
     }
 
     sql.Format(
-        "SELECT ref_event_id, ind_event_id, comment "
+        "SELECT ref_event_id, ind_event_id, conf, comment "
         "FROM LinkEvent WHERE id="ID";",
         f_id
     );
@@ -123,9 +125,10 @@ bool recLinkEvent::Read()
         return false;
     }
     result.SetRow( 0 );
-    f_ref_event_id  = GET_ID( result.GetInt64( 0 ) );
-    f_ind_event_id  = GET_ID( result.GetInt64( 1 ) );
-    f_comment     = result.GetAsString( 2 );
+    f_ref_event_id = GET_ID( result.GetInt64( 0 ) );
+    f_ind_event_id = GET_ID( result.GetInt64( 1 ) );
+    f_conf         = result.GetDouble( 2 );
+    f_comment      = result.GetAsString( 3 );
     return true;
 }
 
@@ -140,7 +143,7 @@ bool recLinkEvent::Find()
     if( f_ind_event_id == 0 ) return false; // Only find single record
 
     sql.Format(
-        "SELECT id, comment FROM LinkEvent "
+        "SELECT id, conf, comment FROM LinkEvent "
         "WHERE ref_event_id="ID" AND ind_event_id="ID";",
         f_ref_event_id, f_ind_event_id
     );
@@ -148,8 +151,9 @@ bool recLinkEvent::Find()
 
     if( result.GetRowCount() != 1 ) return false;
     result.SetRow( 0 );
-    f_id   = GET_ID( result.GetInt64( 0 ) );
-    f_comment = result.GetAsString( 1 );
+    f_id      = GET_ID( result.GetInt64( 0 ) );
+    f_conf    = result.GetDouble( 1 );
+    f_comment = result.GetAsString( 2 );
     return true;
 }
 

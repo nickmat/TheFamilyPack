@@ -153,7 +153,7 @@ public:
         ET_Will         = -14,
         ET_RegBirth     = -15,
         ET_RegDeath     = -16,
-        ET_Resisence    = -17,
+        ET_Residence    = -17,
         ET_MAX          = 18     // Size of list
     };
     enum SelectFilter {

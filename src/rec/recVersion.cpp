@@ -46,8 +46,8 @@
 const int recVerMajor    = 0;
 const int recVerMinor    = 0;
 const int recVerRev      = 9;
-const int recVerTest     = 11;
-const wxStringCharType* recVerStr = wxS("0.0.9.11");
+const int recVerTest     = 12;
+const wxStringCharType* recVerStr = wxS("0.0.9.12");
 
 
 recVersion::recVersion( const recVersion& v )
@@ -475,6 +475,30 @@ static void UpgradeTest0_0_9_10to0_0_9_11()
     recDb::Commit();
 }
 
+static void UpgradeTest0_0_9_11to0_0_9_12()
+{
+    char* query =
+        "ALTER TABLE LinkEvent RENAME TO OldLinkEvent;\n"
+        "CREATE TABLE LinkEvent (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  ref_event_id INTEGER NOT NULL,\n"
+        "  ind_event_id INTEGER NOT NULL REFERENCES Event(id),\n"
+        "  conf FLOAT NOT NULL,\n"
+        "  comment TEXT\n"
+        ");\n"
+        "INSERT INTO LinkEvent"
+        " (id, ref_event_id, ind_event_id, conf, comment)"
+        " SELECT id, ref_event_id, ind_event_id, 0.999, comment"
+        " FROM OldLinkEvent;\n"
+        "DROP TABLE OldLinkEvent;\n"
+    ;
+    recDb::Begin();
+    recDb::GetDb()->ExecuteUpdate( query );
+    recVersion::Set( 0, 0, 9, 12 );
+    recDb::Commit();
+}
+
+
 static void UpgradeRev0_0_9toCurrent( int test )
 {
     switch( test )
@@ -501,6 +525,8 @@ static void UpgradeRev0_0_9toCurrent( int test )
         UpgradeTest0_0_9_9to0_0_9_10();
     case 10:
         UpgradeTest0_0_9_10to0_0_9_11();
+    case 11:
+        UpgradeTest0_0_9_11to0_0_9_12();
     }
 }
 

@@ -265,6 +265,7 @@ CREATE TABLE LinkEvent (
   id INTEGER PRIMARY KEY,
   ref_event_id INTEGER NOT NULL, /* REFERENCES Event(id), May be zero */
   ind_event_id INTEGER NOT NULL REFERENCES Event(id),
+  conf FLOAT NOT NULL,
   comment TEXT
 );
 
@@ -411,7 +412,7 @@ CREATE TABLE Version (
 );
 
 /* The Version table has only this one row */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 11);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 12);
 
 COMMIT;
 

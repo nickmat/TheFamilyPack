@@ -41,6 +41,7 @@ class recLinkEvent : public recDb
 public:
     idt      f_ref_event_id;
     idt      f_ind_event_id;
+    double   f_conf;
     wxString f_comment;
 
     recLinkEvent() {}
@@ -60,9 +61,10 @@ public:
 inline bool recEquivalent( const recLinkEvent& d1, const recLinkEvent& d2 )
 {
     return
-        d1.f_ref_event_id  == d2.f_ref_event_id &&
-        d1.f_ind_event_id  == d2.f_ind_event_id &&
-        d1.f_comment     == d2.f_comment;
+        d1.f_ref_event_id == d2.f_ref_event_id &&
+        d1.f_ind_event_id == d2.f_ind_event_id &&
+        d1.f_conf         == d2.f_conf         &&
+        d1.f_comment      == d2.f_comment;
 }
 
 inline bool operator==( const recLinkEvent& d1, const recLinkEvent& d2 )
