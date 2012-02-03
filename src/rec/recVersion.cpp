@@ -46,8 +46,8 @@
 const int recVerMajor    = 0;
 const int recVerMinor    = 0;
 const int recVerRev      = 9;
-const int recVerTest     = 12;
-const wxStringCharType* recVerStr = wxS("0.0.9.12");
+const int recVerTest     = 13;
+const wxStringCharType* recVerStr = wxS("0.0.9.13");
 
 
 recVersion::recVersion( const recVersion& v )
@@ -498,6 +498,30 @@ static void UpgradeTest0_0_9_11to0_0_9_12()
     recDb::Commit();
 }
 
+static void UpgradeTest0_0_9_12to0_0_9_13()
+{
+    char* query =
+        "ALTER TABLE Individual RENAME TO OldIndividual;\n"
+        "CREATE TABLE Individual (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  surname TEXT,\n"
+        "  given TEXT,\n"
+        "  epitaph TEXT,\n"
+        "  fam_id INTEGER,\n"
+        "  per_id INTEGER\n"
+        ");\n"
+        "INSERT INTO Individual"
+        " (id, surname, given, epitaph, fam_id, per_id)"
+        " SELECT id, surname, given, epitaph, fam_id, per_id"
+        " FROM OldIndividual;\n"
+        "DROP TABLE OldIndividual;\n"
+    ;
+    recDb::Begin();
+    recDb::GetDb()->ExecuteUpdate( query );
+    recVersion::Set( 0, 0, 9, 13 );
+    recDb::Commit();
+}
+
 
 static void UpgradeRev0_0_9toCurrent( int test )
 {
@@ -527,6 +551,8 @@ static void UpgradeRev0_0_9toCurrent( int test )
         UpgradeTest0_0_9_10to0_0_9_11();
     case 11:
         UpgradeTest0_0_9_11to0_0_9_12();
+    case 12:
+        UpgradeTest0_0_9_12to0_0_9_13();
     }
 }
 

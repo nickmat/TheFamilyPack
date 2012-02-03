@@ -69,7 +69,7 @@ public:
     wxString GetNameStr() const { return m_per.GetNameStr(); }
 
     void SetIndId( idt indID ) { m_ind.f_id = indID; }
-    void SetSex( Sex sex ) { m_ind.f_sex = m_per.f_sex = sex; }
+    void SetSex( Sex sex ) { m_per.f_sex = sex; }
 
     void Save() { m_ind.UpdateNames(); m_ind.Save(); }
 };

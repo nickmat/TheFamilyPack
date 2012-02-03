@@ -254,9 +254,7 @@ CREATE TABLE Individual (
   id INTEGER PRIMARY KEY,
   surname TEXT,
   given TEXT,
-  birth_jdn INTEGER,
   epitaph TEXT,
-  sex INTEGER,
   fam_id INTEGER,
   per_id INTEGER
 );
@@ -412,7 +410,7 @@ CREATE TABLE Version (
 );
 
 /* The Version table has only this one row */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 12);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 13);
 
 COMMIT;
 

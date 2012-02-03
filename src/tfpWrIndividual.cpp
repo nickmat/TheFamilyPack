@@ -48,6 +48,7 @@ wxString tfpWriteIndividualPage( idt indID )
     wxString htm;
     size_t i, j, cnt;
     recIndividual ind( indID );
+    recPersona per( ind.f_per_id );
     recIndividual spouse;
 
     htm << wxT("<html><head><title>Individual I ")
@@ -63,11 +64,11 @@ wxString tfpWriteIndividualPage( idt indID )
 
     // Sex
     htm << wxT("<tr><td align=right>ID, Sex:</td><td><b>I ")
-        << indID << wxT(", ") << recGetSexStr( ind.f_sex )
+        << indID << wxT(", ") << recGetSexStr( per.f_sex )
         << wxT("</b></td></tr>");
 
     // Birth
-    idt id = recPersona::GetBirthEvent( ind.f_per_id );
+    idt id = per.GetBirthEvent();
     if( id != 0 ) {
         htm << wxT("<tr><td align=right>Birth:</td><td><b>")
             << recEvent::GetDetailStr( id )
@@ -75,7 +76,7 @@ wxString tfpWriteIndividualPage( idt indID )
             << wxT("><img src=memory:eve.bmp></a></td></tr>");
     }
     // Near birth
-    id = recPersona::GetNrBirthEvent( ind.f_per_id );
+    id = per.GetNrBirthEvent();
     if( id != 0 ) {
         htm << wxT("<tr><td align=right>")
             << recEvent::GetTypeStr( id )
@@ -85,7 +86,7 @@ wxString tfpWriteIndividualPage( idt indID )
             << wxT("><img src=memory:eve.bmp></a></td></tr>");
     }
     // Death
-    id = recPersona::GetDeathEvent( ind.f_per_id );
+    id = per.GetDeathEvent();
     if( id != 0 ) {
         htm << wxT("<tr><td align=right>Death:</td><td><b>")
             << recEvent::GetDetailStr( id )
@@ -93,7 +94,7 @@ wxString tfpWriteIndividualPage( idt indID )
             << wxT("><img src=memory:eve.bmp></a></td></tr>");
     }
     // Near death
-    id = recPersona::GetNrDeathEvent( ind.f_per_id );
+    id = per.GetNrDeathEvent();
     if( id != 0 ) {
         htm << wxT("<tr><td align=right>")
             << recEvent::GetTypeStr( id )
@@ -103,7 +104,7 @@ wxString tfpWriteIndividualPage( idt indID )
             << wxT("><img src=memory:eve.bmp></a></td></tr>");
     }
     // Occupation
-    id = recPersona::GetOccAttribute( ind.f_per_id );
+    id = per.GetOccAttribute();
     if( id != 0 ) {
         htm << wxT("<tr><td align=right>Occupation:</td><td><b>")
             << recAttribute::GetValue( id )

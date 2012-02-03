@@ -66,7 +66,7 @@
   <img id="logo" src="../tfp5.gif" alt="Logo" />
  </a>
  The Family Pack<br/>
- Database Design V0.0.9.5
+ Database Design V0.0.9.12
 </h1>
 
 <div id="page" class="database">
@@ -108,28 +108,29 @@
    <tr>
     <td><a href="#FamilyIndividual">FamilyIndividual</a></td>
     <td><a href="#Individual">Individual</a></td>
+    <td><a href="#LinkEvent">LinkEvent</a></td>
     <td><a href="#LinkPersona">LinkPersona</a></td>
     <td><a href="#Name">Name</a></td>
     <td><a href="#NamePart">NamePart</a></td>
-    <td><a href="#NamePartType">NamePartType</a></td>
    </tr>
    <tr>
+    <td><a href="#NamePartType">NamePartType</a></td>
     <td><a href="#NameStyle">NameStyle</a></td>
     <td><a href="#Persona">Persona</a></td>
     <td><a href="#Place">Place</a></td>
     <td><a href="#PlacePart">PlacePart</a></td>
     <td><a href="#PlacePartType">PlacePartType</a></td>
-    <td><a href="#Reference">Reference</a></td>
    </tr>
    <tr>
+    <td><a href="#Reference">Reference</a></td>
     <td><a href="#ReferenceEntity">ReferenceEntity</a></td>
     <td><a href="#Relationship">Relationship</a></td>
     <td><a href="#Repository">Repository</a></td>
     <td><a href="#RepositorySource">RepositorySource</a></td>
     <td><a href="#Researcher">Researcher</a></td>
-    <td><a href="#Source">Source</a></td>
    </tr>
    <tr>
+    <td><a href="#Source">Source</a></td>
     <td><a href="#User">User</a></td>
     <td><a href="#Version">Version</a></td>
     <td colspan='0' class="na">&nbsp;</td>
@@ -242,7 +243,7 @@
     <tr>
      <td>name</td>
      <td>Text</td>
-     <td>The actual name of the citation part, such as author, compiler, editor, transcriber, or place of publication.  There are more than a hundred different citation parts.</td>
+     <td>The actual name of the citation part, such as author, compiler, editor, transcriber, or place of publication.</td>
     </tr>
 
     <tr id="Contact">
@@ -563,19 +564,9 @@
      <td>The given name or names for this Individual. NOTE: Redundant field created from Persona/Names</td>
     </tr>
     <tr>
-     <td>birth_jdn</td>
-     <td>Integer</td>
-     <td>The birth Julian Day Number, used for sorting individuals. NOTE: Redundant field created from Events</td>
-    </tr>
-    <tr>
      <td>epitaph</td>
      <td>Text</td>
      <td>The short date epitaph string ie (1914 - 1987). NOTE: Redundant field created from Events</td>
-    </tr>
-    <tr>
-     <td>sex</td>
-     <td>Integer</td>
-     <td>This holds 0=Unstated, 1=Male, 2=Female and 3=Unknown</td>
     </tr>
     <tr>
      <td>fam_id</td>
@@ -586,6 +577,38 @@
      <td>per_id</td>
      <td>Integer</td>
      <td>Pointer to the default Persona.</td>
+    </tr>
+
+    <tr id="LinkEvent">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>LinkEvent</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td class="nw">Integer PK</td>
+     <td>Unique key identifying a LinkEvent record.</td>
+    </tr>
+    <tr>
+     <td>ref_event_id</td>
+     <td>Integer</td>
+     <td>Pointer to an Event associated with a Reference</td>
+    </tr>
+    <tr>
+     <td>ind_event_id</td>
+     <td>Integer</td>
+     <td>Pointer to an Event associated with an Individual</td>
+    </tr>
+    <tr>
+     <td>conf</td>
+     <td>Float</td>
+     <td>A value, less than one, to indicate the confidence that the link is correct</td>
+    </tr>
+    <tr>
+     <td>comment</td>
+     <td>Text</td>
+     <td>Optional comment that relates to the Reference Event - Individual Event link</td>
     </tr>
 
     <tr id="LinkPersona">
@@ -608,6 +631,11 @@
      <td>ind_per_id</td>
      <td>Integer</td>
      <td>Pointer to a Persona associated with an Individual</td>
+    </tr>
+    <tr>
+     <td>conf</td>
+     <td>Float</td>
+     <td>A value, less than one, to indicate the confidence that the link is correct</td>
     </tr>
     <tr>
      <td>comment</td>

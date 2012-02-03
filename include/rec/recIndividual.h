@@ -49,9 +49,7 @@ class recIndividual : public recDb
 public:
     wxString f_surname;
     wxString f_given;
-    long     f_birth_jdn;
     wxString f_epitaph;
-    Sex      f_sex;
     idt      f_fam_id;
     idt      f_per_id;
 
@@ -119,9 +117,7 @@ inline bool recEquivalent( const recIndividual& r1, const recIndividual& r2 )
     return
         r1.f_surname     == r2.f_surname      &&
         r1.f_given       == r2.f_given        &&
-        r1.f_birth_jdn   == r2.f_birth_jdn    &&
         r1.f_epitaph     == r2.f_epitaph      &&
-        r1.f_sex         == r2.f_sex          &&
         r1.f_fam_id      == r2.f_fam_id       &&
         r1.f_per_id      == r2.f_per_id;
 }

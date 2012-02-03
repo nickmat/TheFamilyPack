@@ -808,9 +808,7 @@ void RecTestCase::TestIndividual()
 
     record1.f_surname     = "Matthews";
     record1.f_given       = "Nick";
-    record1.f_birth_jdn   = 3;
     record1.f_epitaph     = "(1948-)";
-    record1.f_sex         = SEX_Male;
     record1.f_fam_id      = 4;
     record1.f_per_id      = 5;
     // f_id = 0 so create new record and set f_id to new value.
@@ -825,9 +823,7 @@ void RecTestCase::TestIndividual()
 
     record1.f_surname     = "Bloggs";
     record1.f_given       = "Fred";
-    record1.f_birth_jdn   = 19;
     record1.f_epitaph     = "(1948-)";
-    record1.f_sex         = SEX_Unknown;
     record1.f_fam_id      = 18;
     record1.f_per_id      = 17;
     // f_id = 1 which exists, so amend record leaving f_id to old value.
