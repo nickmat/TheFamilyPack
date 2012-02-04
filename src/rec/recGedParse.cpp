@@ -71,7 +71,7 @@ public:
     void SetIndId( idt indID ) { m_ind.f_id = indID; }
     void SetSex( Sex sex ) { m_per.f_sex = sex; }
 
-    void Save() { m_ind.UpdateNames(); m_ind.Save(); }
+    void Save() { m_per.Save(); m_ind.UpdateNames(); m_ind.Save(); }
 };
 
 class GedFamily
