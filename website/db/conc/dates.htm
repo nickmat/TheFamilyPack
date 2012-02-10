@@ -74,6 +74,11 @@
  A relative date behaves exactly as a fixed date in all respects, including being used as the base date for another relative date.
 </p>
 
+<h2>Future Changes</h2>
+<p>
+ Although the relative dates are working in the current test program, it is probably a bad idea to use jdn column for things other than the actual jdn of date in question. So this will change to create a separate table for RelativeDate, this will have three columns for Years, Months and Days (or whatever other units are indicated) and a field for the base date. The current base_* columns in the Date table will be removed and replaced with a single rel_date_id pointer into the RelativeDate table. This involves some redundancy of data, and an obligation every time a date is edited to check if it appears as a base date in the RelativeDate table and if it does, to update the dependant date or dates as well.
+</p>
+
 </div>
 
 <hr />
