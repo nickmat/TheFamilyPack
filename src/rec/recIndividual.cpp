@@ -139,6 +139,37 @@ bool recIndividual::Read()
     return true;
 }
 
+bool recIndividual::ReadPersona( idt perID )
+{
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( f_id == 0 ) {
+        Clear();
+        return false;
+    }
+
+    sql.Format(
+        "SELECT id, surname, given, epitaph, fam_id "
+        "FROM Individual WHERE per_id="ID";", perID
+    );
+    result = s_db->GetTable( sql );
+
+    if( result.GetRowCount() != 1 )
+    {
+        Clear();
+        return false;
+    }
+    f_per_id = perID;
+    result.SetRow( 0 );
+    f_id          = GET_ID( result.GetInt64( 0 ) );
+    f_surname     = result.GetAsString( 1 );
+    f_given       = result.GetAsString( 2 );
+    f_epitaph     = result.GetAsString( 3 );
+    f_fam_id      = GET_ID( result.GetInt64( 4 ) );
+    return true;
+}
+
 void recIndividual::UpdateDateEpitaph()
 {
     f_epitaph = recPersona::GetDateEpitaph( f_per_id );

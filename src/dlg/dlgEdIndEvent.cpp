@@ -37,22 +37,38 @@
 #include "wx/wx.h"
 #endif
 
+#include <rec/recLink.h>
+
 #include "dlgEdIndEvent.h"
 
+
+//-----------------------------------------------------
+//      dlgEditIndEvent
+//-----------------------------------------------------
+
 dlgEditIndEvent::dlgEditIndEvent( wxWindow* parent )
-    : fbDlgEditIndEvent( parent )
+    : fbDlgEditIndEvent2( parent )
 {
     m_event.Clear();
     m_date1.Clear();
     m_place.Clear();
+
+    m_listPersona->InsertColumn( COL_IndID, _("Individual") );
+    m_listPersona->InsertColumn( COL_Name, _("Name") );
+    m_listPersona->InsertColumn( COL_Role, _("Role") );
+    m_listPersona->InsertColumn( COL_Note, _("Note") );
 }
 
 bool dlgEditIndEvent::TransferDataToWindow()
 {
+    if( m_event.f_id ) {
+        m_event.Read();
+    } else {
+        m_event.Save();
+    }
     m_staticType->SetLabel( m_event.GetTypeStr() );
-
+    m_staticEventID->SetLabel( m_event.GetIdStr() );
     m_textCtrlTitle->SetValue( m_event.f_title );
-
     if( m_event.f_date1_id == 0 ) {
         m_date1.SetDefaults();
         m_date1.Save();
@@ -61,9 +77,7 @@ bool dlgEditIndEvent::TransferDataToWindow()
         m_date1.Read();
     }
     m_textCtrlDate1->SetValue( m_date1.GetStr() );
-
     m_buttonDate2->Enable( false );
-
     if( m_event.f_place_id == 0 ) {
         m_place.Clear();
         m_place.Save();
@@ -72,10 +86,71 @@ bool dlgEditIndEvent::TransferDataToWindow()
         m_place.Read();
     }
     m_textCtrlAddr->SetValue( m_place.GetAddressStr() );
-
     m_textCtrlNote->SetValue( m_event.f_note );
 
+    m_evpers = m_event.GetEventPersonas();
+    m_individuals.clear();
+    recIndividual ind;
+    for( size_t i = 0 ; i < m_evpers.size() ; i++ ) {
+        ind.ReadPersona( m_evpers[i].f_per_id );
+        m_individuals.push_back( ind );
+        m_listPersona->InsertItem( i, ind.GetIdStr() );
+        m_listPersona->SetItem( i, COL_Name, ind.GetFullName() );
+        m_listPersona->SetItem( i, COL_Role, recEventTypeRole::GetName( m_evpers[i].f_role_id ) );
+        m_listPersona->SetItem( i, COL_Note, m_evpers[i].f_note );
+    }
+
+    m_refEventIDs = recLinkEvent::FindEquivRefEvents( m_event.f_id );
+    m_htmlWin2->SetPage( WrReferenceEvents() );
     return true;
+}
+
+wxString dlgEditIndEvent::WrReferenceEvents()
+{
+
+//    size_t i, j, cnt;
+//    recIndividual ind( indID );
+//    recPersona per( ind.f_per_id );
+//    recIndividual spouse;
+    wxString htm;
+
+    htm << "<html><head><title>"
+        << m_event.f_title << "</title></head>"
+           "<body><center><table width=100%>";
+
+
+    for( size_t i = 0 ; i < m_refEventIDs.size() ; i++ ) {
+        recEvent e(m_refEventIDs[i]);
+        htm << "<tr><td>"
+            << e.f_title
+            << "</td></tr>";
+    }
+
+
+#if 0
+    wxSQLite3Table eTable = ind.GetRefEventsTable();
+    for( size_t j = 0 ; j < (size_t) eTable.GetRowCount() ; j++ ) {
+        eTable.SetRow( j );
+        idt eventID = GET_ID( eTable.GetInt64( 0 ) );
+        idt roleID = GET_ID( eTable.GetInt64( 1 ) );
+        idt refID = recEvent::FindReferenceID( eventID );
+
+        htm << "<tr><td align=right>"
+            << recEventTypeRole::GetName( roleID )
+            << ":</td><td><b>"
+            << recEvent::GetTitle( eventID );
+        if( refID != 0 ) {
+            htm << " <a href=R" << refID
+                << "><img src=memory:ref.bmp></a>";
+        }
+        htm << "<br>"
+            << recEvent::GetDetailStr( eventID )
+            << "</b></td></tr>";
+    }
+#endif
+    htm << "</table></center></body></html>";
+
+    return htm;
 }
 
 bool dlgEditIndEvent::TransferDataFromWindow()
@@ -121,6 +196,100 @@ void dlgEditIndEvent::OnDate1Button( wxCommandEvent& event )
 }
 
 void dlgEditIndEvent::OnAddrButton( wxCommandEvent& event )
+{
+    wxMessageBox(
+        wxT("Not yet implimented\nAddress"),
+        wxT("OnAddrButton")
+    );
+}
+
+
+//-----------------------------------------------------
+//      dlgEditIndEvent
+//-----------------------------------------------------
+
+dlgEditIndEvent_::dlgEditIndEvent_( wxWindow* parent )
+    : fbDlgEditIndEvent( parent )
+{
+    m_event.Clear();
+    m_date1.Clear();
+    m_place.Clear();
+}
+
+bool dlgEditIndEvent_::TransferDataToWindow()
+{
+    m_staticType->SetLabel( m_event.GetTypeStr() );
+
+    m_textCtrlTitle->SetValue( m_event.f_title );
+
+    if( m_event.f_date1_id == 0 ) {
+        m_date1.SetDefaults();
+        m_date1.Save();
+    } else {
+        m_date1.f_id = m_event.f_date1_id;
+        m_date1.Read();
+    }
+    m_textCtrlDate1->SetValue( m_date1.GetStr() );
+
+    m_buttonDate2->Enable( false );
+
+    if( m_event.f_place_id == 0 ) {
+        m_place.Clear();
+        m_place.Save();
+    } else {
+        m_place.f_id = m_event.f_place_id;
+        m_place.Read();
+    }
+    m_textCtrlAddr->SetValue( m_place.GetAddressStr() );
+
+    m_textCtrlNote->SetValue( m_event.f_note );
+
+    return true;
+}
+
+bool dlgEditIndEvent_::TransferDataFromWindow()
+{
+    wxASSERT( m_event.f_type_id != 0 );
+
+    m_event.f_title = m_textCtrlTitle->GetValue();
+
+    wxString str = m_textCtrlDate1->GetValue();
+    if( str.IsEmpty() ) {
+        m_date1.Delete();
+        m_event.f_date1_id = 0;
+    } else {
+        m_date1.SetDate( str );
+        m_date1.Save();
+        m_event.f_date1_id = m_date1.f_id;
+    }
+
+    m_event.f_date2_id = 0;
+
+    str = m_textCtrlAddr->GetValue();
+    if( str.IsEmpty() ) {
+        m_place.Delete();
+        m_event.f_place_id = 0;
+    } else {
+        m_place.SetAddress( str );
+        m_place.Save();
+        m_event.f_place_id = m_place.f_id;
+    }
+
+    m_event.f_note = m_textCtrlNote->GetValue();
+
+    m_event.Save();
+    return true;
+}
+
+void dlgEditIndEvent_::OnDate1Button( wxCommandEvent& event )
+{
+    wxMessageBox(
+        wxT("Not yet implimented\nDate"),
+        wxT("OnDate1Button")
+    );
+}
+
+void dlgEditIndEvent_::OnAddrButton( wxCommandEvent& event )
 {
     wxMessageBox(
         wxT("Not yet implimented\nAddress"),

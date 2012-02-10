@@ -404,7 +404,7 @@ void dlgEditIndPersona::OnAttrDownButton( wxCommandEvent& event )
 
 void dlgEditIndPersona::OnEventAddButton( wxCommandEvent& event )
 {
-    const wxString savepoint = "PerEdEvent";
+    const wxString savepoint = "IndAddEvent";
     recDb::Savepoint( savepoint );
 
     idt typeID = recEventType::Select( recEventType::SF_Individual );
@@ -453,7 +453,26 @@ void dlgEditIndPersona::OnEventAddButton( wxCommandEvent& event )
 void dlgEditIndPersona::OnEventEditButton( wxCommandEvent& event )
 {
     // TODO:
-    wxMessageBox( wxT("Not yet implimented"), wxT("OnEventEditButton") );
+//    wxMessageBox( wxT("Not yet implimented"), wxT("OnEventEditButton") );
+    long row = m_listEvent->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row < 0 ) {
+        wxMessageBox( _("No row selected"), _("Edit Event") );
+        return;
+    }
+
+    const wxString savepoint = "IndEdEvent";
+    recDb::Savepoint( savepoint );
+
+    dlgEditIndEvent* dialog = new dlgEditIndEvent( NULL );
+    dialog->SetEvent( m_evpers[row].f_event_id );
+
+    if( dialog->ShowModal() == wxID_OK )
+    {
+        recDb::ReleaseSavepoint( savepoint );
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
 }
 
 void dlgEditIndPersona::OnEventDeleteButton( wxCommandEvent& event )

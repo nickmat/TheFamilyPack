@@ -2494,3 +2494,194 @@ fbDlgEditFamEvent::~fbDlgEditFamEvent()
 	m_buttonAddr->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditFamEvent::OnAddrButton ), NULL, this );
 	
 }
+
+fbDlgEditIndEvent2::fbDlgEditIndEvent2( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	
+	wxBoxSizer* bSizer1;
+	bSizer1 = new wxBoxSizer( wxVERTICAL );
+	
+	m_splitter = new wxSplitterWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_3D|wxSP_LIVE_UPDATE );
+	m_splitter->SetSashGravity( 0.5 );
+	m_splitter->Connect( wxEVT_IDLE, wxIdleEventHandler( fbDlgEditIndEvent2::m_splitterOnIdle ), NULL, this );
+	
+	m_panel21 = new wxPanel( m_splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer133;
+	bSizer133 = new wxBoxSizer( wxVERTICAL );
+	
+	m_splitter6 = new wxSplitterWindow( m_panel21, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_3D|wxSP_BORDER|wxSP_LIVE_UPDATE );
+	m_splitter6->Connect( wxEVT_IDLE, wxIdleEventHandler( fbDlgEditIndEvent2::m_splitter6OnIdle ), NULL, this );
+	
+	m_panel22 = new wxPanel( m_splitter6, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxFlexGridSizer* fgSizer3;
+	fgSizer3 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer3->AddGrowableCol( 1 );
+	fgSizer3->AddGrowableRow( 5 );
+	fgSizer3->SetFlexibleDirection( wxBOTH );
+	fgSizer3->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_ALL );
+	
+	m_staticText17 = new wxStaticText( m_panel22, wxID_ANY, _("Event type:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText17->Wrap( -1 );
+	fgSizer3->Add( m_staticText17, 0, wxALIGN_RIGHT|wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	wxBoxSizer* bSizer134;
+	bSizer134 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_staticType = new wxStaticText( m_panel22, wxID_ANY, _("Birth"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticType->Wrap( -1 );
+	m_staticType->SetFont( wxFont( 9, 74, 90, 92, false, wxT("MS Shell Dlg 2") ) );
+	
+	bSizer134->Add( m_staticType, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	
+	bSizer134->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	m_staticEventID = new wxStaticText( m_panel22, wxID_ANY, _("E0"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticEventID->Wrap( -1 );
+	m_staticEventID->SetFont( wxFont( 11, 72, 90, 92, false, wxT("Times New Roman") ) );
+	
+	bSizer134->Add( m_staticEventID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	fgSizer3->Add( bSizer134, 1, wxEXPAND, 5 );
+	
+	m_staticText171 = new wxStaticText( m_panel22, wxID_ANY, _("Title:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText171->Wrap( -1 );
+	fgSizer3->Add( m_staticText171, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_textCtrlTitle = new wxTextCtrl( m_panel22, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer3->Add( m_textCtrlTitle, 1, wxALL|wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_buttonDate1 = new wxButton( m_panel22, wxID_ANY, _("Date:"), wxDefaultPosition, wxSize( -1,-1 ), wxBU_RIGHT );
+	fgSizer3->Add( m_buttonDate1, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_textCtrlDate1 = new wxTextCtrl( m_panel22, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer3->Add( m_textCtrlDate1, 1, wxALIGN_CENTER_VERTICAL|wxALL|wxEXPAND, 5 );
+	
+	m_buttonDate2 = new wxButton( m_panel22, wxID_ANY, _("End Date:"), wxDefaultPosition, wxSize( -1,-1 ), wxBU_RIGHT );
+	fgSizer3->Add( m_buttonDate2, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_textCtrlDate2 = new wxTextCtrl( m_panel22, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 200,-1 ), wxTE_READONLY );
+	fgSizer3->Add( m_textCtrlDate2, 1, wxALIGN_CENTER_VERTICAL|wxALL|wxEXPAND, 5 );
+	
+	m_buttonAddr = new wxButton( m_panel22, wxID_ANY, _("Place:"), wxDefaultPosition, wxSize( -1,-1 ), wxBU_RIGHT );
+	fgSizer3->Add( m_buttonAddr, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_textCtrlAddr = new wxTextCtrl( m_panel22, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 200,-1 ), 0 );
+	fgSizer3->Add( m_textCtrlAddr, 1, wxALL|wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_staticText1711 = new wxStaticText( m_panel22, wxID_ANY, _("Note:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText1711->Wrap( -1 );
+	fgSizer3->Add( m_staticText1711, 0, wxALL|wxALIGN_RIGHT, 5 );
+	
+	m_textCtrlNote = new wxTextCtrl( m_panel22, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 200,-1 ), wxTE_MULTILINE );
+	fgSizer3->Add( m_textCtrlNote, 1, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
+	
+	m_panel22->SetSizer( fgSizer3 );
+	m_panel22->Layout();
+	fgSizer3->Fit( m_panel22 );
+	m_panel23 = new wxPanel( m_splitter6, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxStaticBoxSizer* sbSizer1;
+	sbSizer1 = new wxStaticBoxSizer( new wxStaticBox( m_panel23, wxID_ANY, _("Personas:") ), wxHORIZONTAL );
+	
+	m_listPersona = new wxListCtrl( m_panel23, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_HRULES|wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_VRULES );
+	m_listPersona->SetMinSize( wxSize( -1,125 ) );
+	
+	sbSizer1->Add( m_listPersona, 1, wxALL|wxEXPAND, 5 );
+	
+	wxBoxSizer* bSizer11;
+	bSizer11 = new wxBoxSizer( wxVERTICAL );
+	
+	m_buttonAdd = new wxButton( m_panel23, wxID_ANY, _("Add"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer11->Add( m_buttonAdd, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+	
+	m_buttonEdit = new wxButton( m_panel23, wxID_ANY, _("Edit"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer11->Add( m_buttonEdit, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+	
+	m_buttonDel = new wxButton( m_panel23, wxID_ANY, _("Delete"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer11->Add( m_buttonDel, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+	
+	wxBoxSizer* bSizer121;
+	bSizer121 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_buttonUp = new wxButton( m_panel23, wxID_ANY, _("Up"), wxDefaultPosition, wxSize( 35,-1 ), 0 );
+	bSizer121->Add( m_buttonUp, 0, wxTOP|wxBOTTOM|wxLEFT, 5 );
+	
+	
+	bSizer121->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	m_buttonDn = new wxButton( m_panel23, wxID_ANY, _("Down"), wxDefaultPosition, wxSize( 35,-1 ), 0 );
+	bSizer121->Add( m_buttonDn, 0, wxALL, 5 );
+	
+	bSizer11->Add( bSizer121, 1, wxEXPAND, 5 );
+	
+	sbSizer1->Add( bSizer11, 0, wxEXPAND, 5 );
+	
+	m_panel23->SetSizer( sbSizer1 );
+	m_panel23->Layout();
+	sbSizer1->Fit( m_panel23 );
+	m_splitter6->SplitHorizontally( m_panel22, m_panel23, 226 );
+	bSizer133->Add( m_splitter6, 1, wxEXPAND, 5 );
+	
+	m_panel21->SetSizer( bSizer133 );
+	m_panel21->Layout();
+	bSizer133->Fit( m_panel21 );
+	m_panel2 = new wxPanel( m_splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer113;
+	bSizer113 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_htmlWin2 = new wxHtmlWindow( m_panel2, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHW_SCROLLBAR_AUTO );
+	bSizer113->Add( m_htmlWin2, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL, 5 );
+	
+	m_panel2->SetSizer( bSizer113 );
+	m_panel2->Layout();
+	bSizer113->Fit( m_panel2 );
+	m_splitter->SplitVertically( m_panel21, m_panel2, 0 );
+	bSizer1->Add( m_splitter, 1, wxEXPAND, 5 );
+	
+	m_staticline1 = new wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
+	bSizer1->Add( m_staticline1, 0, wxEXPAND | wxALL, 0 );
+	
+	wxBoxSizer* bSizer12;
+	bSizer12 = new wxBoxSizer( wxHORIZONTAL );
+	
+	
+	bSizer12->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	m_buttonSave = new wxButton( this, wxID_OK, _("Save"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer12->Add( m_buttonSave, 0, wxTOP|wxBOTTOM|wxLEFT|wxALIGN_CENTER_VERTICAL, 7 );
+	
+	m_buttonCancel = new wxButton( this, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer12->Add( m_buttonCancel, 0, wxALL|wxALIGN_CENTER_VERTICAL, 7 );
+	
+	bSizer1->Add( bSizer12, 0, wxEXPAND, 5 );
+	
+	this->SetSizer( bSizer1 );
+	this->Layout();
+	
+	this->Centre( wxBOTH );
+	
+	// Connect Events
+	m_buttonDate1->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditIndEvent2::OnDate1Button ), NULL, this );
+	m_buttonDate2->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditIndEvent2::OnDate2Button ), NULL, this );
+	m_buttonAddr->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditIndEvent2::OnAddrButton ), NULL, this );
+	m_buttonAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditIndEvent2::OnAddButton ), NULL, this );
+	m_buttonEdit->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditIndEvent2::OnEditButton ), NULL, this );
+	m_buttonDel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditIndEvent2::OnDeleteButton ), NULL, this );
+	m_buttonUp->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditIndEvent2::OnUpButton ), NULL, this );
+	m_buttonDn->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditIndEvent2::OnDownButton ), NULL, this );
+}
+
+fbDlgEditIndEvent2::~fbDlgEditIndEvent2()
+{
+	// Disconnect Events
+	m_buttonDate1->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditIndEvent2::OnDate1Button ), NULL, this );
+	m_buttonDate2->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditIndEvent2::OnDate2Button ), NULL, this );
+	m_buttonAddr->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditIndEvent2::OnAddrButton ), NULL, this );
+	m_buttonAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditIndEvent2::OnAddButton ), NULL, this );
+	m_buttonEdit->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditIndEvent2::OnEditButton ), NULL, this );
+	m_buttonDel->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditIndEvent2::OnDeleteButton ), NULL, this );
+	m_buttonUp->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditIndEvent2::OnUpButton ), NULL, this );
+	m_buttonDn->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditIndEvent2::OnDownButton ), NULL, this );
+	
+}

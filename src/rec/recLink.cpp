@@ -157,6 +157,31 @@ bool recLinkEvent::Find()
     return true;
 }
 
+recIdVec recLinkEvent::FindEquivRefEvents( idt indEventID )
+{
+    recIdVec vec;
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3ResultSet result;
+
+    sql.Format(
+        "SELECT DISTINCT event_id FROM"
+        " (SELECT EP.event_id, LP.ind_per_id FROM"
+        " LinkPersona LP, EventPersona EP, Event E, EventTypeRole R"
+        " WHERE LP.ref_per_id=EP.per_id AND EP.role_id=R.id AND E.id="ID" "
+        "  AND R.type_id=E.type_id AND NOT R.prime=0) "
+        "JOIN "
+        " (SELECT per_id FROM EventPersona WHERE event_id="ID") "
+        "ON ind_per_id=per_id;",
+        indEventID, indEventID
+    );
+    result = s_db->ExecuteQuery( sql );
+
+    while( result.NextRow() ) {
+        vec.push_back( GET_ID( result.GetInt64( 0 ) ) );
+    }
+    return vec;
+}
+
 
 //============================================================================
 //                 recLinkPersona

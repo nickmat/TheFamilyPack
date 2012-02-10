@@ -259,6 +259,9 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "EventTypeRole" );
 
+    static wxString GetIdStr( idt evID ) { return wxString::Format( "Ro"ID, evID ); }
+    wxString GetIdStr() const { return GetIdStr( f_id ); }
+
     static wxString GetName( idt roleID );
     static wxString GetTypeAndRoleStr( idt roleID );
     static idt Select( idt typeID, SelectFilter sf = SF_All );

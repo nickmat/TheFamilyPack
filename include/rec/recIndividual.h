@@ -65,6 +65,8 @@ public:
     static wxString GetIdStr( idt indID ) { return wxString::Format( "I"ID, indID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
+    bool ReadPersona( idt perID );
+
     void UpdateDateEpitaph();
     void UpdateNames();
     void Update();

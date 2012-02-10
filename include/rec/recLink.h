@@ -54,6 +54,8 @@ public:
     TABLE_NAME_MEMBERS( "LinkEvent" );
 
     bool Find();
+
+    static recIdVec FindEquivRefEvents( idt indEventID );
 };
 
 /*! The two entities are equal, ignoring the record id.

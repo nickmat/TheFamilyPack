@@ -886,4 +886,72 @@ class fbDlgEditFamEvent : public wxDialog
 	
 };
 
+///////////////////////////////////////////////////////////////////////////////
+/// Class fbDlgEditIndEvent2
+///////////////////////////////////////////////////////////////////////////////
+class fbDlgEditIndEvent2 : public wxDialog 
+{
+	private:
+	
+	protected:
+		wxSplitterWindow* m_splitter;
+		wxPanel* m_panel21;
+		wxSplitterWindow* m_splitter6;
+		wxPanel* m_panel22;
+		wxStaticText* m_staticText17;
+		wxStaticText* m_staticType;
+		wxStaticText* m_staticEventID;
+		wxStaticText* m_staticText171;
+		wxTextCtrl* m_textCtrlTitle;
+		wxButton* m_buttonDate1;
+		wxTextCtrl* m_textCtrlDate1;
+		wxButton* m_buttonDate2;
+		wxTextCtrl* m_textCtrlDate2;
+		wxButton* m_buttonAddr;
+		wxTextCtrl* m_textCtrlAddr;
+		wxStaticText* m_staticText1711;
+		wxTextCtrl* m_textCtrlNote;
+		wxPanel* m_panel23;
+		wxListCtrl* m_listPersona;
+		wxButton* m_buttonAdd;
+		wxButton* m_buttonEdit;
+		wxButton* m_buttonDel;
+		wxButton* m_buttonUp;
+		wxButton* m_buttonDn;
+		wxPanel* m_panel2;
+		wxHtmlWindow* m_htmlWin2;
+		wxStaticLine* m_staticline1;
+		wxButton* m_buttonSave;
+		wxButton* m_buttonCancel;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnDate1Button( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDate2Button( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAddrButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAddButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEditButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDeleteButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnUpButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDownButton( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		fbDlgEditIndEvent2( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Individual's Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 664,476 ), long style = wxDEFAULT_DIALOG_STYLE ); 
+		~fbDlgEditIndEvent2();
+		
+		void m_splitterOnIdle( wxIdleEvent& )
+		{
+			m_splitter->SetSashPosition( 0 );
+			m_splitter->Disconnect( wxEVT_IDLE, wxIdleEventHandler( fbDlgEditIndEvent2::m_splitterOnIdle ), NULL, this );
+		}
+		
+		void m_splitter6OnIdle( wxIdleEvent& )
+		{
+			m_splitter6->SetSashPosition( 226 );
+			m_splitter6->Disconnect( wxEVT_IDLE, wxIdleEventHandler( fbDlgEditIndEvent2::m_splitter6OnIdle ), NULL, this );
+		}
+	
+};
+
 #endif //__FBDLG_H__
