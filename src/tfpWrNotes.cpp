@@ -53,8 +53,9 @@ wxString GetHtmDateData( const recDate& date )
            "Original Scheme: " << CalendarSchemeName[date.f_record_sch] << "<br>"
            "Display Scheme: " << CalendarSchemeName[date.f_display_sch] << "<br>";
 
-    if( date.f_base_id ) {
-        recDate base( date.f_base_id );
+    if( date.f_rel_id ) {
+        recRelativeDate rel( date.f_rel_id );
+        recDate base( rel.f_base_id );
         htm << "<br>Base on " << base.GetIdStr() << "<br>"
             << GetHtmDateData( base );
     }

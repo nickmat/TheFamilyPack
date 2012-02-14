@@ -71,13 +71,12 @@
  Very often documents contain relative dates, commonly in the form of a persons age. In modern western cultures a persons age is invariably given as the age in years on their last birthday. It follows that if you have a document with a persons age and you know when the document was created, you have the persons date of birth to within a year (or if the documents date is uncertain, then that date's range uncertainty range plus a year). By recording a relative date, it is possible to record the exact nature of the original information. Also, if it is found necessary to change the original base date, all relative dates that rely on it will automatically be updated as well.
 </p>
 <p>
- A relative date behaves exactly as a fixed date in all respects, including being used as the base date for another relative date.
+ When recording Events, it is possible enter two date for those occasions were an Event is spread over a period of time. If the start date is uncertain but the duration is known this can be difficult to describe using dates alone. However, if the end date is recorded as relative to the start date, this information can be recorded with all information still being held in a uniform way.
+</p>
+<p>
+The details of a relative date are held in a separate table which is linked to by the calculated date. In all other respects it behaves exactly as a fixed date in all respects, including being used as the base date for another relative date.
 </p>
 
-<h2>Future Changes</h2>
-<p>
- Although the relative dates are working in the current test program, it is probably a bad idea to use jdn column for things other than the actual jdn of date in question. So this will change to create a separate table for RelativeDate, this will have three columns for Years, Months and Days (or whatever other units are indicated) and a field for the base date. The current base_* columns in the Date table will be removed and replaced with a single rel_date_id pointer into the RelativeDate table. This involves some redundancy of data, and an obligation every time a date is edited to check if it appears as a base date in the RelativeDate table and if it does, to update the dependant date or dates as well.
-</p>
 
 </div>
 

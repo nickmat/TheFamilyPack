@@ -33,7 +33,13 @@
 #include <rec/recDatabase.h>
 #include <cal/calendar.h>
 
+class recRelativeDate;
+
 #define recDate_MAX_RECURSION_COUNT  10
+
+//-----------------------------------------------------
+//      recDate
+//-----------------------------------------------------
 
 class recDate : public recDb
 {
@@ -59,24 +65,15 @@ public:
     static const wxString s_prefStr[PREF_Max];
     static const wxString s_prefFormat[PREF_Max];
 
-    enum BaseStyle {
-        BASE_STYLE_Unstated,
-        BASE_STYLE_AgeRoundDown,
-        BASE_STYLE_Max
-    };
     enum DatePoint {
         DATE_POINT_Beg,
         DATE_POINT_Mid,
         DATE_POINT_End
     };
 
-    static int      sm_count;       // Limit the number of recusive lookups 
-
     long            f_jdn;
     long            f_range;
-    idt             f_base_id;
-    CalendarUnit    f_base_unit;
-    BaseStyle       f_base_style;
+    idt             f_rel_id;
     unsigned        f_type;         // Set with RecDate::TypePrefix
     wxString        f_descrip;
     CalendarScheme  f_record_sch;   // Original convertion scheme
@@ -113,8 +110,11 @@ public:
 
     void SetDefaults();
     static idt Create( const wxString& str ); // Using default settings
+    static idt Create( const recRelativeDate& rel ); 
 
     bool SetDate( const wxString& str, CalendarScheme sch = CALENDAR_SCH_Unstated );
+    bool Update(); // Returns true if date is changed. Does nothing if not relative date.
+
     wxString GetJdnStr( CalendarScheme sch = CALENDAR_SCH_Unstated ) const;
     static wxString GetJdnStr( idt id );
     wxString GetStr( CalendarScheme sch = CALENDAR_SCH_Unstated ) const;
@@ -127,8 +127,6 @@ public:
     unsigned GetTypePrefix() const {
         return f_type & ( FLG_AFTER | FLG_RANGE | FLG_BEFORE ); 
     }
-private:
-    void GetJdn1Jdn2( long& jdn1, long& jdn2, unsigned& prefix, CalendarScheme scheme ) const;
 };
 
 /*! The two entities are equal, ignoring the record id.
@@ -138,9 +136,7 @@ inline bool recEquivalent( const recDate& d1, const recDate& d2 )
     return
         d1.f_jdn         == d2.f_jdn        &&
         d1.f_range       == d2.f_range      &&
-        d1.f_base_id     == d2.f_base_id    &&
-        d1.f_base_unit   == d2.f_base_unit  &&
-        d1.f_base_style  == d2.f_base_style &&
+        d1.f_rel_id     == d2.f_rel_id    &&
         d1.f_type        == d2.f_type       &&
         d1.f_descrip     == d2.f_descrip    &&
         d1.f_record_sch  == d2.f_record_sch &&
@@ -153,6 +149,67 @@ inline bool operator==( const recDate& d1, const recDate& d2 )
 }
 
 inline bool operator!=( const recDate& d1, const recDate& d2 )
+{
+    return !(d1 == d2);
+}
+
+//-----------------------------------------------------
+//      recRelativeDate
+//-----------------------------------------------------
+
+class recRelativeDate : public recDb
+{
+public:
+
+    enum Type {
+        TYPE_Unstated,
+        TYPE_AgeRoundDown,
+        TYPE_Max
+    };
+
+    long            f_val;
+    long            f_range;
+    CalendarUnit    f_unit;
+    idt             f_base_id;
+    Type            f_type;
+    CalendarScheme  f_scheme;
+
+    recRelativeDate() {}
+    recRelativeDate( idt id ) : recDb(id) { Read(); }
+    recRelativeDate( const recRelativeDate& date );
+
+    void Clear();
+    void Save();
+    bool Read();
+    TABLE_NAME_MEMBERS( "RelativeDate" );
+
+    void SetDefaults();
+
+    static wxString GetIdStr( idt indID ) { return wxString::Format( "RD"ID, indID ); }
+    wxString GetIdStr() const { return GetIdStr( f_id ); }
+
+    bool CalculateDate( recDate& date ) const;
+};
+
+/*! The two entities are equal, ignoring the record id.
+ */
+inline bool recEquivalent( const recRelativeDate& d1, const recRelativeDate& d2 )
+{
+    return
+        d1.f_val     == d2.f_val     &&
+        d1.f_range   == d2.f_range   &&
+        d1.f_unit    == d2.f_unit    &&
+        d1.f_base_id == d2.f_base_id &&
+        d1.f_type    == d2.f_type    &&
+        d1.f_scheme  == d2.f_scheme;
+}
+
+inline bool operator==( const recRelativeDate& d1, const recRelativeDate& d2 )
+{
+    return recEquivalent( d1, d2 ) && d1.f_id == d2.f_id;
+}
+
+inline bool operator!=( const recRelativeDate& d1, const recRelativeDate& d2 )
 {
     return !(d1 == d2);
 }

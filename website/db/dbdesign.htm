@@ -125,11 +125,12 @@
     <td><a href="#Reference">Reference</a></td>
     <td><a href="#ReferenceEntity">ReferenceEntity</a></td>
     <td><a href="#Relationship">Relationship</a></td>
+    <td><a href="#RelativeDate">RelativeDate</a></td>
     <td><a href="#Repository">Repository</a></td>
     <td><a href="#RepositorySource">RepositorySource</a></td>
-    <td><a href="#Researcher">Researcher</a></td>
    </tr>
    <tr>
+    <td><a href="#Researcher">Researcher</a></td>
     <td><a href="#Source">Source</a></td>
     <td><a href="#User">User</a></td>
     <td><a href="#Version">Version</a></td>
@@ -322,19 +323,9 @@
      <td>The inclusive number of days in the date range. A value of 0 indicates a range of 1 day</td>
     </tr>
     <tr>
-     <td>base_id</td>
+     <td>rel_id</td>
      <td>Integer</td>
-     <td>If the date is relative, this points to the date it is relative to.</td>
-    </tr>
-    <tr>
-     <td>base_unit</td>
-     <td>Integer</td>
-     <td>For relative dates, sets the units: 0=Unstated, 1=Year, 2=Month, 3=Week and 4=Day.</td>
-    </tr>
-    <tr>
-     <td>base_style</td>
-     <td>Integer</td>
-     <td>For relative dates, this indicates how the relative date is to be interpreted.</td>
+     <td>If the date is based on a relative date, this points to the RelativeDate record.</td>
     </tr>
     <tr>
      <td>type</td>
@@ -921,6 +912,48 @@
      <td>descrip</td>
      <td>Text</td>
      <td>Description of the relationship the first Persona has with the second Persona</td>
+    </tr>
+
+    <tr id="RelativeDate">
+     <td colspan="4" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>RelativeDate</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a RelativeDate.</td>
+    </tr>
+    <tr>
+     <td>val</td>
+     <td>Integer</td>
+     <td>The relative value.</td>
+    </tr>
+    <tr>
+     <td>range</td>
+     <td>Integer</td>
+     <td>The relative range</td>
+    </tr>
+    <tr>
+     <td>unit</td>
+     <td>Integer</td>
+     <td>Sets the units for val and range: 0=Unstated, 1=Year, 2=Month, 3=Week and 4=Day.</td>
+    </tr>
+    <tr>
+     <td>base_id</td>
+     <td>Integer</td>
+     <td>The date the value is relative to.</td>
+    </tr>
+    <tr>
+     <td>type</td>
+     <td>Integer</td>
+     <td>Indicates how the relative date is to be interpreted, 0=Unstated, 1=Age rounded down</td>
+    </tr>
+    <tr>
+     <td>scheme</td>
+     <td>Integer</td>
+     <td>A number indicating the date scheme used for the date calculation</td>
     </tr>
 
     <tr id="Repository">

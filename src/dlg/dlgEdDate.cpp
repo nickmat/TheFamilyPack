@@ -155,19 +155,23 @@ bool dlgEditDateFromAge::TransferDataToWindow()
     m_textCtrlBaseDate->SetValue( m_basestr );
 
     if( m_date.f_id == 0 ) {
+        m_relative.Clear();
+        m_relative.f_range = 1;
+        m_relative.f_base_id = m_base.f_id;
+        m_relative.f_type = recRelativeDate::TYPE_AgeRoundDown;
+        m_relative.f_scheme = m_base.f_record_sch;
+        m_relative.Save();
         m_date.Clear();
+        m_date.f_rel_id = m_relative.f_id;
         m_date.Save();
         // TODO: This needs to be set up using a particular convention
         m_date.f_type = recDate::PREF_On;
         m_date.f_record_sch = m_base.f_record_sch;
         m_date.f_display_sch = m_base.f_display_sch;
 
-        m_date.f_range = 1;
-        m_date.f_base_id = m_base.f_id;
-        m_date.f_base_unit = CALENDAR_UNIT_Year;
-        m_date.f_base_style = recDate::BASE_STYLE_AgeRoundDown;
     } else {
         m_date.Read();
+        m_relative.Read();
         m_text = m_date.GetJdnStr();
     }
     m_textCtrlAge->SetValue( m_text );
@@ -184,6 +188,7 @@ bool dlgEditDateFromAge::TransferDataFromWindow()
 {
     CalcDate();
     m_date.Save();
+    m_relative.Save();
     return true;
 }
 
@@ -202,8 +207,9 @@ void dlgEditDateFromAge::CalcDate()
     m_date.f_type = m_choiceType->GetSelection();
     m_date.f_record_sch = dlgEditDate::scheme[ m_choiceDisplay->GetSelection() ];
     wxString agestr = m_textCtrlAge->GetValue();
-    agestr.ToLong( &m_date.f_jdn );
-    m_date.f_base_unit = unit[ m_radioBoxUnits->GetSelection() ];
+    agestr.ToLong( &m_relative.f_val );
+    m_relative.f_unit = unit[ m_radioBoxUnits->GetSelection() ];
+    m_relative.CalculateDate( m_date );
 }
 
 // End of dlgEdDate.cpp file

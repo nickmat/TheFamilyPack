@@ -92,9 +92,7 @@ CREATE TABLE Date (
   id INTEGER PRIMARY KEY,
   jdn INTEGER,
   range INTEGER,
-  base_id INTEGER,
-  base_unit INTEGER,
-  base_style INTEGER,
+  rel_id INTEGER,
   type INTEGER,
   descrip TEXT,
   record_sch INTEGER,
@@ -363,6 +361,16 @@ CREATE TABLE Relationship (
   descrip TEXT NOT NULL
 );
 
+CREATE TABLE RelativeDate (
+  id INTEGER PRIMARY KEY,
+  val INTEGER,
+  range INTEGER,
+  unit INTEGER,
+  base_id INTEGER NOT NULL REFERENCES Date(id),
+  type INTEGER,
+  scheme INTEGER
+);
+
 CREATE TABLE Repository (
   id INTEGER PRIMARY KEY,
   name TEXT,
@@ -410,7 +418,7 @@ CREATE TABLE Version (
 );
 
 /* The Version table has only this one row */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 13);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 14);
 
 COMMIT;
 

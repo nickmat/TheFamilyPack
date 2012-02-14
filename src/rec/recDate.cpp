@@ -61,16 +61,12 @@ const wxString recDate::s_prefFormat[recDate::PREF_Max] = {
     _("abt %s")       // PREF_About
 };
 
-int recDate::sm_count = 0;
-
 recDate::recDate( const recDate& d )
 {
     f_id          = d.f_id;
     f_jdn         = d.f_jdn;
     f_range       = d.f_range;
-    f_base_id     = d.f_base_id;
-    f_base_unit   = d.f_base_unit;
-    f_base_style  = d.f_base_style;
+    f_rel_id      = d.f_rel_id;
     f_type        = d.f_type;
     f_descrip     = d.f_descrip;
     f_record_sch  = d.f_record_sch;
@@ -82,9 +78,7 @@ void recDate::Clear()
     f_id          = 0;
     f_jdn         = 0;
     f_range       = 0;
-    f_base_id     = 0;
-    f_base_unit   = CALENDAR_UNIT_Unstated;
-    f_base_style  = BASE_STYLE_Unstated;
+    f_rel_id      = 0;
     f_type        = FLG_NULL;
     f_descrip     = wxEmptyString;
     f_record_sch  = CALENDAR_SCH_Unstated;
@@ -101,9 +95,9 @@ void recDate::Save()
         // Add new record
         sql.Format(
             "INSERT INTO Date "
-            "(jdn, range, base_id, base_unit, base_style, type, descrip, record_sch, display_sch) "
-            "VALUES (%ld, %ld, "ID", %d, %d, %u, '%q', %d, %d);",
-            f_jdn, f_range, f_base_id, f_base_unit, f_base_style, f_type, UTF8_(f_descrip), 
+            "(jdn, range, rel_id, type, descrip, record_sch, display_sch) "
+            "VALUES (%ld, %ld, "ID", %u, '%q', %d, %d);",
+            f_jdn, f_range, f_rel_id, f_type, UTF8_(f_descrip), 
             f_record_sch, f_display_sch
         );
         s_db->ExecuteUpdate( sql );
@@ -115,18 +109,18 @@ void recDate::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO Date "
-                "(id, jdn, range, base_id, base_unit, base_style, type, descrip, record_sch, display_sch) "
-                "VALUES ("ID", %ld, %ld, "ID", %d, %d, %u, '%q', %d, %d);",
-                f_id, f_jdn, f_range, f_base_id, f_base_unit, f_base_style, f_type, UTF8_(f_descrip),
+                "(id, jdn, range, rel_id, type, descrip, record_sch, display_sch) "
+                "VALUES ("ID", %ld, %ld, "ID", %u, '%q', %d, %d);",
+                f_id, f_jdn, f_range, f_rel_id, f_type, UTF8_(f_descrip),
                 f_record_sch, f_display_sch
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE Date SET jdn=%ld, range=%ld, base_id="ID", base_unit=%d, "
-                "base_style=%d, type=%u, descrip='%q', record_sch=%d, display_sch=%d "
+                "UPDATE Date SET jdn=%ld, range=%ld, rel_id="ID", "
+                "type=%u, descrip='%q', record_sch=%d, display_sch=%d "
                 "WHERE id="ID";",
-                f_jdn, f_range, f_base_id, f_base_unit, f_base_style, f_type, UTF8_(f_descrip), 
+                f_jdn, f_range, f_rel_id, f_type, UTF8_(f_descrip), 
                 f_record_sch, f_display_sch, f_id
             );
         }
@@ -145,7 +139,7 @@ bool recDate::Read()
     }
 
     sql.Format(
-        "SELECT jdn, range, base_id, base_unit, base_style, type, descrip, record_sch, display_sch "
+        "SELECT jdn, range, rel_id, type, descrip, record_sch, display_sch "
         "FROM Date WHERE id="ID";",
         f_id
     );
@@ -159,13 +153,11 @@ bool recDate::Read()
     result.SetRow( 0 );
     f_jdn         = result.GetInt( 0 );
     f_range       = result.GetInt( 1 );
-    f_base_id     = GET_ID( result.GetInt64( 2 ) );
-    f_base_unit   = (CalendarUnit) result.GetInt( 3 );
-    f_base_style  = (BaseStyle) result.GetInt( 4 );
-    f_type        = (TypeFlag) result.GetInt( 5 );
-    f_descrip     = result.GetAsString( 6 );
-    f_record_sch  = (CalendarScheme) result.GetInt( 7 );
-    f_display_sch = (CalendarScheme) result.GetInt( 8 );
+    f_rel_id      = GET_ID( result.GetInt64( 2 ) );
+    f_type        = (TypeFlag) result.GetInt( 3 );
+    f_descrip     = result.GetAsString( 4 );
+    f_record_sch  = (CalendarScheme) result.GetInt( 5 );
+    f_display_sch = (CalendarScheme) result.GetInt( 6 );
     return true;
 }
 
@@ -183,6 +175,18 @@ idt recDate::Create( const wxString& str )
     recDate date;
     date.SetDefaults();
     date.SetDate( str );
+    date.Save();
+    return date.f_id;
+}
+
+idt recDate::Create( const recRelativeDate& rel )
+{
+    recDate date;
+
+    date.SetDefaults();
+    date.f_rel_id = rel.f_id;
+    rel.CalculateDate( date );
+
     date.Save();
     return date.f_id;
 }
@@ -229,18 +233,24 @@ bool recDate::SetDate( const wxString& str, CalendarScheme scheme )
     return ret;
 }
 
+bool recDate::Update()
+{
+    if( f_rel_id == 0 ) return false;
+
+    recRelativeDate rel(f_rel_id);
+    recDate date( *this ); // duplicate date 
+    rel.CalculateDate( date );
+    return *this != date;
+}
+
 wxString recDate::GetJdnStr( CalendarScheme scheme ) const
 {
-    long jdn1, jdn2;
-    unsigned prefix;
     if( scheme == CALENDAR_SCH_Unstated ) scheme = f_display_sch;
-    sm_count = recDate_MAX_RECURSION_COUNT;
-    GetJdn1Jdn2( jdn1, jdn2, prefix, scheme );
-    if( jdn1 == 0 )
+    if( f_jdn == 0 )
     {
         return f_descrip;
     }
-    return calStrFromJdnRange( jdn1, jdn2, scheme );
+    return calStrFromJdnRange( f_jdn, f_jdn+f_range, scheme );
 }
 
 wxString recDate::GetJdnStr( idt id )
@@ -251,19 +261,15 @@ wxString recDate::GetJdnStr( idt id )
 
 wxString recDate::GetStr( CalendarScheme scheme ) const
 {
-    long jdn1, jdn2;
-    unsigned prefix;
     if( scheme == CALENDAR_SCH_Unstated ) scheme = f_display_sch;
-    sm_count = recDate_MAX_RECURSION_COUNT;
-    GetJdn1Jdn2( jdn1, jdn2, prefix, scheme );
-    if( jdn1 == 0 )
+    if( f_jdn == 0 )
     {
         return f_descrip;
     }
 
     return wxString::Format(
-        s_prefFormat[prefix],
-        calStrFromJdnRange( jdn1, jdn2, scheme )
+        s_prefFormat[GetTypePrefix()],
+        calStrFromJdnRange( f_jdn, f_jdn+f_range, scheme )
     );
 }
 
@@ -275,14 +281,11 @@ wxString recDate::GetStr( idt id )
 
 int recDate::GetYear( CalendarScheme scheme )
 {
-    long jdn, jdn1, jdn2;
-    unsigned prefix;
+    long jdn;
     int year;
     CalendarScheme sch = (scheme == CALENDAR_SCH_Unstated) ? f_display_sch : scheme;
-    sm_count = recDate_MAX_RECURSION_COUNT;
 
-    GetJdn1Jdn2( jdn1, jdn2, prefix, sch );
-    jdn = ( jdn1 + jdn2 ) / 2;
+    jdn =  f_jdn + ( f_range / 2 );
     if( jdn == 0  ) {
         return 0;
     }
@@ -298,22 +301,19 @@ int recDate::GetYear( idt dateID, CalendarScheme sch )
 
 long recDate::GetDatePoint( DatePoint dp )
 {
-    long jdn, jdn1, jdn2;
-    unsigned prefix;
+    long jdn;
     CalendarScheme sch = f_display_sch;
-    sm_count = recDate_MAX_RECURSION_COUNT;
 
-    GetJdn1Jdn2( jdn1, jdn2, prefix, sch );
     switch( dp )
     {
     case DATE_POINT_Beg:
-        jdn = jdn1;
+        jdn = f_jdn;
         break;
     case DATE_POINT_Mid:
-        jdn = ( jdn1 + jdn2 ) / 2;
+        jdn = f_jdn + ( f_range / 2 );
         break;
     case DATE_POINT_End:
-        jdn = jdn2;
+        jdn = f_jdn + f_range;
         break;
     default:
         jdn = 0;
@@ -327,31 +327,140 @@ long recDate::GetDatePoint( idt id, DatePoint dp )
     return date.GetDatePoint( dp );
 }
 
-void recDate::GetJdn1Jdn2( long& jdn1, long& jdn2, unsigned& prefix, CalendarScheme scheme ) const
+
+//-----------------------------------------------------
+//      recRelativeDate
+//-----------------------------------------------------
+
+
+recRelativeDate::recRelativeDate( const recRelativeDate& d )
 {
-    --sm_count;
-    if( sm_count == 0 ) {
-        wxASSERT( false ); // This shoudn't happen.
-        jdn1 = jdn2 = 0;
-        return;
-    }
-    if( f_base_id == 0 ) {
-        jdn1 = f_jdn;
-        jdn2 = f_jdn + f_range;
-        prefix = GetTypePrefix();
+    f_id      = d.f_id;
+    f_val     = d.f_val;
+    f_range   = d.f_range;
+    f_base_id = d.f_base_id;
+    f_unit    = d.f_unit;
+    f_type    = d.f_type;
+    f_scheme  = d.f_scheme;
+}
+
+void recRelativeDate::Clear()
+{
+    f_id      = 0;
+    f_val     = 0;
+    f_range   = 0;
+    f_base_id = 0;
+    f_unit    = CALENDAR_UNIT_Unstated;
+    f_type    = TYPE_Unstated;
+    f_scheme  = CALENDAR_SCH_Unstated;
+}
+
+void recRelativeDate::Save()
+{
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( f_id == 0 )
+    {
+        // Add new record
+        sql.Format(
+            "INSERT INTO RelativeDate "
+            "(val, range, unit, base_id, type, scheme) "
+            "VALUES (%ld, %ld, %d, "ID", %d, %d);",
+            f_val, f_range, f_unit, f_base_id, f_type, f_scheme
+        );
+        s_db->ExecuteUpdate( sql );
+        f_id = GET_ID( s_db->GetLastRowId() );
     } else {
-        recDate base( f_base_id );
-        base.GetJdn1Jdn2( jdn1, jdn2, prefix, scheme );
-        switch( f_base_style )
+        // Does record exist
+        if( !Exists() )
         {
-        case BASE_STYLE_AgeRoundDown:
-            calAddToJdn( jdn1, -(f_jdn+f_range), f_base_unit, scheme );
-            jdn1++;
-            calAddToJdn( jdn2, -f_jdn, f_base_unit, scheme );
-            break;
+            // Add new record
+            sql.Format(
+                "INSERT INTO RelativeDate "
+                "(id, val, range, unit, base_id, type, scheme) "
+                "VALUES ("ID", %ld, %ld, %d, "ID", %d, %d);",
+                f_id, f_val, f_range, f_unit, f_base_id, f_type, f_scheme
+            );
+        } else {
+            // Update existing record
+            sql.Format(
+                "UPDATE RelativeDate SET val=%ld, range=%ld, unit=%d, base_id="ID", "
+                "type=%d, scheme=%d "
+                "WHERE id="ID";",
+                f_val, f_range, f_base_id, f_unit, f_type, f_scheme, f_id
+            );
         }
-        prefix |= GetTypePrefix();
+        s_db->ExecuteUpdate( sql );
     }
 }
+
+bool recRelativeDate::Read()
+{
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( f_id == 0 ) {
+        Clear();
+        return false;
+    }
+
+    sql.Format(
+        "SELECT val, range, unit, base_id, type, scheme"
+        " FROM RelativeDate WHERE id="ID";",
+        f_id
+    );
+    result = s_db->GetTable( sql );
+
+    if( result.GetRowCount() != 1 )
+    {
+        Clear();
+        return false;
+    }
+    result.SetRow( 0 );
+    f_val     = result.GetInt( 0 );
+    f_range   = result.GetInt( 1 );
+    f_unit    = (CalendarUnit) result.GetInt( 2 );
+    f_base_id = GET_ID( result.GetInt64( 3 ) );
+    f_type    = (Type) result.GetInt( 4 );
+    f_scheme  = (CalendarScheme) result.GetInt( 5 );
+    return true;
+}
+
+void recRelativeDate::SetDefaults()
+{
+    // TODO: The default scheme should be a system/user setting.
+    Clear();
+    f_range = 1;
+    f_scheme = CALENDAR_SCH_Gregorian;
+}
+
+
+bool recRelativeDate::CalculateDate( recDate& date ) const
+{
+    recDate base( f_base_id );
+    long jdn1 = base.f_jdn;
+    long jdn2 = jdn1 + base.f_range;
+
+    switch( f_type )
+    {
+    case TYPE_AgeRoundDown:
+        if( !calAddToJdn( jdn1, -(f_val+f_range), f_unit, f_scheme ) ) {
+            return false;
+        }
+        jdn1++;
+        if( !calAddToJdn( jdn2, -f_val, f_unit, f_scheme ) ) {
+            return false;
+        }
+        break;
+    default:
+        return false;
+    }
+    date.f_jdn = jdn1;
+    date.f_range = jdn2 - jdn1;
+    date.f_type = base.f_type;
+    return true;
+}
+
 
 // End of recDate.cpp file

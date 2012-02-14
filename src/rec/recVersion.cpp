@@ -46,8 +46,8 @@
 const int recVerMajor    = 0;
 const int recVerMinor    = 0;
 const int recVerRev      = 9;
-const int recVerTest     = 13;
-const wxStringCharType* recVerStr = wxS("0.0.9.13");
+const int recVerTest     = 14;
+const wxStringCharType* recVerStr = wxS("0.0.9.14");
 
 
 recVersion::recVersion( const recVersion& v )
@@ -230,6 +230,8 @@ bool recVersion::TestForUpgrade()
 //============================================================================
 //                 Code to upgrade old versions
 //============================================================================
+
+#include <cal/calendar.h>
 
 static void UpgradeTest0_0_9_0to0_0_9_1()
 {
@@ -522,6 +524,123 @@ static void UpgradeTest0_0_9_12to0_0_9_13()
     recDb::Commit();
 }
 
+static void UpgradeTest0_0_9_13to0_0_9_14()
+{
+    char* query =
+        "ALTER TABLE Date RENAME TO OldDate;\n"
+
+        "CREATE TABLE RelativeDate (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  val INTEGER,\n"
+        "  range INTEGER,\n"
+        "  unit INTEGER,\n"
+        "  base_id INTEGER NOT NULL REFERENCES Date(id),\n"
+        "  type INTEGER,\n"
+        "  scheme INTEGER\n"
+        ");\n"
+        "CREATE TABLE Date (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  jdn INTEGER,\n"
+        "  range INTEGER,\n"
+        "  rel_id INTEGER,\n"
+        "  type INTEGER,\n"
+        "  descrip TEXT,\n"
+        "  record_sch INTEGER,\n"
+        "  display_sch INTEGER\n"
+        ");\n"
+        // Put all base dates back
+        "INSERT INTO Date"
+        " (id, jdn, range, rel_id, type, descrip, record_sch, display_sch)"
+        " SELECT id, jdn, range, 0, type, descrip, record_sch, display_sch"
+        " FROM OldDate;\n"
+
+
+        "CREATE TABLE TempRelativeDate (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  val INTEGER,\n"
+        "  range INTEGER,\n"
+        "  unit INTEGER,\n"
+        "  base_id INTEGER NOT NULL REFERENCES Date(id),\n"
+        "  type INTEGER,\n"
+        "  scheme INTEGER,\n"
+        "  orig_id INTEGER\n"
+        ");\n"
+
+        "INSERT INTO TempRelativeDate"
+        " (val, range, unit, base_id, type, scheme, orig_id)"
+        " SELECT jdn, range, base_unit, base_id, base_style, record_sch, id"
+        " FROM OldDate WHERE base_id<>0;\n"
+
+        "INSERT INTO RelativeDate"
+        " (id, val, range, unit, base_id, type, scheme)"
+        " SELECT id, val, range, unit, base_id, type, scheme"
+        " FROM TempRelativeDate;\n"
+    ;
+    recDb::Begin();
+    recDb::GetDb()->ExecuteUpdate( query );
+
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT id, val, range, unit, base_id, type, scheme, orig_id"
+        " FROM TempRelativeDate;"
+    );
+    wxSQLite3Table table = recDb::GetDb()->GetTable( sql );
+
+    for( int i = 0 ; i < table.GetRowCount() ; i++ )
+    {
+        table.SetRow( i );
+        idt relDateID = GET_ID( table.GetInt64( 0 ) );
+        long relValue = table.GetInt( 1 );
+        long relRange = table.GetInt( 2 );
+        CalendarUnit unit = (CalendarUnit) table.GetInt( 3 );
+        idt baseDateID = GET_ID( table.GetInt64( 4 ) );
+        int relType = table.GetInt( 5 );
+        CalendarScheme relSch = (CalendarScheme) table.GetInt( 6 );
+        idt newDateID = GET_ID( table.GetInt64( 7 ) );
+        sql.Format(
+            "SELECT jdn, range, type"
+            " FROM Date WHERE id="ID";",
+            baseDateID
+        );
+        wxSQLite3Table table2 = recDb::GetDb()->GetTable( sql );
+
+        long jdn1 = table2.GetInt( 0 );
+        long jdn2 = jdn1 + table2.GetInt( 1 );
+        int baseType = table2.GetInt( 2 );
+
+        switch( table.GetInt( 5 ) )
+        {
+        case 1: //recRelativeDate::TYPE_AgeRoundDown:
+            if( !calAddToJdn( jdn1, -(relValue+relRange), unit, relSch ) ) {
+                return;
+            }
+            jdn1++;
+            if( !calAddToJdn( jdn2, -relValue, unit, relSch ) ) {
+                return;
+            }
+            break;
+        default:
+            return;
+        }
+
+        sql.Format(
+            "UPDATE Date SET jdn=%ld, range=%ld, rel_id="ID" "
+            "WHERE id="ID";",
+            jdn1, jdn2 - jdn1, relDateID, newDateID
+        );
+        recDb::GetDb()->ExecuteUpdate( sql );
+
+    }
+    query =
+        "DROP TABLE TempRelativeDate;\n"
+        "DROP TABLE OldDate;\n"
+    ;
+    recDb::GetDb()->ExecuteUpdate( query );
+
+    recVersion::Set( 0, 0, 9, 14 );
+    recDb::Commit();
+}
+
 
 static void UpgradeRev0_0_9toCurrent( int test )
 {
@@ -553,6 +672,8 @@ static void UpgradeRev0_0_9toCurrent( int test )
         UpgradeTest0_0_9_11to0_0_9_12();
     case 12:
         UpgradeTest0_0_9_12to0_0_9_13();
+    case 13:
+        UpgradeTest0_0_9_13to0_0_9_14();
     }
 }
 

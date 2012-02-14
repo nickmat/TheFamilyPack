@@ -78,6 +78,7 @@ private:
     void SetStaticDate( wxIdleEvent& event );
     void CalcDate();
 
+    recRelativeDate m_relative;
     recDate   m_base;
     recDate   m_date;
     wxString  m_text;

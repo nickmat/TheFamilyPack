@@ -391,13 +391,16 @@ wxSQLite3Table recIndividual::GetNameTable( Sex sex )
 
     if( sex == SEX_Unstated ) {
         sql.Format(
-            "SELECT id, surname, given, epitaph, sex, fam_id FROM Individual "
+//            "SELECT id, surname, given, epitaph, sex, fam_id FROM Individual "
+            "SELECT id, surname, given, epitaph FROM Individual "
             "ORDER BY surname, given;"
         );
     } else {
         sql.Format(
-            "SELECT id, surname, given, epitaph, sex, fam_id FROM Individual "
-            "WHERE sex=%d ORDER BY surname, given;", sex
+//            "SELECT id, surname, given, epitaph, sex, fam_id FROM Individual "
+//            "WHERE sex=%d ORDER BY surname, given;", sex
+            "SELECT id, surname, given, epitaph FROM Individual I, Persona P "
+            "WHERE I.per_id=P.id AND P.sex=%d ORDER BY surname, given;", sex
         );
     }
     return s_db->GetTable( sql );
