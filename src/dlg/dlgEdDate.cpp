@@ -89,8 +89,7 @@ bool dlgEditDate::TransferDataToWindow()
     }
     m_textCtrlDate->SetValue( m_text );
 
-    wxString idStr = wxString::Format( "D "ID":", m_date.f_id );
-    m_staticTextId->SetLabel( idStr );
+    m_staticTextId->SetLabel( m_date.GetIdStr() );
     m_choiceType->SetSelection( m_date.f_type );
     m_choiceOriginal->SetSelection( sch_list[m_date.f_record_sch] );
     m_choiceDisplay->SetSelection( sch_list[m_date.f_display_sch] );
@@ -176,8 +175,7 @@ bool dlgEditDateFromAge::TransferDataToWindow()
     }
     m_textCtrlAge->SetValue( m_text );
 
-    wxString idStr = wxString::Format( "D"ID":", m_date.f_id );
-    m_staticTextId->SetLabel( idStr );
+    m_staticTextId->SetLabel( m_date.GetIdStr() );
     m_choiceType->SetSelection( m_date.f_type );
     m_choiceDisplay->SetSelection( dlgEditDate::sch_list[m_date.f_display_sch] );
 

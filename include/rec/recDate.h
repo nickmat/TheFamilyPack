@@ -164,6 +164,7 @@ public:
     enum Type {
         TYPE_Unstated,
         TYPE_AgeRoundDown,
+        TYPE_Duration,
         TYPE_Max
     };
 

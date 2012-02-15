@@ -388,7 +388,7 @@ void recRelativeDate::Save()
                 "UPDATE RelativeDate SET val=%ld, range=%ld, unit=%d, base_id="ID", "
                 "type=%d, scheme=%d "
                 "WHERE id="ID";",
-                f_val, f_range, f_base_id, f_unit, f_type, f_scheme, f_id
+                f_val, f_range, f_unit, f_base_id, f_type, f_scheme, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -453,12 +453,21 @@ bool recRelativeDate::CalculateDate( recDate& date ) const
             return false;
         }
         break;
+    case TYPE_Duration:
+        if( !calAddToJdn( jdn1, f_val, f_unit, f_scheme ) ) {
+            return false;
+        }
+        if( !calAddToJdn( jdn2, f_val+f_range, f_unit, f_scheme ) ) {
+            return false;
+        }
+        break;
     default:
         return false;
     }
     date.f_jdn = jdn1;
     date.f_range = jdn2 - jdn1;
     date.f_type = base.f_type;
+    date.f_record_sch = f_scheme;
     return true;
 }
 

@@ -267,8 +267,13 @@ enum CalendarUnit {
     CALENDAR_UNIT_Year,
     CALENDAR_UNIT_Month,
     CALENDAR_UNIT_Week,
-    CALENDAR_UNIT_Day
+    CALENDAR_UNIT_Day,
+    CALENDAR_UNIT_Max
 };
+
+/*! Array of unit names
+ */
+extern const wxString CalendarUnitName[];
 
 /*! Add to jdn the given value, based on the values unit and the given scheme. 
  *  Returns true if successful, else false.

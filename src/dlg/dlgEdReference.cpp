@@ -75,8 +75,9 @@ END_EVENT_TABLE()
 dlgEditReference::dlgEditReference( wxWindow* parent )
     : fbDlgEditReference( parent )
 {
-    m_listEntities->InsertColumn( COL_Type, _("Type") );
-    m_listEntities->InsertColumn( COL_Value, _("Value") );
+    m_listEntities->InsertColumn( ENT_COL_Number, _("ID") );
+    m_listEntities->InsertColumn( ENT_COL_Type, _("Type") );
+    m_listEntities->InsertColumn( ENT_COL_Value, _("Value") );
     m_listPersona->InsertColumn( PER_COL_Number, _("Number") );
     m_listPersona->InsertColumn( PER_COL_Name, _("Name") );
     m_listPersona->InsertColumn( PER_COL_Individuals, _("Individuals") );
@@ -96,6 +97,7 @@ bool dlgEditReference::TransferDataToWindow()
 
     m_textCtrlTitle->SetValue( m_reference.f_title );
     m_textCtrlStatement->SetValue(  m_reference.f_statement );
+    UpdateHtml();
 
     recRefEntVec  evid_ents;
     evid_ents = m_reference.ReadReferenceEntitys();
@@ -110,32 +112,38 @@ bool dlgEditReference::TransferDataToWindow()
         switch( entity.rec.f_entity_type )
         {
         case recReferenceEntity::TYPE_Date:
-            m_listEntities->SetItem( i, COL_Value, recDate::GetStr( entID ) );
+            m_listEntities->SetItem( i, ENT_COL_Number, recDate::GetIdStr( entID ) );
+            m_listEntities->SetItem( i, ENT_COL_Value, recDate::GetStr( entID ) );
             break;
         case recReferenceEntity::TYPE_Name:
-            m_listEntities->SetItem( i, COL_Value, recName::GetNameStr( entID ) );
+            m_listEntities->SetItem( i, ENT_COL_Number, recName::GetIdStr( entID ) );
+            m_listEntities->SetItem( i, ENT_COL_Value, recName::GetNameStr( entID ) );
             break;
         case recReferenceEntity::TYPE_Place:
-            m_listEntities->SetItem( i, COL_Value, recPlace::GetAddressStr( entID ) );
+            m_listEntities->SetItem( i, ENT_COL_Number, recPlace::GetIdStr( entID ) );
+            m_listEntities->SetItem( i, ENT_COL_Value, recPlace::GetAddressStr( entID ) );
             break;
         case recReferenceEntity::TYPE_Relationship:
-            m_listEntities->SetItem( i, COL_Value, recRelationship::GetValue1Str( entID ) );
+            m_listEntities->SetItem( i, ENT_COL_Number, recRelationship::GetIdStr( entID ) );
+            m_listEntities->SetItem( i, ENT_COL_Value, recRelationship::GetValue1Str( entID ) );
             break;
         case recReferenceEntity::TYPE_Attribute:
             {
                 recAttribute attribute( entID );
-                m_listEntities->SetItem( i, COL_Value, attribute.f_val );
+                m_listEntities->SetItem( i, ENT_COL_Number, recAttribute::GetIdStr( entID ) );
+                m_listEntities->SetItem( i, ENT_COL_Value, attribute.f_val );
                 m_entities[i].owner = attribute.f_per_id;
             }
             break;
         case recReferenceEntity::TYPE_Event:
-            m_listEntities->SetItem( i, COL_Value, recEvent::GetTitle( entID ) );
+            m_listEntities->SetItem( i, ENT_COL_Number, recEvent::GetIdStr( entID ) );
+            m_listEntities->SetItem( i, ENT_COL_Value, recEvent::GetTitle( entID ) );
             break;
         default:
-            m_listEntities->SetItem( i, COL_Value, _("Unknown Reference Entity") );
+            m_listEntities->SetItem( i, ENT_COL_Value, _("Unknown Reference Entity") );
         }
     }
-    m_listEntities->SetColumnWidth( COL_Value, -1 );
+    m_listEntities->SetColumnWidth( ENT_COL_Value, -1 );
 
     m_personaIDs = m_reference.GetPersonaList();
     for( size_t i = 0 ; i < m_personaIDs.size() ; i++ ) {
@@ -198,6 +206,15 @@ void dlgEditReference::DoRedo()
 {
     m_textCtrlStatement->Redo();
 }
+
+void dlgEditReference::OnStatementViewChanging( wxNotebookEvent& event )
+{
+    if( event.GetSelection() == 0 ) {
+        m_reference.f_statement = m_textCtrlStatement->GetValue();
+        UpdateHtml();
+    }
+}
+
 
 void dlgEditReference::OnPersonaAddButton( wxCommandEvent& event )
 {
@@ -297,7 +314,8 @@ bool dlgEditReference::DoNewDate( idt* dateID )
         m_entities.push_back( entity );
 
         m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
-        m_listEntities->SetItem( row, COL_Value, dialog->GetDate()->GetStr() );
+        m_listEntities->SetItem( row, ENT_COL_Number, dialog->GetDate()->GetIdStr() );
+        m_listEntities->SetItem( row, ENT_COL_Value, dialog->GetDate()->GetStr() );
         ret = true;
     } else {
         // Dialog Cancelled
@@ -340,7 +358,8 @@ bool dlgEditReference::DoNewDateAge( idt* dateID )
         m_entities.push_back( entity );
 
         m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
-        m_listEntities->SetItem( row, COL_Value, dialog->GetDate()->GetStr() );
+        m_listEntities->SetItem( row, ENT_COL_Number, dialog->GetDate()->GetIdStr() );
+        m_listEntities->SetItem( row, ENT_COL_Value, dialog->GetDate()->GetStr() );
         ret = true;
     } else {
         // Dialog Cancelled
@@ -382,7 +401,8 @@ bool dlgEditReference::DoNewPlace( idt* placeID )
         m_entities.push_back( entity );
 
         m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
-        m_listEntities->SetItem( row, COL_Value, dialog->GetPlace()->GetAddressStr() );
+        m_listEntities->SetItem( row, ENT_COL_Number, dialog->GetPlace()->GetIdStr() );
+        m_listEntities->SetItem( row, ENT_COL_Value, dialog->GetPlace()->GetAddressStr() );
         ret = true;
     } else {
         // Dialog Cancelled
@@ -426,7 +446,8 @@ void dlgEditReference::OnNewRelationship( wxCommandEvent& event )
         m_entities.push_back( entity );
 
         m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
-        m_listEntities->SetItem( row, COL_Value, dialog->GetRelationship()->GetValue1Str() );
+        m_listEntities->SetItem( row, ENT_COL_Number, dialog->GetRelationship()->GetIdStr() );
+        m_listEntities->SetItem( row, ENT_COL_Value, dialog->GetRelationship()->GetValue1Str() );
     } else {
         // Dialog Cancelled
         recDb::Rollback( savepoint );
@@ -563,7 +584,8 @@ void dlgEditReference::OnNewEvent( wxCommandEvent& cmnd_event )
         m_entities.push_back( entity );
 
         m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
-        m_listEntities->SetItem( row, COL_Value, dialog->GetEvent()->f_title );
+        m_listEntities->SetItem( row, ENT_COL_Number, dialog->GetEvent()->GetIdStr() );
+        m_listEntities->SetItem( row, ENT_COL_Value, dialog->GetEvent()->f_title );
     } else {
         // Dialog Cancelled
         recDb::Rollback( savepoint );
@@ -599,7 +621,8 @@ void dlgEditReference::OnNewAttribute( wxCommandEvent& event )
         m_entities.push_back( entity );
 
         m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
-        m_listEntities->SetItem( row, COL_Value, dialog->GetAttribute()->f_val );
+        m_listEntities->SetItem( row, ENT_COL_Number, dialog->GetAttribute()->GetIdStr() );
+        m_listEntities->SetItem( row, ENT_COL_Value, dialog->GetAttribute()->f_val );
     } else {
         // Dialog Cancelled
         recDb::Rollback( savepoint );
@@ -635,7 +658,8 @@ void dlgEditReference::OnNewName( wxCommandEvent& event )
         m_entities.push_back( entity );
 
         m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
-        m_listEntities->SetItem( row, COL_Value, dialog->GetName()->GetNameStr() );
+        m_listEntities->SetItem( row, ENT_COL_Number, dialog->GetName()->GetIdStr() );
+        m_listEntities->SetItem( row, ENT_COL_Value, dialog->GetName()->GetNameStr() );
     } else {
         // Dialog Cancelled
         recDb::Rollback( savepoint );
@@ -674,7 +698,8 @@ void dlgEditReference::DoEditDate( idt id, long row )
     if( dialog->ShowModal() == wxID_OK )
     {
         recDb::ReleaseSavepoint( savepoint );
-        m_listEntities->SetItem( row, COL_Value, dialog->GetDate()->GetStr() );
+        m_listEntities->SetItem( row, ENT_COL_Number, dialog->GetDate()->GetIdStr() );
+        m_listEntities->SetItem( row, ENT_COL_Value, dialog->GetDate()->GetStr() );
     } else {
         recDb::Rollback( savepoint );
     }
@@ -690,7 +715,8 @@ void dlgEditReference::DoEditPlace( idt id, long row )
     if( dialog->ShowModal() == wxID_OK )
     {
         recDb::ReleaseSavepoint( savepoint );
-        m_listEntities->SetItem( row, COL_Value, dialog->GetPlace()->GetAddressStr() );
+        m_listEntities->SetItem( row, ENT_COL_Number, dialog->GetPlace()->GetIdStr() );
+        m_listEntities->SetItem( row, ENT_COL_Value, dialog->GetPlace()->GetAddressStr() );
     } else {
         recDb::Rollback( savepoint );
     }
@@ -699,9 +725,6 @@ void dlgEditReference::DoEditPlace( idt id, long row )
 
 void dlgEditReference::DoEditRelationship( idt id, long row )
 {
-//    wxMessageBox( _("Rewrite needed"), _("DoEditRelationship") );
-
-
     const wxString savepoint = "RefEdRel";
     dlgEditRelationship* dialog = new dlgEditRelationship( NULL, id );
 
@@ -709,7 +732,8 @@ void dlgEditReference::DoEditRelationship( idt id, long row )
     if( dialog->ShowModal() == wxID_OK )
     {
         recDb::ReleaseSavepoint( savepoint );
-        m_listEntities->SetItem( row, COL_Value, dialog->GetRelationship()->GetValue1Str() );
+        m_listEntities->SetItem( row, ENT_COL_Number, dialog->GetRelationship()->GetIdStr() );
+        m_listEntities->SetItem( row, ENT_COL_Value, dialog->GetRelationship()->GetValue1Str() );
     } else {
         recDb::Rollback( savepoint );
     }
@@ -730,7 +754,8 @@ void dlgEditReference::DoEditEvent( idt id, long row )
     if( dialog->ShowModal() == wxID_OK )
     {
         recDb::ReleaseSavepoint( savepoint );
-        m_listEntities->SetItem( row, COL_Value, dialog->GetEvent()->f_title );
+        m_listEntities->SetItem( row, ENT_COL_Number, dialog->GetEvent()->GetIdStr() );
+        m_listEntities->SetItem( row, ENT_COL_Value, dialog->GetEvent()->f_title );
     } else {
         recDb::Rollback( savepoint );
     }
@@ -747,7 +772,8 @@ void dlgEditReference::DoEditAttribute( idt id, long row )
     if( dialog->ShowModal() == wxID_OK )
     {
         recDb::ReleaseSavepoint( savepoint );
-        m_listEntities->SetItem( row, COL_Value, dialog->GetAttribute()->f_val );
+        m_listEntities->SetItem( row, ENT_COL_Number, dialog->GetAttribute()->GetIdStr() );
+        m_listEntities->SetItem( row, ENT_COL_Value, dialog->GetAttribute()->f_val );
     } else {
         recDb::Rollback( savepoint );
     }
@@ -764,7 +790,8 @@ void dlgEditReference::DoEditName( idt id, long row )
     if( dialog->ShowModal() == wxID_OK )
     {
         recDb::ReleaseSavepoint( savepoint );
-        m_listEntities->SetItem( row, COL_Value, dialog->GetName()->GetNameStr() );
+        m_listEntities->SetItem( row, ENT_COL_Number, dialog->GetName()->GetIdStr() );
+        m_listEntities->SetItem( row, ENT_COL_Value, dialog->GetName()->GetNameStr() );
     } else {
         recDb::Rollback( savepoint );
     }
@@ -881,32 +908,62 @@ void dlgEditReference::OnDownButton( wxCommandEvent& event )
     }
 }
 
+
+void dlgEditReference::UpdateHtml()
+{
+    wxString htm;
+
+    htm << "<html><head><title>" << m_reference.GetIdStr()
+        << "</title></head><body>\n";
+
+    if( m_reference.f_statement.compare( 0, 9, "<!-- HTML" ) == 0 ) {
+        htm << m_reference.f_statement;
+    } else { // treat as text
+        htm << "<pre>"
+            << m_reference.f_statement
+            << "</pre>";
+    }
+    htm << "\n</body></html>";
+
+    m_htmlView->SetPage( htm );
+}
+
 void dlgEditReference::InsertListItem( long row, const TfpEntity& ent )
 {
-    wxString str;
+    wxString str, idStr;
     switch( ent.rec.f_entity_type )
     {
     case recReferenceEntity::TYPE_Event:
+        idStr = recEvent::GetIdStr( ent.rec.f_entity_id );
         str = recEvent::GetTitle( ent.rec.f_entity_id );
         break;
     case recReferenceEntity::TYPE_Place:
+        idStr = recPlace::GetIdStr( ent.rec.f_entity_id );
         str = recPlace::GetAddressStr( ent.rec.f_entity_id );
         break;
     case recReferenceEntity::TYPE_Date:
+        idStr = recDate::GetIdStr( ent.rec.f_entity_id );
         str = recDate::GetStr( ent.rec.f_entity_id );
         break;
-//    case recReferenceEntity::TYPE_Persona:
-//        str = recPersona::GetNameStr( ent.rec.f_entity_id );
-        break;
     case recReferenceEntity::TYPE_Attribute:
+        idStr = recAttribute::GetIdStr( ent.rec.f_entity_id );
         str = recAttribute::GetValue( ent.rec.f_entity_id );
+        break;
+    case recReferenceEntity::TYPE_Relationship:
+        idStr = recRelationship::GetIdStr( ent.rec.f_entity_id );
+        str = recRelationship::GetValue1Str( ent.rec.f_entity_id );
+        break;
+    case recReferenceEntity::TYPE_Name:
+        idStr = recName::GetIdStr( ent.rec.f_entity_id );
+        str = recName::GetNameStr( ent.rec.f_entity_id );
         break;
     default:
         str = _("Unknown entity type.");
     }
     TfpEntity entity = ent;
     m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
-    m_listEntities->SetItem( row, COL_Value, str );
+    m_listEntities->SetItem( row, ENT_COL_Number, idStr );
+    m_listEntities->SetItem( row, ENT_COL_Value, str );
 }
 
 idt dlgEditReference::SelectCreatePersona()

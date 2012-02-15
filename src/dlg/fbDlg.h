@@ -36,8 +36,8 @@ class tfpListCtrlIndividuals;
 #include <wx/textctrl.h>
 #include <wx/radiobox.h>
 #include <wx/toolbar.h>
-#include <wx/splitter.h>
 #include <wx/html/htmlwin.h>
+#include <wx/splitter.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -699,12 +699,16 @@ class fbDlgEditReference : public wxDialog
 		wxStaticText* m_staticRefID;
 		wxStaticText* m_staticText401;
 		wxTextCtrl* m_textCtrlTitle;
-		wxToolBar* m_toolBar1;
 		wxSplitterWindow* m_splitter1;
 		wxPanel* m_panel7;
+		wxNotebook* m_notebookTop;
+		wxPanel* m_panelSource;
+		wxToolBar* m_toolBar1;
 		wxTextCtrl* m_textCtrlStatement;
+		wxPanel* m_panelView;
+		wxHtmlWindow* m_htmlView;
 		wxPanel* m_panel11;
-		wxNotebook* m_notebook3;
+		wxNotebook* m_notebookBottom;
 		wxPanel* m_panelPersona;
 		wxListCtrl* m_listPersona;
 		wxButton* m_buttonPersonaAdd;
@@ -722,6 +726,7 @@ class fbDlgEditReference : public wxDialog
 		wxButton* m_buttonCancel;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnStatementViewChanging( wxNotebookEvent& event ) { event.Skip(); }
 		virtual void OnTool( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPersonaAddButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPersonaEditButton( wxCommandEvent& event ) { event.Skip(); }
@@ -735,12 +740,12 @@ class fbDlgEditReference : public wxDialog
 	
 	public:
 		
-		fbDlgEditReference( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Reference"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,500 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
+		fbDlgEditReference( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Reference"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 627,549 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbDlgEditReference();
 		
 		void m_splitter1OnIdle( wxIdleEvent& )
 		{
-			m_splitter1->SetSashPosition( 186 );
+			m_splitter1->SetSashPosition( 225 );
 			m_splitter1->Disconnect( wxEVT_IDLE, wxIdleEventHandler( fbDlgEditReference::m_splitter1OnIdle ), NULL, this );
 		}
 	

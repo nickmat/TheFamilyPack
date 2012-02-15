@@ -58,8 +58,8 @@ class dlgEditReference : public fbDlgEditReference
 {
     DECLARE_EVENT_TABLE()
 protected:
-    enum Column {
-        COL_Type, COL_Value, COL_MAX
+    enum EntityColumn {
+        ENT_COL_Type, ENT_COL_Number, ENT_COL_Value, ENT_COL_MAX
     };
     enum PersonaColumn {
         PER_COL_Number, PER_COL_Name, PER_COL_Individuals, PER_COL_MAX
@@ -97,6 +97,7 @@ protected:
     void DoUndo();
     void DoRedo();
 
+	void OnStatementViewChanging( wxNotebookEvent& event );
     void OnNewSource( wxCommandEvent& event );
     void OnNewDate( wxCommandEvent& event );
     void OnNewDateAge( wxCommandEvent& event );
@@ -123,6 +124,7 @@ public:
     bool  DoNewDateAge( idt* dateID );
     bool  DoNewPlace( idt* placeID );
 private:
+    void UpdateHtml();
     void InsertListItem( long row, const TfpEntity& ent );
 
     idt SelectCreatePersona();
@@ -135,6 +137,7 @@ private:
     recReference  m_reference;
     TfpEntities   m_entities;
     recIdVec      m_personaIDs;
+    wxString      m_htmlText;
 };
 
 #endif // DLGEDREFERENCE_H

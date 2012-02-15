@@ -52,6 +52,9 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "Reference" );
 
+    static wxString GetIdStr( idt refID ) { return wxString::Format( "R"ID, refID ); }
+    wxString GetIdStr() const { return GetIdStr( f_id ); }
+
     recRefEntVec ReadReferenceEntitys();
     static wxSQLite3ResultSet GetTitleList();
 

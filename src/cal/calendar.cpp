@@ -76,6 +76,14 @@ const wxString CalendarSchemeAbrev[] = {
     "FR"
 };
 
+const wxString CalendarUnitName[] = {
+    _("Unstated"),
+    _("Year"),
+    _("Month"),
+    _("Week"),
+    _("Day")
+};
+
 // Helper function.
 // Integer function to return floor( a / b )
 long FDiv( long a, long b )
