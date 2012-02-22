@@ -141,7 +141,7 @@ wxString recEvent::GetDetailStr() const
 {
     wxString str;
     str << recDate::GetStr( f_date1_id );
-    if( !str.empty() ) {
+    if( !str.empty() && f_place_id != 0 ) {
         str << ", ";
     }
     str << recPlace::GetAddressStr( f_place_id );

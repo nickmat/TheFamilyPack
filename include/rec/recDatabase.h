@@ -155,6 +155,8 @@ public:
 
     static idt ExecuteID( const wxSQLite3StatementBuffer& sql );
     static idt ExecuteID( const char* format, idt id );
+    static wxString ExecuteStr( const wxSQLite3StatementBuffer& sql );
+    static wxString ExecuteStr( const char* format, idt id );
 };
 
 #define TABLE_NAME_MEMBERS( T )                                        \

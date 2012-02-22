@@ -38,17 +38,21 @@
 
 #include "fbDlg.h"
 
+typedef std::vector< wxString >  StringVec;
+
+
 //-----------------------------------------------------
 //      dlgEditIndEvent
 //-----------------------------------------------------
 
-class dlgEditIndEvent : public fbDlgEditIndEvent2
+class dlgEditIndEvent : public fbDlgEditIndEvent
 {
     enum Columns {
         COL_IndID, COL_Name, COL_Role, COL_Note, COL_MAX
     };
 public:
     dlgEditIndEvent( wxWindow* parent );
+    ~dlgEditIndEvent();
 
     void SetEvent( idt eveID ) { m_event.f_id = eveID; }
     void SetEventType( idt typeID ) { m_event.f_type_id = typeID; }
@@ -59,10 +63,26 @@ public:
 private:
     bool TransferDataToWindow();
     wxString WrReferenceEvents();
+    wxString WrReferenceDates();
+    void CreateDateImageFile();
+    static void DrawDateImage( 
+        wxDC& dc, const recDate& date, long start, double scale, const wxColour& color );
+    wxString WrReferencePlaces();
     bool TransferDataFromWindow();
 
     void OnDate1Button( wxCommandEvent& event );
-    void OnAddrButton( wxCommandEvent& event );
+    void OnDate2Button( wxCommandEvent& event );
+    void OnPlaceButton( wxCommandEvent& event );
+
+    void OnAddButton( wxCommandEvent& event );
+    void OnEditButton( wxCommandEvent& event );
+    void OnDeleteButton( wxCommandEvent& event );
+    void OnUpButton( wxCommandEvent& event );
+    void OnDownButton( wxCommandEvent& event );
+
+    void OnReferencesButton( wxCommandEvent& event );
+    void OnCompareDatesButton( wxCommandEvent& event );
+    void OnComparePlacesButton( wxCommandEvent& event );
 
     recEvent  m_event;
     recDate   m_date1;
@@ -70,34 +90,16 @@ private:
 
     recEventPersonaVec m_evpers;
     recIndividualList  m_individuals;
-    recIdVec m_refEventIDs;
-};
 
+    recEventVec m_refEvents;
+    recIdVec    m_refIDs;
+    recDateVec  m_reDate1s;
+    StringVec   m_dateImageFNs;
 
-//-----------------------------------------------------
-//      dlgEditIndEvent_
-//-----------------------------------------------------
-
-class dlgEditIndEvent_ : public fbDlgEditIndEvent
-{
-public:
-    dlgEditIndEvent_( wxWindow* parent );
-
-    void SetEventType( idt typeID ) { m_event.f_type_id = typeID; }
-    void SetEventTitle( const wxString& titleStr ) { m_event.f_title = titleStr; }
-
-    idt GetEventID() const { return m_event.f_id; }
-
-private:
-    bool TransferDataToWindow();
-    bool TransferDataFromWindow();
-
-    void OnDate1Button( wxCommandEvent& event );
-    void OnAddrButton( wxCommandEvent& event );
-
-    recEvent  m_event;
-    recDate   m_date1;
-    recPlace  m_place;
+    wxString    m_refEventsHtm;
+    wxString    m_refDatesHtm;
+    wxString    m_refPlacesHtm;
+    wxString    m_dateImageFN;
 };
 
 //-----------------------------------------------------

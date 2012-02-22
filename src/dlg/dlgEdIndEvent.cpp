@@ -37,6 +37,8 @@
 #include "wx/wx.h"
 #endif
 
+#include <wx/fs_mem.h>
+
 #include <rec/recLink.h>
 
 #include "dlgEdIndEvent.h"
@@ -47,7 +49,7 @@
 //-----------------------------------------------------
 
 dlgEditIndEvent::dlgEditIndEvent( wxWindow* parent )
-    : fbDlgEditIndEvent2( parent )
+    : fbDlgEditIndEvent( parent )
 {
     m_event.Clear();
     m_date1.Clear();
@@ -57,6 +59,16 @@ dlgEditIndEvent::dlgEditIndEvent( wxWindow* parent )
     m_listPersona->InsertColumn( COL_Name, _("Name") );
     m_listPersona->InsertColumn( COL_Role, _("Role") );
     m_listPersona->InsertColumn( COL_Note, _("Note") );
+}
+
+dlgEditIndEvent::~dlgEditIndEvent()
+{
+    if( !m_dateImageFN.IsEmpty() ) {
+        wxMemoryFSHandler::RemoveFile( m_dateImageFN );
+    }
+    for( size_t i = 0 ; i < m_dateImageFNs.size() ; i++ ) {
+        wxMemoryFSHandler::RemoveFile( m_dateImageFNs[i] );
+    }
 }
 
 bool dlgEditIndEvent::TransferDataToWindow()
@@ -100,56 +112,222 @@ bool dlgEditIndEvent::TransferDataToWindow()
         m_listPersona->SetItem( i, COL_Note, m_evpers[i].f_note );
     }
 
-    m_refEventIDs = recLinkEvent::FindEquivRefEvents( m_event.f_id );
-    m_htmlWin2->SetPage( WrReferenceEvents() );
+    m_refEvents = recLinkEvent::FindEquivRefEvents( m_event.f_id );
+    for( size_t i = 0 ; i < m_refEvents.size() ; i++ ) {
+        idt refID = recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, m_refEvents[i].f_id );
+        m_refIDs.push_back( refID );
+        recDate date( m_refEvents[i].f_date1_id );
+        m_reDate1s.push_back( date );
+    }
+    CreateDateImageFile();
+    m_refEventsHtm = WrReferenceEvents();
+    m_htmlWin->SetPage( m_refEventsHtm );
+    m_buttonReferences->Enable( false );
+    m_refDatesHtm = WrReferenceDates();
+    m_refPlacesHtm = WrReferencePlaces();
     return true;
 }
 
 wxString dlgEditIndEvent::WrReferenceEvents()
 {
-
-//    size_t i, j, cnt;
-//    recIndividual ind( indID );
-//    recPersona per( ind.f_per_id );
-//    recIndividual spouse;
     wxString htm;
 
     htm << "<html><head><title>"
         << m_event.f_title << "</title></head>"
-           "<body><center><table width=100%>";
+           "<body><table>";
 
-
-    for( size_t i = 0 ; i < m_refEventIDs.size() ; i++ ) {
-        recEvent e(m_refEventIDs[i]);
-        htm << "<tr><td>"
-            << e.f_title
-            << "</td></tr>";
-    }
-
-
+    wxASSERT( m_refEvents.size() == m_refIDs.size() );
+    for( size_t i = 0 ; i < m_refEvents.size() ; i++ ) {
+        idt refID = m_refIDs[i];
+        htm << "<tr><td>" << recReference::GetIdStr( m_refIDs[i] )
+            << "</td><td>" << recReference::GetTitle( m_refIDs[i] )
+            << "</td></tr>"
+            << "<tr><td></td><td><table><tr><td>" << m_refEvents[i].GetIdStr()
+            << "</td><td>" 
+            << m_refEvents[i].f_title << "<br>" << m_refEvents[i].GetDetailStr()
+            << "</td></tr>"
+        ;
 #if 0
-    wxSQLite3Table eTable = ind.GetRefEventsTable();
-    for( size_t j = 0 ; j < (size_t) eTable.GetRowCount() ; j++ ) {
-        eTable.SetRow( j );
-        idt eventID = GET_ID( eTable.GetInt64( 0 ) );
-        idt roleID = GET_ID( eTable.GetInt64( 1 ) );
-        idt refID = recEvent::FindReferenceID( eventID );
-
-        htm << "<tr><td align=right>"
-            << recEventTypeRole::GetName( roleID )
-            << ":</td><td><b>"
-            << recEvent::GetTitle( eventID );
-        if( refID != 0 ) {
-            htm << " <a href=R" << refID
-                << "><img src=memory:ref.bmp></a>";
+        if( m_refEvents[i].f_date1_id ) {
+            htm << "<tr><td>" << m_reDate1s[i].GetIdStr()
+                << "</td><td>" << m_reDate1s[i].GetStr()
+                << "</td></tr>"
+            ;
         }
-        htm << "<br>"
-            << recEvent::GetDetailStr( eventID )
-            << "</b></td></tr>";
-    }
+        if( m_refEvents[i].f_place_id ) {
+            htm << "<tr><td>" << recPlace::GetIdStr( m_refEvents[i].f_place_id )
+                << "</td><td>" << recPlace::GetAddressStr( m_refEvents[i].f_place_id )
+                << "</td></tr>"
+            ;
+        }
 #endif
-    htm << "</table></center></body></html>";
+        if( !m_refEvents[i].f_note.IsEmpty() ) {
+            htm << "<tr><td colspan=2>" << m_refEvents[i].f_note
+                << "</td></tr>"
+            ;
+        }
+        htm << "</table></td></tr>";
+    }
 
+    htm << "</table></body></html>";
+
+    return htm;
+}
+
+wxString dlgEditIndEvent::WrReferenceDates()
+{
+    wxString htm;
+
+    htm << "<html><head><title>Dates</title></head><body>\n"
+           "<table cellspacing=0 cellpadding=0 border=0>\n"
+           "<tr><td colspan=4 align=center><font size=+2><b>Dates</b></font></td></tr>\n"
+           "<tr>\n<td>" << m_event.GetIdStr() << "</td>\n"
+//           "<td nowrap>" << m_date1.GetBegStr() << "</td>\n"
+           "<td><img src=\"memory:" << m_dateImageFN << "\"></td>\n"
+           "<td nowrap>" << m_date1.GetStr() << "</td>\n</tr>\n";
+    for( size_t i = 0 ; i < m_reDate1s.size() ; i++ ) {
+        htm << "<tr>\n<td>" << recReference::GetIdStr( m_refIDs[i] ) << "</td>\n"
+//               "<td nowrap>" << m_reDate1s[i].GetBegStr() << "</td>\n"
+               "<td><img src=\"memory:" << m_dateImageFNs[i] << "\"></td>\n"
+               "<td nowrap>" << m_reDate1s[i].GetStr() << "</td>\n</tr>\n";
+    }
+
+    htm << "</table>\n</body>\n</html>\n";
+#if 0
+    htm << "<html><head><title>"
+        << m_event.f_title << "</title></head>"
+           "<body><table>";
+
+    wxASSERT( m_refEvents.size() == m_refIDs.size() );
+    for( size_t i = 0 ; i < m_refEvents.size() ; i++ ) {
+        idt refID = m_refIDs[i];
+        htm << "<tr><td>" << recReference::GetIdStr( m_refIDs[i] )
+            << "</td><td>" << recReference::GetTitle( m_refIDs[i] )
+            << "</td></tr>"
+            << "<tr><td></td><td><table><tr><td>" << m_refEvents[i].GetIdStr()
+            << "</td><td>" << m_refEvents[i].f_title
+            << "</td></tr>"
+        ;
+        if( m_refEvents[i].f_date1_id ) {
+            htm << "<tr><td>" << m_reDate1s[i].GetIdStr()
+                << "</td><td>" << m_reDate1s[i].GetStr()
+                << "</td></tr>"
+            ;
+        }
+        if( m_refEvents[i].f_place_id ) {
+            htm << "<tr><td>" << recPlace::GetIdStr( m_refEvents[i].f_place_id )
+                << "</td><td>" << recPlace::GetAddressStr( m_refEvents[i].f_place_id )
+                << "</td></tr>"
+            ;
+        }
+        if( !m_refEvents[i].f_note.IsEmpty() ) {
+            htm << "<tr><td colspan=2>" << m_refEvents[i].f_note
+                << "</td></tr>"
+            ;
+        }
+        htm << "</table></td></tr>";
+    }
+
+    htm << "</table></body></html>";
+#endif
+    return htm;
+}
+
+void dlgEditIndEvent::CreateDateImageFile()
+{
+    size_t i;
+    wxASSERT( m_date1.f_jdn != 0 );
+    if( !m_dateImageFN.IsEmpty() ) {
+        wxMemoryFSHandler::RemoveFile( m_dateImageFN );
+    }
+    for( i = 0 ; i < m_dateImageFNs.size() ; i++ ) {
+        wxMemoryFSHandler::RemoveFile( m_dateImageFNs[i] );
+    }
+    m_dateImageFNs.clear();
+
+    wxMemoryDC dc;
+    wxBitmap bitmap( 200, 40 );
+    dc.SelectObject( bitmap );
+    wxColour color;
+    dc.SetBackground( *wxWHITE );
+    dc.Clear();
+
+    long min = m_date1.f_jdn;
+    long max = min + m_date1.f_range;
+    for( i = 0 ; i < m_reDate1s.size() ; i++ ) {
+        if( m_reDate1s[i].f_jdn == 0 ) continue;
+        min = wxMin( min, m_reDate1s[i].f_jdn );
+        max = wxMax( max, m_reDate1s[i].f_jdn + m_reDate1s[i].f_range );
+    }
+    min -= 365;
+    max += 365;
+    double scale = (double) 200 / ( max - min );
+    DrawDateImage( dc, m_date1, min, scale, *wxBLACK );
+    wxString filename = m_event.GetIdStr() + "date.bmp";
+    wxMemoryFSHandler::AddFile( filename, bitmap, wxBITMAP_TYPE_BMP );
+    m_dateImageFN = filename;
+
+    int beg = ( m_date1.f_jdn - min ) * scale;
+    int end = ( m_date1.f_jdn + m_date1.f_range - min ) * scale;
+    for( i = 0 ; i < m_reDate1s.size() ; i++ ) {
+        dc.Clear();
+        dc.SetPen( *wxBLACK );
+        if( m_date1.f_range ) {
+            dc.DrawLine( beg, 0, beg, 40 );
+            dc.DrawLine( end, 0, end, 40 );
+        } else {
+            dc.DrawLine( beg, 0, beg, 40 );
+        }
+        unsigned comp = m_date1.GetCompareFlags( m_reDate1s[i] );
+        if( comp & recDate::CF_Overlap ) {
+            color = *wxGREEN;
+        } else if( comp & recDate::CF_WithinType ) {
+            color = wxColour( 255, 127, 0 ); // Orange
+        } else {
+            color = *wxRED;
+        }
+        DrawDateImage( dc, m_reDate1s[i], min, scale, color );
+        filename << m_event.GetIdStr() << "date" << i << ".bmp";
+        wxMemoryFSHandler::AddFile( filename, bitmap, wxBITMAP_TYPE_BMP );
+        m_dateImageFNs.push_back( filename );
+    }
+
+    dc.SelectObject( wxNullBitmap );
+}
+
+void dlgEditIndEvent::DrawDateImage( 
+    wxDC& dc, const recDate& date, long start, double scale, const wxColour& color )
+{
+    // 
+    int beg = ( date.f_jdn - start ) * scale;
+    int end = ( date.f_jdn + date.f_range - start ) * scale;
+    int taper = 365 * scale;
+    dc.SetPen( color );
+    dc.SetBrush( color );
+    if( date.f_type & recDate::FLG_BEFORE ) {
+        wxRect r( beg-taper, 10, taper, 20 );
+        dc.GradientFillLinear( r, *wxWHITE, color, wxRIGHT );
+    }
+    if( date.f_range ) {
+        dc.DrawRectangle( wxRect( beg, 10, end-beg, 20 ) );
+        dc.DrawLine( beg, 0, beg, 40 );
+        dc.DrawLine( end, 0, end, 40 );
+    } else {
+        dc.DrawLine( beg, 0, beg, 40 );
+   }
+    if( date.f_type & recDate::FLG_AFTER ) {
+        wxRect r( end, 10, taper, 20 );
+        dc.GradientFillLinear( r, *wxWHITE, color, wxLEFT );
+    }
+}
+
+wxString dlgEditIndEvent::WrReferencePlaces()
+{
+    wxString htm;
+
+    htm << "<html><head><body>"
+           "Places - Not yet written"
+           "</body></html>";
     return htm;
 }
 
@@ -195,107 +373,192 @@ void dlgEditIndEvent::OnDate1Button( wxCommandEvent& event )
     );
 }
 
-void dlgEditIndEvent::OnAddrButton( wxCommandEvent& event )
-{
-    wxMessageBox(
-        wxT("Not yet implimented\nAddress"),
-        wxT("OnAddrButton")
-    );
-}
-
-
-//-----------------------------------------------------
-//      dlgEditIndEvent
-//-----------------------------------------------------
-
-dlgEditIndEvent_::dlgEditIndEvent_( wxWindow* parent )
-    : fbDlgEditIndEvent( parent )
-{
-    m_event.Clear();
-    m_date1.Clear();
-    m_place.Clear();
-}
-
-bool dlgEditIndEvent_::TransferDataToWindow()
-{
-    m_staticType->SetLabel( m_event.GetTypeStr() );
-
-    m_textCtrlTitle->SetValue( m_event.f_title );
-
-    if( m_event.f_date1_id == 0 ) {
-        m_date1.SetDefaults();
-        m_date1.Save();
-    } else {
-        m_date1.f_id = m_event.f_date1_id;
-        m_date1.Read();
-    }
-    m_textCtrlDate1->SetValue( m_date1.GetStr() );
-
-    m_buttonDate2->Enable( false );
-
-    if( m_event.f_place_id == 0 ) {
-        m_place.Clear();
-        m_place.Save();
-    } else {
-        m_place.f_id = m_event.f_place_id;
-        m_place.Read();
-    }
-    m_textCtrlAddr->SetValue( m_place.GetAddressStr() );
-
-    m_textCtrlNote->SetValue( m_event.f_note );
-
-    return true;
-}
-
-bool dlgEditIndEvent_::TransferDataFromWindow()
-{
-    wxASSERT( m_event.f_type_id != 0 );
-
-    m_event.f_title = m_textCtrlTitle->GetValue();
-
-    wxString str = m_textCtrlDate1->GetValue();
-    if( str.IsEmpty() ) {
-        m_date1.Delete();
-        m_event.f_date1_id = 0;
-    } else {
-        m_date1.SetDate( str );
-        m_date1.Save();
-        m_event.f_date1_id = m_date1.f_id;
-    }
-
-    m_event.f_date2_id = 0;
-
-    str = m_textCtrlAddr->GetValue();
-    if( str.IsEmpty() ) {
-        m_place.Delete();
-        m_event.f_place_id = 0;
-    } else {
-        m_place.SetAddress( str );
-        m_place.Save();
-        m_event.f_place_id = m_place.f_id;
-    }
-
-    m_event.f_note = m_textCtrlNote->GetValue();
-
-    m_event.Save();
-    return true;
-}
-
-void dlgEditIndEvent_::OnDate1Button( wxCommandEvent& event )
+void dlgEditIndEvent::OnDate2Button( wxCommandEvent& event )
 {
     wxMessageBox(
         wxT("Not yet implimented\nDate"),
-        wxT("OnDate1Button")
+        wxT("OnDate2Button")
     );
 }
 
-void dlgEditIndEvent_::OnAddrButton( wxCommandEvent& event )
+void dlgEditIndEvent::OnPlaceButton( wxCommandEvent& event )
 {
     wxMessageBox(
-        wxT("Not yet implimented\nAddress"),
-        wxT("OnAddrButton")
+        wxT("Not yet implimented\nPlace"),
+        wxT("OnPlaceButton")
     );
 }
+
+void dlgEditIndEvent::OnAddButton( wxCommandEvent& event )
+{
+    wxMessageBox(
+        wxT("Not yet implimented"),
+        wxT("OnAddButton")
+    );
+#if 0
+// Copied from Name dialog for as example code
+    const wxString savepoint = "NameAddPart";
+    dlgEditNamePart* dialog = new dlgEditNamePart( NULL );
+    dialog->SetNameID( m_name.f_id );
+
+    recDb::Savepoint( savepoint );
+    if( dialog->ShowModal() == wxID_OK )
+    {
+        recDb::ReleaseSavepoint( savepoint );
+        recNamePart* np = dialog->GetNamePart();
+        int row = m_parts.size();
+        m_listParts->InsertItem( row, recNamePartType::GetTypeStr( np->f_type_id ) );
+        m_listParts->SetItem( row, COL_Value, np->f_val );
+        m_parts.push_back( *np );
+        UpdateName();
+   } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+#endif
+}
+
+void dlgEditIndEvent::OnEditButton( wxCommandEvent& event )
+{
+    wxMessageBox(
+        wxT("Not yet implimented"),
+        wxT("OnEditButton")
+    );
+#if 0
+// Copied from Name dialog for as example code
+    long row = m_listParts->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row < 0 ) {
+        wxMessageBox( _("No row selected"), _("Edit Name") );
+        return;
+    }
+
+    const wxString savepoint = "NameEdPart";
+    dlgEditNamePart* dialog = new dlgEditNamePart( NULL );
+    dialog->SetNamePartID( m_parts[row].f_id );
+
+    recDb::Savepoint( savepoint );
+    if( dialog->ShowModal() == wxID_OK )
+    {
+        recDb::ReleaseSavepoint( savepoint );
+        recNamePart* np = dialog->GetNamePart();
+        m_listParts->SetItem( row, COL_Type, recNamePartType::GetTypeStr( np->f_type_id ) );
+        m_listParts->SetItem( row, COL_Value, np->f_val );
+        m_parts[row] = *np;
+        UpdateName();
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+#endif
+}
+
+void dlgEditIndEvent::OnDeleteButton( wxCommandEvent& event )
+{
+    wxMessageBox(
+        wxT("Not yet implimented"),
+        wxT("OnDeleteButton")
+    );
+#if 0
+// Copied from Name dialog for as example code
+    long row = m_listParts->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row >= 0 ) {
+        m_listParts->DeleteItem( row );
+        m_parts[row].Delete();
+        m_parts.erase( m_parts.begin() + row );
+        UpdateName();
+    } else {
+        wxMessageBox( wxT("No row selected"), wxT("Delete Name") );
+    }
+#endif
+}
+
+void dlgEditIndEvent::OnUpButton( wxCommandEvent& event )
+{
+    wxMessageBox(
+        wxT("Not yet implimented"),
+        wxT("OnUpButton")
+    );
+#if 0
+// Copied from Name dialog for as example code
+    long row = m_listParts->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row < 0 ) {
+        wxMessageBox( wxT("Row not selected"), wxT("NamePart Up") );
+        return;
+    }
+    if( row > 0 ) {
+        recNamePart part = m_parts[row];
+        m_parts[row] = m_parts[row-1];
+        m_parts[row-1] = part;
+
+        m_listParts->SetItem( row, COL_Type, recNamePartType::GetTypeStr( m_parts[row].f_type_id ) );
+        m_listParts->SetItem( row, COL_Value, m_parts[row].f_val );
+        --row;
+        m_listParts->SetItem( row, COL_Type, recNamePartType::GetTypeStr( m_parts[row].f_type_id ) );
+        m_listParts->SetItem( row, COL_Value, m_parts[row].f_val );
+
+        m_listParts->SetItemState( row, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+        UpdateName();
+    }
+#endif
+}
+
+void dlgEditIndEvent::OnDownButton( wxCommandEvent& event )
+{
+    wxMessageBox(
+        wxT("Not yet implimented"),
+        wxT("OnDownButton")
+    );
+#if 0
+// Copied from Name dialog for as example code
+    long row = m_listParts->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row < 0 ) {
+        wxMessageBox( wxT("Row not selected"), wxT("NamePart Down") );
+        return;
+    }
+    if( row < m_listParts->GetItemCount()-1 ) {
+        recNamePart part = m_parts[row];
+        m_parts[row] = m_parts[row+1];
+        m_parts[row+1] = part;
+
+        m_listParts->SetItem( row, COL_Type, recNamePartType::GetTypeStr( m_parts[row].f_type_id ) );
+        m_listParts->SetItem( row, COL_Value, m_parts[row].f_val );
+        row++;
+        m_listParts->SetItem( row, COL_Type, recNamePartType::GetTypeStr( m_parts[row].f_type_id ) );
+        m_listParts->SetItem( row, COL_Value, m_parts[row].f_val );
+
+        m_listParts->SetItemState( row, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+        UpdateName();
+    }
+#endif
+}
+
+void dlgEditIndEvent::OnReferencesButton( wxCommandEvent& event )
+{
+    m_buttonReferences->Enable( false );
+    m_buttonCompareDates->Enable( true );
+    m_buttonComparePlaces->Enable( true );
+    m_htmlWin->SetPage( m_refEventsHtm );
+    m_htmlWin->SetFocus();
+}
+
+void dlgEditIndEvent::OnCompareDatesButton( wxCommandEvent& event )
+{
+    m_buttonReferences->Enable( true );
+    m_buttonCompareDates->Enable( false );
+    m_buttonComparePlaces->Enable( true );
+    m_htmlWin->SetPage( m_refDatesHtm );
+    m_htmlWin->SetFocus();
+}
+
+void dlgEditIndEvent::OnComparePlacesButton( wxCommandEvent& event )
+{
+    m_buttonReferences->Enable( true );
+    m_buttonCompareDates->Enable( true );
+    m_buttonComparePlaces->Enable( false );
+    m_htmlWin->SetPage( m_refPlacesHtm );
+    m_htmlWin->SetFocus();
+}
+
 
 //-----------------------------------------------------
 //      dlgEditFamEvent

@@ -33,6 +33,9 @@
 #include <rec/recDatabase.h>
 #include <cal/calendar.h>
 
+class recDate;
+typedef std::vector< recDate >  recDateVec;
+
 class recRelativeDate;
 
 #define recDate_MAX_RECURSION_COUNT  10
@@ -62,6 +65,20 @@ public:
         PREF_About,
         PREF_Max
     };
+
+    enum CompareFlag {
+        CF_NONE         = 0x0000,
+        CF_RangeAfter   = 0x0001, // The compared range is fully after this dates reange
+        CF_RangeBefore  = 0x0002, // The compared range is fully before this dates reange
+        CF_Overlap      = 0x0004, // Some dates within the (inclusive) range agree.
+
+        CF_AfterOK      = 0x0010, // CF_RangeAfter set but this date has FLG_AFTER set
+        CF_BeforeOK     = 0x0020, // CF_RangeBefore set but this date has FLG_BEFORE set
+        CF_CompBeforeOK = 0x0040, // CF_RangeAfter set but this date has FLG_BEFORE set
+        CF_CompAfterOK  = 0x0080, // CF_RangeAfter set but this date has FLG_AFTER set
+        CF_WithinType   = 0x0100  // At lest one of the 4 above flags is set
+    };
+
     static const wxString s_prefStr[PREF_Max];
     static const wxString s_prefFormat[PREF_Max];
 
@@ -119,6 +136,10 @@ public:
     static wxString GetJdnStr( idt id );
     wxString GetStr( CalendarScheme sch = CALENDAR_SCH_Unstated ) const;
     static wxString GetStr( idt id );
+
+    wxString GetBegStr( CalendarScheme sch = CALENDAR_SCH_Unstated ) const;
+    wxString GetEndStr( CalendarScheme sch = CALENDAR_SCH_Unstated ) const;
+
     int GetYear( CalendarScheme sch = CALENDAR_SCH_Unstated );
     static int GetYear( idt id, CalendarScheme sch = CALENDAR_SCH_Unstated );
     long GetDatePoint( DatePoint dp = DATE_POINT_Mid );
@@ -127,6 +148,8 @@ public:
     unsigned GetTypePrefix() const {
         return f_type & ( FLG_AFTER | FLG_RANGE | FLG_BEFORE ); 
     }
+
+    unsigned GetCompareFlags( const recDate& date ) const;
 };
 
 /*! The two entities are equal, ignoring the record id.

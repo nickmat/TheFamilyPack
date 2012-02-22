@@ -190,4 +190,19 @@ idt recDb::ExecuteID( const char* format, idt id )
     return GET_ID( result.GetInt64( 0 ) );
 }
 
+wxString recDb::ExecuteStr( const wxSQLite3StatementBuffer& sql )
+{
+    wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
+    return result.GetAsString( 0 );
+}
+
+wxString recDb::ExecuteStr( const char* format, idt id )
+{
+    wxSQLite3StatementBuffer sql;
+    sql.Format( format, id );
+
+    wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
+    return result.GetAsString( 0 );
+}
+
 // End of recDatabase.cpp file

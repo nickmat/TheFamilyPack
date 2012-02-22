@@ -55,6 +55,8 @@ public:
     static wxString GetIdStr( idt refID ) { return wxString::Format( "R"ID, refID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
+    static wxString GetTitle( idt refID );
+
     recRefEntVec ReadReferenceEntitys();
     static wxSQLite3ResultSet GetTitleList();
 

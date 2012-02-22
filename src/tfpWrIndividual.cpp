@@ -196,7 +196,7 @@ wxString tfpWriteIndividualPage( idt indID )
             << wxT(":</td><td><b>")
             << eTable.GetAsString( 2 );
         if( refID != 0 ) {
-            htm << wxT(" <a href=R") << refID
+            htm << wxT(" <a href=") << recReference::GetIdStr( refID )
                 << wxT("><img src=memory:ref.bmp></a>");
         }
         htm << "</b></td></tr>";
@@ -213,7 +213,7 @@ wxString tfpWriteIndividualPage( idt indID )
             << wxT(":</td><td><b>")
             << recEvent::GetTitle( eventID );
         if( refID != 0 ) {
-            htm << wxT(" <a href=R") << refID
+            htm << wxT(" <a href=") << recReference::GetIdStr( refID )
                 << wxT("><img src=memory:ref.bmp></a>");
         }
         htm << wxT("<br>")
@@ -226,11 +226,11 @@ wxString tfpWriteIndividualPage( idt indID )
         eTable.SetRow( i );
         idt refID = GET_ID( eTable.GetInt64( 0 ) );
 
-        htm << wxT("<tr><td align=right>R")
-            << refID
+        htm << wxT("<tr><td align=right>")
+            << recReference::GetIdStr( refID )
             << wxT(":</td><td><b>")
             << eTable.GetAsString( 1 )
-            << wxT(" <a href=R") << refID
+            << wxT(" <a href=") << recReference::GetIdStr( refID )
             << wxT("><img src=memory:ref.bmp></a>")
             << wxT("</b></td></tr>");
     }

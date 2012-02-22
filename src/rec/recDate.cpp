@@ -262,8 +262,7 @@ wxString recDate::GetJdnStr( idt id )
 wxString recDate::GetStr( CalendarScheme scheme ) const
 {
     if( scheme == CALENDAR_SCH_Unstated ) scheme = f_display_sch;
-    if( f_jdn == 0 )
-    {
+    if( f_jdn == 0 ) {
         return f_descrip;
     }
 
@@ -271,6 +270,30 @@ wxString recDate::GetStr( CalendarScheme scheme ) const
         s_prefFormat[GetTypePrefix()],
         calStrFromJdnRange( f_jdn, f_jdn+f_range, scheme )
     );
+}
+
+wxString recDate::GetBegStr( CalendarScheme scheme ) const
+{
+    if( f_jdn == 0 ) {
+        return f_descrip;
+    }
+    if( scheme == CALENDAR_SCH_Unstated ) {
+        scheme = f_display_sch;
+    }
+
+    return calStrFromJdn( f_jdn, scheme );
+}
+
+wxString recDate::GetEndStr( CalendarScheme scheme ) const
+{
+    if( f_jdn == 0 ) {
+        return wxEmptyString;
+    }
+    if( scheme == CALENDAR_SCH_Unstated ) {
+        scheme = f_display_sch;
+    }
+
+    return calStrFromJdn( f_jdn + f_range, scheme );
 }
 
 wxString recDate::GetStr( idt id )
@@ -327,6 +350,28 @@ long recDate::GetDatePoint( idt id, DatePoint dp )
     return date.GetDatePoint( dp );
 }
 
+unsigned recDate::GetCompareFlags( const recDate& date ) const
+{
+    unsigned flags = CF_NONE;
+
+    if( (f_jdn+f_range) < date.f_jdn ) flags |= CF_RangeAfter;
+    if( (f_jdn) > (date.f_jdn+date.f_range) ) flags |= CF_RangeBefore;
+    if( !(flags & CF_RangeAfter) && !(flags & CF_RangeBefore) ) flags |= CF_Overlap;
+
+    if( flags & CF_RangeAfter ) {
+        if( f_type & FLG_AFTER ) flags |= CF_AfterOK;
+        if( date.f_type & FLG_BEFORE ) flags |= CF_CompBeforeOK;
+    }
+    if( flags & CF_RangeBefore ) {
+        if( f_type & FLG_BEFORE ) flags |= CF_CompBeforeOK;
+        if( date.f_type & FLG_AFTER ) flags |= CF_CompAfterOK;
+    }
+    if( flags & ( CF_AfterOK | CF_BeforeOK | CF_CompBeforeOK | CF_CompAfterOK ) ) {
+        flags |= CF_WithinType;
+    }
+
+    return flags;
+}
 
 //-----------------------------------------------------
 //      recRelativeDate

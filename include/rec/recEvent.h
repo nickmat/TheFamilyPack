@@ -36,10 +36,13 @@
 #include <rec/recDatabase.h>
 #include <rec/recReference.h>
 
+
+class recEvent;
+typedef std::vector< recEvent >          recEventVec;
 class recEventPersona;
-typedef std::vector< recEventPersona >  recEventPersonaVec;
+typedef std::vector< recEventPersona >   recEventPersonaVec;
 class recEventType;
-typedef std::vector< recEventType >  recEventTypeVec;
+typedef std::vector< recEventType >      recEventTypeVec;
 class recEventTypeRole;
 typedef std::vector< recEventTypeRole >  recEventTypeRoleVec;
 

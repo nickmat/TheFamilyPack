@@ -31,6 +31,7 @@
 #define RECLINK_H
 
 #include <rec/recDatabase.h>
+#include <rec/recEvent.h>
 
 //============================================================================
 //                 recLinkEvent
@@ -55,7 +56,8 @@ public:
 
     bool Find();
 
-    static recIdVec FindEquivRefEvents( idt indEventID );
+    static recIdVec FindEquivRefEventIDs( idt indEventID );
+    static recEventVec FindEquivRefEvents( idt indEventID );
 };
 
 /*! The two entities are equal, ignoring the record id.

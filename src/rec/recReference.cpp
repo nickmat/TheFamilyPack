@@ -115,6 +115,11 @@ bool recReference::Read()
     return true;
 }
 
+wxString recReference::GetTitle( idt refID )
+{
+    return ExecuteStr( "SELECT title FROM Reference WHERE id="ID";", refID );
+}
+
 recRefEntVec recReference::ReadReferenceEntitys()
 {
     recRefEntVec vec;
