@@ -383,9 +383,6 @@ void recGedParse::ReadIndEvent( GedIndividual& gind, int level )
     }
     ev.f_title = wxString::Format( titlefmt, gind.GetNameStr() );
     ev.Save();
-    recLinkEvent le(0);
-    le.f_ind_event_id = ev.f_id;
-    le.Save();
     ep.f_sequence = recDate::GetDatePoint( ev.f_date1_id, dp );
     ep.Save();
 }
