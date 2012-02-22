@@ -96,6 +96,11 @@ bool dlgCreateIndividual::TransferDataFromWindow()
 //                 dlgEditIndPersona dialog
 //============================================================================
 
+BEGIN_EVENT_TABLE( dlgEditIndPersona, wxDialog )
+    EVT_MENU( ID_EDIND_NEW_EVENT,   dlgEditIndPersona::OnNewEvent )
+    EVT_MENU( ID_EDIND_EXIST_EVENT, dlgEditIndPersona::OnExistingEvent )
+END_EVENT_TABLE()
+
 dlgEditIndPersona::dlgEditIndPersona( wxWindow* parent, idt indID ) 
     : fbDlgEditIndPersona( parent )
 {
@@ -404,6 +409,15 @@ void dlgEditIndPersona::OnAttrDownButton( wxCommandEvent& event )
 
 void dlgEditIndPersona::OnEventAddButton( wxCommandEvent& event )
 {
+    wxMenu* menu = new wxMenu;
+    menu->Append( ID_EDIND_NEW_EVENT, _("&New Event") );
+    menu->Append( ID_EDIND_EXIST_EVENT, _("&Existing Event") );
+    PopupMenu( menu );
+    delete menu;
+}
+
+void dlgEditIndPersona::OnNewEvent( wxCommandEvent& event )
+{
     const wxString savepoint = "IndAddEvent";
     recDb::Savepoint( savepoint );
 
@@ -417,11 +431,14 @@ void dlgEditIndPersona::OnEventAddButton( wxCommandEvent& event )
         recDb::Rollback( savepoint );
         return;
     }
+
     dlgEditIndEvent* dialog = new dlgEditIndEvent( NULL );
     dialog->SetEventType( typeID );
     dialog->SetEventTitle( wxString::Format( 
         _("%s of %s"), recEventType::GetTypeStr( typeID ), m_individual.GetFullName()
     ) );
+    dialog->SetPersona( m_individual.f_per_id );
+    dialog->SetPersonaRole( roleID );
 
     if( dialog->ShowModal() == wxID_OK )
     {
@@ -450,10 +467,14 @@ void dlgEditIndPersona::OnEventAddButton( wxCommandEvent& event )
     dialog->Destroy();
 }
 
-void dlgEditIndPersona::OnEventEditButton( wxCommandEvent& event )
+void dlgEditIndPersona::OnExistingEvent( wxCommandEvent& event )
 {
     // TODO:
-//    wxMessageBox( wxT("Not yet implimented"), wxT("OnEventEditButton") );
+    wxMessageBox( wxT("Not yet implimented"), wxT("OnExistingEvent") );
+}
+    
+void dlgEditIndPersona::OnEventEditButton( wxCommandEvent& event )
+{
     long row = m_listEvent->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
         wxMessageBox( _("No row selected"), _("Edit Event") );

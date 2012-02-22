@@ -51,6 +51,7 @@
 dlgEditIndEvent::dlgEditIndEvent( wxWindow* parent )
     : fbDlgEditIndEvent( parent )
 {
+    m_ep.Clear();
     m_event.Clear();
     m_date1.Clear();
     m_place.Clear();
@@ -77,6 +78,10 @@ bool dlgEditIndEvent::TransferDataToWindow()
         m_event.Read();
     } else {
         m_event.Save();
+        if( m_ep.f_per_id ) {
+            m_ep.f_event_id = m_event.f_id;
+            m_ep.Save();
+        }
     }
     m_staticType->SetLabel( m_event.GetTypeStr() );
     m_staticEventID->SetLabel( m_event.GetIdStr() );
@@ -119,7 +124,6 @@ bool dlgEditIndEvent::TransferDataToWindow()
         recDate date( m_refEvents[i].f_date1_id );
         m_reDate1s.push_back( date );
     }
-    CreateDateImageFile();
     m_refEventsHtm = WrReferenceEvents();
     m_htmlWin->SetPage( m_refEventsHtm );
     m_buttonReferences->Enable( false );
@@ -147,24 +151,8 @@ wxString dlgEditIndEvent::WrReferenceEvents()
             << m_refEvents[i].f_title << "<br>" << m_refEvents[i].GetDetailStr()
             << "</td></tr>"
         ;
-#if 0
-        if( m_refEvents[i].f_date1_id ) {
-            htm << "<tr><td>" << m_reDate1s[i].GetIdStr()
-                << "</td><td>" << m_reDate1s[i].GetStr()
-                << "</td></tr>"
-            ;
-        }
-        if( m_refEvents[i].f_place_id ) {
-            htm << "<tr><td>" << recPlace::GetIdStr( m_refEvents[i].f_place_id )
-                << "</td><td>" << recPlace::GetAddressStr( m_refEvents[i].f_place_id )
-                << "</td></tr>"
-            ;
-        }
-#endif
         if( !m_refEvents[i].f_note.IsEmpty() ) {
-            htm << "<tr><td colspan=2>" << m_refEvents[i].f_note
-                << "</td></tr>"
-            ;
+            htm << "<tr><td colspan=2>" << m_refEvents[i].f_note << "</td></tr>";
         }
         htm << "</table></td></tr>";
     }
@@ -178,65 +166,32 @@ wxString dlgEditIndEvent::WrReferenceDates()
 {
     wxString htm;
 
-    htm << "<html><head><title>Dates</title></head><body>\n"
-           "<table cellspacing=0 cellpadding=0 border=0>\n"
-           "<tr><td colspan=4 align=center><font size=+2><b>Dates</b></font></td></tr>\n"
-           "<tr>\n<td>" << m_event.GetIdStr() << "</td>\n"
-//           "<td nowrap>" << m_date1.GetBegStr() << "</td>\n"
-           "<td><img src=\"memory:" << m_dateImageFN << "\"></td>\n"
-           "<td nowrap>" << m_date1.GetStr() << "</td>\n</tr>\n";
-    for( size_t i = 0 ; i < m_reDate1s.size() ; i++ ) {
-        htm << "<tr>\n<td>" << recReference::GetIdStr( m_refIDs[i] ) << "</td>\n"
-//               "<td nowrap>" << m_reDate1s[i].GetBegStr() << "</td>\n"
-               "<td><img src=\"memory:" << m_dateImageFNs[i] << "\"></td>\n"
-               "<td nowrap>" << m_reDate1s[i].GetStr() << "</td>\n</tr>\n";
+    if( CreateDateImageFile() ) {
+        htm << "<html><head><title>Dates</title></head><body>\n"
+               "<table cellspacing=0 cellpadding=0 border=0>\n"
+               "<tr><td colspan=4 align=center><font size=+2><b>Dates</b></font></td></tr>\n"
+               "<tr>\n<td>" << m_event.GetIdStr() << "</td>\n"
+               "<td><img src=\"memory:" << m_dateImageFN << "\"></td>\n"
+               "<td nowrap>" << m_date1.GetStr() << "</td>\n</tr>\n";
+        for( size_t i = 0 ; i < m_reDate1s.size() ; i++ ) {
+            htm << "<tr>\n<td>" << recReference::GetIdStr( m_refIDs[i] ) << "</td>\n"
+                   "<td><img src=\"memory:" << m_dateImageFNs[i] << "\"></td>\n"
+                   "<td nowrap>" << m_reDate1s[i].GetStr() << "</td>\n</tr>\n";
+        }
+
+        htm << "</table>\n</body>\n</html>\n";
+    } else {
+        htm << "<html><head><body>"
+               "No dates recorded"
+               "</body></html>";
     }
 
-    htm << "</table>\n</body>\n</html>\n";
-#if 0
-    htm << "<html><head><title>"
-        << m_event.f_title << "</title></head>"
-           "<body><table>";
-
-    wxASSERT( m_refEvents.size() == m_refIDs.size() );
-    for( size_t i = 0 ; i < m_refEvents.size() ; i++ ) {
-        idt refID = m_refIDs[i];
-        htm << "<tr><td>" << recReference::GetIdStr( m_refIDs[i] )
-            << "</td><td>" << recReference::GetTitle( m_refIDs[i] )
-            << "</td></tr>"
-            << "<tr><td></td><td><table><tr><td>" << m_refEvents[i].GetIdStr()
-            << "</td><td>" << m_refEvents[i].f_title
-            << "</td></tr>"
-        ;
-        if( m_refEvents[i].f_date1_id ) {
-            htm << "<tr><td>" << m_reDate1s[i].GetIdStr()
-                << "</td><td>" << m_reDate1s[i].GetStr()
-                << "</td></tr>"
-            ;
-        }
-        if( m_refEvents[i].f_place_id ) {
-            htm << "<tr><td>" << recPlace::GetIdStr( m_refEvents[i].f_place_id )
-                << "</td><td>" << recPlace::GetAddressStr( m_refEvents[i].f_place_id )
-                << "</td></tr>"
-            ;
-        }
-        if( !m_refEvents[i].f_note.IsEmpty() ) {
-            htm << "<tr><td colspan=2>" << m_refEvents[i].f_note
-                << "</td></tr>"
-            ;
-        }
-        htm << "</table></td></tr>";
-    }
-
-    htm << "</table></body></html>";
-#endif
     return htm;
 }
 
-void dlgEditIndEvent::CreateDateImageFile()
+bool dlgEditIndEvent::CreateDateImageFile()
 {
     size_t i;
-    wxASSERT( m_date1.f_jdn != 0 );
     if( !m_dateImageFN.IsEmpty() ) {
         wxMemoryFSHandler::RemoveFile( m_dateImageFN );
     }
@@ -245,6 +200,21 @@ void dlgEditIndEvent::CreateDateImageFile()
     }
     m_dateImageFNs.clear();
 
+    long min, max;
+    if( m_date1.f_jdn ) {
+        min = m_date1.f_jdn;
+        max = min + m_date1.f_range;
+    } else {
+        for( i = 0, min = 0 ; i < m_reDate1s.size() ; i++ ) {
+            min = m_reDate1s[i].GetDatePoint();
+            if( min ) break;
+        }
+        if( min == 0 ) {
+            return false; // no dates to display
+        }
+        max = min;
+    }        
+
     wxMemoryDC dc;
     wxBitmap bitmap( 200, 40 );
     dc.SelectObject( bitmap );
@@ -252,8 +222,6 @@ void dlgEditIndEvent::CreateDateImageFile()
     dc.SetBackground( *wxWHITE );
     dc.Clear();
 
-    long min = m_date1.f_jdn;
-    long max = min + m_date1.f_range;
     for( i = 0 ; i < m_reDate1s.size() ; i++ ) {
         if( m_reDate1s[i].f_jdn == 0 ) continue;
         min = wxMin( min, m_reDate1s[i].f_jdn );
@@ -293,6 +261,7 @@ void dlgEditIndEvent::CreateDateImageFile()
     }
 
     dc.SelectObject( wxNullBitmap );
+    return true;
 }
 
 void dlgEditIndEvent::DrawDateImage( 

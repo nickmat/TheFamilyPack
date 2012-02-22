@@ -69,6 +69,11 @@ private:
 
 class dlgEditIndPersona : public fbDlgEditIndPersona
 {
+    DECLARE_EVENT_TABLE()
+    enum {
+        ID_EDIND_NEW_EVENT = 1200,
+        ID_EDIND_EXIST_EVENT
+    };
     enum Columns {
         COL_Type, COL_Value, COL_MAX
     };
@@ -99,6 +104,8 @@ private:
     void OnAttrDownButton( wxCommandEvent& event );
 
     void OnEventAddButton( wxCommandEvent& event );
+    void OnNewEvent( wxCommandEvent& event );
+    void OnExistingEvent( wxCommandEvent& event );
     void OnEventEditButton( wxCommandEvent& event );
     void OnEventDeleteButton( wxCommandEvent& event );
     void OnEventUpButton( wxCommandEvent& event );

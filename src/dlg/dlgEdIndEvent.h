@@ -57,6 +57,8 @@ public:
     void SetEvent( idt eveID ) { m_event.f_id = eveID; }
     void SetEventType( idt typeID ) { m_event.f_type_id = typeID; }
     void SetEventTitle( const wxString& titleStr ) { m_event.f_title = titleStr; }
+    void SetPersona( idt perID ) { m_ep.f_per_id = perID; }
+    void SetPersonaRole( idt roleID ) { m_ep.f_role_id = roleID; }
 
     idt GetEventID() const { return m_event.f_id; }
 
@@ -64,7 +66,7 @@ private:
     bool TransferDataToWindow();
     wxString WrReferenceEvents();
     wxString WrReferenceDates();
-    void CreateDateImageFile();
+    bool CreateDateImageFile();
     static void DrawDateImage( 
         wxDC& dc, const recDate& date, long start, double scale, const wxColour& color );
     wxString WrReferencePlaces();
@@ -83,6 +85,8 @@ private:
     void OnReferencesButton( wxCommandEvent& event );
     void OnCompareDatesButton( wxCommandEvent& event );
     void OnComparePlacesButton( wxCommandEvent& event );
+
+    recEventPersona m_ep;
 
     recEvent  m_event;
     recDate   m_date1;
