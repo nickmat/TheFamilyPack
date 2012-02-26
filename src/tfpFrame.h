@@ -103,9 +103,9 @@ public:
 
     void OnCloseWindow( wxCloseEvent& event );
 
-    void NewFile();
-    void OpenFile();
-    void ImportGedcom();
+    bool NewFile();
+    bool OpenFile();
+    bool ImportGedcom();
 
     void SetDatabaseOpen( wxString& path );
     void SetNoDatabase();

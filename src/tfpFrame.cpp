@@ -570,8 +570,9 @@ void TfpFrame::OnCloseWindow( wxCloseEvent& event )
 }
 
 
-void TfpFrame::NewFile()
+bool TfpFrame::NewFile()
 {
+    bool ret = false;
     wxString caption = _("Create TFP Database");
     wxString wildcard = _("TFP Database (*.tfpd)|*.tfpd");
     wxString defaultDir = ".";
@@ -590,12 +591,15 @@ void TfpFrame::NewFile()
             fam.f_id = 1;
             fam.Save();
             m_html->DisplayHtmPage( "F1" );
+            ret = true;
         }
     }
+    return ret;
 }
 
-void TfpFrame::OpenFile()
+bool TfpFrame::OpenFile()
 {
+    bool ret = false;
     wxString caption = _("Select TFP Database");
     wxString wildcard = _("TFP Database (*.tfpd)|*.tfpd");
     wxString defaultDir = ".";
@@ -609,12 +613,15 @@ void TfpFrame::OpenFile()
         {
             SetDatabaseOpen( path );
             m_html->DisplayHtmPage( "F1" );
+            ret = true;
         }
     }
+    return ret;
 }
 
-void TfpFrame::ImportGedcom()
+bool TfpFrame::ImportGedcom()
 {
+    bool ret = false;
     wxString caption = _("Select GEDCOM file");
     wxString wildcard = "GEDCOM (*.ged)|*.ged";
     wxString defaultDir = ".";
@@ -628,10 +635,12 @@ void TfpFrame::ImportGedcom()
         {
             SetDatabaseOpen( path );
             m_html->DisplayHtmPage( "F1" );
+            ret = true;
         } else {
             wxMessageBox( _("Error Reading GEDCOM File"), _("Import") );
         }
     }
+    return ret;
 }
 
 void TfpFrame::SetDatabaseOpen( wxString& path )
