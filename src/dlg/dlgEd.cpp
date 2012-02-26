@@ -158,6 +158,36 @@ bool tfpAddNewParent( idt indID, Sex sex )
     return ret;
 }
 
+bool tfpAddNewParent( const wxString& ref )
+{
+    idt indID;
+    ref.Mid( 1 ).ToLongLong( &indID );
+    Sex sex = ( ref.GetChar(0) == 'F' ) ? SEX_Female : SEX_Male;
+    recDb::Begin();
+    if( tfpAddNewParent( indID, sex ) == true ) {
+        recDb::Commit();
+        return true;
+    } else {
+        recDb::Rollback();
+        return false;
+    }
+}
+
+bool tfpAddNewSpouse( const wxString& ref )
+{
+    idt famID;
+    ref.Mid( 1 ).ToLongLong( &famID );
+    Sex sex = ( ref.GetChar(0) == 'R' ) ? SEX_Female : SEX_Male;
+    recDb::Begin();
+    if( tfpAddNewIndividual( famID, sex ) != 0 ) {
+        recDb::Commit();
+        return true;
+    } else {
+        recDb::Rollback();
+        return false;
+    }
+}
+
 bool tfpEditIndividual( idt indID  )
 {
     const wxString savepoint = "EdInd";
@@ -214,6 +244,20 @@ bool tfpEditReference( idt refID  )
     }
     dialog->Destroy();
     return ret;
+}
+
+bool tfpEditReference( const wxString& ref )
+{
+    wxLongLong_t refID;
+    ref.ToLongLong( &refID );
+    recDb::Begin();
+    if( tfpEditReference( refID ) == true ) {
+        recDb::Commit();
+        return true;
+    } else {
+        recDb::Rollback();
+        return false;
+    }
 }
 
 bool tfpAddExistSpouse( idt indID, Sex sex )

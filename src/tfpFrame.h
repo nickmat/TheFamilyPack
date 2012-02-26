@@ -32,6 +32,7 @@
 #include <wx/html/htmlwin.h>
 #include <rec/recDatabase.h>
 
+class TfpHtml;
 class wxHtmlEasyPrinting;
 
 
@@ -53,11 +54,9 @@ private:
     wxTextCtrl*         m_showpage;
     wxArrayString       m_back;
     wxArrayString       m_forward;
-    wxHtmlWindow*       m_html;
+    TfpHtml*            m_html;
     wxHtmlEasyPrinting* m_prn;
     wxString            m_dbFileName;
-    wxString            m_ctxmenuref;
-    recIdList           m_ctxmenuIDs;
 
 public:
     // ctor and dtor
@@ -102,28 +101,16 @@ public:
     void OnHome( wxCommandEvent& event );
     void OnShowPage( wxCommandEvent& event );
 
-    void OnHtmlLinkClicked( wxHtmlLinkEvent& event );
-    void OnHtmCtxMenu( wxCommandEvent& event );
-    void OnHtmIndMenu( wxCommandEvent& event );
-
     void OnCloseWindow( wxCloseEvent& event );
 
-private:
     void NewFile();
     void OpenFile();
     void ImportGedcom();
 
     void SetDatabaseOpen( wxString& path );
     void SetNoDatabase();
-    bool DisplayHtmPage( const wxString& name );
-    void RefreshHtmPage();
 
-    void DoHtmCtxMenu( const wxString& ref );
-    int AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID );
-
-    void AddNewSpouse( const wxString& ref );
-    void AddNewParent( const wxString& ref );
-    void EditReference( const wxString& ref );
+    void PushHtmName( const wxString& name );
 };
 
 #define tfpMAX_MENU_ITEMS 50

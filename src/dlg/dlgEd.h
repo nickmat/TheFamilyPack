@@ -37,10 +37,13 @@ class recFamily;
 extern idt tfpAddNewIndividual( idt famID, Sex sex, const wxString& surname = wxEmptyString );
 extern idt tfpAddNewChild( idt famID, Sex sex );
 extern bool tfpAddNewParent( idt indID, Sex sex );
+extern bool tfpAddNewParent( const wxString& ref );
+extern bool tfpAddNewSpouse( const wxString& ref );
 extern bool tfpEditIndividual( idt indID );
 
 extern bool tfpEditFamily( idt famID );
 extern bool tfpEditReference( idt refID  );
+extern bool tfpEditReference( const wxString& ref );
 extern bool tfpAddExistSpouse( idt indID, Sex sex );
 extern bool tfpAddExistChild( idt famID, Sex sex );
 extern idt tfpAddMarriageEvent( const recFamily& family );

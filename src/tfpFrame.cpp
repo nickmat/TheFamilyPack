@@ -50,6 +50,7 @@
 #include "tfpRd.h"
 #include "tfpWr.h"
 #include "dlg/dlgEd.h"
+#include "tfpHtml.h"
 
 #include "img/forward.xpm"
 #include "img/back.xpm"
@@ -88,12 +89,8 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_FIND_FORWARD, TfpFrame::OnFindForward )
     EVT_MENU( tfpID_GOTO_HOME, TfpFrame::OnHome )
     EVT_TEXT_ENTER( tfpID_SHOW_PAGE, TfpFrame::OnShowPage )
-    EVT_HTML_LINK_CLICKED( wxID_ANY, TfpFrame::OnHtmlLinkClicked )
-    EVT_MENU_RANGE( tfpID_HCTXMENU_BEG, tfpID_HCTXMENU_END, TfpFrame::OnHtmCtxMenu )
-    EVT_MENU_RANGE( tfpID_INDMENU_BEG, tfpID_INDMENU_END, TfpFrame::OnHtmIndMenu )
     EVT_CLOSE( TfpFrame::OnCloseWindow )
 END_EVENT_TABLE()
-
 
 /*! \brief Frame constructor.
  *
@@ -202,7 +199,8 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
 
     CreateStatusBar();
 
-    m_html = new wxHtmlWindow( this );
+//    m_html = new wxHtmlWindow( this );
+    m_html = new TfpHtml( this, this );
     m_html->SetRelatedStatusBar( 0 );
 
     m_prn = new wxHtmlEasyPrinting( _("Easy Printing Demo"), this );
@@ -210,7 +208,7 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     SetNoDatabase();
     if( recDb::IsOpen() ) {
         SetDatabaseOpen( recDb::GetFileName() );
-        DisplayHtmPage( "F1" );
+        m_html->DisplayHtmPage( "F1" );
     } else {
         m_html->LoadPage( "memory:startup.htm" );
     }
@@ -326,7 +324,7 @@ void TfpFrame::OnAddNewIndMale( wxCommandEvent& event )
             recDb::Commit();
             wxString str;
             str << "FI" << id;
-            DisplayHtmPage( str );
+            m_html->DisplayHtmPage( str );
         } else {
             recDb::Rollback();
         }
@@ -348,7 +346,7 @@ void TfpFrame::OnAddNewIndFemale( wxCommandEvent& event )
             recDb::Commit();
             wxString str;
             str << "FI" << id;
-            DisplayHtmPage( str );
+            m_html->DisplayHtmPage( str );
         } else {
             recDb::Rollback();
         }
@@ -376,7 +374,7 @@ void TfpFrame::OnEditReference( wxCommandEvent& event )
         bool ret = tfpEditReference( (idt) num );
         if( ret == true ) {
             recDb::Commit();
-            RefreshHtmPage();
+            m_html->RefreshHtmPage();
         } else {
             recDb::Rollback();
         }
@@ -405,7 +403,7 @@ void TfpFrame::OnFindIndividualID( wxCommandEvent& event )
  */
 void TfpFrame::OnListIndex( wxCommandEvent& event )
 {
-    DisplayHtmPage( "N" );
+    m_html->DisplayHtmPage( "N" );
 }
 
 /*! \brief Called on a List Names menu option event.
@@ -419,21 +417,21 @@ void TfpFrame::OnListNames( wxCommandEvent& event )
  */
 void TfpFrame::OnListIndividuals( wxCommandEvent& event )
 {
-    DisplayHtmPage( "N*" );
+    m_html->DisplayHtmPage( "N*" );
 }
 
 /*! \brief Called on a List References menu option event.
  */
 void TfpFrame::OnListReferences( wxCommandEvent& event )
 {
-    DisplayHtmPage( "R" );
+    m_html->DisplayHtmPage( "R" );
 }
 
 /*! \brief Called on a List Events menu option event.
  */
 void TfpFrame::OnListEvents( wxCommandEvent& event )
 {
-    DisplayHtmPage( "E" );
+    m_html->DisplayHtmPage( "E" );
 }
 
 /*! \brief Called on a Pedigree Chart menu option event.
@@ -520,7 +518,8 @@ void TfpFrame::OnFindBack( wxCommandEvent& event )
         if( ind == 1 ) {
             m_toolbar->EnableTool( tfpID_FIND_BACK, false );
         }
-        RefreshHtmPage();
+        m_html->SetName( m_back[ind-1] );
+        m_html->RefreshHtmPage();
     }
 }
 
@@ -528,12 +527,13 @@ void TfpFrame::OnFindBack( wxCommandEvent& event )
  */
 void TfpFrame::OnFindForward( wxCommandEvent& event )
 {
-//    wxMessageBox( wxT("Not yet implimented"), wxT("OnFindForward") );
     size_t ind = m_forward.size();
+
     if( ind > 0 )
     {
         --ind;
-        m_back.push_back( m_forward[ind] );
+        wxString name = m_forward[ind];
+        m_back.push_back( name );
         if( m_back.size() > 1 ) {
             m_toolbar->EnableTool( tfpID_FIND_BACK, true );
         }
@@ -541,7 +541,8 @@ void TfpFrame::OnFindForward( wxCommandEvent& event )
         if( ind == 0 ) {
             m_toolbar->EnableTool( tfpID_FIND_FORWARD, false );
         }
-        RefreshHtmPage();
+        m_html->SetName( name );
+        m_html->RefreshHtmPage();
     }
 }
 
@@ -549,7 +550,7 @@ void TfpFrame::OnFindForward( wxCommandEvent& event )
  */
 void TfpFrame::OnHome( wxCommandEvent& event )
 {
-    DisplayHtmPage( "F1" );
+    m_html->DisplayHtmPage( "F1" );
 }
 
 /*! \brief Called on a pressing enter in toolbar text box.
@@ -559,129 +560,6 @@ void TfpFrame::OnShowPage( wxCommandEvent& event )
     wxString page = m_showpage->GetValue();
     m_showpage->SetValue( wxEmptyString );
     tfpDisplayNote( this, page );
-}
-
-/*! \brief Called on a link in the html control being clicked.
- *
- *  Decodes the href string of the clicked link. If the first
- *  character of the href string is:-
- *
- *  ':' then the remainder of the string is a command.
- *
- *  '!' then the remainder of the string is a web address to be
- *  passed to the default external browser.
- *
- */
-void TfpFrame::OnHtmlLinkClicked( wxHtmlLinkEvent& event )
-{
-    wxString href = event.GetLinkInfo().GetHref().c_str();
-
-    try {
-        switch( (wxChar) href.GetChar( 0 ) )
-        {
-        case ':': // Program Commands
-            if( href == ":New" ) {
-                NewFile();
-            } else if( href == ":Open" ) {
-                OpenFile();
-            } else if( href == ":Import" ) {
-                ImportGedcom();
-            } else {
-                wxMessageBox( _("Error: Invalid Command"), _("Link Error") );
-            }
-            break;
-        case '$':  // Context Commands
-            switch( (wxChar) href.GetChar( 1 ) )
-            {
-            case 'I': // Edit the given individual (create if 0)
-                switch( (wxChar) href.GetChar( 2 ) )
-                {
-                case 'L': case 'R':
-                    AddNewSpouse( href.Mid(2) );
-                    break;
-                case 'F': case 'M':
-                    AddNewParent( href.Mid(2) );
-                    break;
-                }
-                break;
-            case 'M': // Create a popup menu
-                DoHtmCtxMenu( href.Mid(2) );
-                break;
-            case 'R': // Edit reference record
-                EditReference( href.Mid(2) );
-                break;
-            }
-            break;
-        case '!':  // Display in external browser
-            wxLaunchDefaultBrowser( href.Mid( 1 ) );
-            break;
-        case '^':  // Display the given reference as a note
-            tfpDisplayNote( this, href.Mid( 1 ) );
-            break;
-        default:   // Display the given reference
-            DisplayHtmPage( href );
-        }
-    } catch( wxSQLite3Exception& e ) {
-        recDb::ErrorMessage( e );
-        recDb::Rollback();
-    }
-}
-
-void TfpFrame::OnHtmCtxMenu( wxCommandEvent& event )
-{
-    bool ret = false;
-    Sex sex;
-    idt id;
-    m_ctxmenuref.Mid(1).ToLongLong( &id );
-
-    recDb::Begin();
-    try {
-        switch( event.GetId() )
-        {
-        case tfpID_HCTXMENU_EDIT_FAMILY:
-            ret = tfpEditFamily( id );
-            break;
-        case tfpID_HCTXMENU_EDIT_INDIVIDUAL:
-            ret = tfpEditIndividual( id );
-            break;
-        case tfpID_HCTXMENU_EDIT_NEW_SON:
-            if( tfpAddNewChild( id, SEX_Male ) != 0 ) ret = true;
-            break;
-        case tfpID_HCTXMENU_EDIT_NEW_DAUR:
-            if( tfpAddNewChild( id, SEX_Female ) != 0 ) ret = true;
-            break;
-        case tfpID_HCTXMENU_EDIT_EXIST_SON:
-            ret = tfpAddExistChild( id, SEX_Male );
-            break;
-        case tfpID_HCTXMENU_EDIT_EXIST_DAUR:
-            ret = tfpAddExistChild( id, SEX_Female );
-            break;
-        case tfpID_HCTXMENU_EDIT_NEW_SPOUSE:
-            sex = ( m_ctxmenuref.GetChar(0) == 'H' ) ? SEX_Female : SEX_Male;
-            id = tfpAddNewIndividual( recIndividual::GetDefaultFamily( id ), sex );
-            if( id ) ret = true;
-            break;
-        case tfpID_HCTXMENU_EDIT_EXIST_SPOUSE:
-            sex = ( m_ctxmenuref.GetChar(0) == 'H' ) ? SEX_Female : SEX_Male;
-            ret = tfpAddExistSpouse( id, sex );
-            break;
-        }
-        if( ret == true ) {
-            recDb::Commit();
-            RefreshHtmPage();
-        } else {
-            recDb::Rollback();
-        }
-    } catch( wxSQLite3Exception& e ) {
-        recDb::ErrorMessage( e );
-        recDb::Rollback();
-    }
-}
-
-void TfpFrame::OnHtmIndMenu( wxCommandEvent& event )
-{
-    size_t i = event.GetId() - tfpID_INDMENU_BEG;
-    DisplayHtmPage( wxString::Format( "F"ID, m_ctxmenuIDs[i] ) );
 }
 
 /*! \brief Called on a Close Window event.
@@ -711,7 +589,7 @@ void TfpFrame::NewFile()
             recFamily fam(0);
             fam.f_id = 1;
             fam.Save();
-            DisplayHtmPage( "F1" );
+            m_html->DisplayHtmPage( "F1" );
         }
     }
 }
@@ -730,7 +608,7 @@ void TfpFrame::OpenFile()
         if( recDb::OpenDb( path ) == true )
         {
             SetDatabaseOpen( path );
-            DisplayHtmPage( "F1" );
+            m_html->DisplayHtmPage( "F1" );
         }
     }
 }
@@ -749,7 +627,7 @@ void TfpFrame::ImportGedcom()
         if( tfpReadGedcom( path ) )
         {
             SetDatabaseOpen( path );
-            DisplayHtmPage( "F1" );
+            m_html->DisplayHtmPage( "F1" );
         } else {
             wxMessageBox( _("Error Reading GEDCOM File"), _("Import") );
         }
@@ -784,202 +662,15 @@ void TfpFrame::SetNoDatabase()
     m_toolbar->EnableTool( tfpID_FIND_FORWARD, false );
 }
 
-bool TfpFrame::DisplayHtmPage( const wxString& name )
+void TfpFrame::PushHtmName( const wxString& name )
 {
-    wxString text = tfpGetDisplayText( name );
-    if( text != wxEmptyString )
-    {
-        m_back.push_back( name );
-        if( m_back.size() > 1 ) {
-            m_toolbar->EnableTool( tfpID_FIND_BACK, true );
-        }
-        if( m_forward.size() != 0 ) {
-            m_forward.clear();
-            m_toolbar->EnableTool( tfpID_FIND_FORWARD, false );
-        }
-        m_html->SetPage( text );
-        return true;
+    m_back.push_back( name );
+    if( m_back.size() > 1 ) {
+        m_toolbar->EnableTool( tfpID_FIND_BACK, true );
     }
-    return false;
-}
-
-void TfpFrame::RefreshHtmPage()
-{
-    size_t cnt = m_back.GetCount();
-    if( cnt > 0 ) {
-        wxString name = m_back[ cnt - 1 ];
-        m_html->SetPage( tfpGetDisplayText( name ) );
-    }
-}
-
-
-void TfpFrame::DoHtmCtxMenu( const wxString& ref )
-{
-    int count;
-    m_ctxmenuref = ref;
-    wxMenu* menu = new wxMenu;
-
-    switch( (wxChar) ref.GetChar( 0 ) )
-    {
-    case 'F': // Edit family record or children
-        menu->Append( tfpID_HCTXMENU_EDIT_FAMILY, wxT("Edit Family") );
-        menu->AppendSeparator();
-        menu->Append( tfpID_HCTXMENU_EDIT_NEW_SON, wxT("Add new Son") );
-        menu->Append( tfpID_HCTXMENU_EDIT_NEW_DAUR, wxT("Add new Daughter") );
-        menu->AppendSeparator();
-        menu->Append( tfpID_HCTXMENU_EDIT_EXIST_SON, wxT("Add existing son") );
-        menu->Append( tfpID_HCTXMENU_EDIT_EXIST_DAUR, wxT("Add existing Daughter") );
-        break;
-    case 'H': case 'W': // Edit a Husb or Wife Individual
-        menu->Append( tfpID_HCTXMENU_EDIT_INDIVIDUAL, wxT("Edit Individual") );
-        menu->AppendSeparator();
-        menu->Append( tfpID_HCTXMENU_EDIT_NEW_SPOUSE, wxT("Add new spouse") );
-        menu->Append( tfpID_HCTXMENU_EDIT_EXIST_SPOUSE, wxT("Add existing spouse") );
-        break;
-    case 'R':
-        // Parents, Spouses (Marriage), Siblings, and Children
-        // List individuals and jump to the selected individuals family
-        m_ctxmenuIDs.empty();
-        count = AddFamiliesToMenu( ref, menu, tfpID_INDMENU_BEG );
-        break;
-    default:
-        delete menu;
-        wxMessageBox( wxT("Error: \"") + ref + wxT("\" Unknown Menu"), wxT("Link Error") );
-        return;
-    }
-
-    PopupMenu( menu );
-    delete menu;
-}
-
-int TfpFrame::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )
-{
-    recFamilyList families;
-    size_t c = 0, i, j;
-    recIndividualList inds;
-    wxLongLong_t indID;
-    ref.Mid( 1 ).ToLongLong( &indID );
-    m_ctxmenuIDs.clear();
-
-    menu->Append( cmd_ID + c, wxT("Family") );
-    m_ctxmenuIDs.push_back( recIndividual::GetDefaultFamily( indID ) );
-    c++;
-
-    wxMenu* parmenu = new wxMenu;
-    menu->Append( tfpID_INDMENU_PARENTS, "Parents", parmenu );
-
-    families = recIndividual::GetParentList( indID );
-    int items = c;
-    for( i = 0 ; i < families.size() ; i++ ) {
-        if( families[i].f_husb_id != 0 ) {
-            parmenu->Append( cmd_ID + c, recIndividual::GetFullName( families[i].f_husb_id ) );
-        }
-        if( families[i].f_wife_id != 0 ) {
-            parmenu->Append( cmd_ID + c, recIndividual::GetFullName( families[i].f_wife_id ) );
-        }
-        m_ctxmenuIDs.push_back( families[i].f_id );
-        c++;
-    }
-    if( items == c ) {
-        menu->Enable( tfpID_INDMENU_PARENTS, false );
-    }
-
-    wxMenu* sibmenu = new wxMenu;
-    menu->Append( tfpID_INDMENU_SIBLINGS, "Siblings", sibmenu );
-    items = c;
-    for( i = 0 ; i < families.size() ; i++ ) {
-        inds = families[i].GetChildren();
-        for( j = 0 ; j < inds.size() ; j++ ) {
-            if( inds[j].f_id == indID ) continue;
-            sibmenu->Append( cmd_ID + c, inds[j].GetFullName() );
-            m_ctxmenuIDs.push_back( inds[j].f_fam_id );
-            c++;
-        }
-        inds.empty();
-    }
-    if( items == c ) {
-        menu->Enable( tfpID_INDMENU_SIBLINGS, false );
-    }
-
-    wxMenu* marmenu = new wxMenu;
-    menu->Append( tfpID_INDMENU_SPOUSES, "Spouses", marmenu );
-    families.empty();
-    families = recIndividual::GetFamilyList( indID );
-    items = c;
-    for( i = 0 ; i < families.size() ; i++ ) {
-        if( families[i].f_husb_id != 0 && families[i].f_husb_id != indID ) {
-            marmenu->Append( cmd_ID + c, recIndividual::GetFullName( families[i].f_husb_id ) );
-            m_ctxmenuIDs.push_back( families[i].f_id );
-            c++;
-        }
-        if( families[i].f_wife_id != 0 && families[i].f_wife_id != indID ) {
-            marmenu->Append( cmd_ID + c, recIndividual::GetFullName( families[i].f_wife_id ) );
-            m_ctxmenuIDs.push_back( families[i].f_id );
-            c++;
-        }
-    }
-    if( items == c ) {
-        menu->Enable( tfpID_INDMENU_SPOUSES, false );
-    }
-
-    wxMenu* kidmenu = new wxMenu;
-    menu->Append( tfpID_INDMENU_CHILDREN, "Children", kidmenu );
-    items = c;
-    for( i = 0 ; i < families.size() ; i++ ) {
-        inds.empty();
-        inds = families[i].GetChildren();
-        for( j = 0 ; j < inds.size() ; j++ ) {
-            kidmenu->Append( cmd_ID + c, inds[j].GetFullName() );
-            m_ctxmenuIDs.push_back( inds[j].f_fam_id );
-            c++;
-        }
-    }
-    if( items == c ) {
-        menu->Enable( tfpID_INDMENU_CHILDREN, false );
-    }
-    families.clear();
-    inds.clear();
-    return c;
-}
-
-void TfpFrame::AddNewSpouse( const wxString& ref )
-{
-    idt famID;
-    ref.Mid( 1 ).ToLongLong( &famID );
-    Sex sex = ( ref.GetChar(0) == 'R' ) ? SEX_Female : SEX_Male;
-    recDb::Begin();
-    if( tfpAddNewIndividual( famID, sex ) != 0 ) {
-        recDb::Commit();
-        RefreshHtmPage();
-    } else {
-        recDb::Rollback();
-    }
-}
-
-void TfpFrame::AddNewParent( const wxString& ref )
-{
-    wxLongLong_t indID;
-    ref.Mid( 1 ).ToLongLong( &indID );
-    Sex sex = ( ref.GetChar(0) == 'F' ) ? SEX_Female : SEX_Male;
-    recDb::Begin();
-    if( tfpAddNewParent( indID, sex ) == true ) {
-        recDb::Commit();
-        RefreshHtmPage();
-    } else {
-        recDb::Rollback();
-    }
-}
-
-void TfpFrame::EditReference( const wxString& ref )
-{
-    wxLongLong_t refID;
-    ref.ToLongLong( &refID );
-    recDb::Begin();
-    if( tfpEditReference( refID ) == true ) {
-        recDb::Commit();
-        RefreshHtmPage();
-    } else {
-        recDb::Rollback();
+    if( m_forward.size() != 0 ) {
+        m_forward.clear();
+        m_toolbar->EnableTool( tfpID_FIND_FORWARD, false );
     }
 }
 

@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Dec  2 2011)
+// C++ code generated with wxFormBuilder (version Feb  9 2012)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -11,9 +11,9 @@
 #include <wx/artprov.h>
 #include <wx/xrc/xmlres.h>
 #include <wx/intl.h>
-class dlgStrTableCtrl;
-class tfpListCtrlIndividuals;
-
+#include "tfpListCtrlInd.h"
+#include "dlgRecTableCtrl.h"
+#include "tfpHtml.h"
 #include <wx/string.h>
 #include <wx/stattext.h>
 #include <wx/gdicmn.h>
@@ -799,14 +799,13 @@ class fbDlgNote : public wxDialog
 	private:
 	
 	protected:
-		wxHtmlWindow* m_htmlWin;
+		TfpHtml* m_htmlWin;
 		wxStaticLine* m_staticline;
 		wxButton* m_buttonCancel;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnClose( wxCloseEvent& event ) { event.Skip(); }
 		virtual void OnIdle( wxIdleEvent& event ) { event.Skip(); }
-		virtual void OnHtmlLinkClicked( wxHtmlLinkEvent& event ) { event.Skip(); }
 		
 	
 	public:

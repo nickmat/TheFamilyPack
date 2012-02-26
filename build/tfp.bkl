@@ -94,6 +94,7 @@
     <sources>$(LOCAL_SRC)/dlg/fbDlg.cpp</sources>
     <sources>$(LOCAL_SRC)/tfpApp.cpp</sources>
     <sources>$(LOCAL_SRC)/tfpFrame.cpp</sources>
+    <sources>$(LOCAL_SRC)/tfpHtml.cpp</sources>
     <sources>$(LOCAL_SRC)/tfpMemory.cpp</sources>
     <sources>$(LOCAL_SRC)/tfpRdGed.cpp</sources>
     <sources>$(LOCAL_SRC)/tfpVersion.cpp</sources>
@@ -128,6 +129,7 @@
     <headers>$(LOCAL_SRC)/dlg/tfpListCtrlInd.h</headers>
     <headers>$(LOCAL_SRC)/tfpApp.h</headers>
     <headers>$(LOCAL_SRC)/tfpFrame.h</headers>
+    <headers>$(LOCAL_SRC)/tfpHtml.h</headers>
     <headers>$(LOCAL_SRC)/tfpMemory.h</headers>
     <headers>$(LOCAL_SRC)/tfpRd.h</headers>
     <headers>$(LOCAL_SRC)/tfpVersion.h</headers>
