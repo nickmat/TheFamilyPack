@@ -59,6 +59,7 @@ void dlgNote::OnIdle( wxIdleEvent& event )
 {
     if( m_cond != recDb::GetChange() ) {
         m_htmlWin->RefreshHtmPage();
+        m_cond = recDb::GetChange();
     }
 }
 

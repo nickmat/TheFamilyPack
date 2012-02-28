@@ -65,11 +65,10 @@ END_EVENT_TABLE()
  */
 void TfpHtml::OnHtmlLinkClicked( wxHtmlLinkEvent& event )
 {
-    bool ret = false;
     wxString href = event.GetLinkInfo().GetHref();
     wxUniChar uch0 = href.GetChar( 0 );
-    wxUniChar uch1 = href.GetChar( 1 );
-    wxUniChar uch2 = href.GetChar( 2 );
+    wxUniChar uch1, uch2;
+    long cond = recDb::GetChange();
 
     try {
         switch( uch0.GetValue() )
@@ -77,27 +76,29 @@ void TfpHtml::OnHtmlLinkClicked( wxHtmlLinkEvent& event )
         case ':': // Program Commands
             if( m_frame ) {
                 if( href == ":New" ) {
-                    ret = m_frame->NewFile();
+                    m_frame->NewFile();
                 } else if( href == ":Open" ) {
-                    ret = m_frame->OpenFile();
+                    m_frame->OpenFile();
                 } else if( href == ":Import" ) {
-                    ret = m_frame->ImportGedcom();
+                    m_frame->ImportGedcom();
                 } else {
                     wxMessageBox( _("Error: Invalid Command"), _("Link Error") );
                 }
             }
             break;
         case '$':  // Context Commands
+            uch1 = href.GetChar( 1 );
             switch( uch1.GetValue() )
             {
             case 'I': // Edit the given individual (create if 0)
+                uch2 = href.GetChar( 2 );
                 switch( uch2.GetValue() )
                 {
                 case 'L': case 'R':
-                    ret = tfpAddNewSpouse( href.Mid(2) );
+                    tfpAddNewSpouse( href.Mid(2) );
                     break;
                 case 'F': case 'M':
-                    ret = tfpAddNewParent( href.Mid(2) );
+                    tfpAddNewParent( href.Mid(2) );
                     break;
                 }
                 break;
@@ -105,25 +106,25 @@ void TfpHtml::OnHtmlLinkClicked( wxHtmlLinkEvent& event )
                 DoHtmCtxMenu( href.Mid(2) );
                 break;
             case 'R': // Edit reference record
-                ret = tfpEditReference( href.Mid(2) );
+                tfpEditReference( href.Mid(2) );
                 break;
             }
             break;
         case '!':  // Display in external browser
             wxLaunchDefaultBrowser( href.Mid( 1 ) );
-            return;
+            break;
         case '^':  // Display the given reference as a note
             tfpDisplayNote( this, href.Mid( 1 ) );
-            return;
+            break;
         default:   // Display the given reference
-            ret = DisplayHtmPage( href );
-            return;
+            DisplayHtmPage( href );
+            break;
         }
     } catch( wxSQLite3Exception& e ) {
         recDb::ErrorMessage( e );
         recDb::Rollback();
     }
-    if( ret ) {
+    if( cond != recDb::GetChange() ) {
         RefreshHtmPage();
     }
 }
@@ -459,6 +460,7 @@ void TfpHtml::RefreshHtmPage()
         SetPage( GetDisplayText( m_name ) );
     }
 }
+
 
 // End of tfpHtml.cpp file
 
