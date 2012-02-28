@@ -396,7 +396,7 @@ wxSQLite3Table recIndividual::GetNameTable( Sex sex )
         );
     } else {
         sql.Format(
-            "SELECT id, surname, given, epitaph FROM Individual I, Persona P "
+            "SELECT I.id, surname, given, epitaph FROM Individual I, Persona P "
             "WHERE I.per_id=P.id AND P.sex=%d ORDER BY surname, given;", sex
         );
     }
