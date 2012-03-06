@@ -51,87 +51,90 @@ wxString tfpWriteIndividualPage( idt indID )
     recPersona per( ind.f_per_id );
     recIndividual spouse;
 
-    htm << wxT("<html><head><title>Individual I ")
-        << indID << wxT("</title></head>")
-           wxT("<body><center><table width=100%>");
+    htm << "<html><head><title>Individual I "
+        << indID << "</title></head>"
+           "<body><center><table width=100%>";
 
     // Name
-    htm << wxT("<tr><td align=right width=120>Name:</td>")
-           wxT("<td><font size=+2><b>") << ind.GetFullName()
-        << wxT("</b></font> ") << ind.f_epitaph
-        << wxT(" <a href=$MR") << indID
-        << wxT("><img src=memory:fam.bmp></a></td></tr>");
+    htm << "<tr><td align=right width=120>Name:</td>"
+           "<td><font size=+2><b>" << ind.GetFullName()
+        << "</b></font> " << ind.f_epitaph
+        << " <a href=$MR" << indID
+        << "><img src=memory:fam.bmp></a></td></tr>";
 
     // Sex
-    htm << wxT("<tr><td align=right>ID, Sex:</td><td><b>I ")
-        << indID << wxT(", ") << recGetSexStr( per.f_sex )
-        << wxT("</b></td></tr>");
+    htm << "<tr><td align=right>ID, Sex:</td><td><b>I "
+        << indID << ", " << recGetSexStr( per.f_sex )
+        << "</b></td></tr>";
 
     // Birth
     idt id = per.GetBirthEvent();
     if( id != 0 ) {
-        htm << wxT("<tr><td align=right>Birth:</td><td><b>")
+        htm << "<tr><td align=right>Birth:</td><td><b>"
             << recEvent::GetDetailStr( id )
-            << wxT("</b> <a href=E") << id
-            << wxT("><img src=memory:eve.bmp></a></td></tr>");
+            << "</b> <a href=E" << id
+            << "><img src=memory:eve.bmp></a></td></tr>";
     }
     // Near birth
     id = per.GetNrBirthEvent();
     if( id != 0 ) {
-        htm << wxT("<tr><td align=right>")
+        htm << "<tr><td align=right>"
             << recEvent::GetTypeStr( id )
-            << wxT(":</td><td><b>")
+            << ":</td><td><b>"
             << recEvent::GetDetailStr( id )
-            << wxT("</b> <a href=E") << id
-            << wxT("><img src=memory:eve.bmp></a></td></tr>");
+            << "</b> <a href=E" << id
+            << "><img src=memory:eve.bmp></a></td></tr>";
     }
     // Death
     id = per.GetDeathEvent();
     if( id != 0 ) {
-        htm << wxT("<tr><td align=right>Death:</td><td><b>")
+        htm << "<tr><td align=right>Death:</td><td><b>"
             << recEvent::GetDetailStr( id )
-            << wxT("</b> <a href=E") << id
-            << wxT("><img src=memory:eve.bmp></a></td></tr>");
+            << "</b> <a href=E" << id
+            << "><img src=memory:eve.bmp></a></td></tr>";
     }
     // Near death
     id = per.GetNrDeathEvent();
     if( id != 0 ) {
-        htm << wxT("<tr><td align=right>")
+        htm << "<tr><td align=right>"
             << recEvent::GetTypeStr( id )
-            << wxT(":</td><td><b>")
+            << ":</td><td><b>"
             << recEvent::GetDetailStr( id )
-            << wxT("</b> <a href=E") << id
-            << wxT("><img src=memory:eve.bmp></a></td></tr>");
+            << "</b> <a href=E" << id
+            << "><img src=memory:eve.bmp></a></td></tr>";
     }
     // Occupation
     id = per.GetOccAttribute();
     if( id != 0 ) {
-        htm << wxT("<tr><td align=right>Occupation:</td><td><b>")
+        htm << "<tr><td align=right>Occupation:</td><td><b>"
             << recAttribute::GetValue( id )
-            << wxT("</b></td></tr>");
+            << "</b></td></tr>";
     }
     // Write out Parents
-    recFamily parents;
-    parents.ReadParents( indID );
-    if( parents.f_husb_id != 0 ) {
-        // Father
-        htm << wxT("<tr><td align=right>Father:</td><td><b><a href=I")
-            << parents.f_husb_id << wxT(">")
-            << recIndividual::GetFullName( parents.f_husb_id )
-            << wxT("</a></b> ")
-            << recIndividual::GetDateEpitaph( parents.f_husb_id )
-            << wxT(" <a href=$MR") << parents.f_husb_id
-            << wxT("><img src=memory:fam.bmp></a></td></tr>");
+    recFamilyVec parents = ind.GetParentList();
+    // Fathers
+    for( i = 0 ; i < parents.size() ; i++ ) {
+        if( parents[i].f_husb_id != 0 ) {
+            htm << "<tr><td align=right>Father:</td><td><b><a href=I"
+                << parents[i].f_husb_id << ">"
+                << recIndividual::GetFullName( parents[i].f_husb_id )
+                << "</a></b> "
+                << recIndividual::GetDateEpitaph( parents[i].f_husb_id )
+                << " <a href=$MR" << parents[i].f_husb_id
+                << "><img src=memory:fam.bmp></a></td></tr>";
+        }
     }
-    if( parents.f_wife_id != 0 ) {
-        // Mother
-        htm << wxT("<tr><td align=right>Mother:</td><td><b><a href=I")
-            << parents.f_wife_id << wxT(">")
-            << recIndividual::GetFullName( parents.f_wife_id )
-            << wxT("</a></b> ")
-            << recIndividual::GetDateEpitaph( parents.f_wife_id )
-            << wxT(" <a href=$MR") << parents.f_wife_id
-            << wxT("><img src=memory:fam.bmp></a></td></tr>");
+    // Mothers
+    for( i = 0 ; i < parents.size() ; i++ ) {
+        if( parents[i].f_wife_id != 0 ) {
+            htm << "<tr><td align=right>Mother:</td><td><b><a href=I"
+                << parents[i].f_wife_id << ">"
+                << recIndividual::GetFullName( parents[i].f_wife_id )
+                << "</a></b> "
+                << recIndividual::GetDateEpitaph( parents[i].f_wife_id )
+                << " <a href=$MR" << parents[i].f_wife_id
+                << "><img src=memory:fam.bmp></a></td></tr>";
+        }
     }
 
     // Write out Families
@@ -147,40 +150,40 @@ wxString tfpWriteIndividualPage( idt indID )
         spouse.Read();
 
         // Spouse name
-        htm << wxT("<tr><td align=right><a href=F")
-            << famID << wxT(">Spouse ") << cnt << wxT(":</a></td>")
-               wxT("<td><b><a href=I")
-            << spouseID << wxT(">")
-            << spouse.GetFullName() << wxT("</a></b> ")
+        htm << "<tr><td align=right><a href=F"
+            << famID << ">Spouse " << cnt << ":</a></td>"
+               "<td><b><a href=I"
+            << spouseID << ">"
+            << spouse.GetFullName() << "</a></b> "
             << spouse.f_epitaph
-            << wxT(" <a href=$MR") << spouseID
-            << wxT("><img src=memory:fam.bmp></a></td></tr>");
+            << " <a href=$MR" << spouseID
+            << "><img src=memory:fam.bmp></a></td></tr>";
 
         // Union event (marriage)
         idt marEvID = families[i].GetMarriageEvent();
         if( marEvID != 0 ) {
-            htm << wxT("<tr><td align=right>")
+            htm << "<tr><td align=right>"
                 << recEvent::GetTypeStr( marEvID )
-                << wxT(":</td><td><b>")
+                << ":</td><td><b>"
                 << recEvent::GetDetailStr( marEvID )
-                << wxT("</b> <a href=E") << marEvID
-                << wxT("><img src=memory:eve.bmp></a></td></tr>");
+                << "</b> <a href=E" << marEvID
+                << "><img src=memory:eve.bmp></a></td></tr>";
         }
 
         // Children
         recIndividualList children = families[i].GetChildren();
         for( j = 0 ; j < children.size() ; j++ ) {
             if( j == 0 ) {
-                htm << wxT("<tr><td align=right>Children:</td>");
+                htm << "<tr><td align=right>Children:</td>";
             } else {
-                htm << wxT("<tr><td></td>");
+                htm << "<tr><td></td>";
             }
-            htm << wxT("<td><b><a href=I")
-                << children[j].f_id << wxT(">")
-                << children[j].GetFullName() << wxT("</a></b> ")
+            htm << "<td><b><a href=I"
+                << children[j].f_id << ">"
+                << children[j].GetFullName() << "</a></b> "
                 << children[j].f_epitaph
-                << wxT(" <a href=$MR") << children[j].f_id
-                << wxT("><img src=memory:fam.bmp></a></td></tr>");
+                << " <a href=$MR" << children[j].f_id
+                << "><img src=memory:fam.bmp></a></td></tr>";
         }
     }
 
@@ -193,11 +196,11 @@ wxString tfpWriteIndividualPage( idt indID )
 
         htm << "<tr><td align=right>"
             << recAttributeType::GetTypeStr( typeID )
-            << wxT(":</td><td><b>")
+            << ":</td><td><b>"
             << eTable.GetAsString( 2 );
         if( refID != 0 ) {
-            htm << wxT(" <a href=") << recReference::GetIdStr( refID )
-                << wxT("><img src=memory:ref.bmp></a>");
+            htm << " <a href=" << recReference::GetIdStr( refID )
+                << "><img src=memory:ref.bmp></a>";
         }
         htm << "</b></td></tr>";
     }
@@ -208,17 +211,17 @@ wxString tfpWriteIndividualPage( idt indID )
         idt roleID = GET_ID( eTable.GetInt64( 1 ) );
         idt refID = recEvent::FindReferenceID( eventID );
 
-        htm << wxT("<tr><td align=right>")
+        htm << "<tr><td align=right>"
             << recEventTypeRole::GetName( roleID )
-            << wxT(":</td><td><b>")
+            << ":</td><td><b>"
             << recEvent::GetTitle( eventID );
         if( refID != 0 ) {
-            htm << wxT(" <a href=") << recReference::GetIdStr( refID )
-                << wxT("><img src=memory:ref.bmp></a>");
+            htm << " <a href=" << recReference::GetIdStr( refID )
+                << "><img src=memory:ref.bmp></a>";
         }
-        htm << wxT("<br>")
+        htm << "<br>"
             << recEvent::GetDetailStr( eventID )
-            << wxT("</b></td></tr>");
+            << "</b></td></tr>";
     }
 
     eTable = ind.GetReferencesTable();
@@ -226,16 +229,16 @@ wxString tfpWriteIndividualPage( idt indID )
         eTable.SetRow( i );
         idt refID = GET_ID( eTable.GetInt64( 0 ) );
 
-        htm << wxT("<tr><td align=right>")
+        htm << "<tr><td align=right>"
             << recReference::GetIdStr( refID )
-            << wxT(":</td><td><b>")
+            << ":</td><td><b>"
             << eTable.GetAsString( 1 )
-            << wxT(" <a href=") << recReference::GetIdStr( refID )
-            << wxT("><img src=memory:ref.bmp></a>")
-            << wxT("</b></td></tr>");
+            << " <a href=" << recReference::GetIdStr( refID )
+            << "><img src=memory:ref.bmp></a>"
+            << "</b></td></tr>";
     }
 
-    htm << wxT("</table></center></body></html>");
+    htm << "</table></center></body></html>";
 
     return htm;
 }

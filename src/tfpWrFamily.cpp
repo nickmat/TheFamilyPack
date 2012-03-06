@@ -36,6 +36,8 @@
 #include "wx/wx.h"
 #endif
 
+#include <wx/tokenzr.h>
+
 #include <rec/recIndividual.h>
 #include <rec/recEvent.h>
 #include <rec/recPersona.h>
@@ -47,19 +49,12 @@
 #define DEATH    recEventTypeRole::ROLE_Death_Died
 #define NR_DEATH recEventType::ETYPE_Grp_Nr_Death
 
-wxString tfpWriteFamilyPage( idt famID, idt indID )
+wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
 {
     size_t i;
     wxString htm;
 
     recFamily fam(famID);
-    if( famID == 0 && ( recIndividual::Exists( indID ) || indID > 1 ) ) {
-        if( recIndividual::GetSex( indID ) == SEX_Female ) {
-            fam.f_wife_id = indID;
-        } else {
-            fam.f_husb_id = indID;
-        }
-    }
     recIndividual husb( fam.f_husb_id );
     recIndividual wife( fam.f_wife_id );
     recFamilyVec husbFams = husb.GetParentList();
@@ -79,11 +74,11 @@ wxString tfpWriteFamilyPage( idt famID, idt indID )
 
     // Husband's Father
     if( fam.f_husb_id ) {
-        if( husbFams.size() && husbFams[0].f_husb_id ) {
-            htm << "<b><a href=F" << husbFams[0].f_id << ">"
-                << recIndividual::GetFullName( husbFams[0].f_husb_id )
+        if( husbFams.size() > iL && husbFams[iL].f_husb_id ) {
+            htm << "<b><a href=F" << husbFams[iL].f_id << ">"
+                << recIndividual::GetFullName( husbFams[iL].f_husb_id )
                 << "</a></b><br>"
-                << recIndividual::GetDateEpitaph( husbFams[0].f_husb_id );
+                << recIndividual::GetDateEpitaph( husbFams[iL].f_husb_id );
         } else {
             htm << "<a href=$IM" << fam.f_husb_id
                 << "><img src=memory:edit.bmp></a>";
@@ -95,11 +90,11 @@ wxString tfpWriteFamilyPage( idt famID, idt indID )
 
     // Wife's Father
     if( fam.f_wife_id ) {
-        if( wifeFams.size() && wifeFams[0].f_husb_id ) {
-            htm << "<b><a href='F" << wifeFams[0].f_id << "'>"
-                << recIndividual::GetFullName( wifeFams[0].f_husb_id )
+        if( wifeFams.size() > iR && wifeFams[iR].f_husb_id ) {
+            htm << "<b><a href='F" << wifeFams[iR].f_id << "'>"
+                << recIndividual::GetFullName( wifeFams[iR].f_husb_id )
                 << "</a></b><br>"
-                << recIndividual::GetDateEpitaph( wifeFams[0].f_husb_id );
+                << recIndividual::GetDateEpitaph( wifeFams[iR].f_husb_id );
         } else {
             htm << "<a href=$IM" << fam.f_wife_id
                 << "><img src=memory:edit.bmp></a>";
@@ -109,11 +104,11 @@ wxString tfpWriteFamilyPage( idt famID, idt indID )
 
     // Husband's Mother
     if( fam.f_husb_id ) {
-        if( husbFams.size() && husbFams[0].f_wife_id ) {
-            htm << "<b><a href=F" << husbFams[0].f_id << ">"
-                << recIndividual::GetFullName( husbFams[0].f_wife_id )
+        if( husbFams.size() > iL && husbFams[iL].f_wife_id ) {
+            htm << "<b><a href=F" << husbFams[iL].f_id << ">"
+                << recIndividual::GetFullName( husbFams[iL].f_wife_id )
                 << "</a></b><br>"
-                << recIndividual::GetDateEpitaph( husbFams[0].f_wife_id );
+                << recIndividual::GetDateEpitaph( husbFams[iL].f_wife_id );
         } else {
             htm << "<a href=$IF" << fam.f_husb_id
                 << "><img src=memory:edit.bmp></a>";
@@ -125,11 +120,11 @@ wxString tfpWriteFamilyPage( idt famID, idt indID )
 
     // Wife's Mother
     if( fam.f_wife_id ) {
-        if( wifeFams.size() && wifeFams[0].f_wife_id ) {
-            htm << "<b><a href='F" << wifeFams[0].f_id << "'>"
-                << recIndividual::GetFullName( wifeFams[0].f_wife_id )
+        if( wifeFams.size() > iR && wifeFams[iR].f_wife_id ) {
+            htm << "<b><a href='F" << wifeFams[iR].f_id << "'>"
+                << recIndividual::GetFullName( wifeFams[iR].f_wife_id )
                 << "</a></b><br>"
-                << recIndividual::GetDateEpitaph( wifeFams[0].f_wife_id );
+                << recIndividual::GetDateEpitaph( wifeFams[iR].f_wife_id );
         } else {
             htm << "<a href=$IF" << fam.f_wife_id
                 << "><img src=memory:edit.bmp></a>";
@@ -271,9 +266,10 @@ wxString tfpWriteFamilyPage( idt famID, idt indID )
         htm << "<br>&nbsp;<table><tr><td align=left valign=top width=270>";
         if( husbFams.size() > 1 ) {
             htm << "<table>";
-            for( i = 1 ; i < husbFams.size() ; i++ ) {
+            for( i = 0 ; i < husbFams.size() ; i++ ) {
+                if( i == iL ) continue;
                 htm << "<tr><td align=left width=270><b><a href='F"
-                    << husbFams[i].f_id << "'>";
+                    << famID << "," << i << "," << iR << "'>";
                 if( husbFams[i].f_husb_id || husbFams[i].f_wife_id ) {
                     if( husbFams[i].f_husb_id ) {
                         htm << recIndividual::GetFullName( husbFams[i].f_husb_id );
@@ -294,9 +290,10 @@ wxString tfpWriteFamilyPage( idt famID, idt indID )
         htm << "</td><td align=right valign=top width=270>";
         if( wifeFams.size() > 1 ) {
             htm << "<table>";
-            for( i = 1 ; i < wifeFams.size() ; i++ ) {
+            for( i = 0 ; i < wifeFams.size() ; i++ ) {
+                if( i == iR ) continue;
                 htm << "<tr><td align=left width=270><b><a href='F"
-                    << wifeFams[i].f_id << "'>";
+                    << famID << "," << iL << "," << i << "'>";
                 if( wifeFams[i].f_husb_id || wifeFams[i].f_wife_id ) {
                     if( wifeFams[i].f_husb_id ) {
                         htm << recIndividual::GetFullName( wifeFams[i].f_husb_id );
@@ -362,10 +359,22 @@ wxString tfpWriteFamilyPage( idt famID, idt indID )
     return htm;
 }
 
+wxString tfpWriteFamilyPage( const wxString& str )
+{
+    unsigned long iL = 0, iR = 0;
+    wxStringTokenizer tokenizer( str, "," );
+    wxString token = tokenizer.GetNextToken();
+    idt id = recGetID( token );
+    token = tokenizer.GetNextToken();
+    token.ToCULong( &iL );
+    token = tokenizer.GetNextToken();
+    token.ToCULong( &iR );
+    return tfpWriteFamilyPage( id, iL, iR );
+}
 
 wxString tfpWriteIndFamilyPage( idt indID )
 {
-    return tfpWriteFamilyPage( recIndividual::GetDefaultFamily( indID ), indID );
+    return tfpWriteFamilyPage( recIndividual::GetDefaultFamily( indID ) );
 }
 
 // End of tfpWrFam.cpp Source
