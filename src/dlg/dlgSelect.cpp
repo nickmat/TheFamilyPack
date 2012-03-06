@@ -63,7 +63,7 @@ dlgSelect::dlgSelect(
     } else {
         m_buttonCreate->Hide();
     }
-    if( style & SELSTYLE_CreateButton ){
+    if( style & SELSTYLE_UnknownButton ){
          m_buttonUnknown->Show();
     } else {
          m_buttonUnknown->Hide();
@@ -195,6 +195,12 @@ void dlgSelectCreatePersona::OnCreatePersona( wxCommandEvent& event )
     SetCreatePressed();
     EndDialog( wxID_OK );
 }
+
+//-------------------------------------------------------------------------------
+//-------------------[ dlgSelectIndividual ]-------------------------------------
+//-------------------------------------------------------------------------------
+
+wxString dlgSelectIndividual::sm_colHeaders[COL_MAX] = { _("ID"), _("Name") };
 
 //-------------------------------------------------------------------------------
 //-------------------[ dlgSelectDate ]-------------------------------------------

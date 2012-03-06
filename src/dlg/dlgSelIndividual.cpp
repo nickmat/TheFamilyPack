@@ -42,7 +42,7 @@
 #include "tfpListCtrlInd.h"
 
 
-dlgSelectIndividual::dlgSelectIndividual( wxWindow* parent )
+dlgSelIndividual::dlgSelIndividual( wxWindow* parent )
     : fbDlgSelectIndividual( parent )
 {
     m_count = 0;
@@ -52,7 +52,7 @@ dlgSelectIndividual::dlgSelectIndividual( wxWindow* parent )
     m_listInd->InsertColumn( 3, wxT("Epitaph") );
 }
 
-void dlgSelectIndividual::OnIdle( wxIdleEvent& event )
+void dlgSelIndividual::OnIdle( wxIdleEvent& event )
 {
     // TODO: Implement OnIdle
     if( m_listInd->GetSelectedItemCount() > 0 ) {
@@ -62,12 +62,12 @@ void dlgSelectIndividual::OnIdle( wxIdleEvent& event )
     }
 }
 
-void dlgSelectIndividual::OnIndividualSelected( wxListEvent& event )
+void dlgSelIndividual::OnIndividualSelected( wxListEvent& event )
 {
     // TODO: Implement OnIndividualSelected
 }
 
-idt dlgSelectIndividual::GetSelectedID()
+idt dlgSelIndividual::GetSelectedID()
 {
     if( m_count > 0 && m_listInd->GetSelectedItemCount() > 0 ) {
         long row = m_listInd->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
@@ -77,7 +77,7 @@ idt dlgSelectIndividual::GetSelectedID()
     return 0;
 }
 
-bool dlgSelectIndividual::CreateTable( Sex sex )
+bool dlgSelIndividual::CreateTable( Sex sex )
 {
     m_table = recIndividual::GetNameTable( sex );
     m_count = m_table.GetRowCount();

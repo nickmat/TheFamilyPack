@@ -118,6 +118,12 @@ bool recPersona::Read()
     return true;
 }
 
+Sex recPersona::GetSex( idt id )
+{
+    recPersona per(id);
+    return per.f_sex;
+}
+
 idt recPersona::GetDefaultNameID( idt id )
 {
     wxString str;

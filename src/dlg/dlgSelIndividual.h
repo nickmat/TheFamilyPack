@@ -34,11 +34,11 @@
 
 #include "fbDlg.h"
 
-class dlgSelectIndividual : public fbDlgSelectIndividual
+class dlgSelIndividual : public fbDlgSelectIndividual
 {
 public:
     /** Constructor */
-    dlgSelectIndividual( wxWindow* parent );
+    dlgSelIndividual( wxWindow* parent );
 
     bool CreateTable( Sex sex = SEX_Unstated );
     idt GetSelectedID();

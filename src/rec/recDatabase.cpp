@@ -54,9 +54,6 @@ idt recGetID( const wxString& str )
 {
     idt id = 0;
     str.ToLongLong( &id );  
-    // TODO: We should be able to test this has worked,
-    // but this is not currently working.
-    // if( !str.ToLongLong( &id ) == false ) return 0;
     return id;
 }
 

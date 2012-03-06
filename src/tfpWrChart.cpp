@@ -98,7 +98,7 @@ void WrPedCht( idt indID, Sex sex, int gen )
     if( ind.f_id == 0 ) return;
     recFamily fam( 0 );
 
-    recFamilyList famList = ind.GetParentList();
+    recFamilyVec famList = ind.GetParentList();
     if( famList.size() > 0 ) {
         fam = famList[0];
     }
@@ -167,7 +167,7 @@ wxString tfpCreateDescChart( idt indID )
 void WrDescCht( idt indID, int gen )
 {
     recIdList children;
-    recFamilyList families = recIndividual::GetFamilyList( indID );
+    recFamilyVec families = recIndividual::GetFamilyList( indID );
     for( size_t i = 0 ; i < families.size() ; i++ )
     {
         idt famID = families[i].f_id;

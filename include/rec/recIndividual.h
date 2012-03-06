@@ -39,7 +39,7 @@
 class recIndividual;
 typedef std::vector< recIndividual >  recIndividualList;
 class recFamily;
-typedef std::vector< recFamily >  recFamilyList;
+typedef std::vector< recFamily >  recFamilyVec;
 class recFamilyIndividual;
 typedef std::vector< recFamilyIndividual >  recFamIndVec;
 
@@ -85,11 +85,13 @@ public:
     static wxString GetFullName( idt id );
     static wxString GetSurname( idt id );
     static wxString GetDateEpitaph( idt id );
+    static wxString GetFullNameEpitaph( idt id );
+    static Sex GetSex( idt id ) { return recPersona::GetSex( GetPersona( id ) ); }
 
-    static recFamilyList GetFamilyList( idt ind );
-    recFamilyList GetFamilyList() const { return GetFamilyList( f_id ); }
-    static recFamilyList GetParentList( idt indID );
-    recFamilyList GetParentList() const { return GetParentList( f_id ); }
+    static recFamilyVec GetFamilyList( idt ind );
+    recFamilyVec GetFamilyList() const { return GetFamilyList( f_id ); }
+    static recFamilyVec GetParentList( idt indID );
+    recFamilyVec GetParentList() const { return GetParentList( f_id ); }
 
     wxSQLite3Table GetRefEventsTable() const { return GetRefEventsTable( f_per_id ); }
     static wxSQLite3Table GetRefEventsTable( idt perID );
@@ -150,6 +152,12 @@ public:
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "Family" );
+
+    idt GetId() const { return f_id; }
+    idt GetHusbId() const { return f_husb_id; }
+    idt GetWifeId() const { return f_wife_id; }
+    static wxString GetIdStr( idt indID ) { return wxString::Format( "F"ID, indID ); }
+    wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     idt GetMarriageEvent() const;
 

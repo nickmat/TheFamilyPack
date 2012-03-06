@@ -135,7 +135,7 @@ wxString tfpWriteIndividualPage( idt indID )
     }
 
     // Write out Families
-    recFamilyList families = recIndividual::GetFamilyList( indID );
+    recFamilyVec families = recIndividual::GetFamilyList( indID );
     for( i = 0, cnt = 0 ; i < families.size() ; i++ ) {
         idt spouseID = families[i].f_husb_id;
         if( spouseID == indID ) spouseID = 0;

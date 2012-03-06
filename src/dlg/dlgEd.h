@@ -32,11 +32,16 @@
 
 #include <rec/recDatabase.h>
 
+typedef std::vector< int >  intVec;
+
+
+
 class recFamily;
 
 extern idt tfpAddNewIndividual( idt famID, Sex sex, const wxString& surname = wxEmptyString );
 extern idt tfpAddNewChild( idt famID, Sex sex );
 extern bool tfpAddNewParent( idt indID, Sex sex );
+extern bool tfpAddExistParent( idt indID, Sex sex );
 extern bool tfpAddNewParent( const wxString& ref );
 extern bool tfpAddNewSpouse( const wxString& ref );
 extern bool tfpEditIndividual( idt indID );
@@ -55,6 +60,7 @@ extern idt tfpPickIndividual( Sex sex = SEX_Unstated );
 #define TFP_SELECT_STYLE_UNKNOWN  0x0002
 
 extern bool tfpSelectPersona( idt* perID, unsigned style, idt refID );
+extern long tfpSelectIndividual( idt* indID, recIdVec indIDs );
 
 extern void tfpDisplayNote( wxWindow* parent, const wxString& name );
 

@@ -586,11 +586,8 @@ bool TfpFrame::NewFile()
         if( recDb::CreateDb( path, flags ) == true )
         {
             SetDatabaseOpen( path );
-            // Kick start with an empty Family
-            recFamily fam(0);
-            fam.f_id = 1;
-            fam.Save();
-            m_html->DisplayHtmPage( "F1" );
+            // Start with the 1st (empty) Family.
+            m_html->DisplayHtmPage( "FI1" );
             ret = true;
         }
     }
@@ -612,7 +609,7 @@ bool TfpFrame::OpenFile()
         if( recDb::OpenDb( path ) == true )
         {
             SetDatabaseOpen( path );
-            m_html->DisplayHtmPage( "F1" );
+            m_html->DisplayHtmPage( "FI1" );
             ret = true;
         }
     }

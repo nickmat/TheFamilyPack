@@ -79,7 +79,9 @@ idt tfpAddNewIndividual( idt famID, Sex sex, const wxString& surname )
     if( dialog->ShowModal() == wxID_OK ) {
         indID = dialog->GetIndividualID();
         *pIndID = indID;
-        family.Save();
+        if( family.GetId() ) {
+            family.Save();
+        }
         recDb::ReleaseSavepoint( savepoint );
     } else {
         recDb::Rollback( savepoint );
@@ -123,19 +125,50 @@ bool tfpAddNewParent( idt indID, Sex sex )
 {
     const wxString savepoint = wxT("AddNewParent");
     bool ret = false;
-    recDb::Savepoint( savepoint );
 
     idt famID = 0;
-    recFamilyList parents = recIndividual::GetParentList( indID );
-    if( parents.size() == 1 ) {
-        famID = parents[0].f_id;
-    } else if( parents.size() > 1 ) {
-        // TODO: Allow for multiple parents
-        wxASSERT( false );
-        return false;
+    recFamilyVec parents = recIndividual::GetParentList( indID );
+
+    if( parents.size() ) {
+        if( parents.size() == 1 ) {
+            if( parents[0].f_husb_id == 0 && sex != SEX_Female ) {
+                famID = parents[0].f_id;
+            } else if( parents[0].f_wife_id == 0 && sex == SEX_Female ) {
+                famID = parents[0].f_id;
+            }
+        }
+        if( famID == 0 ) {
+            recIdVec indIDs;
+            intVec rows;
+            idt parID;
+            for( size_t i = 0 ; i < parents.size() ; i++ ) {
+                if( sex == SEX_Female && parents[i].f_wife_id == 0 ) {
+                    parID = parents[i].f_husb_id;
+                } else if( sex == SEX_Male && parents[i].f_husb_id == 0 ) {
+                    parID = parents[i].f_wife_id;
+                } else {
+                    parID = 0;
+                }
+                if( parID ) {
+                    indIDs.push_back( parID );
+                    rows.push_back( i );
+                }
+            }
+            if( indIDs.size() ) {
+                int row = tfpSelectIndividual( NULL, indIDs );
+                if( row >= 0 ) {
+                    famID = parents[rows[row]].f_id;
+                } else if( row == -2 ) { // Create button pressed
+                    famID = 0;
+                } else {
+                    return false;
+                }
+            }
+        }
     }
 
     wxString surname;
+    recDb::Savepoint( savepoint );
     if( sex == SEX_Male ) {
         surname = recIndividual::GetSurname( indID );
     }
@@ -158,6 +191,13 @@ bool tfpAddNewParent( idt indID, Sex sex )
     return ret;
 }
 
+bool tfpAddExistParent( idt indID, Sex sex )
+{
+    // TODO:
+    wxMessageBox( wxT("Not yet implimented"), wxT("tfpAddExistParent") );
+    return false;
+}
+
 bool tfpAddNewParent( const wxString& ref )
 {
     idt indID;
@@ -175,10 +215,9 @@ bool tfpAddNewParent( const wxString& ref )
 
 bool tfpAddNewSpouse( const wxString& ref )
 {
-    idt famID;
-    ref.Mid( 1 ).ToLongLong( &famID );
-    Sex sex = ( ref.GetChar(0) == 'R' ) ? SEX_Female : SEX_Male;
     recDb::Begin();
+    idt famID = recGetID( ref.Mid( 1 ) );
+    Sex sex = ( ref.GetChar(0) == 'R' ) ? SEX_Female : SEX_Male;
     if( tfpAddNewIndividual( famID, sex ) != 0 ) {
         recDb::Commit();
         return true;
@@ -377,7 +416,6 @@ idt tfpGetExistingMarriageEvent( idt famID )
 
 idt tfpAddMarriageEvent( const recFamily& family )
 {
-//    wxMessageBox( wxT("NYI Add Marriage Event"), wxT("tfpAddMarriageEvent") );
     idt eventID = 0;
 
     const wxString savepoint = "AddFamEvent";
@@ -439,7 +477,7 @@ idt tfpAddMarriageEvent( const recFamily& family )
 idt tfpPickIndividual( Sex sex )
 {
     idt indID = 0;
-    dlgSelectIndividual* dialog = new dlgSelectIndividual( NULL );
+    dlgSelIndividual* dialog = new dlgSelIndividual( NULL );
 
     if( dialog->CreateTable( sex ) == true ) {
         if( dialog->ShowModal() == wxID_OK ) {
@@ -456,7 +494,7 @@ bool tfpSelectPersona( idt* perID, unsigned style, idt refID )
     recIdVec list = recReference::GetPersonaList( refID );
     wxArrayString table;
     for( size_t i = 0 ; i < list.size() ; i++ ) {
-        table.Add( wxString::Format( "Pa"ID, list[i] ) );
+        table.Add( recPersona::GetIdStr( list[i] ) );
         table.Add( recPersona::GetNameStr( list[i] ) );
     }
 
@@ -488,6 +526,39 @@ bool tfpSelectPersona( idt* perID, unsigned style, idt refID )
 
     dialog->Destroy();
     return ret;
+}
+
+long tfpSelectIndividual( idt* indID, recIdVec indIDs )
+{
+    wxArrayString table;
+    for( size_t i = 0 ; i < indIDs.size() ; i++ ) {
+        table.Add( recIndividual::GetIdStr( indIDs[i] ) );
+        table.Add( recIndividual::GetFullNameEpitaph( indIDs[i] ) );
+    }
+    dlgSelectIndividual* dialog = new 
+        dlgSelectIndividual( NULL, _("Select Family"), dlgSelect::SELSTYLE_CreateButton );
+    dialog->SetTable( table );
+
+    long row;
+    if( dialog->ShowModal() == wxID_OK ) {
+        if( dialog->GetCreatePressed() ) {
+            row = -2;
+        } else {
+            row = dialog->GetSelectedRow();
+        }
+    } else {
+        row = -1;
+    }
+    if( indID ) {
+        if( row >= 0 ) {
+            *indID = indIDs[row];
+        } else {
+            *indID = 0;
+        }
+    }
+
+    dialog->Destroy();
+    return row;
 }
 
 void tfpDisplayNote( wxWindow* parent, const wxString& name )

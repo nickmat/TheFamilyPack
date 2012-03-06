@@ -40,7 +40,7 @@ extern wxString tfpWriteEventIndex();
 extern wxString tfpWriteEventPage( idt refID );
 
 // See tfpWrFamily.cpp
-extern wxString tfpWriteFamilyPage( idt famID );
+extern wxString tfpWriteFamilyPage( idt famID, idt indID = 0 );
 extern wxString tfpWriteIndFamilyPage( idt indID );
 
 // See tfpWrIndividual.cpp

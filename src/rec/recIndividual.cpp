@@ -231,10 +231,27 @@ wxString recIndividual::GetDateEpitaph( idt id )
     return result.GetAsString( 0 );
 }
 
-
-recFamilyList recIndividual::GetFamilyList( idt ind )
+wxString recIndividual::GetFullNameEpitaph( idt id )
 {
-    recFamilyList families;
+    wxString str;
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3ResultSet result;
+
+    sql.Format( "SELECT surname, given, epitaph FROM Individual WHERE id="ID";", id );
+    result = s_db->ExecuteQuery( sql );
+    str << result.GetAsString( 1 ) << " " << result.GetAsString( 0 );
+    wxString dates = result.GetAsString( 2 );
+    if( !dates.IsEmpty() ) {
+        str << " " << dates;
+    }
+
+    return str;
+}
+
+
+recFamilyVec recIndividual::GetFamilyList( idt ind )
+{
+    recFamilyVec families;
     recFamily family;
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -258,10 +275,10 @@ recFamilyList recIndividual::GetFamilyList( idt ind )
     return families;
 }
 
-recFamilyList recIndividual::GetParentList( idt indID )
+recFamilyVec recIndividual::GetParentList( idt indID )
 {
     recFamily parent;
-    recFamilyList parents;
+    recFamilyVec parents;
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
 

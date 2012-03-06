@@ -131,7 +131,6 @@ void TfpHtml::OnHtmlLinkClicked( wxHtmlLinkEvent& event )
 
 void TfpHtml::DoHtmCtxMenu( const wxString& ref )
 {
-    int count;
     m_ctxmenuref = ref;
     wxMenu* menu = new wxMenu;
 
@@ -143,20 +142,25 @@ void TfpHtml::DoHtmCtxMenu( const wxString& ref )
         menu->Append( tfpID_HCTXMENU_EDIT_NEW_SON, wxT("Add new Son") );
         menu->Append( tfpID_HCTXMENU_EDIT_NEW_DAUR, wxT("Add new Daughter") );
         menu->AppendSeparator();
-        menu->Append( tfpID_HCTXMENU_EDIT_EXIST_SON, wxT("Add existing son") );
+        menu->Append( tfpID_HCTXMENU_EDIT_EXIST_SON, wxT("Add existing Son") );
         menu->Append( tfpID_HCTXMENU_EDIT_EXIST_DAUR, wxT("Add existing Daughter") );
         break;
     case 'H': case 'W': // Edit a Husb or Wife Individual
         menu->Append( tfpID_HCTXMENU_EDIT_INDIVIDUAL, wxT("Edit Individual") );
         menu->AppendSeparator();
-        menu->Append( tfpID_HCTXMENU_EDIT_NEW_SPOUSE, wxT("Add new spouse") );
-        menu->Append( tfpID_HCTXMENU_EDIT_EXIST_SPOUSE, wxT("Add existing spouse") );
+        menu->Append( tfpID_HCTXMENU_EDIT_NEW_MOTHER, wxT("Add new Mother") );
+        menu->Append( tfpID_HCTXMENU_EDIT_NEW_FATHER, wxT("Add new Father") );
+        menu->Append( tfpID_HCTXMENU_EDIT_NEW_SPOUSE, wxT("Add new Spouse") );
+        menu->AppendSeparator();
+        menu->Append( tfpID_HCTXMENU_EDIT_EXIST_MOTHER, wxT("Add existing Mother") );
+        menu->Append( tfpID_HCTXMENU_EDIT_EXIST_FATHER, wxT("Add existing Father") );
+        menu->Append( tfpID_HCTXMENU_EDIT_EXIST_SPOUSE, wxT("Add existing Spouse") );
         break;
     case 'R':
         // Parents, Spouses (Marriage), Siblings, and Children
         // List individuals and jump to the selected individuals family
         m_ctxmenuIDs.empty();
-        count = AddFamiliesToMenu( ref, menu, tfpID_INDMENU_BEG );
+        AddFamiliesToMenu( ref, menu, tfpID_INDMENU_BEG );
         break;
     default:
         delete menu;
@@ -170,7 +174,7 @@ void TfpHtml::DoHtmCtxMenu( const wxString& ref )
 
 int TfpHtml::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )
 {
-    recFamilyList families;
+    recFamilyVec families;
     size_t c = 0, i, j;
     recIndividualList inds;
     wxLongLong_t indID;
@@ -268,8 +272,7 @@ void TfpHtml::OnHtmCtxMenu( wxCommandEvent& event )
 {
     bool ret = false;
     Sex sex;
-    idt id;
-    m_ctxmenuref.Mid(1).ToLongLong( &id );
+    idt id = recGetID( m_ctxmenuref.Mid(1) );
 
     recDb::Begin();
     try {
@@ -277,9 +280,6 @@ void TfpHtml::OnHtmCtxMenu( wxCommandEvent& event )
         {
         case tfpID_HCTXMENU_EDIT_FAMILY:
             ret = tfpEditFamily( id );
-            break;
-        case tfpID_HCTXMENU_EDIT_INDIVIDUAL:
-            ret = tfpEditIndividual( id );
             break;
         case tfpID_HCTXMENU_EDIT_NEW_SON:
             if( tfpAddNewChild( id, SEX_Male ) != 0 ) ret = true;
@@ -293,10 +293,25 @@ void TfpHtml::OnHtmCtxMenu( wxCommandEvent& event )
         case tfpID_HCTXMENU_EDIT_EXIST_DAUR:
             ret = tfpAddExistChild( id, SEX_Female );
             break;
+        case tfpID_HCTXMENU_EDIT_INDIVIDUAL:
+            ret = tfpEditIndividual( id );
+            break;
+        case tfpID_HCTXMENU_EDIT_NEW_MOTHER:
+            ret = tfpAddNewParent( id, SEX_Female );
+            break;
+        case tfpID_HCTXMENU_EDIT_NEW_FATHER:
+            ret = tfpAddNewParent( id, SEX_Male );
+            break;
         case tfpID_HCTXMENU_EDIT_NEW_SPOUSE:
             sex = ( m_ctxmenuref.GetChar(0) == 'H' ) ? SEX_Female : SEX_Male;
             id = tfpAddNewIndividual( recIndividual::GetDefaultFamily( id ), sex );
             if( id ) ret = true;
+            break;
+        case tfpID_HCTXMENU_EDIT_EXIST_MOTHER:
+            ret = tfpAddExistParent( id, SEX_Female );
+            break;
+        case tfpID_HCTXMENU_EDIT_EXIST_FATHER:
+            ret = tfpAddExistParent( id, SEX_Male );
             break;
         case tfpID_HCTXMENU_EDIT_EXIST_SPOUSE:
             sex = ( m_ctxmenuref.GetChar(0) == 'H' ) ? SEX_Female : SEX_Male;
@@ -366,14 +381,14 @@ wxString TfpHtml::GetDisplayText( const wxString& name )
     case 'F':  // Family reference
         if( name.GetChar( 1 ) == 'I' ) {
             success = name.Mid(2).ToLongLong( &num );
-            if( !success || num < 1 ) {
+            if( !success ) {
                 wxMessageBox( _("Error: Invalid Individual ID link"), _("Link Error") );
                 return wxEmptyString;
             }
             return tfpWriteIndFamilyPage( num );
         }
         success = name.Mid(1).ToLongLong( &num );
-        if( !success || num < 1 ) {
+        if( !success ) {
             wxMessageBox( _("Error: Invalid Family ID link"), _("Link Error") );
             return wxEmptyString;
         }

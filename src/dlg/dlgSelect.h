@@ -120,6 +120,24 @@ private:
 };
 
 //-------------------------------------------------------------------------------
+//-------------------[ dlgSelectIndividual ]-------------------------------------
+//-------------------------------------------------------------------------------
+
+class dlgSelectIndividual : public dlgSelect
+{
+    enum {
+        COL_ID, COL_Name, COL_MAX
+    };
+    static wxString sm_colHeaders[COL_MAX];
+public:
+    dlgSelectIndividual( 
+        wxWindow* parent, 
+        const wxString& title = _("Select Individual"), 
+        unsigned style = SELSTYLE_None 
+    ) : dlgSelect( parent, sm_colHeaders, COL_MAX, title, style ) {}
+};
+
+//-------------------------------------------------------------------------------
 //-------------------[ dlgSelectDate ]-------------------------------------------
 //-------------------------------------------------------------------------------
 
