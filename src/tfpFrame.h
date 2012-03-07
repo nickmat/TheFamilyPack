@@ -51,6 +51,10 @@ private:
     wxMenuBar*          m_menuOpenDB;
     wxMenuBar*          m_menuClosedDB;
     wxToolBar*          m_toolbar;
+    wxMenu*             m_menuEditInd;
+    idt                 m_EditIndLeft;
+    idt                 m_EditIndRight;
+    idt                 m_EditFamily;
     wxTextCtrl*         m_showpage;
     wxArrayString       m_back;
     wxArrayString       m_forward;
@@ -75,10 +79,12 @@ public:
     void OnPageSetup( wxCommandEvent& event );
     void OnQuit( wxCommandEvent& event );
 
+    void OnEditContext( wxCommandEvent& event );
+    void OnEditReference( wxCommandEvent& event );
+
     void OnEditIndividual( wxCommandEvent& event );
     void OnAddNewIndMale( wxCommandEvent& event );
     void OnAddNewIndFemale( wxCommandEvent& event );
-    void OnEditReference( wxCommandEvent& event );
 
     void OnFindFamilyID( wxCommandEvent& event );
     void OnFindIndividualID( wxCommandEvent& event );
@@ -111,6 +117,7 @@ public:
     void SetNoDatabase();
 
     void PushHtmName( const wxString& name );
+    void RefreshEditMenu();
 };
 
 #define tfpMAX_MENU_ITEMS 50
@@ -128,6 +135,24 @@ enum
     tfpID_PREVIEW,
     tfpID_PAGE_SETUP,
     tfpID_EDIT_IND_MENU,
+    tfpID_EDIT_IND_LEFT,
+    tfpID_EDIT_IND_RIGHT,
+    tfpID_EDIT_CONTEXT_BEG,
+    tfpID_EDIT_INDIVIDUAL_LEFT,
+    tfpID_EDIT_NEW_MOTHER_LEFT,
+    tfpID_EDIT_NEW_FATHER_LEFT,
+    tfpID_EDIT_NEW_SPOUSE_LEFT,
+    tfpID_EDIT_EXIST_MOTHER_LEFT,
+    tfpID_EDIT_EXIST_FATHER_LEFT,
+    tfpID_EDIT_EXIST_SPOUSE_LEFT,
+    tfpID_EDIT_INDIVIDUAL_RIGHT,
+    tfpID_EDIT_NEW_MOTHER_RIGHT,
+    tfpID_EDIT_NEW_FATHER_RIGHT,
+    tfpID_EDIT_NEW_SPOUSE_RIGHT,
+    tfpID_EDIT_EXIST_MOTHER_RIGHT,
+    tfpID_EDIT_EXIST_FATHER_RIGHT,
+    tfpID_EDIT_EXIST_SPOUSE_RIGHT,
+    tfpID_EDIT_CONTEXT_END,
     tfpID_EDIT_INDIVIDUAL,
     tfpID_EDIT_IND_NEW_MALE,
     tfpID_EDIT_IND_NEW_FEMALE,

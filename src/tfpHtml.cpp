@@ -388,14 +388,6 @@ wxString TfpHtml::GetDisplayText( const wxString& name )
             return tfpWriteIndFamilyPage( num );
         }
         return tfpWriteFamilyPage( name.Mid(1) );
-#if 0
-        success = name.Mid(1).ToLongLong( &num );
-        if( !success ) {
-            wxMessageBox( _("Error: Invalid Family ID link"), _("Link Error") );
-            return wxEmptyString;
-        }
-        return tfpWriteFamilyPage( num );
-#endif
     case 'I':  // Individual reference
         success = name.Mid(1).ToLongLong( &num );
         if( !success || num < 1 ) {

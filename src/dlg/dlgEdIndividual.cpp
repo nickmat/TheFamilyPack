@@ -70,6 +70,7 @@ bool dlgCreateIndividual::TransferDataToWindow()
     m_staticIndID->SetLabel( m_individual.GetIdStr() );
     m_choiceSex->SetSelection( m_sex );
     m_textSurname->SetValue( m_surname );
+    m_textGiven->SetFocus();
     return true;
 }
 
@@ -106,19 +107,23 @@ dlgEditIndPersona::dlgEditIndPersona( wxWindow* parent, idt indID )
 {
     wxListItem itemCol;
     itemCol.SetText( wxT("Type") );
-    m_listName->InsertColumn( 0, itemCol );
+//    m_listName->InsertColumn( 0, itemCol );
     m_listAttr->InsertColumn( 0, itemCol );
     m_listRel->InsertColumn( 0, itemCol );
     itemCol.SetText( wxT("Value") );
-    m_listName->InsertColumn( 1, itemCol );
+//    m_listName->InsertColumn( 1, itemCol );
     m_listAttr->InsertColumn( 1, itemCol );
     m_listRel->InsertColumn( 1, itemCol );
 
-    m_listEvent->InsertColumn( EV_COL_Number, _("Number") );
-    m_listEvent->InsertColumn( EV_COL_Role, _("Role") );
-    m_listEvent->InsertColumn( EV_COL_Title, _("Title") );
-    m_listEvent->InsertColumn( EV_COL_Date, _("Date") );
-    m_listEvent->InsertColumn( EV_COL_Place, _("Place") );
+    m_listName->InsertColumn( NC_Number, _("Number") );
+    m_listName->InsertColumn( NC_Type, _("Type") );
+    m_listName->InsertColumn( NC_Name, _("Name") );
+
+    m_listEvent->InsertColumn( EC_Number, _("Number") );
+    m_listEvent->InsertColumn( EC_Role, _("Role") );
+    m_listEvent->InsertColumn( EC_Title, _("Title") );
+    m_listEvent->InsertColumn( EC_Date, _("Date") );
+    m_listEvent->InsertColumn( EC_Place, _("Place") );
 
     m_persona.Clear();
     m_individual.Clear();
@@ -148,8 +153,13 @@ bool dlgEditIndPersona::TransferDataToWindow()
 
     m_names = m_persona.ReadNames();
     for( size_t i = 0 ; i < m_names.size() ; i++ ) {
-        m_listName->InsertItem( i, recNameStyle::GetStyleStr( m_names[i].f_style_id ) );
-        m_listName->SetItem( i, COL_Value, m_names[i].GetNameStr() );
+        m_listName->InsertItem( i, m_names[i].GetIdStr() );
+        m_listName->SetItem( i, NC_Type, recNameStyle::GetStyleStr( m_names[i].f_style_id ) );
+        m_listName->SetItem( i, NC_Name, m_names[i].GetNameStr() );
+    }
+    m_listName->SetColumnWidth( NC_Number, 60 );
+    if( m_names.size() ) {
+        m_listName->SetColumnWidth( NC_Name, wxLIST_AUTOSIZE );
     }
 
     m_attributes = m_persona.ReadAttributes();
@@ -161,10 +171,10 @@ bool dlgEditIndPersona::TransferDataToWindow()
     m_evpers = m_persona.ReadEventPersonas();
     for( size_t i = 0 ; i < m_evpers.size() ; i++ ) {
         m_listEvent->InsertItem( i, recEvent::GetIdStr( m_evpers[i].f_event_id ) );
-        m_listEvent->SetItem( i, EV_COL_Role, recEventTypeRole::GetName( m_evpers[i].f_role_id ) );
-        m_listEvent->SetItem( i, EV_COL_Title, recEvent::GetTitle( m_evpers[i].f_event_id ) );
-        m_listEvent->SetItem( i, EV_COL_Date, recEvent::GetDateStr( m_evpers[i].f_event_id ) );
-        m_listEvent->SetItem( i, EV_COL_Place, recEvent::GetAddressStr( m_evpers[i].f_event_id ) );
+        m_listEvent->SetItem( i, EC_Role, recEventTypeRole::GetName( m_evpers[i].f_role_id ) );
+        m_listEvent->SetItem( i, EC_Title, recEvent::GetTitle( m_evpers[i].f_event_id ) );
+        m_listEvent->SetItem( i, EC_Date, recEvent::GetDateStr( m_evpers[i].f_event_id ) );
+        m_listEvent->SetItem( i, EC_Place, recEvent::GetAddressStr( m_evpers[i].f_event_id ) );
     }
 
     m_relationships = m_persona.ReadRelationships();
@@ -173,6 +183,8 @@ bool dlgEditIndPersona::TransferDataToWindow()
         m_listRel->SetItem( i, COL_Value, m_relationships[i].GetRelOfPersonaStr( m_persona.f_id ) );
     }
 
+    m_notebook->SetSelection( 0 );
+    m_textCtrlNote->SetFocus();
     return true;
 }
 
@@ -213,8 +225,9 @@ void dlgEditIndPersona::OnNameAddButton( wxCommandEvent& event )
         recDb::ReleaseSavepoint( savepoint );
         recName* name = dialog->GetName();
         int row = m_names.size();
-        m_listName->InsertItem( row, recNameStyle::GetStyleStr( name->f_style_id ) );
-        m_listName->SetItem( row, COL_Value, name->GetNameStr() );
+        m_listName->InsertItem( row, name->GetIdStr() );
+        m_listName->SetItem( row, NC_Type, recNameStyle::GetStyleStr( name->f_style_id ) );
+        m_listName->SetItem( row, NC_Name, name->GetNameStr() );
         m_names.push_back( *name );
     } else {
         recDb::Rollback( savepoint );
@@ -239,8 +252,9 @@ void dlgEditIndPersona::OnNameEditButton( wxCommandEvent& event )
     {
         recDb::ReleaseSavepoint( savepoint );
         recName* name = dialog->GetName();
-        m_listName->SetItem( row, COL_Type, recNameStyle::GetStyleStr( name->f_style_id ) );
-        m_listName->SetItem( row, COL_Value, name->GetNameStr() );
+        m_listName->SetItem( row, NC_Number, name->GetIdStr() );
+        m_listName->SetItem( row, NC_Type, recNameStyle::GetStyleStr( name->f_style_id ) );
+        m_listName->SetItem( row, NC_Name, name->GetNameStr() );
         m_names[row] = *name;
     } else {
         recDb::Rollback( savepoint );
@@ -272,11 +286,13 @@ void dlgEditIndPersona::OnNameUpButton( wxCommandEvent& event )
         m_names[row] = m_names[row-1];
         m_names[row-1] = attr;
 
-        m_listName->SetItem( row, COL_Type, recNameStyle::GetStyleStr( m_names[row].f_style_id ) );
-        m_listName->SetItem( row, COL_Value, m_names[row].GetNameStr() );
+        m_listName->SetItem( row, NC_Number, m_names[row].GetIdStr() );
+        m_listName->SetItem( row, NC_Type, recNameStyle::GetStyleStr( m_names[row].f_style_id ) );
+        m_listName->SetItem( row, NC_Name, m_names[row].GetNameStr() );
         --row;
-        m_listName->SetItem( row, COL_Type, recNameStyle::GetStyleStr( m_names[row].f_style_id ) );
-        m_listName->SetItem( row, COL_Value, m_names[row].GetNameStr() );
+        m_listName->SetItem( row, NC_Number, m_names[row].GetIdStr() );
+        m_listName->SetItem( row, NC_Type, recNameStyle::GetStyleStr( m_names[row].f_style_id ) );
+        m_listName->SetItem( row, NC_Name, m_names[row].GetNameStr() );
 
         m_listName->SetItemState( row, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
     }
@@ -294,11 +310,13 @@ void dlgEditIndPersona::OnNameDownButton( wxCommandEvent& event )
         m_names[row] = m_names[row+1];
         m_names[row+1] = name;
 
-        m_listName->SetItem( row, COL_Type, recNameStyle::GetStyleStr( m_names[row].f_style_id ) );
-        m_listName->SetItem( row, COL_Value, m_names[row].GetNameStr() );
+        m_listName->SetItem( row, NC_Number, m_names[row].GetIdStr() );
+        m_listName->SetItem( row, NC_Type, recNameStyle::GetStyleStr( m_names[row].f_style_id ) );
+        m_listName->SetItem( row, NC_Name, m_names[row].GetNameStr() );
         row++;
-        m_listName->SetItem( row, COL_Type, recNameStyle::GetStyleStr( m_names[row].f_style_id ) );
-        m_listName->SetItem( row, COL_Value, m_names[row].GetNameStr() );
+        m_listName->SetItem( row, NC_Number, m_names[row].GetIdStr() );
+        m_listName->SetItem( row, NC_Type, recNameStyle::GetStyleStr( m_names[row].f_style_id ) );
+        m_listName->SetItem( row, NC_Name, m_names[row].GetNameStr() );
 
         m_listName->SetItemState( row, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
     }
@@ -453,10 +471,10 @@ void dlgEditIndPersona::OnNewEvent( wxCommandEvent& event )
         recDb::ReleaseSavepoint( savepoint );
         int row = m_evpers.size();
         m_listEvent->InsertItem( row, recEvent::GetIdStr( eventID ) );
-        m_listEvent->SetItem( row, EV_COL_Role, recEventTypeRole::GetName( roleID ) );
-        m_listEvent->SetItem( row, EV_COL_Title, recEvent::GetTitle( eventID ) );
-        m_listEvent->SetItem( row, EV_COL_Date, recEvent::GetDateStr( eventID ) );
-        m_listEvent->SetItem( row, EV_COL_Place, recEvent::GetAddressStr( eventID ) );
+        m_listEvent->SetItem( row, EC_Role, recEventTypeRole::GetName( roleID ) );
+        m_listEvent->SetItem( row, EC_Title, recEvent::GetTitle( eventID ) );
+        m_listEvent->SetItem( row, EC_Date, recEvent::GetDateStr( eventID ) );
+        m_listEvent->SetItem( row, EC_Place, recEvent::GetAddressStr( eventID ) );
         m_evpers.push_back( ep );
     } else {
         recDb::Rollback( savepoint );

@@ -43,16 +43,13 @@ public:
     void SetNameID( idt nameID ) { m_np.f_name_id = nameID; }
     void SetValue( const wxString& val ) { m_np.f_val = val; }
 
-//    wxString GetText() const { return m_text; }
     recNamePart* GetNamePart() { return &m_np; }
 
 private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
 
-//    idt            m_persona;
-    recNamePart  m_np;
-//    wxString        m_text;
+    recNamePart         m_np;
     recNamePartTypeVec  m_types;
 };
 

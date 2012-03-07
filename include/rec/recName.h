@@ -69,10 +69,10 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "Name" );
 
-    static idt CreateName( const wxString& nameStr, idt style = 0 );
-
-    static wxString GetIdStr( idt evID ) { return wxString::Format( "N"ID, evID ); }
+    static wxString GetIdStr( idt nameID ) { return wxString::Format( "N"ID, nameID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
+
+    static idt CreateName( const wxString& nameStr, idt style = 0 );
 
     int AddNameParts( const wxString& nameStr, recStdNameType type = NAME_TYPE_Unstated, int seq = 0 ) const;
     int AddNamePart( const wxString& nameStr, recStdNameType type, int seq ) const;
@@ -129,6 +129,9 @@ public:
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "NamePart" );
+
+    static wxString GetIdStr( idt npID ) { return wxString::Format( "NP"ID, npID ); }
+    wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     static wxString GetValue( idt id );
     static recNamePartVec ConvertStrToList( const wxString& str, idt type = NAME_TYPE_Given_name );

@@ -69,6 +69,7 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_PREVIEW, TfpFrame::OnPreview )
     EVT_MENU( tfpID_PAGE_SETUP, TfpFrame::OnPageSetup )
     EVT_MENU( wxID_EXIT, TfpFrame::OnQuit )
+    EVT_MENU_RANGE( tfpID_EDIT_CONTEXT_BEG, tfpID_EDIT_CONTEXT_END, TfpFrame::OnEditContext )
     EVT_MENU( tfpID_EDIT_INDIVIDUAL, TfpFrame::OnEditIndividual )
     EVT_MENU( tfpID_EDIT_IND_NEW_MALE, TfpFrame::OnAddNewIndMale )
     EVT_MENU( tfpID_EDIT_IND_NEW_FEMALE, TfpFrame::OnAddNewIndFemale )
@@ -121,14 +122,39 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     menuFile->AppendSeparator();
     menuFile->Append( wxID_EXIT, _("E&xit") );
 
-    wxMenu* menuEditInd = new wxMenu;
-    menuEditInd->Append( tfpID_EDIT_INDIVIDUAL, _("Existing &Individual..") );
-    menuEditInd->AppendSeparator();
-    menuEditInd->Append( tfpID_EDIT_IND_NEW_MALE, _("Add New &Male...") );
-    menuEditInd->Append( tfpID_EDIT_IND_NEW_FEMALE, _("Add New &Female...") );
+    wxMenu* menuEdIndL = new wxMenu;
+    menuEdIndL->Append( tfpID_EDIT_INDIVIDUAL_LEFT, _("Edit Individual") );
+    menuEdIndL->AppendSeparator();
+    menuEdIndL->Append( tfpID_EDIT_NEW_MOTHER_LEFT, _("Add new Mother") );
+    menuEdIndL->Append( tfpID_EDIT_NEW_FATHER_LEFT, _("Add new Father") );
+    menuEdIndL->Append( tfpID_EDIT_NEW_SPOUSE_LEFT, _("Add new Spouse") );
+    menuEdIndL->AppendSeparator();
+    menuEdIndL->Append( tfpID_EDIT_EXIST_MOTHER_LEFT, _("Add existing Mother") );
+    menuEdIndL->Append( tfpID_EDIT_EXIST_FATHER_LEFT, _("Add existing Father") );
+    menuEdIndL->Append( tfpID_EDIT_EXIST_SPOUSE_LEFT, _("Add existing Spouse") );
+
+    wxMenu* menuEdIndR = new wxMenu;
+    menuEdIndR->Append( tfpID_EDIT_INDIVIDUAL_RIGHT, _("Edit Individual") );
+    menuEdIndR->AppendSeparator();
+    menuEdIndR->Append( tfpID_EDIT_NEW_MOTHER_RIGHT, _("Add new Mother") );
+    menuEdIndR->Append( tfpID_EDIT_NEW_FATHER_RIGHT, _("Add new Father") );
+    menuEdIndR->Append( tfpID_EDIT_NEW_SPOUSE_RIGHT, _("Add new Spouse") );
+    menuEdIndR->AppendSeparator();
+    menuEdIndR->Append( tfpID_EDIT_EXIST_MOTHER_RIGHT, _("Add existing Mother") );
+    menuEdIndR->Append( tfpID_EDIT_EXIST_FATHER_RIGHT, _("Add existing Father") );
+    menuEdIndR->Append( tfpID_EDIT_EXIST_SPOUSE_RIGHT, _("Add existing Spouse") );
+
+    m_menuEditInd = new wxMenu;
+    m_menuEditInd->Append( tfpID_EDIT_IND_LEFT, "? ?..", menuEdIndL );
+    m_menuEditInd->Append( tfpID_EDIT_IND_RIGHT, "? ?..", menuEdIndR );
+    m_menuEditInd->AppendSeparator();
+    m_menuEditInd->Append( tfpID_EDIT_INDIVIDUAL, _("Existing &Individual..") );
+    m_menuEditInd->AppendSeparator();
+    m_menuEditInd->Append( tfpID_EDIT_IND_NEW_MALE, _("Add New &Male...") );
+    m_menuEditInd->Append( tfpID_EDIT_IND_NEW_FEMALE, _("Add New &Female...") );
     
     wxMenu* menuEdit = new wxMenu;
-    menuEdit->Append( tfpID_EDIT_IND_MENU, _("&Individual"), menuEditInd );
+    menuEdit->Append( tfpID_EDIT_IND_MENU, _("&Individual"), m_menuEditInd );
     menuEdit->Append( tfpID_EDIT_REFERENCE, _("&Reference") );
 
     wxMenu* menuFind = new wxMenu;
@@ -199,7 +225,6 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
 
     CreateStatusBar();
 
-//    m_html = new wxHtmlWindow( this );
     m_html = new TfpHtml( this, this );
     m_html->SetRelatedStatusBar( 0 );
 
@@ -355,6 +380,90 @@ void TfpFrame::OnAddNewIndFemale( wxCommandEvent& event )
         recDb::Rollback();
     }
 }
+
+void TfpFrame::OnEditContext( wxCommandEvent& event )
+{
+    bool ret = false;
+    idt id;
+
+    recDb::Begin();
+    try {
+        switch( event.GetId() )
+        {
+        case tfpID_EDIT_INDIVIDUAL_LEFT:
+            ret = tfpEditIndividual( m_EditIndLeft );
+            break;
+        case tfpID_EDIT_NEW_MOTHER_LEFT:
+            ret = tfpAddNewParent( m_EditIndLeft, SEX_Female );
+            break;
+        case tfpID_EDIT_NEW_FATHER_LEFT:
+            ret = tfpAddNewParent( m_EditIndLeft, SEX_Male );
+            break;
+        case tfpID_EDIT_NEW_SPOUSE_LEFT:
+            id = tfpAddNewIndividual( m_EditFamily, SEX_Female );
+            if( id ) ret = true;
+            break;
+        case tfpID_EDIT_EXIST_MOTHER_LEFT:
+            ret = tfpAddExistParent( m_EditIndLeft, SEX_Female );
+            break;
+        case tfpID_EDIT_EXIST_FATHER_LEFT:
+            ret = tfpAddExistParent( m_EditIndLeft, SEX_Male );
+            break;
+        case tfpID_EDIT_EXIST_SPOUSE_LEFT:
+            ret = tfpAddExistSpouse( m_EditIndLeft, SEX_Female );
+            break;
+        case tfpID_EDIT_INDIVIDUAL_RIGHT:
+            ret = tfpEditIndividual( m_EditIndRight );
+            break;
+        case tfpID_EDIT_NEW_MOTHER_RIGHT:
+            ret = tfpAddNewParent( m_EditIndRight, SEX_Female );
+            break;
+        case tfpID_EDIT_NEW_FATHER_RIGHT:
+            ret = tfpAddNewParent( m_EditIndRight, SEX_Male );
+            break;
+        case tfpID_EDIT_NEW_SPOUSE_RIGHT:
+            id = tfpAddNewIndividual( m_EditFamily, SEX_Male );
+            if( id ) ret = true;
+            break;
+        case tfpID_EDIT_EXIST_MOTHER_RIGHT:
+            ret = tfpAddExistParent( m_EditIndRight, SEX_Female );
+            break;
+        case tfpID_EDIT_EXIST_FATHER_RIGHT:
+            ret = tfpAddExistParent( m_EditIndRight, SEX_Male );
+            break;
+        case tfpID_EDIT_EXIST_SPOUSE_RIGHT:
+            ret = tfpAddExistSpouse( m_EditIndRight, SEX_Female );
+            break;
+#if 0
+        case tfpID_HCTXMENU_EDIT_FAMILY:
+            ret = tfpEditFamily( id );
+            break;
+        case tfpID_HCTXMENU_EDIT_NEW_SON:
+            if( tfpAddNewChild( id, SEX_Male ) != 0 ) ret = true;
+            break;
+        case tfpID_HCTXMENU_EDIT_NEW_DAUR:
+            if( tfpAddNewChild( id, SEX_Female ) != 0 ) ret = true;
+            break;
+        case tfpID_HCTXMENU_EDIT_EXIST_SON:
+            ret = tfpAddExistChild( id, SEX_Male );
+            break;
+        case tfpID_HCTXMENU_EDIT_EXIST_DAUR:
+            ret = tfpAddExistChild( id, SEX_Female );
+            break;
+#endif
+        }
+        if( ret == true ) {
+            recDb::Commit();
+            m_html->RefreshHtmPage();
+        } else {
+            recDb::Rollback();
+        }
+    } catch( wxSQLite3Exception& e ) {
+        recDb::ErrorMessage( e );
+        recDb::Rollback();
+    }
+}
+
 
 /*! \brief Called on a Edit Reference menu option event.
  */
@@ -677,6 +786,56 @@ void TfpFrame::PushHtmName( const wxString& name )
     if( m_forward.size() != 0 ) {
         m_forward.clear();
         m_toolbar->EnableTool( tfpID_FIND_FORWARD, false );
+    }
+    RefreshEditMenu();
+}
+
+void TfpFrame::RefreshEditMenu()
+{
+    wxASSERT( m_back.size() > 0 );
+    wxString disp = m_back[m_back.size()-1];
+    wxUniChar uch = disp.GetChar( 0 );
+    wxUniChar uch1;
+    wxString name;
+    wxString noname = _("none");
+
+    switch( uch.GetValue() ) 
+    {
+    case 'F': {
+            m_EditFamily = 0;
+            uch1 = disp.GetChar( 1 );
+            if( uch1.GetValue() == 'I' ) {
+                idt indID = recGetID( disp.Mid( 2 ) );
+                m_EditFamily = recIndividual::GetDefaultFamily( indID );
+            } else {
+                m_EditFamily = recGetID( disp.Mid( 1 ) );
+            }
+            recFamily fam(m_EditFamily);
+            if( fam.f_husb_id ) {
+                name = recIndividual::GetFullName( fam.f_husb_id );
+                m_menuEditInd->SetLabel( tfpID_EDIT_IND_LEFT, name );
+                m_menuEditInd->Enable( tfpID_EDIT_IND_LEFT, true );
+            } else {
+                m_menuEditInd->SetLabel( tfpID_EDIT_IND_LEFT, noname );
+                m_menuEditInd->Enable( tfpID_EDIT_IND_LEFT, false );
+            }
+            m_EditIndLeft = fam.f_husb_id;
+            if( fam.f_wife_id ) {
+                name = recIndividual::GetFullName( fam.f_wife_id );
+                m_menuEditInd->SetLabel( tfpID_EDIT_IND_RIGHT, name );
+                m_menuEditInd->Enable( tfpID_EDIT_IND_RIGHT, true );
+            } else {
+                m_menuEditInd->SetLabel( tfpID_EDIT_IND_RIGHT, noname );
+                m_menuEditInd->Enable( tfpID_EDIT_IND_RIGHT, false );
+            }
+            m_EditIndRight = fam.f_wife_id;
+        }
+        break;
+    default:
+        m_menuEditInd->SetLabel( tfpID_EDIT_IND_LEFT, noname );
+        m_menuEditInd->Enable( tfpID_EDIT_IND_LEFT, false );
+        m_menuEditInd->SetLabel( tfpID_EDIT_IND_RIGHT, noname );
+        m_menuEditInd->Enable( tfpID_EDIT_IND_RIGHT, false );
     }
 }
 

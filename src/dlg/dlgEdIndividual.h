@@ -77,8 +77,11 @@ class dlgEditIndPersona : public fbDlgEditIndPersona
     enum Columns {
         COL_Type, COL_Value, COL_MAX
     };
+    enum NameColumns {
+        NC_Number, NC_Type, NC_Name, NC_MAX
+    };
     enum EventColumns {
-        EV_COL_Number, EV_COL_Role, EV_COL_Title, EV_COL_Date, EV_COL_Place, EV_COL_MAX
+        EC_Number, EC_Role, EC_Title, EC_Date, EC_Place, EC_MAX
     };
 public:
     dlgEditIndPersona( wxWindow* parent, idt indID );
