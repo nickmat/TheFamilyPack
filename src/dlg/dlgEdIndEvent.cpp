@@ -48,13 +48,11 @@
 //      dlgEditIndEvent
 //-----------------------------------------------------
 
-dlgEditIndEvent::dlgEditIndEvent( wxWindow* parent )
-    : fbDlgEditIndEvent( parent )
+dlgEditIndEvent::dlgEditIndEvent( wxWindow* parent, idt eventID )
+    : fbDlgEditIndEvent( parent ), m_event(eventID)
 {
-    m_ep.Clear();
-    m_event.Clear();
-    m_date1.Clear();
-    m_place.Clear();
+    m_date1.ReadID( m_event.GetDate1ID() );
+    m_place.ReadID( m_event.GetPlaceID() );
 
     m_listPersona->InsertColumn( COL_IndID, _("Individual") );
     m_listPersona->InsertColumn( COL_Name, _("Name") );
@@ -74,6 +72,8 @@ dlgEditIndEvent::~dlgEditIndEvent()
 
 bool dlgEditIndEvent::TransferDataToWindow()
 {
+    wxASSERT( m_event.GetID() != 0 );
+#if 0
     if( m_event.f_id ) {
         m_event.Read();
     } else {
@@ -83,25 +83,26 @@ bool dlgEditIndEvent::TransferDataToWindow()
             m_ep.Save();
         }
     }
+#endif
     m_staticType->SetLabel( m_event.GetTypeStr() );
     m_staticEventID->SetLabel( m_event.GetIdStr() );
     m_textCtrlTitle->SetValue( m_event.f_title );
-    if( m_event.f_date1_id == 0 ) {
-        m_date1.SetDefaults();
-        m_date1.Save();
-    } else {
-        m_date1.f_id = m_event.f_date1_id;
-        m_date1.Read();
-    }
+//    if( m_event.f_date1_id == 0 ) {
+//        m_date1.SetDefaults();
+//        m_date1.Save();
+//    } else {
+//        m_date1.f_id = m_event.f_date1_id;
+//        m_date1.Read();
+//    }
     m_textCtrlDate1->SetValue( m_date1.GetStr() );
     m_buttonDate2->Enable( false );
-    if( m_event.f_place_id == 0 ) {
-        m_place.Clear();
-        m_place.Save();
-    } else {
-        m_place.f_id = m_event.f_place_id;
-        m_place.Read();
-    }
+//    if( m_event.f_place_id == 0 ) {
+//        m_place.Clear();
+//        m_place.Save();
+//    } else {
+//        m_place.f_id = m_event.f_place_id;
+//        m_place.Read();
+//    }
     m_textCtrlAddr->SetValue( m_place.GetAddressStr() );
     m_textCtrlNote->SetValue( m_event.f_note );
 
@@ -267,7 +268,6 @@ bool dlgEditIndEvent::CreateDateImageFile()
 void dlgEditIndEvent::DrawDateImage( 
     wxDC& dc, const recDate& date, long start, double scale, const wxColour& color )
 {
-    // 
     int beg = ( date.f_jdn - start ) * scale;
     int end = ( date.f_jdn + date.f_range - start ) * scale;
     int taper = 365 * scale;
@@ -320,17 +320,18 @@ bool dlgEditIndEvent::TransferDataFromWindow()
 
     str = m_textCtrlAddr->GetValue();
     if( str.IsEmpty() ) {
-        m_place.Delete();
+        m_place.DeleteAll();
         m_event.f_place_id = 0;
     } else {
-        m_place.SetAddress( str );
         m_place.Save();
+        m_place.SetAddress( str );
         m_event.f_place_id = m_place.f_id;
     }
 
     m_event.f_note = m_textCtrlNote->GetValue();
 
     m_event.Save();
+
     return true;
 }
 

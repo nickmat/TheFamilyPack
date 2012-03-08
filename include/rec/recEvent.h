@@ -69,6 +69,13 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "Event" );
 
+    wxString GetTitle() const { return f_title; }
+    idt GetTypeID() const { return f_type_id; }
+    idt GetDate1ID() const { return f_date1_id; }
+    idt GetDate2ID() const { return f_date2_id; }
+    idt GetPlaceID() const { return f_place_id; }
+    wxString GetNote() const { return f_note; }
+
     static wxString GetIdStr( idt evID ) { return wxString::Format( "E"ID, evID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
@@ -84,6 +91,7 @@ public:
     static wxString GetAddressStr( idt evID );
     static idt GetDate1ID( idt evID );
     static long GetDatePoint( idt evID );
+    long GetDatePoint() const;
 
     idt FindReferenceID() const { return FindReferenceID( f_id ); }
     static idt FindReferenceID( idt eventID ) {

@@ -52,12 +52,9 @@ bool dlgEditAttribute::TransferDataToWindow()
     } else {
         m_attr.Read();
     }
-    m_textCtrlValue->SetValue( m_attr.f_val );
 
-    wxString idStr = wxString::Format( "A "ID":", m_attr.f_id );
-    m_staticTextId->SetLabel( idStr );
-    wxString perStr = wxString::Format( "P "ID, m_attr.f_per_id );
-    m_staticTextPersona->SetLabel( perStr );
+    m_staticAttrID->SetLabel( m_attr.GetIdStr() );
+    m_staticPersonaID->SetLabel( recPersona::GetIdStr( m_attr.f_per_id ) );
 
     m_typeList = recAttributeType::GetTypeList();
     for( size_t i = 0 ; i < m_typeList.size() ; i++ ) {
@@ -66,6 +63,8 @@ bool dlgEditAttribute::TransferDataToWindow()
             m_choiceType->SetSelection( (int) i );
         }
     }
+    m_textCtrlValue->SetValue( m_attr.f_val );
+
     return true;
 }
 

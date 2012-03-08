@@ -51,16 +51,16 @@ class dlgEditIndEvent : public fbDlgEditIndEvent
         COL_IndID, COL_Name, COL_Role, COL_Note, COL_MAX
     };
 public:
-    dlgEditIndEvent( wxWindow* parent );
+    dlgEditIndEvent( wxWindow* parent, idt eventID );
     ~dlgEditIndEvent();
 
-    void SetEvent( idt eveID ) { m_event.f_id = eveID; }
-    void SetEventType( idt typeID ) { m_event.f_type_id = typeID; }
-    void SetEventTitle( const wxString& titleStr ) { m_event.f_title = titleStr; }
-    void SetPersona( idt perID ) { m_ep.f_per_id = perID; }
-    void SetPersonaRole( idt roleID ) { m_ep.f_role_id = roleID; }
+//    void SetEvent( idt eveID ) { m_event.f_id = eveID; }
+//    void SetEventType( idt typeID ) { m_event.f_type_id = typeID; }
+//    void SetEventTitle( const wxString& titleStr ) { m_event.f_title = titleStr; }
+//    void SetPersona( idt perID ) { m_ep.f_per_id = perID; }
+//    void SetPersonaRole( idt roleID ) { m_ep.f_role_id = roleID; }
 
-    idt GetEventID() const { return m_event.f_id; }
+//    idt GetEventID() const { return m_event.f_id; }
 
 private:
     bool TransferDataToWindow();
@@ -86,7 +86,7 @@ private:
     void OnCompareDatesButton( wxCommandEvent& event );
     void OnComparePlacesButton( wxCommandEvent& event );
 
-    recEventPersona m_ep;
+//    recEventPersona m_ep;
 
     recEvent  m_event;
     recDate   m_date1;

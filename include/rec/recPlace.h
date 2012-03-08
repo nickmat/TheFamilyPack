@@ -52,6 +52,11 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "Place" );
 
+    bool DeleteAll();
+
+    idt GetDate1ID() const { return f_date1_id; }
+    idt GetDate2ID() const { return f_date2_id; }
+
     static wxString GetIdStr( idt indID ) { return wxString::Format( "P"ID, indID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 

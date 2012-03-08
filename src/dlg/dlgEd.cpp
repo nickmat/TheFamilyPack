@@ -437,18 +437,19 @@ idt tfpAddMarriageEvent( const recFamily& family )
         return 0;
     }
 
-    dlgEditIndEvent* dialog = new dlgEditIndEvent( NULL );
-    dialog->SetEventType( typeID );
-    dialog->SetEventTitle( wxString::Format( 
-        _("%s of %s and %s"), 
-        recEventType::GetTypeStr( typeID ), 
-        recIndividual::GetFullName( family.f_husb_id ),
-        recIndividual::GetFullName( family.f_wife_id )
-    ) );
+    dlgEditIndEvent* dialog = new dlgEditIndEvent( NULL, 0 );
+//    dialog->SetEventType( typeID );
+//    dialog->SetEventTitle( wxString::Format( 
+//        _("%s of %s and %s"), 
+//        recEventType::GetTypeStr( typeID ), 
+//        recIndividual::GetFullName( family.f_husb_id ),
+//        recIndividual::GetFullName( family.f_wife_id )
+//    ) );
 
     if( dialog->ShowModal() == wxID_OK )
     {
-        eventID = dialog->GetEventID();
+
+//        eventID = dialog->GetEventID();
         recLinkEvent le(0);
         le.f_ind_event_id = eventID;
         le.Save();

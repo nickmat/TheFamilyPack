@@ -264,36 +264,39 @@ recEventPersonaVec recEvent::GetEventPersonas()
 long recEvent::GetDatePoint( idt evID )
 {
     recEvent ev(evID);
-    recEventType::ETYPE_Grp grp = recEventType::GetGroup( ev.f_type_id );
+    return ev.GetDatePoint();
+}
+
+long recEvent::GetDatePoint() const
+{
+    recEventType::ETYPE_Grp grp = recEventType::GetGroup( f_type_id );
     switch( grp )
     {
     case recEventType::ETYPE_Grp_Birth:
     case recEventType::ETYPE_Grp_Nr_Birth:
-        return recDate::GetDatePoint( ev.f_date1_id, recDate::DATE_POINT_Beg );
+        return recDate::GetDatePoint( f_date1_id, recDate::DATE_POINT_Beg );
     case recEventType::ETYPE_Grp_Death:
     case recEventType::ETYPE_Grp_Nr_Death:
-        return recDate::GetDatePoint( ev.f_date1_id, recDate::DATE_POINT_End );
+        return recDate::GetDatePoint( f_date1_id, recDate::DATE_POINT_End );
     }
-    return recDate::GetDatePoint( ev.f_date1_id );
+    return recDate::GetDatePoint( f_date1_id );
 }
 
 
 bool recEvent::DeleteFromDb( idt id )
 {
+    // TODO: Consider making 2 functions, one for reference, one for individual.
     wxSQLite3StatementBuffer sql;
 
     // TODO: Ensure Event is removed from reference statement.
     sql.Format(
-//        "UPDATE Family SET event_id=0 WHERE event_id="ID";"
-        "UPDATE Individual SET birth_id=0 WHERE birth_id="ID";"
-        "UPDATE Individual SET nr_birth_id=0 WHERE nr_birth_id="ID";"
-        "UPDATE Individual SET death_id=0 WHERE death_id="ID";"
-        "UPDATE Individual SET nr_death_id=0 WHERE nr_death_id="ID";"
         "DELETE FROM EventPersona WHERE event_id="ID";"
+        "DELETE FROM LinkEvent WHERE ref_event_id="ID";"
+        "DELETE FROM LinkEvent WHERE ind_event_id="ID";"
         "DELETE FROM ReferenceEntity "
              "WHERE entity_type=2 AND entity_id="ID";"
         "DELETE FROM Event WHERE id="ID";",
-        id, id, id, id, id, id, id, id
+        id, id, id, id, id
     );
     s_db->ExecuteUpdate( sql );
     return true;

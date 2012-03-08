@@ -152,6 +152,10 @@ public:
      *  function returns true.
      */
     virtual bool Read() = 0;
+    bool ReadID( idt id ) { f_id = id; return Read(); }
+
+    idt GetID() const { return f_id; }
+    void SetID( idt id ) { f_id = id; }
 
     static idt ExecuteID( const wxSQLite3StatementBuffer& sql );
     static idt ExecuteID( const char* format, idt id );

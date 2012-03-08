@@ -103,8 +103,10 @@ BEGIN_EVENT_TABLE( dlgEditIndPersona, wxDialog )
 END_EVENT_TABLE()
 
 dlgEditIndPersona::dlgEditIndPersona( wxWindow* parent, idt indID )
-    : fbDlgEditIndPersona( parent )
+    : fbDlgEditIndPersona( parent ), m_individual(indID)
 {
+    m_persona.ReadID( m_individual.GetPersona() );
+
     wxListItem itemCol;
     itemCol.SetText( wxT("Type") );
 //    m_listName->InsertColumn( 0, itemCol );
@@ -124,10 +126,6 @@ dlgEditIndPersona::dlgEditIndPersona( wxWindow* parent, idt indID )
     m_listEvent->InsertColumn( EC_Title, _("Title") );
     m_listEvent->InsertColumn( EC_Date, _("Date") );
     m_listEvent->InsertColumn( EC_Place, _("Place") );
-
-    m_persona.Clear();
-    m_individual.Clear();
-    m_individual.f_id = indID;
 }
 
 bool dlgEditIndPersona::TransferDataToWindow()
@@ -450,31 +448,39 @@ void dlgEditIndPersona::OnNewEvent( wxCommandEvent& event )
         return;
     }
 
-    dlgEditIndEvent* dialog = new dlgEditIndEvent( NULL );
-    dialog->SetEventType( typeID );
-    dialog->SetEventTitle( wxString::Format(
+    recEvent eve(0);
+    eve.f_type_id = typeID;
+    eve.f_title = wxString::Format(
         _("%s of %s"), recEventType::GetTypeStr( typeID ), m_individual.GetFullName()
-    ) );
-    dialog->SetPersona( m_individual.f_per_id );
-    dialog->SetPersonaRole( roleID );
+    );
+    eve.Save();
+    dlgEditIndEvent* dialog = new dlgEditIndEvent( NULL, eve.GetID() );
+//    dialog->SetEventType( typeID );
+//    dialog->SetEventTitle( wxString::Format(
+//        _("%s of %s"), recEventType::GetTypeStr( typeID ), m_individual.GetFullName()
+//    ) );
+//    dialog->SetPersona( m_individual.f_per_id );
+//    dialog->SetPersonaRole( roleID );
+
+    recEventPersona ep(0);
+    ep.f_event_id = eve.GetID();
+    ep.f_per_id = m_persona.f_id;
+    ep.f_role_id = roleID;
+    ep.Save();
 
     if( dialog->ShowModal() == wxID_OK )
     {
-        idt eventID = dialog->GetEventID();
-        recEventPersona ep(0);
-        ep.f_event_id = eventID;
-        ep.f_per_id = m_persona.f_id;
-        ep.f_role_id = roleID;
-        ep.f_sequence = recEvent::GetDatePoint( eventID );
+//        idt eventID = dialog->GetEventID();
+        ep.f_sequence = recEvent::GetDatePoint( eve.GetID() );
         ep.Save();
 
         recDb::ReleaseSavepoint( savepoint );
         int row = m_evpers.size();
-        m_listEvent->InsertItem( row, recEvent::GetIdStr( eventID ) );
+        m_listEvent->InsertItem( row, recEvent::GetIdStr( eve.GetID() ) );
         m_listEvent->SetItem( row, EC_Role, recEventTypeRole::GetName( roleID ) );
-        m_listEvent->SetItem( row, EC_Title, recEvent::GetTitle( eventID ) );
-        m_listEvent->SetItem( row, EC_Date, recEvent::GetDateStr( eventID ) );
-        m_listEvent->SetItem( row, EC_Place, recEvent::GetAddressStr( eventID ) );
+        m_listEvent->SetItem( row, EC_Title, recEvent::GetTitle( eve.GetID() ) );
+        m_listEvent->SetItem( row, EC_Date, recEvent::GetDateStr( eve.GetID() ) );
+        m_listEvent->SetItem( row, EC_Place, recEvent::GetAddressStr( eve.GetID() ) );
         m_evpers.push_back( ep );
     } else {
         recDb::Rollback( savepoint );
@@ -499,8 +505,8 @@ void dlgEditIndPersona::OnEventEditButton( wxCommandEvent& event )
     const wxString savepoint = "IndEdEvent";
     recDb::Savepoint( savepoint );
 
-    dlgEditIndEvent* dialog = new dlgEditIndEvent( NULL );
-    dialog->SetEvent( m_evpers[row].f_event_id );
+    dlgEditIndEvent* dialog = new dlgEditIndEvent( NULL, m_evpers[row].f_event_id );
+//    dialog->SetEvent( m_evpers[row].f_event_id );
 
     if( dialog->ShowModal() == wxID_OK )
     {
@@ -513,8 +519,14 @@ void dlgEditIndPersona::OnEventEditButton( wxCommandEvent& event )
 
 void dlgEditIndPersona::OnEventDeleteButton( wxCommandEvent& event )
 {
-    // TODO:
-    wxMessageBox( wxT("Not yet implimented"), wxT("OnEventDeleteButton") );
+    long row = m_listEvent->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row >= 0 ) {
+        m_listEvent->DeleteItem( row );
+        recEvent::DeleteFromDb( m_evpers[row].f_event_id );
+        m_evpers.erase( m_evpers.begin() + row );
+    } else {
+        wxMessageBox( wxT("No row selected"), wxT("Delete Event") );
+    }
 }
 
 void dlgEditIndPersona::OnEventUpButton( wxCommandEvent& event )

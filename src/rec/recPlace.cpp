@@ -113,6 +113,19 @@ bool recPlace::Read()
     return true;
 }
 
+bool recPlace::DeleteAll()
+{
+    if( f_id == 0 ) {
+        return false;
+    }
+
+    wxSQLite3StatementBuffer sql;
+    sql.Format( "DELETE FROM PlacePart WHERE place_id="ID";", f_id );
+    s_db->ExecuteUpdate( sql );
+
+    return Delete();
+}
+
 void recPlace::SetAddress( idt placeID, const wxString& str )
 {
     recPlacePartList ppList = GetPlaceParts( placeID );
