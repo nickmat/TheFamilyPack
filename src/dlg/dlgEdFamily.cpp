@@ -77,7 +77,8 @@ bool dlgEditFamily::TransferDataToWindow()
         fi.Clear();
         fi.f_fam_id = m_family.f_id;
         fi.f_ind_id = m_child;
-        fi.f_sequence = 1;
+        fi.f_seq_child = 1;
+        fi.f_seq_parent = 1;
         fi.Save();
     }
 
@@ -112,7 +113,7 @@ bool dlgEditFamily::TransferDataFromWindow()
 {
     m_family.Save();
     for( size_t i = 0 ; i < m_childlinks.size() ; i++ ) {
-        m_childlinks[i].f_sequence = i+1;
+        m_childlinks[i].fSetSeqChild( i+1 );
         m_childlinks[i].Save();
     }
     return true;

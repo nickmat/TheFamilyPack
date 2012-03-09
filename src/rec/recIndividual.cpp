@@ -559,7 +559,7 @@ recIndividualList recFamily::GetChildren( idt fam )
 
     sql.Format(
         "SELECT ind_id FROM FamilyIndividual WHERE fam_id="ID" "
-        "ORDER BY sequence ASC;", fam
+        "ORDER BY seq_child ASC;", fam
     );
     result = s_db->GetTable( sql );
 
@@ -583,7 +583,7 @@ recIdList recFamily::GetChildrenIds( idt fam )
 
     sql.Format(
         "SELECT ind_id FROM FamilyIndividual WHERE fam_id="ID" "
-        "ORDER BY sequence ASC;", fam
+        "ORDER BY seq_child ASC;", fam
     );
     result = s_db->GetTable( sql );
 
@@ -595,15 +595,26 @@ recIdList recFamily::GetChildrenIds( idt fam )
     return children;
 }
 
-unsigned recFamily::GetChildNextSequence( idt famID )
+int recFamily::GetChildNextSequence( idt famID )
 {
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "SELECT MAX(sequence) FROM FamilyIndividual WHERE fam_id="ID";",
+        "SELECT MAX(seq_child) FROM FamilyIndividual WHERE fam_id="ID";",
         famID
     );
-    return (unsigned) s_db->ExecuteScalar( sql ) + 1;
+    return s_db->ExecuteScalar( sql ) + 1;
+}
+
+int recFamily::GetParentNextSequence( idt indID )
+{
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "SELECT MAX(seq_parent) FROM FamilyIndividual WHERE ind_id="ID";",
+        indID
+    );
+    return s_db->ExecuteScalar( sql ) + 1;
 }
 
 recFamIndVec recFamily::GetChildLinks( idt famID )
@@ -616,18 +627,19 @@ recFamIndVec recFamily::GetChildLinks( idt famID )
     if( famID == 0 ) return ChildLinks;
 
     sql.Format(
-        "SELECT id, ind_id, sequence FROM FamilyIndividual WHERE fam_id="ID" "
-        "ORDER BY sequence ASC;", famID
+        "SELECT id, ind_id, seq_child, seq_parent FROM FamilyIndividual"
+        " WHERE fam_id="ID" ORDER BY seq_child ASC;", famID
     );
     result = s_db->GetTable( sql );
 
-    fi.f_fam_id = famID;
+    fi.fSetFamID( famID );
     for( int i = 0 ; i < result.GetRowCount() ; i++ )
     {
         result.SetRow( i );
-        fi.f_id = GET_ID( result.GetInt64( 0 ) );
-        fi.f_ind_id = GET_ID( result.GetInt64( 1 ) );
-        fi.f_sequence = (unsigned) result.GetInt( 2 );
+        fi.fSetID( GET_ID( result.GetInt64( 0 ) ) );
+        fi.fSetIndID( GET_ID( result.GetInt64( 1 ) ) );
+        fi.fSetSeqChild( result.GetInt( 2 ) );
+        fi.fSetSeqParent( result.GetInt( 3 ) );
         ChildLinks.push_back( fi );
     }
     return ChildLinks;
@@ -672,22 +684,26 @@ wxArrayString recFamily::GetMarriageEventTable() const
     return list;
 }
 
-//----------------------------------------------------------
+//============================================================================
+//-------------------------[ recFamilyIndividual ]----------------------------
+//============================================================================
 
 recFamilyIndividual::recFamilyIndividual( const recFamilyIndividual& fi )
 {
-    f_id       = fi.f_id;
-    f_ind_id   = fi.f_ind_id;
-    f_fam_id   = fi.f_fam_id;
-    f_sequence = fi.f_sequence;
+    f_id         = fi.f_id;
+    f_ind_id     = fi.f_ind_id;
+    f_fam_id     = fi.f_fam_id;
+    f_seq_child  = fi.f_seq_child;
+    f_seq_parent = fi.f_seq_parent;
 }
 
 void recFamilyIndividual::Clear()
 {
-    f_id       = 0;
-    f_ind_id   = 0;
-    f_fam_id   = 0;
-    f_sequence = 0;
+    f_id         = 0;
+    f_ind_id     = 0;
+    f_fam_id     = 0;
+    f_seq_child  = 0;
+    f_seq_parent = 0;
 }
 
 void recFamilyIndividual::Save()
@@ -699,9 +715,9 @@ void recFamilyIndividual::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO FamilyIndividual (fam_id, ind_id, sequence) "
-            "VALUES ("ID", "ID", %u);",
-            f_fam_id, f_ind_id, f_sequence
+            "INSERT INTO FamilyIndividual (fam_id, ind_id, seq_child, seq_parent)"
+            " VALUES ("ID", "ID", %d, %d);",
+            f_fam_id, f_ind_id, f_seq_child, f_seq_parent
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -711,16 +727,17 @@ void recFamilyIndividual::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO FamilyIndividual (id, fam_id, ind_id, sequence) "
-                "VALUES ("ID", "ID", "ID", %u);",
-                f_id, f_fam_id, f_ind_id, f_sequence
+                "INSERT INTO FamilyIndividual (id, fam_id, ind_id, seq_child, seq_parent)"
+                " VALUES ("ID", "ID", "ID", %d, %d);",
+                f_id, f_fam_id, f_ind_id, f_seq_child, f_seq_parent
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE FamilyIndividual SET fam_id="ID", ind_id="ID", sequence=%u "
-                "WHERE id="ID";",
-                f_fam_id, f_ind_id, f_sequence, f_id
+                "UPDATE FamilyIndividual SET fam_id="ID", ind_id="ID","
+                " seq_child=%d, seq_parent=%d"
+                " WHERE id="ID";",
+                f_fam_id, f_ind_id, f_seq_child, f_seq_parent, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -738,7 +755,7 @@ bool recFamilyIndividual::Read()
     }
 
     sql.Format(
-        "SELECT ind_id, fam_id, sequence FROM FamilyIndividual "
+        "SELECT ind_id, fam_id, seq_child, seq_parent FROM FamilyIndividual "
         "WHERE id="ID";", f_id
     );
     result = s_db->GetTable( sql );
@@ -749,9 +766,10 @@ bool recFamilyIndividual::Read()
         return false;
     }
     result.SetRow( 0 );
-    f_ind_id   = GET_ID( result.GetInt64( 0 ) );
-    f_fam_id   = GET_ID( result.GetInt64( 1 ) );
-    f_sequence = (unsigned) result.GetInt( 2 );
+    f_ind_id     = GET_ID( result.GetInt64( 0 ) );
+    f_fam_id     = GET_ID( result.GetInt64( 1 ) );
+    f_seq_child  = result.GetInt( 2 );
+    f_seq_parent = result.GetInt( 3 );
     return true;
 }
 
@@ -763,7 +781,7 @@ bool recFamilyIndividual::Find()
     if( f_fam_id == 0 || f_ind_id == 0 ) return false; // Only find single record
 
     sql.Format(
-        "SELECT id, sequence FROM FamilyIndividual "
+        "SELECT id, seq_child, seq_parent FROM FamilyIndividual "
         "WHERE fam_id="ID" AND ind_id="ID";",
         f_fam_id, f_ind_id
     );
@@ -771,12 +789,14 @@ bool recFamilyIndividual::Find()
 
     if( result.GetRowCount() == 0 ) {
         f_id = 0;
-        f_sequence = 0;
+        f_seq_child = 0;
+        f_seq_parent = 0;
         return true;
     }
     result.SetRow( 0 );
-    f_id = GET_ID( result.GetInt64( 0 ) );
-    f_sequence = (unsigned) result.GetInt( 1 );
+    f_id         = GET_ID( result.GetInt64( 0 ) );
+    f_seq_child  = result.GetInt( 1 );
+    f_seq_parent = result.GetInt( 2 );
     if( result.GetRowCount() != 1 ) return false;
     return true;
 }

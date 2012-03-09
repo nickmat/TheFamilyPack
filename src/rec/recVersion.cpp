@@ -46,8 +46,8 @@
 const int recVerMajor    = 0;
 const int recVerMinor    = 0;
 const int recVerRev      = 9;
-const int recVerTest     = 15;
-const wxStringCharType* recVerStr = wxS("0.0.9.15");
+const int recVerTest     = 16;
+const wxStringCharType* recVerStr = wxS("TFPD-0.0.9.16");
 
 
 recVersion::recVersion( const recVersion& v )
@@ -664,6 +664,29 @@ static void UpgradeTest0_0_9_14to0_0_9_15()
     recDb::Commit();
 }
 
+static void UpgradeTest0_0_9_15to0_0_9_16()
+{
+    char* query =
+        "ALTER TABLE FamilyIndividual RENAME TO OldFamilyIndividual;\n"
+        "CREATE TABLE FamilyIndividual (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  fam_id INTEGER NOT NULL,\n"
+        "  ind_id INTEGER NOT NULL,\n"
+        "  seq_child INTEGER NOT NULL,\n"
+        "  seq_parent INTEGER NOT NULL\n"
+        ");\n"
+        "INSERT INTO FamilyIndividual"
+        " (id, fam_id, ind_id, seq_child, seq_parent)"
+        " SELECT id, fam_id, ind_id, sequence, 1"
+        " FROM OldFamilyIndividual;\n"
+        "DROP TABLE OldFamilyIndividual;\n"
+    ;
+    recDb::Begin();
+    recDb::GetDb()->ExecuteUpdate( query );
+    recVersion::Set( 0, 0, 9, 16 );
+    recDb::Commit();
+}
+
 
 static void UpgradeRev0_0_9toCurrent( int test )
 {
@@ -699,6 +722,8 @@ static void UpgradeRev0_0_9toCurrent( int test )
         UpgradeTest0_0_9_13to0_0_9_14();
     case 14:
         UpgradeTest0_0_9_14to0_0_9_15();
+    case 15:
+        UpgradeTest0_0_9_15to0_0_9_16();
     }
 }
 

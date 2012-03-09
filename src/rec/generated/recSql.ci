@@ -207,9 +207,10 @@ static const char* createdb =  /* recCreate.sql */
  ");\n"
  "CREATE TABLE FamilyIndividual (\n"
  "  id INTEGER PRIMARY KEY,\n"
- "  fam_id INTEGER,\n"
- "  ind_id INTEGER,\n"
- "  sequence INTEGER\n"
+ "  fam_id INTEGER NOT NULL,\n"
+ "  ind_id INTEGER NOT NULL,\n"
+ "  seq_child INTEGER NOT NULL,\n"
+ "  seq_parent INTEGER NOT NULL\n"
  ");\n"
  "CREATE TABLE Individual (\n"
  "  id INTEGER PRIMARY KEY,\n"
@@ -354,7 +355,7 @@ static const char* createdb =  /* recCreate.sql */
  "  revision INTEGER,\n"
  "  test INTEGER\n"
  ");\n"
- "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 15);\n"
+ "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 16);\n"
  "COMMIT;\n";
 
 /* End of recSql.f2c */

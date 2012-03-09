@@ -243,9 +243,10 @@ CREATE TABLE Family (
 
 CREATE TABLE FamilyIndividual (
   id INTEGER PRIMARY KEY,
-  fam_id INTEGER,
-  ind_id INTEGER,
-  sequence INTEGER
+  fam_id INTEGER NOT NULL,
+  ind_id INTEGER NOT NULL,
+  seq_child INTEGER NOT NULL,
+  seq_parent INTEGER NOT NULL
 );
 
 CREATE TABLE Individual (
@@ -418,7 +419,7 @@ CREATE TABLE Version (
 );
 
 /* The Version table has only this one row */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 15);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 16);
 
 COMMIT;
 

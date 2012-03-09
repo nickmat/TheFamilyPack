@@ -267,7 +267,7 @@ void recLinkPersona::Save()
                 "INSERT INTO LinkPersona "
                 "(id, ref_per_id, ind_per_id, conf, comment) "
                 "VALUES ("ID", "ID", "ID", %f, '%q');",
-                f_id, f_ref_per_id, f_ind_per_id, f_conf, f_comment
+                f_id, f_ref_per_id, f_ind_per_id, f_conf, UTF8_(f_comment)
             );
         } else {
             // Update existing record

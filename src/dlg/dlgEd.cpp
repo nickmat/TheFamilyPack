@@ -111,7 +111,7 @@ idt tfpAddNewChild( idt famID, Sex sex )
         recFamilyIndividual fi(0);
         fi.f_fam_id = famID;
         fi.f_ind_id = indID;
-        fi.f_sequence = recFamily::GetChildNextSequence( famID );
+        fi.f_seq_child = recFamily::GetChildNextSequence( famID );
         fi.Save();
         recDb::ReleaseSavepoint( savepoint );
     } else {
@@ -176,13 +176,24 @@ bool tfpAddNewParent( idt indID, Sex sex )
     idt newIndID = tfpAddNewIndividual( famID, sex, surname );
     if( newIndID ) {
         recFamilyIndividual fi(0);
+#if 0
         fi.f_fam_id = recIndividual::GetDefaultFamily( newIndID );
         fi.f_ind_id = indID;
         fi.Find();
         if( fi.f_id == 0 ) {
-            fi.f_sequence = 1;
+            fi.f_seq_child = 1;
             fi.Save();
         }
+#endif
+        fi.fSetFamID( recIndividual::GetDefaultFamily( newIndID ) );
+        fi.fSetIndID( indID );
+        fi.Find();
+        if( fi.fGetID() == 0 ) {
+            fi.fSetSeqChild( 1 );
+            fi.fSetSeqParent( recFamily::GetParentNextSequence( newIndID ) );
+            fi.Save();
+        }
+
         recDb::ReleaseSavepoint( savepoint );
         ret = true;
     } else {
@@ -389,7 +400,7 @@ bool tfpAddExistChild( idt famID, Sex sex )
         fi.Clear();
         fi.f_fam_id = famID;
         fi.f_ind_id = indID;
-        fi.f_sequence = recFamily::GetChildNextSequence( famID );
+        fi.f_seq_child = recFamily::GetChildNextSequence( famID );
         fi.Save();
         ret = true;
         recDb::ReleaseSavepoint( savepoint );

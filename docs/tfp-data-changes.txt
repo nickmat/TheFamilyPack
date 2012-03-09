@@ -1,14 +1,63 @@
 Changes log for TFP Database
 
+TFPD-0.0.9.16
+ Rename sequence column to seq_child and add seq_parent column to
+ FamilyIndividual table. Also put foreign key restraints on fam_id and
+ ind_id columns.
+
+TFPD-0.0.9.15
+ Put foreign key restraints on ref_event_id and ind_event_id columns in
+ LinkEvent table.
+
+TFPD-0.0.9.14
+ Add RelativeDate table.
+ Remove base_id, base_unit and base_style columns from Date table.
+ Add rel_id column to Date table.
+
+TFPD-0.0.9.13
+ Remove birth_jdn and sex columns from Individual table.
+
+TFPD-0.0.9.12
+ Add conf column to LinkEvent table.
+
+TFPD-0.0.9.11
+ Added EventType entry Residence with EventTypeRole entries
+
+TFPD-0.0.9.10
+ Added EventTypeRole entries.
+
+TFPD-0.0.9.9
+ Added EventType entries Register Birth and Register Death
+ Added EventTypeRole entries for above.
+
+TFPD-0.0.9.8
+ Add new Attribute entry, Condition - to record married status.
+
+TFPD-0.0.9.7
+ Change recEventTypeRole prime value for female at family event type.
+
+TFPD-0.0.9.6
+ Add LinkEvent table
+
+TFPD-0.0.9.5
+ Remove default event_id column from Family table.
+
+TFPD-0.0.9.4
+ Remove birth_id, nr_birth_id, death_id, nr_death_id and occ_id columns
+ from Individual table. These are now looked up directly on the fly.
+
+TFPD-0.0.9.3
+ Remove IndividualPersona table.
+
+TFPD-0.0.9.2
+ Add LinkPersona table, populate it from IndividualPersona table.
+
 
 TFPD-0.0.9.1  22 Sep 2011
-
  Remove sort_jdm column from Event table.
-
  Add sequence column to EventPersona table.
 
 
 TFPD-0.0.9.0  28 May 2011
-
  Base version for creating an upgrade path
 

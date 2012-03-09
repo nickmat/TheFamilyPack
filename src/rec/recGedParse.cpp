@@ -639,9 +639,9 @@ void GedFamily::UpdateIndividual( idt* p_perID, idt indID )
 void GedFamily::AddChild( idt indID )
 {
     recFamilyIndividual fi(0);
-    fi.f_fam_id = m_fam.f_id;
-    fi.f_ind_id = indID;
-    fi.f_sequence = ++m_childSeq;
+    fi.fSetFamID( m_fam.f_id );
+    fi.fSetIndID( indID );
+    fi.fSetSeqChild( ++m_childSeq );
     fi.Save();
 }
 

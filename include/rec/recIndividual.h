@@ -166,7 +166,8 @@ public:
     recIndividualList GetChildren() const { return GetChildren( f_id ); }
     static recIdList GetChildrenIds( idt fam );
     recIdList GetChildrenIds() const { return GetChildrenIds( f_id ); }
-    static unsigned GetChildNextSequence( idt id );
+    static int GetChildNextSequence( idt famID );
+    static int GetParentNextSequence( idt indID );
     recFamIndVec GetChildLinks() { return GetChildLinks( f_id ); }
     static recFamIndVec GetChildLinks( idt famID );
 
@@ -190,15 +191,17 @@ inline bool operator!=( const recFamily& r1, const recFamily& r2 )
     return !(r1 == r2);
 }
 
-
-//----------------------------------------------------------
+//============================================================================
+//-------------------------[ recFamilyIndividual ]----------------------------
+//============================================================================
 
 class recFamilyIndividual : public recDb
 {
 public:
-    idt     f_fam_id;
-    idt     f_ind_id;
-    unsigned f_sequence;
+    idt f_fam_id;
+    idt f_ind_id;
+    int f_seq_child;
+    int f_seq_parent;
 
     recFamilyIndividual() {}
     recFamilyIndividual( idt id ) : recDb(id) { Read(); }
@@ -209,15 +212,26 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "FamilyIndividual" );
 
+    idt fGetFamID() const { return f_fam_id; }
+    idt fGetIndID() const { return f_ind_id; }
+    int fGetSeqChild() const { return f_seq_child; }
+    int fSetSeqParent() const { return f_seq_parent; }
+
+    void fSetFamID( idt famID ) { f_fam_id = famID; } 
+    void fSetIndID( idt indID ) { f_ind_id = indID; } 
+    void fSetSeqChild( int seq ) { f_seq_child = seq; }
+    void fSetSeqParent( int seq ) { f_seq_parent = seq; }
+
     bool Find();
 };
 
 inline bool recEquivalent( const recFamilyIndividual& r1, const recFamilyIndividual& r2 )
 {
     return
-        r1.f_fam_id   == r2.f_fam_id  &&
-        r1.f_ind_id   == r2.f_ind_id  &&
-        r1.f_sequence == r2.f_sequence;
+        r1.f_fam_id     == r2.f_fam_id     &&
+        r1.f_ind_id     == r2.f_ind_id     &&
+        r1.f_seq_child  == r2.f_seq_child  &&
+        r1.f_seq_parent == r2.f_seq_parent;
 }
 
 inline bool operator==( const recFamilyIndividual& r1, const recFamilyIndividual& r2 )

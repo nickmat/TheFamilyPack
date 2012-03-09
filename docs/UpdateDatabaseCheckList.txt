@@ -1,0 +1,7 @@
+Update recCreate.sql with the changes
+  Amend Version table entry at bottom of recCreate.sql
+
+In recVersion.cpp update recVerStr etc. at top of file
+  Add UpgradeTest0_0_?_?to0_0_?_? function to update from previous
+  Add new case statement in fuction UpgradeRev0_0_9toCurrent
+
