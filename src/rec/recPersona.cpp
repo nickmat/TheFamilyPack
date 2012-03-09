@@ -214,8 +214,8 @@ recEventPersonaVec recPersona::ReadEventPersonas( idt perID )
     }
 
     sql.Format(
-        "SELECT id, event_id, role_id, note FROM EventPersona "
-        "WHERE per_id="ID";", perID
+        "SELECT id, event_id, role_id, note, sequence FROM EventPersona "
+        "WHERE per_id="ID" ORDER BY sequence;", perID
     );
     result = s_db->GetTable( sql );
 
@@ -228,6 +228,7 @@ recEventPersonaVec recPersona::ReadEventPersonas( idt perID )
         record.f_event_id = GET_ID( result.GetInt64( 1 ) );
         record.f_role_id  = GET_ID( result.GetInt64( 2 ) );
         record.f_note     = result.GetAsString( 3 );
+        record.f_sequence = result.GetInt( 4 );
         list.push_back( record );
     }
     return list;

@@ -124,7 +124,7 @@ private:
     recPersona         m_persona;
     recNameVec         m_names;
     recAttributeVec    m_attributes;
-    recEventPersonaVec m_evpers;
+    recEventPersonaVec m_eps;
     recRelationshipVec m_relationships;
 
     wxString           m_nameStr;

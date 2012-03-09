@@ -92,7 +92,7 @@ private:
     recDate   m_date1;
     recPlace  m_place;
 
-    recEventPersonaVec m_evpers;
+    recEventPersonaVec m_eps;
     recIndividualList  m_individuals;
 
     recEventVec m_refEvents;

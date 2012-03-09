@@ -52,6 +52,9 @@ dlgEditIndEvent::dlgEditIndEvent( wxWindow* parent, idt eventID )
     : fbDlgEditIndEvent( parent ), m_event(eventID)
 {
     m_date1.ReadID( m_event.GetDate1ID() );
+    if( m_date1.GetID() == 0 ) {
+        m_date1.SetDefaults();
+    }
     m_place.ReadID( m_event.GetPlaceID() );
 
     m_listPersona->InsertColumn( COL_IndID, _("Individual") );
@@ -73,49 +76,24 @@ dlgEditIndEvent::~dlgEditIndEvent()
 bool dlgEditIndEvent::TransferDataToWindow()
 {
     wxASSERT( m_event.GetID() != 0 );
-#if 0
-    if( m_event.f_id ) {
-        m_event.Read();
-    } else {
-        m_event.Save();
-        if( m_ep.f_per_id ) {
-            m_ep.f_event_id = m_event.f_id;
-            m_ep.Save();
-        }
-    }
-#endif
     m_staticType->SetLabel( m_event.GetTypeStr() );
     m_staticEventID->SetLabel( m_event.GetIdStr() );
     m_textCtrlTitle->SetValue( m_event.f_title );
-//    if( m_event.f_date1_id == 0 ) {
-//        m_date1.SetDefaults();
-//        m_date1.Save();
-//    } else {
-//        m_date1.f_id = m_event.f_date1_id;
-//        m_date1.Read();
-//    }
     m_textCtrlDate1->SetValue( m_date1.GetStr() );
     m_buttonDate2->Enable( false );
-//    if( m_event.f_place_id == 0 ) {
-//        m_place.Clear();
-//        m_place.Save();
-//    } else {
-//        m_place.f_id = m_event.f_place_id;
-//        m_place.Read();
-//    }
     m_textCtrlAddr->SetValue( m_place.GetAddressStr() );
     m_textCtrlNote->SetValue( m_event.f_note );
 
-    m_evpers = m_event.GetEventPersonas();
+    m_eps = m_event.GetEventPersonas();
     m_individuals.clear();
     recIndividual ind;
-    for( size_t i = 0 ; i < m_evpers.size() ; i++ ) {
-        ind.ReadPersona( m_evpers[i].f_per_id );
+    for( size_t i = 0 ; i < m_eps.size() ; i++ ) {
+        ind.ReadPersona( m_eps[i].f_per_id );
         m_individuals.push_back( ind );
         m_listPersona->InsertItem( i, ind.GetIdStr() );
         m_listPersona->SetItem( i, COL_Name, ind.GetFullName() );
-        m_listPersona->SetItem( i, COL_Role, recEventTypeRole::GetName( m_evpers[i].f_role_id ) );
-        m_listPersona->SetItem( i, COL_Note, m_evpers[i].f_note );
+        m_listPersona->SetItem( i, COL_Role, recEventTypeRole::GetName( m_eps[i].f_role_id ) );
+        m_listPersona->SetItem( i, COL_Note, m_eps[i].f_note );
     }
 
     m_refEvents = recLinkEvent::FindEquivRefEvents( m_event.f_id );
@@ -305,7 +283,6 @@ bool dlgEditIndEvent::TransferDataFromWindow()
     wxASSERT( m_event.f_type_id != 0 );
 
     m_event.f_title = m_textCtrlTitle->GetValue();
-
     wxString str = m_textCtrlDate1->GetValue();
     if( str.IsEmpty() ) {
         m_date1.Delete();
@@ -315,9 +292,7 @@ bool dlgEditIndEvent::TransferDataFromWindow()
         m_date1.Save();
         m_event.f_date1_id = m_date1.f_id;
     }
-
     m_event.f_date2_id = 0;
-
     str = m_textCtrlAddr->GetValue();
     if( str.IsEmpty() ) {
         m_place.DeleteAll();
@@ -327,10 +302,15 @@ bool dlgEditIndEvent::TransferDataFromWindow()
         m_place.SetAddress( str );
         m_event.f_place_id = m_place.f_id;
     }
-
     m_event.f_note = m_textCtrlNote->GetValue();
 
     m_event.Save();
+
+    long dp = m_event.GetDatePoint();
+    for( size_t i = 0 ; i < m_eps.size() ; i++ ) {
+        m_eps[i].f_sequence = dp;
+        m_eps[i].Save();
+    }
 
     return true;
 }

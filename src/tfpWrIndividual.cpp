@@ -47,12 +47,13 @@ wxString tfpWriteIndividualPage( idt indID )
 {
     wxString htm;
     size_t i, j, cnt;
+    idt id;
     recIndividual ind( indID );
     recPersona per( ind.f_per_id );
     recIndividual spouse;
 
-    htm << "<html><head><title>Individual I "
-        << indID << "</title></head>"
+    htm << "<html><head><title>Individual "
+        << ind.GetIdStr() << "</title></head>"
            "<body><center><table width=100%>";
 
     // Name
@@ -63,46 +64,10 @@ wxString tfpWriteIndividualPage( idt indID )
         << "><img src=memory:fam.bmp></a></td></tr>";
 
     // Sex
-    htm << "<tr><td align=right>ID, Sex:</td><td><b>I "
-        << indID << ", " << recGetSexStr( per.f_sex )
+    htm << "<tr><td align=right>ID, Sex:</td><td><b>"
+        << ind.GetIdStr() << ", " << recGetSexStr( per.f_sex )
         << "</b></td></tr>";
 
-    // Birth
-    idt id = per.GetBirthEvent();
-    if( id != 0 ) {
-        htm << "<tr><td align=right>Birth:</td><td><b>"
-            << recEvent::GetDetailStr( id )
-            << "</b> <a href=E" << id
-            << "><img src=memory:eve.bmp></a></td></tr>";
-    }
-    // Near birth
-    id = per.GetNrBirthEvent();
-    if( id != 0 ) {
-        htm << "<tr><td align=right>"
-            << recEvent::GetTypeStr( id )
-            << ":</td><td><b>"
-            << recEvent::GetDetailStr( id )
-            << "</b> <a href=E" << id
-            << "><img src=memory:eve.bmp></a></td></tr>";
-    }
-    // Death
-    id = per.GetDeathEvent();
-    if( id != 0 ) {
-        htm << "<tr><td align=right>Death:</td><td><b>"
-            << recEvent::GetDetailStr( id )
-            << "</b> <a href=E" << id
-            << "><img src=memory:eve.bmp></a></td></tr>";
-    }
-    // Near death
-    id = per.GetNrDeathEvent();
-    if( id != 0 ) {
-        htm << "<tr><td align=right>"
-            << recEvent::GetTypeStr( id )
-            << ":</td><td><b>"
-            << recEvent::GetDetailStr( id )
-            << "</b> <a href=E" << id
-            << "><img src=memory:eve.bmp></a></td></tr>";
-    }
     // Occupation
     id = per.GetOccAttribute();
     if( id != 0 ) {
@@ -110,6 +75,18 @@ wxString tfpWriteIndividualPage( idt indID )
             << recAttribute::GetValue( id )
             << "</b></td></tr>";
     }
+
+    // All Events
+    recEventPersonaVec eps = per.ReadEventPersonas();
+    for( i = 0 ; i < eps.size() ; i++ ) {
+        htm << "<tr><td align=right>"
+            << recEvent::GetTypeStr( eps[i].f_event_id )
+            << ":</td><td><b>"
+            << recEvent::GetDetailStr( eps[i].f_event_id )
+            << "</b> <a href=E" << eps[i].f_event_id
+            << "><img src=memory:eve.bmp></a></td></tr>";
+    }
+
     // Write out Parents
     recFamilyVec parents = ind.GetParentList();
     // Fathers
