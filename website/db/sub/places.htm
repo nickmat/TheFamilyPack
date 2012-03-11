@@ -1,23 +1,23 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<title>The Family Pack - Database: Dates</title>
+<title>The Family Pack - Database: Place</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel='stylesheet' type='text/css' href='../../tfp.css' />
 </head>
 <body>
 
-<h1><a  href="../../index.htm"><img id="logo" src="../../tfp5.gif" alt="Logo" /></a>The Family Pack<br/>Database: Contact</h1>
+<h1><a  href="../../index.htm"><img id="logo" src="../../tfp5.gif" alt="Logo" /></a>The Family Pack<br/>Database: Places</h1>
 
 <div id="page" class="database">
 
 <div id="crumbs">
   <a href="../../index.htm" class="m-item">Home</a>
   <a href="../database.htm" class="m-item level1">Database</a>
-  <a href="admin.htm" class="m-item level2">Administration</a>
-  <a href="contact.htm" class="m-item level3 thispage">Contact</a>
-  <a href="version.htm" class="m-item prev">&lt;&lt;</a>
-  <a href="user.htm" class="m-item next">&gt;&gt;</a>
+  <a href="subsystems.htm" class="m-item level2">Subsystems</a>
+  <a href="places.htm" class="m-item level3 thispage">Places</a>
+  <a href="dates.htm" class="m-item prev">&lt;&lt;</a>
+  <a href="names.htm" class="m-item next">&gt;&gt;</a>
 </div>
 
 <div id="content" class="nomenu">
@@ -29,17 +29,13 @@
 <p class="attribute"><!-- Attr --></p>
 </blockquote>
 
-<div class="diag"><img src="tfp-contact.png" alt="Contact Subsystem" /></div>
-<h2>Contact</h2>
+<div class="diag"><img src='tfp-place.png' alt='Place Subsystem' /></div>
+<h2>Places</h2>
 <p>
- A single contact system is used for all entities that are contactable. The ContactType table is prefilled with core data and can be extended by the user as we find more varied ways of contacting each other.
+ The final Places subsystem design is currently undecided. It could be as simple as a text field or as complex as a digital map that can be set to any point in time. The approach of TFP is to start off simple but allow allow for expansion. This is one area where it really helps to have some background data built into the system, so the design will have the exchange of local and common data (in both directions) as a key objective.
 </p>
 <p>
- The Contact val(ue) is normally a text string, but in the case of ContactType of "Address", the val(ue) is a place id.
-</p>
-<h3>Researcher</h3>
-<p>
- Anyone who has had a hand in creating the data in the database and who needs to be credited can be listed in this table. They should be listed here, even if they also appear as an Individual and or as a User.
+ For the moment, the Places subsystem will use the <a href="http://www.ngsgenealogy.org/cs/GenTech_Projects">GenTech</a> design where locations are broken down into a hierarchy of place names. A particular address is obtained by creating a sequence of names in a particular order. However, the current TFP test program is limited to a very simple format - only one PlacePartType, that of 'Address' is defined, so the full place address is held as single text string.
 </p>
 
 </div>
@@ -53,7 +49,7 @@
   </p>
 </div>
 
-<div id='create-date'><p> 16<sup>th</sup> November 2010</p></div>
+<div id='create-date'><p> 7<sup>th</sup> September 2010</p></div>
 
 </div>
 <!-- Piwik -->

@@ -7,21 +7,29 @@
 </head>
 <body>
 
-<h1><a  href="../../index.htm"><img id="logo" src="../../tfp5.gif" alt="Logo" /></a>The Family Pack<br/>Database: Administration</h1>
+<h1><a  href="../../index.htm"><img id="logo" src="../../tfp5.gif" alt="Logo" /></a>The Family Pack<br/>Database: Subsystems</h1>
 
 <div id="page" class="database">
 
 <div id="crumbs">
   <a href="../../index.htm" class="m-item">Home</a>
   <a href="../database.htm" class="m-item level1">Database</a>
-  <a href="admin.htm" class="m-item level2 thispage">Administration</a>
+  <a href="subsystems.htm" class="m-item level2 thispage">Subsystems</a>
   <a href="../dbdiagram.htm" class="m-item prev">&lt;&lt;</a>
   <a href="version.htm" class="m-item next">&gt;&gt;</a>
 </div>
 <div id="menu">
   <a href="version.htm" class="m-item">Version</a>
-  <a href="contact.htm" class="m-item">Contact</a>
+  <a href="Contact.htm" class="m-item">Contact</a>
   <a href="user.htm" class="m-item">User</a>
+  <a href="sources.htm" class="m-item">Sources</a>
+  <a href="references.htm" class="m-item">References</a>
+  <a href="dates.htm" class="m-item">Dates</a>
+  <a href="places.htm" class="m-item">Places</a>
+  <a href="names.htm" class="m-item">Names</a>
+  <a href="personas.htm" class="m-item">Personas</a>
+  <a href="events.htm" class="m-item">Events</a>
+  <a href="individuals.htm" class="m-item">Individuals</a>
   <a href="../../map.htm" class="m-item">Site Map</a>
   <p style="text-align: center;">
     The project page at<br />
@@ -43,9 +51,29 @@
 <p class="attribute"><!-- Attr --></p>
 </blockquote>
 
-<h2>Administration</h2>
+<h2>Subsystems</h2>
+<p>
+ We can break the database design into four parts, Administration, Evidence, Interpretation and Conclusions.
+</p>
+
+<h3>Administration</h3>
 <p>
  The Administration area of the database is the least developed section, only the basic minimum is being implemented. A version table will enable an automatic update process to be developed, for when changes are made to the database design. The Contact section helps to form a bridge between the Administration area with the other areas of the database. The User section is the area where the database can hold initial start up setting.
+</p>
+
+<h3>Evidence</h3>
+<p>
+ The evidence section centres around the Reference table which is suported by the Source, Citation and Repository subsystems.
+</p>
+
+<h3>Interpretation</h3>
+<p>
+ This is the area where the main work is done. The information presented in the Evidence section is broken down into its constituent parts: Sources, Dates, Places, Names, Relationships, Attributes and Events. Events and Personas are used to glue all these entities together so the computer program can make use of it.
+</p>
+
+<h3>Conclusions</h3>
+<p>
+ The Individuals and Family relationships are the results of the interpretion of the evidence, using the LinkPersona and LinkEvent tables tie things together.
 </p>
 
 </div>
@@ -59,7 +87,7 @@
   </p>
 </div>
 
-<div id='create-date'><p> 16<sup>th</sup> November 2010</p></div>
+<div id='create-date'><p> 7<sup>th</sup> September 2010</p></div>
 
 </div>
 <!-- Piwik -->

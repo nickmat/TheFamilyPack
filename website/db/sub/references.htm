@@ -1,41 +1,38 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<title>The Family Pack - Database: Place</title>
+<title>The Family Pack - Database: References</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel='stylesheet' type='text/css' href='../../tfp.css' />
 </head>
 <body>
 
-<h1><a  href="../../index.htm"><img id="logo" src="../../tfp5.gif" alt="Logo" /></a>The Family Pack<br/>Database: Places</h1>
+<h1><a  href="../../index.htm"><img id="logo" src="../../tfp5.gif" alt="Logo" /></a>The Family Pack<br/>Database: References</h1>
 
 <div id="page" class="database">
 
 <div id="crumbs">
   <a href="../../index.htm" class="m-item">Home</a>
   <a href="../database.htm" class="m-item level1">Database</a>
-  <a href="conclusions.htm" class="m-item level2">Conclusions</a>
-  <a href="places.htm" class="m-item level3 thispage">Places</a>
-  <a href="dates.htm" class="m-item prev">&lt;&lt;</a>
-  <a href="names.htm" class="m-item next">&gt;&gt;</a>
+  <a href="subsystems.htm" class="m-item level2">Subsystems</a>
+  <a href="references.htm" class="m-item level3 thispage">References</a>
+  <a href="sources.htm" class="m-item prev">&lt;&lt;</a>
+  <a href="dates.htm" class="m-item next">&gt;&gt;</a>
 </div>
 
 <div id="content" class="nomenu">
 
 <blockquote>
 <p>
- <!-- Quote -->
+ I'll write maybe one long paragraph describing the events, then a page or two breaking the events into chapters, and then reams of pages delving into my characters. After that, I'm ready to begin.
 </p>
-<p class="attribute"><!-- Attr --></p>
+<p class="attribute">Anne Tyler</p>
 </blockquote>
 
-<div class="diag"><img src='tfp-place.png' alt='Place Subsystem' /></div>
-<h2>Places</h2>
+<div class="diag"><img src="tfp-reference.png" alt="Reference Subsystem" /></div>
+<h2>References</h2>
 <p>
- The final Places subsystem design is currently undecided. It could be as simple as a text field or as complex as a digital map that can be set to any point in time. The approach of TFP is to start off simple but allow allow for expansion. This is one area where it really helps to have some background data built into the system, so the design will have the exchange of local and common data (in both directions) as a key objective.
-</p>
-<p>
- For the moment, the Places subsystem will use the <a href="http://www.ngsgenealogy.org/cs/GenTech_Projects">GenTech</a> design where locations are broken down into a hierarchy of place names. A particular address is obtained by creating a sequence of names in a particular order. However, the current TFP test program is limited to a very simple format - only one PlacePartType, that of 'Address' is defined, so the full place address is held as single text string.
+ The Reference Document is the at the centre of the evidence database. It consists of an id, title and statement - the statement being an XML document based on the TEI (Text Encoding Initiative) specification. The specification will be extended to enable words and phrases to be linked to a ReferenceEntity which in turn links to one of the following records: Source, Date, Place, Name, Attribute, Relationship and Event. These records may, in turn, refer to a persona.
 </p>
 
 </div>
