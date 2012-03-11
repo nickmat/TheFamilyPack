@@ -156,8 +156,8 @@ public:
 
     idt GetID() const { return f_id; }
     void SetID( idt id ) { f_id = id; }
-    idt fGetID() const { return f_id; }
-    void fSetID( idt id ) { f_id = id; }
+    idt FGetID() const { return f_id; }
+    void FSetID( idt id ) { f_id = id; }
 
     static idt ExecuteID( const wxSQLite3StatementBuffer& sql );
     static idt ExecuteID( const char* format, idt id );

@@ -188,7 +188,7 @@ bool tfpAddNewParent( idt indID, Sex sex )
         fi.fSetFamID( recIndividual::GetDefaultFamily( newIndID ) );
         fi.fSetIndID( indID );
         fi.Find();
-        if( fi.fGetID() == 0 ) {
+        if( fi.FGetID() == 0 ) {
             fi.fSetSeqChild( 1 );
             fi.fSetSeqParent( recFamily::GetParentNextSequence( newIndID ) );
             fi.Save();
@@ -466,16 +466,18 @@ idt tfpAddMarriageEvent( const recFamily& family )
         le.Save();
         recEventPersona ep(0);
         ep.f_event_id = eventID;
-        ep.f_sequence = recEvent::GetDatePoint( eventID );
+//        ep.f_sequence = recEvent::GetDatePoint( eventID );
         if( family.f_husb_id ) {
             ep.f_per_id = recIndividual::GetPersona( family.f_husb_id );
             ep.f_role_id = husbRoleID;
+            ep.f_per_seq = 1;
             ep.Save();
         }
         if( family.f_wife_id ) {
             ep.f_id = 0;
             ep.f_per_id = recIndividual::GetPersona( family.f_wife_id );
             ep.f_role_id = wifeRoleID;
+            ep.f_per_seq = 2;
             ep.Save();
         }
         recDb::ReleaseSavepoint( savepoint );

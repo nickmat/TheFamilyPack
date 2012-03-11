@@ -55,6 +55,7 @@ public:
     void Clear();
     void Save();
     bool Read();
+
     TABLE_NAME_MEMBERS( "Persona" );
 
     static wxString GetIdStr( idt perID ) { return wxString::Format( "Pa"ID, perID ); }

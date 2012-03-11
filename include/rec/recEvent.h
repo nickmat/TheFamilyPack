@@ -46,9 +46,9 @@ typedef std::vector< recEventType >      recEventTypeVec;
 class recEventTypeRole;
 typedef std::vector< recEventTypeRole >  recEventTypeRoleVec;
 
-//-----------------------------------------------------
-//      recEvent
-//-----------------------------------------------------
+//============================================================================
+//-------------------------[ recEvent ]---------------------------------------
+//============================================================================
 
 class recEvent : public recDb
 {
@@ -59,6 +59,7 @@ public:
     idt      f_date2_id;
     idt      f_place_id;
     wxString f_note;
+    long     f_date_pt;
 
     recEvent() {}
     recEvent( idt id ) : recDb(id) { Read(); }
@@ -69,12 +70,21 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "Event" );
 
-    wxString GetTitle() const { return f_title; }
-    idt GetTypeID() const { return f_type_id; }
-    idt GetDate1ID() const { return f_date1_id; }
-    idt GetDate2ID() const { return f_date2_id; }
-    idt GetPlaceID() const { return f_place_id; }
-    wxString GetNote() const { return f_note; }
+    wxString FGetTitle() const { return f_title; }
+    idt FGetTypeID() const { return f_type_id; }
+    idt FGetDate1ID() const { return f_date1_id; }
+    idt FGetDate2ID() const { return f_date2_id; }
+    idt FGetPlaceID() const { return f_place_id; }
+    wxString FGetNote() const { return f_note; }
+    long FGetDatePt() const { return f_date_pt; }
+
+    void FSetTitle( const wxString& title ) { f_title = title; }
+    void FSetTypeID( idt typeID ) { f_type_id = typeID; }
+    void FSetDate1ID( idt date1ID ) { f_date1_id = date1ID; }
+    void FSetDate2ID( idt date2ID ) { f_date2_id = date2ID; }
+    void FSetPlaceID( idt placeID ) { f_place_id = placeID; }
+    void FSetNote( const wxString& note ) { f_note = note; }
+    void FSetDatePt( idt datePt ) { f_date_pt = datePt; }
 
     static wxString GetIdStr( idt evID ) { return wxString::Format( "E"ID, evID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
@@ -90,8 +100,8 @@ public:
     static wxString GetDateStr( idt evID );
     static wxString GetAddressStr( idt evID );
     static idt GetDate1ID( idt evID );
-    static long GetDatePoint( idt evID );
-    long GetDatePoint() const;
+    static void UpdateDatePoint( idt evID );
+    void UpdateDatePoint();
 
     idt FindReferenceID() const { return FindReferenceID( f_id ); }
     static idt FindReferenceID( idt eventID ) {
@@ -100,6 +110,9 @@ public:
 
     recEventPersonaVec GetEventPersonas();
     static wxSQLite3ResultSet GetTitleList();
+
+    static int GetLastPersonaSeqNumber( idt eventID );
+    int GetLastPersonaSeqNumber() const { return GetLastPersonaSeqNumber( f_id ); }
 
     // Delete Event and remove all references to it.
     bool DeleteFromDb() { return DeleteFromDb( f_id ); }
@@ -114,7 +127,8 @@ inline bool recEquivalent( const recEvent& r1, const recEvent& r2 )
         r1.f_date1_id == r2.f_date1_id &&
         r1.f_date2_id == r2.f_date2_id &&
         r1.f_place_id == r2.f_place_id &&
-        r1.f_note     == r2.f_note;
+        r1.f_note     == r2.f_note     &&
+        r1.f_date_pt  == r2.f_date_pt;
 }
 
 inline bool operator==( const recEvent& r1, const recEvent& r2 )
@@ -127,9 +141,9 @@ inline bool operator!=( const recEvent& r1, const recEvent& r2 )
     return !(r1 == r2);
 }
 
-//-----------------------------------------------------
-//      recEventType
-//-----------------------------------------------------
+//============================================================================
+//-------------------------[ recEventType ]-----------------------------------
+//============================================================================
 
 class recEventType : public recDb
 {
@@ -216,9 +230,9 @@ inline bool operator!=( const recEventType& r1, const recEventType& r2 )
 }
 
 
-//-----------------------------------------------------
-//      recEventTypeRole
-//-----------------------------------------------------
+//============================================================================
+//-------------------------[ recEventTypeRole ]-------------------------------
+//============================================================================
 
 class recEventTypeRole : public recDb
 {
@@ -297,8 +311,9 @@ inline bool operator!=( const recEventTypeRole& r1, const recEventTypeRole& r2 )
     return !(r1 == r2);
 }
 
-//----------------------------------------------------------
-
+//============================================================================
+//-------------------------[ recEventPersona ]--------------------------------
+//============================================================================
 
 class recEventPersona : public recDb
 {
@@ -307,7 +322,7 @@ public:
     idt      f_per_id;
     idt      f_role_id;
     wxString f_note;
-    long     f_sequence;
+    int      f_per_seq;
 
     recEventPersona() {}
     recEventPersona( idt id ) : recDb(id) { Read(); }
@@ -317,6 +332,18 @@ public:
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "EventPersona" );
+
+    idt FGetEventID() const { return f_event_id; }
+    idt FGetPerID() const { return f_per_id; }
+    idt FGetRoleID() const { return f_role_id; }
+    wxString FGetNote() const { return f_note; }
+    int FGetPerSeq() const { return f_per_seq; }
+
+    void FSetEventID( idt eventID ) { f_event_id = eventID; }
+    void FSetPerID( idt perID ) { f_per_id = perID; }
+    void FSetRoleID( idt roleID ) { f_role_id = roleID; }
+    void FSetNote( const wxString& note ) { f_note = note; }
+    void FSetPerSeq( int perSeq ) { f_per_seq = perSeq; }
 
     /*! Return true if a record exists that matches the
      *  f_per_id, f_event_id and f_role_id.
@@ -331,7 +358,7 @@ inline bool recEquivalent( const recEventPersona& r1, const recEventPersona& r2 
         r1.f_per_id   == r2.f_per_id   &&
         r1.f_role_id  == r2.f_role_id  &&
         r1.f_note     == r2.f_note     &&
-        r1.f_sequence == r2.f_sequence;
+        r1.f_per_seq  == r2.f_per_seq;
 }
 
 inline bool operator==( const recEventPersona& r1, const recEventPersona& r2 )

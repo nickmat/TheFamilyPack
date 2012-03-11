@@ -42,9 +42,9 @@
 #include <rec/recDate.h>
 #include <rec/recPlace.h>
 
-//-----------------------------------------------------
-//      recEvent
-//-----------------------------------------------------
+//============================================================================
+//-------------------------[ recEvent ]---------------------------------------
+//============================================================================
 
 recEvent::recEvent( const recEvent& e )
 {
@@ -77,9 +77,11 @@ void recEvent::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO Event (title, type_id, date1_id, date2_id, place_id, note) "
-            "VALUES ('%q', "ID", "ID", "ID", "ID", '%q');",
-            UTF8_(f_title), f_type_id, f_date1_id, f_date2_id, f_place_id, UTF8_(f_note)
+            "INSERT INTO Event "
+            "(title, type_id, date1_id, date2_id, place_id, note, date_pt) "
+            "VALUES ('%q', "ID", "ID", "ID", "ID", '%q', %ld);",
+            UTF8_(f_title), f_type_id, f_date1_id, f_date2_id, f_place_id, 
+            UTF8_(f_note), f_date_pt
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -89,16 +91,21 @@ void recEvent::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO Event (id, title, type_id, date1_id, date2_id, place_id, note) "
-                "VALUES ("ID", '%q', "ID", "ID", "ID", "ID", '%q');",
-                f_id, UTF8_(f_title), f_type_id, f_date1_id, f_date2_id, f_place_id, UTF8_(f_note)
+                "INSERT INTO Event "
+                "(id, title, type_id, date1_id, date2_id, place_id, note, date_pt) "
+                "VALUES ("ID", '%q', "ID", "ID", "ID", "ID", '%q', %ld);",
+                f_id, UTF8_(f_title), f_type_id, f_date1_id, f_date2_id, f_place_id,
+                UTF8_(f_note), f_date_pt
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE Event SET title='%q', type_id="ID", date1_id="ID", date2_id="ID", place_id="ID", note='%q' "
+                "UPDATE Event SET "
+                "title='%q', type_id="ID", date1_id="ID", date2_id="ID", place_id="ID", "
+                "note='%q', date_pt=%ld "
                 "WHERE id="ID";",
-                UTF8_(f_title), f_type_id, f_date1_id, f_date2_id, f_place_id, UTF8_(f_note), f_id
+                UTF8_(f_title), f_type_id, f_date1_id, f_date2_id, f_place_id, 
+                UTF8_(f_note), f_date_pt, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -116,7 +123,7 @@ bool recEvent::Read()
     }
 
     sql.Format(
-        "SELECT title, type_id, date1_id, date2_id, place_id, note "
+        "SELECT title, type_id, date1_id, date2_id, place_id, note, date_pt "
         "FROM Event WHERE id="ID";",
         f_id
     );
@@ -134,6 +141,7 @@ bool recEvent::Read()
     f_date2_id = GET_ID( result.GetInt64( 3 ) );
     f_place_id = GET_ID( result.GetInt64( 4 ) );
     f_note     = result.GetAsString( 5 );
+    f_date_pt  = (long) result.GetInt( 5 );
     return true;
 }
 
@@ -261,25 +269,25 @@ recEventPersonaVec recEvent::GetEventPersonas()
     return vec;
 }
 
-long recEvent::GetDatePoint( idt evID )
+void recEvent::UpdateDatePoint( idt evID )
 {
     recEvent ev(evID);
-    return ev.GetDatePoint();
+    ev.UpdateDatePoint();
 }
 
-long recEvent::GetDatePoint() const
+void recEvent::UpdateDatePoint()
 {
     recEventType::ETYPE_Grp grp = recEventType::GetGroup( f_type_id );
     switch( grp )
     {
     case recEventType::ETYPE_Grp_Birth:
     case recEventType::ETYPE_Grp_Nr_Birth:
-        return recDate::GetDatePoint( f_date1_id, recDate::DATE_POINT_Beg );
+        f_date_pt = recDate::GetDatePoint( f_date1_id, recDate::DATE_POINT_Beg );
     case recEventType::ETYPE_Grp_Death:
     case recEventType::ETYPE_Grp_Nr_Death:
-        return recDate::GetDatePoint( f_date1_id, recDate::DATE_POINT_End );
+        f_date_pt = recDate::GetDatePoint( f_date1_id, recDate::DATE_POINT_End );
     }
-    return recDate::GetDatePoint( f_date1_id );
+    f_date_pt = recDate::GetDatePoint( f_date1_id );
 }
 
 
@@ -311,10 +319,20 @@ wxSQLite3ResultSet recEvent::GetTitleList()
     return s_db->ExecuteQuery( sql );
 }
 
+int recEvent::GetLastPersonaSeqNumber( idt eventID )
+{
+    wxSQLite3StatementBuffer sql;
 
-//-----------------------------------------------------
-//      recEventType
-//-----------------------------------------------------
+    sql.Format(
+        "SELECT MAX(per_seq) FROM EventPersona WHERE event_id="ID";",
+        eventID
+    );
+    return s_db->ExecuteScalar( sql );
+}
+
+//============================================================================
+//-------------------------[ recEventType ]-----------------------------------
+//============================================================================
 
 recEventType::recEventType( const recEventType& et )
 {
@@ -558,9 +576,9 @@ recEventTypeRoleVec recEventType::GetPrimeRoles( idt typeID, int prime )
 }
 
 
-//-----------------------------------------------------
-//      recEventTypeRole
-//-----------------------------------------------------
+//============================================================================
+//-------------------------[ recEventTypeRole ]-------------------------------
+//============================================================================
 
 recEventTypeRole::recEventTypeRole( const recEventTypeRole& etr )
 {
@@ -695,8 +713,9 @@ idt recEventTypeRole::Select( idt typeID, SelectFilter sf )
 }
 
 
-//----------------------------------------------------------
-
+//============================================================================
+//-------------------------[ recEventPersona ]--------------------------------
+//============================================================================
 
 recEventPersona::recEventPersona( const recEventPersona& ep )
 {
@@ -705,7 +724,7 @@ recEventPersona::recEventPersona( const recEventPersona& ep )
     f_per_id   = ep.f_per_id;
     f_role_id  = ep.f_role_id;
     f_note     = ep.f_note;
-    f_sequence = ep.f_sequence;
+    f_per_seq  = ep.f_per_seq;
 }
 
 void recEventPersona::Clear()
@@ -715,7 +734,7 @@ void recEventPersona::Clear()
     f_per_id   = 0;
     f_role_id  = 0;
     f_note     = wxEmptyString;
-    f_sequence = 0;
+    f_per_seq  = 0;
 }
 
 void recEventPersona::Save()
@@ -727,9 +746,9 @@ void recEventPersona::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO EventPersona (event_id, per_id, role_id, note, sequence) "
-            "VALUES ("ID", "ID", "ID", '%q', %ld);",
-            f_event_id, f_per_id, f_role_id, UTF8_(f_note), f_sequence
+            "INSERT INTO EventPersona (event_id, per_id, role_id, note, per_seq) "
+            "VALUES ("ID", "ID", "ID", '%q', %d);",
+            f_event_id, f_per_id, f_role_id, UTF8_(f_note), f_per_seq
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -739,17 +758,17 @@ void recEventPersona::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO EventPersona (id, event_id, per_id, role_id, note, sequence) "
-                "VALUES ("ID", "ID", "ID", "ID", '%q', %ld);",
-                f_id, f_event_id, f_per_id, f_role_id, UTF8_(f_note), f_sequence
+                "INSERT INTO EventPersona (id, event_id, per_id, role_id, note, per_seq) "
+                "VALUES ("ID", "ID", "ID", "ID", '%q', %d);",
+                f_id, f_event_id, f_per_id, f_role_id, UTF8_(f_note), f_per_seq
             );
         } else {
             // Update existing record
             sql.Format(
                 "UPDATE EventPersona SET event_id="ID", per_id="ID", role_id="ID", "
-                "note='%q', sequence=%ld "
+                "note='%q', per_seq=%d "
                 "WHERE id="ID";",
-                f_event_id, f_per_id, f_role_id, UTF8_(f_note), f_sequence, f_id
+                f_event_id, f_per_id, f_role_id, UTF8_(f_note), f_per_seq, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -767,7 +786,7 @@ bool recEventPersona::Read()
     }
 
     sql.Format(
-        "SELECT id, event_id, per_id, role_id, note, sequence "
+        "SELECT id, event_id, per_id, role_id, note, per_seq "
         "FROM EventPersona WHERE id="ID";",
         f_id
     );
@@ -783,7 +802,7 @@ bool recEventPersona::Read()
     f_per_id   = GET_ID( result.GetInt64( 2 ) );
     f_role_id  = GET_ID( result.GetInt64( 3 ) );
     f_note     = result.GetAsString( 4 );
-    f_sequence = result.GetInt( 5 );
+    f_per_seq  = result.GetInt( 5 );
     return true;
 }
 

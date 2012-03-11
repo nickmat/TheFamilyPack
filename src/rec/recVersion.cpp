@@ -46,8 +46,8 @@
 const int recVerMajor    = 0;
 const int recVerMinor    = 0;
 const int recVerRev      = 9;
-const int recVerTest     = 16;
-const wxStringCharType* recVerStr = wxS("TFPD-0.0.9.16");
+const int recVerTest     = 17;
+const wxStringCharType* recVerStr = wxS("TFPD-0.0.9.17");
 
 
 recVersion::recVersion( const recVersion& v )
@@ -150,7 +150,7 @@ void recVersion::Set( int major, int minor, int revision, int test )
     v.f_revision = revision;
     v.f_test = test;
     v.Save();
-}    
+}
 
 bool recVersion::IsEqual( int major, int minor, int revision, int test ) const
 {
@@ -387,7 +387,7 @@ static void UpgradeTest0_0_9_5to0_0_9_6()
         recDb::DeleteRecord( "EventIdList", GET_ID( result.GetInt64( 0 ) ) );
     }
 
-    sql = 
+    sql =
         "INSERT INTO LinkEvent\n"
         " (ref_event_id, ind_event_id, comment)\n"
         " SELECT id, 0, '' FROM EventIdList;\n"
@@ -687,43 +687,103 @@ static void UpgradeTest0_0_9_15to0_0_9_16()
     recDb::Commit();
 }
 
+static void UpgradeTest0_0_9_16to0_0_9_17()
+{
+    char* query1 =
+        "ALTER TABLE Event RENAME TO OldEvent;\n"
+        "CREATE TABLE Event (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  title TEXT NOT NULL,\n"
+        "  type_id INTEGER NOT NULL REFERENCES EventType(id),\n"
+        "  date1_id INTEGER NOT NULL,\n"
+        "  date2_id INTEGER NOT NULL,\n"
+        "  place_id INTEGER NOT NULL,\n"
+        "  note TEXT NOT NULL,\n"
+        "  date_pt INTEGER NOT NULL\n"
+        ");\n"
+        "INSERT INTO Event"
+        " (id, title, type_id, date1_id, date2_id, place_id, note, date_pt)"
+        " SELECT id, title, type_id, date1_id, date2_id,"
+        " place_id, note, 0"
+        " FROM OldEvent;\n"
+        "DROP TABLE OldEvent;\n"
+    ;
+    recDb::Begin();
+    recDb::GetDb()->ExecuteUpdate( query1 );
+
+    char* query2 =
+        "SELECT E.id, D.jdn, D.range, ET.grp"
+        " FROM Event E, EventType ET, Date D"
+        " WHERE E.type_id=ET.id AND E.date1_id=D.id;"
+    ;
+    wxSQLite3ResultSet result = recDb::GetDb()->ExecuteQuery( query2 );
+    while( result.NextRow() ) {
+        idt eventID = GET_ID( result.GetInt64( 0 ) );
+        long jdn = result.GetInt( 1 );
+        long range = result.GetInt( 2 );
+        int grp = result.GetInt( 3 );
+        long dp;
+        switch( grp )
+        {
+        case recEventType::ETYPE_Grp_Birth:
+        case recEventType::ETYPE_Grp_Nr_Birth:
+            dp = jdn;
+            break;
+        case recEventType::ETYPE_Grp_Death:
+        case recEventType::ETYPE_Grp_Nr_Death:
+            dp = jdn + range;
+            break;
+        default:
+            dp = jdn + (range/2);
+        }
+        wxSQLite3StatementBuffer sql;
+        sql.Format( "UPDATE Event SET date_pt=%ld WHERE id="ID";", dp, eventID );
+        recDb::GetDb()->ExecuteUpdate( sql );
+    }
+
+    char* query3 =
+        "ALTER TABLE EventPersona RENAME TO OldEventPersona;\n"
+        "CREATE TABLE EventPersona (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  event_id INTEGER NOT NULL REFERENCES Event(id),\n"
+        "  per_id INTEGER NOT NULL REFERENCES Persona(id),\n"
+        "  role_id INTEGER NOT NULL REFERENCES EventTypeRole(id),\n"
+        "  note TEXT NOT NULL,\n"
+        "  per_seq INTEGER NOT NULL\n"
+        ");\n"
+        "INSERT INTO EventPersona"
+        " (id, event_id, per_id, role_id, note, per_seq)"
+        " SELECT id, event_id, per_id, role_id, note, sequence"
+        " FROM OldEventPersona;\n"
+        "DROP TABLE OldEventPersona;\n"
+    ;
+    recDb::GetDb()->ExecuteUpdate( query3 );
+    recVersion::Set( 0, 0, 9, 17 );
+    recDb::Commit();
+}
+
 
 static void UpgradeRev0_0_9toCurrent( int test )
 {
     switch( test )
     {
-    case 0:
-        UpgradeTest0_0_9_0to0_0_9_1();
-    case 1: // Fall thru intended
-        UpgradeTest0_0_9_1to0_0_9_2();
-    case 2:
-        UpgradeTest0_0_9_2to0_0_9_3();
-    case 3:
-        UpgradeTest0_0_9_3to0_0_9_4();
-    case 4:
-        UpgradeTest0_0_9_4to0_0_9_5();
-    case 5:
-        UpgradeTest0_0_9_5to0_0_9_6();
-    case 6:
-        UpgradeTest0_0_9_6to0_0_9_7();
-    case 7:
-        UpgradeTest0_0_9_7to0_0_9_8();
-    case 8:
-        UpgradeTest0_0_9_8to0_0_9_9();
-    case 9:
-        UpgradeTest0_0_9_9to0_0_9_10();
-    case 10:
-        UpgradeTest0_0_9_10to0_0_9_11();
-    case 11:
-        UpgradeTest0_0_9_11to0_0_9_12();
-    case 12:
-        UpgradeTest0_0_9_12to0_0_9_13();
-    case 13:
-        UpgradeTest0_0_9_13to0_0_9_14();
-    case 14:
-        UpgradeTest0_0_9_14to0_0_9_15();
-    case 15:
-        UpgradeTest0_0_9_15to0_0_9_16();
+    case 0: UpgradeTest0_0_9_0to0_0_9_1();  // Fall thru intended
+    case 1: UpgradeTest0_0_9_1to0_0_9_2();
+    case 2: UpgradeTest0_0_9_2to0_0_9_3();
+    case 3: UpgradeTest0_0_9_3to0_0_9_4();
+    case 4: UpgradeTest0_0_9_4to0_0_9_5();
+    case 5: UpgradeTest0_0_9_5to0_0_9_6();
+    case 6: UpgradeTest0_0_9_6to0_0_9_7();
+    case 7: UpgradeTest0_0_9_7to0_0_9_8();
+    case 8: UpgradeTest0_0_9_8to0_0_9_9();
+    case 9: UpgradeTest0_0_9_9to0_0_9_10();
+    case 10: UpgradeTest0_0_9_10to0_0_9_11();
+    case 11: UpgradeTest0_0_9_11to0_0_9_12();
+    case 12: UpgradeTest0_0_9_12to0_0_9_13();
+    case 13: UpgradeTest0_0_9_13to0_0_9_14();
+    case 14: UpgradeTest0_0_9_14to0_0_9_15();
+    case 15: UpgradeTest0_0_9_15to0_0_9_16();
+    case 16: UpgradeTest0_0_9_16to0_0_9_17();
     }
 }
 

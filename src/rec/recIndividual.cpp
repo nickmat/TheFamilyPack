@@ -636,7 +636,7 @@ recFamIndVec recFamily::GetChildLinks( idt famID )
     for( int i = 0 ; i < result.GetRowCount() ; i++ )
     {
         result.SetRow( i );
-        fi.fSetID( GET_ID( result.GetInt64( 0 ) ) );
+        fi.FSetID( GET_ID( result.GetInt64( 0 ) ) );
         fi.fSetIndID( GET_ID( result.GetInt64( 1 ) ) );
         fi.fSetSeqChild( result.GetInt( 2 ) );
         fi.fSetSeqParent( result.GetInt( 3 ) );

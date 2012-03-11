@@ -176,13 +176,13 @@ void RecTestCase::TestPersona()
 
     // Create some records for later testing
     recPersona per(0);
-    per.fSetID( 3 );
+    per.FSetID( 3 );
     per.Save();
-    per.fSetID( 4 );
+    per.FSetID( 4 );
     per.Save();
-    per.fSetID( 19 );
+    per.FSetID( 19 );
     per.Save();
-    per.fSetID( 20 );
+    per.FSetID( 20 );
     per.Save();
 }
 
@@ -242,9 +242,9 @@ void RecTestCase::TestIndividual()
 
     // Create some records for later testing
     recIndividual ind(0);
-    ind.fSetID( 6 );
+    ind.FSetID( 6 );
     ind.Save();
-    ind.fSetID( 12 );
+    ind.FSetID( 12 );
     ind.Save();
 }
 
@@ -299,9 +299,9 @@ void RecTestCase::TestFamily()
 
     // Create some records for later testing
     recFamily fam(0);
-    fam.fSetID( 5 );
+    fam.FSetID( 5 );
     fam.Save();
-    fam.fSetID( 11 );
+    fam.FSetID( 11 );
     fam.Save();
 }
 
@@ -783,7 +783,7 @@ void RecTestCase::TestEventPersona()
     record1.f_event_id = 4;
     record1.f_role_id = 5;
     record1.f_note = "Good person";
-    record1.f_sequence = 123;
+    record1.f_per_seq = 123;
     // f_id = 0 so create new record and set f_id to new value.
     record1.Save();
     id = record1.f_id;
@@ -798,7 +798,7 @@ void RecTestCase::TestEventPersona()
     record1.f_event_id = 18;
     record1.f_role_id = 17;
     record1.f_note = "Who he?";
-    record1.f_sequence = 321;
+    record1.f_per_seq = 321;
     // f_id = 1 which exists, so amend record leaving f_id to old value.
     record1.Save();
     CPPUNIT_ASSERT( record1.f_id == id );
@@ -987,7 +987,7 @@ void RecTestCase::TestFamilyIndividual()
     idt id;
 
     recFamilyIndividual record1;
-    record1.fSetID( 0 );
+    record1.FSetID( 0 );
 
     record1.fSetFamID( 5 );
     record1.fSetIndID( 6 );
@@ -995,11 +995,11 @@ void RecTestCase::TestFamilyIndividual()
     record1.fSetSeqParent( 2 );
     // f_id = 0 so create new record and set f_id to new value.
     record1.Save();
-    id = record1.fGetID();
+    id = record1.FGetID();
     CPPUNIT_ASSERT( id == 1 );
 
     recFamilyIndividual record2;
-    record2.fSetID( record1.fGetID() );
+    record2.FSetID( record1.FGetID() );
     record2.Read();
     CPPUNIT_ASSERT( record1 == record2 );
 
@@ -1009,23 +1009,23 @@ void RecTestCase::TestFamilyIndividual()
     record1.fSetSeqParent( 4 );
     // f_id = 1 which exists, so amend record leaving f_id to old value.
     record1.Save();
-    CPPUNIT_ASSERT( record1.fGetID() == id );
+    CPPUNIT_ASSERT( record1.FGetID() == id );
     record2.Read();
     CPPUNIT_ASSERT( record1 == record2 );
 
-    record1.fSetID( 999 );
+    record1.FSetID( 999 );
     record1.fSetSeqChild( 8 );
     // f_id = 999 which doesn't exists, so create new record with no change to f_id.
     record1.Save();
-    CPPUNIT_ASSERT( record1.fGetID() == 999 );
-    record2.fSetID( record1.fGetID() );
+    CPPUNIT_ASSERT( record1.FGetID() == 999 );
+    record2.FSetID( record1.FGetID() );
     record2.Read();
     CPPUNIT_ASSERT( record1 == record2 );
 
-    record1.fSetID( 0 );
+    record1.FSetID( 0 );
     record1.fSetSeqChild( 7 );
     record1.Save();
-    CPPUNIT_ASSERT( record1.fGetID() != 0 );
+    CPPUNIT_ASSERT( record1.FGetID() != 0 );
     CPPUNIT_ASSERT( record1.Exists() == true );
     record1.Delete();
     CPPUNIT_ASSERT( record1.Exists() == false );

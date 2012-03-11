@@ -214,8 +214,8 @@ recEventPersonaVec recPersona::ReadEventPersonas( idt perID )
     }
 
     sql.Format(
-        "SELECT id, event_id, role_id, note, sequence FROM EventPersona "
-        "WHERE per_id="ID" ORDER BY sequence;", perID
+        "SELECT id, event_id, role_id, note, per_seq FROM EventPersona "
+        "WHERE per_id="ID" ORDER BY per_seq;", perID
     );
     result = s_db->GetTable( sql );
 
@@ -228,7 +228,7 @@ recEventPersonaVec recPersona::ReadEventPersonas( idt perID )
         record.f_event_id = GET_ID( result.GetInt64( 1 ) );
         record.f_role_id  = GET_ID( result.GetInt64( 2 ) );
         record.f_note     = result.GetAsString( 3 );
-        record.f_sequence = result.GetInt( 4 );
+        record.f_per_seq  = result.GetInt( 4 );
         list.push_back( record );
     }
     return list;
@@ -339,7 +339,7 @@ idt recPersona::FindEvent( idt perID, recEventType::ETYPE_Grp grp )
         "  EventType T ON R.type_id=T.id "
         "  WHERE T.grp=%d AND R.prime=1) "
         "ON rid=EP.role_id WHERE EP.per_id="ID" "
-        "ORDER BY EP.sequence;",
+        "ORDER BY EP.per_seq;",
         grp, perID
     );
     return ExecuteID( sql );
@@ -359,7 +359,7 @@ idt recPersona::FindCommonEvent( idt perID, recEventType::ETYPE_Grp grp, idt sec
         "  EventType T ON R.type_id=T.id "
         "  WHERE T.grp=%d AND (R.prime=1 OR R.prime=2)) "
         "ON rid=EP.role_id WHERE EP.per_id="ID" "
-        "ORDER BY EP.sequence;",
+        "ORDER BY EP.per_seq;",
         grp, perID
     );
     result1 = s_db->GetTable( sql );
@@ -371,7 +371,7 @@ idt recPersona::FindCommonEvent( idt perID, recEventType::ETYPE_Grp grp, idt sec
         "  EventType T ON R.type_id=T.id "
         "  WHERE T.grp=%d AND (R.prime=1 OR R.prime=2)) "
         "ON rid=EP.role_id WHERE EP.per_id="ID" "
-        "ORDER BY EP.sequence;",
+        "ORDER BY EP.per_seq;",
         grp, secID
     );
     result2 = s_db->GetTable( sql );

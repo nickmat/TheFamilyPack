@@ -382,8 +382,9 @@ void recGedParse::ReadIndEvent( GedIndividual& gind, int level )
         cont = ReadNextLine();
     }
     ev.f_title = wxString::Format( titlefmt, gind.GetNameStr() );
+    ev.f_date_pt = recDate::GetDatePoint( ev.f_date1_id, dp );
     ev.Save();
-    ep.f_sequence = recDate::GetDatePoint( ev.f_date1_id, dp );
+    ep.f_per_seq = ev.GetLastPersonaSeqNumber() + 1;
     ep.Save();
 }
 
@@ -619,10 +620,13 @@ void recGedParse::ReadFamEvent( GedFamily& gfam, int level )
     }
 
     ev.f_title = wxString::Format( titlefmt, gfam.GetHusbNameStr(), gfam.GetWifeNameStr() );
+    ev.f_date_pt = recDate::GetDatePoint( ev.f_date1_id );
     ev.Save();
-    epHusb.f_sequence = epWife.f_sequence = 
-        recDate::GetDatePoint( ev.f_date1_id, recDate::DATE_POINT_Mid );
+
+    int seq = ev.GetLastPersonaSeqNumber();
+    epHusb.f_per_seq = seq + 1;
     epHusb.Save();
+    epWife.f_per_seq = seq + 2;
     epWife.Save();
 }
 

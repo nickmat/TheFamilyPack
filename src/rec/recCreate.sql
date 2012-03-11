@@ -101,21 +101,22 @@ CREATE TABLE Date (
 
 CREATE TABLE Event (
   id INTEGER PRIMARY KEY,
-  title TEXT,
-  type_id INTEGER,
-  date1_id INTEGER,
-  date2_id INTEGER,
-  place_id INTEGER,
-  note TEXT
+  title TEXT NOT NULL,
+  type_id INTEGER NOT NULL REFERENCES EventType(id),
+  date1_id INTEGER NOT NULL,
+  date2_id INTEGER NOT NULL,
+  place_id INTEGER NOT NULL,
+  note TEXT NOT NULL,
+  date_pt INTEGER NOT NULL
 );
 
 CREATE TABLE EventPersona (
   id INTEGER PRIMARY KEY,
-  event_id INTEGER,
-  per_id INTEGER,
-  role_id INTEGER,
-  note TEXT,
-  sequence INTEGER
+  event_id INTEGER NOT NULL REFERENCES Event(id),
+  per_id INTEGER NOT NULL REFERENCES Persona(id),
+  role_id INTEGER NOT NULL REFERENCES EventTypeRole(id),
+  note TEXT NOT NULL,
+  seq_per INTEGER NOT NULL
 );
 
 CREATE TABLE EventType (
@@ -419,7 +420,7 @@ CREATE TABLE Version (
 );
 
 /* The Version table has only this one row */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 16);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 17);
 
 COMMIT;
 

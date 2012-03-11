@@ -51,11 +51,11 @@
 dlgEditIndEvent::dlgEditIndEvent( wxWindow* parent, idt eventID )
     : fbDlgEditIndEvent( parent ), m_event(eventID)
 {
-    m_date1.ReadID( m_event.GetDate1ID() );
-    if( m_date1.GetID() == 0 ) {
+    m_date1.ReadID( m_event.FGetDate1ID() );
+    if( m_date1.FGetID() == 0 ) {
         m_date1.SetDefaults();
     }
-    m_place.ReadID( m_event.GetPlaceID() );
+    m_place.ReadID( m_event.FGetPlaceID() );
 
     m_listPersona->InsertColumn( COL_IndID, _("Individual") );
     m_listPersona->InsertColumn( COL_Name, _("Name") );
@@ -304,11 +304,11 @@ bool dlgEditIndEvent::TransferDataFromWindow()
     }
     m_event.f_note = m_textCtrlNote->GetValue();
 
+    m_event.UpdateDatePoint(); 
     m_event.Save();
 
-    long dp = m_event.GetDatePoint();
     for( size_t i = 0 ; i < m_eps.size() ; i++ ) {
-        m_eps[i].f_sequence = dp;
+        m_eps[i].f_per_seq = i + 1;
         m_eps[i].Save();
     }
 
