@@ -261,11 +261,15 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
         htm << "</table>";
     }
 
-    // Add additinal Parents
-    if( husbFams.size() > 1 || wifeFams.size() > 1 ) {
+    // Add additional Spouses and/or Parents
+    if( husbWives.size() > 1 || wifeHusbs.size() > 1 || 
+        husbFams.size() > 1 || wifeFams.size() > 1 
+    ) {
         htm << "<br>&nbsp;<table><tr><td align=left valign=top width=270>";
+
+        // Display additional Husbands Parents
         if( husbFams.size() > 1 ) {
-            htm << "<table>";
+            htm << "<table><tr><td align=left width=270>Additional Parents</td></tr>";
             for( i = 0 ; i < husbFams.size() ; i++ ) {
                 if( i == iL ) continue;
                 htm << "<tr><td align=left width=270><b><a href='F"
@@ -285,39 +289,12 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
                 }
                 htm << "</a></b></td></tr>";
             }
-            htm << "</table>";
+            htm << "</table><br><br>";
         }
-        htm << "</td><td align=right valign=top width=270>";
-        if( wifeFams.size() > 1 ) {
-            htm << "<table>";
-            for( i = 0 ; i < wifeFams.size() ; i++ ) {
-                if( i == iR ) continue;
-                htm << "<tr><td align=left width=270><b><a href='F"
-                    << famID << "," << iL << "," << i << "'>";
-                if( wifeFams[i].f_husb_id || wifeFams[i].f_wife_id ) {
-                    if( wifeFams[i].f_husb_id ) {
-                        htm << recIndividual::GetFullName( wifeFams[i].f_husb_id );
-                    }
-                    if( wifeFams[i].f_husb_id && wifeFams[i].f_wife_id ) {
-                        htm << "<br>";
-                    }
-                    if( wifeFams[i].f_wife_id ) {
-                        htm << recIndividual::GetFullName( wifeFams[i].f_wife_id );
-                    }
-                } else {
-                    htm << "[Unknown]";
-                }
-                htm << "</a></b></td></tr>";
-            }
-            htm << "</table>";
-        }
-    }
 
-    // Add additional Spouses
-    if( husbWives.size() > 1 || wifeHusbs.size() > 1 ) {
-        htm << "<br>&nbsp;<table><tr><td align=left valign=top width=270>";
+        // Display additional Husbands Spouses
         if( husbWives.size() > 1 ) {
-            htm << "<table>";
+            htm << "<table><tr><td align=left width=270>Additional Spouses</td></tr>";
             for( i = 0 ; i < husbWives.size() ; i++ ) {
                 if( husbWives[i].f_wife_id == wife.f_id ) continue;
                 htm << "<tr><td align=left width=270><b><a href='F"
@@ -334,8 +311,35 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
             htm << wxT("</table>");
         }
         htm << "</td><td align=right valign=top width=270>";
+
+        // Display additional Wifes Parents
+        if( wifeFams.size() > 1 ) {
+            htm << "<table><tr><td align=right width=270>Additional Parents</td></tr>";
+            for( i = 0 ; i < wifeFams.size() ; i++ ) {
+                if( i == iR ) continue;
+                htm << "<tr><td align=right width=270><b><a href='F"
+                    << famID << "," << iL << "," << i << "'>";
+                if( wifeFams[i].f_husb_id || wifeFams[i].f_wife_id ) {
+                    if( wifeFams[i].f_husb_id ) {
+                        htm << recIndividual::GetFullName( wifeFams[i].f_husb_id );
+                    }
+                    if( wifeFams[i].f_husb_id && wifeFams[i].f_wife_id ) {
+                        htm << "<br>";
+                    }
+                    if( wifeFams[i].f_wife_id ) {
+                        htm << recIndividual::GetFullName( wifeFams[i].f_wife_id );
+                    }
+                } else {
+                    htm << "[Unknown]";
+                }
+                htm << "</a></b></td></tr>";
+            }
+            htm << "</table><br><br>";
+        }
+
+        // Display additional Wifes Spouses
         if( wifeHusbs.size() > 1 ) {
-            htm << "<table>";
+            htm << "<table><tr><td align=right width=270>Additional Spouses</td></tr>";
             for( i = 0 ; i < wifeHusbs.size() ; i++ ) {
                 if( wifeHusbs[i].f_husb_id == husb.f_id ) continue;
                 htm << "<tr><td align=right width=270><b><a href='F"

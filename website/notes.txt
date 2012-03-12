@@ -1,12 +1,19 @@
-The following pages need quotes
 
-db/admin/admin.htm      Administration subsection
-db/admin/version.htm    Version
-db/admin/contact.htm    Contact
-db/evid/evidence.htm    Evidence subsection
-db/evid/sources.htm     Sources
-db/conc/conclsions.htm  Conclusions
-db/conc/places.htm      Places
-dev/recprefix.htm       Record Prefixes
-map.htm                 Site map
+file                    title            Needs:-    Writing  Expansion  Quote
+
+db/sub/subsystems.htm   Subsystems                                       Yes
+db/sub/version.htm      Version                                          Yes
+db/sub/contact.htm      Contact                                          Yes
+db/sub/sources.htm      Sources                      Yes                 Yes
+db/sub/places.htm       Places                                           Yes
+db/sub/names.htm        Names                        Yes
+db/sub/events.htm       Events                       Yes
+db/sub/individuals.htm  Individuals and Families     Yes
+com/core.htm            Core Data                    Yes                 Yes
+com/places.htm          Places - A Gazetteer         Yes                 Yes
+com/history.htm         Historical Events            Yes                 Yes
+com/sources.htm         Sources and Repositories     Yes                 Yes
+com/names.htm           Name Expert System           Yes                 Yes
+dev/recprefix.htm       Record Prefixes                                  Yes
+map.htm                 Site map                                         Yes
 
