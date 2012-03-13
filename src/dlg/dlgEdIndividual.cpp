@@ -109,13 +109,9 @@ dlgEditIndPersona::dlgEditIndPersona( wxWindow* parent, idt indID )
 
     wxListItem itemCol;
     itemCol.SetText( wxT("Type") );
-//    m_listName->InsertColumn( 0, itemCol );
     m_listAttr->InsertColumn( 0, itemCol );
-    m_listRel->InsertColumn( 0, itemCol );
     itemCol.SetText( wxT("Value") );
-//    m_listName->InsertColumn( 1, itemCol );
     m_listAttr->InsertColumn( 1, itemCol );
-    m_listRel->InsertColumn( 1, itemCol );
 
     m_listName->InsertColumn( NC_Number, _("Number") );
     m_listName->InsertColumn( NC_Type, _("Type") );
@@ -126,6 +122,10 @@ dlgEditIndPersona::dlgEditIndPersona( wxWindow* parent, idt indID )
     m_listEvent->InsertColumn( EC_Title, _("Title") );
     m_listEvent->InsertColumn( EC_Date, _("Date") );
     m_listEvent->InsertColumn( EC_Place, _("Place") );
+ 
+    m_listRel->InsertColumn( RC_Family, _("Family") );         // Number
+    m_listRel->InsertColumn( RC_Ind, _("Individual") );        // Number
+    m_listRel->InsertColumn( RC_Relation, _("Relationship") ); // Text
 }
 
 bool dlgEditIndPersona::TransferDataToWindow()
@@ -175,10 +175,13 @@ bool dlgEditIndPersona::TransferDataToWindow()
         m_listEvent->SetItem( i, EC_Place, recEvent::GetAddressStr( m_eps[i].f_event_id ) );
     }
 
-    m_relationships = m_persona.ReadRelationships();
+    
+
+    m_relationships = m_individual.GetIndRelationships();
     for( size_t i = 0 ; i < m_relationships.size() ; i++ ) {
-        m_listRel->InsertItem( i, m_relationships[i].GetIdStr() );
-        m_listRel->SetItem( i, COL_Value, m_relationships[i].GetRelOfPersonaStr( m_persona.f_id ) );
+        m_listRel->InsertItem( i, recFamily::GetIdStr( m_relationships[i].GetFamily() ) );
+        m_listRel->SetItem( i, RC_Ind, recIndividual::GetFullName( m_relationships[i].GetIndividual2() ) );
+        m_listRel->SetItem( i, RC_Relation, m_relationships[i].GetTypeStr() );
     }
 
     m_notebook->SetSelection( 0 );

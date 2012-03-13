@@ -83,6 +83,9 @@ class dlgEditIndPersona : public fbDlgEditIndPersona
     enum EventColumns {
         EC_Number, EC_Role, EC_Title, EC_Date, EC_Place, EC_MAX
     };
+    enum RelColumns {
+        RC_Family, RC_Ind, RC_Relation, RC_MAX
+    };
 public:
     dlgEditIndPersona( wxWindow* parent, idt indID );
 
@@ -125,7 +128,7 @@ private:
     recNameVec         m_names;
     recAttributeVec    m_attributes;
     recEventPersonaVec m_eps;
-    recRelationshipVec m_relationships;
+    recIndRelVec       m_relationships;
 
     wxString           m_nameStr;
 };

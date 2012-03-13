@@ -44,6 +44,9 @@
 #include <rec/recPersona.h>
 #include <rec/recName.h>
 
+//============================================================================
+//-------------------------[ recIndividual ]----------------------------------
+//============================================================================
 
 recIndividual::recIndividual( const recIndividual& i )
 {
@@ -307,11 +310,11 @@ wxSQLite3Table recIndividual::GetRefEventsTable( idt perID )
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "SELECT DISTINCT event_id, role_id FROM EventPersona "
+        "SELECT DISTINCT event_id, role_id FROM EventPersona EP "
         "INNER JOIN "
         "(SELECT ref_per_id FROM LinkPersona WHERE ind_per_id="ID") "
-        "ON EventPersona.per_id=ref_per_id "
-        "ORDER BY EventPersona.sequence;",
+        "ON EP.per_id=ref_per_id "
+        ";", //"ORDER BY E.date_pt;",
         perID
     );
     return s_db->GetTable( sql );
@@ -447,7 +450,41 @@ void recIndividual::AddMissingFamilies()
     }
 }
 
-//----------------------------------------------------------
+recIndRelVec recIndividual::GetIndRelationships( idt indID )
+{
+    recIndRelVec rels;
+    recIndRelationship rel(indID);
+
+    recFamilyVec fams = GetParentList( indID );
+    for( size_t i = 0 ; i < fams.size() ; i++ ) {
+        rel.SetFamily( fams[i].FGetID() );
+        if( fams[i].f_husb_id ) {
+            rel.SetIndividual2( fams[i].f_husb_id );
+            rel.SetType( recIndRelationship::IRT_Father );
+            rels.push_back( rel );
+        }
+        if( fams[i].f_wife_id ) {
+            rel.SetIndividual2( fams[i].f_wife_id );
+            rel.SetType( recIndRelationship::IRT_Mother );
+            rels.push_back( rel );
+        }
+    }
+    fams = GetFamilyList( indID );
+    rel.SetType( recIndRelationship::IRT_Child );
+    for( size_t i = 0 ; i < fams.size() ; i++ ) {
+        rel.SetFamily( fams[i].FGetID() );
+        recIdList children = fams[i].GetChildrenIds( fams[i].FGetID() );
+        for( size_t j = 0 ; j < children.size() ; j++ ) {
+            rel.SetIndividual2( children[j] );
+            rels.push_back( rel );
+        }
+    }
+    return rels;
+}
+
+//============================================================================
+//-------------------------[ recFamily ]--------------------------------------
+//============================================================================
 
 recFamily::recFamily( const recFamily& f )
 {
@@ -799,6 +836,25 @@ bool recFamilyIndividual::Find()
     f_seq_parent = result.GetInt( 2 );
     if( result.GetRowCount() != 1 ) return false;
     return true;
+}
+
+//============================================================================
+//-------------------------[ recIndRelationship ]-----------------------------
+//============================================================================
+
+const wxString recIndRelationship::s_TypeStr[recIndRelationship::IRT_MAX] = {
+    _("Unstated"),       // IRT_Unstated
+    _("Father"),         // IRT_Father
+    _("Mother"),         // IRT_Mother
+    _("Child")           // IRT_Child
+};
+
+wxString recIndRelationship::GetTypeStr() const
+{ 
+    if( m_type < 0 || m_type >= IRT_MAX ) {
+        return _("Unknown");
+    }
+    return s_TypeStr[m_type];
 }
 
 // End of recIndividual.cpp file

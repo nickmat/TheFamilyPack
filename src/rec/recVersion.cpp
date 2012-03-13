@@ -753,7 +753,7 @@ static void UpgradeTest0_0_9_16to0_0_9_17()
         ");\n"
         "INSERT INTO EventPersona"
         " (id, event_id, per_id, role_id, note, per_seq)"
-        " SELECT id, event_id, per_id, role_id, note, sequence"
+        " SELECT id, event_id, per_id, role_id, note, -role_id"
         " FROM OldEventPersona;\n"
         "DROP TABLE OldEventPersona;\n"
     ;

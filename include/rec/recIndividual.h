@@ -42,7 +42,12 @@ class recFamily;
 typedef std::vector< recFamily >  recFamilyVec;
 class recFamilyIndividual;
 typedef std::vector< recFamilyIndividual >  recFamIndVec;
+class recIndRelationship;
+typedef std::vector< recIndRelationship >  recIndRelVec;
 
+//============================================================================
+//-------------------------[ recIndividual ]----------------------------------
+//============================================================================
 
 class recIndividual : public recDb
 {
@@ -114,6 +119,9 @@ public:
     static wxSQLite3Table GetNameTable( Sex sex );
 
     static void AddMissingFamilies();
+
+    static recIndRelVec GetIndRelationships( idt indID );
+    recIndRelVec GetIndRelationships() const { return GetIndRelationships( f_id ); }
 };
 
 inline bool recEquivalent( const recIndividual& r1, const recIndividual& r2 )
@@ -136,7 +144,9 @@ inline bool operator!=( const recIndividual& r1, const recIndividual& r2 )
     return !(r1 == r2);
 }
 
-//----------------------------------------------------------
+//============================================================================
+//-------------------------[ recFamily ]--------------------------------------
+//============================================================================
 
 class recFamily : public recDb
 {
@@ -161,10 +171,10 @@ public:
 
     idt GetMarriageEvent() const;
 
-    bool ReadParents( idt ind );
-    static recIndividualList GetChildren( idt fam );
+    bool ReadParents( idt indID );
+    static recIndividualList GetChildren( idt famID );
     recIndividualList GetChildren() const { return GetChildren( f_id ); }
-    static recIdList GetChildrenIds( idt fam );
+    static recIdList GetChildrenIds( idt famID );
     recIdList GetChildrenIds() const { return GetChildrenIds( f_id ); }
     static int GetChildNextSequence( idt famID );
     static int GetParentNextSequence( idt indID );
@@ -244,6 +254,45 @@ inline bool operator!=( const recFamilyIndividual& r1, const recFamilyIndividual
     return !(r1 == r2);
 }
 
-//----------------------------------------------------------
+//============================================================================
+//-------------------------[ recIndRelationship ]-----------------------------
+//============================================================================
+
+
+// This is not based on a table, but is created from the recFamily class
+class recIndRelationship
+{
+public:
+    enum Type {
+        IRT_Unstated = 0,
+        IRT_Father,
+        IRT_Mother,
+        IRT_Child,
+        IRT_MAX
+    };
+
+    recIndRelationship() {}
+    recIndRelationship( idt indID ) 
+        : m_fam_id(0), m_ind1_id(indID), m_ind2_id(0), m_type(IRT_Unstated) {}
+
+    idt GetFamily() const { return m_fam_id; }
+    idt GetIndividual1() const { return m_ind1_id; }
+    idt GetIndividual2() const { return m_ind2_id; }
+    Type GetType() const { return m_type; }
+    wxString GetTypeStr() const;
+
+    void SetFamily( idt famID ) { m_fam_id = famID; }
+    void SetIndividual1( idt indID ) { m_ind1_id = indID; }
+    void SetIndividual2( idt indID ) { m_ind2_id = indID; }
+    void SetType( Type type ) { m_type = type; }
+
+private:
+    idt  m_fam_id;
+    idt  m_ind1_id;
+    idt  m_ind2_id;
+    Type m_type;
+
+    static const wxString s_TypeStr[IRT_MAX];
+};
 
 #endif // RECINDIVIDUAL_H
