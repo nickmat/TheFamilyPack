@@ -310,11 +310,13 @@ wxSQLite3Table recIndividual::GetRefEventsTable( idt perID )
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "SELECT DISTINCT event_id, role_id FROM EventPersona EP "
-        "INNER JOIN "
-        "(SELECT ref_per_id FROM LinkPersona WHERE ind_per_id="ID") "
-        "ON EP.per_id=ref_per_id "
-        ";", //"ORDER BY E.date_pt;",
+        "SELECT event_id, role_id FROM"
+        "   (SELECT DISTINCT event_id, role_id FROM EventPersona EP"
+        "  INNER JOIN"
+        "   (SELECT ref_per_id FROM LinkPersona WHERE ind_per_id="ID")"
+        "  ON EP.per_id=ref_per_id)"
+        " INNER JOIN Event WHERE id=event_id"
+        " ORDER BY date_pt;",
         perID
     );
     return s_db->GetTable( sql );

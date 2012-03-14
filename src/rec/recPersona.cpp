@@ -214,8 +214,10 @@ recEventPersonaVec recPersona::ReadEventPersonas( idt perID )
     }
 
     sql.Format(
-        "SELECT id, event_id, role_id, note, per_seq FROM EventPersona "
-        "WHERE per_id="ID" ORDER BY per_seq;", perID
+        "SELECT EP.id, event_id, role_id, EP.note, per_seq FROM EventPersona EP"
+        " INNER JOIN Event E ON E.id=event_id"
+        " WHERE per_id="ID" ORDER BY date_pt;", 
+        perID
     );
     result = s_db->GetTable( sql );
 
