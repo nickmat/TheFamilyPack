@@ -221,6 +221,13 @@ static const char* createdb =  /* recCreate.sql */
  "  fam_id INTEGER,\n"
  "  per_id INTEGER\n"
  ");\n"
+ "CREATE TABLE LinkAttribute (\n"
+ "  id INTEGER PRIMARY KEY,\n"
+ "  ref_att_id INTEGER NOT NULL REFERENCES Attribute(id),\n"
+ "  ind_att_id INTEGER NOT NULL REFERENCES Attribute(id),\n"
+ "  conf FLOAT NOT NULL,\n"
+ "  comment TEXT\n"
+ ");\n"
  "CREATE TABLE LinkEvent (\n"
  "  id INTEGER PRIMARY KEY,\n"
  "  ref_event_id INTEGER NOT NULL REFERENCES Event(id),\n"
@@ -356,7 +363,7 @@ static const char* createdb =  /* recCreate.sql */
  "  revision INTEGER,\n"
  "  test INTEGER\n"
  ");\n"
- "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 17);\n"
+ "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 18);\n"
  "COMMIT;\n";
 
 /* End of recSql.f2c */

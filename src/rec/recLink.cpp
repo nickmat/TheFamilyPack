@@ -40,6 +40,124 @@
 #include <rec/recLink.h>
 
 //============================================================================
+//                 recLinkAttribute
+//============================================================================
+
+recLinkAttribute::recLinkAttribute( const recLinkAttribute& d )
+{
+    f_id         = d.f_id;
+    f_ref_att_id = d.f_ref_att_id;
+    f_ind_att_id = d.f_ind_att_id;
+    f_conf       = d.f_conf;
+    f_comment    = d.f_comment;
+}
+
+void recLinkAttribute::Clear()
+{
+    f_id         = 0;
+    f_ref_att_id = 0;
+    f_ind_att_id = 0;
+    f_conf       = 0;
+    f_comment    = wxEmptyString;
+}
+
+void recLinkAttribute::Save()
+{
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( f_id == 0 )
+    {
+        // Add new record
+        sql.Format(
+            "INSERT INTO LinkAttribute "
+            "(ref_att_id, ind_att_id, conf, comment) "
+            "VALUES ("ID", "ID", %f, '%q');",
+            f_ref_att_id, f_ind_att_id, f_conf, UTF8_(f_comment)
+        );
+        s_db->ExecuteUpdate( sql );
+        f_id = GET_ID( s_db->GetLastRowId() );
+    } else {
+        // Does record exist
+        if( !Exists() )
+        {
+            // Add new record
+            sql.Format(
+                "INSERT INTO LinkAttribute "
+                "(id, ref_att_id, ind_att_id, conf, comment) "
+                "VALUES ("ID", "ID", "ID", %f, '%q');",
+                f_id, f_ref_att_id, f_ind_att_id, f_conf, f_comment
+            );
+        } else {
+            // Update existing record
+            sql.Format(
+                "UPDATE LinkAttribute SET ref_att_id="ID", ind_att_id="ID", "
+                "conf=%f, comment='%q' "
+                "WHERE id="ID";",
+                f_ref_att_id, f_ind_att_id, f_conf,
+                UTF8_(f_comment), f_id
+            );
+        }
+        s_db->ExecuteUpdate( sql );
+    }
+}
+
+bool recLinkAttribute::Read()
+{
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( f_id == 0 ) {
+        Clear();
+        return false;
+    }
+
+    sql.Format(
+        "SELECT ref_att_id, ind_att_id, conf, comment "
+        "FROM LinkAttribute WHERE id="ID";",
+        f_id
+    );
+    result = s_db->GetTable( sql );
+
+    if( result.GetRowCount() != 1 )
+    {
+        Clear();
+        return false;
+    }
+    result.SetRow( 0 );
+    f_ref_att_id = GET_ID( result.GetInt64( 0 ) );
+    f_ind_att_id = GET_ID( result.GetInt64( 1 ) );
+    f_conf         = result.GetDouble( 2 );
+    f_comment      = result.GetAsString( 3 );
+    return true;
+}
+
+/*! Given the per_id and ind_id settings, find the matching record
+ *  and read in the full record.
+ */
+bool recLinkAttribute::Find()
+{
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( f_ind_att_id == 0 || f_ref_att_id == 0 ) return false; 
+
+    sql.Format(
+        "SELECT id, conf, comment FROM LinkAttribute "
+        "WHERE ref_att_id="ID" AND ind_att_id="ID";",
+        f_ref_att_id, f_ind_att_id
+    );
+    result = s_db->GetTable( sql );
+
+    if( result.GetRowCount() != 1 ) return false;
+    result.SetRow( 0 );
+    f_id      = GET_ID( result.GetInt64( 0 ) );
+    f_conf    = result.GetDouble( 1 );
+    f_comment = result.GetAsString( 2 );
+    return true;
+}
+
+//============================================================================
 //                 recLinkEvent
 //============================================================================
 

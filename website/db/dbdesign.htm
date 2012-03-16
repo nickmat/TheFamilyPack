@@ -108,28 +108,29 @@
    <tr>
     <td><a href="#FamilyIndividual">FamilyIndividual</a></td>
     <td><a href="#Individual">Individual</a></td>
+    <td><a href="#LinkAttribute">LinkAttribute</a></td>
     <td><a href="#LinkEvent">LinkEvent</a></td>
     <td><a href="#LinkPersona">LinkPersona</a></td>
     <td><a href="#Name">Name</a></td>
-    <td><a href="#NamePart">NamePart</a></td>
    </tr>
    <tr>
+    <td><a href="#NamePart">NamePart</a></td>
     <td><a href="#NamePartType">NamePartType</a></td>
     <td><a href="#NameStyle">NameStyle</a></td>
     <td><a href="#Persona">Persona</a></td>
     <td><a href="#Place">Place</a></td>
     <td><a href="#PlacePart">PlacePart</a></td>
-    <td><a href="#PlacePartType">PlacePartType</a></td>
    </tr>
    <tr>
+    <td><a href="#PlacePartType">PlacePartType</a></td>
     <td><a href="#Reference">Reference</a></td>
     <td><a href="#ReferenceEntity">ReferenceEntity</a></td>
     <td><a href="#Relationship">Relationship</a></td>
     <td><a href="#RelativeDate">RelativeDate</a></td>
     <td><a href="#Repository">Repository</a></td>
-    <td><a href="#RepositorySource">RepositorySource</a></td>
    </tr>
    <tr>
+    <td><a href="#RepositorySource">RepositorySource</a></td>
     <td><a href="#Researcher">Researcher</a></td>
     <td><a href="#Source">Source</a></td>
     <td><a href="#User">User</a></td>
@@ -578,6 +579,38 @@
      <td>per_id</td>
      <td>Integer</td>
      <td>Pointer to the default Persona.</td>
+    </tr>
+
+    <tr id="LinkAttribute">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>LinkAttribute</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td class="nw">Integer PK</td>
+     <td>Unique key identifying a LinkAttribute record.</td>
+    </tr>
+    <tr>
+     <td>ref_att_id</td>
+     <td>Integer</td>
+     <td>Pointer to an Attribute associated with a Reference</td>
+    </tr>
+    <tr>
+     <td>ind_att_id</td>
+     <td>Integer</td>
+     <td>Pointer to an Attribute associated with an Individual</td>
+    </tr>
+    <tr>
+     <td>conf</td>
+     <td>Float</td>
+     <td>A value, less than one, to indicate the confidence that the link is correct</td>
+    </tr>
+    <tr>
+     <td>comment</td>
+     <td>Text</td>
+     <td>Optional comment that relates to the Reference Attribute - Individual Attribute link</td>
     </tr>
 
     <tr id="LinkEvent">

@@ -46,8 +46,8 @@
 const int recVerMajor    = 0;
 const int recVerMinor    = 0;
 const int recVerRev      = 9;
-const int recVerTest     = 17;
-const wxStringCharType* recVerStr = wxS("TFPD-0.0.9.17");
+const int recVerTest     = 18;
+const wxStringCharType* recVerStr = wxS("TFPD-0.0.9.18");
 
 
 recVersion::recVersion( const recVersion& v )
@@ -762,6 +762,23 @@ static void UpgradeTest0_0_9_16to0_0_9_17()
     recDb::Commit();
 }
 
+static void UpgradeTest0_0_9_17to0_0_9_18()
+{
+    char* query =
+        "CREATE TABLE LinkAttribute (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  ref_att_id INTEGER NOT NULL REFERENCES Attribute(id),\n"
+        "  ind_att_id INTEGER NOT NULL REFERENCES Attribute(id),\n"
+        "  conf FLOAT NOT NULL,\n"
+        "  comment TEXT\n"
+        ");\n"
+    ;
+    recDb::Begin();
+    recDb::GetDb()->ExecuteUpdate( query );
+    recVersion::Set( 0, 0, 9, 18 );
+    recDb::Commit();
+}
+
 
 static void UpgradeRev0_0_9toCurrent( int test )
 {
@@ -784,6 +801,7 @@ static void UpgradeRev0_0_9toCurrent( int test )
     case 14: UpgradeTest0_0_9_14to0_0_9_15();
     case 15: UpgradeTest0_0_9_15to0_0_9_16();
     case 16: UpgradeTest0_0_9_16to0_0_9_17();
+    case 17: UpgradeTest0_0_9_17to0_0_9_18();
     }
 }
 

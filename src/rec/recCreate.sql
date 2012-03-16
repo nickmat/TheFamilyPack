@@ -259,6 +259,14 @@ CREATE TABLE Individual (
   per_id INTEGER
 );
 
+CREATE TABLE LinkAttribute (
+  id INTEGER PRIMARY KEY,
+  ref_att_id INTEGER NOT NULL REFERENCES Attribute(id),
+  ind_att_id INTEGER NOT NULL REFERENCES Attribute(id),
+  conf FLOAT NOT NULL,
+  comment TEXT
+);
+
 CREATE TABLE LinkEvent (
   id INTEGER PRIMARY KEY,
   ref_event_id INTEGER NOT NULL REFERENCES Event(id),
@@ -420,7 +428,7 @@ CREATE TABLE Version (
 );
 
 /* The Version table has only this one row */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 17);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 18);
 
 COMMIT;
 

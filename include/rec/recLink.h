@@ -34,6 +34,51 @@
 #include <rec/recEvent.h>
 
 //============================================================================
+//                 recLinkAttribute
+//============================================================================
+
+class recLinkAttribute : public recDb
+{
+public:
+    idt      f_ref_att_id;
+    idt      f_ind_att_id;
+    double   f_conf;
+    wxString f_comment;
+
+    recLinkAttribute() {}
+    recLinkAttribute( idt id ) : recDb(id) { Read(); }
+    recLinkAttribute( const recLinkAttribute& link );
+
+    void Clear();
+    void Save();
+    bool Read();
+    TABLE_NAME_MEMBERS( "LinkAttribute" );
+
+    bool Find();
+};
+
+/*! The two entities are equal, ignoring the record id.
+ */
+inline bool recEquivalent( const recLinkAttribute& d1, const recLinkAttribute& d2 )
+{
+    return
+        d1.f_ref_att_id == d2.f_ref_att_id &&
+        d1.f_ind_att_id == d2.f_ind_att_id &&
+        d1.f_conf         == d2.f_conf     &&
+        d1.f_comment      == d2.f_comment;
+}
+
+inline bool operator==( const recLinkAttribute& d1, const recLinkAttribute& d2 )
+{
+    return recEquivalent( d1, d2 ) && d1.f_id == d2.f_id;
+}
+
+inline bool operator!=( const recLinkAttribute& d1, const recLinkAttribute& d2 )
+{
+    return !(d1 == d2);
+}
+
+//============================================================================
 //                 recLinkEvent
 //============================================================================
 
