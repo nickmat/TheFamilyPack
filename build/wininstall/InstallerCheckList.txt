@@ -1,0 +1,14 @@
+    Creating the Windows Setup File
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Ensure nsis is installed.
+
+Copy the final release exe to the build/wininstall file
+ - Name the file tfp03.exe
+
+Copy the Example.tfpd file to the build/wininstall file
+
+Check the tfp03.nsi file for any required changes.
+
+Run nsis compiler on the tfp03.nsi file.
+ - (right click, select "Compile NSIS Script")
