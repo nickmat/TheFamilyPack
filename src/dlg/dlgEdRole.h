@@ -35,13 +35,17 @@
 #include "fbDlg.h"
 #include "dlgEdReference.h"
 
+//============================================================================
+//-------------------------[ dlgEditRole ]------------------------------------
+//============================================================================
+
 class dlgEditRole : public fbDlgEditRole
 {
     DECLARE_CLASS( dlgEditRole )
     DECLARE_EVENT_TABLE()
 
 public:
-    dlgEditRole( wxWindow* parent, idt eventID, idt id = 0 );
+    dlgEditRole( wxWindow* parent, idt eventID, idt epID = 0 );
 
     void SetRefID( idt id ) { m_refID = id; }
 
@@ -59,6 +63,30 @@ private:
     recEvent            m_event;
 
     idt                 m_refID;
+    recEventTypeRoleVec m_roles;
+};
+
+//============================================================================
+//-------------------------[ dlgEditIndRole ]---------------------------------
+//============================================================================
+
+class dlgEditIndRole : public fbDlgEditIndRole
+{
+public:
+    dlgEditIndRole( wxWindow* parent, idt epID );
+
+    recEventPersona* GetEventPersona() { return &m_ep; }
+
+private:
+    bool TransferDataToWindow();
+    bool TransferDataFromWindow();
+
+    void OnButtonAddClick( wxCommandEvent& event );
+
+    recEventPersona     m_ep;
+
+    recEvent            m_event;
+    recEventType        m_et;
     recEventTypeRoleVec m_roles;
 };
 

@@ -42,6 +42,10 @@
 #include "dlgEdRole.h"
 #include "dlgEd.h"
 
+//============================================================================
+//-------------------------[ dlgEditRole ]------------------------------------
+//============================================================================
+
 #define ID_PERSONA_MENU_START 30000
 #define ID_ROLE_MENU_START    31000
 
@@ -52,11 +56,11 @@ BEGIN_EVENT_TABLE( dlgEditRole, wxDialog )
 END_EVENT_TABLE()
 
 
-dlgEditRole::dlgEditRole( wxWindow* parent, idt eventID, idt id )
+dlgEditRole::dlgEditRole( wxWindow* parent, idt eventID, idt epID )
     : fbDlgEditRole( parent )
 {
     m_event.f_id = eventID;
-    m_pe.f_id = id;
+    m_pe.f_id = epID;
 }
 
 bool dlgEditRole::TransferDataToWindow()
@@ -132,5 +136,68 @@ void dlgEditRole::OnRoleSelect( wxCommandEvent& event )
         m_pe.f_role_id = m_roles[i-1].f_id;
     }
 }
+
+//============================================================================
+//-------------------------[ dlgEditIndRole ]---------------------------------
+//============================================================================
+
+dlgEditIndRole::dlgEditIndRole( wxWindow* parent, idt epID ) 
+    : fbDlgEditIndRole(parent)
+{
+    m_ep.ReadID( epID );
+    m_event.ReadID( m_ep.FGetID() );
+    m_et.ReadID( m_event.FGetTypeID() );
+    m_roles = m_et.GetRoles();
+}
+
+bool dlgEditIndRole::TransferDataToWindow()
+{
+    wxASSERT( m_ep.FGetID() != 0 );
+    wxASSERT( m_ep.FGetEventID() != 0 );
+    wxASSERT( m_ep.FGetPerID() != 0 );
+
+    m_staticName->SetLabel( recPersona::GetNameStr( m_ep.FGetPerID() ) );
+    m_staticNameID->SetLabel( recPersona::GetIndividualIdStr( m_ep.FGetPerID() ) );
+    m_staticEvent->SetLabel( m_et.GetTypeStr() );
+    m_staticEP_ID->SetLabel( m_ep.GetIdStr() );
+
+    wxArrayString roleStrs;
+    int sel = 0;
+    for( size_t i = 0 ; i < m_roles.size() ; i++ ) {
+        roleStrs.push_back( m_roles[i].FGetName() );
+        if( m_roles[i].FGetID() == m_ep.FGetRoleID() ) {
+            sel = i;
+        }
+    }
+    m_choiceRole->Set( roleStrs );
+    m_choiceRole->SetSelection( sel );
+
+    m_textCtrlNote->SetValue( m_ep.FGetNote() );
+    return true;
+}
+
+bool dlgEditIndRole::TransferDataFromWindow()
+{
+    int sel = m_choiceRole->GetSelection();
+    if( sel >= 0 && sel < (int) m_roles.size() ) {
+        m_ep.FSetRoleID( m_roles[sel].FGetID() );
+    } else {
+        return false;
+    }
+    m_ep.FSetNote( m_textCtrlNote->GetValue() );
+
+    m_ep.Save();
+    return true;
+}
+
+void dlgEditIndRole::OnButtonAddClick( wxCommandEvent& event )
+{
+    // TODO: Create new roles for event type
+    wxMessageBox(
+        wxT("Not yet implimented\nAdd Role"),
+        wxT("OnButtonAddClick")
+    );
+}
+
 
 // End of dlgEdRole.cpp file

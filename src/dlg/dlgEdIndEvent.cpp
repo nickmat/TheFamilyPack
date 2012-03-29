@@ -42,6 +42,7 @@
 #include <rec/recLink.h>
 
 #include "dlgEdIndEvent.h"
+#include "dlgEdRole.h"
 
 
 //-----------------------------------------------------
@@ -103,11 +104,9 @@ bool dlgEditIndEvent::TransferDataToWindow()
         recDate date( m_refEvents[i].f_date1_id );
         m_reDate1s.push_back( date );
     }
-    m_refEventsHtm = WrReferenceEvents();
-    m_htmlWin->SetPage( m_refEventsHtm );
-    m_buttonReferences->Enable( false );
-    m_refDatesHtm = WrReferenceDates();
-    m_refPlacesHtm = WrReferencePlaces();
+    m_htmlRef->SetPage( WrReferenceEvents() );
+    m_htmlDate->SetPage( WrReferenceDates() );
+    m_htmlPlace->SetPage( WrReferencePlaces() );
     return true;
 }
 
@@ -370,36 +369,27 @@ void dlgEditIndEvent::OnAddButton( wxCommandEvent& event )
 
 void dlgEditIndEvent::OnEditButton( wxCommandEvent& event )
 {
-    wxMessageBox(
-        wxT("Not yet implimented"),
-        wxT("OnEditButton")
-    );
-#if 0
-// Copied from Name dialog for as example code
-    long row = m_listParts->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    long row = m_listPersona->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
-        wxMessageBox( _("No row selected"), _("Edit Name") );
+        wxMessageBox( _("No row selected"), _("Edit Individual") );
         return;
     }
 
-    const wxString savepoint = "NameEdPart";
-    dlgEditNamePart* dialog = new dlgEditNamePart( NULL );
-    dialog->SetNamePartID( m_parts[row].f_id );
+    const wxString savepoint = "EdIndRole";
+    dlgEditIndRole* dialog = new dlgEditIndRole( NULL, m_eps[row].FGetID() );
 
     recDb::Savepoint( savepoint );
     if( dialog->ShowModal() == wxID_OK )
     {
         recDb::ReleaseSavepoint( savepoint );
-        recNamePart* np = dialog->GetNamePart();
-        m_listParts->SetItem( row, COL_Type, recNamePartType::GetTypeStr( np->f_type_id ) );
-        m_listParts->SetItem( row, COL_Value, np->f_val );
-        m_parts[row] = *np;
-        UpdateName();
+        recEventPersona* ep = dialog->GetEventPersona();
+        m_listPersona->SetItem( row, COL_Role, recEventPersona::GetRoleStr( ep->FGetRoleID() ) );
+        m_listPersona->SetItem( row, COL_Note, ep->FGetNote() );
+        m_eps[row] = *ep;
     } else {
         recDb::Rollback( savepoint );
     }
     dialog->Destroy();
-#endif
 }
 
 void dlgEditIndEvent::OnDeleteButton( wxCommandEvent& event )
@@ -481,34 +471,6 @@ void dlgEditIndEvent::OnDownButton( wxCommandEvent& event )
     }
 #endif
 }
-
-void dlgEditIndEvent::OnReferencesButton( wxCommandEvent& event )
-{
-    m_buttonReferences->Enable( false );
-    m_buttonCompareDates->Enable( true );
-    m_buttonComparePlaces->Enable( true );
-    m_htmlWin->SetPage( m_refEventsHtm );
-    m_htmlWin->SetFocus();
-}
-
-void dlgEditIndEvent::OnCompareDatesButton( wxCommandEvent& event )
-{
-    m_buttonReferences->Enable( true );
-    m_buttonCompareDates->Enable( false );
-    m_buttonComparePlaces->Enable( true );
-    m_htmlWin->SetPage( m_refDatesHtm );
-    m_htmlWin->SetFocus();
-}
-
-void dlgEditIndEvent::OnComparePlacesButton( wxCommandEvent& event )
-{
-    m_buttonReferences->Enable( true );
-    m_buttonCompareDates->Enable( true );
-    m_buttonComparePlaces->Enable( false );
-    m_htmlWin->SetPage( m_refPlacesHtm );
-    m_htmlWin->SetFocus();
-}
-
 
 //-----------------------------------------------------
 //      dlgEditFamEvent

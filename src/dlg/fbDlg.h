@@ -152,6 +152,40 @@ class fbDlgEditIndPersona : public wxDialog
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/// Class fbDlgEditIndRole
+///////////////////////////////////////////////////////////////////////////////
+class fbDlgEditIndRole : public wxDialog 
+{
+	private:
+	
+	protected:
+		wxStaticText* m_staticText1;
+		wxStaticText* m_staticName;
+		wxStaticText* m_staticNameID;
+		wxStaticText* m_staticText2;
+		wxStaticText* m_staticEvent;
+		wxStaticText* m_staticEP_ID;
+		wxStaticText* m_staticText3;
+		wxChoice* m_choiceRole;
+		wxButton* m_buttonAdd;
+		wxStaticText* m_staticText4;
+		wxTextCtrl* m_textCtrlNote;
+		wxStaticLine* m_staticline1;
+		wxButton* m_buttonSave;
+		wxButton* m_buttonCancel;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnButtonAddClick( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		fbDlgEditIndRole( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Individual's Role"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 400,231 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
+		~fbDlgEditIndRole();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
 /// Class fbDlgEditPersona
 ///////////////////////////////////////////////////////////////////////////////
 class fbDlgEditPersona : public wxDialog 
@@ -587,9 +621,9 @@ class fbDlgEditIndEvent : public wxDialog
 	
 	protected:
 		wxSplitterWindow* m_splitter;
-		wxPanel* m_panel21;
+		wxPanel* m_panel1;
 		wxSplitterWindow* m_splitter6;
-		wxPanel* m_panel22;
+		wxPanel* m_panel11;
 		wxStaticText* m_staticText17;
 		wxStaticText* m_staticType;
 		wxStaticText* m_staticEventID;
@@ -603,18 +637,21 @@ class fbDlgEditIndEvent : public wxDialog
 		wxTextCtrl* m_textCtrlAddr;
 		wxStaticText* m_staticText1711;
 		wxTextCtrl* m_textCtrlNote;
-		wxPanel* m_panel23;
+		wxPanel* m_panel12;
 		wxListCtrl* m_listPersona;
 		wxButton* m_buttonAdd;
 		wxButton* m_buttonEdit;
 		wxButton* m_buttonDel;
 		wxButton* m_buttonUp;
 		wxButton* m_buttonDn;
-		wxPanel* m_panel2;
-		wxHtmlWindow* m_htmlWin;
-		wxButton* m_buttonReferences;
-		wxButton* m_buttonCompareDates;
-		wxButton* m_buttonComparePlaces;
+		wxPanel* m_panel3;
+		wxNotebook* m_notebook6;
+		wxPanel* m_panelRef;
+		wxHtmlWindow* m_htmlRef;
+		wxPanel* m_panelDates;
+		wxHtmlWindow* m_htmlDate;
+		wxPanel* m_panelPlaces;
+		wxHtmlWindow* m_htmlPlace;
 		wxStaticLine* m_staticline1;
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
@@ -628,9 +665,6 @@ class fbDlgEditIndEvent : public wxDialog
 		virtual void OnDeleteButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnUpButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDownButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnReferencesButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnCompareDatesButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnComparePlacesButton( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:

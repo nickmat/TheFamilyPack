@@ -50,7 +50,7 @@
 #ifdef _DEBUG
 #define VERSION_CONFIG   wxS(" debug")
 #else
-#define VERSION_CONFIG   wxS(" release")
+#define VERSION_CONFIG   wxS("")
 #endif
 
 #define VERSION_NUM   wxS("0.3.0.1")

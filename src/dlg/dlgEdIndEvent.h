@@ -82,12 +82,6 @@ private:
     void OnUpButton( wxCommandEvent& event );
     void OnDownButton( wxCommandEvent& event );
 
-    void OnReferencesButton( wxCommandEvent& event );
-    void OnCompareDatesButton( wxCommandEvent& event );
-    void OnComparePlacesButton( wxCommandEvent& event );
-
-//    recEventPersona m_ep;
-
     recEvent  m_event;
     recDate   m_date1;
     recPlace  m_place;
@@ -100,9 +94,6 @@ private:
     recDateVec  m_reDate1s;
     StringVec   m_dateImageFNs;
 
-    wxString    m_refEventsHtm;
-    wxString    m_refDatesHtm;
-    wxString    m_refPlacesHtm;
     wxString    m_dateImageFN;
 };
 

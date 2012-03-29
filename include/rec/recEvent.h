@@ -209,6 +209,7 @@ public:
     static recEventTypeVec ReadAllFamily();
     static idt Select( SelectFilter sf = SF_All );
     static recEventTypeRoleVec GetRoles( idt typeID );
+    recEventTypeRoleVec GetRoles() const { return GetRoles( FGetID() ); }
     static recEventTypeRoleVec GetPrimeRoles( idt typeID, int prime = 0 );
 };
 
@@ -284,6 +285,16 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "EventTypeRole" );
 
+    idt FGetTypeID() const { return f_type_id; }
+    int FGetPrime() const { return f_prime; }
+    bool FGetOfficial() const { return f_official; }
+    wxString FGetName() const { return f_name; }
+
+    void FSetTypeID( idt typeID ) { f_type_id = typeID; }
+    void FSetPrime( int prime ) { f_prime = prime; }
+    void FSetOfficial( bool official ) { f_official = official; }
+    void FSetName( const wxString& name ) { f_name = name; }
+
     static wxString GetIdStr( idt evID ) { return wxString::Format( "Ro"ID, evID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
@@ -344,6 +355,13 @@ public:
     void FSetRoleID( idt roleID ) { f_role_id = roleID; }
     void FSetNote( const wxString& note ) { f_note = note; }
     void FSetPerSeq( int perSeq ) { f_per_seq = perSeq; }
+
+    static wxString GetIdStr( idt epID ) { return wxString::Format( "EP"ID, epID ); }
+    wxString GetIdStr() const { return GetIdStr( FGetID() ); }
+
+    static wxString GetRoleStr( idt roleID ) 
+        { return ExecuteStr( "SELECT name FROM EventTypeRole WHERE id="ID";", roleID ); }
+    wxString GetRoleStr() const { return GetRoleStr( f_role_id ); }
 
     /*! Return true if a record exists that matches the
      *  f_per_id, f_event_id and f_role_id.
