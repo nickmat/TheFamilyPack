@@ -55,8 +55,15 @@ public:
     void Clear();
     void Save();
     bool Read();
-
     TABLE_NAME_MEMBERS( "Persona" );
+
+    Sex FGetSex() const { return f_sex; }
+    idt FGetRefID() const { return f_ref_id; }
+    wxString FGetNote() const { return f_note; }
+
+    void FSetSex( Sex sex ) { f_sex = sex; }
+    void FSetRefID( idt refID ) { f_ref_id = refID; }
+    void FSetNote( const wxString& note ) { f_note = note; }
 
     static wxString GetIdStr( idt perID ) { return wxString::Format( "Pa"ID, perID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }

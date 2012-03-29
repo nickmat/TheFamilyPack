@@ -652,6 +652,10 @@ class fbDlgEditIndEvent : public wxDialog
 		wxHtmlWindow* m_htmlDate;
 		wxPanel* m_panelPlaces;
 		wxHtmlWindow* m_htmlPlace;
+		wxPanel* m_panelPersona;
+		wxHtmlWindow* m_htmlPersona;
+		wxPanel* m_panelInd;
+		wxHtmlWindow* m_htmlInd;
 		wxStaticLine* m_staticline1;
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;

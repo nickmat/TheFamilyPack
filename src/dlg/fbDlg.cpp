@@ -2137,6 +2137,30 @@ fbDlgEditIndEvent::fbDlgEditIndEvent( wxWindow* parent, wxWindowID id, const wxS
 	m_panelPlaces->Layout();
 	bSizer133->Fit( m_panelPlaces );
 	m_notebook6->AddPage( m_panelPlaces, _("Places"), false );
+	m_panelPersona = new wxPanel( m_notebook6, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer134;
+	bSizer134 = new wxBoxSizer( wxVERTICAL );
+	
+	m_htmlPersona = new wxHtmlWindow( m_panelPersona, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHW_SCROLLBAR_AUTO|wxSUNKEN_BORDER );
+	bSizer134->Add( m_htmlPersona, 1, wxALL|wxEXPAND, 5 );
+	
+	
+	m_panelPersona->SetSizer( bSizer134 );
+	m_panelPersona->Layout();
+	bSizer134->Fit( m_panelPersona );
+	m_notebook6->AddPage( m_panelPersona, _("Persona"), false );
+	m_panelInd = new wxPanel( m_notebook6, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer135;
+	bSizer135 = new wxBoxSizer( wxVERTICAL );
+	
+	m_htmlInd = new wxHtmlWindow( m_panelInd, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHW_SCROLLBAR_AUTO|wxSUNKEN_BORDER );
+	bSizer135->Add( m_htmlInd, 1, wxALL|wxEXPAND, 5 );
+	
+	
+	m_panelInd->SetSizer( bSizer135 );
+	m_panelInd->Layout();
+	bSizer135->Fit( m_panelInd );
+	m_notebook6->AddPage( m_panelInd, _("Individuals"), false );
 	
 	bSizer13->Add( m_notebook6, 1, wxEXPAND | wxALL, 5 );
 	

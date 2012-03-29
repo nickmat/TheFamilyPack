@@ -101,12 +101,17 @@ bool dlgEditIndEvent::TransferDataToWindow()
     for( size_t i = 0 ; i < m_refEvents.size() ; i++ ) {
         idt refID = recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, m_refEvents[i].f_id );
         m_refIDs.push_back( refID );
+        recIdVec pIDs = recReference::GetPersonaList( refID );
+        m_personaIDs.insert( m_personaIDs.end(), pIDs.begin(), pIDs.end() );
         recDate date( m_refEvents[i].f_date1_id );
         m_reDate1s.push_back( date );
     }
+
     m_htmlRef->SetPage( WrReferenceEvents() );
     m_htmlDate->SetPage( WrReferenceDates() );
     m_htmlPlace->SetPage( WrReferencePlaces() );
+    m_htmlPersona->SetPage( WrReferencePersonas() );
+    m_htmlInd->SetPage( WrReferenceIndividuals() );
     return true;
 }
 
@@ -271,8 +276,47 @@ wxString dlgEditIndEvent::WrReferencePlaces()
 {
     wxString htm;
 
+    // TODO: Create places list
     htm << "<html><head><body>"
            "Places - Not yet written"
+           "</body></html>";
+    return htm;
+}
+
+wxString dlgEditIndEvent::WrReferencePersonas()
+{
+    wxString htm;
+
+    htm << "<html><head><title>"
+        << m_event.f_title << "</title></head>"
+           "<body><table>";
+
+    idt prevRefID = 0; 
+    for( size_t i = 0 ; i < m_personaIDs.size() ; i++ ) {
+        recPersona per(m_personaIDs[i]);
+        htm << "<tr><td>" << ( ( prevRefID == per.FGetRefID() ) ? 
+                wxEmptyString : recReference::GetIdStr( per.FGetRefID() ) )
+            << "</td><td>" << per.GetIdStr()
+            << "</td><td>" << per.GetNameStr()
+            << "</td></tr>"
+        ;
+        if( !per.FGetNote().IsEmpty() ) {
+            htm << "<tr><td></td><td>" <<per.FGetNote() << "</td></tr>";
+        }
+        prevRefID = per.FGetRefID();
+    }
+
+    htm << "</table></body></html>";
+
+    return htm;
+}
+
+wxString dlgEditIndEvent::WrReferenceIndividuals()
+{
+    wxString htm;
+
+    htm << "<html><head><body>"
+           "Individuals - Not yet written"
            "</body></html>";
     return htm;
 }
