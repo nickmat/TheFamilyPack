@@ -172,4 +172,17 @@ public:
     bool Exists() { return RecordExists( (T), f_id ); }                \
     static bool Exists( idt id ) { return RecordExists( (T), id ); }
 
+// Create a string list of ID strings for a given record type
+// ie "Pa12, Pa34, Pa56" from a recIdVec
+
+template <class rec>
+wxString recIdVecToStr( const recIdVec& ids ) {
+    wxString str;
+    for( size_t i = 0 ; i < ids.size() ; i++ ) {
+        if( i > 0 ) str << ", ";
+        str << rec::GetIdStr( ids[i] );
+    }
+    return str;
+}
+
 #endif // RECDATABASE_H

@@ -2610,7 +2610,7 @@ fbDlgEditReference::fbDlgEditReference( wxWindow* parent, wxWindowID id, const w
 	m_listPersona = new wxListCtrl( m_panelPersona, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_HRULES|wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_VRULES );
 	m_listPersona->SetMinSize( wxSize( -1,125 ) );
 	
-	bSizer22->Add( m_listPersona, 1, wxALL, 5 );
+	bSizer22->Add( m_listPersona, 1, wxALL|wxEXPAND, 5 );
 	
 	wxBoxSizer* bSizer221;
 	bSizer221 = new wxBoxSizer( wxVERTICAL );

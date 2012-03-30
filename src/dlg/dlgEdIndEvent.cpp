@@ -101,10 +101,22 @@ bool dlgEditIndEvent::TransferDataToWindow()
     for( size_t i = 0 ; i < m_refEvents.size() ; i++ ) {
         idt refID = recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, m_refEvents[i].f_id );
         m_refIDs.push_back( refID );
-        recIdVec pIDs = recReference::GetPersonaList( refID );
+        // Get list of Persona's for this Reference.
+        recIdVec pIDs = recReference::GetPersonaList( refID ); 
         m_personaIDs.insert( m_personaIDs.end(), pIDs.begin(), pIDs.end() );
         recDate date( m_refEvents[i].f_date1_id );
         m_reDate1s.push_back( date );
+    }
+
+    for( size_t i = 0 ; i < m_personaIDs.size() ; i++ ) {
+        // Get a list of Individual's linked to this Persona.
+        recIdVec iIDs = recPersona::GetIndividualIDs( m_personaIDs[i] );
+        for( size_t j = 0 ; j < iIDs.size() ; j++ ) {
+            // Get current list of Persona's already linked to this Individual, if any.
+            recIdVec ipIDs = m_indPerMap[iIDs[j]];
+            ipIDs.push_back( m_personaIDs[i] );
+            m_indPerMap[iIDs[j]] = ipIDs;
+        }
     }
 
     m_htmlRef->SetPage( WrReferenceEvents() );
@@ -315,9 +327,23 @@ wxString dlgEditIndEvent::WrReferenceIndividuals()
 {
     wxString htm;
 
-    htm << "<html><head><body>"
-           "Individuals - Not yet written"
-           "</body></html>";
+    htm << "<html><head><title>"
+        << m_event.f_title << "</title></head>"
+           "<body><table>";
+
+    IndPerMap::iterator it;
+    for( it = m_indPerMap.begin() ; it != m_indPerMap.end() ; it++ ) {
+        recIndividual ind((*it).first);
+
+        htm << "<tr><td>" << ind.GetIdStr()
+            << "</td><td>" << ind.GetFullName()
+            << "</td><td>" << recIdVecToStr<recPersona>( (*it).second )
+            << "</td></tr>"
+        ;
+    }
+
+    htm << "</table></body></html>";
+
     return htm;
 }
 

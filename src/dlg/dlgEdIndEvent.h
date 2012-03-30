@@ -40,6 +40,8 @@
 
 typedef std::vector< wxString >  StringVec;
 
+#include <map>
+typedef std::map< idt, recIdVec > IndPerMap;
 
 //-----------------------------------------------------
 //      dlgEditIndEvent
@@ -86,6 +88,7 @@ private:
     recEventVec m_refEvents;
     recIdVec    m_refIDs;
     recIdVec    m_personaIDs;
+    IndPerMap   m_indPerMap;
     recDateVec  m_reDate1s;
     StringVec   m_dateImageFNs;
 
