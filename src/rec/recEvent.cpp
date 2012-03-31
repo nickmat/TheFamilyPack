@@ -141,7 +141,7 @@ bool recEvent::Read()
     f_date2_id = GET_ID( result.GetInt64( 3 ) );
     f_place_id = GET_ID( result.GetInt64( 4 ) );
     f_note     = result.GetAsString( 5 );
-    f_date_pt  = (long) result.GetInt( 5 );
+    f_date_pt  = (long) result.GetInt( 6 );
     return true;
 }
 

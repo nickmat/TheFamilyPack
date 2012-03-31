@@ -116,7 +116,7 @@ CREATE TABLE EventPersona (
   per_id INTEGER NOT NULL REFERENCES Persona(id),
   role_id INTEGER NOT NULL REFERENCES EventTypeRole(id),
   note TEXT NOT NULL,
-  seq_per INTEGER NOT NULL
+  per_seq INTEGER NOT NULL
 );
 
 CREATE TABLE EventType (
@@ -396,7 +396,7 @@ CREATE TABLE RepositorySource (
   desc TEXT
 );
 
-CREATE TABLE Researcher (
+CREATE TABLE Researcher (  /* See System Settings below for initial entries */
   id INTEGER PRIMARY KEY,
   name TEXT,
   comments TEXT
@@ -413,10 +413,21 @@ CREATE TABLE Source (
   comments TEXT
 );
 
-CREATE TABLE User (
+CREATE TABLE System (  /* See System Settings below for initial entries */
   id INTEGER PRIMARY KEY,
-  res_id INTEGER,
-  fam_id INTEGER
+  val TEXT NOT NULL
+);
+
+CREATE TABLE User (  /* See System Settings below for initial entries */
+  id INTEGER PRIMARY KEY,
+  res_id INTEGER NOT NULL REFERENCES Researcher(id)
+);
+
+CREATE TABLE UserSetting (  /* See System Settings below for initial entries */
+  id INTEGER PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES User(id),
+  property INTEGER NOT NULL,
+  val TEXT NOT NULL
 );
 
 CREATE TABLE Version (
@@ -427,8 +438,17 @@ CREATE TABLE Version (
   test INTEGER
 );
 
+/* Create default settings */
+INSERT INTO Researcher (id, name, comments) VALUES(0, '', '');
+INSERT INTO Researcher (id, name, comments) VALUES(1, 'Anonymous', '');
+INSERT INTO User (id, res_id) VALUES(0, 0);
+INSERT INTO User (id, res_id) VALUES(1, 1);
+INSERT INTO System (id, val) VALUES(1, '1'); /* Default User U1 */
+INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 0, 1, 'F1');
+INSERT INTO UserSetting (id, user_id, property, val) VALUES(2, 1, 1, 'F1');
+
 /* The Version table has only this one row */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 18);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 19);
 
 COMMIT;
 

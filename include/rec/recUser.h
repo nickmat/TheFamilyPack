@@ -42,9 +42,6 @@ typedef std::vector< recUser >  recUserVec;
 class recUser : public recDb
 {
 public:
-    idt     f_res_id;
-    idt     f_fam_id;
-
     recUser() {}
     recUser( idt id ) : recDb(id) { Read(); }
     recUser( const recUser& user );
@@ -52,23 +49,73 @@ public:
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "User" );
+    TABLE_NAME_MEMBERS( "User" )
+    bool Equivalent( const recUser& r2 ) const;
 
+    idt FGetResID() const { return f_res_id; }
+
+    void FSetResID( idt resID ) { f_res_id = resID; }
+
+    static wxString GetIdStr( idt userID ) { return wxString::Format( "U"ID, userID ); }
+    wxString GetIdStr() const { return GetIdStr( f_id ); }
+
+private:
+    idt  f_res_id;
 };
-
-inline bool recEquivalent( const recUser& r1, const recUser& r2 )
-{
-    return
-        r1.f_res_id == r2.f_res_id &&
-        r1.f_fam_id == r2.f_fam_id;
-}
 
 inline bool operator==( const recUser& r1, const recUser& r2 )
 {
-    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
+    return r1.Equivalent( r2 ) && r1.EqualID( r2 );
 }
 
 inline bool operator!=( const recUser& r1, const recUser& r2 )
+{
+    return !(r1 == r2);
+}
+
+//============================================================================
+//                 recUserSetting
+//============================================================================
+
+class recUserSetting : public recDb
+{
+public:
+    enum Property {
+        UP_Unstated = 0,
+        UP_HomeScreen,
+        UP_MAX
+    };
+
+    recUserSetting() {}
+    recUserSetting( idt id ) : recDb(id) { Read(); }
+    recUserSetting( const recUserSetting& user );
+
+    void Clear();
+    void Save();
+    bool Read();
+    TABLE_NAME_MEMBERS( "UserSetting" )
+    bool Equivalent( const recUserSetting& r2 ) const;
+
+    idt FGetUserID() const { return f_user_id; }
+    Property FGetProperty() const { return f_property; }
+    wxString FGetValue() const { return f_val; }
+
+    void FSetUserID( idt userID ) { f_user_id = userID; }
+    void FSetProperty( Property up ) { f_property = up; }
+    void FSetValue( const wxString& val ) { f_val = val; }
+
+private:
+    idt      f_user_id;
+    Property f_property;
+    wxString f_val;
+};
+
+inline bool operator==( const recUserSetting& r1, const recUserSetting& r2 )
+{
+    return r1.Equivalent( r2 ) && r1.EqualID( r2 );
+}
+
+inline bool operator!=( const recUserSetting& r1, const recUserSetting& r2 )
 {
     return !(r1 == r2);
 }

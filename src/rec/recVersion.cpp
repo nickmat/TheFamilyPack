@@ -46,8 +46,8 @@
 const int recVerMajor    = 0;
 const int recVerMinor    = 0;
 const int recVerRev      = 9;
-const int recVerTest     = 18;
-const wxStringCharType* recVerStr = wxS("TFPD-0.0.9.18");
+const int recVerTest     = 19;
+const wxStringCharType* recVerStr = wxS("TFPD-0.0.9.19");
 
 
 recVersion::recVersion( const recVersion& v )
@@ -779,6 +779,43 @@ static void UpgradeTest0_0_9_17to0_0_9_18()
     recDb::Commit();
 }
 
+static void UpgradeTest0_0_9_18to0_0_9_19()
+{
+    char* query =
+        "BEGIN;\n"
+
+        "DROP TABLE User;\n"
+        "CREATE TABLE User (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  res_id INTEGER NOT NULL REFERENCES Researcher(id)\n"
+        ");\n"
+
+        "CREATE TABLE System (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  val TEXT NOT NULL\n"
+        ");\n"
+
+        "CREATE TABLE UserSetting (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  user_id INTEGER NOT NULL REFERENCES User(id),\n"
+        "  property INTEGER NOT NULL,\n"
+        "  val TEXT NOT NULL\n"
+        ");\n"
+
+        "INSERT INTO Researcher (id, name, comments) VALUES(0, '', '');\n"
+        "INSERT INTO Researcher (id, name, comments) VALUES(0, 'Anonymous', '');\n"
+        "INSERT INTO User (id, res_id) VALUES(0, 0);\n"
+        "INSERT INTO User (id, res_id) VALUES(1, 1);\n"
+        "INSERT INTO System (id, val) VALUES(1, '1');\n"
+        "INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 0, 1, 'F1');\n"
+        "INSERT INTO UserSetting (id, user_id, property, val) VALUES(2, 1, 1, 'F1');\n"
+
+        "UPDATE Version SET test=19 WHERE id=1;\n"
+        "COMMIT;\n"
+    ;
+    recDb::GetDb()->ExecuteUpdate( query );
+}
+
 
 static void UpgradeRev0_0_9toCurrent( int test )
 {
@@ -802,6 +839,7 @@ static void UpgradeRev0_0_9toCurrent( int test )
     case 15: UpgradeTest0_0_9_15to0_0_9_16();
     case 16: UpgradeTest0_0_9_16to0_0_9_17();
     case 17: UpgradeTest0_0_9_17to0_0_9_18();
+    case 18: UpgradeTest0_0_9_18to0_0_9_19();
     }
 }
 

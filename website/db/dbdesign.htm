@@ -133,7 +133,11 @@
     <td><a href="#RepositorySource">RepositorySource</a></td>
     <td><a href="#Researcher">Researcher</a></td>
     <td><a href="#Source">Source</a></td>
+    <td><a href="#System">System</a></td>
     <td><a href="#User">User</a></td>
+    <td><a href="#UserSetting">UserSetting</a></td>
+   </tr>
+   <tr>
     <td><a href="#Version">Version</a></td>
     <td colspan='0' class="na">&nbsp;</td>
    </tr>
@@ -1068,7 +1072,7 @@
     <tr>
      <td>id</td>
      <td>Int PK</td>
-     <td>Unique key identifying a Researcher</td>
+     <td>Unique key identifying a Researcher. The default is the unknown Reseacher zero</td>
     </tr>
     <tr>
      <td>name</td>
@@ -1128,6 +1132,23 @@
      <td>Any comments about the Source.</td>
     </tr>
 
+    <tr id="System">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>System</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a System Setting</td>
+    </tr>
+    <tr>
+     <td>val</td>
+     <td>Text</td>
+     <td>The value of the setting, may be text or a foreign key.</td>
+    </tr>
+
     <tr id="User">
      <td colspan="3" class="filler"><a href="#">Top</a></td>
     </tr>
@@ -1141,13 +1162,35 @@
     </tr>
     <tr>
      <td>res_id</td>
-     <td>Integer</td>
-     <td>A pointer to a Researcher corresponding to the User.</td>
+     <td>Integer FK</td>
+     <td>A pointer to the Researcher corresponding to the User. Null indicates the default User.</td>
+    </tr>
+
+    <tr id="UserSetting">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>UserSetting</b></td>
     </tr>
     <tr>
-     <td>fam_id</td>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a UserSetting.</td>
+    </tr>
+    <tr>
+     <td>user_id</td>
      <td>Integer</td>
-     <td>A pointer to a default or home Family.</td>
+     <td>A pointer to the User for which the setting applies.</td>
+    </tr>
+    <tr>
+     <td>property</td>
+     <td>Integer</td>
+     <td>A value indicating the property being set.</td>
+    </tr>
+    <tr>
+     <td>val</td>
+     <td>Text</td>
+     <td>The value of the setting, may be text or a foreign key.</td>
     </tr>
 
     <tr id="Version">

@@ -46,6 +46,7 @@ typedef wxVector< idt >  recIdList;
 typedef std::vector< idt >  recIdVec;
 
 extern idt recGetID( const wxString& str );
+inline wxString recGetStr( idt id ) { return wxString::Format( ID, id ); }
 
 enum Sex { SEX_Unstated, SEX_Male, SEX_Female, SEX_Unknown };
 extern wxString recGetSexStr( Sex sex );
@@ -158,6 +159,8 @@ public:
     void SetID( idt id ) { f_id = id; }
     idt FGetID() const { return f_id; }
     void FSetID( idt id ) { f_id = id; }
+
+    bool EqualID( const recDb& r2 ) const { return f_id == r2.f_id; }
 
     static idt ExecuteID( const wxSQLite3StatementBuffer& sql );
     static idt ExecuteID( const char* format, idt id );

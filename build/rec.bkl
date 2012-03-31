@@ -59,6 +59,7 @@
     <sources>$(LOCAL_SRC)/rec/recReference.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recRelationship.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recSource.cpp</sources>
+    <sources>$(LOCAL_SRC)/rec/recSystem.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recUser.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recVersion.cpp</sources>
 
@@ -77,6 +78,7 @@
     <headers>$(LOCAL_INC)/rec/recReference.h</headers>
     <headers>$(LOCAL_INC)/rec/recRelationship.h</headers>
     <headers>$(LOCAL_INC)/rec/recSource.h</headers>
+    <headers>$(LOCAL_INC)/rec/recSystem.h</headers>
     <headers>$(LOCAL_INC)/rec/recUser.h</headers>
     <headers>$(LOCAL_INC)/rec/recVersion.h</headers>
     <include>$(LOCAL_INC)/rec</include>

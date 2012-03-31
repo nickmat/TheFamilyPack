@@ -47,14 +47,12 @@ recUser::recUser( const recUser& s )
 {
     f_id     = s.f_id;
     f_res_id = s.f_res_id;
-    f_fam_id = s.f_fam_id;
 }
 
 void recUser::Clear()
 {
     f_id     = 0;
     f_res_id = 0;
-    f_fam_id = 0;
 }
 
 void recUser::Save()
@@ -62,32 +60,27 @@ void recUser::Save()
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
 
-    if( f_id == 0 )
-    {
+    if( f_id == 0 ) {
         // Add new record
         sql.Format(
-            "INSERT INTO User (res_id, fam_id) "
-            "VALUES ("ID", "ID");",
-            f_res_id, f_fam_id
+            "INSERT INTO User (res_id) VALUES ("ID");",
+            f_res_id
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
     } else {
         // Does record exist
-        if( !Exists() )
-        {
+        if( !Exists() ) {
             // Add new record
             sql.Format(
-                "INSERT INTO User (id, res_id, fam_id) "
-                "VALUES ("ID", "ID", "ID");",
-                f_id, f_res_id, f_fam_id
+                "INSERT INTO User (id, res_id) VALUES ("ID", "ID");",
+                f_id, f_res_id
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE User SET res_id="ID", fam_id="ID" "
-                "WHERE id="ID";",
-                f_res_id, f_fam_id, f_id
+                "UPDATE User SET res_id="ID" WHERE id="ID";",
+                f_res_id, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -105,21 +98,112 @@ bool recUser::Read()
     }
 
     sql.Format(
-        "SELECT res_id, fam_id "
-        "FROM User WHERE id="ID";",
+        "SELECT res_id FROM User WHERE id="ID";",
         f_id
     );
     result = s_db->GetTable( sql );
 
-    if( result.GetRowCount() != 1 )
-    {
+    if( result.GetRowCount() != 1 ) {
         Clear();
         return false;
     }
     result.SetRow( 0 );
     f_res_id = GET_ID( result.GetInt64( 0 ) );
-    f_fam_id = GET_ID( result.GetInt64( 1 ) );
     return true;
 }
+
+bool recUser::Equivalent( const recUser& r2 ) const
+{ 
+    return f_res_id == r2.f_res_id;
+}
+
+//============================================================================
+//                 recUserSetting
+//============================================================================
+
+recUserSetting::recUserSetting( const recUserSetting& r2 )
+{
+    f_id       = r2.f_id;
+    f_user_id  = r2.f_user_id;
+    f_property = r2.f_property;
+    f_val      = r2.f_val;
+}
+
+void recUserSetting::Clear()
+{
+    f_id       = 0;
+    f_user_id  = 0;
+    f_property = UP_Unstated;
+    f_val      = wxEmptyString;
+}
+
+void recUserSetting::Save()
+{
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( f_id == 0 ) {
+        // Add new record
+        sql.Format(
+            "INSERT INTO UserSetting (user_id, property, val) VALUES ("ID", %d, '%q');",
+            f_user_id, f_property, UTF8_(f_val)
+        );
+        s_db->ExecuteUpdate( sql );
+        f_id = GET_ID( s_db->GetLastRowId() );
+    } else {
+        // Does record exist
+        if( !Exists() ) {
+            // Add new record
+            sql.Format(
+                "INSERT INTO UserSetting (id, user_id, property, val)"
+                " VALUES ("ID", "ID", %d, '%q');",
+                f_id, f_user_id, f_property, UTF8_(f_val)
+            );
+        } else {
+            // Update existing record
+            sql.Format(
+                "UPDATE UserSetting SET user_id="ID", property=%d, val='%q' WHERE id="ID";",
+                f_user_id, f_property, UTF8_(f_val), f_id
+            );
+        }
+        s_db->ExecuteUpdate( sql );
+    }
+}
+
+bool recUserSetting::Read()
+{
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( f_id == 0 ) {
+        Clear();
+        return false;
+    }
+
+    sql.Format(
+        "SELECT user_id, property, val FROM UserSetting WHERE id="ID";",
+        f_id
+    );
+    result = s_db->GetTable( sql );
+
+    if( result.GetRowCount() != 1 ) {
+        Clear();
+        return false;
+    }
+    result.SetRow( 0 );
+    f_user_id  = GET_ID( result.GetInt64( 0 ) );
+    f_property = (Property) result.GetInt( 1 );
+    f_val      = result.GetAsString( 2 );
+    return true;
+}
+
+bool recUserSetting::Equivalent( const recUserSetting& r2 ) const
+{ 
+    return 
+        f_user_id  == r2.f_user_id  &&
+        f_property == r2.f_property &&
+        f_val      == r2.f_val;
+}
+
 
 // End of recUser.cpp file
