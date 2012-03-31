@@ -803,7 +803,7 @@ static void UpgradeTest0_0_9_18to0_0_9_19()
         ");\n"
 
         "INSERT INTO Researcher (id, name, comments) VALUES(0, '', '');\n"
-        "INSERT INTO Researcher (id, name, comments) VALUES(0, 'Anonymous', '');\n"
+        "INSERT INTO Researcher (id, name, comments) VALUES(1, 'Anonymous', '');\n"
         "INSERT INTO User (id, res_id) VALUES(0, 0);\n"
         "INSERT INTO User (id, res_id) VALUES(1, 1);\n"
         "INSERT INTO System (id, val) VALUES(1, '1');\n"
