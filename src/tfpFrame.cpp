@@ -83,6 +83,8 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_LIST_EVENTS, TfpFrame::OnListEvents )
     EVT_MENU( tfpID_PED_CHART, TfpFrame::OnPedChart )
     EVT_MENU( tfpID_DESC_CHART, TfpFrame::OnDescChart )
+    EVT_MENU( tfpID_SYSTEM_SETTING, TfpFrame::OnSystemOptions )
+    EVT_MENU( tfpID_USER_SETTING, TfpFrame::OnUserOptions )
     EVT_MENU( tfpID_HELP_WEB_HOME, TfpFrame::OnHelpWebHome )
     EVT_MENU( tfpID_HELP_ABOUT_DB, TfpFrame::OnAboutDatabase )
     EVT_MENU( wxID_ABOUT, TfpFrame::OnAbout )
@@ -172,6 +174,10 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     menuChart->Append( tfpID_PED_CHART, _("&Pedigree...") );
     menuChart->Append( tfpID_DESC_CHART, _("&Descendant...") );
 
+    wxMenu* menuTools = new wxMenu;
+    menuTools->Append( tfpID_SYSTEM_SETTING, _("&System Options...") );
+    menuTools->Append( tfpID_USER_SETTING, _("&User Options...") );
+
     wxMenu *menuHelp = new wxMenu;
     menuHelp->Append( tfpID_HELP_WEB_HOME, _("The Family Pack &Website") );
     menuHelp->Append( tfpID_HELP_ABOUT_DB, _("About &Database") );
@@ -183,6 +189,7 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     m_menuOpenDB->Append( menuFind, _("F&ind") );
     m_menuOpenDB->Append( menuList, _("&List") );
     m_menuOpenDB->Append( menuChart, _("&Chart") );
+    m_menuOpenDB->Append( menuTools, _("&Tools") );
     m_menuOpenDB->Append( menuHelp, _("&Help") );
 
     // Menu bar for use with closed database
@@ -555,6 +562,20 @@ void TfpFrame::OnPedChart( wxCommandEvent& event )
 void TfpFrame::OnDescChart( wxCommandEvent& event )
 {
     wxMessageBox( wxT("Not yet implimented"), wxT("OnDescChart") );
+}
+
+/*! \brief Called on a System Settings menu option event.
+ */
+void TfpFrame::OnSystemOptions( wxCommandEvent& event )
+{
+    wxMessageBox( wxT("Not yet implimented"), wxT("OnSystemOptions") );
+}
+
+/*! \brief Called on a User Settings menu option event.
+ */
+void TfpFrame::OnUserOptions( wxCommandEvent& event )
+{
+    wxMessageBox( wxT("Not yet implimented"), wxT("OnUserOptions") );
 }
 
 /*! \brief Called on a Help, TFP Website menu option event.

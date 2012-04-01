@@ -98,6 +98,9 @@ public:
     void OnPedChart( wxCommandEvent& event );
     void OnDescChart( wxCommandEvent& event );
 
+    void OnSystemOptions( wxCommandEvent& event );
+    void OnUserOptions( wxCommandEvent& event );
+
     void OnHelpWebHome( wxCommandEvent& event );
     void OnAboutDatabase( wxCommandEvent& event );
     void OnAbout( wxCommandEvent& event );
@@ -166,6 +169,8 @@ enum
 	tfpID_LIST_EVENTS,
     tfpID_PED_CHART,
     tfpID_DESC_CHART,
+    tfpID_SYSTEM_SETTING,
+    tfpID_USER_SETTING,
     tfpID_HELP_WEB_HOME,
     tfpID_HELP_ABOUT_DB,
     tfpID_FIND_BACK,
