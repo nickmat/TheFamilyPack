@@ -32,14 +32,29 @@
 <div class="diag"><img src="tfp-contact.png" alt="Contact Subsystem" /></div>
 <h2>Contact</h2>
 <p>
- A single contact system is used for all entities that are contactable. The ContactType table is prefilled with core data and can be extended by the user as we find more varied ways of contacting each other.
+ A single contact system is used for all entities that are contactable. Note that since all Users are also Researchers, a Users contact details can be found by looking up the relevant Researcher. If a Researcher is also an Individual in the database, only one set of details needs to be included.
 </p>
 <p>
- The Contact val(ue) is normally a text string, but in the case of ContactType of "Address", the val(ue) is a place id.
+ The Contact value <span class="field">[val]</span> is normally a text string, but in the case of ContactType of "Place", the value is a Place id.
 </p>
-<h3>Researcher</h3>
+
+<h3>Contact Type</h3>
+
+<table class="basic rfloat">
+ <tr><th colspan="0">ContactType table Core Data</th></tr>
+ <tr><th>[id]</th><th>[name]</th><th> </th></tr>
+ <tr><td>0</td><td> </td><td>Unstated type</td></tr>
+ <tr><td>-1</td><td>Place</td><td>Address. Actually a Place ID Number</td></tr>
+ <tr><td>-2</td><td>Phone</td><td></td></tr>
+ <tr><td>-3</td><td>Fax</td><td></td></tr>
+ <tr><td>-4</td><td>Mobile</td><td></td></tr>
+ <tr><td>-5</td><td>email</td><td></td></tr>
+ <tr><td>-6</td><td>VoIP</td><td>Internet phone (ie Skype)</td></tr>
+ <tr><td>-7</td><td>Website</td><td></td></tr>
+</table>
+
 <p>
- Anyone who has had a hand in creating the data in the database and who needs to be credited can be listed in this table. They should be listed here, even if they also appear as an Individual and or as a User.
+ The ContactType table is prefilled with core data as shown on the right. This can be extended by the user (using positive ID numbers) as we find more varied ways of contacting each other.
 </p>
 
 </div>

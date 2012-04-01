@@ -179,6 +179,7 @@ table.map td {
 table.basic {
  border: 2px solid black;
  border-collapse: collapse;
+ margin: 1em;
 }
 
 table.basic td, table.basic th {
@@ -188,6 +189,26 @@ table.basic td, table.basic th {
 
 table.basic th {
  background-color: #fed;
+ white-space: nowrap;
+}
+
+
+table.rfloat {
+ display: inline-table;
+ float: right;
+ margin-top: 0;
+ clear: right;
+}
+
+table.lfloat {
+ display: inline-table;
+ float: left;
+ margin-top: 0;
+ clear: left;
+}
+
+h1, h2, h3, hr {
+ clear: both;
 }
 
 span.field {
