@@ -47,6 +47,7 @@
 #include "dlgSelIndividual.h"
 #include "dlgSelEvent.h"
 #include "dlgEdReference.h"
+#include "dlgEdResearcher.h"
 #include "dlgSelect.h"
 #include "dlgEdIndEvent.h"
 #include "dlg/dlgNote.h"
@@ -449,24 +450,14 @@ idt tfpAddMarriageEvent( const recFamily& family )
     }
 
     dlgEditIndEvent* dialog = new dlgEditIndEvent( NULL, 0 );
-//    dialog->SetEventType( typeID );
-//    dialog->SetEventTitle( wxString::Format( 
-//        _("%s of %s and %s"), 
-//        recEventType::GetTypeStr( typeID ), 
-//        recIndividual::GetFullName( family.f_husb_id ),
-//        recIndividual::GetFullName( family.f_wife_id )
-//    ) );
 
     if( dialog->ShowModal() == wxID_OK )
     {
-
-//        eventID = dialog->GetEventID();
         recLinkEvent le(0);
         le.f_ind_event_id = eventID;
         le.Save();
         recEventPersona ep(0);
         ep.f_event_id = eventID;
-//        ep.f_sequence = recEvent::GetDatePoint( eventID );
         if( family.f_husb_id ) {
             ep.f_per_id = recIndividual::GetPersona( family.f_husb_id );
             ep.f_role_id = husbRoleID;
@@ -487,6 +478,24 @@ idt tfpAddMarriageEvent( const recFamily& family )
     dialog->Destroy();
     return eventID;
 }
+
+bool tfpEditResearcher( idt resID  )
+{
+    const wxString savepoint = "EdRes";
+    recDb::Savepoint( savepoint );
+    bool ret = false;
+    dlgEditResearcher* dialog = new dlgEditResearcher( NULL, resID );
+
+    if( dialog->ShowModal() == wxID_OK ) {
+        recDb::ReleaseSavepoint( savepoint );
+        ret = true;
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+    return ret;
+}
+
 
 idt tfpPickIndividual( Sex sex )
 {

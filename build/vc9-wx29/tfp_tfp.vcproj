@@ -273,6 +273,10 @@
                 >
             </File>
             <File
+                RelativePath="..\..\src\dlg\dlgEdResearcher.cpp"
+                >
+            </File>
+            <File
                 RelativePath="..\..\src\dlg\dlgEdRole.cpp"
                 >
             </File>
@@ -428,6 +432,10 @@
             </File>
             <File
                 RelativePath="..\..\src\dlg\dlgEdRelationship.h"
+                >
+            </File>
+            <File
+                RelativePath="..\..\src\dlg\dlgEdResearcher.h"
                 >
             </File>
             <File

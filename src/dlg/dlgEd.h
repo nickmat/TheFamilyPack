@@ -54,6 +54,8 @@ extern bool tfpAddExistChild( idt famID, Sex sex );
 extern idt tfpAddMarriageEvent( const recFamily& family );
 extern idt tfpGetExistingMarriageEvent( idt famID );
 
+extern bool tfpEditResearcher( idt resID  );
+
 extern idt tfpPickIndividual( Sex sex = SEX_Unstated );
 
 #define TFP_SELECT_STYLE_CREATE   0x0001

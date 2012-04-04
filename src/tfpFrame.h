@@ -81,6 +81,7 @@ public:
 
     void OnEditContext( wxCommandEvent& event );
     void OnEditReference( wxCommandEvent& event );
+    void OnEditResearcher( wxCommandEvent& event );
 
     void OnEditIndividual( wxCommandEvent& event );
     void OnAddNewIndMale( wxCommandEvent& event );
@@ -160,6 +161,7 @@ enum
     tfpID_EDIT_IND_NEW_MALE,
     tfpID_EDIT_IND_NEW_FEMALE,
     tfpID_EDIT_REFERENCE,
+    tfpID_EDIT_RESEARCHER,
     tfpID_FIND_FAMILY_ID,
     tfpID_FIND_INDIVIDUAL_ID,
     tfpID_LIST_SURNAME_INDEX,

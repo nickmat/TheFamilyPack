@@ -38,6 +38,7 @@
 #include <wx/splitter.h>
 #include <wx/html/htmlwin.h>
 #include <wx/toolbar.h>
+#include <wx/checkbox.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -938,6 +939,52 @@ class fbDlgSelect : public wxDialog
 		
 		fbDlgSelect( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Select"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 485,269 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbDlgSelect();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class fbDlgEditResearcher
+///////////////////////////////////////////////////////////////////////////////
+class fbDlgEditResearcher : public wxDialog 
+{
+	private:
+	
+	protected:
+		wxStaticText* m_staticText11;
+		wxStaticText* m_staticResID;
+		wxStaticText* m_staticUserID;
+		wxCheckBox* m_checkBoxUser;
+		wxSplitterWindow* m_splitter4;
+		wxPanel* m_panel29;
+		wxStaticText* m_staticText21;
+		wxTextCtrl* m_textName;
+		wxStaticText* m_staticText23;
+		wxTextCtrl* m_textComment;
+		wxPanel* m_panel30;
+		wxListCtrl* m_listContacts;
+		wxButton* m_buttonAdd;
+		wxButton* m_buttonEdit;
+		wxButton* m_buttonDelete;
+		wxStaticLine* m_staticline1;
+		wxButton* m_buttonSave;
+		wxButton* m_buttonCancel;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnButtonClickAdd( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonClickEdit( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonClickDelete( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		fbDlgEditResearcher( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Researcher"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 400,329 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxSYSTEM_MENU ); 
+		~fbDlgEditResearcher();
+		
+		void m_splitter4OnIdle( wxIdleEvent& )
+		{
+			m_splitter4->SetSashPosition( 0 );
+			m_splitter4->Disconnect( wxEVT_IDLE, wxIdleEventHandler( fbDlgEditResearcher::m_splitter4OnIdle ), NULL, this );
+		}
 	
 };
 

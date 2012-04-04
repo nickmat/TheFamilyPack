@@ -333,4 +333,11 @@ bool recResearcher::Read()
     return true;
 }
 
+bool recResearcher::Equivalent( const recResearcher& r2 ) const
+{
+    return
+        f_name     == r2.f_name    &&
+        f_comments == r2.f_comments;
+}
+
 // End of recContact.cpp file

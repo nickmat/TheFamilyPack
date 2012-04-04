@@ -128,29 +128,35 @@ inline bool operator!=( const recContactType& r1, const recContactType& r2 )
 class recResearcher : public recDb
 {
 public:
-    wxString  f_name;
-    wxString  f_comments;
 
     recResearcher() {}
     recResearcher( idt id ) : recDb(id) { Read(); }
-    recResearcher( const recResearcher& at );
+    recResearcher( const recResearcher& res );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "Researcher" );
+    TABLE_NAME_MEMBERS( "Researcher" )
+    bool Equivalent( const recResearcher& r2 ) const;
+
+    wxString FGetName() const { return f_name; }
+    wxString FGetComment() const { return f_comments; }
+
+    void FSetName( const wxString& name ) { f_name = name; }
+    void FSetComments( const wxString& com ) { f_comments = com; }
+
+    static wxString GetIdStr( idt resID ) { return wxString::Format( "Re"ID, resID ); }
+    wxString GetIdStr() const { return GetIdStr( f_id ); }
+
+private:
+    wxString  f_name;
+    wxString  f_comments;
 };
 
-inline bool recEquivalent( const recResearcher& r1, const recResearcher& r2 )
-{
-    return
-        r1.f_name     == r2.f_name    &&
-        r1.f_comments == r2.f_comments;
-}
 
 inline bool operator==( const recResearcher& r1, const recResearcher& r2 )
 {
-    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
+    return r1.Equivalent( r2 ) && r1.EqualID( r2 );
 }
 
 inline bool operator!=( const recResearcher& r1, const recResearcher& r2 )

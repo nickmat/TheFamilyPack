@@ -59,6 +59,9 @@ public:
     static wxString GetIdStr( idt userID ) { return wxString::Format( "U"ID, userID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
+    idt FindFirst( idt resID )
+        { return ExecuteID( "SELECT id FROM User WHERE res_id="ID" ORDER BY id;", resID ); }
+
 private:
     idt  f_res_id;
 };

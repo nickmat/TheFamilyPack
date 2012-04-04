@@ -74,6 +74,7 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_EDIT_IND_NEW_MALE, TfpFrame::OnAddNewIndMale )
     EVT_MENU( tfpID_EDIT_IND_NEW_FEMALE, TfpFrame::OnAddNewIndFemale )
     EVT_MENU( tfpID_EDIT_REFERENCE, TfpFrame::OnEditReference )
+    EVT_MENU( tfpID_EDIT_RESEARCHER, TfpFrame::OnEditResearcher )
     EVT_MENU( tfpID_FIND_FAMILY_ID, TfpFrame::OnFindFamilyID )
     EVT_MENU( tfpID_FIND_INDIVIDUAL_ID, TfpFrame::OnFindIndividualID )
     EVT_MENU( tfpID_LIST_SURNAME_INDEX, TfpFrame::OnListIndex )
@@ -157,7 +158,8 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     
     wxMenu* menuEdit = new wxMenu;
     menuEdit->Append( tfpID_EDIT_IND_MENU, _("&Individual"), m_menuEditInd );
-    menuEdit->Append( tfpID_EDIT_REFERENCE, _("&Reference") );
+    menuEdit->Append( tfpID_EDIT_REFERENCE, _("&Reference...") );
+    menuEdit->Append( tfpID_EDIT_RESEARCHER, _("&Researcher...") );
 
     wxMenu* menuFind = new wxMenu;
     menuFind->Append( tfpID_FIND_FAMILY_ID, _("&Family ID...") );
@@ -488,6 +490,35 @@ void TfpFrame::OnEditReference( wxCommandEvent& event )
     recDb::Begin();
     try {
         bool ret = tfpEditReference( (idt) num );
+        if( ret == true ) {
+            recDb::Commit();
+            m_html->RefreshHtmPage();
+        } else {
+            recDb::Rollback();
+        }
+    }
+    catch( wxSQLite3Exception& e ) {
+        recDb::ErrorMessage( e );
+        recDb::Rollback();
+    }
+}
+
+/*! \brief Called on a Edit Researcher menu option event.
+ */
+void TfpFrame::OnEditResearcher( wxCommandEvent& event )
+{
+    long num = wxGetNumberFromUser(
+        wxT("Enter the Researcher ID or 0 for new Reference"),
+
+        wxT("Researcher ID:"),
+        wxT("Edit Researcher"),
+        (long) 0, (long) 0, (long) INT_MAX
+    );
+    if( num < 0 ) return;
+
+    recDb::Begin();
+    try {
+        bool ret = tfpEditResearcher( (idt) num );
         if( ret == true ) {
             recDb::Commit();
             m_html->RefreshHtmPage();
