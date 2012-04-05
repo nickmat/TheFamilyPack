@@ -74,6 +74,7 @@
 
     <sources>$(LOCAL_SRC)/dlg/dlgEd.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgEdAttribute.cpp</sources>
+    <sources>$(LOCAL_SRC)/dlg/dlgEdContact.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgEdDate.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgEdEvent.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgEdFamily.cpp</sources>
@@ -109,6 +110,7 @@
 
     <headers>$(LOCAL_SRC)/dlg/dlgEd.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgEdAttribute.h</headers>
+    <headers>$(LOCAL_SRC)/dlg/dlgEdContact.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgEdDate.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgEdEvent.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgEdFamily.h</headers>

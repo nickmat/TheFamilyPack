@@ -1,7 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        dlgEdResearcher.h
+ * Name:        dlgEdContact.h
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Edit database Researcher dialog header.
+ * Purpose:     Edit database Contact dialog header.
  * Author:      Nick Matthews
  * Modified by:
  * Website:     http://thefamilypack.org
@@ -27,36 +27,26 @@
 
 */
 
-#ifndef DLGEDRESEARCHER_H
-#define DLGEDRESEARCHER_H
+#ifndef DLGEDNAMEPART_H
+#define DLGEDNAMEPART_H
 
 #include <rec/recContact.h>
-#include <rec/recUser.h>
 
 #include "fbDlg.h"
 
-class dlgEditResearcher : public fbDlgEditResearcher
+class dlgEditContact : public fbDlgEditContact
 {
-    enum Columns {
-        COL_ConID, COL_Type, COL_Value, COL_MAX
-    };
 public:
-    dlgEditResearcher( wxWindow* parent, idt resID );
+    dlgEditContact( wxWindow* parent, idt contactID );
 
-    recResearcher* GetResearcher() { return &m_researcher; }
-    recUser* GetUser() { return &m_user; }
+    recContact* GetContact() { return &m_contact; }
 
 private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
 
-    void OnButtonClickAdd( wxCommandEvent& event );
-    void OnButtonClickEdit( wxCommandEvent& event );
-    void OnButtonClickDelete( wxCommandEvent& event );
-
-    recResearcher     m_researcher;
-    recUser           m_user;
-    recContactVec     m_contacts;
+    recContact         m_contact;
+    recContactTypeVec  m_types;
 };
 
-#endif // DLGEDRESEARCHER_H
+#endif // DLGEDNAMEPART_H

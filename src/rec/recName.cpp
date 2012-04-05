@@ -484,8 +484,8 @@ bool recNamePartType::Read()
 
 wxString recNamePartType::GetTypeStr( idt id )
 {
-    recNamePartType at( id );
-    return at.f_name;
+    recNamePartType npt( id );
+    return npt.f_name;
 }
 
 recNamePartTypeVec recNamePartType::GetTypeList()

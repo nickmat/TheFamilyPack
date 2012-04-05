@@ -72,7 +72,7 @@ void recContact::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO Contact (type_id, repos_id, sub_res_id, ind_id, val) "
+            "INSERT INTO Contact (type_id, repos_id, res_id, ind_id, val) "
             "VALUES ("ID", "ID", "ID", "ID", '%q');",
             f_type_id, f_repos_id, f_res_id, f_ind_id, UTF8_(f_val)
         );
@@ -84,7 +84,7 @@ void recContact::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO Contact (id, type_id, repos_id, sub_res_id, ind_id, val) "
+                "INSERT INTO Contact (id, type_id, repos_id, res_id, ind_id, val) "
                 "VALUES ("ID", "ID", "ID", "ID", "ID", '%q');",
                 f_id, f_type_id, f_repos_id, f_res_id, f_ind_id, UTF8_(f_val)
             );
@@ -112,7 +112,7 @@ bool recContact::Read()
     }
 
     sql.Format(
-        "SELECT type_id, repos_id, sub_res_id, ind_id, val "
+        "SELECT type_id, repos_id, res_id, ind_id, val "
         "FROM Contact WHERE id="ID";",
         f_id
     );
@@ -130,6 +130,16 @@ bool recContact::Read()
     f_ind_id   = GET_ID( result.GetInt64( 3 ) );
     f_val      = result.GetAsString( 4 );
     return true;
+}
+
+bool recContact::Equivalent( const recContact& r2 ) const 
+{
+    return
+        f_type_id  == r2.f_type_id  &&
+        f_repos_id == r2.f_repos_id &&
+        f_res_id   == r2.f_res_id   &&
+        f_ind_id   == r2.f_ind_id   &&
+        f_val      == r2.f_val;
 }
 
 
@@ -207,10 +217,10 @@ bool recContactType::Read()
     return true;
 }
 
-wxString recContactType::GetStr( idt id )
+wxString recContactType::GetTypeStr( idt typeID )
 {
-    recContactType at( id );
-    return at.f_name;
+    recContactType ct( typeID );
+    return ct.f_name;
 }
 
 recContactTypeVec recContactType::GetList()
@@ -339,5 +349,33 @@ bool recResearcher::Equivalent( const recResearcher& r2 ) const
         f_name     == r2.f_name    &&
         f_comments == r2.f_comments;
 }
+
+recContactVec recResearcher::GetContacts() const
+{
+    recContactVec list;
+
+    if( f_id == 0 ) return list;
+
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT id, type_id, repos_id, ind_id, val"
+        " FROM Contact WHERE res_id="ID";",
+        f_id
+    );
+    wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
+
+    recContact con(0);
+    con.FSetResID( f_id );
+    while( result.NextRow() ) {
+        con.FSetID( GET_ID( result.GetInt64( 0 ) ) );
+        con.FSetTypeID( GET_ID( result.GetInt64( 1 ) ) );
+        con.FSetReposID( GET_ID( result.GetInt64( 2 ) ) );
+        con.FSetIndID( GET_ID( result.GetInt64( 3 ) ) );
+        con.FSetValue( result.GetAsString( 4 ) );
+        list.push_back( con );
+    }
+    return list;
+}
+
 
 // End of recContact.cpp file

@@ -989,6 +989,31 @@ class fbDlgEditResearcher : public wxDialog
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/// Class fbDlgEditContact
+///////////////////////////////////////////////////////////////////////////////
+class fbDlgEditContact : public wxDialog 
+{
+	private:
+	
+	protected:
+		wxStaticText* m_staticText11;
+		wxStaticText* m_staticContactID;
+		wxStaticText* m_staticText3;
+		wxChoice* m_choiceType;
+		wxStaticText* m_staticText4;
+		wxTextCtrl* m_textCtrlValue;
+		wxStaticLine* m_staticline1;
+		wxButton* m_buttonSave;
+		wxButton* m_buttonCancel;
+	
+	public:
+		
+		fbDlgEditContact( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Contact"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 296,168 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
+		~fbDlgEditContact();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
 /// Class fbDlgNote
 ///////////////////////////////////////////////////////////////////////////////
 class fbDlgNote : public wxDialog 

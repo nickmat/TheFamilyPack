@@ -229,6 +229,10 @@
                 >
             </File>
             <File
+                RelativePath="..\..\src\dlg\dlgEdContact.cpp"
+                >
+            </File>
+            <File
                 RelativePath="..\..\src\dlg\dlgEdDate.cpp"
                 >
             </File>
@@ -388,6 +392,10 @@
             </File>
             <File
                 RelativePath="..\..\src\dlg\dlgEdAttribute.h"
+                >
+            </File>
+            <File
+                RelativePath="..\..\src\dlg\dlgEdContact.h"
                 >
             </File>
             <File

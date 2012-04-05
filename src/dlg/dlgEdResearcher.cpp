@@ -40,6 +40,7 @@
 #include <rec/recSystem.h>
 
 #include "dlgEdResearcher.h"
+#include "dlgEdContact.h"
 
 dlgEditResearcher::dlgEditResearcher( wxWindow* parent, idt resID )
     : m_researcher(resID), m_user(0), fbDlgEditResearcher( parent )
@@ -76,7 +77,13 @@ bool dlgEditResearcher::TransferDataToWindow()
     m_textName->SetValue( m_researcher.FGetName() );
     m_textComment->SetValue( m_researcher.FGetComment() );
 
-    // TODO: comments
+    m_contacts = m_researcher.GetContacts();
+    for( size_t i = 0 ; i < m_contacts.size() ; i++ ) {
+        m_listContacts->InsertItem( i, m_contacts[i].GetIdStr() );
+        m_listContacts->SetItem( i, COL_Type, m_contacts[i].GetTypeStr() );
+        m_listContacts->SetItem( i, COL_Value, m_contacts[i].FGetValue() );
+    }
+
     return true;
 }
 
@@ -100,17 +107,30 @@ bool dlgEditResearcher::TransferDataFromWindow()
     m_researcher.FSetName( m_textName->GetValue() );
     m_researcher.FSetComments( m_textComment->GetValue() );
 
-    // TODO: comments
     m_researcher.Save();
     return true;
 }
 
 void dlgEditResearcher::OnButtonClickAdd( wxCommandEvent& event )
 {
-    wxMessageBox(
-        wxT("Not yet implimented\nContact"),
-        wxT("OnButtonClickAdd")
-    );
+    const wxString savepoint = "ConAdd";
+    recDb::Savepoint( savepoint );
+
+    dlgEditContact* dialog = new dlgEditContact( NULL, 0 );
+    recContact* con = dialog->GetContact();
+    con->FSetResID( m_researcher.FGetID() );
+
+    if( dialog->ShowModal() == wxID_OK ) {
+        recDb::ReleaseSavepoint( savepoint );
+        int row = m_contacts.size();
+        m_listContacts->InsertItem( row, con->GetIdStr() );
+        m_listContacts->SetItem( row, COL_Type, con->GetTypeStr() );
+        m_listContacts->SetItem( row, COL_Value, con->FGetValue() );
+        m_contacts.push_back( *con );
+   } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
 }
 
 void dlgEditResearcher::OnButtonClickEdit( wxCommandEvent& event )
