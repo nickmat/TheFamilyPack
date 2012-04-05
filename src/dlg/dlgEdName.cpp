@@ -46,9 +46,9 @@
 dlgEditName::dlgEditName( wxWindow* parent ) : fbDlgEditName( parent )
 {
     wxListItem itemCol;
-    itemCol.SetText( wxT("Type") );
+    itemCol.SetText( _("Type") );
     m_listParts->InsertColumn( 0, itemCol );
-    itemCol.SetText( wxT("Value") );
+    itemCol.SetText( _("Value") );
     m_listParts->InsertColumn( 1, itemCol );
 
     m_name.Clear();
@@ -189,7 +189,7 @@ void dlgEditName::OnPartDeleteButton( wxCommandEvent& event )
         m_parts.erase( m_parts.begin() + row );
         UpdateName();
     } else {
-        wxMessageBox( wxT("No row selected"), wxT("Delete Name") );
+        wxMessageBox( _("No row selected"), _("Delete Name") );
     }
 }
 
@@ -197,7 +197,7 @@ void dlgEditName::OnPartUpButton( wxCommandEvent& event )
 {
     long row = m_listParts->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
-        wxMessageBox( wxT("Row not selected"), wxT("NamePart Up") );
+        wxMessageBox( _("Row not selected"), _("NamePart Up") );
         return;
     }
     if( row > 0 ) {
@@ -220,7 +220,7 @@ void dlgEditName::OnPartDownButton( wxCommandEvent& event )
 {
     long row = m_listParts->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
-        wxMessageBox( wxT("Row not selected"), wxT("NamePart Down") );
+        wxMessageBox( _("Row not selected"), _("NamePart Down") );
         return;
     }
     if( row < m_listParts->GetItemCount()-1 ) {

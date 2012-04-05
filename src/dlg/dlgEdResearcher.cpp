@@ -46,11 +46,11 @@ dlgEditResearcher::dlgEditResearcher( wxWindow* parent, idt resID )
     : m_researcher(resID), m_user(0), fbDlgEditResearcher( parent )
 {
     wxListItem itemCol;
-    itemCol.SetText( wxT("ID") );
+    itemCol.SetText( _("ID") );
     m_listContacts->InsertColumn( COL_ConID, itemCol );
-    itemCol.SetText( wxT("Type") );
+    itemCol.SetText( _("Type") );
     m_listContacts->InsertColumn( COL_Type, itemCol );
-    itemCol.SetText( wxT("Value") );
+    itemCol.SetText( _("Value") );
     m_listContacts->InsertColumn( COL_Value, itemCol );
 }
 
@@ -135,18 +135,40 @@ void dlgEditResearcher::OnButtonClickAdd( wxCommandEvent& event )
 
 void dlgEditResearcher::OnButtonClickEdit( wxCommandEvent& event )
 {
-    wxMessageBox(
-        wxT("Not yet implimented\nContact"),
-        wxT("OnButtonClickEdit")
-    );
+    long row = m_listContacts->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row < 0 ) {
+        wxMessageBox( _("No row selected"), _("Edit Contact") );
+        return;
+    }
+
+    const wxString savepoint = "ConEd";
+    recDb::Savepoint( savepoint );
+
+    dlgEditContact* dialog = new dlgEditContact( NULL, m_contacts[row].FGetID() );
+
+    if( dialog->ShowModal() == wxID_OK ) {
+        recDb::ReleaseSavepoint( savepoint );
+        recContact* con = dialog->GetContact();
+        m_listContacts->SetItem( row, COL_ConID, con->GetIdStr() );
+        m_listContacts->SetItem( row, COL_Type, con->GetTypeStr() );
+        m_listContacts->SetItem( row, COL_Value, con->FGetValue() );
+        m_contacts[row] = *con;
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
 }
 
 void dlgEditResearcher::OnButtonClickDelete( wxCommandEvent& event )
 {
-    wxMessageBox(
-        wxT("Not yet implimented\nContact"),
-        wxT("OnButtonClickDelete")
-    );
+    long row = m_listContacts->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row >= 0 ) {
+        m_listContacts->DeleteItem( row );
+        m_contacts[row].Delete();
+        m_contacts.erase( m_contacts.begin() + row );
+    } else {
+        wxMessageBox( _("No row selected"), _("Delete Contact") );
+    }
 }
 
 // End of dlgEdResearcher.cpp file
