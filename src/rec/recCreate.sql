@@ -441,7 +441,7 @@ INSERT INTO ContactType (id, name) VALUES(-2, 'Telephone');
 INSERT INTO ContactType (id, name) VALUES(-3, 'Mobile');
 INSERT INTO ContactType (id, name) VALUES(-4, 'Email');
 INSERT INTO ContactType (id, name) VALUES(-5, 'Website');
-/*
+
 INSERT INTO ContactList (id) VALUES(0);
 INSERT INTO ContactList (id) VALUES(1);
 
@@ -455,7 +455,7 @@ INSERT INTO System (id, val) VALUES(1, '1');
 
 INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 0, 1, 'F1');
 INSERT INTO UserSetting (id, user_id, property, val) VALUES(2, 1, 1, 'F1');
-*/
+
 /* The Version table has only this one row */
 INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 20);
 
