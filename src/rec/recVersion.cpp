@@ -46,8 +46,8 @@
 const int recVerMajor    = 0;
 const int recVerMinor    = 0;
 const int recVerRev      = 9;
-const int recVerTest     = 19;
-const wxStringCharType* recVerStr = wxS("TFPD-0.0.9.19");
+const int recVerTest     = 20;
+const wxStringCharType* recVerStr = wxS("TFPD-0.0.9.20");
 
 
 recVersion::recVersion( const recVersion& v )
@@ -816,6 +816,68 @@ static void UpgradeTest0_0_9_18to0_0_9_19()
     recDb::GetDb()->ExecuteUpdate( query );
 }
 
+static void UpgradeTest0_0_9_19to0_0_9_20()
+{
+    // No attempt at preserving data is made 
+    // as this subsystem has only just been activated.
+    char* query =
+        "BEGIN;\n"
+
+        "DROP TABLE Contact;\n"
+        "CREATE TABLE Contact (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  type_id INTEGER NOT NULL REFERENCES ContactType(id),\n"
+        "  list_id INTEGER NOT NULL REFERENCES ContactList(id),\n"
+        "  val TEXT NOT NULL\n"
+        ");\n"
+
+        "CREATE TABLE ContactList (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  ind_id INTEGER REFERENCES Individual(id)\n"
+        ");\n"
+
+        "DROP TABLE ContactType;\n"
+        "CREATE TABLE ContactType (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  name TEXT NOT NULL\n"
+        ");\n"
+
+        "DROP TABLE Repository;\n"
+        "CREATE TABLE Repository (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  name TEXT NOT NULL,\n"
+        "  access TEXT,\n"
+        "  comments TEXT,\n"
+        "  con_list_id INTEGER NOT NULL REFERENCES ContactList(id)\n"
+        ");\n"
+
+        "DROP TABLE Researcher;\n"
+        "CREATE TABLE Researcher (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  name TEXT NOT NULL,\n"
+        "  comments TEXT,\n"
+        "  con_list_id INTEGER NOT NULL REFERENCES ContactList(id)\n"
+        ");\n"
+
+        "INSERT INTO ContactType (id, name) VALUES(0, '');\n"
+        "INSERT INTO ContactType (id, name) VALUES(-1, 'Address');\n"
+        "INSERT INTO ContactType (id, name) VALUES(-2, 'Telephone');\n"
+        "INSERT INTO ContactType (id, name) VALUES(-3, 'Mobile');\n"
+        "INSERT INTO ContactType (id, name) VALUES(-4, 'Email');\n"
+        "INSERT INTO ContactType (id, name) VALUES(-5, 'Website');\n"
+
+        "INSERT INTO ContactList (id) VALUES(0);\n"
+        "INSERT INTO ContactList (id) VALUES(1);\n"
+
+        "INSERT INTO Researcher (id, name, comments, con_list_id) VALUES(0, '', '', 0);\n"
+        "INSERT INTO Researcher (id, name, comments, con_list_id) VALUES(1, 'Anonymous', '', 1);\n"
+
+        "UPDATE Version SET test=20 WHERE id=1;\n"
+        "COMMIT;\n"
+    ;
+    recDb::GetDb()->ExecuteUpdate( query );
+}
+
 
 static void UpgradeRev0_0_9toCurrent( int test )
 {
@@ -840,6 +902,7 @@ static void UpgradeRev0_0_9toCurrent( int test )
     case 16: UpgradeTest0_0_9_16to0_0_9_17();
     case 17: UpgradeTest0_0_9_17to0_0_9_18();
     case 18: UpgradeTest0_0_9_18to0_0_9_19();
+    case 19: UpgradeTest0_0_9_19to0_0_9_20();
     }
 }
 

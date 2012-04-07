@@ -41,6 +41,9 @@ typedef wxLongLong_t    idt;
 #define GET_ID( id )    ((id).GetValue())
 #define UTF8_(s) ((const char*)(s).utf8_str())
 #define BOOL_(i) ( (i) ? 1 : 0 )
+#define ID_OR_NULL(id) (UTF8_((id) ? recGetStr( id ) : "NULL"))
+#define STR_OR_NULL(s) ( (s).IsEmpty() ? UTF8_("NULL") : \
+    wxSQLite3StatementBuffer.FormatV( "'%q'", UTF8_(s) ) ) 
 
 typedef wxVector< idt >  recIdList;
 typedef std::vector< idt >  recIdVec;

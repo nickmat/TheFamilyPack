@@ -67,26 +67,20 @@ CREATE TABLE CitationPartType (
 
 CREATE TABLE Contact (
   id INTEGER PRIMARY KEY,
-  ind_id INTEGER,
-  res_id INTEGER,
-  repos_id INTEGER,
-  type_id INTEGER,
-  val TEXT
+  type_id INTEGER NOT NULL REFERENCES ContactType(id),
+  list_id INTEGER NOT NULL REFERENCES ContactList(id),
+  val TEXT NOT NULL
+);
+
+CREATE TABLE ContactList (
+  id INTEGER PRIMARY KEY,
+  ind_id INTEGER REFERENCES Individual(id)
 );
 
 CREATE TABLE ContactType (
   id INTEGER PRIMARY KEY,
-  name TEXT
+  name TEXT NOT NULL
 );
-
-INSERT INTO ContactType (id) VALUES(0);
-INSERT INTO ContactType (id, name) VALUES(-1, 'Place');
-INSERT INTO ContactType (id, name) VALUES(-2, 'Phone');
-INSERT INTO ContactType (id, name) VALUES(-3, 'Fax');
-INSERT INTO ContactType (id, name) VALUES(-4, 'Mobile');
-INSERT INTO ContactType (id, name) VALUES(-5, 'email');
-INSERT INTO ContactType (id, name) VALUES(-6, 'VoIP');
-INSERT INTO ContactType (id, name) VALUES(-7, 'Website');
 
 CREATE TABLE Date (
   id INTEGER PRIMARY KEY,
@@ -383,9 +377,10 @@ CREATE TABLE RelativeDate (
 
 CREATE TABLE Repository (
   id INTEGER PRIMARY KEY,
-  name TEXT,
+  name TEXT NOT NULL,
   access TEXT,
-  comments TEXT
+  comments TEXT,
+  con_list_id INTEGER NOT NULL REFERENCES ContactList(id)
 );
 
 CREATE TABLE RepositorySource (
@@ -398,8 +393,9 @@ CREATE TABLE RepositorySource (
 
 CREATE TABLE Researcher (  /* See System Settings below for initial entries */
   id INTEGER PRIMARY KEY,
-  name TEXT,
-  comments TEXT
+  name TEXT NOT NULL,
+  comments TEXT,
+  con_list_id INTEGER NOT NULL REFERENCES ContactList(id)
 );
 
 CREATE TABLE Source (
@@ -439,16 +435,29 @@ CREATE TABLE Version (
 );
 
 /* Create default settings */
-INSERT INTO Researcher (id, name, comments) VALUES(0, '', '');
-INSERT INTO Researcher (id, name, comments) VALUES(1, 'Anonymous', '');
+INSERT INTO ContactType (id, name) VALUES(0, '');
+INSERT INTO ContactType (id, name) VALUES(-1, 'Address');
+INSERT INTO ContactType (id, name) VALUES(-2, 'Telephone');
+INSERT INTO ContactType (id, name) VALUES(-3, 'Mobile');
+INSERT INTO ContactType (id, name) VALUES(-4, 'Email');
+INSERT INTO ContactType (id, name) VALUES(-5, 'Website');
+/*
+INSERT INTO ContactList (id) VALUES(0);
+INSERT INTO ContactList (id) VALUES(1);
+
+INSERT INTO Researcher (id, name, comments, con_list_id) VALUES(0, '', '', 0);
+INSERT INTO Researcher (id, name, comments, con_list_id) VALUES(1, 'Anonymous', '', 1);
+
 INSERT INTO User (id, res_id) VALUES(0, 0);
 INSERT INTO User (id, res_id) VALUES(1, 1);
-INSERT INTO System (id, val) VALUES(1, '1'); /* Default User U1 */
+
+INSERT INTO System (id, val) VALUES(1, '1'); 
+
 INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 0, 1, 'F1');
 INSERT INTO UserSetting (id, user_id, property, val) VALUES(2, 1, 1, 'F1');
-
+*/
 /* The Version table has only this one row */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 19);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 20);
 
 COMMIT;
 

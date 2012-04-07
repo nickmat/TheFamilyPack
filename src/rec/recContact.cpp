@@ -47,9 +47,7 @@ recContact::recContact( const recContact& s )
 {
     f_id       = s.f_id;
     f_type_id  = s.f_type_id;
-    f_repos_id = s.f_repos_id;
-    f_res_id   = s.f_res_id;
-    f_ind_id   = s.f_ind_id;
+    f_list_id  = s.f_list_id;
     f_val      = s.f_val;
 }
 
@@ -57,9 +55,7 @@ void recContact::Clear()
 {
     f_id       = 0;
     f_type_id  = 0;
-    f_repos_id = 0;
-    f_res_id   = 0;
-    f_ind_id   = 0;
+    f_list_id  = 0;
     f_val      = wxEmptyString;
 }
 
@@ -72,9 +68,9 @@ void recContact::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO Contact (type_id, repos_id, res_id, ind_id, val) "
-            "VALUES ("ID", "ID", "ID", "ID", '%q');",
-            f_type_id, f_repos_id, f_res_id, f_ind_id, UTF8_(f_val)
+            "INSERT INTO Contact (type_id, list_id, val) "
+            "VALUES ("ID", "ID", '%q');",
+            f_type_id, f_list_id, UTF8_(f_val)
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -84,17 +80,16 @@ void recContact::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO Contact (id, type_id, repos_id, res_id, ind_id, val) "
-                "VALUES ("ID", "ID", "ID", "ID", "ID", '%q');",
-                f_id, f_type_id, f_repos_id, f_res_id, f_ind_id, UTF8_(f_val)
+                "INSERT INTO Contact (id, type_id, list_id, val) "
+                "VALUES ("ID", "ID", "ID", '%q');",
+                f_id, f_type_id, f_list_id, UTF8_(f_val)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE Contact SET type_id="ID", repos_id="ID", res_id="ID", "
-                "ind_id="ID", val='%q' "
+                "UPDATE Contact SET type_id="ID", list_id="ID", val='%q' "
                 "WHERE id="ID";",
-                f_type_id, f_repos_id, f_res_id, f_ind_id, UTF8_(f_val), f_id
+                f_type_id, f_list_id, UTF8_(f_val), f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -112,7 +107,7 @@ bool recContact::Read()
     }
 
     sql.Format(
-        "SELECT type_id, repos_id, res_id, ind_id, val "
+        "SELECT type_id, list_id, val "
         "FROM Contact WHERE id="ID";",
         f_id
     );
@@ -125,10 +120,8 @@ bool recContact::Read()
     }
     result.SetRow( 0 );
     f_type_id  = GET_ID( result.GetInt64( 0 ) );
-    f_repos_id = GET_ID( result.GetInt64( 1 ) );
-    f_res_id   = GET_ID( result.GetInt64( 2 ) );
-    f_ind_id   = GET_ID( result.GetInt64( 3 ) );
-    f_val      = result.GetAsString( 4 );
+    f_list_id  = GET_ID( result.GetInt64( 1 ) );
+    f_val      = result.GetAsString( 2 );
     return true;
 }
 
@@ -136,12 +129,106 @@ bool recContact::Equivalent( const recContact& r2 ) const
 {
     return
         f_type_id  == r2.f_type_id  &&
-        f_repos_id == r2.f_repos_id &&
-        f_res_id   == r2.f_res_id   &&
-        f_ind_id   == r2.f_ind_id   &&
+        f_list_id  == r2.f_list_id  &&
         f_val      == r2.f_val;
 }
 
+
+//============================================================================
+//                 recContactList
+//============================================================================
+
+recContactList::recContactList( const recContactList& cl )
+{
+    f_id     = cl.f_id;
+    f_ind_id = cl.f_ind_id;
+}
+
+void recContactList::Clear()
+{
+    f_id     = 0;
+    f_ind_id = 0;
+}
+
+void recContactList::Save()
+{
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( f_id == 0 ) {
+        // Add new record
+        sql.Format(
+            "INSERT INTO ContactList (ind_id) VALUES (%s);",
+            ID_OR_NULL( f_ind_id )
+        );
+        s_db->ExecuteUpdate( sql );
+        f_id = GET_ID( s_db->GetLastRowId() );
+    } else {
+        // Does record exist
+        if( !Exists() ) {
+            // Add new record
+            sql.Format(
+                "INSERT INTO ContactList (id, ind_id) "
+                "VALUES ("ID", %q);",
+                f_id, ID_OR_NULL( f_ind_id )
+            );
+        } else {
+            // Update existing record
+            sql.Format(
+                "UPDATE ContactList SET ind_id=%q WHERE id="ID";",
+                ID_OR_NULL( f_ind_id ), f_id
+            );
+        }
+        s_db->ExecuteUpdate( sql );
+    }
+}
+
+bool recContactList::Read()
+{
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( f_id == 0 ) {
+        Clear();
+        return false;
+    }
+
+    sql.Format( "SELECT ind_id FROM ContactList WHERE id="ID";", f_id );
+    result = s_db->GetTable( sql );
+
+    if( result.GetRowCount() != 1 ) {
+        Clear();
+        return false;
+    }
+    result.SetRow( 0 );
+    f_ind_id = GET_ID( result.GetInt64( 0 ) );
+    return true;
+}
+
+recContactVec recContactList::GetContacts( idt listID )
+{
+    recContactVec list;
+
+    if( listID == 0 ) return list;
+
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT id, type_id, val"
+        " FROM Contact WHERE list_id="ID";",
+        listID
+    );
+    wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
+
+    recContact con(0);
+    con.FSetListID( listID );
+    while( result.NextRow() ) {
+        con.FSetID( GET_ID( result.GetInt64( 0 ) ) );
+        con.FSetTypeID( GET_ID( result.GetInt64( 1 ) ) );
+        con.FSetValue( result.GetAsString( 2 ) );
+        list.push_back( con );
+    }
+    return list;
+}
 
 //============================================================================
 //                 recContactType
@@ -265,18 +352,20 @@ recContactTypeVec recContactType::GetList()
 //                 recResearcher
 //============================================================================
 
-recResearcher::recResearcher( const recResearcher& at )
+recResearcher::recResearcher( const recResearcher& res )
 {
-    f_id       = at.f_id;
-    f_name     = at.f_name;
-    f_comments = at.f_comments;
+    f_id          = res.f_id;
+    f_name        = res.f_name;
+    f_comments    = res.f_comments;
+    f_con_list_id = res.f_con_list_id;
 }
 
 void recResearcher::Clear()
 {
-    f_id       = 0;
-    f_name     = wxEmptyString;
-    f_comments = wxEmptyString;
+    f_id          = 0;
+    f_name        = wxEmptyString;
+    f_comments    = wxEmptyString;
+    f_con_list_id = 0;
 }
 
 void recResearcher::Save()
@@ -288,9 +377,9 @@ void recResearcher::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO Researcher (name, comments) "
-            "VALUES ('%q', '%q');",
-            UTF8_(f_name), UTF8_(f_comments)
+            "INSERT INTO Researcher (name, comments, con_list_id)"
+            " VALUES ('%q', '%q', "ID");",
+            UTF8_(f_name), UTF8_(f_comments), f_con_list_id
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -300,16 +389,16 @@ void recResearcher::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO Researcher (id, name, comments) "
-                "VALUES ("ID", '%q', '%q');",
-                f_id, UTF8_(f_name), UTF8_(f_comments)
+                "INSERT INTO Researcher (id, name, comments, con_list_id)"
+                " VALUES ("ID", '%q', '%q', "ID");",
+                f_id, UTF8_(f_name), UTF8_(f_comments), f_con_list_id
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE Researcher SET name='%q', comments='%q' "
-                "WHERE id="ID";",
-                UTF8_(f_name), UTF8_(f_comments), f_id
+                "UPDATE Researcher SET name='%q', comments='%q', con_list_id="ID
+                " WHERE id="ID";",
+                UTF8_(f_name), UTF8_(f_comments), f_con_list_id, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -327,7 +416,7 @@ bool recResearcher::Read()
     }
 
     sql.Format(
-        "SELECT name, comments FROM Researcher WHERE id="ID";",
+        "SELECT name, comments, con_list_id FROM Researcher WHERE id="ID";",
         f_id
     );
     result = s_db->GetTable( sql );
@@ -338,44 +427,18 @@ bool recResearcher::Read()
         return false;
     }
     result.SetRow( 0 );
-    f_name     = result.GetAsString( 0 );
-    f_comments = result.GetAsString( 1 );
+    f_name        = result.GetAsString( 0 );
+    f_comments    = result.GetAsString( 1 );
+    f_con_list_id = GET_ID( result.GetInt64( 2 ) );
     return true;
 }
 
 bool recResearcher::Equivalent( const recResearcher& r2 ) const
 {
     return
-        f_name     == r2.f_name    &&
-        f_comments == r2.f_comments;
+        f_name        == r2.f_name     &&
+        f_comments    == r2.f_comments &&
+        f_con_list_id == r2.f_con_list_id;
 }
-
-recContactVec recResearcher::GetContacts() const
-{
-    recContactVec list;
-
-    if( f_id == 0 ) return list;
-
-    wxSQLite3StatementBuffer sql;
-    sql.Format(
-        "SELECT id, type_id, repos_id, ind_id, val"
-        " FROM Contact WHERE res_id="ID";",
-        f_id
-    );
-    wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
-
-    recContact con(0);
-    con.FSetResID( f_id );
-    while( result.NextRow() ) {
-        con.FSetID( GET_ID( result.GetInt64( 0 ) ) );
-        con.FSetTypeID( GET_ID( result.GetInt64( 1 ) ) );
-        con.FSetReposID( GET_ID( result.GetInt64( 2 ) ) );
-        con.FSetIndID( GET_ID( result.GetInt64( 3 ) ) );
-        con.FSetValue( result.GetAsString( 4 ) );
-        list.push_back( con );
-    }
-    return list;
-}
-
 
 // End of recContact.cpp file

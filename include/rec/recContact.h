@@ -38,6 +38,44 @@ typedef std::vector< recContact >  recContactVec;
 typedef std::vector< recContactType >  recContactTypeVec;
 
 //============================================================================
+//                 recContactList
+//============================================================================
+
+class recContactList : public recDb
+{
+public:
+    recContactList() {}
+    recContactList( idt id ) : recDb(id) { Read(); }
+    recContactList( const recContactList& at );
+
+    void Clear();
+    void Save();
+    bool Read();
+    TABLE_NAME_MEMBERS( "ContactList" );
+    bool Equivalent( const recContactList& r2 ) const { return f_ind_id == r2.f_ind_id; };
+
+    idt FGetIndID() const { return f_ind_id; }
+
+    void FSetIndID( idt indID ) { f_ind_id = indID; }
+
+    static recContactVec GetContacts( idt listID );
+    recContactVec GetContacts() const { return GetContacts( f_id ); }
+
+private:
+    idt  f_ind_id;
+};
+
+inline bool operator==( const recContactList& r1, const recContactList& r2 )
+{
+    return r1.Equivalent( r2 ) && r1.EqualID( r2 );
+}
+
+inline bool operator!=( const recContactList& r1, const recContactList& r2 )
+{
+    return !(r1 == r2);
+}
+
+//============================================================================
 //                 recContactType
 //============================================================================
 
@@ -94,15 +132,11 @@ public:
     bool Equivalent( const recContact& r2 ) const;
 
     idt FGetTypeID() const { return f_type_id; }
-    idt FGetReposID() const { return f_repos_id; }
-    idt FGetResID() const { return f_res_id; }
-    idt FGetIndID() const { return f_ind_id; }
+    idt FGetListID() const { return f_list_id; }
     wxString FGetValue() const { return f_val; }
 
     void FSetTypeID( idt typeID ) { f_type_id = typeID; }
-    void FSetReposID( idt reposID ) { f_repos_id = reposID; }
-    void FSetResID( idt resID ) { f_res_id = resID; }
-    void FSetIndID( idt indID ) { f_ind_id = indID; }
+    void FSetListID( idt listID ) { f_list_id = listID; }
     void FSetValue( const wxString& value ) { f_val = value; }
 
     static wxString GetIdStr( idt resID ) { return wxString::Format( "C"ID, resID ); }
@@ -112,9 +146,7 @@ public:
 
 private:
     idt      f_type_id;
-    idt      f_repos_id;
-    idt      f_res_id;
-    idt      f_ind_id;
+    idt      f_list_id;
     wxString f_val;
 };
 
@@ -135,7 +167,6 @@ inline bool operator!=( const recContact& r1, const recContact& r2 )
 class recResearcher : public recDb
 {
 public:
-
     recResearcher() {}
     recResearcher( idt id ) : recDb(id) { Read(); }
     recResearcher( const recResearcher& res );
@@ -148,18 +179,21 @@ public:
 
     wxString FGetName() const { return f_name; }
     wxString FGetComment() const { return f_comments; }
+    idt FGetConListID() const { return f_con_list_id; }
 
     void FSetName( const wxString& name ) { f_name = name; }
     void FSetComments( const wxString& com ) { f_comments = com; }
+    void FSetConListID( idt clID ) { f_con_list_id = clID; }
 
     static wxString GetIdStr( idt resID ) { return wxString::Format( "Re"ID, resID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
-    recContactVec GetContacts() const;
+    recContactVec GetContacts() const { return recContactList::GetContacts( f_con_list_id ); }
 
 private:
     wxString  f_name;
     wxString  f_comments;
+    idt       f_con_list_id;
 };
 
 

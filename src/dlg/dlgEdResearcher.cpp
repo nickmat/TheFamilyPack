@@ -45,6 +45,8 @@
 dlgEditResearcher::dlgEditResearcher( wxWindow* parent, idt resID )
     : m_researcher(resID), m_user(0), fbDlgEditResearcher( parent )
 {
+    m_list.ReadID( m_researcher.FGetConListID() );
+
     wxListItem itemCol;
     itemCol.SetText( _("ID") );
     m_listContacts->InsertColumn( COL_ConID, itemCol );
@@ -59,6 +61,8 @@ bool dlgEditResearcher::TransferDataToWindow()
     if( m_researcher.f_id == 0 ) {
         // Create a new ID
         m_researcher.Save();
+        m_list.Save();
+        m_researcher.FSetConListID( m_list.FGetID() );
     } else {
         // Check for User
         m_user.FSetID( m_user.FindFirst( m_researcher.FGetID() ) );
@@ -118,7 +122,7 @@ void dlgEditResearcher::OnButtonClickAdd( wxCommandEvent& event )
 
     dlgEditContact* dialog = new dlgEditContact( NULL, 0 );
     recContact* con = dialog->GetContact();
-    con->FSetResID( m_researcher.FGetID() );
+    con->FSetListID( m_list.FGetID() );
 
     if( dialog->ShowModal() == wxID_OK ) {
         recDb::ReleaseSavepoint( savepoint );

@@ -120,7 +120,6 @@ void WrPedCht( idt indID, Sex sex, int gen )
         if( i == gen )
         {
             htm << wxT("<td width=300>&nbsp;&nbsp;<a href=F")
-//                << fam.f_id << wxT("><b>")
                 << ind.f_fam_id << wxT("><b>")
                 << ind.f_given << wxT(" ") << ind.f_surname
                 << wxT("</b></a> ") << ind.f_epitaph << wxT("</td>");
@@ -174,30 +173,24 @@ void WrDescCht( idt indID, int gen )
         idt dadID = families[i].f_husb_id;
         idt mumID = families[i].f_wife_id;
 
-        if( indID == dadID )
-        {
+        if( indID == dadID ) {
             WrDescLine( dadID, mumID, famID, gen );
         } else {
             WrDescLine( mumID, dadID, famID, gen );
         }
-        if( gen > 0 )
-        {
-            if( GenDChart[gen-1] == HTM_CHART_GIF_TEE )
-            {
+        if( gen > 0 ) {
+            if( GenDChart[gen-1] == HTM_CHART_GIF_TEE ) {
                 GenDChart[gen-1] = HTM_CHART_GIF_CONT;
             }
-            if( GenDChart[gen-1] == HTM_CHART_GIF_END )
-            {
+            if( GenDChart[gen-1] == HTM_CHART_GIF_END ) {
                 GenDChart[gen-1] = HTM_CHART_GIF_BLANK;
             }
         }
 
         // Add Children, if any
         children = recFamily::GetChildrenIds( famID );
-        for( size_t j = 0 ; j < children.size() ; j++ )
-        {
-            if( j == children.size()-1 && i == families.size()-1 )
-            {
+        for( size_t j = 0 ; j < children.size() ; j++ ) {
+            if( j == children.size()-1 && i == families.size()-1 ) {
                 GenDChart[gen] = HTM_CHART_GIF_END;
             } else {
                 GenDChart[gen] = HTM_CHART_GIF_TEE;
@@ -209,38 +202,17 @@ void WrDescCht( idt indID, int gen )
 
 void WrDescLine( idt indID, idt spouseID, idt famID, int gen )
 {
-//  wxSQLite3StatementBuffer sql;
-//    wxSQLite3ResultSet resultInd, resultSpouse;
-    int dheight = 0;
-
-//    sql.Format(
-//        "SELECT surname, given, epitaph FROM Individual WHERE id="ID";",
-//        indID
-//    );
-//  resultInd = g_db->ExecuteQuery( sql );
-
-    if( spouseID != 0 )
-    {
-//      sql.Format(
-//          "SELECT surname, given, epitaph FROM Individual WHERE id="ID";",
-//          spouseID
-//      );
-//      resultSpouse = g_db->ExecuteQuery( sql );
-        dheight = 1;
-    }
+    int dheight = ( spouseID == 0 ) ? 0 : 1;
 
     htm << wxT("<table cellspacing=0 cellpadding=0 border=0><tr>");
-    for( int i = 0 ; i <= gen ; i++ )
-    {
-        if( i == gen )
-        {
+    for( int i = 0 ; i <= gen ; i++ ) {
+        if( i == gen ) {
             htm << wxT("<td width=300>&nbsp;&nbsp;<a href=F")
                 << famID << wxT("><b>")
                 << recIndividual::GetFullName( indID )
                 << wxT("</b></a> ")
                 << recIndividual::GetDateEpitaph( indID );
-            if( spouseID != 0 )
-            {
+            if( spouseID != 0 ) {
                 htm << wxT("<br>&nbsp;&nbsp;&nbsp;m. <b>")
                     << recIndividual::GetFullName( spouseID )
                     << wxT("</b> ")
@@ -248,8 +220,7 @@ void WrDescLine( idt indID, idt spouseID, idt famID, int gen )
             }
             htm << wxT("</td>");
 
-            if( gen == 0 )
-            {
+            if( gen == 0 ) {
                 htm << wxT("<td>") << htmChartGif[0] << wxT("</td>");
             }
         } else {

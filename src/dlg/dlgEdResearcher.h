@@ -56,6 +56,7 @@ private:
 
     recResearcher     m_researcher;
     recUser           m_user;
+    recContactList    m_list;
     recContactVec     m_contacts;
 };
 

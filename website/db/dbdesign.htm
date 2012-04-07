@@ -66,7 +66,7 @@
   <img id="logo" src="../tfp5.gif" alt="Logo" />
  </a>
  The Family Pack<br/>
- Database Design V0.0.9.17
+ Database Design V0.0.9.20
 </h1>
 
 <div id="page" class="database">
@@ -95,49 +95,50 @@
     <td><a href="#CitationPart">CitationPart</a></td>
     <td><a href="#CitationPartType">CitationPartType</a></td>
     <td><a href="#Contact">Contact</a></td>
-    <td><a href="#ContactType">ContactType</a></td>
+    <td><a href="#ContactList">ContactList</a></td>
    </tr>
    <tr>
+    <td><a href="#ContactType">ContactType</a></td>
     <td><a href="#Date">Date</a></td>
     <td><a href="#Event">Event</a></td>
     <td><a href="#EventPersona">EventPersona</a></td>
     <td><a href="#EventType">EventType</a></td>
     <td><a href="#EventTypeRole">EventTypeRole</a></td>
-    <td><a href="#Family">Family</a></td>
    </tr>
    <tr>
+    <td><a href="#Family">Family</a></td>
     <td><a href="#FamilyIndividual">FamilyIndividual</a></td>
     <td><a href="#Individual">Individual</a></td>
     <td><a href="#LinkAttribute">LinkAttribute</a></td>
     <td><a href="#LinkEvent">LinkEvent</a></td>
     <td><a href="#LinkPersona">LinkPersona</a></td>
-    <td><a href="#Name">Name</a></td>
    </tr>
    <tr>
+    <td><a href="#Name">Name</a></td>
     <td><a href="#NamePart">NamePart</a></td>
     <td><a href="#NamePartType">NamePartType</a></td>
     <td><a href="#NameStyle">NameStyle</a></td>
     <td><a href="#Persona">Persona</a></td>
     <td><a href="#Place">Place</a></td>
-    <td><a href="#PlacePart">PlacePart</a></td>
    </tr>
    <tr>
+    <td><a href="#PlacePart">PlacePart</a></td>
     <td><a href="#PlacePartType">PlacePartType</a></td>
     <td><a href="#Reference">Reference</a></td>
     <td><a href="#ReferenceEntity">ReferenceEntity</a></td>
     <td><a href="#Relationship">Relationship</a></td>
     <td><a href="#RelativeDate">RelativeDate</a></td>
-    <td><a href="#Repository">Repository</a></td>
    </tr>
    <tr>
+    <td><a href="#Repository">Repository</a></td>
     <td><a href="#RepositorySource">RepositorySource</a></td>
     <td><a href="#Researcher">Researcher</a></td>
     <td><a href="#Source">Source</a></td>
     <td><a href="#System">System</a></td>
     <td><a href="#User">User</a></td>
-    <td><a href="#UserSetting">UserSetting</a></td>
    </tr>
    <tr>
+    <td><a href="#UserSetting">UserSetting</a></td>
     <td><a href="#Version">Version</a></td>
     <td colspan='0' class="na">&nbsp;</td>
    </tr>
@@ -264,29 +265,36 @@
      <td>Unique key identifying an Contact.</td>
     </tr>
     <tr>
-     <td>ind_id</td>
-     <td>Integer</td>
-     <td>Pointer to an Individual record that this is a contact for.</td>
-    </tr>
-    <tr>
-     <td>res_id</td>
-     <td>Integer</td>
-     <td>Pointer to a Researcher record that this is a contact for.</td>
-    </tr>
-    <tr>
-     <td>repos_id</td>
-     <td>Integer</td>
-     <td>Pointer to a Repository record that this is a contact for.</td>
-    </tr>
-    <tr>
      <td>type_id</td>
-     <td>Integer</td>
+     <td>Integer Not null FK</td>
      <td>Pointer to a ContactType for this contact.</td>
+    </tr>
+    <tr>
+     <td>list_id</td>
+     <td>Integer Not null FK</td>
+     <td>Pointer to an ContactList record that this formas a part of</td>
     </tr>
     <tr>
      <td>val</td>
      <td>Text</td>
-     <td>The Contact details, place ID, Telephone number, email address etc.</td>
+     <td>The Contact details, Address, Telephone number, email address etc.</td>
+    </tr>
+
+    <tr id="ContactList">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>ContactList</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying an ContactList</td>
+    </tr>
+    <tr>
+     <td>ind_id</td>
+     <td>Integer FK</td>
+     <td>Optional pointer to an Individual record that this is a list of contacts for.</td>
     </tr>
 
     <tr id="ContactType">
@@ -302,8 +310,8 @@
     </tr>
     <tr>
      <td>name</td>
-     <td>Text</td>
-     <td>Name of the Contact Type. ie Address (Place ID), Phone, email, VoIP (Skype) etc.</td>
+     <td>Text Not null</td>
+     <td>Name of the Contact Type. ie Address, Telephone, Email, etc.</td>
     </tr>
 
     <tr id="Date">
@@ -369,12 +377,12 @@
     </tr>
     <tr>
      <td>title</td>
-     <td>Text</td>
+     <td>Text Not null</td>
      <td>The name of the Event, such as "Marriage of John Smith and Mary Jones".</td>
     </tr>
     <tr>
      <td>type_id</td>
-     <td>Integer</td>
+     <td>Integer Not null FK</td>
      <td>Unique identifier that indicates to which Event Type this event belongs.</td>
     </tr>
     <tr>
@@ -399,7 +407,7 @@
     </tr>
     <tr>
      <td>date_pt</td>
-     <td>Integer</td>
+     <td>Integer Not null</td>
      <td>A single day used to order lists of events.</td>
     </tr>
 
@@ -416,27 +424,27 @@
     </tr>
     <tr>
      <td>event_id</td>
-     <td>Integer</td>
+     <td>Integer Not null FK</td>
      <td>Pointer to the Event</td>
     </tr>
     <tr>
      <td>per_id</td>
-     <td>Integer</td>
+     <td>Integer Not null FK</td>
      <td>Pointer to a Persona</td>
     </tr>
     <tr>
      <td>role_id</td>
-     <td>Integer</td>
+     <td>Integer Not null FK</td>
      <td>Points to the role played by the Person</td>
     </tr>
     <tr>
      <td>note</td>
-     <td>Text</td>
+     <td>Text Not null</td>
      <td>Optional note that relates to the Persona</td>
     </tr>
     <tr>
      <td>per_seq</td>
-     <td>Integer</td>
+     <td>Integer Not null</td>
      <td>The sequence of personas included in a given event.</td>
     </tr>
 
@@ -529,22 +537,22 @@
     </tr>
     <tr>
      <td>fam_id</td>
-     <td>Integer</td>
+     <td>Integer Not null</td>
      <td>Pointer to the Family that the Individual is a child of.</td>
     </tr>
     <tr>
      <td>ind_id</td>
-     <td>Integer</td>
+     <td>Integer Not null</td>
      <td>Pointer to the Individual</td>
     </tr>
     <tr>
      <td>seq_child</td>
-     <td>Integer</td>
+     <td>Integer Not null</td>
      <td>Sequence of the child Individuals in the Family, normally in age order</td>
     </tr>
     <tr>
      <td>seq_parent</td>
-     <td>Integer</td>
+     <td>Integer Not null</td>
      <td>Where an individual is the child of more than one family, (ie genetic child and adopted child) this value will sequence the order of the the families.</td>
     </tr>
 
@@ -598,17 +606,17 @@
     </tr>
     <tr>
      <td>ref_att_id</td>
-     <td>Integer</td>
+     <td>Integer Not null FK</td>
      <td>Pointer to an Attribute associated with a Reference</td>
     </tr>
     <tr>
      <td>ind_att_id</td>
-     <td>Integer</td>
+     <td>Integer Not null FK</td>
      <td>Pointer to an Attribute associated with an Individual</td>
     </tr>
     <tr>
      <td>conf</td>
-     <td>Float</td>
+     <td>Float Not null</td>
      <td>A value, less than one, to indicate the confidence that the link is correct</td>
     </tr>
     <tr>
@@ -630,17 +638,17 @@
     </tr>
     <tr>
      <td>ref_event_id</td>
-     <td>Integer</td>
+     <td>Integer Not null FK</td>
      <td>Pointer to an Event associated with a Reference</td>
     </tr>
     <tr>
      <td>ind_event_id</td>
-     <td>Integer</td>
+     <td>Integer Not null FK</td>
      <td>Pointer to an Event associated with an Individual</td>
     </tr>
     <tr>
      <td>conf</td>
-     <td>Float</td>
+     <td>Float Not null</td>
      <td>A value, less than one, to indicate the confidence that the link is correct</td>
     </tr>
     <tr>
@@ -662,17 +670,17 @@
     </tr>
     <tr>
      <td>ref_per_id</td>
-     <td>Integer</td>
+     <td>Integer Not null FK</td>
      <td>Pointer to a Persona associated with a Reference</td>
     </tr>
     <tr>
      <td>ind_per_id</td>
-     <td>Integer</td>
+     <td>Integer Not null FK</td>
      <td>Pointer to a Persona associated with an Individual</td>
     </tr>
     <tr>
      <td>conf</td>
-     <td>Float</td>
+     <td>Float Not null</td>
      <td>A value, less than one, to indicate the confidence that the link is correct</td>
     </tr>
     <tr>
@@ -694,12 +702,12 @@
     </tr>
     <tr>
      <td>per_id</td>
-     <td>Integer</td>
+     <td>Integer Not null</td>
      <td>Pointer to a Person ID.</td>
     </tr>
     <tr>
      <td>style_id</td>
-     <td>Integer</td>
+     <td>Integer Not null FK</td>
      <td>Identifier that indicates to which NameStyle this name belongs.</td>
     </tr>
     <tr>
@@ -721,12 +729,12 @@
     </tr>
     <tr>
      <td>name_id</td>
-     <td>Integer</td>
+     <td>Integer Not null FK</td>
      <td>Pointer to the Name ID that this part belongs to.</td>
     </tr>
     <tr>
      <td>type_id</td>
-     <td>Integer</td>
+     <td>Integer Not null FK</td>
      <td>Identifier that indicates to which NamePartType this name belongs.</td>
     </tr>
     <tr>
@@ -736,7 +744,7 @@
     </tr>
     <tr>
      <td>sequence</td>
-     <td>Integer</td>
+     <td>Integer Not null</td>
      <td>A number to show a name's position in the full name</td>
     </tr>
 
@@ -753,12 +761,12 @@
     </tr>
     <tr>
      <td>grp</td>
-     <td>Integer</td>
+     <td>Integer Not null</td>
      <td>Holds 0=Unstated, 1=Name part, 2=Title</td>
     </tr>
     <tr>
      <td>name</td>
-     <td>Text</td>
+     <td>Text Not null</td>
      <td>Name of the NamePartType, ie "Given name" or "Rank"</td>
     </tr>
 
@@ -775,7 +783,7 @@
     </tr>
     <tr>
      <td>name</td>
-     <td>Text</td>
+     <td>Text Not null</td>
      <td>Name of the NameStyle, ie "Birth name" or "Married name"</td>
     </tr>
 
@@ -947,17 +955,17 @@
     </tr>
     <tr>
      <td>per1_id</td>
-     <td>Integer</td>
+     <td>Integer Not null FK</td>
      <td>Pointer to the first Persona ID.</td>
     </tr>
     <tr>
      <td>per2_id</td>
-     <td>Integer</td>
+     <td>Integer Not null FK</td>
      <td>Pointer to the second Persona ID.</td>
     </tr>
     <tr>
      <td>descrip</td>
-     <td>Text</td>
+     <td>Text Not null</td>
      <td>Description of the relationship the first Persona has with the second Persona</td>
     </tr>
 
@@ -989,8 +997,8 @@
     </tr>
     <tr>
      <td>base_id</td>
-     <td>Integer</td>
-     <td>The date the value is relative to.</td>
+     <td>Integer Not null FK</td>
+     <td>A pointer to the date the value is relative to.</td>
     </tr>
     <tr>
      <td>type</td>
@@ -1016,7 +1024,7 @@
     </tr>
     <tr>
      <td>name</td>
-     <td>Text</td>
+     <td>Text Not null</td>
      <td>The full name of the Repository.  May be an institution or an individual</td>
     </tr>
     <tr>
@@ -1028,6 +1036,11 @@
      <td>comments</td>
      <td>Text</td>
      <td>Any pertinent comments about the repository, such as the need to obtain a researcher’s card, restrictions on the use of laptops, etc</td>
+    </tr>
+    <tr>
+     <td>con_list_id</td>
+     <td>Integer Not null FK</td>
+     <td>Unique key that identifies a ContactList for the repository.</td>
     </tr>
 
     <tr id="RepositorySource">
@@ -1076,13 +1089,18 @@
     </tr>
     <tr>
      <td>name</td>
-     <td>Text</td>
+     <td>Text Not null</td>
      <td>The full name of the researcher.</td>
     </tr>
     <tr>
      <td>comments</td>
      <td>Text</td>
      <td>Optional comments about the researcher</td>
+    </tr>
+    <tr>
+     <td>con_list_id</td>
+     <td>Integer Not null FK</td>
+     <td>Unique key that identifies a ContactList for the Researcher.</td>
     </tr>
 
     <tr id="Source">
@@ -1145,7 +1163,7 @@
     </tr>
     <tr>
      <td>val</td>
-     <td>Text</td>
+     <td>Text Not null</td>
      <td>The value of the setting, may be text or a foreign key.</td>
     </tr>
 
@@ -1162,7 +1180,7 @@
     </tr>
     <tr>
      <td>res_id</td>
-     <td>Integer FK</td>
+     <td>Integer Not null FK</td>
      <td>A pointer to the Researcher corresponding to the User. Null indicates the default User.</td>
     </tr>
 
@@ -1179,17 +1197,17 @@
     </tr>
     <tr>
      <td>user_id</td>
-     <td>Integer</td>
+     <td>Integer Not null FK</td>
      <td>A pointer to the User for which the setting applies.</td>
     </tr>
     <tr>
      <td>property</td>
-     <td>Integer</td>
+     <td>Integer Not null</td>
      <td>A value indicating the property being set.</td>
     </tr>
     <tr>
      <td>val</td>
-     <td>Text</td>
+     <td>Text Not null</td>
      <td>The value of the setting, may be text or a foreign key.</td>
     </tr>
 

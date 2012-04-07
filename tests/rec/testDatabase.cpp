@@ -57,6 +57,7 @@ private:
         // are created that are used in later tests.
         CPPUNIT_TEST( TestDbCreate );
         CPPUNIT_TEST( TestSystem );
+        CPPUNIT_TEST( TestContactList );
         CPPUNIT_TEST( TestDate );
         CPPUNIT_TEST( TestPlace );
         CPPUNIT_TEST( TestPlacePart );
@@ -80,6 +81,7 @@ private:
 
     void TestDbCreate();
     void TestSystem();
+    void TestContactList();
     void TestDate();
     void TestPlace();
     void TestPlacePart();
@@ -129,6 +131,55 @@ void RecTestCase::TestSystem()
     CPPUNIT_ASSERT_NO_THROW( recSetCurrentUser( 123 ) );
     CPPUNIT_ASSERT( recGetCurrentUser() == 123 );
     recSetCurrentUser( user );
+}
+
+void RecTestCase::TestContactList()
+{
+    recContactList record1;
+    record1.FSetID( 0 );
+    record1.FSetIndID( 3 );  // Doesn't exist so will cause an exception on Save()
+
+    // id = 0 so create new record and set id to new value.
+    CPPUNIT_ASSERT_THROW( record1.Save(), wxSQLite3Exception );
+    recIndividual ind(0);
+    ind.FSetID(3);
+    CPPUNIT_ASSERT_NO_THROW( ind.Save() );
+    CPPUNIT_ASSERT_NO_THROW( record1.Save() );
+    idt id = record1.FGetID();
+    CPPUNIT_ASSERT( id > 0 );
+
+    recContactList record2;
+    record2.FSetID( record1.FGetID() );
+    CPPUNIT_ASSERT_NO_THROW( record2.Read() );
+    CPPUNIT_ASSERT( record1 == record2 );
+
+    record1.FSetIndID( 0 );
+    // id exists, so amend record leaving id to old value.
+    CPPUNIT_ASSERT_NO_THROW( record1.Save() );
+    CPPUNIT_ASSERT( record1.f_id == id );
+    CPPUNIT_ASSERT_NO_THROW( record2.Read() );
+    CPPUNIT_ASSERT( record1 == record2 );
+
+    record1.FSetID( 999 );
+    record1.FSetIndID( 3 );
+    // id = 999 which doesn't exists, so create new record with no change to id.
+    CPPUNIT_ASSERT_NO_THROW( record1.Save() );
+    CPPUNIT_ASSERT( record1.FGetID() == 999 );
+    record2.FSetID( record1.FGetID() );
+    CPPUNIT_ASSERT_NO_THROW( record2.Read() );
+    CPPUNIT_ASSERT( record1 == record2 );
+
+    record1.FSetID( 0 );
+    record1.FSetIndID( 0 );
+    CPPUNIT_ASSERT_NO_THROW( record1.Save() );
+    CPPUNIT_ASSERT( record1.FGetID() != 0 );
+    CPPUNIT_ASSERT( record1.Exists() == true );
+    CPPUNIT_ASSERT_NO_THROW( record1.Delete() );
+    CPPUNIT_ASSERT( record1.Exists() == false );
+
+    CPPUNIT_ASSERT( recContactList::Exists( 999 ) == true );
+    recContactList::Delete( 999 );
+    CPPUNIT_ASSERT( recContactList::Exists( 999 ) == false );
 }
 
 void RecTestCase::TestPersona()
@@ -208,7 +259,7 @@ void RecTestCase::TestIndividual()
     // f_id = 0 so create new record and set f_id to new value.
     record1.Save();
     id = record1.f_id;
-    CPPUNIT_ASSERT( id == 1 );
+    CPPUNIT_ASSERT( id > 0 );
 
     recIndividual record2;
     record2.f_id = record1.f_id;
