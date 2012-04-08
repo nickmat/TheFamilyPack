@@ -38,6 +38,7 @@
 #endif
 
 #include <rec/recSystem.h>
+#include <rec/recIndividual.h>
 
 #include "dlgEdResearcher.h"
 #include "dlgEdContact.h"
@@ -46,6 +47,7 @@ dlgEditResearcher::dlgEditResearcher( wxWindow* parent, idt resID )
     : m_researcher(resID), m_user(0), fbDlgEditResearcher( parent )
 {
     m_list.ReadID( m_researcher.FGetConListID() );
+    m_prevIndID = m_list.FGetIndID();
 
     wxListItem itemCol;
     itemCol.SetText( _("ID") );
@@ -79,7 +81,9 @@ bool dlgEditResearcher::TransferDataToWindow()
     }
 
     m_textName->SetValue( m_researcher.FGetName() );
-    m_textComment->SetValue( m_researcher.FGetComment() );
+    m_textComment->SetValue( m_researcher.FGetComments() );
+    m_textIndID->SetValue( recGetIDStr( m_list.FGetIndID() ) );
+    m_staticIndName->SetLabel( recIndividual::GetFullName( m_list.FGetIndID() ) );
 
     m_contacts = m_researcher.GetContacts();
     for( size_t i = 0 ; i < m_contacts.size() ; i++ ) {
@@ -110,6 +114,23 @@ bool dlgEditResearcher::TransferDataFromWindow()
     }
     m_researcher.FSetName( m_textName->GetValue() );
     m_researcher.FSetComments( m_textComment->GetValue() );
+
+    idt newIndID = recGetID( m_textIndID->GetValue() );
+    if( newIndID != m_prevIndID ) {
+        // Remove the contact list from the previous Individual
+        m_list.FSetIndID( 0 );
+        // Look for an existing list for the new Individual
+        if( newIndID ) {
+            // Is there an existing ContactList
+            idt newCLID = recContactList::FindIndID( newIndID );
+            if( newCLID ) {
+                // Add Contacts 
+                m_list.Assimilate( newCLID );
+            }
+            m_list.FSetIndID( newIndID );
+        }
+        m_list.Save();
+    }
 
     m_researcher.Save();
     return true;

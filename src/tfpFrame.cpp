@@ -82,6 +82,7 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_LIST_INDIVIDUALS, TfpFrame::OnListIndividuals )
     EVT_MENU( tfpID_LIST_REFERENCES, TfpFrame::OnListReferences )
     EVT_MENU( tfpID_LIST_EVENTS, TfpFrame::OnListEvents )
+    EVT_MENU( tfpID_LIST_RESEARCHERS, TfpFrame::OnListResearchers )
     EVT_MENU( tfpID_PED_CHART, TfpFrame::OnPedChart )
     EVT_MENU( tfpID_DESC_CHART, TfpFrame::OnDescChart )
     EVT_MENU( tfpID_SYSTEM_SETTING, TfpFrame::OnSystemOptions )
@@ -171,6 +172,7 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     menuList->Append( tfpID_LIST_INDIVIDUALS, _("&Individuals\tAlt-I") );
     menuList->Append( tfpID_LIST_REFERENCES, _("&References\tAlt-R") );
     menuList->Append( tfpID_LIST_EVENTS, _("&Events\tAlt-E") );
+    menuList->Append( tfpID_LIST_RESEARCHERS, _("Resear&chers\tAlt-C") );
 
     wxMenu* menuChart = new wxMenu;
     menuChart->Append( tfpID_PED_CHART, _("&Pedigree...") );
@@ -579,6 +581,13 @@ void TfpFrame::OnListReferences( wxCommandEvent& event )
 void TfpFrame::OnListEvents( wxCommandEvent& event )
 {
     m_html->DisplayHtmPage( "E" );
+}
+
+/*! \brief Called on a List Researchers menu option event.
+ */
+void TfpFrame::OnListResearchers( wxCommandEvent& event )
+{
+    m_html->DisplayHtmPage( "Re" );
 }
 
 /*! \brief Called on a Pedigree Chart menu option event.

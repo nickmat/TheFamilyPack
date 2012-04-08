@@ -2944,7 +2944,7 @@ fbDlgEditResearcher::fbDlgEditResearcher( wxWindow* parent, wxWindowID id, const
 	
 	m_panel29 = new wxPanel( m_splitter4, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxFlexGridSizer* fgSizer2;
-	fgSizer2 = new wxFlexGridSizer( 2, 2, 0, 0 );
+	fgSizer2 = new wxFlexGridSizer( 3, 2, 0, 0 );
 	fgSizer2->AddGrowableCol( 1 );
 	fgSizer2->AddGrowableRow( 1 );
 	fgSizer2->SetFlexibleDirection( wxBOTH );
@@ -2957,12 +2957,29 @@ fbDlgEditResearcher::fbDlgEditResearcher( wxWindow* parent, wxWindowID id, const
 	m_textName = new wxTextCtrl( m_panel29, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 200,-1 ), 0 );
 	fgSizer2->Add( m_textName, 0, wxALIGN_CENTER_VERTICAL|wxALL|wxEXPAND, 5 );
 	
-	m_staticText23 = new wxStaticText( m_panel29, wxID_ANY, _("Comment:"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText23->Wrap( -1 );
-	fgSizer2->Add( m_staticText23, 0, wxALIGN_RIGHT|wxTOP|wxBOTTOM|wxLEFT, 5 );
+	m_staticText22 = new wxStaticText( m_panel29, wxID_ANY, _("Comment:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText22->Wrap( -1 );
+	fgSizer2->Add( m_staticText22, 0, wxALIGN_RIGHT|wxTOP|wxBOTTOM|wxLEFT, 5 );
 	
 	m_textComment = new wxTextCtrl( m_panel29, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 200,-1 ), wxTE_MULTILINE|wxTE_WORDWRAP );
 	fgSizer2->Add( m_textComment, 0, wxALL|wxEXPAND, 5 );
+	
+	m_staticText23 = new wxStaticText( m_panel29, wxID_ANY, _("Individual:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText23->Wrap( -1 );
+	fgSizer2->Add( m_staticText23, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT, 5 );
+	
+	wxBoxSizer* bSizer21;
+	bSizer21 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_textIndID = new wxTextCtrl( m_panel29, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer21->Add( m_textIndID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_staticIndName = new wxStaticText( m_panel29, wxID_ANY, _("Name"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticIndName->Wrap( -1 );
+	bSizer21->Add( m_staticIndName, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	
+	fgSizer2->Add( bSizer21, 1, wxEXPAND, 5 );
 	
 	
 	m_panel29->SetSizer( fgSizer2 );

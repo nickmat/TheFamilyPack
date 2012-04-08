@@ -95,6 +95,7 @@ public:
     void OnListIndividuals( wxCommandEvent& event );
     void OnListReferences( wxCommandEvent& event );
     void OnListEvents( wxCommandEvent& event );
+    void OnListResearchers( wxCommandEvent& event );
 
     void OnPedChart( wxCommandEvent& event );
     void OnDescChart( wxCommandEvent& event );
@@ -169,6 +170,7 @@ enum
 	tfpID_LIST_INDIVIDUALS,
 	tfpID_LIST_REFERENCES,
 	tfpID_LIST_EVENTS,
+	tfpID_LIST_RESEARCHERS,
     tfpID_PED_CHART,
     tfpID_DESC_CHART,
     tfpID_SYSTEM_SETTING,

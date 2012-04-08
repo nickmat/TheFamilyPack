@@ -299,10 +299,8 @@ bool tfpEditReference( idt refID  )
 
 bool tfpEditReference( const wxString& ref )
 {
-    wxLongLong_t refID;
-    ref.ToLongLong( &refID );
     recDb::Begin();
-    if( tfpEditReference( refID ) == true ) {
+    if( tfpEditReference( recGetID( ref ) ) == true ) {
         recDb::Commit();
         return true;
     } else {
@@ -496,6 +494,17 @@ bool tfpEditResearcher( idt resID  )
     return ret;
 }
 
+bool tfpEditResearcher( const wxString& resStr )
+{
+    recDb::Begin();
+    bool ret = tfpEditResearcher( recGetID( resStr ) );
+    if( ret == true ) {
+        recDb::Commit();
+    } else {
+        recDb::Rollback();
+    }
+    return ret;
+}
 
 idt tfpPickIndividual( Sex sex )
 {

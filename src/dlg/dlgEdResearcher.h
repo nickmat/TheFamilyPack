@@ -54,10 +54,11 @@ private:
     void OnButtonClickEdit( wxCommandEvent& event );
     void OnButtonClickDelete( wxCommandEvent& event );
 
-    recResearcher     m_researcher;
-    recUser           m_user;
-    recContactList    m_list;
-    recContactVec     m_contacts;
+    recResearcher  m_researcher;
+    recUser        m_user;
+    recContactList m_list;
+    idt            m_prevIndID;
+    recContactVec  m_contacts;
 };
 
 #endif // DLGEDRESEARCHER_H

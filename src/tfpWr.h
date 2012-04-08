@@ -31,6 +31,9 @@
 
 #include <rec/recDatabase.h>
 
+// See tfpWrAdmin.cpp
+extern wxString tfpWriteResearcherList();
+
 // See tfpWrChart.cpp
 extern wxString tfpCreatePedChart( idt indID );
 extern wxString tfpCreateDescChart( idt indID );
@@ -61,5 +64,6 @@ extern wxString tfpWriteRelationship( idt rsID );
 // See tfpWrReference.cpp
 extern wxString tfpWriteReferenceIndex();
 extern wxString tfpWriteReferencePage( idt refID );
+
 
 #endif // TFPWR_H

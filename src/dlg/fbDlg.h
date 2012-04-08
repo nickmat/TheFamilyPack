@@ -958,8 +958,11 @@ class fbDlgEditResearcher : public wxDialog
 		wxPanel* m_panel29;
 		wxStaticText* m_staticText21;
 		wxTextCtrl* m_textName;
-		wxStaticText* m_staticText23;
+		wxStaticText* m_staticText22;
 		wxTextCtrl* m_textComment;
+		wxStaticText* m_staticText23;
+		wxTextCtrl* m_textIndID;
+		wxStaticText* m_staticIndName;
 		wxPanel* m_panel30;
 		wxListCtrl* m_listContacts;
 		wxButton* m_buttonAdd;

@@ -32,10 +32,14 @@
 
 #include <rec/recDatabase.h>
 
+class recContactList;
 class recContact;
 class recContactType;
+class recResearcher;
+typedef std::vector< recContactList >  recContactListVec;
 typedef std::vector< recContact >  recContactVec;
 typedef std::vector< recContactType >  recContactTypeVec;
+typedef std::vector< recResearcher >  recResearcherVec;
 
 //============================================================================
 //                 recContactList
@@ -61,6 +65,11 @@ public:
     static recContactVec GetContacts( idt listID );
     recContactVec GetContacts() const { return GetContacts( f_id ); }
 
+    static idt FindIndID( idt indID );
+
+    // Merge in Contacts from target ContactList and then delete it.
+    void Assimilate( idt targetID ) const;
+
 private:
     idt  f_ind_id;
 };
@@ -82,6 +91,16 @@ inline bool operator!=( const recContactList& r1, const recContactList& r2 )
 class recContactType : public recDb
 {
 public:
+    enum Type {
+        CT_Unstated = 0,
+        CT_Address = -1,
+        CT_Telephone = -2,
+        CT_Mobile = -3,
+        CT_Email = -4,
+        CT_Website = -5,
+        CT_MAX = 6
+    };
+
     recContactType() {}
     recContactType( idt id ) : recDb(id) { Read(); }
     recContactType( const recContactType& at );
@@ -121,6 +140,7 @@ inline bool operator!=( const recContactType& r1, const recContactType& r2 )
 class recContact : public recDb
 {
 public:
+
     recContact() {}
     recContact( idt id ) : recDb(id) { Read(); }
     recContact( const recContact& source );
@@ -143,6 +163,7 @@ public:
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     wxString GetTypeStr() const { return recContactType::GetTypeStr( f_type_id ); }
+    wxString GetHtmlValue( const wxString prefixHref = wxEmptyString ) const;
 
 private:
     idt      f_type_id;
@@ -178,7 +199,7 @@ public:
     bool Equivalent( const recResearcher& r2 ) const;
 
     wxString FGetName() const { return f_name; }
-    wxString FGetComment() const { return f_comments; }
+    wxString FGetComments() const { return f_comments; }
     idt FGetConListID() const { return f_con_list_id; }
 
     void FSetName( const wxString& name ) { f_name = name; }
@@ -188,7 +209,11 @@ public:
     static wxString GetIdStr( idt resID ) { return wxString::Format( "Re"ID, resID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
+    idt GetUserID() const;
+    wxString GetUserIdStr() const;
     recContactVec GetContacts() const { return recContactList::GetContacts( f_con_list_id ); }
+
+    static recResearcherVec GetResearchers();
 
 private:
     wxString  f_name;

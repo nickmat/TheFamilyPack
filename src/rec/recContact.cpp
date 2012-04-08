@@ -38,6 +38,7 @@
 #endif
 
 #include <rec/recContact.h>
+#include <rec/recUser.h>
 
 //============================================================================
 //                 recContact
@@ -133,6 +134,23 @@ bool recContact::Equivalent( const recContact& r2 ) const
         f_val      == r2.f_val;
 }
 
+wxString recContact::GetHtmlValue( const wxString prefixHref ) const
+{
+    wxString format;
+
+    switch( f_type_id )
+    {
+    case recContactType::CT_Website:
+        format = "<a href='%shttp://%s'>%s</a>";
+        break;
+    case recContactType::CT_Email:
+        format = "<a href='%smailto:%s'>%s</a>";
+        break;
+    default:
+        return f_val;
+    }
+    return wxString::Format( format, prefixHref, f_val, f_val );
+}
 
 //============================================================================
 //                 recContactList
@@ -228,6 +246,24 @@ recContactVec recContactList::GetContacts( idt listID )
         list.push_back( con );
     }
     return list;
+}
+
+idt recContactList::FindIndID( idt indID )
+{
+    return ExecuteID( "SELECT id FROM ContactList WHERE ind_id="ID";", indID );
+}
+
+void recContactList::Assimilate( idt targetID ) const
+{
+    if( f_id == 0 || targetID == 0 || f_id == targetID ) return;
+
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "UPDATE Contact SET list_id="ID" WHERE list_id="ID";",
+        f_id, targetID
+    );
+    s_db->ExecuteUpdate( sql );
+    Delete( targetID );
 }
 
 //============================================================================
@@ -439,6 +475,37 @@ bool recResearcher::Equivalent( const recResearcher& r2 ) const
         f_name        == r2.f_name     &&
         f_comments    == r2.f_comments &&
         f_con_list_id == r2.f_con_list_id;
+}
+
+idt recResearcher::GetUserID() const
+{
+    return ExecuteID( "SELECT id FROM User WHERE res_id="ID";", f_id );
+}
+
+wxString recResearcher::GetUserIdStr() const
+{
+    idt uID = GetUserID();
+    if( uID == 0 ) return wxEmptyString;
+    return recUser::GetIdStr( uID );
+}
+
+recResearcherVec recResearcher::GetResearchers()
+{
+    recResearcherVec list;
+    wxSQLite3ResultSet result = s_db->ExecuteQuery(
+        "SELECT id, name, comments, con_list_id FROM Researcher"
+        " WHERE id>0 ORDER BY id;"
+    );
+
+    recResearcher res(0);
+    while( result.NextRow() ) {
+        res.FSetID( GET_ID( result.GetInt64( 0 ) ) );
+        res.FSetName( result.GetAsString( 1 ) );
+        res.FSetComments( result.GetAsString( 2 ) );
+        res.FSetConListID( GET_ID( result.GetInt64( 3 ) ) );
+        list.push_back( res );
+    }
+    return list;
 }
 
 // End of recContact.cpp file

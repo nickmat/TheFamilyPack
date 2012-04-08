@@ -50,6 +50,7 @@ typedef std::vector< idt >  recIdVec;
 
 extern idt recGetID( const wxString& str );
 inline wxString recGetStr( idt id ) { return wxString::Format( ID, id ); }
+inline wxString recGetIDStr( idt id ) { return id ? recGetStr( id ) : wxEmptyString; }
 
 enum Sex { SEX_Unstated, SEX_Male, SEX_Female, SEX_Unknown };
 extern wxString recGetSexStr( Sex sex );

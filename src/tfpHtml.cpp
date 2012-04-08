@@ -106,7 +106,12 @@ void TfpHtml::OnHtmlLinkClicked( wxHtmlLinkEvent& event )
                 DoHtmCtxMenu( href.Mid(2) );
                 break;
             case 'R': // Edit reference record
-                tfpEditReference( href.Mid(2) );
+                uch2 = href.GetChar( 2 );
+                if( uch2.GetValue() == 'e' ) {
+                    tfpEditResearcher( href.Mid(3) );
+                } else {
+                    tfpEditReference( href.Mid(2) );
+                }
                 break;
             }
             break;
@@ -413,6 +418,9 @@ wxString TfpHtml::GetDisplayText( const wxString& name )
     case 'R':  // Reference Document
         if( name == "R" ) {
             return tfpWriteReferenceIndex();
+        }
+        if( name == "Re" ) {
+            return tfpWriteResearcherList();
         }
         uch1 = name.GetChar( 1 );
         if( !wxIsdigit( uch1 ) ) {
