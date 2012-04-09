@@ -82,7 +82,7 @@ wxString tfpWriteResearcherList()
             htm << "<tr><td></td><td colspan=3><table>";
 
             for( size_t j = 0 ; j < contacts.size() ; j++ ) {
-                htm << "<tr><td align=right>" << contacts[j].GetTypeStr()
+                htm << "<tr><td valign=top align=right>" << contacts[j].GetTypeStr()
                     << ":</td><td>" << contacts[j].GetHtmlValue( "!" )
                     << "</td></tr>";
             }

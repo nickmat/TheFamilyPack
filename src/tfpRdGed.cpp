@@ -47,14 +47,11 @@
 
 bool tfpReadGedcom( wxString& path )
 {
-    wxFileInputStream input( path );
-    if( input.IsOk() == false ) return false;
-
     unsigned flags = recDb::CREATE_DB_STD_EXT | recDb::CREATE_DB_ENUM_FN;
     if( recDb::CreateDb( path, flags ) == false ) return false;
 
-    recGedParse ged( input );
-    ged.Import();
+    recGedParse ged( path );
+    if( !ged.Import() ) return false;
     ged.CleanUp();
 
     return true;

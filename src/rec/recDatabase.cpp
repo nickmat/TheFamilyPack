@@ -65,7 +65,33 @@ wxString recGetSexStr( Sex sex )
     return sexarray[sex];
 }
 
-bool recDb::CreateDb( wxString& fname, unsigned flags )
+wxString recHTMLifyStr( const wxString& str )
+{
+    wxString htm;
+    wxString::const_iterator it;
+    for( it = str.begin() ; it != str.end() ; it++ ) {
+        switch( (*it).GetValue() )
+        {
+        case '\n':
+            htm << "<br>";
+            break;
+        case '&':
+            htm << "&amp;";
+            break;
+        case '<':
+            htm << "&lt;";
+            break;
+        case '>':
+            htm << "&gt;";
+            break;
+        default:
+            htm << *it;
+        }
+    }
+    return htm;
+}
+
+bool recDb::CreateDb( const wxString& fname, unsigned flags )
 {
     wxFileName dbfile( fname );
 
@@ -94,8 +120,8 @@ bool recDb::CreateDb( wxString& fname, unsigned flags )
         return false;
     }
 
-    fname = dbfile.GetFullPath();
-    s_db->Open( fname );
+    wxString dbfname = dbfile.GetFullPath();
+    s_db->Open( dbfname );
     s_db->ExecuteUpdate( createdb );
     dbfile.Normalize();
     s_fname = dbfile.GetFullPath();

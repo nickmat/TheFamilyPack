@@ -147,7 +147,7 @@ wxString recContact::GetHtmlValue( const wxString prefixHref ) const
         format = "<a href='%smailto:%s'>%s</a>";
         break;
     default:
-        return f_val;
+        return recHTMLifyStr( f_val );
     }
     return wxString::Format( format, prefixHref, f_val, f_val );
 }

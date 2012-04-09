@@ -55,6 +55,7 @@ inline wxString recGetIDStr( idt id ) { return id ? recGetStr( id ) : wxEmptyStr
 enum Sex { SEX_Unstated, SEX_Male, SEX_Female, SEX_Unknown };
 extern wxString recGetSexStr( Sex sex );
 
+extern wxString recHTMLifyStr( const wxString& str );
 
 class recDb
 {
@@ -100,7 +101,7 @@ public:
      *  the name, where n is the lowest number (starting from 2) that
      *  gives a unique name.
      */
-    static bool CreateDb( wxString& fname, unsigned flags );
+    static bool CreateDb( const wxString& fname, unsigned flags );
 
     /*! Opens an existing database file, providing there is not an existing
      *  database open and the file exists.

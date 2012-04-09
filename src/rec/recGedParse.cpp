@@ -41,15 +41,9 @@
 #include <wx/txtstrm.h>
 #include <wx/tokenzr.h>
 
-#include "rec/recGedParse.h"
-#include "rec/recIndividual.h"
-#include "rec/recPersona.h"
-#include "rec/recDate.h"
-#include "rec/recPlace.h"
-#include "rec/recEvent.h"
-#include "rec/recLink.h"
-#include "cal/calendar.h"
+#include "rec/recDb.h"
 
+int recGedParse::m_lineNum = 0;
 
 class GedIndividual
 {
@@ -94,7 +88,6 @@ public:
         m_fam.f_wife_id = indID;
         UpdateIndividual( &m_wifePerId, indID );
     }
-//    void SetEventId( idt eventID ) { m_fam.f_event_id = eventID; }
 
     void AddChild( idt indID );
 
@@ -107,8 +100,86 @@ public:
     void Save() { m_fam.Save(); }
 };
 
+class GedSubmitter
+{
+private:
+    recResearcher  m_res;
+    recContactList m_cl;
+
+public:
+    GedSubmitter();
+
+    void SetSubmID( idt resID ) { m_res.FSetID( resID ); }
+    void SetName( const wxString& nameStr ) { m_res.FSetName( nameStr ); }
+
+    void SaveContact( recContactType::Type type, const wxString& value );
+    void Save() { m_res.Save(); }
+};
+
 bool recGedParse::Import()
 {
+    if( !Pass1() ) return false;
+    m_filestream.SeekI( 0 );
+    if( !Pass2() ) return false;
+    CleanUp();
+    return true;
+}
+
+void recGedParse::CleanUp()
+{
+    recDb::Begin();
+    recIndividual::AddMissingFamilies();
+    recDb::Commit();
+}
+
+bool recGedParse::Pass1()
+{
+    wxString str;
+    wxString xref;
+    unsigned long num;
+    unsigned index;
+    unsigned famCount=0, indiCount=0, submCount=0;
+
+    m_lineNum = 0;
+    while( !m_input.GetInputStream().Eof() ) {
+        m_lineNum++;
+
+        wxStringTokenizer tk( m_input.ReadLine() );
+        if( tk.HasMoreTokens() == false ) continue;
+
+        str = tk.GetNextToken(); // read level number
+        if( str.ToULong( &num ) == false ) return false;
+
+        if( tk.HasMoreTokens() == false ) return false;
+        str = tk.GetNextToken();
+
+        if( str[0] != wxS('@') ) continue;
+
+        str.Mid( 2 ).ToULong( &num );
+
+        xref = str.Mid( 1 ).BeforeFirst( wxS('@') );
+        if( tk.HasMoreTokens() == false ) return false;
+        str = tk.GetNextToken();
+
+        if(      str.Cmp( "INDI" ) == 0 ) {
+            if( m_indiUseXref ) index = (unsigned) num;
+            else index = ++indiCount;
+            m_indiMap[xref] = index;
+        } else if( str.Cmp( "FAM"  ) == 0 ) {
+            if( m_famUseXref ) index = (unsigned) num;
+            else index = ++famCount;
+            m_famMap[xref] = index;
+        } else if( str.Cmp( "SUBM" ) == 0 ) {
+            m_submMap[xref] = ++submCount;
+        }
+    }
+
+    return true;
+}
+
+bool recGedParse::Pass2()
+{
+    m_lineNum = 0;
     recDb::Begin();
     bool cont = ReadNextLine();
     while( cont ) {
@@ -120,6 +191,12 @@ bool recGedParse::Import()
                 break;
             case tagFAM:
                 ReadFam( 1 );
+                break;
+            case tagSUBM:
+                ReadSubm( 1 );
+                break;
+            case tagHEAD:
+                ReadHead( 1 );
                 break;
             case tagTRLR:
             case tag_END:
@@ -136,23 +213,15 @@ bool recGedParse::Import()
     return true;
 }
 
-void recGedParse::CleanUp()
-{
-    recDb::Begin();
-    recIndividual::AddMissingFamilies();
-    recDb::Commit();
-}
-
 bool recGedParse::ReadNextLine()
 {
     wxString str;
+    wxString xref;
     unsigned long num;
 
     m_lineNum++;
     m_level = 0;
-    m_index = 0;
     m_tag = tagNULL;
-    m_ref = 0;
     m_text.empty();
 
     if( m_input.GetInputStream().Eof() == true ) {
@@ -176,31 +245,31 @@ bool recGedParse::ReadNextLine()
     if( str[0] == wxS('@') )
     {
         m_text = str;
-        str.Mid( 2 ).ToULong( &num );
-        m_index = (unsigned) num;
-
+        m_index = str.Mid( 1 ).BeforeFirst( wxS('@') );
         if( tk.HasMoreTokens() == false ) return false;
         str = tk.GetNextToken();
+
+        if(      str.Cmp( "INDI" ) == 0 ) m_tag = tagINDI;
+        else if( str.Cmp( "FAM"  ) == 0 ) m_tag = tagFAM;
+        else if( str.Cmp( "SUBM" ) == 0 ) m_tag = tagSUBM;
+        return true;
     }
 
-    if(      str.Cmp( "INDI" ) == 0 ) m_tag = tagINDI;
-    else if( str.Cmp( "FAM"  ) == 0 ) m_tag = tagFAM;
-
-    if( m_tag != tagNULL ) return true;
 
     if(      str.Cmp( "HUSB" ) == 0 ) m_tag = tagHUSB;
     else if( str.Cmp( "WIFE" ) == 0 ) m_tag = tagWIFE;
     else if( str.Cmp( "CHIL" ) == 0 ) m_tag = tagCHIL;
+    else if( str.Cmp( "SUBM" ) == 0 ) m_tag = tagSUBM;
 
     if( m_tag != tagNULL ) {
-        if( tk.HasMoreTokens() == false ) return false;
+        if( tk.HasMoreTokens() == false ) return true;
         str = tk.GetNextToken();
-        str.Mid( 2 ).ToULong( &num );
-        m_ref = (unsigned) num;
+        m_xref = str.Mid( 1 ).BeforeFirst( wxS('@') );
         return true;
     }
 
-    if(      str.Cmp( "NAME" ) == 0 ) m_tag = tagNAME;
+    if(      str.Cmp( "CONT" ) == 0 ) m_tag = tagCONT;
+    else if( str.Cmp( "NAME" ) == 0 ) m_tag = tagNAME;
     else if( str.Cmp( "SEX"  ) == 0 ) m_tag = tagSEX;
     else if( str.Cmp( "BIRT" ) == 0 ) m_tag = tagBIRT;
     else if( str.Cmp( "CHR"  ) == 0 ) m_tag = tagCHR;
@@ -212,6 +281,15 @@ bool recGedParse::ReadNextLine()
     else if( str.Cmp( "FAMS" ) == 0 ) m_tag = tagFAMS;
     else if( str.Cmp( "FAMC" ) == 0 ) m_tag = tagFAMC;
     else if( str.Cmp( "MARR" ) == 0 ) m_tag = tagMARR;
+    else if( str.Cmp( "HEAD" ) == 0 ) m_tag = tagHEAD;
+    else if( str.Cmp( "ADDR" ) == 0 ) m_tag = tagADDR;
+    else if( str.Cmp( "ADR1" ) == 0 ) m_tag = tagADR1;
+    else if( str.Cmp( "ADR2" ) == 0 ) m_tag = tagADR2;
+    else if( str.Cmp( "ADR3" ) == 0 ) m_tag = tagADR3;
+    else if( str.Cmp( "PHON" ) == 0 ) m_tag = tagPHON;
+    else if( str.Cmp( "EMAL" ) == 0 ) m_tag = tagEMAL;
+    else if( str.Cmp( "FAX"  ) == 0 ) m_tag = tagFAX;
+    else if( str.Cmp( "WWW"  ) == 0 ) m_tag = tagWWW;
     else if( str.Cmp( "_PRI" ) == 0 ) m_tag = tag_PRI;
 
     m_text = tk.GetString();
@@ -219,10 +297,29 @@ bool recGedParse::ReadNextLine()
     return true;
 }
 
+void recGedParse::ReadHead( int level )
+{
+    bool cont = ReadNextLine();
+    while( cont && m_level >= level ) {
+        if( m_level == level ) {
+            switch( m_tag )
+            {
+            case tagSUBM:
+                m_user = m_submMap[ m_xref ];
+                break;
+            case tag_END:
+                cont = FALSE;
+                continue;
+            }
+        }
+        cont = ReadNextLine();
+    }
+}
+
 void recGedParse::ReadIndi( int level )
 {
     GedIndividual gind;
-    gind.SetIndId( m_index );
+    gind.SetIndId( m_indiMap[ m_index ] );
 
     bool cont = ReadNextLine();
     while( cont && m_level >= level ) {
@@ -544,7 +641,7 @@ void recGedParse::ReadIndAttr( GedIndividual& gind, int level )
 void recGedParse::ReadFam( int level )
 {
     GedFamily gfam;
-    gfam.SetFamId( m_index );
+    gfam.SetFamId( m_famMap[ m_index ] );
 
     bool cont = ReadNextLine();
     while( cont && m_level >= level ) {
@@ -552,13 +649,13 @@ void recGedParse::ReadFam( int level )
             switch( m_tag )
             {
             case tagHUSB:
-                gfam.SetHusb( m_ref );
+                gfam.SetHusb( m_indiMap[ m_xref ] );
                 break;
             case tagWIFE:
-                gfam.SetWife( m_ref );
+                gfam.SetWife( m_indiMap[ m_xref ] );
                 break;
             case tagCHIL:
-                gfam.AddChild( m_ref );
+                gfam.AddChild( m_indiMap[ m_xref ] );
                 break;
             case tagMARR:
                 ReadFamEvent( gfam, level+1 );
@@ -593,7 +690,6 @@ void recGedParse::ReadFamEvent( GedFamily& gfam, int level )
         ev.f_type_id = recEventType::ET_Marriage;
         epHusb.f_role_id = recEventTypeRole::ROLE_Marriage_Groom;
         epWife.f_role_id = recEventTypeRole::ROLE_Marriage_Bride;
-//        gfam.SetEventId( ev.f_id );
         titlefmt = _("Marriage of %s and %s");
         break;
     default:
@@ -625,10 +721,106 @@ void recGedParse::ReadFamEvent( GedFamily& gfam, int level )
 
     int seq = ev.GetLastPersonaSeqNumber();
     epHusb.f_per_seq = seq + 1;
-    epHusb.Save();
+    if( epHusb.FGetPerID() ) epHusb.Save();
     epWife.f_per_seq = seq + 2;
-    epWife.Save();
+    if( epWife.FGetPerID() ) epWife.Save();
 }
+
+void recGedParse::ReadSubm( int level )
+{
+    GedSubmitter gsubm;
+    gsubm.SetSubmID( m_submMap[ m_index ] );
+
+    bool cont = ReadNextLine();
+    while( cont && m_level >= level ) {
+        if( m_level == level ) {
+            switch( m_tag )
+            {
+            case tagNAME:
+                gsubm.SetName( m_text );
+                break;
+            case tagADDR:
+                gsubm.SaveContact( recContactType::CT_Address, ReadAddr( level + 1 ) );
+                continue;
+            case tagPHON:
+                gsubm.SaveContact( recContactType::CT_Telephone, m_text );
+                break;
+            case tagEMAL:
+                gsubm.SaveContact( recContactType::CT_Email, m_text );
+                break;
+    // TODO: Add Fax to contact types
+    //        case tagFAX:
+    //            gsubm.SaveContact( recContactType::CT_FAX, m_text );
+    //            break;
+            case tagWWW:
+                gsubm.SaveContact( recContactType::CT_Website, m_text );
+                break;
+            case tag_END:
+                cont = FALSE;
+                continue;
+            }
+        }
+        cont = ReadNextLine();
+    }
+    gsubm.Save();
+}
+
+wxString recGedParse::ReadAddr( int level )
+{
+    wxString addr1 = m_text;
+    wxString addr2;
+    wxString addr3;
+    wxString addrCont;
+    int addrCnt = 0;
+
+    bool cont = ReadNextLine();
+    while( cont && m_level >= level ) {
+        if( m_level == level ) {
+            switch( m_tag )
+            {
+            case tagADR1:
+                addr1 = m_text;
+                break;
+            case tagADR2:
+                addr2 = m_text;
+                break;
+            case tagADR3:
+                addr3 = m_text;
+                break;
+            case tagCONT:
+                switch( addrCnt ) 
+                {
+                case 0:
+                    addr2 = m_text;
+                    addrCnt = 1;
+                    break;
+                case 1:
+                    addr3 = m_text;
+                    addrCnt = 2;
+                    break;
+                default:
+                    if( !addrCont.IsEmpty() ) {
+                        addrCont << "\n";
+                    }
+                    addrCont << m_text;
+                }
+                break;
+            case tag_END:
+                cont = FALSE;
+                continue;
+            }
+        }
+        cont = ReadNextLine();
+    }
+    if( !addr1.IsEmpty() && !addr2.IsEmpty() ) addr1 << "\n";
+    addr1 << addr2;
+    if( !addr1.IsEmpty() && !addr3.IsEmpty() ) addr1 << "\n";
+    addr1 << addr3;
+    if( !addr1.IsEmpty() && !addrCont.IsEmpty() ) addr1 << "\n";
+    addr1 << addrCont;
+    return addr1;
+}
+
 
 void GedFamily::UpdateIndividual( idt* p_perID, idt indID )
 {
@@ -647,6 +839,24 @@ void GedFamily::AddChild( idt indID )
     fi.fSetIndID( indID );
     fi.fSetSeqChild( ++m_childSeq );
     fi.Save();
+}
+
+GedSubmitter::GedSubmitter() 
+    : m_res(0), m_cl(0)
+{ 
+    m_cl.Save(); 
+    m_res.FSetConListID( m_cl.FGetID() );
+}
+
+void GedSubmitter::SaveContact( recContactType::Type type, const wxString& value )
+{
+    if( value.IsEmpty() ) return;
+
+    recContact con(0);
+    con.FSetTypeID( type );
+    con.FSetListID( m_cl.FGetID() );
+    con.FSetValue( value );
+    con.Save();
 }
 
 // End of tfpRdGed.cpp Source

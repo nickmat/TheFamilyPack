@@ -30,29 +30,49 @@
 #ifndef RECGEDPARSE_H
 #define RECGEDPARSE_H
 
+#include <map>
 #include <wx/txtstrm.h>
+#include <wx/wfstream.h>
 #include "rec/recDatabase.h"
+
+typedef std::map< wxString, unsigned > XrefMap;
 
 class GedIndividual;
 class GedFamily;
+class GedSubmitter;
 
 class recGedParse
 {
 public:
-    recGedParse( wxInputStream& stream ) : m_input(stream),
-        m_lineNum(0), m_level(0), m_index(0), m_tag(tagNULL),
-        m_ref(0) {}
+    recGedParse( const wxString& fname ) 
+        : m_filestream(fname), m_input(m_filestream),
+        m_level(0), m_tag(tagNULL),
+        m_indiUseXref(false), m_famUseXref(false),
+        m_user(0)
+    {}
 
     bool Import();
 
     void CleanUp();
+
+    void SetUseXref( bool useXref ) { m_indiUseXref = m_famUseXref = useXref; }
 
 private:
     enum Tag {
         tagNULL, // Invalid or unset value.
         tagINDI, /* Index of INDIVIDUAL, a person */
         tagFAM,  /* Index of FAMILY, a couple and their children */
+        tagSUBM, // Index of Submitter (Researcher) record.
         tagNAME, /* NAME, (one of) the name a person is known by */
+        tagADDR, // ADDRESS, Postal address for Submitter
+        tagADR1,
+        tagADR2,
+        tagADR3,
+        tagCONT, // Continuation on next line.
+        tagPHON, // PHONE, Telephone number.
+        tagEMAL, // EMAIL ADDRESS
+        tagFAX,  // FAX number.
+        tagWWW,  // Web address.
         tagSEX,  /* SEX, M for Male, F for Female */
         tagBIRT, /* BIRTH, birth event */
         tagCHR,  /* CHRISTENING, christening or baptism event */
@@ -68,12 +88,17 @@ private:
         tagMARR, /* MARRIAGE, marriage event */
         tagCHIL, /* CHILD, person - (one of) child member of family */
         tag_PRI, /* PRIVATE, person - if Y, details should not be made public */
+        tagHEAD, // HEADER, required. File always starts with this section.
         tagTRLR, // TRAILER, required. It specifies the end of the data, use tag_END
         tag_END  /* _END, end of file */
     };
 
+    bool Pass1();
+    bool Pass2();
+
     bool ReadNextLine();
 
+    void ReadHead( int level );
     void ReadIndi( int level );
     void ReadName( GedIndividual& gind, int level );
     void ReadSex( GedIndividual& gind );
@@ -81,17 +106,28 @@ private:
     void ReadIndAttr( GedIndividual& gind, int level );
     void ReadFam( int level );
     void ReadFamEvent( GedFamily& gfam, int level );
+    void ReadSubm( int level );
+    wxString ReadAddr( int level );
     idt ParseEvPlace( int level );
     idt ParseEvDate( int level );
 
+    wxFileInputStream m_filestream;
     wxTextInputStream m_input;
     // Current line
-    int      m_lineNum;
+    static int m_lineNum; // Leave this static to aid debugging.
     int      m_level;
-    unsigned m_index;
+    wxString m_index;
+    wxString m_xref;
     Tag      m_tag;
-    unsigned m_ref;
     wxString m_text;
+    // xref_ID pointers
+    bool     m_indiUseXref;
+    XrefMap  m_indiMap;
+    bool     m_famUseXref;
+    XrefMap  m_famMap;
+    XrefMap  m_submMap;
+    // Global settings
+    unsigned m_user;
 };
 
 #endif // RECGEDPARSE_H
