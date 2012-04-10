@@ -52,11 +52,16 @@ bool dlgEditContact::TransferDataToWindow()
         m_contact.Read();
     }
 
+    m_staticContactListID->SetLabel( recContactList::GetIdStr( m_contact.FGetListID() ) );
     m_staticContactID->SetLabel( m_contact.GetIdStr() );
 
     m_types = recContactType::GetList();
     for( size_t i = 0 ; i < m_types.size() ; i++ ) {
-        m_choiceType->Append( m_types[i].FGetName() );
+        if( i == 0 ) {
+            m_choiceType->Append( "<Select Type>" );
+        } else {
+            m_choiceType->Append( m_types[i].FGetName() );
+        }
         if( m_contact.FGetTypeID() == m_types[i].FGetID() ) {
             m_choiceType->SetSelection( (int) i );
         }
@@ -70,11 +75,11 @@ bool dlgEditContact::TransferDataToWindow()
 bool dlgEditContact::TransferDataFromWindow()
 {
     int type = m_choiceType->GetSelection();
-    if( type < 0 ) {
-        m_contact.FSetTypeID( 0 );
-    } else {
-        m_contact.FSetTypeID( m_types[type].FGetID() );
+    if( type <= 0 ) {
+        wxMessageBox( "Please select a Contact Type", "Contact Type Required" );
+        return false;
     }
+    m_contact.FSetTypeID( m_types[type].FGetID() );
     m_contact.FSetValue( m_textCtrlValue->GetValue() );
     m_contact.Save();
     return true;

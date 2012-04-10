@@ -1000,6 +1000,7 @@ class fbDlgEditContact : public wxDialog
 	
 	protected:
 		wxStaticText* m_staticText11;
+		wxStaticText* m_staticContactListID;
 		wxStaticText* m_staticContactID;
 		wxStaticText* m_staticText3;
 		wxChoice* m_choiceType;
@@ -1011,7 +1012,7 @@ class fbDlgEditContact : public wxDialog
 	
 	public:
 		
-		fbDlgEditContact( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Contact"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 296,168 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
+		fbDlgEditContact( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Contact"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 296,206 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbDlgEditContact();
 	
 };

@@ -62,6 +62,9 @@ public:
 
     void FSetIndID( idt indID ) { f_ind_id = indID; }
 
+    static wxString GetIdStr( idt resID ) { return wxString::Format( "CL"ID, resID ); }
+    wxString GetIdStr() const { return GetIdStr( f_id ); }
+
     static recContactVec GetContacts( idt listID );
     recContactVec GetContacts() const { return GetContacts( f_id ); }
 
@@ -114,6 +117,9 @@ public:
     wxString FGetName() const { return f_name; }
 
     void FSetName( const wxString name ) { f_name = name; }
+
+    static wxString GetIdStr( idt resID ) { return wxString::Format( "CT"ID, resID ); }
+    wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     static wxString GetTypeStr( idt typeID );
 

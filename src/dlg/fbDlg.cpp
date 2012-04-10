@@ -3061,20 +3061,36 @@ fbDlgEditContact::fbDlgEditContact( wxWindow* parent, wxWindowID id, const wxStr
 	wxFlexGridSizer* fgSizer11;
 	fgSizer11 = new wxFlexGridSizer( 0, 2, 0, 0 );
 	fgSizer11->AddGrowableCol( 1 );
+	fgSizer11->AddGrowableRow( 2 );
 	fgSizer11->SetFlexibleDirection( wxBOTH );
 	fgSizer11->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_staticText11 = new wxStaticText( this, wxID_ANY, _("ID"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText11 = new wxStaticText( this, wxID_ANY, _("List ID:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText11->Wrap( -1 );
 	m_staticText11->SetFont( wxFont( 8, 74, 90, 90, false, wxT("MS Shell Dlg 2") ) );
 	
 	fgSizer11->Add( m_staticText11, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT, 5 );
 	
-	m_staticContactID = new wxStaticText( this, wxID_ANY, _("C0"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticContactID->Wrap( -1 );
-	m_staticContactID->SetFont( wxFont( 11, 72, 90, 92, false, wxT("Times New Roman") ) );
+	wxBoxSizer* bSizer139;
+	bSizer139 = new wxBoxSizer( wxHORIZONTAL );
 	
-	fgSizer11->Add( m_staticContactID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	m_staticContactListID = new wxStaticText( this, wxID_ANY, _("CL0"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticContactListID->Wrap( -1 );
+	m_staticContactListID->SetFont( wxFont( 10, 74, 90, 92, false, wxT("Times New Roman") ) );
+	
+	bSizer139->Add( m_staticContactListID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	
+	bSizer139->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	m_staticContactID = new wxStaticText( this, wxID_ANY, _("Ct0"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticContactID->Wrap( -1 );
+	m_staticContactID->SetFont( wxFont( 10, 74, 90, 92, false, wxT("Times New Roman") ) );
+	
+	bSizer139->Add( m_staticContactID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	
+	fgSizer11->Add( bSizer139, 1, wxEXPAND, 5 );
 	
 	m_staticText3 = new wxStaticText( this, wxID_ANY, _("Type:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText3->Wrap( -1 );
@@ -3087,9 +3103,9 @@ fbDlgEditContact::fbDlgEditContact( wxWindow* parent, wxWindowID id, const wxStr
 	
 	m_staticText4 = new wxStaticText( this, wxID_ANY, _("Value:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText4->Wrap( -1 );
-	fgSizer11->Add( m_staticText4, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT|wxALL, 5 );
+	fgSizer11->Add( m_staticText4, 0, wxALIGN_RIGHT|wxALL, 5 );
 	
-	m_textCtrlValue = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textCtrlValue = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE );
 	fgSizer11->Add( m_textCtrlValue, 1, wxALIGN_CENTER_VERTICAL|wxALL|wxEXPAND, 5 );
 	
 	
