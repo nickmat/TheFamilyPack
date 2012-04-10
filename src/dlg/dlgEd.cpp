@@ -48,6 +48,7 @@
 #include "dlgSelEvent.h"
 #include "dlgEdReference.h"
 #include "dlgEdResearcher.h"
+#include "dlgEdSystem.h"
 #include "dlgSelect.h"
 #include "dlgEdIndEvent.h"
 #include "dlg/dlgNote.h"
@@ -177,15 +178,6 @@ bool tfpAddNewParent( idt indID, Sex sex )
     idt newIndID = tfpAddNewIndividual( famID, sex, surname );
     if( newIndID ) {
         recFamilyIndividual fi(0);
-#if 0
-        fi.f_fam_id = recIndividual::GetDefaultFamily( newIndID );
-        fi.f_ind_id = indID;
-        fi.Find();
-        if( fi.f_id == 0 ) {
-            fi.f_seq_child = 1;
-            fi.Save();
-        }
-#endif
         fi.fSetFamID( recIndividual::GetDefaultFamily( newIndID ) );
         fi.fSetIndID( indID );
         fi.Find();
@@ -503,6 +495,40 @@ bool tfpEditResearcher( const wxString& resStr )
     } else {
         recDb::Rollback();
     }
+    return ret;
+}
+
+bool tfpEditSystem()
+{
+    const wxString savepoint = "EdSys";
+    recDb::Savepoint( savepoint );
+    bool ret = false;
+    dlgEditSystem* dialog = new dlgEditSystem( NULL );
+
+    if( dialog->ShowModal() == wxID_OK ) {
+        recDb::ReleaseSavepoint( savepoint );
+        ret = true;
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+    return ret;
+}
+
+bool tfpEditUserSettings()
+{
+    const wxString savepoint = "EdUserSet";
+    recDb::Savepoint( savepoint );
+    bool ret = false;
+    dlgEditUserSettings* dialog = new dlgEditUserSettings( NULL );
+
+    if( dialog->ShowModal() == wxID_OK ) {
+        recDb::ReleaseSavepoint( savepoint );
+        ret = true;
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
     return ret;
 }
 

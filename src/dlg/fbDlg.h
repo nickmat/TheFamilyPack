@@ -1018,6 +1018,51 @@ class fbDlgEditContact : public wxDialog
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/// Class fbDlgEditSystem
+///////////////////////////////////////////////////////////////////////////////
+class fbDlgEditSystem : public wxDialog 
+{
+	private:
+	
+	protected:
+		wxStaticText* m_staticText;
+		wxChoice* m_choiceUser;
+		wxStaticLine* m_staticline1;
+		wxButton* m_buttonSave;
+		wxButton* m_buttonCancel;
+	
+	public:
+		
+		fbDlgEditSystem( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("System Settings"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 296,123 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
+		~fbDlgEditSystem();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class fbDlgEditUserSettings
+///////////////////////////////////////////////////////////////////////////////
+class fbDlgEditUserSettings : public wxDialog 
+{
+	private:
+	
+	protected:
+		wxStaticText* m_staticText1;
+		wxStaticText* m_staticUserName;
+		wxStaticText* m_staticUserID;
+		wxStaticText* m_staticText;
+		wxTextCtrl* m_textCtrlHome;
+		wxStaticLine* m_staticline1;
+		wxButton* m_buttonSave;
+		wxButton* m_buttonCancel;
+	
+	public:
+		
+		fbDlgEditUserSettings( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("User Settings"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 301,144 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
+		~fbDlgEditUserSettings();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
 /// Class fbDlgNote
 ///////////////////////////////////////////////////////////////////////////////
 class fbDlgNote : public wxDialog 

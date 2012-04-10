@@ -38,6 +38,7 @@
 #endif
 
 #include <rec/recUser.h>
+#include <rec/recContact.h>
 
 //============================================================================
 //                 recUser
@@ -115,6 +116,52 @@ bool recUser::Read()
 bool recUser::Equivalent( const recUser& r2 ) const
 { 
     return f_res_id == r2.f_res_id;
+}
+
+recUserVec recUser::GetUsers()
+{
+    recUserVec vec;
+
+    wxSQLite3ResultSet result = 
+        s_db->ExecuteQuery( "SELECT id, res_id FROM User;" );
+
+    recUser user;
+    while( result.NextRow() ) {
+        user.f_id = GET_ID( result.GetInt64( 0 ) );
+        user.f_res_id = GET_ID( result.GetInt64( 1 ) );
+        vec.push_back( user );
+    }
+    return vec;
+}
+
+wxString recUser::GetNameStr() const
+{
+    return recResearcher::GetNameStr( f_res_id );
+}
+
+wxString recUser::GetSetting( idt userID, recUserSetting::Property prop )
+{
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT val FROM UserSetting WHERE user_id="ID" AND property=%d;",
+        userID, prop
+    );
+    wxSQLite3Table result = s_db->GetTable( sql );
+
+    if( result.GetRowCount() != 1 ) {
+        // Get Default Value
+        sql.Format(
+            "SELECT val FROM UserSetting WHERE user_id=0 AND property=%d;",
+            prop
+        );
+        result = s_db->GetTable( sql );
+
+        if( result.GetRowCount() != 1 ) {
+            // Still can't find it.
+            return wxEmptyString;
+        }
+    }
+    return result.GetAsString( 0 );
 }
 
 //============================================================================
@@ -205,5 +252,23 @@ bool recUserSetting::Equivalent( const recUserSetting& r2 ) const
         f_val      == r2.f_val;
 }
 
+void recUserSetting::Find( idt userID, recUserSetting::Property prop )
+{
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT id, val FROM UserSetting WHERE user_id="ID" AND property=%d;",
+        userID, prop
+    );
+    wxSQLite3Table result = s_db->GetTable( sql );
+
+    Clear();
+    f_user_id = userID;
+    f_property = prop;
+    if( result.GetRowCount() != 1 ) {
+        return;
+    }
+    f_id = GET_ID( result.GetInt64( 0 ) );
+    f_val = result.GetAsString( 1 );
+}
 
 // End of recUser.cpp file

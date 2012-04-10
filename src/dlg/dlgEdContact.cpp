@@ -58,7 +58,7 @@ bool dlgEditContact::TransferDataToWindow()
     m_types = recContactType::GetList();
     for( size_t i = 0 ; i < m_types.size() ; i++ ) {
         if( i == 0 ) {
-            m_choiceType->Append( "<Select Type>" );
+            m_choiceType->Append( _("<Select Type>") );
         } else {
             m_choiceType->Append( m_types[i].FGetName() );
         }
@@ -76,7 +76,7 @@ bool dlgEditContact::TransferDataFromWindow()
 {
     int type = m_choiceType->GetSelection();
     if( type <= 0 ) {
-        wxMessageBox( "Please select a Contact Type", "Contact Type Required" );
+        wxMessageBox( _("Please select a Contact Type"), _("Contact Type Required") );
         return false;
     }
     m_contact.FSetTypeID( m_types[type].FGetID() );

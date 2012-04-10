@@ -508,4 +508,9 @@ recResearcherVec recResearcher::GetResearchers()
     return list;
 }
 
+wxString recResearcher::GetNameStr( idt resID )
+{
+    return ExecuteStr( "SELECT name FROM Researcher WHERE id="ID";", resID );
+}
+
 // End of recContact.cpp file

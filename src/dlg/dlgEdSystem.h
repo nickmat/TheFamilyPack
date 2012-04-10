@@ -1,11 +1,11 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        dlgEdContact.h
+ * Name:        dlgEdSystem.h
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Edit database Contact dialog header.
+ * Purpose:     Edit database System Settings dialog header.
  * Author:      Nick Matthews
  * Modified by:
  * Website:     http://thefamilypack.org
- * Created:     4 April 2012
+ * Created:     10 April 2012
  * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2012, Nick Matthews.
  * Licence:     GNU GPLv3
@@ -27,26 +27,46 @@
 
 */
 
-#ifndef DLGEDCONTACT_H
-#define DLGEDCONTACT_H
+#ifndef DLGEDSYSTEM_H
+#define DLGEDSYSTEM_H
 
-#include <rec/recContact.h>
+#include <rec/recSystem.h>
+#include <rec/recUser.h>
 
 #include "fbDlg.h"
 
-class dlgEditContact : public fbDlgEditContact
+//============================================================================
+//                 dlgEditSystem
+//============================================================================
+
+class dlgEditSystem : public fbDlgEditSystem
 {
 public:
-    dlgEditContact( wxWindow* parent, idt contactID );
-
-    recContact* GetContact() { return &m_contact; }
+    dlgEditSystem( wxWindow* parent );
 
 private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
 
-    recContact         m_contact;
-    recContactTypeVec  m_types;
+    idt        m_userID;
+    recUserVec m_users;
 };
 
-#endif // DLGEDCONTACT_H
+//============================================================================
+//                 dlgEditUserSettings
+//============================================================================
+
+class dlgEditUserSettings : public fbDlgEditUserSettings
+{
+public:
+    dlgEditUserSettings( wxWindow* parent );
+
+private:
+    bool TransferDataToWindow();
+    bool TransferDataFromWindow();
+
+    recUser   m_user;
+    wxString  m_homeStr;
+};
+
+#endif // DLGEDSYSTEM_H

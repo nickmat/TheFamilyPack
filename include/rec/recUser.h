@@ -31,50 +31,12 @@
 #define RECUSER_H
 
 #include <rec/recDatabase.h>
+#include <rec/recSystem.h>
 
 class recUser;
 typedef std::vector< recUser >  recUserVec;
-
-//============================================================================
-//                 recUser
-//============================================================================
-
-class recUser : public recDb
-{
-public:
-    recUser() {}
-    recUser( idt id ) : recDb(id) { Read(); }
-    recUser( const recUser& user );
-
-    void Clear();
-    void Save();
-    bool Read();
-    TABLE_NAME_MEMBERS( "User" )
-    bool Equivalent( const recUser& r2 ) const;
-
-    idt FGetResID() const { return f_res_id; }
-
-    void FSetResID( idt resID ) { f_res_id = resID; }
-
-    static wxString GetIdStr( idt userID ) { return wxString::Format( "U"ID, userID ); }
-    wxString GetIdStr() const { return GetIdStr( f_id ); }
-
-    idt FindFirst( idt resID )
-        { return ExecuteID( "SELECT id FROM User WHERE res_id="ID" ORDER BY id;", resID ); }
-
-private:
-    idt  f_res_id;
-};
-
-inline bool operator==( const recUser& r1, const recUser& r2 )
-{
-    return r1.Equivalent( r2 ) && r1.EqualID( r2 );
-}
-
-inline bool operator!=( const recUser& r1, const recUser& r2 )
-{
-    return !(r1 == r2);
-}
+class recUserSetting;
+typedef std::vector< recUserSetting >  recUserSettingVec;
 
 //============================================================================
 //                 recUserSetting
@@ -107,6 +69,8 @@ public:
     void FSetProperty( Property up ) { f_property = up; }
     void FSetValue( const wxString& val ) { f_val = val; }
 
+    void Find( idt userID, recUserSetting::Property prop );
+
 private:
     idt      f_user_id;
     Property f_property;
@@ -121,6 +85,58 @@ inline bool operator==( const recUserSetting& r1, const recUserSetting& r2 )
 inline bool operator!=( const recUserSetting& r1, const recUserSetting& r2 )
 {
     return !(r1 == r2);
+}
+
+
+//============================================================================
+//                 recUser
+//============================================================================
+
+class recUser : public recDb
+{
+public:
+    recUser() {}
+    recUser( idt id ) : recDb(id) { Read(); }
+    recUser( const recUser& user );
+
+    void Clear();
+    void Save();
+    bool Read();
+    TABLE_NAME_MEMBERS( "User" )
+    bool Equivalent( const recUser& r2 ) const;
+
+    idt FGetResID() const { return f_res_id; }
+
+    void FSetResID( idt resID ) { f_res_id = resID; }
+
+    static wxString GetIdStr( idt userID ) { return wxString::Format( "U"ID, userID ); }
+    wxString GetIdStr() const { return GetIdStr( f_id ); }
+
+    idt FindFirst( idt resID )
+        { return ExecuteID( "SELECT id FROM User WHERE res_id="ID" ORDER BY id;", resID ); }
+
+    static recUserVec GetUsers();
+
+    wxString GetNameStr() const;
+    static wxString GetSetting( idt userID, recUserSetting::Property prop );
+    wxString GetSetting( recUserSetting::Property prop ) const { return GetSetting( f_id, prop ); }
+
+private:
+    idt  f_res_id;
+};
+
+inline bool operator==( const recUser& r1, const recUser& r2 )
+{
+    return r1.Equivalent( r2 ) && r1.EqualID( r2 );
+}
+
+inline bool operator!=( const recUser& r1, const recUser& r2 )
+{
+    return !(r1 == r2);
+}
+
+inline wxString recGetHomeDisplay() {
+    return recUser::GetSetting( recGetCurrentUser(), recUserSetting::UP_HomeScreen );
 }
 
 

@@ -31,6 +31,9 @@
 
 #include <rec/recDatabase.h>
 
+class recSystem;
+typedef std::vector< recSystem > recSystemVec;
+
 //============================================================================
 //                 recSystem
 //============================================================================

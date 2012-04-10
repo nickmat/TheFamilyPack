@@ -244,7 +244,7 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     SetNoDatabase();
     if( recDb::IsOpen() ) {
         SetDatabaseOpen( recDb::GetFileName() );
-        m_html->DisplayHtmPage( "F1" );
+        m_html->DisplayHomePage();
     } else {
         m_html->LoadPage( "memory:startup.htm" );
     }
@@ -608,14 +608,40 @@ void TfpFrame::OnDescChart( wxCommandEvent& event )
  */
 void TfpFrame::OnSystemOptions( wxCommandEvent& event )
 {
-    wxMessageBox( wxT("Not yet implimented"), wxT("OnSystemOptions") );
+    recDb::Begin();
+    try {
+        bool ret = tfpEditSystem();
+        if( ret == true ) {
+            recDb::Commit();
+            m_html->RefreshHtmPage();
+        } else {
+            recDb::Rollback();
+        }
+    }
+    catch( wxSQLite3Exception& e ) {
+        recDb::ErrorMessage( e );
+        recDb::Rollback();
+    }
 }
 
 /*! \brief Called on a User Settings menu option event.
  */
 void TfpFrame::OnUserOptions( wxCommandEvent& event )
 {
-    wxMessageBox( wxT("Not yet implimented"), wxT("OnUserOptions") );
+    recDb::Begin();
+    try {
+        bool ret = tfpEditUserSettings();
+        if( ret == true ) {
+            recDb::Commit();
+            m_html->RefreshHtmPage();
+        } else {
+            recDb::Rollback();
+        }
+    }
+    catch( wxSQLite3Exception& e ) {
+        recDb::ErrorMessage( e );
+        recDb::Rollback();
+    }
 }
 
 /*! \brief Called on a Help, TFP Website menu option event.
@@ -720,7 +746,7 @@ void TfpFrame::OnFindForward( wxCommandEvent& event )
  */
 void TfpFrame::OnHome( wxCommandEvent& event )
 {
-    m_html->DisplayHtmPage( "F1" );
+    m_html->DisplayHomePage();
 }
 
 /*! \brief Called on a pressing enter in toolbar text box.
@@ -779,7 +805,7 @@ bool TfpFrame::OpenFile()
         if( recDb::OpenDb( path ) == true )
         {
             SetDatabaseOpen( path );
-            m_html->DisplayHtmPage( "FI1" );
+            m_html->DisplayHomePage();
             ret = true;
         }
     }
@@ -801,7 +827,7 @@ bool TfpFrame::ImportGedcom()
         if( tfpReadGedcom( path ) )
         {
             SetDatabaseOpen( path );
-            m_html->DisplayHtmPage( "F1" );
+            m_html->DisplayHtmPage( "N" );
             ret = true;
         } else {
             wxMessageBox( _("Error Reading GEDCOM File"), _("Import") );

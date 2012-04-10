@@ -31,6 +31,7 @@
 
 #include <wx/html/htmlwin.h>
 #include <rec/recDatabase.h>
+#include <rec/recUser.h>
 
 class TfpFrame;
 
@@ -46,6 +47,7 @@ public:
     ~TfpHtml() {}
 
     bool DisplayHtmPage( const wxString& name );
+    bool DisplayHomePage() { return DisplayHtmPage( recGetHomeDisplay() ); }
     void DisplayBlankPage( const wxString& name );
     void SetName( const wxString& name ) { m_name = name; }
     void RefreshHtmPage();

@@ -341,6 +341,7 @@ wxString TfpHtml::GetDisplayText( const wxString& name )
     wxLongLong_t num;
     bool success;
 
+    wxASSERT( name.size() > 0 );
     uch = name.GetChar( 0 );
     switch( uch.GetValue() )
     {

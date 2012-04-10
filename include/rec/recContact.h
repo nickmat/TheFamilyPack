@@ -215,6 +215,8 @@ public:
     static wxString GetIdStr( idt resID ) { return wxString::Format( "Re"ID, resID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
+    static wxString GetNameStr( idt resID );
+
     idt GetUserID() const;
     wxString GetUserIdStr() const;
     recContactVec GetContacts() const { return recContactList::GetContacts( f_con_list_id ); }
