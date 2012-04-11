@@ -57,7 +57,7 @@ bool tfpReadGedcom( wxString& path )
             }
             return true; // We did actually create a database
         }
-        ged.CleanUp();
+//        ged.CleanUp();
 
     } catch( wxSQLite3Exception& e ) {
         recDb::ErrorMessage( e );

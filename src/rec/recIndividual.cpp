@@ -385,22 +385,22 @@ wxSQLite3ResultSet recIndividual::GetNameList( wxString surname )
     if( surname.length() == 0 ) {
         // Full list
         sql.Format(
-            "SELECT surname, given, epitaph, fam_id FROM Individual "
-            "ORDER BY surname, given;"
+            "SELECT surname, given, epitaph, id FROM Individual "
+            "ORDER BY surname, given, epitaph;"
         );
     } else if( surname.length() == 1 ) {
         // Name beginning with letter
         wxString name = surname + wxT("%");
         sql.Format(
-            "SELECT surname, given, epitaph, fam_id FROM Individual "
-            "WHERE surname LIKE '%q' ORDER BY surname, given;",
+            "SELECT surname, given, epitaph, id FROM Individual "
+            "WHERE surname LIKE '%q' ORDER BY surname, given, epitaph;",
             UTF8_(name)
         );
     } else {
         // All matching the given surname
         sql.Format(
-            "SELECT surname, given, epitaph, fam_id FROM Individual "
-            "WHERE surname='%q' ORDER BY surname, given;",
+            "SELECT surname, given, epitaph, id FROM Individual "
+            "WHERE surname='%q' ORDER BY surname, given, epitaph;",
             UTF8_(surname)
         );
     }

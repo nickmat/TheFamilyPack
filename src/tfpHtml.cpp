@@ -164,7 +164,6 @@ void TfpHtml::DoHtmCtxMenu( const wxString& ref )
     case 'R':
         // Parents, Spouses (Marriage), Siblings, and Children
         // List individuals and jump to the selected individuals family
-        m_ctxmenuIDs.empty();
         AddFamiliesToMenu( ref, menu, tfpID_INDMENU_BEG );
         break;
     default:
@@ -184,10 +183,12 @@ int TfpHtml::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )
     recIndividualList inds;
     wxLongLong_t indID;
     ref.Mid( 1 ).ToLongLong( &indID );
-    m_ctxmenuIDs.clear();
+    m_ctxmenuPages.clear();
+    wxString page;
+
 
     menu->Append( cmd_ID + c, wxT("Family") );
-    m_ctxmenuIDs.push_back( recIndividual::GetDefaultFamily( indID ) );
+    m_ctxmenuPages.push_back( "FI"+recGetStr( indID ) );
     c++;
 
     wxMenu* parmenu = new wxMenu;
@@ -202,7 +203,7 @@ int TfpHtml::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )
         if( families[i].f_wife_id != 0 ) {
             parmenu->Append( cmd_ID + c, recIndividual::GetFullName( families[i].f_wife_id ) );
         }
-        m_ctxmenuIDs.push_back( families[i].f_id );
+        m_ctxmenuPages.push_back( "F"+recGetStr( families[i].f_id ) );
         c++;
     }
     if( items == c ) {
@@ -217,7 +218,7 @@ int TfpHtml::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )
         for( j = 0 ; j < inds.size() ; j++ ) {
             if( inds[j].f_id == indID ) continue;
             sibmenu->Append( cmd_ID + c, inds[j].GetFullName() );
-            m_ctxmenuIDs.push_back( inds[j].f_fam_id );
+            m_ctxmenuPages.push_back( "FI"+recGetStr( inds[j].f_id ) );
             c++;
         }
         inds.empty();
@@ -234,12 +235,12 @@ int TfpHtml::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )
     for( i = 0 ; i < families.size() ; i++ ) {
         if( families[i].f_husb_id != 0 && families[i].f_husb_id != indID ) {
             marmenu->Append( cmd_ID + c, recIndividual::GetFullName( families[i].f_husb_id ) );
-            m_ctxmenuIDs.push_back( families[i].f_id );
+            m_ctxmenuPages.push_back( "F"+recGetStr( families[i].f_id ) );
             c++;
         }
         if( families[i].f_wife_id != 0 && families[i].f_wife_id != indID ) {
             marmenu->Append( cmd_ID + c, recIndividual::GetFullName( families[i].f_wife_id ) );
-            m_ctxmenuIDs.push_back( families[i].f_id );
+            m_ctxmenuPages.push_back( "F"+recGetStr( families[i].f_id ) );
             c++;
         }
     }
@@ -255,7 +256,7 @@ int TfpHtml::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )
         inds = families[i].GetChildren();
         for( j = 0 ; j < inds.size() ; j++ ) {
             kidmenu->Append( cmd_ID + c, inds[j].GetFullName() );
-            m_ctxmenuIDs.push_back( inds[j].f_fam_id );
+            m_ctxmenuPages.push_back( "FI"+recGetStr( inds[j].f_id ) );
             c++;
         }
     }
@@ -270,7 +271,7 @@ int TfpHtml::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )
 void TfpHtml::OnHtmIndMenu( wxCommandEvent& event )
 {
     size_t i = event.GetId() - tfpID_INDMENU_BEG;
-    DisplayHtmPage( wxString::Format( "F"ID, m_ctxmenuIDs[i] ) );
+    DisplayHtmPage( m_ctxmenuPages[i] );
 }
 
 void TfpHtml::OnHtmCtxMenu( wxCommandEvent& event )

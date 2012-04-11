@@ -137,7 +137,7 @@ wxString tfpWriteIndividualList( const wxString& surname )
 		htm << wxT("<table border=1>");
         while( result.NextRow() )
 		{
-            htm << wxT("<tr><td><a href='F") 
+            htm << wxT("<tr><td><a href='FI") 
 				<< result.GetAsString( 3 ) 
 				<< wxT("'><b>")
 

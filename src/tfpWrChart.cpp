@@ -94,7 +94,7 @@ wxString tfpCreatePedChart( idt indID )
 
 void WrPedCht( idt indID, Sex sex, int gen )
 {
-   recIndividual ind( indID );
+    recIndividual ind( indID );
     if( ind.f_id == 0 ) return;
     recFamily fam( 0 );
 
@@ -102,6 +102,7 @@ void WrPedCht( idt indID, Sex sex, int gen )
     if( famList.size() > 0 ) {
         fam = famList[0];
     }
+    wxString famLk = ( ind.f_fam_id ) ? "F"+recGetStr( ind.f_fam_id ) : "FI"+recGetStr( indID );
 
     // Construct Pedigree Chart
     GenPChart[gen] = HTM_CHART_GIF_BLANK;
@@ -119,8 +120,8 @@ void WrPedCht( idt indID, Sex sex, int gen )
     {
         if( i == gen )
         {
-            htm << wxT("<td width=300>&nbsp;&nbsp;<a href=F")
-                << ind.f_fam_id << wxT("><b>")
+            htm << wxT("<td width=300>&nbsp;&nbsp;<a href=")
+                << famLk << wxT("><b>")
                 << ind.f_given << wxT(" ") << ind.f_surname
                 << wxT("</b></a> ") << ind.f_epitaph << wxT("</td>");
 
@@ -198,17 +199,21 @@ void WrDescCht( idt indID, int gen )
             WrDescCht( children[j], gen+1 );
         }
     }
+    if( families.size() == 0 ) {
+        WrDescLine( indID, 0, 0, gen );
+    }
 }
 
 void WrDescLine( idt indID, idt spouseID, idt famID, int gen )
 {
     int dheight = ( spouseID == 0 ) ? 0 : 1;
+    wxString famLk = ( famID ) ? "F"+recGetStr( famID ) : "FI"+recGetStr( indID );
 
     htm << wxT("<table cellspacing=0 cellpadding=0 border=0><tr>");
     for( int i = 0 ; i <= gen ; i++ ) {
         if( i == gen ) {
-            htm << wxT("<td width=300>&nbsp;&nbsp;<a href=F")
-                << famID << wxT("><b>")
+            htm << wxT("<td width=300>&nbsp;&nbsp;<a href=")
+                << famLk << wxT("><b>")
                 << recIndividual::GetFullName( indID )
                 << wxT("</b></a> ")
                 << recIndividual::GetDateEpitaph( indID );

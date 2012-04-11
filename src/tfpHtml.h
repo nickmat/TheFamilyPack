@@ -33,6 +33,7 @@
 #include <rec/recDatabase.h>
 #include <rec/recUser.h>
 
+typedef std::vector<wxString> StringVec;
 class TfpFrame;
 
 class TfpHtml : public wxHtmlWindow
@@ -65,7 +66,7 @@ private:
     wxString  m_name;        // Current page name
     TfpFrame* m_frame;
     wxString  m_ctxmenuref;
-    recIdVec  m_ctxmenuIDs;
+    StringVec m_ctxmenuPages;
 };
 
 
