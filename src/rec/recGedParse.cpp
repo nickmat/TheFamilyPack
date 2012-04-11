@@ -40,6 +40,8 @@
 #include <wx/wfstream.h>
 #include <wx/txtstrm.h>
 #include <wx/tokenzr.h>
+#include <wx/progdlg.h>
+#include <wx/busyinfo.h>
 
 #include "rec/recDb.h"
 
@@ -118,9 +120,24 @@ public:
 
 bool recGedParse::Import()
 {
+    wxProgressDialog dialog("Progress dialog example",
+                            "Proccessing...",
+                            m_totalCount/100,    // range
+                            NULL,   // parent
+                            wxPD_CAN_ABORT |
+                            //wxPD_CAN_SKIP |
+                            wxPD_APP_MODAL |
+                            //wxPD_AUTO_HIDE | // -- try this as well
+                            wxPD_ELAPSED_TIME |
+                            wxPD_ESTIMATED_TIME |
+                            wxPD_REMAINING_TIME |
+                            wxPD_SMOOTH // - makes indeterminate mode bar on WinXP very small
+                            );
+    m_progress = &dialog;
     if( !Pass1() ) return false;
     m_filestream.SeekI( 0 );
     if( !Pass2() ) return false;
+    m_progress->Update( m_lineNum/100, "Cleaning up..." );
     CleanUp();
     return true;
 }
@@ -148,9 +165,9 @@ bool recGedParse::Pass1()
         if( tk.HasMoreTokens() == false ) continue;
 
         str = tk.GetNextToken(); // read level number
-        if( str.ToULong( &num ) == false ) return false;
+        if( str.ToULong( &num ) == false ) continue; // return false;
 
-        if( tk.HasMoreTokens() == false ) return false;
+        if( tk.HasMoreTokens() == false ) continue; // return false;
         str = tk.GetNextToken();
 
         if( str[0] != wxS('@') ) continue;
@@ -158,7 +175,7 @@ bool recGedParse::Pass1()
         str.Mid( 2 ).ToULong( &num );
 
         xref = str.Mid( 1 ).BeforeFirst( wxS('@') );
-        if( tk.HasMoreTokens() == false ) return false;
+        if( tk.HasMoreTokens() == false ) continue; // return false;
         str = tk.GetNextToken();
 
         if(      str.Cmp( "INDI" ) == 0 ) {
@@ -173,6 +190,9 @@ bool recGedParse::Pass1()
             m_submMap[xref] = ++submCount;
         }
     }
+//    m_totalCount = famCount + indiCount + submCount;
+    m_totalCount = m_lineNum;
+    m_progress->SetRange( m_totalCount/100 );
 
     return true;
 }
@@ -183,6 +203,18 @@ bool recGedParse::Pass2()
     recDb::Begin();
     bool cont = ReadNextLine();
     while( cont ) {
+        wxString message = wxString::Format( "Line number = %d of %d", m_lineNum, m_totalCount );
+        if( m_progress->Update( m_lineNum/100, message ) == false ) {
+            if( wxMessageBox( 
+                _("Do you really want to cancel?"), 
+                _("Cancel Confirmation"), 
+                wxYES_NO | wxICON_QUESTION ) 
+                == wxYES 
+            ) {
+                return false;
+            }
+            m_progress->Resume();
+        }
         if( m_level == 0 ) {
             switch( m_tag )
             {
@@ -209,7 +241,9 @@ bool recGedParse::Pass2()
             cont = ReadNextLine();
         }
     }
+    m_progress->Update( m_lineNum/100, "Finalising..." );
     recDb::Commit();
+
     return true;
 }
 

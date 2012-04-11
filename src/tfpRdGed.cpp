@@ -40,7 +40,6 @@
 #include <wx/wfstream.h>
 
 #include <rec/recGedParse.h>
-#include <rec/recIndividual.h>
 
 #include "tfpRd.h"
 
