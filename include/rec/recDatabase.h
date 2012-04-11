@@ -94,6 +94,8 @@ public:
         { s_db = db; s_env = env; }
     static wxSQLite3Database* GetDb() { return s_db; }
 
+    static bool IsGUI() { return s_env == ENV_GUI; }
+
     /*! Creates a new database with the given filename. If the flag
      *  CREATE_DB_STD_EXT is set, the standard file extension ".tfpd"
      *  is used. If CREATE_DB_ENUM_FN is set, then if the filename

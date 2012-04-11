@@ -827,7 +827,7 @@ bool TfpFrame::ImportGedcom()
         if( tfpReadGedcom( path ) )
         {
             SetDatabaseOpen( path );
-            m_html->DisplayHtmPage( "N" );
+            m_html->DisplayHtmPage( "F1" );
             ret = true;
         } else {
             wxMessageBox( _("Error Reading GEDCOM File"), _("Import") );

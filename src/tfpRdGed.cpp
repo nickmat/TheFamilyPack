@@ -49,9 +49,20 @@ bool tfpReadGedcom( wxString& path )
     unsigned flags = recDb::CREATE_DB_STD_EXT | recDb::CREATE_DB_ENUM_FN;
     if( recDb::CreateDb( path, flags ) == false ) return false;
 
-    recGedParse ged( path );
-    if( !ged.Import() ) return false;
-    ged.CleanUp();
+    try {
+        recGedParse ged( path );
+        if( !ged.Import() ) {
+            if( recDb::IsGUI() ) {
+                wxMessageBox( _("Error Reading GEDCOM File"), _("Import") );
+            }
+            return true; // We did actually create a database
+        }
+        ged.CleanUp();
+
+    } catch( wxSQLite3Exception& e ) {
+        recDb::ErrorMessage( e );
+        recDb::Rollback();
+    }
 
     return true;
 }

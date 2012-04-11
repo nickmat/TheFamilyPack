@@ -120,25 +120,35 @@ public:
 
 bool recGedParse::Import()
 {
-    wxProgressDialog dialog("Progress dialog example",
-                            "Proccessing...",
-                            m_totalCount/100,    // range
-                            NULL,   // parent
-                            wxPD_CAN_ABORT |
-                            //wxPD_CAN_SKIP |
-                            wxPD_APP_MODAL |
-                            //wxPD_AUTO_HIDE | // -- try this as well
-                            wxPD_ELAPSED_TIME |
-                            wxPD_ESTIMATED_TIME |
-                            wxPD_REMAINING_TIME |
-                            wxPD_SMOOTH // - makes indeterminate mode bar on WinXP very small
-                            );
+    if( recDb::IsGUI() ) {
+        return ImportGUI();
+    }
+    return ImportCmdLine();
+}
+
+bool recGedParse::ImportGUI()
+{
+    wxProgressDialog dialog(
+        _("Progress dialog example"), _("Proccessing..."),
+        m_totalCount/100, NULL,
+        wxPD_CAN_ABORT | wxPD_APP_MODAL | wxPD_ELAPSED_TIME | wxPD_ESTIMATED_TIME | wxPD_REMAINING_TIME
+    );
     m_progress = &dialog;
+
     if( !Pass1() ) return false;
     m_filestream.SeekI( 0 );
     if( !Pass2() ) return false;
-    m_progress->Update( m_lineNum/100, "Cleaning up..." );
-    CleanUp();
+    dialog.Update( m_lineNum/100, "Cleaning up..." );
+//    CleanUp();
+    return true;
+}
+
+bool recGedParse::ImportCmdLine()
+{
+    if( !Pass1() ) return false;
+    m_filestream.SeekI( 0 );
+    if( !Pass2() ) return false;
+//    CleanUp();
     return true;
 }
 
@@ -190,9 +200,8 @@ bool recGedParse::Pass1()
             m_submMap[xref] = ++submCount;
         }
     }
-//    m_totalCount = famCount + indiCount + submCount;
     m_totalCount = m_lineNum;
-    m_progress->SetRange( m_totalCount/100 );
+    if( m_progress ) m_progress->SetRange( (m_totalCount/100) + 1 );
 
     return true;
 }
@@ -203,19 +212,16 @@ bool recGedParse::Pass2()
     recDb::Begin();
     bool cont = ReadNextLine();
     while( cont ) {
-        wxString message = wxString::Format( "Line number = %d of %d", m_lineNum, m_totalCount );
-        if( m_progress->Update( m_lineNum/100, message ) == false ) {
-            if( wxMessageBox( 
-                _("Do you really want to cancel?"), 
-                _("Cancel Confirmation"), 
-                wxYES_NO | wxICON_QUESTION ) 
-                == wxYES 
-            ) {
-                return false;
-            }
-            m_progress->Resume();
-        }
         if( m_level == 0 ) {
+            if( m_progress ) {
+                wxString message = wxString::Format( 
+                    "Line number = %d of %d", m_lineNum, m_totalCount 
+                );
+                if( m_progress->Update( m_lineNum/100, message ) == false ) {
+                    recDb::Rollback();
+                    return false;
+                }
+            }
             switch( m_tag )
             {
             case tagINDI:
@@ -241,7 +247,7 @@ bool recGedParse::Pass2()
             cont = ReadNextLine();
         }
     }
-    m_progress->Update( m_lineNum/100, "Finalising..." );
+    if( m_progress ) m_progress->Update( m_lineNum/100, "Finalising..." );
     recDb::Commit();
 
     return true;

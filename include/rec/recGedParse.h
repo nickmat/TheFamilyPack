@@ -46,7 +46,7 @@ class recGedParse
 {
 public:
     recGedParse( const wxString& fname ) 
-        : m_filestream(fname), m_input(m_filestream),
+        : m_filestream(fname), m_input(m_filestream), m_progress(NULL),
         m_level(0), m_tag(tagNULL),
         m_indiUseXref(false), m_famUseXref(false),
         m_totalCount(0),
@@ -95,6 +95,8 @@ private:
         tag_END  /* _END, end of file */
     };
 
+    bool ImportGUI();
+    bool ImportCmdLine();
     bool Pass1();
     bool Pass2();
 
