@@ -57,6 +57,7 @@ public:
     dlgEditFamily( wxWindow* parent );
 
     void SetFamilyID( idt famID ) { m_family.f_id = famID; }
+    void SetFamily( const recFamily& family ) { m_family = family; }
     void SetChildID( idt childID ) { m_child = childID; }
 
 private:

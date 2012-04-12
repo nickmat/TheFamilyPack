@@ -47,6 +47,7 @@ extern bool tfpAddNewSpouse( const wxString& ref );
 extern bool tfpEditIndividual( idt indID );
 
 extern bool tfpEditFamily( idt famID );
+extern bool tfpEditFamily( const recFamily& fam );
 extern bool tfpEditReference( idt refID  );
 extern bool tfpEditReference( const wxString& ref );
 extern bool tfpAddExistSpouse( idt indID, Sex sex );

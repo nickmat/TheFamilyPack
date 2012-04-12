@@ -37,6 +37,8 @@
 #include "wx/wx.h"
 #endif
 
+#include <wx/tokenzr.h>
+
 #include <rec/recIndividual.h>
 #include <rec/recDate.h>
 #include <rec/recPlace.h>
@@ -563,6 +565,26 @@ bool recFamily::Read()
     result.SetRow( 0 );
     f_husb_id  = GET_ID( result.GetInt64( 0 ) );
     f_wife_id  = GET_ID( result.GetInt64( 1 ) );
+    return true;
+}
+
+// Decode the string which is in the form "Fx1,x2,x3"
+// where Fx1 is the Family id preceded by the letter 'F'
+// x2 is the husband id and x3 the wife id.
+// Returns true if succesful.
+bool recFamily::Decode( const wxString& str )
+{
+    wxStringTokenizer tk( str.Mid(1), "," );
+
+    if( !tk.HasMoreTokens() ) return false;
+    f_id = recGetID( tk.GetNextToken() );
+
+    if( !tk.HasMoreTokens() ) return false;
+    f_husb_id = recGetID( tk.GetNextToken() );
+
+    if( !tk.HasMoreTokens() ) return false;
+    f_wife_id = recGetID( tk.GetNextToken() );
+
     return true;
 }
 

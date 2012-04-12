@@ -270,6 +270,25 @@ bool tfpEditFamily( idt famID )
     return ret;
 }
 
+bool tfpEditFamily( const recFamily& family )
+{
+    const wxString savepoint = "EdFam";
+    bool ret = false;
+
+    dlgEditFamily* dialog = new dlgEditFamily( NULL );
+    dialog->SetFamily( family );
+
+    recDb::Savepoint( savepoint );
+    if( dialog->ShowModal() == wxID_OK ) {
+        recDb::ReleaseSavepoint( savepoint );
+        ret = true;
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+    return ret;
+}
+
 bool tfpEditReference( idt refID  )
 {
     const wxString savepoint = "EdRef";

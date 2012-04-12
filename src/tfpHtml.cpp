@@ -279,13 +279,17 @@ void TfpHtml::OnHtmCtxMenu( wxCommandEvent& event )
     bool ret = false;
     Sex sex;
     idt id = recGetID( m_ctxmenuref.Mid(1) );
+    recFamily fam(id);
+    if( id == 0 && m_ctxmenuref.StartsWith( "F0," ) ) {
+        fam.Decode( m_ctxmenuref );
+    }
 
     recDb::Begin();
     try {
         switch( event.GetId() )
         {
         case tfpID_HCTXMENU_EDIT_FAMILY:
-            ret = tfpEditFamily( id );
+            ret = tfpEditFamily( fam );
             break;
         case tfpID_HCTXMENU_EDIT_NEW_SON:
             if( tfpAddNewChild( id, SEX_Male ) != 0 ) ret = true;

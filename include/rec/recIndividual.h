@@ -169,6 +169,8 @@ public:
     static wxString GetIdStr( idt indID ) { return wxString::Format( "F"ID, indID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
+    bool Decode( const wxString& str );
+
     idt GetMarriageEvent() const;
 
     bool ReadParents( idt indID );

@@ -204,8 +204,8 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR, idt indID )
 
     if( fam.f_husb_id != 0 ) {
         htm << "<a href=$MH" << fam.f_husb_id
-            << "><img src=memory:menu.bmp></a> <b>I "
-            << fam.f_husb_id << "</b>";
+            << "><img src=memory:menu.bmp></a> <b>"
+            << recIndividual::GetIdStr( fam.f_husb_id ) << "</b>";
     }
     htm << "</td><td align=center width=110>";
     if( fam.f_husb_id != 0 ) {
@@ -226,6 +226,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR, idt indID )
 
     htm << "<td align=center width=160>"
         << "<a href=$MF" << fam.f_id
+        << "," << fam.f_husb_id << "," << fam.f_wife_id
         << "><img src=memory:menu.bmp></a>";
     if( fam.f_id != 0 ) {
         htm << " <b>F" << fam.f_id << "</b>";
@@ -249,8 +250,8 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR, idt indID )
     htm << "</td><td align=right width=80>";
 
     if( fam.f_wife_id != 0 ) {
-        htm << "<b> I " << fam.f_wife_id << "</b>"
-            << " <a href=$MW" << fam.f_wife_id
+        htm << "<b>" << recIndividual::GetIdStr( fam.f_wife_id ) 
+            << "</b> <a href=$MW" << fam.f_wife_id
             << "><img src=memory:menu.bmp></a>";
     }
     htm << "</td></tr></table>";

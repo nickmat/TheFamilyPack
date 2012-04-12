@@ -112,12 +112,22 @@ bool dlgEditFamily::TransferDataToWindow()
 bool dlgEditFamily::TransferDataFromWindow()
 {
     m_family.Save();
+    recIndividual ind(m_family.f_husb_id);
+    if( ind.f_fam_id == 0 ) {
+        ind.f_fam_id = m_family.f_id;
+        ind.Save();
+    }
+    ind.ReadID( m_family.f_wife_id );
+    if( ind.f_fam_id == 0 ) {
+        ind.f_fam_id = m_family.f_id;
+        ind.Save();
+    }
+
     for( size_t i = 0 ; i < m_childlinks.size() ; i++ ) {
         m_childlinks[i].fSetSeqChild( i+1 );
         m_childlinks[i].Save();
     }
     return true;
-
 }
 
 void dlgEditFamily::OnHusbButton( wxCommandEvent& event )
