@@ -109,9 +109,9 @@ private:
     recContactList m_cl;
 
 public:
-    GedSubmitter();
+    GedSubmitter( idt resID );
 
-    void SetSubmID( idt resID ) { m_res.FSetID( resID ); }
+//    void SetSubmID( idt resID ) { m_res.FSetID( resID ); }
     void SetName( const wxString& nameStr ) { m_res.FSetName( nameStr ); }
 
     void SaveContact( recContactType::Type type, const wxString& value );
@@ -129,8 +129,8 @@ bool recGedParse::Import()
 bool recGedParse::ImportGUI()
 {
     wxProgressDialog dialog(
-        _("Progress dialog example"), _("Proccessing..."),
-        m_totalCount/100, NULL,
+        _("Reading Gedcom"), _("Proccessing..."),
+        100, NULL,
         wxPD_CAN_ABORT | wxPD_APP_MODAL | wxPD_ELAPSED_TIME | wxPD_ESTIMATED_TIME | wxPD_REMAINING_TIME
     );
     m_progress = &dialog;
@@ -138,8 +138,6 @@ bool recGedParse::ImportGUI()
     if( !Pass1() ) return false;
     m_filestream.SeekI( 0 );
     if( !Pass2() ) return false;
-    dialog.Update( m_lineNum/100, "Cleaning up..." );
-//    CleanUp();
     return true;
 }
 
@@ -148,7 +146,6 @@ bool recGedParse::ImportCmdLine()
     if( !Pass1() ) return false;
     m_filestream.SeekI( 0 );
     if( !Pass2() ) return false;
-//    CleanUp();
     return true;
 }
 
@@ -168,6 +165,7 @@ bool recGedParse::Pass1()
     unsigned famCount=0, indiCount=0, submCount=0;
 
     m_lineNum = 0;
+    if( m_progress ) m_progress->Pulse( _("Examining file...") );
     while( !m_input.GetInputStream().Eof() ) {
         m_lineNum++;
 
@@ -327,7 +325,8 @@ bool recGedParse::ReadNextLine()
     else if( str.Cmp( "ADR2" ) == 0 ) m_tag = tagADR2;
     else if( str.Cmp( "ADR3" ) == 0 ) m_tag = tagADR3;
     else if( str.Cmp( "PHON" ) == 0 ) m_tag = tagPHON;
-    else if( str.Cmp( "EMAL" ) == 0 ) m_tag = tagEMAL;
+    else if( str.Cmp( "EMAI" ) == 0 ) m_tag = tagEMAI;
+    else if( str.Cmp( "EMAL" ) == 0 ) m_tag = tagEMAI; // Generations 8.5 (at least) uses EMAL.
     else if( str.Cmp( "FAX"  ) == 0 ) m_tag = tagFAX;
     else if( str.Cmp( "WWW"  ) == 0 ) m_tag = tagWWW;
     else if( str.Cmp( "_PRI" ) == 0 ) m_tag = tag_PRI;
@@ -768,8 +767,7 @@ void recGedParse::ReadFamEvent( GedFamily& gfam, int level )
 
 void recGedParse::ReadSubm( int level )
 {
-    GedSubmitter gsubm;
-    gsubm.SetSubmID( m_submMap[ m_index ] );
+    GedSubmitter gsubm( m_submMap[ m_index ] );
 
     bool cont = ReadNextLine();
     while( cont && m_level >= level ) {
@@ -785,7 +783,7 @@ void recGedParse::ReadSubm( int level )
             case tagPHON:
                 gsubm.SaveContact( recContactType::CT_Telephone, m_text );
                 break;
-            case tagEMAL:
+            case tagEMAI:
                 gsubm.SaveContact( recContactType::CT_Email, m_text );
                 break;
     // TODO: Add Fax to contact types
@@ -881,11 +879,15 @@ void GedFamily::AddChild( idt indID )
     fi.Save();
 }
 
-GedSubmitter::GedSubmitter() 
-    : m_res(0), m_cl(0)
+GedSubmitter::GedSubmitter( idt resID ) 
+    : m_res(resID)
 { 
-    m_cl.Save(); 
-    m_res.FSetConListID( m_cl.FGetID() );
+    m_cl.ReadID( m_res.FGetConListID() );
+
+    if( m_cl.FGetID() == 0 ) {
+        m_cl.Save();
+        m_res.FSetConListID( m_cl.FGetID() );
+    }
 }
 
 void GedSubmitter::SaveContact( recContactType::Type type, const wxString& value )

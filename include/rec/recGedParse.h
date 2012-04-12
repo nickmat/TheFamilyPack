@@ -72,7 +72,7 @@ private:
         tagADR3,
         tagCONT, // Continuation on next line.
         tagPHON, // PHONE, Telephone number.
-        tagEMAL, // EMAIL ADDRESS
+        tagEMAI, // EMAIL ADDRESS as defined in (draft) GEDCOM 5.5.1
         tagFAX,  // FAX number.
         tagWWW,  // Web address.
         tagSEX,  /* SEX, M for Male, F for Female */
