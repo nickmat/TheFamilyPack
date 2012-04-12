@@ -61,17 +61,14 @@ idt tfpAddNewIndividual( idt famID, Sex sex, const wxString& surname )
     recDb::Savepoint( savepoint );
 
     recFamily family(famID);
-    if( family.f_id == 0 ) {
-        family.Save();
-        famID = family.f_id;
-    }
-    wxASSERT( family.f_id != 0 );
     idt* pIndID = ( sex == SEX_Female ) ? &family.f_wife_id : &family.f_husb_id;
-    if( *pIndID != 0 ) {
-        family.f_id = 0;
-        *pIndID = 0;
-        family.Save();
-        famID = family.f_id;
+    if( famID ) {
+        if( *pIndID != 0 ) {
+            family.f_id = 0;
+            *pIndID = 0;
+            family.Save();
+            famID = family.f_id;
+        }
     }
 
     dlgCreateIndividual* dialog = new dlgCreateIndividual( NULL, famID );

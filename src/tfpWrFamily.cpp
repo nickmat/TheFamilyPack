@@ -217,7 +217,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR, idt indID )
         htm << "&nbsp<a href=CP" << fam.f_husb_id
             << "><img src=memory:pcht.bmp></a>";
     }
-    if( kids.size() > 0 )
+    if( fam.f_husb_id && kids.size() > 0 )
     {
         htm << "&nbsp;<a href=CD" << fam.f_husb_id
             << "><img src=memory:dcht.bmp></a>";
@@ -238,7 +238,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR, idt indID )
         htm << "<a href=I" << fam.f_wife_id
             << "><img src=memory:ind.bmp></a>";
     }
-    if( wifeFams.size() )
+    if( fam.f_wife_id && wifeFams.size() )
     {
         htm << "&nbsp<a href=CP" << fam.f_wife_id
             << "><img src=memory:pcht.bmp></a>";
