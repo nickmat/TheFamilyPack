@@ -56,10 +56,15 @@ public:
 private:
     void OnHtmlLinkClicked( wxHtmlLinkEvent& event );
 
+    void DoLinkLeft( const wxString& href );
+    void DoLinkRight( const wxString& href );
+
     void DoHtmCtxMenu( const wxString& ref );
     int AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID );
     void OnHtmCtxMenu( wxCommandEvent& event );
     void OnHtmIndMenu( wxCommandEvent& event );
+    void DoRightCtxMenu( const wxString& ref );
+    void OnRightCtxMenu( wxCommandEvent& event );
 
     wxString GetDisplayText( const wxString& name );
 

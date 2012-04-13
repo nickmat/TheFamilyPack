@@ -48,6 +48,7 @@
 BEGIN_EVENT_TABLE(TfpHtml, wxHtmlWindow)
     EVT_HTML_LINK_CLICKED( wxID_ANY, TfpHtml::OnHtmlLinkClicked )
     EVT_MENU_RANGE( tfpID_HCTXMENU_BEG, tfpID_HCTXMENU_END, TfpHtml::OnHtmCtxMenu )
+    EVT_MENU_RANGE( tfpID_RCTXMENU_BEG, tfpID_RCTXMENU_END, TfpHtml::OnRightCtxMenu )
     EVT_MENU_RANGE( tfpID_INDMENU_BEG, tfpID_INDMENU_END, TfpHtml::OnHtmIndMenu )
 END_EVENT_TABLE()
 
@@ -66,6 +67,34 @@ END_EVENT_TABLE()
 void TfpHtml::OnHtmlLinkClicked( wxHtmlLinkEvent& event )
 {
     wxString href = event.GetLinkInfo().GetHref();
+    const wxMouseEvent *e = event.GetLinkInfo().GetEvent();
+
+    if (e == NULL || e->LeftUp()){
+        DoLinkLeft( href );
+    }
+    if (e == NULL || e->RightUp()){
+        DoLinkRight( href );
+    }
+}
+
+void TfpHtml::DoLinkRight( const wxString& href )
+{
+    if( href.StartsWith( ":" ) || href.StartsWith( "!" ) ) {
+        return;
+    }
+    if( href.StartsWith( "$" ) ) {
+        DoLinkLeft( href );
+        return;
+    }
+    if( href.StartsWith( "^" ) ) {
+        DoRightCtxMenu( href.Mid( 1 ) );
+        return;
+    }
+    DoRightCtxMenu( href );
+}
+
+void TfpHtml::DoLinkLeft( const wxString& href )
+{
     wxUniChar uch0 = href.GetChar( 0 );
     wxUniChar uch1, uch2;
     long cond = recDb::GetChange();
@@ -337,6 +366,31 @@ void TfpHtml::OnHtmCtxMenu( wxCommandEvent& event )
     } catch( wxSQLite3Exception& e ) {
         recDb::ErrorMessage( e );
         recDb::Rollback();
+    }
+}
+
+void TfpHtml::DoRightCtxMenu( const wxString& ref )
+{
+    m_ctxmenuref = ref;
+    wxMenu* menu = new wxMenu;
+
+    wxString option = wxString::Format( _("Display %s"), ref );
+    menu->Append( tfpID_RCTXMENU_DISPLAY, option );
+    menu->Append( tfpID_RCTXMENU_DISPLAY_NOTE, _("Display as Note") );
+
+    PopupMenu( menu );
+    delete menu;
+}
+
+void TfpHtml::OnRightCtxMenu( wxCommandEvent& event )
+{
+    int menuid = event.GetId();
+
+    if( menuid == tfpID_RCTXMENU_DISPLAY ) {
+        DoLinkLeft( m_ctxmenuref );
+    }
+    if( menuid == tfpID_RCTXMENU_DISPLAY_NOTE ) {
+        DoLinkLeft( "^" + m_ctxmenuref );
     }
 }
 
