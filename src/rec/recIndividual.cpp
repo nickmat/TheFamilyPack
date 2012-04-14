@@ -569,22 +569,37 @@ bool recFamily::Read()
 }
 
 // Decode the string which is in the form "Fx1,x2,x3"
-// where Fx1 is the Family id preceded by the letter 'F'
+// where x1 is the Family id
 // x2 is the husband id and x3 the wife id.
-// Returns true if succesful.
+// or else string has the form FIx where x 
+// is a recIndividual id.
+// Returns true if successful.
 bool recFamily::Decode( const wxString& str )
 {
-    wxStringTokenizer tk( str.Mid(1), "," );
+    if( str.StartsWith( "FI" ) ) {
+        idt indID = recGetID( str.Mid( 2 ) );
+        f_id = recIndividual::GetDefaultFamily( indID );
+        Read();
+        if( f_id == 0 ) {
+            Sex sex = recIndividual::GetSex( indID );
+            if( sex == SEX_Female ) {
+                f_wife_id = indID;
+            } else {
+                f_husb_id = indID;
+            }
+        }
+    } else {
+        wxStringTokenizer tk( str.Mid(1), "," );
 
-    if( !tk.HasMoreTokens() ) return false;
-    f_id = recGetID( tk.GetNextToken() );
+        if( !tk.HasMoreTokens() ) return false;
+        f_id = recGetID( tk.GetNextToken() );
 
-    if( !tk.HasMoreTokens() ) return false;
-    f_husb_id = recGetID( tk.GetNextToken() );
+        if( !tk.HasMoreTokens() ) return false;
+        f_husb_id = recGetID( tk.GetNextToken() );
 
-    if( !tk.HasMoreTokens() ) return false;
-    f_wife_id = recGetID( tk.GetNextToken() );
-
+        if( !tk.HasMoreTokens() ) return false;
+        f_wife_id = recGetID( tk.GetNextToken() );
+    }
     return true;
 }
 

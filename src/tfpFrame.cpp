@@ -773,7 +773,7 @@ void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
     wxUniChar uch = display.GetChar( 0 );
     idt id = recGetID( display.Mid(1) );
     recFamily fam(id);
-    if( id == 0 && display.StartsWith( "F0," ) ) {
+    if( id == 0 && display.StartsWith( "FI" ) ) {
         fam.Decode( display );
     }
     recDb::Begin();
