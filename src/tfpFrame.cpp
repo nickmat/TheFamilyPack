@@ -768,7 +768,6 @@ void TfpFrame::OnShowPage( wxCommandEvent& event )
  */
 void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
 {
-//    wxMessageBox( "Not yet implimented", "OnPageItemEdit" );
     wxString display = GetDisplay();
     wxUniChar uch = display.GetChar( 0 );
     idt id = recGetID( display.Mid(1) );
@@ -783,6 +782,15 @@ void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
         {
         case 'F':
             ret = tfpEditFamily( fam );
+            break;
+        case 'R':
+            ret = tfpEditReference( id );
+            break;
+        case 'E':
+            ret = tfpEditEvent( id );
+            break;
+        case 'I':
+            ret = tfpEditIndividual( id );
             break;
         }
         if( ret == true ) {
@@ -927,6 +935,13 @@ void TfpFrame::RefreshEditMenu()
     wxString name;
     wxString noname = _("none");
 
+    // Clear previous settings
+    m_menuEditInd->SetLabel( tfpID_EDIT_IND_LEFT, noname );
+    m_menuEditInd->Enable( tfpID_EDIT_IND_LEFT, false );
+    m_menuEditInd->SetLabel( tfpID_EDIT_IND_RIGHT, noname );
+    m_menuEditInd->Enable( tfpID_EDIT_IND_RIGHT, false );
+    m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, false );
+
     switch( uch.GetValue() ) 
     {
     case 'F': {
@@ -961,12 +976,11 @@ void TfpFrame::RefreshEditMenu()
             m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
         }
         break;
-    default:
-        m_menuEditInd->SetLabel( tfpID_EDIT_IND_LEFT, noname );
-        m_menuEditInd->Enable( tfpID_EDIT_IND_LEFT, false );
-        m_menuEditInd->SetLabel( tfpID_EDIT_IND_RIGHT, noname );
-        m_menuEditInd->Enable( tfpID_EDIT_IND_RIGHT, false );
-        m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, false );
+    case 'R': case 'E': case 'I':
+        if( disp.size() >= 2 && wxIsdigit( disp.GetChar( 1 ) ) ) {
+            m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
+        }
+        break;
     }
 }
 
