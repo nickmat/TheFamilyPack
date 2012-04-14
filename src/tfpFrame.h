@@ -111,6 +111,7 @@ public:
     void OnFindForward( wxCommandEvent& event );
     void OnHome( wxCommandEvent& event );
     void OnShowPage( wxCommandEvent& event );
+    void OnPageItemEdit( wxCommandEvent& event );
 
     void OnCloseWindow( wxCloseEvent& event );
 
@@ -123,6 +124,8 @@ public:
 
     void PushHtmName( const wxString& name );
     void RefreshEditMenu();
+
+    wxString GetDisplay() const { return m_back[m_back.size()-1]; }
 };
 
 #define tfpMAX_MENU_ITEMS 50
@@ -181,6 +184,7 @@ enum
     tfpID_FIND_FORWARD,
     tfpID_GOTO_HOME,
     tfpID_SHOW_PAGE,
+    tfpID_PAGE_ITEM_EDIT,
     tfpID_HCTXMENU_BEG,
     tfpID_HCTXMENU_EDIT_FAMILY,
     tfpID_HCTXMENU_EDIT_NEW_SON,

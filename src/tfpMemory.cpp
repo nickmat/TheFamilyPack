@@ -40,6 +40,7 @@
 #include <wx/filesys.h>
 #include <wx/fs_mem.h>
 
+#include "tfpMemory.h"
 #include "tfpVersion.h"
 
 #include "img/logo6.xpm"
@@ -70,6 +71,10 @@
 #include "img/kid.xpm"
 #include "img/ref.xpm"
 #include "img/event.xpm"
+
+// Common bitmats
+wxBitmap imgEditBitmap( edit_xpm );
+wxBitmap imgMenuBitmap( menu_xpm );
 
 /*! \brief Create the memory file system and read in the memory files.
  */
@@ -105,10 +110,8 @@ void tfpLoadMemoryFiles()
     wxMemoryFSHandler::AddFile( "pt.bmp", ptBitmap, wxBITMAP_TYPE_XPM );
     wxBitmap peBitmap( pe_xpm );
     wxMemoryFSHandler::AddFile( "pe.bmp", peBitmap, wxBITMAP_TYPE_XPM );
-    wxBitmap editBitmap( edit_xpm );
-    wxMemoryFSHandler::AddFile( "edit.bmp", editBitmap, wxBITMAP_TYPE_XPM );
-    wxBitmap menuBitmap( menu_xpm );
-    wxMemoryFSHandler::AddFile( "menu.bmp", menuBitmap, wxBITMAP_TYPE_XPM );
+    wxMemoryFSHandler::AddFile( "edit.bmp", imgEditBitmap, wxBITMAP_TYPE_XPM );
+    wxMemoryFSHandler::AddFile( "menu.bmp", imgMenuBitmap, wxBITMAP_TYPE_XPM );
     wxBitmap dchtBitmap( dcht_xpm );
     wxMemoryFSHandler::AddFile( "dcht.bmp", dchtBitmap, wxBITMAP_TYPE_XPM );
     wxBitmap pchtBitmap( pcht_xpm );

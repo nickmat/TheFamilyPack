@@ -47,6 +47,7 @@
 #include "tfpFrame.h"
 #include "tfpApp.h"
 #include "tfpVersion.h"
+#include "tfpMemory.h"
 #include "tfpRd.h"
 #include "tfpWr.h"
 #include "dlg/dlgEd.h"
@@ -94,6 +95,7 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_FIND_FORWARD, TfpFrame::OnFindForward )
     EVT_MENU( tfpID_GOTO_HOME, TfpFrame::OnHome )
     EVT_TEXT_ENTER( tfpID_SHOW_PAGE, TfpFrame::OnShowPage )
+    EVT_MENU( tfpID_PAGE_ITEM_EDIT, TfpFrame::OnPageItemEdit )
     EVT_CLOSE( TfpFrame::OnCloseWindow )
 END_EVENT_TABLE()
 
@@ -231,6 +233,8 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     m_toolbar->AddTool( tfpID_GOTO_HOME, _("Home"), bmpHome );
     m_toolbar->AddSeparator();
     m_toolbar->AddControl( m_showpage );
+    m_toolbar->AddSeparator();
+    m_toolbar->AddTool( tfpID_PAGE_ITEM_EDIT, _("Edit"), imgEditBitmap );
     m_toolbar->Realize();
     SetToolBar( m_toolbar );
 
@@ -601,7 +605,7 @@ void TfpFrame::OnPedChart( wxCommandEvent& event )
  */
 void TfpFrame::OnDescChart( wxCommandEvent& event )
 {
-    wxMessageBox( wxT("Not yet implimented"), wxT("OnDescChart") );
+    wxMessageBox( "Not yet implimented", "OnDescChart" );
 }
 
 /*! \brief Called on a System Settings menu option event.
@@ -716,6 +720,7 @@ void TfpFrame::OnFindBack( wxCommandEvent& event )
         }
         m_html->SetName( m_back[ind-1] );
         m_html->RefreshHtmPage();
+        RefreshEditMenu();
     }
 }
 
@@ -739,6 +744,7 @@ void TfpFrame::OnFindForward( wxCommandEvent& event )
         }
         m_html->SetName( name );
         m_html->RefreshHtmPage();
+        RefreshEditMenu();
     }
 }
 
@@ -756,6 +762,40 @@ void TfpFrame::OnShowPage( wxCommandEvent& event )
     wxString page = m_showpage->GetValue();
     m_showpage->SetValue( wxEmptyString );
     tfpDisplayNote( this, page );
+}
+
+/*! \brief Called when the toolbar Edit button is pressed.
+ */
+void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
+{
+//    wxMessageBox( "Not yet implimented", "OnPageItemEdit" );
+    wxString display = GetDisplay();
+    wxUniChar uch = display.GetChar( 0 );
+    idt id = recGetID( display.Mid(1) );
+    recFamily fam(id);
+    if( id == 0 && display.StartsWith( "F0," ) ) {
+        fam.Decode( display );
+    }
+    recDb::Begin();
+    try {
+        bool ret = false;
+        switch( uch.GetValue() )
+        {
+        case 'F':
+            ret = tfpEditFamily( fam );
+            break;
+        }
+        if( ret == true ) {
+            recDb::Commit();
+            m_html->RefreshHtmPage();
+        } else {
+            recDb::Rollback();
+        }
+    }
+    catch( wxSQLite3Exception& e ) {
+        recDb::ErrorMessage( e );
+        recDb::Rollback();
+    }
 }
 
 /*! \brief Called on a Close Window event.
@@ -857,6 +897,7 @@ void TfpFrame::SetNoDatabase()
     m_toolbar->EnableTool( tfpID_LIST_SURNAME_INDEX, false );
     m_toolbar->EnableTool( tfpID_LIST_REFERENCES, false );
     m_toolbar->EnableTool( tfpID_GOTO_HOME, false );
+    m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, false );
     m_showpage->Enable( false );
     m_back.clear();
     m_toolbar->EnableTool( tfpID_FIND_BACK, false );
@@ -880,7 +921,7 @@ void TfpFrame::PushHtmName( const wxString& name )
 void TfpFrame::RefreshEditMenu()
 {
     wxASSERT( m_back.size() > 0 );
-    wxString disp = m_back[m_back.size()-1];
+    wxString disp = GetDisplay();
     wxUniChar uch = disp.GetChar( 0 );
     wxUniChar uch1;
     wxString name;
@@ -916,6 +957,8 @@ void TfpFrame::RefreshEditMenu()
                 m_menuEditInd->Enable( tfpID_EDIT_IND_RIGHT, false );
             }
             m_EditIndRight = fam.f_wife_id;
+            // Update Toolbar
+            m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
         }
         break;
     default:
@@ -923,6 +966,7 @@ void TfpFrame::RefreshEditMenu()
         m_menuEditInd->Enable( tfpID_EDIT_IND_LEFT, false );
         m_menuEditInd->SetLabel( tfpID_EDIT_IND_RIGHT, noname );
         m_menuEditInd->Enable( tfpID_EDIT_IND_RIGHT, false );
+        m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, false );
     }
 }
 
