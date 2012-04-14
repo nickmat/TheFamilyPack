@@ -771,18 +771,20 @@ void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
     wxString display = GetDisplay();
     wxUniChar uch = display.GetChar( 0 );
     idt id = recGetID( display.Mid(1) );
-    recFamily fam(id);
-    if( id == 0 && display.StartsWith( "FI" ) ) {
-        fam.Decode( display );
-    }
     recDb::Begin();
     try {
         bool ret = false;
         switch( uch.GetValue() )
         {
-        case 'F':
-            ret = tfpEditFamily( fam );
-            break;
+        case 'F': 
+            {
+                recFamily fam(id);
+                if( id == 0 && display.StartsWith( "FI" ) ) {
+                    fam.Decode( display );
+                }
+                ret = tfpEditFamily( fam );
+                break;
+            }
         case 'R':
             ret = tfpEditReference( id );
             break;
@@ -831,7 +833,7 @@ bool TfpFrame::NewFile()
         {
             SetDatabaseOpen( path );
             // Start with the 1st (empty) Family.
-            m_html->DisplayHtmPage( "FI1" );
+            m_html->DisplayHtmPage( "F1" );
             ret = true;
         }
     }
