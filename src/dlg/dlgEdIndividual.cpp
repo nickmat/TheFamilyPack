@@ -500,7 +500,6 @@ void dlgEditIndPersona::OnEventEditButton( wxCommandEvent& event )
     recDb::Savepoint( savepoint );
 
     dlgEditIndEvent* dialog = new dlgEditIndEvent( NULL, m_eps[row].f_event_id );
-//    dialog->SetEvent( m_evpers[row].f_event_id );
 
     if( dialog->ShowModal() == wxID_OK )
     {

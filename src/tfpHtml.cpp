@@ -37,6 +37,8 @@
 #include "wx/wx.h"
 #endif
 
+#include <wx/wxcrt.h>
+
 #include <rec/recDb.h>
 
 #include "tfpHtml.h"
@@ -356,6 +358,12 @@ void TfpHtml::OnHtmCtxMenu( wxCommandEvent& event )
             sex = ( m_ctxmenuref.GetChar(0) == 'H' ) ? SEX_Female : SEX_Male;
             ret = tfpAddExistSpouse( id, sex );
             break;
+        case tfpID_HCTXMENU_EDIT_REFERENCE:
+            ret = tfpEditReference( id );
+            break;
+        case tfpID_HCTXMENU_EDIT_EVENT:
+            ret = tfpEditEvent( id );
+            break;
         }
         if( ret == true ) {
             recDb::Commit();
@@ -374,10 +382,20 @@ void TfpHtml::DoRightCtxMenu( const wxString& ref )
     m_ctxmenuref = ref;
     wxMenu* menu = new wxMenu;
 
-    wxString option = wxString::Format( _("Display %s"), ref );
-    menu->Append( tfpID_RCTXMENU_DISPLAY, option );
+    menu->Append( tfpID_RCTXMENU_DISPLAY, "Display " + ref );
     menu->Append( tfpID_RCTXMENU_DISPLAY_NOTE, _("Display as Note") );
 
+    if( wxIsdigit( ref.GetChar( 1 ) ) ) {
+        if( ref.StartsWith( "R" ) ) {
+            menu->Append( tfpID_HCTXMENU_EDIT_REFERENCE, "Edit " + ref );
+        }
+        if( ref.StartsWith( "E" ) ) {
+            menu->Append( tfpID_HCTXMENU_EDIT_EVENT, "Edit " + ref );
+        }
+        if( ref.StartsWith( "I" ) ) {
+            menu->Append( tfpID_HCTXMENU_EDIT_INDIVIDUAL, "Edit " + ref );
+        }
+    }
     PopupMenu( menu );
     delete menu;
 }

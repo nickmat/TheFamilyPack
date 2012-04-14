@@ -55,6 +55,8 @@ extern bool tfpAddExistChild( idt famID, Sex sex );
 extern idt tfpAddMarriageEvent( const recFamily& family );
 extern idt tfpGetExistingMarriageEvent( idt famID );
 
+extern bool tfpEditEvent( idt eveID  );
+
 extern bool tfpEditResearcher( idt resID  );
 extern bool tfpEditResearcher( const wxString& resStr  );
 extern bool tfpEditSystem();

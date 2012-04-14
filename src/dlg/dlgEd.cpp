@@ -485,6 +485,24 @@ idt tfpAddMarriageEvent( const recFamily& family )
     return eventID;
 }
 
+bool tfpEditEvent( idt eveID  )
+{
+    const wxString savepoint = "EdEvent";
+    bool ret = false;
+    dlgEditIndEvent* dialog = new dlgEditIndEvent( NULL, eveID );
+    recDb::Savepoint( savepoint );
+
+    if( dialog->ShowModal() == wxID_OK ) {
+        recDb::ReleaseSavepoint( savepoint );
+        ret = true;
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+    return ret;
+}
+
+
 bool tfpEditResearcher( idt resID  )
 {
     const wxString savepoint = "EdRes";
