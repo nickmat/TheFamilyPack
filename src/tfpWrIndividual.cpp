@@ -82,8 +82,13 @@ wxString tfpWriteIndividualPage( idt indID )
         htm << "<tr><td align=right>"
             << recEvent::GetTypeStr( eps[i].f_event_id )
             << ":</td><td><b>"
-            << recEvent::GetDetailStr( eps[i].f_event_id )
-            << "</b> <a href=E" << eps[i].f_event_id
+            << recEvent::GetDetailStr( eps[i].f_event_id );
+
+        if( !eps[i].f_note.IsEmpty() ) {
+            htm << "<br>" << eps[i].f_note;
+        }
+
+        htm << "</b> <a href=E" << eps[i].f_event_id
             << "><img src=memory:eve.bmp></a></td></tr>";
     }
 

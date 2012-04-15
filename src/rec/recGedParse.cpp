@@ -375,11 +375,12 @@ void recGedParse::ReadIndi( int level )
             case tagCHR:
             case tagDEAT:
             case tagBURI:
+            case tagOCCU:
                 ReadIndEvent( gind, level+1 );
                 continue;
-            case tagOCCU:
-                ReadIndAttr( gind, level+1 );
-                continue;
+//            case tagOCCU:
+//                ReadIndAttr( gind, level+1 );
+//                continue;
             case tag_END:
                 cont = false;
                 continue;
@@ -494,6 +495,13 @@ void recGedParse::ReadIndEvent( GedIndividual& gind, int level )
         ep.f_role_id = recEventTypeRole::ROLE_Burial_Deceased;
         titlefmt = _("Burial of %s");
         dp = recDate::DATE_POINT_End;
+        break;
+    case tagOCCU:
+        ev.f_type_id = recEventType::ET_Occupation;
+        ep.f_role_id = recEventTypeRole::ROLE_Occupation;
+        ep.f_note = m_text;
+        titlefmt = _("Occupation of %s");
+        dp = recDate::DATE_POINT_Mid;
         break;
     default:
         return; // do nothing
@@ -786,10 +794,9 @@ void recGedParse::ReadSubm( int level )
             case tagEMAI:
                 gsubm.SaveContact( recContactType::CT_Email, m_text );
                 break;
-    // TODO: Add Fax to contact types
-    //        case tagFAX:
-    //            gsubm.SaveContact( recContactType::CT_FAX, m_text );
-    //            break;
+            case tagFAX:
+                gsubm.SaveContact( recContactType::CT_Fax, m_text );
+                break;
             case tagWWW:
                 gsubm.SaveContact( recContactType::CT_Website, m_text );
                 break;

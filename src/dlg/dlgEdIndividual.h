@@ -126,7 +126,7 @@ private:
     recIndividual      m_individual;
     recPersona         m_persona;
     recNameVec         m_names;
-    recAttributeVec    m_attributes;
+ //   recAttributeVec    m_attributes;
     recEventPersonaVec m_eps;
     recIndRelVec       m_relationships;
 

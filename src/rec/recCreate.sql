@@ -182,7 +182,7 @@ INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-33, -8, 1
 INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-34, -8, 0, 1, 'Officiator');
 INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-35, -8, 0, 0, 'Present');
 
-INSERT INTO EventType (id, grp, name) VALUES(-9, 7, 'Divorce');
+INSERT INTO EventType (id, grp, name) VALUES(-9, 4, 'Divorce');
 INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-36, -9, 1, 0, 'Husband');
 INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-37, -9, 2, 0, 'Wife');
 
@@ -222,19 +222,29 @@ INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-56, -16, 
 INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-57, -16, 0, 1, 'Registrar');
 INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-58, -16, 0, 0, 'Mentioned');
 
-INSERT INTO EventType (id, grp, name) VALUES(-17, 7, 'Residence');
+INSERT INTO EventType (id, grp, name) VALUES(-17, 8, 'Residence');
 INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-61, -17, 0, 0, 'Family');
 INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-62, -17, 0, 0, 'Visitor');
 INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-63, -17, 0, 0, 'Lodger');
 INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-64, -17, 0, 0, 'Boarder');
 
-/* Next EventTypeRole id = -65 */
+INSERT INTO EventType (id, grp, name) VALUES(-18, 8, 'Occupation');
+INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-65, -18, 1, 0, 'Occupation');
+INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-66, -18, 0, 0, 'Employer');
+
+INSERT INTO EventType (id, grp, name) VALUES(-19, 8, 'Condition');
+INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-67, -18, 1, 0, 'Condition');
+
+/* Next EventTypeRole id = -68 */
 
 CREATE TABLE Family (
   id INTEGER PRIMARY KEY,
   husb_id INTEGER,
   wife_id INTEGER
 );
+
+/* Kick start the new database */
+INSERT INTO Family (id, husb_id, wife_id) VALUES (1, 0, 0);
 
 CREATE TABLE FamilyIndividual (
   id INTEGER PRIMARY KEY,
@@ -441,6 +451,7 @@ INSERT INTO ContactType (id, name) VALUES(-2, 'Telephone');
 INSERT INTO ContactType (id, name) VALUES(-3, 'Mobile');
 INSERT INTO ContactType (id, name) VALUES(-4, 'Email');
 INSERT INTO ContactType (id, name) VALUES(-5, 'Website');
+INSERT INTO ContactType (id, name) VALUES(-6, 'Fax');
 
 INSERT INTO ContactList (id) VALUES(0);
 INSERT INTO ContactList (id) VALUES(1);
@@ -457,7 +468,7 @@ INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 0, 1, 'F1');
 INSERT INTO UserSetting (id, user_id, property, val) VALUES(2, 1, 1, 'F1');
 
 /* The Version table has only this one row */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 20);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 21);
 
 COMMIT;
 

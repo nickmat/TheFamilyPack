@@ -157,7 +157,8 @@ public:
         ETYPE_Grp_Death,    // 5
         ETYPE_Grp_Nr_Death, // 6
         ETYPE_Grp_Other,    // 7
-        ETYPE_Grp_MAX       // 8
+        ETYPE_Grp_Lifetime, // 8
+        ETYPE_Grp_MAX       // 9
     };
 
     enum EType {  // predefined entries, match with recCreate.sql
@@ -179,7 +180,9 @@ public:
         ET_RegBirth     = -15,
         ET_RegDeath     = -16,
         ET_Residence    = -17,
-        ET_MAX          = 18     // Size of list
+        ET_Occupation   = -18,
+        ET_Condition    = -19,
+        ET_MAX          = 20     // Size of list
     };
     enum SelectFilter {
         SF_All,
@@ -262,7 +265,9 @@ public:
         ROLE_Residence_Family       = -61,
         ROLE_Residence_Lodger       = -63,
         ROLE_Residence_Visitor      = -62,
-        ROLE_MAX                    = 22 // size of list
+        ROLE_Occupation             = -65,
+        ROLE_Condition              = -67,
+        ROLE_MAX                    = 24 // size of list
     };
     enum SelectFilter {
         SF_All,

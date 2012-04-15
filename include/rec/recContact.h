@@ -101,7 +101,8 @@ public:
         CT_Mobile = -3,
         CT_Email = -4,
         CT_Website = -5,
-        CT_MAX = 6
+        CT_Fax = -6,
+        CT_MAX = 7
     };
 
     recContactType() {}

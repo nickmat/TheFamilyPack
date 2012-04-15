@@ -46,8 +46,8 @@
 const int recVerMajor    = 0;
 const int recVerMinor    = 0;
 const int recVerRev      = 9;
-const int recVerTest     = 20;
-const wxStringCharType* recVerStr = wxS("TFPD-0.0.9.20");
+const int recVerTest     = 21;
+const wxStringCharType* recVerStr = wxS("TFPD-0.0.9.21");
 
 
 recVersion::recVersion( const recVersion& v )
@@ -878,6 +878,35 @@ static void UpgradeTest0_0_9_19to0_0_9_20()
     recDb::GetDb()->ExecuteUpdate( query );
 }
 
+static void UpgradeTest0_0_9_20to0_0_9_21()
+{
+    // This update is the beginning of a modification to replace the 
+    // Attribute subsystem with an extension of the Event subsystem.
+    // We are not going to transfer the data at this time.
+    char* query =
+        "BEGIN;\n"
+
+        // This was missed in the last upgrade
+        "INSERT INTO ContactType (id, name) VALUES(-6, 'Fax');\n"
+
+        // This is correcting an error
+        "UPDATE EventType SET grp=4 WHERE id=-9;\n"
+
+        "UPDATE EventType SET grp=8 WHERE id=-17;\n"
+
+        "INSERT INTO EventType (id, grp, name) VALUES(-18, 8, 'Occupation');"
+        "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-65, -18, 1, 0, 'Occupation');"
+        "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-66, -18, 0, 0, 'Employer');"
+
+        "INSERT INTO EventType (id, grp, name) VALUES(-19, 8, 'Condition');"
+        "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-67, -18, 1, 0, 'Condition');"
+
+        "UPDATE Version SET test=21 WHERE id=1;\n"
+        "COMMIT;\n"
+    ;
+    recDb::GetDb()->ExecuteUpdate( query );
+}
+
 
 static void UpgradeRev0_0_9toCurrent( int test )
 {
@@ -903,6 +932,7 @@ static void UpgradeRev0_0_9toCurrent( int test )
     case 17: UpgradeTest0_0_9_17to0_0_9_18();
     case 18: UpgradeTest0_0_9_18to0_0_9_19();
     case 19: UpgradeTest0_0_9_19to0_0_9_20();
+    case 20: UpgradeTest0_0_9_20to0_0_9_21();
     }
 }
 
