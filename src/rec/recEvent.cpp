@@ -489,9 +489,50 @@ recEventTypeVec recEventType::ReadAllFamily()
     return vec;
 }
 
-idt recEventType::Select( SelectFilter sf )
+recEventTypeVec recEventType::ReadTypes( SelectFilter sf )
 {
     recEventTypeVec vec;
+    wxString query;
+
+    switch( sf )
+    {
+    case SF_All:
+        query = "SELECT id, grp, name FROM EventType ORDER BY id DESC;";
+        break;
+    case SF_Individual:
+        query = 
+            "SELECT id, grp, name FROM EventType"
+            " WHERE grp=1 OR grp=2 OR grp=5 OR grp=6 OR grp=7 ORDER BY id DESC;"
+        ;
+        break;
+    case SF_Family:
+        query = "SELECT id, grp, name FROM EventType WHERE grp=3 OR grp=4 ORDER BY id DESC;";
+        break;
+    case SF_Personal:
+        query = "SELECT id, grp, name FROM EventType WHERE grp=8 ORDER BY id DESC;";
+        break;
+    case SF_Not_Personal:
+        query = "SELECT id, grp, name FROM EventType WHERE grp<>8 ORDER BY id DESC;";
+        break;
+    default:
+        return vec;
+    }
+    wxSQLite3ResultSet result = s_db->ExecuteQuery( query );
+
+    recEventType et;
+    while( result.NextRow() ) {
+        et.FSetID( GET_ID( result.GetInt64( 0 ) ) );
+        et.FSetGrp( (ETYPE_Grp) result.GetInt( 1 ) );
+        et.FSetName( result.GetAsString( 2 ) );
+        vec.push_back( et );
+    }
+    return vec;
+}
+
+idt recEventType::Select( SelectFilter sf )
+{
+    recEventTypeVec vec = ReadTypes( sf );
+#if 0
     switch( sf )
     {
     case SF_All:
@@ -506,7 +547,7 @@ idt recEventType::Select( SelectFilter sf )
     default:
         return 0;
     }
-
+#endif
     wxArrayString list;
     for( size_t i = 0 ; i < vec.size() ; i++ )
     {

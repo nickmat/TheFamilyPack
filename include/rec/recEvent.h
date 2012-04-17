@@ -34,6 +34,7 @@
 #include <vector>
 
 #include <rec/recDatabase.h>
+#include <rec/recDate.h>
 #include <rec/recReference.h>
 
 
@@ -85,6 +86,8 @@ public:
     void FSetPlaceID( idt placeID ) { f_place_id = placeID; }
     void FSetNote( const wxString& note ) { f_note = note; }
     void FSetDatePt( idt datePt ) { f_date_pt = datePt; }
+    void FSetDatePt( recDate::DatePoint dp ) { f_date_pt = recDate::GetDatePoint( f_date1_id, dp ); }
+
 
     static wxString GetIdStr( idt evID ) { return wxString::Format( "E"ID, evID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
@@ -157,7 +160,7 @@ public:
         ETYPE_Grp_Death,    // 5
         ETYPE_Grp_Nr_Death, // 6
         ETYPE_Grp_Other,    // 7
-        ETYPE_Grp_Lifetime, // 8
+        ETYPE_Grp_Personal, // 8
         ETYPE_Grp_MAX       // 9
     };
 
@@ -187,7 +190,9 @@ public:
     enum SelectFilter {
         SF_All,
         SF_Individual,
-        SF_Family
+        SF_Family,
+        SF_Personal,
+        SF_Not_Personal
     };
 
     ETYPE_Grp f_grp;
@@ -202,6 +207,12 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "EventType" );
 
+    ETYPE_Grp FGetGrp() const { return f_grp; }
+    wxString FGetName() const { return f_name; }
+
+    void FSetGrp( ETYPE_Grp grp ) { f_grp = grp; }
+    void FSetName( wxString name ) { f_name = name; }
+
     static wxString GetTypeStr( idt id );
     wxString GetTypeStr() const { return f_name; }
     static ETYPE_Grp GetGroup( idt id );
@@ -210,6 +221,8 @@ public:
     static recEventTypeVec ReadAll();
     static recEventTypeVec ReadAllIndividual();
     static recEventTypeVec ReadAllFamily();
+    static recEventTypeVec ReadTypes( SelectFilter sf = SF_All );
+
     static idt Select( SelectFilter sf = SF_All );
     static recEventTypeRoleVec GetRoles( idt typeID );
     recEventTypeRoleVec GetRoles() const { return GetRoles( FGetID() ); }

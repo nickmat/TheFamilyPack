@@ -568,6 +568,35 @@ class fbDlgEditAttribute : public wxDialog
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/// Class fbDlgEditPersonalEvent
+///////////////////////////////////////////////////////////////////////////////
+class fbDlgEditPersonalEvent : public wxDialog 
+{
+	private:
+	
+	protected:
+		wxStaticText* m_staticText1;
+		wxStaticText* m_staticType;
+		wxStaticText* m_staticEventID;
+		wxStaticText* m_staticText2;
+		wxStaticText* m_staticPersona;
+		wxStaticText* m_staticPersonaID;
+		wxStaticText* m_staticText3;
+		wxChoice* m_choiceRole;
+		wxStaticText* m_staticText4;
+		wxTextCtrl* m_textDetail;
+		wxStaticLine* m_staticline1;
+		wxButton* m_buttonSave;
+		wxButton* m_buttonCancel;
+	
+	public:
+		
+		fbDlgEditPersonalEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Personal Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 354,196 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
+		~fbDlgEditPersonalEvent();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
 /// Class fbDlgEditEvent
 ///////////////////////////////////////////////////////////////////////////////
 class fbDlgEditEvent : public wxDialog 

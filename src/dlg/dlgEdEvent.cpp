@@ -45,6 +45,10 @@
 #include "dlgEdRole.h"
 #include "dlgEdDate.h"
 
+//============================================================================
+//-------------------------[ dlgEditEvent ]-----------------------------------
+//============================================================================
+
 #define ID_DATE_MENU_START  20000
 #define ID_AGE_MENU_START  20500
 #define ID_PLACE_MENU_START 21000
@@ -327,6 +331,54 @@ void dlgEditEvent::OnDownButton( wxCommandEvent& event )
         wxT("OnDownButton")
     );
     // TODO: Implement OnDownButton
+}
+
+//============================================================================
+//-------------------------[ dlgEditPersonalEvent ]-------------------------------
+//============================================================================
+
+dlgEditPersonalEvent::dlgEditPersonalEvent( wxWindow* parent, idt epID )
+    : fbDlgEditPersonalEvent( parent )
+{
+    m_ep.ReadID( epID );
+    m_event.ReadID( m_ep.FGetEventID() );
+}
+
+bool dlgEditPersonalEvent::TransferDataToWindow()
+{
+    m_staticType->SetLabel( recEventType::GetTypeStr( m_event.FGetTypeID() ) );
+    m_staticEventID->SetLabel( m_event.GetIdStr() );
+    m_staticPersona->SetLabel( recPersona::GetNameStr( m_ep.FGetPerID() ) );
+    m_staticPersonaID->SetLabel( recPersona::GetIdStr( m_ep.FGetPerID() ) );
+
+    m_roles = recEventType::GetRoles( m_event.FGetTypeID() );
+    if( m_roles.size() == 0 ) return false;
+    wxArrayString roleStrs;
+    int sel = 0;
+    for( size_t i = 0 ; i < m_roles.size() ; i++ ) {
+        roleStrs.push_back( m_roles[i].FGetName() );
+        if( m_roles[i].FGetID() == m_ep.FGetRoleID() ) {
+            sel = i;
+        }
+    }
+    m_choiceRole->Set( roleStrs );
+    m_choiceRole->SetSelection( sel );
+
+    m_textDetail->SetValue( m_ep.FGetNote() );
+
+    return true;
+}
+
+bool dlgEditPersonalEvent::TransferDataFromWindow()
+{
+    size_t role = (size_t) m_choiceRole->GetSelection();
+    if( role >= m_roles.size() ) {
+        return false;
+    }
+    m_ep.FSetRoleID( m_roles[role].FGetID() );
+    m_ep.FSetNote( m_textDetail->GetValue() );
+    m_ep.Save();
+    return true;
 }
 
 // End of dlgEdEvent.cpp file

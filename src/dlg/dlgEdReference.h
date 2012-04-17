@@ -72,7 +72,8 @@ protected:
         ID_EDREF_NEW_DATE_AGE,
         ID_EDREF_NEW_NAME,
         ID_EDREF_NEW_REL,
-        ID_EDREF_NEW_ATTR
+        ID_EDREF_NEW_ATTR,
+        ID_EDREF_NEW_PER_EVENT
     };
 
     bool TransferDataToWindow();
@@ -104,14 +105,15 @@ protected:
     void OnNewPlace( wxCommandEvent& event );
     void OnNewRelationship( wxCommandEvent& event );
     void OnNewEvent( wxCommandEvent& event );
-    void OnNewAttribute( wxCommandEvent& event );
+    void OnNewPersonalEvent( wxCommandEvent& event );
+//    void OnNewAttribute( wxCommandEvent& event );
     void OnNewName( wxCommandEvent& event );
 
     void DoEditDate( idt id, long row );
     void DoEditPlace( idt id, long row );
     void DoEditRelationship( idt id, long row );
     void DoEditEvent( idt id, long row );
-    void DoEditAttribute( idt id, long row );
+//    void DoEditAttribute( idt id, long row );
     void DoEditName( idt id, long row );
 
 public:

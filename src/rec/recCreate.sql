@@ -233,7 +233,7 @@ INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-65, -18, 
 INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-66, -18, 0, 0, 'Employer');
 
 INSERT INTO EventType (id, grp, name) VALUES(-19, 8, 'Condition');
-INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-67, -18, 1, 0, 'Condition');
+INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-67, -19, 1, 0, 'Condition');
 
 /* Next EventTypeRole id = -68 */
 

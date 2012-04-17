@@ -69,7 +69,8 @@ BEGIN_EVENT_TABLE( dlgEditReference, wxDialog )
     EVT_MENU( ID_EDREF_NEW_DATE_AGE, dlgEditReference::OnNewDateAge )
     EVT_MENU( ID_EDREF_NEW_NAME,     dlgEditReference::OnNewName )
     EVT_MENU( ID_EDREF_NEW_REL,      dlgEditReference::OnNewRelationship )
-    EVT_MENU( ID_EDREF_NEW_ATTR,     dlgEditReference::OnNewAttribute )
+//    EVT_MENU( ID_EDREF_NEW_ATTR,     dlgEditReference::OnNewAttribute )
+    EVT_MENU( ID_EDREF_NEW_PER_EVENT,dlgEditReference::OnNewPersonalEvent )
 END_EVENT_TABLE()
 
 dlgEditReference::dlgEditReference( wxWindow* parent )
@@ -262,9 +263,10 @@ void dlgEditReference::OnAddButton( wxCommandEvent& event )
     menu->Append( ID_EDREF_NEW_DATE_AGE, _("Date a&ge") );
     menu->Append( ID_EDREF_NEW_PLACE, _("&Place") );
     menu->Append( ID_EDREF_NEW_NAME, _("&Name") );
-    menu->Append( ID_EDREF_NEW_ATTR, _("&Attribute") );
+//    menu->Append( ID_EDREF_NEW_ATTR, _("&Attribute") );
     menu->Append( ID_EDREF_NEW_REL, _("&Relationship") );
     menu->Append( ID_EDREF_NEW_EVENT, _("&Event") );
+    menu->Append( ID_EDREF_NEW_PER_EVENT, _("Personal E&vent") );
     PopupMenu( menu );
     delete menu;
 }
@@ -593,6 +595,85 @@ void dlgEditReference::OnNewEvent( wxCommandEvent& cmnd_event )
     dialog->Destroy();
 }
 
+void dlgEditReference::OnNewPersonalEvent( wxCommandEvent& event )
+{
+    const wxString savepoint = "RefNewPerEvent";
+    recDb::Savepoint( savepoint );
+
+    recEvent eve(0);
+    recEventPersona ep(0);
+
+    eve.FSetTypeID( recEventType::Select( recEventType::SF_Personal ) );
+    if( eve.FGetTypeID() == 0 ) {
+        recDb::Rollback( savepoint );
+        return;
+    }
+    ep.FSetPerID( SelectCreatePersona() );
+    if( ep.FGetPerID() == 0 ) {
+        recDb::Rollback( savepoint );
+        return;
+    }
+    idt date1ID, date2ID;
+    unsigned style = dlgSelect::SELSTYLE_CreateButton | dlgSelect::SELSTYLE_UnknownButton;
+    if( SelectDate( &date1ID, _("Select Start Date"), style ) == false ) {
+        recDb::Rollback( savepoint );
+        return;
+    }
+    if( SelectDate( &date2ID, _("Select End Date"), style ) == false ) {
+        recDb::Rollback( savepoint );
+        return;
+    }
+    if( date1ID == date2ID ) {
+        date2ID = 0;
+    }
+    eve.FSetDate1ID( date1ID );
+    eve.FSetDate2ID( date2ID );
+    idt placeID;
+    if( SelectPlace( &placeID, _("Select Place"), style ) == false ) {
+        recDb::Rollback( savepoint );
+        return;
+    }
+    eve.FSetPlaceID( placeID );
+
+    eve.FSetTitle( 
+        wxString::Format( 
+            _("%s of %s"), 
+            eve.GetTypeStr(), 
+            recPersona::GetNameStr( ep.FGetPerID() )
+        )
+    );
+    eve.FSetDatePt( recDate::DATE_POINT_Mid );
+
+    ep.FSetNote( m_textCtrlStatement->GetStringSelection() );
+    ep.FSetPerSeq( 1 );
+
+    eve.Save();
+    ep.FSetEventID( eve.FGetID() );
+    ep.Save();
+
+    dlgEditPersonalEvent* dialog = new dlgEditPersonalEvent( NULL, ep.FGetID() );
+    if( dialog->ShowModal() == wxID_OK ) {
+        recDb::ReleaseSavepoint( savepoint );
+        int row = m_entities.size();
+        TfpEntity entity;
+        entity.rec.Clear();
+        entity.owner = 0;
+        entity.rec.f_ref_id = m_reference.f_id;
+        entity.rec.f_entity_type = recReferenceEntity::TYPE_Event;
+        entity.rec.f_entity_id = eve.FGetID();
+        entity.rec.Save();
+        m_entities.push_back( entity );
+
+        m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
+        m_listEntities->SetItem( row, ENT_COL_Number, eve.GetIdStr() );
+        m_listEntities->SetItem( row, ENT_COL_Value, eve.FGetTitle() );
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+}
+
+#if 0
 void dlgEditReference::OnNewAttribute( wxCommandEvent& event )
 {
     const wxString savepoint = "RefNewAttr";
@@ -629,6 +710,7 @@ void dlgEditReference::OnNewAttribute( wxCommandEvent& event )
     }
     dialog->Destroy();
 }
+#endif
 
 void dlgEditReference::OnNewName( wxCommandEvent& event )
 {
@@ -681,7 +763,7 @@ void dlgEditReference::OnEditButton( wxCommandEvent& event )
     case recReferenceEntity::TYPE_Place:     DoEditPlace( id, row );     break;
     case recReferenceEntity::TYPE_Relationship: DoEditRelationship( id, row ); break;
     case recReferenceEntity::TYPE_Event:     DoEditEvent( id, row );     break;
-    case recReferenceEntity::TYPE_Attribute: DoEditAttribute( id, row ); break;
+//    case recReferenceEntity::TYPE_Attribute: DoEditAttribute( id, row ); break;
     case recReferenceEntity::TYPE_Name :     DoEditName( id, row );      break;
     default:
         wxMessageBox( _("Element cannot be edited"), _("Edit") );
@@ -761,7 +843,7 @@ void dlgEditReference::DoEditEvent( idt id, long row )
     }
     dialog->Destroy();
 }
-
+#if 0
 void dlgEditReference::DoEditAttribute( idt id, long row )
 {
     const wxString savepoint = "RefEdAttr";
@@ -779,7 +861,7 @@ void dlgEditReference::DoEditAttribute( idt id, long row )
     }
     dialog->Destroy();
 }
-
+#endif
 void dlgEditReference::DoEditName( idt id, long row )
 {
     const wxString savepoint = "RefEdName";

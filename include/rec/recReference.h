@@ -88,15 +88,15 @@ class recReferenceEntity : public recDb
 {
 public:
     enum Type {
-        TYPE_Unstated,     // 0
-        TYPE_Source,       // 1
-        TYPE_Event,        // 2
-        TYPE_Place,        // 3
-        TYPE_Date,         // 4
-        TYPE_Relationship, // 5
-        TYPE_Attribute,    // 6
-        TYPE_Name,         // 7
-        TYPE_MAX           // 8
+        TYPE_Unstated      = 0,
+        TYPE_Source        = 1,
+        TYPE_Event         = 2,
+        TYPE_Place         = 3,
+        TYPE_Date          = 4,
+        TYPE_Relationship  = 5,
+        TYPE_Attribute     = 6,
+        TYPE_Name          = 7,
+        TYPE_MAX           = 8
     };
     static const wxString sm_typeStr[TYPE_MAX];
 

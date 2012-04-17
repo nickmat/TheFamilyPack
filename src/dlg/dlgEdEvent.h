@@ -35,6 +35,10 @@
 #include "fbDlg.h"
 #include "dlgEdReference.h"
 
+//============================================================================
+//-------------------------[ dlgEditEvent ]-----------------------------------
+//============================================================================
+
 /** Implementing fbDlgEditEvent */
 class dlgEditEvent : public fbDlgEditEvent
 {
@@ -85,6 +89,25 @@ private:
     TfpEntityStringVec  m_dateStrings;
 
     EvDate              m_dateButton;
+};
+
+//============================================================================
+//-------------------------[ dlgEditPersonalEvent ]-------------------------------
+//============================================================================
+
+class dlgEditPersonalEvent : public fbDlgEditPersonalEvent
+{
+public:
+    /** Constructor */
+    dlgEditPersonalEvent( wxWindow* parent, idt epID );
+
+private:
+    bool TransferDataToWindow();
+    bool TransferDataFromWindow();
+
+    recEvent            m_event;
+    recEventPersona     m_ep;
+    recEventTypeRoleVec m_roles;
 };
 
 #endif // DLGEDEVENT_H
