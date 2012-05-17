@@ -45,7 +45,7 @@
 #define TFP_SVNVERSION wxS("")
 #endif
 
-#define VERSION_STATUS   wxS(" alpha")
+#define VERSION_STATUS   wxS(" pre-alpha")
 
 #ifdef _DEBUG
 #define VERSION_CONFIG   wxS(" debug")
@@ -53,7 +53,7 @@
 #define VERSION_CONFIG   wxS("")
 #endif
 
-#define VERSION_NUM   wxS("0.3.0.1")
+#define VERSION_NUM   wxS("0.3.0.1.0")
 
 
 #define VERSION   VERSION_NUM TFP_SVNVERSION VERSION_STATUS VERSION_CONFIG
@@ -87,30 +87,12 @@ const wxChar* tfpTitle = wxS("The Family Pack - Version ") VERSION wxS("\n")
 
  30aug07  v0.3.0.0  Pre-alpha test version for wxWidgets (MSW). Not released
 
- Active   v0.3.0.1  First public alpha version
+ Active   v0.3.0.1.0  First public pre-alpha version
 
 
 Routemap
 
- v0.3.0.x     Alpha versions developing a working database definition
-
- v0.3.1       First public beta version
-
- From this point the versioning sytem will use a Major, Minor, Revision system
- where an even Minor number indicates a stable release with only (mostly?) bug
- fixes applied, whilst odd Minor numbers are used for developing new features
- and are therefore less stable.
-
- v0.3.x       Beta versions developing a working User Interface
-
- v0.4.0       First usable beta (From this point, Databases will be maintained
-              across upgrades)
-
- v0.4.x       Bug fixes to v0.4.0
-
- v0.5.x       Further development
-
- v1.0.0       First completed stable version
+ See webpage http://thefamilypack.org/dev/routemap.htm
 
 ***************************************************************************/
 

@@ -46,8 +46,8 @@
 const int recVerMajor    = 0;
 const int recVerMinor    = 0;
 const int recVerRev      = 9;
-const int recVerTest     = 21;
-const wxStringCharType* recVerStr = wxS("TFPD-0.0.9.21");
+const int recVerTest     = 22;
+const wxStringCharType* recVerStr = wxS("TFPD-0.0.9.22");
 
 
 recVersion::recVersion( const recVersion& v )
@@ -907,6 +907,70 @@ static void UpgradeTest0_0_9_20to0_0_9_21()
     recDb::GetDb()->ExecuteUpdate( query );
 }
 
+static void UpgradeTest0_0_9_21to0_0_9_22()
+{
+    char* query1 =
+        "BEGIN;\n"
+        // This is correcting an error from last update
+        "UPDATE EventTypeRole SET type_id=-19 WHERE id=-67;\n"
+        "UPDATE Version SET test=22 WHERE id=1;\n"
+        "COMMIT;\n"
+   ;
+    recDb::GetDb()->ExecuteUpdate( query1 );
+#if 0
+    char* query1 =
+        "BEGIN;\n"
+    ;
+    char* query2 =
+        "DROP TABLE Attribute;\n"
+        "DROP TABLE AttributeType;\n"
+        "DROP TABLE LinkAttribute;\n"
+        "UPDATE Version SET test=22 WHERE id=1;\n"
+        "COMMIT;\n"
+    ;
+    recDb::GetDb()->ExecuteUpdate( query1 );
+    // Transfer Attribute data to the Event subsystem
+    wxSQLite3ResultSet result = recDb::GetDb()->ExecuteQuery(
+        "SELECT id, per_id, type_id, val, sequence FROM Attribute;\n"
+    );
+    wxSQLite3StatementBuffer sql;
+    while( result.NextRow() ) {
+        int type = result.GetInt( 2 );
+        int etype, role;
+        switch( type ) {
+        case -1: etype = -18; role = -65; break;
+        case -2: etype = -19; role = -67; break;
+        default: continue;
+        }
+        sql.Format(
+            "INSERT INTO Event (title, type_id, date1_id, date2_id, place_id, note, date_pt)"
+            " VALUES ('', %d, 0, 0, 0, '', %d);", etype, result.GetInt( 4 )
+        );
+        recDb::GetDb()->ExecuteUpdate( sql );
+        idt eve = GET_ID( recDb::GetDb()->GetLastRowId() );
+        sql.Format(
+            "INSERT INTO EventPersona (event_id, per_id, role_id, note, per_seq)"
+            " VALUES ("ID", %d, %d, '%q', 1);",
+            eve, result.GetInt( 1 ), role, UTF8_(result.GetAsString( 3 ))
+        );
+        recDb::GetDb()->ExecuteUpdate( sql );
+        sql.Format(
+            "SELECT id FROM ReferenceEntity WHERE entity_type=6 AND entity_id=%d;\n",
+            result.GetInt( 1 )
+        );
+        idt re = recDb::ExecuteID( sql );
+        if( re ) {
+            sql.Format(
+                "UPDATE ReferenceEntity SET entity_type=2, entity_id="ID" WHERE id="ID";", 
+                eve, re
+            );
+            recDb::GetDb()->ExecuteUpdate( sql );
+        }
+    }
+    recDb::GetDb()->ExecuteUpdate( query2 );
+#endif
+}
+
 
 static void UpgradeRev0_0_9toCurrent( int test )
 {
@@ -933,6 +997,7 @@ static void UpgradeRev0_0_9toCurrent( int test )
     case 18: UpgradeTest0_0_9_18to0_0_9_19();
     case 19: UpgradeTest0_0_9_19to0_0_9_20();
     case 20: UpgradeTest0_0_9_20to0_0_9_21();
+    case 21: UpgradeTest0_0_9_21to0_0_9_22();
     }
 }
 
