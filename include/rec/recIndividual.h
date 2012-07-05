@@ -118,8 +118,6 @@ public:
     static wxSQLite3ResultSet GetNameList( wxString name );
     static wxSQLite3Table GetNameTable( Sex sex );
 
-    static void AddMissingFamilies();
-
     static recIndRelVec GetIndRelationships( idt indID );
     recIndRelVec GetIndRelationships() const { return GetIndRelationships( f_id ); }
 };

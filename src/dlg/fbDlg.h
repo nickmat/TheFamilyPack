@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Feb  9 2012)
+// C++ code generated with wxFormBuilder (version Dec  2 2011)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -11,9 +11,10 @@
 #include <wx/artprov.h>
 #include <wx/xrc/xmlres.h>
 #include <wx/intl.h>
-#include "tfpListCtrlInd.h"
-#include "dlgRecTableCtrl.h"
-#include "tfpHtml.h"
+class TfpHtml;
+class dlgStrTableCtrl;
+class tfpListCtrlIndividuals;
+
 #include <wx/string.h>
 #include <wx/stattext.h>
 #include <wx/gdicmn.h>
@@ -97,13 +98,6 @@ class fbDlgEditIndPersona : public wxDialog
 		wxButton* m_buttonNameDel;
 		wxButton* m_buttonNameUp;
 		wxButton* m_buttonNameDn;
-		wxPanel* m_panel3;
-		wxListCtrl* m_listAttr;
-		wxButton* m_buttonAttrAdd;
-		wxButton* m_buttonAttrEdit;
-		wxButton* m_buttonAttrDel;
-		wxButton* m_buttonAttrUp;
-		wxButton* m_buttonAttrDn;
 		wxPanel* m_panel21;
 		wxListCtrl* m_listEvent;
 		wxButton* m_buttonEventAdd;
@@ -128,11 +122,6 @@ class fbDlgEditIndPersona : public wxDialog
 		virtual void OnNameDeleteButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnNameUpButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnNameDownButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnAttrAddButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnAttrEditButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnAttrDeleteButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnAttrUpButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnAttrDownButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnEventAddButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnEventEditButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnEventDeleteButton( wxCommandEvent& event ) { event.Skip(); }
@@ -214,13 +203,6 @@ class fbDlgEditPersona : public wxDialog
 		wxButton* m_buttonNameDel;
 		wxButton* m_buttonNameUp;
 		wxButton* m_buttonNameDn;
-		wxPanel* m_panel3;
-		wxListCtrl* m_listAttr;
-		wxButton* m_buttonAttrAdd;
-		wxButton* m_buttonAttrEdit;
-		wxButton* m_buttonAttrDel;
-		wxButton* m_buttonAttrUp;
-		wxButton* m_buttonAttrDn;
 		wxPanel* m_panel21;
 		wxListCtrl* m_listEvent;
 		wxButton* m_buttonEventAdd;
@@ -247,11 +229,6 @@ class fbDlgEditPersona : public wxDialog
 		virtual void OnNameDeleteButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnNameUpButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnNameDownButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnAttrAddButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnAttrEditButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnAttrDeleteButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnAttrUpButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnAttrDownButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnEventAddButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnEventEditButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnEventDeleteButton( wxCommandEvent& event ) { event.Skip(); }
@@ -539,31 +516,6 @@ class fbDlgEditNamePart : public wxDialog
 		
 		fbDlgEditNamePart( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Name Part"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 296,168 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbDlgEditNamePart();
-	
-};
-
-///////////////////////////////////////////////////////////////////////////////
-/// Class fbDlgEditAttribute
-///////////////////////////////////////////////////////////////////////////////
-class fbDlgEditAttribute : public wxDialog 
-{
-	private:
-	
-	protected:
-		wxStaticText* m_staticAttrID;
-		wxStaticText* m_staticPersonaID;
-		wxStaticText* m_staticText3;
-		wxChoice* m_choiceType;
-		wxStaticText* m_staticText4;
-		wxTextCtrl* m_textCtrlValue;
-		wxStaticLine* m_staticline1;
-		wxButton* m_buttonSave;
-		wxButton* m_buttonCancel;
-	
-	public:
-		
-		fbDlgEditAttribute( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Attribute"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 300,168 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
-		~fbDlgEditAttribute();
 	
 };
 

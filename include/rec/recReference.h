@@ -94,7 +94,7 @@ public:
         TYPE_Place         = 3,
         TYPE_Date          = 4,
         TYPE_Relationship  = 5,
-        TYPE_Attribute     = 6,
+        TYPE_Spare         = 6,
         TYPE_Name          = 7,
         TYPE_MAX           = 8
     };

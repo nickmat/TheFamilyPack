@@ -170,7 +170,7 @@ recNameVec recPersona::ReadNames( idt perID )
     }
     return list;
 }
-
+#if 0
 recAttributeVec recPersona::ReadAttributes( idt perID )
 {
     recAttributeVec list;
@@ -201,7 +201,7 @@ recAttributeVec recPersona::ReadAttributes( idt perID )
     }
     return list;
 }
-
+#endif
 recEventPersonaVec recPersona::ReadEventPersonas( idt perID )
 {
     recEventPersonaVec list;

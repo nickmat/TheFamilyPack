@@ -63,8 +63,8 @@ private:
         CPPUNIT_TEST( TestPlacePart );
         CPPUNIT_TEST( TestPlacePartType );
         CPPUNIT_TEST( TestPersona );
-        CPPUNIT_TEST( TestAttribute );
-        CPPUNIT_TEST( TestAttributeType );
+//        CPPUNIT_TEST( TestAttribute );
+//        CPPUNIT_TEST( TestAttributeType );
         CPPUNIT_TEST( TestEvent );
         CPPUNIT_TEST( TestEventType );
         CPPUNIT_TEST( TestEventTypeRole );
@@ -87,8 +87,8 @@ private:
     void TestPlacePart();
     void TestPlacePartType();
     void TestPersona();
-    void TestAttribute();
-    void TestAttributeType();
+//    void TestAttribute();
+//    void TestAttributeType();
     void TestEvent();
     void TestEventType();
     void TestEventTypeRole();
@@ -319,7 +319,8 @@ void RecTestCase::TestFamily()
     // f_id = 0 so create new record and set f_id to new value.
     record1.Save();
     id = record1.f_id;
-    CPPUNIT_ASSERT( id == 1 );
+    // Database is created with a starting family F1, so this is F2
+    CPPUNIT_ASSERT( id == 2 );
 
     recFamily record2;
     record2.f_id = record1.f_id;
@@ -569,6 +570,7 @@ void RecTestCase::TestPlacePartType()
     CPPUNIT_ASSERT( recPlacePartType::Exists( 999 ) == false );
 }
 
+#if 0
 void RecTestCase::TestAttribute()
 {
     idt id;
@@ -670,7 +672,7 @@ void RecTestCase::TestAttributeType()
     recAttributeType::Delete( 999 );
     CPPUNIT_ASSERT( recAttributeType::Exists( 999 ) == false );
 }
-
+#endif
 void RecTestCase::TestEvent()
 {
     idt id;
@@ -971,7 +973,7 @@ void RecTestCase::TestReferenceEntity()
     CPPUNIT_ASSERT( record1 == record2 );
 
     record1.f_ref_id = 10;
-    record1.f_entity_type = recReferenceEntity::TYPE_Attribute;
+    record1.f_entity_type = recReferenceEntity::TYPE_Relationship;
     record1.f_entity_id = 11;
     record1.f_sequence = 2;
     // f_id = 1 which exists, so amend record leaving f_id to old value.

@@ -54,11 +54,11 @@ dlgEditPersona::dlgEditPersona( wxWindow* parent ) : fbDlgEditPersona( parent )
     wxListItem itemCol;
     itemCol.SetText( wxT("Type") );
     m_listName->InsertColumn( 0, itemCol );
-    m_listAttr->InsertColumn( 0, itemCol );
+//    m_listAttr->InsertColumn( 0, itemCol );
     m_listRel->InsertColumn( 0, itemCol );
     itemCol.SetText( wxT("Value") );
     m_listName->InsertColumn( 1, itemCol );
-    m_listAttr->InsertColumn( 1, itemCol );
+//    m_listAttr->InsertColumn( 1, itemCol );
     m_listRel->InsertColumn( 1, itemCol );
 
     m_listEvent->InsertColumn( EV_COL_Number, _("Number") );
@@ -92,13 +92,13 @@ bool dlgEditPersona::TransferDataToWindow()
         m_listName->InsertItem( i, recNameStyle::GetStyleStr( m_names[i].f_style_id ) );
         m_listName->SetItem( i, COL_Value, m_names[i].GetNameStr() );
     }
-
+#if 0
     m_attributes = m_persona.ReadAttributes();
     for( size_t i = 0 ; i < m_attributes.size() ; i++ ) {
         m_listAttr->InsertItem( i, recAttributeType::GetTypeStr( m_attributes[i].f_type_id ) );
         m_listAttr->SetItem( i, COL_Value, m_attributes[i].f_val );
     }
-
+#endif
     m_evpers = m_persona.ReadEventPersonas();
     for( size_t i = 0 ; i < m_evpers.size() ; i++ ) {
         m_listEvent->InsertItem( i, recEvent::GetIdStr( m_evpers[i].f_event_id ) );
@@ -129,14 +129,14 @@ bool dlgEditPersona::TransferDataFromWindow()
             m_names[i].Save();
         }
     }
-
+#if 0
     for( size_t i = 0 ; i < m_attributes.size() ; i++ ) {
         if( m_attributes[i].f_sequence != i+1 ) {
             m_attributes[i].f_sequence = i+1;
             m_attributes[i].Save();
         }
     }
-
+#endif
     return true;
 }
 
@@ -265,7 +265,7 @@ void dlgEditPersona::OnNameDownButton( wxCommandEvent& event )
         m_listName->SetItemState( row, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
     }
 }
-
+#if 0
 void dlgEditPersona::OnAttrAddButton( wxCommandEvent& event )
 {
     const wxString savepoint = "PerAddAttr";
@@ -368,7 +368,7 @@ void dlgEditPersona::OnAttrDownButton( wxCommandEvent& event )
         m_listAttr->SetItemState( row, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
     }
 }
-
+#endif
 wxString dlgEditPersona::GetIndLinksString() const
 {
     wxString txt;

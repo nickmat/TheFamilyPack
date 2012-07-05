@@ -149,13 +149,6 @@ bool recGedParse::ImportCmdLine()
     return true;
 }
 
-void recGedParse::CleanUp()
-{
-    recDb::Begin();
-    recIndividual::AddMissingFamilies();
-    recDb::Commit();
-}
-
 bool recGedParse::Pass1()
 {
     wxString str;
@@ -498,8 +491,7 @@ void recGedParse::ReadIndEvent( GedIndividual& gind, int level )
         break;
     case tagOCCU:
         ev.f_type_id = recEventType::ET_Occupation;
-        ep.f_role_id = recEventTypeRole::ROLE_Occupation;
-        ep.f_note = m_text;
+        ep.f_role_id = recEventTypeRole::FindOrCreate( m_text, recEventType::ET_Occupation );
         titlefmt = _("Occupation of %s");
         dp = recDate::DATE_POINT_Mid;
         break;
@@ -657,6 +649,7 @@ idt recGedParse::ParseEvPlace( int level )
 
 void recGedParse::ReadIndAttr( GedIndividual& gind, int level )
 {
+#if 0
     recAttribute attr(0);
     attr.Save(); // We need th Attribute id
     attr.f_per_id = gind.GetPersonaID();
@@ -683,6 +676,7 @@ void recGedParse::ReadIndAttr( GedIndividual& gind, int level )
         cont = ReadNextLine();
     }
     attr.Save();
+#endif
 }
 
 void recGedParse::ReadFam( int level )

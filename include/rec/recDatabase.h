@@ -45,6 +45,13 @@ typedef wxLongLong_t    idt;
 #define STR_OR_NULL(s) ( (s).IsEmpty() ? UTF8_("NULL") : \
     wxSQLite3StatementBuffer.FormatV( "'%q'", UTF8_(s) ) ) 
 
+// Useful defines placed here for convenience.
+typedef std::vector< wxString >  StringVec;
+typedef std::vector< wxLongLong_t > IntegerVec;
+typedef std::vector< double > DoubleVec;
+typedef std::vector< bool > BoolVec;
+
+
 typedef wxVector< idt >  recIdList;
 typedef std::vector< idt >  recIdVec;
 

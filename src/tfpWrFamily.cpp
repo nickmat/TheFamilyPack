@@ -190,12 +190,14 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR, idt indID )
         << "</td><td width=60><b>Burial</b></td><td width=210>"
         << recEvent::GetDetailStr( recPersona::GetNrDeathEvent( wPerID ) )
         << "</td></tr>";
-
+#if 0
     htm << "<tr align=left><td width=60><b>Occ</b></td><td width=210>"
         << recAttribute::GetValue( recPersona::GetOccAttribute( hPerID ) )
         << "</td><td width=60><b>Occ</b></td><td width=210>"
         << recAttribute::GetValue( recPersona::GetOccAttribute( wPerID ) )
-        << "</td></tr></font>"
+        << "</td></tr>";
+#endif
+    htm << "</font>"
 
         << "</table>";
 

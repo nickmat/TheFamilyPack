@@ -47,7 +47,6 @@ wxString tfpWriteIndividualPage( idt indID )
 {
     wxString htm;
     size_t i, j, cnt;
-    idt id;
     recIndividual ind( indID );
     recPersona per( ind.f_per_id );
     recIndividual spouse;
@@ -67,28 +66,23 @@ wxString tfpWriteIndividualPage( idt indID )
     htm << "<tr><td align=right>ID, Sex:</td><td><b>"
         << ind.GetIdStr() << ", " << recGetSexStr( per.f_sex )
         << "</b></td></tr>";
-
-    // Occupation
-    id = per.GetOccAttribute();
-    if( id != 0 ) {
-        htm << "<tr><td align=right>Occupation:</td><td><b>"
-            << recAttribute::GetValue( id )
-            << "</b></td></tr>";
-    }
-
     // All Events
     recEventPersonaVec eps = per.ReadEventPersonas();
     for( i = 0 ; i < eps.size() ; i++ ) {
+        recEvent eve(eps[i].FGetEventID());
         htm << "<tr><td align=right>"
-            << recEvent::GetTypeStr( eps[i].f_event_id )
-            << ":</td><td><b>"
-            << recEvent::GetDetailStr( eps[i].f_event_id );
+            << eve.GetTypeStr()
+            << ":</td><td><b>";
+        if( eve.GetTypeGroup() == recEventType::ETYPE_Grp_Personal ) {
+            htm << eps[i].GetRoleStr() << " ";
+        }
+        htm << eve.GetDetailStr();
 
-        if( !eps[i].f_note.IsEmpty() ) {
-            htm << "<br>" << eps[i].f_note;
+        if( !eve.FGetNote().IsEmpty() ) {
+            htm << "<br>" << eps[i].FGetNote();
         }
 
-        htm << "</b> <a href=E" << eps[i].f_event_id
+        htm << "</b> <a href=E" << eve.FGetID()
             << "><img src=memory:eve.bmp></a></td></tr>";
     }
 
@@ -169,25 +163,14 @@ wxString tfpWriteIndividualPage( idt indID )
         }
     }
 
-    wxSQLite3Table eTable = ind.GetRefAttributesTable();
+    // Get linked Persona Events
+    wxSQLite3Table eTable = ind.GetRefEventsTable();
     for( i = 0 ; i < (size_t) eTable.GetRowCount() ; i++ ) {
-        eTable.SetRow( i );
-        idt attrID = GET_ID( eTable.GetInt64( 0 ) );
-        idt typeID = GET_ID( eTable.GetInt64( 1 ) );
-        idt refID = recAttribute::FindReferenceID( attrID );
-
-        htm << "<tr><td align=right>"
-            << recAttributeType::GetTypeStr( typeID )
-            << ":</td><td><b>"
-            << eTable.GetAsString( 2 );
-        if( refID != 0 ) {
-            htm << " <a href=" << recReference::GetIdStr( refID )
-                << "><img src=memory:ref.bmp></a>";
+        if( i == 0 ) {
+            htm << "<tr><td colspan=2><font size=+1>"
+                   "Linked to Reference Events"
+                   "</font></td></tr>";
         }
-        htm << "</b></td></tr>";
-    }
-    eTable = ind.GetRefEventsTable();
-    for( i = 0 ; i < (size_t) eTable.GetRowCount() ; i++ ) {
         eTable.SetRow( i );
         idt eventID = GET_ID( eTable.GetInt64( 0 ) );
         idt roleID = GET_ID( eTable.GetInt64( 1 ) );
@@ -206,8 +189,14 @@ wxString tfpWriteIndividualPage( idt indID )
             << "</b></td></tr>";
     }
 
+    // List all References for linked Personas
     eTable = ind.GetReferencesTable();
     for( i = 0 ; i < (size_t) eTable.GetRowCount() ; i++ ) {
+        if( i == 0 ) {
+            htm << "<tr><td colspan=2><font size=+1>"
+                   "Mentioned in References"
+                   "</font></td></tr>";
+        }
         eTable.SetRow( i );
         idt refID = GET_ID( eTable.GetInt64( 0 ) );
 

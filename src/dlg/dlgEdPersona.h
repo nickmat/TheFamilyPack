@@ -63,19 +63,19 @@ private:
     void OnNameDeleteButton( wxCommandEvent& event );
     void OnNameUpButton( wxCommandEvent& event );
     void OnNameDownButton( wxCommandEvent& event );
-
+#if 0
     void OnAttrAddButton( wxCommandEvent& event );
     void OnAttrEditButton( wxCommandEvent& event );
     void OnAttrDeleteButton( wxCommandEvent& event );
     void OnAttrUpButton( wxCommandEvent& event );
     void OnAttrDownButton( wxCommandEvent& event );
-
+#endif
     wxString GetIndLinksString() const;
 
     recPersona         m_persona;
     recIdVec           m_indLinks;
     recNameVec         m_names;
-    recAttributeVec    m_attributes;
+//    recAttributeVec    m_attributes;
     recEventPersonaVec m_evpers;
     recRelationshipVec m_relationships;
 

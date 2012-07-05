@@ -29,7 +29,7 @@
 
 #ifndef DLGEDATTRIBUTE_H
 #define DLGEDATTRIBUTE_H
-
+#if 0
 #include <rec/recPersona.h>
 
 #include "fbDlg.h"
@@ -54,5 +54,5 @@ private:
     recAttribute m_attr;
     recAttributeTypeVec  m_typeList;
 };
-
+#endif
 #endif // DLGEDATTRIBUTE_H

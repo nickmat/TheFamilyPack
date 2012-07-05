@@ -66,6 +66,7 @@ wxString GetHtmDateData( const recDate& date )
 
 wxString tfpWriteAttribute( idt attrID )
 {
+#if 0
     wxString htm;
     recAttribute attr(attrID);
     if( attr.f_id == 0 ) return wxEmptyString;
@@ -76,6 +77,14 @@ wxString tfpWriteAttribute( idt attrID )
         << ": " << attr.f_val
        
         << "</body></html>";
+
+    return htm;
+#endif
+    wxString htm;
+
+    htm << "<html><head><title>Place</title></head><body>"
+           "<h1>Attribute </h1>"
+           "</body></html>";
 
     return htm;
 }

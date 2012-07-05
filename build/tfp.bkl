@@ -172,6 +172,7 @@
 <!--
   Private utility program
   <include file="tfpnick.bkl"/>
+  <include file="ts.bkl"/>
 -->
 </makefile>
 

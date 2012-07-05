@@ -21,6 +21,10 @@ h1 {
  border-right: 2px solid #ddf;
 }
 
+a.download {
+ float: right;
+}
+
 #page {
  position: relative;
 }

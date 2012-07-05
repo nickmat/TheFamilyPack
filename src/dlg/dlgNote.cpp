@@ -38,7 +38,7 @@
 #endif
 
 #include <rec/recDatabase.h>
-
+#include "tfpHtml.h"
 #include "dlgNote.h"
 #include "tfpWr.h"
 

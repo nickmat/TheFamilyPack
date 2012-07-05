@@ -176,6 +176,12 @@ wxString recEvent::GetAddressStr() const
     return recPlace::GetAddressStr( f_place_id );
 }
 
+recEventType::ETYPE_Grp recEvent::GetTypeGroup() const
+{
+    return recEventType::GetGroup( f_type_id );
+}
+    
+
 wxString recEvent::GetDetailStr( idt id )
 {
     recEvent e( id );
@@ -502,7 +508,7 @@ recEventTypeVec recEventType::ReadTypes( SelectFilter sf )
     case SF_Individual:
         query = 
             "SELECT id, grp, name FROM EventType"
-            " WHERE grp=1 OR grp=2 OR grp=5 OR grp=6 OR grp=7 ORDER BY id DESC;"
+            " WHERE grp=1 OR grp=2 OR grp=5 OR grp=6 OR grp=7 OR grp=8 ORDER BY id DESC;"
         ;
         break;
     case SF_Family:
@@ -753,6 +759,35 @@ idt recEventTypeRole::Select( idt typeID, SelectFilter sf )
     return vec[index].f_id;
 }
 
+idt recEventTypeRole::FindOrCreate( const wxString& name, idt type, bool prime, bool official )
+{
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    sql.Format(
+        "SELECT id FROM EventTypeRole "
+        "WHERE type_id="ID" AND prime=%d AND official=%d AND name LIKE '%q';",
+        type, prime, official, UTF8_(name)
+    );
+    result = s_db->GetTable( sql );
+
+    if( result.GetRowCount() == 0 )
+    {
+        // Create
+        recEventTypeRole role;
+        role.f_id = 0;
+        role.f_type_id = type;
+        role.f_prime = prime;
+        role.f_official = official;
+        role.f_name = name;
+        role.Save();
+        return role.f_id;
+    }
+    result.SetRow( 0 );
+    return GET_ID( result.GetInt64( 0 ) );
+
+
+}
 
 //============================================================================
 //-------------------------[ recEventPersona ]--------------------------------

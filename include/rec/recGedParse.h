@@ -55,8 +55,6 @@ public:
 
     bool Import();
 
-    void CleanUp();
-
     void SetUseXref( bool useXref ) { m_indiUseXref = m_famUseXref = useXref; }
 
 private:

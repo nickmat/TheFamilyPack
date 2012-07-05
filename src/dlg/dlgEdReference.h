@@ -106,14 +106,12 @@ protected:
     void OnNewRelationship( wxCommandEvent& event );
     void OnNewEvent( wxCommandEvent& event );
     void OnNewPersonalEvent( wxCommandEvent& event );
-//    void OnNewAttribute( wxCommandEvent& event );
     void OnNewName( wxCommandEvent& event );
 
     void DoEditDate( idt id, long row );
     void DoEditPlace( idt id, long row );
     void DoEditRelationship( idt id, long row );
     void DoEditEvent( idt id, long row );
-//    void DoEditAttribute( idt id, long row );
     void DoEditName( idt id, long row );
 
 public:

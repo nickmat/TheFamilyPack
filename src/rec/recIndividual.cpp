@@ -427,33 +427,6 @@ wxSQLite3Table recIndividual::GetNameTable( Sex sex )
     return s_db->GetTable( sql );
 }
 
-void recIndividual::AddMissingFamilies()
-{
-    wxSQLite3ResultSet result;
-    recFamily fam(0);
-    recIndividual ind;
-    recPersona per;
-
-    result = s_db->ExecuteQuery( "SELECT id FROM Individual WHERE fam_id=0;" );
-    while( result.NextRow() ) {
-        ind.f_id = GET_ID( result.GetInt64( 0 ) );
-        ind.Read();
-        per.f_id = ind.f_per_id;
-        per.Read();
-        fam.f_id = 0;
-        if( per.f_sex == SEX_Female ) {
-            fam.f_husb_id = 0;
-            fam.f_wife_id = ind.f_id;
-        } else {
-            fam.f_husb_id = ind.f_id;
-            fam.f_wife_id = 0;
-        }
-        fam.Save();
-        ind.f_fam_id = fam.f_id;
-        ind.Save();
-    }
-}
-
 recIndRelVec recIndividual::GetIndRelationships( idt indID )
 {
     recIndRelVec rels;

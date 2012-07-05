@@ -29,7 +29,7 @@
 
 #ifndef RECATTRIBUTE_H
 #define RECATTRIBUTE_H
-
+#if 0
 #include <rec/recDatabase.h>
 #include <rec/recReference.h>
 
@@ -137,5 +137,5 @@ inline bool operator!=( const recAttributeType& r1, const recAttributeType& r2 )
 {
     return !(r1 == r2);
 }
-
+#endif
 #endif // RECATTRIBUTE_H

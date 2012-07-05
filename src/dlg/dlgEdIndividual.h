@@ -89,8 +89,6 @@ class dlgEditIndPersona : public fbDlgEditIndPersona
 public:
     dlgEditIndPersona( wxWindow* parent, idt indID );
 
-//    void SetPersonaID( idt perID ) { m_persona.f_id = perID; }
-
     recPersona* GetPersona() { return &m_persona; }
 
 private:
@@ -102,12 +100,6 @@ private:
     void OnNameDeleteButton( wxCommandEvent& event );
     void OnNameUpButton( wxCommandEvent& event );
     void OnNameDownButton( wxCommandEvent& event );
-
-    void OnAttrAddButton( wxCommandEvent& event );
-    void OnAttrEditButton( wxCommandEvent& event );
-    void OnAttrDeleteButton( wxCommandEvent& event );
-    void OnAttrUpButton( wxCommandEvent& event );
-    void OnAttrDownButton( wxCommandEvent& event );
 
     void OnEventAddButton( wxCommandEvent& event );
     void OnNewEvent( wxCommandEvent& event );
@@ -126,7 +118,6 @@ private:
     recIndividual      m_individual;
     recPersona         m_persona;
     recNameVec         m_names;
- //   recAttributeVec    m_attributes;
     recEventPersonaVec m_eps;
     recIndRelVec       m_relationships;
 

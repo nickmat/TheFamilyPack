@@ -107,12 +107,6 @@ dlgEditIndPersona::dlgEditIndPersona( wxWindow* parent, idt indID )
 {
     m_persona.ReadID( m_individual.GetPersona() );
 
-    wxListItem itemCol;
-    itemCol.SetText( wxT("Type") );
-    m_listAttr->InsertColumn( 0, itemCol );
-    itemCol.SetText( wxT("Value") );
-    m_listAttr->InsertColumn( 1, itemCol );
-
     m_listName->InsertColumn( NC_Number, _("Number") );
     m_listName->InsertColumn( NC_Type, _("Type") );
     m_listName->InsertColumn( NC_Name, _("Name") );
@@ -159,13 +153,6 @@ bool dlgEditIndPersona::TransferDataToWindow()
     if( m_names.size() ) {
         m_listName->SetColumnWidth( NC_Name, wxLIST_AUTOSIZE );
     }
-#if 0
-    m_attributes = m_persona.ReadAttributes();
-    for( size_t i = 0 ; i < m_attributes.size() ; i++ ) {
-        m_listAttr->InsertItem( i, recAttributeType::GetTypeStr( m_attributes[i].f_type_id ) );
-        m_listAttr->SetItem( i, COL_Value, m_attributes[i].f_val );
-    }
-#endif
     m_eps = m_persona.ReadEventPersonas();
     for( size_t i = 0 ; i < m_eps.size() ; i++ ) {
         m_listEvent->InsertItem( i, recEvent::GetIdStr( m_eps[i].f_event_id ) );
@@ -201,14 +188,6 @@ bool dlgEditIndPersona::TransferDataFromWindow()
             m_names[i].Save();
         }
     }
-#if 0
-    for( size_t i = 0 ; i < m_attributes.size() ; i++ ) {
-        if( m_attributes[i].f_sequence != i+1 ) {
-            m_attributes[i].f_sequence = i+1;
-            m_attributes[i].Save();
-        }
-    }
-#endif
     m_individual.Update();
     m_individual.Save();
     return true;
@@ -321,124 +300,6 @@ void dlgEditIndPersona::OnNameDownButton( wxCommandEvent& event )
 
         m_listName->SetItemState( row, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
     }
-}
-
-void dlgEditIndPersona::OnAttrAddButton( wxCommandEvent& event )
-{
-    wxMessageBox( "Not Used", "OnAttrAddButton" );
-#if 0
-    const wxString savepoint = "PerAddAttr";
-    dlgEditAttribute* dialog = new dlgEditAttribute( NULL );
-    dialog->SetPersonaID( m_persona.f_id );
-
-    recDb::Savepoint( savepoint );
-    if( dialog->ShowModal() == wxID_OK )
-    {
-        recDb::ReleaseSavepoint( savepoint );
-        recAttribute* attr = dialog->GetAttribute();
-        int row = m_attributes.size();
-        m_listAttr->InsertItem( row, recAttributeType::GetTypeStr( attr->f_type_id ) );
-        m_listAttr->SetItem( row, COL_Value, attr->f_val );
-        m_attributes.push_back( *attr );
-    } else {
-        recDb::Rollback( savepoint );
-    }
-    dialog->Destroy();
-#endif
-}
-
-void dlgEditIndPersona::OnAttrEditButton( wxCommandEvent& event )
-{
-    wxMessageBox( "Not Used", "OnAttrEditButton" );
-#if 0
-    long row = m_listAttr->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-    if( row < 0 ) {
-        wxMessageBox( _("No row selected"), _("Edit Attribute") );
-        return;
-    }
-
-    const wxString savepoint = "PerEdAttr";
-    dlgEditAttribute* dialog = new dlgEditAttribute( NULL );
-    dialog->SetAttributeID( m_attributes[row].f_id );
-
-    recDb::Savepoint( savepoint );
-    if( dialog->ShowModal() == wxID_OK )
-    {
-        recDb::ReleaseSavepoint( savepoint );
-        recAttribute* attr = dialog->GetAttribute();
-        m_listAttr->SetItem( row, COL_Type, recAttributeType::GetTypeStr( attr->f_type_id ) );
-        m_listAttr->SetItem( row, COL_Value, attr->f_val );
-        m_attributes[row] = *attr;
-    } else {
-        recDb::Rollback( savepoint );
-    }
-    dialog->Destroy();
-#endif
-}
-
-void dlgEditIndPersona::OnAttrDeleteButton( wxCommandEvent& event )
-{
-    wxMessageBox( "Not Used", "OnAttrDeleteButton" );
-#if 0
-    long row = m_listAttr->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-    if( row >= 0 ) {
-        m_listAttr->DeleteItem( row );
-        m_attributes[row].Delete();
-        m_attributes.erase( m_attributes.begin() + row );
-    } else {
-        wxMessageBox( _("No row selected"), _("Delete Attribute") );
-    }
-#endif
-}
-
-void dlgEditIndPersona::OnAttrUpButton( wxCommandEvent& event )
-{
-    wxMessageBox( "Not Used", "OnAttrUpButton" );
-#if 0
-    long row = m_listAttr->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-    if( row < 0 ) {
-        wxMessageBox( _("Row not selected"), _("Attribute Up") );
-        return;
-    }
-    if( row > 0 ) {
-        recAttribute attr = m_attributes[row];
-        m_attributes[row] = m_attributes[row-1];
-        m_attributes[row-1] = attr;
-
-        m_listAttr->SetItem( row, COL_Type, recAttributeType::GetTypeStr( m_attributes[row].f_type_id ) );
-        m_listAttr->SetItem( row, COL_Value, m_attributes[row].f_val );
-        --row;
-        m_listAttr->SetItem( row, COL_Type, recAttributeType::GetTypeStr( m_attributes[row].f_type_id ) );
-        m_listAttr->SetItem( row, COL_Value, m_attributes[row].f_val );
-
-        m_listAttr->SetItemState( row, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
-    }
-#endif
-}
-
-void dlgEditIndPersona::OnAttrDownButton( wxCommandEvent& event )
-{
-    wxMessageBox( "Not Used", "OnAttrDownButton" );
-#if 0
-    long row = m_listAttr->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-    if( row < 0 ) {
-        wxMessageBox( _("Row not selected"), _("Attribute Down") );
-        return;
-    }
-    if( row < (long) m_listAttr->GetItemCount() - 1 ) {
-        recAttribute attr = m_attributes[row];
-        m_attributes[row] = m_attributes[row+1];
-        m_attributes[row+1] = attr;
-
-        m_listAttr->SetItem( row, COL_Type, recAttributeType::GetTypeStr( m_attributes[row].f_type_id ) );
-        m_listAttr->SetItem( row, COL_Value, m_attributes[row].f_val );
-        row++;
-        m_listAttr->SetItem( row, COL_Type, recAttributeType::GetTypeStr( m_attributes[row].f_type_id ) );
-        m_listAttr->SetItem( row, COL_Value, m_attributes[row].f_val );
-
-        m_listAttr->SetItemState( row, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
-    }
-#endif
 }
 
 void dlgEditIndPersona::OnEventAddButton( wxCommandEvent& event )

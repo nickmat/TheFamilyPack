@@ -128,6 +128,7 @@ bool dlgEditReference::TransferDataToWindow()
             m_listEntities->SetItem( i, ENT_COL_Number, recRelationship::GetIdStr( entID ) );
             m_listEntities->SetItem( i, ENT_COL_Value, recRelationship::GetValue1Str( entID ) );
             break;
+#if 0
         case recReferenceEntity::TYPE_Attribute:
             {
                 recAttribute attribute( entID );
@@ -136,6 +137,7 @@ bool dlgEditReference::TransferDataToWindow()
                 m_entities[i].owner = attribute.f_per_id;
             }
             break;
+#endif
         case recReferenceEntity::TYPE_Event:
             m_listEntities->SetItem( i, ENT_COL_Number, recEvent::GetIdStr( entID ) );
             m_listEntities->SetItem( i, ENT_COL_Value, recEvent::GetTitle( entID ) );
@@ -1027,10 +1029,12 @@ void dlgEditReference::InsertListItem( long row, const TfpEntity& ent )
         idStr = recDate::GetIdStr( ent.rec.f_entity_id );
         str = recDate::GetStr( ent.rec.f_entity_id );
         break;
+#if 0
     case recReferenceEntity::TYPE_Attribute:
         idStr = recAttribute::GetIdStr( ent.rec.f_entity_id );
         str = recAttribute::GetValue( ent.rec.f_entity_id );
         break;
+#endif
     case recReferenceEntity::TYPE_Relationship:
         idStr = recRelationship::GetIdStr( ent.rec.f_entity_id );
         str = recRelationship::GetValue1Str( ent.rec.f_entity_id );

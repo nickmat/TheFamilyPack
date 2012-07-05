@@ -37,7 +37,7 @@
 #include "wx/wx.h"
 #endif
 
-
+#if 0
 #include <rec/recAttribute.h>
 
 recAttribute::recAttribute( const recAttribute& attr )
@@ -257,5 +257,5 @@ recAttributeTypeVec recAttributeType::GetTypeList()
 
     return list;
 }
-
+#endif
 // End of recAttribute.cpp file

@@ -48,103 +48,6 @@ class recEventTypeRole;
 typedef std::vector< recEventTypeRole >  recEventTypeRoleVec;
 
 //============================================================================
-//-------------------------[ recEvent ]---------------------------------------
-//============================================================================
-
-class recEvent : public recDb
-{
-public:
-    wxString f_title;
-    idt      f_type_id;
-    idt      f_date1_id;
-    idt      f_date2_id;
-    idt      f_place_id;
-    wxString f_note;
-    long     f_date_pt;
-
-    recEvent() {}
-    recEvent( idt id ) : recDb(id) { Read(); }
-    recEvent( const recEvent& event );
-
-    void Clear();
-    void Save();
-    bool Read();
-    TABLE_NAME_MEMBERS( "Event" );
-
-    wxString FGetTitle() const { return f_title; }
-    idt FGetTypeID() const { return f_type_id; }
-    idt FGetDate1ID() const { return f_date1_id; }
-    idt FGetDate2ID() const { return f_date2_id; }
-    idt FGetPlaceID() const { return f_place_id; }
-    wxString FGetNote() const { return f_note; }
-    long FGetDatePt() const { return f_date_pt; }
-
-    void FSetTitle( const wxString& title ) { f_title = title; }
-    void FSetTypeID( idt typeID ) { f_type_id = typeID; }
-    void FSetDate1ID( idt date1ID ) { f_date1_id = date1ID; }
-    void FSetDate2ID( idt date2ID ) { f_date2_id = date2ID; }
-    void FSetPlaceID( idt placeID ) { f_place_id = placeID; }
-    void FSetNote( const wxString& note ) { f_note = note; }
-    void FSetDatePt( idt datePt ) { f_date_pt = datePt; }
-    void FSetDatePt( recDate::DatePoint dp ) { f_date_pt = recDate::GetDatePoint( f_date1_id, dp ); }
-
-
-    static wxString GetIdStr( idt evID ) { return wxString::Format( "E"ID, evID ); }
-    wxString GetIdStr() const { return GetIdStr( f_id ); }
-
-    wxString GetDetailStr() const;
-    wxString GetTypeStr() const;
-    wxString GetDateStr() const;
-    wxString GetAddressStr() const;
-    static wxString GetDetailStr( idt evID );
-    static wxString GetTypeStr( idt evID );
-    static wxString GetTitle( idt evID );
-    static wxString GetNote( idt evID );
-    static wxString GetDateStr( idt evID );
-    static wxString GetAddressStr( idt evID );
-    static idt GetDate1ID( idt evID );
-    static void UpdateDatePoint( idt evID );
-    void UpdateDatePoint();
-
-    idt FindReferenceID() const { return FindReferenceID( f_id ); }
-    static idt FindReferenceID( idt eventID ) {
-        return recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, eventID );
-    }
-
-    recEventPersonaVec GetEventPersonas();
-    static wxSQLite3ResultSet GetTitleList();
-
-    static int GetLastPersonaSeqNumber( idt eventID );
-    int GetLastPersonaSeqNumber() const { return GetLastPersonaSeqNumber( f_id ); }
-
-    // Delete Event and remove all references to it.
-    bool DeleteFromDb() { return DeleteFromDb( f_id ); }
-    static bool DeleteFromDb( idt id );
-};
-
-inline bool recEquivalent( const recEvent& r1, const recEvent& r2 )
-{
-    return
-        r1.f_title    == r2.f_title    &&
-        r1.f_type_id  == r2.f_type_id  &&
-        r1.f_date1_id == r2.f_date1_id &&
-        r1.f_date2_id == r2.f_date2_id &&
-        r1.f_place_id == r2.f_place_id &&
-        r1.f_note     == r2.f_note     &&
-        r1.f_date_pt  == r2.f_date_pt;
-}
-
-inline bool operator==( const recEvent& r1, const recEvent& r2 )
-{
-    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
-}
-
-inline bool operator!=( const recEvent& r1, const recEvent& r2 )
-{
-    return !(r1 == r2);
-}
-
-//============================================================================
 //-------------------------[ recEventType ]-----------------------------------
 //============================================================================
 
@@ -248,6 +151,104 @@ inline bool operator!=( const recEventType& r1, const recEventType& r2 )
 
 
 //============================================================================
+//-------------------------[ recEvent ]---------------------------------------
+//============================================================================
+
+class recEvent : public recDb
+{
+public:
+    wxString f_title;
+    idt      f_type_id;
+    idt      f_date1_id;
+    idt      f_date2_id;
+    idt      f_place_id;
+    wxString f_note;
+    long     f_date_pt;
+
+    recEvent() {}
+    recEvent( idt id ) : recDb(id) { Read(); }
+    recEvent( const recEvent& event );
+
+    void Clear();
+    void Save();
+    bool Read();
+    TABLE_NAME_MEMBERS( "Event" );
+
+    wxString FGetTitle() const { return f_title; }
+    idt FGetTypeID() const { return f_type_id; }
+    idt FGetDate1ID() const { return f_date1_id; }
+    idt FGetDate2ID() const { return f_date2_id; }
+    idt FGetPlaceID() const { return f_place_id; }
+    wxString FGetNote() const { return f_note; }
+    long FGetDatePt() const { return f_date_pt; }
+
+    void FSetTitle( const wxString& title ) { f_title = title; }
+    void FSetTypeID( idt typeID ) { f_type_id = typeID; }
+    void FSetDate1ID( idt date1ID ) { f_date1_id = date1ID; }
+    void FSetDate2ID( idt date2ID ) { f_date2_id = date2ID; }
+    void FSetPlaceID( idt placeID ) { f_place_id = placeID; }
+    void FSetNote( const wxString& note ) { f_note = note; }
+    void FSetDatePt( idt datePt ) { f_date_pt = datePt; }
+    void FSetDatePt( recDate::DatePoint dp ) { f_date_pt = recDate::GetDatePoint( f_date1_id, dp ); }
+
+
+    static wxString GetIdStr( idt evID ) { return wxString::Format( "E"ID, evID ); }
+    wxString GetIdStr() const { return GetIdStr( f_id ); }
+
+    wxString GetDetailStr() const;
+    wxString GetTypeStr() const;
+    wxString GetDateStr() const;
+    wxString GetAddressStr() const;
+    recEventType::ETYPE_Grp GetTypeGroup() const;
+    static wxString GetDetailStr( idt evID );
+    static wxString GetTypeStr( idt evID );
+    static wxString GetTitle( idt evID );
+    static wxString GetNote( idt evID );
+    static wxString GetDateStr( idt evID );
+    static wxString GetAddressStr( idt evID );
+    static idt GetDate1ID( idt evID );
+    static void UpdateDatePoint( idt evID );
+    void UpdateDatePoint();
+
+    idt FindReferenceID() const { return FindReferenceID( f_id ); }
+    static idt FindReferenceID( idt eventID ) {
+        return recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, eventID );
+    }
+
+    recEventPersonaVec GetEventPersonas();
+    static wxSQLite3ResultSet GetTitleList();
+
+    static int GetLastPersonaSeqNumber( idt eventID );
+    int GetLastPersonaSeqNumber() const { return GetLastPersonaSeqNumber( f_id ); }
+
+    // Delete Event and remove all references to it.
+    bool DeleteFromDb() { return DeleteFromDb( f_id ); }
+    static bool DeleteFromDb( idt id );
+};
+
+inline bool recEquivalent( const recEvent& r1, const recEvent& r2 )
+{
+    return
+        r1.f_title    == r2.f_title    &&
+        r1.f_type_id  == r2.f_type_id  &&
+        r1.f_date1_id == r2.f_date1_id &&
+        r1.f_date2_id == r2.f_date2_id &&
+        r1.f_place_id == r2.f_place_id &&
+        r1.f_note     == r2.f_note     &&
+        r1.f_date_pt  == r2.f_date_pt;
+}
+
+inline bool operator==( const recEvent& r1, const recEvent& r2 )
+{
+    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
+}
+
+inline bool operator!=( const recEvent& r1, const recEvent& r2 )
+{
+    return !(r1 == r2);
+}
+
+//============================================================================
 //-------------------------[ recEventTypeRole ]-------------------------------
 //============================================================================
 
@@ -319,6 +320,8 @@ public:
     static wxString GetName( idt roleID );
     static wxString GetTypeAndRoleStr( idt roleID );
     static idt Select( idt typeID, SelectFilter sf = SF_All );
+
+    static idt FindOrCreate( const wxString& name, idt type, bool prime = true, bool official = false );
 };
 
 inline bool recEquivalent( const recEventTypeRole& r1, const recEventTypeRole& r2 )

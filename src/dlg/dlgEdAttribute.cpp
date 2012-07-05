@@ -37,6 +37,7 @@
 #include "wx/wx.h"
 #endif
 
+#if 0
 #include "dlgEdAttribute.h"
 
 dlgEditAttribute::dlgEditAttribute( wxWindow* parent )
@@ -81,5 +82,5 @@ bool dlgEditAttribute::TransferDataFromWindow()
     m_attr.Save();
     return true;
 }
-
+#endif
 // End of dlgEdAttribute.cpp file
