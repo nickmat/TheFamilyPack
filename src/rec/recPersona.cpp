@@ -170,38 +170,7 @@ recNameVec recPersona::ReadNames( idt perID )
     }
     return list;
 }
-#if 0
-recAttributeVec recPersona::ReadAttributes( idt perID )
-{
-    recAttributeVec list;
-    recAttribute record;
-    wxSQLite3StatementBuffer sql;
-    wxSQLite3Table result;
 
-    if( perID == 0 ) {
-        return list;
-    }
-
-    sql.Format(
-        "SELECT id, type_id, val, sequence FROM Attribute "
-        "WHERE per_id="ID" ORDER BY sequence;", perID
-    );
-    result = s_db->GetTable( sql );
-
-    list.reserve( result.GetRowCount() );
-    record.f_per_id = perID;
-    for( int i = 0 ; i < result.GetRowCount() ; i++ )
-    {
-        result.SetRow( i );
-        record.f_id       = GET_ID( result.GetInt64( 0 ) );
-        record.f_type_id  = GET_ID( result.GetInt64( 1 ) );
-        record.f_val      = result.GetAsString( 2 );
-        record.f_sequence = (unsigned) result.GetInt( 3 );
-        list.push_back( record );
-    }
-    return list;
-}
-#endif
 recEventPersonaVec recPersona::ReadEventPersonas( idt perID )
 {
     recEventPersonaVec list;

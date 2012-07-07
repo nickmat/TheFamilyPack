@@ -283,6 +283,13 @@ public:
         ROLE_Condition              = -67,
         ROLE_MAX                    = 24 // size of list
     };
+    enum Prime {
+        PRIME_None   = 0,
+        PRIME_First  = 1,
+        PRIME_Second = 2,
+        PRIME_Any    = 3,
+        PRIME_MAX    = 4
+    };
     enum SelectFilter {
         SF_All,
         SF_Prime,
@@ -380,9 +387,8 @@ public:
     static wxString GetIdStr( idt epID ) { return wxString::Format( "EP"ID, epID ); }
     wxString GetIdStr() const { return GetIdStr( FGetID() ); }
 
-    static wxString GetRoleStr( idt roleID ) 
-        { return ExecuteStr( "SELECT name FROM EventTypeRole WHERE id="ID";", roleID ); }
-    wxString GetRoleStr() const { return GetRoleStr( f_role_id ); }
+    static wxString GetRoleStr( idt perID, idt typeID );
+    wxString GetRoleStr( idt typeID ) const { return GetRoleStr( f_per_id, typeID ); }
 
     /*! Return true if a record exists that matches the
      *  f_per_id, f_event_id and f_role_id.

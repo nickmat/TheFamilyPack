@@ -453,7 +453,7 @@ void dlgEditIndEvent::OnEditButton( wxCommandEvent& event )
     {
         recDb::ReleaseSavepoint( savepoint );
         recEventPersona* ep = dialog->GetEventPersona();
-        m_listPersona->SetItem( row, COL_Role, recEventPersona::GetRoleStr( ep->FGetRoleID() ) );
+        m_listPersona->SetItem( row, COL_Role, recEventTypeRole::GetName( ep->FGetRoleID() ) );
         m_listPersona->SetItem( row, COL_Note, ep->FGetNote() );
         m_eps[row] = *ep;
     } else {

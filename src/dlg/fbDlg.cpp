@@ -122,6 +122,100 @@ fbDlgCreateIndividual::~fbDlgCreateIndividual()
 {
 }
 
+fbDlgCreateRole::fbDlgCreateRole( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	
+	wxBoxSizer* bSizer1;
+	bSizer1 = new wxBoxSizer( wxVERTICAL );
+	
+	wxFlexGridSizer* fgSizer11;
+	fgSizer11 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer11->AddGrowableCol( 1 );
+	fgSizer11->SetFlexibleDirection( wxBOTH );
+	fgSizer11->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_staticText1 = new wxStaticText( this, wxID_ANY, _("ID:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText1->Wrap( -1 );
+	m_staticText1->SetFont( wxFont( 8, 74, 90, 90, false, wxT("MS Shell Dlg 2") ) );
+	
+	fgSizer11->Add( m_staticText1, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT, 5 );
+	
+	m_staticRoleID = new wxStaticText( this, wxID_ANY, _("Ro0"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticRoleID->Wrap( -1 );
+	m_staticRoleID->SetFont( wxFont( 10, 74, 90, 92, false, wxT("MS Shell Dlg 2") ) );
+	
+	fgSizer11->Add( m_staticRoleID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_staticText2 = new wxStaticText( this, wxID_ANY, _("Event:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText2->Wrap( -1 );
+	fgSizer11->Add( m_staticText2, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT|wxALL, 5 );
+	
+	m_textEventType = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+	m_textEventType->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE ) );
+	
+	fgSizer11->Add( m_textEventType, 1, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
+	
+	m_staticText3 = new wxStaticText( this, wxID_ANY, _("Role:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText3->Wrap( -1 );
+	fgSizer11->Add( m_staticText3, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT|wxALL, 5 );
+	
+	m_textCtrlValue = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer11->Add( m_textCtrlValue, 1, wxALIGN_CENTER_VERTICAL|wxALL|wxEXPAND, 5 );
+	
+	m_staticText4 = new wxStaticText( this, wxID_ANY, _("Prime:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText4->Wrap( -1 );
+	fgSizer11->Add( m_staticText4, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	wxBoxSizer* bSizer145;
+	bSizer145 = new wxBoxSizer( wxHORIZONTAL );
+	
+	wxArrayString m_choicePrimeChoices;
+	m_choicePrime = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choicePrimeChoices, 0 );
+	m_choicePrime->SetSelection( 0 );
+	bSizer145->Add( m_choicePrime, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	
+	bSizer145->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	m_checkOfficial = new wxCheckBox( this, wxID_ANY, _("Official:"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT );
+	bSizer145->Add( m_checkOfficial, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	fgSizer11->Add( bSizer145, 1, wxEXPAND, 5 );
+	
+	bSizer1->Add( fgSizer11, 1, wxEXPAND, 5 );
+	
+	m_staticline1 = new wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
+	bSizer1->Add( m_staticline1, 0, wxEXPAND | wxALL, 0 );
+	
+	wxBoxSizer* bSizer12;
+	bSizer12 = new wxBoxSizer( wxHORIZONTAL );
+	
+	
+	bSizer12->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	m_buttonSave = new wxButton( this, wxID_OK, _("Save"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer12->Add( m_buttonSave, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_buttonCancel = new wxButton( this, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer12->Add( m_buttonCancel, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxRIGHT, 5 );
+	
+	bSizer1->Add( bSizer12, 0, wxEXPAND, 5 );
+	
+	this->SetSizer( bSizer1 );
+	this->Layout();
+	
+	// Connect Events
+	m_choicePrime->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( fbDlgCreateRole::OnSelectPrime ), NULL, this );
+}
+
+fbDlgCreateRole::~fbDlgCreateRole()
+{
+	// Disconnect Events
+	m_choicePrime->Disconnect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( fbDlgCreateRole::OnSelectPrime ), NULL, this );
+	
+}
+
 fbDlgEditIndPersona::fbDlgEditIndPersona( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
@@ -290,7 +384,7 @@ fbDlgEditIndPersona::fbDlgEditIndPersona( wxWindow* parent, wxWindowID id, const
 	m_panel21->SetSizer( bSizer222 );
 	m_panel21->Layout();
 	bSizer222->Fit( m_panel21 );
-	m_notebook->AddPage( m_panel21, _("Events"), false );
+	m_notebook->AddPage( m_panel21, _("Events"), true );
 	m_panel4 = new wxPanel( m_notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer24;
 	bSizer24 = new wxBoxSizer( wxHORIZONTAL );
@@ -1584,6 +1678,7 @@ fbDlgEditPersonalEvent::fbDlgEditPersonalEvent( wxWindow* parent, wxWindowID id,
 	wxFlexGridSizer* fgSizer11;
 	fgSizer11 = new wxFlexGridSizer( 0, 2, 0, 0 );
 	fgSizer11->AddGrowableCol( 1 );
+	fgSizer11->AddGrowableRow( 3 );
 	fgSizer11->SetFlexibleDirection( wxBOTH );
 	fgSizer11->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
@@ -1637,17 +1732,15 @@ fbDlgEditPersonalEvent::fbDlgEditPersonalEvent( wxWindow* parent, wxWindowID id,
 	m_staticText3->Wrap( -1 );
 	fgSizer11->Add( m_staticText3, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT|wxALL, 5 );
 	
-	wxArrayString m_choiceRoleChoices;
-	m_choiceRole = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceRoleChoices, 0 );
-	m_choiceRole->SetSelection( 2 );
-	fgSizer11->Add( m_choiceRole, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	m_comboRole = new wxComboBox( this, wxID_ANY, _("<Enter Role>"), wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
+	fgSizer11->Add( m_comboRole, 0, wxALL, 5 );
 	
-	m_staticText4 = new wxStaticText( this, wxID_ANY, _("Detail:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText4 = new wxStaticText( this, wxID_ANY, _("Note:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText4->Wrap( -1 );
-	fgSizer11->Add( m_staticText4, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT|wxALL, 5 );
+	fgSizer11->Add( m_staticText4, 0, wxALIGN_RIGHT|wxALL, 5 );
 	
-	m_textDetail = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer11->Add( m_textDetail, 1, wxALIGN_CENTER_VERTICAL|wxALL|wxEXPAND, 5 );
+	m_textNote = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE );
+	fgSizer11->Add( m_textNote, 1, wxALIGN_CENTER_VERTICAL|wxALL|wxEXPAND, 5 );
 	
 	bSizer1->Add( fgSizer11, 1, wxEXPAND, 5 );
 	

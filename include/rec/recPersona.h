@@ -79,9 +79,6 @@ public:
     static recNameVec ReadNames( idt perID );
     recNameVec ReadNames() const { return ReadNames( f_id ); }
 
-//    static recAttributeVec ReadAttributes( idt perID );
-//    recAttributeVec ReadAttributes() const { return ReadAttributes( f_id ); }
-
     static recEventPersonaVec ReadEventPersonas( idt perID );
     recEventPersonaVec ReadEventPersonas() const { return ReadEventPersonas( f_id ); }
 
@@ -116,8 +113,6 @@ public:
 
     static idt FindAttribute( idt perID, idt atypeID ); 
     idt FindAttribute( idt atypeID ) const { return FindAttribute( f_id, atypeID ); } 
-//    idt GetOccAttribute() const { return FindAttribute( recAttributeType::ATYPE_Occupation ); }
-//    static idt GetOccAttribute( idt id ) { return FindAttribute( id, recAttributeType::ATYPE_Occupation ); }
 
     static wxString GetDateEpitaph( idt id );
     wxString GetDateEpitaph() const { return GetDateEpitaph( f_id ); }

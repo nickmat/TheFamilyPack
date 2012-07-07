@@ -44,7 +44,6 @@
 
 #include "dlgEdPersona.h"
 #include "dlgEdName.h"
-#include "dlgEdAttribute.h"
 #include "dlgEd.h"
 
 
@@ -321,11 +320,6 @@ void dlgEditIndPersona::OnNewEvent( wxCommandEvent& event )
         recDb::Rollback( savepoint );
         return;
     }
-    idt roleID = recEventTypeRole::Select( typeID, recEventTypeRole::SF_Prime );
-    if( roleID == 0 ) {
-        recDb::Rollback( savepoint );
-        return;
-    }
 
     recEvent eve(0);
     eve.f_type_id = typeID;
@@ -337,17 +331,22 @@ void dlgEditIndPersona::OnNewEvent( wxCommandEvent& event )
     recEventPersona ep(0);
     ep.f_event_id = eve.GetID();
     ep.f_per_id = m_persona.f_id;
-    ep.f_role_id = roleID;
     ep.Save();
+
+    if( tfpGetRole( ep.FGetID(), tfpGETROLE_PRIME ) == 0 ) {
+        recDb::Rollback( savepoint );
+        return;
+    }
 
     dlgEditIndEvent* dialog = new dlgEditIndEvent( NULL, eve.GetID() );
 
     if( dialog->ShowModal() == wxID_OK )
     {
         recDb::ReleaseSavepoint( savepoint );
+        ep.Read();
         int row = m_eps.size();
         m_listEvent->InsertItem( row, recEvent::GetIdStr( eve.GetID() ) );
-        m_listEvent->SetItem( row, EC_Role, recEventTypeRole::GetName( roleID ) );
+        m_listEvent->SetItem( row, EC_Role, recEventTypeRole::GetName( ep.FGetRoleID() ) );
         m_listEvent->SetItem( row, EC_Title, recEvent::GetTitle( eve.GetID() ) );
         m_listEvent->SetItem( row, EC_Date, recEvent::GetDateStr( eve.GetID() ) );
         m_listEvent->SetItem( row, EC_Place, recEvent::GetAddressStr( eve.GetID() ) );

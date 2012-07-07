@@ -55,6 +55,7 @@ recEvent::recEvent( const recEvent& e )
     f_date2_id = e.f_date2_id;
     f_place_id = e.f_place_id;
     f_note     = e.f_note;
+    f_date_pt  = e.f_date_pt;
 }
 
 void recEvent::Clear()
@@ -66,6 +67,7 @@ void recEvent::Clear()
     f_date2_id = 0;
     f_place_id = 0;
     f_note     = wxEmptyString;
+    f_date_pt  = 0;
 }
 
 void recEvent::Save()
@@ -880,6 +882,18 @@ bool recEventPersona::Read()
     f_note     = result.GetAsString( 4 );
     f_per_seq  = result.GetInt( 5 );
     return true;
+}
+
+wxString recEventPersona::GetRoleStr( idt perID, idt typeID )
+{
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT ETR.name FROM EventPersona EP, EventTypeRole ETR"
+        " WHERE EP.role_id=ETR.id AND EP.per_id="ID" AND ETR.type_id="ID
+        " ORDER BY EP.per_seq;",
+        perID, typeID
+    );
+    return ExecuteStr( sql );
 }
 
 bool recEventPersona::LinkExists() const

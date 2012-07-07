@@ -56,6 +56,10 @@ extern idt tfpAddMarriageEvent( const recFamily& family );
 extern idt tfpGetExistingMarriageEvent( idt famID );
 
 extern bool tfpEditEvent( idt eveID  );
+#define tfpGETROLE_ALL      0
+#define tfpGETROLE_PRIME    1
+#define tfpGETROLE_NONPRIME 2
+extern idt tfpGetRole( idt eventPersonaID, unsigned flags = tfpGETROLE_ALL );
 
 extern bool tfpEditResearcher( idt resID  );
 extern bool tfpEditResearcher( const wxString& resStr  );

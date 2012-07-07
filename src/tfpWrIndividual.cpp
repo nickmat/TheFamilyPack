@@ -74,7 +74,7 @@ wxString tfpWriteIndividualPage( idt indID )
             << eve.GetTypeStr()
             << ":</td><td><b>";
         if( eve.GetTypeGroup() == recEventType::ETYPE_Grp_Personal ) {
-            htm << eps[i].GetRoleStr() << " ";
+            htm << recEventTypeRole::GetName( eps[i].FGetRoleID() ) << " ";
         }
         htm << eve.GetDetailStr();
 

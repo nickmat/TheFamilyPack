@@ -51,6 +51,7 @@
 #include "dlgEdSystem.h"
 #include "dlgSelect.h"
 #include "dlgEdIndEvent.h"
+#include "dlgEdRole.h"
 #include "dlg/dlgNote.h"
 
 
@@ -502,6 +503,23 @@ bool tfpEditEvent( idt eveID  )
     return ret;
 }
 
+idt tfpGetRole( idt eventPersonaID, unsigned flags )
+{
+    const wxString savepoint = "GetEPRole";
+    idt roleID = 0;
+    dlgEditIndRole* dialog = new dlgEditIndRole( NULL, eventPersonaID );
+
+    recDb::Savepoint( savepoint );
+    if( dialog->ShowModal() == wxID_OK )
+    {
+        recDb::ReleaseSavepoint( savepoint );
+        roleID = dialog->GetRoleID();
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+    return roleID;
+}
 
 bool tfpEditResearcher( idt resID  )
 {

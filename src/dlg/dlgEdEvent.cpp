@@ -361,22 +361,25 @@ bool dlgEditPersonalEvent::TransferDataToWindow()
             sel = i;
         }
     }
-    m_choiceRole->Set( roleStrs );
-    m_choiceRole->SetSelection( sel );
+    m_comboRole->Set( roleStrs );
+//    m_choiceRole->SetSelection( sel );
 
-    m_textDetail->SetValue( m_ep.FGetNote() );
+    m_textNote->SetValue( m_ep.FGetNote() );
 
     return true;
 }
 
 bool dlgEditPersonalEvent::TransferDataFromWindow()
 {
-    size_t role = (size_t) m_choiceRole->GetSelection();
-    if( role >= m_roles.size() ) {
-        return false;
-    }
-    m_ep.FSetRoleID( m_roles[role].FGetID() );
-    m_ep.FSetNote( m_textDetail->GetValue() );
+//    size_t role = (size_t) m_choiceRole->GetSelection();
+//    if( role >= m_roles.size() ) {
+//        return false;
+//    }
+//    m_ep.FSetRoleID( m_roles[role].FGetID() );
+    wxString roleStr = m_comboRole->GetValue();
+
+    m_ep.FSetRoleID( recEventTypeRole::FindOrCreate( roleStr, m_event.FGetTypeID() ) );
+    m_ep.FSetNote( m_textNote->GetValue() );
     m_ep.Save();
     return true;
 }

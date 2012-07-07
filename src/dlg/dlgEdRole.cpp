@@ -145,9 +145,8 @@ dlgEditIndRole::dlgEditIndRole( wxWindow* parent, idt epID )
     : fbDlgEditIndRole(parent)
 {
     m_ep.ReadID( epID );
-    m_event.ReadID( m_ep.FGetID() );
+    m_event.ReadID( m_ep.FGetEventID() );
     m_et.ReadID( m_event.FGetTypeID() );
-    m_roles = m_et.GetRoles();
 }
 
 bool dlgEditIndRole::TransferDataToWindow()
@@ -161,16 +160,7 @@ bool dlgEditIndRole::TransferDataToWindow()
     m_staticEvent->SetLabel( m_et.GetTypeStr() );
     m_staticEP_ID->SetLabel( m_ep.GetIdStr() );
 
-    wxArrayString roleStrs;
-    int sel = 0;
-    for( size_t i = 0 ; i < m_roles.size() ; i++ ) {
-        roleStrs.push_back( m_roles[i].FGetName() );
-        if( m_roles[i].FGetID() == m_ep.FGetRoleID() ) {
-            sel = i;
-        }
-    }
-    m_choiceRole->Set( roleStrs );
-    m_choiceRole->SetSelection( sel );
+    SetRoleList( m_ep.FGetRoleID() );
 
     m_textCtrlNote->SetValue( m_ep.FGetNote() );
     return true;
@@ -190,13 +180,104 @@ bool dlgEditIndRole::TransferDataFromWindow()
     return true;
 }
 
+void dlgEditIndRole::SetRoleList( idt selection )
+{
+    m_roles = m_et.GetRoles();
+    wxArrayString roleStrs;
+    int sel = 0;
+    for( size_t i = 0 ; i < m_roles.size() ; i++ ) {
+        roleStrs.push_back( m_roles[i].FGetName() );
+        if( m_roles[i].FGetID() == selection ) {
+            sel = i;
+        }
+    }
+    m_choiceRole->Set( roleStrs );
+    m_choiceRole->SetSelection( sel );
+}
+
 void dlgEditIndRole::OnButtonAddClick( wxCommandEvent& event )
 {
-    // TODO: Create new roles for event type
-    wxMessageBox(
-        wxT("Not yet implimented\nAdd Role"),
-        wxT("OnButtonAddClick")
-    );
+    const wxString savepoint = "CreateRole";
+    recDb::Savepoint( savepoint );
+
+    dlgCreateRole* dialog = new dlgCreateRole( NULL, m_event.FGetTypeID() );
+    if( dialog->ShowModal() == wxID_OK )
+    {
+        recDb::ReleaseSavepoint( savepoint );
+        SetRoleList( dialog->GetRoleID() );
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+}
+
+//============================================================================
+//-------------------------[ dlgCreateRole ]---------------------------------
+//============================================================================
+
+dlgCreateRole::dlgCreateRole( wxWindow* parent, idt etID ) 
+    : m_et(etID), m_role(0), fbDlgCreateRole(parent) 
+{
+    m_role.FSetTypeID( etID );
+    m_role.FSetPrime( recEventTypeRole::PRIME_First );
+}
+
+bool dlgCreateRole::TransferDataToWindow()
+{
+    if( m_role.FGetID() == 0 ) {
+        m_role.Save();
+    }
+    m_staticRoleID->SetLabel( m_role.GetIdStr() );
+    m_textEventType->SetValue( m_et.FGetName() );
+    m_textCtrlValue->SetValue( m_role.FGetName() );
+
+    wxArrayString primeList;
+    primeList.push_back( _("Other Role") );
+    switch( m_et.FGetGrp() )
+    {
+    case recEventType::ETYPE_Grp_Birth:
+    case recEventType::ETYPE_Grp_Nr_Birth:
+    case recEventType::ETYPE_Grp_Death:
+    case recEventType::ETYPE_Grp_Nr_Death:
+    case recEventType::ETYPE_Grp_Other:
+    case recEventType::ETYPE_Grp_Personal:
+        primeList.push_back( _("Prime Role") );
+        break;
+    case recEventType::ETYPE_Grp_Union:
+    case recEventType::ETYPE_Grp_Family:
+        primeList.push_back( _("1st Prime Role") );
+        primeList.push_back( _("2nd Prime Role") );
+        primeList.push_back( _("Either Prime Role") );
+        break;
+    default:
+        return false;
+    }
+    m_choicePrime->Set( primeList );
+    m_choicePrime->SetSelection( m_role.FGetPrime() );
+    m_checkOfficial->Enable( !m_role.FGetPrime() );
+    return true;
+}
+
+bool dlgCreateRole::TransferDataFromWindow()
+{
+    m_role.FSetPrime( m_choicePrime->GetSelection() );
+    if( !m_role.FGetPrime() ) {
+        m_role.FSetOfficial( m_checkOfficial->GetValue() );
+    } else {
+        m_role.FSetOfficial( false );
+    }
+    m_role.FSetName( m_textCtrlValue->GetValue() );
+    m_role.Save();
+    return true;
+}
+
+void dlgCreateRole::OnSelectPrime( wxCommandEvent& event )
+{
+    if( m_choicePrime->GetSelection() == 0 ) {
+        m_checkOfficial->Enable( true );
+    } else {
+        m_checkOfficial->Enable( false );
+    }
 }
 
 
