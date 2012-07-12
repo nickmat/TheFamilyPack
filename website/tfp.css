@@ -152,6 +152,12 @@ blockquote p.attribute {
  text-align: right;
 }
 
+img.quote {
+ float: right;
+ border-bottom: 4px solid #eef;
+ border-right:  2px solid #eef;
+}
+
 div.diag {
  margin-top: 1em;
  text-align: center;
