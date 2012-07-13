@@ -34,7 +34,6 @@
 #include <rec/recReference.h>
 #include <rec/recName.h>
 #include <rec/recEvent.h>
-#include <rec/recAttribute.h>
 #include <rec/recRelationship.h>
 
 class recPersona;

@@ -44,7 +44,6 @@
 
 #include "dlgEdPersona.h"
 #include "dlgEdName.h"
-#include "dlgEdAttribute.h"
 #include "dlgEd.h"
 
 

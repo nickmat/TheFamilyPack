@@ -45,7 +45,6 @@
 
   <lib id="rec" template="wx-lib,wxlike">
     <libname>$(LOCAL_LIB)/rec$(WXLIBPOSTFIX)</libname>
-    <sources>$(LOCAL_SRC)/rec/recAttribute.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recContact.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recDatabase.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recDate.cpp</sources>
@@ -63,7 +62,6 @@
     <sources>$(LOCAL_SRC)/rec/recUser.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recVersion.cpp</sources>
 
-    <headers>$(LOCAL_INC)/rec/recAttribute.h</headers>
     <headers>$(LOCAL_INC)/rec/recContact.h</headers>
     <headers>$(LOCAL_INC)/rec/recDatabase.h</headers>
     <headers>$(LOCAL_INC)/rec/recDb.h</headers>

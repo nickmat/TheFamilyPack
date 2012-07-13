@@ -41,9 +41,9 @@ following options:
 A similar problem exists for the method of adding the SVN version number to
 the TFP version number. This has not yet been added to the bkl files so have
 to be added by hand. In MS Visual C++ goto tfp properties/Configuration
-Properties/Build Events and enter "../getsvnver.bat" in the Command Line
-entry for both Debug and Release configurations. In the C/C++/Preprocessor
-Preprocessor Definitions entry add TFP_WORKING to the list.
+Properties/Build Events/Pre-Build Event and enter "../getsvnver.bat" in the
+Command Line entry for both Debug and Release configurations. In the
+C/C++/Preprocessor Preprocessor Definitions entry add TFP_WORKING to the list.
 
 If anyone successfully builds the project with other compilers or OS's then
 please drop me a line to let me know how you got on.

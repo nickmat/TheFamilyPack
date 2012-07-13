@@ -48,7 +48,6 @@
 #include "dlgEdPlace.h"
 #include "dlgEdDate.h"
 #include "dlgEdName.h"
-#include "dlgEdAttribute.h"
 #include "dlgEdRelationship.h"
 #include "dlgSelect.h"
 

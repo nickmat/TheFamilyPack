@@ -30,7 +30,6 @@
 #ifndef RECDB_H
 #define RECDB_H
 
-#include <rec/recAttribute.h>
 #include <rec/recContact.h>
 #include <rec/recDatabase.h>
 #include <rec/recDate.h>
