@@ -35,7 +35,6 @@
 
     <sources>$(LOCAL_UTIL)/cal/calCalc.cpp</sources>
     <include>$(LOCAL_INC)</include>
-    <lib-path>$(LOCAL_LIB)</lib-path>
     <library>calendar</library>
     <wx-lib>base</wx-lib>
   </exe>

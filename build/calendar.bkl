@@ -30,7 +30,7 @@
 <makefile>
 
   <lib id="calendar" template="wx-lib,wxlike">
-    <libname>$(LOCAL_LIB)/calendar$(WXLIBPOSTFIX)</libname>
+    <libname>calendar$(WXLIBPOSTFIX)</libname>
     <sources>$(LOCAL_SRC)/cal/calendar.cpp</sources>
     <sources>$(LOCAL_SRC)/cal/calGregorian.cpp</sources>
     <sources>$(LOCAL_SRC)/cal/calJDay.cpp</sources>

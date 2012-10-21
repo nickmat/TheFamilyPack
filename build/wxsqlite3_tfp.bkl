@@ -3,7 +3,8 @@
 <makefile>
 
   <lib id="wxsqlite3" template="wx-lib,wxlike">
-    <libname>$(LOCAL_LIB)/wxsqlite3$(WXLIBPOSTFIX)</libname>
+    <libname>wxsqlite3$(WXLIBPOSTFIX)</libname>
+    <define>SQLITE_ENABLE_RTREE</define>
     <sources>$(REL_ROOT)/3rdparty/wxsqlite3/wxsqlite3.cpp</sources>
     <sources>$(REL_ROOT)/3rdparty/wxsqlite3/sqlite3.c</sources>
     <headers>$(REL_ROOT)/3rdparty/wxsqlite3/sqlite3.h</headers>

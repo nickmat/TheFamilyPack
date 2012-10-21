@@ -44,7 +44,7 @@
   </if>
 
   <lib id="rec" template="wx-lib,wxlike">
-    <libname>$(LOCAL_LIB)/rec$(WXLIBPOSTFIX)</libname>
+    <libname>rec$(WXLIBPOSTFIX)</libname>
     <sources>$(LOCAL_SRC)/rec/recContact.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recDatabase.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recDate.cpp</sources>

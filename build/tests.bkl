@@ -39,7 +39,7 @@
     <sources>$(LOCAL_TESTS)/rec/testDatabase.cpp</sources>
 
     <headers>$(LOCAL_TESTS)/testprec.h</headers>
-    
+
     <include>$(LOCAL_INC)</include>
     <include>$(LOCAL_TESTS)</include>
     <include>$(CPPUNIT_DIR)/include</include>
@@ -50,7 +50,6 @@
     <precomp-headers>on</precomp-headers>
     <precomp-headers-file>wxprec_$(id)</precomp-headers-file>
 
-    <lib-path>$(LOCAL_LIB)</lib-path>
     <lib-path>$(CPPUNIT_DIR)/lib</lib-path>
     <library>calendar</library>
     <library>wxsqlite3</library>

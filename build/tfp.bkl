@@ -40,13 +40,13 @@
     <if cond="FORMAT not in ['msvc6prj','msvs2003prj''msvs2005prj','msvs2008prj','msvs2010prj']">0</if>
   </set>
 
+  <set var="BUILDCONF">
+    <if cond="WX_DEBUG=='1'">debug</if>
+    <if cond="WX_DEBUG=='0'">release</if>
+  </set>
+
   <set var="BUILD_DIR"></set>
   <set var="REL_ROOT">../..</set>
-  <set var="LOCAL_LIB">$(REL_ROOT)/../lib/$(BUILD_DIR)</set>
-  <if cond="BUILD_DIR==''">
-    <set var="REL_ROOT">..</set>
-    <set var="LOCAL_LIB">$(REL_ROOT)/../lib</set>
-  </if>
   <set var="LOCAL_SRC">$(REL_ROOT)/src</set>
   <set var="LOCAL_INC">$(REL_ROOT)/include</set>
   <set var="LOCAL_TESTS">$(REL_ROOT)/tests</set>
@@ -152,7 +152,6 @@
     <precomp-headers>on</precomp-headers>
     <precomp-headers-file>wxprec_$(id)</precomp-headers-file>
 
-    <lib-path>$(LOCAL_LIB)</lib-path>
     <library>wxsqlite3</library>
     <library>rec</library>
     <library>calendar</library>
@@ -167,10 +166,11 @@
   <include file="utils.bkl"/>
   <include file="wxsqlite3_tfp.bkl"/>
   <include file="rec.bkl"/>
+
 <!--
-  Private utility program
-  <include file="tfpnick.bkl"/>
-  <include file="ts.bkl"/>
+  <set var="MAIN_INC">../$(REL_ROOT)/tfp/include</set>
+  <include file="../../tfp_ext/build/ext.bkl"/>
+  <include file="../../tfp_fill/build/fill.bkl"/>
 -->
 </makefile>
 

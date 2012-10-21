@@ -2,7 +2,7 @@
 
 if '%1'=='-h' goto usage
 if '%1'=='?' goto usage
-if '%1'=='' goto buildnmake
+if '%1'=='' goto usage
 if '%2'=='' goto nobuilddir
 @echo on
 bakefile -f %1 -I %WXWIN%\build\bakefiles\wxpresets -D BUILD_DIR=%2 -o %2/tfp.mak tfp.bkl
@@ -12,12 +12,6 @@ goto done
 :nobuilddir
 @echo on
 bakefile -f %1 -I %WXWIN%\build\bakefiles\wxpresets -o tfp tfp.bkl
-@echo off
-goto done
-
-:buildnmake
-@echo on
-bakefile -f msvc -I %WXWIN%\build\bakefiles\wxpresets -o tfp tfp.bkl
 @echo off
 goto done
 
@@ -33,4 +27,3 @@ echo   build msvs2008prj vc9
 echo,
 
 :done
-pause
