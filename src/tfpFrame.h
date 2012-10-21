@@ -119,7 +119,7 @@ public:
     bool OpenFile();
     bool ImportGedcom();
 
-    void SetDatabaseOpen( wxString& path );
+    void SetDatabaseOpen( const wxString& path );
     void SetNoDatabase();
 
     void PushHtmName( const wxString& name );

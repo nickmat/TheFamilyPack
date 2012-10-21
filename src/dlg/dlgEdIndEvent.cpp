@@ -307,7 +307,7 @@ wxString dlgEditIndEvent::WrReferencePersonas()
     for( size_t i = 0 ; i < m_personaIDs.size() ; i++ ) {
         recPersona per(m_personaIDs[i]);
         htm << "<tr><td>" << ( ( prevRefID == per.FGetRefID() ) ? 
-                wxEmptyString : recReference::GetIdStr( per.FGetRefID() ) )
+                "" : recReference::GetIdStr( per.FGetRefID() ) )
             << "</td><td>" << per.GetIdStr()
             << "</td><td>" << per.GetNameStr()
             << "</td></tr>"

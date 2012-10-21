@@ -886,7 +886,7 @@ bool TfpFrame::ImportGedcom()
     return ret;
 }
 
-void TfpFrame::SetDatabaseOpen( wxString& path )
+void TfpFrame::SetDatabaseOpen( const wxString& path )
 {
     wxFileName dbfile( path );
     m_dbFileName = dbfile.GetFullPath();
