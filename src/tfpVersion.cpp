@@ -42,18 +42,18 @@
 #ifdef TFP_WORKING
 #include "svnver.h"
 #else
-#define TFP_SVNVERSION wxS("")
+#define TFP_SVNVERSION ""
 #endif
 
-#define VERSION_STATUS   wxS(" pre-alpha")
+#define VERSION_STATUS   " pre-alpha"
 
 #ifdef _DEBUG
-#define VERSION_CONFIG   wxS(" debug")
+#define VERSION_CONFIG   " debug"
 #else
-#define VERSION_CONFIG   wxS("")
+#define VERSION_CONFIG   ""
 #endif
 
-#define VERSION_NUM   wxS("0.3.0.1.0")
+#define VERSION_NUM   "0.3.0.1.0"
 
 
 #define VERSION   VERSION_NUM TFP_SVNVERSION VERSION_STATUS VERSION_CONFIG
@@ -65,12 +65,12 @@ const char* tfpVersion = VERSION;
 /*! A string containing the current full version number formated for html.
  */
 const char* tfpHtmVersion = 
-    wxS("<b>") VERSION_NUM wxS("</b>") TFP_SVNVERSION VERSION_STATUS VERSION_CONFIG;
+    "<b>" VERSION_NUM "</b>" TFP_SVNVERSION VERSION_STATUS VERSION_CONFIG;
 
 /*! A string containing a long hand version name and copyright message.
  */
-const char* tfpTitle = wxS("The Family Pack - Version ") VERSION wxS("\n")
-                         wxS("Copyright (c) 2010 - 2012 Nick Matthews\n\n" );
+const char* tfpTitle = "The Family Pack - Version " VERSION "\n"
+                         "Copyright (c) 2010 - 2012 Nick Matthews\n\n";
 
 /*************************************************************************//**
 
