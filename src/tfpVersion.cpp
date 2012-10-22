@@ -60,16 +60,16 @@
 
 /*! A string containing the current full version number.
  */
-const wxChar* tfpVersion = VERSION;
+const char* tfpVersion = VERSION;
 
 /*! A string containing the current full version number formated for html.
  */
-const wxChar* tfpHtmVersion = 
+const char* tfpHtmVersion = 
     wxS("<b>") VERSION_NUM wxS("</b>") TFP_SVNVERSION VERSION_STATUS VERSION_CONFIG;
 
 /*! A string containing a long hand version name and copyright message.
  */
-const wxChar* tfpTitle = wxS("The Family Pack - Version ") VERSION wxS("\n")
+const char* tfpTitle = wxS("The Family Pack - Version ") VERSION wxS("\n")
                          wxS("Copyright (c) 2010 - 2012 Nick Matthews\n\n" );
 
 /*************************************************************************//**

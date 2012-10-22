@@ -86,7 +86,7 @@ void recLinkAttribute::Save()
                 "INSERT INTO LinkAttribute "
                 "(id, ref_att_id, ind_att_id, conf, comment) "
                 "VALUES ("ID", "ID", "ID", %f, '%q');",
-                f_id, f_ref_att_id, f_ind_att_id, f_conf, f_comment
+                f_id, f_ref_att_id, f_ind_att_id, f_conf, UTF8_(f_comment)
             );
         } else {
             // Update existing record
@@ -204,7 +204,7 @@ void recLinkEvent::Save()
                 "INSERT INTO LinkEvent "
                 "(id, ref_event_id, ind_event_id, conf, comment) "
                 "VALUES ("ID", "ID", "ID", %f, '%q');",
-                f_id, f_ref_event_id, f_ind_event_id, f_conf, f_comment
+                f_id, f_ref_event_id, f_ind_event_id, f_conf, UTF8_(f_comment)
             );
         } else {
             // Update existing record

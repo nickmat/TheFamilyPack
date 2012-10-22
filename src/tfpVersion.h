@@ -30,9 +30,9 @@
 #ifndef TFPVERSION_H
 #define TFPVERSION_H
 
-extern const wxChar* tfpVersion;
-extern const wxChar* tfpHtmVersion;
-extern const wxChar* tfpTitle;
+extern const char* tfpVersion;
+extern const char* tfpHtmVersion;
+extern const char* tfpTitle;
 
 extern wxString tfpGetCompilerVersion();
 
