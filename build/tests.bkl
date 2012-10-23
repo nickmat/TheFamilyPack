@@ -53,6 +53,7 @@
     <lib-path>$(CPPUNIT_DIR)/lib</lib-path>
     <library>calendar</library>
     <library>wxsqlite3</library>
+    <library>reccl</library>
     <library>rec</library>
     <sys-lib>$(substituteFromDict(WX_DEBUG,{'0':'cppunit','1':'cppunitd'}))</sys-lib>
 

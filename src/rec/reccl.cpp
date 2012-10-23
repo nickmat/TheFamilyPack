@@ -1,13 +1,13 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        tfpRdGed.cpp
+ * Name:        src/rec/reccl.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Read GEDCOM import files.
+ * Purpose:     Manage the rec lib command line interface functions.
  * Author:      Nick Matthews
  * Modified by:
- * Created:     19 September 2011
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2011, Nick Matthews.
  * Website:     http://thefamilypack.org
+ * Created:     22 October 2012
+ * RCS-ID:      $Id$
+ * Copyright:   Copyright (c) 2012, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -17,14 +17,13 @@
  *
  *  The Family Pack is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
  *  along with The Family Pack.  If not, see <http://www.gnu.org/licenses/>.
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
 */
 
 #include "wx/wxprec.h"
@@ -37,31 +36,41 @@
 #include "wx/wx.h"
 #endif
 
-#include <wx/wfstream.h>
+#include <rec/recInterface.h>
 
-#include <rec/recGedParse.h>
-
-#include "tfpRd.h"
-
-
-bool tfpReadGedcom( wxString& path )
+void recMessage( const wxString& mess, const wxString& func )
 {
-    unsigned flags = recDb::CREATE_DB_STD_EXT | recDb::CREATE_DB_ENUM_FN;
-    if( recDb::CreateDb( path, flags ) == false ) return false;
+    wxPrintf( "%s: %s\n", func, mess );
+}
 
-    try {
-        recGedParse ged( path );
-        if( !ged.Import() ) {
-            recMessage( _("Error Reading GEDCOM File"), _("Import") );
-            return true; // We did actually create a database
-        }
+void* recGetProgressDlg( const wxString& title, const wxString& message, int style )
+{
+    return NULL;
+}
 
-    } catch( wxSQLite3Exception& e ) {
-        recDb::ErrorMessage( e );
-        recDb::Rollback();
-    }
-
+bool recProgressPulse( void* progress, const wxString& message )
+{
     return true;
 }
 
-// End of tfpRdGed.cpp Source
+void recProgressSetRange( void* progress, int maximum )
+{
+    return;
+}
+
+bool recProgressUpdate( void* progress, int value, const wxString& message )
+{
+    return true;
+}
+
+void recProgressClose( void* progress )
+{
+    return;
+}
+
+int recGetSingleChoiceIndex( const wxString& caption, const wxArrayString& choices )
+{
+    return 0;
+}
+
+// End of reccl.cpp file

@@ -37,7 +37,6 @@
 
 typedef std::map< wxString, unsigned > XrefMap;
 
-class wxProgressDialog;
 class GedIndividual;
 class GedFamily;
 class GedSubmitter;
@@ -93,8 +92,6 @@ private:
         tag_END  /* _END, end of file */
     };
 
-    bool ImportGUI();
-    bool ImportCmdLine();
     bool Pass1();
     bool Pass2();
 
@@ -115,7 +112,7 @@ private:
 
     wxFileInputStream m_filestream;
     wxTextInputStream m_input;
-    wxProgressDialog* m_progress;
+    void*             m_progress;
     // Current line
     static int m_lineNum; // Leave this static to aid debugging.
     int      m_level;

@@ -205,7 +205,7 @@ bool recVersion::IsLessThan( int major, int minor, int revision, int test ) cons
 bool recVersion::TestForUpgrade()
 {
     if( IsLessThan( 0, 0, 9, 0 ) ) {
-        recDb::Message(
+        recMessage(
             wxString::Format(
                 _("Cannot read old database version %s file."),
                 GetVersionStr()
@@ -215,7 +215,7 @@ bool recVersion::TestForUpgrade()
         return false;
     }
     if( IsMoreThan( recVerMajor, recVerMinor, recVerRev, recVerTest ) ) {
-        recDb::Message(
+        recMessage(
             wxString::Format(
                 _("Cannot read future database version %s file."),
                 GetVersionStr()

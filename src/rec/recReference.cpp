@@ -317,24 +317,4 @@ idt recReferenceEntity::FindReferenceID( Type type, idt entityID )
     return GET_ID( result.GetInt64( 0 ) );
 }
 
-#if 0
-wxArrayString recReferenceEntity::GetNameTable( idt refID )
-{
-    wxArrayString list;
-    wxSQLite3StatementBuffer sql;
-    wxSQLite3ResultSet result;
-
-    sql.Format(
-        "SELECT entity_id FROM ReferenceEntity WHERE ref_id="ID" AND entity_type=7;",
-        refID
-    );
-    result = s_db->ExecuteQuery( sql );
-    while( result.NextRow() ) {
-        idt id = GET_ID( result.GetInt64( 0 ) );
-        list.Add( result.GetAsString( 0 ) );
-        list.Add( recName::GetFullName( id ) );
-    }
-    return list;
-}
-#endif
 // End of recReference.cpp file

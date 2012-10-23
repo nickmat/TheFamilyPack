@@ -46,7 +46,6 @@
 #include "generated/recSql.ci"
 
 wxSQLite3Database* recDb::s_db = NULL;
-recDb::Environment recDb::s_env = recDb::ENV_GUI;
 wxString           recDb::s_fname;
 long               recDb::s_change = 0;
 
@@ -109,14 +108,14 @@ bool recDb::CreateDb( const wxString& fname, unsigned flags )
         }
     } else {
         if( dbfile.FileExists() == true ) {
-            Message( _("File already exists"), _("Create Database") );
+            recMessage( _("File already exists"), _("Create Database") );
             // TODO: replace existing file
             return false;
         }
     }
 
     if( s_db->IsOpen() ) {
-        Message( _("Database already open"), _("Create Database") );
+        recMessage( _("Database already open"), _("Create Database") );
         return false;
     }
 
@@ -131,7 +130,7 @@ bool recDb::CreateDb( const wxString& fname, unsigned flags )
 bool recDb::OpenDb( const wxString& fname )
 {
     if( IsOpen() ) {
-        Message( _("Database already open"), _("Open Database") );
+        recMessage( _("Database already open"), _("Open Database") );
         return false;
     }
     bool success = true;
@@ -148,24 +147,11 @@ bool recDb::OpenDb( const wxString& fname )
     return success;
 }
 
-void recDb::Message( const wxString& mess, const wxString& func )
-{
-    switch( s_env )
-    {
-    case ENV_GUI:
-        wxMessageBox( mess, func );
-        break;
-    case ENV_CmdLine:
-        wxPrintf( "%s: %s\n", func, mess );
-        break;
-    }
-}
-
 void recDb::ErrorMessage( wxSQLite3Exception& e )
 {
     wxString err;
     err << e.GetErrorCode() << ": " << e.GetMessage();
-    Message( err, _("Database Error") );
+    recMessage( err, _("Database Error") );
 }
 
 bool recDb::DeleteRecord( const char* name, idt id )

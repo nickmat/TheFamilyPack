@@ -34,6 +34,7 @@
 
 #include <wx/vector.h>
 #include <wx/wxsqlite3.h>
+#include <rec/recInterface.h>
 
 // Some helpful defines
 typedef wxLongLong_t    idt;
@@ -71,13 +72,8 @@ public:
         CREATE_DB_STD_EXT = 0x0001,
         CREATE_DB_ENUM_FN = 0x0002
     };
-    enum Environment {
-        ENV_GUI,
-        ENV_CmdLine
-    };
 protected:
     static wxSQLite3Database* s_db;
-    static Environment        s_env;
     static wxString           s_fname;
     static long               s_change;
 
@@ -97,11 +93,8 @@ public:
     /*! Constructor with id, reads the record for the given id. */
     recDb( idt id ) : f_id(id) {}
 
-    static void SetDb( wxSQLite3Database* db, Environment env = ENV_GUI ) 
-        { s_db = db; s_env = env; }
+    static void SetDb( wxSQLite3Database* db ) { s_db = db; }
     static wxSQLite3Database* GetDb() { return s_db; }
-
-    static bool IsGUI() { return s_env == ENV_GUI; }
 
     /*! Creates a new database with the given filename. If the flag
      *  CREATE_DB_STD_EXT is set, the standard file extension ".tfpd"
@@ -132,10 +125,6 @@ public:
     /*! Returns the current change value.
      */
     static long GetChange() { return s_change; }
-
-    /*! Output a message for the correct environment
-     */
-    static void Message( const wxString& mess, const wxString& func );
 
     static void Begin() { s_db->Begin(); }
     static void Commit() { s_db->Commit(); ++s_change; }

@@ -111,7 +111,6 @@ private:
 public:
     GedSubmitter( idt resID );
 
-//    void SetSubmID( idt resID ) { m_res.FSetID( resID ); }
     void SetName( const wxString& nameStr ) { m_res.FSetName( nameStr ); }
 
     void SaveContact( recContactType::Type type, const wxString& value );
@@ -120,33 +119,18 @@ public:
 
 bool recGedParse::Import()
 {
-    if( recDb::IsGUI() ) {
-        return ImportGUI();
-    }
-    return ImportCmdLine();
-}
-
-bool recGedParse::ImportGUI()
-{
-    wxProgressDialog dialog(
+    m_progress = recGetProgressDlg(
         _("Reading Gedcom"), _("Proccessing..."),
-        100, NULL,
         wxPD_CAN_ABORT | wxPD_APP_MODAL | wxPD_ELAPSED_TIME | wxPD_ESTIMATED_TIME | wxPD_REMAINING_TIME
     );
-    m_progress = &dialog;
-
-    if( !Pass1() ) return false;
-    m_filestream.SeekI( 0 );
-    if( !Pass2() ) return false;
-    return true;
-}
-
-bool recGedParse::ImportCmdLine()
-{
-    if( !Pass1() ) return false;
-    m_filestream.SeekI( 0 );
-    if( !Pass2() ) return false;
-    return true;
+    bool ok = true;
+    if( !Pass1() ) ok = false;
+    if( ok ) {
+        m_filestream.SeekI( 0 );
+        if( !Pass2() ) ok = false;
+    }
+    recProgressClose( m_progress );
+    return ok;
 }
 
 bool recGedParse::Pass1()
@@ -158,7 +142,7 @@ bool recGedParse::Pass1()
     unsigned famCount=0, indiCount=0, submCount=0;
 
     m_lineNum = 0;
-    if( m_progress ) m_progress->Pulse( _("Examining file...") );
+    recProgressPulse( m_progress, _("Examining file...") );
     while( !m_input.GetInputStream().Eof() ) {
         m_lineNum++;
 
@@ -192,7 +176,7 @@ bool recGedParse::Pass1()
         }
     }
     m_totalCount = m_lineNum;
-    if( m_progress ) m_progress->SetRange( (m_totalCount/100) + 1 );
+    recProgressSetRange( m_progress, (m_totalCount/100) + 1 );
 
     return true;
 }
@@ -206,9 +190,9 @@ bool recGedParse::Pass2()
         if( m_level == 0 ) {
             if( m_progress ) {
                 wxString message = wxString::Format( 
-                    "Line number = %d of %d", m_lineNum, m_totalCount 
+                    _("Line number = %d of %d"), m_lineNum, m_totalCount 
                 );
-                if( m_progress->Update( m_lineNum/100, message ) == false ) {
+                if( recProgressUpdate( m_progress, m_lineNum/100, message ) == false ) {
                     recDb::Rollback();
                     return false;
                 }
@@ -238,7 +222,7 @@ bool recGedParse::Pass2()
             cont = ReadNextLine();
         }
     }
-    if( m_progress ) m_progress->Update( m_lineNum/100, "Finalising..." );
+    recProgressUpdate( m_progress, m_lineNum/100, _("Finalising...") );
     recDb::Commit();
 
     return true;

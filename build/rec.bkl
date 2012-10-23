@@ -69,6 +69,7 @@
     <headers>$(LOCAL_INC)/rec/recEvent.h</headers>
     <headers>$(LOCAL_INC)/rec/recGedParse.h</headers>
     <headers>$(LOCAL_INC)/rec/recIndividual.h</headers>
+    <headers>$(LOCAL_INC)/rec/recInterface.h</headers>
     <headers>$(LOCAL_INC)/rec/recLink.h</headers>
     <headers>$(LOCAL_INC)/rec/recName.h</headers>
     <headers>$(LOCAL_INC)/rec/recPersona.h</headers>
@@ -89,6 +90,20 @@
     <precomp-headers>on</precomp-headers>
     <precomp-headers-file>wxprec_$(id)</precomp-headers-file>
 
+  </lib>
+
+  <lib id="reccl" template="wx-lib,wxlike">
+    <libname>reccl$(WXLIBPOSTFIX)</libname>
+    <sources>$(LOCAL_SRC)/rec/reccl.cpp</sources>
+    <include>$(LOCAL_INC)/rec</include>
+    <include>$(LOCAL_INC)</include>
+  </lib>
+
+  <lib id="recgui" template="wx-lib,wxlike">
+    <libname>recgui$(WXLIBPOSTFIX)</libname>
+    <sources>$(LOCAL_SRC)/rec/recgui.cpp</sources>
+    <include>$(LOCAL_INC)/rec</include>
+    <include>$(LOCAL_INC)</include>
   </lib>
 
 </makefile>

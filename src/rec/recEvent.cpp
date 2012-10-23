@@ -540,22 +540,7 @@ recEventTypeVec recEventType::ReadTypes( SelectFilter sf )
 idt recEventType::Select( SelectFilter sf )
 {
     recEventTypeVec vec = ReadTypes( sf );
-#if 0
-    switch( sf )
-    {
-    case SF_All:
-        vec = recEventType::ReadAll();
-        break;
-    case SF_Individual:
-        vec = recEventType::ReadAllIndividual();
-        break;
-    case SF_Family:
-        vec = recEventType::ReadAllFamily();
-        break;
-    default:
-        return 0;
-    }
-#endif
+
     wxArrayString list;
     for( size_t i = 0 ; i < vec.size() ; i++ )
     {
@@ -563,7 +548,7 @@ idt recEventType::Select( SelectFilter sf )
     }
 
     if( vec.size() == 0 ) return 0;
-    int index = wxGetSingleChoiceIndex( wxEmptyString, _("Select Event Type"), list );
+    int index = recGetSingleChoiceIndex( _("Select Event Type"), list );
     if( index < 0 ) return 0;
     return vec[index].f_id;
 }
@@ -756,7 +741,7 @@ idt recEventTypeRole::Select( idt typeID, SelectFilter sf )
         list.Add( vec[i].f_name );
     }
 
-    int index = wxGetSingleChoiceIndex( wxEmptyString, _("Select Event Role"), list );
+    int index = recGetSingleChoiceIndex( _("Select Event Role"), list );
     if( index < 0 ) return 0;
     return vec[index].f_id;
 }

@@ -154,6 +154,7 @@
 
     <library>wxsqlite3</library>
     <library>rec</library>
+    <library>recgui</library>
     <library>calendar</library>
     <wx-lib>html</wx-lib>
     <wx-lib>adv</wx-lib>
@@ -162,13 +163,16 @@
   </exe>
 
   <include file="calendar.bkl"/>
-  <include file="tests.bkl"/>
-  <include file="utils.bkl"/>
+  <if cond="FORMAT!='gnu'">
+    <include file="tests.bkl"/>
+    <include file="utils.bkl"/>
+  </if>
   <include file="wxsqlite3_tfp.bkl"/>
   <include file="rec.bkl"/>
 
 <!--
   <set var="MAIN_INC">../$(REL_ROOT)/tfp/include</set>
+  <set var="MAIN_SRC">../$(REL_ROOT)/tfp/src</set>
   <include file="../../tfp_ext/build/ext.bkl"/>
   <include file="../../tfp_fill/build/fill.bkl"/>
   <include file="../../tfp_place/build/place.bkl"/>
