@@ -29,40 +29,40 @@
 
 */
 
-static const wxChar* s_startup_htm =  /* startup.htm */
- wxS("<html>\n")
- wxS("<head>\n")
- wxS("<title>The Family Pack StartUp</title>\n")
- wxS("</head>\n")
- wxS("<body>\n")
- wxS("<table width=100%% bgcolor=#e0e0f0>\n")
- wxS("<tr>\n")
- wxS("<td>\n")
- wxS("<img src=memory:logo6.bmp>\n")
- wxS("</td>\n")
- wxS("<td align=center>\n")
- wxS("<font size=+4><b>The Family Pack</b></font>\n")
- wxS("</td>\n")
- wxS("</tr>\n")
- wxS("</table>\n")
- wxS("<center>\n")
- wxS("<p>\n")
- wxS("<br>\n")
- wxS("Actions:-<br>\n")
- wxS("<br>\n")
- wxS("<a href=:Open>Open an existing Database</a><br>\n")
- wxS("<br>\n")
- wxS("<a href=:New>Create a new Database</a><br>\n")
- wxS("<br>\n")
- wxS("<a href=:Import>Import a GEDCOM file</a><br>\n")
- wxS("</p>\n")
- wxS("</center>\n")
- wxS("<p>\n")
- wxS("<a href=!http://thefamilypack.org>http://thefamilypack.org</a><br>\n")
- wxS("<br>\n")
- wxS("<b>TFP</b> %s\n")
- wxS("</p>\n")
- wxS("</body>\n")
- wxS("</html>\n");
+static const char* s_startup_htm =  /* startup.htm */
+ "<html>\n"
+ "<head>\n"
+ "<title>The Family Pack StartUp</title>\n"
+ "</head>\n"
+ "<body>\n"
+ "<table width=100%% bgcolor=#e0e0f0>\n"
+ "<tr>\n"
+ "<td>\n"
+ "<img src=memory:logo6.bmp>\n"
+ "</td>\n"
+ "<td align=center>\n"
+ "<font size=+4><b>The Family Pack</b></font>\n"
+ "</td>\n"
+ "</tr>\n"
+ "</table>\n"
+ "<center>\n"
+ "<p>\n"
+ "<br>\n"
+ "Actions:-<br>\n"
+ "<br>\n"
+ "<a href=:Open>Open an existing Database</a><br>\n"
+ "<br>\n"
+ "<a href=:New>Create a new Database</a><br>\n"
+ "<br>\n"
+ "<a href=:Import>Import a GEDCOM file</a><br>\n"
+ "</p>\n"
+ "</center>\n"
+ "<p>\n"
+ "<a href=!http://thefamilypack.org>http://thefamilypack.org</a><br>\n"
+ "<br>\n"
+ "<b>TFP</b> %s\n"
+ "</p>\n"
+ "</body>\n"
+ "</html>\n";
 
 /* End of tfpText.f2c */
