@@ -69,7 +69,7 @@ bool TfpApp::OnInit()
         recDb::OpenDb( dbFName );
     }
 
-    TfpFrame* frame = new TfpFrame( wxT("The Family Pack"), wxDefaultPosition, wxSize( 640, 480 ) );
+    TfpFrame* frame = new TfpFrame( wxT("The Family Pack"), wxDefaultPosition, wxSize( 800, 600 ) );
     frame->Show(true);
 
     SetTopWindow( frame );
