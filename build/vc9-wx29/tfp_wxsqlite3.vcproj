@@ -44,7 +44,7 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				PreprocessorDefinitions="WIN32;_LIB;_UNICODE;__WXMSW__"
+				PreprocessorDefinitions="WIN32;_LIB;_UNICODE;__WXMSW__;SQLITE_ENABLE_RTREE"
 				AdditionalIncludeDirectories="$(WXWIN)\lib\vc_lib\mswu;$(WXWIN)\include;..\..\include"
 			/>
 			<Tool
@@ -52,12 +52,12 @@
 				AdditionalOptions="/MP"
 				Optimization="2"
 				AdditionalIncludeDirectories="$(WXWIN)\lib\vc_lib\mswu;$(WXWIN)\include;..\..\include"
-				PreprocessorDefinitions="WIN32;_LIB;_UNICODE;__WXMSW__"
+				PreprocessorDefinitions="WIN32;_LIB;_UNICODE;__WXMSW__;SQLITE_ENABLE_RTREE"
 				ExceptionHandling="1"
 				RuntimeLibrary="2"
 				RuntimeTypeInfo="true"
 				ObjectFile="$(SolutionDir)$(ConfigurationName)\wxsqlite3\"
-				ProgramDataBaseFileName="$(SolutionDir)$(ConfigurationName)\../../../lib/vc9/wxsqlite3u.pdb"
+				ProgramDataBaseFileName="$(SolutionDir)$(ConfigurationName)\wxsqlite3u.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="0"
@@ -67,7 +67,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_UNICODE;__WXMSW__"
+				PreprocessorDefinitions="_UNICODE;__WXMSW__;SQLITE_ENABLE_RTREE"
 				Culture="1033"
 				AdditionalIncludeDirectories="$(WXWIN)\lib\vc_lib\mswu;$(WXWIN)\include;..\..\include"
 			/>
@@ -76,7 +76,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(SolutionDir)$(ConfigurationName)\../../../lib/vc9/wxsqlite3u.lib"
+				OutputFile="$(SolutionDir)$(ConfigurationName)\wxsqlite3u.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -123,7 +123,7 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				PreprocessorDefinitions="WIN32;_LIB;_UNICODE;__WXDEBUG__;__WXMSW__;_DEBUG"
+				PreprocessorDefinitions="WIN32;_LIB;_UNICODE;__WXDEBUG__;__WXMSW__;_DEBUG;SQLITE_ENABLE_RTREE"
 				AdditionalIncludeDirectories="$(WXWIN)\lib\vc_lib\mswud;$(WXWIN)\include;..\..\include"
 			/>
 			<Tool
@@ -131,14 +131,14 @@
 				AdditionalOptions="/MP"
 				Optimization="0"
 				AdditionalIncludeDirectories="$(WXWIN)\lib\vc_lib\mswud;$(WXWIN)\include;..\..\include"
-				PreprocessorDefinitions="WIN32;_LIB;_UNICODE;__WXDEBUG__;__WXMSW__;_DEBUG"
+				PreprocessorDefinitions="WIN32;_LIB;_UNICODE;__WXDEBUG__;__WXMSW__;_DEBUG;SQLITE_ENABLE_RTREE"
 				ExceptionHandling="1"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				BufferSecurityCheck="true"
 				RuntimeTypeInfo="true"
 				ObjectFile="$(SolutionDir)$(ConfigurationName)\wxsqlite3\"
-				ProgramDataBaseFileName="$(SolutionDir)$(ConfigurationName)\../../../lib/vc9/wxsqlite3ud.pdb"
+				ProgramDataBaseFileName="$(SolutionDir)$(ConfigurationName)\wxsqlite3ud.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
@@ -148,7 +148,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_UNICODE;__WXDEBUG__;__WXMSW__;_DEBUG"
+				PreprocessorDefinitions="_UNICODE;__WXDEBUG__;__WXMSW__;_DEBUG;SQLITE_ENABLE_RTREE"
 				Culture="1033"
 				AdditionalIncludeDirectories="$(WXWIN)\lib\vc_lib\mswud;$(WXWIN)\include;..\..\include"
 			/>
@@ -157,7 +157,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(SolutionDir)$(ConfigurationName)\../../../lib/vc9/wxsqlite3ud.lib"
+				OutputFile="$(SolutionDir)$(ConfigurationName)\wxsqlite3ud.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool

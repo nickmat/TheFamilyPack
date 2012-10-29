@@ -60,7 +60,7 @@
 				PrecompiledHeaderThrough="wx/wxprec.h"
 				PrecompiledHeaderFile="$(SolutionDir)$(ConfigurationName)\wxprec_calendar.pch"
 				ObjectFile="$(SolutionDir)$(ConfigurationName)\calendar\"
-				ProgramDataBaseFileName="$(SolutionDir)$(ConfigurationName)\../../../lib/vc9/calendaru.pdb"
+				ProgramDataBaseFileName="$(SolutionDir)$(ConfigurationName)\calendaru.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="0"
@@ -79,7 +79,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(SolutionDir)$(ConfigurationName)\../../../lib/vc9/calendaru.lib"
+				OutputFile="$(SolutionDir)$(ConfigurationName)\calendaru.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -144,7 +144,7 @@
 				PrecompiledHeaderThrough="wx/wxprec.h"
 				PrecompiledHeaderFile="$(SolutionDir)$(ConfigurationName)\wxprec_calendar.pch"
 				ObjectFile="$(SolutionDir)$(ConfigurationName)\calendar\"
-				ProgramDataBaseFileName="$(SolutionDir)$(ConfigurationName)\../../../lib/vc9/calendarud.pdb"
+				ProgramDataBaseFileName="$(SolutionDir)$(ConfigurationName)\calendarud.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
@@ -163,7 +163,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(SolutionDir)$(ConfigurationName)\../../../lib/vc9/calendarud.lib"
+				OutputFile="$(SolutionDir)$(ConfigurationName)\calendarud.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
