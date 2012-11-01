@@ -44,20 +44,22 @@
 
 static wxString WriteIndex( wxSQLite3ResultSet& table )
 {
-	wxString htm = 
-		"<html><head><title>Surname Index</title></head><body>"
-		"<center><h1>Surname Index</h1>";
+    wxString htm =
+        "<html><head><title>Surname Index</title>"
+        "<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'>"
+        "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>"
+        "</head><body><center><h1>Surname Index</h1>";
 
     if( table.GetColumnCount() > 0 )
-	{
+    {
         wxChar letter = wxChar('\0');
         wxString name = wxEmptyString;
         int count = 1;
         bool row1st = true;
 
-		htm << wxT("<table border=1>");
+        htm << wxT("<table border=1>");
         while( table.NextRow() )
-		{
+        {
             name = table.GetAsString( 0 );
             if( name.length() == 0 ) {
                 name = "?";
@@ -73,17 +75,17 @@ static wxString WriteIndex( wxSQLite3ResultSet& table )
                     htm << wxT("</tr>");
                 }
                 // Start new line
-                htm << wxT("<tr><td><a href='N") << letter << wxT("'><b>") << letter << wxT("</b></a></td><td>");
+                htm << wxT("<tr><td><a href='tfp:N") << letter << wxT("'><b>") << letter << wxT("</b></a></td><td>");
                 count = 1;
             }
             if( count != 1 )
             {
                 htm << wxT(", ");
             }
-            htm << wxT("<a href='N") << name << wxT("'><b>") << name << wxT("</b></a>");
+            htm << wxT("<a href='tfp:N") << name << wxT("'><b>") << name << wxT("</b></a>");
             count++;
-		}
-		htm << wxT("</tr></table>");
+        }
+        htm << wxT("</tr></table>");
     } else {
         htm << wxT("No Names found!");
     }
@@ -125,30 +127,32 @@ wxString tfpWritePersonIndex()
 
 wxString tfpWriteIndividualList( const wxString& surname )
 {
-	wxString htm;
+    wxString htm;
 
-    htm << wxT("<html><head><title>Name List</title></head><body>")
-        << wxT("<center><h1>") << surname << wxT("</h1>");
+    htm << wxT("<html><head><title>Name List</title>")
+           wxT("<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'>")
+           wxT("<link rel='stylesheet' type='text/css' href='tfp:memory:tfp.css'>")
+           wxT("</head><body><center><h1>") << surname << wxT("</h1>");
 
     wxSQLite3ResultSet result = recIndividual::GetNameList( surname );
 
     if( result.GetColumnCount() > 0 )
-	{
-		htm << wxT("<table border=1>");
+    {
+        htm << wxT("<table border=1>");
         while( result.NextRow() )
-		{
-            htm << wxT("<tr><td><a href='FI") 
-				<< result.GetAsString( 3 ) 
-				<< wxT("'><b>")
+        {
+            htm << wxT("<tr><td><a href='tfp:FI")
+                << result.GetAsString( 3 )
+                << wxT("'><b>")
 
-			    << result.GetAsString( 1 ) << wxT(" ")
-				<< result.GetAsString( 0 )
+                << result.GetAsString( 1 ) << wxT(" ")
+                << result.GetAsString( 0 )
 
-			    << wxT("</b></a> ")
-				<< result.GetAsString( 2 )
-				<< wxT("</td></tr>");
-		}
-		htm << wxT("</table>");
+                << wxT("</b></a> ")
+                << result.GetAsString( 2 )
+                << wxT("</td></tr>");
+        }
+        htm << wxT("</table>");
     } else {
         htm << wxT("No Names found!");
     }

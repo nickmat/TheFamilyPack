@@ -80,7 +80,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions=""
-				AdditionalDependencies="$(SolutionDir)$(ConfigurationName)\wxsqlite3u.lib $(SolutionDir)$(ConfigurationName)\recu.lib $(SolutionDir)$(ConfigurationName)\recguiu.lib $(SolutionDir)$(ConfigurationName)\calendaru.lib wxmsw29u_html.lib wxmsw29u_adv.lib wxmsw29u_core.lib wxbase29u.lib wxtiff.lib wxjpeg.lib wxpng.lib wxzlib.lib wxregexu.lib wxexpat.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib"
+				AdditionalDependencies="$(SolutionDir)$(ConfigurationName)\wxsqlite3u.lib $(SolutionDir)$(ConfigurationName)\recu.lib $(SolutionDir)$(ConfigurationName)\recguiu.lib $(SolutionDir)$(ConfigurationName)\calendaru.lib wxmsw29u_webview.lib wxmsw29u_html.lib wxmsw29u_adv.lib wxmsw29u_core.lib wxbase29u.lib wxtiff.lib wxjpeg.lib wxpng.lib wxzlib.lib wxregexu.lib wxexpat.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib"
 				OutputFile="$(SolutionDir)$(ConfigurationName)\tfp.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -175,7 +175,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions=""
-				AdditionalDependencies="$(SolutionDir)$(ConfigurationName)\wxsqlite3ud.lib $(SolutionDir)$(ConfigurationName)\recud.lib $(SolutionDir)$(ConfigurationName)\recguiud.lib $(SolutionDir)$(ConfigurationName)\calendarud.lib wxmsw29ud_html.lib wxmsw29ud_adv.lib wxmsw29ud_core.lib wxbase29ud.lib wxtiffd.lib wxjpegd.lib wxpngd.lib wxzlibd.lib wxregexud.lib wxexpatd.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib"
+				AdditionalDependencies="$(SolutionDir)$(ConfigurationName)\wxsqlite3ud.lib $(SolutionDir)$(ConfigurationName)\recud.lib $(SolutionDir)$(ConfigurationName)\recguiud.lib $(SolutionDir)$(ConfigurationName)\calendarud.lib wxmsw29ud_webview.lib wxmsw29ud_html.lib wxmsw29ud_adv.lib wxmsw29ud_core.lib wxbase29ud.lib wxtiffd.lib wxjpegd.lib wxpngd.lib wxzlibd.lib wxregexud.lib wxexpatd.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib"
 				OutputFile="$(SolutionDir)$(ConfigurationName)\tfp.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
@@ -224,6 +224,11 @@
                 >
             </File>
             <File
+                RelativePath="..\..\src\tfp.css"
+                DeploymentContent="true"
+                >
+            </File>
+            <File
                 RelativePath="..\..\src\tfpText.f2c"
                 >
                 <FileConfiguration
@@ -232,7 +237,7 @@
                     <Tool
                         Name="VCCustomBuildTool"
                         CommandLine="file2cpp -v -o ..\..\src\generated\tfpText.ci ..\..\src\tfpText.f2c&#x0D;&#x0A;"
-                        AdditionalDependencies="..\..\src\startup.htm"
+                        AdditionalDependencies="..\..\src\startup.htm;..\..\src\tfp.css"
                         Outputs="..\..\src\generated\tfpText.ci"
                     />
                 </FileConfiguration>
@@ -242,7 +247,7 @@
                     <Tool
                         Name="VCCustomBuildTool"
                         CommandLine="file2cpp -v -o ..\..\src\generated\tfpText.ci ..\..\src\tfpText.f2c&#x0D;&#x0A;"
-                        AdditionalDependencies="..\..\src\startup.htm"
+                        AdditionalDependencies="..\..\src\startup.htm;..\..\src\tfp.css"
                         Outputs="..\..\src\generated\tfpText.ci"
                     />
                 </FileConfiguration>
@@ -417,6 +422,10 @@
 				RelativePath="..\..\src\tfpWrReference.cpp"
 				>
 			</File>
+			<File
+				RelativePath="..\..\src\webviewfshandler.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -541,6 +550,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\tfpWr.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\webviewfshandler.h"
 				>
 			</File>
 		</Filter>

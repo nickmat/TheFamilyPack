@@ -52,18 +52,18 @@
 #define HTM_CHART_GIF_PDN   11
 
 const wxString htmChartGif[] = {
-    wxT("<img src=memory:ss.bmp>"),
-    wxT("<img src=memory:ds.bmp>"),
-    wxT("<img src=memory:st.bmp>"),
-    wxT("<img src=memory:dt.bmp>"),
-    wxT("<img src=memory:sc.bmp>"),
-    wxT("<img src=memory:dc.bmp>"),
-    wxT("<img src=memory:se.bmp>"),
-    wxT("<img src=memory:de.bmp>"),
-    wxT("<img src=memory:pt.bmp>"),
-    wxT("<img src=memory:pu.bmp>"),
-    wxT("<img src=memory:pe.bmp>"),
-    wxT("<img src=memory:pd.bmp>")
+    wxT("<img src=memory:ss.png>"),
+    wxT("<img src=memory:ds.png>"),
+    wxT("<img src=memory:st.png>"),
+    wxT("<img src=memory:dt.png>"),
+    wxT("<img src=memory:sc.png>"),
+    wxT("<img src=memory:dc.png>"),
+    wxT("<img src=memory:se.png>"),
+    wxT("<img src=memory:de.png>"),
+    wxT("<img src=memory:pt.png>"),
+    wxT("<img src=memory:pu.png>"),
+    wxT("<img src=memory:pe.png>"),
+    wxT("<img src=memory:pd.png>")
 };
 
 static int GenDChart[100];
@@ -82,8 +82,11 @@ wxString tfpCreatePedChart( idt indID )
     wxString name = ind.GetFullName();
 
     htm << wxT("<html><head><title>Pedigree Chart for ") << name
-        << wxT("</title></head><body link=black>")
-        << wxT("<h1>Pedigree Chart for ") << name << wxT("</h1>");
+        << wxT("</title>")
+           wxT("<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'>")
+           wxT("<link rel='stylesheet' type='text/css' href='memory:tfp.css'>")
+           wxT("</head><body link=black>")
+           wxT("<h1>Pedigree Chart for ") << name << wxT("</h1>");
 
     WrPedCht( indID, SEX_Unstated, 0 );
 
@@ -120,8 +123,8 @@ void WrPedCht( idt indID, Sex sex, int gen )
     {
         if( i == gen )
         {
-            htm << wxT("<td width=300>&nbsp;&nbsp;<a href=")
-                << famLk << wxT("><b>")
+            htm << wxT("<td width=300>&nbsp;&nbsp;<a href='tfp:")
+                << famLk << wxT("'><b>")
                 << ind.f_given << wxT(" ") << ind.f_surname
                 << wxT("</b></a> ") << ind.f_epitaph << wxT("</td>");
 
@@ -152,9 +155,11 @@ wxString tfpCreateDescChart( idt indID )
     wxString name = recIndividual::GetFullName( indID );
     htm.Clear();
 
-    htm << wxT("<html><head><title>Descendant Chart for ")
-        << name << wxT("</title></head><body link=black>")
-        << wxT("<h1>Descendant Chart for ") << name << wxT("</h1>");
+    htm << wxT("<html><head><title>Descendant Chart for ") << name << wxT("</title>")
+           wxT("<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'>")
+           wxT("<link rel='stylesheet' type='text/css' href='tfp:memory:tfp.css'>")
+           wxT("</head><body link=black>")
+           wxT("<h1>Descendant Chart for ") << name << wxT("</h1>");
 
     WrDescCht( indID, 0 );
 
@@ -212,8 +217,8 @@ void WrDescLine( idt indID, idt spouseID, idt famID, int gen )
     htm << wxT("<table cellspacing=0 cellpadding=0 border=0><tr>");
     for( int i = 0 ; i <= gen ; i++ ) {
         if( i == gen ) {
-            htm << wxT("<td width=300>&nbsp;&nbsp;<a href=")
-                << famLk << wxT("><b>")
+            htm << wxT("<td width=300>&nbsp;&nbsp;<a href='tfp:")
+                << famLk << wxT("'><b>")
                 << recIndividual::GetFullName( indID )
                 << wxT("</b></a> ")
                 << recIndividual::GetDateEpitaph( indID );

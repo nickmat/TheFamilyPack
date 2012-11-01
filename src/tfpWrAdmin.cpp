@@ -50,7 +50,10 @@ wxString tfpWriteResearcherList()
     recResearcherVec list = recResearcher::GetResearchers();
     idt curUserID = recGetCurrentUser();
 
-    htm << "<html><head><title>Researchers</title></head><body>"
+    htm << "<html><head><title>Researchers</title>"
+           "<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'>"
+           "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>"
+           "</head><body>"
            "<h1>Researchers</h1><table>";
     for( size_t i = 0 ; i < list.size() ; i++ ) {
         recContactList cl( list[i].FGetConListID() );
@@ -58,7 +61,7 @@ wxString tfpWriteResearcherList()
 
         htm << "<tr><td>";
         if( cl.FGetIndID() ) {
-            htm << "<a href='FI" << cl.FGetIndID() 
+            htm << "<a href='tfp:FI" << cl.FGetIndID()
                 << "'>" << list[i].FGetName() << "</a>";
         } else {
             htm << list[i].FGetName();
@@ -73,9 +76,9 @@ wxString tfpWriteResearcherList()
                 htm << "*";
             }
         }
-        htm << "</td><td><a href=$Re" << list[i].FGetID()
-            << "><img src=memory:edit.bmp></a></td><td>" << list[i].FGetComments()
-            << "</td></tr>"; 
+        htm << "</td><td><a href='tfp:$Re" << list[i].FGetID()
+            << "'><img src=memory:edit.png></a></td><td>" << list[i].FGetComments()
+            << "</td></tr>";
 
         recContactVec contacts = list[i].GetContacts();
         if( contacts.size() ) {

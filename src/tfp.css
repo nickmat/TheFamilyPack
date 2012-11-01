@@ -1,12 +1,13 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        tfpText.f2c
+ * Name:        src/tfp.css
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Screen texts collected from files. Format file for file2cpp.
+ * Purpose:     Basic css used by all html pages internally.
  * Author:      Nick Matthews
  * Modified by:
- * Created:     26 September 2010
+ * Website:     http://thefamilypack.org
+ * Created:     1st November 2012
  * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2012, Nick Matthews.
  * Website:     http://thefamilypack.org
  * Licence:     GNU GPLv3
  *
@@ -27,8 +28,11 @@
 
 */
 
-static const char s_startup_htm[] = @(lrc.xml)"startup.htm";
 
-static const char s_tfp_css[] = @(lrc.c)"tfp.css";
+img {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
 
-/* End of tfpText.f2c */
+/* End of tfp.css file */

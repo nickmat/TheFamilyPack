@@ -49,7 +49,7 @@
 
 BEGIN_EVENT_TABLE(TfpHtml, wxHtmlWindow)
     EVT_HTML_LINK_CLICKED( wxID_ANY, TfpHtml::OnHtmlLinkClicked )
-    EVT_MENU_RANGE( tfpID_HCTXMENU_BEG, tfpID_HCTXMENU_END, TfpHtml::OnHtmCtxMenu )
+//    EVT_MENU_RANGE( tfpID_HCTXMENU_BEG, tfpID_HCTXMENU_END, TfpHtml::OnHtmCtxMenu )
     EVT_MENU_RANGE( tfpID_RCTXMENU_BEG, tfpID_RCTXMENU_END, TfpHtml::OnRightCtxMenu )
     EVT_MENU_RANGE( tfpID_INDMENU_BEG, tfpID_INDMENU_END, TfpHtml::OnHtmIndMenu )
 END_EVENT_TABLE()

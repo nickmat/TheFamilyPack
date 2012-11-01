@@ -72,6 +72,7 @@
 #include "img/ref.xpm"
 #include "img/event.xpm"
 
+
 // Common bitmats
 wxBitmap imgEditBitmap( edit_xpm );
 wxBitmap imgMenuBitmap( menu_xpm );
@@ -82,56 +83,57 @@ void tfpLoadMemoryFiles()
 {
     wxFileSystem::AddHandler( new wxMemoryFSHandler );
     wxBitmap logo6Bitmap( logo6_xpm );
-    wxMemoryFSHandler::AddFile( "logo6.bmp", logo6Bitmap, wxBITMAP_TYPE_XPM );
+    wxMemoryFSHandler::AddFile( "logo6.png", logo6Bitmap, wxBITMAP_TYPE_PNG );
     wxString startupText( wxString::Format( s_startup_htm, tfpHtmVersion ) );
     wxMemoryFSHandler::AddFile( "startup.htm", startupText );
+    wxMemoryFSHandler::AddFile( "tfp.css", s_tfp_css );
 
     wxBitmap dsBitmap( ds_xpm );
-    wxMemoryFSHandler::AddFile( "ds.bmp", dsBitmap, wxBITMAP_TYPE_XPM );
+    wxMemoryFSHandler::AddFile( "ds.png", dsBitmap, wxBITMAP_TYPE_PNG );
     wxBitmap dcBitmap( dc_xpm );
-    wxMemoryFSHandler::AddFile( "dc.bmp", dcBitmap, wxBITMAP_TYPE_XPM );
+    wxMemoryFSHandler::AddFile( "dc.png", dcBitmap, wxBITMAP_TYPE_PNG );
     wxBitmap dtBitmap( dt_xpm );
-    wxMemoryFSHandler::AddFile( "dt.bmp", dtBitmap, wxBITMAP_TYPE_XPM );
+    wxMemoryFSHandler::AddFile( "dt.png", dtBitmap, wxBITMAP_TYPE_PNG );
     wxBitmap deBitmap( de_xpm );
-    wxMemoryFSHandler::AddFile( "de.bmp", deBitmap, wxBITMAP_TYPE_XPM );
+    wxMemoryFSHandler::AddFile( "de.png", deBitmap, wxBITMAP_TYPE_PNG );
     wxBitmap ssBitmap( ss_xpm );
-    wxMemoryFSHandler::AddFile( "ss.bmp", ssBitmap, wxBITMAP_TYPE_XPM );
+    wxMemoryFSHandler::AddFile( "ss.png", ssBitmap, wxBITMAP_TYPE_PNG );
     wxBitmap scBitmap( sc_xpm );
-    wxMemoryFSHandler::AddFile( "sc.bmp", scBitmap, wxBITMAP_TYPE_XPM );
+    wxMemoryFSHandler::AddFile( "sc.png", scBitmap, wxBITMAP_TYPE_PNG );
     wxBitmap stBitmap( st_xpm );
-    wxMemoryFSHandler::AddFile( "st.bmp", stBitmap, wxBITMAP_TYPE_XPM );
+    wxMemoryFSHandler::AddFile( "st.png", stBitmap, wxBITMAP_TYPE_PNG );
     wxBitmap seBitmap( se_xpm );
-    wxMemoryFSHandler::AddFile( "se.bmp", seBitmap, wxBITMAP_TYPE_XPM );
+    wxMemoryFSHandler::AddFile( "se.png", seBitmap, wxBITMAP_TYPE_PNG );
     wxBitmap puBitmap( pu_xpm );
-    wxMemoryFSHandler::AddFile( "pu.bmp", puBitmap, wxBITMAP_TYPE_XPM );
+    wxMemoryFSHandler::AddFile( "pu.png", puBitmap, wxBITMAP_TYPE_PNG );
     wxBitmap pdBitmap( pd_xpm );
-    wxMemoryFSHandler::AddFile( "pd.bmp", pdBitmap, wxBITMAP_TYPE_XPM );
+    wxMemoryFSHandler::AddFile( "pd.png", pdBitmap, wxBITMAP_TYPE_PNG );
     wxBitmap ptBitmap( pt_xpm );
-    wxMemoryFSHandler::AddFile( "pt.bmp", ptBitmap, wxBITMAP_TYPE_XPM );
+    wxMemoryFSHandler::AddFile( "pt.png", ptBitmap, wxBITMAP_TYPE_PNG );
     wxBitmap peBitmap( pe_xpm );
-    wxMemoryFSHandler::AddFile( "pe.bmp", peBitmap, wxBITMAP_TYPE_XPM );
-    wxMemoryFSHandler::AddFile( "edit.bmp", imgEditBitmap, wxBITMAP_TYPE_XPM );
-    wxMemoryFSHandler::AddFile( "menu.bmp", imgMenuBitmap, wxBITMAP_TYPE_XPM );
+    wxMemoryFSHandler::AddFile( "pe.png", peBitmap, wxBITMAP_TYPE_PNG );
+    wxMemoryFSHandler::AddFile( "edit.png", imgEditBitmap, wxBITMAP_TYPE_PNG );
+    wxMemoryFSHandler::AddFile( "menu.png", imgMenuBitmap, wxBITMAP_TYPE_PNG );
     wxBitmap dchtBitmap( dcht_xpm );
-    wxMemoryFSHandler::AddFile( "dcht.bmp", dchtBitmap, wxBITMAP_TYPE_XPM );
+    wxMemoryFSHandler::AddFile( "dcht.png", dchtBitmap, wxBITMAP_TYPE_PNG );
     wxBitmap pchtBitmap( pcht_xpm );
-    wxMemoryFSHandler::AddFile( "pcht.bmp", pchtBitmap, wxBITMAP_TYPE_XPM );
+    wxMemoryFSHandler::AddFile( "pcht.png", pchtBitmap, wxBITMAP_TYPE_PNG );
     wxBitmap indBitmap( ind_xpm );
-    wxMemoryFSHandler::AddFile( "ind.bmp", indBitmap, wxBITMAP_TYPE_XPM );
+    wxMemoryFSHandler::AddFile( "ind.png", indBitmap, wxBITMAP_TYPE_PNG );
     wxBitmap famBitmap( fam_xpm );
-    wxMemoryFSHandler::AddFile( "fam.bmp", famBitmap, wxBITMAP_TYPE_XPM );
+    wxMemoryFSHandler::AddFile( "fam.png", famBitmap, wxBITMAP_TYPE_PNG );
     wxBitmap parBitmap( par_xpm );
-    wxMemoryFSHandler::AddFile( "par.bmp", parBitmap, wxBITMAP_TYPE_XPM );
+    wxMemoryFSHandler::AddFile( "par.png", parBitmap, wxBITMAP_TYPE_PNG );
     wxBitmap sibBitmap( sib_xpm );
-    wxMemoryFSHandler::AddFile( "sib.bmp", sibBitmap, wxBITMAP_TYPE_XPM );
+    wxMemoryFSHandler::AddFile( "sib.png", sibBitmap, wxBITMAP_TYPE_PNG );
     wxBitmap marBitmap( mar_xpm );
-    wxMemoryFSHandler::AddFile( "mar.bmp", marBitmap, wxBITMAP_TYPE_XPM );
+    wxMemoryFSHandler::AddFile( "mar.png", marBitmap, wxBITMAP_TYPE_PNG );
     wxBitmap kidBitmap( kid_xpm );
-    wxMemoryFSHandler::AddFile( "kid.bmp", kidBitmap, wxBITMAP_TYPE_XPM );
+    wxMemoryFSHandler::AddFile( "kid.png", kidBitmap, wxBITMAP_TYPE_PNG );
     wxBitmap refBitmap( ref_xpm );
-    wxMemoryFSHandler::AddFile( "ref.bmp", refBitmap, wxBITMAP_TYPE_XPM );
+    wxMemoryFSHandler::AddFile( "ref.png", refBitmap, wxBITMAP_TYPE_PNG );
     wxBitmap eveBitmap( event_xpm );
-    wxMemoryFSHandler::AddFile( "eve.bmp", eveBitmap, wxBITMAP_TYPE_XPM );
+    wxMemoryFSHandler::AddFile( "eve.png", eveBitmap, wxBITMAP_TYPE_PNG );
 }
 
 // End of tfpMemory.cpp file

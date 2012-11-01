@@ -50,8 +50,10 @@ wxString tfpWriteReferenceIndex()
         return htm;
     }
 
-    htm = "<html><head><title>Reference List</title></head><body>"
-          "<h1>Reference List</h1>";
+    htm = "<html><head><title>Reference List</title>"
+          "<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'>"
+          "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>"
+          "</head><body><h1>Reference List</h1>";
 
     wxSQLite3ResultSet result = recReference::GetTitleList();
 
@@ -62,7 +64,7 @@ wxString tfpWriteReferenceIndex()
         htm << "<table border=1>";
         while( result.NextRow() )
         {
-            htm << "<tr><td><a href='R"
+            htm << "<tr><td><a href='tfp:R"
                 << result.GetAsString( 0 )
                 << "'><b>R"
                 << result.GetAsString( 0 )
@@ -75,7 +77,7 @@ wxString tfpWriteReferenceIndex()
 #endif
         while( result.NextRow() )
         {
-            htm << "<a href='R"
+            htm << "<a href='tfp:R"
                 << result.GetAsString( 0 )
                 << "'><b>R"
                 << result.GetAsString( 0 )
@@ -103,8 +105,10 @@ wxString tfpWriteReferencePage( idt refID )
     recIdVec perIDs = ref.GetPersonaList();
     recIdVec indIDs;
 
-    htm << "<html><head><title>R" << refID
-        << "</title></head><body><h1>" << ref.f_title << "</h1>\n";
+    htm << "<html><head><title>R" << refID << "</title>"
+           "<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'>"
+           "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>"
+           "</head><body><h1>" << ref.f_title << "</h1>\n";
 
     if( ref.f_statement.compare( 0, 9, "<!-- HTML" ) == 0 ) {
         htm << ref.f_statement;
@@ -113,16 +117,16 @@ wxString tfpWriteReferencePage( idt refID )
             << ref.f_statement
             << "</pre>";
     }
-    htm << "<p><a href=$R" << refID
-        << "><img src=memory:edit.bmp></a><br>";
+    htm << "<p><a href='tfp:$R" << refID
+        << "'><img src=memory:edit.png></a><br>";
 
     size_t i;
     for( i = 0 ; i < perIDs.size() ; i++ ) {
         htm << recPersona::GetNameStr( perIDs[i] );
         indIDs = recPersona::GetIndividualIDs( perIDs[i] );
         for( size_t j = 0 ; j < indIDs.size() ; j++ ) {
-            htm << " <a href=I" << indIDs[j]
-                << "><img src=memory:ind.bmp></a>";
+            htm << " <a href='tfp:I" << indIDs[j]
+                << "'><img src=memory:ind.png></a>";
         }
         htm << "<br>";
     }

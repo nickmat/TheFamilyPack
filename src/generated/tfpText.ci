@@ -29,19 +29,19 @@
 
 */
 
-static const char* s_startup_htm =  /* startup.htm */
+static const char s_startup_htm[] =  /* startup.htm */
  "<html>\n"
  "<head>\n"
  "<title>The Family Pack StartUp</title>\n"
  "</head>\n"
  "<body>\n"
- "<table width=100%% bgcolor=#e0e0f0>\n"
+ "<table width='100%%' bgcolor='#e0e0f0'>\n"
  "<tr>\n"
  "<td>\n"
- "<img src=memory:logo6.bmp>\n"
+ "<img src='memory:logo6.png'>\n"
  "</td>\n"
- "<td align=center>\n"
- "<font size=+4><b>The Family Pack</b></font>\n"
+ "<td align='center'>\n"
+ "<font size='+4'><b>The Family Pack</b></font>\n"
  "</td>\n"
  "</tr>\n"
  "</table>\n"
@@ -50,19 +50,26 @@ static const char* s_startup_htm =  /* startup.htm */
  "<br>\n"
  "Actions:-<br>\n"
  "<br>\n"
- "<a href=:Open>Open an existing Database</a><br>\n"
+ "<a href='tfp::Open'>Open an existing Database</a><br>\n"
  "<br>\n"
- "<a href=:New>Create a new Database</a><br>\n"
+ "<a href='tfp::New'>Create a new Database</a><br>\n"
  "<br>\n"
- "<a href=:Import>Import a GEDCOM file</a><br>\n"
+ "<a href='tfp::Import'>Import a GEDCOM file</a><br>\n"
  "</p>\n"
  "</center>\n"
  "<p>\n"
- "<a href=!http://thefamilypack.org>http://thefamilypack.org</a><br>\n"
+ "<a href='http://thefamilypack.org'>http://thefamilypack.org</a><br>\n"
  "<br>\n"
  "<b>TFP</b> %s\n"
  "</p>\n"
  "</body>\n"
  "</html>\n";
+
+static const char s_tfp_css[] =  /* tfp.css */
+ "img {\n"
+ "margin: 0;\n"
+ "padding: 0;\n"
+ "border: 0;\n"
+ "}\n";
 
 /* End of tfpText.f2c */

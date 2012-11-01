@@ -50,7 +50,10 @@ wxString tfpWriteEventIndex()
         return htm;
     }
 
-    htm = "<html><head><title>Event List</title></head><body>"
+    htm = "<html><head><title>Event List</title>"
+          "<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'>"
+          "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>"
+          "</head><body>"
           "<h1>Event List</h1>";
 
     wxSQLite3ResultSet result = recEvent::GetTitleList();
@@ -60,7 +63,7 @@ wxString tfpWriteEventIndex()
     {
         while( result.NextRow() )
         {
-            htm << "<a href='E"
+            htm << "<a href='tfp:E"
                 << result.GetAsString( 0 )
                 << "'><b>E"
                 << result.GetAsString( 0 )
@@ -86,9 +89,10 @@ wxString tfpWriteEventPage( idt eventID )
     recEvent eve(eventID);
     if( eve.f_id == 0 ) return wxEmptyString;
 
-    htm << "<html><head><title>Event " << eve.GetIdStr() 
-        << "</title></head><body>"
-           "<h1>Event " << eve.GetIdStr() << " " << eve.f_title << "</h1>"
+    htm << "<html><head><title>Event " << eve.GetIdStr() << "</title>"
+           "<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'>"
+           "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>"
+           "</head><body><h1>Event " << eve.GetIdStr() << " " << eve.f_title << "</h1>"
            "<table><tr><td>Date:</td><td>" << eve.GetDateStr()
         << "</td></tr><tr><td>Place:</td><td>" << eve.GetAddressStr()
         << "</td></tr><tr><td>Note:</td><td>" << eve.f_note
@@ -100,16 +104,16 @@ wxString tfpWriteEventPage( idt eventID )
         for( size_t i = 0 ; i < eps.size() ; i++ ) {
             recPersona per(eps[i].f_per_id);
             htm << "<tr><td>" << recEventTypeRole::GetName( eps[i].f_role_id )
-                << "</td><td><b>" << per.GetNameStr() 
+                << "</td><td><b>" << per.GetNameStr()
                 << "</b>";
             if( per.f_ref_id ) {
-                htm << " <a href=R" << per.f_ref_id
-                    << "><img src=memory:ref.bmp></a>";
-            } 
+                htm << " <a href='tfp:R" << per.f_ref_id
+                    << "'><img src=memory:ref.png></a>";
+            }
             recIdVec indIDs = per.GetIndividualIDs();
             for( size_t j = 0 ; j < indIDs.size() ; j++ ) {
-                htm << " <a href=$MR" << indIDs[j]
-                    << "><img src=memory:fam.bmp></a>";
+                htm << " <a href='tfp:$MR" << indIDs[j]
+                    << "'><img src=memory:fam.png></a>";
             }
             htm << "</td><td>" << eps[i].f_note
                 << " </td></tr>";

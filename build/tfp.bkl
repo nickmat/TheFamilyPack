@@ -108,6 +108,7 @@
     <sources>$(LOCAL_SRC)/tfpWrName.cpp</sources>
     <sources>$(LOCAL_SRC)/tfpWrNotes.cpp</sources>
     <sources>$(LOCAL_SRC)/tfpWrReference.cpp</sources>
+    <sources>$(LOCAL_SRC)/webviewfshandler.cpp</sources>
 
     <headers>$(LOCAL_SRC)/dlg/dlgEd.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgEdContact.h</headers>
@@ -139,6 +140,7 @@
     <headers>$(LOCAL_SRC)/tfpRd.h</headers>
     <headers>$(LOCAL_SRC)/tfpVersion.h</headers>
     <headers>$(LOCAL_SRC)/tfpWr.h</headers>
+    <headers>$(LOCAL_SRC)/webviewfshandler.h</headers>
 
     <win32-res>$(LOCAL_SRC)/tfp.rc</win32-res>
 
@@ -156,6 +158,7 @@
     <library>rec</library>
     <library>recgui</library>
     <library>calendar</library>
+    <wx-lib>webview</wx-lib>
     <wx-lib>html</wx-lib>
     <wx-lib>adv</wx-lib>
     <wx-lib>core</wx-lib>

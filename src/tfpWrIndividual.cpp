@@ -51,16 +51,17 @@ wxString tfpWriteIndividualPage( idt indID )
     recPersona per( ind.f_per_id );
     recIndividual spouse;
 
-    htm << "<html><head><title>Individual "
-        << ind.GetIdStr() << "</title></head>"
-           "<body><center><table width=100%>";
+    htm << "<html><head><title>Individual " << ind.GetIdStr() << "</title>"
+           "<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'>"
+           "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>"
+           "</head><body><center><table width=100%>";
 
     // Name
     htm << "<tr><td align=right width=120>Name:</td>"
            "<td><font size=+2><b>" << ind.GetFullName()
         << "</b></font> " << ind.f_epitaph
-        << " <a href=$MR" << indID
-        << "><img src=memory:fam.bmp></a></td></tr>";
+        << " <a href='tfp:$MR" << indID
+        << "'><img src=memory:fam.png></a></td></tr>";
 
     // Sex
     htm << "<tr><td align=right>ID, Sex:</td><td><b>"
@@ -82,8 +83,8 @@ wxString tfpWriteIndividualPage( idt indID )
             htm << "<br>" << eps[i].FGetNote();
         }
 
-        htm << "</b> <a href=E" << eve.FGetID()
-            << "><img src=memory:eve.bmp></a></td></tr>";
+        htm << "</b> <a href='tfp:E" << eve.FGetID()
+            << "'><img src=memory:eve.png></a></td></tr>";
     }
 
     // Write out Parents
@@ -91,25 +92,25 @@ wxString tfpWriteIndividualPage( idt indID )
     // Fathers
     for( i = 0 ; i < parents.size() ; i++ ) {
         if( parents[i].f_husb_id != 0 ) {
-            htm << "<tr><td align=right>Father:</td><td><b><a href=I"
-                << parents[i].f_husb_id << ">"
+            htm << "<tr><td align=right>Father:</td><td><b><a href='tfp:I"
+                << parents[i].f_husb_id << "'>"
                 << recIndividual::GetFullName( parents[i].f_husb_id )
                 << "</a></b> "
                 << recIndividual::GetDateEpitaph( parents[i].f_husb_id )
-                << " <a href=$MR" << parents[i].f_husb_id
-                << "><img src=memory:fam.bmp></a></td></tr>";
+                << " <a href='tfp:$MR" << parents[i].f_husb_id
+                << "'><img src=memory:fam.png></a></td></tr>";
         }
     }
     // Mothers
     for( i = 0 ; i < parents.size() ; i++ ) {
         if( parents[i].f_wife_id != 0 ) {
-            htm << "<tr><td align=right>Mother:</td><td><b><a href=I"
-                << parents[i].f_wife_id << ">"
+            htm << "<tr><td align=right>Mother:</td><td><b><a href='tfp:I"
+                << parents[i].f_wife_id << "'>"
                 << recIndividual::GetFullName( parents[i].f_wife_id )
                 << "</a></b> "
                 << recIndividual::GetDateEpitaph( parents[i].f_wife_id )
-                << " <a href=$MR" << parents[i].f_wife_id
-                << "><img src=memory:fam.bmp></a></td></tr>";
+                << " <a href='tfp:$MR" << parents[i].f_wife_id
+                << "'><img src=memory:fam.png></a></td></tr>";
         }
     }
 
@@ -126,14 +127,14 @@ wxString tfpWriteIndividualPage( idt indID )
         spouse.Read();
 
         // Spouse name
-        htm << "<tr><td align=right><a href=F"
-            << famID << ">Spouse " << cnt << ":</a></td>"
-               "<td><b><a href=I"
-            << spouseID << ">"
+        htm << "<tr><td align=right><a href='tfp:F"
+            << famID << "'>Spouse " << cnt << ":</a></td>"
+               "<td><b><a href='tfp:I"
+            << spouseID << "'>"
             << spouse.GetFullName() << "</a></b> "
             << spouse.f_epitaph
-            << " <a href=$MR" << spouseID
-            << "><img src=memory:fam.bmp></a></td></tr>";
+            << " <a href='tfp:$MR" << spouseID
+            << "'><img src=memory:fam.png></a></td></tr>";
 
         // Union event (marriage)
         idt marEvID = families[i].GetMarriageEvent();
@@ -142,8 +143,8 @@ wxString tfpWriteIndividualPage( idt indID )
                 << recEvent::GetTypeStr( marEvID )
                 << ":</td><td><b>"
                 << recEvent::GetDetailStr( marEvID )
-                << "</b> <a href=E" << marEvID
-                << "><img src=memory:eve.bmp></a></td></tr>";
+                << "</b> <a href='tfp:E" << marEvID
+                << "'><img src=memory:eve.png></a></td></tr>";
         }
 
         // Children
@@ -154,12 +155,12 @@ wxString tfpWriteIndividualPage( idt indID )
             } else {
                 htm << "<tr><td></td>";
             }
-            htm << "<td><b><a href=I"
-                << children[j].f_id << ">"
+            htm << "<td><b><a href='tfp:I"
+                << children[j].f_id << "'>"
                 << children[j].GetFullName() << "</a></b> "
                 << children[j].f_epitaph
-                << " <a href=$MR" << children[j].f_id
-                << "><img src=memory:fam.bmp></a></td></tr>";
+                << " <a href='tfp:$MR" << children[j].f_id
+                << "'><img src=memory:fam.png></a></td></tr>";
         }
     }
 
@@ -181,8 +182,8 @@ wxString tfpWriteIndividualPage( idt indID )
             << ":</td><td><b>"
             << recEvent::GetTitle( eventID );
         if( refID != 0 ) {
-            htm << " <a href=" << recReference::GetIdStr( refID )
-                << "><img src=memory:ref.bmp></a>";
+            htm << " <a href='tfp:" << recReference::GetIdStr( refID )
+                << "'><img src=memory:ref.png></a>";
         }
         htm << "<br>"
             << recEvent::GetDetailStr( eventID )
@@ -204,8 +205,8 @@ wxString tfpWriteIndividualPage( idt indID )
             << recReference::GetIdStr( refID )
             << ":</td><td><b>"
             << eTable.GetAsString( 1 )
-            << " <a href=" << recReference::GetIdStr( refID )
-            << "><img src=memory:ref.bmp></a>"
+            << " <a href='tfp:" << recReference::GetIdStr( refID )
+            << "'><img src=memory:ref.png></a>"
             << "</b></td></tr>";
     }
 

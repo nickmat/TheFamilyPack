@@ -7,6 +7,11 @@
                 >
             </File>
             <File
+                RelativePath="..\..\src\tfp.css"
+                DeploymentContent="true"
+                >
+            </File>
+            <File
                 RelativePath="..\..\src\tfpText.f2c"
                 >
                 <FileConfiguration
@@ -15,7 +20,7 @@
                     <Tool
                         Name="VCCustomBuildTool"
                         CommandLine="file2cpp -v -o ..\..\src\generated\tfpText.ci ..\..\src\tfpText.f2c&#x0D;&#x0A;"
-                        AdditionalDependencies="..\..\src\startup.htm"
+                        AdditionalDependencies="..\..\src\startup.htm;..\..\src\tfp.css"
                         Outputs="..\..\src\generated\tfpText.ci"
                     />
                 </FileConfiguration>
@@ -25,7 +30,7 @@
                     <Tool
                         Name="VCCustomBuildTool"
                         CommandLine="file2cpp -v -o ..\..\src\generated\tfpText.ci ..\..\src\tfpText.f2c&#x0D;&#x0A;"
-                        AdditionalDependencies="..\..\src\startup.htm"
+                        AdditionalDependencies="..\..\src\startup.htm;..\..\src\tfp.css"
                         Outputs="..\..\src\generated\tfpText.ci"
                     />
                 </FileConfiguration>

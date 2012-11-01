@@ -32,6 +32,8 @@
 #include <wx/html/htmlwin.h>
 #include <rec/recDatabase.h>
 
+class wxWebView;
+class wxWebViewEvent;
 class TfpHtml;
 class wxHtmlEasyPrinting;
 
@@ -51,6 +53,7 @@ private:
     wxMenuBar*          m_menuOpenDB;
     wxMenuBar*          m_menuClosedDB;
     wxToolBar*          m_toolbar;
+    wxStatusBar*        m_statusbar;
     wxMenu*             m_menuEditInd;
     idt                 m_EditIndLeft;
     idt                 m_EditIndRight;
@@ -58,8 +61,12 @@ private:
     wxTextCtrl*         m_showpage;
     wxArrayString       m_back;
     wxArrayString       m_forward;
-    TfpHtml*            m_html;
-    wxHtmlEasyPrinting* m_prn;
+//    TfpHtml*            m_html;
+    wxWebView*          m_browser;
+    wxString            m_ctxmenuref;
+    StringVec           m_ctxmenuPages;
+
+//    wxHtmlEasyPrinting* m_prn;
     wxString            m_dbFileName;
 
 public:
@@ -113,19 +120,36 @@ public:
     void OnShowPage( wxCommandEvent& event );
     void OnPageItemEdit( wxCommandEvent& event );
 
+    void OnNavigationRequest( wxWebViewEvent& event );
+    void OnHtmCtxMenu( wxCommandEvent& event );
+    void OnHtmIndMenu( wxCommandEvent& event );
+
     void OnCloseWindow( wxCloseEvent& event );
 
     bool NewFile();
     bool OpenFile();
     bool ImportGedcom();
 
+    void DoNavigation( const wxString& href );
+    void DoHtmCtxMenu( const wxString& ref );
+    int AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID );
+
     void SetDatabaseOpen( const wxString& path );
     void SetNoDatabase();
 
     void PushHtmName( const wxString& name );
+    wxString GetCurrentName();
     void RefreshEditMenu();
 
+    bool DisplayHtmPage( const wxString& name );
+    void RefreshHtmPage();
+    bool DisplayHomePage();
+
+
     wxString GetDisplay() const { return m_back[m_back.size()-1]; }
+
+    wxString GetDisplayText( const wxString& name );
+
 };
 
 #define tfpMAX_MENU_ITEMS 50
@@ -210,7 +234,8 @@ enum
     tfpID_INDMENU_SPOUSES,
     tfpID_INDMENU_CHILDREN,
     tfpID_INDMENU_BEG,
-    tfpID_INDMENU_END = tfpID_INDMENU_BEG + tfpMAX_MENU_ITEMS
+    tfpID_INDMENU_END = tfpID_INDMENU_BEG + tfpMAX_MENU_ITEMS,
+    tfpID_BROWSER
 };
 
 #endif // TFPFRAME_H

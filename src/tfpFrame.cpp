@@ -37,6 +37,7 @@
 #include "wx/wx.h"
 #endif
 
+#include <wx/webview.h>
 #include <wx/html/htmlwin.h>
 #include <wx/html/htmprint.h>
 #include <wx/numdlg.h>
@@ -44,6 +45,7 @@
 #include <rec/recIndividual.h>
 #include <rec/recVersion.h>
 
+#include "webviewfshandler.h"
 #include "tfpFrame.h"
 #include "tfpApp.h"
 #include "tfpVersion.h"
@@ -96,6 +98,9 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_GOTO_HOME, TfpFrame::OnHome )
     EVT_TEXT_ENTER( tfpID_SHOW_PAGE, TfpFrame::OnShowPage )
     EVT_MENU( tfpID_PAGE_ITEM_EDIT, TfpFrame::OnPageItemEdit )
+    EVT_WEB_VIEW_NAVIGATING( tfpID_BROWSER, TfpFrame::OnNavigationRequest )
+    EVT_MENU_RANGE( tfpID_HCTXMENU_BEG, tfpID_HCTXMENU_END, TfpFrame::OnHtmCtxMenu )
+    EVT_MENU_RANGE( tfpID_INDMENU_BEG, tfpID_INDMENU_END, TfpFrame::OnHtmIndMenu )
     EVT_CLOSE( TfpFrame::OnCloseWindow )
 END_EVENT_TABLE()
 
@@ -238,19 +243,22 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     m_toolbar->Realize();
     SetToolBar( m_toolbar );
 
-    CreateStatusBar();
+    m_statusbar = CreateStatusBar();
 
-    m_html = new TfpHtml( this, this );
-    m_html->SetRelatedStatusBar( 0 );
-
-    m_prn = new wxHtmlEasyPrinting( _("Easy Printing Demo"), this );
+//    m_html = new TfpHtml( this, this );
+//    m_html->SetRelatedStatusBar( 0 );
+//    m_prn = new wxHtmlEasyPrinting( _("Easy Printing Demo"), this );
+    m_browser = wxWebView::New( this, tfpID_BROWSER );
+    m_browser->RegisterHandler( 
+        wxSharedPtr<wxWebViewHandler>( new wxWebViewFSHandler( "memory" ))
+    );
 
     SetNoDatabase();
     if( recDb::IsOpen() ) {
         SetDatabaseOpen( recDb::GetFileName() );
-        m_html->DisplayHomePage();
+//        m_browser->DisplayHomePage();
     } else {
-        m_html->LoadPage( "memory:startup.htm" );
+        m_browser->LoadURL( "memory:startup.htm" );
     }
 }
 
@@ -258,7 +266,6 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
  */
 TfpFrame::~TfpFrame()
 {
-    wxDELETE( m_prn );
     if( GetMenuBar() != m_menuOpenDB ) {
         wxDELETE( m_menuOpenDB );
     }
@@ -294,7 +301,7 @@ void TfpFrame::OnCloseFile( wxCommandEvent& event )
 {
     recDb::CloseDb();
     SetNoDatabase();
-    m_html->LoadPage( wxT("memory:startup.htm") );
+    m_browser->LoadURL( "memory:startup.htm" );
 }
 
 /*! \brief Called on a Inport GEDCOM File menu option event.
@@ -364,7 +371,7 @@ void TfpFrame::OnAddNewIndMale( wxCommandEvent& event )
             recDb::Commit();
             wxString str;
             str << "FI" << id;
-            m_html->DisplayHtmPage( str );
+            DisplayHtmPage( str );
         } else {
             recDb::Rollback();
         }
@@ -386,7 +393,7 @@ void TfpFrame::OnAddNewIndFemale( wxCommandEvent& event )
             recDb::Commit();
             wxString str;
             str << "FI" << id;
-            m_html->DisplayHtmPage( str );
+            DisplayHtmPage( str );
         } else {
             recDb::Rollback();
         }
@@ -469,7 +476,7 @@ void TfpFrame::OnEditContext( wxCommandEvent& event )
         }
         if( ret == true ) {
             recDb::Commit();
-            m_html->RefreshHtmPage();
+            RefreshHtmPage();
         } else {
             recDb::Rollback();
         }
@@ -498,7 +505,7 @@ void TfpFrame::OnEditReference( wxCommandEvent& event )
         bool ret = tfpEditReference( (idt) num );
         if( ret == true ) {
             recDb::Commit();
-            m_html->RefreshHtmPage();
+            RefreshHtmPage();
         } else {
             recDb::Rollback();
         }
@@ -527,7 +534,7 @@ void TfpFrame::OnEditResearcher( wxCommandEvent& event )
         bool ret = tfpEditResearcher( (idt) num );
         if( ret == true ) {
             recDb::Commit();
-            m_html->RefreshHtmPage();
+            RefreshHtmPage();
         } else {
             recDb::Rollback();
         }
@@ -556,7 +563,7 @@ void TfpFrame::OnFindIndividualID( wxCommandEvent& event )
  */
 void TfpFrame::OnListIndex( wxCommandEvent& event )
 {
-    m_html->DisplayHtmPage( "N" );
+    DisplayHtmPage( "N" );
 }
 
 /*! \brief Called on a List Names menu option event.
@@ -570,28 +577,28 @@ void TfpFrame::OnListNames( wxCommandEvent& event )
  */
 void TfpFrame::OnListIndividuals( wxCommandEvent& event )
 {
-    m_html->DisplayHtmPage( "N*" );
+    DisplayHtmPage( "N*" );
 }
 
 /*! \brief Called on a List References menu option event.
  */
 void TfpFrame::OnListReferences( wxCommandEvent& event )
 {
-    m_html->DisplayHtmPage( "R" );
+    DisplayHtmPage( "R" );
 }
 
 /*! \brief Called on a List Events menu option event.
  */
 void TfpFrame::OnListEvents( wxCommandEvent& event )
 {
-    m_html->DisplayHtmPage( "E" );
+    DisplayHtmPage( "E" );
 }
 
 /*! \brief Called on a List Researchers menu option event.
  */
 void TfpFrame::OnListResearchers( wxCommandEvent& event )
 {
-    m_html->DisplayHtmPage( "Re" );
+    DisplayHtmPage( "Re" );
 }
 
 /*! \brief Called on a Pedigree Chart menu option event.
@@ -617,7 +624,7 @@ void TfpFrame::OnSystemOptions( wxCommandEvent& event )
         bool ret = tfpEditSystem();
         if( ret == true ) {
             recDb::Commit();
-            m_html->RefreshHtmPage();
+            RefreshHtmPage();
         } else {
             recDb::Rollback();
         }
@@ -637,7 +644,7 @@ void TfpFrame::OnUserOptions( wxCommandEvent& event )
         bool ret = tfpEditUserSettings();
         if( ret == true ) {
             recDb::Commit();
-            m_html->RefreshHtmPage();
+            RefreshHtmPage();
         } else {
             recDb::Rollback();
         }
@@ -718,8 +725,8 @@ void TfpFrame::OnFindBack( wxCommandEvent& event )
         if( ind == 1 ) {
             m_toolbar->EnableTool( tfpID_FIND_BACK, false );
         }
-        m_html->SetName( m_back[ind-1] );
-        m_html->RefreshHtmPage();
+//        m_html->SetName( m_back[ind-1] );
+        RefreshHtmPage();
         RefreshEditMenu();
     }
 }
@@ -742,8 +749,8 @@ void TfpFrame::OnFindForward( wxCommandEvent& event )
         if( ind == 0 ) {
             m_toolbar->EnableTool( tfpID_FIND_FORWARD, false );
         }
-        m_html->SetName( name );
-        m_html->RefreshHtmPage();
+//        m_html->SetName( name );
+        RefreshHtmPage();
         RefreshEditMenu();
     }
 }
@@ -752,7 +759,7 @@ void TfpFrame::OnFindForward( wxCommandEvent& event )
  */
 void TfpFrame::OnHome( wxCommandEvent& event )
 {
-    m_html->DisplayHomePage();
+    DisplayHomePage();
 }
 
 /*! \brief Called on a pressing enter in toolbar text box.
@@ -797,7 +804,7 @@ void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
         }
         if( ret == true ) {
             recDb::Commit();
-            m_html->RefreshHtmPage();
+            RefreshHtmPage();
         } else {
             recDb::Rollback();
         }
@@ -807,6 +814,112 @@ void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
         recDb::Rollback();
     }
 }
+
+void TfpFrame::OnNavigationRequest( wxWebViewEvent& evt )
+{
+    wxString url = evt.GetURL();
+    wxString target = evt.GetTarget();
+
+    if( url == wxWebViewDefaultURLStr ) return;
+    if( url.StartsWith( "memory:" ) ) return;
+    // We will handle all other navigation ourselves.
+    evt.Veto();
+
+    if( url.StartsWith( "tfp:" ) ) {
+        DoNavigation( url.Mid( 4 ) );
+        return;
+    }
+    if( url.StartsWith( "http:" ) || url.StartsWith( "https:" ) ) {
+        wxLaunchDefaultBrowser( url );
+        return;
+    }
+
+    wxMessageBox(
+        wxString::Format( 
+            _("Unable to proccess link\n[%s]\n[%s]"), url, target
+        ),
+        _("Unknown Link")
+    );
+}
+
+void TfpFrame::OnHtmCtxMenu( wxCommandEvent& event )
+{
+    bool ret = false;
+    Sex sex;
+    idt id = recGetID( m_ctxmenuref.Mid(1) );
+    recFamily fam(id);
+    if( id == 0 && m_ctxmenuref.StartsWith( "F0," ) ) {
+        fam.Decode( m_ctxmenuref );
+    }
+
+    recDb::Begin();
+    try {
+        switch( event.GetId() )
+        {
+        case tfpID_HCTXMENU_EDIT_FAMILY:
+            ret = tfpEditFamily( fam );
+            break;
+        case tfpID_HCTXMENU_EDIT_NEW_SON:
+            if( tfpAddNewChild( id, SEX_Male ) != 0 ) ret = true;
+            break;
+        case tfpID_HCTXMENU_EDIT_NEW_DAUR:
+            if( tfpAddNewChild( id, SEX_Female ) != 0 ) ret = true;
+            break;
+        case tfpID_HCTXMENU_EDIT_EXIST_SON:
+            ret = tfpAddExistChild( id, SEX_Male );
+            break;
+        case tfpID_HCTXMENU_EDIT_EXIST_DAUR:
+            ret = tfpAddExistChild( id, SEX_Female );
+            break;
+        case tfpID_HCTXMENU_EDIT_INDIVIDUAL:
+            ret = tfpEditIndividual( id );
+            break;
+        case tfpID_HCTXMENU_EDIT_NEW_MOTHER:
+            ret = tfpAddNewParent( id, SEX_Female );
+            break;
+        case tfpID_HCTXMENU_EDIT_NEW_FATHER:
+            ret = tfpAddNewParent( id, SEX_Male );
+            break;
+        case tfpID_HCTXMENU_EDIT_NEW_SPOUSE:
+            sex = ( m_ctxmenuref.GetChar(0) == 'H' ) ? SEX_Female : SEX_Male;
+            id = tfpAddNewIndividual( recIndividual::GetDefaultFamily( id ), sex );
+            if( id ) ret = true;
+            break;
+        case tfpID_HCTXMENU_EDIT_EXIST_MOTHER:
+            ret = tfpAddExistParent( id, SEX_Female );
+            break;
+        case tfpID_HCTXMENU_EDIT_EXIST_FATHER:
+            ret = tfpAddExistParent( id, SEX_Male );
+            break;
+        case tfpID_HCTXMENU_EDIT_EXIST_SPOUSE:
+            sex = ( m_ctxmenuref.GetChar(0) == 'H' ) ? SEX_Female : SEX_Male;
+            ret = tfpAddExistSpouse( id, sex );
+            break;
+        case tfpID_HCTXMENU_EDIT_REFERENCE:
+            ret = tfpEditReference( id );
+            break;
+        case tfpID_HCTXMENU_EDIT_EVENT:
+            ret = tfpEditEvent( id );
+            break;
+        }
+        if( ret == true ) {
+            recDb::Commit();
+            RefreshHtmPage();
+        } else {
+            recDb::Rollback();
+        }
+    } catch( wxSQLite3Exception& e ) {
+        recDb::ErrorMessage( e );
+        recDb::Rollback();
+    }
+}
+
+void TfpFrame::OnHtmIndMenu( wxCommandEvent& event )
+{
+    size_t i = event.GetId() - tfpID_INDMENU_BEG;
+    DisplayHtmPage( m_ctxmenuPages[i] );
+}
+
 
 /*! \brief Called on a Close Window event.
  */
@@ -833,7 +946,7 @@ bool TfpFrame::NewFile()
         {
             SetDatabaseOpen( path );
             // Start with the 1st (empty) Family.
-            m_html->DisplayHtmPage( "F1" );
+            DisplayHtmPage( "F1" );
             ret = true;
         }
     }
@@ -855,7 +968,7 @@ bool TfpFrame::OpenFile()
         if( recDb::OpenDb( path ) == true )
         {
             SetDatabaseOpen( path );
-            m_html->DisplayHomePage();
+            DisplayHomePage();
             ret = true;
         }
     }
@@ -877,7 +990,7 @@ bool TfpFrame::ImportGedcom()
         if( tfpReadGedcom( path ) )
         {
             SetDatabaseOpen( path );
-            m_html->DisplayHtmPage( "F1" );
+            DisplayHtmPage( "F1" );
             ret = true;
         } else {
             wxMessageBox( _("Error Reading GEDCOM File"), _("Import") );
@@ -886,12 +999,214 @@ bool TfpFrame::ImportGedcom()
     return ret;
 }
 
+void TfpFrame::DoNavigation( const wxString& href )
+{
+    wxUniChar uch0 = href.GetChar( 0 );
+    wxUniChar uch1, uch2;
+    long cond = recDb::GetChange();
+
+    try {
+        switch( uch0.GetValue() )
+        {
+        case ':': // Program Commands
+            if( href == ":New" ) {
+                NewFile();
+            } else if( href == ":Open" ) {
+                OpenFile();
+            } else if( href == ":Import" ) {
+                ImportGedcom();
+            } else {
+                wxMessageBox( _("Error: Invalid Command"), _("Link Error") );
+            }
+            break;
+        case '$':  // Context Commands
+            uch1 = href.GetChar( 1 );
+            switch( uch1.GetValue() )
+            {
+            case 'I': // Edit the given individual (create if 0)
+                uch2 = href.GetChar( 2 );
+                switch( uch2.GetValue() )
+                {
+                case 'L': case 'R':
+                    tfpAddNewSpouse( href.Mid(2) );
+                    break;
+                case 'F': case 'M':
+                    tfpAddNewParent( href.Mid(2) );
+                    break;
+                }
+                break;
+            case 'M': // Create a popup menu
+                DoHtmCtxMenu( href.Mid(2) );
+                break;
+            case 'R': // Edit reference record
+                uch2 = href.GetChar( 2 );
+                if( uch2.GetValue() == 'e' ) {
+                    tfpEditResearcher( href.Mid(3) );
+                } else {
+                    tfpEditReference( href.Mid(2) );
+                }
+                break;
+            }
+            break;
+        case '!':  // Display in external browser
+            wxLaunchDefaultBrowser( href.Mid( 1 ) );
+            break;
+        case '^':  // Display the given reference as a note
+            tfpDisplayNote( this, href.Mid( 1 ) );
+            break;
+        default:   // Display the given reference
+            DisplayHtmPage( href );
+            break;
+        }
+    } catch( wxSQLite3Exception& e ) {
+        recDb::ErrorMessage( e );
+        recDb::Rollback();
+    }
+    if( cond != recDb::GetChange() ) {
+        RefreshHtmPage();
+    }
+}
+
+void TfpFrame::DoHtmCtxMenu( const wxString& ref )
+{
+    m_ctxmenuref = ref;
+    wxMenu* menu = new wxMenu;
+
+    switch( (wxChar) ref.GetChar( 0 ) )
+    {
+    case 'F': // Edit family record or children
+        menu->Append( tfpID_HCTXMENU_EDIT_FAMILY, _("Edit Family") );
+        menu->AppendSeparator();
+        menu->Append( tfpID_HCTXMENU_EDIT_NEW_SON, _("Add new Son") );
+        menu->Append( tfpID_HCTXMENU_EDIT_NEW_DAUR, _("Add new Daughter") );
+        menu->AppendSeparator();
+        menu->Append( tfpID_HCTXMENU_EDIT_EXIST_SON, _("Add existing Son") );
+        menu->Append( tfpID_HCTXMENU_EDIT_EXIST_DAUR, _("Add existing Daughter") );
+        break;
+    case 'H': case 'W': // Edit a Husb or Wife Individual
+        menu->Append( tfpID_HCTXMENU_EDIT_INDIVIDUAL, _("Edit Individual") );
+        menu->AppendSeparator();
+        menu->Append( tfpID_HCTXMENU_EDIT_NEW_MOTHER, _("Add new Mother") );
+        menu->Append( tfpID_HCTXMENU_EDIT_NEW_FATHER, _("Add new Father") );
+        menu->Append( tfpID_HCTXMENU_EDIT_NEW_SPOUSE, _("Add new Spouse") );
+        menu->AppendSeparator();
+        menu->Append( tfpID_HCTXMENU_EDIT_EXIST_MOTHER, _("Add existing Mother") );
+        menu->Append( tfpID_HCTXMENU_EDIT_EXIST_FATHER, _("Add existing Father") );
+        menu->Append( tfpID_HCTXMENU_EDIT_EXIST_SPOUSE, _("Add existing Spouse") );
+        break;
+    case 'R':
+        // Parents, Spouses (Marriage), Siblings, and Children
+        // List individuals and jump to the selected individuals family
+        AddFamiliesToMenu( ref, menu, tfpID_INDMENU_BEG );
+        break;
+    default:
+        delete menu;
+        wxMessageBox( wxT("Error: \"") + ref + wxT("\" Unknown Menu"), wxT("Link Error") );
+        return;
+    }
+
+    PopupMenu( menu );
+    delete menu;
+}
+
+int TfpFrame::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )
+{
+    recFamilyVec families;
+    size_t c = 0, i, j;
+    recIndividualList inds;
+    wxLongLong_t indID;
+    ref.Mid( 1 ).ToLongLong( &indID );
+    m_ctxmenuPages.clear();
+    wxString page;
+
+
+    menu->Append( cmd_ID + c, wxT("Family") );
+    m_ctxmenuPages.push_back( "FI"+recGetStr( indID ) );
+    c++;
+
+    wxMenu* parmenu = new wxMenu;
+    menu->Append( tfpID_INDMENU_PARENTS, "Parents", parmenu );
+
+    families = recIndividual::GetParentList( indID );
+    int items = c;
+    for( i = 0 ; i < families.size() ; i++ ) {
+        if( families[i].f_husb_id != 0 ) {
+            parmenu->Append( cmd_ID + c, recIndividual::GetFullName( families[i].f_husb_id ) );
+        }
+        if( families[i].f_wife_id != 0 ) {
+            parmenu->Append( cmd_ID + c, recIndividual::GetFullName( families[i].f_wife_id ) );
+        }
+        m_ctxmenuPages.push_back( "F"+recGetStr( families[i].f_id ) );
+        c++;
+    }
+    if( items == c ) {
+        menu->Enable( tfpID_INDMENU_PARENTS, false );
+    }
+
+    wxMenu* sibmenu = new wxMenu;
+    menu->Append( tfpID_INDMENU_SIBLINGS, "Siblings", sibmenu );
+    items = c;
+    for( i = 0 ; i < families.size() ; i++ ) {
+        inds = families[i].GetChildren();
+        for( j = 0 ; j < inds.size() ; j++ ) {
+            if( inds[j].f_id == indID ) continue;
+            sibmenu->Append( cmd_ID + c, inds[j].GetFullName() );
+            m_ctxmenuPages.push_back( "FI"+recGetStr( inds[j].f_id ) );
+            c++;
+        }
+        inds.empty();
+    }
+    if( items == c ) {
+        menu->Enable( tfpID_INDMENU_SIBLINGS, false );
+    }
+
+    wxMenu* marmenu = new wxMenu;
+    menu->Append( tfpID_INDMENU_SPOUSES, "Spouses", marmenu );
+    families.empty();
+    families = recIndividual::GetFamilyList( indID );
+    items = c;
+    for( i = 0 ; i < families.size() ; i++ ) {
+        if( families[i].f_husb_id != 0 && families[i].f_husb_id != indID ) {
+            marmenu->Append( cmd_ID + c, recIndividual::GetFullName( families[i].f_husb_id ) );
+            m_ctxmenuPages.push_back( "F"+recGetStr( families[i].f_id ) );
+            c++;
+        }
+        if( families[i].f_wife_id != 0 && families[i].f_wife_id != indID ) {
+            marmenu->Append( cmd_ID + c, recIndividual::GetFullName( families[i].f_wife_id ) );
+            m_ctxmenuPages.push_back( "F"+recGetStr( families[i].f_id ) );
+            c++;
+        }
+    }
+    if( items == c ) {
+        menu->Enable( tfpID_INDMENU_SPOUSES, false );
+    }
+
+    wxMenu* kidmenu = new wxMenu;
+    menu->Append( tfpID_INDMENU_CHILDREN, "Children", kidmenu );
+    items = c;
+    for( i = 0 ; i < families.size() ; i++ ) {
+        inds.empty();
+        inds = families[i].GetChildren();
+        for( j = 0 ; j < inds.size() ; j++ ) {
+            kidmenu->Append( cmd_ID + c, inds[j].GetFullName() );
+            m_ctxmenuPages.push_back( "FI"+recGetStr( inds[j].f_id ) );
+            c++;
+        }
+    }
+    if( items == c ) {
+        menu->Enable( tfpID_INDMENU_CHILDREN, false );
+    }
+    families.clear();
+    inds.clear();
+    return c;
+}
+
 void TfpFrame::SetDatabaseOpen( const wxString& path )
 {
     wxFileName dbfile( path );
     m_dbFileName = dbfile.GetFullPath();
     wxString fmt( wxString::Format( "TFP: %s, %%s", dbfile.GetName() ) );
-    m_html->SetRelatedFrame( this, fmt );
+//    m_html->SetRelatedFrame( this, fmt );
     SetMenuBar( m_menuOpenDB );
     m_toolbar->EnableTool( tfpID_LIST_SURNAME_INDEX, true );
     m_toolbar->EnableTool( tfpID_LIST_REFERENCES, true );
@@ -902,7 +1217,7 @@ void TfpFrame::SetDatabaseOpen( const wxString& path )
 void TfpFrame::SetNoDatabase()
 {
     m_dbFileName = wxEmptyString;
-    m_html->SetRelatedFrame( this, "%s" );
+//    m_html->SetRelatedFrame( this, "%s" );
     SetMenuBar( m_menuClosedDB );
     m_toolbar->EnableTool( tfpID_LIST_SURNAME_INDEX, false );
     m_toolbar->EnableTool( tfpID_LIST_REFERENCES, false );
@@ -926,6 +1241,15 @@ void TfpFrame::PushHtmName( const wxString& name )
         m_toolbar->EnableTool( tfpID_FIND_FORWARD, false );
     }
     RefreshEditMenu();
+}
+
+wxString TfpFrame::GetCurrentName()
+{
+    size_t ind = m_back.size();
+    if( ind >= 1 ) {
+        return m_back[ind-1];
+    }
+    return wxEmptyString;
 }
 
 void TfpFrame::RefreshEditMenu()
@@ -985,6 +1309,149 @@ void TfpFrame::RefreshEditMenu()
         break;
     }
 }
+
+bool TfpFrame::DisplayHtmPage( const wxString& name )
+{
+    wxString text = GetDisplayText( name );
+    if( !text.IsEmpty() ) {
+        PushHtmName( name );
+        m_browser->SetPage( text, "" );
+        return true;
+    }
+    return false;
+}
+
+void TfpFrame::RefreshHtmPage()
+{
+    wxString name = GetCurrentName();
+    if( name.size() ) {
+        m_browser->SetPage( GetDisplayText( name ), "" );
+    }
+}
+
+bool TfpFrame::DisplayHomePage()
+{
+    return DisplayHtmPage( recGetHomeDisplay() ); 
+}
+
+/////////////////////////////////////////////////////////////
+// This could be converted to a function
+
+wxString TfpFrame::GetDisplayText( const wxString& name )
+{
+    wxUniChar uch, uch1;
+    wxLongLong_t num;
+    bool success;
+
+    wxASSERT( name.size() > 0 );
+    uch = name.GetChar( 0 );
+    switch( uch.GetValue() )
+    {
+    case 'A':  // Attribute
+        success = name.Mid(1).ToLongLong( &num );
+        if( !success || num < 1 ) {
+            wxMessageBox( _("Error: Invalid Attribute ID link"), _("Link Error") );
+            return wxEmptyString;
+        }
+        return tfpWriteAttribute( num );
+    case 'C':  // Chart reference
+        success = name.Mid(2).ToLongLong( &num );
+        if( !success || num < 1 ) {
+            wxMessageBox( _("Error: Invalid Individual ID link"), _("Link Error") );
+            return wxEmptyString;
+        }
+        switch( (wxChar) name.GetChar( 1 ) )
+        {
+        case 'D':
+            return tfpCreateDescChart( num );
+        case 'P':
+            return tfpCreatePedChart( num );
+        }
+        wxMessageBox( _("Error: Invalid Chart link reference"), _("Link Error") );
+        return wxEmptyString;
+    case 'D':  // Date
+        success = name.Mid(1).ToLongLong( &num );
+        if( !success || num < 1 ) {
+            wxMessageBox( _("Error: Invalid Date ID link"), _("Link Error") );
+            return wxEmptyString;
+        }
+        return tfpWriteDate( num );
+    case 'E':  // Reference Document
+        if( name == "E" ) {
+            return tfpWriteEventIndex();
+        }
+        success = name.Mid(1).ToLongLong( &num );
+        if( !success || num < 1 ) {
+            wxMessageBox( _("Error: Invalid Reference Document ID link"), _("Link Error") );
+            return wxEmptyString;
+        }
+        return tfpWriteEventPage( num );
+    case 'F':  // Family reference
+        if( name.GetChar( 1 ) == 'I' ) {
+            success = name.Mid(2).ToLongLong( &num );
+            if( !success ) {
+                wxMessageBox( _("Error: Invalid Individual ID link"), _("Link Error") );
+                return wxEmptyString;
+            }
+            return tfpWriteIndFamilyPage( num );
+        }
+        return tfpWriteFamilyPage( name.Mid(1) );
+    case 'I':  // Individual reference
+        success = name.Mid(1).ToLongLong( &num );
+        if( !success || num < 1 ) {
+            wxMessageBox( _("Error: Invalid Individual ID link"), _("Link Error") );
+            return wxEmptyString;
+        }
+        return tfpWriteIndividualPage( num );
+    case 'N':  // Name index
+        if( name == "N" ) {
+            return tfpWriteIndividualIndex();
+        }
+        if( name == "N*" ) {
+            return tfpWriteIndividualList( wxEmptyString );
+        }
+        return tfpWriteIndividualList( name.Mid( 1 ) );
+    case 'P':  // Place
+        success = name.Mid(1).ToLongLong( &num );
+        if( !success || num < 1 ) {
+            wxMessageBox( _("Error: Invalid Place ID link"), _("Link Error") );
+            return wxEmptyString;
+        }
+        return tfpWritePlace( num );
+    case 'R':  // Reference Document
+        if( name == "R" ) {
+            return tfpWriteReferenceIndex();
+        }
+        if( name == "Re" ) {
+            return tfpWriteResearcherList();
+        }
+        uch1 = name.GetChar( 1 );
+        if( !wxIsdigit( uch1 ) ) {
+            success = name.Mid(2).ToLongLong( &num );
+            if( !success ) {
+                wxMessageBox( _("Error: Invalid ID link"), _("Link Error") );
+                return wxEmptyString;
+            }
+            switch( uch1.GetValue() )
+            {
+            case 's':
+                return tfpWriteRelationship( num );
+            default:
+                wxMessageBox( _("Error: Invalid ID link"), _("Link Error") );
+                return wxEmptyString;
+            }
+        }
+        success = name.Mid(1).ToLongLong( &num );
+        if( !success || num < 1 ) {
+            wxMessageBox( _("Error: Invalid Reference Document ID link"), _("Link Error") );
+            return wxEmptyString;
+        }
+        return tfpWriteReferencePage( num );
+    }
+    wxMessageBox( _("Error: Invalid Display Name ")+name, _("Link Error") );
+    return wxEmptyString;
+}
+
 
 // End of tfpFrame.cpp file
 
