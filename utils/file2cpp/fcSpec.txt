@@ -71,7 +71,6 @@ commenttype:  remove comments as defined by the commenttype:-
   2. Right trim
   3. Compact blank lines
   5. Left trim
-  
 
 Example:-
    File: test.f2c
@@ -116,5 +115,12 @@ ____________________________________________________
 
 Command Line Switches:
 
-Usage:  file2cpp [/h] [/v] [/q] [/o <str>] [/I <str>] format-file
-/h or --help
+Usage:  file2cpp [-h] [-q] [-v] [-s] [-o <str>] [-I <str>] format-file
+
+-h or --help     Display help screen
+-q or --quiet    Do not display the startup banner.
+-v or --verbose  Output progress.
+-s or --svn      Svn friendly, if "RCS-ID" and "$Id:" occur in the same line, remove the $ from $Id:.
+-o or --output filename   Filename to use for output.
+-I or --include paths     A semicolon deliminated list of paths to search for input files.
+format-file               The template file (ie file containing the format or formats).

@@ -42,23 +42,23 @@
 #include <wx/cmdline.h>
 #include <wx/tokenzr.h>
 
-#define VERSION   "0.3.1"
+#define VERSION   "0.4.0"
 #define PROGNAME  "file2cpp"
 
 const wxString g_version = VERSION;
 const wxString g_progName = PROGNAME;
 
-#ifdef NDEBUG
-const wxString g_title = PROGNAME " - Version " VERSION "\n"
-                         "Copyright (c) 2009 Nick Matthews\n\n";
-#else
+#ifdef _DEBUG
 const wxString g_title = PROGNAME " - Version " VERSION " Debug\n"
-                         "Copyright (c) 2009 Nick Matthews\n\n";
+                         "Copyright (c) 2009, 2012 Nick Matthews\n\n";
+#else
+const wxString g_title = PROGNAME " - Version " VERSION "\n"
+                         "Copyright (c) 2009, 2012 Nick Matthews\n\n";
 #endif
 
 bool g_verbose = false;
 bool g_quiet   = false;
-//wxString g_incPath;
+bool g_svn     = false;
 wxArrayString g_incPaths;
 
 enum SkipType {
@@ -98,6 +98,7 @@ bool IsPostfixTerminator( wxChar ch );
 bool Compare( cit_t it, cit_t end, const wxString& str );
 void AddToIncPaths( wxString& incPath );
 bool FindFile( wxFileName& name );
+void DisableSvnId( wxString* line );
 
 /*#*************************************************************************
  **  main
@@ -111,8 +112,9 @@ int main( int argc, char** argv )
             wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP },
         { wxCMD_LINE_SWITCH, "v", "verbose", "be verbose" },
         { wxCMD_LINE_SWITCH, "q", "quiet",   "be quiet" },
+        { wxCMD_LINE_SWITCH, "s", "svn",     "svn friendly" },
         { wxCMD_LINE_OPTION, "o", "output",  "output file" },
-        { wxCMD_LINE_OPTION, "I", "include",   "include paths" },
+        { wxCMD_LINE_OPTION, "I", "include", "include paths" },
         { wxCMD_LINE_PARAM,  NULL, NULL, "format file",
             wxCMD_LINE_VAL_STRING, wxCMD_LINE_OPTION_MANDATORY },
         { wxCMD_LINE_NONE }
@@ -138,6 +140,7 @@ int main( int argc, char** argv )
 
     if( parser.Found( "q" ) ) g_quiet = true;
     if( parser.Found( "v" ) ) g_verbose = true;
+    if( parser.Found( "s" ) ) g_svn = true;
 
     if( ! g_quiet ) wxPrintf( g_title );
 
@@ -206,6 +209,9 @@ int ProccessInFile( wxTextFile& inFile, wxFFile& outFile )
     wxString out;
     cit_t it, end;
     for( line = inFile.GetFirstLine() ; !inFile.Eof() ; line = inFile.GetNextLine() ) {
+        if( g_svn && line.find( "RCS-ID" ) != wxString::npos ) {
+            DisableSvnId( &line );
+        }
         end = line.end();
         for( it = line.begin() ; it != end ; it++ ) {
             if( skip != SKIP_NONE ) {
@@ -579,6 +585,14 @@ bool FindFile( wxFileName& name )
         }
     }
     return false;
+}
+
+void DisableSvnId( wxString* line )
+{
+    size_t pos = line->find( "$Id:" );
+    if( pos != wxString::npos ) {
+        *line = line->Mid(0,pos) + line->Mid(pos+1);
+    }
 }
 
 /* End of file2cpp.cpp file */

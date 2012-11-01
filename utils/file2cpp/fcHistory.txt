@@ -27,37 +27,40 @@
 
    Revision History
    ~~~~~~~~~~~~~~~~
-   
+ 1nov12  v0.4.0
+   Added -s switch. Subversion friendly. When set, if "RCS-ID" and "$Id:" occur
+   in the same line in the format-file, the $ from $Id: is removed.
+
  2oct10  v0.3.1
    Modification to strings to enable wxWidgets v2.9.0 compile.
-   
+
  6oct09  v0.3.0
    Program renamed file2cpp to avoid confusion with the GNU program file2c.
-   Complete rewrite as a C++ wxWidgets console program. The Format (input) 
+   Complete rewrite as a C++ wxWidgets console program. The Format (input)
    file now uses the @ prefix to control the formatting files being
    transcribed, as shown below.
-   
+
        @{filename}
          Output the filename as a literal C char array.
-     
+
        @(options.commenttype)prefix"filename"postfix[;,whitespace]
          Output the filename as a sequence of C strings with the optional
          prefix and postfix characters and optionally removing whitespace and
          comments. See fcSpec.txt for details.
-     
+
  9apr08  N0.20  (Version not released.)
    Add switch -X, which puts wxWidgets macros, wxT("string"), around text.
 
 10dec05  D0.10  (Version not released.)
-   Initial version of File2c, a MS Windows command line program written in C. 
+   Initial version of File2c, a MS Windows command line program written in C.
    The program takes an input file and outputs that file with C /* ... */
-   comments and blank lines removed. The sequences { filename.ext } and 
-   " filename.ext " are replaced with literal representations of the named 
+   comments and blank lines removed. The sequences { filename.ext } and
+   " filename.ext " are replaced with literal representations of the named
    files. The code sequence { filename.exe } is replaced by a literal C type
    char array. The sequence " filename.ext " is replaced by a list of C type
-   strings representing the text lines in a form that will automatically be 
+   strings representing the text lines in a form that will automatically be
    concatenated. C type comments and blank lines in the text file are removed.
-   
+
    Example:-
    File: test.f2c
 ____________________________________________________

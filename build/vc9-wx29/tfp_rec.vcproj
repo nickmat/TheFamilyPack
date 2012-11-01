@@ -208,7 +208,7 @@
                     >
                     <Tool
                         Name="VCCustomBuildTool"
-                        CommandLine="file2cpp -v -o ..\..\src\rec\generated\recSql.ci ..\..\src\rec\recSql.f2c&#x0D;&#x0A;"
+                        CommandLine="file2cpp -v -s -o ..\..\src\rec\generated\recSql.ci ..\..\src\rec\recSql.f2c&#x0D;&#x0A;"
                         AdditionalDependencies="..\..\src\rec\recCreate.sql"
                         Outputs="..\..\src\rec\generated\recSql.ci"
                     />
@@ -218,7 +218,7 @@
                     >
                     <Tool
                         Name="VCCustomBuildTool"
-                        CommandLine="file2cpp -v -o ..\..\src\rec\generated\recSql.ci ..\..\src\rec\recSql.f2c&#x0D;&#x0A;"
+                        CommandLine="file2cpp -v -s -o ..\..\src\rec\generated\recSql.ci ..\..\src\rec\recSql.f2c&#x0D;&#x0A;"
                         AdditionalDependencies="..\..\src\rec\recCreate.sql"
                         Outputs="..\..\src\rec\generated\recSql.ci"
                     />

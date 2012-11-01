@@ -236,7 +236,7 @@
                     >
                     <Tool
                         Name="VCCustomBuildTool"
-                        CommandLine="file2cpp -v -o ..\..\src\generated\tfpText.ci ..\..\src\tfpText.f2c&#x0D;&#x0A;"
+                        CommandLine="file2cpp -v -s -o ..\..\src\generated\tfpText.ci ..\..\src\tfpText.f2c&#x0D;&#x0A;"
                         AdditionalDependencies="..\..\src\startup.htm;..\..\src\tfp.css"
                         Outputs="..\..\src\generated\tfpText.ci"
                     />
@@ -246,7 +246,7 @@
                     >
                     <Tool
                         Name="VCCustomBuildTool"
-                        CommandLine="file2cpp -v -o ..\..\src\generated\tfpText.ci ..\..\src\tfpText.f2c&#x0D;&#x0A;"
+                        CommandLine="file2cpp -v -s -o ..\..\src\generated\tfpText.ci ..\..\src\tfpText.f2c&#x0D;&#x0A;"
                         AdditionalDependencies="..\..\src\startup.htm;..\..\src\tfp.css"
                         Outputs="..\..\src\generated\tfpText.ci"
                     />
