@@ -245,9 +245,7 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
 
     m_statusbar = CreateStatusBar();
 
-//    m_html = new TfpHtml( this, this );
-//    m_html->SetRelatedStatusBar( 0 );
-//    m_prn = new wxHtmlEasyPrinting( _("Easy Printing Demo"), this );
+    m_webPageAllow = false;
     m_browser = wxWebView::New( this, tfpID_BROWSER );
     m_browser->RegisterHandler( 
         wxSharedPtr<wxWebViewHandler>( new wxWebViewFSHandler( "memory" ))
@@ -256,7 +254,7 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     SetNoDatabase();
     if( recDb::IsOpen() ) {
         SetDatabaseOpen( recDb::GetFileName() );
-//        m_browser->DisplayHomePage();
+        DisplayHomePage();
     } else {
         m_browser->LoadURL( "memory:startup.htm" );
     }
@@ -725,7 +723,6 @@ void TfpFrame::OnFindBack( wxCommandEvent& event )
         if( ind == 1 ) {
             m_toolbar->EnableTool( tfpID_FIND_BACK, false );
         }
-//        m_html->SetName( m_back[ind-1] );
         RefreshHtmPage();
         RefreshEditMenu();
     }
@@ -749,7 +746,6 @@ void TfpFrame::OnFindForward( wxCommandEvent& event )
         if( ind == 0 ) {
             m_toolbar->EnableTool( tfpID_FIND_FORWARD, false );
         }
-//        m_html->SetName( name );
         RefreshHtmPage();
         RefreshEditMenu();
     }
@@ -817,6 +813,10 @@ void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
 
 void TfpFrame::OnNavigationRequest( wxWebViewEvent& evt )
 {
+    if( m_webPageAllow ) {
+        m_webPageAllow = false;
+        return;
+    }
     wxString url = evt.GetURL();
     wxString target = evt.GetTarget();
 
@@ -827,6 +827,10 @@ void TfpFrame::OnNavigationRequest( wxWebViewEvent& evt )
 
     if( url.StartsWith( "tfp:" ) ) {
         DoNavigation( url.Mid( 4 ) );
+        return;
+    }
+    if( url.StartsWith( "tfpc:" ) ) {
+        DoTfpCommand( url.Mid( 5 ) );
         return;
     }
     if( url.StartsWith( "http:" ) || url.StartsWith( "https:" ) ) {
@@ -999,6 +1003,22 @@ bool TfpFrame::ImportGedcom()
     return ret;
 }
 
+void TfpFrame::OpenTestFile()
+{
+    wxString caption = _("Select htm file");
+    wxString wildcard = _("Htm file (*.htm)|*.htm");
+    wxString defaultDir = ".";
+    wxString defaultFName = wxEmptyString;
+
+    wxFileDialog dialog( this, caption, defaultDir, defaultFName, wildcard, wxFD_OPEN );
+    if( dialog.ShowModal() == wxID_OK )
+    {
+        wxString path = dialog.GetPath();
+        m_webPageAllow = true;
+        m_browser->LoadURL( "file://" + path );
+    }
+}
+
 void TfpFrame::DoNavigation( const wxString& href )
 {
     wxUniChar uch0 = href.GetChar( 0 );
@@ -1008,17 +1028,6 @@ void TfpFrame::DoNavigation( const wxString& href )
     try {
         switch( uch0.GetValue() )
         {
-        case ':': // Program Commands
-            if( href == ":New" ) {
-                NewFile();
-            } else if( href == ":Open" ) {
-                OpenFile();
-            } else if( href == ":Import" ) {
-                ImportGedcom();
-            } else {
-                wxMessageBox( _("Error: Invalid Command"), _("Link Error") );
-            }
-            break;
         case '$':  // Context Commands
             uch1 = href.GetChar( 1 );
             switch( uch1.GetValue() )
@@ -1047,9 +1056,6 @@ void TfpFrame::DoNavigation( const wxString& href )
                 }
                 break;
             }
-            break;
-        case '!':  // Display in external browser
-            wxLaunchDefaultBrowser( href.Mid( 1 ) );
             break;
         case '^':  // Display the given reference as a note
             tfpDisplayNote( this, href.Mid( 1 ) );
@@ -1107,6 +1113,27 @@ void TfpFrame::DoHtmCtxMenu( const wxString& ref )
 
     PopupMenu( menu );
     delete menu;
+}
+
+
+void TfpFrame::DoTfpCommand( const wxString& href )
+{
+    if( href == "New" ) {
+        NewFile();
+    } else if( href == "Open" ) {
+        OpenFile();
+    } else if( href == "Import" ) {
+        ImportGedcom();
+#ifdef _DEBUG
+    } else if( href == "Test" ) {
+        OpenTestFile();
+#endif
+    } else {
+        wxMessageBox( 
+            wxString::Format( _("Error: Invalid Command \"tfpc:%s\""), href ),
+            _("Link Error") 
+        );
+    }
 }
 
 int TfpFrame::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )

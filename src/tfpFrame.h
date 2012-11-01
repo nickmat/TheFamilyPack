@@ -61,12 +61,11 @@ private:
     wxTextCtrl*         m_showpage;
     wxArrayString       m_back;
     wxArrayString       m_forward;
-//    TfpHtml*            m_html;
     wxWebView*          m_browser;
     wxString            m_ctxmenuref;
     StringVec           m_ctxmenuPages;
+    bool                m_webPageAllow;
 
-//    wxHtmlEasyPrinting* m_prn;
     wxString            m_dbFileName;
 
 public:
@@ -129,9 +128,11 @@ public:
     bool NewFile();
     bool OpenFile();
     bool ImportGedcom();
+    void OpenTestFile();
 
     void DoNavigation( const wxString& href );
     void DoHtmCtxMenu( const wxString& ref );
+    void DoTfpCommand( const wxString& href );
     int AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID );
 
     void SetDatabaseOpen( const wxString& path );

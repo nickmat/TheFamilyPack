@@ -84,7 +84,14 @@ void tfpLoadMemoryFiles()
     wxFileSystem::AddHandler( new wxMemoryFSHandler );
     wxBitmap logo6Bitmap( logo6_xpm );
     wxMemoryFSHandler::AddFile( "logo6.png", logo6Bitmap, wxBITMAP_TYPE_PNG );
+#ifdef _DEBUG
+    wxString v;
+    v << tfpHtmVersion << "<br><br><a href='tfpc:Test'>Test html page</a>";
+    wxString startupText( wxString::Format( s_startup_htm, v ) );
+#else
     wxString startupText( wxString::Format( s_startup_htm, tfpHtmVersion ) );
+#endif
+
     wxMemoryFSHandler::AddFile( "startup.htm", startupText );
     wxMemoryFSHandler::AddFile( "tfp.css", s_tfp_css );
 

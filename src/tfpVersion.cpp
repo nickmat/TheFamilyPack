@@ -45,7 +45,7 @@
 #define TFP_SVNVERSION ""
 #endif
 
-#define VERSION_STATUS   " pre-alpha webview test"
+#define VERSION_STATUS   " pre-alpha"
 
 #ifdef _DEBUG
 #define VERSION_CONFIG   " debug"

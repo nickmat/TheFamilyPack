@@ -7,7 +7,7 @@
  * Author:      Nick Matthews
  * Modified by:
  * Created:     26 September 2010
- * RCS-ID:      $Id: tfpText.f2c 285 2012-10-24 12:29:04Z nickmat $
+ * RCS-ID:      Id: tfpText.f2c 288 2012-11-01 13:05:36Z nickmat $
  * Copyright:   Copyright (c) 2010, Nick Matthews.
  * Website:     http://thefamilypack.org
  * Licence:     GNU GPLv3
@@ -50,11 +50,11 @@ static const char s_startup_htm[] =  /* startup.htm */
  "<br>\n"
  "Actions:-<br>\n"
  "<br>\n"
- "<a href='tfp::Open'>Open an existing Database</a><br>\n"
+ "<a href='tfpc:Open'>Open an existing Database</a><br>\n"
  "<br>\n"
- "<a href='tfp::New'>Create a new Database</a><br>\n"
+ "<a href='tfpc:New'>Create a new Database</a><br>\n"
  "<br>\n"
- "<a href='tfp::Import'>Import a GEDCOM file</a><br>\n"
+ "<a href='tfpc:Import'>Import a GEDCOM file</a><br>\n"
  "</p>\n"
  "</center>\n"
  "<p>\n"
