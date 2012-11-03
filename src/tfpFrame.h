@@ -132,6 +132,7 @@ public:
     void OpenTestFile();
 
     void DoNavigation( const wxString& href );
+    void DoEdit( const wxString& href );
     void DoPopupNote( const wxString& href );
     void DoHtmCtxMenu( const wxString& ref );
     void DoTfpCommand( const wxString& href );

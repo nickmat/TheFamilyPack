@@ -202,29 +202,31 @@ bool tfpAddExistParent( idt indID, Sex sex )
 
 bool tfpAddNewParent( const wxString& ref )
 {
+    const wxString savepoint = "AddIndPar";
+    recDb::Savepoint( savepoint );
     idt indID;
     ref.Mid( 1 ).ToLongLong( &indID );
     Sex sex = ( ref.GetChar(0) == 'F' ) ? SEX_Female : SEX_Male;
-    recDb::Begin();
     if( tfpAddNewParent( indID, sex ) == true ) {
-        recDb::Commit();
+        recDb::ReleaseSavepoint( savepoint );
         return true;
     } else {
-        recDb::Rollback();
+        recDb::Rollback( savepoint );
         return false;
     }
 }
 
 bool tfpAddNewSpouse( const wxString& ref )
 {
-    recDb::Begin();
+    const wxString savepoint = "AddIndSp";
+    recDb::Savepoint( savepoint );
     idt famID = recGetID( ref.Mid( 1 ) );
     Sex sex = ( ref.GetChar(0) == 'R' ) ? SEX_Female : SEX_Male;
     if( tfpAddNewIndividual( famID, sex ) != 0 ) {
-        recDb::Commit();
+        recDb::ReleaseSavepoint( savepoint );
         return true;
     } else {
-        recDb::Rollback();
+        recDb::Rollback( savepoint );
         return false;
     }
 }

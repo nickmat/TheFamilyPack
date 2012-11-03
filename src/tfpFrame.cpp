@@ -831,6 +831,10 @@ void TfpFrame::OnNavigationRequest( wxWebViewEvent& evt )
         DoNavigation( url.Mid( 4 ) );
         return;
     }
+    if( url.StartsWith( "tfpe:" ) ) {
+        DoEdit( url.Mid( 5 ) );
+        return;
+    }
     if( url.StartsWith( "tfpi:" ) ) {
         DoPopupNote( url.Mid( 5 ) );
         return;
@@ -1069,6 +1073,32 @@ void TfpFrame::DoNavigation( const wxString& href )
         default:   // Display the given reference
             DisplayHtmPage( href );
             break;
+        }
+    } catch( wxSQLite3Exception& e ) {
+        recDb::ErrorMessage( e );
+        recDb::Rollback();
+    }
+    if( cond != recDb::GetChange() ) {
+        RefreshHtmPage();
+    }
+}
+
+void TfpFrame::DoEdit( const wxString& href )
+{
+    long cond = recDb::GetChange();
+
+    try {
+        if( href.StartsWith( "IL" ) || href.StartsWith( "IR" ) ) {
+            tfpAddNewSpouse( href.Mid(1) );
+        } else if( href.StartsWith( "IF" ) || href.StartsWith( "IM" ) ) {
+            tfpAddNewParent( href.Mid(1) );
+        } else if( href.StartsWith( "I" ) ) {
+            tfpEditIndividual( recGetID( href.Mid(1) ) );
+        } else {
+            wxMessageBox(
+                wxString::Format( _("Unable to edit ref\n[%s]"), href ),
+                _("Unknown Edit")
+            );
         }
     } catch( wxSQLite3Exception& e ) {
         recDb::ErrorMessage( e );

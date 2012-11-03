@@ -34,6 +34,7 @@ extern void tfpLoadMemoryFiles();
 
 extern wxBitmap imgEditBitmap;
 extern wxBitmap imgMenuBitmap;
+extern wxBitmap imgBlankBitmap;
 
 
 #endif // TFPMEMORY_H

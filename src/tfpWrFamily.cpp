@@ -76,12 +76,156 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR, idt indID )
     recFamilyVec wifeHusbs = recIndividual::GetFamilyList( wife.f_id );
 
     htm << "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
-           "\"http://www.w3.org/TR/html4/loose.dtd\">"
-           "<html><head><title>Family F" << famID << "</title>"
-           "<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'>"
-           "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>"
-           "</head><body><center>"
-           "<table border='1'>"
+           "\"http://www.w3.org/TR/html4/loose.dtd\">\n"
+           "<html>\n<head>\n<title>Family F" << famID << "</title>\n"
+           "<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>\n"
+           "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>\n"
+           "</head>\n<body>\n";
+
+#if 1
+    htm << "<table class='core'>\n";
+
+    // Parents
+    htm << "<tr>\n<td class='parent'>\n"
+           "<table class='parent'>\n<tr>\n<td class='male'>\n";
+
+    // Hubands Father
+    if( fam.f_husb_id ) {
+        if( husbFams.size() > iL && husbFams[iL].f_husb_id ) {
+            htm << "<a href='tfp:F" << husbFams[iL].f_id << "'>"
+                << recIndividual::GetFullName( husbFams[iL].f_husb_id )
+                << "</a><br>"
+                << recIndividual::GetDateEpitaph( husbFams[iL].f_husb_id );
+        } else {
+            htm << "<a href='tfpe:IM" << fam.f_husb_id
+                << "'><img src='memory:blank.png' width='200' height='15' alt='Add Father'></a>";
+        }
+    } else {
+        htm << "&nbsp;";
+    }
+    htm << "\n</td>\n</tr>\n<tr>\n<td class='fem'>\n";
+
+    // Husbands Mother
+    if( fam.f_husb_id ) {
+        if( husbFams.size() > iL && husbFams[iL].f_wife_id ) {
+            htm << "<a href='tfp:F" << husbFams[iL].f_id << "'>"
+                << recIndividual::GetFullName( husbFams[iL].f_wife_id )
+                << "</a><br>"
+                << recIndividual::GetDateEpitaph( husbFams[iL].f_wife_id );
+        } else {
+            htm << "<a href='tfpe:IF" << fam.f_husb_id
+                << "'><img  src='memory:blank.png' width='200' height='15' alt='Add Mother'></a>";
+        }
+    } else {
+        htm << "&nbsp;";
+   }
+
+    htm << "\n</td>\n</tr>\n</table>\n"
+           "</td>\n<td class='parent'>\n"
+           "<table class='parent'>\n<tr>\n<td class='male'>\n";
+
+    // Wifes Father
+    if( fam.f_wife_id ) {
+        if( wifeFams.size() > iR && wifeFams[iR].f_husb_id ) {
+            htm << "<a href='tfp:F" << wifeFams[iR].f_id << "'>"
+                << recIndividual::GetFullName( wifeFams[iR].f_husb_id )
+                << "</a><br>"
+                << recIndividual::GetDateEpitaph( wifeFams[iR].f_husb_id );
+        } else {
+            htm << "<a href='tfpe:IM" << fam.f_wife_id
+                << "'><img src='memory:blank.png' width='200' height='15' alt='Add Father'></a>";
+        }
+    } else {
+        htm << "&nbsp;";
+    }
+    htm << "\n</td>\n</tr>\n<tr>\n<td class='fem'>\n";
+
+    // Wife Mother
+    if( fam.f_wife_id ) {
+        if( wifeFams.size() > iR && wifeFams[iR].f_wife_id ) {
+            htm << "<a href='tfp:F" << wifeFams[iR].f_id << "'>"
+                << recIndividual::GetFullName( wifeFams[iR].f_wife_id )
+                << "</a><br>"
+                << recIndividual::GetDateEpitaph( wifeFams[iR].f_wife_id );
+        } else {
+            htm << "<a href='tfpe:IF" << fam.f_wife_id
+                << "'><img  src='memory:blank.png' width='200' height='15' alt='Add Mother'></a>";
+        }
+    } else {
+        htm << "&nbsp;";
+   }
+
+    htm << "\n</td>\n</tr>\n</table>\n"
+           "</td>\n</tr>\n";
+
+
+    // Marriage event
+    htm << "<tr>\n<td colspan='2' class='both'>\n<b>Marriage: </b>"
+        << recEvent::GetDetailStr( fam.GetMarriageEvent() )
+        << "\n</td>\n</tr>\n";
+
+    // The happy couple
+    htm << "<tr>\n<td class='couple male'>";
+    if( fam.f_husb_id == 0 ) {
+        htm << "<a href='tfpe:IL" << fam.f_id
+            << "'><img src='memory:blank.png' width='200' height='40' alt='Add husband'></a>";
+    } else {
+        htm << "<a href='tfpe:I" << fam.f_husb_id
+            << "'>" << recIndividual::GetFullName( fam.f_husb_id )
+            << "</a><br>"
+            << recIndividual::GetDateEpitaph( fam.f_husb_id );
+    }
+    htm << "</td>\n<td class='couple fem'>";
+    if( fam.f_wife_id == 0 ) {
+        htm << "<a href='tfpe:IR" << fam.f_id
+            << "'><img src='memory:blank.png' width='200' height='40' alt='Add wife'></a>";
+    } else {
+        htm << "<a href='tfpe:I" << fam.f_wife_id
+            << "'>" << recIndividual::GetFullName( fam.f_wife_id )
+            << "</a><br>"
+            << recIndividual::GetDateEpitaph( fam.f_wife_id );
+    }
+    htm << "</td>\n</tr>\n";
+
+    // Standard events
+    htm << "<tr>\n<td>\n<b>Birth: </b>"
+        << recEvent::GetDetailStr( recPersona::GetBirthEvent( hPerID ) )
+        << "\n</td>\n<td>\n<b>Birth: </b>"
+        << recEvent::GetDetailStr( recPersona::GetBirthEvent( wPerID ) )
+        << "\n</td>\n</tr>\n";
+
+    htm << "<tr>\n<td>\n<b>Baptism: </b>"
+        << recEvent::GetDetailStr( recPersona::GetNrBirthEvent( hPerID ) )
+        << "\n</td>\n<td>\n<b>Baptism: </b>"
+        << recEvent::GetDetailStr( recPersona::GetNrBirthEvent( wPerID ) )
+        << "\n</td>\n</tr>\n";
+
+    htm << "<tr>\n<td>\n<b>Death: </b>"
+        << recEvent::GetDetailStr( recPersona::GetDeathEvent( hPerID ) )
+        << "\n</td>\n<td>\n<b>Death: </b>"
+        << recEvent::GetDetailStr( recPersona::GetDeathEvent( wPerID ) )
+        << "\n</td>\n</tr>\n";
+
+    htm << "<tr>\n<td>\n<b>Burial: </b>"
+        << recEvent::GetDetailStr( recPersona::GetNrDeathEvent( hPerID ) )
+        << "\n</td>\n<td>\n<b>Burial: </b>"
+        << recEvent::GetDetailStr( recPersona::GetNrDeathEvent( wPerID ) )
+        << "\n</td>\n</tr>\n";
+
+    htm << "<tr>\n<td>\n<b>Occ: </b>"
+        << recEventPersona::GetRoleStr( hPerID, recEventType::ET_Occupation )
+        << "\n</td>\n<td>\n<b>Occ: </b>"
+        << recEventPersona::GetRoleStr( wPerID, recEventType::ET_Occupation )
+        << "\n</td>\n</tr>\n";
+
+    // core done
+    htm << "</table>\n";
+
+#endif
+
+    htm << "<center>";
+#if 0
+    htm << "<table border='1'>"
            "<tr><td align=center width='255'>";
 
     // Husband's Father
@@ -92,8 +236,8 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR, idt indID )
                 << "</a></b><br>"
                 << recIndividual::GetDateEpitaph( husbFams[iL].f_husb_id );
         } else {
-            htm << "<a href='tfp:$IM'" << fam.f_husb_id
-                << "><img src='memory:edit.png' alt='Edit'></a>";
+            htm << "<a href='tfp:$IM" << fam.f_husb_id
+                << "'><img src='memory:edit.png' alt='Edit'></a>";
         }
     } else {
         htm << "&nbsp;";
@@ -204,6 +348,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR, idt indID )
     htm << "</font>"
 
         << "</table>";
+#endif
 
     // Write status, Edit and chart links
     htm << "<table><tr><td align=left width='80'>";

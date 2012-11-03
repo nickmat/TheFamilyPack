@@ -62,6 +62,7 @@
 #include "img/dcht.xpm"
 #include "img/pcht.xpm"
 #include "img/edit.xpm"
+#include "img/blank.xpm"
 #include "img/menu.xpm"
 #include "img/ind.xpm"
 #include "img/fam.xpm"
@@ -76,6 +77,7 @@
 // Common bitmats
 wxBitmap imgEditBitmap( edit_xpm );
 wxBitmap imgMenuBitmap( menu_xpm );
+wxBitmap imgBlankBitmap( blank_xpm );
 
 /*! \brief Create the memory file system and read in the memory files.
  */
@@ -120,6 +122,7 @@ void tfpLoadMemoryFiles()
     wxBitmap peBitmap( pe_xpm );
     wxMemoryFSHandler::AddFile( "pe.png", peBitmap, wxBITMAP_TYPE_PNG );
     wxMemoryFSHandler::AddFile( "edit.png", imgEditBitmap, wxBITMAP_TYPE_PNG );
+    wxMemoryFSHandler::AddFile( "blank.png", imgBlankBitmap, wxBITMAP_TYPE_PNG );
     wxMemoryFSHandler::AddFile( "menu.png", imgMenuBitmap, wxBITMAP_TYPE_PNG );
     wxBitmap dchtBitmap( dcht_xpm );
     wxMemoryFSHandler::AddFile( "dcht.png", dchtBitmap, wxBITMAP_TYPE_PNG );
