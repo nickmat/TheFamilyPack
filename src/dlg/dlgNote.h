@@ -30,14 +30,13 @@
 #ifndef DLGNOTE_H
 #define DLGNOTE_H
 
-#include "fbDlg.h"
+class wxHtmlWindow;
 
-class dlgNote : public fbDlgNote
+class dlgNote : public wxDialog 
 {
 public:
-    dlgNote( wxWindow* parent ) : m_cond(0), fbDlgNote( parent ) {}
-
-    void SetDisplay( const wxString& name );
+	dlgNote( wxWindow* parent, const wxString& name ); 
+	~dlgNote();
 
 private:
     bool TransferDataToWindow();
@@ -47,6 +46,31 @@ private:
 
     wxString m_name;
     long     m_cond;
+	wxHtmlWindow* m_htmlWin;
 };
+
+#if 0
+
+//============================================================================
+//-------------------------[ dlgPopupNote ]-----------------------------------
+//============================================================================
+
+#include <wx/popupwin.h>
+
+class dlgPopupNote: public wxPopupTransientWindow
+{
+public:
+    dlgPopupNote( wxWindow *parent, const wxString& htm );
+    virtual ~dlgPopupNote();
+
+    wxScrolledWindow* GetChild() { return m_panel; }
+
+private:
+    wxScrolledWindow *m_panel;
+    wxHtmlWindow*     m_html;
+
+    DECLARE_CLASS(SimpleTransientPopup)
+};
+#endif
 
 #endif // DLGNOTE_H

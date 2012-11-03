@@ -37,6 +37,7 @@
 #include "wx/wx.h"
 #endif
 
+#if 0
 #include <wx/wxcrt.h>
 
 #include <rec/recDb.h>
@@ -149,9 +150,9 @@ void TfpHtml::DoLinkLeft( const wxString& href )
         case '!':  // Display in external browser
             wxLaunchDefaultBrowser( href.Mid( 1 ) );
             break;
-        case '^':  // Display the given reference as a note
-            tfpDisplayNote( this, href.Mid( 1 ) );
-            break;
+//        case '^':  // Display the given reference as a note
+//            tfpDisplayNote( this, href.Mid( 1 ) );
+//            break;
         default:   // Display the given reference
             DisplayHtmPage( href );
             break;
@@ -556,7 +557,7 @@ void TfpHtml::RefreshHtmPage()
         SetPage( GetDisplayText( m_name ) );
     }
 }
-
+#endif
 
 // End of tfpHtml.cpp file
 

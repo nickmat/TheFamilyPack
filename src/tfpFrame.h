@@ -31,6 +31,7 @@
 
 #include <wx/html/htmlwin.h>
 #include <rec/recDatabase.h>
+#include "dlg/dlgNote.h"
 
 class wxWebView;
 class wxWebViewEvent;
@@ -131,6 +132,7 @@ public:
     void OpenTestFile();
 
     void DoNavigation( const wxString& href );
+    void DoPopupNote( const wxString& href );
     void DoHtmCtxMenu( const wxString& ref );
     void DoTfpCommand( const wxString& href );
     int AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID );
@@ -149,7 +151,7 @@ public:
 
     wxString GetDisplay() const { return m_back[m_back.size()-1]; }
 
-    wxString GetDisplayText( const wxString& name );
+//    wxString GetDisplayText( const wxString& name );
 
 };
 

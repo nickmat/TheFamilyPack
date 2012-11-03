@@ -671,6 +671,7 @@ long tfpSelectIndividual( idt* indID, recIdVec indIDs )
     return row;
 }
 
+#if 0
 void tfpDisplayNote( wxWindow* parent, const wxString& name )
 {
     if( !name.IsEmpty() ) {
@@ -679,5 +680,5 @@ void tfpDisplayNote( wxWindow* parent, const wxString& name )
         dialog->Show();
     }
 }
-
+#endif
 // End of dlgEd.cpp file

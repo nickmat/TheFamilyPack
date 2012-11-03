@@ -37,28 +37,63 @@
 #include "wx/wx.h"
 #endif
 
+#include <wx/html/htmlwin.h>
+
 #include <rec/recDatabase.h>
-#include "tfpHtml.h"
 #include "dlgNote.h"
 #include "tfpWr.h"
 
 
-void dlgNote::SetDisplay( const wxString& name )
+dlgNote::dlgNote( wxWindow* parent, const wxString& name )
+    : wxDialog( 
+        parent, wxID_ANY, "Note", wxDefaultPosition, wxDefaultSize, 
+        wxCAPTION | wxCLOSE_BOX | wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER 
+    )
 {
+	SetSizeHints( wxDefaultSize, wxDefaultSize );
+	
+	wxBoxSizer* bSizer1;
+	bSizer1 = new wxBoxSizer( wxVERTICAL );
+	
+	wxBoxSizer* bSizer2;
+	bSizer2 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_htmlWin = new wxHtmlWindow(
+        this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHW_SCROLLBAR_AUTO
+    );
+	bSizer2->Add( m_htmlWin, 1, wxALL|wxEXPAND, 5 );
+	
+	bSizer1->Add( bSizer2, 1, wxEXPAND, 5 );
+	
+	SetSizer( bSizer1 );
+	Layout();
+
     m_name = name;
     m_cond = recDb::GetChange();
+    SetPosition( wxGetMousePosition() );
+	
+	// Connect Events
+	Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( dlgNote::OnClose ) );
+	Connect( wxEVT_IDLE, wxIdleEventHandler( dlgNote::OnIdle ) );
+}
+
+dlgNote::~dlgNote()
+{
+	// Disconnect Events
+	Disconnect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( dlgNote::OnClose ) );
+	Disconnect( wxEVT_IDLE, wxIdleEventHandler( dlgNote::OnIdle ) );
 }
 
 bool dlgNote::TransferDataToWindow()
 {
-    m_htmlWin->DisplayHtmPage( m_name );
+    m_htmlWin->SetPage( tfpGetDisplayText( m_name ) );
     return true;
 }
 
 void dlgNote::OnIdle( wxIdleEvent& event )
 {
     if( m_cond != recDb::GetChange() ) {
-        m_htmlWin->RefreshHtmPage();
+        m_htmlWin->SetPage( tfpGetDisplayText( m_name ) );
         m_cond = recDb::GetChange();
     }
 }
@@ -68,4 +103,36 @@ void dlgNote::OnClose( wxCloseEvent& event )
     Destroy();
 }
 
+#if 0
+
+//============================================================================
+//-------------------------[ dlgPopupNote ]-----------------------------------
+//============================================================================
+
+IMPLEMENT_CLASS( dlgPopupNote, wxPopupTransientWindow )
+
+dlgPopupNote::dlgPopupNote( wxWindow *parent, const wxString& htm )
+                     :wxPopupTransientWindow( parent )
+{
+    m_panel = new wxScrolledWindow( this, wxID_ANY );
+    m_panel->SetBackgroundColour( *wxLIGHT_GREY );
+
+    m_html = new TfpHtml( 
+        m_panel, wxID_ANY, wxDefaultPosition, wxSize(200,100), wxHW_SCROLLBAR_AUTO 
+    );
+    m_html->SetPage( htm );
+
+    wxBoxSizer *topSizer = new wxBoxSizer( wxVERTICAL );
+    topSizer->Add( m_html, 1, wxALL|wxEXPAND, 5 );
+
+    m_panel->SetSizer( topSizer );
+    topSizer->Fit(m_panel);
+    topSizer->Fit(this);
+    Position( wxGetMousePosition(), wxSize(10,20) );
+}
+
+dlgPopupNote::~dlgPopupNote()
+{
+}
+#endif
 // End of dlgNote.cpp file

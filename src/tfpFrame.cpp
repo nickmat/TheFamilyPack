@@ -764,7 +764,8 @@ void TfpFrame::OnShowPage( wxCommandEvent& event )
 {
     wxString page = m_showpage->GetValue();
     m_showpage->SetValue( wxEmptyString );
-    tfpDisplayNote( this, page );
+//    tfpDisplayNote( this, page );
+    DisplayHtmPage( page );
 }
 
 /*! \brief Called when the toolbar Edit button is pressed.
@@ -827,6 +828,10 @@ void TfpFrame::OnNavigationRequest( wxWebViewEvent& evt )
 
     if( url.StartsWith( "tfp:" ) ) {
         DoNavigation( url.Mid( 4 ) );
+        return;
+    }
+    if( url.StartsWith( "tfpi:" ) ) {
+        DoPopupNote( url.Mid( 5 ) );
         return;
     }
     if( url.StartsWith( "tfpc:" ) ) {
@@ -1057,9 +1062,9 @@ void TfpFrame::DoNavigation( const wxString& href )
                 break;
             }
             break;
-        case '^':  // Display the given reference as a note
-            tfpDisplayNote( this, href.Mid( 1 ) );
-            break;
+//        case '^':  // Display the given reference as a note
+//            tfpDisplayNote( this, href.Mid( 1 ) );
+//            break;
         default:   // Display the given reference
             DisplayHtmPage( href );
             break;
@@ -1071,6 +1076,20 @@ void TfpFrame::DoNavigation( const wxString& href )
     if( cond != recDb::GetChange() ) {
         RefreshHtmPage();
     }
+}
+
+void TfpFrame::DoPopupNote( const wxString& ref )
+{
+    dlgNote* note = new dlgNote( this, ref );
+    note->Show();
+#if 0
+    wxMessageBox(
+        wxString::Format( 
+            _("Unable to proccess Note ref\n[%s]"), ref
+        ),
+        _("Unknown Note")
+    );
+#endif
 }
 
 void TfpFrame::DoHtmCtxMenu( const wxString& ref )
@@ -1339,7 +1358,7 @@ void TfpFrame::RefreshEditMenu()
 
 bool TfpFrame::DisplayHtmPage( const wxString& name )
 {
-    wxString text = GetDisplayText( name );
+    wxString text = tfpGetDisplayText( name );
     if( !text.IsEmpty() ) {
         PushHtmName( name );
         m_browser->SetPage( text, "" );
@@ -1352,7 +1371,7 @@ void TfpFrame::RefreshHtmPage()
 {
     wxString name = GetCurrentName();
     if( name.size() ) {
-        m_browser->SetPage( GetDisplayText( name ), "" );
+        m_browser->SetPage( tfpGetDisplayText( name ), "" );
     }
 }
 
@@ -1362,30 +1381,26 @@ bool TfpFrame::DisplayHomePage()
 }
 
 /////////////////////////////////////////////////////////////
-// This could be converted to a function
+// This could be moved to a new file
 
-wxString TfpFrame::GetDisplayText( const wxString& name )
+wxString tfpGetDisplayText( const wxString& name )
 {
     wxUniChar uch, uch1;
     wxLongLong_t num;
     bool success;
+    wxString ErrorPage = "<html><head><title>Error</title></head>"
+        "<body><h1>Error writing [%s]</h1><p>%s</p></body></html>";
 
     wxASSERT( name.size() > 0 );
     uch = name.GetChar( 0 );
     switch( uch.GetValue() )
     {
-    case 'A':  // Attribute
-        success = name.Mid(1).ToLongLong( &num );
-        if( !success || num < 1 ) {
-            wxMessageBox( _("Error: Invalid Attribute ID link"), _("Link Error") );
-            return wxEmptyString;
-        }
-        return tfpWriteAttribute( num );
     case 'C':  // Chart reference
         success = name.Mid(2).ToLongLong( &num );
         if( !success || num < 1 ) {
-            wxMessageBox( _("Error: Invalid Individual ID link"), _("Link Error") );
-            return wxEmptyString;
+            return wxString::Format( 
+                ErrorPage, name, _("Invalid Individual ID link") 
+            );
         }
         switch( (wxChar) name.GetChar( 1 ) )
         {
@@ -1394,13 +1409,15 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
         case 'P':
             return tfpCreatePedChart( num );
         }
-        wxMessageBox( _("Error: Invalid Chart link reference"), _("Link Error") );
-        return wxEmptyString;
+        return wxString::Format( 
+            ErrorPage, name, _("Invalid Chart link reference") 
+        );
     case 'D':  // Date
         success = name.Mid(1).ToLongLong( &num );
         if( !success || num < 1 ) {
-            wxMessageBox( _("Error: Invalid Date ID link"), _("Link Error") );
-            return wxEmptyString;
+            return wxString::Format( 
+                ErrorPage, name, _("Invalid Date ID link") 
+            );
         }
         return tfpWriteDate( num );
     case 'E':  // Reference Document
@@ -1409,16 +1426,18 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
         }
         success = name.Mid(1).ToLongLong( &num );
         if( !success || num < 1 ) {
-            wxMessageBox( _("Error: Invalid Reference Document ID link"), _("Link Error") );
-            return wxEmptyString;
+            return wxString::Format( 
+                ErrorPage, name, _("Invalid Reference Document ID link") 
+            );
         }
         return tfpWriteEventPage( num );
     case 'F':  // Family reference
         if( name.GetChar( 1 ) == 'I' ) {
             success = name.Mid(2).ToLongLong( &num );
             if( !success ) {
-                wxMessageBox( _("Error: Invalid Individual ID link"), _("Link Error") );
-                return wxEmptyString;
+                return wxString::Format( 
+                    ErrorPage, name, _("Invalid Individual ID link") 
+                );
             }
             return tfpWriteIndFamilyPage( num );
         }
@@ -1426,8 +1445,9 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
     case 'I':  // Individual reference
         success = name.Mid(1).ToLongLong( &num );
         if( !success || num < 1 ) {
-            wxMessageBox( _("Error: Invalid Individual ID link"), _("Link Error") );
-            return wxEmptyString;
+            return wxString::Format( 
+                ErrorPage, name, _("Invalid Individual ID link") 
+            );
         }
         return tfpWriteIndividualPage( num );
     case 'N':  // Name index
@@ -1441,8 +1461,9 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
     case 'P':  // Place
         success = name.Mid(1).ToLongLong( &num );
         if( !success || num < 1 ) {
-            wxMessageBox( _("Error: Invalid Place ID link"), _("Link Error") );
-            return wxEmptyString;
+            return wxString::Format( 
+                ErrorPage, name, _("Invalid Place ID link") 
+            );
         }
         return tfpWritePlace( num );
     case 'R':  // Reference Document
@@ -1456,27 +1477,31 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
         if( !wxIsdigit( uch1 ) ) {
             success = name.Mid(2).ToLongLong( &num );
             if( !success ) {
-                wxMessageBox( _("Error: Invalid ID link"), _("Link Error") );
-                return wxEmptyString;
+                return wxString::Format( 
+                    ErrorPage, name, _("Invalid ID link") 
+                );
             }
             switch( uch1.GetValue() )
             {
             case 's':
                 return tfpWriteRelationship( num );
             default:
-                wxMessageBox( _("Error: Invalid ID link"), _("Link Error") );
-                return wxEmptyString;
+                return wxString::Format( 
+                    ErrorPage, name, _("Invalid ID link") 
+                );
             }
         }
         success = name.Mid(1).ToLongLong( &num );
         if( !success || num < 1 ) {
-            wxMessageBox( _("Error: Invalid Reference Document ID link"), _("Link Error") );
-            return wxEmptyString;
+            return wxString::Format( 
+                ErrorPage, name, _("Invalid Reference Document ID link") 
+            );
         }
         return tfpWriteReferencePage( num );
     }
-    wxMessageBox( _("Error: Invalid Display Name ")+name, _("Link Error") );
-    return wxEmptyString;
+    return wxString::Format( 
+        ErrorPage, name, _("Invalid Display Name") 
+    );
 }
 
 

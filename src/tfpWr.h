@@ -31,6 +31,9 @@
 
 #include <rec/recDatabase.h>
 
+// See tfpFrame.cpp (should be moved)
+extern wxString tfpGetDisplayText( const wxString& name );
+
 // See tfpWrAdmin.cpp
 extern wxString tfpWriteResearcherList();
 
@@ -64,6 +67,5 @@ extern wxString tfpWriteRelationship( idt rsID );
 // See tfpWrReference.cpp
 extern wxString tfpWriteReferenceIndex();
 extern wxString tfpWriteReferencePage( idt refID );
-
 
 #endif // TFPWR_H

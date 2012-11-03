@@ -26,8 +26,8 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 */
 
-#ifndef TFPHTML_H
 #define TFPHTML_H
+#ifndef TFPHTML_H
 
 #include <wx/html/htmlwin.h>
 #include <rec/recDatabase.h>
