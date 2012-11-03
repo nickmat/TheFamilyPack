@@ -11,7 +11,6 @@
 #include <wx/artprov.h>
 #include <wx/xrc/xmlres.h>
 #include <wx/intl.h>
-class TfpHtml;
 class dlgStrTableCtrl;
 class tfpListCtrlIndividuals;
 
@@ -1073,30 +1072,6 @@ class fbDlgEditUserSettings : public wxDialog
 		
 		fbDlgEditUserSettings( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("User Settings"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 301,144 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbDlgEditUserSettings();
-	
-};
-
-///////////////////////////////////////////////////////////////////////////////
-/// Class fbDlgNote
-///////////////////////////////////////////////////////////////////////////////
-class fbDlgNote : public wxDialog 
-{
-	private:
-	
-	protected:
-		TfpHtml* m_htmlWin;
-		wxStaticLine* m_staticline;
-		wxButton* m_buttonCancel;
-		
-		// Virtual event handlers, overide them in your derived class
-		virtual void OnClose( wxCloseEvent& event ) { event.Skip(); }
-		virtual void OnIdle( wxIdleEvent& event ) { event.Skip(); }
-		
-	
-	public:
-		
-		fbDlgNote( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Note"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 342,251 ), long style = wxCAPTION|wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
-		~fbDlgNote();
 	
 };
 

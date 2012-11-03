@@ -44,6 +44,7 @@
 
 #include <rec/recIndividual.h>
 #include <rec/recVersion.h>
+#include <rec/recUser.h>
 
 #include "webviewfshandler.h"
 #include "tfpFrame.h"

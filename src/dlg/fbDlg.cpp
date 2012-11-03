@@ -17,7 +17,6 @@
 
 
 #include "dlgRecTableCtrl.h"
-#include "tfpHtml.h"
 #include "tfpListCtrlInd.h"
 
 #include "fbDlg.h"
@@ -3148,49 +3147,4 @@ fbDlgEditUserSettings::fbDlgEditUserSettings( wxWindow* parent, wxWindowID id, c
 
 fbDlgEditUserSettings::~fbDlgEditUserSettings()
 {
-}
-
-fbDlgNote::fbDlgNote( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
-{
-	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
-	
-	wxBoxSizer* bSizer1;
-	bSizer1 = new wxBoxSizer( wxVERTICAL );
-	
-	wxBoxSizer* bSizer2;
-	bSizer2 = new wxBoxSizer( wxHORIZONTAL );
-	
-	m_htmlWin = new TfpHtml( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHW_SCROLLBAR_AUTO );
-	bSizer2->Add( m_htmlWin, 1, wxALL|wxEXPAND, 5 );
-	
-	bSizer1->Add( bSizer2, 1, wxEXPAND, 5 );
-	
-	m_staticline = new wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
-	bSizer1->Add( m_staticline, 0, wxEXPAND | wxALL, 0 );
-	
-	wxBoxSizer* bSizer3;
-	bSizer3 = new wxBoxSizer( wxHORIZONTAL );
-	
-	
-	bSizer3->Add( 0, 0, 1, wxEXPAND, 5 );
-	
-	m_buttonCancel = new wxButton( this, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer3->Add( m_buttonCancel, 0, wxALL, 5 );
-	
-	bSizer1->Add( bSizer3, 0, wxEXPAND, 5 );
-	
-	this->SetSizer( bSizer1 );
-	this->Layout();
-	
-	// Connect Events
-	this->Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( fbDlgNote::OnClose ) );
-	this->Connect( wxEVT_IDLE, wxIdleEventHandler( fbDlgNote::OnIdle ) );
-}
-
-fbDlgNote::~fbDlgNote()
-{
-	// Disconnect Events
-	this->Disconnect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( fbDlgNote::OnClose ) );
-	this->Disconnect( wxEVT_IDLE, wxIdleEventHandler( fbDlgNote::OnIdle ) );
-	
 }
