@@ -92,6 +92,7 @@ public:
     static wxString GetDateEpitaph( idt id );
     static wxString GetFullNameEpitaph( idt id );
     static Sex GetSex( idt id ) { return recPersona::GetSex( GetPersona( id ) ); }
+    Sex GetSex() { return recPersona::GetSex( f_per_id ); }
 
     static recFamilyVec GetFamilyList( idt ind );
     recFamilyVec GetFamilyList() const { return GetFamilyList( f_id ); }

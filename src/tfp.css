@@ -29,7 +29,7 @@
 */
 
 body {
-    color: black;
+    color: #444;
     background-color: Ivory;
 }
 
@@ -40,8 +40,12 @@ img {
 }
 
 a {
-  color: black;
+  color: #444;
   text-decoration: none;
+}
+
+a:hover {
+  color: #000;
 }
 
 table.core {
@@ -68,6 +72,13 @@ table.core td.fem {
     text-align: center;
     font: bold 1.2em "Times New Roman", serif;
 }
+
+table.core td.neut {
+    background-color: #eeeeee;
+    text-align: center;
+    font: bold 1.2em "Times New Roman", serif;
+}
+
 table.core td.both {
     text-align: center;
 }
@@ -89,17 +100,25 @@ table.core table.parent {
     margin: 0.2em auto;
 }
 
-table.core td.parent {
+table.core td.frame {
     border-style: none;
     background-color: transparent;
-    padding: 0 0 0.5em 0;
+    padding: 0.5em 0 0.5em 0;
     margin: 0;
+}
+
+table.core td.frame-top {
+    padding: 0 0 0.5em 0;
 }
 
 table.core td.status {
     text-align: center;
     border: 2px inset #777;
     background-color: #e7e7e7;
+}
+
+table.core td.kids {
+    text-align: center;
 }
 
 /* End of tfp.css file */
