@@ -1085,27 +1085,31 @@ void TfpFrame::DoNavigation( const wxString& href )
 
 void TfpFrame::DoEdit( const wxString& href )
 {
-    long cond = recDb::GetChange();
+    bool ret = false;
 
+    recDb::Begin();
     try {
         if( href.StartsWith( "IL" ) || href.StartsWith( "IR" ) ) {
-            tfpAddNewSpouse( href.Mid(1) );
+            ret = tfpAddNewSpouse( href.Mid(1) );
         } else if( href.StartsWith( "IF" ) || href.StartsWith( "IM" ) ) {
-            tfpAddNewParent( href.Mid(1) );
+            ret = tfpAddNewParent( href.Mid(1) );
         } else if( href.StartsWith( "I" ) ) {
-            tfpEditIndividual( recGetID( href.Mid(1) ) );
+            ret = tfpEditIndividual( recGetID( href.Mid(1) ) );
         } else {
             wxMessageBox(
                 wxString::Format( _("Unable to edit ref\n[%s]"), href ),
                 _("Unknown Edit")
             );
         }
+        if( ret == true ) {
+            recDb::Commit();
+            RefreshHtmPage();
+        } else {
+            recDb::Rollback();
+        }
     } catch( wxSQLite3Exception& e ) {
         recDb::ErrorMessage( e );
         recDb::Rollback();
-    }
-    if( cond != recDb::GetChange() ) {
-        RefreshHtmPage();
     }
 }
 

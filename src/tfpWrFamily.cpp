@@ -299,7 +299,8 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR, idt indID )
 
     // Add Children
     if( kids.size() > 0 ) {
-        htm << "<td colspan='2' class='frame frame-bot'>\n<table class='parent'>\n";
+        htm << "<tr>\n<td colspan='2' class='frame frame-bot'>\n"
+            << "<table class='parent'>\n";
         for( i = 0 ; i < kids.size() ; i++ ) {
             htm << "<tr>\n<td class='" 
                 << GetSexClass( kids[i].f_id )
@@ -310,7 +311,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR, idt indID )
                 << kids[i].f_epitaph
                 << "\n</td>\n</tr>\n";
         }
-        htm << "</table>\n</td>\n";
+        htm << "</tr>\n</table>\n</td>\n";
     }
 
     // Add additional Spouses and/or Parents
@@ -415,7 +416,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR, idt indID )
                     continue;
                 }
                 htm << "<tr>\n<td class='"
-                    << GetSexClass( husbWives[i].f_wife_id, SEX_Female )
+                    << GetSexClass( wifeHusbs[i].f_husb_id, SEX_Male )
                     << "'>\n<a href='tfp:F"
                     << wifeHusbs[i].f_id << "'>";                     // FamID,
                 if( wifeHusbs[i].f_husb_id == 0 ) {
@@ -434,112 +435,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR, idt indID )
     }
 
     // core done
-    htm << "</table>\n";
-
-
-#if 0
-    htm << "<center>";
-
-    // Add additional Spouses and/or Parents
-    if( husbWives.size() > 1 || wifeHusbs.size() > 1 || 
-        husbFams.size() > 1 || wifeFams.size() > 1 
-    ) {
-        htm << "<br>&nbsp;<table><tr><td align='left' valign='top' width='270'>";
-
-        // Display additional Husbands Parents
-        if( husbFams.size() > 1 ) {
-            htm << "<table><tr><td align='left' width='270'>Additional Parents</td></tr>";
-            for( i = 0 ; i < husbFams.size() ; i++ ) {
-                if( i == iL ) continue;
-                htm << "<tr><td align='left' width='270'><b><a href='tfp:F"
-                    << famID << "," << i << "," << iR << "," << indID << "'>";
-                if( husbFams[i].f_husb_id || husbFams[i].f_wife_id ) {
-                    if( husbFams[i].f_husb_id ) {
-                        htm << recIndividual::GetFullName( husbFams[i].f_husb_id );
-                    }
-                    if( husbFams[i].f_husb_id && husbFams[i].f_wife_id ) {
-                        htm << "<br>";
-                    }
-                    if( husbFams[i].f_wife_id ) {
-                        htm << recIndividual::GetFullName( husbFams[i].f_wife_id );
-                    }
-                } else {
-                    htm << "[Unknown]";
-                }
-                htm << "</a></b></td></tr>";
-            }
-            htm << "</table><br><br>";
-        }
-
-        // Display additional Husbands Spouses
-        if( husbWives.size() > 1 ) {
-            htm << "<table><tr><td align='left' width='270'>Additional Spouses</td></tr>";
-            for( i = 0 ; i < husbWives.size() ; i++ ) {
-                if( husbWives[i].f_wife_id == wife.f_id ) continue;
-                htm << "<tr><td align='left' width='270'><b><a href='tfp:F"
-                    << husbWives[i].f_id << "'>";                     // FamID,
-                if( husbWives[i].f_wife_id == 0 ) {
-                    htm << "[Unknown]";
-                } else {
-                    htm << recIndividual::GetFullName( husbWives[i].f_wife_id );   //  Name
-                }
-                htm << "</a></b>&nbsp;&nbsp;"
-                    << recIndividual::GetDateEpitaph( husbWives[i].f_wife_id )
-                    << "</td></tr>";
-            }
-            htm << wxT("</table>");
-        }
-        htm << "</td><td align=right valign=top width=270>";
-
-        // Display additional Wifes Parents
-        if( wifeFams.size() > 1 ) {
-            htm << "<table><tr><td align='right' width='270'>Additional Parents</td></tr>";
-            for( i = 0 ; i < wifeFams.size() ; i++ ) {
-                if( i == iR ) continue;
-                htm << "<tr><td align='right' width='270'><b><a href='tfp:F"
-                    << famID << "," << iL << "," << i << "," << indID << "'>";
-                if( wifeFams[i].f_husb_id || wifeFams[i].f_wife_id ) {
-                    if( wifeFams[i].f_husb_id ) {
-                        htm << recIndividual::GetFullName( wifeFams[i].f_husb_id );
-                    }
-                    if( wifeFams[i].f_husb_id && wifeFams[i].f_wife_id ) {
-                        htm << "<br>";
-                    }
-                    if( wifeFams[i].f_wife_id ) {
-                        htm << recIndividual::GetFullName( wifeFams[i].f_wife_id );
-                    }
-                } else {
-                    htm << "[Unknown]";
-                }
-                htm << "</a></b></td></tr>";
-            }
-            htm << "</table><br><br>";
-        }
-
-        // Display additional Wifes Spouses
-        if( wifeHusbs.size() > 1 ) {
-            htm << "<table><tr><td align='right' width='270'>Additional Spouses</td></tr>";
-            for( i = 0 ; i < wifeHusbs.size() ; i++ ) {
-                if( wifeHusbs[i].f_husb_id == husb.f_id ) continue;
-                htm << "<tr><td align='right' width='270'><b><a href='tfp:F"
-                    << wifeHusbs[i].f_id << "'>";                     // FamID,
-                if( wifeHusbs[i].f_husb_id == 0 ) {
-                    htm << "[Unknown]";
-                } else {
-                    htm << recIndividual::GetFullName( wifeHusbs[i].f_husb_id );  //  Name
-                }
-                htm << "</a></b>&nbsp;&nbsp;"
-                    << recIndividual::GetDateEpitaph( wifeHusbs[i].f_husb_id )
-                    << "</td></tr>";
-            }
-            htm << "</table>";
-        }
-        htm << "</td></tr></table>";
-    }
-
-    htm << "</center>";
-#endif
-    htm << "</body></html>";
+    htm << "</table>\n</body>\n</html>\n";
 
     return htm;
 }
