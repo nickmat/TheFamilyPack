@@ -299,8 +299,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR, idt indID )
 
     // Add Children
     if( kids.size() > 0 ) {
-        htm //<< "<tr>\n<td colspan='2' class='frame'>&nbsp;</td>\n</tr>\n"
-            << "<td colspan='2' class='frame'>\n<table class='parent'>\n";
+        htm << "<td colspan='2' class='frame frame-bot'>\n<table class='parent'>\n";
         for( i = 0 ; i < kids.size() ; i++ ) {
             htm << "<tr>\n<td class='" 
                 << GetSexClass( kids[i].f_id )
@@ -314,29 +313,133 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR, idt indID )
         htm << "</table>\n</td>\n";
     }
 
+    // Add additional Spouses and/or Parents
+    if( husbWives.size() > 1 || wifeHusbs.size() > 1 || 
+        husbFams.size() > 1 || wifeFams.size() > 1 
+    ) {
+        htm << "<tr>\n<td class='frame frame-bot'>\n";
+               
+        // Display additional Husbands Parents
+        if( husbFams.size() > 1 ) {
+            htm << "<table class='parent'>\n"
+                << "<tr>\n<td class='status'>\nAdditional Parents:\n</td>\n</tr>\n";
+            for( i = 0 ; i < husbFams.size() ; i++ ) {
+                if( i == iL ) {
+                    continue;
+                }
+                htm << "<tr>\n<td class='"
+                    << "neut" //GetSexClass( husbFams[i].f_husb_id )
+                    << "'>\n<a href='tfp:F"
+                    << famID << "," << i << "," << iR << "," << indID << "'>";
+                if( husbFams[i].f_husb_id || husbFams[i].f_wife_id ) {
+                    if( husbFams[i].f_husb_id ) {
+                        htm << recIndividual::GetFullName( husbFams[i].f_husb_id );
+                    }
+                    if( husbFams[i].f_husb_id && husbFams[i].f_wife_id ) {
+                        htm << "<br>";
+                    }
+                    if( husbFams[i].f_wife_id ) {
+                        htm << recIndividual::GetFullName( husbFams[i].f_wife_id );
+                    }
+                } else {
+                    htm << "[Unknown]";
+                }
+                htm << "</a>\n</td>\n</tr>\n";
+            }
+            htm << "</table>\n";
+        }
 
+        // Display additional Husbands Spouses
+        if( husbWives.size() > 1 ) {
+            htm << "<table class='parent'>\n"
+                << "<tr>\n<td class='status'>\nAdditional Spouses:\n</td>\n</tr>\n";
+            for( i = 0 ; i < husbWives.size() ; i++ ) {
+                if( husbWives[i].f_wife_id == wife.f_id ) {
+                    continue;
+                }
+                htm << "<tr>\n<td class='"
+                    << GetSexClass( husbWives[i].f_wife_id, SEX_Female )
+                    << "'>\n<a href='tfp:F"
+                    << husbWives[i].f_id << "'>";                     // FamID,
+                if( husbWives[i].f_wife_id == 0 ) {
+                    htm << "[Unknown]";
+                } else {
+                    htm << recIndividual::GetFullName( husbWives[i].f_wife_id );   //  Name
+                }
+                htm << "</a>&nbsp;&nbsp;"
+                    << recIndividual::GetDateEpitaph( husbWives[i].f_wife_id )
+                    << "\n</td>\n</tr>\n";
+            }
+            htm << "</table>\n";
+        }
+
+        htm << "</td>\n<td class='frame frame-bot'>\n";
+
+        // Display additional Wifes Parents
+        if( wifeFams.size() > 1 ) {
+            htm << "<table class='parent'>\n"
+                << "<tr>\n<td class='status'>\nAdditional Parents:\n</td>\n</tr>\n";
+            for( i = 0 ; i < wifeFams.size() ; i++ ) {
+                if( i == iR ) {
+                    continue;
+                }
+
+                htm << "<tr>\n<td class='"
+                    << "neut" //GetSexClass( wifeFams[i].f_husb_id )
+                    << "'>\n<a href='tfp:F"
+                    << famID << "," << iL << "," << i << "," << indID << "'>";
+                if( wifeFams[i].f_husb_id || wifeFams[i].f_wife_id ) {
+                    if( wifeFams[i].f_husb_id ) {
+                        htm << recIndividual::GetFullName( wifeFams[i].f_husb_id );
+                    }
+                    if( wifeFams[i].f_husb_id && wifeFams[i].f_wife_id ) {
+                        htm << "<br>";
+                    }
+                    if( wifeFams[i].f_wife_id ) {
+                        htm << recIndividual::GetFullName( wifeFams[i].f_wife_id );
+                    }
+                } else {
+                    htm << "[Unknown]";
+                }
+                htm << "</a>\n</td>\n</tr>\n";
+            }
+            htm << "</table>\n";
+        }
+
+        // Display additional Wifes Spouses
+        if( wifeHusbs.size() > 1 ) {
+            htm << "<table class='parent'>\n"
+                << "<tr>\n<td class='status'>\nAdditional Spouses:\n</td>\n</tr>\n";
+            for( i = 0 ; i < wifeHusbs.size() ; i++ ) {
+                if( wifeHusbs[i].f_husb_id == husb.f_id ) {
+                    continue;
+                }
+                htm << "<tr>\n<td class='"
+                    << GetSexClass( husbWives[i].f_wife_id, SEX_Female )
+                    << "'>\n<a href='tfp:F"
+                    << wifeHusbs[i].f_id << "'>";                     // FamID,
+                if( wifeHusbs[i].f_husb_id == 0 ) {
+                    htm << "[Unknown]";
+                } else {
+                    htm << recIndividual::GetFullName( wifeHusbs[i].f_husb_id );  //  Name
+                }
+                htm << "</a>&nbsp;&nbsp;"
+                    << recIndividual::GetDateEpitaph( wifeHusbs[i].f_husb_id )
+                    << "\n</td>\n</tr>\n";
+            }
+            htm << "</table>\n";
+        }
+
+        htm << "</td>\n</tr>\n";
+    }
 
     // core done
     htm << "</table>\n";
 
 
-
-    htm << "<center>";
 #if 0
-    // Add Children
-    if( kids.size() > 0 ) {
-        htm << "<br>&nbsp;<table border='1'>";
-        for( i = 0 ; i < kids.size() ; i++ ) {
-            htm << "<tr><td align='center' width='300'><b><a href='tfp:FI"
-                << kids[i].f_id << "'>"
-                << kids[i].GetFullName()
-                << "</a></b>&nbsp;&nbsp;"
-                << kids[i].f_epitaph
-                << "</td></tr>";
-        }
-        htm << "</table>";
-    }
-#endif
+    htm << "<center>";
+
     // Add additional Spouses and/or Parents
     if( husbWives.size() > 1 || wifeHusbs.size() > 1 || 
         husbFams.size() > 1 || wifeFams.size() > 1 
@@ -434,7 +537,9 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR, idt indID )
         htm << "</td></tr></table>";
     }
 
-    htm << "</center></body></html>";
+    htm << "</center>";
+#endif
+    htm << "</body></html>";
 
     return htm;
 }
