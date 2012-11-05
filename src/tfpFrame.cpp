@@ -828,7 +828,7 @@ void TfpFrame::OnNavigationRequest( wxWebViewEvent& evt )
     evt.Veto();
 
     if( url.StartsWith( "tfp:" ) ) {
-        DoNavigation( url.Mid( 4 ) );
+        DisplayHtmPage( url.Mid( 4 ) );
         return;
     }
     if( url.StartsWith( "tfpe:" ) ) {
@@ -1029,57 +1029,26 @@ void TfpFrame::OpenTestFile()
     }
 }
 
-void TfpFrame::DoNavigation( const wxString& href )
+// Handles scheme "tfpc:" 
+void TfpFrame::DoTfpCommand( const wxString& href )
 {
-    wxUniChar uch0 = href.GetChar( 0 );
-    wxUniChar uch1, uch2;
-    long cond = recDb::GetChange();
-
-    try {
-        switch( uch0.GetValue() )
-        {
-        case '$':  // Context Commands
-            uch1 = href.GetChar( 1 );
-            switch( uch1.GetValue() )
-            {
-            case 'I': // Edit the given individual (create if 0)
-                uch2 = href.GetChar( 2 );
-                switch( uch2.GetValue() )
-                {
-                case 'L': case 'R':
-                    tfpAddNewSpouse( href.Mid(2) );
-                    break;
-                case 'F': case 'M':
-                    tfpAddNewParent( href.Mid(2) );
-                    break;
-                }
-                break;
-            case 'M': // Create a popup menu
-                DoHtmCtxMenu( href.Mid(2) );
-                break;
-            case 'R': // Edit reference record
-                uch2 = href.GetChar( 2 );
-                if( uch2.GetValue() == 'e' ) {
-                    tfpEditResearcher( href.Mid(3) );
-                } else {
-                    tfpEditReference( href.Mid(2) );
-                }
-                break;
-            }
-            break;
-//        case '^':  // Display the given reference as a note
-//            tfpDisplayNote( this, href.Mid( 1 ) );
-//            break;
-        default:   // Display the given reference
-            DisplayHtmPage( href );
-            break;
-        }
-    } catch( wxSQLite3Exception& e ) {
-        recDb::ErrorMessage( e );
-        recDb::Rollback();
-    }
-    if( cond != recDb::GetChange() ) {
-        RefreshHtmPage();
+    if( href == "New" ) {
+        NewFile();
+    } else if( href == "Open" ) {
+        OpenFile();
+    } else if( href == "Import" ) {
+        ImportGedcom();
+#ifdef _DEBUG
+    } else if( href == "Test" ) {
+        OpenTestFile();
+#endif
+    } else if( href.StartsWith( "M" ) ) {
+        DoHtmCtxMenu( href.Mid( 1 ) );
+    } else {
+        wxMessageBox( 
+            wxString::Format( _("Error: Invalid Command \"tfpc:%s\""), href ),
+            _("Link Error") 
+        );
     }
 }
 
@@ -1095,6 +1064,10 @@ void TfpFrame::DoEdit( const wxString& href )
             ret = tfpAddNewParent( href.Mid(1) );
         } else if( href.StartsWith( "I" ) ) {
             ret = tfpEditIndividual( recGetID( href.Mid(1) ) );
+        } else if( href.StartsWith( "Re" ) ) {
+            ret = tfpEditResearcher( recGetID( href.Mid(2) ) );
+        } else if( href.StartsWith( "R" ) ) {
+            ret = tfpEditReference( recGetID( href.Mid(1) ) );
         } else {
             wxMessageBox(
                 wxString::Format( _("Unable to edit ref\n[%s]"), href ),
@@ -1117,14 +1090,6 @@ void TfpFrame::DoPopupNote( const wxString& ref )
 {
     dlgNote* note = new dlgNote( this, ref );
     note->Show();
-#if 0
-    wxMessageBox(
-        wxString::Format( 
-            _("Unable to proccess Note ref\n[%s]"), ref
-        ),
-        _("Unknown Note")
-    );
-#endif
 }
 
 void TfpFrame::DoHtmCtxMenu( const wxString& ref )
@@ -1167,27 +1132,6 @@ void TfpFrame::DoHtmCtxMenu( const wxString& ref )
 
     PopupMenu( menu );
     delete menu;
-}
-
-
-void TfpFrame::DoTfpCommand( const wxString& href )
-{
-    if( href == "New" ) {
-        NewFile();
-    } else if( href == "Open" ) {
-        OpenFile();
-    } else if( href == "Import" ) {
-        ImportGedcom();
-#ifdef _DEBUG
-    } else if( href == "Test" ) {
-        OpenTestFile();
-#endif
-    } else {
-        wxMessageBox( 
-            wxString::Format( _("Error: Invalid Command \"tfpc:%s\""), href ),
-            _("Link Error") 
-        );
-    }
 }
 
 int TfpFrame::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )
@@ -1287,7 +1231,6 @@ void TfpFrame::SetDatabaseOpen( const wxString& path )
     wxFileName dbfile( path );
     m_dbFileName = dbfile.GetFullPath();
     wxString fmt( wxString::Format( "TFP: %s, %%s", dbfile.GetName() ) );
-//    m_html->SetRelatedFrame( this, fmt );
     SetMenuBar( m_menuOpenDB );
     m_toolbar->EnableTool( tfpID_LIST_SURNAME_INDEX, true );
     m_toolbar->EnableTool( tfpID_LIST_REFERENCES, true );
@@ -1298,7 +1241,6 @@ void TfpFrame::SetDatabaseOpen( const wxString& path )
 void TfpFrame::SetNoDatabase()
 {
     m_dbFileName = wxEmptyString;
-//    m_html->SetRelatedFrame( this, "%s" );
     SetMenuBar( m_menuClosedDB );
     m_toolbar->EnableTool( tfpID_LIST_SURNAME_INDEX, false );
     m_toolbar->EnableTool( tfpID_LIST_REFERENCES, false );

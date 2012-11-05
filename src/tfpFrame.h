@@ -131,11 +131,10 @@ public:
     bool ImportGedcom();
     void OpenTestFile();
 
-    void DoNavigation( const wxString& href );
+    void DoTfpCommand( const wxString& href );
     void DoEdit( const wxString& href );
     void DoPopupNote( const wxString& href );
     void DoHtmCtxMenu( const wxString& ref );
-    void DoTfpCommand( const wxString& href );
     int AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID );
 
     void SetDatabaseOpen( const wxString& path );

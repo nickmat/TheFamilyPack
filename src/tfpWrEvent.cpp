@@ -112,7 +112,7 @@ wxString tfpWriteEventPage( idt eventID )
             }
             recIdVec indIDs = per.GetIndividualIDs();
             for( size_t j = 0 ; j < indIDs.size() ; j++ ) {
-                htm << " <a href='tfp:$MR" << indIDs[j]
+                htm << " <a href='tfpc:MR" << indIDs[j]
                     << "'><img src=memory:fam.png></a>";
             }
             htm << "</td><td>" << eps[i].f_note

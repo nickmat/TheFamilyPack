@@ -49,7 +49,6 @@ extern bool tfpEditIndividual( idt indID );
 extern bool tfpEditFamily( idt famID );
 extern bool tfpEditFamily( const recFamily& fam );
 extern bool tfpEditReference( idt refID  );
-extern bool tfpEditReference( const wxString& ref );
 extern bool tfpAddExistSpouse( idt indID, Sex sex );
 extern bool tfpAddExistChild( idt famID, Sex sex );
 extern idt tfpAddMarriageEvent( const recFamily& family );
@@ -62,7 +61,6 @@ extern bool tfpEditEvent( idt eveID  );
 extern idt tfpGetRole( idt eventPersonaID, unsigned flags = tfpGETROLE_ALL );
 
 extern bool tfpEditResearcher( idt resID  );
-extern bool tfpEditResearcher( const wxString& resStr  );
 extern bool tfpEditSystem();
 extern bool tfpEditUserSettings();
 

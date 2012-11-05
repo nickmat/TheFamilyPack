@@ -76,7 +76,7 @@ wxString tfpWriteResearcherList()
                 htm << "*";
             }
         }
-        htm << "</td><td><a href='tfp:$Re" << list[i].FGetID()
+        htm << "</td><td><a href='tfpe:Re" << list[i].FGetID()
             << "'><img src=memory:edit.png></a></td><td>" << list[i].FGetComments()
             << "</td></tr>";
 

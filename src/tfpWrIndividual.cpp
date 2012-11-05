@@ -60,7 +60,7 @@ wxString tfpWriteIndividualPage( idt indID )
     htm << "<tr><td align=right width=120>Name:</td>"
            "<td><font size=+2><b>" << ind.GetFullName()
         << "</b></font> " << ind.f_epitaph
-        << " <a href='tfp:$MR" << indID
+        << " <a href='tfpc:MR" << indID
         << "'><img src=memory:fam.png></a></td></tr>";
 
     // Sex
@@ -97,7 +97,7 @@ wxString tfpWriteIndividualPage( idt indID )
                 << recIndividual::GetFullName( parents[i].f_husb_id )
                 << "</a></b> "
                 << recIndividual::GetDateEpitaph( parents[i].f_husb_id )
-                << " <a href='tfp:$MR" << parents[i].f_husb_id
+                << " <a href='tfpc:MR" << parents[i].f_husb_id
                 << "'><img src=memory:fam.png></a></td></tr>";
         }
     }
@@ -109,7 +109,7 @@ wxString tfpWriteIndividualPage( idt indID )
                 << recIndividual::GetFullName( parents[i].f_wife_id )
                 << "</a></b> "
                 << recIndividual::GetDateEpitaph( parents[i].f_wife_id )
-                << " <a href='tfp:$MR" << parents[i].f_wife_id
+                << " <a href='tfpc:MR" << parents[i].f_wife_id
                 << "'><img src=memory:fam.png></a></td></tr>";
         }
     }
@@ -133,7 +133,7 @@ wxString tfpWriteIndividualPage( idt indID )
             << spouseID << "'>"
             << spouse.GetFullName() << "</a></b> "
             << spouse.f_epitaph
-            << " <a href='tfp:$MR" << spouseID
+            << " <a href='tfpc:MR" << spouseID
             << "'><img src=memory:fam.png></a></td></tr>";
 
         // Union event (marriage)
@@ -159,7 +159,7 @@ wxString tfpWriteIndividualPage( idt indID )
                 << children[j].f_id << "'>"
                 << children[j].GetFullName() << "</a></b> "
                 << children[j].f_epitaph
-                << " <a href='tfp:$MR" << children[j].f_id
+                << " <a href='tfpc:MR" << children[j].f_id
                 << "'><img src=memory:fam.png></a></td></tr>";
         }
     }

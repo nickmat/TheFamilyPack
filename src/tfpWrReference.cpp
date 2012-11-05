@@ -117,7 +117,7 @@ wxString tfpWriteReferencePage( idt refID )
             << ref.f_statement
             << "</pre>";
     }
-    htm << "<p><a href='tfp:$R" << refID
+    htm << "<p><a href='tfpe:R" << refID
         << "'><img src=memory:edit.png></a><br>";
 
     size_t i;

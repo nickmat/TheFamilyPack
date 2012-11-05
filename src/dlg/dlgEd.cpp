@@ -308,18 +308,6 @@ bool tfpEditReference( idt refID  )
     return ret;
 }
 
-bool tfpEditReference( const wxString& ref )
-{
-    recDb::Begin();
-    if( tfpEditReference( recGetID( ref ) ) == true ) {
-        recDb::Commit();
-        return true;
-    } else {
-        recDb::Rollback();
-        return false;
-    }
-}
-
 bool tfpAddExistSpouse( idt indID, Sex sex )
 {
     const wxString savepoint = wxT("AddExistSpouse");
@@ -537,18 +525,6 @@ bool tfpEditResearcher( idt resID  )
         recDb::Rollback( savepoint );
     }
     dialog->Destroy();
-    return ret;
-}
-
-bool tfpEditResearcher( const wxString& resStr )
-{
-    recDb::Begin();
-    bool ret = tfpEditResearcher( recGetID( resStr ) );
-    if( ret == true ) {
-        recDb::Commit();
-    } else {
-        recDb::Rollback();
-    }
     return ret;
 }
 
