@@ -76,6 +76,7 @@ protected:
     static wxSQLite3Database* s_db;
     static wxString           s_fname;
     static long               s_change;
+    static long               s_spnumber;
 
 public:
     /*! Delete the given record in the given table.
@@ -130,6 +131,7 @@ public:
     static void Commit() { s_db->Commit(); ++s_change; }
     static void Rollback() { if( !s_db->GetAutoCommit() ) s_db->Rollback(); }
     static void ErrorMessage( wxSQLite3Exception& e );
+    static wxString GetSavepointStr() { return wxString::Format( "sp%ld", ++s_spnumber ); }
     static void Savepoint( const wxString& str ) { s_db->Savepoint( str ); }
     static void ReleaseSavepoint( const wxString& str )
         { s_db->ReleaseSavepoint( str ); }

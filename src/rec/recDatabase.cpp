@@ -48,6 +48,7 @@
 wxSQLite3Database* recDb::s_db = NULL;
 wxString           recDb::s_fname;
 long               recDb::s_change = 0;
+long               recDb::s_spnumber = 0;
 
 idt recGetID( const wxString& str )
 {
