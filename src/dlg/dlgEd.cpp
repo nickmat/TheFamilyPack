@@ -123,7 +123,7 @@ idt tfpAddNewChild( idt famID, Sex sex )
 
 bool tfpAddNewParent( idt indID, Sex sex )
 {
-    const wxString savepoint = wxT("AddNewParent");
+    const wxString savepoint = recDb::GetSavepointStr();
     bool ret = false;
 
     idt famID = 0;
@@ -168,9 +168,15 @@ bool tfpAddNewParent( idt indID, Sex sex )
     }
 
     wxString surname;
-    recDb::Savepoint( savepoint );
     if( sex == SEX_Male ) {
         surname = recIndividual::GetSurname( indID );
+    }
+    recDb::Savepoint( savepoint );
+    if( famID == 0 ) {
+        // Create a new family
+        recFamily fam(0);
+        fam.Save();
+        famID = fam.FGetID();
     }
 
     idt newIndID = tfpAddNewIndividual( famID, sex, surname );
