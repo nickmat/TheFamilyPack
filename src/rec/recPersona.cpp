@@ -318,7 +318,20 @@ idt recPersona::FindEvent( idt perID, recEventType::ETYPE_Grp grp )
 
 idt recPersona::FindCommonEvent( idt perID, recEventType::ETYPE_Grp grp, idt secID )
 {
-    if( perID == 0 || grp == recEventType::ETYPE_Grp_Unstated || secID == 0 ) return 0;
+    if( grp == recEventType::ETYPE_Grp_Unstated ) {
+        return 0;
+    }
+    idt perID1, perID2;
+    if( perID == 0 ) {
+        perID1 = secID;
+        perID2 = 0;
+    } else {
+        perID1 = perID;
+        perID2 = secID;
+    }
+    if( perID1 == 0 ) {
+        return 0;
+    }
 
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result1, result2;
@@ -328,22 +341,28 @@ idt recPersona::FindCommonEvent( idt perID, recEventType::ETYPE_Grp grp, idt sec
         "(SELECT R.id AS rid FROM EventTypeRole R "
         "  INNER JOIN "
         "  EventType T ON R.type_id=T.id "
-        "  WHERE T.grp=%d AND (R.prime=1 OR R.prime=2)) "
+        "  WHERE T.grp=%d AND NOT R.prime=0) "
         "ON rid=EP.role_id WHERE EP.per_id="ID" "
         "ORDER BY EP.per_seq;",
-        grp, perID
+        grp, perID1
     );
     result1 = s_db->GetTable( sql );
+    if( perID2 == 0 ) {
+        if( result1.GetRowCount() ) {
+            return GET_ID( result1.GetInt64( 0 ) );
+        }
+        return 0;
+    }
     sql.Format(
         "SELECT EP.event_id FROM EventPersona EP "
         "INNER JOIN "
         "(SELECT R.id AS rid FROM EventTypeRole R "
         "  INNER JOIN "
         "  EventType T ON R.type_id=T.id "
-        "  WHERE T.grp=%d AND (R.prime=1 OR R.prime=2)) "
+        "  WHERE T.grp=%d AND NOT R.prime=0) "
         "ON rid=EP.role_id WHERE EP.per_id="ID" "
         "ORDER BY EP.per_seq;",
-        grp, secID
+        grp, perID2
     );
     result2 = s_db->GetTable( sql );
 
