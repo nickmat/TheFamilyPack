@@ -207,7 +207,9 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR, idt indID )
         << "\n</td>\n</tr>\n";
 
     // The happy couple
-    htm << "<tr>\n<td class='couple male'>";
+    htm << "<tr>\n<td class='couple "
+        << GetSexClass( fam.f_husb_id, SEX_Male )
+        << "'>";
     if( fam.f_husb_id == 0 ) {
         htm << "<a href='tfpe:IL" << fam.f_id
             << "'><img src='memory:blank.png' width='200' height='40' alt='Add husband'></a>";
@@ -217,7 +219,9 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR, idt indID )
             << "</a><br>"
             << recIndividual::GetDateEpitaph( fam.f_husb_id );
     }
-    htm << "</td>\n<td class='couple fem'>";
+    htm << "</td>\n<td class='couple "
+        << GetSexClass( fam.f_wife_id, SEX_Female )
+        << "'>";
     if( fam.f_wife_id == 0 ) {
         htm << "<a href='tfpe:IR" << fam.f_id
             << "'><img src='memory:blank.png' width='200' height='40' alt='Add wife'></a>";
