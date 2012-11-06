@@ -131,13 +131,23 @@ bool recDb::CreateDb( const wxString& fname, unsigned flags )
 bool recDb::OpenDb( const wxString& fname )
 {
     if( IsOpen() ) {
-        recMessage( _("Database already open"), _("Open Database") );
+        recMessage( _("Database already open."), _("Open Database") );
         return false;
     }
     bool success = true;
     s_fname = fname;
 
-    s_db->Open( fname );
+    try {
+        s_db->Open( fname, wxEmptyString, WXSQLITE_OPEN_READWRITE );
+    } catch( wxSQLite3Exception& e ) {
+        recDb::ErrorMessage( e );
+        return false;
+    }
+    if( !IsOpen() ) {
+        recMessage( _("Unable to open Database."), _("Open Database") );
+        return false;
+    }
+
     recVersion ver(1);
     if( !ver.IsEqual( recVerMajor, recVerMinor, recVerRev, recVerTest ) ) {
         success = ver.DoUpgrade();
