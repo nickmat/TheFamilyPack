@@ -289,7 +289,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR, idt indID )
             << "'><img src='memory:menu.png' alt='Edit'></a>\n"
             << "&nbsp;<a href='tfp:I" << fam.f_wife_id
             << "'><img src='memory:ind.png' alt='Individual details'></a>\n";
-        if( husbFams.size() ) {
+        if( wifeFams.size() ) {
             htm << "&nbsp;<a href='tfp:CP" << fam.f_wife_id
                 << "'><img src='memory:pcht.png' alt='Pedigree'></a>\n";
         }

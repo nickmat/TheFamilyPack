@@ -862,11 +862,15 @@ void TfpFrame::OnHtmCtxMenu( wxCommandEvent& event )
     Sex sex;
     idt id = recGetID( m_ctxmenuref.Mid(1) );
     recFamily fam(id);
+
+    recDb::Begin();
     if( id == 0 && m_ctxmenuref.StartsWith( "F0," ) ) {
         fam.Decode( m_ctxmenuref );
     }
+    if( fam.FGetID() == 0 ) {
+        fam.Save();
+    }
 
-    recDb::Begin();
     try {
         switch( event.GetId() )
         {

@@ -276,11 +276,14 @@ bool tfpEditFamily( idt famID )
     return ret;
 }
 
-bool tfpEditFamily( const recFamily& family )
+bool tfpEditFamily( recFamily& family )
 {
-    const wxString savepoint = "EdFam";
+    const wxString savepoint = recDb::GetSavepointStr();
     bool ret = false;
 
+    if( family.FGetID() == 0 ) {
+        family.Save();
+    }
     dlgEditFamily* dialog = new dlgEditFamily( NULL );
     dialog->SetFamily( family );
 
@@ -431,9 +434,7 @@ idt tfpGetExistingMarriageEvent( idt famID )
 
 idt tfpAddMarriageEvent( const recFamily& family )
 {
-    idt eventID = 0;
-
-    const wxString savepoint = "AddFamEvent";
+    const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
 
     idt typeID = recEventType::Select( recEventType::SF_Family );
@@ -452,28 +453,32 @@ idt tfpAddMarriageEvent( const recFamily& family )
         return 0;
     }
 
-    dlgEditIndEvent* dialog = new dlgEditIndEvent( NULL, 0 );
+    recEvent eve(0);
+    eve.FSetTypeID( typeID );
+    eve.Save();
+    idt eventID = eve.FGetID();
+    wxString title;
+
+    recEventPersona ep(0);
+    ep.f_event_id = eventID;
+    if( family.f_husb_id ) {
+        ep.f_per_id = recIndividual::GetPersona( family.f_husb_id );
+        ep.f_role_id = husbRoleID;
+        ep.f_per_seq = 1;
+        ep.Save();
+    }
+    if( family.f_wife_id ) {
+        ep.f_id = 0;
+        ep.f_per_id = recIndividual::GetPersona( family.f_wife_id );
+        ep.f_role_id = wifeRoleID;
+        ep.f_per_seq = 2;
+        ep.Save();
+    }
+
+    dlgEditIndEvent* dialog = new dlgEditIndEvent( NULL, eventID );
 
     if( dialog->ShowModal() == wxID_OK )
     {
-        recLinkEvent le(0);
-        le.f_ind_event_id = eventID;
-        le.Save();
-        recEventPersona ep(0);
-        ep.f_event_id = eventID;
-        if( family.f_husb_id ) {
-            ep.f_per_id = recIndividual::GetPersona( family.f_husb_id );
-            ep.f_role_id = husbRoleID;
-            ep.f_per_seq = 1;
-            ep.Save();
-        }
-        if( family.f_wife_id ) {
-            ep.f_id = 0;
-            ep.f_per_id = recIndividual::GetPersona( family.f_wife_id );
-            ep.f_role_id = wifeRoleID;
-            ep.f_per_seq = 2;
-            ep.Save();
-        }
         recDb::ReleaseSavepoint( savepoint );
     } else {
         recDb::Rollback( savepoint );
