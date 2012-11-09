@@ -73,10 +73,10 @@ private:
 class dlgEditIndRole : public fbDlgEditIndRole
 {
 public:
-    dlgEditIndRole( wxWindow* parent, idt epID );
+    dlgEditIndRole( wxWindow* parent, idt ieID );
 
-    recEventPersona* GetEventPersona() { return &m_ep; }
-    idt GetRoleID() const { return m_ep.FGetRoleID(); }
+    recIndividualEvent* GetIndividualEvent() { return &m_ie; }
+    idt GetRoleID() const { return m_ie.FGetRoleID(); }
 
 private:
     bool TransferDataToWindow();
@@ -86,7 +86,7 @@ private:
     void OnButtonAddClick( wxCommandEvent& event );
 
 
-    recEventPersona     m_ep;
+    recIndividualEvent  m_ie;
 
     recEvent            m_event;
     recEventType        m_et;

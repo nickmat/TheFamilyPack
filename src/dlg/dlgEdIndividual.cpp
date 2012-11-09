@@ -152,13 +152,13 @@ bool dlgEditIndPersona::TransferDataToWindow()
     if( m_names.size() ) {
         m_listName->SetColumnWidth( NC_Name, wxLIST_AUTOSIZE );
     }
-    m_eps = m_persona.ReadEventPersonas();
-    for( size_t i = 0 ; i < m_eps.size() ; i++ ) {
-        m_listEvent->InsertItem( i, recEvent::GetIdStr( m_eps[i].f_event_id ) );
-        m_listEvent->SetItem( i, EC_Role, recEventTypeRole::GetName( m_eps[i].f_role_id ) );
-        m_listEvent->SetItem( i, EC_Title, recEvent::GetTitle( m_eps[i].f_event_id ) );
-        m_listEvent->SetItem( i, EC_Date, recEvent::GetDateStr( m_eps[i].f_event_id ) );
-        m_listEvent->SetItem( i, EC_Place, recEvent::GetAddressStr( m_eps[i].f_event_id ) );
+    m_ies = m_individual.GetEvents();
+    for( size_t i = 0 ; i < m_ies.size() ; i++ ) {
+        m_listEvent->InsertItem( i, recEvent::GetIdStr( m_ies[i].FGetEventID() ) );
+        m_listEvent->SetItem( i, EC_Role, recEventTypeRole::GetName( m_ies[i].FGetRoleID() ) );
+        m_listEvent->SetItem( i, EC_Title, recEvent::GetTitle( m_ies[i].FGetEventID() ) );
+        m_listEvent->SetItem( i, EC_Date, recEvent::GetDateStr( m_ies[i].FGetEventID() ) );
+        m_listEvent->SetItem( i, EC_Place, recEvent::GetAddressStr( m_ies[i].FGetEventID() ) );
     }
 
     
@@ -328,12 +328,12 @@ void dlgEditIndPersona::OnNewEvent( wxCommandEvent& event )
     );
     eve.Save();
 
-    recEventPersona ep(0);
-    ep.f_event_id = eve.GetID();
-    ep.f_per_id = m_persona.f_id;
-    ep.Save();
+    recIndividualEvent ie(0);
+    ie.FSetEventID( eve.GetID() );
+    ie.FSetIndID( m_individual.FGetID() );
+    ie.Save();
 
-    if( tfpGetRole( ep.FGetID(), tfpGETROLE_PRIME ) == 0 ) {
+    if( tfpGetRole( ie.FGetID(), tfpGETROLE_PRIME ) == 0 ) {
         recDb::Rollback( savepoint );
         return;
     }
@@ -343,14 +343,14 @@ void dlgEditIndPersona::OnNewEvent( wxCommandEvent& event )
     if( dialog->ShowModal() == wxID_OK )
     {
         recDb::ReleaseSavepoint( savepoint );
-        ep.Read();
-        int row = m_eps.size();
+        ie.Read();
+        int row = m_ies.size();
         m_listEvent->InsertItem( row, recEvent::GetIdStr( eve.GetID() ) );
-        m_listEvent->SetItem( row, EC_Role, recEventTypeRole::GetName( ep.FGetRoleID() ) );
+        m_listEvent->SetItem( row, EC_Role, recEventTypeRole::GetName( ie.FGetRoleID() ) );
         m_listEvent->SetItem( row, EC_Title, recEvent::GetTitle( eve.GetID() ) );
         m_listEvent->SetItem( row, EC_Date, recEvent::GetDateStr( eve.GetID() ) );
         m_listEvent->SetItem( row, EC_Place, recEvent::GetAddressStr( eve.GetID() ) );
-        m_eps.push_back( ep );
+        m_ies.push_back( ie );
     } else {
         recDb::Rollback( savepoint );
     }
@@ -374,7 +374,8 @@ void dlgEditIndPersona::OnEventEditButton( wxCommandEvent& event )
     const wxString savepoint = "IndEdEvent";
     recDb::Savepoint( savepoint );
 
-    dlgEditIndEvent* dialog = new dlgEditIndEvent( NULL, m_eps[row].f_event_id );
+    dlgEditIndEvent* dialog = 
+        new dlgEditIndEvent( NULL, m_ies[row].FGetEventID() );
 
     if( dialog->ShowModal() == wxID_OK )
     {
@@ -390,8 +391,8 @@ void dlgEditIndPersona::OnEventDeleteButton( wxCommandEvent& event )
     long row = m_listEvent->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row >= 0 ) {
         m_listEvent->DeleteItem( row );
-        recEvent::DeleteFromDb( m_eps[row].f_event_id );
-        m_eps.erase( m_eps.begin() + row );
+        recEvent::DeleteFromDb( m_ies[row].FGetEventID() );
+        m_ies.erase( m_ies.begin() + row );
     } else {
         wxMessageBox( wxT("No row selected"), wxT("Delete Event") );
     }

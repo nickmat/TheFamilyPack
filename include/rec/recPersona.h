@@ -89,32 +89,12 @@ public:
     static wxString GetIndividualIdStr( idt perID );
     wxString GetIndividualIdStr() const { return GetIndividualIdStr( f_id ); }
 
-    static idt FindEvent( idt perID, idt roleID );
-    idt FindEvent( idt roleID ) const { return FindEvent( f_id, roleID ); }
-    static idt FindEvent( idt perID, recEventType::ETYPE_Grp grp );
-    idt FindEvent( recEventType::ETYPE_Grp grp ) const { return FindEvent( f_id, grp ); }
-
-    idt GetBirthEvent() const { return FindEvent( recEventTypeRole::ROLE_Birth_Born ); }
-    idt GetNrBirthEvent() const { return FindEvent( recEventType::ETYPE_Grp_Nr_Birth ); }
-    idt GetDeathEvent() const { return FindEvent( recEventTypeRole::ROLE_Death_Died ); }
-    idt GetNrDeathEvent() const { return FindEvent( recEventType::ETYPE_Grp_Nr_Death ); }
-    static idt GetBirthEvent( idt id ) { return FindEvent( id, recEventTypeRole::ROLE_Birth_Born ); }
-    static idt GetNrBirthEvent( idt id ) { return FindEvent( id, recEventType::ETYPE_Grp_Nr_Birth ); }
-    static idt GetDeathEvent( idt id ) { return FindEvent( id, recEventTypeRole::ROLE_Death_Died ); }
-    static idt GetNrDeathEvent( idt id ) { return FindEvent( id, recEventType::ETYPE_Grp_Nr_Death ); }
-
     static idt FindCommonEvent( idt perID, recEventType::ETYPE_Grp grp, idt secID );
 
     static idt GetMarriageEvent( idt perID, idt spouseID ) {
         return FindCommonEvent( perID, recEventType::ETYPE_Grp_Union, spouseID ); 
     }
     idt GetMarriageEvent( idt spouseID ) const { return GetMarriageEvent( f_id, spouseID ); }
-
-    static idt FindAttribute( idt perID, idt atypeID ); 
-    idt FindAttribute( idt atypeID ) const { return FindAttribute( f_id, atypeID ); } 
-
-    static wxString GetDateEpitaph( idt id );
-    wxString GetDateEpitaph() const { return GetDateEpitaph( f_id ); }
 
     static int CountNames( idt id );
     int CountNames() const { return CountNames( f_id ); }

@@ -86,8 +86,10 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR, idt indID )
     recFamilyVec husbFams = husb.GetParentList();
     recFamilyVec wifeFams = wife.GetParentList();
 
-    idt hPerID = husb.GetPersona();
-    idt wPerID = wife.GetPersona();
+//    idt hPerID = husb.GetPersona();
+//    idt wPerID = wife.GetPersona();
+    idt hIndID = husb.FGetID();
+    idt wIndID = wife.FGetID();
 
     recIndividualList kids = fam.GetChildren();
     recFamilyVec husbWives = recIndividual::GetFamilyList( husb.f_id );
@@ -235,33 +237,33 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR, idt indID )
 
     // Standard events
     htm << "<tr>\n<td>\n<b>Birth: </b>"
-        << recEvent::GetDetailStr( recPersona::GetBirthEvent( hPerID ) )
+        << recEvent::GetDetailStr( recIndividual::GetBirthEvent( hIndID ) )
         << "\n</td>\n<td>\n<b>Birth: </b>"
-        << recEvent::GetDetailStr( recPersona::GetBirthEvent( wPerID ) )
+        << recEvent::GetDetailStr( recIndividual::GetBirthEvent( wIndID ) )
         << "\n</td>\n</tr>\n";
 
     htm << "<tr>\n<td>\n<b>Baptism: </b>"
-        << recEvent::GetDetailStr( recPersona::GetNrBirthEvent( hPerID ) )
+        << recEvent::GetDetailStr( recIndividual::GetNrBirthEvent( hIndID ) )
         << "\n</td>\n<td>\n<b>Baptism: </b>"
-        << recEvent::GetDetailStr( recPersona::GetNrBirthEvent( wPerID ) )
+        << recEvent::GetDetailStr( recIndividual::GetNrBirthEvent( wIndID ) )
         << "\n</td>\n</tr>\n";
 
     htm << "<tr>\n<td>\n<b>Death: </b>"
-        << recEvent::GetDetailStr( recPersona::GetDeathEvent( hPerID ) )
+        << recEvent::GetDetailStr( recIndividual::GetDeathEvent( hIndID ) )
         << "\n</td>\n<td>\n<b>Death: </b>"
-        << recEvent::GetDetailStr( recPersona::GetDeathEvent( wPerID ) )
+        << recEvent::GetDetailStr( recIndividual::GetDeathEvent( wIndID ) )
         << "\n</td>\n</tr>\n";
 
     htm << "<tr>\n<td>\n<b>Burial: </b>"
-        << recEvent::GetDetailStr( recPersona::GetNrDeathEvent( hPerID ) )
+        << recEvent::GetDetailStr( recIndividual::GetNrDeathEvent( hIndID ) )
         << "\n</td>\n<td>\n<b>Burial: </b>"
-        << recEvent::GetDetailStr( recPersona::GetNrDeathEvent( wPerID ) )
+        << recEvent::GetDetailStr( recIndividual::GetNrDeathEvent( wIndID ) )
         << "\n</td>\n</tr>\n";
 
     htm << "<tr>\n<td>\n<b>Occ: </b>"
-        << recEventPersona::GetRoleStr( hPerID, recEventType::ET_Occupation )
+        << recIndividualEvent::GetRoleStr( hIndID, recEventType::ET_Occupation )
         << "\n</td>\n<td>\n<b>Occ: </b>"
-        << recEventPersona::GetRoleStr( wPerID, recEventType::ET_Occupation )
+        << recIndividualEvent::GetRoleStr( wIndID, recEventType::ET_Occupation )
         << "\n</td>\n</tr>\n";
 
     // Individuals Status bar

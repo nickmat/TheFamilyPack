@@ -31,21 +31,24 @@
 #ifndef RECEVENT_H
 #define RECEVENT_H
 
-#include <vector>
-
 #include <rec/recDatabase.h>
 #include <rec/recDate.h>
 #include <rec/recReference.h>
 
 
 class recEvent;
-typedef std::vector< recEvent >          recEventVec;
+typedef std::vector< recEvent >           recEventVec;
 class recEventPersona;
-typedef std::vector< recEventPersona >   recEventPersonaVec;
+typedef std::vector< recEventPersona >    recEventPersonaVec;
 class recEventType;
-typedef std::vector< recEventType >      recEventTypeVec;
+typedef std::vector< recEventType >       recEventTypeVec;
 class recEventTypeRole;
-typedef std::vector< recEventTypeRole >  recEventTypeRoleVec;
+typedef std::vector< recEventTypeRole >   recEventTypeRoleVec;
+class recIndividualEvent;
+typedef std::vector< recIndividualEvent > recIndEventVec;
+class recFamilyEvent;
+typedef std::vector< recFamilyEvent >     recFamilyEventVec;
+
 
 //============================================================================
 //-------------------------[ recEventType ]-----------------------------------
@@ -214,7 +217,10 @@ public:
     static idt FindReferenceID( idt eventID ) {
         return recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, eventID );
     }
+    static recEventVec FindEquivRefEvents( idt indEventID );
 
+
+    recIndEventVec GetIndividualEvents();
     recEventPersonaVec GetEventPersonas();
     static wxSQLite3ResultSet GetTitleList();
 
@@ -416,5 +422,119 @@ inline bool operator!=( const recEventPersona& r1, const recEventPersona& r2 )
     return !(r1 == r2);
 }
 
+//============================================================================
+//-------------------------[ recIndividualEvent ]-----------------------------
+//============================================================================
+
+class recIndividualEvent : public recDb
+{
+public:
+    idt      f_ind_id;
+    idt      f_event_id;
+    idt      f_role_id;
+    wxString f_note;
+    int      f_ind_seq;
+
+    recIndividualEvent() {}
+    recIndividualEvent( idt id ) : recDb(id) { Read(); }
+    recIndividualEvent( const recIndividualEvent& pe );
+
+    void Clear();
+    void Save();
+    bool Read();
+    TABLE_NAME_MEMBERS( "IndividualEvent" );
+
+    idt FGetIndID() const { return f_ind_id; }
+    idt FGetEventID() const { return f_event_id; }
+    idt FGetRoleID() const { return f_role_id; }
+    wxString FGetNote() const { return f_note; }
+    int FGetIndSeq() const { return f_ind_seq; }
+
+    void FSetIndID( idt indID ) { f_ind_id = indID; }
+    void FSetEventID( idt eventID ) { f_event_id = eventID; }
+    void FSetRoleID( idt roleID ) { f_role_id = roleID; }
+    void FSetNote( const wxString& note ) { f_note = note; }
+    void FSetIndSeq( int indSeq ) { f_ind_seq = indSeq; }
+
+    static wxString GetIdStr( idt ieID ) { return wxString::Format( "IE"ID, ieID ); }
+    wxString GetIdStr() const { return GetIdStr( FGetID() ); }
+
+    static wxString GetRoleStr( idt indID, idt typeID );
+    wxString GetRoleStr( idt typeID ) const { return GetRoleStr( f_ind_id, typeID ); }
+
+    /*! Return true if a record exists that matches the
+     *  f_per_id, f_event_id and f_role_id.
+     */
+//    bool LinkExists() const;
+};
+
+inline bool recEquivalent( const recIndividualEvent& r1, const recIndividualEvent& r2 )
+{
+    return
+        r1.f_ind_id   == r2.f_ind_id   &&
+        r1.f_event_id == r2.f_event_id &&
+        r1.f_role_id  == r2.f_role_id  &&
+        r1.f_note     == r2.f_note     &&
+        r1.f_ind_seq  == r2.f_ind_seq;
+}
+
+inline bool operator==( const recIndividualEvent& r1, const recIndividualEvent& r2 )
+{
+    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
+}
+
+inline bool operator!=( const recIndividualEvent& r1, const recIndividualEvent& r2 )
+{
+    return !(r1 == r2);
+}
+
+//============================================================================
+//-------------------------[ recFamilyEvent ]---------------------------------
+//============================================================================
+
+class recFamilyEvent : public recDb
+{
+public:
+    idt      f_fam_id;
+    idt      f_event_id;
+    wxString f_note;
+
+    recFamilyEvent() {}
+    recFamilyEvent( idt id ) : recDb(id) { Read(); }
+    recFamilyEvent( const recFamilyEvent& link );
+
+    void Clear();
+    void Save();
+    bool Read();
+    TABLE_NAME_MEMBERS( "FamilyEvent" );
+
+    idt FGetFamID() const { return f_fam_id; }
+    idt FGetEventID() const { return f_event_id; }
+    wxString FGetNote() const { return f_note; }
+
+    void FSetFamID( idt famID ) { f_fam_id = famID; }
+    void FSetEventID( idt eventID ) { f_event_id = eventID; }
+    void FSetNote( const wxString& note ) { f_note = note; }
+};
+
+/*! The two entities are equal, ignoring the record id.
+ */
+inline bool recEquivalent( const recFamilyEvent& r1, const recFamilyEvent& r2 )
+{
+    return
+        r1.f_fam_id   == r2.f_fam_id   &&
+        r1.f_event_id == r2.f_event_id &&
+        r1.f_note     == r2.f_note;
+}
+
+inline bool operator==( const recFamilyEvent& d1, const recFamilyEvent& d2 )
+{
+    return recEquivalent( d1, d2 ) && d1.f_id == d2.f_id;
+}
+
+inline bool operator!=( const recFamilyEvent& d1, const recFamilyEvent& d2 )
+{
+    return !(d1 == d2);
+}
 
 #endif // RECEVENT_H

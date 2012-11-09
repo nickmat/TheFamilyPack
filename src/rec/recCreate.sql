@@ -216,7 +216,13 @@ INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-66, -18, 
 INSERT INTO EventType (id, grp, name) VALUES(-19, 8, 'Condition');
 INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-67, -19, 1, 0, 'Condition');
 
-/* Next EventTypeRole id = -68 */
+INSERT INTO EventType (id, grp, name) VALUES(-20, 3, 'Civl Partnership');
+INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-68, -20, 3, 0, 'Partner');
+INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-69, -20, 0, 1, 'Officiator');
+INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-70, -20, 0, 0, 'Witness');
+INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-71, -20, 0, 0, 'Present');
+
+/* Next EventTypeRole id = -72 */
 
 CREATE TABLE Family (
   id INTEGER PRIMARY KEY,
@@ -226,6 +232,14 @@ CREATE TABLE Family (
 
 /* Kick start the new database */
 INSERT INTO Family (id, husb_id, wife_id) VALUES (1, 0, 0);
+
+CREATE TABLE FamilyEvent (
+  id INTEGER PRIMARY KEY,
+  fam_id INTEGER NOT NULL REFERENCES Family(id),
+  event_id INTEGER NOT NULL REFERENCES Event(id),
+  note TEXT,
+  fam_seq INTEGER NOT NULL
+);
 
 CREATE TABLE FamilyIndividual (
   id INTEGER PRIMARY KEY,
@@ -244,12 +258,13 @@ CREATE TABLE Individual (
   per_id INTEGER
 );
 
-CREATE TABLE LinkEvent (
+CREATE TABLE IndividualEvent (
   id INTEGER PRIMARY KEY,
-  ref_event_id INTEGER NOT NULL REFERENCES Event(id),
-  ind_event_id INTEGER NOT NULL REFERENCES Event(id),
-  conf FLOAT NOT NULL,
-  comment TEXT
+  ind_id INTEGER NOT NULL REFERENCES Individual(id),
+  event_id INTEGER NOT NULL REFERENCES Event(id),
+  role_id INTEGER NOT NULL REFERENCES EventTypeRole(id),
+  note TEXT NOT NULL,
+  ind_seq INTEGER NOT NULL
 );
 
 CREATE TABLE LinkPersona (
@@ -435,13 +450,13 @@ INSERT INTO Researcher (id, name, comments, con_list_id) VALUES(1, 'Anonymous', 
 INSERT INTO User (id, res_id) VALUES(0, 0);
 INSERT INTO User (id, res_id) VALUES(1, 1);
 
-INSERT INTO System (id, val) VALUES(1, '1'); 
+INSERT INTO System (id, val) VALUES(1, '1');
 
 INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 0, 1, 'F1');
 INSERT INTO UserSetting (id, user_id, property, val) VALUES(2, 1, 1, 'F1');
 
 /* The Version table has only this one row */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 23);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 24);
 
 COMMIT;
 

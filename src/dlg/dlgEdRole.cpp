@@ -38,6 +38,7 @@
 #endif
 
 #include <rec/recPersona.h>
+#include <rec/recIndividual.h>
 
 #include "dlgEdRole.h"
 #include "dlgEd.h"
@@ -141,28 +142,28 @@ void dlgEditRole::OnRoleSelect( wxCommandEvent& event )
 //-------------------------[ dlgEditIndRole ]---------------------------------
 //============================================================================
 
-dlgEditIndRole::dlgEditIndRole( wxWindow* parent, idt epID ) 
+dlgEditIndRole::dlgEditIndRole( wxWindow* parent, idt ieID ) 
     : fbDlgEditIndRole(parent)
 {
-    m_ep.ReadID( epID );
-    m_event.ReadID( m_ep.FGetEventID() );
+    m_ie.ReadID( ieID );
+    m_event.ReadID( m_ie.FGetEventID() );
     m_et.ReadID( m_event.FGetTypeID() );
 }
 
 bool dlgEditIndRole::TransferDataToWindow()
 {
-    wxASSERT( m_ep.FGetID() != 0 );
-    wxASSERT( m_ep.FGetEventID() != 0 );
-    wxASSERT( m_ep.FGetPerID() != 0 );
+    wxASSERT( m_ie.FGetID() != 0 );
+    wxASSERT( m_ie.FGetEventID() != 0 );
+    wxASSERT( m_ie.FGetIndID() != 0 );
 
-    m_staticName->SetLabel( recPersona::GetNameStr( m_ep.FGetPerID() ) );
-    m_staticNameID->SetLabel( recPersona::GetIndividualIdStr( m_ep.FGetPerID() ) );
+    m_staticName->SetLabel( recIndividual::GetFullName( m_ie.FGetIndID() ) );
+    m_staticNameID->SetLabel( recIndividual::GetIdStr( m_ie.FGetIndID() ) );
     m_staticEvent->SetLabel( m_et.GetTypeStr() );
-    m_staticEP_ID->SetLabel( m_ep.GetIdStr() );
+    m_staticEP_ID->SetLabel( m_ie.GetIdStr() );
 
-    SetRoleList( m_ep.FGetRoleID() );
+    SetRoleList( m_ie.FGetRoleID() );
 
-    m_textCtrlNote->SetValue( m_ep.FGetNote() );
+    m_textCtrlNote->SetValue( m_ie.FGetNote() );
     return true;
 }
 
@@ -170,13 +171,13 @@ bool dlgEditIndRole::TransferDataFromWindow()
 {
     int sel = m_choiceRole->GetSelection();
     if( sel >= 0 && sel < (int) m_roles.size() ) {
-        m_ep.FSetRoleID( m_roles[sel].FGetID() );
+        m_ie.FSetRoleID( m_roles[sel].FGetID() );
     } else {
         return false;
     }
-    m_ep.FSetNote( m_textCtrlNote->GetValue() );
+    m_ie.FSetNote( m_textCtrlNote->GetValue() );
 
-    m_ep.Save();
+    m_ie.Save();
     return true;
 }
 

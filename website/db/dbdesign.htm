@@ -81,7 +81,7 @@
 
 <div id="content" class="nomenu">
 
-<blockquote>
+<blockquote class="short">
 <p>
  The goal is to transform data into information, and information into insight.
 </p>
@@ -90,57 +90,52 @@
 
   <table frame="box" rules="all" class="index">
    <tr>
-    <td><a href="#Attribute">Attribute</a></td>
-    <td><a href="#AttributeType">AttributeType</a></td>
     <td><a href="#CitationPart">CitationPart</a></td>
     <td><a href="#CitationPartType">CitationPartType</a></td>
     <td><a href="#Contact">Contact</a></td>
     <td><a href="#ContactList">ContactList</a></td>
-   </tr>
-   <tr>
     <td><a href="#ContactType">ContactType</a></td>
     <td><a href="#Date">Date</a></td>
+   </tr>
+   <tr>
     <td><a href="#Event">Event</a></td>
     <td><a href="#EventPersona">EventPersona</a></td>
     <td><a href="#EventType">EventType</a></td>
     <td><a href="#EventTypeRole">EventTypeRole</a></td>
+    <td><a href="#Family">Family</a></td>
+    <td><a href="#FamilyEvent">FamilyEvent</a></td>
    </tr>
    <tr>
-    <td><a href="#Family">Family</a></td>
     <td><a href="#FamilyIndividual">FamilyIndividual</a></td>
     <td><a href="#Individual">Individual</a></td>
-    <td><a href="#LinkAttribute">LinkAttribute</a></td>
-    <td><a href="#LinkEvent">LinkEvent</a></td>
+    <td><a href="#IndividualEvent">IndividualEvent</a></td>
     <td><a href="#LinkPersona">LinkPersona</a></td>
-   </tr>
-   <tr>
     <td><a href="#Name">Name</a></td>
     <td><a href="#NamePart">NamePart</a></td>
+   </tr>
+   <tr>
     <td><a href="#NamePartType">NamePartType</a></td>
     <td><a href="#NameStyle">NameStyle</a></td>
     <td><a href="#Persona">Persona</a></td>
     <td><a href="#Place">Place</a></td>
-   </tr>
-   <tr>
     <td><a href="#PlacePart">PlacePart</a></td>
     <td><a href="#PlacePartType">PlacePartType</a></td>
+   </tr>
+   <tr>
     <td><a href="#Reference">Reference</a></td>
     <td><a href="#ReferenceEntity">ReferenceEntity</a></td>
     <td><a href="#Relationship">Relationship</a></td>
     <td><a href="#RelativeDate">RelativeDate</a></td>
-   </tr>
-   <tr>
     <td><a href="#Repository">Repository</a></td>
     <td><a href="#RepositorySource">RepositorySource</a></td>
+   </tr>
+   <tr>
     <td><a href="#Researcher">Researcher</a></td>
     <td><a href="#Source">Source</a></td>
     <td><a href="#System">System</a></td>
     <td><a href="#User">User</a></td>
-   </tr>
-   <tr>
     <td><a href="#UserSetting">UserSetting</a></td>
     <td><a href="#Version">Version</a></td>
-    <td colspan='0' class="na">&nbsp;</td>
    </tr>
    <!-- <td colspan='0' class="na">&nbsp;</td> -->
   </table>
@@ -154,60 +149,6 @@
     </tr>
    </thead>
    <tbody>
-
-    <tr id="Attribute">
-     <td colspan="3" class="filler"><a href="#">Top</a></td>
-    </tr>
-    <tr class="head">
-     <td colspan="3"><b>Attribute</b></td>
-    </tr>
-    <tr>
-     <td>id</td>
-     <td>Integer PK</td>
-     <td>Unique key identifying an Attribute</td>
-    </tr>
-    <tr>
-     <td>per_id</td>
-     <td>Integer</td>
-     <td>Pointer to a Person ID</td>
-    </tr>
-    <tr>
-     <td>type_id</td>
-     <td>Integer</td>
-     <td>Unique identifier that indicates to which AttributeType this attribute belongs.</td>
-    </tr>
-    <tr>
-     <td>val</td>
-     <td>Text</td>
-     <td>The value of the Attribute, such as "Butcher" where type_id points to "Occupation".</td>
-    </tr>
-    <tr>
-     <td>sequence</td>
-     <td>Integer</td>
-     <td>Sequence of the Attribute within a Persona. The value may also be used to determine a default value if a Persona has more than one of a given criteria.</td>
-    </tr>
-
-    <tr id="AttributeType">
-     <td colspan="3" class="filler"><a href="#">Top</a></td>
-    </tr>
-    <tr class="head">
-     <td colspan="3"><b>AttributeType</b></td>
-    </tr>
-    <tr>
-     <td>id</td>
-     <td>Integer PK</td>
-     <td>Unique key identifying an Attribute</td>
-    </tr>
-    <tr>
-     <td>grp</td>
-     <td>Integer</td>
-     <td>Holds 0=Unstated, 1=Occupation, 100=Other</td>
-    </tr>
-    <tr>
-     <td>name</td>
-     <td>Text</td>
-     <td>Name of the Attribute Type</td>
-    </tr>
 
     <tr id="CitationPart">
      <td colspan="3" class="filler"><a href="#">Top</a></td>
@@ -524,6 +465,33 @@
      <td>Pointer to the Individual who is the female partner</td>
     </tr>
 
+    <tr id="FamilyEvent">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>FamilyEvent</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td class="nw">Integer PK</td>
+     <td>Unique key identifying a FamilyEvent</td>
+    </tr>
+    <tr>
+     <td>fam_id</td>
+     <td>Integer Not null FK</td>
+     <td>Pointer to a Family associated with the Event</td>
+    </tr>
+    <tr>
+     <td>event_id</td>
+     <td>Integer Not null FK</td>
+     <td>Pointer to the Event associated with a Family</td>
+    </tr>
+    <tr>
+     <td>note</td>
+     <td>Text</td>
+     <td>Optional note that relates to the Family - Event link</td>
+    </tr>
+
     <tr id="FamilyIndividual">
      <td colspan="3" class="filler"><a href="#">Top</a></td>
     </tr>
@@ -590,71 +558,44 @@
     <tr>
      <td>per_id</td>
      <td>Integer</td>
-     <td>Pointer to the default Persona.</td>
+     <td>Pointer to an associated Persona.</td>
     </tr>
 
-    <tr id="LinkAttribute">
+    <tr id="IndividualEvent">
      <td colspan="3" class="filler"><a href="#">Top</a></td>
     </tr>
     <tr class="head">
-     <td colspan="3"><b>LinkAttribute</b></td>
+     <td colspan="3"><b>IndividualEvent</b></td>
     </tr>
     <tr>
      <td>id</td>
      <td class="nw">Integer PK</td>
-     <td>Unique key identifying a LinkAttribute record.</td>
+     <td>Unique key identifying an IndividualEvent.</td>
     </tr>
     <tr>
-     <td>ref_att_id</td>
+     <td>ind_id</td>
      <td>Integer Not null FK</td>
-     <td>Pointer to an Attribute associated with a Reference</td>
+     <td>Pointer to an Individual</td>
     </tr>
     <tr>
-     <td>ind_att_id</td>
+     <td>event_id</td>
      <td>Integer Not null FK</td>
-     <td>Pointer to an Attribute associated with an Individual</td>
+     <td>Pointer to the Event</td>
     </tr>
     <tr>
-     <td>conf</td>
-     <td>Float Not null</td>
-     <td>A value, less than one, to indicate the confidence that the link is correct</td>
-    </tr>
-    <tr>
-     <td>comment</td>
-     <td>Text</td>
-     <td>Optional comment that relates to the Reference Attribute - Individual Attribute link</td>
-    </tr>
-
-    <tr id="LinkEvent">
-     <td colspan="3" class="filler"><a href="#">Top</a></td>
-    </tr>
-    <tr class="head">
-     <td colspan="3"><b>LinkEvent</b></td>
-    </tr>
-    <tr>
-     <td>id</td>
-     <td class="nw">Integer PK</td>
-     <td>Unique key identifying a LinkEvent record.</td>
-    </tr>
-    <tr>
-     <td>ref_event_id</td>
+     <td>role_id</td>
      <td>Integer Not null FK</td>
-     <td>Pointer to an Event associated with a Reference</td>
+     <td>Points to the role played by the Individual</td>
     </tr>
     <tr>
-     <td>ind_event_id</td>
-     <td>Integer Not null FK</td>
-     <td>Pointer to an Event associated with an Individual</td>
+     <td>note</td>
+     <td>Text Not null</td>
+     <td>Optional note that relates to the Individual</td>
     </tr>
     <tr>
-     <td>conf</td>
-     <td>Float Not null</td>
-     <td>A value, less than one, to indicate the confidence that the link is correct</td>
-    </tr>
-    <tr>
-     <td>comment</td>
-     <td>Text</td>
-     <td>Optional comment that relates to the Reference Event - Individual Event link</td>
+     <td>per_seq</td>
+     <td>Integer Not null</td>
+     <td>The sequence of Individuals included in a given event.</td>
     </tr>
 
     <tr id="LinkPersona">

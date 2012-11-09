@@ -85,19 +85,20 @@ bool dlgEditIndEvent::TransferDataToWindow()
     m_textCtrlAddr->SetValue( m_place.GetAddressStr() );
     m_textCtrlNote->SetValue( m_event.f_note );
 
-    m_eps = m_event.GetEventPersonas();
+    m_ies = m_event.GetIndividualEvents();
     m_individuals.clear();
     recIndividual ind;
-    for( size_t i = 0 ; i < m_eps.size() ; i++ ) {
-        ind.ReadPersona( m_eps[i].f_per_id );
+    for( size_t i = 0 ; i < m_ies.size() ; i++ ) {
+//        ind.ReadPersona( m_ies[i].f_per_id );
+        ind.ReadID( m_ies[i].FGetIndID() );
         m_individuals.push_back( ind );
         m_listPersona->InsertItem( i, ind.GetIdStr() );
         m_listPersona->SetItem( i, COL_Name, ind.GetFullName() );
-        m_listPersona->SetItem( i, COL_Role, recEventTypeRole::GetName( m_eps[i].f_role_id ) );
-        m_listPersona->SetItem( i, COL_Note, m_eps[i].f_note );
+        m_listPersona->SetItem( i, COL_Role, recEventTypeRole::GetName( m_ies[i].f_role_id ) );
+        m_listPersona->SetItem( i, COL_Note, m_ies[i].f_note );
     }
 
-    m_refEvents = recLinkEvent::FindEquivRefEvents( m_event.f_id );
+    m_refEvents = recEvent::FindEquivRefEvents( m_event.f_id );
     for( size_t i = 0 ; i < m_refEvents.size() ; i++ ) {
         idt refID = recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, m_refEvents[i].f_id );
         m_refIDs.push_back( refID );
@@ -376,9 +377,9 @@ bool dlgEditIndEvent::TransferDataFromWindow()
     m_event.UpdateDatePoint(); 
     m_event.Save();
 
-    for( size_t i = 0 ; i < m_eps.size() ; i++ ) {
-        m_eps[i].f_per_seq = i + 1;
-        m_eps[i].Save();
+    for( size_t i = 0 ; i < m_ies.size() ; i++ ) {
+        m_ies[i].FSetIndSeq( i + 1 );
+        m_ies[i].Save();
     }
 
     return true;
@@ -446,16 +447,16 @@ void dlgEditIndEvent::OnEditButton( wxCommandEvent& event )
     }
 
     const wxString savepoint = "EdIndRole";
-    dlgEditIndRole* dialog = new dlgEditIndRole( NULL, m_eps[row].FGetID() );
+    dlgEditIndRole* dialog = new dlgEditIndRole( NULL, m_ies[row].FGetID() );
 
     recDb::Savepoint( savepoint );
     if( dialog->ShowModal() == wxID_OK )
     {
         recDb::ReleaseSavepoint( savepoint );
-        recEventPersona* ep = dialog->GetEventPersona();
-        m_listPersona->SetItem( row, COL_Role, recEventTypeRole::GetName( ep->FGetRoleID() ) );
-        m_listPersona->SetItem( row, COL_Note, ep->FGetNote() );
-        m_eps[row] = *ep;
+        recIndividualEvent* ie = dialog->GetIndividualEvent();
+        m_listPersona->SetItem( row, COL_Role, recEventTypeRole::GetName( ie->FGetRoleID() ) );
+        m_listPersona->SetItem( row, COL_Note, ie->FGetNote() );
+        m_ies[row] = *ie;
     } else {
         recDb::Rollback( savepoint );
     }

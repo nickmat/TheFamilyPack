@@ -177,7 +177,35 @@ bool recIndividual::ReadPersona( idt perID )
 
 void recIndividual::UpdateDateEpitaph()
 {
-    f_epitaph = recPersona::GetDateEpitaph( f_per_id );
+    idt bDateID, dDateID;
+
+    bDateID = recEvent::GetDate1ID( GetBirthEvent() );
+    if( bDateID == 0 ) {
+        bDateID = recEvent::GetDate1ID( GetNrBirthEvent() );
+    }
+    dDateID = recEvent::GetDate1ID( GetDeathEvent() );
+    if( dDateID == 0 ) {
+        dDateID = recEvent::GetDate1ID( GetNrDeathEvent() );
+    }
+    if( bDateID == 0 && dDateID == 0 ) {
+        f_epitaph = wxEmptyString;
+        return;
+    }
+
+    wxString str;
+    f_epitaph = "(";
+    if( bDateID ) {
+        f_epitaph << recDate::GetYear( bDateID );
+    } else {
+        f_epitaph << " ";
+    }
+    f_epitaph << " - ";
+    if( dDateID ) {
+        f_epitaph << recDate::GetYear( dDateID );
+    } else {
+        f_epitaph << " ";
+    }
+    f_epitaph << ")";
 }
 
 void recIndividual::UpdateNames()
@@ -194,14 +222,13 @@ void recIndividual::UpdateNames()
 void recIndividual::Update()
 {
     recPersona per( f_per_id );
-
-    f_epitaph = per.GetDateEpitaph();
-
     idt nameID = per.GetDefaultNameID();
     f_surname = recName::GetSurname( nameID );
     if( f_surname.length() == 0 ) f_surname = "?";
     f_given = recName::GetNamePartStr( nameID, NAME_TYPE_Given_name );
     if( f_given.length() == 0 ) f_given = "?";
+
+    UpdateDateEpitaph();
 }
 
 wxString recIndividual::GetFullName( idt id )
@@ -252,6 +279,38 @@ wxString recIndividual::GetFullNameEpitaph( idt id )
 
     return str;
 }
+
+idt recIndividual::FindEvent( idt indID, idt roleID )
+{
+    if( indID == 0 || roleID == 0 ) return 0;
+
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT event_id FROM IndividualEvent WHERE ind_id="ID" AND role_id ="ID";",
+        indID, roleID
+    );
+    return ExecuteID( sql );
+}
+
+idt recIndividual::FindEvent( idt indID, recEventType::ETYPE_Grp grp )
+{
+    if( indID == 0 || grp == recEventType::ETYPE_Grp_Unstated ) return 0;
+
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT IE.event_id FROM IndividualEvent IE "
+        "INNER JOIN "
+        "(SELECT R.id AS rid FROM EventTypeRole R "
+        "  INNER JOIN "
+        "  EventType T ON R.type_id=T.id "
+        "  WHERE T.grp=%d AND R.prime=1) "
+        "ON rid=IE.role_id WHERE IE.ind_id="ID" "
+        "ORDER BY IE.ind_seq;",
+        grp, indID
+    );
+    return ExecuteID( sql );
+}
+
 
 
 recFamilyVec recIndividual::GetFamilyList( idt ind )
@@ -306,6 +365,42 @@ recFamilyVec recIndividual::GetParentList( idt indID )
     }
     return parents;
 }
+
+recIndEventVec recIndividual::GetEvents( idt indID )
+{
+    recIndEventVec list;
+    recIndividualEvent record;
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( indID == 0 ) {
+        return list;
+    }
+
+    sql.Format(
+        "SELECT IE.id, event_id, role_id, IE.note, ind_seq FROM IndividualEvent IE"
+        " INNER JOIN Event E ON E.id=event_id"
+        " WHERE ind_id="ID" ORDER BY date_pt;", 
+        indID
+    );
+    result = s_db->GetTable( sql );
+
+    list.reserve( result.GetRowCount() );
+    record.f_ind_id = indID;
+    for( int i = 0 ; i < result.GetRowCount() ; i++ )
+    {
+        result.SetRow( i );
+        record.f_id       = GET_ID( result.GetInt64( 0 ) );
+        record.f_event_id = GET_ID( result.GetInt64( 1 ) );
+        record.f_role_id  = GET_ID( result.GetInt64( 2 ) );
+        record.f_note     = result.GetAsString( 3 );
+        record.f_ind_seq  = result.GetInt( 4 );
+        list.push_back( record );
+    }
+    return list;
+}
+
+
 
 wxSQLite3Table recIndividual::GetRefEventsTable( idt perID )
 {
