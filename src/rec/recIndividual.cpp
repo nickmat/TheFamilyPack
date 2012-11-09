@@ -679,6 +679,39 @@ idt recFamily::GetMarriageEvent() const
     );
 }
 
+recIdVec recFamily::FindEventList( idt famID, recEventType::ETYPE_Grp grp )
+{
+    recIdVec vec;
+    if( famID == 0 || grp == recEventType::ETYPE_Grp_Unstated ) {
+        return vec;
+    }
+
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT E.id FROM Event E, EventType ET, FamilyEvent FE"
+        " WHERE FE.event_id=E.id AND E.type_id=ET.id"
+        " AND ET.grp=%d AND FE.fam_id="ID
+        " ORDER BY E.date_pt;",
+        grp, famID
+    );
+    wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
+
+    while( result.NextRow() ) {
+        vec.push_back( GET_ID( result.GetInt64( 0 ) ) );
+    }
+    return vec;
+}
+
+idt recFamily::GetUnionEvent( idt famID )
+{
+    recIdVec vec = FindEventList( famID, recEventType::ETYPE_Grp_Union );
+    if( vec.size() ) {
+        return vec[0];
+    }
+    return 0;
+}
+
+
 bool recFamily::ReadParents( idt ind )
 {
     wxSQLite3StatementBuffer sql;

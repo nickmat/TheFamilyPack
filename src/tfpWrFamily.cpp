@@ -205,7 +205,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR, idt indID )
 
     // Marriage event
     htm << "<tr>\n<td colspan='2' class='both'>\n<b>Marriage: </b>"
-        << recEvent::GetDetailStr( fam.GetMarriageEvent() )
+        << recEvent::GetDetailStr( fam.GetUnionEvent() )
         << "\n</td>\n</tr>\n";
 
     // The happy couple

@@ -190,6 +190,9 @@ public:
     bool Decode( const wxString& str );
 
     idt GetMarriageEvent() const;
+    static recIdVec FindEventList( idt famID, recEventType::ETYPE_Grp grp );
+    static idt GetUnionEvent( idt famID );
+    idt GetUnionEvent() const { return GetUnionEvent( f_id ); }
 
     bool ReadParents( idt indID );
     static recIndividualList GetChildren( idt famID );
