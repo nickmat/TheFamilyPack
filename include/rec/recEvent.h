@@ -224,8 +224,10 @@ public:
     recEventPersonaVec GetEventPersonas();
     static wxSQLite3ResultSet GetTitleList();
 
-    static int GetLastPersonaSeqNumber( idt eventID );
-    int GetLastPersonaSeqNumber() const { return GetLastPersonaSeqNumber( f_id ); }
+    static int GetLastPerSeqNumber( idt eventID );
+    int GetLastPerSeqNumber() const { return GetLastPerSeqNumber( f_id ); }
+    static int GetLastIndSeqNumber( idt eventID );
+    int GetLastIndSeqNumber() const { return GetLastIndSeqNumber( f_id ); }
 
     // Delete Event and remove all references to it.
     bool DeleteFromDb() { return DeleteFromDb( f_id ); }

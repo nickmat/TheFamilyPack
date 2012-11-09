@@ -390,12 +390,23 @@ wxSQLite3ResultSet recEvent::GetTitleList()
     return s_db->ExecuteQuery( sql );
 }
 
-int recEvent::GetLastPersonaSeqNumber( idt eventID )
+int recEvent::GetLastPerSeqNumber( idt eventID )
 {
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
         "SELECT MAX(per_seq) FROM EventPersona WHERE event_id="ID";",
+        eventID
+    );
+    return s_db->ExecuteScalar( sql );
+}
+
+int recEvent::GetLastIndSeqNumber( idt eventID )
+{
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "SELECT MAX(ind_seq) FROM IndividualEvent WHERE event_id="ID";",
         eventID
     );
     return s_db->ExecuteScalar( sql );

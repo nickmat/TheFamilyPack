@@ -102,7 +102,6 @@ private:
     void ReadName( GedIndividual& gind, int level );
     void ReadSex( GedIndividual& gind );
     void ReadIndEvent( GedIndividual& gind, int level );
-    void ReadIndAttr( GedIndividual& gind, int level );
     void ReadFam( int level );
     void ReadFamEvent( GedFamily& gfam, int level );
     void ReadSubm( int level );

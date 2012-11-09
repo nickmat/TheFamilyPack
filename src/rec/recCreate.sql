@@ -237,8 +237,7 @@ CREATE TABLE FamilyEvent (
   id INTEGER PRIMARY KEY,
   fam_id INTEGER NOT NULL REFERENCES Family(id),
   event_id INTEGER NOT NULL REFERENCES Event(id),
-  note TEXT,
-  fam_seq INTEGER NOT NULL
+  note TEXT
 );
 
 CREATE TABLE FamilyIndividual (

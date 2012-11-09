@@ -55,12 +55,15 @@ private:
     int                  m_nameSeq;
 
 public:
-    GedIndividual() : m_ind(0), m_per(0), m_nameSeq(0) { 
+    GedIndividual( idt indID ) : m_ind(0), m_per(0), m_nameSeq(0) { 
+        m_ind.FSetID( indID );
         m_per.Save(); 
         m_ind.f_per_id = m_per.f_id;
+        m_ind.Save();
     }
 
     idt GetPersonaID() const { return m_per.f_id; }
+    idt GetIndID() const { return m_ind.FGetID(); }
     int GetNameSeq() { return ++m_nameSeq; }
     wxString GetNameStr() const { return m_per.GetNameStr(); }
 
@@ -79,9 +82,13 @@ private:
     int       m_childSeq;
 
 public:
-    GedFamily() : m_fam(0), m_husbPerId(0), m_wifePerId(0), m_childSeq(0) {}
+    GedFamily( idt famID ) 
+        : m_fam(0), m_husbPerId(0), m_wifePerId(0), m_childSeq(0) 
+    {
+        m_fam.FSetID( famID );
+        m_fam.Save();
+    }
 
-    void SetFamId( idt famID ) { m_fam.f_id = famID; }
     void SetHusb( idt indID ) { 
         m_fam.f_husb_id = indID;
         UpdateIndividual( &m_husbPerId, indID ); 
@@ -93,8 +100,9 @@ public:
 
     void AddChild( idt indID );
 
-    idt GetHusbPerId() const { return m_husbPerId; }
-    idt GetWifePerId() const { return m_wifePerId; }
+    idt GetFamilyID() const { return m_fam.FGetID(); }
+    idt GetHusbIndId() const { return m_fam.f_husb_id; }
+    idt GetWifeIndId() const { return m_fam.f_wife_id; }
     wxString GetHusbNameStr() const { return recPersona::GetNameStr( m_husbPerId ); }
     wxString GetWifeNameStr() const { return recPersona::GetNameStr( m_wifePerId ); }
 
@@ -334,8 +342,7 @@ void recGedParse::ReadHead( int level )
 
 void recGedParse::ReadIndi( int level )
 {
-    GedIndividual gind;
-    gind.SetIndId( m_indiMap[ m_index ] );
+    GedIndividual gind( m_indiMap[ m_index ] );
 
     bool cont = ReadNextLine();
     while( cont && m_level >= level ) {
@@ -355,9 +362,6 @@ void recGedParse::ReadIndi( int level )
             case tagOCCU:
                 ReadIndEvent( gind, level+1 );
                 continue;
-//            case tagOCCU:
-//                ReadIndAttr( gind, level+1 );
-//                continue;
             case tag_END:
                 cont = false;
                 continue;
@@ -441,45 +445,46 @@ void recGedParse::ReadIndEvent( GedIndividual& gind, int level )
 {
     recEvent ev(0);
     ev.Save(); // We need the id number
-    recEventPersona ep(0);
-    ep.f_event_id = ev.f_id;
-    ep.f_per_id = gind.GetPersonaID();
+    recIndividualEvent ie(0);
+    ie.FSetEventID( ev.FGetID() );
+    ie.FSetIndID( gind.GetIndID() );
     wxString titlefmt;
     recDate::DatePoint dp;
 
     switch( m_tag )
     {
     case tagBIRT:
-        ev.f_type_id = recEventType::ET_Birth;
-        ep.f_role_id = recEventTypeRole::ROLE_Birth_Born;
+        ev.FSetTypeID( recEventType::ET_Birth );
+        ie.FSetRoleID( recEventTypeRole::ROLE_Birth_Born );
         titlefmt = _("Birth of %s");
         dp = recDate::DATE_POINT_Beg;
         break;
     case tagCHR:
-        ev.f_type_id = recEventType::ET_Baptism;
-        ep.f_role_id = recEventTypeRole::ROLE_Baptism_Baptised;
+        ev.FSetTypeID( recEventType::ET_Baptism );
+        ie.FSetRoleID( recEventTypeRole::ROLE_Baptism_Baptised );
         titlefmt = _("Baptism of %s");
         dp = recDate::DATE_POINT_Beg;
         break;
     case tagDEAT:
-        ev.f_type_id = recEventType::ET_Death;
-        ep.f_role_id = recEventTypeRole::ROLE_Death_Died;
+        ev.FSetTypeID( recEventType::ET_Death );
+        ie.FSetRoleID( recEventTypeRole::ROLE_Death_Died );
         titlefmt = _("Death of %s");
         dp = recDate::DATE_POINT_End;
         break;
     case tagBURI:
-        ev.f_type_id = recEventType::ET_Burial;
-        ep.f_role_id = recEventTypeRole::ROLE_Burial_Deceased;
+        ev.FSetTypeID( recEventType::ET_Burial );
+        ie.FSetRoleID( recEventTypeRole::ROLE_Burial_Deceased );
         titlefmt = _("Burial of %s");
         dp = recDate::DATE_POINT_End;
         break;
     case tagOCCU:
-        ev.f_type_id = recEventType::ET_Occupation;
-        ep.f_role_id = recEventTypeRole::FindOrCreate( m_text, recEventType::ET_Occupation );
+        ev.FSetTypeID( recEventType::ET_Occupation );
+        ie.FSetRoleID( recEventTypeRole::FindOrCreate( m_text, recEventType::ET_Occupation ) );
         titlefmt = _("Occupation of %s");
         dp = recDate::DATE_POINT_Mid;
         break;
     default:
+        ev.Delete();
         return; // do nothing
     }
 
@@ -504,8 +509,8 @@ void recGedParse::ReadIndEvent( GedIndividual& gind, int level )
     ev.f_title = wxString::Format( titlefmt, gind.GetNameStr() );
     ev.f_date_pt = recDate::GetDatePoint( ev.f_date1_id, dp );
     ev.Save();
-    ep.f_per_seq = ev.GetLastPersonaSeqNumber() + 1;
-    ep.Save();
+    ie.FSetIndSeq( ev.GetLastIndSeqNumber() + 1 );
+    ie.Save();
 }
 
 idt recGedParse::ParseEvDate( int level )
@@ -631,42 +636,9 @@ idt recGedParse::ParseEvPlace( int level )
     return place.f_id;
 }
 
-void recGedParse::ReadIndAttr( GedIndividual& gind, int level )
-{
-#if 0
-    recAttribute attr(0);
-    attr.Save(); // We need th Attribute id
-    attr.f_per_id = gind.GetPersonaID();
-    switch( m_tag )
-    {
-    case tagOCCU:
-        attr.f_type_id = recAttributeType::ATYPE_Occupation;
-        break;
-    default:
-        return; // ignore unrecognised attribute
-    }
-    attr.f_val = m_text;
-
-    bool cont = ReadNextLine();
-    while( cont && m_level >= level ) {
-        if( m_level == level ) {
-            switch( m_tag )
-            {
-            case tag_END:
-                cont = false;
-                continue;
-            }
-        }
-        cont = ReadNextLine();
-    }
-    attr.Save();
-#endif
-}
-
 void recGedParse::ReadFam( int level )
 {
-    GedFamily gfam;
-    gfam.SetFamId( m_famMap[ m_index ] );
+    GedFamily gfam( m_famMap[ m_index ] );
 
     bool cont = ReadNextLine();
     while( cont && m_level >= level ) {
@@ -701,23 +673,28 @@ void recGedParse::ReadFamEvent( GedFamily& gfam, int level )
     ev.Save(); // We need the id number
     wxString titlefmt;
 
-    recEventPersona epHusb(0);
-    epHusb.f_event_id = ev.f_id;
-    epHusb.f_per_id = gfam.GetHusbPerId();
+    recFamilyEvent fe(0);
+    fe.FSetEventID( ev.FGetID() );
+    fe.FSetFamID( gfam.GetFamilyID() );
 
-    recEventPersona epWife(0);
-    epWife.f_event_id = ev.f_id;
-    epWife.f_per_id = gfam.GetWifePerId();
+    recIndividualEvent ieHusb(0);
+    ieHusb.FSetEventID( ev.FGetID() );
+    ieHusb.FSetIndID( gfam.GetHusbIndId() );
+
+    recIndividualEvent ieWife(0);
+    ieWife.FSetEventID( ev.FGetID() );
+    ieWife.FSetIndID( gfam.GetWifeIndId() );
 
     switch( m_tag )
     {
     case tagMARR:
-        ev.f_type_id = recEventType::ET_Marriage;
-        epHusb.f_role_id = recEventTypeRole::ROLE_Marriage_Groom;
-        epWife.f_role_id = recEventTypeRole::ROLE_Marriage_Bride;
+        ev.FSetTypeID( recEventType::ET_Marriage );
+        ieHusb.FSetRoleID( recEventTypeRole::ROLE_Marriage_Groom );
+        ieWife.FSetRoleID( recEventTypeRole::ROLE_Marriage_Bride );
         titlefmt = _("Marriage of %s and %s");
         break;
     default:
+        ev.Delete();
         return; // do nothing
     }
 
@@ -743,12 +720,13 @@ void recGedParse::ReadFamEvent( GedFamily& gfam, int level )
     ev.f_title = wxString::Format( titlefmt, gfam.GetHusbNameStr(), gfam.GetWifeNameStr() );
     ev.f_date_pt = recDate::GetDatePoint( ev.f_date1_id );
     ev.Save();
+    fe.Save();
 
-    int seq = ev.GetLastPersonaSeqNumber();
-    epHusb.f_per_seq = seq + 1;
-    if( epHusb.FGetPerID() ) epHusb.Save();
-    epWife.f_per_seq = seq + 2;
-    if( epWife.FGetPerID() ) epWife.Save();
+    int seq = ev.GetLastIndSeqNumber();    
+    ieHusb.FSetIndSeq( seq + 1 );
+    if( ieHusb.FGetIndID() ) ieHusb.Save();
+    ieWife.FSetIndSeq( seq + 2 );
+    if( ieWife.FGetIndID() ) ieWife.Save();
 }
 
 void recGedParse::ReadSubm( int level )
