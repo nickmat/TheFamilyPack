@@ -53,6 +53,9 @@ protected:
         tfpID_DLGEDFAM_ADDEXISTSON,
         tfpID_DLGEDFAM_ADDEXISTDAUR,
     };
+    enum EventColumns {
+        EC_Number, EC_Title, EC_Date, EC_Place, EC_MAX
+    };
 public:
     dlgEditFamily( wxWindow* parent );
 
@@ -89,11 +92,12 @@ private:
 	void OnEventUpButton( wxCommandEvent& event );
 	void OnEventDownButton( wxCommandEvent& event );
 
-    idt           m_child;
+    idt            m_child;
     EDBUT_Type     m_editbutton;
 
-    recFamily      m_family;
-    recFamIndVec   m_childlinks;
+    recFamily         m_family;
+    recFamIndVec      m_childlinks;
+    recFamilyEventVec m_fes;
 
 };
 

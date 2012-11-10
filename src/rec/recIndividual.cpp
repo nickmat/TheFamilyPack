@@ -554,6 +554,18 @@ recIndRelVec recIndividual::GetIndRelationships( idt indID )
     return rels;
 }
 
+int recIndividual::GetMaxEventSeqNumber( idt indID )
+{
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "SELECT MAX(ind_seq) FROM IndividualEvent WHERE ind_id="ID";",
+        indID
+    );
+    return s_db->ExecuteScalar( sql );
+}
+
+
 //============================================================================
 //-------------------------[ recFamily ]--------------------------------------
 //============================================================================
@@ -822,6 +834,35 @@ recFamIndVec recFamily::GetChildLinks( idt famID )
     return ChildLinks;
 }
 
+recFamilyEventVec recFamily::GetEvents( idt famID )
+{
+    recFamilyEventVec fes;
+    recFamilyEvent fe;
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( famID == 0 ) return fes;
+
+    sql.Format(
+        "SELECT id, event_id, note, fam_seq FROM FamilyEvent"
+        " WHERE fam_id="ID" ORDER BY fam_seq;", famID
+    );
+    result = s_db->GetTable( sql );
+
+    fe.FSetFamID( famID );
+    for( int i = 0 ; i < result.GetRowCount() ; i++ )
+    {
+        result.SetRow( i );
+        fe.FSetID( GET_ID( result.GetInt64( 0 ) ) );
+        fe.FSetEventID( GET_ID( result.GetInt64( 1 ) ) );
+        fe.FSetNote( result.GetAsString( 2 ) );
+        fe.FSetFamSeq( result.GetInt( 3 ) );
+        fes.push_back( fe );
+    }
+    return fes;
+}
+
+
 wxArrayString recFamily::GetMarriageEventTable() const
 {
     wxArrayString list;
@@ -859,6 +900,17 @@ wxArrayString recFamily::GetMarriageEventTable() const
         list.Add( recPlace::GetAddressStr( GET_ID( result.GetInt64( 3 ) ) ) );
     }
     return list;
+}
+
+int recFamily::GetMaxEventSeqNumber( idt famID )
+{
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "SELECT MAX(fam_seq) FROM FamilyEvent WHERE fam_id="ID";",
+        famID
+    );
+    return s_db->ExecuteScalar( sql );
 }
 
 //============================================================================

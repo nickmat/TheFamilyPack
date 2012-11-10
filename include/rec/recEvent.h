@@ -226,8 +226,8 @@ public:
 
     static int GetLastPerSeqNumber( idt eventID );
     int GetLastPerSeqNumber() const { return GetLastPerSeqNumber( f_id ); }
-    static int GetLastIndSeqNumber( idt eventID );
-    int GetLastIndSeqNumber() const { return GetLastIndSeqNumber( f_id ); }
+//    static int GetLastIndSeqNumber( idt eventID );
+//    int GetLastIndSeqNumber() const { return GetLastIndSeqNumber( f_id ); }
 
     // Delete Event and remove all references to it.
     bool DeleteFromDb() { return DeleteFromDb( f_id ); }
@@ -500,6 +500,7 @@ public:
     idt      f_fam_id;
     idt      f_event_id;
     wxString f_note;
+    int      f_fam_seq;
 
     recFamilyEvent() {}
     recFamilyEvent( idt id ) : recDb(id) { Read(); }
@@ -513,10 +514,15 @@ public:
     idt FGetFamID() const { return f_fam_id; }
     idt FGetEventID() const { return f_event_id; }
     wxString FGetNote() const { return f_note; }
+    int FGetFamSeq() const { return f_fam_seq; }
 
     void FSetFamID( idt famID ) { f_fam_id = famID; }
     void FSetEventID( idt eventID ) { f_event_id = eventID; }
     void FSetNote( const wxString& note ) { f_note = note; }
+    void FSetFamSeq( int seq ) { f_fam_seq = seq; }
+
+    static wxString GetIdStr( idt feID ) { return wxString::Format( "FE"ID, feID ); }
+    wxString GetIdStr() const { return GetIdStr( FGetID() ); }
 };
 
 /*! The two entities are equal, ignoring the record id.
@@ -526,7 +532,8 @@ inline bool recEquivalent( const recFamilyEvent& r1, const recFamilyEvent& r2 )
     return
         r1.f_fam_id   == r2.f_fam_id   &&
         r1.f_event_id == r2.f_event_id &&
-        r1.f_note     == r2.f_note;
+        r1.f_note     == r2.f_note     &&
+        r1.f_fam_seq  == r2.f_fam_seq;
 }
 
 inline bool operator==( const recFamilyEvent& d1, const recFamilyEvent& d2 )

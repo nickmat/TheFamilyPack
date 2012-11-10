@@ -46,8 +46,8 @@
 const int recVerMajor    = 0;
 const int recVerMinor    = 0;
 const int recVerRev      = 9;
-const int recVerTest     = 24;
-const wxStringCharType* recVerStr = wxS("TFPD-0.0.9.24");
+const int recVerTest     = 25;
+const wxStringCharType* recVerStr = wxS("TFPD-0.0.9.25");
 
 
 recVersion::recVersion( const recVersion& v )
@@ -936,7 +936,7 @@ static void UpgradeTest0_0_9_22to0_0_9_23()
     recDb::GetDb()->ExecuteUpdate( query );
 }
 
-static void UpgradeTest0_0_9_23to0_0_9_24()
+static void UpgradeTest0_0_9_23to0_0_9_25()
 {
     throw wxSQLite3Exception( 0, _("Cannot handle old database version."));
 }
@@ -969,7 +969,8 @@ static void UpgradeRev0_0_9toCurrent( int test )
     case 20: UpgradeTest0_0_9_20to0_0_9_21();
     case 21: UpgradeTest0_0_9_21to0_0_9_22();
     case 22: UpgradeTest0_0_9_22to0_0_9_23();
-    case 23: UpgradeTest0_0_9_23to0_0_9_24();
+    case 23:
+    case 24: UpgradeTest0_0_9_23to0_0_9_25();
     }
 }
 

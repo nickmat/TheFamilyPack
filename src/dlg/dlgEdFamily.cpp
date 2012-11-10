@@ -63,6 +63,11 @@ dlgEditFamily::dlgEditFamily( wxWindow* parent ) : fbDlgEditFamily( parent )
 {
     m_child = 0;
     m_family.Clear();
+
+    m_listEvent->InsertColumn( EC_Number, _("Number") );
+    m_listEvent->InsertColumn( EC_Title, _("Title") );
+    m_listEvent->InsertColumn( EC_Date, _("Date") );
+    m_listEvent->InsertColumn( EC_Place, _("Place") );
 }
 
 bool dlgEditFamily::TransferDataToWindow()
@@ -105,6 +110,14 @@ bool dlgEditFamily::TransferDataToWindow()
             list.Add( recIndividual::GetFullName( m_childlinks[i].f_ind_id ) );
         }
         m_listChild->InsertItems( list, 0 );
+    }
+    m_fes = m_family.GetEvents();
+    for( size_t i = 0 ; i < m_fes.size() ; i++ ) {
+        idt eveID = m_fes[i].FGetEventID();
+        m_listEvent->InsertItem( i, recEvent::GetIdStr( eveID ) );
+        m_listEvent->SetItem( i, EC_Title, recEvent::GetTitle( eveID ) );
+        m_listEvent->SetItem( i, EC_Date, recEvent::GetDateStr( eveID ) );
+        m_listEvent->SetItem( i, EC_Place, recEvent::GetAddressStr( eveID ) );
     }
     return true;
 }

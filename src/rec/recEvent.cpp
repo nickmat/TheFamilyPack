@@ -401,17 +401,6 @@ int recEvent::GetLastPerSeqNumber( idt eventID )
     return s_db->ExecuteScalar( sql );
 }
 
-int recEvent::GetLastIndSeqNumber( idt eventID )
-{
-    wxSQLite3StatementBuffer sql;
-
-    sql.Format(
-        "SELECT MAX(ind_seq) FROM IndividualEvent WHERE event_id="ID";",
-        eventID
-    );
-    return s_db->ExecuteScalar( sql );
-}
-
 //============================================================================
 //-------------------------[ recEventType ]-----------------------------------
 //============================================================================
@@ -1079,6 +1068,7 @@ wxString recIndividualEvent::GetRoleStr( idt indID, idt typeID )
     return ExecuteStr( sql );
 }
 
+
 //============================================================================
 //-------------------------[ recFamilyEvent ]---------------------------------
 //============================================================================
@@ -1089,6 +1079,7 @@ recFamilyEvent::recFamilyEvent( const recFamilyEvent& ep )
     f_fam_id   = ep.f_fam_id;
     f_event_id = ep.f_event_id;
     f_note     = ep.f_note;
+    f_fam_seq  = ep.f_fam_seq;
 }
 
 void recFamilyEvent::Clear()
@@ -1097,6 +1088,7 @@ void recFamilyEvent::Clear()
     f_fam_id   = 0;
     f_event_id = 0;
     f_note     = wxEmptyString;
+    f_fam_seq  = 0;
 }
 
 void recFamilyEvent::Save()
@@ -1108,9 +1100,9 @@ void recFamilyEvent::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO FamilyEvent (fam_id, event_id, note) "
-            "VALUES ("ID", "ID", '%q');",
-            f_fam_id, f_event_id, UTF8_(f_note)
+            "INSERT INTO FamilyEvent (fam_id, event_id, note, fam_seq) "
+            "VALUES ("ID", "ID", '%q', %d);",
+            f_fam_id, f_event_id, UTF8_(f_note), f_fam_seq
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -1120,16 +1112,16 @@ void recFamilyEvent::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO FamilyEvent (id, fam_id, event_id, note) "
-                "VALUES ("ID", "ID", "ID", '%q');",
-                f_id, f_fam_id, f_event_id, UTF8_(f_note)
+                "INSERT INTO FamilyEvent (id, fam_id, event_id, note, fam_seq) "
+                "VALUES ("ID", "ID", "ID", '%q', %d);",
+                f_id, f_fam_id, f_event_id, UTF8_(f_note), f_fam_seq
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE FamilyEvent SET fam_id="ID", event_id="ID", note='%q'"
-                " WHERE id="ID";",
-                f_fam_id, f_event_id, UTF8_(f_note), f_id
+                "UPDATE FamilyEvent SET fam_id="ID", event_id="ID", note='%q',"
+                " fam_seq=%d WHERE id="ID";",
+                f_fam_id, f_event_id, UTF8_(f_note), f_fam_seq, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -1147,7 +1139,7 @@ bool recFamilyEvent::Read()
     }
 
     sql.Format(
-        "SELECT fam_id, event_id, note"
+        "SELECT fam_id, event_id, note, fam_seq"
         " FROM FamilyEvent WHERE id="ID";",
         f_id
     );
@@ -1162,6 +1154,7 @@ bool recFamilyEvent::Read()
     f_fam_id   = GET_ID( result.GetInt64( 0 ) );
     f_event_id = GET_ID( result.GetInt64( 1 ) );
     f_note     = result.GetAsString( 2 );
+    f_fam_seq  = result.GetInt( 3 );
     return true;
 }
 

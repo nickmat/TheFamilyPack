@@ -140,6 +140,9 @@ public:
 
     static recIndRelVec GetIndRelationships( idt indID );
     recIndRelVec GetIndRelationships() const { return GetIndRelationships( f_id ); }
+
+    static int GetMaxEventSeqNumber( idt indID );
+    int GetMaxEventSeqNumber() const { return GetMaxEventSeqNumber( f_id ); }
 };
 
 inline bool recEquivalent( const recIndividual& r1, const recIndividual& r2 )
@@ -203,8 +206,13 @@ public:
     static int GetParentNextSequence( idt indID );
     recFamIndVec GetChildLinks() { return GetChildLinks( f_id ); }
     static recFamIndVec GetChildLinks( idt famID );
+    static recFamilyEventVec GetEvents( idt famID );
+    recFamilyEventVec GetEvents() const { return GetEvents( f_id ); }
 
     wxArrayString GetMarriageEventTable() const;
+
+    static int GetMaxEventSeqNumber( idt famID );
+    int GetMaxEventSeqNumber() const { return GetMaxEventSeqNumber( f_id ); }
 };
 
 inline bool recEquivalent( const recFamily& r1, const recFamily& r2 )

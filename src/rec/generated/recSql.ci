@@ -200,7 +200,8 @@ static const char* createdb =  /* recCreate.sql */
  "  id INTEGER PRIMARY KEY,\n"
  "  fam_id INTEGER NOT NULL REFERENCES Family(id),\n"
  "  event_id INTEGER NOT NULL REFERENCES Event(id),\n"
- "  note TEXT\n"
+ "  note TEXT,\n"
+ "  fam_seq INTEGER NOT NULL\n"
  ");\n"
  "CREATE TABLE FamilyIndividual (\n"
  "  id INTEGER PRIMARY KEY,\n"
@@ -380,7 +381,7 @@ static const char* createdb =  /* recCreate.sql */
  "INSERT INTO System (id, val) VALUES(1, '1');\n"
  "INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 0, 1, 'F1');\n"
  "INSERT INTO UserSetting (id, user_id, property, val) VALUES(2, 1, 1, 'F1');\n"
- "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 24);\n"
+ "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 25);\n"
  "COMMIT;\n";
 
 /* End of recSql.f2c */

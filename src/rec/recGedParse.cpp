@@ -66,6 +66,7 @@ public:
     idt GetIndID() const { return m_ind.FGetID(); }
     int GetNameSeq() { return ++m_nameSeq; }
     wxString GetNameStr() const { return m_per.GetNameStr(); }
+    int GetEventSeq() const { return m_ind.GetMaxEventSeqNumber(); }
 
     void SetIndId( idt indID ) { m_ind.f_id = indID; }
     void SetSex( Sex sex ) { m_per.f_sex = sex; }
@@ -105,6 +106,7 @@ public:
     idt GetWifeIndId() const { return m_fam.f_wife_id; }
     wxString GetHusbNameStr() const { return recPersona::GetNameStr( m_husbPerId ); }
     wxString GetWifeNameStr() const { return recPersona::GetNameStr( m_wifePerId ); }
+    int GetEventSeq() const { return m_fam.GetMaxEventSeqNumber(); }
 
     void UpdateIndividual( idt* p_perID, idt indID );
     void Save() { m_fam.Save(); }
@@ -509,7 +511,7 @@ void recGedParse::ReadIndEvent( GedIndividual& gind, int level )
     ev.f_title = wxString::Format( titlefmt, gind.GetNameStr() );
     ev.f_date_pt = recDate::GetDatePoint( ev.f_date1_id, dp );
     ev.Save();
-    ie.FSetIndSeq( ev.GetLastIndSeqNumber() + 1 );
+    ie.FSetIndSeq( gind.GetEventSeq() + 1 );
     ie.Save();
 }
 
@@ -720,12 +722,14 @@ void recGedParse::ReadFamEvent( GedFamily& gfam, int level )
     ev.f_title = wxString::Format( titlefmt, gfam.GetHusbNameStr(), gfam.GetWifeNameStr() );
     ev.f_date_pt = recDate::GetDatePoint( ev.f_date1_id );
     ev.Save();
+    fe.FSetFamSeq( gfam.GetEventSeq() + 1 );
     fe.Save();
 
-    int seq = ev.GetLastIndSeqNumber();    
-    ieHusb.FSetIndSeq( seq + 1 );
+    int seq = recIndividual::GetMaxEventSeqNumber( gfam.GetHusbIndId() ) + 1;
+    ieHusb.FSetIndSeq( seq );
     if( ieHusb.FGetIndID() ) ieHusb.Save();
-    ieWife.FSetIndSeq( seq + 2 );
+    seq = recIndividual::GetMaxEventSeqNumber( gfam.GetWifeIndId() ) + 1;
+    ieWife.FSetIndSeq( seq );
     if( ieWife.FGetIndID() ) ieWife.Save();
 }
 
