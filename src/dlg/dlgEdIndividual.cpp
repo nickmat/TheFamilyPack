@@ -390,11 +390,18 @@ void dlgEditIndPersona::OnEventDeleteButton( wxCommandEvent& event )
 {
     long row = m_listEvent->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row >= 0 ) {
+        int ans = wxMessageBox( 
+            _("Remove Event completely from database?"), _("Delete Event"),
+            wxYES_NO | wxCANCEL, this
+        );
+        if( ans != wxYES ) {
+            return;
+        }
         m_listEvent->DeleteItem( row );
         recEvent::DeleteFromDb( m_ies[row].FGetEventID() );
         m_ies.erase( m_ies.begin() + row );
     } else {
-        wxMessageBox( wxT("No row selected"), wxT("Delete Event") );
+        wxMessageBox( _("No row selected"), _("Delete Event") );
     }
 }
 

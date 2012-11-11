@@ -296,8 +296,6 @@ class fbDlgEditFamily : public wxDialog
 		wxStaticText* m_staticHusbName;
 		wxButton* m_buttonWife;
 		wxStaticText* m_staticWifeName;
-		wxButton* m_buttonMarr;
-		wxStaticText* m_staticMarrEvent;
 		wxPanel* m_panel211;
 		wxListBox* m_listChild;
 		wxButton* m_buttonAdd;
@@ -319,7 +317,6 @@ class fbDlgEditFamily : public wxDialog
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnHusbButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnWifeButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnMarriageButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnChildAddButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnChildEditButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnChildDeleteButton( wxCommandEvent& event ) { event.Skip(); }

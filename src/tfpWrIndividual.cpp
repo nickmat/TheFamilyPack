@@ -137,7 +137,7 @@ wxString tfpWriteIndividualPage( idt indID )
             << "'><img src=memory:fam.png></a></td></tr>";
 
         // Union event (marriage)
-        idt marEvID = families[i].GetMarriageEvent();
+        idt marEvID = families[i].GetUnionEvent();
         if( marEvID != 0 ) {
             htm << "<tr><td align=right>"
                 << recEvent::GetTypeStr( marEvID )

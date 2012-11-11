@@ -74,7 +74,9 @@ public:
 
     void UpdateDateEpitaph();
     void UpdateNames();
+    void UpdateDefaultFamily();
     void Update();
+    static void Update( idt indID );
     wxString GetFullName() { return f_given + " " + f_surname; }
 
     static idt GetDefaultFamily( idt id ) {
@@ -192,8 +194,7 @@ public:
 
     bool Decode( const wxString& str );
 
-    idt GetMarriageEvent() const;
-    static recIdVec FindEventList( idt famID, recEventType::ETYPE_Grp grp );
+    idt GetMarriageEvent_() const;
     static idt GetUnionEvent( idt famID );
     idt GetUnionEvent() const { return GetUnionEvent( f_id ); }
 

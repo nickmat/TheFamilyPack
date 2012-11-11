@@ -39,11 +39,11 @@ class dlgEditFamily : public fbDlgEditFamily
     DECLARE_CLASS( dlgEditFamily )
     DECLARE_EVENT_TABLE()
 
-    enum EDBUT_Type { EDBUT_Husb, EDBUT_Wife, EDBUT_Marr };
+    enum EDBUT_Type { EDBUT_Husb, EDBUT_Wife };
 
 protected:
     enum {
-        tfpID_DLGEDFAM_EDIT = 1100,
+        tfpID_DLGEDFAM_EDIT = 1500,
         tfpID_DLGEDFAM_REMOVE,
         tfpID_DLGEDFAM_DELETE,
         tfpID_DLGEDFAM_ADDNEW,
@@ -52,6 +52,8 @@ protected:
         tfpID_DLGEDFAM_ADDNEWDAUR,
         tfpID_DLGEDFAM_ADDEXISTSON,
         tfpID_DLGEDFAM_ADDEXISTDAUR,
+        tfpID_DLGEDFAM_NEW_EVENT,
+        tfpID_DLGEDFAM_EXIST_EVENT
     };
     enum EventColumns {
         EC_Number, EC_Title, EC_Date, EC_Place, EC_MAX
@@ -69,14 +71,11 @@ private:
 
     void OnHusbButton( wxCommandEvent& event );
     void OnWifeButton( wxCommandEvent& event );
-    void OnMarriageButton( wxCommandEvent& event );
-    void EditIDMenu( idt editID );
+    void EditSpouseMenu( idt indID );
     void OnEditID( wxCommandEvent& event );
     void OnRemoveID( wxCommandEvent& event );
     void OnDeleteID( wxCommandEvent& event );
     void OnAddExistID( wxCommandEvent& event );
-
-    bool EditEvent( idt* pEventID );
 
     void OnChildAddButton( wxCommandEvent& event );
     void OnAddChild( wxCommandEvent& event );
@@ -87,10 +86,13 @@ private:
     void OnChildDownButton( wxCommandEvent& event );
 
     void OnEventAddButton( wxCommandEvent& event );
+    void OnNewEvent( wxCommandEvent& event );
+	void OnExistingEvent( wxCommandEvent& event );
 	void OnEventEditButton( wxCommandEvent& event );
 	void OnEventDeleteButton( wxCommandEvent& event );
 	void OnEventUpButton( wxCommandEvent& event );
 	void OnEventDownButton( wxCommandEvent& event );
+
 
     idt            m_child;
     EDBUT_Type     m_editbutton;

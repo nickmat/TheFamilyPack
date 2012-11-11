@@ -219,16 +219,33 @@ void recIndividual::UpdateNames()
     if( f_given.length() == 0 ) f_given = "?";
 }
 
+void recIndividual::UpdateDefaultFamily()
+{
+    recFamilyVec families = GetFamilyList();
+    if( families.size() == 0 ) {
+        f_fam_id = 0;
+        return;
+    }
+    for( size_t i = 0 ; i < families.size() ; i++ ) {
+        if( families[i].FGetID() == f_fam_id ) {
+            return;
+        }
+    }
+    f_fam_id = families[0].FGetID();
+}
+
 void recIndividual::Update()
 {
-    recPersona per( f_per_id );
-    idt nameID = per.GetDefaultNameID();
-    f_surname = recName::GetSurname( nameID );
-    if( f_surname.length() == 0 ) f_surname = "?";
-    f_given = recName::GetNamePartStr( nameID, NAME_TYPE_Given_name );
-    if( f_given.length() == 0 ) f_given = "?";
-
+    UpdateDefaultFamily();
+    UpdateNames();
     UpdateDateEpitaph();
+}
+
+void recIndividual::Update( idt indID )
+{
+    recIndividual ind(indID);
+    ind.Update();
+    ind.Save();
 }
 
 wxString recIndividual::GetFullName( idt id )
@@ -310,8 +327,6 @@ idt recIndividual::FindEvent( idt indID, recEventType::ETYPE_Grp grp )
     );
     return ExecuteID( sql );
 }
-
-
 
 recFamilyVec recIndividual::GetFamilyList( idt ind )
 {
@@ -683,7 +698,7 @@ bool recFamily::Decode( const wxString& str )
     return true;
 }
 
-idt recFamily::GetMarriageEvent() const
+idt recFamily::GetMarriageEvent_() const
 {
     return recPersona::GetMarriageEvent(
         recIndividual::GetPersona( f_husb_id ),
@@ -691,34 +706,20 @@ idt recFamily::GetMarriageEvent() const
     );
 }
 
-recIdVec recFamily::FindEventList( idt famID, recEventType::ETYPE_Grp grp )
-{
-    recIdVec vec;
-    if( famID == 0 || grp == recEventType::ETYPE_Grp_Unstated ) {
-        return vec;
-    }
-
-    wxSQLite3StatementBuffer sql;
-    sql.Format(
-        "SELECT E.id FROM Event E, EventType ET, FamilyEvent FE"
-        " WHERE FE.event_id=E.id AND E.type_id=ET.id"
-        " AND ET.grp=%d AND FE.fam_id="ID
-        " ORDER BY E.date_pt;",
-        grp, famID
-    );
-    wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
-
-    while( result.NextRow() ) {
-        vec.push_back( GET_ID( result.GetInt64( 0 ) ) );
-    }
-    return vec;
-}
-
 idt recFamily::GetUnionEvent( idt famID )
 {
-    recIdVec vec = FindEventList( famID, recEventType::ETYPE_Grp_Union );
-    if( vec.size() ) {
-        return vec[0];
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3ResultSet result;
+
+    sql.Format(
+        "SELECT FE.event_id FROM FamilyEvent FE, Event E, EventType ET"
+        " WHERE FE.fam_id="ID" AND FE.event_id=E.id AND E.type_id=ET.id"
+        " AND ET.grp=3 ORDER BY FE.fam_seq",
+        famID
+    );
+    result = s_db->ExecuteQuery( sql );
+    if( result.NextRow() ) {
+        return GET_ID( result.GetInt64( 0 ) );
     }
     return 0;
 }

@@ -932,7 +932,7 @@ fbDlgEditFamily::fbDlgEditFamily( wxWindow* parent, wxWindowID id, const wxStrin
 	m_notebook5 = new wxNotebook( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
 	m_panel17 = new wxPanel( m_notebook5, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxFlexGridSizer* fgSizer21;
-	fgSizer21 = new wxFlexGridSizer( 3, 2, 0, 0 );
+	fgSizer21 = new wxFlexGridSizer( 2, 2, 0, 0 );
 	fgSizer21->AddGrowableCol( 1 );
 	fgSizer21->SetFlexibleDirection( wxBOTH );
 	fgSizer21->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
@@ -950,13 +950,6 @@ fbDlgEditFamily::fbDlgEditFamily( wxWindow* parent, wxWindowID id, const wxStrin
 	m_staticWifeName = new wxStaticText( m_panel17, wxID_ANY, _("Name"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticWifeName->Wrap( -1 );
 	fgSizer21->Add( m_staticWifeName, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
-	
-	m_buttonMarr = new wxButton( m_panel17, wxID_ANY, _("Marriage:"), wxDefaultPosition, wxSize( -1,-1 ), wxBU_RIGHT );
-	fgSizer21->Add( m_buttonMarr, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
-	
-	m_staticMarrEvent = new wxStaticText( m_panel17, wxID_ANY, _("Event"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticMarrEvent->Wrap( -1 );
-	fgSizer21->Add( m_staticMarrEvent, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	m_panel17->SetSizer( fgSizer21 );
 	m_panel17->Layout();
@@ -1069,7 +1062,6 @@ fbDlgEditFamily::fbDlgEditFamily( wxWindow* parent, wxWindowID id, const wxStrin
 	// Connect Events
 	m_buttonHusb->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditFamily::OnHusbButton ), NULL, this );
 	m_buttonWife->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditFamily::OnWifeButton ), NULL, this );
-	m_buttonMarr->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditFamily::OnMarriageButton ), NULL, this );
 	m_buttonAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditFamily::OnChildAddButton ), NULL, this );
 	m_buttonEdit->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditFamily::OnChildEditButton ), NULL, this );
 	m_buttonDel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditFamily::OnChildDeleteButton ), NULL, this );
@@ -1087,7 +1079,6 @@ fbDlgEditFamily::~fbDlgEditFamily()
 	// Disconnect Events
 	m_buttonHusb->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditFamily::OnHusbButton ), NULL, this );
 	m_buttonWife->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditFamily::OnWifeButton ), NULL, this );
-	m_buttonMarr->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditFamily::OnMarriageButton ), NULL, this );
 	m_buttonAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditFamily::OnChildAddButton ), NULL, this );
 	m_buttonEdit->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditFamily::OnChildEditButton ), NULL, this );
 	m_buttonDel->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditFamily::OnChildDeleteButton ), NULL, this );

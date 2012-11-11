@@ -194,6 +194,7 @@ public:
     void FSetDatePt( idt datePt ) { f_date_pt = datePt; }
     void FSetDatePt( recDate::DatePoint dp ) { f_date_pt = recDate::GetDatePoint( f_date1_id, dp ); }
 
+    wxString SetAutoTitle( const wxString& name1, const wxString& name2 = wxEmptyString );
 
     static wxString GetIdStr( idt evID ) { return wxString::Format( "E"ID, evID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
@@ -218,7 +219,6 @@ public:
         return recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, eventID );
     }
     static recEventVec FindEquivRefEvents( idt indEventID );
-
 
     recIndEventVec GetIndividualEvents();
     recEventPersonaVec GetEventPersonas();

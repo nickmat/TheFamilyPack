@@ -147,6 +147,34 @@ bool recEvent::Read()
     return true;
 }
 
+wxString recEvent::SetAutoTitle( const wxString& name1, const wxString& name2 )
+{
+    f_title = wxEmptyString;
+    wxString n1, n2;
+    if( n1.size() ) {
+        n1 = name1;
+        n2 = name2;
+    } else {
+        n1 = name2;
+        n2 = name1;
+    }
+    wxString type = recEventType::GetTypeStr( f_type_id );
+    if( type.size() ) {
+        f_title << type << " of ";
+    } else {
+        f_title << "Unknown event for ";
+    }
+    if( n1.size() ) {
+        f_title << n1;
+    } else {
+        f_title << "Unknown person";
+    }
+    if( n2.size() ) {
+        f_title << " and " << n2;
+    }
+    return f_title;
+}
+
 wxString recEvent::GetDetailStr() const
 {
     wxString str;
@@ -370,8 +398,8 @@ bool recEvent::DeleteFromDb( idt id )
     // TODO: Ensure Event is removed from reference statement.
     sql.Format(
         "DELETE FROM EventPersona WHERE event_id="ID";"
-        "DELETE FROM LinkEvent WHERE ref_event_id="ID";"
-        "DELETE FROM LinkEvent WHERE ind_event_id="ID";"
+        "DELETE FROM IndividualEvent WHERE event_id="ID";"
+        "DELETE FROM FamilyEvent WHERE event_id="ID";"
         "DELETE FROM ReferenceEntity "
              "WHERE entity_type=2 AND entity_id="ID";"
         "DELETE FROM Event WHERE id="ID";",
@@ -646,19 +674,26 @@ recEventTypeRoleVec recEventType::GetPrimeRoles( idt typeID, int prime )
     recEventTypeRoleVec vec;
     wxSQLite3StatementBuffer sql;
 
-    if( prime == 0 ) {
-        sql.Format(
-            "SELECT id, name FROM EventTypeRole "
-            "WHERE type_id="ID" AND (prime=1 OR prime=2) ORDER BY id DESC;",
-            typeID
-        );
-    } else {
-        sql.Format(
-            "SELECT id, name FROM EventTypeRole "
-            "WHERE type_id="ID" AND prime=%d ORDER BY id DESC;",
-            typeID, prime
-        );
+    wxString filter;
+    switch( prime )
+    {
+    case 0:
+        filter = "NOT prime=0";
+        break;
+    case -1:
+        filter = "prime=1 OR prime=3";
+        break;
+    case -2:
+        filter = "prime=2 OR prime=3";
+        break;
+    default:
+        filter = wxString::Format( "prime=%d", prime );
     }
+    sql.Format(
+        "SELECT id, name FROM EventTypeRole "
+        "WHERE type_id="ID" AND (%q) ORDER BY id DESC;",
+        typeID, UTF8_(filter)
+    );
     wxSQLite3Table table = s_db->GetTable( sql );
 
     record.f_type_id = typeID;
@@ -787,10 +822,10 @@ idt recEventTypeRole::Select( idt typeID, SelectFilter sf )
         vec = recEventType::GetPrimeRoles( typeID );
         break;
     case SF_Prime1:
-        vec = recEventType::GetPrimeRoles( typeID, 1 );
+        vec = recEventType::GetPrimeRoles( typeID, -1 );
         break;
     case SF_Prime2:
-        vec = recEventType::GetPrimeRoles( typeID, 2 );
+        vec = recEventType::GetPrimeRoles( typeID, -2 );
         break;
     default:
         return 0;
