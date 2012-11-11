@@ -103,36 +103,4 @@ void dlgNote::OnClose( wxCloseEvent& event )
     Destroy();
 }
 
-#if 0
-
-//============================================================================
-//-------------------------[ dlgPopupNote ]-----------------------------------
-//============================================================================
-
-IMPLEMENT_CLASS( dlgPopupNote, wxPopupTransientWindow )
-
-dlgPopupNote::dlgPopupNote( wxWindow *parent, const wxString& htm )
-                     :wxPopupTransientWindow( parent )
-{
-    m_panel = new wxScrolledWindow( this, wxID_ANY );
-    m_panel->SetBackgroundColour( *wxLIGHT_GREY );
-
-    m_html = new TfpHtml( 
-        m_panel, wxID_ANY, wxDefaultPosition, wxSize(200,100), wxHW_SCROLLBAR_AUTO 
-    );
-    m_html->SetPage( htm );
-
-    wxBoxSizer *topSizer = new wxBoxSizer( wxVERTICAL );
-    topSizer->Add( m_html, 1, wxALL|wxEXPAND, 5 );
-
-    m_panel->SetSizer( topSizer );
-    topSizer->Fit(m_panel);
-    topSizer->Fit(this);
-    Position( wxGetMousePosition(), wxSize(10,20) );
-}
-
-dlgPopupNote::~dlgPopupNote()
-{
-}
-#endif
 // End of dlgNote.cpp file

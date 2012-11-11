@@ -31,7 +31,7 @@
 
 #include <rec/recDatabase.h>
 
-// See tfpFrame.cpp (should be moved)
+// See tfpWr.cpp
 extern wxString tfpGetDisplayText( const wxString& name );
 
 // See tfpWrAdmin.cpp

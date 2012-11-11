@@ -375,10 +375,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tfpHtml.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\tfpMemory.cpp"
 				>
 			</File>
@@ -388,6 +384,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\tfpVersion.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\tfpWr.cpp"
 				>
 			</File>
 			<File
@@ -526,10 +526,6 @@
 			</File>
 			<File
 				RelativePath="..\..\src\tfpFrame.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\tfpHtml.h"
 				>
 			</File>
 			<File

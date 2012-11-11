@@ -49,28 +49,4 @@ private:
 	wxHtmlWindow* m_htmlWin;
 };
 
-#if 0
-
-//============================================================================
-//-------------------------[ dlgPopupNote ]-----------------------------------
-//============================================================================
-
-#include <wx/popupwin.h>
-
-class dlgPopupNote: public wxPopupTransientWindow
-{
-public:
-    dlgPopupNote( wxWindow *parent, const wxString& htm );
-    virtual ~dlgPopupNote();
-
-    wxScrolledWindow* GetChild() { return m_panel; }
-
-private:
-    wxScrolledWindow *m_panel;
-    wxHtmlWindow*     m_html;
-
-    DECLARE_CLASS(SimpleTransientPopup)
-};
-#endif
-
 #endif // DLGNOTE_H
