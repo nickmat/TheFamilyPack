@@ -27,9 +27,12 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 -->
 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
  <head>
   <title>The Family Pack StartUp</title>
+  <meta http-equiv='Content-Type' content='text/html;charset=utf-8'>
+  <link rel='stylesheet' type='text/css' href='memory:tfp.css'>
  </head>
  <body>
   <!-- Double up on % characters as this is used by wxString::Format -->
@@ -48,15 +51,22 @@
     <br>
     Actions:-<br>
     <br>
-    <a href='tfpc:Open'>Open an existing Database</a><br>
+    <form id='open' method='link' action='tfpc:Open'>
+     <input type='submit' value='Open an existing Database'>
+    </form>
     <br>
-    <a href='tfpc:New'>Create a new Database</a><br>
+    <form id='new' method='link' action='tfpc:New'>
+     <input type='submit' value='Create a new Database'>
+    </form>
     <br>
-    <a href='tfpc:Import'>Import a GEDCOM file</a><br>
+    <form id='import' method='link' action='tfpc:Import'>
+     <input type='submit' value='Import a GEDCOM file'>
+    </form>
+    <br>
    </p>
   </center>
   <p>
-   <a href='http://thefamilypack.org'>http://thefamilypack.org</a><br>
+   <a class='web' href='http://thefamilypack.org'>http://thefamilypack.org</a><br>
        <br>
    <!-- The version number string added here -->
        <b>TFP</b> %s

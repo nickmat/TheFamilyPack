@@ -48,6 +48,11 @@ a:hover {
   color: #000;
 }
 
+a.web:hover {
+  color: #000;
+  text-decoration: underline;
+}
+
 table.core {
     border-collapse: collapse;
     margin: 0 auto;
