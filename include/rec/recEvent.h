@@ -226,12 +226,10 @@ public:
 
     static int GetLastPerSeqNumber( idt eventID );
     int GetLastPerSeqNumber() const { return GetLastPerSeqNumber( f_id ); }
-//    static int GetLastIndSeqNumber( idt eventID );
-//    int GetLastIndSeqNumber() const { return GetLastIndSeqNumber( f_id ); }
 
     // Delete Event and remove all references to it.
-    bool DeleteFromDb() { return DeleteFromDb( f_id ); }
-    static bool DeleteFromDb( idt id );
+    void DeleteFromDb();
+    static void DeleteFromDb( idt id );
 };
 
 inline bool recEquivalent( const recEvent& r1, const recEvent& r2 )

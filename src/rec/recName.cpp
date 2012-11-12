@@ -170,17 +170,22 @@ int recName::AddNamePart( const wxString& nameStr, recStdNameType type, int seq 
     return part.f_sequence;
 }
 
-bool recName::DeleteAll()
+void recName::DeleteFromDb( idt id )
 {
-    if( f_id == 0 ) {
-        return false;
-    }
+    if( id == 0 ) return;
 
+    // TODO: Consider making 2 functions, one for reference, one for individual.
     wxSQLite3StatementBuffer sql;
-    sql.Format( "DELETE FROM NamePart WHERE name_id="ID";", f_id );
-    s_db->ExecuteUpdate( sql );
 
-    return Delete();
+    // TODO: Ensure Event is removed from reference statement.
+    sql.Format(
+        "DELETE FROM NamePart WHERE name_id="ID";"
+        "DELETE FROM ReferenceEntity "
+             "WHERE entity_type=7 AND entity_id="ID";"
+        "DELETE FROM Name WHERE id="ID";",
+        id, id, id
+    );
+    s_db->ExecuteUpdate( sql );
 }
 
 wxString recName::GetNameStr( idt id )

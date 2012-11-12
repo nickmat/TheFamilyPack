@@ -390,9 +390,12 @@ recEventVec recEvent::FindEquivRefEvents( idt indEventID )
     return vec;
 }
 
-bool recEvent::DeleteFromDb( idt id )
+void recEvent::DeleteFromDb()
 {
-    // TODO: Consider making 2 functions, one for reference, one for individual.
+    if( f_id <= 0 ) {
+        // Don't delete universal events.
+        return;
+    }
     wxSQLite3StatementBuffer sql;
 
     // TODO: Ensure Event is removed from reference statement.
@@ -400,13 +403,27 @@ bool recEvent::DeleteFromDb( idt id )
         "DELETE FROM EventPersona WHERE event_id="ID";"
         "DELETE FROM IndividualEvent WHERE event_id="ID";"
         "DELETE FROM FamilyEvent WHERE event_id="ID";"
-        "DELETE FROM ReferenceEntity "
-             "WHERE entity_type=2 AND entity_id="ID";"
-        "DELETE FROM Event WHERE id="ID";",
-        id, id, id, id, id
+        "DELETE FROM ReferenceEntity WHERE entity_type=2 AND entity_id="ID";",
+        f_id, f_id, f_id, f_id
     );
     s_db->ExecuteUpdate( sql );
-    return true;
+
+    Delete();
+    recDate::DeleteIfOrphaned( f_date1_id );
+    recDate::DeleteIfOrphaned( f_date2_id );
+    recPlace::DeleteIfOrphaned( f_place_id );
+    // TODO: Delete orphaned EventType and/or EventTypeRole 
+    Clear();
+}
+
+void recEvent::DeleteFromDb( idt id )
+{
+    if( id <= 0 ) {
+        // Don't delete universal events.
+        return;
+    }
+    recEvent eve(id);
+    eve.DeleteFromDb();
 }
 
 wxSQLite3ResultSet recEvent::GetTitleList()

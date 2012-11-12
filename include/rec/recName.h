@@ -76,7 +76,10 @@ public:
 
     int AddNameParts( const wxString& nameStr, recStdNameType type = NAME_TYPE_Unstated, int seq = 0 ) const;
     int AddNamePart( const wxString& nameStr, recStdNameType type, int seq ) const;
-    bool DeleteAll();
+
+    // Delete Name and remove all references to it.
+    void DeleteFromDb() { DeleteFromDb( f_id ); Clear(); }
+    static void DeleteFromDb( idt id );
 
     static wxString GetNameStr( idt id );
     wxString GetNameStr() const { return GetNameStr( f_id ); }

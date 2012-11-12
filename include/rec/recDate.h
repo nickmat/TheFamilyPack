@@ -150,6 +150,8 @@ public:
     }
 
     unsigned GetCompareFlags( const recDate& date ) const;
+
+    static void DeleteIfOrphaned( idt dateID );
 };
 
 /*! The two entities are equal, ignoring the record id.

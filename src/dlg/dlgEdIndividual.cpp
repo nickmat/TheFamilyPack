@@ -245,8 +245,15 @@ void dlgEditIndPersona::OnNameDeleteButton( wxCommandEvent& event )
 {
     long row = m_listName->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row >= 0 ) {
+        int ans = wxMessageBox( 
+            _("Remove Name completely from database?"), _("Delete Event"),
+            wxYES_NO | wxCANCEL, this
+        );
+        if( ans != wxYES ) {
+            return;
+        }
         m_listName->DeleteItem( row );
-        m_names[row].DeleteAll();
+        m_names[row].DeleteFromDb();
         m_names.erase( m_names.begin() + row );
     } else {
         wxMessageBox( wxT("No row selected"), wxT("Delete Name") );

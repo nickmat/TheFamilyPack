@@ -38,6 +38,7 @@
 #endif
 
 #include <rec/recPlace.h>
+#include <rec/recDate.h>
 
 
 recPlace::recPlace( const recPlace& p )
@@ -128,7 +129,7 @@ bool recPlace::DeleteAll()
 
 void recPlace::SetAddress( idt placeID, const wxString& str )
 {
-    recPlacePartList ppList = GetPlaceParts( placeID );
+    recPlacePartVec ppList = GetPlaceParts( placeID );
     if( ppList.size() == 0 )
     {
         recPlacePart pp;
@@ -176,13 +177,13 @@ wxString recPlace::GetAddressStr( idt id )
     return str;
 }
 
-recPlacePartList recPlace::GetPlaceParts( idt placeID )
+recPlacePartVec recPlace::GetPlaceParts( idt placeID )
 {
     wxString str;
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
     recPlacePart pp;
-    recPlacePartList ppList;
+    recPlacePartVec ppList;
 
     sql.Format(
         "SELECT * FROM PlacePart WHERE place_id="ID" ORDER BY sequence;",
@@ -203,6 +204,37 @@ recPlacePartList recPlace::GetPlaceParts( idt placeID )
     return ppList;
 }
 
+void recPlace::DeleteIfOrphaned( idt id )
+{
+    if( id <= 0 ) {
+        // Don't delete universal places.
+        return;
+    }
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format( "SELECT COUNT(*) FROM Event WHERE place_id="ID";", id );
+    if( s_db->ExecuteScalar( sql ) > 0 ) return;
+
+    sql.Format( "SELECT COUNT(*) FROM Source WHERE sub_place_id="ID" OR loc_place_id="ID";", id, id );
+    if( s_db->ExecuteScalar( sql ) > 0 ) return;
+
+    // TODO: Ensure Place is removed from reference statement.
+    sql.Format(
+        "DELETE FROM ReferenceEntity"
+        " WHERE entity_type=3 AND entity_id="ID";",
+        id
+    );
+    s_db->ExecuteUpdate( sql );
+
+    recPlacePartVec pps = GetPlaceParts( id );
+    for( size_t i = 0 ; i < pps.size() ; i++ ) {
+        pps[i].Delete();
+    }
+    recPlace place(id);
+    place.Delete();
+    recDate::DeleteIfOrphaned( place.f_date1_id );
+    recDate::DeleteIfOrphaned( place.f_date2_id );
+}
 
 //----------------------------------------------------------
 

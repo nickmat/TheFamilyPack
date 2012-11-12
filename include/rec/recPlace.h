@@ -31,11 +31,10 @@
 #define RECPLACE_H
 
 
-#include <wx/vector.h>
 #include <rec/recDatabase.h>
 
 class recPlacePart;
-typedef wxVector< recPlacePart >  recPlacePartList;
+typedef std::vector< recPlacePart > recPlacePartVec;
 
 class recPlace : public recDb
 {
@@ -66,8 +65,10 @@ public:
     wxString GetAddressStr() const { return GetAddressStr( f_id ); }
     static wxString GetAddressStr( idt id );
 
-    recPlacePartList GetPlaceParts() const { return GetPlaceParts( f_id ); }
-    static recPlacePartList GetPlaceParts( idt placeID );
+    recPlacePartVec GetPlaceParts() const { return GetPlaceParts( f_id ); }
+    static recPlacePartVec GetPlaceParts( idt placeID );
+
+    static void DeleteIfOrphaned( idt placeID );
 };
 
 /*! The two entities are equal, ignoring the record id.

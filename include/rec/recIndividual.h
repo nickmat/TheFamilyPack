@@ -38,6 +38,7 @@
 
 class recIndividual;
 typedef std::vector< recIndividual >  recIndividualList;
+typedef std::vector< recIndividual >  recIndividualVec;
 class recFamily;
 typedef std::vector< recFamily >  recFamilyVec;
 class recFamilyIndividual;
@@ -110,7 +111,6 @@ public:
     static idt GetNrBirthEvent( idt id ) { return FindEvent( id, recEventType::ETYPE_Grp_Nr_Birth ); }
     static idt GetDeathEvent( idt id ) { return FindEvent( id, recEventTypeRole::ROLE_Death_Died ); }
     static idt GetNrDeathEvent( idt id ) { return FindEvent( id, recEventType::ETYPE_Grp_Nr_Death ); }
-
 
     static recFamilyVec GetFamilyList( idt ind );
     recFamilyVec GetFamilyList() const { return GetFamilyList( f_id ); }

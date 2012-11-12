@@ -71,7 +71,7 @@ bool dlgEditPlace::TransferDataFromWindow()
 
     m_place.Save();
 
-    recPlacePartList ppVec = m_place.GetPlaceParts();
+    recPlacePartVec ppVec = m_place.GetPlaceParts();
     if( ppVec.size() == 0 )
     {
         recPlacePart pp;

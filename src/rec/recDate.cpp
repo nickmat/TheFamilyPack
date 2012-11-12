@@ -373,6 +373,43 @@ unsigned recDate::GetCompareFlags( const recDate& date ) const
     return flags;
 }
 
+void recDate::DeleteIfOrphaned( idt id )
+{
+    if( id <= 0 ) {
+        // Don't delete universal dates.
+        return;
+    }
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format( "SELECT COUNT(*) FROM RelativeDate WHERE base_id="ID";", id );
+    if( s_db->ExecuteScalar( sql ) > 0 ) return;
+
+    sql.Format( "SELECT COUNT(*) FROM Event WHERE date1_id="ID" OR date2_id="ID";", id, id );
+    if( s_db->ExecuteScalar( sql ) > 0 ) return;
+
+    sql.Format( "SELECT COUNT(*) FROM Place WHERE date1_id="ID" OR date2_id="ID";", id, id );
+    if( s_db->ExecuteScalar( sql ) > 0 ) return;
+
+    sql.Format( "SELECT COUNT(*) FROM Source WHERE sub_date1_id="ID" OR sub_date2_id="ID";", id, id );
+    if( s_db->ExecuteScalar( sql ) > 0 ) return;
+
+    // TODO: Ensure Date is removed from reference statement.
+    sql.Format(
+        "DELETE FROM ReferenceEntity"
+        " WHERE entity_type=4 AND entity_id="ID";",
+        id
+    );
+    s_db->ExecuteUpdate( sql );
+
+    idt relID = ExecuteID( "SELECT rel_id FROM Date WHERE id="ID";", id );
+    if( relID ) {
+        idt baseID = ExecuteID( "SELECT base_id FROM RelativeDate WHERE id="ID";", relID );
+        recRelativeDate::Delete( relID );
+        DeleteIfOrphaned( baseID );
+    }
+    Delete( id );
+}
+
 //-----------------------------------------------------
 //      recRelativeDate
 //-----------------------------------------------------
