@@ -51,21 +51,18 @@
 //                 dlgCreateIndividual dialog
 //============================================================================
 
-dlgCreateIndividual::dlgCreateIndividual( wxWindow* parent, idt famID )
+dlgCreateIndividual::dlgCreateIndividual( wxWindow* parent, idt indID )
     : fbDlgCreateIndividual( parent )
 {
     m_sex = SEX_Unstated;
     m_individual.Clear();
-    m_individual.f_fam_id = famID;
+    m_individual.f_id = indID;
     m_persona.Clear();
     m_name.Clear();
 }
 
 bool dlgCreateIndividual::TransferDataToWindow()
 {
-    wxASSERT( m_individual.f_id  == 0 );
-    m_individual.Save(); // Create id
-
     m_staticIndID->SetLabel( m_individual.GetIdStr() );
     m_choiceSex->SetSelection( m_sex );
     m_textSurname->SetValue( m_surname );

@@ -75,11 +75,8 @@ dlgEditFamily::dlgEditFamily( wxWindow* parent ) : fbDlgEditFamily( parent )
 
 bool dlgEditFamily::TransferDataToWindow()
 {
-    if( m_family.f_id == 0 ) {
-        m_family.Save();
-    } else {
-        m_family.Read();
-    }
+    wxASSERT( m_family.f_id != 0 );
+    m_family.Read();
     if( m_child > 0 ) {
         recFamilyIndividual fi;
         fi.Clear();

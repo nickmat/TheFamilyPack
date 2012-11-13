@@ -127,7 +127,7 @@ public:
     void Save() { m_res.Save(); }
 };
 
-bool recGedParse::Import()
+bool recGedParse::Import( unsigned flags )
 {
     m_progress = recGetProgressDlg(
         _("Reading Gedcom"), _("Proccessing..."),
@@ -139,8 +139,18 @@ bool recGedParse::Import()
         m_filestream.SeekI( 0 );
         if( !Pass2() ) ok = false;
     }
+    if( ok && ! (flags & recGED_IMPORT_NO_POST_OPS) ) {
+        ok = DoPostOperations();
+    }
     recProgressClose( m_progress );
     return ok;
+}
+
+bool recGedParse::DoPostOperations()
+{
+    recDb::Begin();
+    return recIndividual::CreateMissingFamilies();
+    recDb::Commit();
 }
 
 bool recGedParse::Pass1()

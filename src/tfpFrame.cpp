@@ -155,9 +155,19 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     menuEdIndR->Append( tfpID_EDIT_EXIST_FATHER_RIGHT, _("Add existing Father") );
     menuEdIndR->Append( tfpID_EDIT_EXIST_SPOUSE_RIGHT, _("Add existing Spouse") );
 
+    wxMenu* menuEdFam = new wxMenu;
+    menuEdFam->Append( tfpID_EDIT_FAMILY, _("Edit Family") );
+    menuEdFam->AppendSeparator();
+    menuEdFam->Append( tfpID_EDIT_NEW_SON, _("Add new Son") );
+    menuEdFam->Append( tfpID_EDIT_NEW_DAUR, _("Add new Daughter") );
+    menuEdFam->AppendSeparator();
+    menuEdFam->Append( tfpID_EDIT_EXIST_SON, _("Add existing Son") );
+    menuEdFam->Append( tfpID_EDIT_EXIST_DAUR, _("Add existing Daughter") );    
+
     m_menuEditInd = new wxMenu;
     m_menuEditInd->Append( tfpID_EDIT_IND_LEFT, "? ?..", menuEdIndL );
     m_menuEditInd->Append( tfpID_EDIT_IND_RIGHT, "? ?..", menuEdIndR );
+    m_menuEditInd->Append( tfpID_EDIT_FAMILY_MENU, _("Family"), menuEdFam );
     m_menuEditInd->AppendSeparator();
     m_menuEditInd->Append( tfpID_EDIT_INDIVIDUAL, _("Existing &Individual..") );
     m_menuEditInd->AppendSeparator();
@@ -403,6 +413,7 @@ void TfpFrame::OnAddNewIndFemale( wxCommandEvent& event )
 
 void TfpFrame::OnEditContext( wxCommandEvent& event )
 {
+    wxString disp = GetDisplay();
     bool ret = false;
     idt id;
 
@@ -454,23 +465,23 @@ void TfpFrame::OnEditContext( wxCommandEvent& event )
         case tfpID_EDIT_EXIST_SPOUSE_RIGHT:
             ret = tfpAddExistSpouse( m_EditIndRight, SEX_Female );
             break;
-#if 0
-        case tfpID_HCTXMENU_EDIT_FAMILY:
-            ret = tfpEditFamily( id );
+        case tfpID_EDIT_FAMILY:
+            ret = tfpEditFamily( m_EditFamily );
             break;
-        case tfpID_HCTXMENU_EDIT_NEW_SON:
-            if( tfpAddNewChild( id, SEX_Male ) != 0 ) ret = true;
+        case tfpID_EDIT_NEW_SON:
+            id = tfpAddNewChild( m_EditFamily, SEX_Male );
+            if( id ) ret = true;
             break;
-        case tfpID_HCTXMENU_EDIT_NEW_DAUR:
-            if( tfpAddNewChild( id, SEX_Female ) != 0 ) ret = true;
+        case tfpID_EDIT_NEW_DAUR:
+            id = tfpAddNewChild( m_EditFamily, SEX_Female );
+            if( id ) ret = true;
             break;
-        case tfpID_HCTXMENU_EDIT_EXIST_SON:
-            ret = tfpAddExistChild( id, SEX_Male );
+        case tfpID_EDIT_EXIST_SON:
+            ret = tfpAddExistChild( m_EditFamily, SEX_Male );
             break;
-        case tfpID_HCTXMENU_EDIT_EXIST_DAUR:
-            ret = tfpAddExistChild( id, SEX_Female );
+        case tfpID_EDIT_EXIST_DAUR:
+            ret = tfpAddExistChild( m_EditFamily, SEX_Female );
             break;
-#endif
         }
         if( ret == true ) {
             recDb::Commit();
@@ -764,7 +775,6 @@ void TfpFrame::OnShowPage( wxCommandEvent& event )
 {
     wxString page = m_showpage->GetValue();
     m_showpage->SetValue( wxEmptyString );
-//    tfpDisplayNote( this, page );
     DisplayHtmPage( page );
 }
 
@@ -781,14 +791,8 @@ void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
         switch( uch.GetValue() )
         {
         case 'F': 
-            {
-                recFamily fam(id);
-                if( id == 0 && display.StartsWith( "FI" ) ) {
-                    fam.Decode( display );
-                }
-                ret = tfpEditFamily( fam );
-                break;
-            }
+            ret = tfpEditFamily( id );
+            break;
         case 'R':
             ret = tfpEditReference( id );
             break;
@@ -860,21 +864,13 @@ void TfpFrame::OnHtmCtxMenu( wxCommandEvent& event )
     bool ret = false;
     Sex sex;
     idt id = recGetID( m_ctxmenuref.Mid(1) );
-    recFamily fam(id);
 
     recDb::Begin();
-    if( id == 0 && m_ctxmenuref.StartsWith( "F0," ) ) {
-        fam.Decode( m_ctxmenuref );
-    }
-    if( fam.FGetID() == 0 ) {
-        fam.Save();
-    }
-
     try {
         switch( event.GetId() )
         {
         case tfpID_HCTXMENU_EDIT_FAMILY:
-            ret = tfpEditFamily( fam );
+            ret = tfpEditFamily( id );
             break;
         case tfpID_HCTXMENU_EDIT_NEW_SON:
             if( tfpAddNewChild( id, SEX_Male ) != 0 ) ret = true;
@@ -898,8 +894,9 @@ void TfpFrame::OnHtmCtxMenu( wxCommandEvent& event )
             ret = tfpAddNewParent( id, SEX_Male );
             break;
         case tfpID_HCTXMENU_EDIT_NEW_SPOUSE:
-            sex = ( m_ctxmenuref.GetChar(0) == 'H' ) ? SEX_Female : SEX_Male;
-            id = tfpAddNewIndividual( recIndividual::GetDefaultFamily( id ), sex );
+//            sex = ( m_ctxmenuref.GetChar(0) == 'H' ) ? SEX_Female : SEX_Male;
+//            id = tfpAddNewIndividual( recIndividual::GetDefaultFamily( id ), sex );
+            id = tfpAddNewSpouse( m_ctxmenuref );
             if( id ) ret = true;
             break;
         case tfpID_HCTXMENU_EDIT_EXIST_MOTHER:
@@ -1147,7 +1144,6 @@ int TfpFrame::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )
     m_ctxmenuPages.clear();
     wxString page;
 
-
     menu->Append( cmd_ID + c, wxT("Family") );
     m_ctxmenuPages.push_back( "FI"+recGetStr( indID ) );
     c++;
@@ -1297,15 +1293,9 @@ void TfpFrame::RefreshEditMenu()
     switch( uch.GetValue() ) 
     {
     case 'F': {
-            m_EditFamily = 0;
-            uch1 = disp.GetChar( 1 );
-            if( uch1.GetValue() == 'I' ) {
-                idt indID = recGetID( disp.Mid( 2 ) );
-                m_EditFamily = recIndividual::GetDefaultFamily( indID );
-            } else {
-                m_EditFamily = recGetID( disp.Mid( 1 ) );
-            }
-            recFamily fam(m_EditFamily);
+            recFamily fam(0);
+            fam.Decode( disp );
+            m_EditFamily = fam.FGetID();
             if( fam.f_husb_id ) {
                 name = recIndividual::GetFullName( fam.f_husb_id );
                 m_menuEditInd->SetLabel( tfpID_EDIT_IND_LEFT, name );

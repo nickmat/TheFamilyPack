@@ -145,6 +145,8 @@ public:
 
     static int GetMaxEventSeqNumber( idt indID );
     int GetMaxEventSeqNumber() const { return GetMaxEventSeqNumber( f_id ); }
+
+    static bool CreateMissingFamilies();
 };
 
 inline bool recEquivalent( const recIndividual& r1, const recIndividual& r2 )
@@ -193,6 +195,7 @@ public:
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     bool Decode( const wxString& str );
+    void SetMemberDefault();
 
     idt GetMarriageEvent_() const;
     static idt GetUnionEvent( idt famID );

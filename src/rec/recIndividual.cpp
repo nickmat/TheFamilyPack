@@ -580,6 +580,32 @@ int recIndividual::GetMaxEventSeqNumber( idt indID )
     return s_db->ExecuteScalar( sql );
 }
 
+bool recIndividual::CreateMissingFamilies()
+{
+    wxSQLite3ResultSet result =
+        s_db->ExecuteQuery( 
+        "SELECT I.id, P.sex FROM Individual I, Persona P"
+        " WHERE I.per_id=P.id AND I.fam_id=0;"
+    );
+
+    while( result.NextRow() ) {
+        idt indID = GET_ID( result.GetInt64( 0 ) );
+        if( indID <= 0 ) continue;
+        Sex sex = (Sex) result.GetInt( 1 );
+        recFamily fam(0);
+        if( sex == SEX_Female ) {
+            fam.f_wife_id = indID;
+        } else {
+            fam.f_husb_id = indID;
+        }
+        fam.Save();
+        recIndividual ind(indID);
+        ind.f_fam_id = fam.FGetID();
+        ind.Save();
+    }
+    return true;
+}
+
 
 //============================================================================
 //-------------------------[ recFamily ]--------------------------------------
@@ -663,8 +689,8 @@ bool recFamily::Read()
     return true;
 }
 
-// Decode the string which is in the form "Fx1,x2,x3"
-// where x1 is the Family id
+// Decode the string which is in the form "Fx1" or
+// "Fx1,x2,x3" where x1 is the Family id
 // x2 is the husband id and x3 the wife id.
 // or else string has the form FIx where x 
 // is a recIndividual id.
@@ -689,14 +715,35 @@ bool recFamily::Decode( const wxString& str )
         if( !tk.HasMoreTokens() ) return false;
         f_id = recGetID( tk.GetNextToken() );
 
-        if( !tk.HasMoreTokens() ) return false;
-        f_husb_id = recGetID( tk.GetNextToken() );
+        if( tk.HasMoreTokens() ) {
+            f_husb_id = recGetID( tk.GetNextToken() );
 
-        if( !tk.HasMoreTokens() ) return false;
-        f_wife_id = recGetID( tk.GetNextToken() );
+            if( !tk.HasMoreTokens() ) return false;
+            f_wife_id = recGetID( tk.GetNextToken() );
+        } else {
+            Read();
+        }
     }
     return true;
 }
+
+void recFamily::SetMemberDefault() {
+    if( f_husb_id ) {
+        recIndividual ind(f_husb_id);
+        if( ind.f_fam_id == 0 ) {
+            ind.f_fam_id = f_id;
+            ind.Save();
+        }
+    }
+    if( f_wife_id ) {
+        recIndividual ind(f_wife_id);
+        if( ind.f_fam_id == 0 ) {
+            ind.f_fam_id = f_id;
+            ind.Save();
+        }
+    }
+}
+
 
 idt recFamily::GetMarriageEvent_() const
 {

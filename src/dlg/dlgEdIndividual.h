@@ -43,12 +43,10 @@
 class dlgCreateIndividual : public fbDlgCreateIndividual
 {
 public:
-    dlgCreateIndividual( wxWindow* parent, idt famID );
+    dlgCreateIndividual( wxWindow* parent, idt indID );
 
     void SetSex( Sex sex ) { m_sex = sex; }
     void SetSurname( const wxString& name ) { m_surname = name; }
-
-    idt GetIndividualID() const { return m_individual.f_id; }
 
 private:
     bool TransferDataToWindow();

@@ -41,6 +41,8 @@ class GedIndividual;
 class GedFamily;
 class GedSubmitter;
 
+#define recGED_IMPORT_NO_POST_OPS 0x01
+
 class recGedParse
 {
 public:
@@ -52,9 +54,10 @@ public:
         m_user(0)
     {}
 
-    bool Import();
+    bool Import( unsigned flags = 0 );
 
     void SetUseXref( bool useXref ) { m_indiUseXref = m_famUseXref = useXref; }
+    bool DoPostOperations();
 
 private:
     enum Tag {

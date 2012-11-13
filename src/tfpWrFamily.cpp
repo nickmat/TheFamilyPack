@@ -72,7 +72,10 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR, idt indID )
     size_t i;
     wxString htm;
 
+    wxASSERT( famID != 0 );
+    wxASSERT( indID == 0 );
     recFamily fam(famID);
+#if 0
     if( famID == 0 ) {
         Sex sex = recIndividual::GetSex( indID );
         if( sex == SEX_Female ) {
@@ -81,13 +84,12 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR, idt indID )
             fam.f_husb_id = indID;
         }
     }
+#endif
     recIndividual husb( fam.f_husb_id );
     recIndividual wife( fam.f_wife_id );
     recFamilyVec husbFams = husb.GetParentList();
     recFamilyVec wifeFams = wife.GetParentList();
 
-//    idt hPerID = husb.GetPersona();
-//    idt wPerID = wife.GetPersona();
     idt hIndID = husb.FGetID();
     idt wIndID = wife.FGetID();
 
@@ -334,24 +336,25 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR, idt indID )
                 if( i == iL ) {
                     continue;
                 }
-                htm << "<tr>\n<td class='"
-                    << "neut" //GetSexClass( husbFams[i].f_husb_id )
-                    << "'>\n<a href='tfp:F"
-                    << famID << "," << i << "," << iR << "," << indID << "'>";
-                if( husbFams[i].f_husb_id || husbFams[i].f_wife_id ) {
-                    if( husbFams[i].f_husb_id ) {
-                        htm << recIndividual::GetFullName( husbFams[i].f_husb_id );
-                    }
-                    if( husbFams[i].f_husb_id && husbFams[i].f_wife_id ) {
-                        htm << "<br>";
-                    }
-                    if( husbFams[i].f_wife_id ) {
-                        htm << recIndividual::GetFullName( husbFams[i].f_wife_id );
-                    }
-                } else {
-                    htm << "[Unknown]";
+                if( husbFams[i].f_husb_id ) {
+                    htm << "<tr>\n<td class='"
+                        << GetSexClass( husbFams[i].f_husb_id )
+                        << "'>\n<a href='tfp:F"
+                        << famID << "," << i << "," << iR << "," << indID << "'>"
+                        << recIndividual::GetFullName( husbFams[i].f_husb_id )
+                        << "</a>\n</td>\n</tr>\n";
+                } 
+                if( husbFams[i].f_wife_id ) {
+                    htm << "<tr>\n<td class='"
+                        << GetSexClass( husbFams[i].f_wife_id )
+                        << "'>\n<a href='tfp:F"
+                        << famID << "," << i << "," << iR << "," << indID << "'>"
+                        << recIndividual::GetFullName( husbFams[i].f_wife_id )
+                        << "</a>\n</td>\n</tr>\n";
                 }
-                htm << "</a>\n</td>\n</tr>\n";
+                if( !( husbFams[i].f_husb_id || husbFams[i].f_wife_id ) ) {
+                    htm << "<tr>\n<td class='neut'>\n[Unknown]\n</td>\n</tr>\n";
+                }
             }
             htm << "</table>\n";
         }
@@ -390,25 +393,25 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR, idt indID )
                 if( i == iR ) {
                     continue;
                 }
-
-                htm << "<tr>\n<td class='"
-                    << "neut" //GetSexClass( wifeFams[i].f_husb_id )
-                    << "'>\n<a href='tfp:F"
-                    << famID << "," << iL << "," << i << "," << indID << "'>";
-                if( wifeFams[i].f_husb_id || wifeFams[i].f_wife_id ) {
-                    if( wifeFams[i].f_husb_id ) {
-                        htm << recIndividual::GetFullName( wifeFams[i].f_husb_id );
-                    }
-                    if( wifeFams[i].f_husb_id && wifeFams[i].f_wife_id ) {
-                        htm << "<br>";
-                    }
-                    if( wifeFams[i].f_wife_id ) {
-                        htm << recIndividual::GetFullName( wifeFams[i].f_wife_id );
-                    }
-                } else {
-                    htm << "[Unknown]";
+                if( wifeFams[i].f_husb_id ) {
+                    htm << "<tr>\n<td class='"
+                        << GetSexClass( wifeFams[i].f_husb_id )
+                        << "'>\n<a href='tfp:F"
+                        << famID << "," << iL << "," << i << "," << indID << "'>"
+                        << recIndividual::GetFullName( wifeFams[i].f_husb_id )
+                        << "</a>\n</td>\n</tr>\n";
+                } 
+                if( wifeFams[i].f_wife_id ) {
+                    htm << "<tr>\n<td class='"
+                        << GetSexClass( wifeFams[i].f_wife_id )
+                        << "'>\n<a href='tfp:F"
+                        << famID << "," << iL << "," << i << "," << indID << "'>"
+                        << recIndividual::GetFullName( wifeFams[i].f_wife_id )
+                        << "</a>\n</td>\n</tr>\n";
                 }
-                htm << "</a>\n</td>\n</tr>\n";
+                if( !( wifeFams[i].f_husb_id || wifeFams[i].f_wife_id ) ) {
+                    htm << "<tr>\n<td class='neut'>\n[Unknown]\n</td>\n</tr>\n";
+                }
             }
             htm << "</table>\n";
         }
@@ -464,7 +467,7 @@ wxString tfpWriteFamilyPage( const wxString& str )
 wxString tfpWriteIndFamilyPage( idt indID )
 {
     idt famID = recIndividual::GetDefaultFamily( indID );
-    return tfpWriteFamilyPage( famID, 0, 0, indID );
+    return tfpWriteFamilyPage( famID, 0, 0 );
 }
 
 // End of tfpWrFam.cpp Source
