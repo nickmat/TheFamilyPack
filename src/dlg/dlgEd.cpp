@@ -78,6 +78,7 @@ idt tfpAddNewIndividual( idt famID, Sex sex, const wxString& surname )
         recDb::ReleaseSavepoint( savepoint );
     } else {
         recDb::Rollback( savepoint );
+        indID = 0;
     }
     dialog->Destroy();
     return indID;
@@ -110,7 +111,6 @@ idt tfpAddNewChild( idt famID, Sex sex )
     } else {
         recDb::Rollback( savepoint );
     }
-
     return indID;
 }
 
@@ -478,6 +478,7 @@ idt tfpAddMarriageEvent( const recFamily& family )
         recDb::ReleaseSavepoint( savepoint );
     } else {
         recDb::Rollback( savepoint );
+        eventID = 0;
     }
     dialog->Destroy();
     return eventID;
@@ -656,14 +657,4 @@ long tfpSelectIndividual( idt* indID, recIdVec indIDs )
     return row;
 }
 
-#if 0
-void tfpDisplayNote( wxWindow* parent, const wxString& name )
-{
-    if( !name.IsEmpty() ) {
-        dlgNote* dialog = new dlgNote( parent );
-        dialog->SetDisplay( name );
-        dialog->Show();
-    }
-}
-#endif
 // End of dlgEd.cpp file

@@ -894,8 +894,6 @@ void TfpFrame::OnHtmCtxMenu( wxCommandEvent& event )
             ret = tfpAddNewParent( id, SEX_Male );
             break;
         case tfpID_HCTXMENU_EDIT_NEW_SPOUSE:
-//            sex = ( m_ctxmenuref.GetChar(0) == 'H' ) ? SEX_Female : SEX_Male;
-//            id = tfpAddNewIndividual( recIndividual::GetDefaultFamily( id ), sex );
             id = tfpAddNewSpouse( m_ctxmenuref );
             if( id ) ret = true;
             break;

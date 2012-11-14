@@ -71,7 +71,5 @@ extern idt tfpPickIndividual( Sex sex = SEX_Unstated );
 extern bool tfpSelectPersona( idt* perID, unsigned style, idt refID );
 extern long tfpSelectIndividual( idt* indID, recIdVec indIDs );
 
-//extern void tfpDisplayNote( wxWindow* parent, const wxString& name );
-
 #endif // TFPEDIT_H
 
