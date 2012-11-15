@@ -783,8 +783,14 @@ void TfpFrame::OnShowPage( wxCommandEvent& event )
 void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
 {
     wxString display = GetDisplay();
+    idt id;
+    if( display.StartsWith( "FI" ) ) {
+        idt famID = recGetID( display.Mid(2) );
+        id = recIndividual::GetDefaultFamily( famID );
+    } else {
+        id = recGetID( display.Mid(1) );
+    }
     wxUniChar uch = display.GetChar( 0 );
-    idt id = recGetID( display.Mid(1) );
     recDb::Begin();
     try {
         bool ret = false;
