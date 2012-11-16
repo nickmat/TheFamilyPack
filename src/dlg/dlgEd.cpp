@@ -194,9 +194,31 @@ bool tfpAddNewParent( idt indID, Sex sex )
 
 bool tfpAddExistParent( idt indID, Sex sex )
 {
-    // TODO:
-    wxMessageBox( wxT("Not yet implimented"), wxT("tfpAddExistParent") );
-    return false;
+    wxASSERT( indID != 0 );
+    const wxString savepoint = recDb::GetSavepointStr();
+    bool ret = false;
+
+    idt parentID = tfpPickIndividual( sex );
+    if( parentID == 0 ) {
+        return false;
+    }
+    recFamilyVec families = recIndividual::GetFamilyList( parentID );
+    wxASSERT( families.size() > 0 );
+    size_t i = 0;
+    if( families.size() > 1 ) {
+        // TODO: Allow for selecting from multiple families.
+        wxMessageBox( "Select which of multiple families\nNot yet implimented", "tfpAddExistParent" );
+        return false;
+    }
+    recDb::Savepoint( savepoint );
+    recFamilyIndividual fi(0);
+    fi.f_fam_id = families[i].FGetID();
+    fi.f_ind_id = indID;
+    fi.f_seq_child = recFamily::GetChildNextSequence( families[i].FGetID() );
+    fi.f_seq_parent = recFamily::GetParentNextSequence( indID );
+    fi.Save();
+    recDb::ReleaseSavepoint( savepoint );
+    return true;
 }
 
 bool tfpAddNewParent( const wxString& ref )

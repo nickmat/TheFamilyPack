@@ -785,8 +785,8 @@ void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
     wxString display = GetDisplay();
     idt id;
     if( display.StartsWith( "FI" ) ) {
-        idt famID = recGetID( display.Mid(2) );
-        id = recIndividual::GetDefaultFamily( famID );
+        idt indID = recGetID( display.Mid(2) );
+        id = recIndividual::GetDefaultFamily( indID );
     } else {
         id = recGetID( display.Mid(1) );
     }
