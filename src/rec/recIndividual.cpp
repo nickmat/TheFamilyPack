@@ -606,6 +606,38 @@ bool recIndividual::CreateMissingFamilies()
     return true;
 }
 
+void recIndividual::DeleteFromDb()
+{
+    if( f_id <= 0 ) {
+        return;
+    }
+    wxSQLite3StatementBuffer sql;
+
+    recFamilyVec families = GetFamilyList();
+    sql.Format(
+        "DELETE FROM FamilyIndividual WHERE ind_id="ID";"
+        "DELETE FROM Family WHERE husb_id="ID" AND wife_id=0;"
+        "DELETE FROM Family WHERE husb_id=0 AND wife_id="ID";"
+        "DELETE FROM IndividualEvent WHERE ind_id="ID";",
+        f_id, f_id, f_id, f_id
+    );
+    s_db->ExecuteUpdate( sql );
+
+    recPersona::DeleteFromDb( f_per_id );
+    Delete();
+    // TODO: Delete orphaned EventType and/or EventTypeRole 
+    Clear();
+}
+
+void recIndividual::DeleteFromDb( idt id )
+{
+    if( id <= 0 ) {
+        return;
+    }
+    recIndividual ind(id);
+    ind.DeleteFromDb();
+}
+
 
 //============================================================================
 //-------------------------[ recFamily ]--------------------------------------

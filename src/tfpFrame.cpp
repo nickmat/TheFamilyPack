@@ -134,40 +134,44 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     menuFile->Append( wxID_EXIT, _("E&xit") );
 
     wxMenu* menuEdIndL = new wxMenu;
-    menuEdIndL->Append( tfpID_EDIT_INDIVIDUAL_LEFT, _("Edit Individual") );
+    menuEdIndL->Append( tfpID_EDIT_INDIVIDUAL_LEFT, _("&Edit Individual") );
     menuEdIndL->AppendSeparator();
-    menuEdIndL->Append( tfpID_EDIT_NEW_MOTHER_LEFT, _("Add new Mother") );
-    menuEdIndL->Append( tfpID_EDIT_NEW_FATHER_LEFT, _("Add new Father") );
-    menuEdIndL->Append( tfpID_EDIT_NEW_SPOUSE_LEFT, _("Add new Spouse") );
+    menuEdIndL->Append( tfpID_EDIT_NEW_MOTHER_LEFT, _("Add new &Mother") );
+    menuEdIndL->Append( tfpID_EDIT_NEW_FATHER_LEFT, _("Add new &Father") );
+    menuEdIndL->Append( tfpID_EDIT_NEW_SPOUSE_LEFT, _("Add new &Spouse") );
     menuEdIndL->AppendSeparator();
-    menuEdIndL->Append( tfpID_EDIT_EXIST_MOTHER_LEFT, _("Add existing Mother") );
-    menuEdIndL->Append( tfpID_EDIT_EXIST_FATHER_LEFT, _("Add existing Father") );
-    menuEdIndL->Append( tfpID_EDIT_EXIST_SPOUSE_LEFT, _("Add existing Spouse") );
+    menuEdIndL->Append( tfpID_EDIT_EXIST_MOTHER_LEFT, _("Add existing M&other") );
+    menuEdIndL->Append( tfpID_EDIT_EXIST_FATHER_LEFT, _("Add existing F&ather") );
+    menuEdIndL->Append( tfpID_EDIT_EXIST_SPOUSE_LEFT, _("Add existing S&pouse") );
+    menuEdIndL->AppendSeparator();
+    menuEdIndL->Append( tfpID_EDIT_DELETE_IND_LEFT, _("&Delete Individual") );
 
     wxMenu* menuEdIndR = new wxMenu;
-    menuEdIndR->Append( tfpID_EDIT_INDIVIDUAL_RIGHT, _("Edit Individual") );
+    menuEdIndR->Append( tfpID_EDIT_INDIVIDUAL_RIGHT, _("&Edit Individual") );
     menuEdIndR->AppendSeparator();
-    menuEdIndR->Append( tfpID_EDIT_NEW_MOTHER_RIGHT, _("Add new Mother") );
-    menuEdIndR->Append( tfpID_EDIT_NEW_FATHER_RIGHT, _("Add new Father") );
-    menuEdIndR->Append( tfpID_EDIT_NEW_SPOUSE_RIGHT, _("Add new Spouse") );
+    menuEdIndR->Append( tfpID_EDIT_NEW_MOTHER_RIGHT, _("Add new &Mother") );
+    menuEdIndR->Append( tfpID_EDIT_NEW_FATHER_RIGHT, _("Add new &Father") );
+    menuEdIndR->Append( tfpID_EDIT_NEW_SPOUSE_RIGHT, _("Add new &Spouse") );
     menuEdIndR->AppendSeparator();
-    menuEdIndR->Append( tfpID_EDIT_EXIST_MOTHER_RIGHT, _("Add existing Mother") );
-    menuEdIndR->Append( tfpID_EDIT_EXIST_FATHER_RIGHT, _("Add existing Father") );
-    menuEdIndR->Append( tfpID_EDIT_EXIST_SPOUSE_RIGHT, _("Add existing Spouse") );
+    menuEdIndR->Append( tfpID_EDIT_EXIST_MOTHER_RIGHT, _("Add existing M&other") );
+    menuEdIndR->Append( tfpID_EDIT_EXIST_FATHER_RIGHT, _("Add existing F&ather") );
+    menuEdIndR->Append( tfpID_EDIT_EXIST_SPOUSE_RIGHT, _("Add existing S&pouse") );
+    menuEdIndR->AppendSeparator();
+    menuEdIndR->Append( tfpID_EDIT_DELETE_IND_RIGHT, _("&Delete Individual") );
 
     wxMenu* menuEdFam = new wxMenu;
-    menuEdFam->Append( tfpID_EDIT_FAMILY, _("Edit Family") );
+    menuEdFam->Append( tfpID_EDIT_FAMILY, _("&Edit Family") );
     menuEdFam->AppendSeparator();
-    menuEdFam->Append( tfpID_EDIT_NEW_SON, _("Add new Son") );
-    menuEdFam->Append( tfpID_EDIT_NEW_DAUR, _("Add new Daughter") );
+    menuEdFam->Append( tfpID_EDIT_NEW_SON, _("Add new &Son") );
+    menuEdFam->Append( tfpID_EDIT_NEW_DAUR, _("Add new &Daughter") );
     menuEdFam->AppendSeparator();
-    menuEdFam->Append( tfpID_EDIT_EXIST_SON, _("Add existing Son") );
-    menuEdFam->Append( tfpID_EDIT_EXIST_DAUR, _("Add existing Daughter") );    
+    menuEdFam->Append( tfpID_EDIT_EXIST_SON, _("Add existing S&on") );
+    menuEdFam->Append( tfpID_EDIT_EXIST_DAUR, _("Add existing D&aughter") );    
 
     m_menuEditInd = new wxMenu;
     m_menuEditInd->Append( tfpID_EDIT_IND_LEFT, "? ?..", menuEdIndL );
     m_menuEditInd->Append( tfpID_EDIT_IND_RIGHT, "? ?..", menuEdIndR );
-    m_menuEditInd->Append( tfpID_EDIT_FAMILY_MENU, _("Family"), menuEdFam );
+    m_menuEditInd->Append( tfpID_EDIT_FAMILY_MENU, _("F&amily"), menuEdFam );
     m_menuEditInd->AppendSeparator();
     m_menuEditInd->Append( tfpID_EDIT_INDIVIDUAL, _("Existing &Individual..") );
     m_menuEditInd->AppendSeparator();
@@ -443,6 +447,9 @@ void TfpFrame::OnEditContext( wxCommandEvent& event )
         case tfpID_EDIT_EXIST_SPOUSE_LEFT:
             ret = tfpAddExistSpouse( m_EditIndLeft, SEX_Female );
             break;
+        case tfpID_EDIT_DELETE_IND_LEFT:
+            ret = tfpDeleteIndividual( m_EditIndLeft );
+            break;
         case tfpID_EDIT_INDIVIDUAL_RIGHT:
             ret = tfpEditIndividual( m_EditIndRight );
             break;
@@ -464,6 +471,9 @@ void TfpFrame::OnEditContext( wxCommandEvent& event )
             break;
         case tfpID_EDIT_EXIST_SPOUSE_RIGHT:
             ret = tfpAddExistSpouse( m_EditIndRight, SEX_Female );
+            break;
+        case tfpID_EDIT_DELETE_IND_RIGHT:
+            ret = tfpDeleteIndividual( m_EditIndRight );
             break;
         case tfpID_EDIT_FAMILY:
             ret = tfpEditFamily( m_EditFamily );
@@ -913,6 +923,9 @@ void TfpFrame::OnHtmCtxMenu( wxCommandEvent& event )
             sex = ( m_ctxmenuref.GetChar(0) == 'H' ) ? SEX_Female : SEX_Male;
             ret = tfpAddExistSpouse( id, sex );
             break;
+        case tfpID_HCTXMENU_EDIT_DELETE_IND:
+            ret = tfpDeleteIndividual( id );
+            break;
         case tfpID_HCTXMENU_EDIT_REFERENCE:
             ret = tfpEditReference( id );
             break;
@@ -1122,6 +1135,8 @@ void TfpFrame::DoHtmCtxMenu( const wxString& ref )
         menu->Append( tfpID_HCTXMENU_EDIT_EXIST_MOTHER, _("Add existing Mother") );
         menu->Append( tfpID_HCTXMENU_EDIT_EXIST_FATHER, _("Add existing Father") );
         menu->Append( tfpID_HCTXMENU_EDIT_EXIST_SPOUSE, _("Add existing Spouse") );
+        menu->AppendSeparator();
+        menu->Append( tfpID_HCTXMENU_EDIT_DELETE_IND, _("Delete Individual") );
         break;
     case 'R':
         // Parents, Spouses (Marriage), Siblings, and Children

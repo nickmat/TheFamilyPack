@@ -147,6 +147,10 @@ public:
     int GetMaxEventSeqNumber() const { return GetMaxEventSeqNumber( f_id ); }
 
     static bool CreateMissingFamilies();
+
+    // Delete Individual and remove all references to it.
+    void DeleteFromDb();
+    static void DeleteFromDb( idt id );
 };
 
 inline bool recEquivalent( const recIndividual& r1, const recIndividual& r2 )

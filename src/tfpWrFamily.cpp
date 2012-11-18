@@ -67,24 +67,12 @@ wxString GetSexClass( idt indID, Sex pref )
 }
 
 
-wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR, idt indID )
+wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
 {
     size_t i;
     wxString htm;
 
-    wxASSERT( famID != 0 );
-    wxASSERT( indID == 0 );
     recFamily fam(famID);
-#if 0
-    if( famID == 0 ) {
-        Sex sex = recIndividual::GetSex( indID );
-        if( sex == SEX_Female ) {
-            fam.f_wife_id = indID;
-        } else {
-            fam.f_husb_id = indID;
-        }
-    }
-#endif
     recIndividual husb( fam.f_husb_id );
     recIndividual wife( fam.f_wife_id );
     recFamilyVec husbFams = husb.GetParentList();
@@ -340,7 +328,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR, idt indID )
                     htm << "<tr>\n<td class='"
                         << GetSexClass( husbFams[i].f_husb_id )
                         << "'>\n<a href='tfp:F"
-                        << famID << "," << i << "," << iR << "," << indID << "'>"
+                        << famID << "," << i << "," << iR << "'>"
                         << recIndividual::GetFullName( husbFams[i].f_husb_id )
                         << "</a>\n</td>\n</tr>\n";
                 } 
@@ -348,7 +336,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR, idt indID )
                     htm << "<tr>\n<td class='"
                         << GetSexClass( husbFams[i].f_wife_id )
                         << "'>\n<a href='tfp:F"
-                        << famID << "," << i << "," << iR << "," << indID << "'>"
+                        << famID << "," << i << "," << iR << "'>"
                         << recIndividual::GetFullName( husbFams[i].f_wife_id )
                         << "</a>\n</td>\n</tr>\n";
                 }
@@ -397,7 +385,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR, idt indID )
                     htm << "<tr>\n<td class='"
                         << GetSexClass( wifeFams[i].f_husb_id )
                         << "'>\n<a href='tfp:F"
-                        << famID << "," << iL << "," << i << "," << indID << "'>"
+                        << famID << "," << iL << "," << i << "'>"
                         << recIndividual::GetFullName( wifeFams[i].f_husb_id )
                         << "</a>\n</td>\n</tr>\n";
                 } 
@@ -405,7 +393,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR, idt indID )
                     htm << "<tr>\n<td class='"
                         << GetSexClass( wifeFams[i].f_wife_id )
                         << "'>\n<a href='tfp:F"
-                        << famID << "," << iL << "," << i << "," << indID << "'>"
+                        << famID << "," << iL << "," << i << "'>"
                         << recIndividual::GetFullName( wifeFams[i].f_wife_id )
                         << "</a>\n</td>\n</tr>\n";
                 }
@@ -459,9 +447,7 @@ wxString tfpWriteFamilyPage( const wxString& str )
     token.ToCULong( &iL );
     token = tokenizer.GetNextToken();
     token.ToCULong( &iR );
-    token = tokenizer.GetNextToken();
-    idt indID = recGetID( token );
-    return tfpWriteFamilyPage( famID, iL, iR, indID );
+    return tfpWriteFamilyPage( famID, iL, iR );
 }
 
 wxString tfpWriteIndFamilyPage( idt indID )

@@ -98,6 +98,10 @@ public:
 
     static int CountNames( idt id );
     int CountNames() const { return CountNames( f_id ); }
+
+    // Delete Persona record and remove all records that reference it.
+    void DeleteFromDb();
+    static void DeleteFromDb( idt id );
 };
 
 inline bool recEquivalent( const recPersona& r1, const recPersona& r2 )

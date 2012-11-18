@@ -354,5 +354,37 @@ int recPersona::CountNames( idt perID )
     return s_db->ExecuteScalar( sql );
 }
 
+void recPersona::DeleteFromDb()
+{
+    if( f_id <= 0 ) {
+        return;
+    }
+    wxSQLite3StatementBuffer sql;
+
+    recNameVec names = ReadNames();
+    for( size_t i = 0 ; i < names.size() ; i++ ) {
+        names[i].DeleteFromDb();
+    }
+    sql.Format(
+        "DELETE FROM EventPersona WHERE per_id="ID";"
+        "DELETE FROM Relationship WHERE per1_id="ID" OR per2_id="ID";",
+        f_id, f_id, f_id
+    );
+    s_db->ExecuteUpdate( sql );
+
+
+    Delete();
+    // TODO: Delete orphaned EventType and/or EventTypeRole 
+    Clear();
+}
+
+void recPersona::DeleteFromDb( idt id )
+{
+    if( id <= 0 ) {
+        return;
+    }
+    recPersona per(id);
+    per.DeleteFromDb();
+}
 
 // End of recPersona.cpp file

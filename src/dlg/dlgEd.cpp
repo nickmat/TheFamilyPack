@@ -296,6 +296,22 @@ bool tfpEditIndividual( idt indID  )
     return ret;
 }
 
+bool tfpDeleteIndividual( idt indID )
+{
+    bool ret = false;
+    wxString mess = wxString::Format(
+        _("This action will remove Individual %s\n%s\n\nDo you want to continue?"),
+        recIndividual::GetIdStr( indID ),
+        recIndividual::GetFullName( indID )
+    );
+    int ans = wxMessageBox( mess, "Delete Individual", wxYES_NO | wxCANCEL );
+    if( ans == wxYES ) {
+        recIndividual::DeleteFromDb( indID );
+        ret = true;
+    }
+    return ret;
+}
+
 bool tfpEditFamily( idt famID )
 {
     wxASSERT( famID != 0 );
