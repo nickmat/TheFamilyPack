@@ -426,6 +426,28 @@ void recEvent::DeleteFromDb( idt id )
     eve.DeleteFromDb();
 }
 
+void recEvent::DeleteIfOrphaned( idt id )
+{
+    if( id <= 0 ) {
+        // Don't delete universal dates.
+        return;
+    }
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format( "SELECT COUNT(*) FROM EventPersona WHERE event_id="ID";", id );
+    if( s_db->ExecuteScalar( sql ) > 0 ) return;
+    sql.Format(
+        "SELECT COUNT(*) FROM ReferenceEntity"
+        " WHERE entity_type=2 AND entity_id="ID";",
+        id
+    );
+    if( s_db->ExecuteScalar( sql ) > 0 ) return;
+    sql.Format( "SELECT COUNT(*) FROM IndividualEvent WHERE event_id="ID";", id );
+    if( s_db->ExecuteScalar( sql ) > 0 ) return;
+
+    DeleteFromDb( id );
+}
+
 wxSQLite3ResultSet recEvent::GetTitleList()
 {
     wxSQLite3StatementBuffer sql;

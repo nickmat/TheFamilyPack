@@ -36,7 +36,7 @@
 #ifndef WX_PRECOMP
 #include "wx/wx.h"
 #endif
-
+#if 0
 #include "rec/recIndividual.h"
 #include "dlgSelEvent.h"
 #include "dlgRecTableCtrl.h"
@@ -86,6 +86,6 @@ bool dlgSelectEvent::CreateMarriageTable( idt famID )
     m_listEvent->SetItemCount( m_count );
     return true;
 }
-
+#endif
 
 // End of dlgSelIndividual.cpp file

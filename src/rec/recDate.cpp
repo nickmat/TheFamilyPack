@@ -393,13 +393,12 @@ void recDate::DeleteIfOrphaned( idt id )
     sql.Format( "SELECT COUNT(*) FROM Source WHERE sub_date1_id="ID" OR sub_date2_id="ID";", id, id );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
 
-    // TODO: Ensure Date is removed from reference statement.
     sql.Format(
-        "DELETE FROM ReferenceEntity"
+        "SELECT COUNT(*) FROM ReferenceEntity"
         " WHERE entity_type=4 AND entity_id="ID";",
         id
     );
-    s_db->ExecuteUpdate( sql );
+    if( s_db->ExecuteScalar( sql ) > 0 ) return;
 
     idt relID = ExecuteID( "SELECT rel_id FROM Date WHERE id="ID";", id );
     if( relID ) {

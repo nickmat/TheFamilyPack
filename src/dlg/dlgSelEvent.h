@@ -29,7 +29,7 @@
 
 #ifndef DLGSELEVENT_H
 #define DLGSELEVENT_H
-
+#if 0
 #include <rec/recDatabase.h>
 
 #include "fbDlg.h"
@@ -54,5 +54,5 @@ protected:
     wxArrayString  m_table;
     size_t         m_count;
 };
-
+#endif
 #endif // DLGSELEVENT_H

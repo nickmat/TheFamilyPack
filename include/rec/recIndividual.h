@@ -221,6 +221,9 @@ public:
 
     static int GetMaxEventSeqNumber( idt famID );
     int GetMaxEventSeqNumber() const { return GetMaxEventSeqNumber( f_id ); }
+
+    static void RemoveFromEvents( idt famID, idt indID );
+    void RemoveFromEvents( idt indID ) const { RemoveFromEvents( f_id, indID ); }
 };
 
 inline bool recEquivalent( const recFamily& r1, const recFamily& r2 )

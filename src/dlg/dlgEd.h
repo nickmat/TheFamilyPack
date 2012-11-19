@@ -51,9 +51,9 @@ extern bool tfpDeleteIndividual( idt indID );
 extern bool tfpEditFamily( idt famID );
 extern bool tfpEditReference( idt refID  );
 extern bool tfpAddExistSpouse( idt indID, Sex sex );
-extern bool tfpAddExistChild( idt famID, Sex sex );
+extern idt tfpAddExistChild( idt famID, Sex sex );
 extern idt tfpAddMarriageEvent( const recFamily& family );
-extern idt tfpGetExistingMarriageEvent( idt famID );
+//extern idt tfpGetExistingMarriageEvent_( idt famID );
 
 extern bool tfpEditEvent( idt eveID  );
 #define tfpGETROLE_ALL      0

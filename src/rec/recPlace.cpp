@@ -220,11 +220,11 @@ void recPlace::DeleteIfOrphaned( idt id )
 
     // TODO: Ensure Place is removed from reference statement.
     sql.Format(
-        "DELETE FROM ReferenceEntity"
+        "SELECT COUNT(*) FROM ReferenceEntity"
         " WHERE entity_type=3 AND entity_id="ID";",
         id
     );
-    s_db->ExecuteUpdate( sql );
+    if( s_db->ExecuteScalar( sql ) > 0 ) return;
 
     recPlacePartVec pps = GetPlaceParts( id );
     for( size_t i = 0 ; i < pps.size() ; i++ ) {

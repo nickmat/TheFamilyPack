@@ -638,7 +638,6 @@ void recIndividual::DeleteFromDb( idt id )
     ind.DeleteFromDb();
 }
 
-
 //============================================================================
 //-------------------------[ recFamily ]--------------------------------------
 //============================================================================
@@ -991,6 +990,21 @@ int recFamily::GetMaxEventSeqNumber( idt famID )
         famID
     );
     return s_db->ExecuteScalar( sql );
+}
+
+void recFamily::RemoveFromEvents( idt famID, idt indID )
+{
+    if( famID == 0 || indID == 0 ) return;
+
+    wxSQLite3StatementBuffer sql;
+    recFamilyEventVec fes = GetEvents( famID );
+    for( size_t i = 0 ; i < fes.size() ; i++ ) {
+        sql.Format(
+            "DELETE FROM IndividualEvent WHERE ind_id="ID" AND event_id="ID";",
+            indID, fes[i].FGetEventID()
+        );
+        s_db->ExecuteUpdate( sql );
+    }
 }
 
 //============================================================================

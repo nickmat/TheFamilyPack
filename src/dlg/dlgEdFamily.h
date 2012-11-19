@@ -93,7 +93,6 @@ private:
 	void OnEventUpButton( wxCommandEvent& event );
 	void OnEventDownButton( wxCommandEvent& event );
 
-
     idt            m_child;
     EDBUT_Type     m_editbutton;
 

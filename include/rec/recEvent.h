@@ -230,6 +230,8 @@ public:
     // Delete Event and remove all references to it.
     void DeleteFromDb();
     static void DeleteFromDb( idt id );
+
+    static void DeleteIfOrphaned( idt id );
 };
 
 inline bool recEquivalent( const recEvent& r1, const recEvent& r2 )
@@ -461,11 +463,6 @@ public:
 
     static wxString GetRoleStr( idt indID, idt typeID );
     wxString GetRoleStr( idt typeID ) const { return GetRoleStr( f_ind_id, typeID ); }
-
-    /*! Return true if a record exists that matches the
-     *  f_per_id, f_event_id and f_role_id.
-     */
-//    bool LinkExists() const;
 };
 
 inline bool recEquivalent( const recIndividualEvent& r1, const recIndividualEvent& r2 )

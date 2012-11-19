@@ -300,7 +300,7 @@ bool tfpDeleteIndividual( idt indID )
 {
     bool ret = false;
     wxString mess = wxString::Format(
-        _("This action will remove Individual %s\n%s\n\nDo you want to continue?"),
+        _("This action will completely remove Individual %s\n%s\nfrom the database\n\nDo you want to continue?"),
         recIndividual::GetIdStr( indID ),
         recIndividual::GetFullName( indID )
     );
@@ -429,10 +429,9 @@ bool tfpAddExistSpouse( idt indID, Sex sex )
     return ret;
 }
 
-bool tfpAddExistChild( idt famID, Sex sex )
+idt tfpAddExistChild( idt famID, Sex sex )
 {
     const wxString savepoint = "AddExistingChild";
-    bool ret = false;
     recDb::Savepoint( savepoint );
 
     idt indID = tfpPickIndividual( sex );
@@ -443,16 +442,16 @@ bool tfpAddExistChild( idt famID, Sex sex )
         fi.f_ind_id = indID;
         fi.f_seq_child = recFamily::GetChildNextSequence( famID );
         fi.Save();
-        ret = true;
         recDb::ReleaseSavepoint( savepoint );
     } else {
         recDb::Rollback( savepoint );
     }
 
-    return ret;
+    return indID;
 }
 
-idt tfpGetExistingMarriageEvent( idt famID )
+#if 0
+idt tfpGetExistingMarriageEvent_( idt famID )
 {
     idt eventID = 0;
     dlgSelectEvent* dialog = new dlgSelectEvent( NULL );
@@ -465,6 +464,7 @@ idt tfpGetExistingMarriageEvent( idt famID )
     dialog->Destroy();
     return eventID;
 }
+#endif
 
 idt tfpAddMarriageEvent( const recFamily& family )
 {

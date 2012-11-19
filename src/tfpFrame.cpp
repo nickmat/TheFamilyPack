@@ -487,10 +487,12 @@ void TfpFrame::OnEditContext( wxCommandEvent& event )
             if( id ) ret = true;
             break;
         case tfpID_EDIT_EXIST_SON:
-            ret = tfpAddExistChild( m_EditFamily, SEX_Male );
+            id = tfpAddExistChild( m_EditFamily, SEX_Male );
+            if( id ) ret = true;
             break;
         case tfpID_EDIT_EXIST_DAUR:
-            ret = tfpAddExistChild( m_EditFamily, SEX_Female );
+            id = tfpAddExistChild( m_EditFamily, SEX_Female );
+            if( id ) ret = true;
             break;
         }
         if( ret == true ) {
@@ -745,7 +747,6 @@ void TfpFrame::OnFindBack( wxCommandEvent& event )
             m_toolbar->EnableTool( tfpID_FIND_BACK, false );
         }
         RefreshHtmPage();
-        RefreshEditMenu();
     }
 }
 
@@ -768,7 +769,6 @@ void TfpFrame::OnFindForward( wxCommandEvent& event )
             m_toolbar->EnableTool( tfpID_FIND_FORWARD, false );
         }
         RefreshHtmPage();
-        RefreshEditMenu();
     }
 }
 
@@ -895,10 +895,12 @@ void TfpFrame::OnHtmCtxMenu( wxCommandEvent& event )
             if( tfpAddNewChild( id, SEX_Female ) != 0 ) ret = true;
             break;
         case tfpID_HCTXMENU_EDIT_EXIST_SON:
-            ret = tfpAddExistChild( id, SEX_Male );
+            id = tfpAddExistChild( id, SEX_Male );
+            if( id ) ret = true;
             break;
         case tfpID_HCTXMENU_EDIT_EXIST_DAUR:
-            ret = tfpAddExistChild( id, SEX_Female );
+            id = tfpAddExistChild( id, SEX_Female );
+            if( id ) ret = true;
             break;
         case tfpID_HCTXMENU_EDIT_INDIVIDUAL:
             ret = tfpEditIndividual( id );
@@ -1281,7 +1283,6 @@ void TfpFrame::PushHtmName( const wxString& name )
         m_forward.clear();
         m_toolbar->EnableTool( tfpID_FIND_FORWARD, false );
     }
-    RefreshEditMenu();
 }
 
 wxString TfpFrame::GetCurrentName()
@@ -1351,6 +1352,7 @@ bool TfpFrame::DisplayHtmPage( const wxString& name )
     if( !text.IsEmpty() ) {
         PushHtmName( name );
         m_browser->SetPage( text, "" );
+        RefreshEditMenu();
         return true;
     }
     return false;
@@ -1361,6 +1363,7 @@ void TfpFrame::RefreshHtmPage()
     wxString name = GetCurrentName();
     if( name.size() ) {
         m_browser->SetPage( tfpGetDisplayText( name ), "" );
+        RefreshEditMenu();
     }
 }
 
