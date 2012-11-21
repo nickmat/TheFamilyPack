@@ -45,7 +45,6 @@
 #include "dlgEdIndividual.h"
 #include "dlgEdPersona.h"
 #include "dlgSelIndividual.h"
-#include "dlgSelEvent.h"
 #include "dlgEdReference.h"
 #include "dlgEdResearcher.h"
 #include "dlgEdSystem.h"

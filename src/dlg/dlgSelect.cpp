@@ -209,7 +209,7 @@ wxString dlgSelectIndividual::sm_colHeaders[COL_MAX] = { _("ID"), _("Name") };
 wxString dlgSelectDate::sm_colHeaders[COL_MAX] = { _("ID"), _("Date") };
 
 //-------------------------------------------------------------------------------
-//-------------------[ dlgSelectDateEx ]-------------------------------------
+//-------------------[ dlgSelectDateEx ]-----------------------------------------
 //-------------------------------------------------------------------------------
 
 BEGIN_EVENT_TABLE( dlgSelectDateEx, wxDialog )
@@ -251,7 +251,7 @@ void dlgSelectDateEx::OnCreateDateAge( wxCommandEvent& event )
 wxString dlgSelectPlace::sm_colHeaders[COL_MAX] = { _("ID"), _("Place") };
 
 //-------------------------------------------------------------------------------
-//-------------------[ dlgSelectPlaceEx ]------------------------------------------
+//-------------------[ dlgSelectPlaceEx ]----------------------------------------
 //-------------------------------------------------------------------------------
 
 void dlgSelectPlaceEx::OnCreateButton( wxCommandEvent& event )
@@ -267,20 +267,13 @@ void dlgSelectPlaceEx::OnCreateButton( wxCommandEvent& event )
 //-------------------[ dlgSelectName ]-------------------------------------------
 //-------------------------------------------------------------------------------
 
-//#include <rec/recReference.h>
-
 wxString dlgSelectName::sm_colHeaders[COL_MAX] = { _("ID"), _("Name") };
-#if 0
-bool dlgSelectName::CreateRefNameTable( idt refID )
-{
-    wxArrayString table = recReferenceEntity::GetNameTable( refID );
 
-    if( table.size() == 0 ) {
-        return false;
-    }
-    SetTable( table );
+//-------------------------------------------------------------------------------
+//-------------------[ dlgSelectEventType ]--------------------------------------
+//-------------------------------------------------------------------------------
 
-    return true;
-}
-#endif
+wxString dlgSelectEventType::sm_colHeaders[COL_MAX] = { _("Group"), _("Type") };
+
+
 // End of dlgSelIndividual.cpp file

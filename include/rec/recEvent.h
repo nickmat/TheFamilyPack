@@ -54,6 +54,20 @@ typedef std::vector< recFamilyEvent >     recFamilyEventVec;
 //-------------------------[ recEventType ]-----------------------------------
 //============================================================================
 
+enum {
+    recET_FILTER_GrpNone        = 0x0000,
+    recET_FILTER_GrpBirth       = 0x0001,
+    recET_FILTER_GrpNrBirth     = 0x0002,
+    recET_FILTER_GrpFamUnion    = 0x0004,
+    recET_FILTER_GrpFamOther    = 0x0008,
+    recET_FILTER_GrpDeath       = 0x0010,
+    recET_FILTER_GrpNrDeath     = 0x0020,
+    recET_FILTER_GrpOther       = 0x0040,
+    recET_FILTER_GrpPersonal    = 0x0080,
+    recET_FILTER_GrpAll         = 0xffff,
+    recET_FILTER_GrpFamily = (recET_FILTER_GrpFamUnion|recET_FILTER_GrpFamOther)
+};
+
 class recEventType : public recDb
 {
 public:
@@ -119,6 +133,9 @@ public:
     void FSetGrp( ETYPE_Grp grp ) { f_grp = grp; }
     void FSetName( wxString name ) { f_name = name; }
 
+    static wxString GetGroupStr( ETYPE_Grp grp );
+    wxString GetGroupStr() const { return GetGroupStr( f_grp ); }
+
     static wxString GetTypeStr( idt id );
     wxString GetTypeStr() const { return f_name; }
     static ETYPE_Grp GetGroup( idt id );
@@ -128,6 +145,8 @@ public:
     static recEventTypeVec ReadAllIndividual();
     static recEventTypeVec ReadAllFamily();
     static recEventTypeVec ReadTypes( SelectFilter sf = SF_All );
+
+    static recEventTypeVec ReadVec( unsigned filter = recET_FILTER_GrpAll );
 
     static idt Select( SelectFilter sf = SF_All );
     static recEventTypeRoleVec GetRoles( idt typeID );

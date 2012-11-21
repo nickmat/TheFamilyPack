@@ -544,6 +544,23 @@ bool recEventType::Read()
     return true;
 }
 
+wxString recEventType::GetGroupStr( ETYPE_Grp grp )
+{
+    wxASSERT( grp >= 0 && grp < ETYPE_Grp_MAX );
+    static wxString grparray[ETYPE_Grp_MAX] = {
+        _("Unstated"),
+        _("Birth"),
+        _("Near Birth"),
+        _("Family Union"),
+        _("Other Family"),
+        _("Death"),
+        _("Near Death"),
+        _("Other"),
+        _("Personal")
+    };
+    return grparray[grp];
+}
+
 wxString recEventType::GetTypeStr( idt id )
 {
     recEventType et( id );
@@ -655,6 +672,63 @@ recEventTypeVec recEventType::ReadTypes( SelectFilter sf )
     default:
         return vec;
     }
+    wxSQLite3ResultSet result = s_db->ExecuteQuery( query );
+
+    recEventType et;
+    while( result.NextRow() ) {
+        et.FSetID( GET_ID( result.GetInt64( 0 ) ) );
+        et.FSetGrp( (ETYPE_Grp) result.GetInt( 1 ) );
+        et.FSetName( result.GetAsString( 2 ) );
+        vec.push_back( et );
+    }
+    return vec;
+}
+
+recEventTypeVec recEventType::ReadVec( unsigned filter )
+{
+    recEventTypeVec vec;
+    if( filter == recET_FILTER_GrpNone ) {
+        return vec;
+    }
+    wxString query = "SELECT id, grp, name FROM EventType WHERE ";
+    if( filter == recET_FILTER_GrpAll ) {
+        query << "NOT grp=0 ";
+    } else {
+        bool started = false;
+        if( filter & recET_FILTER_GrpBirth ) {
+            if( started ) query << "OR "; else started = true;
+            query << "grp=1 ";
+        }
+        if( filter & recET_FILTER_GrpNrBirth ) {
+            if( started ) query << "OR "; else started = true;
+            query << "grp=2 ";
+        }
+        if( filter & recET_FILTER_GrpFamUnion ) {
+            if( started ) query << "OR "; else started = true;
+            query << "grp=3 ";
+        }
+        if( filter & recET_FILTER_GrpFamOther ) {
+            if( started ) query << "OR "; else started = true;
+            query << "grp=4 ";
+        }
+        if( filter & recET_FILTER_GrpDeath ) {
+            if( started ) query << "OR "; else started = true;
+            query << "grp=5 ";
+        }
+        if( filter & recET_FILTER_GrpNrDeath ) {
+            if( started ) query << "OR "; else started = true;
+            query << "grp=6 ";
+        }
+        if( filter & recET_FILTER_GrpOther ) {
+            if( started ) query << "OR "; else started = true;
+            query << "grp=7 ";
+        }
+        if( filter & recET_FILTER_GrpPersonal ) {
+            if( started ) query << "OR "; else started = true;
+            query << "grp=8 ";
+        }
+    }
+    query << "ORDER BY id DESC;";
     wxSQLite3ResultSet result = s_db->ExecuteQuery( query );
 
     recEventType et;

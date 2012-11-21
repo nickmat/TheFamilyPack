@@ -45,13 +45,13 @@
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="WIN32;_LIB;_UNICODE;__WXMSW__"
-				AdditionalIncludeDirectories="$(WXWIN)\lib\vc_lib\mswu;$(WXWIN)\include;..\..\include\rec;..\..\include"
+				AdditionalIncludeDirectories="$(WXWIN)\lib\vc_lib\mswu;$(WXWIN)\include;..\..\include\rec;..\..\include\rg;..\..\include"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/MP"
 				Optimization="2"
-				AdditionalIncludeDirectories="$(WXWIN)\lib\vc_lib\mswu;$(WXWIN)\include;..\..\include\rec;..\..\include"
+				AdditionalIncludeDirectories="$(WXWIN)\lib\vc_lib\mswu;$(WXWIN)\include;..\..\include\rec;..\..\include\rg;..\..\include"
 				PreprocessorDefinitions="WIN32;_LIB;_UNICODE;__WXMSW__"
 				ExceptionHandling="1"
 				RuntimeLibrary="2"
@@ -69,7 +69,7 @@
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_UNICODE;__WXMSW__"
 				Culture="1033"
-				AdditionalIncludeDirectories="$(WXWIN)\lib\vc_lib\mswu;$(WXWIN)\include;..\..\include\rec;..\..\include"
+				AdditionalIncludeDirectories="$(WXWIN)\lib\vc_lib\mswu;$(WXWIN)\include;..\..\include\rec;..\..\include\rg;..\..\include"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -124,13 +124,13 @@
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="WIN32;_LIB;_UNICODE;__WXDEBUG__;__WXMSW__;_DEBUG"
-				AdditionalIncludeDirectories="$(WXWIN)\lib\vc_lib\mswud;$(WXWIN)\include;..\..\include\rec;..\..\include"
+				AdditionalIncludeDirectories="$(WXWIN)\lib\vc_lib\mswud;$(WXWIN)\include;..\..\include\rec;..\..\include\rg;..\..\include"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/MP"
 				Optimization="0"
-				AdditionalIncludeDirectories="$(WXWIN)\lib\vc_lib\mswud;$(WXWIN)\include;..\..\include\rec;..\..\include"
+				AdditionalIncludeDirectories="$(WXWIN)\lib\vc_lib\mswud;$(WXWIN)\include;..\..\include\rec;..\..\include\rg;..\..\include"
 				PreprocessorDefinitions="WIN32;_LIB;_UNICODE;__WXDEBUG__;__WXMSW__;_DEBUG"
 				ExceptionHandling="1"
 				BasicRuntimeChecks="3"
@@ -150,7 +150,7 @@
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_UNICODE;__WXDEBUG__;__WXMSW__;_DEBUG"
 				Culture="1033"
-				AdditionalIncludeDirectories="$(WXWIN)\lib\vc_lib\mswud;$(WXWIN)\include;..\..\include\rec;..\..\include"
+				AdditionalIncludeDirectories="$(WXWIN)\lib\vc_lib\mswud;$(WXWIN)\include;..\..\include\rec;..\..\include\rg;..\..\include"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -192,7 +192,45 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath="..\..\src\rg\fbRgDialog.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rec\recgui.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgDialogs.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgSelect.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgTableCtrl.cpp"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl;inc;xsd"
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
+			>
+			<File
+				RelativePath="..\..\src\rg\fbRgDialog.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\rg\rgDialogs.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgSelect.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgTableCtrl.h"
 				>
 			</File>
 		</Filter>

@@ -91,7 +91,6 @@
     <sources>$(LOCAL_SRC)/dlg/dlgNote.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgRecTableCtrl.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgSelect.cpp</sources>
-    <sources>$(LOCAL_SRC)/dlg/dlgSelEvent.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgSelIndividual.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/fbDlg.cpp</sources>
     <sources>$(LOCAL_SRC)/tfpApp.cpp</sources>
@@ -129,7 +128,6 @@
     <headers>$(LOCAL_SRC)/dlg/dlgNote.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgRecTableCtrl.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgSelect.h</headers>
-    <headers>$(LOCAL_SRC)/dlg/dlgSelEvent.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgSelIndividual.h</headers>
     <headers>$(LOCAL_SRC)/dlg/fbDlg.h</headers>
     <headers>$(LOCAL_SRC)/dlg/tfpListCtrlInd.h</headers>

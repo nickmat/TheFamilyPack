@@ -1,13 +1,13 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        dlgSelEvent.h
+ * Name:        include/rg/rgDialogs.h
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Select Event record from list dialog header.
+ * Purpose:     Various Database Dialog function prototypes, GUI only.
  * Author:      Nick Matthews
  * Modified by:
  * Website:     http://thefamilypack.org
- * Created:     6 November 2010
+ * Created:     21 November 2012
  * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2012, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -24,35 +24,15 @@
  *  along with The Family Pack.  If not, see <http://www.gnu.org/licenses/>.
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
 */
 
-#ifndef DLGSELEVENT_H
-#define DLGSELEVENT_H
-#if 0
-#include <rec/recDatabase.h>
+#ifndef RGDIALOGS_H
+#define RGDIALOGS_H
 
-#include "fbDlg.h"
+#define rgSEL_ET_FLAG_None     0
+#define rgSEL_ET_FLAG_Create   0x01
+#define rgSEL_ET_FLAG_Filter   0x02
 
+extern idt rgSelectEventType( unsigned flag = rgSEL_ET_FLAG_Create, unsigned grpfilter = recET_FILTER_GrpAll );
 
-class dlgSelectEvent : public fbDlgSelectEvent
-{
-    enum {
-        COL_ID, COL_Title, COL_Date, COL_Place, COL_MAX
-    };
-public:
-    /** Constructor */
-    dlgSelectEvent( wxWindow* parent );
-
-    bool CreateMarriageTable( idt famID );
-    idt GetSelectedID();
-
-protected:
-    // Handlers for fbDlgSelectEvent events.
-    void OnIdle( wxIdleEvent& event );
-
-    wxArrayString  m_table;
-    size_t         m_count;
-};
-#endif
-#endif // DLGSELEVENT_H
+#endif // RGDIALOGS_H

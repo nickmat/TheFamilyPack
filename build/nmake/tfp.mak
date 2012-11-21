@@ -79,7 +79,6 @@ TFP_OBJECTS =  \
 	tfp_dlgNote.obj \
 	tfp_dlgRecTableCtrl.obj \
 	tfp_dlgSelect.obj \
-	tfp_dlgSelEvent.obj \
 	tfp_dlgSelIndividual.obj \
 	tfp_fbDlg.obj \
 	tfp_tfpApp.obj \
@@ -185,9 +184,14 @@ RECGUI_CXXFLAGS = /MD$(VAR_19) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) \
 	/D__WXMSW__ \
 	/I$(WX_DIR)\lib\$(COMPILER_PREFIX)$(WXCPU)_lib\msw$(WXLIBPOSTFIX) \
 	/I$(WX_DIR)\include $(VAR) $(VAR_18) $(p) /Fdrecgui$(WXLIBPOSTFIX).pdb \
-	/I..\..\include\rec /I..\..\include /GR /EHsc $(CPPFLAGS) $(CXXFLAGS)
+	/I..\..\include\rec /I..\..\include\rg /I..\..\include /GR /EHsc $(CPPFLAGS) \
+	$(CXXFLAGS)
 RECGUI_OBJECTS =  \
-	recgui_recgui.obj
+	recgui_recgui.obj \
+	recgui_fbRgDialog.obj \
+	recgui_rgDialogs.obj \
+	recgui_rgSelect.obj \
+	recgui_rgTableCtrl.obj
 
 ### Conditionally set variables: ###
 
@@ -447,9 +451,6 @@ tfp_dlgRecTableCtrl.obj: .\..\..\src\dlg\dlgRecTableCtrl.cpp
 tfp_dlgSelect.obj: .\..\..\src\dlg\dlgSelect.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\dlgSelect.cpp
 
-tfp_dlgSelEvent.obj: .\..\..\src\dlg\dlgSelEvent.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\dlgSelEvent.cpp
-
 tfp_dlgSelIndividual.obj: .\..\..\src\dlg\dlgSelIndividual.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\dlgSelIndividual.cpp
 
@@ -605,4 +606,16 @@ reccl_reccl.obj: .\..\..\src\rec\reccl.cpp
 
 recgui_recgui.obj: .\..\..\src\rec\recgui.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rec\recgui.cpp
+
+recgui_fbRgDialog.obj: .\..\..\src\rg\fbRgDialog.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\fbRgDialog.cpp
+
+recgui_rgDialogs.obj: .\..\..\src\rg\rgDialogs.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgDialogs.cpp
+
+recgui_rgSelect.obj: .\..\..\src\rg\rgSelect.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgSelect.cpp
+
+recgui_rgTableCtrl.obj: .\..\..\src\rg\rgTableCtrl.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgTableCtrl.cpp
 

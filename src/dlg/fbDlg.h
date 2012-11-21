@@ -901,30 +901,6 @@ class fbDlgSelectIndividual : public wxDialog
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class fbDlgSelectEvent
-///////////////////////////////////////////////////////////////////////////////
-class fbDlgSelectEvent : public wxDialog 
-{
-	private:
-	
-	protected:
-		dlgStrTableCtrl* m_listEvent;
-		wxStaticLine* m_staticline;
-		wxButton* m_buttonSelect;
-		wxButton* m_buttonCancel;
-		
-		// Virtual event handlers, overide them in your derived class
-		virtual void OnIdle( wxIdleEvent& event ) { event.Skip(); }
-		
-	
-	public:
-		
-		fbDlgSelectEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Select Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 485,269 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
-		~fbDlgSelectEvent();
-	
-};
-
-///////////////////////////////////////////////////////////////////////////////
 /// Class fbDlgSelect
 ///////////////////////////////////////////////////////////////////////////////
 class fbDlgSelect : public wxDialog 

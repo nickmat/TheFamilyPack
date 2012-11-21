@@ -331,10 +331,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\dlg\dlgSelEvent.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\dlg\dlgSelIndividual.cpp"
 				>
 			</File>
@@ -502,10 +498,6 @@
 			</File>
 			<File
 				RelativePath="..\..\src\dlg\dlgRecTableCtrl.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\dlg\dlgSelEvent.h"
 				>
 			</File>
 			<File
