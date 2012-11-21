@@ -107,13 +107,6 @@ public:
         ET_Condition    = -19,
         ET_MAX          = 20     // Size of list
     };
-    enum SelectFilter {
-        SF_All,
-        SF_Individual,
-        SF_Family,
-        SF_Personal,
-        SF_Not_Personal
-    };
 
     ETYPE_Grp f_grp;
     wxString  f_name;
@@ -141,14 +134,8 @@ public:
     static ETYPE_Grp GetGroup( idt id );
     ETYPE_Grp GetGroup() const { return f_grp; }
 
-    static recEventTypeVec ReadAll();
-    static recEventTypeVec ReadAllIndividual();
-    static recEventTypeVec ReadAllFamily();
-    static recEventTypeVec ReadTypes( SelectFilter sf = SF_All );
-
     static recEventTypeVec ReadVec( unsigned filter = recET_FILTER_GrpAll );
 
-    static idt Select( SelectFilter sf = SF_All );
     static recEventTypeRoleVec GetRoles( idt typeID );
     recEventTypeRoleVec GetRoles() const { return GetRoles( FGetID() ); }
     static recEventTypeRoleVec GetPrimeRoles( idt typeID, int prime = 0 );

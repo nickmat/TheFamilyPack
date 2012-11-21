@@ -39,6 +39,7 @@
 
 #include <rec/recIndividual.h>
 #include <rec/recLink.h>
+#include <rg/rgDialogs.h>
 
 #include "dlgEd.h"
 #include "dlgEdFamily.h"
@@ -449,28 +450,12 @@ idt tfpAddExistChild( idt famID, Sex sex )
     return indID;
 }
 
-#if 0
-idt tfpGetExistingMarriageEvent_( idt famID )
-{
-    idt eventID = 0;
-    dlgSelectEvent* dialog = new dlgSelectEvent( NULL );
-    if( dialog->CreateMarriageTable( famID ) ) {
-        if( dialog->ShowModal() == wxID_OK ) {
-            eventID = dialog->GetSelectedID();
-        }
-
-    }
-    dialog->Destroy();
-    return eventID;
-}
-#endif
-
 idt tfpAddMarriageEvent( const recFamily& family )
 {
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
 
-    idt typeID = recEventType::Select( recEventType::SF_Family );
+    idt typeID = rgSelectEventType( rgSEL_ET_FLAG_Create, recET_FILTER_GrpFamily );
     if( typeID == 0 ) {
         recDb::Rollback( savepoint );
         return 0;

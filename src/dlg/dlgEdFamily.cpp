@@ -39,6 +39,7 @@
 
 #include <rec/recIndividual.h>
 #include <rec/recEvent.h>
+#include <rg/rgDialogs.h>
 
 #include "dlgEdFamily.h"
 #include "dlgEdIndEvent.h"
@@ -380,7 +381,7 @@ void dlgEditFamily::OnNewEvent( wxCommandEvent& event )
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
 
-    idt typeID = recEventType::Select( recEventType::SF_Family );
+    idt typeID = rgSelectEventType( rgSEL_ET_FLAG_Create, recET_FILTER_GrpFamily );
     if( typeID == 0 ) {
         recDb::Rollback( savepoint );
         return;

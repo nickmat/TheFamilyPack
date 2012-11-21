@@ -41,6 +41,7 @@
 #include <rec/recPlace.h>
 #include <rec/recPersona.h>
 #include <rec/recEvent.h>
+#include <rg/rgDialogs.h>
 
 #include "dlgEdReference.h"
 #include "dlgEdEvent.h"
@@ -465,7 +466,7 @@ void dlgEditReference::OnNewEvent( wxCommandEvent& cmnd_event )
     // items and we will need to be able to roll these back.
     recDb::Savepoint( savepoint );
 
-    idt typeID = recEventType::Select();
+    idt typeID = rgSelectEventType();
     if( typeID == 0 ) {
         recDb::Rollback( savepoint );
         return;
@@ -604,7 +605,7 @@ void dlgEditReference::OnNewPersonalEvent( wxCommandEvent& event )
     recEvent eve(0);
     recEventPersona ep(0);
 
-    eve.FSetTypeID( recEventType::Select( recEventType::SF_Personal ) );
+    eve.FSetTypeID( rgSelectEventType( rgSEL_ET_FLAG_Create, recET_FILTER_GrpPersonal ) );
     if( eve.FGetTypeID() == 0 ) {
         recDb::Rollback( savepoint );
         return;

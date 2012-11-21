@@ -53,7 +53,6 @@ extern bool tfpEditReference( idt refID  );
 extern bool tfpAddExistSpouse( idt indID, Sex sex );
 extern idt tfpAddExistChild( idt famID, Sex sex );
 extern idt tfpAddMarriageEvent( const recFamily& family );
-//extern idt tfpGetExistingMarriageEvent_( idt famID );
 
 extern bool tfpEditEvent( idt eveID  );
 #define tfpGETROLE_ALL      0

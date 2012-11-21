@@ -29,6 +29,8 @@
 #ifndef RGDIALOGS_H
 #define RGDIALOGS_H
 
+#include <rec/recEvent.h>
+
 #define rgSEL_ET_FLAG_None     0
 #define rgSEL_ET_FLAG_Create   0x01
 #define rgSEL_ET_FLAG_Filter   0x02

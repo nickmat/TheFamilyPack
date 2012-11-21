@@ -320,7 +320,6 @@ void dlgEditIndPersona::OnNewEvent( wxCommandEvent& event )
     const wxString savepoint = "IndAddEvent";
     recDb::Savepoint( savepoint );
 
-//    idt typeID = recEventType::Select( recEventType::SF_Individual );
     idt typeID = rgSelectEventType();
     if( typeID == 0 ) {
         recDb::Rollback( savepoint );
