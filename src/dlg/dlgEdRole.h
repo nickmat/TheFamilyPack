@@ -93,25 +93,4 @@ private:
     recEventTypeRoleVec m_roles;
 };
 
-//============================================================================
-//-------------------------[ dlgCreateRole ]---------------------------------
-//============================================================================
-
-class dlgCreateRole : public fbDlgCreateRole
-{
-public:
-    dlgCreateRole( wxWindow* parent, idt etID );
-
-    idt GetRoleID() const { return m_role.FGetID(); }
-   
-private:
-    bool TransferDataToWindow();
-    bool TransferDataFromWindow();
-
-    void OnSelectPrime( wxCommandEvent& event );
-
-    recEventType     m_et;
-    recEventTypeRole m_role;
-};
-
 #endif // DLGEDROLE_H

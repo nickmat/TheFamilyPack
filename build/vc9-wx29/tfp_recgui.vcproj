@@ -204,6 +204,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rg\rgEdRole.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rg\rgSelect.cpp"
 				>
 			</File>
@@ -223,6 +227,10 @@
 			</File>
 			<File
 				RelativePath="..\..\include\rg\rgDialogs.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgEdRole.h"
 				>
 			</File>
 			<File

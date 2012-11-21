@@ -120,6 +120,9 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "EventType" );
 
+    static wxString GetIdStr( idt evID ) { return wxString::Format( "ET"ID, evID ); }
+    wxString GetIdStr() const { return GetIdStr( f_id ); }
+
     ETYPE_Grp FGetGrp() const { return f_grp; }
     wxString FGetName() const { return f_name; }
 

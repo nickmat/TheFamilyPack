@@ -38,7 +38,46 @@
 
 #include <rec/recEvent.h>
 
+#include "rgEdRole.h"
 #include "rgSelect.h"
+
+bool rgEditRole( idt roleID )
+{
+    wxASSERT( roleID != 0 );
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+    bool ret = false;
+
+    rgDlgEditRole* dialog = new rgDlgEditRole( NULL, roleID );
+
+    if( dialog->ShowModal() == wxID_OK ) {
+        recDb::ReleaseSavepoint( savepoint );
+        ret = true;
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+    return ret;
+}
+
+idt rgCreateRole( idt etID )
+{
+    wxASSERT( etID != 0 );
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+
+    recEventTypeRole role(0);
+    role.FSetTypeID( etID );
+    role.Save();
+    idt roleID = role.FGetID();
+    if( rgEditRole( roleID ) ) {
+        recDb::ReleaseSavepoint( savepoint );
+    } else {
+        recDb::Rollback( savepoint );
+        roleID = 0;
+    }
+    return roleID;
+}
 
 idt rgSelectEventType( unsigned flag, unsigned grpfilter )
 {

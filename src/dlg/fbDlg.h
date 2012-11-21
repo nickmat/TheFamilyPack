@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Dec  2 2011)
+// C++ code generated with wxFormBuilder (version Oct  8 2012)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -26,7 +26,6 @@ class tfpListCtrlIndividuals;
 #include <wx/statline.h>
 #include <wx/button.h>
 #include <wx/dialog.h>
-#include <wx/checkbox.h>
 #include <wx/panel.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
@@ -40,6 +39,7 @@ class tfpListCtrlIndividuals;
 #include <wx/splitter.h>
 #include <wx/html/htmlwin.h>
 #include <wx/toolbar.h>
+#include <wx/checkbox.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -69,38 +69,6 @@ class fbDlgCreateIndividual : public wxDialog
 		
 		fbDlgCreateIndividual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Create Individual"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 400,221 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxSYSTEM_MENU ); 
 		~fbDlgCreateIndividual();
-	
-};
-
-///////////////////////////////////////////////////////////////////////////////
-/// Class fbDlgCreateRole
-///////////////////////////////////////////////////////////////////////////////
-class fbDlgCreateRole : public wxDialog 
-{
-	private:
-	
-	protected:
-		wxStaticText* m_staticText1;
-		wxStaticText* m_staticRoleID;
-		wxStaticText* m_staticText2;
-		wxTextCtrl* m_textEventType;
-		wxStaticText* m_staticText3;
-		wxTextCtrl* m_textCtrlValue;
-		wxStaticText* m_staticText4;
-		wxChoice* m_choicePrime;
-		wxCheckBox* m_checkOfficial;
-		wxStaticLine* m_staticline1;
-		wxButton* m_buttonSave;
-		wxButton* m_buttonCancel;
-		
-		// Virtual event handlers, overide them in your derived class
-		virtual void OnSelectPrime( wxCommandEvent& event ) { event.Skip(); }
-		
-	
-	public:
-		
-		fbDlgCreateRole( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Create Role"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 296,206 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
-		~fbDlgCreateRole();
 	
 };
 

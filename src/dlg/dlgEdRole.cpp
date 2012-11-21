@@ -43,6 +43,8 @@
 #include "dlgEdRole.h"
 #include "dlgEd.h"
 
+#include <rg/rgDialogs.h>
+
 //============================================================================
 //-------------------------[ dlgEditRole ]------------------------------------
 //============================================================================
@@ -198,6 +200,11 @@ void dlgEditIndRole::SetRoleList( idt selection )
 
 void dlgEditIndRole::OnButtonAddClick( wxCommandEvent& event )
 {
+    idt roleID = rgCreateRole( m_event.FGetTypeID() );
+    if( roleID ) {
+        SetRoleList( roleID );
+    }
+#if 0
     const wxString savepoint = "CreateRole";
     recDb::Savepoint( savepoint );
 
@@ -210,8 +217,9 @@ void dlgEditIndRole::OnButtonAddClick( wxCommandEvent& event )
         recDb::Rollback( savepoint );
     }
     dialog->Destroy();
+#endif
 }
-
+#if 0
 //============================================================================
 //-------------------------[ dlgCreateRole ]---------------------------------
 //============================================================================
@@ -280,6 +288,6 @@ void dlgCreateRole::OnSelectPrime( wxCommandEvent& event )
         m_checkOfficial->Enable( false );
     }
 }
-
+#endif
 
 // End of dlgEdRole.cpp file

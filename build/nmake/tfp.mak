@@ -190,6 +190,7 @@ RECGUI_OBJECTS =  \
 	recgui_recgui.obj \
 	recgui_fbRgDialog.obj \
 	recgui_rgDialogs.obj \
+	recgui_rgEdRole.obj \
 	recgui_rgSelect.obj \
 	recgui_rgTableCtrl.obj
 
@@ -612,6 +613,9 @@ recgui_fbRgDialog.obj: .\..\..\src\rg\fbRgDialog.cpp
 
 recgui_rgDialogs.obj: .\..\..\src\rg\rgDialogs.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgDialogs.cpp
+
+recgui_rgEdRole.obj: .\..\..\src\rg\rgEdRole.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdRole.cpp
 
 recgui_rgSelect.obj: .\..\..\src\rg\rgSelect.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgSelect.cpp

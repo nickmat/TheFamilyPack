@@ -1,7 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        include/rg/rgDialogs.h
+ * Name:        src/rg/rgEdRole.h
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Various Database Dialog function prototypes, GUI only.
+ * Purpose:     Edit an EventTypeRole record dialog header, GUI only.
  * Author:      Nick Matthews
  * Modified by:
  * Website:     http://thefamilypack.org
@@ -26,18 +26,32 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 */
 
-#ifndef RGDIALOGS_H
-#define RGDIALOGS_H
+#ifndef RGEDROLE_H
+#define RGEDROLE_H
 
 #include <rec/recEvent.h>
 
-extern bool rgEditRole( idt roleID );
-extern idt rgCreateRole( idt etID );
+#include "fbRgDialog.h"
 
-#define rgSEL_ET_FLAG_None     0
-#define rgSEL_ET_FLAG_Create   0x01
-#define rgSEL_ET_FLAG_Filter   0x02
+//============================================================================
+//-------------------------[ dlgCreateRole ]---------------------------------
+//============================================================================
 
-extern idt rgSelectEventType( unsigned flag = rgSEL_ET_FLAG_Create, unsigned grpfilter = recET_FILTER_GrpAll );
+class rgDlgEditRole : public fbRgEditRole
+{
+public:
+    rgDlgEditRole( wxWindow* parent, idt etrID );
 
-#endif // RGDIALOGS_H
+    idt GetRoleID() const { return m_role.FGetID(); }
+   
+private:
+    bool TransferDataToWindow();
+    bool TransferDataFromWindow();
+
+    void OnChoicePrime( wxCommandEvent& event );
+
+    recEventType     m_et;
+    recEventTypeRole m_role;
+};
+
+#endif // RGEDROLE_H
