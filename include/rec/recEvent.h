@@ -131,6 +131,7 @@ public:
 
     static wxString GetGroupStr( ETYPE_Grp grp );
     wxString GetGroupStr() const { return GetGroupStr( f_grp ); }
+    static wxArrayString GetGroupStrings();
 
     static wxString GetTypeStr( idt id );
     wxString GetTypeStr() const { return f_name; }
@@ -342,6 +343,8 @@ public:
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     static wxString GetName( idt roleID );
+    wxString GetPrimeStr() const;
+
     static wxString GetTypeAndRoleStr( idt roleID );
     static idt Select( idt typeID, SelectFilter sf = SF_All );
 

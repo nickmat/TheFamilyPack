@@ -1,7 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/rg/rgEdRole.h
+ * Name:        src/rg/rgEdEventType.h
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Edit an EventTypeRole record dialog header, GUI only.
+ * Purpose:     Edit an EventType record dialog header, GUI only.
  * Author:      Nick Matthews
  * Modified by:
  * Website:     http://thefamilypack.org
@@ -26,32 +26,36 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 */
 
-#ifndef RGEDROLE_H
-#define RGEDROLE_H
+#ifndef RGEDEVENTTYPE_H
+#define RGEDEVENTTYPE_H
 
 #include <rec/recEvent.h>
 
 #include "fbRgDialog.h"
 
 //============================================================================
-//-------------------------[ rgDlgEditRole ]----------------------------------
+//-------------------------[ rgDlgEditEventType ]-----------------------------
 //============================================================================
 
-class rgDlgEditRole : public fbRgEditRole
+class rgDlgEditEventType : public fbRgEditEventType
 {
-public:
-    rgDlgEditRole( wxWindow* parent, idt etrID );
+    enum RoleCols {
+        RC_Number, RC_Name, RC_Prime, RC_Official, RC_MAX
+    };
 
-    idt GetRoleID() const { return m_role.FGetID(); }
+public:
+    rgDlgEditEventType( wxWindow* parent, idt etID );
    
 private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
 
-    void OnChoicePrime( wxCommandEvent& event );
+	void OnButtonRoleAdd( wxCommandEvent& event );
+	void OnButtonRoleEdit( wxCommandEvent& event );
+	void OnButtonRoleDelete( wxCommandEvent& event );
 
-    recEventType     m_et;
-    recEventTypeRole m_role;
+    recEventType        m_et;
+    recEventTypeRoleVec m_roles;
 };
 
-#endif // RGEDROLE_H
+#endif // RGEDEVENTTYPE_H

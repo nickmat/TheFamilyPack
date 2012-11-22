@@ -561,6 +561,15 @@ wxString recEventType::GetGroupStr( ETYPE_Grp grp )
     return grparray[grp];
 }
 
+wxArrayString recEventType::GetGroupStrings()
+{
+    wxArrayString strs;
+    for( size_t i = 0 ; i < ETYPE_Grp_MAX ; i++ ) {
+        strs.push_back( GetGroupStr( (ETYPE_Grp) i ) );
+    }
+    return strs;
+}
+
 wxString recEventType::GetTypeStr( idt id )
 {
     recEventType et( id );
@@ -788,6 +797,55 @@ wxString recEventTypeRole::GetName( idt roleID )
 {
     recEventTypeRole role( roleID );
     return role.f_name;
+}
+
+wxString recEventTypeRole::GetPrimeStr() const
+{
+    wxString str;
+    recEventType::ETYPE_Grp group = recEventType::GetGroup( f_type_id );
+
+    switch( group )
+    {
+    case recEventType::ETYPE_Grp_Birth:
+    case recEventType::ETYPE_Grp_Nr_Birth:
+    case recEventType::ETYPE_Grp_Death:
+    case recEventType::ETYPE_Grp_Nr_Death:
+    case recEventType::ETYPE_Grp_Other:
+    case recEventType::ETYPE_Grp_Personal:
+        switch( f_prime )
+        {
+        case PRIME_None:
+            str = _("No");
+            break;
+        case PRIME_First:
+            str = _("Yes");
+            break;
+        default:
+            str = _("?");
+        }
+        break;
+    case recEventType::ETYPE_Grp_Union:
+    case recEventType::ETYPE_Grp_Family:
+        switch( f_prime )
+        {
+        case PRIME_None:
+            str = _("No");
+            break;
+        case PRIME_First:
+            str = _("Male");
+            break;
+        case PRIME_Second:
+            str = _("Female");
+            break;
+        case PRIME_Any:
+            str = _("Neutral");
+            break;
+        default:
+            str = _("?");
+        }
+        break;
+    }
+    return str;
 }
 
 wxString recEventTypeRole::GetTypeAndRoleStr( idt roleID )

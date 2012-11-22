@@ -381,7 +381,7 @@ void dlgEditFamily::OnNewEvent( wxCommandEvent& event )
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
 
-    idt typeID = rgSelectEventType( rgSEL_ET_FLAG_Create, recET_FILTER_GrpFamily );
+    idt typeID = rgSelectEventType( rgSELSTYLE_Create, NULL, recET_FILTER_GrpFamily );
     if( typeID == 0 ) {
         recDb::Rollback( savepoint );
         return;

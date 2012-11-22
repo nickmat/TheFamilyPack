@@ -19,16 +19,50 @@ class rgStrTableCtrl;
 #include <wx/font.h>
 #include <wx/colour.h>
 #include <wx/settings.h>
-#include <wx/sizer.h>
-#include <wx/textctrl.h>
 #include <wx/choice.h>
-#include <wx/checkbox.h>
-#include <wx/statline.h>
-#include <wx/button.h>
-#include <wx/dialog.h>
+#include <wx/textctrl.h>
+#include <wx/sizer.h>
 #include <wx/listctrl.h>
+#include <wx/button.h>
+#include <wx/statline.h>
+#include <wx/dialog.h>
+#include <wx/checkbox.h>
 
 ///////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class fbRgEditEventType
+///////////////////////////////////////////////////////////////////////////////
+class fbRgEditEventType : public wxDialog 
+{
+	private:
+	
+	protected:
+		wxStaticText* m_staticText4;
+		wxChoice* m_choiceGroup;
+		wxStaticText* m_staticText3;
+		wxTextCtrl* m_textCtrlValue;
+		wxListCtrl* m_listRole;
+		wxButton* m_buttonRoleAdd;
+		wxButton* m_buttonRoleEdit;
+		wxButton* m_buttonRoleDelete;
+		wxStaticLine* m_staticline1;
+		wxStaticText* m_staticTypeID;
+		wxButton* m_buttonSave;
+		wxButton* m_buttonCancel;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnButtonRoleAdd( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonRoleEdit( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonRoleDelete( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		fbRgEditEventType( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Event Type"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 350,300 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
+		~fbRgEditEventType();
+	
+};
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Class fbRgEditRole

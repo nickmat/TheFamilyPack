@@ -32,21 +32,15 @@
 #include <rec/recDatabase.h>
 
 #include "fbRgDialog.h"
+#include "rg/rgDialogs.h"
 
 class rgSelect : public fbRgSelect
 {
 public:
-    enum StyleFlags {
-        SELSTYLE_None          = 0x0000,
-        SELSTYLE_CreateButton  = 0x0001,
-        SELSTYLE_FilterButton  = 0x0002,
-        SELSTYLE_UnknownButton = 0x0004
-    };
-
     /** Constructor */
     rgSelect( wxWindow* parent, wxString* headers, long width,
-        const wxString& title = wxEmptyString,
-        unsigned style = SELSTYLE_None );
+        unsigned style = rgSELSTYLE_None,
+        const wxString& title = wxEmptyString );
 
     void SetTable( wxArrayString table );
     void SetCreateButton( bool on = true );
@@ -92,9 +86,9 @@ class rgDlgSelectEventType : public rgSelect
 public:
     rgDlgSelectEventType( 
         wxWindow* parent = NULL, 
-        const wxString& title = _("Select Event Type"),
-        unsigned style = SELSTYLE_CreateButton
-    ) : rgSelect( parent, sm_colHeaders, COL_MAX, title, style ) {}
+        unsigned style = rgSELSTYLE_None,
+        const wxString& title = _("Select Event Type")
+    ) : rgSelect( parent, sm_colHeaders, COL_MAX, style, title ) {}
 };
 
 #endif // RGSELECT_H

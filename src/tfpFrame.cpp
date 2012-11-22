@@ -54,6 +54,7 @@
 #include "tfpRd.h"
 #include "tfpWr.h"
 #include "dlg/dlgEd.h"
+#include "rg/rgDialogs.h"
 
 #include "img/forward.xpm"
 #include "img/back.xpm"
@@ -78,6 +79,9 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_EDIT_IND_NEW_FEMALE, TfpFrame::OnAddNewIndFemale )
     EVT_MENU( tfpID_EDIT_REFERENCE, TfpFrame::OnEditReference )
     EVT_MENU( tfpID_EDIT_RESEARCHER, TfpFrame::OnEditResearcher )
+
+//    EVT_MENU( tfpID_EDIT_EVENT_TYPE, TfpFrame::OnEditEventType )
+
     EVT_MENU( tfpID_FIND_FAMILY_ID, TfpFrame::OnFindFamilyID )
     EVT_MENU( tfpID_FIND_INDIVIDUAL_ID, TfpFrame::OnFindIndividualID )
     EVT_MENU( tfpID_LIST_SURNAME_INDEX, TfpFrame::OnListIndex )
@@ -177,11 +181,15 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     m_menuEditInd->AppendSeparator();
     m_menuEditInd->Append( tfpID_EDIT_IND_NEW_MALE, _("Add New &Male...") );
     m_menuEditInd->Append( tfpID_EDIT_IND_NEW_FEMALE, _("Add New &Female...") );
-    
+
+    wxMenu* menuEdCore = new wxMenu;
+    menuEdCore->Append( tfpID_EDIT_EVENT_TYPE, _("&Event Types...") );
+
     wxMenu* menuEdit = new wxMenu;
     menuEdit->Append( tfpID_EDIT_IND_MENU, _("&Individual"), m_menuEditInd );
     menuEdit->Append( tfpID_EDIT_REFERENCE, _("&Reference...") );
-    menuEdit->Append( tfpID_EDIT_RESEARCHER, _("&Researcher...") );
+    menuEdit->Append( tfpID_EDIT_RESEARCHER, _("R&esearcher...") );
+    menuEdit->Append( tfpID_EDIT_CORE_MENU, _("&Core Data"), menuEdCore );
 
     wxMenu* menuFind = new wxMenu;
     menuFind->Append( tfpID_FIND_FAMILY_ID, _("&Family ID...") );
@@ -420,6 +428,7 @@ void TfpFrame::OnEditContext( wxCommandEvent& event )
     wxString disp = GetDisplay();
     bool ret = false;
     idt id;
+    unsigned rettype = 0;
 
     recDb::Begin();
     try {
@@ -493,6 +502,11 @@ void TfpFrame::OnEditContext( wxCommandEvent& event )
         case tfpID_EDIT_EXIST_DAUR:
             id = tfpAddExistChild( m_EditFamily, SEX_Female );
             if( id ) ret = true;
+            break;
+        case tfpID_EDIT_EVENT_TYPE:
+            id = rgSelectEventType( rgSELSTYLE_Create, &rettype );
+            if( id ) ret = true;
+            if( id && rettype == rgSELSTYLE_None ) ret = rgEditEventType( id );
             break;
         }
         if( ret == true ) {
@@ -570,7 +584,7 @@ void TfpFrame::OnEditResearcher( wxCommandEvent& event )
  */
 void TfpFrame::OnFindFamilyID( wxCommandEvent& event )
 {
-    wxMessageBox( wxT("Not yet implimented"), wxT("OnFindFamilyID") );
+    wxMessageBox( "Not yet implimented", "OnFindFamilyID" );
 }
 
 /*! \brief Called on a Find Individual ID menu option event.

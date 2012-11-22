@@ -173,6 +173,10 @@ enum
     tfpID_EDIT_IND_LEFT,
     tfpID_EDIT_IND_RIGHT,
     tfpID_EDIT_FAMILY_MENU,
+    tfpID_EDIT_CORE_MENU,
+
+    // Items in this group are handled 
+    // by TfpFrame::OnEditContext
     tfpID_EDIT_CONTEXT_BEG,
     tfpID_EDIT_INDIVIDUAL_LEFT,
     tfpID_EDIT_NEW_MOTHER_LEFT,
@@ -195,7 +199,10 @@ enum
     tfpID_EDIT_NEW_DAUR,
     tfpID_EDIT_EXIST_SON,
     tfpID_EDIT_EXIST_DAUR,
+    tfpID_EDIT_EVENT_TYPE,
     tfpID_EDIT_CONTEXT_END,
+    // End of TfpFrame::OnEditContext group
+
     tfpID_EDIT_INDIVIDUAL,
     tfpID_EDIT_IND_NEW_MALE,
     tfpID_EDIT_IND_NEW_FEMALE,

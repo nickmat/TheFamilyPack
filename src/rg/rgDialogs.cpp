@@ -38,8 +38,45 @@
 
 #include <rec/recEvent.h>
 
+#include "rgEdEventType.h"
 #include "rgEdRole.h"
 #include "rgSelect.h"
+
+bool rgEditEventType( idt etID )
+{
+    wxASSERT( etID != 0 );
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+    bool ret = false;
+
+    rgDlgEditEventType* dialog = new rgDlgEditEventType( NULL, etID );
+
+    if( dialog->ShowModal() == wxID_OK ) {
+        recDb::ReleaseSavepoint( savepoint );
+        ret = true;
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+    return ret;
+}
+
+idt rgCreateEventType()
+{
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+
+    recEventType et(0);
+    et.Save();
+    idt etID = et.FGetID();
+    if( rgEditEventType( etID ) ) {
+        recDb::ReleaseSavepoint( savepoint );
+    } else {
+        recDb::Rollback( savepoint );
+        etID = 0;
+    }
+    return etID;
+}
 
 bool rgEditRole( idt roleID )
 {
@@ -79,41 +116,46 @@ idt rgCreateRole( idt etID )
     return roleID;
 }
 
-idt rgSelectEventType( unsigned flag, unsigned grpfilter )
+idt rgSelectEventType( unsigned flag, unsigned* retbutton, unsigned grpfilter )
 {
-    recEventTypeVec types = recEventType::ReadVec( grpfilter );
-    wxArrayString table;
-    for( size_t i = 0 ; i < types.size() ; i++ ) {
-        table.push_back( types[i].GetGroupStr() );        
-        table.push_back( types[i].FGetName() );        
-    }
-    rgDlgSelectEventType* dialog = new rgDlgSelectEventType();
-    dialog->SetTable( table );
     idt id = 0;
     bool cont = true;
+    rgDlgSelectEventType* dialog = new rgDlgSelectEventType( NULL, flag );
+
     while( cont ) {
+        recEventTypeVec types = recEventType::ReadVec( grpfilter );
+        wxArrayString table;
+        for( size_t i = 0 ; i < types.size() ; i++ ) {
+            table.push_back( types[i].GetGroupStr() );        
+            table.push_back( types[i].FGetName() );        
+        }
+        dialog->SetTable( table );
         if( dialog->ShowModal() == wxID_OK ) {
             if( dialog->GetCreatePressed() ) {
-                // Create new Event Type
-                wxMessageBox( wxT("Not yet implimented"), wxT("rgSelectEventType") );
-                dialog->SetCreatePressed( false );
+                if( retbutton ) *retbutton = rgSELSTYLE_Create;
+                id = rgCreateEventType();
+                if( id ) {
+                    cont = false;
+                } else {
+                    dialog->SetCreatePressed( false );
+                }
                 continue;
             }
             if( dialog->GetFilterPressed() ) {
                 // Create new Event Type
-                wxMessageBox( wxT("Not yet implimented"), wxT("rgSelectEventType") );
+                wxMessageBox( "Not yet implimented", "rgSelectEventType" );
                 dialog->SetFilterPressed( false );
                 continue;
             }
             if( dialog->GetUnknownPressed() ) {
-                // Create new Event Type
-                wxMessageBox( wxT("Not yet implimented"), wxT("rgSelectEventType") );
-                dialog->SetUnknownPressed( false );
+                wxASSERT( false ); // We shouldn't be here, Unknown has no meaning.
+                if( retbutton ) *retbutton = rgSELSTYLE_Unknown;
                 continue;
             }
             size_t item = (size_t) dialog->GetSelectedRow();
             id = types[item].FGetID();
         }
+        if( retbutton ) *retbutton = rgSELSTYLE_None;
         cont = false;
     }
     dialog->Destroy();

@@ -40,8 +40,8 @@
 #include "rgTableCtrl.h"
 
 rgSelect::rgSelect( 
-    wxWindow* parent, wxString* headers, long width,
-    const wxString& title, unsigned style )
+    wxWindow* parent, wxString* headers, long width, unsigned style,
+    const wxString& title )
     : m_create(false), m_filter(false), m_unknown(false), fbRgSelect( parent )
 {
     m_width = width;
@@ -59,17 +59,17 @@ rgSelect::rgSelect(
     } else {
         SetTitle( title );
     }
-    if( style & SELSTYLE_CreateButton ){
+    if( style & rgSELSTYLE_Create ){
         m_buttonCreate->Show();
     } else {
         m_buttonCreate->Hide();
     }
-    if( style & SELSTYLE_FilterButton ){
+    if( style & rgSELSTYLE_Filter ){
         m_buttonFilter->Show();
     } else {
         m_buttonFilter->Hide();
     }
-    if( style & SELSTYLE_UnknownButton ){
+    if( style & rgSELSTYLE_Unknown ){
          m_buttonUnknown->Show();
     } else {
          m_buttonUnknown->Hide();

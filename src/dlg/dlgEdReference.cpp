@@ -605,7 +605,7 @@ void dlgEditReference::OnNewPersonalEvent( wxCommandEvent& event )
     recEvent eve(0);
     recEventPersona ep(0);
 
-    eve.FSetTypeID( rgSelectEventType( rgSEL_ET_FLAG_Create, recET_FILTER_GrpPersonal ) );
+    eve.FSetTypeID( rgSelectEventType( rgSELSTYLE_Create, NULL, recET_FILTER_GrpPersonal ) );
     if( eve.FGetTypeID() == 0 ) {
         recDb::Rollback( savepoint );
         return;
