@@ -277,7 +277,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
     htm << "\n</td>\n<td class='status'>\n";
     if( fam.f_wife_id != 0 ) {
         htm << "<b>" << recIndividual::GetIdStr( fam.f_wife_id ) << "</b>\n"
-            << "&nbsp;&nbsp;<a href='tfpc:MH" << fam.f_wife_id
+            << "&nbsp;&nbsp;<a href='tfpc:MW" << fam.f_wife_id
             << "'><img src='memory:menu.png' alt='Edit'></a>\n"
             << "&nbsp;<a href='tfp:I" << fam.f_wife_id
             << "'><img src='memory:ind.png' alt='Individual details'></a>\n";
