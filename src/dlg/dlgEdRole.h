@@ -66,31 +66,4 @@ private:
     recEventTypeRoleVec m_roles;
 };
 
-//============================================================================
-//-------------------------[ dlgEditIndRole ]---------------------------------
-//============================================================================
-
-class dlgEditIndRole : public fbDlgEditIndRole
-{
-public:
-    dlgEditIndRole( wxWindow* parent, idt ieID );
-
-    recIndividualEvent* GetIndividualEvent() { return &m_ie; }
-    idt GetRoleID() const { return m_ie.FGetRoleID(); }
-
-private:
-    bool TransferDataToWindow();
-    bool TransferDataFromWindow();
-    void SetRoleList( idt selection );
-
-    void OnButtonAddClick( wxCommandEvent& event );
-
-
-    recIndividualEvent  m_ie;
-
-    recEvent            m_event;
-    recEventType        m_et;
-    recEventTypeRoleVec m_roles;
-};
-
 #endif // DLGEDROLE_H

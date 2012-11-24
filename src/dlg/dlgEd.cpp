@@ -523,6 +523,7 @@ bool tfpEditEvent( idt eveID  )
     return ret;
 }
 
+#if 0
 idt tfpGetRole( idt eventPersonaID, unsigned flags )
 {
     const wxString savepoint = "GetEPRole";
@@ -540,6 +541,7 @@ idt tfpGetRole( idt eventPersonaID, unsigned flags )
     dialog->Destroy();
     return roleID;
 }
+#endif
 
 bool tfpEditResearcher( idt resID  )
 {

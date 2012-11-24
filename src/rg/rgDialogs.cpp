@@ -40,7 +40,10 @@
 
 #include "rgEdEventType.h"
 #include "rgEdRole.h"
+#include "rgEdPerIndEvent.h"
+
 #include "rgSelect.h"
+
 
 bool rgEditEventType( idt etID )
 {
@@ -114,6 +117,44 @@ idt rgCreateRole( idt etID )
         roleID = 0;
     }
     return roleID;
+}
+
+bool rgEditIndEventRole( idt ieID, rgSHOWROLE filter )
+{
+    wxASSERT( ieID != 0 );
+    const wxString savepoint = recDb::GetSavepointStr();
+    bool ret = false;
+    rgDlgIndEvent* dialog = new rgDlgIndEvent( NULL, ieID, filter );
+
+    recDb::Savepoint( savepoint );
+    if( dialog->ShowModal() == wxID_OK )
+    {
+        recDb::ReleaseSavepoint( savepoint );
+        ret = true;
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+    return ret;
+}
+
+bool rgEditPerEventRole( idt epID, rgSHOWROLE filter )
+{
+    wxASSERT( epID != 0 );
+    const wxString savepoint = recDb::GetSavepointStr();
+    bool ret = false;
+    rgDlgPerEvent* dialog = new rgDlgPerEvent( NULL, epID, filter );
+
+    recDb::Savepoint( savepoint );
+    if( dialog->ShowModal() == wxID_OK )
+    {
+        recDb::ReleaseSavepoint( savepoint );
+        ret = true;
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+    return ret;
 }
 
 idt rgSelectEventType( unsigned flag, unsigned* retbutton, unsigned grpfilter )

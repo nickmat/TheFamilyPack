@@ -35,7 +35,6 @@ class tfpListCtrlIndividuals;
 #include <wx/listbox.h>
 #include <wx/statbox.h>
 #include <wx/radiobox.h>
-#include <wx/combobox.h>
 #include <wx/splitter.h>
 #include <wx/html/htmlwin.h>
 #include <wx/toolbar.h>
@@ -138,40 +137,6 @@ class fbDlgEditIndPersona : public wxDialog
 		
 		fbDlgEditIndPersona( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Individual"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbDlgEditIndPersona();
-	
-};
-
-///////////////////////////////////////////////////////////////////////////////
-/// Class fbDlgEditIndRole
-///////////////////////////////////////////////////////////////////////////////
-class fbDlgEditIndRole : public wxDialog 
-{
-	private:
-	
-	protected:
-		wxStaticText* m_staticText1;
-		wxStaticText* m_staticName;
-		wxStaticText* m_staticNameID;
-		wxStaticText* m_staticText2;
-		wxStaticText* m_staticEvent;
-		wxStaticText* m_staticEP_ID;
-		wxStaticText* m_staticText3;
-		wxChoice* m_choiceRole;
-		wxButton* m_buttonAdd;
-		wxStaticText* m_staticText4;
-		wxTextCtrl* m_textCtrlNote;
-		wxStaticLine* m_staticline1;
-		wxButton* m_buttonSave;
-		wxButton* m_buttonCancel;
-		
-		// Virtual event handlers, overide them in your derived class
-		virtual void OnButtonAddClick( wxCommandEvent& event ) { event.Skip(); }
-		
-	
-	public:
-		
-		fbDlgEditIndRole( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Individual's Role"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 400,231 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
-		~fbDlgEditIndRole();
 	
 };
 
@@ -513,35 +478,6 @@ class fbDlgEditNamePart : public wxDialog
 		
 		fbDlgEditNamePart( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Name Part"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 296,168 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbDlgEditNamePart();
-	
-};
-
-///////////////////////////////////////////////////////////////////////////////
-/// Class fbDlgEditPersonalEvent
-///////////////////////////////////////////////////////////////////////////////
-class fbDlgEditPersonalEvent : public wxDialog 
-{
-	private:
-	
-	protected:
-		wxStaticText* m_staticText1;
-		wxStaticText* m_staticType;
-		wxStaticText* m_staticEventID;
-		wxStaticText* m_staticText2;
-		wxStaticText* m_staticPersona;
-		wxStaticText* m_staticPersonaID;
-		wxStaticText* m_staticText3;
-		wxComboBox* m_comboRole;
-		wxStaticText* m_staticText4;
-		wxTextCtrl* m_textNote;
-		wxStaticLine* m_staticline1;
-		wxButton* m_buttonSave;
-		wxButton* m_buttonCancel;
-	
-	public:
-		
-		fbDlgEditPersonalEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Personal Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 355,208 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
-		~fbDlgEditPersonalEvent();
 	
 };
 

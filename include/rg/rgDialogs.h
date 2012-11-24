@@ -36,19 +36,23 @@ extern idt rgCreateEventType();
 extern bool rgEditRole( idt roleID );
 extern idt rgCreateRole( idt etID );
 
+enum rgSHOWROLE {
+    rgSHOWROLE_All,
+    rgSHOWROLE_PrimeAll,
+    rgSHOWROLE_PrimeMale,
+    rgSHOWROLE_PrimeFemale
+};
+extern bool rgEditIndEventRole( idt ieID, rgSHOWROLE filter = rgSHOWROLE_All );
+extern bool rgEditPerEventRole( idt epID, rgSHOWROLE filter = rgSHOWROLE_All );
+
 enum {
     rgSELSTYLE_None       = 0x0000,
-    // Show Create button
-    rgSELSTYLE_Create     = 0x0001,
-    // Show Filter button
-    rgSELSTYLE_Filter     = 0x0002,
-    // Show Unknown button (Selects the Unknown value)
-    rgSELSTYLE_Unknown    = 0x0004,
+    rgSELSTYLE_Create     = 0x0001,   // Show Create button
+    rgSELSTYLE_Filter     = 0x0002,   // Show Filter button
+    rgSELSTYLE_Unknown    = 0x0004,   // Show Unknown button (for Unknown value)
 };
-
 extern idt rgSelectEventType( 
-    unsigned flag = rgSELSTYLE_Create, 
-    unsigned* retbutton = NULL,
+    unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL,
     unsigned grpfilter = recET_FILTER_GrpAll );
 
 #endif // RGDIALOGS_H

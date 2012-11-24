@@ -338,7 +338,7 @@ void dlgEditIndPersona::OnNewEvent( wxCommandEvent& event )
     ie.FSetIndID( m_individual.FGetID() );
     ie.Save();
 
-    if( tfpGetRole( ie.FGetID(), tfpGETROLE_PRIME ) == 0 ) {
+    if( ! rgEditIndEventRole( ie.FGetID(), rgSHOWROLE_PrimeAll )  ) {
         recDb::Rollback( savepoint );
         return;
     }

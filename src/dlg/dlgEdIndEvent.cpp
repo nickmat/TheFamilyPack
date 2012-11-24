@@ -40,6 +40,7 @@
 #include <wx/fs_mem.h>
 
 #include <rec/recLink.h>
+#include <rg/rgDialogs.h>
 
 #include "dlgEdIndEvent.h"
 #include "dlgEdRole.h"
@@ -445,22 +446,13 @@ void dlgEditIndEvent::OnEditButton( wxCommandEvent& event )
         wxMessageBox( _("No row selected"), _("Edit Individual") );
         return;
     }
-
-    const wxString savepoint = "EdIndRole";
-    dlgEditIndRole* dialog = new dlgEditIndRole( NULL, m_ies[row].FGetID() );
-
-    recDb::Savepoint( savepoint );
-    if( dialog->ShowModal() == wxID_OK )
-    {
-        recDb::ReleaseSavepoint( savepoint );
-        recIndividualEvent* ie = dialog->GetIndividualEvent();
-        m_listPersona->SetItem( row, COL_Role, recEventTypeRole::GetName( ie->FGetRoleID() ) );
-        m_listPersona->SetItem( row, COL_Note, ie->FGetNote() );
-        m_ies[row] = *ie;
-    } else {
-        recDb::Rollback( savepoint );
+    idt ieID = m_ies[row].FGetID();
+    if( rgEditIndEventRole( ieID ) ) {
+        m_ies[row].Read();
+        m_listPersona->SetItem( 
+            row, COL_Role, recEventTypeRole::GetName( m_ies[row].FGetRoleID() ) );
+        m_listPersona->SetItem( row, COL_Note, m_ies[row].FGetNote() );
     }
-    dialog->Destroy();
 }
 
 void dlgEditIndEvent::OnDeleteButton( wxCommandEvent& event )

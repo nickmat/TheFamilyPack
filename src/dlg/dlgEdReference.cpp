@@ -69,7 +69,6 @@ BEGIN_EVENT_TABLE( dlgEditReference, wxDialog )
     EVT_MENU( ID_EDREF_NEW_DATE_AGE, dlgEditReference::OnNewDateAge )
     EVT_MENU( ID_EDREF_NEW_NAME,     dlgEditReference::OnNewName )
     EVT_MENU( ID_EDREF_NEW_REL,      dlgEditReference::OnNewRelationship )
-//    EVT_MENU( ID_EDREF_NEW_ATTR,     dlgEditReference::OnNewAttribute )
     EVT_MENU( ID_EDREF_NEW_PER_EVENT,dlgEditReference::OnNewPersonalEvent )
 END_EVENT_TABLE()
 
@@ -128,16 +127,6 @@ bool dlgEditReference::TransferDataToWindow()
             m_listEntities->SetItem( i, ENT_COL_Number, recRelationship::GetIdStr( entID ) );
             m_listEntities->SetItem( i, ENT_COL_Value, recRelationship::GetValue1Str( entID ) );
             break;
-#if 0
-        case recReferenceEntity::TYPE_Attribute:
-            {
-                recAttribute attribute( entID );
-                m_listEntities->SetItem( i, ENT_COL_Number, recAttribute::GetIdStr( entID ) );
-                m_listEntities->SetItem( i, ENT_COL_Value, attribute.f_val );
-                m_entities[i].owner = attribute.f_per_id;
-            }
-            break;
-#endif
         case recReferenceEntity::TYPE_Event:
             m_listEntities->SetItem( i, ENT_COL_Number, recEvent::GetIdStr( entID ) );
             m_listEntities->SetItem( i, ENT_COL_Value, recEvent::GetTitle( entID ) );
@@ -265,7 +254,6 @@ void dlgEditReference::OnAddButton( wxCommandEvent& event )
     menu->Append( ID_EDREF_NEW_DATE_AGE, _("Date a&ge") );
     menu->Append( ID_EDREF_NEW_PLACE, _("&Place") );
     menu->Append( ID_EDREF_NEW_NAME, _("&Name") );
-//    menu->Append( ID_EDREF_NEW_ATTR, _("&Attribute") );
     menu->Append( ID_EDREF_NEW_REL, _("&Relationship") );
     menu->Append( ID_EDREF_NEW_EVENT, _("&Event") );
     menu->Append( ID_EDREF_NEW_PER_EVENT, _("Personal E&vent") );
@@ -599,7 +587,7 @@ void dlgEditReference::OnNewEvent( wxCommandEvent& cmnd_event )
 
 void dlgEditReference::OnNewPersonalEvent( wxCommandEvent& event )
 {
-    const wxString savepoint = "RefNewPerEvent";
+    const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
 
     recEvent eve(0);
@@ -653,8 +641,7 @@ void dlgEditReference::OnNewPersonalEvent( wxCommandEvent& event )
     ep.FSetEventID( eve.FGetID() );
     ep.Save();
 
-    dlgEditPersonalEvent* dialog = new dlgEditPersonalEvent( NULL, ep.FGetID() );
-    if( dialog->ShowModal() == wxID_OK ) {
+    if( rgEditPerEventRole( ep.FGetID() ) ) {
         recDb::ReleaseSavepoint( savepoint );
         int row = m_entities.size();
         TfpEntity entity;
@@ -672,47 +659,7 @@ void dlgEditReference::OnNewPersonalEvent( wxCommandEvent& event )
     } else {
         recDb::Rollback( savepoint );
     }
-    dialog->Destroy();
 }
-
-#if 0
-void dlgEditReference::OnNewAttribute( wxCommandEvent& event )
-{
-    const wxString savepoint = "RefNewAttr";
-    recDb::Savepoint( savepoint );
-
-    idt perID = SelectCreatePersona();
-    if( perID == 0 ) {
-        recDb::Rollback( savepoint );
-        return;
-    }
-    dlgEditAttribute* dialog = new dlgEditAttribute( NULL );
-    dialog->SetPersonaID( perID );
-    dialog->SetValue( m_textCtrlStatement->GetStringSelection() );
-
-    if( dialog->ShowModal() == wxID_OK )
-    {
-        recDb::ReleaseSavepoint( savepoint );
-        int row = m_entities.size();
-        TfpEntity entity;
-        entity.rec.Clear();
-        entity.owner = 0;
-        entity.rec.f_ref_id = m_reference.f_id;
-        entity.rec.f_entity_type = recReferenceEntity::TYPE_Attribute;
-        entity.rec.f_entity_id = dialog->GetAttribute()->f_id;
-        entity.rec.Save();
-        m_entities.push_back( entity );
-
-        m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
-        m_listEntities->SetItem( row, ENT_COL_Number, dialog->GetAttribute()->GetIdStr() );
-        m_listEntities->SetItem( row, ENT_COL_Value, dialog->GetAttribute()->f_val );
-    } else {
-        // Dialog Cancelled
-        recDb::Rollback( savepoint );
-    }
-    dialog->Destroy();
-}
-#endif
 
 void dlgEditReference::OnNewName( wxCommandEvent& event )
 {
@@ -765,7 +712,6 @@ void dlgEditReference::OnEditButton( wxCommandEvent& event )
     case recReferenceEntity::TYPE_Place:     DoEditPlace( id, row );     break;
     case recReferenceEntity::TYPE_Relationship: DoEditRelationship( id, row ); break;
     case recReferenceEntity::TYPE_Event:     DoEditEvent( id, row );     break;
-//    case recReferenceEntity::TYPE_Attribute: DoEditAttribute( id, row ); break;
     case recReferenceEntity::TYPE_Name :     DoEditName( id, row );      break;
     default:
         wxMessageBox( _("Element cannot be edited"), _("Edit") );
@@ -845,25 +791,7 @@ void dlgEditReference::DoEditEvent( idt id, long row )
     }
     dialog->Destroy();
 }
-#if 0
-void dlgEditReference::DoEditAttribute( idt id, long row )
-{
-    const wxString savepoint = "RefEdAttr";
-    dlgEditAttribute* dialog = new dlgEditAttribute( NULL );
-    dialog->SetAttributeID( id );
 
-    recDb::Savepoint( savepoint );
-    if( dialog->ShowModal() == wxID_OK )
-    {
-        recDb::ReleaseSavepoint( savepoint );
-        m_listEntities->SetItem( row, ENT_COL_Number, dialog->GetAttribute()->GetIdStr() );
-        m_listEntities->SetItem( row, ENT_COL_Value, dialog->GetAttribute()->f_val );
-    } else {
-        recDb::Rollback( savepoint );
-    }
-    dialog->Destroy();
-}
-#endif
 void dlgEditReference::DoEditName( idt id, long row )
 {
     const wxString savepoint = "RefEdName";
@@ -1029,12 +957,6 @@ void dlgEditReference::InsertListItem( long row, const TfpEntity& ent )
         idStr = recDate::GetIdStr( ent.rec.f_entity_id );
         str = recDate::GetStr( ent.rec.f_entity_id );
         break;
-#if 0
-    case recReferenceEntity::TYPE_Attribute:
-        idStr = recAttribute::GetIdStr( ent.rec.f_entity_id );
-        str = recAttribute::GetValue( ent.rec.f_entity_id );
-        break;
-#endif
     case recReferenceEntity::TYPE_Relationship:
         idStr = recRelationship::GetIdStr( ent.rec.f_entity_id );
         str = recRelationship::GetValue1Str( ent.rec.f_entity_id );

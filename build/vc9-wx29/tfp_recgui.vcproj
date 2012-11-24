@@ -204,6 +204,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rg\rgEdEventType.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgEdPerIndEvent.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rg\rgEdRole.cpp"
 				>
 			</File>
@@ -227,6 +235,14 @@
 			</File>
 			<File
 				RelativePath="..\..\include\rg\rgDialogs.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgEdEventType.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgEdPerIndEvent.h"
 				>
 			</File>
 			<File

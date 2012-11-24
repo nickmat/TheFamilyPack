@@ -55,10 +55,10 @@ extern idt tfpAddExistChild( idt famID, Sex sex );
 extern idt tfpAddMarriageEvent( const recFamily& family );
 
 extern bool tfpEditEvent( idt eveID  );
-#define tfpGETROLE_ALL      0
-#define tfpGETROLE_PRIME    1
-#define tfpGETROLE_NONPRIME 2
-extern idt tfpGetRole( idt eventPersonaID, unsigned flags = tfpGETROLE_ALL );
+//#define tfpGETROLE_ALL_      0
+//#define tfpGETROLE_PRIME_    1
+//#define tfpGETROLE_NONPRIME_ 2
+//extern idt tfpGetRole_( idt eventPersonaID, unsigned flags = tfpGETROLE_ALL_ );
 
 extern bool tfpEditResearcher( idt resID  );
 extern bool tfpEditSystem();
