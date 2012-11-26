@@ -647,7 +647,8 @@ recEventTypeRoleVec recEventType::GetRoles( idt typeID )
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "SELECT id, name FROM EventTypeRole WHERE type_id="ID" ORDER BY id DESC;",
+        "SELECT id, prime, official, name FROM EventTypeRole"
+        " WHERE type_id="ID" ORDER BY id DESC;",
         typeID
     );
     wxSQLite3Table table = s_db->GetTable( sql );
@@ -657,7 +658,9 @@ recEventTypeRoleVec recEventType::GetRoles( idt typeID )
     {
         table.SetRow( i );
         record.f_id = GET_ID( table.GetInt64( 0 ) );
-        record.f_name = table.GetAsString( 1 );
+        record.f_prime = table.GetInt( 1 );
+        record.f_official = table.GetBool( 2 );
+        record.f_name = table.GetAsString( 3 );
         vec.push_back( record );
     }
     return vec;
