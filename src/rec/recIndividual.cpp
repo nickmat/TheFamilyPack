@@ -144,6 +144,55 @@ bool recIndividual::Read()
     return true;
 }
 
+recIndividualVec recIndividual::ReadVec( unsigned sexfilter )
+{
+    wxString query =
+        "SELECT I.id, I.surname, I.given, I.epitaph, I.fam_id, I.per_id FROM ";
+    wxString queryMid = "Individual I, Persona P WHERE I.per_id=P.id AND ";
+    if( sexfilter == recInd_FILTER_SexAll ) {
+        query << "Individual I ";
+    } else if( sexfilter == recInd_FILTER_SexMalePlus ) {
+        query << queryMid << "NOT P.sex=2 ";
+    } else if( sexfilter == recInd_FILTER_SexFemalePlus ) {
+        query << queryMid << "NOT P.sex=1 ";
+    } else {
+        bool started = false;
+        query << queryMid;
+        if( sexfilter & recInd_FILTER_SexUnstated ) {
+            if( started ) query << "OR "; else started = true;
+            query << "P.sex=0 ";
+        }
+        if( sexfilter & recInd_FILTER_SexMale ) {
+            if( started ) query << "OR "; else started = true;
+            query << "P.sex=1 ";
+        }
+        if( sexfilter & recInd_FILTER_SexFemale ) {
+            if( started ) query << "OR "; else started = true;
+            query << "P.sex=2 ";
+        }
+        if( sexfilter & recInd_FILTER_SexUnknown ) {
+            if( started ) query << "OR "; else started = true;
+            query << "P.sex=3 ";
+        }
+    }
+    query << "ORDER BY surname, given, epitaph, id;";
+
+    wxSQLite3ResultSet result = s_db->ExecuteQuery( query ); 
+
+    recIndividual ind;
+    recIndividualVec inds;
+    while( result.NextRow() ) {
+        ind.f_id      = GET_ID( result.GetInt64( 0 ) );
+        ind.f_surname = result.GetAsString( 1 );
+        ind.f_given   = result.GetAsString( 2 );
+        ind.f_epitaph = result.GetAsString( 3 );
+        ind.f_fam_id  = GET_ID( result.GetInt64( 4 ) );
+        ind.f_per_id  = GET_ID( result.GetInt64( 5 ) );
+        inds.push_back( ind );
+    }
+    return inds;
+}
+
 bool recIndividual::ReadPersona( idt perID )
 {
     wxSQLite3StatementBuffer sql;
@@ -433,7 +482,7 @@ wxSQLite3Table recIndividual::GetRefEventsTable( idt perID )
     );
     return s_db->GetTable( sql );
 }
-
+#if 0
 wxSQLite3Table recIndividual::GetRefAttributesTable( idt perID )
 {
     wxSQLite3StatementBuffer sql;
@@ -447,6 +496,7 @@ wxSQLite3Table recIndividual::GetRefAttributesTable( idt perID )
     );
     return s_db->GetTable( sql );
 }
+#endif
 
 wxSQLite3Table recIndividual::GetReferencesTable( idt perID )
 {

@@ -30,6 +30,7 @@
 #define RGDIALOGS_H
 
 #include <rec/recEvent.h>
+#include <rec/recIndividual.h>
 
 extern bool rgEditEventType( idt etID );
 extern idt rgCreateEventType();
@@ -43,6 +44,7 @@ enum rgSHOWROLE {
     rgSHOWROLE_PrimeFemale
 };
 extern bool rgEditIndEventRole( idt ieID, rgSHOWROLE filter = rgSHOWROLE_All );
+extern bool rgCreateIndEventRole( idt indID, idt eveID, idt roleID );
 extern bool rgEditPerEventRole( idt epID, rgSHOWROLE filter = rgSHOWROLE_All );
 
 enum {
@@ -54,5 +56,8 @@ enum {
 extern idt rgSelectEventType( 
     unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL,
     unsigned grpfilter = recET_FILTER_GrpAll );
+extern idt rgSelectIndividual( 
+    unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL,
+    unsigned sexfilter = recInd_FILTER_SexAll );
 
 #endif // RGDIALOGS_H

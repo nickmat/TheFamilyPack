@@ -86,6 +86,8 @@ bool dlgEditIndEvent::TransferDataToWindow()
     m_textCtrlAddr->SetValue( m_place.GetAddressStr() );
     m_textCtrlNote->SetValue( m_event.f_note );
 
+    ListLinkedIndividuals();
+#if 0
     m_ies = m_event.GetIndividualEvents();
     m_individuals.clear();
     recIndividual ind;
@@ -98,6 +100,7 @@ bool dlgEditIndEvent::TransferDataToWindow()
         m_listPersona->SetItem( i, COL_Role, recEventTypeRole::GetName( m_ies[i].f_role_id ) );
         m_listPersona->SetItem( i, COL_Note, m_ies[i].f_note );
     }
+#endif
 
     m_refEvents = recEvent::FindEquivRefEvents( m_event.f_id );
     for( size_t i = 0 ; i < m_refEvents.size() ; i++ ) {
@@ -127,6 +130,22 @@ bool dlgEditIndEvent::TransferDataToWindow()
     m_htmlPersona->SetPage( WrReferencePersonas() );
     m_htmlInd->SetPage( WrReferenceIndividuals() );
     return true;
+}
+
+void dlgEditIndEvent::ListLinkedIndividuals()
+{
+    m_ies = m_event.GetIndividualEvents();
+    m_individuals.clear();
+    recIndividual ind;
+    m_listPersona->DeleteAllItems();
+    for( size_t i = 0 ; i < m_ies.size() ; i++ ) {
+        ind.ReadID( m_ies[i].FGetIndID() );
+        m_individuals.push_back( ind );
+        m_listPersona->InsertItem( i, ind.GetIdStr() );
+        m_listPersona->SetItem( i, COL_Name, ind.GetFullName() );
+        m_listPersona->SetItem( i, COL_Role, recEventTypeRole::GetName( m_ies[i].f_role_id ) );
+        m_listPersona->SetItem( i, COL_Note, m_ies[i].f_note );
+    }
 }
 
 wxString dlgEditIndEvent::WrReferenceEvents()
@@ -412,31 +431,9 @@ void dlgEditIndEvent::OnPlaceButton( wxCommandEvent& event )
 
 void dlgEditIndEvent::OnAddButton( wxCommandEvent& event )
 {
-    wxMessageBox(
-        wxT("Not yet implimented"),
-        wxT("OnAddButton")
-    );
-#if 0
-// Copied from Name dialog for as example code
-    const wxString savepoint = "NameAddPart";
-    dlgEditNamePart* dialog = new dlgEditNamePart( NULL );
-    dialog->SetNameID( m_name.f_id );
-
-    recDb::Savepoint( savepoint );
-    if( dialog->ShowModal() == wxID_OK )
-    {
-        recDb::ReleaseSavepoint( savepoint );
-        recNamePart* np = dialog->GetNamePart();
-        int row = m_parts.size();
-        m_listParts->InsertItem( row, recNamePartType::GetTypeStr( np->f_type_id ) );
-        m_listParts->SetItem( row, COL_Value, np->f_val );
-        m_parts.push_back( *np );
-        UpdateName();
-   } else {
-        recDb::Rollback( savepoint );
+    if( rgCreateIndEventRole( 0, m_event.FGetID(), 0 ) ) {
+        ListLinkedIndividuals();
     }
-    dialog->Destroy();
-#endif
 }
 
 void dlgEditIndEvent::OnEditButton( wxCommandEvent& event )
@@ -448,20 +445,32 @@ void dlgEditIndEvent::OnEditButton( wxCommandEvent& event )
     }
     idt ieID = m_ies[row].FGetID();
     if( rgEditIndEventRole( ieID ) ) {
-        m_ies[row].Read();
-        m_listPersona->SetItem( 
-            row, COL_Role, recEventTypeRole::GetName( m_ies[row].FGetRoleID() ) );
-        m_listPersona->SetItem( row, COL_Note, m_ies[row].FGetNote() );
+        ListLinkedIndividuals();
     }
 }
 
 void dlgEditIndEvent::OnDeleteButton( wxCommandEvent& event )
 {
+    long row = m_listPersona->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row < 0 ) {
+        wxMessageBox( _("No row selected"), _("Delete Link") );
+        return;
+    }
+    idt ieID = m_ies[row].FGetID();
+    int ans = wxMessageBox( 
+        _("Remove Individual and Event link from database?"), _("Delete Link"),
+        wxYES_NO | wxCANCEL, this
+    );
+    if( ans != wxYES ) {
+        return;
+    }
+    recIndividualEvent::Delete( ieID );
+    ListLinkedIndividuals();
+#if 0
     wxMessageBox(
         wxT("Not yet implimented"),
         wxT("OnDeleteButton")
     );
-#if 0
 // Copied from Name dialog for as example code
     long row = m_listParts->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row >= 0 ) {
@@ -474,67 +483,6 @@ void dlgEditIndEvent::OnDeleteButton( wxCommandEvent& event )
     }
 #endif
 }
-
-void dlgEditIndEvent::OnUpButton( wxCommandEvent& event )
-{
-    wxMessageBox(
-        wxT("Not yet implimented"),
-        wxT("OnUpButton")
-    );
-#if 0
-// Copied from Name dialog for as example code
-    long row = m_listParts->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-    if( row < 0 ) {
-        wxMessageBox( wxT("Row not selected"), wxT("NamePart Up") );
-        return;
-    }
-    if( row > 0 ) {
-        recNamePart part = m_parts[row];
-        m_parts[row] = m_parts[row-1];
-        m_parts[row-1] = part;
-
-        m_listParts->SetItem( row, COL_Type, recNamePartType::GetTypeStr( m_parts[row].f_type_id ) );
-        m_listParts->SetItem( row, COL_Value, m_parts[row].f_val );
-        --row;
-        m_listParts->SetItem( row, COL_Type, recNamePartType::GetTypeStr( m_parts[row].f_type_id ) );
-        m_listParts->SetItem( row, COL_Value, m_parts[row].f_val );
-
-        m_listParts->SetItemState( row, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
-        UpdateName();
-    }
-#endif
-}
-
-void dlgEditIndEvent::OnDownButton( wxCommandEvent& event )
-{
-    wxMessageBox(
-        wxT("Not yet implimented"),
-        wxT("OnDownButton")
-    );
-#if 0
-// Copied from Name dialog for as example code
-    long row = m_listParts->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-    if( row < 0 ) {
-        wxMessageBox( wxT("Row not selected"), wxT("NamePart Down") );
-        return;
-    }
-    if( row < m_listParts->GetItemCount()-1 ) {
-        recNamePart part = m_parts[row];
-        m_parts[row] = m_parts[row+1];
-        m_parts[row+1] = part;
-
-        m_listParts->SetItem( row, COL_Type, recNamePartType::GetTypeStr( m_parts[row].f_type_id ) );
-        m_listParts->SetItem( row, COL_Value, m_parts[row].f_val );
-        row++;
-        m_listParts->SetItem( row, COL_Type, recNamePartType::GetTypeStr( m_parts[row].f_type_id ) );
-        m_listParts->SetItem( row, COL_Value, m_parts[row].f_val );
-
-        m_listParts->SetItemState( row, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
-        UpdateName();
-    }
-#endif
-}
-
 //-----------------------------------------------------
 //      dlgEditFamEvent
 //-----------------------------------------------------

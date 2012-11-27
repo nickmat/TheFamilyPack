@@ -91,4 +91,22 @@ public:
     ) : rgSelect( parent, sm_colHeaders, COL_MAX, style, title ) {}
 };
 
+//-------------------------------------------------------------------------------
+//-------------------[ rgDlgSelectIndividual ]-----------------------------------
+//-------------------------------------------------------------------------------
+
+class rgDlgSelectIndividual : public rgSelect
+{
+    enum {
+        COL_ID, COL_Name, COL_MAX
+    };
+    static wxString sm_colHeaders[COL_MAX];
+public:
+    rgDlgSelectIndividual( 
+        wxWindow* parent = NULL, 
+        unsigned style = rgSELSTYLE_None,
+        const wxString& title = _("Select Individual")
+    ) : rgSelect( parent, sm_colHeaders, COL_MAX, style, title ) {}
+};
+
 #endif // RGSELECT_H

@@ -58,6 +58,7 @@ public:
 
 private:
     bool TransferDataToWindow();
+    void ListLinkedIndividuals();
     wxString WrReferenceEvents();
     wxString WrReferenceDates();
     bool CreateDateImageFile();
@@ -75,8 +76,6 @@ private:
     void OnAddButton( wxCommandEvent& event );
     void OnEditButton( wxCommandEvent& event );
     void OnDeleteButton( wxCommandEvent& event );
-    void OnUpButton( wxCommandEvent& event );
-    void OnDownButton( wxCommandEvent& event );
 
     recEvent  m_event;
     recDate   m_date1;

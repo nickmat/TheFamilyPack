@@ -166,5 +166,10 @@ idt rgSelect::GetSelectedID()
 
 wxString rgDlgSelectEventType::sm_colHeaders[COL_MAX] = { _("Group"), _("Type") };
 
+//-------------------------------------------------------------------------------
+//-------------------[ rgDlgSelectIndividual ]-----------------------------------
+//-------------------------------------------------------------------------------
+
+wxString rgDlgSelectIndividual::sm_colHeaders[COL_MAX] = { _("ID"), _("Name") };
 
 // End of src/rg/rgSelect.cpp file

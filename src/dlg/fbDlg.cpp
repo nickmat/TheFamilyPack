@@ -1785,12 +1785,6 @@ fbDlgEditIndEvent::fbDlgEditIndEvent( wxWindow* parent, wxWindowID id, const wxS
 	m_buttonDel = new wxButton( m_panel12, wxID_ANY, _("Delete"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer121->Add( m_buttonDel, 0, wxALIGN_CENTER_HORIZONTAL|wxTOP|wxBOTTOM|wxLEFT, 5 );
 	
-	m_buttonUp = new wxButton( m_panel12, wxID_ANY, _("Up"), wxDefaultPosition, wxSize( 35,-1 ), 0 );
-	bSizer121->Add( m_buttonUp, 0, wxTOP|wxBOTTOM|wxLEFT, 5 );
-	
-	m_buttonDn = new wxButton( m_panel12, wxID_ANY, _("Down"), wxDefaultPosition, wxSize( 35,-1 ), 0 );
-	bSizer121->Add( m_buttonDn, 0, wxALL, 5 );
-	
 	
 	bSizer12->Add( bSizer121, 0, wxEXPAND, 5 );
 	
@@ -1911,8 +1905,6 @@ fbDlgEditIndEvent::fbDlgEditIndEvent( wxWindow* parent, wxWindowID id, const wxS
 	m_buttonAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditIndEvent::OnAddButton ), NULL, this );
 	m_buttonEdit->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditIndEvent::OnEditButton ), NULL, this );
 	m_buttonDel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditIndEvent::OnDeleteButton ), NULL, this );
-	m_buttonUp->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditIndEvent::OnUpButton ), NULL, this );
-	m_buttonDn->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditIndEvent::OnDownButton ), NULL, this );
 }
 
 fbDlgEditIndEvent::~fbDlgEditIndEvent()
@@ -1924,8 +1916,6 @@ fbDlgEditIndEvent::~fbDlgEditIndEvent()
 	m_buttonAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditIndEvent::OnAddButton ), NULL, this );
 	m_buttonEdit->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditIndEvent::OnEditButton ), NULL, this );
 	m_buttonDel->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditIndEvent::OnDeleteButton ), NULL, this );
-	m_buttonUp->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditIndEvent::OnUpButton ), NULL, this );
-	m_buttonDn->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditIndEvent::OnDownButton ), NULL, this );
 	
 }
 

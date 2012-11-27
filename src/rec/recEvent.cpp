@@ -286,8 +286,9 @@ recIndEventVec recEvent::GetIndividualEvents()
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "SELECT id, ind_id, role_id, note, ind_seq "
-        "FROM IndividualEvent WHERE event_id="ID";",
+        "SELECT id, ind_id, role_id, note, ind_seq"
+        " FROM IndividualEvent WHERE event_id="ID
+        " ORDER BY id;",
         f_id
     );
     wxSQLite3Table table = s_db->GetTable( sql );

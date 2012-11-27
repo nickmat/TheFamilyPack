@@ -557,8 +557,6 @@ class fbDlgEditIndEvent : public wxDialog
 		wxButton* m_buttonAdd;
 		wxButton* m_buttonEdit;
 		wxButton* m_buttonDel;
-		wxButton* m_buttonUp;
-		wxButton* m_buttonDn;
 		wxPanel* m_panel3;
 		wxNotebook* m_notebook6;
 		wxPanel* m_panelRef;
@@ -582,8 +580,6 @@ class fbDlgEditIndEvent : public wxDialog
 		virtual void OnAddButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnEditButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDeleteButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnUpButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnDownButton( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:

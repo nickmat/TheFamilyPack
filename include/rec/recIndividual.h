@@ -50,6 +50,16 @@ typedef std::vector< recIndRelationship >  recIndRelVec;
 //-------------------------[ recIndividual ]----------------------------------
 //============================================================================
 
+enum {
+    recInd_FILTER_SexAll        = 0,
+    recInd_FILTER_SexUnstated   = 0x0001,
+    recInd_FILTER_SexMale       = 0x0002,
+    recInd_FILTER_SexFemale     = 0x0004,
+    recInd_FILTER_SexUnknown    = 0x0008,
+    recInd_FILTER_SexMalePlus   = (recInd_FILTER_SexMale | recInd_FILTER_SexUnstated | recInd_FILTER_SexUnknown),
+    recInd_FILTER_SexFemalePlus = (recInd_FILTER_SexFemale | recInd_FILTER_SexUnstated | recInd_FILTER_SexUnknown)
+};
+
 class recIndividual : public recDb
 {
 public:
@@ -70,6 +80,8 @@ public:
 
     static wxString GetIdStr( idt indID ) { return wxString::Format( "I"ID, indID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
+
+    static recIndividualVec ReadVec( unsigned sexfilter = recInd_FILTER_SexAll );
 
     bool ReadPersona( idt perID );
 
@@ -123,8 +135,8 @@ public:
     wxSQLite3Table GetRefEventsTable() const { return GetRefEventsTable( f_per_id ); }
     static wxSQLite3Table GetRefEventsTable( idt perID );
 
-    wxSQLite3Table GetRefAttributesTable() const { return GetRefAttributesTable( f_per_id ); }
-    static wxSQLite3Table GetRefAttributesTable( idt perID );
+//    wxSQLite3Table GetRefAttributesTable() const { return GetRefAttributesTable( f_per_id ); }
+//    static wxSQLite3Table GetRefAttributesTable( idt perID );
 
     wxSQLite3Table GetReferencesTable() const { return GetReferencesTable( f_per_id ); }
     static wxSQLite3Table GetReferencesTable( idt perID );
