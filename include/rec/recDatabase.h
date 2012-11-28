@@ -113,7 +113,7 @@ public:
 
     /*! Closes the existing database file.
      */
-    static void CloseDb() { s_db->Close(); s_fname = wxEmptyString; }
+    static void CloseDb();
 
     /*! Returns true if the database is currently open.
     */

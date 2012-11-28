@@ -158,6 +158,13 @@ bool recDb::OpenDb( const wxString& fname )
     return success;
 }
 
+void recDb::CloseDb() 
+{ 
+    s_db->Close();
+    s_fname = wxEmptyString;
+    ++s_change;
+}
+
 void recDb::ErrorMessage( wxSQLite3Exception& e )
 {
     wxString err;
