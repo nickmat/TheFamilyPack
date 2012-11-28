@@ -197,6 +197,7 @@ RECGUI_OBJECTS =  \
 	recgui_recgui.obj \
 	recgui_fbRgDialog.obj \
 	recgui_rgDialogs.obj \
+	recgui_rgEdDate.obj \
 	recgui_rgEdEventType.obj \
 	recgui_rgEdPerIndEvent.obj \
 	recgui_rgEdRole.obj \
@@ -639,6 +640,9 @@ recgui_fbRgDialog.obj: .\..\..\src\rg\fbRgDialog.cpp
 
 recgui_rgDialogs.obj: .\..\..\src\rg\rgDialogs.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgDialogs.cpp
+
+recgui_rgEdDate.obj: .\..\..\src\rg\rgEdDate.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdDate.cpp
 
 recgui_rgEdEventType.obj: .\..\..\src\rg\rgEdEventType.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdEventType.cpp

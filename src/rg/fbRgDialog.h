@@ -19,16 +19,50 @@ class rgStrTableCtrl;
 #include <wx/font.h>
 #include <wx/colour.h>
 #include <wx/settings.h>
-#include <wx/sizer.h>
 #include <wx/choice.h>
-#include <wx/button.h>
 #include <wx/textctrl.h>
+#include <wx/sizer.h>
 #include <wx/statline.h>
+#include <wx/button.h>
 #include <wx/dialog.h>
 #include <wx/listctrl.h>
 #include <wx/checkbox.h>
 
 ///////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class fbRgEditDate
+///////////////////////////////////////////////////////////////////////////////
+class fbRgEditDate : public wxDialog 
+{
+	private:
+	
+	protected:
+		wxStaticText* m_staticText1;
+		wxStaticText* m_staticOutput;
+		wxStaticText* m_staticText2;
+		wxChoice* m_choiceDisplay;
+		wxStaticText* m_staticText3;
+		wxChoice* m_choiceType;
+		wxStaticText* m_staticText4;
+		wxTextCtrl* m_textCtrlDate;
+		wxStaticText* m_staticText5;
+		wxChoice* m_choiceInput;
+		wxStaticLine* m_staticline1;
+		wxStaticText* m_staticDateID;
+		wxButton* m_buttonSave;
+		wxButton* m_buttonCancel;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnIdle( wxIdleEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		fbRgEditDate( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Date"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE ); 
+		~fbRgEditDate();
+	
+};
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Class fbRgPerIndEvent

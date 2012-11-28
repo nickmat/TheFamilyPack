@@ -466,23 +466,8 @@ void dlgEditIndEvent::OnDeleteButton( wxCommandEvent& event )
     }
     recIndividualEvent::Delete( ieID );
     ListLinkedIndividuals();
-#if 0
-    wxMessageBox(
-        wxT("Not yet implimented"),
-        wxT("OnDeleteButton")
-    );
-// Copied from Name dialog for as example code
-    long row = m_listParts->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-    if( row >= 0 ) {
-        m_listParts->DeleteItem( row );
-        m_parts[row].Delete();
-        m_parts.erase( m_parts.begin() + row );
-        UpdateName();
-    } else {
-        wxMessageBox( wxT("No row selected"), wxT("Delete Name") );
-    }
-#endif
 }
+
 //-----------------------------------------------------
 //      dlgEditFamEvent
 //-----------------------------------------------------

@@ -32,6 +32,8 @@
 #include <rec/recEvent.h>
 #include <rec/recIndividual.h>
 
+extern bool rgEditDate( idt dateID );
+extern idt rgCreateDate( const wxString& dateStr = wxEmptyString );
 extern bool rgEditEventType( idt etID );
 extern idt rgCreateEventType();
 extern bool rgEditRole( idt roleID );

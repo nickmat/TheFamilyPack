@@ -104,6 +104,7 @@
     <sources>$(LOCAL_SRC)/rec/recgui.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/fbRgDialog.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgDialogs.cpp</sources>
+    <sources>$(LOCAL_SRC)/rg/rgEdDate.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdEventType.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdPerIndEvent.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdRole.cpp</sources>
@@ -113,6 +114,7 @@
     <headers>$(LOCAL_INC)/rg/rgDialogs.h</headers>
 
     <headers>$(LOCAL_SRC)/rg/fbRgDialog.h</headers>
+    <headers>$(LOCAL_SRC)/rg/rgEdDate.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdEventType.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdPerIndEvent.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdRole.h</headers>

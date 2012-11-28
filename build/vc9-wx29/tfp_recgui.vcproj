@@ -204,6 +204,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rg\rgEdDate.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rg\rgEdEventType.cpp"
 				>
 			</File>
@@ -235,6 +239,10 @@
 			</File>
 			<File
 				RelativePath="..\..\include\rg\rgDialogs.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgEdDate.h"
 				>
 			</File>
 			<File

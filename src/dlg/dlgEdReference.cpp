@@ -271,8 +271,7 @@ void dlgEditReference::OnNewSource( wxCommandEvent& event )
 
 void dlgEditReference::OnNewDate( wxCommandEvent& event )
 {
-    idt dateID;
-    DoNewDate( &dateID );
+    DoNewDate();
 }
 
 void dlgEditReference::OnNewDateAge( wxCommandEvent& event )
@@ -281,41 +280,28 @@ void dlgEditReference::OnNewDateAge( wxCommandEvent& event )
     DoNewDateAge( &dateID );
 }
 
-bool dlgEditReference::DoNewDate( idt* dateID )
+idt dlgEditReference::DoNewDate()
 {
-    const wxString savepoint = "RefDate";
-    *dateID = 0;
-    dlgEditDate* dialog = new dlgEditDate( NULL );
-
-    dialog->SetText( m_textCtrlStatement->GetStringSelection() );
-
-    bool ret;
-    recDb::Savepoint( savepoint );
-    if( dialog->ShowModal() == wxID_OK )
-    {
-        recDb::ReleaseSavepoint( savepoint );
-        *dateID = dialog->GetDate()->f_id;
-        int row = m_entities.size();
-        TfpEntity entity;
-        entity.rec.Clear();
-        entity.owner = 0;
-        entity.rec.f_ref_id = m_reference.f_id;
-        entity.rec.f_entity_type = recReferenceEntity::TYPE_Date;
-        entity.rec.f_entity_id = *dateID;
-        entity.rec.Save();
-        m_entities.push_back( entity );
-
-        m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
-        m_listEntities->SetItem( row, ENT_COL_Number, dialog->GetDate()->GetIdStr() );
-        m_listEntities->SetItem( row, ENT_COL_Value, dialog->GetDate()->GetStr() );
-        ret = true;
-    } else {
-        // Dialog Cancelled
-        recDb::Rollback( savepoint );
-        ret = false;
+    idt dateID = rgCreateDate( m_textCtrlStatement->GetStringSelection() );
+    if( dateID == 0 ) {
+        return false;
     }
-    dialog->Destroy();
-    return ret;
+
+    int row = m_entities.size();
+    TfpEntity entity;
+    entity.rec.Clear();
+    entity.owner = 0;
+    entity.rec.f_ref_id = m_reference.f_id;
+    entity.rec.f_entity_type = recReferenceEntity::TYPE_Date;
+    entity.rec.f_entity_id = dateID;
+    entity.rec.Save();
+    m_entities.push_back( entity );
+
+    m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
+    m_listEntities->SetItem( row, ENT_COL_Number, recDate::GetIdStr( dateID ) );
+    m_listEntities->SetItem( row, ENT_COL_Value, recDate::GetStr( dateID ) );
+
+    return true;
 }
 
 bool dlgEditReference::DoNewDateAge( idt* dateID )
@@ -719,21 +705,12 @@ void dlgEditReference::OnEditButton( wxCommandEvent& event )
     }
 }
 
-void dlgEditReference::DoEditDate( idt id, long row )
+void dlgEditReference::DoEditDate( idt dateID, long row )
 {
-    const wxString savepoint = "RefEdDate";
-    dlgEditDate* dialog = new dlgEditDate( NULL, id );
-
-    recDb::Savepoint( savepoint );
-    if( dialog->ShowModal() == wxID_OK )
-    {
-        recDb::ReleaseSavepoint( savepoint );
-        m_listEntities->SetItem( row, ENT_COL_Number, dialog->GetDate()->GetIdStr() );
-        m_listEntities->SetItem( row, ENT_COL_Value, dialog->GetDate()->GetStr() );
-    } else {
-        recDb::Rollback( savepoint );
+    if( rgEditDate( dateID ) ) {
+        m_listEntities->SetItem( row, ENT_COL_Number, recDate::GetIdStr( dateID ) );
+        m_listEntities->SetItem( row, ENT_COL_Value, recDate::GetStr( dateID ) );
     }
-    dialog->Destroy();
 }
 
 void dlgEditReference::DoEditPlace( idt id, long row )

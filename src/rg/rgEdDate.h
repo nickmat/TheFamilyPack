@@ -1,13 +1,13 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        dlgEdDate.h
+ * Name:        src/rg/rgEdDate.h
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Edit database Date entity dialog header.
  * Author:      Nick Matthews
  * Modified by:
  * Website:     http://thefamilypack.org
- * Created:     9 October 2010
+ * Created:     28th November 2012
  * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2012, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -32,9 +32,38 @@
 
 #include <rec/recDate.h>
 
-#include "fbDlg.h"
+#include "rg/rgDialogs.h"
 
+#include "fbRgDialog.h"
 
+namespace rgDate
+{
+    extern CalendarScheme scheme[];
+    extern int sch_list[CALENDAR_SCH_Max];
+}
+
+//============================================================================
+//-------------------------[ rgDlgEditDate ]----------------------------------
+//============================================================================
+
+class rgDlgEditDate : public fbRgEditDate
+{
+//    static CalendarScheme scheme[];
+//    static int sch_list[CALENDAR_SCH_Max];
+
+public:
+    rgDlgEditDate( wxWindow* parent, idt dateID );
+
+private:
+    bool TransferDataToWindow();
+    bool TransferDataFromWindow();
+    void OnIdle( wxIdleEvent& event );
+
+    recDate   m_date;
+    wxString  m_output;
+};
+
+#if 0
 /*! dlgEditDateFromAge
  *  This dialog creates a new date from an old one plus an age value.
  *  It cannot be used to edit an existing date.
@@ -42,8 +71,6 @@
 class dlgEditDateFromAge : public fbDlgEditDateFromAge
 {
 public:
-    static CalendarScheme scheme[];
-    static int sch_list[CALENDAR_SCH_Max];
     static CalendarUnit unit[];
 
     dlgEditDateFromAge( wxWindow* parent, idt baseID, idt dateID = 0 );
@@ -65,5 +92,5 @@ private:
     wxString  m_basestr;
     wxString  m_output;
 };
-
+#endif
 #endif // DLGEDDATE_H

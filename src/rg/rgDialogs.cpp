@@ -39,12 +39,52 @@
 #include <rec/recEvent.h>
 #include <rec/recIndividual.h>
 
+#include "rgEdDate.h"
 #include "rgEdEventType.h"
 #include "rgEdRole.h"
 #include "rgEdPerIndEvent.h"
 
 #include "rgSelect.h"
 
+
+bool rgEditDate( idt dateID )
+{
+    wxASSERT( dateID != 0 );
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+    bool ret = false;
+
+    rgDlgEditDate* dialog = new rgDlgEditDate( NULL, dateID );
+
+    if( dialog->ShowModal() == wxID_OK ) {
+        recDb::ReleaseSavepoint( savepoint );
+        ret = true;
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+    return ret;
+}
+
+idt rgCreateDate( const wxString& dateStr )
+{
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+
+    recDate date(0);
+    date.SetDefaults();
+    if( dateStr.size() ) {
+        date.SetDate( dateStr );
+    }
+    date.Save();
+    idt dateID = date.FGetID();
+    if( rgEditDate( dateID ) ) {
+        recDb::ReleaseSavepoint( savepoint );
+        return dateID;
+    }
+    recDb::Rollback( savepoint );
+    return 0;
+}
 
 bool rgEditEventType( idt etID )
 {

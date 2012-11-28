@@ -229,7 +229,8 @@ void dlgSelectDateEx::OnCreateButton( wxCommandEvent& event )
 void dlgSelectDateEx::OnCreateDateBase( wxCommandEvent& event )
 {
     wxASSERT( m_dlgEdRef );
-    if( m_dlgEdRef->DoNewDate( &m_dateID ) ) {
+    m_dateID = m_dlgEdRef->DoNewDate();
+    if( m_dateID != 0 ) {
         SetCreatePressed();
         EndDialog( wxID_OK );
     }
