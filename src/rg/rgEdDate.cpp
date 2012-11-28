@@ -87,6 +87,7 @@ bool rgDlgEditDate::TransferDataToWindow()
 
     m_output = m_date.GetJdnStr();
     m_textCtrlDate->SetValue( m_output );
+    m_staticOutput->SetLabel( m_output );
     return true;
 }
 

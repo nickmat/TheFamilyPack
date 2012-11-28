@@ -151,6 +151,9 @@ public:
 
     unsigned GetCompareFlags( const recDate& date ) const;
 
+    bool IsRelative() const { return ( f_rel_id != 0 ); }
+    static bool IsRelative( idt dateID ) { recDate date(dateID); return date.IsRelative(); }
+
     static void DeleteIfOrphaned( idt dateID );
 };
 
