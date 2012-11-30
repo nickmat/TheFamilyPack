@@ -40,6 +40,12 @@ class recRelativeDate;
 
 #define recDate_MAX_RECURSION_COUNT  10
 
+enum {
+    recD_FILTER_None      = 0x0000,
+    recD_FILTER_Reference = 0x0001,
+};
+
+
 //-----------------------------------------------------
 //      recDate
 //-----------------------------------------------------
@@ -121,6 +127,22 @@ public:
      *  static bool Exists( idt id );
      */
     TABLE_NAME_MEMBERS( "Date" );
+
+    long FGetJdn() const { return f_jdn; }
+    long FGetRange() const { return f_range; }
+    idt FGetRelID() const { return f_rel_id; }
+    unsigned FGetType() const { return f_type; }
+    wxString FGetDescrip() const { return f_descrip; }
+    CalendarScheme FGetRecordSch() const { return f_record_sch; }
+    CalendarScheme FGetDisplaySch() const { return f_display_sch; }
+
+    void FSetJdn( long jdn ) { f_jdn = jdn; }
+    void FSetRange( long range ) { f_range = range; }
+    void FSetRelID( idt relID ) { f_rel_id = relID; }
+    void FSetType( unsigned type ) { f_type = type; }
+    void FSetDescrip( const wxString& descrip ) { f_descrip = descrip; }
+    void FSetRecordSch( CalendarScheme sch ) { f_record_sch = sch; }
+    void FSetDisplaySch( CalendarScheme sch ) { f_display_sch = sch; }
 
     static wxString GetIdStr( idt indID ) { return wxString::Format( "D"ID, indID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
@@ -211,6 +233,22 @@ public:
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "RelativeDate" );
+
+    long FGetVal() const { return f_val; }
+    long FGetValue() const { return f_val; }
+    long FGetRange() const { return f_range; }
+    CalendarUnit FGetUnit() const { return f_unit; }
+    idt FGetBaseID() const { return f_base_id; }
+    Type FGetType() const { return f_type; }
+    CalendarScheme FGetScheme() const { return f_scheme; }
+
+    void FSetVal( long val ) { f_val = val; }
+    void FSetValue( long val ) { f_val = val; }
+    void FSetRange( long range ) { f_range = range; }
+    void FSetUnit( CalendarUnit unit ) { f_unit = unit; }
+    void FSetBaseID( idt baseID ) { f_base_id = baseID; }
+    void FSetType( Type type ) { f_type = type; }
+    void FSetScheme( CalendarScheme sch ) { f_scheme = sch; } 
 
     void SetDefaults();
 

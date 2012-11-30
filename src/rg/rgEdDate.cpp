@@ -1,7 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Name:        src/rg/rgEdDate.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Edit database Date entity dialog.
+ * Purpose:     Edit database Date dialogs.
  * Author:      Nick Matthews
  * Modified by:
  * Website:     http://thefamilypack.org
@@ -39,10 +39,6 @@
 
 #include "rgEdDate.h"
 
-//============================================================================
-//-------------------------[ rgDlgEditDate ]----------------------------------
-//============================================================================
-
 
 CalendarScheme rgDate::scheme[] = {
     CALENDAR_SCH_Unstated,
@@ -65,10 +61,40 @@ int rgDate::sch_list[CALENDAR_SCH_Max] = {
     0,   // CALENDAR_SCH_English
     0,   // CALENDAR_SCH_Scottish
     0,   // CALENDAR_SCH_Swedish
-    0,   // CALENDAR_SCH_FrenchRevolution
+    0    // CALENDAR_SCH_FrenchRevolution
+};
+
+CalendarUnit rgDate::unit[] = {
+    CALENDAR_UNIT_Year,
+    CALENDAR_UNIT_Month,
+    CALENDAR_UNIT_Week,
+    CALENDAR_UNIT_Day
+};
+
+int rgDate::unit_list[CALENDAR_UNIT_Max] = {
+    0,  // CALENDAR_UNIT_Unstated
+    0,  // CALENDAR_UNIT_Year
+    1,  // CALENDAR_UNIT_Month
+    2,  // CALENDAR_UNIT_Week
+    3   // CALENDAR_UNIT_Day
+};
+
+recRelativeDate::Type rgDate::calc[] = {
+    recRelativeDate::TYPE_AgeRoundDown,
+    recRelativeDate::TYPE_Duration
+};
+
+int rgDate::calc_list[recRelativeDate::TYPE_Max] = {
+    0,  // TYPE_Unstated
+    0,  // TYPE_AgeRoundDown
+    1   // TYPE_Duration
 };
 
 using namespace rgDate;
+
+//============================================================================
+//-------------------------[ rgDlgEditDate ]----------------------------------
+//============================================================================
 
 rgDlgEditDate::rgDlgEditDate( wxWindow* parent, idt dateID )
     : m_date(dateID), fbRgEditDate( parent )
@@ -122,61 +148,37 @@ void rgDlgEditDate::OnIdle( wxIdleEvent& event )
     }
 }
 
-//===========================================================================
-//       dlgEditDateFromAge
-//===========================================================================
-#if 0
-CalendarUnit dlgEditDateFromAge::unit[] = {
-    CALENDAR_UNIT_Year,
-    CALENDAR_UNIT_Month,
-    CALENDAR_UNIT_Week,
-    CALENDAR_UNIT_Day
-};
+//============================================================================
+//-------------------------[ rgDlgEditDateFromAge ]---------------------------
+//============================================================================
 
-dlgEditDateFromAge::dlgEditDateFromAge( wxWindow* parent, idt baseID, idt dateID )
-    : fbDlgEditDateFromAge( parent )
+
+rgDlgEditRelativeDate::rgDlgEditRelativeDate( wxWindow* parent, idt dateID )
+    : m_date(dateID),  fbRgEditRelativeDate( parent )
 {
-    m_base.f_id = baseID;
-    m_base.Read();
-    m_basestr = m_base.GetStr();
-    m_date.f_id = dateID;
-    m_date.Read();
+    m_relative.ReadID( m_date.FGetRelID() );
+    m_base.ReadID( m_relative.FGetBaseID() );
 }
 
-bool dlgEditDateFromAge::TransferDataToWindow()
+bool rgDlgEditRelativeDate::TransferDataToWindow()
 {
-    m_textCtrlBaseDate->SetValue( m_basestr );
+    wxASSERT( m_date.FGetID() != 0 );
+    wxASSERT( m_relative.FGetID() != 0 );
+    wxASSERT( m_base.FGetID() != 0 );
 
-    if( m_date.f_id == 0 ) {
-        m_relative.Clear();
-        m_relative.f_range = 1;
-        m_relative.f_base_id = m_base.f_id;
-        m_relative.f_type = recRelativeDate::TYPE_AgeRoundDown;
-        m_relative.f_scheme = m_base.f_record_sch;
-        m_relative.Save();
-        m_date.Clear();
-        m_date.f_rel_id = m_relative.f_id;
-        m_date.Save();
-        // TODO: This needs to be set up using a particular convention
-        m_date.f_type = recDate::PREF_On;
-        m_date.f_record_sch = m_base.f_record_sch;
-        m_date.f_display_sch = m_base.f_display_sch;
-
-    } else {
-        m_date.Read();
-        m_relative.Read();
-        m_text = m_date.GetJdnStr();
-    }
-    m_textCtrlAge->SetValue( m_text );
-
-    m_staticTextId->SetLabel( m_date.GetIdStr() );
-    m_choiceType->SetSelection( m_date.f_type );
-    m_choiceDisplay->SetSelection( dlgEditDate::sch_list[m_date.f_display_sch] );
-
+    m_staticOutput->SetLabel( m_date.GetStr() );
+    m_choiceDisplay->SetSelection( sch_list[m_date.FGetDisplaySch()] );
+    m_choiceType->SetSelection( m_date.FGetType() );
+    m_textCtrlBase->SetValue( m_base.GetStr() );
+    wxString age = wxString::Format( "%ld", m_relative.FGetValue() );
+    m_textCtrlAge->SetValue( age );
+    m_choiceInput->SetSelection( sch_list[m_relative.FGetScheme()] );
+    m_radioUnits->SetSelection( unit_list[m_relative.FGetUnit()] );
+    m_staticDateID->SetLabel( m_date.GetIdStr() );
     return true;
 }
 
-bool dlgEditDateFromAge::TransferDataFromWindow()
+bool rgDlgEditRelativeDate::TransferDataFromWindow()
 {
     CalcDate();
     m_date.Save();
@@ -184,24 +186,27 @@ bool dlgEditDateFromAge::TransferDataFromWindow()
     return true;
 }
 
-void dlgEditDateFromAge::SetStaticDate( wxIdleEvent& event )
+void rgDlgEditRelativeDate::OnIdle( wxIdleEvent& event )
 {
     CalcDate();
     wxString str = m_date.GetStr();
     if( str != m_output ) {
-        m_staticTextOutput->SetLabel( str );
+        m_staticOutput->SetLabel( str );
         m_output = str;
     }
 }
 
-void dlgEditDateFromAge::CalcDate()
+void rgDlgEditRelativeDate::CalcDate()
 {
-    m_date.f_type = m_choiceType->GetSelection();
-    m_date.f_record_sch = dlgEditDate::scheme[ m_choiceDisplay->GetSelection() ];
+    m_date.FSetDisplaySch( scheme[m_choiceDisplay->GetSelection()] );
+    m_relative.FSetType( calc[m_choiceType->GetSelection()] );
     wxString agestr = m_textCtrlAge->GetValue();
     agestr.ToLong( &m_relative.f_val );
-    m_relative.f_unit = unit[ m_radioBoxUnits->GetSelection() ];
+    m_relative.FSetScheme( scheme[m_choiceInput->GetSelection()] );
+    m_date.FSetRecordSch( m_relative.FGetScheme() );
+    m_relative.FSetUnit( unit[m_radioUnits->GetSelection()] );
+
     m_relative.CalculateDate( m_date );
 }
-#endif
-// End of dlgEdDate.cpp file
+
+// End of src/rg/rgEdDate.cpp file

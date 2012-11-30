@@ -138,57 +138,6 @@ public:
 };
 
 //-------------------------------------------------------------------------------
-//-------------------[ dlgSelectDate ]-------------------------------------------
-//-------------------------------------------------------------------------------
-
-class dlgSelectDate : public dlgSelect
-{
-    enum {
-        COL_ID, COL_Date, COL_MAX
-    };
-    static wxString sm_colHeaders[COL_MAX];
-
-public:
-    dlgSelectDate( 
-        wxWindow* parent = NULL, 
-        const wxString& title = _("Select Date"),
-        unsigned style = SELSTYLE_None
-    ) : dlgSelect( parent, sm_colHeaders, COL_MAX, title, style ) {}
-    
-};
-
-//-------------------------------------------------------------------------------
-//-------------------[ dlgSelectDateEx ]-----------------------------------------
-//-------------------------------------------------------------------------------
-
-class dlgSelectDateEx : public dlgSelectDate
-{
-    DECLARE_EVENT_TABLE()
-
-public:
-    dlgSelectDateEx( 
-        wxWindow* parent, 
-        dlgEditReference* dlgEdRef,
-        const wxString& title, 
-        unsigned style
-    ) : m_dlgEdRef( dlgEdRef ), dlgSelectDate( parent, title, style ) {}
-   
-    idt GetDateID() const { return m_dateID; }
-protected:
-    enum {
-        ID_SELCREATDATE_Base = 1210,
-        ID_SELCREATDATE_Age
-    };
-    void OnCreateButton( wxCommandEvent& event );
-    void OnCreateDateBase( wxCommandEvent& event );
-    void OnCreateDateAge( wxCommandEvent& event );
-
-private:
-    idt               m_dateID;
-    dlgEditReference* m_dlgEdRef;
-};
-
-//-------------------------------------------------------------------------------
 //-------------------[ dlgSelectPlace ]------------------------------------------
 //-------------------------------------------------------------------------------
 
@@ -244,24 +193,5 @@ public:
     dlgSelectName( wxWindow* parent )
         : dlgSelect( parent, sm_colHeaders, COL_MAX ) {}
 };
-
-//-------------------------------------------------------------------------------
-//-------------------[ dlgSelectEventType ]--------------------------------------
-//-------------------------------------------------------------------------------
-
-class dlgSelectEventType : public dlgSelect
-{
-    enum {
-        COL_Group, COL_Type, COL_MAX
-    };
-    static wxString sm_colHeaders[COL_MAX];
-public:
-    dlgSelectEventType( 
-        wxWindow* parent = NULL, 
-        const wxString& title = _("Select Event Type"),
-        unsigned style = SELSTYLE_CreateButton
-    ) : dlgSelect( parent, sm_colHeaders, COL_MAX, title, style ) {}
-};
-
 
 #endif // DLGSELECT_H

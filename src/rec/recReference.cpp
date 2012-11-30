@@ -189,6 +189,24 @@ int recReference::GetPersonaCount( idt refID )
     return s_db->ExecuteScalar( sql );
 }
 
+recIdVec recReference::GetDateIdVec( idt refID )
+{
+    recIdVec vec;
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3ResultSet result;
+
+    sql.Format(
+        "SELECT entity_id FROM ReferenceEntity"
+        " WHERE entity_type=4 AND ref_id="ID";",
+        refID
+    );
+    result = s_db->ExecuteQuery( sql );
+
+    while( result.NextRow() ) {
+        vec.push_back( GET_ID( result.GetInt64( 0 ) ) );
+    }
+    return vec;
+}
 
 //----------------------------------------------------------
 

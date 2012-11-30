@@ -47,7 +47,6 @@
 #include "dlgEdEvent.h"
 #include "dlgEdPersona.h"
 #include "dlgEdPlace.h"
-#include "dlgEdDate.h"
 #include "dlgEdName.h"
 #include "dlgEdRelationship.h"
 #include "dlgSelect.h"
@@ -263,28 +262,14 @@ void dlgEditReference::OnAddButton( wxCommandEvent& event )
 
 void dlgEditReference::OnNewSource( wxCommandEvent& event )
 {
-    wxMessageBox(
-        wxT("Not yet implimented"),
-        wxT("OnNewSource")
-    );
+    wxMessageBox( "Not yet implimented", "OnNewSource" );
 }
 
 void dlgEditReference::OnNewDate( wxCommandEvent& event )
 {
-    DoNewDate();
-}
-
-void dlgEditReference::OnNewDateAge( wxCommandEvent& event )
-{
-    idt dateID;
-    DoNewDateAge( &dateID );
-}
-
-idt dlgEditReference::DoNewDate()
-{
     idt dateID = rgCreateDate( m_textCtrlStatement->GetStringSelection() );
     if( dateID == 0 ) {
-        return false;
+        return;// 0;
     }
 
     int row = m_entities.size();
@@ -300,52 +285,40 @@ idt dlgEditReference::DoNewDate()
     m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
     m_listEntities->SetItem( row, ENT_COL_Number, recDate::GetIdStr( dateID ) );
     m_listEntities->SetItem( row, ENT_COL_Value, recDate::GetStr( dateID ) );
-
-    return true;
 }
 
-bool dlgEditReference::DoNewDateAge( idt* dateID )
+void dlgEditReference::OnNewDateAge( wxCommandEvent& event )
 {
-    const wxString savepoint = "RefDateAge";
-    recDb::Savepoint( savepoint );
+    wxString valStr = m_textCtrlStatement->GetStringSelection();
+    long val;
+    if( !valStr.ToLong( &val ) ) {
+        val = 0;
+    }
+
     idt baseID;
     unsigned style = dlgSelect::SELSTYLE_CreateButton;
     if( SelectDate( &baseID, _("Select Base Date"), style ) == false ) {
-        recDb::Rollback( savepoint );
-        return false;
+        return;
     }
 
-    *dateID = 0;
-    dlgEditDateFromAge* dialog = new dlgEditDateFromAge( NULL, baseID );
-
-    dialog->SetText( m_textCtrlStatement->GetStringSelection() );
-
-    bool ret;
-    if( dialog->ShowModal() == wxID_OK )
-    {
-        recDb::ReleaseSavepoint( savepoint );
-        *dateID = dialog->GetDate()->f_id;
-        int row = m_entities.size();
-        TfpEntity entity;
-        entity.rec.Clear();
-        entity.owner = 0;
-        entity.rec.f_ref_id = m_reference.f_id;
-        entity.rec.f_entity_type = recReferenceEntity::TYPE_Date;
-        entity.rec.f_entity_id = *dateID;
-        entity.rec.Save();
-        m_entities.push_back( entity );
-
-        m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
-        m_listEntities->SetItem( row, ENT_COL_Number, dialog->GetDate()->GetIdStr() );
-        m_listEntities->SetItem( row, ENT_COL_Value, dialog->GetDate()->GetStr() );
-        ret = true;
-    } else {
-        // Dialog Cancelled
-        recDb::Rollback( savepoint );
-        ret = false;
+    idt dateID = rgCreateRelativeDate( baseID, val );
+    if( dateID == 0 ) {
+        return;
     }
-    dialog->Destroy();
-    return ret;
+
+    int row = m_entities.size();
+    TfpEntity entity;
+    entity.rec.Clear();
+    entity.owner = 0;
+    entity.rec.f_ref_id = m_reference.f_id;
+    entity.rec.f_entity_type = recReferenceEntity::TYPE_Date;
+    entity.rec.f_entity_id = dateID;
+    entity.rec.Save();
+    m_entities.push_back( entity );
+
+    m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
+    m_listEntities->SetItem( row, ENT_COL_Number, recDate::GetIdStr( dateID ) );
+    m_listEntities->SetItem( row, ENT_COL_Value, recDate::GetStr( dateID ) );
 }
 
 void dlgEditReference::OnNewPlace( wxCommandEvent& event )
@@ -987,6 +960,33 @@ bool dlgEditReference::SelectDate(
     idt* dateID, const wxString& title, unsigned style )
 {
     wxASSERT( dateID );  // Can't handle NULL pointer
+
+    unsigned retButton;
+    *dateID = rgSelectDate( style, &retButton, recD_FILTER_Reference, m_reference.FGetID() );
+    if( retButton == rgSELSTYLE_Create ) {
+        int row = m_entities.size();
+        TfpEntity entity;
+        entity.owner = 0;
+        entity.index = -1;
+        entity.rec.Clear();
+        entity.rec.f_ref_id = m_reference.f_id;
+        entity.rec.f_entity_type = recReferenceEntity::TYPE_Date;
+        entity.rec.f_entity_id = *dateID;
+        entity.rec.Save();
+        m_entities.push_back( entity );
+
+        m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
+        m_listEntities->SetItem( row, ENT_COL_Number, recDate::GetIdStr( *dateID ) );
+        m_listEntities->SetItem( row, ENT_COL_Value, recDate::GetStr( *dateID ) );
+    }
+    if( *dateID == 0 ) {
+        if( retButton == rgSELSTYLE_Unknown ) {
+            return true;
+        }
+        return false;
+    }
+    return true;
+#if 0
     recIdVec list;
     wxArrayString table;
     for( size_t i = 0 ; i < m_entities.size() ; i++ ) {
@@ -1019,6 +1019,7 @@ bool dlgEditReference::SelectDate(
 
     dialog->Destroy();
     return ret;
+#endif
 }
 
 bool dlgEditReference::SelectPlace( 

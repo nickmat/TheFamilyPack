@@ -74,6 +74,24 @@ private:
 
 
 //-------------------------------------------------------------------------------
+//-------------------[ rgDlgSelectDate ]-----------------------------------------
+//-------------------------------------------------------------------------------
+
+class rgDlgSelectDate : public rgSelect
+{
+    enum {
+        COL_ID, COL_Date, COL_MAX
+    };
+    static wxString sm_colHeaders[COL_MAX];
+public:
+    rgDlgSelectDate( 
+        wxWindow* parent = NULL, 
+        unsigned style = rgSELSTYLE_None,
+        const wxString& title = _("Select Date")
+    ) : rgSelect( parent, sm_colHeaders, COL_MAX, style, title ) {}
+};
+
+//-------------------------------------------------------------------------------
 //-------------------[ dlgSelectEventType ]--------------------------------------
 //-------------------------------------------------------------------------------
 

@@ -43,7 +43,6 @@
 
 #include "dlgEdEvent.h"
 #include "dlgEdRole.h"
-#include "dlgEdDate.h"
 
 //============================================================================
 //-------------------------[ dlgEditEvent ]-----------------------------------
@@ -179,6 +178,8 @@ void dlgEditEvent::OnDateSelect( wxCommandEvent& event )
 
 void dlgEditEvent::OnAgeSelect( wxCommandEvent& event )
 {
+    wxMessageBox( "Rewrite needed", "OnAgeSelect" );
+#if 0
     const wxString savepoint = "EvtDateAge";
     size_t i = event.GetId() - ID_AGE_MENU_START;
     wxTextCtrl* textCtrlDate =
@@ -207,6 +208,7 @@ void dlgEditEvent::OnAgeSelect( wxCommandEvent& event )
         recDb::Rollback( savepoint );
     }
     dialog->Destroy();
+#endif
 }
 
 void dlgEditEvent::OnPlaceButton( wxCommandEvent& event )

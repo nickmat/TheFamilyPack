@@ -267,10 +267,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\dlg\dlgEdDate.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\dlg\dlgEdEvent.cpp"
 				>
 			</File>
@@ -434,10 +430,6 @@
 			</File>
 			<File
 				RelativePath="..\..\src\dlg\dlgEdContact.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\dlg\dlgEdDate.h"
 				>
 			</File>
 			<File

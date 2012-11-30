@@ -120,8 +120,6 @@ public:
 
     void SetID( idt id ) { m_reference.f_id = id; }
 
-    idt  DoNewDate();
-    bool  DoNewDateAge( idt* dateID );
     bool  DoNewPlace( idt* placeID );
 private:
     void UpdateHtml();

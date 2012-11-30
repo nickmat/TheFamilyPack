@@ -50,6 +50,9 @@
 bool rgEditDate( idt dateID )
 {
     wxASSERT( dateID != 0 );
+    if( recDate::IsRelative( dateID ) ) {
+        return rgEditRelativeDate( dateID );
+    }
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
     bool ret = false;
@@ -79,6 +82,51 @@ idt rgCreateDate( const wxString& dateStr )
     date.Save();
     idt dateID = date.FGetID();
     if( rgEditDate( dateID ) ) {
+        recDb::ReleaseSavepoint( savepoint );
+        return dateID;
+    }
+    recDb::Rollback( savepoint );
+    return 0;
+}
+
+bool rgEditRelativeDate( idt dateID )
+{
+    wxASSERT( dateID != 0 );
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+    bool ret = false;
+
+    rgDlgEditRelativeDate* dialog = new rgDlgEditRelativeDate( NULL, dateID );
+
+    if( dialog->ShowModal() == wxID_OK ) {
+        recDb::ReleaseSavepoint( savepoint );
+        ret = true;
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+    return ret;
+}
+
+idt rgCreateRelativeDate( idt baseID, long value )
+{
+    wxASSERT( baseID != 0 );
+
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+
+    recRelativeDate rel(0);
+    rel.SetDefaults();
+    rel.FSetValue( value );
+    rel.FSetBaseID( baseID );
+    rel.Save();
+
+    recDate date(0);
+    date.SetDefaults();
+    date.FSetRelID( rel.FGetID() );
+    date.Save();
+    idt dateID = date.FGetID();
+    if( rgEditRelativeDate( dateID ) ) {
         recDb::ReleaseSavepoint( savepoint );
         return dateID;
     }
@@ -227,6 +275,61 @@ bool rgEditPerEventRole( idt epID, rgSHOWROLE filter )
     return ret;
 }
 
+idt rgSelectDate( unsigned flag, unsigned* retbutton, unsigned filter, idt id )
+{
+    idt dateID = 0;
+    if( retbutton ) *retbutton = rgSELSTYLE_None;
+    bool cont = true;
+    rgDlgSelectIndividual* dialog = new rgDlgSelectIndividual( NULL, flag );
+
+    while( cont ) {
+        recIdVec dateIDs;
+        switch( filter )
+        {
+        case recD_FILTER_Reference:
+            dateIDs = recReference::GetDateIdVec( id );
+            break;
+        default:
+            wxASSERT( false ); // Shouldn't be here
+            return 0;
+        }
+        wxArrayString table;
+        for( size_t i = 0 ; i < dateIDs.size() ; i++ ) {
+            table.push_back( recDate::GetIdStr( dateIDs[i] ) );        
+            table.push_back( recDate::GetStr( dateIDs[i] ) );        
+        }
+        dialog->SetTable( table );
+        if( dialog->ShowModal() == wxID_OK ) {
+            if( dialog->GetCreatePressed() ) {
+                dateID = rgCreateDate();
+                if( dateID ) {
+                    if( retbutton ) *retbutton = rgSELSTYLE_Create;
+                    cont = false;
+                } else {
+                    dialog->SetCreatePressed( false );
+                }
+                continue;
+            }
+            if( dialog->GetFilterPressed() ) {
+                // Create new Event Type
+                wxMessageBox( "Not yet implimented", "rgSelectIndividual" );
+                dialog->SetFilterPressed( false );
+                continue;
+            }
+            if( dialog->GetUnknownPressed() ) {
+                wxASSERT( false ); // We shouldn't be here, Unknown has no meaning.
+                if( retbutton ) *retbutton = rgSELSTYLE_Unknown;
+                continue;
+            }
+            size_t item = (size_t) dialog->GetSelectedRow();
+            dateID = dateIDs[item];
+        }
+        cont = false;
+    }
+    dialog->Destroy();
+    return dateID;
+}
+
 idt rgSelectEventType( unsigned flag, unsigned* retbutton, unsigned grpfilter )
 {
     idt id = 0;
@@ -300,7 +403,7 @@ idt rgSelectIndividual( unsigned flag, unsigned* retbutton, unsigned sexfilter )
             }
             if( dialog->GetFilterPressed() ) {
                 // Create new Event Type
-                wxMessageBox( "Not yet implimented", "rgSelectEventType" );
+                wxMessageBox( "Not yet implimented", "rgSelectIndividual" );
                 dialog->SetFilterPressed( false );
                 continue;
             }

@@ -63,6 +63,9 @@ public:
     static recIdVec GetPersonaList( idt refID );
     recIdVec GetPersonaList() const { return GetPersonaList( f_id ); }
     static int GetPersonaCount( idt refID );
+
+    static recIdVec GetDateIdVec( idt refID );
+    recIdVec GetDateIdVec() const { return GetDateIdVec( f_id ); }
 };
 
 inline bool recEquivalent( const recReference& r1, const recReference& r2 )

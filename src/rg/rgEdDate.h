@@ -1,7 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Name:        src/rg/rgEdDate.h
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Edit database Date entity dialog header.
+ * Purpose:     Edit database Date dialogs header.
  * Author:      Nick Matthews
  * Modified by:
  * Website:     http://thefamilypack.org
@@ -27,8 +27,8 @@
 
 */
 
-#ifndef DLGEDDATE_H
-#define DLGEDDATE_H
+#ifndef RGEDDATE_H
+#define RGEDDATE_H
 
 #include <rec/recDate.h>
 
@@ -40,6 +40,10 @@ namespace rgDate
 {
     extern CalendarScheme scheme[];
     extern int sch_list[CALENDAR_SCH_Max];
+    extern CalendarUnit unit[];
+    extern int unit_list[CALENDAR_UNIT_Max];
+    extern recRelativeDate::Type calc[];
+    extern int calc_list[recRelativeDate::TYPE_Max];
 }
 
 //============================================================================
@@ -48,9 +52,6 @@ namespace rgDate
 
 class rgDlgEditDate : public fbRgEditDate
 {
-//    static CalendarScheme scheme[];
-//    static int sch_list[CALENDAR_SCH_Max];
-
 public:
     rgDlgEditDate( wxWindow* parent, idt dateID );
 
@@ -63,34 +64,25 @@ private:
     wxString  m_output;
 };
 
-#if 0
-/*! dlgEditDateFromAge
- *  This dialog creates a new date from an old one plus an age value.
- *  It cannot be used to edit an existing date.
- */
-class dlgEditDateFromAge : public fbDlgEditDateFromAge
+//============================================================================
+//-------------------------[ rgDlgEditRelativeDate ]--------------------------
+//============================================================================
+
+class rgDlgEditRelativeDate : public fbRgEditRelativeDate
 {
 public:
-    static CalendarUnit unit[];
-
-    dlgEditDateFromAge( wxWindow* parent, idt baseID, idt dateID = 0 );
-
-    void SetText( const wxString& text ) { m_text = text; }
-
-    recDate* GetDate() { return &m_date; }
+    rgDlgEditRelativeDate( wxWindow* parent, idt dateID );
 
 private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
-    void SetStaticDate( wxIdleEvent& event );
+    void OnIdle( wxIdleEvent& event );
     void CalcDate();
 
+    recDate         m_date;
     recRelativeDate m_relative;
-    recDate   m_base;
-    recDate   m_date;
-    wxString  m_text;
-    wxString  m_basestr;
+    recDate         m_base;
     wxString  m_output;
 };
-#endif
-#endif // DLGEDDATE_H
+
+#endif // RGEDDATE_H

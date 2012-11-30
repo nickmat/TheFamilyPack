@@ -202,48 +202,6 @@ void dlgSelectCreatePersona::OnCreatePersona( wxCommandEvent& event )
 
 wxString dlgSelectIndividual::sm_colHeaders[COL_MAX] = { _("ID"), _("Name") };
 
-//-------------------------------------------------------------------------------
-//-------------------[ dlgSelectDate ]-------------------------------------------
-//-------------------------------------------------------------------------------
-
-wxString dlgSelectDate::sm_colHeaders[COL_MAX] = { _("ID"), _("Date") };
-
-//-------------------------------------------------------------------------------
-//-------------------[ dlgSelectDateEx ]-----------------------------------------
-//-------------------------------------------------------------------------------
-
-BEGIN_EVENT_TABLE( dlgSelectDateEx, wxDialog )
-    EVT_MENU( ID_SELCREATDATE_Base, dlgSelectDateEx::OnCreateDateBase )
-    EVT_MENU( ID_SELCREATDATE_Age, dlgSelectDateEx::OnCreateDateAge )
-END_EVENT_TABLE()
-
-void dlgSelectDateEx::OnCreateButton( wxCommandEvent& event )
-{
-    wxMenu* menu = new wxMenu;
-    menu->Append( ID_SELCREATDATE_Base, _("Create &New Date") );
-    menu->Append( ID_SELCREATDATE_Age, _("Create Date from &Age") );
-    PopupMenu( menu );
-    delete menu;
-}
-
-void dlgSelectDateEx::OnCreateDateBase( wxCommandEvent& event )
-{
-    wxASSERT( m_dlgEdRef );
-    m_dateID = m_dlgEdRef->DoNewDate();
-    if( m_dateID != 0 ) {
-        SetCreatePressed();
-        EndDialog( wxID_OK );
-    }
-}
-
-void dlgSelectDateEx::OnCreateDateAge( wxCommandEvent& event )
-{
-    wxASSERT( m_dlgEdRef );
-    if( m_dlgEdRef->DoNewDateAge( &m_dateID ) ) {
-        SetCreatePressed();
-        EndDialog( wxID_OK );
-    }
-}
 
 //-------------------------------------------------------------------------------
 //-------------------[ dlgSelectPlace ]------------------------------------------
@@ -269,12 +227,6 @@ void dlgSelectPlaceEx::OnCreateButton( wxCommandEvent& event )
 //-------------------------------------------------------------------------------
 
 wxString dlgSelectName::sm_colHeaders[COL_MAX] = { _("ID"), _("Name") };
-
-//-------------------------------------------------------------------------------
-//-------------------[ dlgSelectEventType ]--------------------------------------
-//-------------------------------------------------------------------------------
-
-wxString dlgSelectEventType::sm_colHeaders[COL_MAX] = { _("Group"), _("Type") };
 
 
 // End of dlgSelIndividual.cpp file
