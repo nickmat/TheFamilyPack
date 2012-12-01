@@ -75,6 +75,7 @@ public:
 
 private:
     bool TransferDataToWindow();
+    void SetUnitRadio();
     bool TransferDataFromWindow();
     void OnIdle( wxIdleEvent& event );
     void CalcDate();
@@ -82,7 +83,11 @@ private:
     recDate         m_date;
     recRelativeDate m_relative;
     recDate         m_base;
-    wxString  m_output;
+
+    wxString        m_output;
+    CalendarScheme  m_scheme;
+    int             m_unitday;
+    int             m_unitdmy;
 };
 
 #endif // RGEDDATE_H

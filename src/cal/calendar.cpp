@@ -84,6 +84,23 @@ const wxString CalendarUnitName[] = {
     _("Day")
 };
 
+const CalendarStructure CalendarStructs[CALENDAR_SCH_Max] = {
+    CALENDAR_STRUCT_Unstated,  // CALENDAR_SCH_Unstated
+    CALENDAR_STRUCT_Unstated,  // CALENDAR_SCH_Unknown
+    CALENDAR_STRUCT_Unstated,  // CALENDAR_SCH_Unlisted
+    CALENDAR_STRUCT_Day,       // CALENDAR_SCH_JulianDayNumber
+    CALENDAR_STRUCT_Time,      // CALENDAR_SCH_JulianDay
+    CALENDAR_STRUCT_Day,       // CALENDAR_SCH_ModJulianDay
+    CALENDAR_STRUCT_Day,       // CALENDAR_SCH_RataDie
+    CALENDAR_STRUCT_Triple,    // CALENDAR_SCH_Julian
+    CALENDAR_STRUCT_Triple,    // CALENDAR_SCH_Gregorian
+    CALENDAR_STRUCT_Triple,    // CALENDAR_SCH_Catholic
+    CALENDAR_STRUCT_Triple,    // CALENDAR_SCH_English
+    CALENDAR_STRUCT_Triple,    // CALENDAR_SCH_Scottish
+    CALENDAR_STRUCT_Triple,    // CALENDAR_SCH_Swedish
+    CALENDAR_STRUCT_Triple     // CALENDAR_SCH_FrenchRevolution
+};
+
 // Helper function.
 // Integer function to return floor( a / b )
 long FDiv( long a, long b )

@@ -69,8 +69,6 @@ enum CalendarScheme {
 
     /*! Julian Day Number: JDN. The calendar system used internally by TFP.
      *
-     *  JDN = JD + 0.5
-     *
      *  The Julian Day starting at midday. JDN 0 represents the day starting at
      *  midday Monday 24 Nov -4713 (Gregorian). Although the calendar library can correctly
      *  handle JDN 0 and negative JD Numbers, TFP has a special meaning for jdn 0.
@@ -80,6 +78,7 @@ enum CalendarScheme {
 
     /*! Julian Day: JD
      *
+     *  JD = JDN - 0.5
      *  The system used by astronomers to mark time since midday Monday 1st January 4713 B.C.E. (Julian Calendar).
      *
      *  The fractional part of the day is used to denote the time of day, so the day
@@ -178,6 +177,8 @@ enum CalendarScheme {
      */
     CALENDAR_SCH_Max
 };
+
+
 /*! Array of scheme names
  */
 extern const wxString CalendarSchemeName[];
@@ -280,5 +281,15 @@ extern const wxString CalendarUnitName[];
  */
 extern bool calAddToJdn(
     long& jdn, long value, CalendarUnit unit, CalendarScheme scheme );
+
+enum CalendarStructure {
+    CALENDAR_STRUCT_Unstated,  // Value held as a string
+    CALENDAR_STRUCT_Time,      // Value hels as a double
+    CALENDAR_STRUCT_Day,       // Value held as a long
+    CALENDAR_STRUCT_Triple,    // Value held as a DMYDate 
+    CALENDAR_STRUCT_Max
+};
+
+extern const CalendarStructure CalendarStructs[CALENDAR_SCH_Max];
 
 #endif // CALENDAR_H

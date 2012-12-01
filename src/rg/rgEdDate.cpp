@@ -173,9 +173,29 @@ bool rgDlgEditRelativeDate::TransferDataToWindow()
     wxString age = wxString::Format( "%ld", m_relative.FGetValue() );
     m_textCtrlAge->SetValue( age );
     m_choiceInput->SetSelection( sch_list[m_relative.FGetScheme()] );
+    m_unitday = m_unitdmy = unit_list[m_relative.FGetUnit()];
+    if( m_unitday <= 1 ) {
+        m_unitday = 2;
+    }
+    SetUnitRadio();
     m_radioUnits->SetSelection( unit_list[m_relative.FGetUnit()] );
     m_staticDateID->SetLabel( m_date.GetIdStr() );
     return true;
+}
+
+void rgDlgEditRelativeDate::SetUnitRadio()
+{
+    if( CalendarStructs[m_relative.FGetScheme()] == CALENDAR_STRUCT_Day ) {
+        m_radioUnits->Enable( 0, false );
+        m_radioUnits->Enable( 1, false );
+        m_radioUnits->SetSelection( m_unitday );
+    } else if( CalendarStructs[m_relative.FGetScheme()] == CALENDAR_STRUCT_Triple ) {
+        m_radioUnits->Enable( 0, true );
+        m_radioUnits->Enable( 1, true );
+        m_radioUnits->SetSelection( m_unitdmy );
+    } else {
+        wxASSERT( false );
+    }
 }
 
 bool rgDlgEditRelativeDate::TransferDataFromWindow()
@@ -193,6 +213,17 @@ void rgDlgEditRelativeDate::OnIdle( wxIdleEvent& event )
     if( str != m_output ) {
         m_staticOutput->SetLabel( str );
         m_output = str;
+    }
+    CalendarScheme sch = m_relative.FGetScheme();
+    if( sch != m_scheme ) {
+        SetUnitRadio();
+        m_scheme = sch;
+    } else {
+        if( CalendarStructs[sch] == CALENDAR_STRUCT_Day ) {
+            m_unitday = m_radioUnits->GetSelection();
+        } else {
+            m_unitdmy = m_radioUnits->GetSelection();
+        }
     }
 }
 
