@@ -680,10 +680,6 @@ void dlgEditReference::OnEditButton( wxCommandEvent& event )
 
 void dlgEditReference::DoEditDate( idt dateID, long row )
 {
-    if( recDate::IsRelative( dateID ) ) {
-        wxMessageBox( "Relative Dates not done yet", "DoEditDate" );
-        return;
-    }
     if( rgEditDate( dateID ) ) {
         m_listEntities->SetItem( row, ENT_COL_Number, recDate::GetIdStr( dateID ) );
         m_listEntities->SetItem( row, ENT_COL_Value, recDate::GetStr( dateID ) );

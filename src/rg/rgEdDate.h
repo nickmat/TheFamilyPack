@@ -78,6 +78,7 @@ private:
     void SetUnitRadio();
     bool TransferDataFromWindow();
     void OnIdle( wxIdleEvent& event );
+    void OnBaseButton( wxCommandEvent& event );
     void CalcDate();
 
     recDate         m_date;

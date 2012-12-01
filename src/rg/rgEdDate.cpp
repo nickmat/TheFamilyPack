@@ -103,6 +103,7 @@ rgDlgEditDate::rgDlgEditDate( wxWindow* parent, idt dateID )
 
 bool rgDlgEditDate::TransferDataToWindow()
 {
+    wxASSERT( CALENDAR_SCH_Max == 14 ); // Don't forget to update when adding schemes
     wxASSERT( m_date.FGetID() != 0  );
     wxASSERT( m_date.f_rel_id == 0 );
 
@@ -224,6 +225,14 @@ void rgDlgEditRelativeDate::OnIdle( wxIdleEvent& event )
         } else {
             m_unitdmy = m_radioUnits->GetSelection();
         }
+    }
+}
+
+void rgDlgEditRelativeDate::OnBaseButton( wxCommandEvent& event )
+{
+    if( rgEditDate( m_base.FGetID() ) ) {
+        m_base.Read();
+        m_textCtrlBase->SetValue( m_base.GetStr() );
     }
 }
 
