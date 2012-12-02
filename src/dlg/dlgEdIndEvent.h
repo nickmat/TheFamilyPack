@@ -79,6 +79,7 @@ private:
 
     recEvent  m_event;
     recDate   m_date1;
+    recDate   m_date2;
     recPlace  m_place;
 
     recIndEventVec     m_ies;

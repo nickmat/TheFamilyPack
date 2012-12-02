@@ -129,6 +129,9 @@ public:
     void FSetGrp( ETYPE_Grp grp ) { f_grp = grp; }
     void FSetName( wxString name ) { f_name = name; }
 
+    bool HasDateSpan() const;
+    static bool HasDateSpan( idt etID );
+
     static wxString GetGroupStr( ETYPE_Grp grp );
     wxString GetGroupStr() const { return GetGroupStr( f_grp ); }
     static wxArrayString GetGroupStrings();

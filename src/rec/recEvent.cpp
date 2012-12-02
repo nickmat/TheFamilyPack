@@ -545,6 +545,24 @@ bool recEventType::Read()
     return true;
 }
 
+bool recEventType::HasDateSpan() const
+{
+    switch( f_grp )
+    {
+    case ETYPE_Grp_Other:
+    case ETYPE_Grp_Personal:
+        return true;
+    default:
+        return false;
+    }
+}
+
+bool recEventType::HasDateSpan( idt etID )
+{
+    recEventType et(etID);
+    return et.HasDateSpan();
+}
+
 wxString recEventType::GetGroupStr( ETYPE_Grp grp )
 {
     wxASSERT( grp >= 0 && grp < ETYPE_Grp_MAX );

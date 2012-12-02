@@ -1596,14 +1596,14 @@ fbDlgEditIndEvent::fbDlgEditIndEvent( wxWindow* parent, wxWindowID id, const wxS
 	m_buttonDate2 = new wxButton( m_panel11, wxID_ANY, _("End Date:"), wxDefaultPosition, wxSize( -1,-1 ), wxBU_RIGHT );
 	fgSizer111->Add( m_buttonDate2, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_textCtrlDate2 = new wxTextCtrl( m_panel11, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 200,-1 ), wxTE_READONLY );
+	m_textCtrlDate2 = new wxTextCtrl( m_panel11, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( -1,-1 ), 0 );
 	m_textCtrlDate2->SetMaxLength( 0 ); 
 	fgSizer111->Add( m_textCtrlDate2, 1, wxALIGN_CENTER_VERTICAL|wxALL|wxEXPAND, 5 );
 	
 	m_buttonPlace = new wxButton( m_panel11, wxID_ANY, _("Place:"), wxDefaultPosition, wxSize( -1,-1 ), wxBU_RIGHT );
 	fgSizer111->Add( m_buttonPlace, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_textCtrlAddr = new wxTextCtrl( m_panel11, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 200,-1 ), 0 );
+	m_textCtrlAddr = new wxTextCtrl( m_panel11, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( -1,-1 ), 0 );
 	m_textCtrlAddr->SetMaxLength( 0 ); 
 	fgSizer111->Add( m_textCtrlAddr, 1, wxALL|wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
 	

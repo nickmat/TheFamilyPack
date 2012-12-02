@@ -108,7 +108,10 @@ bool rgDlgEditDate::TransferDataToWindow()
     wxASSERT( m_date.f_rel_id == 0 );
 
     m_staticDateID->SetLabel( m_date.GetIdStr() );
-    m_choiceType->SetSelection( m_date.f_type );
+    if( m_date.FGetType() < 1 || m_date.FGetType() >= recDate::PREF_Max ) {
+        m_date.FSetType( recDate::PREF_On );
+    }
+    m_choiceType->SetSelection( m_date.f_type - 1 );
     m_choiceInput->SetSelection( sch_list[m_date.f_record_sch] );
     m_choiceDisplay->SetSelection( sch_list[m_date.f_display_sch] );
 
@@ -120,7 +123,7 @@ bool rgDlgEditDate::TransferDataToWindow()
 
 bool rgDlgEditDate::TransferDataFromWindow()
 {
-    m_date.f_type = m_choiceType->GetSelection();
+    m_date.f_type = m_choiceType->GetSelection() + 1;
     m_date.f_record_sch = scheme[ m_choiceInput->GetSelection() ];
     m_date.f_display_sch = scheme[ m_choiceDisplay->GetSelection() ];
     m_date.SetDate( m_textCtrlDate->GetValue() );
