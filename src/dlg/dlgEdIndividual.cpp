@@ -379,12 +379,18 @@ void dlgEditIndPersona::OnEventEditButton( wxCommandEvent& event )
     const wxString savepoint = "IndEdEvent";
     recDb::Savepoint( savepoint );
 
+    idt eveID = m_ies[row].FGetEventID();
     dlgEditIndEvent* dialog = 
-        new dlgEditIndEvent( NULL, m_ies[row].FGetEventID() );
+        new dlgEditIndEvent( NULL, eveID );
 
     if( dialog->ShowModal() == wxID_OK )
     {
         recDb::ReleaseSavepoint( savepoint );
+        m_listEvent->SetItem( row, EC_Number, recEvent::GetIdStr( eveID ) );
+        m_listEvent->SetItem( row, EC_Role, recEventTypeRole::GetName( m_ies[row].FGetRoleID() ) );
+        m_listEvent->SetItem( row, EC_Title, recEvent::GetTitle( eveID ) );
+        m_listEvent->SetItem( row, EC_Date, recEvent::GetDateStr( eveID ) );
+        m_listEvent->SetItem( row, EC_Place, recEvent::GetAddressStr( eveID ) );
     } else {
         recDb::Rollback( savepoint );
     }

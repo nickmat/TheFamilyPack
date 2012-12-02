@@ -416,6 +416,7 @@ void dlgEditIndEvent::OnDate1Button( wxCommandEvent& event )
         rgEditDate( m_date1.FGetID() );
         m_date1.Read();
     }
+    m_textCtrlDate1->SetValue( m_date1.GetStr() );
 }
 
 void dlgEditIndEvent::OnDate2Button( wxCommandEvent& event )
@@ -426,6 +427,7 @@ void dlgEditIndEvent::OnDate2Button( wxCommandEvent& event )
         rgEditDate( m_date2.FGetID() );
         m_date2.Read();
     }
+    m_textCtrlDate2->SetValue( m_date2.GetStr() );
 }
 
 void dlgEditIndEvent::OnPlaceButton( wxCommandEvent& event )
@@ -436,6 +438,7 @@ void dlgEditIndEvent::OnPlaceButton( wxCommandEvent& event )
         rgEditPlace( m_place.FGetID() );
         m_place.Read();
     }
+    m_textCtrlAddr->SetValue( m_place.GetAddressStr() );
 }
 
 void dlgEditIndEvent::OnAddButton( wxCommandEvent& event )

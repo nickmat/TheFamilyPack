@@ -126,7 +126,7 @@ bool rgDlgEditDate::TransferDataFromWindow()
     m_date.f_type = m_choiceType->GetSelection() + 1;
     m_date.f_record_sch = scheme[ m_choiceInput->GetSelection() ];
     m_date.f_display_sch = scheme[ m_choiceDisplay->GetSelection() ];
-    m_date.SetDate( m_textCtrlDate->GetValue() );
+    m_date.SetJdnDate( m_textCtrlDate->GetValue() );
 
     m_date.Save();
     return true;
@@ -138,7 +138,7 @@ void rgDlgEditDate::OnIdle( wxIdleEvent& event )
     date.f_type = m_choiceType->GetSelection();
     date.f_record_sch = scheme[ m_choiceInput->GetSelection() ];
     date.f_display_sch = scheme[ m_choiceDisplay->GetSelection() ];
-    date.SetDate( m_textCtrlDate->GetValue() );
+    date.SetJdnDate( m_textCtrlDate->GetValue() );
 
     wxString str;
     if( date.f_descrip.IsEmpty() ) {

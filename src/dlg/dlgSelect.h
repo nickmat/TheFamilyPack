@@ -138,48 +138,6 @@ public:
 };
 
 //-------------------------------------------------------------------------------
-//-------------------[ dlgSelectPlace ]------------------------------------------
-//-------------------------------------------------------------------------------
-
-class dlgSelectPlace : public dlgSelect
-{
-    enum {
-        COL_ID, COL_Place, COL_MAX
-    };
-    static wxString sm_colHeaders[COL_MAX];
-public:
-    dlgSelectPlace( 
-        wxWindow* parent = NULL, 
-        const wxString& title = _("Select Place"),
-        unsigned style = SELSTYLE_None
-    ) : dlgSelect( parent, sm_colHeaders, COL_MAX, title, style ) {}
-};
-
-//-------------------------------------------------------------------------------
-//-------------------[ dlgSelectPlaceEx ]----------------------------------------
-//-------------------------------------------------------------------------------
-#if 0
-class dlgSelectPlaceEx : public dlgSelectPlace
-{
-public:
-    dlgSelectPlaceEx( 
-        wxWindow* parent, 
-        dlgEditReference* dlgEdRef,
-        const wxString& title, 
-        unsigned style
-    ) : m_dlgEdRef( dlgEdRef ), dlgSelectPlace( parent, title, style ) {}
-   
-    idt GetPlaceID() const { return m_placeID; }
-
-protected:
-    void OnCreateButton( wxCommandEvent& event );
-
-private:
-    idt               m_placeID;
-    dlgEditReference* m_dlgEdRef;
-};
-#endif
-//-------------------------------------------------------------------------------
 //-------------------[ dlgSelectName ]-------------------------------------------
 //-------------------------------------------------------------------------------
 
