@@ -189,7 +189,7 @@ int recReference::GetPersonaCount( idt refID )
     return s_db->ExecuteScalar( sql );
 }
 
-recIdVec recReference::GetDateIdVec( idt refID )
+recIdVec recReference::GetIdVecForEntity( idt refID, recReferenceEntity::Type type )
 {
     recIdVec vec;
     wxSQLite3StatementBuffer sql;
@@ -197,8 +197,8 @@ recIdVec recReference::GetDateIdVec( idt refID )
 
     sql.Format(
         "SELECT entity_id FROM ReferenceEntity"
-        " WHERE entity_type=4 AND ref_id="ID";",
-        refID
+        " WHERE entity_type=%d AND ref_id="ID";",
+        (int) type, refID
     );
     result = s_db->ExecuteQuery( sql );
 

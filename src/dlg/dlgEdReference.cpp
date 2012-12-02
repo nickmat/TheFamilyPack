@@ -46,7 +46,6 @@
 #include "dlgEdReference.h"
 #include "dlgEdEvent.h"
 #include "dlgEdPersona.h"
-#include "dlgEdPlace.h"
 #include "dlgEdName.h"
 #include "dlgEdRelationship.h"
 #include "dlgSelect.h"
@@ -269,7 +268,7 @@ void dlgEditReference::OnNewDate( wxCommandEvent& event )
 {
     idt dateID = rgCreateDate( m_textCtrlStatement->GetStringSelection() );
     if( dateID == 0 ) {
-        return;// 0;
+        return;
     }
 
     int row = m_entities.size();
@@ -323,45 +322,24 @@ void dlgEditReference::OnNewDateAge( wxCommandEvent& event )
 
 void dlgEditReference::OnNewPlace( wxCommandEvent& event )
 {
-    idt placeID;
-    DoNewPlace( &placeID );
-}
-
-bool dlgEditReference::DoNewPlace( idt* placeID )
-{
-    const wxString savepoint = "RefPlace";
-    *placeID = 0;
-    dlgEditPlace* dialog = new dlgEditPlace( NULL );
-
-    dialog->SetText( m_textCtrlStatement->GetStringSelection() );
-
-    bool ret;
-    recDb::Savepoint( savepoint );
-    if( dialog->ShowModal() == wxID_OK )
-    {
-        recDb::ReleaseSavepoint( savepoint );
-        *placeID = dialog->GetPlace()->f_id;
-        int row = m_entities.size();
-        TfpEntity entity;
-        entity.rec.Clear();
-        entity.owner = 0;
-        entity.rec.f_ref_id = m_reference.f_id;
-        entity.rec.f_entity_type = recReferenceEntity::TYPE_Place;
-        entity.rec.f_entity_id = dialog->GetPlace()->f_id;
-        entity.rec.Save();
-        m_entities.push_back( entity );
-
-        m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
-        m_listEntities->SetItem( row, ENT_COL_Number, dialog->GetPlace()->GetIdStr() );
-        m_listEntities->SetItem( row, ENT_COL_Value, dialog->GetPlace()->GetAddressStr() );
-        ret = true;
-    } else {
-        // Dialog Cancelled
-        recDb::Rollback( savepoint );
-        ret = false;
+    idt placeID = rgCreatePlace( m_textCtrlStatement->GetStringSelection() );
+    if( placeID == 0 ) {
+        return;
     }
-    dialog->Destroy();
-    return ret;
+
+    int row = m_entities.size();
+    TfpEntity entity;
+    entity.rec.Clear();
+    entity.owner = 0;
+    entity.rec.f_ref_id = m_reference.f_id;
+    entity.rec.f_entity_type = recReferenceEntity::TYPE_Place;
+    entity.rec.f_entity_id = placeID;
+    entity.rec.Save();
+    m_entities.push_back( entity );
+
+    m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
+    m_listEntities->SetItem( row, ENT_COL_Number, recPlace::GetIdStr( placeID ) );
+    m_listEntities->SetItem( row, ENT_COL_Value, recPlace::GetAddressStr( placeID ) );
 }
 
 void dlgEditReference::OnNewRelationship( wxCommandEvent& event )
@@ -686,21 +664,12 @@ void dlgEditReference::DoEditDate( idt dateID, long row )
     }
 }
 
-void dlgEditReference::DoEditPlace( idt id, long row )
+void dlgEditReference::DoEditPlace( idt placeID, long row )
 {
-    const wxString savepoint = "RefEdPlace";
-    dlgEditPlace* dialog = new dlgEditPlace( NULL, id );
-
-    recDb::Savepoint( savepoint );
-    if( dialog->ShowModal() == wxID_OK )
-    {
-        recDb::ReleaseSavepoint( savepoint );
-        m_listEntities->SetItem( row, ENT_COL_Number, dialog->GetPlace()->GetIdStr() );
-        m_listEntities->SetItem( row, ENT_COL_Value, dialog->GetPlace()->GetAddressStr() );
-    } else {
-        recDb::Rollback( savepoint );
+    if( rgEditPlace( placeID ) ) {
+        m_listEntities->SetItem( row, ENT_COL_Number, recPlace::GetIdStr( placeID ) );
+        m_listEntities->SetItem( row, ENT_COL_Value, recPlace::GetAddressStr( placeID ) );
     }
-    dialog->Destroy();
 }
 
 void dlgEditReference::DoEditRelationship( idt id, long row )
@@ -982,78 +951,38 @@ bool dlgEditReference::SelectDate(
         return false;
     }
     return true;
-#if 0
-    recIdVec list;
-    wxArrayString table;
-    for( size_t i = 0 ; i < m_entities.size() ; i++ ) {
-        if( m_entities[i].rec.f_entity_type == recReferenceEntity::TYPE_Date ) {
-            idt id = m_entities[i].rec.f_entity_id;
-            list.push_back( id );
-            table.Add( wxString::Format( "Da"ID, id ) );
-            table.Add( recDate::GetStr( id ) );
-        }
-    }
-
-    dlgSelectDateEx* dialog = new dlgSelectDateEx( NULL, this, title, style );
-    dialog->SetTable( table );
-
-    bool ret;
-    if( dialog->ShowModal() == wxID_OK ) {
-        if( dialog->GetUnknownPressed() ) {
-            *dateID = 0;
-        } else if( dialog->GetCreatePressed() ) {
-            *dateID = dialog->GetDateID();
-        } else {
-            long row = dialog->GetSelectedRow();
-            *dateID = list[row];
-        }
-        ret = true;
-    } else {
-        *dateID = 0;
-        ret = false;
-    }
-
-    dialog->Destroy();
-    return ret;
-#endif
 }
 
 bool dlgEditReference::SelectPlace( 
     idt* placeID, const wxString& title, unsigned style )
 {
     wxASSERT( placeID );  // Can't handle NULL pointer
-    recIdVec list;
-    wxArrayString table;
-    for( size_t i = 0 ; i < m_entities.size() ; i++ ) {
-        if( m_entities[i].rec.f_entity_type == recReferenceEntity::TYPE_Place ) {
-            idt id = m_entities[i].rec.f_entity_id;
-            list.push_back( id );
-            table.Add( wxString::Format( "P"ID, id ) );
-            table.Add( recPlace::GetAddressStr( id ) );
-        }
+
+    unsigned retButton;
+    *placeID = rgSelectPlace( style, &retButton, recP_FILTER_Reference, m_reference.FGetID() );
+    if( retButton == rgSELSTYLE_Create ) {
+        int row = m_entities.size();
+        TfpEntity entity;
+        entity.owner = 0;
+        entity.index = -1;
+        entity.rec.Clear();
+        entity.rec.f_ref_id = m_reference.f_id;
+        entity.rec.f_entity_type = recReferenceEntity::TYPE_Place;
+        entity.rec.f_entity_id = *placeID;
+        entity.rec.Save();
+        m_entities.push_back( entity );
+
+        m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
+        m_listEntities->SetItem( row, ENT_COL_Number, recPlace::GetIdStr( *placeID ) );
+        m_listEntities->SetItem( row, ENT_COL_Value, recPlace::GetAddressStr( *placeID ) );
     }
-
-    dlgSelectPlaceEx* dialog = new dlgSelectPlaceEx( NULL, this, title, style );
-    dialog->SetTable( table );
-
-    bool ret;
-    if( dialog->ShowModal() == wxID_OK ) {
-        if( dialog->GetUnknownPressed() ) {
-            *placeID = 0;
-        } else if( dialog->GetCreatePressed() ) {
-            *placeID = dialog->GetPlaceID();
-        } else {
-            long row = dialog->GetSelectedRow();
-            *placeID = list[row];
+    if( *placeID == 0 ) {
+        if( retButton == rgSELSTYLE_Unknown ) {
+            return true;
         }
-        ret = true;
-    } else {
-        *placeID = 0;
-        ret = false;
+        return false;
     }
-
-    dialog->Destroy();
-    return ret;
+    return true;
 }
 
 idt dlgEditReference::SelectName()

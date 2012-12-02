@@ -37,55 +37,10 @@
 class recReferenceEntity;
 typedef std::vector< recReferenceEntity >  recRefEntVec;
 
-class recReference : public recDb
-{
-public:
-    wxString f_title;
-    wxString f_statement;
+//-----------------------------------------------------
+//      recReferenceEntity
+//-----------------------------------------------------
 
-    recReference() {}
-    recReference( idt id ) : recDb(id) { Read(); }
-    recReference( const recReference& ref );
-
-    void Clear();
-    void Save();
-    bool Read();
-    TABLE_NAME_MEMBERS( "Reference" );
-
-    static wxString GetIdStr( idt refID ) { return wxString::Format( "R"ID, refID ); }
-    wxString GetIdStr() const { return GetIdStr( f_id ); }
-
-    static wxString GetTitle( idt refID );
-
-    recRefEntVec ReadReferenceEntitys();
-    static wxSQLite3ResultSet GetTitleList();
-
-    static recIdVec GetPersonaList( idt refID );
-    recIdVec GetPersonaList() const { return GetPersonaList( f_id ); }
-    static int GetPersonaCount( idt refID );
-
-    static recIdVec GetDateIdVec( idt refID );
-    recIdVec GetDateIdVec() const { return GetDateIdVec( f_id ); }
-};
-
-inline bool recEquivalent( const recReference& r1, const recReference& r2 )
-{
-    return
-        r1.f_title  == r2.f_title  &&
-        r1.f_statement == r2.f_statement;
-}
-
-inline bool operator==( const recReference& r1, const recReference& r2 )
-{
-    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
-}
-
-inline bool operator!=( const recReference& r1, const recReference& r2 )
-{
-    return !(r1 == r2);
-}
-
-//----------------------------------------------------------
 
 class recReferenceEntity : public recDb
 {
@@ -140,6 +95,66 @@ inline bool operator==( const recReferenceEntity& r1, const recReferenceEntity& 
 }
 
 inline bool operator!=( const recReferenceEntity& r1, const recReferenceEntity& r2 )
+{
+    return !(r1 == r2);
+}
+
+//-----------------------------------------------------
+//      recReference
+//-----------------------------------------------------
+
+class recReference : public recDb
+{
+public:
+    wxString f_title;
+    wxString f_statement;
+
+    recReference() {}
+    recReference( idt id ) : recDb(id) { Read(); }
+    recReference( const recReference& ref );
+
+    void Clear();
+    void Save();
+    bool Read();
+    TABLE_NAME_MEMBERS( "Reference" );
+
+    static wxString GetIdStr( idt refID ) { return wxString::Format( "R"ID, refID ); }
+    wxString GetIdStr() const { return GetIdStr( f_id ); }
+
+    static wxString GetTitle( idt refID );
+
+    recRefEntVec ReadReferenceEntitys();
+    static wxSQLite3ResultSet GetTitleList();
+
+    static recIdVec GetPersonaList( idt refID );
+    recIdVec GetPersonaList() const { return GetPersonaList( f_id ); }
+    static int GetPersonaCount( idt refID );
+
+    static recIdVec GetIdVecForEntity( idt refID, recReferenceEntity::Type type );
+
+    static recIdVec GetPlaceIdVec( idt refID ) 
+        { return GetIdVecForEntity( refID, recReferenceEntity::TYPE_Place ); }
+    recIdVec GetPlaceIdVec() const { return GetPlaceIdVec( f_id ); }
+
+    static recIdVec GetDateIdVec( idt refID ) 
+        { return GetIdVecForEntity( refID, recReferenceEntity::TYPE_Date ); }
+    recIdVec GetDateIdVec() const { return GetDateIdVec( f_id ); }
+
+};
+
+inline bool recEquivalent( const recReference& r1, const recReference& r2 )
+{
+    return
+        r1.f_title  == r2.f_title  &&
+        r1.f_statement == r2.f_statement;
+}
+
+inline bool operator==( const recReference& r1, const recReference& r2 )
+{
+    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
+}
+
+inline bool operator!=( const recReference& r1, const recReference& r2 )
 {
     return !(r1 == r2);
 }

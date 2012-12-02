@@ -357,32 +357,6 @@ class fbDlgEditDateFromAge : public wxDialog
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class fbDlgEditPlace
-///////////////////////////////////////////////////////////////////////////////
-class fbDlgEditPlace : public wxDialog 
-{
-	private:
-	
-	protected:
-		enum
-		{
-			tfpID_EDPLACE_ADDR = 1000
-		};
-		
-		wxStaticText* m_staticText16;
-		wxTextCtrl* m_textCtrlAddr;
-		wxStaticLine* m_staticline1;
-		wxButton* m_buttonSave;
-		wxButton* m_buttonCancel;
-	
-	public:
-		
-		fbDlgEditPlace( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Place"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 300,110 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
-		~fbDlgEditPlace();
-	
-};
-
-///////////////////////////////////////////////////////////////////////////////
 /// Class fbDlgEditName
 ///////////////////////////////////////////////////////////////////////////////
 class fbDlgEditName : public wxDialog 

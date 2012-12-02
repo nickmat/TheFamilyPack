@@ -1,7 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        dlgEdPlace.h
+ * Name:        src/rg/rgEdPlace.h
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Edit database Place entity dialog header.
+ * Purpose:     Edit database Place dialog header.
  * Author:      Nick Matthews
  * Modified by:
  * Website:     http://thefamilypack.org
@@ -27,29 +27,24 @@
 
 */
 
-#ifndef DLGEDPLACE_H
-#define DLGEDPLACE_H
+#ifndef RGEDPLACE_H
+#define RGEDPLACE_H
 
 #include <rec/recPlace.h>
 
-#include "fbDlg.h"
+#include "fbRgDialog.h"
 
-class dlgEditPlace : public fbDlgEditPlace
+class rgDlgEditPlace : public fbRgEditPlace
 {
 public:
-    dlgEditPlace( wxWindow* parent, idt id = 0 );
-
-    void SetText( const wxString& text ) { m_text = text; }
-
-    wxString GetText() const { return m_text; }
-    recPlace* GetPlace() { return &m_place; }
+    rgDlgEditPlace( wxWindow* parent, idt placeID );
 
 private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
 
-    recPlace  m_place;
-    wxString  m_text;
+    recPlace     m_place;
+    recPlacePart m_pp;
 };
 
-#endif // DLGEDPLACE_H
+#endif // RGEDPLACE_H

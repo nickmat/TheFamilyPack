@@ -1,7 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        dlgEdPlace.cpp
+ * Name:        src/rg/rgEdPlace.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Edit database Place entity dialog.
+ * Purpose:     Edit database Place dialog.
  * Author:      Nick Matthews
  * Modified by:
  * Website:     http://thefamilypack.org
@@ -37,60 +37,36 @@
 #include "wx/wx.h"
 #endif
 
-#include "dlgEdPlace.h"
+#include "rgEdPlace.h"
 
-dlgEditPlace::dlgEditPlace( wxWindow* parent, idt id )
-    : fbDlgEditPlace( parent )
+// NOTE We are using a simplified place model where the only PlaceTypePart is
+// "Address" and there is one, and only one, PlacePart per Place.
+
+rgDlgEditPlace::rgDlgEditPlace( wxWindow* parent, idt placeID )
+    : m_place(placeID), fbRgEditPlace( parent )
 {
-    m_place.f_id = id;
-    m_place.Read();
+    recPlacePartVec parts = m_place.GetPlaceParts();
+    wxASSERT( parts.size() == 1 ); // Using simple address model
+    m_pp = parts[0];
 }
 
 
-bool dlgEditPlace::TransferDataToWindow()
+bool rgDlgEditPlace::TransferDataToWindow()
 {
-    if( m_place.f_id == 0 )
-    {
-        m_place.Clear();
-        m_place.Save();
-    } else {
-        m_place.Read();
-        m_text = m_place.GetAddressStr();
-    }
+    wxASSERT( m_place.FGetID() != 0  );
 
-    wxTextCtrl* textCtrl = (wxTextCtrl*) FindWindow( tfpID_EDPLACE_ADDR );
-    textCtrl->SetValue( m_text );
-
+    m_staticPlaceID->SetLabel( m_place.GetIdStr() );
+    m_textCtrlAddr->SetValue( m_pp.FGetValue() );
     return true;
 }
 
-bool dlgEditPlace::TransferDataFromWindow()
+bool rgDlgEditPlace::TransferDataFromWindow()
 {
-    wxTextCtrl* textCtrl = (wxTextCtrl*) FindWindow( tfpID_EDPLACE_ADDR );
-    m_text = textCtrl->GetValue();
-
-    m_place.Save();
-
-    recPlacePartVec ppVec = m_place.GetPlaceParts();
-    if( ppVec.size() == 0 )
-    {
-        recPlacePart pp;
-        pp.Clear();
-        pp.f_type_id = recPlacePartType::TYPE_Address;
-        pp.f_place_id = m_place.f_id;
-        pp.f_val = m_text;
-        pp.Save();
-    } else {
-        ppVec[0].f_type_id = recPlacePartType::TYPE_Address;
-        ppVec[0].f_val = m_text;
-        ppVec[0].Save();
-        for( size_t i = 1 ; i < ppVec.size() ; i++ ) {
-            ppVec[i].Delete();
-        }
-    }
+    m_pp.FSetValue( m_textCtrlAddr->GetValue() );
+    m_pp.Save();
 
     return true;
 }
 
 
-// End of dlgEdPlace.cpp file
+// End of src/rg/rgEdPlace.cpp file

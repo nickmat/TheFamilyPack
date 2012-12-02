@@ -36,6 +36,11 @@
 class recPlacePart;
 typedef std::vector< recPlacePart > recPlacePartVec;
 
+enum {
+    recP_FILTER_None      = 0x0000,
+    recP_FILTER_Reference = 0x0001,
+};
+
 class recPlace : public recDb
 {
 public:
@@ -50,6 +55,11 @@ public:
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "Place" );
+
+    idt FGetDate1ID() const { return f_date1_id; }
+    idt FGetDate2ID() const { return f_date2_id; }
+    void FSetDate1ID( idt dateID ) { f_date1_id = dateID; }
+    void FSetDate2ID( idt dateID ) { f_date2_id = dateID; }
 
     bool DeleteAll();
 
@@ -96,8 +106,8 @@ inline bool operator!=( const recPlace& r1, const recPlace& r2 )
 class recPlacePart : public recDb
 {
 public:
-    idt     f_type_id;
-    idt     f_place_id;
+    idt      f_type_id;
+    idt      f_place_id;
     wxString f_val;
     int      f_sequence;
 
@@ -109,6 +119,16 @@ public:
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "PlacePart" );
+
+    idt FGetTypeID() const { return f_type_id; }
+    idt FGetPlaceID() const { return f_place_id; }
+    wxString FGetValue() const { return f_val; }
+    int FGetSequence() const { return f_sequence; }
+
+    void FSetTypeID( idt typeID ) { f_type_id = typeID; }
+    void FSetPlaceID( idt placeID ) { f_place_id = placeID; }
+    void FSetValue( const wxString& value ) { f_val = value; }
+    void FSetSequence( int seq ) { f_sequence = seq; }
 };
 
 inline bool recEquivalent( const recPlacePart& r1, const recPlacePart& r2 )
@@ -151,6 +171,10 @@ public:
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "PlacePartType" );
+
+    wxString FGetName() const { return f_name; }
+
+    void FSetName( const wxString& name ) { f_name = name; }
 };
 
 inline bool recEquivalent( const recPlacePartType& r1, const recPlacePartType& r2 )

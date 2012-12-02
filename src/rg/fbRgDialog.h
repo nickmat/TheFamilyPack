@@ -104,6 +104,28 @@ class fbRgEditRelativeDate : public wxDialog
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/// Class fbRgEditPlace
+///////////////////////////////////////////////////////////////////////////////
+class fbRgEditPlace : public wxDialog 
+{
+	private:
+	
+	protected:
+		wxStaticText* m_staticText1;
+		wxTextCtrl* m_textCtrlAddr;
+		wxStaticLine* m_staticline1;
+		wxStaticText* m_staticPlaceID;
+		wxButton* m_buttonSave;
+		wxButton* m_buttonCancel;
+	
+	public:
+		
+		fbRgEditPlace( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Place"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE ); 
+		~fbRgEditPlace();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
 /// Class fbRgPerIndEvent
 ///////////////////////////////////////////////////////////////////////////////
 class fbRgPerIndEvent : public wxDialog 

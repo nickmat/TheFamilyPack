@@ -120,7 +120,7 @@ public:
 
     void SetID( idt id ) { m_reference.f_id = id; }
 
-    bool  DoNewPlace( idt* placeID );
+//    bool  DoNewPlace( idt* placeID );
 private:
     void UpdateHtml();
     void InsertListItem( long row, const TfpEntity& ent );

@@ -92,6 +92,24 @@ public:
 };
 
 //-------------------------------------------------------------------------------
+//-------------------[ rgDlgSelectPlace ]----------------------------------------
+//-------------------------------------------------------------------------------
+
+class rgDlgSelectPlace : public rgSelect
+{
+    enum {
+        COL_ID, COL_Place, COL_MAX
+    };
+    static wxString sm_colHeaders[COL_MAX];
+public:
+    rgDlgSelectPlace( 
+        wxWindow* parent = NULL, 
+        unsigned style = rgSELSTYLE_None,
+        const wxString& title = _("Select Place")
+    ) : rgSelect( parent, sm_colHeaders, COL_MAX, style, title ) {}
+};
+
+//-------------------------------------------------------------------------------
 //-------------------[ dlgSelectEventType ]--------------------------------------
 //-------------------------------------------------------------------------------
 

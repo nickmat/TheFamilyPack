@@ -40,6 +40,7 @@
 #include <rec/recIndividual.h>
 
 #include "rgEdDate.h"
+#include "rgEdPlace.h"
 #include "rgEdEventType.h"
 #include "rgEdRole.h"
 #include "rgEdPerIndEvent.h"
@@ -129,6 +130,48 @@ idt rgCreateRelativeDate( idt baseID, long value )
     if( rgEditRelativeDate( dateID ) ) {
         recDb::ReleaseSavepoint( savepoint );
         return dateID;
+    }
+    recDb::Rollback( savepoint );
+    return 0;
+}
+
+bool rgEditPlace( idt placeID )
+{
+    wxASSERT( placeID != 0 );
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+    bool ret = false;
+
+    rgDlgEditPlace* dialog = new rgDlgEditPlace( NULL, placeID );
+
+    if( dialog->ShowModal() == wxID_OK ) {
+        recDb::ReleaseSavepoint( savepoint );
+        ret = true;
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+    return ret;
+}
+
+idt rgCreatePlace( const wxString& placeStr )
+{
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+
+    recPlace place(0);
+    place.Save();
+    idt placeID = place.FGetID();
+    recPlacePart pp(0);
+    pp.FSetPlaceID( placeID );
+    pp.FSetTypeID( recPlacePartType::TYPE_Address );
+    pp.FSetValue( placeStr );
+    pp.FSetSequence( 1 );
+    pp.Save();
+
+    if( rgEditPlace( placeID ) ) {
+        recDb::ReleaseSavepoint( savepoint );
+        return placeID;
     }
     recDb::Rollback( savepoint );
     return 0;
@@ -280,7 +323,7 @@ idt rgSelectDate( unsigned flag, unsigned* retbutton, unsigned filter, idt id )
     idt dateID = 0;
     if( retbutton ) *retbutton = rgSELSTYLE_None;
     bool cont = true;
-    rgDlgSelectIndividual* dialog = new rgDlgSelectIndividual( NULL, flag );
+    rgDlgSelectDate* dialog = new rgDlgSelectDate( NULL, flag );
 
     while( cont ) {
         recIdVec dateIDs;
@@ -312,7 +355,7 @@ idt rgSelectDate( unsigned flag, unsigned* retbutton, unsigned filter, idt id )
             }
             if( dialog->GetFilterPressed() ) {
                 // Create new Event Type
-                wxMessageBox( "Not yet implimented", "rgSelectIndividual" );
+                wxMessageBox( "Not yet implimented", "rgSelectDate" );
                 dialog->SetFilterPressed( false );
                 continue;
             }
@@ -328,6 +371,61 @@ idt rgSelectDate( unsigned flag, unsigned* retbutton, unsigned filter, idt id )
     }
     dialog->Destroy();
     return dateID;
+}
+
+idt rgSelectPlace( unsigned flag, unsigned* retbutton, unsigned filter, idt id )
+{
+    idt placeID = 0;
+    if( retbutton ) *retbutton = rgSELSTYLE_None;
+    bool cont = true;
+    rgDlgSelectPlace* dialog = new rgDlgSelectPlace( NULL, flag );
+
+    while( cont ) {
+        recIdVec placeIDs;
+        switch( filter )
+        {
+        case recP_FILTER_Reference:
+            placeIDs = recReference::GetPlaceIdVec( id );
+            break;
+        default:
+            wxASSERT( false ); // Shouldn't be here
+            return 0;
+        }
+        wxArrayString table;
+        for( size_t i = 0 ; i < placeIDs.size() ; i++ ) {
+            table.push_back( recPlace::GetIdStr( placeIDs[i] ) );        
+            table.push_back( recPlace::GetAddressStr( placeIDs[i] ) );        
+        }
+        dialog->SetTable( table );
+        if( dialog->ShowModal() == wxID_OK ) {
+            if( dialog->GetCreatePressed() ) {
+                placeID = rgCreatePlace();
+                if( placeID ) {
+                    if( retbutton ) *retbutton = rgSELSTYLE_Create;
+                    cont = false;
+                } else {
+                    dialog->SetCreatePressed( false );
+                }
+                continue;
+            }
+            if( dialog->GetFilterPressed() ) {
+                // Create new Event Type
+                wxMessageBox( "Not yet implimented", "rgSelectPlace" );
+                dialog->SetFilterPressed( false );
+                continue;
+            }
+            if( dialog->GetUnknownPressed() ) {
+                wxASSERT( false ); // We shouldn't be here, Unknown has no meaning.
+                if( retbutton ) *retbutton = rgSELSTYLE_Unknown;
+                continue;
+            }
+            size_t item = (size_t) dialog->GetSelectedRow();
+            placeID = placeIDs[item];
+        }
+        cont = false;
+    }
+    dialog->Destroy();
+    return placeID;
 }
 
 idt rgSelectEventType( unsigned flag, unsigned* retbutton, unsigned grpfilter )

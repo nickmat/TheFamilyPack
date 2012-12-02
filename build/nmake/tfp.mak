@@ -62,7 +62,6 @@ TFP_CXXFLAGS = /MD$(VAR_23) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) /D__WXMSW__
 TFP_OBJECTS =  \
 	tfp_dlgEd.obj \
 	tfp_dlgEdContact.obj \
-	tfp_dlgEdDate.obj \
 	tfp_dlgEdEvent.obj \
 	tfp_dlgEdFamily.obj \
 	tfp_dlgEdIndEvent.obj \
@@ -70,7 +69,6 @@ TFP_OBJECTS =  \
 	tfp_dlgEdName.obj \
 	tfp_dlgEdNamePart.obj \
 	tfp_dlgEdPersona.obj \
-	tfp_dlgEdPlace.obj \
 	tfp_dlgEdReference.obj \
 	tfp_dlgEdRelationship.obj \
 	tfp_dlgEdResearcher.obj \
@@ -200,6 +198,7 @@ RECGUI_OBJECTS =  \
 	recgui_rgEdDate.obj \
 	recgui_rgEdEventType.obj \
 	recgui_rgEdPerIndEvent.obj \
+	recgui_rgEdPlace.obj \
 	recgui_rgEdRole.obj \
 	recgui_rgSelect.obj \
 	recgui_rgTableCtrl.obj
@@ -425,9 +424,6 @@ tfp_dlgEd.obj: .\..\..\src\dlg\dlgEd.cpp
 tfp_dlgEdContact.obj: .\..\..\src\dlg\dlgEdContact.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\dlgEdContact.cpp
 
-tfp_dlgEdDate.obj: .\..\..\src\dlg\dlgEdDate.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\dlgEdDate.cpp
-
 tfp_dlgEdEvent.obj: .\..\..\src\dlg\dlgEdEvent.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\dlgEdEvent.cpp
 
@@ -448,9 +444,6 @@ tfp_dlgEdNamePart.obj: .\..\..\src\dlg\dlgEdNamePart.cpp
 
 tfp_dlgEdPersona.obj: .\..\..\src\dlg\dlgEdPersona.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\dlgEdPersona.cpp
-
-tfp_dlgEdPlace.obj: .\..\..\src\dlg\dlgEdPlace.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\dlgEdPlace.cpp
 
 tfp_dlgEdReference.obj: .\..\..\src\dlg\dlgEdReference.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\dlgEdReference.cpp
@@ -649,6 +642,9 @@ recgui_rgEdEventType.obj: .\..\..\src\rg\rgEdEventType.cpp
 
 recgui_rgEdPerIndEvent.obj: .\..\..\src\rg\rgEdPerIndEvent.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdPerIndEvent.cpp
+
+recgui_rgEdPlace.obj: .\..\..\src\rg\rgEdPlace.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdPlace.cpp
 
 recgui_rgEdRole.obj: .\..\..\src\rg\rgEdRole.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdRole.cpp

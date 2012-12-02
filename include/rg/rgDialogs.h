@@ -36,6 +36,8 @@ extern bool rgEditDate( idt dateID );
 extern idt rgCreateDate( const wxString& dateStr = wxEmptyString );
 extern bool rgEditRelativeDate( idt dateID );
 extern idt rgCreateRelativeDate( idt baseID, long value = 0 );
+extern bool rgEditPlace( idt placeID );
+extern idt rgCreatePlace( const wxString& placeStr = wxEmptyString );
 extern bool rgEditEventType( idt etID );
 extern idt rgCreateEventType();
 extern bool rgEditRole( idt roleID );
@@ -58,6 +60,9 @@ enum {
     rgSELSTYLE_Unknown    = 0x0004,   // Show Unknown button (for Unknown value)
 };
 extern idt rgSelectDate( 
+    unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL,
+    unsigned filter = 0, idt = 0 );
+extern idt rgSelectPlace( 
     unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL,
     unsigned filter = 0, idt = 0 );
 extern idt rgSelectEventType( 
