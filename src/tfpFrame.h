@@ -51,6 +51,7 @@ class TfpFrame : public wxFrame
 private:
     DECLARE_EVENT_TABLE()
 
+    long                m_changeState;
     wxMenuBar*          m_menuOpenDB;
     wxMenuBar*          m_menuClosedDB;
     wxToolBar*          m_toolbar;
@@ -124,6 +125,7 @@ public:
     void OnHtmCtxMenu( wxCommandEvent& event );
     void OnHtmIndMenu( wxCommandEvent& event );
 
+    void OnIdle( wxIdleEvent& event );
     void OnCloseWindow( wxCloseEvent& event );
 
     bool NewFile();
@@ -144,15 +146,10 @@ public:
     wxString GetCurrentName();
     void RefreshEditMenu();
 
+    wxString GetDisplay() const { return m_back[m_back.size()-1]; }
     bool DisplayHtmPage( const wxString& name );
     void RefreshHtmPage();
     bool DisplayHomePage();
-
-
-    wxString GetDisplay() const { return m_back[m_back.size()-1]; }
-
-//    wxString GetDisplayText( const wxString& name );
-
 };
 
 #define tfpMAX_MENU_ITEMS 50

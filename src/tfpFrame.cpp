@@ -38,8 +38,6 @@
 #endif
 
 #include <wx/webview.h>
-//#include <wx/html/htmlwin.h>
-//#include <wx/html/htmprint.h>
 #include <wx/numdlg.h>
 
 #include <rec/recIndividual.h>
@@ -79,9 +77,6 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_EDIT_IND_NEW_FEMALE, TfpFrame::OnAddNewIndFemale )
     EVT_MENU( tfpID_EDIT_REFERENCE, TfpFrame::OnEditReference )
     EVT_MENU( tfpID_EDIT_RESEARCHER, TfpFrame::OnEditResearcher )
-
-//    EVT_MENU( tfpID_EDIT_EVENT_TYPE, TfpFrame::OnEditEventType )
-
     EVT_MENU( tfpID_FIND_FAMILY_ID, TfpFrame::OnFindFamilyID )
     EVT_MENU( tfpID_FIND_INDIVIDUAL_ID, TfpFrame::OnFindIndividualID )
     EVT_MENU( tfpID_LIST_SURNAME_INDEX, TfpFrame::OnListIndex )
@@ -105,6 +100,7 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_WEB_VIEW_NAVIGATING( tfpID_BROWSER, TfpFrame::OnNavigationRequest )
     EVT_MENU_RANGE( tfpID_HCTXMENU_BEG, tfpID_HCTXMENU_END, TfpFrame::OnHtmCtxMenu )
     EVT_MENU_RANGE( tfpID_INDMENU_BEG, tfpID_INDMENU_END, TfpFrame::OnHtmIndMenu )
+    EVT_IDLE( TfpFrame::OnIdle )
     EVT_CLOSE( TfpFrame::OnCloseWindow )
 END_EVENT_TABLE()
 
@@ -116,6 +112,7 @@ END_EVENT_TABLE()
 TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& size )
     : wxFrame( (wxFrame*) NULL, wxID_ANY, title, pos, size )
 {
+    m_changeState = recDb::GetChange();
     // Set frames Icon
     SetIcon( wxIcon( "tfp" ) );
 
@@ -298,7 +295,10 @@ TfpFrame::~TfpFrame()
  */
 void TfpFrame::OnNewWindow( wxCommandEvent& event )
 {
-    wxMessageBox( wxT("Not yet implimented"), wxT("OnNewWindow") );
+    TfpFrame* frame = new TfpFrame( 
+        "The Family Pack", wxDefaultPosition, wxSize( 900, 700 )
+    );
+    frame->Show(true);
 }
 
 /*! \brief Called on a New File menu option event.
@@ -322,6 +322,7 @@ void TfpFrame::OnCloseFile( wxCommandEvent& event )
     recDb::CloseDb();
     SetNoDatabase();
     m_browser->LoadURL( "memory:startup.htm" );
+    m_changeState = recDb::GetChange();
 }
 
 /*! \brief Called on a Inport GEDCOM File menu option event.
@@ -340,7 +341,7 @@ void TfpFrame::OnImportGedcom( wxCommandEvent& event )
  */
 void TfpFrame::OnExportHtml( wxCommandEvent& event )
 {
-    wxMessageBox( wxT("Not yet implimented"), wxT("OnExportHtml") );
+    wxMessageBox( "Not yet implimented", "OnExportHtml" );
 }
 
 /*! \brief Called on a Print menu option event.
@@ -967,6 +968,18 @@ void TfpFrame::OnHtmIndMenu( wxCommandEvent& event )
     DisplayHtmPage( m_ctxmenuPages[i] );
 }
 
+void TfpFrame::OnIdle( wxIdleEvent& event )
+{
+    if( m_changeState != recDb::GetChange() ) {
+        if( recDb::IsOpen() ) {
+            RefreshHtmPage();
+        } else {
+            SetNoDatabase();
+            m_browser->LoadURL( "memory:startup.htm" );
+            m_changeState = recDb::GetChange();
+        }
+    }
+}
 
 /*! \brief Called on a Close Window event.
  */
@@ -1367,6 +1380,7 @@ bool TfpFrame::DisplayHtmPage( const wxString& name )
         PushHtmName( name );
         m_browser->SetPage( text, "" );
         RefreshEditMenu();
+        m_changeState = recDb::GetChange();
         return true;
     }
     return false;
@@ -1379,6 +1393,7 @@ void TfpFrame::RefreshHtmPage()
         m_browser->SetPage( tfpGetDisplayText( name ), "" );
         RefreshEditMenu();
     }
+    m_changeState = recDb::GetChange();
 }
 
 bool TfpFrame::DisplayHomePage()
