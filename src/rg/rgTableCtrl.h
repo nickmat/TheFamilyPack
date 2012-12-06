@@ -48,7 +48,29 @@ public:
     ) : wxListCtrl( parent, id, pos, size, style, validator, name ),
         m_table(NULL) {}
 
-    void SetTable( wxSQLite3Table* table ) { m_table = table; }
+    void SetTable( wxSQLite3Table* table );
+
+private:
+    wxString OnGetItemText( long item, long column ) const;
+
+    wxSQLite3Table* m_table;
+};
+
+class rgRecEventTableCtrl : public wxListCtrl
+{
+public:
+    rgRecEventTableCtrl(
+        wxWindow *parent,
+        wxWindowID id = wxID_ANY,
+        const wxPoint& pos = wxDefaultPosition,
+        const wxSize& size = wxDefaultSize,
+        long style = wxLC_ICON,
+        const wxValidator& validator = wxDefaultValidator,
+        const wxString& name = wxListCtrlNameStr
+    ) : wxListCtrl( parent, id, pos, size, style, validator, name ),
+        m_table(NULL) {}
+
+    void SetTable( wxSQLite3Table* table );
 
 private:
     wxString OnGetItemText( long item, long column ) const;

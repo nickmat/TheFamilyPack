@@ -364,6 +364,7 @@ void dlgEditIndPersona::OnNewEvent( wxCommandEvent& event )
 
 void dlgEditIndPersona::OnExistingEvent( wxCommandEvent& event )
 {
+    idt eveID = rgSelectIndEvent();
     // TODO:
     wxMessageBox( wxT("Not yet implimented"), wxT("OnExistingEvent") );
 }

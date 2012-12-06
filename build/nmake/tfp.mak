@@ -165,6 +165,7 @@ REC_OBJECTS =  \
 	rec_recDatabase.obj \
 	rec_recDate.obj \
 	rec_recEvent.obj \
+	rec_recFilterEvent.obj \
 	rec_recGedParse.obj \
 	rec_recIndividual.obj \
 	rec_recLink.obj \
@@ -201,6 +202,7 @@ RECGUI_OBJECTS =  \
 	recgui_rgEdPlace.obj \
 	recgui_rgEdRole.obj \
 	recgui_rgSelect.obj \
+	recgui_rgSelIndEvent.obj \
 	recgui_rgTableCtrl.obj
 
 ### Conditionally set variables: ###
@@ -583,6 +585,9 @@ rec_recDate.obj: .\..\..\src\rec\recDate.cpp
 rec_recEvent.obj: .\..\..\src\rec\recEvent.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recEvent.cpp
 
+rec_recFilterEvent.obj: .\..\..\src\rec\recFilterEvent.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recFilterEvent.cpp
+
 rec_recGedParse.obj: .\..\..\src\rec\recGedParse.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recGedParse.cpp
 
@@ -651,6 +656,9 @@ recgui_rgEdRole.obj: .\..\..\src\rg\rgEdRole.cpp
 
 recgui_rgSelect.obj: .\..\..\src\rg\rgSelect.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgSelect.cpp
+
+recgui_rgSelIndEvent.obj: .\..\..\src\rg\rgSelIndEvent.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgSelIndEvent.cpp
 
 recgui_rgTableCtrl.obj: .\..\..\src\rg\rgTableCtrl.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgTableCtrl.cpp

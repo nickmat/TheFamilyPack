@@ -224,6 +224,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rg\rgSelIndEvent.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rg\rgSelect.cpp"
 				>
 			</File>
@@ -263,6 +267,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\rg\rgEdRole.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgSelIndEvent.h"
 				>
 			</File>
 			<File

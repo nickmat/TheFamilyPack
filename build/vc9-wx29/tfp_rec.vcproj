@@ -267,6 +267,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rec\recFilterEvent.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rec\recGedParse.cpp"
 				>
 			</File>
@@ -338,6 +342,10 @@
 			</File>
 			<File
 				RelativePath="..\..\include\rec\recEvent.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\rec\recFilterEvent.h"
 				>
 			</File>
 			<File

@@ -11,6 +11,7 @@
 #include <wx/artprov.h>
 #include <wx/xrc/xmlres.h>
 #include <wx/intl.h>
+class rgRecEventTableCtrl;
 class rgStrTableCtrl;
 
 #include <wx/string.h>
@@ -28,6 +29,8 @@ class rgStrTableCtrl;
 #include <wx/radiobox.h>
 #include <wx/listctrl.h>
 #include <wx/checkbox.h>
+#include <wx/checklst.h>
+#include <wx/statbox.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -60,7 +63,7 @@ class fbRgEditDate : public wxDialog
 	
 	public:
 		
-		fbRgEditDate( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Date"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE ); 
+		fbRgEditDate( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Date"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbRgEditDate();
 	
 };
@@ -98,7 +101,7 @@ class fbRgEditRelativeDate : public wxDialog
 	
 	public:
 		
-		fbRgEditRelativeDate( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Relative Date"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE ); 
+		fbRgEditRelativeDate( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Relative Date"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbRgEditRelativeDate();
 	
 };
@@ -120,7 +123,7 @@ class fbRgEditPlace : public wxDialog
 	
 	public:
 		
-		fbRgEditPlace( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Place"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE ); 
+		fbRgEditPlace( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Place"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbRgEditPlace();
 	
 };
@@ -253,8 +256,55 @@ class fbRgSelect : public wxDialog
 	
 	public:
 		
-		fbRgSelect( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Select"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 410,289 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
+		fbRgSelect( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Select"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbRgSelect();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class fbRgSelectIndEvent
+///////////////////////////////////////////////////////////////////////////////
+class fbRgSelectIndEvent : public wxDialog 
+{
+	private:
+	
+	protected:
+		wxCheckListBox* m_checkListGrp;
+		wxButton* m_buttonSelectGrp;
+		wxButton* m_buttonClearGrp;
+		wxStaticText* m_staticText37;
+		wxTextCtrl* m_textCtrlBegDatePt;
+		wxStaticText* m_staticText38;
+		wxTextCtrl* m_textCtrlEndDatePt;
+		wxCheckListBox* m_checkListType;
+		wxButton* m_buttonSelectType;
+		wxButton* m_buttonClearType;
+		rgRecEventTableCtrl* m_listEvent;
+		wxStaticLine* m_staticline8;
+		wxStaticText* m_staticEventCount;
+		wxButton* m_buttonSelect;
+		wxButton* m_buttonCancel;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnIdle( wxIdleEvent& event ) { event.Skip(); }
+		virtual void OnGroupCheckSelect( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnGroupCheckToggled( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonGroupSelectAll( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonGroupClearAll( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnBegDateText( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEndDateText( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnTypeCheckSelect( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnTypeCheckToggled( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonTypeSelectAll( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonTypeClearAll( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnListEventItemDeselected( wxListEvent& event ) { event.Skip(); }
+		virtual void OnListEventItemSelected( wxListEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		fbRgSelectIndEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Select Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
+		~fbRgSelectIndEvent();
 	
 };
 

@@ -79,6 +79,7 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_EDIT_RESEARCHER, TfpFrame::OnEditResearcher )
     EVT_MENU( tfpID_FIND_FAMILY_ID, TfpFrame::OnFindFamilyID )
     EVT_MENU( tfpID_FIND_INDIVIDUAL_ID, TfpFrame::OnFindIndividualID )
+    EVT_MENU( tfpID_FIND_EVENT_ID, TfpFrame::OnFindEventID )
     EVT_MENU( tfpID_LIST_SURNAME_INDEX, TfpFrame::OnListIndex )
     EVT_MENU( tfpID_LIST_NAMES, TfpFrame::OnListNames )
     EVT_MENU( tfpID_LIST_INDIVIDUALS, TfpFrame::OnListIndividuals )
@@ -191,6 +192,7 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     wxMenu* menuFind = new wxMenu;
     menuFind->Append( tfpID_FIND_FAMILY_ID, _("&Family ID...") );
     menuFind->Append( tfpID_FIND_INDIVIDUAL_ID, _("&Individual ID...") );
+    menuFind->Append( tfpID_FIND_EVENT_ID, _("&Event ID...") );
 
     wxMenu* menuList = new wxMenu;
     menuList->Append( tfpID_LIST_SURNAME_INDEX, _("&Surname Index\tAlt-S") );
@@ -593,6 +595,16 @@ void TfpFrame::OnFindFamilyID( wxCommandEvent& event )
 void TfpFrame::OnFindIndividualID( wxCommandEvent& event )
 {
     wxMessageBox( wxT("Not yet implimented"), wxT("OnFindIndividualID") );
+}
+
+/*! \brief Called on a Find Individual ID menu option event.
+ */
+void TfpFrame::OnFindEventID( wxCommandEvent& event )
+{
+    idt eveID = rgSelectIndEvent();
+    if( eveID ) {
+        DisplayHtmPage( "E"+recGetStr( eveID ) );
+    }
 }
 
 /*! \brief Called on a List Index menu option event.

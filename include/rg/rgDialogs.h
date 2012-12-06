@@ -29,7 +29,7 @@
 #ifndef RGDIALOGS_H
 #define RGDIALOGS_H
 
-#include <rec/recEvent.h>
+#include <rec/recFilterEvent.h>
 #include <rec/recIndividual.h>
 
 extern bool rgEditDate( idt dateID );
@@ -68,6 +68,10 @@ extern idt rgSelectPlace(
 extern idt rgSelectEventType( 
     unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL,
     unsigned grpfilter = recET_FILTER_GrpAll );
+extern idt rgSelectIndEvent( 
+    unsigned flag = rgSELSTYLE_None, 
+    recFilterEvent* filter = NULL,
+    bool* ok = NULL );
 extern idt rgSelectIndividual( 
     unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL,
     unsigned sexfilter = recInd_FILTER_SexAll );

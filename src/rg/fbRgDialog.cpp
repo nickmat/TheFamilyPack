@@ -665,7 +665,7 @@ fbRgSelect::fbRgSelect( wxWindow* parent, wxWindowID id, const wxString& title, 
 	wxBoxSizer* bSizer2;
 	bSizer2 = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_listCtrl = new rgStrTableCtrl( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_VIRTUAL|wxLC_VRULES|wxALWAYS_SHOW_SB|wxVSCROLL );
+	m_listCtrl = new rgStrTableCtrl( this, wxID_ANY, wxDefaultPosition, wxSize( -1,300 ), wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_VIRTUAL|wxLC_VRULES|wxALWAYS_SHOW_SB|wxVSCROLL );
 	bSizer2->Add( m_listCtrl, 1, wxEXPAND|wxALL, 5 );
 	
 	
@@ -687,13 +687,13 @@ fbRgSelect::fbRgSelect( wxWindow* parent, wxWindowID id, const wxString& title, 
 	bSizer3->Add( m_buttonUnknown, 0, wxALL, 5 );
 	
 	
-	bSizer3->Add( 0, 0, 1, wxEXPAND, 5 );
+	bSizer3->Add( 0, 0, 1, wxEXPAND, 10 );
 	
 	m_buttonSelect = new wxButton( this, wxID_OK, _("Select"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer3->Add( m_buttonSelect, 0, wxTOP|wxBOTTOM|wxLEFT, 5 );
+	bSizer3->Add( m_buttonSelect, 0, wxALL, 5 );
 	
 	m_buttonCancel = new wxButton( this, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer3->Add( m_buttonCancel, 0, wxALL, 5 );
+	bSizer3->Add( m_buttonCancel, 0, wxTOP|wxBOTTOM|wxRIGHT, 5 );
 	
 	
 	bSizer1->Add( bSizer3, 0, wxEXPAND, 5 );
@@ -701,6 +701,7 @@ fbRgSelect::fbRgSelect( wxWindow* parent, wxWindowID id, const wxString& title, 
 	
 	this->SetSizer( bSizer1 );
 	this->Layout();
+	bSizer1->Fit( this );
 	
 	// Connect Events
 	this->Connect( wxEVT_IDLE, wxIdleEventHandler( fbRgSelect::OnIdle ) );
@@ -716,5 +717,164 @@ fbRgSelect::~fbRgSelect()
 	m_buttonCreate->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSelect::OnCreateButton ), NULL, this );
 	m_buttonFilter->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSelect::OnFilterButton ), NULL, this );
 	m_buttonUnknown->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSelect::OnUnknownButton ), NULL, this );
+	
+}
+
+fbRgSelectIndEvent::fbRgSelectIndEvent( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	
+	wxBoxSizer* bSizer1;
+	bSizer1 = new wxBoxSizer( wxVERTICAL );
+	
+	wxBoxSizer* bSizer27;
+	bSizer27 = new wxBoxSizer( wxHORIZONTAL );
+	
+	wxBoxSizer* bSizer28;
+	bSizer28 = new wxBoxSizer( wxVERTICAL );
+	
+	wxStaticBoxSizer* sbSizer1;
+	sbSizer1 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Event Group") ), wxHORIZONTAL );
+	
+	wxArrayString m_checkListGrpChoices;
+	m_checkListGrp = new wxCheckListBox( this, wxID_ANY, wxDefaultPosition, wxSize( -1,110 ), m_checkListGrpChoices, wxLB_NEEDED_SB );
+	sbSizer1->Add( m_checkListGrp, 0, wxALL|wxEXPAND, 5 );
+	
+	wxBoxSizer* bSizer11;
+	bSizer11 = new wxBoxSizer( wxVERTICAL );
+	
+	m_buttonSelectGrp = new wxButton( this, wxID_ANY, _("Select All"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer11->Add( m_buttonSelectGrp, 0, wxALL, 5 );
+	
+	m_buttonClearGrp = new wxButton( this, wxID_ANY, _("Clear All"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer11->Add( m_buttonClearGrp, 0, wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+	
+	
+	sbSizer1->Add( bSizer11, 1, wxEXPAND, 5 );
+	
+	
+	bSizer28->Add( sbSizer1, 0, wxEXPAND, 5 );
+	
+	wxStaticBoxSizer* sbSizer3;
+	sbSizer3 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Date Points") ), wxVERTICAL );
+	
+	wxFlexGridSizer* fgSizer13;
+	fgSizer13 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer13->AddGrowableCol( 1 );
+	fgSizer13->SetFlexibleDirection( wxBOTH );
+	fgSizer13->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_staticText37 = new wxStaticText( this, wxID_ANY, _("Dates After:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText37->Wrap( -1 );
+	fgSizer13->Add( m_staticText37, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT|wxTOP|wxBOTTOM|wxLEFT, 5 );
+	
+	m_textCtrlBegDatePt = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer13->Add( m_textCtrlBegDatePt, 0, wxALL|wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_staticText38 = new wxStaticText( this, wxID_ANY, _("Dates Before:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText38->Wrap( -1 );
+	fgSizer13->Add( m_staticText38, 0, wxTOP|wxBOTTOM|wxLEFT|wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT, 5 );
+	
+	m_textCtrlEndDatePt = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer13->Add( m_textCtrlEndDatePt, 0, wxALL|wxEXPAND, 5 );
+	
+	
+	sbSizer3->Add( fgSizer13, 0, wxEXPAND, 5 );
+	
+	
+	bSizer28->Add( sbSizer3, 0, wxEXPAND, 5 );
+	
+	
+	bSizer27->Add( bSizer28, 1, wxEXPAND, 5 );
+	
+	wxStaticBoxSizer* sbSizer2;
+	sbSizer2 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Event Type") ), wxHORIZONTAL );
+	
+	wxArrayString m_checkListTypeChoices;
+	m_checkListType = new wxCheckListBox( this, wxID_ANY, wxDefaultPosition, wxSize( -1,110 ), m_checkListTypeChoices, wxLB_NEEDED_SB );
+	sbSizer2->Add( m_checkListType, 0, wxALL|wxEXPAND, 5 );
+	
+	wxBoxSizer* bSizer12;
+	bSizer12 = new wxBoxSizer( wxVERTICAL );
+	
+	m_buttonSelectType = new wxButton( this, wxID_ANY, _("Select All"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer12->Add( m_buttonSelectType, 0, wxALL, 5 );
+	
+	m_buttonClearType = new wxButton( this, wxID_ANY, _("Clear All"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer12->Add( m_buttonClearType, 0, wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+	
+	
+	sbSizer2->Add( bSizer12, 1, wxEXPAND, 0 );
+	
+	
+	bSizer27->Add( sbSizer2, 1, wxEXPAND|wxLEFT, 5 );
+	
+	
+	bSizer1->Add( bSizer27, 1, wxEXPAND, 0 );
+	
+	m_listEvent = new rgRecEventTableCtrl( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_VIRTUAL );
+	bSizer1->Add( m_listEvent, 1, wxALL|wxEXPAND, 5 );
+	
+	m_staticline8 = new wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
+	bSizer1->Add( m_staticline8, 0, wxEXPAND | wxALL, 0 );
+	
+	wxBoxSizer* bSizerDismiss;
+	bSizerDismiss = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_staticEventCount = new wxStaticText( this, wxID_ANY, _("0 Events"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticEventCount->Wrap( -1 );
+	bSizerDismiss->Add( m_staticEventCount, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	
+	bSizerDismiss->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	m_buttonSelect = new wxButton( this, wxID_OK, _("Select"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizerDismiss->Add( m_buttonSelect, 0, wxTOP|wxBOTTOM|wxLEFT, 5 );
+	
+	m_buttonCancel = new wxButton( this, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizerDismiss->Add( m_buttonCancel, 0, wxALL, 5 );
+	
+	
+	bSizer1->Add( bSizerDismiss, 0, wxEXPAND, 5 );
+	
+	
+	this->SetSizer( bSizer1 );
+	this->Layout();
+	bSizer1->Fit( this );
+	
+	this->Centre( wxBOTH );
+	
+	// Connect Events
+	this->Connect( wxEVT_IDLE, wxIdleEventHandler( fbRgSelectIndEvent::OnIdle ) );
+	m_checkListGrp->Connect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( fbRgSelectIndEvent::OnGroupCheckSelect ), NULL, this );
+	m_checkListGrp->Connect( wxEVT_COMMAND_CHECKLISTBOX_TOGGLED, wxCommandEventHandler( fbRgSelectIndEvent::OnGroupCheckToggled ), NULL, this );
+	m_buttonSelectGrp->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSelectIndEvent::OnButtonGroupSelectAll ), NULL, this );
+	m_buttonClearGrp->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSelectIndEvent::OnButtonGroupClearAll ), NULL, this );
+	m_textCtrlBegDatePt->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( fbRgSelectIndEvent::OnBegDateText ), NULL, this );
+	m_textCtrlEndDatePt->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( fbRgSelectIndEvent::OnEndDateText ), NULL, this );
+	m_checkListType->Connect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( fbRgSelectIndEvent::OnTypeCheckSelect ), NULL, this );
+	m_checkListType->Connect( wxEVT_COMMAND_CHECKLISTBOX_TOGGLED, wxCommandEventHandler( fbRgSelectIndEvent::OnTypeCheckToggled ), NULL, this );
+	m_buttonSelectType->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSelectIndEvent::OnButtonTypeSelectAll ), NULL, this );
+	m_buttonClearType->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSelectIndEvent::OnButtonTypeClearAll ), NULL, this );
+	m_listEvent->Connect( wxEVT_COMMAND_LIST_ITEM_DESELECTED, wxListEventHandler( fbRgSelectIndEvent::OnListEventItemDeselected ), NULL, this );
+	m_listEvent->Connect( wxEVT_COMMAND_LIST_ITEM_SELECTED, wxListEventHandler( fbRgSelectIndEvent::OnListEventItemSelected ), NULL, this );
+}
+
+fbRgSelectIndEvent::~fbRgSelectIndEvent()
+{
+	// Disconnect Events
+	this->Disconnect( wxEVT_IDLE, wxIdleEventHandler( fbRgSelectIndEvent::OnIdle ) );
+	m_checkListGrp->Disconnect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( fbRgSelectIndEvent::OnGroupCheckSelect ), NULL, this );
+	m_checkListGrp->Disconnect( wxEVT_COMMAND_CHECKLISTBOX_TOGGLED, wxCommandEventHandler( fbRgSelectIndEvent::OnGroupCheckToggled ), NULL, this );
+	m_buttonSelectGrp->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSelectIndEvent::OnButtonGroupSelectAll ), NULL, this );
+	m_buttonClearGrp->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSelectIndEvent::OnButtonGroupClearAll ), NULL, this );
+	m_textCtrlBegDatePt->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( fbRgSelectIndEvent::OnBegDateText ), NULL, this );
+	m_textCtrlEndDatePt->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( fbRgSelectIndEvent::OnEndDateText ), NULL, this );
+	m_checkListType->Disconnect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( fbRgSelectIndEvent::OnTypeCheckSelect ), NULL, this );
+	m_checkListType->Disconnect( wxEVT_COMMAND_CHECKLISTBOX_TOGGLED, wxCommandEventHandler( fbRgSelectIndEvent::OnTypeCheckToggled ), NULL, this );
+	m_buttonSelectType->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSelectIndEvent::OnButtonTypeSelectAll ), NULL, this );
+	m_buttonClearType->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSelectIndEvent::OnButtonTypeClearAll ), NULL, this );
+	m_listEvent->Disconnect( wxEVT_COMMAND_LIST_ITEM_DESELECTED, wxListEventHandler( fbRgSelectIndEvent::OnListEventItemDeselected ), NULL, this );
+	m_listEvent->Disconnect( wxEVT_COMMAND_LIST_ITEM_SELECTED, wxListEventHandler( fbRgSelectIndEvent::OnListEventItemSelected ), NULL, this );
 	
 }

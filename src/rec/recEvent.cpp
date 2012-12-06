@@ -580,10 +580,10 @@ wxString recEventType::GetGroupStr( ETYPE_Grp grp )
     return grparray[grp];
 }
 
-wxArrayString recEventType::GetGroupStrings()
+wxArrayString recEventType::GetGroupStrings( size_t start )
 {
     wxArrayString strs;
-    for( size_t i = 0 ; i < ETYPE_Grp_MAX ; i++ ) {
+    for( size_t i = start ; i < ETYPE_Grp_MAX ; i++ ) {
         strs.push_back( GetGroupStr( (ETYPE_Grp) i ) );
     }
     return strs;

@@ -37,15 +37,46 @@
 #include "wx/wx.h"
 #endif
 
-#include <wx/wxsqlite3.h>
+#include <rec/recEvent.h>
 
 #include "rgTableCtrl.h"
 
+void rgRecTableCtrl::SetTable( wxSQLite3Table* table ) 
+{
+    m_table = table;
+    SetItemCount( table->GetRowCount() );
+}
 
 wxString rgRecTableCtrl::OnGetItemText( long item, long column ) const
 {
     m_table->SetRow( item );
     return m_table->GetAsString( column );
+}
+
+void rgRecEventTableCtrl::SetTable( wxSQLite3Table* table ) 
+{
+    m_table = table;
+    SetItemCount( table->GetRowCount() );
+}
+
+wxString rgRecEventTableCtrl::OnGetItemText( long item, long column ) const
+{
+    long dp;
+
+    m_table->SetRow( item );
+    switch( column )
+    {
+    case 0:
+        return recEvent::GetIdStr( GET_ID( m_table->GetInt64( 0 ) ) );
+    case 2:
+        dp = m_table->GetInt( 2 );
+        if( dp == 0 ) {
+            return wxEmptyString;
+        }
+        return calStrFromJdn( dp, CALENDAR_SCH_Gregorian );
+    default:
+        return m_table->GetAsString( column );
+    }
 }
 
 wxString rgStrTableCtrl::OnGetItemText( long item, long column ) const

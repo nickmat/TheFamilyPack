@@ -97,6 +97,7 @@ public:
 
     void OnFindFamilyID( wxCommandEvent& event );
     void OnFindIndividualID( wxCommandEvent& event );
+    void OnFindEventID( wxCommandEvent& event );
 
     void OnListIndex( wxCommandEvent& event );
     void OnListNames( wxCommandEvent& event );
@@ -207,6 +208,7 @@ enum
     tfpID_EDIT_RESEARCHER,
     tfpID_FIND_FAMILY_ID,
     tfpID_FIND_INDIVIDUAL_ID,
+    tfpID_FIND_EVENT_ID,
     tfpID_LIST_SURNAME_INDEX,
     tfpID_LIST_NAMES,
 	tfpID_LIST_INDIVIDUALS,

@@ -128,6 +128,24 @@ public:
 };
 
 //-------------------------------------------------------------------------------
+//-------------------[ rgDlgSelectIndEvent ]-------------------------------------
+//-------------------------------------------------------------------------------
+#if 0
+class rgDlgSelectIndEvent : public rgSelect
+{
+    enum {
+        COL_ID, COL_Title, /*COL_DatePt, COL_Type, COL_Grp,*/ COL_MAX
+    };
+    static wxString sm_colHeaders[COL_MAX];
+public:
+    rgDlgSelectIndEvent( 
+        wxWindow* parent = NULL, 
+        unsigned style = rgSELSTYLE_None,
+        const wxString& title = _("Select Event")
+    ) : rgSelect( parent, sm_colHeaders, COL_MAX, style, title ) {}
+};
+#endif
+//-------------------------------------------------------------------------------
 //-------------------[ rgDlgSelectIndividual ]-----------------------------------
 //-------------------------------------------------------------------------------
 

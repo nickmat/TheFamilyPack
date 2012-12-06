@@ -37,6 +37,7 @@
 #endif
 
 #include <rec/recEvent.h>
+#include <rec/recFilterEvent.h>
 #include <rec/recIndividual.h>
 
 #include "rgEdDate.h"
@@ -46,6 +47,7 @@
 #include "rgEdPerIndEvent.h"
 
 #include "rgSelect.h"
+#include "rgSelIndEvent.h"
 
 
 bool rgEditDate( idt dateID )
@@ -471,6 +473,76 @@ idt rgSelectEventType( unsigned flag, unsigned* retbutton, unsigned grpfilter )
         cont = false;
     }
     dialog->Destroy();
+    return id;
+}
+
+idt rgSelectIndEvent( unsigned selstyle, recFilterEvent* exfilter, bool* ok )
+{
+    idt id = 0;
+    bool cont = true;
+    recFilterEvent* fe = exfilter;
+    if( fe == NULL ) {
+        fe = new recFilterEvent;
+    }
+    if( ok ) *ok = false;
+
+    rgDlgSelectIndEvent* dialog = new rgDlgSelectIndEvent( NULL, selstyle, fe );
+    if( dialog->ShowModal() == wxID_OK ) {
+        if( ok ) *ok = true;
+        if( dialog->GetCreatePressed() ) {
+ //           id = rgCreateIndEvent();
+ //           if( id == 0 && ok ) *ok = false;
+            wxMessageBox( "rgCreateIndEvent/nNot yet don", "rgSelectIndEvent" );
+        } else if( dialog->GetUnknownPressed() ) {
+            id = 0;
+        } else {
+            id = dialog->GetID();
+        }
+    }
+
+#if 0
+    while( cont ) {
+        recIdVec eveIDs = fe->GetEventIDs();
+        wxArrayString table;
+        for( size_t i = 0 ; i < eveIDs.size() ; i++ ) {
+            table.push_back( recEvent::GetIdStr( eveIDs[i] ) );        
+            table.push_back( recEvent::GetTitle( eveIDs[i] ) );        
+        }
+        dialog->SetTable( table );
+        if( dialog->ShowModal() == wxID_OK ) {
+            if( dialog->GetCreatePressed() ) {
+                if( retbutton ) *retbutton = rgSELSTYLE_Create;
+                id = rgCreateEventType();
+                if( id ) {
+                    cont = false;
+                } else {
+                    dialog->SetCreatePressed( false );
+                }
+                continue;
+            }
+            if( dialog->GetFilterPressed() ) {
+                rgDlgFilterEvent* dlgfilter = new rgDlgFilterEvent( NULL, fe );;
+                dlgfilter->ShowModal();
+                dlgfilter->Destroy();
+                dialog->SetFilterPressed( false );
+                continue;
+            }
+            if( dialog->GetUnknownPressed() ) {
+                wxASSERT( false ); // We shouldn't be here, Unknown has no meaning.
+                if( retbutton ) *retbutton = rgSELSTYLE_Unknown;
+                continue;
+            }
+            size_t item = (size_t) dialog->GetSelectedRow();
+            id = eveIDs[item];
+        }
+        if( retbutton ) *retbutton = rgSELSTYLE_None;
+        cont = false;
+    }
+#endif
+    dialog->Destroy();
+    if( exfilter == NULL ) {
+        delete fe;
+    }
     return id;
 }
 

@@ -64,7 +64,7 @@ enum {
     recET_FILTER_GrpNrDeath     = 0x0020,
     recET_FILTER_GrpOther       = 0x0040,
     recET_FILTER_GrpPersonal    = 0x0080,
-    recET_FILTER_GrpAll         = 0xffff,
+    recET_FILTER_GrpAll         = 0x00ff,
     recET_FILTER_GrpFamily = (recET_FILTER_GrpFamUnion|recET_FILTER_GrpFamOther)
 };
 
@@ -134,7 +134,7 @@ public:
 
     static wxString GetGroupStr( ETYPE_Grp grp );
     wxString GetGroupStr() const { return GetGroupStr( f_grp ); }
-    static wxArrayString GetGroupStrings();
+    static wxArrayString GetGroupStrings( size_t start = 0 );
 
     static wxString GetTypeStr( idt id );
     wxString GetTypeStr() const { return f_name; }
