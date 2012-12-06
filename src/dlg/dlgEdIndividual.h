@@ -70,7 +70,9 @@ class dlgEditIndPersona : public fbDlgEditIndPersona
     DECLARE_EVENT_TABLE()
     enum {
         ID_EDIND_NEW_EVENT = 1200,
-        ID_EDIND_EXIST_EVENT
+        ID_EDIND_EXIST_EVENT,
+        ID_EDIND_UNLINK_EVENT,
+        ID_EDIND_DELETE_EVENT
     };
     enum Columns {
         COL_Type, COL_Value, COL_MAX
@@ -104,6 +106,8 @@ private:
     void OnExistingEvent( wxCommandEvent& event );
     void OnEventEditButton( wxCommandEvent& event );
     void OnEventDeleteButton( wxCommandEvent& event );
+    void OnUnlinkEvent( wxCommandEvent& event );
+    void OnDeleteEvent( wxCommandEvent& event );
     void OnEventUpButton( wxCommandEvent& event );
     void OnEventDownButton( wxCommandEvent& event );
 
@@ -120,6 +124,7 @@ private:
     recIndRelVec       m_relationships;
 
     wxString           m_nameStr;
+    long               m_currentRow;
 };
 
 #endif // DLGEDINDIVIDUAL_H

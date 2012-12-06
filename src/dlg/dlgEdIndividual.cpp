@@ -97,6 +97,8 @@ bool dlgCreateIndividual::TransferDataFromWindow()
 BEGIN_EVENT_TABLE( dlgEditIndPersona, wxDialog )
     EVT_MENU( ID_EDIND_NEW_EVENT,   dlgEditIndPersona::OnNewEvent )
     EVT_MENU( ID_EDIND_EXIST_EVENT, dlgEditIndPersona::OnExistingEvent )
+    EVT_MENU( ID_EDIND_UNLINK_EVENT, dlgEditIndPersona::OnUnlinkEvent )
+    EVT_MENU( ID_EDIND_DELETE_EVENT, dlgEditIndPersona::OnDeleteEvent )
 END_EVENT_TABLE()
 
 dlgEditIndPersona::dlgEditIndPersona( wxWindow* parent, idt indID )
@@ -432,19 +434,36 @@ void dlgEditIndPersona::OnEventDeleteButton( wxCommandEvent& event )
 {
     long row = m_listEvent->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row >= 0 ) {
-        int ans = wxMessageBox( 
-            _("Remove Event completely from database?"), _("Delete Event"),
-            wxYES_NO | wxCANCEL, this
-        );
-        if( ans != wxYES ) {
-            return;
-        }
-        m_listEvent->DeleteItem( row );
-        recEvent::DeleteFromDb( m_ies[row].FGetEventID() );
-        m_ies.erase( m_ies.begin() + row );
+        m_currentRow = row;
+        wxMenu* menu = new wxMenu;
+        menu->Append( ID_EDIND_UNLINK_EVENT, _("&Unlink Event") );
+        menu->Append( ID_EDIND_DELETE_EVENT, _("&Delete Event") );
+        PopupMenu( menu );
+        delete menu;
     } else {
         wxMessageBox( _("No row selected"), _("Delete Event") );
     }
+}
+
+void dlgEditIndPersona::OnUnlinkEvent( wxCommandEvent& event )
+{
+    m_listEvent->DeleteItem( m_currentRow );
+    recIndividualEvent::Delete( m_ies[m_currentRow].FGetID() );
+    m_ies.erase( m_ies.begin() + m_currentRow );
+}
+
+void dlgEditIndPersona::OnDeleteEvent( wxCommandEvent& event )
+{
+    int ans = wxMessageBox( 
+        _("Remove Event completely from database?"), _("Delete Event"),
+        wxYES_NO | wxCANCEL, this
+    );
+    if( ans != wxYES ) {
+        return;
+    }
+    m_listEvent->DeleteItem( m_currentRow );
+    recEvent::DeleteFromDb( m_ies[m_currentRow].FGetEventID() );
+    m_ies.erase( m_ies.begin() + m_currentRow );
 }
 
 void dlgEditIndPersona::OnEventUpButton( wxCommandEvent& event )
