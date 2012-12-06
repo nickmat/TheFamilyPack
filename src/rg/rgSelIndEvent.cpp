@@ -39,12 +39,13 @@
 
 #include "rgTableCtrl.h"
 #include "rgSelIndEvent.h"
+#include "rg/rgDialogs.h"
 
 
 rgDlgSelectIndEvent::rgDlgSelectIndEvent( wxWindow* parent, unsigned selstyle, recFilterEvent* fe )
-    : fbRgSelectIndEvent( parent ), m_fe(fe), m_begDatePt(0), m_endDatePt(0)
+    : m_create(false), m_fe(fe), m_begDatePt(0), m_endDatePt(0),
+    fbRgSelectIndEvent( parent )
 {
-    wxASSERT( selstyle == 0 );
     wxSize sz = m_listEvent->GetClientSize();
     //                               ID   Date  scrollbar
     int titlewidth = sz.GetWidth() - 50 - 100 - 20;
@@ -53,8 +54,13 @@ rgDlgSelectIndEvent::rgDlgSelectIndEvent( wxWindow* parent, unsigned selstyle, r
     m_listEvent->InsertColumn( COL_ID, _("ID"), wxLIST_FORMAT_LEFT, 50 );
     m_listEvent->InsertColumn( COL_Title, _("Title"), wxLIST_FORMAT_LEFT, titlewidth );
     m_listEvent->InsertColumn( COL_DatePt, _("Date Point"), wxLIST_FORMAT_LEFT, 100 );
-}
 
+    if( selstyle & rgSELSTYLE_Create ){
+        m_buttonCreate->Show();
+    } else {
+        m_buttonCreate->Hide();
+    }
+}
 
 bool rgDlgSelectIndEvent::TransferDataToWindow()
 {
@@ -210,6 +216,12 @@ void rgDlgSelectIndEvent::OnBegDateText( wxCommandEvent& event )
             m_begDatePt = jdn1;
         }
     }
+}
+
+void rgDlgSelectIndEvent::OnCreateButton( wxCommandEvent& event )
+{
+    m_create = true;
+    EndDialog( wxID_OK );
 }
 
 void rgDlgSelectIndEvent::OnEndDateText( wxCommandEvent& event )

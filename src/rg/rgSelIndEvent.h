@@ -42,7 +42,7 @@ class rgDlgSelectIndEvent : public fbRgSelectIndEvent
 public:
     rgDlgSelectIndEvent( wxWindow* parent, unsigned selstyle, recFilterEvent* fe );
 
-    bool GetCreatePressed() const { return false; }
+    bool GetCreatePressed() const { return m_create; }
     bool GetUnknownPressed() const { return false; }
     idt GetID() const;
 
@@ -63,11 +63,14 @@ private:
     void OnEndDateText( wxCommandEvent& event );
     void OnListEventItemDeselected( wxListEvent& event ) { m_buttonSelect->Enable( false ); }
     void OnListEventItemSelected( wxListEvent& event ) { m_buttonSelect->Enable( true ); }
+    void OnCreateButton( wxCommandEvent& event );
 
     void SetGroupAll( bool check );
     void CreateTypeList();
     void SetTypeAll( bool check );
     void Refresh();
+
+    bool m_create;
 
     recFilterEvent* m_fe;
     long m_begDatePt;

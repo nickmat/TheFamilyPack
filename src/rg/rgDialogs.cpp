@@ -320,6 +320,56 @@ bool rgEditPerEventRole( idt epID, rgSHOWROLE filter )
     return ret;
 }
 
+idt rgCreateIndEvent( idt indID )
+{
+    wxMessageBox( "Not yet implimented\nneed to rewrite dlgEditIndEvent", "rgCreateIndEvent" );
+    return 0;
+    // We need to rewrite dlgEditIndEvent for rg library
+#if 0
+    wxASSERT( indID != 0 );
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+
+    idt typeID = rgSelectEventType();
+    if( typeID == 0 ) {
+        recDb::Rollback( savepoint );
+        return 0;
+    }
+
+    recEvent eve(0);
+    eve.f_type_id = typeID;
+    eve.f_title = wxString::Format(
+        _("%s of %s"), 
+        recEventType::GetTypeStr( typeID ), 
+        recIndividual::GetFullName( indID )
+    );
+    eve.Save();
+    idt eveID = eve.GetID();
+
+    recIndividualEvent ie(0);
+    ie.FSetEventID( eveID );
+    ie.FSetIndID( indID );
+    ie.Save();
+
+    if( ! rgEditIndEventRole( ie.FGetID(), rgSHOWROLE_PrimeAll )  ) {
+        recDb::Rollback( savepoint );
+        return 0;
+    }
+
+    dlgEditIndEvent* dialog = new dlgEditIndEvent( NULL, eve.GetID() );
+
+    if( dialog->ShowModal() == wxID_OK )
+    {
+        recDb::ReleaseSavepoint( savepoint );
+    } else {
+        recDb::Rollback( savepoint );
+        eveID = 0;
+    }
+    dialog->Destroy();
+    return eveID;
+#endif
+}
+
 idt rgSelectDate( unsigned flag, unsigned* retbutton, unsigned filter, idt id )
 {
     idt dateID = 0;
@@ -476,9 +526,9 @@ idt rgSelectEventType( unsigned flag, unsigned* retbutton, unsigned grpfilter )
     return id;
 }
 
-idt rgSelectIndEvent( unsigned selstyle, recFilterEvent* exfilter, bool* ok )
+idt rgSelectIndEvent( unsigned selstyle, recFilterEvent* exfilter, bool* ok, idt indID )
 {
-    idt id = 0;
+    idt eveID = 0;
     bool cont = true;
     recFilterEvent* fe = exfilter;
     if( fe == NULL ) {
@@ -490,60 +540,19 @@ idt rgSelectIndEvent( unsigned selstyle, recFilterEvent* exfilter, bool* ok )
     if( dialog->ShowModal() == wxID_OK ) {
         if( ok ) *ok = true;
         if( dialog->GetCreatePressed() ) {
- //           id = rgCreateIndEvent();
- //           if( id == 0 && ok ) *ok = false;
-            wxMessageBox( "rgCreateIndEvent/nNot yet don", "rgSelectIndEvent" );
+            eveID = rgCreateIndEvent( indID );
+            if( eveID == 0 && ok ) *ok = false;
         } else if( dialog->GetUnknownPressed() ) {
-            id = 0;
+            eveID = 0;
         } else {
-            id = dialog->GetID();
+            eveID = dialog->GetID();
         }
     }
-
-#if 0
-    while( cont ) {
-        recIdVec eveIDs = fe->GetEventIDs();
-        wxArrayString table;
-        for( size_t i = 0 ; i < eveIDs.size() ; i++ ) {
-            table.push_back( recEvent::GetIdStr( eveIDs[i] ) );        
-            table.push_back( recEvent::GetTitle( eveIDs[i] ) );        
-        }
-        dialog->SetTable( table );
-        if( dialog->ShowModal() == wxID_OK ) {
-            if( dialog->GetCreatePressed() ) {
-                if( retbutton ) *retbutton = rgSELSTYLE_Create;
-                id = rgCreateEventType();
-                if( id ) {
-                    cont = false;
-                } else {
-                    dialog->SetCreatePressed( false );
-                }
-                continue;
-            }
-            if( dialog->GetFilterPressed() ) {
-                rgDlgFilterEvent* dlgfilter = new rgDlgFilterEvent( NULL, fe );;
-                dlgfilter->ShowModal();
-                dlgfilter->Destroy();
-                dialog->SetFilterPressed( false );
-                continue;
-            }
-            if( dialog->GetUnknownPressed() ) {
-                wxASSERT( false ); // We shouldn't be here, Unknown has no meaning.
-                if( retbutton ) *retbutton = rgSELSTYLE_Unknown;
-                continue;
-            }
-            size_t item = (size_t) dialog->GetSelectedRow();
-            id = eveIDs[item];
-        }
-        if( retbutton ) *retbutton = rgSELSTYLE_None;
-        cont = false;
-    }
-#endif
     dialog->Destroy();
     if( exfilter == NULL ) {
         delete fe;
     }
-    return id;
+    return eveID;
 }
 
 idt rgSelectIndividual( unsigned flag, unsigned* retbutton, unsigned sexfilter )

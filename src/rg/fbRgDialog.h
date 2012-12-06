@@ -281,6 +281,7 @@ class fbRgSelectIndEvent : public wxDialog
 		wxButton* m_buttonClearType;
 		rgRecEventTableCtrl* m_listEvent;
 		wxStaticLine* m_staticline8;
+		wxButton* m_buttonCreate;
 		wxStaticText* m_staticEventCount;
 		wxButton* m_buttonSelect;
 		wxButton* m_buttonCancel;
@@ -299,6 +300,7 @@ class fbRgSelectIndEvent : public wxDialog
 		virtual void OnButtonTypeClearAll( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnListEventItemDeselected( wxListEvent& event ) { event.Skip(); }
 		virtual void OnListEventItemSelected( wxListEvent& event ) { event.Skip(); }
+		virtual void OnCreateButton( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:

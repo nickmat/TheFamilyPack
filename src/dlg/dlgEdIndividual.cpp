@@ -317,7 +317,7 @@ void dlgEditIndPersona::OnEventAddButton( wxCommandEvent& event )
 
 void dlgEditIndPersona::OnNewEvent( wxCommandEvent& event )
 {
-    const wxString savepoint = "IndAddEvent";
+    const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
 
     idt typeID = rgSelectEventType();
@@ -345,8 +345,7 @@ void dlgEditIndPersona::OnNewEvent( wxCommandEvent& event )
 
     dlgEditIndEvent* dialog = new dlgEditIndEvent( NULL, eve.GetID() );
 
-    if( dialog->ShowModal() == wxID_OK )
-    {
+    if( dialog->ShowModal() == wxID_OK ) {
         recDb::ReleaseSavepoint( savepoint );
         ie.Read();
         int row = m_ies.size();
@@ -364,9 +363,40 @@ void dlgEditIndPersona::OnNewEvent( wxCommandEvent& event )
 
 void dlgEditIndPersona::OnExistingEvent( wxCommandEvent& event )
 {
-    idt eveID = rgSelectIndEvent();
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+
+    idt eveID = rgSelectIndEvent( /*rgSELSTYLE_Create, NULL, NULL, m_individual.FGetID()*/ );
+
+    recIndividualEvent ie(0);
+    ie.FSetEventID( eveID );
+    ie.FSetIndID( m_individual.FGetID() );
+    ie.Save();
+
+    if( ! rgEditIndEventRole( ie.FGetID(), rgSHOWROLE_All )  ) {
+        recDb::Rollback( savepoint );
+        return;
+    }
+
+    dlgEditIndEvent* dialog = new dlgEditIndEvent( NULL, eveID );
+
+    if( dialog->ShowModal() == wxID_OK ) {
+        recDb::ReleaseSavepoint( savepoint );
+        ie.Read();
+        int row = m_ies.size();
+        m_listEvent->InsertItem( row, recEvent::GetIdStr( eveID ) );
+        m_listEvent->SetItem( row, EC_Role, recEventTypeRole::GetName( ie.FGetRoleID() ) );
+        m_listEvent->SetItem( row, EC_Title, recEvent::GetTitle( eveID ) );
+        m_listEvent->SetItem( row, EC_Date, recEvent::GetDateStr( eveID ) );
+        m_listEvent->SetItem( row, EC_Place, recEvent::GetAddressStr( eveID ) );
+        m_ies.push_back( ie );
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+
     // TODO:
-    wxMessageBox( wxT("Not yet implimented"), wxT("OnExistingEvent") );
+//    wxMessageBox( wxT("Not yet implimented"), wxT("OnExistingEvent") );
 }
 
 void dlgEditIndPersona::OnEventEditButton( wxCommandEvent& event )

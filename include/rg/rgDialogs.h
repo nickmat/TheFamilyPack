@@ -52,6 +52,7 @@ enum rgSHOWROLE {
 extern bool rgEditIndEventRole( idt ieID, rgSHOWROLE filter = rgSHOWROLE_All );
 extern bool rgCreateIndEventRole( idt indID, idt eveID, idt roleID );
 extern bool rgEditPerEventRole( idt epID, rgSHOWROLE filter = rgSHOWROLE_All );
+extern idt rgCreateIndEvent( idt indID );
 
 enum {
     rgSELSTYLE_None       = 0x0000,
@@ -71,7 +72,8 @@ extern idt rgSelectEventType(
 extern idt rgSelectIndEvent( 
     unsigned flag = rgSELSTYLE_None, 
     recFilterEvent* filter = NULL,
-    bool* ok = NULL );
+    bool* ok = NULL,
+    idt indID = 0 );
 extern idt rgSelectIndividual( 
     unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL,
     unsigned sexfilter = recInd_FILTER_SexAll );

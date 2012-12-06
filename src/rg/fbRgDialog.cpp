@@ -821,6 +821,9 @@ fbRgSelectIndEvent::fbRgSelectIndEvent( wxWindow* parent, wxWindowID id, const w
 	wxBoxSizer* bSizerDismiss;
 	bSizerDismiss = new wxBoxSizer( wxHORIZONTAL );
 	
+	m_buttonCreate = new wxButton( this, wxID_ANY, _("Create"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizerDismiss->Add( m_buttonCreate, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
 	m_staticEventCount = new wxStaticText( this, wxID_ANY, _("0 Events"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticEventCount->Wrap( -1 );
 	bSizerDismiss->Add( m_staticEventCount, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
@@ -858,6 +861,7 @@ fbRgSelectIndEvent::fbRgSelectIndEvent( wxWindow* parent, wxWindowID id, const w
 	m_buttonClearType->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSelectIndEvent::OnButtonTypeClearAll ), NULL, this );
 	m_listEvent->Connect( wxEVT_COMMAND_LIST_ITEM_DESELECTED, wxListEventHandler( fbRgSelectIndEvent::OnListEventItemDeselected ), NULL, this );
 	m_listEvent->Connect( wxEVT_COMMAND_LIST_ITEM_SELECTED, wxListEventHandler( fbRgSelectIndEvent::OnListEventItemSelected ), NULL, this );
+	m_buttonCreate->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSelectIndEvent::OnCreateButton ), NULL, this );
 }
 
 fbRgSelectIndEvent::~fbRgSelectIndEvent()
@@ -876,5 +880,6 @@ fbRgSelectIndEvent::~fbRgSelectIndEvent()
 	m_buttonClearType->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSelectIndEvent::OnButtonTypeClearAll ), NULL, this );
 	m_listEvent->Disconnect( wxEVT_COMMAND_LIST_ITEM_DESELECTED, wxListEventHandler( fbRgSelectIndEvent::OnListEventItemDeselected ), NULL, this );
 	m_listEvent->Disconnect( wxEVT_COMMAND_LIST_ITEM_SELECTED, wxListEventHandler( fbRgSelectIndEvent::OnListEventItemSelected ), NULL, this );
+	m_buttonCreate->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSelectIndEvent::OnCreateButton ), NULL, this );
 	
 }
