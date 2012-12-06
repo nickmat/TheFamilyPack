@@ -135,9 +135,6 @@ public:
     wxSQLite3Table GetRefEventsTable() const { return GetRefEventsTable( f_per_id ); }
     static wxSQLite3Table GetRefEventsTable( idt perID );
 
-//    wxSQLite3Table GetRefAttributesTable() const { return GetRefAttributesTable( f_per_id ); }
-//    static wxSQLite3Table GetRefAttributesTable( idt perID );
-
     wxSQLite3Table GetReferencesTable() const { return GetReferencesTable( f_per_id ); }
     static wxSQLite3Table GetReferencesTable( idt perID );
 

@@ -161,8 +161,6 @@ bool dlgEditIndPersona::TransferDataToWindow()
         m_listEvent->SetItem( i, EC_Place, recEvent::GetAddressStr( m_ies[i].FGetEventID() ) );
     }
 
-    
-
     m_relationships = m_individual.GetIndRelationships();
     for( size_t i = 0 ; i < m_relationships.size() ; i++ ) {
         m_listRel->InsertItem( i, recFamily::GetIdStr( m_relationships[i].GetFamily() ) );
@@ -185,6 +183,12 @@ bool dlgEditIndPersona::TransferDataFromWindow()
         if( m_names[i].f_sequence != i+1 ) {
             m_names[i].f_sequence = i+1;
             m_names[i].Save();
+        }
+    }
+    for( size_t i = 0 ; i < m_ies.size() ; i++ ) {
+        if( m_ies[i].FGetIndSeq() != i+1 ) {
+            m_ies[i].FSetIndSeq( i+1 );
+            m_ies[i].Save();
         }
     }
     m_individual.Update();
@@ -396,9 +400,6 @@ void dlgEditIndPersona::OnExistingEvent( wxCommandEvent& event )
         recDb::Rollback( savepoint );
     }
     dialog->Destroy();
-
-    // TODO:
-//    wxMessageBox( wxT("Not yet implimented"), wxT("OnExistingEvent") );
 }
 
 void dlgEditIndPersona::OnEventEditButton( wxCommandEvent& event )
@@ -468,14 +469,64 @@ void dlgEditIndPersona::OnDeleteEvent( wxCommandEvent& event )
 
 void dlgEditIndPersona::OnEventUpButton( wxCommandEvent& event )
 {
-    // TODO:
-    wxMessageBox( wxT("Not yet implimented"), wxT("OnEventUpButton") );
+    long row = m_listEvent->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row < 0 ) {
+        wxMessageBox( _("Row not selected"), _("Event Up") );
+        return;
+    }
+    if( row > 0 ) {
+        recIndividualEvent ie = m_ies[row];
+        m_ies[row] = m_ies[row-1];
+        m_ies[row-1] = ie;
+
+        idt eveID = m_ies[row].FGetEventID();
+        m_listEvent->SetItem( row, EC_Number, recEvent::GetIdStr( eveID ) );
+        m_listEvent->SetItem( row, EC_Role, recEventTypeRole::GetName( m_ies[row].FGetRoleID() ) );
+        m_listEvent->SetItem( row, EC_Title, recEvent::GetTitle( eveID ) );
+        m_listEvent->SetItem( row, EC_Date, recEvent::GetDateStr( eveID ) );
+        m_listEvent->SetItem( row, EC_Place, recEvent::GetAddressStr( eveID ) );
+
+        --row;
+        eveID = m_ies[row].FGetEventID();
+        m_listEvent->SetItem( row, EC_Number, recEvent::GetIdStr( eveID ) );
+        m_listEvent->SetItem( row, EC_Role, recEventTypeRole::GetName( m_ies[row].FGetRoleID() ) );
+        m_listEvent->SetItem( row, EC_Title, recEvent::GetTitle( eveID ) );
+        m_listEvent->SetItem( row, EC_Date, recEvent::GetDateStr( eveID ) );
+        m_listEvent->SetItem( row, EC_Place, recEvent::GetAddressStr( eveID ) );
+
+        m_listEvent->SetItemState( row, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+    }
 }
 
 void dlgEditIndPersona::OnEventDownButton( wxCommandEvent& event )
 {
-    // TODO:
-    wxMessageBox( wxT("Not yet implimented"), wxT("OnEventDownButton") );
+    long row = m_listEvent->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row < 0 ) {
+        wxMessageBox( _("Row not selected"), _("Event Down") );
+        return;
+    }
+    if( row < (long) m_listEvent->GetItemCount() - 1 ) {
+        recIndividualEvent ie = m_ies[row];
+        m_ies[row] = m_ies[row+1];
+        m_ies[row+1] = ie;
+
+        idt eveID = m_ies[row].FGetEventID();
+        m_listEvent->SetItem( row, EC_Number, recEvent::GetIdStr( eveID ) );
+        m_listEvent->SetItem( row, EC_Role, recEventTypeRole::GetName( m_ies[row].FGetRoleID() ) );
+        m_listEvent->SetItem( row, EC_Title, recEvent::GetTitle( eveID ) );
+        m_listEvent->SetItem( row, EC_Date, recEvent::GetDateStr( eveID ) );
+        m_listEvent->SetItem( row, EC_Place, recEvent::GetAddressStr( eveID ) );
+
+        row++;
+        eveID = m_ies[row].FGetEventID();
+        m_listEvent->SetItem( row, EC_Number, recEvent::GetIdStr( eveID ) );
+        m_listEvent->SetItem( row, EC_Role, recEventTypeRole::GetName( m_ies[row].FGetRoleID() ) );
+        m_listEvent->SetItem( row, EC_Title, recEvent::GetTitle( eveID ) );
+        m_listEvent->SetItem( row, EC_Date, recEvent::GetDateStr( eveID ) );
+        m_listEvent->SetItem( row, EC_Place, recEvent::GetAddressStr( eveID ) );
+
+        m_listEvent->SetItemState( row, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+    }
 }
 
 void dlgEditIndPersona::OnRelAddButton( wxCommandEvent& event )
