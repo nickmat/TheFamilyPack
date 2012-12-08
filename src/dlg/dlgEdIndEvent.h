@@ -95,30 +95,4 @@ private:
     wxString    m_dateImageFN;
 };
 
-//-----------------------------------------------------
-//      dlgEditFamEvent
-//-----------------------------------------------------
-
-class dlgEditFamEvent : public fbDlgEditFamEvent
-{
-public:
-    dlgEditFamEvent(
-        wxWindow* parent, idt eventID,
-        recEventType::ETYPE_Grp grp = recEventType::ETYPE_Grp_Unstated );
-
-    idt GetEventID() const { return m_event.f_id; }
-
-private:
-    bool TransferDataToWindow();
-    bool TransferDataFromWindow();
-
-    void OnTypeButton( wxCommandEvent& event );
-    void OnDateButton( wxCommandEvent& event );
-    void OnAddrButton( wxCommandEvent& event );
-
-    recEventType::ETYPE_Grp m_grp;
-    recEvent  m_event;
-};
-
-
 #endif // DLGEDINDEVENT_H

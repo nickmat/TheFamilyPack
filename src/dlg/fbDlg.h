@@ -34,7 +34,6 @@ class tfpListCtrlIndividuals;
 #include <wx/notebook.h>
 #include <wx/listbox.h>
 #include <wx/statbox.h>
-#include <wx/radiobox.h>
 #include <wx/splitter.h>
 #include <wx/html/htmlwin.h>
 #include <wx/toolbar.h>
@@ -270,93 +269,6 @@ class fbDlgEditFamily : public wxDialog
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class fbDlgEditFamily1
-///////////////////////////////////////////////////////////////////////////////
-class fbDlgEditFamily1 : public wxDialog 
-{
-	private:
-	
-	protected:
-		enum
-		{
-			tfpID_EDFAM_FAM_ID = 1000,
-			tfpID_EDFAM_HUSB_BUT,
-			tfpID_EDFAM_HUSB_NAM,
-			tfpID_EDFAM_WIFE_BUT,
-			tfpID_EDFAM_WIFE_NAM,
-			tfpID_EDFAM_MARR_BUT,
-			tfpID_EDFAM_MARR_EV,
-			tfpID_EDFAM_CHILD_LIST,
-			tfpID_EDFAM_ADD,
-			tfpID_EDFAM_EDIT,
-			tfpID_EDFAM_DELETE,
-			tfpID_EDFAM_UP,
-			tfpID_EDFAM_DOWN
-		};
-		
-		wxStaticText* m_staticText1;
-		wxStaticText* m_staticFamID;
-		wxButton* m_buttonHusbID;
-		wxStaticText* m_staticText3;
-		wxStaticText* m_staticHusbName;
-		wxButton* m_buttonWife;
-		wxStaticText* m_staticText9;
-		wxStaticText* m_staticWifeName;
-		wxButton* m_buttonMarr;
-		wxStaticText* m_staticText12;
-		wxStaticText* m_staticMarrEvent;
-		wxListBox* m_listChild;
-		wxButton* m_buttonAdd;
-		wxButton* m_buttonEdit;
-		wxButton* m_buttonDel;
-		wxButton* m_buttonUp;
-		wxButton* m_button1Dn;
-		wxStaticLine* m_staticline1;
-		wxButton* m_buttonSave;
-		wxButton* m_buttonCancel;
-	
-	public:
-		
-		fbDlgEditFamily1( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Family"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 414,354 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
-		~fbDlgEditFamily1();
-	
-};
-
-///////////////////////////////////////////////////////////////////////////////
-/// Class fbDlgEditDateFromAge
-///////////////////////////////////////////////////////////////////////////////
-class fbDlgEditDateFromAge : public wxDialog 
-{
-	private:
-	
-	protected:
-		wxStaticText* m_staticTextId;
-		wxStaticText* m_staticTextOutput;
-		wxStaticText* m_staticText5;
-		wxTextCtrl* m_textCtrlAge;
-		wxStaticText* m_staticText2;
-		wxTextCtrl* m_textCtrlBaseDate;
-		wxStaticText* m_staticText3;
-		wxChoice* m_choiceType;
-		wxStaticText* m_staticText4;
-		wxChoice* m_choiceDisplay;
-		wxRadioBox* m_radioBoxUnits;
-		wxStaticLine* m_staticline1;
-		wxButton* m_buttonSave;
-		wxButton* m_buttonCancel;
-		
-		// Virtual event handlers, overide them in your derived class
-		virtual void SetStaticDate( wxIdleEvent& event ) { event.Skip(); }
-		
-	
-	public:
-		
-		fbDlgEditDateFromAge( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Date from Age"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 264,275 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxSYSTEM_MENU ); 
-		~fbDlgEditDateFromAge();
-	
-};
-
-///////////////////////////////////////////////////////////////////////////////
 /// Class fbDlgEditName
 ///////////////////////////////////////////////////////////////////////////////
 class fbDlgEditName : public wxDialog 
@@ -539,44 +451,6 @@ class fbDlgEditIndEvent : public wxDialog
 			m_splitter6->SetSashPosition( 230 );
 			m_splitter6->Disconnect( wxEVT_IDLE, wxIdleEventHandler( fbDlgEditIndEvent::m_splitter6OnIdle ), NULL, this );
 		}
-	
-};
-
-///////////////////////////////////////////////////////////////////////////////
-/// Class fbDlgEditFamEvent
-///////////////////////////////////////////////////////////////////////////////
-class fbDlgEditFamEvent : public wxDialog 
-{
-	private:
-	
-	protected:
-		wxStaticText* m_staticText1;
-		wxTextCtrl* m_textCtrlTitle;
-		wxStaticText* m_staticText2;
-		wxTextCtrl* m_textCtrlType;
-		wxButton* m_buttonType;
-		wxStaticText* m_staticText3;
-		wxTextCtrl* m_textCtrlDate;
-		wxButton* m_buttonDate;
-		wxStaticText* m_staticText4;
-		wxTextCtrl* m_textCtrlAddr;
-		wxButton* m_buttonAddr;
-		wxStaticText* m_staticText5;
-		wxTextCtrl* m_textCtrlNote;
-		wxStaticLine* m_staticline1;
-		wxButton* m_buttonSave;
-		wxButton* m_buttonCancel;
-		
-		// Virtual event handlers, overide them in your derived class
-		virtual void OnTypeButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnDateButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnAddrButton( wxCommandEvent& event ) { event.Skip(); }
-		
-	
-	public:
-		
-		fbDlgEditFamEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 322,284 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
-		~fbDlgEditFamEvent();
 	
 };
 
