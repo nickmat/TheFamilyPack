@@ -52,8 +52,6 @@ typedef std::vector< wxLongLong_t > IntegerVec;
 typedef std::vector< double > DoubleVec;
 typedef std::vector< bool > BoolVec;
 
-
-typedef wxVector< idt >  recIdList;
 typedef std::vector< idt >  recIdVec;
 typedef std::vector< bool > recBoolVec;
 

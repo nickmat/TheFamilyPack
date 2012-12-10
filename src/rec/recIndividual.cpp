@@ -610,7 +610,7 @@ recIndRelVec recIndividual::GetIndRelationships( idt indID )
     rel.SetType( recIndRelationship::IRT_Child );
     for( size_t i = 0 ; i < fams.size() ; i++ ) {
         rel.SetFamily( fams[i].FGetID() );
-        recIdList children = fams[i].GetChildrenIds( fams[i].FGetID() );
+        recIdVec children = fams[i].GetChildrenIds( fams[i].FGetID() );
         for( size_t j = 0 ; j < children.size() ; j++ ) {
             rel.SetIndividual2( children[j] );
             rels.push_back( rel );
@@ -891,9 +891,9 @@ recIndividualList recFamily::GetChildren( idt fam )
     return children;
 }
 
-recIdList recFamily::GetChildrenIds( idt fam )
+recIdVec recFamily::GetChildrenIds( idt fam )
 {
-    recIdList children;
+    recIdVec children;
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
 

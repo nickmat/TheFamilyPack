@@ -171,7 +171,7 @@ wxString tfpCreateDescChart( idt indID )
 // Recursive function which creates Descendants chart
 void WrDescCht( idt indID, int gen )
 {
-    recIdList children;
+    recIdVec children;
     recFamilyVec families = recIndividual::GetFamilyList( indID );
     for( size_t i = 0 ; i < families.size() ; i++ )
     {

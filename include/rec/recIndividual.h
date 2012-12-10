@@ -217,8 +217,8 @@ public:
     bool ReadParents( idt indID );
     static recIndividualList GetChildren( idt famID );
     recIndividualList GetChildren() const { return GetChildren( f_id ); }
-    static recIdList GetChildrenIds( idt famID );
-    recIdList GetChildrenIds() const { return GetChildrenIds( f_id ); }
+    static recIdVec GetChildrenIds( idt famID );
+    recIdVec GetChildrenIds() const { return GetChildrenIds( f_id ); }
     static int GetChildNextSequence( idt famID );
     static int GetParentNextSequence( idt indID );
     recFamIndVec GetChildLinks() { return GetChildLinks( f_id ); }
