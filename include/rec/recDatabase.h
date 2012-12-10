@@ -53,7 +53,6 @@ typedef std::vector< double > DoubleVec;
 typedef std::vector< bool > BoolVec;
 
 typedef std::vector< idt >  recIdVec;
-typedef std::vector< bool > recBoolVec;
 
 extern idt recGetID( const wxString& str );
 inline wxString recGetStr( idt id ) { return wxString::Format( ID, id ); }

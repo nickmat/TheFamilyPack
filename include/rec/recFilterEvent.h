@@ -69,7 +69,7 @@ private:
     FE_Class       m_class;
     bool           m_groupChks[recEventType::ETYPE_Grp_MAX];
     recIdVec       m_types;
-    recBoolVec     m_typeChks;
+    BoolVec        m_typeChks;
     long           m_begDate;
     long           m_endDate;
     wxSQLite3Table m_table;
