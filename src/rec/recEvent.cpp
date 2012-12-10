@@ -370,7 +370,8 @@ recEventVec recEvent::FindEquivRefEvents( idt indEventID )
         "   WHERE LP.ref_per_id=EP.per_id AND EP.role_id=R.id AND E.id="ID" "
         "    AND R.type_id=E.type_id AND NOT R.prime=0) "
         "  JOIN "
-        "   (SELECT per_id FROM EventPersona WHERE event_id="ID") "
+        "   (SELECT I.per_id FROM IndividualEvent IE, Individual I"
+        "    WHERE IE.ind_id=I.id AND IE.event_id="ID") "
         "  ON ind_per_id=per_id) "
         "ON id=event_id;",
         indEventID, indEventID
