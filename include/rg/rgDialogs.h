@@ -78,4 +78,15 @@ extern idt rgSelectIndividual(
     unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL,
     unsigned sexfilter = recInd_FILTER_SexAll );
 
+// See rgCrName.h
+enum {
+    rgCRNAME_Default   = 0x000, // Use default settings to decode name1 string.
+    rgCRNAME_Sur_Given = 0x001  // If given, name1 is surname, name2 is given name.
+};
+extern idt rgCreateName( idt perID,
+    unsigned flags = rgCRNAME_Default, 
+    const wxString& name1 = wxEmptyString,
+    const wxString& name2 = wxEmptyString,
+    recNameStyle::Style type = recNameStyle::NS_Default );
+
 #endif // RGDIALOGS_H

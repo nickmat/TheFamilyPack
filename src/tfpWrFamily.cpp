@@ -206,7 +206,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
         htm << "<a href='tfpe:IL" << fam.f_id
             << "'><img src='memory:blank.png' width='200' height='40' alt='Add husband'></a>";
     } else {
-        htm << "<a href='tfpe:I" << fam.f_husb_id
+        htm << "<a href='tfp:I" << fam.f_husb_id
             << "'>" << recIndividual::GetFullName( fam.f_husb_id )
             << "</a><br>"
             << recIndividual::GetDateEpitaph( fam.f_husb_id );
@@ -218,7 +218,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
         htm << "<a href='tfpe:IR" << fam.f_id
             << "'><img src='memory:blank.png' width='200' height='40' alt='Add wife'></a>";
     } else {
-        htm << "<a href='tfpe:I" << fam.f_wife_id
+        htm << "<a href='tfp:I" << fam.f_wife_id
             << "'>" << recIndividual::GetFullName( fam.f_wife_id )
             << "</a><br>"
             << recIndividual::GetDateEpitaph( fam.f_wife_id );

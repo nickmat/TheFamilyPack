@@ -83,6 +83,9 @@ public:
 
     static wxString GetNameStr( idt id );
     wxString GetNameStr() const { return GetNameStr( f_id ); }
+
+
+
     static wxString GetNamePartStr( idt nameID, idt partID );
     wxString GetNamePartStr( idt partID ) const
         { return GetNamePartStr( f_id, partID ); }

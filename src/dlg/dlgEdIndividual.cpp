@@ -198,24 +198,15 @@ bool dlgEditIndPersona::TransferDataFromWindow()
 
 void dlgEditIndPersona::OnNameAddButton( wxCommandEvent& event )
 {
-    const wxString savepoint = "PerAddName";
-    dlgEditName* dialog = new dlgEditName( NULL );
-    dialog->SetPersonaID( m_persona.f_id );
-
-    recDb::Savepoint( savepoint );
-    if( dialog->ShowModal() == wxID_OK )
-    {
-        recDb::ReleaseSavepoint( savepoint );
-        recName* name = dialog->GetName();
+    idt nameID = rgCreateName( m_persona.FGetID() );
+    if( nameID ) {
+        recName name(nameID);
         int row = m_names.size();
-        m_listName->InsertItem( row, name->GetIdStr() );
-        m_listName->SetItem( row, NC_Type, recNameStyle::GetStyleStr( name->f_style_id ) );
-        m_listName->SetItem( row, NC_Name, name->GetNameStr() );
-        m_names.push_back( *name );
-    } else {
-        recDb::Rollback( savepoint );
+        m_listName->InsertItem( row, name.GetIdStr() );
+        m_listName->SetItem( row, NC_Type, recNameStyle::GetStyleStr( name.f_style_id ) );
+        m_listName->SetItem( row, NC_Name, name.GetNameStr() );
+        m_names.push_back( name );
     }
-    dialog->Destroy();
 }
 
 void dlgEditIndPersona::OnNameEditButton( wxCommandEvent& event )

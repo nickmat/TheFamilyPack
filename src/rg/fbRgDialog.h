@@ -35,6 +35,32 @@ class rgStrTableCtrl;
 ///////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
+/// Class fbRgCreateName
+///////////////////////////////////////////////////////////////////////////////
+class fbRgCreateName : public wxDialog 
+{
+	private:
+	
+	protected:
+		wxStaticText* m_staticText1;
+		wxChoice* m_choiceType;
+		wxStaticText* m_staticText2;
+		wxTextCtrl* m_textCtrlGiven;
+		wxStaticText* m_staticText3;
+		wxTextCtrl* m_textCtrlSurname;
+		wxStaticLine* m_staticline1;
+		wxStaticText* m_staticNameID;
+		wxButton* m_buttonSave;
+		wxButton* m_buttonCancel;
+	
+	public:
+		
+		fbRgCreateName( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Create Name"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
+		~fbRgCreateName();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
 /// Class fbRgEditDate
 ///////////////////////////////////////////////////////////////////////////////
 class fbRgEditDate : public wxDialog 

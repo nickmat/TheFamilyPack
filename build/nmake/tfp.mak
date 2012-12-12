@@ -195,6 +195,7 @@ RECGUI_OBJECTS =  \
 	recgui_recgui.obj \
 	recgui_fbRgDialog.obj \
 	recgui_rgCompareEvent.obj \
+	recgui_rgCrName.obj \
 	recgui_rgDialogs.obj \
 	recgui_rgEdDate.obj \
 	recgui_rgEdEventType.obj \
@@ -635,6 +636,9 @@ recgui_fbRgDialog.obj: .\..\..\src\rg\fbRgDialog.cpp
 
 recgui_rgCompareEvent.obj: .\..\..\src\rg\rgCompareEvent.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgCompareEvent.cpp
+
+recgui_rgCrName.obj: .\..\..\src\rg\rgCrName.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgCrName.cpp
 
 recgui_rgDialogs.obj: .\..\..\src\rg\rgDialogs.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgDialogs.cpp
