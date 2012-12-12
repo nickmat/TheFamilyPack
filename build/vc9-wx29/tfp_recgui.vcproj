@@ -200,6 +200,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rg\rgCompareEvent.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rg\rgDialogs.cpp"
 				>
 			</File>
@@ -243,6 +247,10 @@
 			>
 			<File
 				RelativePath="..\..\src\rg\fbRgDialog.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\rg\rgCompareEvent.h"
 				>
 			</File>
 			<File

@@ -133,6 +133,7 @@ public:
     static bool HasDateSpan( idt etID );
 
     static wxString GetGroupStr( ETYPE_Grp grp );
+    static wxString GetGroupStr( idt typeID );
     wxString GetGroupStr() const { return GetGroupStr( f_grp ); }
     static wxArrayString GetGroupStrings( size_t start = 0 );
 
@@ -233,6 +234,8 @@ public:
     }
     static recEventVec FindEquivRefEvents( idt indEventID );
 
+    static bool IsIndEvent( idt eveID );
+    bool IsIndEvent() const { return IsIndEvent( f_id ); }
     recIndEventVec GetIndividualEvents();
     recEventPersonaVec GetEventPersonas();
     static wxSQLite3ResultSet GetTitleList();

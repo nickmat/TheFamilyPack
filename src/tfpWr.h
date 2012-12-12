@@ -30,9 +30,7 @@
 #define TFPWR_H
 
 #include <rec/recDatabase.h>
-
-// See tfpWr.cpp
-extern wxString tfpGetDisplayText( const wxString& name );
+class rgCompareEvent;
 
 // See tfpWrAdmin.cpp
 extern wxString tfpWriteResearcherList();
@@ -43,7 +41,7 @@ extern wxString tfpCreateDescChart( idt indID );
 
 // See tfpWrEvent.cpp
 extern wxString tfpWriteEventIndex();
-extern wxString tfpWriteEventPage( idt refID );
+extern wxString tfpWriteEventPage( idt eveID, rgCompareEvent* ce );
 
 // See tfpWrFamily.cpp
 extern wxString tfpWriteFamilyPage( idt famID, size_t iL = 0, size_t iR = 0 );

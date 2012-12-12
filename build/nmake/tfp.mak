@@ -86,7 +86,6 @@ TFP_OBJECTS =  \
 	tfp_tfpVersion.obj \
 	tfp_tfpWrAdmin.obj \
 	tfp_tfpWrChart.obj \
-	tfp_tfpWr.obj \
 	tfp_tfpWrEvent.obj \
 	tfp_tfpWrFamily.obj \
 	tfp_tfpWrIndividual.obj \
@@ -195,6 +194,7 @@ RECGUI_CXXFLAGS = /MD$(VAR_23) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) \
 RECGUI_OBJECTS =  \
 	recgui_recgui.obj \
 	recgui_fbRgDialog.obj \
+	recgui_rgCompareEvent.obj \
 	recgui_rgDialogs.obj \
 	recgui_rgEdDate.obj \
 	recgui_rgEdEventType.obj \
@@ -498,9 +498,6 @@ tfp_tfpWrAdmin.obj: .\..\..\src\tfpWrAdmin.cpp
 tfp_tfpWrChart.obj: .\..\..\src\tfpWrChart.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfpWrChart.cpp
 
-tfp_tfpWr.obj: .\..\..\src\tfpWr.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfpWr.cpp
-
 tfp_tfpWrEvent.obj: .\..\..\src\tfpWrEvent.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfpWrEvent.cpp
 
@@ -635,6 +632,9 @@ recgui_recgui.obj: .\..\..\src\rec\recgui.cpp
 
 recgui_fbRgDialog.obj: .\..\..\src\rg\fbRgDialog.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\fbRgDialog.cpp
+
+recgui_rgCompareEvent.obj: .\..\..\src\rg\rgCompareEvent.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgCompareEvent.cpp
 
 recgui_rgDialogs.obj: .\..\..\src\rg\rgDialogs.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgDialogs.cpp

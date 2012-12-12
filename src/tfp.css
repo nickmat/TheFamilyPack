@@ -30,7 +30,11 @@
 
 body {
     color: #444;
-    background-color: Ivory;
+    background-color: white;
+}
+
+h1 {
+    text-align: center;
 }
 
 img {
@@ -46,6 +50,7 @@ a {
 
 a:hover {
   color: #000;
+  text-decoration: underline;
 }
 
 a.web:hover {
@@ -103,6 +108,7 @@ table.core table.parent {
     width: 90%;
     padding: 0;
     margin: 0.2em auto;
+    border: 2px solid #777;
 }
 
 table.core td.frame {
@@ -128,6 +134,32 @@ table.core td.status {
 
 table.core td.kids {
     text-align: center;
+}
+
+table.core table.data {
+    border-collapse: collapse;
+    margin: 0.2em auto;
+    border: 2px solid #777;
+}
+
+table.core table.data th {
+    text-align: center;
+    text-weight: bold;
+    background-color: #e7e7e7;
+    padding: 0 0.5em;
+    border: 2px solid #777;
+}
+
+table.core table.diag td {
+    border-width: 1px 2px;
+    padding: 0 0.5em;
+    margin: 0;
+    background-color: white;
+    white-space: nowrap;
+}
+
+table.core table.diag td.diag {
+    border-width: 0;
 }
 
 /* End of tfp.css file */

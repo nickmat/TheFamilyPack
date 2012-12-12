@@ -40,16 +40,18 @@
 #include <wx/html/htmlwin.h>
 
 #include <rec/recDatabase.h>
+#include "tfpFrame.h"
 #include "dlgNote.h"
 #include "tfpWr.h"
 
 
-dlgNote::dlgNote( wxWindow* parent, const wxString& name )
+dlgNote::dlgNote( TfpFrame* parent, const wxString& name )
     : wxDialog( 
-        parent, wxID_ANY, "Note", wxDefaultPosition, wxDefaultSize, 
+        (wxWindow*) parent, wxID_ANY, "Note", wxDefaultPosition, wxDefaultSize, 
         wxCAPTION | wxCLOSE_BOX | wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER 
     )
 {
+    m_frame = parent;
 	SetSizeHints( wxDefaultSize, wxDefaultSize );
 	
 	wxBoxSizer* bSizer1;
@@ -86,14 +88,14 @@ dlgNote::~dlgNote()
 
 bool dlgNote::TransferDataToWindow()
 {
-    m_htmlWin->SetPage( tfpGetDisplayText( m_name ) );
+    m_htmlWin->SetPage( m_frame->GetDisplayText( m_name ) );
     return true;
 }
 
 void dlgNote::OnIdle( wxIdleEvent& event )
 {
     if( m_cond != recDb::GetChange() ) {
-        m_htmlWin->SetPage( tfpGetDisplayText( m_name ) );
+        m_htmlWin->SetPage( m_frame->GetDisplayText( m_name ) );
         m_cond = recDb::GetChange();
     }
 }

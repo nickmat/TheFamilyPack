@@ -68,19 +68,19 @@ wxString tfpWriteIndividualPage( idt indID )
         << ind.GetIdStr() << ", " << recGetSexStr( per.f_sex )
         << "</b></td></tr>";
     // All Events
-    recEventPersonaVec eps = per.ReadEventPersonas();
-    for( i = 0 ; i < eps.size() ; i++ ) {
-        recEvent eve(eps[i].FGetEventID());
+    recIndEventVec ies = ind.GetEvents();
+    for( i = 0 ; i < ies.size() ; i++ ) {
+        recEvent eve(ies[i].FGetEventID());
         htm << "<tr><td align=right>"
             << eve.GetTypeStr()
             << ":</td><td><b>";
         if( eve.GetTypeGroup() == recEventType::ETYPE_Grp_Personal ) {
-            htm << recEventTypeRole::GetName( eps[i].FGetRoleID() ) << " ";
+            htm << recEventTypeRole::GetName( ies[i].FGetRoleID() ) << " ";
         }
         htm << eve.GetDetailStr();
 
         if( !eve.FGetNote().IsEmpty() ) {
-            htm << "<br>" << eps[i].FGetNote();
+            htm << "<br>" << ies[i].FGetNote();
         }
 
         htm << "</b> <a href='tfp:E" << eve.FGetID()

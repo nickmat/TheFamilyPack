@@ -279,6 +279,13 @@ wxString recEvent::GetNote( idt id )
     return result.GetAsString( 0 );
 }
 
+bool recEvent::IsIndEvent( idt eveID )
+{
+    const char* fmt = "SELECT id FROM IndividualEvent WHERE event_id="ID";";
+    idt indID = ExecuteID( fmt, eveID );
+    return indID ? true : false;
+}
+
 recIndEventVec recEvent::GetIndividualEvents()
 {
     recIndEventVec vec;
@@ -579,6 +586,12 @@ wxString recEventType::GetGroupStr( ETYPE_Grp grp )
         _("Personal")
     };
     return grparray[grp];
+}
+
+wxString recEventType::GetGroupStr( idt typeID )
+{
+    recEventType et( typeID );
+    return GetGroupStr( et.FGetGrp() );
 }
 
 wxArrayString recEventType::GetGroupStrings( size_t start )

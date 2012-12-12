@@ -1,11 +1,11 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        dlgEdIndEvent.h
+ * Name:        src/rg/rgCompareEvent.h
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Edit database Individual Event dialog header.
+ * Purpose:     Class used to display linked Individual Event data.
  * Author:      Nick Matthews
  * Modified by:
  * Website:     http://thefamilypack.org
- * Created:     9 October 2010
+ * Created:     21 November 2012
  * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2010, Nick Matthews.
  * Licence:     GNU GPLv3
@@ -27,53 +27,33 @@
 
 */
 
-#ifndef DLGEDINDEVENT_H
-#define DLGEDINDEVENT_H
-
-#include <rec/recEvent.h>
-#include <rec/recDate.h>
-#include <rec/recPlace.h>
-#include <rec/recIndividual.h>
-#include <rec/recPersona.h>
-
-#include "fbDlg.h"
+#ifndef RGCOMPAREEVENT_H
+#define RGCOMPAREEVENT_H
 
 #include <map>
+
+#include <rec/recEvent.h>
+#include <rec/recIndividual.h>
+#include <rec/recPlace.h>
+
 typedef std::map< idt, recIdVec > IndPerMap;
 
-//-----------------------------------------------------
-//      dlgEditIndEvent
-//-----------------------------------------------------
-
-class dlgEditIndEvent : public fbDlgEditIndEvent
+class rgCompareEvent
 {
-    enum Columns {
-        COL_IndID, COL_Name, COL_Role, COL_Note, COL_MAX
-    };
 public:
-    dlgEditIndEvent( wxWindow* parent, idt eventID );
-    ~dlgEditIndEvent();
+    rgCompareEvent() {};
+    ~rgCompareEvent();
+
+    void Reset( idt eveID );
+
+    wxString GetRefEventTable();
+    wxString GetRefDatesTable();
 
 private:
-    bool TransferDataToWindow();
-    void ListLinkedIndividuals();
-    wxString WrReferenceEvents();
-    wxString WrReferenceDates();
+    void UnloadFiles();
     bool CreateDateImageFile();
     static void DrawDateImage( 
         wxDC& dc, const recDate& date, long start, double scale, const wxColour& color );
-    wxString WrReferencePlaces();
-    wxString WrReferencePersonas();
-    wxString WrReferenceIndividuals();
-    bool TransferDataFromWindow();
-
-    void OnDate1Button( wxCommandEvent& event );
-    void OnDate2Button( wxCommandEvent& event );
-    void OnPlaceButton( wxCommandEvent& event );
-
-    void OnAddButton( wxCommandEvent& event );
-    void OnEditButton( wxCommandEvent& event );
-    void OnDeleteButton( wxCommandEvent& event );
 
     recEvent  m_event;
     recDate   m_date1;
@@ -88,9 +68,9 @@ private:
     recIdVec    m_personaIDs;
     IndPerMap   m_indPerMap;
     recDateVec  m_reDate1s;
-    StringVec   m_dateImageFNs;
 
     wxString    m_dateImageFN;
+    StringVec   m_dateImageFNs;
 };
 
-#endif // DLGEDINDEVENT_H
+#endif // RGCOMPAREEVENT_H

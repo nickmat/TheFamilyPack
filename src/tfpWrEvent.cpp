@@ -38,8 +38,14 @@
 
 #include <rec/recEvent.h>
 #include <rec/recPersona.h>
+#include <rec/recIndividual.h>
+
+#include <rg/rgCompareEvent.h>
 
 #include "tfpWr.h"
+
+static wxString tfpWriteIndEventPage( idt eventID, rgCompareEvent* ce );
+static wxString tfpWriteRefEventPage( idt eventID );
 
 wxString tfpWriteEventIndex()
 {
@@ -83,7 +89,75 @@ wxString tfpWriteEventIndex()
     return htm;
 }
 
-wxString tfpWriteEventPage( idt eventID )
+wxString tfpWriteEventPage( idt eventID, rgCompareEvent* ce )
+{
+    if( recEvent::IsIndEvent( eventID ) ) {
+        return tfpWriteIndEventPage( eventID, ce );
+    }
+    return tfpWriteRefEventPage( eventID );
+}
+
+
+wxString tfpWriteIndEventPage( idt eventID, rgCompareEvent* ce )
+{
+    ce->Reset( eventID );
+    wxString htm;
+    recEvent eve(eventID);
+    if( eve.f_id == 0 ) return wxEmptyString;
+
+    htm << "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
+           "\"http://www.w3.org/TR/html4/loose.dtd\">\n"
+           "<html>\n<head>\n"
+           "<title>Event " << eve.GetIdStr() << "</title>\n"
+           "<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>\n"
+           "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>\n"
+           "</head>\n<body>\n"
+
+           "<h1>Event " << eve.GetIdStr() << ": " << eve.f_title << "</h1>\n"
+           "<table class='core'>\n<tr>\n<td class='frame frame-top'>\n"
+
+           "<table class='data'>\n<tr>\n"
+           "<td><b>Date: </b>" << eve.GetDateStr() << "</td>\n"
+           "</tr>\n<tr>\n"
+           "<td><b>Place: </b>" << eve.GetAddressStr() << "</td>\n"
+           "</tr>\n<tr>\n"
+           "<td><b>Note: </b>" << eve.f_note << "</td>\n"
+           "</tr>\n<tr>\n"
+           "<td><b>Group: </b>" << recEventType::GetGroupStr( eve.FGetTypeID() ) <<
+           " <b>Type: </b>" << eve.GetTypeStr() << "</td>\n"
+           "</tr>\n</table>\n"
+           "</td>\n</tr>\n<tr>\n<td class='frame frame-top'>\n";
+
+    recIndEventVec ies = eve.GetIndividualEvents();
+    if( !ies.empty() ) {
+        htm << "<table class='data'>\n<tr>\n"
+               "<th>Role</th>\n<th>Individual</th>\n<th>Note</th>\n</tr>\n";
+        for( size_t i = 0 ; i < ies.size() ; i++ ) {
+            recIndividual ind(ies[i].FGetIndID());
+            recPersona per( recIndividual::GetPersona( ind.FGetID() ) );
+            htm << "<tr>\n<td>" << recEventTypeRole::GetName( ies[i].FGetRoleID() )
+                << "</td>\n<td>\n<b>" << per.GetNameStr()
+                << "</b>";
+            recIdVec indIDs = per.GetIndividualIDs();
+            for( size_t j = 0 ; j < indIDs.size() ; j++ ) {
+                htm << " <a href='tfpc:MR" << indIDs[j]
+                    << "'><img src='memory:fam.png' alt='Family'></a>";
+            }
+            htm << "</td>\n<td>" << ies[i].f_note
+                << " </td>\n</tr>\n";
+        }
+        htm << "</table>\n";
+    }
+    htm << "</td>\n</tr>\n<tr>\n<td class='frame frame-top'>\n"
+        << ce->GetRefDatesTable()
+        << "</td>\n</tr>\n</table>\n"
+
+        << "</body>\n</html>\n";
+
+    return htm;
+}
+
+wxString tfpWriteRefEventPage( idt eventID )
 {
     wxString htm;
     recEvent eve(eventID);

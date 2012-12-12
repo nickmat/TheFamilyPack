@@ -105,6 +105,7 @@
     <libname>recgui$(WXLIBPOSTFIX)</libname>
     <sources>$(LOCAL_SRC)/rec/recgui.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/fbRgDialog.cpp</sources>
+    <sources>$(LOCAL_SRC)/rg/rgCompareEvent.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgDialogs.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdDate.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdEventType.cpp</sources>
@@ -115,6 +116,7 @@
     <sources>$(LOCAL_SRC)/rg/rgSelIndEvent.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgTableCtrl.cpp</sources>
 
+    <headers>$(LOCAL_INC)/rg/rgCompareEvent.h</headers>
     <headers>$(LOCAL_INC)/rg/rgDialogs.h</headers>
 
     <headers>$(LOCAL_SRC)/rg/fbRgDialog.h</headers>

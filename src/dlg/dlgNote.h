@@ -30,12 +30,13 @@
 #ifndef DLGNOTE_H
 #define DLGNOTE_H
 
+class TfpFrame;
 class wxHtmlWindow;
 
 class dlgNote : public wxDialog 
 {
 public:
-	dlgNote( wxWindow* parent, const wxString& name ); 
+	dlgNote( TfpFrame* parent, const wxString& name ); 
 	~dlgNote();
 
 private:
@@ -44,8 +45,9 @@ private:
     void OnIdle( wxIdleEvent& event );
     void OnClose( wxCloseEvent& event );
 
-    wxString m_name;
-    long     m_cond;
+    TfpFrame* m_frame;
+    wxString  m_name;
+    long      m_cond;
 	wxHtmlWindow* m_htmlWin;
 };
 

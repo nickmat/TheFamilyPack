@@ -31,6 +31,7 @@
 
 #include <wx/html/htmlwin.h>
 #include <rec/recDatabase.h>
+#include <rg/rgCompareEvent.h>
 #include "dlg/dlgNote.h"
 
 class wxWebView;
@@ -69,6 +70,8 @@ private:
     bool                m_webPageAllow;
 
     wxString            m_dbFileName;
+
+    rgCompareEvent      m_compEvent;
 
 public:
     // ctor and dtor
@@ -151,6 +154,7 @@ public:
     bool DisplayHtmPage( const wxString& name );
     void RefreshHtmPage();
     bool DisplayHomePage();
+    wxString GetDisplayText( const wxString& name );
 };
 
 #define tfpMAX_MENU_ITEMS 50
