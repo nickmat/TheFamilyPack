@@ -41,11 +41,11 @@
 
 #include <rec/recIndividual.h>
 #include <rec/recLink.h>
+#include <rg/rgDialogs.h>
 
 #include "dlgEdPersona.h"
-#include "dlgEdName.h"
+//#include "dlgEdName.h"
 #include "dlgEd.h"
-
 
 
 dlgEditPersona::dlgEditPersona( wxWindow* parent ) : fbDlgEditPersona( parent )
@@ -147,23 +147,14 @@ void dlgEditPersona::OnIndCreateButton( wxCommandEvent& event )
 
 void dlgEditPersona::OnNameAddButton( wxCommandEvent& event )
 {
-    const wxString savepoint = "PerAddName";
-    dlgEditName* dialog = new dlgEditName( NULL );
-    dialog->SetPersonaID( m_persona.f_id );
-
-    recDb::Savepoint( savepoint );
-    if( dialog->ShowModal() == wxID_OK )
-    {
-        recDb::ReleaseSavepoint( savepoint );
-        recName* name = dialog->GetName();
+    idt nameID = rgCreateName( m_persona.FGetID() );
+    if( nameID ) {
+        recName name(nameID);
         int row = m_names.size();
-        m_listName->InsertItem( row, recNameStyle::GetStyleStr( name->f_style_id ) );
-        m_listName->SetItem( row, COL_Value, name->GetNameStr() );
-        m_names.push_back( *name );
-    } else {
-        recDb::Rollback( savepoint );
+        m_listName->InsertItem( row, recNameStyle::GetStyleStr( name.FGetTypeID() ) );
+        m_listName->SetItem( row, COL_Value, name.GetNameStr() );
+        m_names.push_back( name );
     }
-    dialog->Destroy();
 }
 
 void dlgEditPersona::OnNameEditButton( wxCommandEvent& event )
@@ -173,23 +164,13 @@ void dlgEditPersona::OnNameEditButton( wxCommandEvent& event )
         wxMessageBox( _("No row selected"), _("Edit Name") );
         return;
     }
-
-    const wxString savepoint = "PerEdName";
-    dlgEditName* dialog = new dlgEditName( NULL );
-    dialog->SetData( m_names[row].f_id );
-
-    recDb::Savepoint( savepoint );
-    if( dialog->ShowModal() == wxID_OK )
-    {
-        recDb::ReleaseSavepoint( savepoint );
-        recName* name = dialog->GetName();
-        m_listName->SetItem( row, COL_Type, recNameStyle::GetStyleStr( name->f_style_id ) );
-        m_listName->SetItem( row, COL_Value, name->GetNameStr() );
-        m_names[row] = *name;
-    } else {
-        recDb::Rollback( savepoint );
+    idt nameID = m_names[row].FGetID();
+    if( rgEditName( nameID ) ) {
+        recName name( nameID );
+        m_listName->SetItem( row, COL_Type, recNameStyle::GetStyleStr( name.FGetTypeID() ) );
+        m_listName->SetItem( row, COL_Value, name.GetNameStr() );
+        m_names[row] = name;
     }
-    dialog->Destroy();
 }
 
 void dlgEditPersona::OnNameDeleteButton( wxCommandEvent& event )

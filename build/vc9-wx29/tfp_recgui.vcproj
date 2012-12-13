@@ -220,6 +220,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rg\rgEdName.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgEdNamePart.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rg\rgEdPerIndEvent.cpp"
 				>
 			</File>
@@ -271,6 +279,14 @@
 			</File>
 			<File
 				RelativePath="..\..\src\rg\rgEdEventType.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgEdName.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgEdNamePart.h"
 				>
 			</File>
 			<File

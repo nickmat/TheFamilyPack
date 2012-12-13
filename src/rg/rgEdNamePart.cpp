@@ -1,13 +1,13 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        dlgEdNamePart.cpp
+ * Name:        src/rg/rgEdNamePart.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Edit database Name Part entity dialog.
  * Author:      Nick Matthews
  * Modified by:
  * Website:     http://thefamilypack.org
- * Created:     24 November 2010
+ * Created:     12th December 2012
  * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2012, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -37,24 +37,56 @@
 #include "wx/wx.h"
 #endif
 
-#include "dlgEdNamePart.h"
+#include "rgEdNamePart.h"
+#include "rg/rgDialogs.h"
 
-dlgEditNamePart::dlgEditNamePart( wxWindow* parent )
-    : fbDlgEditNamePart( parent )
+bool rgEditNamePart( idt npID )
 {
-    m_np.Clear();
+    wxASSERT( npID != 0 );
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+    bool ret = false;
+
+    dlgEditNamePart* dialog = new dlgEditNamePart( NULL, npID );
+
+    if( dialog->ShowModal() == wxID_OK ) {
+        recDb::ReleaseSavepoint( savepoint );
+        ret = true;
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+    return ret;
 }
+
+idt rgCreateNamePart( idt nameID, const wxString& npStr )
+{
+    wxASSERT( nameID != 0 );
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+
+    recNamePart np(0);
+    np.f_name_id = nameID;
+    np.f_val = npStr;
+    np.Save();
+
+    idt npID = np.FGetID();
+    if( rgEditNamePart( npID ) ) {
+        recDb::ReleaseSavepoint( savepoint );
+        return npID;
+    }
+    recDb::Rollback( savepoint );
+    return 0;
+}
+
+//============================================================================
+//-------------------------[ rgDlgEditNamePart ]------------------------------
+//============================================================================
 
 bool dlgEditNamePart::TransferDataToWindow()
 {
-    if( m_np.f_id == 0 ) {
-        m_np.Save();
-    } else {
-        m_np.Read();
-    }
-
-    m_staticNameID->SetLabel( recName::GetIdStr( m_np.f_name_id ) );
-    m_staticNamePartID->SetLabel( m_np.GetIdStr() );
+    wxASSERT( m_np.FGetID() != 0 );
+    wxASSERT( m_np.f_name_id != 0 );
 
     m_types = recNamePartType::GetTypeList();
     for( size_t i = 0 ; i < m_types.size() ; i++ ) {
@@ -63,8 +95,11 @@ bool dlgEditNamePart::TransferDataToWindow()
             m_choiceType->SetSelection( (int) i );
         }
     }
-
     m_textCtrlValue->SetValue( m_np.f_val );
+
+    wxString npIdStr = m_np.GetIdStr();
+    wxString nameIdStr = recName::GetIdStr( m_np.f_name_id );
+    m_staticNamePartID->SetLabel( npIdStr + ":" + nameIdStr );
 
     return true;
 }
@@ -82,4 +117,4 @@ bool dlgEditNamePart::TransferDataFromWindow()
     return true;
 }
 
-// End of dlgEditNamePart.cpp file
+// End of src/rg/rgEdNamePart.cpp file

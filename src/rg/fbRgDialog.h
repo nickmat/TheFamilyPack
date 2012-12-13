@@ -26,8 +26,8 @@ class rgStrTableCtrl;
 #include <wx/statline.h>
 #include <wx/button.h>
 #include <wx/dialog.h>
-#include <wx/radiobox.h>
 #include <wx/listctrl.h>
+#include <wx/radiobox.h>
 #include <wx/checkbox.h>
 #include <wx/checklst.h>
 #include <wx/statbox.h>
@@ -57,6 +57,68 @@ class fbRgCreateName : public wxDialog
 		
 		fbRgCreateName( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Create Name"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbRgCreateName();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class fbRgEditName
+///////////////////////////////////////////////////////////////////////////////
+class fbRgEditName : public wxDialog 
+{
+	private:
+	
+	protected:
+		wxStaticText* m_staticText1;
+		wxStaticText* m_staticName;
+		wxStaticText* m_staticText2;
+		wxChoice* m_choiceType;
+		wxListCtrl* m_listNamePart;
+		wxButton* m_buttonPartAdd;
+		wxButton* m_buttonPartEdit;
+		wxButton* m_buttonPartDel;
+		wxButton* m_buttonPartUp;
+		wxButton* m_buttonPartDown;
+		wxStaticLine* m_staticline12;
+		wxStaticText* m_staticNameID;
+		wxButton* m_buttonSave;
+		wxButton* m_buttonCancel;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnPartAddButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnPartEditButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnPartDeleteButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnPartUpButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnPartDownButton( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		fbRgEditName( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Name"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
+		~fbRgEditName();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class fbRgEditNamePart
+///////////////////////////////////////////////////////////////////////////////
+class fbRgEditNamePart : public wxDialog 
+{
+	private:
+	
+	protected:
+		wxStaticText* m_staticText1;
+		wxChoice* m_choiceType;
+		wxStaticText* m_staticText2;
+		wxTextCtrl* m_textCtrlValue;
+		wxStaticLine* m_staticline1;
+		wxStaticText* m_staticNamePartID;
+		wxButton* m_buttonSave;
+		wxButton* m_buttonCancel;
+	
+	public:
+		
+		fbRgEditNamePart( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Name Part"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
+		~fbRgEditNamePart();
 	
 };
 

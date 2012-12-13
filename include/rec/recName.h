@@ -69,6 +69,14 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "Name" );
 
+    idt FGetPerID() const { return f_per_id; }
+    idt FGetTypeID() const { return f_style_id; }
+    int FGetNameSeq() const { return f_sequence; }
+
+    void FSetPerID( idt perID ) { f_per_id = perID; }
+    void FSetTypeID( idt typeID ) { f_style_id = typeID; }
+    void FSetPerSeq( int perSeq ) { f_sequence = perSeq; }
+
     static wxString GetIdStr( idt nameID ) { return wxString::Format( "N"ID, nameID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
@@ -125,7 +133,7 @@ public:
     idt       f_name_id;
     idt       f_type_id;
     wxString  f_val;
-    unsigned  f_sequence;
+    int       f_sequence;
 
     recNamePart() {}
     recNamePart( idt id ) : recDb(id) { Read(); }
@@ -135,6 +143,16 @@ public:
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "NamePart" );
+
+    idt FGetNameID() const { return f_name_id; }
+    idt FGetTypeID() const { return f_type_id; }
+    wxString FGetValue() const { return f_val; }
+    int FGetNameSeq() const { return f_sequence; }
+
+    void FSetNameID( idt nameID ) { f_name_id = nameID; }
+    void FSetTypeID( idt typeID ) { f_type_id = typeID; }
+    void FSetValue( const wxString& val ) { f_val = val; }
+    void FSetNameSeq( int nameSeq ) { f_sequence = nameSeq; }
 
     static wxString GetIdStr( idt npID ) { return wxString::Format( "NP"ID, npID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
@@ -189,6 +207,15 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "NameType" );
 
+    NTYPE_Grp FGetGroup() const { return f_grp; }
+    wxString FGetName() const { return f_name; }
+
+    void FSetGroup( NTYPE_Grp group ) { f_grp = group; }
+    void FSetName( const wxString& name ) { f_name = name; }
+
+    static wxString GetIdStr( idt nptID ) { return wxString::Format( "NPT"ID, nptID ); }
+    wxString GetIdStr() const { return GetIdStr( f_id ); }
+
     static wxString GetTypeStr( idt id );
 
     static recNamePartTypeVec GetTypeList();
@@ -217,7 +244,7 @@ class recNameStyle : public recDb
 {
 public:
     enum Style {
-        NS_Default = 0,
+        NS_Default = 0, // Recorded (ie Name as recorded in documents)
         NS_Birth   = -1,
         NS_Married = -2,
         NS_Alias   = -3,
@@ -234,6 +261,13 @@ public:
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "NameStyle" );
+
+    wxString FGetName() const { return f_name; }
+
+    void FSetName( const wxString& name ) { f_name = name; }
+
+    static wxString GetIdStr( idt ntID ) { return wxString::Format( "NT"ID, ntID ); }
+    wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     static wxString GetStyleStr( idt id );
 

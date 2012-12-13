@@ -67,7 +67,7 @@ void recName::Save()
         // Add new record
         sql.Format(
             "INSERT INTO Name (per_id, style_id, sequence)"
-            "VALUES ("ID", "ID", %u);",
+            "VALUES ("ID", "ID", %d);",
             f_per_id, f_style_id, f_sequence
         );
         s_db->ExecuteUpdate( sql );
@@ -79,13 +79,13 @@ void recName::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO Name (id, per_id, style_id, sequence)"
-                "VALUES ("ID", "ID", "ID", %u);",
+                "VALUES ("ID", "ID", "ID", %d);",
                 f_id, f_per_id, f_style_id, f_sequence
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE Name SET per_id="ID", style_id="ID", sequence=%u WHERE id="ID";",
+                "UPDATE Name SET per_id="ID", style_id="ID", sequence=%d WHERE id="ID";",
                 f_per_id, f_style_id, f_sequence, f_id
             );
         }
@@ -321,7 +321,7 @@ void recNamePart::Save()
         // Add new record
         sql.Format(
             "INSERT INTO NamePart (name_id, type_id, val, sequence)"
-            "VALUES ("ID", "ID", '%q', %u);",
+            "VALUES ("ID", "ID", '%q', %d);",
             f_name_id, f_type_id, UTF8_(f_val), f_sequence
         );
         s_db->ExecuteUpdate( sql );
@@ -333,13 +333,13 @@ void recNamePart::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO NamePart (id, name_id, type_id, val, sequence)"
-                "VALUES ("ID", "ID", "ID", '%q', %u);",
+                "VALUES ("ID", "ID", "ID", '%q', %d);",
                 f_id, f_name_id, f_type_id, UTF8_(f_val), f_sequence
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE NamePart SET name_id="ID", type_id="ID", val='%q', sequence=%u "
+                "UPDATE NamePart SET name_id="ID", type_id="ID", val='%q', sequence=%d "
                 "WHERE id="ID";",
                 f_name_id, f_type_id, UTF8_(f_val), f_sequence, f_id
             );
@@ -437,7 +437,7 @@ void recNamePartType::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO NamePartType (grp, name) VALUES (%u, '%q');",
+            "INSERT INTO NamePartType (grp, name) VALUES (%d, '%q');",
             f_grp, UTF8_(f_name)
         );
         s_db->ExecuteUpdate( sql );
@@ -449,13 +449,13 @@ void recNamePartType::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO NamePartType (id, grp, name) "
-                "VALUES ("ID", %u, '%q');",
+                "VALUES ("ID", %d, '%q');",
                 f_id, f_grp, UTF8_(f_name)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE NamePartType SET grp=%u, name='%q' WHERE id="ID";",
+                "UPDATE NamePartType SET grp=%d, name='%q' WHERE id="ID";",
                 f_grp, UTF8_(f_name), f_id
             );
         }

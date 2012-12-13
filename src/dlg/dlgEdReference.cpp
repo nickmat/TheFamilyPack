@@ -46,7 +46,6 @@
 #include "dlgEdReference.h"
 #include "dlgEdEvent.h"
 #include "dlgEdPersona.h"
-#include "dlgEdName.h"
 #include "dlgEdRelationship.h"
 #include "dlgSelect.h"
 
@@ -600,7 +599,7 @@ void dlgEditReference::OnNewPersonalEvent( wxCommandEvent& event )
 
 void dlgEditReference::OnNewName( wxCommandEvent& event )
 {
-    const wxString savepoint = "RefNewName";
+    const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
 
     idt perID = SelectCreatePersona();
@@ -608,12 +607,9 @@ void dlgEditReference::OnNewName( wxCommandEvent& event )
         recDb::Rollback( savepoint );
         return;
     }
-    dlgEditName* dialog = new dlgEditName( NULL );
-    dialog->SetPersonaID( perID );
-    dialog->CreateName( m_textCtrlStatement->GetStringSelection() );
-
-    if( dialog->ShowModal() == wxID_OK )
-    {
+    wxString nameStr = m_textCtrlStatement->GetStringSelection();
+    idt nameID = rgCreateName( perID, rgCRNAME_Default, nameStr );
+    if( nameID ) {
         recDb::ReleaseSavepoint( savepoint );
         int row = m_entities.size();
         TfpEntity entity;
@@ -621,18 +617,16 @@ void dlgEditReference::OnNewName( wxCommandEvent& event )
         entity.owner = 0;
         entity.rec.f_ref_id = m_reference.f_id;
         entity.rec.f_entity_type = recReferenceEntity::TYPE_Name;
-        entity.rec.f_entity_id = dialog->GetName()->f_id;
+        entity.rec.f_entity_id = nameID;
         entity.rec.Save();
         m_entities.push_back( entity );
 
         m_listEntities->InsertItem( row, entity.rec.GetTypeStr() );
-        m_listEntities->SetItem( row, ENT_COL_Number, dialog->GetName()->GetIdStr() );
-        m_listEntities->SetItem( row, ENT_COL_Value, dialog->GetName()->GetNameStr() );
+        m_listEntities->SetItem( row, ENT_COL_Number, recName::GetIdStr( nameID ) );
+        m_listEntities->SetItem( row, ENT_COL_Value, recName::GetNameStr( nameID ) );
     } else {
-        // Dialog Cancelled
         recDb::Rollback( savepoint );
     }
-    dialog->Destroy();
 }
 
 void dlgEditReference::OnEditButton( wxCommandEvent& event )
@@ -713,20 +707,10 @@ void dlgEditReference::DoEditEvent( idt id, long row )
 
 void dlgEditReference::DoEditName( idt id, long row )
 {
-    const wxString savepoint = "RefEdName";
-    dlgEditName* dialog = new dlgEditName( NULL );
-    dialog->SetData( id );
-
-    recDb::Savepoint( savepoint );
-    if( dialog->ShowModal() == wxID_OK )
-    {
-        recDb::ReleaseSavepoint( savepoint );
-        m_listEntities->SetItem( row, ENT_COL_Number, dialog->GetName()->GetIdStr() );
-        m_listEntities->SetItem( row, ENT_COL_Value, dialog->GetName()->GetNameStr() );
-    } else {
-        recDb::Rollback( savepoint );
+    if( rgEditName( id ) ) {
+        m_listEntities->SetItem( row, ENT_COL_Number, recName::GetIdStr( id ) );
+        m_listEntities->SetItem( row, ENT_COL_Value, recName::GetNameStr( id ) );
     }
-    dialog->Destroy();
 }
 
 void dlgEditReference::OnDeleteButton( wxCommandEvent& event )

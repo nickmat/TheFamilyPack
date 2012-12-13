@@ -44,7 +44,6 @@
 #include "dlgEdIndEvent.h"
 
 #include "dlgEdPersona.h"
-#include "dlgEdName.h"
 #include "dlgEd.h"
 
 
@@ -216,24 +215,14 @@ void dlgEditIndPersona::OnNameEditButton( wxCommandEvent& event )
         wxMessageBox( _("No row selected"), _("Edit Name") );
         return;
     }
-
-    const wxString savepoint = "PerEdName";
-    dlgEditName* dialog = new dlgEditName( NULL );
-    dialog->SetData( m_names[row].f_id );
-
-    recDb::Savepoint( savepoint );
-    if( dialog->ShowModal() == wxID_OK )
-    {
-        recDb::ReleaseSavepoint( savepoint );
-        recName* name = dialog->GetName();
-        m_listName->SetItem( row, NC_Number, name->GetIdStr() );
-        m_listName->SetItem( row, NC_Type, recNameStyle::GetStyleStr( name->f_style_id ) );
-        m_listName->SetItem( row, NC_Name, name->GetNameStr() );
-        m_names[row] = *name;
-    } else {
-        recDb::Rollback( savepoint );
+    idt nameID = m_names[row].FGetID();
+    if( rgEditName( nameID ) ) {
+        recName name( nameID );
+        m_listName->SetItem( row, NC_Number, name.GetIdStr() );
+        m_listName->SetItem( row, NC_Type, recNameStyle::GetStyleStr( name.FGetTypeID() ) );
+        m_listName->SetItem( row, NC_Name, name.GetNameStr() );
+        m_names[row] = name;
     }
-    dialog->Destroy();
 }
 
 void dlgEditIndPersona::OnNameDeleteButton( wxCommandEvent& event )

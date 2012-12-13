@@ -283,14 +283,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\dlg\dlgEdName.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\dlg\dlgEdNamePart.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\dlg\dlgEdPersona.cpp"
 				>
 			</File>
@@ -438,14 +430,6 @@
 			</File>
 			<File
 				RelativePath="..\..\src\dlg\dlgEdIndividual.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\dlg\dlgEdName.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\dlg\dlgEdNamePart.h"
 				>
 			</File>
 			<File
