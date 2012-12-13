@@ -52,7 +52,7 @@ wxString tfpWriteResearcherList()
 
     htm << "<html><head><title>Researchers</title>"
            "<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'>"
-           "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>"
+           "<link rel='stylesheet' type='text/css' href='memory:tfp______.css'>"
            "</head><body>"
            "<h1>Researchers</h1><table>";
     for( size_t i = 0 ; i < list.size() ; i++ ) {

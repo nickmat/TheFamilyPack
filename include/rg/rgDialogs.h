@@ -43,17 +43,6 @@ extern idt rgCreateEventType();
 extern bool rgEditRole( idt roleID );
 extern idt rgCreateRole( idt etID );
 
-enum rgSHOWROLE {
-    rgSHOWROLE_All,
-    rgSHOWROLE_PrimeAll,
-    rgSHOWROLE_PrimeMale,
-    rgSHOWROLE_PrimeFemale
-};
-extern bool rgEditIndEventRole( idt ieID, rgSHOWROLE filter = rgSHOWROLE_All );
-extern bool rgCreateIndEventRole( idt indID, idt eveID, idt roleID );
-extern bool rgEditPerEventRole( idt epID, rgSHOWROLE filter = rgSHOWROLE_All );
-extern idt rgCreateIndEvent( idt indID );
-
 enum {
     rgSELSTYLE_None       = 0x0000,
     rgSELSTYLE_Create     = 0x0001,   // Show Create button
@@ -96,5 +85,19 @@ extern idt rgCreateName( idt perID,
 // See src/rg/rgEdNamePart.cpp
 extern bool rgEditNamePart( idt npID );
 extern idt rgCreateNamePart( idt nameID, const wxString& npStr = wxEmptyString );
+
+// See src/rg/rgEdPerIndEvent.cpp
+enum rgSHOWROLE {
+    rgSHOWROLE_All,
+    rgSHOWROLE_PrimeAll,
+    rgSHOWROLE_PrimeMale,
+    rgSHOWROLE_PrimeFemale
+};
+extern bool rgEditIndEventRole( idt ieID, rgSHOWROLE filter = rgSHOWROLE_All );
+extern bool rgCreateIndEventRole( idt indID, idt eveID, idt roleID );
+extern bool rgEditPerEventRole( idt epID, rgSHOWROLE filter = rgSHOWROLE_All );
+extern idt rgCreateIndEvent( idt indID );
+
+
 
 #endif // RGDIALOGS_H

@@ -114,7 +114,6 @@ wxString tfpWriteIndEventPage( idt eventID, rgCompareEvent* ce )
            "</head>\n<body>\n"
 
            "<h1>Event " << eve.GetIdStr() << ": " << eve.f_title << "</h1>\n"
-           "<table class='core'>\n<tr>\n<td class='frame frame-top'>\n"
 
            "<table class='data'>\n<tr>\n"
            "<td><b>Date: </b>" << eve.GetDateStr() << "</td>\n"
@@ -126,7 +125,7 @@ wxString tfpWriteIndEventPage( idt eventID, rgCompareEvent* ce )
            "<td><b>Group: </b>" << recEventType::GetGroupStr( eve.FGetTypeID() ) <<
            " <b>Type: </b>" << eve.GetTypeStr() << "</td>\n"
            "</tr>\n</table>\n"
-           "</td>\n</tr>\n<tr>\n<td class='frame frame-top'>\n";
+    ;
 
     recIndEventVec ies = eve.GetIndividualEvents();
     if( !ies.empty() ) {
@@ -136,8 +135,10 @@ wxString tfpWriteIndEventPage( idt eventID, rgCompareEvent* ce )
             recIndividual ind(ies[i].FGetIndID());
             recPersona per( recIndividual::GetPersona( ind.FGetID() ) );
             htm << "<tr>\n<td>" << recEventTypeRole::GetName( ies[i].FGetRoleID() )
-                << "</td>\n<td>\n<b>" << per.GetNameStr()
-                << "</b>";
+                << "</td>\n<td class='" << GetSexClass( ind.FGetID() ) 
+                << "'>\n<b><a href='tfp:I" << ind.FGetID() 
+                << "'>" << per.GetNameStr()
+                << "</a></b>";
             recIdVec indIDs = per.GetIndividualIDs();
             for( size_t j = 0 ; j < indIDs.size() ; j++ ) {
                 htm << " <a href='tfpc:MR" << indIDs[j]
@@ -148,10 +149,9 @@ wxString tfpWriteIndEventPage( idt eventID, rgCompareEvent* ce )
         }
         htm << "</table>\n";
     }
-    htm << "</td>\n</tr>\n<tr>\n<td class='frame frame-top'>\n"
+    htm << ce->GetRefEventsTable()
         << ce->GetRefDatesTable()
-        << "</td>\n</tr>\n</table>\n"
-
+        << ce->GetRefPlacesTable()
         << "</body>\n</html>\n";
 
     return htm;

@@ -252,7 +252,7 @@ idt rgCreateRole( idt etID )
     }
     return roleID;
 }
-
+#if 0
 bool rgEditIndEventRole( idt ieID, rgSHOWROLE filter )
 {
     wxASSERT( ieID != 0 );
@@ -369,7 +369,7 @@ idt rgCreateIndEvent( idt indID )
     return eveID;
 #endif
 }
-
+#endif
 idt rgSelectDate( unsigned flag, unsigned* retbutton, unsigned filter, idt id )
 {
     idt dateID = 0;

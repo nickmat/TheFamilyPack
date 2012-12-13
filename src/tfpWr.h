@@ -32,6 +32,10 @@
 #include <rec/recDatabase.h>
 class rgCompareEvent;
 
+// See tfpWrFamily.cpp
+extern wxString GetSexClass( idt indID, Sex pref = SEX_Unknown );
+
+
 // See tfpWrAdmin.cpp
 extern wxString tfpWriteResearcherList();
 

@@ -49,8 +49,6 @@
 #define DEATH    recEventTypeRole::ROLE_Death_Died
 #define NR_DEATH recEventType::ETYPE_Grp_Nr_Death
 
-static wxString GetSexClass( idt indID, Sex pref = SEX_Unknown );
-
 wxString GetSexClass( idt indID, Sex pref )
 {
     Sex sex = recIndividual::GetSex( indID );

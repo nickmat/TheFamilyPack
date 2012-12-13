@@ -46,8 +46,9 @@ public:
 
     void Reset( idt eveID );
 
-    wxString GetRefEventTable();
     wxString GetRefDatesTable();
+    wxString GetRefPlacesTable();
+    wxString GetRefEventsTable();
 
 private:
     void UnloadFiles();
@@ -68,6 +69,7 @@ private:
     recIdVec    m_personaIDs;
     IndPerMap   m_indPerMap;
     recDateVec  m_reDate1s;
+    recPlaceVec m_rePlaces;
 
     wxString    m_dateImageFN;
     StringVec   m_dateImageFNs;

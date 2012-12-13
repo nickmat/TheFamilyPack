@@ -84,7 +84,7 @@ wxString tfpCreatePedChart( idt indID )
     htm << wxT("<html><head><title>Pedigree Chart for ") << name
         << wxT("</title>")
            wxT("<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'>")
-           wxT("<link rel='stylesheet' type='text/css' href='memory:tfp.css'>")
+           wxT("<link rel='stylesheet' type='text/css' href='memory:tfp_____.css'>")
            wxT("</head><body link=black>")
            wxT("<h1>Pedigree Chart for ") << name << wxT("</h1>");
 
@@ -157,7 +157,7 @@ wxString tfpCreateDescChart( idt indID )
 
     htm << wxT("<html><head><title>Descendant Chart for ") << name << wxT("</title>")
            wxT("<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'>")
-           wxT("<link rel='stylesheet' type='text/css' href='tfp:memory:tfp.css'>")
+           wxT("<link rel='stylesheet' type='text/css' href='tfp:memory:tfp_____.css'>")
            wxT("</head><body link=black>")
            wxT("<h1>Descendant Chart for ") << name << wxT("</h1>");
 

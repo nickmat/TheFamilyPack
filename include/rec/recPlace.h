@@ -33,6 +33,8 @@
 
 #include <rec/recDatabase.h>
 
+class recPlace;
+typedef std::vector< recPlace > recPlaceVec;
 class recPlacePart;
 typedef std::vector< recPlacePart > recPlacePartVec;
 

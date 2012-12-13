@@ -61,6 +61,7 @@ void rgCompareEvent::Reset( idt eveID )
     m_personaIDs.clear();
     m_indPerMap.clear();
     m_reDate1s.clear();
+    m_rePlaces.clear();
 
     // The list of events we will be comparing with.
     m_refEvents = recEvent::FindEquivRefEvents( m_event.f_id );
@@ -70,9 +71,10 @@ void rgCompareEvent::Reset( idt eveID )
         // Get list of Persona's for this Reference.
         recIdVec pIDs = recReference::GetPersonaList( refID ); 
         m_personaIDs.insert( m_personaIDs.end(), pIDs.begin(), pIDs.end() );
-        recDate date( m_refEvents[i].f_date1_id );
-        if( date.FGetJdn() == 0 ) continue;
+        recDate date( m_refEvents[i].FGetDate1ID() );
         m_reDate1s.push_back( date );
+        recPlace place( m_refEvents[i].FGetPlaceID() );
+        m_rePlaces.push_back( place );
     }
 
     for( size_t i = 0 ; i < m_personaIDs.size() ; i++ ) {
@@ -87,29 +89,39 @@ void rgCompareEvent::Reset( idt eveID )
     }
 }
 
-wxString rgCompareEvent::GetRefEventTable()
+wxString rgCompareEvent::GetRefEventsTable()
 {
+    wxASSERT( m_refIDs.size() == m_refEvents.size() );
     wxString htm;
 
-    htm << "<table>";
-
-    wxASSERT( m_refEvents.size() == m_refIDs.size() );
-    for( size_t i = 0 ; i < m_refEvents.size() ; i++ ) {
-        idt refID = m_refIDs[i];
-        htm << "<tr><td>" << recReference::GetIdStr( m_refIDs[i] )
-            << "</td><td>" << recReference::GetTitle( m_refIDs[i] )
-            << "</td></tr>"
-            << "<tr><td></td><td><table><tr><td>" << m_refEvents[i].GetIdStr()
-            << "</td><td>" 
-            << m_refEvents[i].f_title << "<br>" << m_refEvents[i].GetDetailStr()
-            << "</td></tr>"
+    if( m_refIDs.size() ) {
+        htm << 
+            "<table class='data'>\n"
+            "<tr>\n"
+            "<th colspan='2'>Reference Document</th>\n"
+            "<th colspan='2'>Reference Event</th>\n"
+            "</tr>\n"
         ;
-        if( !m_refEvents[i].f_note.IsEmpty() ) {
-            htm << "<tr><td colspan='2'>" << m_refEvents[i].f_note << "</td></tr>";
+        for( size_t i = 0 ; i < m_refIDs.size() ; i++ ) {
+            htm << 
+                "<tr>\n"
+                "<td><b><a href='tfp:R" << m_refIDs[i] << 
+                "'>" << recReference::GetIdStr( m_refIDs[i] ) << "</a></b></td>\n"
+                "<td>" << recReference::GetTitle( m_refIDs[i] ) << "</td>\n"
+                "<td><b><a href='tfp:E" << m_refEvents[i].FGetID() <<
+                "'>" << m_refEvents[i].GetIdStr() << "</a></b></td>\n"
+                "<td>" << m_refEvents[i].FGetTitle() << "</td>\n"
+                "</tr>\n"
+            ;
         }
-        htm << "</table></td></tr>";
+        htm << "</table>\n";
+    } else {
+        htm << 
+            "<table class='data'>\n<tr>\n"
+            "<th>No Reference places available</th>\n"
+            "</tr>\n</table>\n"
+        ;
     }
-    htm << "</table>";
 
     return htm;
 }
@@ -122,7 +134,7 @@ wxString rgCompareEvent::GetRefDatesTable()
         htm << 
             "<table class='data diag'>\n"
             "<tr>\n"
-            "<th colspan='2'>Dates</th>\n"
+            "<th colspan='2'>Date</th>\n"
             "<th colspan='2'>Reference Document</th>\n"
             "</tr>\n<tr>\n"
             "<td>" << m_date1.GetStr() << "</td>\n"
@@ -136,7 +148,10 @@ wxString rgCompareEvent::GetRefDatesTable()
                 "<tr>\n"
                 "<td>" << m_reDate1s[i].GetStr() << "</td>\n"
                 "<td class='diag'><img src='memory:" << m_dateImageFNs[i] << "' alt=''></td>\n"
-                "<td><b>" << recReference::GetIdStr( m_refIDs[i] ) << "</b></td>\n"
+                "<td><b><a href='tfp:R" << m_refIDs[i] <<
+                "'>" << recReference::GetIdStr( m_refIDs[i] ) <<
+                "</a>: <a href='tfp:E" << m_refEvents[i].FGetID() <<
+                "'>" << m_refEvents[i].GetIdStr() << "</a></b></td>\n"
                 "<td>" << recReference::GetTitle( m_refIDs[i] ) << "</td>\n"
                 "</tr>\n"
             ;
@@ -250,6 +265,48 @@ void rgCompareEvent::DrawDateImage(
         dc.GradientFillLinear( r, *wxWHITE, color, wxLEFT );
     }
 }
+
+wxString rgCompareEvent::GetRefPlacesTable()
+{
+    wxString htm;
+
+    if( m_rePlaces.size() ) {
+        htm << 
+            "<table class='data'>\n"
+            "<tr>\n"
+            "<th>Place</th>\n"
+            "<th colspan='2'>Reference Document</th>\n"
+            "</tr>\n<tr>\n"
+            "<td>" << m_place.GetAddressStr() << "</td>\n"
+            "<td><b>" << m_event.GetIdStr() << "</b></td>\n"
+            "<td></td>"
+            "</tr>\n"
+        ;
+        for( size_t i = 0 ; i < m_rePlaces.size() ; i++ ) {
+            if( m_rePlaces[i].FGetID() == 0 ) continue;
+            htm << 
+                "<tr>\n"
+                "<td>" << m_rePlaces[i].GetAddressStr() << "</td>\n"
+                "<td><b><a href='tfp:R" << m_refIDs[i] <<
+                "'>" << recReference::GetIdStr( m_refIDs[i] ) <<
+                "</a>: <a href='tfp:E" << m_refEvents[i].FGetID() <<
+                "'>" << m_refEvents[i].GetIdStr() << "</a></b></td>\n"
+                "<td>" << recReference::GetTitle( m_refIDs[i] ) << "</td>\n"
+                "</tr>\n"
+            ;
+        }
+        htm << "</table>\n";
+    } else {
+        htm << 
+            "<table class='data'>\n<tr>\n"
+            "<th>No Reference places available</th>\n"
+            "</tr>\n</table>\n"
+        ;
+    }
+
+    return htm;
+}
+
 
 
 void rgCompareEvent::UnloadFiles()

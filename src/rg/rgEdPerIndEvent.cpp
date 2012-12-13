@@ -39,7 +39,125 @@
 #include <rec/recIndividual.h>
 
 #include "rgEdPerIndEvent.h"
-#include "rg/rgDialogs.h"
+//#include "rg/rgDialogs.h"
+
+
+bool rgEditIndEventRole( idt ieID, rgSHOWROLE filter )
+{
+    wxASSERT( ieID != 0 );
+    const wxString savepoint = recDb::GetSavepointStr();
+    bool ret = false;
+    rgDlgIndEvent* dialog = new rgDlgIndEvent( NULL, ieID, filter );
+
+    recDb::Savepoint( savepoint );
+    if( dialog->ShowModal() == wxID_OK )
+    {
+        recDb::ReleaseSavepoint( savepoint );
+        ret = true;
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+    return ret;
+}
+
+bool rgCreateIndEventRole( idt indID, idt eveID, idt roleID )
+{
+    wxASSERT( eveID != 0 ); // TODO: Select an Event from list
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+
+    if( indID == 0 ) {
+        indID = rgSelectIndividual( rgSELSTYLE_None );
+        if( indID == 0 ) {
+            recDb::Rollback( savepoint );
+            return false;
+        }
+    }
+    recIndividualEvent ie(0);
+    ie.FSetIndID( indID );
+    ie.FSetEventID( eveID );
+    ie.FSetRoleID( roleID );
+    ie.FSetIndSeq( recIndividual::GetMaxEventSeqNumber( indID ) );
+    ie.Save();
+    if( roleID == 0 ) {
+        if( ! rgEditIndEventRole( ie.FGetID() ) ) {
+            recDb::Rollback( savepoint );
+            return false;
+        }
+    }
+    recDb::ReleaseSavepoint( savepoint );
+    return true;
+}
+
+bool rgEditPerEventRole( idt epID, rgSHOWROLE filter )
+{
+    wxASSERT( epID != 0 );
+    const wxString savepoint = recDb::GetSavepointStr();
+    bool ret = false;
+    rgDlgPerEvent* dialog = new rgDlgPerEvent( NULL, epID, filter );
+
+    recDb::Savepoint( savepoint );
+    if( dialog->ShowModal() == wxID_OK )
+    {
+        recDb::ReleaseSavepoint( savepoint );
+        ret = true;
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+    return ret;
+}
+
+idt rgCreateIndEvent( idt indID )
+{
+    wxMessageBox( "Not yet implimented\nneed to rewrite dlgEditIndEvent", "rgCreateIndEvent" );
+    return 0;
+    // We need to rewrite dlgEditIndEvent for rg library
+#if 0
+    wxASSERT( indID != 0 );
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+
+    idt typeID = rgSelectEventType();
+    if( typeID == 0 ) {
+        recDb::Rollback( savepoint );
+        return 0;
+    }
+
+    recEvent eve(0);
+    eve.f_type_id = typeID;
+    eve.f_title = wxString::Format(
+        _("%s of %s"), 
+        recEventType::GetTypeStr( typeID ), 
+        recIndividual::GetFullName( indID )
+    );
+    eve.Save();
+    idt eveID = eve.GetID();
+
+    recIndividualEvent ie(0);
+    ie.FSetEventID( eveID );
+    ie.FSetIndID( indID );
+    ie.Save();
+
+    if( ! rgEditIndEventRole( ie.FGetID(), rgSHOWROLE_PrimeAll )  ) {
+        recDb::Rollback( savepoint );
+        return 0;
+    }
+
+    dlgEditIndEvent* dialog = new dlgEditIndEvent( NULL, eve.GetID() );
+
+    if( dialog->ShowModal() == wxID_OK )
+    {
+        recDb::ReleaseSavepoint( savepoint );
+    } else {
+        recDb::Rollback( savepoint );
+        eveID = 0;
+    }
+    dialog->Destroy();
+    return eveID;
+#endif
+}
 
 //============================================================================
 //-------------------------[ rgPerIndEvent ]----------------------------------
