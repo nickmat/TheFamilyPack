@@ -46,10 +46,12 @@
 #include "img/logo6.xpm"
 #include "generated/tfpText.ci"
 
+#include "img/cht/dss.xpm"
 #include "img/cht/ds.xpm"
 #include "img/cht/dc.xpm"
 #include "img/cht/dt.xpm"
 #include "img/cht/de.xpm"
+#include "img/cht/sss.xpm"
 #include "img/cht/ss.xpm"
 #include "img/cht/sc.xpm"
 #include "img/cht/st.xpm"
@@ -97,6 +99,8 @@ void tfpLoadMemoryFiles()
     wxMemoryFSHandler::AddFile( "startup.htm", startupText );
     wxMemoryFSHandler::AddFile( "tfp.css", s_tfp_css );
 
+    wxBitmap dssBitmap( dss_xpm );
+    wxMemoryFSHandler::AddFile( "dss.png", dssBitmap, wxBITMAP_TYPE_PNG );
     wxBitmap dsBitmap( ds_xpm );
     wxMemoryFSHandler::AddFile( "ds.png", dsBitmap, wxBITMAP_TYPE_PNG );
     wxBitmap dcBitmap( dc_xpm );
@@ -105,6 +109,8 @@ void tfpLoadMemoryFiles()
     wxMemoryFSHandler::AddFile( "dt.png", dtBitmap, wxBITMAP_TYPE_PNG );
     wxBitmap deBitmap( de_xpm );
     wxMemoryFSHandler::AddFile( "de.png", deBitmap, wxBITMAP_TYPE_PNG );
+    wxBitmap sssBitmap( sss_xpm );
+    wxMemoryFSHandler::AddFile( "sss.png", sssBitmap, wxBITMAP_TYPE_PNG );
     wxBitmap ssBitmap( ss_xpm );
     wxMemoryFSHandler::AddFile( "ss.png", ssBitmap, wxBITMAP_TYPE_PNG );
     wxBitmap scBitmap( sc_xpm );

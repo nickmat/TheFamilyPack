@@ -40,7 +40,7 @@ h1 {
 img {
     margin: 0;
     padding: 0;
-    border: 0;
+    border: 0 none black;
 }
 
 a {
@@ -160,6 +160,24 @@ table.diag td {
 table.diag td.diag {
     background-color: white;
     border-width: 0;
+}
+
+table.chart {
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+table.chart td {
+    background-color: transparent;
+    border: 0 none;
+    padding: 0;
+    margin: 0;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+table.chart td.name {
+    padding: 0 0.5em;
 }
 
 /* End of tfp.css file */

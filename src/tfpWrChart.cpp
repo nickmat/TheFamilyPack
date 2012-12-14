@@ -40,11 +40,14 @@
 
 #include "tfpWr.h"
 
-#define HTM_CHART_GIF_BLANK 0
-#define HTM_CHART_GIF_TEE   2
-#define HTM_CHART_GIF_CONT  4
-#define HTM_CHART_GIF_END   6
-#define HTM_CHART_GIF_DBL   1
+#define HTM_CHART_GEN_MAX  20
+
+#define HTM_CHART_GIF_SH_BLK 12
+#define HTM_CHART_GIF_BLANK  0
+#define HTM_CHART_GIF_TEE    2
+#define HTM_CHART_GIF_CONT   4
+#define HTM_CHART_GIF_END    6
+#define HTM_CHART_GIF_DBL    1
 
 #define HTM_CHART_GIF_PTOP  8
 #define HTM_CHART_GIF_PUP   9
@@ -52,18 +55,20 @@
 #define HTM_CHART_GIF_PDN   11
 
 const wxString htmChartGif[] = {
-    wxT("<img src=memory:ss.png>"),
-    wxT("<img src=memory:ds.png>"),
-    wxT("<img src=memory:st.png>"),
-    wxT("<img src=memory:dt.png>"),
-    wxT("<img src=memory:sc.png>"),
-    wxT("<img src=memory:dc.png>"),
-    wxT("<img src=memory:se.png>"),
-    wxT("<img src=memory:de.png>"),
-    wxT("<img src=memory:pt.png>"),
-    wxT("<img src=memory:pu.png>"),
-    wxT("<img src=memory:pe.png>"),
-    wxT("<img src=memory:pd.png>")
+    "<img src='memory:ss.png'>",
+    "<img src='memory:ds.png'>",
+    "<img src='memory:st.png'>",
+    "<img src='memory:dt.png'>",
+    "<img src='memory:sc.png'>",
+    "<img src='memory:dc.png'>",
+    "<img src='memory:se.png'>",
+    "<img src='memory:de.png'>",
+    "<img src='memory:pt.png'>",
+    "<img src='memory:pu.png'>",
+    "<img src='memory:pe.png'>",
+    "<img src='memory:pd.png'>",
+    "<img src='memory:sss.png'>",
+    "<img src='memory:dss.png'>"
 };
 
 static int GenDChart[100];
@@ -81,22 +86,29 @@ wxString tfpCreatePedChart( idt indID )
 
     wxString name = ind.GetFullName();
 
-    htm << wxT("<html><head><title>Pedigree Chart for ") << name
-        << wxT("</title>")
-           wxT("<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'>")
-           wxT("<link rel='stylesheet' type='text/css' href='memory:tfp_____.css'>")
-           wxT("</head><body link=black>")
-           wxT("<h1>Pedigree Chart for ") << name << wxT("</h1>");
+    htm << 
+        "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
+        "\"http://www.w3.org/TR/html4/loose.dtd\">\n"
+        "<html>\n<head>\n<title>Pedigree Chart for " << name << "</title>\n"
+        "<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>\n"
+        "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>\n"
+        "</head>\n<body>\n\n"
+        "<h1>Pedigree Chart for " << name << "</h1>\n\n"
+        "<table class='chart'>\n"
+    ;
 
     WrPedCht( indID, SEX_Unstated, 0 );
 
-    htm << wxT("</body></html>");
+    htm << "</table>\n\n</body>\n</html>\n";
 
     return htm;
 }
 
 void WrPedCht( idt indID, Sex sex, int gen )
 {
+    if( gen == HTM_CHART_GEN_MAX ) {
+        return;
+    }
     recIndividual ind( indID );
     if( ind.f_id == 0 ) return;
     recFamily fam( 0 );
@@ -118,25 +130,20 @@ void WrPedCht( idt indID, Sex sex, int gen )
     if( sex == SEX_Female ) GenPChart[gen-1] = HTM_CHART_GIF_PEND;
 
     // Write out the given person
-    htm << wxT("<table cellspacing=0 cellpadding=0 border=0><tr>");
-    for( int i = 0 ; i <= gen ; i++ )
-    {
-        if( i == gen )
-        {
-            htm << wxT("<td width=300>&nbsp;&nbsp;<a href='tfp:")
-                << famLk << wxT("'><b>")
-                << ind.f_given << wxT(" ") << ind.f_surname
-                << wxT("</b></a> ") << ind.f_epitaph << wxT("</td>");
-
-            if( gen == 0 )
-            {
-                htm << wxT("<td>") << htmChartGif[0] << wxT("</td>");
-            }
+    htm << "<tr>\n<td><img src='memory:sss.png'></td>\n";
+    for( int i = 0 ; i <= gen ; i++ ) {
+        if( i == gen ) {
+            htm << "<td class='name' colspan='" 
+                << HTM_CHART_GEN_MAX - gen << "'><a href='tfp:"
+                << famLk << "'><b>"
+                << ind.f_given << " " << ind.f_surname
+                << "</b></a> " << ind.f_epitaph << "</td>\n"
+            ;
         } else {
-            htm << wxT("<td>") << htmChartGif[GenPChart[i]] << wxT("</td>");
+            htm << "<td>" << htmChartGif[GenPChart[i]] << "</td>\n";
         }
     }
-    htm << wxT("</tr></table>");
+    htm << "</tr>\n";
 
     if( sex == SEX_Male ) GenPChart[gen-1] = HTM_CHART_GIF_PUP;
     if( sex == SEX_Female ) GenPChart[gen-1] = HTM_CHART_GIF_BLANK;
@@ -155,15 +162,20 @@ wxString tfpCreateDescChart( idt indID )
     wxString name = recIndividual::GetFullName( indID );
     htm.Clear();
 
-    htm << wxT("<html><head><title>Descendant Chart for ") << name << wxT("</title>")
-           wxT("<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'>")
-           wxT("<link rel='stylesheet' type='text/css' href='tfp:memory:tfp_____.css'>")
-           wxT("</head><body link=black>")
-           wxT("<h1>Descendant Chart for ") << name << wxT("</h1>");
+    htm << 
+        "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
+        "\"http://www.w3.org/TR/html4/loose.dtd\">\n"
+        "<html>\n<head>\n<title>Descendant Chart for " << name << "</title>\n"
+        "<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>\n"
+        "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>\n"
+        "</head>\n<body>\n"
+        "<h1>Descendant Chart for " << name << "</h1>\n\n"
+        "<table class='chart'>\n"
+    ;
 
     WrDescCht( indID, 0 );
 
-    htm << wxT("</body></html>");
+    htm << "</table>\n\n</body>\n</html>\n";
 
     return htm;
 }
@@ -214,30 +226,31 @@ void WrDescLine( idt indID, idt spouseID, idt famID, int gen )
     int dheight = ( spouseID == 0 ) ? 0 : 1;
     wxString famLk = ( famID ) ? "F"+recGetStr( famID ) : "FI"+recGetStr( indID );
 
-    htm << wxT("<table cellspacing=0 cellpadding=0 border=0><tr>");
+    htm << "<tr>\n<td>" << htmChartGif[HTM_CHART_GIF_SH_BLK+dheight] << "</td>\n";
     for( int i = 0 ; i <= gen ; i++ ) {
         if( i == gen ) {
-            htm << wxT("<td width=300>&nbsp;&nbsp;<a href='tfp:")
-                << famLk << wxT("'><b>")
+            htm << "<td  class='name' colspan='" 
+                << HTM_CHART_GEN_MAX - gen << "'><a href='tfp:"
+                << famLk << "'><b>"
                 << recIndividual::GetFullName( indID )
-                << wxT("</b></a> ")
+                << "</b></a> "
                 << recIndividual::GetDateEpitaph( indID );
             if( spouseID != 0 ) {
-                htm << wxT("<br>&nbsp;&nbsp;&nbsp;m. <b>")
+                htm << "<br>\n m. <b>"
                     << recIndividual::GetFullName( spouseID )
-                    << wxT("</b> ")
+                    << "</b> "
                     << recIndividual::GetDateEpitaph( spouseID );
             }
-            htm << wxT("</td>");
+            htm << "</td>\n";
 
-            if( gen == 0 ) {
-                htm << wxT("<td>") << htmChartGif[0] << wxT("</td>");
-            }
+//            if( gen == 0 ) {
+//                htm << "<td>" << htmChartGif[0] << "</td>\n";
+//            }
         } else {
-            htm << wxT("<td>") << htmChartGif[GenDChart[i]+dheight] << wxT("</td>");
+            htm << "<td>" << htmChartGif[GenDChart[i]+dheight] << "</td>\n";
         }
     }
-    htm << wxT("</tr></table>");
+    htm << "</tr>\n";
 }
 
 // End of tfpWrChart.cpp Source
