@@ -33,6 +33,22 @@ body {
     background-color: Ivory;
 }
 
+table.logo {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table.logo td {
+    background-color: #e0e0f0;
+    margin: 0;
+    padding: 0.5em;
+    border: 0 none black;
+}
+
+table.logo td.title {
+    text-align: center;
+}
+
 h1 {
     text-align: center;
 }
