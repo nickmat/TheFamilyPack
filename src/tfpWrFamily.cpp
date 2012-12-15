@@ -305,7 +305,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
                 << kids[i].f_epitaph
                 << "\n</td>\n</tr>\n";
         }
-        htm << "</tr>\n</table>\n</td>\n";
+        htm << "</table>\n</td>\n</tr>\n";
     }
 
     // Add additional Spouses and/or Parents
