@@ -50,7 +50,6 @@
 #include "dlgEdResearcher.h"
 #include "dlgEdSystem.h"
 #include "dlgSelect.h"
-#include "dlgEdIndEvent.h"
 #include "dlgEdRole.h"
 #include "dlg/dlgNote.h"
 
@@ -450,6 +449,7 @@ idt tfpAddExistChild( idt famID, Sex sex )
     return indID;
 }
 
+#if 0
 idt tfpAddMarriageEvent( const recFamily& family )
 {
     const wxString savepoint = recDb::GetSavepointStr();
@@ -523,7 +523,6 @@ bool tfpEditEvent( idt eveID  )
     return ret;
 }
 
-#if 0
 idt tfpGetRole( idt eventPersonaID, unsigned flags )
 {
     const wxString savepoint = "GetEPRole";

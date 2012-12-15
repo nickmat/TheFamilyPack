@@ -109,56 +109,6 @@ bool rgEditPerEventRole( idt epID, rgSHOWROLE filter )
     return ret;
 }
 
-idt rgCreateIndEvent( idt indID )
-{
-    wxMessageBox( "Not yet implimented\nneed to rewrite dlgEditIndEvent", "rgCreateIndEvent" );
-    return 0;
-    // We need to rewrite dlgEditIndEvent for rg library
-#if 0
-    wxASSERT( indID != 0 );
-    const wxString savepoint = recDb::GetSavepointStr();
-    recDb::Savepoint( savepoint );
-
-    idt typeID = rgSelectEventType();
-    if( typeID == 0 ) {
-        recDb::Rollback( savepoint );
-        return 0;
-    }
-
-    recEvent eve(0);
-    eve.f_type_id = typeID;
-    eve.f_title = wxString::Format(
-        _("%s of %s"), 
-        recEventType::GetTypeStr( typeID ), 
-        recIndividual::GetFullName( indID )
-    );
-    eve.Save();
-    idt eveID = eve.GetID();
-
-    recIndividualEvent ie(0);
-    ie.FSetEventID( eveID );
-    ie.FSetIndID( indID );
-    ie.Save();
-
-    if( ! rgEditIndEventRole( ie.FGetID(), rgSHOWROLE_PrimeAll )  ) {
-        recDb::Rollback( savepoint );
-        return 0;
-    }
-
-    dlgEditIndEvent* dialog = new dlgEditIndEvent( NULL, eve.GetID() );
-
-    if( dialog->ShowModal() == wxID_OK )
-    {
-        recDb::ReleaseSavepoint( savepoint );
-    } else {
-        recDb::Rollback( savepoint );
-        eveID = 0;
-    }
-    dialog->Destroy();
-    return eveID;
-#endif
-}
-
 //============================================================================
 //-------------------------[ rgPerIndEvent ]----------------------------------
 //============================================================================
@@ -214,7 +164,6 @@ void rgPerIndEvent::OnAddRoleButton( wxCommandEvent& event )
         SetRoleList( roleID );
     }
 }
-
 
 //============================================================================
 //-------------------------[ rgDlgIndEvent ]----------------------------------

@@ -479,6 +479,8 @@ public:
     static wxString GetIdStr( idt ieID ) { return wxString::Format( "IE"ID, ieID ); }
     wxString GetIdStr() const { return GetIdStr( FGetID() ); }
 
+    bool Find( idt indID, idt eveID );
+
     static wxString GetRoleStr( idt indID, idt typeID );
     wxString GetRoleStr( idt typeID ) const { return GetRoleStr( f_ind_id, typeID ); }
 };

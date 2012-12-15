@@ -31,6 +31,8 @@ class rgStrTableCtrl;
 #include <wx/checkbox.h>
 #include <wx/checklst.h>
 #include <wx/statbox.h>
+#include <wx/panel.h>
+#include <wx/splitter.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -395,6 +397,60 @@ class fbRgSelectIndEvent : public wxDialog
 		
 		fbRgSelectIndEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Select Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbRgSelectIndEvent();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class fbRgEditEvent
+///////////////////////////////////////////////////////////////////////////////
+class fbRgEditEvent : public wxDialog 
+{
+	private:
+	
+	protected:
+		wxSplitterWindow* m_splitter1;
+		wxPanel* m_panel1;
+		wxStaticText* m_staticText1;
+		wxStaticText* m_staticType;
+		wxStaticText* m_staticText2;
+		wxTextCtrl* m_textCtrlTitle;
+		wxButton* m_buttonDate1;
+		wxTextCtrl* m_textCtrlDate1;
+		wxButton* m_buttonDate2;
+		wxTextCtrl* m_textCtrlDate2;
+		wxButton* m_buttonPlace;
+		wxTextCtrl* m_textCtrlPlace;
+		wxStaticText* m_staticText6;
+		wxTextCtrl* m_textCtrlNote;
+		wxPanel* m_panel2;
+		wxListCtrl* m_listPersona;
+		wxButton* m_buttonAdd;
+		wxButton* m_buttonEdit;
+		wxButton* m_buttonDelete;
+		wxStaticLine* m_staticline12;
+		wxStaticText* m_staticEventID;
+		wxButton* m_buttonSave;
+		wxButton* m_buttonCancel;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnDate1Button( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDate2Button( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnPlaceButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAddButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEditButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDeleteButton( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		fbRgEditEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE ); 
+		~fbRgEditEvent();
+		
+		void m_splitter1OnIdle( wxIdleEvent& )
+		{
+			m_splitter1->SetSashPosition( 0 );
+			m_splitter1->Disconnect( wxEVT_IDLE, wxIdleEventHandler( fbRgEditEvent::m_splitter1OnIdle ), NULL, this );
+		}
 	
 };
 

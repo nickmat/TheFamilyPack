@@ -148,6 +148,14 @@ void recPlace::SetAddress( idt placeID, const wxString& str )
     }
 }
 
+idt recPlace::Create( const wxString& str )
+{
+    recPlace place(0);
+    place.Save();
+    place.SetAddress( str );
+    return place.FGetID();
+}
+
 wxString recPlace::GetAddressStr( idt id )
 {
     if( id == 0 ) return wxEmptyString;

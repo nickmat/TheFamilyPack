@@ -52,9 +52,7 @@ extern bool tfpEditFamily( idt famID );
 extern bool tfpEditReference( idt refID  );
 extern bool tfpAddExistSpouse( idt indID, Sex sex );
 extern idt tfpAddExistChild( idt famID, Sex sex );
-extern idt tfpAddMarriageEvent( const recFamily& family );
-
-extern bool tfpEditEvent( idt eveID  );
+//extern idt tfpAddMarriageEvent( const recFamily& family );
 
 extern bool tfpEditResearcher( idt resID  );
 extern bool tfpEditSystem();

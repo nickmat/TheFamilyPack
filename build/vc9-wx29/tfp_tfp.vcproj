@@ -275,10 +275,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\dlg\dlgEdIndEvent.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\dlg\dlgEdIndividual.cpp"
 				>
 			</File>
@@ -422,10 +418,6 @@
 			</File>
 			<File
 				RelativePath="..\..\src\dlg\dlgEdFamily.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\dlg\dlgEdIndEvent.h"
 				>
 			</File>
 			<File

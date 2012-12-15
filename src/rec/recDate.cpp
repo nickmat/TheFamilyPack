@@ -233,6 +233,15 @@ bool recDate::SetDate( const wxString& str, CalendarScheme scheme )
     return ret;
 }
 
+bool recDate::SetDate( idt dateID, const wxString& str, CalendarScheme sch )
+{
+    wxASSERT( dateID != 0 );
+    recDate date(dateID);
+    bool ret = date.SetDate( str, sch );
+    date.Save();
+    return ret;
+}
+
 bool recDate::SetJdnDate( const wxString& str, CalendarScheme scheme )
 {
     long beg, end;

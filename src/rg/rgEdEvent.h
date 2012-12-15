@@ -27,8 +27,8 @@
 
 */
 
-#ifndef DLGEDINDEVENT_H
-#define DLGEDINDEVENT_H
+#ifndef RGEDEVENT_H
+#define RGEDEVENT_H
 
 #include <rec/recEvent.h>
 #include <rec/recDate.h>
@@ -36,35 +36,26 @@
 #include <rec/recIndividual.h>
 #include <rec/recPersona.h>
 
-#include "fbDlg.h"
+#include "fbRgDialog.h"
 
-#include <map>
-typedef std::map< idt, recIdVec > IndPerMap;
+//#include <map>
+//typedef std::map< idt, recIdVec > IndPerMap;
 
-//-----------------------------------------------------
-//      dlgEditIndEvent
-//-----------------------------------------------------
+//============================================================================
+//-------------------------[ rgDlgEditEvent ]---------------------------------
+//============================================================================
 
-class dlgEditIndEvent : public fbDlgEditIndEvent
+class rgDlgEditEvent : public fbRgEditEvent
 {
     enum Columns {
         COL_IndID, COL_Name, COL_Role, COL_Note, COL_MAX
     };
 public:
-    dlgEditIndEvent( wxWindow* parent, idt eventID );
-    ~dlgEditIndEvent();
+    rgDlgEditEvent( wxWindow* parent, idt eventID );
 
 private:
     bool TransferDataToWindow();
     void ListLinkedIndividuals();
-    wxString WrReferenceEvents();
-    wxString WrReferenceDates();
-    bool CreateDateImageFile();
-    static void DrawDateImage( 
-        wxDC& dc, const recDate& date, long start, double scale, const wxColour& color );
-    wxString WrReferencePlaces();
-    wxString WrReferencePersonas();
-    wxString WrReferenceIndividuals();
     bool TransferDataFromWindow();
 
     void OnDate1Button( wxCommandEvent& event );
@@ -76,21 +67,12 @@ private:
     void OnDeleteButton( wxCommandEvent& event );
 
     recEvent  m_event;
-    recDate   m_date1;
-    recDate   m_date2;
-    recPlace  m_place;
+    idt  m_date1ID;
+    idt  m_date2ID;
+    idt  m_placeID;
 
     recIndEventVec    m_ies;
     recIndividualVec  m_individuals;
-
-    recEventVec m_refEvents;
-    recIdVec    m_refIDs;
-    recIdVec    m_personaIDs;
-    IndPerMap   m_indPerMap;
-    recDateVec  m_reDate1s;
-    StringVec   m_dateImageFNs;
-
-    wxString    m_dateImageFN;
 };
 
-#endif // DLGEDINDEVENT_H
+#endif // RGEDEVENT_H

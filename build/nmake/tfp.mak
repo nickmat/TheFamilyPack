@@ -64,7 +64,6 @@ TFP_OBJECTS =  \
 	tfp_dlgEdContact.obj \
 	tfp_dlgEdEvent.obj \
 	tfp_dlgEdFamily.obj \
-	tfp_dlgEdIndEvent.obj \
 	tfp_dlgEdIndividual.obj \
 	tfp_dlgEdPersona.obj \
 	tfp_dlgEdReference.obj \
@@ -196,6 +195,7 @@ RECGUI_OBJECTS =  \
 	recgui_rgCrName.obj \
 	recgui_rgDialogs.obj \
 	recgui_rgEdDate.obj \
+	recgui_rgEdEvent.obj \
 	recgui_rgEdEventType.obj \
 	recgui_rgEdName.obj \
 	recgui_rgEdNamePart.obj \
@@ -433,9 +433,6 @@ tfp_dlgEdEvent.obj: .\..\..\src\dlg\dlgEdEvent.cpp
 tfp_dlgEdFamily.obj: .\..\..\src\dlg\dlgEdFamily.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\dlgEdFamily.cpp
 
-tfp_dlgEdIndEvent.obj: .\..\..\src\dlg\dlgEdIndEvent.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\dlgEdIndEvent.cpp
-
 tfp_dlgEdIndividual.obj: .\..\..\src\dlg\dlgEdIndividual.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\dlgEdIndividual.cpp
 
@@ -639,6 +636,9 @@ recgui_rgDialogs.obj: .\..\..\src\rg\rgDialogs.cpp
 
 recgui_rgEdDate.obj: .\..\..\src\rg\rgEdDate.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdDate.cpp
+
+recgui_rgEdEvent.obj: .\..\..\src\rg\rgEdEvent.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdEvent.cpp
 
 recgui_rgEdEventType.obj: .\..\..\src\rg\rgEdEventType.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdEventType.cpp

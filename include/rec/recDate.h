@@ -152,6 +152,8 @@ public:
     static idt Create( const recRelativeDate& rel ); 
 
     bool SetDate( const wxString& str, CalendarScheme sch = CALENDAR_SCH_Unstated );
+    static bool SetDate( idt dateID, const wxString& str, CalendarScheme sch = CALENDAR_SCH_Unstated );
+    
     bool SetJdnDate( const wxString& str, CalendarScheme sch = CALENDAR_SCH_Unstated );
     bool Update(); // Returns true if date is changed. Does nothing if not relative date.
 

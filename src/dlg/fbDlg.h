@@ -34,9 +34,9 @@ class tfpListCtrlIndividuals;
 #include <wx/notebook.h>
 #include <wx/listbox.h>
 #include <wx/statbox.h>
-#include <wx/splitter.h>
-#include <wx/html/htmlwin.h>
 #include <wx/toolbar.h>
+#include <wx/html/htmlwin.h>
+#include <wx/splitter.h>
 #include <wx/checkbox.h>
 
 ///////////////////////////////////////////////////////////////////////////
@@ -311,80 +311,6 @@ class fbDlgEditEvent : public wxDialog
 		
 		fbDlgEditEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbDlgEditEvent();
-	
-};
-
-///////////////////////////////////////////////////////////////////////////////
-/// Class fbDlgEditIndEvent
-///////////////////////////////////////////////////////////////////////////////
-class fbDlgEditIndEvent : public wxDialog 
-{
-	private:
-	
-	protected:
-		wxSplitterWindow* m_splitter;
-		wxPanel* m_panel1;
-		wxSplitterWindow* m_splitter6;
-		wxPanel* m_panel11;
-		wxStaticText* m_staticText17;
-		wxStaticText* m_staticType;
-		wxStaticText* m_staticEventID;
-		wxStaticText* m_staticText171;
-		wxTextCtrl* m_textCtrlTitle;
-		wxButton* m_buttonDate1;
-		wxTextCtrl* m_textCtrlDate1;
-		wxButton* m_buttonDate2;
-		wxTextCtrl* m_textCtrlDate2;
-		wxButton* m_buttonPlace;
-		wxTextCtrl* m_textCtrlAddr;
-		wxStaticText* m_staticText1711;
-		wxTextCtrl* m_textCtrlNote;
-		wxPanel* m_panel12;
-		wxListCtrl* m_listPersona;
-		wxButton* m_buttonAdd;
-		wxButton* m_buttonEdit;
-		wxButton* m_buttonDel;
-		wxPanel* m_panel3;
-		wxNotebook* m_notebook6;
-		wxPanel* m_panelRef;
-		wxHtmlWindow* m_htmlRef;
-		wxPanel* m_panelDates;
-		wxHtmlWindow* m_htmlDate;
-		wxPanel* m_panelPlaces;
-		wxHtmlWindow* m_htmlPlace;
-		wxPanel* m_panelPersona;
-		wxHtmlWindow* m_htmlPersona;
-		wxPanel* m_panelInd;
-		wxHtmlWindow* m_htmlInd;
-		wxStaticLine* m_staticline1;
-		wxButton* m_buttonSave;
-		wxButton* m_buttonCancel;
-		
-		// Virtual event handlers, overide them in your derived class
-		virtual void OnDate1Button( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnDate2Button( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnPlaceButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnAddButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnEditButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnDeleteButton( wxCommandEvent& event ) { event.Skip(); }
-		
-	
-	public:
-		
-		fbDlgEditIndEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Individual's Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 859,476 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
-		~fbDlgEditIndEvent();
-		
-		void m_splitterOnIdle( wxIdleEvent& )
-		{
-			m_splitter->SetSashPosition( 370 );
-			m_splitter->Disconnect( wxEVT_IDLE, wxIdleEventHandler( fbDlgEditIndEvent::m_splitterOnIdle ), NULL, this );
-		}
-		
-		void m_splitter6OnIdle( wxIdleEvent& )
-		{
-			m_splitter6->SetSashPosition( 230 );
-			m_splitter6->Disconnect( wxEVT_IDLE, wxIdleEventHandler( fbDlgEditIndEvent::m_splitter6OnIdle ), NULL, this );
-		}
 	
 };
 

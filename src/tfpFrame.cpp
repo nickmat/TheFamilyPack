@@ -840,7 +840,7 @@ void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
             ret = tfpEditReference( id );
             break;
         case 'E':
-            ret = tfpEditEvent( id );
+            ret = rgEditEvent( id );
             break;
         case 'I':
             ret = tfpEditIndividual( id );
@@ -959,7 +959,7 @@ void TfpFrame::OnHtmCtxMenu( wxCommandEvent& event )
             ret = tfpEditReference( id );
             break;
         case tfpID_HCTXMENU_EDIT_EVENT:
-            ret = tfpEditEvent( id );
+            ret = rgEditEvent( id );
             break;
         }
         if( ret == true ) {

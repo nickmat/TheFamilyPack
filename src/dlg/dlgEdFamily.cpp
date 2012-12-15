@@ -42,7 +42,6 @@
 #include <rg/rgDialogs.h>
 
 #include "dlgEdFamily.h"
-#include "dlgEdIndEvent.h"
 #include "dlgEd.h"
 
 IMPLEMENT_CLASS( dlgEditFamily, wxDialog )
@@ -378,6 +377,26 @@ void dlgEditFamily::OnEventAddButton( wxCommandEvent& event )
 
 void dlgEditFamily::OnNewEvent( wxCommandEvent& event )
 {
+    idt eveID; 
+    if( m_family.f_husb_id == 0 ) {
+        eveID = rgCreateIndEvent( m_family.f_wife_id, m_family.f_husb_id );
+    } else {
+        eveID = rgCreateIndEvent( m_family.f_husb_id, m_family.f_wife_id );
+    }
+    if( eveID ) {
+        recFamilyEvent fe(0);
+        fe.FSetFamID( m_family.FGetID() );
+        fe.FSetEventID( eveID );
+        fe.FSetFamSeq( m_family.GetMaxEventSeqNumber() );
+        fe.Save();
+        m_fes.push_back( fe );
+        int row = m_fes.size();
+        m_listEvent->InsertItem( row, recEvent::GetIdStr( eveID ) );
+        m_listEvent->SetItem( row, EC_Title, recEvent::GetTitle( eveID ) );
+        m_listEvent->SetItem( row, EC_Date, recEvent::GetDateStr( eveID ) );
+        m_listEvent->SetItem( row, EC_Place, recEvent::GetAddressStr( eveID ) );
+    }
+#if 0
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
 
@@ -441,6 +460,7 @@ void dlgEditFamily::OnNewEvent( wxCommandEvent& event )
         recDb::Rollback( savepoint );
     }
     dialog->Destroy();
+#endif
 }
 
 void dlgEditFamily::OnExistingEvent( wxCommandEvent& event )
@@ -456,20 +476,7 @@ void dlgEditFamily::OnEventEditButton( wxCommandEvent& event )
         wxMessageBox( _("No row selected"), _("Edit Event") );
         return;
     }
-
-    const wxString savepoint = recDb::GetSavepointStr();
-    recDb::Savepoint( savepoint );
-
-    dlgEditIndEvent* dialog = 
-        new dlgEditIndEvent( NULL, m_fes[row].FGetEventID() );
-
-    if( dialog->ShowModal() == wxID_OK )
-    {
-        recDb::ReleaseSavepoint( savepoint );
-    } else {
-        recDb::Rollback( savepoint );
-    }
-    dialog->Destroy();
+    rgEditEvent( m_fes[row].FGetEventID() );
 }
 
 void dlgEditFamily::OnEventDeleteButton( wxCommandEvent& event )

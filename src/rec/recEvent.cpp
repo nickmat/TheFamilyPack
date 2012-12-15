@@ -1171,6 +1171,38 @@ bool recIndividualEvent::Read()
     return true;
 }
 
+bool recIndividualEvent::Find( idt indID, idt eveID )
+{
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( indID == 0 || eveID == 0 ) {
+        Clear();
+        return false;
+    }
+
+    sql.Format(
+        "SELECT id, role_id, note, ind_seq "
+        "FROM IndividualEvent WHERE ind_id="ID" AND event_id="ID";",
+        indID, eveID
+    );
+    result = s_db->GetTable( sql );
+
+    if( result.GetRowCount() != 1 )
+    {
+        Clear();
+        return false;
+    }
+    result.SetRow( 0 );
+    f_id       = GET_ID( result.GetInt64( 0 ) );
+    f_ind_id   = indID;
+    f_event_id = eveID;
+    f_role_id  = GET_ID( result.GetInt64( 1 ) );
+    f_note     = result.GetAsString( 2 );
+    f_ind_seq  = result.GetInt( 3 );
+    return true;
+}
+
 wxString recIndividualEvent::GetRoleStr( idt indID, idt typeID )
 {
     wxSQLite3StatementBuffer sql;

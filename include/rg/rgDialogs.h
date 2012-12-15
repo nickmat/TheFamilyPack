@@ -96,8 +96,10 @@ enum rgSHOWROLE {
 extern bool rgEditIndEventRole( idt ieID, rgSHOWROLE filter = rgSHOWROLE_All );
 extern bool rgCreateIndEventRole( idt indID, idt eveID, idt roleID );
 extern bool rgEditPerEventRole( idt epID, rgSHOWROLE filter = rgSHOWROLE_All );
-extern idt rgCreateIndEvent( idt indID );
 
+// See src/rg/rgEdEvent.cpp
+extern bool rgEditEvent( idt eveID );
+extern idt rgCreateIndEvent( idt ind1ID, idt ind2ID = 0 );
 
 
 #endif // RGDIALOGS_H

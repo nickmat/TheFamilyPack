@@ -41,7 +41,6 @@
 #include <rg/rgDialogs.h>
 
 #include "dlgEdIndividual.h"
-#include "dlgEdIndEvent.h"
 
 #include "dlgEdPersona.h"
 #include "dlgEd.h"
@@ -303,48 +302,18 @@ void dlgEditIndPersona::OnEventAddButton( wxCommandEvent& event )
 
 void dlgEditIndPersona::OnNewEvent( wxCommandEvent& event )
 {
-    const wxString savepoint = recDb::GetSavepointStr();
-    recDb::Savepoint( savepoint );
-
-    idt typeID = rgSelectEventType();
-    if( typeID == 0 ) {
-        recDb::Rollback( savepoint );
-        return;
-    }
-
-    recEvent eve(0);
-    eve.f_type_id = typeID;
-    eve.f_title = wxString::Format(
-        _("%s of %s"), recEventType::GetTypeStr( typeID ), m_individual.GetFullName()
-    );
-    eve.Save();
-
-    recIndividualEvent ie(0);
-    ie.FSetEventID( eve.GetID() );
-    ie.FSetIndID( m_individual.FGetID() );
-    ie.Save();
-
-    if( ! rgEditIndEventRole( ie.FGetID(), rgSHOWROLE_PrimeAll )  ) {
-        recDb::Rollback( savepoint );
-        return;
-    }
-
-    dlgEditIndEvent* dialog = new dlgEditIndEvent( NULL, eve.GetID() );
-
-    if( dialog->ShowModal() == wxID_OK ) {
-        recDb::ReleaseSavepoint( savepoint );
-        ie.Read();
-        int row = m_ies.size();
-        m_listEvent->InsertItem( row, recEvent::GetIdStr( eve.GetID() ) );
-        m_listEvent->SetItem( row, EC_Role, recEventTypeRole::GetName( ie.FGetRoleID() ) );
-        m_listEvent->SetItem( row, EC_Title, recEvent::GetTitle( eve.GetID() ) );
-        m_listEvent->SetItem( row, EC_Date, recEvent::GetDateStr( eve.GetID() ) );
-        m_listEvent->SetItem( row, EC_Place, recEvent::GetAddressStr( eve.GetID() ) );
+    idt eveID = rgCreateIndEvent( m_individual.FGetID() );
+    if( eveID ) {
+        recIndividualEvent ie;
+        ie.Find( m_individual.FGetID(), eveID );
         m_ies.push_back( ie );
-    } else {
-        recDb::Rollback( savepoint );
+        int row = m_listEvent->GetItemCount();
+        m_listEvent->InsertItem( row, recEvent::GetIdStr( eveID ) );
+        m_listEvent->SetItem( row, EC_Role, recEventTypeRole::GetName( ie.FGetRoleID() ) );
+        m_listEvent->SetItem( row, EC_Title, recEvent::GetTitle( eveID ) );
+        m_listEvent->SetItem( row, EC_Date, recEvent::GetDateStr( eveID ) );
+        m_listEvent->SetItem( row, EC_Place, recEvent::GetAddressStr( eveID ) );
     }
-    dialog->Destroy();
 }
 
 void dlgEditIndPersona::OnExistingEvent( wxCommandEvent& event )
@@ -364,9 +333,7 @@ void dlgEditIndPersona::OnExistingEvent( wxCommandEvent& event )
         return;
     }
 
-    dlgEditIndEvent* dialog = new dlgEditIndEvent( NULL, eveID );
-
-    if( dialog->ShowModal() == wxID_OK ) {
+    if( rgEditEvent( eveID ) ) {
         recDb::ReleaseSavepoint( savepoint );
         ie.Read();
         int row = m_ies.size();
@@ -379,7 +346,6 @@ void dlgEditIndPersona::OnExistingEvent( wxCommandEvent& event )
     } else {
         recDb::Rollback( savepoint );
     }
-    dialog->Destroy();
 }
 
 void dlgEditIndPersona::OnEventEditButton( wxCommandEvent& event )
@@ -389,26 +355,14 @@ void dlgEditIndPersona::OnEventEditButton( wxCommandEvent& event )
         wxMessageBox( _("No row selected"), _("Edit Event") );
         return;
     }
-
-    const wxString savepoint = "IndEdEvent";
-    recDb::Savepoint( savepoint );
-
     idt eveID = m_ies[row].FGetEventID();
-    dlgEditIndEvent* dialog = 
-        new dlgEditIndEvent( NULL, eveID );
-
-    if( dialog->ShowModal() == wxID_OK )
-    {
-        recDb::ReleaseSavepoint( savepoint );
+    if( rgEditEvent( eveID ) ) {
         m_listEvent->SetItem( row, EC_Number, recEvent::GetIdStr( eveID ) );
         m_listEvent->SetItem( row, EC_Role, recEventTypeRole::GetName( m_ies[row].FGetRoleID() ) );
         m_listEvent->SetItem( row, EC_Title, recEvent::GetTitle( eveID ) );
         m_listEvent->SetItem( row, EC_Date, recEvent::GetDateStr( eveID ) );
         m_listEvent->SetItem( row, EC_Place, recEvent::GetAddressStr( eveID ) );
-    } else {
-        recDb::Rollback( savepoint );
     }
-    dialog->Destroy();
 }
 
 void dlgEditIndPersona::OnEventDeleteButton( wxCommandEvent& event )
