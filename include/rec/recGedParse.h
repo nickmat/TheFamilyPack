@@ -33,7 +33,8 @@
 #include <map>
 #include <wx/txtstrm.h>
 #include <wx/wfstream.h>
-#include "rec/recDatabase.h"
+#include <rec/recDatabase.h>
+#include <rec/recDate.h>
 
 typedef std::map< wxString, unsigned > XrefMap;
 
@@ -110,7 +111,9 @@ private:
     void ReadSubm( int level );
     wxString ReadAddr( int level );
     idt ParseEvPlace( int level );
-    idt ParseEvDate( int level );
+    idt ParseEvDate( int level, idt* d2ID );
+    wxString ParseDate( recDate* date, const wxString& str );
+    long GetMonth( const wxString& token, CalendarScheme sch );
 
     wxFileInputStream m_filestream;
     wxTextInputStream m_input;

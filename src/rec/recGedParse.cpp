@@ -504,13 +504,15 @@ void recGedParse::ReadIndEvent( GedIndividual& gind, int level )
     bool cont = ReadNextLine();
     while( cont && m_level >= level ) {
         if( m_level == level ) {
+            idt date2ID = 0;
             switch( m_tag )
             {
             case tagDATE:
-                ev.f_date1_id = ParseEvDate( level+1 );
+                ev.FSetDate1ID( ParseEvDate( level+1, &date2ID ) );
+                ev.FSetDate2ID( date2ID );
                 break;
             case tagPLAC:
-                ev.f_place_id = ParseEvPlace( level+1 );
+                ev.FSetPlaceID( ParseEvPlace( level+1 ) );
                 break;
             case tag_END:
                 cont = FALSE;
@@ -526,41 +528,40 @@ void recGedParse::ReadIndEvent( GedIndividual& gind, int level )
     ie.Save();
 }
 
-idt recGedParse::ParseEvDate( int level )
+idt recGedParse::ParseEvDate( int level, idt* d2ID  )
 {
     recDate date(0);
+    recDate date2(0);
     wxString text = m_text;
-    static wxString MonName[] = {
-        wxT("JAN"), wxT("FEB"), wxT("MAR"), wxT("APR"), wxT("MAY"), wxT("JUN"),
-        wxT("JUL"), wxT("AUG"), wxT("SEP"), wxT("OCT"), wxT("NOV"), wxT("DEC")
-    };
-
-    if( text.find( '/' ) != wxNOT_FOUND ) {
-        // Date strings with a / char are not (at the moment) valid.
-        date.f_descrip = text;
-        date.Save();
-        return date.f_id;
-    }
+    wxString period;
+    bool range = false;
 
     wxStringTokenizer tkz( text );
     if( tkz.HasMoreTokens() == false ) return 0;
     wxString token = tkz.GetNextToken();
 
-    if( token.compare( wxT("FROM") ) == 0 ||
-        token.compare( wxT("TO") ) == 0 ||
-        token.compare( wxT("BET") ) == 0 ||
-        token.compare( wxT("INT") ) == 0 )
+    if( token.compare( "INT" ) == 0 )
     {
         date.f_descrip = m_text;
         date.Save();
         return date.f_id;
     }
 
+    if( token.compare( "FROM" ) == 0 ||
+        token.compare( "TO" ) == 0 ) {
+        period = token;
+        token = tkz.GetNextToken();
+    }
+    if( token.compare( "BET" ) == 0 ) {
+        range = true;
+        token = tkz.GetNextToken();
+    }
+
     CalendarScheme sch = CALENDAR_SCH_Unstated;
-    if(      token.compare( wxT("@#DGREGORIAN@") ) == 0 ) sch = CALENDAR_SCH_Gregorian;
-    else if( token.compare( wxT("@#DJULIAN@") )    == 0 ) sch = CALENDAR_SCH_Julian;
-    else if( token.compare( wxT("@#DUNKNOWN@") )   == 0 ) sch = CALENDAR_SCH_Unknown;
-    else if( token.compare( 0, 3, wxT("@#D") )     == 0 ) sch = CALENDAR_SCH_Unlisted;
+    if(      token.compare( "@#DGREGORIAN@" ) == 0 ) sch = CALENDAR_SCH_Gregorian;
+    else if( token.compare( "@#DJULIAN@" )    == 0 ) sch = CALENDAR_SCH_Julian;
+    else if( token.compare( "@#DUNKNOWN@" )   == 0 ) sch = CALENDAR_SCH_Unknown;
+    else if( token.compare( 0, 3, "@#D" )     == 0 ) sch = CALENDAR_SCH_Unlisted;
 
     if( sch == CALENDAR_SCH_Unlisted || sch == CALENDAR_SCH_Unknown ) {
         date.f_record_sch = date.f_display_sch = sch;
@@ -597,29 +598,106 @@ idt recGedParse::ParseEvDate( int level )
         flags = recDate::PREF_On;
     }
 
-    long day = 0, month = 0, year = 0;
-    if( token.ToLong( &day ) == true ) {
-        if( tkz.HasMoreTokens() == false ) {
-            year = day;
-            day = 0;
+    date.FSetType( flags );
+    date.FSetRecordSch( sch );
+    date.FSetDisplaySch( sch );
+    wxString tail = ParseDate( &date, token+" "+tkz.GetString() );
+    date.Save();
+    date2.FSetType( recDate::PREF_On );
+    date2.FSetRecordSch( sch );
+    date2.FSetDisplaySch( sch );
+    if( period != wxEmptyString ) {
+        if( period.compare( "TO" ) == 0 ) {
+            date2.FSetJdn( date.GetDatePoint( recDate::DATE_POINT_Beg ) );
+            date2.FSetType( recDate::PREF_Before );
+            date2.Save();
+            *d2ID = date.FGetID();
+            return date2.FGetID();
+        }
+        tkz.SetString( tail );
+        token = tkz.GetNextToken();
+        if( token.compare( "TO" ) ) {
+            ParseDate( &date2, tkz.GetString() );
         } else {
-            token = tkz.GetNextToken();
+            date2.FSetJdn( date.GetDatePoint( recDate::DATE_POINT_End ) );
+            date2.FSetType( recDate::PREF_After );
         }
+        date2.Save();
+        *d2ID = date.FGetID();
     }
-    // look for month
-    for( int i = 0 ; i < 12 ; i++ ) {
-        if( token.compare( MonName[i] ) == 0 ) {
-            month = i+1;
-            if( tkz.HasMoreTokens() == false ) {
-                // if there is a month there must be a year
-                return 0;
-            }
-            token = tkz.GetNextToken();
-            break;
+    if( range == true ) {
+        tkz.SetString( tail );
+        token = tkz.GetNextToken();
+        if( token.compare( "AND" ) != 0 ) {
+            date.FSetDescrip( m_text );
+        } else {
+            ParseDate( &date2, tkz.GetString() );
+            long beg = wxMin( 
+                date.GetDatePoint( recDate::DATE_POINT_Beg ),
+                date2.GetDatePoint( recDate::DATE_POINT_Beg )
+            );
+            long end = wxMax(
+                date.GetDatePoint( recDate::DATE_POINT_End ),
+                date2.GetDatePoint( recDate::DATE_POINT_End )
+            );
+            date.FSetJdn( beg );
+            date.FSetRange( end - beg );
         }
+        date.Save();
     }
-    if( token.ToLong( &year ) == false ) return 0;
+    return date.f_id;
+}
 
+wxString recGedParse::ParseDate( recDate* date, const wxString& str )
+{
+    wxString tail;
+    wxStringTokenizer tkz( str );
+    wxString token = tkz.GetNextToken();
+
+    long day = 0, month = 0, year = 0;
+    if( token.ToCLong( &day ) == false ) {
+        // Format must be 'month year'
+        day = 0;
+        month = GetMonth( token, date->FGetRecordSch() );
+        if( month == 0 || !tkz.HasMoreTokens() ) {
+            date->FSetDescrip( m_text );
+            return "";
+        }
+        token = tkz.GetNextToken();
+        if( token.ToCLong( &year ) == false ) {
+            date->FSetDescrip( m_text );
+            return "";
+        }
+        tail = tkz.GetString();
+    } else {
+        if( tkz.HasMoreTokens() ) {
+            token = tkz.GetNextToken();
+            month = GetMonth( token, date->FGetRecordSch() );
+            if( month == 0 ) {
+                // Format must be just 'year'
+                year = day;
+                day = 0;
+                tail = token+" "+tkz.GetString();
+            } else {
+                // Format is 'day month year'
+                if( !tkz.HasMoreTokens() ) {
+                    date->FSetDescrip( m_text );
+                    return "";
+                }
+                token = tkz.GetNextToken();
+                if( token.ToCLong( &year ) == false ) {
+                    date->FSetDescrip( m_text );
+                    return "";
+                }
+                tail = tkz.GetString();
+            }
+        } else {
+            date->FSetDescrip( m_text );
+            return "";
+        }
+    }
+
+    CalendarScheme sch = date->FGetRecordSch();
     long jdn1 = 0, jdn2 = 0;
     DMYDate dmy;
     dmy.SetDMY( (day==0) ? 1 : day, (month==0) ? 1 : month, year );
@@ -628,14 +706,33 @@ idt recGedParse::ParseEvDate( int level )
     if( day == 0 ) day = calLastDayInMonth( month, year, sch );
     dmy.SetDMY( day, month, year );
     calConvertToJdn( jdn2, dmy, sch );
+    date->FSetJdn( jdn1 );
+    date->FSetRange( jdn2 - jdn1 );
 
-    date.f_jdn = jdn1;
-    date.f_range = jdn2 - jdn1;
-    date.f_type = flags;
-    date.f_record_sch = date.f_display_sch = sch;
-    date.Save();
-    return date.f_id;
+    return tail;
 }
+
+long recGedParse::GetMonth( const wxString& token, CalendarScheme sch )
+{
+    static wxString MonName[] = {
+        "JAN", "FEB", "MAR", "APR", "MAY", "JUN",
+        "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"
+    };
+    switch( sch )
+    {
+    case CALENDAR_SCH_Julian:
+    case CALENDAR_SCH_Gregorian:
+        for( int i = 0 ; i < 12 ; i++ ) {
+            if( token.compare( MonName[i] ) == 0 ) {
+                return i+1;
+            }
+        }
+        return 0;
+    default:
+        return 0;
+    }
+}
+
 
 idt recGedParse::ParseEvPlace( int level )
 {
@@ -714,13 +811,15 @@ void recGedParse::ReadFamEvent( GedFamily& gfam, int level )
     bool cont = ReadNextLine();
     while( cont && m_level >= level ) {
         if( m_level == level ) {
+            idt date2ID = 0;
             switch( m_tag )
             {
             case tagDATE:
-                ev.f_date1_id = ParseEvDate( level+1 );
+                ev.FSetDate1ID( ParseEvDate( level+1, &date2ID ) );
+                ev.FSetDate2ID( date2ID );
                 break;
             case tagPLAC:
-                ev.f_place_id = ParseEvPlace( level+1 );
+                ev.FSetPlaceID( ParseEvPlace( level+1 ) );
                 break;
             case tag_END:
                 cont = FALSE;
