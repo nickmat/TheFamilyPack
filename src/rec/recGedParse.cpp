@@ -149,8 +149,9 @@ bool recGedParse::Import( unsigned flags )
 bool recGedParse::DoPostOperations()
 {
     recDb::Begin();
-    return recIndividual::CreateMissingFamilies();
+    bool ret = recIndividual::CreateMissingFamilies();
     recDb::Commit();
+    return ret;
 }
 
 bool recGedParse::Pass1()
