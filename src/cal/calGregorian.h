@@ -32,10 +32,11 @@ class DMYDate;
 
 // Gregorian (New Style)
 extern bool calGregorianIsLeapYear( int year );
+
 extern int calGregorianLastDayInMonth( int month, int year );
-//extern bool calGregorianToJdn( long& jdn, int day, int month, int year );
-extern bool calGregorianToJdn( long& jdn, const DMYDate& dmy );
-//extern bool calGregorianFromJdn( long jdn, int& day, int& month, int& year );
-extern bool calGregorianFromJdn( long jdn, DMYDate& dmy );
+
+extern bool calGregorianToJdn( long* jdn, const DMYDate& dmy );
+
+extern bool calGregorianFromJdn( long jdn, DMYDate* dmy );
 
 #endif // CALGREGORIAN_H

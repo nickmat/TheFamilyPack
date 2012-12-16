@@ -141,34 +141,34 @@ void CalTestCase::TestTable()
     DMYDate dmy;
 
     for( int i = 0 ; i < MaxSample ; i++ ) {
-        calConvertFromJdn( SampleList[i].jdn, num, CALENDAR_SCH_RataDie );
+        calConvertFromJdn( SampleList[i].jdn, &num, CALENDAR_SCH_RataDie );
         CPPUNIT_ASSERT( num == SampleList[i].rd );
-        calConvertToJdn( jdn, SampleList[i].rd, CALENDAR_SCH_RataDie );
+        calConvertToJdn( &jdn, SampleList[i].rd, CALENDAR_SCH_RataDie );
         CPPUNIT_ASSERT( jdn == SampleList[i].jdn );
 
-        calConvertFromJdn( SampleList[i].jdn, dbl, CALENDAR_SCH_JulianDay );
+        calConvertFromJdn( SampleList[i].jdn, &dbl, CALENDAR_SCH_JulianDay );
         // We shouldn't really equate doubles here - but it should work ok.
         CPPUNIT_ASSERT( dbl == SampleList[i].jd );
-        calConvertToJdn( jdn, SampleList[i].jd, CALENDAR_SCH_JulianDay );
+        calConvertToJdn( &jdn, SampleList[i].jd, CALENDAR_SCH_JulianDay );
         CPPUNIT_ASSERT( jdn == SampleList[i].jdn );
 
-        calConvertFromJdn( SampleList[i].jdn, num, CALENDAR_SCH_ModJulianDay );
+        calConvertFromJdn( SampleList[i].jdn, &num, CALENDAR_SCH_ModJulianDay );
         CPPUNIT_ASSERT( num == SampleList[i].mjd );
-        calConvertToJdn( jdn, SampleList[i].mjd, CALENDAR_SCH_ModJulianDay );
+        calConvertToJdn( &jdn, SampleList[i].mjd, CALENDAR_SCH_ModJulianDay );
         CPPUNIT_ASSERT( jdn == SampleList[i].jdn );
 
-        calConvertFromJdn( SampleList[i].jdn, dmy, CALENDAR_SCH_Gregorian );
+        calConvertFromJdn( SampleList[i].jdn, &dmy, CALENDAR_SCH_Gregorian );
         CPPUNIT_ASSERT( dmy.day == SampleList[i].g.day );
         CPPUNIT_ASSERT( dmy.month == SampleList[i].g.month );
         CPPUNIT_ASSERT( dmy.year == SampleList[i].g.year );
-        calConvertToJdn( jdn, SampleList[i].g, CALENDAR_SCH_Gregorian );
+        calConvertToJdn( &jdn, SampleList[i].g, CALENDAR_SCH_Gregorian );
         CPPUNIT_ASSERT( jdn == SampleList[i].jdn );
 
-        calConvertFromJdn( SampleList[i].jdn, dmy, CALENDAR_SCH_Julian );
+        calConvertFromJdn( SampleList[i].jdn, &dmy, CALENDAR_SCH_Julian );
         CPPUNIT_ASSERT( dmy.day == SampleList[i].j.day );
         CPPUNIT_ASSERT( dmy.month == SampleList[i].j.month );
         CPPUNIT_ASSERT( dmy.year == SampleList[i].j.year );
-        calConvertToJdn( jdn, SampleList[i].j, CALENDAR_SCH_Julian );
+        calConvertToJdn( &jdn, SampleList[i].j, CALENDAR_SCH_Julian );
         CPPUNIT_ASSERT( jdn == SampleList[i].jdn );
     }
 }
@@ -201,7 +201,7 @@ void CalTestCase::TestJulian()
     long prev_jd;
 
     dmy.day = 31; dmy.month = 12; dmy.year = CALTEST_J_START_YEAR-1;
-    CPPUNIT_ASSERT( calConvertToJdn( prev_jd, dmy, CALENDAR_SCH_Julian ) );
+    CPPUNIT_ASSERT( calConvertToJdn( &prev_jd, dmy, CALENDAR_SCH_Julian ) );
     CPPUNIT_ASSERT( prev_jd == CALTEST_J_START_PREV_JDN );
 
     for( dmy.year = CALTEST_J_START_YEAR ; 
@@ -218,12 +218,12 @@ void CalTestCase::TestJulian()
             for( dmy.day = 1 ; dmy.day <= month_length ; ++dmy.day )
             {
                 long jd;
-				CPPUNIT_ASSERT( calConvertToJdn( jd, dmy, CALENDAR_SCH_Julian ) );
+				CPPUNIT_ASSERT( calConvertToJdn( &jd, dmy, CALENDAR_SCH_Julian ) );
                 CPPUNIT_ASSERT( jd == prev_jd+1 );
                 ++prev_jd;
 
                 DMYDate tdmy;
-                calConvertFromJdn( jd, tdmy, CALENDAR_SCH_Julian );
+                calConvertFromJdn( jd, &tdmy, CALENDAR_SCH_Julian );
                 CPPUNIT_ASSERT( tdmy == dmy );
 			}
         }
@@ -258,7 +258,7 @@ void CalTestCase::TestGregorian()
     long prev_jd;
 
     dmy.day = 31; dmy.month = 12; dmy.year = CALTEST_G_START_YEAR-1;
-    CPPUNIT_ASSERT( calConvertToJdn( prev_jd, dmy, CALENDAR_SCH_Gregorian ) );
+    CPPUNIT_ASSERT( calConvertToJdn( &prev_jd, dmy, CALENDAR_SCH_Gregorian ) );
     CPPUNIT_ASSERT( prev_jd == CALTEST_G_START_PREV_JDN );
 
     for( dmy.year = CALTEST_G_START_YEAR ; 
@@ -278,12 +278,12 @@ void CalTestCase::TestGregorian()
             for( dmy.day = 1 ; dmy.day <= month_length ; ++dmy.day )
             {
                 long jd;
-				CPPUNIT_ASSERT( calConvertToJdn( jd, dmy, CALENDAR_SCH_Gregorian ) );
+				CPPUNIT_ASSERT( calConvertToJdn( &jd, dmy, CALENDAR_SCH_Gregorian ) );
                 CPPUNIT_ASSERT( jd == prev_jd+1 );
                 ++prev_jd;
 
                 DMYDate tdmy;
-                calConvertFromJdn( jd, tdmy, CALENDAR_SCH_Gregorian );
+                calConvertFromJdn( jd, &tdmy, CALENDAR_SCH_Gregorian );
                 CPPUNIT_ASSERT( tdmy == dmy );
 			}
         }
@@ -298,52 +298,52 @@ void CalTestCase::TestAdd()
 
     jdn1 = jdn2 = 2455611; // 18 Feb 2011 (G)
     year = 62;
-    CPPUNIT_ASSERT( calAddToJdn( jdn1, -(year+1), CALENDAR_UNIT_Year, sch ) );
+    CPPUNIT_ASSERT( calAddToJdn( &jdn1, -(year+1), CALENDAR_UNIT_Year, sch ) );
     jdn1++;
     CPPUNIT_ASSERT( jdn1 == 2432601 );  // 19 Feb 1948 (G)
-    CPPUNIT_ASSERT( calAddToJdn( jdn2, -year, CALENDAR_UNIT_Year, sch ) );
+    CPPUNIT_ASSERT( calAddToJdn( &jdn2, -year, CALENDAR_UNIT_Year, sch ) );
     CPPUNIT_ASSERT( jdn2 == 2432966 );  // 18 Feb 1949 (G)
 
     jdn1 = jdn2 = 2455459; // 19 Sep 2010 (G)
     year = 62;
-    CPPUNIT_ASSERT( calAddToJdn( jdn1, -(year+1), CALENDAR_UNIT_Year, sch ) );
+    CPPUNIT_ASSERT( calAddToJdn( &jdn1, -(year+1), CALENDAR_UNIT_Year, sch ) );
     jdn1++;
     CPPUNIT_ASSERT( jdn1 == 2432449 );  // 20 Sep 1947 (G)
-    CPPUNIT_ASSERT( calAddToJdn( jdn2, -year, CALENDAR_UNIT_Year, sch ) );
+    CPPUNIT_ASSERT( calAddToJdn( &jdn2, -year, CALENDAR_UNIT_Year, sch ) );
     CPPUNIT_ASSERT( jdn2 == 2432814 );  // 19 Sep 1948 (G)
 
     jdn1 = jdn2 = 2455458; // 18 Sep 2010 (G)
     year = 61;
-    CPPUNIT_ASSERT( calAddToJdn( jdn1, -(year+1), CALENDAR_UNIT_Year, sch ) );
+    CPPUNIT_ASSERT( calAddToJdn( &jdn1, -(year+1), CALENDAR_UNIT_Year, sch ) );
     jdn1++;
     CPPUNIT_ASSERT( jdn1 == 2432814 );  // 19 Sep 1948 (G)
-    CPPUNIT_ASSERT( calAddToJdn( jdn2, -year, CALENDAR_UNIT_Year, sch ) );
+    CPPUNIT_ASSERT( calAddToJdn( &jdn2, -year, CALENDAR_UNIT_Year, sch ) );
     CPPUNIT_ASSERT( jdn2 == 2433178 );  // 18 Sep 1949 (G)
 
     jdn1 = jdn2 = 2432814; // 19 Sep 1948 (G)
     month = 10;
-    CPPUNIT_ASSERT( calAddToJdn( jdn1, -(month+1), CALENDAR_UNIT_Month, sch ) );
+    CPPUNIT_ASSERT( calAddToJdn( &jdn1, -(month+1), CALENDAR_UNIT_Month, sch ) );
     jdn1++;
     CPPUNIT_ASSERT( jdn1 == 2432479 );  // 20 Oct 1947 (G)
-    CPPUNIT_ASSERT( calAddToJdn( jdn2, -month, CALENDAR_UNIT_Month, sch ) );
+    CPPUNIT_ASSERT( calAddToJdn( &jdn2, -month, CALENDAR_UNIT_Month, sch ) );
     CPPUNIT_ASSERT( jdn2 == 2432509 );  // 19 Nov 1947 (G)
 
     jdn1 = 2432613; // 2 Mar 1948 (G)
     jdn2 = 2432978; // 2 Mar 1949 (G)
     day = 4;
-    CPPUNIT_ASSERT( calAddToJdn( jdn1, -(day+1), CALENDAR_UNIT_Day, sch ) );
+    CPPUNIT_ASSERT( calAddToJdn( &jdn1, -(day+1), CALENDAR_UNIT_Day, sch ) );
     jdn1++;
     CPPUNIT_ASSERT( jdn1 == 2432609 );  // 27 Feb 1948 (G)
-    CPPUNIT_ASSERT( calAddToJdn( jdn2, -day, CALENDAR_UNIT_Day, sch ) );
+    CPPUNIT_ASSERT( calAddToJdn( &jdn2, -day, CALENDAR_UNIT_Day, sch ) );
     CPPUNIT_ASSERT( jdn2 == 2432974 );  // 26 Feb 1949 (G)
 
     jdn1 = 2455612; // 19 Feb 2011 (G)
     day = 4;
     month = 11;
     year = 10;
-    CPPUNIT_ASSERT( calAddToJdn( jdn1, -year, CALENDAR_UNIT_Year, sch ) );
-    CPPUNIT_ASSERT( calAddToJdn( jdn1, -month, CALENDAR_UNIT_Month, sch ) );
-    CPPUNIT_ASSERT( calAddToJdn( jdn1, -day, CALENDAR_UNIT_Day, sch ) );
+    CPPUNIT_ASSERT( calAddToJdn( &jdn1, -year, CALENDAR_UNIT_Year, sch ) );
+    CPPUNIT_ASSERT( calAddToJdn( &jdn1, -month, CALENDAR_UNIT_Month, sch ) );
+    CPPUNIT_ASSERT( calAddToJdn( &jdn1, -day, CALENDAR_UNIT_Day, sch ) );
     CPPUNIT_ASSERT( jdn1 == 2451619 );  // 15 Mar 2000 (G)
 }
 

@@ -212,7 +212,7 @@ void rgDlgSelectIndEvent::OnBegDateText( wxCommandEvent& event )
     wxString str = m_textCtrlBegDatePt->GetValue();
     if( str.size() ) {
         long jdn1, jdn2;
-        if( calStrToJdnRange( jdn1, jdn2, str, CALENDAR_SCH_Gregorian ) ) {
+        if( calStrToJdnRange( &jdn1, &jdn2, str, CALENDAR_SCH_Gregorian ) ) {
             m_begDatePt = jdn1;
         }
     }
@@ -229,7 +229,7 @@ void rgDlgSelectIndEvent::OnEndDateText( wxCommandEvent& event )
     wxString str = m_textCtrlEndDatePt->GetValue();
     if( str.size() ) {
         long jdn1, jdn2;
-        if( calStrToJdnRange( jdn1, jdn2, str, CALENDAR_SCH_Gregorian ) ) {
+        if( calStrToJdnRange( &jdn1, &jdn2, str, CALENDAR_SCH_Gregorian ) ) {
             m_endDatePt = jdn2;
         }
     }

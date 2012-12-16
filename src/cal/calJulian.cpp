@@ -68,29 +68,14 @@ int calJulianLastDayInMonth( int month, int year )
 /*! Sets jdn to the Julian Day Number for the given day, month and year
  *  in the Julian Calendar. Always returns true.
  */
-bool calJulianToJdn( long& jdn, const DMYDate& dmy )
+bool calJulianToJdn( long* jdn, const DMYDate& dmy )
 {
-    jdn =
+    *jdn =
         FDiv(dmy.year,4)*1461 + PMod(dmy.year,4)*365
         + calLatinDiy[dmy.month] + dmy.day + BASEDATE_Julian;
 
     // Adjust if in the 1st 2 months of 4 year cycle
-    if( dmy.month < 3 && (dmy.year%4) == 0 ) --jdn;
-
-    return true;
-}
-
-/*! Sets jdn to the Julian Day Number for the given day, month and year
- *  in the Julian Calendar. Always returns true.
- */
-bool calJulianToJdn( long& jdn, int day, int month, int year )
-{
-    jdn =
-        FDiv(year,4)*1461 + PMod(year,4)*365
-        + calLatinDiy[month] + day + BASEDATE_Julian;
-
-    // Adjust if in the 1st 2 months of 4 year cycle
-    if( month < 3 && (year%4) == 0 ) --jdn;
+    if( dmy.month < 3 && (dmy.year%4) == 0 ) --(*jdn);
 
     return true;
 }
@@ -98,62 +83,31 @@ bool calJulianToJdn( long& jdn, int day, int month, int year )
 /*! Splits the given Julian Day Number date into the day, month and year
  *  for the Julian Calendar.
  */
-bool calJulianFromJdn( long date, int& day, int& month, int& year )
+bool calJulianFromJdn( long date, DMYDate* dmy )
 {
     date -= BASEDATE_Julian;
 
-    year = (int) FDiv( date, 1461 ) * 4;
+    dmy->year = (int) FDiv( date, 1461 ) * 4;
     date = PMod( date, 1461 );
 
     if( date < 60 )
     {
         if( date < 31 )
         {
-            month = 1;
-            day = (int) date + 1;
+            dmy->month = 1;
+            dmy->day = (int) date + 1;
             return true;
         }
-        month = 2;
-        day = (int) date - 30;
+        dmy->month = 2;
+        dmy->day = (int) date - 30;
         return true;
     }
     --date; // remove the leap day
-    year += (int) date / 365;
+    dmy->year += (int) date / 365;
     date %= 365;
-    month = 1;
-    while( date >= (long) calLatinDiy[month+1] ) month++;
-    day = (int) date - calLatinDiy[month] + 1;
-    return true;
-}
-
-/*! Splits the given Julian Day Number date into the day, month and year
- *  for the Julian Calendar.
- */
-bool calJulianFromJdn( long date, DMYDate& dmy )
-{
-    date -= BASEDATE_Julian;
-
-    dmy.year = (int) FDiv( date, 1461 ) * 4;
-    date = PMod( date, 1461 );
-
-    if( date < 60 )
-    {
-        if( date < 31 )
-        {
-            dmy.month = 1;
-            dmy.day = (int) date + 1;
-            return true;
-        }
-        dmy.month = 2;
-        dmy.day = (int) date - 30;
-        return true;
-    }
-    --date; // remove the leap day
-    dmy.year += (int) date / 365;
-    date %= 365;
-    dmy.month = 1;
-    while( date >= (long) calLatinDiy[dmy.month+1] ) dmy.month++;
-    dmy.day = (int) date - calLatinDiy[dmy.month] + 1;
+    dmy->month = 1;
+    while( date >= (long) calLatinDiy[dmy->month+1] ) dmy->month++;
+    dmy->day = (int) date - calLatinDiy[dmy->month] + 1;
     return true;
 }
 

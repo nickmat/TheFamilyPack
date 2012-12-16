@@ -123,7 +123,7 @@ long PMod( long a, long b )
  *  into a julian day number.
  *  Returns true if successful, false otherwise.
  */
-bool calConvertToJdn( long& jdn, const DMYDate& dmy, CalendarScheme scheme )
+bool calConvertToJdn( long* jdn, const DMYDate& dmy, CalendarScheme scheme )
 {
     switch( scheme )
     {
@@ -139,7 +139,7 @@ bool calConvertToJdn( long& jdn, const DMYDate& dmy, CalendarScheme scheme )
  *  for the given scheme.
  *  Returns true if successful, false otherwise.
  */
-bool calConvertFromJdn( long jdn, DMYDate& dmy, CalendarScheme scheme )
+bool calConvertFromJdn( long jdn, DMYDate* dmy, CalendarScheme scheme )
 {
     switch( scheme )
     {
@@ -175,7 +175,7 @@ int calLastDayInMonth( int month, int year, CalendarScheme scheme )
     return 0;
 }
 
-bool calYearFromJdn( int& year, long jdn, CalendarScheme scheme )
+bool calYearFromJdn( int* year, long jdn, CalendarScheme scheme )
 {
     DMYDate dmy;
     bool ret;
@@ -183,15 +183,15 @@ bool calYearFromJdn( int& year, long jdn, CalendarScheme scheme )
     switch( scheme )
     {
     case CALENDAR_SCH_Gregorian:
-        ret = calGregorianFromJdn( jdn, dmy );
+        ret = calGregorianFromJdn( jdn, &dmy );
         break;
     case CALENDAR_SCH_Julian:
-        ret = calJulianFromJdn( jdn, dmy );
+        ret = calJulianFromJdn( jdn, &dmy );
         break;
     default:
         return false;
     }
-    year = dmy.year;
+    *year = dmy.year;
     return ret;
 }
 
@@ -245,7 +245,7 @@ wxString calStrFromJdnRange( long jdn1, long jdn2, CalendarScheme scheme )
     return calStrFromJdn( jdn1, scheme );
 }
 
-bool calStrToJdn( long& jdn, const wxString& str, CalendarScheme scheme )
+bool calStrToJdn( long* jdn, const wxString& str, CalendarScheme scheme )
 {
     switch( scheme )
     {
@@ -262,7 +262,7 @@ bool calStrToJdn( long& jdn, const wxString& str, CalendarScheme scheme )
 }
 
 bool calStrToJdnRange(
-    long& jdn1, long& jdn2, const wxString& str, CalendarScheme scheme )
+    long* jdn1, long* jdn2, const wxString& str, CalendarScheme scheme )
 {
     bool ret;
 
@@ -279,7 +279,7 @@ bool calStrToJdnRange(
         ret = calJDayStrToJdnRange( jdn1, jdn2, str, scheme );
         break;
     default:
-        jdn1 = jdn2 = 0;
+        *jdn1 = *jdn2 = 0;
         ret = false;
     }
 
@@ -287,15 +287,15 @@ bool calStrToJdnRange(
 }
 
 bool calAddToJdn( 
-    long& jdn, long value, CalendarUnit unit, CalendarScheme scheme )
+    long* jdn, long value, CalendarUnit unit, CalendarScheme scheme )
 {
     switch( unit )
     {
     case CALENDAR_UNIT_Day:
-        jdn += value;
+        *jdn += value;
         return true;
     case CALENDAR_UNIT_Week:
-        jdn += value * 7;
+        *jdn += value * 7;
         return true;
     case CALENDAR_UNIT_Month:
     case CALENDAR_UNIT_Year:

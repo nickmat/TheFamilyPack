@@ -53,18 +53,18 @@
 /*! Convert a julian day number into an integer format date of the given scheme.
  *  Returns true if successful, false otherwise.
  */
-bool calConvertFromJdn( long jdn, long& num, CalendarScheme scheme )
+bool calConvertFromJdn( long jdn, long* num, CalendarScheme scheme )
 {
     switch( scheme )
     {
     case CALENDAR_SCH_JulianDayNumber:
-        num = jdn;
+        *num = jdn;
         return true;
     case CALENDAR_SCH_ModJulianDay:
-        num = jdn - BASEDATE_ModJulianDay;
+        *num = jdn - BASEDATE_ModJulianDay;
         return true;
     case CALENDAR_SCH_RataDie:
-        num = jdn - BASEDATE_RataDie;
+        *num = jdn - BASEDATE_RataDie;
         return true;
     }
     return false;
@@ -74,12 +74,12 @@ bool calConvertFromJdn( long jdn, long& num, CalendarScheme scheme )
  *  for the given scheme.
  *  Returns true if successful, false otherwise.
  */
-bool calConvertFromJdn( long jdn, double& num, CalendarScheme scheme )
+bool calConvertFromJdn( long jdn, double* num, CalendarScheme scheme )
 {
     switch( scheme )
     {
     case CALENDAR_SCH_JulianDay:
-        num = ((double) jdn) - 0.5;
+        *num = ((double) jdn) - 0.5;
         return true;
     }
     return false;
@@ -88,18 +88,18 @@ bool calConvertFromJdn( long jdn, double& num, CalendarScheme scheme )
 /*! Convert a date in integer format of given scheme into a julian day number.
  *  Returns true if successful, false otherwise.
  */
-extern bool calConvertToJdn( long& jdn, long num, CalendarScheme scheme )
+extern bool calConvertToJdn( long* jdn, long num, CalendarScheme scheme )
 {
     switch( scheme )
     {
     case CALENDAR_SCH_JulianDayNumber:
-        jdn = num;
+        *jdn = num;
         return true;
     case CALENDAR_SCH_ModJulianDay:
-        jdn = num + BASEDATE_ModJulianDay;
+        *jdn = num + BASEDATE_ModJulianDay;
         return true;
     case CALENDAR_SCH_RataDie:
-        jdn = num + BASEDATE_RataDie;
+        *jdn = num + BASEDATE_RataDie;
         return true;
     }
     return false;
@@ -109,12 +109,12 @@ extern bool calConvertToJdn( long& jdn, long num, CalendarScheme scheme )
  *  into a julian day number.
  *  Returns true if successful, false otherwise.
  */
-bool calConvertToJdn( long& jdn, double num, CalendarScheme scheme )
+bool calConvertToJdn( long* jdn, double num, CalendarScheme scheme )
 {
     switch( scheme )
     {
     case CALENDAR_SCH_JulianDay:
-        jdn = (long) ( num + 0.5 );
+        *jdn = (long) ( num + 0.5 );
         return true;
     }
     return false;
@@ -178,30 +178,30 @@ wxString calJDayStrFromJdnRange( long jdn1, long jdn2, CalendarScheme scheme )
 /*! Parse the string and obtain its jdn for the given scheme.
  *  The scheme is one which is represented by a single number.
  */
-bool calJDayStrToJdn( long& jdn, const wxString& str, CalendarScheme scheme )
+bool calJDayStrToJdn( long* jdn, const wxString& str, CalendarScheme scheme )
 {
     bool ret;
-    jdn = 0; // in case of error
+    *jdn = 0; // in case of error
 
     switch( scheme )
     {
     case CALENDAR_SCH_JulianDayNumber:
-        return str.ToLong( &jdn );
+        return str.ToLong( jdn );
     case CALENDAR_SCH_JulianDay:
         double jd;
         ret = str.ToDouble( &jd );
         if( ret == false ) return false;
-        jdn = (long) ( jd - 0.5 );
+        *jdn = (long) ( jd - 0.5 );
         return true;
     case CALENDAR_SCH_ModJulianDay:
-        ret = str.ToLong( &jdn );
+        ret = str.ToLong( jdn );
         if( ret == false ) return false;
-        jdn += BASEDATE_ModJulianDay;
+        *jdn += BASEDATE_ModJulianDay;
         return true;
     case CALENDAR_SCH_RataDie:
-        ret = str.ToLong( &jdn );
+        ret = str.ToLong( jdn );
         if( ret == false ) return false;
-        jdn += BASEDATE_RataDie;
+        *jdn += BASEDATE_RataDie;
         return true;
     }
     return false;
@@ -213,17 +213,17 @@ bool calJDayStrToJdn( long& jdn, const wxString& str, CalendarScheme scheme )
  *  Expected format:  nnnnn - nnnnn
  */
 bool calJDayStrToJdnRange(
-    long& jdn1, long& jdn2, const wxString& str, CalendarScheme scheme )
+    long* jdn1, long* jdn2, const wxString& str, CalendarScheme scheme )
 {
     bool ret1 = false, ret2 = false;
     wxArrayString tokens = wxStringTokenize( str );
 
-    jdn1 = jdn2 = 0; // error returns should have these set to zero
+    *jdn1 = *jdn2 = 0; // error returns should have these set to zero
     size_t count =  tokens.GetCount();
     if( count == 1 )
     {
         ret2 = ret1 = calJDayStrToJdn( jdn1, tokens[0], scheme );
-        jdn2 = jdn1;
+        *jdn2 = *jdn1;
     }
     else if( count == 3 && tokens[1] == wxT("-") )
     {
@@ -232,14 +232,14 @@ bool calJDayStrToJdnRange(
     }
     if( ret1 == false || ret2 == false )
     {
-        jdn1 = jdn2 = 0;
+        *jdn1 = *jdn2 = 0;
         return false;
     }
-    if( jdn1 > jdn2 )
+    if( *jdn1 > *jdn2 )
     {
-        long temp = jdn1;
-        jdn1 = jdn2;
-        jdn2 = temp;
+        long temp = *jdn1;
+        *jdn1 = *jdn2;
+        *jdn2 = temp;
     }
     return true;
 }

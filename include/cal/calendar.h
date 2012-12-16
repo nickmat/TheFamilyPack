@@ -192,40 +192,40 @@ extern const wxString CalendarSchemeAbrev[];
  *  Returns true if successful, false otherwise.
  */
 // See cal/calJDay.cpp
-extern bool calConvertToJdn( long& jdn, long num, CalendarScheme scheme );
+extern bool calConvertToJdn( long* jdn, long num, CalendarScheme scheme );
 
 /*! Convert a date in floating (double) format for a given scheme
  *  into a julian day number.
  *  Returns true if successful, false otherwise.
  */
 // See cal/calJDay.cpp
-extern bool calConvertToJdn( long& jdn, double num, CalendarScheme scheme );
+extern bool calConvertToJdn( long* jdn, double num, CalendarScheme scheme );
 
 /*! Convert a date in day, month, year format for a given scheme 
  *  into a julian day number.
  *  Returns true if successful, false otherwise.
  */
-extern bool calConvertToJdn( long& jdn, const DMYDate& dmy, CalendarScheme scheme );
+extern bool calConvertToJdn( long* jdn, const DMYDate& dmy, CalendarScheme scheme );
 
 /*! Convert a julian day number into an integer format date 
  *  for the given scheme.
  *  Returns true if successful, false otherwise.
  */
 // See cal/calJDay.cpp
-extern bool calConvertFromJdn( long jdn, long& num, CalendarScheme scheme );
+extern bool calConvertFromJdn( long jdn, long* num, CalendarScheme scheme );
 
 /*! Convert a julian day number into an floating (double) format date 
  *  for the given scheme.
  *  Returns true if successful, false otherwise.
  */
 // See cal/calJDay.cpp
-extern bool calConvertFromJdn( long jdn, double& num, CalendarScheme scheme );
+extern bool calConvertFromJdn( long jdn, double* num, CalendarScheme scheme );
 
 /*! Convert a julian day number into a day, month, year format date 
  *  for the given scheme.
  *  Returns true if successful, false otherwise.
  */
-extern bool calConvertFromJdn( long jdn, DMYDate& dmy, CalendarScheme scheme );
+extern bool calConvertFromJdn( long jdn, DMYDate* dmy, CalendarScheme scheme );
 
 /*! Returns true if year is a leap year and false if not,
  * or the calendar scheme does not support leap years.
@@ -240,7 +240,7 @@ extern int calLastDayInMonth( int month, int year, CalendarScheme scheme );
 /*! Get the year number, based on the given calendar scheme
  * Returns false if unable to determine year
  */
-extern bool calYearFromJdn( int& year, long jdn, CalendarScheme scheme );
+extern bool calYearFromJdn( int* year, long jdn, CalendarScheme scheme );
 
 /*! Returns a string representation of the julian day number for the given
  * calendar scheme. Returns a wxEmptyString on error.
@@ -255,13 +255,13 @@ extern wxString calStrFromJdnRange( long jdn1, long jdn2, CalendarScheme scheme 
 /*! Converts a string into a julian day number based on the given
  * calendar scheme. Returns zero if unable to parse string.
  */
-extern bool calStrToJdn( long& jdn, const wxString& str, CalendarScheme scheme );
+extern bool calStrToJdn( long* jdn, const wxString& str, CalendarScheme scheme );
 
 /*! Converts a string of a date range in a given calendar scheme into two julian
  * day numbers. Note: jdn1 <= jdn2. Returns false if unable to parse string.
  */
 extern bool calStrToJdnRange(
-    long& jdn1, long& jdn2, const wxString& str, CalendarScheme scheme );
+    long* jdn1, long* jdn2, const wxString& str, CalendarScheme scheme );
 
 enum CalendarUnit {
     CALENDAR_UNIT_Unstated,
@@ -280,7 +280,7 @@ extern const wxString CalendarUnitName[];
  *  Returns true if successful, else false.
  */
 extern bool calAddToJdn(
-    long& jdn, long value, CalendarUnit unit, CalendarScheme scheme );
+    long* jdn, long value, CalendarUnit unit, CalendarScheme scheme );
 
 enum CalendarStructure {
     CALENDAR_STRUCT_Unstated,  // Value held as a string

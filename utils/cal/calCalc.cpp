@@ -116,7 +116,7 @@ void ccConvertDate( wxString& date )
 	date.Trim();
 	if( g_range == true )
 	{
-        ret = calStrToJdnRange( jdn1, jdn2, date, g_from );
+        ret = calStrToJdnRange( &jdn1, &jdn2, date, g_from );
 		if( ret == true )
 		{
 			xdate = calStrFromJdnRange( jdn1, jdn2, g_to );
@@ -129,7 +129,7 @@ void ccConvertDate( wxString& date )
 		);
 	} else { 
 		// g_range == false
-        ret = calStrToJdn( jdn1, date, g_from );
+        ret = calStrToJdn( &jdn1, date, g_from );
 		if( ret == true )
 		{
 			xdate = calStrFromJdn( jdn1, g_to );
@@ -160,17 +160,17 @@ void ccAgeDateToRange( wxString& line )
 	token.Trim();  // Get rid of newline
 
     if( g_range == true ) {
-        ret = calStrToJdnRange( jdn1, jdn2, token, g_from );
+        ret = calStrToJdnRange( &jdn1, &jdn2, token, g_from );
        	if( ret == false ) return;
     } else {
-        ret = calStrToJdn( jdn1, token, g_from );
+        ret = calStrToJdn( &jdn1, token, g_from );
        	if( ret == false ) return;
         jdn2 = jdn1;
     }
 
-    ret = calAddToJdn( jdn1, -(year+1), CALENDAR_UNIT_Year, g_from );
+    ret = calAddToJdn( &jdn1, -(year+1), CALENDAR_UNIT_Year, g_from );
     jdn1++;
-    ret = calAddToJdn( jdn2, -year, CALENDAR_UNIT_Year, g_from );
+    ret = calAddToJdn( &jdn2, -year, CALENDAR_UNIT_Year, g_from );
 
 	adate = calStrFromJdnRange( jdn1, jdn2, g_to );
 	wxPrintf( 
@@ -198,17 +198,17 @@ void ccAgeMonthsDateToRange( wxString& line )
 	token.Trim();  // Get rid of newline
 
     if( g_range == true ) {
-        ret = calStrToJdnRange( jdn1, jdn2, token, g_from );
+        ret = calStrToJdnRange( &jdn1, &jdn2, token, g_from );
        	if( ret == false ) return;
     } else {
-        ret = calStrToJdn( jdn1, token, g_from );
+        ret = calStrToJdn( &jdn1, token, g_from );
        	if( ret == false ) return;
         jdn2 = jdn1;
     }
 
-    ret = calAddToJdn( jdn1, -(month+1), CALENDAR_UNIT_Month, g_from );
+    ret = calAddToJdn( &jdn1, -(month+1), CALENDAR_UNIT_Month, g_from );
     jdn1++;
-    ret = calAddToJdn( jdn2, -month, CALENDAR_UNIT_Month, g_from );
+    ret = calAddToJdn( &jdn2, -month, CALENDAR_UNIT_Month, g_from );
 
 	adate = calStrFromJdnRange( jdn1, jdn2, g_to );
 	wxPrintf( 

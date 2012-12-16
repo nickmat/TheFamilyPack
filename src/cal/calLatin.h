@@ -35,7 +35,7 @@ extern wxString calMonthName[3][12];
 class DMYDate;
 
 // Return the month number 1-12 for correct match, or zero if no match
-extern int calLatinLookUpMonth( const wxString str );
+extern int calLatinLookUpMonth( const wxString& str );
 
 // Parse a Latin style date string in the format:  dd mmm... yyyy
 // and update day, month and year arguments. Returns true on success
@@ -43,9 +43,9 @@ extern bool calLatinFromStr( const wxString& str, DMYDate& dmy );
 
 // Given the day month year and scheme, calculate the jdn.
 // Returns true on success
-extern bool calLatinToJdn( long& jdn, const DMYDate& dmy, CalendarScheme scheme );
+extern bool calLatinToJdn( long* jdn, const DMYDate& dmy, CalendarScheme scheme );
 
-extern bool calLatinToJdn( long& jdn, int d, int m, int y, CalendarScheme scheme );
+extern bool calLatinToJdn( long* jdn, int d, int m, int y, CalendarScheme scheme );
 
 // Return the string representing the jdn in the given scheme
 extern wxString calLatinStrFromJdn( long jdn, CalendarScheme scheme );
@@ -55,11 +55,11 @@ extern wxString calLatinStrFromJdnRange(
     long jdn1, long jdn2, CalendarScheme scheme );
 
 // Parse the string and obtain its jdn for the given scheme
-extern bool calLatinStrToJdn( long& jdn, const wxString& str, CalendarScheme scheme );
+extern bool calLatinStrToJdn( long* jdn, const wxString& str, CalendarScheme scheme );
 
 // Parse the string and obtain its jdn range for the given scheme
 extern bool calLatinStrToJdnRange(
-    long& jdn1, long& jdn2, const wxString& str, CalendarScheme scheme );
+    long* jdn1, long* jdn2, const wxString& str, CalendarScheme scheme );
 
 // Subtract the age in dmy from the jdn range for the given scheme.
 //bool calLatinSubAgeFromJdnRange(
@@ -67,6 +67,6 @@ extern bool calLatinStrToJdnRange(
 
 // Add to jdn the given value based on the values unit and the given scheme. 
 extern bool calLatinAddToJdn(
-    long& jdn, long value, CalendarUnit unit, CalendarScheme scheme );
+    long* jdn, long value, CalendarUnit unit, CalendarScheme scheme );
 
 #endif // CALLATIN_H

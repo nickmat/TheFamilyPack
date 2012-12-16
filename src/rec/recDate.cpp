@@ -215,7 +215,7 @@ bool recDate::SetDate( const wxString& str, CalendarScheme scheme )
 
     long beg, end;
     if( scheme == CALENDAR_SCH_Unstated ) scheme = f_record_sch;
-    bool ret = calStrToJdnRange( beg, end, s, scheme );
+    bool ret = calStrToJdnRange( &beg, &end, s, scheme );
     if( ret == true )
     {
         f_jdn = beg;
@@ -246,7 +246,7 @@ bool recDate::SetJdnDate( const wxString& str, CalendarScheme scheme )
 {
     long beg, end;
     if( scheme == CALENDAR_SCH_Unstated ) scheme = f_record_sch;
-    bool ret = calStrToJdnRange( beg, end, str, scheme );
+    bool ret = calStrToJdnRange( &beg, &end, str, scheme );
     if( ret == true )
     {
         f_jdn = beg;
@@ -313,7 +313,7 @@ int recDate::GetYear( CalendarScheme scheme )
     if( jdn == 0  ) {
         return 0;
     }
-    calYearFromJdn( year, jdn, sch );
+    calYearFromJdn( &year, jdn, sch );
     return year;
 }
 
@@ -527,19 +527,19 @@ bool recRelativeDate::CalculateDate( recDate& date ) const
     switch( f_type )
     {
     case TYPE_AgeRoundDown:
-        if( !calAddToJdn( jdn1, -(f_val+f_range), f_unit, f_scheme ) ) {
+        if( !calAddToJdn( &jdn1, -(f_val+f_range), f_unit, f_scheme ) ) {
             return false;
         }
         jdn1++;
-        if( !calAddToJdn( jdn2, -f_val, f_unit, f_scheme ) ) {
+        if( !calAddToJdn( &jdn2, -f_val, f_unit, f_scheme ) ) {
             return false;
         }
         break;
     case TYPE_Duration:
-        if( !calAddToJdn( jdn1, f_val, f_unit, f_scheme ) ) {
+        if( !calAddToJdn( &jdn1, f_val, f_unit, f_scheme ) ) {
             return false;
         }
-        if( !calAddToJdn( jdn2, f_val+f_range, f_unit, f_scheme ) ) {
+        if( !calAddToJdn( &jdn2, f_val+f_range, f_unit, f_scheme ) ) {
             return false;
         }
         break;

@@ -37,10 +37,10 @@ extern wxString calJDayStrFromJdnRange(
     long jdn1, long jdn2, CalendarScheme scheme );
 
 // Parse the string and obtain its jdn for the given scheme
-extern bool calJDayStrToJdn( long& jdn, const wxString& str, CalendarScheme scheme );
+extern bool calJDayStrToJdn( long* jdn, const wxString& str, CalendarScheme scheme );
 
 // Parse the string and obtain its jdn range for the given scheme
 extern bool calJDayStrToJdnRange(
-    long& jdn1, long& jdn2, const wxString& str, CalendarScheme scheme );
+    long* jdn1, long* jdn2, const wxString& str, CalendarScheme scheme );
 
 #endif // CALJDAY_H

@@ -74,7 +74,7 @@ wxString calMonthName[3][12] = {
 /*! Convert a latin style month name to month number.
  *  Return the month number 1-12 for correct match, or zero if no match
  */
-int calLatinLookUpMonth( const wxString str )
+int calLatinLookUpMonth( const wxString& str )
 {
     int i;
     wxString name = str.Left( 3 ).Upper();
@@ -122,7 +122,7 @@ bool calLatinFromStr( const wxString& str, DMYDate& dmy )
 /*! Sets jdn to the JDN corresponding to the day, month and year according
  *  to the given latin calendar scheme.
  */
-bool calLatinToJdn( long& jdn, const DMYDate& dmy, CalendarScheme scheme )
+bool calLatinToJdn( long* jdn, const DMYDate& dmy, CalendarScheme scheme )
 {
     switch( scheme )
     {
@@ -136,7 +136,7 @@ bool calLatinToJdn( long& jdn, const DMYDate& dmy, CalendarScheme scheme )
 
 /*! Sets day month and year in the given calendar scheme from the JDN jdn.
  */
-bool calLatinFromJdn( long jdn, DMYDate& dmy, CalendarScheme scheme )
+bool calLatinFromJdn( long jdn, DMYDate* dmy, CalendarScheme scheme )
 {
     switch( scheme )
     {
@@ -148,7 +148,7 @@ bool calLatinFromJdn( long jdn, DMYDate& dmy, CalendarScheme scheme )
     return false;
 }
 
-bool calLatinToJdn( long& jdn, int d, int m, int y, CalendarScheme scheme ) 
+bool calLatinToJdn( long* jdn, int d, int m, int y, CalendarScheme scheme ) 
 {
     DMYDate dmy; 
     
@@ -166,7 +166,7 @@ wxString calLatinStrFromJdn( long jdn, CalendarScheme scheme )
     DMYDate dmy;
     wxString str;
 
-    calLatinFromJdn( jdn, dmy, scheme );
+    calLatinFromJdn( jdn, &dmy, scheme );
 
     str << dmy.day << wxT(" ")
         << calMonthName[0][dmy.month-1]
@@ -189,8 +189,8 @@ wxString calLatinStrFromJdnRange( long jdn1, long jdn2, CalendarScheme scheme )
     DMYDate dmy1, dmy2;
     wxString str;
 
-    calLatinFromJdn( jdn1, dmy1, scheme );
-    calLatinFromJdn( jdn2, dmy2, scheme );
+    calLatinFromJdn( jdn1, &dmy1, scheme );
+    calLatinFromJdn( jdn2, &dmy2, scheme );
 
     if( dmy1.day == 1 )
     {
@@ -235,13 +235,13 @@ wxString calLatinStrFromJdnRange( long jdn1, long jdn2, CalendarScheme scheme )
 /*! Converts the string str into a JDN and sets jdn. Returns true
  *  if successful, else false.
  */
-bool calLatinStrToJdn( long& jdn, const wxString& str, CalendarScheme scheme )
+bool calLatinStrToJdn( long* jdn, const wxString& str, CalendarScheme scheme )
 {
     DMYDate dmy;
 
     if( calLatinFromStr( str, dmy ) == false )
     {
-        jdn = 0;
+        *jdn = 0;
         return false;
     }
     return calLatinToJdn( jdn, dmy, scheme );
@@ -251,14 +251,14 @@ bool calLatinStrToJdn( long& jdn, const wxString& str, CalendarScheme scheme )
  *  Returns true if successful, else false.
  */
 bool calLatinStrToJdnRange(
-    long& jdn1, long& jdn2, const wxString& str, CalendarScheme scheme )
+    long* jdn1, long* jdn2, const wxString& str, CalendarScheme scheme )
 {
     bool ret1 = false, ret2 = false;
     long day, year;
     int month;
 
     wxArrayString tokens = wxStringTokenize( str );
-    jdn1 = jdn2 = 0; // error returns should have these set to zero
+    *jdn1 = *jdn2 = 0; // error returns should have these set to zero
     size_t count =  tokens.GetCount();
     if( count == 0 ) return false;
 
@@ -322,20 +322,20 @@ bool calLatinStrToJdnRange(
         if( month == 0 ) return false;
         if( tokens[2].ToLong( &year ) == false ) return false;
         ret1 = calLatinToJdn( jdn1, day, month, year, scheme );
-        jdn2 = jdn1;
+        *jdn2 = *jdn1;
         ret2 = ret1;
     }
 
     if( ret1 == false || ret2 == false )
     {
-        jdn1 = jdn2 = 0;
+        *jdn1 = *jdn2 = 0;
         return false;
     }
-    if( jdn1 > jdn2 )
+    if( *jdn1 > *jdn2 )
     {
-        long temp = jdn1;
-        jdn1 = jdn2;
-        jdn2 = temp;
+        long temp = *jdn1;
+        *jdn1 = *jdn2;
+        *jdn2 = temp;
     }
     return true;
 }
@@ -344,10 +344,10 @@ bool calLatinStrToJdnRange(
  *  Returns true if successful, else false.
  */
 bool calLatinAddToJdn(
-    long& jdn, long value, CalendarUnit unit, CalendarScheme scheme )
+    long* jdn, long value, CalendarUnit unit, CalendarScheme scheme )
 {
     DMYDate dmy;
-    if( !calConvertFromJdn( jdn, dmy, scheme ) ) return false;
+    if( !calConvertFromJdn( *jdn, &dmy, scheme ) ) return false;
     switch( unit )
     {
     case CALENDAR_UNIT_Year:

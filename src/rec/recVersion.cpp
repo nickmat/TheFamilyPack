@@ -611,11 +611,11 @@ static void UpgradeTest0_0_9_13to0_0_9_14()
         switch( table.GetInt( 5 ) )
         {
         case 1: //recRelativeDate::TYPE_AgeRoundDown:
-            if( !calAddToJdn( jdn1, -(relValue+relRange), unit, relSch ) ) {
+            if( !calAddToJdn( &jdn1, -(relValue+relRange), unit, relSch ) ) {
                 return;
             }
             jdn1++;
-            if( !calAddToJdn( jdn2, -relValue, unit, relSch ) ) {
+            if( !calAddToJdn( &jdn2, -relValue, unit, relSch ) ) {
                 return;
             }
             break;

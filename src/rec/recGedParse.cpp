@@ -701,11 +701,11 @@ wxString recGedParse::ParseDate( recDate* date, const wxString& str )
     long jdn1 = 0, jdn2 = 0;
     DMYDate dmy;
     dmy.SetDMY( (day==0) ? 1 : day, (month==0) ? 1 : month, year );
-    calConvertToJdn( jdn1, dmy, sch );
+    calConvertToJdn( &jdn1, dmy, sch );
     if( month == 0 ) month = 12;
     if( day == 0 ) day = calLastDayInMonth( month, year, sch );
     dmy.SetDMY( day, month, year );
-    calConvertToJdn( jdn2, dmy, sch );
+    calConvertToJdn( &jdn2, dmy, sch );
     date->FSetJdn( jdn1 );
     date->FSetRange( jdn2 - jdn1 );
 
