@@ -30,33 +30,11 @@
 
 #include <vector>
 
-class calToken;
-typedef std::vector< calToken > calTokenVec;
 
 enum {
     calR_MAX = 5,
     calR_INVALID = -1
 };
-
-
-/*! class to hold a day, month and year
- */
-class DMYDate {
-public:
-    void SetDMY( int d, int m, int y ) { day = d; month = m; year = y; }
-
-    int day; int month; int year;
-};
-
-inline bool operator==(const DMYDate& d1, const DMYDate& d2)
-{
-    return d1.day == d2.day && d1.month == d2.month && d1.year == d2.year;
-}
-
-inline bool operator!=(const DMYDate& d1, const DMYDate& d2)
-{
-    return !(d1 == d2);
-}
 
 enum CalendarScheme {
 
@@ -198,50 +176,32 @@ extern const wxString CalendarSchemeName[];
  */
 extern const wxString CalendarSchemeAbrev[];
 
-/*! Convert a date in integer format for a given scheme
- *  into a julian day number.
+/*! Convert a date given in individual records (Largest, ie year, first) for a 
+ *  given scheme into a julian day number.
  *  Returns true if successful, false otherwise.
  */
-// See cal/calJDay.cpp
-extern bool calConvertToJdn( long* jdn, long num, CalendarScheme scheme );
+extern bool calConvertToJdn( 
+    long* jdn, CalendarScheme scheme, 
+    long r0, long r1 = calR_INVALID, long r2 = calR_INVALID, 
+    long r3 = calR_INVALID, long r4 = calR_INVALID );
 
-/*! Convert a date in floating (double) format for a given scheme
- *  into a julian day number.
+/*! Convert an incomplete date given in individual records (Largest, ie year, first) 
+ *  for a given scheme into a julian day number range, Submit calR_INVALID values for
+ *  the missing date parts (days or days and months).
  *  Returns true if successful, false otherwise.
  */
-// See cal/calJDay.cpp
-extern bool calConvertToJdn( long* jdn, double num, CalendarScheme scheme );
+extern bool calConvertToJdnRange( 
+    long* jdn1, long*jdn2, CalendarScheme scheme, 
+    long r0, long r1 = calR_INVALID, long r2 = calR_INVALID, 
+    long r3 = calR_INVALID, long r4 = calR_INVALID );
 
-/*! Convert a date in day, month, year format for a given scheme 
- *  into a julian day number.
- *  Returns true if successful, false otherwise.
- */
-extern bool calConvertToJdn( long* jdn, const DMYDate& dmy, CalendarScheme scheme );
-
-/*! Convert a julian day number into an integer format date 
+/*! Convert a julian day number into individual records (Largest, ie year, first) 
  *  for the given scheme.
  *  Returns true if successful, false otherwise.
  */
-// See cal/calJDay.cpp
-extern bool calConvertFromJdn( long jdn, long* num, CalendarScheme scheme );
-
-/*! Convert a julian day number into an floating (double) format date 
- *  for the given scheme.
- *  Returns true if successful, false otherwise.
- */
-// See cal/calJDay.cpp
-extern bool calConvertFromJdn( long jdn, double* num, CalendarScheme scheme );
-
-/*! Convert a julian day number into a day, month, year format date 
- *  for the given scheme.
- *  Returns true if successful, false otherwise.
- */
-extern bool calConvertFromJdn( long jdn, DMYDate* dmy, CalendarScheme scheme );
-
-/*! Returns true if year is a leap year and false if not,
- * or the calendar scheme does not support leap years.
- */
-extern bool calIsLeapYear( int year, CalendarScheme scheme );
+extern bool calConvertFromJdn( 
+    long jdn, CalendarScheme scheme, 
+    long* r0, long* r1 = NULL, long* r2 = NULL, long* r3 = NULL, long* r4 = NULL );
 
 /*! Returns the number of days in the given month for the given year
  * or 0 if the calendar scheme does not support months

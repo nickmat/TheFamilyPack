@@ -121,19 +121,33 @@ long PMod( long a, long b )
     return r;
 }
 
-bool calYearFromJdn( int* year, long jdn, CalendarScheme sch )
+bool calConvertToJdn( long* jdn, CalendarScheme sch, 
+    long r0, long r1, long r2, long r3, long r4 )
+{
+    calRecord rec( sch, r0, r1, r2, r3, r4 );
+    return rec.ConvertToJdn( jdn );
+}
+
+bool calConvertToJdnRange( long* jdn1, long*jdn2, CalendarScheme sch, 
+    long r0, long r1, long r2, long r3, long r4 )
+{
+    calRecord rec( sch, r0, r1, r2, r3, r4 );
+    return rec.ConvertToRange( jdn1, jdn2 );
+}
+
+bool calConvertFromJdn( long jdn, CalendarScheme sch, 
+     long* r0, long* r1, long* r2, long* r3, long* r4 )
 {
     calRecord rec( sch );
     bool ok = rec.ConvertFromJdn( jdn );
     if( ok ) {
-        *year = rec.GetR( 0 );
+        rec.GetR( r0, r1, r2, r3, r4 );
     }
     return ok;
 }
 
 bool calStrToJdn( long* jdn, const wxString& str, CalendarScheme sch )
 {
-    bool ok = true;
     calTokenVec tokens = calParseStr( str );
     calRecord rec( sch, tokens.size(), &tokens[0] );
     return rec.ConvertToJdn( jdn );
@@ -197,53 +211,19 @@ wxString calStrFromJdnRange( long jdn1, long jdn2, CalendarScheme sch )
     return str;
 }
 
+bool calYearFromJdn( int* year, long jdn, CalendarScheme sch )
+{
+    calRecord rec( sch );
+    bool ok = rec.ConvertFromJdn( jdn );
+    if( ok ) {
+        *year = rec.GetR( 0 );
+    }
+    return ok;
+}
+
 
 
 //-------------------------------------------------------------------------------
-
-/*! Convert a date in day, month, year format for a given scheme 
- *  into a julian day number.
- *  Returns true if successful, false otherwise.
- */
-bool calConvertToJdn( long* jdn, const DMYDate& dmy, CalendarScheme scheme )
-{
-    switch( scheme )
-    {
-    case CALENDAR_SCH_Gregorian:
-        return calGregorianToJdn( jdn, dmy );
-    case CALENDAR_SCH_Julian:
-        return calJulianToJdn( jdn, dmy );
-    }
-    return false;
-}
-
-/*! Convert a julian day number into a day, month, year format date 
- *  for the given scheme.
- *  Returns true if successful, false otherwise.
- */
-bool calConvertFromJdn( long jdn, DMYDate* dmy, CalendarScheme scheme )
-{
-    switch( scheme )
-    {
-    case CALENDAR_SCH_Gregorian:
-        return calGregorianFromJdn( jdn, dmy );
-    case CALENDAR_SCH_Julian:
-        return calJulianFromJdn( jdn, dmy );
-    }
-    return false;
-}
-
-bool calIsLeapYear( int year, CalendarScheme scheme )
-{
-    switch( scheme )
-    {
-    case CALENDAR_SCH_Julian:
-        return calJulianIsLeapYear( year );
-    case CALENDAR_SCH_Gregorian:
-        return calGregorianIsLeapYear( year );
-    }
-    return false;
-}
 
 int calLastDayInMonth( int month, int year, CalendarScheme scheme )
 {

@@ -35,4 +35,25 @@ extern long FDiv( long a, long b );
 //! Integer function to return positive value of ( a % b )
 extern long PMod( long a, long b );
 
+
+/*! class to hold a day, month and year
+ */
+class DMYDate {
+public:
+    void SetDMY( int d, int m, int y ) { day = d; month = m; year = y; }
+
+    int day; int month; int year;
+};
+
+inline bool operator==(const DMYDate& d1, const DMYDate& d2)
+{
+    return d1.day == d2.day && d1.month == d2.month && d1.year == d2.year;
+}
+
+inline bool operator!=(const DMYDate& d1, const DMYDate& d2)
+{
+    return !(d1 == d2);
+}
+
+
 #endif // CALCOMMON_H

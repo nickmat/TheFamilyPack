@@ -28,6 +28,8 @@
 #ifndef CALJULIAN_H
 #define CALJULIAN_H
 
+#include "calCommon.h"
+
 // Julian (Old Style)
 extern bool calJulianIsLeapYear( int year );
 

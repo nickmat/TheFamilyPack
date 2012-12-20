@@ -78,14 +78,25 @@ CPPUNIT_TEST_SUITE_NAMED_REGISTRATION( CalTestCase, "CalTestCase" );
 //#define CALTEST_SHORT
 #define CALTEST_BRIEF
 
+struct DMYt {
+    long day;
+    long month;
+    long year;
+};
+
+inline bool operator==(const DMYt& d1, const DMYt& d2)
+{
+    return d1.day == d2.day && d1.month == d2.month && d1.year == d2.year;
+}
+
 
 struct SampleDate {
     long jdn;
     long rd;
     double jd;
     long mjd;
-    DMYDate g;
-    DMYDate j;
+    DMYt g;
+    DMYt j;
 };
 
 /*! Size of SampleList array.
@@ -136,39 +147,52 @@ SampleDate SampleList[MaxSample] = {
 
 void CalTestCase::TestTable()
 {
-    long jdn, num;
-    double dbl;
-    DMYDate dmy;
+    long jdn;//, num;
+//    double dbl;
+    DMYt dmy;
 
     for( int i = 0 ; i < MaxSample ; i++ ) {
+#if 0   
+        // Support for RataDie  currently dropped
         calConvertFromJdn( SampleList[i].jdn, &num, CALENDAR_SCH_RataDie );
         CPPUNIT_ASSERT( num == SampleList[i].rd );
         calConvertToJdn( &jdn, SampleList[i].rd, CALENDAR_SCH_RataDie );
         CPPUNIT_ASSERT( jdn == SampleList[i].jdn );
 
+        // Support for Julian Day  currently dropped
         calConvertFromJdn( SampleList[i].jdn, &dbl, CALENDAR_SCH_JulianDay );
         // We shouldn't really equate doubles here - but it should work ok.
         CPPUNIT_ASSERT( dbl == SampleList[i].jd );
         calConvertToJdn( &jdn, SampleList[i].jd, CALENDAR_SCH_JulianDay );
         CPPUNIT_ASSERT( jdn == SampleList[i].jdn );
 
+        // Support for Modified Julian Day  currently dropped
         calConvertFromJdn( SampleList[i].jdn, &num, CALENDAR_SCH_ModJulianDay );
         CPPUNIT_ASSERT( num == SampleList[i].mjd );
         calConvertToJdn( &jdn, SampleList[i].mjd, CALENDAR_SCH_ModJulianDay );
         CPPUNIT_ASSERT( jdn == SampleList[i].jdn );
+#endif
 
-        calConvertFromJdn( SampleList[i].jdn, &dmy, CALENDAR_SCH_Gregorian );
+//        calConvertFromJdn( SampleList[i].jdn, &dmy, CALENDAR_SCH_Gregorian );
+        calConvertFromJdn( SampleList[i].jdn, CALENDAR_SCH_Gregorian,
+            &dmy.year, &dmy.month, &dmy.day );
         CPPUNIT_ASSERT( dmy.day == SampleList[i].g.day );
         CPPUNIT_ASSERT( dmy.month == SampleList[i].g.month );
         CPPUNIT_ASSERT( dmy.year == SampleList[i].g.year );
-        calConvertToJdn( &jdn, SampleList[i].g, CALENDAR_SCH_Gregorian );
+//        calConvertToJdn( &jdn, SampleList[i].g, CALENDAR_SCH_Gregorian );
+        calConvertToJdn( &jdn, CALENDAR_SCH_Gregorian, 
+            SampleList[i].g.year, SampleList[i].g.month, SampleList[i].g.day );
         CPPUNIT_ASSERT( jdn == SampleList[i].jdn );
 
-        calConvertFromJdn( SampleList[i].jdn, &dmy, CALENDAR_SCH_Julian );
+//        calConvertFromJdn( SampleList[i].jdn, &dmy, CALENDAR_SCH_Julian );
+        calConvertFromJdn( SampleList[i].jdn, CALENDAR_SCH_Julian,
+            &dmy.year, &dmy.month, &dmy.day );
         CPPUNIT_ASSERT( dmy.day == SampleList[i].j.day );
         CPPUNIT_ASSERT( dmy.month == SampleList[i].j.month );
         CPPUNIT_ASSERT( dmy.year == SampleList[i].j.year );
-        calConvertToJdn( &jdn, SampleList[i].j, CALENDAR_SCH_Julian );
+//        calConvertToJdn( &jdn, SampleList[i].j, CALENDAR_SCH_Julian );
+        calConvertToJdn( &jdn, CALENDAR_SCH_Julian, 
+            SampleList[i].j.year, SampleList[i].j.month, SampleList[i].j.day );
         CPPUNIT_ASSERT( jdn == SampleList[i].jdn );
     }
 }
@@ -191,24 +215,31 @@ void CalTestCase::TestTable()
 #define CALTEST_J_END_YEAR       2010
 #endif
 
+static bool IsLeapYearJulian( long year )
+{
+    return ( year % 4 ) == 0;
+}
+
 void CalTestCase::TestJulian()
 {
     int LengthOfMonth[2][12] = {
         { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 },
         { 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }
     };
-    DMYDate dmy;
+    DMYt dmy;
     long prev_jd;
 
     dmy.day = 31; dmy.month = 12; dmy.year = CALTEST_J_START_YEAR-1;
-    CPPUNIT_ASSERT( calConvertToJdn( &prev_jd, dmy, CALENDAR_SCH_Julian ) );
+//    CPPUNIT_ASSERT( calConvertToJdn( &prev_jd, dmy, CALENDAR_SCH_Julian ) );
+    CPPUNIT_ASSERT( calConvertToJdn( &prev_jd, CALENDAR_SCH_Julian, dmy.year, dmy.month, dmy.day ) );
     CPPUNIT_ASSERT( prev_jd == CALTEST_J_START_PREV_JDN );
 
     for( dmy.year = CALTEST_J_START_YEAR ; 
         dmy.year < CALTEST_J_END_YEAR ; ++dmy.year )
     {
         size_t leap_year = ( dmy.year % 4 == 0 ) ? 1 : 0;
-        size_t tleap_year = ( calIsLeapYear( dmy.year, CALENDAR_SCH_Julian ) == true ) ? 1 : 0;
+//        size_t tleap_year = ( calIsLeapYear( dmy.year, CALENDAR_SCH_Julian ) == true ) ? 1 : 0;
+        size_t tleap_year = ( IsLeapYearJulian( dmy.year ) == true ) ? 1 : 0;
         CPPUNIT_ASSERT( tleap_year == leap_year );
         for( dmy.month = 1 ; dmy.month <= 12 ; ++dmy.month )
         {
@@ -218,12 +249,15 @@ void CalTestCase::TestJulian()
             for( dmy.day = 1 ; dmy.day <= month_length ; ++dmy.day )
             {
                 long jd;
-				CPPUNIT_ASSERT( calConvertToJdn( &jd, dmy, CALENDAR_SCH_Julian ) );
+//				CPPUNIT_ASSERT( calConvertToJdn( &jd, dmy, CALENDAR_SCH_Julian ) );
+                CPPUNIT_ASSERT( calConvertToJdn( &jd, CALENDAR_SCH_Julian, dmy.year, dmy.month, dmy.day ) );
                 CPPUNIT_ASSERT( jd == prev_jd+1 );
                 ++prev_jd;
 
-                DMYDate tdmy;
-                calConvertFromJdn( jd, &tdmy, CALENDAR_SCH_Julian );
+                DMYt tdmy;
+//                calConvertFromJdn( jd, &tdmy, CALENDAR_SCH_Julian );
+                calConvertFromJdn( jd, CALENDAR_SCH_Julian,
+                    &tdmy.year, &tdmy.month, &tdmy.day );
                 CPPUNIT_ASSERT( tdmy == dmy );
 			}
         }
@@ -248,17 +282,23 @@ void CalTestCase::TestJulian()
 #define CALTEST_G_END_YEAR       2010
 #endif
 
+bool IsLeapYearGregorian( long year )
+{
+    return ( year%4 == 0 && year%100 != 0 ) || year%400 == 0;
+}
+
 void CalTestCase::TestGregorian()
 {
     int LengthOfMonth[2][12] = {
         { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 },
         { 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }
     };
-    DMYDate dmy;
+    DMYt dmy;
     long prev_jd;
 
     dmy.day = 31; dmy.month = 12; dmy.year = CALTEST_G_START_YEAR-1;
-    CPPUNIT_ASSERT( calConvertToJdn( &prev_jd, dmy, CALENDAR_SCH_Gregorian ) );
+//    CPPUNIT_ASSERT( calConvertToJdn( &prev_jd, dmy, CALENDAR_SCH_Gregorian ) );
+    CPPUNIT_ASSERT( calConvertToJdn( &prev_jd, CALENDAR_SCH_Gregorian, dmy.year, dmy.month, dmy.day ) );
     CPPUNIT_ASSERT( prev_jd == CALTEST_G_START_PREV_JDN );
 
     for( dmy.year = CALTEST_G_START_YEAR ; 
@@ -268,7 +308,8 @@ void CalTestCase::TestGregorian()
         leap_year = ( dmy.year % 4 == 0 ) ? 1 : 0;
         leap_year = ( dmy.year % 100 == 0 ) ? 0 : leap_year;
         leap_year = ( dmy.year % 400 == 0 ) ? 1 : leap_year;
-        size_t tleap_year = ( calIsLeapYear( dmy.year, CALENDAR_SCH_Gregorian ) == true ) ? 1 : 0;
+//        size_t tleap_year = ( calIsLeapYear( dmy.year, CALENDAR_SCH_Gregorian ) == true ) ? 1 : 0;
+        size_t tleap_year = ( IsLeapYearGregorian( dmy.year ) == true ) ? 1 : 0;
         CPPUNIT_ASSERT( tleap_year == leap_year );
         for( dmy.month = 1 ; dmy.month <= 12 ; ++dmy.month )
         {
@@ -278,12 +319,15 @@ void CalTestCase::TestGregorian()
             for( dmy.day = 1 ; dmy.day <= month_length ; ++dmy.day )
             {
                 long jd;
-				CPPUNIT_ASSERT( calConvertToJdn( &jd, dmy, CALENDAR_SCH_Gregorian ) );
+//				CPPUNIT_ASSERT( calConvertToJdn( &jd, dmy, CALENDAR_SCH_Gregorian ) );
+                CPPUNIT_ASSERT( calConvertToJdn( &jd, CALENDAR_SCH_Gregorian, dmy.year, dmy.month, dmy.day ) );
                 CPPUNIT_ASSERT( jd == prev_jd+1 );
                 ++prev_jd;
 
-                DMYDate tdmy;
-                calConvertFromJdn( jd, &tdmy, CALENDAR_SCH_Gregorian );
+                DMYt tdmy;
+//                calConvertFromJdn( jd, &tdmy, CALENDAR_SCH_Gregorian );
+                calConvertFromJdn( jd, CALENDAR_SCH_Gregorian,
+                    &tdmy.year, &tdmy.month, &tdmy.day );
                 CPPUNIT_ASSERT( tdmy == dmy );
 			}
         }

@@ -145,6 +145,24 @@ void calRecord::Copy( const calRecord& rec )
     m_r[4] = rec.m_r[4];
 }
 
+void calRecord::SetR( long r0, long r1, long r2, long r3, long r4 )
+{
+    m_r[0] = r0;
+    m_r[1] = r1;
+    m_r[2] = r2;
+    m_r[3] = r3;
+    m_r[4] = r4;
+}
+
+long calRecord::GetR( long* r0, long* r1, long* r2, long* r3, long* r4 )
+{
+    if( r0 ) *r0 = m_r[0];
+    if( r1 ) *r1 = m_r[1];
+    if( r2 ) *r2 = m_r[2];
+    if( r3 ) *r3 = m_r[3];
+    if( r4 ) *r4 = m_r[4];
+    return m_r[0];
+}
 
 void calRecord::CompleteFieldsAsFirst()
 {

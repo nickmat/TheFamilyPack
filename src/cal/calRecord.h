@@ -51,7 +51,12 @@ public:
     calRecord( CalendarScheme sch, size_t size, const calToken* tokens );
     calRecord( const calRecord& record );
 
+    void SetR( size_t i, long v ) { m_r[i] = v; }
+    void SetR( long r0, long r1 = calR_INVALID, long r2 = calR_INVALID, long r3 = calR_INVALID, long r4 = calR_INVALID );
+
     long GetR( size_t i ) const { return m_r[i]; }
+    // returns r0
+    long GetR( long* r0 = NULL, long* r1 = NULL, long* r2 = NULL, long* r3 = NULL, long* r4 = NULL );
     wxString GetStr();
 
     void CompleteFieldsAsFirst();

@@ -657,7 +657,7 @@ wxString recGedParse::ParseDate( recDate* date, const wxString& str )
     long day = 0, month = 0, year = 0;
     if( token.ToCLong( &day ) == false ) {
         // Format must be 'month year'
-        day = 0;
+        day = calR_INVALID;
         month = GetMonth( token, date->FGetRecordSch() );
         if( month == 0 || !tkz.HasMoreTokens() ) {
             date->FSetDescrip( m_text );
@@ -676,7 +676,8 @@ wxString recGedParse::ParseDate( recDate* date, const wxString& str )
             if( month == 0 ) {
                 // Format must be just 'year'
                 year = day;
-                day = 0;
+                day = calR_INVALID;
+                month = calR_INVALID;
                 tail = token+" "+tkz.GetString();
             } else {
                 // Format is 'day month year'
@@ -699,13 +700,10 @@ wxString recGedParse::ParseDate( recDate* date, const wxString& str )
 
     CalendarScheme sch = date->FGetRecordSch();
     long jdn1 = 0, jdn2 = 0;
-    DMYDate dmy;
-    dmy.SetDMY( (day==0) ? 1 : day, (month==0) ? 1 : month, year );
-    calConvertToJdn( &jdn1, dmy, sch );
-    if( month == 0 ) month = 12;
-    if( day == 0 ) day = calLastDayInMonth( month, year, sch );
-    dmy.SetDMY( day, month, year );
-    calConvertToJdn( &jdn2, dmy, sch );
+    if( !calConvertToJdnRange( &jdn1, &jdn2, sch, year, month, day ) ) {
+        date->FSetDescrip( m_text );
+        return "";
+    }
     date->FSetJdn( jdn1 );
     date->FSetRange( jdn2 - jdn1 );
 

@@ -31,6 +31,9 @@
 
 #include "calendar.h"
 
+class calToken;
+typedef std::vector< calToken > calTokenVec;
+
 enum calTOKEN {
     calTOKEN_NULL,
     calTOKEN_Label,

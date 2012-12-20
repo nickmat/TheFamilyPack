@@ -38,6 +38,7 @@
 #include "wx/tokenzr.h"
 
 #include "calendar.h"
+#include "calCommon.h"
 #include "calLatin.h"
 #include "calJulian.h"
 #include "calGregorian.h"
@@ -346,29 +347,32 @@ bool calLatinStrToJdnRange(
 bool calLatinAddToJdn(
     long* jdn, long value, CalendarUnit unit, CalendarScheme scheme )
 {
-    DMYDate dmy;
-    if( !calConvertFromJdn( *jdn, &dmy, scheme ) ) return false;
+    //DMYDate dmy;
+    long year, month, day;
+//    if( !calConvertFromJdn( *jdn, &dmy, scheme ) ) return false;
+    if( !calConvertFromJdn( *jdn, scheme, &year, &month, &day ) ) return false;
     switch( unit )
     {
     case CALENDAR_UNIT_Year:
-        dmy.year += value;
+        year += value;
         break;
     case CALENDAR_UNIT_Month:
-        dmy.year += value / 12;
-        dmy.month += value % 12;
-        if( dmy.month > 12 ) {
-            dmy.year++;
-            dmy.month -= 12;
+        year += value / 12;
+        month += value % 12;
+        if( month > 12 ) {
+            year++;
+            month -= 12;
         }
-        if( dmy.month < 1 ) {
-            --dmy.year;
-            dmy.month += 12;
+        if( month < 1 ) {
+            --year;
+            month += 12;
         }
         break;
     default:
         return false;
     }
-    return calConvertToJdn( jdn, dmy, scheme );
+//    return calConvertToJdn( jdn, dmy, scheme );
+    return calConvertToJdn( jdn, scheme, year, month, day );
 }
 
 // End of calJulian.cpp
