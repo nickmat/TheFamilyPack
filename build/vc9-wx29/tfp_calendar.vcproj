@@ -202,15 +202,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\cal\calJDay.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\cal\calJulian.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\cal\calLatin.cpp"
 				>
 			</File>
 			<File
@@ -260,15 +252,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\cal\calJDay.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\cal\calJulian.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\cal\calLatin.h"
 				>
 			</File>
 			<File

@@ -102,9 +102,7 @@ CALENDAR_CXXFLAGS = /MD$(VAR_23) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) \
 CALENDAR_OBJECTS =  \
 	calendar_calendar.obj \
 	calendar_calGregorian.obj \
-	calendar_calJDay.obj \
 	calendar_calJulian.obj \
-	calendar_calLatin.obj \
 	calendar_calParse.obj \
 	calendar_calRecord.obj \
 	calendar_dummy.obj
@@ -525,14 +523,8 @@ calendar_calendar.obj: .\..\..\src\cal\calendar.cpp
 calendar_calGregorian.obj: .\..\..\src\cal\calGregorian.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(CALENDAR_CXXFLAGS) .\..\..\src\cal\calGregorian.cpp
 
-calendar_calJDay.obj: .\..\..\src\cal\calJDay.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(CALENDAR_CXXFLAGS) .\..\..\src\cal\calJDay.cpp
-
 calendar_calJulian.obj: .\..\..\src\cal\calJulian.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(CALENDAR_CXXFLAGS) .\..\..\src\cal\calJulian.cpp
-
-calendar_calLatin.obj: .\..\..\src\cal\calLatin.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(CALENDAR_CXXFLAGS) .\..\..\src\cal\calLatin.cpp
 
 calendar_calParse.obj: .\..\..\src\cal\calParse.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(CALENDAR_CXXFLAGS) .\..\..\src\cal\calParse.cpp
