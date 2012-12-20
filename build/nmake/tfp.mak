@@ -105,6 +105,8 @@ CALENDAR_OBJECTS =  \
 	calendar_calJDay.obj \
 	calendar_calJulian.obj \
 	calendar_calLatin.obj \
+	calendar_calParse.obj \
+	calendar_calRecord.obj \
 	calendar_dummy.obj
 TESTS_CXXFLAGS = /MD$(VAR_23) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) \
 	/D__WXMSW__ \
@@ -531,6 +533,12 @@ calendar_calJulian.obj: .\..\..\src\cal\calJulian.cpp
 
 calendar_calLatin.obj: .\..\..\src\cal\calLatin.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(CALENDAR_CXXFLAGS) .\..\..\src\cal\calLatin.cpp
+
+calendar_calParse.obj: .\..\..\src\cal\calParse.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(CALENDAR_CXXFLAGS) .\..\..\src\cal\calParse.cpp
+
+calendar_calRecord.obj: .\..\..\src\cal\calRecord.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(CALENDAR_CXXFLAGS) .\..\..\src\cal\calRecord.cpp
 
 calendar_dummy.obj: .\..\..\src\dummy.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(CALENDAR_CXXFLAGS) /Ycwx/wxprec.h .\..\..\src\dummy.cpp

@@ -214,6 +214,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\cal\calParse.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\cal\calRecord.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\cal\calendar.cpp"
 				>
 			</File>
@@ -261,6 +269,14 @@
 			</File>
 			<File
 				RelativePath="..\..\src\cal\calLatin.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\cal\calParse.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\cal\calRecord.h"
 				>
 			</File>
 			<File

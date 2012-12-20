@@ -37,6 +37,8 @@
 
 #include "calendar.h"
 #include "calCommon.h"
+#include "calParse.h"
+#include "calRecord.h"
 #include "calJDay.h"
 #include "calLatin.h"
 #include "calJulian.h"
@@ -119,6 +121,86 @@ long PMod( long a, long b )
     return r;
 }
 
+bool calYearFromJdn( int* year, long jdn, CalendarScheme sch )
+{
+    calRecord rec( sch );
+    bool ok = rec.ConvertFromJdn( jdn );
+    if( ok ) {
+        *year = rec.GetR( 0 );
+    }
+    return ok;
+}
+
+bool calStrToJdn( long* jdn, const wxString& str, CalendarScheme sch )
+{
+    bool ok = true;
+    calTokenVec tokens = calParseStr( str );
+    calRecord rec( sch, tokens.size(), &tokens[0] );
+    return rec.ConvertToJdn( jdn );
+}
+
+wxString calStrFromJdn( long jdn, CalendarScheme sch )
+{
+    calRecord rec( sch );
+    rec.ConvertFromJdn( jdn );
+    return rec.GetStr();
+}
+
+bool calStrToJdnRange(
+    long* jdn1, long* jdn2, const wxString& str, CalendarScheme sch )
+{ 
+    bool ok = true;
+    calTokenVec tokens = calParseStr( str );
+    for( size_t i = 0 ; i < tokens.size() ; i++ ) {
+        if( tokens[i].GetToken() == calTOKEN_RangeSep ) {
+            if( i == 0 ) {
+                return false;
+            }
+            calRecord rec1( sch, i, &tokens[0] );
+            ok = rec1.ConvertRangeStartToJdn( jdn1 );
+            size_t len = tokens.size() - i - 1;
+            if( len == 0 ) {
+                return false;
+            }
+            if( ok ) {
+                calRecord rec2( sch, len, &tokens[i+1] );
+                ok = rec2.ConvertRangeEndToJdn( jdn2 );
+            }
+            return ok;
+        }
+    }
+    calRecord rec3( sch, tokens.size(), &tokens[0] );
+    ok = rec3.ConvertToRange( jdn1, jdn2 );
+
+    return ok;
+}
+
+wxString calStrFromJdnRange( long jdn1, long jdn2, CalendarScheme sch )
+{
+    wxString str;
+    calRecord rec1( sch );
+    rec1.ConvertFromJdn( jdn1 );
+    if( jdn1 == jdn2 ) {
+        return rec1.GetStr();
+    }
+    rec1.RemoveFieldsIfFirst();
+
+    calRecord rec2( sch );
+    rec2.ConvertFromJdn( jdn2 );
+    rec2.RemoveFieldsIfLast();
+
+    if( rec1 == rec2 ) {
+        return rec1.GetStr();
+    }
+    str << rec1.GetStr() << " - " << rec2.GetStr();
+
+    return str;
+}
+
+
+
+//-------------------------------------------------------------------------------
+
 /*! Convert a date in day, month, year format for a given scheme 
  *  into a julian day number.
  *  Returns true if successful, false otherwise.
@@ -173,117 +255,6 @@ int calLastDayInMonth( int month, int year, CalendarScheme scheme )
         return calJulianLastDayInMonth( month, year );
     }
     return 0;
-}
-
-bool calYearFromJdn( int* year, long jdn, CalendarScheme scheme )
-{
-    DMYDate dmy;
-    bool ret;
-
-    switch( scheme )
-    {
-    case CALENDAR_SCH_Gregorian:
-        ret = calGregorianFromJdn( jdn, &dmy );
-        break;
-    case CALENDAR_SCH_Julian:
-        ret = calJulianFromJdn( jdn, &dmy );
-        break;
-    default:
-        return false;
-    }
-    *year = dmy.year;
-    return ret;
-}
-
-wxString calStrFromJdn( long jdn, CalendarScheme scheme )
-{
-    wxString str;
-
-    switch( scheme )
-    {
-    case CALENDAR_SCH_Gregorian:
-    case CALENDAR_SCH_Julian:
-        return calLatinStrFromJdn( jdn, scheme );
-    case CALENDAR_SCH_JulianDayNumber:
-    case CALENDAR_SCH_JulianDay:
-    case CALENDAR_SCH_ModJulianDay:
-    case CALENDAR_SCH_RataDie:
-        return calJDayStrFromJdn( jdn, scheme );
-    case CALENDAR_SCH_Unstated:
-        return _("Unstated");
-    case CALENDAR_SCH_Unknown:
-        return _("Unknown");
-    case CALENDAR_SCH_Unlisted:
-        return _("Unlisted");
-    }
-    return _("Not yet done");
-}
-
-wxString calStrFromJdnRange( long jdn1, long jdn2, CalendarScheme scheme )
-{
-    // Format: dd mmm... yyyy
-    // Format: nnnnnnn
-    if( jdn1 == jdn2 )
-    {
-        return calStrFromJdn( jdn1, scheme );
-    }
-
-    wxString str;
-
-    switch( scheme )
-    {
-    case CALENDAR_SCH_Gregorian:
-    case CALENDAR_SCH_Julian:
-        return calLatinStrFromJdnRange( jdn1, jdn2, scheme );
-    case CALENDAR_SCH_JulianDayNumber:
-    case CALENDAR_SCH_JulianDay:
-    case CALENDAR_SCH_ModJulianDay:
-    case CALENDAR_SCH_RataDie:
-        return calJDayStrFromJdnRange( jdn1, jdn2, scheme );
-    }
-    // Use the defaults from the single jdn version
-    return calStrFromJdn( jdn1, scheme );
-}
-
-bool calStrToJdn( long* jdn, const wxString& str, CalendarScheme scheme )
-{
-    switch( scheme )
-    {
-    case CALENDAR_SCH_Julian:
-    case CALENDAR_SCH_Gregorian:
-        return calLatinStrToJdn( jdn, str, scheme );
-    case CALENDAR_SCH_JulianDayNumber:
-    case CALENDAR_SCH_JulianDay:
-    case CALENDAR_SCH_ModJulianDay:
-    case CALENDAR_SCH_RataDie:
-        return calJDayStrToJdn( jdn, str, scheme );
-    }
-    return false;
-}
-
-bool calStrToJdnRange(
-    long* jdn1, long* jdn2, const wxString& str, CalendarScheme scheme )
-{
-    bool ret;
-
-    switch( scheme )
-    {
-    case CALENDAR_SCH_Julian:
-    case CALENDAR_SCH_Gregorian:
-        ret = calLatinStrToJdnRange( jdn1, jdn2, str, scheme );
-        break;
-    case CALENDAR_SCH_JulianDayNumber:
-    case CALENDAR_SCH_JulianDay:
-    case CALENDAR_SCH_ModJulianDay:
-    case CALENDAR_SCH_RataDie:
-        ret = calJDayStrToJdnRange( jdn1, jdn2, str, scheme );
-        break;
-    default:
-        *jdn1 = *jdn2 = 0;
-        ret = false;
-    }
-
-    return ret;
 }
 
 bool calAddToJdn( 

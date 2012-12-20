@@ -36,12 +36,19 @@
     <sources>$(LOCAL_SRC)/cal/calJDay.cpp</sources>
     <sources>$(LOCAL_SRC)/cal/calJulian.cpp</sources>
     <sources>$(LOCAL_SRC)/cal/calLatin.cpp</sources>
+    <sources>$(LOCAL_SRC)/cal/calParse.cpp</sources>
+    <sources>$(LOCAL_SRC)/cal/calRecord.cpp</sources>
+
     <headers>$(LOCAL_INC)/cal/calendar.h</headers>
+
     <headers>$(LOCAL_SRC)/cal/calCommon.h</headers>
     <headers>$(LOCAL_SRC)/cal/calGregorian.h</headers>
     <headers>$(LOCAL_SRC)/cal/calJDay.h</headers>
     <headers>$(LOCAL_SRC)/cal/calJulian.h</headers>
     <headers>$(LOCAL_SRC)/cal/calLatin.h</headers>
+    <headers>$(LOCAL_SRC)/cal/calParse.h</headers>
+    <headers>$(LOCAL_SRC)/cal/calRecord.h</headers>
+
     <include>$(LOCAL_INC)/cal</include>
     <include>$(LOCAL_INC)</include>
 

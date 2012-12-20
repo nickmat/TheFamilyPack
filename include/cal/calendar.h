@@ -28,6 +28,17 @@
 #ifndef CALENDAR_H
 #define CALENDAR_H
 
+#include <vector>
+
+class calToken;
+typedef std::vector< calToken > calTokenVec;
+
+enum {
+    calR_MAX = 5,
+    calR_INVALID = -1
+};
+
+
 /*! class to hold a day, month and year
  */
 class DMYDate {
@@ -247,11 +258,6 @@ extern bool calYearFromJdn( int* year, long jdn, CalendarScheme scheme );
  */
 extern wxString calStrFromJdn( long jdn, CalendarScheme scheme );
 
-/*! Returns a string giving a date range of two julian day numbers in a given
- * calendar scheme. Returns a wxEmptyString on error.
- */
-extern wxString calStrFromJdnRange( long jdn1, long jdn2, CalendarScheme scheme );
-
 /*! Converts a string into a julian day number based on the given
  * calendar scheme. Returns zero if unable to parse string.
  */
@@ -262,6 +268,11 @@ extern bool calStrToJdn( long* jdn, const wxString& str, CalendarScheme scheme )
  */
 extern bool calStrToJdnRange(
     long* jdn1, long* jdn2, const wxString& str, CalendarScheme scheme );
+
+/*! Returns a string giving a date range of two julian day numbers in a given
+ * calendar scheme. Returns a wxEmptyString on error.
+ */
+extern wxString calStrFromJdnRange( long jdn1, long jdn2, CalendarScheme scheme );
 
 enum CalendarUnit {
     CALENDAR_UNIT_Unstated,
