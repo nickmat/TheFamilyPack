@@ -39,8 +39,22 @@
 
 #include "calendar.h"
 #include "calCommon.h"
-#include "calLatin.h"
 #include "calJulian.h"
+
+
+// Days in the year at the start of each month (Jan = 1) (not leap year)
+int calLatinDiy[14] = {
+    // Note: we add an extra 0 to the beginning of the array to save
+    //       subtracting 1 from the month number
+    0, 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365
+};
+
+int calLatinLengthOfMonth[3][12] = {
+    { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }, // Nomal year
+    { 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }, // Leap year
+    { 31, 30, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }  // For the Swedish calendar scheme
+};
+
 
 // Julian Calendar
 

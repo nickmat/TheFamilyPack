@@ -35,6 +35,9 @@ extern long FDiv( long a, long b );
 //! Integer function to return positive value of ( a % b )
 extern long PMod( long a, long b );
 
+// See calJulian.cpp
+extern int calLatinDiy[];
+extern int calLatinLengthOfMonth[3][12];
 
 /*! class to hold a day, month and year
  */

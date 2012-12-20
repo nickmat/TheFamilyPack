@@ -39,7 +39,6 @@
 
 #include "calendar.h"
 #include "calCommon.h"
-#include "calLatin.h"
 #include "calGregorian.h"
 
 #define BASEDATE_Gregorian 1721060L

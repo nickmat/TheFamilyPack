@@ -39,8 +39,6 @@
 #include "calCommon.h"
 #include "calParse.h"
 #include "calRecord.h"
-#include "calJDay.h"
-#include "calLatin.h"
 #include "calJulian.h"
 #include "calGregorian.h"
 
@@ -236,6 +234,42 @@ int calLastDayInMonth( int month, int year, CalendarScheme scheme )
     }
     return 0;
 }
+
+//------------------------------------------------------------------------
+/*! Add to jdn the given value based on the values unit and the given scheme. 
+ *  Returns true if successful, else false.
+ */
+bool calLatinAddToJdn(
+    long* jdn, long value, CalendarUnit unit, CalendarScheme scheme )
+{
+    //DMYDate dmy;
+    long year, month, day;
+//    if( !calConvertFromJdn( *jdn, &dmy, scheme ) ) return false;
+    if( !calConvertFromJdn( *jdn, scheme, &year, &month, &day ) ) return false;
+    switch( unit )
+    {
+    case CALENDAR_UNIT_Year:
+        year += value;
+        break;
+    case CALENDAR_UNIT_Month:
+        year += value / 12;
+        month += value % 12;
+        if( month > 12 ) {
+            year++;
+            month -= 12;
+        }
+        if( month < 1 ) {
+            --year;
+            month += 12;
+        }
+        break;
+    default:
+        return false;
+    }
+//    return calConvertToJdn( jdn, dmy, scheme );
+    return calConvertToJdn( jdn, scheme, year, month, day );
+}
+
 
 bool calAddToJdn( 
     long* jdn, long value, CalendarUnit unit, CalendarScheme scheme )
