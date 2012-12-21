@@ -264,15 +264,16 @@ void recIndividual::UpdateNames()
     idt nameID = recPersona::GetDefaultNameID( f_per_id );
     f_surname = recName::GetSurname( nameID );
     if( f_surname.length() == 0 ) f_surname = "?";
-    f_given = recName::GetNamePartStr( nameID, NAME_TYPE_Given_name );
-    if( f_given.length() == 0 ) f_given = "?";
+//    f_given = recName::GetNamePartStr( nameID, NAME_TYPE_Given_name );
+    f_given = recName::GetNameStr( nameID );
+    if( f_given.length() == 0 ) f_given = "? ?";
 }
 
 void recIndividual::UpdateDefaultFamily()
 {
     recFamilyVec families = GetFamilyList();
     if( families.size() == 0 ) {
-        f_fam_id = 0;
+        f_fam_id = 0; // [TODO: We should create a new family] <<================<<<<<< 
         return;
     }
     for( size_t i = 0 ; i < families.size() ; i++ ) {
@@ -299,14 +300,12 @@ void recIndividual::Update( idt indID )
 
 wxString recIndividual::GetFullName( idt id )
 {
-    wxString str;
     wxSQLite3StatementBuffer sql;
     wxSQLite3ResultSet result;
 
-    sql.Format( "SELECT surname, given FROM Individual WHERE id="ID";", id );
+    sql.Format( "SELECT given FROM Individual WHERE id="ID";", id );
     result = s_db->ExecuteQuery( sql );
-    str << result.GetAsString( 1 ) << " " << result.GetAsString( 0 );
-    return str;
+    return result.GetAsString( 0 );
 }
 
 wxString recIndividual::GetSurname( idt id )

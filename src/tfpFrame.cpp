@@ -90,6 +90,7 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_DESC_CHART, TfpFrame::OnDescChart )
     EVT_MENU( tfpID_SYSTEM_SETTING, TfpFrame::OnSystemOptions )
     EVT_MENU( tfpID_USER_SETTING, TfpFrame::OnUserOptions )
+    EVT_MENU( tfpID_TOOL_SYSTEM_CHECK, TfpFrame::OnSystemCheck )
     EVT_MENU( tfpID_HELP_WEB_HOME, TfpFrame::OnHelpWebHome )
     EVT_MENU( tfpID_HELP_ABOUT_DB, TfpFrame::OnAboutDatabase )
     EVT_MENU( wxID_ABOUT, TfpFrame::OnAbout )
@@ -209,6 +210,7 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     wxMenu* menuTools = new wxMenu;
     menuTools->Append( tfpID_SYSTEM_SETTING, _("&System Options...") );
     menuTools->Append( tfpID_USER_SETTING, _("&User Options...") );
+    menuTools->Append( tfpID_TOOL_SYSTEM_CHECK, _("Systems &Check") );
 
     wxMenu *menuHelp = new wxMenu;
     menuHelp->Append( tfpID_HELP_WEB_HOME, _("The Family Pack &Website") );
@@ -691,6 +693,23 @@ void TfpFrame::OnUserOptions( wxCommandEvent& event )
     try {
         bool ret = tfpEditUserSettings();
         if( ret == true ) {
+            recDb::Commit();
+            RefreshHtmPage();
+        } else {
+            recDb::Rollback();
+        }
+    }
+    catch( wxSQLite3Exception& e ) {
+        recDb::ErrorMessage( e );
+        recDb::Rollback();
+    }
+}
+
+void TfpFrame::OnSystemCheck( wxCommandEvent& event )
+{
+    recDb::Begin();
+    try {
+        if( recDb::GlobalUpdate() ) {
             recDb::Commit();
             RefreshHtmPage();
         } else {

@@ -114,6 +114,7 @@ public:
 
     void OnSystemOptions( wxCommandEvent& event );
     void OnUserOptions( wxCommandEvent& event );
+    void OnSystemCheck( wxCommandEvent& event );
 
     void OnHelpWebHome( wxCommandEvent& event );
     void OnAboutDatabase( wxCommandEvent& event );
@@ -223,6 +224,7 @@ enum
     tfpID_DESC_CHART,
     tfpID_SYSTEM_SETTING,
     tfpID_USER_SETTING,
+    tfpID_TOOL_SYSTEM_CHECK,
     tfpID_HELP_WEB_HOME,
     tfpID_HELP_ABOUT_DB,
     tfpID_FIND_BACK,

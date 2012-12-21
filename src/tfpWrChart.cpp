@@ -136,8 +136,8 @@ void WrPedCht( idt indID, Sex sex, int gen )
             htm << "<td class='name' colspan='" 
                 << HTM_CHART_GEN_MAX - gen << "'><a href='tfp:"
                 << famLk << "'><b>"
-                << ind.f_given << " " << ind.f_surname
-                << "</b></a> " << ind.f_epitaph << "</td>\n"
+                << ind.f_given << "</b></a> " << ind.f_epitaph 
+                << "</td>\n"
             ;
         } else {
             htm << "<td>" << htmChartGif[GenPChart[i]] << "</td>\n";
@@ -242,10 +242,6 @@ void WrDescLine( idt indID, idt spouseID, idt famID, int gen )
                     << recIndividual::GetDateEpitaph( spouseID );
             }
             htm << "</td>\n";
-
-//            if( gen == 0 ) {
-//                htm << "<td>" << htmChartGif[0] << "</td>\n";
-//            }
         } else {
             htm << "<td>" << htmChartGif[GenDChart[i]+dheight] << "</td>\n";
         }

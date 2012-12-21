@@ -90,7 +90,7 @@ public:
     void UpdateDefaultFamily();
     void Update();
     static void Update( idt indID );
-    wxString GetFullName() { return f_given + " " + f_surname; }
+    wxString GetFullName() { return f_given; }
 
     static idt GetDefaultFamily( idt id ) {
         if( id == 0 ) return 0;

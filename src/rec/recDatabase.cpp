@@ -41,6 +41,7 @@
 
 #include <rec/recDatabase.h>
 #include <rec/recVersion.h>
+#include <rec/recIndividual.h>
 
 // SQL script to create new database
 #include "generated/recSql.ci"
@@ -163,6 +164,17 @@ void recDb::CloseDb()
     s_db->Close();
     s_fname = wxEmptyString;
     ++s_change;
+}
+
+bool recDb::GlobalUpdate()
+{
+    recIndividualVec inds = recIndividual::ReadVec();
+    for( size_t i = 0 ; i < inds.size() ; i++ ) {
+        inds[i].Update();
+        inds[i].Save();
+    }
+    bool ok = recIndividual::CreateMissingFamilies();
+    return ok;
 }
 
 void recDb::ErrorMessage( wxSQLite3Exception& e )

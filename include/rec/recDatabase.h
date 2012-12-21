@@ -113,6 +113,11 @@ public:
      */
     static void CloseDb();
 
+    /*! Do a global systems check and update.
+     *  Could take a while.
+     */
+    static bool GlobalUpdate();
+
     /*! Returns true if the database is currently open.
     */
     static bool IsOpen() { return s_db->IsOpen(); }
