@@ -6,34 +6,34 @@
 
     Copyright (c) 2008, Nick Matthews
 
-This Calendar Library (cal) has been designed for use with "The Family Pack" 
+This Calendar Library (cal) has been designed for use with "The Family Pack"
 application but it is designed to be quite independent. So, for instance, a
-Julian Day Number (JDN) of zero has a special meaning within TFP (date not 
-known or required), but cal treats it as just another day at the office 
+Julian Day Number (JDN) of zero has a special meaning within TFP (date not
+known or required), but cal treats it as just another day at the office
 (1 Jan 4713 BCE).
 
-The library is based around julian days, the system used by astronomers to 
-mark time since midday Monday 1st January 4713 B.C.E. (Julian Calendar). The 
-fractional of the day day is used to denote the time of day, so the day 
+The library is based around julian days, the system used by astronomers to
+mark time since midday Monday 1st January 4713 B.C.E. (Julian Calendar). The
+fractional of the day day is used to denote the time of day, so the day
 commencing Midnight on Tuesday 2nd January 4713 B.C.E. would given as JD 0.5
 and Sunday 19th September 1948 C.E. (Gregorian Calendar) is JD 2432313.5.
 
-Because TFP does not normally record the time of day, the fractional part of 
+Because TFP does not normally record the time of day, the fractional part of
 the day is ignored and the day number for the day starting at midday is used
 for the whole day. To emphasize the different convention, they are labelled as
-Julian Day Numbers (JDN). So the day Sunday 19th September 1948 C.E. (Gregorian 
+Julian Day Numbers (JDN). So the day Sunday 19th September 1948 C.E. (Gregorian
 Calendar) is recorded as JDN 2432314.
 
 The cal library interface consists of a few C++ functions. These are detailed
-in the header file calendar.h and normally these are sufficient. They mainly 
+in the header file calendar.h and normally these are sufficient. They mainly
 convert strings to and from JDN values. The functions use an enumeration of
 Calendar Schemes to indicate the scheme being converted. The definition of
-a scheme is much broader than is normally associated with calendars. The 
+a scheme is much broader than is normally associated with calendars. The
 Gregorian Calendar was first introduced in 1582 but the change over was carried
-out over several centuries in different countries. Also, the date of the new 
-year could vary from place to place. All these different variations have been 
+out over several centuries in different countries. Also, the date of the new
+year could vary from place to place. All these different variations have been
 given Calender Scheme names, such as "English Calendar" where the change over
-from Julian to Gregorian occurred in Sep 1752 where the 2nd was follows by the 
+from Julian to Gregorian occurred in Sep 1752 where the 2nd was follows by the
 14th, and between the 12th century and the change over date, new year was on the
 25th March. The Scottish Scheme is similar the English but the new year was
 always on 1st January.
@@ -119,7 +119,10 @@ Imprecise or uncertain dates are held as a date range. In fact all dates in TFP
 are held as a date range, but where the date is known it is a range of one day.
 This range of possible dates should not be confused with a fixed date range
 where, for example, an event is held over a period of time. In this case both
-the start and the end dates may themselves be uncertain.
+the start and the end dates may themselves be uncertain. This documentation
+uses the word "Range" to indicate the range of uncertainty of a single date,
+and the word "Period" to indicate a protracted period of time which has a start
+and an end date.
 
 
 Examples of date ranges (in latin format)
@@ -130,3 +133,65 @@ year                                   1 Jan year - lastday Dec year
 year1 - year2                          1 Jan year1 - lastday Dec year2
 Mon1 year1 - Mon2 year2                1 Mon1 year1 - lastday Mon2 year2
 day1 Mon1 year1 - day2 Mon2 year2      day1 Mon1 year1 - day2 Mon2 year2
+
+
+Local Calendars
+~~~~~~~~~~~~~~~
+
+It is the intention to create a system of local calendars. Some of these will
+be supplied with the program (as part of the core data) but it will also be
+possible for the user to create their own local calendars as part of their
+database. These local calendars will allow for such things as changes between
+standards (ie the change between Julian and Gregorian calendars). The
+different "start of year" dates used at different times. And to allow for
+modifications to the stardard calendars where there is local variation.
+
+This will use a simple macro language to enable the commands to be stored
+within the database. Proposed examples are:-
+
+
+Rule: "Set (Jdn) Sub 2400001;"
+
+This would create a new local calendar based on the Julian day number (JDN)
+but with a value of the (JDN) value minus 2400001. This would create the
+Modified Julian Day (MJD) calendar. (The name and code name would be hald
+elsewhere.)
+
+
+Rule: "Set (J) after 2 Sep 1752 set (G);"
+
+Sets the date at which the calendar system changes. A calendar using this rule
+would use the Julian (J) calendar up to, and including, the 2 September after
+which the Gregorian (G) calender would be used.
+
+Rule: "Between 1200 and 1753 year change 25 Mar;"
+
+Sets a period of time during which the the year change occured on the 25th
+of March. Note, this is workable except where the period starts or ends.
+If the change of convention causes a short year (as it did in 1752 in England)
+there is no problem but if it causes a long year (as it theoretically would
+have when the convention started) then a year would contain two identical
+dates. This didn't cause a problem at the time because didn't happen at a
+precise time but grow up as custom and practice over a period of time.
+Currently the only way to overcome this for our local calendar is to provide
+a "Limit of validity" during which the calendar can be used.
+
+Rule: Adjust length of Month (or equivalent) or Year by 1 (or 2) days.
+
+One of the problems with calendars based on astronomical events is that the
+calulation of when a new month or year starts is dependant on the method
+of calculation a the data used in that calculation. If the start of a new day
+is on the cusp of a particular astronomical event, and this event is used to
+start a new month or year - this may result in the difference of a day in the
+length of the preceding month or year. This difference would normally be
+corrected the following month or year when the calculations realign, resulting
+in a period of time when the calendars are one day apart. If a user of the
+system is aware that a difference has occured, then a local calendar can be
+created with a table of such corrections.
+
+When it is not possible to create a correction table in the above fashion, it
+has to be accepted that a conversion may contain an error and the actual date
+is plus or minus a couple of days. This possible error should be held
+separately from other approximations so that if the date is converted back
+again to the original form, the error can be removed. It is an important
+feature of the system that dates should be reversable without error.
