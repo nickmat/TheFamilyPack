@@ -64,6 +64,7 @@ wxString GetHtmDateData( const recDate& date )
 
 } // namespace
 
+#if 0
 wxString tfpWriteAttribute( idt attrID )
 {
 #if 0
@@ -88,6 +89,7 @@ wxString tfpWriteAttribute( idt attrID )
 
     return htm;
 }
+#endif
 
 wxString tfpWriteDate( idt dateID )
 {

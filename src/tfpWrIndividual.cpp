@@ -39,6 +39,7 @@
 #include <rec/recIndividual.h>
 #include <rec/recEvent.h>
 #include <rec/recPersona.h>
+#include <rec/recName.h>
 #include <rec/recReference.h>
 
 #include "tfpWr.h"
@@ -46,171 +47,264 @@
 wxString tfpWriteIndividualPage( idt indID )
 {
     wxString htm;
-    size_t i, j, cnt;
+    size_t i, j;
     recIndividual ind( indID );
     recPersona per( ind.f_per_id );
     recIndividual spouse;
 
-    htm << "<html><head><title>Individual " << ind.GetIdStr() << "</title>"
-           "<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'>"
-           "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>"
-           "</head><body><center><table width=100%>";
+    htm << 
+        "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
+        "\"http://www.w3.org/TR/html4/loose.dtd\">\n"
+        "<html>\n<head>\n"
+        "<title>Individual " << ind.GetIdStr() << "</title>\n"
+        "<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>\n"
+        "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>\n"
+        "</head>\n<body>\n"
 
-    // Name
-    htm << "<tr><td align=right width=120>Name:</td>"
-           "<td><font size=+2><b>" << ind.GetFullName()
-        << "</b></font> " << ind.f_epitaph
-        << " <a href='tfpc:MR" << indID
-        << "'><img src=memory:fam.png></a></td></tr>";
+        "<h1>" << ind.GetFullNameEpitaph() <<
+        " <a href='tfpc:MR" << indID << "'><img src=memory:fam.png></a>"
+        "</h1>\n"
 
-    // Sex
-    htm << "<tr><td align=right>ID, Sex:</td><td><b>"
-        << ind.GetIdStr() << ", " << recGetSexStr( per.f_sex )
-        << "</b></td></tr>";
-    // All Events
-    recIndEventVec ies = ind.GetEvents();
-    for( i = 0 ; i < ies.size() ; i++ ) {
-        recEvent eve(ies[i].FGetEventID());
-        htm << "<tr><td align=right>"
-            << eve.GetTypeStr()
-            << ":</td><td><b>";
-        if( eve.GetTypeGroup() == recEventType::ETYPE_Grp_Personal ) {
-            htm << recEventTypeRole::GetName( ies[i].FGetRoleID() ) << " ";
-        }
-        htm << eve.GetDetailStr();
-
-        if( !eve.FGetNote().IsEmpty() ) {
-            htm << "<br>" << ies[i].FGetNote();
-        }
-
-        htm << "</b> <a href='tfp:E" << eve.FGetID()
-            << "'><img src=memory:eve.png></a></td></tr>";
+        // Individual record
+        "<table class='data'>\n<tr>\n"
+        "<td>Name:</td><td class='" << GetSexClass( ind.FGetID() ) <<
+        "'>" << ind.GetFullNameEpitaph() <<
+        " <a href='tfpc:MR" << indID << "'><img src=memory:fam.png></a></td>"
+        "</tr>\n<tr>\n"
+        "<td>ID, Sex:</td><td>" << ind.GetIdStr() << 
+        ", " << recGetSexStr( per.FGetSex() ) << "</td>\n"
+        "</tr>\n<tr>\n"
+        "<td>Note:</td><td>" << per.FGetNote() << "</td>\n"
+        "</tr>\n</table>\n"
+    ;
+    // Names
+    recNameVec names = per.ReadNames();
+    htm << 
+        "<table class='data'>\n<tr>\n"
+        "<th colspan='3'>Names</th>";
+    for( size_t i = 0 ; i < names.size() ; i++ ) {
+        htm << "</tr>\n<tr>\n"
+            "<td><a href='tfpi:N" << names[i].FGetID() <<
+            "'>" << names[i].GetIdStr() <<
+            "</a></td><td>" << recNameStyle::GetStyleStr( names[i].FGetTypeID() ) <<
+            "</td><td>" << names[i].GetNameStr() <<
+            "</td>";
     }
-
-    // Write out Parents
+    // Parents
     recFamilyVec parents = ind.GetParentList();
-    // Fathers
-    for( i = 0 ; i < parents.size() ; i++ ) {
-        if( parents[i].f_husb_id != 0 ) {
-            htm << "<tr><td align=right>Father:</td><td><b><a href='tfp:I"
-                << parents[i].f_husb_id << "'>"
-                << recIndividual::GetFullName( parents[i].f_husb_id )
-                << "</a></b> "
-                << recIndividual::GetDateEpitaph( parents[i].f_husb_id )
-                << " <a href='tfpc:MR" << parents[i].f_husb_id
-                << "'><img src=memory:fam.png></a></td></tr>";
+    htm << 
+        "</tr>\n<tr>\n"
+        "<th colspan='3'>Parents</th>\n";
+    for( size_t i = 0 ; i < parents.size() ; i++ ) {
+        idt hID = parents[i].FGetHusbID();
+        if( hID != 0 ) {
+            htm << 
+                "</tr>\n<tr>\n"
+                "<td><b>" << recIndividual::GetIdStr( hID ) <<
+                "</b></td>\n<td>Father:"
+                "</td>\n<td class='" << GetSexClass( hID ) <<
+                "'><a href='tfp:I" << hID << 
+                "'>" << recIndividual::GetFullName( hID ) <<
+                " " << recIndividual::GetDateEpitaph( hID ) <<
+                " <a href='tfpc:MR" << hID <<
+                "'><img src=memory:fam.png></a></td>\n"
+            ;
+        }
+        idt wID = parents[i].FGetWifeID();
+        if( wID != 0 ) {
+            htm << 
+                "</tr>\n<tr>\n"
+                "<td><b>" << recIndividual::GetIdStr( wID ) <<
+                "</b></td>\n<td>Mother:"
+                "</td>\n<td class='" << GetSexClass( wID ) <<
+                "'><a href='tfp:I" << wID << 
+                "'>" << recIndividual::GetFullName( wID ) <<
+                " " << recIndividual::GetDateEpitaph( wID ) <<
+                " <a href='tfpc:MR" << wID <<
+                "'><img src=memory:fam.png></a></td>\n"
+            ;
         }
     }
-    // Mothers
-    for( i = 0 ; i < parents.size() ; i++ ) {
-        if( parents[i].f_wife_id != 0 ) {
-            htm << "<tr><td align=right>Mother:</td><td><b><a href='tfp:I"
-                << parents[i].f_wife_id << "'>"
-                << recIndividual::GetFullName( parents[i].f_wife_id )
-                << "</a></b> "
-                << recIndividual::GetDateEpitaph( parents[i].f_wife_id )
-                << " <a href='tfpc:MR" << parents[i].f_wife_id
-                << "'><img src=memory:fam.png></a></td></tr>";
-        }
-    }
-
-    // Write out Families
     recFamilyVec families = recIndividual::GetFamilyList( indID );
-    for( i = 0, cnt = 0 ; i < families.size() ; i++ ) {
-        idt spouseID = families[i].f_husb_id;
+    for( size_t i = 0 ; i < families.size() ; i++ ) {
+        idt spouseID = families[i].FGetHusbID();
         if( spouseID == indID ) spouseID = 0;
-        if( spouseID == 0 ) spouseID = families[i].f_wife_id;
-        if( spouseID == 0 || spouseID == indID ) continue;
-        cnt++;
+        if( spouseID == 0 ) spouseID = families[i].FGetWifeID();
         idt famID = families[i].f_id;
         spouse.f_id = spouseID;
         spouse.Read();
 
-        // Spouse name
-        htm << "<tr><td align=right><a href='tfp:F"
-            << famID << "'>Spouse " << cnt << ":</a></td>"
-               "<td><b><a href='tfp:I"
-            << spouseID << "'>"
-            << spouse.GetFullName() << "</a></b> "
-            << spouse.f_epitaph
-            << " <a href='tfpc:MR" << spouseID
-            << "'><img src=memory:fam.png></a></td></tr>";
-
+        htm << 
+            "</tr>\n<tr>\n"
+            "<th colspan='3'>Family " << i+1 << "</th>\n"
+            "</tr>\n<tr>\n" <<
+            // Spouse name
+            "<td><b><a href='tfp:I" << spouseID << 
+            "'>" << recIndividual::GetIdStr( spouseID ) <<
+            "</a></b></td>\n<td><a href='tfp:F" << famID << 
+            "'>Spouse " << i+1 << "</a>:</td>\n"
+            "<td class='" << GetSexClass( spouseID ) <<
+            "'><a href='tfp:I" << spouseID <<
+            "'>" << spouse.GetFullName() <<
+            "</a></b> " << spouse.f_epitaph <<
+            " <a href='tfpc:MR" << spouseID <<
+            "'><img src=memory:fam.png></a></td>\n"
+        ;
         // Union event (marriage)
         idt marEvID = families[i].GetUnionEvent();
         if( marEvID != 0 ) {
-            htm << "<tr><td align=right>"
-                << recEvent::GetTypeStr( marEvID )
-                << ":</td><td><b>"
-                << recEvent::GetDetailStr( marEvID )
-                << "</b> <a href='tfp:E" << marEvID
-                << "'><img src=memory:eve.png></a></td></tr>";
+            htm <<
+                "</tr>\n<tr>\n" <<
+                "<td><b><a href='tfp:E" << marEvID <<
+                "'>" << recEvent::GetIdStr( marEvID ) <<
+                "</a></b></td>\n<td>" << recEvent::GetTypeStr( marEvID ) <<
+                ":</td>\n<td><b>" << recEvent::GetDetailStr( marEvID ) <<
+                "</b></td>\n"
+            ;
         }
-
         // Children
         recIndividualList children = families[i].GetChildren();
         for( j = 0 ; j < children.size() ; j++ ) {
+            idt cID = children[j].FGetID();
+            htm <<
+                "</tr>\n<tr>\n" <<
+                "<td><b><a href='tfp:I" << cID <<
+                "'>" << children[j].GetIdStr() <<
+                "</a></b></td>\n"
+            ;
             if( j == 0 ) {
-                htm << "<tr><td align=right>Children:</td>";
-            } else {
-                htm << "<tr><td></td>";
+                htm << 
+                    "<td valign='top' rowspan='" << children.size() << 
+                    "'>Children:</td>\n"
+                ;
             }
-            htm << "<td><b><a href='tfp:I"
-                << children[j].f_id << "'>"
-                << children[j].GetFullName() << "</a></b> "
-                << children[j].f_epitaph
-                << " <a href='tfpc:MR" << children[j].f_id
-                << "'><img src=memory:fam.png></a></td></tr>";
+            htm << 
+                "<td class='" << GetSexClass( cID ) <<
+                "'><a href='tfp:I" << cID <<
+                "'>" << children[j].GetFullName() <<
+                "</a> " << children[j].FGetEpitaph() <<
+                " <a href='tfpc:MR" << cID <<
+                "'><img src=memory:fam.png></a></td>\n"
+            ;
         }
     }
+    htm << "</tr>\n</table>\n";
+
+    // All Events
+    recIndEventVec ies = ind.GetEvents();
+    htm << 
+        "<table class='data'>\n<tr>\n"
+        "<th colspan='4'>Conclusion Events</th>\n";
+    for( i = 0 ; i < ies.size() ; i++ ) {
+        idt eveID = ies[i].FGetEventID();
+        recEvent eve( eveID );
+        wxString cat1, cat2, dStr, pStr;
+        if( eve.FGetDate1ID() || eve.FGetPlaceID() ) {
+            cat1 = "<br>\n";
+        }
+        if( eve.FGetDate1ID() && eve.FGetPlaceID() ) {
+            cat2 = ", ";
+        }
+        if( eve.FGetDate1ID() ) {
+            dStr << 
+                "<a href='tfpi:D" << eve.FGetDate1ID() <<
+                "'>" << eve.GetDateStr() <<
+                "</a>"
+            ;
+        }
+        if( eve.FGetPlaceID() ) {
+            pStr <<
+                "<a href='tfpi:P" << eve.FGetPlaceID() <<
+                "'>" << eve.GetAddressStr() <<
+                "</a>"
+            ;
+        }
+        htm <<
+            "</tr>\n<tr>\n" <<
+            "<td><b><a href='tfp:E" << eveID <<
+            "'>" << eve.GetIdStr() <<
+            "</a></b></td>\n<td>" << eve.GetTypeStr() <<
+            ":</td>\n<td>" << recEventTypeRole::GetName( ies[i].FGetRoleID() ) <<
+            "</td><td>" << eve.FGetTitle() << 
+            cat1 << dStr << cat2 << pStr 
+        ;
+        if( !eve.FGetNote().IsEmpty() ) {
+            htm << "<br>\n" << ies[i].FGetNote();
+        }
+        htm << "</td>\n";
+    }
+    htm << "</tr>\n</table>\n";
 
     // Get linked Persona Events
     wxSQLite3Table eTable = ind.GetRefEventsTable();
+    htm << 
+        "<table class='data'>\n<tr>\n"
+        "<th colspan='4'>Evidence Events</th>\n";
     for( i = 0 ; i < (size_t) eTable.GetRowCount() ; i++ ) {
-        if( i == 0 ) {
-            htm << "<tr><td colspan=2><font size=+1>"
-                   "Linked to Reference Events"
-                   "</font></td></tr>";
-        }
         eTable.SetRow( i );
-        idt eventID = GET_ID( eTable.GetInt64( 0 ) );
+        idt eveID = GET_ID( eTable.GetInt64( 0 ) );
+        recEvent eve( eveID );
         idt roleID = GET_ID( eTable.GetInt64( 1 ) );
-        idt refID = recEvent::FindReferenceID( eventID );
+        idt refID = recEvent::FindReferenceID( eveID );
 
-        htm << "<tr><td align=right>"
-            << recEventTypeRole::GetName( roleID )
-            << ":</td><td><b>"
-            << recEvent::GetTitle( eventID );
-        if( refID != 0 ) {
-            htm << " <a href='tfp:" << recReference::GetIdStr( refID )
-                << "'><img src=memory:ref.png></a>";
+        wxString cat1, cat2, dStr, pStr;
+        if( eve.FGetDate1ID() || eve.FGetPlaceID() ) {
+            cat1 = "<br>\n";
         }
-        htm << "<br>"
-            << recEvent::GetDetailStr( eventID )
-            << "</b></td></tr>";
+        if( eve.FGetDate1ID() && eve.FGetPlaceID() ) {
+            cat2 = ", ";
+        }
+        if( eve.FGetDate1ID() ) {
+            dStr << 
+                "<a href='tfpi:D" << eve.FGetDate1ID() <<
+                "'>" << eve.GetDateStr() <<
+                "</a>"
+            ;
+        }
+        if( eve.FGetPlaceID() ) {
+            pStr <<
+                "<a href='tfpi:P" << eve.FGetPlaceID() <<
+                "'>" << eve.GetAddressStr() <<
+                "</a>"
+            ;
+        }
+        htm <<
+            "</tr>\n<tr>\n" <<
+            "<td><b><a href='tfp:R" << refID <<
+            "'>" << recReference::GetIdStr( refID ) <<
+            "</a>: <a href='tfp:E" << eveID <<
+            "'>" << eve.GetIdStr() <<
+            "</b></td>\n<td>" << eve.GetTypeStr() <<
+            ":</td>\n<td>" << recEventTypeRole::GetName( roleID ) <<
+            "</td><td>" << eve.FGetTitle() << 
+            cat1 << dStr << cat2 << pStr 
+        ;
+//        if( !eve.FGetNote().IsEmpty() ) {
+//            htm << "<br>\n" << ies[i].FGetNote();
+//        }
+        htm << "</td>\n";
     }
+    htm << "</tr>\n</table>\n";
+
 
     // List all References for linked Personas
     eTable = ind.GetReferencesTable();
+    htm << 
+        "<table class='data'>\n<tr>\n"
+        "<th colspan='2'>Reference Links</th>\n";
     for( i = 0 ; i < (size_t) eTable.GetRowCount() ; i++ ) {
-        if( i == 0 ) {
-            htm << "<tr><td colspan=2><font size=+1>"
-                   "Mentioned in References"
-                   "</font></td></tr>";
-        }
         eTable.SetRow( i );
         idt refID = GET_ID( eTable.GetInt64( 0 ) );
 
-        htm << "<tr><td align=right>"
-            << recReference::GetIdStr( refID )
-            << ":</td><td><b>"
-            << eTable.GetAsString( 1 )
-            << " <a href='tfp:" << recReference::GetIdStr( refID )
-            << "'><img src=memory:ref.png></a>"
-            << "</b></td></tr>";
+        htm <<
+            "</tr>\n<tr>\n" <<
+            "<td><b><a href='tfp:R" << refID <<
+            "'>" << recReference::GetIdStr( refID ) <<
+            "</a></b></td>\n<td>" << eTable.GetAsString( 1 ) <<
+            "</td>\n"
+        ;
     }
-
-    htm << "</table></center></body></html>";
+    htm << "</tr>\n</table>\n</body>\n</html>\n";
 
     return htm;
 }

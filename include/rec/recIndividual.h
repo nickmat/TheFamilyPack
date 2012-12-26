@@ -81,6 +81,18 @@ public:
     static wxString GetIdStr( idt indID ) { return wxString::Format( "I"ID, indID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
+    wxString FGetSurname() const { return f_surname; }
+    wxString FGetName() const { return f_given; }
+    wxString FGetEpitaph() const { return f_epitaph; }
+    idt FGetFamID() const { return f_fam_id; }
+    idt FGetPerID() const { return f_per_id; }
+
+    void FSetSurname( const wxString& surname ) { f_surname = surname; }
+    void FSetName( const wxString& name ) { f_given = name; }
+    void FSetEpitaph( const wxString& epitaph ) { f_epitaph = epitaph; }
+    void FSetFamID( idt famID ) { f_fam_id = famID; }
+    void FSetPerID( idt perID ) { f_per_id = perID; }
+
     static recIndividualVec ReadVec( unsigned sexfilter = recInd_FILTER_SexAll );
 
     bool ReadPersona( idt perID );
@@ -107,6 +119,7 @@ public:
     static wxString GetSurname( idt id );
     static wxString GetDateEpitaph( idt id );
     static wxString GetFullNameEpitaph( idt id );
+    wxString GetFullNameEpitaph() const { return f_given + " " + f_epitaph; }
     static Sex GetSex( idt id ) { return recPersona::GetSex( GetPersona( id ) ); }
     Sex GetSex() { return recPersona::GetSex( f_per_id ); }
 
@@ -200,6 +213,12 @@ public:
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "Family" );
+
+    idt FGetHusbID() const { return f_husb_id; }
+    idt FGetWifeID() const { return f_wife_id; }
+
+    void FSetHusbID( idt hID ) { f_husb_id = hID; }
+    void FSetWifeID( idt wID ) { f_wife_id = wID; }
 
     idt GetId() const { return f_id; }
     idt GetHusbId() const { return f_husb_id; }

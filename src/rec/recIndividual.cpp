@@ -334,10 +334,10 @@ wxString recIndividual::GetFullNameEpitaph( idt id )
     wxSQLite3StatementBuffer sql;
     wxSQLite3ResultSet result;
 
-    sql.Format( "SELECT surname, given, epitaph FROM Individual WHERE id="ID";", id );
+    sql.Format( "SELECT given, epitaph FROM Individual WHERE id="ID";", id );
     result = s_db->ExecuteQuery( sql );
-    str << result.GetAsString( 1 ) << " " << result.GetAsString( 0 );
-    wxString dates = result.GetAsString( 2 );
+    str << result.GetAsString( 0 );
+    wxString dates = result.GetAsString( 1 );
     if( !dates.IsEmpty() ) {
         str << " " << dates;
     }
@@ -481,21 +481,6 @@ wxSQLite3Table recIndividual::GetRefEventsTable( idt perID )
     );
     return s_db->GetTable( sql );
 }
-#if 0
-wxSQLite3Table recIndividual::GetRefAttributesTable( idt perID )
-{
-    wxSQLite3StatementBuffer sql;
-
-    sql.Format(
-        "SELECT DISTINCT id, type_id, val FROM Attribute "
-        "INNER JOIN "
-        "(SELECT ref_per_id FROM LinkPersona WHERE ind_per_id="ID") "
-        "ON Attribute.per_id=ref_per_id;",
-        perID
-    );
-    return s_db->GetTable( sql );
-}
-#endif
 
 wxSQLite3Table recIndividual::GetReferencesTable( idt perID )
 {
