@@ -1506,7 +1506,11 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
         if( name == "N*" ) {
             return tfpWriteIndividualList( wxEmptyString );
         }
-        return tfpWriteIndividualList( name.Mid( 1 ) );
+        success = name.Mid(1).ToLongLong( &num );
+        if( !success || num < 1 ) {
+            return tfpWriteIndividualList( name.Mid( 1 ) );
+        }
+        return tfpWriteName( num );
     case 'P':  // Place
         success = name.Mid(1).ToLongLong( &num );
         if( !success || num < 1 ) {

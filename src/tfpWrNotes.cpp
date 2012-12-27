@@ -64,33 +64,6 @@ wxString GetHtmDateData( const recDate& date )
 
 } // namespace
 
-#if 0
-wxString tfpWriteAttribute( idt attrID )
-{
-#if 0
-    wxString htm;
-    recAttribute attr(attrID);
-    if( attr.f_id == 0 ) return wxEmptyString;
-
-    htm << "<html><head><title>Place</title></head><body>"
-           "<h1>Attribute " << attr.GetIdStr() << "</h1>"
-        << recAttributeType::GetTypeStr( attr.f_type_id )
-        << ": " << attr.f_val
-       
-        << "</body></html>";
-
-    return htm;
-#endif
-    wxString htm;
-
-    htm << "<html><head><title>Place</title></head><body>"
-           "<h1>Attribute </h1>"
-           "</body></html>";
-
-    return htm;
-}
-#endif
-
 wxString tfpWriteDate( idt dateID )
 {
     wxString htm;
@@ -117,6 +90,34 @@ wxString tfpWritePlace( idt placeID )
         << place.GetAddressStr();
        
     htm << "</body></html>";
+
+    return htm;
+}
+
+wxString tfpWriteName( idt nameID )
+{
+    wxString htm;
+    recName name(nameID);
+    if( name.FGetID() == 0 ) return wxEmptyString;
+    recNamePartVec parts = name.GetParts();
+
+    htm << "<html><head><title>Name</title></head><body>"
+           "<h1>Name " << name.GetIdStr() << "<br>"
+           << name.GetNameStr() << "</h1>"
+           << "<p>Name Type: <b>" 
+           << recNameStyle::GetStyleStr( name.FGetTypeID() )
+           << "</b></p><table>";
+
+    for( size_t i = 0 ; i < parts.size() ; i++ ) {
+        htm << "<tr><td>"
+            << recNamePartType::GetTypeStr( parts[i].FGetTypeID() )
+            << "</td><td><b>"
+            << parts[i].FGetValue()
+            << "</b></td></tr>"
+        ;
+    }
+       
+    htm << "</table></body></html>";
 
     return htm;
 }
