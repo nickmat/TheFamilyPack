@@ -226,10 +226,11 @@ public:
     static wxString GetIdStr( idt indID ) { return wxString::Format( "F"ID, indID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
+    static recIdVec GetFamilyIdVec();
+
     bool Decode( const wxString& str );
     void SetMemberDefault();
 
-    idt GetMarriageEvent_() const;
     static idt GetUnionEvent( idt famID );
     idt GetUnionEvent() const { return GetUnionEvent( f_id ); }
 

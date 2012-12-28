@@ -754,6 +754,18 @@ bool recFamily::Read()
     return true;
 }
 
+recIdVec recFamily::GetFamilyIdVec()
+{
+    recIdVec famIDs;
+    wxSQLite3ResultSet result;
+
+    result = s_db->ExecuteQuery( "SELECT id FROM Family;" );
+    while( result.NextRow() ) {
+        famIDs.push_back( GET_ID( result.GetInt64( 0 ) ) );
+    }
+    return famIDs;
+}
+
 // Decode the string which is in the form "Fx1" or
 // "Fx1,x2,x3" where x1 is the Family id
 // x2 is the husband id and x3 the wife id.
@@ -809,14 +821,6 @@ void recFamily::SetMemberDefault() {
     }
 }
 
-
-idt recFamily::GetMarriageEvent_() const
-{
-    return recPersona::GetMarriageEvent(
-        recIndividual::GetPersona( f_husb_id ),
-        recIndividual::GetPersona( f_wife_id )
-    );
-}
 
 idt recFamily::GetUnionEvent( idt famID )
 {
