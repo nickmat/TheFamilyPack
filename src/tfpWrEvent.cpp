@@ -111,7 +111,7 @@ wxString tfpWriteIndEventPage( idt eventID, rgCompareEvent* ce )
            "<title>Event " << eve.GetIdStr() << "</title>\n"
            "<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>\n"
            "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>\n"
-           "</head>\n<body>\n"
+           "</head>\n<body>\n<div class='tfp'>\n"
 
            "<h1>Event " << eve.GetIdStr() << ": " << eve.f_title << "</h1>\n"
 
@@ -152,7 +152,7 @@ wxString tfpWriteIndEventPage( idt eventID, rgCompareEvent* ce )
     htm << ce->GetRefEventsTable()
         << ce->GetRefDatesTable()
         << ce->GetRefPlacesTable()
-        << "</body>\n</html>\n";
+        << "</div>\n</body>\n</html>\n";
 
     return htm;
 }

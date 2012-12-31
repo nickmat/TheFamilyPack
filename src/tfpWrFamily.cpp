@@ -88,7 +88,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
            "<html>\n<head>\n<title>Family F" << famID << "</title>\n"
            "<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>\n"
            "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>\n"
-           "</head>\n<body>\n";
+           "</head>\n<body>\n<div class='tfp'>\n";
 
     htm << "<table class='core'>\n";
 
@@ -430,7 +430,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
     }
 
     // core done
-    htm << "</table>\n</body>\n</html>\n";
+    htm << "</table>\n</div>\n</body>\n</html>\n";
 
     return htm;
 }

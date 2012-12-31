@@ -59,7 +59,7 @@ wxString tfpWriteIndividualPage( idt indID )
         "<title>Individual " << ind.GetIdStr() << "</title>\n"
         "<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>\n"
         "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>\n"
-        "</head>\n<body>\n"
+        "</head>\n<body>\n<div class='tfp'>\n"
 
         "<h1>" << ind.GetFullNameEpitaph() <<
         " <a href='tfpc:MR" << indID << "'><img src=memory:fam.png></a>"
@@ -304,7 +304,7 @@ wxString tfpWriteIndividualPage( idt indID )
             "</td>\n"
         ;
     }
-    htm << "</tr>\n</table>\n</body>\n</html>\n";
+    htm << "</tr>\n</table>\n</div>\n</body>\n</html>\n";
 
     return htm;
 }

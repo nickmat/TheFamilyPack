@@ -72,11 +72,23 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "ReferenceEntity" );
 
+    idt FGetRefID() const { return f_ref_id; }
+    Type FGetEntityType() const { return f_entity_type; }
+    idt FGetEntityID() const { return f_entity_id; }
+    int FGetSequence() const { return f_sequence; }
+
+    void FSetRefID( idt refID ) { f_ref_id = refID; }
+    void FSetEntityType( Type etype ) { f_entity_type = etype; }
+    void FSetEntityID( idt entID ) { f_entity_id = entID; }
+    void FSetSequence( int seq ) { f_sequence = seq; }
+
     static void Create( idt refID, Type type, idt entID, int* pseq );
 
-    wxString GetTypeStr() { return sm_typeStr[f_entity_type]; }
+    wxString GetTypeStr() const { return sm_typeStr[f_entity_type]; }
     static wxString GetTypeStr( Type etype ) { return sm_typeStr[etype]; }
 
+    wxString GetEntityIdStr() const; 
+    wxString GetEntityStr() const; 
 
     static idt FindReferenceID( Type type, idt entityID );
 };

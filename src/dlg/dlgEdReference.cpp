@@ -229,6 +229,9 @@ void dlgEditReference::OnPersonaEditButton( wxCommandEvent& event )
     if( dialog->ShowModal() == wxID_OK )
     {
         recDb::ReleaseSavepoint( savepoint );
+        m_listPersona->SetItem( row, PER_COL_Number, recPersona::GetIdStr( m_personaIDs[row] ) );
+        m_listPersona->SetItem( row, PER_COL_Name, recPersona::GetNameStr( m_personaIDs[row] ) );
+        m_listPersona->SetItem( row, PER_COL_Individuals, recPersona::GetIndividualIdStr( m_personaIDs[row] ) );
     } else {
         recDb::Rollback( savepoint );
     }

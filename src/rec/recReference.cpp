@@ -39,6 +39,10 @@
 
 #include <rec/recReference.h>
 #include <rec/recName.h>
+#include <rec/recDate.h>
+#include <rec/recPlace.h>
+#include <rec/recEvent.h>
+#include <rec/recRelationship.h>
 
 
 recReference::recReference( const recReference& r )
@@ -320,7 +324,41 @@ void recReferenceEntity::Create( idt refID, Type type, idt entID, int* pseq )
     re.Save();
 }
 
+wxString recReferenceEntity::GetEntityIdStr() const
+{
+    switch( f_entity_type )
+    {
+    case TYPE_Event:
+        return recEvent::GetIdStr( f_entity_id );
+    case TYPE_Place:
+        return recPlace::GetIdStr( f_entity_id );
+    case TYPE_Date:
+        return recDate::GetIdStr( f_entity_id );
+    case TYPE_Relationship:
+        return recRelationship::GetIdStr( f_entity_id );
+    case TYPE_Name:
+        return recName::GetIdStr( f_entity_id );
+    }
+    return recGetIDStr( f_entity_id );
+}
 
+wxString recReferenceEntity::GetEntityStr() const
+{
+    switch( f_entity_type )
+    {
+    case TYPE_Event:
+        return recEvent::GetTitle( f_entity_id );
+    case TYPE_Place:
+        return recPlace::GetAddressStr( f_entity_id );
+    case TYPE_Date:
+        return recDate::GetStr( f_entity_id );
+    case TYPE_Relationship:
+        return recRelationship::GetValue1Str( f_entity_id );
+    case TYPE_Name:
+        return recName::GetNameStr( f_entity_id );
+    }
+    return "[Unknown entity]";
+}
 
 idt recReferenceEntity::FindReferenceID( Type type, idt entityID )
 {
