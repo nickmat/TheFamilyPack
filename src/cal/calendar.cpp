@@ -204,7 +204,7 @@ wxString calStrFromJdnRange( long jdn1, long jdn2, CalendarScheme sch )
     if( rec1 == rec2 ) {
         return rec1.GetStr();
     }
-    str << rec1.GetStr() << " - " << rec2.GetStr();
+    str << rec1.GetStr() << " ~ " << rec2.GetStr();
 
     return str;
 }
@@ -242,10 +242,10 @@ int calLastDayInMonth( int month, int year, CalendarScheme scheme )
 bool calLatinAddToJdn(
     long* jdn, long value, CalendarUnit unit, CalendarScheme scheme )
 {
-    //DMYDate dmy;
     long year, month, day;
-//    if( !calConvertFromJdn( *jdn, &dmy, scheme ) ) return false;
-    if( !calConvertFromJdn( *jdn, scheme, &year, &month, &day ) ) return false;
+    if( !calConvertFromJdn( *jdn, scheme, &year, &month, &day ) ) {
+        return false;
+    }
     switch( unit )
     {
     case CALENDAR_UNIT_Year:
@@ -266,7 +266,6 @@ bool calLatinAddToJdn(
     default:
         return false;
     }
-//    return calConvertToJdn( jdn, dmy, scheme );
     return calConvertToJdn( jdn, scheme, year, month, day );
 }
 

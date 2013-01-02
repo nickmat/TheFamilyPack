@@ -522,7 +522,7 @@ bool recRelativeDate::CalculateDate( recDate& date ) const
 {
     recDate base( f_base_id );
     long jdn1 = base.f_jdn;
-    long jdn2 = jdn1 + base.f_range;
+    long jdn2 = jdn1 + base.f_range + 1;
 
     switch( f_type )
     {
@@ -539,15 +539,34 @@ bool recRelativeDate::CalculateDate( recDate& date ) const
         if( !calAddToJdn( &jdn1, f_val, f_unit, f_scheme ) ) {
             return false;
         }
-        if( !calAddToJdn( &jdn2, f_val+f_range, f_unit, f_scheme ) ) {
+        if( !calAddToJdn( &jdn2, f_val, f_unit, f_scheme ) ) {
+            return false;
+        }
+        break;
+    case TYPE_AddToStart:
+        if( !calAddToJdn( &jdn1, f_val, f_unit, f_scheme ) ) {
+            return false;
+        }
+        break;
+    case TYPE_AddToEnd:
+        if( !calAddToJdn( &jdn2, f_val, f_unit, f_scheme ) ) {
             return false;
         }
         break;
     default:
         return false;
     }
+    if( jdn1 == jdn2 ) {
+        // Can't deal with zero length ranges
+        return false;
+    }
+    if( jdn1 > jdn2 ) {
+        long temp = jdn1;
+        jdn1 = jdn2;
+        jdn2 = temp;
+    }
     date.f_jdn = jdn1;
-    date.f_range = jdn2 - jdn1;
+    date.f_range = jdn2 - jdn1 - 1;
     date.f_type = base.f_type;
     date.f_record_sch = f_scheme;
     return true;

@@ -81,7 +81,9 @@ int rgDate::unit_list[CALENDAR_UNIT_Max] = {
 
 recRelativeDate::Type rgDate::calc[] = {
     recRelativeDate::TYPE_AgeRoundDown,
-    recRelativeDate::TYPE_Duration
+    recRelativeDate::TYPE_Duration,
+    recRelativeDate::TYPE_AddToStart,
+    recRelativeDate::TYPE_AddToEnd
 };
 
 int rgDate::calc_list[recRelativeDate::TYPE_Max] = {
@@ -153,7 +155,7 @@ void rgDlgEditDate::OnIdle( wxIdleEvent& event )
 }
 
 //============================================================================
-//-------------------------[ rgDlgEditDateFromAge ]---------------------------
+//-------------------------[ rgDlgEditRelativeDate ]--------------------------
 //============================================================================
 
 

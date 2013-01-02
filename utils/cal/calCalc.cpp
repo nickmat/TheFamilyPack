@@ -212,7 +212,7 @@ void ccAgeMonthsDateToRange( wxString& line )
 
 	adate = calStrFromJdnRange( jdn1, jdn2, g_to );
 	wxPrintf( 
-		wxT("%ld mths on %s (%s) -> %ld - %ld -> %s (%s)\n"),
+		wxT("%ld mths on %s (%s) -> %ld ~ %ld -> %s (%s)\n"),
         month, token.c_str(), CalendarSchemeAbrev[g_from].c_str(),
 		jdn1, jdn2,
 		adate.c_str(), CalendarSchemeAbrev[g_to].c_str()

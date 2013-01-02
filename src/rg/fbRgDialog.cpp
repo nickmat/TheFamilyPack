@@ -429,7 +429,7 @@ fbRgEditRelativeDate::fbRgEditRelativeDate( wxWindow* parent, wxWindowID id, con
 	m_staticText3->Wrap( -1 );
 	fgSizer11->Add( m_staticText3, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	wxString m_choiceTypeChoices[] = { _("Age, round down"), _("Duration") };
+	wxString m_choiceTypeChoices[] = { _("Age, round down"), _("Duration"), _("Add to start"), _("Add to end") };
 	int m_choiceTypeNChoices = sizeof( m_choiceTypeChoices ) / sizeof( wxString );
 	m_choiceType = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceTypeNChoices, m_choiceTypeChoices, 0 );
 	m_choiceType->SetSelection( 0 );
@@ -443,7 +443,7 @@ fbRgEditRelativeDate::fbRgEditRelativeDate( wxWindow* parent, wxWindowID id, con
 	
 	fgSizer11->Add( m_textCtrlBase, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
-	m_staticText4 = new wxStaticText( this, wxID_ANY, _("Age:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText4 = new wxStaticText( this, wxID_ANY, _("Value:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText4->Wrap( -1 );
 	fgSizer11->Add( m_staticText4, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
 	
@@ -465,7 +465,7 @@ fbRgEditRelativeDate::fbRgEditRelativeDate( wxWindow* parent, wxWindowID id, con
 	
 	wxString m_radioUnitsChoices[] = { _("Years"), _("Months"), _("Weeks"), _("Days") };
 	int m_radioUnitsNChoices = sizeof( m_radioUnitsChoices ) / sizeof( wxString );
-	m_radioUnits = new wxRadioBox( this, wxID_ANY, _("Age Units:"), wxDefaultPosition, wxDefaultSize, m_radioUnitsNChoices, m_radioUnitsChoices, 1, wxRA_SPECIFY_ROWS );
+	m_radioUnits = new wxRadioBox( this, wxID_ANY, _("Unit:"), wxDefaultPosition, wxDefaultSize, m_radioUnitsNChoices, m_radioUnitsChoices, 1, wxRA_SPECIFY_ROWS );
 	m_radioUnits->SetSelection( 0 );
 	bSizer1->Add( m_radioUnits, 0, wxALL, 5 );
 	
@@ -496,7 +496,6 @@ fbRgEditRelativeDate::fbRgEditRelativeDate( wxWindow* parent, wxWindowID id, con
 	
 	this->SetSizer( bSizer1 );
 	this->Layout();
-	bSizer1->Fit( this );
 	
 	this->Centre( wxBOTH );
 	

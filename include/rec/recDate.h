@@ -215,6 +215,8 @@ public:
         TYPE_Unstated,
         TYPE_AgeRoundDown,
         TYPE_Duration,
+        TYPE_AddToStart,
+        TYPE_AddToEnd,
         TYPE_Max
     };
 

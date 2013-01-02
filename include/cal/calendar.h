@@ -177,7 +177,8 @@ extern const wxString CalendarSchemeName[];
 extern const wxString CalendarSchemeAbrev[];
 
 /*! Convert a date given in individual records (Largest, ie year, first) for a 
- *  given scheme into a julian day number.
+ *  given scheme into a julian day number. This only returns a range of more than a day 
+ *  if the records are incomplete ie all but year are set to calR_INVALID.
  *  Returns true if successful, false otherwise.
  */
 extern bool calConvertToJdn( 

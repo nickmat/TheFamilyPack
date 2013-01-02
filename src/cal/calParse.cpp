@@ -59,10 +59,10 @@ calTOKEN GetTokenType( const wxUniChar& uc )
 
 calTOKEN GetPunctType( const wxString& punct )
 {
-    if( punct == "-" ) {
+    if( punct == "~" ) {
         return calTOKEN_RangeSep;
     }
-    if( punct == "--" ) {
+    if( punct == "-" ) {
         return calTOKEN_Minus;
     }
     return calTOKEN_Punct;
@@ -140,6 +140,11 @@ void calInit()
     LabelLookup["oct"] = 10;
     LabelLookup["nov"] = 11;
     LabelLookup["dec"] = 12;
+
+    LabelLookup["year"]  = 0;
+    LabelLookup["month"] = 1;
+    LabelLookup["day"]   = 2;
+
 
     LabelLookup["(jdn)"] = CALENDAR_SCH_JulianDayNumber;
     LabelLookup["(j)"]   = CALENDAR_SCH_Julian;
