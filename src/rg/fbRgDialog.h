@@ -171,9 +171,11 @@ class fbRgEditRelativeDate : public wxDialog
 		wxStaticText* m_staticText2;
 		wxChoice* m_choiceDisplay;
 		wxStaticText* m_staticText3;
-		wxChoice* m_choiceType;
+		wxChoice* m_choiceCalc;
 		wxButton* m_buttonBase;
 		wxTextCtrl* m_textCtrlBase;
+		wxStaticText* m_staticText3a;
+		wxChoice* m_choicePrecision;
 		wxStaticText* m_staticText4;
 		wxTextCtrl* m_textCtrlAge;
 		wxStaticText* m_staticText5;
@@ -191,7 +193,7 @@ class fbRgEditRelativeDate : public wxDialog
 	
 	public:
 		
-		fbRgEditRelativeDate( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Relative Date"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 358,291 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
+		fbRgEditRelativeDate( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Relative Date"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbRgEditRelativeDate();
 	
 };

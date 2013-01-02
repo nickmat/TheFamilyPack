@@ -186,7 +186,7 @@ inline bool recEquivalent( const recDate& d1, const recDate& d2 )
     return
         d1.f_jdn         == d2.f_jdn        &&
         d1.f_range       == d2.f_range      &&
-        d1.f_rel_id     == d2.f_rel_id    &&
+        d1.f_rel_id      == d2.f_rel_id     &&
         d1.f_type        == d2.f_type       &&
         d1.f_descrip     == d2.f_descrip    &&
         d1.f_record_sch  == d2.f_record_sch &&

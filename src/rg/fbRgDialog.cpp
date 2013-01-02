@@ -429,11 +429,11 @@ fbRgEditRelativeDate::fbRgEditRelativeDate( wxWindow* parent, wxWindowID id, con
 	m_staticText3->Wrap( -1 );
 	fgSizer11->Add( m_staticText3, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	wxString m_choiceTypeChoices[] = { _("Age, round down"), _("Duration"), _("Add to start"), _("Add to end") };
-	int m_choiceTypeNChoices = sizeof( m_choiceTypeChoices ) / sizeof( wxString );
-	m_choiceType = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceTypeNChoices, m_choiceTypeChoices, 0 );
-	m_choiceType->SetSelection( 0 );
-	fgSizer11->Add( m_choiceType, 0, wxALL, 5 );
+	wxString m_choiceCalcChoices[] = { _("Age, round down"), _("Duration"), _("Add to start"), _("Add to end") };
+	int m_choiceCalcNChoices = sizeof( m_choiceCalcChoices ) / sizeof( wxString );
+	m_choiceCalc = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceCalcNChoices, m_choiceCalcChoices, 0 );
+	m_choiceCalc->SetSelection( 0 );
+	fgSizer11->Add( m_choiceCalc, 0, wxALL, 5 );
 	
 	m_buttonBase = new wxButton( this, wxID_ANY, _("Base Date:"), wxDefaultPosition, wxDefaultSize, wxBU_RIGHT );
 	fgSizer11->Add( m_buttonBase, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
@@ -442,6 +442,16 @@ fbRgEditRelativeDate::fbRgEditRelativeDate( wxWindow* parent, wxWindowID id, con
 	m_textCtrlBase->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_3DLIGHT ) );
 	
 	fgSizer11->Add( m_textCtrlBase, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
+	m_staticText3a = new wxStaticText( this, wxID_ANY, _("Precision:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText3a->Wrap( -1 );
+	fgSizer11->Add( m_staticText3a, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	wxString m_choicePrecisionChoices[] = { _("After"), _("On"), _("On or after"), _("Before"), _("Not"), _("On or before"), _("About") };
+	int m_choicePrecisionNChoices = sizeof( m_choicePrecisionChoices ) / sizeof( wxString );
+	m_choicePrecision = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choicePrecisionNChoices, m_choicePrecisionChoices, 0 );
+	m_choicePrecision->SetSelection( 1 );
+	fgSizer11->Add( m_choicePrecision, 0, wxALL, 5 );
 	
 	m_staticText4 = new wxStaticText( this, wxID_ANY, _("Value:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText4->Wrap( -1 );
@@ -496,6 +506,7 @@ fbRgEditRelativeDate::fbRgEditRelativeDate( wxWindow* parent, wxWindowID id, con
 	
 	this->SetSizer( bSizer1 );
 	this->Layout();
+	bSizer1->Fit( this );
 	
 	this->Centre( wxBOTH );
 	

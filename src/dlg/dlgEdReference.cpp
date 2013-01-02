@@ -430,7 +430,7 @@ void dlgEditReference::OnNewEvent( wxCommandEvent& cmnd_event )
     }
 
     idt dateID1;
-    unsigned style = dlgSelect::SELSTYLE_CreateButton | dlgSelect::SELSTYLE_UnknownButton;
+    unsigned style = rgSELSTYLE_Create | rgSELSTYLE_Unknown;
     if( SelectDate( &dateID1, _("Select Start Date"), style ) == false ) {
         recDb::Rollback( savepoint );
         return;

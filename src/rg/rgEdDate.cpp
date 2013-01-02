@@ -174,8 +174,9 @@ bool rgDlgEditRelativeDate::TransferDataToWindow()
 
     m_staticOutput->SetLabel( m_date.GetStr() );
     m_choiceDisplay->SetSelection( sch_list[m_date.FGetDisplaySch()] );
-    m_choiceType->SetSelection( m_date.FGetType() );
+    m_choiceCalc->SetSelection( m_relative.FGetType() );
     m_textCtrlBase->SetValue( m_base.GetStr() );
+    m_choicePrecision->SetSelection( m_date.FGetType() - 1 );
     wxString age = wxString::Format( "%ld", m_relative.FGetValue() );
     m_textCtrlAge->SetValue( age );
     m_choiceInput->SetSelection( sch_list[m_relative.FGetScheme()] );
@@ -244,7 +245,8 @@ void rgDlgEditRelativeDate::OnBaseButton( wxCommandEvent& event )
 void rgDlgEditRelativeDate::CalcDate()
 {
     m_date.FSetDisplaySch( scheme[m_choiceDisplay->GetSelection()] );
-    m_relative.FSetType( calc[m_choiceType->GetSelection()] );
+    m_relative.FSetType( calc[m_choiceCalc->GetSelection()] );
+    m_date.FSetType( m_choicePrecision->GetSelection() + 1 );
     wxString agestr = m_textCtrlAge->GetValue();
     agestr.ToLong( &m_relative.f_val );
     m_relative.FSetScheme( scheme[m_choiceInput->GetSelection()] );

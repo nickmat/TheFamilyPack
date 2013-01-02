@@ -412,9 +412,9 @@ idt rgSelectDate( unsigned flag, unsigned* retbutton, unsigned filter, idt id )
                 continue;
             }
             if( dialog->GetUnknownPressed() ) {
-                wxASSERT( false ); // We shouldn't be here, Unknown has no meaning.
                 if( retbutton ) *retbutton = rgSELSTYLE_Unknown;
-                continue;
+                dateID = 0;
+                break;
             }
             size_t item = (size_t) dialog->GetSelectedRow();
             dateID = dateIDs[item];
@@ -467,9 +467,9 @@ idt rgSelectPlace( unsigned flag, unsigned* retbutton, unsigned filter, idt id )
                 continue;
             }
             if( dialog->GetUnknownPressed() ) {
-                wxASSERT( false ); // We shouldn't be here, Unknown has no meaning.
                 if( retbutton ) *retbutton = rgSELSTYLE_Unknown;
-                continue;
+                placeID = 0;
+                break;
             }
             size_t item = (size_t) dialog->GetSelectedRow();
             placeID = placeIDs[item];

@@ -567,7 +567,7 @@ bool recRelativeDate::CalculateDate( recDate& date ) const
     }
     date.f_jdn = jdn1;
     date.f_range = jdn2 - jdn1 - 1;
-    date.f_type = base.f_type;
+    date.f_type |= base.f_type;
     date.f_record_sch = f_scheme;
     return true;
 }
