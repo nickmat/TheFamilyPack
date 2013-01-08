@@ -1,12 +1,12 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        calGregorian.h
+ * Name:        src/cal/calAstro.h
  * Project:     Cal: A general purpose calendar library.
- * Purpose:     Gregorian Calendar functions.
+ * Purpose:     General astronomy functions header.
  * Author:      Nick Matthews
- * Modified by:
- * Created:     28 September 2010
+ * Website:     http://thefamilypack.org
+ * Created:     8th December 2013
  * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2013, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -25,24 +25,22 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 */
 
-#ifndef CALGREGORIAN_H
-#define CALGREGORIAN_H
+#ifndef CALASTRO_H
+#define CALASTRO_H
 
-class DMYDate;
+extern const double calMeanTropicalYear;
 
-// Gregorian (New Style)
-extern bool calGregorianIsLeapYear( int year );
+extern const double calSpring; // 0 degrees
+extern const double calSummer; // 90 degrees
+extern const double calAutumn; // 180 degrees
+extern const double calWinter; // 270 degrees
 
-extern int calGregorianLastDayInMonth( int month, int year );
+extern const double calJ2000;  // 1 Jan 2000 (G) plus 12 hours
 
-extern bool calGregorianToJdn( long* jdn, const DMYDate& dmy );
+extern double calEquationOfTime( double moment );
 
-extern long calGregorianToJdn( long year, long month, long day );
+extern double calSolarLongtitude( double moment );
 
-extern bool calGregorianFromJdn( long jdn, DMYDate* dmy );
+extern double calEstimatePriorSolarLongitude( double season, double moment );
 
-extern void calGregorianFromJdn( long jdn, long* year, long* month, long* day );
-
-extern long calGregorianYearFromJdn( long jdn );
-
-#endif // CALGREGORIAN_H
+#endif // CALASTRO_H

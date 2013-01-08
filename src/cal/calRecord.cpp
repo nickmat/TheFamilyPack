@@ -40,6 +40,8 @@
 #include "calRecord.h"
 #include "calJulian.h"
 #include "calGregorian.h"
+#include "calFrench.h"
+
 
 namespace {
 
@@ -57,14 +59,19 @@ calBASE baseLookup[CALENDAR_SCH_Max] = {
     calBASE_NULL,      // CALENDAR_SCH_English
     calBASE_NULL,      // CALENDAR_SCH_Scottish
     calBASE_NULL,      // CALENDAR_SCH_Swedish
-    calBASE_NULL,      // CALENDAR_SCH_FrenchRevolution
+    calBASE_French,    // CALENDAR_SCH_FrenchRevolution
 };
     
-size_t recordSize[calBASE_MAX] = { 0, 1, 3, 3 };
+size_t recordSize[calBASE_MAX] = { 0, 1, 3, 3, 3 };
 
 wxString calLatinMonthName[12] = {
     "Jan", "Feb", "Mar", "Apr", "May", "Jun",
     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+};
+
+wxString calFrenchMonthName[13] = {
+    "Vend", "Brum", "Frim", "Nivo", "Pluv", "Vent",
+    "Germ", "Flor", "Prai", "Mess", "Ther", "Fruc", "Comp"
 };
 
 } // namespace
@@ -101,21 +108,23 @@ calRecord::calRecord( CalendarScheme sch, size_t size, const calToken* tokens )
         break;
     case calBASE_Julian:
     case calBASE_Gregorian:
+    case calBASE_French:
         switch( size )
         {
         case 1:
-            m_r[0] = tokens[0].GetNumber();
+            m_r[0] = tokens[0].GetNumber(); // Year
             break;
         case 2:
-            m_r[1] = tokens[0].GetNumber();
-            m_r[0] = tokens[1].GetNumber();
+            m_r[1] = tokens[0].GetNumber(); // Month
+            m_r[0] = tokens[1].GetNumber(); // Year
             break;
         case 3:
-            m_r[2] = tokens[0].GetNumber();
-            m_r[1] = tokens[1].GetNumber();
-            m_r[0] = tokens[2].GetNumber();
+            m_r[2] = tokens[0].GetNumber(); // Day
+            m_r[1] = tokens[1].GetNumber(); // Month
+            m_r[0] = tokens[2].GetNumber(); // Year
             break;
         }
+        break;
     }
 }
 
@@ -184,17 +193,28 @@ void calRecord::CompleteFieldsAsLast()
     case calBASE_Julian:
         if( m_r[1] == calR_INVALID ) {
             m_r[1] = 12;
+            m_r[2] = calR_INVALID;
         }
-        if( m_r[2] < 1 ) {
+        if( m_r[2] == calR_INVALID ) {
             m_r[2] = calJulianLastDayInMonth( m_r[1], m_r[0] );
         }
         break;
     case calBASE_Gregorian:
         if( m_r[1] == calR_INVALID ) {
             m_r[1] = 12;
+            m_r[2] = calR_INVALID;
         }
-        if( m_r[2] < 1 ) {
+        if( m_r[2] == calR_INVALID ) {
             m_r[2] = calGregorianLastDayInMonth( m_r[1], m_r[0] );
+        }
+        break;
+    case calBASE_French:
+        if( m_r[1] == calR_INVALID ) {
+            m_r[1] = 13;
+            m_r[2] = calR_INVALID;
+        }
+        if( m_r[2] == calR_INVALID ) {
+            m_r[2] = calFrenchLastDayInMonth( m_r[1], m_r[0] );
         }
         break;
     }
@@ -207,14 +227,8 @@ void calRecord::RemoveFieldsIfFirst()
     case calBASE_Jdn:
         break;
     case calBASE_Julian:
-        if( m_r[2] ==  1 ) {
-            m_r[2] = calR_INVALID;
-            if( m_r[1] == 1 ) {
-                m_r[1] = calR_INVALID;
-            }
-        }
-        break;
     case calBASE_Gregorian:
+    case calBASE_French:
         if( m_r[2] ==  1 ) {
             m_r[2] = calR_INVALID;
             if( m_r[1] == 1 ) {
@@ -232,7 +246,7 @@ void calRecord::RemoveFieldsIfLast()
     case calBASE_Jdn:
         break;
     case calBASE_Julian:
-        if( m_r[2] ==  calJulianLastDayInMonth( m_r[1], m_r[0] ) ) {
+        if( m_r[2] == calJulianLastDayInMonth( m_r[1], m_r[0] ) ) {
             m_r[2] = calR_INVALID;
             if( m_r[1] == 12 ) {
                 m_r[1] = calR_INVALID;
@@ -240,9 +254,17 @@ void calRecord::RemoveFieldsIfLast()
         }
         break;
     case calBASE_Gregorian:
-        if( m_r[2] ==  calGregorianLastDayInMonth( m_r[1], m_r[0] ) ) {
+        if( m_r[2] == calGregorianLastDayInMonth( m_r[1], m_r[0] ) ) {
             m_r[2] = calR_INVALID;
             if( m_r[1] == 12 ) {
+                m_r[1] = calR_INVALID;
+            }
+        }
+        break;
+    case calBASE_French:
+        if( m_r[2] == calFrenchLastDayInMonth( m_r[1], m_r[0] ) ) {
+            m_r[2] = calR_INVALID;
+            if( m_r[1] == 13 ) {
                 m_r[1] = calR_INVALID;
             }
         }
@@ -265,6 +287,8 @@ bool calRecord::ConvertToJdn( long* jdn ) const
     case calBASE_Gregorian:
         dmy.SetDMY( m_r[2], m_r[1], m_r[0] );
         return calGregorianToJdn( jdn, dmy );
+    case calBASE_French:
+        return calFrenchToJdn( jdn, m_r[0], m_r[1], m_r[2] );
     }
     return false;
 }
@@ -290,6 +314,8 @@ bool calRecord::ConvertFromJdn( long jdn )
         m_r[1] = dmy.month;
         m_r[2] = dmy.day;
         return true;
+    case calBASE_French:
+        return calFrenchFromJdn( jdn, &m_r[0], &m_r[1], &m_r[2] );
     }
     return false;
 }
@@ -329,6 +355,17 @@ wxString calRecord::GetStr()
         }
         if( m_r[1] != calR_INVALID ) {
             str << calLatinMonthName[m_r[1]-1] << " ";
+        }
+        if( m_r[0] != calR_INVALID ) {
+            str << m_r[0];
+        }
+        break;
+    case calBASE_French:
+        if( m_r[2] != calR_INVALID ) {
+            str << m_r[2] << " ";
+        }
+        if( m_r[1] != calR_INVALID ) {
+            str << calFrenchMonthName[m_r[1]-1] << " ";
         }
         if( m_r[0] != calR_INVALID ) {
             str << m_r[0];

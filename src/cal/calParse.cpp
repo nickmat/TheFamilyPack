@@ -74,6 +74,10 @@ long GetValue( const wxString& label )
     if( LabelLookup.count( value ) ) {
         return LabelLookup[value];
     }
+    value = label.Left(4).Lower();
+    if( LabelLookup.count( value ) ) {
+        return LabelLookup[value];
+    }
     return 0;
 }
 
@@ -140,6 +144,20 @@ void calInit()
     LabelLookup["oct"] = 10;
     LabelLookup["nov"] = 11;
     LabelLookup["dec"] = 12;
+
+    LabelLookup["vend"] = 1;
+    LabelLookup["brum"] = 2;
+    LabelLookup["frim"] = 3;
+    LabelLookup["nivo"] = 4;
+    LabelLookup["pluv"] = 5;
+    LabelLookup["vent"] = 6;
+    LabelLookup["germ"] = 7;
+    LabelLookup["flor"] = 8;
+    LabelLookup["prai"] = 9;
+    LabelLookup["mess"] = 10;
+    LabelLookup["ther"] = 11;
+    LabelLookup["fruc"] = 12;
+    LabelLookup["comp"] = 13;
 
     LabelLookup["year"]  = 0;
     LabelLookup["month"] = 1;

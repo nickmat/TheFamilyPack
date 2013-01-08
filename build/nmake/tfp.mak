@@ -100,9 +100,12 @@ CALENDAR_CXXFLAGS = /MD$(VAR_23) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) \
 	/I..\..\include\cal /I..\..\include /GR /EHsc /Yu"wx/wxprec.h" \
 	/Fp"wxprec_calendar.pch" $(CPPFLAGS) $(CXXFLAGS)
 CALENDAR_OBJECTS =  \
+	calendar_calAstro.obj \
 	calendar_calendar.obj \
+	calendar_calFrench.obj \
 	calendar_calGregorian.obj \
 	calendar_calJulian.obj \
+	calendar_calMath.obj \
 	calendar_calParse.obj \
 	calendar_calRecord.obj \
 	calendar_dummy.obj
@@ -517,14 +520,23 @@ tfp_tfp.res: .\..\..\src\tfp.rc
 tfp_dummy.obj: .\..\..\src\dummy.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) /Ycwx/wxprec.h .\..\..\src\dummy.cpp
 
+calendar_calAstro.obj: .\..\..\src\cal\calAstro.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(CALENDAR_CXXFLAGS) .\..\..\src\cal\calAstro.cpp
+
 calendar_calendar.obj: .\..\..\src\cal\calendar.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(CALENDAR_CXXFLAGS) .\..\..\src\cal\calendar.cpp
+
+calendar_calFrench.obj: .\..\..\src\cal\calFrench.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(CALENDAR_CXXFLAGS) .\..\..\src\cal\calFrench.cpp
 
 calendar_calGregorian.obj: .\..\..\src\cal\calGregorian.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(CALENDAR_CXXFLAGS) .\..\..\src\cal\calGregorian.cpp
 
 calendar_calJulian.obj: .\..\..\src\cal\calJulian.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(CALENDAR_CXXFLAGS) .\..\..\src\cal\calJulian.cpp
+
+calendar_calMath.obj: .\..\..\src\cal\calMath.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(CALENDAR_CXXFLAGS) .\..\..\src\cal\calMath.cpp
 
 calendar_calParse.obj: .\..\..\src\cal\calParse.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(CALENDAR_CXXFLAGS) .\..\..\src\cal\calParse.cpp

@@ -1,12 +1,12 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        calGregorian.h
+ * Name:        src/cal/calMath.cpp
  * Project:     Cal: A general purpose calendar library.
- * Purpose:     Gregorian Calendar functions.
+ * Purpose:     General mathmatical functions.
  * Author:      Nick Matthews
- * Modified by:
- * Created:     28 September 2010
+ * Website:     http://thefamilypack.org
+ * Created:     8th December 2013
  * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2013, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -25,24 +25,48 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 */
 
-#ifndef CALGREGORIAN_H
-#define CALGREGORIAN_H
+#include "wx/wxprec.h"
 
-class DMYDate;
+#ifdef __BORLANDC__
+#pragma hdrstop
+#endif
 
-// Gregorian (New Style)
-extern bool calGregorianIsLeapYear( int year );
+#ifndef WX_PRECOMP
+#include "wx/wx.h"
+#endif
 
-extern int calGregorianLastDayInMonth( int month, int year );
+#include <cmath>
 
-extern bool calGregorianToJdn( long* jdn, const DMYDate& dmy );
+#include "calMath.h"
 
-extern long calGregorianToJdn( long year, long month, long day );
+double const calPi = 3.141592653589793;
 
-extern bool calGregorianFromJdn( long jdn, DMYDate* dmy );
 
-extern void calGregorianFromJdn( long jdn, long* year, long* month, long* day );
+#define calMINSEARCH_MAX 370
 
-extern long calGregorianYearFromJdn( long jdn );
+// CC3 p20
+long calMinSearch( long start, calLongSearchFunc func )
+{
+    for( long i = 0, d = start ; i < calMINSEARCH_MAX ; i++, d++ ) {
+        if( func( d ) ) {
+            return d;
+        }
+    }
+    wxASSERT( false ); // Should have calulated a better start.
+    return 0;
+}
 
-#endif // CALGREGORIAN_H
+int calSignum( double n )
+{
+    if( n > 0 ) return 1;
+    if( n < 0 ) return -1;
+    return 0;
+}
+
+double calMod( double x, double y )
+{
+    return x - y * floor( x / y ); 
+} 
+
+
+// End of src/cal/calMath.cpp

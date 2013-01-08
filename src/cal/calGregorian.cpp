@@ -87,6 +87,28 @@ bool calGregorianToJdn( long* jdn, const DMYDate& dmy )
     return true;
 }
 
+long calGregorianToJdn( long year, long month, long day )
+{
+    long jdn =
+        FDiv( year, 400 )*146097L          //     days in 400 year cycles
+        + (PMod( year, 400 )/100)*36524L   // - 1 days in 100 year cycles
+        + (PMod( year, 100 )/4)*1461       // + 1 days in 4 year cycles
+        + PMod( year, 4 )*365              // + 1 days in year
+        + calLatinDiy[month] + day     // - 1 days numbered from 1 not 0
+        + BASEDATE_Gregorian;
+
+    // Adjust if in the 1st 2 months of 4 year cycle
+    if( month < 3 && year%4 == 0 ) --jdn;
+
+    // Adjust if in the 1st 2 months of 100 year cycle
+    if( year%100 == 0 && month < 3 ) ++jdn;
+
+    // Adjust if in the 1st 2 months of 400 year cycle
+    if( year%400 == 0 && month < 3 ) --jdn;
+
+    return jdn;
+}
+
 /*! Splits the given Julian Day Number date into the day, month and year
  *  for the Gregorian Calendar.
  */
@@ -148,5 +170,73 @@ bool calGregorianFromJdn( long date, DMYDate* dmy )
     dmy->day = (int) date - calLatinDiy[dmy->month] + 1;
     return true;
 }
+
+void calGregorianFromJdn( long jdn, long* year, long* month, long* day )
+{
+    long date = jdn - BASEDATE_Gregorian;
+    *year = FDiv( date, 146097L ) * 400;
+    date = PMod( date, 146097L );
+
+    if( date < 60 )
+    {
+        if( date < 31 )
+        {
+            *month = 1;
+            *day = date + 1;
+            return;
+        }
+        *month = 2;
+        *day = date - 30;
+        return;
+    }
+    --date; // remove the leap day
+    *year += ((date/36524L) * 100);
+    date %= 36524L;
+
+    if( date < 59 ) // Note, this is not a leap year
+    {
+        if( date < 31 )
+        {
+            *month = 1;
+            *day = date + 1;
+            return;
+        }
+        *month = 2;
+        *day = date - 30;
+        return;
+    }
+    ++date; // add the missing the leap day
+    *year += (date/1461) * 4;
+    date %= 1461;
+
+    if( date < 60 )
+    {
+        if( date < 31 )
+        {
+            *month = 1;
+            *day = date + 1;
+            return;
+        }
+        *month = 2;
+        *day = date - 30;
+        return;
+    }
+    --date; // remove the leap day
+    *year += date / 365;
+    date %= 365;
+    *month = 1;
+    while( date >= calLatinDiy[(*month)+1] ) {
+        (*month)++;
+    }
+    *day = date - calLatinDiy[*month] + 1;
+}
+
+long calGregorianYearFromJdn( long jdn )
+{
+    long year, month, day;
+    calGregorianFromJdn( jdn, &year, &month, &day );
+    return year;
+}
+
 
 // End of calGregorian.cpp

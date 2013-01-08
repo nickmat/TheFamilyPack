@@ -1,12 +1,12 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        calGregorian.h
+ * Name:        src/cal/calFrench.h
  * Project:     Cal: A general purpose calendar library.
- * Purpose:     Gregorian Calendar functions.
+ * Purpose:     French Revolutionary Calendar functions header.
  * Author:      Nick Matthews
- * Modified by:
- * Created:     28 September 2010
+ * Website:     http://thefamilypack.org
+ * Created:     8th December 2013
  * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2013, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -25,24 +25,13 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 */
 
-#ifndef CALGREGORIAN_H
-#define CALGREGORIAN_H
+#ifndef CALFRENCH_H
+#define CALFRENCH_H
 
-class DMYDate;
+extern long calFrenchLastDayInMonth( long month, long year );
 
-// Gregorian (New Style)
-extern bool calGregorianIsLeapYear( int year );
+extern bool calFrenchToJdn( long* jdn, long year, long month, long day );
 
-extern int calGregorianLastDayInMonth( int month, int year );
+extern bool calFrenchFromJdn( long jdn, long* year, long* month, long* day );
 
-extern bool calGregorianToJdn( long* jdn, const DMYDate& dmy );
-
-extern long calGregorianToJdn( long year, long month, long day );
-
-extern bool calGregorianFromJdn( long jdn, DMYDate* dmy );
-
-extern void calGregorianFromJdn( long jdn, long* year, long* month, long* day );
-
-extern long calGregorianYearFromJdn( long jdn );
-
-#endif // CALGREGORIAN_H
+#endif // CALFRENCH_H

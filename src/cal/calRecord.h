@@ -30,13 +30,16 @@
 
 #include "calendar.h"
 
+class calToken;
+
 // These are the current base calendars
 enum calBASE {
     calBASE_NULL,
     calBASE_Jdn,
     calBASE_Julian,
     calBASE_Gregorian,
-    calBASE_MAX,
+    calBASE_French,
+    calBASE_MAX
 };
 
 class calRecord 
