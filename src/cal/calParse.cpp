@@ -103,7 +103,11 @@ calTokenVec calParseStr( const wxString& str )
             } while( it != str.end() && *it != ')' );
             token.SetToken( calTOKEN_Scheme );
         } else {
-            type = GetTokenType( *it );
+            if( *it == '-' ) {
+                type = calTOKEN_Number;
+            } else {
+                type = GetTokenType( *it );
+            }
             do {
                 outStr << *it++;
             } while( it != str.end() && type == GetTokenType( *it ) );
