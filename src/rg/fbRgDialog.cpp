@@ -315,7 +315,7 @@ fbRgEditDate::fbRgEditDate( wxWindow* parent, wxWindowID id, const wxString& tit
 	m_staticText2->Wrap( -1 );
 	fgSizer11->Add( m_staticText2, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	wxString m_choiceDisplayChoices[] = { _("Unstated"), _("Julian Day Number"), _("Julian"), _("Gregorian") };
+	wxString m_choiceDisplayChoices[] = { _("Unstated"), _("Julian Day Number"), _("Julian"), _("Gregorian"), _("French Revolutionary") };
 	int m_choiceDisplayNChoices = sizeof( m_choiceDisplayChoices ) / sizeof( wxString );
 	m_choiceDisplay = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceDisplayNChoices, m_choiceDisplayChoices, 0 );
 	m_choiceDisplay->SetSelection( 3 );
@@ -342,7 +342,7 @@ fbRgEditDate::fbRgEditDate( wxWindow* parent, wxWindowID id, const wxString& tit
 	m_staticText5->Wrap( -1 );
 	fgSizer11->Add( m_staticText5, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	wxString m_choiceInputChoices[] = { _("Unstated"), _("Julian Day Number"), _("Julian"), _("Gregorian") };
+	wxString m_choiceInputChoices[] = { _("Unstated"), _("Julian Day Number"), _("Julian"), _("Gregorian"), _("French Revolutionary") };
 	int m_choiceInputNChoices = sizeof( m_choiceInputChoices ) / sizeof( wxString );
 	m_choiceInput = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceInputNChoices, m_choiceInputChoices, 0 );
 	m_choiceInput->SetSelection( 3 );
@@ -419,7 +419,7 @@ fbRgEditRelativeDate::fbRgEditRelativeDate( wxWindow* parent, wxWindowID id, con
 	m_staticText2->Wrap( -1 );
 	fgSizer11->Add( m_staticText2, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	wxString m_choiceDisplayChoices[] = { _("Unstated"), _("Julian Day Number"), _("Julian"), _("Gregorian") };
+	wxString m_choiceDisplayChoices[] = { _("Unstated"), _("Julian Day Number"), _("Julian"), _("Gregorian"), _("French Revolutionary") };
 	int m_choiceDisplayNChoices = sizeof( m_choiceDisplayChoices ) / sizeof( wxString );
 	m_choiceDisplay = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceDisplayNChoices, m_choiceDisplayChoices, 0 );
 	m_choiceDisplay->SetSelection( 3 );
@@ -464,7 +464,7 @@ fbRgEditRelativeDate::fbRgEditRelativeDate( wxWindow* parent, wxWindowID id, con
 	m_staticText5->Wrap( -1 );
 	fgSizer11->Add( m_staticText5, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	wxString m_choiceInputChoices[] = { _("Unstated"), _("Julian Day Number"), _("Julian"), _("Gregorian") };
+	wxString m_choiceInputChoices[] = { _("Unstated"), _("Julian Day Number"), _("Julian"), _("Gregorian"), _("French Revolutionary") };
 	int m_choiceInputNChoices = sizeof( m_choiceInputChoices ) / sizeof( wxString );
 	m_choiceInput = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceInputNChoices, m_choiceInputChoices, 0 );
 	m_choiceInput->SetSelection( 3 );

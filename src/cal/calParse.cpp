@@ -171,6 +171,7 @@ void calInit()
     LabelLookup["(jdn)"] = CALENDAR_SCH_JulianDayNumber;
     LabelLookup["(j)"]   = CALENDAR_SCH_Julian;
     LabelLookup["(g)"]   = CALENDAR_SCH_Gregorian;
+    LabelLookup["(fr)"]  = CALENDAR_SCH_FrenchRevolution;
 
     hasrun = true;
 }

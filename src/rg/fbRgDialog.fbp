@@ -3497,7 +3497,7 @@
                                 <property name="caption"></property>
                                 <property name="caption_visible">1</property>
                                 <property name="center_pane">0</property>
-                                <property name="choices">&quot;Unstated&quot; &quot;Julian Day Number&quot; &quot;Julian&quot; &quot;Gregorian&quot;</property>
+                                <property name="choices">&quot;Unstated&quot; &quot;Julian Day Number&quot; &quot;Julian&quot; &quot;Gregorian&quot; &quot;French Revolutionary&quot;</property>
                                 <property name="close_button">1</property>
                                 <property name="context_help"></property>
                                 <property name="context_menu">1</property>
@@ -4013,7 +4013,7 @@
                                 <property name="caption"></property>
                                 <property name="caption_visible">1</property>
                                 <property name="center_pane">0</property>
-                                <property name="choices">&quot;Unstated&quot; &quot;Julian Day Number&quot; &quot;Julian&quot; &quot;Gregorian&quot;</property>
+                                <property name="choices">&quot;Unstated&quot; &quot;Julian Day Number&quot; &quot;Julian&quot; &quot;Gregorian&quot; &quot;French Revolutionary&quot;</property>
                                 <property name="close_button">1</property>
                                 <property name="context_help"></property>
                                 <property name="context_menu">1</property>
@@ -4798,7 +4798,7 @@
                                 <property name="caption"></property>
                                 <property name="caption_visible">1</property>
                                 <property name="center_pane">0</property>
-                                <property name="choices">&quot;Unstated&quot; &quot;Julian Day Number&quot; &quot;Julian&quot; &quot;Gregorian&quot;</property>
+                                <property name="choices">&quot;Unstated&quot; &quot;Julian Day Number&quot; &quot;Julian&quot; &quot;Gregorian&quot; &quot;French Revolutionary&quot;</property>
                                 <property name="close_button">1</property>
                                 <property name="context_help"></property>
                                 <property name="context_menu">1</property>
@@ -5218,11 +5218,11 @@
                                 <event name="OnUpdateUI"></event>
                             </object>
                         </object>
-                        <object class="sizeritem" expanded="1">
+                        <object class="sizeritem" expanded="0">
                             <property name="border">5</property>
                             <property name="flag">wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</property>
                             <property name="proportion">0</property>
-                            <object class="wxStaticText" expanded="1">
+                            <object class="wxStaticText" expanded="0">
                                 <property name="BottomDockable">1</property>
                                 <property name="LeftDockable">1</property>
                                 <property name="RightDockable">1</property>
@@ -5301,11 +5301,11 @@
                                 <event name="OnUpdateUI"></event>
                             </object>
                         </object>
-                        <object class="sizeritem" expanded="1">
+                        <object class="sizeritem" expanded="0">
                             <property name="border">5</property>
                             <property name="flag">wxALL</property>
                             <property name="proportion">0</property>
-                            <object class="wxChoice" expanded="1">
+                            <object class="wxChoice" expanded="0">
                                 <property name="BottomDockable">1</property>
                                 <property name="LeftDockable">1</property>
                                 <property name="RightDockable">1</property>
@@ -5664,7 +5664,7 @@
                                 <property name="caption"></property>
                                 <property name="caption_visible">1</property>
                                 <property name="center_pane">0</property>
-                                <property name="choices">&quot;Unstated&quot; &quot;Julian Day Number&quot; &quot;Julian&quot; &quot;Gregorian&quot;</property>
+                                <property name="choices">&quot;Unstated&quot; &quot;Julian Day Number&quot; &quot;Julian&quot; &quot;Gregorian&quot; &quot;French Revolutionary&quot;</property>
                                 <property name="close_button">1</property>
                                 <property name="context_help"></property>
                                 <property name="context_menu">1</property>

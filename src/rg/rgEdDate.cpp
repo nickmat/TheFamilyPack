@@ -44,7 +44,8 @@ CalendarScheme rgDate::scheme[] = {
     CALENDAR_SCH_Unstated,
     CALENDAR_SCH_JulianDayNumber,
     CALENDAR_SCH_Julian,
-    CALENDAR_SCH_Gregorian
+    CALENDAR_SCH_Gregorian,
+    CALENDAR_SCH_FrenchRevolution
 };
 
 int rgDate::sch_list[CALENDAR_SCH_Max] = {
@@ -61,7 +62,7 @@ int rgDate::sch_list[CALENDAR_SCH_Max] = {
     0,   // CALENDAR_SCH_English
     0,   // CALENDAR_SCH_Scottish
     0,   // CALENDAR_SCH_Swedish
-    0    // CALENDAR_SCH_FrenchRevolution
+    4    // CALENDAR_SCH_FrenchRevolution
 };
 
 CalendarUnit rgDate::unit[] = {
