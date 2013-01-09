@@ -558,11 +558,22 @@ idt recGedParse::ParseEvDate( int level, idt* d2ID  )
     }
 
     CalendarScheme sch = CALENDAR_SCH_Unstated;
-    if(      token.compare( "@#DGREGORIAN@" ) == 0 ) sch = CALENDAR_SCH_Gregorian;
-    else if( token.compare( "@#DJULIAN@" )    == 0 ) sch = CALENDAR_SCH_Julian;
-    else if( token.compare( "@#DFRENCH R@" )  == 0 ) sch = CALENDAR_SCH_FrenchRevolution;
-    else if( token.compare( "@#DUNKNOWN@" )   == 0 ) sch = CALENDAR_SCH_Unknown;
-    else if( token.compare( 0, 3, "@#D" )     == 0 ) sch = CALENDAR_SCH_Unlisted;
+    if( token.compare( "@#DGREGORIAN@" ) == 0 ) {
+        sch = CALENDAR_SCH_Gregorian;
+    } else if( token.compare( "@#DJULIAN@" ) == 0 ) {
+        sch = CALENDAR_SCH_Julian;
+    } else if( token.compare( "@#DFRENCH" ) == 0 ) {
+        token = tkz.GetNextToken();
+        if( token.compare( "R@" ) == 0 ) {
+            sch = CALENDAR_SCH_FrenchRevolution;
+        }
+    } else if( token.compare( "@#DHEBREW@" ) == 0 ) {
+        sch = CALENDAR_SCH_Unlisted;
+    } else if( token.compare( "@#DUNKNOWN@" ) == 0 ) {
+        sch = CALENDAR_SCH_Unknown;
+    } else if( token.compare( 0, 3, "@#D" ) == 0 ) {
+        sch = CALENDAR_SCH_Unlisted;
+    }
 
     if( sch == CALENDAR_SCH_Unlisted || sch == CALENDAR_SCH_Unknown ) {
         date.f_record_sch = date.f_display_sch = sch;
@@ -694,8 +705,10 @@ wxString recGedParse::ParseDate( recDate* date, const wxString& str )
                 tail = tkz.GetString();
             }
         } else {
-            date->FSetDescrip( m_text );
-            return "";
+            // Format must be just 'year'
+            year = day;
+            day = calR_INVALID;
+            month = calR_INVALID;
         }
     }
 
@@ -722,19 +735,20 @@ long recGedParse::GetMonth( const wxString& token, CalendarScheme sch )
         "GERM", "FLOR", "PRAI", "MESS", "THER", "FRUC", "COMP"
     };
 
+    wxString mon = token.Upper();
     switch( sch )
     {
     case CALENDAR_SCH_Julian:
     case CALENDAR_SCH_Gregorian:
         for( int i = 0 ; i < 12 ; i++ ) {
-            if( token.compare( MonName[i] ) == 0 ) {
+            if( mon.compare( MonName[i] ) == 0 ) {
                 return i+1;
             }
         }
         break;
     case CALENDAR_SCH_FrenchRevolution:
         for( int i = 0 ; i < 13 ; i++ ) {
-            if( token.compare( FRMonName[i] ) == 0 ) {
+            if( mon.compare( FRMonName[i] ) == 0 ) {
                 return i+1;
             }
         }
