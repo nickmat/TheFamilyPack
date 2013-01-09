@@ -65,7 +65,7 @@ enum CalendarScheme {
      */
     CALENDAR_SCH_JulianDayNumber,
 
-    /*! Julian Day: JD
+    /*! Julian Day: JD  [TEMPORARILY WITHDRAWN]
      *
      *  JD = JDN - 0.5
      *  The system used by astronomers to mark time since midday Monday 1st January 4713 B.C.E. (Julian Calendar).
@@ -77,7 +77,7 @@ enum CalendarScheme {
      */
     CALENDAR_SCH_JulianDay,
 
-    /*! Modified Julian Day: MJD.
+    /*! Modified Julian Day: MJD.  [TEMPORARILY WITHDRAWN]
      *
      *  MJD = JDN - 2400001
      *
@@ -85,7 +85,7 @@ enum CalendarScheme {
      */
     CALENDAR_SCH_ModJulianDay,
 
-    /*! Rata Die: RD.
+    /*! Rata Die: RD.  [TEMPORARILY WITHDRAWN]
      *
      *  RD = JDN - 1721425
      *
@@ -156,7 +156,7 @@ enum CalendarScheme {
      */
     CALENDAR_SCH_Swedish,
 
-    /*! French Revolution Calendar: FR.  [NOT YET AVAILABLE]
+    /*! French Revolution Calendar: FR.
      *
      *  Short lived attempt to rationalise the calendar after the French Revolution.
      */

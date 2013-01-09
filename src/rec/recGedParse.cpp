@@ -560,6 +560,7 @@ idt recGedParse::ParseEvDate( int level, idt* d2ID  )
     CalendarScheme sch = CALENDAR_SCH_Unstated;
     if(      token.compare( "@#DGREGORIAN@" ) == 0 ) sch = CALENDAR_SCH_Gregorian;
     else if( token.compare( "@#DJULIAN@" )    == 0 ) sch = CALENDAR_SCH_Julian;
+    else if( token.compare( "@#DFRENCH R@" )  == 0 ) sch = CALENDAR_SCH_FrenchRevolution;
     else if( token.compare( "@#DUNKNOWN@" )   == 0 ) sch = CALENDAR_SCH_Unknown;
     else if( token.compare( 0, 3, "@#D" )     == 0 ) sch = CALENDAR_SCH_Unlisted;
 
@@ -716,6 +717,11 @@ long recGedParse::GetMonth( const wxString& token, CalendarScheme sch )
         "JAN", "FEB", "MAR", "APR", "MAY", "JUN",
         "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"
     };
+    static wxString FRMonName[13] = {
+        "VEND", "BRUM", "FRIM", "NIVO", "PLUV", "VENT",
+        "GERM", "FLOR", "PRAI", "MESS", "THER", "FRUC", "COMP"
+    };
+
     switch( sch )
     {
     case CALENDAR_SCH_Julian:
@@ -725,10 +731,16 @@ long recGedParse::GetMonth( const wxString& token, CalendarScheme sch )
                 return i+1;
             }
         }
-        return 0;
-    default:
-        return 0;
+        break;
+    case CALENDAR_SCH_FrenchRevolution:
+        for( int i = 0 ; i < 13 ; i++ ) {
+            if( token.compare( FRMonName[i] ) == 0 ) {
+                return i+1;
+            }
+        }
+        break;
     }
+    return 0;
 }
 
 
