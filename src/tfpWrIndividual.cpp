@@ -61,14 +61,12 @@ wxString tfpWriteIndividualPage( idt indID )
         "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>\n"
         "</head>\n<body>\n<div class='tfp'>\n"
 
-        "<h1>" << ind.GetFullNameEpitaph() <<
-        " <a href='tfpc:MR" << indID << "'><img src=memory:fam.png></a>"
-        "</h1>\n"
-
         // Individual record
         "<table class='data'>\n<tr>\n"
-        "<td>Name:</td><td class='" << GetSexClass( ind.FGetID() ) <<
-        "'>" << ind.GetFullNameEpitaph() <<
+        "<td>Name:</td><td class='subject " << GetSexClass( ind.FGetID() ) <<
+        "'><a href='tfp:F" << ind.FGetFamID() << 
+        "'>" << ind.FGetName() <<
+        "</a> " << ind.FGetEpitaph() <<
         " <a href='tfpc:MR" << indID << "'><img src=memory:fam.png></a></td>"
         "</tr>\n<tr>\n"
         "<td>ID, Sex:</td><td>" << ind.GetIdStr() << 
@@ -84,9 +82,9 @@ wxString tfpWriteIndividualPage( idt indID )
         "<th colspan='3'>Names</th>";
     for( size_t i = 0 ; i < names.size() ; i++ ) {
         htm << "</tr>\n<tr>\n"
-            "<td><a href='tfpi:N" << names[i].FGetID() <<
+            "<td><b><a href='tfpi:N" << names[i].FGetID() <<
             "'>" << names[i].GetIdStr() <<
-            "</a></td><td>" << recNameStyle::GetStyleStr( names[i].FGetTypeID() ) <<
+            "</a></b></td><td>" << recNameStyle::GetStyleStr( names[i].FGetTypeID() ) <<
             "</td><td>" << names[i].GetNameStr() <<
             "</td>";
     }
@@ -105,7 +103,7 @@ wxString tfpWriteIndividualPage( idt indID )
                 "</td>\n<td class='" << GetSexClass( hID ) <<
                 "'><a href='tfp:I" << hID << 
                 "'>" << recIndividual::GetFullName( hID ) <<
-                " " << recIndividual::GetDateEpitaph( hID ) <<
+                "</a> " << recIndividual::GetDateEpitaph( hID ) <<
                 " <a href='tfpc:MR" << hID <<
                 "'><img src=memory:fam.png></a></td>\n"
             ;
@@ -119,7 +117,7 @@ wxString tfpWriteIndividualPage( idt indID )
                 "</td>\n<td class='" << GetSexClass( wID ) <<
                 "'><a href='tfp:I" << wID << 
                 "'>" << recIndividual::GetFullName( wID ) <<
-                " " << recIndividual::GetDateEpitaph( wID ) <<
+                "</a> " << recIndividual::GetDateEpitaph( wID ) <<
                 " <a href='tfpc:MR" << wID <<
                 "'><img src=memory:fam.png></a></td>\n"
             ;

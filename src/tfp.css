@@ -119,6 +119,10 @@ div.tfp td.couple a {
     font-size: 1.5em;
 }
 
+div.tfp td.subject a {
+    font-size: 1.5em;
+}
+
 div.tfp table.parent {
     border-collapse: collapse;
     width: 90%;
