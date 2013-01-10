@@ -278,10 +278,16 @@ wxString recDate::GetJdnStr( CalendarScheme scheme ) const
     return calStrFromJdnRange( f_jdn, f_jdn+f_range, scheme );
 }
 
-wxString recDate::GetJdnStr( idt id )
+wxString recDate::GetJdnStr( idt id, CalendarScheme sch )
 {
     recDate d( id );
-    return d.GetJdnStr();
+    return d.GetJdnStr( sch );
+}
+
+wxString recDate::GetInputJdnStr( idt id )
+{
+    recDate d( id );
+    return d.GetJdnStr( d.f_record_sch );
 }
 
 wxString recDate::GetStr( CalendarScheme scheme ) const

@@ -118,7 +118,7 @@ bool rgDlgEditDate::TransferDataToWindow()
     m_choiceInput->SetSelection( sch_list[m_date.f_record_sch] );
     m_choiceDisplay->SetSelection( sch_list[m_date.f_display_sch] );
 
-    m_textCtrlDate->SetValue( m_date.GetJdnStr() );
+    m_textCtrlDate->SetValue( m_date.GetInputJdnStr() );
     m_output = m_date.GetStr();
     m_staticOutput->SetLabel( m_output );
     return true;

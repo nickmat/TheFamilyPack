@@ -158,7 +158,11 @@ public:
     bool Update(); // Returns true if date is changed. Does nothing if not relative date.
 
     wxString GetJdnStr( CalendarScheme sch = CALENDAR_SCH_Unstated ) const;
-    static wxString GetJdnStr( idt id );
+    static wxString GetJdnStr( idt id, CalendarScheme sch = CALENDAR_SCH_Unstated  );
+
+    wxString GetInputJdnStr() const { return GetJdnStr( f_record_sch ); }
+    static wxString GetInputJdnStr( idt id );
+
     wxString GetStr( CalendarScheme sch = CALENDAR_SCH_Unstated ) const;
     static wxString GetStr( idt id );
 
