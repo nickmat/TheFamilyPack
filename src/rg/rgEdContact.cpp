@@ -1,13 +1,12 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        dlgEdContact.cpp
+ * Name:        src/rg/rgEdContact.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Edit database Contact dialog.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
- * Created:     4 April 2012
+ * Created:     10th January 2013
  * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2012, Nick Matthews.
+ * Copyright:   Copyright (c) 2013, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -37,23 +36,55 @@
 #include "wx/wx.h"
 #endif
 
-#include "dlgEdContact.h"
+#include "rgEdContact.h"
+#include "rg/rgDialogs.h"
 
-dlgEditContact::dlgEditContact( wxWindow* parent, idt contactID )
-    : m_contact(contactID), fbDlgEditContact( parent )
+bool rgEditContact( idt conID )
 {
+    wxASSERT( conID != 0 );
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+    bool ret = false;
+
+    rgDlgEditContact* dialog = new rgDlgEditContact( NULL, conID );
+
+    if( dialog->ShowModal() == wxID_OK ) {
+        recDb::ReleaseSavepoint( savepoint );
+        ret = true;
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+    return ret;
 }
 
-bool dlgEditContact::TransferDataToWindow()
+idt rgCreateContact( idt clID )
 {
-    if( m_contact.f_id == 0 ) {
-        m_contact.Save();
-    } else {
-        m_contact.Read();
-    }
+    wxASSERT( clID != 0 );
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
 
-    m_staticContactListID->SetLabel( recContactList::GetIdStr( m_contact.FGetListID() ) );
-    m_staticContactID->SetLabel( m_contact.GetIdStr() );
+    recContact con(0);
+    con.FSetListID( clID );
+    con.Save();
+
+    idt conID = con.FGetID();
+    if( rgEditContact( conID ) ) {
+        recDb::ReleaseSavepoint( savepoint );
+        return conID;
+    }
+    recDb::Rollback( savepoint );
+    return 0;
+}
+
+//============================================================================
+//-------------------------[ rgEditContact ]----------------------------------
+//============================================================================
+
+bool rgDlgEditContact::TransferDataToWindow()
+{
+    wxASSERT( m_contact.FGetID() != 0 );
+    wxASSERT( m_contact.FGetListID() != 0 );
 
     m_types = recContactType::GetList();
     for( size_t i = 0 ; i < m_types.size() ; i++ ) {
@@ -69,10 +100,13 @@ bool dlgEditContact::TransferDataToWindow()
 
     m_textCtrlValue->SetValue( m_contact.FGetValue() );
 
+//    m_staticContactListID->SetLabel( recContactList::GetIdStr( m_contact.FGetListID() ) );
+    m_staticContactID->SetLabel( m_contact.GetIdStr() );
+
     return true;
 }
 
-bool dlgEditContact::TransferDataFromWindow()
+bool rgDlgEditContact::TransferDataFromWindow()
 {
     int type = m_choiceType->GetSelection();
     if( type <= 0 ) {
@@ -85,4 +119,4 @@ bool dlgEditContact::TransferDataFromWindow()
     return true;
 }
 
-// End of dlgEditNamePart.cpp file
+// End of src/rg/rgEdContact.cpp file

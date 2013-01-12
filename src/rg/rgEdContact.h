@@ -1,13 +1,12 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        dlgEdContact.h
+ * Name:        src/rg/rgEdContact.h
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Edit database Contact dialog header.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
- * Created:     4 April 2012
+ * Created:     10th January 2013
  * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2012, Nick Matthews.
+ * Copyright:   Copyright (c) 2013, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -27,19 +26,18 @@
 
 */
 
-#ifndef DLGEDCONTACT_H
-#define DLGEDCONTACT_H
+#ifndef RGEDCONTACT_H
+#define RGEDCONTACT_H
 
 #include <rec/recContact.h>
 
-#include "fbDlg.h"
+#include "fbRgDialog.h"
 
-class dlgEditContact : public fbDlgEditContact
+class rgDlgEditContact : public fbRgEditContact
 {
 public:
-    dlgEditContact( wxWindow* parent, idt contactID );
-
-    recContact* GetContact() { return &m_contact; }
+    rgDlgEditContact( wxWindow* parent, idt contactID ) 
+        : m_contact(contactID), fbRgEditContact( parent ) {}
 
 private:
     bool TransferDataToWindow();
@@ -49,4 +47,4 @@ private:
     recContactTypeVec  m_types;
 };
 
-#endif // DLGEDCONTACT_H
+#endif // RGEDCONTACT_H

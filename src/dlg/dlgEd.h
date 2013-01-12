@@ -36,7 +36,7 @@ typedef std::vector< int >  intVec;
 
 
 
-class recFamily;
+//class recFamily;
 
 extern idt tfpAddNewIndividual( idt famID, Sex sex, const wxString& surname = wxEmptyString );
 extern idt tfpAddNewChild( idt famID, Sex sex );
@@ -52,9 +52,7 @@ extern bool tfpEditFamily( idt famID );
 extern bool tfpEditReference( idt refID  );
 extern bool tfpAddExistSpouse( idt indID, Sex sex );
 extern idt tfpAddExistChild( idt famID, Sex sex );
-//extern idt tfpAddMarriageEvent( const recFamily& family );
 
-extern bool tfpEditResearcher( idt resID  );
 extern bool tfpEditSystem();
 extern bool tfpEditUserSettings();
 

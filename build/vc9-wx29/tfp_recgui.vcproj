@@ -212,6 +212,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rg\rgEdContact.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rg\rgEdDate.cpp"
 				>
 			</File>
@@ -237,6 +241,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\rg\rgEdPlace.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgEdResearcher.cpp"
 				>
 			</File>
 			<File
@@ -266,6 +274,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rg\rgCommon.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\include\rg\rgCompareEvent.h"
 				>
 			</File>
@@ -275,6 +287,10 @@
 			</File>
 			<File
 				RelativePath="..\..\include\rg\rgDialogs.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgEdContact.h"
 				>
 			</File>
 			<File
@@ -303,6 +319,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\rg\rgEdPlace.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgEdResearcher.h"
 				>
 			</File>
 			<File

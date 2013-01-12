@@ -263,10 +263,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\dlg\dlgEdContact.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\dlg\dlgEdEvent.cpp"
 				>
 			</File>
@@ -288,10 +284,6 @@
 			</File>
 			<File
 				RelativePath="..\..\src\dlg\dlgEdRelationship.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\dlg\dlgEdResearcher.cpp"
 				>
 			</File>
 			<File
@@ -409,10 +401,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\dlg\dlgEdContact.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\dlg\dlgEdEvent.h"
 				>
 			</File>
@@ -434,10 +422,6 @@
 			</File>
 			<File
 				RelativePath="..\..\src\dlg\dlgEdRelationship.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\dlg\dlgEdResearcher.h"
 				>
 			</File>
 			<File

@@ -561,7 +561,7 @@ void TfpFrame::OnEditReference( wxCommandEvent& event )
 void TfpFrame::OnEditResearcher( wxCommandEvent& event )
 {
     long num = wxGetNumberFromUser(
-        wxT("Enter the Researcher ID or 0 for new Reference"),
+        wxT("Enter the Researcher ID or 0 for new Researcher"),
 
         wxT("Researcher ID:"),
         wxT("Edit Researcher"),
@@ -571,7 +571,15 @@ void TfpFrame::OnEditResearcher( wxCommandEvent& event )
 
     recDb::Begin();
     try {
-        bool ret = tfpEditResearcher( (idt) num );
+        bool ret = false;
+        if( num == 0 ) {
+            idt resID = rgCreateResearcher();
+            if( resID != 0 ) {
+                ret = true;
+            }
+        } else {
+            ret = rgEditResearcher( (idt) num );
+        }
         if( ret == true ) {
             recDb::Commit();
             RefreshHtmPage();
@@ -889,6 +897,7 @@ void TfpFrame::OnNavigationRequest( wxWebViewEvent& evt )
 
     if( url == wxWebViewDefaultURLStr ) return;
     if( url.StartsWith( "memory:" ) ) return;
+    if( url.StartsWith( "mailto:" ) ) return;
     // We will handle all other navigation ourselves.
     evt.Veto();
 
@@ -1142,9 +1151,11 @@ void TfpFrame::DoEdit( const wxString& href )
         } else if( href.StartsWith( "I" ) ) {
             ret = tfpEditIndividual( recGetID( href.Mid(1) ) );
         } else if( href.StartsWith( "Re" ) ) {
-            ret = tfpEditResearcher( recGetID( href.Mid(2) ) );
+            ret = rgEditResearcher( recGetID( href.Mid(2) ) );
         } else if( href.StartsWith( "R" ) ) {
             ret = tfpEditReference( recGetID( href.Mid(1) ) );
+        } else if( href.StartsWith( "C" ) ) {
+            ret = rgEditContact( recGetID( href.Mid(1) ) );
         } else {
             wxMessageBox(
                 wxString::Format( _("Unable to edit ref\n[%s]"), href ),

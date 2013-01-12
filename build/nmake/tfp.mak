@@ -61,14 +61,12 @@ TFP_CXXFLAGS = /MD$(VAR_23) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) /D__WXMSW__
 	$(CPPFLAGS) $(CXXFLAGS)
 TFP_OBJECTS =  \
 	tfp_dlgEd.obj \
-	tfp_dlgEdContact.obj \
 	tfp_dlgEdEvent.obj \
 	tfp_dlgEdFamily.obj \
 	tfp_dlgEdIndividual.obj \
 	tfp_dlgEdPersona.obj \
 	tfp_dlgEdReference.obj \
 	tfp_dlgEdRelationship.obj \
-	tfp_dlgEdResearcher.obj \
 	tfp_dlgEdRole.obj \
 	tfp_dlgEdSystem.obj \
 	tfp_dlgNote.obj \
@@ -197,6 +195,7 @@ RECGUI_OBJECTS =  \
 	recgui_rgCompareEvent.obj \
 	recgui_rgCrName.obj \
 	recgui_rgDialogs.obj \
+	recgui_rgEdContact.obj \
 	recgui_rgEdDate.obj \
 	recgui_rgEdEvent.obj \
 	recgui_rgEdEventType.obj \
@@ -204,6 +203,7 @@ RECGUI_OBJECTS =  \
 	recgui_rgEdNamePart.obj \
 	recgui_rgEdPerIndEvent.obj \
 	recgui_rgEdPlace.obj \
+	recgui_rgEdResearcher.obj \
 	recgui_rgEdRole.obj \
 	recgui_rgSelect.obj \
 	recgui_rgSelIndEvent.obj \
@@ -427,9 +427,6 @@ recgui$(WXLIBPOSTFIX).lib: $(RECGUI_OBJECTS)
 tfp_dlgEd.obj: .\..\..\src\dlg\dlgEd.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\dlgEd.cpp
 
-tfp_dlgEdContact.obj: .\..\..\src\dlg\dlgEdContact.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\dlgEdContact.cpp
-
 tfp_dlgEdEvent.obj: .\..\..\src\dlg\dlgEdEvent.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\dlgEdEvent.cpp
 
@@ -447,9 +444,6 @@ tfp_dlgEdReference.obj: .\..\..\src\dlg\dlgEdReference.cpp
 
 tfp_dlgEdRelationship.obj: .\..\..\src\dlg\dlgEdRelationship.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\dlgEdRelationship.cpp
-
-tfp_dlgEdResearcher.obj: .\..\..\src\dlg\dlgEdResearcher.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\dlgEdResearcher.cpp
 
 tfp_dlgEdRole.obj: .\..\..\src\dlg\dlgEdRole.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\dlgEdRole.cpp
@@ -646,6 +640,9 @@ recgui_rgCrName.obj: .\..\..\src\rg\rgCrName.cpp
 recgui_rgDialogs.obj: .\..\..\src\rg\rgDialogs.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgDialogs.cpp
 
+recgui_rgEdContact.obj: .\..\..\src\rg\rgEdContact.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdContact.cpp
+
 recgui_rgEdDate.obj: .\..\..\src\rg\rgEdDate.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdDate.cpp
 
@@ -666,6 +663,9 @@ recgui_rgEdPerIndEvent.obj: .\..\..\src\rg\rgEdPerIndEvent.cpp
 
 recgui_rgEdPlace.obj: .\..\..\src\rg\rgEdPlace.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdPlace.cpp
+
+recgui_rgEdResearcher.obj: .\..\..\src\rg\rgEdResearcher.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdResearcher.cpp
 
 recgui_rgEdRole.obj: .\..\..\src\rg\rgEdRole.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdRole.cpp

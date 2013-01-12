@@ -1,13 +1,12 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        dlgEdResearcher.h
+ * Name:        src/rg/rgEdResearcher.h
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Edit database Researcher dialog header.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
- * Created:     4 April 2012
+ * Created:     11th January 2013
  * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2012, Nick Matthews.
+ * Copyright:   Copyright (c) 2013, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -27,38 +26,40 @@
 
 */
 
-#ifndef DLGEDRESEARCHER_H
-#define DLGEDRESEARCHER_H
+#ifndef RGEDRESEARCHER_H
+#define RGEDRESEARCHER_H
 
 #include <rec/recContact.h>
 #include <rec/recUser.h>
 
-#include "fbDlg.h"
+#include "fbRgDialog.h"
 
-class dlgEditResearcher : public fbDlgEditResearcher
+class rgDlgEditResearcher : public fbRgEditResearcher
 {
     enum Columns {
         COL_ConID, COL_Type, COL_Value, COL_MAX
     };
 public:
-    dlgEditResearcher( wxWindow* parent, idt resID );
-
-    recResearcher* GetResearcher() { return &m_researcher; }
-    recUser* GetUser() { return &m_user; }
+    rgDlgEditResearcher( wxWindow* parent, idt resID );
 
 private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
 
-    void OnButtonClickAdd( wxCommandEvent& event );
-    void OnButtonClickEdit( wxCommandEvent& event );
-    void OnButtonClickDelete( wxCommandEvent& event );
+    void AddIndLink();
+    void OnOptnChange( wxCommandEvent& event );
+    void OnOptnUnlink( wxCommandEvent& event );
+
+    void OnButtonInd( wxCommandEvent& event );
+    void OnButtonAdd( wxCommandEvent& event );
+    void OnButtonEdit( wxCommandEvent& event );
+    void OnButtonDelete( wxCommandEvent& event );
+
 
     recResearcher  m_researcher;
     recUser        m_user;
     recContactList m_list;
-    idt            m_prevIndID;
     recContactVec  m_contacts;
 };
 
-#endif // DLGEDRESEARCHER_H
+#endif // RGEDRESEARCHER_H

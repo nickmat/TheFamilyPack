@@ -47,7 +47,6 @@
 #include "dlgEdPersona.h"
 #include "dlgSelIndividual.h"
 #include "dlgEdReference.h"
-#include "dlgEdResearcher.h"
 #include "dlgEdSystem.h"
 #include "dlgSelect.h"
 #include "dlgEdRole.h"
@@ -447,116 +446,6 @@ idt tfpAddExistChild( idt famID, Sex sex )
     }
 
     return indID;
-}
-
-#if 0
-idt tfpAddMarriageEvent( const recFamily& family )
-{
-    const wxString savepoint = recDb::GetSavepointStr();
-    recDb::Savepoint( savepoint );
-
-    idt typeID = rgSelectEventType( rgSELSTYLE_Create, NULL, recET_FILTER_GrpFamily );
-    if( typeID == 0 ) {
-        recDb::Rollback( savepoint );
-        return 0;
-    }
-    idt husbRoleID = recEventTypeRole::Select( typeID, recEventTypeRole::SF_Prime1 );
-    if( husbRoleID == 0 ) {
-        recDb::Rollback( savepoint );
-        return 0;
-    }
-    idt wifeRoleID = recEventTypeRole::Select( typeID, recEventTypeRole::SF_Prime2 );
-    if( wifeRoleID == 0 ) {
-        recDb::Rollback( savepoint );
-        return 0;
-    }
-
-    recEvent eve(0);
-    eve.FSetTypeID( typeID );
-    eve.Save();
-    idt eventID = eve.FGetID();
-    wxString title;
-
-    recEventPersona ep(0);
-    ep.f_event_id = eventID;
-    if( family.f_husb_id ) {
-        ep.f_per_id = recIndividual::GetPersona( family.f_husb_id );
-        ep.f_role_id = husbRoleID;
-        ep.f_per_seq = 1;
-        ep.Save();
-    }
-    if( family.f_wife_id ) {
-        ep.f_id = 0;
-        ep.f_per_id = recIndividual::GetPersona( family.f_wife_id );
-        ep.f_role_id = wifeRoleID;
-        ep.f_per_seq = 2;
-        ep.Save();
-    }
-
-    dlgEditIndEvent* dialog = new dlgEditIndEvent( NULL, eventID );
-
-    if( dialog->ShowModal() == wxID_OK )
-    {
-        recDb::ReleaseSavepoint( savepoint );
-    } else {
-        recDb::Rollback( savepoint );
-        eventID = 0;
-    }
-    dialog->Destroy();
-    return eventID;
-}
-
-bool tfpEditEvent( idt eveID  )
-{
-    const wxString savepoint = "EdEvent";
-    bool ret = false;
-    dlgEditIndEvent* dialog = new dlgEditIndEvent( NULL, eveID );
-    recDb::Savepoint( savepoint );
-
-    if( dialog->ShowModal() == wxID_OK ) {
-        recDb::ReleaseSavepoint( savepoint );
-        ret = true;
-    } else {
-        recDb::Rollback( savepoint );
-    }
-    dialog->Destroy();
-    return ret;
-}
-
-idt tfpGetRole( idt eventPersonaID, unsigned flags )
-{
-    const wxString savepoint = "GetEPRole";
-    idt roleID = 0;
-    dlgEditIndRole* dialog = new dlgEditIndRole( NULL, eventPersonaID );
-
-    recDb::Savepoint( savepoint );
-    if( dialog->ShowModal() == wxID_OK )
-    {
-        recDb::ReleaseSavepoint( savepoint );
-        roleID = dialog->GetRoleID();
-    } else {
-        recDb::Rollback( savepoint );
-    }
-    dialog->Destroy();
-    return roleID;
-}
-#endif
-
-bool tfpEditResearcher( idt resID  )
-{
-    const wxString savepoint = "EdRes";
-    recDb::Savepoint( savepoint );
-    bool ret = false;
-    dlgEditResearcher* dialog = new dlgEditResearcher( NULL, resID );
-
-    if( dialog->ShowModal() == wxID_OK ) {
-        recDb::ReleaseSavepoint( savepoint );
-        ret = true;
-    } else {
-        recDb::Rollback( savepoint );
-    }
-    dialog->Destroy();
-    return ret;
 }
 
 bool tfpEditSystem()

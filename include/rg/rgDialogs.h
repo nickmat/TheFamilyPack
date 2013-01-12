@@ -68,6 +68,14 @@ extern idt rgSelectIndividual(
     unsigned sexfilter = recInd_FILTER_SexAll );
 
 
+// See src/rg/rgEdContact.cpp
+extern bool rgEditContact( idt conID );
+extern idt rgCreateContact( idt clID );
+
+// See src/rg/rgEdEvent.cpp
+extern bool rgEditEvent( idt eveID );
+extern idt rgCreateIndEvent( idt ind1ID, idt ind2ID = 0 );
+
 // See src/rg/rgEdName.cpp
 extern bool rgEditName( idt nameID );
 
@@ -97,9 +105,9 @@ extern bool rgEditIndEventRole( idt ieID, rgSHOWROLE filter = rgSHOWROLE_All );
 extern bool rgCreateIndEventRole( idt indID, idt eveID, idt roleID );
 extern bool rgEditPerEventRole( idt epID, rgSHOWROLE filter = rgSHOWROLE_All );
 
-// See src/rg/rgEdEvent.cpp
-extern bool rgEditEvent( idt eveID );
-extern idt rgCreateIndEvent( idt ind1ID, idt ind2ID = 0 );
+// See src/rg/rgEdResearcher.cpp
+extern bool rgEditResearcher( idt conID );
+extern idt rgCreateResearcher();
 
 
 #endif // RGDIALOGS_H
