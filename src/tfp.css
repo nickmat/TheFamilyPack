@@ -200,6 +200,12 @@ table.chart td.name {
     padding: 0 0.5em;
 }
 
+@media print {
+    div.pagesel {
+        display: none;
+    }
+}
+
 div.pagesel {
     margin: 1em auto;
     text-align: center;
@@ -222,8 +228,13 @@ div.pagesel a.pncur {
     background-color: ivory;
 }
 
-div.pagesel a:hover, div.pagesel a.pncur:hover {
+div.pagesel a:hover {
     background-color: orange;
+}
+
+div.pagesel a.pncur:hover {
+    background-color: ivory;
+    text-decoration: none;
 }
 
 /* End of tfp.css file */

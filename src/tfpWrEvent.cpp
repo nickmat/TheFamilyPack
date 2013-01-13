@@ -106,7 +106,7 @@ wxString tfpWriteEventPagedIndex( idt begCnt )
         result.SetRow( 0 );
         beg = GET_ID( result.GetInt64( 0 ) );
         result.SetRow( size-1 );
-//        end = GET_ID( result.GetInt64( 0 ) );
+        end = GET_ID( result.GetInt64( 0 ) );
     }
     int pgcur = begCnt/maxrows;
     int b1, e1, b2, e2;
@@ -138,11 +138,11 @@ wxString tfpWriteEventPagedIndex( idt begCnt )
         }
         for( int i = 0 ; i < pgcnt ; i++ ) {
             if(i == b1 ) {
-                mnu << " ... ";
+                mnu << " ...\n";
                 i = e1;
             }
             if(i == b2 ) {
-                mnu << " ... ";
+                mnu << " ...\n";
                 i = e2;
             }
             if( i == pgcur ) {

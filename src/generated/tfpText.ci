@@ -217,6 +217,11 @@ static const char s_tfp_css[] =  /* tfp.css */
  "table.chart td.name {\n"
  "padding: 0 0.5em;\n"
  "}\n"
+ "@media print {\n"
+ "div.pagesel {\n"
+ "display: none;\n"
+ "}\n"
+ "}\n"
  "div.pagesel {\n"
  "margin: 1em auto;\n"
  "text-align: center;\n"
@@ -235,8 +240,12 @@ static const char s_tfp_css[] =  /* tfp.css */
  "div.pagesel a.pncur {\n"
  "background-color: ivory;\n"
  "}\n"
- "div.pagesel a:hover, div.pagesel a.pncur:hover {\n"
+ "div.pagesel a:hover {\n"
  "background-color: orange;\n"
+ "}\n"
+ "div.pagesel a.pncur:hover {\n"
+ "background-color: ivory;\n"
+ "text-decoration: none;\n"
  "}\n";
 
 /* End of tfpText.f2c */

@@ -84,7 +84,9 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_LIST_NAMES, TfpFrame::OnListNames )
     EVT_MENU( tfpID_LIST_INDIVIDUALS, TfpFrame::OnListIndividuals )
     EVT_MENU( tfpID_LIST_REFERENCES, TfpFrame::OnListReferences )
-    EVT_MENU( tfpID_LIST_EVENTS, TfpFrame::OnListEvents )
+    EVT_MENU( tfpID_LIST_ALL_EVENTS, TfpFrame::OnListAllEvents )
+    EVT_MENU( tfpID_LIST_PAGED_EVENTS, TfpFrame::OnListPagedEvents )
+    EVT_MENU( tfpID_LIST_SELECTED_EVENTS, TfpFrame::OnListSelectedEvents )
     EVT_MENU( tfpID_LIST_RESEARCHERS, TfpFrame::OnListResearchers )
     EVT_MENU( tfpID_PED_CHART, TfpFrame::OnPedChart )
     EVT_MENU( tfpID_DESC_CHART, TfpFrame::OnDescChart )
@@ -195,12 +197,17 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     menuFind->Append( tfpID_FIND_INDIVIDUAL_ID, _("&Individual ID...") );
     menuFind->Append( tfpID_FIND_EVENT_ID, _("&Event ID...") );
 
+    wxMenu* menuListEvent = new wxMenu;
+    menuListEvent->Append( tfpID_LIST_ALL_EVENTS, _("&All Events\tAlt-E") );
+    menuListEvent->Append( tfpID_LIST_PAGED_EVENTS, _("&Paged Events") );
+    menuListEvent->Append( tfpID_LIST_SELECTED_EVENTS, _("&Selected Events...") );
+
     wxMenu* menuList = new wxMenu;
     menuList->Append( tfpID_LIST_SURNAME_INDEX, _("&Surname Index\tAlt-S") );
     menuList->Append( tfpID_LIST_NAMES, _("&Names\tAlt-N") );
     menuList->Append( tfpID_LIST_INDIVIDUALS, _("&Individuals\tAlt-I") );
     menuList->Append( tfpID_LIST_REFERENCES, _("&References\tAlt-R") );
-    menuList->Append( tfpID_LIST_EVENTS, _("&Events\tAlt-E") );
+    menuList->Append( tfpID_LIST_EVENT_MENU, _("&Events"), menuListEvent );
     menuList->Append( tfpID_LIST_RESEARCHERS, _("Resear&chers\tAlt-C") );
 
     wxMenu* menuChart = new wxMenu;
@@ -628,7 +635,7 @@ void TfpFrame::OnListIndex( wxCommandEvent& event )
  */
 void TfpFrame::OnListNames( wxCommandEvent& event )
 {
-    wxMessageBox( wxT("Not yet implimented"), wxT("OnListNames") );
+    wxMessageBox( _("Not yet implimented"), _("OnListNames") );
 }
 
 /*! \brief Called on a  List Individuals menu option event.
@@ -645,11 +652,25 @@ void TfpFrame::OnListReferences( wxCommandEvent& event )
     DisplayHtmPage( "R" );
 }
 
-/*! \brief Called on a List Events menu option event.
+/*! \brief Called on a List/All Events menu option event.
  */
-void TfpFrame::OnListEvents( wxCommandEvent& event )
+void TfpFrame::OnListAllEvents( wxCommandEvent& event )
+{
+    DisplayHtmPage( "E" );
+}
+
+/*! \brief Called on a List/Paged Events menu option event.
+ */
+void TfpFrame::OnListPagedEvents( wxCommandEvent& event )
 {
     DisplayHtmPage( "E,0" );
+}
+
+/*! \brief Called on a List/Selected Events menu option event.
+ */
+void TfpFrame::OnListSelectedEvents( wxCommandEvent& event )
+{
+    wxMessageBox( _("Not yet implimented"), _("OnListSelectedEvents") );
 }
 
 /*! \brief Called on a List Researchers menu option event.
