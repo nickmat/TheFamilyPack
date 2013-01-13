@@ -1442,6 +1442,8 @@ void TfpFrame::RefreshEditMenu()
 
 bool TfpFrame::DisplayHtmPage( const wxString& name )
 {
+    wxBusyCursor wait;
+
     wxString text = GetDisplayText( name );
     if( !text.IsEmpty() ) {
         PushHtmName( name );

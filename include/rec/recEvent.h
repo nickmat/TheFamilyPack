@@ -238,7 +238,7 @@ public:
     bool IsIndEvent() const { return IsIndEvent( f_id ); }
     recIndEventVec GetIndividualEvents();
     recEventPersonaVec GetEventPersonas();
-    static wxSQLite3ResultSet GetTitleList();
+    static wxSQLite3Table GetTitleList();
     static wxSQLite3Table GetTitleList( idt limit, int offset );
 
     static int GetLastPerSeqNumber( idt eventID );

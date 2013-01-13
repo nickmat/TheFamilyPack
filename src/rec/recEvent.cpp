@@ -457,13 +457,13 @@ void recEvent::DeleteIfOrphaned( idt id )
     DeleteFromDb( id );
 }
 
-wxSQLite3ResultSet recEvent::GetTitleList()
+wxSQLite3Table recEvent::GetTitleList()
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
         "SELECT id, title FROM Event ORDER BY id;"
     );
-    return s_db->ExecuteQuery( sql );
+    return s_db->GetTable( sql );
 }
 
 wxSQLite3Table recEvent::GetTitleList( idt limit, int offset )

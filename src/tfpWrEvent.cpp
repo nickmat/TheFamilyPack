@@ -56,6 +56,34 @@ wxString tfpWriteEventIndex()
         return htm;
     }
 
+    wxSQLite3Table result = recEvent::GetTitleList();
+    size_t size = (size_t) result.GetRowCount();
+
+    htm =
+        "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
+        "\"http://www.w3.org/TR/html4/loose.dtd\">\n"
+        "<html>\n<head>\n"
+        "<title>Event List</title>\n"
+        "<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>\n"
+        "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>\n"
+        "</head>\n<body>\n<div class='tfp'>\n"
+        "<h1>Event Index</h1>"
+        "<table class='data'>\n"
+        "<tr><th>ID</th><th>Title</th></tr>\n"
+    ;
+
+    for( size_t i = 0 ; i < size ; i++ ) {
+        result.SetRow( i );
+        htm << "<tr>\n<td><a href='tfp:E"
+            << result.GetAsString( 0 )
+            << "'><b>E"
+            << result.GetAsString( 0 )
+            << "</b></a></td>\n<td>"
+            << result.GetAsString( 1 )
+            << "</td>\n</tr>\n";
+    }
+    htm << "</table>\n</div>\n</body>\n</html>\n";
+#if 0
     htm <<
         "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
         "\"http://www.w3.org/TR/html4/loose.dtd\">\n"
@@ -88,6 +116,7 @@ wxString tfpWriteEventIndex()
     }
 
     htm << "</div>\n</body>\n</html>\n";
+#endif
 
     lastchange = recDb::GetChange();
     return htm;
