@@ -239,6 +239,7 @@ public:
     recIndEventVec GetIndividualEvents();
     recEventPersonaVec GetEventPersonas();
     static wxSQLite3ResultSet GetTitleList();
+    static wxSQLite3Table GetTitleList( idt limit, int offset );
 
     static int GetLastPerSeqNumber( idt eventID );
     int GetLastPerSeqNumber() const { return GetLastPerSeqNumber( f_id ); }

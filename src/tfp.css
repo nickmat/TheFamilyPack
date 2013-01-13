@@ -200,4 +200,30 @@ table.chart td.name {
     padding: 0 0.5em;
 }
 
+div.pagesel {
+    margin: 1em auto;
+    text-align: center;
+}
+
+div.pagesel a {
+    padding: 0.25em 1em;
+    border: 2px solid #777;
+    background-color: yellow;
+    font-size: big;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+div.pagesel a.pn {
+    padding: 0.25em 0.2em;
+}
+
+div.pagesel a.pncur {
+    background-color: ivory;
+}
+
+div.pagesel a:hover, div.pagesel a.pncur:hover {
+    background-color: orange;
+}
+
 /* End of tfp.css file */

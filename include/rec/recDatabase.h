@@ -85,6 +85,15 @@ public:
      */
     static bool RecordExists( const char* table, idt id );
 
+    /*! Return the number of User (above 0) records in the given table.
+     */
+    static int GetUserCount( const char* table );
+
+    /*! Return the total number of records (incl. system and the null record)
+     *  in the given table.
+     */
+    static int GetCount( const char* table );
+
     idt   f_id;
 
     /*! Default constructor, does nothing. */
@@ -181,7 +190,9 @@ public:
     bool Delete() { return DeleteRecord( (T), f_id ); }                \
     static bool Delete( idt id ) { return DeleteRecord( (T), id ); }   \
     bool Exists() { return RecordExists( (T), f_id ); }                \
-    static bool Exists( idt id ) { return RecordExists( (T), id ); }
+    static bool Exists( idt id ) { return RecordExists( (T), id ); }   \
+    static int UserCount() { return GetUserCount(T); }                 \
+    static int Count() { return GetCount(T); }
 
 // Create a string list of ID strings for a given record type
 // ie "Pa12, Pa34, Pa56" from a recIdVec

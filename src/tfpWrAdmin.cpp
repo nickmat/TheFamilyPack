@@ -113,40 +113,6 @@ wxString tfpWriteResearcherList()
             }
         }
         htm << "</td>\n</tr>\n</table>\n";
-#if 0
-        if( cl.FGetIndID() ) {
-            htm << "<a href='tfp:FI" << cl.FGetIndID()
-                << "'>" << list[i].FGetName() << "</a>";
-        } else {
-            htm << list[i].FGetName();
-        }
-        htm << "</td><td>" << list[i].GetIdStr();
-        if( cl.FGetIndID() ) {
-            htm << ", " << recIndividual::GetIdStr( cl.FGetIndID() );
-        }
-        if( userID ) {
-            htm << ", " << recUser::GetIdStr( userID );
-            if( userID == curUserID ) {
-                htm << "*";
-            }
-        }
-
-        htm << "</td><td><a href='tfpe:Re" << list[i].FGetID()
-            << "'><img src=memory:edit.png></a></td><td>" << list[i].FGetComments()
-            << "</td></tr>";
-
-        recContactVec contacts = list[i].GetContacts();
-        if( contacts.size() ) {
-            htm << "<tr><td></td><td colspan=3><table>";
-
-            for( size_t j = 0 ; j < contacts.size() ; j++ ) {
-                htm << "<tr><td valign=top align=right>" << contacts[j].GetTypeStr()
-                    << ":</td><td>" << contacts[j].GetHtmlValue()
-                    << "</td></tr>";
-            }
-            htm << "</table></td></tr>";
-        }
-#endif
     }
 
     htm << "</div></body></html>";
@@ -154,4 +120,4 @@ wxString tfpWriteResearcherList()
     return htm;
 }
 
-// End of tfpWrName.cpp Source
+// End of tfpWrAdmin.cpp Source

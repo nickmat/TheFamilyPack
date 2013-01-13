@@ -649,7 +649,7 @@ void TfpFrame::OnListReferences( wxCommandEvent& event )
  */
 void TfpFrame::OnListEvents( wxCommandEvent& event )
 {
-    DisplayHtmPage( "E" );
+    DisplayHtmPage( "E,0" );
 }
 
 /*! \brief Called on a List Researchers menu option event.
@@ -901,6 +901,10 @@ void TfpFrame::OnNavigationRequest( wxWebViewEvent& evt )
     // We will handle all other navigation ourselves.
     evt.Veto();
 
+    if( url.StartsWith( "null:" ) ) {
+        // do nothing
+        return;
+    }
     if( url.StartsWith( "tfp:" ) ) {
         DisplayHtmPage( url.Mid( 4 ) );
         return;
@@ -1453,6 +1457,7 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
 
     wxASSERT( name.size() > 0 );
     uch = name.GetChar( 0 );
+    uch1 = name.size() > 1 ? name.GetChar( 1 ) : 0;
     switch( uch.GetValue() )
     {
     case 'C':  // Chart reference
@@ -1484,15 +1489,24 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
         if( name == "E" ) {
             return tfpWriteEventIndex();
         }
+        if( uch1 == ',' ) {
+            success = name.Mid(2).ToLongLong( &num );
+            if( !success || num < 0 ) {
+                return wxString::Format(
+                    ErrorPage, name, _("Invalid Event Index Page")
+                );
+            }
+            return tfpWriteEventPagedIndex( num );
+        }
         success = name.Mid(1).ToLongLong( &num );
         if( !success || num < 1 ) {
             return wxString::Format(
-                ErrorPage, name, _("Invalid Reference Document ID link")
+                ErrorPage, name, _("Invalid Event ID link")
             );
         }
         return tfpWriteEventPage( num, &m_compEvent );
     case 'F':  // Family reference
-        if( name.GetChar( 1 ) == 'I' ) {
+        if( uch1 == 'I' ) {
             success = name.Mid(2).ToLongLong( &num );
             if( !success ) {
                 return wxString::Format(
@@ -1537,7 +1551,6 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
         if( name == "Re" ) {
             return tfpWriteResearcherList();
         }
-        uch1 = name.GetChar( 1 );
         if( !wxIsdigit( uch1 ) ) {
             success = name.Mid(2).ToLongLong( &num );
             if( !success ) {

@@ -466,6 +466,16 @@ wxSQLite3ResultSet recEvent::GetTitleList()
     return s_db->ExecuteQuery( sql );
 }
 
+wxSQLite3Table recEvent::GetTitleList( idt limit, int offset )
+{
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT id, title FROM Event ORDER BY id LIMIT "ID", %d;",
+        limit, offset
+    );
+    return s_db->GetTable( sql );
+}
+
 int recEvent::GetLastPerSeqNumber( idt eventID )
 {
     wxSQLite3StatementBuffer sql;

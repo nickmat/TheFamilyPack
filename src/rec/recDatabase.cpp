@@ -214,6 +214,22 @@ bool recDb::RecordExists( const char* name, idt id )
     return true;
 }
 
+int recDb::GetUserCount( const char* name )
+{
+    wxSQLite3StatementBuffer sql;
+    sql.Format( "SELECT COUNT(*) FROM %q WHERE id>0;", name );
+
+    return s_db->ExecuteScalar( sql );
+}
+
+int recDb::GetCount( const char* name )
+{
+    wxSQLite3StatementBuffer sql;
+    sql.Format( "SELECT COUNT(*) FROM %q;", name );
+
+    return s_db->ExecuteScalar( sql );
+}
+
 idt recDb::ExecuteID( const wxSQLite3StatementBuffer& sql )
 {
     wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
