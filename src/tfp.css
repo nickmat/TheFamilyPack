@@ -74,6 +74,11 @@ a.web:hover {
   text-decoration: underline;
 }
 
+div.tfp p.indent {
+    text-indent: -1em;
+    padding-left: 1em;
+}
+
 div.tfp table.core {
     border-collapse: collapse;
     margin: 0 auto;
@@ -129,6 +134,18 @@ div.tfp table.parent {
     padding: 0;
     margin: 0.2em auto;
     border: 2px solid #777;
+}
+
+div.tfp table.frame {
+    margin: 1em auto;
+}
+
+div.tfp td.support {
+    vertical-align: text-top;
+    border-style: none;
+    background-color: transparent;
+    padding: 1em;
+    margin: 0;
 }
 
 div.tfp td.frame {
@@ -198,6 +215,10 @@ table.chart td {
 
 table.chart td.name {
     padding: 0 0.5em;
+}
+
+p.nowrap {
+    white-space: nowrap;
 }
 
 @media print {

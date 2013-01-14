@@ -31,6 +31,7 @@
 
 #include <rec/recDatabase.h>
 class rgCompareEvent;
+class recFilterEvent;
 
 // See tfpWrFamily.cpp
 extern wxString GetSexClass( idt indID, Sex pref = SEX_Unknown );
@@ -46,6 +47,7 @@ extern wxString tfpCreateDescChart( idt indID );
 // See tfpWrEvent.cpp
 extern wxString tfpWriteEventIndex();
 extern wxString tfpWriteEventPagedIndex( idt begCnt );
+extern wxString tfpWriteEventSelection( recFilterEvent& filter );
 extern wxString tfpWriteEventPage( idt eveID, rgCompareEvent* ce );
 
 // See tfpWrFamily.cpp

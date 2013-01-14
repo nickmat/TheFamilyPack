@@ -555,6 +555,16 @@ idt rgSelectIndEvent( unsigned selstyle, recFilterEvent* exfilter, bool* ok, idt
     return eveID;
 }
 
+bool rgSelectIndEventList( recFilterEvent* evefilter )
+{
+    wxASSERT( evefilter != NULL );
+    idt ret = rgSelectIndEvent( rgSELSTYLE_SelList, evefilter );
+    if( ret == 0 ) {
+        return false;
+    }
+    return true;
+}
+
 idt rgSelectIndividual( unsigned flag, unsigned* retbutton, unsigned sexfilter )
 {
     idt id = 0;

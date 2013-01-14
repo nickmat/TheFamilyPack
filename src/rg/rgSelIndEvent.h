@@ -61,8 +61,8 @@ private:
     void OnButtonTypeClearAll( wxCommandEvent& event ) { SetTypeAll( false ); }
     void OnBegDateText( wxCommandEvent& event );
     void OnEndDateText( wxCommandEvent& event );
-    void OnListEventItemDeselected( wxListEvent& event ) { m_buttonSelect->Enable( false ); }
-    void OnListEventItemSelected( wxListEvent& event ) { m_buttonSelect->Enable( true ); }
+    void OnListEventItemDeselected( wxListEvent& event );
+    void OnListEventItemSelected( wxListEvent& event );
     void OnCreateButton( wxCommandEvent& event );
 
     void SetGroupAll( bool check );
@@ -71,6 +71,7 @@ private:
     void Refresh();
 
     bool m_create;
+    bool m_selList;
 
     recFilterEvent* m_fe;
     long m_begDatePt;

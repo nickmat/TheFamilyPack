@@ -37,6 +37,7 @@
 #endif
 
 #include <rec/recEvent.h>
+#include <rec/recFilterEvent.h>
 #include <rec/recPersona.h>
 #include <rec/recIndividual.h>
 
@@ -83,40 +84,6 @@ wxString tfpWriteEventIndex()
             << "</td>\n</tr>\n";
     }
     htm << "</table>\n</div>\n</body>\n</html>\n";
-#if 0
-    htm <<
-        "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
-        "\"http://www.w3.org/TR/html4/loose.dtd\">\n"
-        "<html>\n<head>\n"
-        "<title>Event List</title>\n"
-        "<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>\n"
-        "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>\n"
-        "</head>\n<body>\n<div class='tfp'>\n"
-    ;
-
-    wxSQLite3ResultSet result = recEvent::GetTitleList();
-
-    size_t cnt = 0;
-    if( result.GetColumnCount() > 0 )
-    {
-        while( result.NextRow() )
-        {
-            htm << "<a href='tfp:E"
-                << result.GetAsString( 0 )
-                << "'><b>E"
-                << result.GetAsString( 0 )
-                << "</b></a> "
-                << result.GetAsString( 1 )
-                << "<br>\n";
-            cnt++;
-        }
-        htm << "<br><br>\nTotal Events found: " << cnt << "\n";
-    } else {
-        htm << "No Events found!\n";
-    }
-
-    htm << "</div>\n</body>\n</html>\n";
-#endif
 
     lastchange = recDb::GetChange();
     return htm;
@@ -226,6 +193,85 @@ wxString tfpWriteEventPagedIndex( idt begCnt )
     }
     htm << "</table>\n" << mnu << "<br>\n</div>\n</body>\n</html>\n";
 
+    return htm;
+}
+
+wxString tfpWriteEventSelection( recFilterEvent& filter )
+{
+
+    wxSQLite3Table* result = filter.GetTable();
+    size_t size = (size_t) result->GetRowCount();
+
+    wxString htm =
+        "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
+        "\"http://www.w3.org/TR/html4/loose.dtd\">\n"
+        "<html>\n<head>\n"
+        "<title>Event List</title>\n"
+        "<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>\n"
+        "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>\n"
+        "</head>\n<body>\n<div class='tfp'>\n"
+        "<h1>Selected Event List</h1>"
+    ;
+
+    htm << "<table class='frame'>\n<tr>\n<td class='support'><br>\n";
+    long begDate = filter.GetBegDatePt();
+    long endDate = filter.GetEndDatePt();
+    if( begDate || endDate ) {
+        htm << "<p class='nowrap'>\n";
+        if( filter.GetBegDatePt() ) {
+            htm << 
+                "From Date: <b>" << 
+                calStrFromJdn( filter.GetBegDatePt(), CALENDAR_SCH_Gregorian ) <<
+                "</b><br>\n"
+            ;
+        }
+        if( filter.GetEndDatePt() ) {
+            htm << 
+                "To Date: <b>" << 
+                calStrFromJdn( filter.GetEndDatePt(), CALENDAR_SCH_Gregorian ) <<
+                "</b><br>\n"
+            ;
+        }
+        htm << "</p>\n";
+    }
+
+    recIdVec typeIDs = filter.GetTypeIDVec();
+    htm << "<p class='indent nowrap'>\nEvent Types:<b><br>\n";
+    for( size_t i = 0 ; i < typeIDs.size() ; i++ ) {
+        htm << recEventType::GetTypeStr( typeIDs[i] ) << "<br>\n";
+    }
+    htm << "</b></p>\n";
+
+    htm <<
+        "</td><td class='frame'>"
+        "<table class='data'>\n"
+        "<tr><th>ID</th><th>Title</th><th>Year</th></tr>\n"
+    ;
+    for( size_t i = 0 ; i < size ; i++ ) {
+        result->SetRow( i );
+        long jdn = result->GetInt( 2 );
+        wxString yearStr;
+        if( jdn ) {
+            int year;
+            calYearFromJdn( &year, jdn, CALENDAR_SCH_Gregorian );
+            yearStr << year;
+        }
+
+        htm << "<tr>\n<td><a href='tfp:E"
+            << result->GetAsString( 0 )
+            << "'><b>E"
+            << result->GetAsString( 0 )
+            << "</b></a></td>\n<td>"
+            << result->GetAsString( 1 )
+            << "</td>\n<td>"
+            << yearStr
+            << "</td>\n</tr>\n";
+    }
+    htm << "</table>\n";
+
+    htm << "</td>\n</tr>\n</table>\n";
+
+    htm << "</div>\n</body>\n</html>\n";
     return htm;
 }
 

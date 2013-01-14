@@ -49,6 +49,7 @@ public:
     wxSQLite3Table* GetTable() { return &m_table; }
     size_t GetTableSize();
     idt GetIdForRow( size_t i );
+    recIdVec GetTypeIDVec() const;
 
     void SetFEClass( FE_Class fec ) { m_class = fec; }
     void SetGroupFlag( size_t index, bool flag ) { m_groupChks[index] = flag; }

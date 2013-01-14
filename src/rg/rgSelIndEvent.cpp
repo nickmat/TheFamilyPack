@@ -43,8 +43,8 @@
 
 
 rgDlgSelectIndEvent::rgDlgSelectIndEvent( wxWindow* parent, unsigned selstyle, recFilterEvent* fe )
-    : m_create(false), m_fe(fe), m_begDatePt(0), m_endDatePt(0),
-    fbRgSelectIndEvent( parent )
+    : m_create(false), m_selList(false), m_fe(fe),
+    m_begDatePt(0), m_endDatePt(0), fbRgSelectIndEvent( parent )
 {
     wxSize sz = m_listEvent->GetClientSize();
     //                               ID   Date  scrollbar
@@ -59,6 +59,11 @@ rgDlgSelectIndEvent::rgDlgSelectIndEvent( wxWindow* parent, unsigned selstyle, r
         m_buttonCreate->Show();
     } else {
         m_buttonCreate->Hide();
+    }
+    if( selstyle & rgSELSTYLE_SelList ) {
+        m_selList = true;
+        m_buttonSelect->SetLabel( "OK" );
+        m_buttonSelect->Enable( true );
     }
 }
 
@@ -218,6 +223,20 @@ void rgDlgSelectIndEvent::OnBegDateText( wxCommandEvent& event )
     }
 }
 
+void rgDlgSelectIndEvent::OnListEventItemDeselected( wxListEvent& event )
+{
+    if( !m_selList ) {
+        m_buttonSelect->Enable( false );
+    }
+}
+
+void rgDlgSelectIndEvent::OnListEventItemSelected( wxListEvent& event )
+{
+    if( !m_selList ) {
+        m_buttonSelect->Enable( true );
+    }
+}
+
 void rgDlgSelectIndEvent::OnCreateButton( wxCommandEvent& event )
 {
     m_create = true;
@@ -256,14 +275,20 @@ void rgDlgSelectIndEvent::Refresh()
     m_listEvent->SetTable( m_fe->GetTable() );
     m_listEvent->Refresh();
     m_staticEventCount->SetLabel( wxString::Format( "%d Events", m_fe->GetTableSize() ) );
-    m_buttonSelect->Enable( false );
+    if( !m_selList ) {
+        m_buttonSelect->Enable( false );
+    }
 }
 
 idt rgDlgSelectIndEvent::GetID() const
 {
-    if( m_fe->GetTableSize() > 0 && m_listEvent->GetSelectedItemCount() > 0 ) {
-        long row = m_listEvent->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-        return m_fe->GetIdForRow( row );
+    if( m_fe->GetTableSize() > 0 ) {
+        if( m_selList ) {
+            return m_fe->GetIdForRow( 0 );
+        } else if( m_listEvent->GetSelectedItemCount() > 0 ) {
+            long row = m_listEvent->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+            return m_fe->GetIdForRow( row );
+        }
     }
     return 0;
 }

@@ -31,6 +31,7 @@
 
 #include <wx/html/htmlwin.h>
 #include <rec/recDatabase.h>
+#include <rec/recFilterEvent.h>
 #include <rg/rgCompareEvent.h>
 #include "dlg/dlgNote.h"
 
@@ -72,6 +73,7 @@ private:
     wxString            m_dbFileName;
 
     rgCompareEvent      m_compEvent;
+    recFilterEvent      m_eveFilter;
 
 public:
     // ctor and dtor
@@ -142,6 +144,7 @@ public:
 
     void DoTfpCommand( const wxString& href );
     void DoEdit( const wxString& href );
+    void DoSelectionUpdate( const wxString& display );
     void DoPopupNote( const wxString& href );
     void DoHtmCtxMenu( const wxString& ref );
     int AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID );

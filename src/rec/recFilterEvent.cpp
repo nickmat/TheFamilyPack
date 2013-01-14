@@ -112,5 +112,15 @@ idt recFilterEvent::GetIdForRow( size_t i )
     return GET_ID( m_table.GetInt64( 0 ) ); 
 }
 
+recIdVec recFilterEvent::GetTypeIDVec() const
+{
+    recIdVec typeIDs;
+    for( size_t i = 0 ; i < m_types.size() ; i++ ) {
+        if( m_typeChks[i] ) {
+            typeIDs.push_back( m_types[i] );
+        }
+    }
+    return typeIDs;
+}
 
 // End of src/rec/recFilterEvent.cpp file

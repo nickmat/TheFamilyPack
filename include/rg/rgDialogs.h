@@ -48,6 +48,7 @@ enum {
     rgSELSTYLE_Create     = 0x0001,   // Show Create button
     rgSELSTYLE_Filter     = 0x0002,   // Show Filter button
     rgSELSTYLE_Unknown    = 0x0004,   // Show Unknown button (for Unknown value)
+    rgSELSTYLE_SelList    = 0x0100    // Selects the full list
 };
 extern idt rgSelectDate( 
     unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL,
@@ -58,6 +59,7 @@ extern idt rgSelectPlace(
 extern idt rgSelectEventType( 
     unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL,
     unsigned grpfilter = recET_FILTER_GrpAll );
+extern bool rgSelectIndEventList( recFilterEvent* exfilter );
 extern idt rgSelectIndEvent( 
     unsigned flag = rgSELSTYLE_None, 
     recFilterEvent* filter = NULL,

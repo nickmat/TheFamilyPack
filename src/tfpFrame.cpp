@@ -670,7 +670,10 @@ void TfpFrame::OnListPagedEvents( wxCommandEvent& event )
  */
 void TfpFrame::OnListSelectedEvents( wxCommandEvent& event )
 {
-    wxMessageBox( _("Not yet implimented"), _("OnListSelectedEvents") );
+    if( rgSelectIndEventList( &m_eveFilter ) ) {
+//        wxMessageBox( _("Not yet finished"), _("OnListSelectedEvents") );
+        DisplayHtmPage( "E$" );
+    }
 }
 
 /*! \brief Called on a List Researchers menu option event.
@@ -868,6 +871,10 @@ void TfpFrame::OnShowPage( wxCommandEvent& event )
 void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
 {
     wxString display = GetDisplay();
+    if( display == "E$" ) {
+        DoSelectionUpdate( display );
+        return;
+    }
     idt id;
     if( display.StartsWith( "FI" ) ) {
         idt indID = recGetID( display.Mid(2) );
@@ -1199,6 +1206,22 @@ void TfpFrame::DoEdit( const wxString& href )
     }
 }
 
+void TfpFrame::DoSelectionUpdate( const wxString& display )
+{
+    try {
+        bool ret = false;
+        if( display == "E$" ) {
+            ret = rgSelectIndEventList( &m_eveFilter );
+        }
+        if( ret == true ) {
+            RefreshHtmPage();
+        }
+    }
+    catch( wxSQLite3Exception& e ) {
+        recDb::ErrorMessage( e );
+    }
+}
+
 void TfpFrame::DoPopupNote( const wxString& ref )
 {
     dlgNote* note = new dlgNote( this, ref );
@@ -1433,7 +1456,9 @@ void TfpFrame::RefreshEditMenu()
         }
         break;
     case 'R': case 'E': case 'I':
-        if( disp.size() >= 2 && wxIsdigit( disp.GetChar( 1 ) ) ) {
+        if( disp.size() >= 2 && 
+            ( wxIsdigit( disp.GetChar( 1 ) ) || disp.GetChar( 1 ) == '$' )
+        ) {
             m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
         }
         break;
@@ -1511,6 +1536,9 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
     case 'E':  // Individual or Reference Event
         if( name == "E" ) {
             return tfpWriteEventIndex();
+        }
+        if( name == "E$" ) {
+            return tfpWriteEventSelection( m_eveFilter );
         }
         if( uch1 == ',' ) {
             success = name.Mid(2).ToLongLong( &num );
