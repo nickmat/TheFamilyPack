@@ -44,6 +44,8 @@ public:
 
     bool GetGroupFlag( size_t index ) const { return m_groupChks[index]; }
     size_t GetTypesSize() const { return m_types.size(); }
+    wxString GetBegDatePtStr() const { return m_begDateStr; }
+    wxString GetEndDatePtStr() const { return m_endDateStr; }
     long GetBegDatePt() const { return m_begDate; }
     long GetEndDatePt() const { return m_endDate; }
     wxSQLite3Table* GetTable() { return &m_table; }
@@ -54,6 +56,8 @@ public:
     void SetFEClass( FE_Class fec ) { m_class = fec; }
     void SetGroupFlag( size_t index, bool flag ) { m_groupChks[index] = flag; }
     void SetTypeFlag( size_t index, bool flag ) { m_typeChks[index] = flag; }
+    void SetBegDatePtStr( const wxString& str ) { m_begDateStr = str; }
+    void SetEndDatePtStr( const wxString& str ) { m_endDateStr = str; }
     void SetBegDatePt( long dp ) { m_begDate = dp; }
     void SetEndDatePt( long dp ) { m_endDate = dp; }
 
@@ -71,6 +75,8 @@ private:
     bool           m_groupChks[recEventType::ETYPE_Grp_MAX];
     recIdVec       m_types;
     BoolVec        m_typeChks;
+    wxString       m_begDateStr;
+    wxString       m_endDateStr;
     long           m_begDate;
     long           m_endDate;
     wxSQLite3Table m_table;

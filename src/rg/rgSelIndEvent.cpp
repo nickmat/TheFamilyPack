@@ -77,11 +77,15 @@ bool rgDlgSelectIndEvent::TransferDataToWindow()
         m_checkListGrp->Check( i-1, flag );
     }
     CreateTypeList();
+    m_textCtrlBegDatePt->SetValue( m_fe->GetBegDatePtStr() );
+    m_textCtrlEndDatePt->SetValue( m_fe->GetEndDatePtStr() );
     return true;
 }
 
 bool rgDlgSelectIndEvent::TransferDataFromWindow()
 {
+    m_fe->SetBegDatePtStr( m_textCtrlBegDatePt->GetValue() );
+    m_fe->SetEndDatePtStr( m_textCtrlEndDatePt->GetValue() );
     return true;
 }
 
