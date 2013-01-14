@@ -3,11 +3,10 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Functions to write to screen and compare Events.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     24 October 2010
  * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2010-2013, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -47,6 +46,19 @@
 
 static wxString tfpWriteIndEventPage( idt eventID, rgCompareEvent* ce );
 static wxString tfpWriteRefEventPage( idt eventID );
+
+wxString GetSexClassPer( idt perID )
+{
+    Sex sex = recPersona::GetSex( perID );
+    switch( sex ) {
+    case SEX_Male: 
+        return "male";
+    case SEX_Female: 
+        return "fem";
+    }
+    return "neut";
+}
+
 
 wxString tfpWriteEventIndex()
 {
@@ -291,26 +303,29 @@ wxString tfpWriteIndEventPage( idt eventID, rgCompareEvent* ce )
     recEvent eve(eventID);
     if( eve.f_id == 0 ) return wxEmptyString;
 
-    htm << "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
-           "\"http://www.w3.org/TR/html4/loose.dtd\">\n"
-           "<html>\n<head>\n"
-           "<title>Event " << eve.GetIdStr() << "</title>\n"
-           "<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>\n"
-           "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>\n"
-           "</head>\n<body>\n<div class='tfp'>\n"
+    htm << 
+        "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
+        "\"http://www.w3.org/TR/html4/loose.dtd\">\n"
+        "<html>\n<head>\n"
+        "<title>Event " << eve.GetIdStr() << "</title>\n"
+        "<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>\n"
+        "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>\n"
+        "</head>\n<body>\n<div class='tfp'>\n"
 
-           "<h1>Event " << eve.GetIdStr() << ": " << eve.f_title << "</h1>\n"
+        "<h1>Conclusion Event " << eve.GetIdStr() << ": " << eve.f_title << "</h1>\n"
 
-           "<table class='data'>\n<tr>\n"
-           "<td><b>Date: </b>" << eve.GetDateStr() << "</td>\n"
-           "</tr>\n<tr>\n"
-           "<td><b>Place: </b>" << eve.GetAddressStr() << "</td>\n"
-           "</tr>\n<tr>\n"
-           "<td><b>Note: </b>" << eve.f_note << "</td>\n"
-           "</tr>\n<tr>\n"
-           "<td><b>Group: </b>" << recEventType::GetGroupStr( eve.FGetTypeID() ) <<
-           " <b>Type: </b>" << eve.GetTypeStr() << "</td>\n"
-           "</tr>\n</table>\n"
+        "<table class='data'>\n<tr>\n"
+        "<td><b><a href='tfpi:D" << eve.FGetDate1ID() <<
+        "'>Date</a>: </b>" << eve.GetDateStr() << "</td>\n"
+        "</tr>\n<tr>\n"
+        "<td><b><a href='tfpi:P" << eve.FGetPlaceID() << 
+        "'>Place</a>: </b>" << eve.GetAddressStr() << "</td>\n"
+        "</tr>\n<tr>\n"
+        "<td><b>Note: </b>" << eve.f_note << "</td>\n"
+        "</tr>\n<tr>\n"
+        "<td>Group: " << recEventType::GetGroupStr( eve.FGetTypeID() ) <<
+        " Type: " << eve.GetTypeStr() << "</td>\n"
+        "</tr>\n</table>\n"
     ;
 
     recIndEventVec ies = eve.GetIndividualEvents();
@@ -348,40 +363,70 @@ wxString tfpWriteRefEventPage( idt eventID )
     wxString htm;
     recEvent eve(eventID);
     if( eve.f_id == 0 ) return wxEmptyString;
+    idt refID = recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, eventID );
 
-    htm << "<html><head><title>Event " << eve.GetIdStr() << "</title>"
-           "<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'>"
-           "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>"
-           "</head><body><h1>Event " << eve.GetIdStr() << " " << eve.f_title << "</h1>"
-           "<table><tr><td>Date:</td><td>" << eve.GetDateStr()
-        << "</td></tr><tr><td>Place:</td><td>" << eve.GetAddressStr()
-        << "</td></tr><tr><td>Note:</td><td>" << eve.f_note
-        << "</td></tr></table><br>";
+    htm <<
+        "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
+        "\"http://www.w3.org/TR/html4/loose.dtd\">\n"
+        "<html>\n<head>\n"
+        "<title>Event " << eve.GetIdStr() << "</title>\n"
+        "<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>\n"
+        "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>\n"
+        "</head>\n<body>\n<div class='tfp'>\n"
+        "<h1>Evidence Event " << eve.GetIdStr() << ": " << eve.f_title << "</h1>\n"
+
+        "<table class='data'>\n<tr>\n"
+        "<td><b><a href='tfpi:D" << eve.FGetDate1ID() <<
+        "'>Date</a>: </b>" << eve.GetDateStr() << "</td>\n"
+        "</tr>\n<tr>\n"
+        "<td><b><a href='tfpi:P" << eve.FGetPlaceID() << 
+        "'>Place</a>: </b>" << eve.GetAddressStr() << "</td>\n"
+        "</tr>\n<tr>\n"
+        "<td><b>Note: </b>" << eve.f_note << "</td>\n"
+        "</tr>\n<tr>\n"
+        "<td>Group: " << recEventType::GetGroupStr( eve.FGetTypeID() ) <<
+        " Type: " << eve.GetTypeStr() << "</td>\n"
+        "</tr>\n<tr>\n"
+        "<td><b><a href='tfp:R" << refID <<
+        "'>" << recReference::GetIdStr( refID ) <<
+        "</a></b> " << recReference::GetTitle( refID ) << "</td>\n"
+        "</tr>\n</table>\n"
+    ;
 
     recEventPersonaVec eps = eve.GetEventPersonas();
     if( !eps.empty() ) {
-        htm << "<table>";
+        htm <<
+            "<table class='data'>\n<tr>\n"
+            "<th>Role</th><th>ID</th><th>Persona</th><th>Note</th>"
+            "<th>Individuals</tr>\n"
+        ;
         for( size_t i = 0 ; i < eps.size() ; i++ ) {
-            recPersona per(eps[i].f_per_id);
-            htm << "<tr><td>" << recEventTypeRole::GetName( eps[i].f_role_id )
-                << "</td><td><b>" << per.GetNameStr()
-                << "</b>";
-            if( per.f_ref_id ) {
-                htm << " <a href='tfp:R" << per.f_ref_id
-                    << "'><img src=memory:ref.png></a>";
-            }
+            recPersona per( eps[i].FGetPerID() );
             recIdVec indIDs = per.GetIndividualIDs();
+            htm <<
+                "<tr>\n<td>" << 
+                recEventTypeRole::GetName( eps[i].FGetRoleID() ) <<
+                "</td>\n<td>" << per.GetIdStr() <<
+                "</td>\n<td class='" << GetSexClassPer( per.FGetID() ) <<
+                "'>" << per.GetNameStr() <<
+                "</td>\n<td>" << eps[i].f_note << 
+                " </td>\n<td><b>"
+            ;
             for( size_t j = 0 ; j < indIDs.size() ; j++ ) {
-                htm << " <a href='tfpc:MR" << indIDs[j]
-                    << "'><img src=memory:fam.png></a>";
+                if( j > 0 ) {
+                    htm << ", ";
+                }
+                htm <<
+                    "<a href='tfp:I" << indIDs[j] <<
+                    "'>" << recIndividual::GetIdStr( indIDs[j] ) <<
+                    "</a>"
+                ;
             }
-            htm << "</td><td>" << eps[i].f_note
-                << " </td></tr>";
+            htm << "</b></td>\n</tr>\n";
         }
-        htm << "</table>";
+        htm << "</table>\n";
     }
-    htm << "</body></html>";
-
+    htm << "</body>\n</html>\n";
     return htm;
 }
 
