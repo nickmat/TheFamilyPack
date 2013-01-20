@@ -45,19 +45,25 @@
 static wxString WriteIndex( wxSQLite3ResultSet& table )
 {
     wxString htm =
-        "<html><head><title>Surname Index</title>"
-        "<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'>"
-        "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>"
-        "</head><body><center><h1>Surname Index</h1>";
+        "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
+        "\"http://www.w3.org/TR/html4/loose.dtd\">\n"
+        "<html>\n<head>\n"
+        "<title>Surname Index</title>\n"
+        "<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>\n"
+        "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>\n"
+        "</head>\n<body>\n<div class='tfp'>\n"
+        "<h1>Surname Index</h1>\n"
+    ;
 
     if( table.GetColumnCount() > 0 )
     {
         wxChar letter = wxChar('\0');
-        wxString name = wxEmptyString;
-        int count = 1;
+        wxString name;
+        wxString rowclass;
+        int count = 1, row = 0;
         bool row1st = true;
 
-        htm << wxT("<table border=1>");
+        htm << "<table class='data'>\n";
         while( table.NextRow() )
         {
             name = table.GetAsString( 0 );
@@ -66,31 +72,43 @@ static wxString WriteIndex( wxSQLite3ResultSet& table )
             }
             if( name.GetChar(0) != letter )
             {
+                row++;
+                rowclass = ( row % 2 ) ? "odd" : "even";
                 letter = name.GetChar(0);
                 if( row1st == true )
                 {
                     row1st = false;
                 } else {
                     // End prevous line
-                    htm << wxT("</tr>");
+                    htm << "\n</td>\n</tr>\n";
                 }
                 // Start new line
-                htm << wxT("<tr><td><a href='tfp:N") << letter << wxT("'><b>") << letter << wxT("</b></a></td><td>");
+                htm <<
+                    "<tr>\n<td class='" << rowclass <<
+                    "'><a href='tfp:N" << letter <<
+                    "'><b>" << letter <<
+                    "</b></a></td>\n<td class='" << rowclass <<
+                    "'>"
+                ;
                 count = 1;
             }
             if( count != 1 )
             {
-                htm << wxT(", ");
+                htm << ", ";
             }
-            htm << wxT("<a href='tfp:N") << name << wxT("'><b>") << name << wxT("</b></a>");
+            htm << 
+                "\n<a href='tfp:N" << name <<
+                "'><b>" << name <<
+                "</b></a>"
+            ;
             count++;
         }
-        htm << wxT("</tr></table>");
+        htm << "</tr>\n</table>\n";
     } else {
-        htm << wxT("No Names found!");
+        htm << "<p>No Names found!</p>\n";
     }
 
-    htm << wxT("</center></body></html>");
+    htm << "</div>\n</body>\n</html>\n";
 
     return htm;
 }

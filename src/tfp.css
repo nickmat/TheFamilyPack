@@ -128,6 +128,16 @@ div.tfp td.subject a {
     font-size: 1.5em;
 }
 
+
+div.tfp td.odd {
+    background-color: #f4ebed;
+}
+
+div.tfp td.even {
+    background-color: #faf0f0;
+}
+
+
 div.tfp table.parent {
     border-collapse: collapse;
     width: 90%;
