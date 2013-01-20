@@ -81,8 +81,8 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_FIND_INDIVIDUAL_ID, TfpFrame::OnFindIndividualID )
     EVT_MENU( tfpID_FIND_EVENT_ID, TfpFrame::OnFindEventID )
     EVT_MENU( tfpID_LIST_SURNAME_INDEX, TfpFrame::OnListIndex )
-    EVT_MENU( tfpID_LIST_NAMES, TfpFrame::OnListNames )
     EVT_MENU( tfpID_LIST_INDIVIDUALS, TfpFrame::OnListIndividuals )
+    EVT_MENU( tfpID_LIST_PERSONAS, TfpFrame::OnListPersonas )
     EVT_MENU( tfpID_LIST_REFERENCES, TfpFrame::OnListReferences )
     EVT_MENU( tfpID_LIST_ALL_EVENTS, TfpFrame::OnListAllEvents )
     EVT_MENU( tfpID_LIST_PAGED_EVENTS, TfpFrame::OnListPagedEvents )
@@ -204,7 +204,7 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
 
     wxMenu* menuList = new wxMenu;
     menuList->Append( tfpID_LIST_SURNAME_INDEX, _("&Surname Index\tAlt-S") );
-    menuList->Append( tfpID_LIST_NAMES, _("&Names\tAlt-N") );
+    menuList->Append( tfpID_LIST_PERSONAS, _("Person&a Index\tAlt-A") );
     menuList->Append( tfpID_LIST_INDIVIDUALS, _("&Individuals\tAlt-I") );
     menuList->Append( tfpID_LIST_REFERENCES, _("&References\tAlt-R") );
     menuList->Append( tfpID_LIST_EVENT_MENU, _("&Events"), menuListEvent );
@@ -631,11 +631,11 @@ void TfpFrame::OnListIndex( wxCommandEvent& event )
     DisplayHtmPage( "N" );
 }
 
-/*! \brief Called on a List Names menu option event.
+/*! \brief Called on a List Personas menu option event.
  */
-void TfpFrame::OnListNames( wxCommandEvent& event )
+void TfpFrame::OnListPersonas( wxCommandEvent& event )
 {
-    wxMessageBox( _("Not yet implimented"), _("OnListNames") );
+    DisplayHtmPage( "Pa" );
 }
 
 /*! \brief Called on a  List Individuals menu option event.
@@ -671,7 +671,6 @@ void TfpFrame::OnListPagedEvents( wxCommandEvent& event )
 void TfpFrame::OnListSelectedEvents( wxCommandEvent& event )
 {
     if( rgSelectIndEventList( &m_eveFilter ) ) {
-//        wxMessageBox( _("Not yet finished"), _("OnListSelectedEvents") );
         DisplayHtmPage( "E$" );
     }
 }
@@ -1588,6 +1587,9 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
         }
         return tfpWriteName( num );
     case 'P':  // Place
+        if( name == "Pa" ) {
+            return tfpWritePersonIndex();
+        }
         success = name.Mid(1).ToLongLong( &num );
         if( !success || num < 1 ) {
             return wxString::Format(
