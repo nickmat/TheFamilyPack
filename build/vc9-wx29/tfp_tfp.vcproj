@@ -355,6 +355,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\tfpWr.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\tfpWrAdmin.cpp"
 				>
 			</File>

@@ -44,16 +44,8 @@
 
 static wxString WriteIndex( wxSQLite3ResultSet& table )
 {
-    wxString htm =
-        "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
-        "\"http://www.w3.org/TR/html4/loose.dtd\">\n"
-        "<html>\n<head>\n"
-        "<title>Surname Index</title>\n"
-        "<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>\n"
-        "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>\n"
-        "</head>\n<body>\n<div class='tfp'>\n"
-        "<h1>Surname Index</h1>\n"
-    ;
+    wxString htm = tfpWrHead( "Surname Index" );
+    htm << "<h1>Surname Index</h1>\n";
 
     if( table.GetColumnCount() > 0 )
     {
@@ -72,8 +64,7 @@ static wxString WriteIndex( wxSQLite3ResultSet& table )
             }
             if( name.GetChar(0) != letter )
             {
-                row++;
-                rowclass = ( row % 2 ) ? "odd" : "even";
+                rowclass = wxGetRowClass( ++row );
                 letter = name.GetChar(0);
                 if( row1st == true )
                 {
@@ -108,7 +99,7 @@ static wxString WriteIndex( wxSQLite3ResultSet& table )
         htm << "<p>No Names found!</p>\n";
     }
 
-    htm << "</div>\n</body>\n</html>\n";
+    htm << tfpWrTail();
 
     return htm;
 }
@@ -145,37 +136,36 @@ wxString tfpWritePersonIndex()
 
 wxString tfpWriteIndividualList( const wxString& surname )
 {
-    wxString htm;
-
-    htm << wxT("<html><head><title>Name List</title>")
-           wxT("<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'>")
-           wxT("<link rel='stylesheet' type='text/css' href='tfp:memory:tfp.css'>")
-           wxT("</head><body><center><h1>") << surname << wxT("</h1>");
+    wxString htm = tfpWrHead( "Name List" );
+    htm << "<h1>" << surname << "</h1>\n";
 
     wxSQLite3ResultSet result = recIndividual::GetNameList( surname );
 
+    int row = 0;
     if( result.GetColumnCount() > 0 )
     {
-        htm << wxT("<table border=1>");
+        htm << "<table class='data'>\n";
         while( result.NextRow() )
         {
-            htm << wxT("<tr><td><a href='tfp:FI")
-                << result.GetAsString( 3 )
-                << wxT("'><b>")
-
-                << result.GetAsString( 1 ) << wxT(" ")
-                << result.GetAsString( 0 )
-
-                << wxT("</b></a> ")
-                << result.GetAsString( 2 )
-                << wxT("</td></tr>");
+            wxString rowclass = wxGetRowClass( ++row );
+            idt indID = GET_ID( result.GetInt64( 2 ) );
+            htm << 
+                "<tr>\n<td class='" << rowclass <<
+                "'>\n<a href='tfp:I" << indID <<
+                "'><b>" << recIndividual::GetIdStr( indID ) <<
+                "</b></a>\n</td>\n<td class='" << rowclass <<
+                "'>\n<a href='tfp:FI" << indID <<
+                "'><b>" << result.GetAsString( 0 ) <<
+                "</b></a> " << result.GetAsString( 1 ) <<
+                "&nbsp;&nbsp;\n<a href='tfpc:MR" << indID <<
+                "'><img src=memory:fam.png></a>\n</td>\n</tr>\n";
         }
-        htm << wxT("</table>");
+        htm << "</table>\n";
     } else {
-        htm << wxT("No Names found!");
+        htm << "<p>No Names found!</p>\n";
     }
 
-    htm << wxT("</center></body></html>");
+    htm << tfpWrTail();
 
     return htm;
 }

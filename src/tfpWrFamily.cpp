@@ -49,21 +49,6 @@
 #define DEATH    recEventTypeRole::ROLE_Death_Died
 #define NR_DEATH recEventType::ETYPE_Grp_Nr_Death
 
-wxString GetSexClass( idt indID, Sex pref )
-{
-    Sex sex = recIndividual::GetSex( indID );
-    if( sex == SEX_Unstated ) {
-        sex = pref;
-    }
-    switch( sex ) {
-    case SEX_Male: 
-        return "male";
-    case SEX_Female: 
-        return "fem";
-    }
-    return "neut";
-}
-
 
 wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
 {

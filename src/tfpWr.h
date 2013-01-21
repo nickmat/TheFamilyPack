@@ -3,9 +3,8 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Write screen page functions.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
- * Created:     7 October 2010
+ * Created:     7th October 2010
  * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2010, Nick Matthews.
  * Licence:     GNU GPLv3
@@ -33,8 +32,11 @@
 class rgCompareEvent;
 class recFilterEvent;
 
-// See tfpWrFamily.cpp
+// See tfpWr.cpp
+extern wxString tfpWrHead( const wxString& title );
+extern wxString tfpWrTail();
 extern wxString GetSexClass( idt indID, Sex pref = SEX_Unknown );
+extern wxString wxGetRowClass( int row );
 
 
 // See tfpWrAdmin.cpp
