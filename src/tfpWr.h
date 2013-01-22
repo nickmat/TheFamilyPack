@@ -37,6 +37,9 @@ extern wxString tfpWrHead( const wxString& title );
 extern wxString tfpWrTail();
 extern wxString GetSexClass( idt indID, Sex pref = SEX_Unknown );
 extern wxString wxGetRowClass( int row );
+enum GET_EPITAPH_Prefix { GE_None, GE_Spaces, GE_NewLine };
+extern wxString tfpGetEpitaphPlus( idt indID, GET_EPITAPH_Prefix prefix = GE_Spaces );
+
 
 
 // See tfpWrAdmin.cpp

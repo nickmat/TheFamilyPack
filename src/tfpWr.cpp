@@ -82,4 +82,29 @@ wxString wxGetRowClass( int row )
     return ( row % 2 ) ? "odd" : "even";
 }
 
+wxString tfpGetEpitaphPlus( idt indID,  GET_EPITAPH_Prefix prefix )
+{
+    wxString epitaph = recIndividual::GetDateEpitaph( indID );
+    wxString prefixStr;
+
+    if( epitaph.size() ) {
+        switch( prefix )
+        {
+        case GE_Spaces:
+            prefixStr = "&nbsp;&nbsp;";
+            break;
+        case GE_NewLine:
+            prefixStr = "<br>\n";
+            break;
+        }
+    }
+    wxString ret;
+    ret << 
+        prefixStr << epitaph <<
+        "&nbsp;&nbsp;<a href='tfpc:MR" << indID <<
+        "'><img src=memory:fam.png></a>"
+    ;
+    return ret;
+}
+
 // End of src/tfpWr.cpp Source
