@@ -45,15 +45,15 @@
 #define PROGNAME  "CalCalc"
 #define COPYRIGHT  "2008-2011 Nick Matthews"
 
-const wxString g_version = VERSION;
-const wxString g_progName = PROGNAME;
-const wxString g_copyright = COPYRIGHT;
+const char* g_version = VERSION;
+const char* g_progName = PROGNAME;
+const char* g_copyright = COPYRIGHT;
 
 #ifdef _DEBUG
-const wxString g_title = PROGNAME " - Version " VERSION " Debug\n"
+const char* g_title = PROGNAME " - Version " VERSION " Debug\n"
                          "Copyright (c) " COPYRIGHT "\n\n";
 #else
-const wxString g_title = PROGNAME " - Version " VERSION "\n"
+const char* g_title = PROGNAME " - Version " VERSION "\n"
                          "Copyright (c) " COPYRIGHT "\n\n";
 #endif
 
@@ -73,98 +73,98 @@ CalendarScheme g_to = CALENDAR_SCH_Gregorian;
  */
 void ccUse()
 {
-	wxPrintf(
-		wxT("\n")
-		wxT("Enter one of the following commands:-\n")
-		wxT("x date         Enter the date to convert.\n")
-		wxT("a age date     Enter age in years & date to convert to birth date range.\n")
-		wxT("am age date    Enter age in months & date to convert to birth date range.\n")
-		wxT("range          Set to enter and display a date range.\n")
-		wxT("single         Set to enter and display a single date.\n")
-		wxT("from sch       Set the entered scheme type (see below).\n")
-		wxT("to sch         Set the scheme type to convert to.\n")
-		wxT("help           Display this screen.\n")
-		wxT("exit           Exit the program.\n")
-		wxT("\n")
-		wxT("sch can be one of the following:-\n")
-		wxT("us          Unstated\n")
-		wxT("uk          Unknown\n")
-		wxT("ul          Unlisted\n")
-		wxT("jdn         Julian Day Number\n")
-		wxT("jd          Julian Day\n")
-		wxT("mjd         Modified Julian Day\n")
-		wxT("rd          Rata Die (Fixed Date)\n")
-		wxT("j           Julian\n")
-		wxT("g           Gregorian\n")
-		wxT("cath        Catholic\n")
-		wxT("eng         English\n")
-		wxT("scot        Scottish\n")
-		wxT("swed        Swedish\n")
-		wxT("fr          French Revolutionary\n")
-		wxT("\n")
-	);
+    wxPrintf(
+        "\n"
+        "Enter one of the following commands:-\n"
+        "x date         Enter the date to convert.\n"
+        "a age date     Enter age in years & date to convert to birth date range.\n"
+        "am age date    Enter age in months & date to convert to birth date range.\n"
+        "range          Set to enter and display a date range.\n"
+        "single         Set to enter and display a single date.\n"
+        "from sch       Set the entered scheme type (see below).\n"
+        "to sch         Set the scheme type to convert to.\n"
+        "help           Display this screen.\n"
+        "exit           Exit the program.\n"
+        "\n"
+        "sch can be one of the following:-\n"
+        "us          Unstated\n"
+        "uk          Unknown\n"
+        "ul          Unlisted\n"
+        "jdn         Julian Day Number\n"
+        "jd          Julian Day\n"
+        "mjd         Modified Julian Day\n"
+        "rd          Rata Die (Fixed Date)\n"
+        "j           Julian\n"
+        "g           Gregorian\n"
+        "cath        Catholic\n"
+        "eng         English\n"
+        "scot        Scottish\n"
+        "swed        Swedish\n"
+        "fr          French Revolutionary\n"
+        "\n"
+    );
 }
 
 /*! Convert the given date string
  */
 void ccConvertDate( wxString& date )
 {
-	long jdn1 = -1, jdn2 = -1;
-	wxString xdate = wxT("Error reading date");
-	bool ret;
+    long jdn1 = -1, jdn2 = -1;
+    wxString xdate = "Error reading date";
+    bool ret;
 
-	date.Trim();
-	if( g_range == true )
-	{
+    date.Trim();
+    if( g_range == true )
+    {
         ret = calStrToJdnRange( &jdn1, &jdn2, date, g_from );
-		if( ret == true )
-		{
-			xdate = calStrFromJdnRange( jdn1, jdn2, g_to );
-		}
-		wxPrintf( 
-			wxT("%s (%s) -> %ld - %ld -> %s (%s)\n"),
-			date.c_str(), CalendarSchemeAbrev[g_from].c_str(),
-			jdn1, jdn2,
-			xdate.c_str(), CalendarSchemeAbrev[g_to].c_str()
-		);
-	} else { 
-		// g_range == false
+        if( ret == true )
+        {
+            xdate = calStrFromJdnRange( jdn1, jdn2, g_to );
+        }
+        wxPrintf(
+            "%s (%s) -> %ld ~ %ld -> %s (%s)\n",
+            date.c_str(), CalendarSchemeAbrev[g_from],
+            jdn1, jdn2,
+            xdate.c_str(), CalendarSchemeAbrev[g_to]
+        );
+    } else {
+        // g_range == false
         ret = calStrToJdn( &jdn1, date, g_from );
-		if( ret == true )
-		{
-			xdate = calStrFromJdn( jdn1, g_to );
-		}
-		wxPrintf( 
-			wxT("%s (%s) -> %ld -> %s (%s)\n"),
-			date.c_str(), CalendarSchemeAbrev[g_from].c_str(),
-			jdn1,
-			xdate.c_str(), CalendarSchemeAbrev[g_to].c_str()
-		);
-	}
+        if( ret == true )
+        {
+            xdate = calStrFromJdn( jdn1, g_to );
+        }
+        wxPrintf(
+            "%s (%s) -> %ld -> %s (%s)\n",
+            date.c_str(), CalendarSchemeAbrev[g_from],
+            jdn1,
+            xdate.c_str(), CalendarSchemeAbrev[g_to]
+        );
+    }
 }
 
 /*! Calculate a date range given an age in years and a single date.
  */
 void ccAgeDateToRange( wxString& line )
 {
-  	wxStringTokenizer tkz;
+    wxStringTokenizer tkz;
     wxString token;
-	long jdn1, jdn2, year;
-	wxString adate;
-	bool ret;
+    long jdn1, jdn2, year;
+    wxString adate;
+    bool ret;
 
     tkz.SetString( line );
     token = tkz.GetNextToken();
-	token.ToLong( &year );
-	token = tkz.GetString();
-	token.Trim();  // Get rid of newline
+    token.ToLong( &year );
+    token = tkz.GetString();
+    token.Trim();  // Get rid of newline
 
     if( g_range == true ) {
         ret = calStrToJdnRange( &jdn1, &jdn2, token, g_from );
-       	if( ret == false ) return;
+        if( ret == false ) return;
     } else {
         ret = calStrToJdn( &jdn1, token, g_from );
-       	if( ret == false ) return;
+        if( ret == false ) return;
         jdn2 = jdn1;
     }
 
@@ -172,37 +172,37 @@ void ccAgeDateToRange( wxString& line )
     jdn1++;
     ret = calAddToJdn( &jdn2, -year, CALENDAR_UNIT_Year, g_from );
 
-	adate = calStrFromJdnRange( jdn1, jdn2, g_to );
-	wxPrintf( 
-		wxT("%ld yrs on %s (%s) -> %ld - %ld -> %s (%s)\n"),
-        year, token.c_str(), CalendarSchemeAbrev[g_from].c_str(),
-		jdn1, jdn2,
-		adate.c_str(), CalendarSchemeAbrev[g_to].c_str()
-	);
+    adate = calStrFromJdnRange( jdn1, jdn2, g_to );
+    wxPrintf(
+        "%ld yrs on %s (%s) -> %ld ~ %ld -> %s (%s)\n",
+        year, token.c_str(), CalendarSchemeAbrev[g_from],
+        jdn1, jdn2,
+        adate.c_str(), CalendarSchemeAbrev[g_to]
+    );
 }
 
 /*! Calculate a date range given an age in months and a single date.
  */
 void ccAgeMonthsDateToRange( wxString& line )
 {
-  	wxStringTokenizer tkz;
+    wxStringTokenizer tkz;
     wxString token;
-	long jdn1, jdn2, month;
-	wxString adate;
-	bool ret;
+    long jdn1, jdn2, month;
+    wxString adate;
+    bool ret;
 
     tkz.SetString( line );
     token = tkz.GetNextToken();
-	token.ToLong( &month );
-	token = tkz.GetString();
-	token.Trim();  // Get rid of newline
+    token.ToLong( &month );
+    token = tkz.GetString();
+    token.Trim();  // Get rid of newline
 
     if( g_range == true ) {
         ret = calStrToJdnRange( &jdn1, &jdn2, token, g_from );
-       	if( ret == false ) return;
+        if( ret == false ) return;
     } else {
         ret = calStrToJdn( &jdn1, token, g_from );
-       	if( ret == false ) return;
+        if( ret == false ) return;
         jdn2 = jdn1;
     }
 
@@ -210,111 +210,112 @@ void ccAgeMonthsDateToRange( wxString& line )
     jdn1++;
     ret = calAddToJdn( &jdn2, -month, CALENDAR_UNIT_Month, g_from );
 
-	adate = calStrFromJdnRange( jdn1, jdn2, g_to );
-	wxPrintf( 
-		wxT("%ld mths on %s (%s) -> %ld ~ %ld -> %s (%s)\n"),
-        month, token.c_str(), CalendarSchemeAbrev[g_from].c_str(),
-		jdn1, jdn2,
-		adate.c_str(), CalendarSchemeAbrev[g_to].c_str()
-	);
+    adate = calStrFromJdnRange( jdn1, jdn2, g_to );
+    wxPrintf(
+        "%ld mths on %s (%s) -> %ld ~ %ld -> %s (%s)\n",
+        month, token.c_str(), CalendarSchemeAbrev[g_from],
+        jdn1, jdn2,
+        adate.c_str(), CalendarSchemeAbrev[g_to]
+    );
 }
 
 /*! Convert the string to a calender scheme.
  */
 CalendarScheme ccGetScheme( wxString& token )
 {
-    if( token == wxT("us")   ) return CALENDAR_SCH_Unstated;	
-    if( token == wxT("uk")   ) return CALENDAR_SCH_Unknown;	
-    if( token == wxT("ul")   ) return CALENDAR_SCH_Unlisted;	
-    if( token == wxT("jdn")  ) return CALENDAR_SCH_JulianDayNumber;	
-    if( token == wxT("jd")   ) return CALENDAR_SCH_JulianDay;	
-    if( token == wxT("mjd")  ) return CALENDAR_SCH_ModJulianDay;	
-    if( token == wxT("rd")   ) return CALENDAR_SCH_RataDie;	
-    if( token == wxT("j")    ) return CALENDAR_SCH_Julian;	
-    if( token == wxT("g")    ) return CALENDAR_SCH_Gregorian;	
-    if( token == wxT("cath") ) return CALENDAR_SCH_Catholic;	
-    if( token == wxT("eng")  ) return CALENDAR_SCH_English;	
-    if( token == wxT("scot") ) return CALENDAR_SCH_Scottish;	
-    if( token == wxT("swed") ) return CALENDAR_SCH_Swedish;	
-    if( token == wxT("fr")   ) return CALENDAR_SCH_FrenchRevolution;	
-    return CALENDAR_SCH_Unstated;	    
+    if( token == "us"   ) return CALENDAR_SCH_Unstated;
+    if( token == "uk"   ) return CALENDAR_SCH_Unknown;
+    if( token == "ul"   ) return CALENDAR_SCH_Unlisted;
+    if( token == "jdn"  ) return CALENDAR_SCH_JulianDayNumber;
+    if( token == "jd"   ) return CALENDAR_SCH_JulianDay;
+    if( token == "mjd"  ) return CALENDAR_SCH_ModJulianDay;
+    if( token == "rd"   ) return CALENDAR_SCH_RataDie;
+    if( token == "j"    ) return CALENDAR_SCH_Julian;
+    if( token == "g"    ) return CALENDAR_SCH_Gregorian;
+    if( token == "cath" ) return CALENDAR_SCH_Catholic;
+    if( token == "eng"  ) return CALENDAR_SCH_English;
+    if( token == "scot" ) return CALENDAR_SCH_Scottish;
+    if( token == "swed" ) return CALENDAR_SCH_Swedish;
+    if( token == "fr"   ) return CALENDAR_SCH_FrenchRevolution;
+    return CALENDAR_SCH_Unstated;
 }
 
 /*! Run the Calculator.
  */
 int ccEval()
 {
-	int errnum = 0;
+    int errnum = 0;
     wxString line;
     wxString token;
-  	wxStringTokenizer tkz;
+    wxStringTokenizer tkz;
 
-	for(;;)
-	{
-		wxPrintf( wxT("cc: ") );
+    for(;;)
+    {
+        wxPrintf( "cc: " );
         wxFgets( wxStringBuffer( line, 256 ), 256, stdin );
-		if( line == wxT("\n") ) break;
+        if( line == wxT("\n") ) break;
         tkz.SetString( line );
         token = tkz.GetNextToken();
         if( token == wxEmptyString ) continue;
 
-		if( token == wxT("?") || token == wxT("help") ) {
-			ccUse();
+        if( token == "?" || token == "help" ) {
+            ccUse();
             continue;
-		}
-		if( token == wxT("x") )	{
+        }
+        if( token == "x" )  {
             ccConvertDate( tkz.GetString() );
-			continue;
-		}
-		if( token == wxT("a") ) {
-			ccAgeDateToRange( tkz.GetString() );
-			continue;
-		}
-		if( token == wxT("am") ) {
-			ccAgeMonthsDateToRange( tkz.GetString() );
-			continue;
-		}
-		if( token == wxT("range") )	{
-			g_range = true;
             continue;
-		}
-		if( token == wxT("single") ) {
-			g_range = false;
+        }
+        if( token == "a" ) {
+            ccAgeDateToRange( tkz.GetString() );
             continue;
-		}
-		if( token == wxT("from") )	{
+        }
+        if( token == "am" ) {
+            ccAgeMonthsDateToRange( tkz.GetString() );
+            continue;
+        }
+        if( token == "range" )  {
+            g_range = true;
+            continue;
+        }
+        if( token == "single" ) {
+            g_range = false;
+            continue;
+        }
+        if( token == "from" )   {
             token = tkz.GetNextToken();
-			g_from = ccGetScheme( token );
-			wxPrintf( wxT("Convert from %s (%s)\n"), 
-				CalendarSchemeName[g_from].c_str(),
-				CalendarSchemeAbrev[g_from].c_str()
-			);
-			continue;
-		}
-		if( token == wxT("to") )	{
+            g_from = ccGetScheme( token );
+            wxPrintf(
+                "Convert from %s (%s)\n",
+                CalendarSchemeName[g_from],
+                CalendarSchemeAbrev[g_from]
+            );
+            continue;
+        }
+        if( token == "to" ) {
             token = tkz.GetNextToken();
-			g_to = ccGetScheme( token );
-			wxPrintf( wxT("Convert to %s (%s)\n"), 
-				CalendarSchemeName[g_to].c_str(),
-				CalendarSchemeAbrev[g_to].c_str()
-			);
-			continue;
-		}
-        if( token == wxT("exit") ) {
+            g_to = ccGetScheme( token );
+            wxPrintf( wxT("Convert to %s (%s)\n"),
+                CalendarSchemeName[g_to],
+                CalendarSchemeAbrev[g_to]
+            );
+            continue;
+        }
+        if( token == "exit" ) {
             return 0;
         }
-		wxPrintf( wxT(" Unrecognized command!\n") );
-	}
-	return errnum;
+        wxPrintf( " Unrecognized command!\n" );
+    }
+    return errnum;
 }
 
 int main()
 {
-	int ret = 0;
-	if( wxInitialize() == false ) return 1;
-	wxPrintf( g_title );
+    int ret = 0;
+    if( wxInitialize() == false ) return 1;
+    wxPrintf( g_title );
     ret = ccEval();
-	wxUninitialize();
+    wxUninitialize();
     return ret;
 }
 

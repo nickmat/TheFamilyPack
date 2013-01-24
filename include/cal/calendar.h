@@ -170,11 +170,11 @@ enum CalendarScheme {
 
 /*! Array of scheme names
  */
-extern const wxString CalendarSchemeName[];
+extern const char* CalendarSchemeName[];
 
 /*! Array of scheme abreviations
  */
-extern const wxString CalendarSchemeAbrev[];
+extern const char* CalendarSchemeAbrev[];
 
 /*! Convert a date given in individual records (Largest, ie year, first) for a 
  *  given scheme into a julian day number. This only returns a range of more than a day 
@@ -246,7 +246,7 @@ enum CalendarUnit {
 
 /*! Array of unit names
  */
-extern const wxString CalendarUnitName[];
+extern const char* CalendarUnitName[];
 
 /*! Add to jdn the given value, based on the values unit and the given scheme. 
  *  Returns true if successful, else false.

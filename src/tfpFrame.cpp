@@ -1504,7 +1504,7 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
 
     wxASSERT( name.size() > 0 );
     uch = name.GetChar( 0 );
-    uch1 = name.size() > 1 ? name.GetChar( 1 ) : 0;
+    uch1 = name.size() > 1 ? name.GetChar( 1 ) : (wxUniChar) '\0';
     switch( uch.GetValue() )
     {
     case 'C':  // Chart reference

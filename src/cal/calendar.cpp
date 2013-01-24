@@ -42,7 +42,7 @@
 #include "calJulian.h"
 #include "calGregorian.h"
 
-const wxString CalendarSchemeName[] = {
+const char* CalendarSchemeName[] = {
     _("Unstated"),
     _("Unknown"),
     _("Unlisted"),
@@ -59,7 +59,7 @@ const wxString CalendarSchemeName[] = {
     _("French Revolutionary")
 };
 
-const wxString CalendarSchemeAbrev[] = {
+const char* CalendarSchemeAbrev[] = {
     "null", // Unstated
     "NK",   // Unknown
     "NL",   // Unlisted
@@ -76,7 +76,7 @@ const wxString CalendarSchemeAbrev[] = {
     "FR"
 };
 
-const wxString CalendarUnitName[] = {
+const char* CalendarUnitName[] = {
     _("Unstated"),
     _("Year"),
     _("Month"),

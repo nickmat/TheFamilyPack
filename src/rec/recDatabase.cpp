@@ -47,7 +47,8 @@
 #include "generated/recSql.ci"
 
 wxSQLite3Database* recDb::s_db = NULL;
-wxString           recDb::s_fname;
+//wxString           recDb::s_fname;
+const char*        recDb::s_fname;
 long               recDb::s_change = 0;
 long               recDb::s_spnumber = 0;
 
@@ -162,7 +163,7 @@ bool recDb::OpenDb( const wxString& fname )
 void recDb::CloseDb() 
 { 
     s_db->Close();
-    s_fname = wxEmptyString;
+    s_fname = "";
     ++s_change;
 }
 
