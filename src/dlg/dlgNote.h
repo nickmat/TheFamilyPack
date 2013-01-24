@@ -3,7 +3,6 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Display html text as a note.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     21 January 2012
  * RCS-ID:      $Id$
@@ -31,13 +30,13 @@
 #define DLGNOTE_H
 
 class TfpFrame;
-class wxHtmlWindow;
+class wxWebView;
 
-class dlgNote : public wxDialog 
+class dlgNote : public wxDialog
 {
 public:
-	dlgNote( TfpFrame* parent, const wxString& name ); 
-	~dlgNote();
+    dlgNote( TfpFrame* parent, const wxString& name );
+    ~dlgNote();
 
 private:
     bool TransferDataToWindow();
@@ -45,10 +44,10 @@ private:
     void OnIdle( wxIdleEvent& event );
     void OnClose( wxCloseEvent& event );
 
-    TfpFrame* m_frame;
-    wxString  m_name;
-    long      m_cond;
-	wxHtmlWindow* m_htmlWin;
+    TfpFrame*  m_frame;
+    wxString   m_name;
+    long       m_cond;
+    wxWebView* m_browser;
 };
 
 #endif // DLGNOTE_H

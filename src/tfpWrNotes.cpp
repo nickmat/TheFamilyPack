@@ -70,11 +70,11 @@ wxString tfpWriteDate( idt dateID )
     recDate date(dateID);
     if( date.f_id == 0 ) return wxEmptyString;
 
-    htm << "<html><head><title>Date</title></head><body>"
-           "<h1>Date " << date.GetIdStr() << "</h1>"
+    htm << tfpWrHead( "Date" )  //"<html><head><title>Date</title></head><body>"
+        << "<h1>Date " << date.GetIdStr() << "</h1>"
         << GetHtmDateData( date );
        
-    htm << "</body></html>";
+    htm << tfpWrTail(); // "</body></html>";
 
     return htm;
 }

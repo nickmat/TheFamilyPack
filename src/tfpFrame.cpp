@@ -38,13 +38,13 @@
 #endif
 
 #include <wx/webview.h>
+#include "webviewfshandler.h"
 #include <wx/numdlg.h>
 
 #include <rec/recIndividual.h>
 #include <rec/recVersion.h>
 #include <rec/recUser.h>
 
-#include "webviewfshandler.h"
 #include "tfpFrame.h"
 #include "tfpApp.h"
 #include "tfpVersion.h"
