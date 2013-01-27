@@ -50,6 +50,9 @@ class CalTestCase : public CppUnit::TestCase
 public:
     CalTestCase() {}
 
+    virtual void setUp();
+    virtual void tearDown();
+
 private:
     CPPUNIT_TEST_SUITE( CalTestCase );
         CPPUNIT_TEST( TestTable );
@@ -63,8 +66,9 @@ private:
     void TestJulian();
     void TestGregorian();
     void TestFrench();
-
     void TestAdd();
+
+
 
     DECLARE_NO_COPY_CLASS(CalTestCase)
 };
@@ -148,11 +152,23 @@ SampleDate SampleList[MaxSample] = {
     { 2486077, 764652, 2486076.5,   86076, { 18,  7, 2094 }, {  5,  7, 2094 }, { 30, 10,   302 } }
 };
 
+void CalTestCase::setUp()
+{
+    calInit();
+}
+
+void CalTestCase::tearDown()
+{
+    calUninit();
+}
+
 void CalTestCase::TestTable()
 {
     long jdn;//, num;
 //    double dbl;
     DMYt dmy;
+    wxString str;
+    bool ret;
 
     for( int i = 0 ; i < MaxSample ; i++ ) {
 #if 0   
@@ -185,6 +201,11 @@ void CalTestCase::TestTable()
         calConvertToJdn( &jdn, CALENDAR_SCH_Gregorian, 
             SampleList[i].g.year, SampleList[i].g.month, SampleList[i].g.day );
         CPPUNIT_ASSERT( jdn == SampleList[i].jdn );
+        jdn = 0;
+        str = calStrFromJdn( SampleList[i].jdn, CALENDAR_SCH_Gregorian );
+        ret = calStrToJdn( &jdn, str, CALENDAR_SCH_Gregorian );
+        CPPUNIT_ASSERT( ret == true );
+        CPPUNIT_ASSERT( jdn == SampleList[i].jdn );        
 
         calConvertFromJdn( SampleList[i].jdn, CALENDAR_SCH_Julian,
             &dmy.year, &dmy.month, &dmy.day );
@@ -195,6 +216,11 @@ void CalTestCase::TestTable()
         calConvertToJdn( &jdn, CALENDAR_SCH_Julian, 
             SampleList[i].j.year, SampleList[i].j.month, SampleList[i].j.day );
         CPPUNIT_ASSERT( jdn == SampleList[i].jdn );
+        jdn = 0;
+        str = calStrFromJdn( SampleList[i].jdn, CALENDAR_SCH_Julian );
+        ret = calStrToJdn( &jdn, str, CALENDAR_SCH_Julian );
+        CPPUNIT_ASSERT( ret == true );
+        CPPUNIT_ASSERT( jdn == SampleList[i].jdn );        
 
         calConvertFromJdn( SampleList[i].jdn, CALENDAR_SCH_FrenchRevolution,
             &dmy.year, &dmy.month, &dmy.day );
@@ -205,6 +231,11 @@ void CalTestCase::TestTable()
         calConvertToJdn( &jdn, CALENDAR_SCH_FrenchRevolution, 
             SampleList[i].fr.year, SampleList[i].fr.month, SampleList[i].fr.day );
         CPPUNIT_ASSERT( jdn == SampleList[i].jdn );
+        jdn = 0;
+        str = calStrFromJdn( SampleList[i].jdn, CALENDAR_SCH_FrenchRevolution );
+        ret = calStrToJdn( &jdn, str, CALENDAR_SCH_FrenchRevolution );
+        CPPUNIT_ASSERT( ret == true );
+        CPPUNIT_ASSERT( jdn == SampleList[i].jdn );        
     }
 }
 

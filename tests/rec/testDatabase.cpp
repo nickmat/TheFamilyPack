@@ -42,6 +42,12 @@
 
 #include <rec/recDb.h>
 
+// Set to 0 avoid wxSQLite3 execptions which may cause memory leaks
+// or 1 otherwise
+#define ALLOW_SQL_MEMORY_LEAK 0
+
+#define TEST_FILENAME "./TestDb.tfpd"
+
 // ----------------------------------------------------------------------------
 // test class
 // ----------------------------------------------------------------------------
@@ -51,7 +57,12 @@ class RecTestCase : public CppUnit::TestCase
 public:
     RecTestCase() {}
 
+    virtual void setUp();
+    virtual void tearDown();
+
 private:
+    void AddTestData();
+
     CPPUNIT_TEST_SUITE( RecTestCase );
         // The order of these are significant as records
         // are created that are used in later tests.
@@ -63,8 +74,6 @@ private:
         CPPUNIT_TEST( TestPlacePart );
         CPPUNIT_TEST( TestPlacePartType );
         CPPUNIT_TEST( TestPersona );
-//        CPPUNIT_TEST( TestAttribute );
-//        CPPUNIT_TEST( TestAttributeType );
         CPPUNIT_TEST( TestEvent );
         CPPUNIT_TEST( TestEventType );
         CPPUNIT_TEST( TestEventTypeRole );
@@ -76,7 +85,6 @@ private:
         CPPUNIT_TEST( TestFamily );
         CPPUNIT_TEST( TestFamilyIndividual );
         CPPUNIT_TEST( TestSource );
-        CPPUNIT_TEST( TestShutdown );
     CPPUNIT_TEST_SUITE_END();
 
     void TestDbCreate();
@@ -87,8 +95,6 @@ private:
     void TestPlacePart();
     void TestPlacePartType();
     void TestPersona();
-//    void TestAttribute();
-//    void TestAttributeType();
     void TestEvent();
     void TestEventType();
     void TestEventTypeRole();
@@ -100,7 +106,6 @@ private:
     void TestFamily();
     void TestFamilyIndividual();
     void TestSource();
-    void TestShutdown();
 
     DECLARE_NO_COPY_CLASS(RecTestCase)
 };
@@ -111,11 +116,57 @@ CPPUNIT_TEST_SUITE_REGISTRATION( RecTestCase );
 // also include in it's own registry so that these tests can be run alone
 CPPUNIT_TEST_SUITE_NAMED_REGISTRATION( RecTestCase, "RecTestCase" );
 
+void RecTestCase::setUp()
+{
+//    recDb::SetDb( new wxSQLite3Database() );
+    recInitialize();
+    wxString fname = TEST_FILENAME;
+    wxRemoveFile( fname );
+    recDb::CreateDb( fname, 0 );
+}
+
+void RecTestCase::tearDown()
+{
+    recDb::CloseDb();
+    recUninitialize();
+//    delete recDb::GetDb();
+}
+
+void RecTestCase::AddTestData()
+{
+    const char* sql =
+        "BEGIN;\n"
+        "INSERT INTO Event"
+        " (id, title, type_id, date1_id, date2_id, place_id, note, date_pt)"
+        " VALUES(1, 'Test 1', -1, 0, 0, 0, '', 0);\n"
+        "INSERT INTO Event"
+        " (id, title, type_id, date1_id, date2_id, place_id, note, date_pt)"
+        " VALUES(19, 'Test 19', -1, 0, 0, 0, '', 0);\n"
+
+        "INSERT INTO Persona (id, sex, ref_id, note) VALUES(4, 0, 0, '');\n"
+        "INSERT INTO Individual"
+        " (id, surname, given, epitaph, fam_id, per_id)"
+        " VALUES (4, 'Surname', 'Given Surname', '', 0, 4);\n"
+
+        "INSERT INTO Persona (id, sex, ref_id, note) VALUES(19, 0, 0, '');\n"
+        "INSERT INTO Individual"
+        " (id, surname, given, epitaph, fam_id, per_id)"
+        " VALUES (19, 'Surname', 'Given Surname', '', 0, 19);\n"
+
+        "INSERT INTO Persona (id, sex, ref_id, note) VALUES(3, 0, 0, '');\n"
+        "INSERT INTO Persona (id, sex, ref_id, note) VALUES(20, 0, 0, '');\n"
+        "COMMIT;\n"
+    ;
+    recDb::GetDb()->ExecuteUpdate( sql );
+}
+
 void RecTestCase::TestDbCreate()
 {
-    wxString fname = "./TestDb.tfpd";
+    // Shutdown the current db
+    recDb::CloseDb();
+
+    wxString fname = "./Temp.tfpd";
     wxRemoveFile( fname );
-    recDb::SetDb( new wxSQLite3Database() );
 
     bool ret = recDb::CreateDb( fname, 0 );
     CPPUNIT_ASSERT( ret == true );
@@ -138,9 +189,10 @@ void RecTestCase::TestContactList()
     recContactList record1;
     record1.FSetID( 0 );
     record1.FSetIndID( 3 );  // Doesn't exist so will cause an exception on Save()
-
+#if ALLOW_SQL_MEMORY_LEAK
     // id = 0 so create new record and set id to new value.
     CPPUNIT_ASSERT_THROW( record1.Save(), wxSQLite3Exception );
+#endif
     recIndividual ind(0);
     ind.FSetID(3);
     CPPUNIT_ASSERT_NO_THROW( ind.Save() );
@@ -180,188 +232,6 @@ void RecTestCase::TestContactList()
     CPPUNIT_ASSERT( recContactList::Exists( 999 ) == true );
     recContactList::Delete( 999 );
     CPPUNIT_ASSERT( recContactList::Exists( 999 ) == false );
-}
-
-void RecTestCase::TestPersona()
-{
-    idt id;
-
-    recPersona persona1;
-    persona1.f_id = 0;
-
-    persona1.f_sex = SEX_Male;
-    persona1.f_ref_id = 10;
-    persona1.f_note = "Someone";
-    // f_id = 0 so create new record and set f_id to new value.
-    persona1.Save();
-    id = persona1.f_id;
-    CPPUNIT_ASSERT( id == 1 );
-
-    recPersona persona2;
-    persona2.f_id = persona1.f_id;
-    persona2.Read();
-    CPPUNIT_ASSERT( persona1 == persona2 );
-
-    persona1.f_sex = SEX_Female;
-    persona1.f_ref_id = 22;
-    persona1.f_note = "Another one";
-    // f_id = 1 which exists, so amend record leaving f_id to old value.
-    persona1.Save();
-    CPPUNIT_ASSERT( persona1.f_id == id );
-    persona2.Read();
-    CPPUNIT_ASSERT( persona1 == persona2 );
-
-    persona1.f_id = 999;
-    persona1.f_note = "Not wanted";
-    // f_id = 999 which doesn't exists, so create new record with no change to f_id.
-    persona1.Save();
-    CPPUNIT_ASSERT( persona1.f_id == 999 );
-    persona2.f_id = persona1.f_id;
-    persona2.Read();
-    CPPUNIT_ASSERT( persona1 == persona2 );
-
-    persona1.f_id = 0;
-    persona1.f_note = "Nor this";
-    persona1.Save();
-    CPPUNIT_ASSERT( persona1.f_id != 0 );
-    CPPUNIT_ASSERT( persona1.Exists() == true );
-    persona1.Delete();
-    CPPUNIT_ASSERT( persona1.Exists() == false );
-
-    CPPUNIT_ASSERT( recPersona::Exists( 999 ) == true );
-    recPersona::Delete( 999 );
-    CPPUNIT_ASSERT( recPersona::Exists( 999 ) == false );
-
-    // Create some records for later testing, Pa1 is already there
-    recPersona per(0);
-    per.FSetID( 3 );
-    per.Save();
-    per.FSetID( 4 );
-    per.Save();
-    per.FSetID( 19 );
-    per.Save();
-    per.FSetID( 20 );
-    per.Save();
-}
-
-void RecTestCase::TestIndividual()
-{
-    idt id;
-
-    recIndividual record1;
-    record1.f_id = 0;
-
-    record1.f_surname     = "Matthews";
-    record1.f_given       = "Nick";
-    record1.f_epitaph     = "(1948-)";
-    record1.f_fam_id      = 4;
-    record1.f_per_id      = 5;
-    // f_id = 0 so create new record and set f_id to new value.
-    record1.Save();
-    id = record1.f_id;
-    CPPUNIT_ASSERT( id > 0 );
-
-    recIndividual record2;
-    record2.f_id = record1.f_id;
-    record2.Read();
-    CPPUNIT_ASSERT( record1 == record2 );
-
-    record1.f_surname     = "Bloggs";
-    record1.f_given       = "Fred";
-    record1.f_epitaph     = "(1948-)";
-    record1.f_fam_id      = 18;
-    record1.f_per_id      = 17;
-    // f_id = 1 which exists, so amend record leaving f_id to old value.
-    record1.Save();
-    CPPUNIT_ASSERT( record1.f_id == id );
-    record2.Read();
-    CPPUNIT_ASSERT( record1 == record2 );
-
-    record1.f_id = 999;
-    record1.f_surname = "Not wanted";
-    // f_id = 999 which doesn't exists, so create new record with no change to f_id.
-    record1.Save();
-    CPPUNIT_ASSERT( record1.f_id == 999 );
-    record2.f_id = record1.f_id;
-    record2.Read();
-    CPPUNIT_ASSERT( record1 == record2 );
-
-    record1.f_id = 0;
-    record1.f_surname = "Nor this";
-    record1.Save();
-    CPPUNIT_ASSERT( record1.f_id != 0 );
-    CPPUNIT_ASSERT( record1.Exists() == true );
-    record1.Delete();
-    CPPUNIT_ASSERT( record1.Exists() == false );
-
-    CPPUNIT_ASSERT( recIndividual::Exists( 999 ) == true );
-    recIndividual::Delete( 999 );
-    CPPUNIT_ASSERT( recIndividual::Exists( 999 ) == false );
-
-    // Create some records for later testing
-    recIndividual ind(0);
-    ind.FSetID( 6 );
-    ind.Save();
-    ind.FSetID( 12 );
-    ind.Save();
-}
-
-
-void RecTestCase::TestFamily()
-{
-    idt id;
-
-    recFamily record1;
-    record1.f_id = 0;
-
-    record1.f_husb_id  = 3;
-    record1.f_wife_id  = 4;
-    // f_id = 0 so create new record and set f_id to new value.
-    record1.Save();
-    id = record1.f_id;
-    // Database is created with a starting family F1, so this is F2
-    CPPUNIT_ASSERT( id == 2 );
-
-    recFamily record2;
-    record2.f_id = record1.f_id;
-    record2.Read();
-    CPPUNIT_ASSERT( record1 == record2 );
-
-    record1.f_husb_id  = 16;
-    record1.f_wife_id  = 15;
-    // f_id = 1 which exists, so amend record leaving f_id to old value.
-    record1.Save();
-    CPPUNIT_ASSERT( record1.f_id == id );
-    record2.Read();
-    CPPUNIT_ASSERT( record1 == record2 );
-
-    record1.f_id = 999;
-    record1.f_husb_id = 8888;
-    // f_id = 999 which doesn't exists, so create new record with no change to f_id.
-    record1.Save();
-    CPPUNIT_ASSERT( record1.f_id == 999 );
-    record2.f_id = record1.f_id;
-    record2.Read();
-    CPPUNIT_ASSERT( record1 == record2 );
-
-    record1.f_id = 0;
-    record1.f_husb_id = 7777;
-    record1.Save();
-    CPPUNIT_ASSERT( record1.f_id != 0 );
-    CPPUNIT_ASSERT( record1.Exists() == true );
-    record1.Delete();
-    CPPUNIT_ASSERT( record1.Exists() == false );
-
-    CPPUNIT_ASSERT( recFamily::Exists( 999 ) == true );
-    recFamily::Delete( 999 );
-    CPPUNIT_ASSERT( recFamily::Exists( 999 ) == false );
-
-    // Create some records for later testing
-    recFamily fam(0);
-    fam.FSetID( 5 );
-    fam.Save();
-    fam.FSetID( 11 );
-    fam.Save();
 }
 
 void RecTestCase::TestDate()
@@ -570,109 +440,69 @@ void RecTestCase::TestPlacePartType()
     CPPUNIT_ASSERT( recPlacePartType::Exists( 999 ) == false );
 }
 
-#if 0
-void RecTestCase::TestAttribute()
+void RecTestCase::TestPersona()
 {
     idt id;
 
-    recAttribute attr1;
-    attr1.f_id = 0;
+    recPersona persona1;
+    persona1.f_id = 0;
 
-    attr1.f_per_id = 1;
-    attr1.f_type_id = -2;
-    attr1.f_val = "Matthews";
-    attr1.f_sequence = 3;
+    persona1.f_sex = SEX_Male;
+    persona1.f_ref_id = 10;
+    persona1.f_note = "Someone";
     // f_id = 0 so create new record and set f_id to new value.
-    attr1.Save();
-    id = attr1.f_id;
+    persona1.Save();
+    id = persona1.f_id;
     CPPUNIT_ASSERT( id == 1 );
 
-    recAttribute attr2;
-    attr2.f_id = attr1.f_id;
-    attr2.Read();
-    CPPUNIT_ASSERT( attr1 == attr2 );
+    recPersona persona2;
+    persona2.f_id = persona1.f_id;
+    persona2.Read();
+    CPPUNIT_ASSERT( persona1 == persona2 );
 
-    attr1.f_per_id = 2;
-    attr1.f_type_id = -1;
-    attr1.f_val = "Nick";
-    attr1.f_sequence = 1;
+    persona1.f_sex = SEX_Female;
+    persona1.f_ref_id = 22;
+    persona1.f_note = "Another one";
     // f_id = 1 which exists, so amend record leaving f_id to old value.
-    attr1.Save();
-    CPPUNIT_ASSERT( attr1.f_id == id );
-    attr2.Read();
-    CPPUNIT_ASSERT( attr1 == attr2 );
+    persona1.Save();
+    CPPUNIT_ASSERT( persona1.f_id == id );
+    persona2.Read();
+    CPPUNIT_ASSERT( persona1 == persona2 );
 
-    attr1.f_id = 999;
-    attr1.f_val = "Anything";
+    persona1.f_id = 999;
+    persona1.f_note = "Not wanted";
     // f_id = 999 which doesn't exists, so create new record with no change to f_id.
-    attr1.Save();
-    CPPUNIT_ASSERT( attr1.f_id == 999 );
-    attr2.f_id = attr1.f_id;
-    attr2.Read();
-    CPPUNIT_ASSERT( attr1 == attr2 );
+    persona1.Save();
+    CPPUNIT_ASSERT( persona1.f_id == 999 );
+    persona2.f_id = persona1.f_id;
+    persona2.Read();
+    CPPUNIT_ASSERT( persona1 == persona2 );
 
-    attr1.f_id = 0;
-    attr1.f_val = "More";
-    attr1.Save();
-    CPPUNIT_ASSERT( attr1.f_id != 0 );
-    CPPUNIT_ASSERT( attr1.Exists() == true );
-    attr1.Delete();
-    CPPUNIT_ASSERT( attr1.Exists() == false );
+    persona1.f_id = 0;
+    persona1.f_note = "Nor this";
+    persona1.Save();
+    CPPUNIT_ASSERT( persona1.f_id != 0 );
+    CPPUNIT_ASSERT( persona1.Exists() == true );
+    persona1.Delete();
+    CPPUNIT_ASSERT( persona1.Exists() == false );
 
-    CPPUNIT_ASSERT( recAttribute::Exists( 999 ) == true );
-    recAttribute::Delete( 999 );
-    CPPUNIT_ASSERT( recAttribute::Exists( 999 ) == false );
+    CPPUNIT_ASSERT( recPersona::Exists( 999 ) == true );
+    recPersona::Delete( 999 );
+    CPPUNIT_ASSERT( recPersona::Exists( 999 ) == false );
+
+    // Create some records for later testing, Pa1 is already there
+    recPersona per(0);
+    per.FSetID( 3 );
+    per.Save();
+    per.FSetID( 4 );
+    per.Save();
+    per.FSetID( 19 );
+    per.Save();
+    per.FSetID( 20 );
+    per.Save();
 }
 
-void RecTestCase::TestAttributeType()
-{
-    idt id;
 
-    recAttributeType attrtype1;
-    attrtype1.f_id = 0;
-
-    attrtype1.f_grp = recAttributeType::AGRP_Other;
-    attrtype1.f_name = "Hair colour";
-    // f_id = 0 so create new record and set f_id to new value.
-    attrtype1.Save();
-    id = attrtype1.f_id;
-    CPPUNIT_ASSERT( id == 1 );
-
-    recAttributeType attrtype2;
-    attrtype2.f_id = attrtype1.f_id;
-    attrtype2.Read();
-    CPPUNIT_ASSERT( attrtype1 == attrtype2 );
-
-    attrtype1.f_grp = recAttributeType::AGRP_Occ;
-    attrtype1.f_name = "Bricklayer";
-    // f_id = 1 which exists, so amend record leaving f_id to old value.
-    attrtype1.Save();
-    CPPUNIT_ASSERT( attrtype1.f_id == id );
-    attrtype2.Read();
-    CPPUNIT_ASSERT( attrtype1 == attrtype2 );
-
-    attrtype1.f_id = 999;
-    attrtype1.f_name = "Not wanted";
-    // f_id = 999 which doesn't exists, so create new record with no change to f_id.
-    attrtype1.Save();
-    CPPUNIT_ASSERT( attrtype1.f_id == 999 );
-    attrtype2.f_id = attrtype1.f_id;
-    attrtype2.Read();
-    CPPUNIT_ASSERT( attrtype1 == attrtype2 );
-
-    attrtype1.f_id = 0;
-    attrtype1.f_name = "Nor this";
-    attrtype1.Save();
-    CPPUNIT_ASSERT( attrtype1.f_id != 0 );
-    CPPUNIT_ASSERT( attrtype1.Exists() == true );
-    attrtype1.Delete();
-    CPPUNIT_ASSERT( attrtype1.Exists() == false );
-
-    CPPUNIT_ASSERT( recAttributeType::Exists( 999 ) == true );
-    recAttributeType::Delete( 999 );
-    CPPUNIT_ASSERT( recAttributeType::Exists( 999 ) == false );
-}
-#endif
 void RecTestCase::TestEvent()
 {
     idt id;
@@ -687,8 +517,10 @@ void RecTestCase::TestEvent()
     record1.FSetPlaceID( 5 );
     record1.FSetNote( "Good one" );
     record1.FSetDatePt( 2430792 );
+#if ALLOW_SQL_MEMORY_LEAK
     // f_id = 0 so create new record and set f_id to new value.
     CPPUNIT_ASSERT_THROW( record1.Save(), wxSQLite3Exception );
+#endif
     record1.FSetTypeID( recEventType::ET_Marriage ); // Correct record
     CPPUNIT_ASSERT_NO_THROW( record1.Save() );
     id = record1.FGetID();
@@ -848,6 +680,7 @@ void RecTestCase::TestEventTypeRole()
 void RecTestCase::TestEventPersona()
 {
     idt id;
+    CPPUNIT_ASSERT_NO_THROW( AddTestData() );
 
     recEventPersona record1;
     record1.FSetID( 0 );
@@ -857,8 +690,10 @@ void RecTestCase::TestEventPersona()
     record1.FSetRoleID( 10000 ); // Doesn't exist, make Save() throw 
     record1.FSetNote( "Good person" );
     record1.FSetPerSeq( 123 );
+#if ALLOW_SQL_MEMORY_LEAK
     // f_id = 0 so create new record and set f_id to new value.
     CPPUNIT_ASSERT_THROW( record1.Save(), wxSQLite3Exception );
+#endif
     record1.FSetRoleID( recEventTypeRole::ROLE_Birth_Born ); // Correct record
     CPPUNIT_ASSERT_NO_THROW( record1.Save() );
     id = record1.FGetID();
@@ -1004,9 +839,72 @@ void RecTestCase::TestReferenceEntity()
     CPPUNIT_ASSERT( recReferenceEntity::Exists( 999 ) == false );
 }
 
+void RecTestCase::TestIndividual()
+{
+    idt id;
+
+    recIndividual record1;
+    record1.f_id = 0;
+
+    record1.f_surname     = "Matthews";
+    record1.f_given       = "Nick";
+    record1.f_epitaph     = "(1948-)";
+    record1.f_fam_id      = 4;
+    record1.f_per_id      = 5;
+    // f_id = 0 so create new record and set f_id to new value.
+    record1.Save();
+    id = record1.f_id;
+    CPPUNIT_ASSERT( id > 0 );
+
+    recIndividual record2;
+    record2.f_id = record1.f_id;
+    record2.Read();
+    CPPUNIT_ASSERT( record1 == record2 );
+
+    record1.f_surname     = "Bloggs";
+    record1.f_given       = "Fred";
+    record1.f_epitaph     = "(1948-)";
+    record1.f_fam_id      = 18;
+    record1.f_per_id      = 17;
+    // f_id = 1 which exists, so amend record leaving f_id to old value.
+    record1.Save();
+    CPPUNIT_ASSERT( record1.f_id == id );
+    record2.Read();
+    CPPUNIT_ASSERT( record1 == record2 );
+
+    record1.f_id = 999;
+    record1.f_surname = "Not wanted";
+    // f_id = 999 which doesn't exists, so create new record with no change to f_id.
+    record1.Save();
+    CPPUNIT_ASSERT( record1.f_id == 999 );
+    record2.f_id = record1.f_id;
+    record2.Read();
+    CPPUNIT_ASSERT( record1 == record2 );
+
+    record1.f_id = 0;
+    record1.f_surname = "Nor this";
+    record1.Save();
+    CPPUNIT_ASSERT( record1.f_id != 0 );
+    CPPUNIT_ASSERT( record1.Exists() == true );
+    record1.Delete();
+    CPPUNIT_ASSERT( record1.Exists() == false );
+
+    CPPUNIT_ASSERT( recIndividual::Exists( 999 ) == true );
+    recIndividual::Delete( 999 );
+    CPPUNIT_ASSERT( recIndividual::Exists( 999 ) == false );
+
+    // Create some records for later testing
+    recIndividual ind(0);
+    ind.FSetID( 6 );
+    ind.Save();
+    ind.FSetID( 12 );
+    ind.Save();
+}
+
 void RecTestCase::TestLinkPersona()
 {
     idt id;
+    CPPUNIT_ASSERT_NO_THROW( AddTestData() );
 
     recLinkPersona record1;
     record1.f_id = 0;
@@ -1016,7 +914,7 @@ void RecTestCase::TestLinkPersona()
     record1.f_conf = 0.5;
     record1.f_comment = "This is he";
     // f_id = 0 so create new record and set f_id to new value.
-    record1.Save();
+    CPPUNIT_ASSERT_NO_THROW( record1.Save() );
     id = record1.f_id;
     CPPUNIT_ASSERT( id == 1 );
 
@@ -1030,7 +928,7 @@ void RecTestCase::TestLinkPersona()
     record1.f_conf = 0.333;
     record1.f_comment = "And maybe me";
     // f_id = 1 which exists, so amend record leaving f_id to old value.
-    record1.Save();
+    CPPUNIT_ASSERT_NO_THROW( record1.Save() );
     CPPUNIT_ASSERT( record1.f_id == id );
     record2.Read();
     CPPUNIT_ASSERT( record1 == record2 );
@@ -1038,7 +936,7 @@ void RecTestCase::TestLinkPersona()
     record1.f_id = 999;
     record1.f_comment = "Not wanted";
     // f_id = 999 which doesn't exists, so create new record with no change to f_id.
-    record1.Save();
+    CPPUNIT_ASSERT_NO_THROW( record1.Save() );
     CPPUNIT_ASSERT( record1.f_id == 999 );
     record2.f_id = record1.f_id;
     record2.Read();
@@ -1055,6 +953,63 @@ void RecTestCase::TestLinkPersona()
     CPPUNIT_ASSERT( recLinkPersona::Exists( 999 ) == true );
     recLinkPersona::Delete( 999 );
     CPPUNIT_ASSERT( recLinkPersona::Exists( 999 ) == false );
+}
+
+void RecTestCase::TestFamily()
+{
+    idt id;
+
+    recFamily record1;
+    record1.f_id = 0;
+
+    record1.f_husb_id  = 3;
+    record1.f_wife_id  = 4;
+    // f_id = 0 so create new record and set f_id to new value.
+    record1.Save();
+    id = record1.f_id;
+    // Database is created with a starting family F1, so this is F2
+    CPPUNIT_ASSERT( id == 2 );
+
+    recFamily record2;
+    record2.f_id = record1.f_id;
+    record2.Read();
+    CPPUNIT_ASSERT( record1 == record2 );
+
+    record1.f_husb_id  = 16;
+    record1.f_wife_id  = 15;
+    // f_id = 1 which exists, so amend record leaving f_id to old value.
+    record1.Save();
+    CPPUNIT_ASSERT( record1.f_id == id );
+    record2.Read();
+    CPPUNIT_ASSERT( record1 == record2 );
+
+    record1.f_id = 999;
+    record1.f_husb_id = 8888;
+    // f_id = 999 which doesn't exists, so create new record with no change to f_id.
+    record1.Save();
+    CPPUNIT_ASSERT( record1.f_id == 999 );
+    record2.f_id = record1.f_id;
+    record2.Read();
+    CPPUNIT_ASSERT( record1 == record2 );
+
+    record1.f_id = 0;
+    record1.f_husb_id = 7777;
+    record1.Save();
+    CPPUNIT_ASSERT( record1.f_id != 0 );
+    CPPUNIT_ASSERT( record1.Exists() == true );
+    record1.Delete();
+    CPPUNIT_ASSERT( record1.Exists() == false );
+
+    CPPUNIT_ASSERT( recFamily::Exists( 999 ) == true );
+    recFamily::Delete( 999 );
+    CPPUNIT_ASSERT( recFamily::Exists( 999 ) == false );
+
+    // Create some records for later testing
+    recFamily fam(0);
+    fam.FSetID( 5 );
+    fam.Save();
+    fam.FSetID( 11 );
+    fam.Save();
 }
 
 void RecTestCase::TestFamilyIndividual()
@@ -1161,9 +1116,11 @@ void RecTestCase::TestSource()
     CPPUNIT_ASSERT( recSource::Exists( 999 ) == false );
 }
 
+#if 0
 void RecTestCase::TestShutdown()
 {
     delete recDb::GetDb();
 }
+#endif
 
 // End of testDatabase.cpp

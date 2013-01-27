@@ -42,13 +42,32 @@
 #include <rec/recDatabase.h>
 #include <rec/recVersion.h>
 #include <rec/recIndividual.h>
+#include <cal/calendar.h>
 
 // SQL script to create new database
 #include "generated/recSql.ci"
 
+extern void recInitialize()
+{
+    if( recDb::GetDb() == NULL ) {
+        recDb::SetDb( new wxSQLite3Database() );
+    }
+    calInit();
+}
+
+extern void recUninitialize()
+{
+    wxSQLite3Database* db = recDb::GetDb();
+    if( db ) {
+        delete db;
+        recDb::SetDb( NULL );
+    }
+    calUninit();
+}
+
 wxSQLite3Database* recDb::s_db = NULL;
-//wxString           recDb::s_fname;
-const char*        recDb::s_fname;
+wxString           recDb::s_fname;
+//const char*        recDb::s_fname;
 long               recDb::s_change = 0;
 long               recDb::s_spnumber = 0;
 

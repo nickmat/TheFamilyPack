@@ -167,6 +167,13 @@ enum CalendarScheme {
     CALENDAR_SCH_Max
 };
 
+/*! Initialize the calendar lib
+ */
+extern void calInit();
+
+/*! Uninitialize the calendar lib
+ */
+extern void calUninit();
 
 /*! Array of scheme names
  */

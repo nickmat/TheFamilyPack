@@ -36,13 +36,12 @@ class TfpApp : public wxApp
 private:
 
 public:
-    TfpApp();
+    TfpApp() {}
     virtual bool OnInit();
     virtual int OnExit();
-
 };
 
-DECLARE_APP( TfpApp )
+wxDECLARE_APP( TfpApp );
 
 #endif // TFPAPP_H
 

@@ -29,10 +29,16 @@
 #define CALPARSE_H
 
 
+#include <map>
 #include "calendar.h"
+
 
 class calToken;
 typedef std::vector< calToken > calTokenVec;
+
+class calParser;
+extern calParser* g_calparser;
+typedef std::map< wxString, unsigned > calLabelMap;
 
 enum calTOKEN {
     calTOKEN_NULL,
@@ -45,6 +51,11 @@ enum calTOKEN {
     calTOKEN_RangeSep,
     calTOKEN_Minus
 };
+
+extern void calInitParser();
+extern void calUninitParser();
+
+extern calTokenVec calParseStr( const wxString& str );
 
 class calToken
 {
@@ -62,6 +73,19 @@ public:
     long GetNumber() const { return m_number; }
 };
 
-extern calTokenVec calParseStr( const wxString& str );
+class calParser
+{
+public:
+    calParser();
+
+    calTokenVec ParseStr( const wxString& str );
+
+private:
+    calTOKEN GetTokenType( const wxUniChar& uc );
+    calTOKEN GetPunctType( const wxString& punct );
+    long GetValue( const wxString& label );
+
+    calLabelMap m_lookup;
+};
 
 #endif // CALPARSE_H

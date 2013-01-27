@@ -42,17 +42,14 @@
 #include "tfpApp.h"
 #include "tfpFrame.h"
 #include "tfpMemory.h"
-#include "rec/recDatabase.h"
+#include <rec/recDatabase.h>
+#include <cal/calendar.h>
 
-IMPLEMENT_APP(TfpApp)
-
-TfpApp::TfpApp()
-{ 
-}
+wxIMPLEMENT_APP( TfpApp );
 
 /*! This is where all the application initialisation is carried out.
-    Function ends by creating the programs main frame and making it visible.
-*/
+ *  Function ends by creating the programs main frame and making it visible.
+ */
 bool TfpApp::OnInit()
 {
     wxImage::AddHandler( new wxPNGHandler );
@@ -61,7 +58,7 @@ bool TfpApp::OnInit()
     wxImage::AddHandler( new wxXPMHandler );
     tfpLoadMemoryFiles();
 
-    recDb::SetDb( new wxSQLite3Database() );
+    recInitialize();
     if( argc > 1 ) {
         // 1st comand line argument is assumed to be a database file
         wxString dbFName( argv[1] );
@@ -82,7 +79,7 @@ bool TfpApp::OnInit()
 */
 int TfpApp::OnExit()
 {
-    delete recDb::GetDb();
+    recUninitialize();
     return 0;
 }
 

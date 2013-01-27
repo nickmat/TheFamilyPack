@@ -35,17 +35,119 @@
 #include "wx/wx.h"
 #endif
 
-#include <map>
+
 #include "calParse.h"
 
-typedef std::map< wxString, unsigned > calLabelMap;
-calLabelMap LabelLookup;
+//typedef std::map< wxString, unsigned > calLabelMap;
+//calLabelMap LabelLookup;
+extern calParser* g_calparser = NULL;
 
-extern void calInit();
+void calInitParser()
+{
+    wxASSERT( g_calparser == NULL );
+    g_calparser = new calParser;
+}
 
-namespace {
+void calUninitParser()
+{
+    wxASSERT( g_calparser != NULL );
+    delete g_calparser;
+    g_calparser = NULL;
+}
 
-calTOKEN GetTokenType( const wxUniChar& uc )
+calTokenVec calParseStr( const wxString& str )
+{
+    wxASSERT( g_calparser != NULL );
+    return g_calparser->ParseStr( str ); 
+}
+
+
+calParser::calParser()
+{
+    m_lookup["jan"] = 1;
+    m_lookup["feb"] = 2;
+    m_lookup["mar"] = 3;
+    m_lookup["apr"] = 4;
+    m_lookup["may"] = 5;
+    m_lookup["jun"] = 6;
+    m_lookup["jul"] = 7;
+    m_lookup["aug"] = 8;
+    m_lookup["sep"] = 9;
+    m_lookup["oct"] = 10;
+    m_lookup["nov"] = 11;
+    m_lookup["dec"] = 12;
+
+    m_lookup["vend"] = 1;
+    m_lookup["brum"] = 2;
+    m_lookup["frim"] = 3;
+    m_lookup["nivo"] = 4;
+    m_lookup["pluv"] = 5;
+    m_lookup["vent"] = 6;
+    m_lookup["germ"] = 7;
+    m_lookup["flor"] = 8;
+    m_lookup["prai"] = 9;
+    m_lookup["mess"] = 10;
+    m_lookup["ther"] = 11;
+    m_lookup["fruc"] = 12;
+    m_lookup["comp"] = 13;
+
+    m_lookup["year"]  = 0;
+    m_lookup["month"] = 1;
+    m_lookup["day"]   = 2;
+
+    m_lookup["(jdn)"] = CALENDAR_SCH_JulianDayNumber;
+    m_lookup["(j)"]   = CALENDAR_SCH_Julian;
+    m_lookup["(g)"]   = CALENDAR_SCH_Gregorian;
+    m_lookup["(fr)"]  = CALENDAR_SCH_FrenchRevolution;
+}
+
+calTokenVec calParser::ParseStr( const wxString& str )
+{
+    calTokenVec vec;
+    calToken token;
+    wxString outStr;
+    calTOKEN type;
+    long num;
+
+    for( wxString::const_iterator it = str.begin() ; it != str.end() ; ) {
+        if( wxIsspace( *it ) ) {
+            it++;
+            continue;
+        }
+        if( *it == '(' ) {
+            do {
+                outStr << *it++;
+            } while( it != str.end() && *it != ')' );
+            token.SetToken( calTOKEN_Scheme );
+        } else {
+            if( *it == '-' ) {
+                type = calTOKEN_Number;
+            } else {
+                type = GetTokenType( *it );
+            }
+            do {
+                outStr << *it++;
+            } while( it != str.end() && type == GetTokenType( *it ) );
+            if( type == calTOKEN_Punct ) {
+                type = GetPunctType( outStr );
+            }
+            token.SetToken( type );
+        }
+        if( type == calTOKEN_Number ) {
+            outStr.ToCLong( &num );
+        } else {
+            num = GetValue( outStr );
+        }
+        token.SetNumber( num );
+        token.SetLabel( outStr );
+        vec.push_back( token );
+        outStr.clear();
+    }
+    return vec;
+}
+
+
+calTOKEN calParser::GetTokenType( const wxUniChar& uc )
 {
     if( wxIsdigit( uc ) ) {
         return calTOKEN_Number;
@@ -57,7 +159,7 @@ calTOKEN GetTokenType( const wxUniChar& uc )
     return calTOKEN_NULL;
 }
 
-calTOKEN GetPunctType( const wxString& punct )
+calTOKEN calParser::GetPunctType( const wxString& punct )
 {
     if( punct == "~" ) {
         return calTOKEN_RangeSep;
@@ -68,21 +170,22 @@ calTOKEN GetPunctType( const wxString& punct )
     return calTOKEN_Punct;
 }
 
-long GetValue( const wxString& label )
+long calParser::GetValue( const wxString& label )
 {
     wxString value = label.Left(3).Lower();
-    if( LabelLookup.count( value ) ) {
-        return LabelLookup[value];
+    if( m_lookup.count( value ) ) {
+        return m_lookup[value];
     }
     value = label.Left(4).Lower();
-    if( LabelLookup.count( value ) ) {
-        return LabelLookup[value];
+    if( m_lookup.count( value ) ) {
+        return m_lookup[value];
     }
     return 0;
 }
 
-} // namespace
+//-------------------------------------------------------
 
+#if 0
 calTokenVec calParseStr( const wxString& str )
 {
     calTokenVec vec;
@@ -175,5 +278,6 @@ void calInit()
 
     hasrun = true;
 }
+#endif
 
 // End of src/cal/calParse.cpp

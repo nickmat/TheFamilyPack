@@ -42,6 +42,8 @@
 #include "calJulian.h"
 #include "calGregorian.h"
 
+static bool s_initOk = false;
+
 const char* CalendarSchemeName[] = {
     _("Unstated"),
     _("Unknown"),
@@ -117,6 +119,23 @@ long PMod( long a, long b )
     long r = a % b;
     if( r < 0 ) r += b;
     return r;
+}
+
+
+void calInit()
+{
+    if( s_initOk == false ) {
+        calInitParser();
+        s_initOk = true;
+    }
+}
+
+void calUninit()
+{
+    if( s_initOk == true ) {
+        calUninitParser();
+        s_initOk = false;
+    }
 }
 
 bool calConvertToJdn( long* jdn, CalendarScheme sch, 

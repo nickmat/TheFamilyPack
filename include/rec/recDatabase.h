@@ -46,6 +46,9 @@ typedef wxLongLong_t    idt;
 #define STR_OR_NULL(s) ( (s).IsEmpty() ? UTF8_("NULL") : \
     wxSQLite3StatementBuffer.FormatV( "'%q'", UTF8_(s) ) ) 
 
+extern void recInitialize();
+extern void recUninitialize();
+
 // Useful defines placed here for convenience.
 typedef std::vector< wxString >  StringVec;
 typedef std::vector< wxLongLong_t > IntegerVec;
@@ -72,7 +75,7 @@ public:
     };
 protected:
     static wxSQLite3Database* s_db;
-    static const char*        s_fname;
+    static wxString           s_fname;
     static long               s_change;
     static long               s_spnumber;
 

@@ -313,8 +313,10 @@ int main()
 {
     int ret = 0;
     if( wxInitialize() == false ) return 1;
+    calInit();
     wxPrintf( g_title );
     ret = ccEval();
+    calUninit();
     wxUninitialize();
     return ret;
 }
