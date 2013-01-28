@@ -66,8 +66,6 @@ extern void recUninitialize()
 }
 
 wxSQLite3Database* recDb::s_db = NULL;
-wxString           recDb::s_fname;
-//const char*        recDb::s_fname;
 long               recDb::s_change = 0;
 long               recDb::s_spnumber = 0;
 
@@ -144,8 +142,6 @@ bool recDb::CreateDb( const wxString& fname, unsigned flags )
     wxString dbfname = dbfile.GetFullPath();
     s_db->Open( dbfname );
     s_db->ExecuteUpdate( createdb );
-    dbfile.Normalize();
-    s_fname = dbfile.GetFullPath();
     return true;
 }
 
@@ -156,7 +152,6 @@ bool recDb::OpenDb( const wxString& fname )
         return false;
     }
     bool success = true;
-    s_fname = fname;
 
     try {
         s_db->Open( fname, wxEmptyString, WXSQLITE_OPEN_READWRITE );
@@ -182,7 +177,6 @@ bool recDb::OpenDb( const wxString& fname )
 void recDb::CloseDb() 
 { 
     s_db->Close();
-    s_fname = "";
     ++s_change;
 }
 
@@ -195,6 +189,15 @@ bool recDb::GlobalUpdate()
     }
     bool ok = recIndividual::CreateMissingFamilies();
     return ok;
+}
+
+wxString recDb::GetFileName()
+{
+    wxString fn;
+    if( s_db ) {
+        fn = s_db->GetDatabaseFilename( "main" );
+    }
+    return fn;
 }
 
 void recDb::ErrorMessage( wxSQLite3Exception& e )

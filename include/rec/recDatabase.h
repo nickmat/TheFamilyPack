@@ -75,7 +75,6 @@ public:
     };
 protected:
     static wxSQLite3Database* s_db;
-    static wxString           s_fname;
     static long               s_change;
     static long               s_spnumber;
 
@@ -136,7 +135,7 @@ public:
 
     /*! Returns the full file name of the currently open database.
      */
-    static wxString GetFileName() { return s_fname; }
+    static wxString GetFileName();
 
     /*! Returns the current change value.
      */

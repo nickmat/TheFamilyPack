@@ -1366,7 +1366,7 @@ void TfpFrame::SetDatabaseOpen( const wxString& path )
 {
     wxFileName dbfile( path );
     m_dbFileName = dbfile.GetFullPath();
-    wxString fmt( wxString::Format( "TFP: %s, %%s", dbfile.GetName() ) );
+    m_titleFmt = wxString::Format( "TFP: %s, %%s", dbfile.GetName() );
     SetMenuBar( m_menuOpenDB );
     m_toolbar->EnableTool( tfpID_LIST_SURNAME_INDEX, true );
     m_toolbar->EnableTool( tfpID_LIST_REFERENCES, true );
@@ -1377,6 +1377,7 @@ void TfpFrame::SetDatabaseOpen( const wxString& path )
 void TfpFrame::SetNoDatabase()
 {
     m_dbFileName = wxEmptyString;
+    SetTitle( "The Family Pack" );
     SetMenuBar( m_menuClosedDB );
     m_toolbar->EnableTool( tfpID_LIST_SURNAME_INDEX, false );
     m_toolbar->EnableTool( tfpID_LIST_REFERENCES, false );
@@ -1468,6 +1469,7 @@ bool TfpFrame::DisplayHtmPage( const wxString& name )
 {
     wxBusyCursor wait;
 
+    SetTitle( wxString::Format( m_titleFmt, name ) );
     wxString text = GetDisplayText( name );
     if( !text.IsEmpty() ) {
         PushHtmName( name );
@@ -1482,6 +1484,7 @@ bool TfpFrame::DisplayHtmPage( const wxString& name )
 void TfpFrame::RefreshHtmPage()
 {
     wxString name = GetCurrentName();
+    SetTitle( wxString::Format( m_titleFmt, name ) );
     if( name.size() ) {
         m_browser->SetPage( GetDisplayText( name ), "" );
         RefreshEditMenu();
