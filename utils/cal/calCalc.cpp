@@ -107,12 +107,13 @@ void ccUse()
 
 /*! Convert the given date string
  */
-void ccConvertDate( wxString& date )
+void ccConvertDate( const wxString& datestr )
 {
     long jdn1 = -1, jdn2 = -1;
     wxString xdate = "Error reading date";
     bool ret;
 
+    wxString date = datestr;
     date.Trim();
     if( g_range == true )
     {
@@ -145,7 +146,7 @@ void ccConvertDate( wxString& date )
 
 /*! Calculate a date range given an age in years and a single date.
  */
-void ccAgeDateToRange( wxString& line )
+void ccAgeDateToRange( const wxString& line )
 {
     wxStringTokenizer tkz;
     wxString token;
@@ -183,7 +184,7 @@ void ccAgeDateToRange( wxString& line )
 
 /*! Calculate a date range given an age in months and a single date.
  */
-void ccAgeMonthsDateToRange( wxString& line )
+void ccAgeMonthsDateToRange( const wxString& line )
 {
     wxStringTokenizer tkz;
     wxString token;
@@ -221,7 +222,7 @@ void ccAgeMonthsDateToRange( wxString& line )
 
 /*! Convert the string to a calender scheme.
  */
-CalendarScheme ccGetScheme( wxString& token )
+CalendarScheme ccGetScheme( const wxString& token )
 {
     if( token == "us"   ) return CALENDAR_SCH_Unstated;
     if( token == "uk"   ) return CALENDAR_SCH_Unknown;
