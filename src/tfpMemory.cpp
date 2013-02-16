@@ -77,12 +77,17 @@
 
 
 // Common bitmaps
-wxBitmap* imgEditBitmap;
+wxBitmap* imgEditBitmap = NULL;
 
 /*! \brief Create the memory file system and read in the memory files.
  */
 void tfpLoadMemoryFiles()
 {
+	// This function should only be run once
+	static bool hasrun = false;
+	wxASSERT( hasrun == false );
+	hasrun = true;
+
 	// Create common bitmaps
 	imgEditBitmap = new wxBitmap( edit_xpm );
 
