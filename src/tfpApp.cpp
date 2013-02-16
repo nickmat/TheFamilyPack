@@ -37,13 +37,10 @@
 #include "wx/wx.h"
 #endif
 
-#include <wx/wxsqlite3.h>
-
 #include "tfpApp.h"
 #include "tfpFrame.h"
 #include "tfpMemory.h"
 #include <rec/recDatabase.h>
-#include <cal/calendar.h>
 
 wxIMPLEMENT_APP( TfpApp );
 

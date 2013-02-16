@@ -76,15 +76,16 @@
 #include "img/event.xpm"
 
 
-// Common bitmats
-wxBitmap imgEditBitmap( edit_xpm );
-wxBitmap imgMenuBitmap( menu_xpm );
-wxBitmap imgBlankBitmap( blank_xpm );
+// Common bitmaps
+wxBitmap* imgEditBitmap;
 
 /*! \brief Create the memory file system and read in the memory files.
  */
 void tfpLoadMemoryFiles()
 {
+	// Create common bitmaps
+	imgEditBitmap = new wxBitmap( edit_xpm );
+
     wxFileSystem::AddHandler( new wxMemoryFSHandler );
     wxBitmap logo6Bitmap( logo6_xpm );
     wxMemoryFSHandler::AddFile( "logo6.png", logo6Bitmap, wxBITMAP_TYPE_PNG );
@@ -127,9 +128,11 @@ void tfpLoadMemoryFiles()
     wxMemoryFSHandler::AddFile( "pt.png", ptBitmap, wxBITMAP_TYPE_PNG );
     wxBitmap peBitmap( pe_xpm );
     wxMemoryFSHandler::AddFile( "pe.png", peBitmap, wxBITMAP_TYPE_PNG );
-    wxMemoryFSHandler::AddFile( "edit.png", imgEditBitmap, wxBITMAP_TYPE_PNG );
-    wxMemoryFSHandler::AddFile( "blank.png", imgBlankBitmap, wxBITMAP_TYPE_PNG );
-    wxMemoryFSHandler::AddFile( "menu.png", imgMenuBitmap, wxBITMAP_TYPE_PNG );
+    wxMemoryFSHandler::AddFile( "edit.png", *imgEditBitmap, wxBITMAP_TYPE_PNG );
+    wxBitmap blankBitmap( blank_xpm );
+    wxMemoryFSHandler::AddFile( "blank.png", blankBitmap, wxBITMAP_TYPE_PNG );
+    wxBitmap menuBitmap( menu_xpm );
+    wxMemoryFSHandler::AddFile( "menu.png", menuBitmap, wxBITMAP_TYPE_PNG );
     wxBitmap dchtBitmap( dcht_xpm );
     wxMemoryFSHandler::AddFile( "dcht.png", dchtBitmap, wxBITMAP_TYPE_PNG );
     wxBitmap pchtBitmap( pcht_xpm );

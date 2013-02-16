@@ -37,6 +37,8 @@
 #include "wx/wx.h"
 #endif
 
+#include <wx/filename.h>
+
 #include <wx/webview.h>
 #include "webviewfshandler.h"
 #include <wx/numdlg.h>
@@ -59,6 +61,10 @@
 #include "img/find.xpm"
 #include "img/home.xpm"
 #include "img/findref.xpm"
+
+#ifndef wxHAS_IMAGES_IN_RESOURCES
+    #include "img/tfp.xpm"
+#endif
 
 BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_NEW_WINDOW, TfpFrame::OnNewWindow )
@@ -118,7 +124,7 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
 {
     m_changeState = recDb::GetChange();
     // Set frames Icon
-    SetIcon( wxIcon( "tfp" ) );
+    SetIcon( wxICON( tfp ) );
 
     // create a menu bar for use with an open database
     wxMenu *menuFile = new wxMenu;
@@ -269,7 +275,7 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     m_toolbar->AddSeparator();
     m_toolbar->AddControl( m_showpage );
     m_toolbar->AddSeparator();
-    m_toolbar->AddTool( tfpID_PAGE_ITEM_EDIT, _("Edit"), imgEditBitmap );
+    m_toolbar->AddTool( tfpID_PAGE_ITEM_EDIT, _("Edit"), *imgEditBitmap );
     m_toolbar->Realize();
     SetToolBar( m_toolbar );
 

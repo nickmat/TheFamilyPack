@@ -29,7 +29,6 @@
 #ifndef TFPFRAME_H
 #define TFPFRAME_H
 
-#include <wx/html/htmlwin.h>
 #include <rec/recDatabase.h>
 #include <rec/recFilterEvent.h>
 #include <rg/rgCompareEvent.h>
@@ -37,8 +36,6 @@
 
 class wxWebView;
 class wxWebViewEvent;
-class TfpHtml;
-class wxHtmlEasyPrinting;
 
 
 /*! \brief The main application frame.
