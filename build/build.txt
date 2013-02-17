@@ -1,51 +1,69 @@
 Build Instructions
 ~~~~~~~~~~~~~~~~~~
 
-The build process has been tested on Windows and MS Visual C++.
+The tfp build system is based on the bakefile program used by the wxWidgets
+library.
 
-1) Download and install wxWidgets version 2.9.3 or later
+The build is slightly complicated because of the use of a custom utility 
+"file2cpp" which is used to imbed text files into the program. (It was also
+used for image files, but these are now in xpm format.) As both the input and
+output files of the file2cpp program are supplied, the utility is only 
+required if you need to edit the input files. If you have the file2cpp program
+installed on your system, you may use the *-dep build folders, otherwise use
+the folder without the -dep suffix. 
 
-2) Ensure the environment variable WXWIN is set to wxWidgets root folder.
+The build process has been tested on Windows with MS Visual C++ 2008 express
+with either the IDE or nmake.
 
-3) Download and install Bakefile version 0.2.9 or later
+Windows Build
+~~~~~~~~~~~~~
 
-4) Run the batch file built-XXX.bat from the build folder, where XXX matches
-    the version of MS Visual C++ you are running.
+1) Download and install wxWidgets version 2.9.4.
+   Ensure the environment variable WXWIN is set to wxWidgets root folder.
 
-5) Open the folder created by the batch file and open the tfp.sln file in
-    MS Visual C++.
+2) To compile the test program, download and install the CppUnit framework.
+   Set the environment variable CPPUNIT to the library folder.
 
-If you are using MS Visual C++ 2008 and wxWidgets 2.9.x then you can skip
-items (3) and (4) and use the files provided in build\vc9-wx29
+3) To start the IDE, open the tfp\build\vc9 (or vc9-dep) folder and 
+   double click the tfp.sln file. 
+   
+   To compile from the commandline, open the Visual Studio 2008 (or equivalent)
+   Command Prompt and navigate to the tfp\build\nmake (or nmake-dep) folder
+   and, for the debug build, enter:-
+       nmake -f tfp.mak
+   or, for the release build:-
+       nmake -f tfp.mak -D WX_DEBUG=0
 
-TFP creates some source files using the custom utility program file2cpp. The
-source for this program is provided in the utils/file2cpp folder. Since the
-generated files are supplied ready made, the utility is only needed if the
-input files are changed.
+Add Subversion Version Number
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Unfortunately, bakefile can't put the file dependencies into the Visual C++
-project files, so if you want to change the input files you have the
-following options:
+By default, the version number of the last subversion commit is not included as
+part of the tfp version number as displayed in the program. This can be added
+when using the MS Visual Studio IDE as follows:-
 
-    If the changes are minor, make the changes by hand, remembering to change
-    both source and generated files.
+    Open the tfp project properties dialog and make the following changes.
+      Configuration Properties
+        C/C++
+          Preprocessor
+            Preprocessor Definitions:
+              Add TFP_WORKING to list
+              for both Debug and Release Configurations
+        Build Events
+          Pre-Build Event
+            Command Line:
+              Add "..\getsvnver.bat"
+            Description:
+              Add "Update with svn version number"
+              for both Debug and Release Configurations
 
-    Create the file2cpp program and use either nmake on the commandline or
-    the files provided in build\vc9-wx29.
+Not that there are some drawbacks to the above changes if you are making
+commits to subversion. After commiting you may need to recompile a couple of
+times so the new version number is picked up. If anyone knows a better system
+that achieves the same end, please let me know. 
 
-    Create the file2cpp program and required project file. Modify the
-    tfp.vcproj file by inserting the text found in the
-    tfp_tfp-vcproj-processed-files.txt file. Examine the provided
-    build\vc9-wx29\tfp.vcproj file to see where it should go.
-
-A similar problem exists for the method of adding the SVN version number to
-the TFP version number. This has not yet been added to the bkl files so have
-to be added by hand. In MS Visual C++ goto tfp properties/Configuration
-Properties/Build Events/Pre-Build Event and enter "../getsvnver.bat" in the
-Command Line entry for both Debug and Release configurations. In the
-C/C++/Preprocessor Preprocessor Definitions entry add TFP_WORKING to the list.
+Other Systems
+~~~~~~~~~~~~~
 
 If anyone successfully builds the project with other compilers or OS's then
 please drop me a line to let me know how you got on.
 
-$ID:$

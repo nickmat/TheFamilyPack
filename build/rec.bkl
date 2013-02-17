@@ -29,7 +29,8 @@
 
 <makefile>
 
-  <if cond="FORMAT_MSVC_PROJECT=='0'">
+<!--  <if cond="ALLOW_LOCAL_DEPENDENCIES=='1'"> -->
+  <if cond="NO_DEPS=='0'">
 
     <action id="$(LOCAL_SRC)/rec/generated/recSql.ci">
       <command>file2cpp -v -o $(LOCAL_SRC)/rec/generated/recSql.ci $(LOCAL_SRC)/rec/recSql.f2c</command>

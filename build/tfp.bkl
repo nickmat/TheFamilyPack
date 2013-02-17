@@ -35,10 +35,20 @@
 
   <include file="presets/wx.bkl"/>
 
-  <set var="FORMAT_MSVC_PROJECT">
-    <if cond="FORMAT in ['msvc6prj','msvs2003prj''msvs2005prj','msvs2008prj','msvs2010prj']">1</if>
-    <if cond="FORMAT not in ['msvc6prj','msvs2003prj''msvs2005prj','msvs2008prj','msvs2010prj']">0</if>
-  </set>
+  <!-- Set NO_UTILS to 1 to remove all other programs, including unit tests -->
+  <set var="NO_UTILS" overwrite="0">0</set>
+
+  <!--
+    Set NO_DEPS to 1 to avoid regenerating dependancies that require the file2cpp utility.
+    We always do this for MS visual studio and then patch the file later, if neccessary.
+  -->
+  <set var="NO_DEPS" overwrite="0">0</set>
+  <if cond="FORMAT in ['msvc6prj','msvs2003prj''msvs2005prj','msvs2008prj']">
+    <set var="NO_DEPS">1</set>
+  </if>
+
+  <!-- Set INC_NON_SVN to 1 to to add projects not included in the svn repository -->
+  <set var="INC_NON_SVN" overwrite="0">0</set>
 
   <set var="BUILDCONF">
     <if cond="WX_DEBUG=='1'">debug</if>
@@ -54,12 +64,13 @@
   <set var="LOCAL_UTIL">$(REL_ROOT)/utils</set>
   <set var="CPPUNIT_DIR">$(DOLLAR)($(ENV_VAR)CPPUNIT)</set>
 
-  <if cond="FORMAT_MSVC_PROJECT=='0'">
+  <if cond="NO_DEPS=='0'">
 
     <action id="$(LOCAL_SRC)/generated/tfpText.ci">
       <command>file2cpp -v -o $(LOCAL_SRC)/generated/tfpText.ci $(LOCAL_SRC)/tfpText.f2c</command>
       <depends-on-file>$(LOCAL_SRC)/tfpText.f2c</depends-on-file>
       <depends-on-file>$(LOCAL_SRC)/startup.htm</depends-on-file>
+      <depends-on-file>$(LOCAL_SRC)/tfp.css</depends-on-file>
     </action>
 
     <action id="$(LOCAL_SRC)/tfpMemory.cpp">
@@ -149,20 +160,20 @@
   </exe>
 
   <include file="calendar.bkl"/>
-  <if cond="FORMAT!='gnu'">
+  <if cond="NO_UTILS=='0'">
     <include file="tests.bkl"/>
     <include file="utils.bkl"/>
   </if>
   <include file="wxsqlite3_tfp.bkl"/>
   <include file="rec.bkl"/>
 
-<!--
-  <set var="MAIN_INC">../$(REL_ROOT)/tfp/include</set>
-  <set var="MAIN_SRC">../$(REL_ROOT)/tfp/src</set>
-  <include file="../../tfp_ext/build/ext.bkl"/>
-  <include file="../../tfp_fill/build/fill.bkl"/>
-  <include file="../../tfp_place/build/place.bkl"/>
--->
+  <if cond="INC_NON_SVN=='1'">
+    <set var="MAIN_INC">../$(REL_ROOT)/tfp/include</set>
+    <set var="MAIN_SRC">../$(REL_ROOT)/tfp/src</set>
+    <include file="../../tfp_ext/build/ext.bkl"/>
+    <include file="../../tfp_fill/build/fill.bkl"/>
+    <include file="../../tfp_place/build/place.bkl"/>
+  </if>
 
 </makefile>
 

@@ -360,6 +360,11 @@ test_for_selected_wxbuild:
 	@if not exist $(WX_DIR)\lib\$(COMPILER_PREFIX)$(WXCPU)_lib\msw$(WXLIBPOSTFIX)\wx\setup.h \
 	exit 1
 
+../../src/generated/tfpText.ci: ..\..\src\tfpText.f2c ..\..\src\startup.htm
+	file2cpp -v -o ../../src/generated/tfpText.ci ../../src/tfpText.f2c
+
+../../src/tfpMemory.cpp: ..\..\src\generated\tfpText.ci
+
 tfp.exe: tfp_dummy.obj  $(TFP_OBJECTS) tfp_tfp.res wxsqlite3$(WXLIBPOSTFIX).lib rec$(WXLIBPOSTFIX).lib recgui$(WXLIBPOSTFIX).lib calendar$(WXLIBPOSTFIX).lib
 	link /NOLOGO /OUT:$@  /LIBPATH:$(WX_DIR)\lib\$(COMPILER_PREFIX)$(WXCPU)_lib $(WXMACHINE_FLAG) $(VAR_13) /pdb:"tfp.pdb" $(____tfp__DEBUGINFO_9) /SUBSYSTEM:WINDOWS $(LDFLAGS) @<<
 	$(TFP_OBJECTS) $(TFP_RESOURCES)  wxsqlite3$(WXLIBPOSTFIX).lib rec$(WXLIBPOSTFIX).lib recgui$(WXLIBPOSTFIX).lib calendar$(WXLIBPOSTFIX).lib wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_webview.lib wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_html.lib wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_adv.lib wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_core.lib wxbase$(WX_VERSION)$(WXLIBPOSTFIX).lib wxtiff$(WX3RDPARTYLIBPOSTFIX).lib wxjpeg$(WX3RDPARTYLIBPOSTFIX).lib wxpng$(WX3RDPARTYLIBPOSTFIX).lib wxzlib$(WX3RDPARTYLIBPOSTFIX).lib wxregex$(WXLIBPOSTFIX).lib wxexpat$(WX3RDPARTYLIBPOSTFIX).lib kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib oleacc.lib
@@ -396,6 +401,11 @@ wxsqlite3$(WXLIBPOSTFIX).lib: $(WXSQLITE3_OBJECTS)
 	link /LIB /NOLOGO /OUT:$@ @<<
 	$(WXSQLITE3_OBJECTS)
 <<
+
+../../src/rec/generated/recSql.ci: ..\..\src\rec\recSql.f2c ..\..\src\rec\recCreate.sql
+	file2cpp -v -o ../../src/rec/generated/recSql.ci ../../src/rec/recSql.f2c
+
+../../src/rec/recDatabase.cpp: ..\..\src\rec\generated\recSql.ci
 
 rec$(WXLIBPOSTFIX).lib: rec_dummy.obj  $(REC_OBJECTS)
 	if exist $@ del $@
