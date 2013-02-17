@@ -214,11 +214,6 @@ clean:
 test_for_selected_wxbuild: 
 	@$(WX_CONFIG) $(WX_CONFIG_FLAGS)
 
-../../src/generated/tfpText.ci: ../../src/tfpText.f2c ../../src/startup.htm
-	file2cpp -v -o ../../src/generated/tfpText.ci ../../src/tfpText.f2c
-
-../../src/tfpMemory.cpp: ../../src/generated/tfpText.ci
-
 tfp: $(TFP_OBJECTS) libwxsqlite3.a librec.a librecgui.a libcalendar.a
 	$(CXX) -o $@ $(TFP_OBJECTS)  $(VAR_4)  $(LDFLAGS)  libwxsqlite3.a librec.a librecgui.a libcalendar.a `$(WX_CONFIG) $(WX_CONFIG_FLAGS) --libs webview,html,adv,core,base`
 
@@ -231,11 +226,6 @@ libwxsqlite3.a: $(WXSQLITE3_OBJECTS)
 	rm -f $@
 	$(AR) rcu $@ $(WXSQLITE3_OBJECTS)
 	$(RANLIB) $@
-
-../../src/rec/generated/recSql.ci: ../../src/rec/recSql.f2c ../../src/rec/recCreate.sql
-	file2cpp -v -o ../../src/rec/generated/recSql.ci ../../src/rec/recSql.f2c
-
-../../src/rec/recDatabase.cpp: ../../src/rec/generated/recSql.ci
 
 librec.a: $(REC_OBJECTS)
 	rm -f $@
