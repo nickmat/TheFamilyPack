@@ -124,7 +124,6 @@ fbRgEditContact::fbRgEditContact( wxWindow* parent, wxWindowID id, const wxStrin
 	fgSizer11->Add( m_staticText4, 0, wxALIGN_RIGHT|wxALL, 5 );
 	
 	m_textCtrlValue = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 250,80 ), wxTE_MULTILINE );
-	m_textCtrlValue->SetMaxLength( 0 ); 
 	fgSizer11->Add( m_textCtrlValue, 1, wxALIGN_CENTER_VERTICAL|wxALL|wxEXPAND, 5 );
 	
 	
@@ -1241,7 +1240,6 @@ fbRgPerIndEvent::fbRgPerIndEvent( wxWindow* parent, wxWindowID id, const wxStrin
 	fgSizer3->Add( m_staticText4, 0, wxALL|wxALIGN_RIGHT, 5 );
 	
 	m_textCtrlNote = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_WORDWRAP );
-	m_textCtrlNote->SetMaxLength( 0 ); 
 	fgSizer3->Add( m_textCtrlNote, 0, wxALL|wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	
