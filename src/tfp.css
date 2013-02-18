@@ -245,6 +245,7 @@ div.pagesel {
 div.pagesel a {
     padding: 0.25em 1em;
     border: 2px solid #777;
+    border-radius: 5px;
     background-color: yellow;
     font-size: big;
     font-weight: bold;
@@ -266,6 +267,16 @@ div.pagesel a:hover {
 div.pagesel a.pncur:hover {
     background-color: ivory;
     text-decoration: none;
+}
+
+div.control a {
+	line-height: 4em;
+    background-color: lightyellow;
+}
+
+div.control a:hover {
+    text-decoration: none;
+    border: 2px solid black;
 }
 
 /* End of tfp.css file */
