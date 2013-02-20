@@ -13,7 +13,9 @@ installed on your system, you may use the *-dep build folders, otherwise use
 the folder without the -dep suffix. 
 
 The build process has been tested on Windows with MS Visual C++ 2008 express
-with either the IDE or nmake.
+with both the IDE and nmake.
+
+The Gnu/Linux build has been tested on Linux Mint 14 and Ubuntu 11.10
 
 Windows Build
 ~~~~~~~~~~~~~
@@ -56,10 +58,33 @@ when using the MS Visual Studio IDE as follows:-
               Add "Update with svn version number"
               for both Debug and Release Configurations
 
-Not that there are some drawbacks to the above changes if you are making
+Note that there are some drawbacks to the above changes if you are making
 commits to subversion. After commiting you may need to recompile a couple of
 times so the new version number is picked up. If anyone knows a better system
 that achieves the same end, please let me know. 
+
+Gnu/Linux Build
+~~~~~~~~~~~~~~~
+
+1) Install build tools
+    sudo apt-get install build-essential libgtk2.0-dev libwebkitgtk-dev
+
+2) Download the wxWidgets source file with Unix line endings and unpack it.
+   From within a terminal, navigate to wxWidgets root directory:-
+    mkdir gtk-build
+    cd gtk-build
+    ../configure --disable-shared
+    make
+    make install
+
+3) Also from within a terminal, navigate to the tfp/build/gnu directory.
+    make
+    ./tfp
+   should run The family Pack program.
+   
+Note, the gnu build only includes the libraries and main program - not the
+test program or utilities. Anyone with development experience on unix systems
+should have no difficulty building these if required.
 
 Other Systems
 ~~~~~~~~~~~~~
