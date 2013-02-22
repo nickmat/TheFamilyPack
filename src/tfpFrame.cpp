@@ -258,7 +258,7 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     SetMenuBar( m_menuClosedDB );
 
     // Add toolbar
-    m_toolbar = new wxToolBar( this, wxID_ANY );
+    m_toolbar = CreateToolBar();
     m_showpage = new wxTextCtrl( m_toolbar, tfpID_SHOW_PAGE, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER );
     wxBitmap bmpForward( forward_xpm );
     wxBitmap bmpBack( back_xpm );

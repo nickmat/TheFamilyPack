@@ -83,13 +83,13 @@ wxBitmap* imgEditBitmap = NULL;
  */
 void tfpLoadMemoryFiles()
 {
-	// This function should only be run once
-	static bool hasrun = false;
-	wxASSERT( hasrun == false );
-	hasrun = true;
+    // This function should only be run once
+    static bool hasrun = false;
+    wxASSERT( hasrun == false );
+    hasrun = true;
 
-	// Create common bitmaps
-	imgEditBitmap = new wxBitmap( edit_xpm );
+    // Create common bitmaps
+    imgEditBitmap = new wxBitmap( edit_xpm );
 
     wxFileSystem::AddHandler( new wxMemoryFSHandler );
     wxBitmap logo6Bitmap( logo6_xpm );
