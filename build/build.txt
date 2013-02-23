@@ -86,6 +86,28 @@ Note, the gnu build only includes the libraries and main program - not the
 test program or utilities. Anyone with development experience on unix systems
 should have no difficulty building these if required.
 
+Mac/OSX Build
+~~~~~~~~~~~~~
+
+1) Download the wxWidgets library (to a folder which we will named wx) and The
+   Family Pack code (to a folder which we will name tfp) together in the same
+   folder.
+   
+2) In the terminal, navigate to the wx folder:-
+    mkdir build-osx
+    cd build-osx
+    ../configure --with-osx-cocoa --disable-shared --prefix="$(pwd)"
+    make
+
+3) Also in the terminal, navigate to the tfp/build/gnu folder:-
+    make WX_CONFIG=../../../wx/build-osx/wx-config
+    
+4) Create a application bundle with the resulting tfp binary file.
+   (I am still investigating the best way of going about this)
+
+Note the the developer is completely new to the mac system and this is his
+first attempt at creating a mac app.
+
 Other Systems
 ~~~~~~~~~~~~~
 
