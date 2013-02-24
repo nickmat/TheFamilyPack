@@ -30,8 +30,9 @@
 #ifndef   TFPMEMORY_H
 #define   TFPMEMORY_H
 
-extern void tfpLoadMemoryFiles();
-
 extern wxBitmap* imgEditBitmap;
+
+extern void tfpLoadMemoryFiles();
+extern void tfpDeleteBitmaps();
 
 #endif // TFPMEMORY_H

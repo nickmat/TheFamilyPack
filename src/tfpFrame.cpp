@@ -283,9 +283,7 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
 
     m_webPageAllow = false;
     m_browser = wxWebView::New( this, tfpID_BROWSER );
-    m_browser->RegisterHandler( 
-        wxSharedPtr<wxWebViewHandler>( new wxWebViewFSHandler( "memory" ))
-    );
+    m_browser->RegisterHandler( GetWebViewMemoryHandler() );
 
     SetNoDatabase();
     if( recDb::IsOpen() ) {
@@ -1051,9 +1049,7 @@ void TfpFrame::OnIdle( wxIdleEvent& event )
         if( recDb::IsOpen() ) {
             RefreshHtmPage();
         } else {
-            SetNoDatabase();
-            m_browser->LoadURL( "memory:startup.htm" );
-            m_changeState = recDb::GetChange();
+            Close( true );
         }
     }
 }

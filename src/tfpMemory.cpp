@@ -160,5 +160,10 @@ void tfpLoadMemoryFiles()
     wxMemoryFSHandler::AddFile( "eve.png", eveBitmap, wxBITMAP_TYPE_PNG );
 }
 
+void tfpDeleteBitmaps()
+{
+    wxDELETE( imgEditBitmap );
+}
+
 // End of tfpMemory.cpp file
 

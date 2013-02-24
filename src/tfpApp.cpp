@@ -37,6 +37,8 @@
 #include "wx/wx.h"
 #endif
 
+#include "webviewfshandler.h"
+
 #include "tfpApp.h"
 #include "tfpFrame.h"
 #include "tfpMemory.h"
@@ -54,6 +56,8 @@ bool TfpApp::OnInit()
     wxImage::AddHandler( new wxGIFHandler );
     wxImage::AddHandler( new wxXPMHandler );
     tfpLoadMemoryFiles();
+
+    m_webviewFSHandler = wxSharedPtr<wxWebViewHandler>( new wxWebViewFSHandler( "memory" ) );
 
     recInitialize();
     if( argc > 1 ) {
@@ -77,7 +81,13 @@ bool TfpApp::OnInit()
 int TfpApp::OnExit()
 {
     recUninitialize();
+    tfpDeleteBitmaps();
     return 0;
+}
+
+wxSharedPtr<wxWebViewHandler> GetWebViewMemoryHandler()
+{
+    return wxGetApp().GetWebViewFSHandler();
 }
 
 // End of tfpApp.cpp file

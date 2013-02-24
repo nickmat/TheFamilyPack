@@ -30,18 +30,26 @@
 #ifndef TFPAPP_H
 #define TFPAPP_H
 
+class wxWebViewHandler;
+class wxWebViewFSHandler;
+
 //! The application class. As required by wxWidgets.
 class TfpApp : public wxApp
 {
 private:
+    wxSharedPtr<wxWebViewHandler> m_webviewFSHandler;
 
 public:
     TfpApp() {}
     virtual bool OnInit();
     virtual int OnExit();
+
+    wxSharedPtr<wxWebViewHandler> GetWebViewFSHandler() { return m_webviewFSHandler; }
 };
 
 wxDECLARE_APP( TfpApp );
+
+extern wxSharedPtr<wxWebViewHandler> GetWebViewMemoryHandler();
 
 #endif // TFPAPP_H
 

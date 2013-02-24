@@ -87,8 +87,12 @@ bool dlgNote::TransferDataToWindow()
 void dlgNote::OnIdle( wxIdleEvent& event )
 {
     if( m_cond != recDb::GetChange() ) {
-        m_browser->SetPage( m_frame->GetDisplayText( m_name ), "" );
-        m_cond = recDb::GetChange();
+        if( recDb::IsOpen() ) {
+            m_browser->SetPage( m_frame->GetDisplayText( m_name ), "" );
+            m_cond = recDb::GetChange();
+        } else {
+            Close( true );
+        }
     }
 }
 
