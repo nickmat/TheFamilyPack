@@ -42,7 +42,7 @@
 
 #include "tfpWr.h"
 
-wxString tfpWrHead( const wxString& title )
+wxString tfpWrHeadTfp( const wxString& title )
 {
     wxString htm;
     htm <<
@@ -57,7 +57,7 @@ wxString tfpWrHead( const wxString& title )
     return htm;
 }
 
-wxString tfpWrTail()
+wxString tfpWrTailTfp()
 {
     return "</div>\n</body>\n</html>\n";
 }

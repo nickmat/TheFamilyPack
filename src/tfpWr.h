@@ -33,8 +33,8 @@ class rgCompareEvent;
 class recFilterEvent;
 
 // See tfpWr.cpp
-extern wxString tfpWrHead( const wxString& title );
-extern wxString tfpWrTail();
+extern wxString tfpWrHeadTfp( const wxString& title );
+extern wxString tfpWrTailTfp();
 extern wxString GetSexClass( idt indID, Sex pref = SEX_Unknown );
 extern wxString wxGetRowClass( int row );
 enum GET_EPITAPH_Prefix { GE_None, GE_Spaces, GE_NewLine };

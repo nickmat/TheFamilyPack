@@ -66,77 +66,83 @@ wxString GetHtmDateData( const recDate& date )
 
 wxString tfpWriteDate( idt dateID )
 {
-    wxString htm;
     recDate date(dateID);
-    if( date.f_id == 0 ) return wxEmptyString;
+    if( date.FGetID() == 0 ) return wxEmptyString;
 
-    htm << tfpWrHead( "Date" )  //"<html><head><title>Date</title></head><body>"
-        << "<h1>Date " << date.GetIdStr() << "</h1>"
-        << GetHtmDateData( date );
-       
-    htm << tfpWrTail(); // "</body></html>";
+    wxString htm;
+    htm << 
+        tfpWrHeadTfp( "Date" ) <<
+        "<h1>Date " << date.GetIdStr() << "</h1>\n" <<
+        GetHtmDateData( date ) <<
+        tfpWrTailTfp()
+    ;
 
     return htm;
 }
 
 wxString tfpWritePlace( idt placeID )
 {
-    wxString htm;
     recPlace place(placeID);
-    if( place.f_id == 0 ) return wxEmptyString;
+    if( place.FGetID() == 0 ) return wxEmptyString;
 
-    htm << "<html><head><title>Place</title></head><body>"
-           "<h1>Place " << place.GetIdStr() << "</h1>"
-        << place.GetAddressStr();
-       
-    htm << "</body></html>";
+    wxString htm;
+    htm <<
+        tfpWrHeadTfp( "Place" ) <<
+        "<h1>Place " << place.GetIdStr() << "</h1>\n" <<
+        place.GetAddressStr() << "\n" <<
+        tfpWrTailTfp()
+    ;
 
     return htm;
 }
 
 wxString tfpWriteName( idt nameID )
 {
-    wxString htm;
     recName name(nameID);
     if( name.FGetID() == 0 ) return wxEmptyString;
     recNamePartVec parts = name.GetParts();
 
-    htm << "<html><head><title>Name</title></head><body>"
-           "<h1>Name " << name.GetIdStr() << "<br>"
-           << name.GetNameStr() << "</h1>"
-           << "<p>Name Type: <b>" 
-           << recNameStyle::GetStyleStr( name.FGetTypeID() )
-           << "</b></p><table>";
+    wxString htm;
+    htm <<
+        tfpWrHeadTfp( "Name" ) <<
+        "<h1>Name " << name.GetIdStr() << "<br>\n" <<
+        name.GetNameStr() << "</h1>\n"
+        "<p>Name Type: <b>" <<
+        recNameStyle::GetStyleStr( name.FGetTypeID() ) <<
+        "</b></p>\n<table class='property'>\n"
+    ;
 
     for( size_t i = 0 ; i < parts.size() ; i++ ) {
-        htm << "<tr><td>"
-            << recNamePartType::GetTypeStr( parts[i].FGetTypeID() )
-            << "</td><td><b>"
-            << parts[i].FGetValue()
-            << "</b></td></tr>"
+        htm <<
+            "<tr>\n<td class='label'>" <<
+            recNamePartType::GetTypeStr( parts[i].FGetTypeID() ) <<
+            ":</td>\n<td><b>" <<
+            parts[i].FGetValue() <<
+            "</b></td>\n</tr>\n"
         ;
     }
        
-    htm << "</table></body></html>";
+    htm << "</table>\n" << tfpWrTailTfp();
 
     return htm;
 }
 
 wxString tfpWriteRelationship( idt rsID )
 {
-    wxString htm;
     recRelationship rs(rsID);
-    if( rs.f_id == 0 ) return wxEmptyString;
+    if( rs.FGetID() == 0 ) return wxEmptyString;
 
-    htm << "<html><head><title>Relationship</title></head><body>"
-           "<h1>Relationship " << rs.GetIdStr() << "</h1>"
-        << recPersona::GetIdStr( rs.f_per1_id ) << " and "
-        << recPersona::GetIdStr( rs.f_per2_id ) << " have the relationship "
-        << rs.f_descrip << ", so:<br><br>"
-        << rs.GetValue1Str() << "<br><br>"
-        << rs.GetValue2Str()
-           
-        << "</body></html>";
+    wxString htm;
+    htm <<
+        tfpWrHeadTfp( "Relationship" ) <<
+        "<h1>Relationship " << rs.GetIdStr() << "</h1>\n" <<
+        recPersona::GetIdStr( rs.f_per1_id ) << " and " <<
+        recPersona::GetIdStr( rs.f_per2_id ) << " have the relationship " <<
+        rs.f_descrip << ", so:<br><br>" <<
+        rs.GetValue1Str() << "<br><br>" <<
+        rs.GetValue2Str() <<
+        tfpWrTailTfp()
+    ;
 
     return htm;
 }

@@ -6,7 +6,7 @@
  * Modified by:
  * Created:     24 September 2010
  * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2010-2013, Nick Matthews.
  * Website:     http://thefamilypack.org
  * Licence:     GNU GPLv3
  *
@@ -31,7 +31,6 @@
 #define TFPAPP_H
 
 class wxWebViewHandler;
-class wxWebViewFSHandler;
 
 //! The application class. As required by wxWidgets.
 class TfpApp : public wxApp

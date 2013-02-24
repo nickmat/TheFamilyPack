@@ -44,7 +44,7 @@
 
 static wxString WriteIndex( wxSQLite3ResultSet& table )
 {
-    wxString htm = tfpWrHead( "Surname Index" );
+    wxString htm = tfpWrHeadTfp( "Surname Index" );
     htm << "<h1>Surname Index</h1>\n";
 
     if( table.GetColumnCount() > 0 )
@@ -99,7 +99,7 @@ static wxString WriteIndex( wxSQLite3ResultSet& table )
         htm << "<p>No Names found!</p>\n";
     }
 
-    htm << tfpWrTail();
+    htm << tfpWrTailTfp();
 
     return htm;
 }
@@ -136,7 +136,7 @@ wxString tfpWritePersonIndex()
 
 wxString tfpWriteIndividualList( const wxString& surname )
 {
-    wxString htm = tfpWrHead( "Name List" );
+    wxString htm = tfpWrHeadTfp( "Name List" );
     htm << "<h1>" << surname << "</h1>\n";
 
     wxSQLite3ResultSet result = recIndividual::GetNameList( surname );
@@ -165,7 +165,7 @@ wxString tfpWriteIndividualList( const wxString& surname )
         htm << "<p>No Names found!</p>\n";
     }
 
-    htm << tfpWrTail();
+    htm << tfpWrTailTfp();
 
     return htm;
 }
