@@ -70,54 +70,73 @@ wxString tfpWriteReferenceIndex()
     if( !htm.IsEmpty() && recDb::GetChange() == lastchange ) {
         return htm;
     }
+    wxSQLite3Table result = recReference::GetTitleList();
 
-    htm = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
-          " \"http://www.w3.org/TR/html4/loose.dtd\">\n"
-          "<html>\n<head>\n<title>Reference List</title>\n"
-          "<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'>\n"
-          "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>\n"
-          "</head>\n<body>\n<div class='tfp'>\n"
-          "<h1>Reference List</h1>\n";
+    htm = tfpWrHeadTfp( "Reference List" );
+    htm << "<h1>Reference List</h1>\n";
 
-    wxSQLite3ResultSet result = recReference::GetTitleList();
-
-    size_t cnt = 0;
-    if( result.GetColumnCount() > 0 )
-    {
-        htm << "<table class='data'>\n";
-        while( result.NextRow() )
-        {
-            htm << "<tr><td><a href='tfp:R"
-                << result.GetAsString( 0 )
-                << "'><b>R"
-                << result.GetAsString( 0 )
-                << "</b></a></td><td> "
-                << result.GetAsString( 1 )
-                << "</td></tr>\n";
-            cnt++;
-        }
-        htm << "</table>\n<p>\nTotal References found: " << cnt << "\n</p>\n";
-#if 0
-        while( result.NextRow() )
-        {
-            htm << "<a href='tfp:R"
-                << result.GetAsString( 0 )
-                << "'><b>R"
-                << result.GetAsString( 0 )
-                << "</b></a> "
-                << result.GetAsString( 1 )
-                << "<br>";
-            cnt++;
-        }
-        htm << "<br><br>Total References found: " << cnt;
-#endif
-    } else {
-        htm << "<p>No References found!</p>\n";
+    htm <<
+        "<table class='data'>\n"
+        "<tr><th>ID</th><th>Title</th></tr>\n"
+    ;
+    for( int i = 0 ; i < result.GetRowCount() ; i++ ) {
+        result.SetRow( i );
+        htm << 
+            "<tr><td><a href='tfp:R" << result.GetAsString( 0 ) <<
+            "'><b>R" << result.GetAsString( 0 ) <<
+            "</b></a></td><td> " << result.GetAsString( 1 ) <<
+            "</td></tr>\n"
+        ;
     }
+    htm << 
+        "</table>\n<p>\nTotal References found: " <<
+        result.GetRowCount() <<
+        "\n</p>\n"
+    ;
 
-    htm << "</div></body>\n</html>\n";
+    htm << tfpWrTailTfp();
 
     lastchange = recDb::GetChange();
+    return htm;
+}
+
+wxString tfpWriteReferencePagedIndex( idt begCnt )
+{
+    int maxsize = recReference::UserCount();
+    if( maxsize <= tfpWR_PAGE_MAX ) {
+        return tfpWriteReferenceIndex();
+    }
+    wxString pmenu = tfpWritePagedIndexMenu( begCnt, maxsize, "tfp:R," );
+
+    wxSQLite3Table result = recReference::GetTitleList( begCnt, tfpWR_PAGE_MAX );
+    size_t size = (size_t) result.GetRowCount();
+    result.SetRow( 0 );
+    idt beg = GET_ID( result.GetInt64( 0 ) );
+    result.SetRow( size-1 );
+    idt end = GET_ID( result.GetInt64( 0 ) );
+
+    wxString htm;
+    htm <<
+        tfpWrHeadTfp( "Reference List" ) <<
+        "<h1>Event Index from " << recReference::GetIdStr( beg ) <<
+        " to " << recReference::GetIdStr( end ) <<
+        "</h1>\n" << pmenu <<
+        "<table class='data'>\n"
+        "<tr><th>ID</th><th>Title</th></tr>\n"
+    ;
+    for( size_t i = 0 ; i < size ; i++ ) {
+        result.SetRow( i );
+        htm << 
+            "<tr><td><a href='tfp:R" << result.GetAsString( 0 ) <<
+            "'><b>R" << result.GetAsString( 0 ) <<
+            "</b></a></td><td> " << result.GetAsString( 1 ) <<
+            "</td></tr>\n"
+        ;
+    }
+    htm << 
+        "</table>\n" << pmenu <<
+        "<br>\n" << tfpWrTailTfp() 
+    ;
     return htm;
 }
 

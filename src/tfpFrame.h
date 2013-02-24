@@ -106,6 +106,7 @@ public:
     void OnListPersonas( wxCommandEvent& event );
     void OnListIndividuals( wxCommandEvent& event );
     void OnListReferences( wxCommandEvent& event );
+    void OnListPagedReferences( wxCommandEvent& event );
     void OnListAllEvents( wxCommandEvent& event );
     void OnListPagedEvents( wxCommandEvent& event );
     void OnListSelectedEvents( wxCommandEvent& event );
@@ -220,7 +221,9 @@ enum
     tfpID_LIST_SURNAME_INDEX,
     tfpID_LIST_PERSONAS,
 	tfpID_LIST_INDIVIDUALS,
-	tfpID_LIST_REFERENCES,
+	tfpID_LIST_REFERENCE_MENU,
+	tfpID_LIST_ALL_REFERENCES,
+	tfpID_LIST_PAGED_REFERENCES,
 	tfpID_LIST_EVENT_MENU,
 	tfpID_LIST_ALL_EVENTS,
 	tfpID_LIST_PAGED_EVENTS,

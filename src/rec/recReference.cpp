@@ -156,13 +156,19 @@ recRefEntVec recReference::ReadReferenceEntitys()
     return vec;
 }
 
-wxSQLite3ResultSet recReference::GetTitleList()
+wxSQLite3Table recReference::GetTitleList()
+{
+    return s_db->GetTable( "SELECT id, title FROM Reference ORDER BY id;" );
+}
+
+wxSQLite3Table recReference::GetTitleList( idt offset, int limit )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "SELECT id, title FROM Reference ORDER BY id;"
+        "SELECT id, title FROM Reference ORDER BY id LIMIT "ID", %d;",
+        offset, limit
     );
-    return s_db->ExecuteQuery( sql );
+    return s_db->GetTable( sql );
 }
 
 recIdVec recReference::GetPersonaList( idt refID )

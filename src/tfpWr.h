@@ -35,6 +35,8 @@ class recFilterEvent;
 // See tfpWr.cpp
 extern wxString tfpWrHeadTfp( const wxString& title );
 extern wxString tfpWrTailTfp();
+#define tfpWR_PAGE_MAX 100
+extern wxString tfpWritePagedIndexMenu( idt begCnt, size_t maxsize, const wxString prefix );
 extern wxString GetSexClass( idt indID, Sex pref = SEX_Unknown );
 extern wxString wxGetRowClass( int row );
 enum GET_EPITAPH_Prefix { GE_None, GE_Spaces, GE_NewLine };
@@ -76,6 +78,7 @@ extern wxString tfpWriteRelationship( idt rsID );
 
 // See tfpWrReference.cpp
 extern wxString tfpWriteReferenceIndex();
+extern wxString tfpWriteReferencePagedIndex( idt begCnt );
 extern wxString tfpWriteReferencePage( idt refID );
 
 #endif // TFPWR_H

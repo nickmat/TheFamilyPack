@@ -89,7 +89,8 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_LIST_SURNAME_INDEX, TfpFrame::OnListIndex )
     EVT_MENU( tfpID_LIST_INDIVIDUALS, TfpFrame::OnListIndividuals )
     EVT_MENU( tfpID_LIST_PERSONAS, TfpFrame::OnListPersonas )
-    EVT_MENU( tfpID_LIST_REFERENCES, TfpFrame::OnListReferences )
+    EVT_MENU( tfpID_LIST_ALL_REFERENCES, TfpFrame::OnListReferences )
+    EVT_MENU( tfpID_LIST_PAGED_REFERENCES, TfpFrame::OnListPagedReferences )
     EVT_MENU( tfpID_LIST_ALL_EVENTS, TfpFrame::OnListAllEvents )
     EVT_MENU( tfpID_LIST_PAGED_EVENTS, TfpFrame::OnListPagedEvents )
     EVT_MENU( tfpID_LIST_SELECTED_EVENTS, TfpFrame::OnListSelectedEvents )
@@ -203,6 +204,10 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     menuFind->Append( tfpID_FIND_INDIVIDUAL_ID, _("&Individual ID...") );
     menuFind->Append( tfpID_FIND_EVENT_ID, _("&Event ID...") );
 
+    wxMenu* menuListRef = new wxMenu;
+    menuListRef->Append( tfpID_LIST_ALL_REFERENCES, _("&All References\tAlt-R") );
+    menuListRef->Append( tfpID_LIST_PAGED_REFERENCES, _("&Paged References") );
+
     wxMenu* menuListEvent = new wxMenu;
     menuListEvent->Append( tfpID_LIST_ALL_EVENTS, _("&All Events\tAlt-E") );
     menuListEvent->Append( tfpID_LIST_PAGED_EVENTS, _("&Paged Events") );
@@ -212,7 +217,7 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     menuList->Append( tfpID_LIST_SURNAME_INDEX, _("&Surname Index\tAlt-S") );
     menuList->Append( tfpID_LIST_PERSONAS, _("Person&a Index\tAlt-A") );
     menuList->Append( tfpID_LIST_INDIVIDUALS, _("&Individuals\tAlt-I") );
-    menuList->Append( tfpID_LIST_REFERENCES, _("&References\tAlt-R") );
+    menuList->Append( tfpID_LIST_REFERENCE_MENU, _("&References"), menuListRef );
     menuList->Append( tfpID_LIST_EVENT_MENU, _("&Events"), menuListEvent );
     menuList->Append( tfpID_LIST_RESEARCHERS, _("Resear&chers\tAlt-C") );
 
@@ -269,7 +274,7 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     m_toolbar->AddTool( tfpID_FIND_FORWARD, _("Forward"), bmpForward );
     m_toolbar->AddSeparator();
     m_toolbar->AddTool( tfpID_LIST_SURNAME_INDEX, _("Index"), bmpFind );
-    m_toolbar->AddTool( tfpID_LIST_REFERENCES, _("References"), bmpFindref );
+    m_toolbar->AddTool( tfpID_LIST_PAGED_REFERENCES, _("References"), bmpFindref );
     m_toolbar->AddSeparator();
     m_toolbar->AddTool( tfpID_GOTO_HOME, _("Home"), bmpHome );
     m_toolbar->AddSeparator();
@@ -654,6 +659,13 @@ void TfpFrame::OnListIndividuals( wxCommandEvent& event )
 void TfpFrame::OnListReferences( wxCommandEvent& event )
 {
     DisplayHtmPage( "R" );
+}
+
+/*! \brief Called on a List/Paged Events menu option event.
+ */
+void TfpFrame::OnListPagedReferences( wxCommandEvent& event )
+{
+    DisplayHtmPage( "R,0" );
 }
 
 /*! \brief Called on a List/All Events menu option event.
@@ -1371,7 +1383,7 @@ void TfpFrame::SetDatabaseOpen( const wxString& path )
     m_titleFmt = wxString::Format( "TFP: %s, %%s", dbfile.GetName() );
     SetMenuBar( m_menuOpenDB );
     m_toolbar->EnableTool( tfpID_LIST_SURNAME_INDEX, true );
-    m_toolbar->EnableTool( tfpID_LIST_REFERENCES, true );
+    m_toolbar->EnableTool( tfpID_LIST_PAGED_REFERENCES, true );
     m_toolbar->EnableTool( tfpID_GOTO_HOME, true );
     m_showpage->Enable( true );
 }
@@ -1382,7 +1394,7 @@ void TfpFrame::SetNoDatabase()
     SetTitle( "The Family Pack" );
     SetMenuBar( m_menuClosedDB );
     m_toolbar->EnableTool( tfpID_LIST_SURNAME_INDEX, false );
-    m_toolbar->EnableTool( tfpID_LIST_REFERENCES, false );
+    m_toolbar->EnableTool( tfpID_LIST_PAGED_REFERENCES, false );
     m_toolbar->EnableTool( tfpID_GOTO_HOME, false );
     m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, false );
     m_showpage->Enable( false );
@@ -1605,6 +1617,15 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
     case 'R':  // Reference Document
         if( name == "R" ) {
             return tfpWriteReferenceIndex();
+        }
+        if( uch1 == ',' ) {
+            success = name.Mid(2).ToLongLong( &num );
+            if( !success || num < 0 ) {
+                return wxString::Format(
+                    ErrorPage, name, _("Invalid Reference Index Page")
+                );
+            }
+            return tfpWriteReferencePagedIndex( num );
         }
         if( name == "Re" ) {
             return tfpWriteResearcherList();

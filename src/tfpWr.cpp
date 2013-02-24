@@ -62,6 +62,76 @@ wxString tfpWrTailTfp()
     return "</div>\n</body>\n</html>\n";
 }
 
+wxString tfpWritePagedIndexMenu( idt begCnt, size_t maxsize, const wxString prefix )
+{
+    int maxrows = tfpWR_PAGE_MAX;
+    idt beg = 0, end = 0;
+    int pgcnt = ( maxsize / maxrows ) + 1;
+
+    int pgcur = begCnt/maxrows;
+    int b1, e1, b2, e2;
+    b1 = b2 = e1 = e2 = pgcnt;
+
+    wxString mnu;
+    if( pgcnt > 1 ) {
+        mnu << "<div class='pagesel'><p>\n";
+        if( begCnt != 0 ) {
+            mnu <<
+                "<a href='" << prefix << begCnt-maxrows << 
+                "'>Prev</a>\n"
+            ;
+        } else {
+            mnu <<
+                "<a class='pncur' href='null:'>Prev</a>\n"
+            ;
+        }
+        if( pgcnt > 10 ) {
+            if( pgcur < 2 )  { b1 = 5; e1 = pgcnt - 5; }
+            else if( pgcur == 2 ) { b1 = 6; e1 = pgcnt - 4; }
+            else if( pgcur == 3 ) { b1 = 7; e1 = pgcnt - 3; }
+            else if( pgcur == 4 ) { b1 = 8; e1 = pgcnt - 2; }
+            else if( pgcur == pgcnt - 5 ) { b1 = 2; e1 = pgcnt - 8; }
+            else if( pgcur == pgcnt - 4 ) { b1 = 3; e1 = pgcnt - 7; }
+            else if( pgcur == pgcnt - 3 ) { b1 = 4; e1 = pgcnt - 6; }
+            else if( pgcur > pgcnt - 3 )  { b1 = 5; e1 = pgcnt - 5; }
+            else { b1 = 1; e1 = pgcur - 3; b2 = pgcur + 4; e2 = pgcnt - 1; }
+        }
+        for( int i = 0 ; i < pgcnt ; i++ ) {
+            if(i == b1 ) {
+                mnu << " ...\n";
+                i = e1;
+            }
+            if(i == b2 ) {
+                mnu << " ...\n";
+                i = e2;
+            }
+            if( i == pgcur ) {
+                mnu <<
+                    "<a class='pn pncur' href='null:'>" << 
+                    i+1 << "</a>\n"
+                ;
+            } else {
+                mnu <<
+                    "<a class='pn' href='" << prefix << i*maxrows << 
+                    "'>" << i+1 << "</a>\n"
+                ;
+            }
+        }
+        if( begCnt+maxrows < maxsize ) {
+            mnu <<
+                "<a href='" << prefix << begCnt+maxrows << 
+                "'>Next</a>\n"
+            ;
+        } else {
+            mnu <<
+                "<a class='pncur' href='null:'>Next</a>\n"
+            ;
+        }
+        mnu << "</p></div>\n" ;
+    }
+    return mnu;
+}
+
 wxString GetSexClass( idt indID, Sex pref )
 {
     Sex sex = recIndividual::GetSex( indID );

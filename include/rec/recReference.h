@@ -136,7 +136,8 @@ public:
     static wxString GetTitle( idt refID );
 
     recRefEntVec ReadReferenceEntitys();
-    static wxSQLite3ResultSet GetTitleList();
+    static wxSQLite3Table GetTitleList();
+    static wxSQLite3Table GetTitleList( idt offset, int limit );
 
     static recIdVec GetPersonaList( idt refID );
     recIdVec GetPersonaList() const { return GetPersonaList( f_id ); }
