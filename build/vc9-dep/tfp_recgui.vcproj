@@ -228,6 +228,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rg\rgEdEvidEvent.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rg\rgEdName.cpp"
 				>
 			</File>
@@ -241,6 +245,14 @@
 			</File>
 			<File
 				RelativePath="..\..\src\rg\rgEdPlace.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgEdReference.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgEdRelationship.cpp"
 				>
 			</File>
 			<File
@@ -306,6 +318,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rg\rgEdEvidEvent.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rg\rgEdName.h"
 				>
 			</File>
@@ -319,6 +335,14 @@
 			</File>
 			<File
 				RelativePath="..\..\src\rg\rgEdPlace.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgEdReference.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgEdRelationship.h"
 				>
 			</File>
 			<File

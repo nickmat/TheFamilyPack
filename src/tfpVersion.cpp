@@ -6,7 +6,7 @@
  * Modified by:
  * Created:     24 September 2010
  * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2010-2013, Nick Matthews.
  * Website:     http://thefamilypack.org
  * Licence:     GNU GPLv3
  *
@@ -70,7 +70,7 @@ const char* tfpHtmVersion =
 /*! A string containing a long hand version name and copyright message.
  */
 const char* tfpTitle = "The Family Pack - Version " VERSION "\n"
-                         "Copyright (c) 2010 - 2012 Nick Matthews\n\n";
+                         "Copyright (c) 2010 - 2013 Nick Matthews\n\n";
 
 /*************************************************************************//**
 

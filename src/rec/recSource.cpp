@@ -142,6 +142,31 @@ bool recSource::Read()
     return true;
 }
 
+void recSource::RemoveDates( idt dateID )
+{
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "UPDATE Source SET sub_date1_id=0 WHERE sub_date1_id="ID";"
+        "UPDATE Source SET sub_date2_id=0 WHERE sub_date2_id="ID";",
+        dateID, dateID
+    );
+    s_db->ExecuteUpdate( sql );
+}
+
+void recSource::RemovePlace( idt placeID )
+{
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "UPDATE Source SET sub_place_id=0 WHERE sub_place_id="ID";"
+        "UPDATE Source SET loc_place_id=0 WHERE loc_place_id="ID";",
+        placeID, placeID
+    );
+    s_db->ExecuteUpdate( sql );
+}
+
+
 //============================================================================
 //                 recCitationPart
 //============================================================================

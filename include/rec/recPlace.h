@@ -63,8 +63,6 @@ public:
     void FSetDate1ID( idt dateID ) { f_date1_id = dateID; }
     void FSetDate2ID( idt dateID ) { f_date2_id = dateID; }
 
-    bool DeleteAll();
-
     idt GetDate1ID() const { return f_date1_id; }
     idt GetDate2ID() const { return f_date2_id; }
 
@@ -80,6 +78,9 @@ public:
 
     recPlacePartVec GetPlaceParts() const { return GetPlaceParts( f_id ); }
     static recPlacePartVec GetPlaceParts( idt placeID );
+
+    static void RemoveDates( idt dateID );
+    static void RemoveFromDatabase( idt placeID );
 
     static void DeleteIfOrphaned( idt placeID );
 };

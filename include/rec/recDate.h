@@ -179,8 +179,18 @@ public:
 
     bool IsRelative() const { return ( f_rel_id != 0 ); }
     static bool IsRelative( idt dateID ) { recDate date(dateID); return date.IsRelative(); }
+    bool IsUsedAsBase() const { return IsUsedAsBase( f_id ); }
+    static bool IsUsedAsBase( idt dateID );
+    static recIdVec GetRelativeIdList( idt id );
+    bool IsUsedInEvent() const { return IsUsedInEvent( f_id ); }
+    static bool IsUsedInEvent( idt dateID );
+    bool IsUsedInSource() const { return IsUsedInSource( f_id ); }
+    static bool IsUsedInSource( idt dateID );
+    bool IsUsedInPlace() const { return IsUsedInPlace( f_id ); }
+    static bool IsUsedInPlace( idt dateID );
 
     static void DeleteIfOrphaned( idt dateID );
+    static void RemoveFromDatabase( idt dateID );
 };
 
 /*! The two entities are equal, ignoring the record id.
@@ -256,12 +266,16 @@ public:
     void FSetType( Type type ) { f_type = type; }
     void FSetScheme( CalendarScheme sch ) { f_scheme = sch; } 
 
+    static idt GetParentDate( idt rdID );
+
     void SetDefaults();
 
-    static wxString GetIdStr( idt indID ) { return wxString::Format( "RD"ID, indID ); }
+    static wxString GetIdStr( idt rdID ) { return wxString::Format( "RD"ID, rdID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     bool CalculateDate( recDate& date ) const;
+
+    static void RemoveFromDatabase( idt rdID );
 };
 
 /*! The two entities are equal, ignoring the record id.

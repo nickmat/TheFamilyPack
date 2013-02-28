@@ -244,9 +244,13 @@ public:
     static int GetLastPerSeqNumber( idt eventID );
     int GetLastPerSeqNumber() const { return GetLastPerSeqNumber( f_id ); }
 
+    static void RemoveDates( idt dateID ); // removes date if found, replacing with 0
+    static void RemovePlace( idt placeID ); // removes place if found, replacing with 0
+
     // Delete Event and remove all references to it.
-    void DeleteFromDb();
-    static void DeleteFromDb( idt id );
+    void RemoveFromDatabase();
+    static void RemoveFromDatabase( idt id );
+    static void RemoveIncOrphansFromDatabase( idt id );
 
     static void DeleteIfOrphaned( idt id );
 };
@@ -309,6 +313,7 @@ public:
         ROLE_MAX                    = 24 // size of list
     };
     enum Prime {
+        PRIME_Ignore = -1,
         PRIME_None   = 0,
         PRIME_First  = 1,
         PRIME_Second = 2,
@@ -355,7 +360,8 @@ public:
     static wxString GetTypeAndRoleStr( idt roleID );
     static idt Select( idt typeID, SelectFilter sf = SF_All );
 
-    static idt FindOrCreate( const wxString& name, idt type, bool prime = true, bool official = false );
+    static idt Find( const wxString& name, idt type, Prime prime = PRIME_Ignore, TriLogic official = TRILOGIC_both );
+    static idt FindOrCreate( const wxString& name, idt type, Prime prime = PRIME_First, bool official = false );
 };
 
 inline bool recEquivalent( const recEventTypeRole& r1, const recEventTypeRole& r2 )

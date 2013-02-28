@@ -170,7 +170,7 @@ int recName::AddNamePart( const wxString& nameStr, recStdNameType type, int seq 
     return part.f_sequence;
 }
 
-void recName::DeleteFromDb( idt id )
+void recName::RemoveFromDatabase( idt id )
 {
     if( id == 0 ) return;
 

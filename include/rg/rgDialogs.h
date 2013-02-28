@@ -32,6 +32,8 @@
 #include <rec/recFilterEvent.h>
 #include <rec/recIndividual.h>
 
+class rgDlgEditReference;
+
 extern bool rgEditDate( idt dateID );
 extern idt rgCreateDate( const wxString& dateStr = wxEmptyString );
 extern bool rgEditRelativeDate( idt dateID );
@@ -68,7 +70,7 @@ extern idt rgSelectIndEvent(
 extern idt rgSelectIndividual( 
     unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL,
     unsigned sexfilter = recInd_FILTER_SexAll );
-
+extern idt rgSelectCreatePersona( wxWindow* parent, idt refID );
 
 // See src/rg/rgEdContact.cpp
 extern bool rgEditContact( idt conID );
@@ -77,6 +79,11 @@ extern idt rgCreateContact( idt clID );
 // See src/rg/rgEdEvent.cpp
 extern bool rgEditEvent( idt eveID );
 extern idt rgCreateIndEvent( idt ind1ID, idt ind2ID = 0 );
+
+// See src/rg/rgEdEvidEvent.cpp
+extern bool rgEditEvidEvent( rgDlgEditReference* parent, idt eveID );
+extern idt rgCreateEvidEvent( rgDlgEditReference* parent );
+extern idt rgCreateEvidPerEvent( rgDlgEditReference* parent, const wxString& role );
 
 // See src/rg/rgEdName.cpp
 extern bool rgEditName( idt nameID );
@@ -106,6 +113,16 @@ enum rgSHOWROLE {
 extern bool rgEditIndEventRole( idt ieID, rgSHOWROLE filter = rgSHOWROLE_All );
 extern bool rgCreateIndEventRole( idt indID, idt eveID, idt roleID );
 extern bool rgEditPerEventRole( idt epID, rgSHOWROLE filter = rgSHOWROLE_All );
+extern bool rgCreatePerEventRole( idt perID, idt eveID, idt roleID );
+
+// See src/rg/rgEdReference.cpp
+extern bool rgEditReference( wxWindow* parent, idt refID );
+extern idt rgCreateReference( wxWindow* parent );
+
+// See src/rg/rgEdRelationship.cpp
+extern bool rgEditPerRelationship( rgDlgEditReference* parent, idt relID );
+extern idt rgCreatePerRelationship( 
+    rgDlgEditReference* parent, const wxString& descrip = wxEmptyString );
 
 // See src/rg/rgEdResearcher.cpp
 extern bool rgEditResearcher( idt conID );

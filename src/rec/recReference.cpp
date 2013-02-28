@@ -171,6 +171,16 @@ wxSQLite3Table recReference::GetTitleList( idt offset, int limit )
     return s_db->GetTable( sql );
 }
 
+int recReference::GetNextEntitySequence() const
+{
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT MAX(sequence) FROM ReferenceEntity WHERE ref_id="ID";",
+        f_id
+    );
+    return s_db->ExecuteScalar( sql )+1;
+}
+
 recIdVec recReference::GetPersonaList( idt refID )
 {
     recIdVec vec;
@@ -377,6 +387,16 @@ idt recReferenceEntity::FindReferenceID( Type type, idt entityID )
 
     wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
     return GET_ID( result.GetInt64( 0 ) );
+}
+
+void recReferenceEntity::Delete( Type type, idt entityID )
+{
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "DELETE FROM ReferenceEntity WHERE entity_type=%d AND entity_id="ID";",
+        (int) type, entityID
+    );
+    s_db->ExecuteUpdate( sql );
 }
 
 // End of recReference.cpp file

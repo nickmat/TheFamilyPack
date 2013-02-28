@@ -29,6 +29,12 @@ class rgStrTableCtrl;
 #include <wx/panel.h>
 #include <wx/listctrl.h>
 #include <wx/splitter.h>
+#include <wx/bitmap.h>
+#include <wx/image.h>
+#include <wx/icon.h>
+#include <wx/toolbar.h>
+#include <wx/webview.h>
+#include <wx/notebook.h>
 #include <wx/radiobox.h>
 #include <wx/checkbox.h>
 #include <wx/checklst.h>
@@ -163,7 +169,7 @@ class fbRgEditEvent : public wxDialog
 	
 	public:
 		
-		fbRgEditEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE ); 
+		fbRgEditEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbRgEditEvent();
 		
 		void m_splitter1OnIdle( wxIdleEvent& )
@@ -203,7 +209,7 @@ class fbRgEditEventType : public wxDialog
 	
 	public:
 		
-		fbRgEditEventType( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Event Type"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 350,300 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
+		fbRgEditEventType( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Event Type"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbRgEditEventType();
 	
 };
@@ -289,6 +295,109 @@ class fbRgEditPlace : public wxDialog
 		
 		fbRgEditPlace( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Place"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbRgEditPlace();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class fbRgEditReference
+///////////////////////////////////////////////////////////////////////////////
+class fbRgEditReference : public wxDialog 
+{
+	private:
+	
+	protected:
+		enum
+		{
+			tfpID_EDREF_OnCut = 1000,
+			tfpID_EDREF_OnCopy,
+			tfpID_EDREF_OnPaste,
+			tfpID_EDREF_OnUndo,
+			tfpID_EDREF_OnRedo
+		};
+		
+		wxStaticText* m_staticText401;
+		wxTextCtrl* m_textCtrlTitle;
+		wxSplitterWindow* m_splitter1;
+		wxPanel* m_panel7;
+		wxNotebook* m_notebookTop;
+		wxPanel* m_panelSource;
+		wxToolBar* m_toolBar1;
+		wxTextCtrl* m_textCtrlStatement;
+		wxPanel* m_panelView;
+		wxWebView* m_webview;
+		wxPanel* m_panel11;
+		wxNotebook* m_notebookBottom;
+		wxPanel* m_panelPersona;
+		wxListCtrl* m_listPersona;
+		wxButton* m_buttonPersonaAdd;
+		wxButton* m_buttonPersonaEdit;
+		wxButton* m_buttonPersonaDel;
+		wxPanel* m_panelEntities;
+		wxListCtrl* m_listEntities;
+		wxButton* m_buttonAdd;
+		wxButton* m_buttonEdit;
+		wxButton* m_buttonDel;
+		wxButton* m_buttonUp;
+		wxButton* m_buttonDn;
+		wxStaticLine* m_staticline1;
+		wxStaticText* m_staticRefID;
+		wxButton* m_buttonSave1;
+		wxButton* m_buttonCancel1;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnStatementViewChanging( wxNotebookEvent& event ) { event.Skip(); }
+		virtual void OnTool( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnPersonaAddButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnPersonaEditButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnPersonaDeleteButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAddEntityButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEditEntityButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDeleteEntityButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnUpEntityButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDownEntityButton( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		fbRgEditReference( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Reference"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
+		~fbRgEditReference();
+		
+		void m_splitter1OnIdle( wxIdleEvent& )
+		{
+			m_splitter1->SetSashPosition( 265 );
+			m_splitter1->Disconnect( wxEVT_IDLE, wxIdleEventHandler( fbRgEditReference::m_splitter1OnIdle ), NULL, this );
+		}
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class fbRgEditRelationship
+///////////////////////////////////////////////////////////////////////////////
+class fbRgEditRelationship : public wxDialog 
+{
+	private:
+	
+	protected:
+		wxButton* m_buttonPerson1;
+		wxTextCtrl* m_textCtrlPersona1;
+		wxStaticText* m_staticText75;
+		wxTextCtrl* m_textCtrlDescrip;
+		wxButton* m_buttonPersona2;
+		wxTextCtrl* m_textCtrlPersona2;
+		wxStaticLine* m_staticline18;
+		wxStaticText* m_staticRsNumber;
+		wxButton* m_buttonSave;
+		wxButton* m_buttonCancel;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnPersona1Button( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnPersona2Button( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		fbRgEditRelationship( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Relationship"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
+		~fbRgEditRelationship();
 	
 };
 

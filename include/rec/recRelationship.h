@@ -52,6 +52,14 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "Relationship" );
 
+    idt FGetPer1ID() const { return f_per1_id; }
+    idt FGetPer2ID() const { return f_per2_id; }
+    wxString FGetDescrip() const { return f_descrip; }
+ 
+    void FSetPer1ID( idt perID ) { f_per1_id = perID; }
+    void FSetPer2ID( idt perID ) { f_per2_id = perID; }
+    void FSetDescrip( const wxString& descrip ) { f_descrip = descrip; }
+
     static wxString GetIdStr( idt relID ) { return wxString::Format( "Rs"ID, relID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 

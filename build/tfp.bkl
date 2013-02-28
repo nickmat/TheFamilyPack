@@ -84,12 +84,9 @@
     <runtime-libs>dynamic</runtime-libs>
 
     <sources>$(LOCAL_SRC)/dlg/dlgEd.cpp</sources>
-    <sources>$(LOCAL_SRC)/dlg/dlgEdEvent.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgEdFamily.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgEdIndividual.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgEdPersona.cpp</sources>
-    <sources>$(LOCAL_SRC)/dlg/dlgEdReference.cpp</sources>
-    <sources>$(LOCAL_SRC)/dlg/dlgEdRelationship.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgEdRole.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgEdSystem.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgNote.cpp</sources>
@@ -114,12 +111,9 @@
     <sources>$(LOCAL_SRC)/webviewfshandler.cpp</sources>
 
     <headers>$(LOCAL_SRC)/dlg/dlgEd.h</headers>
-    <headers>$(LOCAL_SRC)/dlg/dlgEdEvent.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgEdFamily.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgEdIndividual.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgEdPersona.h</headers>
-    <headers>$(LOCAL_SRC)/dlg/dlgEdReference.h</headers>
-    <headers>$(LOCAL_SRC)/dlg/dlgEdRelationship.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgEdRole.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgEdSystem.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgNote.h</headers>

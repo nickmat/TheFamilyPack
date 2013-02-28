@@ -185,7 +185,7 @@ void dlgEditPersona::OnNameDeleteButton( wxCommandEvent& event )
             return;
         }
         m_listName->DeleteItem( row );
-        m_names[row].DeleteFromDb();
+        m_names[row].RemoveFromDatabase();
         m_names.erase( m_names.begin() + row );
     } else {
         wxMessageBox( wxT("No row selected"), wxT("Delete Name") );

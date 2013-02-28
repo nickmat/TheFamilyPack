@@ -354,7 +354,7 @@ int recPersona::CountNames( idt perID )
     return s_db->ExecuteScalar( sql );
 }
 
-void recPersona::DeleteFromDb()
+void recPersona::RemoveFromDatabase()
 {
     if( f_id <= 0 ) {
         return;
@@ -363,7 +363,7 @@ void recPersona::DeleteFromDb()
 
     recNameVec names = ReadNames();
     for( size_t i = 0 ; i < names.size() ; i++ ) {
-        names[i].DeleteFromDb();
+        names[i].RemoveFromDatabase();
     }
     sql.Format(
         "DELETE FROM EventPersona WHERE per_id="ID";"
@@ -378,13 +378,13 @@ void recPersona::DeleteFromDb()
     Clear();
 }
 
-void recPersona::DeleteFromDb( idt id )
+void recPersona::RemoveFromDatabase( idt id )
 {
     if( id <= 0 ) {
         return;
     }
     recPersona per(id);
-    per.DeleteFromDb();
+    per.RemoveFromDatabase();
 }
 
 // End of recPersona.cpp file

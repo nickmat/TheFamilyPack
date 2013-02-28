@@ -113,10 +113,13 @@
     <sources>$(LOCAL_SRC)/rg/rgEdDate.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdEvent.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdEventType.cpp</sources>
+    <sources>$(LOCAL_SRC)/rg/rgEdEvidEvent.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdName.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdNamePart.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdPerIndEvent.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdPlace.cpp</sources>
+    <sources>$(LOCAL_SRC)/rg/rgEdReference.cpp</sources>
+    <sources>$(LOCAL_SRC)/rg/rgEdRelationship.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdResearcher.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdRole.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgSelect.cpp</sources>
@@ -133,10 +136,13 @@
     <headers>$(LOCAL_SRC)/rg/rgEdDate.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdEvent.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdEventType.h</headers>
+    <headers>$(LOCAL_SRC)/rg/rgEdEvidEvent.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdName.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdNamePart.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdPerIndEvent.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdPlace.h</headers>
+    <headers>$(LOCAL_SRC)/rg/rgEdReference.h</headers>
+    <headers>$(LOCAL_SRC)/rg/rgEdRelationship.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdResearcher.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdRole.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgSelect.h</headers>

@@ -33,10 +33,6 @@ class tfpListCtrlIndividuals;
 #include <wx/listctrl.h>
 #include <wx/notebook.h>
 #include <wx/listbox.h>
-#include <wx/statbox.h>
-#include <wx/toolbar.h>
-#include <wx/html/htmlwin.h>
-#include <wx/splitter.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -268,52 +264,6 @@ class fbDlgEditFamily : public wxDialog
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class fbDlgEditEvent
-///////////////////////////////////////////////////////////////////////////////
-class fbDlgEditEvent : public wxDialog 
-{
-	private:
-	
-	protected:
-		wxStaticText* m_staticText1;
-		wxStaticText* m_staticType;
-		wxStaticText* m_staticText2;
-		wxTextCtrl* m_textCtrlTitle;
-		wxButton* m_buttonDateBeg;
-		wxTextCtrl* m_textCtrlDateBeg;
-		wxButton* m_buttonDateEnd;
-		wxTextCtrl* m_textCtrlDateEnd;
-		wxButton* m_buttonPlace;
-		wxTextCtrl* m_textCtrlPlace;
-		wxListCtrl* m_listPersona;
-		wxButton* m_buttonAdd;
-		wxButton* m_buttonEdit;
-		wxButton* m_buttonDel;
-		wxButton* m_buttonUp;
-		wxButton* m_buttonDn;
-		wxStaticLine* m_staticline1;
-		wxButton* m_buttonSave;
-		wxButton* m_buttonCancel;
-		
-		// Virtual event handlers, overide them in your derived class
-		virtual void OnDateBegButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnDateEndButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnPlaceButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnAddButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnEditButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnDeleteButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnUpButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnDownButton( wxCommandEvent& event ) { event.Skip(); }
-		
-	
-	public:
-		
-		fbDlgEditEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
-		~fbDlgEditEvent();
-	
-};
-
-///////////////////////////////////////////////////////////////////////////////
 /// Class fbDlgEditRole
 ///////////////////////////////////////////////////////////////////////////////
 class fbDlgEditRole : public wxDialog 
@@ -342,110 +292,6 @@ class fbDlgEditRole : public wxDialog
 		
 		fbDlgEditRole( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Persona's Role"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 400,231 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbDlgEditRole();
-	
-};
-
-///////////////////////////////////////////////////////////////////////////////
-/// Class fbDlgEditRelationship
-///////////////////////////////////////////////////////////////////////////////
-class fbDlgEditRelationship : public wxDialog 
-{
-	private:
-	
-	protected:
-		wxStaticText* m_staticRsNumber;
-		wxButton* m_buttonPersona1;
-		wxTextCtrl* m_textCtrlPersona1;
-		wxStaticText* m_staticText2;
-		wxTextCtrl* m_textCtrlDescrip;
-		wxButton* m_buttonPersona2;
-		wxTextCtrl* m_textCtrlPersona2;
-		wxStaticLine* m_staticline1;
-		wxButton* m_buttonSave;
-		wxButton* m_buttonCancel;
-		
-		// Virtual event handlers, overide them in your derived class
-		virtual void OnPersona1Button( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnPersona2Button( wxCommandEvent& event ) { event.Skip(); }
-		
-	
-	public:
-		
-		fbDlgEditRelationship( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Persona's Relationship"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 337,217 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
-		~fbDlgEditRelationship();
-	
-};
-
-///////////////////////////////////////////////////////////////////////////////
-/// Class fbDlgEditReference
-///////////////////////////////////////////////////////////////////////////////
-class fbDlgEditReference : public wxDialog 
-{
-	private:
-	
-	protected:
-		enum
-		{
-			tfpID_EDREF_OnCut = 1000,
-			tfpID_EDREF_OnCopy,
-			tfpID_EDREF_OnPaste,
-			tfpID_EDREF_OnUndo,
-			tfpID_EDREF_OnRedo
-		};
-		
-		wxStaticText* m_staticText1;
-		wxStaticText* m_staticRefID;
-		wxStaticText* m_staticText401;
-		wxTextCtrl* m_textCtrlTitle;
-		wxSplitterWindow* m_splitter1;
-		wxPanel* m_panel7;
-		wxNotebook* m_notebookTop;
-		wxPanel* m_panelSource;
-		wxToolBar* m_toolBar1;
-		wxTextCtrl* m_textCtrlStatement;
-		wxPanel* m_panelView;
-		wxHtmlWindow* m_htmlView;
-		wxPanel* m_panel11;
-		wxNotebook* m_notebookBottom;
-		wxPanel* m_panelPersona;
-		wxListCtrl* m_listPersona;
-		wxButton* m_buttonPersonaAdd;
-		wxButton* m_buttonPersonaEdit;
-		wxButton* m_buttonPersonaDel;
-		wxPanel* m_panelEntities;
-		wxListCtrl* m_listEntities;
-		wxButton* m_buttonAdd;
-		wxButton* m_buttonEdit;
-		wxButton* m_buttonDel;
-		wxButton* m_buttonUp;
-		wxButton* m_buttonDn;
-		wxStaticLine* m_staticline1;
-		wxButton* m_buttonSave;
-		wxButton* m_buttonCancel;
-		
-		// Virtual event handlers, overide them in your derived class
-		virtual void OnStatementViewChanging( wxNotebookEvent& event ) { event.Skip(); }
-		virtual void OnTool( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnPersonaAddButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnPersonaEditButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnPersonaDeleteButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnAddButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnEditButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnDeleteButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnUpButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnDownButton( wxCommandEvent& event ) { event.Skip(); }
-		
-	
-	public:
-		
-		fbDlgEditReference( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Reference"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 627,549 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
-		~fbDlgEditReference();
-		
-		void m_splitter1OnIdle( wxIdleEvent& )
-		{
-			m_splitter1->SetSashPosition( 225 );
-			m_splitter1->Disconnect( wxEVT_IDLE, wxIdleEventHandler( fbDlgEditReference::m_splitter1OnIdle ), NULL, this );
-		}
 	
 };
 

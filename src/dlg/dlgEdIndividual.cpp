@@ -236,7 +236,7 @@ void dlgEditIndPersona::OnNameDeleteButton( wxCommandEvent& event )
             return;
         }
         m_listName->DeleteItem( row );
-        m_names[row].DeleteFromDb();
+        m_names[row].RemoveFromDatabase();
         m_names.erase( m_names.begin() + row );
     } else {
         wxMessageBox( wxT("No row selected"), wxT("Delete Name") );
@@ -397,7 +397,7 @@ void dlgEditIndPersona::OnDeleteEvent( wxCommandEvent& event )
         return;
     }
     m_listEvent->DeleteItem( m_currentRow );
-    recEvent::DeleteFromDb( m_ies[m_currentRow].FGetEventID() );
+    recEvent::RemoveIncOrphansFromDatabase( m_ies[m_currentRow].FGetEventID() );
     m_ies.erase( m_ies.begin() + m_currentRow );
 }
 

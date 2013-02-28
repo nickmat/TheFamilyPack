@@ -225,10 +225,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\dlg\dlgEdEvent.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\dlg\dlgEdFamily.cpp"
 				>
 			</File>
@@ -238,14 +234,6 @@
 			</File>
 			<File
 				RelativePath="..\..\src\dlg\dlgEdPersona.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\dlg\dlgEdReference.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\dlg\dlgEdRelationship.cpp"
 				>
 			</File>
 			<File
@@ -367,10 +355,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\dlg\dlgEdEvent.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\dlg\dlgEdFamily.h"
 				>
 			</File>
@@ -380,14 +364,6 @@
 			</File>
 			<File
 				RelativePath="..\..\src\dlg\dlgEdPersona.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\dlg\dlgEdReference.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\dlg\dlgEdRelationship.h"
 				>
 			</File>
 			<File

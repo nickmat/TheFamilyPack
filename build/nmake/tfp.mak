@@ -61,12 +61,9 @@ TFP_CXXFLAGS = /MD$(VAR_23) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) /D__WXMSW__
 	$(CPPFLAGS) $(CXXFLAGS)
 TFP_OBJECTS =  \
 	tfp_dlgEd.obj \
-	tfp_dlgEdEvent.obj \
 	tfp_dlgEdFamily.obj \
 	tfp_dlgEdIndividual.obj \
 	tfp_dlgEdPersona.obj \
-	tfp_dlgEdReference.obj \
-	tfp_dlgEdRelationship.obj \
 	tfp_dlgEdRole.obj \
 	tfp_dlgEdSystem.obj \
 	tfp_dlgNote.obj \
@@ -200,10 +197,13 @@ RECGUI_OBJECTS =  \
 	recgui_rgEdDate.obj \
 	recgui_rgEdEvent.obj \
 	recgui_rgEdEventType.obj \
+	recgui_rgEdEvidEvent.obj \
 	recgui_rgEdName.obj \
 	recgui_rgEdNamePart.obj \
 	recgui_rgEdPerIndEvent.obj \
 	recgui_rgEdPlace.obj \
+	recgui_rgEdReference.obj \
+	recgui_rgEdRelationship.obj \
 	recgui_rgEdResearcher.obj \
 	recgui_rgEdRole.obj \
 	recgui_rgSelect.obj \
@@ -418,9 +418,6 @@ recgui$(WXLIBPOSTFIX).lib: $(RECGUI_OBJECTS)
 tfp_dlgEd.obj: .\..\..\src\dlg\dlgEd.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\dlgEd.cpp
 
-tfp_dlgEdEvent.obj: .\..\..\src\dlg\dlgEdEvent.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\dlgEdEvent.cpp
-
 tfp_dlgEdFamily.obj: .\..\..\src\dlg\dlgEdFamily.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\dlgEdFamily.cpp
 
@@ -429,12 +426,6 @@ tfp_dlgEdIndividual.obj: .\..\..\src\dlg\dlgEdIndividual.cpp
 
 tfp_dlgEdPersona.obj: .\..\..\src\dlg\dlgEdPersona.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\dlgEdPersona.cpp
-
-tfp_dlgEdReference.obj: .\..\..\src\dlg\dlgEdReference.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\dlgEdReference.cpp
-
-tfp_dlgEdRelationship.obj: .\..\..\src\dlg\dlgEdRelationship.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\dlgEdRelationship.cpp
 
 tfp_dlgEdRole.obj: .\..\..\src\dlg\dlgEdRole.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\dlgEdRole.cpp
@@ -646,6 +637,9 @@ recgui_rgEdEvent.obj: .\..\..\src\rg\rgEdEvent.cpp
 recgui_rgEdEventType.obj: .\..\..\src\rg\rgEdEventType.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdEventType.cpp
 
+recgui_rgEdEvidEvent.obj: .\..\..\src\rg\rgEdEvidEvent.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdEvidEvent.cpp
+
 recgui_rgEdName.obj: .\..\..\src\rg\rgEdName.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdName.cpp
 
@@ -657,6 +651,12 @@ recgui_rgEdPerIndEvent.obj: .\..\..\src\rg\rgEdPerIndEvent.cpp
 
 recgui_rgEdPlace.obj: .\..\..\src\rg\rgEdPlace.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdPlace.cpp
+
+recgui_rgEdReference.obj: .\..\..\src\rg\rgEdReference.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdReference.cpp
+
+recgui_rgEdRelationship.obj: .\..\..\src\rg\rgEdRelationship.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdRelationship.cpp
 
 recgui_rgEdResearcher.obj: .\..\..\src\rg\rgEdResearcher.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdResearcher.cpp

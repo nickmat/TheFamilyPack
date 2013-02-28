@@ -491,7 +491,7 @@ void dlgEditFamily::OnEventDeleteButton( wxCommandEvent& event )
             return;
         }
         m_listEvent->DeleteItem( row );
-        recEvent::DeleteFromDb( m_fes[row].FGetEventID() );
+        recEvent::RemoveIncOrphansFromDatabase( m_fes[row].FGetEventID() );
         m_fes.erase( m_fes.begin() + row );
     } else {
         wxMessageBox( _("No row selected"), _("Delete Event") );

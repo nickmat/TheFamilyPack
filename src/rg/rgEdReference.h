@@ -1,13 +1,12 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        dlgEdReference.h
+ * Name:        src/rg/rgEdReference.h
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Edit database Reference entity dialog header.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
- * Created:     9 October 2010
+ * Created:     26th February 2013
  * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2013, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -27,34 +26,18 @@
 
 */
 
-#ifndef DLGEDREFERENCE_H
-#define DLGEDREFERENCE_H
-
-#include <vector>
+#ifndef RGEDREFERENCE_H
+#define RGEDREFERENCE_H
 
 #include <rec/recReference.h>
 
-#include "fbDlg.h"
+#include "fbRgDialog.h"
 
-struct TfpEntity {
-    recReferenceEntity rec;
-    idt                owner;
-    int                index;  // Temporary index value, -1 if not used
-};
+//============================================================================
+//-------------------------[ rgDlgEditReference ]-----------------------------
+//============================================================================
 
-typedef std::vector< TfpEntity >  TfpEntities;
-
-extern int tfpGetEntityIndex( TfpEntities* array, int ind );
-
-struct TfpEntityString {
-    wxString m_str;
-    int      m_index;
-    idt      m_id;
-};
-
-typedef std::vector< TfpEntityString > TfpEntityStringVec;
-
-class dlgEditReference : public fbDlgEditReference
+class rgDlgEditReference : public fbRgEditReference
 {
     DECLARE_EVENT_TABLE()
 protected:
@@ -66,32 +49,23 @@ protected:
     };
     enum {
         ID_EDREF_NEW_SOURCE = 1100,
-        ID_EDREF_NEW_EVENT,
-        ID_EDREF_NEW_PLACE,
+        ID_EDREF_NEW_NAME,
         ID_EDREF_NEW_DATE,
         ID_EDREF_NEW_DATE_AGE,
-        ID_EDREF_NEW_NAME,
-        ID_EDREF_NEW_REL,
-        ID_EDREF_NEW_ATTR,
-        ID_EDREF_NEW_PER_EVENT
+        ID_EDREF_NEW_PLACE,
+        ID_EDREF_NEW_EVENT,
+        ID_EDREF_NEW_PER_EVENT,
+        ID_EDREF_NEW_REL
     };
 
     bool TransferDataToWindow();
+    void UpdateHtml();
+    void ListEntities();
+    void ListPersonas();
+    void UpdateLists() { ListPersonas(); ListEntities(); }
     bool TransferDataFromWindow();
-
     // Handlers for fbDlgEditReference events.
     void OnTool( wxCommandEvent& event );
-    // Persona tab buttons
-    void OnPersonaAddButton( wxCommandEvent& event );
-    void OnPersonaEditButton( wxCommandEvent& event );
-    void OnPersonaDeleteButton( wxCommandEvent& event );
-    // Entity tab buttons
-    void OnAddButton( wxCommandEvent& event );
-    void OnEditButton( wxCommandEvent& event );
-    void OnDeleteButton( wxCommandEvent& event );
-    void OnUpButton( wxCommandEvent& event );
-    void OnDownButton( wxCommandEvent& event );
-
     void DoCut();
     void DoCopy();
     void DoPaste();
@@ -99,43 +73,41 @@ protected:
     void DoRedo();
 
 	void OnStatementViewChanging( wxNotebookEvent& event );
+    // Persona tab buttons
+    void OnPersonaAddButton( wxCommandEvent& event );
+    void OnPersonaEditButton( wxCommandEvent& event );
+    void OnPersonaDeleteButton( wxCommandEvent& event );
+    // Entity tab buttons
+    void OnAddEntityButton( wxCommandEvent& event );
     void OnNewSource( wxCommandEvent& event );
+    void OnNewName( wxCommandEvent& event );
     void OnNewDate( wxCommandEvent& event );
     void OnNewDateAge( wxCommandEvent& event );
     void OnNewPlace( wxCommandEvent& event );
-    void OnNewRelationship( wxCommandEvent& event );
     void OnNewEvent( wxCommandEvent& event );
     void OnNewPersonalEvent( wxCommandEvent& event );
-    void OnNewName( wxCommandEvent& event );
-
-    void DoEditDate( idt id, long row );
-    void DoEditPlace( idt id, long row );
-    void DoEditRelationship( idt id, long row );
-    void DoEditEvent( idt id, long row );
-    void DoEditName( idt id, long row );
+    void OnNewRelationship( wxCommandEvent& event );
+    void OnEditEntityButton( wxCommandEvent& event );
+    void OnDeleteEntityButton( wxCommandEvent& event );
+    void OnUpEntityButton( wxCommandEvent& event );
+    void OnDownEntityButton( wxCommandEvent& event );
 
 public:
     /** Constructor */
-    dlgEditReference( wxWindow* parent );
+    rgDlgEditReference( wxWindow* parent, idt refID );
 
-    void SetID( idt id ) { m_reference.f_id = id; }
-
-//    bool  DoNewPlace( idt* placeID );
-private:
-    void UpdateHtml();
-    void InsertListItem( long row, const TfpEntity& ent );
-
-    idt SelectCreatePersona();
     bool SelectDate( idt* dateID, const wxString& title, unsigned style );
     bool SelectPlace( idt* placeID, const wxString& title, unsigned style );
-    idt SelectName();
+    idt SelectCreatePersona();
 
-    TfpEntityStringVec GetDateEntityStringVec();
+    void CreateRefEntity( recReferenceEntity::Type type, idt entID );
+    void InsertEntityListItem( size_t row );
+    void UpdateSequence();
 
     recReference  m_reference;
-    TfpEntities   m_entities;
+    recRefEntVec  m_entities;
     recIdVec      m_personaIDs;
     wxString      m_htmlText;
 };
 
-#endif // DLGEDREFERENCE_H
+#endif // RGEDREFERENCE_H

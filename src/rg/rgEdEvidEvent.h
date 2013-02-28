@@ -1,13 +1,12 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        dlgEdEvent.h
+ * Name:        src/rg/rgEdEvidEvent.h
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Edit database Event entity dialog header.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
- * Created:     9 October 2010
+ * Created:     25th February 2013
  * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2013, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -27,21 +26,38 @@
 
 */
 
-#ifndef DLGEDEVENT_H
-#define DLGEDEVENT_H
+#ifndef RGEDEVIDEVENT_H
+#define RGEDEVIDEVENT_H
 
-#include <rec/recEvent.h>
-
-#include "fbDlg.h"
-#include "dlgEdReference.h"
+#include "rgEdEvent.h"
+#include "rgEdReference.h"
 
 //============================================================================
-//-------------------------[ dlgEditEvent ]-----------------------------------
+//-------------------------[ rgDlgEditEvidEvent ]-----------------------------
 //============================================================================
 
-/** Implementing fbDlgEditEvent */
-class dlgEditEvent : public fbDlgEditEvent
+/** Implementing rgDlgEditEvidEvent */
+class rgDlgEditEvidEvent : public rgDlgEditEvent
 {
+public:
+    rgDlgEditEvidEvent( rgDlgEditReference* parent, idt eventID )
+        : m_refDialog(parent), rgDlgEditEvent( parent, eventID )
+    { wxASSERT( parent != NULL ); }
+
+protected:
+    virtual void ListLinkedPersona();
+    virtual void EditRow( long row );
+    virtual void DeleteRow( long row );
+
+    void OnAddButton( wxCommandEvent& event );
+
+private:
+    rgDlgEditReference* m_refDialog;
+
+    recEventPersonaVec  m_eps;
+    recPersonaVec       m_personas;
+
+#if 0
     DECLARE_CLASS( dlgEditEvent )
     DECLARE_EVENT_TABLE()
 
@@ -89,6 +105,7 @@ private:
     TfpEntityStringVec  m_dateStrings;
 
     EvDate              m_dateButton;
+#endif
 };
 
-#endif // DLGEDEVENT_H
+#endif // RGEDEVIDEVENT_H

@@ -38,6 +38,9 @@
 #endif
 
 #include <rec/recDate.h>
+#include <rec/recEvent.h>
+#include <rec/recPlace.h>
+#include <rec/recSource.h>
 
 const wxString recDate::s_prefStr[recDate::PREF_Max] = {
     _("Unstated"),       // PREF_Unstated
@@ -380,6 +383,75 @@ unsigned recDate::GetCompareFlags( const recDate& date ) const
     return flags;
 }
 
+bool recDate::IsUsedAsBase( idt id )
+{
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format( "SELECT COUNT(*) FROM RelativeDate WHERE base_id="ID";", id );
+    if( s_db->ExecuteScalar( sql ) > 0 ) {
+        return true;
+    }
+    return false;
+}
+
+// List of all relative dates using dateID as a base. 
+recIdVec recDate::GetRelativeIdList( idt dateID )
+{
+    recIdVec list;
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3ResultSet result;
+
+    sql.Format( "SELECT id FROM RelativeDate WHERE base_id="ID";", dateID );
+    result = s_db->ExecuteQuery( sql );
+
+    while( result.NextRow() ) {
+        list.push_back( GET_ID( result.GetInt64( 0 ) ) );
+    }
+    return list;
+}
+
+bool recDate::IsUsedInEvent( idt id )
+{
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "SELECT COUNT(*) FROM Event WHERE date1_id="ID" OR date2_id="ID";",
+        id, id
+    );
+    if( s_db->ExecuteScalar( sql ) > 0 ) {
+        return true;
+    }
+    return false;
+}
+
+bool recDate::IsUsedInSource( idt id )
+{
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "SELECT COUNT(*) FROM Source WHERE sub_date1_id="ID" OR sub_date2_id="ID";",
+        id, id
+    );
+    if( s_db->ExecuteScalar( sql ) > 0 ) {
+        return true;
+    }
+    return false;
+}
+
+bool recDate::IsUsedInPlace( idt id )
+{
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "SELECT COUNT(*) FROM Place WHERE date1_id="ID" OR date2_id="ID";",
+        id, id
+    );
+    if( s_db->ExecuteScalar( sql ) > 0 ) {
+        return true;
+    }
+    return false;
+}
+
 void recDate::DeleteIfOrphaned( idt id )
 {
     if( id <= 0 ) {
@@ -413,6 +485,27 @@ void recDate::DeleteIfOrphaned( idt id )
         recRelativeDate::Delete( relID );
         DeleteIfOrphaned( baseID );
     }
+    Delete( id );
+}
+
+void recDate::RemoveFromDatabase( idt id )
+{
+    if( id == 0 ) {
+        return;
+    }
+    if( IsUsedAsBase( id ) ) {
+        recIdVec rels = GetRelativeIdList( id );
+        for( size_t i = 0 ; i < rels.size() ; i++ ) {
+            recRelativeDate::RemoveFromDatabase( rels[i] );
+        }
+    }
+    recEvent::RemoveDates( id );
+    recPlace::RemoveDates( id );
+    recSource::RemoveDates( id );
+    recReferenceEntity::Delete( recReferenceEntity::TYPE_Date, id );
+    // If this is a relative date, remove the relative part.
+    recDate date(id);
+    Delete( date.FGetRelID() ); 
     Delete( id );
 }
 
@@ -578,5 +671,14 @@ bool recRelativeDate::CalculateDate( recDate& date ) const
     return true;
 }
 
+idt recRelativeDate::GetParentDate( idt rdID )
+{
+    return ExecuteID( "SELECT id FROM Date WHERE rel_id="ID";", rdID );
+}
+
+void recRelativeDate::RemoveFromDatabase( idt rdID )
+{
+    recDate::RemoveFromDatabase( GetParentDate( rdID ) );
+}
 
 // End of recDate.cpp file

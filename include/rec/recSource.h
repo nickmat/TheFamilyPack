@@ -61,6 +61,8 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "Source" );
 
+    static void RemoveDates( idt dateID );
+    static void RemovePlace( idt placeID );
 };
 
 inline bool recEquivalent( const recSource& r1, const recSource& r2 )

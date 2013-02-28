@@ -109,6 +109,28 @@ bool rgEditPerEventRole( idt epID, rgSHOWROLE filter )
     return ret;
 }
 
+bool rgCreatePerEventRole( idt perID, idt eveID, idt roleID )
+{
+    wxASSERT( perID != 0 ); // TODO: Select a Persona from a list
+    wxASSERT( eveID != 0 ); // TODO: Select an Event from a list
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+    recEventPersona ep(0);
+    ep.FSetPerID( perID );
+    ep.FSetEventID( eveID );
+    ep.FSetRoleID( roleID );
+    ep.FSetPerSeq( recIndividual::GetMaxEventSeqNumber( perID ) );
+    ep.Save();
+    if( roleID == 0 ) {
+        if( ! rgEditPerEventRole( ep.FGetID() ) ) {
+            recDb::Rollback( savepoint );
+            return false;
+        }
+    }
+    recDb::ReleaseSavepoint( savepoint );
+    return true;
+}
+
 //============================================================================
 //-------------------------[ rgPerIndEvent ]----------------------------------
 //============================================================================

@@ -118,7 +118,7 @@ wxString tfpWriteReferencePagedIndex( idt begCnt )
     wxString htm;
     htm <<
         tfpWrHeadTfp( "Reference List" ) <<
-        "<h1>Event Index from " << recReference::GetIdStr( beg ) <<
+        "<h1>Reference Document Index from " << recReference::GetIdStr( beg ) <<
         " to " << recReference::GetIdStr( end ) <<
         "</h1>\n" << pmenu <<
         "<table class='data'>\n"

@@ -39,6 +39,8 @@
 
 #include <rec/recPlace.h>
 #include <rec/recDate.h>
+#include <rec/recEvent.h>
+#include <rec/recSource.h>
 
 
 recPlace::recPlace( const recPlace& p )
@@ -112,19 +114,6 @@ bool recPlace::Read()
     f_date1_id = GET_ID( result.GetInt64( 1 ) );
     f_date2_id = GET_ID( result.GetInt64( 2 ) );
     return true;
-}
-
-bool recPlace::DeleteAll()
-{
-    if( f_id == 0 ) {
-        return false;
-    }
-
-    wxSQLite3StatementBuffer sql;
-    sql.Format( "DELETE FROM PlacePart WHERE place_id="ID";", f_id );
-    s_db->ExecuteUpdate( sql );
-
-    return Delete();
 }
 
 void recPlace::SetAddress( idt placeID, const wxString& str )
@@ -210,6 +199,31 @@ recPlacePartVec recPlace::GetPlaceParts( idt placeID )
         ppList.push_back( pp );
     }
     return ppList;
+}
+
+void recPlace::RemoveDates( idt dateID )
+{
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "UPDATE Place SET date1_id=0 WHERE date1_id="ID";"
+        "UPDATE Place SET date2_id=0 WHERE date2_id="ID";",
+        dateID, dateID
+    );
+    s_db->ExecuteUpdate( sql );
+}
+
+void recPlace::RemoveFromDatabase( idt placeID )
+{
+    recEvent::RemovePlace( placeID );
+    recSource::RemovePlace( placeID );
+
+    recPlacePartVec parts = recPlace::GetPlaceParts( placeID );
+    for( size_t i = 0 ; i < parts.size() ; i++ ) {
+        parts[i].Delete();
+    }
+    recReferenceEntity::Delete( recReferenceEntity::TYPE_Place, placeID );
+    Delete( placeID );
 }
 
 void recPlace::DeleteIfOrphaned( idt id )

@@ -192,4 +192,48 @@ wxString rgDlgSelectEventType::sm_colHeaders[COL_MAX] = { _("Group"), _("Type") 
 
 wxString rgDlgSelectIndividual::sm_colHeaders[COL_MAX] = { _("ID"), _("Name") };
 
+//-------------------------------------------------------------------------------
+//-------------------[ rgDlgSelectPersona ]--------------------------------------
+//-------------------------------------------------------------------------------
+
+wxString rgDlgSelectPersona::sm_colHeaders[COL_MAX] = { _("ID"), _("Name") };
+
+//-------------------------------------------------------------------------------
+//-------------------[ rgDlgSelectCreatePersona ]--------------------------------
+//-------------------------------------------------------------------------------
+
+BEGIN_EVENT_TABLE( rgDlgSelectCreatePersona, wxDialog )
+    EVT_MENU_RANGE( rgID_SELCREATPER_MALE, rgID_SELCREATPER_UNKNOWN, rgDlgSelectCreatePersona::OnCreatePersona )
+END_EVENT_TABLE()
+
+
+void rgDlgSelectCreatePersona::OnCreateButton( wxCommandEvent& event )
+{
+    wxMenu* menu = new wxMenu;
+    menu->Append( rgID_SELCREATPER_MALE, _("Create &Male Persona") );
+    menu->Append( rgID_SELCREATPER_FEMALE, _("Create &Female Persona") );
+    menu->Append( rgID_SELCREATPER_UNKNOWN, _("Create &Unknown Persona") );
+    PopupMenu( menu );
+    delete menu;
+}
+
+void rgDlgSelectCreatePersona::OnCreatePersona( wxCommandEvent& event )
+{
+    switch( event.GetId() )
+    {
+    case rgID_SELCREATPER_MALE:
+        m_sex = SEX_Male;
+        break;
+    case rgID_SELCREATPER_FEMALE:
+        m_sex = SEX_Female;
+        break;
+    case rgID_SELCREATPER_UNKNOWN:
+        m_sex = SEX_Unknown;
+        break;
+    }
+    SetCreatePressed();
+    EndDialog( wxID_OK );
+}
+
+
 // End of src/rg/rgSelect.cpp file

@@ -129,7 +129,7 @@ idt rgCreateIndEvent( idt ind1ID, idt ind2ID )
 }
 
 //============================================================================
-//-------------------------[ rgDlgEditEvent ]---------------------------------
+//-------------------------[ rgDlgEditEvidEvent ]-----------------------------
 //============================================================================
 
 rgDlgEditEvent::rgDlgEditEvent( wxWindow* parent, idt eventID )
@@ -161,11 +161,11 @@ bool rgDlgEditEvent::TransferDataToWindow()
     m_textCtrlPlace->SetValue( recPlace::GetAddressStr( m_placeID ) );
     m_textCtrlNote->SetValue( m_event.f_note );
 
-    ListLinkedIndividuals();
+    ListLinkedPersona();
     return true;
 }
 
-void rgDlgEditEvent::ListLinkedIndividuals()
+void rgDlgEditEvent::ListLinkedPersona()
 {
     m_ies = m_event.GetIndividualEvents();
     m_individuals.clear();
@@ -306,7 +306,7 @@ void rgDlgEditEvent::OnPlaceButton( wxCommandEvent& event )
 void rgDlgEditEvent::OnAddButton( wxCommandEvent& event )
 {
     if( rgCreateIndEventRole( 0, m_event.FGetID(), 0 ) ) {
-        ListLinkedIndividuals();
+        ListLinkedPersona();
     }
 }
 
@@ -317,9 +317,14 @@ void rgDlgEditEvent::OnEditButton( wxCommandEvent& event )
         wxMessageBox( _("No row selected"), _("Edit Individual") );
         return;
     }
+    EditRow( row );
+}
+
+void rgDlgEditEvent::EditRow( long row )
+{
     idt ieID = m_ies[row].FGetID();
     if( rgEditIndEventRole( ieID ) ) {
-        ListLinkedIndividuals();
+        ListLinkedPersona();
     }
 }
 
@@ -330,16 +335,22 @@ void rgDlgEditEvent::OnDeleteButton( wxCommandEvent& event )
         wxMessageBox( _("No row selected"), _("Delete Link") );
         return;
     }
+    DeleteRow( row );
+}
+
+void rgDlgEditEvent::DeleteRow( long row )
+{
     idt ieID = m_ies[row].FGetID();
     int ans = wxMessageBox( 
-        _("Remove Individual and Event link from database?"), _("Delete Link"),
+        _("Remove the link between the Individual and this Event from database?"),
+        _("Delete Link"),
         wxYES_NO | wxCANCEL, this
     );
     if( ans != wxYES ) {
         return;
     }
     recIndividualEvent::Delete( ieID );
-    ListLinkedIndividuals();
+    ListLinkedPersona();
 }
 
 // End of dlgEdIndEvent.cpp file

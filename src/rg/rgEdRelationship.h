@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        dlgEdRelationship.h
+ * Name:        src/rg/rgEdRelationship.h
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Edit database Relationship entity dialog header.
  * Author:      Nick Matthews
@@ -27,18 +27,23 @@
 
 */
 
-#ifndef DLGEDRELATIONSHIP_H
-#define DLGEDRELATIONSHIP_H
+#ifndef RGEDRELATIONSHIP_H
+#define RGEDRELATIONSHIP_H
 
-#include <rec/recEvent.h>
+#include <rec/recRelationship.h>
 
-#include "fbDlg.h"
-#include "dlgEdReference.h"
+#include "fbRgDialog.h"
 
-class dlgEditRelationship : public fbDlgEditRelationship
+class rgDlgEditReference;
+
+//============================================================================
+//-------------------------[ rgDlgEditRelationship ]--------------------------
+//============================================================================
+
+class rgDlgEditRelationship : public fbRgEditRelationship
 {
 public:
-    dlgEditRelationship( wxWindow* parent, idt relID = 0 );
+    rgDlgEditRelationship( rgDlgEditReference* parent, idt relID );
 
     void SetPersona1ID( idt perID ) { m_rel.f_per1_id = perID; }
     void SetPersona2ID( idt perID ) { m_rel.f_per2_id = perID; }
@@ -52,7 +57,9 @@ private:
     void OnPersona1Button( wxCommandEvent& event );
     void OnPersona2Button( wxCommandEvent& event );
 
+    rgDlgEditReference* m_refDialog;
+
     recRelationship  m_rel;
 };
 
-#endif // DLGEDRELATIONSHIP_H
+#endif // RGEDRELATIONSHIP_H

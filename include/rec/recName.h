@@ -86,8 +86,8 @@ public:
     int AddNamePart( const wxString& nameStr, recStdNameType type, int seq ) const;
 
     // Delete Name and remove all references to it.
-    void DeleteFromDb() { DeleteFromDb( f_id ); Clear(); }
-    static void DeleteFromDb( idt id );
+    static void RemoveFromDatabase( idt id );
+    void RemoveFromDatabase() { RemoveFromDatabase( f_id ); Clear(); }
 
     static wxString GetNameStr( idt id );
     wxString GetNameStr() const { return GetNameStr( f_id ); }

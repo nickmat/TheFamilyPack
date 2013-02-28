@@ -83,6 +83,7 @@ public:
     void FSetSequence( int seq ) { f_sequence = seq; }
 
     static void Create( idt refID, Type type, idt entID, int* pseq );
+    static void Delete( Type type, idt entityID );
 
     wxString GetTypeStr() const { return sm_typeStr[f_entity_type]; }
     static wxString GetTypeStr( Type etype ) { return sm_typeStr[etype]; }
@@ -130,6 +131,12 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "Reference" );
 
+    wxString FGetTitle() const { return f_title; }
+    wxString FGetStatement() const { return f_statement; }
+
+    void FSetTitle( const wxString& title ) { f_title = title; }
+    void FSetStatement( const wxString& statement ) { f_statement = statement; }
+
     static wxString GetIdStr( idt refID ) { return wxString::Format( "R"ID, refID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
@@ -138,6 +145,8 @@ public:
     recRefEntVec ReadReferenceEntitys();
     static wxSQLite3Table GetTitleList();
     static wxSQLite3Table GetTitleList( idt offset, int limit );
+
+    int GetNextEntitySequence() const;
 
     static recIdVec GetPersonaList( idt refID );
     recIdVec GetPersonaList() const { return GetPersonaList( f_id ); }

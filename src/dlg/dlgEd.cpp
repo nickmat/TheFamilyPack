@@ -304,7 +304,7 @@ bool tfpDeleteIndividual( idt indID )
     );
     int ans = wxMessageBox( mess, "Delete Individual", wxYES_NO | wxCANCEL );
     if( ans == wxYES ) {
-        recIndividual::DeleteFromDb( indID );
+        recIndividual::RemoveFromDatabase( indID );
         ret = true;
     }
     return ret;
@@ -319,25 +319,6 @@ bool tfpEditFamily( idt famID )
 
     dlgEditFamily* dialog = new dlgEditFamily( NULL );
     dialog->SetFamilyID( famID );
-
-    if( dialog->ShowModal() == wxID_OK ) {
-        recDb::ReleaseSavepoint( savepoint );
-        ret = true;
-    } else {
-        recDb::Rollback( savepoint );
-    }
-    dialog->Destroy();
-    return ret;
-}
-
-bool tfpEditReference( idt refID  )
-{
-    const wxString savepoint = "EdRef";
-    bool ret = false;
-    dlgEditReference* dialog = new dlgEditReference( NULL );
-    recDb::Savepoint( savepoint );
-
-    dialog->SetID( refID );
 
     if( dialog->ShowModal() == wxID_OK ) {
         recDb::ReleaseSavepoint( savepoint );

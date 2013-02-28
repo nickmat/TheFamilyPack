@@ -64,6 +64,9 @@ inline wxString recGetIDStr( idt id ) { return id ? recGetStr( id ) : ""; }
 enum Sex { SEX_Unstated, SEX_Male, SEX_Female, SEX_Unknown };
 extern wxString recGetSexStr( Sex sex );
 
+// Used for searching for records with binary fields
+enum TriLogic { TRILOGIC_false, TRILOGIC_true, TRILOGIC_both };
+
 extern wxString recHTMLifyStr( const wxString& str );
 
 class recDb

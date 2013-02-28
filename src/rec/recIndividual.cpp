@@ -640,7 +640,7 @@ bool recIndividual::CreateMissingFamilies()
     return true;
 }
 
-void recIndividual::DeleteFromDb()
+void recIndividual::RemoveFromDatabase()
 {
     if( f_id <= 0 ) {
         return;
@@ -657,19 +657,19 @@ void recIndividual::DeleteFromDb()
     );
     s_db->ExecuteUpdate( sql );
 
-    recPersona::DeleteFromDb( f_per_id );
+    recPersona::RemoveFromDatabase( f_per_id );
     Delete();
     // TODO: Delete orphaned EventType and/or EventTypeRole 
     Clear();
 }
 
-void recIndividual::DeleteFromDb( idt id )
+void recIndividual::RemoveFromDatabase( idt id )
 {
     if( id <= 0 ) {
         return;
     }
     recIndividual ind(id);
-    ind.DeleteFromDb();
+    ind.RemoveFromDatabase();
 }
 
 //============================================================================

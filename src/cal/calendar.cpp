@@ -165,7 +165,13 @@ bool calConvertFromJdn( long jdn, CalendarScheme sch,
 
 bool calStrToJdn( long* jdn, const wxString& str, CalendarScheme sch )
 {
+    if( str.size() == 0 ) {
+        return false;
+    }
     calTokenVec tokens = calParseStr( str );
+    if( tokens.size() == 0 ) {
+        return false;
+    }
     calRecord rec( sch, tokens.size(), &tokens[0] );
     return rec.ConvertToJdn( jdn );
 }
@@ -180,7 +186,10 @@ wxString calStrFromJdn( long jdn, CalendarScheme sch )
 bool calStrToJdnRange(
     long* jdn1, long* jdn2, const wxString& str, CalendarScheme sch )
 { 
-    bool ok = true;
+    if( str.size() == 0 ) {
+        return false;
+    }
+    bool ok = false;
     calTokenVec tokens = calParseStr( str );
     for( size_t i = 0 ; i < tokens.size() ; i++ ) {
         if( tokens[i].GetToken() == calTOKEN_RangeSep ) {
@@ -200,9 +209,10 @@ bool calStrToJdnRange(
             return ok;
         }
     }
-    calRecord rec3( sch, tokens.size(), &tokens[0] );
-    ok = rec3.ConvertToRange( jdn1, jdn2 );
-
+    if( tokens.size() ) {
+        calRecord rec3( sch, tokens.size(), &tokens[0] );
+        ok = rec3.ConvertToRange( jdn1, jdn2 );
+    }
     return ok;
 }
 

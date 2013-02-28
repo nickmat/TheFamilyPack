@@ -69,12 +69,9 @@ TFP_CXXFLAGS = $(VAR) $(VAR_4) -I../../include -I../../src `$(WX_CONFIG) \
 	--cxxflags $(WX_CONFIG_FLAGS)` $(CPPFLAGS) $(CXXFLAGS)
 TFP_OBJECTS =  \
 	tfp_dlgEd.o \
-	tfp_dlgEdEvent.o \
 	tfp_dlgEdFamily.o \
 	tfp_dlgEdIndividual.o \
 	tfp_dlgEdPersona.o \
-	tfp_dlgEdReference.o \
-	tfp_dlgEdRelationship.o \
 	tfp_dlgEdRole.o \
 	tfp_dlgEdSystem.o \
 	tfp_dlgNote.o \
@@ -155,10 +152,13 @@ RECGUI_OBJECTS =  \
 	recgui_rgEdDate.o \
 	recgui_rgEdEvent.o \
 	recgui_rgEdEventType.o \
+	recgui_rgEdEvidEvent.o \
 	recgui_rgEdName.o \
 	recgui_rgEdNamePart.o \
 	recgui_rgEdPerIndEvent.o \
 	recgui_rgEdPlace.o \
+	recgui_rgEdReference.o \
+	recgui_rgEdRelationship.o \
 	recgui_rgEdResearcher.o \
 	recgui_rgEdRole.o \
 	recgui_rgSelect.o \
@@ -245,9 +245,6 @@ librecgui.a: $(RECGUI_OBJECTS)
 tfp_dlgEd.o: ./../../src/dlg/dlgEd.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
-tfp_dlgEdEvent.o: ./../../src/dlg/dlgEdEvent.cpp
-	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
-
 tfp_dlgEdFamily.o: ./../../src/dlg/dlgEdFamily.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
@@ -255,12 +252,6 @@ tfp_dlgEdIndividual.o: ./../../src/dlg/dlgEdIndividual.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
 tfp_dlgEdPersona.o: ./../../src/dlg/dlgEdPersona.cpp
-	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
-
-tfp_dlgEdReference.o: ./../../src/dlg/dlgEdReference.cpp
-	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
-
-tfp_dlgEdRelationship.o: ./../../src/dlg/dlgEdRelationship.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
 tfp_dlgEdRole.o: ./../../src/dlg/dlgEdRole.cpp
@@ -449,6 +440,9 @@ recgui_rgEdEvent.o: ./../../src/rg/rgEdEvent.cpp
 recgui_rgEdEventType.o: ./../../src/rg/rgEdEventType.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
+recgui_rgEdEvidEvent.o: ./../../src/rg/rgEdEvidEvent.cpp
+	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
+
 recgui_rgEdName.o: ./../../src/rg/rgEdName.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
@@ -459,6 +453,12 @@ recgui_rgEdPerIndEvent.o: ./../../src/rg/rgEdPerIndEvent.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgEdPlace.o: ./../../src/rg/rgEdPlace.cpp
+	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
+
+recgui_rgEdReference.o: ./../../src/rg/rgEdReference.cpp
+	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
+
+recgui_rgEdRelationship.o: ./../../src/rg/rgEdRelationship.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgEdResearcher.o: ./../../src/rg/rgEdResearcher.cpp

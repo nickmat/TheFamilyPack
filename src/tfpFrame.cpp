@@ -548,17 +548,23 @@ void TfpFrame::OnEditContext( wxCommandEvent& event )
 void TfpFrame::OnEditReference( wxCommandEvent& event )
 {
     long num = wxGetNumberFromUser(
-        wxT("Enter the Reference ID or 0 for new Reference"),
+        _("Enter the Reference ID or 0 for new Reference"),
 
-        wxT("Reference ID:"),
-        wxT("Edit Reference"),
+        _("Reference ID:"),
+        _("Edit Reference"),
         (long) 0, (long) 0, (long) INT_MAX
     );
     if( num < 0 ) return;
 
     recDb::Begin();
     try {
-        bool ret = tfpEditReference( (idt) num );
+        bool ret;
+        if( num == 0 ) {
+            idt id = rgCreateReference( this );
+            ret = ( id == 0 ) ? false : true;
+        } else {
+            ret = rgEditReference( this, (idt) num );
+        }
         if( ret == true ) {
             recDb::Commit();
             RefreshHtmPage();
@@ -907,7 +913,7 @@ void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
             ret = tfpEditFamily( id );
             break;
         case 'R':
-            ret = tfpEditReference( id );
+            ret = rgEditReference( this, id );
             break;
         case 'E':
             ret = rgEditEvent( id );
@@ -1031,7 +1037,7 @@ void TfpFrame::OnHtmCtxMenu( wxCommandEvent& event )
             ret = tfpDeleteIndividual( id );
             break;
         case tfpID_HCTXMENU_EDIT_REFERENCE:
-            ret = tfpEditReference( id );
+            ret = rgEditReference( this, id );
             break;
         case tfpID_HCTXMENU_EDIT_EVENT:
             ret = rgEditEvent( id );
@@ -1198,7 +1204,7 @@ void TfpFrame::DoEdit( const wxString& href )
         } else if( href.StartsWith( "Re" ) ) {
             ret = rgEditResearcher( recGetID( href.Mid(2) ) );
         } else if( href.StartsWith( "R" ) ) {
-            ret = tfpEditReference( recGetID( href.Mid(1) ) );
+            ret = rgEditReference( this, recGetID( href.Mid(1) ) );
         } else if( href.StartsWith( "C" ) ) {
             ret = rgEditContact( recGetID( href.Mid(1) ) );
         } else {

@@ -171,8 +171,8 @@ public:
     static bool CreateMissingFamilies();
 
     // Delete Individual and remove all references to it.
-    void DeleteFromDb();
-    static void DeleteFromDb( idt id );
+    void RemoveFromDatabase();
+    static void RemoveFromDatabase( idt id );
 };
 
 inline bool recEquivalent( const recIndividual& r1, const recIndividual& r2 )

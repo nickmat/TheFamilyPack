@@ -399,7 +399,7 @@ recEventVec recEvent::FindEquivRefEvents( idt indEventID )
     return vec;
 }
 
-void recEvent::DeleteFromDb()
+void recEvent::RemoveFromDatabase()
 {
     if( f_id <= 0 ) {
         // Don't delete universal events.
@@ -418,21 +418,54 @@ void recEvent::DeleteFromDb()
     s_db->ExecuteUpdate( sql );
 
     Delete();
-    recDate::DeleteIfOrphaned( f_date1_id );
-    recDate::DeleteIfOrphaned( f_date2_id );
-    recPlace::DeleteIfOrphaned( f_place_id );
-    // TODO: Delete orphaned EventType and/or EventTypeRole 
     Clear();
 }
 
-void recEvent::DeleteFromDb( idt id )
+void recEvent::RemoveFromDatabase( idt id )
 {
     if( id <= 0 ) {
         // Don't delete universal events.
         return;
     }
     recEvent eve(id);
-    eve.DeleteFromDb();
+    eve.RemoveFromDatabase();
+}
+
+void recEvent::RemoveIncOrphansFromDatabase( idt id )
+{
+    if( id <= 0 ) {
+        // Don't delete universal events.
+        return;
+    }
+    recEvent eve(id);
+    RemoveFromDatabase( eve.f_id );
+    recDate::DeleteIfOrphaned( eve.f_date1_id );
+    recDate::DeleteIfOrphaned( eve.f_date2_id );
+    recPlace::DeleteIfOrphaned( eve.f_place_id );
+    // TODO: Delete orphaned EventType and/or EventTypeRole 
+}
+
+void recEvent::RemoveDates( idt dateID )
+{
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "UPDATE Event SET date1_id=0, date_pt=0 WHERE date1_id="ID";"
+        "UPDATE Event SET date2_id=0 WHERE date2_id="ID";",
+        dateID, dateID
+    );
+    s_db->ExecuteUpdate( sql );
+}
+
+void recEvent::RemovePlace( idt placeID )
+{
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "UPDATE Event SET place_id=0 WHERE place_id="ID";",
+        placeID
+    );
+    s_db->ExecuteUpdate( sql );
 }
 
 void recEvent::DeleteIfOrphaned( idt id )
@@ -454,7 +487,7 @@ void recEvent::DeleteIfOrphaned( idt id )
     sql.Format( "SELECT COUNT(*) FROM IndividualEvent WHERE event_id="ID";", id );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
 
-    DeleteFromDb( id );
+    RemoveFromDatabase( id );
 }
 
 wxSQLite3Table recEvent::GetTitleList()
@@ -930,7 +963,34 @@ idt recEventTypeRole::Select( idt typeID, SelectFilter sf )
     return vec[index].f_id;
 }
 
-idt recEventTypeRole::FindOrCreate( const wxString& name, idt type, bool prime, bool official )
+idt recEventTypeRole::Find( const wxString& name, idt type, Prime prime, TriLogic official )
+{
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    wxString primeCondition;
+    if( prime != PRIME_Ignore ) {
+        primeCondition << " AND prime=" << prime; 
+    }
+    wxString officialCondition;
+    if( official != TRILOGIC_both ) {
+        officialCondition << " AND official=" << official;
+    }
+    sql.Format(
+        "SELECT id FROM EventTypeRole "
+        "WHERE type_id="ID"%q%q AND name LIKE '%q';",
+        type, UTF8_(primeCondition), UTF8_(officialCondition), UTF8_(name)
+    );
+    result = s_db->GetTable( sql );
+
+    if( result.GetRowCount() == 0 ) {
+        return 0;
+    }
+    result.SetRow( 0 );
+    return GET_ID( result.GetInt64( 0 ) );
+}
+
+idt recEventTypeRole::FindOrCreate( const wxString& name, idt type, Prime prime, bool official )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -956,8 +1016,6 @@ idt recEventTypeRole::FindOrCreate( const wxString& name, idt type, bool prime, 
     }
     result.SetRow( 0 );
     return GET_ID( result.GetInt64( 0 ) );
-
-
 }
 
 //============================================================================

@@ -591,7 +591,6 @@ idt rgSelectIndividual( unsigned flag, unsigned* retbutton, unsigned sexfilter )
                 continue;
             }
             if( dialog->GetFilterPressed() ) {
-                // Create new Event Type
                 wxMessageBox( "Not yet implimented", "rgSelectIndividual" );
                 dialog->SetFilterPressed( false );
                 continue;
@@ -609,6 +608,39 @@ idt rgSelectIndividual( unsigned flag, unsigned* retbutton, unsigned sexfilter )
     }
     dialog->Destroy();
     return id;
+}
+
+idt rgSelectCreatePersona( wxWindow* parent, idt refID )
+{
+    recIdVec list = recReference::GetPersonaList( refID );
+    wxArrayString table;
+    for( size_t i = 0 ; i < list.size() ; i++ ) {
+        table.Add( recPersona::GetIdStr( list[i] ) );
+        table.Add( recPersona::GetNameStr( list[i] ) );
+    }
+
+    rgDlgSelectCreatePersona* dialog = new rgDlgSelectCreatePersona( parent );
+    dialog->SetTable( table );
+
+    idt perID = 0;
+    if( dialog->ShowModal() == wxID_OK ) {
+        Sex sex = dialog->GetSex();
+        if( sex != SEX_Unstated ) { // indicates Create new persona
+            recPersona per(0);
+            per.FSetRefID( refID );
+            per.FSetSex( sex );
+            per.Save();
+            perID = per.FGetID();
+        } else {
+            long row = dialog->GetSelectedRow();
+            if( row >= 0 ) {
+                perID = list[row];
+            }
+        }
+    }
+
+    dialog->Destroy();
+    return perID;
 }
 
 // End of src/rg/rgDilogs.cpp file
