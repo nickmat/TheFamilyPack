@@ -117,6 +117,7 @@
     <sources>$(LOCAL_SRC)/rg/rgEdName.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdNamePart.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdPerIndEvent.cpp</sources>
+    <sources>$(LOCAL_SRC)/rg/rgEdPersona.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdPlace.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdReference.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdRelationship.cpp</sources>
@@ -140,6 +141,7 @@
     <headers>$(LOCAL_SRC)/rg/rgEdName.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdNamePart.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdPerIndEvent.h</headers>
+    <headers>$(LOCAL_SRC)/rg/rgEdPersona.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdPlace.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdReference.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdRelationship.h</headers>

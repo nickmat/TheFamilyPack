@@ -42,7 +42,6 @@
 
 #include "dlgEdIndividual.h"
 
-#include "dlgEdPersona.h"
 #include "dlgEd.h"
 
 

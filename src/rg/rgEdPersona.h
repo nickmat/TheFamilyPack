@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        dlgEdPersona.h
+ * Name:        src/rg/rgEdPersona.h
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Edit database Persona entity dialog header.
  * Author:      Nick Matthews
@@ -27,15 +27,19 @@
 
 */
 
-#ifndef DLGEDPERSONA_H
-#define DLGEDPERSONA_H
+#ifndef RGEDPERSONA_H
+#define RGEDPERSONA_H
 
 #include <rec/recPersona.h>
 
-#include "fbDlg.h"
+#include "fbRgDialog.h"
 
 
-class dlgEditPersona : public fbDlgEditPersona
+//============================================================================
+//-------------------------[ rgDlgEditPersona ]-------------------------------
+//============================================================================
+
+class rgDlgEditPersona : public fbRgEditPersona
 {
     enum Columns {
         COL_Type, COL_Value, COL_MAX
@@ -44,7 +48,7 @@ class dlgEditPersona : public fbDlgEditPersona
         EV_COL_Number, EV_COL_Role, EV_COL_Title, EV_COL_Date, EV_COL_Place, EV_COL_MAX
     };
 public:
-    dlgEditPersona( wxWindow* parent );
+    rgDlgEditPersona( wxWindow* parent, idt perID );
 
     void SetPersonaID( idt perID ) { m_persona.f_id = perID; }
 
@@ -55,30 +59,22 @@ private:
     bool TransferDataFromWindow();
 
     void OnIndLinkButton( wxCommandEvent& event );
-    void OnIndCreateButton( wxCommandEvent& event );
 
     void OnNameAddButton( wxCommandEvent& event );
     void OnNameEditButton( wxCommandEvent& event );
     void OnNameDeleteButton( wxCommandEvent& event );
     void OnNameUpButton( wxCommandEvent& event );
     void OnNameDownButton( wxCommandEvent& event );
-#if 0
-    void OnAttrAddButton( wxCommandEvent& event );
-    void OnAttrEditButton( wxCommandEvent& event );
-    void OnAttrDeleteButton( wxCommandEvent& event );
-    void OnAttrUpButton( wxCommandEvent& event );
-    void OnAttrDownButton( wxCommandEvent& event );
-#endif
+
     wxString GetIndLinksString() const;
 
     recPersona         m_persona;
     recIdVec           m_indLinks;
     recNameVec         m_names;
-//    recAttributeVec    m_attributes;
     recEventPersonaVec m_evpers;
     recRelationshipVec m_relationships;
 
     wxString           m_nameStr;
 };
 
-#endif // DLGEDPERSONA_H
+#endif // RGEDPERSONA_H

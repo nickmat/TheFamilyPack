@@ -44,7 +44,6 @@
 #include "dlgEd.h"
 #include "dlgEdFamily.h"
 #include "dlgEdIndividual.h"
-#include "dlgEdPersona.h"
 #include "dlgSelIndividual.h"
 #include "dlgEdSystem.h"
 #include "dlgSelect.h"

@@ -218,30 +218,14 @@ void rgDlgEditReference::OnPersonaAddButton( wxCommandEvent& event )
 
 void rgDlgEditReference::OnPersonaEditButton( wxCommandEvent& event )
 {
-    wxMessageBox( "Not yet implimented", "OnPersonaAddButton" );
-#if 0
-    const wxString savepoint = "RefEdPer";
     long row = m_listPersona->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
         wxMessageBox( _("No row selected"), _("Edit Entity") );
         return;
     }
-
-    dlgEditPersona* dialog = new dlgEditPersona( NULL );
-    dialog->SetPersonaID( m_personaIDs[row] );
-
-    recDb::Savepoint( savepoint );
-    if( dialog->ShowModal() == wxID_OK )
-    {
-        recDb::ReleaseSavepoint( savepoint );
-        m_listPersona->SetItem( row, PER_COL_Number, recPersona::GetIdStr( m_personaIDs[row] ) );
-        m_listPersona->SetItem( row, PER_COL_Name, recPersona::GetNameStr( m_personaIDs[row] ) );
-        m_listPersona->SetItem( row, PER_COL_Individuals, recPersona::GetIndividualIdStr( m_personaIDs[row] ) );
-    } else {
-        recDb::Rollback( savepoint );
+    if( rgEditPersona( this, m_personaIDs[row] ) ) {
+        UpdateLists();
     }
-    dialog->Destroy();
-#endif
 }
 
 void rgDlgEditReference::OnPersonaDeleteButton( wxCommandEvent& event )

@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        dlgEdPersona.cpp
+ * Name:        src/rg/rgEdPersona.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Edit database Persona entity dialog.
  * Author:      Nick Matthews
@@ -43,12 +43,33 @@
 #include <rec/recLink.h>
 #include <rg/rgDialogs.h>
 
-#include "dlgEdPersona.h"
-//#include "dlgEdName.h"
-#include "dlgEd.h"
+#include "rgEdPersona.h"
 
+bool rgEditPersona( wxWindow* parent, idt perID )
+{
+    wxASSERT( perID != 0 );
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+    bool ret = false;
 
-dlgEditPersona::dlgEditPersona( wxWindow* parent ) : fbDlgEditPersona( parent )
+    rgDlgEditPersona* dialog = new rgDlgEditPersona( parent, perID );
+
+    if( dialog->ShowModal() == wxID_OK ) {
+        recDb::ReleaseSavepoint( savepoint );
+        ret = true;
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+    return ret;
+}
+
+//============================================================================
+//-------------------------[ rgDlgEditPersona ]-------------------------------
+//============================================================================
+
+rgDlgEditPersona::rgDlgEditPersona( wxWindow* parent, idt perID )
+    : m_persona(perID), fbRgEditPersona( parent )
 {
     wxListItem itemCol;
     itemCol.SetText( wxT("Type") );
@@ -63,17 +84,10 @@ dlgEditPersona::dlgEditPersona( wxWindow* parent ) : fbDlgEditPersona( parent )
     m_listEvent->InsertColumn( EV_COL_Title, _("Title") );
     m_listEvent->InsertColumn( EV_COL_Date, _("Date") );
     m_listEvent->InsertColumn( EV_COL_Place, _("Place") );
-
-    m_persona.Clear();
 }
 
-bool dlgEditPersona::TransferDataToWindow()
+bool rgDlgEditPersona::TransferDataToWindow()
 {
-    if( m_persona.f_id == 0 ) {
-        m_persona.Save();
-    } else {
-        m_persona.Read();
-    }
     m_nameStr = m_persona.GetNameStr();
     m_staticPerName->SetLabel( m_nameStr );
     m_staticPerID->SetLabel( m_persona.GetIdStr() );
@@ -107,7 +121,7 @@ bool dlgEditPersona::TransferDataToWindow()
     return true;
 }
 
-bool dlgEditPersona::TransferDataFromWindow()
+bool rgDlgEditPersona::TransferDataFromWindow()
 {
     m_persona.f_sex = (Sex) m_choiceSex->GetSelection();
     m_persona.f_note = m_textCtrlNote->GetValue();
@@ -122,9 +136,9 @@ bool dlgEditPersona::TransferDataFromWindow()
     return true;
 }
 
-void dlgEditPersona::OnIndLinkButton( wxCommandEvent& event )
+void rgDlgEditPersona::OnIndLinkButton( wxCommandEvent& event )
 {
-    idt indID = tfpPickIndividual();
+    idt indID = rgSelectIndividual();
     if( indID == 0 ) return;
 
     recLinkPersona lp(0);
@@ -136,16 +150,7 @@ void dlgEditPersona::OnIndLinkButton( wxCommandEvent& event )
     m_staticIndId->SetLabel( recIndividual::GetIdStr( indID ) );
 }
 
-void dlgEditPersona::OnIndCreateButton( wxCommandEvent& event )
-{
-    wxMessageBox(
-        wxT("Not yet implimented\nDate"),
-        wxT("OnIndCreateButton")
-    );
-    // TODO: Add code
-}
-
-void dlgEditPersona::OnNameAddButton( wxCommandEvent& event )
+void rgDlgEditPersona::OnNameAddButton( wxCommandEvent& event )
 {
     idt nameID = rgCreateName( m_persona.FGetID() );
     if( nameID ) {
@@ -157,7 +162,7 @@ void dlgEditPersona::OnNameAddButton( wxCommandEvent& event )
     }
 }
 
-void dlgEditPersona::OnNameEditButton( wxCommandEvent& event )
+void rgDlgEditPersona::OnNameEditButton( wxCommandEvent& event )
 {
     long row = m_listName->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
@@ -173,7 +178,7 @@ void dlgEditPersona::OnNameEditButton( wxCommandEvent& event )
     }
 }
 
-void dlgEditPersona::OnNameDeleteButton( wxCommandEvent& event )
+void rgDlgEditPersona::OnNameDeleteButton( wxCommandEvent& event )
 {
     long row = m_listName->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row >= 0 ) {
@@ -192,7 +197,7 @@ void dlgEditPersona::OnNameDeleteButton( wxCommandEvent& event )
     }
 }
 
-void dlgEditPersona::OnNameUpButton( wxCommandEvent& event )
+void rgDlgEditPersona::OnNameUpButton( wxCommandEvent& event )
 {
     long row = m_listName->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
@@ -214,7 +219,7 @@ void dlgEditPersona::OnNameUpButton( wxCommandEvent& event )
     }
 }
 
-void dlgEditPersona::OnNameDownButton( wxCommandEvent& event )
+void rgDlgEditPersona::OnNameDownButton( wxCommandEvent& event )
 {
     long row = m_listName->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
@@ -236,7 +241,7 @@ void dlgEditPersona::OnNameDownButton( wxCommandEvent& event )
     }
 }
 
-wxString dlgEditPersona::GetIndLinksString() const
+wxString rgDlgEditPersona::GetIndLinksString() const
 {
     wxString txt;
 

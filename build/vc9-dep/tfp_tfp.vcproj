@@ -271,10 +271,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\dlg\dlgEdPersona.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\dlg\dlgEdRole.cpp"
 				>
 			</File>
@@ -398,10 +394,6 @@
 			</File>
 			<File
 				RelativePath="..\..\src\dlg\dlgEdIndividual.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\dlg\dlgEdPersona.h"
 				>
 			</File>
 			<File

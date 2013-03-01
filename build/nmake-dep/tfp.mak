@@ -63,7 +63,6 @@ TFP_OBJECTS =  \
 	tfp_dlgEd.obj \
 	tfp_dlgEdFamily.obj \
 	tfp_dlgEdIndividual.obj \
-	tfp_dlgEdPersona.obj \
 	tfp_dlgEdRole.obj \
 	tfp_dlgEdSystem.obj \
 	tfp_dlgNote.obj \
@@ -201,6 +200,7 @@ RECGUI_OBJECTS =  \
 	recgui_rgEdName.obj \
 	recgui_rgEdNamePart.obj \
 	recgui_rgEdPerIndEvent.obj \
+	recgui_rgEdPersona.obj \
 	recgui_rgEdPlace.obj \
 	recgui_rgEdReference.obj \
 	recgui_rgEdRelationship.obj \
@@ -434,9 +434,6 @@ tfp_dlgEdFamily.obj: .\..\..\src\dlg\dlgEdFamily.cpp
 tfp_dlgEdIndividual.obj: .\..\..\src\dlg\dlgEdIndividual.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\dlgEdIndividual.cpp
 
-tfp_dlgEdPersona.obj: .\..\..\src\dlg\dlgEdPersona.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\dlgEdPersona.cpp
-
 tfp_dlgEdRole.obj: .\..\..\src\dlg\dlgEdRole.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\dlgEdRole.cpp
 
@@ -658,6 +655,9 @@ recgui_rgEdNamePart.obj: .\..\..\src\rg\rgEdNamePart.cpp
 
 recgui_rgEdPerIndEvent.obj: .\..\..\src\rg\rgEdPerIndEvent.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdPerIndEvent.cpp
+
+recgui_rgEdPersona.obj: .\..\..\src\rg\rgEdPersona.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdPersona.cpp
 
 recgui_rgEdPlace.obj: .\..\..\src\rg\rgEdPlace.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdPlace.cpp

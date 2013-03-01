@@ -86,7 +86,6 @@
     <sources>$(LOCAL_SRC)/dlg/dlgEd.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgEdFamily.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgEdIndividual.cpp</sources>
-    <sources>$(LOCAL_SRC)/dlg/dlgEdPersona.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgEdRole.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgEdSystem.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgNote.cpp</sources>
@@ -113,7 +112,6 @@
     <headers>$(LOCAL_SRC)/dlg/dlgEd.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgEdFamily.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgEdIndividual.h</headers>
-    <headers>$(LOCAL_SRC)/dlg/dlgEdPersona.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgEdRole.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgEdSystem.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgNote.h</headers>
