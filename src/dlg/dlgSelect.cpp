@@ -41,7 +41,6 @@
 #include "rec/recPersona.h"
 #include "dlgSelect.h"
 #include "dlgRecTableCtrl.h"
-#include "dlgEdReference.h"
 
 dlgSelect::dlgSelect( 
     wxWindow* parent, wxString* headers, long width,

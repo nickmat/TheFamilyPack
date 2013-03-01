@@ -33,7 +33,6 @@
 #include <rec/recPersona.h>
 
 #include "fbDlg.h"
-#include "dlgEdReference.h"
 
 
 class dlgEditPersona : public fbDlgEditPersona
