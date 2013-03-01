@@ -241,10 +241,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\dlg\dlgSelIndividual.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\dlg\dlgSelect.cpp"
 				>
 			</File>
@@ -359,10 +355,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\dlg\dlgSelIndividual.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\dlg\dlgSelect.h"
 				>
 			</File>
@@ -376,10 +368,6 @@
 			</File>
 			<File
 				RelativePath="..\..\src\tfpFrame.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\dlg\tfpListCtrlInd.h"
 				>
 			</File>
 			<File

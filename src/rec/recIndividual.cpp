@@ -175,7 +175,7 @@ recIndividualVec recIndividual::ReadVec( unsigned sexfilter )
             query << "P.sex=3 ";
         }
     }
-    query << "ORDER BY surname, given, epitaph, id;";
+    query << "ORDER BY surname, given, epitaph, I.id;";
 
     wxSQLite3ResultSet result = s_db->ExecuteQuery( query ); 
 

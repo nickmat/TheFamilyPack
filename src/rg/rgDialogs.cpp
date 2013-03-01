@@ -610,6 +610,23 @@ idt rgSelectIndividual( unsigned flag, unsigned* retbutton, unsigned sexfilter )
     return id;
 }
 
+idt rgSelectIndividual( Sex sex )
+{
+    unsigned filter;
+    switch( sex ) 
+    {
+    case SEX_Male:
+        filter = recInd_FILTER_SexMale;
+        break;
+    case SEX_Female:
+        filter = recInd_FILTER_SexFemale;
+        break;
+    default:
+        filter = recInd_FILTER_SexUnknown;
+    }
+    return rgSelectIndividual( rgSELSTYLE_None, NULL, filter );
+}
+
 idt rgSelectCreatePersona( wxWindow* parent, idt refID )
 {
     recIdVec list = recReference::GetPersonaList( refID );

@@ -29,7 +29,7 @@
 
 #ifndef DLGSELINDIVIDUAL_H
 #define DLGSELINDIVIDUAL_H
-
+#if 0
 #include <rec/recDatabase.h>
 
 #include "fbDlg.h"
@@ -52,5 +52,5 @@ protected:
     wxSQLite3Table m_table;
     long           m_count;
 };
-
+#endif
 #endif // DLGSELINDIVIDUAL_H

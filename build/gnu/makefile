@@ -74,7 +74,6 @@ TFP_OBJECTS =  \
 	tfp_dlgNote.o \
 	tfp_dlgRecTableCtrl.o \
 	tfp_dlgSelect.o \
-	tfp_dlgSelIndividual.o \
 	tfp_fbDlg.o \
 	tfp_tfpApp.o \
 	tfp_tfpFrame.o \
@@ -258,9 +257,6 @@ tfp_dlgRecTableCtrl.o: ./../../src/dlg/dlgRecTableCtrl.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
 tfp_dlgSelect.o: ./../../src/dlg/dlgSelect.cpp
-	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
-
-tfp_dlgSelIndividual.o: ./../../src/dlg/dlgSelIndividual.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
 tfp_fbDlg.o: ./../../src/dlg/fbDlg.cpp

@@ -34,10 +34,6 @@
 
 typedef std::vector< int >  intVec;
 
-
-
-//class recFamily;
-
 extern idt tfpAddNewIndividual( idt famID, Sex sex, const wxString& surname = wxEmptyString );
 extern idt tfpAddNewChild( idt famID, Sex sex );
 extern bool tfpAddNewParent( idt indID, Sex sex );
@@ -45,14 +41,13 @@ extern bool tfpAddExistParent( idt indID, Sex sex );
 extern bool tfpAddNewParent( const wxString& ref );
 extern bool tfpAddNewSpouse( const wxString& ref );
 extern bool tfpEditIndividual( idt indID );
-
 extern bool tfpDeleteIndividual( idt indID );
 
 extern bool tfpEditFamily( idt famID );
 extern bool tfpAddExistSpouse( idt indID, Sex sex );
 extern idt tfpAddExistChild( idt famID, Sex sex );
 
-extern idt tfpPickIndividual( Sex sex = SEX_Unstated );
+//extern idt tfpPickIndividual( Sex sex = SEX_Unstated );
 
 #define TFP_SELECT_STYLE_CREATE   0x0001
 #define TFP_SELECT_STYLE_UNKNOWN  0x0002

@@ -12,7 +12,6 @@
 #include <wx/xrc/xmlres.h>
 #include <wx/intl.h>
 class dlgStrTableCtrl;
-class tfpListCtrlIndividuals;
 
 #include <wx/string.h>
 #include <wx/stattext.h>
@@ -187,31 +186,6 @@ class fbDlgEditFamily : public wxDialog
 		
 		fbDlgEditFamily( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Family"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbDlgEditFamily();
-	
-};
-
-///////////////////////////////////////////////////////////////////////////////
-/// Class fbDlgSelectIndividual
-///////////////////////////////////////////////////////////////////////////////
-class fbDlgSelectIndividual : public wxDialog 
-{
-	private:
-	
-	protected:
-		tfpListCtrlIndividuals* m_listInd;
-		wxStaticLine* m_staticline6;
-		wxButton* m_buttonSave;
-		wxButton* m_buttonCancel;
-		
-		// Virtual event handlers, overide them in your derived class
-		virtual void OnIdle( wxIdleEvent& event ) { event.Skip(); }
-		virtual void OnIndividualSelected( wxListEvent& event ) { event.Skip(); }
-		
-	
-	public:
-		
-		fbDlgSelectIndividual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Select Individual"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 485,269 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
-		~fbDlgSelectIndividual();
 	
 };
 

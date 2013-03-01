@@ -38,8 +38,9 @@
 #endif
 
 #include "rec/recIndividual.h"
-#include "dlgSelIndividual.h"
 #include "tfpListCtrlInd.h"
+#if 0
+#include "dlgSelIndividual.h"
 
 
 dlgSelIndividual::dlgSelIndividual( wxWindow* parent )
@@ -97,5 +98,5 @@ wxString tfpListCtrlIndividuals::OnGetItemText( long item, long column ) const
 //  return wxString::Format( wxT("Col: %ld, Row: %ld"), column, item );
 
 }
-
+#endif
 // End of dlgSelIndividual.cpp file

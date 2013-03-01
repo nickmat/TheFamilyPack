@@ -70,6 +70,7 @@ extern idt rgSelectIndEvent(
 extern idt rgSelectIndividual( 
     unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL,
     unsigned sexfilter = recInd_FILTER_SexAll );
+extern idt rgSelectIndividual( Sex sex );
 extern idt rgSelectCreatePersona( wxWindow* parent, idt refID );
 
 // See src/rg/rgEdContact.cpp

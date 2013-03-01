@@ -17,7 +17,6 @@
 
 
 #include "dlgRecTableCtrl.h"
-#include "tfpListCtrlInd.h"
 
 #include "fbDlg.h"
 
@@ -609,57 +608,6 @@ fbDlgEditFamily::~fbDlgEditFamily()
 	m_buttonEventDel->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditFamily::OnEventDeleteButton ), NULL, this );
 	m_buttonEventUp->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditFamily::OnEventUpButton ), NULL, this );
 	m_buttonEventDn->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbDlgEditFamily::OnEventDownButton ), NULL, this );
-	
-}
-
-fbDlgSelectIndividual::fbDlgSelectIndividual( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
-{
-	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
-	
-	wxBoxSizer* bSizer21;
-	bSizer21 = new wxBoxSizer( wxVERTICAL );
-	
-	wxBoxSizer* bSizer22;
-	bSizer22 = new wxBoxSizer( wxHORIZONTAL );
-	
-	m_listInd = new tfpListCtrlIndividuals( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_HRULES|wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_VIRTUAL|wxLC_VRULES );
-	bSizer22->Add( m_listInd, 1, wxEXPAND|wxALL, 5 );
-	
-	
-	bSizer21->Add( bSizer22, 1, wxEXPAND, 5 );
-	
-	m_staticline6 = new wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
-	bSizer21->Add( m_staticline6, 0, wxEXPAND | wxALL, 5 );
-	
-	wxBoxSizer* bSizer13;
-	bSizer13 = new wxBoxSizer( wxHORIZONTAL );
-	
-	
-	bSizer13->Add( 0, 0, 1, wxEXPAND, 5 );
-	
-	m_buttonSave = new wxButton( this, wxID_OK, _("Select"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer13->Add( m_buttonSave, 0, wxALL, 5 );
-	
-	m_buttonCancel = new wxButton( this, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer13->Add( m_buttonCancel, 0, wxALL, 5 );
-	
-	
-	bSizer21->Add( bSizer13, 0, wxEXPAND, 5 );
-	
-	
-	this->SetSizer( bSizer21 );
-	this->Layout();
-	
-	// Connect Events
-	this->Connect( wxEVT_IDLE, wxIdleEventHandler( fbDlgSelectIndividual::OnIdle ) );
-	m_listInd->Connect( wxEVT_COMMAND_LIST_ITEM_ACTIVATED, wxListEventHandler( fbDlgSelectIndividual::OnIndividualSelected ), NULL, this );
-}
-
-fbDlgSelectIndividual::~fbDlgSelectIndividual()
-{
-	// Disconnect Events
-	this->Disconnect( wxEVT_IDLE, wxIdleEventHandler( fbDlgSelectIndividual::OnIdle ) );
-	m_listInd->Disconnect( wxEVT_COMMAND_LIST_ITEM_ACTIVATED, wxListEventHandler( fbDlgSelectIndividual::OnIndividualSelected ), NULL, this );
 	
 }
 

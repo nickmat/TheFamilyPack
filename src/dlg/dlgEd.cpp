@@ -192,7 +192,7 @@ bool tfpAddExistParent( idt indID, Sex sex )
     const wxString savepoint = recDb::GetSavepointStr();
     bool ret = false;
 
-    idt parentID = tfpPickIndividual( sex );
+    idt parentID = rgSelectIndividual( sex );
     if( parentID == 0 ) {
         return false;
     }
@@ -339,7 +339,7 @@ bool tfpAddExistSpouse( idt indID, Sex sex )
     fam.f_id = ind.f_fam_id;
     fam.Read();
     if( sex == SEX_Male ) {
-        spouse.f_id = tfpPickIndividual( SEX_Male );
+        spouse.f_id = rgSelectIndividual( SEX_Male );
         if( spouse.f_id != 0 ) {
             spouse.Read();
             if( fam.f_husb_id == 0 ) { // No husband yet
@@ -367,7 +367,7 @@ bool tfpAddExistSpouse( idt indID, Sex sex )
             }
         }
     } else { // SEX_Male
-        spouse.f_id = tfpPickIndividual( SEX_Female );
+        spouse.f_id = rgSelectIndividual( SEX_Female );
         if( spouse.f_id != 0 ) {
             spouse.Read();
             if( fam.f_wife_id == 0 ) { // No wives yet
@@ -409,7 +409,7 @@ idt tfpAddExistChild( idt famID, Sex sex )
     const wxString savepoint = "AddExistingChild";
     recDb::Savepoint( savepoint );
 
-    idt indID = tfpPickIndividual( sex );
+    idt indID = rgSelectIndividual( sex );
     if( indID != 0 ) {
         recFamilyIndividual fi;
         fi.Clear();
@@ -422,20 +422,6 @@ idt tfpAddExistChild( idt famID, Sex sex )
         recDb::Rollback( savepoint );
     }
 
-    return indID;
-}
-
-idt tfpPickIndividual( Sex sex )
-{
-    idt indID = 0;
-    dlgSelIndividual* dialog = new dlgSelIndividual( NULL );
-
-    if( dialog->CreateTable( sex ) == true ) {
-        if( dialog->ShowModal() == wxID_OK ) {
-            indID = dialog->GetSelectedID();
-        }
-    }
-    dialog->Destroy();
     return indID;
 }
 

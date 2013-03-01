@@ -29,7 +29,7 @@
 
 #ifndef TFPLISTCTRLIND_H
 #define TFPLISTCTRLIND_H
-
+#if 0
 #include <wx/listctrl.h>
 
 class wxSQLite3Table;
@@ -54,5 +54,5 @@ private:
 
     wxSQLite3Table* mp_table;
 };
-
+#endif
 #endif // TFPLISTCTRLIND_H
