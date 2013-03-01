@@ -132,5 +132,10 @@ extern idt rgCreatePerRelationship(
 extern bool rgEditResearcher( idt conID );
 extern idt rgCreateResearcher();
 
+// See src/rg/rgEdSystem.cpp
+extern bool rgEditSystemSettings( wxWindow* parent );
+
+// See src/rg/rgEdUser.cpp
+extern bool rgEditUserSettings( wxWindow* parent );
 
 #endif // RGDIALOGS_H

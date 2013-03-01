@@ -724,7 +724,7 @@ void TfpFrame::OnSystemOptions( wxCommandEvent& event )
 {
     recDb::Begin();
     try {
-        bool ret = tfpEditSystem();
+        bool ret = rgEditSystemSettings( this );
         if( ret == true ) {
             recDb::Commit();
             RefreshHtmPage();
@@ -744,7 +744,7 @@ void TfpFrame::OnUserOptions( wxCommandEvent& event )
 {
     recDb::Begin();
     try {
-        bool ret = tfpEditUserSettings();
+        bool ret = rgEditUserSettings( this );
         if( ret == true ) {
             recDb::Commit();
             RefreshHtmPage();

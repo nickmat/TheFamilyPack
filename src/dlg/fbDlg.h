@@ -191,38 +191,6 @@ class fbDlgEditFamily : public wxDialog
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class fbDlgEditRole
-///////////////////////////////////////////////////////////////////////////////
-class fbDlgEditRole : public wxDialog 
-{
-	private:
-	
-	protected:
-		wxStaticText* m_staticText1;
-		wxStaticText* m_staticTextEvent;
-		wxButton* m_buttonPersona;
-		wxTextCtrl* m_textCtrlPersona;
-		wxButton* m_buttonRole;
-		wxTextCtrl* m_textCtrlRole;
-		wxStaticText* m_staticText2;
-		wxTextCtrl* m_textCtrlNote;
-		wxStaticLine* m_staticline1;
-		wxButton* m_buttonSave;
-		wxButton* m_buttonCancel;
-		
-		// Virtual event handlers, overide them in your derived class
-		virtual void OnPersonaButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnRoleButton( wxCommandEvent& event ) { event.Skip(); }
-		
-	
-	public:
-		
-		fbDlgEditRole( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Persona's Role"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 400,231 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
-		~fbDlgEditRole();
-	
-};
-
-///////////////////////////////////////////////////////////////////////////////
 /// Class fbDlgSelectIndividual
 ///////////////////////////////////////////////////////////////////////////////
 class fbDlgSelectIndividual : public wxDialog 
@@ -272,51 +240,6 @@ class fbDlgSelect : public wxDialog
 		
 		fbDlgSelect( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Select"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 485,269 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbDlgSelect();
-	
-};
-
-///////////////////////////////////////////////////////////////////////////////
-/// Class fbDlgEditSystem
-///////////////////////////////////////////////////////////////////////////////
-class fbDlgEditSystem : public wxDialog 
-{
-	private:
-	
-	protected:
-		wxStaticText* m_staticText;
-		wxChoice* m_choiceUser;
-		wxStaticLine* m_staticline1;
-		wxButton* m_buttonSave;
-		wxButton* m_buttonCancel;
-	
-	public:
-		
-		fbDlgEditSystem( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("System Settings"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 296,123 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
-		~fbDlgEditSystem();
-	
-};
-
-///////////////////////////////////////////////////////////////////////////////
-/// Class fbDlgEditUserSettings
-///////////////////////////////////////////////////////////////////////////////
-class fbDlgEditUserSettings : public wxDialog 
-{
-	private:
-	
-	protected:
-		wxStaticText* m_staticText1;
-		wxStaticText* m_staticUserName;
-		wxStaticText* m_staticUserID;
-		wxStaticText* m_staticText;
-		wxTextCtrl* m_textCtrlHome;
-		wxStaticLine* m_staticline1;
-		wxButton* m_buttonSave;
-		wxButton* m_buttonCancel;
-	
-	public:
-		
-		fbDlgEditUserSettings( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("User Settings"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 301,144 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
-		~fbDlgEditUserSettings();
 	
 };
 

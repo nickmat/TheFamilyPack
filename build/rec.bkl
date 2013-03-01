@@ -123,6 +123,8 @@
     <sources>$(LOCAL_SRC)/rg/rgEdRelationship.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdResearcher.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdRole.cpp</sources>
+    <sources>$(LOCAL_SRC)/rg/rgEdSystem.cpp</sources>
+    <sources>$(LOCAL_SRC)/rg/rgEdUser.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgSelect.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgSelIndEvent.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgTableCtrl.cpp</sources>
@@ -147,6 +149,8 @@
     <headers>$(LOCAL_SRC)/rg/rgEdRelationship.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdResearcher.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdRole.h</headers>
+    <headers>$(LOCAL_SRC)/rg/rgEdSystem.h</headers>
+    <headers>$(LOCAL_SRC)/rg/rgEdUser.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgSelect.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgSelIndEvent.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgTableCtrl.h</headers>

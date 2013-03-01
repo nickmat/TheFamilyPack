@@ -71,8 +71,6 @@ TFP_OBJECTS =  \
 	tfp_dlgEd.o \
 	tfp_dlgEdFamily.o \
 	tfp_dlgEdIndividual.o \
-	tfp_dlgEdRole.o \
-	tfp_dlgEdSystem.o \
 	tfp_dlgNote.o \
 	tfp_dlgRecTableCtrl.o \
 	tfp_dlgSelect.o \
@@ -161,6 +159,8 @@ RECGUI_OBJECTS =  \
 	recgui_rgEdRelationship.o \
 	recgui_rgEdResearcher.o \
 	recgui_rgEdRole.o \
+	recgui_rgEdSystem.o \
+	recgui_rgEdUser.o \
 	recgui_rgSelect.o \
 	recgui_rgSelIndEvent.o \
 	recgui_rgTableCtrl.o
@@ -249,12 +249,6 @@ tfp_dlgEdFamily.o: ./../../src/dlg/dlgEdFamily.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
 tfp_dlgEdIndividual.o: ./../../src/dlg/dlgEdIndividual.cpp
-	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
-
-tfp_dlgEdRole.o: ./../../src/dlg/dlgEdRole.cpp
-	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
-
-tfp_dlgEdSystem.o: ./../../src/dlg/dlgEdSystem.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
 tfp_dlgNote.o: ./../../src/dlg/dlgNote.cpp
@@ -465,6 +459,12 @@ recgui_rgEdResearcher.o: ./../../src/rg/rgEdResearcher.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgEdRole.o: ./../../src/rg/rgEdRole.cpp
+	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
+
+recgui_rgEdSystem.o: ./../../src/rg/rgEdSystem.cpp
+	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
+
+recgui_rgEdUser.o: ./../../src/rg/rgEdUser.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgSelect.o: ./../../src/rg/rgSelect.cpp

@@ -1,7 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        dlgEdSystem.cpp
+ * Name:        src/rg/rgEdUser.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Edit database System Settings dialog.
+ * Purpose:     Edit database User Settings dialog.
  * Author:      Nick Matthews
  * Modified by:
  * Website:     http://thefamilypack.org
@@ -37,58 +37,38 @@
 #include "wx/wx.h"
 #endif
 
-#include "dlgEdSystem.h"
+#include <rg/rgDialogs.h>
+#include "rgEdUser.h"
 
-//============================================================================
-//                 dlgEditSystem
-//============================================================================
-
-dlgEditSystem::dlgEditSystem( wxWindow* parent )
-    : fbDlgEditSystem( parent )
+bool rgEditUserSettings( wxWindow* parent )
 {
-    m_userID = recGetCurrentUser();
-    m_users = recUser::GetUsers();
-}
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+    bool ret = false;
+    rgDlgEditUserSettings* dialog = new rgDlgEditUserSettings( parent );
 
-bool dlgEditSystem::TransferDataToWindow()
-{
-    for( size_t i = 0 ; i < m_users.size() ; i++ ) {
-        if( i == 0 ) {
-            m_choiceUser->Append( _("<Select User>") );
-        } else {
-            m_choiceUser->Append( m_users[i].GetNameStr() );
-        }
-        if( m_userID == m_users[i].FGetID() ) {
-            m_choiceUser->SetSelection( (int) i );
-        }
+    if( dialog->ShowModal() == wxID_OK ) {
+        recDb::ReleaseSavepoint( savepoint );
+        ret = true;
+    } else {
+        recDb::Rollback( savepoint );
     }
-
-    return true;
-}
-
-bool dlgEditSystem::TransferDataFromWindow()
-{
-    int user = m_choiceUser->GetSelection();
-    if( user <= 0 ) {
-        wxMessageBox( _("Please select a User"), _("User Required") );
-        return false;
-    }
-    recSetCurrentUser( (idt) user );
-    return true;
+    dialog->Destroy();
+    return ret;
 }
 
 //============================================================================
 //                 dlgEditUserSettings
 //============================================================================
 
-dlgEditUserSettings::dlgEditUserSettings( wxWindow* parent )
-    : fbDlgEditUserSettings( parent )
+rgDlgEditUserSettings::rgDlgEditUserSettings( wxWindow* parent )
+    : fbRgEditUserSettings( parent )
 {
     m_user.ReadID( recGetCurrentUser() );
     m_homeStr = m_user.GetSetting( recUserSetting::UP_HomeScreen );
 }
 
-bool dlgEditUserSettings::TransferDataToWindow()
+bool rgDlgEditUserSettings::TransferDataToWindow()
 {
     m_staticUserName->SetLabel( m_user.GetNameStr() );
     m_staticUserID->SetLabel( m_user.GetIdStr() );
@@ -98,7 +78,7 @@ bool dlgEditUserSettings::TransferDataToWindow()
     return true;
 }
 
-bool dlgEditUserSettings::TransferDataFromWindow()
+bool rgDlgEditUserSettings::TransferDataFromWindow()
 {
     recUserSetting us;
     m_homeStr = m_textCtrlHome->GetValue();
@@ -110,4 +90,4 @@ bool dlgEditUserSettings::TransferDataFromWindow()
     return true;
 }
 
-// End of dlgEditNamePart.cpp file
+// End of src/rg/rgEdUser.cpp file

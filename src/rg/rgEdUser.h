@@ -1,13 +1,13 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        dlgEdRole.h
+ * Name:        src/rg/rgEdUser.h
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Edit database Event Role entity dialog header.
+ * Purpose:     Edit database User Settings dialog header.
  * Author:      Nick Matthews
  * Modified by:
  * Website:     http://thefamilypack.org
- * Created:     22 October 2010
+ * Created:     10 April 2012
  * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2012, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -27,42 +27,28 @@
 
 */
 
-#ifndef DLGEDROLE_H
-#define DLGEDROLE_H
+#ifndef RGEDUSER_H
+#define RGEDUSER_H
 
-#include <rec/recEvent.h>
+#include <rec/recUser.h>
 
-#include "fbDlg.h"
+#include "fbRgDialog.h"
 
 //============================================================================
-//-------------------------[ dlgEditRole ]------------------------------------
+//                 dlgEditUserSettings
 //============================================================================
 
-class dlgEditRole : public fbDlgEditRole
+class rgDlgEditUserSettings : public fbRgEditUserSettings
 {
-    DECLARE_CLASS( dlgEditRole )
-    DECLARE_EVENT_TABLE()
-
 public:
-    dlgEditRole( wxWindow* parent, idt eventID, idt epID = 0 );
-
-    void SetRefID( idt id ) { m_refID = id; }
-
-    recEventPersona* GetEventPersona() { return &m_pe; }
+    rgDlgEditUserSettings( wxWindow* parent );
 
 private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
 
-    void OnPersonaButton( wxCommandEvent& event );
-    void OnRoleButton( wxCommandEvent& event );
-    void OnRoleSelect( wxCommandEvent& event );
-
-    recEventPersona     m_pe;
-    recEvent            m_event;
-
-    idt                 m_refID;
-    recEventTypeRoleVec m_roles;
+    recUser   m_user;
+    wxString  m_homeStr;
 };
 
-#endif // DLGEDROLE_H
+#endif // RGEDUSER_H

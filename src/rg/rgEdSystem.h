@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        dlgEdSystem.h
+ * Name:        src/rg/rgEdSystem.h
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Edit database System Settings dialog header.
  * Author:      Nick Matthews
@@ -27,22 +27,22 @@
 
 */
 
-#ifndef DLGEDSYSTEM_H
-#define DLGEDSYSTEM_H
+#ifndef RGEDSYSTEM_H
+#define RGEDSYSTEM_H
 
 #include <rec/recSystem.h>
 #include <rec/recUser.h>
 
-#include "fbDlg.h"
+#include "fbRgDialog.h"
 
 //============================================================================
 //                 dlgEditSystem
 //============================================================================
 
-class dlgEditSystem : public fbDlgEditSystem
+class rgDlgEditSystem : public fbRgEditSystem
 {
 public:
-    dlgEditSystem( wxWindow* parent );
+    rgDlgEditSystem( wxWindow* parent );
 
 private:
     bool TransferDataToWindow();
@@ -52,21 +52,4 @@ private:
     recUserVec m_users;
 };
 
-//============================================================================
-//                 dlgEditUserSettings
-//============================================================================
-
-class dlgEditUserSettings : public fbDlgEditUserSettings
-{
-public:
-    dlgEditUserSettings( wxWindow* parent );
-
-private:
-    bool TransferDataToWindow();
-    bool TransferDataFromWindow();
-
-    recUser   m_user;
-    wxString  m_homeStr;
-};
-
-#endif // DLGEDSYSTEM_H
+#endif // RGEDSYSTEM_H

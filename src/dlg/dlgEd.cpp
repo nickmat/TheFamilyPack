@@ -45,9 +45,7 @@
 #include "dlgEdFamily.h"
 #include "dlgEdIndividual.h"
 #include "dlgSelIndividual.h"
-#include "dlgEdSystem.h"
 #include "dlgSelect.h"
-#include "dlgEdRole.h"
 #include "dlg/dlgNote.h"
 
 
@@ -425,40 +423,6 @@ idt tfpAddExistChild( idt famID, Sex sex )
     }
 
     return indID;
-}
-
-bool tfpEditSystem()
-{
-    const wxString savepoint = "EdSys";
-    recDb::Savepoint( savepoint );
-    bool ret = false;
-    dlgEditSystem* dialog = new dlgEditSystem( NULL );
-
-    if( dialog->ShowModal() == wxID_OK ) {
-        recDb::ReleaseSavepoint( savepoint );
-        ret = true;
-    } else {
-        recDb::Rollback( savepoint );
-    }
-    dialog->Destroy();
-    return ret;
-}
-
-bool tfpEditUserSettings()
-{
-    const wxString savepoint = "EdUserSet";
-    recDb::Savepoint( savepoint );
-    bool ret = false;
-    dlgEditUserSettings* dialog = new dlgEditUserSettings( NULL );
-
-    if( dialog->ShowModal() == wxID_OK ) {
-        recDb::ReleaseSavepoint( savepoint );
-        ret = true;
-    } else {
-        recDb::Rollback( savepoint );
-    }
-    dialog->Destroy();
-    return ret;
 }
 
 idt tfpPickIndividual( Sex sex )
