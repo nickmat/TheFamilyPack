@@ -47,13 +47,5 @@ extern bool tfpEditFamily( idt famID );
 extern bool tfpAddExistSpouse( idt indID, Sex sex );
 extern idt tfpAddExistChild( idt famID, Sex sex );
 
-//extern idt tfpPickIndividual( Sex sex = SEX_Unstated );
-
-#define TFP_SELECT_STYLE_CREATE   0x0001
-#define TFP_SELECT_STYLE_UNKNOWN  0x0002
-
-//extern bool tfpSelectPersona( idt* perID, unsigned style, idt refID );
-extern long tfpSelectIndividual( idt* indID, recIdVec indIDs );
-
 #endif // TFPEDIT_H
 

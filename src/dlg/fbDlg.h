@@ -11,8 +11,6 @@
 #include <wx/artprov.h>
 #include <wx/xrc/xmlres.h>
 #include <wx/intl.h>
-class dlgStrTableCtrl;
-
 #include <wx/string.h>
 #include <wx/stattext.h>
 #include <wx/gdicmn.h>
@@ -157,34 +155,6 @@ class fbDlgEditFamily : public wxDialog
 		
 		fbDlgEditFamily( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Family"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbDlgEditFamily();
-	
-};
-
-///////////////////////////////////////////////////////////////////////////////
-/// Class fbDlgSelect
-///////////////////////////////////////////////////////////////////////////////
-class fbDlgSelect : public wxDialog 
-{
-	private:
-	
-	protected:
-		dlgStrTableCtrl* m_listCtrl;
-		wxStaticLine* m_staticline;
-		wxButton* m_buttonCreate;
-		wxButton* m_buttonUnknown;
-		wxButton* m_buttonSelect;
-		wxButton* m_buttonCancel;
-		
-		// Virtual event handlers, overide them in your derived class
-		virtual void OnIdle( wxIdleEvent& event ) { event.Skip(); }
-		virtual void OnCreateButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnUnknownButton( wxCommandEvent& event ) { event.Skip(); }
-		
-	
-	public:
-		
-		fbDlgSelect( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Select"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 485,269 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
-		~fbDlgSelect();
 	
 };
 

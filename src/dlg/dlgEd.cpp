@@ -44,7 +44,6 @@
 #include "dlgEd.h"
 #include "dlgEdFamily.h"
 #include "dlgEdIndividual.h"
-#include "dlgSelect.h"
 #include "dlg/dlgNote.h"
 
 
@@ -126,13 +125,16 @@ bool tfpAddNewParent( idt indID, Sex sex )
                 }
             }
             if( indIDs.size() ) {
-                int row = tfpSelectIndividual( NULL, indIDs );
-                if( row >= 0 ) {
-                    famID = parents[rows[row]].f_id;
-                } else if( row == -2 ) { // Create button pressed
-                    famID = 0;
-                } else {
+                idt indID = rgSelectIndividual( indIDs );
+                if( indID == 0 ) {
+                    recDb::Rollback( savepoint );
                     return false;
+                }
+                for( size_t i = 0 ; i < indIDs.size() ; i++ ) {
+                    if( indID == indIDs[i] ) {
+                        famID = parents[rows[i]].FGetID();
+                        break;
+                    }
                 }
             }
         }
@@ -407,80 +409,6 @@ idt tfpAddExistChild( idt famID, Sex sex )
     }
 
     return indID;
-}
-#if 0
-bool tfpSelectPersona( idt* perID, unsigned style, idt refID )
-{
-    wxASSERT( perID );  // Can't handle NULL pointer
-    recIdVec list = recReference::GetPersonaList( refID );
-    wxArrayString table;
-    for( size_t i = 0 ; i < list.size() ; i++ ) {
-        table.Add( recPersona::GetIdStr( list[i] ) );
-        table.Add( recPersona::GetNameStr( list[i] ) );
-    }
-
-    dlgSelectCreatePersona* dialog = 
-        new dlgSelectCreatePersona( NULL, refID );
-    dialog->SetTable( table );
-    if( style & TFP_SELECT_STYLE_CREATE ) {
-        dialog->SetCreateButton();
-    }
-    if( style & TFP_SELECT_STYLE_UNKNOWN ) {
-        dialog->SetUnknownButton();
-    }
-
-    bool ret;
-    if( dialog->ShowModal() == wxID_OK ) {
-        if( dialog->GetCreatePressed() ) {
-            *perID = dialog->GetPersonaID();
-        } else if( dialog->GetUnknownPressed() ) {
-            *perID = 0;
-        } else {
-            long row = dialog->GetSelectedRow();
-            *perID = list[row];
-        }
-        ret = true;
-    } else {
-        *perID = 0;
-        ret = false;
-    }
-
-    dialog->Destroy();
-    return ret;
-}
-#endif
-
-long tfpSelectIndividual( idt* indID, recIdVec indIDs )
-{
-    wxArrayString table;
-    for( size_t i = 0 ; i < indIDs.size() ; i++ ) {
-        table.Add( recIndividual::GetIdStr( indIDs[i] ) );
-        table.Add( recIndividual::GetFullNameEpitaph( indIDs[i] ) );
-    }
-    dlgSelectIndividual* dialog = new 
-        dlgSelectIndividual( NULL, _("Select Family"), dlgSelect::SELSTYLE_CreateButton );
-    dialog->SetTable( table );
-
-    long row;
-    if( dialog->ShowModal() == wxID_OK ) {
-        if( dialog->GetCreatePressed() ) {
-            row = -2;
-        } else {
-            row = dialog->GetSelectedRow();
-        }
-    } else {
-        row = -1;
-    }
-    if( indID ) {
-        if( row >= 0 ) {
-            *indID = indIDs[row];
-        } else {
-            *indID = 0;
-        }
-    }
-
-    dialog->Destroy();
-    return row;
 }
 
 // End of dlgEd.cpp file

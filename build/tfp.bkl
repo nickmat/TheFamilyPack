@@ -87,8 +87,6 @@
     <sources>$(LOCAL_SRC)/dlg/dlgEdFamily.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgEdIndividual.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgNote.cpp</sources>
-    <sources>$(LOCAL_SRC)/dlg/dlgRecTableCtrl.cpp</sources>
-    <sources>$(LOCAL_SRC)/dlg/dlgSelect.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/fbDlg.cpp</sources>
     <sources>$(LOCAL_SRC)/tfpApp.cpp</sources>
     <sources>$(LOCAL_SRC)/tfpFrame.cpp</sources>
@@ -110,8 +108,6 @@
     <headers>$(LOCAL_SRC)/dlg/dlgEdFamily.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgEdIndividual.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgNote.h</headers>
-    <headers>$(LOCAL_SRC)/dlg/dlgRecTableCtrl.h</headers>
-    <headers>$(LOCAL_SRC)/dlg/dlgSelect.h</headers>
     <headers>$(LOCAL_SRC)/dlg/fbDlg.h</headers>
     <headers>$(LOCAL_SRC)/tfpApp.h</headers>
     <headers>$(LOCAL_SRC)/tfpFrame.h</headers>

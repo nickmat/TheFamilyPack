@@ -275,14 +275,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\dlg\dlgRecTableCtrl.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\dlg\dlgSelect.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\dummy.cpp"
 				>
 				<FileConfiguration
@@ -386,14 +378,6 @@
 			</File>
 			<File
 				RelativePath="..\..\src\dlg\dlgNote.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\dlg\dlgRecTableCtrl.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\dlg\dlgSelect.h"
 				>
 			</File>
 			<File

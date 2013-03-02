@@ -64,8 +64,6 @@ TFP_OBJECTS =  \
 	tfp_dlgEdFamily.obj \
 	tfp_dlgEdIndividual.obj \
 	tfp_dlgNote.obj \
-	tfp_dlgRecTableCtrl.obj \
-	tfp_dlgSelect.obj \
 	tfp_fbDlg.obj \
 	tfp_tfpApp.obj \
 	tfp_tfpFrame.obj \
@@ -436,12 +434,6 @@ tfp_dlgEdIndividual.obj: .\..\..\src\dlg\dlgEdIndividual.cpp
 
 tfp_dlgNote.obj: .\..\..\src\dlg\dlgNote.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\dlgNote.cpp
-
-tfp_dlgRecTableCtrl.obj: .\..\..\src\dlg\dlgRecTableCtrl.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\dlgRecTableCtrl.cpp
-
-tfp_dlgSelect.obj: .\..\..\src\dlg\dlgSelect.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\dlgSelect.cpp
 
 tfp_fbDlg.obj: .\..\..\src\dlg\fbDlg.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\fbDlg.cpp
