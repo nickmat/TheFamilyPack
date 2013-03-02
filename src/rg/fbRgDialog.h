@@ -21,8 +21,8 @@ class rgStrTableCtrl;
 #include <wx/colour.h>
 #include <wx/settings.h>
 #include <wx/choice.h>
-#include <wx/textctrl.h>
 #include <wx/sizer.h>
+#include <wx/textctrl.h>
 #include <wx/statline.h>
 #include <wx/button.h>
 #include <wx/dialog.h>
@@ -41,6 +41,36 @@ class rgStrTableCtrl;
 #include <wx/statbox.h>
 
 ///////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class fbRgCreateIndividual
+///////////////////////////////////////////////////////////////////////////////
+class fbRgCreateIndividual : public wxDialog 
+{
+	private:
+	
+	protected:
+		wxStaticText* m_staticText11;
+		wxStaticText* m_staticName;
+		wxStaticText* m_staticText12;
+		wxChoice* m_choiceSex;
+		wxStaticText* m_staticText21;
+		wxTextCtrl* m_textGiven;
+		wxStaticText* m_staticText22;
+		wxTextCtrl* m_textSurname;
+		wxStaticText* m_staticText23;
+		wxTextCtrl* m_textNote;
+		wxStaticLine* m_staticline1;
+		wxStaticText* m_staticIndID;
+		wxButton* m_buttonSave1;
+		wxButton* m_buttonCancel1;
+	
+	public:
+		
+		fbRgCreateIndividual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Create Individual"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxSYSTEM_MENU ); 
+		~fbRgCreateIndividual();
+	
+};
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Class fbRgCreateName

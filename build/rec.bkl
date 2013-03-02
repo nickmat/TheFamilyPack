@@ -107,6 +107,7 @@
     <sources>$(LOCAL_SRC)/rec/recgui.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/fbRgDialog.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgCompareEvent.cpp</sources>
+    <sources>$(LOCAL_SRC)/rg/rgCrIndividual.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgCrName.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgDialogs.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdContact.cpp</sources>
@@ -134,6 +135,7 @@
 
     <headers>$(LOCAL_SRC)/rg/fbRgDialog.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgCommon.h</headers>
+    <headers>$(LOCAL_SRC)/rg/rgCrIndividual.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgCrName.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdContact.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdDate.h</headers>

@@ -50,30 +50,15 @@
 
 idt tfpAddNewIndividual( idt famID, Sex sex, const wxString& surname )
 {
-    const wxString savepoint = recDb::GetSavepointStr();
-    recDb::Savepoint( savepoint );
-
-    recIndividual ind(0);
-    ind.Save();
-    idt indID = ind.FGetID();
-
+    idt indID = rgCreateIndividual( NULL, sex, rgCRNAME_Sur_Given, surname );
+    if( indID == 0 ) {
+        return 0;
+    }
     recFamily family(famID);
     idt* pIndID = ( sex == SEX_Female ) ? &family.f_wife_id : &family.f_husb_id;
     wxASSERT( *pIndID == 0 );
     *pIndID = indID;
     family.Save();
-
-    dlgCreateIndividual* dialog = new dlgCreateIndividual( NULL, indID );
-    dialog->SetSex( sex );
-    dialog->SetSurname( surname );
-
-    if( dialog->ShowModal() == wxID_OK ) {
-        recDb::ReleaseSavepoint( savepoint );
-    } else {
-        recDb::Rollback( savepoint );
-        indID = 0;
-    }
-    dialog->Destroy();
     return indID;
 }
 
@@ -423,7 +408,7 @@ idt tfpAddExistChild( idt famID, Sex sex )
 
     return indID;
 }
-
+#if 0
 bool tfpSelectPersona( idt* perID, unsigned style, idt refID )
 {
     wxASSERT( perID );  // Can't handle NULL pointer
@@ -463,6 +448,7 @@ bool tfpSelectPersona( idt* perID, unsigned style, idt refID )
     dialog->Destroy();
     return ret;
 }
+#endif
 
 long tfpSelectIndividual( idt* indID, recIdVec indIDs )
 {

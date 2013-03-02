@@ -1,7 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        tfpEdit.h
+ * Name:        src/rg/rgCrIndividual.h
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Functions to edit the database header.
+ * Purpose:     Create database Individual entity dialog header.
  * Author:      Nick Matthews
  * Modified by:
  * Website:     http://thefamilypack.org
@@ -27,33 +27,41 @@
 
 */
 
-#ifndef TFPEDIT_H
-#define TFPEDIT_H
+#ifndef RGCRINDIVIDUAL_H
+#define RGCRINDIVIDUAL_H
 
-#include <rec/recDatabase.h>
+#include <rec/recIndividual.h>
+#include <rec/recPersona.h>
+#include <rec/recName.h>
 
-typedef std::vector< int >  intVec;
+#include "fbRgDialog.h"
 
-extern idt tfpAddNewIndividual( idt famID, Sex sex, const wxString& surname = wxEmptyString );
-extern idt tfpAddNewChild( idt famID, Sex sex );
-extern bool tfpAddNewParent( idt indID, Sex sex );
-extern bool tfpAddExistParent( idt indID, Sex sex );
-extern bool tfpAddNewParent( const wxString& ref );
-extern bool tfpAddNewSpouse( const wxString& ref );
-extern bool tfpEditIndividual( idt indID );
-extern bool tfpDeleteIndividual( idt indID );
+//============================================================================
+//                 dlgCreateIndividual dialog
+//============================================================================
 
-extern bool tfpEditFamily( idt famID );
-extern bool tfpAddExistSpouse( idt indID, Sex sex );
-extern idt tfpAddExistChild( idt famID, Sex sex );
+class rgDlgCreateIndividual : public fbRgCreateIndividual
+{
+public:
+    rgDlgCreateIndividual( wxWindow* parent );
 
-//extern idt tfpPickIndividual( Sex sex = SEX_Unstated );
+    idt GetIndID() const { return m_individual.FGetID(); }
 
-#define TFP_SELECT_STYLE_CREATE   0x0001
-#define TFP_SELECT_STYLE_UNKNOWN  0x0002
+    void SetSex( Sex sex ) { m_sex = sex; }
+    void SetGiven( const wxString& name ) { m_given = name; }
+    void SetSurname( const wxString& name ) { m_surname = name; }
 
-//extern bool tfpSelectPersona( idt* perID, unsigned style, idt refID );
-extern long tfpSelectIndividual( idt* indID, recIdVec indIDs );
+private:
+    bool TransferDataToWindow();
+    bool TransferDataFromWindow();
 
-#endif // TFPEDIT_H
+    Sex            m_sex;
+    wxString       m_given;
+    wxString       m_surname;
 
+    recIndividual  m_individual;
+    recPersona     m_persona;
+    recName        m_name;
+};
+
+#endif // RGCRINDIVIDUAL_H

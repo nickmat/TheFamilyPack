@@ -71,7 +71,28 @@ extern idt rgSelectIndividual(
     unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL,
     unsigned sexfilter = recInd_FILTER_SexAll );
 extern idt rgSelectIndividual( Sex sex );
+extern idt rgSelectIndividual(
+    recIdVec indIDs,
+    unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL );
 extern idt rgSelectCreatePersona( wxWindow* parent, idt refID );
+
+// See src/rg/rgCrIndividual.cpp
+enum {
+    rgCRNAME_Default   = 0x000, // Use default settings to decode name1 string.
+    rgCRNAME_Sur_Given = 0x001  // If given, name1 is surname, name2 is given name.
+};
+extern idt rgCreateIndividual( wxWindow* parent,
+    Sex sex = SEX_Unknown,
+    unsigned flags = rgCRNAME_Default, 
+    const wxString& name1 = wxEmptyString,
+    const wxString& name2 = wxEmptyString );
+
+// See src/rg/rgCrName.cpp
+extern idt rgCreateName( idt perID,
+    unsigned flags = rgCRNAME_Default, 
+    const wxString& name1 = wxEmptyString,
+    const wxString& name2 = wxEmptyString,
+    recNameStyle::Style type = recNameStyle::NS_Default );
 
 // See src/rg/rgEdContact.cpp
 extern bool rgEditContact( idt conID );
@@ -88,17 +109,6 @@ extern idt rgCreateEvidPerEvent( rgDlgEditReference* parent, const wxString& rol
 
 // See src/rg/rgEdName.cpp
 extern bool rgEditName( idt nameID );
-
-// See src/rg/rgCrName.cpp
-enum {
-    rgCRNAME_Default   = 0x000, // Use default settings to decode name1 string.
-    rgCRNAME_Sur_Given = 0x001  // If given, name1 is surname, name2 is given name.
-};
-extern idt rgCreateName( idt perID,
-    unsigned flags = rgCRNAME_Default, 
-    const wxString& name1 = wxEmptyString,
-    const wxString& name2 = wxEmptyString,
-    recNameStyle::Style type = recNameStyle::NS_Default );
 
 // See src/rg/rgEdNamePart.cpp
 extern bool rgEditNamePart( idt npID );

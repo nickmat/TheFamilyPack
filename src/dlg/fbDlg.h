@@ -19,50 +19,21 @@ class dlgStrTableCtrl;
 #include <wx/font.h>
 #include <wx/colour.h>
 #include <wx/settings.h>
-#include <wx/choice.h>
 #include <wx/sizer.h>
+#include <wx/choice.h>
 #include <wx/textctrl.h>
-#include <wx/statline.h>
-#include <wx/button.h>
-#include <wx/dialog.h>
 #include <wx/panel.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
 #include <wx/listctrl.h>
+#include <wx/button.h>
 #include <wx/notebook.h>
+#include <wx/statline.h>
+#include <wx/dialog.h>
 #include <wx/listbox.h>
 
 ///////////////////////////////////////////////////////////////////////////
-
-///////////////////////////////////////////////////////////////////////////////
-/// Class fbDlgCreateIndividual
-///////////////////////////////////////////////////////////////////////////////
-class fbDlgCreateIndividual : public wxDialog 
-{
-	private:
-	
-	protected:
-		wxStaticText* m_staticText11;
-		wxStaticText* m_staticIndID;
-		wxStaticText* m_staticText12;
-		wxChoice* m_choiceSex;
-		wxStaticText* m_staticText21;
-		wxTextCtrl* m_textGiven;
-		wxStaticText* m_staticText22;
-		wxTextCtrl* m_textSurname;
-		wxStaticText* m_staticText23;
-		wxTextCtrl* m_textNote;
-		wxStaticLine* m_staticline1;
-		wxButton* m_buttonSave;
-		wxButton* m_buttonCancel;
-	
-	public:
-		
-		fbDlgCreateIndividual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Create Individual"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 400,221 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxSYSTEM_MENU ); 
-		~fbDlgCreateIndividual();
-	
-};
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Class fbDlgEditIndPersona

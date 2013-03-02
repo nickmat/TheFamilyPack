@@ -37,31 +37,6 @@
 #include "fbDlg.h"
 
 //============================================================================
-//                 dlgCreateIndividual dialog
-//============================================================================
-
-class dlgCreateIndividual : public fbDlgCreateIndividual
-{
-public:
-    dlgCreateIndividual( wxWindow* parent, idt indID );
-
-    void SetSex( Sex sex ) { m_sex = sex; }
-    void SetSurname( const wxString& name ) { m_surname = name; }
-
-private:
-    bool TransferDataToWindow();
-    bool TransferDataFromWindow();
-
-    Sex            m_sex;
-    wxString       m_surname;
-
-    recIndividual  m_individual;
-    recPersona     m_persona;
-    recName        m_name;
-};
-
-
-//============================================================================
 //                 dlgEditIndPersona dialog
 //============================================================================
 

@@ -44,49 +44,6 @@
 
 #include "dlgEd.h"
 
-
-//============================================================================
-//                 dlgCreateIndividual dialog
-//============================================================================
-
-dlgCreateIndividual::dlgCreateIndividual( wxWindow* parent, idt indID )
-    : fbDlgCreateIndividual( parent )
-{
-    m_sex = SEX_Unstated;
-    m_individual.Clear();
-    m_individual.f_id = indID;
-    m_persona.Clear();
-    m_name.Clear();
-}
-
-bool dlgCreateIndividual::TransferDataToWindow()
-{
-    m_staticIndID->SetLabel( m_individual.GetIdStr() );
-    m_choiceSex->SetSelection( m_sex );
-    m_textSurname->SetValue( m_surname );
-    m_textGiven->SetFocus();
-    return true;
-}
-
-bool dlgCreateIndividual::TransferDataFromWindow()
-{
-    m_persona.f_sex = (Sex) m_choiceSex->GetSelection();
-    m_persona.f_note = m_textNote->GetValue();
-    m_persona.Save();
-
-    m_name.f_per_id = m_persona.f_id;
-    m_name.Save();
-    int seq = m_name.AddNameParts( m_textGiven->GetValue(), NAME_TYPE_Given_name, 0 );
-    m_name.AddNamePart( m_textSurname->GetValue(), NAME_TYPE_Surname, seq );
-
-    m_individual.f_per_id = m_persona.f_id;
-    m_individual.Update();
-    m_individual.Save();
-
-    return true;
-}
-
-
 //============================================================================
 //                 dlgEditIndPersona dialog
 //============================================================================

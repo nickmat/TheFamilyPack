@@ -39,6 +39,7 @@
 #include <rec/recEvent.h>
 #include <rec/recFilterEvent.h>
 #include <rec/recIndividual.h>
+#include <rg/rgDialogs.h>
 
 #include "rgEdDate.h"
 #include "rgEdPlace.h"
@@ -565,6 +566,51 @@ bool rgSelectIndEventList( recFilterEvent* evefilter )
     return true;
 }
 
+idt rgSelectIndividual( recIdVec indIDs, unsigned flag, unsigned* retbutton )
+{
+    idt id = 0;
+    bool cont = true;
+    rgDlgSelectIndividual* dialog = new rgDlgSelectIndividual( NULL, flag );
+
+    while( cont ) {
+        wxArrayString table;
+        for( size_t i = 0 ; i < indIDs.size() ; i++ ) {
+            table.push_back( recIndividual::GetIdStr( indIDs[i] ) );        
+            table.push_back( recIndividual::GetFullName( indIDs[i] ) );        
+        }
+        dialog->SetTable( table );
+        if( dialog->ShowModal() == wxID_OK ) {
+            if( dialog->GetCreatePressed() ) {
+                if( retbutton ) *retbutton = rgSELSTYLE_Create;
+                id = rgCreateIndividual( NULL );
+                if( id ) {
+                    cont = false;
+                } else {
+                    dialog->SetCreatePressed( false );
+                    indIDs.push_back( id );
+                }
+                continue;
+            }
+            if( dialog->GetFilterPressed() ) {
+                wxMessageBox( "Not yet implimented", "rgSelectIndividual" );
+                dialog->SetFilterPressed( false );
+                continue;
+            }
+            if( dialog->GetUnknownPressed() ) {
+                wxASSERT( false ); // We shouldn't be here, Unknown has no meaning.
+                if( retbutton ) *retbutton = rgSELSTYLE_Unknown;
+                continue;
+            }
+            size_t item = (size_t) dialog->GetSelectedRow();
+            id = indIDs[item];
+        }
+        if( retbutton ) *retbutton = rgSELSTYLE_None;
+        cont = false;
+    }
+    dialog->Destroy();
+    return id;
+}
+
 idt rgSelectIndividual( unsigned flag, unsigned* retbutton, unsigned sexfilter )
 {
     idt id = 0;
@@ -582,7 +628,7 @@ idt rgSelectIndividual( unsigned flag, unsigned* retbutton, unsigned sexfilter )
         if( dialog->ShowModal() == wxID_OK ) {
             if( dialog->GetCreatePressed() ) {
                 if( retbutton ) *retbutton = rgSELSTYLE_Create;
-                id = rgCreateEventType();
+                id = rgCreateIndividual( NULL );
                 if( id ) {
                     cont = false;
                 } else {

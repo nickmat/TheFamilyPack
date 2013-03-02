@@ -142,6 +142,7 @@ RECGUI_OBJECTS =  \
 	recgui_recgui.o \
 	recgui_fbRgDialog.o \
 	recgui_rgCompareEvent.o \
+	recgui_rgCrIndividual.o \
 	recgui_rgCrName.o \
 	recgui_rgDialogs.o \
 	recgui_rgEdContact.o \
@@ -407,6 +408,9 @@ recgui_fbRgDialog.o: ./../../src/rg/fbRgDialog.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgCompareEvent.o: ./../../src/rg/rgCompareEvent.cpp
+	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
+
+recgui_rgCrIndividual.o: ./../../src/rg/rgCrIndividual.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgCrName.o: ./../../src/rg/rgCrName.cpp

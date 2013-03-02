@@ -204,6 +204,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rg\rgCrIndividual.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rg\rgCrName.cpp"
 				>
 			</File>
@@ -303,6 +307,10 @@
 			</File>
 			<File
 				RelativePath="..\..\include\rg\rgCompareEvent.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgCrIndividual.h"
 				>
 			</File>
 			<File
