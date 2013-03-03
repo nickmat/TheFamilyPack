@@ -506,7 +506,7 @@ void TfpFrame::OnEditContext( wxCommandEvent& event )
             ret = tfpDeleteIndividual( m_EditIndRight );
             break;
         case tfpID_EDIT_FAMILY:
-            ret = tfpEditFamily( m_EditFamily );
+            ret = rgEditFamily( this, m_EditFamily );
             break;
         case tfpID_EDIT_NEW_SON:
             id = tfpAddNewChild( m_EditFamily, SEX_Male );
@@ -910,7 +910,7 @@ void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
         switch( uch.GetValue() )
         {
         case 'F': 
-            ret = tfpEditFamily( id );
+            ret = rgEditFamily( this, id );
             break;
         case 'R':
             ret = rgEditReference( this, id );
@@ -994,7 +994,7 @@ void TfpFrame::OnHtmCtxMenu( wxCommandEvent& event )
         switch( event.GetId() )
         {
         case tfpID_HCTXMENU_EDIT_FAMILY:
-            ret = tfpEditFamily( id );
+            ret = rgEditFamily( this, id );
             break;
         case tfpID_HCTXMENU_EDIT_NEW_SON:
             if( tfpAddNewChild( id, SEX_Male ) != 0 ) ret = true;

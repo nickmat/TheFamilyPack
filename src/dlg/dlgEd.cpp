@@ -42,8 +42,6 @@
 #include <rg/rgDialogs.h>
 
 #include "dlgEd.h"
-#include "dlgEdFamily.h"
-#include "dlg/dlgNote.h"
 
 
 idt tfpAddNewIndividual( idt famID, Sex sex, const wxString& surname )
@@ -271,26 +269,6 @@ bool tfpDeleteIndividual( idt indID )
         recIndividual::RemoveFromDatabase( indID );
         ret = true;
     }
-    return ret;
-}
-
-bool tfpEditFamily( idt famID )
-{
-    wxASSERT( famID != 0 );
-    const wxString savepoint = recDb::GetSavepointStr();
-    recDb::Savepoint( savepoint );
-    bool ret = false;
-
-    dlgEditFamily* dialog = new dlgEditFamily( NULL );
-    dialog->SetFamilyID( famID );
-
-    if( dialog->ShowModal() == wxID_OK ) {
-        recDb::ReleaseSavepoint( savepoint );
-        ret = true;
-    } else {
-        recDb::Rollback( savepoint );
-    }
-    dialog->Destroy();
     return ret;
 }
 

@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        dlgEdFamily.cpp
+ * Name:        src/rg/rgEdFamily.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Edit database Family entity dialog.
  * Author:      Nick Matthews
@@ -41,42 +41,61 @@
 #include <rec/recEvent.h>
 #include <rg/rgDialogs.h>
 
-#include "dlgEdFamily.h"
-#include "dlgEd.h"
+#include "rgEdFamily.h"
+#include "../dlg/dlgEd.h"
 
-IMPLEMENT_CLASS( dlgEditFamily, wxDialog )
+bool rgEditFamily( wxWindow* parent, idt famID )
+{
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+    bool ret = false;
 
-BEGIN_EVENT_TABLE( dlgEditFamily, wxDialog )
-    EVT_MENU( tfpID_DLGEDFAM_EDIT, dlgEditFamily::OnEditID )
-    EVT_MENU( tfpID_DLGEDFAM_REMOVE, dlgEditFamily::OnRemoveID )
-    EVT_MENU( tfpID_DLGEDFAM_DELETE, dlgEditFamily::OnDeleteID )
-    EVT_MENU( tfpID_DLGEDFAM_ADDNEW, dlgEditFamily::OnEditID )
-    EVT_MENU( tfpID_DLGEDFAM_ADDEXIST, dlgEditFamily::OnAddExistID )
+    rgDlgEditFamily* dialog = new rgDlgEditFamily( parent, famID );
 
-    EVT_MENU( tfpID_DLGEDFAM_ADDNEWSON, dlgEditFamily::OnAddChild )
-    EVT_MENU( tfpID_DLGEDFAM_ADDNEWDAUR, dlgEditFamily::OnAddChild )
-    EVT_MENU( tfpID_DLGEDFAM_ADDEXISTSON, dlgEditFamily::OnAddChild )
-    EVT_MENU( tfpID_DLGEDFAM_ADDEXISTDAUR, dlgEditFamily::OnAddChild )
+    if( dialog->ShowModal() == wxID_OK ) {
+        recDb::ReleaseSavepoint( savepoint );
+        ret = true;
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+    return ret;
+}
 
-    EVT_MENU( tfpID_DLGEDFAM_NEW_EVENT,   dlgEditFamily::OnNewEvent )
-    EVT_MENU( tfpID_DLGEDFAM_EXIST_EVENT, dlgEditFamily::OnExistingEvent )
+//============================================================================
+//-------------------------[ rgDlgEditFamily ]--------------------------------
+//============================================================================
+
+IMPLEMENT_CLASS( rgDlgEditFamily, wxDialog )
+
+BEGIN_EVENT_TABLE( rgDlgEditFamily, wxDialog )
+    EVT_MENU( tfpID_DLGEDFAM_EDIT, rgDlgEditFamily::OnEditID )
+    EVT_MENU( tfpID_DLGEDFAM_REMOVE, rgDlgEditFamily::OnRemoveID )
+    EVT_MENU( tfpID_DLGEDFAM_DELETE, rgDlgEditFamily::OnDeleteID )
+    EVT_MENU( tfpID_DLGEDFAM_ADDNEW, rgDlgEditFamily::OnEditID )
+    EVT_MENU( tfpID_DLGEDFAM_ADDEXIST, rgDlgEditFamily::OnAddExistID )
+
+    EVT_MENU( tfpID_DLGEDFAM_ADDNEWSON, rgDlgEditFamily::OnAddChild )
+    EVT_MENU( tfpID_DLGEDFAM_ADDNEWDAUR, rgDlgEditFamily::OnAddChild )
+    EVT_MENU( tfpID_DLGEDFAM_ADDEXISTSON, rgDlgEditFamily::OnAddChild )
+    EVT_MENU( tfpID_DLGEDFAM_ADDEXISTDAUR, rgDlgEditFamily::OnAddChild )
+
+    EVT_MENU( tfpID_DLGEDFAM_NEW_EVENT,   rgDlgEditFamily::OnNewEvent )
+    EVT_MENU( tfpID_DLGEDFAM_EXIST_EVENT, rgDlgEditFamily::OnExistingEvent )
 END_EVENT_TABLE()
 
-dlgEditFamily::dlgEditFamily( wxWindow* parent ) : fbDlgEditFamily( parent )
+rgDlgEditFamily::rgDlgEditFamily( wxWindow* parent, idt famID ) 
+    : m_family(famID), m_child(0), m_editbutton(EDBUT_Husb), fbRgEditFamily( parent )
 {
-    m_child = 0;
-    m_family.Clear();
-
     m_listEvent->InsertColumn( EC_Number, _("Number") );
     m_listEvent->InsertColumn( EC_Title, _("Title") );
     m_listEvent->InsertColumn( EC_Date, _("Date") );
     m_listEvent->InsertColumn( EC_Place, _("Place") );
 }
 
-bool dlgEditFamily::TransferDataToWindow()
+bool rgDlgEditFamily::TransferDataToWindow()
 {
     wxASSERT( m_family.f_id != 0 );
-    m_family.Read();
     if( m_child > 0 ) {
         recFamilyIndividual fi;
         fi.Clear();
@@ -119,7 +138,7 @@ bool dlgEditFamily::TransferDataToWindow()
     return true;
 }
 
-bool dlgEditFamily::TransferDataFromWindow()
+bool rgDlgEditFamily::TransferDataFromWindow()
 {
     m_family.Save();
     recIndividual ind(m_family.f_husb_id);
@@ -147,19 +166,19 @@ bool dlgEditFamily::TransferDataFromWindow()
     return true;
 }
 
-void dlgEditFamily::OnHusbButton( wxCommandEvent& event )
+void rgDlgEditFamily::OnHusbButton( wxCommandEvent& event )
 {
     m_editbutton = EDBUT_Husb;
     EditSpouseMenu( m_family.f_husb_id );
 }
 
-void dlgEditFamily::OnWifeButton( wxCommandEvent& event )
+void rgDlgEditFamily::OnWifeButton( wxCommandEvent& event )
 {
     m_editbutton = EDBUT_Wife;
     EditSpouseMenu( m_family.f_wife_id );
 }
 
-void dlgEditFamily::EditSpouseMenu( idt indID )
+void rgDlgEditFamily::EditSpouseMenu( idt indID )
 {
     wxMenu* menu = new wxMenu;
 
@@ -180,7 +199,7 @@ void dlgEditFamily::EditSpouseMenu( idt indID )
     delete menu;
 }
 
-void dlgEditFamily::OnEditID( wxCommandEvent& event )
+void rgDlgEditFamily::OnEditID( wxCommandEvent& event )
 {
     idt indID;
     Sex sex;
@@ -208,7 +227,7 @@ void dlgEditFamily::OnEditID( wxCommandEvent& event )
     m_staticWifeName->SetLabel( recIndividual::GetFullName( m_family.f_wife_id ) );
 }
 
-void dlgEditFamily::OnRemoveID( wxCommandEvent& event )
+void rgDlgEditFamily::OnRemoveID( wxCommandEvent& event )
 {
     idt indID;
 
@@ -233,7 +252,7 @@ void dlgEditFamily::OnRemoveID( wxCommandEvent& event )
     recIndividual::CreateMissingFamilies();
 }
 
-void dlgEditFamily::OnDeleteID( wxCommandEvent& event )
+void rgDlgEditFamily::OnDeleteID( wxCommandEvent& event )
 {
     if( m_editbutton == EDBUT_Husb ) {
         if( tfpDeleteIndividual( m_family.f_husb_id ) ) {
@@ -248,7 +267,7 @@ void dlgEditFamily::OnDeleteID( wxCommandEvent& event )
     }
 }
 
-void dlgEditFamily::OnAddExistID( wxCommandEvent& event )
+void rgDlgEditFamily::OnAddExistID( wxCommandEvent& event )
 {
     if( m_editbutton == EDBUT_Husb ) {
        tfpAddExistSpouse( m_family.f_wife_id, SEX_Male );
@@ -260,7 +279,7 @@ void dlgEditFamily::OnAddExistID( wxCommandEvent& event )
     m_staticWifeName->SetLabel( recIndividual::GetFullName( m_family.f_wife_id ) );
 }
 
-void dlgEditFamily::OnChildAddButton( wxCommandEvent& event )
+void rgDlgEditFamily::OnChildAddButton( wxCommandEvent& event )
 {
     wxMenu* menu = new wxMenu;
 
@@ -274,7 +293,7 @@ void dlgEditFamily::OnChildAddButton( wxCommandEvent& event )
     delete menu;
 }
 
-void dlgEditFamily::OnAddChild( wxCommandEvent& event )
+void rgDlgEditFamily::OnAddChild( wxCommandEvent& event )
 {
     idt ret = 0;
 
@@ -305,7 +324,7 @@ void dlgEditFamily::OnAddChild( wxCommandEvent& event )
     }
 }
 
-void dlgEditFamily::OnChildEditButton( wxCommandEvent& event )
+void rgDlgEditFamily::OnChildEditButton( wxCommandEvent& event )
 {
     int item = m_listChild->GetSelection();
     if( item == wxNOT_FOUND ) {
@@ -317,7 +336,7 @@ void dlgEditFamily::OnChildEditButton( wxCommandEvent& event )
     m_listChild->SetString( item, recIndividual::GetFullName( indID ) );
 }
 
-void dlgEditFamily::OnChildDeleteButton( wxCommandEvent& event )
+void rgDlgEditFamily::OnChildDeleteButton( wxCommandEvent& event )
 {
     int item = m_listChild->GetSelection();
     if( item == wxNOT_FOUND ) {
@@ -329,7 +348,7 @@ void dlgEditFamily::OnChildDeleteButton( wxCommandEvent& event )
     m_listChild->Delete( item );
 }
 
-void dlgEditFamily::OnChildUpButton( wxCommandEvent& event )
+void rgDlgEditFamily::OnChildUpButton( wxCommandEvent& event )
 {
     int item = m_listChild->GetSelection();
     if( item == wxNOT_FOUND || item == 0 ) {
@@ -347,7 +366,7 @@ void dlgEditFamily::OnChildUpButton( wxCommandEvent& event )
     m_listChild->SetSelection( item - 1 );
 }
 
-void dlgEditFamily::OnChildDownButton( wxCommandEvent& event )
+void rgDlgEditFamily::OnChildDownButton( wxCommandEvent& event )
 {
     int item = m_listChild->GetSelection();
     if( item == wxNOT_FOUND || item == m_listChild->GetCount() - 1 ) {
@@ -366,7 +385,7 @@ void dlgEditFamily::OnChildDownButton( wxCommandEvent& event )
 }
 
 
-void dlgEditFamily::OnEventAddButton( wxCommandEvent& event )
+void rgDlgEditFamily::OnEventAddButton( wxCommandEvent& event )
 {
     wxMenu* menu = new wxMenu;
     menu->Append( tfpID_DLGEDFAM_NEW_EVENT, _("&New Event") );
@@ -375,7 +394,7 @@ void dlgEditFamily::OnEventAddButton( wxCommandEvent& event )
     delete menu;
 }
 
-void dlgEditFamily::OnNewEvent( wxCommandEvent& event )
+void rgDlgEditFamily::OnNewEvent( wxCommandEvent& event )
 {
     idt eveID; 
     if( m_family.f_husb_id == 0 ) {
@@ -396,80 +415,15 @@ void dlgEditFamily::OnNewEvent( wxCommandEvent& event )
         m_listEvent->SetItem( row, EC_Date, recEvent::GetDateStr( eveID ) );
         m_listEvent->SetItem( row, EC_Place, recEvent::GetAddressStr( eveID ) );
     }
-#if 0
-    const wxString savepoint = recDb::GetSavepointStr();
-    recDb::Savepoint( savepoint );
-
-    idt typeID = rgSelectEventType( rgSELSTYLE_Create, NULL, recET_FILTER_GrpFamily );
-    if( typeID == 0 ) {
-        recDb::Rollback( savepoint );
-        return;
-    }
-
-    recEvent eve(0);
-    eve.f_type_id = typeID;
-    eve.SetAutoTitle( 
-        recIndividual::GetFullName( m_family.f_husb_id ),
-        recIndividual::GetFullName( m_family.f_wife_id )
-    );
-    eve.Save();
-
-    recIndividualEvent ie(0);
-    ie.FSetEventID( eve.GetID() );
-    if( m_family.f_husb_id ) {
-        ie.FSetIndID( m_family.f_husb_id );
-        idt roleID = recEventTypeRole::Select( typeID, recEventTypeRole::SF_Prime1 );
-        if( roleID == 0 ) {
-            recDb::Rollback( savepoint );
-            return;
-        }
-        ie.FSetRoleID( roleID );
-        ie.FSetIndSeq( recIndividual::GetMaxEventSeqNumber( m_family.f_husb_id ) );
-        ie.Save();
-    }
-    if( m_family.f_wife_id ) {
-        ie.FSetID( 0 );
-        ie.FSetIndID( m_family.f_wife_id );
-        idt roleID = recEventTypeRole::Select( typeID, recEventTypeRole::SF_Prime2 );
-        if( roleID == 0 ) {
-            recDb::Rollback( savepoint );
-            return;
-        }
-        ie.FSetRoleID( roleID );
-        ie.FSetIndSeq( recIndividual::GetMaxEventSeqNumber( m_family.f_wife_id ) );
-        ie.Save();
-    }
-    recFamilyEvent fe(0);
-    fe.FSetFamID( m_family.FGetID() );
-    fe.FSetEventID( eve.FGetID() );
-    fe.FSetFamSeq( m_family.GetMaxEventSeqNumber() );
-    fe.Save();
-
-    dlgEditIndEvent* dialog = new dlgEditIndEvent( this, eve.GetID() );
-
-    if( dialog->ShowModal() == wxID_OK ) {
-        recDb::ReleaseSavepoint( savepoint );
-        eve.Read();
-        int row = m_fes.size();
-        m_listEvent->InsertItem( row, recEvent::GetIdStr( eve.GetID() ) );
-        m_listEvent->SetItem( row, EC_Title, recEvent::GetTitle( eve.GetID() ) );
-        m_listEvent->SetItem( row, EC_Date, recEvent::GetDateStr( eve.GetID() ) );
-        m_listEvent->SetItem( row, EC_Place, recEvent::GetAddressStr( eve.GetID() ) );
-        m_fes.push_back( fe );
-    } else {
-        recDb::Rollback( savepoint );
-    }
-    dialog->Destroy();
-#endif
 }
 
-void dlgEditFamily::OnExistingEvent( wxCommandEvent& event )
+void rgDlgEditFamily::OnExistingEvent( wxCommandEvent& event )
 {
     // TODO:
     wxMessageBox( _("Not yet implimented"), _("OnExistingEvent") );
 }
 
-void dlgEditFamily::OnEventEditButton( wxCommandEvent& event )
+void rgDlgEditFamily::OnEventEditButton( wxCommandEvent& event )
 {
     long row = m_listEvent->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
@@ -479,7 +433,7 @@ void dlgEditFamily::OnEventEditButton( wxCommandEvent& event )
     rgEditEvent( m_fes[row].FGetEventID() );
 }
 
-void dlgEditFamily::OnEventDeleteButton( wxCommandEvent& event )
+void rgDlgEditFamily::OnEventDeleteButton( wxCommandEvent& event )
 {
     long row = m_listEvent->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row >= 0 ) {
@@ -498,7 +452,7 @@ void dlgEditFamily::OnEventDeleteButton( wxCommandEvent& event )
     }
 }
 
-void dlgEditFamily::OnEventUpButton( wxCommandEvent& event )
+void rgDlgEditFamily::OnEventUpButton( wxCommandEvent& event )
 {
     long row = m_listEvent->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
@@ -523,7 +477,7 @@ void dlgEditFamily::OnEventUpButton( wxCommandEvent& event )
     }
 }
 
-void dlgEditFamily::OnEventDownButton( wxCommandEvent& event )
+void rgDlgEditFamily::OnEventDownButton( wxCommandEvent& event )
 {
     long row = m_listEvent->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
@@ -550,4 +504,4 @@ void dlgEditFamily::OnEventDownButton( wxCommandEvent& event )
 
 
 
-// End of dlgEdFamily.cpp
+// End of src/rg/rgEdFamily.cpp

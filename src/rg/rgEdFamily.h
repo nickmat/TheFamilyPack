@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        dlgEdFamily.h
+ * Name:        src/rg/rgEdFamily.h
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Edit database Family entity dialog header.
  * Author:      Nick Matthews
@@ -27,14 +27,18 @@
 
 */
 
-#ifndef  DLGEDITFAMILY_H
-#define  DLGEDITFAMILY_H
+#ifndef  RGEDITFAMILY_H
+#define  RGEDITFAMILY_H
 
 #include <rec/recIndividual.h>
 
-#include "fbDlg.h"
+#include "fbRgDialog.h"
 
-class dlgEditFamily : public fbDlgEditFamily
+//============================================================================
+//-------------------------[ rgDlgEditFamily ]--------------------------------
+//============================================================================
+
+class rgDlgEditFamily : public fbRgEditFamily
 {
     DECLARE_CLASS( dlgEditFamily )
     DECLARE_EVENT_TABLE()
@@ -59,10 +63,9 @@ protected:
         EC_Number, EC_Title, EC_Date, EC_Place, EC_MAX
     };
 public:
-    dlgEditFamily( wxWindow* parent );
+    rgDlgEditFamily( wxWindow* parent, idt famID );
 
-    void SetFamilyID( idt famID ) { m_family.f_id = famID; }
-    void SetFamily( const recFamily& family ) { m_family = family; }
+//    void SetFamily( const recFamily& family ) { m_family = family; }
     void SetChildID( idt childID ) { m_child = childID; }
 
 private:
@@ -99,7 +102,6 @@ private:
     recFamily         m_family;
     recFamIndVec      m_childlinks;
     recFamilyEventVec m_fes;
-
 };
 
-#endif // DLGEDITFAMILY_H
+#endif // RGEDITFAMILY_H

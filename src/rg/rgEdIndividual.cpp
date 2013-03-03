@@ -45,9 +45,9 @@
 bool rgEditIndividual( wxWindow* parent, idt indID  )
 {
     const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
     bool ret = false;
     rgDlgEditIndividual* dialog = new rgDlgEditIndividual( parent, indID );
-    recDb::Savepoint( savepoint );
 
     if( dialog->ShowModal() == wxID_OK ) {
         recDb::ReleaseSavepoint( savepoint );
