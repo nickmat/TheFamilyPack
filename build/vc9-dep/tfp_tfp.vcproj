@@ -263,10 +263,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\dlg\dlgEdFamily.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\dlg\dlgNote.cpp"
 				>
 			</File>
@@ -289,10 +285,6 @@
 						UsePrecompiledHeader="1"
 					/>
 				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\src\dlg\fbDlg.cpp"
-				>
 			</File>
 			<File
 				RelativePath="..\..\src\tfpApp.cpp"
@@ -365,15 +357,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\dlg\dlgEdFamily.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\dlg\dlgNote.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\dlg\fbDlg.h"
 				>
 			</File>
 			<File

@@ -61,9 +61,7 @@ TFP_CXXFLAGS = /MD$(VAR_23) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) /D__WXMSW__
 	$(CPPFLAGS) $(CXXFLAGS)
 TFP_OBJECTS =  \
 	tfp_dlgEd.obj \
-	tfp_dlgEdFamily.obj \
 	tfp_dlgNote.obj \
-	tfp_fbDlg.obj \
 	tfp_tfpApp.obj \
 	tfp_tfpFrame.obj \
 	tfp_tfpMemory.obj \
@@ -192,6 +190,7 @@ RECGUI_OBJECTS =  \
 	recgui_rgEdEvent.obj \
 	recgui_rgEdEventType.obj \
 	recgui_rgEdEvidEvent.obj \
+	recgui_rgEdFamily.obj \
 	recgui_rgEdIndividual.obj \
 	recgui_rgEdName.obj \
 	recgui_rgEdNamePart.obj \
@@ -416,14 +415,8 @@ recgui$(WXLIBPOSTFIX).lib: $(RECGUI_OBJECTS)
 tfp_dlgEd.obj: .\..\..\src\dlg\dlgEd.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\dlgEd.cpp
 
-tfp_dlgEdFamily.obj: .\..\..\src\dlg\dlgEdFamily.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\dlgEdFamily.cpp
-
 tfp_dlgNote.obj: .\..\..\src\dlg\dlgNote.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\dlgNote.cpp
-
-tfp_fbDlg.obj: .\..\..\src\dlg\fbDlg.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\fbDlg.cpp
 
 tfp_tfpApp.obj: .\..\..\src\tfpApp.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfpApp.cpp
@@ -619,6 +612,9 @@ recgui_rgEdEventType.obj: .\..\..\src\rg\rgEdEventType.cpp
 
 recgui_rgEdEvidEvent.obj: .\..\..\src\rg\rgEdEvidEvent.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdEvidEvent.cpp
+
+recgui_rgEdFamily.obj: .\..\..\src\rg\rgEdFamily.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdFamily.cpp
 
 recgui_rgEdIndividual.obj: .\..\..\src\rg\rgEdIndividual.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdIndividual.cpp

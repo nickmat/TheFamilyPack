@@ -69,9 +69,7 @@ TFP_CXXFLAGS = $(VAR) $(VAR_4) -I../../include -I../../src `$(WX_CONFIG) \
 	--cxxflags $(WX_CONFIG_FLAGS)` $(CPPFLAGS) $(CXXFLAGS)
 TFP_OBJECTS =  \
 	tfp_dlgEd.o \
-	tfp_dlgEdFamily.o \
 	tfp_dlgNote.o \
-	tfp_fbDlg.o \
 	tfp_tfpApp.o \
 	tfp_tfpFrame.o \
 	tfp_tfpMemory.o \
@@ -147,6 +145,7 @@ RECGUI_OBJECTS =  \
 	recgui_rgEdEvent.o \
 	recgui_rgEdEventType.o \
 	recgui_rgEdEvidEvent.o \
+	recgui_rgEdFamily.o \
 	recgui_rgEdIndividual.o \
 	recgui_rgEdName.o \
 	recgui_rgEdNamePart.o \
@@ -243,13 +242,7 @@ librecgui.a: $(RECGUI_OBJECTS)
 tfp_dlgEd.o: ./../../src/dlg/dlgEd.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
-tfp_dlgEdFamily.o: ./../../src/dlg/dlgEdFamily.cpp
-	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
-
 tfp_dlgNote.o: ./../../src/dlg/dlgNote.cpp
-	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
-
-tfp_fbDlg.o: ./../../src/dlg/fbDlg.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
 tfp_tfpApp.o: ./../../src/tfpApp.cpp
@@ -421,6 +414,9 @@ recgui_rgEdEventType.o: ./../../src/rg/rgEdEventType.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgEdEvidEvent.o: ./../../src/rg/rgEdEvidEvent.cpp
+	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
+
+recgui_rgEdFamily.o: ./../../src/rg/rgEdFamily.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgEdIndividual.o: ./../../src/rg/rgEdIndividual.cpp

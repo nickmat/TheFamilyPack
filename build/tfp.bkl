@@ -84,9 +84,7 @@
     <runtime-libs>dynamic</runtime-libs>
 
     <sources>$(LOCAL_SRC)/dlg/dlgEd.cpp</sources>
-    <sources>$(LOCAL_SRC)/dlg/dlgEdFamily.cpp</sources>
     <sources>$(LOCAL_SRC)/dlg/dlgNote.cpp</sources>
-    <sources>$(LOCAL_SRC)/dlg/fbDlg.cpp</sources>
     <sources>$(LOCAL_SRC)/tfpApp.cpp</sources>
     <sources>$(LOCAL_SRC)/tfpFrame.cpp</sources>
     <sources>$(LOCAL_SRC)/tfpMemory.cpp</sources>
@@ -104,9 +102,7 @@
     <sources>$(LOCAL_SRC)/webviewfshandler.cpp</sources>
 
     <headers>$(LOCAL_SRC)/dlg/dlgEd.h</headers>
-    <headers>$(LOCAL_SRC)/dlg/dlgEdFamily.h</headers>
     <headers>$(LOCAL_SRC)/dlg/dlgNote.h</headers>
-    <headers>$(LOCAL_SRC)/dlg/fbDlg.h</headers>
     <headers>$(LOCAL_SRC)/tfpApp.h</headers>
     <headers>$(LOCAL_SRC)/tfpFrame.h</headers>
     <headers>$(LOCAL_SRC)/tfpMemory.h</headers>

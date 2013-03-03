@@ -236,6 +236,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rg\rgEdFamily.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rg\rgEdIndividual.cpp"
 				>
 			</File>
@@ -343,6 +347,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\rg\rgEdEvidEvent.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgEdFamily.h"
 				>
 			</File>
 			<File
