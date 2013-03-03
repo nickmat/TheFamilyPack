@@ -107,6 +107,9 @@ extern bool rgEditEvidEvent( rgDlgEditReference* parent, idt eveID );
 extern idt rgCreateEvidEvent( rgDlgEditReference* parent );
 extern idt rgCreateEvidPerEvent( rgDlgEditReference* parent, const wxString& role );
 
+// See src/rg/rgEdIndividual.cpp
+extern bool rgEditIndividual( wxWindow* parent, idt indID );
+
 // See src/rg/rgEdName.cpp
 extern bool rgEditName( idt nameID );
 

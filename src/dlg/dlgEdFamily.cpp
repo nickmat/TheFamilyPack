@@ -201,7 +201,7 @@ void dlgEditFamily::OnEditID( wxCommandEvent& event )
             m_family.f_wife_id = indID;
         }
     } else {
-        tfpEditIndividual( indID );
+        rgEditIndividual( this, indID );
     }
 
     m_staticHusbName->SetLabel( recIndividual::GetFullName( m_family.f_husb_id ) );
@@ -313,7 +313,7 @@ void dlgEditFamily::OnChildEditButton( wxCommandEvent& event )
         return;
     }
     idt indID = m_childlinks[item].fGetIndID();
-    tfpEditIndividual( indID );
+    rgEditIndividual( this, indID );
     m_listChild->SetString( item, recIndividual::GetFullName( indID ) );
 }
 

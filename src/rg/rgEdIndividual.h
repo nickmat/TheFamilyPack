@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        dlgEdIndividual.h
+ * Name:        src/rg/rgEdIndividual.h
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Edit database Individual entity dialog header.
  * Author:      Nick Matthews
@@ -27,20 +27,20 @@
 
 */
 
-#ifndef DLGEDINDIVIDUAL_H
-#define DLGEDINDIVIDUAL_H
+#ifndef RGEDINDIVIDUAL_H
+#define RGEDINDIVIDUAL_H
 
 #include <rec/recIndividual.h>
 #include <rec/recPersona.h>
 #include <rec/recEvent.h>
 
-#include "fbDlg.h"
+#include "fbRgDialog.h"
 
 //============================================================================
 //                 dlgEditIndPersona dialog
 //============================================================================
 
-class dlgEditIndPersona : public fbDlgEditIndPersona
+class rgDlgEditIndividual : public fbRgEditIndividual
 {
     DECLARE_EVENT_TABLE()
     enum {
@@ -62,7 +62,7 @@ class dlgEditIndPersona : public fbDlgEditIndPersona
         RC_Family, RC_Ind, RC_Relation, RC_MAX
     };
 public:
-    dlgEditIndPersona( wxWindow* parent, idt indID );
+    rgDlgEditIndividual( wxWindow* parent, idt indID );
 
     recPersona* GetPersona() { return &m_persona; }
 
@@ -102,4 +102,4 @@ private:
     long               m_currentRow;
 };
 
-#endif // DLGEDINDIVIDUAL_H
+#endif // RGEDINDIVIDUAL_H

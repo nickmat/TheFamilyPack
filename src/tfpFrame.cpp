@@ -456,7 +456,7 @@ void TfpFrame::OnEditContext( wxCommandEvent& event )
         switch( event.GetId() )
         {
         case tfpID_EDIT_INDIVIDUAL_LEFT:
-            ret = tfpEditIndividual( m_EditIndLeft );
+            ret = rgEditIndividual( this, m_EditIndLeft );
             break;
         case tfpID_EDIT_NEW_MOTHER_LEFT:
             ret = tfpAddNewParent( m_EditIndLeft, SEX_Female );
@@ -481,7 +481,7 @@ void TfpFrame::OnEditContext( wxCommandEvent& event )
             ret = tfpDeleteIndividual( m_EditIndLeft );
             break;
         case tfpID_EDIT_INDIVIDUAL_RIGHT:
-            ret = tfpEditIndividual( m_EditIndRight );
+            ret = rgEditIndividual( this, m_EditIndRight );
             break;
         case tfpID_EDIT_NEW_MOTHER_RIGHT:
             ret = tfpAddNewParent( m_EditIndRight, SEX_Female );
@@ -919,7 +919,7 @@ void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
             ret = rgEditEvent( id );
             break;
         case 'I':
-            ret = tfpEditIndividual( id );
+            ret = rgEditIndividual( this, id );
             break;
         }
         if( ret == true ) {
@@ -1011,7 +1011,7 @@ void TfpFrame::OnHtmCtxMenu( wxCommandEvent& event )
             if( id ) ret = true;
             break;
         case tfpID_HCTXMENU_EDIT_INDIVIDUAL:
-            ret = tfpEditIndividual( id );
+            ret = rgEditIndividual( this, id );
             break;
         case tfpID_HCTXMENU_EDIT_NEW_MOTHER:
             ret = tfpAddNewParent( id, SEX_Female );
@@ -1200,7 +1200,7 @@ void TfpFrame::DoEdit( const wxString& href )
         } else if( href.StartsWith( "IF" ) || href.StartsWith( "IM" ) ) {
             ret = tfpAddNewParent( href.Mid(1) );
         } else if( href.StartsWith( "I" ) ) {
-            ret = tfpEditIndividual( recGetID( href.Mid(1) ) );
+            ret = rgEditIndividual( this, recGetID( href.Mid(1) ) );
         } else if( href.StartsWith( "Re" ) ) {
             ret = rgEditResearcher( recGetID( href.Mid(2) ) );
         } else if( href.StartsWith( "R" ) ) {

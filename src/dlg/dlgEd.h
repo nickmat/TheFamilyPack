@@ -40,7 +40,6 @@ extern bool tfpAddNewParent( idt indID, Sex sex );
 extern bool tfpAddExistParent( idt indID, Sex sex );
 extern bool tfpAddNewParent( const wxString& ref );
 extern bool tfpAddNewSpouse( const wxString& ref );
-extern bool tfpEditIndividual( idt indID );
 extern bool tfpDeleteIndividual( idt indID );
 
 extern bool tfpEditFamily( idt famID );

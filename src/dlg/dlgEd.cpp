@@ -43,7 +43,6 @@
 
 #include "dlgEd.h"
 #include "dlgEdFamily.h"
-#include "dlgEdIndividual.h"
 #include "dlg/dlgNote.h"
 
 
@@ -257,23 +256,6 @@ bool tfpAddNewSpouse( const wxString& ref )
         recDb::Rollback( savepoint );
         return false;
     }
-}
-
-bool tfpEditIndividual( idt indID  )
-{
-    const wxString savepoint = "EdInd";
-    bool ret = false;
-    dlgEditIndPersona* dialog = new dlgEditIndPersona( NULL, indID );
-    recDb::Savepoint( savepoint );
-
-    if( dialog->ShowModal() == wxID_OK ) {
-        recDb::ReleaseSavepoint( savepoint );
-        ret = true;
-    } else {
-        recDb::Rollback( savepoint );
-    }
-    dialog->Destroy();
-    return ret;
 }
 
 bool tfpDeleteIndividual( idt indID )

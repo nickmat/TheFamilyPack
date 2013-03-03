@@ -115,6 +115,7 @@
     <sources>$(LOCAL_SRC)/rg/rgEdEvent.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdEventType.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdEvidEvent.cpp</sources>
+    <sources>$(LOCAL_SRC)/rg/rgEdIndividual.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdName.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdNamePart.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdPerIndEvent.cpp</sources>
@@ -142,6 +143,7 @@
     <headers>$(LOCAL_SRC)/rg/rgEdEvent.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdEventType.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdEvidEvent.h</headers>
+    <headers>$(LOCAL_SRC)/rg/rgEdIndividual.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdName.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdNamePart.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdPerIndEvent.h</headers>

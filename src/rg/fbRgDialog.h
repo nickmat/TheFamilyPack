@@ -245,6 +245,74 @@ class fbRgEditEventType : public wxDialog
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/// Class fbRgEditIndividual
+///////////////////////////////////////////////////////////////////////////////
+class fbRgEditIndividual : public wxDialog 
+{
+	private:
+	
+	protected:
+		wxStaticText* m_staticText1;
+		wxStaticText* m_staticPerName;
+		wxNotebook* m_notebook;
+		wxPanel* m_panel1;
+		wxStaticText* m_staticTextEpitaph;
+		wxStaticText* m_staticText11;
+		wxChoice* m_choiceSex;
+		wxStaticText* m_staticText12;
+		wxTextCtrl* m_textCtrlNote;
+		wxPanel* m_panel2;
+		wxListCtrl* m_listName;
+		wxButton* m_buttonNameAdd;
+		wxButton* m_buttonNameEdit;
+		wxButton* m_buttonNameDel;
+		wxButton* m_buttonNameUp;
+		wxButton* m_buttonNameDn;
+		wxPanel* m_panel21;
+		wxListCtrl* m_listEvent;
+		wxButton* m_buttonEventAdd;
+		wxButton* m_buttonEventEdit;
+		wxButton* m_buttonEventDel;
+		wxButton* m_buttonEventUp;
+		wxButton* m_buttonEventDn;
+		wxPanel* m_panel4;
+		wxListCtrl* m_listRel;
+		wxButton* m_buttonRelAdd;
+		wxButton* m_buttonRelEdit;
+		wxButton* m_buttonRelDel;
+		wxButton* m_buttonRelUp;
+		wxButton* m_buttonRelDn;
+		wxStaticLine* m_staticline1;
+		wxStaticText* m_staticIndID;
+		wxButton* m_buttonSave1;
+		wxButton* m_buttonCancel1;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnNameAddButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnNameEditButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnNameDeleteButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnNameUpButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnNameDownButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEventAddButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEventEditButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEventDeleteButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEventUpButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEventDownButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnRelAddButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnRelEditButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnRelDeleteButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnRelUpButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnRelDownButton( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		fbRgEditIndividual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Individual"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
+		~fbRgEditIndividual();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
 /// Class fbRgEditName
 ///////////////////////////////////////////////////////////////////////////////
 class fbRgEditName : public wxDialog 

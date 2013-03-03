@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        dlgEdIndividual.cpp
+ * Name:        src/rg/rgEdIndividual.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Edit database Individual entity dialog.
  * Author:      Nick Matthews
@@ -40,23 +40,38 @@
 #include <rec/recLink.h>
 #include <rg/rgDialogs.h>
 
-#include "dlgEdIndividual.h"
+#include "rgEdIndividual.h"
 
-#include "dlgEd.h"
+bool rgEditIndividual( wxWindow* parent, idt indID  )
+{
+    const wxString savepoint = recDb::GetSavepointStr();
+    bool ret = false;
+    rgDlgEditIndividual* dialog = new rgDlgEditIndividual( parent, indID );
+    recDb::Savepoint( savepoint );
+
+    if( dialog->ShowModal() == wxID_OK ) {
+        recDb::ReleaseSavepoint( savepoint );
+        ret = true;
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+    return ret;
+}
 
 //============================================================================
-//                 dlgEditIndPersona dialog
+//                 rgDlgEditIndividual dialog
 //============================================================================
 
-BEGIN_EVENT_TABLE( dlgEditIndPersona, wxDialog )
-    EVT_MENU( ID_EDIND_NEW_EVENT,   dlgEditIndPersona::OnNewEvent )
-    EVT_MENU( ID_EDIND_EXIST_EVENT, dlgEditIndPersona::OnExistingEvent )
-    EVT_MENU( ID_EDIND_UNLINK_EVENT, dlgEditIndPersona::OnUnlinkEvent )
-    EVT_MENU( ID_EDIND_DELETE_EVENT, dlgEditIndPersona::OnDeleteEvent )
+BEGIN_EVENT_TABLE( rgDlgEditIndividual, wxDialog )
+    EVT_MENU( ID_EDIND_NEW_EVENT,   rgDlgEditIndividual::OnNewEvent )
+    EVT_MENU( ID_EDIND_EXIST_EVENT, rgDlgEditIndividual::OnExistingEvent )
+    EVT_MENU( ID_EDIND_UNLINK_EVENT, rgDlgEditIndividual::OnUnlinkEvent )
+    EVT_MENU( ID_EDIND_DELETE_EVENT, rgDlgEditIndividual::OnDeleteEvent )
 END_EVENT_TABLE()
 
-dlgEditIndPersona::dlgEditIndPersona( wxWindow* parent, idt indID )
-    : fbDlgEditIndPersona( parent ), m_individual(indID)
+rgDlgEditIndividual::rgDlgEditIndividual( wxWindow* parent, idt indID )
+    : fbRgEditIndividual( parent ), m_individual(indID)
 {
     m_persona.ReadID( m_individual.GetPersona() );
 
@@ -75,7 +90,7 @@ dlgEditIndPersona::dlgEditIndPersona( wxWindow* parent, idt indID )
     m_listRel->InsertColumn( RC_Relation, _("Relationship") ); // Text
 }
 
-bool dlgEditIndPersona::TransferDataToWindow()
+bool rgDlgEditIndividual::TransferDataToWindow()
 {
     if( m_individual.f_id == 0 ) {
         m_individual.Save();
@@ -90,7 +105,7 @@ bool dlgEditIndPersona::TransferDataToWindow()
     m_nameStr = m_persona.GetNameStr();
     m_staticPerName->SetLabel( m_nameStr );
     m_staticIndID->SetLabel( m_individual.GetIdStr() );
-    m_staticPerID->SetLabel( m_persona.GetIdStr() );
+//    m_staticPerID->SetLabel( m_persona.GetIdStr() );
 
     m_staticTextEpitaph->SetLabel( m_individual.f_epitaph );
     m_choiceSex->SetSelection( (int) m_persona.f_sex );
@@ -127,7 +142,7 @@ bool dlgEditIndPersona::TransferDataToWindow()
     return true;
 }
 
-bool dlgEditIndPersona::TransferDataFromWindow()
+bool rgDlgEditIndividual::TransferDataFromWindow()
 {
     m_persona.f_sex = (Sex) m_choiceSex->GetSelection();
     m_persona.f_note = m_textCtrlNote->GetValue();
@@ -150,7 +165,7 @@ bool dlgEditIndPersona::TransferDataFromWindow()
     return true;
 }
 
-void dlgEditIndPersona::OnNameAddButton( wxCommandEvent& event )
+void rgDlgEditIndividual::OnNameAddButton( wxCommandEvent& event )
 {
     idt nameID = rgCreateName( m_persona.FGetID() );
     if( nameID ) {
@@ -163,7 +178,7 @@ void dlgEditIndPersona::OnNameAddButton( wxCommandEvent& event )
     }
 }
 
-void dlgEditIndPersona::OnNameEditButton( wxCommandEvent& event )
+void rgDlgEditIndividual::OnNameEditButton( wxCommandEvent& event )
 {
     long row = m_listName->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
@@ -180,7 +195,7 @@ void dlgEditIndPersona::OnNameEditButton( wxCommandEvent& event )
     }
 }
 
-void dlgEditIndPersona::OnNameDeleteButton( wxCommandEvent& event )
+void rgDlgEditIndividual::OnNameDeleteButton( wxCommandEvent& event )
 {
     long row = m_listName->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row >= 0 ) {
@@ -199,7 +214,7 @@ void dlgEditIndPersona::OnNameDeleteButton( wxCommandEvent& event )
     }
 }
 
-void dlgEditIndPersona::OnNameUpButton( wxCommandEvent& event )
+void rgDlgEditIndividual::OnNameUpButton( wxCommandEvent& event )
 {
     long row = m_listName->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
@@ -223,7 +238,7 @@ void dlgEditIndPersona::OnNameUpButton( wxCommandEvent& event )
     }
 }
 
-void dlgEditIndPersona::OnNameDownButton( wxCommandEvent& event )
+void rgDlgEditIndividual::OnNameDownButton( wxCommandEvent& event )
 {
     long row = m_listName->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
@@ -247,7 +262,7 @@ void dlgEditIndPersona::OnNameDownButton( wxCommandEvent& event )
     }
 }
 
-void dlgEditIndPersona::OnEventAddButton( wxCommandEvent& event )
+void rgDlgEditIndividual::OnEventAddButton( wxCommandEvent& event )
 {
     wxMenu* menu = new wxMenu;
     menu->Append( ID_EDIND_NEW_EVENT, _("&New Event") );
@@ -256,7 +271,7 @@ void dlgEditIndPersona::OnEventAddButton( wxCommandEvent& event )
     delete menu;
 }
 
-void dlgEditIndPersona::OnNewEvent( wxCommandEvent& event )
+void rgDlgEditIndividual::OnNewEvent( wxCommandEvent& event )
 {
     idt eveID = rgCreateIndEvent( m_individual.FGetID() );
     if( eveID ) {
@@ -272,7 +287,7 @@ void dlgEditIndPersona::OnNewEvent( wxCommandEvent& event )
     }
 }
 
-void dlgEditIndPersona::OnExistingEvent( wxCommandEvent& event )
+void rgDlgEditIndividual::OnExistingEvent( wxCommandEvent& event )
 {
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
@@ -304,7 +319,7 @@ void dlgEditIndPersona::OnExistingEvent( wxCommandEvent& event )
     }
 }
 
-void dlgEditIndPersona::OnEventEditButton( wxCommandEvent& event )
+void rgDlgEditIndividual::OnEventEditButton( wxCommandEvent& event )
 {
     long row = m_listEvent->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
@@ -321,7 +336,7 @@ void dlgEditIndPersona::OnEventEditButton( wxCommandEvent& event )
     }
 }
 
-void dlgEditIndPersona::OnEventDeleteButton( wxCommandEvent& event )
+void rgDlgEditIndividual::OnEventDeleteButton( wxCommandEvent& event )
 {
     long row = m_listEvent->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row >= 0 ) {
@@ -336,14 +351,14 @@ void dlgEditIndPersona::OnEventDeleteButton( wxCommandEvent& event )
     }
 }
 
-void dlgEditIndPersona::OnUnlinkEvent( wxCommandEvent& event )
+void rgDlgEditIndividual::OnUnlinkEvent( wxCommandEvent& event )
 {
     m_listEvent->DeleteItem( m_currentRow );
     recIndividualEvent::Delete( m_ies[m_currentRow].FGetID() );
     m_ies.erase( m_ies.begin() + m_currentRow );
 }
 
-void dlgEditIndPersona::OnDeleteEvent( wxCommandEvent& event )
+void rgDlgEditIndividual::OnDeleteEvent( wxCommandEvent& event )
 {
     int ans = wxMessageBox( 
         _("Remove Event completely from database?"), _("Delete Event"),
@@ -357,7 +372,7 @@ void dlgEditIndPersona::OnDeleteEvent( wxCommandEvent& event )
     m_ies.erase( m_ies.begin() + m_currentRow );
 }
 
-void dlgEditIndPersona::OnEventUpButton( wxCommandEvent& event )
+void rgDlgEditIndividual::OnEventUpButton( wxCommandEvent& event )
 {
     long row = m_listEvent->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
@@ -388,7 +403,7 @@ void dlgEditIndPersona::OnEventUpButton( wxCommandEvent& event )
     }
 }
 
-void dlgEditIndPersona::OnEventDownButton( wxCommandEvent& event )
+void rgDlgEditIndividual::OnEventDownButton( wxCommandEvent& event )
 {
     long row = m_listEvent->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
@@ -419,35 +434,35 @@ void dlgEditIndPersona::OnEventDownButton( wxCommandEvent& event )
     }
 }
 
-void dlgEditIndPersona::OnRelAddButton( wxCommandEvent& event )
+void rgDlgEditIndividual::OnRelAddButton( wxCommandEvent& event )
 {
     // TODO:
     wxMessageBox( wxT("Not yet implimented"), wxT("OnRelAddButton") );
 }
 
-void dlgEditIndPersona::OnRelEditButton( wxCommandEvent& event )
+void rgDlgEditIndividual::OnRelEditButton( wxCommandEvent& event )
 {
     // TODO:
     wxMessageBox( wxT("Not yet implimented"), wxT("OnRelEditButton") );
 }
 
-void dlgEditIndPersona::OnRelDeleteButton( wxCommandEvent& event )
+void rgDlgEditIndividual::OnRelDeleteButton( wxCommandEvent& event )
 {
     // TODO:
     wxMessageBox( wxT("Not yet implimented"), wxT("OnRelDeleteButton") );
 }
 
-void dlgEditIndPersona::OnRelUpButton( wxCommandEvent& event )
+void rgDlgEditIndividual::OnRelUpButton( wxCommandEvent& event )
 {
     // TODO:
     wxMessageBox( wxT("Not yet implimented"), wxT("OnRelUpButton") );
 }
 
-void dlgEditIndPersona::OnRelDownButton( wxCommandEvent& event )
+void rgDlgEditIndividual::OnRelDownButton( wxCommandEvent& event )
 {
     // TODO:
     wxMessageBox( wxT("Not yet implimented"), wxT("OnRelDownButton") );
 }
 
 
-// End of dlgEdIndividual.cpp
+// End of src/rg/rgEdIndividual.cpp
