@@ -203,6 +203,7 @@ RECGUI_OBJECTS =  \
 	recgui_rgEdRole.obj \
 	recgui_rgEdSystem.obj \
 	recgui_rgEdUser.obj \
+	recgui_rgIndividual.obj \
 	recgui_rgSelect.obj \
 	recgui_rgSelIndEvent.obj \
 	recgui_rgTableCtrl.obj
@@ -651,6 +652,9 @@ recgui_rgEdSystem.obj: .\..\..\src\rg\rgEdSystem.cpp
 
 recgui_rgEdUser.obj: .\..\..\src\rg\rgEdUser.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdUser.cpp
+
+recgui_rgIndividual.obj: .\..\..\src\rg\rgIndividual.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgIndividual.cpp
 
 recgui_rgSelect.obj: .\..\..\src\rg\rgSelect.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgSelect.cpp

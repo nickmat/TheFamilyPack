@@ -213,7 +213,7 @@ void rgDlgEditFamily::OnEditID( wxCommandEvent& event )
     }
 
     if( indID == 0 ) {
-        indID = tfpAddNewIndividual( m_family.f_id, sex );
+        indID = rgAddNewIndividual( this, sex, "", m_family.f_id );
         if( m_editbutton == EDBUT_Husb ) {
             m_family.f_husb_id = indID;
         } else {

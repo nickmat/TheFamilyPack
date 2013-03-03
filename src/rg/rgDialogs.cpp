@@ -582,7 +582,7 @@ idt rgSelectIndividual( recIdVec indIDs, unsigned flag, unsigned* retbutton )
         if( dialog->ShowModal() == wxID_OK ) {
             if( dialog->GetCreatePressed() ) {
                 if( retbutton ) *retbutton = rgSELSTYLE_Create;
-                id = rgCreateIndividual( NULL );
+                id = rgAddNewIndividual( NULL, SEX_Unstated );
                 if( id ) {
                     cont = false;
                 } else {
@@ -628,7 +628,7 @@ idt rgSelectIndividual( unsigned flag, unsigned* retbutton, unsigned sexfilter )
         if( dialog->ShowModal() == wxID_OK ) {
             if( dialog->GetCreatePressed() ) {
                 if( retbutton ) *retbutton = rgSELSTYLE_Create;
-                id = rgCreateIndividual( NULL );
+                id = rgAddNewIndividual( NULL, SEX_Unstated );
                 if( id ) {
                     cont = false;
                 } else {

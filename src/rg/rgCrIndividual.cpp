@@ -43,6 +43,7 @@
 
 idt rgCreateIndividual( 
     wxWindow* parent,
+    idt famID,
     Sex sex,
     unsigned flags, 
     const wxString& name1,
@@ -52,7 +53,7 @@ idt rgCreateIndividual(
     recDb::Savepoint( savepoint );
     idt indID = 0;
 
-    rgDlgCreateIndividual* dialog = new rgDlgCreateIndividual( parent );
+    rgDlgCreateIndividual* dialog = new rgDlgCreateIndividual( parent, famID );
     dialog->SetSex( sex );
     if( flags & rgCRNAME_Sur_Given ) {
         dialog->SetSurname( name1 );
@@ -75,23 +76,27 @@ idt rgCreateIndividual(
 }
 
 //============================================================================
-//                 rgDlgCreateIndividual dialog
+//-------------------------[ rgDlgCreateIndividual ]--------------------------
 //============================================================================
 
-rgDlgCreateIndividual::rgDlgCreateIndividual( wxWindow* parent )
+rgDlgCreateIndividual::rgDlgCreateIndividual( wxWindow* parent, idt famID )
     : m_individual(0), m_persona(0), m_name(0), m_sex(SEX_Unstated),
     fbRgCreateIndividual( parent )
 {
+    wxASSERT( famID != 0 );
     m_persona.Save();
     m_name.FSetPerID( m_persona.FGetID() );
     m_name.Save();
     m_individual.FSetPerID( m_persona.FGetID() );
+    m_individual.FSetFamID( famID );
     m_individual.Save();
 }
 
 bool rgDlgCreateIndividual::TransferDataToWindow()
 {
-    m_staticIndID->SetLabel( m_individual.GetIdStr() );
+    wxString idStr = m_individual.GetIdStr() + ", " 
+        + recFamily::GetIdStr( m_individual.FGetFamID() );
+    m_staticIndID->SetLabel( idStr );
     m_choiceSex->SetSelection( m_sex );
     m_textSurname->SetValue( m_surname );
     m_textGiven->SetFocus();
@@ -107,7 +112,7 @@ bool rgDlgCreateIndividual::TransferDataFromWindow()
     int seq = m_name.AddNameParts( m_textGiven->GetValue(), NAME_TYPE_Given_name, 0 );
     m_name.AddNamePart( m_textSurname->GetValue(), NAME_TYPE_Surname, seq );
 
-    m_individual.Update();
+    m_individual.UpdateNames();
     m_individual.Save();
 
     return true;

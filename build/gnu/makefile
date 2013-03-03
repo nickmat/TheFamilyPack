@@ -158,6 +158,7 @@ RECGUI_OBJECTS =  \
 	recgui_rgEdRole.o \
 	recgui_rgEdSystem.o \
 	recgui_rgEdUser.o \
+	recgui_rgIndividual.o \
 	recgui_rgSelect.o \
 	recgui_rgSelIndEvent.o \
 	recgui_rgTableCtrl.o
@@ -453,6 +454,9 @@ recgui_rgEdSystem.o: ./../../src/rg/rgEdSystem.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgEdUser.o: ./../../src/rg/rgEdUser.cpp
+	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
+
+recgui_rgIndividual.o: ./../../src/rg/rgIndividual.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgSelect.o: ./../../src/rg/rgSelect.cpp

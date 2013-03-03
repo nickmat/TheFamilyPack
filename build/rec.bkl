@@ -128,6 +128,7 @@
     <sources>$(LOCAL_SRC)/rg/rgEdRole.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdSystem.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdUser.cpp</sources>
+    <sources>$(LOCAL_SRC)/rg/rgIndividual.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgSelect.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgSelIndEvent.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgTableCtrl.cpp</sources>

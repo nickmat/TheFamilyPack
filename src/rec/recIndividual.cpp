@@ -273,6 +273,7 @@ void recIndividual::UpdateDefaultFamily()
 {
     recFamilyVec families = GetFamilyList();
     if( families.size() == 0 ) {
+        wxASSERT( false ); // We shouldn't have this situation
         f_fam_id = 0; // [TODO: We should create a new family] <<================<<<<<< 
         return;
     }

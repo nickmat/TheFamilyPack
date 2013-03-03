@@ -407,7 +407,7 @@ void TfpFrame::OnAddNewIndMale( wxCommandEvent& event )
     idt id = 0;
     recDb::Begin();
     try {
-        id = tfpAddNewIndividual( 0, SEX_Male );
+        id = rgAddNewIndividual( this, SEX_Male );
         if( id != 0 ) {
             recDb::Commit();
             wxString str;
@@ -429,7 +429,7 @@ void TfpFrame::OnAddNewIndFemale( wxCommandEvent& event )
     idt id = 0;
     recDb::Begin();
     try {
-        id = tfpAddNewIndividual( 0, SEX_Female );
+        id = rgAddNewIndividual( this, SEX_Female );
         if( id != 0 ) {
             recDb::Commit();
             wxString str;
@@ -465,7 +465,7 @@ void TfpFrame::OnEditContext( wxCommandEvent& event )
             ret = tfpAddNewParent( m_EditIndLeft, SEX_Male );
             break;
         case tfpID_EDIT_NEW_SPOUSE_LEFT:
-            id = tfpAddNewIndividual( m_EditFamily, SEX_Female );
+            id = rgAddNewIndividual( this, SEX_Female, "", m_EditFamily );
             if( id ) ret = true;
             break;
         case tfpID_EDIT_EXIST_MOTHER_LEFT:
@@ -490,7 +490,7 @@ void TfpFrame::OnEditContext( wxCommandEvent& event )
             ret = tfpAddNewParent( m_EditIndRight, SEX_Male );
             break;
         case tfpID_EDIT_NEW_SPOUSE_RIGHT:
-            id = tfpAddNewIndividual( m_EditFamily, SEX_Male );
+            id = rgAddNewIndividual( this, SEX_Male, "", m_EditFamily );
             if( id ) ret = true;
             break;
         case tfpID_EDIT_EXIST_MOTHER_RIGHT:

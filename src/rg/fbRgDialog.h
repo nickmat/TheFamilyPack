@@ -65,6 +65,10 @@ class fbRgCreateIndividual : public wxDialog
 		wxStaticText* m_staticIndID;
 		wxButton* m_buttonSave1;
 		wxButton* m_buttonCancel1;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnIdle( wxIdleEvent& event ) { event.Skip(); }
+		
 	
 	public:
 		

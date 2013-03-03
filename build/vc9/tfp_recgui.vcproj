@@ -288,6 +288,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rg\rgIndividual.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rg\rgSelIndEvent.cpp"
 				>
 			</File>

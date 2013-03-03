@@ -34,16 +34,18 @@
 
 typedef std::vector< int >  intVec;
 
-extern idt tfpAddNewIndividual( idt famID, Sex sex, const wxString& surname = wxEmptyString );
-extern idt tfpAddNewChild( idt famID, Sex sex );
 extern bool tfpAddNewParent( idt indID, Sex sex );
 extern bool tfpAddExistParent( idt indID, Sex sex );
-extern bool tfpAddNewParent( const wxString& ref );
-extern bool tfpAddNewSpouse( const wxString& ref );
-extern bool tfpDeleteIndividual( idt indID );
 
 extern bool tfpAddExistSpouse( idt indID, Sex sex );
+
+extern idt tfpAddNewChild( idt famID, Sex sex );
 extern idt tfpAddExistChild( idt famID, Sex sex );
+
+extern bool tfpDeleteIndividual( idt indID );
+
+extern bool tfpAddNewParent( const wxString& ref );
+extern bool tfpAddNewSpouse( const wxString& ref );
 
 #endif // TFPEDIT_H
 

@@ -36,14 +36,20 @@
 
 #include "fbRgDialog.h"
 
+extern idt rgCreateIndividual( wxWindow* parent, idt famID,
+    Sex sex = SEX_Unknown,
+    unsigned flags = rgCRNAME_Default, 
+    const wxString& name1 = wxEmptyString,
+    const wxString& name2 = wxEmptyString );
+
 //============================================================================
-//                 dlgCreateIndividual dialog
+//-------------------------[ rgDlgCreateIndividual ]--------------------------
 //============================================================================
 
 class rgDlgCreateIndividual : public fbRgCreateIndividual
 {
 public:
-    rgDlgCreateIndividual( wxWindow* parent );
+    rgDlgCreateIndividual( wxWindow* parent, idt famID );
 
     idt GetIndID() const { return m_individual.FGetID(); }
 

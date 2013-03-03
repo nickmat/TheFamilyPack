@@ -126,10 +126,16 @@ fbRgCreateIndividual::fbRgCreateIndividual( wxWindow* parent, wxWindowID id, con
 	this->SetSizer( bSizer91 );
 	this->Layout();
 	bSizer91->Fit( this );
+	
+	// Connect Events
+	this->Connect( wxEVT_IDLE, wxIdleEventHandler( fbRgCreateIndividual::OnIdle ) );
 }
 
 fbRgCreateIndividual::~fbRgCreateIndividual()
 {
+	// Disconnect Events
+	this->Disconnect( wxEVT_IDLE, wxIdleEventHandler( fbRgCreateIndividual::OnIdle ) );
+	
 }
 
 fbRgCreateName::fbRgCreateName( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )

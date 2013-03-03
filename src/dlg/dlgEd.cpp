@@ -43,21 +43,6 @@
 
 #include "dlgEd.h"
 
-
-idt tfpAddNewIndividual( idt famID, Sex sex, const wxString& surname )
-{
-    idt indID = rgCreateIndividual( NULL, sex, rgCRNAME_Sur_Given, surname );
-    if( indID == 0 ) {
-        return 0;
-    }
-    recFamily family(famID);
-    idt* pIndID = ( sex == SEX_Female ) ? &family.f_wife_id : &family.f_husb_id;
-    wxASSERT( *pIndID == 0 );
-    *pIndID = indID;
-    family.Save();
-    return indID;
-}
-
 idt tfpAddNewChild( idt famID, Sex sex )
 {
     const wxString savepoint = recDb::GetSavepointStr();
@@ -74,7 +59,7 @@ idt tfpAddNewChild( idt famID, Sex sex )
         surname = recIndividual::GetSurname( parentID );
     }
 
-    idt indID = tfpAddNewIndividual( 0, sex, surname );
+    idt indID = rgAddNewIndividual( NULL, sex, surname );
     if( indID ) {
         recFamilyIndividual fi(0);
         fi.f_fam_id = famID;
@@ -149,7 +134,7 @@ bool tfpAddNewParent( idt indID, Sex sex )
         famID = fam.FGetID();
     }
 
-    idt newIndID = tfpAddNewIndividual( famID, sex, surname );
+    idt newIndID = rgAddNewIndividual( NULL, sex, surname, famID );
     if( newIndID ) {
         recFamilyIndividual fi(0);
         fi.fSetFamID( recIndividual::GetDefaultFamily( newIndID ) );
@@ -167,6 +152,22 @@ bool tfpAddNewParent( idt indID, Sex sex )
         recDb::Rollback( savepoint );
     }
     return ret;
+}
+
+bool tfpAddNewParent( const wxString& ref )
+{
+    const wxString savepoint = "AddIndPar";
+    recDb::Savepoint( savepoint );
+    idt indID;
+    ref.Mid( 1 ).ToLongLong( &indID );
+    Sex sex = ( ref.GetChar(0) == 'F' ) ? SEX_Female : SEX_Male;
+    if( tfpAddNewParent( indID, sex ) == true ) {
+        recDb::ReleaseSavepoint( savepoint );
+        return true;
+    } else {
+        recDb::Rollback( savepoint );
+        return false;
+    }
 }
 
 bool tfpAddExistParent( idt indID, Sex sex )
@@ -196,22 +197,6 @@ bool tfpAddExistParent( idt indID, Sex sex )
     fi.Save();
     recDb::ReleaseSavepoint( savepoint );
     return true;
-}
-
-bool tfpAddNewParent( const wxString& ref )
-{
-    const wxString savepoint = "AddIndPar";
-    recDb::Savepoint( savepoint );
-    idt indID;
-    ref.Mid( 1 ).ToLongLong( &indID );
-    Sex sex = ( ref.GetChar(0) == 'F' ) ? SEX_Female : SEX_Male;
-    if( tfpAddNewParent( indID, sex ) == true ) {
-        recDb::ReleaseSavepoint( savepoint );
-        return true;
-    } else {
-        recDb::Rollback( savepoint );
-        return false;
-    }
 }
 
 bool tfpAddNewSpouse( const wxString& ref )
@@ -247,7 +232,7 @@ bool tfpAddNewSpouse( const wxString& ref )
         wxASSERT( false ); // shouldn't be here
     }
 
-    if( tfpAddNewIndividual( famID, sex ) != 0 ) {
+    if( rgAddNewIndividual( NULL, sex, "", famID ) != 0 ) {
         recDb::ReleaseSavepoint( savepoint );
         return true;
     } else {
