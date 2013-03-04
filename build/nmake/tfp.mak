@@ -60,7 +60,6 @@ TFP_CXXFLAGS = /MD$(VAR_23) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) /D__WXMSW__
 	/I..\..\include /I..\..\src /GR /EHsc /Yu"wx/wxprec.h" /Fp"wxprec_tfp.pch" \
 	$(CPPFLAGS) $(CXXFLAGS)
 TFP_OBJECTS =  \
-	tfp_dlgEd.obj \
 	tfp_dlgNote.obj \
 	tfp_tfpApp.obj \
 	tfp_tfpFrame.obj \
@@ -412,9 +411,6 @@ recgui$(WXLIBPOSTFIX).lib: $(RECGUI_OBJECTS)
 	link /LIB /NOLOGO /OUT:$@ @<<
 	$(RECGUI_OBJECTS)
 <<
-
-tfp_dlgEd.obj: .\..\..\src\dlg\dlgEd.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\dlgEd.cpp
 
 tfp_dlgNote.obj: .\..\..\src\dlg\dlgNote.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\dlgNote.cpp

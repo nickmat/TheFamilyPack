@@ -259,10 +259,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\src\dlg\dlgEd.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\dlg\dlgNote.cpp"
 				>
 			</File>
@@ -352,10 +348,6 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
-			<File
-				RelativePath="..\..\src\dlg\dlgEd.h"
-				>
-			</File>
 			<File
 				RelativePath="..\..\src\dlg\dlgNote.h"
 				>

@@ -42,7 +42,6 @@
 #include <rg/rgDialogs.h>
 
 #include "rgEdFamily.h"
-#include "../dlg/dlgEd.h"
 
 bool rgEditFamily( wxWindow* parent, idt famID )
 {
@@ -255,12 +254,12 @@ void rgDlgEditFamily::OnRemoveID( wxCommandEvent& event )
 void rgDlgEditFamily::OnDeleteID( wxCommandEvent& event )
 {
     if( m_editbutton == EDBUT_Husb ) {
-        if( tfpDeleteIndividual( m_family.f_husb_id ) ) {
+        if( rgDeleteIndividual( this, m_family.f_husb_id ) ) {
             m_family.f_husb_id = 0;
             m_staticHusbName->SetLabel( wxEmptyString );
         }
     } else {
-        if( tfpDeleteIndividual( m_family.f_wife_id ) ) {
+        if( rgDeleteIndividual( this, m_family.f_wife_id ) ) {
             m_family.f_wife_id = 0;
             m_staticWifeName->SetLabel( wxEmptyString );
         }
@@ -270,9 +269,9 @@ void rgDlgEditFamily::OnDeleteID( wxCommandEvent& event )
 void rgDlgEditFamily::OnAddExistID( wxCommandEvent& event )
 {
     if( m_editbutton == EDBUT_Husb ) {
-       tfpAddExistSpouse( m_family.f_wife_id, SEX_Male );
+       rgAddExistSpouse( this, m_family.f_wife_id, SEX_Male );
     } else {
-       tfpAddExistSpouse( m_family.f_husb_id, SEX_Female );
+       rgAddExistSpouse( this, m_family.f_husb_id, SEX_Female );
     }
     m_family.Read();
     m_staticHusbName->SetLabel( recIndividual::GetFullName( m_family.f_husb_id ) );
@@ -295,32 +294,32 @@ void rgDlgEditFamily::OnChildAddButton( wxCommandEvent& event )
 
 void rgDlgEditFamily::OnAddChild( wxCommandEvent& event )
 {
-    idt ret = 0;
+    idt indID = 0;
 
     switch( event.GetId() )
     {
     case tfpID_DLGEDFAM_ADDNEWSON:
-        ret = tfpAddNewChild( m_family.f_id, SEX_Male );
+        indID = rgAddNewChild( this, m_family.f_id, SEX_Male );
         break;
     case tfpID_DLGEDFAM_ADDNEWDAUR:
-        ret = tfpAddNewChild( m_family.f_id, SEX_Female );
+        indID = rgAddNewChild( this, m_family.f_id, SEX_Female );
         break;
     case tfpID_DLGEDFAM_ADDEXISTSON:
-        ret = tfpAddExistChild( m_family.f_id, SEX_Male );
+        indID = rgAddExistChild( this, m_family.f_id, SEX_Male );
         break;
     case tfpID_DLGEDFAM_ADDEXISTDAUR:
-        ret = tfpAddExistChild( m_family.f_id, SEX_Female );
+        indID = rgAddExistChild( this, m_family.f_id, SEX_Female );
         break;
     }
 
-    if( ret != 0 ) {
+    if( indID != 0 ) {
         recFamilyIndividual fi;
         fi.Clear();
         fi.f_fam_id = m_family.f_id;
-        fi.f_ind_id = ret;
+        fi.f_ind_id = indID;
         fi.Find();
         m_childlinks.push_back( fi );
-        m_listChild->Append( recIndividual::GetFullName( ret ) );
+        m_listChild->Append( recIndividual::GetFullName( indID ) );
     }
 }
 

@@ -68,7 +68,6 @@ WX_CONFIG_FLAGS = $(WX_CONFIG_UNICODE_FLAG) $(WX_CONFIG_SHARED_FLAG) \
 TFP_CXXFLAGS = $(VAR) $(VAR_4) -I../../include -I../../src `$(WX_CONFIG) \
 	--cxxflags $(WX_CONFIG_FLAGS)` $(CPPFLAGS) $(CXXFLAGS)
 TFP_OBJECTS =  \
-	tfp_dlgEd.o \
 	tfp_dlgNote.o \
 	tfp_tfpApp.o \
 	tfp_tfpFrame.o \
@@ -239,9 +238,6 @@ librecgui.a: $(RECGUI_OBJECTS)
 	rm -f $@
 	$(AR) rcu $@ $(RECGUI_OBJECTS)
 	$(RANLIB) $@
-
-tfp_dlgEd.o: ./../../src/dlg/dlgEd.cpp
-	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
 tfp_dlgNote.o: ./../../src/dlg/dlgNote.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<

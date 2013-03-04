@@ -51,6 +51,7 @@ extern void recUninitialize();
 
 // Useful defines placed here for convenience.
 typedef std::vector< wxString >  StringVec;
+typedef std::vector< int >  IntVec;
 typedef std::vector< wxLongLong_t > IntegerVec;
 typedef std::vector< double > DoubleVec;
 typedef std::vector< bool > BoolVec;

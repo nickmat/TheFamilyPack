@@ -104,9 +104,9 @@ public:
     static void Update( idt indID );
     wxString GetFullName() { return f_given; }
 
-    static idt GetDefaultFamily( idt id ) {
-        if( id == 0 ) return 0;
-        return ExecuteID( "SELECT fam_id FROM Individual WHERE id="ID";", id );
+    static idt GetDefaultFamily( idt indID ) {
+        if( indID == 0 ) return 0;
+        return ExecuteID( "SELECT fam_id FROM Individual WHERE id="ID";", indID );
     }
     static idt GetPersona( idt indID ) {
         if( indID == 0 ) return 0;

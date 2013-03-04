@@ -75,14 +75,7 @@ extern idt rgSelectIndividual(
     recIdVec indIDs,
     unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL );
 extern idt rgSelectCreatePersona( wxWindow* parent, idt refID );
-#if 0
-// See src/rg/rgCrIndividual.cpp
-extern idt rgCreateIndividual( wxWindow* parent,
-    Sex sex = SEX_Unknown,
-    unsigned flags = rgCRNAME_Default, 
-    const wxString& name1 = wxEmptyString,
-    const wxString& name2 = wxEmptyString );
-#endif
+
 // See src/rg/rgCrName.cpp
 enum {
     rgCRNAME_Default   = 0x000, // Use default settings to decode name1 string.
@@ -158,6 +151,12 @@ extern bool rgEditUserSettings( wxWindow* parent );
 // See src/rg/rgIndividual.cpp
 extern idt rgAddNewIndividual( 
     wxWindow* wind, Sex sex, const wxString& surname = wxEmptyString, idt famID = 0 );
-
+extern bool rgAddNewParent( wxWindow* wind, idt indID, Sex sex );
+extern bool rgAddExistParent( wxWindow* wind, idt indID, Sex sex );
+extern bool rgAddNewSpouse( wxWindow* wind, idt indID, Sex sex );
+extern bool rgAddExistSpouse( wxWindow* wind, idt indID, Sex sex );
+extern idt rgAddNewChild( wxWindow* wind, idt famID, Sex sex );
+extern idt rgAddExistChild( wxWindow* wind, idt famID, Sex sex );
+extern bool rgDeleteIndividual( wxWindow* wind, idt indID );
 
 #endif // RGDIALOGS_H
