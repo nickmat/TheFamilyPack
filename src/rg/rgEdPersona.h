@@ -41,6 +41,9 @@
 
 class rgDlgEditPersona : public fbRgEditPersona
 {
+    enum Page {
+        PAGE_Persona, PAGE_Name, PAGE_Event, PAGE_Rel
+    };
     enum Columns {
         COL_Type, COL_Value, COL_MAX
     };
@@ -48,7 +51,7 @@ class rgDlgEditPersona : public fbRgEditPersona
         EV_COL_Number, EV_COL_Role, EV_COL_Title, EV_COL_Date, EV_COL_Place, EV_COL_MAX
     };
 public:
-    rgDlgEditPersona( wxWindow* parent, idt perID );
+    rgDlgEditPersona( rgDlgEditReference* parent, idt perID );
 
     void SetPersonaID( idt perID ) { m_persona.f_id = perID; }
 
@@ -58,6 +61,13 @@ private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
 
+    wxString GetIndLinksString() const;
+    void UpdateNameList( idt nameID = 0 );
+    void UpdateEventList( idt eveID = 0 );
+    void UpdateRelList( idt relID = 0 );
+
+    void OnPageChanged( wxNotebookEvent& event );
+
     void OnIndLinkButton( wxCommandEvent& event );
 
     void OnNameAddButton( wxCommandEvent& event );
@@ -66,15 +76,27 @@ private:
     void OnNameUpButton( wxCommandEvent& event );
     void OnNameDownButton( wxCommandEvent& event );
 
-    wxString GetIndLinksString() const;
+    void OnEventAddButton( wxCommandEvent& event );
+    void OnEventEditButton( wxCommandEvent& event );
+    void OnEventDeleteButton( wxCommandEvent& event );
+    void OnEventUpButton( wxCommandEvent& event );
+    void OnEventDownButton( wxCommandEvent& event );
+    void OnOrderBy( wxCommandEvent& event );
 
-    recPersona         m_persona;
-    recIdVec           m_indLinks;
-    recNameVec         m_names;
-    recEventPersonaVec m_evpers;
-    recRelationshipVec m_relationships;
+    void OnRelAddButton( wxCommandEvent& event );
+    void OnRelEditButton( wxCommandEvent& event );
+    void OnRelDeleteButton( wxCommandEvent& event );
 
-    wxString           m_nameStr;
+    rgDlgEditReference* m_refDialog;
+
+    recPersona             m_persona;
+    recIdVec               m_indLinks;
+    recNameVec             m_names;
+    recEventPersonaVec     m_evpers;
+    recPersona::EventOrder m_order;
+    recRelationshipVec     m_relationships;
+
+    wxString               m_nameStr;
 };
 
 #endif // RGEDPERSONA_H

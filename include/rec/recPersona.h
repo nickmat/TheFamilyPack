@@ -43,6 +43,11 @@ typedef std::vector< recPersona >  recPersonaVec;
 class recPersona : public recDb
 {
 public:
+    enum EventOrder {
+        EO_DatePt,
+        EO_PerSeq
+    };
+
     Sex      f_sex;
     idt      f_ref_id;
     wxString f_note;
@@ -78,8 +83,9 @@ public:
     static recNameVec ReadNames( idt perID );
     recNameVec ReadNames() const { return ReadNames( f_id ); }
 
-    static recEventPersonaVec ReadEventPersonas( idt perID );
-    recEventPersonaVec ReadEventPersonas() const { return ReadEventPersonas( f_id ); }
+    static recEventPersonaVec ReadEventPersonas( idt perID, EventOrder order = EO_DatePt );
+    recEventPersonaVec ReadEventPersonas( EventOrder order = EO_DatePt ) const 
+        { return ReadEventPersonas( f_id, order ); }
 
     static recRelationshipVec ReadRelationships( idt perID );
     recRelationshipVec ReadRelationships() { return ReadRelationships( f_id ); }
@@ -98,6 +104,7 @@ public:
 
     static int CountNames( idt id );
     int CountNames() const { return CountNames( f_id ); }
+    static int GetMaxNameSeq( idt id );
 
     // Delete Persona record and remove all records that reference it.
     void RemoveFromDatabase();

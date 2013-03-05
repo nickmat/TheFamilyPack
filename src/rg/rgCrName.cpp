@@ -37,6 +37,8 @@
 #include "wx/wx.h"
 #endif
 
+#include <rec/recPersona.h>
+
 #include "rgCrName.h"
 #include "rg/rgDialogs.h"
 
@@ -53,6 +55,7 @@ idt rgCreateName(
 
     rgDlgCreateName* dialog = new rgDlgCreateName( NULL );
     dialog->SetPersonaID( perID );
+    dialog->SetPerSeq( recPersona::GetMaxNameSeq( perID ) + 1 );
     if( flags & rgCRNAME_Sur_Given ) {
         dialog->SetSurname( name1 );
         dialog->SetGiven( name2 );

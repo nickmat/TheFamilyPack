@@ -126,7 +126,7 @@ extern bool rgEditPerEventRole( idt epID, rgSHOWROLE filter = rgSHOWROLE_All );
 extern bool rgCreatePerEventRole( idt perID, idt eveID, idt roleID );
 
 // See src/rg/rgEdPersona.cpp
-extern bool rgEditPersona( wxWindow* parent, idt perID );
+extern bool rgEditPersona( rgDlgEditReference* parent, idt perID );
 //extern idt rgCreatePersona( wxWindow* parent );
 
 // See src/rg/rgEdReference.cpp

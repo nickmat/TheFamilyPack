@@ -34,9 +34,9 @@ class rgStrTableCtrl;
 #include <wx/icon.h>
 #include <wx/listbox.h>
 #include <wx/notebook.h>
+#include <wx/radiobox.h>
 #include <wx/toolbar.h>
 #include <wx/webview.h>
-#include <wx/radiobox.h>
 #include <wx/checkbox.h>
 #include <wx/checklst.h>
 #include <wx/statbox.h>
@@ -447,10 +447,10 @@ class fbRgEditPersona : public wxDialog
 		wxStaticText* m_staticPerName;
 		wxNotebook* m_notebook;
 		wxPanel* m_panel1;
-		wxStaticText* m_staticText11;
-		wxChoice* m_choiceSex;
 		wxStaticText* m_staticText12;
 		wxTextCtrl* m_textCtrlNote;
+		wxStaticText* m_staticText11;
+		wxChoice* m_choiceSex;
 		wxButton* m_buttonIndLink;
 		wxStaticText* m_staticText13;
 		wxStaticText* m_staticIndId;
@@ -468,19 +468,19 @@ class fbRgEditPersona : public wxDialog
 		wxButton* m_buttonEventDel;
 		wxButton* m_buttonEventUp;
 		wxButton* m_buttonEventDn;
+		wxRadioBox* m_radioBox3;
 		wxPanel* m_panel4;
 		wxListCtrl* m_listRel;
 		wxButton* m_buttonRelAdd;
 		wxButton* m_buttonRelEdit;
 		wxButton* m_buttonRelDel;
-		wxButton* m_buttonRelUp;
-		wxButton* m_buttonRelDn;
 		wxStaticLine* m_staticline1;
 		wxStaticText* m_staticPerID;
 		wxButton* m_buttonSave1;
 		wxButton* m_buttonCancel1;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnPageChanged( wxNotebookEvent& event ) { event.Skip(); }
 		virtual void OnIndLinkButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnNameAddButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnNameEditButton( wxCommandEvent& event ) { event.Skip(); }
@@ -492,11 +492,10 @@ class fbRgEditPersona : public wxDialog
 		virtual void OnEventDeleteButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnEventUpButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnEventDownButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnOrderBy( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRelAddButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRelEditButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRelDeleteButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnRelUpButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnRelDownButton( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:

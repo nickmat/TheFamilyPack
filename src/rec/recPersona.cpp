@@ -171,7 +171,7 @@ recNameVec recPersona::ReadNames( idt perID )
     return list;
 }
 
-recEventPersonaVec recPersona::ReadEventPersonas( idt perID )
+recEventPersonaVec recPersona::ReadEventPersonas( idt perID, EventOrder order )
 {
     recEventPersonaVec list;
     recEventPersona record;
@@ -181,12 +181,24 @@ recEventPersonaVec recPersona::ReadEventPersonas( idt perID )
     if( perID == 0 ) {
         return list;
     }
+    wxString orderStr;
+    switch( order )
+    {
+    case EO_DatePt:
+        orderStr = "date_pt, EP.per_seq";
+        break;
+    case EO_PerSeq:
+        orderStr = "EP.per_seq, date_pt";
+        break;
+    default:
+        wxASSERT( false ); // Shouldn't be here
+    }
 
     sql.Format(
         "SELECT EP.id, event_id, role_id, EP.note, per_seq FROM EventPersona EP"
         " INNER JOIN Event E ON E.id=event_id"
-        " WHERE per_id="ID" ORDER BY date_pt;", 
-        perID
+        " WHERE per_id="ID" ORDER BY %s;", 
+        perID, UTF8_(orderStr)
     );
     result = s_db->GetTable( sql );
 
@@ -351,6 +363,16 @@ int recPersona::CountNames( idt perID )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format( "SELECT COUNT(*) FROM Name WHERE per_id="ID";", perID );
+    return s_db->ExecuteScalar( sql );
+}
+
+int recPersona::GetMaxNameSeq( idt perID )
+{
+    if( perID == 0 ) {
+        return 0;
+    }
+    wxSQLite3StatementBuffer sql;
+    sql.Format( "SELECT MAX(sequence) FROM Name WHERE per_id="ID";", perID );
     return s_db->ExecuteScalar( sql );
 }
 

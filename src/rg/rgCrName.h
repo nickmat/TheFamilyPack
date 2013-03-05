@@ -47,6 +47,7 @@ public:
     idt GetNameID() const { return m_name.FGetID(); }
 
     void SetPersonaID( idt perID ) { m_name.f_per_id = perID; }
+    void SetPerSeq( int seq ) { m_name.FSetPerSeq( seq ); }
     void SetGiven( const wxString& given ) { m_given = given; }
     void SetSurname( const wxString& sur ) { m_surname = sur; }
     void SetType( recNameStyle::Style type ) { m_name.f_style_id = type; }

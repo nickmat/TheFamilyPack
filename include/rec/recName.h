@@ -71,7 +71,7 @@ public:
 
     idt FGetPerID() const { return f_per_id; }
     idt FGetTypeID() const { return f_style_id; }
-    int FGetNameSeq() const { return f_sequence; }
+    int FGetPerSeq() const { return f_sequence; }
 
     void FSetPerID( idt perID ) { f_per_id = perID; }
     void FSetTypeID( idt typeID ) { f_style_id = typeID; }
