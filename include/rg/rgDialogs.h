@@ -74,14 +74,13 @@ extern idt rgSelectIndividual( Sex sex );
 extern idt rgSelectIndividual(
     recIdVec indIDs,
     unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL );
-extern idt rgSelectCreatePersona( wxWindow* parent, idt refID );
 
 // See src/rg/rgCrName.cpp
 enum {
     rgCRNAME_Default   = 0x000, // Use default settings to decode name1 string.
     rgCRNAME_Sur_Given = 0x001  // If given, name1 is surname, name2 is given name.
 };
-extern idt rgCreateName( idt perID,
+extern idt rgCreateName( wxWindow* parent, idt perID,
     unsigned flags = rgCRNAME_Default, 
     const wxString& name1 = wxEmptyString,
     const wxString& name2 = wxEmptyString,

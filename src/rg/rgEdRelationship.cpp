@@ -129,12 +129,20 @@ bool rgDlgEditRelationship::TransferDataFromWindow()
 
 void rgDlgEditRelationship::OnPersona1Button( wxCommandEvent& event )
 {
-    wxMessageBox( _("Not yet written"), _("OnPersona1Button") );
+    idt perID = m_refDialog->SelectCreatePersona();
+    if( perID ) {
+        m_rel.FSetPer1ID( perID );
+        m_textCtrlPersona1->SetValue( recPersona::GetNameStr( perID ) );
+    }
 }
 
 void rgDlgEditRelationship::OnPersona2Button( wxCommandEvent& event )
 {
-    wxMessageBox( _("Not yet written"), _("OnPersona2Button") );
+    idt perID = m_refDialog->SelectCreatePersona();
+    if( perID ) {
+        m_rel.FSetPer2ID( perID );
+        m_textCtrlPersona2->SetValue( recPersona::GetNameStr( perID ) );
+    }
 }
 
 // End of dlgEdRelationship.cpp file

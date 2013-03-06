@@ -167,7 +167,7 @@ bool rgDlgEditIndividual::TransferDataFromWindow()
 
 void rgDlgEditIndividual::OnNameAddButton( wxCommandEvent& event )
 {
-    idt nameID = rgCreateName( m_persona.FGetID() );
+    idt nameID = rgCreateName( this, m_persona.FGetID() );
     if( nameID ) {
         recName name(nameID);
         int row = m_names.size();

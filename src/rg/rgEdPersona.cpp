@@ -223,7 +223,7 @@ void rgDlgEditPersona::OnIndLinkButton( wxCommandEvent& event )
 
 void rgDlgEditPersona::OnNameAddButton( wxCommandEvent& event )
 {
-    idt nameID = rgCreateName( m_persona.FGetID() );
+    idt nameID = rgCreateName( this, m_persona.FGetID() );
     if( nameID ) {
         m_refDialog->CreateRefEntity( recReferenceEntity::TYPE_Name, nameID );
         UpdateNameList( nameID );

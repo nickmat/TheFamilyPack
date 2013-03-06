@@ -43,6 +43,7 @@
 #include "rg/rgDialogs.h"
 
 idt rgCreateName( 
+    wxWindow* parent,
     idt perID,
     unsigned flags, 
     const wxString& name1,
@@ -53,7 +54,7 @@ idt rgCreateName(
     recDb::Savepoint( savepoint );
     idt nameID = 0;
 
-    rgDlgCreateName* dialog = new rgDlgCreateName( NULL );
+    rgDlgCreateName* dialog = new rgDlgCreateName( parent );
     dialog->SetPersonaID( perID );
     dialog->SetPerSeq( recPersona::GetMaxNameSeq( perID ) + 1 );
     if( flags & rgCRNAME_Sur_Given ) {

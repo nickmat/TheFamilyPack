@@ -43,6 +43,7 @@
 
 #include <rg/rgDialogs.h>
 #include "rgEdReference.h"
+#include "rgSelect.h"
 
 bool rgEditReference( wxWindow* parent, idt refID )
 {
@@ -261,14 +262,14 @@ void rgDlgEditReference::OnNewName( wxCommandEvent& event )
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
 
-    idt perID = rgSelectCreatePersona( this, m_reference.FGetID() );
+    idt perID = SelectCreatePersona();
     if( perID == 0 ) {
         recDb::Rollback( savepoint );
         return;
     }
 
     wxString nameStr = m_textCtrlStatement->GetStringSelection();
-    idt nameID = rgCreateName( perID, rgCRNAME_Default, nameStr );
+    idt nameID = rgCreateName( this, perID, rgCRNAME_Default, nameStr );
     if( nameID ) {
         recDb::ReleaseSavepoint( savepoint );
         CreateRefEntity( recReferenceEntity::TYPE_Name, nameID );
@@ -512,7 +513,49 @@ bool rgDlgEditReference::SelectPlace(
 
 idt rgDlgEditReference::SelectCreatePersona()
 {
-    return rgSelectCreatePersona( this, m_reference.FGetID() );
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+
+    recIdVec list = m_reference.GetPersonaList();
+    wxArrayString table;
+    for( size_t i = 0 ; i < list.size() ; i++ ) {
+        table.Add( recPersona::GetIdStr( list[i] ) );
+        table.Add( recPersona::GetNameStr( list[i] ) );
+    }
+
+    rgDlgSelectCreatePersona* dialog = new rgDlgSelectCreatePersona( this );
+    dialog->SetTable( table );
+
+    idt perID = 0;
+    if( dialog->ShowModal() == wxID_OK ) {
+        Sex sex = dialog->GetSex();
+        if( sex != SEX_Unstated ) { // indicates Create new persona
+            recPersona per(0);
+            per.FSetRefID( m_reference.FGetID() );
+            per.FSetSex( sex );
+            per.Save();
+            perID = per.FGetID();
+            idt nameID = rgCreateName( this, perID );
+            if( nameID ) {
+                CreateRefEntity( recReferenceEntity::TYPE_Name, nameID );
+            } else {
+                perID = 0;
+            }
+        } else {
+            long row = dialog->GetSelectedRow();
+            if( row >= 0 ) {
+                perID = list[row];
+            }
+        }
+    }
+    if( perID ) {
+        recDb::ReleaseSavepoint( savepoint );
+    } else {
+        recDb::Rollback( savepoint );
+    }
+
+    dialog->Destroy();
+    return perID;
 }
 
 void rgDlgEditReference::InsertEntityListItem( size_t row )
