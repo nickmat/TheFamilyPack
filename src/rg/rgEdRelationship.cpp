@@ -62,25 +62,30 @@ bool rgEditPerRelationship( rgDlgEditReference* parent, idt relID )
     return ret;
 }
 
-idt rgCreatePerRelationship( rgDlgEditReference* parent, const wxString& descrip )
+idt rgCreatePerRelationship( 
+    rgDlgEditReference* parent, int per1ID, const wxString& descrip, idt per2ID )
 {
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
 
-    idt perID1 = parent->SelectCreatePersona();
-    if( perID1 == 0 ) {
+    if( per1ID == 0 ) {
+        per1ID = parent->SelectCreatePersona();
+    }
+    if( per1ID == 0 ) {
         recDb::Rollback( savepoint );
         return 0;
     }
-    idt perID2 = parent->SelectCreatePersona();
-    if( perID2 == 0 ) {
+    if( per2ID == 0 ) {
+        per2ID = parent->SelectCreatePersona();
+    }
+    if( per2ID == 0 ) {
         recDb::Rollback( savepoint );
         return 0;
     }
 
     recRelationship rel(0);
-    rel.FSetPer1ID( perID1 );
-    rel.FSetPer2ID( perID2 );
+    rel.FSetPer1ID( per1ID );
+    rel.FSetPer2ID( per2ID );
     rel.FSetDescrip( descrip );
     rel.Save();
     idt relID = rel.FGetID();
@@ -93,7 +98,6 @@ idt rgCreatePerRelationship( rgDlgEditReference* parent, const wxString& descrip
     }
     return relID;
 }
-
 
 //============================================================================
 //-------------------------[ rgDlgEditRelationship ]--------------------------

@@ -403,7 +403,7 @@ void rgDlgEditPersona::OnOrderBy( wxCommandEvent& event )
 
 void rgDlgEditPersona::OnRelAddButton( wxCommandEvent& event )
 {
-    idt relID = rgCreatePerRelationship( m_refDialog );
+    idt relID = rgCreatePerRelationship( m_refDialog, m_persona.FGetID() );
     if( relID ) {
         m_refDialog->CreateRefEntity( recReferenceEntity::TYPE_Relationship, relID );
         UpdateRelList( relID );
@@ -412,7 +412,7 @@ void rgDlgEditPersona::OnRelAddButton( wxCommandEvent& event )
 
 void rgDlgEditPersona::OnRelEditButton( wxCommandEvent& event )
 {
-    long row = m_listName->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    long row = m_listRel->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
         wxMessageBox( _("No row selected"), _("Edit Relationship") );
         return;
@@ -425,7 +425,7 @@ void rgDlgEditPersona::OnRelEditButton( wxCommandEvent& event )
 
 void rgDlgEditPersona::OnRelDeleteButton( wxCommandEvent& event )
 {
-    long row = m_listEvent->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    long row = m_listRel->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
         wxMessageBox( _("No row selected"), _("Delete Relationship") );
         return;

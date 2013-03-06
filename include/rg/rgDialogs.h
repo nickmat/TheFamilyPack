@@ -136,7 +136,12 @@ extern idt rgCreateReference( wxWindow* parent );
 // See src/rg/rgEdRelationship.cpp
 extern bool rgEditPerRelationship( rgDlgEditReference* parent, idt relID );
 extern idt rgCreatePerRelationship( 
-    rgDlgEditReference* parent, const wxString& descrip = wxEmptyString );
+    rgDlgEditReference* parent, 
+    int per1ID, const wxString& descrip = wxEmptyString, idt per2ID = 0 );
+inline idt rgCreatePerRelationship( 
+    rgDlgEditReference* parent, 
+    const wxString& descrip = wxEmptyString ) 
+    { return rgCreatePerRelationship( parent, 0, descrip ); }
 
 // See src/rg/rgEdResearcher.cpp
 extern bool rgEditResearcher( idt conID );
