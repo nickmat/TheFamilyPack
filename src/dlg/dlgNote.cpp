@@ -40,6 +40,7 @@
 #include "webviewfshandler.h"
 
 #include <rec/recDatabase.h>
+#include <rg/rgDialogs.h>
 #include "tfpFrame.h"
 #include "dlgNote.h"
 #include "tfpWr.h"
@@ -69,6 +70,8 @@ dlgNote::dlgNote( TfpFrame* parent, const wxString& name )
     // Connect Events
     Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( dlgNote::OnClose ) );
     Connect( wxEVT_IDLE, wxIdleEventHandler( dlgNote::OnIdle ) );
+    Connect( m_browser->GetId(), wxEVT_COMMAND_WEB_VIEW_NAVIGATING,
+        wxWebViewEventHandler( dlgNote::OnNavigationRequest ), NULL, this );
 }
 
 dlgNote::~dlgNote()
@@ -76,6 +79,8 @@ dlgNote::~dlgNote()
     // Disconnect Events
     Disconnect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( dlgNote::OnClose ) );
     Disconnect( wxEVT_IDLE, wxIdleEventHandler( dlgNote::OnIdle ) );
+    Disconnect( m_browser->GetId(), wxEVT_COMMAND_WEB_VIEW_NAVIGATING,
+        wxWebViewEventHandler( dlgNote::OnNavigationRequest ), NULL, this );
 }
 
 bool dlgNote::TransferDataToWindow()
@@ -93,6 +98,31 @@ void dlgNote::OnIdle( wxIdleEvent& event )
         } else {
             Close( true );
         }
+    }
+}
+
+void dlgNote::OnNavigationRequest( wxWebViewEvent& evt )
+{
+    wxString url = evt.GetURL();
+    if( url == wxWebViewDefaultURLStr ) return;
+
+    recDb::Begin();
+    try {
+        bool ret = false;
+
+        if( url.StartsWith( "tfpe:D" ) ) {
+            ret = rgEditDate( recGetID( url.Mid(6) ) );
+        }
+        if( ret == true ) {
+            recDb::Commit();
+            m_browser->SetPage( m_frame->GetDisplayText( m_name ), "" );
+            m_cond = recDb::GetChange();
+        } else {
+            recDb::Rollback();
+        }
+    } catch( wxSQLite3Exception& e ) {
+        recDb::ErrorMessage( e );
+        recDb::Rollback();
     }
 }
 

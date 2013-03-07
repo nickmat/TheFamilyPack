@@ -72,7 +72,9 @@ wxString tfpWriteDate( idt dateID )
     wxString htm;
     htm << 
         tfpWrHeadTfp( "Date" ) <<
-        "<h1>Date " << date.GetIdStr() << "</h1>\n" <<
+        "<h1>Date " << date.GetIdStr() <<
+        " <a href='tfpe:D" << date.FGetID() <<
+        "'><img src='memory:edit.png'></a></h1>\n" <<
         GetHtmDateData( date ) <<
         tfpWrTailTfp()
     ;

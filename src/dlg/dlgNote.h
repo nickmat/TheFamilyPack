@@ -43,6 +43,7 @@ private:
 
     void OnIdle( wxIdleEvent& event );
     void OnClose( wxCloseEvent& event );
+    void OnNavigationRequest( wxWebViewEvent& event );
 
     TfpFrame*  m_frame;
     wxString   m_name;
