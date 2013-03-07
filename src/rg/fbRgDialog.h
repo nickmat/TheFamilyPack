@@ -574,8 +574,9 @@ class fbRgEditReference : public wxDialog
 		wxButton* m_buttonCancel1;
 		
 		// Virtual event handlers, overide them in your derived class
-		virtual void OnStatementViewChanging( wxNotebookEvent& event ) { event.Skip(); }
+		virtual void OnStatementViewChanged( wxNotebookEvent& event ) { event.Skip(); }
 		virtual void OnTool( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEntityViewChanged( wxNotebookEvent& event ) { event.Skip(); }
 		virtual void OnPersonaAddButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPersonaEditButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPersonaDeleteButton( wxCommandEvent& event ) { event.Skip(); }

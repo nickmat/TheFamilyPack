@@ -90,7 +90,9 @@ wxString tfpWritePlace( idt placeID )
     wxString htm;
     htm <<
         tfpWrHeadTfp( "Place" ) <<
-        "<h1>Place " << place.GetIdStr() << "</h1>\n" <<
+        "<h1>Place " << place.GetIdStr() << 
+        " <a href='tfpe:P" << place.FGetID() <<
+        "'><img src='memory:edit.png'></a></h1>\n" <<
         place.GetAddressStr() << "\n" <<
         tfpWrTailTfp()
     ;
@@ -108,7 +110,9 @@ wxString tfpWriteName( idt nameID )
     htm <<
         tfpWrHeadTfp( "Name" ) <<
         "<h1>Name " << name.GetIdStr() << "<br>\n" <<
-        name.GetNameStr() << "</h1>\n"
+        name.GetNameStr() << 
+        " <a href='tfpe:N" << name.FGetID() <<
+        "'><img src='memory:edit.png'></a></h1>\n"
         "<p>Name Type: <b>" <<
         recNameStyle::GetStyleStr( name.FGetTypeID() ) <<
         "</b></p>\n<table class='property'>\n"

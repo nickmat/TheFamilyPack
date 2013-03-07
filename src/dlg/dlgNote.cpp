@@ -68,10 +68,9 @@ dlgNote::dlgNote( TfpFrame* parent, const wxString& name )
     SetPosition( wxGetMousePosition() );
 
     // Connect Events
-    Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( dlgNote::OnClose ) );
+    Connect( wxEVT_COMMAND_WEB_VIEW_NAVIGATING, wxWebViewEventHandler( dlgNote::OnNavigationRequest ) );
     Connect( wxEVT_IDLE, wxIdleEventHandler( dlgNote::OnIdle ) );
-    Connect( m_browser->GetId(), wxEVT_COMMAND_WEB_VIEW_NAVIGATING,
-        wxWebViewEventHandler( dlgNote::OnNavigationRequest ), NULL, this );
+    Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( dlgNote::OnClose ) );
 }
 
 dlgNote::~dlgNote()
@@ -79,8 +78,7 @@ dlgNote::~dlgNote()
     // Disconnect Events
     Disconnect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( dlgNote::OnClose ) );
     Disconnect( wxEVT_IDLE, wxIdleEventHandler( dlgNote::OnIdle ) );
-    Disconnect( m_browser->GetId(), wxEVT_COMMAND_WEB_VIEW_NAVIGATING,
-        wxWebViewEventHandler( dlgNote::OnNavigationRequest ), NULL, this );
+    Disconnect( wxEVT_COMMAND_WEB_VIEW_NAVIGATING, wxWebViewEventHandler( dlgNote::OnNavigationRequest ) );
 }
 
 bool dlgNote::TransferDataToWindow()
@@ -89,22 +87,9 @@ bool dlgNote::TransferDataToWindow()
     return true;
 }
 
-void dlgNote::OnIdle( wxIdleEvent& event )
-{
-    if( m_cond != recDb::GetChange() ) {
-        if( recDb::IsOpen() ) {
-            m_browser->SetPage( m_frame->GetDisplayText( m_name ), "" );
-            m_cond = recDb::GetChange();
-        } else {
-            Close( true );
-        }
-    }
-}
-
 void dlgNote::OnNavigationRequest( wxWebViewEvent& evt )
 {
     wxString url = evt.GetURL();
-    if( url == wxWebViewDefaultURLStr ) return;
 
     recDb::Begin();
     try {
@@ -112,6 +97,12 @@ void dlgNote::OnNavigationRequest( wxWebViewEvent& evt )
 
         if( url.StartsWith( "tfpe:D" ) ) {
             ret = rgEditDate( recGetID( url.Mid(6) ) );
+        } else if( url.StartsWith( "tfpe:P" ) ) {
+            ret = rgEditPlace( recGetID( url.Mid(6) ) );
+        } else if( url.StartsWith( "tfpe:N" ) ) {
+            ret = rgEditName( recGetID( url.Mid(6) ) );
+//        } else if( url.StartsWith( "tfpe:Rs" ) ) {
+//            ret = rgEditRelationship( recGetID( url.Mid(7) ) );
         }
         if( ret == true ) {
             recDb::Commit();
@@ -123,6 +114,18 @@ void dlgNote::OnNavigationRequest( wxWebViewEvent& evt )
     } catch( wxSQLite3Exception& e ) {
         recDb::ErrorMessage( e );
         recDb::Rollback();
+    }
+}
+
+void dlgNote::OnIdle( wxIdleEvent& event )
+{
+    if( m_cond != recDb::GetChange() ) {
+        if( recDb::IsOpen() ) {
+            m_browser->SetPage( m_frame->GetDisplayText( m_name ), "" );
+            m_cond = recDb::GetChange();
+        } else {
+            Close( true );
+        }
     }
 }
 
