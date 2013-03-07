@@ -112,9 +112,15 @@ bool rgDlgEditReference::TransferDataToWindow()
     m_textCtrlTitle->SetValue( m_reference.FGetTitle() );
     m_textCtrlStatement->SetValue(  m_reference.FGetStatement() );
 
-    UpdateHtml();
-    ListEntities();
-    ListPersonas();
+    UpdateEntities();
+    return true;
+}
+
+bool rgDlgEditReference::TransferDataFromWindow()
+{
+    m_reference.FSetTitle( m_textCtrlTitle->GetValue() );
+    m_reference.FSetStatement( m_textCtrlStatement->GetValue() );
+    m_reference.Save();
     return true;
 }
 
@@ -137,78 +143,92 @@ void rgDlgEditReference::UpdateHtml()
     m_webview->SetPage( htm, "" );
 }
 
-void rgDlgEditReference::ListEntities()
-{
-    m_entities = m_reference.ReadReferenceEntitys();
-    m_listEntities->DeleteAllItems();
-    for( size_t i = 0 ; i < m_entities.size() ; i++ )
-    {
-        InsertEntityListItem( i );
-    }
-    m_listEntities->SetColumnWidth( ENT_COL_Value, -1 );
-}
-
-void rgDlgEditReference::ListPersonas()
+void rgDlgEditReference::UpdatePersonas( idt perID )
 {
     m_personaIDs = m_reference.GetPersonaList();
     m_listPersona->DeleteAllItems();
+    int row = -1;
     for( size_t i = 0 ; i < m_personaIDs.size() ; i++ ) {
         m_listPersona->InsertItem( i, recPersona::GetIdStr( m_personaIDs[i] ) );
         m_listPersona->SetItem( i, PER_COL_Name, recPersona::GetNameStr( m_personaIDs[i] ) );
         m_listPersona->SetItem( i, PER_COL_Individuals, recPersona::GetIndividualIdStr( m_personaIDs[i] ) );
+        if( perID == m_personaIDs[i] ) {
+            m_listPersona->SetItemState( i, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+            row = i;
+        }
     }
     m_listPersona->SetColumnWidth( PER_COL_Name, -1 );
+    if( row >= 0 ) {
+        m_listPersona->EnsureVisible( row );
+    }
 }
 
-bool rgDlgEditReference::TransferDataFromWindow()
+void rgDlgEditReference::UpdateEntities( idt reID )
 {
-    m_reference.FSetTitle( m_textCtrlTitle->GetValue() );
-    m_reference.FSetStatement( m_textCtrlStatement->GetValue() );
-    m_reference.Save();
-    return true;
+    m_entities = m_reference.ReadReferenceEntitys();
+    m_listEntities->DeleteAllItems();
+    int row = -1;
+    for( size_t i = 0 ; i < m_entities.size() ; i++ )
+    {
+        InsertEntityListItem( i );
+        if( reID == m_entities[i].FGetID() ) {
+            m_listEntities->SetItemState( i, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+            row = i;
+        }
+        // Correct errors and gaps in sequence numbers.
+        if( m_entities[i].FGetSequence() != i+1 ) {
+            m_entities[i].FSetSequence( i+1 );
+            m_entities[i].Save();
+        }
+    }
+    m_listEntities->SetColumnWidth( ENT_COL_Value, -1 );
+    if( row >= 0 ) {
+        m_listEntities->EnsureVisible( row );
+    }
 }
+
 void rgDlgEditReference::OnTool( wxCommandEvent& event )
 {
     switch( event.GetId() )
     {
-    case tfpID_EDREF_OnCut:       DoCut();       break;
-    case tfpID_EDREF_OnCopy:      DoCopy();      break;
-    case tfpID_EDREF_OnPaste:     DoPaste();     break;
-    case tfpID_EDREF_OnUndo:      DoUndo();      break;
-    case tfpID_EDREF_OnRedo:      DoRedo();      break;
+    case tfpID_EDREF_OnCut:       
+        m_textCtrlStatement->Cut();
+        break;
+    case tfpID_EDREF_OnCopy:
+        m_textCtrlStatement->Copy();
+        break;
+    case tfpID_EDREF_OnPaste:
+        m_textCtrlStatement->Paste();
+        break;
+    case tfpID_EDREF_OnUndo:
+        m_textCtrlStatement->Undo();
+        break;
+    case tfpID_EDREF_OnRedo:
+        m_textCtrlStatement->Redo();
+        break;
     }
 }
 
-void rgDlgEditReference::DoCut()
+void rgDlgEditReference::OnStatementViewChanged( wxNotebookEvent& event )
 {
-    m_textCtrlStatement->Cut();
-}
-
-void rgDlgEditReference::DoCopy()
-{
-    m_textCtrlStatement->Copy();
-}
-
-void rgDlgEditReference::DoPaste()
-{
-    m_textCtrlStatement->Paste();
-}
-
-void rgDlgEditReference::DoUndo()
-{
-    m_textCtrlStatement->Undo();
-}
-
-void rgDlgEditReference::DoRedo()
-{
-    m_textCtrlStatement->Redo();
-}
-
-void rgDlgEditReference::OnStatementViewChanging( wxNotebookEvent& event )
-{
-    if( event.GetSelection() == 0 ) {
+    if( event.GetSelection() == 1 ) {
         m_reference.f_statement = m_textCtrlStatement->GetValue();
         UpdateHtml();
+    }
+}
+
+void rgDlgEditReference::OnEntityViewChanged( wxNotebookEvent& event )
+{
+    switch( event.GetSelection() )
+    {
+    case 0:
+        UpdatePersonas();
+        break;
+    case 1:
+        UpdateEntities();
+        break;
+    default:
+        wxASSERT( false );
     }
 }
 
@@ -224,8 +244,9 @@ void rgDlgEditReference::OnPersonaEditButton( wxCommandEvent& event )
         wxMessageBox( _("No row selected"), _("Edit Entity") );
         return;
     }
-    if( rgEditPersona( this, m_personaIDs[row] ) ) {
-        UpdateLists();
+    idt perID = m_personaIDs[row];
+    if( rgEditPersona( this, perID ) ) {
+        UpdatePersonas( perID );
     }
 }
 
@@ -272,8 +293,8 @@ void rgDlgEditReference::OnNewName( wxCommandEvent& event )
     idt nameID = rgCreateName( this, perID, rgCRNAME_Default, nameStr );
     if( nameID ) {
         recDb::ReleaseSavepoint( savepoint );
-        CreateRefEntity( recReferenceEntity::TYPE_Name, nameID );
-        UpdateLists();
+        idt reID = CreateRefEntity( recReferenceEntity::TYPE_Name, nameID );
+        UpdateEntities( reID );
     } else {
         recDb::Rollback( savepoint );
     }
@@ -283,8 +304,8 @@ void rgDlgEditReference::OnNewDate( wxCommandEvent& event )
 {
     idt dateID = rgCreateDate( m_textCtrlStatement->GetStringSelection() );
     if( dateID ) {
-        CreateRefEntity( recReferenceEntity::TYPE_Date, dateID );
-        UpdateLists();
+        idt reID = CreateRefEntity( recReferenceEntity::TYPE_Date, dateID );
+        UpdateEntities( reID );
     }
 }
 
@@ -312,8 +333,8 @@ void rgDlgEditReference::OnNewDateAge( wxCommandEvent& event )
     idt dateID = rgCreateRelativeDate( baseID, val );
     if( dateID ) {
         recDb::ReleaseSavepoint( savepoint );
-        CreateRefEntity( recReferenceEntity::TYPE_Date, dateID );
-        UpdateLists();
+        idt reID = CreateRefEntity( recReferenceEntity::TYPE_Date, dateID );
+        UpdateEntities( reID );
     } else {
         recDb::Rollback( savepoint );
     }
@@ -323,8 +344,8 @@ void rgDlgEditReference::OnNewPlace( wxCommandEvent& event )
 {
     idt placeID = rgCreatePlace( m_textCtrlStatement->GetStringSelection() );
     if( placeID ) {
-        CreateRefEntity( recReferenceEntity::TYPE_Place, placeID );
-        UpdateLists();
+        idt reID = CreateRefEntity( recReferenceEntity::TYPE_Place, placeID );
+        UpdateEntities( reID );
     }
 }
 
@@ -332,8 +353,8 @@ void rgDlgEditReference::OnNewEvent( wxCommandEvent& cmnd_event )
 {
     idt eveID = rgCreateEvidEvent( this );
     if( eveID ) {
-        CreateRefEntity( recReferenceEntity::TYPE_Event, eveID );
-        UpdateLists();
+        idt reID = CreateRefEntity( recReferenceEntity::TYPE_Event, eveID );
+        UpdateEntities( reID );
     }
 }
 
@@ -341,8 +362,8 @@ void rgDlgEditReference::OnNewPersonalEvent( wxCommandEvent& event )
 {
     idt eveID = rgCreateEvidPerEvent( this, m_textCtrlStatement->GetStringSelection() );
     if( eveID ) {
-        CreateRefEntity( recReferenceEntity::TYPE_Event, eveID );
-        UpdateLists();
+        idt reID = CreateRefEntity( recReferenceEntity::TYPE_Event, eveID );
+        UpdateEntities( reID );
     }
 }
 
@@ -350,8 +371,8 @@ void rgDlgEditReference::OnNewRelationship( wxCommandEvent& event )
 {
     idt relID = rgCreatePerRelationship( this, m_textCtrlStatement->GetStringSelection() );
     if( relID ) {
-        CreateRefEntity( recReferenceEntity::TYPE_Relationship, relID );
-        UpdateLists();
+        idt reID = CreateRefEntity( recReferenceEntity::TYPE_Relationship, relID );
+        UpdateEntities( reID );
     }
 }
 
@@ -384,7 +405,7 @@ void rgDlgEditReference::OnEditEntityButton( wxCommandEvent& event )
         wxMessageBox( _("Element cannot be edited"), _("Edit") );
         return;
     }
-    UpdateLists();
+    UpdateEntities( m_entities[row].FGetID() );
 }
 
 void rgDlgEditReference::OnDeleteEntityButton( wxCommandEvent& event )
@@ -418,7 +439,7 @@ void rgDlgEditReference::OnDeleteEntityButton( wxCommandEvent& event )
         wxMessageBox( _("Element cannot be deleted"), _("Delete") );
         return;
     }
-    UpdateLists();
+    UpdateEntities();
 }
 
 void rgDlgEditReference::OnUpEntityButton( wxCommandEvent& event )
@@ -428,18 +449,15 @@ void rgDlgEditReference::OnUpEntityButton( wxCommandEvent& event )
         wxMessageBox( _("No row selected"), _("Edit Entity") );
         return;
     }
-    if( row != 0 ) {
-        recReferenceEntity ent = m_entities[row];
-        m_entities[row] = m_entities[row-1];
-        m_entities[row-1] = ent;
-        UpdateSequence();
-
-        m_listEntities->DeleteItem( row );
-        InsertEntityListItem( row-1 );
-        long state = wxLIST_STATE_SELECTED;
-        m_listEntities->SetItemState( row-1, state, state );
-        m_listEntities->EnsureVisible( row-1 );
+    if( row == 0 ) {
+        return; // Already at top
     }
+    int seq = m_entities[row].FGetSequence();
+    m_entities[row].FSetSequence( m_entities[row-1].FGetSequence() );
+    m_entities[row].Save();
+    m_entities[row-1].FSetSequence( seq );
+    m_entities[row-1].Save();
+    UpdateEntities( m_entities[row].FGetID() );
 }
 
 void rgDlgEditReference::OnDownEntityButton( wxCommandEvent& event )
@@ -449,21 +467,18 @@ void rgDlgEditReference::OnDownEntityButton( wxCommandEvent& event )
         wxMessageBox( _("No row selected"), _("Edit Entity") );
         return;
     }
-    if( row < m_listEntities->GetItemCount()-1 ) {
-        recReferenceEntity ent = m_entities[row];
-        m_entities[row] = m_entities[row+1];
-        m_entities[row+1] = ent;
-        UpdateSequence();
-
-        m_listEntities->DeleteItem( row );
-        InsertEntityListItem( row+1 );
-        long state = wxLIST_STATE_SELECTED;
-        m_listEntities->SetItemState( row+1, state, state );
-        m_listEntities->EnsureVisible( row+1 );
+    if( row == m_listEntities->GetItemCount() - 1 ) {
+        return; // Already at bottom
     }
+    int seq = m_entities[row].FGetSequence();
+    m_entities[row].FSetSequence( m_entities[row+1].FGetSequence() );
+    m_entities[row].Save();
+    m_entities[row+1].FSetSequence( seq );
+    m_entities[row+1].Save();
+    UpdateEntities( m_entities[row].FGetID() );
 }
 
-void rgDlgEditReference::CreateRefEntity( recReferenceEntity::Type type, idt entID )
+idt rgDlgEditReference::CreateRefEntity( recReferenceEntity::Type type, idt entID )
 {
     recReferenceEntity re(0);
     re.FSetRefID( m_reference.FGetID() );
@@ -471,6 +486,7 @@ void rgDlgEditReference::CreateRefEntity( recReferenceEntity::Type type, idt ent
     re.FSetEntityID( entID );
     re.FSetSequence( m_reference.GetNextEntitySequence() );
     re.Save();
+    return re.FGetID();
 }
 
 bool rgDlgEditReference::SelectDate( 

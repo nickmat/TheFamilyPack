@@ -59,20 +59,16 @@ protected:
     };
 
     bool TransferDataToWindow();
-    void UpdateHtml();
-    void ListEntities();
-    void ListPersonas();
-    void UpdateLists() { ListPersonas(); ListEntities(); }
     bool TransferDataFromWindow();
-    // Handlers for fbDlgEditReference events.
-    void OnTool( wxCommandEvent& event );
-    void DoCut();
-    void DoCopy();
-    void DoPaste();
-    void DoUndo();
-    void DoRedo();
+    void UpdateHtml();
+    void UpdatePersonas( idt perID = 0 );
+    void UpdateEntities( idt reID = 0 );
 
-	void OnStatementViewChanging( wxNotebookEvent& event );
+    void OnTool( wxCommandEvent& event );
+
+	void OnStatementViewChanged( wxNotebookEvent& event );
+	void OnEntityViewChanged( wxNotebookEvent& event );
+
     // Persona tab buttons
     void OnPersonaAddButton( wxCommandEvent& event );
     void OnPersonaEditButton( wxCommandEvent& event );
@@ -100,14 +96,13 @@ public:
     bool SelectPlace( idt* placeID, const wxString& title, unsigned style );
     idt SelectCreatePersona();
 
-    void CreateRefEntity( recReferenceEntity::Type type, idt entID );
+    idt CreateRefEntity( recReferenceEntity::Type type, idt entID );
     void InsertEntityListItem( size_t row );
     void UpdateSequence();
 
     recReference  m_reference;
     recRefEntVec  m_entities;
     recIdVec      m_personaIDs;
-    wxString      m_htmlText;
 };
 
 #endif // RGEDREFERENCE_H
