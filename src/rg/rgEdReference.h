@@ -55,7 +55,10 @@ protected:
         ID_EDREF_NEW_PLACE,
         ID_EDREF_NEW_EVENT,
         ID_EDREF_NEW_PER_EVENT,
-        ID_EDREF_NEW_REL
+        ID_EDREF_NEW_REL,
+        ID_ADDPER_MALE,
+        ID_ADDPER_FEMALE,
+        ID_ADDPER_UNKNOWN
     };
 
     bool TransferDataToWindow();
@@ -71,6 +74,7 @@ protected:
 
     // Persona tab buttons
     void OnPersonaAddButton( wxCommandEvent& event );
+    void OnPersonaAddMenuOp( wxCommandEvent& event );
     void OnPersonaEditButton( wxCommandEvent& event );
     void OnPersonaDeleteButton( wxCommandEvent& event );
     // Entity tab buttons

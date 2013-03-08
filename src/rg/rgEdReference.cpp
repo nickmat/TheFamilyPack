@@ -93,6 +93,7 @@ BEGIN_EVENT_TABLE( rgDlgEditReference, wxDialog )
     EVT_MENU( ID_EDREF_NEW_EVENT,    rgDlgEditReference::OnNewEvent )
     EVT_MENU( ID_EDREF_NEW_PER_EVENT,rgDlgEditReference::OnNewPersonalEvent )
     EVT_MENU( ID_EDREF_NEW_REL,      rgDlgEditReference::OnNewRelationship )
+    EVT_MENU_RANGE( ID_ADDPER_MALE, ID_ADDPER_UNKNOWN, rgDlgEditReference::OnPersonaAddMenuOp )
 END_EVENT_TABLE()
 
 rgDlgEditReference::rgDlgEditReference( wxWindow* parent, idt refID )
@@ -234,7 +235,42 @@ void rgDlgEditReference::OnEntityViewChanged( wxNotebookEvent& event )
 
 void rgDlgEditReference::OnPersonaAddButton( wxCommandEvent& event )
 {
-    wxMessageBox( "Not yet implimented", "OnPersonaAddButton" );
+    wxMenu* menu = new wxMenu;
+    menu->Append( ID_ADDPER_MALE, _("Add &Male Persona") );
+    menu->Append( ID_ADDPER_FEMALE, _("Add &Female Persona") );
+    menu->Append( ID_ADDPER_UNKNOWN, _("Add &Unknown Persona") );
+    PopupMenu( menu );
+    delete menu;
+}
+
+void rgDlgEditReference::OnPersonaAddMenuOp( wxCommandEvent& event )
+{
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+
+    recPersona per(0);
+    per.FSetRefID( m_reference.FGetID() );
+    switch( event.GetId() )
+    {
+    case ID_ADDPER_MALE:
+        per.FSetSex( SEX_Male );
+        break;
+    case ID_ADDPER_FEMALE:
+        per.FSetSex( SEX_Female );
+        break;
+    case ID_ADDPER_UNKNOWN:
+        per.FSetSex( SEX_Unknown );
+        break;
+    }
+    per.Save();
+    idt nameID = rgCreateName( this, per.FGetID() );
+    if( nameID ) {
+        recDb::ReleaseSavepoint( savepoint );
+        idt reID = CreateRefEntity( recReferenceEntity::TYPE_Name, nameID );
+        UpdatePersonas( per.FGetID() );
+    } else {
+        recDb::Rollback( savepoint );
+    }
 }
 
 void rgDlgEditReference::OnPersonaEditButton( wxCommandEvent& event )
@@ -252,10 +288,22 @@ void rgDlgEditReference::OnPersonaEditButton( wxCommandEvent& event )
 
 void rgDlgEditReference::OnPersonaDeleteButton( wxCommandEvent& event )
 {
-    wxMessageBox(
-        wxT("Not yet implimented"),
-        wxT("OnPersonaDeleteButton")
+    long row = m_listPersona->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row < 0 ) {
+        wxMessageBox( _("No row selected"), _("Delete Persona") );
+        return;
+    }
+    idt perID = m_personaIDs[row];
+    wxString mess = wxString::Format( 
+        "Remove Persona %s: %s\nfrom Database?", 
+        recPersona::GetIdStr( perID ), recPersona::GetNameStr( perID )
     );
+    int ans = wxMessageBox( mess, _("Delete Persona"), wxYES_NO | wxCANCEL, this );
+    if( ans != wxYES ) {
+        return;
+    }
+    recPersona::RemoveFromDatabase( perID );
+    UpdatePersonas();
 }
 
 void rgDlgEditReference::OnAddEntityButton( wxCommandEvent& event )
