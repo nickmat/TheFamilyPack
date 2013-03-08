@@ -60,6 +60,7 @@
 #include "img/find.xpm"
 #include "img/home.xpm"
 #include "img/findref.xpm"
+#include "img/findevent.xpm"
 
 #ifndef wxHAS_IMAGES_IN_RESOURCES
     #include "img/tfp.xpm"
@@ -267,12 +268,14 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     wxBitmap bmpForward( forward_xpm );
     wxBitmap bmpBack( back_xpm );
     wxBitmap bmpFind( find_xpm );
+    wxBitmap bmpFindeve( findevent_xpm );
     wxBitmap bmpFindref( findref_xpm );
     wxBitmap bmpHome( home_xpm );
     m_toolbar->AddTool( tfpID_FIND_BACK, _("Back"), bmpBack );
     m_toolbar->AddTool( tfpID_FIND_FORWARD, _("Forward"), bmpForward );
     m_toolbar->AddSeparator();
     m_toolbar->AddTool( tfpID_LIST_SURNAME_INDEX, _("Index"), bmpFind );
+    m_toolbar->AddTool( tfpID_LIST_PAGED_EVENTS, _("Events"), bmpFindeve );
     m_toolbar->AddTool( tfpID_LIST_PAGED_REFERENCES, _("References"), bmpFindref );
     m_toolbar->AddSeparator();
     m_toolbar->AddTool( tfpID_GOTO_HOME, _("Home"), bmpHome );

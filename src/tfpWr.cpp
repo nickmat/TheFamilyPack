@@ -77,7 +77,7 @@ wxString tfpWritePagedIndexMenu( idt begCnt, size_t maxsize, const wxString pref
         mnu << "<div class='pagesel'><p>\n";
         if( begCnt != 0 ) {
             mnu <<
-                "<a href='" << prefix << begCnt-maxrows << 
+                "<a href='" << prefix << "," << begCnt-maxrows << 
                 "'>Prev</a>\n"
             ;
         } else {
@@ -112,14 +112,14 @@ wxString tfpWritePagedIndexMenu( idt begCnt, size_t maxsize, const wxString pref
                 ;
             } else {
                 mnu <<
-                    "<a class='pn' href='" << prefix << i*maxrows << 
+                    "<a class='pn' href='" << prefix << "," << i*maxrows << 
                     "'>" << i+1 << "</a>\n"
                 ;
             }
         }
         if( begCnt+maxrows < maxsize ) {
             mnu <<
-                "<a href='" << prefix << begCnt+maxrows << 
+                "<a href='" << prefix << "," << begCnt+maxrows << 
                 "'>Next</a>\n"
             ;
         } else {
@@ -127,7 +127,7 @@ wxString tfpWritePagedIndexMenu( idt begCnt, size_t maxsize, const wxString pref
                 "<a class='pncur' href='null:'>Next</a>\n"
             ;
         }
-        mnu << "</p></div>\n" ;
+        mnu << "<a class='pn' href='" << prefix << "'>All</a>\n</p></div>\n";
     }
     return mnu;
 }

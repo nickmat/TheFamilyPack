@@ -106,7 +106,7 @@ wxString tfpWriteReferencePagedIndex( idt begCnt )
     if( maxsize <= tfpWR_PAGE_MAX ) {
         return tfpWriteReferenceIndex();
     }
-    wxString pmenu = tfpWritePagedIndexMenu( begCnt, maxsize, "tfp:R," );
+    wxString pmenu = tfpWritePagedIndexMenu( begCnt, maxsize, "tfp:R" );
 
     wxSQLite3Table result = recReference::GetTitleList( begCnt, tfpWR_PAGE_MAX );
     size_t size = (size_t) result.GetRowCount();

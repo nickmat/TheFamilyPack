@@ -103,108 +103,41 @@ wxString tfpWriteEventIndex()
 
 wxString tfpWriteEventPagedIndex( idt begCnt )
 {
-    const int maxrows = 100;
-    idt beg = 0, end = 0;
-    size_t maxsize = (size_t) recEvent::UserCount();
-    int pgcnt = ( maxsize / maxrows ) + 1;
+    int maxsize = recEvent::UserCount();
+    if( maxsize <= tfpWR_PAGE_MAX ) {
+        return tfpWriteEventIndex();
+    }
+    wxString pmenu = tfpWritePagedIndexMenu( begCnt, maxsize, "tfp:E" );
 
-    wxSQLite3Table result = recEvent::GetTitleList( begCnt, maxrows );
+    wxSQLite3Table result = recEvent::GetTitleList( begCnt, tfpWR_PAGE_MAX );
     size_t size = (size_t) result.GetRowCount();
-    if( size ) {
-        result.SetRow( 0 );
-        beg = GET_ID( result.GetInt64( 0 ) );
-        result.SetRow( size-1 );
-        end = GET_ID( result.GetInt64( 0 ) );
-    }
-    int pgcur = begCnt/maxrows;
-    int b1, e1, b2, e2;
-    b1 = b2 = e1 = e2 = pgcnt;
-
-    wxString mnu;
-    if( pgcnt > 1 ) {
-        mnu << "<div class='pagesel'><p>\n";
-        if( begCnt != 0 ) {
-            mnu <<
-                "<a href='tfp:E," << begCnt-maxrows << 
-                "'>Prev</a>\n"
-            ;
-        } else {
-            mnu <<
-                "<a class='pncur' href='null:'>Prev</a>\n"
-            ;
-        }
-        if( pgcnt > 10 ) {
-            if( pgcur < 2 )  { b1 = 5; e1 = pgcnt - 5; }
-            else if( pgcur == 2 ) { b1 = 6; e1 = pgcnt - 4; }
-            else if( pgcur == 3 ) { b1 = 7; e1 = pgcnt - 3; }
-            else if( pgcur == 4 ) { b1 = 8; e1 = pgcnt - 2; }
-            else if( pgcur == pgcnt - 5 ) { b1 = 2; e1 = pgcnt - 8; }
-            else if( pgcur == pgcnt - 4 ) { b1 = 3; e1 = pgcnt - 7; }
-            else if( pgcur == pgcnt - 3 ) { b1 = 4; e1 = pgcnt - 6; }
-            else if( pgcur > pgcnt - 3 )  { b1 = 5; e1 = pgcnt - 5; }
-            else { b1 = 1; e1 = pgcur - 3; b2 = pgcur + 4; e2 = pgcnt - 1; }
-        }
-        for( int i = 0 ; i < pgcnt ; i++ ) {
-            if(i == b1 ) {
-                mnu << " ...\n";
-                i = e1;
-            }
-            if(i == b2 ) {
-                mnu << " ...\n";
-                i = e2;
-            }
-            if( i == pgcur ) {
-                mnu <<
-                    "<a class='pn pncur' href='null:'>" << 
-                    i+1 << "</a>\n"
-                ;
-            } else {
-                mnu <<
-                    "<a class='pn' href='tfp:E," << i*maxrows << 
-                    "'>" << i+1 << "</a>\n"
-                ;
-            }
-        }
-        if( begCnt+maxrows < maxsize ) {
-            mnu <<
-                "<a href='tfp:E," << begCnt+maxrows << 
-                "'>Next</a>\n"
-            ;
-        } else {
-            mnu <<
-                "<a class='pncur' href='null:'>Next</a>\n"
-            ;
-        }
-        mnu << "</p></div>\n" ;
-    }
+    result.SetRow( 0 );
+    idt beg = GET_ID( result.GetInt64( 0 ) );
+    result.SetRow( size-1 );
+    idt end = GET_ID( result.GetInt64( 0 ) );
 
     wxString htm;
     htm <<
-        "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
-        "\"http://www.w3.org/TR/html4/loose.dtd\">\n"
-        "<html>\n<head>\n"
-        "<title>Event List</title>\n"
-        "<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>\n"
-        "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>\n"
-        "</head>\n<body>\n<div class='tfp'>\n"
-        "<h1>Event Index from " << recEvent::GetIdStr( beg ) <<
-        " to " << recEvent::GetIdStr( end ) << "</h1>" << mnu <<
+        tfpWrHeadTfp( "Event List" ) <<
+        "<h1>Reference Document Index from " << recEvent::GetIdStr( beg ) <<
+        " to " << recEvent::GetIdStr( end ) <<
+        "</h1>\n" << pmenu <<
         "<table class='data'>\n"
         "<tr><th>ID</th><th>Title</th></tr>\n"
     ;
-
     for( size_t i = 0 ; i < size ; i++ ) {
         result.SetRow( i );
-        htm << "<tr>\n<td><a href='tfp:E"
-            << result.GetAsString( 0 )
-            << "'><b>E"
-            << result.GetAsString( 0 )
-            << "</b></a></td>\n<td>"
-            << result.GetAsString( 1 )
-            << "</td>\n</tr>\n";
+        htm << 
+            "<tr><td><a href='tfp:E" << result.GetAsString( 0 ) <<
+            "'><b>E" << result.GetAsString( 0 ) <<
+            "</b></a></td><td> " << result.GetAsString( 1 ) <<
+            "</td></tr>\n"
+        ;
     }
-    htm << "</table>\n" << mnu << "<br>\n</div>\n</body>\n</html>\n";
-
+    htm << 
+        "</table>\n" << pmenu <<
+        "<br>\n" << tfpWrTailTfp() 
+    ;
     return htm;
 }
 
