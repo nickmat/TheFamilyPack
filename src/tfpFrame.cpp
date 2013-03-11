@@ -1398,6 +1398,7 @@ void TfpFrame::SetDatabaseOpen( const wxString& path )
     m_titleFmt = wxString::Format( "TFP: %s, %%s", dbfile.GetName() );
     SetMenuBar( m_menuOpenDB );
     m_toolbar->EnableTool( tfpID_LIST_SURNAME_INDEX, true );
+    m_toolbar->EnableTool( tfpID_LIST_PAGED_EVENTS, true );
     m_toolbar->EnableTool( tfpID_LIST_PAGED_REFERENCES, true );
     m_toolbar->EnableTool( tfpID_GOTO_HOME, true );
     m_showpage->Enable( true );
@@ -1409,6 +1410,7 @@ void TfpFrame::SetNoDatabase()
     SetTitle( "The Family Pack" );
     SetMenuBar( m_menuClosedDB );
     m_toolbar->EnableTool( tfpID_LIST_SURNAME_INDEX, false );
+    m_toolbar->EnableTool( tfpID_LIST_PAGED_EVENTS, false );
     m_toolbar->EnableTool( tfpID_LIST_PAGED_REFERENCES, false );
     m_toolbar->EnableTool( tfpID_GOTO_HOME, false );
     m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, false );
@@ -1454,6 +1456,7 @@ void TfpFrame::RefreshEditMenu()
     m_menuEditInd->Enable( tfpID_EDIT_IND_LEFT, false );
     m_menuEditInd->SetLabel( tfpID_EDIT_IND_RIGHT, noname );
     m_menuEditInd->Enable( tfpID_EDIT_IND_RIGHT, false );
+    m_menuEditInd->Enable( tfpID_EDIT_FAMILY_MENU, false );
     m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, false );
 
     switch( uch.GetValue() ) 
@@ -1480,11 +1483,21 @@ void TfpFrame::RefreshEditMenu()
                 m_menuEditInd->Enable( tfpID_EDIT_IND_RIGHT, false );
             }
             m_EditIndRight = fam.f_wife_id;
+            m_menuEditInd->Enable( tfpID_EDIT_FAMILY_MENU, true );
             // Update Toolbar
             m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
         }
         break;
-    case 'R': case 'E': case 'I':
+    case 'I':
+        if( disp.size() >= 2 && wxIsdigit( disp.GetChar( 1 ) ) ) {
+            idt indID = recGetID( disp.Mid( 1 ) );
+            name = recIndividual::GetFullName( indID );
+            m_menuEditInd->SetLabel( tfpID_EDIT_IND_LEFT, name );
+            m_menuEditInd->Enable( tfpID_EDIT_IND_LEFT, true );
+            m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
+        }
+        break;
+    case 'R': case 'E':
         if( disp.size() >= 2 && 
             ( wxIsdigit( disp.GetChar( 1 ) ) || disp.GetChar( 1 ) == '$' )
         ) {
