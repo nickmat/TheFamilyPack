@@ -160,7 +160,7 @@ bool rgDlgEditResearcher::TransferDataFromWindow()
 
 void rgDlgEditResearcher::AddIndLink()
 {
-    idt indID = rgSelectIndividual();
+    idt indID = rgSelectIndividual( this );
     if( indID == 0 ) {
         return;
     }

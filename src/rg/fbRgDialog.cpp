@@ -416,7 +416,7 @@ fbRgEditEvent::fbRgEditEvent( wxWindow* parent, wxWindowID id, const wxString& t
 	m_staticText2->Wrap( -1 );
 	fgSizer10->Add( m_staticText2, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_textCtrlTitle = new wxTextCtrl( m_panel1, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textCtrlTitle = new wxTextCtrl( m_panel1, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 350,-1 ), 0 );
 	fgSizer10->Add( m_textCtrlTitle, 1, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
 	
 	m_buttonDate1 = new wxButton( m_panel1, wxID_ANY, _("Date:"), wxDefaultPosition, wxDefaultSize, wxBU_RIGHT );
@@ -452,9 +452,7 @@ fbRgEditEvent::fbRgEditEvent( wxWindow* parent, wxWindowID id, const wxString& t
 	wxBoxSizer* bSizer21;
 	bSizer21 = new wxBoxSizer( wxVERTICAL );
 	
-	m_listPersona = new wxListCtrl( m_panel2, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_HRULES|wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_VRULES );
-	m_listPersona->SetMinSize( wxSize( 400,100 ) );
-	
+	m_listPersona = new wxListCtrl( m_panel2, wxID_ANY, wxDefaultPosition, wxSize( 400,100 ), wxLC_HRULES|wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_VRULES );
 	bSizer21->Add( m_listPersona, 1, wxALL|wxEXPAND, 5 );
 	
 	wxBoxSizer* bSizer211;

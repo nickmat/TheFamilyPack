@@ -61,14 +61,14 @@ bool rgEditIndEventRole( idt ieID, rgSHOWROLE filter )
     return ret;
 }
 
-bool rgCreateIndEventRole( idt indID, idt eveID, idt roleID )
+bool rgCreateIndEventRole( wxWindow* wind, idt indID, idt eveID, idt roleID )
 {
     wxASSERT( eveID != 0 ); // TODO: Select an Event from list
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
 
     if( indID == 0 ) {
-        indID = rgSelectIndividual( rgSELSTYLE_None );
+        indID = rgSelectIndividual( wind, rgSELSTYLE_None );
         if( indID == 0 ) {
             recDb::Rollback( savepoint );
             return false;

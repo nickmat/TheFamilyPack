@@ -154,7 +154,7 @@ bool rgAddExistParent( wxWindow* wind, idt indID, Sex sex )
     recDb::Savepoint( savepoint );
     bool ret = false;
 
-    idt parentID = rgSelectIndividual( sex );
+    idt parentID = rgSelectIndividual( wind, sex );
     if( parentID == 0 ) {
         recDb::ReleaseSavepoint( savepoint );
         return false;
@@ -223,7 +223,7 @@ bool rgAddExistSpouse( wxWindow* wind, idt indID, Sex sex )
     fam.f_id = ind.f_fam_id;
     fam.Read();
     if( sex == SEX_Male ) {
-        spouse.f_id = rgSelectIndividual( SEX_Male );
+        spouse.f_id = rgSelectIndividual( wind, SEX_Male );
         if( spouse.f_id != 0 ) {
             spouse.Read();
             if( fam.f_husb_id == 0 ) { // No husband yet
@@ -251,7 +251,7 @@ bool rgAddExistSpouse( wxWindow* wind, idt indID, Sex sex )
             }
         }
     } else { // SEX_Male
-        spouse.f_id = rgSelectIndividual( SEX_Female );
+        spouse.f_id = rgSelectIndividual( wind, SEX_Female );
         if( spouse.f_id != 0 ) {
             spouse.Read();
             if( fam.f_wife_id == 0 ) { // No wives yet
@@ -322,7 +322,7 @@ idt rgAddExistChild( wxWindow* wind, idt famID, Sex sex )
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
 
-    idt indID = rgSelectIndividual( sex );
+    idt indID = rgSelectIndividual( wind, sex );
     if( indID != 0 ) {
         recFamilyIndividual fi;
         fi.Clear();

@@ -180,14 +180,14 @@ idt rgCreatePlace( const wxString& placeStr )
     return 0;
 }
 
-bool rgEditEventType( idt etID )
+bool rgEditEventType( wxWindow* wind, idt etID )
 {
     wxASSERT( etID != 0 );
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
     bool ret = false;
 
-    rgDlgEditEventType* dialog = new rgDlgEditEventType( NULL, etID );
+    rgDlgEditEventType* dialog = new rgDlgEditEventType( wind, etID );
 
     if( dialog->ShowModal() == wxID_OK ) {
         recDb::ReleaseSavepoint( savepoint );
@@ -199,7 +199,7 @@ bool rgEditEventType( idt etID )
     return ret;
 }
 
-idt rgCreateEventType()
+idt rgCreateEventType( wxWindow* wind )
 {
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
@@ -207,7 +207,7 @@ idt rgCreateEventType()
     recEventType et(0);
     et.Save();
     idt etID = et.FGetID();
-    if( rgEditEventType( etID ) ) {
+    if( rgEditEventType( wind, etID ) ) {
         recDb::ReleaseSavepoint( savepoint );
     } else {
         recDb::Rollback( savepoint );
@@ -364,11 +364,11 @@ idt rgSelectPlace( unsigned flag, unsigned* retbutton, unsigned filter, idt id )
     return placeID;
 }
 
-idt rgSelectEventType( unsigned flag, unsigned* retbutton, unsigned grpfilter )
+idt rgSelectEventType( wxWindow* wind, unsigned flag, unsigned* retbutton, unsigned grpfilter )
 {
     idt id = 0;
     bool cont = true;
-    rgDlgSelectEventType* dialog = new rgDlgSelectEventType( NULL, flag );
+    rgDlgSelectEventType* dialog = new rgDlgSelectEventType( wind, flag );
 
     while( cont ) {
         recEventTypeVec types = recEventType::ReadVec( grpfilter );
@@ -381,7 +381,7 @@ idt rgSelectEventType( unsigned flag, unsigned* retbutton, unsigned grpfilter )
         if( dialog->ShowModal() == wxID_OK ) {
             if( dialog->GetCreatePressed() ) {
                 if( retbutton ) *retbutton = rgSELSTYLE_Create;
-                id = rgCreateEventType();
+                id = rgCreateEventType( wind );
                 if( id ) {
                     cont = false;
                 } else {
@@ -410,7 +410,7 @@ idt rgSelectEventType( unsigned flag, unsigned* retbutton, unsigned grpfilter )
     return id;
 }
 
-idt rgSelectIndEvent( unsigned selstyle, recFilterEvent* exfilter, bool* ok, idt indID )
+idt rgSelectIndEvent( wxWindow* wind, unsigned selstyle, recFilterEvent* exfilter, bool* ok, idt indID )
 {
     idt eveID = 0;
     bool cont = true;
@@ -420,11 +420,11 @@ idt rgSelectIndEvent( unsigned selstyle, recFilterEvent* exfilter, bool* ok, idt
     }
     if( ok ) *ok = false;
 
-    rgDlgSelectIndEvent* dialog = new rgDlgSelectIndEvent( NULL, selstyle, fe );
+    rgDlgSelectIndEvent* dialog = new rgDlgSelectIndEvent( wind, selstyle, fe );
     if( dialog->ShowModal() == wxID_OK ) {
         if( ok ) *ok = true;
         if( dialog->GetCreatePressed() ) {
-            eveID = rgCreateIndEvent( indID );
+            eveID = rgCreateIndEvent( wind, indID );
             if( eveID == 0 && ok ) *ok = false;
         } else if( dialog->GetUnknownPressed() ) {
             eveID = 0;
@@ -439,10 +439,10 @@ idt rgSelectIndEvent( unsigned selstyle, recFilterEvent* exfilter, bool* ok, idt
     return eveID;
 }
 
-bool rgSelectIndEventList( recFilterEvent* evefilter )
+bool rgSelectIndEventList( wxWindow* wind, recFilterEvent* evefilter )
 {
     wxASSERT( evefilter != NULL );
-    idt ret = rgSelectIndEvent( rgSELSTYLE_SelList, evefilter );
+    idt ret = rgSelectIndEvent( wind, rgSELSTYLE_SelList, evefilter );
     if( ret == 0 ) {
         return false;
     }
@@ -494,11 +494,11 @@ idt rgSelectIndividual( recIdVec indIDs, unsigned flag, unsigned* retbutton )
     return id;
 }
 
-idt rgSelectIndividual( unsigned flag, unsigned* retbutton, unsigned sexfilter )
+idt rgSelectIndividual( wxWindow* wind, unsigned flag, unsigned* retbutton, unsigned sexfilter )
 {
     idt id = 0;
     bool cont = true;
-    rgDlgSelectIndividual* dialog = new rgDlgSelectIndividual( NULL, flag );
+    rgDlgSelectIndividual* dialog = new rgDlgSelectIndividual( wind, flag );
 
     while( cont ) {
         recIndividualVec inds = recIndividual::ReadVec( sexfilter );
@@ -539,7 +539,7 @@ idt rgSelectIndividual( unsigned flag, unsigned* retbutton, unsigned sexfilter )
     return id;
 }
 
-idt rgSelectIndividual( Sex sex )
+idt rgSelectIndividual( wxWindow* wind, Sex sex )
 {
     unsigned filter;
     switch( sex ) 
@@ -553,7 +553,7 @@ idt rgSelectIndividual( Sex sex )
     default:
         filter = recInd_FILTER_SexUnknown;
     }
-    return rgSelectIndividual( rgSELSTYLE_None, NULL, filter );
+    return rgSelectIndividual( wind, rgSELSTYLE_None, NULL, filter );
 }
 
 // End of src/rg/rgDilogs.cpp file

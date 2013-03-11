@@ -397,9 +397,9 @@ void rgDlgEditFamily::OnNewEvent( wxCommandEvent& event )
 {
     idt eveID; 
     if( m_family.f_husb_id == 0 ) {
-        eveID = rgCreateIndEvent( m_family.f_wife_id, m_family.f_husb_id );
+        eveID = rgCreateIndEvent( this, m_family.f_wife_id, m_family.f_husb_id );
     } else {
-        eveID = rgCreateIndEvent( m_family.f_husb_id, m_family.f_wife_id );
+        eveID = rgCreateIndEvent( this, m_family.f_husb_id, m_family.f_wife_id );
     }
     if( eveID ) {
         recFamilyEvent fe(0);
@@ -429,7 +429,7 @@ void rgDlgEditFamily::OnEventEditButton( wxCommandEvent& event )
         wxMessageBox( _("No row selected"), _("Edit Event") );
         return;
     }
-    rgEditEvent( m_fes[row].FGetEventID() );
+    rgEditEvent( this, m_fes[row].FGetEventID() );
 }
 
 void rgDlgEditFamily::OnEventDeleteButton( wxCommandEvent& event )

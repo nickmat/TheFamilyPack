@@ -81,7 +81,9 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_EDIT_INDIVIDUAL, TfpFrame::OnEditIndividual )
     EVT_MENU( tfpID_EDIT_IND_NEW_MALE, TfpFrame::OnAddNewIndMale )
     EVT_MENU( tfpID_EDIT_IND_NEW_FEMALE, TfpFrame::OnAddNewIndFemale )
-    EVT_MENU( tfpID_EDIT_REFERENCE, TfpFrame::OnEditReference )
+//    EVT_MENU( tfpID_EDIT_EVENT_CURRENT, TfpFrame::OnEditEventCurrent )
+//    EVT_MENU( tfpID_EDIT_EVENT_NEW, TfpFrame::OnEditEventNew )
+//    EVT_MENU( tfpID_EDIT_REFERENCE, TfpFrame::OnEditReference )
     EVT_MENU( tfpID_EDIT_RESEARCHER, TfpFrame::OnEditResearcher )
     EVT_MENU( tfpID_FIND_FAMILY_ID, TfpFrame::OnFindFamilyID )
     EVT_MENU( tfpID_FIND_INDIVIDUAL_ID, TfpFrame::OnFindIndividualID )
@@ -190,11 +192,17 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     m_menuEditInd->Append( tfpID_EDIT_IND_NEW_MALE, _("Add New &Male...") );
     m_menuEditInd->Append( tfpID_EDIT_IND_NEW_FEMALE, _("Add New &Female...") );
 
+    m_menuEditEvent = new wxMenu;
+    m_menuEditEvent->Append( tfpID_EDIT_EVENT_CURRENT, _("None") );
+    m_menuEditEvent->Append( tfpID_EDIT_EVENT_SELECT, _("&Select Event") );
+    m_menuEditEvent->Append( tfpID_EDIT_EVENT_NEW_CON, _("&New Conclusion Event") );
+
     wxMenu* menuEdCore = new wxMenu;
     menuEdCore->Append( tfpID_EDIT_EVENT_TYPE, _("&Event Types...") );
 
     wxMenu* menuEdit = new wxMenu;
     menuEdit->Append( tfpID_EDIT_IND_MENU, _("&Individual"), m_menuEditInd );
+    menuEdit->Append( tfpID_EDIT_EVENT_MENU, _("&Event"), m_menuEditEvent );
     menuEdit->Append( tfpID_EDIT_REFERENCE, _("&Reference...") );
     menuEdit->Append( tfpID_EDIT_RESEARCHER, _("R&esearcher...") );
     menuEdit->Append( tfpID_EDIT_CORE_MENU, _("&Core Data"), menuEdCore );
@@ -526,10 +534,26 @@ void TfpFrame::OnEditContext( wxCommandEvent& event )
             id = rgAddExistChild( this, m_EditFamily, SEX_Female );
             if( id ) ret = true;
             break;
-        case tfpID_EDIT_EVENT_TYPE:
-            id = rgSelectEventType( rgSELSTYLE_Create, &rettype );
+        case tfpID_EDIT_EVENT_CURRENT:
+            ret = rgEditEvent( this, m_editEventID );
+            break;
+        case tfpID_EDIT_EVENT_SELECT:
+            id = rgSelectIndEvent( this, rgSELSTYLE_None );
+            if( id ) id = rgEditEvent( this, id );
             if( id ) ret = true;
-            if( id && rettype == rgSELSTYLE_None ) ret = rgEditEventType( id );
+            break;
+        case tfpID_EDIT_EVENT_NEW_CON:
+            id = rgSelectIndividual( this, rgSELSTYLE_None );
+            if( id ) id = rgCreateIndEvent( this, id );
+            if( id ) ret = true;
+            break;
+        case tfpID_EDIT_EVENT_TYPE:
+            id = rgSelectEventType( this, rgSELSTYLE_Create, &rettype );
+            if( id ) ret = true;
+            if( id && rettype == rgSELSTYLE_None ) ret = rgEditEventType( this, id );
+            break;
+        default:
+            wxMessageBox( "Not yet implimented", "OnEditContext" );
             break;
         }
         if( ret == true ) {
@@ -635,7 +659,7 @@ void TfpFrame::OnFindIndividualID( wxCommandEvent& event )
  */
 void TfpFrame::OnFindEventID( wxCommandEvent& event )
 {
-    idt eveID = rgSelectIndEvent();
+    idt eveID = rgSelectIndEvent( this );
     if( eveID ) {
         DisplayHtmPage( "E"+recGetStr( eveID ) );
     }
@@ -694,7 +718,7 @@ void TfpFrame::OnListPagedEvents( wxCommandEvent& event )
  */
 void TfpFrame::OnListSelectedEvents( wxCommandEvent& event )
 {
-    if( rgSelectIndEventList( &m_eveFilter ) ) {
+    if( rgSelectIndEventList( this, &m_eveFilter ) ) {
         DisplayHtmPage( "E$" );
     }
 }
@@ -918,7 +942,7 @@ void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
             ret = rgEditReference( this, id );
             break;
         case 'E':
-            ret = rgEditEvent( id );
+            ret = rgEditEvent( this, id );
             break;
         case 'I':
             ret = rgEditIndividual( this, id );
@@ -1042,7 +1066,7 @@ void TfpFrame::OnHtmCtxMenu( wxCommandEvent& event )
             ret = rgEditReference( this, id );
             break;
         case tfpID_HCTXMENU_EDIT_EVENT:
-            ret = rgEditEvent( id );
+            ret = rgEditEvent( this, id );
             break;
         }
         if( ret == true ) {
@@ -1239,7 +1263,7 @@ void TfpFrame::DoSelectionUpdate( const wxString& display )
     try {
         bool ret = false;
         if( display == "E$" ) {
-            ret = rgSelectIndEventList( &m_eveFilter );
+            ret = rgSelectIndEventList( this, &m_eveFilter );
         }
         if( ret == true ) {
             RefreshHtmPage();
@@ -1457,6 +1481,8 @@ void TfpFrame::RefreshEditMenu()
     m_menuEditInd->SetLabel( tfpID_EDIT_IND_RIGHT, noname );
     m_menuEditInd->Enable( tfpID_EDIT_IND_RIGHT, false );
     m_menuEditInd->Enable( tfpID_EDIT_FAMILY_MENU, false );
+    m_menuEditEvent->SetLabel( tfpID_EDIT_EVENT_CURRENT, noname );
+    m_menuEditEvent->Enable( tfpID_EDIT_EVENT_CURRENT, false );
     m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, false );
 
     switch( uch.GetValue() ) 
@@ -1492,12 +1518,24 @@ void TfpFrame::RefreshEditMenu()
         if( disp.size() >= 2 && wxIsdigit( disp.GetChar( 1 ) ) ) {
             idt indID = recGetID( disp.Mid( 1 ) );
             name = recIndividual::GetFullName( indID );
+            if( name.size() > 50 ) {
+                name = name.Mid( 0, 48 ) + "..."; 
+            }
             m_menuEditInd->SetLabel( tfpID_EDIT_IND_LEFT, name );
             m_menuEditInd->Enable( tfpID_EDIT_IND_LEFT, true );
             m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
         }
         break;
-    case 'R': case 'E':
+    case 'E':
+        if( disp.size() >= 2 && wxIsdigit( disp.GetChar( 1 ) ) ) {
+            m_editEventID = recGetID( disp.Mid( 1 ) );
+            name = recEvent::GetTitle( m_editEventID );
+            m_menuEditEvent->SetLabel( tfpID_EDIT_EVENT_CURRENT, name );
+            m_menuEditEvent->Enable( tfpID_EDIT_EVENT_CURRENT, true );
+            m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
+        }
+        break;
+    case 'R':
         if( disp.size() >= 2 && 
             ( wxIsdigit( disp.GetChar( 1 ) ) || disp.GetChar( 1 ) == '$' )
         ) {

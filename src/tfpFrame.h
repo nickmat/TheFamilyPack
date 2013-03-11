@@ -59,6 +59,8 @@ private:
     idt                 m_EditIndLeft;
     idt                 m_EditIndRight;
     idt                 m_EditFamily;
+    wxMenu*             m_menuEditEvent;
+    idt                 m_editEventID;
     wxTextCtrl*         m_showpage;
     wxArrayString       m_back;
     wxArrayString       m_forward;
@@ -180,6 +182,12 @@ enum
     tfpID_EDIT_IND_LEFT,
     tfpID_EDIT_IND_RIGHT,
     tfpID_EDIT_FAMILY_MENU,
+    tfpID_EDIT_INDIVIDUAL,
+    tfpID_EDIT_IND_NEW_MALE,
+    tfpID_EDIT_IND_NEW_FEMALE,
+    tfpID_EDIT_EVENT_MENU,
+    tfpID_EDIT_REFERENCE,
+    tfpID_EDIT_RESEARCHER,
     tfpID_EDIT_CORE_MENU,
 
     // Items in this group are handled 
@@ -206,15 +214,13 @@ enum
     tfpID_EDIT_NEW_DAUR,
     tfpID_EDIT_EXIST_SON,
     tfpID_EDIT_EXIST_DAUR,
+    tfpID_EDIT_EVENT_CURRENT,
+    tfpID_EDIT_EVENT_SELECT,
+    tfpID_EDIT_EVENT_NEW_CON,
     tfpID_EDIT_EVENT_TYPE,
     tfpID_EDIT_CONTEXT_END,
     // End of TfpFrame::OnEditContext group
 
-    tfpID_EDIT_INDIVIDUAL,
-    tfpID_EDIT_IND_NEW_MALE,
-    tfpID_EDIT_IND_NEW_FEMALE,
-    tfpID_EDIT_REFERENCE,
-    tfpID_EDIT_RESEARCHER,
     tfpID_FIND_FAMILY_ID,
     tfpID_FIND_INDIVIDUAL_ID,
     tfpID_FIND_EVENT_ID,

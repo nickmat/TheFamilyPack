@@ -45,14 +45,14 @@
 #include "rgEdEvent.h"
 
 
-bool rgEditEvent( idt eveID )
+bool rgEditEvent( wxWindow* parent, idt eveID )
 {
     wxASSERT( eveID != 0 );
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
     bool ret = false;
 
-    rgDlgEditEvent* dialog = new rgDlgEditEvent( NULL, eveID );
+    rgDlgEditEvent* dialog = new rgDlgEditEvent( parent, eveID );
 
     if( dialog->ShowModal() == wxID_OK ) {
         recDb::ReleaseSavepoint( savepoint );
@@ -65,7 +65,7 @@ bool rgEditEvent( idt eveID )
 }
 
 
-idt rgCreateIndEvent( idt ind1ID, idt ind2ID )
+idt rgCreateIndEvent( wxWindow* parent, idt ind1ID, idt ind2ID )
 {
     wxASSERT( ind1ID != 0 );
     const wxString savepoint = recDb::GetSavepointStr();
@@ -75,7 +75,7 @@ idt rgCreateIndEvent( idt ind1ID, idt ind2ID )
     if( ind2ID ) {
         grpfilter = recET_FILTER_GrpFamily;
     }
-    idt typeID = rgSelectEventType( rgSELSTYLE_Create, NULL, grpfilter );
+    idt typeID = rgSelectEventType( parent, rgSELSTYLE_Create, NULL, grpfilter );
     if( typeID == 0 ) {
         recDb::Rollback( savepoint );
         return 0;
@@ -120,7 +120,7 @@ idt rgCreateIndEvent( idt ind1ID, idt ind2ID )
         }
     }
 
-    if( ! rgEditEvent( eveID ) ) {
+    if( ! rgEditEvent( parent, eveID ) ) {
         recDb::Rollback( savepoint );
         return 0;
     }
@@ -129,17 +129,17 @@ idt rgCreateIndEvent( idt ind1ID, idt ind2ID )
 }
 
 //============================================================================
-//-------------------------[ rgDlgEditEvidEvent ]-----------------------------
+//-------------------------[ rgDlgEditEvent ]---------------------------------
 //============================================================================
 
 rgDlgEditEvent::rgDlgEditEvent( wxWindow* parent, idt eventID )
-    : fbRgEditEvent( parent ), m_event(eventID)
+    : m_event(eventID), fbRgEditEvent( parent )
 {
     m_date1ID = m_event.FGetDate1ID();
     m_date2ID = m_event.FGetDate2ID();
     m_placeID = m_event.FGetPlaceID();
 
-    m_listPersona->InsertColumn( COL_IndID, _("Individual") );
+    m_listPersona->InsertColumn( COL_IndID, _("Individual"), wxLIST_FORMAT_LEFT, 70 );
     m_listPersona->InsertColumn( COL_Name, _("Name") );
     m_listPersona->InsertColumn( COL_Role, _("Role") );
     m_listPersona->InsertColumn( COL_Note, _("Note") );
@@ -149,8 +149,7 @@ bool rgDlgEditEvent::TransferDataToWindow()
 {
     wxASSERT( m_event.GetID() != 0 );
     m_staticType->SetLabel( m_event.GetTypeStr() );
-    m_staticEventID->SetLabel( m_event.GetIdStr() );
-    m_textCtrlTitle->SetValue( m_event.f_title );
+    m_textCtrlTitle->SetValue( m_event.FGetTitle() );
     m_textCtrlDate1->SetValue( recDate::GetStr( m_date1ID ) );
     if( recEventType::HasDateSpan( m_event.FGetTypeID() ) ) {
         m_textCtrlDate2->SetValue( recDate::GetStr( m_date2ID ) );
@@ -160,8 +159,8 @@ bool rgDlgEditEvent::TransferDataToWindow()
     }
     m_textCtrlPlace->SetValue( recPlace::GetAddressStr( m_placeID ) );
     m_textCtrlNote->SetValue( m_event.f_note );
-
     ListLinkedPersona();
+    m_staticEventID->SetLabel( m_event.GetIdStr() );
     return true;
 }
 
@@ -179,6 +178,8 @@ void rgDlgEditEvent::ListLinkedPersona()
         m_listPersona->SetItem( i, COL_Role, recEventTypeRole::GetName( m_ies[i].f_role_id ) );
         m_listPersona->SetItem( i, COL_Note, m_ies[i].f_note );
     }
+    m_listPersona->SetColumnWidth( COL_Name, wxLIST_AUTOSIZE );
+    m_listPersona->SetColumnWidth( COL_Role, wxLIST_AUTOSIZE );
 }
 
 bool rgDlgEditEvent::TransferDataFromWindow()
@@ -305,7 +306,7 @@ void rgDlgEditEvent::OnPlaceButton( wxCommandEvent& event )
 
 void rgDlgEditEvent::OnAddButton( wxCommandEvent& event )
 {
-    if( rgCreateIndEventRole( 0, m_event.FGetID(), 0 ) ) {
+    if( rgCreateIndEventRole( this, 0, m_event.FGetID(), 0 ) ) {
         ListLinkedPersona();
     }
 }

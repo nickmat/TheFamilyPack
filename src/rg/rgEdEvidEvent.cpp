@@ -90,7 +90,7 @@ idt rgCreateEvidEvent( rgDlgEditReference* parent )
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
 
-    idt typeID = rgSelectEventType();
+    idt typeID = rgSelectEventType( parent );
     if( typeID == 0 ) {
         recDb::Rollback( savepoint );
         return 0;
@@ -215,7 +215,7 @@ idt rgCreateEvidPerEvent( rgDlgEditReference* parent, const wxString& role )
         return 0;
     }
 
-    idt eveTypeID = rgSelectEventType( rgSELSTYLE_Create, NULL, recET_FILTER_GrpPersonal );
+    idt eveTypeID = rgSelectEventType( parent, rgSELSTYLE_Create, NULL, recET_FILTER_GrpPersonal );
     if( eveTypeID == 0 ) {
         recDb::Rollback( savepoint );
         return 0;

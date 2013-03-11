@@ -4953,7 +4953,7 @@
                                             <property name="pos"></property>
                                             <property name="resize">Resizable</property>
                                             <property name="show">1</property>
-                                            <property name="size"></property>
+                                            <property name="size">350,-1</property>
                                             <property name="style"></property>
                                             <property name="subclass"></property>
                                             <property name="toolbar_pane">0</property>
@@ -5826,7 +5826,7 @@
                                             <property name="maximum_size"></property>
                                             <property name="min_size"></property>
                                             <property name="minimize_button">0</property>
-                                            <property name="minimum_size">400,100</property>
+                                            <property name="minimum_size">-1,-1</property>
                                             <property name="moveable">1</property>
                                             <property name="name">m_listPersona</property>
                                             <property name="pane_border">1</property>
@@ -5837,7 +5837,7 @@
                                             <property name="pos"></property>
                                             <property name="resize">Resizable</property>
                                             <property name="show">1</property>
-                                            <property name="size"></property>
+                                            <property name="size">400,100</property>
                                             <property name="style">wxLC_HRULES|wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_VRULES</property>
                                             <property name="subclass"></property>
                                             <property name="toolbar_pane">0</property>

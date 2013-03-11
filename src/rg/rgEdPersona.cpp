@@ -209,7 +209,7 @@ void rgDlgEditPersona::OnPageChanged( wxNotebookEvent& event )
 
 void rgDlgEditPersona::OnIndLinkButton( wxCommandEvent& event )
 {
-    idt indID = rgSelectIndividual();
+    idt indID = rgSelectIndividual( this );
     if( indID == 0 ) return;
 
     recLinkPersona lp(0);

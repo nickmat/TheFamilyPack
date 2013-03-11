@@ -40,8 +40,8 @@ extern bool rgEditRelativeDate( idt dateID );
 extern idt rgCreateRelativeDate( idt baseID, long value = 0 );
 extern bool rgEditPlace( idt placeID );
 extern idt rgCreatePlace( const wxString& placeStr = wxEmptyString );
-extern bool rgEditEventType( idt etID );
-extern idt rgCreateEventType();
+extern bool rgEditEventType( wxWindow* wind, idt etID );
+extern idt rgCreateEventType( wxWindow* wind );
 extern bool rgEditRole( idt roleID );
 extern idt rgCreateRole( idt etID );
 
@@ -59,18 +59,21 @@ extern idt rgSelectPlace(
     unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL,
     unsigned filter = 0, idt = 0 );
 extern idt rgSelectEventType( 
+    wxWindow* wind,
     unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL,
     unsigned grpfilter = recET_FILTER_GrpAll );
-extern bool rgSelectIndEventList( recFilterEvent* exfilter );
+extern bool rgSelectIndEventList( wxWindow* wind, recFilterEvent* exfilter );
 extern idt rgSelectIndEvent( 
+    wxWindow* parent,
     unsigned flag = rgSELSTYLE_None, 
     recFilterEvent* filter = NULL,
     bool* ok = NULL,
     idt indID = 0 );
-extern idt rgSelectIndividual( 
+extern idt rgSelectIndividual(
+    wxWindow* wind,
     unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL,
     unsigned sexfilter = recInd_FILTER_SexAll );
-extern idt rgSelectIndividual( Sex sex );
+extern idt rgSelectIndividual( wxWindow* wind, Sex sex );
 extern idt rgSelectIndividual(
     recIdVec indIDs,
     unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL );
@@ -91,8 +94,8 @@ extern bool rgEditContact( idt conID );
 extern idt rgCreateContact( idt clID );
 
 // See src/rg/rgEdEvent.cpp
-extern bool rgEditEvent( idt eveID );
-extern idt rgCreateIndEvent( idt ind1ID, idt ind2ID = 0 );
+extern bool rgEditEvent( wxWindow* parent, idt eveID );
+extern idt rgCreateIndEvent( wxWindow* parent, idt ind1ID, idt ind2ID = 0 );
 
 // See src/rg/rgEdEvidEvent.cpp
 extern bool rgEditEvidEvent( rgDlgEditReference* parent, idt eveID );
@@ -120,7 +123,7 @@ enum rgSHOWROLE {
     rgSHOWROLE_PrimeFemale
 };
 extern bool rgEditIndEventRole( idt ieID, rgSHOWROLE filter = rgSHOWROLE_All );
-extern bool rgCreateIndEventRole( idt indID, idt eveID, idt roleID );
+extern bool rgCreateIndEventRole( wxWindow* wind, idt indID, idt eveID, idt roleID );
 extern bool rgEditPerEventRole( idt epID, rgSHOWROLE filter = rgSHOWROLE_All );
 extern bool rgCreatePerEventRole( idt perID, idt eveID, idt roleID );
 

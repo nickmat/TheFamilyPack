@@ -273,7 +273,7 @@ void rgDlgEditIndividual::OnEventAddButton( wxCommandEvent& event )
 
 void rgDlgEditIndividual::OnNewEvent( wxCommandEvent& event )
 {
-    idt eveID = rgCreateIndEvent( m_individual.FGetID() );
+    idt eveID = rgCreateIndEvent( this, m_individual.FGetID() );
     if( eveID ) {
         recIndividualEvent ie;
         ie.Find( m_individual.FGetID(), eveID );
@@ -292,7 +292,7 @@ void rgDlgEditIndividual::OnExistingEvent( wxCommandEvent& event )
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
 
-    idt eveID = rgSelectIndEvent( /*rgSELSTYLE_Create, NULL, NULL, m_individual.FGetID()*/ );
+    idt eveID = rgSelectIndEvent( this /*, rgSELSTYLE_Create, NULL, NULL, m_individual.FGetID()*/ );
 
     recIndividualEvent ie(0);
     ie.FSetEventID( eveID );
@@ -304,7 +304,7 @@ void rgDlgEditIndividual::OnExistingEvent( wxCommandEvent& event )
         return;
     }
 
-    if( rgEditEvent( eveID ) ) {
+    if( rgEditEvent( this, eveID ) ) {
         recDb::ReleaseSavepoint( savepoint );
         ie.Read();
         int row = m_ies.size();
@@ -327,7 +327,7 @@ void rgDlgEditIndividual::OnEventEditButton( wxCommandEvent& event )
         return;
     }
     idt eveID = m_ies[row].FGetEventID();
-    if( rgEditEvent( eveID ) ) {
+    if( rgEditEvent( this, eveID ) ) {
         m_listEvent->SetItem( row, EC_Number, recEvent::GetIdStr( eveID ) );
         m_listEvent->SetItem( row, EC_Role, recEventTypeRole::GetName( m_ies[row].FGetRoleID() ) );
         m_listEvent->SetItem( row, EC_Title, recEvent::GetTitle( eveID ) );
