@@ -183,7 +183,6 @@ RECGUI_OBJECTS =  \
 	recgui_rgCompareEvent.obj \
 	recgui_rgCrIndividual.obj \
 	recgui_rgCrName.obj \
-	recgui_rgDialogs.obj \
 	recgui_rgEdContact.obj \
 	recgui_rgEdDate.obj \
 	recgui_rgEdEvent.obj \
@@ -198,6 +197,7 @@ RECGUI_OBJECTS =  \
 	recgui_rgEdPlace.obj \
 	recgui_rgEdReference.obj \
 	recgui_rgEdRelationship.obj \
+	recgui_rgEdRelDate.obj \
 	recgui_rgEdResearcher.obj \
 	recgui_rgEdRole.obj \
 	recgui_rgEdSystem.obj \
@@ -592,9 +592,6 @@ recgui_rgCrIndividual.obj: .\..\..\src\rg\rgCrIndividual.cpp
 recgui_rgCrName.obj: .\..\..\src\rg\rgCrName.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgCrName.cpp
 
-recgui_rgDialogs.obj: .\..\..\src\rg\rgDialogs.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgDialogs.cpp
-
 recgui_rgEdContact.obj: .\..\..\src\rg\rgEdContact.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdContact.cpp
 
@@ -636,6 +633,9 @@ recgui_rgEdReference.obj: .\..\..\src\rg\rgEdReference.cpp
 
 recgui_rgEdRelationship.obj: .\..\..\src\rg\rgEdRelationship.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdRelationship.cpp
+
+recgui_rgEdRelDate.obj: .\..\..\src\rg\rgEdRelDate.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdRelDate.cpp
 
 recgui_rgEdResearcher.obj: .\..\..\src\rg\rgEdResearcher.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdResearcher.cpp

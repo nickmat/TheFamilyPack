@@ -212,10 +212,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\rg\rgDialogs.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\rg\rgEdContact.cpp"
 				>
 			</File>
@@ -265,6 +261,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\rg\rgEdReference.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgEdRelDate.cpp"
 				>
 			</File>
 			<File
@@ -383,6 +383,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\rg\rgEdReference.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgEdRelDate.h"
 				>
 			</File>
 			<File

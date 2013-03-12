@@ -138,7 +138,6 @@ RECGUI_OBJECTS =  \
 	recgui_rgCompareEvent.o \
 	recgui_rgCrIndividual.o \
 	recgui_rgCrName.o \
-	recgui_rgDialogs.o \
 	recgui_rgEdContact.o \
 	recgui_rgEdDate.o \
 	recgui_rgEdEvent.o \
@@ -153,6 +152,7 @@ RECGUI_OBJECTS =  \
 	recgui_rgEdPlace.o \
 	recgui_rgEdReference.o \
 	recgui_rgEdRelationship.o \
+	recgui_rgEdRelDate.o \
 	recgui_rgEdResearcher.o \
 	recgui_rgEdRole.o \
 	recgui_rgEdSystem.o \
@@ -395,9 +395,6 @@ recgui_rgCrIndividual.o: ./../../src/rg/rgCrIndividual.cpp
 recgui_rgCrName.o: ./../../src/rg/rgCrName.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
-recgui_rgDialogs.o: ./../../src/rg/rgDialogs.cpp
-	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
-
 recgui_rgEdContact.o: ./../../src/rg/rgEdContact.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
@@ -438,6 +435,9 @@ recgui_rgEdReference.o: ./../../src/rg/rgEdReference.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgEdRelationship.o: ./../../src/rg/rgEdRelationship.cpp
+	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
+
+recgui_rgEdRelDate.o: ./../../src/rg/rgEdRelDate.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgEdResearcher.o: ./../../src/rg/rgEdResearcher.cpp
