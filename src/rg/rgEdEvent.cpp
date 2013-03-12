@@ -65,7 +65,7 @@ bool rgEditEvent( wxWindow* parent, idt eveID )
 }
 
 
-idt rgCreateIndEvent( wxWindow* parent, idt ind1ID, idt ind2ID )
+idt rgCreateIndEvent( wxWindow* wind, idt ind1ID, idt ind2ID )
 {
     wxASSERT( ind1ID != 0 );
     const wxString savepoint = recDb::GetSavepointStr();
@@ -75,7 +75,7 @@ idt rgCreateIndEvent( wxWindow* parent, idt ind1ID, idt ind2ID )
     if( ind2ID ) {
         grpfilter = recET_FILTER_GrpFamily;
     }
-    idt typeID = rgSelectEventType( parent, rgSELSTYLE_Create, NULL, grpfilter );
+    idt typeID = rgSelectEventType( wind, rgSELSTYLE_Create, NULL, grpfilter );
     if( typeID == 0 ) {
         recDb::Rollback( savepoint );
         return 0;
@@ -100,7 +100,7 @@ idt rgCreateIndEvent( wxWindow* parent, idt ind1ID, idt ind2ID )
         if( sex == SEX_Male ) sr = rgSHOWROLE_PrimeMale;
         if( sex == SEX_Female ) sr = rgSHOWROLE_PrimeFemale;
     }
-    if( ! rgEditIndEventRole( ie.FGetID(), sr )  ) {
+    if( ! rgEditIndEventRole( wind, ie.FGetID(), sr )  ) {
         recDb::Rollback( savepoint );
         return 0;
     }
@@ -114,13 +114,13 @@ idt rgCreateIndEvent( wxWindow* parent, idt ind1ID, idt ind2ID )
         Sex sex = recIndividual::GetSex( ind2ID );
         if( sex == SEX_Male ) sr = rgSHOWROLE_PrimeMale;
         if( sex == SEX_Female ) sr = rgSHOWROLE_PrimeFemale;
-        if( ! rgEditIndEventRole( ie.FGetID(), sr )  ) {
+        if( ! rgEditIndEventRole( wind, ie.FGetID(), sr )  ) {
             recDb::Rollback( savepoint );
             return 0;
         }
     }
 
-    if( ! rgEditEvent( parent, eveID ) ) {
+    if( ! rgEditEvent( wind, eveID ) ) {
         recDb::Rollback( savepoint );
         return 0;
     }
@@ -262,12 +262,12 @@ bool rgDlgEditEvent::TransferDataFromWindow()
 void rgDlgEditEvent::OnDate1Button( wxCommandEvent& event )
 {
     if( m_date1ID == 0 ) {
-        m_date1ID = rgCreateDate();
+        m_date1ID = rgCreateDate( this );
         if( m_date1ID == 0 ) {
             return;
         }
     } else {
-        if( !rgEditDate( m_date1ID ) ) {
+        if( !rgEditDate( this, m_date1ID ) ) {
             return;
         }
     }
@@ -277,12 +277,12 @@ void rgDlgEditEvent::OnDate1Button( wxCommandEvent& event )
 void rgDlgEditEvent::OnDate2Button( wxCommandEvent& event )
 {
     if( m_date2ID == 0 ) {
-        m_date2ID = rgCreateDate();
+        m_date2ID = rgCreateDate( this );
         if( m_date2ID == 0 ) {
             return;
         }
     } else {
-        if( !rgEditDate( m_date2ID ) ) {
+        if( !rgEditDate( this, m_date2ID ) ) {
             return;
         }
     }
@@ -292,12 +292,12 @@ void rgDlgEditEvent::OnDate2Button( wxCommandEvent& event )
 void rgDlgEditEvent::OnPlaceButton( wxCommandEvent& event )
 {
     if( m_placeID == 0 ) {
-        m_placeID = rgCreatePlace();
+        m_placeID = rgCreatePlace( this );
         if( m_placeID == 0 ) {
             return;
         }
     } else {
-        if( !rgEditPlace( m_placeID ) ) {
+        if( !rgEditPlace( this, m_placeID ) ) {
             return;
         }
     }
@@ -324,7 +324,7 @@ void rgDlgEditEvent::OnEditButton( wxCommandEvent& event )
 void rgDlgEditEvent::EditRow( long row )
 {
     idt ieID = m_ies[row].FGetID();
-    if( rgEditIndEventRole( ieID ) ) {
+    if( rgEditIndEventRole( this, ieID ) ) {
         ListLinkedPersona();
     }
 }

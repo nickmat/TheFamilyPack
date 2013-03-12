@@ -350,7 +350,7 @@ void rgDlgEditReference::OnNewName( wxCommandEvent& event )
 
 void rgDlgEditReference::OnNewDate( wxCommandEvent& event )
 {
-    idt dateID = rgCreateDate( m_textCtrlStatement->GetStringSelection() );
+    idt dateID = rgCreateDate( this, m_textCtrlStatement->GetStringSelection() );
     if( dateID ) {
         idt reID = CreateRefEntity( recReferenceEntity::TYPE_Date, dateID );
         UpdateEntities( reID );
@@ -369,7 +369,7 @@ void rgDlgEditReference::OnNewDateAge( wxCommandEvent& event )
     recDb::Savepoint( savepoint );
 
     unsigned retButton;
-    idt baseID = rgSelectDate( rgSELSTYLE_Create, &retButton, recD_FILTER_Reference, m_reference.FGetID() );
+    idt baseID = rgSelectDate( this, rgSELSTYLE_Create, &retButton, recD_FILTER_Reference, m_reference.FGetID() );
     if( baseID == 0 ) {
         recDb::Rollback( savepoint );
         return;
@@ -378,7 +378,7 @@ void rgDlgEditReference::OnNewDateAge( wxCommandEvent& event )
         CreateRefEntity( recReferenceEntity::TYPE_Date, baseID );
     }
 
-    idt dateID = rgCreateRelativeDate( baseID, val );
+    idt dateID = rgCreateRelativeDate( this, baseID, val );
     if( dateID ) {
         recDb::ReleaseSavepoint( savepoint );
         idt reID = CreateRefEntity( recReferenceEntity::TYPE_Date, dateID );
@@ -390,7 +390,7 @@ void rgDlgEditReference::OnNewDateAge( wxCommandEvent& event )
 
 void rgDlgEditReference::OnNewPlace( wxCommandEvent& event )
 {
-    idt placeID = rgCreatePlace( m_textCtrlStatement->GetStringSelection() );
+    idt placeID = rgCreatePlace( this, m_textCtrlStatement->GetStringSelection() );
     if( placeID ) {
         idt reID = CreateRefEntity( recReferenceEntity::TYPE_Place, placeID );
         UpdateEntities( reID );
@@ -435,10 +435,10 @@ void rgDlgEditReference::OnEditEntityButton( wxCommandEvent& event )
     switch( m_entities[row].FGetEntityType() )
     {
     case recReferenceEntity::TYPE_Date:  
-        if( rgEditDate( id ) ) break;
+        if( rgEditDate( this, id ) ) break;
         return;
     case recReferenceEntity::TYPE_Place: 
-        if( rgEditPlace( id ) ) break;
+        if( rgEditPlace( this, id ) ) break;
         return;
     case recReferenceEntity::TYPE_Relationship:
         if( rgEditPerRelationship( this, id ) ) break;
@@ -447,7 +447,7 @@ void rgDlgEditReference::OnEditEntityButton( wxCommandEvent& event )
         if( rgEditEvidEvent( this, id ) ) break;
         return;
     case recReferenceEntity::TYPE_Name:
-        if( rgEditName( id ) ) break;
+        if( rgEditName( this, id ) ) break;
         return;
     default:
         wxMessageBox( _("Element cannot be edited"), _("Edit") );
@@ -543,7 +543,7 @@ bool rgDlgEditReference::SelectDate(
     wxASSERT( dateID );  // Can't handle NULL pointer
 
     unsigned retButton;
-    *dateID = rgSelectDate( style, &retButton, recD_FILTER_Reference, m_reference.FGetID() );
+    *dateID = rgSelectDate( this, style, &retButton, recD_FILTER_Reference, m_reference.FGetID() );
     if( retButton == rgSELSTYLE_Create ) {
         CreateRefEntity( recReferenceEntity::TYPE_Date, *dateID );
     }
@@ -562,7 +562,7 @@ bool rgDlgEditReference::SelectPlace(
     wxASSERT( placeID );  // Can't handle NULL pointer
 
     unsigned retButton;
-    *placeID = rgSelectPlace( style, &retButton, recP_FILTER_Reference, m_reference.FGetID() );
+    *placeID = rgSelectPlace( this, style, &retButton, recP_FILTER_Reference, m_reference.FGetID() );
     if( retButton == rgSELSTYLE_Create ) {
         CreateRefEntity( recReferenceEntity::TYPE_Place, *placeID );
     }

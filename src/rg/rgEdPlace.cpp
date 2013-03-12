@@ -37,7 +37,51 @@
 #include "wx/wx.h"
 #endif
 
+#include "rg/rgDialogs.h"
 #include "rgEdPlace.h"
+
+bool rgEditPlace( wxWindow* wind, idt placeID )
+{
+    wxASSERT( placeID != 0 );
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+    bool ret = false;
+
+    rgDlgEditPlace* dialog = new rgDlgEditPlace( NULL, placeID );
+
+    if( dialog->ShowModal() == wxID_OK ) {
+        recDb::ReleaseSavepoint( savepoint );
+        ret = true;
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+    return ret;
+}
+
+idt rgCreatePlace( wxWindow* wind, const wxString& placeStr )
+{
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+
+    recPlace place(0);
+    place.Save();
+    idt placeID = place.FGetID();
+    recPlacePart pp(0);
+    pp.FSetPlaceID( placeID );
+    pp.FSetTypeID( recPlacePartType::TYPE_Address );
+    pp.FSetValue( placeStr );
+    pp.FSetSequence( 1 );
+    pp.Save();
+
+    if( rgEditPlace( wind, placeID ) ) {
+        recDb::ReleaseSavepoint( savepoint );
+        return placeID;
+    }
+    recDb::Rollback( savepoint );
+    return 0;
+}
+
 
 // NOTE We are using a simplified place model where the only PlaceTypePart is
 // "Address" and there is one, and only one, PlacePart per Place.

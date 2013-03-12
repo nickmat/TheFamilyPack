@@ -96,11 +96,11 @@ void dlgNote::OnNavigationRequest( wxWebViewEvent& evt )
         bool ret = false;
 
         if( url.StartsWith( "tfpe:D" ) ) {
-            ret = rgEditDate( recGetID( url.Mid(6) ) );
+            ret = rgEditDate( this, recGetID( url.Mid(6) ) );
         } else if( url.StartsWith( "tfpe:P" ) ) {
-            ret = rgEditPlace( recGetID( url.Mid(6) ) );
+            ret = rgEditPlace( this, recGetID( url.Mid(6) ) );
         } else if( url.StartsWith( "tfpe:N" ) ) {
-            ret = rgEditName( recGetID( url.Mid(6) ) );
+            ret = rgEditName( this, recGetID( url.Mid(6) ) );
 //        } else if( url.StartsWith( "tfpe:Rs" ) ) {
 //            ret = rgEditRelationship( recGetID( url.Mid(7) ) );
         }

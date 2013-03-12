@@ -43,7 +43,7 @@
 #include "rgEdResearcher.h"
 #include "rgCommon.h"
 
-bool rgEditResearcher( idt resID  )
+bool rgEditResearcher( wxWindow* wind, idt resID  )
 {
     wxASSERT( resID != 0 );
 
@@ -51,7 +51,7 @@ bool rgEditResearcher( idt resID  )
     recDb::Savepoint( savepoint );
     bool ret = false;
 
-    rgDlgEditResearcher* dialog = new rgDlgEditResearcher( NULL, resID );
+    rgDlgEditResearcher* dialog = new rgDlgEditResearcher( wind, resID );
 
     if( dialog->ShowModal() == wxID_OK ) {
         recDb::ReleaseSavepoint( savepoint );
@@ -63,7 +63,7 @@ bool rgEditResearcher( idt resID  )
     return ret;
 }
 
-idt rgCreateResearcher()
+idt rgCreateResearcher( wxWindow* wind )
 {
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
@@ -76,7 +76,7 @@ idt rgCreateResearcher()
     res.Save();
     idt resID = res.FGetID();
 
-    if( rgEditResearcher( resID ) ) {
+    if( rgEditResearcher( wind, resID ) ) {
         recDb::ReleaseSavepoint( savepoint );
         return resID;
     }
@@ -214,7 +214,7 @@ void rgDlgEditResearcher::OnButtonInd( wxCommandEvent& event )
 
 void rgDlgEditResearcher::OnButtonAdd( wxCommandEvent& event )
 {
-    idt conID = rgCreateContact( m_list.FGetID() );
+    idt conID = rgCreateContact( this, m_list.FGetID() );
     if( conID ) {
         recContact con(conID);
         int row = m_contacts.size();
@@ -232,7 +232,7 @@ void rgDlgEditResearcher::OnButtonEdit( wxCommandEvent& event )
         wxMessageBox( _("No row selected"), _("Edit Contact") );
         return;
     }
-    if( rgEditContact( m_contacts[row].FGetID() ) ) {
+    if( rgEditContact( this, m_contacts[row].FGetID() ) ) {
         m_contacts[row].Read();
         m_listContacts->SetItem( row, COL_ConID, m_contacts[row].GetIdStr() );
         m_listContacts->SetItem( row, COL_Type, m_contacts[row].GetTypeStr() );

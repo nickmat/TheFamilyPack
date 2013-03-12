@@ -34,86 +34,50 @@
 
 class rgDlgEditReference;
 
-extern bool rgEditDate( idt dateID );
-extern idt rgCreateDate( const wxString& dateStr = wxEmptyString );
-extern bool rgEditRelativeDate( idt dateID );
-extern idt rgCreateRelativeDate( idt baseID, long value = 0 );
-extern bool rgEditPlace( idt placeID );
-extern idt rgCreatePlace( const wxString& placeStr = wxEmptyString );
-extern bool rgEditEventType( wxWindow* wind, idt etID );
-extern idt rgCreateEventType( wxWindow* wind );
-extern bool rgEditRole( idt roleID );
-extern idt rgCreateRole( idt etID );
-
-enum {
-    rgSELSTYLE_None       = 0x0000,
-    rgSELSTYLE_Create     = 0x0001,   // Show Create button
-    rgSELSTYLE_Filter     = 0x0002,   // Show Filter button
-    rgSELSTYLE_Unknown    = 0x0004,   // Show Unknown button (for Unknown value)
-    rgSELSTYLE_SelList    = 0x0100    // Selects the full list
-};
-extern idt rgSelectDate( 
-    unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL,
-    unsigned filter = 0, idt = 0 );
-extern idt rgSelectPlace( 
-    unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL,
-    unsigned filter = 0, idt = 0 );
-extern idt rgSelectEventType( 
-    wxWindow* wind,
-    unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL,
-    unsigned grpfilter = recET_FILTER_GrpAll );
-extern bool rgSelectIndEventList( wxWindow* wind, recFilterEvent* exfilter );
-extern idt rgSelectIndEvent( 
-    wxWindow* parent,
-    unsigned flag = rgSELSTYLE_None, 
-    recFilterEvent* filter = NULL,
-    bool* ok = NULL,
-    idt indID = 0 );
-extern idt rgSelectIndividual(
-    wxWindow* wind,
-    unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL,
-    unsigned sexfilter = recInd_FILTER_SexAll );
-extern idt rgSelectIndividual( wxWindow* wind, Sex sex );
-extern idt rgSelectIndividual(
-    recIdVec indIDs,
-    unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL );
-
 // See src/rg/rgCrName.cpp
 enum {
     rgCRNAME_Default   = 0x000, // Use default settings to decode name1 string.
     rgCRNAME_Sur_Given = 0x001  // If given, name1 is surname, name2 is given name.
 };
-extern idt rgCreateName( wxWindow* parent, idt perID,
+extern idt rgCreateName( wxWindow* wind, idt perID,
     unsigned flags = rgCRNAME_Default, 
     const wxString& name1 = wxEmptyString,
     const wxString& name2 = wxEmptyString,
     recNameStyle::Style type = recNameStyle::NS_Default );
 
 // See src/rg/rgEdContact.cpp
-extern bool rgEditContact( idt conID );
-extern idt rgCreateContact( idt clID );
+extern bool rgEditContact( wxWindow* wind, idt conID );
+extern idt rgCreateContact( wxWindow* wind, idt clID );
+
+// See src/rg/rgEdDate.cpp
+extern bool rgEditDate( wxWindow* wind, idt dateID );
+extern idt rgCreateDate( wxWindow* wind, const wxString& dateStr = wxEmptyString );
 
 // See src/rg/rgEdEvent.cpp
-extern bool rgEditEvent( wxWindow* parent, idt eveID );
-extern idt rgCreateIndEvent( wxWindow* parent, idt ind1ID, idt ind2ID = 0 );
+extern bool rgEditEvent( wxWindow* wind, idt eveID );
+extern idt rgCreateIndEvent( wxWindow* wind, idt ind1ID, idt ind2ID = 0 );
+
+// See src/rg/rgEdEventType.cpp
+extern bool rgEditEventType( wxWindow* wind, idt etID );
+extern idt rgCreateEventType( wxWindow* wind );
 
 // See src/rg/rgEdEvidEvent.cpp
-extern bool rgEditEvidEvent( rgDlgEditReference* parent, idt eveID );
-extern idt rgCreateEvidEvent( rgDlgEditReference* parent );
-extern idt rgCreateEvidPerEvent( rgDlgEditReference* parent, const wxString& role );
+extern bool rgEditEvidEvent( rgDlgEditReference* wind, idt eveID );
+extern idt rgCreateEvidEvent( rgDlgEditReference* wind );
+extern idt rgCreateEvidPerEvent( rgDlgEditReference* wind, const wxString& role );
 
 // See src/rg/rgEdFamily.cpp
-extern bool rgEditFamily( wxWindow* parent, idt famID );
+extern bool rgEditFamily( wxWindow* wind, idt famID );
 
 // See src/rg/rgEdIndividual.cpp
-extern bool rgEditIndividual( wxWindow* parent, idt indID );
+extern bool rgEditIndividual( wxWindow* wind, idt indID );
 
 // See src/rg/rgEdName.cpp
-extern bool rgEditName( idt nameID );
+extern bool rgEditName( wxWindow* wind, idt nameID );
 
 // See src/rg/rgEdNamePart.cpp
-extern bool rgEditNamePart( idt npID );
-extern idt rgCreateNamePart( idt nameID, const wxString& npStr = wxEmptyString );
+extern bool rgEditNamePart( wxWindow* wind, idt npID );
+extern idt rgCreateNamePart( wxWindow* wind, idt nameID, const wxString& npStr = wxEmptyString );
 
 // See src/rg/rgEdPerIndEvent.cpp
 enum rgSHOWROLE {
@@ -122,38 +86,50 @@ enum rgSHOWROLE {
     rgSHOWROLE_PrimeMale,
     rgSHOWROLE_PrimeFemale
 };
-extern bool rgEditIndEventRole( idt ieID, rgSHOWROLE filter = rgSHOWROLE_All );
+extern bool rgEditIndEventRole( wxWindow* wind, idt ieID, rgSHOWROLE filter = rgSHOWROLE_All );
 extern bool rgCreateIndEventRole( wxWindow* wind, idt indID, idt eveID, idt roleID );
-extern bool rgEditPerEventRole( idt epID, rgSHOWROLE filter = rgSHOWROLE_All );
-extern bool rgCreatePerEventRole( idt perID, idt eveID, idt roleID );
+extern bool rgEditPerEventRole( wxWindow* wind, idt epID, rgSHOWROLE filter = rgSHOWROLE_All );
+extern bool rgCreatePerEventRole( wxWindow* wind, idt perID, idt eveID, idt roleID );
 
 // See src/rg/rgEdPersona.cpp
-extern bool rgEditPersona( rgDlgEditReference* parent, idt perID );
+extern bool rgEditPersona( rgDlgEditReference* wind, idt perID );
 //extern idt rgCreatePersona( wxWindow* parent );
 
+// See src/rg/rgEdPlace.cpp
+extern bool rgEditPlace( wxWindow* wind, idt placeID );
+extern idt rgCreatePlace( wxWindow* wind, const wxString& placeStr = wxEmptyString );
+
 // See src/rg/rgEdReference.cpp
-extern bool rgEditReference( wxWindow* parent, idt refID );
-extern idt rgCreateReference( wxWindow* parent );
+extern bool rgEditReference( wxWindow* wind, idt refID );
+extern idt rgCreateReference( wxWindow* wind );
 
 // See src/rg/rgEdRelationship.cpp
-extern bool rgEditPerRelationship( rgDlgEditReference* parent, idt relID );
+extern bool rgEditPerRelationship( rgDlgEditReference* wind, idt relID );
 extern idt rgCreatePerRelationship( 
-    rgDlgEditReference* parent, 
+    rgDlgEditReference* wind, 
     int per1ID, const wxString& descrip = wxEmptyString, idt per2ID = 0 );
 inline idt rgCreatePerRelationship( 
-    rgDlgEditReference* parent, 
+    rgDlgEditReference* wind, 
     const wxString& descrip = wxEmptyString ) 
-    { return rgCreatePerRelationship( parent, 0, descrip ); }
+    { return rgCreatePerRelationship( wind, 0, descrip ); }
+
+// See src/rg/rgEdRelDate.cpp
+extern bool rgEditRelativeDate( wxWindow* wind, idt dateID );
+extern idt rgCreateRelativeDate( wxWindow* wind, idt baseID, long value = 0 );
 
 // See src/rg/rgEdResearcher.cpp
-extern bool rgEditResearcher( idt conID );
-extern idt rgCreateResearcher();
+extern bool rgEditResearcher( wxWindow* wind, idt conID );
+extern idt rgCreateResearcher( wxWindow* wind );
+
+// See src/rg/rgEdRole.cpp
+extern bool rgEditRole( wxWindow* wind, idt roleID );
+extern idt rgCreateRole( wxWindow* wind, idt etID );
 
 // See src/rg/rgEdSystem.cpp
-extern bool rgEditSystemSettings( wxWindow* parent );
+extern bool rgEditSystemSettings( wxWindow* wind );
 
 // See src/rg/rgEdUser.cpp
-extern bool rgEditUserSettings( wxWindow* parent );
+extern bool rgEditUserSettings( wxWindow* wind );
 
 // See src/rg/rgIndividual.cpp
 extern idt rgAddNewIndividual( 
@@ -165,5 +141,45 @@ extern bool rgAddExistSpouse( wxWindow* wind, idt indID, Sex sex );
 extern idt rgAddNewChild( wxWindow* wind, idt famID, Sex sex );
 extern idt rgAddExistChild( wxWindow* wind, idt famID, Sex sex );
 extern bool rgDeleteIndividual( wxWindow* wind, idt indID );
+
+enum {
+    rgSELSTYLE_None       = 0x0000,
+    rgSELSTYLE_Create     = 0x0001,   // Show Create button
+    rgSELSTYLE_Filter     = 0x0002,   // Show Filter button
+    rgSELSTYLE_Unknown    = 0x0004,   // Show Unknown button (for Unknown value)
+    rgSELSTYLE_SelList    = 0x0100    // Selects the full list
+};
+
+// See src/rg/rgSelect.cpp
+extern idt rgSelectDate( 
+    wxWindow* wind,
+    unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL,
+    unsigned filter = 0, idt = 0 );
+extern idt rgSelectPlace( 
+    wxWindow* wind,
+    unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL,
+    unsigned filter = 0, idt = 0 );
+extern idt rgSelectEventType( 
+    wxWindow* wind,
+    unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL,
+    unsigned grpfilter = recET_FILTER_GrpAll );
+extern idt rgSelectIndividual(
+    wxWindow* wind,
+    unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL,
+    unsigned sexfilter = recInd_FILTER_SexAll );
+extern idt rgSelectIndividual( wxWindow* wind, Sex sex );
+extern idt rgSelectIndividual(
+    wxWindow* wind,
+    recIdVec indIDs,
+    unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL );
+
+// See src/rg/rgSelIndEvent.cpp
+extern bool rgSelectIndEventList( wxWindow* wind, recFilterEvent* exfilter );
+extern idt rgSelectIndEvent( 
+    wxWindow* wind,
+    unsigned flag = rgSELSTYLE_None, 
+    recFilterEvent* filter = NULL,
+    bool* ok = NULL,
+    idt indID = 0 );
 
 #endif // RGDIALOGS_H

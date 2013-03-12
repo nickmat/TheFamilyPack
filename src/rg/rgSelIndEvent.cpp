@@ -41,6 +41,48 @@
 #include "rgSelIndEvent.h"
 #include "rg/rgDialogs.h"
 
+bool rgSelectIndEventList( wxWindow* wind, recFilterEvent* evefilter )
+{
+    wxASSERT( evefilter != NULL );
+    idt ret = rgSelectIndEvent( wind, rgSELSTYLE_SelList, evefilter );
+    if( ret == 0 ) {
+        return false;
+    }
+    return true;
+}
+
+idt rgSelectIndEvent( wxWindow* wind, unsigned selstyle, recFilterEvent* exfilter, bool* ok, idt indID )
+{
+    idt eveID = 0;
+    bool cont = true;
+    recFilterEvent* fe = exfilter;
+    if( fe == NULL ) {
+        fe = new recFilterEvent;
+    }
+    if( ok ) *ok = false;
+
+    rgDlgSelectIndEvent* dialog = new rgDlgSelectIndEvent( wind, selstyle, fe );
+    if( dialog->ShowModal() == wxID_OK ) {
+        if( ok ) *ok = true;
+        if( dialog->GetCreatePressed() ) {
+            eveID = rgCreateIndEvent( wind, indID );
+            if( eveID == 0 && ok ) *ok = false;
+        } else if( dialog->GetUnknownPressed() ) {
+            eveID = 0;
+        } else {
+            eveID = dialog->GetID();
+        }
+    }
+    dialog->Destroy();
+    if( exfilter == NULL ) {
+        delete fe;
+    }
+    return eveID;
+}
+
+//-------------------------------------------------------------------------------
+//-------------------[ rgDlgSelectIndEvent ]-------------------------------------
+//-------------------------------------------------------------------------------
 
 rgDlgSelectIndEvent::rgDlgSelectIndEvent( wxWindow* parent, unsigned selstyle, recFilterEvent* fe )
     : m_create(false), m_selList(false), m_fe(fe),

@@ -43,14 +43,14 @@
 #include "rg/rgDialogs.h"
 
 
-bool rgEditName( idt nameID )
+bool rgEditName( wxWindow* wind, idt nameID )
 {
     wxASSERT( nameID != 0 );
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
     bool ret = false;
 
-    rgDlgEditName* dialog = new rgDlgEditName( NULL, nameID );
+    rgDlgEditName* dialog = new rgDlgEditName( wind, nameID );
 
     if( dialog->ShowModal() == wxID_OK ) {
         recDb::ReleaseSavepoint( savepoint );
@@ -129,7 +129,7 @@ void rgDlgEditName::UpdateName()
 
 void rgDlgEditName::OnPartAddButton( wxCommandEvent& event )
 {
-    idt npID = rgCreateNamePart( m_name.FGetID() );
+    idt npID = rgCreateNamePart( this, m_name.FGetID() );
     if( npID ) {
         recNamePart np(npID);
         int row = m_parts.size();
@@ -149,7 +149,7 @@ void rgDlgEditName::OnPartEditButton( wxCommandEvent& event )
         return;
     }
     idt npID = m_parts[row].FGetID();
-    if( rgEditNamePart( npID ) ) {
+    if( rgEditNamePart( this, npID ) ) {
         recNamePart np(npID);
         m_listNamePart->SetItem( row, COL_ID, np.GetIdStr() );
         m_listNamePart->SetItem( row, COL_Type, recNamePartType::GetTypeStr( np.FGetTypeID() ) );

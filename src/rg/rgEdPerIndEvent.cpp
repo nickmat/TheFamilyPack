@@ -42,12 +42,12 @@
 //#include "rg/rgDialogs.h"
 
 
-bool rgEditIndEventRole( idt ieID, rgSHOWROLE filter )
+bool rgEditIndEventRole( wxWindow* wind, idt ieID, rgSHOWROLE filter )
 {
     wxASSERT( ieID != 0 );
     const wxString savepoint = recDb::GetSavepointStr();
     bool ret = false;
-    rgDlgIndEvent* dialog = new rgDlgIndEvent( NULL, ieID, filter );
+    rgDlgIndEvent* dialog = new rgDlgIndEvent( wind, ieID, filter );
 
     recDb::Savepoint( savepoint );
     if( dialog->ShowModal() == wxID_OK )
@@ -81,7 +81,7 @@ bool rgCreateIndEventRole( wxWindow* wind, idt indID, idt eveID, idt roleID )
     ie.FSetIndSeq( recIndividual::GetMaxEventSeqNumber( indID ) );
     ie.Save();
     if( roleID == 0 ) {
-        if( ! rgEditIndEventRole( ie.FGetID() ) ) {
+        if( ! rgEditIndEventRole( wind, ie.FGetID() ) ) {
             recDb::Rollback( savepoint );
             return false;
         }
@@ -90,12 +90,12 @@ bool rgCreateIndEventRole( wxWindow* wind, idt indID, idt eveID, idt roleID )
     return true;
 }
 
-bool rgEditPerEventRole( idt epID, rgSHOWROLE filter )
+bool rgEditPerEventRole( wxWindow* wind, idt epID, rgSHOWROLE filter )
 {
     wxASSERT( epID != 0 );
     const wxString savepoint = recDb::GetSavepointStr();
     bool ret = false;
-    rgDlgPerEvent* dialog = new rgDlgPerEvent( NULL, epID, filter );
+    rgDlgPerEvent* dialog = new rgDlgPerEvent( wind, epID, filter );
 
     recDb::Savepoint( savepoint );
     if( dialog->ShowModal() == wxID_OK )
@@ -109,7 +109,7 @@ bool rgEditPerEventRole( idt epID, rgSHOWROLE filter )
     return ret;
 }
 
-bool rgCreatePerEventRole( idt perID, idt eveID, idt roleID )
+bool rgCreatePerEventRole( wxWindow* wind, idt perID, idt eveID, idt roleID )
 {
     wxASSERT( perID != 0 ); // TODO: Select a Persona from a list
     wxASSERT( eveID != 0 ); // TODO: Select an Event from a list
@@ -122,7 +122,7 @@ bool rgCreatePerEventRole( idt perID, idt eveID, idt roleID )
     ep.FSetPerSeq( recIndividual::GetMaxEventSeqNumber( perID ) );
     ep.Save();
     if( roleID == 0 ) {
-        if( ! rgEditPerEventRole( ep.FGetID() ) ) {
+        if( ! rgEditPerEventRole( wind, ep.FGetID() ) ) {
             recDb::Rollback( savepoint );
             return false;
         }
@@ -181,7 +181,7 @@ idt rgPerIndEvent::GetRoleID() const
 
 void rgPerIndEvent::OnAddRoleButton( wxCommandEvent& event )
 {
-    idt roleID = rgCreateRole( m_event.FGetTypeID() );
+    idt roleID = rgCreateRole( this, m_event.FGetTypeID() );
     if( roleID ) {
         SetRoleList( roleID );
     }

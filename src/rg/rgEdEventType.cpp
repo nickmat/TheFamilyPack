@@ -36,7 +36,44 @@
 #include "wx/wx.h"
 #endif
 
+#include "rg/rgDialogs.h"
 #include "rgEdEventType.h"
+
+bool rgEditEventType( wxWindow* wind, idt etID )
+{
+    wxASSERT( etID != 0 );
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+    bool ret = false;
+
+    rgDlgEditEventType* dialog = new rgDlgEditEventType( wind, etID );
+
+    if( dialog->ShowModal() == wxID_OK ) {
+        recDb::ReleaseSavepoint( savepoint );
+        ret = true;
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+    return ret;
+}
+
+idt rgCreateEventType( wxWindow* wind )
+{
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+
+    recEventType et(0);
+    et.Save();
+    idt etID = et.FGetID();
+    if( rgEditEventType( wind, etID ) ) {
+        recDb::ReleaseSavepoint( savepoint );
+    } else {
+        recDb::Rollback( savepoint );
+        etID = 0;
+    }
+    return etID;
+}
 
 //============================================================================
 //-------------------------[ rgDlgEditEventType ]-----------------------------

@@ -621,12 +621,12 @@ void TfpFrame::OnEditResearcher( wxCommandEvent& event )
     try {
         bool ret = false;
         if( num == 0 ) {
-            idt resID = rgCreateResearcher();
+            idt resID = rgCreateResearcher( this );
             if( resID != 0 ) {
                 ret = true;
             }
         } else {
-            ret = rgEditResearcher( (idt) num );
+            ret = rgEditResearcher( this, (idt) num );
         }
         if( ret == true ) {
             recDb::Commit();
@@ -1235,11 +1235,11 @@ void TfpFrame::DoEdit( const wxString& href )
         } else if( href.StartsWith( "I" ) ) {
             ret = rgEditIndividual( this, recGetID( href.Mid(1) ) );
         } else if( href.StartsWith( "Re" ) ) {
-            ret = rgEditResearcher( recGetID( href.Mid(2) ) );
+            ret = rgEditResearcher( this, recGetID( href.Mid(2) ) );
         } else if( href.StartsWith( "R" ) ) {
             ret = rgEditReference( this, recGetID( href.Mid(1) ) );
         } else if( href.StartsWith( "C" ) ) {
-            ret = rgEditContact( recGetID( href.Mid(1) ) );
+            ret = rgEditContact( this, recGetID( href.Mid(1) ) );
         } else {
             wxMessageBox(
                 wxString::Format( _("Unable to edit ref\n[%s]"), href ),

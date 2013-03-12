@@ -36,7 +36,46 @@
 #include "wx/wx.h"
 #endif
 
+#include "rg/rgDialogs.h"
 #include "rgEdRole.h"
+
+bool rgEditRole( wxWindow* wind, idt roleID )
+{
+    wxASSERT( roleID != 0 );
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+    bool ret = false;
+
+    rgDlgEditRole* dialog = new rgDlgEditRole( wind, roleID );
+
+    if( dialog->ShowModal() == wxID_OK ) {
+        recDb::ReleaseSavepoint( savepoint );
+        ret = true;
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+    return ret;
+}
+
+idt rgCreateRole( wxWindow* wind, idt etID )
+{
+    wxASSERT( etID != 0 );
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+
+    recEventTypeRole role(0);
+    role.FSetTypeID( etID );
+    role.Save();
+    idt roleID = role.FGetID();
+    if( rgEditRole( wind, roleID ) ) {
+        recDb::ReleaseSavepoint( savepoint );
+    } else {
+        recDb::Rollback( savepoint );
+        roleID = 0;
+    }
+    return roleID;
+}
 
 //============================================================================
 //-------------------------[ rgDlgEditRole ]----------------------------------

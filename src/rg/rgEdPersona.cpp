@@ -238,7 +238,7 @@ void rgDlgEditPersona::OnNameEditButton( wxCommandEvent& event )
         return;
     }
     idt nameID = m_names[row].FGetID();
-    if( rgEditName( nameID ) ) {
+    if( rgEditName( this, nameID ) ) {
         UpdateNameList( nameID );
     }
 }

@@ -186,7 +186,7 @@ void rgDlgEditIndividual::OnNameEditButton( wxCommandEvent& event )
         return;
     }
     idt nameID = m_names[row].FGetID();
-    if( rgEditName( nameID ) ) {
+    if( rgEditName( this, nameID ) ) {
         recName name( nameID );
         m_listName->SetItem( row, NC_Number, name.GetIdStr() );
         m_listName->SetItem( row, NC_Type, recNameStyle::GetStyleStr( name.FGetTypeID() ) );
@@ -299,7 +299,7 @@ void rgDlgEditIndividual::OnExistingEvent( wxCommandEvent& event )
     ie.FSetIndID( m_individual.FGetID() );
     ie.Save();
 
-    if( ! rgEditIndEventRole( ie.FGetID(), rgSHOWROLE_All )  ) {
+    if( ! rgEditIndEventRole( this, ie.FGetID(), rgSHOWROLE_All )  ) {
         recDb::Rollback( savepoint );
         return;
     }

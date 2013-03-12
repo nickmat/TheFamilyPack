@@ -204,18 +204,18 @@ idt rgCreateEvidEvent( rgDlgEditReference* parent )
     return eveID;
 }
 
-idt rgCreateEvidPerEvent( rgDlgEditReference* parent, const wxString& role )
+idt rgCreateEvidPerEvent( rgDlgEditReference* wind, const wxString& role )
 {
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
 
-    idt perID = parent->SelectCreatePersona();
+    idt perID = wind->SelectCreatePersona();
     if( perID == 0 ) {
         recDb::Rollback( savepoint );
         return 0;
     }
 
-    idt eveTypeID = rgSelectEventType( parent, rgSELSTYLE_Create, NULL, recET_FILTER_GrpPersonal );
+    idt eveTypeID = rgSelectEventType( wind, rgSELSTYLE_Create, NULL, recET_FILTER_GrpPersonal );
     if( eveTypeID == 0 ) {
         recDb::Rollback( savepoint );
         return 0;
@@ -228,11 +228,11 @@ idt rgCreateEvidPerEvent( rgDlgEditReference* parent, const wxString& role )
 
     idt date1ID, date2ID;
     unsigned style = rgSELSTYLE_Create | rgSELSTYLE_Unknown;
-    if( parent->SelectDate( &date1ID, _("Select Start Date"), style ) == false ) {
+    if( wind->SelectDate( &date1ID, _("Select Start Date"), style ) == false ) {
         recDb::Rollback( savepoint );
         return 0;
     }
-    if( parent->SelectDate( &date2ID, _("Select End Date"), style ) == false ) {
+    if( wind->SelectDate( &date2ID, _("Select End Date"), style ) == false ) {
         recDb::Rollback( savepoint );
         return 0;
     }
@@ -240,7 +240,7 @@ idt rgCreateEvidPerEvent( rgDlgEditReference* parent, const wxString& role )
         date2ID = 0;
     }
     idt placeID;
-    if( parent->SelectPlace( &placeID, _("Select Place"), style ) == false ) {
+    if( wind->SelectPlace( &placeID, _("Select Place"), style ) == false ) {
         recDb::Rollback( savepoint );
         return 0;
     }
@@ -272,7 +272,7 @@ idt rgCreateEvidPerEvent( rgDlgEditReference* parent, const wxString& role )
     ep.FSetPerSeq( 1 );
     ep.Save();
 
-    if( rgEditPerEventRole( ep.FGetID() ) ) {
+    if( rgEditPerEventRole( wind, ep.FGetID() ) ) {
         recDb::ReleaseSavepoint( savepoint );
     } else {
         recDb::Rollback( savepoint );
@@ -307,7 +307,7 @@ void rgDlgEditEvidEvent::OnAddButton( wxCommandEvent& event )
     if( perID == 0 ) {
         return;
     }
-    if( rgCreatePerEventRole( perID, m_event.FGetID(), 0 ) ) {
+    if( rgCreatePerEventRole( this, perID, m_event.FGetID(), 0 ) ) {
         ListLinkedPersona();
     }
 }
@@ -315,7 +315,7 @@ void rgDlgEditEvidEvent::OnAddButton( wxCommandEvent& event )
 void rgDlgEditEvidEvent::EditRow( long row )
 {
     idt epID = m_eps[row].FGetID();
-    if( rgEditPerEventRole( epID ) ) {
+    if( rgEditPerEventRole( this, epID ) ) {
         ListLinkedPersona();
     }
 }

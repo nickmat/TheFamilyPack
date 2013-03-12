@@ -1,13 +1,12 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/rg/rgEdDate.h
+ * Name:        src/rg/rgEdRelDate.h
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Edit database Date dialog header.
+ * Purpose:     Edit database Relative Date dialog header.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
- * Created:     28th November 2012
+ * Created:     12th March 2013
  * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2012-2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2013, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -27,41 +26,41 @@
 
 */
 
-#ifndef RGEDDATE_H
-#define RGEDDATE_H
+#ifndef RGEDRELDATE_H
+#define RGEDRELDATE_H
 
 #include <rec/recDate.h>
 
 #include "rg/rgDialogs.h"
+#include "rgEdDate.h"
 
 #include "fbRgDialog.h"
 
-namespace rgDate
-{
-    extern CalendarScheme scheme[];
-    extern int sch_list[CALENDAR_SCH_Max];
-    extern CalendarUnit unit[];
-    extern int unit_list[CALENDAR_UNIT_Max];
-    extern recRelativeDate::Type calc[];
-    extern int calc_list[recRelativeDate::TYPE_Max];
-}
-
 //============================================================================
-//-------------------------[ rgDlgEditDate ]----------------------------------
+//-------------------------[ rgDlgEditRelativeDate ]--------------------------
 //============================================================================
 
-class rgDlgEditDate : public fbRgEditDate
+class rgDlgEditRelativeDate : public fbRgEditRelativeDate
 {
 public:
-    rgDlgEditDate( wxWindow* parent, idt dateID );
+    rgDlgEditRelativeDate( wxWindow* parent, idt dateID );
 
 private:
     bool TransferDataToWindow();
+    void SetUnitRadio();
     bool TransferDataFromWindow();
     void OnIdle( wxIdleEvent& event );
+    void OnBaseButton( wxCommandEvent& event );
+    void CalcDate();
 
-    recDate   m_date;
-    wxString  m_output;
+    recDate         m_date;
+    recRelativeDate m_relative;
+    recDate         m_base;
+
+    wxString        m_output;
+    CalendarScheme  m_scheme;
+    int             m_unitday;
+    int             m_unitdmy;
 };
 
-#endif // RGEDDATE_H
+#endif // RGEDRELDATE_H

@@ -1,13 +1,13 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Name:        src/rg/rgEdDate.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Edit database Date dialogs.
+ * Purpose:     Edit database Date dialog.
  * Author:      Nick Matthews
  * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     28th November 2012
  * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2012, Nick Matthews.
+ * Copyright:   Copyright (c) 2012-2013, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -37,8 +37,50 @@
 #include "wx/wx.h"
 #endif
 
+#include "rg/rgDialogs.h"
 #include "rgEdDate.h"
 
+bool rgEditDate( wxWindow* wind, idt dateID )
+{
+    wxASSERT( dateID != 0 );
+    if( recDate::IsRelative( dateID ) ) {
+        return rgEditRelativeDate( wind, dateID );
+    }
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+    bool ret = false;
+
+    rgDlgEditDate* dialog = new rgDlgEditDate( wind, dateID );
+
+    if( dialog->ShowModal() == wxID_OK ) {
+        recDb::ReleaseSavepoint( savepoint );
+        ret = true;
+    } else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+    return ret;
+}
+
+idt rgCreateDate( wxWindow* wind, const wxString& dateStr )
+{
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+
+    recDate date(0);
+    date.SetDefaults();
+    if( dateStr.size() ) {
+        date.SetDate( dateStr );
+    }
+    date.Save();
+    idt dateID = date.FGetID();
+    if( rgEditDate( wind, dateID ) ) {
+        recDb::ReleaseSavepoint( savepoint );
+        return dateID;
+    }
+    recDb::Rollback( savepoint );
+    return 0;
+}
 
 CalendarScheme rgDate::scheme[] = {
     CALENDAR_SCH_Unstated,
@@ -153,108 +195,6 @@ void rgDlgEditDate::OnIdle( wxIdleEvent& event )
         m_staticOutput->SetLabel( str );
         m_output = str;
     }
-}
-
-//============================================================================
-//-------------------------[ rgDlgEditRelativeDate ]--------------------------
-//============================================================================
-
-
-rgDlgEditRelativeDate::rgDlgEditRelativeDate( wxWindow* parent, idt dateID )
-    : m_date(dateID),  fbRgEditRelativeDate( parent )
-{
-    m_relative.ReadID( m_date.FGetRelID() );
-    m_base.ReadID( m_relative.FGetBaseID() );
-}
-
-bool rgDlgEditRelativeDate::TransferDataToWindow()
-{
-    wxASSERT( m_date.FGetID() != 0 );
-    wxASSERT( m_relative.FGetID() != 0 );
-    wxASSERT( m_base.FGetID() != 0 );
-
-    m_staticOutput->SetLabel( m_date.GetStr() );
-    m_choiceDisplay->SetSelection( sch_list[m_date.FGetDisplaySch()] );
-    m_choiceCalc->SetSelection( m_relative.FGetType() );
-    m_textCtrlBase->SetValue( m_base.GetStr() );
-    m_choicePrecision->SetSelection( m_date.FGetType() - 1 );
-    wxString age = wxString::Format( "%ld", m_relative.FGetValue() );
-    m_textCtrlAge->SetValue( age );
-    m_choiceInput->SetSelection( sch_list[m_relative.FGetScheme()] );
-    m_unitday = m_unitdmy = unit_list[m_relative.FGetUnit()];
-    if( m_unitday <= 1 ) {
-        m_unitday = 2;
-    }
-    SetUnitRadio();
-    m_radioUnits->SetSelection( unit_list[m_relative.FGetUnit()] );
-    m_staticDateID->SetLabel( m_date.GetIdStr() );
-    return true;
-}
-
-void rgDlgEditRelativeDate::SetUnitRadio()
-{
-    if( CalendarStructs[m_relative.FGetScheme()] == CALENDAR_STRUCT_Day ) {
-        m_radioUnits->Enable( 0, false );
-        m_radioUnits->Enable( 1, false );
-        m_radioUnits->SetSelection( m_unitday );
-    } else if( CalendarStructs[m_relative.FGetScheme()] == CALENDAR_STRUCT_Triple ) {
-        m_radioUnits->Enable( 0, true );
-        m_radioUnits->Enable( 1, true );
-        m_radioUnits->SetSelection( m_unitdmy );
-    } else {
-        wxASSERT( false );
-    }
-}
-
-bool rgDlgEditRelativeDate::TransferDataFromWindow()
-{
-    CalcDate();
-    m_date.Save();
-    m_relative.Save();
-    return true;
-}
-
-void rgDlgEditRelativeDate::OnIdle( wxIdleEvent& event )
-{
-    CalcDate();
-    wxString str = m_date.GetStr();
-    if( str != m_output ) {
-        m_staticOutput->SetLabel( str );
-        m_output = str;
-    }
-    CalendarScheme sch = m_relative.FGetScheme();
-    if( sch != m_scheme ) {
-        SetUnitRadio();
-        m_scheme = sch;
-    } else {
-        if( CalendarStructs[sch] == CALENDAR_STRUCT_Day ) {
-            m_unitday = m_radioUnits->GetSelection();
-        } else {
-            m_unitdmy = m_radioUnits->GetSelection();
-        }
-    }
-}
-
-void rgDlgEditRelativeDate::OnBaseButton( wxCommandEvent& event )
-{
-    if( rgEditDate( m_base.FGetID() ) ) {
-        m_base.Read();
-        m_textCtrlBase->SetValue( m_base.GetStr() );
-    }
-}
-
-void rgDlgEditRelativeDate::CalcDate()
-{
-    m_date.FSetDisplaySch( scheme[m_choiceDisplay->GetSelection()] );
-    m_relative.FSetType( calc[m_choiceCalc->GetSelection()] );
-    m_date.FSetType( m_choicePrecision->GetSelection() + 1 );
-    wxString agestr = m_textCtrlAge->GetValue();
-    agestr.ToLong( &m_relative.f_val );
-    m_relative.FSetScheme( scheme[m_choiceInput->GetSelection()] );
-    m_date.FSetRecordSch( m_relative.FGetScheme() );
-    m_relative.FSetUnit( unit[m_radioUnits->GetSelection()] );
-
-    m_relative.CalculateDate( m_date );
 }
 
 // End of src/rg/rgEdDate.cpp file

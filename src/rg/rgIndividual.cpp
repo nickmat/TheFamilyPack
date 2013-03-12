@@ -107,7 +107,7 @@ bool rgAddNewParent( wxWindow* wind, idt indID, Sex sex )
                 }
             }
             if( indIDs.size() ) {
-                idt indID = rgSelectIndividual( indIDs );
+                idt indID = rgSelectIndividual( wind, indIDs );
                 if( indID == 0 ) {
                     recDb::Rollback( savepoint );
                     return false;

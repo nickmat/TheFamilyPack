@@ -39,14 +39,14 @@
 #include "rgEdContact.h"
 #include "rg/rgDialogs.h"
 
-bool rgEditContact( idt conID )
+bool rgEditContact( wxWindow* wind, idt conID )
 {
     wxASSERT( conID != 0 );
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
     bool ret = false;
 
-    rgDlgEditContact* dialog = new rgDlgEditContact( NULL, conID );
+    rgDlgEditContact* dialog = new rgDlgEditContact( wind, conID );
 
     if( dialog->ShowModal() == wxID_OK ) {
         recDb::ReleaseSavepoint( savepoint );
@@ -58,7 +58,7 @@ bool rgEditContact( idt conID )
     return ret;
 }
 
-idt rgCreateContact( idt clID )
+idt rgCreateContact( wxWindow* wind, idt clID )
 {
     wxASSERT( clID != 0 );
     const wxString savepoint = recDb::GetSavepointStr();
@@ -69,7 +69,7 @@ idt rgCreateContact( idt clID )
     con.Save();
 
     idt conID = con.FGetID();
-    if( rgEditContact( conID ) ) {
+    if( rgEditContact( wind, conID ) ) {
         recDb::ReleaseSavepoint( savepoint );
         return conID;
     }
