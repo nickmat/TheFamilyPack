@@ -171,7 +171,7 @@ recNameVec recPersona::ReadNames( idt perID )
     return list;
 }
 
-recEventPersonaVec recPersona::ReadEventPersonas( idt perID, EventOrder order )
+recEventPersonaVec recPersona::ReadEventPersonas( idt perID, recEventOrder order )
 {
     recEventPersonaVec list;
     recEventPersona record;
@@ -184,10 +184,10 @@ recEventPersonaVec recPersona::ReadEventPersonas( idt perID, EventOrder order )
     wxString orderStr;
     switch( order )
     {
-    case EO_DatePt:
+    case recEO_DatePt:
         orderStr = "date_pt, EP.per_seq";
         break;
-    case EO_PerSeq:
+    case recEO_PerSeq:
         orderStr = "EP.per_seq, date_pt";
         break;
     default:

@@ -43,23 +43,20 @@
 class rgDlgEditIndividual : public fbRgEditIndividual
 {
     DECLARE_EVENT_TABLE()
+    enum Page {
+        PAGE_Persona, PAGE_Name, PAGE_Event
+    };
     enum {
         ID_EDIND_NEW_EVENT = 1200,
         ID_EDIND_EXIST_EVENT,
         ID_EDIND_UNLINK_EVENT,
         ID_EDIND_DELETE_EVENT
     };
-    enum Columns {
-        COL_Type, COL_Value, COL_MAX
-    };
     enum NameColumns {
         NC_Number, NC_Type, NC_Name, NC_MAX
     };
     enum EventColumns {
         EC_Number, EC_Role, EC_Title, EC_Date, EC_Place, EC_MAX
-    };
-    enum RelColumns {
-        RC_Family, RC_Ind, RC_Relation, RC_MAX
     };
 public:
     rgDlgEditIndividual( wxWindow* parent, idt indID );
@@ -69,6 +66,11 @@ public:
 private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
+
+    void UpdateNameList( idt nameID = 0 );
+    void UpdateEventList( idt eveID = 0 );
+
+    void OnPageChanged( wxNotebookEvent& event );
 
     void OnNameAddButton( wxCommandEvent& event );
     void OnNameEditButton( wxCommandEvent& event );
@@ -85,21 +87,16 @@ private:
     void OnDeleteEvent( wxCommandEvent& event );
     void OnEventUpButton( wxCommandEvent& event );
     void OnEventDownButton( wxCommandEvent& event );
+    void OnEventOrderBy( wxCommandEvent& event );
 
-    void OnRelAddButton( wxCommandEvent& event );
-    void OnRelEditButton( wxCommandEvent& event );
-    void OnRelDeleteButton( wxCommandEvent& event );
-    void OnRelUpButton( wxCommandEvent& event );
-    void OnRelDownButton( wxCommandEvent& event );
+    recIndividual   m_individual;
+    recPersona      m_persona;
+    recNameVec      m_names;
+    recIndEventVec  m_ies;
+    recEventOrder   m_order;
 
-    recIndividual      m_individual;
-    recPersona         m_persona;
-    recNameVec         m_names;
-    recIndEventVec     m_ies;
-    recIndRelVec       m_relationships;
-
-    wxString           m_nameStr;
-    long               m_currentRow;
+    wxString        m_nameStr;
+    long            m_currentRow;
 };
 
 #endif // RGEDINDIVIDUAL_H

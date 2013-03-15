@@ -430,7 +430,7 @@ recFamilyVec recIndividual::GetParentList( idt indID )
     return parents;
 }
 
-recIndEventVec recIndividual::GetEvents( idt indID )
+recIndEventVec recIndividual::GetEvents( idt indID, recEventOrder order )
 {
     recIndEventVec list;
     recIndividualEvent record;
@@ -440,12 +440,24 @@ recIndEventVec recIndividual::GetEvents( idt indID )
     if( indID == 0 ) {
         return list;
     }
+    wxString orderStr;
+    switch( order )
+    {
+    case recEO_DatePt:
+        orderStr = "date_pt, IE.ind_seq";
+        break;
+    case recEO_PerSeq:
+        orderStr = "IE.ind_seq, date_pt";
+        break;
+    default:
+        wxASSERT( false ); // Shouldn't be here
+    }
 
     sql.Format(
         "SELECT IE.id, event_id, role_id, IE.note, ind_seq FROM IndividualEvent IE"
         " INNER JOIN Event E ON E.id=event_id"
-        " WHERE ind_id="ID" ORDER BY IE.ind_seq;", 
-        indID
+        " WHERE ind_id="ID" ORDER BY %s;", 
+        indID, UTF8_(orderStr)
     );
     result = s_db->GetTable( sql );
 

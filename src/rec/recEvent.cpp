@@ -151,7 +151,7 @@ wxString recEvent::SetAutoTitle( const wxString& name1, const wxString& name2 )
 {
     f_title = wxEmptyString;
     wxString n1, n2;
-    if( n1.size() ) {
+    if( name1.size() ) {
         n1 = name1;
         n2 = name2;
     } else {

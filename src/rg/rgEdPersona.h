@@ -89,14 +89,14 @@ private:
 
     rgDlgEditReference* m_refDialog;
 
-    recPersona             m_persona;
-    recIdVec               m_indLinks;
-    recNameVec             m_names;
-    recEventPersonaVec     m_evpers;
-    recPersona::EventOrder m_order;
-    recRelationshipVec     m_relationships;
+    recPersona          m_persona;
+    recIdVec            m_indLinks;
+    recNameVec          m_names;
+    recEventPersonaVec  m_evpers;
+    recEventOrder       m_order;
+    recRelationshipVec  m_relationships;
 
-    wxString               m_nameStr;
+    wxString            m_nameStr;
 };
 
 #endif // RGEDPERSONA_H

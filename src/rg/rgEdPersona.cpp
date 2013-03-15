@@ -70,7 +70,7 @@ bool rgEditPersona( rgDlgEditReference* parent, idt perID )
 //============================================================================
 
 rgDlgEditPersona::rgDlgEditPersona( rgDlgEditReference* parent, idt perID )
-    : m_refDialog(parent), m_persona(perID), m_order(recPersona::EO_DatePt),
+    : m_refDialog(parent), m_persona(perID), m_order(recEO_DatePt),
     fbRgEditPersona( parent )
 {
     wxListItem itemCol;
@@ -158,7 +158,7 @@ void rgDlgEditPersona::UpdateEventList( idt eveID )
             row = i;
         }
         // Correct errors and gaps in sequence numbers.
-        if( m_order == recPersona::EO_PerSeq && m_evpers[i].FGetPerSeq() != i+1 ) {
+        if( m_order == recEO_PerSeq && m_evpers[i].FGetPerSeq() != i+1 ) {
             m_evpers[i].FSetPerSeq( i+1 );
             m_evpers[i].Save();
         }
@@ -384,12 +384,12 @@ void rgDlgEditPersona::OnOrderBy( wxCommandEvent& event )
     switch( event.GetSelection() )
     {
     case 0:
-        m_order = recPersona::EO_DatePt;
+        m_order = recEO_DatePt;
         m_buttonEventUp->Enable( false );
         m_buttonEventDn->Enable( false );
         break;
     case 1:
-        m_order = recPersona::EO_PerSeq;
+        m_order = recEO_PerSeq;
         m_buttonEventUp->Enable( true );
         m_buttonEventDn->Enable( true );
         break;

@@ -336,19 +336,14 @@ class fbRgEditIndividual : public wxDialog
 		wxButton* m_buttonEventDel;
 		wxButton* m_buttonEventUp;
 		wxButton* m_buttonEventDn;
-		wxPanel* m_panel4;
-		wxListCtrl* m_listRel;
-		wxButton* m_buttonRelAdd;
-		wxButton* m_buttonRelEdit;
-		wxButton* m_buttonRelDel;
-		wxButton* m_buttonRelUp;
-		wxButton* m_buttonRelDn;
+		wxRadioBox* m_radioBox3;
 		wxStaticLine* m_staticline1;
 		wxStaticText* m_staticIndID;
 		wxButton* m_buttonSave1;
 		wxButton* m_buttonCancel1;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnPageChanged( wxNotebookEvent& event ) { event.Skip(); }
 		virtual void OnNameAddButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnNameEditButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnNameDeleteButton( wxCommandEvent& event ) { event.Skip(); }
@@ -359,11 +354,7 @@ class fbRgEditIndividual : public wxDialog
 		virtual void OnEventDeleteButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnEventUpButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnEventDownButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnRelAddButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnRelEditButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnRelDeleteButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnRelUpButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnRelDownButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEventOrderBy( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:

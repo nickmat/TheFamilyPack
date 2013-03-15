@@ -959,16 +959,26 @@ fbRgEditIndividual::fbRgEditIndividual( wxWindow* parent, wxWindowID id, const w
 	bSizer109 = new wxBoxSizer( wxHORIZONTAL );
 	
 	m_buttonEventUp = new wxButton( m_panel21, wxID_ANY, _("Up"), wxDefaultPosition, wxSize( 35,-1 ), 0 );
+	m_buttonEventUp->Enable( false );
+	
 	bSizer109->Add( m_buttonEventUp, 0, wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
 	
 	bSizer109->Add( 0, 0, 1, wxEXPAND, 5 );
 	
 	m_buttonEventDn = new wxButton( m_panel21, wxID_ANY, _("Down"), wxDefaultPosition, wxSize( 35,-1 ), 0 );
+	m_buttonEventDn->Enable( false );
+	
 	bSizer109->Add( m_buttonEventDn, 0, wxBOTTOM|wxRIGHT, 5 );
 	
 	
 	bSizer108->Add( bSizer109, 1, wxEXPAND, 5 );
+	
+	wxString m_radioBox3Choices[] = { _("Date Point"), _("Preference") };
+	int m_radioBox3NChoices = sizeof( m_radioBox3Choices ) / sizeof( wxString );
+	m_radioBox3 = new wxRadioBox( m_panel21, wxID_ANY, _("Order by:-"), wxDefaultPosition, wxDefaultSize, m_radioBox3NChoices, m_radioBox3Choices, 1, wxRA_SPECIFY_COLS );
+	m_radioBox3->SetSelection( 0 );
+	bSizer108->Add( m_radioBox3, 0, wxALL, 5 );
 	
 	
 	bSizer107->Add( bSizer108, 0, wxEXPAND, 5 );
@@ -978,48 +988,6 @@ fbRgEditIndividual::fbRgEditIndividual( wxWindow* parent, wxWindowID id, const w
 	m_panel21->Layout();
 	bSizer107->Fit( m_panel21 );
 	m_notebook->AddPage( m_panel21, _("Events"), false );
-	m_panel4 = new wxPanel( m_notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxBoxSizer* bSizer110;
-	bSizer110 = new wxBoxSizer( wxHORIZONTAL );
-	
-	m_listRel = new wxListCtrl( m_panel4, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_HRULES|wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_VRULES );
-	bSizer110->Add( m_listRel, 1, wxALL|wxEXPAND, 5 );
-	
-	wxBoxSizer* bSizer111;
-	bSizer111 = new wxBoxSizer( wxVERTICAL );
-	
-	m_buttonRelAdd = new wxButton( m_panel4, wxID_ANY, _("Add"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer111->Add( m_buttonRelAdd, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
-	
-	m_buttonRelEdit = new wxButton( m_panel4, wxID_ANY, _("Edit"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer111->Add( m_buttonRelEdit, 0, wxALIGN_CENTER_HORIZONTAL|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
-	
-	m_buttonRelDel = new wxButton( m_panel4, wxID_ANY, _("Delete"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer111->Add( m_buttonRelDel, 0, wxALIGN_CENTER_HORIZONTAL|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
-	
-	wxBoxSizer* bSizer112;
-	bSizer112 = new wxBoxSizer( wxHORIZONTAL );
-	
-	m_buttonRelUp = new wxButton( m_panel4, wxID_ANY, _("Up"), wxDefaultPosition, wxSize( 35,-1 ), 0 );
-	bSizer112->Add( m_buttonRelUp, 0, wxBOTTOM|wxRIGHT|wxLEFT, 5 );
-	
-	
-	bSizer112->Add( 0, 0, 1, wxEXPAND, 5 );
-	
-	m_buttonRelDn = new wxButton( m_panel4, wxID_ANY, _("Down"), wxDefaultPosition, wxSize( 35,-1 ), 0 );
-	bSizer112->Add( m_buttonRelDn, 0, wxBOTTOM|wxRIGHT, 5 );
-	
-	
-	bSizer111->Add( bSizer112, 1, wxEXPAND, 5 );
-	
-	
-	bSizer110->Add( bSizer111, 0, wxEXPAND, 5 );
-	
-	
-	m_panel4->SetSizer( bSizer110 );
-	m_panel4->Layout();
-	bSizer110->Fit( m_panel4 );
-	m_notebook->AddPage( m_panel4, _("Relationships"), false );
 	
 	bSizer100->Add( m_notebook, 1, wxEXPAND|wxALL, 5 );
 	
@@ -1056,6 +1024,7 @@ fbRgEditIndividual::fbRgEditIndividual( wxWindow* parent, wxWindowID id, const w
 	bSizer98->Fit( this );
 	
 	// Connect Events
+	m_notebook->Connect( wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, wxNotebookEventHandler( fbRgEditIndividual::OnPageChanged ), NULL, this );
 	m_buttonNameAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditIndividual::OnNameAddButton ), NULL, this );
 	m_buttonNameEdit->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditIndividual::OnNameEditButton ), NULL, this );
 	m_buttonNameDel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditIndividual::OnNameDeleteButton ), NULL, this );
@@ -1066,16 +1035,13 @@ fbRgEditIndividual::fbRgEditIndividual( wxWindow* parent, wxWindowID id, const w
 	m_buttonEventDel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditIndividual::OnEventDeleteButton ), NULL, this );
 	m_buttonEventUp->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditIndividual::OnEventUpButton ), NULL, this );
 	m_buttonEventDn->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditIndividual::OnEventDownButton ), NULL, this );
-	m_buttonRelAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditIndividual::OnRelAddButton ), NULL, this );
-	m_buttonRelEdit->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditIndividual::OnRelEditButton ), NULL, this );
-	m_buttonRelDel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditIndividual::OnRelDeleteButton ), NULL, this );
-	m_buttonRelUp->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditIndividual::OnRelUpButton ), NULL, this );
-	m_buttonRelDn->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditIndividual::OnRelDownButton ), NULL, this );
+	m_radioBox3->Connect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( fbRgEditIndividual::OnEventOrderBy ), NULL, this );
 }
 
 fbRgEditIndividual::~fbRgEditIndividual()
 {
 	// Disconnect Events
+	m_notebook->Disconnect( wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, wxNotebookEventHandler( fbRgEditIndividual::OnPageChanged ), NULL, this );
 	m_buttonNameAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditIndividual::OnNameAddButton ), NULL, this );
 	m_buttonNameEdit->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditIndividual::OnNameEditButton ), NULL, this );
 	m_buttonNameDel->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditIndividual::OnNameDeleteButton ), NULL, this );
@@ -1086,11 +1052,7 @@ fbRgEditIndividual::~fbRgEditIndividual()
 	m_buttonEventDel->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditIndividual::OnEventDeleteButton ), NULL, this );
 	m_buttonEventUp->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditIndividual::OnEventUpButton ), NULL, this );
 	m_buttonEventDn->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditIndividual::OnEventDownButton ), NULL, this );
-	m_buttonRelAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditIndividual::OnRelAddButton ), NULL, this );
-	m_buttonRelEdit->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditIndividual::OnRelEditButton ), NULL, this );
-	m_buttonRelDel->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditIndividual::OnRelDeleteButton ), NULL, this );
-	m_buttonRelUp->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditIndividual::OnRelUpButton ), NULL, this );
-	m_buttonRelDn->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditIndividual::OnRelDownButton ), NULL, this );
+	m_radioBox3->Disconnect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( fbRgEditIndividual::OnEventOrderBy ), NULL, this );
 	
 }
 

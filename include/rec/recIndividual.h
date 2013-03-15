@@ -142,8 +142,9 @@ public:
     static recFamilyVec GetParentList( idt indID );
     recFamilyVec GetParentList() const { return GetParentList( f_id ); }
 
-    static recIndEventVec GetEvents( idt indID );
-    recIndEventVec GetEvents() const { return GetEvents( f_id ); }
+    static recIndEventVec GetEvents( idt indID, recEventOrder order = recEO_DatePt );
+    recIndEventVec GetEvents( recEventOrder order = recEO_DatePt ) const
+        { return GetEvents( f_id, order ); }
 
     wxSQLite3Table GetRefEventsTable() const { return GetRefEventsTable( f_per_id ); }
     static wxSQLite3Table GetRefEventsTable( idt perID );

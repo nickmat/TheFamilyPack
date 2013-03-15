@@ -71,7 +71,8 @@ BEGIN_EVENT_TABLE( rgDlgEditIndividual, wxDialog )
 END_EVENT_TABLE()
 
 rgDlgEditIndividual::rgDlgEditIndividual( wxWindow* parent, idt indID )
-    : fbRgEditIndividual( parent ), m_individual(indID)
+    : m_individual(indID), m_order(recEO_DatePt),
+    fbRgEditIndividual( parent )
 {
     m_persona.ReadID( m_individual.GetPersona() );
 
@@ -84,10 +85,6 @@ rgDlgEditIndividual::rgDlgEditIndividual( wxWindow* parent, idt indID )
     m_listEvent->InsertColumn( EC_Title, _("Title") );
     m_listEvent->InsertColumn( EC_Date, _("Date") );
     m_listEvent->InsertColumn( EC_Place, _("Place") );
- 
-    m_listRel->InsertColumn( RC_Family, _("Family") );         // Number
-    m_listRel->InsertColumn( RC_Ind, _("Individual") );        // Number
-    m_listRel->InsertColumn( RC_Relation, _("Relationship") ); // Text
 }
 
 bool rgDlgEditIndividual::TransferDataToWindow()
@@ -102,40 +99,13 @@ bool rgDlgEditIndividual::TransferDataToWindow()
         m_persona.Read();
     }
 
-    m_nameStr = m_persona.GetNameStr();
-    m_staticPerName->SetLabel( m_nameStr );
-    m_staticIndID->SetLabel( m_individual.GetIdStr() );
-//    m_staticPerID->SetLabel( m_persona.GetIdStr() );
-
     m_staticTextEpitaph->SetLabel( m_individual.f_epitaph );
     m_choiceSex->SetSelection( (int) m_persona.f_sex );
     m_textCtrlNote->SetValue(  m_persona.f_note );
+    m_staticIndID->SetLabel( m_individual.GetIdStr() );
 
-    m_names = m_persona.ReadNames();
-    for( size_t i = 0 ; i < m_names.size() ; i++ ) {
-        m_listName->InsertItem( i, m_names[i].GetIdStr() );
-        m_listName->SetItem( i, NC_Type, recNameStyle::GetStyleStr( m_names[i].f_style_id ) );
-        m_listName->SetItem( i, NC_Name, m_names[i].GetNameStr() );
-    }
-    m_listName->SetColumnWidth( NC_Number, 60 );
-    if( m_names.size() ) {
-        m_listName->SetColumnWidth( NC_Name, wxLIST_AUTOSIZE );
-    }
-    m_ies = m_individual.GetEvents();
-    for( size_t i = 0 ; i < m_ies.size() ; i++ ) {
-        m_listEvent->InsertItem( i, recEvent::GetIdStr( m_ies[i].FGetEventID() ) );
-        m_listEvent->SetItem( i, EC_Role, recEventTypeRole::GetName( m_ies[i].FGetRoleID() ) );
-        m_listEvent->SetItem( i, EC_Title, recEvent::GetTitle( m_ies[i].FGetEventID() ) );
-        m_listEvent->SetItem( i, EC_Date, recEvent::GetDateStr( m_ies[i].FGetEventID() ) );
-        m_listEvent->SetItem( i, EC_Place, recEvent::GetAddressStr( m_ies[i].FGetEventID() ) );
-    }
-
-    m_relationships = m_individual.GetIndRelationships();
-    for( size_t i = 0 ; i < m_relationships.size() ; i++ ) {
-        m_listRel->InsertItem( i, recFamily::GetIdStr( m_relationships[i].GetFamily() ) );
-        m_listRel->SetItem( i, RC_Ind, recIndividual::GetFullName( m_relationships[i].GetIndividual2() ) );
-        m_listRel->SetItem( i, RC_Relation, m_relationships[i].GetTypeStr() );
-    }
+    UpdateNameList();
+    UpdateEventList();
 
     m_notebook->SetSelection( 0 );
     m_textCtrlNote->SetFocus();
@@ -165,16 +135,80 @@ bool rgDlgEditIndividual::TransferDataFromWindow()
     return true;
 }
 
+void rgDlgEditIndividual::UpdateNameList( idt nameID )
+{
+    m_names = m_persona.ReadNames();
+    m_listName->DeleteAllItems();
+    int row = -1;
+    for( size_t i = 0 ; i < m_names.size() ; i++ ) {
+        m_listName->InsertItem( i, m_names[i].GetIdStr() );
+        m_listName->SetItem( i, NC_Type, recNameStyle::GetStyleStr( m_names[i].FGetTypeID() ) );
+        m_listName->SetItem( i, NC_Name, m_names[i].GetNameStr() );
+        if( nameID == m_names[i].FGetID() ) {
+            m_listName->SetItemState( i, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+            row = i;
+        }
+    }
+    if( row >= 0 ) {
+        m_listName->EnsureVisible( row );
+    }
+    // Check for name change.
+    wxString name = m_persona.GetNameStr();
+    if( name != m_nameStr ) {
+        m_staticPerName->SetLabel( name );
+        m_nameStr = name;
+    }
+}
+
+void rgDlgEditIndividual::UpdateEventList( idt eveID )
+{
+    m_ies = m_individual.GetEvents( m_order );
+    m_listEvent->DeleteAllItems();
+    int row = -1;
+    for( size_t i = 0 ; i < m_ies.size() ; i++ ) {
+        m_listEvent->InsertItem( i, recEvent::GetIdStr( m_ies[i].FGetEventID() ) );
+        m_listEvent->SetItem( i, EC_Role, recEventTypeRole::GetName( m_ies[i].FGetRoleID() ) );
+        m_listEvent->SetItem( i, EC_Title, recEvent::GetTitle( m_ies[i].FGetEventID() ) );
+        m_listEvent->SetItem( i, EC_Date, recEvent::GetDateStr( m_ies[i].FGetEventID() ) );
+        m_listEvent->SetItem( i, EC_Place, recEvent::GetAddressStr( m_ies[i].FGetEventID() ) );
+        if( eveID == m_ies[i].FGetEventID() ) {
+            m_listEvent->SetItemState( i, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+            row = i;
+        }
+        // Correct errors and gaps in sequence numbers.
+        if( m_order == recEO_PerSeq && m_ies[i].FGetIndSeq() != i+1 ) {
+            m_ies[i].FSetIndSeq( i+1 );
+            m_ies[i].Save();
+        }
+    }
+    if( row >= 0 ) {
+        m_listEvent->EnsureVisible( row );
+    }
+}
+
+void rgDlgEditIndividual::OnPageChanged( wxNotebookEvent& event )
+{
+    Page page = (Page) event.GetSelection();
+    switch( page )
+    {
+    case PAGE_Persona:
+        break;
+    case PAGE_Name:
+        UpdateNameList();
+        break;
+    case PAGE_Event:
+        UpdateEventList();
+        break;
+    default:
+        wxASSERT( false );
+    }
+}
+
 void rgDlgEditIndividual::OnNameAddButton( wxCommandEvent& event )
 {
     idt nameID = rgCreateName( this, m_persona.FGetID() );
     if( nameID ) {
-        recName name(nameID);
-        int row = m_names.size();
-        m_listName->InsertItem( row, name.GetIdStr() );
-        m_listName->SetItem( row, NC_Type, recNameStyle::GetStyleStr( name.f_style_id ) );
-        m_listName->SetItem( row, NC_Name, name.GetNameStr() );
-        m_names.push_back( name );
+        UpdateNameList( nameID );
     }
 }
 
@@ -187,31 +221,29 @@ void rgDlgEditIndividual::OnNameEditButton( wxCommandEvent& event )
     }
     idt nameID = m_names[row].FGetID();
     if( rgEditName( this, nameID ) ) {
-        recName name( nameID );
-        m_listName->SetItem( row, NC_Number, name.GetIdStr() );
-        m_listName->SetItem( row, NC_Type, recNameStyle::GetStyleStr( name.FGetTypeID() ) );
-        m_listName->SetItem( row, NC_Name, name.GetNameStr() );
-        m_names[row] = name;
+        UpdateNameList( nameID );
     }
 }
 
 void rgDlgEditIndividual::OnNameDeleteButton( wxCommandEvent& event )
 {
     long row = m_listName->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-    if( row >= 0 ) {
-        int ans = wxMessageBox( 
-            _("Remove Name completely from database?"), _("Delete Event"),
-            wxYES_NO | wxCANCEL, this
-        );
-        if( ans != wxYES ) {
-            return;
-        }
-        m_listName->DeleteItem( row );
-        m_names[row].RemoveFromDatabase();
-        m_names.erase( m_names.begin() + row );
-    } else {
-        wxMessageBox( wxT("No row selected"), wxT("Delete Name") );
+    if( row < 0 ) {
+        wxMessageBox( _("No row selected"), _("Delete Name") );
+        return;
     }
+    idt nameID = m_names[row].FGetID();
+    wxString mess = wxString::Format( 
+        "Remove Name %s: %s\nfrom Individual %s?", 
+        recName::GetIdStr( nameID ), recName::GetNameStr( nameID ),
+        m_individual.GetIdStr()
+    );
+    int ans = wxMessageBox( mess, _("Delete Name"), wxYES_NO | wxCANCEL, this );
+    if( ans != wxYES ) {
+        return;
+    }
+    recName::RemoveFromDatabase( nameID );
+    UpdateNameList();
 }
 
 void rgDlgEditIndividual::OnNameUpButton( wxCommandEvent& event )
@@ -221,21 +253,15 @@ void rgDlgEditIndividual::OnNameUpButton( wxCommandEvent& event )
         wxMessageBox( _("Row not selected"), _("Name Up") );
         return;
     }
-    if( row > 0 ) {
-        recName attr = m_names[row];
-        m_names[row] = m_names[row-1];
-        m_names[row-1] = attr;
-
-        m_listName->SetItem( row, NC_Number, m_names[row].GetIdStr() );
-        m_listName->SetItem( row, NC_Type, recNameStyle::GetStyleStr( m_names[row].f_style_id ) );
-        m_listName->SetItem( row, NC_Name, m_names[row].GetNameStr() );
-        --row;
-        m_listName->SetItem( row, NC_Number, m_names[row].GetIdStr() );
-        m_listName->SetItem( row, NC_Type, recNameStyle::GetStyleStr( m_names[row].f_style_id ) );
-        m_listName->SetItem( row, NC_Name, m_names[row].GetNameStr() );
-
-        m_listName->SetItemState( row, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+    if( row == 0 ) {
+        return; // Already at top
     }
+    int seq = m_names[row].FGetPerSeq();
+    m_names[row].FSetPerSeq( m_names[row-1].FGetPerSeq() );
+    m_names[row].Save();
+    m_names[row-1].FSetPerSeq( seq );
+    m_names[row-1].Save();
+    UpdateNameList( m_names[row].FGetID() );
 }
 
 void rgDlgEditIndividual::OnNameDownButton( wxCommandEvent& event )
@@ -245,21 +271,15 @@ void rgDlgEditIndividual::OnNameDownButton( wxCommandEvent& event )
         wxMessageBox( _("Row not selected"), _("Name Down") );
         return;
     }
-    if( row < (long) m_listName->GetItemCount() - 1 ) {
-        recName name = m_names[row];
-        m_names[row] = m_names[row+1];
-        m_names[row+1] = name;
-
-        m_listName->SetItem( row, NC_Number, m_names[row].GetIdStr() );
-        m_listName->SetItem( row, NC_Type, recNameStyle::GetStyleStr( m_names[row].f_style_id ) );
-        m_listName->SetItem( row, NC_Name, m_names[row].GetNameStr() );
-        row++;
-        m_listName->SetItem( row, NC_Number, m_names[row].GetIdStr() );
-        m_listName->SetItem( row, NC_Type, recNameStyle::GetStyleStr( m_names[row].f_style_id ) );
-        m_listName->SetItem( row, NC_Name, m_names[row].GetNameStr() );
-
-        m_listName->SetItemState( row, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+    if( row == m_listName->GetItemCount() - 1 ) {
+        return; // Already at bottom
     }
+    int seq = m_names[row].FGetPerSeq();
+    m_names[row].FSetPerSeq( m_names[row+1].FGetPerSeq() );
+    m_names[row].Save();
+    m_names[row+1].FSetPerSeq( seq );
+    m_names[row+1].Save();
+    UpdateNameList( m_names[row].FGetID() );
 }
 
 void rgDlgEditIndividual::OnEventAddButton( wxCommandEvent& event )
@@ -275,15 +295,7 @@ void rgDlgEditIndividual::OnNewEvent( wxCommandEvent& event )
 {
     idt eveID = rgCreateIndEvent( this, m_individual.FGetID() );
     if( eveID ) {
-        recIndividualEvent ie;
-        ie.Find( m_individual.FGetID(), eveID );
-        m_ies.push_back( ie );
-        int row = m_listEvent->GetItemCount();
-        m_listEvent->InsertItem( row, recEvent::GetIdStr( eveID ) );
-        m_listEvent->SetItem( row, EC_Role, recEventTypeRole::GetName( ie.FGetRoleID() ) );
-        m_listEvent->SetItem( row, EC_Title, recEvent::GetTitle( eveID ) );
-        m_listEvent->SetItem( row, EC_Date, recEvent::GetDateStr( eveID ) );
-        m_listEvent->SetItem( row, EC_Place, recEvent::GetAddressStr( eveID ) );
+        UpdateEventList( eveID );
     }
 }
 
@@ -292,7 +304,11 @@ void rgDlgEditIndividual::OnExistingEvent( wxCommandEvent& event )
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
 
-    idt eveID = rgSelectIndEvent( this /*, rgSELSTYLE_Create, NULL, NULL, m_individual.FGetID()*/ );
+    idt eveID = rgSelectIndEvent( this );
+    if( eveID == 0 ) {
+        recDb::Rollback( savepoint );
+        return;
+    }
 
     recIndividualEvent ie(0);
     ie.FSetEventID( eveID );
@@ -306,14 +322,7 @@ void rgDlgEditIndividual::OnExistingEvent( wxCommandEvent& event )
 
     if( rgEditEvent( this, eveID ) ) {
         recDb::ReleaseSavepoint( savepoint );
-        ie.Read();
-        int row = m_ies.size();
-        m_listEvent->InsertItem( row, recEvent::GetIdStr( eveID ) );
-        m_listEvent->SetItem( row, EC_Role, recEventTypeRole::GetName( ie.FGetRoleID() ) );
-        m_listEvent->SetItem( row, EC_Title, recEvent::GetTitle( eveID ) );
-        m_listEvent->SetItem( row, EC_Date, recEvent::GetDateStr( eveID ) );
-        m_listEvent->SetItem( row, EC_Place, recEvent::GetAddressStr( eveID ) );
-        m_ies.push_back( ie );
+        UpdateEventList( eveID );
     } else {
         recDb::Rollback( savepoint );
     }
@@ -328,11 +337,7 @@ void rgDlgEditIndividual::OnEventEditButton( wxCommandEvent& event )
     }
     idt eveID = m_ies[row].FGetEventID();
     if( rgEditEvent( this, eveID ) ) {
-        m_listEvent->SetItem( row, EC_Number, recEvent::GetIdStr( eveID ) );
-        m_listEvent->SetItem( row, EC_Role, recEventTypeRole::GetName( m_ies[row].FGetRoleID() ) );
-        m_listEvent->SetItem( row, EC_Title, recEvent::GetTitle( eveID ) );
-        m_listEvent->SetItem( row, EC_Date, recEvent::GetDateStr( eveID ) );
-        m_listEvent->SetItem( row, EC_Place, recEvent::GetAddressStr( eveID ) );
+        UpdateEventList( eveID );
     }
 }
 
@@ -353,9 +358,8 @@ void rgDlgEditIndividual::OnEventDeleteButton( wxCommandEvent& event )
 
 void rgDlgEditIndividual::OnUnlinkEvent( wxCommandEvent& event )
 {
-    m_listEvent->DeleteItem( m_currentRow );
     recIndividualEvent::Delete( m_ies[m_currentRow].FGetID() );
-    m_ies.erase( m_ies.begin() + m_currentRow );
+    UpdateEventList();
 }
 
 void rgDlgEditIndividual::OnDeleteEvent( wxCommandEvent& event )
@@ -367,9 +371,8 @@ void rgDlgEditIndividual::OnDeleteEvent( wxCommandEvent& event )
     if( ans != wxYES ) {
         return;
     }
-    m_listEvent->DeleteItem( m_currentRow );
     recEvent::RemoveIncOrphansFromDatabase( m_ies[m_currentRow].FGetEventID() );
-    m_ies.erase( m_ies.begin() + m_currentRow );
+    UpdateEventList();
 }
 
 void rgDlgEditIndividual::OnEventUpButton( wxCommandEvent& event )
@@ -379,28 +382,15 @@ void rgDlgEditIndividual::OnEventUpButton( wxCommandEvent& event )
         wxMessageBox( _("Row not selected"), _("Event Up") );
         return;
     }
-    if( row > 0 ) {
-        recIndividualEvent ie = m_ies[row];
-        m_ies[row] = m_ies[row-1];
-        m_ies[row-1] = ie;
-
-        idt eveID = m_ies[row].FGetEventID();
-        m_listEvent->SetItem( row, EC_Number, recEvent::GetIdStr( eveID ) );
-        m_listEvent->SetItem( row, EC_Role, recEventTypeRole::GetName( m_ies[row].FGetRoleID() ) );
-        m_listEvent->SetItem( row, EC_Title, recEvent::GetTitle( eveID ) );
-        m_listEvent->SetItem( row, EC_Date, recEvent::GetDateStr( eveID ) );
-        m_listEvent->SetItem( row, EC_Place, recEvent::GetAddressStr( eveID ) );
-
-        --row;
-        eveID = m_ies[row].FGetEventID();
-        m_listEvent->SetItem( row, EC_Number, recEvent::GetIdStr( eveID ) );
-        m_listEvent->SetItem( row, EC_Role, recEventTypeRole::GetName( m_ies[row].FGetRoleID() ) );
-        m_listEvent->SetItem( row, EC_Title, recEvent::GetTitle( eveID ) );
-        m_listEvent->SetItem( row, EC_Date, recEvent::GetDateStr( eveID ) );
-        m_listEvent->SetItem( row, EC_Place, recEvent::GetAddressStr( eveID ) );
-
-        m_listEvent->SetItemState( row, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+    if( row == 0 ) {
+        return; // Already at top
     }
+    int seq = m_ies[row].FGetIndSeq();
+    m_ies[row].FSetIndSeq( m_ies[row-1].FGetIndSeq() );
+    m_ies[row].Save();
+    m_ies[row-1].FSetIndSeq( seq );
+    m_ies[row-1].Save();
+    UpdateEventList( m_ies[row].FGetEventID() );
 }
 
 void rgDlgEditIndividual::OnEventDownButton( wxCommandEvent& event )
@@ -410,59 +400,37 @@ void rgDlgEditIndividual::OnEventDownButton( wxCommandEvent& event )
         wxMessageBox( _("Row not selected"), _("Event Down") );
         return;
     }
-    if( row < (long) m_listEvent->GetItemCount() - 1 ) {
-        recIndividualEvent ie = m_ies[row];
-        m_ies[row] = m_ies[row+1];
-        m_ies[row+1] = ie;
-
-        idt eveID = m_ies[row].FGetEventID();
-        m_listEvent->SetItem( row, EC_Number, recEvent::GetIdStr( eveID ) );
-        m_listEvent->SetItem( row, EC_Role, recEventTypeRole::GetName( m_ies[row].FGetRoleID() ) );
-        m_listEvent->SetItem( row, EC_Title, recEvent::GetTitle( eveID ) );
-        m_listEvent->SetItem( row, EC_Date, recEvent::GetDateStr( eveID ) );
-        m_listEvent->SetItem( row, EC_Place, recEvent::GetAddressStr( eveID ) );
-
-        row++;
-        eveID = m_ies[row].FGetEventID();
-        m_listEvent->SetItem( row, EC_Number, recEvent::GetIdStr( eveID ) );
-        m_listEvent->SetItem( row, EC_Role, recEventTypeRole::GetName( m_ies[row].FGetRoleID() ) );
-        m_listEvent->SetItem( row, EC_Title, recEvent::GetTitle( eveID ) );
-        m_listEvent->SetItem( row, EC_Date, recEvent::GetDateStr( eveID ) );
-        m_listEvent->SetItem( row, EC_Place, recEvent::GetAddressStr( eveID ) );
-
-        m_listEvent->SetItemState( row, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+    if( row == m_listEvent->GetItemCount() - 1 ) {
+        return; // Already at bottom
     }
+    int seq = m_ies[row].FGetIndSeq();
+    m_ies[row].FSetIndSeq( m_ies[row+1].FGetIndSeq() );
+    m_ies[row].Save();
+    m_ies[row+1].FSetIndSeq( seq );
+    m_ies[row+1].Save();
+    UpdateEventList( m_ies[row].FGetEventID() );
 }
 
-void rgDlgEditIndividual::OnRelAddButton( wxCommandEvent& event )
+void rgDlgEditIndividual::OnEventOrderBy( wxCommandEvent& event )
 {
-    // TODO:
-    wxMessageBox( wxT("Not yet implimented"), wxT("OnRelAddButton") );
+    switch( event.GetSelection() )
+    {
+    case 0:
+        m_order = recEO_DatePt;
+        m_buttonEventUp->Enable( false );
+        m_buttonEventDn->Enable( false );
+        break;
+    case 1:
+        m_order = recEO_PerSeq;
+        m_buttonEventUp->Enable( true );
+        m_buttonEventDn->Enable( true );
+        break;
+    default:
+        return;
+    }
+    long row = m_listEvent->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    idt eveID = ( row >= 0 ) ? m_ies[row].FGetEventID() : 0;
+    UpdateEventList( eveID );
 }
-
-void rgDlgEditIndividual::OnRelEditButton( wxCommandEvent& event )
-{
-    // TODO:
-    wxMessageBox( wxT("Not yet implimented"), wxT("OnRelEditButton") );
-}
-
-void rgDlgEditIndividual::OnRelDeleteButton( wxCommandEvent& event )
-{
-    // TODO:
-    wxMessageBox( wxT("Not yet implimented"), wxT("OnRelDeleteButton") );
-}
-
-void rgDlgEditIndividual::OnRelUpButton( wxCommandEvent& event )
-{
-    // TODO:
-    wxMessageBox( wxT("Not yet implimented"), wxT("OnRelUpButton") );
-}
-
-void rgDlgEditIndividual::OnRelDownButton( wxCommandEvent& event )
-{
-    // TODO:
-    wxMessageBox( wxT("Not yet implimented"), wxT("OnRelDownButton") );
-}
-
 
 // End of src/rg/rgEdIndividual.cpp

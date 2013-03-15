@@ -40,14 +40,14 @@ class recPersona;
 typedef std::vector< recPersona >  recPersonaVec;
 
 
+enum recEventOrder {
+    recEO_DatePt,
+    recEO_PerSeq
+};
+
 class recPersona : public recDb
 {
 public:
-    enum EventOrder {
-        EO_DatePt,
-        EO_PerSeq
-    };
-
     Sex      f_sex;
     idt      f_ref_id;
     wxString f_note;
@@ -83,8 +83,8 @@ public:
     static recNameVec ReadNames( idt perID );
     recNameVec ReadNames() const { return ReadNames( f_id ); }
 
-    static recEventPersonaVec ReadEventPersonas( idt perID, EventOrder order = EO_DatePt );
-    recEventPersonaVec ReadEventPersonas( EventOrder order = EO_DatePt ) const 
+    static recEventPersonaVec ReadEventPersonas( idt perID, recEventOrder order = recEO_DatePt );
+    recEventPersonaVec ReadEventPersonas( recEventOrder order = recEO_DatePt ) const 
         { return ReadEventPersonas( f_id, order ); }
 
     static recRelationshipVec ReadRelationships( idt perID );
