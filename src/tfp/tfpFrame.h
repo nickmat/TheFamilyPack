@@ -32,7 +32,7 @@
 #include <rec/recDatabase.h>
 #include <rec/recFilterEvent.h>
 #include <rg/rgCompareEvent.h>
-#include "dlg/dlgNote.h"
+#include "tfpNote.h"
 
 class wxWebView;
 class wxWebViewEvent;

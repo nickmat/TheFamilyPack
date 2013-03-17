@@ -219,26 +219,26 @@
             Name="Processed Files"
             >
             <File
-                RelativePath="..\..\src\startup.htm"
+                RelativePath="..\..\src\tfp\startup.htm"
                 DeploymentContent="true"
                 >
             </File>
             <File
-                RelativePath="..\..\src\tfp.css"
+                RelativePath="..\..\src\tfp\tfp.css"
                 DeploymentContent="true"
                 >
             </File>
             <File
-                RelativePath="..\..\src\tfpText.f2c"
+                RelativePath="..\..\src\tfp\tfpText.f2c"
                 >
                 <FileConfiguration
                     Name="Release|Win32"
                     >
                     <Tool
                         Name="VCCustomBuildTool"
-                        CommandLine="file2cpp -v -s -o ..\..\src\generated\tfpText.ci ..\..\src\tfpText.f2c&#x0D;&#x0A;"
-                        AdditionalDependencies="..\..\src\startup.htm;..\..\src\tfp.css"
-                        Outputs="..\..\src\generated\tfpText.ci"
+                        CommandLine="file2cpp -v -s -o ..\..\src\tfp\generated\tfpText.ci ..\..\src\tfp\tfpText.f2c&#x0D;&#x0A;"
+                        AdditionalDependencies="..\..\src\tfp\startup.htm;..\..\src\tfp\tfp.css"
+                        Outputs="..\..\src\tfp\generated\tfpText.ci"
                     />
                 </FileConfiguration>
                 <FileConfiguration
@@ -246,9 +246,9 @@
                     >
                     <Tool
                         Name="VCCustomBuildTool"
-                        CommandLine="file2cpp -v -s -o ..\..\src\generated\tfpText.ci ..\..\src\tfpText.f2c&#x0D;&#x0A;"
-                        AdditionalDependencies="..\..\src\startup.htm;..\..\src\tfp.css"
-                        Outputs="..\..\src\generated\tfpText.ci"
+                        CommandLine="file2cpp -v -s -o ..\..\src\tfp\generated\tfpText.ci ..\..\src\tfp\tfpText.f2c&#x0D;&#x0A;"
+                        AdditionalDependencies="..\..\src\tfp\startup.htm;..\..\src\tfp\tfp.css"
+                        Outputs="..\..\src\tfp\generated\tfpText.ci"
                     />
                 </FileConfiguration>
             </File>
@@ -258,10 +258,6 @@
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
-			<File
-				RelativePath="..\..\src\dlg\dlgNote.cpp"
-				>
-			</File>
 			<File
 				RelativePath="..\..\src\dummy.cpp"
 				>
@@ -283,59 +279,63 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\src\tfpApp.cpp"
+				RelativePath="..\..\src\tfp\tfpApp.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tfpFrame.cpp"
+				RelativePath="..\..\src\tfp\tfpFrame.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tfpMemory.cpp"
+				RelativePath="..\..\src\tfp\tfpMemory.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tfpRdGed.cpp"
+				RelativePath="..\..\src\tfp\tfpNote.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tfpVersion.cpp"
+				RelativePath="..\..\src\tfp\tfpRdGed.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tfpWr.cpp"
+				RelativePath="..\..\src\tfp\tfpVersion.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tfpWrAdmin.cpp"
+				RelativePath="..\..\src\tfp\tfpWr.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tfpWrChart.cpp"
+				RelativePath="..\..\src\tfp\tfpWrAdmin.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tfpWrEvent.cpp"
+				RelativePath="..\..\src\tfp\tfpWrChart.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tfpWrFamily.cpp"
+				RelativePath="..\..\src\tfp\tfpWrEvent.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tfpWrIndividual.cpp"
+				RelativePath="..\..\src\tfp\tfpWrFamily.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tfpWrName.cpp"
+				RelativePath="..\..\src\tfp\tfpWrIndividual.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tfpWrNotes.cpp"
+				RelativePath="..\..\src\tfp\tfpWrName.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tfpWrReference.cpp"
+				RelativePath="..\..\src\tfp\tfpWrNotes.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\tfp\tfpWrReference.cpp"
 				>
 			</File>
 			<File
@@ -349,31 +349,31 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\..\src\dlg\dlgNote.h"
+				RelativePath="..\..\src\tfp\tfpApp.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tfpApp.h"
+				RelativePath="..\..\src\tfp\tfpFrame.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tfpFrame.h"
+				RelativePath="..\..\src\tfp\tfpMemory.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tfpMemory.h"
+				RelativePath="..\..\src\tfp\tfpNote.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tfpRd.h"
+				RelativePath="..\..\src\tfp\tfpRd.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tfpVersion.h"
+				RelativePath="..\..\src\tfp\tfpVersion.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tfpWr.h"
+				RelativePath="..\..\src\tfp\tfpWr.h"
 				>
 			</File>
 			<File
@@ -387,7 +387,7 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
-				RelativePath="..\..\src\tfp.rc"
+				RelativePath="..\..\src\tfp\tfp.rc"
 				>
 			</File>
 		</Filter>

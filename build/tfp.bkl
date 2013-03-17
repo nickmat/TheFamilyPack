@@ -83,33 +83,33 @@
     <app-type>gui</app-type>
     <runtime-libs>dynamic</runtime-libs>
 
-    <sources>$(LOCAL_SRC)/dlg/dlgNote.cpp</sources>
-    <sources>$(LOCAL_SRC)/tfpApp.cpp</sources>
-    <sources>$(LOCAL_SRC)/tfpFrame.cpp</sources>
-    <sources>$(LOCAL_SRC)/tfpMemory.cpp</sources>
-    <sources>$(LOCAL_SRC)/tfpRdGed.cpp</sources>
-    <sources>$(LOCAL_SRC)/tfpVersion.cpp</sources>
-    <sources>$(LOCAL_SRC)/tfpWr.cpp</sources>
-    <sources>$(LOCAL_SRC)/tfpWrAdmin.cpp</sources>
-    <sources>$(LOCAL_SRC)/tfpWrChart.cpp</sources>
-    <sources>$(LOCAL_SRC)/tfpWrEvent.cpp</sources>
-    <sources>$(LOCAL_SRC)/tfpWrFamily.cpp</sources>
-    <sources>$(LOCAL_SRC)/tfpWrIndividual.cpp</sources>
-    <sources>$(LOCAL_SRC)/tfpWrName.cpp</sources>
-    <sources>$(LOCAL_SRC)/tfpWrNotes.cpp</sources>
-    <sources>$(LOCAL_SRC)/tfpWrReference.cpp</sources>
+    <sources>$(LOCAL_SRC)/tfp/tfpApp.cpp</sources>
+    <sources>$(LOCAL_SRC)/tfp/tfpFrame.cpp</sources>
+    <sources>$(LOCAL_SRC)/tfp/tfpMemory.cpp</sources>
+    <sources>$(LOCAL_SRC)/tfp/tfpNote.cpp</sources>
+    <sources>$(LOCAL_SRC)/tfp/tfpRdGed.cpp</sources>
+    <sources>$(LOCAL_SRC)/tfp/tfpVersion.cpp</sources>
+    <sources>$(LOCAL_SRC)/tfp/tfpWr.cpp</sources>
+    <sources>$(LOCAL_SRC)/tfp/tfpWrAdmin.cpp</sources>
+    <sources>$(LOCAL_SRC)/tfp/tfpWrChart.cpp</sources>
+    <sources>$(LOCAL_SRC)/tfp/tfpWrEvent.cpp</sources>
+    <sources>$(LOCAL_SRC)/tfp/tfpWrFamily.cpp</sources>
+    <sources>$(LOCAL_SRC)/tfp/tfpWrIndividual.cpp</sources>
+    <sources>$(LOCAL_SRC)/tfp/tfpWrName.cpp</sources>
+    <sources>$(LOCAL_SRC)/tfp/tfpWrNotes.cpp</sources>
+    <sources>$(LOCAL_SRC)/tfp/tfpWrReference.cpp</sources>
     <sources>$(LOCAL_SRC)/webviewfshandler.cpp</sources>
 
-    <headers>$(LOCAL_SRC)/dlg/dlgNote.h</headers>
-    <headers>$(LOCAL_SRC)/tfpApp.h</headers>
-    <headers>$(LOCAL_SRC)/tfpFrame.h</headers>
-    <headers>$(LOCAL_SRC)/tfpMemory.h</headers>
-    <headers>$(LOCAL_SRC)/tfpRd.h</headers>
-    <headers>$(LOCAL_SRC)/tfpVersion.h</headers>
-    <headers>$(LOCAL_SRC)/tfpWr.h</headers>
+    <headers>$(LOCAL_SRC)/tfp/tfpApp.h</headers>
+    <headers>$(LOCAL_SRC)/tfp/tfpFrame.h</headers>
+    <headers>$(LOCAL_SRC)/tfp/tfpMemory.h</headers>
+    <headers>$(LOCAL_SRC)/tfp/tfpNote.h</headers>
+    <headers>$(LOCAL_SRC)/tfp/tfpRd.h</headers>
+    <headers>$(LOCAL_SRC)/tfp/tfpVersion.h</headers>
+    <headers>$(LOCAL_SRC)/tfp/tfpWr.h</headers>
     <headers>$(LOCAL_SRC)/webviewfshandler.h</headers>
 
-    <win32-res>$(LOCAL_SRC)/tfp.rc</win32-res>
+    <win32-res>$(LOCAL_SRC)/tfp/tfp.rc</win32-res>
 
     <include>$(LOCAL_INC)</include>
     <include>$(LOCAL_SRC)</include>

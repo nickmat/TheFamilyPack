@@ -42,7 +42,7 @@
 #include <rec/recDatabase.h>
 #include <rg/rgDialogs.h>
 #include "tfpFrame.h"
-#include "dlgNote.h"
+#include "tfpNote.h"
 #include "tfpWr.h"
 
 

@@ -68,10 +68,10 @@ WX_CONFIG_FLAGS = $(WX_CONFIG_UNICODE_FLAG) $(WX_CONFIG_SHARED_FLAG) \
 TFP_CXXFLAGS = $(VAR) $(VAR_4) -I../../include -I../../src `$(WX_CONFIG) \
 	--cxxflags $(WX_CONFIG_FLAGS)` $(CPPFLAGS) $(CXXFLAGS)
 TFP_OBJECTS =  \
-	tfp_dlgNote.o \
 	tfp_tfpApp.o \
 	tfp_tfpFrame.o \
 	tfp_tfpMemory.o \
+	tfp_tfpNote.o \
 	tfp_tfpRdGed.o \
 	tfp_tfpVersion.o \
 	tfp_tfpWr.o \
@@ -239,49 +239,49 @@ librecgui.a: $(RECGUI_OBJECTS)
 	$(AR) rcu $@ $(RECGUI_OBJECTS)
 	$(RANLIB) $@
 
-tfp_dlgNote.o: ./../../src/dlg/dlgNote.cpp
+tfp_tfpApp.o: ./../../src/tfp/tfpApp.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
-tfp_tfpApp.o: ./../../src/tfpApp.cpp
+tfp_tfpFrame.o: ./../../src/tfp/tfpFrame.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
-tfp_tfpFrame.o: ./../../src/tfpFrame.cpp
+tfp_tfpMemory.o: ./../../src/tfp/tfpMemory.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
-tfp_tfpMemory.o: ./../../src/tfpMemory.cpp
+tfp_tfpNote.o: ./../../src/tfp/tfpNote.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
-tfp_tfpRdGed.o: ./../../src/tfpRdGed.cpp
+tfp_tfpRdGed.o: ./../../src/tfp/tfpRdGed.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
-tfp_tfpVersion.o: ./../../src/tfpVersion.cpp
+tfp_tfpVersion.o: ./../../src/tfp/tfpVersion.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
-tfp_tfpWr.o: ./../../src/tfpWr.cpp
+tfp_tfpWr.o: ./../../src/tfp/tfpWr.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
-tfp_tfpWrAdmin.o: ./../../src/tfpWrAdmin.cpp
+tfp_tfpWrAdmin.o: ./../../src/tfp/tfpWrAdmin.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
-tfp_tfpWrChart.o: ./../../src/tfpWrChart.cpp
+tfp_tfpWrChart.o: ./../../src/tfp/tfpWrChart.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
-tfp_tfpWrEvent.o: ./../../src/tfpWrEvent.cpp
+tfp_tfpWrEvent.o: ./../../src/tfp/tfpWrEvent.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
-tfp_tfpWrFamily.o: ./../../src/tfpWrFamily.cpp
+tfp_tfpWrFamily.o: ./../../src/tfp/tfpWrFamily.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
-tfp_tfpWrIndividual.o: ./../../src/tfpWrIndividual.cpp
+tfp_tfpWrIndividual.o: ./../../src/tfp/tfpWrIndividual.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
-tfp_tfpWrName.o: ./../../src/tfpWrName.cpp
+tfp_tfpWrName.o: ./../../src/tfp/tfpWrName.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
-tfp_tfpWrNotes.o: ./../../src/tfpWrNotes.cpp
+tfp_tfpWrNotes.o: ./../../src/tfp/tfpWrNotes.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
-tfp_tfpWrReference.o: ./../../src/tfpWrReference.cpp
+tfp_tfpWrReference.o: ./../../src/tfp/tfpWrReference.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
 tfp_webviewfshandler.o: ./../../src/webviewfshandler.cpp

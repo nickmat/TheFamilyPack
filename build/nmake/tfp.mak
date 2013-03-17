@@ -60,10 +60,10 @@ TFP_CXXFLAGS = /MD$(VAR_23) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) /D__WXMSW__
 	/I..\..\include /I..\..\src /GR /EHsc /Yu"wx/wxprec.h" /Fp"wxprec_tfp.pch" \
 	$(CPPFLAGS) $(CXXFLAGS)
 TFP_OBJECTS =  \
-	tfp_dlgNote.obj \
 	tfp_tfpApp.obj \
 	tfp_tfpFrame.obj \
 	tfp_tfpMemory.obj \
+	tfp_tfpNote.obj \
 	tfp_tfpRdGed.obj \
 	tfp_tfpVersion.obj \
 	tfp_tfpWr.obj \
@@ -412,56 +412,56 @@ recgui$(WXLIBPOSTFIX).lib: $(RECGUI_OBJECTS)
 	$(RECGUI_OBJECTS)
 <<
 
-tfp_dlgNote.obj: .\..\..\src\dlg\dlgNote.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\dlg\dlgNote.cpp
+tfp_tfpApp.obj: .\..\..\src\tfp\tfpApp.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpApp.cpp
 
-tfp_tfpApp.obj: .\..\..\src\tfpApp.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfpApp.cpp
+tfp_tfpFrame.obj: .\..\..\src\tfp\tfpFrame.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpFrame.cpp
 
-tfp_tfpFrame.obj: .\..\..\src\tfpFrame.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfpFrame.cpp
+tfp_tfpMemory.obj: .\..\..\src\tfp\tfpMemory.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpMemory.cpp
 
-tfp_tfpMemory.obj: .\..\..\src\tfpMemory.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfpMemory.cpp
+tfp_tfpNote.obj: .\..\..\src\tfp\tfpNote.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpNote.cpp
 
-tfp_tfpRdGed.obj: .\..\..\src\tfpRdGed.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfpRdGed.cpp
+tfp_tfpRdGed.obj: .\..\..\src\tfp\tfpRdGed.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpRdGed.cpp
 
-tfp_tfpVersion.obj: .\..\..\src\tfpVersion.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfpVersion.cpp
+tfp_tfpVersion.obj: .\..\..\src\tfp\tfpVersion.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpVersion.cpp
 
-tfp_tfpWr.obj: .\..\..\src\tfpWr.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfpWr.cpp
+tfp_tfpWr.obj: .\..\..\src\tfp\tfpWr.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWr.cpp
 
-tfp_tfpWrAdmin.obj: .\..\..\src\tfpWrAdmin.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfpWrAdmin.cpp
+tfp_tfpWrAdmin.obj: .\..\..\src\tfp\tfpWrAdmin.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrAdmin.cpp
 
-tfp_tfpWrChart.obj: .\..\..\src\tfpWrChart.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfpWrChart.cpp
+tfp_tfpWrChart.obj: .\..\..\src\tfp\tfpWrChart.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrChart.cpp
 
-tfp_tfpWrEvent.obj: .\..\..\src\tfpWrEvent.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfpWrEvent.cpp
+tfp_tfpWrEvent.obj: .\..\..\src\tfp\tfpWrEvent.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrEvent.cpp
 
-tfp_tfpWrFamily.obj: .\..\..\src\tfpWrFamily.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfpWrFamily.cpp
+tfp_tfpWrFamily.obj: .\..\..\src\tfp\tfpWrFamily.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrFamily.cpp
 
-tfp_tfpWrIndividual.obj: .\..\..\src\tfpWrIndividual.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfpWrIndividual.cpp
+tfp_tfpWrIndividual.obj: .\..\..\src\tfp\tfpWrIndividual.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrIndividual.cpp
 
-tfp_tfpWrName.obj: .\..\..\src\tfpWrName.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfpWrName.cpp
+tfp_tfpWrName.obj: .\..\..\src\tfp\tfpWrName.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrName.cpp
 
-tfp_tfpWrNotes.obj: .\..\..\src\tfpWrNotes.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfpWrNotes.cpp
+tfp_tfpWrNotes.obj: .\..\..\src\tfp\tfpWrNotes.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrNotes.cpp
 
-tfp_tfpWrReference.obj: .\..\..\src\tfpWrReference.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfpWrReference.cpp
+tfp_tfpWrReference.obj: .\..\..\src\tfp\tfpWrReference.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrReference.cpp
 
 tfp_webviewfshandler.obj: .\..\..\src\webviewfshandler.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\webviewfshandler.cpp
 
-tfp_tfp.res: .\..\..\src\tfp.rc
-	rc /fo$@  /d WIN32  /d _UNICODE $(__WXDEBUG_DEFINE_p_1) /d __WXMSW__ /i $(WX_DIR)\lib\$(COMPILER_PREFIX)$(WXCPU)_lib\msw$(WXLIBPOSTFIX) /i $(WX_DIR)\include $(______tfp__DEBUGINFO_6_p_1) /d _WINDOWS /i ..\..\include /i ..\..\src .\..\..\src\tfp.rc
+tfp_tfp.res: .\..\..\src\tfp\tfp.rc
+	rc /fo$@  /d WIN32  /d _UNICODE $(__WXDEBUG_DEFINE_p_1) /d __WXMSW__ /i $(WX_DIR)\lib\$(COMPILER_PREFIX)$(WXCPU)_lib\msw$(WXLIBPOSTFIX) /i $(WX_DIR)\include $(______tfp__DEBUGINFO_6_p_1) /d _WINDOWS /i ..\..\include /i ..\..\src .\..\..\src\tfp\tfp.rc
 
 tfp_dummy.obj: .\..\..\src\dummy.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) /Ycwx/wxprec.h .\..\..\src\dummy.cpp
