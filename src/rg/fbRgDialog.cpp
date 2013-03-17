@@ -92,7 +92,6 @@ fbRgCreateIndividual::fbRgCreateIndividual( wxWindow* parent, wxWindowID id, con
 	fgSizer16->Add( m_staticText23, 0, wxALIGN_RIGHT|wxTOP|wxBOTTOM|wxLEFT, 5 );
 	
 	m_textNote = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 300,50 ), wxTE_MULTILINE );
-	m_textNote->SetMaxLength( 0 ); 
 	fgSizer16->Add( m_textNote, 1, wxALL|wxEXPAND, 5 );
 	
 	
@@ -897,7 +896,6 @@ fbRgEditIndividual::fbRgEditIndividual( wxWindow* parent, wxWindowID id, const w
 	bSizer103->Add( m_staticText12, 0, wxALL, 5 );
 	
 	m_textCtrlNote = new wxTextCtrl( m_panel1, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 350,100 ), wxTE_MULTILINE );
-	m_textCtrlNote->SetMaxLength( 0 ); 
 	bSizer103->Add( m_textCtrlNote, 1, wxALL|wxEXPAND, 5 );
 	
 	
@@ -1305,7 +1303,6 @@ fbRgEditPersona::fbRgEditPersona( wxWindow* parent, wxWindowID id, const wxStrin
 	bSizer68->Add( m_staticText12, 0, wxALL, 5 );
 	
 	m_textCtrlNote = new wxTextCtrl( m_panel1, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( -1,-1 ), wxTE_MULTILINE );
-	m_textCtrlNote->SetMaxLength( 0 ); 
 	bSizer68->Add( m_textCtrlNote, 1, wxALL|wxEXPAND, 5 );
 	
 	
@@ -1626,7 +1623,6 @@ fbRgEditReference::fbRgEditReference( wxWindow* parent, wxWindowID id, const wxS
 	bSizer51->Add( m_staticText401, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	m_textCtrlTitle = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	m_textCtrlTitle->SetMaxLength( 0 ); 
 	bSizer51->Add( m_textCtrlTitle, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	
@@ -1663,7 +1659,6 @@ fbRgEditReference::fbRgEditReference( wxWindow* parent, wxWindowID id, const wxS
 	bSizer53->Add( m_toolBar1, 0, wxEXPAND, 5 );
 	
 	m_textCtrlStatement = new wxTextCtrl( m_panelSource, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 600,150 ), wxTE_DONTWRAP|wxTE_MULTILINE|wxHSCROLL );
-	m_textCtrlStatement->SetMaxLength( 0 ); 
 	m_textCtrlStatement->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 76, 90, 90, false, wxEmptyString ) );
 	
 	bSizer53->Add( m_textCtrlStatement, 1, wxALL|wxEXPAND, 5 );
