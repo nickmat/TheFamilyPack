@@ -1019,10 +1019,10 @@ void RecTestCase::TestFamilyIndividual()
     recFamilyIndividual record1;
     record1.FSetID( 0 );
 
-    record1.fSetFamID( 5 );
-    record1.fSetIndID( 6 );
-    record1.fSetSeqChild( 1 );
-    record1.fSetSeqParent( 2 );
+    record1.FSetFamID( 5 );
+    record1.FSetIndID( 6 );
+    record1.FSetSeqChild( 1 );
+    record1.FSetSeqParent( 2 );
     // f_id = 0 so create new record and set f_id to new value.
     record1.Save();
     id = record1.FGetID();
@@ -1033,10 +1033,10 @@ void RecTestCase::TestFamilyIndividual()
     record2.Read();
     CPPUNIT_ASSERT( record1 == record2 );
 
-    record1.fSetFamID( 11 );
-    record1.fSetIndID( 12 );
-    record1.fSetSeqChild( 3 );
-    record1.fSetSeqParent( 4 );
+    record1.FSetFamID( 11 );
+    record1.FSetIndID( 12 );
+    record1.FSetSeqChild( 3 );
+    record1.FSetSeqParent( 4 );
     // f_id = 1 which exists, so amend record leaving f_id to old value.
     record1.Save();
     CPPUNIT_ASSERT( record1.FGetID() == id );
@@ -1044,7 +1044,7 @@ void RecTestCase::TestFamilyIndividual()
     CPPUNIT_ASSERT( record1 == record2 );
 
     record1.FSetID( 999 );
-    record1.fSetSeqChild( 8 );
+    record1.FSetSeqChild( 8 );
     // f_id = 999 which doesn't exists, so create new record with no change to f_id.
     record1.Save();
     CPPUNIT_ASSERT( record1.FGetID() == 999 );
@@ -1053,7 +1053,7 @@ void RecTestCase::TestFamilyIndividual()
     CPPUNIT_ASSERT( record1 == record2 );
 
     record1.FSetID( 0 );
-    record1.fSetSeqChild( 7 );
+    record1.FSetSeqChild( 7 );
     record1.Save();
     CPPUNIT_ASSERT( record1.FGetID() != 0 );
     CPPUNIT_ASSERT( record1.Exists() == true );

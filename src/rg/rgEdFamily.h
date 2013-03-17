@@ -47,17 +47,23 @@ class rgDlgEditFamily : public fbRgEditFamily
 
 protected:
     enum {
-        tfpID_DLGEDFAM_EDIT = 1500,
-        tfpID_DLGEDFAM_REMOVE,
-        tfpID_DLGEDFAM_DELETE,
-        tfpID_DLGEDFAM_ADDNEW,
-        tfpID_DLGEDFAM_ADDEXIST,
-        tfpID_DLGEDFAM_ADDNEWSON,
-        tfpID_DLGEDFAM_ADDNEWDAUR,
-        tfpID_DLGEDFAM_ADDEXISTSON,
-        tfpID_DLGEDFAM_ADDEXISTDAUR,
-        tfpID_DLGEDFAM_NEW_EVENT,
-        tfpID_DLGEDFAM_EXIST_EVENT
+        rgID_DLGEDFAM_EDIT = 1500,
+        rgID_DLGEDFAM_REMOVE,
+        rgID_DLGEDFAM_DELETE,
+        rgID_DLGEDFAM_ADDNEW,
+        rgID_DLGEDFAM_ADDEXIST,
+        rgID_DLGEDFAM_ADDNEWSON,
+        rgID_DLGEDFAM_ADDNEWDAUR,
+        rgID_DLGEDFAM_ADDEXISTSON,
+        rgID_DLGEDFAM_ADDEXISTDAUR,
+        rgID_DLGEDFAM_UNLINK_EVENT,
+        rgID_DLGEDFAM_DELETE_EVENT
+    };
+    enum Page {
+        PAGE_Family, PAGE_Children, PAGE_Events
+    };
+    enum ChildColumns {
+        CC_Number, CC_Name, CC_Dates, CC_MAX
     };
     enum EventColumns {
         EC_Number, EC_Title, EC_Date, EC_Place, EC_MAX
@@ -65,12 +71,14 @@ protected:
 public:
     rgDlgEditFamily( wxWindow* parent, idt famID );
 
-//    void SetFamily( const recFamily& family ) { m_family = family; }
-    void SetChildID( idt childID ) { m_child = childID; }
-
 private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
+    void UpdateNames();
+    void UpdateChildList( idt indID = 0 );
+    void UpdateEventList( idt eveID = 0 );
+
+    void OnPageChanged( wxNotebookEvent& event );
 
     void OnHusbButton( wxCommandEvent& event );
     void OnWifeButton( wxCommandEvent& event );
@@ -82,26 +90,28 @@ private:
 
     void OnChildAddButton( wxCommandEvent& event );
     void OnAddChild( wxCommandEvent& event );
-
     void OnChildEditButton( wxCommandEvent& event );
     void OnChildDeleteButton( wxCommandEvent& event );
     void OnChildUpButton( wxCommandEvent& event );
     void OnChildDownButton( wxCommandEvent& event );
 
     void OnEventAddButton( wxCommandEvent& event );
-    void OnNewEvent( wxCommandEvent& event );
-	void OnExistingEvent( wxCommandEvent& event );
 	void OnEventEditButton( wxCommandEvent& event );
 	void OnEventDeleteButton( wxCommandEvent& event );
-	void OnEventUpButton( wxCommandEvent& event );
-	void OnEventDownButton( wxCommandEvent& event );
+	void OnUnlinkEvent( wxCommandEvent& event );
+	void OnDeleteEvent( wxCommandEvent& event );
+    void OnEventUpButton( wxCommandEvent& event );
+    void OnEventDownButton( wxCommandEvent& event );
+    void OnEventOrderBy( wxCommandEvent& event );
 
-    idt            m_child;
-    EDBUT_Type     m_editbutton;
 
     recFamily         m_family;
-    recFamIndVec      m_childlinks;
+    recFamIndVec      m_fis;
     recFamilyEventVec m_fes;
+
+    recEventOrder     m_order;
+    EDBUT_Type        m_editbutton;
+    long              m_currentRow;
 };
 
 #endif // RGEDITFAMILY_H

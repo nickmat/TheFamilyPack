@@ -286,6 +286,24 @@ bool recEvent::IsIndEvent( idt eveID )
     return indID ? true : false;
 }
 
+bool recEvent::IsFamilyEvent( idt eveID )
+{
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3ResultSet result;
+
+    sql.Format(
+        "SELECT ET.grp FROM Event E, EventType ET"
+        " WHERE E.type_id=ET.id AND E.id="ID";",
+        eveID
+    );
+    result = s_db->ExecuteQuery( sql );
+    recEventType::ETYPE_Grp grp = (recEventType::ETYPE_Grp) result.GetInt( 0 );
+    if( grp == recEventType::ETYPE_Grp_Union || recEventType::ETYPE_Grp_Family ) {
+        return true;
+    }
+    return false;
+}
+
 recIndEventVec recEvent::GetIndividualEvents()
 {
     recIndEventVec vec;
@@ -610,7 +628,7 @@ bool recEventType::HasDateSpan( idt etID )
     return et.HasDateSpan();
 }
 
-wxString recEventType::GetGroupStr( ETYPE_Grp grp )
+wxString recEventType::GetGroupString( ETYPE_Grp grp )
 {
     wxASSERT( grp >= 0 && grp < ETYPE_Grp_MAX );
     static wxString grparray[ETYPE_Grp_MAX] = {
@@ -630,7 +648,7 @@ wxString recEventType::GetGroupStr( ETYPE_Grp grp )
 wxString recEventType::GetGroupStr( idt typeID )
 {
     recEventType et( typeID );
-    return GetGroupStr( et.FGetGrp() );
+    return GetGroupString( et.FGetGrp() );
 }
 
 wxArrayString recEventType::GetGroupStrings( size_t start )
@@ -665,6 +683,10 @@ recEventTypeVec recEventType::ReadVec( unsigned filter )
         query << "NOT grp=0 ";
     } else {
         bool started = false;
+        if( filter & recET_FILTER_GrpUnstated ) {
+            if( started ) query << "OR "; else started = true;
+            query << "grp=0 ";
+        }
         if( filter & recET_FILTER_GrpBirth ) {
             if( started ) query << "OR "; else started = true;
             query << "grp=1 ";

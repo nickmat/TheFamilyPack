@@ -130,12 +130,12 @@ bool rgAddNewParent( wxWindow* wind, idt indID, Sex sex )
     idt parentID = rgAddNewIndividual( wind, sex, surname, famID );
     if( parentID ) {
         recFamilyIndividual fi(0);
-        fi.fSetFamID( recIndividual::GetDefaultFamily( parentID ) );
-        fi.fSetIndID( indID );
+        fi.FSetFamID( recIndividual::GetDefaultFamily( parentID ) );
+        fi.FSetIndID( indID );
         fi.Find();
         if( fi.FGetID() == 0 ) {
-            fi.fSetSeqChild( 1 );
-            fi.fSetSeqParent( recFamily::GetParentNextSequence( parentID ) );
+            fi.FSetSeqChild( 1 );
+            fi.FSetSeqParent( recFamily::GetParentNextSequence( parentID ) );
             fi.Save();
         }
 
@@ -295,9 +295,9 @@ idt rgAddNewChild( wxWindow* wind, idt famID, Sex sex )
     // TODO: Allow for other naming systems
     wxString surname;
     recFamily family(famID);
-    idt parentID = family.f_husb_id;
+    idt parentID = family.FGetHusbID();
     if( parentID == 0 ) {
-        parentID = family.f_wife_id;
+        parentID = family.FGetWifeID();
     }
     if( parentID ) {
         surname = recIndividual::GetSurname( parentID );
@@ -306,9 +306,10 @@ idt rgAddNewChild( wxWindow* wind, idt famID, Sex sex )
     idt indID = rgAddNewIndividual( wind, sex, surname );
     if( indID ) {
         recFamilyIndividual fi(0);
-        fi.f_fam_id = famID;
-        fi.f_ind_id = indID;
-        fi.f_seq_child = recFamily::GetChildNextSequence( famID );
+        fi.FSetFamID( famID );
+        fi.FSetIndID( indID );
+        fi.FSetSeqChild( recFamily::GetChildNextSequence( famID ) );
+        fi.FSetSeqParent( recFamily::GetParentNextSequence( indID ) );
         fi.Save();
         recDb::ReleaseSavepoint( savepoint );
     } else {
@@ -324,11 +325,11 @@ idt rgAddExistChild( wxWindow* wind, idt famID, Sex sex )
 
     idt indID = rgSelectIndividual( wind, sex );
     if( indID != 0 ) {
-        recFamilyIndividual fi;
-        fi.Clear();
-        fi.f_fam_id = famID;
-        fi.f_ind_id = indID;
-        fi.f_seq_child = recFamily::GetChildNextSequence( famID );
+        recFamilyIndividual fi(0);
+        fi.FSetFamID( famID );
+        fi.FSetIndID( indID );
+        fi.FSetSeqChild( recFamily::GetChildNextSequence( famID ) );
+        fi.FSetSeqParent( recFamily::GetParentNextSequence( indID ) );
         fi.Save();
         recDb::ReleaseSavepoint( savepoint );
     } else {

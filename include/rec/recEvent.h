@@ -56,15 +56,16 @@ typedef std::vector< recFamilyEvent >     recFamilyEventVec;
 
 enum {
     recET_FILTER_GrpNone        = 0x0000,
-    recET_FILTER_GrpBirth       = 0x0001,
-    recET_FILTER_GrpNrBirth     = 0x0002,
-    recET_FILTER_GrpFamUnion    = 0x0004,
-    recET_FILTER_GrpFamOther    = 0x0008,
-    recET_FILTER_GrpDeath       = 0x0010,
-    recET_FILTER_GrpNrDeath     = 0x0020,
-    recET_FILTER_GrpOther       = 0x0040,
-    recET_FILTER_GrpPersonal    = 0x0080,
-    recET_FILTER_GrpAll         = 0x00ff,
+    recET_FILTER_GrpUnstated    = 0x0001,
+    recET_FILTER_GrpBirth       = 0x0002,
+    recET_FILTER_GrpNrBirth     = 0x0004,
+    recET_FILTER_GrpFamUnion    = 0x0008,
+    recET_FILTER_GrpFamOther    = 0x0010,
+    recET_FILTER_GrpDeath       = 0x0020,
+    recET_FILTER_GrpNrDeath     = 0x0040,
+    recET_FILTER_GrpOther       = 0x0080,
+    recET_FILTER_GrpPersonal    = 0x0100,
+    recET_FILTER_GrpAll         = 0x01ff,
     recET_FILTER_GrpFamily = (recET_FILTER_GrpFamUnion|recET_FILTER_GrpFamOther)
 };
 
@@ -132,7 +133,7 @@ public:
     bool HasDateSpan() const;
     static bool HasDateSpan( idt etID );
 
-    static wxString GetGroupStr( ETYPE_Grp grp );
+    static wxString GetGroupString( ETYPE_Grp grp );
     static wxString GetGroupStr( idt typeID );
     wxString GetGroupStr() const { return GetGroupStr( f_grp ); }
     static wxArrayString GetGroupStrings( size_t start = 0 );
@@ -236,6 +237,9 @@ public:
 
     static bool IsIndEvent( idt eveID );
     bool IsIndEvent() const { return IsIndEvent( f_id ); }
+    static bool IsFamilyEvent( idt eveID );
+    bool IsFamilyEvent() const { return IsFamilyEvent( f_id ); }
+
     recIndEventVec GetIndividualEvents();
     recEventPersonaVec GetEventPersonas();
     static wxSQLite3Table GetTitleList();

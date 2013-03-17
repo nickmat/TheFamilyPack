@@ -78,6 +78,7 @@ private:
     bool m_selList;
 
     recFilterEvent* m_fe;
+    IntVec m_groups;
     long m_begDatePt;
     long m_endDatePt;
 };

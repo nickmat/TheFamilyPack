@@ -89,15 +89,7 @@ rgDlgEditIndividual::rgDlgEditIndividual( wxWindow* parent, idt indID )
 
 bool rgDlgEditIndividual::TransferDataToWindow()
 {
-    if( m_individual.f_id == 0 ) {
-        m_individual.Save();
-        m_persona.Save();
-        m_individual.f_per_id = m_persona.f_id;
-    } else {
-        m_individual.Read();
-        m_persona.f_id = m_individual.f_per_id;
-        m_persona.Read();
-    }
+    wxASSERT( m_individual.FGetID() != 0 );
 
     m_staticTextEpitaph->SetLabel( m_individual.f_epitaph );
     m_choiceSex->SetSelection( (int) m_persona.f_sex );

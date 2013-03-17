@@ -65,7 +65,7 @@ bool rgEditEvent( wxWindow* parent, idt eveID )
 }
 
 
-idt rgCreateIndEvent( wxWindow* wind, idt ind1ID, idt ind2ID )
+idt rgCreateIndEvent( wxWindow* wind, idt ind1ID, idt ind2ID, idt famID )
 {
     wxASSERT( ind1ID != 0 );
     const wxString savepoint = recDb::GetSavepointStr();
@@ -118,6 +118,13 @@ idt rgCreateIndEvent( wxWindow* wind, idt ind1ID, idt ind2ID )
             recDb::Rollback( savepoint );
             return 0;
         }
+    }
+    if( famID ) {
+        recFamilyEvent fe(0);
+        fe.FSetFamID( famID );
+        fe.FSetEventID( eveID );
+        fe.FSetFamSeq( recFamily::GetMaxEventSeqNumber( famID ) );
+        fe.Save();
     }
 
     if( ! rgEditEvent( wind, eveID ) ) {

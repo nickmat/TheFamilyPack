@@ -61,8 +61,6 @@ class rgDlgEditIndividual : public fbRgEditIndividual
 public:
     rgDlgEditIndividual( wxWindow* parent, idt indID );
 
-    recPersona* GetPersona() { return &m_persona; }
-
 private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();

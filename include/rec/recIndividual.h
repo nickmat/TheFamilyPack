@@ -294,15 +294,15 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "FamilyIndividual" );
 
-    idt fGetFamID() const { return f_fam_id; }
-    idt fGetIndID() const { return f_ind_id; }
-    int fGetSeqChild() const { return f_seq_child; }
-    int fSetSeqParent() const { return f_seq_parent; }
+    idt FGetFamID() const { return f_fam_id; }
+    idt FGetIndID() const { return f_ind_id; }
+    int FGetSeqChild() const { return f_seq_child; }
+    int FSetSeqParent() const { return f_seq_parent; }
 
-    void fSetFamID( idt famID ) { f_fam_id = famID; } 
-    void fSetIndID( idt indID ) { f_ind_id = indID; } 
-    void fSetSeqChild( int seq ) { f_seq_child = seq; }
-    void fSetSeqParent( int seq ) { f_seq_parent = seq; }
+    void FSetFamID( idt famID ) { f_fam_id = famID; } 
+    void FSetIndID( idt indID ) { f_ind_id = indID; } 
+    void FSetSeqChild( int seq ) { f_seq_child = seq; }
+    void FSetSeqParent( int seq ) { f_seq_parent = seq; }
 
     bool Find();
 };

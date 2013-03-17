@@ -40,9 +40,20 @@ class recFilterEvent
 {
 public:
     enum FE_Class { FE_All, FE_Ind, FE_Ref, FE_Max };
-    recFilterEvent();
+    enum recFE_FLAG {
+        recFE_FLAG_EnableNul = 0x0001,
+        recFE_FLAG_EnableInd = 0x0002,
+        recFE_FLAG_EnableFam = 0x0004,
+        recFE_FLAG_ShowNul   = 0x0100,
+        recFE_FLAG_ShowInd   = 0x0200,
+        recFE_FLAG_ShowFam   = 0x0400,
+        recFE_FLAG_Default   = 0x0006
+    };
 
-    bool GetGroupFlag( size_t index ) const { return m_groupChks[index]; }
+    recFilterEvent( unsigned flag = recFE_FLAG_Default );
+
+    bool GetGroupEnabled( size_t index ) const { return m_groupEnabled[index]; }
+    bool GetGroupChecked( size_t index ) const { return m_groupChecked[index]; }
     size_t GetTypesSize() const { return m_types.size(); }
     wxString GetBegDatePtStr() const { return m_begDateStr; }
     wxString GetEndDatePtStr() const { return m_endDateStr; }
@@ -54,7 +65,8 @@ public:
     recIdVec GetTypeIDVec() const;
 
     void SetFEClass( FE_Class fec ) { m_class = fec; }
-    void SetGroupFlag( size_t index, bool flag ) { m_groupChks[index] = flag; }
+    void SetGroupEnabled( size_t index, bool flag ) { m_groupEnabled[index] = flag; }
+    void SetGroupChecked( size_t index, bool flag ) { m_groupChecked[index] = flag; }
     void SetTypeFlag( size_t index, bool flag ) { m_typeChks[index] = flag; }
     void SetBegDatePtStr( const wxString& str ) { m_begDateStr = str; }
     void SetEndDatePtStr( const wxString& str ) { m_endDateStr = str; }
@@ -72,7 +84,8 @@ private:
 
 
     FE_Class       m_class;
-    bool           m_groupChks[recEventType::ETYPE_Grp_MAX];
+    bool           m_groupEnabled[recEventType::ETYPE_Grp_MAX];
+    bool           m_groupChecked[recEventType::ETYPE_Grp_MAX];
     recIdVec       m_types;
     BoolVec        m_typeChks;
     wxString       m_begDateStr;

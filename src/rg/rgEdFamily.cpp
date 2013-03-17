@@ -68,24 +68,29 @@ bool rgEditFamily( wxWindow* parent, idt famID )
 IMPLEMENT_CLASS( rgDlgEditFamily, wxDialog )
 
 BEGIN_EVENT_TABLE( rgDlgEditFamily, wxDialog )
-    EVT_MENU( tfpID_DLGEDFAM_EDIT, rgDlgEditFamily::OnEditID )
-    EVT_MENU( tfpID_DLGEDFAM_REMOVE, rgDlgEditFamily::OnRemoveID )
-    EVT_MENU( tfpID_DLGEDFAM_DELETE, rgDlgEditFamily::OnDeleteID )
-    EVT_MENU( tfpID_DLGEDFAM_ADDNEW, rgDlgEditFamily::OnEditID )
-    EVT_MENU( tfpID_DLGEDFAM_ADDEXIST, rgDlgEditFamily::OnAddExistID )
+    EVT_MENU( rgID_DLGEDFAM_EDIT, rgDlgEditFamily::OnEditID )
+    EVT_MENU( rgID_DLGEDFAM_REMOVE, rgDlgEditFamily::OnRemoveID )
+    EVT_MENU( rgID_DLGEDFAM_DELETE, rgDlgEditFamily::OnDeleteID )
+    EVT_MENU( rgID_DLGEDFAM_ADDNEW, rgDlgEditFamily::OnEditID )
+    EVT_MENU( rgID_DLGEDFAM_ADDEXIST, rgDlgEditFamily::OnAddExistID )
 
-    EVT_MENU( tfpID_DLGEDFAM_ADDNEWSON, rgDlgEditFamily::OnAddChild )
-    EVT_MENU( tfpID_DLGEDFAM_ADDNEWDAUR, rgDlgEditFamily::OnAddChild )
-    EVT_MENU( tfpID_DLGEDFAM_ADDEXISTSON, rgDlgEditFamily::OnAddChild )
-    EVT_MENU( tfpID_DLGEDFAM_ADDEXISTDAUR, rgDlgEditFamily::OnAddChild )
+    EVT_MENU( rgID_DLGEDFAM_ADDNEWSON, rgDlgEditFamily::OnAddChild )
+    EVT_MENU( rgID_DLGEDFAM_ADDNEWDAUR, rgDlgEditFamily::OnAddChild )
+    EVT_MENU( rgID_DLGEDFAM_ADDEXISTSON, rgDlgEditFamily::OnAddChild )
+    EVT_MENU( rgID_DLGEDFAM_ADDEXISTDAUR, rgDlgEditFamily::OnAddChild )
 
-    EVT_MENU( tfpID_DLGEDFAM_NEW_EVENT,   rgDlgEditFamily::OnNewEvent )
-    EVT_MENU( tfpID_DLGEDFAM_EXIST_EVENT, rgDlgEditFamily::OnExistingEvent )
+    EVT_MENU( rgID_DLGEDFAM_UNLINK_EVENT, rgDlgEditFamily::OnUnlinkEvent )
+    EVT_MENU( rgID_DLGEDFAM_DELETE_EVENT, rgDlgEditFamily::OnDeleteEvent )
 END_EVENT_TABLE()
 
 rgDlgEditFamily::rgDlgEditFamily( wxWindow* parent, idt famID ) 
-    : m_family(famID), m_child(0), m_editbutton(EDBUT_Husb), fbRgEditFamily( parent )
+    : m_family(famID), m_editbutton(EDBUT_Husb), m_order(recEO_DatePt),
+    m_currentRow(0), fbRgEditFamily( parent )
 {
+    m_listChildren->InsertColumn( CC_Number, _("Number"), wxLIST_FORMAT_LEFT, 60 );
+    m_listChildren->InsertColumn( CC_Name, _("Name") );
+    m_listChildren->InsertColumn( CC_Dates, _("Dates") );
+
     m_listEvent->InsertColumn( EC_Number, _("Number") );
     m_listEvent->InsertColumn( EC_Title, _("Title") );
     m_listEvent->InsertColumn( EC_Date, _("Date") );
@@ -94,75 +99,119 @@ rgDlgEditFamily::rgDlgEditFamily( wxWindow* parent, idt famID )
 
 bool rgDlgEditFamily::TransferDataToWindow()
 {
-    wxASSERT( m_family.f_id != 0 );
-    if( m_child > 0 ) {
-        recFamilyIndividual fi;
-        fi.Clear();
-        fi.f_fam_id = m_family.f_id;
-        fi.f_ind_id = m_child;
-        fi.f_seq_child = 1;
-        fi.f_seq_parent = 1;
-        fi.Save();
-    }
-
-    wxString str;
-
-    str << wxT("F") << m_family.f_id;
-    m_staticFamID->SetLabel( str  );
-
-    str = recIndividual::GetFullName( m_family.f_husb_id );
-    m_staticHusbName->SetLabel( str  );
-
-    str = recIndividual::GetFullName( m_family.f_wife_id );
-    m_staticWifeName->SetLabel( str  );
-
-    m_childlinks = m_family.GetChildLinks();
-    wxArrayString list;
-    if( m_childlinks.size() > 0 )
-    {
-        for( size_t i = 0 ; i < m_childlinks.size() ; i++ )
-        {
-            list.Add( recIndividual::GetFullName( m_childlinks[i].f_ind_id ) );
-        }
-        m_listChild->InsertItems( list, 0 );
-    }
-    m_fes = m_family.GetEvents();
-    for( size_t i = 0 ; i < m_fes.size() ; i++ ) {
-        idt eveID = m_fes[i].FGetEventID();
-        m_listEvent->InsertItem( i, recEvent::GetIdStr( eveID ) );
-        m_listEvent->SetItem( i, EC_Title, recEvent::GetTitle( eveID ) );
-        m_listEvent->SetItem( i, EC_Date, recEvent::GetDateStr( eveID ) );
-        m_listEvent->SetItem( i, EC_Place, recEvent::GetAddressStr( eveID ) );
-    }
+    wxASSERT( m_family.FGetID() != 0 );
+    UpdateNames();
+    UpdateChildList();
+    UpdateEventList();
+    m_staticFamID->SetLabel( m_family.GetIdStr() );
     return true;
 }
 
 bool rgDlgEditFamily::TransferDataFromWindow()
 {
     m_family.Save();
-    recIndividual ind(m_family.f_husb_id);
-    if( ind.f_fam_id == 0 ) {
-        ind.f_fam_id = m_family.f_id;
+    recIndividual ind(m_family.FGetHusbID());
+    if( ind.FGetFamID() == 0 ) {
+        ind.FSetFamID( m_family.FGetID() );
         ind.Save();
     }
-    ind.ReadID( m_family.f_wife_id );
-    if( ind.f_fam_id == 0 ) {
-        ind.f_fam_id = m_family.f_id;
+    ind.ReadID( m_family.FGetWifeID() );
+    if( ind.FGetFamID() == 0 ) {
+        ind.FSetFamID( m_family.FGetID() );
         ind.Save();
     }
+    return true;
+}
 
-    for( size_t i = 0 ; i < m_childlinks.size() ; i++ ) {
-        m_childlinks[i].fSetSeqChild( i+1 );
-        m_childlinks[i].Save();
+void rgDlgEditFamily::UpdateNames()
+{
+    wxString str1 = recIndividual::GetFullName( m_family.FGetHusbID() );
+    m_staticHusbName->SetLabel( str1  );
+
+    wxString str2 = recIndividual::GetFullName( m_family.FGetWifeID() );
+    m_staticWifeName->SetLabel( str2  );
+
+    if( str1.size() ) {
+        if( str2.size() ) {
+            str1 << _(" and ") << str2;
+        }
+    } else {
+        str1 << str2;
     }
+    m_staticNames->SetLabel( str1 );
+}
 
+void rgDlgEditFamily::UpdateChildList( idt curIndID )
+{
+    m_fis = m_family.GetChildLinks();
+    m_listChildren->DeleteAllItems();
+    int row = -1;
+    for( size_t i = 0 ; i < m_fis.size() ; i++ ) {
+        idt indID = m_fis[i].FGetIndID();
+        m_listChildren->InsertItem( i, recIndividual::GetIdStr( indID ) );
+        m_listChildren->SetItem( i, CC_Name, recIndividual::GetFullName( indID ) );
+        m_listChildren->SetItem( i, CC_Dates, recIndividual::GetDateEpitaph( indID ) );
+        if( curIndID == indID ) {
+            m_listChildren->SetItemState( i, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+            row = i;
+        }
+        // Correct errors and gaps in sequence numbers.
+        if( m_fis[i].FGetSeqChild() != i+1 ) {
+            m_fis[i].FSetSeqChild( i+1 );
+            m_fis[i].Save();
+        }
+    }
+    if( m_fis.size() ) {
+        m_listChildren->SetColumnWidth( CC_Name, -1 );
+    }
+    if( row >= 0 ) {
+        m_listChildren->EnsureVisible( row );
+    }
+}
+
+void rgDlgEditFamily::UpdateEventList( idt curEveID )
+{
+    m_fes = m_family.GetEvents();
+    m_listEvent->DeleteAllItems();
+    int row = -1;
     for( size_t i = 0 ; i < m_fes.size() ; i++ ) {
-        if( m_fes[i].FGetFamSeq() != i+1 ) {
+        idt eveID = m_fes[i].FGetEventID();
+        m_listEvent->InsertItem( i, recEvent::GetIdStr( eveID ) );
+        m_listEvent->SetItem( i, EC_Title, recEvent::GetTitle( eveID ) );
+        m_listEvent->SetItem( i, EC_Date, recEvent::GetDateStr( eveID ) );
+        m_listEvent->SetItem( i, EC_Place, recEvent::GetAddressStr( eveID ) );
+        if( curEveID == eveID ) {
+            m_listEvent->SetItemState( i, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+            row = i;
+        }
+        // Correct errors and gaps in sequence numbers.
+        if( m_order == recEO_FamSeq && m_fes[i].FGetFamSeq() != i+1 ) {
             m_fes[i].FSetFamSeq( i+1 );
             m_fes[i].Save();
         }
     }
-    return true;
+    if( row >= 0 ) {
+        m_listEvent->EnsureVisible( row );
+    }
+}
+
+void rgDlgEditFamily::OnPageChanged( wxNotebookEvent& event )
+{
+    Page page = (Page) event.GetSelection();
+    switch( page )
+    {
+    case PAGE_Family:
+        break;
+        UpdateNames();
+    case PAGE_Children:
+        UpdateChildList();
+        break;
+    case PAGE_Events:
+        UpdateEventList();
+        break;
+    default:
+        wxASSERT( false );
+    }
 }
 
 void rgDlgEditFamily::OnHusbButton( wxCommandEvent& event )
@@ -183,16 +232,16 @@ void rgDlgEditFamily::EditSpouseMenu( idt indID )
 
     if( indID != 0 )
     {
-        menu->Append( tfpID_DLGEDFAM_EDIT,     _("&Edit") );
-        menu->Append( tfpID_DLGEDFAM_REMOVE,   _("&Remove") );
-        menu->Append( tfpID_DLGEDFAM_DELETE,   _("&Delete") );
+        menu->Append( rgID_DLGEDFAM_EDIT,     _("&Edit") );
+        menu->Append( rgID_DLGEDFAM_REMOVE,   _("&Remove") );
+        menu->Append( rgID_DLGEDFAM_DELETE,   _("&Delete") );
         if( m_family.f_husb_id == 0 || m_family.f_wife_id == 0 ) {
-            menu->Enable( tfpID_DLGEDFAM_REMOVE, false );
-            menu->Enable( tfpID_DLGEDFAM_DELETE, false );
+            menu->Enable( rgID_DLGEDFAM_REMOVE, false );
+            menu->Enable( rgID_DLGEDFAM_DELETE, false );
         }
     } else {
-        menu->Append( tfpID_DLGEDFAM_ADDNEW,   _("Add &New") );
-        menu->Append( tfpID_DLGEDFAM_ADDEXIST, _("Add &Existing") );
+        menu->Append( rgID_DLGEDFAM_ADDNEW,   _("Add &New") );
+        menu->Append( rgID_DLGEDFAM_ADDEXIST, _("Add &Existing") );
     }
     PopupMenu( menu );
     delete menu;
@@ -204,26 +253,25 @@ void rgDlgEditFamily::OnEditID( wxCommandEvent& event )
     Sex sex;
 
     if( m_editbutton == EDBUT_Husb ) {
-        indID = m_family.f_husb_id;
+        indID = m_family.FGetHusbID();
         sex = SEX_Male;
     } else {  // m_editbutton == EDBUT_Wife
-        indID = m_family.f_wife_id;
+        indID = m_family.FGetWifeID();
         sex = SEX_Female;
     }
 
     if( indID == 0 ) {
-        indID = rgAddNewIndividual( this, sex, "", m_family.f_id );
+        indID = rgAddNewIndividual( this, sex, "", m_family.FGetID() );
         if( m_editbutton == EDBUT_Husb ) {
-            m_family.f_husb_id = indID;
+            m_family.FSetHusbID( indID );
         } else {
-            m_family.f_wife_id = indID;
+            m_family.FSetWifeID( indID );
         }
     } else {
         rgEditIndividual( this, indID );
     }
 
-    m_staticHusbName->SetLabel( recIndividual::GetFullName( m_family.f_husb_id ) );
-    m_staticWifeName->SetLabel( recIndividual::GetFullName( m_family.f_wife_id ) );
+    UpdateNames();
 }
 
 void rgDlgEditFamily::OnRemoveID( wxCommandEvent& event )
@@ -231,62 +279,65 @@ void rgDlgEditFamily::OnRemoveID( wxCommandEvent& event )
     idt indID;
 
     if( m_editbutton == EDBUT_Husb ) {
-        if( m_family.f_wife_id == 0 ) {
+        if( m_family.FGetWifeID() == 0 ) {
             return;  // Can't remove both spouses
         }
-        indID = m_family.f_husb_id;
-        m_family.f_husb_id = 0;
-        m_staticHusbName->SetLabel( wxEmptyString );
+        indID = m_family.FGetHusbID();
+        m_family.FSetHusbID( 0 );
     } else {
-        if( m_family.f_husb_id == 0 ) {
+        if( m_family.FGetHusbID() == 0 ) {
             return;  // Can't remove both spouses
         }
-        indID = m_family.f_wife_id;
-        m_family.f_wife_id = 0;
-        m_staticWifeName->SetLabel( wxEmptyString );
+        indID = m_family.FGetWifeID();
+        m_family.FSetWifeID( 0 );
     }
     m_family.Save();
     m_family.RemoveFromEvents( indID );
     recIndividual::Update( indID );
     recIndividual::CreateMissingFamilies();
+    UpdateNames();
 }
 
 void rgDlgEditFamily::OnDeleteID( wxCommandEvent& event )
 {
     if( m_editbutton == EDBUT_Husb ) {
-        if( rgDeleteIndividual( this, m_family.f_husb_id ) ) {
-            m_family.f_husb_id = 0;
-            m_staticHusbName->SetLabel( wxEmptyString );
+        if( m_family.FGetWifeID() == 0 ) {
+            return;  // Can't remove both spouses
+        }
+        if( rgDeleteIndividual( this, m_family.FGetHusbID() ) ) {
+            m_family.FSetHusbID( 0 );
         }
     } else {
-        if( rgDeleteIndividual( this, m_family.f_wife_id ) ) {
-            m_family.f_wife_id = 0;
-            m_staticWifeName->SetLabel( wxEmptyString );
+        if( m_family.FGetHusbID() == 0 ) {
+            return;  // Can't remove both spouses
+        }
+        if( rgDeleteIndividual( this, m_family.FGetWifeID() ) ) {
+            m_family.FSetWifeID( 0 );
         }
     }
+    UpdateNames();
 }
 
 void rgDlgEditFamily::OnAddExistID( wxCommandEvent& event )
 {
     if( m_editbutton == EDBUT_Husb ) {
-       rgAddExistSpouse( this, m_family.f_wife_id, SEX_Male );
+        rgAddExistSpouse( this, m_family.FGetWifeID(), SEX_Male );
     } else {
-       rgAddExistSpouse( this, m_family.f_husb_id, SEX_Female );
+        rgAddExistSpouse( this, m_family.FGetHusbID(), SEX_Female );
     }
     m_family.Read();
-    m_staticHusbName->SetLabel( recIndividual::GetFullName( m_family.f_husb_id ) );
-    m_staticWifeName->SetLabel( recIndividual::GetFullName( m_family.f_wife_id ) );
+    UpdateNames();
 }
 
 void rgDlgEditFamily::OnChildAddButton( wxCommandEvent& event )
 {
     wxMenu* menu = new wxMenu;
 
-    menu->Append( tfpID_DLGEDFAM_ADDNEWSON,    _("Add New &Son") );
-    menu->Append( tfpID_DLGEDFAM_ADDNEWDAUR,   _("Add New &Daughter") );
+    menu->Append( rgID_DLGEDFAM_ADDNEWSON,    _("Add New &Son") );
+    menu->Append( rgID_DLGEDFAM_ADDNEWDAUR,   _("Add New &Daughter") );
     menu->AppendSeparator();
-    menu->Append( tfpID_DLGEDFAM_ADDEXISTSON,  _("Add &Existing Son") );
-    menu->Append( tfpID_DLGEDFAM_ADDEXISTDAUR, _("Add E&xisting Daughter") );
+    menu->Append( rgID_DLGEDFAM_ADDEXISTSON,  _("Add &Existing Son") );
+    menu->Append( rgID_DLGEDFAM_ADDEXISTDAUR, _("Add E&xisting Daughter") );
 
     PopupMenu( menu );
     delete menu;
@@ -298,128 +349,96 @@ void rgDlgEditFamily::OnAddChild( wxCommandEvent& event )
 
     switch( event.GetId() )
     {
-    case tfpID_DLGEDFAM_ADDNEWSON:
-        indID = rgAddNewChild( this, m_family.f_id, SEX_Male );
+    case rgID_DLGEDFAM_ADDNEWSON:
+        indID = rgAddNewChild( this, m_family.FGetID(), SEX_Male );
         break;
-    case tfpID_DLGEDFAM_ADDNEWDAUR:
-        indID = rgAddNewChild( this, m_family.f_id, SEX_Female );
+    case rgID_DLGEDFAM_ADDNEWDAUR:
+        indID = rgAddNewChild( this, m_family.FGetID(), SEX_Female );
         break;
-    case tfpID_DLGEDFAM_ADDEXISTSON:
-        indID = rgAddExistChild( this, m_family.f_id, SEX_Male );
+    case rgID_DLGEDFAM_ADDEXISTSON:
+        indID = rgAddExistChild( this, m_family.FGetID(), SEX_Male );
         break;
-    case tfpID_DLGEDFAM_ADDEXISTDAUR:
-        indID = rgAddExistChild( this, m_family.f_id, SEX_Female );
+    case rgID_DLGEDFAM_ADDEXISTDAUR:
+        indID = rgAddExistChild( this, m_family.FGetID(), SEX_Female );
         break;
     }
-
-    if( indID != 0 ) {
-        recFamilyIndividual fi;
-        fi.Clear();
-        fi.f_fam_id = m_family.f_id;
-        fi.f_ind_id = indID;
-        fi.Find();
-        m_childlinks.push_back( fi );
-        m_listChild->Append( recIndividual::GetFullName( indID ) );
+    if( indID ) {
+        UpdateChildList( indID );
     }
 }
 
 void rgDlgEditFamily::OnChildEditButton( wxCommandEvent& event )
 {
-    int item = m_listChild->GetSelection();
-    if( item == wxNOT_FOUND ) {
+    long row = m_listChildren->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row == wxNOT_FOUND ) {
         wxMessageBox( _("Row not selected"), _("Edit Children") );
         return;
     }
-    idt indID = m_childlinks[item].fGetIndID();
-    rgEditIndividual( this, indID );
-    m_listChild->SetString( item, recIndividual::GetFullName( indID ) );
+    idt indID = m_fis[row].FGetIndID();
+    if( rgEditIndividual( this, indID ) ) {
+        UpdateChildList( indID );
+    }
 }
 
 void rgDlgEditFamily::OnChildDeleteButton( wxCommandEvent& event )
 {
-    int item = m_listChild->GetSelection();
-    if( item == wxNOT_FOUND ) {
+    long row = m_listChildren->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row == wxNOT_FOUND ) {
         wxMessageBox( _("Row not selected"), _("Remove Children") );
         return;
     }
-    m_childlinks[item].Delete();
-    m_childlinks.erase( m_childlinks.begin() + item );
-    m_listChild->Delete( item );
+    m_fis[row].Delete();
+    UpdateChildList();
 }
 
 void rgDlgEditFamily::OnChildUpButton( wxCommandEvent& event )
 {
-    int item = m_listChild->GetSelection();
-    if( item == wxNOT_FOUND || item == 0 ) {
+    long row = m_listChildren->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row < 0 ) {
+        wxMessageBox( _("Row not selected"), _("Name Up") );
         return;
     }
-
-    recFamilyIndividual fi = m_childlinks[item];
-    m_childlinks[item] = m_childlinks[item-1];
-    m_childlinks[item-1] = fi;
-
-    m_listChild->Delete( item );
-    m_listChild->Insert(
-        recIndividual::GetFullName( m_childlinks[item-1].f_ind_id ), item - 1
-    );
-    m_listChild->SetSelection( item - 1 );
+    if( row == 0 ) {
+        return; // Already at top
+    }
+    int seq = m_fis[row].FGetSeqChild();
+    m_fis[row].FSetSeqChild( m_fis[row-1].FGetSeqChild() );
+    m_fis[row].Save();
+    m_fis[row-1].FSetSeqChild( seq );
+    m_fis[row-1].Save();
+    UpdateChildList( m_fis[row].FGetIndID() );
 }
 
 void rgDlgEditFamily::OnChildDownButton( wxCommandEvent& event )
 {
-    int item = m_listChild->GetSelection();
-    if( item == wxNOT_FOUND || item == m_listChild->GetCount() - 1 ) {
+    long row = m_listChildren->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row < 0 ) {
+        wxMessageBox( _("Row not selected"), _("Name Up") );
         return;
     }
-
-    recFamilyIndividual fi = m_childlinks[item];
-    m_childlinks[item] = m_childlinks[item+1];
-    m_childlinks[item+1] = fi;
-
-    m_listChild->Delete( item );
-    m_listChild->Insert(
-        recIndividual::GetFullName( m_childlinks[item+1].f_ind_id ), item + 1
-    );
-    m_listChild->SetSelection( item + 1 );
+    if( row == m_listChildren->GetItemCount() - 1 ) {
+        return; // Already at bottom
+    }
+    int seq = m_fis[row].FGetSeqChild();
+    m_fis[row].FSetSeqChild( m_fis[row+1].FGetSeqChild() );
+    m_fis[row].Save();
+    m_fis[row+1].FSetSeqChild( seq );
+    m_fis[row+1].Save();
+    UpdateChildList( m_fis[row].FGetIndID() );
 }
 
 
 void rgDlgEditFamily::OnEventAddButton( wxCommandEvent& event )
 {
-    wxMenu* menu = new wxMenu;
-    menu->Append( tfpID_DLGEDFAM_NEW_EVENT, _("&New Event") );
-    menu->Append( tfpID_DLGEDFAM_EXIST_EVENT, _("&Existing Event") );
-    PopupMenu( menu );
-    delete menu;
-}
-
-void rgDlgEditFamily::OnNewEvent( wxCommandEvent& event )
-{
     idt eveID; 
-    if( m_family.f_husb_id == 0 ) {
-        eveID = rgCreateIndEvent( this, m_family.f_wife_id, m_family.f_husb_id );
+    if( m_family.FGetHusbID() == 0 ) {
+        eveID = rgCreateIndEvent( this, m_family.FGetWifeID(), m_family.FGetHusbID(), m_family.FGetID() );
     } else {
-        eveID = rgCreateIndEvent( this, m_family.f_husb_id, m_family.f_wife_id );
+        eveID = rgCreateIndEvent( this, m_family.FGetHusbID(), m_family.FGetWifeID(), m_family.FGetID() );
     }
     if( eveID ) {
-        recFamilyEvent fe(0);
-        fe.FSetFamID( m_family.FGetID() );
-        fe.FSetEventID( eveID );
-        fe.FSetFamSeq( m_family.GetMaxEventSeqNumber() );
-        fe.Save();
-        m_fes.push_back( fe );
-        int row = m_fes.size();
-        m_listEvent->InsertItem( row, recEvent::GetIdStr( eveID ) );
-        m_listEvent->SetItem( row, EC_Title, recEvent::GetTitle( eveID ) );
-        m_listEvent->SetItem( row, EC_Date, recEvent::GetDateStr( eveID ) );
-        m_listEvent->SetItem( row, EC_Place, recEvent::GetAddressStr( eveID ) );
+        UpdateEventList( eveID );
     }
-}
-
-void rgDlgEditFamily::OnExistingEvent( wxCommandEvent& event )
-{
-    // TODO:
-    wxMessageBox( _("Not yet implimented"), _("OnExistingEvent") );
 }
 
 void rgDlgEditFamily::OnEventEditButton( wxCommandEvent& event )
@@ -429,78 +448,102 @@ void rgDlgEditFamily::OnEventEditButton( wxCommandEvent& event )
         wxMessageBox( _("No row selected"), _("Edit Event") );
         return;
     }
-    rgEditEvent( this, m_fes[row].FGetEventID() );
+    idt eveID = m_fes[row].FGetEventID();
+    if( rgEditEvent( this, eveID ) ) {
+        UpdateEventList( eveID );
+    }
 }
 
 void rgDlgEditFamily::OnEventDeleteButton( wxCommandEvent& event )
 {
     long row = m_listEvent->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row >= 0 ) {
-        int ans = wxMessageBox( 
-            _("Remove Event completely from database?"), _("Delete Event"),
-            wxYES_NO | wxCANCEL, this
-        );
-        if( ans != wxYES ) {
-            return;
-        }
-        m_listEvent->DeleteItem( row );
-        recEvent::RemoveIncOrphansFromDatabase( m_fes[row].FGetEventID() );
-        m_fes.erase( m_fes.begin() + row );
+        m_currentRow = row;
+        wxMenu* menu = new wxMenu;
+        menu->Append( rgID_DLGEDFAM_UNLINK_EVENT, _("&Unlink Event") );
+        menu->Append( rgID_DLGEDFAM_DELETE_EVENT, _("&Delete Event") );
+        PopupMenu( menu );
+        delete menu;
     } else {
         wxMessageBox( _("No row selected"), _("Delete Event") );
     }
+}
+
+void rgDlgEditFamily::OnUnlinkEvent( wxCommandEvent& event )
+{
+    recFamilyEvent::Delete( m_fes[m_currentRow].FGetID() );
+    UpdateEventList();
+}
+
+void rgDlgEditFamily::OnDeleteEvent( wxCommandEvent& event )
+{
+    int ans = wxMessageBox( 
+        _("Remove Event completely from database?"), _("Delete Event"),
+        wxYES_NO | wxCANCEL, this
+    );
+    if( ans != wxYES ) {
+        return;
+    }
+    recEvent::RemoveIncOrphansFromDatabase( m_fes[m_currentRow].FGetEventID() );
+    UpdateEventList();
 }
 
 void rgDlgEditFamily::OnEventUpButton( wxCommandEvent& event )
 {
     long row = m_listEvent->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
-        wxMessageBox( _("No row selected"), _("Move Event up") );
+        wxMessageBox( _("Row not selected"), _("Event Up") );
         return;
     }
-    if( row != 0 ) {
-        recFamilyEvent temp = m_fes[row];
-        m_fes[row] = m_fes[row-1];
-        m_fes[row-1] = temp;
-
-        m_listEvent->DeleteItem( row );
-        idt eveID = m_fes[row-1].FGetEventID();
-        m_listEvent->InsertItem( row-1, recEvent::GetIdStr( eveID ) );
-        m_listEvent->SetItem( row-1, EC_Title, recEvent::GetTitle( eveID ) );
-        m_listEvent->SetItem( row-1, EC_Date, recEvent::GetDateStr( eveID ) );
-        m_listEvent->SetItem( row-1, EC_Place, recEvent::GetAddressStr( eveID ) );
-
-        long state = wxLIST_STATE_SELECTED;
-        m_listEvent->SetItemState( row-1, state, state );
-        m_listEvent->EnsureVisible( row-1 );
+    if( row == 0 ) {
+        return; // Already at top
     }
+    int seq = m_fes[row].FGetFamSeq();
+    m_fes[row].FSetFamSeq( m_fes[row-1].FGetFamSeq() );
+    m_fes[row].Save();
+    m_fes[row-1].FSetFamSeq( seq );
+    m_fes[row-1].Save();
+    UpdateEventList( m_fes[row].FGetEventID() );
 }
 
 void rgDlgEditFamily::OnEventDownButton( wxCommandEvent& event )
 {
     long row = m_listEvent->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
-        wxMessageBox( _("No row selected"), _("Move Event down") );
+        wxMessageBox( _("Row not selected"), _("Event Down") );
         return;
     }
-    if( row < m_listEvent->GetItemCount()-1 ) {
-        recFamilyEvent temp = m_fes[row];
-        m_fes[row] = m_fes[row+1];
-        m_fes[row+1] = temp;
-
-        m_listEvent->DeleteItem( row );
-        idt eveID = m_fes[row+1].FGetEventID();
-        m_listEvent->InsertItem( row+1, recEvent::GetIdStr( eveID ) );
-        m_listEvent->SetItem( row+1, EC_Title, recEvent::GetTitle( eveID ) );
-        m_listEvent->SetItem( row+1, EC_Date, recEvent::GetDateStr( eveID ) );
-        m_listEvent->SetItem( row+1, EC_Place, recEvent::GetAddressStr( eveID ) );
-
-        long state = wxLIST_STATE_SELECTED;
-        m_listEvent->SetItemState( row+1, state, state );
-        m_listEvent->EnsureVisible( row+1 );
+    if( row == m_listEvent->GetItemCount() - 1 ) {
+        return; // Already at bottom
     }
+    int seq = m_fes[row].FGetFamSeq();
+    m_fes[row].FSetFamSeq( m_fes[row+1].FGetFamSeq() );
+    m_fes[row].Save();
+    m_fes[row+1].FSetFamSeq( seq );
+    m_fes[row+1].Save();
+    UpdateEventList( m_fes[row].FGetEventID() );
 }
 
-
+void rgDlgEditFamily::OnEventOrderBy( wxCommandEvent& event )
+{
+    switch( event.GetSelection() )
+    {
+    case 0:
+        m_order = recEO_DatePt;
+        m_buttonEventUp->Enable( false );
+        m_buttonEventDn->Enable( false );
+        break;
+    case 1:
+        m_order = recEO_FamSeq;
+        m_buttonEventUp->Enable( true );
+        m_buttonEventDn->Enable( true );
+        break;
+    default:
+        return;
+    }
+    long row = m_listEvent->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    idt eveID = ( row >= 0 ) ? m_fes[row].FGetEventID() : 0;
+    UpdateEventList( eveID );
+}
 
 // End of src/rg/rgEdFamily.cpp

@@ -951,14 +951,14 @@ recFamIndVec recFamily::GetChildLinks( idt famID )
     );
     result = s_db->GetTable( sql );
 
-    fi.fSetFamID( famID );
+    fi.FSetFamID( famID );
     for( int i = 0 ; i < result.GetRowCount() ; i++ )
     {
         result.SetRow( i );
         fi.FSetID( GET_ID( result.GetInt64( 0 ) ) );
-        fi.fSetIndID( GET_ID( result.GetInt64( 1 ) ) );
-        fi.fSetSeqChild( result.GetInt( 2 ) );
-        fi.fSetSeqParent( result.GetInt( 3 ) );
+        fi.FSetIndID( GET_ID( result.GetInt64( 1 ) ) );
+        fi.FSetSeqChild( result.GetInt( 2 ) );
+        fi.FSetSeqParent( result.GetInt( 3 ) );
         ChildLinks.push_back( fi );
     }
     return ChildLinks;

@@ -42,7 +42,8 @@ typedef std::vector< recPersona >  recPersonaVec;
 
 enum recEventOrder {
     recEO_DatePt,
-    recEO_PerSeq
+    recEO_PerSeq,
+    recEO_FamSeq
 };
 
 class recPersona : public recDb

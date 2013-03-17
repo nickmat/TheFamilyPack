@@ -112,12 +112,20 @@ rgDlgSelectIndEvent::rgDlgSelectIndEvent( wxWindow* parent, unsigned selstyle, r
 bool rgDlgSelectIndEvent::TransferDataToWindow()
 {
     m_fe->SetFEClass( recFilterEvent::FE_Ind ); // TODO: allow for FE_Ref as well.
-    wxArrayString grpStrings = recEventType::GetGroupStrings( 1 );
-    m_checkListGrp->InsertItems( grpStrings, 0 );
-    for( size_t i = 1 ; i < recEventType::ETYPE_Grp_MAX ; i++ ) {
-        bool flag = m_fe->GetGroupFlag( i );
-        m_checkListGrp->Check( i-1, flag );
+
+    wxArrayString grpStrings;
+    for( int i = 0 ; i < recEventType::ETYPE_Grp_MAX ; i++ ) {
+        if( m_fe->GetGroupEnabled( i ) ) {
+            grpStrings.push_back( recEventType::GetGroupString( (recEventType::ETYPE_Grp) i ) );
+            m_groups.push_back( i );
+        }
     }
+    m_checkListGrp->InsertItems( grpStrings, 0 );
+    for( size_t i = 0 ; i < m_groups.size() ; i++ ) {
+        bool flag = m_fe->GetGroupChecked( m_groups[i] );
+        m_checkListGrp->Check( i, flag );
+    }
+
     CreateTypeList();
     m_textCtrlBegDatePt->SetValue( m_fe->GetBegDatePtStr() );
     m_textCtrlEndDatePt->SetValue( m_fe->GetEndDatePtStr() );
@@ -144,7 +152,7 @@ void rgDlgSelectIndEvent::OnGroupCheckToggled( wxCommandEvent& event )
 {
     int i = event.GetInt();
     bool flag = m_checkListGrp->wxCheckListBox::IsChecked( i );
-    m_fe->SetGroupFlag( i+1, flag );
+    m_fe->SetGroupChecked( m_groups[i], flag );
     CreateTypeList();
 }
 
@@ -155,16 +163,16 @@ void rgDlgSelectIndEvent::OnGroupCheckSelect( wxCommandEvent& event )
         bool flag = m_checkListGrp->wxCheckListBox::IsChecked( i );
         m_checkListGrp->Check( i, !flag );
         m_checkListGrp->SetSelection( wxNOT_FOUND );
-        m_fe->SetGroupFlag( i+1, !flag );
+        m_fe->SetGroupChecked( m_groups[i], !flag );
         CreateTypeList();
     }
 }
 
 void rgDlgSelectIndEvent::SetGroupAll( bool check )
 {
-    for( size_t i = 1 ; i < recEventType::ETYPE_Grp_MAX ; i++ ) {
-        m_checkListGrp->Check( i-1, check );
-        m_fe->SetGroupFlag( i, check );
+    for( size_t i = 0 ; i < m_groups.size() ; i++ ) {
+        m_checkListGrp->Check( i, check );
+        m_fe->SetGroupChecked( m_groups[i], check );
     }
     CreateTypeList();
 }
@@ -172,52 +180,41 @@ void rgDlgSelectIndEvent::SetGroupAll( bool check )
 void rgDlgSelectIndEvent::CreateTypeList()
 {
     unsigned grpfilter = 0;
-    for( size_t i = 1 ; i < recEventType::ETYPE_Grp_MAX ; i++ ) {
-        bool flag = m_fe->GetGroupFlag( i );
-        switch( (recEventType::ETYPE_Grp) i )
-        {
-        case recEventType::ETYPE_Grp_Birth:
-            if( flag ) {
+    for( size_t i = 0 ; i < m_groups.size() ; i++ ) {
+        bool flag = m_fe->GetGroupChecked( m_groups[i] );
+        if( flag ) {
+            switch( (recEventType::ETYPE_Grp) m_groups[i] )
+            {
+            case recEventType::ETYPE_Grp_Unstated:
+                grpfilter |= recET_FILTER_GrpUnstated;
+                break;
+            case recEventType::ETYPE_Grp_Birth:
                 grpfilter |= recET_FILTER_GrpBirth;
-            }
-            break;
-        case recEventType::ETYPE_Grp_Nr_Birth:
-            if( flag ) {
+                break;
+            case recEventType::ETYPE_Grp_Nr_Birth:
                 grpfilter |= recET_FILTER_GrpNrBirth;
-            }
-            break;
-        case recEventType::ETYPE_Grp_Union:
-            if( flag ) {
+                break;
+            case recEventType::ETYPE_Grp_Union:
                 grpfilter |= recET_FILTER_GrpFamUnion;
-            }
-            break;
-        case recEventType::ETYPE_Grp_Family:
-            if( flag ) {
+                break;
+            case recEventType::ETYPE_Grp_Family:
                 grpfilter |= recET_FILTER_GrpFamOther;
-            }
-            break;
-        case recEventType::ETYPE_Grp_Death:
-            if( flag ) {
+                break;
+            case recEventType::ETYPE_Grp_Death:
                 grpfilter |= recET_FILTER_GrpDeath;
-            }
-            break;
-        case recEventType::ETYPE_Grp_Nr_Death:
-            if( flag ) {
+                break;
+            case recEventType::ETYPE_Grp_Nr_Death:
                 grpfilter |= recET_FILTER_GrpNrDeath;
-            }
-            break;
-        case recEventType::ETYPE_Grp_Other:
-            if( flag ) {
+                break;
+            case recEventType::ETYPE_Grp_Other:
                 grpfilter |= recET_FILTER_GrpOther;
-            }
-            break;
-        case recEventType::ETYPE_Grp_Personal:
-            if( flag ) {
+                break;
+            case recEventType::ETYPE_Grp_Personal:
                 grpfilter |= recET_FILTER_GrpPersonal;
+                break;
+            default:
+                wxASSERT( false ); // Shouldn't be here!
             }
-            break;
-        default:
-            wxASSERT( false ); // Shouldn't be here!
         }
     }
 

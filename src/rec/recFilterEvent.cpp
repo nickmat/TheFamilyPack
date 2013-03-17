@@ -39,10 +39,42 @@
 
 #include <rec/recFilterEvent.h>
 
-recFilterEvent::recFilterEvent()
+recFilterEvent::recFilterEvent( unsigned flag )
+    : m_begDate(0), m_endDate(0), m_class(FE_Ind)
 {
     for( size_t i = 0 ; i < recEventType::ETYPE_Grp_MAX ; i++ ) {
-        m_groupChks[i] = true;
+        m_groupEnabled[i] = false;
+        m_groupChecked[i] = false;
+    }
+    if( flag & recFE_FLAG_EnableNul ) {
+        m_groupEnabled[recEventType::ETYPE_Grp_Unstated] = true;
+    }
+    if( flag & recFE_FLAG_EnableInd ) {
+        m_groupEnabled[recEventType::ETYPE_Grp_Birth] = true;
+        m_groupEnabled[recEventType::ETYPE_Grp_Nr_Birth] = true;
+        m_groupEnabled[recEventType::ETYPE_Grp_Death] = true;
+        m_groupEnabled[recEventType::ETYPE_Grp_Nr_Death] = true;
+        m_groupEnabled[recEventType::ETYPE_Grp_Other] = true;
+        m_groupEnabled[recEventType::ETYPE_Grp_Personal] = true;
+    }
+    if( flag & recFE_FLAG_EnableFam ) {
+        m_groupEnabled[recEventType::ETYPE_Grp_Union] = true;
+        m_groupEnabled[recEventType::ETYPE_Grp_Family] = true;
+    }
+    if( flag & recFE_FLAG_ShowNul ) {
+        m_groupChecked[recEventType::ETYPE_Grp_Unstated] = true;
+    }
+    if( flag & recFE_FLAG_ShowInd ) {
+        m_groupChecked[recEventType::ETYPE_Grp_Birth] = true;
+        m_groupChecked[recEventType::ETYPE_Grp_Nr_Birth] = true;
+        m_groupChecked[recEventType::ETYPE_Grp_Death] = true;
+        m_groupChecked[recEventType::ETYPE_Grp_Nr_Death] = true;
+        m_groupChecked[recEventType::ETYPE_Grp_Other] = true;
+        m_groupChecked[recEventType::ETYPE_Grp_Personal] = true;
+    }
+    if( flag & recFE_FLAG_ShowFam ) {
+        m_groupChecked[recEventType::ETYPE_Grp_Union] = true;
+        m_groupChecked[recEventType::ETYPE_Grp_Family] = true;
     }
     m_begDate = m_endDate = 0;
 }

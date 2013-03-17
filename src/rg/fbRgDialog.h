@@ -32,9 +32,8 @@ class rgStrTableCtrl;
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
-#include <wx/listbox.h>
-#include <wx/notebook.h>
 #include <wx/radiobox.h>
+#include <wx/notebook.h>
 #include <wx/toolbar.h>
 #include <wx/webview.h>
 #include <wx/checkbox.h>
@@ -265,12 +264,12 @@ class fbRgEditFamily : public wxDialog
 		wxButton* m_buttonWife;
 		wxStaticText* m_staticWifeName;
 		wxPanel* m_panel211;
-		wxListBox* m_listChild;
+		wxListCtrl* m_listChildren;
 		wxButton* m_buttonAdd;
 		wxButton* m_buttonEdit;
 		wxButton* m_buttonDel;
 		wxButton* m_buttonUp;
-		wxButton* m_button1Dn;
+		wxButton* m_buttonDn;
 		wxPanel* m_panel21;
 		wxListCtrl* m_listEvent;
 		wxButton* m_buttonEventAdd;
@@ -278,12 +277,14 @@ class fbRgEditFamily : public wxDialog
 		wxButton* m_buttonEventDel;
 		wxButton* m_buttonEventUp;
 		wxButton* m_buttonEventDn;
+		wxRadioBox* m_radioBox3;
 		wxStaticLine* m_staticline1;
 		wxStaticText* m_staticFamID;
 		wxButton* m_buttonSave1;
 		wxButton* m_buttonCancel1;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnPageChanged( wxNotebookEvent& event ) { event.Skip(); }
 		virtual void OnHusbButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnWifeButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnChildAddButton( wxCommandEvent& event ) { event.Skip(); }
@@ -296,6 +297,7 @@ class fbRgEditFamily : public wxDialog
 		virtual void OnEventDeleteButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnEventUpButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnEventDownButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEventOrderBy( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:
