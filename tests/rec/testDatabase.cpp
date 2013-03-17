@@ -118,7 +118,6 @@ CPPUNIT_TEST_SUITE_NAMED_REGISTRATION( RecTestCase, "RecTestCase" );
 
 void RecTestCase::setUp()
 {
-//    recDb::SetDb( new wxSQLite3Database() );
     recInitialize();
     wxString fname = TEST_FILENAME;
     wxRemoveFile( fname );
@@ -129,7 +128,6 @@ void RecTestCase::tearDown()
 {
     recDb::CloseDb();
     recUninitialize();
-//    delete recDb::GetDb();
 }
 
 void RecTestCase::AddTestData()
@@ -1115,12 +1113,5 @@ void RecTestCase::TestSource()
     recSource::Delete( 999 );
     CPPUNIT_ASSERT( recSource::Exists( 999 ) == false );
 }
-
-#if 0
-void RecTestCase::TestShutdown()
-{
-    delete recDb::GetDb();
-}
-#endif
 
 // End of testDatabase.cpp

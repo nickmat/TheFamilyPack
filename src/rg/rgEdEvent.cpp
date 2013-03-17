@@ -39,7 +39,8 @@
 
 #include <wx/fs_mem.h>
 
-#include <rec/recLink.h>
+#include <rec/recDate.h>
+#include <rec/recPlace.h>
 #include <rg/rgDialogs.h>
 
 #include "rgEdEvent.h"

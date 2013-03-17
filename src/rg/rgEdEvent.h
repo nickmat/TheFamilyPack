@@ -31,15 +31,10 @@
 #define RGEDEVENT_H
 
 #include <rec/recEvent.h>
-#include <rec/recDate.h>
-#include <rec/recPlace.h>
 #include <rec/recIndividual.h>
-#include <rec/recPersona.h>
 
 #include "fbRgDialog.h"
 
-//#include <map>
-//typedef std::map< idt, recIdVec > IndPerMap;
 
 //============================================================================
 //-------------------------[ rgDlgEditEvent ]---------------------------------
