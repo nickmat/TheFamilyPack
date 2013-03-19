@@ -39,7 +39,7 @@
 #include "rgSelect.h"
 #include "rgTableCtrl.h"
 
-rgSelect::rgSelect( 
+rgSelect::rgSelect(
     wxWindow* parent, wxString* headers, long width, unsigned style,
     const wxString& title )
     : m_create(false), m_filter(false), m_unknown(false), fbRgSelect( parent )
@@ -184,8 +184,8 @@ idt rgSelectDate( wxWindow* wind, unsigned flag, unsigned* retbutton, unsigned f
         }
         wxArrayString table;
         for( size_t i = 0 ; i < dateIDs.size() ; i++ ) {
-            table.push_back( recDate::GetIdStr( dateIDs[i] ) );        
-            table.push_back( recDate::GetStr( dateIDs[i] ) );        
+            table.push_back( recDate::GetIdStr( dateIDs[i] ) );
+            table.push_back( recDate::GetStr( dateIDs[i] ) );
         }
         dialog->SetTable( table );
         if( dialog->ShowModal() == wxID_OK ) {
@@ -232,7 +232,7 @@ idt rgSelectPlace( wxWindow* wind, unsigned flag, unsigned* retbutton, unsigned 
     idt placeID = 0;
     if( retbutton ) *retbutton = rgSELSTYLE_None;
     bool cont = true;
-    rgDlgSelectPlace* dialog = new rgDlgSelectPlace( NULL, flag );
+    rgDlgSelectPlace* dialog = new rgDlgSelectPlace( wind, flag );
 
     while( cont ) {
         recIdVec placeIDs;
@@ -247,8 +247,8 @@ idt rgSelectPlace( wxWindow* wind, unsigned flag, unsigned* retbutton, unsigned 
         }
         wxArrayString table;
         for( size_t i = 0 ; i < placeIDs.size() ; i++ ) {
-            table.push_back( recPlace::GetIdStr( placeIDs[i] ) );        
-            table.push_back( recPlace::GetAddressStr( placeIDs[i] ) );        
+            table.push_back( recPlace::GetIdStr( placeIDs[i] ) );
+            table.push_back( recPlace::GetAddressStr( placeIDs[i] ) );
         }
         dialog->SetTable( table );
         if( dialog->ShowModal() == wxID_OK ) {
@@ -298,8 +298,8 @@ idt rgSelectEventType( wxWindow* wind, unsigned flag, unsigned* retbutton, unsig
         recEventTypeVec types = recEventType::ReadVec( grpfilter );
         wxArrayString table;
         for( size_t i = 0 ; i < types.size() ; i++ ) {
-            table.push_back( types[i].GetGroupStr() );        
-            table.push_back( types[i].FGetName() );        
+            table.push_back( types[i].GetGroupStr() );
+            table.push_back( types[i].FGetName() );
         }
         dialog->SetTable( table );
         if( dialog->ShowModal() == wxID_OK ) {
@@ -349,8 +349,8 @@ idt rgSelectIndividual( wxWindow* wind, recIdVec indIDs, unsigned flag, unsigned
     while( cont ) {
         wxArrayString table;
         for( size_t i = 0 ; i < indIDs.size() ; i++ ) {
-            table.push_back( recIndividual::GetIdStr( indIDs[i] ) );        
-            table.push_back( recIndividual::GetFullName( indIDs[i] ) );        
+            table.push_back( recIndividual::GetIdStr( indIDs[i] ) );
+            table.push_back( recIndividual::GetFullName( indIDs[i] ) );
         }
         dialog->SetTable( table );
         if( dialog->ShowModal() == wxID_OK ) {
@@ -395,14 +395,14 @@ idt rgSelectIndividual( wxWindow* wind, unsigned flag, unsigned* retbutton, unsi
         recIndividualVec inds = recIndividual::ReadVec( sexfilter );
         wxArrayString table;
         for( size_t i = 0 ; i < inds.size() ; i++ ) {
-            table.push_back( inds[i].GetIdStr() );        
-            table.push_back( inds[i].GetFullName() );        
+            table.push_back( inds[i].GetIdStr() );
+            table.push_back( inds[i].GetFullName() );
         }
         dialog->SetTable( table );
         if( dialog->ShowModal() == wxID_OK ) {
             if( dialog->GetCreatePressed() ) {
                 if( retbutton ) *retbutton = rgSELSTYLE_Create;
-                id = rgAddNewIndividual( NULL, SEX_Unstated );
+                id = rgAddNewIndividual( wind, SEX_Unstated );
                 if( id ) {
                     cont = false;
                 } else {
@@ -433,7 +433,7 @@ idt rgSelectIndividual( wxWindow* wind, unsigned flag, unsigned* retbutton, unsi
 idt rgSelectIndividual( wxWindow* wind, Sex sex )
 {
     unsigned filter;
-    switch( sex ) 
+    switch( sex )
     {
     case SEX_Male:
         filter = recInd_FILTER_SexMale;

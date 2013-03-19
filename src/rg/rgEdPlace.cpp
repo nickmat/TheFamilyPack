@@ -47,7 +47,7 @@ bool rgEditPlace( wxWindow* wind, idt placeID )
     recDb::Savepoint( savepoint );
     bool ret = false;
 
-    rgDlgEditPlace* dialog = new rgDlgEditPlace( NULL, placeID );
+    rgDlgEditPlace* dialog = new rgDlgEditPlace( wind, placeID );
 
     if( dialog->ShowModal() == wxID_OK ) {
         recDb::ReleaseSavepoint( savepoint );
