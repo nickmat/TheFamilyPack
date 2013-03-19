@@ -1,3 +1,3 @@
 
-SubWCRev ..\.. ..\svnver.h.template ..\..\src\svnver.h
+SubWCRev ..\.. ..\svnver.h.template ..\..\src\tfp\svnver.h
 
