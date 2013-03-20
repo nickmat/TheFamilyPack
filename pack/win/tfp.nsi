@@ -33,12 +33,12 @@
 
 !define TFPNAME       "The Family Pack"
 !define APP_EXE       "tfp03.exe"
-!define VERSION_DOT   "0.3.0.1"
-!define VERSION_UND   "0_3_0_1"
-!define VERSION_TXT   "V${VERSION_DOT} alpha"
+!define VERSION_DOT   "0.3.0.1.0"
+!define VERSION_UND   "0_3_0_1_0"
+!define VERSION_TXT   "V${VERSION_DOT} pre-alpha"
 !define LICENSE       "license.txt"
 !define DESCRIPTION   "Genealogical Application Installer"
-!define COPYRIGHT     "2012 @ Nick Matthews"
+!define COPYRIGHT     "2013 @ Nick Matthews"
 
 !define DOC_PATH      "$DOCUMENTS\${TFPNAME}"
 !define EXAMPLE_PATH  "$DOCUMENTS\${TFPNAME}\Examples"
@@ -48,7 +48,7 @@
 !define REG_UNINSTALL "Software\Microsoft\Windows\CurrentVersion\Uninstall\${TFPNAME}"
 
 Name "${TFPNAME}"
-OutFile "thefamilypack-${VERSION_UND}-setup.exe"
+OutFile "tfp-setup.exe"
 
 VIProductVersion "${VERSION_DOT}"
 VIAddVersionKey "ProductName" "${TFPNAME}"
@@ -180,7 +180,7 @@ Section "Uninstall"
 
   ;ADD YOUR OWN FILES HERE...
   Delete "$INSTDIR\tfp03.exe"
-  Delete "$INSTDIR\gpl3.txt"
+  Delete "$INSTDIR\license.txt"
   Delete "$INSTDIR\Uninstall.exe"
 
   RMDir "$INSTDIR"

@@ -6,5 +6,3 @@ copy ..\..\sample\Example.tfpd
 
 del tfp03.exe
 del Example.tfpd
-
-pause

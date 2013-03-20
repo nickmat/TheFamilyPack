@@ -72,5 +72,3 @@ dtou -v -I tfp -E .;c;ci;cpp;css;f2c;fbp;h;htm;sql;txt;xpm
 7za a -r tfp.gz tfp.tar > nul
 del tfp.tar
 rmdir /S /Q tfp
-
-pause
