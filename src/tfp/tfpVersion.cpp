@@ -97,14 +97,19 @@ Routemap
 ***************************************************************************/
 
 /*! Returns a string representing the compiler name and version.
- *  Only working for Visual C++ so far.
+ *  Works for Visual C++ and GCC so far.
  */
 wxString tfpGetCompilerVersion()
 {
-#ifdef __VISUALC__
-    return wxString::Format( wxT("Visual C++ version %d"), __VISUALC__ );
+#if defined(__VISUALC__)
+    return wxString::Format( _("Visual C++ version %d"), __VISUALC__ );
+#elif defined(__GNUC__)
+    return wxString::Format( 
+        _("GCC compiler version %d.%d.%d"),
+        __GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__
+    );
 #else
-    return wxT("Unknown compiler");
+    return _("Unknown compiler");
 #endif
 }
 
