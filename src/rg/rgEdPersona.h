@@ -44,11 +44,14 @@ class rgDlgEditPersona : public fbRgEditPersona
     enum Page {
         PAGE_Persona, PAGE_Name, PAGE_Event, PAGE_Rel
     };
-    enum Columns {
-        COL_Type, COL_Value, COL_MAX
+    enum NameColumns {
+        NC_Number, NC_Type, NC_Name, NC_MAX
     };
     enum EventColumns {
         EV_COL_Number, EV_COL_Role, EV_COL_Title, EV_COL_Date, EV_COL_Place, EV_COL_MAX
+    };
+    enum RelColumns {
+        RC_Number, RC_Value, RC_MAX
     };
 public:
     rgDlgEditPersona( rgDlgEditReference* parent, idt perID );
@@ -66,7 +69,7 @@ private:
     void UpdateEventList( idt eveID = 0 );
     void UpdateRelList( idt relID = 0 );
 
-    void OnPageChanged( wxNotebookEvent& event );
+    void OnPageChanged( wxBookCtrlEvent& event );
 
     void OnIndLinkButton( wxCommandEvent& event );
 

@@ -68,7 +68,7 @@ private:
     void UpdateNameList( idt nameID = 0 );
     void UpdateEventList( idt eveID = 0 );
 
-    void OnPageChanged( wxNotebookEvent& event );
+    void OnPageChanged( wxBookCtrlEvent& event );
 
     void OnNameAddButton( wxCommandEvent& event );
     void OnNameEditButton( wxCommandEvent& event );

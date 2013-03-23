@@ -73,19 +73,18 @@ rgDlgEditPersona::rgDlgEditPersona( rgDlgEditReference* parent, idt perID )
     : m_refDialog(parent), m_persona(perID), m_order(recEO_DatePt),
     fbRgEditPersona( parent )
 {
-    wxListItem itemCol;
-    itemCol.SetText( wxT("Type") );
-    m_listName->InsertColumn( 0, itemCol );
-    m_listRel->InsertColumn( 0, itemCol );
-    itemCol.SetText( wxT("Value") );
-    m_listName->InsertColumn( 1, itemCol );
-    m_listRel->InsertColumn( 1, itemCol );
+    m_listName->InsertColumn( NC_Number, _("Number") );
+    m_listName->InsertColumn( NC_Type, _("Type") );
+    m_listName->InsertColumn( NC_Name, _("Name") );
 
     m_listEvent->InsertColumn( EV_COL_Number, _("Number") );
     m_listEvent->InsertColumn( EV_COL_Role, _("Role") );
     m_listEvent->InsertColumn( EV_COL_Title, _("Title") );
     m_listEvent->InsertColumn( EV_COL_Date, _("Date") );
     m_listEvent->InsertColumn( EV_COL_Place, _("Place") );
+
+    m_listRel->InsertColumn( RC_Number, _("Number") );
+    m_listRel->InsertColumn( RC_Value, _("Value") );
 }
 
 bool rgDlgEditPersona::TransferDataToWindow()
@@ -100,6 +99,9 @@ bool rgDlgEditPersona::TransferDataToWindow()
     m_indLinks = m_persona.GetIndividualIDs();
     m_staticIndId->SetLabel( GetIndLinksString() );
 
+    UpdateNameList();
+    UpdateEventList();
+    UpdateRelList();
     return true;
 }
 
@@ -130,12 +132,16 @@ void rgDlgEditPersona::UpdateNameList( idt nameID )
     m_listName->DeleteAllItems();
     int row = -1;
     for( size_t i = 0 ; i < m_names.size() ; i++ ) {
-        m_listName->InsertItem( i, recNameStyle::GetStyleStr( m_names[i].f_style_id ) );
-        m_listName->SetItem( i, COL_Value, m_names[i].GetNameStr() );
+        m_listName->InsertItem( i, m_names[i].GetIdStr() );
+        m_listName->SetItem( i, NC_Type, recNameStyle::GetStyleStr( m_names[i].FGetTypeID() ) );
+        m_listName->SetItem( i, NC_Name, m_names[i].GetNameStr() );
         if( nameID == m_names[i].FGetID() ) {
             m_listName->SetItemState( i, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
             row = i;
         }
+    }
+    if( m_names.size() ) {
+        m_listName->SetColumnWidth( NC_Name, -1 );
     }
     if( row >= 0 ) {
         m_listName->EnsureVisible( row );
@@ -175,20 +181,23 @@ void rgDlgEditPersona::UpdateRelList( idt relID )
     int row = -1;
     for( size_t i = 0 ; i < m_relationships.size() ; i++ ) {
         m_listRel->InsertItem( i, m_relationships[i].GetIdStr() );
-        m_listRel->SetItem( i, COL_Value, m_relationships[i].GetRelOfPersonaStr( m_persona.f_id ) );
+        m_listRel->SetItem( i, RC_Value, m_relationships[i].GetRelOfPersonaStr( m_persona.f_id ) );
         if( relID == m_relationships[i].FGetID() ) {
             m_listRel->SetItemState( i, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
             row = i;
         }
+    }
+    if( m_relationships.size() ) {
+        m_listRel->SetColumnWidth( RC_Value, -1 );
     }
     if( row >= 0 ) {
         m_listRel->EnsureVisible( row );
     }
 }
 
-void rgDlgEditPersona::OnPageChanged( wxNotebookEvent& event )
+void rgDlgEditPersona::OnPageChanged( wxBookCtrlEvent& event )
 {
-    Page page = (Page) event.GetSelection();
+    Page page = (Page) m_notebook->GetSelection();
     switch( page )
     {
     case PAGE_Persona:
@@ -205,6 +214,7 @@ void rgDlgEditPersona::OnPageChanged( wxNotebookEvent& event )
     default:
         wxASSERT( false );
     }
+    PostSizeEvent();
 }
 
 void rgDlgEditPersona::OnIndLinkButton( wxCommandEvent& event )

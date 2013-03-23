@@ -69,8 +69,8 @@ protected:
 
     void OnTool( wxCommandEvent& event );
 
-	void OnStatementViewChanged( wxNotebookEvent& event );
-	void OnEntityViewChanged( wxNotebookEvent& event );
+	void OnStatementViewChanged( wxBookCtrlEvent& event );
+	void OnEntityViewChanged( wxBookCtrlEvent& event );
 
     // Persona tab buttons
     void OnPersonaAddButton( wxCommandEvent& event );

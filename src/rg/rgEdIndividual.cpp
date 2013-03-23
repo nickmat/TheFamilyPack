@@ -141,6 +141,9 @@ void rgDlgEditIndividual::UpdateNameList( idt nameID )
             row = i;
         }
     }
+    if( m_names.size() ) {
+        m_listName->SetColumnWidth( NC_Name, -1 );
+    }
     if( row >= 0 ) {
         m_listName->EnsureVisible( row );
     }
@@ -178,9 +181,9 @@ void rgDlgEditIndividual::UpdateEventList( idt eveID )
     }
 }
 
-void rgDlgEditIndividual::OnPageChanged( wxNotebookEvent& event )
+void rgDlgEditIndividual::OnPageChanged( wxBookCtrlEvent& event )
 {
-    Page page = (Page) event.GetSelection();
+    Page page = (Page) m_notebook->GetSelection();
     switch( page )
     {
     case PAGE_Persona:
@@ -194,6 +197,7 @@ void rgDlgEditIndividual::OnPageChanged( wxNotebookEvent& event )
     default:
         wxASSERT( false );
     }
+    PostSizeEvent();
 }
 
 void rgDlgEditIndividual::OnNameAddButton( wxCommandEvent& event )

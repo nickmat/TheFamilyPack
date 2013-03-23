@@ -102,6 +102,7 @@ rgDlgEditReference::rgDlgEditReference( wxWindow* parent, idt refID )
     m_listEntities->InsertColumn( ENT_COL_Number, _("ID") );
     m_listEntities->InsertColumn( ENT_COL_Type, _("Type") );
     m_listEntities->InsertColumn( ENT_COL_Value, _("Value") );
+
     m_listPersona->InsertColumn( PER_COL_Number, _("Number") );
     m_listPersona->InsertColumn( PER_COL_Name, _("Name") );
     m_listPersona->InsertColumn( PER_COL_Individuals, _("Individuals") );
@@ -113,6 +114,8 @@ bool rgDlgEditReference::TransferDataToWindow()
     m_textCtrlTitle->SetValue( m_reference.FGetTitle() );
     m_textCtrlStatement->SetValue(  m_reference.FGetStatement() );
 
+    UpdateHtml();
+    UpdatePersonas();
     UpdateEntities();
     return true;
 }
@@ -210,17 +213,18 @@ void rgDlgEditReference::OnTool( wxCommandEvent& event )
     }
 }
 
-void rgDlgEditReference::OnStatementViewChanged( wxNotebookEvent& event )
+void rgDlgEditReference::OnStatementViewChanged( wxBookCtrlEvent& event )
 {
-    if( event.GetSelection() == 1 ) {
+    if( m_notebookTop->GetSelection() == 1 ) {
         m_reference.f_statement = m_textCtrlStatement->GetValue();
         UpdateHtml();
     }
+    m_panelTop->PostSizeEvent();
 }
 
-void rgDlgEditReference::OnEntityViewChanged( wxNotebookEvent& event )
+void rgDlgEditReference::OnEntityViewChanged( wxBookCtrlEvent& event )
 {
-    switch( event.GetSelection() )
+    switch( m_notebookBottom->GetSelection() )
     {
     case 0:
         UpdatePersonas();
@@ -231,6 +235,7 @@ void rgDlgEditReference::OnEntityViewChanged( wxNotebookEvent& event )
     default:
         wxASSERT( false );
     }
+    m_panelBottom->PostSizeEvent();
 }
 
 void rgDlgEditReference::OnPersonaAddButton( wxCommandEvent& event )

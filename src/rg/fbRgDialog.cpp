@@ -635,15 +635,15 @@ fbRgEditFamily::fbRgEditFamily( wxWindow* parent, wxWindowID id, const wxString&
 	
 	m_staticNames = new wxStaticText( this, wxID_ANY, _("Name and Name"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticNames->Wrap( -1 );
-	m_staticNames->SetFont( wxFont( 8, 74, 90, 92, false, wxT("MS Shell Dlg 2") ) );
+	m_staticNames->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
 	
 	bSizer118->Add( m_staticNames, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
 	
 	bSizer117->Add( bSizer118, 0, wxEXPAND, 5 );
 	
-	m_notebook5 = new wxNotebook( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
-	m_panel17 = new wxPanel( m_notebook5, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_notebook = new wxNotebook( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+	m_panel17 = new wxPanel( m_notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxFlexGridSizer* fgSizer17;
 	fgSizer17 = new wxFlexGridSizer( 2, 2, 0, 0 );
 	fgSizer17->AddGrowableCol( 1 );
@@ -668,8 +668,8 @@ fbRgEditFamily::fbRgEditFamily( wxWindow* parent, wxWindowID id, const wxString&
 	m_panel17->SetSizer( fgSizer17 );
 	m_panel17->Layout();
 	fgSizer17->Fit( m_panel17 );
-	m_notebook5->AddPage( m_panel17, _("Family"), true );
-	m_panel211 = new wxPanel( m_notebook5, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_notebook->AddPage( m_panel17, _("Family"), true );
+	m_panel211 = new wxPanel( m_notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer119;
 	bSizer119 = new wxBoxSizer( wxHORIZONTAL );
 	
@@ -710,8 +710,8 @@ fbRgEditFamily::fbRgEditFamily( wxWindow* parent, wxWindowID id, const wxString&
 	m_panel211->SetSizer( bSizer119 );
 	m_panel211->Layout();
 	bSizer119->Fit( m_panel211 );
-	m_notebook5->AddPage( m_panel211, _("Children"), false );
-	m_panel21 = new wxPanel( m_notebook5, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_notebook->AddPage( m_panel211, _("Children"), false );
+	m_panel21 = new wxPanel( m_notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer122;
 	bSizer122 = new wxBoxSizer( wxHORIZONTAL );
 	
@@ -762,9 +762,9 @@ fbRgEditFamily::fbRgEditFamily( wxWindow* parent, wxWindowID id, const wxString&
 	m_panel21->SetSizer( bSizer122 );
 	m_panel21->Layout();
 	bSizer122->Fit( m_panel21 );
-	m_notebook5->AddPage( m_panel21, _("Events"), false );
+	m_notebook->AddPage( m_panel21, _("Events"), false );
 	
-	bSizer117->Add( m_notebook5, 1, wxEXPAND|wxALL, 5 );
+	bSizer117->Add( m_notebook, 1, wxEXPAND|wxALL, 5 );
 	
 	m_staticline1 = new wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
 	bSizer117->Add( m_staticline1, 0, wxEXPAND|wxALL, 0 );
@@ -796,7 +796,7 @@ fbRgEditFamily::fbRgEditFamily( wxWindow* parent, wxWindowID id, const wxString&
 	bSizer117->Fit( this );
 	
 	// Connect Events
-	m_notebook5->Connect( wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, wxNotebookEventHandler( fbRgEditFamily::OnPageChanged ), NULL, this );
+	m_notebook->Connect( wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, wxNotebookEventHandler( fbRgEditFamily::OnPageChanged ), NULL, this );
 	m_buttonHusb->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditFamily::OnHusbButton ), NULL, this );
 	m_buttonWife->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditFamily::OnWifeButton ), NULL, this );
 	m_buttonAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditFamily::OnChildAddButton ), NULL, this );
@@ -815,7 +815,7 @@ fbRgEditFamily::fbRgEditFamily( wxWindow* parent, wxWindowID id, const wxString&
 fbRgEditFamily::~fbRgEditFamily()
 {
 	// Disconnect Events
-	m_notebook5->Disconnect( wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, wxNotebookEventHandler( fbRgEditFamily::OnPageChanged ), NULL, this );
+	m_notebook->Disconnect( wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, wxNotebookEventHandler( fbRgEditFamily::OnPageChanged ), NULL, this );
 	m_buttonHusb->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditFamily::OnHusbButton ), NULL, this );
 	m_buttonWife->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditFamily::OnWifeButton ), NULL, this );
 	m_buttonAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditFamily::OnChildAddButton ), NULL, this );
@@ -848,7 +848,7 @@ fbRgEditIndividual::fbRgEditIndividual( wxWindow* parent, wxWindowID id, const w
 	
 	m_staticPerName = new wxStaticText( this, wxID_ANY, _("Name"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticPerName->Wrap( -1 );
-	m_staticPerName->SetFont( wxFont( 10, 72, 90, 92, false, wxEmptyString ) );
+	m_staticPerName->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
 	
 	bSizer99->Add( m_staticPerName, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
@@ -910,7 +910,7 @@ fbRgEditIndividual::fbRgEditIndividual( wxWindow* parent, wxWindowID id, const w
 	wxBoxSizer* bSizer104;
 	bSizer104 = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_listName = new wxListCtrl( m_panel2, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_HRULES|wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_VRULES );
+	m_listName = new wxListCtrl( m_panel2, wxID_ANY, wxDefaultPosition, wxSize( 300,150 ), wxLC_HRULES|wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_VRULES );
 	bSizer104->Add( m_listName, 1, wxALL|wxEXPAND, 5 );
 	
 	wxBoxSizer* bSizer105;
@@ -952,7 +952,7 @@ fbRgEditIndividual::fbRgEditIndividual( wxWindow* parent, wxWindowID id, const w
 	wxBoxSizer* bSizer107;
 	bSizer107 = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_listEvent = new wxListCtrl( m_panel21, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_HRULES|wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_VRULES );
+	m_listEvent = new wxListCtrl( m_panel21, wxID_ANY, wxDefaultPosition, wxSize( 300,150 ), wxLC_HRULES|wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_VRULES );
 	bSizer107->Add( m_listEvent, 1, wxALL|wxEXPAND, 5 );
 	
 	wxBoxSizer* bSizer108;
@@ -1632,11 +1632,11 @@ fbRgEditReference::fbRgEditReference( wxWindow* parent, wxWindowID id, const wxS
 	m_splitter1->SetSashGravity( 0.75 );
 	m_splitter1->Connect( wxEVT_IDLE, wxIdleEventHandler( fbRgEditReference::m_splitter1OnIdle ), NULL, this );
 	
-	m_panel7 = new wxPanel( m_splitter1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_panelTop = new wxPanel( m_splitter1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer52;
 	bSizer52 = new wxBoxSizer( wxVERTICAL );
 	
-	m_notebookTop = new wxNotebook( m_panel7, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNB_BOTTOM );
+	m_notebookTop = new wxNotebook( m_panelTop, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNB_BOTTOM );
 	m_panelSource = new wxPanel( m_notebookTop, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer53;
 	bSizer53 = new wxBoxSizer( wxVERTICAL );
@@ -1684,14 +1684,14 @@ fbRgEditReference::fbRgEditReference( wxWindow* parent, wxWindowID id, const wxS
 	bSizer52->Add( m_notebookTop, 1, wxEXPAND|wxALL, 5 );
 	
 	
-	m_panel7->SetSizer( bSizer52 );
-	m_panel7->Layout();
-	bSizer52->Fit( m_panel7 );
-	m_panel11 = new wxPanel( m_splitter1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_panelTop->SetSizer( bSizer52 );
+	m_panelTop->Layout();
+	bSizer52->Fit( m_panelTop );
+	m_panelBottom = new wxPanel( m_splitter1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer55;
 	bSizer55 = new wxBoxSizer( wxVERTICAL );
 	
-	m_notebookBottom = new wxNotebook( m_panel11, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+	m_notebookBottom = new wxNotebook( m_panelBottom, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
 	m_panelPersona = new wxPanel( m_notebookBottom, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer56;
 	bSizer56 = new wxBoxSizer( wxHORIZONTAL );
@@ -1764,10 +1764,10 @@ fbRgEditReference::fbRgEditReference( wxWindow* parent, wxWindowID id, const wxS
 	bSizer55->Add( m_notebookBottom, 1, wxEXPAND|wxALL, 5 );
 	
 	
-	m_panel11->SetSizer( bSizer55 );
-	m_panel11->Layout();
-	bSizer55->Fit( m_panel11 );
-	m_splitter1->SplitHorizontally( m_panel7, m_panel11, 265 );
+	m_panelBottom->SetSizer( bSizer55 );
+	m_panelBottom->Layout();
+	bSizer55->Fit( m_panelBottom );
+	m_splitter1->SplitHorizontally( m_panelTop, m_panelBottom, 265 );
 	bSizer49->Add( m_splitter1, 1, wxEXPAND, 5 );
 	
 	m_staticline1 = new wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );

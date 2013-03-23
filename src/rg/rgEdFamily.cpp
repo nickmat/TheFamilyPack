@@ -195,9 +195,9 @@ void rgDlgEditFamily::UpdateEventList( idt curEveID )
     }
 }
 
-void rgDlgEditFamily::OnPageChanged( wxNotebookEvent& event )
+void rgDlgEditFamily::OnPageChanged( wxBookCtrlEvent& event )
 {
-    Page page = (Page) event.GetSelection();
+    Page page = (Page) m_notebook->GetSelection();
     switch( page )
     {
     case PAGE_Family:
@@ -212,6 +212,7 @@ void rgDlgEditFamily::OnPageChanged( wxNotebookEvent& event )
     default:
         wxASSERT( false );
     }
+    PostSizeEvent();
 }
 
 void rgDlgEditFamily::OnHusbButton( wxCommandEvent& event )

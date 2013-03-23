@@ -78,7 +78,7 @@ private:
     void UpdateChildList( idt indID = 0 );
     void UpdateEventList( idt eveID = 0 );
 
-    void OnPageChanged( wxNotebookEvent& event );
+    void OnPageChanged( wxBookCtrlEvent& event );
 
     void OnHusbButton( wxCommandEvent& event );
     void OnWifeButton( wxCommandEvent& event );

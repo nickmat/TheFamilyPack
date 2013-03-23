@@ -257,7 +257,7 @@ class fbRgEditFamily : public wxDialog
 	
 	protected:
 		wxStaticText* m_staticNames;
-		wxNotebook* m_notebook5;
+		wxNotebook* m_notebook;
 		wxPanel* m_panel17;
 		wxButton* m_buttonHusb;
 		wxStaticText* m_staticHusbName;
@@ -540,14 +540,14 @@ class fbRgEditReference : public wxDialog
 		wxStaticText* m_staticText401;
 		wxTextCtrl* m_textCtrlTitle;
 		wxSplitterWindow* m_splitter1;
-		wxPanel* m_panel7;
+		wxPanel* m_panelTop;
 		wxNotebook* m_notebookTop;
 		wxPanel* m_panelSource;
 		wxToolBar* m_toolBar1;
 		wxTextCtrl* m_textCtrlStatement;
 		wxPanel* m_panelView;
 		wxWebView* m_webview;
-		wxPanel* m_panel11;
+		wxPanel* m_panelBottom;
 		wxNotebook* m_notebookBottom;
 		wxPanel* m_panelPersona;
 		wxListCtrl* m_listPersona;
