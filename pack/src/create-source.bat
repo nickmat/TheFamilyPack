@@ -67,7 +67,7 @@ copy ..\..\utils\doccore\dcMain.cpp tfp\utils\doccore > nul
 copy ..\..\utils\file2cpp\*.* tfp\utils\file2cpp > nul
 
 7za a -r tfp.zip tfp > ziplist.txt
-dtou -v -I tfp -E .;c;ci;cpp;css;f2c;fbp;h;htm;sql;txt;xpm
+dtou -v -I tfp -E .;c;ci;cpp;css;f2c;fbp;h;htm;sql;txt;xpm > convert-rpt.txt
 7za a -r tfp.tar tfp > nul
 7za a -r tfp.gz tfp.tar > nul
 del tfp.tar

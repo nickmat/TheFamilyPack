@@ -1,5 +1,5 @@
 The Family Pack - A program to store genealogical data.
-Copyright (C) 2012 Nick Matthews
+Copyright (C) 2013 Nick Matthews
 
 The Family Pack is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
