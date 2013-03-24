@@ -46,14 +46,19 @@
 #include "rgEdEvent.h"
 
 
-bool rgEditEvent( wxWindow* parent, idt eveID )
+bool rgEditEvent( wxWindow* wind, idt eveID )
 {
     wxASSERT( eveID != 0 );
+    idt refID = recEvent::FindReferenceID( eveID );
+    if( refID ) {
+        return rgEditReference( wind, refID );
+    }
+
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
     bool ret = false;
 
-    rgDlgEditEvent* dialog = new rgDlgEditEvent( parent, eveID );
+    rgDlgEditEvent* dialog = new rgDlgEditEvent( wind, eveID );
 
     if( dialog->ShowModal() == wxID_OK ) {
         recDb::ReleaseSavepoint( savepoint );

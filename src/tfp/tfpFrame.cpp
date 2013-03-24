@@ -299,6 +299,7 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     m_webPageAllow = false;
     m_browser = wxWebView::New( this, tfpID_BROWSER );
     m_browser->RegisterHandler( GetWebViewMemoryHandler() );
+    m_browser->EnableHistory( false ); // We handle our own history.
 
     SetNoDatabase();
     if( recDb::IsOpen() ) {

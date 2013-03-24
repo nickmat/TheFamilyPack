@@ -1,7 +1,7 @@
 @echo off
 if exist rmdir /S /Q tfp
-del tfp.zip
-del tfp.gz
+if exist tfp.zip del tfp.zip
+if exist tfp.gz del tfp.gz
 
 mkdir tfp
 mkdir tfp\3rdparty
