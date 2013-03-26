@@ -39,19 +39,40 @@
 /** Implementing rgDlgEditEvidEvent */
 class rgDlgEditEvidEvent : public rgDlgEditEvent
 {
+    DECLARE_EVENT_TABLE()
 public:
     rgDlgEditEvidEvent( rgDlgEditReference* parent, idt eventID )
         : m_refDialog(parent), rgDlgEditEvent( parent, eventID )
     { wxASSERT( parent != NULL ); }
 
 protected:
+    enum {
+        ID_EDEE_OPTN_EDIT = 1500,
+        ID_EDEE_OPTN_UNLINK,
+        ID_EDEE_OPTN_CREATE,
+        ID_EDEE_OPTN_CREATE_REL
+    };
+
     virtual void ListLinkedPersona();
     virtual void EditRow( long row );
     virtual void DeleteRow( long row );
 
+    void OnDate1Button( wxCommandEvent& event );
+    void OnDate2Button( wxCommandEvent& event );
+    void OnPlaceButton( wxCommandEvent& event );
+
+    void OnOptnEdit( wxCommandEvent& event );
+    void OnOptnUnlink( wxCommandEvent& event );
+    void OnOptnCreate( wxCommandEvent& event );
+    void OnOptnCreateRel( wxCommandEvent& event );
+
     void OnAddButton( wxCommandEvent& event );
 
 private:
+    enum Button {
+        EEEB_Date1, EEEB_Date2, EEEB_Place
+    };
+    Button              m_button;
     rgDlgEditReference* m_refDialog;
 
     recEventPersonaVec  m_eps;

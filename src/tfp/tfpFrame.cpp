@@ -372,28 +372,28 @@ void TfpFrame::OnImportGedcom( wxCommandEvent& event )
  */
 void TfpFrame::OnExportHtml( wxCommandEvent& event )
 {
-    wxMessageBox( "Not yet implimented", "OnExportHtml" );
+    wxMessageBox( _("Not yet implimented"), "OnExportHtml" );
 }
 
 /*! \brief Called on a Print menu option event.
  */
 void TfpFrame::OnPrint( wxCommandEvent& event )
 {
-    wxMessageBox( wxT("Not yet implimented"), wxT("OnPrint") );
+    wxMessageBox( _("Not yet implimented"), "OnPrint" );
 }
 
 /*! \brief Called on a Print Preview menu option event.
  */
 void TfpFrame::OnPreview( wxCommandEvent& event )
 {
-    wxMessageBox( wxT("Not yet implimented"), wxT("OnPreview") );
+    wxMessageBox( _("Not yet implimented"), "OnPreview" );
 }
 
 /*! \brief Called on a  Page Setup menu option event.
  */
 void TfpFrame::OnPageSetup( wxCommandEvent& event )
 {
-    wxMessageBox( wxT("Not yet implimented"), wxT("OnPageSetup") );
+    wxMessageBox( _("Not yet implimented"), "OnPageSetup" );
 }
 
 /*! \brief Called on an Exit Application menu option event.
@@ -408,7 +408,7 @@ void TfpFrame::OnQuit( wxCommandEvent& event )
  */
 void TfpFrame::OnEditIndividual( wxCommandEvent& event )
 {
-    wxMessageBox( wxT("Not yet implimented"), wxT("OnEditIndividual") );
+    wxMessageBox( _("Not yet implimented"), "OnEditIndividual" );
 }
 
 /*! \brief Called on a Add New Male Individual menu option event.

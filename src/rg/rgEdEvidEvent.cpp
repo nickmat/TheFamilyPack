@@ -264,6 +264,13 @@ idt rgCreateEvidPerEvent( rgDlgEditReference* wind, const wxString& role )
 //-------------------------[ rgDlgEditEvidEvent ]-----------------------------
 //============================================================================
 
+BEGIN_EVENT_TABLE( rgDlgEditEvidEvent, wxDialog )
+    EVT_MENU( ID_EDEE_OPTN_EDIT,       rgDlgEditEvidEvent::OnOptnEdit )
+    EVT_MENU( ID_EDEE_OPTN_UNLINK,     rgDlgEditEvidEvent::OnOptnUnlink )
+    EVT_MENU( ID_EDEE_OPTN_CREATE,     rgDlgEditEvidEvent::OnOptnCreate )
+    EVT_MENU( ID_EDEE_OPTN_CREATE_REL, rgDlgEditEvidEvent::OnOptnCreateRel )
+END_EVENT_TABLE()
+
 void rgDlgEditEvidEvent::ListLinkedPersona()
 {
     m_eps = m_event.GetEventPersonas();
@@ -277,17 +284,6 @@ void rgDlgEditEvidEvent::ListLinkedPersona()
         m_listPersona->SetItem( i, COL_Name, per.GetNameStr() );
         m_listPersona->SetItem( i, COL_Role, recEventTypeRole::GetName( m_eps[i].FGetRoleID() ) );
         m_listPersona->SetItem( i, COL_Note, m_eps[i].FGetNote() );
-    }
-}
-
-void rgDlgEditEvidEvent::OnAddButton( wxCommandEvent& event )
-{
-    idt perID = m_refDialog->SelectCreatePersona();
-    if( perID == 0 ) {
-        return;
-    }
-    if( rgCreatePerEventRole( this, perID, m_event.FGetID(), 0 ) ) {
-        ListLinkedPersona();
     }
 }
 
@@ -312,6 +308,184 @@ void rgDlgEditEvidEvent::DeleteRow( long row )
     }
     recEventPersona::Delete( epID );
     ListLinkedPersona();
+}
+
+void rgDlgEditEvidEvent::OnDate1Button( wxCommandEvent& event )
+{
+    m_button = EEEB_Date1;
+    wxMenu* menu = new wxMenu;
+    if( m_date1ID ) {
+        menu->Append( ID_EDEE_OPTN_EDIT, _("&Edit") );
+        menu->Append( ID_EDEE_OPTN_UNLINK, _("&Unlink") );
+    } else {
+        menu->Append( ID_EDEE_OPTN_CREATE, _("Set &Date") );
+        menu->Append( ID_EDEE_OPTN_CREATE_REL, _("Set &Relative Date") );
+    }
+    PopupMenu( menu );
+    delete menu;
+}
+
+void rgDlgEditEvidEvent::OnDate2Button( wxCommandEvent& event )
+{
+    m_button = EEEB_Date2;
+    wxMenu* menu = new wxMenu;
+    if( m_date2ID ) {
+        menu->Append( ID_EDEE_OPTN_EDIT, _("&Edit") );
+        menu->Append( ID_EDEE_OPTN_UNLINK, _("&Unlink") );
+    } else {
+        menu->Append( ID_EDEE_OPTN_CREATE, _("Set &Date") );
+        menu->Append( ID_EDEE_OPTN_CREATE_REL, _("Set &Relative Date") );
+    }
+    PopupMenu( menu );
+    delete menu;
+}
+
+void rgDlgEditEvidEvent::OnPlaceButton( wxCommandEvent& event )
+{
+    m_button = EEEB_Place;
+    wxMenu* menu = new wxMenu;
+    if( m_placeID ) {
+        menu->Append( ID_EDEE_OPTN_EDIT, _("&Edit") );
+        menu->Append( ID_EDEE_OPTN_UNLINK, _("&Unlink") );
+    } else {
+        menu->Append( ID_EDEE_OPTN_CREATE, _("Set &Date") );
+        menu->Append( ID_EDEE_OPTN_CREATE_REL, _("Set &Relative Date") );
+    }
+    PopupMenu( menu );
+    delete menu;
+}
+
+void rgDlgEditEvidEvent::OnOptnEdit( wxCommandEvent& event )
+{
+    switch( m_button )
+    {
+    case EEEB_Date1:
+        if( !rgEditDate( this, m_date1ID ) ) {
+            return;
+        }
+        m_textCtrlDate1->SetValue( recDate::GetStr( m_date1ID ) );
+        break;
+    case EEEB_Date2:
+        if( !rgEditDate( this, m_date2ID ) ) {
+            return;
+        }
+        m_textCtrlDate2->SetValue( recDate::GetStr( m_date2ID ) );
+        break;
+    case EEEB_Place:
+        if( !rgEditPlace( this, m_placeID ) ) {
+            return;
+        }
+        m_textCtrlPlace->SetValue( recPlace::GetAddressStr( m_placeID ) );
+        break;
+    }
+}
+
+void rgDlgEditEvidEvent::OnOptnUnlink( wxCommandEvent& event )
+{
+    switch( m_button )
+    {
+    case EEEB_Date1:
+        m_date1ID = 0;
+        m_textCtrlDate1->SetValue( "" );
+        break;
+    case EEEB_Date2:
+        m_date2ID = 0;
+        m_textCtrlDate2->SetValue( "" );
+        break;
+    case EEEB_Place:
+        m_placeID = 0;
+        m_textCtrlPlace->SetValue( "" );
+        break;
+    }
+    m_event.FSetDate1ID( m_date1ID );
+    m_event.FSetDate2ID( m_date2ID );
+    m_event.FSetPlaceID( m_placeID );
+}
+
+void rgDlgEditEvidEvent::OnOptnCreate( wxCommandEvent& event )
+{
+    switch( m_button )
+    {
+    case EEEB_Date1:
+        if( ! m_refDialog->SelectDate( &m_date1ID, "", rgSELSTYLE_Create ) ) {
+            return;
+        }
+        m_textCtrlDate1->SetValue( recDate::GetStr( m_date1ID ) );
+        break;
+    case EEEB_Date2:
+        if( ! m_refDialog->SelectDate( &m_date2ID, "", rgSELSTYLE_Create ) ) {
+            return;
+        }
+        m_textCtrlDate2->SetValue( recDate::GetStr( m_date2ID ) );
+        break;
+    case EEEB_Place:
+        if( ! m_refDialog->SelectPlace( &m_placeID, "", rgSELSTYLE_Create ) ) {
+            return;
+        }
+        m_textCtrlPlace->SetValue( recPlace::GetAddressStr( m_placeID ) );
+        break;
+    }
+    m_event.FSetDate1ID( m_date1ID );
+    m_event.FSetDate2ID( m_date2ID );
+    m_event.FSetPlaceID( m_placeID );
+}
+
+void rgDlgEditEvidEvent::OnOptnCreateRel( wxCommandEvent& event )
+{
+    idt id;
+    switch( m_button )
+    {
+    case EEEB_Date1:
+        if( ! m_refDialog->SelectDate( &id, _("Select Base Date"), rgSELSTYLE_Create ) ) {
+            return;
+        }
+        m_date1ID = rgCreateRelativeDate( this, id );
+        if( m_date1ID == 0 ) {
+            m_date1ID = m_event.FGetDate1ID();
+            m_refDialog->CreateRefEntity( recReferenceEntity::TYPE_Date, m_date1ID );
+            break;
+        }
+        m_textCtrlDate1->SetValue( recDate::GetStr( m_date1ID ) );
+        break;
+    case EEEB_Date2:
+        if( ! m_refDialog->SelectDate( &id, _("Select Base Date"), rgSELSTYLE_Create ) ) {
+            return;
+        }
+        m_date2ID = rgCreateRelativeDate( this, id );
+        if( m_date2ID == 0 ) {
+            m_date2ID = m_event.FGetDate2ID();
+            m_refDialog->CreateRefEntity( recReferenceEntity::TYPE_Date, m_date2ID );
+            break;
+        }
+        m_textCtrlDate2->SetValue( recDate::GetStr( m_date2ID ) );
+        break;
+    case EEEB_Place:
+        if( ! m_refDialog->SelectPlace( &id, "", rgSELSTYLE_Create ) ) {
+            return;
+        }
+        m_placeID = rgCreateRelativeDate( this, id );
+        if( m_placeID == 0 ) {
+            m_placeID = m_event.FGetPlaceID();
+            m_refDialog->CreateRefEntity( recReferenceEntity::TYPE_Place, m_placeID );
+            break;
+        }
+        m_textCtrlPlace->SetValue( recPlace::GetAddressStr( m_placeID ) );
+        break;
+    }
+    m_event.FSetDate1ID( m_date1ID );
+    m_event.FSetDate2ID( m_date2ID );
+    m_event.FSetPlaceID( m_placeID );
+}
+
+void rgDlgEditEvidEvent::OnAddButton( wxCommandEvent& event )
+{
+    idt perID = m_refDialog->SelectCreatePersona();
+    if( perID == 0 ) {
+        return;
+    }
+    if( rgCreatePerEventRole( this, perID, m_event.FGetID(), 0 ) ) {
+        ListLinkedPersona();
+    }
 }
 
 // End of src/rg/rgEdEvidEvent.cpp file
