@@ -442,9 +442,9 @@ void rgDlgEditEvidEvent::OnOptnCreateRel( wxCommandEvent& event )
         m_date1ID = rgCreateRelativeDate( this, id );
         if( m_date1ID == 0 ) {
             m_date1ID = m_event.FGetDate1ID();
-            m_refDialog->CreateRefEntity( recReferenceEntity::TYPE_Date, m_date1ID );
-            break;
+            return;
         }
+        m_refDialog->CreateRefEntity( recReferenceEntity::TYPE_Date, m_date1ID );
         m_textCtrlDate1->SetValue( recDate::GetStr( m_date1ID ) );
         break;
     case EEEB_Date2:
@@ -454,9 +454,9 @@ void rgDlgEditEvidEvent::OnOptnCreateRel( wxCommandEvent& event )
         m_date2ID = rgCreateRelativeDate( this, id );
         if( m_date2ID == 0 ) {
             m_date2ID = m_event.FGetDate2ID();
-            m_refDialog->CreateRefEntity( recReferenceEntity::TYPE_Date, m_date2ID );
-            break;
+            return;
         }
+        m_refDialog->CreateRefEntity( recReferenceEntity::TYPE_Date, m_date2ID );
         m_textCtrlDate2->SetValue( recDate::GetStr( m_date2ID ) );
         break;
     case EEEB_Place:
@@ -466,9 +466,9 @@ void rgDlgEditEvidEvent::OnOptnCreateRel( wxCommandEvent& event )
         m_placeID = rgCreateRelativeDate( this, id );
         if( m_placeID == 0 ) {
             m_placeID = m_event.FGetPlaceID();
-            m_refDialog->CreateRefEntity( recReferenceEntity::TYPE_Place, m_placeID );
-            break;
+            return;
         }
+        m_refDialog->CreateRefEntity( recReferenceEntity::TYPE_Place, m_placeID );
         m_textCtrlPlace->SetValue( recPlace::GetAddressStr( m_placeID ) );
         break;
     }
