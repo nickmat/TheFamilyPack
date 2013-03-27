@@ -244,16 +244,28 @@ wxString tfpWriteIndEventPage( idt eventID, rgCompareEvent* ce )
         "<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>\n"
         "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>\n"
         "</head>\n<body>\n<div class='tfp'>\n"
-
         "<h1>Conclusion Event " << eve.GetIdStr() << ": " << eve.f_title << "</h1>\n"
-
-        "<table class='data'>\n<tr>\n"
-        "<td><b><a href='tfpi:D" << eve.FGetDate1ID() <<
-        "'>Date</a>: </b>" << eve.GetDateStr() << "</td>\n"
-        "</tr>\n<tr>\n"
-        "<td><b><a href='tfpi:P" << eve.FGetPlaceID() << 
-        "'>Place</a>: </b>" << eve.GetAddressStr() << "</td>\n"
-        "</tr>\n<tr>\n"
+        "<table class='data'>\n<tr>\n<td>"
+    ;
+    if( eve.FGetDate1ID() ) {
+        htm <<
+            "<b><a href='tfpi:D" << eve.FGetDate1ID() <<
+            "'>Date</a>: </b>" << eve.GetDateStr()
+        ;
+    } else {
+        htm << "<b>Date:</b>";
+    }
+    htm << "</td>\n</tr>\n<tr>\n<td>";
+    if( eve.FGetPlaceID() ) {
+        htm <<
+            "<b><a href='tfpi:P" << eve.FGetPlaceID() << 
+            "'>Place</a>: </b>" << eve.GetAddressStr()
+        ;
+    } else {
+        htm << "<b>Place:</b>";
+    }
+    htm <<
+        "</td>\n</tr>\n<tr>\n"
         "<td><b>Note: </b>" << eve.f_note << "</td>\n"
         "</tr>\n<tr>\n"
         "<td>Group: " << recEventType::GetGroupStr( eve.FGetTypeID() ) <<
@@ -294,8 +306,8 @@ wxString tfpWriteIndEventPage( idt eventID, rgCompareEvent* ce )
 wxString tfpWriteRefEventPage( idt eventID )
 {
     wxString htm;
+    if( eventID == 0 ) return wxEmptyString;
     recEvent eve(eventID);
-    if( eve.f_id == 0 ) return wxEmptyString;
     idt refID = recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, eventID );
 
     htm <<
@@ -308,14 +320,28 @@ wxString tfpWriteRefEventPage( idt eventID )
         "</head>\n<body>\n<div class='tfp'>\n"
         "<h1>Evidence Event " << eve.GetIdStr() << ": " << eve.f_title << "</h1>\n"
 
-        "<table class='data'>\n<tr>\n"
-        "<td><b><a href='tfpi:D" << eve.FGetDate1ID() <<
-        "'>Date</a>: </b>" << eve.GetDateStr() << "</td>\n"
-        "</tr>\n<tr>\n"
-        "<td><b><a href='tfpi:P" << eve.FGetPlaceID() << 
-        "'>Place</a>: </b>" << eve.GetAddressStr() << "</td>\n"
-        "</tr>\n<tr>\n"
-        "<td><b>Note: </b>" << eve.f_note << "</td>\n"
+        "<table class='data'>\n<tr>\n<td>"
+    ;
+    if( eve.FGetDate1ID() ) {
+        htm <<
+            "<b><a href='tfpi:D" << eve.FGetDate1ID() <<
+            "'>Date</a>: </b>" << eve.GetDateStr()
+        ;
+    } else {
+        htm << "<b>Date:</b>";
+    }
+    htm << "</td>\n</tr>\n<tr>\n<td>";
+    if( eve.FGetPlaceID() ) {
+        htm <<
+            "<b><a href='tfpi:P" << eve.FGetPlaceID() << 
+            "'>Place</a>: </b>" << eve.GetAddressStr()
+        ;
+    } else {
+        htm << "<b>Place:</b>";
+    }
+    htm <<
+        "</td>\n</tr>\n<tr>\n"
+        "<td><b>Note: </b>" << eve.FGetNote() << "</td>\n"
         "</tr>\n<tr>\n"
         "<td>Group: " << recEventType::GetGroupStr( eve.FGetTypeID() ) <<
         " Type: " << eve.GetTypeStr() << "</td>\n"

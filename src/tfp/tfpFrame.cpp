@@ -677,7 +677,8 @@ void TfpFrame::OnListIndex( wxCommandEvent& event )
  */
 void TfpFrame::OnListPersonas( wxCommandEvent& event )
 {
-    DisplayHtmPage( "Pa" );
+    wxMessageBox( "Not yet implimented", "OnListPersonas" );
+//    DisplayHtmPage( "Pa" );
 }
 
 /*! \brief Called on a  List Individuals menu option event.
