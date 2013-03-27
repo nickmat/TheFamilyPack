@@ -628,7 +628,7 @@ bool recEventType::HasDateSpan( idt etID )
     return et.HasDateSpan();
 }
 
-wxString recEventType::GetGroupString( ETYPE_Grp grp )
+wxString recEventType::GetGroupStr( ETYPE_Grp grp )
 {
     wxASSERT( grp >= 0 && grp < ETYPE_Grp_MAX );
     static wxString grparray[ETYPE_Grp_MAX] = {
@@ -645,10 +645,10 @@ wxString recEventType::GetGroupString( ETYPE_Grp grp )
     return grparray[grp];
 }
 
-wxString recEventType::GetGroupStr( idt typeID )
+wxString recEventType::GetGroupStr( idt etID )
 {
-    recEventType et( typeID );
-    return GetGroupString( et.FGetGrp() );
+    recEventType et(etID);
+    return et.GetGroupStr();
 }
 
 wxArrayString recEventType::GetGroupStrings( size_t start )

@@ -116,7 +116,7 @@ bool rgDlgSelectIndEvent::TransferDataToWindow()
     wxArrayString grpStrings;
     for( int i = 0 ; i < recEventType::ETYPE_Grp_MAX ; i++ ) {
         if( m_fe->GetGroupEnabled( i ) ) {
-            grpStrings.push_back( recEventType::GetGroupString( (recEventType::ETYPE_Grp) i ) );
+            grpStrings.push_back( recEventType::GetGroupStr( (recEventType::ETYPE_Grp) i ) );
             m_groups.push_back( i );
         }
     }

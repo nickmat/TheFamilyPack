@@ -133,9 +133,10 @@ public:
     bool HasDateSpan() const;
     static bool HasDateSpan( idt etID );
 
-    static wxString GetGroupString( ETYPE_Grp grp );
-    static wxString GetGroupStr( idt typeID );
     wxString GetGroupStr() const { return GetGroupStr( f_grp ); }
+    static wxString GetGroupStr( ETYPE_Grp grp );
+    static wxString GetGroupStr( idt etID );
+
     static wxArrayString GetGroupStrings( size_t start = 0 );
 
     static wxString GetTypeStr( idt id );
