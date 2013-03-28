@@ -87,7 +87,7 @@ const char* tfpTitle = "The Family Pack - Version " VERSION "\n"
 
  30aug07  v0.3.0.0  Pre-alpha test version for wxWidgets (MSW). Not released
 
- Active   v0.3.0.1.0  First public pre-alpha version
+ 28mar13  v0.3.0.1.0  First public pre-alpha release.
 
 
 Routemap
