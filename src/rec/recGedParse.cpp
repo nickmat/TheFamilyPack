@@ -397,37 +397,42 @@ void recGedParse::ReadName( GedIndividual& gind, int level )
     np.f_type_id = NAME_TYPE_Given_name;
     np.f_sequence = 1;
 
-    wxString::const_iterator i;
-    for( i = nameStr.begin() ; i != nameStr.end() ; i++ ) {
+    wxString::const_iterator it;
+    for( it = nameStr.begin() ; it != nameStr.end() ; it++ ) {
         switch( np.f_type_id )
         {
         case NAME_TYPE_Given_name:
         case NAME_TYPE_Post_name:
-            if( *i == wxT(' ') ) {
+            if( np.f_val.length() == 0 && *it == wxS('/') ) {
+                np.f_type_id = NAME_TYPE_Surname;
+                continue;
+            }
+            if( *it == wxS(' ') || *it == wxS('/') ) {
                 if( np.f_val.length() == 0 ) continue; // Ignore leading spaces
                 np.Save();
                 np.f_id = 0;
                 np.f_val = wxEmptyString;
                 ++np.f_sequence;
-                continue;
-            }
-            if( np.f_val.length() == 0 && *i == wxS('/') ) {
-                np.f_type_id = NAME_TYPE_Surname;
+                if( *it == wxS('/') ) {
+                    np.f_type_id = NAME_TYPE_Surname;
+                }
                 continue;
             }
             break;
         case NAME_TYPE_Surname:
-            if( *i == wxS('/') ) {
-                np.Save();
+            if( *it == wxS('/') ) {
+                if( np.f_val.length() ) {
+                    np.Save();
+                    ++np.f_sequence;
+                }
                 np.f_id = 0;
                 np.f_type_id = NAME_TYPE_Post_name;
                 np.f_val = wxEmptyString;
-                ++np.f_sequence;
                 continue;
             }
             break;
         }
-        np.f_val += *i;
+        np.f_val += *it;
     }
     if( np.f_val.length() != 0 ) {
         np.Save();
