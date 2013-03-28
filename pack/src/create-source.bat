@@ -46,8 +46,12 @@ copy ..\..\include\cal\*.* tfp\include\cal > nul
 copy ..\..\include\rec\*.* tfp\include\rec > nul
 copy ..\..\include\rg\*.* tfp\include\rg > nul
 copy ..\..\include\wx\*.* tfp\include\wx > nul
+
+rem ================[ Examples ]====================
 copy ..\..\sample\Example.tfpd tfp\sample > nul
 copy ..\..\sample\allged.ged tfp\sample > nul
+copy ..\..\sample\royal92.ged tfp\sample > nul
+
 copy ..\..\src\dummy.cpp tfp\src > nul
 copy ..\..\src\webviewfshandler.* tfp\src > nul
 copy ..\..\src\cal\*.* tfp\src\cal > nul

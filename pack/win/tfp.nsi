@@ -157,6 +157,8 @@ Section "Examples" InstallExamples
   SetOutPath      "${EXAMPLE_PATH}"
 
   File "Example.tfpd"
+  File "allged.ged"
+  File "royal92.ged"
 
 SectionEnd
 

@@ -6,9 +6,11 @@ Note, the version numbers used in the svn-trunk refer to the proposed future rel
 
 Check the program release version running on Windows, Ubuntu (Unity and Mint) and Mac.
 
--) Tag the svn rep.
+-) Edit the src/tfp/tfpVersion.cpp file. Replace "Actitive" with the date for the current version.
 
--) Create the Windows Release version and check startup page version number and About Box text (version & (c) date).
+-) Do a final release build and check startup page version number and About Box text (version & (c) date).
+
+-) Tag the svn rep.
 
 -) Check pack/win/tfp.nsi for version number, copyright date and sample files.
 
@@ -24,7 +26,7 @@ Check the program release version running on Windows, Ubuntu (Unity and Mint) an
 
 -) Post on thefamilypack_announce.
 
--) Increment the version numbers on svn-trunk
+-) Increment the version numbers on svn-trunk 
 
 <>
 
