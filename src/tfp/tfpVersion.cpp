@@ -53,7 +53,7 @@
 #define VERSION_CONFIG   ""
 #endif
 
-#define VERSION_NUM   "0.3.0.1.0"
+#define VERSION_NUM   "0.3.0.1.1"
 
 
 #define VERSION   VERSION_NUM TFP_SVNVERSION VERSION_STATUS VERSION_CONFIG
@@ -89,10 +89,11 @@ const char* tfpTitle = "The Family Pack - Version " VERSION "\n"
 
  28mar13  v0.3.0.1.0  First public pre-alpha release.
 
+ active   v0.3.0.1.1  Extend calendar system.
+                      Split events into Conclusion Events and Evidence Events
 
-Routemap
 
- See webpage http://thefamilypack.org/dev/routemap.htm
+ See also webpage http://thefamilypack.org/dev/routemap.htm
 
 ***************************************************************************/
 

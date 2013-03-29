@@ -33,8 +33,8 @@
 
 !define TFPNAME       "The Family Pack"
 !define APP_EXE       "tfp03.exe"
-!define VERSION_DOT   "0.3.0.1.0"
-!define VERSION_UND   "0_3_0_1_0"
+!define VERSION_DOT   "0.3.0.1.1"
+;!define VERSION_UND   "0_3_0_1_0"
 !define VERSION_TXT   "V${VERSION_DOT} pre-alpha"
 !define LICENSE       "license.txt"
 !define DESCRIPTION   "Genealogical Application Installer"
