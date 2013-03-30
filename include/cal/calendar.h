@@ -162,6 +162,20 @@ enum CalendarScheme {
      */
     CALENDAR_SCH_FrenchRevolution,
 
+    /*! Islamic Tabular Calendar: I.
+     *
+     *  Arithmetic version of the Islamic lunar or Hijri calendar.
+     *  Based on leap years in years 2, 5, 7, 10, 13, 16, 18, 21, 24, 26 and 29 of a
+     *  30 year cycle. (Note, there are other variations)
+     */
+    CALENDAR_SCH_IslamicTabular,
+
+    /*! Hebrew Calendar: H.
+     *
+     *  Short lived attempt to rationalise the calendar after the French Revolution.
+     */
+    CALENDAR_SCH_Hebrew,
+
     /*! End marker, used to size arrays etc.
      */
     CALENDAR_SCH_Max

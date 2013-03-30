@@ -41,6 +41,7 @@
 #include "calRecord.h"
 #include "calJulian.h"
 #include "calGregorian.h"
+#include "calIslamic.h"
 
 static bool s_initOk = false;
 
@@ -58,7 +59,9 @@ const char* CalendarSchemeName[] = {
     _("English"),
     _("Scottish"),
     _("Swedish"),
-    _("French Revolutionary")
+    _("French Revolutionary"),
+    _("Islamic Tabular"),
+    _("Hebrew")
 };
 
 const char* CalendarSchemeAbrev[] = {
@@ -75,7 +78,9 @@ const char* CalendarSchemeAbrev[] = {
     "Eng",
     "Scot",
     "Swed",
-    "FR"
+    "FR",
+    "I",
+    "H"
 };
 
 const char* CalendarUnitName[] = {
@@ -100,7 +105,9 @@ const CalendarStructure CalendarStructs[CALENDAR_SCH_Max] = {
     CALENDAR_STRUCT_Triple,    // CALENDAR_SCH_English
     CALENDAR_STRUCT_Triple,    // CALENDAR_SCH_Scottish
     CALENDAR_STRUCT_Triple,    // CALENDAR_SCH_Swedish
-    CALENDAR_STRUCT_Triple     // CALENDAR_SCH_FrenchRevolution
+    CALENDAR_STRUCT_Triple,    // CALENDAR_SCH_FrenchRevolution
+    CALENDAR_STRUCT_Triple,    // CALENDAR_SCH_IslamicTabular
+    CALENDAR_STRUCT_Triple     // CALENDAR_SCH_Hebrew
 };
 
 // Helper function.

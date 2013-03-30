@@ -238,6 +238,8 @@ CalendarScheme ccGetScheme( const wxString& token )
     if( token == "scot" ) return CALENDAR_SCH_Scottish;
     if( token == "swed" ) return CALENDAR_SCH_Swedish;
     if( token == "fr"   ) return CALENDAR_SCH_FrenchRevolution;
+    if( token == "i"    ) return CALENDAR_SCH_IslamicTabular;
+    if( token == "h"    ) return CALENDAR_SCH_Hebrew;
     return CALENDAR_SCH_Unstated;
 }
 

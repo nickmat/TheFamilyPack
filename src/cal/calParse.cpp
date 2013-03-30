@@ -91,6 +91,19 @@ calParser::calParser()
     m_lookup["fruc"] = 12;
     m_lookup["comp"] = 13;
 
+    m_lookup["jan"] = 1;
+    m_lookup["feb"] = 2;
+    m_lookup["mar"] = 3;
+    m_lookup["apr"] = 4;
+    m_lookup["may"] = 5;
+    m_lookup["jun"] = 6;
+    m_lookup["jul"] = 7;
+    m_lookup["aug"] = 8;
+    m_lookup["sep"] = 9;
+    m_lookup["oct"] = 10;
+    m_lookup["nov"] = 11;
+    m_lookup["dec"] = 12;
+
     m_lookup["year"]  = 0;
     m_lookup["month"] = 1;
     m_lookup["day"]   = 2;
@@ -99,6 +112,8 @@ calParser::calParser()
     m_lookup["(j)"]   = CALENDAR_SCH_Julian;
     m_lookup["(g)"]   = CALENDAR_SCH_Gregorian;
     m_lookup["(fr)"]  = CALENDAR_SCH_FrenchRevolution;
+    m_lookup["(i)"]  = CALENDAR_SCH_IslamicTabular;
+    m_lookup["(h)"]  = CALENDAR_SCH_Hebrew;
 }
 
 calTokenVec calParser::ParseStr( const wxString& str )

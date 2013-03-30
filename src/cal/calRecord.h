@@ -39,6 +39,8 @@ enum calBASE {
     calBASE_Julian,
     calBASE_Gregorian,
     calBASE_French,
+    calBASE_Islamic,
+//    calBASE_Hebrew,
     calBASE_MAX
 };
 
