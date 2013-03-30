@@ -92,6 +92,8 @@ CALENDAR_OBJECTS =  \
 	calendar_calendar.o \
 	calendar_calFrench.o \
 	calendar_calGregorian.o \
+	calendar_calHebrew.o \
+	calendar_calIslamic.o \
 	calendar_calJulian.o \
 	calendar_calMath.o \
 	calendar_calParse.o \
@@ -300,6 +302,12 @@ calendar_calFrench.o: ./../../src/cal/calFrench.cpp
 	$(CXX) -c -o $@ $(CALENDAR_CXXFLAGS) $(CPPDEPS) $<
 
 calendar_calGregorian.o: ./../../src/cal/calGregorian.cpp
+	$(CXX) -c -o $@ $(CALENDAR_CXXFLAGS) $(CPPDEPS) $<
+
+calendar_calHebrew.o: ./../../src/cal/calHebrew.cpp
+	$(CXX) -c -o $@ $(CALENDAR_CXXFLAGS) $(CPPDEPS) $<
+
+calendar_calIslamic.o: ./../../src/cal/calIslamic.cpp
 	$(CXX) -c -o $@ $(CALENDAR_CXXFLAGS) $(CPPDEPS) $<
 
 calendar_calJulian.o: ./../../src/cal/calJulian.cpp

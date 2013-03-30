@@ -90,6 +90,8 @@ CALENDAR_OBJECTS =  \
 	calendar_calendar.obj \
 	calendar_calFrench.obj \
 	calendar_calGregorian.obj \
+	calendar_calHebrew.obj \
+	calendar_calIslamic.obj \
 	calendar_calJulian.obj \
 	calendar_calMath.obj \
 	calendar_calParse.obj \
@@ -487,6 +489,12 @@ calendar_calFrench.obj: .\..\..\src\cal\calFrench.cpp
 
 calendar_calGregorian.obj: .\..\..\src\cal\calGregorian.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(CALENDAR_CXXFLAGS) .\..\..\src\cal\calGregorian.cpp
+
+calendar_calHebrew.obj: .\..\..\src\cal\calHebrew.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(CALENDAR_CXXFLAGS) .\..\..\src\cal\calHebrew.cpp
+
+calendar_calIslamic.obj: .\..\..\src\cal\calIslamic.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(CALENDAR_CXXFLAGS) .\..\..\src\cal\calIslamic.cpp
 
 calendar_calJulian.obj: .\..\..\src\cal\calJulian.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(CALENDAR_CXXFLAGS) .\..\..\src\cal\calJulian.cpp

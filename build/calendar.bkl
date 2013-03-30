@@ -35,6 +35,8 @@
     <sources>$(LOCAL_SRC)/cal/calendar.cpp</sources>
     <sources>$(LOCAL_SRC)/cal/calFrench.cpp</sources>
     <sources>$(LOCAL_SRC)/cal/calGregorian.cpp</sources>
+    <sources>$(LOCAL_SRC)/cal/calHebrew.cpp</sources>
+    <sources>$(LOCAL_SRC)/cal/calIslamic.cpp</sources>
     <sources>$(LOCAL_SRC)/cal/calJulian.cpp</sources>
     <sources>$(LOCAL_SRC)/cal/calMath.cpp</sources>
     <sources>$(LOCAL_SRC)/cal/calParse.cpp</sources>
@@ -46,6 +48,8 @@
     <headers>$(LOCAL_SRC)/cal/calCommon.h</headers>
     <headers>$(LOCAL_SRC)/cal/calFrench.h</headers>
     <headers>$(LOCAL_SRC)/cal/calGregorian.h</headers>
+    <headers>$(LOCAL_SRC)/cal/calHebrew.h</headers>
+    <headers>$(LOCAL_SRC)/cal/calIslamic.h</headers>
     <headers>$(LOCAL_SRC)/cal/calJulian.h</headers>
     <headers>$(LOCAL_SRC)/cal/calMath.h</headers>
     <headers>$(LOCAL_SRC)/cal/calParse.h</headers>

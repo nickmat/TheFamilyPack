@@ -210,6 +210,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\cal\calHebrew.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\cal\calIslamic.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\cal\calJulian.cpp"
 				>
 			</File>
@@ -269,6 +277,14 @@
 			</File>
 			<File
 				RelativePath="..\..\src\cal\calGregorian.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\cal\calHebrew.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\cal\calIslamic.h"
 				>
 			</File>
 			<File
