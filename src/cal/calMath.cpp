@@ -42,13 +42,13 @@
 double const calPi = 3.141592653589793;
 
 
-#define calMINSEARCH_MAX 370
+#define calSEARCH_MAX 10
 
 // CC3 p20
-long calMinSearch( long start, calLongSearchFunc func )
+long calMinSearch( long start, calLongSearchFunc func, long constant )
 {
-    for( long i = 0, d = start ; i < calMINSEARCH_MAX ; i++, d++ ) {
-        if( func( d ) ) {
+    for( long i = 0, d = start ; i < calSEARCH_MAX ; i++, d++ ) {
+        if( func( d, constant ) ) {
             return d;
         }
     }

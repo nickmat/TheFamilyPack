@@ -3,7 +3,6 @@
  * Project:     Cal: A general purpose calendar library.
  * Purpose:     Islamic Tabular (arithmetic) Calendar functions.
  * Author:      Nick Matthews
- * Modified by:
  * Created:     29th March 2013
  * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2013, Nick Matthews.
@@ -28,9 +27,9 @@
 #ifndef CALISLAMIC_H
 #define CALISLAMIC_H
 
-extern bool calIslamicIsLeapYear( int year );
+extern bool calIslamicIsLeapYear( long year );
 
-extern int calIslamicLastDayInMonth( int month, int year );
+extern int calIslamicLastDayInMonth( long month, long year );
 
 extern bool calIslamicToJdn( long* jdn, long year, long month, long day );
 

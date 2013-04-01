@@ -55,16 +55,16 @@ double MidnightInParis( long jdn )
     return localfromapparent - ParisLongitude / 360;
 }
 
-bool fnyoobMinFunc( long jdn )
+bool fnyoobMinFunc( long jdn, long constant )
 {
-    return calAutumn <= calSolarLongtitude( MidnightInParis( jdn ) );
+    return constant <= calSolarLongtitude( MidnightInParis( jdn ) );
 }
 
 long FrenchNewYearOnOrBefore( long jdn )
 {
     double approx = 
         calEstimatePriorSolarLongitude( calAutumn, MidnightInParis( jdn ) );
-    return calMinSearch( (long) approx - 1, fnyoobMinFunc );
+    return calMinSearch( (long) approx - 1, fnyoobMinFunc, calAutumn );
 }
 
 } // namespace

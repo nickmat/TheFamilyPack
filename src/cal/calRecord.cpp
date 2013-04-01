@@ -42,6 +42,7 @@
 #include "calGregorian.h"
 #include "calFrench.h"
 #include "calIslamic.h"
+#include "calHebrew.h"
 
 
 namespace {
@@ -62,10 +63,10 @@ calBASE baseLookup[CALENDAR_SCH_Max] = {
     calBASE_NULL,      // CALENDAR_SCH_Swedish
     calBASE_French,    // CALENDAR_SCH_FrenchRevolution
     calBASE_Islamic,   // CALENDAR_SCH_IslamicTabular
-    calBASE_NULL //calBASE_Hebrew    // CALENDAR_SCH_Hebrew
+    calBASE_Hebrew     // CALENDAR_SCH_Hebrew
 };
     
-size_t recordSize[calBASE_MAX] = { 0, 1, 3, 3, 3 };
+size_t recordSize[calBASE_MAX] = { 0, 1, 3, 3, 3, 3, 3 };
 
 wxString calLatinMonthName[12] = {
     "Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -75,6 +76,11 @@ wxString calLatinMonthName[12] = {
 wxString calFrenchMonthName[13] = {
     "Vend", "Brum", "Frim", "Nivo", "Pluv", "Vent",
     "Germ", "Flor", "Prai", "Mess", "Ther", "Fruc", "Comp"
+};
+
+wxString calHebrewMonthName[13] = { // These are as detailed in GEDCOM v5.5
+    "NSN", "IYR", "SVN", "TMZ", "AAV", "ELL",
+    "TSH", "CSH", "KSL", "TVT", "SHV", "ADR", "ADS"
 };
 
 } // namespace
@@ -113,6 +119,7 @@ calRecord::calRecord( CalendarScheme sch, size_t size, const calToken* tokens )
     case calBASE_Gregorian:
     case calBASE_French:
     case calBASE_Islamic:
+    case calBASE_Hebrew:
         switch( size )
         {
         case 1:
@@ -230,6 +237,15 @@ void calRecord::CompleteFieldsAsLast()
             m_r[2] = calIslamicLastDayInMonth( m_r[1], m_r[0] );
         }
         break;
+    case calBASE_Hebrew:
+        if( m_r[1] == calR_INVALID ) {
+            m_r[1] = calHebrewIsLeapYear( m_r[0] ) ? 13 : 12;
+            m_r[2] = calR_INVALID;
+        }
+        if( m_r[2] == calR_INVALID ) {
+            m_r[2] = calHebrewLastDayInMonth( m_r[1], m_r[0] );
+        }
+        break;
     }
 }
 
@@ -243,6 +259,7 @@ void calRecord::RemoveFieldsIfFirst()
     case calBASE_Gregorian:
     case calBASE_French:
     case calBASE_Islamic:
+    case calBASE_Hebrew:
         if( m_r[2] ==  1 ) {
             m_r[2] = calR_INVALID;
             if( m_r[1] == 1 ) {
@@ -291,6 +308,14 @@ void calRecord::RemoveFieldsIfLast()
             }
         }
         break;
+    case calBASE_Hebrew:
+        if( m_r[2] == calHebrewLastDayInMonth( m_r[1], m_r[0] ) ) {
+            m_r[2] = calR_INVALID;
+            if( m_r[1] == ( calHebrewIsLeapYear( m_r[0] ) ? 13 : 12 ) ) {
+                m_r[1] = calR_INVALID;
+            }
+        }
+        break;
     }
 }
 
@@ -313,6 +338,8 @@ bool calRecord::ConvertToJdn( long* jdn ) const
         return calFrenchToJdn( jdn, m_r[0], m_r[1], m_r[2] );
     case calBASE_Islamic:
         return calIslamicToJdn( jdn, m_r[0], m_r[1], m_r[2] );
+    case calBASE_Hebrew:
+        return calHebrewToJdn( jdn, m_r[0], m_r[1], m_r[2] );
     }
     return false;
 }
@@ -342,6 +369,8 @@ bool calRecord::ConvertFromJdn( long jdn )
         return calFrenchFromJdn( jdn, &m_r[0], &m_r[1], &m_r[2] );
     case calBASE_Islamic:
         return calIslamicFromJdn( jdn, &m_r[0], &m_r[1], &m_r[2] );
+    case calBASE_Hebrew:
+        return calHebrewFromJdn( jdn, &m_r[0], &m_r[1], &m_r[2] );
     }
     return false;
 }
@@ -403,6 +432,17 @@ wxString calRecord::GetStr()
         }
         if( m_r[1] != calR_INVALID ) {
             str << m_r[1] << " ";
+        }
+        if( m_r[0] != calR_INVALID ) {
+            str << m_r[0];
+        }
+        break;
+    case calBASE_Hebrew:
+        if( m_r[2] != calR_INVALID ) {
+            str << m_r[2] << " ";
+        }
+        if( m_r[1] != calR_INVALID ) {
+            str << calHebrewMonthName[m_r[1]-1] << " ";
         }
         if( m_r[0] != calR_INVALID ) {
             str << m_r[0];

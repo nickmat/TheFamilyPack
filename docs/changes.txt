@@ -1,0 +1,9 @@
+The Family Pack - Change log.
+
+TFP 0.3.0.1.1 - active
+
+Added the Islamic Tabular (arithmetic) and Hebrew calendars schemes to the
+Calendar Library.
+
+TFP 0.3.0.1.0 - 28th March 2013
+First Release.

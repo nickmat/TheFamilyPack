@@ -3,7 +3,6 @@
  * Project:     Cal: A general purpose calendar library.
  * Purpose:     Hebrew Calendar functions.
  * Author:      Nick Matthews
- * Modified by:
  * Created:     30th March 2013
  * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2013, Nick Matthews.
@@ -28,9 +27,10 @@
 #ifndef CALHEBREW_H
 #define CALHEBREW_H
 
-extern bool calHebrewIsLeapYear( int year );
+// A Hebrew leap year is a year with 13 months, other years having 12.
+extern bool calHebrewIsLeapYear( long year );
 
-extern int calHebrewLastDayInMonth( int month, int year );
+extern int calHebrewLastDayInMonth( long month, long year );
 
 extern bool calHebrewToJdn( long* jdn, long year, long month, long day );
 

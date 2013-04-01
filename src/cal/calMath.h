@@ -31,9 +31,9 @@
 // We use our own value of pi for consistancy.
 extern const double calPi;
 
-typedef bool (*calLongSearchFunc)( long comp );
+typedef bool (*calLongSearchFunc)( long value, long constant );
 
-extern long calMinSearch( long start, calLongSearchFunc func );
+extern long calMinSearch( long start, calLongSearchFunc func, long constant );
 
 extern int calSignum( double n );
 

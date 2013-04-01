@@ -91,18 +91,19 @@ calParser::calParser()
     m_lookup["fruc"] = 12;
     m_lookup["comp"] = 13;
 
-    m_lookup["jan"] = 1;
-    m_lookup["feb"] = 2;
-    m_lookup["mar"] = 3;
-    m_lookup["apr"] = 4;
-    m_lookup["may"] = 5;
-    m_lookup["jun"] = 6;
-    m_lookup["jul"] = 7;
-    m_lookup["aug"] = 8;
-    m_lookup["sep"] = 9;
-    m_lookup["oct"] = 10;
-    m_lookup["nov"] = 11;
-    m_lookup["dec"] = 12;
+    m_lookup["nsn"] = 1;
+    m_lookup["iyr"] = 2;
+    m_lookup["svn"] = 3;
+    m_lookup["tmz"] = 4;
+    m_lookup["aav"] = 5;
+    m_lookup["ell"] = 6;
+    m_lookup["tsh"] = 7;
+    m_lookup["csh"] = 8;
+    m_lookup["ksl"] = 9;
+    m_lookup["tvt"] = 10;
+    m_lookup["shv"] = 11;
+    m_lookup["adr"] = 12;
+    m_lookup["ads"] = 13;
 
     m_lookup["year"]  = 0;
     m_lookup["month"] = 1;

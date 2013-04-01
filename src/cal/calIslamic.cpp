@@ -3,7 +3,6 @@
  * Project:     Cal: A general purpose calendar library.
  * Purpose:     Islamic Calendar functions.
  * Author:      Nick Matthews
- * Modified by:
  * Created:     29th March 2013
  * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2013, Nick Matthews.
@@ -48,7 +47,7 @@
 
 /*! Returns true if the year is a leap year in the Islamic Calendar.
  */
-bool calIslamicIsLeapYear( int year )
+bool calIslamicIsLeapYear( long year )
 {
     return ( ( 14 + 11 * year ) % 30 ) < 11;
 }
@@ -56,7 +55,7 @@ bool calIslamicIsLeapYear( int year )
 /*! Returns the last day of the month for the given month and year
  *  in the Islamic Calendar.
  */
-int calIslamicLastDayInMonth( int month, int year )
+int calIslamicLastDayInMonth( long month, long year )
 {
     wxASSERT( month >= 1 && month <= 12 );
     if( month == 12 ) {
@@ -77,14 +76,7 @@ bool calIslamicToJdn( long* jdn, long year, long month, long day )
         + FDiv( year * 11 + 3, 30 ) 
         + 29 * ( month - 1 )
         + FDiv( month, 2 ) + day;
-#if 0
-    *jdn =
-        FDiv(dmy.year,4)*1461 + PMod(dmy.year,4)*365
-        + calLatinDiy[dmy.month] + dmy.day + BASEDATE_Julian;
 
-    // Adjust if in the 1st 2 months of 4 year cycle
-    if( dmy.month < 3 && (dmy.year%4) == 0 ) --(*jdn);
-#endif
     return true;
 }
 
@@ -93,40 +85,15 @@ bool calIslamicToJdn( long* jdn, long year, long month, long day )
  */
 bool calIslamicFromJdn( long jdn, long* year, long* month, long* day )
 {
-    long temp;
-
     *year = FDiv( 30 * ( jdn - BASEDATE_Islamic ) + 10646, 10631 );
 
+    long temp;
     calIslamicToJdn( &temp, *year, 1, 1 );
     *month = FDiv( 11 * ( jdn - temp ) + 330, 325 );
 
     calIslamicToJdn( &temp, *year, *month, 1 );
     *day = 1 + jdn - temp;
-#if 0
-    date -= BASEDATE_Julian;
 
-    dmy->year = (int) FDiv( date, 1461 ) * 4;
-    date = PMod( date, 1461 );
-
-    if( date < 60 )
-    {
-        if( date < 31 )
-        {
-            dmy->month = 1;
-            dmy->day = (int) date + 1;
-            return true;
-        }
-        dmy->month = 2;
-        dmy->day = (int) date - 30;
-        return true;
-    }
-    --date; // remove the leap day
-    dmy->year += (int) date / 365;
-    date %= 365;
-    dmy->month = 1;
-    while( date >= (long) calLatinDiy[dmy->month+1] ) dmy->month++;
-    dmy->day = (int) date - calLatinDiy[dmy->month] + 1;
-#endif
     return true;
 }
 
