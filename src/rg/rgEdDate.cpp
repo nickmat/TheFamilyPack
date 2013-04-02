@@ -87,8 +87,11 @@ CalendarScheme rgDate::scheme[] = {
     CALENDAR_SCH_JulianDayNumber,
     CALENDAR_SCH_Julian,
     CALENDAR_SCH_Gregorian,
-    CALENDAR_SCH_FrenchRevolution
+    CALENDAR_SCH_FrenchRevolution,
+    CALENDAR_SCH_IslamicTabular,
+    CALENDAR_SCH_Hebrew
 };
+size_t rgDate::SchemeListSize = sizeof( rgDate::scheme ) / sizeof( CalendarScheme );
 
 int rgDate::sch_list[CALENDAR_SCH_Max] = {
     0,   // CALENDAR_SCH_Unstated
@@ -104,7 +107,9 @@ int rgDate::sch_list[CALENDAR_SCH_Max] = {
     0,   // CALENDAR_SCH_English
     0,   // CALENDAR_SCH_Scottish
     0,   // CALENDAR_SCH_Swedish
-    4    // CALENDAR_SCH_FrenchRevolution
+    4,   // CALENDAR_SCH_FrenchRevolution
+    5,   // CALENDAR_SCH_IslamicTabular,
+    6    // CALENDAR_SCH_Hebrew
 };
 
 CalendarUnit rgDate::unit[] = {
@@ -135,6 +140,15 @@ int rgDate::calc_list[recRelativeDate::TYPE_Max] = {
     1   // TYPE_Duration
 };
 
+wxArrayString rgDate::GetCalendarList()
+{
+    wxArrayString list;
+    for( size_t i = 0 ; i < rgDate::SchemeListSize ; i++ ) {
+        list.push_back( CalendarSchemeName[rgDate::scheme[i]] );
+    }
+    return list;
+}
+
 using namespace rgDate;
 
 //============================================================================
@@ -148,7 +162,7 @@ rgDlgEditDate::rgDlgEditDate( wxWindow* parent, idt dateID )
 
 bool rgDlgEditDate::TransferDataToWindow()
 {
-    wxASSERT( CALENDAR_SCH_Max == 14 ); // Don't forget to update when adding schemes
+    wxASSERT( CALENDAR_SCH_Max == 16 ); // Don't forget to update when adding schemes
     wxASSERT( m_date.FGetID() != 0  );
     wxASSERT( m_date.f_rel_id == 0 );
 
@@ -157,7 +171,9 @@ bool rgDlgEditDate::TransferDataToWindow()
         m_date.FSetType( recDate::PREF_On );
     }
     m_choiceType->SetSelection( m_date.f_type - 1 );
+    m_choiceInput->Set( GetCalendarList() );
     m_choiceInput->SetSelection( sch_list[m_date.f_record_sch] );
+    m_choiceDisplay->Set( GetCalendarList() );
     m_choiceDisplay->SetSelection( sch_list[m_date.f_display_sch] );
 
     m_textCtrlDate->SetValue( m_date.GetInputJdnStr() );

@@ -172,7 +172,7 @@ enum CalendarScheme {
 
     /*! Hebrew Calendar: H.
      *
-     *  Short lived attempt to rationalise the calendar after the French Revolution.
+     *  The arithmetic Hebrew Calendar.
      */
     CALENDAR_SCH_Hebrew,
 

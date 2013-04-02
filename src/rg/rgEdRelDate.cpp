@@ -104,12 +104,14 @@ bool rgDlgEditRelativeDate::TransferDataToWindow()
     wxASSERT( m_base.FGetID() != 0 );
 
     m_staticOutput->SetLabel( m_date.GetStr() );
+    m_choiceDisplay->Set( GetCalendarList() );
     m_choiceDisplay->SetSelection( sch_list[m_date.FGetDisplaySch()] );
     m_choiceCalc->SetSelection( m_relative.FGetType() );
     m_textCtrlBase->SetValue( m_base.GetStr() );
     m_choicePrecision->SetSelection( m_date.FGetType() - 1 );
     wxString age = wxString::Format( "%ld", m_relative.FGetValue() );
     m_textCtrlAge->SetValue( age );
+    m_choiceInput->Set( GetCalendarList() );
     m_choiceInput->SetSelection( sch_list[m_relative.FGetScheme()] );
     m_unitday = m_unitdmy = unit_list[m_relative.FGetUnit()];
     if( m_unitday <= 1 ) {

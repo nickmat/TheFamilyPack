@@ -39,11 +39,13 @@
 namespace rgDate
 {
     extern CalendarScheme scheme[];
+    extern size_t SchemeListSize;
     extern int sch_list[CALENDAR_SCH_Max];
     extern CalendarUnit unit[];
     extern int unit_list[CALENDAR_UNIT_Max];
     extern recRelativeDate::Type calc[];
     extern int calc_list[recRelativeDate::TYPE_Max];
+    extern wxArrayString GetCalendarList();
 }
 
 //============================================================================
@@ -58,6 +60,7 @@ public:
 private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
+
     void OnIdle( wxIdleEvent& event );
 
     recDate   m_date;
