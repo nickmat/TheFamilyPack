@@ -49,7 +49,7 @@
  */
 bool calIslamicIsLeapYear( long year )
 {
-    return ( ( 14 + 11 * year ) % 30 ) < 11;
+    return PMod( 14 + 11 * year, 30 ) < 11;
 }
 
 /*! Returns the last day of the month for the given month and year

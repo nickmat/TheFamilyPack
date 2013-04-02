@@ -86,7 +86,7 @@ bool calHebrewTestForYear( long year, long jdn )
  */
 bool calHebrewIsLeapYear( long year )
 {
-    return ( ( 1 + 7 * year ) % 19 ) < 7;
+    return PMod( 1 + 7 * year, 19 ) < 7;
 }
 
 /*! Returns the last day of the month for the given month and year

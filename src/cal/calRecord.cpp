@@ -399,9 +399,7 @@ wxString calRecord::GetStr()
     switch( m_base )
     {
     case calBASE_Jdn:
-        if( m_r[0] != calR_INVALID ) {
-            str << m_r[0];
-        }
+        str << m_r[0];
         break;
     case calBASE_Julian:
     case calBASE_Gregorian:
@@ -411,9 +409,7 @@ wxString calRecord::GetStr()
         if( m_r[1] != calR_INVALID ) {
             str << calLatinMonthName[m_r[1]-1] << " ";
         }
-        if( m_r[0] != calR_INVALID ) {
-            str << m_r[0];
-        }
+        str << m_r[0];
         break;
     case calBASE_French:
         if( m_r[2] != calR_INVALID ) {
@@ -422,9 +418,7 @@ wxString calRecord::GetStr()
         if( m_r[1] != calR_INVALID ) {
             str << calFrenchMonthName[m_r[1]-1] << " ";
         }
-        if( m_r[0] != calR_INVALID ) {
-            str << m_r[0];
-        }
+        str << m_r[0];
         break;
     case calBASE_Islamic:
         if( m_r[2] != calR_INVALID ) {
@@ -433,9 +427,7 @@ wxString calRecord::GetStr()
         if( m_r[1] != calR_INVALID ) {
             str << m_r[1] << " ";
         }
-        if( m_r[0] != calR_INVALID ) {
-            str << m_r[0];
-        }
+        str << m_r[0];
         break;
     case calBASE_Hebrew:
         if( m_r[2] != calR_INVALID ) {
@@ -444,9 +436,7 @@ wxString calRecord::GetStr()
         if( m_r[1] != calR_INVALID ) {
             str << calHebrewMonthName[m_r[1]-1] << " ";
         }
-        if( m_r[0] != calR_INVALID ) {
-            str << m_r[0];
-        }
+        str << m_r[0];
         break;
     default:
         str << _("Not available");

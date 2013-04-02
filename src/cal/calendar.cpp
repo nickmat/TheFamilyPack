@@ -41,7 +41,9 @@
 #include "calRecord.h"
 #include "calJulian.h"
 #include "calGregorian.h"
+#include "calFrench.h"
 #include "calIslamic.h"
+#include "calHebrew.h"
 
 static bool s_initOk = false;
 
@@ -255,8 +257,6 @@ bool calYearFromJdn( int* year, long jdn, CalendarScheme sch )
     return ok;
 }
 
-
-
 //-------------------------------------------------------------------------------
 
 int calLastDayInMonth( int month, int year, CalendarScheme scheme )
@@ -267,6 +267,12 @@ int calLastDayInMonth( int month, int year, CalendarScheme scheme )
         return calGregorianLastDayInMonth( month, year );
     case CALENDAR_SCH_Julian:
         return calJulianLastDayInMonth( month, year );
+    case CALENDAR_SCH_FrenchRevolution:
+        return calFrenchLastDayInMonth( month, year );
+    case CALENDAR_SCH_IslamicTabular:
+        return calIslamicLastDayInMonth( month, year );
+    case CALENDAR_SCH_Hebrew:
+        return calHebrewLastDayInMonth( month, year );
     }
     return 0;
 }
