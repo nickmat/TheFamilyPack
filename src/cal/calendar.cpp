@@ -277,6 +277,22 @@ int calLastDayInMonth( int month, int year, CalendarScheme scheme )
     return 0;
 }
 
+long calLastMonthInYear( long year, CalendarScheme scheme )
+{
+    switch( scheme )
+    {
+    case CALENDAR_SCH_Gregorian:
+    case CALENDAR_SCH_Julian:
+    case CALENDAR_SCH_IslamicTabular:
+        return 12;
+    case CALENDAR_SCH_FrenchRevolution:
+        return 13;
+    case CALENDAR_SCH_Hebrew:
+        return calHebrewIsLeapYear( year ) ? 13 : 12;
+    }
+    return 0;
+}
+
 //------------------------------------------------------------------------
 /*! Add to jdn the given value based on the values unit and the given scheme. 
  *  Returns true if successful, else false.

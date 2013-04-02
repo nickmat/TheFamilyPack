@@ -74,6 +74,7 @@ private:
         CPPUNIT_TEST( TestGregorian );
         CPPUNIT_TEST( TestFrench );
         CPPUNIT_TEST( TestIslamic );
+        CPPUNIT_TEST( TestHebrew );
         CPPUNIT_TEST( TestAdd );
     CPPUNIT_TEST_SUITE_END();
 
@@ -82,6 +83,7 @@ private:
     void TestGregorian();
     void TestFrench();
     void TestIslamic();
+    void TestHebrew();
     void TestAdd();
 
     DECLARE_NO_COPY_CLASS(CalTestCase)
@@ -455,6 +457,71 @@ void CalTestCase::TestIslamic()
                 CPPUNIT_ASSERT( jdn == prev_jdn );
 #endif
 			}
+        }
+    }
+}
+
+
+#ifdef CALTEST_LONG
+#define CALTEST_H_START_YEAR     2760
+#define CALTEST_H_START_PREV_JDN 1355699L
+#define CALTEST_H_END_YEAR       5910
+#endif
+
+#ifdef CALTEST_SHORT
+#define CALTEST_H_START_YEAR     4960
+#define CALTEST_H_START_PREV_JDN 2159257L
+#define CALTEST_H_END_YEAR       5810
+#endif
+
+#ifdef CALTEST_BRIEF
+#define CALTEST_H_START_YEAR     5650
+#define CALTEST_H_START_PREV_JDN 2411271L
+#define CALTEST_H_END_YEAR       5780
+#endif
+
+void CalTestCase::TestHebrew()
+{
+    DMYt dmy;
+    long prev_jdn;
+
+    CalendarScheme sch = CALENDAR_SCH_Hebrew;
+    dmy.year = CALTEST_H_START_YEAR-1;
+    dmy.month = 6;
+    dmy.day = calLastDayInMonth( dmy.month, dmy.year, sch );
+
+    CPPUNIT_ASSERT( calConvertToJdn( &prev_jdn, sch, dmy.year, dmy.month, dmy.day ) );
+    CPPUNIT_ASSERT( prev_jdn == CALTEST_H_START_PREV_JDN );
+
+    for( dmy.year = CALTEST_H_START_YEAR ; dmy.year < CALTEST_H_END_YEAR ; dmy.year++ )
+    {
+        long lmiy = calLastMonthInYear( dmy.year, sch );
+        for( dmy.month = 7 ; ; dmy.month++ )
+        {
+            long ldim = calLastDayInMonth( dmy.month, dmy.year, sch );
+            for( dmy.day = 1 ; dmy.day <= ldim ; ++dmy.day )
+            {
+                long jdn;
+                CPPUNIT_ASSERT( calConvertToJdn( &jdn, sch, dmy.year, dmy.month, dmy.day ) );
+                prev_jdn++;
+                CPPUNIT_ASSERT( jdn == prev_jdn );
+
+                DMYt tdmy;
+                calConvertFromJdn( jdn, sch, &tdmy.year, &tdmy.month, &tdmy.day );
+                CPPUNIT_ASSERT( tdmy == dmy );
+
+#ifdef CALTEST_STRINGS
+                wxString str = calStrFromJdn( jdn, sch );
+                CPPUNIT_ASSERT( calStrToJdn( &jdn, str, sch ) );
+                CPPUNIT_ASSERT( jdn == prev_jdn );
+#endif
+			}
+            if( dmy.month == lmiy ) {
+                dmy.month = 0;
+            }
+            if( dmy.month == 6 ) {
+                break;
+            }
         }
     }
 }

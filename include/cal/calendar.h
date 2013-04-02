@@ -230,6 +230,11 @@ extern bool calConvertFromJdn(
  */
 extern int calLastDayInMonth( int month, int year, CalendarScheme scheme );
 
+/*! Returns the number of months in the given year
+ * or 0 if the calendar scheme does not support months
+ */
+extern long calLastMonthInYear( long year, CalendarScheme scheme );
+
 /*! Get the year number, based on the given calendar scheme
  * Returns false if unable to determine year
  */

@@ -5,5 +5,7 @@ TFP 0.3.0.1.1 - active
 Added the Islamic Tabular (arithmetic) and Hebrew calendars schemes to the
 Calendar Library.
 
+bug - Converting dates with the year -1 to a string didn't show the year.
+
 TFP 0.3.0.1.0 - 28th March 2013
 First Release.
