@@ -134,15 +134,17 @@ wxString tfpWritePersonIndex()
     return htm;
 }
 
-wxString tfpWriteIndividualList( const wxString& surname )
+wxString tfpWriteIndividualList( const wxString& sname )
 {
+    wxString surname = tfpNormaliseSpaces( sname );
+
     wxString htm = tfpWrHeadTfp( "Name List" );
     htm << "<h1>" << surname << "</h1>\n";
 
     wxSQLite3ResultSet result = recIndividual::GetNameList( surname );
 
     int row = 0;
-    if( result.GetColumnCount() > 0 )
+    if( ! result.Eof() )
     {
         htm << "<table class='data'>\n";
         while( result.NextRow() )

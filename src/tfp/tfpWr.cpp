@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/tfpWr.cpp
+ * Name:        src/tfp/tfpWr.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Write HTML screen support functions.
  * Author:      Nick Matthews
@@ -177,4 +177,17 @@ wxString tfpGetEpitaphPlus( idt indID,  GET_EPITAPH_Prefix prefix )
     return ret;
 }
 
-// End of src/tfpWr.cpp Source
+wxString tfpNormaliseSpaces( const wxString& str )
+{
+    wxString out(str);
+    for(;;) {
+        size_t pos = out.find( "%20" );
+        if( pos == wxString::npos ) {
+            break;
+        }
+        out.replace( pos, 3, " " );
+    }
+    return out;
+}
+
+// End of src/tfp/tfpWr.cpp Source
