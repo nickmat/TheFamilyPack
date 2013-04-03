@@ -45,4 +45,8 @@ extern void recProgressClose( void* progress );
  */
 extern int recGetSingleChoiceIndex( const wxString& caption, const wxArrayString& choices );
 
+/*! On GUI, ask permission to upgrage database version.
+ */
+extern bool recPermissionToUpgrade();
+
 #endif // RECINTERFACE_H

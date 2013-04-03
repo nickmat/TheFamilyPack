@@ -1,14 +1,13 @@
 <?xml version="1.0"?>
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        rec.bkl
+ * Name:        build/rec.bkl
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     The bakefile source for building the database library.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     5th October 2010
  * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2010-2013, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -62,6 +61,7 @@
     <sources>$(LOCAL_SRC)/rec/recSource.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recSystem.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recUser.cpp</sources>
+    <sources>$(LOCAL_SRC)/rec/recUpgrade.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recVersion.cpp</sources>
 
     <headers>$(LOCAL_INC)/rec/recContact.h</headers>

@@ -125,6 +125,7 @@ REC_OBJECTS =  \
 	rec_recSource.o \
 	rec_recSystem.o \
 	rec_recUser.o \
+	rec_recUpgrade.o \
 	rec_recVersion.o \
 	rec_dummy.o
 RECCL_CXXFLAGS = $(VAR) $(VAR_4) -I../../include/rec -I../../include \
@@ -377,6 +378,9 @@ rec_recSystem.o: ./../../src/rec/recSystem.cpp
 	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
 
 rec_recUser.o: ./../../src/rec/recUser.cpp
+	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
+
+rec_recUpgrade.o: ./../../src/rec/recUpgrade.cpp
 	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
 
 rec_recVersion.o: ./../../src/rec/recVersion.cpp

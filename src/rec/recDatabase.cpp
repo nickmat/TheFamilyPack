@@ -151,7 +151,6 @@ bool recDb::OpenDb( const wxString& fname )
         recMessage( _("Database already open."), _("Open Database") );
         return false;
     }
-    bool success = true;
 
     try {
         s_db->Open( fname, wxEmptyString, WXSQLITE_OPEN_READWRITE );
@@ -164,10 +163,7 @@ bool recDb::OpenDb( const wxString& fname )
         return false;
     }
 
-    recVersion ver(1);
-    if( !ver.IsEqual( recVerMajor, recVerMinor, recVerRev, recVerTest ) ) {
-        success = ver.DoUpgrade();
-    }
+    bool success = recVersion::Manage();
     if( success == false ) {
         CloseDb();
     }

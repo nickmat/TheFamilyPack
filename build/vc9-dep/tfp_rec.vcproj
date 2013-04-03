@@ -311,6 +311,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rec\recUpgrade.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rec\recUser.cpp"
 				>
 			</File>

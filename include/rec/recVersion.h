@@ -1,13 +1,12 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        recVersion.h
+ * Name:        src/rec/recVersion.h
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Manage the SQLite3 Version record header.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     24 October 2010
  * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2010-2013, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -33,32 +32,37 @@
 #include <rec/recDatabase.h>
 
 
+// Defined in recUpgrade.cpp file
 extern const int recVerMajor;
 extern const int recVerMinor;
 extern const int recVerRev;
 extern const int recVerTest;
 extern const wxStringCharType* recVerStr;
 
+extern bool recDoUpgrade();
+
 
 class recVersion : public recDb
 {
 public:
-    int  f_major;
-    int  f_minor;
-    int  f_revision;
-    int  f_test;
-
-    recVersion() {}
-    recVersion( idt id ) : recDb(id) { Read(); }
+    recVersion() { Read(); }
     recVersion( const recVersion& ver );
-
-    void Clear();
-    void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "Version" );
 
+    int FGetMajor() const { return f_major; }
+    int FGetMinor() const { return f_minor; }
+    int FGetRevision() const { return f_revision; }
+    int FGetTest() const { return f_test; }
+
+    /*! Return the database full version string.
+     */
     static wxString GetVersionStr();
-    static void Set( int major, int minor, int revision, int test );
+
+    /*! Check whether the database version is compatable with the program
+     *  version. If not, handle updating the database and return true. 
+     *  Or, if it is not possible to update, return false.
+     */
+    static bool Manage() { return recDoUpgrade(); }
 
     bool IsEqual( 
         int major, int minor = -1, int revision = -1, int test = -1 ) const;
@@ -66,38 +70,16 @@ public:
         int major, int minor = -1, int revision = -1, int test = -1 ) const;
     bool IsLessThan( 
         int major, int minor = -1, int revision = -1, int test = -1 ) const;
-    bool IsEqualMoreThan( 
-        int major, int minor = -1, int revision = -1, int test = -1 ) const {
-            return !IsLessThan( major, minor, revision, test );
-        }
-    bool IsEqualLessThan( 
-        int major, int minor = -1, int revision = -1, int test = -1 ) const {
-            return !IsMoreThan( major, minor, revision, test );
-        }
 
-    bool TestForUpgrade();
-    bool DoUpgrade();
+private:
+    void Clear();
+    void Save() { wxASSERT( false ); }
+    TABLE_NAME_MEMBERS( "Version" );
+
+    int  f_major;
+    int  f_minor;
+    int  f_revision;
+    int  f_test;
 };
-
-/*! The two entities are equal, ignoring the record id.
- */
-inline bool recEquivalent( const recVersion& r1, const recVersion& r2 )
-{
-    return
-        r1.f_major    == r2.f_major    &&
-        r1.f_minor    == r2.f_minor    &&
-        r1.f_revision == r2.f_revision &&
-        r1.f_test     == r2.f_test;
-}
-
-inline bool operator==( const recVersion& r1, const recVersion& r2 )
-{
-    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
-}
-
-inline bool operator!=( const recVersion& r1, const recVersion& r2 )
-{
-    return !(r1 == r2);
-}
 
 #endif // RECVERSION_H

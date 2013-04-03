@@ -38,6 +38,7 @@
 
 #include <wx/progdlg.h>
 #include <rec/recInterface.h>
+#include <rec/recVersion.h>
 
 void recMessage( const wxString& mess, const wxString& func )
 {
@@ -78,6 +79,20 @@ void recProgressClose( void* progress )
 int recGetSingleChoiceIndex( const wxString& caption, const wxArrayString& choices )
 {
     return wxGetSingleChoiceIndex( wxEmptyString, caption, choices );
+}
+
+bool recPermissionToUpgrade()
+{
+    recVersion v;
+    wxString mess = wxString::Format(
+        _("Upgrade database from version from V%s to V%s"), 
+        v.GetVersionStr(), recVerStr
+    );
+    int ans = wxMessageBox( mess, _("Upgrade Database"), wxYES_NO | wxCANCEL );
+    if( ans == wxYES ) {
+        return true;
+    }
+    return false; 
 }
 
 // End of recgui.cpp file

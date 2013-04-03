@@ -73,4 +73,9 @@ int recGetSingleChoiceIndex( const wxString& caption, const wxArrayString& choic
     return 0;
 }
 
+bool recPermissionToUpgrade()
+{
+    return false; // Can't upgrade from the command line.
+}
+
 // End of reccl.cpp file

@@ -164,6 +164,7 @@ REC_OBJECTS =  \
 	rec_recSource.obj \
 	rec_recSystem.obj \
 	rec_recUser.obj \
+	rec_recUpgrade.obj \
 	rec_recVersion.obj \
 	rec_dummy.obj
 RECCL_CXXFLAGS = /MD$(VAR_23) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) \
@@ -575,6 +576,9 @@ rec_recSystem.obj: .\..\..\src\rec\recSystem.cpp
 
 rec_recUser.obj: .\..\..\src\rec\recUser.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recUser.cpp
+
+rec_recUpgrade.obj: .\..\..\src\rec\recUpgrade.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recUpgrade.cpp
 
 rec_recVersion.obj: .\..\..\src\rec\recVersion.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recVersion.cpp

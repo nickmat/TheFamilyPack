@@ -1141,14 +1141,15 @@ bool TfpFrame::OpenFile()
     wxString defaultFName = wxEmptyString;
 
     wxFileDialog dialog( this, caption, defaultDir, defaultFName, wildcard, wxFD_OPEN );
-    if( dialog.ShowModal() == wxID_OK )
-    {
+    if( dialog.ShowModal() == wxID_OK ) {
         wxString path = dialog.GetPath();
-        if( recDb::OpenDb( path ) == true )
-        {
+        if( recDb::OpenDb( path ) == true ) {
             SetDatabaseOpen( path );
             DisplayHomePage();
             ret = true;
+        } else {
+            // No change if fail.
+            m_changeState = recDb::GetChange();
         }
     }
     return ret;

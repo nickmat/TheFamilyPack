@@ -230,9 +230,6 @@ CREATE TABLE Family (
   wife_id INTEGER
 );
 
-/* Kick start the new database */
-INSERT INTO Family (id, husb_id, wife_id) VALUES (1, 0, 0);
-
 CREATE TABLE FamilyEvent (
   id INTEGER PRIMARY KEY,
   fam_id INTEGER NOT NULL REFERENCES Family(id),
@@ -456,7 +453,7 @@ INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 0, 1, 'F1');
 INSERT INTO UserSetting (id, user_id, property, val) VALUES(2, 1, 1, 'F1');
 
 /* The Version table has only this one row */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 25);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 9, 26);
 
 COMMIT;
 
