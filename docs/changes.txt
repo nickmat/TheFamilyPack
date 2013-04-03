@@ -5,7 +5,12 @@ TFP 0.3.0.1.1 - active
 Added the Islamic Tabular (arithmetic) and Hebrew calendars schemes to the
 Calendar Library.
 
+On Open Database it now asks permission before updating an older version file.
+
 bug - Converting dates with the year -1 to a string didn't show the year.
+
+Database changes from 0.0.9.25
+0.0.10.0  Remove blank F1 Family record from new database.
 
 TFP 0.3.0.1.0 - 28th March 2013
 First Release.
