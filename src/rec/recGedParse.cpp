@@ -573,7 +573,7 @@ idt recGedParse::ParseEvDate( int level, idt* d2ID  )
             sch = CALENDAR_SCH_FrenchRevolution;
         }
     } else if( token.compare( "@#DHEBREW@" ) == 0 ) {
-        sch = CALENDAR_SCH_Unlisted;
+        sch = CALENDAR_SCH_Hebrew;
     } else if( token.compare( "@#DUNKNOWN@" ) == 0 ) {
         sch = CALENDAR_SCH_Unknown;
     } else if( token.compare( 0, 3, "@#D" ) == 0 ) {
@@ -739,6 +739,10 @@ long recGedParse::GetMonth( const wxString& token, CalendarScheme sch )
         "VEND", "BRUM", "FRIM", "NIVO", "PLUV", "VENT",
         "GERM", "FLOR", "PRAI", "MESS", "THER", "FRUC", "COMP"
     };
+    static wxString HMonName[13] = {
+        "NSN", "IYR", "SVN", "TMZ", "AAV", "ELL",
+        "TSH", "CSH", "KSL", "TVT", "SHV", "ADR", "ADS"
+    };
 
     wxString mon = token.Upper();
     switch( sch )
@@ -754,6 +758,13 @@ long recGedParse::GetMonth( const wxString& token, CalendarScheme sch )
     case CALENDAR_SCH_FrenchRevolution:
         for( int i = 0 ; i < 13 ; i++ ) {
             if( mon.compare( FRMonName[i] ) == 0 ) {
+                return i+1;
+            }
+        }
+        break;
+    case CALENDAR_SCH_Hebrew:
+        for( int i = 0 ; i < 13 ; i++ ) {
+            if( mon.compare( HMonName[i] ) == 0 ) {
                 return i+1;
             }
         }
