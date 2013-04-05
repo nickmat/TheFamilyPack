@@ -49,7 +49,7 @@ static wxString GetHref( const recReferenceEntity& ref )
     switch( ref.FGetEntityType() )
     {
     case recReferenceEntity::TYPE_Event:
-        return "tfp:E" + idStr;
+        return "tfp:ER" + idStr;
     case recReferenceEntity::TYPE_Place:
         return "tfpi:P" + idStr;
     case recReferenceEntity::TYPE_Date:

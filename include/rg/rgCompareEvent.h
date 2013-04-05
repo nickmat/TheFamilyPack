@@ -63,8 +63,8 @@ private:
 
     recIndEventVec    m_ies;
     recIndividualVec  m_individuals;
+    recEventRecordVec m_refEvents;
 
-    recEventVec m_refEvents;
     recIdVec    m_refIDs;
     recIdVec    m_personaIDs;
     IndPerMap   m_indPerMap;

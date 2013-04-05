@@ -345,7 +345,7 @@ wxString recReferenceEntity::GetEntityIdStr() const
     switch( f_entity_type )
     {
     case TYPE_Event:
-        return recEvent::GetIdStr( f_entity_id );
+        return recEventRecord::GetIdStr( f_entity_id );
     case TYPE_Place:
         return recPlace::GetIdStr( f_entity_id );
     case TYPE_Date:
@@ -363,7 +363,7 @@ wxString recReferenceEntity::GetEntityStr() const
     switch( f_entity_type )
     {
     case TYPE_Event:
-        return recEvent::GetTitle( f_entity_id );
+        return recEventRecord::GetTitle( f_entity_id );
     case TYPE_Place:
         return recPlace::GetAddressStr( f_entity_id );
     case TYPE_Date:

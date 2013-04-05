@@ -243,7 +243,7 @@ wxString tfpWriteIndividualPage( idt indID )
         idt eveID = GET_ID( eTable.GetInt64( 0 ) );
         recEvent eve( eveID );
         idt roleID = GET_ID( eTable.GetInt64( 1 ) );
-        idt refID = recEvent::FindReferenceID( eveID );
+        idt refID = recEventRecord::FindReferenceID( eveID );
 
         wxString cat1, cat2, dStr, pStr;
         if( eve.FGetDate1ID() || eve.FGetPlaceID() ) {

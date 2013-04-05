@@ -55,6 +55,7 @@ extern wxString tfpWriteEventIndex();
 extern wxString tfpWriteEventPagedIndex( idt begCnt );
 extern wxString tfpWriteEventSelection( recFilterEvent& filter );
 extern wxString tfpWriteEventPage( idt eveID, rgCompareEvent* ce );
+extern wxString tfpWriteEventRecordPage( idt eventID );
 
 // See tfpWrFamily.cpp
 extern wxString tfpWriteFamilyPage( idt famID, size_t iL = 0, size_t iR = 0 );

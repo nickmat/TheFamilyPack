@@ -42,8 +42,8 @@
 const int recVerMajor    = 0;
 const int recVerMinor    = 0;
 const int recVerRev      = 10;
-const int recVerTest     = 0;
-const wxStringCharType* recVerStr = wxS("TFPD-0.0.10.0");
+const int recVerTest     = 1;
+const wxStringCharType* recVerStr = wxS("TFPD-0.0.10.1");
 
 //============================================================================
 //                 Code to upgrade old versions
@@ -53,6 +53,9 @@ namespace {
 
 void UpgradeRev0_0_9to10( int test )
 {
+    if( test < 25 ) {
+        throw wxSQLite3Exception( 0, _("Cannot handle old database version.") );
+    }
     wxASSERT( test == 25 );
     // Version 0.0.9.25 to 0.0.10.0
     // Change to Core Data only, only affects new databases.
@@ -65,9 +68,64 @@ void UpgradeRev0_0_9to10( int test )
     recDb::GetDb()->ExecuteUpdate( query );
 }
 
+void UpgradeTest0_0_10_0to0_0_10_1()
+{
+    // Version 0.0.10.0 to 0.0.10.1
+    // Split the Event table into Event and a new EventRecord table.
+    char* query =
+        "BEGIN;\n"
+        "ALTER TABLE Event RENAME TO OldEvent;\n"
+
+        "CREATE TABLE Event (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  title TEXT NOT NULL,\n"
+        "  type_id INTEGER NOT NULL REFERENCES EventType(id),\n"
+        "  date1_id INTEGER NOT NULL,\n"
+        "  date2_id INTEGER NOT NULL,\n"
+        "  place_id INTEGER NOT NULL,\n"
+        "  note TEXT NOT NULL,\n"
+        "  date_pt INTEGER NOT NULL\n"
+        ");\n"
+
+        "INSERT INTO Event (id, title, type_id, date1_id,"
+        " date2_id, place_id, note, date_pt)"
+        " SELECT E.id, E.title, E.type_id, E.date1_id,"
+        " E.date2_id, E.place_id, E.note, E.date_pt"
+        " FROM OldEvent E, IndividualEvent IE"
+        " WHERE E.id=IE.event_id GROUP BY E.id;\n"
+
+        "CREATE TABLE EventRecord (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  title TEXT NOT NULL,\n"
+        "  type_id INTEGER NOT NULL REFERENCES EventType(id),\n"
+        "  date1_id INTEGER NOT NULL,\n"
+        "  date2_id INTEGER NOT NULL,\n"
+        "  place_id INTEGER NOT NULL,\n"
+        "  note TEXT NOT NULL,\n"
+        "  date_pt INTEGER NOT NULL\n"
+        ");\n"
+
+        "INSERT INTO EventRecord (id, title, type_id, date1_id,"
+        " date2_id, place_id, note, date_pt)"
+        " SELECT E.id, E.title, E.type_id, E.date1_id,"
+        " E.date2_id, E.place_id, E.note, E.date_pt"
+        " FROM OldEvent E, EventPersona EP"
+        " WHERE E.id=EP.event_id GROUP BY E.id;\n"
+
+        "DROP TABLE OldEvent;\n"
+        "UPDATE Version SET revision=10, test=1 WHERE id=1;\n"
+        "COMMIT;\n"
+        "VACUUM;\n"
+    ;
+    recDb::GetDb()->ExecuteUpdate( query );
+}
+
 void UpgradeRev0_0_10toCurrent( int test )
 {
-    wxASSERT( test == 0 );
+    switch( test )
+    {
+    case 0: UpgradeTest0_0_10_0to0_0_10_1();  // Fall thru intended
+    }
 }
 
 } // namespace

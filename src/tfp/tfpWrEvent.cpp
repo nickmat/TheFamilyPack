@@ -44,8 +44,8 @@
 
 #include "tfpWr.h"
 
-static wxString tfpWriteIndEventPage( idt eventID, rgCompareEvent* ce );
-static wxString tfpWriteRefEventPage( idt eventID );
+//static wxString tfpWriteIndEventPage( idt eventID, rgCompareEvent* ce );
+//static wxString tfpWriteRefEventPage( idt eventID );
 
 wxString GetSexClassPer( idt perID )
 {
@@ -222,15 +222,6 @@ wxString tfpWriteEventSelection( recFilterEvent& filter )
 
 wxString tfpWriteEventPage( idt eventID, rgCompareEvent* ce )
 {
-    if( recEvent::IsIndEvent( eventID ) ) {
-        return tfpWriteIndEventPage( eventID, ce );
-    }
-    return tfpWriteRefEventPage( eventID );
-}
-
-
-wxString tfpWriteIndEventPage( idt eventID, rgCompareEvent* ce )
-{
     ce->Reset( eventID );
     wxString htm;
     recEvent eve(eventID);
@@ -244,7 +235,7 @@ wxString tfpWriteIndEventPage( idt eventID, rgCompareEvent* ce )
         "<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>\n"
         "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>\n"
         "</head>\n<body>\n<div class='tfp'>\n"
-        "<h1>Conclusion Event " << eve.GetIdStr() << ": " << eve.f_title << "</h1>\n"
+        "<h1>Event " << eve.GetIdStr() << ": " << eve.f_title << "</h1>\n"
         "<table class='data'>\n<tr>\n<td>"
     ;
     if( eve.FGetDate1ID() ) {
@@ -303,11 +294,11 @@ wxString tfpWriteIndEventPage( idt eventID, rgCompareEvent* ce )
     return htm;
 }
 
-wxString tfpWriteRefEventPage( idt eventID )
+wxString tfpWriteEventRecordPage( idt eventID )
 {
     wxString htm;
     if( eventID == 0 ) return wxEmptyString;
-    recEvent eve(eventID);
+    recEventRecord eve(eventID);
     idt refID = recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, eventID );
 
     htm <<
@@ -318,7 +309,7 @@ wxString tfpWriteRefEventPage( idt eventID )
         "<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>\n"
         "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>\n"
         "</head>\n<body>\n<div class='tfp'>\n"
-        "<h1>Evidence Event " << eve.GetIdStr() << ": " << eve.f_title << "</h1>\n"
+        "<h1>Event Record " << eve.GetIdStr() << ": " << eve.f_title << "</h1>\n"
 
         "<table class='data'>\n<tr>\n<td>"
     ;

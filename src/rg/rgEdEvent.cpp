@@ -49,10 +49,10 @@
 bool rgEditEvent( wxWindow* wind, idt eveID )
 {
     wxASSERT( eveID != 0 );
-    idt refID = recEvent::FindReferenceID( eveID );
-    if( refID ) {
-        return rgEditReference( wind, refID );
-    }
+//    idt refID = recEvent::FindReferenceID( eveID );
+//    if( refID ) {
+//        return rgEditReference( wind, refID );
+//    }
 
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );

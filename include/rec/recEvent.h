@@ -38,6 +38,8 @@
 
 class recEvent;
 typedef std::vector< recEvent >           recEventVec;
+class recEventRecord;
+typedef std::vector< recEventRecord >     recEventRecordVec;
 class recEventPersona;
 typedef std::vector< recEventPersona >    recEventPersonaVec;
 class recEventType;
@@ -230,24 +232,24 @@ public:
     static void UpdateDatePoint( idt evID );
     void UpdateDatePoint();
 
-    idt FindReferenceID() const { return FindReferenceID( f_id ); }
-    static idt FindReferenceID( idt eventID ) {
-        return recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, eventID );
-    }
-    static recEventVec FindEquivRefEvents( idt indEventID );
+//    idt FindReferenceID() const { return FindReferenceID( f_id ); }
+//    static idt FindReferenceID( idt eventID ) {
+//        return recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, eventID );
+//    }
+    static recEventRecordVec FindEquivRefEvents( idt indEventID );
 
-    static bool IsIndEvent( idt eveID );
-    bool IsIndEvent() const { return IsIndEvent( f_id ); }
+//    static bool IsIndEvent( idt eveID );
+//    bool IsIndEvent() const { return IsIndEvent( f_id ); }
     static bool IsFamilyEvent( idt eveID );
     bool IsFamilyEvent() const { return IsFamilyEvent( f_id ); }
 
     recIndEventVec GetIndividualEvents();
-    recEventPersonaVec GetEventPersonas();
+//    recEventPersonaVec GetEventPersonas();
     static wxSQLite3Table GetTitleList();
     static wxSQLite3Table GetTitleList( idt offset, int limit );
 
-    static int GetLastPerSeqNumber( idt eventID );
-    int GetLastPerSeqNumber() const { return GetLastPerSeqNumber( f_id ); }
+//    static int GetLastPerSeqNumber( idt eventID );
+//    int GetLastPerSeqNumber() const { return GetLastPerSeqNumber( f_id ); }
 
     static void RemoveDates( idt dateID ); // removes date if found, replacing with 0
     static void RemovePlace( idt placeID ); // removes place if found, replacing with 0
@@ -278,6 +280,119 @@ inline bool operator==( const recEvent& r1, const recEvent& r2 )
 }
 
 inline bool operator!=( const recEvent& r1, const recEvent& r2 )
+{
+    return !(r1 == r2);
+}
+
+//============================================================================
+//-------------------------[ recEventRecord ]---------------------------------
+//============================================================================
+
+class recEventRecord : public recDb
+{
+public:
+    wxString f_title;
+    idt      f_type_id;
+    idt      f_date1_id;
+    idt      f_date2_id;
+    idt      f_place_id;
+    wxString f_note;
+    long     f_date_pt;
+
+    recEventRecord() {}
+    recEventRecord( idt id ) : recDb(id) { Read(); }
+    recEventRecord( const recEventRecord& event );
+
+    void Clear();
+    void Save();
+    bool Read();
+    TABLE_NAME_MEMBERS( "EventRecord" );
+
+    wxString FGetTitle() const { return f_title; }
+    idt FGetTypeID() const { return f_type_id; }
+    idt FGetDate1ID() const { return f_date1_id; }
+    idt FGetDate2ID() const { return f_date2_id; }
+    idt FGetPlaceID() const { return f_place_id; }
+    wxString FGetNote() const { return f_note; }
+    long FGetDatePt() const { return f_date_pt; }
+
+    void FSetTitle( const wxString& title ) { f_title = title; }
+    void FSetTypeID( idt typeID ) { f_type_id = typeID; }
+    void FSetDate1ID( idt date1ID ) { f_date1_id = date1ID; }
+    void FSetDate2ID( idt date2ID ) { f_date2_id = date2ID; }
+    void FSetPlaceID( idt placeID ) { f_place_id = placeID; }
+    void FSetNote( const wxString& note ) { f_note = note; }
+    void FSetDatePt( idt datePt ) { f_date_pt = datePt; }
+    void FSetDatePt( recDate::DatePoint dp ) { f_date_pt = recDate::GetDatePoint( f_date1_id, dp ); }
+
+    wxString SetAutoTitle( const wxString& name1, const wxString& name2 = wxEmptyString );
+
+    static wxString GetIdStr( idt evID ) { return wxString::Format( "ER"ID, evID ); }
+    wxString GetIdStr() const { return GetIdStr( f_id ); }
+
+    wxString GetDetailStr() const;
+    wxString GetTypeStr() const;
+    wxString GetDateStr() const;
+    wxString GetAddressStr() const;
+    recEventType::ETYPE_Grp GetTypeGroup() const;
+    static wxString GetDetailStr( idt evID );
+    static wxString GetTypeStr( idt evID );
+    static wxString GetTitle( idt evID );
+    static wxString GetNote( idt evID );
+    static wxString GetDateStr( idt evID );
+    static wxString GetAddressStr( idt evID );
+    static idt GetDate1ID( idt evID );
+    static void UpdateDatePoint( idt evID );
+    void UpdateDatePoint();
+
+    idt FindReferenceID() const { return FindReferenceID( f_id ); }
+    static idt FindReferenceID( idt eventID ) {
+        return recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, eventID );
+    }
+//    static recEventVec FindEquivRefEvents( idt indEventID );
+
+//    static bool IsIndEvent( idt eveID );
+//    bool IsIndEvent() const { return IsIndEvent( f_id ); }
+    static bool IsFamilyEvent( idt eveID );
+    bool IsFamilyEvent() const { return IsFamilyEvent( f_id ); }
+
+//    recIndEventVec GetIndividualEvents();
+    recEventPersonaVec GetEventPersonas();
+    static wxSQLite3Table GetTitleList();
+    static wxSQLite3Table GetTitleList( idt offset, int limit );
+
+    static int GetLastPerSeqNumber( idt eventID );
+    int GetLastPerSeqNumber() const { return GetLastPerSeqNumber( f_id ); }
+
+    static void RemoveDates( idt dateID ); // removes date if found, replacing with 0
+    static void RemovePlace( idt placeID ); // removes place if found, replacing with 0
+
+    // Delete Event and remove all references to it.
+    void RemoveFromDatabase();
+    static void RemoveFromDatabase( idt id );
+    static void RemoveIncOrphansFromDatabase( idt id );
+
+    static void DeleteIfOrphaned( idt id );
+};
+
+inline bool recEquivalent( const recEventRecord& r1, const recEventRecord& r2 )
+{
+    return
+        r1.f_title    == r2.f_title    &&
+        r1.f_type_id  == r2.f_type_id  &&
+        r1.f_date1_id == r2.f_date1_id &&
+        r1.f_date2_id == r2.f_date2_id &&
+        r1.f_place_id == r2.f_place_id &&
+        r1.f_note     == r2.f_note     &&
+        r1.f_date_pt  == r2.f_date_pt;
+}
+
+inline bool operator==( const recEventRecord& r1, const recEventRecord& r2 )
+{
+    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
+}
+
+inline bool operator!=( const recEventRecord& r1, const recEventRecord& r2 )
 {
     return !(r1 == r2);
 }

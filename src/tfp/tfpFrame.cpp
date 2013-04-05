@@ -736,7 +736,7 @@ void TfpFrame::OnListResearchers( wxCommandEvent& event )
  */
 void TfpFrame::OnPedChart( wxCommandEvent& event )
 {
-    wxMessageBox( wxT("Not yet implimented"), wxT("OnPedChart") );
+    wxMessageBox( "Not yet implimented", "OnPedChart" );
 }
 
 /*! \brief Called on a Descendant Chart menu option event.
@@ -925,13 +925,16 @@ void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
         return;
     }
     idt id;
+    wxUniChar uch = display.GetChar( 0 );
+    wxUniChar uch1 = display.size() > 1 ? display.GetChar( 1 ) : (wxUniChar) '\0';
     if( display.StartsWith( "FI" ) ) {
         idt indID = recGetID( display.Mid(2) );
         id = recIndividual::GetDefaultFamily( indID );
+    } else if( display.StartsWith( "ER" ) ) {
+        id = recGetID( display.Mid(2) );
     } else {
         id = recGetID( display.Mid(1) );
     }
-    wxUniChar uch = display.GetChar( 0 );
     recDb::Begin();
     try {
         bool ret = false;
@@ -944,7 +947,11 @@ void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
             ret = rgEditReference( this, id );
             break;
         case 'E':
-            ret = rgEditEvent( this, id );
+            if( uch1.GetValue() == 'R' ) {
+                ret = rgEditEventRecord( this, id );
+            } else {
+                ret = rgEditEvent( this, id );
+            }
             break;
         case 'I':
             ret = rgEditIndividual( this, id );
@@ -1536,6 +1543,12 @@ void TfpFrame::RefreshEditMenu()
             m_menuEditEvent->SetLabel( tfpID_EDIT_EVENT_CURRENT, name );
             m_menuEditEvent->Enable( tfpID_EDIT_EVENT_CURRENT, true );
             m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
+        } else if( disp.size() >= 3 && disp.GetChar( 1 ) == 'R' && wxIsdigit( disp.GetChar( 2 ) ) ) {
+            m_editEventID = recGetID( disp.Mid( 2 ) );
+            name = recEventRecord::GetTitle( m_editEventID );
+//            m_menuEditEvent->SetLabel( tfpID_EDIT_EVENT_CURRENT, name );
+//            m_menuEditEvent->Enable( tfpID_EDIT_EVENT_CURRENT, true );
+            m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
         }
         break;
     case 'R':
@@ -1624,6 +1637,15 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
         }
         if( name == "E$" ) {
             return tfpWriteEventSelection( m_eveFilter );
+        }
+        if( uch1 == 'R' ) {
+            success = name.Mid(2).ToLongLong( &num );
+            if( !success || num < 0 ) {
+                return wxString::Format(
+                    ErrorPage, name, _("Invalid Event Record Page")
+                );
+            }
+            return tfpWriteEventRecordPage( num );
         }
         if( uch1 == ',' ) {
             success = name.Mid(2).ToLongLong( &num );

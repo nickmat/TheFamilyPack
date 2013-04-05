@@ -65,6 +65,7 @@ extern idt rgCreateEventType( wxWindow* wind );
 extern bool rgEditEvidEvent( rgDlgEditReference* wind, idt eveID );
 extern idt rgCreateEvidEvent( rgDlgEditReference* wind );
 extern idt rgCreateEvidPerEvent( rgDlgEditReference* wind, const wxString& role );
+extern bool rgEditEventRecord( wxWindow* wind, idt eveID );
 
 // See src/rg/rgEdFamily.cpp
 extern bool rgEditFamily( wxWindow* wind, idt famID );

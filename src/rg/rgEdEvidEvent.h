@@ -37,15 +37,16 @@
 //============================================================================
 
 /** Implementing rgDlgEditEvidEvent */
-class rgDlgEditEvidEvent : public rgDlgEditEvent
+class rgDlgEditEvidEvent : public fbRgEditEvent
 {
     DECLARE_EVENT_TABLE()
 public:
-    rgDlgEditEvidEvent( rgDlgEditReference* parent, idt eventID )
-        : m_refDialog(parent), rgDlgEditEvent( parent, eventID )
-    { wxASSERT( parent != NULL ); }
+    rgDlgEditEvidEvent( rgDlgEditReference* parent, idt eventID );
 
 protected:
+    enum Columns {
+        COL_PerID, COL_Name, COL_Role, COL_Note, COL_MAX
+    };
     enum {
         ID_EDEE_OPTN_EDIT = 1500,
         ID_EDEE_OPTN_UNLINK,
@@ -53,9 +54,11 @@ protected:
         ID_EDEE_OPTN_CREATE_REL
     };
 
-    virtual void ListLinkedPersona();
-    virtual void EditRow( long row );
-    virtual void DeleteRow( long row );
+    bool TransferDataToWindow();
+    bool TransferDataFromWindow();
+    void ListLinkedPersona();
+    void EditRow( long row );
+    void DeleteRow( long row );
 
     void OnDate1Button( wxCommandEvent& event );
     void OnDate2Button( wxCommandEvent& event );
@@ -67,6 +70,11 @@ protected:
     void OnOptnCreateRel( wxCommandEvent& event );
 
     void OnAddButton( wxCommandEvent& event );
+
+    recEventRecord  m_event;
+    idt  m_date1ID;
+    idt  m_date2ID;
+    idt  m_placeID;
 
 private:
     enum Button {

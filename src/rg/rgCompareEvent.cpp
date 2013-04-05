@@ -108,7 +108,7 @@ wxString rgCompareEvent::GetRefEventsTable()
                 "<td><b><a href='tfp:R" << m_refIDs[i] << 
                 "'>" << recReference::GetIdStr( m_refIDs[i] ) << "</a></b></td>\n"
                 "<td>" << recReference::GetTitle( m_refIDs[i] ) << "</td>\n"
-                "<td><b><a href='tfp:E" << m_refEvents[i].FGetID() <<
+                "<td><b><a href='tfp:ER" << m_refEvents[i].FGetID() <<
                 "'>" << m_refEvents[i].GetIdStr() << "</a></b></td>\n"
                 "<td>" << m_refEvents[i].FGetTitle() << "</td>\n"
                 "</tr>\n"
@@ -150,7 +150,7 @@ wxString rgCompareEvent::GetRefDatesTable()
                 "<td class='diag'><img src='memory:" << m_dateImageFNs[i] << "' alt=''></td>\n"
                 "<td><b><a href='tfp:R" << m_refIDs[i] <<
                 "'>" << recReference::GetIdStr( m_refIDs[i] ) <<
-                "</a>: <a href='tfp:E" << m_refEvents[i].FGetID() <<
+                "</a>: <a href='tfp:ER" << m_refEvents[i].FGetID() <<
                 "'>" << m_refEvents[i].GetIdStr() << "</a></b></td>\n"
                 "<td>" << recReference::GetTitle( m_refIDs[i] ) << "</td>\n"
                 "</tr>\n"
@@ -289,7 +289,7 @@ wxString rgCompareEvent::GetRefPlacesTable()
                 "<td>" << m_rePlaces[i].GetAddressStr() << "</td>\n"
                 "<td><b><a href='tfp:R" << m_refIDs[i] <<
                 "'>" << recReference::GetIdStr( m_refIDs[i] ) <<
-                "</a>: <a href='tfp:E" << m_refEvents[i].FGetID() <<
+                "</a>: <a href='tfp:ER" << m_refEvents[i].FGetID() <<
                 "'>" << m_refEvents[i].GetIdStr() << "</a></b></td>\n"
                 "<td>" << recReference::GetTitle( m_refIDs[i] ) << "</td>\n"
                 "</tr>\n"

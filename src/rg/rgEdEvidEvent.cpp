@@ -44,9 +44,22 @@
 #include "rgEdEvidEvent.h"
 #include "rgEdReference.h"
 
+bool rgEditEventRecord( wxWindow* wind, idt erID )
+{
+    idt refID = recEventRecord::FindReferenceID( erID );
+    wxASSERT( refID != 0 );
+    if( refID ) {
+        return rgEditReference( wind, refID );
+    }
+    return false;
+}
 
 bool rgEditEvidEvent( rgDlgEditReference* parent, idt eveID )
 {
+    wxMessageBox( "To be rewritten", "rgEditEvidEvent" );
+    return false;
+
+
     wxASSERT( eveID != 0 );
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
@@ -66,6 +79,10 @@ bool rgEditEvidEvent( rgDlgEditReference* parent, idt eveID )
 
 idt rgCreateEvidEvent( rgDlgEditReference* parent )
 {
+    wxMessageBox( "To be rewritten", "rgCreateEvidEvent" );
+    return false;
+
+
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
 
@@ -151,7 +168,7 @@ idt rgCreateEvidEvent( rgDlgEditReference* parent )
         );
     }
 
-    recEvent e(0);
+    recEventRecord e(0);
     e.FSetTitle( title );
     e.FSetTypeID( typeID );
     e.FSetDate1ID( dateID1 );
@@ -185,6 +202,10 @@ idt rgCreateEvidEvent( rgDlgEditReference* parent )
 
 idt rgCreateEvidPerEvent( rgDlgEditReference* wind, const wxString& role )
 {
+    wxMessageBox( "To be rewritten", "rgCreateEvidPerEvent" );
+    return false;
+
+
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
 
@@ -233,7 +254,7 @@ idt rgCreateEvidPerEvent( rgDlgEditReference* wind, const wxString& role )
         }
     }
 
-    recEvent eve(0);
+    recEventRecord eve(0);
     eve.FSetTitle( title );
     eve.FSetTypeID( eveTypeID );
     eve.FSetDate1ID( date1ID );
@@ -270,6 +291,117 @@ BEGIN_EVENT_TABLE( rgDlgEditEvidEvent, wxDialog )
     EVT_MENU( ID_EDEE_OPTN_CREATE,     rgDlgEditEvidEvent::OnOptnCreate )
     EVT_MENU( ID_EDEE_OPTN_CREATE_REL, rgDlgEditEvidEvent::OnOptnCreateRel )
 END_EVENT_TABLE()
+
+rgDlgEditEvidEvent::rgDlgEditEvidEvent( rgDlgEditReference* parent, idt erID )
+    : m_event(erID), fbRgEditEvent( parent )
+{
+    wxASSERT( false ); // Not currently working
+
+    m_date1ID = m_event.FGetDate1ID();
+    m_date2ID = m_event.FGetDate2ID();
+    m_placeID = m_event.FGetPlaceID();
+
+    m_listPersona->InsertColumn( COL_PerID, _("Persona"), wxLIST_FORMAT_LEFT, 70 );
+    m_listPersona->InsertColumn( COL_Name, _("Name") );
+    m_listPersona->InsertColumn( COL_Role, _("Role") );
+    m_listPersona->InsertColumn( COL_Note, _("Note") );
+}
+
+bool rgDlgEditEvidEvent::TransferDataToWindow()
+{
+    wxASSERT( m_event.GetID() != 0 );
+    m_staticType->SetLabel( m_event.GetTypeStr() );
+    m_textCtrlTitle->SetValue( m_event.FGetTitle() );
+    m_textCtrlDate1->SetValue( recDate::GetStr( m_date1ID ) );
+    if( recEventType::HasDateSpan( m_event.FGetTypeID() ) ) {
+        m_textCtrlDate2->SetValue( recDate::GetStr( m_date2ID ) );
+    } else {
+        m_buttonDate2->Enable( false );
+        m_textCtrlDate2->Enable( false );
+    }
+    m_textCtrlPlace->SetValue( recPlace::GetAddressStr( m_placeID ) );
+    m_textCtrlNote->SetValue( m_event.f_note );
+    ListLinkedPersona();
+    m_staticEventID->SetLabel( m_event.GetIdStr() );
+    return true;
+}
+
+bool rgDlgEditEvidEvent::TransferDataFromWindow()
+{
+    wxASSERT( m_event.FGetTypeID() != 0 );
+
+    m_event.FSetTitle( m_textCtrlTitle->GetValue() );
+    wxString str = m_textCtrlDate1->GetValue();
+    idt dateID = m_event.FGetDate1ID();
+    if( str.IsEmpty() ) {
+        if( dateID != 0 ) {
+            m_event.FSetDate1ID( 0 );
+            m_event.Save();
+            recDate::DeleteIfOrphaned( dateID );
+        }
+        recDate::DeleteIfOrphaned( m_date1ID );
+    } else {
+        if( m_date1ID ) {
+            recDate::SetDate( m_date1ID, str );
+        } else {
+            m_date1ID = recDate::Create( str );
+        }
+        if( dateID != m_date1ID ) {
+            m_event.FSetDate1ID( m_date1ID );
+        }
+    }
+
+    str = m_textCtrlDate2->GetValue();
+    dateID = m_event.FGetDate2ID();
+    if( str.IsEmpty() ) {
+        if( dateID != 0 ) {
+            m_event.FSetDate2ID( 0 );
+            m_event.Save();
+            recDate::DeleteIfOrphaned( dateID );
+        }
+        recDate::DeleteIfOrphaned( m_date2ID );
+    } else {
+        if( m_date2ID ) {
+            recDate::SetDate( m_date2ID, str );
+        } else {
+            m_date2ID = recDate::Create( str );
+        }
+        if( dateID != m_date2ID ) {
+            m_event.FSetDate2ID( m_date2ID );
+        }
+    }
+
+    str = m_textCtrlPlace->GetValue();
+    idt placeID = m_event.FGetPlaceID();
+    if( str.IsEmpty() ) {
+        if( placeID != 0 ) {
+            m_event.FSetPlaceID( 0 );
+            m_event.Save();
+            recPlace::DeleteIfOrphaned( placeID );
+        }
+        recPlace::DeleteIfOrphaned( m_placeID );
+    } else {
+        if( m_placeID ) {
+            recPlace::SetAddress( m_placeID, str );
+        } else {
+            m_placeID = recPlace::Create( str );
+        }
+        if( placeID != m_placeID ) {
+            m_event.FSetPlaceID( m_placeID );
+        }
+    }
+    m_event.FSetNote( m_textCtrlNote->GetValue() );
+
+    m_event.UpdateDatePoint(); 
+    m_event.Save();
+
+    for( size_t i = 0 ; i < m_eps.size() ; i++ ) {
+        m_eps[i].FSetPerSeq( i + 1 );
+        m_eps[i].Save();
+    }
+
+    return true;
+}
 
 void rgDlgEditEvidEvent::ListLinkedPersona()
 {

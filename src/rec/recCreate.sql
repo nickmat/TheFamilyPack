@@ -94,6 +94,17 @@ CREATE TABLE EventPersona (
   per_seq INTEGER NOT NULL
 );
 
+CREATE TABLE EventRecord (
+  id INTEGER PRIMARY KEY,
+  title TEXT NOT NULL,
+  type_id INTEGER NOT NULL REFERENCES EventType(id),
+  date1_id INTEGER NOT NULL,
+  date2_id INTEGER NOT NULL,
+  place_id INTEGER NOT NULL,
+  note TEXT NOT NULL,
+  date_pt INTEGER NOT NULL
+);
+
 CREATE TABLE EventType (
   id INTEGER PRIMARY KEY,
   grp INTEGER,
@@ -453,7 +464,7 @@ INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 0, 1, 'F1');
 INSERT INTO UserSetting (id, user_id, property, val) VALUES(2, 1, 1, 'F1');
 
 /* The Version table has only this one row */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 0);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 1);
 
 COMMIT;
 

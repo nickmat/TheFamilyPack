@@ -486,7 +486,7 @@ void rgDlgEditReference::OnDeleteEntityButton( wxCommandEvent& event )
         recName::RemoveFromDatabase( entID );
         break;
     case recReferenceEntity::TYPE_Event:
-        recEvent::RemoveFromDatabase( entID );
+        recEventRecord::RemoveFromDatabase( entID );
         break;
     default:
         wxMessageBox( _("Element cannot be deleted"), _("Delete") );
@@ -650,8 +650,8 @@ void rgDlgEditReference::InsertEntityListItem( size_t row )
         m_listEntities->SetItem( row, ENT_COL_Value, recRelationship::GetValue1Str( entID ) );
         break;
     case recReferenceEntity::TYPE_Event:
-        m_listEntities->SetItem( row, ENT_COL_Number, recEvent::GetIdStr( entID ) );
-        m_listEntities->SetItem( row, ENT_COL_Value, recEvent::GetTitle( entID ) );
+        m_listEntities->SetItem( row, ENT_COL_Number, recEventRecord::GetIdStr( entID ) );
+        m_listEntities->SetItem( row, ENT_COL_Value, recEventRecord::GetTitle( entID ) );
         break;
     default:
         m_listEntities->SetItem( row, ENT_COL_Value, _("Unknown Reference Entity") );
