@@ -43,14 +43,14 @@
 #include "rgEdRelationship.h"
 #include "rgEdReference.h"
 
-bool rgEditPerRelationship( rgDlgEditReference* parent, idt relID )
+bool rgEditPersonaRelationship( wxWindow* wind, idt relID )
 {
     wxASSERT( relID != 0 );
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
     bool ret = false;
 
-    rgDlgEditRelationship* dialog = new rgDlgEditRelationship( parent, relID );
+    rgDlgEditRelationship* dialog = new rgDlgEditRelationship( wind, relID );
 
     if( dialog->ShowModal() == wxID_OK ) {
         recDb::ReleaseSavepoint( savepoint );
@@ -62,21 +62,21 @@ bool rgEditPerRelationship( rgDlgEditReference* parent, idt relID )
     return ret;
 }
 
-idt rgCreatePerRelationship( 
-    rgDlgEditReference* parent, int per1ID, const wxString& descrip, idt per2ID )
+idt rgCreatePersonaRelationship( 
+    wxWindow* wind, idt refID, const wxString& descrip, idt per1ID, idt per2ID )
 {
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
 
     if( per1ID == 0 ) {
-        per1ID = parent->SelectCreatePersona();
+        per1ID = rgSelectCreatePersonaFromReference( wind, refID );
     }
     if( per1ID == 0 ) {
         recDb::Rollback( savepoint );
         return 0;
     }
     if( per2ID == 0 ) {
-        per2ID = parent->SelectCreatePersona();
+        per2ID = rgSelectCreatePersonaFromReference( wind, refID );
     }
     if( per2ID == 0 ) {
         recDb::Rollback( savepoint );
@@ -90,7 +90,7 @@ idt rgCreatePerRelationship(
     rel.Save();
     idt relID = rel.FGetID();
 
-    if( rgEditPerRelationship( parent, relID ) ) {
+    if( rgEditPersonaRelationship( wind, relID ) ) {
         recDb::ReleaseSavepoint( savepoint );
     } else {
         recDb::Rollback( savepoint );
@@ -103,9 +103,10 @@ idt rgCreatePerRelationship(
 //-------------------------[ rgDlgEditRelationship ]--------------------------
 //============================================================================
 
-rgDlgEditRelationship::rgDlgEditRelationship( rgDlgEditReference* parent, idt relID )
-    : m_refDialog(parent), m_rel(relID), fbRgEditRelationship( parent )
+rgDlgEditRelationship::rgDlgEditRelationship( wxWindow* parent, idt relID )
+    : m_rel(relID), fbRgEditRelationship( parent )
 {
+    m_refID = recRelationship::FindReferenceID( relID );
 }
 
 bool rgDlgEditRelationship::TransferDataToWindow()
@@ -129,7 +130,7 @@ bool rgDlgEditRelationship::TransferDataFromWindow()
 
 void rgDlgEditRelationship::OnPersona1Button( wxCommandEvent& event )
 {
-    idt perID = m_refDialog->SelectCreatePersona();
+    idt perID = rgSelectCreatePersonaFromReference( this, m_refID );
     if( perID ) {
         m_rel.FSetPer1ID( perID );
         m_textCtrlPersona1->SetValue( recPersona::GetNameStr( perID ) );
@@ -138,7 +139,7 @@ void rgDlgEditRelationship::OnPersona1Button( wxCommandEvent& event )
 
 void rgDlgEditRelationship::OnPersona2Button( wxCommandEvent& event )
 {
-    idt perID = m_refDialog->SelectCreatePersona();
+    idt perID = rgSelectCreatePersonaFromReference( this, m_refID );
     if( perID ) {
         m_rel.FSetPer2ID( perID );
         m_textCtrlPersona2->SetValue( recPersona::GetNameStr( perID ) );

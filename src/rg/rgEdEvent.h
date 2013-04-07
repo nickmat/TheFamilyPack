@@ -45,15 +45,13 @@ class rgDlgEditEvent : public fbRgEditEvent
 public:
     rgDlgEditEvent( wxWindow* parent, idt eventID );
 
-protected:
+private:
     enum Columns {
         COL_IndID, COL_Name, COL_Role, COL_Note, COL_MAX
     };
-    virtual void ListLinkedPersona();
-    virtual void EditRow( long row );
-    virtual void DeleteRow( long row );
 
     bool TransferDataToWindow();
+    void ListLinkedIndividuals();
     bool TransferDataFromWindow();
 
     void OnDate1Button( wxCommandEvent& event );
@@ -65,11 +63,10 @@ protected:
     void OnDeleteButton( wxCommandEvent& event );
 
     recEvent  m_event;
-    idt  m_date1ID;
-    idt  m_date2ID;
-    idt  m_placeID;
+    idt       m_date1ID;
+    idt       m_date2ID;
+    idt       m_placeID;
 
-private:
     recIndEventVec    m_ies;
     recIndividualVec  m_individuals;
 };

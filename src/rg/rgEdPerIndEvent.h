@@ -36,34 +36,10 @@
 #include "fbRgDialog.h"
 
 //============================================================================
-//-------------------------[ rgPerIndEvent ]----------------------------------
-//============================================================================
-
-class rgPerIndEvent : public fbRgPerIndEvent
-{
-public:
-    rgPerIndEvent( wxWindow* parent, rgSHOWROLE filter )
-        : m_filter(filter), fbRgPerIndEvent( parent ) {}
-   
-protected:
-    void SetEvent( idt eveID ) { m_event.ReadID( eveID ); }
-    void SetRoleList( idt selection );
-    idt GetRoleID() const;
-
-    void OnAddRoleButton( wxCommandEvent& event );
-
-private:
-    rgSHOWROLE          m_filter;
-    recEvent            m_event;
-    recEventTypeRoleVec m_roles;
-};
-
-
-//============================================================================
 //-------------------------[ rgDlgIndEvent ]----------------------------------
 //============================================================================
 
-class rgDlgIndEvent : public rgPerIndEvent
+class rgDlgIndEvent : public fbRgPerIndEvent
 {
 public:
     rgDlgIndEvent( wxWindow* parent, idt ieID, rgSHOWROLE filter );
@@ -72,14 +48,22 @@ private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
 
+    void SetRoleList( idt selection );
+    idt GetRoleID() const;
+
+    void OnAddRoleButton( wxCommandEvent& event );
+
+    recEvent            m_event;
     recIndividualEvent  m_ie;
+    rgSHOWROLE          m_filter;
+    recEventTypeRoleVec m_roles;
 };
 
 //============================================================================
 //-------------------------[ rgDlgPerEvent ]----------------------------------
 //============================================================================
 
-class rgDlgPerEvent : public rgPerIndEvent
+class rgDlgPerEvent : public fbRgPerIndEvent
 {
 public:
     rgDlgPerEvent( wxWindow* parent, idt epID, rgSHOWROLE filter );
@@ -88,7 +72,15 @@ private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
 
-    recEventPersona  m_ep;
+    void SetRoleList( idt selection );
+    idt GetRoleID() const;
+
+    void OnAddRoleButton( wxCommandEvent& event );
+
+    recEventRecord      m_event;
+    recEventPersona     m_ep;
+    rgSHOWROLE          m_filter;
+    recEventTypeRoleVec m_roles;
 };
 
 #endif // RGEDPERINDEVENT_H

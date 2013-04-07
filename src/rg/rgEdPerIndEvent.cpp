@@ -39,7 +39,6 @@
 #include <rec/recIndividual.h>
 
 #include "rgEdPerIndEvent.h"
-//#include "rg/rgDialogs.h"
 
 
 bool rgEditIndEventRole( wxWindow* wind, idt ieID, rgSHOWROLE filter )
@@ -109,15 +108,15 @@ bool rgEditPerEventRole( wxWindow* wind, idt epID, rgSHOWROLE filter )
     return ret;
 }
 
-bool rgCreatePerEventRole( wxWindow* wind, idt perID, idt eveID, idt roleID )
+bool rgCreatePerEventRole( wxWindow* wind, idt perID, idt erID, idt roleID )
 {
     wxASSERT( perID != 0 ); // TODO: Select a Persona from a list
-    wxASSERT( eveID != 0 ); // TODO: Select an Event from a list
+    wxASSERT( erID != 0 ); // TODO: Select an Event from a list
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
     recEventPersona ep(0);
     ep.FSetPerID( perID );
-    ep.FSetEventID( eveID );
+    ep.FSetEventID( erID );
     ep.FSetRoleID( roleID );
     ep.FSetPerSeq( recIndividual::GetMaxEventSeqNumber( perID ) );
     ep.Save();
@@ -132,10 +131,40 @@ bool rgCreatePerEventRole( wxWindow* wind, idt perID, idt eveID, idt roleID )
 }
 
 //============================================================================
-//-------------------------[ rgPerIndEvent ]----------------------------------
+//-------------------------[ rgDlgIndEvent ]----------------------------------
 //============================================================================
 
-void rgPerIndEvent::SetRoleList( idt selection )
+rgDlgIndEvent::rgDlgIndEvent( wxWindow* parent, idt ieID, rgSHOWROLE filter ) 
+    : m_ie(ieID), m_filter(filter), fbRgPerIndEvent( parent )
+{
+    m_event.ReadID( m_ie.FGetEventID() );
+}
+
+bool rgDlgIndEvent::TransferDataToWindow()
+{
+    wxASSERT( m_ie.FGetID() != 0 );
+    wxASSERT( m_ie.FGetEventID() != 0 );
+    wxASSERT( m_ie.FGetIndID() != 0 );
+
+    m_staticName->SetLabel( recIndividual::GetFullName( m_ie.FGetIndID() ) );
+    m_staticNameID->SetLabel( recIndividual::GetIdStr( m_ie.FGetIndID() ) );
+
+    SetRoleList( m_ie.FGetRoleID() );
+
+    m_textCtrlNote->SetValue( m_ie.FGetNote() );
+    m_staticRoleID->SetLabel( m_ie.GetIdStr() );
+    return true;
+}
+
+bool rgDlgIndEvent::TransferDataFromWindow()
+{
+    m_ie.FSetRoleID( GetRoleID() );
+    m_ie.FSetNote( m_textCtrlNote->GetValue() );
+
+    m_ie.Save();
+    return true;
+}
+void rgDlgIndEvent::SetRoleList( idt selection )
 {
     m_staticEvent->SetLabel( m_event.FGetTitle() );
     m_staticEventID->SetLabel( m_event.GetIdStr() );
@@ -170,7 +199,7 @@ void rgPerIndEvent::SetRoleList( idt selection )
     m_choiceRole->SetSelection( sel );
 }
 
-idt rgPerIndEvent::GetRoleID() const
+idt rgDlgIndEvent::GetRoleID() const
 {
     int sel = m_choiceRole->GetSelection();
     if( sel >= 0 && sel < (int) m_roles.size() ) {
@@ -179,7 +208,7 @@ idt rgPerIndEvent::GetRoleID() const
     return 0;
 }
 
-void rgPerIndEvent::OnAddRoleButton( wxCommandEvent& event )
+void rgDlgIndEvent::OnAddRoleButton( wxCommandEvent& event )
 {
     idt roleID = rgCreateRole( this, m_event.FGetTypeID() );
     if( roleID ) {
@@ -188,48 +217,13 @@ void rgPerIndEvent::OnAddRoleButton( wxCommandEvent& event )
 }
 
 //============================================================================
-//-------------------------[ rgDlgIndEvent ]----------------------------------
-//============================================================================
-
-rgDlgIndEvent::rgDlgIndEvent( wxWindow* parent, idt ieID, rgSHOWROLE filter ) 
-    : m_ie(ieID), rgPerIndEvent( parent, filter )
-{
-    SetEvent( m_ie.FGetEventID() );
-}
-
-bool rgDlgIndEvent::TransferDataToWindow()
-{
-    wxASSERT( m_ie.FGetID() != 0 );
-    wxASSERT( m_ie.FGetEventID() != 0 );
-    wxASSERT( m_ie.FGetIndID() != 0 );
-
-    m_staticName->SetLabel( recIndividual::GetFullName( m_ie.FGetIndID() ) );
-    m_staticNameID->SetLabel( recIndividual::GetIdStr( m_ie.FGetIndID() ) );
-
-    SetRoleList( m_ie.FGetRoleID() );
-
-    m_textCtrlNote->SetValue( m_ie.FGetNote() );
-    m_staticRoleID->SetLabel( m_ie.GetIdStr() );
-    return true;
-}
-
-bool rgDlgIndEvent::TransferDataFromWindow()
-{
-    m_ie.FSetRoleID( GetRoleID() );
-    m_ie.FSetNote( m_textCtrlNote->GetValue() );
-
-    m_ie.Save();
-    return true;
-}
-
-//============================================================================
 //-------------------------[ rgDlgPerEvent ]----------------------------------
 //============================================================================
 
 rgDlgPerEvent::rgDlgPerEvent( wxWindow* parent, idt epID, rgSHOWROLE filter ) 
-    : m_ep(epID), rgPerIndEvent( parent, filter )
+    : m_ep(epID), m_filter(filter), fbRgPerIndEvent( parent )
 {
-    SetEvent( m_ep.FGetEventID() );
+    m_event.ReadID( m_ep.FGetEventID() );
 }
 
 bool rgDlgPerEvent::TransferDataToWindow()
@@ -257,6 +251,57 @@ bool rgDlgPerEvent::TransferDataFromWindow()
 
     m_ep.Save();
     return true;
+}
+void rgDlgPerEvent::SetRoleList( idt selection )
+{
+    m_staticEvent->SetLabel( m_event.FGetTitle() );
+    m_staticEventID->SetLabel( m_event.GetIdStr() );
+
+    switch( m_filter )
+    {
+    case rgSHOWROLE_All:
+        m_roles = recEventType::GetRoles( m_event.FGetTypeID() );
+        break;
+    case rgSHOWROLE_PrimeAll:
+        m_roles = recEventType::GetPrimeRoles( m_event.FGetTypeID() );
+        break;
+    case rgSHOWROLE_PrimeMale:
+        m_roles = recEventType::GetPrimeRoles( m_event.FGetTypeID(), -1 );
+        break;
+    case rgSHOWROLE_PrimeFemale:
+        m_roles = recEventType::GetPrimeRoles( m_event.FGetTypeID(), -2 );
+        break;
+    default:
+        wxASSERT( false );
+    }
+
+    wxArrayString roleStrs;
+    int sel = 0;
+    for( size_t i = 0 ; i < m_roles.size() ; i++ ) {
+        roleStrs.push_back( m_roles[i].FGetName() );
+        if( m_roles[i].FGetID() == selection ) {
+            sel = i;
+        }
+    }
+    m_choiceRole->Set( roleStrs );
+    m_choiceRole->SetSelection( sel );
+}
+
+idt rgDlgPerEvent::GetRoleID() const
+{
+    int sel = m_choiceRole->GetSelection();
+    if( sel >= 0 && sel < (int) m_roles.size() ) {
+        return m_roles[sel].FGetID();
+    }
+    return 0;
+}
+
+void rgDlgPerEvent::OnAddRoleButton( wxCommandEvent& event )
+{
+    idt roleID = rgCreateRole( this, m_event.FGetTypeID() );
+    if( roleID ) {
+        SetRoleList( roleID );
+    }
 }
 
 // End of src/rg/rgEdPerIndEvent.cpp file

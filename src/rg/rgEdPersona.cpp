@@ -69,10 +69,13 @@ bool rgEditPersona( rgDlgEditReference* parent, idt perID )
 //-------------------------[ rgDlgEditPersona ]-------------------------------
 //============================================================================
 
-rgDlgEditPersona::rgDlgEditPersona( rgDlgEditReference* parent, idt perID )
-    : m_refDialog(parent), m_persona(perID), m_order(recEO_DatePt),
+rgDlgEditPersona::rgDlgEditPersona( wxWindow* parent, idt perID )
+    : m_persona(perID), m_order(recEO_DatePt),
     fbRgEditPersona( parent )
 {
+    m_refID = m_persona.FGetRefID();
+    wxASSERT( m_refID != 0 );
+
     m_listName->InsertColumn( NC_Number, _("Number") );
     m_listName->InsertColumn( NC_Type, _("Type") );
     m_listName->InsertColumn( NC_Name, _("Name") );
@@ -235,7 +238,7 @@ void rgDlgEditPersona::OnNameAddButton( wxCommandEvent& event )
 {
     idt nameID = rgCreateName( this, m_persona.FGetID() );
     if( nameID ) {
-        m_refDialog->CreateRefEntity( recReferenceEntity::TYPE_Name, nameID );
+        recReferenceEntity::Create( m_refID, recReferenceEntity::TYPE_Name, nameID );
         UpdateNameList( nameID );
     }
 }
@@ -312,9 +315,9 @@ void rgDlgEditPersona::OnNameDownButton( wxCommandEvent& event )
 
 void rgDlgEditPersona::OnEventAddButton( wxCommandEvent& event )
 {
-    idt eveID = rgCreateEvidEvent( m_refDialog );
+    idt eveID = rgCreateEventRecord( this, m_refID );
     if( eveID ) {
-        m_refDialog->CreateRefEntity( recReferenceEntity::TYPE_Event, eveID );
+        recReferenceEntity::Create( m_refID, recReferenceEntity::TYPE_Event, eveID );
         UpdateEventList( eveID );
     }
 }
@@ -327,7 +330,7 @@ void rgDlgEditPersona::OnEventEditButton( wxCommandEvent& event )
         return;
     }
     idt eventID = m_evpers[row].FGetEventID();
-    if( rgEditEvidEvent( m_refDialog, eventID ) ) {
+    if( rgEditEventRecord( this, eventID ) ) {
         UpdateEventList( eventID );
     }
 }
@@ -413,9 +416,10 @@ void rgDlgEditPersona::OnOrderBy( wxCommandEvent& event )
 
 void rgDlgEditPersona::OnRelAddButton( wxCommandEvent& event )
 {
-    idt relID = rgCreatePerRelationship( m_refDialog, m_persona.FGetID() );
+//    idt relID = rgCreatePerRelationship( m_refDialog, m_persona.FGetID() );
+    idt relID = rgCreatePersonaRelationship( this, m_refID, "", m_persona.FGetID() );
     if( relID ) {
-        m_refDialog->CreateRefEntity( recReferenceEntity::TYPE_Relationship, relID );
+        recReferenceEntity::Create( m_refID, recReferenceEntity::TYPE_Relationship, relID );
         UpdateRelList( relID );
     }
 }
@@ -428,7 +432,7 @@ void rgDlgEditPersona::OnRelEditButton( wxCommandEvent& event )
         return;
     }
     idt relID = m_relationships[row].FGetID();
-    if( rgEditPerRelationship( m_refDialog, relID ) ) {
+    if( rgEditPersonaRelationship( this, relID ) ) {
         UpdateRelList( relID );
     }
 }

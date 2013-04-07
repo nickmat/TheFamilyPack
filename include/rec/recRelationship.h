@@ -31,6 +31,7 @@
 #define RECRELATIONSHIP_H
 
 #include <rec/recDatabase.h>
+#include <rec/recReference.h>
 
 class recRelationship;
 typedef std::vector< recRelationship >  recRelationshipVec;
@@ -70,6 +71,9 @@ public:
 
     wxString GetRelOfPersonaStr( idt perID ) const;
     static wxString GetRelOfPersonaStr( idt perID, idt relID );
+
+    static idt FindReferenceID( idt relID ) {
+        return recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Relationship, relID ); }
 };
 
 inline bool recEquivalent( const recRelationship& r1, const recRelationship& r2 )

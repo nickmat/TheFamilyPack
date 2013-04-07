@@ -80,6 +80,91 @@ idt rgCreateReference( wxWindow* parent )
     return 0;
 }
 
+extern bool rgSelectDateFromReference( 
+    wxWindow* wind, idt* dateID, idt refID, const wxString& title, unsigned style )
+{
+    wxASSERT( dateID );  // Can't handle NULL pointer
+
+    unsigned retButton;
+    *dateID = rgSelectDate( wind, style, &retButton, recD_FILTER_Reference, refID );
+    if( retButton == rgSELSTYLE_Create ) {
+        recReferenceEntity::Create( refID, recReferenceEntity::TYPE_Date, *dateID );
+    }
+    if( *dateID == 0 ) {
+        if( retButton == rgSELSTYLE_Unknown ) {
+            return true;
+        }
+        return false;
+    }
+    return true;
+}
+
+extern bool rgSelectPlaceFromReference( 
+    wxWindow* wind, idt* placeID, idt refID, const wxString& title, unsigned style )
+{
+    wxASSERT( placeID );  // Can't handle NULL pointer
+
+    unsigned retButton;
+    *placeID = rgSelectPlace( wind, style, &retButton, recD_FILTER_Reference, refID );
+    if( retButton == rgSELSTYLE_Create ) {
+        recReferenceEntity::Create( refID, recReferenceEntity::TYPE_Place, *placeID );
+    }
+    if( *placeID == 0 ) {
+        if( retButton == rgSELSTYLE_Unknown ) {
+            return true;
+        }
+        return false;
+    }
+    return true;
+}
+
+idt rgSelectCreatePersonaFromReference( wxWindow* wind, idt refID )
+{
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+
+    recIdVec list = recReference::GetPersonaList( refID );
+    wxArrayString table;
+    for( size_t i = 0 ; i < list.size() ; i++ ) {
+        table.Add( recPersona::GetIdStr( list[i] ) );
+        table.Add( recPersona::GetNameStr( list[i] ) );
+    }
+
+    rgDlgSelectCreatePersona* dialog = new rgDlgSelectCreatePersona( wind );
+    dialog->SetTable( table );
+
+    idt perID = 0;
+    if( dialog->ShowModal() == wxID_OK ) {
+        Sex sex = dialog->GetSex();
+        if( sex != SEX_Unstated ) { // indicates Create new persona
+            recPersona per(0);
+            per.FSetRefID( refID );
+            per.FSetSex( sex );
+            per.Save();
+            perID = per.FGetID();
+            idt nameID = rgCreateName( wind, perID );
+            if( nameID ) {
+                recReferenceEntity::Create( refID, recReferenceEntity::TYPE_Name, nameID );
+            } else {
+                perID = 0;
+            }
+        } else {
+            long row = dialog->GetSelectedRow();
+            if( row >= 0 ) {
+                perID = list[row];
+            }
+        }
+    }
+    if( perID ) {
+        recDb::ReleaseSavepoint( savepoint );
+    } else {
+        recDb::Rollback( savepoint );
+    }
+
+    dialog->Destroy();
+    return perID;
+}
+
 //============================================================================
 //-------------------------[ rgDlgEditReference ]-----------------------------
 //============================================================================
@@ -404,7 +489,7 @@ void rgDlgEditReference::OnNewPlace( wxCommandEvent& event )
 
 void rgDlgEditReference::OnNewEvent( wxCommandEvent& cmnd_event )
 {
-    idt eveID = rgCreateEvidEvent( this );
+    idt eveID = rgCreateEventRecord( this, m_reference.FGetID() );
     if( eveID ) {
         idt reID = CreateRefEntity( recReferenceEntity::TYPE_Event, eveID );
         UpdateEntities( reID );
@@ -413,7 +498,9 @@ void rgDlgEditReference::OnNewEvent( wxCommandEvent& cmnd_event )
 
 void rgDlgEditReference::OnNewPersonalEvent( wxCommandEvent& event )
 {
-    idt eveID = rgCreateEvidPerEvent( this, m_textCtrlStatement->GetStringSelection() );
+    idt eveID = rgCreatePersonalEventRecord( 
+        this, m_reference.FGetID(), m_textCtrlStatement->GetStringSelection()
+    );
     if( eveID ) {
         idt reID = CreateRefEntity( recReferenceEntity::TYPE_Event, eveID );
         UpdateEntities( reID );
@@ -422,7 +509,9 @@ void rgDlgEditReference::OnNewPersonalEvent( wxCommandEvent& event )
 
 void rgDlgEditReference::OnNewRelationship( wxCommandEvent& event )
 {
-    idt relID = rgCreatePerRelationship( this, m_textCtrlStatement->GetStringSelection() );
+    idt relID = rgCreatePersonaRelationship( 
+        this, m_reference.FGetID(), m_textCtrlStatement->GetStringSelection()
+    );
     if( relID ) {
         idt reID = CreateRefEntity( recReferenceEntity::TYPE_Relationship, relID );
         UpdateEntities( reID );
@@ -446,10 +535,10 @@ void rgDlgEditReference::OnEditEntityButton( wxCommandEvent& event )
         if( rgEditPlace( this, id ) ) break;
         return;
     case recReferenceEntity::TYPE_Relationship:
-        if( rgEditPerRelationship( this, id ) ) break;
+        if( rgEditPersonaRelationship( this, id ) ) break;
         return;
     case recReferenceEntity::TYPE_Event: 
-        if( rgEditEvidEvent( this, id ) ) break;
+        if( rgEditEventRecord( this, id ) ) break;
         return;
     case recReferenceEntity::TYPE_Name:
         if( rgEditName( this, id ) ) break;

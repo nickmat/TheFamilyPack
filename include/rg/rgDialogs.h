@@ -34,6 +34,14 @@
 
 class rgDlgEditReference;
 
+enum {
+    rgSELSTYLE_None       = 0x0000,
+    rgSELSTYLE_Create     = 0x0001,   // Show Create button
+    rgSELSTYLE_Filter     = 0x0002,   // Show Filter button
+    rgSELSTYLE_Unknown    = 0x0004,   // Show Unknown button (for Unknown value)
+    rgSELSTYLE_SelList    = 0x0100    // Selects the full list
+};
+
 // See src/rg/rgCrName.cpp
 enum {
     rgCRNAME_Default   = 0x000, // Use default settings to decode name1 string.
@@ -57,15 +65,14 @@ extern idt rgCreateDate( wxWindow* wind, const wxString& dateStr = wxEmptyString
 extern bool rgEditEvent( wxWindow* wind, idt eveID );
 extern idt rgCreateIndEvent( wxWindow* wind, idt ind1ID, idt ind2ID = 0, idt famID = 0 );
 
+// See src/rg/rgEdEventRecord.cpp
+extern bool rgEditEventRecord( wxWindow* wind, idt eveID );
+extern idt rgCreateEventRecord( wxWindow* wind, idt refID );
+extern idt rgCreatePersonalEventRecord( wxWindow* wind, idt refID, const wxString& role );
+
 // See src/rg/rgEdEventType.cpp
 extern bool rgEditEventType( wxWindow* wind, idt etID );
 extern idt rgCreateEventType( wxWindow* wind );
-
-// See src/rg/rgEdEvidEvent.cpp
-extern bool rgEditEvidEvent( rgDlgEditReference* wind, idt eveID );
-extern idt rgCreateEvidEvent( rgDlgEditReference* wind );
-extern idt rgCreateEvidPerEvent( rgDlgEditReference* wind, const wxString& role );
-extern bool rgEditEventRecord( wxWindow* wind, idt eveID );
 
 // See src/rg/rgEdFamily.cpp
 extern bool rgEditFamily( wxWindow* wind, idt famID );
@@ -103,16 +110,16 @@ extern idt rgCreatePlace( wxWindow* wind, const wxString& placeStr = wxEmptyStri
 // See src/rg/rgEdReference.cpp
 extern bool rgEditReference( wxWindow* wind, idt refID );
 extern idt rgCreateReference( wxWindow* wind );
+extern bool rgSelectDateFromReference( 
+    wxWindow* wind, idt* dateID, idt refID, const wxString& title, unsigned style );
+extern bool rgSelectPlaceFromReference( 
+    wxWindow* wind, idt* placeID, idt refID, const wxString& title, unsigned style );
+extern idt rgSelectCreatePersonaFromReference( wxWindow* wind, idt refID );
 
 // See src/rg/rgEdRelationship.cpp
-extern bool rgEditPerRelationship( rgDlgEditReference* wind, idt relID );
-extern idt rgCreatePerRelationship( 
-    rgDlgEditReference* wind, 
-    int per1ID, const wxString& descrip = wxEmptyString, idt per2ID = 0 );
-inline idt rgCreatePerRelationship( 
-    rgDlgEditReference* wind, 
-    const wxString& descrip = wxEmptyString ) 
-    { return rgCreatePerRelationship( wind, 0, descrip ); }
+extern bool rgEditPersonaRelationship( wxWindow* wind, idt relID );
+extern idt rgCreatePersonaRelationship(
+    wxWindow* wind, idt refID, const wxString& value = "", idt per1ID = 0, idt per2ID = 0 ); 
 
 // See src/rg/rgEdRelDate.cpp
 extern bool rgEditRelativeDate( wxWindow* wind, idt dateID );
@@ -142,14 +149,6 @@ extern bool rgAddExistSpouse( wxWindow* wind, idt indID, Sex sex );
 extern idt rgAddNewChild( wxWindow* wind, idt famID, Sex sex );
 extern idt rgAddExistChild( wxWindow* wind, idt famID, Sex sex );
 extern bool rgDeleteIndividual( wxWindow* wind, idt indID );
-
-enum {
-    rgSELSTYLE_None       = 0x0000,
-    rgSELSTYLE_Create     = 0x0001,   // Show Create button
-    rgSELSTYLE_Filter     = 0x0002,   // Show Filter button
-    rgSELSTYLE_Unknown    = 0x0004,   // Show Unknown button (for Unknown value)
-    rgSELSTYLE_SelList    = 0x0100    // Selects the full list
-};
 
 // See src/rg/rgSelect.cpp
 extern idt rgSelectDate( 

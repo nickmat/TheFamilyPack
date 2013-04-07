@@ -29,21 +29,22 @@
 #ifndef RGEDEVIDEVENT_H
 #define RGEDEVIDEVENT_H
 
-#include "rgEdEvent.h"
-#include "rgEdReference.h"
+#include <rec/recEvent.h>
+#include <rec/recReference.h>
+
+#include "fbRgDialog.h"
 
 //============================================================================
-//-------------------------[ rgDlgEditEvidEvent ]-----------------------------
+//-------------------------[ rgDlgEditEventRecord ]---------------------------
 //============================================================================
 
 /** Implementing rgDlgEditEvidEvent */
-class rgDlgEditEvidEvent : public fbRgEditEvent
+class rgDlgEditEventRecord : public fbRgEditEvent
 {
     DECLARE_EVENT_TABLE()
 public:
-    rgDlgEditEvidEvent( rgDlgEditReference* parent, idt eventID );
-
-protected:
+    rgDlgEditEventRecord( wxWindow* parent, idt eventID );
+private:
     enum Columns {
         COL_PerID, COL_Name, COL_Role, COL_Note, COL_MAX
     };
@@ -55,10 +56,8 @@ protected:
     };
 
     bool TransferDataToWindow();
-    bool TransferDataFromWindow();
     void ListLinkedPersona();
-    void EditRow( long row );
-    void DeleteRow( long row );
+    bool TransferDataFromWindow();
 
     void OnDate1Button( wxCommandEvent& event );
     void OnDate2Button( wxCommandEvent& event );
@@ -70,18 +69,25 @@ protected:
     void OnOptnCreateRel( wxCommandEvent& event );
 
     void OnAddButton( wxCommandEvent& event );
+    void OnEditButton( wxCommandEvent& event );
+    void OnDeleteButton( wxCommandEvent& event );
+#if 0
 
+    void EditRow( long row );
+    void DeleteRow( long row );
+
+#endif
+    idt             m_refID;
     recEventRecord  m_event;
     idt  m_date1ID;
     idt  m_date2ID;
     idt  m_placeID;
 
-private:
     enum Button {
         EEEB_Date1, EEEB_Date2, EEEB_Place
     };
     Button              m_button;
-    rgDlgEditReference* m_refDialog;
+//    rgDlgEditReference* m_refDialog;
 
     recEventPersonaVec  m_eps;
     recPersonaVec       m_personas;

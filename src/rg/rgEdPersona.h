@@ -54,7 +54,8 @@ class rgDlgEditPersona : public fbRgEditPersona
         RC_Number, RC_Value, RC_MAX
     };
 public:
-    rgDlgEditPersona( rgDlgEditReference* parent, idt perID );
+//    rgDlgEditPersona( rgDlgEditReference* parent, idt perID );
+    rgDlgEditPersona( wxWindow* parent, idt perID );
 
     void SetPersonaID( idt perID ) { m_persona.f_id = perID; }
 
@@ -90,7 +91,8 @@ private:
     void OnRelEditButton( wxCommandEvent& event );
     void OnRelDeleteButton( wxCommandEvent& event );
 
-    rgDlgEditReference* m_refDialog;
+//    rgDlgEditReference* m_refDialog;
+    idt                 m_refID;
 
     recPersona          m_persona;
     recIdVec            m_indLinks;

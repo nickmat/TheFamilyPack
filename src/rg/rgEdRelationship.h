@@ -43,7 +43,7 @@ class rgDlgEditReference;
 class rgDlgEditRelationship : public fbRgEditRelationship
 {
 public:
-    rgDlgEditRelationship( rgDlgEditReference* parent, idt relID );
+    rgDlgEditRelationship( wxWindow* parent, idt relID );
 
     void SetPersona1ID( idt perID ) { m_rel.f_per1_id = perID; }
     void SetPersona2ID( idt perID ) { m_rel.f_per2_id = perID; }
@@ -57,8 +57,7 @@ private:
     void OnPersona1Button( wxCommandEvent& event );
     void OnPersona2Button( wxCommandEvent& event );
 
-    rgDlgEditReference* m_refDialog;
-
+    idt              m_refID;
     recRelationship  m_rel;
 };
 

@@ -112,8 +112,8 @@
     <sources>$(LOCAL_SRC)/rg/rgEdContact.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdDate.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdEvent.cpp</sources>
+    <sources>$(LOCAL_SRC)/rg/rgEdEventRecord.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdEventType.cpp</sources>
-    <sources>$(LOCAL_SRC)/rg/rgEdEvidEvent.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdFamily.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdIndividual.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdName.cpp</sources>
@@ -143,8 +143,8 @@
     <headers>$(LOCAL_SRC)/rg/rgEdContact.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdDate.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdEvent.h</headers>
+    <headers>$(LOCAL_SRC)/rg/rgEdEventRecord.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdEventType.h</headers>
-    <headers>$(LOCAL_SRC)/rg/rgEdEvidEvent.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdFamily.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdIndividual.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdName.h</headers>

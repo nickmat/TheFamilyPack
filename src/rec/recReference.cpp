@@ -171,12 +171,12 @@ wxSQLite3Table recReference::GetTitleList( idt offset, int limit )
     return s_db->GetTable( sql );
 }
 
-int recReference::GetNextEntitySequence() const
+int recReference::GetNextEntitySequence( idt refID )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
         "SELECT MAX(sequence) FROM ReferenceEntity WHERE ref_id="ID";",
-        f_id
+        refID
     );
     return s_db->ExecuteScalar( sql )+1;
 }
@@ -336,7 +336,11 @@ void recReferenceEntity::Create( idt refID, Type type, idt entID, int* pseq )
     re.f_ref_id = refID;
     re.f_entity_type = type;
     re.f_entity_id = entID;
-    re.f_sequence = ++(*pseq);
+    if( pseq ) {
+        re.f_sequence = ++(*pseq);
+    } else {
+        re.f_sequence = recReference::GetNextEntitySequence( refID );
+    }
     re.Save();
 }
 

@@ -82,7 +82,7 @@ public:
     void FSetEntityID( idt entID ) { f_entity_id = entID; }
     void FSetSequence( int seq ) { f_sequence = seq; }
 
-    static void Create( idt refID, Type type, idt entID, int* pseq );
+    static void Create( idt refID, Type type, idt entID, int* pseq = NULL );
     static void Delete( Type type, idt entityID );
 
     wxString GetTypeStr() const { return sm_typeStr[f_entity_type]; }
@@ -146,7 +146,8 @@ public:
     static wxSQLite3Table GetTitleList();
     static wxSQLite3Table GetTitleList( idt offset, int limit );
 
-    int GetNextEntitySequence() const;
+    static int GetNextEntitySequence( idt refID );
+    int GetNextEntitySequence() const { return GetNextEntitySequence( f_id ); }
 
     static recIdVec GetPersonaList( idt refID );
     recIdVec GetPersonaList() const { return GetPersonaList( f_id ); }

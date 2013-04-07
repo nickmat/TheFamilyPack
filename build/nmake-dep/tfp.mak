@@ -189,8 +189,8 @@ RECGUI_OBJECTS =  \
 	recgui_rgEdContact.obj \
 	recgui_rgEdDate.obj \
 	recgui_rgEdEvent.obj \
+	recgui_rgEdEventRecord.obj \
 	recgui_rgEdEventType.obj \
-	recgui_rgEdEvidEvent.obj \
 	recgui_rgEdFamily.obj \
 	recgui_rgEdIndividual.obj \
 	recgui_rgEdName.obj \
@@ -623,11 +623,11 @@ recgui_rgEdDate.obj: .\..\..\src\rg\rgEdDate.cpp
 recgui_rgEdEvent.obj: .\..\..\src\rg\rgEdEvent.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdEvent.cpp
 
+recgui_rgEdEventRecord.obj: .\..\..\src\rg\rgEdEventRecord.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdEventRecord.cpp
+
 recgui_rgEdEventType.obj: .\..\..\src\rg\rgEdEventType.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdEventType.cpp
-
-recgui_rgEdEvidEvent.obj: .\..\..\src\rg\rgEdEvidEvent.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdEvidEvent.cpp
 
 recgui_rgEdFamily.obj: .\..\..\src\rg\rgEdFamily.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdFamily.cpp

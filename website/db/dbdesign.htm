@@ -100,44 +100,47 @@
    <tr>
     <td><a href="#Event">Event</a></td>
     <td><a href="#EventPersona">EventPersona</a></td>
+    <td><a href="#EventRecord">EventRecord</a></td>
     <td><a href="#EventType">EventType</a></td>
     <td><a href="#EventTypeRole">EventTypeRole</a></td>
     <td><a href="#Family">Family</a></td>
-    <td><a href="#FamilyEvent">FamilyEvent</a></td>
    </tr>
    <tr>
+    <td><a href="#FamilyEvent">FamilyEvent</a></td>
     <td><a href="#FamilyIndividual">FamilyIndividual</a></td>
     <td><a href="#Individual">Individual</a></td>
     <td><a href="#IndividualEvent">IndividualEvent</a></td>
     <td><a href="#LinkPersona">LinkPersona</a></td>
     <td><a href="#Name">Name</a></td>
-    <td><a href="#NamePart">NamePart</a></td>
    </tr>
    <tr>
+    <td><a href="#NamePart">NamePart</a></td>
     <td><a href="#NamePartType">NamePartType</a></td>
     <td><a href="#NameStyle">NameStyle</a></td>
     <td><a href="#Persona">Persona</a></td>
     <td><a href="#Place">Place</a></td>
     <td><a href="#PlacePart">PlacePart</a></td>
-    <td><a href="#PlacePartType">PlacePartType</a></td>
    </tr>
    <tr>
+    <td><a href="#PlacePartType">PlacePartType</a></td>
     <td><a href="#Reference">Reference</a></td>
     <td><a href="#ReferenceEntity">ReferenceEntity</a></td>
     <td><a href="#Relationship">Relationship</a></td>
     <td><a href="#RelativeDate">RelativeDate</a></td>
     <td><a href="#Repository">Repository</a></td>
-    <td><a href="#RepositorySource">RepositorySource</a></td>
    </tr>
    <tr>
+    <td><a href="#RepositorySource">RepositorySource</a></td>
     <td><a href="#Researcher">Researcher</a></td>
     <td><a href="#Source">Source</a></td>
     <td><a href="#System">System</a></td>
     <td><a href="#User">User</a></td>
     <td><a href="#UserSetting">UserSetting</a></td>
-    <td><a href="#Version">Version</a></td>
    </tr>
-   <!-- <td colspan='0' class="na">&nbsp;</td> -->
+   <tr>
+    <td><a href="#Version">Version</a></td>
+    <td colspan='0' class="na">&nbsp;</td>
+   </tr>
   </table>
 
   <table cellpadding="4" frame="box" rules="all">
@@ -366,7 +369,7 @@
     <tr>
      <td>event_id</td>
      <td>Integer Not null FK</td>
-     <td>Pointer to the Event</td>
+     <td>Pointer to an EventRecord</td>
     </tr>
     <tr>
      <td>per_id</td>
@@ -376,7 +379,7 @@
     <tr>
      <td>role_id</td>
      <td>Integer Not null FK</td>
-     <td>Points to the role played by the Person</td>
+     <td>Points to the role played by the Persona</td>
     </tr>
     <tr>
      <td>note</td>
@@ -386,7 +389,54 @@
     <tr>
      <td>per_seq</td>
      <td>Integer Not null</td>
-     <td>The sequence of personas included in a given event.</td>
+     <td>The sequence of personas included in a given event record.</td>
+    </tr>
+
+    <tr id="EventRecord">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>EventRecord</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying an EventRecord</td>
+    </tr>
+    <tr>
+     <td>title</td>
+     <td>Text Not null</td>
+     <td>The name of the Event, such as "Marriage of John Smith and Mary Jones".</td>
+    </tr>
+    <tr>
+     <td>type_id</td>
+     <td>Integer Not null FK</td>
+     <td>Unique identifier that indicates to which Event Type this event belongs.</td>
+    </tr>
+    <tr>
+     <td>date1_id</td>
+     <td>Integer</td>
+     <td>The point date associated with the Event.</td>
+    </tr>
+    <tr>
+     <td>date2_id</td>
+     <td>Integer</td>
+     <td>The optional second date if a date range is associated with the Event.</td>
+    </tr>
+    <tr>
+     <td>place_id</td>
+     <td>Integer</td>
+     <td>Unique identifier in Place that indicates where this Event took place.</td>
+    </tr>
+    <tr>
+     <td>note</td>
+     <td>Text</td>
+     <td>Optional note that relates to the Event.</td>
+    </tr>
+    <tr>
+     <td>date_pt</td>
+     <td>Integer Not null</td>
+     <td>A single day used to order lists of events.</td>
     </tr>
 
     <tr id="EventType">

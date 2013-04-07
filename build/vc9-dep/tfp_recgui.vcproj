@@ -224,11 +224,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\rg\rgEdEventType.cpp"
+				RelativePath="..\..\src\rg\rgEdEventRecord.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\rg\rgEdEvidEvent.cpp"
+				RelativePath="..\..\src\rg\rgEdEventType.cpp"
 				>
 			</File>
 			<File
@@ -346,11 +346,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\rg\rgEdEventType.h"
+				RelativePath="..\..\src\rg\rgEdEventRecord.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\rg\rgEdEvidEvent.h"
+				RelativePath="..\..\src\rg\rgEdEventType.h"
 				>
 			</File>
 			<File

@@ -49,10 +49,6 @@
 bool rgEditEvent( wxWindow* wind, idt eveID )
 {
     wxASSERT( eveID != 0 );
-//    idt refID = recEvent::FindReferenceID( eveID );
-//    if( refID ) {
-//        return rgEditReference( wind, refID );
-//    }
 
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
@@ -172,12 +168,12 @@ bool rgDlgEditEvent::TransferDataToWindow()
     }
     m_textCtrlPlace->SetValue( recPlace::GetAddressStr( m_placeID ) );
     m_textCtrlNote->SetValue( m_event.f_note );
-    ListLinkedPersona();
+    ListLinkedIndividuals();
     m_staticEventID->SetLabel( m_event.GetIdStr() );
     return true;
 }
 
-void rgDlgEditEvent::ListLinkedPersona()
+void rgDlgEditEvent::ListLinkedIndividuals()
 {
     m_ies = m_event.GetIndividualEvents();
     m_individuals.clear();
@@ -320,7 +316,7 @@ void rgDlgEditEvent::OnPlaceButton( wxCommandEvent& event )
 void rgDlgEditEvent::OnAddButton( wxCommandEvent& event )
 {
     if( rgCreateIndEventRole( this, 0, m_event.FGetID(), 0 ) ) {
-        ListLinkedPersona();
+        ListLinkedIndividuals();
     }
 }
 
@@ -331,14 +327,9 @@ void rgDlgEditEvent::OnEditButton( wxCommandEvent& event )
         wxMessageBox( _("No row selected"), _("Edit Individual") );
         return;
     }
-    EditRow( row );
-}
-
-void rgDlgEditEvent::EditRow( long row )
-{
     idt ieID = m_ies[row].FGetID();
     if( rgEditIndEventRole( this, ieID ) ) {
-        ListLinkedPersona();
+        ListLinkedIndividuals();
     }
 }
 
@@ -349,11 +340,6 @@ void rgDlgEditEvent::OnDeleteButton( wxCommandEvent& event )
         wxMessageBox( _("No row selected"), _("Delete Link") );
         return;
     }
-    DeleteRow( row );
-}
-
-void rgDlgEditEvent::DeleteRow( long row )
-{
     idt ieID = m_ies[row].FGetID();
     int ans = wxMessageBox( 
         _("Remove the link between the Individual and this Event from database?"),
@@ -364,7 +350,7 @@ void rgDlgEditEvent::DeleteRow( long row )
         return;
     }
     recIndividualEvent::Delete( ieID );
-    ListLinkedPersona();
+    ListLinkedIndividuals();
 }
 
 // End of dlgEdIndEvent.cpp file

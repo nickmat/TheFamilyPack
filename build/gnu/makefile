@@ -144,8 +144,8 @@ RECGUI_OBJECTS =  \
 	recgui_rgEdContact.o \
 	recgui_rgEdDate.o \
 	recgui_rgEdEvent.o \
+	recgui_rgEdEventRecord.o \
 	recgui_rgEdEventType.o \
-	recgui_rgEdEvidEvent.o \
 	recgui_rgEdFamily.o \
 	recgui_rgEdIndividual.o \
 	recgui_rgEdName.o \
@@ -416,10 +416,10 @@ recgui_rgEdDate.o: ./../../src/rg/rgEdDate.cpp
 recgui_rgEdEvent.o: ./../../src/rg/rgEdEvent.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
-recgui_rgEdEventType.o: ./../../src/rg/rgEdEventType.cpp
+recgui_rgEdEventRecord.o: ./../../src/rg/rgEdEventRecord.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
-recgui_rgEdEvidEvent.o: ./../../src/rg/rgEdEvidEvent.cpp
+recgui_rgEdEventType.o: ./../../src/rg/rgEdEventType.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgEdFamily.o: ./../../src/rg/rgEdFamily.cpp
