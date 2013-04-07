@@ -398,6 +398,61 @@ inline bool operator!=( const recEventRecord& r1, const recEventRecord& r2 )
 }
 
 //============================================================================
+//-------------------------[ recEventEventRecord ]----------------------------
+//============================================================================
+
+class recEventEventRecord : public recDb
+{
+    idt      f_event_id;
+    idt      f_event_rec_id;
+    double   f_conf;
+    wxString f_note;
+
+public:
+    recEventEventRecord() {}
+    recEventEventRecord( idt id ) : recDb(id) { Read(); }
+    recEventEventRecord( const recEventEventRecord& link );
+
+    void Clear();
+    void Save();
+    bool Read();
+    TABLE_NAME_MEMBERS( "EventEventRecord" );
+
+    idt FGetEventID() const { return f_event_id; }
+    idt FGetEventRecID() const { return f_event_rec_id; }
+    double FGetConf() const { return f_conf; }
+    wxString FGetNote() const { return f_note; }
+
+    void FSetEvent( idt eveID ) { f_event_id = eveID; }
+    void FSetEventRec( idt erID ) { f_event_rec_id = erID; }
+    void FSetConf( double conf ) { f_conf = conf; }
+    void FSetNote( const wxString& note ) { f_note = note; }
+
+    bool Find();
+};
+
+/*! The two entities are equal, ignoring the record id.
+ */
+inline bool recEquivalent( const recEventEventRecord& d1, const recEventEventRecord& d2 )
+{
+    return
+        d1.FGetEventID()    == d2.FGetEventID()    &&
+        d1.FGetEventRecID() == d2.FGetEventRecID() &&
+        d1.FGetConf()       == d2.FGetConf()       &&
+        d1.FGetNote()       == d2.FGetNote();
+}
+
+inline bool operator==( const recEventEventRecord& d1, const recEventEventRecord& d2 )
+{
+    return recEquivalent( d1, d2 ) && d1.f_id == d2.f_id;
+}
+
+inline bool operator!=( const recEventEventRecord& d1, const recEventEventRecord& d2 )
+{
+    return !(d1 == d2);
+}
+
+//============================================================================
 //-------------------------[ recEventTypeRole ]-------------------------------
 //============================================================================
 

@@ -85,6 +85,14 @@ CREATE TABLE Event (
   date_pt INTEGER NOT NULL
 );
 
+CREATE TABLE EventEventRecord (
+  id INTEGER PRIMARY KEY,
+  event_id INTEGER NOT NULL REFERENCES Event(id),
+  event_rec_id INTEGER NOT NULL REFERENCES EventRecord(id),
+  conf FLOAT NOT NULL,
+  note TEXT
+);
+
 CREATE TABLE EventPersona (
   id INTEGER PRIMARY KEY,
   event_id INTEGER NOT NULL REFERENCES Event(id),
@@ -464,7 +472,7 @@ INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 0, 1, 'F1');
 INSERT INTO UserSetting (id, user_id, property, val) VALUES(2, 1, 1, 'F1');
 
 /* The Version table has only this one row */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 1);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 2);
 
 COMMIT;
 

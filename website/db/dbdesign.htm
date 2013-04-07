@@ -99,45 +99,46 @@
    </tr>
    <tr>
     <td><a href="#Event">Event</a></td>
+    <td><a href="#EventEventRecord">EventEventRecord</a></td>
     <td><a href="#EventPersona">EventPersona</a></td>
     <td><a href="#EventRecord">EventRecord</a></td>
     <td><a href="#EventType">EventType</a></td>
     <td><a href="#EventTypeRole">EventTypeRole</a></td>
-    <td><a href="#Family">Family</a></td>
    </tr>
    <tr>
+    <td><a href="#Family">Family</a></td>
     <td><a href="#FamilyEvent">FamilyEvent</a></td>
     <td><a href="#FamilyIndividual">FamilyIndividual</a></td>
     <td><a href="#Individual">Individual</a></td>
     <td><a href="#IndividualEvent">IndividualEvent</a></td>
     <td><a href="#LinkPersona">LinkPersona</a></td>
-    <td><a href="#Name">Name</a></td>
    </tr>
    <tr>
+    <td><a href="#Name">Name</a></td>
     <td><a href="#NamePart">NamePart</a></td>
     <td><a href="#NamePartType">NamePartType</a></td>
     <td><a href="#NameStyle">NameStyle</a></td>
     <td><a href="#Persona">Persona</a></td>
     <td><a href="#Place">Place</a></td>
-    <td><a href="#PlacePart">PlacePart</a></td>
    </tr>
    <tr>
+    <td><a href="#PlacePart">PlacePart</a></td>
     <td><a href="#PlacePartType">PlacePartType</a></td>
     <td><a href="#Reference">Reference</a></td>
     <td><a href="#ReferenceEntity">ReferenceEntity</a></td>
     <td><a href="#Relationship">Relationship</a></td>
     <td><a href="#RelativeDate">RelativeDate</a></td>
-    <td><a href="#Repository">Repository</a></td>
    </tr>
    <tr>
+    <td><a href="#Repository">Repository</a></td>
     <td><a href="#RepositorySource">RepositorySource</a></td>
     <td><a href="#Researcher">Researcher</a></td>
     <td><a href="#Source">Source</a></td>
     <td><a href="#System">System</a></td>
     <td><a href="#User">User</a></td>
-    <td><a href="#UserSetting">UserSetting</a></td>
    </tr>
    <tr>
+    <td><a href="#UserSetting">UserSetting</a></td>
     <td><a href="#Version">Version</a></td>
     <td colspan='0' class="na">&nbsp;</td>
    </tr>
@@ -353,6 +354,38 @@
      <td>date_pt</td>
      <td>Integer Not null</td>
      <td>A single day used to order lists of events.</td>
+    </tr>
+
+    <tr id="EventEventRecord">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>EventEventRecord</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td class="nw">Integer PK</td>
+     <td>Unique key identifying an EventEventRecord.</td>
+    </tr>
+    <tr>
+     <td>event_id</td>
+     <td>Integer Not null FK</td>
+     <td>Pointer to an Event</td>
+    </tr>
+    <tr>
+     <td>event_rec_id</td>
+     <td>Integer Not null FK</td>
+     <td>Pointer to an EventRecord</td>
+    </tr>
+    <tr>
+     <td>conf</td>
+     <td>Float Not null</td>
+     <td>A value, less than one, to indicate the confidence that the link is correct</td>
+    </tr>
+    <tr>
+     <td>note</td>
+     <td>Text</td>
+     <td>Optional note that relates to the link between the events</td>
     </tr>
 
     <tr id="EventPersona">

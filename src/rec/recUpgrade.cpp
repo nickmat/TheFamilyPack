@@ -38,12 +38,12 @@
 
 #include <rec/recVersion.h>
 
-// This is the database version this program is designed to work with.
+// This is the database version that this program is designed to work with.
 const int recVerMajor    = 0;
 const int recVerMinor    = 0;
 const int recVerRev      = 10;
-const int recVerTest     = 1;
-const wxStringCharType* recVerStr = wxS("TFPD-0.0.10.1");
+const int recVerTest     = 2;
+const wxStringCharType* recVerStr = wxS("TFPD-0.0.10.2");
 
 //============================================================================
 //                 Code to upgrade old versions
@@ -113,7 +113,28 @@ void UpgradeTest0_0_10_0to0_0_10_1()
         " WHERE E.id=EP.event_id GROUP BY E.id;\n"
 
         "DROP TABLE OldEvent;\n"
-        "UPDATE Version SET revision=10, test=1 WHERE id=1;\n"
+        "UPDATE Version SET test=1 WHERE id=1;\n"
+        "COMMIT;\n"
+    ;
+    recDb::GetDb()->ExecuteUpdate( query );
+}
+
+void UpgradeTest0_0_10_1to0_0_10_2()
+{
+    // Version 0.0.10.1 to 0.0.10.2
+    // Add a new EventEventRecord table.
+    char* query =
+        "BEGIN;\n"
+
+        "CREATE TABLE EventEventRecord (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  event_id INTEGER NOT NULL REFERENCES Event(id),\n"
+        "  event_rec_id INTEGER NOT NULL REFERENCES EventRecord(id),\n"
+        "  conf FLOAT NOT NULL,\n"
+        "  note TEXT\n"
+        ");\n"
+
+        "UPDATE Version SET test=2 WHERE id=1;\n"
         "COMMIT;\n"
         "VACUUM;\n"
     ;
@@ -125,6 +146,7 @@ void UpgradeRev0_0_10toCurrent( int test )
     switch( test )
     {
     case 0: UpgradeTest0_0_10_0to0_0_10_1();  // Fall thru intended
+    case 1: UpgradeTest0_0_10_1to0_0_10_2();
     }
 }
 

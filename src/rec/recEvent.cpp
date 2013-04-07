@@ -1022,6 +1022,124 @@ int recEventRecord::GetLastPerSeqNumber( idt eventID )
 }
 
 //============================================================================
+//-------------------------[ recEventEventRecord ]----------------------------
+//============================================================================
+
+recEventEventRecord::recEventEventRecord( const recEventEventRecord& d )
+{
+    f_id           = d.f_id;
+    f_event_id     = d.f_event_id;
+    f_event_rec_id = d.f_event_rec_id;
+    f_conf         = d.f_conf;
+    f_note         = d.f_note;
+}
+
+void recEventEventRecord::Clear()
+{
+    f_id           = 0;
+    f_event_id     = 0;
+    f_event_rec_id = 0;
+    f_conf         = 0;
+    f_note         = wxEmptyString;
+}
+
+void recEventEventRecord::Save()
+{
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( f_id == 0 )
+    {
+        // Add new record
+        sql.Format(
+            "INSERT INTO EventEventRecord "
+            "(event_id, event_rec_id, conf, note) "
+            "VALUES ("ID", "ID", %f, '%q');",
+            f_event_id, f_event_rec_id, f_conf, UTF8_(f_note)
+        );
+        s_db->ExecuteUpdate( sql );
+        f_id = GET_ID( s_db->GetLastRowId() );
+    } else {
+        // Does record exist
+        if( !Exists() )
+        {
+            // Add new record
+            sql.Format(
+                "INSERT INTO EventEventRecord "
+                "(id, event_id, event_rec_id, conf, note) "
+                "VALUES ("ID", "ID", "ID", %f, '%q');",
+                f_id, f_event_id, f_event_rec_id, f_conf, UTF8_(f_note)
+            );
+        } else {
+            // Update existing record
+            sql.Format(
+                "UPDATE EventEventRecord SET event_id="ID", event_rec_id="ID", "
+                "conf=%f, note='%q' "
+                "WHERE id="ID";",
+                f_event_id, f_event_rec_id, f_conf,
+                UTF8_(f_note), f_id
+            );
+        }
+        s_db->ExecuteUpdate( sql );
+    }
+}
+
+bool recEventEventRecord::Read()
+{
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( f_id == 0 ) {
+        Clear();
+        return false;
+    }
+
+    sql.Format(
+        "SELECT event_id, event_rec_id, conf, note "
+        "FROM EventEventRecord WHERE id="ID";",
+        f_id
+    );
+    result = s_db->GetTable( sql );
+
+    if( result.GetRowCount() != 1 )
+    {
+        Clear();
+        return false;
+    }
+    result.SetRow( 0 );
+    f_event_id     = GET_ID( result.GetInt64( 0 ) );
+    f_event_rec_id = GET_ID( result.GetInt64( 1 ) );
+    f_conf         = result.GetDouble( 2 );
+    f_note         = result.GetAsString( 3 );
+    return true;
+}
+
+/*! Given the per_id and ind_id settings, find the matching record
+ *  and read in the full record.
+ */
+bool recEventEventRecord::Find()
+{
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( f_event_id == 0 || f_event_rec_id == 0 ) return false; // Only find single record
+
+    sql.Format(
+        "SELECT id, conf, note FROM EventEventRecord "
+        "WHERE event_id="ID" AND event_rec_id="ID";",
+        f_event_id, f_event_rec_id
+    );
+    result = s_db->GetTable( sql );
+
+    if( result.GetRowCount() != 1 ) return false;
+    result.SetRow( 0 );
+    f_id   = GET_ID( result.GetInt64( 0 ) );
+    f_conf = result.GetDouble( 1 );
+    f_note = result.GetAsString( 2 );
+    return true;
+}
+
+//============================================================================
 //-------------------------[ recEventType ]-----------------------------------
 //============================================================================
 
