@@ -491,8 +491,8 @@ void rgDlgEditReference::OnNewEvent( wxCommandEvent& cmnd_event )
 {
     idt eveID = rgCreateEventRecord( this, m_reference.FGetID() );
     if( eveID ) {
-        idt reID = CreateRefEntity( recReferenceEntity::TYPE_Event, eveID );
-        UpdateEntities( reID );
+//        idt reID = CreateRefEntity( recReferenceEntity::TYPE_Event, eveID );
+        UpdateEntities();// reID );
     }
 }
 

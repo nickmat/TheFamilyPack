@@ -190,4 +190,23 @@ private:
     Sex m_sex;
 };
 
+//-------------------------------------------------------------------------------
+//-------------------[ rgDlgSelectEventRecord ]----------------------------------
+//-------------------------------------------------------------------------------
+
+class rgDlgSelectEventRecord : public rgSelect
+{
+    enum {
+        COL_ID, COL_Title, COL_MAX
+    };
+    static wxString sm_colHeaders[COL_MAX];
+public:
+    rgDlgSelectEventRecord( 
+        wxWindow* parent = NULL,
+        unsigned style = rgSELSTYLE_None,
+        const wxString& title = _("Select Event Record")
+    ) : rgSelect( parent, sm_colHeaders, COL_MAX, style, title ) {}
+};
+
+
 #endif // RGSELECT_H

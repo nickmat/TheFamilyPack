@@ -36,6 +36,7 @@
 #include "wx/wx.h"
 #endif
 
+#include <rec/recEvent.h>
 #include "rgSelect.h"
 #include "rgTableCtrl.h"
 
@@ -492,5 +493,31 @@ void rgDlgSelectCreatePersona::OnCreatePersona( wxCommandEvent& event )
     EndDialog( wxID_OK );
 }
 
+//-------------------------------------------------------------------------------
+//-------------------[ rgDlgSelectEventRecord ]----------------------------------
+//-------------------------------------------------------------------------------
+
+idt rgSelectEquivalentEventRecord( wxWindow* wind, idt eventID )
+{
+    recEventRecordVec ers = recEvent::FindEquivRefEvents( eventID );
+    if( ers.size() == 0 ) {
+        return 0;
+    }
+    rgDlgSelectEventRecord* dialog = new rgDlgSelectEventRecord( wind, rgSELSTYLE_None );
+    wxArrayString table;
+    for( size_t i = 0 ; i < ers.size() ; i++ ) {
+        table.push_back( ers[i].GetIdStr() );
+        table.push_back( ers[i].FGetTitle() );
+    }
+    dialog->SetTable( table );
+    idt id = 0;
+    if( dialog->ShowModal() == wxID_OK ) {
+        size_t item = (size_t) dialog->GetSelectedRow();
+        id = ers[item].FGetID();
+    }
+    return id;
+}
+
+wxString rgDlgSelectEventRecord::sm_colHeaders[COL_MAX] = { _("ID"), _("Title") };
 
 // End of src/rg/rgSelect.cpp file

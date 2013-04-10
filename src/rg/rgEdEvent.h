@@ -46,29 +46,37 @@ public:
     rgDlgEditEvent( wxWindow* parent, idt eventID );
 
 private:
-    enum Columns {
+    enum ColInd {
         COL_IndID, COL_Name, COL_Role, COL_Note, COL_MAX
+    };
+    enum ColRecord {
+        COL_RecID, COL_RefID, COL_RefTitle
     };
 
     bool TransferDataToWindow();
     void ListLinkedIndividuals();
+    void ListEventRecords();
     bool TransferDataFromWindow();
 
     void OnDate1Button( wxCommandEvent& event );
     void OnDate2Button( wxCommandEvent& event );
     void OnPlaceButton( wxCommandEvent& event );
 
-    void OnAddButton( wxCommandEvent& event );
-    void OnEditButton( wxCommandEvent& event );
-    void OnDeleteButton( wxCommandEvent& event );
+    void OnAddInd( wxCommandEvent& event );
+    void OnEditInd( wxCommandEvent& event );
+    void OnDelInd( wxCommandEvent& event );
+
+    void OnAddRecord( wxCommandEvent& event );
+    void OnEditRecord( wxCommandEvent& event );
+    void OnDeleteRecord( wxCommandEvent& event );
 
     recEvent  m_event;
     idt       m_date1ID;
     idt       m_date2ID;
     idt       m_placeID;
 
-    recIndEventVec    m_ies;
-    recIndividualVec  m_individuals;
+    recIndEventVec     m_ies;
+    recEveEveRecordVec m_eers;
 };
 
 #endif // RGEDEVENT_H

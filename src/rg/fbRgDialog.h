@@ -27,13 +27,13 @@ class rgStrTableCtrl;
 #include <wx/button.h>
 #include <wx/dialog.h>
 #include <wx/panel.h>
-#include <wx/listctrl.h>
-#include <wx/splitter.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
-#include <wx/radiobox.h>
+#include <wx/listctrl.h>
 #include <wx/notebook.h>
+#include <wx/splitter.h>
+#include <wx/radiobox.h>
 #include <wx/toolbar.h>
 #include <wx/webview.h>
 #include <wx/checkbox.h>
@@ -168,6 +168,62 @@ class fbRgEditEvent : public wxDialog
 	private:
 	
 	protected:
+		wxStaticText* m_staticText2;
+		wxTextCtrl* m_textCtrlTitle;
+		wxNotebook* m_notebook6;
+		wxPanel* m_panel1;
+		wxStaticText* m_staticText1;
+		wxStaticText* m_staticType;
+		wxButton* m_buttonDate1;
+		wxTextCtrl* m_textCtrlDate1;
+		wxButton* m_buttonDate2;
+		wxTextCtrl* m_textCtrlDate2;
+		wxButton* m_buttonPlace;
+		wxTextCtrl* m_textCtrlPlace;
+		wxPanel* m_panel23;
+		wxTextCtrl* m_textCtrlNote;
+		wxPanel* m_panel2;
+		wxListCtrl* m_listIndividual;
+		wxButton* m_buttonAddInd;
+		wxButton* m_buttonEditInd;
+		wxButton* m_buttonDelInd;
+		wxPanel* m_panel24;
+		wxListCtrl* m_listRecord;
+		wxButton* m_buttonAddRec;
+		wxButton* m_buttonEditRec;
+		wxButton* m_buttonDelRec;
+		wxStaticLine* m_staticline12;
+		wxStaticText* m_staticEventID;
+		wxButton* m_buttonSave;
+		wxButton* m_buttonCancel;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnDate1Button( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDate2Button( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnPlaceButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAddInd( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEditInd( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDeleteInd( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAddRecord( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEditRecord( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDeleteRecord( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		fbRgEditEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
+		~fbRgEditEvent();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class fbRgEditEventRecord
+///////////////////////////////////////////////////////////////////////////////
+class fbRgEditEventRecord : public wxDialog 
+{
+	private:
+	
+	protected:
 		wxSplitterWindow* m_splitter1;
 		wxPanel* m_panel1;
 		wxStaticText* m_staticText1;
@@ -188,7 +244,7 @@ class fbRgEditEvent : public wxDialog
 		wxButton* m_buttonEdit;
 		wxButton* m_buttonDelete;
 		wxStaticLine* m_staticline12;
-		wxStaticText* m_staticEventID;
+		wxStaticText* m_staticEventRecID;
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
 		
@@ -203,13 +259,13 @@ class fbRgEditEvent : public wxDialog
 	
 	public:
 		
-		fbRgEditEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
-		~fbRgEditEvent();
+		fbRgEditEventRecord( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Event Record"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
+		~fbRgEditEventRecord();
 		
 		void m_splitter1OnIdle( wxIdleEvent& )
 		{
 			m_splitter1->SetSashPosition( 0 );
-			m_splitter1->Disconnect( wxEVT_IDLE, wxIdleEventHandler( fbRgEditEvent::m_splitter1OnIdle ), NULL, this );
+			m_splitter1->Disconnect( wxEVT_IDLE, wxIdleEventHandler( fbRgEditEventRecord::m_splitter1OnIdle ), NULL, this );
 		}
 	
 };

@@ -148,10 +148,14 @@ rgDlgEditEvent::rgDlgEditEvent( wxWindow* parent, idt eventID )
     m_date2ID = m_event.FGetDate2ID();
     m_placeID = m_event.FGetPlaceID();
 
-    m_listPersona->InsertColumn( COL_IndID, _("Individual"), wxLIST_FORMAT_LEFT, 70 );
-    m_listPersona->InsertColumn( COL_Name, _("Name") );
-    m_listPersona->InsertColumn( COL_Role, _("Role") );
-    m_listPersona->InsertColumn( COL_Note, _("Note") );
+    m_listIndividual->InsertColumn( COL_IndID, _("Individual"), wxLIST_FORMAT_LEFT, 70 );
+    m_listIndividual->InsertColumn( COL_Name, _("Name") );
+    m_listIndividual->InsertColumn( COL_Role, _("Role") );
+    m_listIndividual->InsertColumn( COL_Note, _("Note") );
+
+    m_listRecord->InsertColumn( COL_RecID, _("Record"), wxLIST_FORMAT_LEFT, 70 );
+    m_listRecord->InsertColumn( COL_RefID, _("Reference") );
+    m_listRecord->InsertColumn( COL_RefTitle, _("Reference Title") );
 }
 
 bool rgDlgEditEvent::TransferDataToWindow()
@@ -169,6 +173,7 @@ bool rgDlgEditEvent::TransferDataToWindow()
     m_textCtrlPlace->SetValue( recPlace::GetAddressStr( m_placeID ) );
     m_textCtrlNote->SetValue( m_event.f_note );
     ListLinkedIndividuals();
+    ListEventRecords();
     m_staticEventID->SetLabel( m_event.GetIdStr() );
     return true;
 }
@@ -176,19 +181,30 @@ bool rgDlgEditEvent::TransferDataToWindow()
 void rgDlgEditEvent::ListLinkedIndividuals()
 {
     m_ies = m_event.GetIndividualEvents();
-    m_individuals.clear();
-    recIndividual ind;
-    m_listPersona->DeleteAllItems();
+    m_listIndividual->DeleteAllItems();
     for( size_t i = 0 ; i < m_ies.size() ; i++ ) {
-        ind.ReadID( m_ies[i].FGetIndID() );
-        m_individuals.push_back( ind );
-        m_listPersona->InsertItem( i, ind.GetIdStr() );
-        m_listPersona->SetItem( i, COL_Name, ind.GetFullName() );
-        m_listPersona->SetItem( i, COL_Role, recEventTypeRole::GetName( m_ies[i].f_role_id ) );
-        m_listPersona->SetItem( i, COL_Note, m_ies[i].f_note );
+        idt indID = m_ies[i].FGetIndID();
+        m_listIndividual->InsertItem( i, recIndividual::GetIdStr( indID ) );
+        m_listIndividual->SetItem( i, COL_Name, recIndividual::GetFullName( indID ) );
+        m_listIndividual->SetItem( i, COL_Role, recEventTypeRole::GetName( m_ies[i].f_role_id ) );
+        m_listIndividual->SetItem( i, COL_Note, m_ies[i].f_note );
     }
-    m_listPersona->SetColumnWidth( COL_Name, wxLIST_AUTOSIZE );
-    m_listPersona->SetColumnWidth( COL_Role, wxLIST_AUTOSIZE );
+    m_listIndividual->SetColumnWidth( COL_Name, wxLIST_AUTOSIZE );
+    m_listIndividual->SetColumnWidth( COL_Role, wxLIST_AUTOSIZE );
+}
+
+void rgDlgEditEvent::ListEventRecords()
+{
+    m_eers = m_event.GetEveEveRecords();
+    m_listRecord->DeleteAllItems();
+    for( size_t i = 0 ; i < m_eers.size() ; i++ ) {
+        idt erID = m_eers[i].FGetEventRecID();
+        idt refID = recEventRecord::FindReferenceID( erID );
+        m_listRecord->InsertItem( i, recEventRecord::GetIdStr( erID ) );
+        m_listRecord->SetItem( i, COL_RefID, recReference::GetIdStr( refID ) );
+        m_listRecord->SetItem( i, COL_RefTitle, recReference::GetTitle( refID ) );
+    }
+    m_listRecord->SetColumnWidth( COL_RefTitle, wxLIST_AUTOSIZE );
 }
 
 bool rgDlgEditEvent::TransferDataFromWindow()
@@ -313,16 +329,16 @@ void rgDlgEditEvent::OnPlaceButton( wxCommandEvent& event )
     m_textCtrlPlace->SetValue( recPlace::GetAddressStr( m_placeID ) );
 }
 
-void rgDlgEditEvent::OnAddButton( wxCommandEvent& event )
+void rgDlgEditEvent::OnAddInd( wxCommandEvent& event )
 {
     if( rgCreateIndEventRole( this, 0, m_event.FGetID(), 0 ) ) {
         ListLinkedIndividuals();
     }
 }
 
-void rgDlgEditEvent::OnEditButton( wxCommandEvent& event )
+void rgDlgEditEvent::OnEditInd( wxCommandEvent& event )
 {
-    long row = m_listPersona->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    long row = m_listIndividual->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
         wxMessageBox( _("No row selected"), _("Edit Individual") );
         return;
@@ -333,9 +349,9 @@ void rgDlgEditEvent::OnEditButton( wxCommandEvent& event )
     }
 }
 
-void rgDlgEditEvent::OnDeleteButton( wxCommandEvent& event )
+void rgDlgEditEvent::OnDelInd( wxCommandEvent& event )
 {
-    long row = m_listPersona->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    long row = m_listIndividual->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
         wxMessageBox( _("No row selected"), _("Delete Link") );
         return;
@@ -351,6 +367,21 @@ void rgDlgEditEvent::OnDeleteButton( wxCommandEvent& event )
     }
     recIndividualEvent::Delete( ieID );
     ListLinkedIndividuals();
+}
+
+void rgDlgEditEvent::OnAddRecord( wxCommandEvent& event )
+{
+    wxMessageBox( _("Not yet implimented"), "OnAddRecord" );
+}
+
+void rgDlgEditEvent::OnEditRecord( wxCommandEvent& event )
+{
+    wxMessageBox( _("Not yet implimented"), "OnEditRecord" );
+}
+
+void rgDlgEditEvent::OnDeleteRecord( wxCommandEvent& event )
+{
+    wxMessageBox( _("Not yet implimented"), "OnDelRecord" );
 }
 
 // End of dlgEdIndEvent.cpp file

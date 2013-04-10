@@ -72,7 +72,7 @@ bool rgEditEventRecord( wxWindow* wind, idt erID )
     dialog->Destroy();
     return ret;
 }
-
+// Create a new EventRecord from the reference document
 idt rgCreateEventRecord( wxWindow* wind, idt refID )
 {
     const wxString savepoint = recDb::GetSavepointStr();
@@ -160,36 +160,37 @@ idt rgCreateEventRecord( wxWindow* wind, idt refID )
         );
     }
 
-    recEventRecord e(0);
-    e.FSetTitle( title );
-    e.FSetTypeID( typeID );
-    e.FSetDate1ID( dateID1 );
-    e.FSetDate2ID( dateID2 );
-    e.FSetPlaceID( placeID );
-    e.Save();
-    idt eveID = e.FGetID();
+    recEventRecord er(0);
+    er.FSetTitle( title );
+    er.FSetTypeID( typeID );
+    er.FSetDate1ID( dateID1 );
+    er.FSetDate2ID( dateID2 );
+    er.FSetPlaceID( placeID );
+    er.Save();
+    idt erID = er.FGetID();
+    recReferenceEntity::Create( refID, recReferenceEntity::TYPE_Event, erID );
 
     recEventPersona ep1(0);
-    ep1.FSetEventID( eveID );
+    ep1.FSetEventID( erID );
     ep1.FSetPerID( perID1 );
     ep1.FSetRoleID( role1 );
     ep1.FSetPerSeq( 1 );
     ep1.Save();
     if( person2 ) {
         recEventPersona ep2(0);
-        ep2.FSetEventID( eveID );
+        ep2.FSetEventID( erID );
         ep2.FSetPerID( perID2 );
         ep2.FSetRoleID( role2 );
         ep2.FSetPerSeq( 2 );
         ep2.Save();
     }
-    if( rgEditEventRecord( wind, eveID ) ) {
+    if( rgEditEventRecord( wind, erID ) ) {
         recDb::ReleaseSavepoint( savepoint );
     } else {
         recDb::Rollback( savepoint );
-        eveID = 0;
+        erID = 0;
     }
-    return eveID;
+    return erID;
 }
 
 idt rgCreatePersonalEventRecord( wxWindow* wind, idt refID, const wxString& role )
@@ -281,7 +282,7 @@ BEGIN_EVENT_TABLE( rgDlgEditEventRecord, wxDialog )
 END_EVENT_TABLE()
 
 rgDlgEditEventRecord::rgDlgEditEventRecord( wxWindow* parent, idt erID )
-    : m_event(erID), fbRgEditEvent( parent )
+    : m_event(erID), fbRgEditEventRecord( parent )
 {
     m_refID = recEventRecord::FindReferenceID( erID );
     wxASSERT( m_refID != 0 );
@@ -313,7 +314,7 @@ bool rgDlgEditEventRecord::TransferDataToWindow()
     m_textCtrlPlace->Enable( false );
     m_textCtrlNote->SetValue( m_event.f_note );
     ListLinkedPersona();
-    m_staticEventID->SetLabel( m_event.GetIdStr() );
+    m_staticEventRecID->SetLabel( m_event.GetIdStr() );
     return true;
 }
 

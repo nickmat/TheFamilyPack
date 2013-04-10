@@ -37,19 +37,21 @@
 
 
 class recEvent;
-typedef std::vector< recEvent >           recEventVec;
+typedef std::vector< recEvent >            recEventVec;
 class recEventRecord;
-typedef std::vector< recEventRecord >     recEventRecordVec;
+typedef std::vector< recEventRecord >      recEventRecordVec;
+class recEventEventRecord;
+typedef std::vector< recEventEventRecord > recEveEveRecordVec;
 class recEventPersona;
-typedef std::vector< recEventPersona >    recEventPersonaVec;
+typedef std::vector< recEventPersona >     recEventPersonaVec;
 class recEventType;
-typedef std::vector< recEventType >       recEventTypeVec;
+typedef std::vector< recEventType >        recEventTypeVec;
 class recEventTypeRole;
-typedef std::vector< recEventTypeRole >   recEventTypeRoleVec;
+typedef std::vector< recEventTypeRole >    recEventTypeRoleVec;
 class recIndividualEvent;
-typedef std::vector< recIndividualEvent > recIndEventVec;
+typedef std::vector< recIndividualEvent >  recIndEventVec;
 class recFamilyEvent;
-typedef std::vector< recFamilyEvent >     recFamilyEventVec;
+typedef std::vector< recFamilyEvent >      recFamilyEventVec;
 
 
 //============================================================================
@@ -232,24 +234,16 @@ public:
     static void UpdateDatePoint( idt evID );
     void UpdateDatePoint();
 
-//    idt FindReferenceID() const { return FindReferenceID( f_id ); }
-//    static idt FindReferenceID( idt eventID ) {
-//        return recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, eventID );
-//    }
-    static recEventRecordVec FindEquivRefEvents( idt indEventID );
+    static recEventRecordVec FindEquivRefEvents( idt evetID );
+    static recEveEveRecordVec GetEveEveRecords( idt eveID );
+    recEveEveRecordVec GetEveEveRecords() const { return GetEveEveRecords( f_id ); }
 
-//    static bool IsIndEvent( idt eveID );
-//    bool IsIndEvent() const { return IsIndEvent( f_id ); }
     static bool IsFamilyEvent( idt eveID );
     bool IsFamilyEvent() const { return IsFamilyEvent( f_id ); }
 
     recIndEventVec GetIndividualEvents();
-//    recEventPersonaVec GetEventPersonas();
     static wxSQLite3Table GetTitleList();
     static wxSQLite3Table GetTitleList( idt offset, int limit );
-
-//    static int GetLastPerSeqNumber( idt eventID );
-//    int GetLastPerSeqNumber() const { return GetLastPerSeqNumber( f_id ); }
 
     static void RemoveDates( idt dateID ); // removes date if found, replacing with 0
     static void RemovePlace( idt placeID ); // removes place if found, replacing with 0
@@ -349,14 +343,10 @@ public:
     static idt FindReferenceID( idt eventID ) {
         return recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, eventID );
     }
-//    static recEventVec FindEquivRefEvents( idt indEventID );
 
-//    static bool IsIndEvent( idt eveID );
-//    bool IsIndEvent() const { return IsIndEvent( f_id ); }
     static bool IsFamilyEvent( idt eveID );
     bool IsFamilyEvent() const { return IsFamilyEvent( f_id ); }
 
-//    recIndEventVec GetIndividualEvents();
     recEventPersonaVec GetEventPersonas();
     static wxSQLite3Table GetTitleList();
     static wxSQLite3Table GetTitleList( idt offset, int limit );

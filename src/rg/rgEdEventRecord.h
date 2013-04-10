@@ -39,7 +39,7 @@
 //============================================================================
 
 /** Implementing rgDlgEditEvidEvent */
-class rgDlgEditEventRecord : public fbRgEditEvent
+class rgDlgEditEventRecord : public fbRgEditEventRecord
 {
     DECLARE_EVENT_TABLE()
 public:

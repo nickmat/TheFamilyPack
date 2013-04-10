@@ -123,7 +123,7 @@ void UpgradeTest0_0_10_1to0_0_10_2()
 {
     // Version 0.0.10.1 to 0.0.10.2
     // Add a new EventEventRecord table.
-    char* query =
+    char* query1 =
         "BEGIN;\n"
 
         "CREATE TABLE EventEventRecord (\n"
@@ -133,7 +133,43 @@ void UpgradeTest0_0_10_1to0_0_10_2()
         "  conf FLOAT NOT NULL,\n"
         "  note TEXT\n"
         ");\n"
+    ;
+    recDb::GetDb()->ExecuteUpdate( query1 );
 
+    wxSQLite3ResultSet ids = recDb::GetDb()->ExecuteQuery( "SELECT id FROM Event;" );
+    while( ids.NextRow() ) {
+        idt eventID = GET_ID( ids.GetInt64( 0 ) );
+        wxSQLite3StatementBuffer sql;
+        sql.Format(
+            "SELECT id FROM "
+            "  EventRecord "
+            "JOIN "
+            "  (SELECT DISTINCT event_id FROM "
+            "   (SELECT EP.event_id, LP.ind_per_id FROM "
+            "   LinkPersona LP, EventPersona EP, Event E, EventTypeRole R "
+            "   WHERE LP.ref_per_id=EP.per_id AND EP.role_id=R.id AND E.id="ID" "
+            "    AND R.type_id=E.type_id AND NOT R.prime=0) "
+            "  JOIN "
+            "   (SELECT I.per_id FROM IndividualEvent IE, Individual I"
+            "    WHERE IE.ind_id=I.id AND IE.event_id="ID") "
+            "  ON ind_per_id=per_id) "
+            "ON id=event_id;",
+            eventID, eventID
+        );
+        wxSQLite3ResultSet result = recDb::GetDb()->ExecuteQuery( sql );
+        while( result.NextRow() ) {
+            wxSQLite3StatementBuffer sql2;
+            sql2.Format(
+                "INSERT INTO EventEventRecord "
+                "(event_id, event_rec_id, conf, note) "
+                "VALUES ("ID", "ID", 0.999, '');",
+                eventID, GET_ID( result.GetInt64( 0 ) )
+            );
+            recDb::GetDb()->ExecuteUpdate( sql2 );
+        }
+    }
+
+    char* query =
         "UPDATE Version SET test=2 WHERE id=1;\n"
         "COMMIT;\n"
         "VACUUM;\n"

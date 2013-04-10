@@ -417,6 +417,31 @@ recEventRecordVec recEvent::FindEquivRefEvents( idt indEventID )
     return vec;
 }
 
+recEveEveRecordVec recEvent::GetEveEveRecords( idt eveID )
+{
+    recEveEveRecordVec vec;
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3ResultSet result;
+
+    sql.Format(
+        "SELECT id, event_rec_id, conf, note FROM "
+        "  EventEventRecord WHERE event_id="ID";",
+        eveID
+    );
+    result = s_db->ExecuteQuery( sql );
+
+    recEventEventRecord eer(0);
+    eer.FSetEvent( eveID );
+    while( result.NextRow() ) {
+        eer.FSetID( GET_ID( result.GetInt64( 0 ) ) );
+        eer.FSetEventRec( GET_ID( result.GetInt64( 1 ) ) );
+        eer.FSetConf( result.GetDouble( 2 ) );
+        eer.FSetNote( result.GetAsString( 3 ) );
+        vec.push_back( eer );
+    }
+    return vec;
+}
+
 void recEvent::RemoveFromDatabase()
 {
     if( f_id <= 0 ) {

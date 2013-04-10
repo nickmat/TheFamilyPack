@@ -172,6 +172,7 @@ extern idt rgSelectIndividual(
     wxWindow* wind,
     recIdVec indIDs,
     unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL );
+extern idt rgSelectEquivalentEventRecord( wxWindow* wind, idt eventID );
 
 // See src/rg/rgSelIndEvent.cpp
 extern bool rgSelectIndEventList( wxWindow* wind, recFilterEvent* exfilter );
