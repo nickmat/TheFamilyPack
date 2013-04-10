@@ -42,8 +42,8 @@
 const int recVerMajor    = 0;
 const int recVerMinor    = 0;
 const int recVerRev      = 10;
-const int recVerTest     = 2;
-const wxStringCharType* recVerStr = wxS("TFPD-0.0.10.2");
+const int recVerTest     = 3;
+const wxStringCharType* recVerStr = wxS("TFPD-0.0.10.3");
 
 //============================================================================
 //                 Code to upgrade old versions
@@ -172,6 +172,54 @@ void UpgradeTest0_0_10_1to0_0_10_2()
     char* query =
         "UPDATE Version SET test=2 WHERE id=1;\n"
         "COMMIT;\n"
+    ;
+    recDb::GetDb()->ExecuteUpdate( query );
+}
+
+void UpgradeTest0_0_10_2to0_0_10_3()
+{
+    // Version 0.0.10.2 to 0.0.10.3
+    // Add column higher_id to table Event.
+    // Change column event_id to event_rec_id in table EventPersona.
+
+    char* query =
+        "BEGIN;\n"
+
+        "ALTER TABLE Event RENAME TO OldEvent;\n"
+        "CREATE TABLE Event (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  title TEXT NOT NULL,\n"
+        "  higher_id INTEGER NOT NULL,\n"
+        "  type_id INTEGER NOT NULL REFERENCES EventType(id),\n"
+        "  date1_id INTEGER NOT NULL,\n"
+        "  date2_id INTEGER NOT NULL,\n"
+        "  place_id INTEGER NOT NULL,\n"
+        "  note TEXT NOT NULL,\n"
+        "  date_pt INTEGER NOT NULL\n"
+        ");\n"
+        "INSERT INTO Event"
+        " (id, title, higher_id, type_id, date1_id, date2_id, place_id, note, date_pt)"
+        " SELECT id, title, 0, type_id, date1_id, date2_id, place_id, note, date_pt"
+        " FROM OldEvent;\n"
+        "DROP TABLE OldEvent;\n"
+
+        "ALTER TABLE EventPersona RENAME TO OldEventPersona;\n"
+        "CREATE TABLE EventPersona (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  event_rec_id INTEGER NOT NULL REFERENCES EventRecord(id),\n"
+        "  per_id INTEGER NOT NULL REFERENCES Persona(id),\n"
+        "  role_id INTEGER NOT NULL REFERENCES EventTypeRole(id),\n"
+        "  note TEXT NOT NULL,\n"
+        "  per_seq INTEGER NOT NULL\n"
+        ");\n"
+        "INSERT INTO EventPersona"
+        " (id, event_rec_id, per_id, role_id, note, per_seq)"
+        " SELECT id, event_id, per_id, role_id, note, per_seq"
+        " FROM OldEventPersona;\n"
+        "DROP TABLE OldEventPersona;\n"
+
+        "UPDATE Version SET test=3 WHERE id=1;\n"
+        "COMMIT;\n"
         "VACUUM;\n"
     ;
     recDb::GetDb()->ExecuteUpdate( query );
@@ -183,6 +231,7 @@ void UpgradeRev0_0_10toCurrent( int test )
     {
     case 0: UpgradeTest0_0_10_0to0_0_10_1();  // Fall thru intended
     case 1: UpgradeTest0_0_10_1to0_0_10_2();
+    case 2: UpgradeTest0_0_10_2to0_0_10_3();
     }
 }
 

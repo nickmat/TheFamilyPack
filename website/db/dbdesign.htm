@@ -326,23 +326,28 @@
      <td>The name of the Event, such as "Marriage of John Smith and Mary Jones".</td>
     </tr>
     <tr>
+     <td>higher_id</td>
+     <td>Integer Not null FK</td>
+     <td>Unique identifier that indicates a higher Event which contains this event.</td>
+    </tr>
+    <tr>
      <td>type_id</td>
      <td>Integer Not null FK</td>
      <td>Unique identifier that indicates to which Event Type this event belongs.</td>
     </tr>
     <tr>
      <td>date1_id</td>
-     <td>Integer</td>
+     <td>Integer Not null FK</td>
      <td>The point date associated with the Event.</td>
     </tr>
     <tr>
      <td>date2_id</td>
-     <td>Integer</td>
+     <td>Integer Not null FK</td>
      <td>The optional second date if a date range is associated with the Event.</td>
     </tr>
     <tr>
      <td>place_id</td>
-     <td>Integer</td>
+     <td>Integer Not null FK</td>
      <td>Unique identifier in Place that indicates where this Event took place.</td>
     </tr>
     <tr>
@@ -400,7 +405,7 @@
      <td>Unique key identifying an EventPersona.</td>
     </tr>
     <tr>
-     <td>event_id</td>
+     <td>event_rec_id</td>
      <td>Integer Not null FK</td>
      <td>Pointer to an EventRecord</td>
     </tr>
@@ -448,17 +453,17 @@
     </tr>
     <tr>
      <td>date1_id</td>
-     <td>Integer</td>
+     <td>Integer Not null FK</td>
      <td>The point date associated with the Event.</td>
     </tr>
     <tr>
      <td>date2_id</td>
-     <td>Integer</td>
+     <td>Integer Not null FK</td>
      <td>The optional second date if a date range is associated with the Event.</td>
     </tr>
     <tr>
      <td>place_id</td>
-     <td>Integer</td>
+     <td>Integer Not null FK</td>
      <td>Unique identifier in Place that indicates where this Event took place.</td>
     </tr>
     <tr>
