@@ -295,6 +295,9 @@ rgDlgEditEventRecord::rgDlgEditEventRecord( wxWindow* parent, idt erID )
     m_listPersona->InsertColumn( COL_Name, _("Name") );
     m_listPersona->InsertColumn( COL_Role, _("Role") );
     m_listPersona->InsertColumn( COL_Note, _("Note") );
+
+    m_listConclusion->InsertColumn( COL_EveID, _("Event"), wxLIST_FORMAT_LEFT, 70 );
+    m_listConclusion->InsertColumn( COL_EveTitle, _("Title") );
 }
 
 bool rgDlgEditEventRecord::TransferDataToWindow()
@@ -302,16 +305,13 @@ bool rgDlgEditEventRecord::TransferDataToWindow()
     wxASSERT( m_event.GetID() != 0 );
     m_staticType->SetLabel( m_event.GetTypeStr() );
     m_textCtrlTitle->SetValue( m_event.FGetTitle() );
-    m_textCtrlDate1->SetValue( recDate::GetStr( m_date1ID ) );
-    m_textCtrlDate1->Enable( false );
+    m_staticDate1->SetLabel( recDate::GetStr( m_date1ID ) );
     if( recEventType::HasDateSpan( m_event.FGetTypeID() ) ) {
-        m_textCtrlDate2->SetValue( recDate::GetStr( m_date2ID ) );
+        m_staticDate2->SetLabel( recDate::GetStr( m_date2ID ) );
     } else {
         m_buttonDate2->Enable( false );
     }
-    m_textCtrlDate2->Enable( false );
-    m_textCtrlPlace->SetValue( recPlace::GetAddressStr( m_placeID ) );
-    m_textCtrlPlace->Enable( false );
+    m_staticPlace->SetLabel( recPlace::GetAddressStr( m_placeID ) );
     m_textCtrlNote->SetValue( m_event.f_note );
     ListLinkedPersona();
     m_staticEventRecID->SetLabel( m_event.GetIdStr() );
@@ -399,19 +399,19 @@ void rgDlgEditEventRecord::OnOptnEdit( wxCommandEvent& event )
         if( !rgEditDate( this, m_date1ID ) ) {
             return;
         }
-        m_textCtrlDate1->SetValue( recDate::GetStr( m_date1ID ) );
+        m_staticDate1->SetLabel( recDate::GetStr( m_date1ID ) );
         break;
     case EEEB_Date2:
         if( !rgEditDate( this, m_date2ID ) ) {
             return;
         }
-        m_textCtrlDate2->SetValue( recDate::GetStr( m_date2ID ) );
+        m_staticDate2->SetLabel( recDate::GetStr( m_date2ID ) );
         break;
     case EEEB_Place:
         if( !rgEditPlace( this, m_placeID ) ) {
             return;
         }
-        m_textCtrlPlace->SetValue( recPlace::GetAddressStr( m_placeID ) );
+        m_staticPlace->SetLabel( recPlace::GetAddressStr( m_placeID ) );
         break;
     }
 }
@@ -423,17 +423,17 @@ void rgDlgEditEventRecord::OnOptnUnlink( wxCommandEvent& event )
     case EEEB_Date1:
         m_event.FSetDate1ID( 0 );
         m_date1ID = 0;
-        m_textCtrlDate1->SetValue( "" );
+        m_staticDate1->SetLabel( "" );
         break;
     case EEEB_Date2:
         m_event.FSetDate2ID( 0 );
         m_date2ID = 0;
-        m_textCtrlDate2->SetValue( "" );
+        m_staticDate2->SetLabel( "" );
         break;
     case EEEB_Place:
         m_event.FSetPlaceID( 0 );
         m_placeID = 0;
-        m_textCtrlPlace->SetValue( "" );
+        m_staticPlace->SetLabel( "" );
         break;
     }
     m_event.Save();
@@ -449,7 +449,7 @@ void rgDlgEditEventRecord::OnOptnCreate( wxCommandEvent& event )
         ) ) {
             return;
         }
-        m_textCtrlDate1->SetValue( recDate::GetStr( m_date1ID ) );
+        m_staticDate1->SetLabel( recDate::GetStr( m_date1ID ) );
         m_event.FSetDate1ID( m_date1ID );
         break;
     case EEEB_Date2:
@@ -458,7 +458,7 @@ void rgDlgEditEventRecord::OnOptnCreate( wxCommandEvent& event )
         ) ) {
             return;
         }
-        m_textCtrlDate2->SetValue( recDate::GetStr( m_date2ID ) );
+        m_staticDate2->SetLabel( recDate::GetStr( m_date2ID ) );
         m_event.FSetDate2ID( m_date2ID );
         break;
     case EEEB_Place:
@@ -467,7 +467,7 @@ void rgDlgEditEventRecord::OnOptnCreate( wxCommandEvent& event )
         ) ) {
             return;
         }
-        m_textCtrlPlace->SetValue( recPlace::GetAddressStr( m_placeID ) );
+        m_staticPlace->SetLabel( recPlace::GetAddressStr( m_placeID ) );
         m_event.FSetPlaceID( m_placeID );
         break;
     }
@@ -492,7 +492,7 @@ void rgDlgEditEventRecord::OnOptnCreateRel( wxCommandEvent& event )
         }
         m_event.FSetDate1ID( m_date1ID );
         recReferenceEntity::Create( m_refID, recReferenceEntity::TYPE_Date, m_date1ID );
-        m_textCtrlDate1->SetValue( recDate::GetStr( m_date1ID ) );
+        m_staticDate1->SetLabel( recDate::GetStr( m_date1ID ) );
         break;
     case EEEB_Date2:
         if( ! rgSelectDateFromReference( 
@@ -507,7 +507,7 @@ void rgDlgEditEventRecord::OnOptnCreateRel( wxCommandEvent& event )
         }
         m_event.FSetDate2ID( m_date2ID );
         recReferenceEntity::Create( m_refID, recReferenceEntity::TYPE_Date, m_date2ID );
-        m_textCtrlDate2->SetValue( recDate::GetStr( m_date2ID ) );
+        m_staticDate2->SetLabel( recDate::GetStr( m_date2ID ) );
         break;
     case EEEB_Place:
         wxASSERT( false ); // No such thing as relative place
@@ -516,7 +516,7 @@ void rgDlgEditEventRecord::OnOptnCreateRel( wxCommandEvent& event )
     m_event.Save();
 }
 
-void rgDlgEditEventRecord::OnAddButton( wxCommandEvent& event )
+void rgDlgEditEventRecord::OnAddPer( wxCommandEvent& event )
 {
     idt perID = rgSelectCreatePersonaFromReference( this, m_refID );
     if( perID == 0 ) {
@@ -527,7 +527,7 @@ void rgDlgEditEventRecord::OnAddButton( wxCommandEvent& event )
     }
 }
 
-void rgDlgEditEventRecord::OnEditButton( wxCommandEvent& event )
+void rgDlgEditEventRecord::OnEditPer( wxCommandEvent& event )
 {
     long row = m_listPersona->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
@@ -540,7 +540,7 @@ void rgDlgEditEventRecord::OnEditButton( wxCommandEvent& event )
     }
 }
 
-void rgDlgEditEventRecord::OnDeleteButton( wxCommandEvent& event )
+void rgDlgEditEventRecord::OnDeletePer( wxCommandEvent& event )
 {
     long row = m_listPersona->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
@@ -558,6 +558,21 @@ void rgDlgEditEventRecord::OnDeleteButton( wxCommandEvent& event )
     }
     recEventPersona::Delete( epID );
     ListLinkedPersona();
+}
+
+void rgDlgEditEventRecord::OnAddCon( wxCommandEvent& event )
+{
+    wxMessageBox( _("Not yet implimented"), "OnAddCon" );
+}
+
+void rgDlgEditEventRecord::OnEditCon( wxCommandEvent& event )
+{
+    wxMessageBox( _("Not yet implimented"), "OnEditCon" );
+}
+
+void rgDlgEditEventRecord::OnDeleteCon( wxCommandEvent& event )
+{
+    wxMessageBox( _("Not yet implimented"), "OnDeleteCon" );
 }
 
 // End of src/rg/rgEdEvidEvent.cpp file

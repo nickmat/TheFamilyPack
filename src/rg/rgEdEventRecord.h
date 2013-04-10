@@ -45,8 +45,11 @@ class rgDlgEditEventRecord : public fbRgEditEventRecord
 public:
     rgDlgEditEventRecord( wxWindow* parent, idt eventID );
 private:
-    enum Columns {
+    enum ColPer {
         COL_PerID, COL_Name, COL_Role, COL_Note, COL_MAX
+    };
+    enum ColEvent {
+        COL_EveID, COL_EveTitle
     };
     enum {
         ID_EDEE_OPTN_EDIT = 1500,
@@ -68,27 +71,24 @@ private:
     void OnOptnCreate( wxCommandEvent& event );
     void OnOptnCreateRel( wxCommandEvent& event );
 
-    void OnAddButton( wxCommandEvent& event );
-    void OnEditButton( wxCommandEvent& event );
-    void OnDeleteButton( wxCommandEvent& event );
-#if 0
+    void OnAddPer( wxCommandEvent& event );
+    void OnEditPer( wxCommandEvent& event );
+    void OnDeletePer( wxCommandEvent& event );
 
-    void EditRow( long row );
-    void DeleteRow( long row );
+    void OnAddCon( wxCommandEvent& event );
+    void OnEditCon( wxCommandEvent& event );
+    void OnDeleteCon( wxCommandEvent& event );
 
-#endif
-    idt             m_refID;
-    recEventRecord  m_event;
-    idt  m_date1ID;
-    idt  m_date2ID;
-    idt  m_placeID;
+    idt            m_refID;
+    recEventRecord m_event;
+    idt            m_date1ID;
+    idt            m_date2ID;
+    idt            m_placeID;
 
     enum Button {
         EEEB_Date1, EEEB_Date2, EEEB_Place
     };
     Button              m_button;
-//    rgDlgEditReference* m_refDialog;
-
     recEventPersonaVec  m_eps;
     recPersonaVec       m_personas;
 };
