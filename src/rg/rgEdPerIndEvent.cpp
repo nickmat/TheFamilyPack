@@ -116,7 +116,7 @@ bool rgCreatePerEventRole( wxWindow* wind, idt perID, idt erID, idt roleID )
     recDb::Savepoint( savepoint );
     recEventPersona ep(0);
     ep.FSetPerID( perID );
-    ep.FSetEventID( erID );
+    ep.FSetEventRecID( erID );
     ep.FSetRoleID( roleID );
     ep.FSetPerSeq( recIndividual::GetMaxEventSeqNumber( perID ) );
     ep.Save();
@@ -223,13 +223,13 @@ void rgDlgIndEvent::OnAddRoleButton( wxCommandEvent& event )
 rgDlgPerEvent::rgDlgPerEvent( wxWindow* parent, idt epID, rgSHOWROLE filter ) 
     : m_ep(epID), m_filter(filter), fbRgPerIndEvent( parent )
 {
-    m_event.ReadID( m_ep.FGetEventID() );
+    m_event.ReadID( m_ep.FGetEventRecID() );
 }
 
 bool rgDlgPerEvent::TransferDataToWindow()
 {
     wxASSERT( m_ep.FGetID() != 0 );
-    wxASSERT( m_ep.FGetEventID() != 0 );
+    wxASSERT( m_ep.FGetEventRecID() != 0 );
     wxASSERT( m_ep.FGetPerID() != 0 );
 
     m_staticPerInd->SetLabel( "Persona:" );

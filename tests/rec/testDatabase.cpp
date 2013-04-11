@@ -135,9 +135,16 @@ void RecTestCase::AddTestData()
     const char* sql =
         "BEGIN;\n"
         "INSERT INTO Event"
+        " (id, title, higher_id, type_id, date1_id, date2_id, place_id, note, date_pt)"
+        " VALUES(1, 'Test 1', 0, -1, 0, 0, 0, '', 0);\n"
+        "INSERT INTO Event"
+        " (id, title, higher_id, type_id, date1_id, date2_id, place_id, note, date_pt)"
+        " VALUES(19, 'Test 19', 0, -1, 0, 0, 0, '', 0);\n"
+
+        "INSERT INTO EventRecord"
         " (id, title, type_id, date1_id, date2_id, place_id, note, date_pt)"
         " VALUES(1, 'Test 1', -1, 0, 0, 0, '', 0);\n"
-        "INSERT INTO Event"
+        "INSERT INTO EventRecord"
         " (id, title, type_id, date1_id, date2_id, place_id, note, date_pt)"
         " VALUES(19, 'Test 19', -1, 0, 0, 0, '', 0);\n"
 
@@ -683,7 +690,7 @@ void RecTestCase::TestEventPersona()
     recEventPersona record1;
     record1.FSetID( 0 );
 
-    record1.FSetEventID( 1 );    // Needs to exist
+    record1.FSetEventRecID( 1 );    // Needs to exist
     record1.FSetPerID( 3 );      // Needs to exist
     record1.FSetRoleID( 10000 ); // Doesn't exist, make Save() throw 
     record1.FSetNote( "Good person" );
@@ -702,7 +709,7 @@ void RecTestCase::TestEventPersona()
     CPPUNIT_ASSERT_NO_THROW( record2.Read() );
     CPPUNIT_ASSERT( record1 == record2 );
 
-    record1.FSetEventID( 19 );    // Needs to exist
+    record1.FSetEventRecID( 19 );    // Needs to exist
     record1.FSetPerID( 20 );      // Needs to exist
     record1.FSetRoleID( recEventTypeRole::ROLE_Baptism_Baptised ); 
     record1.FSetNote( "Who he?" );
@@ -965,8 +972,8 @@ void RecTestCase::TestFamily()
     // f_id = 0 so create new record and set f_id to new value.
     record1.Save();
     id = record1.f_id;
-    // Database is created with a starting family F1, so this is F2
-    CPPUNIT_ASSERT( id == 2 );
+    // Database is created with initial families, so this is 1.
+    CPPUNIT_ASSERT( id == 1 );
 
     recFamily record2;
     record2.f_id = record1.f_id;

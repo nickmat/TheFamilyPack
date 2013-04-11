@@ -181,6 +181,7 @@ class recEvent : public recDb
 {
 public:
     wxString f_title;
+    idt      f_higher_id;
     idt      f_type_id;
     idt      f_date1_id;
     idt      f_date2_id;
@@ -198,6 +199,7 @@ public:
     TABLE_NAME_MEMBERS( "Event" );
 
     wxString FGetTitle() const { return f_title; }
+    idt FGetHigherID() const { return f_higher_id; }
     idt FGetTypeID() const { return f_type_id; }
     idt FGetDate1ID() const { return f_date1_id; }
     idt FGetDate2ID() const { return f_date2_id; }
@@ -206,6 +208,7 @@ public:
     long FGetDatePt() const { return f_date_pt; }
 
     void FSetTitle( const wxString& title ) { f_title = title; }
+    void FSetHigherID( idt eveID ) { f_higher_id = eveID; }
     void FSetTypeID( idt typeID ) { f_type_id = typeID; }
     void FSetDate1ID( idt date1ID ) { f_date1_id = date1ID; }
     void FSetDate2ID( idt date2ID ) { f_date2_id = date2ID; }
@@ -259,13 +262,14 @@ public:
 inline bool recEquivalent( const recEvent& r1, const recEvent& r2 )
 {
     return
-        r1.f_title    == r2.f_title    &&
-        r1.f_type_id  == r2.f_type_id  &&
-        r1.f_date1_id == r2.f_date1_id &&
-        r1.f_date2_id == r2.f_date2_id &&
-        r1.f_place_id == r2.f_place_id &&
-        r1.f_note     == r2.f_note     &&
-        r1.f_date_pt  == r2.f_date_pt;
+        r1.f_title     == r2.f_title     &&
+        r1.f_higher_id == r2.f_higher_id &&
+        r1.f_type_id   == r2.f_type_id   &&
+        r1.f_date1_id  == r2.f_date1_id  &&
+        r1.f_date2_id  == r2.f_date2_id  &&
+        r1.f_place_id  == r2.f_place_id  &&
+        r1.f_note      == r2.f_note      &&
+        r1.f_date_pt   == r2.f_date_pt;
 }
 
 inline bool operator==( const recEvent& r1, const recEvent& r2 )
@@ -555,7 +559,7 @@ inline bool operator!=( const recEventTypeRole& r1, const recEventTypeRole& r2 )
 class recEventPersona : public recDb
 {
 public:
-    idt      f_event_id;
+    idt      f_event_rec_id;
     idt      f_per_id;
     idt      f_role_id;
     wxString f_note;
@@ -570,13 +574,13 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "EventPersona" );
 
-    idt FGetEventID() const { return f_event_id; }
+    idt FGetEventRecID() const { return f_event_rec_id; }
     idt FGetPerID() const { return f_per_id; }
     idt FGetRoleID() const { return f_role_id; }
     wxString FGetNote() const { return f_note; }
     int FGetPerSeq() const { return f_per_seq; }
 
-    void FSetEventID( idt eventID ) { f_event_id = eventID; }
+    void FSetEventRecID( idt erID ) { f_event_rec_id = erID; }
     void FSetPerID( idt perID ) { f_per_id = perID; }
     void FSetRoleID( idt roleID ) { f_role_id = roleID; }
     void FSetNote( const wxString& note ) { f_note = note; }
@@ -597,7 +601,7 @@ public:
 inline bool recEquivalent( const recEventPersona& r1, const recEventPersona& r2 )
 {
     return
-        r1.f_event_id == r2.f_event_id &&
+        r1.f_event_rec_id == r2.f_event_rec_id &&
         r1.f_per_id   == r2.f_per_id   &&
         r1.f_role_id  == r2.f_role_id  &&
         r1.f_note     == r2.f_note     &&

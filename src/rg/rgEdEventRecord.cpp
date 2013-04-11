@@ -171,14 +171,14 @@ idt rgCreateEventRecord( wxWindow* wind, idt refID )
     recReferenceEntity::Create( refID, recReferenceEntity::TYPE_Event, erID );
 
     recEventPersona ep1(0);
-    ep1.FSetEventID( erID );
+    ep1.FSetEventRecID( erID );
     ep1.FSetPerID( perID1 );
     ep1.FSetRoleID( role1 );
     ep1.FSetPerSeq( 1 );
     ep1.Save();
     if( person2 ) {
         recEventPersona ep2(0);
-        ep2.FSetEventID( erID );
+        ep2.FSetEventRecID( erID );
         ep2.FSetPerID( perID2 );
         ep2.FSetRoleID( role2 );
         ep2.FSetPerSeq( 2 );
@@ -254,7 +254,7 @@ idt rgCreatePersonalEventRecord( wxWindow* wind, idt refID, const wxString& role
     idt eveID = eve.FGetID();
 
     recEventPersona ep(0);
-    ep.FSetEventID( eveID );
+    ep.FSetEventRecID( eveID );
     ep.FSetPerID( perID );
     ep.FSetRoleID( roleID );
     ep.FSetNote( note );

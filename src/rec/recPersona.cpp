@@ -174,7 +174,6 @@ recNameVec recPersona::ReadNames( idt perID )
 recEventPersonaVec recPersona::ReadEventPersonas( idt perID, recEventOrder order )
 {
     recEventPersonaVec list;
-    recEventPersona record;
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
 
@@ -195,20 +194,21 @@ recEventPersonaVec recPersona::ReadEventPersonas( idt perID, recEventOrder order
     }
 
     sql.Format(
-        "SELECT EP.id, event_id, role_id, EP.note, per_seq FROM EventPersona EP"
-        " INNER JOIN Event E ON E.id=event_id"
+        "SELECT EP.id, event_rec_id, role_id, EP.note, per_seq FROM EventPersona EP"
+        " INNER JOIN Event E ON E.id=event_rec_id"
         " WHERE per_id="ID" ORDER BY %s;", 
         perID, UTF8_(orderStr)
     );
     result = s_db->GetTable( sql );
 
     list.reserve( result.GetRowCount() );
+    recEventPersona record;
     record.f_per_id = perID;
     for( int i = 0 ; i < result.GetRowCount() ; i++ )
     {
         result.SetRow( i );
         record.f_id       = GET_ID( result.GetInt64( 0 ) );
-        record.f_event_id = GET_ID( result.GetInt64( 1 ) );
+        record.f_event_rec_id = GET_ID( result.GetInt64( 1 ) );
         record.f_role_id  = GET_ID( result.GetInt64( 2 ) );
         record.f_note     = result.GetAsString( 3 );
         record.f_per_seq  = result.GetInt( 4 );

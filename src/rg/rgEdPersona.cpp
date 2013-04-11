@@ -157,12 +157,12 @@ void rgDlgEditPersona::UpdateEventList( idt eveID )
     m_listEvent->DeleteAllItems();
     int row = -1;
     for( size_t i = 0 ; i < m_evpers.size() ; i++ ) {
-        m_listEvent->InsertItem( i, recEvent::GetIdStr( m_evpers[i].f_event_id ) );
+        m_listEvent->InsertItem( i, recEvent::GetIdStr( m_evpers[i].f_event_rec_id ) );
         m_listEvent->SetItem( i, EV_COL_Role, recEventTypeRole::GetName( m_evpers[i].f_role_id ) );
-        m_listEvent->SetItem( i, EV_COL_Title, recEvent::GetTitle( m_evpers[i].f_event_id ) );
-        m_listEvent->SetItem( i, EV_COL_Date, recEvent::GetDateStr( m_evpers[i].f_event_id ) );
-        m_listEvent->SetItem( i, EV_COL_Place, recEvent::GetAddressStr( m_evpers[i].f_event_id ) );
-        if( eveID == m_evpers[i].FGetEventID() ) {
+        m_listEvent->SetItem( i, EV_COL_Title, recEvent::GetTitle( m_evpers[i].f_event_rec_id ) );
+        m_listEvent->SetItem( i, EV_COL_Date, recEvent::GetDateStr( m_evpers[i].f_event_rec_id ) );
+        m_listEvent->SetItem( i, EV_COL_Place, recEvent::GetAddressStr( m_evpers[i].f_event_rec_id ) );
+        if( eveID == m_evpers[i].FGetEventRecID() ) {
             m_listEvent->SetItemState( i, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
             row = i;
         }
@@ -329,7 +329,7 @@ void rgDlgEditPersona::OnEventEditButton( wxCommandEvent& event )
         wxMessageBox( _("No row selected"), _("Edit Event"), wxOK | wxCENTRE, this );
         return;
     }
-    idt eventID = m_evpers[row].FGetEventID();
+    idt eventID = m_evpers[row].FGetEventRecID();
     if( rgEditEventRecord( this, eventID ) ) {
         UpdateEventList( eventID );
     }
@@ -342,7 +342,7 @@ void rgDlgEditPersona::OnEventDeleteButton( wxCommandEvent& event )
         wxMessageBox( _("No row selected"), _("Delete From Event") );
         return;
     }
-    idt eveID = m_evpers[row].FGetEventID();
+    idt eveID = m_evpers[row].FGetEventRecID();
     wxString mess = wxString::Format( 
         "Remove %s %s from Event %s\n%s?", 
         m_persona.GetNameStr(), m_persona.GetIdStr(),
@@ -371,7 +371,7 @@ void rgDlgEditPersona::OnEventUpButton( wxCommandEvent& event )
     m_evpers[row].Save();
     m_evpers[row-1].FSetPerSeq( seq );
     m_evpers[row-1].Save();
-    UpdateEventList( m_evpers[row].FGetEventID() );
+    UpdateEventList( m_evpers[row].FGetEventRecID() );
 }
 
 void rgDlgEditPersona::OnEventDownButton( wxCommandEvent& event )
@@ -389,7 +389,7 @@ void rgDlgEditPersona::OnEventDownButton( wxCommandEvent& event )
     m_evpers[row].Save();
     m_evpers[row+1].FSetPerSeq( seq );
     m_evpers[row+1].Save();
-    UpdateEventList( m_evpers[row].FGetEventID() );
+    UpdateEventList( m_evpers[row].FGetEventRecID() );
 }
 
 void rgDlgEditPersona::OnOrderBy( wxCommandEvent& event )
@@ -410,7 +410,7 @@ void rgDlgEditPersona::OnOrderBy( wxCommandEvent& event )
         return;
     }
     long row = m_listEvent->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-    idt eveID = ( row >= 0 ) ? m_evpers[row].FGetEventID() : 0;
+    idt eveID = ( row >= 0 ) ? m_evpers[row].FGetEventRecID() : 0;
     UpdateEventList( eveID );
 }
 

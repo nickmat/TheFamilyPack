@@ -48,26 +48,28 @@
 
 recEvent::recEvent( const recEvent& e )
 {
-    f_id       = e.f_id;
-    f_title    = e.f_title;
-    f_type_id  = e.f_type_id;
-    f_date1_id = e.f_date1_id;
-    f_date2_id = e.f_date2_id;
-    f_place_id = e.f_place_id;
-    f_note     = e.f_note;
-    f_date_pt  = e.f_date_pt;
+    f_id        = e.f_id;
+    f_title     = e.f_title;
+    f_higher_id = e.f_higher_id;
+    f_type_id   = e.f_type_id;
+    f_date1_id  = e.f_date1_id;
+    f_date2_id  = e.f_date2_id;
+    f_place_id  = e.f_place_id;
+    f_note      = e.f_note;
+    f_date_pt   = e.f_date_pt;
 }
 
 void recEvent::Clear()
 {
-    f_id       = 0;
-    f_title    = wxEmptyString;
-    f_type_id  = 0;
-    f_date1_id = 0;
-    f_date2_id = 0;
-    f_place_id = 0;
-    f_note     = wxEmptyString;
-    f_date_pt  = 0;
+    f_id        = 0;
+    f_title     = wxEmptyString;
+    f_higher_id = 0;
+    f_type_id   = 0;
+    f_date1_id  = 0;
+    f_date2_id  = 0;
+    f_place_id  = 0;
+    f_note      = wxEmptyString;
+    f_date_pt   = 0;
 }
 
 void recEvent::Save()
@@ -80,9 +82,9 @@ void recEvent::Save()
         // Add new record
         sql.Format(
             "INSERT INTO Event "
-            "(title, type_id, date1_id, date2_id, place_id, note, date_pt) "
-            "VALUES ('%q', "ID", "ID", "ID", "ID", '%q', %ld);",
-            UTF8_(f_title), f_type_id, f_date1_id, f_date2_id, f_place_id, 
+            "(title, higher_id, type_id, date1_id, date2_id, place_id, note, date_pt) "
+            "VALUES ('%q', "ID", "ID", "ID", "ID", "ID", '%q', %ld);",
+            UTF8_(f_title), f_higher_id, f_type_id, f_date1_id, f_date2_id, f_place_id, 
             UTF8_(f_note), f_date_pt
         );
         s_db->ExecuteUpdate( sql );
@@ -94,19 +96,19 @@ void recEvent::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO Event "
-                "(id, title, type_id, date1_id, date2_id, place_id, note, date_pt) "
-                "VALUES ("ID", '%q', "ID", "ID", "ID", "ID", '%q', %ld);",
-                f_id, UTF8_(f_title), f_type_id, f_date1_id, f_date2_id, f_place_id,
+                "(id, title, higher_id, type_id, date1_id, date2_id, place_id, note, date_pt) "
+                "VALUES ("ID", '%q', "ID", "ID", "ID", "ID", "ID", '%q', %ld);",
+                f_id, UTF8_(f_title), f_higher_id, f_type_id, f_date1_id, f_date2_id, f_place_id,
                 UTF8_(f_note), f_date_pt
             );
         } else {
             // Update existing record
             sql.Format(
                 "UPDATE Event SET "
-                "title='%q', type_id="ID", date1_id="ID", date2_id="ID", place_id="ID", "
+                "title='%q', higher_id="ID", type_id="ID", date1_id="ID", date2_id="ID", place_id="ID", "
                 "note='%q', date_pt=%ld "
                 "WHERE id="ID";",
-                UTF8_(f_title), f_type_id, f_date1_id, f_date2_id, f_place_id, 
+                UTF8_(f_title), f_higher_id, f_type_id, f_date1_id, f_date2_id, f_place_id, 
                 UTF8_(f_note), f_date_pt, f_id
             );
         }
@@ -125,7 +127,7 @@ bool recEvent::Read()
     }
 
     sql.Format(
-        "SELECT title, type_id, date1_id, date2_id, place_id, note, date_pt "
+        "SELECT title, higher_id, type_id, date1_id, date2_id, place_id, note, date_pt "
         "FROM Event WHERE id="ID";",
         f_id
     );
@@ -137,13 +139,14 @@ bool recEvent::Read()
         return false;
     }
     result.SetRow( 0 );
-    f_title    = result.GetAsString( 0 );
-    f_type_id  = GET_ID( result.GetInt64( 1 ) );
-    f_date1_id = GET_ID( result.GetInt64( 2 ) );
-    f_date2_id = GET_ID( result.GetInt64( 3 ) );
-    f_place_id = GET_ID( result.GetInt64( 4 ) );
-    f_note     = result.GetAsString( 5 );
-    f_date_pt  = (long) result.GetInt( 6 );
+    f_title     = result.GetAsString( 0 );
+    f_higher_id = GET_ID( result.GetInt64( 1 ) );
+    f_type_id   = GET_ID( result.GetInt64( 2 ) );
+    f_date1_id  = GET_ID( result.GetInt64( 3 ) );
+    f_date2_id  = GET_ID( result.GetInt64( 4 ) );
+    f_place_id  = GET_ID( result.GetInt64( 5 ) );
+    f_note      = result.GetAsString( 6 );
+    f_date_pt   = (long) result.GetInt( 7 );
     return true;
 }
 
@@ -278,14 +281,7 @@ wxString recEvent::GetNote( idt id )
     result = s_db->ExecuteQuery( sql );
     return result.GetAsString( 0 );
 }
-#if 0
-bool recEvent::IsIndEvent( idt eveID )
-{
-    const char* fmt = "SELECT id FROM IndividualEvent WHERE event_id="ID";";
-    idt indID = ExecuteID( fmt, eveID );
-    return indID ? true : false;
-}
-#endif
+
 bool recEvent::IsFamilyEvent( idt eveID )
 {
     wxSQLite3StatementBuffer sql;
@@ -331,33 +327,7 @@ recIndEventVec recEvent::GetIndividualEvents()
     }
     return vec;
 }
-#if 0
-recEventPersonaVec recEvent::GetEventPersonas()
-{
-    recEventPersonaVec vec;
-    recEventPersona record;
-    wxSQLite3StatementBuffer sql;
 
-    sql.Format(
-        "SELECT id, per_id, role_id, note "
-        "FROM EventPersona WHERE event_id="ID";",
-        f_id
-    );
-    wxSQLite3Table table = s_db->GetTable( sql );
-
-    record.f_event_id = f_id;
-    for( int i = 0 ; i < table.GetRowCount() ; i++ )
-    {
-        table.SetRow( i );
-        record.f_id = GET_ID( table.GetInt64( 0 ) );
-        record.f_per_id = GET_ID( table.GetInt64( 1 ) );
-        record.f_role_id = GET_ID( table.GetInt64( 2 ) );
-        record.f_note = table.GetAsString( 3 );
-        vec.push_back( record );
-    }
-    return vec;
-}
-#endif
 void recEvent::UpdateDatePoint( idt evID )
 {
     recEvent ev(evID);
@@ -390,7 +360,7 @@ recEventRecordVec recEvent::FindEquivRefEvents( idt indEventID )
         "  EventRecord "
         "JOIN "
         "  (SELECT DISTINCT event_id FROM "
-        "   (SELECT EP.event_id, LP.ind_per_id FROM "
+        "   (SELECT EP.event_rec_id, LP.ind_per_id FROM "
         "   LinkPersona LP, EventPersona EP, Event E, EventTypeRole R "
         "   WHERE LP.ref_per_id=EP.per_id AND EP.role_id=R.id AND E.id="ID" "
         "    AND R.type_id=E.type_id AND NOT R.prime=0) "
@@ -544,18 +514,7 @@ wxSQLite3Table recEvent::GetTitleList( idt offset, int limit )
     );
     return s_db->GetTable( sql );
 }
-#if 0
-int recEvent::GetLastPerSeqNumber( idt eventID )
-{
-    wxSQLite3StatementBuffer sql;
 
-    sql.Format(
-        "SELECT MAX(per_seq) FROM EventPersona WHERE event_id="ID";",
-        eventID
-    );
-    return s_db->ExecuteScalar( sql );
-}
-#endif
 //============================================================================
 //-------------------------[ recEventRecord ]---------------------------------
 //============================================================================
@@ -792,14 +751,7 @@ wxString recEventRecord::GetNote( idt id )
     result = s_db->ExecuteQuery( sql );
     return result.GetAsString( 0 );
 }
-#if 0
-bool recEventRecord::IsIndEvent( idt eveID )
-{
-    const char* fmt = "SELECT id FROM IndividualEvent WHERE event_id="ID";";
-    idt indID = ExecuteID( fmt, eveID );
-    return indID ? true : false;
-}
-#endif
+
 bool recEventRecord::IsFamilyEvent( idt eveID )
 {
     wxSQLite3StatementBuffer sql;
@@ -817,49 +769,21 @@ bool recEventRecord::IsFamilyEvent( idt eveID )
     }
     return false;
 }
-#if 0
-recIndEventVec recEventRecord::GetIndividualEvents()
-{
-    recIndEventVec vec;
-    recIndividualEvent record;
-    wxSQLite3StatementBuffer sql;
 
-    sql.Format(
-        "SELECT id, ind_id, role_id, note, ind_seq"
-        " FROM IndividualEvent WHERE event_id="ID
-        " ORDER BY id;",
-        f_id
-    );
-    wxSQLite3Table table = s_db->GetTable( sql );
-
-    record.f_event_id = f_id;
-    for( int i = 0 ; i < table.GetRowCount() ; i++ )
-    {
-        table.SetRow( i );
-        record.f_id = GET_ID( table.GetInt64( 0 ) );
-        record.f_ind_id = GET_ID( table.GetInt64( 1 ) );
-        record.f_role_id = GET_ID( table.GetInt64( 2 ) );
-        record.f_note = table.GetAsString( 3 );
-        record.f_ind_seq = table.GetInt( 4 );
-        vec.push_back( record );
-    }
-    return vec;
-}
-#endif
 recEventPersonaVec recEventRecord::GetEventPersonas()
 {
     recEventPersonaVec vec;
-    recEventPersona record;
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
         "SELECT id, per_id, role_id, note "
-        "FROM EventPersona WHERE event_id="ID";",
+        "FROM EventPersona WHERE event_rec_id="ID";",
         f_id
     );
     wxSQLite3Table table = s_db->GetTable( sql );
 
-    record.f_event_id = f_id;
+    recEventPersona record;
+    record.FSetEventRecID( f_id );
     for( int i = 0 ; i < table.GetRowCount() ; i++ )
     {
         table.SetRow( i );
@@ -892,45 +816,7 @@ void recEventRecord::UpdateDatePoint()
     }
     f_date_pt = recDate::GetDatePoint( f_date1_id );
 }
-#if 0
-recEventVec recEventRecord::FindEquivRefEvents( idt indEventID )
-{
-    recEventVec vec;
-    wxSQLite3StatementBuffer sql;
-    wxSQLite3ResultSet result;
 
-    sql.Format(
-        "SELECT id, title, type_id, date1_id, date2_id, place_id, note FROM "
-        "  Event "
-        "JOIN "
-        "  (SELECT DISTINCT event_id FROM "
-        "   (SELECT EP.event_id, LP.ind_per_id FROM "
-        "   LinkPersona LP, EventPersona EP, Event E, EventTypeRole R "
-        "   WHERE LP.ref_per_id=EP.per_id AND EP.role_id=R.id AND E.id="ID" "
-        "    AND R.type_id=E.type_id AND NOT R.prime=0) "
-        "  JOIN "
-        "   (SELECT I.per_id FROM IndividualEvent IE, Individual I"
-        "    WHERE IE.ind_id=I.id AND IE.event_id="ID") "
-        "  ON ind_per_id=per_id) "
-        "ON id=event_id;",
-        indEventID, indEventID
-    );
-    result = s_db->ExecuteQuery( sql );
-
-    while( result.NextRow() ) {
-        recEvent e(0);
-        e.f_id       = GET_ID( result.GetInt64( 0 ) );
-        e.f_title    = result.GetAsString( 1 );
-        e.f_type_id  = GET_ID( result.GetInt64( 2 ) );
-        e.f_date1_id = GET_ID( result.GetInt64( 3 ) );
-        e.f_date2_id = GET_ID( result.GetInt64( 4 ) );
-        e.f_place_id = GET_ID( result.GetInt64( 5 ) );
-        e.f_note     = result.GetAsString( 6 );
-        vec.push_back( e );
-    }
-    return vec;
-}
-#endif
 void recEventRecord::RemoveFromDatabase()
 {
     if( f_id <= 0 ) {
@@ -941,7 +827,7 @@ void recEventRecord::RemoveFromDatabase()
 
     // TODO: Ensure Event is removed from reference statement.
     sql.Format(
-        "DELETE FROM EventPersona WHERE event_id="ID";"
+        "DELETE FROM EventPersona WHERE event_rec_id="ID";"
         "DELETE FROM ReferenceEntity WHERE entity_type=2 AND entity_id="ID";",
         f_id, f_id
     );
@@ -1006,7 +892,7 @@ void recEventRecord::DeleteIfOrphaned( idt id )
     }
     wxSQLite3StatementBuffer sql;
 
-    sql.Format( "SELECT COUNT(*) FROM EventPersona WHERE event_id="ID";", id );
+    sql.Format( "SELECT COUNT(*) FROM EventPersona WHERE event_rec_id="ID";", id );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
     sql.Format(
         "SELECT COUNT(*) FROM ReferenceEntity"
@@ -1676,22 +1562,22 @@ idt recEventTypeRole::FindOrCreate( const wxString& name, idt type, Prime prime,
 
 recEventPersona::recEventPersona( const recEventPersona& ep )
 {
-    f_id       = ep.f_id;
-    f_event_id = ep.f_event_id;
-    f_per_id   = ep.f_per_id;
-    f_role_id  = ep.f_role_id;
-    f_note     = ep.f_note;
-    f_per_seq  = ep.f_per_seq;
+    f_id           = ep.f_id;
+    f_event_rec_id = ep.f_event_rec_id;
+    f_per_id       = ep.f_per_id;
+    f_role_id      = ep.f_role_id;
+    f_note         = ep.f_note;
+    f_per_seq      = ep.f_per_seq;
 }
 
 void recEventPersona::Clear()
 {
-    f_id       = 0;
-    f_event_id = 0;
-    f_per_id   = 0;
-    f_role_id  = 0;
-    f_note     = wxEmptyString;
-    f_per_seq  = 0;
+    f_id           = 0;
+    f_event_rec_id = 0;
+    f_per_id       = 0;
+    f_role_id      = 0;
+    f_note         = wxEmptyString;
+    f_per_seq      = 0;
 }
 
 void recEventPersona::Save()
@@ -1703,9 +1589,9 @@ void recEventPersona::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO EventPersona (event_id, per_id, role_id, note, per_seq) "
+            "INSERT INTO EventPersona (event_rec_id, per_id, role_id, note, per_seq) "
             "VALUES ("ID", "ID", "ID", '%q', %d);",
-            f_event_id, f_per_id, f_role_id, UTF8_(f_note), f_per_seq
+            f_event_rec_id, f_per_id, f_role_id, UTF8_(f_note), f_per_seq
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -1715,17 +1601,17 @@ void recEventPersona::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO EventPersona (id, event_id, per_id, role_id, note, per_seq) "
+                "INSERT INTO EventPersona (id, event_rec_id, per_id, role_id, note, per_seq) "
                 "VALUES ("ID", "ID", "ID", "ID", '%q', %d);",
-                f_id, f_event_id, f_per_id, f_role_id, UTF8_(f_note), f_per_seq
+                f_id, f_event_rec_id, f_per_id, f_role_id, UTF8_(f_note), f_per_seq
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE EventPersona SET event_id="ID", per_id="ID", role_id="ID", "
+                "UPDATE EventPersona SET event_rec_id="ID", per_id="ID", role_id="ID", "
                 "note='%q', per_seq=%d "
                 "WHERE id="ID";",
-                f_event_id, f_per_id, f_role_id, UTF8_(f_note), f_per_seq, f_id
+                f_event_rec_id, f_per_id, f_role_id, UTF8_(f_note), f_per_seq, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -1743,7 +1629,7 @@ bool recEventPersona::Read()
     }
 
     sql.Format(
-        "SELECT id, event_id, per_id, role_id, note, per_seq "
+        "SELECT id, event_rec_id, per_id, role_id, note, per_seq "
         "FROM EventPersona WHERE id="ID";",
         f_id
     );
@@ -1755,11 +1641,11 @@ bool recEventPersona::Read()
         return false;
     }
     result.SetRow( 0 );
-    f_event_id = GET_ID( result.GetInt64( 1 ) );
-    f_per_id   = GET_ID( result.GetInt64( 2 ) );
-    f_role_id  = GET_ID( result.GetInt64( 3 ) );
-    f_note     = result.GetAsString( 4 );
-    f_per_seq  = result.GetInt( 5 );
+    f_event_rec_id = GET_ID( result.GetInt64( 1 ) );
+    f_per_id       = GET_ID( result.GetInt64( 2 ) );
+    f_role_id      = GET_ID( result.GetInt64( 3 ) );
+    f_note         = result.GetAsString( 4 );
+    f_per_seq      = result.GetInt( 5 );
     return true;
 }
 
@@ -1777,15 +1663,15 @@ wxString recEventPersona::GetRoleStr( idt perID, idt typeID )
 
 bool recEventPersona::LinkExists() const
 {
-    if( f_per_id == 0 || f_event_id == 0 || f_role_id == 0 ) {
+    if( f_per_id == 0 || f_event_rec_id == 0 || f_role_id == 0 ) {
         return false;
     }
 
     wxSQLite3StatementBuffer sql;
     sql.Format(
         "SELECT COUNT(*) FROM EventPersona "
-        "WHERE event_id="ID" AND per_id="ID" AND role_id="ID";",
-        f_event_id, f_per_id, f_role_id
+        "WHERE event_rec_id="ID" AND per_id="ID" AND role_id="ID";",
+        f_event_rec_id, f_per_id, f_role_id
     );
 
     if( s_db->ExecuteScalar( sql ) == 0 ) {
