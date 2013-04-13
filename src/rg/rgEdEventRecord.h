@@ -60,6 +60,7 @@ private:
 
     bool TransferDataToWindow();
     void ListLinkedPersona();
+    void ListEvents();
     bool TransferDataFromWindow();
 
     void OnDate1Button( wxCommandEvent& event );
@@ -91,6 +92,7 @@ private:
     Button              m_button;
     recEventPersonaVec  m_eps;
     recPersonaVec       m_personas;
+    recEveEveRecordVec  m_eers;
 };
 
 #endif // RGEDEVIDEVENT_H

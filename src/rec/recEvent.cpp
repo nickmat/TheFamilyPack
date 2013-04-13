@@ -359,7 +359,7 @@ recEventRecordVec recEvent::FindEquivRefEvents( idt indEventID )
         "SELECT id, title, type_id, date1_id, date2_id, place_id, note FROM "
         "  EventRecord "
         "JOIN "
-        "  (SELECT DISTINCT event_id FROM "
+        "  (SELECT DISTINCT event_rec_id FROM "
         "   (SELECT EP.event_rec_id, LP.ind_per_id FROM "
         "   LinkPersona LP, EventPersona EP, Event E, EventTypeRole R "
         "   WHERE LP.ref_per_id=EP.per_id AND EP.role_id=R.id AND E.id="ID" "
@@ -368,7 +368,7 @@ recEventRecordVec recEvent::FindEquivRefEvents( idt indEventID )
         "   (SELECT I.per_id FROM IndividualEvent IE, Individual I"
         "    WHERE IE.ind_id=I.id AND IE.event_id="ID") "
         "  ON ind_per_id=per_id) "
-        "ON id=event_id;",
+        "ON id=event_rec_id;",
         indEventID, indEventID
     );
     result = s_db->ExecuteQuery( sql );
@@ -401,10 +401,10 @@ recEveEveRecordVec recEvent::GetEveEveRecords( idt eveID )
     result = s_db->ExecuteQuery( sql );
 
     recEventEventRecord eer(0);
-    eer.FSetEvent( eveID );
+    eer.FSetEventID( eveID );
     while( result.NextRow() ) {
         eer.FSetID( GET_ID( result.GetInt64( 0 ) ) );
-        eer.FSetEventRec( GET_ID( result.GetInt64( 1 ) ) );
+        eer.FSetEventRecID( GET_ID( result.GetInt64( 1 ) ) );
         eer.FSetConf( result.GetDouble( 2 ) );
         eer.FSetNote( result.GetAsString( 3 ) );
         vec.push_back( eer );
@@ -750,6 +750,31 @@ wxString recEventRecord::GetNote( idt id )
     sql.Format( "SELECT note FROM EventRecord WHERE id="ID";", id );
     result = s_db->ExecuteQuery( sql );
     return result.GetAsString( 0 );
+}
+
+recEveEveRecordVec recEventRecord::GetEveEveRecords( idt erID )
+{
+    recEveEveRecordVec vec;
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3ResultSet result;
+
+    sql.Format(
+        "SELECT id, event_id, conf, note FROM "
+        "  EventEventRecord WHERE event_rec_id="ID";",
+        erID
+    );
+    result = s_db->ExecuteQuery( sql );
+
+    recEventEventRecord eer(0);
+    eer.FSetEventRecID( erID );
+    while( result.NextRow() ) {
+        eer.FSetID( GET_ID( result.GetInt64( 0 ) ) );
+        eer.FSetEventID( GET_ID( result.GetInt64( 1 ) ) );
+        eer.FSetConf( result.GetDouble( 2 ) );
+        eer.FSetNote( result.GetAsString( 3 ) );
+        vec.push_back( eer );
+    }
+    return vec;
 }
 
 bool recEventRecord::IsFamilyEvent( idt eveID )

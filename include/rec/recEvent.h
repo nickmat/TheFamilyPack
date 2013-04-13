@@ -347,6 +347,8 @@ public:
     static idt FindReferenceID( idt eventID ) {
         return recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, eventID );
     }
+    static recEveEveRecordVec GetEveEveRecords( idt erID );
+    recEveEveRecordVec GetEveEveRecords() const { return GetEveEveRecords( f_id ); }
 
     static bool IsFamilyEvent( idt eveID );
     bool IsFamilyEvent() const { return IsFamilyEvent( f_id ); }
@@ -417,8 +419,8 @@ public:
     double FGetConf() const { return f_conf; }
     wxString FGetNote() const { return f_note; }
 
-    void FSetEvent( idt eveID ) { f_event_id = eveID; }
-    void FSetEventRec( idt erID ) { f_event_rec_id = erID; }
+    void FSetEventID( idt eveID ) { f_event_id = eveID; }
+    void FSetEventRecID( idt erID ) { f_event_rec_id = erID; }
     void FSetConf( double conf ) { f_conf = conf; }
     void FSetNote( const wxString& note ) { f_note = note; }
 

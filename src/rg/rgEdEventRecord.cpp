@@ -314,6 +314,7 @@ bool rgDlgEditEventRecord::TransferDataToWindow()
     m_staticPlace->SetLabel( recPlace::GetAddressStr( m_placeID ) );
     m_textCtrlNote->SetValue( m_event.f_note );
     ListLinkedPersona();
+    ListEvents();
     m_staticEventRecID->SetLabel( m_event.GetIdStr() );
     return true;
 }
@@ -332,6 +333,18 @@ void rgDlgEditEventRecord::ListLinkedPersona()
         m_listPersona->SetItem( i, COL_Role, recEventTypeRole::GetName( m_eps[i].FGetRoleID() ) );
         m_listPersona->SetItem( i, COL_Note, m_eps[i].FGetNote() );
     }
+}
+
+void rgDlgEditEventRecord::ListEvents()
+{
+    m_eers = m_event.GetEveEveRecords();
+    m_listConclusion->DeleteAllItems();
+    for( size_t i = 0 ; i < m_eers.size() ; i++ ) {
+        idt eveID = m_eers[i].FGetEventID();
+        m_listConclusion->InsertItem( i, recEvent::GetIdStr( eveID ) );
+        m_listConclusion->SetItem( i, COL_EveTitle, recEvent::GetTitle( eveID ) );
+    }
+    m_listConclusion->SetColumnWidth( COL_EveTitle, wxLIST_AUTOSIZE );
 }
 
 bool rgDlgEditEventRecord::TransferDataFromWindow()
