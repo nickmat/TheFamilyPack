@@ -347,6 +347,8 @@ public:
     static idt FindReferenceID( idt eventID ) {
         return recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, eventID );
     }
+    static recIdVec FindRealEventIDs( idt erID );
+    recIdVec FindRealEventIDs() const { return FindRealEventIDs( f_id ); }
     static recEveEveRecordVec GetEveEveRecords( idt erID );
     recEveEveRecordVec GetEveEveRecords() const { return GetEveEveRecords( f_id ); }
 

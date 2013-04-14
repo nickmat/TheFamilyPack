@@ -76,7 +76,7 @@ wxString tfpWriteIndividualPage( idt indID )
         "</tr>\n</table>\n"
     ;
     // Names
-    recNameVec names = per.ReadNames();
+    recNameVec names = ind.ReadNames();
     htm << 
         "<table class='data'>\n<tr>\n"
         "<th colspan='3'>Names</th>";
@@ -192,7 +192,7 @@ wxString tfpWriteIndividualPage( idt indID )
     recIndEventVec ies = ind.GetEvents();
     htm << 
         "<table class='data'>\n<tr>\n"
-        "<th colspan='4'>Conclusion Events</th>\n";
+        "<th colspan='4'>Events</th>\n";
     for( i = 0 ; i < ies.size() ; i++ ) {
         idt eveID = ies[i].FGetEventID();
         recEvent eve( eveID );
@@ -233,36 +233,36 @@ wxString tfpWriteIndividualPage( idt indID )
     }
     htm << "</tr>\n</table>\n";
 
-    // Get linked Persona Events
+    // Get linked Events Records
     wxSQLite3Table eTable = ind.GetRefEventsTable();
     htm << 
         "<table class='data'>\n<tr>\n"
-        "<th colspan='4'>Evidence Events</th>\n";
+        "<th colspan='4'>Event Records</th>\n";
     for( i = 0 ; i < (size_t) eTable.GetRowCount() ; i++ ) {
         eTable.SetRow( i );
-        idt eveID = GET_ID( eTable.GetInt64( 0 ) );
-        recEvent eve( eveID );
+        idt erID = GET_ID( eTable.GetInt64( 0 ) );
+        recEventRecord er( erID );
         idt roleID = GET_ID( eTable.GetInt64( 1 ) );
-        idt refID = recEventRecord::FindReferenceID( eveID );
+        idt refID = recEventRecord::FindReferenceID( erID );
 
         wxString cat1, cat2, dStr, pStr;
-        if( eve.FGetDate1ID() || eve.FGetPlaceID() ) {
+        if( er.FGetDate1ID() || er.FGetPlaceID() ) {
             cat1 = "<br>\n";
         }
-        if( eve.FGetDate1ID() && eve.FGetPlaceID() ) {
+        if( er.FGetDate1ID() && er.FGetPlaceID() ) {
             cat2 = ", ";
         }
-        if( eve.FGetDate1ID() ) {
+        if( er.FGetDate1ID() ) {
             dStr << 
-                "<a href='tfpi:D" << eve.FGetDate1ID() <<
-                "'>" << eve.GetDateStr() <<
+                "<a href='tfpi:D" << er.FGetDate1ID() <<
+                "'>" << er.GetDateStr() <<
                 "</a>"
             ;
         }
-        if( eve.FGetPlaceID() ) {
+        if( er.FGetPlaceID() ) {
             pStr <<
-                "<a href='tfpi:P" << eve.FGetPlaceID() <<
-                "'>" << eve.GetAddressStr() <<
+                "<a href='tfpi:P" << er.FGetPlaceID() <<
+                "'>" << er.GetAddressStr() <<
                 "</a>"
             ;
         }
@@ -270,16 +270,16 @@ wxString tfpWriteIndividualPage( idt indID )
             "</tr>\n<tr>\n" <<
             "<td><b><a href='tfp:R" << refID <<
             "'>" << recReference::GetIdStr( refID ) <<
-            "</a>: <a href='tfp:E" << eveID <<
-            "'>" << eve.GetIdStr() <<
-            "</b></td>\n<td>" << eve.GetTypeStr() <<
+            "</a>: <a href='tfp:ER" << erID <<
+            "'>" << er.GetIdStr() <<
+            "</b></td>\n<td>" << er.GetTypeStr() <<
             ":</td>\n<td>" << recEventTypeRole::GetName( roleID ) <<
-            "</td><td>" << eve.FGetTitle() << 
+            "</td><td>" << er.FGetTitle() << 
             cat1 << dStr << cat2 << pStr 
         ;
-//        if( !eve.FGetNote().IsEmpty() ) {
-//            htm << "<br>\n" << ies[i].FGetNote();
-//        }
+        if( er.FGetNote().size() ) {
+            htm << "<br>\n" << er.FGetNote();
+        }
         htm << "</td>\n";
     }
     htm << "</tr>\n</table>\n";

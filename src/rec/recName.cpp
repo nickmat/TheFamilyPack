@@ -41,9 +41,15 @@
 
 #include <rec/recName.h>
 
+
+//============================================================================
+//-------------------------[ recName ]----------------------------------------
+//============================================================================
+
 recName::recName( const recName& n )
 {
     f_id       = n.f_id;
+    f_ind_id   = n.f_ind_id;
     f_per_id   = n.f_per_id;
     f_style_id = n.f_style_id;
     f_sequence = n.f_sequence;
@@ -52,6 +58,7 @@ recName::recName( const recName& n )
 void recName::Clear()
 {
     f_id       = 0;
+    f_ind_id   = 0;
     f_per_id   = 0;
     f_style_id = 0;
     f_sequence = 0;
@@ -66,9 +73,9 @@ void recName::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO Name (per_id, style_id, sequence)"
-            "VALUES ("ID", "ID", %d);",
-            f_per_id, f_style_id, f_sequence
+            "INSERT INTO Name (ind_id, per_id, style_id, sequence)"
+            "VALUES ("ID", "ID", "ID", %d);",
+            f_ind_id, f_per_id, f_style_id, f_sequence
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -78,15 +85,15 @@ void recName::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO Name (id, per_id, style_id, sequence)"
-                "VALUES ("ID", "ID", "ID", %d);",
-                f_id, f_per_id, f_style_id, f_sequence
+                "INSERT INTO Name (id, ind_id, per_id, style_id, sequence)"
+                "VALUES ("ID", "ID", "ID", "ID", %d);",
+                f_id, f_ind_id, f_per_id, f_style_id, f_sequence
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE Name SET per_id="ID", style_id="ID", sequence=%d WHERE id="ID";",
-                f_per_id, f_style_id, f_sequence, f_id
+                "UPDATE Name SET ind_id="ID", per_id="ID", style_id="ID", sequence=%d WHERE id="ID";",
+                f_ind_id, f_per_id, f_style_id, f_sequence, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -104,7 +111,7 @@ bool recName::Read()
     }
 
     sql.Format(
-        "SELECT per_id, style_id, sequence "
+        "SELECT ind_id, per_id, style_id, sequence "
         "FROM Name WHERE id="ID";",
         f_id
     );
@@ -116,9 +123,10 @@ bool recName::Read()
         return false;
     }
     result.SetRow( 0 );
-    f_per_id   = GET_ID( result.GetInt64( 0 ) );
-    f_style_id = GET_ID( result.GetInt64( 1 ) );
-    f_sequence = result.GetInt( 2 );
+    f_ind_id   = GET_ID( result.GetInt64( 0 ) );
+    f_per_id   = GET_ID( result.GetInt64( 1 ) );
+    f_style_id = GET_ID( result.GetInt64( 2 ) );
+    f_sequence = result.GetInt( 3 );
     return true;
 }
 
@@ -236,6 +244,21 @@ wxString recName::GetNamePartStr( idt nameID, idt partID )
     return str;
 }
 
+int recName::GetNextSequence( idt indID, idt perID )
+{
+    const char* owner;
+    if( indID ) {
+        owner = "ind_id";
+    } else if( perID ) {
+        owner = "per_id";
+    } else {
+        return 1;
+    }
+    wxSQLite3StatementBuffer sql;
+    sql.Format( "SELECT MAX(sequence) FROM Name WHERE %s="ID";", owner, perID );
+    return s_db->ExecuteScalar( sql ) + 1;
+}
+
 bool recName::FindPersona( idt perID, idt styleID )
 {
     wxSQLite3StatementBuffer sql;
@@ -291,7 +314,9 @@ recNamePartVec recName::GetParts( idt nameID )
 }
 
 
-//----------------------------------------------------------
+//============================================================================
+//-------------------------[ recNamePart ]------------------------------------
+//============================================================================
 
 recNamePart::recNamePart( const recNamePart& n )
 {
@@ -412,7 +437,10 @@ recNamePartVec recNamePart::ConvertStrToList(
     return list;
 }
 
-//----------------------------------------------------------
+
+//============================================================================
+//-------------------------[ recNamePartType ]--------------------------------
+//============================================================================
 
 recNamePartType::recNamePartType( const recNamePartType& at )
 {
@@ -534,7 +562,10 @@ recNamePartTypeVec recNamePartType::GetTypeList()
     return list;
 }
 
-//----------------------------------------------------------
+
+//============================================================================
+//-------------------------[ recNameStyle ]-----------------------------------
+//============================================================================
 
 recNameStyle::recNameStyle( const recNameStyle& at )
 {
@@ -651,4 +682,5 @@ recNameStyleVec recNameStyle::GetStyleList()
     return list;
 }
 
-// End of recPersona.cpp file
+
+// End of src/rec/recName.cpp file

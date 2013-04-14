@@ -752,6 +752,14 @@ wxString recEventRecord::GetNote( idt id )
     return result.GetAsString( 0 );
 }
 
+recIdVec recEventRecord::FindRealEventIDs( idt erID )
+{
+    recIdVec eveIDs;
+    // TODO: Get a list of Event's 
+    // by matching Persona and Individuls for the prime roles
+    return eveIDs;
+}
+
 recEveEveRecordVec recEventRecord::GetEveEveRecords( idt erID )
 {
     recEveEveRecordVec vec;

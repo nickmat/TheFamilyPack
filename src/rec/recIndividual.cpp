@@ -346,6 +346,38 @@ wxString recIndividual::GetFullNameEpitaph( idt id )
     return str;
 }
 
+recNameVec recIndividual::ReadNames( idt indID )
+{
+    recNameVec list;
+    recName name(0);
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( indID == 0 ) {
+        return list;
+    }
+
+    sql.Format(
+        "SELECT id, per_id, style_id, sequence FROM Name WHERE ind_id="ID" "
+        "ORDER BY sequence;",
+        indID
+    );
+    result = s_db->GetTable( sql );
+
+    name.FSetIndID( indID );
+    list.reserve( result.GetRowCount() );
+    for( int i = 0 ; i < result.GetRowCount() ; i++ )
+    {
+        result.SetRow( i );
+        name.FSetID( GET_ID( result.GetInt64( 0 ) ) );
+        name.FSetPerID( GET_ID( result.GetInt64( 1 ) ) );
+        name.FSetTypeID( GET_ID( result.GetInt64( 2 ) ) );
+        name.FSetSequence( result.GetInt( 3 ) );
+        list.push_back( name );
+    }
+    return list;
+}
+
 idt recIndividual::FindEvent( idt indID, idt roleID )
 {
     if( indID == 0 || roleID == 0 ) return 0;
@@ -483,12 +515,12 @@ wxSQLite3Table recIndividual::GetRefEventsTable( idt perID )
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "SELECT event_id, role_id FROM"
-        "   (SELECT DISTINCT event_id, role_id FROM EventPersona EP"
+        "SELECT event_rec_id, role_id FROM"
+        "   (SELECT DISTINCT event_rec_id, role_id FROM EventPersona EP"
         "  INNER JOIN"
         "   (SELECT ref_per_id FROM LinkPersona WHERE ind_per_id="ID")"
         "  ON EP.per_id=ref_per_id)"
-        " INNER JOIN Event WHERE id=event_id"
+        " INNER JOIN EventRecord WHERE id=event_rec_id"
         " ORDER BY date_pt;",
         perID
     );

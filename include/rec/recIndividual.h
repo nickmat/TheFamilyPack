@@ -114,6 +114,8 @@ public:
     }
     idt GetPersona() const { return f_per_id; }
 
+    static recNameVec ReadNames( idt indID );
+    recNameVec ReadNames() const { return ReadNames( f_id ); }
 
     static wxString GetFullName( idt id );
     static wxString GetSurname( idt id );

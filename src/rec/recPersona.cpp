@@ -152,20 +152,21 @@ recNameVec recPersona::ReadNames( idt perID )
     }
 
     sql.Format(
-        "SELECT id, style_id, sequence FROM Name WHERE per_id="ID" "
+        "SELECT id, ind_id, style_id, sequence FROM Name WHERE per_id="ID" "
         "ORDER BY sequence;",
         perID
     );
     result = s_db->GetTable( sql );
 
-    name.f_per_id = perID;
+    name.FSetPerID( perID );
     list.reserve( result.GetRowCount() );
     for( int i = 0 ; i < result.GetRowCount() ; i++ )
     {
         result.SetRow( i );
-        name.f_id         = GET_ID( result.GetInt64( 0 ) );
-        name.f_style_id   = GET_ID( result.GetInt64( 1 ) );
-        name.f_sequence = (unsigned) result.GetInt( 2 );
+        name.FSetID( GET_ID( result.GetInt64( 0 ) ) );
+        name.FSetIndID( GET_ID( result.GetInt64( 1 ) ) );
+        name.FSetTypeID( GET_ID( result.GetInt64( 2 ) ) );
+        name.FSetSequence( result.GetInt( 3 ) );
         list.push_back( name );
     }
     return list;

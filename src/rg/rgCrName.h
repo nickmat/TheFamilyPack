@@ -46,11 +46,12 @@ public:
 
     idt GetNameID() const { return m_name.FGetID(); }
 
-    void SetPersonaID( idt perID ) { m_name.f_per_id = perID; }
-    void SetPerSeq( int seq ) { m_name.FSetPerSeq( seq ); }
+    void SetIndividualID( idt indID ) { m_name.FSetIndID( indID ); }
+    void SetPersonaID( idt perID ) { m_name.FSetPerID( perID ); }
+    void SetNextSequence() { m_name.SetNextSequence(); }
     void SetGiven( const wxString& given ) { m_given = given; }
     void SetSurname( const wxString& sur ) { m_surname = sur; }
-    void SetType( recNameStyle::Style type ) { m_name.f_style_id = type; }
+    void SetTypeID( idt typeID ) { m_name.FSetTypeID( typeID ); }
 
 private:
     bool TransferDataToWindow();

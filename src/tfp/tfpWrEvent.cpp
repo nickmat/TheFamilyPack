@@ -44,9 +44,6 @@
 
 #include "tfpWr.h"
 
-//static wxString tfpWriteIndEventPage( idt eventID, rgCompareEvent* ce );
-//static wxString tfpWriteRefEventPage( idt eventID );
-
 wxString GetSexClassPer( idt perID )
 {
     Sex sex = recPersona::GetSex( perID );
@@ -270,19 +267,17 @@ wxString tfpWriteEventPage( idt eventID, rgCompareEvent* ce )
                "<th>Role</th>\n<th>Individual</th>\n<th>Note</th>\n</tr>\n";
         for( size_t i = 0 ; i < ies.size() ; i++ ) {
             recIndividual ind(ies[i].FGetIndID());
-            recPersona per( recIndividual::GetPersona( ind.FGetID() ) );
-            htm << "<tr>\n<td>" << recEventTypeRole::GetName( ies[i].FGetRoleID() )
+            htm 
+                << "<tr>\n<td>" << recEventTypeRole::GetName( ies[i].FGetRoleID() )
                 << "</td>\n<td class='" << GetSexClass( ind.FGetID() ) 
                 << "'>\n<b><a href='tfp:I" << ind.FGetID() 
-                << "'>" << per.GetNameStr()
-                << "</a></b>";
-            recIdVec indIDs = per.GetIndividualIDs();
-            for( size_t j = 0 ; j < indIDs.size() ; j++ ) {
-                htm << " <a href='tfpc:MR" << indIDs[j]
-                    << "'><img src='memory:fam.png' alt='Family'></a>";
-            }
-            htm << "</td>\n<td>" << ies[i].f_note
-                << " </td>\n</tr>\n";
+                << "'>" << ind.FGetName()
+                << "</a></b>"
+               << " <a href='tfpc:MR" << ind.FGetID()
+               << "'><img src='memory:fam.png' alt='Family'></a>"
+               << "</td>\n<td>" << ies[i].f_note
+               << " </td>\n</tr>\n"
+           ;
         }
         htm << "</table>\n";
     }

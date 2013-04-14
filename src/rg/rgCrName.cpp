@@ -44,19 +44,21 @@
 
 idt rgCreateName( 
     wxWindow* parent,
+    idt indID,
     idt perID,
     unsigned flags, 
     const wxString& name1,
     const wxString& name2,
-    recNameStyle::Style type
+    idt typeID
 ) {
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
     idt nameID = 0;
 
     rgDlgCreateName* dialog = new rgDlgCreateName( parent );
+    dialog->SetIndividualID( indID );
     dialog->SetPersonaID( perID );
-    dialog->SetPerSeq( recPersona::GetMaxNameSeq( perID ) + 1 );
+    dialog->SetNextSequence();
     if( flags & rgCRNAME_Sur_Given ) {
         dialog->SetSurname( name1 );
         dialog->SetGiven( name2 );
@@ -66,7 +68,7 @@ idt rgCreateName(
         dialog->SetSurname( surname );
         dialog->SetGiven( given );
     }
-    dialog->SetType( type );
+    dialog->SetTypeID( typeID );
 
     if( dialog->ShowModal() == wxID_OK ) {
         recDb::ReleaseSavepoint( savepoint );
@@ -81,6 +83,7 @@ idt rgCreateName(
 //============================================================================
 //-------------------------[ rgDlgCreateName ]--------------------------------
 //============================================================================
+
 
 bool rgDlgCreateName::TransferDataToWindow()
 {

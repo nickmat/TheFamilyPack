@@ -47,11 +47,20 @@ enum {
     rgCRNAME_Default   = 0x000, // Use default settings to decode name1 string.
     rgCRNAME_Sur_Given = 0x001  // If given, name1 is surname, name2 is given name.
 };
-extern idt rgCreateName( wxWindow* wind, idt perID,
+extern idt rgCreateName( wxWindow* wind, idt indID, idt perID,
+    unsigned flags, const wxString& name1, const wxString& name2, idt typeID );
+inline idt rgCreatePersonaName( wxWindow* wind, idt perID,
     unsigned flags = rgCRNAME_Default, 
     const wxString& name1 = wxEmptyString,
     const wxString& name2 = wxEmptyString,
-    recNameStyle::Style type = recNameStyle::NS_Default );
+    idt typeID = (idt) recNameStyle::NS_Default )
+    { return rgCreateName( wind, 0, perID, flags, name1, name2, typeID ); }
+inline idt rgCreateIndividualName( wxWindow* wind, idt indID,
+    unsigned flags = rgCRNAME_Default, 
+    const wxString& name1 = wxEmptyString,
+    const wxString& name2 = wxEmptyString,
+    idt typeID = (idt) recNameStyle::NS_Default )
+    { return rgCreateName( wind, indID, 0, flags, name1, name2, typeID ); }
 
 // See src/rg/rgEdContact.cpp
 extern bool rgEditContact( wxWindow* wind, idt conID );

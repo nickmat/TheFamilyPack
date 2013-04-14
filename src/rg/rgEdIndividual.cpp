@@ -202,7 +202,7 @@ void rgDlgEditIndividual::OnPageChanged( wxBookCtrlEvent& event )
 
 void rgDlgEditIndividual::OnNameAddButton( wxCommandEvent& event )
 {
-    idt nameID = rgCreateName( this, m_persona.FGetID() );
+    idt nameID = rgCreateIndividualName( this, m_individual.FGetID() );
     if( nameID ) {
         UpdateNameList( nameID );
     }
@@ -252,10 +252,10 @@ void rgDlgEditIndividual::OnNameUpButton( wxCommandEvent& event )
     if( row == 0 ) {
         return; // Already at top
     }
-    int seq = m_names[row].FGetPerSeq();
-    m_names[row].FSetPerSeq( m_names[row-1].FGetPerSeq() );
+    int seq = m_names[row].FGetSequence();
+    m_names[row].FSetSequence( m_names[row-1].FGetSequence() );
     m_names[row].Save();
-    m_names[row-1].FSetPerSeq( seq );
+    m_names[row-1].FSetSequence( seq );
     m_names[row-1].Save();
     UpdateNameList( m_names[row].FGetID() );
 }
@@ -270,10 +270,10 @@ void rgDlgEditIndividual::OnNameDownButton( wxCommandEvent& event )
     if( row == m_listName->GetItemCount() - 1 ) {
         return; // Already at bottom
     }
-    int seq = m_names[row].FGetPerSeq();
-    m_names[row].FSetPerSeq( m_names[row+1].FGetPerSeq() );
+    int seq = m_names[row].FGetSequence();
+    m_names[row].FSetSequence( m_names[row+1].FGetSequence() );
     m_names[row].Save();
-    m_names[row+1].FSetPerSeq( seq );
+    m_names[row+1].FSetSequence( seq );
     m_names[row+1].Save();
     UpdateNameList( m_names[row].FGetID() );
 }

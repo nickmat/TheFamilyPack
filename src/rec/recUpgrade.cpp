@@ -42,8 +42,8 @@
 const int recVerMajor    = 0;
 const int recVerMinor    = 0;
 const int recVerRev      = 10;
-const int recVerTest     = 3;
-const wxStringCharType* recVerStr = wxS("TFPD-0.0.10.3");
+const int recVerTest     = 4;
+const wxStringCharType* recVerStr = wxS("TFPD-0.0.10.4");
 
 //============================================================================
 //                 Code to upgrade old versions
@@ -220,7 +220,40 @@ void UpgradeTest0_0_10_2to0_0_10_3()
 
         "UPDATE Version SET test=3 WHERE id=1;\n"
         "COMMIT;\n"
-        "VACUUM;\n"
+    ;
+    recDb::GetDb()->ExecuteUpdate( query );
+}
+
+void UpgradeTest0_0_10_3to0_0_10_4()
+{
+    // Version 0.0.10.3 to 0.0.10.4
+    // Add column ind_id to table Name.
+
+    char* query =
+        "BEGIN;\n"
+
+        "ALTER TABLE Name RENAME TO OldName;\n"
+        "CREATE TABLE Name (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  ind_id INTEGER NOT NULL,\n"
+        "  per_id INTEGER NOT NULL,\n"
+        "  style_id INTEGER NOT NULL REFERENCES NameStyle(id),\n"
+        "  sequence INTEGER\n"
+        ");\n"
+        "INSERT INTO Name"
+        " (id, ind_id, per_id, style_id, sequence)"
+        " SELECT N.id, 0, N.per_id, N.style_id, N.sequence"
+        " FROM OldName N, Persona P WHERE"
+        " N.per_id=P.id AND P.ref_id<>0;\n"
+        "INSERT INTO Name"
+        " (id, ind_id, per_id, style_id, sequence)"
+        " SELECT N.id, I.id, 0, N.style_id, N.sequence"
+        " FROM OldName N, Persona P, Individual I"
+        " WHERE N.per_id=P.id AND P.ref_id=0 AND P.id=I.per_id;\n"
+        "DROP TABLE OldName;\n"
+
+        "UPDATE Version SET test=4 WHERE id=1;\n"
+        "COMMIT;\n"
     ;
     recDb::GetDb()->ExecuteUpdate( query );
 }
@@ -232,6 +265,7 @@ void UpgradeRev0_0_10toCurrent( int test )
     case 0: UpgradeTest0_0_10_0to0_0_10_1();  // Fall thru intended
     case 1: UpgradeTest0_0_10_1to0_0_10_2();
     case 2: UpgradeTest0_0_10_2to0_0_10_3();
+    case 3: UpgradeTest0_0_10_3to0_0_10_4();
     }
 }
 

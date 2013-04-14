@@ -1565,9 +1565,9 @@ bool TfpFrame::DisplayHtmPage( const wxString& name )
 {
     wxBusyCursor wait;
 
-    SetTitle( wxString::Format( m_titleFmt, name ) );
     wxString text = GetDisplayText( name );
     if( !text.IsEmpty() ) {
+        SetTitle( wxString::Format( m_titleFmt, name ) );
         PushHtmName( name );
         m_browser->SetPage( text, "" );
         RefreshEditMenu();

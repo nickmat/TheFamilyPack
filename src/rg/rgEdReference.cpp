@@ -142,7 +142,7 @@ idt rgSelectCreatePersonaFromReference( wxWindow* wind, idt refID )
             per.FSetSex( sex );
             per.Save();
             perID = per.FGetID();
-            idt nameID = rgCreateName( wind, perID );
+            idt nameID = rgCreatePersonaName( wind, perID );
             if( nameID ) {
                 recReferenceEntity::Create( refID, recReferenceEntity::TYPE_Name, nameID );
             } else {
@@ -353,7 +353,7 @@ void rgDlgEditReference::OnPersonaAddMenuOp( wxCommandEvent& event )
         break;
     }
     per.Save();
-    idt nameID = rgCreateName( this, per.FGetID() );
+    idt nameID = rgCreatePersonaName( this, per.FGetID() );
     if( nameID ) {
         recDb::ReleaseSavepoint( savepoint );
         idt reID = CreateRefEntity( recReferenceEntity::TYPE_Name, nameID );
@@ -428,7 +428,7 @@ void rgDlgEditReference::OnNewName( wxCommandEvent& event )
     }
 
     wxString nameStr = m_textCtrlStatement->GetStringSelection();
-    idt nameID = rgCreateName( this, perID, rgCRNAME_Default, nameStr );
+    idt nameID = rgCreatePersonaName( this, perID, rgCRNAME_Default, nameStr );
     if( nameID ) {
         recDb::ReleaseSavepoint( savepoint );
         idt reID = CreateRefEntity( recReferenceEntity::TYPE_Name, nameID );
@@ -693,7 +693,7 @@ idt rgDlgEditReference::SelectCreatePersona()
             per.FSetSex( sex );
             per.Save();
             perID = per.FGetID();
-            idt nameID = rgCreateName( this, perID );
+            idt nameID = rgCreatePersonaName( this, perID );
             if( nameID ) {
                 CreateRefEntity( recReferenceEntity::TYPE_Name, nameID );
             } else {

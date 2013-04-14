@@ -42,7 +42,6 @@ typedef std::vector< recNameStyle >     recNameStyleVec;
 typedef std::vector< recNamePart >      recNamePartVec;
 typedef std::vector< recNamePartType >  recNamePartTypeVec;
 
-//----------------------------------------------------------
 
 enum recStdNameType  // These match the create.sql file
 {
@@ -53,9 +52,14 @@ enum recStdNameType  // These match the create.sql file
     NAME_TYPE_Max        = 4
 };
 
+//============================================================================
+//-------------------------[ recName ]----------------------------------------
+//============================================================================
+
 class recName : public recDb
 {
 public:
+    idt  f_ind_id;
     idt  f_per_id;
     idt  f_style_id;
     int  f_sequence;
@@ -69,13 +73,15 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "Name" );
 
+    idt FGetIndID() const { return f_ind_id; }
     idt FGetPerID() const { return f_per_id; }
     idt FGetTypeID() const { return f_style_id; }
-    int FGetPerSeq() const { return f_sequence; }
+    int FGetSequence() const { return f_sequence; }
 
+    void FSetIndID( idt indID ) { f_ind_id = indID; }
     void FSetPerID( idt perID ) { f_per_id = perID; }
     void FSetTypeID( idt typeID ) { f_style_id = typeID; }
-    void FSetPerSeq( int perSeq ) { f_sequence = perSeq; }
+    void FSetSequence( int seq ) { f_sequence = seq; }
 
     static wxString GetIdStr( idt nameID ) { return wxString::Format( "N"ID, nameID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
@@ -92,14 +98,15 @@ public:
     static wxString GetNameStr( idt id );
     wxString GetNameStr() const { return GetNameStr( f_id ); }
 
-
-
     static wxString GetNamePartStr( idt nameID, idt partID );
     wxString GetNamePartStr( idt partID ) const
         { return GetNamePartStr( f_id, partID ); }
     static wxString GetSurname( idt id ) 
         { return GetNamePartStr( id, NAME_TYPE_Surname ); }
     wxString GetSurname() const { return GetNamePartStr( NAME_TYPE_Surname ); }
+
+    static int GetNextSequence( idt indID, idt perID );
+    void SetNextSequence() { f_sequence = GetNextSequence( f_ind_id, f_per_id ); }
 
     bool FindPersona( idt perID, idt styleID = 0 );
 
@@ -110,6 +117,7 @@ public:
 inline bool recEquivalent( const recName& r1, const recName& r2 )
 {
     return
+        r1.f_ind_id   == r2.f_ind_id   &&
         r1.f_per_id   == r2.f_per_id   &&
         r1.f_style_id == r2.f_style_id &&
         r1.f_sequence == r2.f_sequence;
@@ -125,7 +133,10 @@ inline bool operator!=( const recName& r1, const recName& r2 )
     return !(r1 == r2);
 }
 
-//----------------------------------------------------------
+
+//============================================================================
+//-------------------------[ recNamePart ]------------------------------------
+//============================================================================
 
 class recNamePart : public recDb
 {
@@ -185,7 +196,10 @@ inline bool operator!=( const recNamePart& r1, const recNamePart& r2 )
     return !(r1 == r2);
 }
 
-//----------------------------------------------------------
+
+//============================================================================
+//-------------------------[ recNamePartType ]--------------------------------
+//============================================================================
 
 class recNamePartType : public recDb
 {
@@ -238,7 +252,10 @@ inline bool operator!=( const recNamePartType& r1, const recNamePartType& r2 )
     return !(r1 == r2);
 }
 
-//----------------------------------------------------------
+
+//============================================================================
+//-------------------------[ recNameStyle ]-----------------------------------
+//============================================================================
 
 class recNameStyle : public recDb
 {

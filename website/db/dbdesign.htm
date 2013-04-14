@@ -730,19 +730,24 @@
      <td>Unique key identifying a Name.</td>
     </tr>
     <tr>
+     <td>ind_id</td>
+     <td>Integer Not null FK</td>
+     <td>Pointer to a Individual ID.</td>
+    </tr>
+    <tr>
      <td>per_id</td>
-     <td>Integer Not null</td>
-     <td>Pointer to a Person ID.</td>
+     <td>Integer Not null FK</td>
+     <td>Pointer to a Persona ID. Either the ind_id or per_id column should be 0.</td>
     </tr>
     <tr>
      <td>style_id</td>
      <td>Integer Not null FK</td>
-     <td>Identifier that indicates to which NameStyle this name belongs.</td>
+     <td>Pointer to a NameStyle ID to indicate the type of name, ie Married or Alias etc.</td>
     </tr>
     <tr>
      <td>sequence</td>
      <td>Integer</td>
-     <td>Sequence of the Name within the Persona. The default name is the first in the list.</td>
+     <td>Sequence of the Name within the Individual or Persona. The default name is the first in the list.</td>
     </tr>
 
     <tr id="NamePart">
