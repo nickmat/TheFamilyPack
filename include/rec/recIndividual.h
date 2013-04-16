@@ -63,11 +63,12 @@ enum {
 class recIndividual : public recDb
 {
 public:
+    Sex      f_sex;
+    wxString f_name;
     wxString f_surname;
-    wxString f_given;
     wxString f_epitaph;
+    wxString f_note;
     idt      f_fam_id;
-    idt      f_per_id;
 
     recIndividual() {}
     recIndividual( idt id ) : recDb(id) { Read(); }
@@ -81,38 +82,31 @@ public:
     static wxString GetIdStr( idt indID ) { return wxString::Format( "I"ID, indID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
+    Sex FGetSex() const { return f_sex; }
+    wxString FGetName() const { return f_name; }
     wxString FGetSurname() const { return f_surname; }
-    wxString FGetName() const { return f_given; }
     wxString FGetEpitaph() const { return f_epitaph; }
+    wxString FGetNote() const { return f_note; }
     idt FGetFamID() const { return f_fam_id; }
-    idt FGetPerID() const { return f_per_id; }
 
+    void FSetSex( Sex sex ) { f_sex = sex; }
+    void FSetName( const wxString& name ) { f_name = name; }
     void FSetSurname( const wxString& surname ) { f_surname = surname; }
-    void FSetName( const wxString& name ) { f_given = name; }
     void FSetEpitaph( const wxString& epitaph ) { f_epitaph = epitaph; }
+    void FSetNote( const wxString& note ) { f_note = note; }
     void FSetFamID( idt famID ) { f_fam_id = famID; }
-    void FSetPerID( idt perID ) { f_per_id = perID; }
 
     static recIndividualVec ReadVec( unsigned sexfilter = recInd_FILTER_SexAll );
-
-    bool ReadPersona( idt perID );
 
     void UpdateDateEpitaph();
     void UpdateNames();
     void UpdateDefaultFamily();
     void Update();
     static void Update( idt indID );
-    wxString GetFullName() { return f_given; }
+    wxString GetFullName() { return f_name; }
 
-    static idt GetDefaultFamily( idt indID ) {
-        if( indID == 0 ) return 0;
-        return ExecuteID( "SELECT fam_id FROM Individual WHERE id="ID";", indID );
-    }
-    static idt GetPersona( idt indID ) {
-        if( indID == 0 ) return 0;
-        return ExecuteID( "SELECT per_id FROM Individual WHERE id="ID";", indID );
-    }
-    idt GetPersona() const { return f_per_id; }
+    static idt GetDefaultFamily( idt indID ); 
+    idt GetDefaultFamily() const { return FGetFamID(); } 
 
     static recNameVec ReadNames( idt indID );
     recNameVec ReadNames() const { return ReadNames( f_id ); }
@@ -121,9 +115,8 @@ public:
     static wxString GetSurname( idt id );
     static wxString GetDateEpitaph( idt id );
     static wxString GetFullNameEpitaph( idt id );
-    wxString GetFullNameEpitaph() const { return f_given + " " + f_epitaph; }
-    static Sex GetSex( idt id ) { return recPersona::GetSex( GetPersona( id ) ); }
-    Sex GetSex() { return recPersona::GetSex( f_per_id ); }
+    wxString GetFullNameEpitaph() const { return f_name + " " + f_epitaph; }
+    static Sex GetSex( idt id ) { recIndividual ind(id); return ind.f_sex; }
 
     static idt FindEvent( idt indID, idt roleID );
     idt FindEvent( idt roleID ) const { return FindEvent( f_id, roleID ); }
@@ -139,7 +132,7 @@ public:
     static idt GetDeathEvent( idt id ) { return FindEvent( id, recEventTypeRole::ROLE_Death_Died ); }
     static idt GetNrDeathEvent( idt id ) { return FindEvent( id, recEventType::ETYPE_Grp_Nr_Death ); }
 
-    static recFamilyVec GetFamilyList( idt ind );
+    static recFamilyVec GetFamilyList( idt indID );
     recFamilyVec GetFamilyList() const { return GetFamilyList( f_id ); }
     static recFamilyVec GetParentList( idt indID );
     recFamilyVec GetParentList() const { return GetParentList( f_id ); }
@@ -148,14 +141,14 @@ public:
     recIndEventVec GetEvents( recEventOrder order = recEO_DatePt ) const
         { return GetEvents( f_id, order ); }
 
-    wxSQLite3Table GetRefEventsTable() const { return GetRefEventsTable( f_per_id ); }
-    static wxSQLite3Table GetRefEventsTable( idt perID );
+    wxSQLite3Table GetRefEventsTable() const { return GetRefEventsTable_( f_id ); }
+    static wxSQLite3Table GetRefEventsTable_( idt indID );
 
-    wxSQLite3Table GetReferencesTable() const { return GetReferencesTable( f_per_id ); }
-    static wxSQLite3Table GetReferencesTable( idt perID );
+    wxSQLite3Table GetReferencesTable() const { return GetReferencesTable_( f_id ); }
+    static wxSQLite3Table GetReferencesTable_( idt indID );
 
-    wxArrayString GetEventIdStrList( idt etrID ) const { GetEventIdStrList( f_per_id, etrID ); }
-    static wxArrayString GetEventIdStrList( idt perID, idt etrID );
+    wxArrayString GetEventIdStrList( idt etrID ) const { GetEventIdStrList_( f_id, etrID ); }
+    static wxArrayString GetEventIdStrList_( idt indID, idt etrID );
 
     static wxSQLite3ResultSet GetSurnameList() {
         return s_db->ExecuteQuery(
@@ -181,11 +174,12 @@ public:
 inline bool recEquivalent( const recIndividual& r1, const recIndividual& r2 )
 {
     return
-        r1.f_surname     == r2.f_surname      &&
-        r1.f_given       == r2.f_given        &&
-        r1.f_epitaph     == r2.f_epitaph      &&
-        r1.f_fam_id      == r2.f_fam_id       &&
-        r1.f_per_id      == r2.f_per_id;
+        r1.f_sex     == r2.f_sex     &&   
+        r1.f_name    == r2.f_name    &&
+        r1.f_surname == r2.f_surname &&
+        r1.f_epitaph == r2.f_epitaph &&
+        r1.f_note    == r2.f_note    &&
+        r1.f_fam_id  == r2.f_fam_id;
 }
 
 inline bool operator==( const recIndividual& r1, const recIndividual& r2 )
@@ -249,7 +243,7 @@ public:
     static recFamilyEventVec GetEvents( idt famID );
     recFamilyEventVec GetEvents() const { return GetEvents( f_id ); }
 
-    wxArrayString GetMarriageEventTable() const;
+//    wxArrayString GetMarriageEventTable() const;
 
     static int GetMaxEventSeqNumber( idt famID );
     int GetMaxEventSeqNumber() const { return GetMaxEventSeqNumber( f_id ); }

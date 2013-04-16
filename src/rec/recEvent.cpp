@@ -359,15 +359,13 @@ recEventRecordVec recEvent::FindEquivRefEvents( idt indEventID )
         "SELECT id, title, type_id, date1_id, date2_id, place_id, note FROM "
         "  EventRecord "
         "JOIN "
-        "  (SELECT DISTINCT event_rec_id FROM "
-        "   (SELECT EP.event_rec_id, LP.ind_per_id FROM "
-        "   LinkPersona LP, EventPersona EP, Event E, EventTypeRole R "
-        "   WHERE LP.ref_per_id=EP.per_id AND EP.role_id=R.id AND E.id="ID" "
-        "    AND R.type_id=E.type_id AND NOT R.prime=0) "
-        "  JOIN "
-        "   (SELECT I.per_id FROM IndividualEvent IE, Individual I"
-        "    WHERE IE.ind_id=I.id AND IE.event_id="ID") "
-        "  ON ind_per_id=per_id) "
+        "   (SELECT EP.event_rec_id FROM "
+        "   IndividualEvent IE, IndividualPersona IP, EventPersona EP "
+        "   WHERE IE.event_id="ID
+        "     AND IP.ind_id=IE.ind_id "
+        "     AND EP.per_id=IP.per_id "
+        "     AND IE.role_id=EP.role_id "
+        "    GROUP BY event_rec_id) "
         "ON id=event_rec_id;",
         indEventID, indEventID
     );

@@ -178,6 +178,22 @@ int recName::AddNamePart( const wxString& nameStr, recStdNameType type, int seq 
     return part.f_sequence;
 }
 
+idt recName::GetDefaultNameID( idt indID, idt perID )
+{
+    wxString str;
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "SELECT id FROM Name WHERE ind_id="ID" AND per_id="ID" ORDER BY sequence;",
+        indID, perID
+    );
+    wxSQLite3Table result = s_db->GetTable( sql );
+    if( result.GetRowCount() > 0 ) {
+        return GET_ID( result.GetInt64( 0 ) );
+    }
+    return 0;
+}
+
 void recName::RemoveFromDatabase( idt id )
 {
     if( id == 0 ) return;

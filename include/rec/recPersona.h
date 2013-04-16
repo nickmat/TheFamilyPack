@@ -75,8 +75,8 @@ public:
 
     static Sex GetSex( idt id );
 
-    static idt GetDefaultNameID( idt id );
-    idt GetDefaultNameID() const { return GetDefaultNameID( f_id ); }
+    static idt GetDefaultNameID( idt perID ) { return recName::GetDefaultNameID( 0, perID ); }
+    idt GetDefaultNameID() const { return recName::GetDefaultNameID( 0, f_id ); }
     static wxString GetNameStr( idt id ) 
         { return recName::GetNameStr( GetDefaultNameID( id ) ); }
     wxString GetNameStr() const { return GetNameStr( f_id ); }

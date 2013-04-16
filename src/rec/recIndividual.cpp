@@ -52,22 +52,24 @@
 
 recIndividual::recIndividual( const recIndividual& i )
 {
-    f_id          = i.f_id;
-    f_surname     = i.f_surname;
-    f_given       = i.f_given;
-    f_epitaph     = i.f_epitaph;
-    f_fam_id      = i.f_fam_id;
-    f_per_id      = i.f_per_id;
+    f_id      = i.f_id;
+    f_sex     = i.f_sex;
+    f_name    = i.f_name;
+    f_surname = i.f_surname;
+    f_epitaph = i.f_epitaph;
+    f_note    = i.f_note;
+    f_fam_id  = i.f_fam_id;
 }
 
 void recIndividual::Clear()
 {
-    f_id          = 0;
-    f_surname     = wxEmptyString;
-    f_given       = wxEmptyString;
-    f_epitaph     = wxEmptyString;
-    f_fam_id      = 0;
-    f_per_id      = 0;
+    f_id      = 0;
+    f_sex     = SEX_Unstated;
+    f_name    = wxEmptyString;
+    f_surname = wxEmptyString;
+    f_epitaph = wxEmptyString;
+    f_note    = wxEmptyString;
+    f_fam_id  = 0;
 }
 
 void recIndividual::Save()
@@ -81,11 +83,10 @@ void recIndividual::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO Individual (surname, given, epitaph, "
-            "fam_id, per_id) VALUES "
-            "('%q', '%q', '%q', "ID", "ID");",
-            UTF8_(f_surname), UTF8_(f_given), UTF8_(f_epitaph),
-            f_fam_id, f_per_id
+            "INSERT INTO Individual (sex, name, surname, epitaph, note, fam_id)"
+            " VALUES (%u, '%q', '%q', '%q', '%q', "ID");",
+            f_sex, UTF8_(f_name), UTF8_(f_surname), UTF8_(f_epitaph),
+            UTF8_(f_note), f_fam_id
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -95,19 +96,19 @@ void recIndividual::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO Individual (id, surname, given, epitaph, "
-                "fam_id, per_id) "
-                "VALUES ("ID", '%q', '%q', '%q', "ID", "ID");",
-                f_id, UTF8_(f_surname), UTF8_(f_given), UTF8_(f_epitaph),
-                f_fam_id, f_per_id
+                "INSERT INTO Individual (id, sex, name, surname, epitaph, note, fam_id)"
+                " VALUES ("ID", %u, '%q', '%q', '%q', '%q', "ID");",
+                f_id, f_sex, UTF8_(f_name), UTF8_(f_surname), UTF8_(f_epitaph),
+                UTF8_(f_note), f_fam_id
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE Individual SET surname='%q', given='%q', "
-                "epitaph='%q', fam_id="ID", per_id="ID" WHERE id="ID";",
-                UTF8_(f_surname), UTF8_(f_given), UTF8_(f_epitaph),
-                f_fam_id, f_per_id, f_id
+                "UPDATE Individual"
+                " SET sex=%u, name='%q', surname='%q', epitaph='%q', note='%q', fam_id="ID""
+                " WHERE id="ID";",
+                f_sex, UTF8_(f_name), UTF8_(f_surname), UTF8_(f_epitaph), UTF8_(f_note),
+                f_fam_id, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -125,8 +126,8 @@ bool recIndividual::Read()
     }
 
     sql.Format(
-        "SELECT surname, given, epitaph, fam_id, per_id "
-        "FROM Individual WHERE id="ID";", f_id
+        "SELECT sex, name, surname, epitaph, note, fam_id"
+        " FROM Individual WHERE id="ID";", f_id
     );
     result = s_db->GetTable( sql );
 
@@ -136,46 +137,47 @@ bool recIndividual::Read()
         return false;
     }
     result.SetRow( 0 );
-    f_surname     = result.GetAsString( 0 );
-    f_given       = result.GetAsString( 1 );
-    f_epitaph     = result.GetAsString( 2 );
-    f_fam_id      = GET_ID( result.GetInt64( 3 ) );
-    f_per_id      = GET_ID( result.GetInt64( 4 ) );
+    f_sex     = (Sex) result.GetInt( 0 );
+    f_name    = result.GetAsString( 1 );
+    f_surname = result.GetAsString( 2 );
+    f_epitaph = result.GetAsString( 3 );
+    f_note    = result.GetAsString( 4 );
+    f_fam_id  = GET_ID( result.GetInt64( 5 ) );
     return true;
 }
 
 recIndividualVec recIndividual::ReadVec( unsigned sexfilter )
 {
     wxString query =
-        "SELECT I.id, I.surname, I.given, I.epitaph, I.fam_id, I.per_id FROM ";
-    wxString queryMid = "Individual I, Persona P WHERE I.per_id=P.id AND ";
+        "SELECT id, sex, name, surname, epitaph, note, fam_id FROM ";
+    wxString queryMid = "Individual WHERE ";
     if( sexfilter == recInd_FILTER_SexAll ) {
-        query << "Individual I ";
+        query << "Individual ";
     } else if( sexfilter == recInd_FILTER_SexMalePlus ) {
-        query << queryMid << "NOT P.sex=2 ";
+        query << queryMid << "NOT sex=2 ";
     } else if( sexfilter == recInd_FILTER_SexFemalePlus ) {
-        query << queryMid << "NOT P.sex=1 ";
+        query << queryMid << "NOT sex=1 ";
     } else {
         bool started = false;
         query << queryMid;
         if( sexfilter & recInd_FILTER_SexUnstated ) {
             if( started ) query << "OR "; else started = true;
-            query << "P.sex=0 ";
+            query << "sex=0 ";
         }
         if( sexfilter & recInd_FILTER_SexMale ) {
             if( started ) query << "OR "; else started = true;
-            query << "P.sex=1 ";
+            query << "sex=1 ";
         }
         if( sexfilter & recInd_FILTER_SexFemale ) {
             if( started ) query << "OR "; else started = true;
-            query << "P.sex=2 ";
+            query << "sex=2 ";
         }
         if( sexfilter & recInd_FILTER_SexUnknown ) {
             if( started ) query << "OR "; else started = true;
-            query << "P.sex=3 ";
+            query << "sex=3 ";
         }
     }
-    query << "ORDER BY surname, given, epitaph, I.id;";
+    query << "ORDER BY surname, name, epitaph, id;";
 
     wxSQLite3ResultSet result = s_db->ExecuteQuery( query ); 
 
@@ -183,16 +185,17 @@ recIndividualVec recIndividual::ReadVec( unsigned sexfilter )
     recIndividualVec inds;
     while( result.NextRow() ) {
         ind.f_id      = GET_ID( result.GetInt64( 0 ) );
-        ind.f_surname = result.GetAsString( 1 );
-        ind.f_given   = result.GetAsString( 2 );
-        ind.f_epitaph = result.GetAsString( 3 );
-        ind.f_fam_id  = GET_ID( result.GetInt64( 4 ) );
-        ind.f_per_id  = GET_ID( result.GetInt64( 5 ) );
+        ind.f_sex     = (Sex) result.GetInt( 1 );
+        ind.f_name    = result.GetAsString( 2 );
+        ind.f_surname = result.GetAsString( 3 );
+        ind.f_epitaph = result.GetAsString( 4 );
+        ind.f_note    = result.GetAsString( 5 );
+        ind.f_fam_id  = GET_ID( result.GetInt64( 6 ) );
         inds.push_back( ind );
     }
     return inds;
 }
-
+#if 0
 bool recIndividual::ReadPersona( idt perID )
 {
     wxSQLite3StatementBuffer sql;
@@ -223,6 +226,7 @@ bool recIndividual::ReadPersona( idt perID )
     f_fam_id      = GET_ID( result.GetInt64( 4 ) );
     return true;
 }
+#endif
 
 void recIndividual::UpdateDateEpitaph()
 {
@@ -259,14 +263,14 @@ void recIndividual::UpdateDateEpitaph()
 
 void recIndividual::UpdateNames()
 {
-    if( f_per_id == 0 ) return;
+//    if( f_per_id == 0 ) return;
 
-    idt nameID = recPersona::GetDefaultNameID( f_per_id );
+    idt nameID = recName::GetDefaultNameID( f_id, 0 );
     f_surname = recName::GetSurname( nameID );
     if( f_surname.length() == 0 ) f_surname = "?";
 //    f_given = recName::GetNamePartStr( nameID, NAME_TYPE_Given_name );
-    f_given = recName::GetNameStr( nameID );
-    if( f_given.length() == 0 ) f_given = "? ?";
+    f_name = recName::GetNameStr( nameID );
+    if( f_name.length() == 0 ) f_name = "? ?";
 }
 
 void recIndividual::UpdateDefaultFamily()
@@ -304,7 +308,7 @@ wxString recIndividual::GetFullName( idt id )
     wxSQLite3StatementBuffer sql;
     wxSQLite3ResultSet result;
 
-    sql.Format( "SELECT given FROM Individual WHERE id="ID";", id );
+    sql.Format( "SELECT name FROM Individual WHERE id="ID";", id );
     result = s_db->ExecuteQuery( sql );
     return result.GetAsString( 0 );
 }
@@ -335,16 +339,22 @@ wxString recIndividual::GetFullNameEpitaph( idt id )
     wxSQLite3StatementBuffer sql;
     wxSQLite3ResultSet result;
 
-    sql.Format( "SELECT given, epitaph FROM Individual WHERE id="ID";", id );
+    sql.Format( "SELECT name, epitaph FROM Individual WHERE id="ID";", id );
     result = s_db->ExecuteQuery( sql );
     str << result.GetAsString( 0 );
     wxString dates = result.GetAsString( 1 );
-    if( !dates.IsEmpty() ) {
+    if( dates.size() ) {
         str << " " << dates;
     }
 
     return str;
 }
+
+idt recIndividual::GetDefaultFamily( idt indID )
+{
+    return ExecuteID( "SELECT fam_id FROM Individual WHERE id="ID";", indID );
+}
+
 
 recNameVec recIndividual::ReadNames( idt indID )
 {
@@ -510,7 +520,7 @@ recIndEventVec recIndividual::GetEvents( idt indID, recEventOrder order )
 
 
 
-wxSQLite3Table recIndividual::GetRefEventsTable( idt perID )
+wxSQLite3Table recIndividual::GetRefEventsTable_( idt indID )
 {
     wxSQLite3StatementBuffer sql;
 
@@ -518,44 +528,44 @@ wxSQLite3Table recIndividual::GetRefEventsTable( idt perID )
         "SELECT event_rec_id, role_id FROM"
         "   (SELECT DISTINCT event_rec_id, role_id FROM EventPersona EP"
         "  INNER JOIN"
-        "   (SELECT ref_per_id FROM LinkPersona WHERE ind_per_id="ID")"
-        "  ON EP.per_id=ref_per_id)"
+        "   (SELECT per_id AS ip_per_id FROM IndividualPersona WHERE ind_id="ID")"
+        "  ON EP.per_id=ip_per_id)"
         " INNER JOIN EventRecord WHERE id=event_rec_id"
         " ORDER BY date_pt;",
-        perID
+        indID
     );
     return s_db->GetTable( sql );
 }
 
-wxSQLite3Table recIndividual::GetReferencesTable( idt perID )
+wxSQLite3Table recIndividual::GetReferencesTable_( idt indID )
 {
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
         "SELECT R.id, R.title "
-        "FROM LinkPersona LP, Persona P, Reference R "
-        "WHERE LP.ind_per_id="ID" AND LP.ref_per_id=P.id AND P.ref_id=R.id;",
-        perID
+        "FROM IndividualPersona IP, Persona P, Reference R "
+        "WHERE IP.ind_id="ID" AND IP.per_id=P.id AND P.ref_id=R.id;",
+        indID
     );
     return s_db->GetTable( sql );
 }
 
-wxArrayString recIndividual::GetEventIdStrList( idt perID, idt etrID )
+wxArrayString recIndividual::GetEventIdStrList_( idt indID, idt etrID )
 {
     wxArrayString list;
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
 
-    if( perID == 0 ) return list;
+    if( indID == 0 ) return list;
 
     sql.Format(
         "SELECT id, title, date1_id, place_id FROM Event "
         "WHERE id=("
         "SELECT event_id FROM EventPersona INNER JOIN "
-        "(SELECT ref_per_id AS ipp FROM LinkPersona WHERE ind_per_id="ID") Mip "
+        "(SELECT per_id AS ipp FROM IndividualPersona WHERE ind_id="ID") Mip "
         "ON per_id=Mip.ipp WHERE role_id=%d"
         ");",
-        perID, etrID
+        indID, etrID
     );
     result = s_db->GetTable( sql );
 
@@ -576,22 +586,22 @@ wxSQLite3ResultSet recIndividual::GetNameList( wxString surname )
     if( surname.length() == 0 ) {
         // Full list
         sql.Format(
-            "SELECT given, epitaph, id FROM Individual "
-            "ORDER BY surname, given, epitaph;"
+            "SELECT name, epitaph, id FROM Individual "
+            "ORDER BY surname, name, epitaph;"
         );
     } else if( surname.length() == 1 ) {
         // Name beginning with letter
         wxString name = surname + wxT("%");
         sql.Format(
-            "SELECT given, epitaph, id FROM Individual "
-            "WHERE surname LIKE '%q' ORDER BY surname, given, epitaph;",
+            "SELECT name, epitaph, id FROM Individual "
+            "WHERE surname LIKE '%q' ORDER BY surname, name, epitaph;",
             UTF8_(name)
         );
     } else {
         // All matching the given surname
         sql.Format(
-            "SELECT given, epitaph, id FROM Individual "
-            "WHERE surname='%q' ORDER BY surname, given, epitaph;",
+            "SELECT name, epitaph, id FROM Individual "
+            "WHERE surname='%q' ORDER BY surname, name, epitaph;",
             UTF8_(surname)
         );
     }
@@ -604,13 +614,13 @@ wxSQLite3Table recIndividual::GetNameTable( Sex sex )
 
     if( sex == SEX_Unstated ) {
         sql.Format(
-            "SELECT id, surname, given, epitaph FROM Individual "
-            "ORDER BY surname, given;"
+            "SELECT id, surname, name, epitaph FROM Individual "
+            "ORDER BY surname, name;"
         );
     } else {
         sql.Format(
-            "SELECT I.id, surname, given, epitaph FROM Individual I, Persona P "
-            "WHERE I.per_id=P.id AND P.sex=%d ORDER BY surname, given;", sex
+            "SELECT I.id, surname, name, epitaph FROM Individual "
+            "WHERE sex=%d ORDER BY surname, name;", sex
         );
     }
     return s_db->GetTable( sql );
@@ -662,10 +672,7 @@ int recIndividual::GetMaxEventSeqNumber( idt indID )
 bool recIndividual::CreateMissingFamilies()
 {
     wxSQLite3ResultSet result =
-        s_db->ExecuteQuery( 
-        "SELECT I.id, P.sex FROM Individual I, Persona P"
-        " WHERE I.per_id=P.id AND I.fam_id=0;"
-    );
+        s_db->ExecuteQuery( "SELECT id, sex FROM Individual WHERE fam_id=0;" );
 
     while( result.NextRow() ) {
         idt indID = GET_ID( result.GetInt64( 0 ) );
@@ -694,15 +701,18 @@ void recIndividual::RemoveFromDatabase()
 
     recFamilyVec families = GetFamilyList();
     sql.Format(
+        // TODO: Remove ContactList if orphaned
         "DELETE FROM FamilyIndividual WHERE ind_id="ID";"
         "DELETE FROM Family WHERE husb_id="ID" AND wife_id=0;"
         "DELETE FROM Family WHERE husb_id=0 AND wife_id="ID";"
-        "DELETE FROM IndividualEvent WHERE ind_id="ID";",
+        "DELETE FROM IndividualEvent WHERE ind_id="ID";"
+        "DELETE FROM IndividualPersona WHERE ind_id="ID";",
         f_id, f_id, f_id, f_id
     );
     s_db->ExecuteUpdate( sql );
 
-    recPersona::RemoveFromDatabase( f_per_id );
+//    recPersona::RemoveFromDatabase( f_per_id );
+    // TODO: Remove orphaned Name
     Delete();
     // TODO: Delete orphaned EventType and/or EventTypeRole 
     Clear();
@@ -849,7 +859,11 @@ bool recFamily::Decode( const wxString& str )
     return true;
 }
 
-void recFamily::SetMemberDefault() {
+void recFamily::SetMemberDefault() 
+{
+    // TODO: Do we really need this?
+    wxASSERT( false );
+#if 0
     if( f_husb_id ) {
         recIndividual ind(f_husb_id);
         if( ind.f_fam_id == 0 ) {
@@ -864,6 +878,7 @@ void recFamily::SetMemberDefault() {
             ind.Save();
         }
     }
+#endif
 }
 
 
@@ -1024,7 +1039,7 @@ recFamilyEventVec recFamily::GetEvents( idt famID )
     return fes;
 }
 
-
+#if 0
 wxArrayString recFamily::GetMarriageEventTable() const
 {
     wxArrayString list;
@@ -1063,6 +1078,7 @@ wxArrayString recFamily::GetMarriageEventTable() const
     }
     return list;
 }
+#endif
 
 int recFamily::GetMaxEventSeqNumber( idt famID )
 {

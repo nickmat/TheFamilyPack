@@ -35,47 +35,57 @@
 
 
 //============================================================================
-//                 recLinkPersona
+//                 recIndividualPersona
 //============================================================================
 
 
-class recLinkPersona : public recDb
+class recIndividualPersona : public recDb
 {
 public:
-    idt      f_ref_per_id;
-    idt      f_ind_per_id;
+    idt      f_ind_id;
+    idt      f_per_id;
     double   f_conf;
-    wxString f_comment;
+    wxString f_note;
 
-    recLinkPersona() {}
-    recLinkPersona( idt id ) : recDb(id) { Read(); }
-    recLinkPersona( const recLinkPersona& link );
+    recIndividualPersona() {}
+    recIndividualPersona( idt id ) : recDb(id) { Read(); }
+    recIndividualPersona( const recIndividualPersona& link );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "LinkPersona" );
+    TABLE_NAME_MEMBERS( "IndividualPersona" );
+
+    idt FGetIndID() const { return f_ind_id; }
+    idt FGetPerID() const { return f_per_id; }
+    double FGetConf() const { return f_conf; }
+    wxString FGetNote() const { return f_note; }
+
+    void FSetIndID( idt indID ) { f_ind_id = indID; }
+    void FSetPerID( idt perID ) { f_per_id = perID; }
+    void FSetConf( double conf ) { f_conf = conf; }
+    void FSetNote( const wxString& note ) { f_note = note; }
 
     bool Find();
 };
 
 /*! The two entities are equal, ignoring the record id.
  */
-inline bool recEquivalent( const recLinkPersona& d1, const recLinkPersona& d2 )
+inline bool recEquivalent( const recIndividualPersona& d1, const recIndividualPersona& d2 )
 {
     return
-        d1.f_ref_per_id  == d2.f_ref_per_id &&
-        d1.f_ind_per_id  == d2.f_ind_per_id &&
-        d1.f_conf        == d2.f_conf       &&
-        d1.f_comment     == d2.f_comment;
+        d1.f_ind_id == d2.f_ind_id &&
+        d1.f_per_id == d2.f_per_id &&
+        d1.f_conf   == d2.f_conf   &&
+        d1.f_note   == d2.f_note;
 }
 
-inline bool operator==( const recLinkPersona& d1, const recLinkPersona& d2 )
+inline bool operator==( const recIndividualPersona& d1, const recIndividualPersona& d2 )
 {
     return recEquivalent( d1, d2 ) && d1.f_id == d2.f_id;
 }
 
-inline bool operator!=( const recLinkPersona& d1, const recLinkPersona& d2 )
+inline bool operator!=( const recIndividualPersona& d1, const recIndividualPersona& d2 )
 {
     return !(d1 == d2);
 }

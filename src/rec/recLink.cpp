@@ -41,28 +41,28 @@
 
 
 //============================================================================
-//                 recLinkPersona
+//                 recIndividualPersona
 //============================================================================
 
-recLinkPersona::recLinkPersona( const recLinkPersona& d )
+recIndividualPersona::recIndividualPersona( const recIndividualPersona& d )
 {
-    f_id          = d.f_id;
-    f_ref_per_id  = d.f_ref_per_id;
-    f_ind_per_id  = d.f_ind_per_id;
-    f_conf        = d.f_conf;
-    f_comment     = d.f_comment;
+    f_id     = d.f_id;
+    f_ind_id = d.f_ind_id;
+    f_per_id = d.f_per_id;
+    f_conf   = d.f_conf;
+    f_note   = d.f_note;
 }
 
-void recLinkPersona::Clear()
+void recIndividualPersona::Clear()
 {
-    f_id          = 0;
-    f_ref_per_id  = 0;
-    f_ind_per_id  = 0;
-    f_conf        = 0;
-    f_comment     = wxEmptyString;
+    f_id     = 0;
+    f_ind_id = 0;
+    f_per_id = 0;
+    f_conf   = 0;
+    f_note   = wxEmptyString;
 }
 
-void recLinkPersona::Save()
+void recIndividualPersona::Save()
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -71,10 +71,10 @@ void recLinkPersona::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO LinkPersona "
-            "(ref_per_id, ind_per_id, conf, comment) "
+            "INSERT INTO IndividualPersona "
+            "(ind_id, per_id, conf, note) "
             "VALUES ("ID", "ID", %f, '%q');",
-            f_ref_per_id, f_ind_per_id, f_conf, UTF8_(f_comment)
+            f_ind_id, f_per_id, f_conf, UTF8_(f_note)
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -84,26 +84,26 @@ void recLinkPersona::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO LinkPersona "
-                "(id, ref_per_id, ind_per_id, conf, comment) "
+                "INSERT INTO IndividualPersona "
+                "(id, ind_id, per_id, conf, note) "
                 "VALUES ("ID", "ID", "ID", %f, '%q');",
-                f_id, f_ref_per_id, f_ind_per_id, f_conf, UTF8_(f_comment)
+                f_id, f_ind_id, f_per_id, f_conf, UTF8_(f_note)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE LinkPersona SET ref_per_id="ID", ind_per_id="ID", "
-                "conf=%f, comment='%q' "
+                "UPDATE IndividualPersona SET ind_id="ID", per_id="ID", "
+                "conf=%f, note='%q' "
                 "WHERE id="ID";",
-                f_ref_per_id, f_ind_per_id, f_conf,
-                UTF8_(f_comment), f_id
+                f_ind_id, f_per_id, f_conf,
+                UTF8_(f_note), f_id
             );
         }
         s_db->ExecuteUpdate( sql );
     }
 }
 
-bool recLinkPersona::Read()
+bool recIndividualPersona::Read()
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -114,8 +114,8 @@ bool recLinkPersona::Read()
     }
 
     sql.Format(
-        "SELECT ref_per_id, ind_per_id, conf, comment "
-        "FROM LinkPersona WHERE id="ID";",
+        "SELECT ind_id, per_id, conf, note"
+        " FROM IndividualPersona WHERE id="ID";",
         f_id
     );
     result = s_db->GetTable( sql );
@@ -126,27 +126,27 @@ bool recLinkPersona::Read()
         return false;
     }
     result.SetRow( 0 );
-    f_ref_per_id  = GET_ID( result.GetInt64( 0 ) );
-    f_ind_per_id  = GET_ID( result.GetInt64( 1 ) );
-    f_conf        = result.GetDouble( 2 );
-    f_comment     = result.GetAsString( 3 );
+    f_ind_id = GET_ID( result.GetInt64( 0 ) );
+    f_per_id = GET_ID( result.GetInt64( 1 ) );
+    f_conf   = result.GetDouble( 2 );
+    f_note   = result.GetAsString( 3 );
     return true;
 }
 
 /*! Given the per_id and ind_id settings, find the matching record
  *  and read in the full record.
  */
-bool recLinkPersona::Find()
+bool recIndividualPersona::Find()
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
 
-    if( f_ref_per_id == 0 || f_ind_per_id == 0 ) return false; // Only find single record
+    if( f_ind_id == 0 || f_per_id == 0 ) return false; // Only find single record
 
     sql.Format(
-        "SELECT id, conf, comment FROM LinkPersona "
-        "WHERE ref_per_id="ID" AND ind_per_id="ID";",
-        f_ref_per_id, f_ind_per_id
+        "SELECT id, conf, note FROM IndividualPersona "
+        "WHERE ind_id="ID" AND per_id="ID";",
+        f_ind_id, f_per_id
     );
     result = s_db->GetTable( sql );
 
@@ -154,7 +154,7 @@ bool recLinkPersona::Find()
     result.SetRow( 0 );
     f_id   = GET_ID( result.GetInt64( 0 ) );
     f_conf = result.GetDouble( 1 );
-    f_comment = result.GetAsString( 2 );
+    f_note = result.GetAsString( 2 );
     return true;
 }
 

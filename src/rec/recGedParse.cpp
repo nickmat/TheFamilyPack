@@ -51,40 +51,34 @@ class GedIndividual
 {
 private:
     recIndividual        m_ind;
-    recPersona           m_per;
     int                  m_nameSeq;
 
 public:
-    GedIndividual( idt indID ) : m_ind(0), m_per(0), m_nameSeq(0) { 
+    GedIndividual( idt indID ) : m_ind(0), m_nameSeq(0) { 
         m_ind.FSetID( indID );
-        m_per.Save(); 
-        m_ind.f_per_id = m_per.f_id;
         m_ind.Save();
     }
 
-    idt GetPersonaID() const { return m_per.f_id; }
     idt GetIndID() const { return m_ind.FGetID(); }
     int GetNameSeq() { return ++m_nameSeq; }
-    wxString GetNameStr() const { return m_per.GetNameStr(); }
+    wxString GetNameStr() const { return m_ind.FGetName(); }
     int GetEventSeq() const { return m_ind.GetMaxEventSeqNumber(); }
 
     void SetIndId( idt indID ) { m_ind.f_id = indID; }
-    void SetSex( Sex sex ) { m_per.f_sex = sex; }
+    void SetSex( Sex sex ) { m_ind.FSetSex( sex ); }
 
-    void Save() { m_per.Save(); m_ind.UpdateNames(); m_ind.Save(); }
+    void Save() { m_ind.UpdateNames(); m_ind.Save(); }
 };
 
 class GedFamily
 {
 private:
     recFamily m_fam;
-    idt       m_husbPerId;
-    idt       m_wifePerId;
     int       m_childSeq;
 
 public:
     GedFamily( idt famID ) 
-        : m_fam(0), m_husbPerId(0), m_wifePerId(0), m_childSeq(0) 
+        : m_fam(0), m_childSeq(0) 
     {
         m_fam.FSetID( famID );
         m_fam.Save();
@@ -92,11 +86,11 @@ public:
 
     void SetHusb( idt indID ) { 
         m_fam.f_husb_id = indID;
-        UpdateIndividual( &m_husbPerId, indID ); 
+        UpdateIndividual( indID ); 
     }
     void SetWife( idt indID ) { 
         m_fam.f_wife_id = indID;
-        UpdateIndividual( &m_wifePerId, indID );
+        UpdateIndividual( indID );
     }
 
     void AddChild( idt indID );
@@ -104,11 +98,11 @@ public:
     idt GetFamilyID() const { return m_fam.FGetID(); }
     idt GetHusbIndId() const { return m_fam.f_husb_id; }
     idt GetWifeIndId() const { return m_fam.f_wife_id; }
-    wxString GetHusbNameStr() const { return recPersona::GetNameStr( m_husbPerId ); }
-    wxString GetWifeNameStr() const { return recPersona::GetNameStr( m_wifePerId ); }
+    wxString GetHusbNameStr() const { return recIndividual::GetFullName( m_fam.FGetHusbID() ); }
+    wxString GetWifeNameStr() const { return recIndividual::GetFullName( m_fam.FGetWifeID() ); }
     int GetEventSeq() const { return m_fam.GetMaxEventSeqNumber(); }
 
-    void UpdateIndividual( idt* p_perID, idt indID );
+    void UpdateIndividual( idt indID );
     void Save() { m_fam.Save(); }
 };
 
@@ -388,7 +382,7 @@ void recGedParse::ReadIndi( int level )
 void recGedParse::ReadName( GedIndividual& gind, int level )
 {
     recName name(0);
-    name.f_per_id = gind.GetPersonaID();
+    name.f_ind_id = gind.GetIndID();
     name.f_sequence = gind.GetNameSeq();
     name.Save();
     wxString nameStr = m_text;
@@ -976,15 +970,13 @@ wxString recGedParse::ReadAddr( int level )
     return addr1;
 }
 
-
-void GedFamily::UpdateIndividual( idt* p_perID, idt indID )
+void GedFamily::UpdateIndividual( idt indID )
 {
     recIndividual ind(indID);
-    if( ind.f_fam_id == 0 ) {
-        ind.f_fam_id = m_fam.f_id;
+    if( ind.FGetFamID() == 0 ) {
+        ind.FSetFamID( m_fam.FGetID() );
         ind.Save();
     }
-    *p_perID = ind.f_per_id;
 }
 
 void GedFamily::AddChild( idt indID )

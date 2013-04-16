@@ -74,8 +74,6 @@ rgDlgEditIndividual::rgDlgEditIndividual( wxWindow* parent, idt indID )
     : m_individual(indID), m_order(recEO_DatePt),
     fbRgEditIndividual( parent )
 {
-    m_persona.ReadID( m_individual.GetPersona() );
-
     m_listName->InsertColumn( NC_Number, _("Number") );
     m_listName->InsertColumn( NC_Type, _("Type") );
     m_listName->InsertColumn( NC_Name, _("Name") );
@@ -92,8 +90,8 @@ bool rgDlgEditIndividual::TransferDataToWindow()
     wxASSERT( m_individual.FGetID() != 0 );
 
     m_staticTextEpitaph->SetLabel( m_individual.f_epitaph );
-    m_choiceSex->SetSelection( (int) m_persona.f_sex );
-    m_textCtrlNote->SetValue(  m_persona.f_note );
+    m_choiceSex->SetSelection( (int) m_individual.f_sex );
+    m_textCtrlNote->SetValue(  m_individual.f_note );
     m_staticIndID->SetLabel( m_individual.GetIdStr() );
 
     UpdateNameList();
@@ -106,9 +104,8 @@ bool rgDlgEditIndividual::TransferDataToWindow()
 
 bool rgDlgEditIndividual::TransferDataFromWindow()
 {
-    m_persona.f_sex = (Sex) m_choiceSex->GetSelection();
-    m_persona.f_note = m_textCtrlNote->GetValue();
-    m_persona.Save();
+    m_individual.f_sex = (Sex) m_choiceSex->GetSelection();
+    m_individual.f_note = m_textCtrlNote->GetValue();
 
     for( size_t i = 0 ; i < m_names.size() ; i++ ) {
         if( m_names[i].f_sequence != i+1 ) {
@@ -129,7 +126,7 @@ bool rgDlgEditIndividual::TransferDataFromWindow()
 
 void rgDlgEditIndividual::UpdateNameList( idt nameID )
 {
-    m_names = m_persona.ReadNames();
+    m_names = m_individual.ReadNames();
     m_listName->DeleteAllItems();
     int row = -1;
     for( size_t i = 0 ; i < m_names.size() ; i++ ) {
@@ -148,7 +145,7 @@ void rgDlgEditIndividual::UpdateNameList( idt nameID )
         m_listName->EnsureVisible( row );
     }
     // Check for name change.
-    wxString name = m_persona.GetNameStr();
+    wxString name = m_individual.GetFullName();
     if( name != m_nameStr ) {
         m_staticPerName->SetLabel( name );
         m_nameStr = name;

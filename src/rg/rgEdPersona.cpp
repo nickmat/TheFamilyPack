@@ -225,9 +225,9 @@ void rgDlgEditPersona::OnIndLinkButton( wxCommandEvent& event )
     idt indID = rgSelectIndividual( this );
     if( indID == 0 ) return;
 
-    recLinkPersona lp(0);
-    lp.f_ref_per_id = m_persona.f_id;
-    lp.f_ind_per_id = recIndividual::GetPersona( indID );
+    recIndividualPersona lp(0);
+    lp.f_ind_id = indID;
+    lp.f_per_id = m_persona.f_id;
     lp.f_conf = 0.999;
     lp.Save();
 

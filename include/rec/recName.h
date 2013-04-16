@@ -91,6 +91,8 @@ public:
     int AddNameParts( const wxString& nameStr, recStdNameType type = NAME_TYPE_Unstated, int seq = 0 ) const;
     int AddNamePart( const wxString& nameStr, recStdNameType type, int seq ) const;
 
+    static idt GetDefaultNameID( idt indID, idt perID );
+
     // Delete Name and remove all references to it.
     static void RemoveFromDatabase( idt id );
     void RemoveFromDatabase() { RemoveFromDatabase( f_id ); Clear(); }

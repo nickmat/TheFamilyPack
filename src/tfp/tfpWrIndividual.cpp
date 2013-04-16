@@ -49,7 +49,6 @@ wxString tfpWriteIndividualPage( idt indID )
     wxString htm;
     size_t i, j;
     recIndividual ind( indID );
-    recPersona per( ind.f_per_id );
     recIndividual spouse;
 
     htm << 
@@ -70,9 +69,9 @@ wxString tfpWriteIndividualPage( idt indID )
         " <a href='tfpc:MR" << indID << "'><img src=memory:fam.png></a></td>"
         "</tr>\n<tr>\n"
         "<td>ID, Sex:</td><td>" << ind.GetIdStr() << 
-        ", " << recGetSexStr( per.FGetSex() ) << "</td>\n"
+        ", " << recGetSexStr( ind.FGetSex() ) << "</td>\n"
         "</tr>\n<tr>\n"
-        "<td>Note:</td><td>" << per.FGetNote() << "</td>\n"
+        "<td>Note:</td><td>" << ind.FGetNote() << "</td>\n"
         "</tr>\n</table>\n"
     ;
     // Names

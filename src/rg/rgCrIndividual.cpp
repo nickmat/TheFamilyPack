@@ -80,16 +80,14 @@ idt rgCreateIndividual(
 //============================================================================
 
 rgDlgCreateIndividual::rgDlgCreateIndividual( wxWindow* parent, idt famID )
-    : m_individual(0), m_persona(0), m_name(0), m_sex(SEX_Unstated),
+    : m_individual(0), m_name(0), m_sex(SEX_Unstated),
     fbRgCreateIndividual( parent )
 {
     wxASSERT( famID != 0 );
-    m_persona.Save();
-    m_name.FSetPerID( m_persona.FGetID() );
-    m_name.Save();
-    m_individual.FSetPerID( m_persona.FGetID() );
     m_individual.FSetFamID( famID );
     m_individual.Save();
+    m_name.FSetIndID( m_individual.FGetID() );
+    m_name.Save();
 }
 
 bool rgDlgCreateIndividual::TransferDataToWindow()
@@ -105,9 +103,8 @@ bool rgDlgCreateIndividual::TransferDataToWindow()
 
 bool rgDlgCreateIndividual::TransferDataFromWindow()
 {
-    m_persona.FSetSex( (Sex) m_choiceSex->GetSelection() );
-    m_persona.FSetNote( m_textNote->GetValue() );
-    m_persona.Save();
+    m_individual.FSetSex( (Sex) m_choiceSex->GetSelection() );
+    m_individual.FSetNote( m_textNote->GetValue() );
 
     int seq = m_name.AddNameParts( m_textGiven->GetValue(), NAME_TYPE_Given_name, 0 );
     m_name.AddNamePart( m_textSurname->GetValue(), NAME_TYPE_Surname, seq );

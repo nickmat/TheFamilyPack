@@ -111,7 +111,7 @@
     <td><a href="#FamilyIndividual">FamilyIndividual</a></td>
     <td><a href="#Individual">Individual</a></td>
     <td><a href="#IndividualEvent">IndividualEvent</a></td>
-    <td><a href="#LinkPersona">LinkPersona</a></td>
+    <td><a href="#IndividualPersona">IndividualPersona</a></td>
    </tr>
    <tr>
     <td><a href="#Name">Name</a></td>
@@ -624,14 +624,19 @@
      <td>Unique key identifying an Individual</td>
     </tr>
     <tr>
+     <td>sex</td>
+     <td>Integer</td>
+     <td>This holds 0=Unstated, 1=Male, 2=Female and 3=Unknown.</td>
+    </tr>
+    <tr>
+     <td>name</td>
+     <td>Text</td>
+     <td>The full name or names that this Individual is known by. NOTE: Redundant field created from Persona/Names</td>
+    </tr>
+    <tr>
      <td>surname</td>
      <td>Text</td>
      <td>The surname name that this Individual is known by. NOTE: Redundant field created from Persona/Names</td>
-    </tr>
-    <tr>
-     <td>given</td>
-     <td>Text</td>
-     <td>The given name or names for this Individual. NOTE: Redundant field created from Persona/Names</td>
     </tr>
     <tr>
      <td>epitaph</td>
@@ -639,14 +644,14 @@
      <td>The short date epitaph string ie (1914 - 1987). NOTE: Redundant field created from Events</td>
     </tr>
     <tr>
-     <td>fam_id</td>
-     <td>Integer</td>
-     <td>Pointer to the default (preferred) Family ID</td>
+     <td>note</td>
+     <td>Text</td>
+     <td>Any narrative necessary to distinguish this individual.</td>
     </tr>
     <tr>
-     <td>per_id</td>
-     <td>Integer</td>
-     <td>Pointer to an associated Persona.</td>
+     <td>fam_id</td>
+     <td>Integer Not null FK</td>
+     <td>Pointer to the default (preferred) Family ID</td>
     </tr>
 
     <tr id="IndividualEvent">
@@ -686,26 +691,26 @@
      <td>The sequence of Individuals included in a given event.</td>
     </tr>
 
-    <tr id="LinkPersona">
+    <tr id="IndividualPersona">
      <td colspan="3" class="filler"><a href="#">Top</a></td>
     </tr>
     <tr class="head">
-     <td colspan="3"><b>LinkPersona</b></td>
+     <td colspan="3"><b>IndividualPersona</b></td>
     </tr>
     <tr>
      <td>id</td>
      <td class="nw">Integer PK</td>
-     <td>Unique key identifying a LinkPersona record.</td>
+     <td>Unique key identifying a IndividualPersona record.</td>
     </tr>
     <tr>
-     <td>ref_per_id</td>
+     <td>ind_id</td>
+     <td>Integer Not null FK</td>
+     <td>Pointer to an Individual</td>
+    </tr>
+    <tr>
+     <td>per_id</td>
      <td>Integer Not null FK</td>
      <td>Pointer to a Persona associated with a Reference</td>
-    </tr>
-    <tr>
-     <td>ind_per_id</td>
-     <td>Integer Not null FK</td>
-     <td>Pointer to a Persona associated with an Individual</td>
     </tr>
     <tr>
      <td>conf</td>
@@ -713,9 +718,9 @@
      <td>A value, less than one, to indicate the confidence that the link is correct</td>
     </tr>
     <tr>
-     <td>comment</td>
+     <td>note</td>
      <td>Text</td>
-     <td>Optional comment that relates to the Reference Persona - Individual Persona link</td>
+     <td>Optional note that relates to this Individual - Persona link</td>
     </tr>
 
     <tr id="Name">
@@ -1215,7 +1220,7 @@
     <tr>
      <td>res_id</td>
      <td>Integer Not null FK</td>
-     <td>A pointer to the Researcher corresponding to the User. Null indicates the default User.</td>
+     <td>A pointer to the Researcher corresponding to the User. Zero indicates the default User.</td>
     </tr>
 
     <tr id="UserSetting">

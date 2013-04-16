@@ -136,7 +136,7 @@ void WrPedCht( idt indID, Sex sex, int gen )
             htm << "<td class='name' colspan='" 
                 << HTM_CHART_GEN_MAX - gen << "'><a href='tfp:"
                 << famLk << "'><b>"
-                << ind.f_given << "</b></a> " << ind.f_epitaph 
+                << ind.FGetName() << "</b></a> " << ind.FGetEpitaph() 
                 << "</td>\n"
             ;
         } else {

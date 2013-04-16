@@ -88,7 +88,6 @@ private:
     void OnEventOrderBy( wxCommandEvent& event );
 
     recIndividual   m_individual;
-    recPersona      m_persona;
     recNameVec      m_names;
     recIndEventVec  m_ies;
     recEventOrder   m_order;

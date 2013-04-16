@@ -42,8 +42,8 @@
 const int recVerMajor    = 0;
 const int recVerMinor    = 0;
 const int recVerRev      = 10;
-const int recVerTest     = 4;
-const wxStringCharType* recVerStr = wxS("TFPD-0.0.10.4");
+const int recVerTest     = 5;
+const wxStringCharType* recVerStr = wxS("TFPD-0.0.10.5");
 
 //============================================================================
 //                 Code to upgrade old versions
@@ -258,6 +258,55 @@ void UpgradeTest0_0_10_3to0_0_10_4()
     recDb::GetDb()->ExecuteUpdate( query );
 }
 
+void UpgradeTest0_0_10_4to0_0_10_5()
+{
+    // Version 0.0.10.4 to 0.0.10.5
+    // Remove columns fam_id and per_id from the Individual table and add columns
+    // sex and note.
+    // Rename LinkPersona table to IndividualPersona and rename columns ind_per_id
+    // and ref_per_id to ind_id and per_id respectively.
+
+    char* query =
+        "BEGIN;\n"
+
+        "CREATE TABLE IndividualPersona (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  ind_id INTEGER NOT NULL REFERENCES Individual(id),\n"
+        "  per_id INTEGER NOT NULL REFERENCES Persona(id),\n"
+        "  conf FLOAT NOT NULL,\n"
+        "  note TEXT\n"
+        ");\n"
+        "INSERT INTO IndividualPersona"
+        " (id, ind_id, per_id, conf, note)"
+        " SELECT L.id, I.id, L.ref_per_id, L.conf, L.comment"
+        " FROM LinkPersona L, Individual I WHERE"
+        " L.ind_per_id=I.per_id;\n"
+        "DROP TABLE LinkPersona;\n"
+
+        "ALTER TABLE Individual RENAME TO OldIndividual;\n"
+        "CREATE TABLE Individual (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  sex INTEGER NOT NULL,\n"
+        "  name TEXT,\n"
+        "  surname TEXT,\n"
+        "  epitaph TEXT,\n"
+        "  note TEXT NOT NULL,\n"
+        "  fam_id INTEGER NOT NULL\n"
+        ");\n"
+        "INSERT INTO Individual"
+        " (id, sex, name, surname, epitaph, note, fam_id)"
+        " SELECT I.id, P.sex, I.given, I.surname, I.epitaph, P.note, I.fam_id"
+        " FROM OldIndividual I, Persona P WHERE"
+        " I.per_id=P.id;\n"
+        "DELETE FROM Persona WHERE ref_id=0;\n"
+        "DROP TABLE OldIndividual;\n"
+
+        "UPDATE Version SET test=5 WHERE id=1;\n"
+        "COMMIT;\n"
+    ;
+    recDb::GetDb()->ExecuteUpdate( query );
+}
+
 void UpgradeRev0_0_10toCurrent( int test )
 {
     switch( test )
@@ -266,6 +315,7 @@ void UpgradeRev0_0_10toCurrent( int test )
     case 1: UpgradeTest0_0_10_1to0_0_10_2();
     case 2: UpgradeTest0_0_10_2to0_0_10_3();
     case 3: UpgradeTest0_0_10_3to0_0_10_4();
+    case 4: UpgradeTest0_0_10_4to0_0_10_5();
     }
 }
 

@@ -66,7 +66,6 @@ private:
     wxString       m_surname;
 
     recIndividual  m_individual;
-    recPersona     m_persona;
     recName        m_name;
 };
 
