@@ -233,15 +233,14 @@ wxString tfpWriteIndividualPage( idt indID )
     htm << "</tr>\n</table>\n";
 
     // Get linked Events Records
-    wxSQLite3Table eTable = ind.GetRefEventsTable();
+    wxSQLite3ResultSet eSet = ind.GetEventRecordSet();
     htm << 
         "<table class='data'>\n<tr>\n"
         "<th colspan='4'>Event Records</th>\n";
-    for( i = 0 ; i < (size_t) eTable.GetRowCount() ; i++ ) {
-        eTable.SetRow( i );
-        idt erID = GET_ID( eTable.GetInt64( 0 ) );
+    while( eSet.NextRow() ) {
+        idt erID = GET_ID( eSet.GetInt64( 0 ) );
         recEventRecord er( erID );
-        idt roleID = GET_ID( eTable.GetInt64( 1 ) );
+        idt roleID = GET_ID( eSet.GetInt64( 1 ) );
         idt refID = recEventRecord::FindReferenceID( erID );
 
         wxString cat1, cat2, dStr, pStr;
@@ -285,19 +284,17 @@ wxString tfpWriteIndividualPage( idt indID )
 
 
     // List all References for linked Personas
-    eTable = ind.GetReferencesTable();
+    eSet = ind.GetReferenceSet();
     htm << 
         "<table class='data'>\n<tr>\n"
         "<th colspan='2'>Reference Links</th>\n";
-    for( i = 0 ; i < (size_t) eTable.GetRowCount() ; i++ ) {
-        eTable.SetRow( i );
-        idt refID = GET_ID( eTable.GetInt64( 0 ) );
-
+    while( eSet.NextRow() ) {
+        idt refID = GET_ID( eSet.GetInt64( 0 ) );
         htm <<
             "</tr>\n<tr>\n" <<
             "<td><b><a href='tfp:R" << refID <<
             "'>" << recReference::GetIdStr( refID ) <<
-            "</a></b></td>\n<td>" << eTable.GetAsString( 1 ) <<
+            "</a></b></td>\n<td>" << eSet.GetAsString( 1 ) <<
             "</td>\n"
         ;
     }

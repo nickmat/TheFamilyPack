@@ -440,9 +440,7 @@ recIndEventVec recIndividual::GetEvents( idt indID, recEventOrder order )
     return list;
 }
 
-
-
-wxSQLite3Table recIndividual::GetRefEventsTable_( idt indID )
+wxSQLite3ResultSet recIndividual::GetEventRecordSet( idt indID )
 {
     wxSQLite3StatementBuffer sql;
 
@@ -456,10 +454,10 @@ wxSQLite3Table recIndividual::GetRefEventsTable_( idt indID )
         " ORDER BY date_pt;",
         indID
     );
-    return s_db->GetTable( sql );
+    return s_db->ExecuteQuery( sql );
 }
 
-wxSQLite3Table recIndividual::GetReferencesTable_( idt indID )
+wxSQLite3ResultSet recIndividual::GetReferenceSet( idt indID )
 {
     wxSQLite3StatementBuffer sql;
 
@@ -469,36 +467,7 @@ wxSQLite3Table recIndividual::GetReferencesTable_( idt indID )
         "WHERE IP.ind_id="ID" AND IP.per_id=P.id AND P.ref_id=R.id;",
         indID
     );
-    return s_db->GetTable( sql );
-}
-
-wxArrayString recIndividual::GetEventIdStrList_( idt indID, idt etrID )
-{
-    wxArrayString list;
-    wxSQLite3StatementBuffer sql;
-    wxSQLite3Table result;
-
-    if( indID == 0 ) return list;
-
-    sql.Format(
-        "SELECT id, title, date1_id, place_id FROM Event "
-        "WHERE id=("
-        "SELECT event_id FROM EventPersona INNER JOIN "
-        "(SELECT per_id AS ipp FROM IndividualPersona WHERE ind_id="ID") Mip "
-        "ON per_id=Mip.ipp WHERE role_id=%d"
-        ");",
-        indID, etrID
-    );
-    result = s_db->GetTable( sql );
-
-    for( int i = 0 ; i < result.GetRowCount() ; i++ ) {
-        result.SetRow( i );
-        list.Add( result.GetAsString( 0 ) );
-        list.Add( result.GetAsString( 1 ) );
-        list.Add( recDate::GetStr( GET_ID( result.GetInt64( 2 ) ) ) );
-        list.Add( recPlace::GetAddressStr( GET_ID( result.GetInt64( 3 ) ) ) );
-    }
-    return list;
+    return s_db->ExecuteQuery( sql );
 }
 
 wxSQLite3ResultSet recIndividual::GetNameSet( wxString surname )

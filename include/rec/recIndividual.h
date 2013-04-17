@@ -141,14 +141,11 @@ public:
     recIndEventVec GetEvents( recEventOrder order = recEO_DatePt ) const
         { return GetEvents( f_id, order ); }
 
-    wxSQLite3Table GetRefEventsTable() const { return GetRefEventsTable_( f_id ); }
-    static wxSQLite3Table GetRefEventsTable_( idt indID );
+    wxSQLite3ResultSet GetEventRecordSet() const { return GetEventRecordSet( f_id ); }
+    static wxSQLite3ResultSet GetEventRecordSet( idt indID );
 
-    wxSQLite3Table GetReferencesTable() const { return GetReferencesTable_( f_id ); }
-    static wxSQLite3Table GetReferencesTable_( idt indID );
-
-    wxArrayString GetEventIdStrList( idt etrID ) const { GetEventIdStrList_( f_id, etrID ); }
-    static wxArrayString GetEventIdStrList_( idt indID, idt etrID );
+    wxSQLite3ResultSet GetReferenceSet() const { return GetReferenceSet( f_id ); }
+    static wxSQLite3ResultSet GetReferenceSet( idt indID );
 
     static wxSQLite3ResultSet GetNameSet( wxString name );
     static wxSQLite3ResultSet GetNameSet( Sex sex );
