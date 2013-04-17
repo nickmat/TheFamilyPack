@@ -112,7 +112,7 @@ wxString tfpWriteIndividualIndex()
         return htm;
     }
 
-    wxSQLite3ResultSet table = recIndividual::GetSurnameList();
+    wxSQLite3ResultSet table = recIndividual::GetSurnameSet();
 
     htm = WriteIndex( table );
     lastchange = recDb::GetChange();
@@ -141,7 +141,7 @@ wxString tfpWriteIndividualList( const wxString& sname )
     wxString htm = tfpWrHeadTfp( "Name List" );
     htm << "<h1>" << surname << "</h1>\n";
 
-    wxSQLite3ResultSet result = recIndividual::GetNameList( surname );
+    wxSQLite3ResultSet result = recIndividual::GetNameSet( surname );
 
     int row = 0;
     if( ! result.Eof() )

@@ -194,6 +194,44 @@ idt recName::GetDefaultNameID( idt indID, idt perID )
     return 0;
 }
 
+wxString recName::GetDefaultNameStr( idt indID, idt perID )
+{
+    idt nameID = GetDefaultNameID( indID, perID );
+    return GetNameStr( nameID );
+}
+
+recNameVec recName::GetNames( idt indID, idt perID )
+{
+    recNameVec list;
+    recName name(0);
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( indID == 0 ) {
+        return list;
+    }
+
+    sql.Format(
+        "SELECT id, style_id, sequence FROM Name"
+        " WHERE ind_id="ID" AND per_id="ID" ORDER BY sequence;",
+        indID, perID
+    );
+    result = s_db->GetTable( sql );
+
+    name.FSetIndID( indID );
+    name.FSetPerID( perID );
+    list.reserve( result.GetRowCount() );
+    for( int i = 0 ; i < result.GetRowCount() ; i++ )
+    {
+        result.SetRow( i );
+        name.FSetID( GET_ID( result.GetInt64( 0 ) ) );
+        name.FSetTypeID( GET_ID( result.GetInt64( 1 ) ) );
+        name.FSetSequence( result.GetInt( 2 ) );
+        list.push_back( name );
+    }
+    return list;
+}
+
 void recName::RemoveFromDatabase( idt id )
 {
     if( id == 0 ) return;

@@ -75,7 +75,7 @@ wxString tfpWriteIndividualPage( idt indID )
         "</tr>\n</table>\n"
     ;
     // Names
-    recNameVec names = ind.ReadNames();
+    recNameVec names = ind.GetNames();
     htm << 
         "<table class='data'>\n<tr>\n"
         "<th colspan='3'>Names</th>";
@@ -101,8 +101,8 @@ wxString tfpWriteIndividualPage( idt indID )
                 "</b></td>\n<td>Father:"
                 "</td>\n<td class='" << GetSexClass( hID ) <<
                 "'><a href='tfp:I" << hID << 
-                "'>" << recIndividual::GetFullName( hID ) <<
-                "</a> " << recIndividual::GetDateEpitaph( hID ) <<
+                "'>" << recIndividual::GetName( hID ) <<
+                "</a> " << recIndividual::GetEpitaph( hID ) <<
                 " <a href='tfpc:MR" << hID <<
                 "'><img src=memory:fam.png></a></td>\n"
             ;
@@ -115,8 +115,8 @@ wxString tfpWriteIndividualPage( idt indID )
                 "</b></td>\n<td>Mother:"
                 "</td>\n<td class='" << GetSexClass( wID ) <<
                 "'><a href='tfp:I" << wID << 
-                "'>" << recIndividual::GetFullName( wID ) <<
-                "</a> " << recIndividual::GetDateEpitaph( wID ) <<
+                "'>" << recIndividual::GetName( wID ) <<
+                "</a> " << recIndividual::GetEpitaph( wID ) <<
                 " <a href='tfpc:MR" << wID <<
                 "'><img src=memory:fam.png></a></td>\n"
             ;
@@ -142,7 +142,7 @@ wxString tfpWriteIndividualPage( idt indID )
             "'>Spouse " << i+1 << "</a>:</td>\n"
             "<td class='" << GetSexClass( spouseID ) <<
             "'><a href='tfp:I" << spouseID <<
-            "'>" << spouse.GetFullName() <<
+            "'>" << spouse.FGetName() <<
             "</a></b> " << spouse.f_epitaph <<
             " <a href='tfpc:MR" << spouseID <<
             "'><img src=memory:fam.png></a></td>\n"
@@ -178,7 +178,7 @@ wxString tfpWriteIndividualPage( idt indID )
             htm << 
                 "<td class='" << GetSexClass( cID ) <<
                 "'><a href='tfp:I" << cID <<
-                "'>" << children[j].GetFullName() <<
+                "'>" << children[j].FGetName() <<
                 "</a> " << children[j].FGetEpitaph() <<
                 " <a href='tfpc:MR" << cID <<
                 "'><img src=memory:fam.png></a></td>\n"

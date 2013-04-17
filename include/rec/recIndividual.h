@@ -96,27 +96,27 @@ public:
     void FSetNote( const wxString& note ) { f_note = note; }
     void FSetFamID( idt famID ) { f_fam_id = famID; }
 
+    static wxString GetName( idt indID );
+    static wxString GetSurname( idt indID );
+    static wxString GetEpitaph( idt indID );
+    static Sex GetSex( idt indID );
+    static idt GetFamilyID( idt indID ); 
+
     static recIndividualVec ReadVec( unsigned sexfilter = recInd_FILTER_SexAll );
 
-    void UpdateDateEpitaph();
+    static idt GetNameID( idt indID ) { return recName::GetDefaultNameID( indID, 0 ); }
+    idt GetNameID() const { return recName::GetDefaultNameID( f_id, 0 ); }
+    static wxString GetNameStr( idt indID ) { return recName::GetDefaultNameStr( indID, 0 ); }
+    wxString GetNameStr() const { return recName::GetDefaultNameStr( f_id, 0 ); }
+
+    static recNameVec GetNames( idt indID ) { return recName::GetNames( indID, 0 ); }
+    recNameVec GetNames() const { return recName::GetNames( f_id, 0 ); }
+
+    void UpdateEpitaph();
     void UpdateNames();
     void UpdateDefaultFamily();
     void Update();
     static void Update( idt indID );
-    wxString GetFullName() { return f_name; }
-
-    static idt GetDefaultFamily( idt indID ); 
-    idt GetDefaultFamily() const { return FGetFamID(); } 
-
-    static recNameVec ReadNames( idt indID );
-    recNameVec ReadNames() const { return ReadNames( f_id ); }
-
-    static wxString GetFullName( idt id );
-    static wxString GetSurname( idt id );
-    static wxString GetDateEpitaph( idt id );
-    static wxString GetFullNameEpitaph( idt id );
-    wxString GetFullNameEpitaph() const { return f_name + " " + f_epitaph; }
-    static Sex GetSex( idt id ) { recIndividual ind(id); return ind.f_sex; }
 
     static idt FindEvent( idt indID, idt roleID );
     idt FindEvent( idt roleID ) const { return FindEvent( f_id, roleID ); }
@@ -150,13 +150,9 @@ public:
     wxArrayString GetEventIdStrList( idt etrID ) const { GetEventIdStrList_( f_id, etrID ); }
     static wxArrayString GetEventIdStrList_( idt indID, idt etrID );
 
-    static wxSQLite3ResultSet GetSurnameList() {
-        return s_db->ExecuteQuery(
-            "SELECT surname FROM Individual GROUP BY surname;"
-        );
-    }
-    static wxSQLite3ResultSet GetNameList( wxString name );
-    static wxSQLite3Table GetNameTable( Sex sex );
+    static wxSQLite3ResultSet GetNameSet( wxString name );
+    static wxSQLite3ResultSet GetNameSet( Sex sex );
+    static wxSQLite3ResultSet GetSurnameSet();
 
     static recIndRelVec GetIndRelationships( idt indID );
     recIndRelVec GetIndRelationships() const { return GetIndRelationships( f_id ); }

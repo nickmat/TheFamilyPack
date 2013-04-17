@@ -98,8 +98,8 @@ public:
     idt GetFamilyID() const { return m_fam.FGetID(); }
     idt GetHusbIndId() const { return m_fam.f_husb_id; }
     idt GetWifeIndId() const { return m_fam.f_wife_id; }
-    wxString GetHusbNameStr() const { return recIndividual::GetFullName( m_fam.FGetHusbID() ); }
-    wxString GetWifeNameStr() const { return recIndividual::GetFullName( m_fam.FGetWifeID() ); }
+    wxString GetHusbNameStr() const { return recIndividual::GetName( m_fam.FGetHusbID() ); }
+    wxString GetWifeNameStr() const { return recIndividual::GetName( m_fam.FGetWifeID() ); }
     int GetEventSeq() const { return m_fam.GetMaxEventSeqNumber(); }
 
     void UpdateIndividual( idt indID );

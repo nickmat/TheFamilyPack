@@ -130,7 +130,7 @@ bool rgAddNewParent( wxWindow* wind, idt indID, Sex sex )
     idt parentID = rgAddNewIndividual( wind, sex, surname, famID );
     if( parentID ) {
         recFamilyIndividual fi(0);
-        fi.FSetFamID( recIndividual::GetDefaultFamily( parentID ) );
+        fi.FSetFamID( recIndividual::GetFamilyID( parentID ) );
         fi.FSetIndID( indID );
         fi.Find();
         if( fi.FGetID() == 0 ) {
@@ -184,7 +184,7 @@ bool rgAddNewSpouse( wxWindow* wind, idt indID, Sex sex )
     recDb::Savepoint( savepoint );
     bool ret = false;
 
-    idt famID = recIndividual::GetDefaultFamily( indID );
+    idt famID = recIndividual::GetFamilyID( indID );
     recFamily fam(famID);
     if( sex == SEX_Female ) {
         if( fam.f_wife_id != 0 ) {
@@ -345,7 +345,7 @@ bool rgDeleteIndividual( wxWindow* wind, idt indID )
     wxString mess = wxString::Format(
         _("This action will completely remove Individual %s\n%s\nfrom the database\n\nDo you want to continue?"),
         recIndividual::GetIdStr( indID ),
-        recIndividual::GetFullName( indID )
+        recIndividual::GetName( indID )
     );
     int ans = wxMessageBox( mess, _("Delete Individual"), wxYES_NO | wxCANCEL, wind );
     if( ans == wxYES ) {

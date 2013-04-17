@@ -86,8 +86,8 @@ idt rgCreateIndEvent( wxWindow* wind, idt ind1ID, idt ind2ID, idt famID )
     recEvent eve(0);
     eve.FSetTypeID( typeID );
     eve.SetAutoTitle(
-        recIndividual::GetFullName( ind1ID ),
-        recIndividual::GetFullName( ind2ID )
+        recIndividual::GetName( ind1ID ),
+        recIndividual::GetName( ind2ID )
     );
     eve.Save();
     idt eveID = eve.GetID();
@@ -185,7 +185,7 @@ void rgDlgEditEvent::ListLinkedIndividuals()
     for( size_t i = 0 ; i < m_ies.size() ; i++ ) {
         idt indID = m_ies[i].FGetIndID();
         m_listIndividual->InsertItem( i, recIndividual::GetIdStr( indID ) );
-        m_listIndividual->SetItem( i, COL_Name, recIndividual::GetFullName( indID ) );
+        m_listIndividual->SetItem( i, COL_Name, recIndividual::GetName( indID ) );
         m_listIndividual->SetItem( i, COL_Role, recEventTypeRole::GetName( m_ies[i].f_role_id ) );
         m_listIndividual->SetItem( i, COL_Note, m_ies[i].f_note );
     }

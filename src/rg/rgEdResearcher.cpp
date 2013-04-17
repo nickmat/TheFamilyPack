@@ -111,7 +111,7 @@ bool rgDlgEditResearcher::TransferDataToWindow()
     m_textCtrlName->SetValue( m_researcher.FGetName() );
     m_textCtrlComment->SetValue( m_researcher.FGetComments() );
     idt indID = m_list.FGetIndID();
-    m_staticIndName->SetLabel( recIndividual::GetFullName( indID ) );
+    m_staticIndName->SetLabel( recIndividual::GetName( indID ) );
     m_staticIndID->SetLabel( recIndividual::GetIdStr( indID ) );
 
     for( size_t i = 0 ; i < m_contacts.size() ; i++ ) {
@@ -173,7 +173,7 @@ void rgDlgEditResearcher::AddIndLink()
     }
     m_list.FSetIndID( indID );
     m_list.Save();
-    m_staticIndName->SetLabel( recIndividual::GetFullName( indID ) );
+    m_staticIndName->SetLabel( recIndividual::GetName( indID ) );
     m_staticIndID->SetLabel( recIndividual::GetIdStr( indID ) );
 }
 

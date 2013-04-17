@@ -154,7 +154,7 @@ wxString wxGetRowClass( int row )
 
 wxString tfpGetEpitaphPlus( idt indID,  GET_EPITAPH_Prefix prefix )
 {
-    wxString epitaph = recIndividual::GetDateEpitaph( indID );
+    wxString epitaph = recIndividual::GetEpitaph( indID );
     wxString prefixStr;
 
     if( epitaph.size() ) {

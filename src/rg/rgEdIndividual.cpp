@@ -126,7 +126,7 @@ bool rgDlgEditIndividual::TransferDataFromWindow()
 
 void rgDlgEditIndividual::UpdateNameList( idt nameID )
 {
-    m_names = m_individual.ReadNames();
+    m_names = m_individual.GetNames();
     m_listName->DeleteAllItems();
     int row = -1;
     for( size_t i = 0 ; i < m_names.size() ; i++ ) {
@@ -145,7 +145,7 @@ void rgDlgEditIndividual::UpdateNameList( idt nameID )
         m_listName->EnsureVisible( row );
     }
     // Check for name change.
-    wxString name = m_individual.GetFullName();
+    wxString name = m_individual.FGetName();
     if( name != m_nameStr ) {
         m_staticPerName->SetLabel( name );
         m_nameStr = name;

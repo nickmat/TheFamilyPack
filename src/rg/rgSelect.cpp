@@ -351,7 +351,7 @@ idt rgSelectIndividual( wxWindow* wind, recIdVec indIDs, unsigned flag, unsigned
         wxArrayString table;
         for( size_t i = 0 ; i < indIDs.size() ; i++ ) {
             table.push_back( recIndividual::GetIdStr( indIDs[i] ) );
-            table.push_back( recIndividual::GetFullName( indIDs[i] ) );
+            table.push_back( recIndividual::GetName( indIDs[i] ) );
         }
         dialog->SetTable( table );
         if( dialog->ShowModal() == wxID_OK ) {
@@ -397,7 +397,7 @@ idt rgSelectIndividual( wxWindow* wind, unsigned flag, unsigned* retbutton, unsi
         wxArrayString table;
         for( size_t i = 0 ; i < inds.size() ; i++ ) {
             table.push_back( inds[i].GetIdStr() );
-            table.push_back( inds[i].GetFullName() );
+            table.push_back( inds[i].FGetName() );
         }
         dialog->SetTable( table );
         if( dialog->ShowModal() == wxID_OK ) {

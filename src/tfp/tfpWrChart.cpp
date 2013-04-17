@@ -84,7 +84,7 @@ wxString tfpCreatePedChart( idt indID )
     htm.Clear();
     recIndividual ind(indID);
 
-    wxString name = ind.GetFullName();
+    wxString name = ind.FGetName();
 
     htm << 
         "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
@@ -159,7 +159,7 @@ void WrPedCht( idt indID, Sex sex, int gen )
 
 wxString tfpCreateDescChart( idt indID )
 {
-    wxString name = recIndividual::GetFullName( indID );
+    wxString name = recIndividual::GetName( indID );
     htm.Clear();
 
     htm << 
@@ -232,14 +232,14 @@ void WrDescLine( idt indID, idt spouseID, idt famID, int gen )
             htm << "<td  class='name' colspan='" 
                 << HTM_CHART_GEN_MAX - gen << "'><a href='tfp:"
                 << famLk << "'><b>"
-                << recIndividual::GetFullName( indID )
+                << recIndividual::GetName( indID )
                 << "</b></a> "
-                << recIndividual::GetDateEpitaph( indID );
+                << recIndividual::GetEpitaph( indID );
             if( spouseID != 0 ) {
                 htm << "<br>\n m. <b>"
-                    << recIndividual::GetFullName( spouseID )
+                    << recIndividual::GetName( spouseID )
                     << "</b> "
-                    << recIndividual::GetDateEpitaph( spouseID );
+                    << recIndividual::GetEpitaph( spouseID );
             }
             htm << "</td>\n";
         } else {

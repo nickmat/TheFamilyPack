@@ -125,10 +125,10 @@ bool rgDlgEditFamily::TransferDataFromWindow()
 
 void rgDlgEditFamily::UpdateNames()
 {
-    wxString str1 = recIndividual::GetFullName( m_family.FGetHusbID() );
+    wxString str1 = recIndividual::GetName( m_family.FGetHusbID() );
     m_staticHusbName->SetLabel( str1  );
 
-    wxString str2 = recIndividual::GetFullName( m_family.FGetWifeID() );
+    wxString str2 = recIndividual::GetName( m_family.FGetWifeID() );
     m_staticWifeName->SetLabel( str2  );
 
     if( str1.size() ) {
@@ -149,8 +149,8 @@ void rgDlgEditFamily::UpdateChildList( idt curIndID )
     for( size_t i = 0 ; i < m_fis.size() ; i++ ) {
         idt indID = m_fis[i].FGetIndID();
         m_listChildren->InsertItem( i, recIndividual::GetIdStr( indID ) );
-        m_listChildren->SetItem( i, CC_Name, recIndividual::GetFullName( indID ) );
-        m_listChildren->SetItem( i, CC_Dates, recIndividual::GetDateEpitaph( indID ) );
+        m_listChildren->SetItem( i, CC_Name, recIndividual::GetName( indID ) );
+        m_listChildren->SetItem( i, CC_Dates, recIndividual::GetEpitaph( indID ) );
         if( curIndID == indID ) {
             m_listChildren->SetItemState( i, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
             row = i;

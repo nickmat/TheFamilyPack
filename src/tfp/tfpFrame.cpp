@@ -929,7 +929,7 @@ void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
     wxUniChar uch1 = display.size() > 1 ? display.GetChar( 1 ) : (wxUniChar) '\0';
     if( display.StartsWith( "FI" ) ) {
         idt indID = recGetID( display.Mid(2) );
-        id = recIndividual::GetDefaultFamily( indID );
+        id = recIndividual::GetFamilyID( indID );
     } else if( display.StartsWith( "ER" ) ) {
         id = recGetID( display.Mid(2) );
     } else {
@@ -1355,10 +1355,10 @@ int TfpFrame::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )
     int items = c;
     for( i = 0 ; i < families.size() ; i++ ) {
         if( families[i].f_husb_id != 0 ) {
-            parmenu->Append( cmd_ID + c, recIndividual::GetFullName( families[i].f_husb_id ) );
+            parmenu->Append( cmd_ID + c, recIndividual::GetName( families[i].f_husb_id ) );
         }
         if( families[i].f_wife_id != 0 ) {
-            parmenu->Append( cmd_ID + c, recIndividual::GetFullName( families[i].f_wife_id ) );
+            parmenu->Append( cmd_ID + c, recIndividual::GetName( families[i].f_wife_id ) );
         }
         m_ctxmenuPages.push_back( "F"+recGetStr( families[i].f_id ) );
         c++;
@@ -1374,7 +1374,7 @@ int TfpFrame::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )
         inds = families[i].GetChildren();
         for( j = 0 ; j < inds.size() ; j++ ) {
             if( inds[j].f_id == indID ) continue;
-            sibmenu->Append( cmd_ID + c, inds[j].GetFullName() );
+            sibmenu->Append( cmd_ID + c, inds[j].FGetName() );
             m_ctxmenuPages.push_back( "FI"+recGetStr( inds[j].f_id ) );
             c++;
         }
@@ -1391,12 +1391,12 @@ int TfpFrame::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )
     items = c;
     for( i = 0 ; i < families.size() ; i++ ) {
         if( families[i].f_husb_id != 0 && families[i].f_husb_id != indID ) {
-            marmenu->Append( cmd_ID + c, recIndividual::GetFullName( families[i].f_husb_id ) );
+            marmenu->Append( cmd_ID + c, recIndividual::GetName( families[i].f_husb_id ) );
             m_ctxmenuPages.push_back( "F"+recGetStr( families[i].f_id ) );
             c++;
         }
         if( families[i].f_wife_id != 0 && families[i].f_wife_id != indID ) {
-            marmenu->Append( cmd_ID + c, recIndividual::GetFullName( families[i].f_wife_id ) );
+            marmenu->Append( cmd_ID + c, recIndividual::GetName( families[i].f_wife_id ) );
             m_ctxmenuPages.push_back( "F"+recGetStr( families[i].f_id ) );
             c++;
         }
@@ -1412,7 +1412,7 @@ int TfpFrame::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )
         inds.empty();
         inds = families[i].GetChildren();
         for( j = 0 ; j < inds.size() ; j++ ) {
-            kidmenu->Append( cmd_ID + c, inds[j].GetFullName() );
+            kidmenu->Append( cmd_ID + c, inds[j].FGetName() );
             m_ctxmenuPages.push_back( "FI"+recGetStr( inds[j].f_id ) );
             c++;
         }
@@ -1502,7 +1502,7 @@ void TfpFrame::RefreshEditMenu()
             fam.Decode( disp );
             m_EditFamily = fam.FGetID();
             if( fam.f_husb_id ) {
-                name = recIndividual::GetFullName( fam.f_husb_id );
+                name = recIndividual::GetName( fam.f_husb_id );
                 m_menuEditInd->SetLabel( tfpID_EDIT_IND_LEFT, name );
                 m_menuEditInd->Enable( tfpID_EDIT_IND_LEFT, true );
             } else {
@@ -1511,7 +1511,7 @@ void TfpFrame::RefreshEditMenu()
             }
             m_EditIndLeft = fam.f_husb_id;
             if( fam.f_wife_id ) {
-                name = recIndividual::GetFullName( fam.f_wife_id );
+                name = recIndividual::GetName( fam.f_wife_id );
                 m_menuEditInd->SetLabel( tfpID_EDIT_IND_RIGHT, name );
                 m_menuEditInd->Enable( tfpID_EDIT_IND_RIGHT, true );
             } else {
@@ -1527,7 +1527,7 @@ void TfpFrame::RefreshEditMenu()
     case 'I':
         if( disp.size() >= 2 && wxIsdigit( disp.GetChar( 1 ) ) ) {
             idt indID = recGetID( disp.Mid( 1 ) );
-            name = recIndividual::GetFullName( indID );
+            name = recIndividual::GetName( indID );
             if( name.size() > 50 ) {
                 name = name.Mid( 0, 48 ) + "..."; 
             }

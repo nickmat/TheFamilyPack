@@ -90,7 +90,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
             htm << 
                 "<td class='" << GetSexClass( indID, SEX_Male ) <<
                 "'><a href='tfp:F" << husbFams[iL].FGetID() << 
-                "'>" << recIndividual::GetFullName( indID ) <<
+                "'>" << recIndividual::GetName( indID ) <<
                 "</a>" << tfpGetEpitaphPlus( indID, GE_NewLine ) <<
                 "</td>\n"
             ;
@@ -112,7 +112,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
             htm << 
                 "<td class='" << GetSexClass( indID, SEX_Female ) << 
                 "'><a href='tfp:F" << husbFams[iL].FGetID() <<
-                "'>" << recIndividual::GetFullName( indID ) <<
+                "'>" << recIndividual::GetName( indID ) <<
                 "</a>" << tfpGetEpitaphPlus( indID, GE_NewLine ) <<
                 "</td>\n"
             ;
@@ -136,7 +136,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
             htm << 
                 "<td class='" << GetSexClass( indID, SEX_Male ) <<
                 "'>\n<a href='tfp:F" << wifeFams[iR].FGetID() << 
-                "'>" << recIndividual::GetFullName( indID ) <<
+                "'>" << recIndividual::GetName( indID ) <<
                 "</a>" << tfpGetEpitaphPlus( indID, GE_NewLine ) <<
                 "</td>\n"
             ;
@@ -157,7 +157,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
             htm <<
                 "<td class='" << GetSexClass( indID, SEX_Female ) <<
                 "'>\n<a href='tfp:F" << wifeFams[iR].FGetID() << 
-                "'>" << recIndividual::GetFullName( indID ) <<
+                "'>" << recIndividual::GetName( indID ) <<
                 "</a>" << tfpGetEpitaphPlus( indID, GE_NewLine ) <<
                 "</td>\n"
             ;
@@ -205,9 +205,9 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
             << "'><img src='memory:blank.png' width='200' height='40' alt='Add husband'></a>";
     } else {
         htm << "<a href='tfp:I" << fam.f_husb_id
-            << "'>" << recIndividual::GetFullName( fam.f_husb_id )
+            << "'>" << recIndividual::GetName( fam.f_husb_id )
             << "</a><br>"
-            << recIndividual::GetDateEpitaph( fam.f_husb_id );
+            << recIndividual::GetEpitaph( fam.f_husb_id );
     }
     htm << "</td>\n<td class='couple "
         << GetSexClass( fam.f_wife_id, SEX_Female )
@@ -217,9 +217,9 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
             << "'><img src='memory:blank.png' width='200' height='40' alt='Add wife'></a>";
     } else {
         htm << "<a href='tfp:I" << fam.f_wife_id
-            << "'>" << recIndividual::GetFullName( fam.f_wife_id )
+            << "'>" << recIndividual::GetName( fam.f_wife_id )
             << "</a><br>"
-            << recIndividual::GetDateEpitaph( fam.f_wife_id );
+            << recIndividual::GetEpitaph( fam.f_wife_id );
     }
     htm << "</td>\n</tr>\n";
 
@@ -376,7 +376,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
             htm <<
                 "<tr>\n<td class='" << GetSexClass( indID ) << 
                 " kids'><b><a href='tfp:FI" << indID <<
-                "'>" << kids[i].GetFullName() <<
+                "'>" << kids[i].FGetName() <<
                 "</a></b>&nbsp;&nbsp;" << kids[i].f_epitaph <<
                 "&nbsp;&nbsp;<a href='tfpc:MR" << indID <<
                 "'><img src=memory:fam.png></a></td>\n</tr>\n"
@@ -405,7 +405,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
                         "<tr>\n<td class='" << GetSexClass( indID ) <<
                         "'><a href='tfp:F" << famID <<
                         "," << i << "," << iR <<
-                        "'>" << recIndividual::GetFullName( indID ) <<
+                        "'>" << recIndividual::GetName( indID ) <<
                         "</a>&nbsp;&nbsp;<a href='tfpc:MR" << indID <<
                         "'><img src=memory:fam.png></a></td>\n</tr>\n"
                     ;
@@ -416,7 +416,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
                         "<tr>\n<td class='" << GetSexClass( indID ) <<
                         "'>\n<a href='tfp:F" << famID <<
                         "," << i << "," << iR << 
-                        "'>" << recIndividual::GetFullName( indID ) <<
+                        "'>" << recIndividual::GetName( indID ) <<
                         "</a>&nbsp;&nbsp;<a href='tfpc:MR" << indID <<
                         "'><img src=memory:fam.png></a></td>\n</tr>\n"
                     ;
@@ -444,11 +444,11 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
                 if( indID == 0 ) {
                     htm << "[Unknown]";
                 } else {
-                    htm << recIndividual::GetFullName( indID );   //  Name
+                    htm << recIndividual::GetName( indID );   //  Name
                 }
                 htm <<
                     "</a>&nbsp;&nbsp;" <<
-                    recIndividual::GetDateEpitaph( indID ) <<
+                    recIndividual::GetEpitaph( indID ) <<
                     "&nbsp;&nbsp;<a href='tfpc:MR" << indID <<
                     "'><img src=memory:fam.png></a></td>\n</tr>\n"
                 ;
@@ -471,7 +471,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
                         "<tr>\n<td class='" << GetSexClass( indID ) <<
                         "'><a href='tfp:F" << famID <<
                         "," << i << "," << iL <<
-                        "'>" << recIndividual::GetFullName( indID ) <<
+                        "'>" << recIndividual::GetName( indID ) <<
                         "</a>&nbsp;&nbsp;<a href='tfpc:MR" << indID <<
                         "'><img src=memory:fam.png></a></td>\n</tr>\n"
                     ;
@@ -482,7 +482,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
                         "<tr>\n<td class='" << GetSexClass( indID ) <<
                         "'>\n<a href='tfp:F" << famID <<
                         "," << i << "," << iL << 
-                        "'>" << recIndividual::GetFullName( indID ) <<
+                        "'>" << recIndividual::GetName( indID ) <<
                         "</a>&nbsp;&nbsp;<a href='tfpc:MR" << indID <<
                         "'><img src=memory:fam.png></a></td>\n</tr>\n"
                     ;
@@ -510,11 +510,11 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
                 if( indID == 0 ) {
                     htm << "[Unknown]";
                 } else {
-                    htm << recIndividual::GetFullName( indID );   //  Name
+                    htm << recIndividual::GetName( indID );   //  Name
                 }
                 htm <<
                     "</a>&nbsp;&nbsp;" <<
-                    recIndividual::GetDateEpitaph( indID ) <<
+                    recIndividual::GetEpitaph( indID ) <<
                     "&nbsp;&nbsp;<a href='tfpc:MR" << indID <<
                     "'><img src=memory:fam.png></a></td>\n</tr>\n"
                 ;
@@ -546,7 +546,7 @@ wxString tfpWriteFamilyPage( const wxString& str )
 
 wxString tfpWriteIndFamilyPage( idt indID )
 {
-    idt famID = recIndividual::GetDefaultFamily( indID );
+    idt famID = recIndividual::GetFamilyID( indID );
     return tfpWriteFamilyPage( famID, 0, 0 );
 }
 

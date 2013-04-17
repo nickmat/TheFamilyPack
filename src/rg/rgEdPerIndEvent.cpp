@@ -146,7 +146,7 @@ bool rgDlgIndEvent::TransferDataToWindow()
     wxASSERT( m_ie.FGetEventID() != 0 );
     wxASSERT( m_ie.FGetIndID() != 0 );
 
-    m_staticName->SetLabel( recIndividual::GetFullName( m_ie.FGetIndID() ) );
+    m_staticName->SetLabel( recIndividual::GetName( m_ie.FGetIndID() ) );
     m_staticNameID->SetLabel( recIndividual::GetIdStr( m_ie.FGetIndID() ) );
 
     SetRoleList( m_ie.FGetRoleID() );

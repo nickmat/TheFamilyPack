@@ -75,11 +75,10 @@ public:
 
     static Sex GetSex( idt id );
 
-    static idt GetDefaultNameID( idt perID ) { return recName::GetDefaultNameID( 0, perID ); }
-    idt GetDefaultNameID() const { return recName::GetDefaultNameID( 0, f_id ); }
-    static wxString GetNameStr( idt id ) 
-        { return recName::GetNameStr( GetDefaultNameID( id ) ); }
-    wxString GetNameStr() const { return GetNameStr( f_id ); }
+    static idt GetNameID( idt perID ) { return recName::GetDefaultNameID( 0, perID ); }
+    idt GetNameID() const { return recName::GetDefaultNameID( 0, f_id ); }
+    static wxString GetNameStr( idt perID ) { return recName::GetDefaultNameStr( 0, perID ); }
+    wxString GetNameStr() const { return recName::GetDefaultNameStr( 0, f_id ); }
 
     static recNameVec ReadNames( idt perID );
     recNameVec ReadNames() const { return ReadNames( f_id ); }
@@ -91,21 +90,12 @@ public:
     static recRelationshipVec ReadRelationships( idt perID );
     recRelationshipVec ReadRelationships() { return ReadRelationships( f_id ); }
 
+    // Get a list of linked to Individual's
     static recIdVec GetIndividualIDs( idt perID );
     recIdVec GetIndividualIDs() const { return GetIndividualIDs( f_id ); }
+    // Commer delimited string of linked Individual ID strings. 
     static wxString GetIndividualIdStr( idt perID );
     wxString GetIndividualIdStr() const { return GetIndividualIdStr( f_id ); }
-
-    static idt FindCommonEvent( idt perID, recEventType::ETYPE_Grp grp, idt secID );
-
-    static idt GetMarriageEvent( idt perID, idt spouseID ) {
-        return FindCommonEvent( perID, recEventType::ETYPE_Grp_Union, spouseID ); 
-    }
-    idt GetMarriageEvent( idt spouseID ) const { return GetMarriageEvent( f_id, spouseID ); }
-
-    static int CountNames( idt id );
-    int CountNames() const { return CountNames( f_id ); }
-    static int GetMaxNameSeq( idt id );
 
     // Delete Persona record and remove all records that reference it.
     void RemoveFromDatabase();
