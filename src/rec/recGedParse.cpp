@@ -61,7 +61,7 @@ public:
 
     idt GetIndID() const { return m_ind.FGetID(); }
     int GetNameSeq() { return ++m_nameSeq; }
-    wxString GetNameStr() const { return m_ind.FGetName(); }
+    wxString GetNameStr() const { return m_ind.GetNameStr(); }
     int GetEventSeq() const { return m_ind.GetMaxEventSeqNumber(); }
 
     void SetIndId( idt indID ) { m_ind.f_id = indID; }
