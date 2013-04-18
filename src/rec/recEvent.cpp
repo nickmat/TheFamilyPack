@@ -957,7 +957,7 @@ int recEventRecord::GetLastPerSeqNumber( idt eventID )
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "SELECT MAX(per_seq) FROM EventPersona WHERE event_id="ID";",
+        "SELECT MAX(per_seq) FROM EventPersona WHERE event_rec_id="ID";",
         eventID
     );
     return s_db->ExecuteScalar( sql );
