@@ -234,6 +234,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rec\recEventRecord.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rec\recEventType.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rec\recFilterEvent.cpp"
 				>
 			</File>
@@ -242,11 +250,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\rec\recIndividual.cpp"
+				RelativePath="..\..\src\rec\recIndPersona.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\rec\recLink.cpp"
+				RelativePath="..\..\src\rec\recIndividual.cpp"
 				>
 			</File>
 			<File
@@ -316,6 +324,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\include\rec\recEventRecord.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\rec\recEventType.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\include\rec\recFilterEvent.h"
 				>
 			</File>
@@ -324,15 +340,15 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\include\rec\recIndPersona.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\include\rec\recIndividual.h"
 				>
 			</File>
 			<File
 				RelativePath="..\..\include\rec\recInterface.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\rec\recLink.h"
 				>
 			</File>
 			<File

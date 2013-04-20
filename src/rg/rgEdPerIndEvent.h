@@ -30,6 +30,7 @@
 #define RGEDPERINDEVENT_H
 
 #include <rec/recEvent.h>
+#include <rec/recEventRecord.h>
 
 #include "rg/rgDialogs.h"
 

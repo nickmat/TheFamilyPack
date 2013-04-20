@@ -37,7 +37,7 @@
 #include "wx/wx.h"
 #endif
 
-#include <rec/recLink.h>
+#include <rec/recIndPersona.h>
 #include <rg/rgDialogs.h>
 
 #include "rgEdIndividual.h"

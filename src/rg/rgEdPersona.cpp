@@ -40,7 +40,7 @@
 #include <wx/tokenzr.h>
 
 #include <rec/recIndividual.h>
-#include <rec/recLink.h>
+#include <rec/recIndPersona.h>
 #include <rg/rgDialogs.h>
 
 #include "rgEdReference.h"
@@ -416,7 +416,6 @@ void rgDlgEditPersona::OnOrderBy( wxCommandEvent& event )
 
 void rgDlgEditPersona::OnRelAddButton( wxCommandEvent& event )
 {
-//    idt relID = rgCreatePerRelationship( m_refDialog, m_persona.FGetID() );
     idt relID = rgCreatePersonaRelationship( this, m_refID, "", m_persona.FGetID() );
     if( relID ) {
         recReferenceEntity::Create( m_refID, recReferenceEntity::TYPE_Relationship, relID );

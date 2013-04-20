@@ -41,7 +41,9 @@
 #include <rec/recName.h>
 #include <rec/recDate.h>
 #include <rec/recPlace.h>
+#include <rec/recEventRecord.h>
 #include <rec/recEvent.h>
+#include <rec/recEventType.h>
 #include <rec/recRelationship.h>
 
 

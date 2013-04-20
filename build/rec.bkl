@@ -49,10 +49,12 @@
     <sources>$(LOCAL_SRC)/rec/recDatabase.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recDate.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recEvent.cpp</sources>
+    <sources>$(LOCAL_SRC)/rec/recEventRecord.cpp</sources>
+    <sources>$(LOCAL_SRC)/rec/recEventType.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recFilterEvent.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recGedParse.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recIndividual.cpp</sources>
-    <sources>$(LOCAL_SRC)/rec/recLink.cpp</sources>
+    <sources>$(LOCAL_SRC)/rec/recIndPersona.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recName.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recPersona.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recPlace.cpp</sources>
@@ -69,11 +71,13 @@
     <headers>$(LOCAL_INC)/rec/recDb.h</headers>
     <headers>$(LOCAL_INC)/rec/recDate.h</headers>
     <headers>$(LOCAL_INC)/rec/recEvent.h</headers>
+    <headers>$(LOCAL_INC)/rec/recEventRecord.h</headers>
+    <headers>$(LOCAL_INC)/rec/recEventType.h</headers>
     <headers>$(LOCAL_INC)/rec/recFilterEvent.h</headers>
     <headers>$(LOCAL_INC)/rec/recGedParse.h</headers>
     <headers>$(LOCAL_INC)/rec/recIndividual.h</headers>
     <headers>$(LOCAL_INC)/rec/recInterface.h</headers>
-    <headers>$(LOCAL_INC)/rec/recLink.h</headers>
+    <headers>$(LOCAL_INC)/rec/recIndPersona.h</headers>
     <headers>$(LOCAL_INC)/rec/recName.h</headers>
     <headers>$(LOCAL_INC)/rec/recPersona.h</headers>
     <headers>$(LOCAL_INC)/rec/recPlace.h</headers>
@@ -83,6 +87,7 @@
     <headers>$(LOCAL_INC)/rec/recSystem.h</headers>
     <headers>$(LOCAL_INC)/rec/recUser.h</headers>
     <headers>$(LOCAL_INC)/rec/recVersion.h</headers>
+
     <include>$(LOCAL_INC)/rec</include>
     <include>$(LOCAL_INC)</include>
 
@@ -92,19 +97,18 @@
     <precomp-headers-header>wx/wxprec.h</precomp-headers-header>
     <precomp-headers>on</precomp-headers>
     <precomp-headers-file>wxprec_$(id)</precomp-headers-file>
-
   </lib>
 
   <lib id="reccl" template="wx-lib,wxlike">
     <libname>reccl$(WXLIBPOSTFIX)</libname>
-    <sources>$(LOCAL_SRC)/rec/reccl.cpp</sources>
+    <sources>$(LOCAL_SRC)/rc/reccl.cpp</sources>
     <include>$(LOCAL_INC)/rec</include>
     <include>$(LOCAL_INC)</include>
   </lib>
 
   <lib id="recgui" template="wx-lib,wxlike">
     <libname>recgui$(WXLIBPOSTFIX)</libname>
-    <sources>$(LOCAL_SRC)/rec/recgui.cpp</sources>
+    <sources>$(LOCAL_SRC)/rg/recgui.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/fbRgDialog.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgCompareEvent.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgCrIndividual.cpp</sources>

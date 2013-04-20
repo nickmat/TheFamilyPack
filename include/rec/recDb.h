@@ -34,9 +34,12 @@
 #include <rec/recDatabase.h>
 #include <rec/recDate.h>
 #include <rec/recEvent.h>
+#include <rec/recEventRecord.h>
+#include <rec/recEventType.h>
 #include <rec/recGedParse.h>
 #include <rec/recIndividual.h>
-#include <rec/recLink.h>
+#include <rec/recInterface.h>
+#include <rec/recIndPersona.h>
 #include <rec/recName.h>
 #include <rec/recPersona.h>
 #include <rec/recPlace.h>

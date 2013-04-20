@@ -1,7 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        recEvent.h
+ * Name:        include/rec/recEvent.h
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Manage SQLite3 Event, EventTypes, EventTypeRole and
+ * Purpose:     Manage SQLite3 Event, EventTypeRole and
  *              RecEventPersona records.
  * Author:      Nick Matthews
  * Modified by:
@@ -28,149 +28,13 @@
 
 */
 
-#ifndef RECEVENT_H
-#define RECEVENT_H
+#ifndef REC_RECEVENT_H
+#define REC_RECEVENT_H
 
 #include <rec/recDatabase.h>
+#include <rec/recEventType.h>
 #include <rec/recDate.h>
 #include <rec/recReference.h>
-
-
-class recEvent;
-typedef std::vector< recEvent >            recEventVec;
-class recEventRecord;
-typedef std::vector< recEventRecord >      recEventRecordVec;
-class recEventEventRecord;
-typedef std::vector< recEventEventRecord > recEveEveRecordVec;
-class recEventPersona;
-typedef std::vector< recEventPersona >     recEventPersonaVec;
-class recEventType;
-typedef std::vector< recEventType >        recEventTypeVec;
-class recEventTypeRole;
-typedef std::vector< recEventTypeRole >    recEventTypeRoleVec;
-class recIndividualEvent;
-typedef std::vector< recIndividualEvent >  recIndEventVec;
-class recFamilyEvent;
-typedef std::vector< recFamilyEvent >      recFamilyEventVec;
-
-
-//============================================================================
-//-------------------------[ recEventType ]-----------------------------------
-//============================================================================
-
-enum {
-    recET_FILTER_GrpNone        = 0x0000,
-    recET_FILTER_GrpUnstated    = 0x0001,
-    recET_FILTER_GrpBirth       = 0x0002,
-    recET_FILTER_GrpNrBirth     = 0x0004,
-    recET_FILTER_GrpFamUnion    = 0x0008,
-    recET_FILTER_GrpFamOther    = 0x0010,
-    recET_FILTER_GrpDeath       = 0x0020,
-    recET_FILTER_GrpNrDeath     = 0x0040,
-    recET_FILTER_GrpOther       = 0x0080,
-    recET_FILTER_GrpPersonal    = 0x0100,
-    recET_FILTER_GrpAll         = 0x01ff,
-    recET_FILTER_GrpFamily = (recET_FILTER_GrpFamUnion|recET_FILTER_GrpFamOther)
-};
-
-class recEventType : public recDb
-{
-public:
-    enum ETYPE_Grp {
-        ETYPE_Grp_Unstated, // 0
-        ETYPE_Grp_Birth,    // 1
-        ETYPE_Grp_Nr_Birth, // 2
-        ETYPE_Grp_Union,    // 3
-        ETYPE_Grp_Family,   // 4
-        ETYPE_Grp_Death,    // 5
-        ETYPE_Grp_Nr_Death, // 6
-        ETYPE_Grp_Other,    // 7
-        ETYPE_Grp_Personal, // 8
-        ETYPE_Grp_MAX       // 9
-    };
-
-    enum EType {  // predefined entries, match with recCreate.sql
-        ET_Unstated     = 0,
-        ET_Birth        = -1,
-        ET_Death        = -2,
-        ET_Marriage     = -3,
-        ET_Baptism      = -4,
-        ET_Burial       = -5,
-        ET_AdultBaptism = -6,
-        ET_Census       = -7,
-        ET_Confirmation = -8,
-        ET_Divorce      = -9,
-        ET_Emigration   = -10,
-        ET_Immigration  = -11,
-        ET_Graduation   = -12,
-        ET_Probate      = -13,
-        ET_Will         = -14,
-        ET_RegBirth     = -15,
-        ET_RegDeath     = -16,
-        ET_Residence    = -17,
-        ET_Occupation   = -18,
-        ET_Condition    = -19,
-        ET_MAX          = 20     // Size of list
-    };
-
-    ETYPE_Grp f_grp;
-    wxString  f_name;
-
-    recEventType() {}
-    recEventType( idt id ) : recDb(id) { Read(); }
-    recEventType( const recEventType& et );
-
-    void Clear();
-    void Save();
-    bool Read();
-    TABLE_NAME_MEMBERS( "EventType" );
-
-    static wxString GetIdStr( idt evID ) { return wxString::Format( "ET"ID, evID ); }
-    wxString GetIdStr() const { return GetIdStr( f_id ); }
-
-    ETYPE_Grp FGetGrp() const { return f_grp; }
-    wxString FGetName() const { return f_name; }
-
-    void FSetGrp( ETYPE_Grp grp ) { f_grp = grp; }
-    void FSetName( wxString name ) { f_name = name; }
-
-    bool HasDateSpan() const;
-    static bool HasDateSpan( idt etID );
-
-    wxString GetGroupStr() const { return GetGroupStr( f_grp ); }
-    static wxString GetGroupStr( ETYPE_Grp grp );
-    static wxString GetGroupStr( idt etID );
-
-    static wxArrayString GetGroupStrings( size_t start = 0 );
-
-    static wxString GetTypeStr( idt id );
-    wxString GetTypeStr() const { return f_name; }
-    static ETYPE_Grp GetGroup( idt id );
-    ETYPE_Grp GetGroup() const { return f_grp; }
-
-    static recEventTypeVec ReadVec( unsigned filter = recET_FILTER_GrpAll );
-
-    static recEventTypeRoleVec GetRoles( idt typeID );
-    recEventTypeRoleVec GetRoles() const { return GetRoles( FGetID() ); }
-    static recEventTypeRoleVec GetPrimeRoles( idt typeID, int prime = 0 );
-};
-
-inline bool recEquivalent( const recEventType& r1, const recEventType& r2 )
-{
-    return
-        r1.f_grp  == r2.f_grp  &&
-        r1.f_name == r2.f_name;
-}
-
-inline bool operator==( const recEventType& r1, const recEventType& r2 )
-{
-    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
-}
-
-inline bool operator!=( const recEventType& r1, const recEventType& r2 )
-{
-    return !(r1 == r2);
-}
 
 
 //============================================================================
@@ -282,118 +146,6 @@ inline bool operator!=( const recEvent& r1, const recEvent& r2 )
     return !(r1 == r2);
 }
 
-//============================================================================
-//-------------------------[ recEventRecord ]---------------------------------
-//============================================================================
-
-class recEventRecord : public recDb
-{
-public:
-    wxString f_title;
-    idt      f_type_id;
-    idt      f_date1_id;
-    idt      f_date2_id;
-    idt      f_place_id;
-    wxString f_note;
-    long     f_date_pt;
-
-    recEventRecord() {}
-    recEventRecord( idt id ) : recDb(id) { Read(); }
-    recEventRecord( const recEventRecord& event );
-
-    void Clear();
-    void Save();
-    bool Read();
-    TABLE_NAME_MEMBERS( "EventRecord" );
-
-    wxString FGetTitle() const { return f_title; }
-    idt FGetTypeID() const { return f_type_id; }
-    idt FGetDate1ID() const { return f_date1_id; }
-    idt FGetDate2ID() const { return f_date2_id; }
-    idt FGetPlaceID() const { return f_place_id; }
-    wxString FGetNote() const { return f_note; }
-    long FGetDatePt() const { return f_date_pt; }
-
-    void FSetTitle( const wxString& title ) { f_title = title; }
-    void FSetTypeID( idt typeID ) { f_type_id = typeID; }
-    void FSetDate1ID( idt date1ID ) { f_date1_id = date1ID; }
-    void FSetDate2ID( idt date2ID ) { f_date2_id = date2ID; }
-    void FSetPlaceID( idt placeID ) { f_place_id = placeID; }
-    void FSetNote( const wxString& note ) { f_note = note; }
-    void FSetDatePt( idt datePt ) { f_date_pt = datePt; }
-    void FSetDatePt( recDate::DatePoint dp ) { f_date_pt = recDate::GetDatePoint( f_date1_id, dp ); }
-
-    wxString SetAutoTitle( const wxString& name1, const wxString& name2 = wxEmptyString );
-
-    static wxString GetIdStr( idt evID ) { return wxString::Format( "ER"ID, evID ); }
-    wxString GetIdStr() const { return GetIdStr( f_id ); }
-
-    wxString GetDetailStr() const;
-    wxString GetTypeStr() const;
-    wxString GetDateStr() const;
-    wxString GetAddressStr() const;
-    recEventType::ETYPE_Grp GetTypeGroup() const;
-    static wxString GetDetailStr( idt evID );
-    static wxString GetTypeStr( idt evID );
-    static wxString GetTitle( idt evID );
-    static wxString GetNote( idt evID );
-    static wxString GetDateStr( idt evID );
-    static wxString GetAddressStr( idt evID );
-    static idt GetDate1ID( idt evID );
-    static void UpdateDatePoint( idt evID );
-    void UpdateDatePoint();
-
-    idt FindReferenceID() const { return FindReferenceID( f_id ); }
-    static idt FindReferenceID( idt eventID ) {
-        return recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, eventID );
-    }
-    static recIdVec FindRealEventIDs( idt erID );
-    recIdVec FindRealEventIDs() const { return FindRealEventIDs( f_id ); }
-    static recEveEveRecordVec GetEveEveRecords( idt erID );
-    recEveEveRecordVec GetEveEveRecords() const { return GetEveEveRecords( f_id ); }
-
-    static bool IsFamilyEvent( idt eveID );
-    bool IsFamilyEvent() const { return IsFamilyEvent( f_id ); }
-
-    recEventPersonaVec GetEventPersonas();
-    static wxSQLite3Table GetTitleList();
-    static wxSQLite3Table GetTitleList( idt offset, int limit );
-
-    static int GetLastPerSeqNumber( idt eventID );
-    int GetLastPerSeqNumber() const { return GetLastPerSeqNumber( f_id ); }
-
-    static void RemoveDates( idt dateID ); // removes date if found, replacing with 0
-    static void RemovePlace( idt placeID ); // removes place if found, replacing with 0
-
-    // Delete Event and remove all references to it.
-    void RemoveFromDatabase();
-    static void RemoveFromDatabase( idt id );
-    static void RemoveIncOrphansFromDatabase( idt id );
-
-    static void DeleteIfOrphaned( idt id );
-};
-
-inline bool recEquivalent( const recEventRecord& r1, const recEventRecord& r2 )
-{
-    return
-        r1.f_title    == r2.f_title    &&
-        r1.f_type_id  == r2.f_type_id  &&
-        r1.f_date1_id == r2.f_date1_id &&
-        r1.f_date2_id == r2.f_date2_id &&
-        r1.f_place_id == r2.f_place_id &&
-        r1.f_note     == r2.f_note     &&
-        r1.f_date_pt  == r2.f_date_pt;
-}
-
-inline bool operator==( const recEventRecord& r1, const recEventRecord& r2 )
-{
-    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
-}
-
-inline bool operator!=( const recEventRecord& r1, const recEventRecord& r2 )
-{
-    return !(r1 == r2);
-}
 
 //============================================================================
 //-------------------------[ recEventEventRecord ]----------------------------
@@ -741,4 +493,4 @@ inline bool operator!=( const recFamilyEvent& d1, const recFamilyEvent& d2 )
     return !(d1 == d2);
 }
 
-#endif // RECEVENT_H
+#endif // REC_RECEVENT_H

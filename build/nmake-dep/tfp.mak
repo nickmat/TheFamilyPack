@@ -152,10 +152,12 @@ REC_OBJECTS =  \
 	rec_recDatabase.obj \
 	rec_recDate.obj \
 	rec_recEvent.obj \
+	rec_recEventRecord.obj \
+	rec_recEventType.obj \
 	rec_recFilterEvent.obj \
 	rec_recGedParse.obj \
 	rec_recIndividual.obj \
-	rec_recLink.obj \
+	rec_recIndPersona.obj \
 	rec_recName.obj \
 	rec_recPersona.obj \
 	rec_recPlace.obj \
@@ -551,6 +553,12 @@ rec_recDate.obj: .\..\..\src\rec\recDate.cpp
 rec_recEvent.obj: .\..\..\src\rec\recEvent.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recEvent.cpp
 
+rec_recEventRecord.obj: .\..\..\src\rec\recEventRecord.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recEventRecord.cpp
+
+rec_recEventType.obj: .\..\..\src\rec\recEventType.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recEventType.cpp
+
 rec_recFilterEvent.obj: .\..\..\src\rec\recFilterEvent.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recFilterEvent.cpp
 
@@ -560,8 +568,8 @@ rec_recGedParse.obj: .\..\..\src\rec\recGedParse.cpp
 rec_recIndividual.obj: .\..\..\src\rec\recIndividual.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recIndividual.cpp
 
-rec_recLink.obj: .\..\..\src\rec\recLink.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recLink.cpp
+rec_recIndPersona.obj: .\..\..\src\rec\recIndPersona.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recIndPersona.cpp
 
 rec_recName.obj: .\..\..\src\rec\recName.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recName.cpp
@@ -596,11 +604,11 @@ rec_recVersion.obj: .\..\..\src\rec\recVersion.cpp
 rec_dummy.obj: .\..\..\src\dummy.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) /Ycwx/wxprec.h .\..\..\src\dummy.cpp
 
-reccl_reccl.obj: .\..\..\src\rec\reccl.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(RECCL_CXXFLAGS) .\..\..\src\rec\reccl.cpp
+reccl_reccl.obj: .\..\..\src\rc\reccl.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECCL_CXXFLAGS) .\..\..\src\rc\reccl.cpp
 
-recgui_recgui.obj: .\..\..\src\rec\recgui.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rec\recgui.cpp
+recgui_recgui.obj: .\..\..\src\rg\recgui.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\recgui.cpp
 
 recgui_fbRgDialog.obj: .\..\..\src\rg\fbRgDialog.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\fbRgDialog.cpp

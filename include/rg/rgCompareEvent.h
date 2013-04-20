@@ -33,6 +33,7 @@
 #include <map>
 
 #include <rec/recEvent.h>
+#include <rec/recEventRecord.h>
 #include <rec/recIndividual.h>
 #include <rec/recPlace.h>
 

@@ -37,6 +37,7 @@
 #endif
 
 #include <rec/recEvent.h>
+#include <rec/recEventRecord.h>
 #include "rgSelect.h"
 #include "rgTableCtrl.h"
 

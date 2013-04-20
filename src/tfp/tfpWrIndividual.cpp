@@ -38,6 +38,7 @@
 
 #include <rec/recIndividual.h>
 #include <rec/recEvent.h>
+#include <rec/recEventRecord.h>
 #include <rec/recPersona.h>
 #include <rec/recName.h>
 #include <rec/recReference.h>

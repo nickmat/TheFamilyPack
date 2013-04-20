@@ -29,7 +29,7 @@
 #ifndef RGEDEVIDEVENT_H
 #define RGEDEVIDEVENT_H
 
-#include <rec/recEvent.h>
+#include <rec/recEventRecord.h>
 #include <rec/recReference.h>
 
 #include "fbRgDialog.h"

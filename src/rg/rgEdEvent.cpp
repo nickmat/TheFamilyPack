@@ -41,6 +41,7 @@
 
 #include <rec/recDate.h>
 #include <rec/recPlace.h>
+#include <rec/recEventRecord.h>
 #include <rg/rgDialogs.h>
 
 #include "rgEdEvent.h"

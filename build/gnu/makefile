@@ -113,10 +113,12 @@ REC_OBJECTS =  \
 	rec_recDatabase.o \
 	rec_recDate.o \
 	rec_recEvent.o \
+	rec_recEventRecord.o \
+	rec_recEventType.o \
 	rec_recFilterEvent.o \
 	rec_recGedParse.o \
 	rec_recIndividual.o \
-	rec_recLink.o \
+	rec_recIndPersona.o \
 	rec_recName.o \
 	rec_recPersona.o \
 	rec_recPlace.o \
@@ -344,6 +346,12 @@ rec_recDate.o: ./../../src/rec/recDate.cpp
 rec_recEvent.o: ./../../src/rec/recEvent.cpp
 	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
 
+rec_recEventRecord.o: ./../../src/rec/recEventRecord.cpp
+	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
+
+rec_recEventType.o: ./../../src/rec/recEventType.cpp
+	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
+
 rec_recFilterEvent.o: ./../../src/rec/recFilterEvent.cpp
 	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
 
@@ -353,7 +361,7 @@ rec_recGedParse.o: ./../../src/rec/recGedParse.cpp
 rec_recIndividual.o: ./../../src/rec/recIndividual.cpp
 	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
 
-rec_recLink.o: ./../../src/rec/recLink.cpp
+rec_recIndPersona.o: ./../../src/rec/recIndPersona.cpp
 	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
 
 rec_recName.o: ./../../src/rec/recName.cpp
@@ -389,10 +397,10 @@ rec_recVersion.o: ./../../src/rec/recVersion.cpp
 rec_dummy.o: ./../../src/dummy.cpp
 	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
 
-reccl_reccl.o: ./../../src/rec/reccl.cpp
+reccl_reccl.o: ./../../src/rc/reccl.cpp
 	$(CXX) -c -o $@ $(RECCL_CXXFLAGS) $(CPPDEPS) $<
 
-recgui_recgui.o: ./../../src/rec/recgui.cpp
+recgui_recgui.o: ./../../src/rg/recgui.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_fbRgDialog.o: ./../../src/rg/fbRgDialog.cpp
