@@ -108,6 +108,9 @@ public:
     idt GetNameID() const { return recName::GetDefaultNameID( f_id, 0 ); }
     static wxString GetNameStr( idt indID ) { return recName::GetDefaultNameStr( indID, 0 ); }
     wxString GetNameStr() const { return recName::GetDefaultNameStr( f_id, 0 ); }
+    static wxString GetDescriptionStr( idt indID );
+    wxString GetDescriptionStr() const { return GetDescriptionStr( f_id ); }
+    
 
     static recNameVec GetNames( idt indID ) { return recName::GetNames( indID, 0 ); }
     recNameVec GetNames() const { return recName::GetNames( f_id, 0 ); }

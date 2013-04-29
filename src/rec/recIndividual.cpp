@@ -196,6 +196,22 @@ recIndividualVec recIndividual::ReadVec( unsigned sexfilter )
     return inds;
 }
 
+wxString recIndividual::GetDescriptionStr( idt indID )
+{
+    recIndividual ind(indID);
+    if( ind.FGetID() == 0 ) {
+        return wxEmptyString;
+    }
+    wxString name = ind.FGetName();
+    if( name.size() == 0 ) {
+        name = "? ?";
+    }
+    if( ind.FGetEpitaph().size() ) {
+        return name + " " + ind.FGetEpitaph();
+    }
+    return name;
+}
+
 void recIndividual::UpdateEpitaph()
 {
     idt bDateID, dDateID;
