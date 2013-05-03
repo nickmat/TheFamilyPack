@@ -30,45 +30,11 @@
 #ifndef RECDATABASE_H
 #define RECDATABASE_H
 
-#include <vector>
-
-#include <wx/vector.h>
-#include <wx/wxsqlite3.h>
+#include <rec/recHelper.h>
 #include <rec/recInterface.h>
-
-// Some helpful defines
-typedef wxLongLong_t    idt;
-#define ID              "%lld"
-#define GET_ID( id )    ((id).GetValue())
-#define UTF8_(s) ((const char*)(s).utf8_str())
-#define BOOL_(i) ( (i) ? 1 : 0 )
-#define ID_OR_NULL(id) (UTF8_((id) ? recGetStr( id ) : "NULL"))
-#define STR_OR_NULL(s) ( (s).IsEmpty() ? UTF8_("NULL") : \
-    wxSQLite3StatementBuffer.FormatV( "'%q'", UTF8_(s) ) ) 
 
 extern void recInitialize();
 extern void recUninitialize();
-
-// Useful defines placed here for convenience.
-typedef std::vector< wxString >  StringVec;
-typedef std::vector< int >  IntVec;
-typedef std::vector< wxLongLong_t > IntegerVec;
-typedef std::vector< double > DoubleVec;
-typedef std::vector< bool > BoolVec;
-
-typedef std::vector< idt >  recIdVec;
-
-extern idt recGetID( const wxString& str );
-inline wxString recGetStr( idt id ) { return wxString::Format( ID, id ); }
-inline wxString recGetIDStr( idt id ) { return id ? recGetStr( id ) : ""; }
-
-enum Sex { SEX_Unstated, SEX_Male, SEX_Female, SEX_Unknown };
-extern wxString recGetSexStr( Sex sex );
-
-// Used for searching for records with binary fields
-enum TriLogic { TRILOGIC_false, TRILOGIC_true, TRILOGIC_both };
-
-extern wxString recHTMLifyStr( const wxString& str );
 
 class recDb
 {
@@ -199,18 +165,5 @@ public:
     static bool Exists( idt id ) { return RecordExists( (T), id ); }   \
     static int UserCount() { return GetUserCount(T); }                 \
     static int Count() { return GetCount(T); }
-
-// Create a string list of ID strings for a given record type
-// ie "Pa12, Pa34, Pa56" from a recIdVec
-
-template <class rec>
-wxString recIdVecToStr( const recIdVec& ids ) {
-    wxString str;
-    for( size_t i = 0 ; i < ids.size() ; i++ ) {
-        if( i > 0 ) str << ", ";
-        str << rec::GetIdStr( ids[i] );
-    }
-    return str;
-}
 
 #endif // RECDATABASE_H

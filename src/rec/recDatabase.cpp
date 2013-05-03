@@ -69,46 +69,6 @@ wxSQLite3Database* recDb::s_db = NULL;
 long               recDb::s_change = 0;
 long               recDb::s_spnumber = 0;
 
-idt recGetID( const wxString& str )
-{
-    idt id = 0;
-    str.ToLongLong( &id );  
-    return id;
-}
-
-wxString recGetSexStr( Sex sex )
-{
-    static wxString sexarray[] = {
-        _("Unstated"), _("Male"), _("Female"), _("Unknown")
-    };
-    return sexarray[sex];
-}
-
-wxString recHTMLifyStr( const wxString& str )
-{
-    wxString htm;
-    wxString::const_iterator it;
-    for( it = str.begin() ; it != str.end() ; it++ ) {
-        switch( (*it).GetValue() )
-        {
-        case '\n':
-            htm << "<br>";
-            break;
-        case '&':
-            htm << "&amp;";
-            break;
-        case '<':
-            htm << "&lt;";
-            break;
-        case '>':
-            htm << "&gt;";
-            break;
-        default:
-            htm << *it;
-        }
-    }
-    return htm;
-}
 
 bool recDb::CreateDb( const wxString& fname, unsigned flags )
 {

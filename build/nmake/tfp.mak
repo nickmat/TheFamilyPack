@@ -156,6 +156,7 @@ REC_OBJECTS =  \
 	rec_recEventType.obj \
 	rec_recFilterEvent.obj \
 	rec_recGedParse.obj \
+	rec_recHelper.obj \
 	rec_recIndividual.obj \
 	rec_recIndPersona.obj \
 	rec_recName.obj \
@@ -554,6 +555,9 @@ rec_recFilterEvent.obj: .\..\..\src\rec\recFilterEvent.cpp
 
 rec_recGedParse.obj: .\..\..\src\rec\recGedParse.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recGedParse.cpp
+
+rec_recHelper.obj: .\..\..\src\rec\recHelper.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recHelper.cpp
 
 rec_recIndividual.obj: .\..\..\src\rec\recIndividual.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recIndividual.cpp

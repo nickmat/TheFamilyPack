@@ -53,6 +53,7 @@
     <sources>$(LOCAL_SRC)/rec/recEventType.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recFilterEvent.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recGedParse.cpp</sources>
+    <sources>$(LOCAL_SRC)/rec/recHelper.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recIndividual.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recIndPersona.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recName.cpp</sources>
@@ -75,6 +76,7 @@
     <headers>$(LOCAL_INC)/rec/recEventType.h</headers>
     <headers>$(LOCAL_INC)/rec/recFilterEvent.h</headers>
     <headers>$(LOCAL_INC)/rec/recGedParse.h</headers>
+    <headers>$(LOCAL_INC)/rec/recHelper.h</headers>
     <headers>$(LOCAL_INC)/rec/recIndividual.h</headers>
     <headers>$(LOCAL_INC)/rec/recInterface.h</headers>
     <headers>$(LOCAL_INC)/rec/recIndPersona.h</headers>
