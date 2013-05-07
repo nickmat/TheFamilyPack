@@ -186,7 +186,7 @@ void rgDlgEditRelativeDate::CalcDate()
     m_date.FSetRecordSch( m_relative.FGetScheme() );
     m_relative.FSetUnit( unit[m_radioUnits->GetSelection()] );
 
-    m_relative.CalculateDate( m_date );
+    m_relative.CalculateDate( &m_date );
 }
 
 // End of src/rg/rgEdRelDate.cpp file

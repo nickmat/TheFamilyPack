@@ -44,16 +44,6 @@
 #include "rgEdEventRecord.h"
 #include "rgEdReference.h"
 
-bool rgEditEventRecord_( wxWindow* wind, idt erID )
-{
-    idt refID = recEventRecord::FindReferenceID( erID );
-    wxASSERT( refID != 0 );
-    if( refID ) {
-        return rgEditReference( wind, refID );
-    }
-    return false;
-}
-
 bool rgEditEventRecord( wxWindow* wind, idt erID )
 {
     wxASSERT( erID != 0 );
@@ -306,9 +296,8 @@ bool rgDlgEditEventRecord::TransferDataToWindow()
     m_staticType->SetLabel( m_event.GetTypeStr() );
     m_textCtrlTitle->SetValue( m_event.FGetTitle() );
     m_staticDate1->SetLabel( recDate::GetStr( m_date1ID ) );
-    if( recEventType::HasDateSpan( m_event.FGetTypeID() ) ) {
-        m_staticDate2->SetLabel( recDate::GetStr( m_date2ID ) );
-    } else {
+    m_staticDate2->SetLabel( recDate::GetStr( m_date2ID ) );
+    if( ! recEventType::HasDateSpan( m_event.FGetTypeID() ) ) {
         m_buttonDate2->Enable( false );
     }
     m_staticPlace->SetLabel( recPlace::GetAddressStr( m_placeID ) );

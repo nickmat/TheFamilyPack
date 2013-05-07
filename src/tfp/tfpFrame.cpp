@@ -96,6 +96,9 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_LIST_ALL_EVENTS, TfpFrame::OnListAllEvents )
     EVT_MENU( tfpID_LIST_PAGED_EVENTS, TfpFrame::OnListPagedEvents )
     EVT_MENU( tfpID_LIST_SELECTED_EVENTS, TfpFrame::OnListSelectedEvents )
+    EVT_MENU( tfpID_LIST_ALL_EVENTRECS, TfpFrame::OnListAllEventRecs )
+    EVT_MENU( tfpID_LIST_PAGED_EVENTRECS, TfpFrame::OnListPagedEventRecs )
+    EVT_MENU( tfpID_LIST_SELECTED_EVENTRECS, TfpFrame::OnListSelectedEventRecs )
     EVT_MENU( tfpID_LIST_RESEARCHERS, TfpFrame::OnListResearchers )
     EVT_MENU( tfpID_PED_CHART, TfpFrame::OnPedChart )
     EVT_MENU( tfpID_DESC_CHART, TfpFrame::OnDescChart )
@@ -220,6 +223,10 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     menuListEvent->Append( tfpID_LIST_ALL_EVENTS, _("&All Events\tAlt-E") );
     menuListEvent->Append( tfpID_LIST_PAGED_EVENTS, _("&Paged Events") );
     menuListEvent->Append( tfpID_LIST_SELECTED_EVENTS, _("&Selected Events...") );
+    menuListEvent->AppendSeparator();
+    menuListEvent->Append( tfpID_LIST_ALL_EVENTRECS, _("All Event &Records") );
+    menuListEvent->Append( tfpID_LIST_PAGED_EVENTRECS, _("Pa&ged Event Records") );
+    menuListEvent->Append( tfpID_LIST_SELECTED_EVENTRECS, _("Se&lected Event Records...") );
 
     wxMenu* menuList = new wxMenu;
     menuList->Append( tfpID_LIST_SURNAME_INDEX, _("&Surname Index\tAlt-S") );
@@ -723,6 +730,30 @@ void TfpFrame::OnListSelectedEvents( wxCommandEvent& event )
     if( rgSelectIndEventList( this, &m_eveFilter ) ) {
         DisplayHtmPage( "E$" );
     }
+}
+
+/*! \brief Called on a List/All Events menu option event.
+ */
+void TfpFrame::OnListAllEventRecs( wxCommandEvent& event )
+{
+    DisplayHtmPage( "ER" );
+}
+
+/*! \brief Called on a List/Paged Events menu option event.
+ */
+void TfpFrame::OnListPagedEventRecs( wxCommandEvent& event )
+{
+    DisplayHtmPage( "ER,0" );
+}
+
+/*! \brief Called on a List/Selected Events menu option event.
+ */
+void TfpFrame::OnListSelectedEventRecs( wxCommandEvent& event )
+{
+    wxMessageBox( "Not yet implimented", "OnListSelectedEventRecs" );
+//    if( rgSelectIndEventRecList( this, &m_erFilter ) ) {
+//        DisplayHtmPage( "ER$" );
+//    }
 }
 
 /*! \brief Called on a List Researchers menu option event.
@@ -1232,7 +1263,12 @@ void TfpFrame::DoEdit( const wxString& href )
 
     recDb::Begin();
     try {
-        if( href.StartsWith( "IL" ) ) {
+        if( href.StartsWith( "EER" ) ) {
+            idt eID, erID;
+            recGetIDs( href.Mid(3), &eID, &erID );
+            id = rgCreateIndEventEventRecord( this, eID, erID );
+            if( id ) ret = true;
+        } else if( href.StartsWith( "IL" ) ) {
             id = rgAddNewIndividual( this, SEX_Male, "", recGetID( href.Mid(2) ) );
             if( id ) ret = true;
         } else if( href.StartsWith( "IR" ) ) {
@@ -1638,7 +1674,23 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
         if( name == "E$" ) {
             return tfpWriteEventSelection( m_eveFilter );
         }
+        if( name == "ER" ) {
+            return tfpWriteEventRecordIndex();
+        }
+// We don't have a EventRecord filter yet!
+//        if( name == "ER$" ) {
+//            return tfpWriteEventRecordSelection( m_erFilter );
+//        }
         if( uch1 == 'R' ) {
+            if( name.GetChar( 2 ) == ',' ) {
+                success = name.Mid(3).ToLongLong( &num );
+                if( !success || num < 0 ) {
+                    return wxString::Format(
+                        ErrorPage, name, _("Invalid Event Index Page")
+                    );
+                }
+                return tfpWriteEventRecordPagedIndex( num );
+            }
             success = name.Mid(2).ToLongLong( &num );
             if( !success || num < 0 ) {
                 return wxString::Format(

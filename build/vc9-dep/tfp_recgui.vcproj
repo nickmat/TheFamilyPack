@@ -224,6 +224,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rg\rgEdEventEventRec.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rg\rgEdEventRecord.cpp"
 				>
 			</File>
@@ -343,6 +347,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\rg\rgEdEvent.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgEdEventEventRec.h"
 				>
 			</File>
 			<File

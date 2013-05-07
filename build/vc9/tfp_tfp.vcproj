@@ -281,6 +281,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\tfp\tfpWrEventRecord.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\tfp\tfpWrFamily.cpp"
 				>
 			</File>

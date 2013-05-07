@@ -70,6 +70,7 @@ TFP_OBJECTS =  \
 	tfp_tfpWrAdmin.obj \
 	tfp_tfpWrChart.obj \
 	tfp_tfpWrEvent.obj \
+	tfp_tfpWrEventRecord.obj \
 	tfp_tfpWrFamily.obj \
 	tfp_tfpWrIndividual.obj \
 	tfp_tfpWrName.obj \
@@ -192,6 +193,7 @@ RECGUI_OBJECTS =  \
 	recgui_rgEdContact.obj \
 	recgui_rgEdDate.obj \
 	recgui_rgEdEvent.obj \
+	recgui_rgEdEventEventRec.obj \
 	recgui_rgEdEventRecord.obj \
 	recgui_rgEdEventType.obj \
 	recgui_rgEdFamily.obj \
@@ -448,6 +450,9 @@ tfp_tfpWrChart.obj: .\..\..\src\tfp\tfpWrChart.cpp
 tfp_tfpWrEvent.obj: .\..\..\src\tfp\tfpWrEvent.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrEvent.cpp
 
+tfp_tfpWrEventRecord.obj: .\..\..\src\tfp\tfpWrEventRecord.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrEventRecord.cpp
+
 tfp_tfpWrFamily.obj: .\..\..\src\tfp\tfpWrFamily.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrFamily.cpp
 
@@ -624,6 +629,9 @@ recgui_rgEdDate.obj: .\..\..\src\rg\rgEdDate.cpp
 
 recgui_rgEdEvent.obj: .\..\..\src\rg\rgEdEvent.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdEvent.cpp
+
+recgui_rgEdEventEventRec.obj: .\..\..\src\rg\rgEdEventEventRec.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdEventEventRec.cpp
 
 recgui_rgEdEventRecord.obj: .\..\..\src\rg\rgEdEventRecord.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdEventRecord.cpp

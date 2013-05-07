@@ -78,6 +78,7 @@ TFP_OBJECTS =  \
 	tfp_tfpWrAdmin.o \
 	tfp_tfpWrChart.o \
 	tfp_tfpWrEvent.o \
+	tfp_tfpWrEventRecord.o \
 	tfp_tfpWrFamily.o \
 	tfp_tfpWrIndividual.o \
 	tfp_tfpWrName.o \
@@ -147,6 +148,7 @@ RECGUI_OBJECTS =  \
 	recgui_rgEdContact.o \
 	recgui_rgEdDate.o \
 	recgui_rgEdEvent.o \
+	recgui_rgEdEventEventRec.o \
 	recgui_rgEdEventRecord.o \
 	recgui_rgEdEventType.o \
 	recgui_rgEdFamily.o \
@@ -273,6 +275,9 @@ tfp_tfpWrChart.o: ./../../src/tfp/tfpWrChart.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
 tfp_tfpWrEvent.o: ./../../src/tfp/tfpWrEvent.cpp
+	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
+
+tfp_tfpWrEventRecord.o: ./../../src/tfp/tfpWrEventRecord.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
 tfp_tfpWrFamily.o: ./../../src/tfp/tfpWrFamily.cpp
@@ -426,6 +431,9 @@ recgui_rgEdDate.o: ./../../src/rg/rgEdDate.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgEdEvent.o: ./../../src/rg/rgEdEvent.cpp
+	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
+
+recgui_rgEdEventEventRec.o: ./../../src/rg/rgEdEventEventRec.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgEdEventRecord.o: ./../../src/rg/rgEdEventRecord.cpp

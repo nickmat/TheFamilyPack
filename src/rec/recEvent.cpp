@@ -630,6 +630,29 @@ bool recEventEventRecord::Find()
     return true;
 }
 
+/*! Given the Event id and EventRecord id, find the matching record id.
+ */
+idt recEventEventRecord::Find( idt eID, idt erID )
+{
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( eID == 0 || erID == 0 ) return 0; // Only find single record
+
+    sql.Format(
+        "SELECT id FROM EventEventRecord "
+        "WHERE event_id="ID" AND event_rec_id="ID";",
+        eID, erID
+    );
+    result = s_db->GetTable( sql );
+
+    if( result.GetRowCount() != 1 ) {
+        return 0;
+    }
+    result.SetRow( 0 );
+    return GET_ID( result.GetInt64( 0 ) );
+}
+
 
 //============================================================================
 //-------------------------[ recEventTypeRole ]-------------------------------
@@ -831,7 +854,7 @@ idt recEventTypeRole::Find( const wxString& name, idt type, Prime prime, TriLogi
     }
     sql.Format(
         "SELECT id FROM EventTypeRole "
-        "WHERE type_id="ID"%q%q AND name LIKE '%q';",
+        "WHERE type_id="ID"%s%s AND name LIKE '%q';",
         type, UTF8_(primeCondition), UTF8_(officialCondition), UTF8_(name)
     );
     result = s_db->GetTable( sql );

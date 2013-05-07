@@ -188,7 +188,7 @@ idt recDate::Create( const recRelativeDate& rel )
 
     date.SetDefaults();
     date.f_rel_id = rel.f_id;
-    rel.CalculateDate( date );
+    rel.CalculateDate( &date );
 
     date.Save();
     return date.f_id;
@@ -261,14 +261,12 @@ bool recDate::SetJdnDate( const wxString& str, CalendarScheme scheme )
     return ret;
 }
 
-bool recDate::Update()
+void recDate::Update()
 {
-    if( f_rel_id == 0 ) return false;
+    if( f_rel_id == 0 ) return;
 
     recRelativeDate rel(f_rel_id);
-    recDate date( *this ); // duplicate date 
-    rel.CalculateDate( date );
-    return *this != date;
+    rel.CalculateDate( this );
 }
 
 wxString recDate::GetJdnStr( CalendarScheme scheme ) const
@@ -620,7 +618,7 @@ void recRelativeDate::SetDefaults()
 }
 
 
-bool recRelativeDate::CalculateDate( recDate& date ) const
+bool recRelativeDate::CalculateDate( recDate* date ) const
 {
     recDate base( f_base_id );
     long jdn1 = base.f_jdn;
@@ -667,10 +665,10 @@ bool recRelativeDate::CalculateDate( recDate& date ) const
         jdn1 = jdn2;
         jdn2 = temp;
     }
-    date.f_jdn = jdn1;
-    date.f_range = jdn2 - jdn1 - 1;
-    date.f_type |= base.f_type;
-    date.f_record_sch = f_scheme;
+    date->f_jdn = jdn1;
+    date->f_range = jdn2 - jdn1 - 1;
+    date->f_type |= base.f_type;
+    date->f_record_sch = f_scheme;
     return true;
 }
 

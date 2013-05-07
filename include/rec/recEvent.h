@@ -178,7 +178,11 @@ public:
     void FSetConf( double conf ) { f_conf = conf; }
     void FSetNote( const wxString& note ) { f_note = note; }
 
+    static wxString GetIdStr( idt eerID ) { return wxString::Format( "EER"ID, eerID ); }
+    wxString GetIdStr() const { return GetIdStr( f_id ); }
+
     bool Find();
+    static idt recEventEventRecord::Find( idt eID, idt erID );
 };
 
 /*! The two entities are equal, ignoring the record id.

@@ -93,6 +93,7 @@
     <sources>$(LOCAL_SRC)/tfp/tfpWrAdmin.cpp</sources>
     <sources>$(LOCAL_SRC)/tfp/tfpWrChart.cpp</sources>
     <sources>$(LOCAL_SRC)/tfp/tfpWrEvent.cpp</sources>
+    <sources>$(LOCAL_SRC)/tfp/tfpWrEventRecord.cpp</sources>
     <sources>$(LOCAL_SRC)/tfp/tfpWrFamily.cpp</sources>
     <sources>$(LOCAL_SRC)/tfp/tfpWrIndividual.cpp</sources>
     <sources>$(LOCAL_SRC)/tfp/tfpWrName.cpp</sources>

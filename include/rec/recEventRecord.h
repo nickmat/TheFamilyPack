@@ -97,11 +97,9 @@ public:
     void UpdateDatePoint();
 
     idt FindReferenceID() const { return FindReferenceID( f_id ); }
-    static idt FindReferenceID( idt eventID ) {
-        return recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, eventID );
+    static idt FindReferenceID( idt erID ) {
+        return recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, erID );
     }
-    static recIdVec FindRealEventIDs( idt erID );
-    recIdVec FindRealEventIDs() const { return FindRealEventIDs( f_id ); }
     static recEveEveRecordVec GetEveEveRecords( idt erID );
     recEveEveRecordVec GetEveEveRecords() const { return GetEveEveRecords( f_id ); }
 
@@ -118,7 +116,9 @@ public:
     // Find matching Event records by following the links:-
     // EventRecord/Persona(prime Role) -> Persona/Individual link -> Individual/Event(matching role)
     // Depending on the type and group of the event, loosely match Date and Place.
-    recIdVec FindMatchingEvents() const;
+    enum recEVENT_Link { recEVENT_Link_EvEvRec, recEVENT_Link_IndPer };
+    recIdVec FindMatchingEvents( recEVENT_Link link = recEVENT_Link_EvEvRec ) const;
+    recCheckIdVec FindCheckedMatchingEvents() const;
 
     static void RemoveDates( idt dateID ); // removes date if found, replacing with 0
     static void RemovePlace( idt placeID ); // removes place if found, replacing with 0
@@ -130,27 +130,5 @@ public:
 
     static void DeleteIfOrphaned( idt id );
 };
-
-inline bool recEquivalent( const recEventRecord& r1, const recEventRecord& r2 )
-{
-    return
-        r1.f_title    == r2.f_title    &&
-        r1.f_type_id  == r2.f_type_id  &&
-        r1.f_date1_id == r2.f_date1_id &&
-        r1.f_date2_id == r2.f_date2_id &&
-        r1.f_place_id == r2.f_place_id &&
-        r1.f_note     == r2.f_note     &&
-        r1.f_date_pt  == r2.f_date_pt;
-}
-
-inline bool operator==( const recEventRecord& r1, const recEventRecord& r2 )
-{
-    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
-}
-
-inline bool operator!=( const recEventRecord& r1, const recEventRecord& r2 )
-{
-    return !(r1 == r2);
-}
 
 #endif // REC_RECEVENTRECORD_H

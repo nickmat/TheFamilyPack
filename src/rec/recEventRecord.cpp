@@ -279,14 +279,6 @@ wxString recEventRecord::GetNote( idt id )
     return result.GetAsString( 0 );
 }
 
-recIdVec recEventRecord::FindRealEventIDs( idt erID )
-{
-    recIdVec eveIDs;
-    // TODO: Get a list of Event's 
-    // by matching Persona and Individuls for the prime roles
-    return eveIDs;
-}
-
 recEveEveRecordVec recEventRecord::GetEveEveRecords( idt erID )
 {
     recEveEveRecordVec vec;
@@ -492,10 +484,68 @@ int recEventRecord::GetLastPerSeqNumber( idt eventID )
     return s_db->ExecuteScalar( sql );
 }
 
-recIdVec recEventRecord::FindMatchingEvents() const
+
+recIdVec recEventRecord::FindMatchingEvents( recEVENT_Link link ) const
 {
     recIdVec eveIDs;
+    wxSQLite3StatementBuffer sql;
+
+    if( link == recEVENT_Link_EvEvRec ) {
+        sql.Format(
+            // This query finds Event's which match the EventRecord, 
+            // by using the EventEventRecord table.
+            "SELECT event_id FROM EventEventRecord"
+            " WHERE event_rec_id="ID
+            " ORDER BY event_id;",
+            f_id
+        );
+    } else { // recEVENT_Link_IndPer
+        sql.Format(
+            // This query finds Event's which match the EventRecord, 
+            // by matching the linked prime Persona with their Indiviuals.
+            "SELECT IE.event_id"
+            " FROM EventPersona EP, IndividualPersona IP,"
+            " IndividualEvent IE, EventTypeRole ETR"
+            " WHERE EP.event_rec_id="ID
+            " AND EP.per_id=IP.per_id AND IP.ind_id=IE.ind_id AND EP.role_id=IE.role_id"
+            " AND EP.role_id=ETR.id AND ETR.prime>0"
+            " GROUP BY IE.event_id"
+            " ORDER BY IE.event_id;",
+            f_id
+        );
+    }
+    wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
+
+    while( result.NextRow() ) {
+        eveIDs.push_back( GET_ID( result.GetInt64( 0 ) ) );
+    }
+
     return eveIDs;
+}
+
+recCheckIdVec recEventRecord::FindCheckedMatchingEvents() const
+{
+    recCheckIdVec list;
+    recIdVec e1 = FindMatchingEvents( recEVENT_Link_EvEvRec );
+    recIdVec e2 = FindMatchingEvents( recEVENT_Link_IndPer );
+
+    // This assumes e1 and e2 are both in ascending order
+    for( size_t i = 0, j = 0 ; i < e1.size() || j < e2.size() ; ) {
+        recCheckID chk;
+        if( i == e1.size() ) {
+            chk.SetIDs( 0, e2[j++] );
+        } else if( j == e2.size() ) {
+            chk.SetIDs( e1[i++], 0 );
+        } else if( e1[i] == e2[j] ) {
+            chk.SetIDs( e1[i++], e2[j++] );
+        } else if( e1[i] > e2[j] ) {
+            chk.SetIDs( e1[i++], 0 );
+        } else {
+            chk.SetIDs( 0, e2[j++] );
+        }
+        list.push_back( chk );
+    }
+    return list;
 }
 
 // End of src/rec/recEventRecord.cpp file

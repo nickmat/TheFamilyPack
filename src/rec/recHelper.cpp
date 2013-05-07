@@ -45,6 +45,18 @@ idt recGetID( const wxString& str )
     return id;
 }
 
+bool recGetIDs( const wxString& str, idt* id1, idt* id2 )
+{
+    *id1 = recGetID( str );
+    size_t pos = str.find_first_of( wxS(',') );
+    if( pos == wxString::npos ) {
+        *id2 = 0;
+    } else {
+        *id2 = recGetID( str.substr( pos + 1 ) );
+    }
+    return *id1 != 0 && *id2 != 0;
+}
+
 wxString recGetSexStr( Sex sex )
 {
     static wxString sexarray[] = {

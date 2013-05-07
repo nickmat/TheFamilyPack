@@ -155,7 +155,7 @@ public:
     static bool SetDate( idt dateID, const wxString& str, CalendarScheme sch = CALENDAR_SCH_Unstated );
     
     bool SetJdnDate( const wxString& str, CalendarScheme sch = CALENDAR_SCH_Unstated );
-    bool Update(); // Returns true if date is changed. Does nothing if not relative date.
+    void Update(); // Does nothing if not relative date.
 
     wxString GetJdnStr( CalendarScheme sch = CALENDAR_SCH_Unstated ) const;
     static wxString GetJdnStr( idt id, CalendarScheme sch = CALENDAR_SCH_Unstated  );
@@ -273,7 +273,7 @@ public:
     static wxString GetIdStr( idt rdID ) { return wxString::Format( "RD"ID, rdID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
-    bool CalculateDate( recDate& date ) const;
+    bool CalculateDate( recDate* date ) const;
 
     static void RemoveFromDatabase( idt rdID );
 };

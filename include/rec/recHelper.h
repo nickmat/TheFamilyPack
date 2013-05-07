@@ -76,7 +76,11 @@ extern bool recCheckIDsAreEqual( const recCheckIdVec& ids );
 extern bool recCheckIDsHaveAdditionalFirst( const recCheckIdVec& ids );
 extern bool recCheckIDsHaveAdditionalSecond( const recCheckIdVec& ids );
 
+// Convert the given string into an idt
 extern idt recGetID( const wxString& str );
+// Convert the given commer delimited string into two idt's
+// return true if both are non-zero.
+extern bool recGetIDs( const wxString& str, idt* id1, idt* id2 );
 inline wxString recGetStr( idt id ) { return wxString::Format( ID, id ); }
 inline wxString recGetIDStr( idt id ) { return id ? recGetStr( id ) : ""; }
 

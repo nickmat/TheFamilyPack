@@ -44,18 +44,6 @@
 
 #include "tfpWr.h"
 
-wxString GetSexClassPer( idt perID )
-{
-    Sex sex = recPersona::GetSex( perID );
-    switch( sex ) {
-    case SEX_Male: 
-        return "male";
-    case SEX_Female: 
-        return "fem";
-    }
-    return "neut";
-}
-
 
 wxString tfpWriteEventIndex()
 {
@@ -256,8 +244,8 @@ wxString tfpWriteEventPage( idt eventID, rgCompareEvent* ce )
         "</td>\n</tr>\n<tr>\n"
         "<td><b>Note: </b>" << eve.f_note << "</td>\n"
         "</tr>\n<tr>\n"
-        "<td>Group: " << recEventType::GetGroupStr( eve.FGetTypeID() ) <<
-        " Type: " << eve.GetTypeStr() << "</td>\n"
+        "<td><b>Group:</b> " << recEventType::GetGroupStr( eve.FGetTypeID() ) <<
+        " <b>Type:</b> " << eve.GetTypeStr() << "</td>\n"
         "</tr>\n</table>\n"
     ;
 
@@ -286,92 +274,6 @@ wxString tfpWriteEventPage( idt eventID, rgCompareEvent* ce )
         << ce->GetRefPlacesTable()
         << "</div>\n</body>\n</html>\n";
 
-    return htm;
-}
-
-wxString tfpWriteEventRecordPage( idt eventID )
-{
-    wxString htm;
-    if( eventID == 0 ) return wxEmptyString;
-    recEventRecord eve(eventID);
-    idt refID = recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, eventID );
-
-    htm <<
-        "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
-        "\"http://www.w3.org/TR/html4/loose.dtd\">\n"
-        "<html>\n<head>\n"
-        "<title>Event " << eve.GetIdStr() << "</title>\n"
-        "<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>\n"
-        "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>\n"
-        "</head>\n<body>\n<div class='tfp'>\n"
-        "<h1>Event Record " << eve.GetIdStr() << ": " << eve.f_title << "</h1>\n"
-
-        "<table class='data'>\n<tr>\n<td>"
-    ;
-    if( eve.FGetDate1ID() ) {
-        htm <<
-            "<b><a href='tfpi:D" << eve.FGetDate1ID() <<
-            "'>Date</a>: </b>" << eve.GetDateStr()
-        ;
-    } else {
-        htm << "<b>Date:</b>";
-    }
-    htm << "</td>\n</tr>\n<tr>\n<td>";
-    if( eve.FGetPlaceID() ) {
-        htm <<
-            "<b><a href='tfpi:P" << eve.FGetPlaceID() << 
-            "'>Place</a>: </b>" << eve.GetAddressStr()
-        ;
-    } else {
-        htm << "<b>Place:</b>";
-    }
-    htm <<
-        "</td>\n</tr>\n<tr>\n"
-        "<td><b>Note: </b>" << eve.FGetNote() << "</td>\n"
-        "</tr>\n<tr>\n"
-        "<td>Group: " << recEventType::GetGroupStr( eve.FGetTypeID() ) <<
-        " Type: " << eve.GetTypeStr() << "</td>\n"
-        "</tr>\n<tr>\n"
-        "<td><b><a href='tfp:R" << refID <<
-        "'>" << recReference::GetIdStr( refID ) <<
-        "</a></b> " << recReference::GetTitle( refID ) << "</td>\n"
-        "</tr>\n</table>\n"
-    ;
-
-    recEventPersonaVec eps = eve.GetEventPersonas();
-    if( !eps.empty() ) {
-        htm <<
-            "<table class='data'>\n<tr>\n"
-            "<th>Role</th><th>ID</th><th>Persona</th><th>Note</th>"
-            "<th>Individuals</tr>\n"
-        ;
-        for( size_t i = 0 ; i < eps.size() ; i++ ) {
-            recPersona per( eps[i].FGetPerID() );
-            recIdVec indIDs = per.GetIndividualIDs();
-            htm <<
-                "<tr>\n<td>" << 
-                recEventTypeRole::GetName( eps[i].FGetRoleID() ) <<
-                "</td>\n<td>" << per.GetIdStr() <<
-                "</td>\n<td class='" << GetSexClassPer( per.FGetID() ) <<
-                "'>" << per.GetNameStr() <<
-                "</td>\n<td>" << eps[i].f_note << 
-                " </td>\n<td><b>"
-            ;
-            for( size_t j = 0 ; j < indIDs.size() ; j++ ) {
-                if( j > 0 ) {
-                    htm << ", ";
-                }
-                htm <<
-                    "<a href='tfp:I" << indIDs[j] <<
-                    "'>" << recIndividual::GetIdStr( indIDs[j] ) <<
-                    "</a>"
-                ;
-            }
-            htm << "</b></td>\n</tr>\n";
-        }
-        htm << "</table>\n";
-    }
-    htm << "</body>\n</html>\n";
     return htm;
 }
 
