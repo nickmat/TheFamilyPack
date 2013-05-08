@@ -220,7 +220,7 @@ wxString tfpWriteEventRecordPage( idt erID )
                 ;
             } else {
                 htm <<
-                    "<a href='tfpe:EER" << e2 << "," << erID <<
+                    "<a href='tfpe:cEER" << e2 << "," << erID <<
                     "'><img src='memory:blank.png' width='80' height='20' alt='Add Direct Link'></a>"
                 ;
             }
@@ -237,6 +237,18 @@ wxString tfpWriteEventRecordPage( idt erID )
             ;
         }
         htm << "</table>\n";
+    } else {
+        // There is no matching Event, see if we need one.
+        // Get list of all Individuals linked to the linked Persona.
+        htm <<
+            "<table class='data'>\n"
+            "<tr>\n<th>Event</th><th>Title</th></tr>\n"
+            "<tr>\n<td><a href='tfpe:cE" << erID <<
+            "'><img src='memory:blank.png' width='80' height='20' alt='Add Event'></a>"
+            "</td>\n<td>" << recEventRecord::GetTitle( erID ) << 
+            "</td>\n</tr>\n"
+            "</table>\n"
+        ;
     }
 
     htm << tfpWrTailTfp();

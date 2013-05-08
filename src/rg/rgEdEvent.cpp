@@ -126,7 +126,7 @@ idt rgCreateIndEvent( wxWindow* wind, idt ind1ID, idt ind2ID, idt famID )
         recFamilyEvent fe(0);
         fe.FSetFamID( famID );
         fe.FSetEventID( eveID );
-        fe.FSetFamSeq( recFamily::GetMaxEventSeqNumber( famID ) );
+        fe.FSetFamSeq( recFamily::GetMaxEventSeqNumber( famID ) + 1 );
         fe.Save();
     }
 
@@ -136,6 +136,53 @@ idt rgCreateIndEvent( wxWindow* wind, idt ind1ID, idt ind2ID, idt famID )
     }
     recDb::ReleaseSavepoint( savepoint );
     return eveID;
+}
+
+idt rgCreateEventFromRecord( wxWindow* wind, idt erID )
+{
+    wxASSERT( erID != 0 );
+    recEventRecord er(erID);
+
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+
+    recEvent e(0);
+    e.FSetTitle( er.FGetTitle() );
+    e.FSetTypeID( er.FGetTypeID() );
+    e.FSetDate1ID( er.FGetDate1ID() );
+    e.FSetDate2ID( er.FGetDate2ID() );
+    e.FSetPlaceID( er.FGetPlaceID() );
+    e.FSetNote( er.FGetNote() );
+    e.FSetDatePt( er.FGetDatePt() );
+    e.Save();
+    idt eID = e.FGetID();
+
+    recEventEventRecord eer(0);
+    eer.FSetEventID( eID );
+    eer.FSetEventRecID( erID );
+    eer.FSetConf( 0.999 );
+    eer.Save();
+
+    recEventPersonaVec pers = er.GetEventPersonas();
+    for( size_t i = 0 ; i < pers.size() ; i++ ) {
+        recIdVec indIDs = recPersona::GetIndividualIDs( pers[i].FGetPerID() );
+        for( size_t j = 0 ; j < indIDs.size() ; j++ ) {
+            recIndividualEvent ie(0);
+            ie.FSetIndID( indIDs[j] );
+            ie.FSetEventID( eID );
+            ie.FSetRoleID( pers[i].FGetRoleID() );
+            ie.FSetNote( pers[i].FGetNote() );
+            ie.FSetIndSeq( recIndividual::GetMaxEventSeqNumber( indIDs[j] ) + 1 );
+            ie.Save();
+        }
+    }
+
+    if( ! rgEditEvent( wind, eID ) ) {
+        recDb::Rollback( savepoint );
+        return 0;
+    }
+    recDb::ReleaseSavepoint( savepoint );
+    return eID;
 }
 
 //============================================================================

@@ -38,6 +38,7 @@
 #include <rec/recEvent.h>
 #include <rec/recReference.h>
 
+#include "rg/rgDialogs.h"
 #include "rgEdEventEventRec.h"
 
 bool rgEditEventEventRecord( wxWindow* wind, idt eerID )
@@ -84,11 +85,6 @@ idt rgCreateIndEventEventRecord( wxWindow* wind, idt eID, idt erID )
 //-------------------------[ rgDlgEditEventEventRec ]-------------------------
 //============================================================================
 
-rgDlgEditEventEventRec::rgDlgEditEventEventRec( wxWindow* parent, idt eerID ) 
-    : m_eer(eerID), fbRgEditEventEventRec( parent )
-{
-}
-
 bool rgDlgEditEventEventRec::TransferDataToWindow()
 {
     wxASSERT( m_eer.FGetID() != 0 );
@@ -107,7 +103,9 @@ bool rgDlgEditEventEventRec::TransferDataToWindow()
         + ": " + recReference::GetTitle( rID );
     m_staticRef->SetLabel( rStr );
 
-    m_textCtrlConf->SetValue( wxString::Format( "%1f", m_eer.FGetConf() ) );
+    wxString confStr;
+    confStr << m_eer.FGetConf();
+    m_textCtrlConf->SetValue( confStr );
     m_textCtrlNote->SetValue( m_eer.FGetNote() );
 
     m_staticEvEvRecID->SetLabel( m_eer.GetIdStr() );

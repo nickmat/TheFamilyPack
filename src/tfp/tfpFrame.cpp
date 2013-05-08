@@ -1263,10 +1263,13 @@ void TfpFrame::DoEdit( const wxString& href )
 
     recDb::Begin();
     try {
-        if( href.StartsWith( "EER" ) ) {
+        if( href.StartsWith( "cEER" ) ) {
             idt eID, erID;
-            recGetIDs( href.Mid(3), &eID, &erID );
+            recGetIDs( href.Mid(4), &eID, &erID );
             id = rgCreateIndEventEventRecord( this, eID, erID );
+            if( id ) ret = true;
+        } else if( href.StartsWith( "cE" ) ) {
+            id = rgCreateEventFromRecord( this, recGetID( href.Mid(2) ) );
             if( id ) ret = true;
         } else if( href.StartsWith( "IL" ) ) {
             id = rgAddNewIndividual( this, SEX_Male, "", recGetID( href.Mid(2) ) );

@@ -30,8 +30,6 @@
 
 #include <rec/recEventRecord.h>
 
-#include "rg/rgDialogs.h"
-
 #include "fbRgDialog.h"
 
 //============================================================================
@@ -41,7 +39,8 @@
 class rgDlgEditEventEventRec : public fbRgEditEventEventRec
 {
 public:
-    rgDlgEditEventEventRec( wxWindow* parent, idt eerID );
+    rgDlgEditEventEventRec( wxWindow* parent, idt eerID )
+        : m_eer(eerID), fbRgEditEventEventRec( parent ) {}
    
 private:
     bool TransferDataToWindow();

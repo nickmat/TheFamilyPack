@@ -73,6 +73,7 @@ extern idt rgCreateDate( wxWindow* wind, const wxString& dateStr = wxEmptyString
 // See src/rg/rgEdEvent.cpp
 extern bool rgEditEvent( wxWindow* wind, idt eveID );
 extern idt rgCreateIndEvent( wxWindow* wind, idt ind1ID, idt ind2ID = 0, idt famID = 0 );
+extern idt rgCreateEventFromRecord( wxWindow* wind, idt erID );
 
 // See src/rg/rgEdEventEventRec.cpp
 extern bool rgEditEventEventRecord( wxWindow* wind, idt eerID );
