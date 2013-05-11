@@ -66,12 +66,7 @@ idt rgCreateIndEventEventRecord( wxWindow* wind, idt eID, idt erID )
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
 
-    recEventEventRecord eer(0);
-    eer.FSetEventID( eID );
-    eer.FSetEventRecID( erID );
-    eer.FSetConf( 0.999 );
-    eer.Save();
-    idt eerID = eer.FGetID();
+    idt eerID = recEventEventRecord::Create( eID, erID );
 
     if( rgEditEventEventRecord( wind, eerID ) ) {
         recDb::ReleaseSavepoint( savepoint );

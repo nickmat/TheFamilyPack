@@ -218,6 +218,17 @@ recEventPersonaVec recPersona::ReadEventPersonas( idt perID, recEventOrder order
     return list;
 }
 
+int recPersona::GetMaxEventRecordSeqNumber( idt perID )
+{
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "SELECT MAX(per_seq) FROM EventPersona WHERE per_id="ID";",
+        perID
+    );
+    return s_db->ExecuteScalar( sql );
+}
+
 recRelationshipVec recPersona::ReadRelationships( idt perID )
 {
     recRelationshipVec list;

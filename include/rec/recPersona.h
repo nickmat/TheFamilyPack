@@ -87,6 +87,9 @@ public:
     recEventPersonaVec ReadEventPersonas( recEventOrder order = recEO_DatePt ) const 
         { return ReadEventPersonas( f_id, order ); }
 
+    static int GetMaxEventRecordSeqNumber( idt perID );
+    int GetMaxEventRecordSeqNumber() const { return GetMaxEventRecordSeqNumber( f_id ); }
+
     static recRelationshipVec ReadRelationships( idt perID );
     recRelationshipVec ReadRelationships() { return ReadRelationships( f_id ); }
 

@@ -39,6 +39,7 @@
 #include <rec/recEvent.h>
 #include <rec/recEventRecord.h>
 #include <rec/recPlace.h>
+#include <rec/recIndividual.h>
 
 //============================================================================
 //-------------------------[ recEvent ]---------------------------------------
@@ -174,6 +175,32 @@ wxString recEvent::SetAutoTitle( const wxString& name1, const wxString& name2 )
         f_title << " and " << n2;
     }
     return f_title;
+}
+
+void recEvent::SetDatePeriodToInclude( idt eID, idt dateID )
+{
+    recEvent e(eID);
+    recDate date(dateID);
+    recDate date1(e.FGetDate1ID());
+    recDate date2(e.FGetDate2ID());
+
+    if( date.FGetJdn() < date1.FGetJdn() ) {
+        e.FSetDate1ID( date.FGetID() );
+        if( date2.FGetID() == 0 ) {
+            e.FSetDate2ID( date1.FGetID() );
+            e.Save();
+        } else {
+            e.Save();
+            recDate::DeleteIfOrphaned( date1.FGetID() );
+        }
+    } else if( 
+        ( e.FGetDate2ID() == 0 && date.FGetJdn() > date1.FGetJdn() ) ||
+        ( e.FGetDate2ID() != 0 && date.FGetJdn() > date2.FGetJdn() )
+    ) {
+        e.FSetDate2ID( date.FGetID() );
+        e.Save();
+        recDate::DeleteIfOrphaned( date2.FGetID() );
+    }
 }
 
 wxString recEvent::GetDetailStr() const
@@ -604,6 +631,20 @@ bool recEventEventRecord::Read()
     f_note         = result.GetAsString( 3 );
     return true;
 }
+
+idt recEventEventRecord::Create( idt eID, idt erID, double conf, const wxString& note )
+{
+    recEventEventRecord eer(0);
+
+    eer.FSetEventID( eID );
+    eer.FSetEventRecID( erID );
+    eer.FSetConf( conf );
+    eer.FSetNote( note );
+    eer.Save();
+
+    return eer.FGetID();
+}
+
 
 /*! Given the per_id and ind_id settings, find the matching record
  *  and read in the full record.
@@ -1109,6 +1150,18 @@ bool recIndividualEvent::Read()
     f_note     = result.GetAsString( 3 );
     f_ind_seq  = result.GetInt( 4 );
     return true;
+}
+
+idt recIndividualEvent::Create( idt indID, idt eID, idt roleID, const wxString& note )
+{
+    recIndividualEvent ie(0);
+    ie.FSetIndID( indID );
+    ie.FSetEventID( eID );
+    ie.FSetRoleID( roleID );
+    ie.FSetNote( note );
+    ie.FSetIndSeq( recIndividual::GetMaxEventSeqNumber( indID ) + 1 );
+    ie.Save();
+    return ie.FGetID();
 }
 
 bool recIndividualEvent::Find( idt indID, idt eveID )

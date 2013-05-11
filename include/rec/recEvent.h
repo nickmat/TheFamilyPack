@@ -82,6 +82,7 @@ public:
     void FSetDatePt( recDate::DatePoint dp ) { f_date_pt = recDate::GetDatePoint( f_date1_id, dp ); }
 
     wxString SetAutoTitle( const wxString& name1, const wxString& name2 = wxEmptyString );
+    static void SetDatePeriodToInclude( idt eventID, idt dateID );
 
     static wxString GetIdStr( idt evID ) { return wxString::Format( "E"ID, evID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
@@ -180,6 +181,8 @@ public:
 
     static wxString GetIdStr( idt eerID ) { return wxString::Format( "EER"ID, eerID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
+
+    static idt Create( idt eID, idt erID, double conf = 0.99, const wxString& note = wxEmptyString );
 
     bool Find();
     static idt recEventEventRecord::Find( idt eID, idt erID );
@@ -414,6 +417,8 @@ public:
 
     static wxString GetIdStr( idt ieID ) { return wxString::Format( "IE"ID, ieID ); }
     wxString GetIdStr() const { return GetIdStr( FGetID() ); }
+
+    static idt Create( idt indID, idt eID, idt roleID, const wxString& note = wxEmptyString );
 
     bool Find( idt indID, idt eveID );
 
