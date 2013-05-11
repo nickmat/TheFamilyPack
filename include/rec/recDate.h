@@ -144,12 +144,16 @@ public:
     void FSetRecordSch( CalendarScheme sch ) { f_record_sch = sch; }
     void FSetDisplaySch( CalendarScheme sch ) { f_display_sch = sch; }
 
+    long GetEndJdn() const { return f_jdn + f_range; }
+    void SetEndJdn( long jdn ) { f_range = jdn - f_jdn; }
+
     static wxString GetIdStr( idt indID ) { return wxString::Format( "D"ID, indID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     void SetDefaults();
     static idt Create( const wxString& str ); // Using default settings
     static idt Create( const recRelativeDate& rel ); 
+    static idt Create( idt dateID ); // Clone and make absolute.
 
     bool SetDate( const wxString& str, CalendarScheme sch = CALENDAR_SCH_Unstated );
     static bool SetDate( idt dateID, const wxString& str, CalendarScheme sch = CALENDAR_SCH_Unstated );

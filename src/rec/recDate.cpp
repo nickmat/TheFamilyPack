@@ -194,6 +194,19 @@ idt recDate::Create( const recRelativeDate& rel )
     return date.f_id;
 }
 
+idt recDate::Create( idt dateID )
+{
+    if( dateID == 0 ) {
+        return 0;
+    }
+    recDate date(dateID);
+    date.FSetID( 0 );
+    date.FSetRelID( 0 );
+
+    date.Save();
+    return date.FGetID();
+}
+
 bool recDate::SetDate( const wxString& str, CalendarScheme scheme )
 {
     wxString lstr = str.Lower();
