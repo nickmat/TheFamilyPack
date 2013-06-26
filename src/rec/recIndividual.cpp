@@ -862,6 +862,17 @@ recIdVec recFamily::GetChildrenIds( idt fam )
     return children;
 }
 
+int recFamily::GetChildCount( idt famID )
+{
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "SELECT COUNT(*) FROM FamilyIndividual WHERE fam_id="ID";",
+        famID
+    );
+    return s_db->ExecuteScalar( sql );
+}
+
 int recFamily::GetChildNextSequence( idt famID )
 {
     wxSQLite3StatementBuffer sql;

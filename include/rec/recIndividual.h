@@ -230,6 +230,8 @@ public:
     recIndividualList GetChildren() const { return GetChildren( f_id ); }
     static recIdVec GetChildrenIds( idt famID );
     recIdVec GetChildrenIds() const { return GetChildrenIds( f_id ); }
+    static int GetChildCount( idt famID );
+    int GetChildCount() const { return GetChildCount( f_id ); }
     static int GetChildNextSequence( idt famID );
     static int GetParentNextSequence( idt indID );
     recFamIndVec GetChildLinks() { return GetChildLinks( f_id ); }
