@@ -773,29 +773,6 @@ bool recFamily::Decode( const wxString& str )
     return true;
 }
 
-void recFamily::SetMemberDefault() 
-{
-    // TODO: Do we really need this?
-    wxASSERT( false );
-#if 0
-    if( f_husb_id ) {
-        recIndividual ind(f_husb_id);
-        if( ind.f_fam_id == 0 ) {
-            ind.f_fam_id = f_id;
-            ind.Save();
-        }
-    }
-    if( f_wife_id ) {
-        recIndividual ind(f_wife_id);
-        if( ind.f_fam_id == 0 ) {
-            ind.f_fam_id = f_id;
-            ind.Save();
-        }
-    }
-#endif
-}
-
-
 idt recFamily::GetUnionEvent( idt famID )
 {
     wxSQLite3StatementBuffer sql;
@@ -814,6 +791,16 @@ idt recFamily::GetUnionEvent( idt famID )
     return 0;
 }
 
+idt recFamily::GetSpouseID( idt indID ) const
+{
+    if( indID == f_husb_id ) {
+        return f_wife_id;
+    }
+    if( indID == f_wife_id ) {
+        return f_husb_id;
+    }
+    return 0;
+}
 
 bool recFamily::ReadParents( idt ind )
 {
@@ -952,47 +939,6 @@ recFamilyEventVec recFamily::GetEvents( idt famID )
     }
     return fes;
 }
-
-#if 0
-wxArrayString recFamily::GetMarriageEventTable() const
-{
-    wxArrayString list;
-    if( f_id == 0 ) return list;
-    if( f_husb_id == 0 && f_wife_id == 0 ) return list;
-    idt husbPerID = recIndividual::GetPersona( f_husb_id );
-    idt wifePerID = recIndividual::GetPersona( f_wife_id );
-    if( husbPerID == 0 ) {
-        return recIndividual::GetEventIdStrList( wifePerID, recEventTypeRole::ROLE_Marriage_Bride );
-    }
-    if( wifePerID == 0 ) {
-        return recIndividual::GetEventIdStrList( husbPerID, recEventTypeRole::ROLE_Marriage_Groom );
-    }
-
-    wxSQLite3StatementBuffer sql;
-    wxSQLite3Table result;
-    sql.Format(
-        "SELECT id, title, date1_id, place_id FROM Event "
-        "WHERE id=("
-        "SELECT event_id FROM EventPersona WHERE per_id="ID" AND role_id=%d "
-        "INTERSECT "
-        "SELECT event_id FROM EventPersona WHERE per_id="ID" AND role_id=%d "
-        ");",
-        husbPerID, recEventTypeRole::ROLE_Marriage_Groom,
-        wifePerID, recEventTypeRole::ROLE_Marriage_Bride
-    );
-    result = s_db->GetTable( sql );
-
-    for( int i = 0 ; i < result.GetRowCount() ; i++ )
-    {
-        result.SetRow( i );
-        list.Add( result.GetAsString( 0 ) );
-        list.Add( result.GetAsString( 1 ) );
-        list.Add( recDate::GetStr( GET_ID( result.GetInt64( 2 ) ) ) );
-        list.Add( recPlace::GetAddressStr( GET_ID( result.GetInt64( 3 ) ) ) );
-    }
-    return list;
-}
-#endif
 
 int recFamily::GetMaxEventSeqNumber( idt famID )
 {

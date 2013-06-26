@@ -213,19 +213,17 @@ public:
     void FSetHusbID( idt hID ) { f_husb_id = hID; }
     void FSetWifeID( idt wID ) { f_wife_id = wID; }
 
-    idt GetId() const { return f_id; }
-    idt GetHusbId() const { return f_husb_id; }
-    idt GetWifeId() const { return f_wife_id; }
     static wxString GetIdStr( idt indID ) { return wxString::Format( "F"ID, indID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     static recIdVec GetFamilyIdVec();
 
     bool Decode( const wxString& str );
-    void SetMemberDefault();
 
     static idt GetUnionEvent( idt famID );
     idt GetUnionEvent() const { return GetUnionEvent( f_id ); }
+
+    idt GetSpouseID( idt indID ) const;
 
     bool ReadParents( idt indID );
     static recIndividualList GetChildren( idt famID );
@@ -238,8 +236,6 @@ public:
     static recFamIndVec GetChildLinks( idt famID );
     static recFamilyEventVec GetEvents( idt famID );
     recFamilyEventVec GetEvents() const { return GetEvents( f_id ); }
-
-//    wxArrayString GetMarriageEventTable() const;
 
     static int GetMaxEventSeqNumber( idt famID );
     int GetMaxEventSeqNumber() const { return GetMaxEventSeqNumber( f_id ); }
