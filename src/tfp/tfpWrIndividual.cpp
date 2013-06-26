@@ -125,29 +125,35 @@ wxString tfpWriteIndividualPage( idt indID )
     }
     recFamilyVec families = recIndividual::GetFamilyList( indID );
     for( size_t i = 0 ; i < families.size() ; i++ ) {
-        idt spouseID = families[i].FGetHusbID();
-        if( spouseID == indID ) spouseID = 0;
-        if( spouseID == 0 ) spouseID = families[i].FGetWifeID();
-        idt famID = families[i].f_id;
-        spouse.f_id = spouseID;
-        spouse.Read();
+        idt spouseID = families[i].GetSpouseID( indID );
+        recIndividualList children = families[i].GetChildren();
+        if( spouseID == 0 && children.size() == 0 ) {
+            // Family is single individual
+            continue;
+        }
+        idt famID = families[i].FGetID();
+        spouse.ReadID( spouseID );
 
         htm << 
             "</tr>\n<tr>\n"
             "<th colspan='3'>Family " << i+1 << "</th>\n"
-            "</tr>\n<tr>\n" <<
-            // Spouse name
-            "<td><b><a href='tfp:I" << spouseID << 
-            "'>" << recIndividual::GetIdStr( spouseID ) <<
-            "</a></b></td>\n<td><a href='tfp:F" << famID << 
-            "'>Spouse " << i+1 << "</a>:</td>\n"
-            "<td class='" << GetSexClass( spouseID ) <<
-            "'><a href='tfp:I" << spouseID <<
-            "'>" << spouse.FGetName() <<
-            "</a></b> " << spouse.f_epitaph <<
-            " <a href='tfpc:MR" << spouseID <<
-            "'><img src=memory:fam.png></a></td>\n"
+            "</tr>\n<tr>\n"
         ;
+        // Spouse name
+        if( spouseID ) {
+            htm <<
+                "<td><b><a href='tfp:I" << spouseID << 
+                "'>" << recIndividual::GetIdStr( spouseID ) <<
+                "</a></b></td>\n<td><a href='tfp:F" << famID << 
+                "'>Spouse " << i+1 << "</a>:</td>\n"
+                "<td class='" << GetSexClass( spouseID ) <<
+                "'><a href='tfp:I" << spouseID <<
+                "'>" << spouse.FGetName() <<
+                "</a></b> " << spouse.f_epitaph <<
+                " <a href='tfpc:MR" << spouseID <<
+                "'><img src=memory:fam.png></a></td>\n"
+            ;
+        }
         // Union event (marriage)
         idt marEvID = families[i].GetUnionEvent();
         if( marEvID != 0 ) {
@@ -161,7 +167,6 @@ wxString tfpWriteIndividualPage( idt indID )
             ;
         }
         // Children
-        recIndividualList children = families[i].GetChildren();
         for( j = 0 ; j < children.size() ; j++ ) {
             idt cID = children[j].FGetID();
             htm <<
