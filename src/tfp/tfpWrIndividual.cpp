@@ -50,7 +50,12 @@ wxString tfpWriteIndividualPage( idt indID )
     wxString htm;
     size_t i, j;
     recIndividual ind( indID );
+    recFamilyVec parents = ind.GetParentList();
+    recFamilyVec families = ind.GetFamilyList();
+    wxASSERT( families.size() > 0 );
     recIndividual spouse;
+    bool single = ( families.size() > 1 || families[0].GetSpouseID( indID ) || 
+        families[0].GetChildCount() ) ? false : true;
 
     htm << 
         "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
@@ -67,8 +72,18 @@ wxString tfpWriteIndividualPage( idt indID )
         "'><a href='tfp:F" << ind.FGetFamID() << 
         "'>" << ind.FGetName() <<
         "</a> " << ind.FGetEpitaph() <<
-        " <a href='tfpc:MR" << indID << "'><img src=memory:fam.png></a></td>"
-        "</tr>\n<tr>\n"
+        " <a href='tfpc:MR" << indID << "'><img src=memory:fam.png></a>\n"
+    ;
+    if( parents.size() ) {
+        htm << "&nbsp;<a href='tfp:CP" << indID
+            << "'><img src='memory:pcht.png' alt='Pedigree'></a>\n";
+    }
+    if( ! single ) {
+        htm << "&nbsp;<a href='tfp:CD" << indID
+            << "'><img src='memory:dcht.png' alt='Descendants'></a>\n";
+    }
+    htm <<
+        "</td></tr>\n<tr>\n"
         "<td>ID, Sex:</td><td>" << ind.GetIdStr() << 
         ", " << recGetSexStr( ind.FGetSex() ) << "</td>\n"
         "</tr>\n<tr>\n"
@@ -89,10 +104,12 @@ wxString tfpWriteIndividualPage( idt indID )
             "</td>";
     }
     // Parents
-    recFamilyVec parents = ind.GetParentList();
-    htm << 
-        "</tr>\n<tr>\n"
-        "<th colspan='3'>Parents</th>\n";
+    if( parents.size() ) {
+        htm << 
+            "</tr>\n<tr>\n"
+            "<th colspan='3'>Parents</th>\n"
+        ;
+    }
     for( size_t i = 0 ; i < parents.size() ; i++ ) {
         idt hID = parents[i].FGetHusbID();
         if( hID != 0 ) {
@@ -123,7 +140,6 @@ wxString tfpWriteIndividualPage( idt indID )
             ;
         }
     }
-    recFamilyVec families = recIndividual::GetFamilyList( indID );
     for( size_t i = 0 ; i < families.size() ; i++ ) {
         idt spouseID = families[i].GetSpouseID( indID );
         recIndividualList children = families[i].GetChildren();
