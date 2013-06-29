@@ -75,7 +75,7 @@ Gnu/Linux Build
     cd gtk-build
     ../configure --disable-shared
     make
-    make install
+    sudo make install
 
 3) Also from within a terminal, navigate to the tfp/build/gnu directory.
     make
