@@ -51,15 +51,16 @@ extern wxString tfpCreatePedChart( idt indID );
 extern wxString tfpCreateDescChart( idt indID );
 
 // See tfpWrEvent.cpp
+extern wxString tfpWriteEventPage( idt eveID, rgCompareEvent* ce );
+
+// See tfpWrEventIndex.cpp
 extern wxString tfpWriteEventIndex();
 extern wxString tfpWriteEventPagedIndex( idt begCnt );
 extern wxString tfpWriteEventSelection( recFilterEvent& filter );
-extern wxString tfpWriteEventPage( idt eveID, rgCompareEvent* ce );
 
 // See tfpWrEventRecord.cpp
 extern wxString tfpWriteEventRecordIndex();
 extern wxString tfpWriteEventRecordPagedIndex( idt begCnt );
-//extern wxString tfpWriteEventRecordSelection( recFilterEventRecord& filter );
 extern wxString tfpWriteEventRecordPage( idt eventID );
 
 // See tfpWrFamily.cpp

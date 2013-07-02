@@ -182,10 +182,10 @@ public:
     static wxString GetIdStr( idt eerID ) { return wxString::Format( "EER"ID, eerID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
-    static idt Create( idt eID, idt erID, double conf = 0.99, const wxString& note = wxEmptyString );
+    static idt Create( idt eID, idt erID, double conf = 0.999, const wxString& note = wxEmptyString );
 
     bool Find();
-    static idt recEventEventRecord::Find( idt eID, idt erID );
+    static idt Find( idt eID, idt erID );
 };
 
 /*! The two entities are equal, ignoring the record id.

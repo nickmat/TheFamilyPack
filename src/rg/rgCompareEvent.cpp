@@ -118,7 +118,7 @@ wxString rgCompareEvent::GetRefEventsTable()
     } else {
         htm << 
             "<table class='data'>\n<tr>\n"
-            "<th>No Reference places available</th>\n"
+            "<th>No Reference Event Records available</th>\n"
             "</tr>\n</table>\n"
         ;
     }

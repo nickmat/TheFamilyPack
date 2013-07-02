@@ -319,6 +319,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\tfp\tfpWrEventIndex.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\tfp\tfpWrEventRecord.cpp"
 				>
 			</File>

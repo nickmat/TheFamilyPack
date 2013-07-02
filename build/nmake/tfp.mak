@@ -70,6 +70,7 @@ TFP_OBJECTS =  \
 	tfp_tfpWrAdmin.obj \
 	tfp_tfpWrChart.obj \
 	tfp_tfpWrEvent.obj \
+	tfp_tfpWrEventIndex.obj \
 	tfp_tfpWrEventRecord.obj \
 	tfp_tfpWrFamily.obj \
 	tfp_tfpWrIndividual.obj \
@@ -449,6 +450,9 @@ tfp_tfpWrChart.obj: .\..\..\src\tfp\tfpWrChart.cpp
 
 tfp_tfpWrEvent.obj: .\..\..\src\tfp\tfpWrEvent.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrEvent.cpp
+
+tfp_tfpWrEventIndex.obj: .\..\..\src\tfp\tfpWrEventIndex.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrEventIndex.cpp
 
 tfp_tfpWrEventRecord.obj: .\..\..\src\tfp\tfpWrEventRecord.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrEventRecord.cpp

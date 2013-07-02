@@ -36,178 +36,17 @@
 #endif
 
 #include <rec/recEvent.h>
-#include <rec/recFilterEvent.h>
 #include <rec/recPersona.h>
 #include <rec/recIndividual.h>
+#include <rec/recEventRecord.h>
 
-#include <rg/rgCompareEvent.h>
+//#include <rg/rgCompareEvent.h>
 
 #include "tfpWr.h"
 
-
-wxString tfpWriteEventIndex()
-{
-    static wxString htm;
-    static long lastchange(0);
-
-    if( !htm.IsEmpty() && recDb::GetChange() == lastchange ) {
-        return htm;
-    }
-
-    wxSQLite3Table result = recEvent::GetTitleList();
-    size_t size = (size_t) result.GetRowCount();
-
-    htm =
-        "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
-        "\"http://www.w3.org/TR/html4/loose.dtd\">\n"
-        "<html>\n<head>\n"
-        "<title>Event List</title>\n"
-        "<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>\n"
-        "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>\n"
-        "</head>\n<body>\n<div class='tfp'>\n"
-        "<h1>Event Index</h1>"
-        "<table class='data'>\n"
-        "<tr><th>ID</th><th>Title</th></tr>\n"
-    ;
-
-    for( size_t i = 0 ; i < size ; i++ ) {
-        result.SetRow( i );
-        htm << "<tr>\n<td><a href='tfp:E"
-            << result.GetAsString( 0 )
-            << "'><b>E"
-            << result.GetAsString( 0 )
-            << "</b></a></td>\n<td>"
-            << result.GetAsString( 1 )
-            << "</td>\n</tr>\n";
-    }
-    htm << "</table>\n</div>\n</body>\n</html>\n";
-
-    lastchange = recDb::GetChange();
-    return htm;
-}
-
-wxString tfpWriteEventPagedIndex( idt begCnt )
-{
-    int maxsize = recEvent::UserCount();
-    if( maxsize <= tfpWR_PAGE_MAX ) {
-        return tfpWriteEventIndex();
-    }
-    wxString pmenu = tfpWritePagedIndexMenu( begCnt, maxsize, "tfp:E" );
-
-    wxSQLite3Table result = recEvent::GetTitleList( begCnt, tfpWR_PAGE_MAX );
-    size_t size = (size_t) result.GetRowCount();
-    result.SetRow( 0 );
-    idt beg = GET_ID( result.GetInt64( 0 ) );
-    result.SetRow( size-1 );
-    idt end = GET_ID( result.GetInt64( 0 ) );
-
-    wxString htm;
-    htm <<
-        tfpWrHeadTfp( "Event List" ) <<
-        "<h1>Reference Document Index from " << recEvent::GetIdStr( beg ) <<
-        " to " << recEvent::GetIdStr( end ) <<
-        "</h1>\n" << pmenu <<
-        "<table class='data'>\n"
-        "<tr><th>ID</th><th>Title</th></tr>\n"
-    ;
-    for( size_t i = 0 ; i < size ; i++ ) {
-        result.SetRow( i );
-        htm << 
-            "<tr><td><a href='tfp:E" << result.GetAsString( 0 ) <<
-            "'><b>E" << result.GetAsString( 0 ) <<
-            "</b></a></td><td> " << result.GetAsString( 1 ) <<
-            "</td></tr>\n"
-        ;
-    }
-    htm << 
-        "</table>\n" << pmenu <<
-        "<br>\n" << tfpWrTailTfp() 
-    ;
-    return htm;
-}
-
-wxString tfpWriteEventSelection( recFilterEvent& filter )
-{
-
-    wxSQLite3Table* result = filter.GetTable();
-    size_t size = (size_t) result->GetRowCount();
-
-    wxString htm =
-        "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
-        "\"http://www.w3.org/TR/html4/loose.dtd\">\n"
-        "<html>\n<head>\n"
-        "<title>Event List</title>\n"
-        "<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>\n"
-        "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>\n"
-        "</head>\n<body>\n<div class='tfp'>\n"
-        "<h1>Selected Event List</h1>"
-    ;
-
-    htm << "<table class='frame'>\n<tr>\n<td class='support'><br>\n";
-    long begDate = filter.GetBegDatePt();
-    long endDate = filter.GetEndDatePt();
-    if( begDate || endDate ) {
-        htm << "<p class='nowrap'>\n";
-        if( filter.GetBegDatePt() ) {
-            htm << 
-                "From Date: <b>" << 
-                calStrFromJdn( filter.GetBegDatePt(), CALENDAR_SCH_Gregorian ) <<
-                "</b><br>\n"
-            ;
-        }
-        if( filter.GetEndDatePt() ) {
-            htm << 
-                "To Date: <b>" << 
-                calStrFromJdn( filter.GetEndDatePt(), CALENDAR_SCH_Gregorian ) <<
-                "</b><br>\n"
-            ;
-        }
-        htm << "</p>\n";
-    }
-
-    recIdVec typeIDs = filter.GetTypeIDVec();
-    htm << "<p class='indent nowrap'>\nEvent Types:<b><br>\n";
-    for( size_t i = 0 ; i < typeIDs.size() ; i++ ) {
-        htm << recEventType::GetTypeStr( typeIDs[i] ) << "<br>\n";
-    }
-    htm << "</b></p>\n";
-
-    htm <<
-        "</td><td class='frame'>"
-        "<table class='data'>\n"
-        "<tr><th>ID</th><th>Title</th><th>Year</th></tr>\n"
-    ;
-    for( size_t i = 0 ; i < size ; i++ ) {
-        result->SetRow( i );
-        long jdn = result->GetInt( 2 );
-        wxString yearStr;
-        if( jdn ) {
-            int year;
-            calYearFromJdn( &year, jdn, CALENDAR_SCH_Gregorian );
-            yearStr << year;
-        }
-
-        htm << "<tr>\n<td><a href='tfp:E"
-            << result->GetAsString( 0 )
-            << "'><b>E"
-            << result->GetAsString( 0 )
-            << "</b></a></td>\n<td>"
-            << result->GetAsString( 1 )
-            << "</td>\n<td>"
-            << yearStr
-            << "</td>\n</tr>\n";
-    }
-    htm << "</table>\n";
-
-    htm << "</td>\n</tr>\n</table>\n";
-
-    htm << "</div>\n</body>\n</html>\n";
-    return htm;
-}
-
 wxString tfpWriteEventPage( idt eventID, rgCompareEvent* ce )
 {
-    ce->Reset( eventID );
+//    ce->Reset( eventID );
     wxString htm;
     recEvent eve(eventID);
     if( eve.f_id == 0 ) return wxEmptyString;
@@ -221,7 +60,12 @@ wxString tfpWriteEventPage( idt eventID, rgCompareEvent* ce )
         "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>\n"
         "</head>\n<body>\n<div class='tfp'>\n"
         "<h1>Event " << eve.GetIdStr() << ": " << eve.f_title << "</h1>\n"
-        "<table class='data'>\n<tr>\n<td>"
+        "<table class='data'>\n"
+        "<tr>\n<td>"
+        "<b>Type:</b> " << eve.GetTypeStr() << 
+        " &nbsp; <b>Group:</b> " << recEventType::GetGroupStr( eve.FGetTypeID() ) <<
+        "</td>\n</tr>\n"
+        "<tr>\n<td>"
     ;
     if( eve.FGetDate1ID() ) {
         htm <<
@@ -242,11 +86,8 @@ wxString tfpWriteEventPage( idt eventID, rgCompareEvent* ce )
     }
     htm <<
         "</td>\n</tr>\n<tr>\n"
-        "<td><b>Note: </b>" << eve.f_note << "</td>\n"
-        "</tr>\n<tr>\n"
-        "<td><b>Group:</b> " << recEventType::GetGroupStr( eve.FGetTypeID() ) <<
-        " <b>Type:</b> " << eve.GetTypeStr() << "</td>\n"
-        "</tr>\n</table>\n"
+        "<td><b>Note: </b>" << eve.f_note << "</td>\n</tr>\n"
+        "</table>\n"
     ;
 
     recIndEventVec ies = eve.GetIndividualEvents();
@@ -269,10 +110,32 @@ wxString tfpWriteEventPage( idt eventID, rgCompareEvent* ce )
         }
         htm << "</table>\n";
     }
-    htm << ce->GetRefEventsTable()
-        << ce->GetRefDatesTable()
-        << ce->GetRefPlacesTable()
-        << "</div>\n</body>\n</html>\n";
+
+    recEveEveRecordVec eers = eve.GetEveEveRecords();
+    if( eers.size() ) {
+        htm << 
+            "<table class='data'>\n<tr>\n"
+            "<th>Record</th>\n<th>Conf</th>\n<th>Title</th>\n</tr>\n"
+        ;
+        for( size_t i = 0 ; i < eers.size() ; i++ ) {
+            idt eerID = eers[i].FGetEventRecID();
+            htm << 
+                "<tr>\n"
+                "<td><b><a href='tfp:ER" << eerID << 
+                "'>" <<  recEventRecord::GetIdStr( eerID ) << "</a></b></td>\n"
+                "<td>" << eers[i].FGetConf() << "</td>\n"
+                "<td>" << recEventRecord::GetTitle( eerID ) << "</td>\n"
+                "</tr>\n"
+            ;
+        }
+        htm << "</table>\n";
+    }
+
+    //htm << ce->GetRefEventsTable()
+    //    << ce->GetRefDatesTable()
+    //    << ce->GetRefPlacesTable();
+
+    htm << "</div>\n</body>\n</html>\n";
 
     return htm;
 }
