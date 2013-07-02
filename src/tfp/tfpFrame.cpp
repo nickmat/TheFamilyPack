@@ -83,7 +83,8 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_EDIT_IND_NEW_FEMALE, TfpFrame::OnAddNewIndFemale )
 //    EVT_MENU( tfpID_EDIT_EVENT_CURRENT, TfpFrame::OnEditEventCurrent )
 //    EVT_MENU( tfpID_EDIT_EVENT_NEW, TfpFrame::OnEditEventNew )
-//    EVT_MENU( tfpID_EDIT_REFERENCE, TfpFrame::OnEditReference )
+    EVT_MENU( tfpID_EDIT_NEW_REFERENCE, TfpFrame::OnEditNewReference )
+    EVT_MENU( tfpID_EDIT_REFERENCE, TfpFrame::OnEditReference )
     EVT_MENU( tfpID_EDIT_RESEARCHER, TfpFrame::OnEditResearcher )
     EVT_MENU( tfpID_FIND_FAMILY_ID, TfpFrame::OnFindFamilyID )
     EVT_MENU( tfpID_FIND_INDIVIDUAL_ID, TfpFrame::OnFindIndividualID )
@@ -200,13 +201,17 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     m_menuEditEvent->Append( tfpID_EDIT_EVENT_SELECT, _("&Select Event") );
     m_menuEditEvent->Append( tfpID_EDIT_EVENT_NEW_CON, _("&New Conclusion Event") );
 
+    m_menuEditReference = new wxMenu;
+    m_menuEditReference->Append( tfpID_EDIT_REFERENCE, _("&Reference...") );
+    m_menuEditReference->Append( tfpID_EDIT_NEW_REFERENCE, _("&New Reference") );
+
     wxMenu* menuEdCore = new wxMenu;
     menuEdCore->Append( tfpID_EDIT_EVENT_TYPE, _("&Event Types...") );
 
     wxMenu* menuEdit = new wxMenu;
     menuEdit->Append( tfpID_EDIT_IND_MENU, _("&Individual"), m_menuEditInd );
     menuEdit->Append( tfpID_EDIT_EVENT_MENU, _("&Event"), m_menuEditEvent );
-    menuEdit->Append( tfpID_EDIT_REFERENCE, _("&Reference...") );
+    menuEdit->Append( tfpID_EDIT_REFERENCE_MENU, _("&Reference"), m_menuEditReference );
     menuEdit->Append( tfpID_EDIT_RESEARCHER, _("R&esearcher...") );
     menuEdit->Append( tfpID_EDIT_CORE_MENU, _("&Core Data"), menuEdCore );
 
@@ -577,36 +582,46 @@ void TfpFrame::OnEditContext( wxCommandEvent& event )
 }
 
 
+/*! \brief Called on a Edit New Reference menu option event.
+ */
+void TfpFrame::OnEditNewReference( wxCommandEvent& event )
+{
+    recDb::Begin();
+    try {
+        if( rgCreateReference( this ) == 0 ) {
+            recDb::Rollback();
+        } else {
+            recDb::Commit();
+            RefreshHtmPage();
+        }
+    } catch( wxSQLite3Exception& e ) {
+        recDb::ErrorMessage( e );
+        recDb::Rollback();
+    }
+}
+
 /*! \brief Called on a Edit Reference menu option event.
  */
 void TfpFrame::OnEditReference( wxCommandEvent& event )
 {
     long num = wxGetNumberFromUser(
-        _("Enter the Reference ID or 0 for new Reference"),
+        _("Enter the Reference ID number"),
 
         _("Reference ID:"),
         _("Edit Reference"),
-        (long) 0, (long) 0, (long) INT_MAX
+        (long) 0, (long) 0, (long) INT_MAX, this
     );
-    if( num < 0 ) return;
+    if( num <= 0 ) return;
 
     recDb::Begin();
     try {
-        bool ret;
-        if( num == 0 ) {
-            idt id = rgCreateReference( this );
-            ret = ( id == 0 ) ? false : true;
-        } else {
-            ret = rgEditReference( this, (idt) num );
-        }
-        if( ret == true ) {
+        if( rgEditReference( this, (idt) num ) ) {
             recDb::Commit();
             RefreshHtmPage();
         } else {
             recDb::Rollback();
         }
-    }
-    catch( wxSQLite3Exception& e ) {
+    } catch( wxSQLite3Exception& e ) {
         recDb::ErrorMessage( e );
         recDb::Rollback();
     }

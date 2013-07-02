@@ -61,6 +61,7 @@ private:
     idt                 m_EditFamily;
     wxMenu*             m_menuEditEvent;
     idt                 m_editEventID;
+    wxMenu*             m_menuEditReference;
     wxTextCtrl*         m_showpage;
     wxArrayString       m_back;
     wxArrayString       m_forward;
@@ -93,6 +94,7 @@ public:
     void OnQuit( wxCommandEvent& event );
 
     void OnEditContext( wxCommandEvent& event );
+    void OnEditNewReference( wxCommandEvent& event );
     void OnEditReference( wxCommandEvent& event );
     void OnEditResearcher( wxCommandEvent& event );
 
@@ -189,7 +191,9 @@ enum
     tfpID_EDIT_IND_NEW_MALE,
     tfpID_EDIT_IND_NEW_FEMALE,
     tfpID_EDIT_EVENT_MENU,
+    tfpID_EDIT_REFERENCE_MENU,
     tfpID_EDIT_REFERENCE,
+    tfpID_EDIT_NEW_REFERENCE,
     tfpID_EDIT_RESEARCHER,
     tfpID_EDIT_CORE_MENU,
 

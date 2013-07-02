@@ -48,10 +48,18 @@
 bool rgEditReference( wxWindow* parent, idt refID )
 {
     wxASSERT( refID != 0 );
+    if( ! recReference::Exists( refID ) ) {
+        wxString mess = wxString::Format(
+            "Reference %s not found.", 
+            recReference::GetIdStr( refID)
+        );
+        wxMessageBox( mess, "Edit Reference Error" );
+        return false;
+    }
     const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
     bool ret = false;
     rgDlgEditReference* dialog = new rgDlgEditReference( parent, refID );
-    recDb::Savepoint( savepoint );
 
     if( dialog->ShowModal() == wxID_OK ) {
         recDb::ReleaseSavepoint( savepoint );
@@ -195,6 +203,7 @@ rgDlgEditReference::rgDlgEditReference( wxWindow* parent, idt refID )
 
 bool rgDlgEditReference::TransferDataToWindow()
 {
+    wxASSERT( m_reference.FGetID() != 0 );
     m_staticRefID->SetLabel( m_reference.GetIdStr()  );
     m_textCtrlTitle->SetValue( m_reference.FGetTitle() );
     m_textCtrlStatement->SetValue(  m_reference.FGetStatement() );
