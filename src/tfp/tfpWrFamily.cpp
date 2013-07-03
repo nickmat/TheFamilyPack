@@ -174,14 +174,16 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
            "</td>\n</tr>\n";
 
     // Family status bar
-    htm << "<tr>\n<td colspan='2' class='both status'>\n";
-    if( fam.f_id != 0 ) {
-        htm << "<b>" << fam.GetIdStr() << "&nbsp;&nbsp;</b>";
+    if( fam.FGetID() ) {
+        htm <<
+            "<tr>\n<td colspan='2' class='both status'>\n"
+            "<b>" << fam.GetIdStr() << "&nbsp;&nbsp;</b>"
+            "<a href='tfpc:MF" << fam.FGetID() <<
+            "," << fam.FGetHusbID() << "," << fam.FGetWifeID() <<
+            "'><img src='memory:menu.png' alt='Edit family'></a>\n"
+            "</td>\n</tr>\n"
+        ;
     }
-    htm << "<a href='tfpc:MF" << fam.f_id
-        << "," << fam.f_husb_id << "," << fam.f_wife_id
-        << "'><img src='memory:menu.png' alt='Edit family'></a>"
-        << "\n</td>\n</tr>\n";
 
     // Marriage event
     eveID = fam.GetUnionEvent();

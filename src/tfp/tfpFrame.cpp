@@ -1554,26 +1554,30 @@ void TfpFrame::RefreshEditMenu()
     case 'F': {
             recFamily fam(0);
             fam.Decode( disp );
-            m_EditFamily = fam.FGetID();
-            if( fam.f_husb_id ) {
-                name = recIndividual::GetName( fam.f_husb_id );
-                m_menuEditInd->SetLabel( tfpID_EDIT_IND_LEFT, name );
-                m_menuEditInd->Enable( tfpID_EDIT_IND_LEFT, true );
+            if( fam.FGetID() ) {
+                m_EditFamily = fam.FGetID();
+                if( fam.f_husb_id ) {
+                    name = recIndividual::GetName( fam.f_husb_id );
+                    m_menuEditInd->SetLabel( tfpID_EDIT_IND_LEFT, name );
+                    m_menuEditInd->Enable( tfpID_EDIT_IND_LEFT, true );
+                } else {
+                    m_menuEditInd->SetLabel( tfpID_EDIT_IND_LEFT, noname );
+                    m_menuEditInd->Enable( tfpID_EDIT_IND_LEFT, false );
+                }
+                m_EditIndLeft = fam.f_husb_id;
+                if( fam.f_wife_id ) {
+                    name = recIndividual::GetName( fam.f_wife_id );
+                    m_menuEditInd->SetLabel( tfpID_EDIT_IND_RIGHT, name );
+                    m_menuEditInd->Enable( tfpID_EDIT_IND_RIGHT, true );
+                } else {
+                    m_menuEditInd->SetLabel( tfpID_EDIT_IND_RIGHT, noname );
+                    m_menuEditInd->Enable( tfpID_EDIT_IND_RIGHT, false );
+                }
+                m_EditIndRight = fam.f_wife_id;
+                m_menuEditInd->Enable( tfpID_EDIT_FAMILY_MENU, true );
             } else {
-                m_menuEditInd->SetLabel( tfpID_EDIT_IND_LEFT, noname );
-                m_menuEditInd->Enable( tfpID_EDIT_IND_LEFT, false );
+                m_menuEditInd->Enable( tfpID_EDIT_FAMILY_MENU, false );
             }
-            m_EditIndLeft = fam.f_husb_id;
-            if( fam.f_wife_id ) {
-                name = recIndividual::GetName( fam.f_wife_id );
-                m_menuEditInd->SetLabel( tfpID_EDIT_IND_RIGHT, name );
-                m_menuEditInd->Enable( tfpID_EDIT_IND_RIGHT, true );
-            } else {
-                m_menuEditInd->SetLabel( tfpID_EDIT_IND_RIGHT, noname );
-                m_menuEditInd->Enable( tfpID_EDIT_IND_RIGHT, false );
-            }
-            m_EditIndRight = fam.f_wife_id;
-            m_menuEditInd->Enable( tfpID_EDIT_FAMILY_MENU, true );
             // Update Toolbar
             m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
         }
