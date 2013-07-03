@@ -148,65 +148,67 @@ wxString tfpWriteReferencePage( idt refID )
     recIdVec indIDs;
 
     htm <<
-        "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
-        " \"http://www.w3.org/TR/html4/loose.dtd\">\n"
-        "<html>\n<head>\n<title>R" << refID << "</title>\n"
-        "<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'>\n"
-        "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>\n"
-        "</head>\n<body>\n"
+        tfpWrHeadTfp( "Reference " + ref.GetIdStr(), "tab" ) <<
         "<h1>" << ref.GetIdStr() << ": " << ref.f_title << "</h1>\n"
     ;
 
     if( ref.f_statement.compare( 0, 9, "<!-- HTML" ) == 0 ) {
-        htm << ref.f_statement;
+        htm <<
+            "</div>\n" << ref.f_statement << "\n<div class='tfp'>\n"
+        ;
     } else { // treat as text
         htm << "<pre>"
             << ref.f_statement
             << "</pre>";
     }
-    htm <<
-        "<div class='tfp'>\n<hr>\n"
-        "<table class='data'>\n"
-        "<tr><th colspan='3'>Persona</th></tr>\n"
-    ;
+
+    htm << "<hr>\n<table class='data'>\n";
     recIdVec perIDs = ref.GetPersonaList();
-    for( size_t i = 0 ; i < perIDs.size() ; i++ ) {
-        idt perID = perIDs[i];
+    if( perIDs.size() ) {
         htm <<
-            "<tr><td>" << recPersona::GetIdStr( perID ) <<
-            "</td><td>" <<  recPersona::GetNameStr( perID ) <<
-            "</td><td><b>"
+            "<tr><th colspan='3'>Persona</th></tr>\n"
         ;
-        recIdVec indIDs = recPersona::GetIndividualIDs( perID ); 
-        for( size_t j = 0 ; j < indIDs.size() ; j++ ) {
-            if( j > 0 ) {
-                htm << ", ";
-            }
+        for( size_t i = 0 ; i < perIDs.size() ; i++ ) {
+            idt perID = perIDs[i];
             htm <<
-                "<a href='tfp:I" << indIDs[j] <<
-                "'>" << recIndividual::GetIdStr( indIDs[j] ) <<
-                "</a>"
+                "<tr><td>" << recPersona::GetIdStr( perID ) <<
+                "</td><td>" <<  recPersona::GetNameStr( perID ) <<
+                "</td><td><b>"
+            ;
+            recIdVec indIDs = recPersona::GetIndividualIDs( perID ); 
+            for( size_t j = 0 ; j < indIDs.size() ; j++ ) {
+                if( j > 0 ) {
+                    htm << ", ";
+                }
+                htm <<
+                    "<a href='tfp:I" << indIDs[j] <<
+                    "'>" << recIndividual::GetIdStr( indIDs[j] ) <<
+                    "</a>"
+                ;
+            }
+            htm << "</b></td></tr>\n";
+        }
+    } else {
+        htm << "<tr><th>No Persona Entered</th></tr>\n";
+    }
+    htm << "</table>\n<table class='data'>\n";
+
+    recRefEntVec res = ref.ReadReferenceEntitys();
+    if( res.size() ) {
+        htm << "<tr><th colspan='3'>Reference Entities</th></tr>\n";
+        for( size_t i = 0 ; i < res.size() ; i++ ) {
+            htm <<
+                "<tr><td>" << res[i].GetTypeStr() <<
+                "</td><td><b><a href='" << GetHref( res[i] ) <<
+                "'>" << res[i].GetEntityIdStr() <<
+                "</a></b></td><td>" << res[i].GetEntityStr() <<
+                "</td></tr>\n"
             ;
         }
-        htm << "</b></td></tr>\n";
+    } else {
+        htm << "<tr><th>No Reference Entities Entered</th></tr>\n";
     }
-
-    htm <<
-        "</table>\n"
-        "<table class='data'>\n"
-        "<tr><th colspan='3'>Reference Entities</th></tr>\n"
-    ;
-    recRefEntVec res = ref.ReadReferenceEntitys();
-    for( size_t i = 0 ; i < res.size() ; i++ ) {
-        htm <<
-            "<tr><td>" << res[i].GetTypeStr() <<
-            "</td><td><b><a href='" << GetHref( res[i] ) <<
-            "'>" << res[i].GetEntityIdStr() <<
-            "</a></b></td><td>" << res[i].GetEntityStr() <<
-            "</td></tr>\n"
-        ;
-    }
-    htm << "</table>\n</div>\n</body>\n</html>\n";
+    htm << "</table>\n" << tfpWrTailTfp();
 
     return htm;
 }

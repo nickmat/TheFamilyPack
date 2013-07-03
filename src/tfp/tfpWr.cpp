@@ -42,16 +42,23 @@
 
 #include "tfpWr.h"
 
-wxString tfpWrHeadTfp( const wxString& title )
+wxString tfpWrHeadTfp( const wxString& title, const wxString& css )
 {
     wxString htm;
     htm <<
-        "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
-        " \"http://www.w3.org/TR/html4/loose.dtd\">\n"
+        "<!DOCTYPE html>\n"
         "<html>\n<head>\n"
         "<title>" << title << "</title>\n"
         "<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>\n"
         "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>\n"
+    ;
+    if( css.size() ) {
+        htm <<
+            "<link rel='stylesheet' type='text/css' href='memory:" << css <<
+            ".css'>\n"
+        ;
+    }
+    htm <<
         "</head>\n<body>\n<div class='tfp'>\n"
     ;
     return htm;

@@ -33,7 +33,7 @@ class rgCompareEvent;
 class recFilterEvent;
 
 // See tfpWr.cpp
-extern wxString tfpWrHeadTfp( const wxString& title );
+extern wxString tfpWrHeadTfp( const wxString& title, const wxString& css = wxEmptyString );
 extern wxString tfpWrTailTfp();
 #define tfpWR_PAGE_MAX 100
 extern wxString tfpWritePagedIndexMenu( idt begCnt, size_t maxsize, const wxString prefix );

@@ -30,5 +30,6 @@
 static const char s_startup_htm[] = @(lrc.xml)"startup.htm";
 
 static const char s_tfp_css[] = @(lrc.c)"tfp.css";
+static const char s_tab_css[] = @(lrc.c)"tab.css";
 
 /* End of tfpText.f2c */

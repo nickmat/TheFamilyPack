@@ -1,0 +1,149 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Name:        src/tfp/tab.css
+ * Project:     The Family Pack: Genealogy data storage and display program.
+ * Purpose:     Style sheet for reference documents with tabular data.
+ * Author:      Nick Matthews
+ * Modified by:
+ * Website:     http://thefamilypack.org
+ * Created:     3rd July 2013
+ * RCS-ID:      $Id$
+ * Copyright:   Copyright (c) 2013, Nick Matthews.
+ * Website:     http://thefamilypack.org
+ * Licence:     GNU GPLv3
+ *
+ *  The Family Pack is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The Family Pack is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with The Family Pack.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+*/
+
+div.birth { color: #000000; background-color: #ffe8ea; }
+div.marr  { color: #000000; background-color: #e8ffea; }
+div.death { color: #000000; background-color: #f0f0f0; }
+
+table {
+    margin-left: auto;
+    margin-right: auto;
+}
+table td {
+    padding: 1px 0.5em 1px 0.5em;
+}
+
+table.page {
+    color: #000000;
+    background-color: #ffffff;
+    padding: 1em 1em 1em 1em;
+}
+
+table.page td {
+    text-align: center;
+    white-space: nowrap;
+}
+
+table.cert {
+    padding: 1em 1em 1em 1em;
+}
+
+body.marr table.entry {
+    color: #000000;
+    background-color: #d0fce6;
+    border-collapse: collapse;
+}
+
+table.entry {
+    border: 2px solid black;
+    border-collapse: collapse;
+}
+
+table.entry td {
+    border: 1px solid black;
+}
+
+table.entry tr.hd {
+    font-size: x-small;
+}
+
+table.entry td.hd {
+    font-size: x-small;
+}
+
+table.data {
+    border-collapse: collapse;
+}
+
+#tabular-doc {
+    font: normal 1em "Times New Roman", serif;
+}
+
+#tabular-doc table.data td {
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+
+#tabular-doc table.data td.hd {
+    border: 1px solid black;
+}
+
+#tabular-doc table.data .hd {
+    font-size: x-small;
+}
+
+#tabular-doc .bigheading {
+    font-size: large;
+}
+
+#tabular-doc table.data td {
+    padding: 0.4em;
+}
+
+#tabular-doc table.data td.lmargin {
+    border: none;
+    border-right: 2px solid black;
+}
+
+#tabular-doc table.data td.rmargin {
+    border: none;
+    border-left: 2px solid black;
+}
+
+#tabular-doc table.data td.tmargin {
+    border-top: 2px solid black;
+}
+
+#tabular-doc table.data td.bmargin {
+    border-bottom: 2px solid black;
+}
+
+table.layout {
+    border-collapse: collapse;
+    border-style: none;
+    border: none;
+}
+
+table.layout td {
+    border-style: none;
+}
+
+#tabular-doc table.data table.layout td {
+    border: none;
+    padding: 0 1em;
+}
+
+#tabular-doc table.data table.layout td.brace {
+    font-size: 2.5em;
+    padding: 0;
+}
+

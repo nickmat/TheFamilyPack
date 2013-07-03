@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/tfp.css
+ * Name:        src/tfp/tfp.css
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Basic css used by all html pages internally.
  * Author:      Nick Matthews
@@ -183,13 +183,13 @@ div.tfp td.kids {
     text-align: center;
 }
 
-table.data {
+div.tfp table.data {
     border-collapse: collapse;
     margin: 1em auto;
     border: 2px solid #777;
 }
 
-table.data th {
+div.tfp table.data th {
     text-align: center;
     text-weight: bold;
     background-color: #e7e7e7;
@@ -288,7 +288,7 @@ div.pagesel a.pncur:hover {
 }
 
 div.control a {
-	line-height: 4em;
+    line-height: 4em;
     background-color: lightyellow;
 }
 

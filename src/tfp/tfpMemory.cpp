@@ -104,6 +104,7 @@ void tfpLoadMemoryFiles()
 
     wxMemoryFSHandler::AddFile( "startup.htm", startupText );
     wxMemoryFSHandler::AddFile( "tfp.css", s_tfp_css );
+    wxMemoryFSHandler::AddFile( "tab.css", s_tab_css );
 
     wxBitmap dssBitmap( dss_xpm );
     wxMemoryFSHandler::AddFile( "dss.png", dssBitmap, wxBITMAP_TYPE_PNG );

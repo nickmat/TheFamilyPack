@@ -12,6 +12,11 @@
                 >
             </File>
             <File
+                RelativePath="..\..\src\tfp\tab.css"
+                DeploymentContent="true"
+                >
+            </File>
+            <File
                 RelativePath="..\..\src\tfp\tfpText.f2c"
                 >
                 <FileConfiguration
@@ -20,7 +25,7 @@
                     <Tool
                         Name="VCCustomBuildTool"
                         CommandLine="file2cpp -v -s -o ..\..\src\tfp\generated\tfpText.ci ..\..\src\tfp\tfpText.f2c&#x0D;&#x0A;"
-                        AdditionalDependencies="..\..\src\tfp\startup.htm;..\..\src\tfp\tfp.css"
+                        AdditionalDependencies="..\..\src\tfp\startup.htm;..\..\src\tfp\tfp.css;..\..\src\tfp\tab.css"
                         Outputs="..\..\src\tfp\generated\tfpText.ci"
                     />
                 </FileConfiguration>
@@ -30,7 +35,7 @@
                     <Tool
                         Name="VCCustomBuildTool"
                         CommandLine="file2cpp -v -s -o ..\..\src\tfp\generated\tfpText.ci ..\..\src\tfp\tfpText.f2c&#x0D;&#x0A;"
-                        AdditionalDependencies="..\..\src\tfp\startup.htm;..\..\src\tfp\tfp.css"
+                        AdditionalDependencies="..\..\src\tfp\startup.htm;..\..\src\tfp\tfp.css;..\..\src\tfp\tab.css"
                         Outputs="..\..\src\tfp\generated\tfpText.ci"
                     />
                 </FileConfiguration>

@@ -226,8 +226,14 @@ void rgDlgEditReference::UpdateHtml()
 {
     wxString htm;
 
-    htm << "<html><head><title>" << m_reference.GetIdStr()
-        << "</title></head><body>\n";
+    htm << 
+        "<!DOCTYPE html>\n"
+        "<html>\n<head>\n"
+        "<title>" << m_reference.GetIdStr() << "</title>\n"
+        "<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>\n"
+        "<link rel='stylesheet' type='text/css' href='memory:tab.css'>\n"
+        "</head>\n<body>\n"
+    ;
 
     if( m_reference.f_statement.compare( 0, 9, "<!-- HTML" ) == 0 ) {
         htm << m_reference.FGetStatement();

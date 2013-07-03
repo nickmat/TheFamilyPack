@@ -52,6 +52,7 @@ wxString tfpWriteEventPage( idt eventID, rgCompareEvent* ce )
     if( eve.f_id == 0 ) return wxEmptyString;
 
     htm << 
+#if 0
         "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
         "\"http://www.w3.org/TR/html4/loose.dtd\">\n"
         "<html>\n<head>\n"
@@ -59,6 +60,9 @@ wxString tfpWriteEventPage( idt eventID, rgCompareEvent* ce )
         "<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>\n"
         "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>\n"
         "</head>\n<body>\n<div class='tfp'>\n"
+#endif
+        tfpWrHeadTfp( "Event " + eve.GetIdStr() ) <<
+
         "<h1>Event " << eve.GetIdStr() << ": " << eve.f_title << "</h1>\n"
         "<table class='data'>\n"
         "<tr>\n<td>"
@@ -135,7 +139,7 @@ wxString tfpWriteEventPage( idt eventID, rgCompareEvent* ce )
     //    << ce->GetRefDatesTable()
     //    << ce->GetRefPlacesTable();
 
-    htm << "</div>\n</body>\n</html>\n";
+    htm << tfpWrTailTfp();
 
     return htm;
 }
