@@ -1575,11 +1575,11 @@ void TfpFrame::RefreshEditMenu()
                 }
                 m_EditIndRight = fam.f_wife_id;
                 m_menuEditInd->Enable( tfpID_EDIT_FAMILY_MENU, true );
+                m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
             } else {
                 m_menuEditInd->Enable( tfpID_EDIT_FAMILY_MENU, false );
+                m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, false );
             }
-            // Update Toolbar
-            m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
         }
         break;
     case 'I':
