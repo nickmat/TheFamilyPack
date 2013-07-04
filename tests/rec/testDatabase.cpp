@@ -150,13 +150,13 @@ void RecTestCase::AddTestData()
 
         "INSERT INTO Persona (id, sex, ref_id, note) VALUES(4, 0, 0, '');\n"
         "INSERT INTO Individual"
-        " (id, surname, given, epitaph, fam_id, per_id)"
-        " VALUES (4, 'Surname', 'Given Surname', '', 0, 4);\n"
+        " (id, sex, name, surname, epitaph, note, fam_id)"
+        " VALUES (3, 1, 'Name', 'Surname', '', 'Note', 0);\n"
 
         "INSERT INTO Persona (id, sex, ref_id, note) VALUES(19, 0, 0, '');\n"
         "INSERT INTO Individual"
-        " (id, surname, given, epitaph, fam_id, per_id)"
-        " VALUES (19, 'Surname', 'Given Surname', '', 0, 19);\n"
+        " (id, sex, name, surname, epitaph, note, fam_id)"
+        " VALUES (20, 1, 'Name', 'Surname', '', 'Note', 0);\n"
 
         "INSERT INTO Persona (id, sex, ref_id, note) VALUES(3, 0, 0, '');\n"
         "INSERT INTO Persona (id, sex, ref_id, note) VALUES(20, 0, 0, '');\n"
@@ -851,6 +851,7 @@ void RecTestCase::TestIndividual()
     recIndividual record1;
     record1.f_id = 0;
 
+    record1.FSetSex( SEX_Male );
     record1.f_surname     = "Matthews";
     record1.f_name        = "Nick Matthews";
     record1.f_epitaph     = "(1948-)";
@@ -866,6 +867,7 @@ void RecTestCase::TestIndividual()
     record2.Read();
     CPPUNIT_ASSERT( record1 == record2 );
 
+    record1.FSetSex( SEX_Male );
     record1.f_surname     = "Bloggs";
     record1.f_name        = "Fred Bloggs";
     record1.f_epitaph     = "(1948-)";
