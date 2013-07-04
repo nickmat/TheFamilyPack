@@ -177,7 +177,7 @@ bool calStrToJdn( long* jdn, const wxString& str, CalendarScheme sch )
     if( str.size() == 0 ) {
         return false;
     }
-    calTokenVec tokens = calParseStr( str );
+    calTokenVec tokens = calParseStr( str, sch );
     if( tokens.size() == 0 ) {
         return false;
     }
@@ -199,7 +199,7 @@ bool calStrToJdnRange(
         return false;
     }
     bool ok = false;
-    calTokenVec tokens = calParseStr( str );
+    calTokenVec tokens = calParseStr( str,sch );
     for( size_t i = 0 ; i < tokens.size() ; i++ ) {
         if( tokens[i].GetToken() == calTOKEN_RangeSep ) {
             if( i == 0 ) {

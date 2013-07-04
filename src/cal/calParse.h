@@ -28,7 +28,6 @@
 #ifndef CALPARSE_H
 #define CALPARSE_H
 
-
 #include <map>
 #include "calendar.h"
 
@@ -36,9 +35,23 @@
 class calToken;
 typedef std::vector< calToken > calTokenVec;
 
+enum calSYNTAX {
+    calSYNTAX_NULL,
+    calSYNTAX_Number,
+    calSYNTAX_Latin,
+    calSYNTAX_French,
+    calSYNTAX_Isamic,
+    calSYNTAX_Hebrew,
+    calSYNTAX_MAX
+};
+
 class calParser;
 extern calParser* g_calparser;
-typedef std::map< wxString, unsigned > calLabelMap;
+typedef std::map< wxString, long > calLabelMap;
+enum {
+    calLabelIgnore = -1,
+    calLabelNotFound = -2
+};
 
 enum calTOKEN {
     calTOKEN_NULL,
@@ -55,7 +68,7 @@ enum calTOKEN {
 extern void calInitParser();
 extern void calUninitParser();
 
-extern calTokenVec calParseStr( const wxString& str );
+extern calTokenVec calParseStr( const wxString& str, CalendarScheme sch );
 
 class calToken
 {
@@ -78,14 +91,15 @@ class calParser
 public:
     calParser();
 
-    calTokenVec ParseStr( const wxString& str );
+    calTokenVec ParseStr( const wxString& str, calSYNTAX syn );
 
 private:
     calTOKEN GetTokenType( const wxUniChar& uc );
     calTOKEN GetPunctType( const wxString& punct );
     long GetValue( const wxString& label );
 
-    calLabelMap m_lookup;
+    calSYNTAX   m_syntax;
+    calLabelMap m_lookup[calSYNTAX_MAX];
 };
 
 #endif // CALPARSE_H

@@ -78,6 +78,11 @@ wxString calFrenchMonthName[13] = {
     "Germ", "Flor", "Prai", "Mess", "Ther", "Fruc", "Comp"
 };
 
+wxString calIslamicMonthName[12] = {
+    "Muharram", "Safar", "Rabi'I", "Rabi'II", "JumadaI", "JumadaII",
+    "Rajab", "Sha'ban", "Ramadan", "Shawwal", "Dhu al Qa'da", "Dhu al Hijja"
+};
+
 wxString calHebrewMonthName[13] = { // These are as detailed in GEDCOM v5.5
     "NSN", "IYR", "SVN", "TMZ", "AAV", "ELL",
     "TSH", "CSH", "KSL", "TVT", "SHV", "ADR", "ADS"
@@ -425,7 +430,7 @@ wxString calRecord::GetStr()
             str << m_r[2] << " ";
         }
         if( m_r[1] != calR_INVALID ) {
-            str << m_r[1] << " ";
+            str << calIslamicMonthName[m_r[1]-1] << " ";
         }
         str << m_r[0];
         break;

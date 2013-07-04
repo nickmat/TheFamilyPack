@@ -55,69 +55,106 @@ void calUninitParser()
     g_calparser = NULL;
 }
 
-calTokenVec calParseStr( const wxString& str )
+calTokenVec calParseStr( const wxString& str, CalendarScheme sch )
 {
     wxASSERT( g_calparser != NULL );
-    return g_calparser->ParseStr( str ); 
+    calSYNTAX syntax = calSYNTAX_NULL;
+
+    switch( sch ) 
+    {
+    case CALENDAR_SCH_JulianDayNumber:
+        syntax = calSYNTAX_Number;
+        break;
+    case CALENDAR_SCH_Julian:
+    case CALENDAR_SCH_Gregorian:
+        syntax = calSYNTAX_Latin;
+        break;
+     case CALENDAR_SCH_FrenchRevolution:
+        syntax = calSYNTAX_French;
+        break;
+    case CALENDAR_SCH_IslamicTabular:
+        syntax = calSYNTAX_Isamic;
+        break;
+    case CALENDAR_SCH_Hebrew:
+        syntax = calSYNTAX_Hebrew;
+        break;
+   }
+    return g_calparser->ParseStr( str, syntax ); 
 }
 
 
 calParser::calParser()
+    : m_syntax(calSYNTAX_NULL)
 {
-    m_lookup["jan"] = 1;
-    m_lookup["feb"] = 2;
-    m_lookup["mar"] = 3;
-    m_lookup["apr"] = 4;
-    m_lookup["may"] = 5;
-    m_lookup["jun"] = 6;
-    m_lookup["jul"] = 7;
-    m_lookup["aug"] = 8;
-    m_lookup["sep"] = 9;
-    m_lookup["oct"] = 10;
-    m_lookup["nov"] = 11;
-    m_lookup["dec"] = 12;
+    m_lookup[calSYNTAX_Latin]["jan"] = 1;
+    m_lookup[calSYNTAX_Latin]["feb"] = 2;
+    m_lookup[calSYNTAX_Latin]["mar"] = 3;
+    m_lookup[calSYNTAX_Latin]["apr"] = 4;
+    m_lookup[calSYNTAX_Latin]["may"] = 5;
+    m_lookup[calSYNTAX_Latin]["jun"] = 6;
+    m_lookup[calSYNTAX_Latin]["jul"] = 7;
+    m_lookup[calSYNTAX_Latin]["aug"] = 8;
+    m_lookup[calSYNTAX_Latin]["sep"] = 9;
+    m_lookup[calSYNTAX_Latin]["oct"] = 10;
+    m_lookup[calSYNTAX_Latin]["nov"] = 11;
+    m_lookup[calSYNTAX_Latin]["dec"] = 12;
 
-    m_lookup["vend"] = 1;
-    m_lookup["brum"] = 2;
-    m_lookup["frim"] = 3;
-    m_lookup["nivo"] = 4;
-    m_lookup["pluv"] = 5;
-    m_lookup["vent"] = 6;
-    m_lookup["germ"] = 7;
-    m_lookup["flor"] = 8;
-    m_lookup["prai"] = 9;
-    m_lookup["mess"] = 10;
-    m_lookup["ther"] = 11;
-    m_lookup["fruc"] = 12;
-    m_lookup["comp"] = 13;
+    m_lookup[calSYNTAX_French]["vend"] = 1;
+    m_lookup[calSYNTAX_French]["brum"] = 2;
+    m_lookup[calSYNTAX_French]["frim"] = 3;
+    m_lookup[calSYNTAX_French]["nivo"] = 4;
+    m_lookup[calSYNTAX_French]["pluv"] = 5;
+    m_lookup[calSYNTAX_French]["vent"] = 6;
+    m_lookup[calSYNTAX_French]["germ"] = 7;
+    m_lookup[calSYNTAX_French]["flor"] = 8;
+    m_lookup[calSYNTAX_French]["prai"] = 9;
+    m_lookup[calSYNTAX_French]["mess"] = 10;
+    m_lookup[calSYNTAX_French]["ther"] = 11;
+    m_lookup[calSYNTAX_French]["fruc"] = 12;
+    m_lookup[calSYNTAX_French]["comp"] = 13;
 
-    m_lookup["nsn"] = 1;
-    m_lookup["iyr"] = 2;
-    m_lookup["svn"] = 3;
-    m_lookup["tmz"] = 4;
-    m_lookup["aav"] = 5;
-    m_lookup["ell"] = 6;
-    m_lookup["tsh"] = 7;
-    m_lookup["csh"] = 8;
-    m_lookup["ksl"] = 9;
-    m_lookup["tvt"] = 10;
-    m_lookup["shv"] = 11;
-    m_lookup["adr"] = 12;
-    m_lookup["ads"] = 13;
+    m_lookup[calSYNTAX_Isamic]["muharram"] = 1;
+    m_lookup[calSYNTAX_Isamic]["safar"] = 2;
+    m_lookup[calSYNTAX_Isamic]["rabi'i"] = 3;
+    m_lookup[calSYNTAX_Isamic]["rabi'ii"] = 4;
+    m_lookup[calSYNTAX_Isamic]["jumadai"] = 5;
+    m_lookup[calSYNTAX_Isamic]["jumadaii"] = 6;
+    m_lookup[calSYNTAX_Isamic]["rajab"] = 7;
+    m_lookup[calSYNTAX_Isamic]["sha'ban"] = 8;
+    m_lookup[calSYNTAX_Isamic]["ramadan"] = 9;
+    m_lookup[calSYNTAX_Isamic]["shawwal"] = 10;
+    m_lookup[calSYNTAX_Isamic]["qa'da"] = 11;
+    m_lookup[calSYNTAX_Isamic]["hijja"] = 12;
+    m_lookup[calSYNTAX_Isamic]["dhu"] = calLabelIgnore;
+    m_lookup[calSYNTAX_Isamic]["al"] = calLabelIgnore;
 
-    m_lookup["year"]  = 0;
-    m_lookup["month"] = 1;
-    m_lookup["day"]   = 2;
+    m_lookup[calSYNTAX_Hebrew]["nsn"] = 1;
+    m_lookup[calSYNTAX_Hebrew]["iyr"] = 2;
+    m_lookup[calSYNTAX_Hebrew]["svn"] = 3;
+    m_lookup[calSYNTAX_Hebrew]["tmz"] = 4;
+    m_lookup[calSYNTAX_Hebrew]["aav"] = 5;
+    m_lookup[calSYNTAX_Hebrew]["ell"] = 6;
+    m_lookup[calSYNTAX_Hebrew]["tsh"] = 7;
+    m_lookup[calSYNTAX_Hebrew]["csh"] = 8;
+    m_lookup[calSYNTAX_Hebrew]["ksl"] = 9;
+    m_lookup[calSYNTAX_Hebrew]["tvt"] = 10;
+    m_lookup[calSYNTAX_Hebrew]["shv"] = 11;
+    m_lookup[calSYNTAX_Hebrew]["adr"] = 12;
+    m_lookup[calSYNTAX_Hebrew]["ads"] = 13;
 
-    m_lookup["(jdn)"] = CALENDAR_SCH_JulianDayNumber;
-    m_lookup["(j)"]   = CALENDAR_SCH_Julian;
-    m_lookup["(g)"]   = CALENDAR_SCH_Gregorian;
-    m_lookup["(fr)"]  = CALENDAR_SCH_FrenchRevolution;
-    m_lookup["(i)"]  = CALENDAR_SCH_IslamicTabular;
-    m_lookup["(h)"]  = CALENDAR_SCH_Hebrew;
+    m_lookup[calSYNTAX_NULL]["year"]  = 0;
+    m_lookup[calSYNTAX_NULL]["month"] = 1;
+    m_lookup[calSYNTAX_NULL]["day"]   = 2;
+
+    m_lookup[calSYNTAX_NULL]["(jdn)"] = CALENDAR_SCH_JulianDayNumber;
+    m_lookup[calSYNTAX_NULL]["(j)"]   = CALENDAR_SCH_Julian;
+    m_lookup[calSYNTAX_NULL]["(g)"]   = CALENDAR_SCH_Gregorian;
+    m_lookup[calSYNTAX_NULL]["(fr)"]  = CALENDAR_SCH_FrenchRevolution;
+    m_lookup[calSYNTAX_NULL]["(i)"]   = CALENDAR_SCH_IslamicTabular;
+    m_lookup[calSYNTAX_NULL]["(h)"]   = CALENDAR_SCH_Hebrew;
 }
 
-calTokenVec calParser::ParseStr( const wxString& str )
+calTokenVec calParser::ParseStr( const wxString& str, calSYNTAX syn )
 {
     calTokenVec vec;
     calToken token;
@@ -125,6 +162,7 @@ calTokenVec calParser::ParseStr( const wxString& str )
     calTOKEN type;
     long num;
 
+    m_syntax = syn;
     for( wxString::const_iterator it = str.begin() ; it != str.end() ; ) {
         if( wxIsspace( *it ) ) {
             it++;
@@ -153,6 +191,14 @@ calTokenVec calParser::ParseStr( const wxString& str )
             outStr.ToCLong( &num );
         } else {
             num = GetValue( outStr );
+            if( num == calLabelNotFound ) {
+                calTokenVec empty;
+                return empty;
+            }
+            if( num == calLabelIgnore ) {
+                outStr.clear();
+                continue;
+            }
         }
         token.SetNumber( num );
         token.SetLabel( outStr );
@@ -167,7 +213,7 @@ calTOKEN calParser::GetTokenType( const wxUniChar& uc )
 {
     if( wxIsdigit( uc ) ) {
         return calTOKEN_Number;
-    } else if( wxIsalpha( uc ) ) {
+    } else if( wxIsalpha( uc ) || uc == '\'' ) {
         return calTOKEN_Label;
     } else if( wxIspunct( uc ) ) {
         return calTOKEN_Punct;
@@ -188,15 +234,23 @@ calTOKEN calParser::GetPunctType( const wxString& punct )
 
 long calParser::GetValue( const wxString& label )
 {
-    wxString value = label.Left(3).Lower();
-    if( m_lookup.count( value ) ) {
-        return m_lookup[value];
+    wxString value;
+    switch( m_syntax )
+    {
+    case calSYNTAX_Latin:
+    case calSYNTAX_Hebrew:
+        value = label.Left(3).Lower();
+        break;
+    case calSYNTAX_French:
+        value = label.Left(4).Lower();
+        break;
+    default:
+        value = label.Lower();
     }
-    value = label.Left(4).Lower();
-    if( m_lookup.count( value ) ) {
-        return m_lookup[value];
+    if( m_lookup[m_syntax].count( value ) ) {
+        return m_lookup[m_syntax][value];
     }
-    return 0;
+    return calLabelNotFound;
 }
 
 // End of src/cal/calParse.cpp
