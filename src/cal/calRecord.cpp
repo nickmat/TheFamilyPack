@@ -73,9 +73,14 @@ wxString calLatinMonthName[12] = {
     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 };
 
-wxString calFrenchMonthName[13] = {
+wxString calFrenchMonthNameGed[13] = {
     "Vend", "Brum", "Frim", "Nivo", "Pluv", "Vent",
     "Germ", "Flor", "Prai", "Mess", "Ther", "Fruc", "Comp"
+};
+
+wxString calFrenchMonthName[13] = {
+    L"Vendémiaire", "Brumaire", "Frimaire", L"Nivôse", L"Pluviôse", L"Ventôse",
+    "Germinal", L"Floréal", "Prairial", "Messidor", "Thermidor", "Fructidor", L"Complémentaires"
 };
 
 wxString calIslamicMonthName[12] = {
@@ -83,9 +88,13 @@ wxString calIslamicMonthName[12] = {
     "Rajab", "Sha'ban", "Ramadan", "Shawwal", "Dhu al Qa'da", "Dhu al Hijja"
 };
 
-wxString calHebrewMonthName[13] = { // These are as detailed in GEDCOM v5.5
+wxString calHebrewMonthNameGed[13] = { // These are as detailed in GEDCOM v5.5
     "NSN", "IYR", "SVN", "TMZ", "AAV", "ELL",
     "TSH", "CSH", "KSL", "TVT", "SHV", "ADR", "ADS"
+};
+wxString calHebrewMonthName[13] = { // Based on the Academy of the Hebrew Language
+    "Nisan", "Iyyar", "Sivan", "Tammuz", "Av", "Elul",
+    "Tishri", "Marheshvan", "Kislev", "Tevet", "Shvat", "Adar", "AdarII"
 };
 
 } // namespace

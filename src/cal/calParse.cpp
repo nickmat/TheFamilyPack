@@ -99,6 +99,7 @@ calParser::calParser()
     m_lookup[calSYNTAX_Latin]["nov"] = 11;
     m_lookup[calSYNTAX_Latin]["dec"] = 12;
 
+    // French revolutionary GedCom names
     m_lookup[calSYNTAX_French]["vend"] = 1;
     m_lookup[calSYNTAX_French]["brum"] = 2;
     m_lookup[calSYNTAX_French]["frim"] = 3;
@@ -113,6 +114,22 @@ calParser::calParser()
     m_lookup[calSYNTAX_French]["fruc"] = 12;
     m_lookup[calSYNTAX_French]["comp"] = 13;
 
+    // French revolutionary full names
+    m_lookup[calSYNTAX_French][L"vendémiaire"] = 1;
+    m_lookup[calSYNTAX_French]["brumaire"] = 2;
+    m_lookup[calSYNTAX_French]["frimaire"] = 3;
+    m_lookup[calSYNTAX_French][L"nivôse"] = 4;
+    m_lookup[calSYNTAX_French][L"pluviôse"] = 5;
+    m_lookup[calSYNTAX_French][L"ventôse"] = 6;
+    m_lookup[calSYNTAX_French]["germinal"] = 7;
+    m_lookup[calSYNTAX_French][L"floréal"] = 8;
+    m_lookup[calSYNTAX_French]["prairial"] = 9;
+    m_lookup[calSYNTAX_French]["messidor"] = 10;
+    m_lookup[calSYNTAX_French]["thermidor"] = 11;
+    m_lookup[calSYNTAX_French]["fructidor"] = 12;
+    m_lookup[calSYNTAX_French][L"complémentaires"] = 13;
+
+    // Islamic month names
     m_lookup[calSYNTAX_Isamic]["muharram"] = 1;
     m_lookup[calSYNTAX_Isamic]["safar"] = 2;
     m_lookup[calSYNTAX_Isamic]["rabi'i"] = 3;
@@ -128,6 +145,7 @@ calParser::calParser()
     m_lookup[calSYNTAX_Isamic]["dhu"] = calLabelIgnore;
     m_lookup[calSYNTAX_Isamic]["al"] = calLabelIgnore;
 
+    // Hebrew GedCom names
     m_lookup[calSYNTAX_Hebrew]["nsn"] = 1;
     m_lookup[calSYNTAX_Hebrew]["iyr"] = 2;
     m_lookup[calSYNTAX_Hebrew]["svn"] = 3;
@@ -141,6 +159,22 @@ calParser::calParser()
     m_lookup[calSYNTAX_Hebrew]["shv"] = 11;
     m_lookup[calSYNTAX_Hebrew]["adr"] = 12;
     m_lookup[calSYNTAX_Hebrew]["ads"] = 13;
+
+    // Hebrew Acadamy names
+    m_lookup[calSYNTAX_Hebrew]["nisan"] = 1;
+    m_lookup[calSYNTAX_Hebrew]["iyyar"] = 2;
+    m_lookup[calSYNTAX_Hebrew]["sivan"] = 3;
+    m_lookup[calSYNTAX_Hebrew]["tammuz"] = 4;
+    m_lookup[calSYNTAX_Hebrew]["av"] = 5;
+    m_lookup[calSYNTAX_Hebrew]["elul"] = 6;
+    m_lookup[calSYNTAX_Hebrew]["tishri"] = 7;
+    m_lookup[calSYNTAX_Hebrew]["marheshvan"] = 8;
+    m_lookup[calSYNTAX_Hebrew]["kislev"] = 9;
+    m_lookup[calSYNTAX_Hebrew]["tevet"] = 10;
+    m_lookup[calSYNTAX_Hebrew]["shvat"] = 11;
+    m_lookup[calSYNTAX_Hebrew]["adar"] = 12;
+    m_lookup[calSYNTAX_Hebrew]["adari"] = 12;
+    m_lookup[calSYNTAX_Hebrew]["adarii"] = 13;
 
     m_lookup[calSYNTAX_NULL]["year"]  = 0;
     m_lookup[calSYNTAX_NULL]["month"] = 1;
@@ -238,11 +272,7 @@ long calParser::GetValue( const wxString& label )
     switch( m_syntax )
     {
     case calSYNTAX_Latin:
-    case calSYNTAX_Hebrew:
         value = label.Left(3).Lower();
-        break;
-    case calSYNTAX_French:
-        value = label.Left(4).Lower();
         break;
     default:
         value = label.Lower();
