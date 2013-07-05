@@ -46,7 +46,7 @@
 #include "rgEdReference.h"
 #include "rgEdPersona.h"
 
-bool rgEditPersona( rgDlgEditReference* parent, idt perID )
+bool rgEditPersona( wxWindow* parent, idt perID )
 {
     wxASSERT( perID != 0 );
     const wxString savepoint = recDb::GetSavepointStr();
@@ -63,6 +63,28 @@ bool rgEditPersona( rgDlgEditReference* parent, idt perID )
     }
     dialog->Destroy();
     return ret;
+}
+
+idt rgCreateNamedPersona( wxWindow* wind, idt refID )
+{
+    wxASSERT( refID!= 0 ); // Must be associated with a reference
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+
+    idt perID = recPersona::Create( refID );
+    idt nameID = rgCreatePersonaName( wind, perID );
+    if( nameID == 0 ) {
+        recDb::Rollback( savepoint );
+        return 0;
+    }
+    recReferenceEntity::Create( refID, recReferenceEntity::TYPE_Name, nameID );
+
+    if( ! rgEditPersona( wind, perID ) ) {
+        recDb::Rollback( savepoint );
+        return 0;
+    }
+    recDb::ReleaseSavepoint( savepoint );
+    return perID;
 }
 
 //============================================================================

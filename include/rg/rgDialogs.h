@@ -114,8 +114,8 @@ extern bool rgEditPerEventRole( wxWindow* wind, idt epID, rgSHOWROLE filter = rg
 extern bool rgCreatePerEventRole( wxWindow* wind, idt perID, idt eveID, idt roleID );
 
 // See src/rg/rgEdPersona.cpp
-extern bool rgEditPersona( rgDlgEditReference* wind, idt perID );
-//extern idt rgCreatePersona( wxWindow* parent );
+extern bool rgEditPersona( wxWindow* wind, idt perID );
+extern idt rgCreateNamedPersona( wxWindow* parent, idt refID );
 
 // See src/rg/rgEdPlace.cpp
 extern bool rgEditPlace( wxWindow* wind, idt placeID );
@@ -128,7 +128,6 @@ extern bool rgSelectDateFromReference(
     wxWindow* wind, idt* dateID, idt refID, const wxString& title, unsigned style );
 extern bool rgSelectPlaceFromReference( 
     wxWindow* wind, idt* placeID, idt refID, const wxString& title, unsigned style );
-extern idt rgSelectCreatePersonaFromReference( wxWindow* wind, idt refID );
 
 // See src/rg/rgEdRelationship.cpp
 extern bool rgEditPersonaRelationship( wxWindow* wind, idt relID );
@@ -153,7 +152,7 @@ extern bool rgEditSystemSettings( wxWindow* wind );
 // See src/rg/rgEdUser.cpp
 extern bool rgEditUserSettings( wxWindow* wind );
 
-// See src/rg/rgIndividual.cpp
+// See src/rg/rgEdIndividual.cpp
 extern idt rgAddNewIndividual( 
     wxWindow* wind, Sex sex, const wxString& surname = wxEmptyString, idt famID = 0 );
 extern bool rgAddNewParent( wxWindow* wind, idt indID, Sex sex );
@@ -169,14 +168,17 @@ extern idt rgSelectDate(
     wxWindow* wind,
     unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL,
     unsigned filter = 0, idt = 0 );
+
 extern idt rgSelectPlace( 
     wxWindow* wind,
     unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL,
     unsigned filter = 0, idt = 0 );
+
 extern idt rgSelectEventType( 
     wxWindow* wind,
     unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL,
     unsigned grpfilter = recET_FILTER_GrpAll );
+
 extern idt rgSelectIndividual(
     wxWindow* wind,
     unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL,
@@ -185,7 +187,19 @@ extern idt rgSelectIndividual( wxWindow* wind, Sex sex );
 extern idt rgSelectIndividual(
     wxWindow* wind,
     recIdVec indIDs,
-    unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL );
+    unsigned style = rgSELSTYLE_Create, unsigned* retbutton = NULL );
+
+enum rgSELPER {
+    rgSELPER_Default = 0x00,
+    rgSELPER_CreateUnnamed = 0x01
+};
+extern idt rgSelectPersona( 
+    wxWindow* wind, 
+    idt refID,
+    unsigned style = rgSELSTYLE_Create, 
+    rgSELPER flag = rgSELPER_Default,
+    unsigned* retbutton = NULL );
+
 extern idt rgSelectEquivalentEventRecord( wxWindow* wind, idt eventID );
 
 // See src/rg/rgSelIndEvent.cpp

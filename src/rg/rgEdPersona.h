@@ -91,7 +91,6 @@ private:
     void OnRelEditButton( wxCommandEvent& event );
     void OnRelDeleteButton( wxCommandEvent& event );
 
-//    rgDlgEditReference* m_refDialog;
     idt                 m_refID;
 
     recPersona          m_persona;

@@ -151,34 +151,22 @@ public:
 
 class rgDlgSelectPersona : public rgSelect
 {
+    DECLARE_EVENT_TABLE()
     enum {
         COL_ID, COL_Name, COL_MAX
     };
     static wxString sm_colHeaders[COL_MAX];
 public:
     rgDlgSelectPersona( 
-        wxWindow* parent = NULL,
-        unsigned style = rgSELSTYLE_None,
-        const wxString& title = _("Select Persona")
-    ) : rgSelect( parent, sm_colHeaders, COL_MAX, style, title ) {}
-};
-
-//-------------------------------------------------------------------------------
-//-------------------[ rgDlgSelectCreatePersona ]----------------------------------
-//-------------------------------------------------------------------------------
-
-class rgDlgSelectCreatePersona : public rgDlgSelectPersona
-{
-    DECLARE_EVENT_TABLE()
-public:
-    rgDlgSelectCreatePersona( 
-        wxWindow* parent, const wxString& title = _("Select Persona") )
-        : m_sex(SEX_Unstated), rgDlgSelectPersona( parent, rgSELSTYLE_Create, title )
+        wxWindow* parent, unsigned style = rgSELSTYLE_None, 
+        const wxString& title = _("Select Persona") )
+        : m_sex(SEX_Unstated), 
+        rgSelect( parent, sm_colHeaders, COL_MAX, style, title )
     {}
 
     Sex GetSex() const { return m_sex; }
 
-protected:
+private:
     enum {
         rgID_SELCREATPER_MALE = 1200,
         rgID_SELCREATPER_FEMALE,
@@ -186,7 +174,7 @@ protected:
     };
     void OnCreateButton( wxCommandEvent& event );
     void OnCreatePersona( wxCommandEvent& event );
-private:
+
     Sex m_sex;
 };
 

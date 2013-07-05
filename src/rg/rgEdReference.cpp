@@ -126,53 +126,6 @@ extern bool rgSelectPlaceFromReference(
     return true;
 }
 
-idt rgSelectCreatePersonaFromReference( wxWindow* wind, idt refID )
-{
-    const wxString savepoint = recDb::GetSavepointStr();
-    recDb::Savepoint( savepoint );
-
-    recIdVec list = recReference::GetPersonaList( refID );
-    wxArrayString table;
-    for( size_t i = 0 ; i < list.size() ; i++ ) {
-        table.Add( recPersona::GetIdStr( list[i] ) );
-        table.Add( recPersona::GetNameStr( list[i] ) );
-    }
-
-    rgDlgSelectCreatePersona* dialog = new rgDlgSelectCreatePersona( wind );
-    dialog->SetTable( table );
-
-    idt perID = 0;
-    if( dialog->ShowModal() == wxID_OK ) {
-        Sex sex = dialog->GetSex();
-        if( sex != SEX_Unstated ) { // indicates Create new persona
-            recPersona per(0);
-            per.FSetRefID( refID );
-            per.FSetSex( sex );
-            per.Save();
-            perID = per.FGetID();
-            idt nameID = rgCreatePersonaName( wind, perID );
-            if( nameID ) {
-                recReferenceEntity::Create( refID, recReferenceEntity::TYPE_Name, nameID );
-            } else {
-                perID = 0;
-            }
-        } else {
-            long row = dialog->GetSelectedRow();
-            if( row >= 0 ) {
-                perID = list[row];
-            }
-        }
-    }
-    if( perID ) {
-        recDb::ReleaseSavepoint( savepoint );
-    } else {
-        recDb::Rollback( savepoint );
-    }
-
-    dialog->Destroy();
-    return perID;
-}
-
 //============================================================================
 //-------------------------[ rgDlgEditReference ]-----------------------------
 //============================================================================
@@ -436,7 +389,9 @@ void rgDlgEditReference::OnNewName( wxCommandEvent& event )
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
 
-    idt perID = SelectCreatePersona();
+    idt perID = rgSelectPersona( 
+        this, m_reference.GetID(), rgSELSTYLE_Create, rgSELPER_CreateUnnamed
+    );
     if( perID == 0 ) {
         recDb::Rollback( savepoint );
         return;
@@ -506,7 +461,6 @@ void rgDlgEditReference::OnNewEvent( wxCommandEvent& cmnd_event )
 {
     idt eveID = rgCreateEventRecord( this, m_reference.FGetID() );
     if( eveID ) {
-//        idt reID = CreateRefEntity( recReferenceEntity::TYPE_Event, eveID );
         UpdateEntities();// reID );
     }
 }
@@ -645,7 +599,7 @@ idt rgDlgEditReference::CreateRefEntity( recReferenceEntity::Type type, idt entI
     re.Save();
     return re.FGetID();
 }
-
+#if 0
 bool rgDlgEditReference::SelectDate( 
     idt* dateID, const wxString& title, unsigned style )
 {
@@ -683,53 +637,7 @@ bool rgDlgEditReference::SelectPlace(
     }
     return true;
 }
-
-idt rgDlgEditReference::SelectCreatePersona()
-{
-    const wxString savepoint = recDb::GetSavepointStr();
-    recDb::Savepoint( savepoint );
-
-    recIdVec list = m_reference.GetPersonaList();
-    wxArrayString table;
-    for( size_t i = 0 ; i < list.size() ; i++ ) {
-        table.Add( recPersona::GetIdStr( list[i] ) );
-        table.Add( recPersona::GetNameStr( list[i] ) );
-    }
-
-    rgDlgSelectCreatePersona* dialog = new rgDlgSelectCreatePersona( this );
-    dialog->SetTable( table );
-
-    idt perID = 0;
-    if( dialog->ShowModal() == wxID_OK ) {
-        Sex sex = dialog->GetSex();
-        if( sex != SEX_Unstated ) { // indicates Create new persona
-            recPersona per(0);
-            per.FSetRefID( m_reference.FGetID() );
-            per.FSetSex( sex );
-            per.Save();
-            perID = per.FGetID();
-            idt nameID = rgCreatePersonaName( this, perID );
-            if( nameID ) {
-                CreateRefEntity( recReferenceEntity::TYPE_Name, nameID );
-            } else {
-                perID = 0;
-            }
-        } else {
-            long row = dialog->GetSelectedRow();
-            if( row >= 0 ) {
-                perID = list[row];
-            }
-        }
-    }
-    if( perID ) {
-        recDb::ReleaseSavepoint( savepoint );
-    } else {
-        recDb::Rollback( savepoint );
-    }
-
-    dialog->Destroy();
-    return perID;
-}
+#endif
 
 void rgDlgEditReference::InsertEntityListItem( size_t row )
 {
@@ -759,16 +667,6 @@ void rgDlgEditReference::InsertEntityListItem( size_t row )
         break;
     default:
         m_listEntities->SetItem( row, ENT_COL_Value, _("Unknown Reference Entity") );
-    }
-}
-
-void rgDlgEditReference::UpdateSequence()
-{
-    for( size_t i = 0 ; i < m_entities.size() ; i++ ) {
-        if( m_entities[i].FGetSequence() != i+1 ) {
-            m_entities[i].FSetSequence( i+1 );
-            m_entities[i].Save();
-        }
     }
 }
 

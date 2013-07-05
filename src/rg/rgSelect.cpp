@@ -342,51 +342,6 @@ wxString rgDlgSelectEventType::sm_colHeaders[COL_MAX] = { _("Group"), _("Type") 
 //-------------------[ rgDlgSelectIndividual ]-----------------------------------
 //-------------------------------------------------------------------------------
 
-idt rgSelectIndividual( wxWindow* wind, recIdVec indIDs, unsigned flag, unsigned* retbutton )
-{
-    idt id = 0;
-    bool cont = true;
-    rgDlgSelectIndividual* dialog = new rgDlgSelectIndividual( wind, flag );
-
-    while( cont ) {
-        wxArrayString table;
-        for( size_t i = 0 ; i < indIDs.size() ; i++ ) {
-            table.push_back( recIndividual::GetIdStr( indIDs[i] ) );
-            table.push_back( recIndividual::GetName( indIDs[i] ) );
-        }
-        dialog->SetTable( table );
-        if( dialog->ShowModal() == wxID_OK ) {
-            if( dialog->GetCreatePressed() ) {
-                if( retbutton ) *retbutton = rgSELSTYLE_Create;
-                id = rgAddNewIndividual( wind, SEX_Unstated );
-                if( id ) {
-                    cont = false;
-                } else {
-                    dialog->SetCreatePressed( false );
-                    indIDs.push_back( id );
-                }
-                continue;
-            }
-            if( dialog->GetFilterPressed() ) {
-                wxMessageBox( "Not yet implimented", "rgSelectIndividual" );
-                dialog->SetFilterPressed( false );
-                continue;
-            }
-            if( dialog->GetUnknownPressed() ) {
-                wxASSERT( false ); // We shouldn't be here, Unknown has no meaning.
-                if( retbutton ) *retbutton = rgSELSTYLE_Unknown;
-                continue;
-            }
-            size_t item = (size_t) dialog->GetSelectedRow();
-            id = indIDs[item];
-        }
-        if( retbutton ) *retbutton = rgSELSTYLE_None;
-        cont = false;
-    }
-    dialog->Destroy();
-    return id;
-}
-
 idt rgSelectIndividual( wxWindow* wind, unsigned flag, unsigned* retbutton, unsigned sexfilter )
 {
     idt id = 0;
@@ -449,24 +404,111 @@ idt rgSelectIndividual( wxWindow* wind, Sex sex )
     return rgSelectIndividual( wind, rgSELSTYLE_None, NULL, filter );
 }
 
+idt rgSelectIndividual( wxWindow* wind, recIdVec indIDs, unsigned flag, unsigned* retbutton )
+{
+    idt id = 0;
+    bool cont = true;
+    rgDlgSelectIndividual* dialog = new rgDlgSelectIndividual( wind, flag );
+
+    while( cont ) {
+        wxArrayString table;
+        for( size_t i = 0 ; i < indIDs.size() ; i++ ) {
+            table.push_back( recIndividual::GetIdStr( indIDs[i] ) );
+            table.push_back( recIndividual::GetName( indIDs[i] ) );
+        }
+        dialog->SetTable( table );
+        if( dialog->ShowModal() == wxID_OK ) {
+            if( dialog->GetCreatePressed() ) {
+                if( retbutton ) *retbutton = rgSELSTYLE_Create;
+                id = rgAddNewIndividual( wind, SEX_Unstated );
+                if( id ) {
+                    cont = false;
+                } else {
+                    dialog->SetCreatePressed( false );
+                    indIDs.push_back( id );
+                }
+                continue;
+            }
+            if( dialog->GetFilterPressed() ) {
+                wxMessageBox( "Not yet implimented", "rgSelectIndividual" );
+                dialog->SetFilterPressed( false );
+                continue;
+            }
+            if( dialog->GetUnknownPressed() ) {
+                wxASSERT( false ); // We shouldn't be here, Unknown has no meaning.
+                if( retbutton ) *retbutton = rgSELSTYLE_Unknown;
+                continue;
+            }
+            size_t item = (size_t) dialog->GetSelectedRow();
+            id = indIDs[item];
+        }
+        if( retbutton ) *retbutton = rgSELSTYLE_None;
+        cont = false;
+    }
+    dialog->Destroy();
+    return id;
+}
+
 wxString rgDlgSelectIndividual::sm_colHeaders[COL_MAX] = { _("ID"), _("Name") };
 
 //-------------------------------------------------------------------------------
 //-------------------[ rgDlgSelectPersona ]--------------------------------------
 //-------------------------------------------------------------------------------
 
-wxString rgDlgSelectPersona::sm_colHeaders[COL_MAX] = { _("ID"), _("Name") };
+idt rgSelectPersona( 
+    wxWindow* wind, idt refID, unsigned style, rgSELPER flag, unsigned* retbutton )
+{
+    idt perID = 0;
+    rgDlgSelectPersona* dialog = new rgDlgSelectPersona( wind, style );
 
-//-------------------------------------------------------------------------------
-//-------------------[ rgDlgSelectCreatePersona ]--------------------------------
-//-------------------------------------------------------------------------------
+    for(;;) {
+        recIdVec perIDs = recReference::GetPersonaList( refID );
+        wxArrayString table;
+        for( size_t i = 0 ; i < perIDs.size() ; i++ ) {
+            table.push_back( recPersona::GetIdStr( perIDs[i] ) );
+            table.push_back( recPersona::GetNameStr( perIDs[i] ) );
+        }
+        dialog->SetTable( table );
+        if( dialog->ShowModal() == wxID_OK ) {
+            if( dialog->GetCreatePressed() ) {
+                if( retbutton ) *retbutton = rgSELSTYLE_Create;
+                if( flag & rgSELPER_CreateUnnamed ) {
+                    perID = recPersona::Create( refID );
+                } else {
+                    perID = rgCreateNamedPersona( wind, refID );
+                    if( perID == 0 ) {
+                        continue;
+                    }
+                }
+                break;
+            }
+            if( dialog->GetFilterPressed() ) {
+                wxMessageBox( "Not yet implimented", "rgSelectIndividual" );
+                dialog->SetFilterPressed( false );
+                continue;
+            }
+            if( dialog->GetUnknownPressed() ) {
+                wxASSERT( false ); // We shouldn't be here, Unknown has no meaning.
+                if( retbutton ) *retbutton = rgSELSTYLE_Unknown;
+                continue;
+            }
+            size_t item = (size_t) dialog->GetSelectedRow();
+            perID = perIDs[item];
+        }
+        if( retbutton ) *retbutton = rgSELSTYLE_None;
+        break;
+    }
+    dialog->Destroy();
+    return perID;
+}
 
-BEGIN_EVENT_TABLE( rgDlgSelectCreatePersona, wxDialog )
-    EVT_MENU_RANGE( rgID_SELCREATPER_MALE, rgID_SELCREATPER_UNKNOWN, rgDlgSelectCreatePersona::OnCreatePersona )
+BEGIN_EVENT_TABLE( rgDlgSelectPersona, wxDialog )
+    EVT_MENU_RANGE( rgID_SELCREATPER_MALE, rgID_SELCREATPER_UNKNOWN, rgDlgSelectPersona::OnCreatePersona )
 END_EVENT_TABLE()
 
+wxString rgDlgSelectPersona::sm_colHeaders[COL_MAX] = { _("ID"), _("Name") };
 
-void rgDlgSelectCreatePersona::OnCreateButton( wxCommandEvent& event )
+void rgDlgSelectPersona::OnCreateButton( wxCommandEvent& event )
 {
     wxMenu* menu = new wxMenu;
     menu->Append( rgID_SELCREATPER_MALE, _("Create &Male Persona") );
@@ -476,7 +518,7 @@ void rgDlgSelectCreatePersona::OnCreateButton( wxCommandEvent& event )
     delete menu;
 }
 
-void rgDlgSelectCreatePersona::OnCreatePersona( wxCommandEvent& event )
+void rgDlgSelectPersona::OnCreatePersona( wxCommandEvent& event )
 {
     switch( event.GetId() )
     {

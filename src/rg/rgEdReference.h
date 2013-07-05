@@ -39,8 +39,16 @@
 
 class rgDlgEditReference : public fbRgEditReference
 {
+public:
+    /** Constructor */
+    rgDlgEditReference( wxWindow* parent, idt refID );
+
+//   bool SelectDate( idt* dateID, const wxString& title, unsigned style );
+//    bool SelectPlace( idt* placeID, const wxString& title, unsigned style );
+
+private:
     DECLARE_EVENT_TABLE()
-protected:
+
     enum EntityColumn {
         ENT_COL_Type, ENT_COL_Number, ENT_COL_Value, ENT_COL_MAX
     };
@@ -92,17 +100,8 @@ protected:
     void OnUpEntityButton( wxCommandEvent& event );
     void OnDownEntityButton( wxCommandEvent& event );
 
-public:
-    /** Constructor */
-    rgDlgEditReference( wxWindow* parent, idt refID );
-
-    bool SelectDate( idt* dateID, const wxString& title, unsigned style );
-    bool SelectPlace( idt* placeID, const wxString& title, unsigned style );
-    idt SelectCreatePersona();
-
     idt CreateRefEntity( recReferenceEntity::Type type, idt entID );
     void InsertEntityListItem( size_t row );
-    void UpdateSequence();
 
     recReference  m_reference;
     recRefEntVec  m_entities;

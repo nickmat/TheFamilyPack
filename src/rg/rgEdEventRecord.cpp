@@ -123,7 +123,7 @@ idt rgCreateEventRecord( wxWindow* wind, idt refID )
         return 0;
     }
 
-    idt perID1 = rgSelectCreatePersonaFromReference( wind, refID );
+    idt perID1 = rgSelectPersona( wind, refID );
     if( perID1 == 0 ) {
         recDb::Rollback( savepoint );
         return 0;
@@ -131,7 +131,7 @@ idt rgCreateEventRecord( wxWindow* wind, idt refID )
     wxString title;
     idt perID2 = 0;
     if( person2 ) {
-        perID2 = rgSelectCreatePersonaFromReference( wind, refID );
+        perID2 = rgSelectPersona( wind, refID );
         if( perID2 == 0 ) {
             recDb::Rollback( savepoint );
             return 0;
@@ -188,7 +188,7 @@ idt rgCreatePersonalEventRecord( wxWindow* wind, idt refID, const wxString& role
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
 
-    idt perID = rgSelectCreatePersonaFromReference( wind, refID );
+    idt perID = rgSelectPersona( wind, refID );
     if( perID == 0 ) {
         recDb::Rollback( savepoint );
         return 0;
@@ -520,7 +520,7 @@ void rgDlgEditEventRecord::OnOptnCreateRel( wxCommandEvent& event )
 
 void rgDlgEditEventRecord::OnAddPer( wxCommandEvent& event )
 {
-    idt perID = rgSelectCreatePersonaFromReference( this, m_refID );
+    idt perID = rgSelectPersona( this, m_refID );
     if( perID == 0 ) {
         return;
     }
