@@ -73,6 +73,8 @@ public:
     static wxString GetIdStr( idt perID ) { return wxString::Format( "Pa"ID, perID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
+    static idt Create( idt refID, Sex sex = SEX_Unstated );
+
     static Sex GetSex( idt id );
 
     static idt GetNameID( idt perID ) { return recName::GetDefaultNameID( 0, perID ); }

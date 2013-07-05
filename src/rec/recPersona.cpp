@@ -118,6 +118,15 @@ bool recPersona::Read()
     return true;
 }
 
+idt recPersona::Create( idt refID, Sex sex )
+{
+    recPersona per(0);
+    per.f_ref_id = refID;
+    per.f_sex = sex;
+    per.Save();
+    return per.f_id;
+}
+
 Sex recPersona::GetSex( idt id )
 {
     recPersona per(id);
