@@ -86,6 +86,9 @@ public:
     static wxString GetIdStr( idt nameID ) { return wxString::Format( "N"ID, nameID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
+    static idt GetIndID( idt nameID );
+    static idt GetPerID( idt nameID );
+
     static idt CreateName( const wxString& nameStr, idt style = 0 );
 
     int AddNameParts( const wxString& nameStr, recStdNameType type = NAME_TYPE_Unstated, int seq = 0 ) const;

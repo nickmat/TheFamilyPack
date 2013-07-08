@@ -130,6 +130,16 @@ bool recName::Read()
     return true;
 }
 
+idt recName::GetIndID( idt nameID )
+{
+    return ExecuteID( "SELECT ind_id FROM Name WHERE id="ID";", nameID );
+}
+
+idt recName::GetPerID( idt nameID )
+{
+    return ExecuteID( "SELECT per_id FROM Name WHERE id="ID";", nameID );
+}
+
 idt recName::CreateName( const wxString& nameStr, idt style )
 {
     recName name(0);
