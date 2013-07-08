@@ -26,6 +26,7 @@ class rgStrTableCtrl;
 #include <wx/statline.h>
 #include <wx/button.h>
 #include <wx/dialog.h>
+#include <wx/checkbox.h>
 #include <wx/panel.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
@@ -36,7 +37,6 @@ class rgStrTableCtrl;
 #include <wx/toolbar.h>
 #include <wx/webview.h>
 #include <wx/splitter.h>
-#include <wx/checkbox.h>
 #include <wx/checklst.h>
 #include <wx/statbox.h>
 
@@ -91,7 +91,10 @@ class fbRgCreateName : public wxDialog
 		wxStaticText* m_staticText3;
 		wxTextCtrl* m_textCtrlSurname;
 		wxStaticLine* m_staticline1;
+		wxCheckBox* m_checkFullName;
 		wxStaticText* m_staticNameID;
+		wxCheckBox* m_checkExtend;
+		wxStaticText* m_staticPerIndID;
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
 	

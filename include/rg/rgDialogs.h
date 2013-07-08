@@ -44,8 +44,9 @@ enum {
 
 // See src/rg/rgCrName.cpp
 enum {
-    rgCRNAME_Default   = 0x000, // Use default settings to decode name1 string.
-    rgCRNAME_Sur_Given = 0x001  // If given, name1 is surname, name2 is given name.
+    rgCRNAME_Default    = 0x0000, // Use default settings to decode name1 string.
+    rgCRNAME_Sur_Given  = 0x0001, // If given, name1 is surname, name2 is given name.
+    rgCRNAME_EditExtend = 0x0100  // If set, allow Edit Persona/Individual check box.
 };
 extern idt rgCreateName( wxWindow* wind, idt indID, idt perID,
     unsigned flags, const wxString& name1, const wxString& name2, idt typeID );

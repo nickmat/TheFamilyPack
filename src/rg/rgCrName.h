@@ -41,20 +41,20 @@
 class rgDlgCreateName : public fbRgCreateName
 {
 public:
-    rgDlgCreateName( wxWindow* parent ) 
-        : m_name(0), fbRgCreateName( parent ) {}
+    rgDlgCreateName( wxWindow* parent, idt indID, idt perID, unsigned editEx );
 
     idt GetNameID() const { return m_name.FGetID(); }
 
-    void SetIndividualID( idt indID ) { m_name.FSetIndID( indID ); }
-    void SetPersonaID( idt perID ) { m_name.FSetPerID( perID ); }
-    void SetNextSequence() { m_name.SetNextSequence(); }
     void SetGiven( const wxString& given ) { m_given = given; }
     void SetSurname( const wxString& sur ) { m_surname = sur; }
     void SetTypeID( idt typeID ) { m_name.FSetTypeID( typeID ); }
 
+    bool GetEditFullName() const { return m_editFullName; }
+    bool GetEditExtend() const { return m_editExtend; }
+
 private:
     bool TransferDataToWindow();
+    void CreateRecords();
     bool TransferDataFromWindow();
 
     wxString  m_given;
@@ -62,6 +62,9 @@ private:
 
     recName          m_name;
     recNameStyleVec  m_types;
+
+    bool m_editFullName;
+    bool m_editExtend;
 };
 
 #endif // RGCRNAME_H

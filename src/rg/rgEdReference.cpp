@@ -321,11 +321,14 @@ void rgDlgEditReference::OnPersonaAddMenuOp( wxCommandEvent& event )
         break;
     }
     per.Save();
-    idt nameID = rgCreatePersonaName( this, per.FGetID() );
+    idt perID = per.FGetID();
+
+    wxString nameStr = m_textCtrlStatement->GetStringSelection();
+    idt nameID = rgCreatePersonaName( this, perID, rgCRNAME_EditExtend, nameStr );
     if( nameID ) {
         recDb::ReleaseSavepoint( savepoint );
         idt reID = CreateRefEntity( recReferenceEntity::TYPE_Name, nameID );
-        UpdatePersonas( per.FGetID() );
+        UpdateEntities( reID );
     } else {
         recDb::Rollback( savepoint );
     }
@@ -398,7 +401,7 @@ void rgDlgEditReference::OnNewName( wxCommandEvent& event )
     }
 
     wxString nameStr = m_textCtrlStatement->GetStringSelection();
-    idt nameID = rgCreatePersonaName( this, perID, rgCRNAME_Default, nameStr );
+    idt nameID = rgCreatePersonaName( this, perID, rgCRNAME_EditExtend, nameStr );
     if( nameID ) {
         recDb::ReleaseSavepoint( savepoint );
         idt reID = CreateRefEntity( recReferenceEntity::TYPE_Name, nameID );

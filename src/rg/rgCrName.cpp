@@ -43,7 +43,7 @@
 #include "rg/rgDialogs.h"
 
 idt rgCreateName( 
-    wxWindow* parent,
+    wxWindow* wind,
     idt indID,
     idt perID,
     unsigned flags, 
@@ -54,11 +54,10 @@ idt rgCreateName(
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
     idt nameID = 0;
+    unsigned editEx = flags & rgCRNAME_EditExtend;
 
-    rgDlgCreateName* dialog = new rgDlgCreateName( parent );
-    dialog->SetIndividualID( indID );
-    dialog->SetPersonaID( perID );
-    dialog->SetNextSequence();
+    rgDlgCreateName* dialog = new rgDlgCreateName( wind, indID, perID, editEx );
+
     if( flags & rgCRNAME_Sur_Given ) {
         dialog->SetSurname( name1 );
         dialog->SetGiven( name2 );
@@ -73,6 +72,17 @@ idt rgCreateName(
     if( dialog->ShowModal() == wxID_OK ) {
         recDb::ReleaseSavepoint( savepoint );
         nameID = dialog->GetNameID();
+        if( dialog->GetEditFullName() ) {
+            rgEditName( wind, nameID );
+        }
+        if( dialog->GetEditExtend() ) {
+            if( perID ) {
+                rgEditPersona( wind, perID );
+            }
+            if( indID ) {
+                rgEditIndividual( wind, indID );
+            }
+        }
     } else {
         recDb::Rollback( savepoint );
     }
@@ -84,6 +94,19 @@ idt rgCreateName(
 //-------------------------[ rgDlgCreateName ]--------------------------------
 //============================================================================
 
+rgDlgCreateName::rgDlgCreateName(
+    wxWindow* parent, idt indID, idt perID, unsigned editEx 
+    ) : m_name(0), m_editFullName(false), m_editExtend(false),
+    fbRgCreateName( parent )
+{
+    wxASSERT( (indID == 0) != (perID == 0) ); // One, and only one, must be zero
+    m_name.FSetIndID( indID );
+    m_name.FSetPerID( perID );
+    m_name.SetNextSequence();
+    if( ! editEx ){
+        m_checkExtend->Enable( false );
+    }
+}
 
 bool rgDlgCreateName::TransferDataToWindow()
 {
@@ -99,6 +122,12 @@ bool rgDlgCreateName::TransferDataToWindow()
     m_textCtrlGiven->SetValue( m_given );
     m_textCtrlSurname->SetValue( m_surname );
     m_staticNameID->SetLabel( m_name.GetIdStr() );
+    if( m_name.FGetPerID() ) {
+        m_staticPerIndID->SetLabel( recPersona::GetIdStr( m_name.FGetPerID() ) );
+    } else {
+        m_staticPerIndID->SetLabel( recIndividual::GetIdStr( m_name.FGetIndID() ) );
+        m_checkExtend->SetLabel( _("Edit Individual") );
+    }
     return true;
 }
 
@@ -110,6 +139,9 @@ bool rgDlgCreateName::TransferDataFromWindow()
 
     int seq = m_name.AddNameParts( m_textCtrlGiven->GetValue(), NAME_TYPE_Given_name, 0 );
     m_name.AddNamePart( m_textCtrlSurname->GetValue(), NAME_TYPE_Surname, seq );
+
+    m_editFullName = m_checkFullName->GetValue();
+    m_editExtend = m_checkExtend->GetValue();
     return true;
 }
 
