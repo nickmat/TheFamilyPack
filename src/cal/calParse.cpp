@@ -115,6 +115,8 @@ calParser::calParser()
     m_lookup[calSYNTAX_French]["comp"] = 13;
 
     // French revolutionary full names
+    // TODO: Use correct accented utf charaters 
+#if 0
     m_lookup[calSYNTAX_French][L"vendémiaire"] = 1;
     m_lookup[calSYNTAX_French]["brumaire"] = 2;
     m_lookup[calSYNTAX_French]["frimaire"] = 3;
@@ -128,6 +130,20 @@ calParser::calParser()
     m_lookup[calSYNTAX_French]["thermidor"] = 11;
     m_lookup[calSYNTAX_French]["fructidor"] = 12;
     m_lookup[calSYNTAX_French][L"complémentaires"] = 13;
+#endif
+    m_lookup[calSYNTAX_French]["vendemiaire"] = 1;
+    m_lookup[calSYNTAX_French]["brumaire"] = 2;
+    m_lookup[calSYNTAX_French]["frimaire"] = 3;
+    m_lookup[calSYNTAX_French]["nivose"] = 4;
+    m_lookup[calSYNTAX_French]["pluviose"] = 5;
+    m_lookup[calSYNTAX_French]["ventose"] = 6;
+    m_lookup[calSYNTAX_French]["germinal"] = 7;
+    m_lookup[calSYNTAX_French]["floreal"] = 8;
+    m_lookup[calSYNTAX_French]["prairial"] = 9;
+    m_lookup[calSYNTAX_French]["messidor"] = 10;
+    m_lookup[calSYNTAX_French]["thermidor"] = 11;
+    m_lookup[calSYNTAX_French]["fructidor"] = 12;
+    m_lookup[calSYNTAX_French]["complementaires"] = 13;
 
     // Islamic month names
     m_lookup[calSYNTAX_Isamic]["muharram"] = 1;

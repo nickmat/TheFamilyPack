@@ -79,8 +79,11 @@ wxString calFrenchMonthNameGed[13] = {
 };
 
 wxString calFrenchMonthName[13] = {
-    L"Vendémiaire", "Brumaire", "Frimaire", L"Nivôse", L"Pluviôse", L"Ventôse",
-    "Germinal", L"Floréal", "Prairial", "Messidor", "Thermidor", "Fructidor", L"Complémentaires"
+    // TODO: Use correct accented utf charaters 
+//    L"Vendémiaire", "Brumaire", "Frimaire", L"Nivôse", L"Pluviôse", L"Ventôse",
+//    "Germinal", L"Floréal", "Prairial", "Messidor", "Thermidor", "Fructidor", L"Complémentaires"
+    "Vendemiaire", "Brumaire", "Frimaire", "Nivose", "Pluviose", "Ventose",
+    "Germinal", "Floreal", "Prairial", "Messidor", "Thermidor", "Fructidor", "Complementaires"
 };
 
 wxString calIslamicMonthName[12] = {
