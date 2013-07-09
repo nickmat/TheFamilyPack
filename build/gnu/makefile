@@ -220,8 +220,8 @@ clean:
 test_for_selected_wxbuild: 
 	@$(WX_CONFIG) $(WX_CONFIG_FLAGS)
 
-tfp: $(TFP_OBJECTS) libwxsqlite3.a librec.a librecgui.a libcalendar.a
-	$(CXX) -o $@ $(TFP_OBJECTS)  $(VAR_4)  $(LDFLAGS)  libwxsqlite3.a librec.a librecgui.a libcalendar.a `$(WX_CONFIG) $(WX_CONFIG_FLAGS) --libs webview,html,adv,core,base`
+tfp: $(TFP_OBJECTS) librecgui.a librec.a libcalendar.a libwxsqlite3.a
+	$(CXX) -o $@ $(TFP_OBJECTS)  $(VAR_4)  $(LDFLAGS)  librecgui.a librec.a libcalendar.a libwxsqlite3.a `$(WX_CONFIG) $(WX_CONFIG_FLAGS) --libs webview,adv,core,base`
 
 libcalendar.a: $(CALENDAR_OBJECTS)
 	rm -f $@

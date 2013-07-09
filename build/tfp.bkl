@@ -123,12 +123,11 @@
     <precomp-headers>on</precomp-headers>
     <precomp-headers-file>wxprec_$(id)</precomp-headers-file>
 
-    <library>wxsqlite3</library>
-    <library>rec</library>
     <library>recgui</library>
+    <library>rec</library>
     <library>calendar</library>
+    <library>wxsqlite3</library>
     <wx-lib>webview</wx-lib>
-    <wx-lib>html</wx-lib>
     <wx-lib>adv</wx-lib>
     <wx-lib>core</wx-lib>
     <wx-lib>base</wx-lib>
