@@ -61,7 +61,7 @@ inline long DateDifference( long jdn1, long jdn2 ) { return jdn2 - jdn1; }
 // 1 Jan 1810 (G) = 2382149 (JDN)
 
 // CC3 p177
-extern double EphemerisCorrection( double moment )
+double EphemerisCorrection( double moment )
 {
     const double daypersec = 1.0 / 86400.0;
     long jdn = (long) moment;

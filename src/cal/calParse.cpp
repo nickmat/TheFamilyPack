@@ -40,7 +40,7 @@
 
 //typedef std::map< wxString, unsigned > calLabelMap;
 //calLabelMap LabelLookup;
-extern calParser* g_calparser = NULL;
+calParser* g_calparser = NULL;
 
 void calInitParser()
 {
