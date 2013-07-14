@@ -58,10 +58,12 @@ extern wxString tfpWriteEventIndex();
 extern wxString tfpWriteEventPagedIndex( idt begCnt );
 extern wxString tfpWriteEventSelection( recFilterEvent& filter );
 
-// See tfpWrEventRecord.cpp
+// See tfpWrEventRecIndex.cpp
 extern wxString tfpWriteEventRecordIndex();
 extern wxString tfpWriteEventRecordPagedIndex( idt begCnt );
-extern wxString tfpWriteEventRecordPage( idt eventID );
+
+// See tfpWrEventRecord.cpp
+extern wxString tfpWriteEventRecordPage( idt erID );
 
 // See tfpWrFamily.cpp
 extern wxString tfpWriteFamilyPage( idt famID, size_t iL = 0, size_t iR = 0 );

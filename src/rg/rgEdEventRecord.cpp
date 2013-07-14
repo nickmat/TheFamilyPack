@@ -174,6 +174,9 @@ idt rgCreateEventRecord( wxWindow* wind, idt refID )
         ep2.FSetPerSeq( 2 );
         ep2.Save();
     }
+
+    // TODO: Find or create Event's to link
+
     if( rgEditEventRecord( wind, erID ) ) {
         recDb::ReleaseSavepoint( savepoint );
     } else {

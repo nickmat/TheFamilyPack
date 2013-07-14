@@ -1653,10 +1653,10 @@ bool TfpFrame::DisplayHomePage()
 
 wxString TfpFrame::GetDisplayText( const wxString& name )
 {
+    wxASSERT( name.size() > 0 );
     wxLongLong_t num, num1 = 0, num2 = 0;
     bool success, success1 = false, success2 = false;
 
-    wxASSERT( name.size() > 0 );
     success = name.Mid(1).ToLongLong( &num );
     if( name.size() > 1 ) {
         success1 = name.Mid(2).ToLongLong( &num1 );

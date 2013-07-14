@@ -79,6 +79,7 @@ TFP_OBJECTS =  \
 	tfp_tfpWrChart.o \
 	tfp_tfpWrEvent.o \
 	tfp_tfpWrEventIndex.o \
+	tfp_tfpWrEventRecIndex.o \
 	tfp_tfpWrEventRecord.o \
 	tfp_tfpWrFamily.o \
 	tfp_tfpWrIndividual.o \
@@ -279,6 +280,9 @@ tfp_tfpWrEvent.o: ./../../src/tfp/tfpWrEvent.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
 tfp_tfpWrEventIndex.o: ./../../src/tfp/tfpWrEventIndex.cpp
+	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
+
+tfp_tfpWrEventRecIndex.o: ./../../src/tfp/tfpWrEventRecIndex.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
 tfp_tfpWrEventRecord.o: ./../../src/tfp/tfpWrEventRecord.cpp
