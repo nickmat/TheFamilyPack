@@ -40,27 +40,18 @@
 #include <rec/recIndividual.h>
 #include <rec/recEventRecord.h>
 
-//#include <rg/rgCompareEvent.h>
+#include <rg/rgCompareEvent.h>
 
 #include "tfpWr.h"
 
 wxString tfpWriteEventPage( idt eventID, rgCompareEvent* ce )
 {
-//    ce->Reset( eventID );
+    if( ce ) ce->Reset( eventID );
     wxString htm;
     recEvent eve(eventID);
     if( eve.f_id == 0 ) return wxEmptyString;
 
     htm << 
-#if 0
-        "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
-        "\"http://www.w3.org/TR/html4/loose.dtd\">\n"
-        "<html>\n<head>\n"
-        "<title>Event " << eve.GetIdStr() << "</title>\n"
-        "<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>\n"
-        "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>\n"
-        "</head>\n<body>\n<div class='tfp'>\n"
-#endif
         tfpWrHeadTfp( "Event " + eve.GetIdStr() ) <<
 
         "<h1>Event " << eve.GetIdStr() << ": " << eve.f_title << "</h1>\n"
@@ -135,9 +126,15 @@ wxString tfpWriteEventPage( idt eventID, rgCompareEvent* ce )
         htm << "</table>\n";
     }
 
-    //htm << ce->GetRefEventsTable()
-    //    << ce->GetRefDatesTable()
-    //    << ce->GetRefPlacesTable();
+    if( ce ) {
+        htm << 
+            ce->GetRefEventsTable() <<
+            ce->GetRefDatesTable() <<
+            ce->GetRefPlacesTable()
+        ;
+    } else {
+        htm << "<p><a href='tfp:E^" << eventID << "'>Show Event Records</a></p>\n";
+    }
 
     htm << tfpWrTailTfp();
 

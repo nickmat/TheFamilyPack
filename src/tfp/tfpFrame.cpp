@@ -1653,175 +1653,104 @@ bool TfpFrame::DisplayHomePage()
 
 wxString TfpFrame::GetDisplayText( const wxString& name )
 {
-    wxUniChar uch, uch1;
-    wxLongLong_t num;
-    bool success;
-    wxString ErrorPage = "<html><head><title>Error</title></head>"
-        "<body><h1>Error writing [%s]</h1><p>%s</p></body></html>";
+    wxLongLong_t num, num1 = 0, num2 = 0;
+    bool success, success1 = false, success2 = false;
 
     wxASSERT( name.size() > 0 );
-    uch = name.GetChar( 0 );
-    uch1 = name.size() > 1 ? name.GetChar( 1 ) : (wxUniChar) '\0';
-    switch( uch.GetValue() )
-    {
-    case 'C':  // Chart reference
-        success = name.Mid(2).ToLongLong( &num );
-        if( !success || num < 1 ) {
-            return wxString::Format(
-                ErrorPage, name, _("Invalid Individual ID link")
-            );
-        }
-        switch( (wxChar) name.GetChar( 1 ) )
-        {
-        case 'D':
-            return tfpCreateDescChart( num );
-        case 'P':
-            return tfpCreatePedChart( num );
-        }
-        return wxString::Format(
-            ErrorPage, name, _("Invalid Chart link reference")
-        );
-    case 'D':  // Date
-        success = name.Mid(1).ToLongLong( &num );
-        if( !success || num < 1 ) {
-            return wxString::Format(
-                ErrorPage, name, _("Invalid Date ID link")
-            );
-        }
+    success = name.Mid(1).ToLongLong( &num );
+    if( name.size() > 1 ) {
+        success1 = name.Mid(2).ToLongLong( &num1 );
+    }
+    if( name.size() > 2 ) {
+        success2 = name.Mid(3).ToLongLong( &num2 );
+    }
+
+    if( name.compare( 0, 2, "CD" ) == 0 && success1 ) {
+        return tfpCreateDescChart( num1 );
+    }
+    if( name.compare( 0, 2, "CP" ) == 0 && success1 ) {
+        return tfpCreatePedChart( num1 );
+    }
+    if( name.compare( 0, 1, "D" ) == 0 && success ) {
         return tfpWriteDate( num );
-    case 'E':  // Individual or Reference Event
-        if( name == "E" ) {
-            return tfpWriteEventIndex();
-        }
-        if( name == "E$" ) {
-            return tfpWriteEventSelection( m_eveFilter );
-        }
-        if( name == "ER" ) {
-            return tfpWriteEventRecordIndex();
-        }
+    }
+    if( name.compare( "E" ) == 0 ) {
+        return tfpWriteEventIndex();
+    }
+    if( name.compare( "E$" ) == 0 ) {
+        return tfpWriteEventSelection( m_eveFilter );
+    }
+    if( name.compare( "ER" ) == 0 ) {
+        return tfpWriteEventRecordIndex();
+    }
 // We don't have a EventRecord filter yet!
-//        if( name == "ER$" ) {
-//            return tfpWriteEventRecordSelection( m_erFilter );
-//        }
-        if( uch1 == 'R' ) {
-            if( name.GetChar( 2 ) == ',' ) {
-                success = name.Mid(3).ToLongLong( &num );
-                if( !success || num < 0 ) {
-                    return wxString::Format(
-                        ErrorPage, name, _("Invalid Event Index Page")
-                    );
-                }
-                return tfpWriteEventRecordPagedIndex( num );
-            }
-            success = name.Mid(2).ToLongLong( &num );
-            if( !success || num < 0 ) {
-                return wxString::Format(
-                    ErrorPage, name, _("Invalid Event Record Page")
-                );
-            }
-            return tfpWriteEventRecordPage( num );
-        }
-        if( uch1 == ',' ) {
-            success = name.Mid(2).ToLongLong( &num );
-            if( !success || num < 0 ) {
-                return wxString::Format(
-                    ErrorPage, name, _("Invalid Event Index Page")
-                );
-            }
-            return tfpWriteEventPagedIndex( num );
-        }
-        success = name.Mid(1).ToLongLong( &num );
-        if( !success || num < 1 ) {
-            return wxString::Format(
-                ErrorPage, name, _("Invalid Event ID link")
-            );
-        }
-        return tfpWriteEventPage( num, &m_compEvent );
-    case 'F':  // Family reference
-        if( uch1 == 'I' ) {
-            success = name.Mid(2).ToLongLong( &num );
-            if( !success ) {
-                return wxString::Format(
-                    ErrorPage, name, _("Invalid Individual ID link")
-                );
-            }
-            return tfpWriteIndFamilyPage( num );
-        }
+//    if( name.compare( "ER$" ) == 0 ) {
+//        return tfpWriteEventRecordSelection( m_erFilter );
+//    }
+    if( name.compare( 0, 2, "ER" ) == 0 && success1 ) {
+        return tfpWriteEventRecordPage( num1 );
+    }
+    if( name.compare( 0, 3, "ER," ) == 0 && success2 ) {
+        return tfpWriteEventRecordPagedIndex( num2 );
+    }
+    if( name.compare( 0, 1, "E" ) == 0 && success ) {
+        return tfpWriteEventPage( num, NULL );
+    }
+    if( name.compare( 0, 2, "E^" ) == 0 && success1 ) {
+        return tfpWriteEventPage( num1, &m_compEvent );
+    }
+    if( name.compare( 0, 2, "E," ) == 0 && success1 ) {
+        return tfpWriteEventPagedIndex( num1 );
+    }
+    if( name.compare( 0, 2, "FI" ) == 0 && success1 ) {
+        return tfpWriteIndFamilyPage( num1 );
+    }
+    if( name.compare( 0, 1, "F" ) == 0 && success ) {
+        // Note, Family Page may have alternate parents
+        // so name string requires further decoding.
         return tfpWriteFamilyPage( name.Mid(1) );
-    case 'I':  // Individual reference
-        success = name.Mid(1).ToLongLong( &num );
-        if( !success || num < 1 ) {
-            return wxString::Format(
-                ErrorPage, name, _("Invalid Individual ID link")
-            );
-        }
+    }
+    if( name.compare( 0, 1, "I" ) == 0 && success ) {
         return tfpWriteIndividualPage( num );
-    case 'N':  // Name index
-        if( name == "N" ) {
-            return tfpWriteIndividualIndex();
-        }
-        if( name == "N*" ) {
-            return tfpWriteIndividualList( wxEmptyString );
-        }
-        success = name.Mid(1).ToLongLong( &num );
-        if( !success || num < 1 ) {
-            return tfpWriteIndividualList( name.Mid( 1 ) );
-        }
+    }
+    if( name.compare( "N" ) == 0 ) {
+        return tfpWriteIndividualIndex();
+    }
+    if( name.compare( "N*" ) == 0 ) {
+        return tfpWriteIndividualList( "" );
+    }
+    if( name.compare( 0, 1, "N" ) == 0 && ! success ) {
+        return tfpWriteIndividualList( name.Mid( 1 ) );
+    }
+    if( name.compare( 0, 1, "N" ) == 0 && success ) {
         return tfpWriteName( num );
-    case 'P':  // Place
-        if( name == "Pa" ) {
-            return tfpWritePersonIndex();
-        }
-        success = name.Mid(1).ToLongLong( &num );
-        if( !success || num < 1 ) {
-            return wxString::Format(
-                ErrorPage, name, _("Invalid Place ID link")
-            );
-        }
+    }
+    if( name.compare( "Pa" ) == 0 ) {
+        return tfpWritePersonIndex();
+    }
+    if( name.compare( 0, 1, "P" ) == 0 && success ) {
         return tfpWritePlace( num );
-    case 'R':  // Reference Document
-        if( name == "R" ) {
-            return tfpWriteReferenceIndex();
-        }
-        if( uch1 == ',' ) {
-            success = name.Mid(2).ToLongLong( &num );
-            if( !success || num < 0 ) {
-                return wxString::Format(
-                    ErrorPage, name, _("Invalid Reference Index Page")
-                );
-            }
-            return tfpWriteReferencePagedIndex( num );
-        }
-        if( name == "Re" ) {
-            return tfpWriteResearcherList();
-        }
-        if( !wxIsdigit( uch1 ) ) {
-            success = name.Mid(2).ToLongLong( &num );
-            if( !success ) {
-                return wxString::Format(
-                    ErrorPage, name, _("Invalid ID link")
-                );
-            }
-            switch( uch1.GetValue() )
-            {
-            case 's':
-                return tfpWriteRelationship( num );
-            default:
-                return wxString::Format(
-                    ErrorPage, name, _("Invalid ID link")
-                );
-            }
-        }
-        success = name.Mid(1).ToLongLong( &num );
-        if( !success || num < 1 ) {
-            return wxString::Format(
-                ErrorPage, name, _("Invalid Reference Document ID link")
-            );
-        }
+    }
+    if( name.compare( "R" ) == 0 ) {
+        return tfpWriteReferenceIndex();
+    }
+    if( name.compare( 0, 2, "R," ) == 0 && success1 ) {
+        return tfpWriteReferencePagedIndex( num1 );
+    }
+    if( name.compare( 0, 1, "R" ) == 0 && success ) {
         return tfpWriteReferencePage( num );
     }
+    if( name.compare( "Re" ) == 0 ) {
+        return tfpWriteResearcherList();
+    }
+    if( name.compare( 0, 2, "Rs" ) == 0 && success1 ) {
+        return tfpWriteRelationship( num1 );
+    }
+
     return wxString::Format(
-        ErrorPage, name, _("Invalid Display Name")
+        "<html><head><title>Error</title></head>"
+        "<body><h1>Error</h1><p>Page [%s] not understood.</p></body></html>",
+        name
     );
 }
 
