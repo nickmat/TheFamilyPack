@@ -101,7 +101,6 @@
     <sources>$(LOCAL_SRC)/tfp/tfpWrName.cpp</sources>
     <sources>$(LOCAL_SRC)/tfp/tfpWrNotes.cpp</sources>
     <sources>$(LOCAL_SRC)/tfp/tfpWrReference.cpp</sources>
-    <sources>$(LOCAL_SRC)/webviewfshandler.cpp</sources>
 
     <headers>$(LOCAL_SRC)/tfp/tfpApp.h</headers>
     <headers>$(LOCAL_SRC)/tfp/tfpFrame.h</headers>
@@ -110,7 +109,6 @@
     <headers>$(LOCAL_SRC)/tfp/tfpRd.h</headers>
     <headers>$(LOCAL_SRC)/tfp/tfpVersion.h</headers>
     <headers>$(LOCAL_SRC)/tfp/tfpWr.h</headers>
-    <headers>$(LOCAL_SRC)/webviewfshandler.h</headers>
 
     <win32-res>$(LOCAL_SRC)/tfp/tfp.rc</win32-res>
 

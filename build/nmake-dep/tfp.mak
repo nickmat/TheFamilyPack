@@ -78,7 +78,6 @@ TFP_OBJECTS =  \
 	tfp_tfpWrName.obj \
 	tfp_tfpWrNotes.obj \
 	tfp_tfpWrReference.obj \
-	tfp_webviewfshandler.obj \
 	tfp_dummy.obj
 TFP_RESOURCES =  \
 	tfp_tfp.res
@@ -485,9 +484,6 @@ tfp_tfpWrNotes.obj: .\..\..\src\tfp\tfpWrNotes.cpp
 
 tfp_tfpWrReference.obj: .\..\..\src\tfp\tfpWrReference.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrReference.cpp
-
-tfp_webviewfshandler.obj: .\..\..\src\webviewfshandler.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\webviewfshandler.cpp
 
 tfp_tfp.res: .\..\..\src\tfp\tfp.rc
 	rc /fo$@  /d WIN32  /d _UNICODE $(__WXDEBUG_DEFINE_p_1) /d __WXMSW__ /i $(WX_DIR)\lib\$(COMPILER_PREFIX)$(WXCPU)_lib\msw$(WXLIBPOSTFIX) /i $(WX_DIR)\include $(______tfp__DEBUGINFO_6_p_1) /d _WINDOWS /i ..\..\include /i ..\..\src .\..\..\src\tfp\tfp.rc

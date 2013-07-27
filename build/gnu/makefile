@@ -86,7 +86,6 @@ TFP_OBJECTS =  \
 	tfp_tfpWrName.o \
 	tfp_tfpWrNotes.o \
 	tfp_tfpWrReference.o \
-	tfp_webviewfshandler.o \
 	tfp_dummy.o
 CALENDAR_CXXFLAGS = $(VAR) $(VAR_4) -I../../include/cal -I../../include \
 	`$(WX_CONFIG) --cxxflags $(WX_CONFIG_FLAGS)` $(CPPFLAGS) $(CXXFLAGS)
@@ -301,9 +300,6 @@ tfp_tfpWrNotes.o: ./../../src/tfp/tfpWrNotes.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
 tfp_tfpWrReference.o: ./../../src/tfp/tfpWrReference.cpp
-	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
-
-tfp_webviewfshandler.o: ./../../src/webviewfshandler.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
 tfp_dummy.o: ./../../src/dummy.cpp

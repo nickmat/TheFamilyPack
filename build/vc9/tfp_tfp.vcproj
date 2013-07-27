@@ -312,10 +312,6 @@
 				RelativePath="..\..\src\tfp\tfpWrReference.cpp"
 				>
 			</File>
-			<File
-				RelativePath="..\..\src\webviewfshandler.cpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -348,10 +344,6 @@
 			</File>
 			<File
 				RelativePath="..\..\src\tfp\tfpWr.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\webviewfshandler.h"
 				>
 			</File>
 		</Filter>

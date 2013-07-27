@@ -37,7 +37,7 @@
 #endif
 
 #include <wx/webview.h>
-#include "webviewfshandler.h"
+#include <wx/webviewfshandler.h>
 
 #include <rec/recDatabase.h>
 #include <rg/rgDialogs.h>
@@ -68,7 +68,7 @@ dlgNote::dlgNote( TfpFrame* parent, const wxString& name )
     SetPosition( wxGetMousePosition() );
 
     // Connect Events
-    Connect( wxEVT_COMMAND_WEB_VIEW_NAVIGATING, wxWebViewEventHandler( dlgNote::OnNavigationRequest ) );
+    Connect( wxEVT_COMMAND_WEBVIEW_NAVIGATING, wxWebViewEventHandler( dlgNote::OnNavigationRequest ) );
     Connect( wxEVT_IDLE, wxIdleEventHandler( dlgNote::OnIdle ) );
     Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( dlgNote::OnClose ) );
 }
@@ -78,7 +78,7 @@ dlgNote::~dlgNote()
     // Disconnect Events
     Disconnect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( dlgNote::OnClose ) );
     Disconnect( wxEVT_IDLE, wxIdleEventHandler( dlgNote::OnIdle ) );
-    Disconnect( wxEVT_COMMAND_WEB_VIEW_NAVIGATING, wxWebViewEventHandler( dlgNote::OnNavigationRequest ) );
+    Disconnect( wxEVT_COMMAND_WEBVIEW_NAVIGATING, wxWebViewEventHandler( dlgNote::OnNavigationRequest ) );
 }
 
 bool dlgNote::TransferDataToWindow()

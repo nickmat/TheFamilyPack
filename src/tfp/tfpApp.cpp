@@ -37,12 +37,12 @@
 #include "wx/wx.h"
 #endif
 
-#include "webviewfshandler.h"
+#include <wx/webviewfshandler.h>
 
+#include <rec/recDatabase.h>
 #include "tfpApp.h"
 #include "tfpFrame.h"
 #include "tfpMemory.h"
-#include <rec/recDatabase.h>
 
 wxIMPLEMENT_APP( TfpApp );
 

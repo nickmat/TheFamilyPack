@@ -40,7 +40,7 @@
 #include <wx/filename.h>
 
 #include <wx/webview.h>
-#include "webviewfshandler.h"
+#include <wx/webviewfshandler.h>
 #include <wx/numdlg.h>
 
 #include <rec/recIndividual.h>
@@ -114,7 +114,7 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_GOTO_HOME, TfpFrame::OnHome )
     EVT_TEXT_ENTER( tfpID_SHOW_PAGE, TfpFrame::OnShowPage )
     EVT_MENU( tfpID_PAGE_ITEM_EDIT, TfpFrame::OnPageItemEdit )
-    EVT_WEB_VIEW_NAVIGATING( tfpID_BROWSER, TfpFrame::OnNavigationRequest )
+    EVT_WEBVIEW_NAVIGATING( tfpID_BROWSER, TfpFrame::OnNavigationRequest )
     EVT_MENU_RANGE( tfpID_HCTXMENU_BEG, tfpID_HCTXMENU_END, TfpFrame::OnHtmCtxMenu )
     EVT_MENU_RANGE( tfpID_INDMENU_BEG, tfpID_INDMENU_END, TfpFrame::OnHtmIndMenu )
     EVT_IDLE( TfpFrame::OnIdle )
