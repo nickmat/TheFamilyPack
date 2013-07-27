@@ -338,9 +338,9 @@ idt recIndividual::FindEvent( idt indID, idt roleID )
     return ExecuteID( sql );
 }
 
-idt recIndividual::FindEvent( idt indID, recEventType::ETYPE_Grp grp )
+idt recIndividual::FindGroupEvent( idt indID, recET_GRP grp )
 {
-    if( indID == 0 || grp == recEventType::ETYPE_Grp_Unstated ) return 0;
+    if( indID == 0 || grp == recET_GRP_Unstated ) return 0;
 
     wxSQLite3StatementBuffer sql;
     sql.Format(
@@ -355,6 +355,33 @@ idt recIndividual::FindEvent( idt indID, recEventType::ETYPE_Grp grp )
         grp, indID
     );
     return ExecuteID( sql );
+}
+
+recIdVec recIndividual::FindEvents( idt indID, recET_GRP grp )
+{
+    recIdVec eIDs;
+    if( indID == 0 || grp == recET_GRP_Unstated ) {
+        return eIDs;
+    }
+
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT IE.event_id FROM IndividualEvent IE "
+        "INNER JOIN "
+        "(SELECT R.id AS rid FROM EventTypeRole R "
+        "  INNER JOIN "
+        "  EventType T ON R.type_id=T.id "
+        "  WHERE T.grp=%d AND R.prime=1) "
+        "ON rid=IE.role_id WHERE IE.ind_id="ID" "
+        "ORDER BY IE.ind_seq;",
+        grp, indID
+    );
+
+    wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
+    while( result.NextRow() ) {
+        eIDs.push_back( GET_ID( result.GetInt64( 0 ) ) );
+    }
+    return eIDs;
 }
 
 recFamilyVec recIndividual::GetFamilyList( idt ind )
@@ -723,6 +750,24 @@ bool recFamily::Read()
     return true;
 }
 
+recIdVec recFamily::GetCoupleAsIdVec() const
+{
+    recIdVec ids;
+    if( f_husb_id ) {
+        ids.push_back( f_husb_id );
+    }
+    if( f_wife_id ) {
+        ids.push_back( f_wife_id );
+    }
+    return ids;
+}
+
+recIdVec recFamily::GetCoupleAsIdVec( idt famID )
+{
+    recFamily fam(famID);
+    return fam.GetCoupleAsIdVec();
+}
+
 recIdVec recFamily::GetFamilyIdVec()
 {
     recIdVec famIDs;
@@ -801,6 +846,43 @@ idt recFamily::GetSpouseID( idt indID ) const
     }
     return 0;
 }
+
+idt recFamily::Find( idt ind1ID, idt ind2ID )
+{
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3ResultSet result;
+
+    sql.Format(
+        "SELECT id FROM Family"
+        " WHERE (husb="ID" AND wife="ID") OR (husb="ID" AND wife="ID");",
+        ind1ID, ind2ID, ind2ID, ind1ID
+    );
+    result = s_db->ExecuteQuery( sql );
+    if( result.NextRow() ) {
+        return GET_ID( result.GetInt64( 0 ) );
+    }
+    return 0;
+}
+
+recIdVec recFamily::FindVec( const recIdVec& ind1IDs, const recIdVec& ind2IDs )
+{
+    recIdVec famIDs;
+    for( size_t i = 0 ; i < ind1IDs.size() ; i++ ) {
+        for( size_t j = 0 ; j < ind2IDs.size() ; j++ ) {
+            idt famID;
+
+            famID = recFamily::Find( ind1IDs[i], 0 );
+            recIdVecAddIfUnique( famIDs, famID );
+            famID = recFamily::Find( 0, ind2IDs[j] );
+            recIdVecAddIfUnique( famIDs, famID );
+
+            famID = recFamily::Find( ind1IDs[i], ind2IDs[j] );
+            recIdVecAddIfUnique( famIDs, famID );
+        }
+    }
+    return famIDs;
+}
+
 
 bool recFamily::ReadParents( idt ind )
 {

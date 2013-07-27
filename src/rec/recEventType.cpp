@@ -53,7 +53,7 @@ recEventType::recEventType( const recEventType& et )
 void recEventType::Clear()
 {
     f_id   = 0;
-    f_grp  = ETYPE_Grp_Unstated;
+    f_grp  = recET_GRP_Unstated;
     f_name = wxEmptyString;
 }
 
@@ -110,7 +110,7 @@ bool recEventType::Read()
         return false;
     }
     result.SetRow( 0 );
-    f_grp = (ETYPE_Grp) result.GetInt( 0 );
+    f_grp = (recET_GRP) result.GetInt( 0 );
     f_name = result.GetAsString( 1 );
     return true;
 }
@@ -119,12 +119,17 @@ bool recEventType::HasDateSpan() const
 {
     switch( f_grp )
     {
-    case ETYPE_Grp_Other:
-    case ETYPE_Grp_Personal:
+    case recET_GRP_Other:
+    case recET_GRP_Personal:
         return true;
     default:
         return false;
     }
+}
+
+wxString recEventType::GetName( idt tID )
+{
+    return ExecuteStr( "SELECT name FROM EventType WHERE id="ID";", tID );
 }
 
 bool recEventType::HasDateSpan( idt etID )
@@ -133,10 +138,10 @@ bool recEventType::HasDateSpan( idt etID )
     return et.HasDateSpan();
 }
 
-wxString recEventType::GetGroupStr( ETYPE_Grp grp )
+wxString recEventType::GetGroupValueStr( recET_GRP grp )
 {
-    wxASSERT( grp >= 0 && grp < ETYPE_Grp_MAX );
-    static wxString grparray[ETYPE_Grp_MAX] = {
+    wxASSERT( grp >= 0 && grp < recET_GRP_MAX );
+    static wxString grparray[recET_GRP_MAX] = {
         _("Unstated"),
         _("Birth"),
         _("Near Birth"),
@@ -153,14 +158,14 @@ wxString recEventType::GetGroupStr( ETYPE_Grp grp )
 wxString recEventType::GetGroupStr( idt etID )
 {
     recEventType et(etID);
-    return et.GetGroupStr();
+    return et.GetGroupValueStr( et.FGetGrp() );
 }
 
 wxArrayString recEventType::GetGroupStrings( size_t start )
 {
     wxArrayString strs;
-    for( size_t i = start ; i < ETYPE_Grp_MAX ; i++ ) {
-        strs.push_back( GetGroupStr( (ETYPE_Grp) i ) );
+    for( size_t i = start ; i < recET_GRP_MAX ; i++ ) {
+        strs.push_back( GetGroupStr( (recET_GRP) i ) );
     }
     return strs;
 }
@@ -171,7 +176,7 @@ wxString recEventType::GetTypeStr( idt id )
     return et.f_name;
 }
 
-recEventType::ETYPE_Grp recEventType::GetGroup( idt id )
+recET_GRP recEventType::GetGroup( idt id )
 {
     recEventType et( id );
     return et.f_grp;
@@ -231,7 +236,7 @@ recEventTypeVec recEventType::ReadVec( unsigned filter )
     recEventType et;
     while( result.NextRow() ) {
         et.FSetID( GET_ID( result.GetInt64( 0 ) ) );
-        et.FSetGrp( (ETYPE_Grp) result.GetInt( 1 ) );
+        et.FSetGrp( (recET_GRP) result.GetInt( 1 ) );
         et.FSetName( result.GetAsString( 2 ) );
         vec.push_back( et );
     }

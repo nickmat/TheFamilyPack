@@ -52,6 +52,7 @@ typedef std::vector< bool > BoolVec;
 
 typedef std::vector< idt >  recIdVec;
 
+
 // This class is used when we want to compare two lists that have been
 // obtained by separate routes. The normal pattern is that either
 // first and second are the same or one of them is zero.
@@ -78,6 +79,9 @@ extern bool recCheckIDsHaveAdditionalSecond( const recCheckIdVec& ids );
 
 // Convert the given string into an idt
 extern idt recGetID( const wxString& str );
+// Convert the given idStr into an idt if it has a matching prefix.
+extern idt recIdFromStr( const wxString& prefix, const wxString idStr );
+
 // Convert the given commer delimited string into two idt's
 // return true if both are non-zero.
 extern bool recGetIDs( const wxString& str, idt* id1, idt* id2 );
@@ -103,5 +107,9 @@ wxString recIdVecToStr( const recIdVec& ids ) {
     }
     return str;
 }
+
+extern recIdVec recIdVecFromStr( const wxString& prefix, const wxString list );
+
+extern void recIdVecAddIfUnique( recIdVec& vec, idt id );
 
 #endif // REC_RECHELPER_H

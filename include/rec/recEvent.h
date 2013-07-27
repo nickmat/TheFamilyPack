@@ -36,6 +36,10 @@
 #include <rec/recDate.h>
 #include <rec/recReference.h>
 
+enum recE_ {
+    recE_FILTER_None      = 0x0000,
+    recE_FILTER_Reference = 0x0001,
+};
 
 //============================================================================
 //-------------------------[ recEvent ]---------------------------------------
@@ -81,17 +85,19 @@ public:
     void FSetDatePt( idt datePt ) { f_date_pt = datePt; }
     void FSetDatePt( recDate::DatePoint dp ) { f_date_pt = recDate::GetDatePoint( f_date1_id, dp ); }
 
-    wxString SetAutoTitle( const wxString& name1, const wxString& name2 = wxEmptyString );
-    static void SetDatePeriodToInclude( idt eventID, idt dateID );
-
     static wxString GetIdStr( idt evID ) { return wxString::Format( "E"ID, evID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
+
+    static idt CreateFromEventRecord( idt erID );
+
+    wxString SetAutoTitle( const wxString& name1, const wxString& name2 = wxEmptyString );
+    static void SetDatePeriodToInclude( idt eventID, idt dateID );
 
     wxString GetDetailStr() const;
     wxString GetTypeStr() const;
     wxString GetDateStr() const;
     wxString GetAddressStr() const;
-    recEventType::ETYPE_Grp GetTypeGroup() const;
+    recET_GRP GetTypeGroup() const;
     static wxString GetDetailStr( idt evID );
     static wxString GetTypeStr( idt evID );
     static wxString GetTitle( idt evID );

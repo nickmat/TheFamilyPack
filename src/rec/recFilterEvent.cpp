@@ -39,59 +39,79 @@
 
 #include <rec/recFilterEvent.h>
 
-recFilterEvent::recFilterEvent( unsigned flag )
-    : m_begDate(0), m_endDate(0), m_class(FE_Ind)
+//============================================================================
+//-------------------------[ recSelSetEvent ]---------------------------------
+//============================================================================
+
+bool recSelSetEvent::IsTypeChecked( idt etID ) const
 {
-    for( size_t i = 0 ; i < recEventType::ETYPE_Grp_MAX ; i++ ) {
-        m_groupEnabled[i] = false;
-        m_groupChecked[i] = false;
+    for( size_t i = 0 ; i < m_typesChked.size() ; i++ ) {
+        if( m_typesChked[i] == etID ) {
+            return true;
+        }
     }
-    if( flag & recFE_FLAG_EnableNul ) {
-        m_groupEnabled[recEventType::ETYPE_Grp_Unstated] = true;
+    return false;
+}
+
+//============================================================================
+//-------------------------[ recFilterEvent ]---------------------------------
+//============================================================================
+
+recFilterEvent::recFilterEvent( const recSelSetEvent& set )
+    : m_begDate(0), m_endDate(0)
+{
+    m_grpsEnabled = set.GetGroupsEnabled();
+    m_grpsChecked = set.GetGroupsChecked();
+
+    recEventTypeVec ets = recEventType::ReadVec( m_grpsEnabled & m_grpsChecked );
+    for( size_t i = 0 ; i < ets.size() ; i++ ) {
+        idt etID = ets[i].FGetID();
+        bool chk = set.IsTypeChecked( etID );
+        AddTypeIDs( etID, chk );
     }
-    if( flag & recFE_FLAG_EnableInd ) {
-        m_groupEnabled[recEventType::ETYPE_Grp_Birth] = true;
-        m_groupEnabled[recEventType::ETYPE_Grp_Nr_Birth] = true;
-        m_groupEnabled[recEventType::ETYPE_Grp_Death] = true;
-        m_groupEnabled[recEventType::ETYPE_Grp_Nr_Death] = true;
-        m_groupEnabled[recEventType::ETYPE_Grp_Other] = true;
-        m_groupEnabled[recEventType::ETYPE_Grp_Personal] = true;
+
+    CalendarScheme sch = set.GetCalendarScheme();
+    long jdn1, jdn2;
+    wxString str = set.GetBegDateStr();
+    if( calStrToJdnRange( &jdn1, &jdn2, str, sch ) ) {
+        m_begDate = jdn1;
     }
-    if( flag & recFE_FLAG_EnableFam ) {
-        m_groupEnabled[recEventType::ETYPE_Grp_Union] = true;
-        m_groupEnabled[recEventType::ETYPE_Grp_Family] = true;
+    str = set.GetEndDateStr();
+    if( calStrToJdnRange( &jdn1, &jdn2, str, sch ) ) {
+        m_endDate = jdn2;
     }
-    if( flag & recFE_FLAG_ShowNul ) {
-        m_groupChecked[recEventType::ETYPE_Grp_Unstated] = true;
+
+    m_indIDs = set.GetIndIDs();
+}
+
+long recFilterEvent::GetTypeIndexFromID( idt etID ) const
+{
+    for( size_t i = 0 ; i < m_types.size() ; i++ ) {
+        if( m_types[i] == etID ) {
+            return (long) i;
+        }
     }
-    if( flag & recFE_FLAG_ShowInd ) {
-        m_groupChecked[recEventType::ETYPE_Grp_Birth] = true;
-        m_groupChecked[recEventType::ETYPE_Grp_Nr_Birth] = true;
-        m_groupChecked[recEventType::ETYPE_Grp_Death] = true;
-        m_groupChecked[recEventType::ETYPE_Grp_Nr_Death] = true;
-        m_groupChecked[recEventType::ETYPE_Grp_Other] = true;
-        m_groupChecked[recEventType::ETYPE_Grp_Personal] = true;
-    }
-    if( flag & recFE_FLAG_ShowFam ) {
-        m_groupChecked[recEventType::ETYPE_Grp_Union] = true;
-        m_groupChecked[recEventType::ETYPE_Grp_Family] = true;
-    }
-    m_begDate = m_endDate = 0;
+    return -1;
 }
 
 void recFilterEvent::CreateEventTable()
 {
-    wxASSERT( m_class == FE_Ind ); // TODO: filter on Ref events
     wxString sql;
     wxString tc = GetTypeCondition();
     wxString dc = GetDateCondition();
+    wxString indc = GetIndCondition();
+    wxString indt;
+    if( indc.size() ) {
+        indt = ", IndividualEvent IE";
+    }
+
     if( m_types.size() == 0 || tc.size() == 0 ) {
         sql << ";";
     } else {
         sql << "SELECT DISTINCT E.id, E.title, E.date_pt"
-               " FROM Event E, IndividualEvent IE"
-               " WHERE IE.event_id=E.id" << tc << dc <<
-               " ORDER BY date_pt, E.id;";
+               " FROM Event E" << indt <<
+               " WHERE E.id<>0" << tc << dc << indc <<
+               " ORDER BY E.date_pt, E.id;";
     }
     m_table = recDb::GetDb()->GetTable( sql );
 }
@@ -130,6 +150,22 @@ wxString recFilterEvent::GetDateCondition()
     return sql;
 }
 
+wxString recFilterEvent::GetIndCondition()
+{
+    wxString sql;
+    if( m_indIDs.size() ) {
+        sql << " AND E.id=IE.event_id AND (";
+        for( size_t i = 0 ; i < m_indIDs.size() ; i++ ) {
+            if( i > 0 ) {
+                sql << " OR";
+            }
+            sql << " IE.ind_id=" << m_indIDs[i];
+        }
+        sql << " )";
+    }
+    return sql;
+}
+
 size_t recFilterEvent::GetTableSize()
 {
     if( m_table.IsOk() ) {
@@ -153,6 +189,28 @@ recIdVec recFilterEvent::GetTypeIDVec() const
         }
     }
     return typeIDs;
+}
+
+void recFilterEvent::SetTypesChecked( bool chk )
+{
+    for( size_t i = 0 ; i < m_typeChks.size() ; i++ ) {
+        m_typeChks[i] = chk;
+    }
+}
+
+void recFilterEvent::AddTypeIDs( idt typeID, bool chk )
+{
+    m_types.push_back( typeID ); 
+    m_typeChks.push_back( chk );
+}
+
+void recFilterEvent::ResetTypeIDs( bool chk )
+{
+    ClearTypeIDs();
+    recEventTypeVec ets = recEventType::ReadVec( m_grpsEnabled & m_grpsChecked );
+    for( size_t i = 0 ; i < ets.size() ; i++ ) {
+        AddTypeIDs( ets[i].FGetID(), chk );
+    }
 }
 
 // End of src/rec/recFilterEvent.cpp file

@@ -5,7 +5,6 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     30th April 2013
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2013, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -35,6 +34,8 @@
 #ifndef WX_PRECOMP
 #include "wx/wx.h"
 #endif
+
+#include <wx/tokenzr.h>
 
 #include <rec/recHelper.h>
 
@@ -121,6 +122,45 @@ bool recCheckIDsHaveAdditionalSecond( const recCheckIdVec& ids )
     return false;
 }
 
+idt recIdFromStr( const wxString& prefix, const wxString idStr )
+{
+    size_t psize = prefix.size();
+    if( idStr.size() <= psize ) {
+        return 0;
+    }
+    if( idStr.compare( 0, psize, prefix ) != 0 ) {
+        return 0;
+    }
+    return recGetID( idStr.substr( psize ) );
+}
+
+recIdVec recIdVecFromStr( const wxString& prefix, const wxString list )
+{
+    recIdVec vec;
+    wxStringTokenizer tk( list, ", ", wxTOKEN_STRTOK );
+
+    while ( tk.HasMoreTokens() ) {
+        wxString idStr = tk.GetNextToken();
+        idt id = recIdFromStr( prefix, idStr );
+        if( id ) {
+            vec.push_back( id );
+        }
+    }
+    return vec;
+}
+
+void recIdVecAddIfUnique( recIdVec& vec, idt id )
+{
+    if( id == 0 ) {
+        return;
+    }
+    for( size_t i = 0 ; i < vec.size() ; i++ ) {
+        if( vec[i] == id ) {
+            return;
+        }
+    }
+    vec.push_back( id );
+}
 
 
-// End of recDatabase.cpp file
+// End of src/rec/recHelper.cpp file

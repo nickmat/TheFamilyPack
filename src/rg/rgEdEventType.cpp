@@ -95,7 +95,7 @@ bool rgDlgEditEventType::TransferDataToWindow()
 {
     wxArrayString groupList = recEventType::GetGroupStrings();
     m_choiceGroup->Set( groupList );
-    m_choiceGroup->SetSelection( recEventType::ETYPE_Grp_Other );
+    m_choiceGroup->SetSelection( recET_GRP_Other );
 
     for( size_t i = 0 ; i < m_roles.size() ; i++ ) {
         m_listRole->InsertItem( i, m_roles[i].GetIdStr() );
@@ -112,7 +112,7 @@ bool rgDlgEditEventType::TransferDataToWindow()
 
 bool rgDlgEditEventType::TransferDataFromWindow()
 {
-    m_et.FSetGrp( (recEventType::ETYPE_Grp) m_choiceGroup->GetSelection() );
+    m_et.FSetGrp( (recET_GRP) m_choiceGroup->GetSelection() );
     m_et.FSetName( m_textCtrlValue->GetValue() );
     m_et.Save();
     return true;

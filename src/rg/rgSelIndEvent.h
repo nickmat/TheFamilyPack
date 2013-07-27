@@ -38,17 +38,17 @@
 //-------------------[ rgDlgSelectIndEvent ]-------------------------------------
 //-------------------------------------------------------------------------------
 
-class rgDlgSelectIndEvent : public fbRgSelectIndEvent
+class rgDlgSelectEvent : public fbRgSelectEvent
 {
     enum {
         COL_ID, COL_Title, COL_DatePt, /*COL_Type, COL_Grp,*/ COL_MAX
     };
 public:
-    rgDlgSelectIndEvent( wxWindow* parent, unsigned selstyle, recFilterEvent* fe );
+    rgDlgSelectEvent( wxWindow* parent, unsigned selstyle, recSelSetEvent& sse );
 
     bool GetCreatePressed() const { return m_create; }
     bool GetUnknownPressed() const { return false; }
-    idt GetID() const;
+    idt GetID();
 
 private:
     bool TransferDataToWindow();
@@ -65,22 +65,27 @@ private:
     void OnButtonTypeClearAll( wxCommandEvent& event ) { SetTypeAll( false ); }
     void OnBegDateText( wxCommandEvent& event );
     void OnEndDateText( wxCommandEvent& event );
+    void OnIndIdText( wxCommandEvent& event );
     void OnListEventItemDeselected( wxListEvent& event );
     void OnListEventItemSelected( wxListEvent& event );
     void OnCreateButton( wxCommandEvent& event );
 
     void SetGroupAll( bool check );
     void CreateTypeList();
+    void UpdateTypeCtrl();
+    void UpdateTypeList();
     void SetTypeAll( bool check );
     void Refresh();
 
     bool m_create;
     bool m_selList;
 
-    recFilterEvent* m_fe;
-    IntVec m_groups;
-    long m_begDatePt;
-    long m_endDatePt;
+    recSelSetEvent* m_sse;
+    recFilterEvent  m_fe;
+    IntVec    m_grps;
+    long      m_begDatePt;
+    long      m_endDatePt;
+    recIdVec  m_indIDs;
 };
 
 #endif // RGSELINDEVENT_H

@@ -551,7 +551,7 @@ void TfpFrame::OnEditContext( wxCommandEvent& event )
             ret = rgEditEvent( this, m_editEventID );
             break;
         case tfpID_EDIT_EVENT_SELECT:
-            id = rgSelectIndEvent( this, rgSELSTYLE_None );
+            id = rgSelectEvent( this, rgSELSTYLE_None );
             if( id ) id = rgEditEvent( this, id );
             if( id ) ret = true;
             break;
@@ -682,7 +682,7 @@ void TfpFrame::OnFindIndividualID( wxCommandEvent& event )
  */
 void TfpFrame::OnFindEventID( wxCommandEvent& event )
 {
-    idt eveID = rgSelectIndEvent( this );
+    idt eveID = rgSelectEvent( this );
     if( eveID ) {
         DisplayHtmPage( "E"+recGetStr( eveID ) );
     }
@@ -742,7 +742,7 @@ void TfpFrame::OnListPagedEvents( wxCommandEvent& event )
  */
 void TfpFrame::OnListSelectedEvents( wxCommandEvent& event )
 {
-    if( rgSelectIndEventList( this, &m_eveFilter ) ) {
+    if( rgSelectEventList( this, &m_selEvent ) ) {
         DisplayHtmPage( "E$" );
     }
 }
@@ -1327,7 +1327,7 @@ void TfpFrame::DoSelectionUpdate( const wxString& display )
     try {
         bool ret = false;
         if( display == "E$" ) {
-            ret = rgSelectIndEventList( this, &m_eveFilter );
+            ret = rgSelectEventList( this, &m_selEvent );
         }
         if( ret == true ) {
             RefreshHtmPage();
@@ -1678,7 +1678,7 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
         return tfpWriteEventIndex();
     }
     if( name.compare( "E$" ) == 0 ) {
-        return tfpWriteEventSelection( m_eveFilter );
+        return tfpWriteEventSelection( m_selEvent );
     }
     if( name.compare( "ER" ) == 0 ) {
         return tfpWriteEventRecordIndex();

@@ -149,6 +149,23 @@ bool recEvent::Read()
     return true;
 }
 
+idt recEvent::CreateFromEventRecord( idt erID )
+{
+    recEvent e(0);
+    recEventRecord er(erID);
+
+    e.f_title    = er.f_title;
+    e.f_type_id  = er.f_type_id;
+    e.f_date1_id = er.f_date1_id;
+    e.f_date2_id = er.f_date2_id;
+    e.f_place_id = er.f_place_id;
+    e.f_note     = er.f_note;
+    e.f_date_pt  = er.f_date_pt;
+
+    e.Save();
+    return e.FGetID();
+}
+
 wxString recEvent::SetAutoTitle( const wxString& name1, const wxString& name2 )
 {
     f_title = wxEmptyString;
@@ -234,7 +251,7 @@ wxString recEvent::GetAddressStr() const
     return recPlace::GetAddressStr( f_place_id );
 }
 
-recEventType::ETYPE_Grp recEvent::GetTypeGroup() const
+recET_GRP recEvent::GetTypeGroup() const
 {
     return recEventType::GetGroup( f_type_id );
 }
@@ -318,8 +335,8 @@ bool recEvent::IsFamilyEvent( idt eveID )
         eveID
     );
     result = s_db->ExecuteQuery( sql );
-    recEventType::ETYPE_Grp grp = (recEventType::ETYPE_Grp) result.GetInt( 0 );
-    if( grp == recEventType::ETYPE_Grp_Union || recEventType::ETYPE_Grp_Family ) {
+    recET_GRP grp = (recET_GRP) result.GetInt( 0 );
+    if( grp == recET_GRP_FamUnion || recET_GRP_FamOther ) {
         return true;
     }
     return false;
@@ -361,14 +378,14 @@ void recEvent::UpdateDatePoint( idt evID )
 
 void recEvent::UpdateDatePoint()
 {
-    recEventType::ETYPE_Grp grp = recEventType::GetGroup( f_type_id );
+    recET_GRP grp = recEventType::GetGroup( f_type_id );
     switch( grp )
     {
-    case recEventType::ETYPE_Grp_Birth:
-    case recEventType::ETYPE_Grp_Nr_Birth:
+    case recET_GRP_Birth:
+    case recET_GRP_NrBirth:
         f_date_pt = recDate::GetDatePoint( f_date1_id, recDate::DATE_POINT_Beg );
-    case recEventType::ETYPE_Grp_Death:
-    case recEventType::ETYPE_Grp_Nr_Death:
+    case recET_GRP_Death:
+    case recET_GRP_NrDeath:
         f_date_pt = recDate::GetDatePoint( f_date1_id, recDate::DATE_POINT_End );
     }
     f_date_pt = recDate::GetDatePoint( f_date1_id );
@@ -794,16 +811,16 @@ wxString recEventTypeRole::GetName( idt roleID )
 wxString recEventTypeRole::GetPrimeStr() const
 {
     wxString str;
-    recEventType::ETYPE_Grp group = recEventType::GetGroup( f_type_id );
+    recET_GRP group = recEventType::GetGroup( f_type_id );
 
     switch( group )
     {
-    case recEventType::ETYPE_Grp_Birth:
-    case recEventType::ETYPE_Grp_Nr_Birth:
-    case recEventType::ETYPE_Grp_Death:
-    case recEventType::ETYPE_Grp_Nr_Death:
-    case recEventType::ETYPE_Grp_Other:
-    case recEventType::ETYPE_Grp_Personal:
+    case recET_GRP_Birth:
+    case recET_GRP_NrBirth:
+    case recET_GRP_Death:
+    case recET_GRP_NrDeath:
+    case recET_GRP_Other:
+    case recET_GRP_Personal:
         switch( f_prime )
         {
         case PRIME_None:
@@ -816,8 +833,8 @@ wxString recEventTypeRole::GetPrimeStr() const
             str = _("?");
         }
         break;
-    case recEventType::ETYPE_Grp_Union:
-    case recEventType::ETYPE_Grp_Family:
+    case recET_GRP_FamUnion:
+    case recET_GRP_FamOther:
         switch( f_prime )
         {
         case PRIME_None:

@@ -297,7 +297,7 @@ void rgDlgEditIndividual::OnExistingEvent( wxCommandEvent& event )
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
 
-    idt eveID = rgSelectIndEvent( this );
+    idt eveID = rgSelectEvent( this );
     if( eveID == 0 ) {
         recDb::Rollback( savepoint );
         return;

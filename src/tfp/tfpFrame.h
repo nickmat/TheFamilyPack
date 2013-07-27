@@ -74,7 +74,7 @@ private:
     wxString            m_titleFmt;
 
     rgCompareEvent      m_compEvent;
-    recFilterEvent      m_eveFilter;
+    recSelSetEvent      m_selEvent;
 
 public:
     // ctor and dtor

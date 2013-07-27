@@ -79,6 +79,12 @@ extern idt rgCreateEventFromRecord( wxWindow* wind, idt erID );
 // See src/rg/rgEdEventEventRec.cpp
 extern bool rgEditEventEventRecord( wxWindow* wind, idt eerID );
 extern idt rgCreateIndEventEventRecord( wxWindow* wind, idt eID, idt erID );
+extern idt rgFindOrCreateIndEvent( 
+    wxWindow* wind, 
+    idt erID, 
+    double conf,
+    idt id,  // Individual or Family depending on Event Group 
+    idt roleID );
 
 // See src/rg/rgEdEventRecord.cpp
 extern bool rgEditEventRecord( wxWindow* wind, idt eveID );
@@ -204,11 +210,11 @@ extern idt rgSelectPersona(
 extern idt rgSelectEquivalentEventRecord( wxWindow* wind, idt eventID );
 
 // See src/rg/rgSelIndEvent.cpp
-extern bool rgSelectIndEventList( wxWindow* wind, recFilterEvent* exfilter );
-extern idt rgSelectIndEvent( 
+extern bool rgSelectEventList( wxWindow* wind, recSelSetEvent* exfilter );
+extern idt rgSelectEvent( 
     wxWindow* wind,
     unsigned flag = rgSELSTYLE_None, 
-    recFilterEvent* filter = NULL,
+    recSelSetEvent* filter = NULL,
     bool* ok = NULL,
     idt indID = 0 );
 

@@ -30,7 +30,7 @@
 
 #include <rec/recDatabase.h>
 class rgCompareEvent;
-class recFilterEvent;
+class recSelSetEvent;
 
 // See tfpWr.cpp
 extern wxString tfpWrHeadTfp( const wxString& title, const wxString& css = wxEmptyString );
@@ -56,7 +56,7 @@ extern wxString tfpWriteEventPage( idt eveID, rgCompareEvent* ce );
 // See tfpWrEventIndex.cpp
 extern wxString tfpWriteEventIndex();
 extern wxString tfpWriteEventPagedIndex( idt begCnt );
-extern wxString tfpWriteEventSelection( recFilterEvent& filter );
+extern wxString tfpWriteEventSelection( recSelSetEvent& filter );
 
 // See tfpWrEventRecIndex.cpp
 extern wxString tfpWriteEventRecordIndex();

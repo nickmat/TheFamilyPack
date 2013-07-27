@@ -589,7 +589,7 @@ void RecTestCase::TestEventType()
     recEventType record1;
     record1.f_id = 0;
 
-    record1.f_grp = recEventType::ETYPE_Grp_Union;
+    record1.f_grp = recET_GRP_FamUnion;
     record1.f_name = "Marriage";
     // f_id = 0 so create new record and set f_id to new value.
     record1.Save();
@@ -601,7 +601,7 @@ void RecTestCase::TestEventType()
     record2.Read();
     CPPUNIT_ASSERT( record1 == record2 );
 
-    record1.f_grp = recEventType::ETYPE_Grp_Nr_Birth;
+    record1.f_grp = recET_GRP_NrBirth;
     record1.f_name = "Christening";
     // f_id = 1 which exists, so amend record leaving f_id to old value.
     record1.Save();

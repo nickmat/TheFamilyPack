@@ -5,7 +5,6 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     20th April 2013
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2013, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -51,7 +50,6 @@ class recFamilyEvent;
 typedef std::vector< recFamilyEvent >      recFamilyEventVec;
 
 enum {
-    recET_FILTER_GrpNone        = 0x0000,
     recET_FILTER_GrpUnstated    = 0x0001,
     recET_FILTER_GrpBirth       = 0x0002,
     recET_FILTER_GrpNrBirth     = 0x0004,
@@ -61,9 +59,44 @@ enum {
     recET_FILTER_GrpNrDeath     = 0x0040,
     recET_FILTER_GrpOther       = 0x0080,
     recET_FILTER_GrpPersonal    = 0x0100,
+
+    recET_FILTER_GrpNone        = 0x0000,
     recET_FILTER_GrpAll         = 0x01ff,
+    recET_FILTER_GrpAllValid    = 0x01fe,
     recET_FILTER_GrpFamily = (recET_FILTER_GrpFamUnion|recET_FILTER_GrpFamOther)
 };
+
+enum recET_GRP_FILTER {
+    recET_GRP_FILTER_Unstated    = 0x0001,
+    recET_GRP_FILTER_Birth       = 0x0002,
+    recET_GRP_FILTER_NrBirth     = 0x0004,
+    recET_GRP_FILTER_FamUnion    = 0x0008,
+    recET_GRP_FILTER_FamOther    = 0x0010,
+    recET_GRP_FILTER_Death       = 0x0020,
+    recET_GRP_FILTER_NrDeath     = 0x0040,
+    recET_GRP_FILTER_Other       = 0x0080,
+    recET_GRP_FILTER_Personal    = 0x0100,
+
+    recET_GRP_FILTER_None        = 0x0000,
+    recET_GRP_FILTER_All         = 0x01ff,
+    recET_GRP_FILTER_AllValid    = 0x01fe,
+    recET_GRP_FILTER_Family = (recET_GRP_FILTER_FamUnion|recET_GRP_FILTER_FamOther)
+};
+
+enum recET_GRP {
+    recET_GRP_Unstated, // 0
+    recET_GRP_Birth,    // 1
+    recET_GRP_NrBirth,  // 2
+    recET_GRP_FamUnion, // 3
+    recET_GRP_FamOther, // 4
+    recET_GRP_Death,    // 5
+    recET_GRP_NrDeath,  // 6
+    recET_GRP_Other,    // 7
+    recET_GRP_Personal, // 8
+    recET_GRP_MAX       // 9
+};
+
+inline recET_GRP_FILTER recEventTypeGrpToFilter( recET_GRP grp ) { return  recET_GRP_FILTER(1 << grp); }
 
 //============================================================================
 //-------------------------[ recEventType ]-----------------------------------
@@ -72,19 +105,6 @@ enum {
 class recEventType : public recDb
 {
 public:
-    enum ETYPE_Grp {
-        ETYPE_Grp_Unstated, // 0
-        ETYPE_Grp_Birth,    // 1
-        ETYPE_Grp_Nr_Birth, // 2
-        ETYPE_Grp_Union,    // 3
-        ETYPE_Grp_Family,   // 4
-        ETYPE_Grp_Death,    // 5
-        ETYPE_Grp_Nr_Death, // 6
-        ETYPE_Grp_Other,    // 7
-        ETYPE_Grp_Personal, // 8
-        ETYPE_Grp_MAX       // 9
-    };
-
     enum EType {  // predefined entries, match with recCreate.sql
         ET_Unstated     = 0,
         ET_Birth        = -1,
@@ -109,7 +129,7 @@ public:
         ET_MAX          = 20     // Size of list
     };
 
-    ETYPE_Grp f_grp;
+    recET_GRP f_grp;
     wxString  f_name;
 
     recEventType() {}
@@ -124,27 +144,29 @@ public:
     static wxString GetIdStr( idt evID ) { return wxString::Format( "ET"ID, evID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
-    ETYPE_Grp FGetGrp() const { return f_grp; }
+    recET_GRP FGetGrp() const { return f_grp; }
     wxString FGetName() const { return f_name; }
 
-    void FSetGrp( ETYPE_Grp grp ) { f_grp = grp; }
+    void FSetGrp( recET_GRP grp ) { f_grp = grp; }
     void FSetName( wxString name ) { f_name = name; }
+
+    static wxString GetName( idt typeID );
 
     bool HasDateSpan() const;
     static bool HasDateSpan( idt etID );
 
     wxString GetGroupStr() const { return GetGroupStr( f_grp ); }
-    static wxString GetGroupStr( ETYPE_Grp grp );
     static wxString GetGroupStr( idt etID );
+    static wxString GetGroupValueStr( recET_GRP grp );
 
     static wxArrayString GetGroupStrings( size_t start = 0 );
 
     static wxString GetTypeStr( idt id );
     wxString GetTypeStr() const { return f_name; }
-    static ETYPE_Grp GetGroup( idt id );
-    ETYPE_Grp GetGroup() const { return f_grp; }
+    static recET_GRP GetGroup( idt id );
+//    recET_GRP GetGroup() const { return f_grp; }
 
-    static recEventTypeVec ReadVec( unsigned filter = recET_FILTER_GrpAll );
+    static recEventTypeVec ReadVec( unsigned filter = recET_GRP_FILTER_AllValid );
 
     static recEventTypeRoleVec GetRoles( idt typeID );
     recEventTypeRoleVec GetRoles() const { return GetRoles( FGetID() ); }

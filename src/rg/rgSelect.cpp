@@ -229,7 +229,8 @@ wxString rgDlgSelectDate::sm_colHeaders[COL_MAX] = { _("ID"), _("Date") };
 
 #include <rec/recPlace.h>
 
-idt rgSelectPlace( wxWindow* wind, unsigned flag, unsigned* retbutton, unsigned filter, idt id )
+idt rgSelectPlace( 
+    wxWindow* wind, unsigned flag, unsigned* retbutton, unsigned filter, idt id )
 {
     idt placeID = 0;
     if( retbutton ) *retbutton = rgSELSTYLE_None;
@@ -562,5 +563,6 @@ idt rgSelectEquivalentEventRecord( wxWindow* wind, idt eventID )
 }
 
 wxString rgDlgSelectEventRecord::sm_colHeaders[COL_MAX] = { _("ID"), _("Title") };
+
 
 // End of src/rg/rgSelect.cpp file

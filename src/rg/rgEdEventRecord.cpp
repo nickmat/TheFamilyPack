@@ -82,22 +82,22 @@ idt rgCreateEventRecord( wxWindow* wind, idt refID )
 
     switch( etype.f_grp )
     {
-    case recEventType::ETYPE_Grp_Birth:
+    case recET_GRP_Birth:
         role1 = recEventTypeRole::ROLE_Birth_Born;
         break;
-    case recEventType::ETYPE_Grp_Nr_Birth:
+    case recET_GRP_NrBirth:
         break;
-    case recEventType::ETYPE_Grp_Death:
+    case recET_GRP_Death:
         role1 = recEventTypeRole::ROLE_Death_Died;
         break;
-    case recEventType::ETYPE_Grp_Nr_Death:
+    case recET_GRP_NrDeath:
         break;
-    case recEventType::ETYPE_Grp_Union:
+    case recET_GRP_FamUnion:
         person2 = true;
         role1 = recEventTypeRole::ROLE_Marriage_Groom;
         role2 = recEventTypeRole::ROLE_Marriage_Bride;
         break;
-    case recEventType::ETYPE_Grp_Family:
+    case recET_GRP_FamOther:
         person2 = true;
         break;
     default:
@@ -166,6 +166,8 @@ idt rgCreateEventRecord( wxWindow* wind, idt refID )
     ep1.FSetRoleID( role1 );
     ep1.FSetPerSeq( 1 );
     ep1.Save();
+    recIdVec indID1s = recPersona::GetIndividualIDs( perID1 );
+    recIdVec indID2s;
     if( person2 ) {
         recEventPersona ep2(0);
         ep2.FSetEventRecID( erID );
@@ -173,9 +175,18 @@ idt rgCreateEventRecord( wxWindow* wind, idt refID )
         ep2.FSetRoleID( role2 );
         ep2.FSetPerSeq( 2 );
         ep2.Save();
+        indID2s = recPersona::GetIndividualIDs( perID2 );
+        recIdVec famIDs = recFamily::FindVec( indID1s, indID2s );
+        for( size_t i = 0 ; i < famIDs.size() ; i++ ) {
+            double conf = 0.999/indID1s.size();
+            rgFindOrCreateIndEvent( wind, erID, conf, famIDs[i], role1 );
+        }
+    } else {
+        for( size_t i = 0 ; i < indID1s.size() ; i++ ) {
+            double conf = 0.999/indID1s.size();
+            rgFindOrCreateIndEvent( wind, erID, conf, indID1s[i], role1 );
+        }
     }
-
-    // TODO: Find or create Event's to link
 
     if( rgEditEventRecord( wind, erID ) ) {
         recDb::ReleaseSavepoint( savepoint );

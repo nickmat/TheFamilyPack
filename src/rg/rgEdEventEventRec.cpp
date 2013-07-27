@@ -37,6 +37,7 @@
 
 #include <rec/recEvent.h>
 #include <rec/recReference.h>
+#include <rec/recIndividual.h>
 
 #include "rg/rgDialogs.h"
 #include "rgEdEventEventRec.h"
@@ -74,6 +75,73 @@ idt rgCreateIndEventEventRecord( wxWindow* wind, idt eID, idt erID )
     }
     recDb::Rollback( savepoint );
     return 0;
+}
+
+idt rgFindOrCreateIndEvent( 
+    wxWindow* wind, idt erID, double conf, idt indID, idt roleID )
+{
+    wxASSERT( erID != 0 );
+    wxASSERT( indID != 0 );
+    idt eID = 0;
+    recIdVec eIDs;
+    recEventRecord er(erID);
+    recET_GRP grp = er.GetTypeGroup();
+
+    switch( grp )
+    {
+    case recET_GRP_Birth:
+    case recET_GRP_Death:
+        eID = recIndividual::FindEvent( indID, grp );
+        if( eID == 0 ) {
+            eID = recEvent::CreateFromEventRecord( erID );
+        }
+        eIDs.push_back( eID );
+        break;
+    case recET_GRP_NrBirth:
+    case recET_GRP_NrDeath:
+    case recET_GRP_Other:
+        {
+            recSelSetEvent sse;
+            sse.SetGroupsEnabled(
+                recET_GRP_FILTER_NrBirth | 
+                recET_GRP_FILTER_NrDeath |
+                recET_GRP_FILTER_Other
+            );
+            sse.SetGroupsChecked( recEventTypeGrpToFilter( grp ) );
+            sse.AddTypeChecked( er.FGetTypeID() );
+            sse.AddIndID( indID );
+
+            eID = rgSelectEvent( wind, rgSELSTYLE_None, &sse );
+        }
+        break;
+#if 0
+    case recET_GRP_FamUnion:
+    case recET_GRP_FamOther:
+        {
+            recSelSetEvent sse;
+            sse.SetGroupsEnabled(
+                recET_GRP_FILTER_FamUnion |
+                recET_GRP_FILTER_FamOther
+            );
+            sse.SetGroupsChecked( recEventTypeGrpToFilter( grp ) );
+            sse.AddTypeChecked( er.FGetTypeID() );
+            recIdVec indIDs = recFamily::GetCoupleAsIdVec( id );
+            for( size_t i = 0 ; i < indIDs.size() ; i++ ) {
+                sse.AddIndID( indIDs[i] );
+            }
+            eID = rgSelectEvent( wind, rgSELSTYLE_None, &sse );
+        }
+        break;
+#endif
+    }
+
+    if( eID ) {
+        // Now we have an Event, create the Event EventRecord links
+        recEventEventRecord::Create( eID, erID, conf );
+        recIndividualEvent::Create( indID, eID, roleID );
+    }
+
+    return eID;
 }
 
 //============================================================================

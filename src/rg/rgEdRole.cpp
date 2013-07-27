@@ -100,16 +100,16 @@ bool rgDlgEditRole::TransferDataToWindow()
     primeList.push_back( _("No") );
     switch( m_et.FGetGrp() )
     {
-    case recEventType::ETYPE_Grp_Birth:
-    case recEventType::ETYPE_Grp_Nr_Birth:
-    case recEventType::ETYPE_Grp_Death:
-    case recEventType::ETYPE_Grp_Nr_Death:
-    case recEventType::ETYPE_Grp_Other:
-    case recEventType::ETYPE_Grp_Personal:
+    case recET_GRP_Birth:
+    case recET_GRP_NrBirth:
+    case recET_GRP_Death:
+    case recET_GRP_NrDeath:
+    case recET_GRP_Other:
+    case recET_GRP_Personal:
         primeList.push_back( _("Prime Role") );
         break;
-    case recEventType::ETYPE_Grp_Union:
-    case recEventType::ETYPE_Grp_Family:
+    case recET_GRP_FamUnion:
+    case recET_GRP_FamOther:
         primeList.push_back( _("1st Prime Role") );
         primeList.push_back( _("2nd Prime Role") );
         primeList.push_back( _("Either Prime Role") );

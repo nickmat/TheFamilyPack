@@ -196,5 +196,4 @@ public:
     ) : rgSelect( parent, sm_colHeaders, COL_MAX, style, title ) {}
 };
 
-
 #endif // RGSELECT_H

@@ -940,9 +940,9 @@ class fbRgSelect : public wxDialog
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class fbRgSelectIndEvent
+/// Class fbRgSelectEvent
 ///////////////////////////////////////////////////////////////////////////////
-class fbRgSelectIndEvent : public wxDialog 
+class fbRgSelectEvent : public wxDialog 
 {
 	private:
 	
@@ -957,6 +957,8 @@ class fbRgSelectIndEvent : public wxDialog
 		wxCheckListBox* m_checkListType;
 		wxButton* m_buttonSelectType;
 		wxButton* m_buttonClearType;
+		wxStaticText* m_staticText115;
+		wxTextCtrl* m_textCtrlIndID;
 		rgRecEventTableCtrl* m_listEvent;
 		wxStaticLine* m_staticline8;
 		wxButton* m_buttonCreate;
@@ -976,6 +978,7 @@ class fbRgSelectIndEvent : public wxDialog
 		virtual void OnTypeCheckToggled( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnButtonTypeSelectAll( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnButtonTypeClearAll( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnIndIdText( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnListEventItemDeselected( wxListEvent& event ) { event.Skip(); }
 		virtual void OnListEventItemSelected( wxListEvent& event ) { event.Skip(); }
 		virtual void OnCreateButton( wxCommandEvent& event ) { event.Skip(); }
@@ -983,8 +986,8 @@ class fbRgSelectIndEvent : public wxDialog
 	
 	public:
 		
-		fbRgSelectIndEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Select Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
-		~fbRgSelectIndEvent();
+		fbRgSelectEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Select Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
+		~fbRgSelectEvent();
 	
 };
 

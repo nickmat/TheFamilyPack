@@ -122,10 +122,12 @@ wxString tfpWriteEventPagedIndex( idt begCnt )
     return htm;
 }
 
-wxString tfpWriteEventSelection( recFilterEvent& filter )
+wxString tfpWriteEventSelection( recSelSetEvent& filter )
 {
+    recFilterEvent fe(filter);
 
-    wxSQLite3Table* result = filter.GetTable();
+    fe.CreateEventTable();
+    wxSQLite3Table* result = fe.GetTable();
     size_t size = (size_t) result->GetRowCount();
 
     wxString htm =
@@ -140,28 +142,20 @@ wxString tfpWriteEventSelection( recFilterEvent& filter )
     ;
 
     htm << "<table class='frame'>\n<tr>\n<td class='support'><br>\n";
-    long begDate = filter.GetBegDatePt();
-    long endDate = filter.GetEndDatePt();
-    if( begDate || endDate ) {
+    wxString begDate = filter.GetBegDateStr();
+    wxString endDate = filter.GetEndDateStr();
+    if( begDate.size() || endDate.size() ) {
         htm << "<p class='nowrap'>\n";
-        if( filter.GetBegDatePt() ) {
-            htm << 
-                "From Date: <b>" << 
-                calStrFromJdn( filter.GetBegDatePt(), CALENDAR_SCH_Gregorian ) <<
-                "</b><br>\n"
-            ;
+        if( begDate.size() ) {
+            htm << "From Date: <b>" << begDate << "</b><br>\n";
         }
-        if( filter.GetEndDatePt() ) {
-            htm << 
-                "To Date: <b>" << 
-                calStrFromJdn( filter.GetEndDatePt(), CALENDAR_SCH_Gregorian ) <<
-                "</b><br>\n"
-            ;
+        if( endDate.size() ) {
+            htm << "To Date: <b>" << endDate << "</b><br>\n";
         }
         htm << "</p>\n";
     }
 
-    recIdVec typeIDs = filter.GetTypeIDVec();
+    recIdVec typeIDs = fe.GetTypeIDVec();
     htm << "<p class='indent nowrap'>\nEvent Types:<b><br>\n";
     for( size_t i = 0 ; i < typeIDs.size() ; i++ ) {
         htm << recEventType::GetTypeStr( typeIDs[i] ) << "<br>\n";

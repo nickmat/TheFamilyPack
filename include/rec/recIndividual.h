@@ -81,6 +81,8 @@ public:
 
     static wxString GetIdStr( idt indID ) { return wxString::Format( "I"ID, indID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
+    static idt GetIdFromStr( const wxString& str ) { return recIdFromStr( "I", str ); }
+    static recIdVec GetIdVecFromStr( const wxString& str ) { return recIdVecFromStr( "I", str ); }
 
     Sex FGetSex() const { return f_sex; }
     wxString FGetName() const { return f_name; }
@@ -123,17 +125,20 @@ public:
 
     static idt FindEvent( idt indID, idt roleID );
     idt FindEvent( idt roleID ) const { return FindEvent( f_id, roleID ); }
-    static idt FindEvent( idt indID, recEventType::ETYPE_Grp grp );
-    idt FindEvent( recEventType::ETYPE_Grp grp ) const { return FindEvent( f_id, grp ); }
+    static idt FindGroupEvent( idt indID, recET_GRP grp );
+    idt FindGroupEvent( recET_GRP grp ) const { return FindGroupEvent( f_id, grp ); }
+ 
+    static recIdVec FindEvents( idt indID, recET_GRP grp );
+    recIdVec FindEvents( recET_GRP grp ) const { return FindEvents( f_id, grp ); }
 
-    idt GetBirthEvent() const { return FindEvent( recEventTypeRole::ROLE_Birth_Born ); }
-    idt GetNrBirthEvent() const { return FindEvent( recEventType::ETYPE_Grp_Nr_Birth ); }
-    idt GetDeathEvent() const { return FindEvent( recEventTypeRole::ROLE_Death_Died ); }
-    idt GetNrDeathEvent() const { return FindEvent( recEventType::ETYPE_Grp_Nr_Death ); }
-    static idt GetBirthEvent( idt id ) { return FindEvent( id, recEventTypeRole::ROLE_Birth_Born ); }
-    static idt GetNrBirthEvent( idt id ) { return FindEvent( id, recEventType::ETYPE_Grp_Nr_Birth ); }
-    static idt GetDeathEvent( idt id ) { return FindEvent( id, recEventTypeRole::ROLE_Death_Died ); }
-    static idt GetNrDeathEvent( idt id ) { return FindEvent( id, recEventType::ETYPE_Grp_Nr_Death ); }
+    idt GetBirthEvent() const { return FindGroupEvent( recET_GRP_Birth ); }
+    idt GetNrBirthEvent() const { return FindGroupEvent( recET_GRP_NrBirth ); }
+    idt GetDeathEvent() const { return FindGroupEvent( recET_GRP_Death ); }
+    idt GetNrDeathEvent() const { return FindGroupEvent( recET_GRP_NrDeath ); }
+    static idt GetBirthEvent( idt id ) { return FindGroupEvent( id, recET_GRP_Birth ); }
+    static idt GetNrBirthEvent( idt id ) { return FindGroupEvent( id, recET_GRP_NrBirth ); }
+    static idt GetDeathEvent( idt id ) { return FindGroupEvent( id, recET_GRP_Death ); }
+    static idt GetNrDeathEvent( idt id ) { return FindGroupEvent( id, recET_GRP_NrDeath ); }
 
     static recFamilyVec GetFamilyList( idt indID );
     recFamilyVec GetFamilyList() const { return GetFamilyList( f_id ); }
@@ -216,6 +221,9 @@ public:
     static wxString GetIdStr( idt indID ) { return wxString::Format( "F"ID, indID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
+    recIdVec GetCoupleAsIdVec() const;
+    static recIdVec GetCoupleAsIdVec( idt famID );
+
     static recIdVec GetFamilyIdVec();
 
     bool Decode( const wxString& str );
@@ -224,6 +232,9 @@ public:
     idt GetUnionEvent() const { return GetUnionEvent( f_id ); }
 
     idt GetSpouseID( idt indID ) const;
+    static idt Find( idt ind1ID, idt ind2ID );
+    void Find() { f_id = Find( f_husb_id, f_wife_id ); Read(); }
+    static recIdVec FindVec( const recIdVec& ind1IDs, const recIdVec& ind2IDs );
 
     bool ReadParents( idt indID );
     static recIndividualList GetChildren( idt famID );

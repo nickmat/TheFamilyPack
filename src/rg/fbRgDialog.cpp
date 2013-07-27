@@ -3001,7 +3001,7 @@ fbRgSelect::~fbRgSelect()
 	
 }
 
-fbRgSelectIndEvent::fbRgSelectIndEvent( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+fbRgSelectEvent::fbRgSelectEvent( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
 	
@@ -3068,6 +3068,9 @@ fbRgSelectIndEvent::fbRgSelectIndEvent( wxWindow* parent, wxWindowID id, const w
 	
 	bSizer27->Add( bSizer28, 1, wxEXPAND, 5 );
 	
+	wxBoxSizer* bSizer124;
+	bSizer124 = new wxBoxSizer( wxVERTICAL );
+	
 	wxStaticBoxSizer* sbSizer2;
 	sbSizer2 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Event Type") ), wxHORIZONTAL );
 	
@@ -3088,7 +3091,23 @@ fbRgSelectIndEvent::fbRgSelectIndEvent( wxWindow* parent, wxWindowID id, const w
 	sbSizer2->Add( bSizer12, 1, wxEXPAND, 0 );
 	
 	
-	bSizer27->Add( sbSizer2, 1, wxEXPAND|wxLEFT, 5 );
+	bSizer124->Add( sbSizer2, 1, wxEXPAND|wxLEFT, 5 );
+	
+	wxBoxSizer* bSizer125;
+	bSizer125 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_staticText115 = new wxStaticText( this, wxID_ANY, _("Individual ID:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText115->Wrap( -1 );
+	bSizer125->Add( m_staticText115, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_textCtrlIndID = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer125->Add( m_textCtrlIndID, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	
+	bSizer124->Add( bSizer125, 0, wxEXPAND, 5 );
+	
+	
+	bSizer27->Add( bSizer124, 1, wxEXPAND, 5 );
 	
 	
 	bSizer1->Add( bSizer27, 1, wxEXPAND, 0 );
@@ -3129,38 +3148,40 @@ fbRgSelectIndEvent::fbRgSelectIndEvent( wxWindow* parent, wxWindowID id, const w
 	this->Centre( wxBOTH );
 	
 	// Connect Events
-	this->Connect( wxEVT_IDLE, wxIdleEventHandler( fbRgSelectIndEvent::OnIdle ) );
-	m_checkListGrp->Connect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( fbRgSelectIndEvent::OnGroupCheckSelect ), NULL, this );
-	m_checkListGrp->Connect( wxEVT_COMMAND_CHECKLISTBOX_TOGGLED, wxCommandEventHandler( fbRgSelectIndEvent::OnGroupCheckToggled ), NULL, this );
-	m_buttonSelectGrp->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSelectIndEvent::OnButtonGroupSelectAll ), NULL, this );
-	m_buttonClearGrp->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSelectIndEvent::OnButtonGroupClearAll ), NULL, this );
-	m_textCtrlBegDatePt->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( fbRgSelectIndEvent::OnBegDateText ), NULL, this );
-	m_textCtrlEndDatePt->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( fbRgSelectIndEvent::OnEndDateText ), NULL, this );
-	m_checkListType->Connect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( fbRgSelectIndEvent::OnTypeCheckSelect ), NULL, this );
-	m_checkListType->Connect( wxEVT_COMMAND_CHECKLISTBOX_TOGGLED, wxCommandEventHandler( fbRgSelectIndEvent::OnTypeCheckToggled ), NULL, this );
-	m_buttonSelectType->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSelectIndEvent::OnButtonTypeSelectAll ), NULL, this );
-	m_buttonClearType->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSelectIndEvent::OnButtonTypeClearAll ), NULL, this );
-	m_listEvent->Connect( wxEVT_COMMAND_LIST_ITEM_DESELECTED, wxListEventHandler( fbRgSelectIndEvent::OnListEventItemDeselected ), NULL, this );
-	m_listEvent->Connect( wxEVT_COMMAND_LIST_ITEM_SELECTED, wxListEventHandler( fbRgSelectIndEvent::OnListEventItemSelected ), NULL, this );
-	m_buttonCreate->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSelectIndEvent::OnCreateButton ), NULL, this );
+	this->Connect( wxEVT_IDLE, wxIdleEventHandler( fbRgSelectEvent::OnIdle ) );
+	m_checkListGrp->Connect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( fbRgSelectEvent::OnGroupCheckSelect ), NULL, this );
+	m_checkListGrp->Connect( wxEVT_COMMAND_CHECKLISTBOX_TOGGLED, wxCommandEventHandler( fbRgSelectEvent::OnGroupCheckToggled ), NULL, this );
+	m_buttonSelectGrp->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSelectEvent::OnButtonGroupSelectAll ), NULL, this );
+	m_buttonClearGrp->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSelectEvent::OnButtonGroupClearAll ), NULL, this );
+	m_textCtrlBegDatePt->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( fbRgSelectEvent::OnBegDateText ), NULL, this );
+	m_textCtrlEndDatePt->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( fbRgSelectEvent::OnEndDateText ), NULL, this );
+	m_checkListType->Connect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( fbRgSelectEvent::OnTypeCheckSelect ), NULL, this );
+	m_checkListType->Connect( wxEVT_COMMAND_CHECKLISTBOX_TOGGLED, wxCommandEventHandler( fbRgSelectEvent::OnTypeCheckToggled ), NULL, this );
+	m_buttonSelectType->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSelectEvent::OnButtonTypeSelectAll ), NULL, this );
+	m_buttonClearType->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSelectEvent::OnButtonTypeClearAll ), NULL, this );
+	m_textCtrlIndID->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( fbRgSelectEvent::OnIndIdText ), NULL, this );
+	m_listEvent->Connect( wxEVT_COMMAND_LIST_ITEM_DESELECTED, wxListEventHandler( fbRgSelectEvent::OnListEventItemDeselected ), NULL, this );
+	m_listEvent->Connect( wxEVT_COMMAND_LIST_ITEM_SELECTED, wxListEventHandler( fbRgSelectEvent::OnListEventItemSelected ), NULL, this );
+	m_buttonCreate->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSelectEvent::OnCreateButton ), NULL, this );
 }
 
-fbRgSelectIndEvent::~fbRgSelectIndEvent()
+fbRgSelectEvent::~fbRgSelectEvent()
 {
 	// Disconnect Events
-	this->Disconnect( wxEVT_IDLE, wxIdleEventHandler( fbRgSelectIndEvent::OnIdle ) );
-	m_checkListGrp->Disconnect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( fbRgSelectIndEvent::OnGroupCheckSelect ), NULL, this );
-	m_checkListGrp->Disconnect( wxEVT_COMMAND_CHECKLISTBOX_TOGGLED, wxCommandEventHandler( fbRgSelectIndEvent::OnGroupCheckToggled ), NULL, this );
-	m_buttonSelectGrp->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSelectIndEvent::OnButtonGroupSelectAll ), NULL, this );
-	m_buttonClearGrp->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSelectIndEvent::OnButtonGroupClearAll ), NULL, this );
-	m_textCtrlBegDatePt->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( fbRgSelectIndEvent::OnBegDateText ), NULL, this );
-	m_textCtrlEndDatePt->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( fbRgSelectIndEvent::OnEndDateText ), NULL, this );
-	m_checkListType->Disconnect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( fbRgSelectIndEvent::OnTypeCheckSelect ), NULL, this );
-	m_checkListType->Disconnect( wxEVT_COMMAND_CHECKLISTBOX_TOGGLED, wxCommandEventHandler( fbRgSelectIndEvent::OnTypeCheckToggled ), NULL, this );
-	m_buttonSelectType->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSelectIndEvent::OnButtonTypeSelectAll ), NULL, this );
-	m_buttonClearType->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSelectIndEvent::OnButtonTypeClearAll ), NULL, this );
-	m_listEvent->Disconnect( wxEVT_COMMAND_LIST_ITEM_DESELECTED, wxListEventHandler( fbRgSelectIndEvent::OnListEventItemDeselected ), NULL, this );
-	m_listEvent->Disconnect( wxEVT_COMMAND_LIST_ITEM_SELECTED, wxListEventHandler( fbRgSelectIndEvent::OnListEventItemSelected ), NULL, this );
-	m_buttonCreate->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSelectIndEvent::OnCreateButton ), NULL, this );
+	this->Disconnect( wxEVT_IDLE, wxIdleEventHandler( fbRgSelectEvent::OnIdle ) );
+	m_checkListGrp->Disconnect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( fbRgSelectEvent::OnGroupCheckSelect ), NULL, this );
+	m_checkListGrp->Disconnect( wxEVT_COMMAND_CHECKLISTBOX_TOGGLED, wxCommandEventHandler( fbRgSelectEvent::OnGroupCheckToggled ), NULL, this );
+	m_buttonSelectGrp->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSelectEvent::OnButtonGroupSelectAll ), NULL, this );
+	m_buttonClearGrp->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSelectEvent::OnButtonGroupClearAll ), NULL, this );
+	m_textCtrlBegDatePt->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( fbRgSelectEvent::OnBegDateText ), NULL, this );
+	m_textCtrlEndDatePt->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( fbRgSelectEvent::OnEndDateText ), NULL, this );
+	m_checkListType->Disconnect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( fbRgSelectEvent::OnTypeCheckSelect ), NULL, this );
+	m_checkListType->Disconnect( wxEVT_COMMAND_CHECKLISTBOX_TOGGLED, wxCommandEventHandler( fbRgSelectEvent::OnTypeCheckToggled ), NULL, this );
+	m_buttonSelectType->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSelectEvent::OnButtonTypeSelectAll ), NULL, this );
+	m_buttonClearType->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSelectEvent::OnButtonTypeClearAll ), NULL, this );
+	m_textCtrlIndID->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( fbRgSelectEvent::OnIndIdText ), NULL, this );
+	m_listEvent->Disconnect( wxEVT_COMMAND_LIST_ITEM_DESELECTED, wxListEventHandler( fbRgSelectEvent::OnListEventItemDeselected ), NULL, this );
+	m_listEvent->Disconnect( wxEVT_COMMAND_LIST_ITEM_SELECTED, wxListEventHandler( fbRgSelectEvent::OnListEventItemSelected ), NULL, this );
+	m_buttonCreate->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSelectEvent::OnCreateButton ), NULL, this );
 	
 }
