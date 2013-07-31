@@ -3,11 +3,9 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Class used to display linked Individual Event data.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     10th December 2012
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2012, Nick Matthews.
+ * Copyright:   Copyright (c) 2012-2013, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -69,7 +67,7 @@ void rgCompareEvent::Reset( idt eveID )
         idt refID = recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, m_refEvents[i].f_id );
         m_refIDs.push_back( refID );
         // Get list of Persona's for this Reference.
-        recIdVec pIDs = recReference::GetPersonaList( refID ); 
+        recIdVec pIDs = recReference::GetPersonaList( refID );
         m_personaIDs.insert( m_personaIDs.end(), pIDs.begin(), pIDs.end() );
         recDate date( m_refEvents[i].FGetDate1ID() );
         m_reDate1s.push_back( date );
@@ -95,7 +93,7 @@ wxString rgCompareEvent::GetRefEventsTable()
     wxString htm;
 
     if( m_refIDs.size() ) {
-        htm << 
+        htm <<
             "<table class='data'>\n"
             "<tr>\n"
             "<th colspan='2'>Reference Document</th>\n"
@@ -103,12 +101,12 @@ wxString rgCompareEvent::GetRefEventsTable()
             "</tr>\n"
         ;
         for( size_t i = 0 ; i < m_refIDs.size() ; i++ ) {
-            htm << 
+            htm <<
                 "<tr>\n"
-                "<td><b><a href='tfp:R" << m_refIDs[i] << 
+                "<td><b><a href='tfp:R" << m_refIDs[i] <<
                 "'>" << recReference::GetIdStr( m_refIDs[i] ) << "</a></b></td>\n"
                 "<td>" << recReference::GetTitle( m_refIDs[i] ) << "</td>\n"
-                "<td><b><a href='tfp:ER" << m_refEvents[i].FGetID() <<
+                "<td><b><a href='tfp:Em" << m_refEvents[i].FGetID() <<
                 "'>" << m_refEvents[i].GetIdStr() << "</a></b></td>\n"
                 "<td>" << m_refEvents[i].FGetTitle() << "</td>\n"
                 "</tr>\n"
@@ -116,7 +114,7 @@ wxString rgCompareEvent::GetRefEventsTable()
         }
         htm << "</table>\n";
     } else {
-        htm << 
+        htm <<
             "<table class='data'>\n<tr>\n"
             "<th>No Reference Event Records available</th>\n"
             "</tr>\n</table>\n"
@@ -131,7 +129,7 @@ wxString rgCompareEvent::GetRefDatesTable()
     wxString htm;
 
     if( CreateDateImageFile() ) {
-        htm << 
+        htm <<
             "<table class='data diag'>\n"
             "<tr>\n"
             "<th colspan='2'>Date</th>\n"
@@ -144,13 +142,13 @@ wxString rgCompareEvent::GetRefDatesTable()
             "</tr>\n"
         ;
         for( size_t i = 0 ; i < m_reDate1s.size() ; i++ ) {
-            htm << 
+            htm <<
                 "<tr>\n"
                 "<td>" << m_reDate1s[i].GetStr() << "</td>\n"
                 "<td class='diag'><img src='memory:" << m_dateImageFNs[i] << "' alt=''></td>\n"
                 "<td><b><a href='tfp:R" << m_refIDs[i] <<
                 "'>" << recReference::GetIdStr( m_refIDs[i] ) <<
-                "</a>: <a href='tfp:ER" << m_refEvents[i].FGetID() <<
+                "</a>: <a href='tfp:Em" << m_refEvents[i].FGetID() <<
                 "'>" << m_refEvents[i].GetIdStr() << "</a></b></td>\n"
                 "<td>" << recReference::GetTitle( m_refIDs[i] ) << "</td>\n"
                 "</tr>\n"
@@ -158,7 +156,7 @@ wxString rgCompareEvent::GetRefDatesTable()
         }
         htm << "</table>\n";
     } else {
-        htm << 
+        htm <<
             "<table class='data'>\n<tr>\n"
             "<th>No Reference dates available</th>\n"
             "</tr>\n</table>\n"
@@ -188,7 +186,7 @@ bool rgCompareEvent::CreateDateImageFile()
             return false; // no dates to display
         }
         max = min;
-    }        
+    }
 
     wxMemoryDC dc;
     wxBitmap bitmap( 200, 40 );
@@ -241,7 +239,7 @@ bool rgCompareEvent::CreateDateImageFile()
     return true;
 }
 
-void rgCompareEvent::DrawDateImage( 
+void rgCompareEvent::DrawDateImage(
     wxDC& dc, const recDate& date, long start, double scale, const wxColour& color )
 {
     int beg = ( date.f_jdn - start ) * scale;
@@ -271,7 +269,7 @@ wxString rgCompareEvent::GetRefPlacesTable()
     wxString htm;
 
     if( m_rePlaces.size() ) {
-        htm << 
+        htm <<
             "<table class='data'>\n"
             "<tr>\n"
             "<th>Place</th>\n"
@@ -284,12 +282,12 @@ wxString rgCompareEvent::GetRefPlacesTable()
         ;
         for( size_t i = 0 ; i < m_rePlaces.size() ; i++ ) {
             if( m_rePlaces[i].FGetID() == 0 ) continue;
-            htm << 
+            htm <<
                 "<tr>\n"
                 "<td>" << m_rePlaces[i].GetAddressStr() << "</td>\n"
                 "<td><b><a href='tfp:R" << m_refIDs[i] <<
                 "'>" << recReference::GetIdStr( m_refIDs[i] ) <<
-                "</a>: <a href='tfp:ER" << m_refEvents[i].FGetID() <<
+                "</a>: <a href='tfp:Em" << m_refEvents[i].FGetID() <<
                 "'>" << m_refEvents[i].GetIdStr() << "</a></b></td>\n"
                 "<td>" << recReference::GetTitle( m_refIDs[i] ) << "</td>\n"
                 "</tr>\n"
@@ -297,7 +295,7 @@ wxString rgCompareEvent::GetRefPlacesTable()
         }
         htm << "</table>\n";
     } else {
-        htm << 
+        htm <<
             "<table class='data'>\n<tr>\n"
             "<th>No Reference places available</th>\n"
             "</tr>\n</table>\n"

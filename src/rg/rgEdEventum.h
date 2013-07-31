@@ -1,11 +1,10 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/rg/rgEdEvidEvent.h
+ * Name:        src/rg/rgEdEventum.h
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Edit database Event entity dialog header.
+ * Purpose:     Edit database Eventum entity dialog header.
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     25th February 2013
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2013, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -26,24 +25,24 @@
 
 */
 
-#ifndef RGEDEVIDEVENT_H
-#define RGEDEVIDEVENT_H
+#ifndef RGEDEVENTUM_H
+#define RGEDEVENTUM_H
 
-#include <rec/recEventRecord.h>
+#include <rec/recEventum.h>
 #include <rec/recReference.h>
 
 #include "fbRgDialog.h"
 
 //============================================================================
-//-------------------------[ rgDlgEditEventRecord ]---------------------------
+//-------------------------[ rgDlgEditEventum]--------------------------------
 //============================================================================
 
-/** Implementing rgDlgEditEvidEvent */
-class rgDlgEditEventRecord : public fbRgEditEventRecord
+/** Implementing rgDlgEditEventum */
+class rgDlgEditEventum : public fbRgEditEventum
 {
     DECLARE_EVENT_TABLE()
 public:
-    rgDlgEditEventRecord( wxWindow* parent, idt eventID );
+    rgDlgEditEventum( wxWindow* parent, idt eventID );
 private:
     enum ColPer {
         COL_PerID, COL_Name, COL_Role, COL_Note, COL_MAX
@@ -81,7 +80,7 @@ private:
     void OnDeleteCon( wxCommandEvent& event );
 
     idt            m_refID;
-    recEventRecord m_event;
+    recEventum     m_event;
     idt            m_date1ID;
     idt            m_date2ID;
     idt            m_placeID;
@@ -90,9 +89,9 @@ private:
         EEEB_Date1, EEEB_Date2, EEEB_Place
     };
     Button              m_button;
-    recEventPersonaVec  m_eps;
+    recEventumPersonaVec  m_eps;
     recPersonaVec       m_personas;
-    recEveEveRecordVec  m_eers;
+    recEventEventumVec  m_eers;
 };
 
-#endif // RGEDEVIDEVENT_H
+#endif // RGEDEVENTUM_H

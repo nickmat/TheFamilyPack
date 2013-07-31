@@ -36,7 +36,7 @@
 #endif
 
 #include "rgTableCtrl.h"
-#include "rgSelIndEvent.h"
+#include "rgSelEvent.h"
 #include "rg/rgDialogs.h"
 
 bool rgSelectEventList( wxWindow* wind, recSelSetEvent* evefilter )

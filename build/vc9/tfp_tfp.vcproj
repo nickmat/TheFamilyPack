@@ -285,11 +285,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tfp\tfpWrEventRecIndex.cpp"
+				RelativePath="..\..\src\tfp\tfpWrEventum.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tfp\tfpWrEventRecord.cpp"
+				RelativePath="..\..\src\tfp\tfpWrEventumIndex.cpp"
 				>
 			</File>
 			<File

@@ -3,10 +3,8 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Edit database Persona entity dialog.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     9 October 2010
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2010, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -175,16 +173,16 @@ void rgDlgEditPersona::UpdateNameList( idt nameID )
 
 void rgDlgEditPersona::UpdateEventList( idt eveID )
 {
-    m_evpers = m_persona.ReadEventPersonas( m_order );
+    m_evpers = m_persona.ReadEventumPersonas( m_order );
     m_listEvent->DeleteAllItems();
     int row = -1;
     for( size_t i = 0 ; i < m_evpers.size() ; i++ ) {
-        m_listEvent->InsertItem( i, recEvent::GetIdStr( m_evpers[i].f_event_rec_id ) );
+        m_listEvent->InsertItem( i, recEvent::GetIdStr( m_evpers[i].f_eventum_id ) );
         m_listEvent->SetItem( i, EV_COL_Role, recEventTypeRole::GetName( m_evpers[i].f_role_id ) );
-        m_listEvent->SetItem( i, EV_COL_Title, recEvent::GetTitle( m_evpers[i].f_event_rec_id ) );
-        m_listEvent->SetItem( i, EV_COL_Date, recEvent::GetDateStr( m_evpers[i].f_event_rec_id ) );
-        m_listEvent->SetItem( i, EV_COL_Place, recEvent::GetAddressStr( m_evpers[i].f_event_rec_id ) );
-        if( eveID == m_evpers[i].FGetEventRecID() ) {
+        m_listEvent->SetItem( i, EV_COL_Title, recEvent::GetTitle( m_evpers[i].f_eventum_id ) );
+        m_listEvent->SetItem( i, EV_COL_Date, recEvent::GetDateStr( m_evpers[i].f_eventum_id ) );
+        m_listEvent->SetItem( i, EV_COL_Place, recEvent::GetAddressStr( m_evpers[i].f_eventum_id ) );
+        if( eveID == m_evpers[i].FGetEventumID() ) {
             m_listEvent->SetItemState( i, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
             row = i;
         }
@@ -286,8 +284,8 @@ void rgDlgEditPersona::OnNameDeleteButton( wxCommandEvent& event )
         return;
     }
     idt nameID = m_names[row].FGetID();
-    wxString mess = wxString::Format( 
-        "Remove Name %s: %s\nfrom Persona %s?", 
+    wxString mess = wxString::Format(
+        "Remove Name %s: %s\nfrom Persona %s?",
         recName::GetIdStr( nameID ), recName::GetNameStr( nameID ),
         m_persona.GetIdStr()
     );
@@ -337,7 +335,7 @@ void rgDlgEditPersona::OnNameDownButton( wxCommandEvent& event )
 
 void rgDlgEditPersona::OnEventAddButton( wxCommandEvent& event )
 {
-    idt eveID = rgCreateEventRecord( this, m_refID );
+    idt eveID = rgCreateEventum( this, m_refID );
     if( eveID ) {
         recReferenceEntity::Create( m_refID, recReferenceEntity::TYPE_Event, eveID );
         UpdateEventList( eveID );
@@ -351,8 +349,8 @@ void rgDlgEditPersona::OnEventEditButton( wxCommandEvent& event )
         wxMessageBox( _("No row selected"), _("Edit Event"), wxOK | wxCENTRE, this );
         return;
     }
-    idt eventID = m_evpers[row].FGetEventRecID();
-    if( rgEditEventRecord( this, eventID ) ) {
+    idt eventID = m_evpers[row].FGetEventumID();
+    if( rgEditEventum( this, eventID ) ) {
         UpdateEventList( eventID );
     }
 }
@@ -364,9 +362,9 @@ void rgDlgEditPersona::OnEventDeleteButton( wxCommandEvent& event )
         wxMessageBox( _("No row selected"), _("Delete From Event") );
         return;
     }
-    idt eveID = m_evpers[row].FGetEventRecID();
-    wxString mess = wxString::Format( 
-        "Remove %s %s from Event %s\n%s?", 
+    idt eveID = m_evpers[row].FGetEventumID();
+    wxString mess = wxString::Format(
+        "Remove %s %s from Event %s\n%s?",
         m_persona.GetNameStr(), m_persona.GetIdStr(),
         recEvent::GetIdStr( eveID ), recEvent::GetTitle( eveID )
     );
@@ -393,7 +391,7 @@ void rgDlgEditPersona::OnEventUpButton( wxCommandEvent& event )
     m_evpers[row].Save();
     m_evpers[row-1].FSetPerSeq( seq );
     m_evpers[row-1].Save();
-    UpdateEventList( m_evpers[row].FGetEventRecID() );
+    UpdateEventList( m_evpers[row].FGetEventumID() );
 }
 
 void rgDlgEditPersona::OnEventDownButton( wxCommandEvent& event )
@@ -411,7 +409,7 @@ void rgDlgEditPersona::OnEventDownButton( wxCommandEvent& event )
     m_evpers[row].Save();
     m_evpers[row+1].FSetPerSeq( seq );
     m_evpers[row+1].Save();
-    UpdateEventList( m_evpers[row].FGetEventRecID() );
+    UpdateEventList( m_evpers[row].FGetEventumID() );
 }
 
 void rgDlgEditPersona::OnOrderBy( wxCommandEvent& event )
@@ -432,7 +430,7 @@ void rgDlgEditPersona::OnOrderBy( wxCommandEvent& event )
         return;
     }
     long row = m_listEvent->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-    idt eveID = ( row >= 0 ) ? m_evpers[row].FGetEventRecID() : 0;
+    idt eveID = ( row >= 0 ) ? m_evpers[row].FGetEventumID() : 0;
     UpdateEventList( eveID );
 }
 
@@ -466,8 +464,8 @@ void rgDlgEditPersona::OnRelDeleteButton( wxCommandEvent& event )
         return;
     }
     idt relID = m_relationships[row].FGetID();
-    wxString mess = wxString::Format( 
-        "Remove Relationship %s\n%s\nfrom Persona?", 
+    wxString mess = wxString::Format(
+        "Remove Relationship %s\n%s\nfrom Persona?",
         m_relationships[row].GetIdStr(), m_relationships[row].FGetDescrip()
     );
     int ans = wxMessageBox( mess, _("Delete Relationship"), wxYES_NO | wxCANCEL, this );

@@ -5,7 +5,6 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     24 October 2010
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2010-2013, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -38,7 +37,7 @@
 #include <rec/recEvent.h>
 #include <rec/recPersona.h>
 #include <rec/recIndividual.h>
-#include <rec/recEventRecord.h>
+#include <rec/recEventum.h>
 
 #include <rg/rgCompareEvent.h>
 
@@ -51,13 +50,13 @@ wxString tfpWriteEventPage( idt eventID, rgCompareEvent* ce )
     recEvent eve(eventID);
     if( eve.f_id == 0 ) return wxEmptyString;
 
-    htm << 
+    htm <<
         tfpWrHeadTfp( "Event " + eve.GetIdStr() ) <<
 
         "<h1>Event " << eve.GetIdStr() << ": " << eve.f_title << "</h1>\n"
         "<table class='data'>\n"
         "<tr>\n<td>"
-        "<b>Type:</b> " << eve.GetTypeStr() << 
+        "<b>Type:</b> " << eve.GetTypeStr() <<
         " &nbsp; <b>Group:</b> " << recEventType::GetGroupStr( eve.FGetTypeID() ) <<
         "</td>\n</tr>\n"
         "<tr>\n<td>"
@@ -73,7 +72,7 @@ wxString tfpWriteEventPage( idt eventID, rgCompareEvent* ce )
     htm << "</td>\n</tr>\n<tr>\n<td>";
     if( eve.FGetPlaceID() ) {
         htm <<
-            "<b><a href='tfpi:P" << eve.FGetPlaceID() << 
+            "<b><a href='tfpi:P" << eve.FGetPlaceID() <<
             "'>Place</a>: </b>" << eve.GetAddressStr()
         ;
     } else {
@@ -91,10 +90,10 @@ wxString tfpWriteEventPage( idt eventID, rgCompareEvent* ce )
                "<th>Role</th>\n<th>Individual</th>\n<th>Note</th>\n</tr>\n";
         for( size_t i = 0 ; i < ies.size() ; i++ ) {
             recIndividual ind(ies[i].FGetIndID());
-            htm 
+            htm
                 << "<tr>\n<td>" << recEventTypeRole::GetName( ies[i].FGetRoleID() )
-                << "</td>\n<td class='" << GetSexClass( ind.FGetID() ) 
-                << "'>\n<b><a href='tfp:I" << ind.FGetID() 
+                << "</td>\n<td class='" << GetSexClass( ind.FGetID() )
+                << "'>\n<b><a href='tfp:I" << ind.FGetID()
                 << "'>" << ind.FGetName()
                 << "</a></b>"
                << " <a href='tfpc:MR" << ind.FGetID()
@@ -106,20 +105,20 @@ wxString tfpWriteEventPage( idt eventID, rgCompareEvent* ce )
         htm << "</table>\n";
     }
 
-    recEveEveRecordVec eers = eve.GetEveEveRecords();
+    recEventEventumVec eers = eve.GetEventEventums();
     if( eers.size() ) {
-        htm << 
+        htm <<
             "<table class='data'>\n<tr>\n"
             "<th>Record</th>\n<th>Conf</th>\n<th>Title</th>\n</tr>\n"
         ;
         for( size_t i = 0 ; i < eers.size() ; i++ ) {
-            idt eerID = eers[i].FGetEventRecID();
-            htm << 
+            idt eerID = eers[i].FGetEventumID();
+            htm <<
                 "<tr>\n"
-                "<td><b><a href='tfp:ER" << eerID << 
-                "'>" <<  recEventRecord::GetIdStr( eerID ) << "</a></b></td>\n"
+                "<td><b><a href='tfp:Em" << eerID <<
+                "'>" <<  recEventum::GetIdStr( eerID ) << "</a></b></td>\n"
                 "<td>" << eers[i].FGetConf() << "</td>\n"
-                "<td>" << recEventRecord::GetTitle( eerID ) << "</td>\n"
+                "<td>" << recEventum::GetTitle( eerID ) << "</td>\n"
                 "</tr>\n"
             ;
         }
@@ -127,13 +126,13 @@ wxString tfpWriteEventPage( idt eventID, rgCompareEvent* ce )
     }
 
     if( ce ) {
-        htm << 
+        htm <<
             ce->GetRefEventsTable() <<
             ce->GetRefDatesTable() <<
             ce->GetRefPlacesTable()
         ;
     } else {
-        htm << "<p><a href='tfp:E^" << eventID << "'>Show Event Records</a></p>\n";
+        htm << "<p><a href='tfp:E^" << eventID << "'>Show Eventums</a></p>\n";
     }
 
     htm << tfpWrTailTfp();

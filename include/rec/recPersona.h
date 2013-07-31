@@ -3,10 +3,8 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Manage SQLite3 Persona records.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2010, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -85,12 +83,12 @@ public:
     static recNameVec ReadNames( idt perID );
     recNameVec ReadNames() const { return ReadNames( f_id ); }
 
-    static recEventPersonaVec ReadEventPersonas( idt perID, recEventOrder order = recEO_DatePt );
-    recEventPersonaVec ReadEventPersonas( recEventOrder order = recEO_DatePt ) const 
-        { return ReadEventPersonas( f_id, order ); }
+    static recEventumPersonaVec ReadEventumPersonas( idt perID, recEventOrder order = recEO_DatePt );
+    recEventumPersonaVec ReadEventumPersonas( recEventOrder order = recEO_DatePt ) const
+        { return ReadEventumPersonas( f_id, order ); }
 
-    static int GetMaxEventRecordSeqNumber( idt perID );
-    int GetMaxEventRecordSeqNumber() const { return GetMaxEventRecordSeqNumber( f_id ); }
+    static int GetMaxEventumSeqNumber( idt perID );
+    int GetMaxEventumSeqNumber() const { return GetMaxEventumSeqNumber( f_id ); }
 
     static recRelationshipVec ReadRelationships( idt perID );
     recRelationshipVec ReadRelationships() { return ReadRelationships( f_id ); }
@@ -98,7 +96,7 @@ public:
     // Get a list of linked to Individual's
     static recIdVec GetIndividualIDs( idt perID );
     recIdVec GetIndividualIDs() const { return GetIndividualIDs( f_id ); }
-    // Commer delimited string of linked Individual ID strings. 
+    // Commer delimited string of linked Individual ID strings.
     static wxString GetIndividualIdStr( idt perID );
     wxString GetIndividualIdStr() const { return GetIndividualIdStr( f_id ); }
 

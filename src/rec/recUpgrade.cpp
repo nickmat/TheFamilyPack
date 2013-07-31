@@ -5,7 +5,6 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3rd April 2013
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2013, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -42,8 +41,8 @@
 const int recVerMajor    = 0;
 const int recVerMinor    = 0;
 const int recVerRev      = 10;
-const int recVerTest     = 5;
-const wxStringCharType* recVerStr = wxS("TFPD-0.0.10.5");
+const int recVerTest     = 6;
+const wxStringCharType* recVerStr = wxS("TFPD-0.0.10.6");
 
 //============================================================================
 //                 Code to upgrade old versions
@@ -59,7 +58,7 @@ void UpgradeRev0_0_9to10( int test )
     wxASSERT( test == 25 );
     // Version 0.0.9.25 to 0.0.10.0
     // Change to Core Data only, only affects new databases.
-    // Removed intitial F1 family record for new databases. 
+    // Removed intitial F1 family record for new databases.
     char* query =
         "BEGIN;\n"
         "UPDATE Version SET revision=10, test=0 WHERE id=1;\n"
@@ -307,6 +306,53 @@ void UpgradeTest0_0_10_4to0_0_10_5()
     recDb::GetDb()->ExecuteUpdate( query );
 }
 
+void UpgradeTest0_0_10_5to0_0_10_6()
+{
+    // Version 0.0.10.5 to 0.0.10.6
+    // Rename table EventRecord to Eventum
+    // Rename table EventEventRecord to EventEventum
+    // Rename column EventEvetum.event_rec_id to eventum_id
+    // Rename table EventPersona to EventumPersona
+    // Rename column EventumPersona.event_rec_id to eventum_id
+
+    char* query =
+        "BEGIN;\n"
+
+        "ALTER TABLE EventRecord RENAME TO Eventum;\n"
+
+        "CREATE TABLE EventEventum (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  event_id INTEGER NOT NULL REFERENCES Event(id),\n"
+        "  eventum_id INTEGER NOT NULL REFERENCES Eventum(id),\n"
+        "  conf FLOAT NOT NULL,\n"
+        "  note TEXT\n"
+        ");\n"
+        "INSERT INTO EventEventum"
+        " (id, event_id, eventum_id, conf, note)"
+        " SELECT id, event_id, event_rec_id, conf, note"
+        " FROM EventEventRecord;\n"
+        "DROP TABLE EventEventRecord;\n"
+
+        "CREATE TABLE EventumPersona (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  eventum_id INTEGER NOT NULL REFERENCES Eventum(id),\n"
+        "  per_id INTEGER NOT NULL REFERENCES Persona(id),\n"
+        "  role_id INTEGER NOT NULL REFERENCES EventTypeRole(id),\n"
+        "  note TEXT NOT NULL,\n"
+        "  per_seq INTEGER NOT NULL\n"
+        ");\n"
+        "INSERT INTO EventumPersona"
+        " (id, eventum_id, per_id, role_id, note, per_seq)"
+        " SELECT id, event_rec_id, per_id, role_id, note, per_seq"
+        " FROM EventPersona;\n"
+        "DROP TABLE EventPersona;\n"
+
+        "UPDATE Version SET test=6 WHERE id=1;\n"
+        "COMMIT;\n"
+    ;
+    recDb::GetDb()->ExecuteUpdate( query );
+}
+
 void UpgradeRev0_0_10toCurrent( int test )
 {
     switch( test )
@@ -316,6 +362,7 @@ void UpgradeRev0_0_10toCurrent( int test )
     case 2: UpgradeTest0_0_10_2to0_0_10_3();
     case 3: UpgradeTest0_0_10_3to0_0_10_4();
     case 4: UpgradeTest0_0_10_4to0_0_10_5();
+    case 5: UpgradeTest0_0_10_5to0_0_10_6();
     }
 }
 

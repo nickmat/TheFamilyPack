@@ -79,8 +79,8 @@ TFP_OBJECTS =  \
 	tfp_tfpWrChart.o \
 	tfp_tfpWrEvent.o \
 	tfp_tfpWrEventIndex.o \
-	tfp_tfpWrEventRecIndex.o \
-	tfp_tfpWrEventRecord.o \
+	tfp_tfpWrEventum.o \
+	tfp_tfpWrEventumIndex.o \
 	tfp_tfpWrFamily.o \
 	tfp_tfpWrIndividual.o \
 	tfp_tfpWrName.o \
@@ -115,8 +115,8 @@ REC_OBJECTS =  \
 	rec_recDatabase.o \
 	rec_recDate.o \
 	rec_recEvent.o \
-	rec_recEventRecord.o \
 	rec_recEventType.o \
+	rec_recEventum.o \
 	rec_recFilterEvent.o \
 	rec_recGedParse.o \
 	rec_recHelper.o \
@@ -149,9 +149,9 @@ RECGUI_OBJECTS =  \
 	recgui_rgEdContact.o \
 	recgui_rgEdDate.o \
 	recgui_rgEdEvent.o \
-	recgui_rgEdEventEventRec.o \
-	recgui_rgEdEventRecord.o \
+	recgui_rgEdEventEventum.o \
 	recgui_rgEdEventType.o \
+	recgui_rgEdEventum.o \
 	recgui_rgEdFamily.o \
 	recgui_rgEdIndividual.o \
 	recgui_rgEdName.o \
@@ -168,7 +168,7 @@ RECGUI_OBJECTS =  \
 	recgui_rgEdUser.o \
 	recgui_rgIndividual.o \
 	recgui_rgSelect.o \
-	recgui_rgSelIndEvent.o \
+	recgui_rgSelEvent.o \
 	recgui_rgTableCtrl.o
 
 ### Conditionally set variables: ###
@@ -281,10 +281,10 @@ tfp_tfpWrEvent.o: ./../../src/tfp/tfpWrEvent.cpp
 tfp_tfpWrEventIndex.o: ./../../src/tfp/tfpWrEventIndex.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
-tfp_tfpWrEventRecIndex.o: ./../../src/tfp/tfpWrEventRecIndex.cpp
+tfp_tfpWrEventum.o: ./../../src/tfp/tfpWrEventum.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
-tfp_tfpWrEventRecord.o: ./../../src/tfp/tfpWrEventRecord.cpp
+tfp_tfpWrEventumIndex.o: ./../../src/tfp/tfpWrEventumIndex.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
 tfp_tfpWrFamily.o: ./../../src/tfp/tfpWrFamily.cpp
@@ -356,10 +356,10 @@ rec_recDate.o: ./../../src/rec/recDate.cpp
 rec_recEvent.o: ./../../src/rec/recEvent.cpp
 	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
 
-rec_recEventRecord.o: ./../../src/rec/recEventRecord.cpp
+rec_recEventType.o: ./../../src/rec/recEventType.cpp
 	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
 
-rec_recEventType.o: ./../../src/rec/recEventType.cpp
+rec_recEventum.o: ./../../src/rec/recEventum.cpp
 	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
 
 rec_recFilterEvent.o: ./../../src/rec/recFilterEvent.cpp
@@ -437,13 +437,13 @@ recgui_rgEdDate.o: ./../../src/rg/rgEdDate.cpp
 recgui_rgEdEvent.o: ./../../src/rg/rgEdEvent.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
-recgui_rgEdEventEventRec.o: ./../../src/rg/rgEdEventEventRec.cpp
-	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
-
-recgui_rgEdEventRecord.o: ./../../src/rg/rgEdEventRecord.cpp
+recgui_rgEdEventEventum.o: ./../../src/rg/rgEdEventEventum.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgEdEventType.o: ./../../src/rg/rgEdEventType.cpp
+	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
+
+recgui_rgEdEventum.o: ./../../src/rg/rgEdEventum.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgEdFamily.o: ./../../src/rg/rgEdFamily.cpp
@@ -494,7 +494,7 @@ recgui_rgIndividual.o: ./../../src/rg/rgIndividual.cpp
 recgui_rgSelect.o: ./../../src/rg/rgSelect.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
-recgui_rgSelIndEvent.o: ./../../src/rg/rgSelIndEvent.cpp
+recgui_rgSelEvent.o: ./../../src/rg/rgSelEvent.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgTableCtrl.o: ./../../src/rg/rgTableCtrl.cpp

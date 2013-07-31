@@ -224,15 +224,15 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\rg\rgEdEventEventRec.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\rg\rgEdEventRecord.cpp"
+				RelativePath="..\..\src\rg\rgEdEventEventum.cpp"
 				>
 			</File>
 			<File
 				RelativePath="..\..\src\rg\rgEdEventType.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgEdEventum.cpp"
 				>
 			</File>
 			<File
@@ -296,7 +296,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\rg\rgSelIndEvent.cpp"
+				RelativePath="..\..\src\rg\rgSelEvent.cpp"
 				>
 			</File>
 			<File
@@ -350,15 +350,15 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\rg\rgEdEventEventRec.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\rg\rgEdEventRecord.h"
+				RelativePath="..\..\src\rg\rgEdEventEventum.h"
 				>
 			</File>
 			<File
 				RelativePath="..\..\src\rg\rgEdEventType.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgEdEventum.h"
 				>
 			</File>
 			<File
@@ -418,7 +418,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\rg\rgSelIndEvent.h"
+				RelativePath="..\..\src\rg\rgSelEvent.h"
 				>
 			</File>
 			<File

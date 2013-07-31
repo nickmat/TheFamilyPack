@@ -1,12 +1,10 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Name:        src/rg/rgEdPerIndEvent.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Edit an EventPersona or IndividualEvent record dialog.
+ * Purpose:     Edit an EventumPersona or IndividualEvent record dialog.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     23 November 2012
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2012, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -114,9 +112,9 @@ bool rgCreatePerEventRole( wxWindow* wind, idt perID, idt erID, idt roleID )
     wxASSERT( erID != 0 ); // TODO: Select an Event from a list
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
-    recEventPersona ep(0);
+    recEventumPersona ep(0);
     ep.FSetPerID( perID );
-    ep.FSetEventRecID( erID );
+    ep.FSetEventumID( erID );
     ep.FSetRoleID( roleID );
     ep.FSetPerSeq( recIndividual::GetMaxEventSeqNumber( perID ) );
     ep.Save();
@@ -134,7 +132,7 @@ bool rgCreatePerEventRole( wxWindow* wind, idt perID, idt erID, idt roleID )
 //-------------------------[ rgDlgIndEvent ]----------------------------------
 //============================================================================
 
-rgDlgIndEvent::rgDlgIndEvent( wxWindow* parent, idt ieID, rgSHOWROLE filter ) 
+rgDlgIndEvent::rgDlgIndEvent( wxWindow* parent, idt ieID, rgSHOWROLE filter )
     : m_ie(ieID), m_filter(filter), fbRgPerIndEvent( parent )
 {
     m_event.ReadID( m_ie.FGetEventID() );
@@ -220,16 +218,16 @@ void rgDlgIndEvent::OnAddRoleButton( wxCommandEvent& event )
 //-------------------------[ rgDlgPerEvent ]----------------------------------
 //============================================================================
 
-rgDlgPerEvent::rgDlgPerEvent( wxWindow* parent, idt epID, rgSHOWROLE filter ) 
+rgDlgPerEvent::rgDlgPerEvent( wxWindow* parent, idt epID, rgSHOWROLE filter )
     : m_ep(epID), m_filter(filter), fbRgPerIndEvent( parent )
 {
-    m_event.ReadID( m_ep.FGetEventRecID() );
+    m_event.ReadID( m_ep.FGetEventumID() );
 }
 
 bool rgDlgPerEvent::TransferDataToWindow()
 {
     wxASSERT( m_ep.FGetID() != 0 );
-    wxASSERT( m_ep.FGetEventRecID() != 0 );
+    wxASSERT( m_ep.FGetEventumID() != 0 );
     wxASSERT( m_ep.FGetPerID() != 0 );
 
     m_staticPerInd->SetLabel( "Persona:" );

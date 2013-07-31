@@ -3,11 +3,9 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     TfpFrame class header.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     24 September 2010
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2010-2013, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -114,9 +112,9 @@ public:
     void OnListAllEvents( wxCommandEvent& event );
     void OnListPagedEvents( wxCommandEvent& event );
     void OnListSelectedEvents( wxCommandEvent& event );
-    void OnListAllEventRecs( wxCommandEvent& event );
-    void OnListPagedEventRecs( wxCommandEvent& event );
-    void OnListSelectedEventRecs( wxCommandEvent& event );
+    void OnListAllEventums( wxCommandEvent& event );
+    void OnListPagedEventums( wxCommandEvent& event );
+    void OnListSelectedEventums( wxCommandEvent& event );
     void OnListResearchers( wxCommandEvent& event );
 
     void OnPedChart( wxCommandEvent& event );
@@ -241,9 +239,9 @@ enum
 	tfpID_LIST_ALL_EVENTS,
 	tfpID_LIST_PAGED_EVENTS,
 	tfpID_LIST_SELECTED_EVENTS,
-	tfpID_LIST_ALL_EVENTRECS,
-	tfpID_LIST_PAGED_EVENTRECS,
-	tfpID_LIST_SELECTED_EVENTRECS,
+	tfpID_LIST_ALL_EVENTUMS,
+	tfpID_LIST_PAGED_EVENTUMS,
+	tfpID_LIST_SELECTED_EVENTUMS,
     tfpID_LIST_RESEARCHERS,
     tfpID_PED_CHART,
     tfpID_DESC_CHART,

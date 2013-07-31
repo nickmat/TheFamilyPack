@@ -3,10 +3,8 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Manage SQLite3 Reference and ReferenceEntity records.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2010, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -41,7 +39,7 @@
 #include <rec/recName.h>
 #include <rec/recDate.h>
 #include <rec/recPlace.h>
-#include <rec/recEventRecord.h>
+#include <rec/recEventum.h>
 #include <rec/recEvent.h>
 #include <rec/recEventType.h>
 #include <rec/recRelationship.h>
@@ -351,7 +349,7 @@ wxString recReferenceEntity::GetEntityIdStr() const
     switch( f_entity_type )
     {
     case TYPE_Event:
-        return recEventRecord::GetIdStr( f_entity_id );
+        return recEventum::GetIdStr( f_entity_id );
     case TYPE_Place:
         return recPlace::GetIdStr( f_entity_id );
     case TYPE_Date:
@@ -369,7 +367,7 @@ wxString recReferenceEntity::GetEntityStr() const
     switch( f_entity_type )
     {
     case TYPE_Event:
-        return recEventRecord::GetTitle( f_entity_id );
+        return recEventum::GetTitle( f_entity_id );
     case TYPE_Place:
         return recPlace::GetAddressStr( f_entity_id );
     case TYPE_Date:

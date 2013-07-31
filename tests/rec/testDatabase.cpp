@@ -3,10 +3,8 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     CppUnit test program for recDb and derived database classes.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     30th September 2010
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2010, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -77,7 +75,7 @@ private:
         CPPUNIT_TEST( TestEvent );
         CPPUNIT_TEST( TestEventType );
         CPPUNIT_TEST( TestEventTypeRole );
-        CPPUNIT_TEST( TestEventPersona );
+        CPPUNIT_TEST( TestEventumPersona );
         CPPUNIT_TEST( TestReference );
         CPPUNIT_TEST( TestReferenceEntity );
         CPPUNIT_TEST( TestIndividual );
@@ -98,7 +96,7 @@ private:
     void TestEvent();
     void TestEventType();
     void TestEventTypeRole();
-    void TestEventPersona();
+    void TestEventumPersona();
     void TestReference();
     void TestReferenceEntity();
     void TestIndividual();
@@ -141,10 +139,10 @@ void RecTestCase::AddTestData()
         " (id, title, higher_id, type_id, date1_id, date2_id, place_id, note, date_pt)"
         " VALUES(19, 'Test 19', 0, -1, 0, 0, 0, '', 0);\n"
 
-        "INSERT INTO EventRecord"
+        "INSERT INTO Eventum"
         " (id, title, type_id, date1_id, date2_id, place_id, note, date_pt)"
         " VALUES(1, 'Test 1', -1, 0, 0, 0, '', 0);\n"
-        "INSERT INTO EventRecord"
+        "INSERT INTO Eventum"
         " (id, title, type_id, date1_id, date2_id, place_id, note, date_pt)"
         " VALUES(19, 'Test 19', -1, 0, 0, 0, '', 0);\n"
 
@@ -682,17 +680,17 @@ void RecTestCase::TestEventTypeRole()
     CPPUNIT_ASSERT( recEventTypeRole::Exists( 999 ) == false );
 }
 
-void RecTestCase::TestEventPersona()
+void RecTestCase::TestEventumPersona()
 {
     idt id;
     CPPUNIT_ASSERT_NO_THROW( AddTestData() );
 
-    recEventPersona record1;
+    recEventumPersona record1;
     record1.FSetID( 0 );
 
-    record1.FSetEventRecID( 1 );    // Needs to exist
+    record1.FSetEventumID( 1 );    // Needs to exist
     record1.FSetPerID( 3 );      // Needs to exist
-    record1.FSetRoleID( 10000 ); // Doesn't exist, make Save() throw 
+    record1.FSetRoleID( 10000 ); // Doesn't exist, make Save() throw
     record1.FSetNote( "Good person" );
     record1.FSetPerSeq( 123 );
 #if ALLOW_SQL_MEMORY_LEAK
@@ -704,14 +702,14 @@ void RecTestCase::TestEventPersona()
     id = record1.FGetID();
     CPPUNIT_ASSERT( id == 1 );
 
-    recEventPersona record2;
+    recEventumPersona record2;
     record2.FSetID( record1.FGetID() );
     CPPUNIT_ASSERT_NO_THROW( record2.Read() );
     CPPUNIT_ASSERT( record1 == record2 );
 
-    record1.FSetEventRecID( 19 );    // Needs to exist
+    record1.FSetEventumID( 19 );    // Needs to exist
     record1.FSetPerID( 20 );      // Needs to exist
-    record1.FSetRoleID( recEventTypeRole::ROLE_Baptism_Baptised ); 
+    record1.FSetRoleID( recEventTypeRole::ROLE_Baptism_Baptised );
     record1.FSetNote( "Who he?" );
     record1.FSetPerSeq( 321 );
     // f_id = 1 which exists, so amend record leaving f_id to old value.
@@ -737,9 +735,9 @@ void RecTestCase::TestEventPersona()
     CPPUNIT_ASSERT_NO_THROW( record1.Delete() );
     CPPUNIT_ASSERT( record1.Exists() == false );
 
-    CPPUNIT_ASSERT( recEventPersona::Exists( 999 ) == true );
-    CPPUNIT_ASSERT_NO_THROW( recEventPersona::Delete( 999 ) );
-    CPPUNIT_ASSERT( recEventPersona::Exists( 999 ) == false );
+    CPPUNIT_ASSERT( recEventumPersona::Exists( 999 ) == true );
+    CPPUNIT_ASSERT_NO_THROW( recEventumPersona::Delete( 999 ) );
+    CPPUNIT_ASSERT( recEventumPersona::Exists( 999 ) == false );
 }
 
 void RecTestCase::TestReference()

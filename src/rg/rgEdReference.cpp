@@ -5,7 +5,6 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     26th February 2013
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2013, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -39,7 +38,7 @@
 #include <rec/recDate.h>
 #include <rec/recPlace.h>
 #include <rec/recPersona.h>
-#include <rec/recEventRecord.h>
+#include <rec/recEventum.h>
 
 #include <rg/rgDialogs.h>
 #include "rgEdReference.h"
@@ -50,7 +49,7 @@ bool rgEditReference( wxWindow* parent, idt refID )
     wxASSERT( refID != 0 );
     if( ! recReference::Exists( refID ) ) {
         wxString mess = wxString::Format(
-            "Reference %s not found.", 
+            "Reference %s not found.",
             recReference::GetIdStr( refID)
         );
         wxMessageBox( mess, "Edit Reference Error" );
@@ -88,7 +87,7 @@ idt rgCreateReference( wxWindow* parent )
     return 0;
 }
 
-extern bool rgSelectDateFromReference( 
+extern bool rgSelectDateFromReference(
     wxWindow* wind, idt* dateID, idt refID, const wxString& title, unsigned style )
 {
     wxASSERT( dateID );  // Can't handle NULL pointer
@@ -107,7 +106,7 @@ extern bool rgSelectDateFromReference(
     return true;
 }
 
-extern bool rgSelectPlaceFromReference( 
+extern bool rgSelectPlaceFromReference(
     wxWindow* wind, idt* placeID, idt refID, const wxString& title, unsigned style )
 {
     wxASSERT( placeID );  // Can't handle NULL pointer
@@ -179,7 +178,7 @@ void rgDlgEditReference::UpdateHtml()
 {
     wxString htm;
 
-    htm << 
+    htm <<
         "<!DOCTYPE html>\n"
         "<html>\n<head>\n"
         "<title>" << m_reference.GetIdStr() << "</title>\n"
@@ -248,7 +247,7 @@ void rgDlgEditReference::OnTool( wxCommandEvent& event )
 {
     switch( event.GetId() )
     {
-    case tfpID_EDREF_OnCut:       
+    case tfpID_EDREF_OnCut:
         m_textCtrlStatement->Cut();
         break;
     case tfpID_EDREF_OnCopy:
@@ -355,8 +354,8 @@ void rgDlgEditReference::OnPersonaDeleteButton( wxCommandEvent& event )
         return;
     }
     idt perID = m_personaIDs[row];
-    wxString mess = wxString::Format( 
-        "Remove Persona %s: %s\nfrom Database?", 
+    wxString mess = wxString::Format(
+        "Remove Persona %s: %s\nfrom Database?",
         recPersona::GetIdStr( perID ), recPersona::GetNameStr( perID )
     );
     int ans = wxMessageBox( mess, _("Delete Persona"), wxYES_NO | wxCANCEL, this );
@@ -392,7 +391,7 @@ void rgDlgEditReference::OnNewName( wxCommandEvent& event )
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
 
-    idt perID = rgSelectPersona( 
+    idt perID = rgSelectPersona(
         this, m_reference.GetID(), rgSELSTYLE_Create, rgSELPER_CreateUnnamed
     );
     if( perID == 0 ) {
@@ -462,7 +461,7 @@ void rgDlgEditReference::OnNewPlace( wxCommandEvent& event )
 
 void rgDlgEditReference::OnNewEvent( wxCommandEvent& cmnd_event )
 {
-    idt eveID = rgCreateEventRecord( this, m_reference.FGetID() );
+    idt eveID = rgCreateEventum( this, m_reference.FGetID() );
     if( eveID ) {
         UpdateEntities();// reID );
     }
@@ -470,7 +469,7 @@ void rgDlgEditReference::OnNewEvent( wxCommandEvent& cmnd_event )
 
 void rgDlgEditReference::OnNewPersonalEvent( wxCommandEvent& event )
 {
-    idt eveID = rgCreatePersonalEventRecord( 
+    idt eveID = rgCreatePersonalEventum(
         this, m_reference.FGetID(), m_textCtrlStatement->GetStringSelection()
     );
     if( eveID ) {
@@ -481,7 +480,7 @@ void rgDlgEditReference::OnNewPersonalEvent( wxCommandEvent& event )
 
 void rgDlgEditReference::OnNewRelationship( wxCommandEvent& event )
 {
-    idt relID = rgCreatePersonaRelationship( 
+    idt relID = rgCreatePersonaRelationship(
         this, m_reference.FGetID(), m_textCtrlStatement->GetStringSelection()
     );
     if( relID ) {
@@ -500,17 +499,17 @@ void rgDlgEditReference::OnEditEntityButton( wxCommandEvent& event )
     idt id = m_entities[row].FGetEntityID();
     switch( m_entities[row].FGetEntityType() )
     {
-    case recReferenceEntity::TYPE_Date:  
+    case recReferenceEntity::TYPE_Date:
         if( rgEditDate( this, id ) ) break;
         return;
-    case recReferenceEntity::TYPE_Place: 
+    case recReferenceEntity::TYPE_Place:
         if( rgEditPlace( this, id ) ) break;
         return;
     case recReferenceEntity::TYPE_Relationship:
         if( rgEditPersonaRelationship( this, id ) ) break;
         return;
-    case recReferenceEntity::TYPE_Event: 
-        if( rgEditEventRecord( this, id ) ) break;
+    case recReferenceEntity::TYPE_Event:
+        if( rgEditEventum( this, id ) ) break;
         return;
     case recReferenceEntity::TYPE_Name:
         if( rgEditName( this, id ) ) break;
@@ -547,7 +546,7 @@ void rgDlgEditReference::OnDeleteEntityButton( wxCommandEvent& event )
         recName::RemoveFromDatabase( entID );
         break;
     case recReferenceEntity::TYPE_Event:
-        recEventRecord::RemoveFromDatabase( entID );
+        recEventum::RemoveFromDatabase( entID );
         break;
     default:
         wxMessageBox( _("Element cannot be deleted"), _("Delete") );
@@ -603,7 +602,7 @@ idt rgDlgEditReference::CreateRefEntity( recReferenceEntity::Type type, idt entI
     return re.FGetID();
 }
 #if 0
-bool rgDlgEditReference::SelectDate( 
+bool rgDlgEditReference::SelectDate(
     idt* dateID, const wxString& title, unsigned style )
 {
     wxASSERT( dateID );  // Can't handle NULL pointer
@@ -622,7 +621,7 @@ bool rgDlgEditReference::SelectDate(
     return true;
 }
 
-bool rgDlgEditReference::SelectPlace( 
+bool rgDlgEditReference::SelectPlace(
     idt* placeID, const wxString& title, unsigned style )
 {
     wxASSERT( placeID );  // Can't handle NULL pointer
@@ -665,8 +664,8 @@ void rgDlgEditReference::InsertEntityListItem( size_t row )
         m_listEntities->SetItem( row, ENT_COL_Value, recRelationship::GetValue1Str( entID ) );
         break;
     case recReferenceEntity::TYPE_Event:
-        m_listEntities->SetItem( row, ENT_COL_Number, recEventRecord::GetIdStr( entID ) );
-        m_listEntities->SetItem( row, ENT_COL_Value, recEventRecord::GetTitle( entID ) );
+        m_listEntities->SetItem( row, ENT_COL_Number, recEventum::GetIdStr( entID ) );
+        m_listEntities->SetItem( row, ENT_COL_Value, recEventum::GetTitle( entID ) );
         break;
     default:
         m_listEntities->SetItem( row, ENT_COL_Value, _("Unknown Reference Entity") );

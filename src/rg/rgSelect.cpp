@@ -3,10 +3,8 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Base rgSelect dialog class and others, GUI only.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     21 November 2012
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2012, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -37,7 +35,7 @@
 #endif
 
 #include <rec/recEvent.h>
-#include <rec/recEventRecord.h>
+#include <rec/recEventum.h>
 #include "rgSelect.h"
 #include "rgTableCtrl.h"
 
@@ -229,7 +227,7 @@ wxString rgDlgSelectDate::sm_colHeaders[COL_MAX] = { _("ID"), _("Date") };
 
 #include <rec/recPlace.h>
 
-idt rgSelectPlace( 
+idt rgSelectPlace(
     wxWindow* wind, unsigned flag, unsigned* retbutton, unsigned filter, idt id )
 {
     idt placeID = 0;
@@ -456,7 +454,7 @@ wxString rgDlgSelectIndividual::sm_colHeaders[COL_MAX] = { _("ID"), _("Name") };
 //-------------------[ rgDlgSelectPersona ]--------------------------------------
 //-------------------------------------------------------------------------------
 
-idt rgSelectPersona( 
+idt rgSelectPersona(
     wxWindow* wind, idt refID, unsigned style, rgSELPER flag, unsigned* retbutton )
 {
     idt perID = 0;
@@ -538,16 +536,16 @@ void rgDlgSelectPersona::OnCreatePersona( wxCommandEvent& event )
 }
 
 //-------------------------------------------------------------------------------
-//-------------------[ rgDlgSelectEventRecord ]----------------------------------
+//-------------------[ rgDlgSelectEventum ]--------------------------------------
 //-------------------------------------------------------------------------------
 
-idt rgSelectEquivalentEventRecord( wxWindow* wind, idt eventID )
+idt rgSelectEquivalentEventum( wxWindow* wind, idt eventID )
 {
-    recEventRecordVec ers = recEvent::FindEquivRefEvents( eventID );
+    recEventumVec ers = recEvent::FindEquivRefEvents( eventID );
     if( ers.size() == 0 ) {
         return 0;
     }
-    rgDlgSelectEventRecord* dialog = new rgDlgSelectEventRecord( wind, rgSELSTYLE_None );
+    rgDlgSelectEventum* dialog = new rgDlgSelectEventum( wind, rgSELSTYLE_None );
     wxArrayString table;
     for( size_t i = 0 ; i < ers.size() ; i++ ) {
         table.push_back( ers[i].GetIdStr() );
@@ -562,7 +560,7 @@ idt rgSelectEquivalentEventRecord( wxWindow* wind, idt eventID )
     return id;
 }
 
-wxString rgDlgSelectEventRecord::sm_colHeaders[COL_MAX] = { _("ID"), _("Title") };
+wxString rgDlgSelectEventum::sm_colHeaders[COL_MAX] = { _("ID"), _("Title") };
 
 
 // End of src/rg/rgSelect.cpp file

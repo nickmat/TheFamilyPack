@@ -1,11 +1,10 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/rg/rgEdEventEventRec.cpp
+ * Name:        src/rg/rgEdEventEventum.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Edit an EventEventRecord record dialog header.
+ * Purpose:     Edit an EventEventum record dialog header.
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     7th May 2013
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2013, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -40,14 +39,14 @@
 #include <rec/recIndividual.h>
 
 #include "rg/rgDialogs.h"
-#include "rgEdEventEventRec.h"
+#include "rgEdEventEventum.h"
 
-bool rgEditEventEventRecord( wxWindow* wind, idt eerID )
+bool rgEditEventEventum( wxWindow* wind, idt eerID )
 {
     wxASSERT( eerID != 0 );
     const wxString savepoint = recDb::GetSavepointStr();
     bool ret = false;
-    rgDlgEditEventEventRec* dialog = new rgDlgEditEventEventRec( wind, eerID );
+    rgDlgEditEventEventum* dialog = new rgDlgEditEventEventum( wind, eerID );
 
     recDb::Savepoint( savepoint );
     if( dialog->ShowModal() == wxID_OK )
@@ -61,15 +60,15 @@ bool rgEditEventEventRecord( wxWindow* wind, idt eerID )
     return ret;
 }
 
-idt rgCreateIndEventEventRecord( wxWindow* wind, idt eID, idt erID )
+idt rgCreateIndEventEventum( wxWindow* wind, idt eID, idt erID )
 {
     wxASSERT( eID != 0 && erID != 0 );
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
 
-    idt eerID = recEventEventRecord::Create( eID, erID );
+    idt eerID = recEventEventum::Create( eID, erID );
 
-    if( rgEditEventEventRecord( wind, eerID ) ) {
+    if( rgEditEventEventum( wind, eerID ) ) {
         recDb::ReleaseSavepoint( savepoint );
         return eerID;
     }
@@ -77,14 +76,14 @@ idt rgCreateIndEventEventRecord( wxWindow* wind, idt eID, idt erID )
     return 0;
 }
 
-idt rgFindOrCreateIndEvent( 
+idt rgFindOrCreateIndEvent(
     wxWindow* wind, idt erID, double conf, idt indID, idt roleID )
 {
     wxASSERT( erID != 0 );
     wxASSERT( indID != 0 );
     idt eID = 0;
     recIdVec eIDs;
-    recEventRecord er(erID);
+    recEventum er(erID);
     recET_GRP grp = er.GetTypeGroup();
 
     switch( grp )
@@ -93,7 +92,7 @@ idt rgFindOrCreateIndEvent(
     case recET_GRP_Death:
         eID = recIndividual::FindEvent( indID, grp );
         if( eID == 0 ) {
-            eID = recEvent::CreateFromEventRecord( erID );
+            eID = recEvent::CreateFromEventum( erID );
         }
         eIDs.push_back( eID );
         break;
@@ -103,7 +102,7 @@ idt rgFindOrCreateIndEvent(
         {
             recSelSetEvent sse;
             sse.SetGroupsEnabled(
-                recET_GRP_FILTER_NrBirth | 
+                recET_GRP_FILTER_NrBirth |
                 recET_GRP_FILTER_NrDeath |
                 recET_GRP_FILTER_Other
             );
@@ -136,8 +135,8 @@ idt rgFindOrCreateIndEvent(
     }
 
     if( eID ) {
-        // Now we have an Event, create the Event EventRecord links
-        recEventEventRecord::Create( eID, erID, conf );
+        // Now we have an Event, create the Event Eventum links
+        recEventEventum::Create( eID, erID, conf );
         recIndividualEvent::Create( indID, eID, roleID );
     }
 
@@ -145,10 +144,10 @@ idt rgFindOrCreateIndEvent(
 }
 
 //============================================================================
-//-------------------------[ rgDlgEditEventEventRec ]-------------------------
+//-------------------------[ rgDlgEditEventEventum ]--------------------------
 //============================================================================
 
-bool rgDlgEditEventEventRec::TransferDataToWindow()
+bool rgDlgEditEventEventum::TransferDataToWindow()
 {
     wxASSERT( m_eer.FGetID() != 0 );
 
@@ -156,13 +155,13 @@ bool rgDlgEditEventEventRec::TransferDataToWindow()
     wxString eStr = recEvent::GetIdStr( eID ) + ": " + recEvent::GetTitle( eID );
     m_staticEvent->SetLabel( eStr );
 
-    idt erID = m_eer.FGetEventRecID();
-    wxString erStr = recEventRecord::GetIdStr( erID ) 
-        + ": " + recEventRecord::GetTitle( erID );
-    m_staticEventRec->SetLabel( erStr );
+    idt erID = m_eer.FGetEventumID();
+    wxString erStr = recEventum::GetIdStr( erID )
+        + ": " + recEventum::GetTitle( erID );
+    m_staticEventum->SetLabel( erStr );
 
-    idt rID = recEventRecord::FindReferenceID( erID );
-    wxString rStr = recReference::GetIdStr( rID ) 
+    idt rID = recEventum::FindReferenceID( erID );
+    wxString rStr = recReference::GetIdStr( rID )
         + ": " + recReference::GetTitle( rID );
     m_staticRef->SetLabel( rStr );
 
@@ -175,7 +174,7 @@ bool rgDlgEditEventEventRec::TransferDataToWindow()
     return true;
 }
 
-bool rgDlgEditEventEventRec::TransferDataFromWindow()
+bool rgDlgEditEventEventum::TransferDataFromWindow()
 {
     double conf;
     m_textCtrlConf->GetValue().ToDouble( &conf );
@@ -186,4 +185,4 @@ bool rgDlgEditEventEventRec::TransferDataFromWindow()
     return true;
 }
 
-// End of src/rg/rgEdEventEventRec.cpp file
+// End of src/rg/rgEdEventEventum.cpp file

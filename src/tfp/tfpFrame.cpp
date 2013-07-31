@@ -3,11 +3,9 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     TfpFrame class source.
  * Author:      Nick Matthews
- * Modified by:
- * Created:     25 September 2010
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010, Nick Matthews.
  * Website:     http://thefamilypack.org
+ * Created:     25 September 2010
+ * Copyright:   Copyright (c) 2010, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -97,9 +95,9 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_LIST_ALL_EVENTS, TfpFrame::OnListAllEvents )
     EVT_MENU( tfpID_LIST_PAGED_EVENTS, TfpFrame::OnListPagedEvents )
     EVT_MENU( tfpID_LIST_SELECTED_EVENTS, TfpFrame::OnListSelectedEvents )
-    EVT_MENU( tfpID_LIST_ALL_EVENTRECS, TfpFrame::OnListAllEventRecs )
-    EVT_MENU( tfpID_LIST_PAGED_EVENTRECS, TfpFrame::OnListPagedEventRecs )
-    EVT_MENU( tfpID_LIST_SELECTED_EVENTRECS, TfpFrame::OnListSelectedEventRecs )
+    EVT_MENU( tfpID_LIST_ALL_EVENTUMS, TfpFrame::OnListAllEventums )
+    EVT_MENU( tfpID_LIST_PAGED_EVENTUMS, TfpFrame::OnListPagedEventums )
+    EVT_MENU( tfpID_LIST_SELECTED_EVENTUMS, TfpFrame::OnListSelectedEventums )
     EVT_MENU( tfpID_LIST_RESEARCHERS, TfpFrame::OnListResearchers )
     EVT_MENU( tfpID_PED_CHART, TfpFrame::OnPedChart )
     EVT_MENU( tfpID_DESC_CHART, TfpFrame::OnDescChart )
@@ -184,7 +182,7 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     menuEdFam->Append( tfpID_EDIT_NEW_DAUR, _("Add new &Daughter") );
     menuEdFam->AppendSeparator();
     menuEdFam->Append( tfpID_EDIT_EXIST_SON, _("Add existing S&on") );
-    menuEdFam->Append( tfpID_EDIT_EXIST_DAUR, _("Add existing D&aughter") );    
+    menuEdFam->Append( tfpID_EDIT_EXIST_DAUR, _("Add existing D&aughter") );
 
     m_menuEditInd = new wxMenu;
     m_menuEditInd->Append( tfpID_EDIT_IND_LEFT, "? ?..", menuEdIndL );
@@ -229,9 +227,9 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     menuListEvent->Append( tfpID_LIST_PAGED_EVENTS, _("&Paged Events") );
     menuListEvent->Append( tfpID_LIST_SELECTED_EVENTS, _("&Selected Events...") );
     menuListEvent->AppendSeparator();
-    menuListEvent->Append( tfpID_LIST_ALL_EVENTRECS, _("All Event &Records") );
-    menuListEvent->Append( tfpID_LIST_PAGED_EVENTRECS, _("Pa&ged Event Records") );
-    menuListEvent->Append( tfpID_LIST_SELECTED_EVENTRECS, _("Se&lected Event Records...") );
+    menuListEvent->Append( tfpID_LIST_ALL_EVENTUMS, _("All Eventu&ms") );
+    menuListEvent->Append( tfpID_LIST_PAGED_EVENTUMS, _("Pa&ged Eventums") );
+    menuListEvent->Append( tfpID_LIST_SELECTED_EVENTUMS, _("Se&lected Eventums...") );
 
     wxMenu* menuList = new wxMenu;
     menuList->Append( tfpID_LIST_SURNAME_INDEX, _("&Surname Index\tAlt-S") );
@@ -338,7 +336,7 @@ TfpFrame::~TfpFrame()
  */
 void TfpFrame::OnNewWindow( wxCommandEvent& event )
 {
-    TfpFrame* frame = new TfpFrame( 
+    TfpFrame* frame = new TfpFrame(
         "The Family Pack", wxDefaultPosition, wxSize( 900, 700 )
     );
     frame->Show(true);
@@ -747,27 +745,27 @@ void TfpFrame::OnListSelectedEvents( wxCommandEvent& event )
     }
 }
 
-/*! \brief Called on a List/All Events menu option event.
+/*! \brief Called on a List/All Eventums menu option event.
  */
-void TfpFrame::OnListAllEventRecs( wxCommandEvent& event )
+void TfpFrame::OnListAllEventums( wxCommandEvent& event )
 {
-    DisplayHtmPage( "ER" );
+    DisplayHtmPage( "Em" );
 }
 
-/*! \brief Called on a List/Paged Events menu option event.
+/*! \brief Called on a List/Paged Eventums menu option event.
  */
-void TfpFrame::OnListPagedEventRecs( wxCommandEvent& event )
+void TfpFrame::OnListPagedEventums( wxCommandEvent& event )
 {
-    DisplayHtmPage( "ER,0" );
+    DisplayHtmPage( "Em,0" );
 }
 
-/*! \brief Called on a List/Selected Events menu option event.
+/*! \brief Called on a List/Selected Eventums menu option event.
  */
-void TfpFrame::OnListSelectedEventRecs( wxCommandEvent& event )
+void TfpFrame::OnListSelectedEventums( wxCommandEvent& event )
 {
-    wxMessageBox( "Not yet implimented", "OnListSelectedEventRecs" );
-//    if( rgSelectIndEventRecList( this, &m_erFilter ) ) {
-//        DisplayHtmPage( "ER$" );
+    wxMessageBox( "Not yet implimented", "OnListSelectedEventums" );
+//    if( rgSelectIndEventumList( this, &m_emFilter ) ) {
+//        DisplayHtmPage( "Em$" );
 //    }
 }
 
@@ -986,7 +984,7 @@ void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
         bool ret = false;
         switch( uch.GetValue() )
         {
-        case 'F': 
+        case 'F':
             ret = rgEditFamily( this, id );
             break;
         case 'R':
@@ -994,7 +992,7 @@ void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
             break;
         case 'E':
             if( uch1.GetValue() == 'R' ) {
-                ret = rgEditEventRecord( this, id );
+                ret = rgEditEventum( this, id );
             } else {
                 ret = rgEditEvent( this, id );
             }
@@ -1057,7 +1055,7 @@ void TfpFrame::OnNavigationRequest( wxWebViewEvent& evt )
     }
 
     wxMessageBox(
-        wxString::Format( 
+        wxString::Format(
             _("Unable to proccess link\n[%s]\n[%s]"), url, target
         ),
         _("Unknown Link")
@@ -1248,7 +1246,7 @@ void TfpFrame::OpenTestFile()
     }
 }
 
-// Handles scheme "tfpc:" 
+// Handles scheme "tfpc:"
 void TfpFrame::DoTfpCommand( const wxString& href )
 {
     if( href == "New" ) {
@@ -1264,9 +1262,9 @@ void TfpFrame::DoTfpCommand( const wxString& href )
     } else if( href.StartsWith( "M" ) ) {
         DoHtmCtxMenu( href.Mid( 1 ) );
     } else {
-        wxMessageBox( 
+        wxMessageBox(
             wxString::Format( _("Error: Invalid Command \"tfpc:%s\""), href ),
-            _("Link Error") 
+            _("Link Error")
         );
     }
 }
@@ -1281,7 +1279,7 @@ void TfpFrame::DoEdit( const wxString& href )
         if( href.StartsWith( "cEER" ) ) {
             idt eID, erID;
             recGetIDs( href.Mid(4), &eID, &erID );
-            id = rgCreateIndEventEventRecord( this, eID, erID );
+            id = rgCreateIndEventEventum( this, eID, erID );
             if( id ) ret = true;
         } else if( href.StartsWith( "cE" ) ) {
             id = rgCreateEventFromRecord( this, recGetID( href.Mid(2) ) );
@@ -1549,7 +1547,7 @@ void TfpFrame::RefreshEditMenu()
     m_menuEditEvent->Enable( tfpID_EDIT_EVENT_CURRENT, false );
     m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, false );
 
-    switch( uch.GetValue() ) 
+    switch( uch.GetValue() )
     {
     case 'F': {
             recFamily fam(0);
@@ -1587,7 +1585,7 @@ void TfpFrame::RefreshEditMenu()
             idt indID = recGetID( disp.Mid( 1 ) );
             name = recIndividual::GetName( indID );
             if( name.size() > 50 ) {
-                name = name.Mid( 0, 48 ) + "..."; 
+                name = name.Mid( 0, 48 ) + "...";
             }
             m_menuEditInd->SetLabel( tfpID_EDIT_IND_LEFT, name );
             m_menuEditInd->Enable( tfpID_EDIT_IND_LEFT, true );
@@ -1603,14 +1601,14 @@ void TfpFrame::RefreshEditMenu()
             m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
         } else if( disp.size() >= 3 && disp.GetChar( 1 ) == 'R' && wxIsdigit( disp.GetChar( 2 ) ) ) {
             m_editEventID = recGetID( disp.Mid( 2 ) );
-            name = recEventRecord::GetTitle( m_editEventID );
+            name = recEventum::GetTitle( m_editEventID );
 //            m_menuEditEvent->SetLabel( tfpID_EDIT_EVENT_CURRENT, name );
 //            m_menuEditEvent->Enable( tfpID_EDIT_EVENT_CURRENT, true );
             m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
         }
         break;
     case 'R':
-        if( disp.size() >= 2 && 
+        if( disp.size() >= 2 &&
             ( wxIsdigit( disp.GetChar( 1 ) ) || disp.GetChar( 1 ) == '$' )
         ) {
             m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
@@ -1648,7 +1646,7 @@ void TfpFrame::RefreshHtmPage()
 
 bool TfpFrame::DisplayHomePage()
 {
-    return DisplayHtmPage( recGetHomeDisplay() ); 
+    return DisplayHtmPage( recGetHomeDisplay() );
 }
 
 wxString TfpFrame::GetDisplayText( const wxString& name )
@@ -1680,18 +1678,18 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
     if( name.compare( "E$" ) == 0 ) {
         return tfpWriteEventSelection( m_selEvent );
     }
-    if( name.compare( "ER" ) == 0 ) {
-        return tfpWriteEventRecordIndex();
+    if( name.compare( "Em" ) == 0 ) {
+        return tfpWriteEventumIndex();
     }
-// We don't have a EventRecord filter yet!
-//    if( name.compare( "ER$" ) == 0 ) {
-//        return tfpWriteEventRecordSelection( m_erFilter );
+// We don't have a Eventum filter yet!
+//    if( name.compare( "Em$" ) == 0 ) {
+//        return tfpWriteEventumSelection( m_erFilter );
 //    }
-    if( name.compare( 0, 2, "ER" ) == 0 && success1 ) {
-        return tfpWriteEventRecordPage( num1 );
+    if( name.compare( 0, 2, "Em" ) == 0 && success1 ) {
+        return tfpWriteEventumPage( num1 );
     }
-    if( name.compare( 0, 3, "ER," ) == 0 && success2 ) {
-        return tfpWriteEventRecordPagedIndex( num2 );
+    if( name.compare( 0, 3, "Em," ) == 0 && success2 ) {
+        return tfpWriteEventumPagedIndex( num2 );
     }
     if( name.compare( 0, 1, "E" ) == 0 && success ) {
         return tfpWriteEventPage( num, NULL );

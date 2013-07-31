@@ -1,11 +1,10 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/rg/rgEdEventEventRec.h
+ * Name:        src/rg/rgEdEventEventum.h
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Edit an EventEventRecord record dialog header.
+ * Purpose:     Edit an EventEventum record dialog header.
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     7th May 2013
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2013, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -25,28 +24,28 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 */
 
-#ifndef RG_RGEDEVENTEVENTREC_H
-#define RG_RGEDEVENTEVENTREC_H
+#ifndef RG_RGEDEVENTEVENTUM_H
+#define RG_RGEDEVENTEVENTUM_H
 
-#include <rec/recEventRecord.h>
+#include <rec/recEventum.h>
 
 #include "fbRgDialog.h"
 
 //============================================================================
-//-------------------------[ rgDlgEditEventEventRec ]-------------------------
+//-------------------------[ rgDlgEditEventEventum ]--------------------------
 //============================================================================
 
-class rgDlgEditEventEventRec : public fbRgEditEventEventRec
+class rgDlgEditEventEventum : public fbRgEditEventEventum
 {
 public:
-    rgDlgEditEventEventRec( wxWindow* parent, idt eerID )
-        : m_eer(eerID), fbRgEditEventEventRec( parent ) {}
-   
+    rgDlgEditEventEventum( wxWindow* parent, idt eerID )
+        : m_eer(eerID), fbRgEditEventEventum( parent ) {}
+
 private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
 
-    recEventEventRecord m_eer;
+    recEventEventum m_eer;
 };
 
-#endif // RG_RGEDEVENTEVENTREC_H
+#endif // RG_RGEDEVENTEVENTUM_H

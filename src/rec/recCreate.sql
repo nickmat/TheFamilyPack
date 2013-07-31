@@ -3,11 +3,9 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     SQL text to create initial database.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     22nd March 2008
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2008 - 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2008 - 2013, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -86,32 +84,12 @@ CREATE TABLE Event (
   date_pt INTEGER NOT NULL
 );
 
-CREATE TABLE EventEventRecord (
+CREATE TABLE EventEventum (
   id INTEGER PRIMARY KEY,
   event_id INTEGER NOT NULL REFERENCES Event(id),
-  event_rec_id INTEGER NOT NULL REFERENCES EventRecord(id),
+  eventum_id INTEGER NOT NULL REFERENCES Eventum(id),
   conf FLOAT NOT NULL,
   note TEXT
-);
-
-CREATE TABLE EventPersona (
-  id INTEGER PRIMARY KEY,
-  event_rec_id INTEGER NOT NULL REFERENCES EventRecord(id),
-  per_id INTEGER NOT NULL REFERENCES Persona(id),
-  role_id INTEGER NOT NULL REFERENCES EventTypeRole(id),
-  note TEXT NOT NULL,
-  per_seq INTEGER NOT NULL
-);
-
-CREATE TABLE EventRecord (
-  id INTEGER PRIMARY KEY,
-  title TEXT NOT NULL,
-  type_id INTEGER NOT NULL REFERENCES EventType(id),
-  date1_id INTEGER NOT NULL,
-  date2_id INTEGER NOT NULL,
-  place_id INTEGER NOT NULL,
-  note TEXT NOT NULL,
-  date_pt INTEGER NOT NULL
 );
 
 CREATE TABLE EventType (
@@ -126,6 +104,26 @@ CREATE TABLE EventTypeRole (
   prime INTEGER,
   official INTEGER,
   name TEXT
+);
+
+CREATE TABLE Eventum (
+  id INTEGER PRIMARY KEY,
+  title TEXT NOT NULL,
+  type_id INTEGER NOT NULL REFERENCES EventType(id),
+  date1_id INTEGER NOT NULL,
+  date2_id INTEGER NOT NULL,
+  place_id INTEGER NOT NULL,
+  note TEXT NOT NULL,
+  date_pt INTEGER NOT NULL
+);
+
+CREATE TABLE EventumPersona (
+  id INTEGER PRIMARY KEY,
+  eventum_id INTEGER NOT NULL REFERENCES Eventum(id),
+  per_id INTEGER NOT NULL REFERENCES Persona(id),
+  role_id INTEGER NOT NULL REFERENCES EventTypeRole(id),
+  note TEXT NOT NULL,
+  per_seq INTEGER NOT NULL
 );
 
 INSERT INTO EventType (id) VALUES(0);
@@ -475,7 +473,7 @@ INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 0, 1, 'F1');
 INSERT INTO UserSetting (id, user_id, property, val) VALUES(2, 1, 1, 'F1');
 
 /* The Version table has only this one row */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 5);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 6);
 
 COMMIT;
 

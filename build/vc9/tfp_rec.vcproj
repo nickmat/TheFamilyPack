@@ -234,11 +234,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\rec\recEventRecord.cpp"
+				RelativePath="..\..\src\rec\recEventType.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\rec\recEventType.cpp"
+				RelativePath="..\..\src\rec\recEventum.cpp"
 				>
 			</File>
 			<File
@@ -328,11 +328,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\rec\recEventRecord.h"
+				RelativePath="..\..\include\rec\recEventType.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\rec\recEventType.h"
+				RelativePath="..\..\include\rec\recEventum.h"
 				>
 			</File>
 			<File

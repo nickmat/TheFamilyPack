@@ -99,11 +99,11 @@
    </tr>
    <tr>
     <td><a href="#Event">Event</a></td>
-    <td><a href="#EventEventRecord">EventEventRecord</a></td>
-    <td><a href="#EventPersona">EventPersona</a></td>
-    <td><a href="#EventRecord">EventRecord</a></td>
+    <td><a href="#EventEventum">EventEventum</a></td>
     <td><a href="#EventType">EventType</a></td>
     <td><a href="#EventTypeRole">EventTypeRole</a></td>
+    <td><a href="#Eventum">Eventum</a></td>
+    <td><a href="#EventumPersona">EventumPersona</a></td>
    </tr>
    <tr>
     <td><a href="#Family">Family</a></td>
@@ -361,16 +361,16 @@
      <td>A single day used to order lists of events.</td>
     </tr>
 
-    <tr id="EventEventRecord">
+    <tr id="EventEventum">
      <td colspan="3" class="filler"><a href="#">Top</a></td>
     </tr>
     <tr class="head">
-     <td colspan="3"><b>EventEventRecord</b></td>
+     <td colspan="3"><b>EventEventum</b></td>
     </tr>
     <tr>
      <td>id</td>
      <td class="nw">Integer PK</td>
-     <td>Unique key identifying an EventEventRecord.</td>
+     <td>Unique key identifying an EventEventum.</td>
     </tr>
     <tr>
      <td>event_id</td>
@@ -378,9 +378,9 @@
      <td>Pointer to an Event</td>
     </tr>
     <tr>
-     <td>event_rec_id</td>
+     <td>eventum_id</td>
      <td>Integer Not null FK</td>
-     <td>Pointer to an EventRecord</td>
+     <td>Pointer to an Eventum</td>
     </tr>
     <tr>
      <td>conf</td>
@@ -391,90 +391,6 @@
      <td>note</td>
      <td>Text</td>
      <td>Optional note that relates to the link between the events</td>
-    </tr>
-
-    <tr id="EventPersona">
-     <td colspan="3" class="filler"><a href="#">Top</a></td>
-    </tr>
-    <tr class="head">
-     <td colspan="3"><b>EventPersona</b></td>
-    </tr>
-    <tr>
-     <td>id</td>
-     <td class="nw">Integer PK</td>
-     <td>Unique key identifying an EventPersona.</td>
-    </tr>
-    <tr>
-     <td>event_rec_id</td>
-     <td>Integer Not null FK</td>
-     <td>Pointer to an EventRecord</td>
-    </tr>
-    <tr>
-     <td>per_id</td>
-     <td>Integer Not null FK</td>
-     <td>Pointer to a Persona</td>
-    </tr>
-    <tr>
-     <td>role_id</td>
-     <td>Integer Not null FK</td>
-     <td>Points to the role played by the Persona</td>
-    </tr>
-    <tr>
-     <td>note</td>
-     <td>Text Not null</td>
-     <td>Optional note that relates to the Persona</td>
-    </tr>
-    <tr>
-     <td>per_seq</td>
-     <td>Integer Not null</td>
-     <td>The sequence of personas included in a given event record.</td>
-    </tr>
-
-    <tr id="EventRecord">
-     <td colspan="3" class="filler"><a href="#">Top</a></td>
-    </tr>
-    <tr class="head">
-     <td colspan="3"><b>EventRecord</b></td>
-    </tr>
-    <tr>
-     <td>id</td>
-     <td>Integer PK</td>
-     <td>Unique key identifying an EventRecord</td>
-    </tr>
-    <tr>
-     <td>title</td>
-     <td>Text Not null</td>
-     <td>The name of the Event, such as "Marriage of John Smith and Mary Jones".</td>
-    </tr>
-    <tr>
-     <td>type_id</td>
-     <td>Integer Not null FK</td>
-     <td>Unique identifier that indicates to which Event Type this event belongs.</td>
-    </tr>
-    <tr>
-     <td>date1_id</td>
-     <td>Integer Not null FK</td>
-     <td>The point date associated with the Event.</td>
-    </tr>
-    <tr>
-     <td>date2_id</td>
-     <td>Integer Not null FK</td>
-     <td>The optional second date if a date range is associated with the Event.</td>
-    </tr>
-    <tr>
-     <td>place_id</td>
-     <td>Integer Not null FK</td>
-     <td>Unique identifier in Place that indicates where this Event took place.</td>
-    </tr>
-    <tr>
-     <td>note</td>
-     <td>Text</td>
-     <td>Optional note that relates to the Event.</td>
-    </tr>
-    <tr>
-     <td>date_pt</td>
-     <td>Integer Not null</td>
-     <td>A single day used to order lists of events.</td>
     </tr>
 
     <tr id="EventType">
@@ -529,6 +445,90 @@
      <td>name</td>
      <td>Text</td>
      <td>The value that distinguishes the different members of the event type, such as role (bride, groom, witness).</td>
+    </tr>
+
+    <tr id="Eventum">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>Eventum</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying an Eventum</td>
+    </tr>
+    <tr>
+     <td>title</td>
+     <td>Text Not null</td>
+     <td>The name of the Event, such as "Marriage of John Smith and Mary Jones".</td>
+    </tr>
+    <tr>
+     <td>type_id</td>
+     <td>Integer Not null FK</td>
+     <td>Unique identifier that indicates to which Event Type this eventum belongs.</td>
+    </tr>
+    <tr>
+     <td>date1_id</td>
+     <td>Integer Not null FK</td>
+     <td>The point date associated with the Eventum.</td>
+    </tr>
+    <tr>
+     <td>date2_id</td>
+     <td>Integer Not null FK</td>
+     <td>The optional second date if a date range is associated with the Eventum.</td>
+    </tr>
+    <tr>
+     <td>place_id</td>
+     <td>Integer Not null FK</td>
+     <td>Unique identifier in Place that indicates where this Eventum took place.</td>
+    </tr>
+    <tr>
+     <td>note</td>
+     <td>Text</td>
+     <td>Optional note that relates to the Eventum.</td>
+    </tr>
+    <tr>
+     <td>date_pt</td>
+     <td>Integer Not null</td>
+     <td>A single day used to order lists of events.</td>
+    </tr>
+
+    <tr id="EventumPersona">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>EventumPersona</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td class="nw">Integer PK</td>
+     <td>Unique key identifying an EventumPersona.</td>
+    </tr>
+    <tr>
+     <td>eventum_id</td>
+     <td>Integer Not null FK</td>
+     <td>Pointer to an Eventum</td>
+    </tr>
+    <tr>
+     <td>per_id</td>
+     <td>Integer Not null FK</td>
+     <td>Pointer to a Persona</td>
+    </tr>
+    <tr>
+     <td>role_id</td>
+     <td>Integer Not null FK</td>
+     <td>Points to the role played by the Persona</td>
+    </tr>
+    <tr>
+     <td>note</td>
+     <td>Text Not null</td>
+     <td>Optional note that relates to the Persona</td>
+    </tr>
+    <tr>
+     <td>per_seq</td>
+     <td>Integer Not null</td>
+     <td>The sequence of personas included in a given eventum record.</td>
     </tr>
 
     <tr id="Family">

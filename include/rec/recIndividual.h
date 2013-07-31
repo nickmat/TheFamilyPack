@@ -3,10 +3,8 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Manage SQLite3 Family, FamilyIndividual and Individual records.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2010, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -102,7 +100,7 @@ public:
     static wxString GetSurname( idt indID );
     static wxString GetEpitaph( idt indID );
     static Sex GetSex( idt indID );
-    static idt GetFamilyID( idt indID ); 
+    static idt GetFamilyID( idt indID );
 
     static recIndividualVec ReadVec( unsigned sexfilter = recInd_FILTER_SexAll );
 
@@ -112,7 +110,7 @@ public:
     wxString GetNameStr() const { return recName::GetDefaultNameStr( f_id, 0 ); }
     static wxString GetDescriptionStr( idt indID );
     wxString GetDescriptionStr() const { return GetDescriptionStr( f_id ); }
-    
+
 
     static recNameVec GetNames( idt indID ) { return recName::GetNames( indID, 0 ); }
     recNameVec GetNames() const { return recName::GetNames( f_id, 0 ); }
@@ -127,7 +125,7 @@ public:
     idt FindEvent( idt roleID ) const { return FindEvent( f_id, roleID ); }
     static idt FindGroupEvent( idt indID, recET_GRP grp );
     idt FindGroupEvent( recET_GRP grp ) const { return FindGroupEvent( f_id, grp ); }
- 
+
     static recIdVec FindEvents( idt indID, recET_GRP grp );
     recIdVec FindEvents( recET_GRP grp ) const { return FindEvents( f_id, grp ); }
 
@@ -149,8 +147,8 @@ public:
     recIndEventVec GetEvents( recEventOrder order = recEO_DatePt ) const
         { return GetEvents( f_id, order ); }
 
-    wxSQLite3ResultSet GetEventRecordSet() const { return GetEventRecordSet( f_id ); }
-    static wxSQLite3ResultSet GetEventRecordSet( idt indID );
+    wxSQLite3ResultSet GetEventumSet() const { return GetEventumSet( f_id ); }
+    static wxSQLite3ResultSet GetEventumSet( idt indID );
 
     wxSQLite3ResultSet GetReferenceSet() const { return GetReferenceSet( f_id ); }
     static wxSQLite3ResultSet GetReferenceSet( idt indID );
@@ -175,7 +173,7 @@ public:
 inline bool recEquivalent( const recIndividual& r1, const recIndividual& r2 )
 {
     return
-        r1.f_sex     == r2.f_sex     &&   
+        r1.f_sex     == r2.f_sex     &&
         r1.f_name    == r2.f_name    &&
         r1.f_surname == r2.f_surname &&
         r1.f_epitaph == r2.f_epitaph &&
@@ -300,8 +298,8 @@ public:
     int FGetSeqChild() const { return f_seq_child; }
     int FSetSeqParent() const { return f_seq_parent; }
 
-    void FSetFamID( idt famID ) { f_fam_id = famID; } 
-    void FSetIndID( idt indID ) { f_ind_id = indID; } 
+    void FSetFamID( idt famID ) { f_fam_id = famID; }
+    void FSetIndID( idt indID ) { f_ind_id = indID; }
     void FSetSeqChild( int seq ) { f_seq_child = seq; }
     void FSetSeqParent( int seq ) { f_seq_parent = seq; }
 
@@ -345,7 +343,7 @@ public:
     };
 
     recIndRelationship() {}
-    recIndRelationship( idt indID ) 
+    recIndRelationship( idt indID )
         : m_fam_id(0), m_ind1_id(indID), m_ind2_id(0), m_type(IRT_Unstated) {}
 
     idt GetFamily() const { return m_fam_id; }

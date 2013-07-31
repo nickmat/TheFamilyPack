@@ -1,12 +1,10 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Name:        src/rg/rgEdPerIndEvent.h
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Edit an EventPersona or IndividualEvent record dialog header.
+ * Purpose:     Edit an EventumPersona or IndividualEvent record dialog header.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     23 November 2012
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2012, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -30,7 +28,7 @@
 #define RGEDPERINDEVENT_H
 
 #include <rec/recEvent.h>
-#include <rec/recEventRecord.h>
+#include <rec/recEventum.h>
 
 #include "rg/rgDialogs.h"
 
@@ -44,7 +42,7 @@ class rgDlgIndEvent : public fbRgPerIndEvent
 {
 public:
     rgDlgIndEvent( wxWindow* parent, idt ieID, rgSHOWROLE filter );
-   
+
 private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
@@ -68,7 +66,7 @@ class rgDlgPerEvent : public fbRgPerIndEvent
 {
 public:
     rgDlgPerEvent( wxWindow* parent, idt epID, rgSHOWROLE filter );
-   
+
 private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
@@ -78,8 +76,8 @@ private:
 
     void OnAddRoleButton( wxCommandEvent& event );
 
-    recEventRecord      m_event;
-    recEventPersona     m_ep;
+    recEventum          m_event;
+    recEventumPersona   m_ep;
     rgSHOWROLE          m_filter;
     recEventTypeRoleVec m_roles;
 };

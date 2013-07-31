@@ -3,10 +3,8 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Various Database Dialog function prototypes, GUI only.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     21 November 2012
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2012, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -51,13 +49,13 @@ enum {
 extern idt rgCreateName( wxWindow* wind, idt indID, idt perID,
     unsigned flags, const wxString& name1, const wxString& name2, idt typeID );
 inline idt rgCreatePersonaName( wxWindow* wind, idt perID,
-    unsigned flags = rgCRNAME_Default, 
+    unsigned flags = rgCRNAME_Default,
     const wxString& name1 = wxEmptyString,
     const wxString& name2 = wxEmptyString,
     idt typeID = (idt) recNameStyle::NS_Default )
     { return rgCreateName( wind, 0, perID, flags, name1, name2, typeID ); }
 inline idt rgCreateIndividualName( wxWindow* wind, idt indID,
-    unsigned flags = rgCRNAME_Default, 
+    unsigned flags = rgCRNAME_Default,
     const wxString& name1 = wxEmptyString,
     const wxString& name2 = wxEmptyString,
     idt typeID = (idt) recNameStyle::NS_Default )
@@ -76,24 +74,24 @@ extern bool rgEditEvent( wxWindow* wind, idt eveID );
 extern idt rgCreateIndEvent( wxWindow* wind, idt ind1ID, idt ind2ID = 0, idt famID = 0 );
 extern idt rgCreateEventFromRecord( wxWindow* wind, idt erID );
 
-// See src/rg/rgEdEventEventRec.cpp
-extern bool rgEditEventEventRecord( wxWindow* wind, idt eerID );
-extern idt rgCreateIndEventEventRecord( wxWindow* wind, idt eID, idt erID );
-extern idt rgFindOrCreateIndEvent( 
-    wxWindow* wind, 
-    idt erID, 
+// See src/rg/rgEdEventEventum.cpp
+extern bool rgEditEventEventum( wxWindow* wind, idt eerID );
+extern idt rgCreateIndEventEventum( wxWindow* wind, idt eID, idt erID );
+extern idt rgFindOrCreateIndEvent(
+    wxWindow* wind,
+    idt erID,
     double conf,
-    idt id,  // Individual or Family depending on Event Group 
+    idt id,  // Individual or Family depending on Event Group
     idt roleID );
-
-// See src/rg/rgEdEventRecord.cpp
-extern bool rgEditEventRecord( wxWindow* wind, idt eveID );
-extern idt rgCreateEventRecord( wxWindow* wind, idt refID );
-extern idt rgCreatePersonalEventRecord( wxWindow* wind, idt refID, const wxString& role );
 
 // See src/rg/rgEdEventType.cpp
 extern bool rgEditEventType( wxWindow* wind, idt etID );
 extern idt rgCreateEventType( wxWindow* wind );
+
+// See src/rg/rgEdEventum.cpp
+extern bool rgEditEventum( wxWindow* wind, idt eveID );
+extern idt rgCreateEventum( wxWindow* wind, idt refID );
+extern idt rgCreatePersonalEventum( wxWindow* wind, idt refID, const wxString& role );
 
 // See src/rg/rgEdFamily.cpp
 extern bool rgEditFamily( wxWindow* wind, idt famID );
@@ -131,15 +129,15 @@ extern idt rgCreatePlace( wxWindow* wind, const wxString& placeStr = wxEmptyStri
 // See src/rg/rgEdReference.cpp
 extern bool rgEditReference( wxWindow* wind, idt refID );
 extern idt rgCreateReference( wxWindow* wind );
-extern bool rgSelectDateFromReference( 
+extern bool rgSelectDateFromReference(
     wxWindow* wind, idt* dateID, idt refID, const wxString& title, unsigned style );
-extern bool rgSelectPlaceFromReference( 
+extern bool rgSelectPlaceFromReference(
     wxWindow* wind, idt* placeID, idt refID, const wxString& title, unsigned style );
 
 // See src/rg/rgEdRelationship.cpp
 extern bool rgEditPersonaRelationship( wxWindow* wind, idt relID );
 extern idt rgCreatePersonaRelationship(
-    wxWindow* wind, idt refID, const wxString& value = "", idt per1ID = 0, idt per2ID = 0 ); 
+    wxWindow* wind, idt refID, const wxString& value = "", idt per1ID = 0, idt per2ID = 0 );
 
 // See src/rg/rgEdRelDate.cpp
 extern bool rgEditRelativeDate( wxWindow* wind, idt dateID );
@@ -160,7 +158,7 @@ extern bool rgEditSystemSettings( wxWindow* wind );
 extern bool rgEditUserSettings( wxWindow* wind );
 
 // See src/rg/rgEdIndividual.cpp
-extern idt rgAddNewIndividual( 
+extern idt rgAddNewIndividual(
     wxWindow* wind, Sex sex, const wxString& surname = wxEmptyString, idt famID = 0 );
 extern bool rgAddNewParent( wxWindow* wind, idt indID, Sex sex );
 extern bool rgAddExistParent( wxWindow* wind, idt indID, Sex sex );
@@ -171,17 +169,17 @@ extern idt rgAddExistChild( wxWindow* wind, idt famID, Sex sex );
 extern bool rgDeleteIndividual( wxWindow* wind, idt indID );
 
 // See src/rg/rgSelect.cpp
-extern idt rgSelectDate( 
+extern idt rgSelectDate(
     wxWindow* wind,
     unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL,
     unsigned filter = 0, idt = 0 );
 
-extern idt rgSelectPlace( 
+extern idt rgSelectPlace(
     wxWindow* wind,
     unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL,
     unsigned filter = 0, idt = 0 );
 
-extern idt rgSelectEventType( 
+extern idt rgSelectEventType(
     wxWindow* wind,
     unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL,
     unsigned grpfilter = recET_FILTER_GrpAll );
@@ -200,20 +198,20 @@ enum rgSELPER {
     rgSELPER_Default = 0x00,
     rgSELPER_CreateUnnamed = 0x01
 };
-extern idt rgSelectPersona( 
-    wxWindow* wind, 
+extern idt rgSelectPersona(
+    wxWindow* wind,
     idt refID,
-    unsigned style = rgSELSTYLE_Create, 
+    unsigned style = rgSELSTYLE_Create,
     rgSELPER flag = rgSELPER_Default,
     unsigned* retbutton = NULL );
 
-extern idt rgSelectEquivalentEventRecord( wxWindow* wind, idt eventID );
+extern idt rgSelectEquivalentEventum( wxWindow* wind, idt eventID );
 
 // See src/rg/rgSelIndEvent.cpp
 extern bool rgSelectEventList( wxWindow* wind, recSelSetEvent* exfilter );
-extern idt rgSelectEvent( 
+extern idt rgSelectEvent(
     wxWindow* wind,
-    unsigned flag = rgSELSTYLE_None, 
+    unsigned flag = rgSELSTYLE_None,
     recSelSetEvent* filter = NULL,
     bool* ok = NULL,
     idt indID = 0 );

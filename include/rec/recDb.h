@@ -3,10 +3,8 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Manage SQLite3 database, combined header.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2010, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -34,7 +32,7 @@
 #include <rec/recDatabase.h>
 #include <rec/recDate.h>
 #include <rec/recEvent.h>
-#include <rec/recEventRecord.h>
+#include <rec/recEventum.h>
 #include <rec/recEventType.h>
 #include <rec/recGedParse.h>
 #include <rec/recIndividual.h>

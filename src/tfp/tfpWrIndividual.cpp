@@ -3,11 +3,9 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Write screen for a Individual function.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     7 October 2010
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2010-2013, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -38,7 +36,7 @@
 
 #include <rec/recIndividual.h>
 #include <rec/recEvent.h>
-#include <rec/recEventRecord.h>
+#include <rec/recEventum.h>
 #include <rec/recPersona.h>
 #include <rec/recName.h>
 #include <rec/recReference.h>
@@ -54,10 +52,10 @@ wxString tfpWriteIndividualPage( idt indID )
     recFamilyVec families = ind.GetFamilyList();
     wxASSERT( families.size() > 0 );
     recIndividual spouse;
-    bool single = ( families.size() > 1 || families[0].GetSpouseID( indID ) || 
+    bool single = ( families.size() > 1 || families[0].GetSpouseID( indID ) ||
         families[0].GetChildCount() ) ? false : true;
 
-    htm << 
+    htm <<
         "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
         "\"http://www.w3.org/TR/html4/loose.dtd\">\n"
         "<html>\n<head>\n"
@@ -69,7 +67,7 @@ wxString tfpWriteIndividualPage( idt indID )
         // Individual record
         "<table class='data'>\n<tr>\n"
         "<td>Name:</td><td class='subject " << GetSexClass( ind.FGetID() ) <<
-        "'><a href='tfp:F" << ind.FGetFamID() << 
+        "'><a href='tfp:F" << ind.FGetFamID() <<
         "'>" << ind.FGetName() <<
         "</a> " << ind.FGetEpitaph() <<
         " <a href='tfpc:MR" << indID << "'><img src=memory:fam.png></a>\n"
@@ -84,7 +82,7 @@ wxString tfpWriteIndividualPage( idt indID )
     }
     htm <<
         "</td></tr>\n<tr>\n"
-        "<td>ID, Sex:</td><td>" << ind.GetIdStr() << 
+        "<td>ID, Sex:</td><td>" << ind.GetIdStr() <<
         ", " << recGetSexStr( ind.FGetSex() ) << "</td>\n"
         "</tr>\n<tr>\n"
         "<td>Note:</td><td>" << ind.FGetNote() << "</td>\n"
@@ -92,7 +90,7 @@ wxString tfpWriteIndividualPage( idt indID )
     ;
     // Names
     recNameVec names = ind.GetNames();
-    htm << 
+    htm <<
         "<table class='data'>\n<tr>\n"
         "<th colspan='3'>Names</th>";
     for( size_t i = 0 ; i < names.size() ; i++ ) {
@@ -105,7 +103,7 @@ wxString tfpWriteIndividualPage( idt indID )
     }
     // Parents
     if( parents.size() ) {
-        htm << 
+        htm <<
             "</tr>\n<tr>\n"
             "<th colspan='3'>Parents</th>\n"
         ;
@@ -113,12 +111,12 @@ wxString tfpWriteIndividualPage( idt indID )
     for( size_t i = 0 ; i < parents.size() ; i++ ) {
         idt hID = parents[i].FGetHusbID();
         if( hID != 0 ) {
-            htm << 
+            htm <<
                 "</tr>\n<tr>\n"
                 "<td><b>" << recIndividual::GetIdStr( hID ) <<
                 "</b></td>\n<td>Father:"
                 "</td>\n<td class='" << GetSexClass( hID ) <<
-                "'><a href='tfp:I" << hID << 
+                "'><a href='tfp:I" << hID <<
                 "'>" << recIndividual::GetName( hID ) <<
                 "</a> " << recIndividual::GetEpitaph( hID ) <<
                 " <a href='tfpc:MR" << hID <<
@@ -127,12 +125,12 @@ wxString tfpWriteIndividualPage( idt indID )
         }
         idt wID = parents[i].FGetWifeID();
         if( wID != 0 ) {
-            htm << 
+            htm <<
                 "</tr>\n<tr>\n"
                 "<td><b>" << recIndividual::GetIdStr( wID ) <<
                 "</b></td>\n<td>Mother:"
                 "</td>\n<td class='" << GetSexClass( wID ) <<
-                "'><a href='tfp:I" << wID << 
+                "'><a href='tfp:I" << wID <<
                 "'>" << recIndividual::GetName( wID ) <<
                 "</a> " << recIndividual::GetEpitaph( wID ) <<
                 " <a href='tfpc:MR" << wID <<
@@ -150,7 +148,7 @@ wxString tfpWriteIndividualPage( idt indID )
         idt famID = families[i].FGetID();
         spouse.ReadID( spouseID );
 
-        htm << 
+        htm <<
             "</tr>\n<tr>\n"
             "<th colspan='3'>Family " << i+1 << "</th>\n"
             "</tr>\n<tr>\n"
@@ -158,9 +156,9 @@ wxString tfpWriteIndividualPage( idt indID )
         // Spouse name
         if( spouseID ) {
             htm <<
-                "<td><b><a href='tfp:I" << spouseID << 
+                "<td><b><a href='tfp:I" << spouseID <<
                 "'>" << recIndividual::GetIdStr( spouseID ) <<
-                "</a></b></td>\n<td><a href='tfp:F" << famID << 
+                "</a></b></td>\n<td><a href='tfp:F" << famID <<
                 "'>Spouse " << i+1 << "</a>:</td>\n"
                 "<td class='" << GetSexClass( spouseID ) <<
                 "'><a href='tfp:I" << spouseID <<
@@ -192,12 +190,12 @@ wxString tfpWriteIndividualPage( idt indID )
                 "</a></b></td>\n"
             ;
             if( j == 0 ) {
-                htm << 
-                    "<td valign='top' rowspan='" << children.size() << 
+                htm <<
+                    "<td valign='top' rowspan='" << children.size() <<
                     "'>Children:</td>\n"
                 ;
             }
-            htm << 
+            htm <<
                 "<td class='" << GetSexClass( cID ) <<
                 "'><a href='tfp:I" << cID <<
                 "'>" << children[j].FGetName() <<
@@ -211,7 +209,7 @@ wxString tfpWriteIndividualPage( idt indID )
 
     // All Events
     recIndEventVec ies = ind.GetEvents();
-    htm << 
+    htm <<
         "<table class='data'>\n<tr>\n"
         "<th colspan='4'>Events</th>\n";
     for( i = 0 ; i < ies.size() ; i++ ) {
@@ -225,7 +223,7 @@ wxString tfpWriteIndividualPage( idt indID )
             cat2 = ", ";
         }
         if( eve.FGetDate1ID() ) {
-            dStr << 
+            dStr <<
                 "<a href='tfpi:D" << eve.FGetDate1ID() <<
                 "'>" << eve.GetDateStr() <<
                 "</a>"
@@ -244,8 +242,8 @@ wxString tfpWriteIndividualPage( idt indID )
             "'>" << eve.GetIdStr() <<
             "</a></b></td>\n<td>" << eve.GetTypeStr() <<
             ":</td>\n<td>" << recEventTypeRole::GetName( ies[i].FGetRoleID() ) <<
-            "</td><td>" << eve.FGetTitle() << 
-            cat1 << dStr << cat2 << pStr 
+            "</td><td>" << eve.FGetTitle() <<
+            cat1 << dStr << cat2 << pStr
         ;
         if( !eve.FGetNote().IsEmpty() ) {
             htm << "<br>\n" << ies[i].FGetNote();
@@ -255,15 +253,15 @@ wxString tfpWriteIndividualPage( idt indID )
     htm << "</tr>\n</table>\n";
 
     // Get linked Events Records
-    wxSQLite3ResultSet eSet = ind.GetEventRecordSet();
-    htm << 
+    wxSQLite3ResultSet eSet = ind.GetEventumSet();
+    htm <<
         "<table class='data'>\n<tr>\n"
         "<th colspan='4'>Event Records</th>\n";
     while( eSet.NextRow() ) {
         idt erID = GET_ID( eSet.GetInt64( 0 ) );
-        recEventRecord er( erID );
+        recEventum er( erID );
         idt roleID = GET_ID( eSet.GetInt64( 1 ) );
-        idt refID = recEventRecord::FindReferenceID( erID );
+        idt refID = recEventum::FindReferenceID( erID );
 
         wxString cat1, cat2, dStr, pStr;
         if( er.FGetDate1ID() || er.FGetPlaceID() ) {
@@ -273,7 +271,7 @@ wxString tfpWriteIndividualPage( idt indID )
             cat2 = ", ";
         }
         if( er.FGetDate1ID() ) {
-            dStr << 
+            dStr <<
                 "<a href='tfpi:D" << er.FGetDate1ID() <<
                 "'>" << er.GetDateStr() <<
                 "</a>"
@@ -290,12 +288,12 @@ wxString tfpWriteIndividualPage( idt indID )
             "</tr>\n<tr>\n" <<
             "<td><b><a href='tfp:R" << refID <<
             "'>" << recReference::GetIdStr( refID ) <<
-            "</a>: <a href='tfp:ER" << erID <<
+            "</a>: <a href='tfp:Em" << erID <<
             "'>" << er.GetIdStr() <<
             "</b></td>\n<td>" << er.GetTypeStr() <<
             ":</td>\n<td>" << recEventTypeRole::GetName( roleID ) <<
-            "</td><td>" << er.FGetTitle() << 
-            cat1 << dStr << cat2 << pStr 
+            "</td><td>" << er.FGetTitle() <<
+            cat1 << dStr << cat2 << pStr
         ;
         if( er.FGetNote().size() ) {
             htm << "<br>\n" << er.FGetNote();
@@ -307,7 +305,7 @@ wxString tfpWriteIndividualPage( idt indID )
 
     // List all References for linked Personas
     eSet = ind.GetReferenceSet();
-    htm << 
+    htm <<
         "<table class='data'>\n<tr>\n"
         "<th colspan='2'>Reference Links</th>\n";
     while( eSet.NextRow() ) {

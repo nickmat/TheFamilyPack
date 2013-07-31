@@ -3,10 +3,8 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Edit database Persona entity dialog header.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     9 October 2010
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2010, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -96,7 +94,7 @@ private:
     recPersona          m_persona;
     recIdVec            m_indLinks;
     recNameVec          m_names;
-    recEventPersonaVec  m_evpers;
+    recEventumPersonaVec  m_evpers;
     recEventOrder       m_order;
     recRelationshipVec  m_relationships;
 

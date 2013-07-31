@@ -1,11 +1,10 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        include/rec/recEventRecord.h
+ * Name:        include/rec/recEventum.h
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Manage SQLite3 EventRecord table.
+ * Purpose:     Manage SQLite3 Eventum table.
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     20th April 2013
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2013, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -26,8 +25,8 @@
 
 */
 
-#ifndef REC_RECEVENTRECORD_H
-#define REC_RECEVENTRECORD_H
+#ifndef REC_RECEVENTUM_H
+#define REC_RECEVENTUM_H
 
 #include <rec/recDatabase.h>
 #include <rec/recEventType.h>
@@ -36,10 +35,10 @@
 
 
 //============================================================================
-//-------------------------[ recEventRecord ]---------------------------------
+//-------------------------[ recEventum ]-------------------------------------
 //============================================================================
 
-class recEventRecord : public recDb
+class recEventum : public recDb
 {
 public:
     wxString f_title;
@@ -50,14 +49,14 @@ public:
     wxString f_note;
     long     f_date_pt;
 
-    recEventRecord() {}
-    recEventRecord( idt id ) : recDb(id) { Read(); }
-    recEventRecord( const recEventRecord& event );
+    recEventum() {}
+    recEventum( idt id ) : recDb(id) { Read(); }
+    recEventum( const recEventum& event );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "EventRecord" );
+    TABLE_NAME_MEMBERS( "Eventum" );
 
     wxString FGetTitle() const { return f_title; }
     idt FGetTypeID() const { return f_type_id; }
@@ -78,7 +77,7 @@ public:
 
     wxString SetAutoTitle( const wxString& name1, const wxString& name2 = wxEmptyString );
 
-    static wxString GetIdStr( idt evID ) { return wxString::Format( "ER"ID, evID ); }
+    static wxString GetIdStr( idt evID ) { return wxString::Format( "Em"ID, evID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     wxString GetDetailStr() const;
@@ -100,13 +99,13 @@ public:
     static idt FindReferenceID( idt erID ) {
         return recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, erID );
     }
-    static recEveEveRecordVec GetEveEveRecords( idt erID );
-    recEveEveRecordVec GetEveEveRecords() const { return GetEveEveRecords( f_id ); }
+    static recEventEventumVec GetEventEventums( idt erID );
+    recEventEventumVec GetEventEventums() const { return GetEventEventums( f_id ); }
 
     static bool IsFamilyEvent( idt eveID );
     bool IsFamilyEvent() const { return IsFamilyEvent( f_id ); }
 
-    recEventPersonaVec GetEventPersonas();
+    recEventumPersonaVec GetEventumPersonas();
     static wxSQLite3Table GetTitleList();
     static wxSQLite3Table GetTitleList( idt offset, int limit );
 
@@ -114,7 +113,7 @@ public:
     int GetLastPerSeqNumber() const { return GetLastPerSeqNumber( f_id ); }
 
     // Find matching Event records by following the links:-
-    // EventRecord/Persona(prime Role) -> Persona/Individual link -> Individual/Event(matching role)
+    // Eventum/Persona(prime Role) -> Persona/Individual link -> Individual/Event(matching role)
     // Depending on the type and group of the event, loosely match Date and Place.
     enum recEVENT_Link { recEVENT_Link_EvEvRec, recEVENT_Link_IndPer };
     recIdVec FindMatchingEvents( recEVENT_Link link = recEVENT_Link_EvEvRec ) const;
@@ -131,4 +130,4 @@ public:
     static void DeleteIfOrphaned( idt id );
 };
 
-#endif // REC_RECEVENTRECORD_H
+#endif // REC_RECEVENTUM_H

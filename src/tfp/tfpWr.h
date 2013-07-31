@@ -5,7 +5,6 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     7th October 2010
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2010, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -58,12 +57,12 @@ extern wxString tfpWriteEventIndex();
 extern wxString tfpWriteEventPagedIndex( idt begCnt );
 extern wxString tfpWriteEventSelection( recSelSetEvent& filter );
 
-// See tfpWrEventRecIndex.cpp
-extern wxString tfpWriteEventRecordIndex();
-extern wxString tfpWriteEventRecordPagedIndex( idt begCnt );
+// See tfpWrEventum.cpp
+extern wxString tfpWriteEventumPage( idt erID );
 
-// See tfpWrEventRecord.cpp
-extern wxString tfpWriteEventRecordPage( idt erID );
+// See tfpWrEventumIndex.cpp
+extern wxString tfpWriteEventumIndex();
+extern wxString tfpWriteEventumPagedIndex( idt begCnt );
 
 // See tfpWrFamily.cpp
 extern wxString tfpWriteFamilyPage( idt famID, size_t iL = 0, size_t iR = 0 );

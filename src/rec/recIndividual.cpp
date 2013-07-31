@@ -6,7 +6,6 @@
  * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2010, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -179,7 +178,7 @@ recIndividualVec recIndividual::ReadVec( unsigned sexfilter )
     }
     query << "ORDER BY surname, name, epitaph, id;";
 
-    wxSQLite3ResultSet result = s_db->ExecuteQuery( query ); 
+    wxSQLite3ResultSet result = s_db->ExecuteQuery( query );
 
     recIndividual ind;
     recIndividualVec inds;
@@ -259,7 +258,7 @@ void recIndividual::UpdateDefaultFamily()
     recFamilyVec families = GetFamilyList();
     if( families.size() == 0 ) {
         wxASSERT( false ); // We shouldn't have this situation
-        f_fam_id = 0; // [TODO: We should create a new family] <<================<<<<<< 
+        f_fam_id = 0; // [TODO: We should create a new family] <<================<<<<<<
         return;
     }
     for( size_t i = 0 ; i < families.size() ; i++ ) {
@@ -463,7 +462,7 @@ recIndEventVec recIndividual::GetEvents( idt indID, recEventOrder order )
     sql.Format(
         "SELECT IE.id, event_id, role_id, IE.note, ind_seq FROM IndividualEvent IE"
         " INNER JOIN Event E ON E.id=event_id"
-        " WHERE ind_id="ID" ORDER BY %s;", 
+        " WHERE ind_id="ID" ORDER BY %s;",
         indID, UTF8_(orderStr)
     );
     result = s_db->GetTable( sql );
@@ -483,17 +482,17 @@ recIndEventVec recIndividual::GetEvents( idt indID, recEventOrder order )
     return list;
 }
 
-wxSQLite3ResultSet recIndividual::GetEventRecordSet( idt indID )
+wxSQLite3ResultSet recIndividual::GetEventumSet( idt indID )
 {
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "SELECT event_rec_id, role_id FROM"
-        "   (SELECT DISTINCT event_rec_id, role_id FROM EventPersona EP"
+        "SELECT eventum_id, role_id FROM"
+        "   (SELECT DISTINCT eventum_id, role_id FROM EventumPersona EP"
         "  INNER JOIN"
         "   (SELECT per_id AS ip_per_id FROM IndividualPersona WHERE ind_id="ID")"
         "  ON EP.per_id=ip_per_id)"
-        " INNER JOIN EventRecord WHERE id=event_rec_id"
+        " INNER JOIN Eventum WHERE id=eventum_id"
         " ORDER BY date_pt;",
         indID
     );
@@ -655,7 +654,7 @@ void recIndividual::RemoveFromDatabase()
 //    recPersona::RemoveFromDatabase( f_per_id );
     // TODO: Remove orphaned Name
     Delete();
-    // TODO: Delete orphaned EventType and/or EventTypeRole 
+    // TODO: Delete orphaned EventType and/or EventTypeRole
     Clear();
 }
 
@@ -783,7 +782,7 @@ recIdVec recFamily::GetFamilyIdVec()
 // Decode the string which is in the form "Fx1" or
 // "Fx1,x2,x3" where x1 is the Family id
 // x2 is the husband id and x3 the wife id.
-// or else string has the form FIx where x 
+// or else string has the form FIx where x
 // is a recIndividual id.
 // Returns true if successful.
 bool recFamily::Decode( const wxString& str )
@@ -1188,7 +1187,7 @@ const wxString recIndRelationship::s_TypeStr[recIndRelationship::IRT_MAX] = {
 };
 
 wxString recIndRelationship::GetTypeStr() const
-{ 
+{
     if( m_type < 0 || m_type >= IRT_MAX ) {
         return _("Unknown");
     }

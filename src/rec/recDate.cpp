@@ -3,10 +3,8 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Manage SQLite3 Date records.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2010, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -100,7 +98,7 @@ void recDate::Save()
             "INSERT INTO Date "
             "(jdn, range, rel_id, type, descrip, record_sch, display_sch) "
             "VALUES (%ld, %ld, "ID", %u, '%q', %d, %d);",
-            f_jdn, f_range, f_rel_id, f_type, UTF8_(f_descrip), 
+            f_jdn, f_range, f_rel_id, f_type, UTF8_(f_descrip),
             f_record_sch, f_display_sch
         );
         s_db->ExecuteUpdate( sql );
@@ -123,7 +121,7 @@ void recDate::Save()
                 "UPDATE Date SET jdn=%ld, range=%ld, rel_id="ID", "
                 "type=%u, descrip='%q', record_sch=%d, display_sch=%d "
                 "WHERE id="ID";",
-                f_jdn, f_range, f_rel_id, f_type, UTF8_(f_descrip), 
+                f_jdn, f_range, f_rel_id, f_type, UTF8_(f_descrip),
                 f_record_sch, f_display_sch, f_id
             );
         }
@@ -405,7 +403,7 @@ bool recDate::IsUsedAsBase( idt id )
     return false;
 }
 
-// List of all relative dates using dateID as a base. 
+// List of all relative dates using dateID as a base.
 recIdVec recDate::GetRelativeIdList( idt dateID )
 {
     recIdVec list;
@@ -477,7 +475,7 @@ void recDate::DeleteIfOrphaned( idt id )
     sql.Format( "SELECT COUNT(*) FROM Event WHERE date1_id="ID" OR date2_id="ID";", id, id );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
 
-    sql.Format( "SELECT COUNT(*) FROM EventRecord WHERE date1_id="ID" OR date2_id="ID";", id, id );
+    sql.Format( "SELECT COUNT(*) FROM Eventum WHERE date1_id="ID" OR date2_id="ID";", id, id );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
 
     sql.Format( "SELECT COUNT(*) FROM Place WHERE date1_id="ID" OR date2_id="ID";", id, id );
@@ -519,7 +517,7 @@ void recDate::RemoveFromDatabase( idt id )
     recReferenceEntity::Delete( recReferenceEntity::TYPE_Date, id );
     // If this is a relative date, remove the relative part.
     recDate date(id);
-    Delete( date.FGetRelID() ); 
+    Delete( date.FGetRelID() );
     Delete( id );
 }
 

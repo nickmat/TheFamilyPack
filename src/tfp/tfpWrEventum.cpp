@@ -1,11 +1,10 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/tfp/tfpWrEventRecord.cpp
+ * Name:        src/tfp/tfpWrEventum.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Functions to write to screen and compare EventRecord's.
+ * Purpose:     Functions to write to screen and compare Eventum's.
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     24 October 2010
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2010-2013, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -36,7 +35,7 @@
 #endif
 
 #include <rec/recEvent.h>
-#include <rec/recEventRecord.h>
+#include <rec/recEventum.h>
 #include <rec/recPersona.h>
 #include <rec/recIndividual.h>
 
@@ -46,25 +45,25 @@ wxString GetSexClassPer( idt perID )
 {
     Sex sex = recPersona::GetSex( perID );
     switch( sex ) {
-    case SEX_Male: 
+    case SEX_Male:
         return "male";
-    case SEX_Female: 
+    case SEX_Female:
         return "fem";
     }
     return "neut";
 }
 
-wxString tfpWriteEventRecordPage( idt erID )
+wxString tfpWriteEventumPage( idt erID )
 {
     wxString htm;
     if( erID == 0 ) return wxEmptyString;
-    recEventRecord er(erID);
+    recEventum er(erID);
     idt refID = recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, erID );
 
 
     htm <<
-        tfpWrHeadTfp( "Event Record " + er.GetIdStr() ) <<
-        "<h1>Event Record " << er.GetIdStr() << ": " << er.FGetTitle() << "</h1>\n"
+        tfpWrHeadTfp( "Eventum " + er.GetIdStr() ) <<
+        "<h1>Eventum " << er.GetIdStr() << ": " << er.FGetTitle() << "</h1>\n"
         "<table class='data'>\n<tr>\n<td>"
     ;
     if( er.FGetDate1ID() ) {
@@ -78,7 +77,7 @@ wxString tfpWriteEventRecordPage( idt erID )
     htm << "</td>\n</tr>\n<tr>\n<td>";
     if( er.FGetPlaceID() ) {
         htm <<
-            "<b><a href='tfpi:P" << er.FGetPlaceID() << 
+            "<b><a href='tfpi:P" << er.FGetPlaceID() <<
             "'>Place</a>: </b>" << er.GetAddressStr()
         ;
     } else {
@@ -97,7 +96,7 @@ wxString tfpWriteEventRecordPage( idt erID )
         "</tr>\n</table>\n"
     ;
 
-    recEventPersonaVec eps = er.GetEventPersonas();
+    recEventumPersonaVec eps = er.GetEventumPersonas();
     if( eps.size() ) {
         htm <<
             "<table class='data'>\n<tr>\n"
@@ -108,12 +107,12 @@ wxString tfpWriteEventRecordPage( idt erID )
             recPersona per( eps[i].FGetPerID() );
             recIdVec indIDs = per.GetIndividualIDs();
             htm <<
-                "<tr>\n<td>" << 
+                "<tr>\n<td>" <<
                 recEventTypeRole::GetName( eps[i].FGetRoleID() ) <<
                 "</td>\n<td>" << per.GetIdStr() <<
                 "</td>\n<td class='" << GetSexClassPer( per.FGetID() ) <<
                 "'>" << per.GetNameStr() <<
-                "</td>\n<td>" << eps[i].f_note << 
+                "</td>\n<td>" << eps[i].f_note <<
                 " </td>\n<td><b>"
             ;
             for( size_t j = 0 ; j < indIDs.size() ; j++ ) {
@@ -140,12 +139,12 @@ wxString tfpWriteEventRecordPage( idt erID )
         for( size_t i = 0 ; i < ces.size() ; i++ ) {
             idt e1 = ces[i].GetFirstID();
             idt e2 = ces[i].GetSecondID();
-            idt eID = ( e1 ) ? e1 : e2; 
+            idt eID = ( e1 ) ? e1 : e2;
             wxString eIdStr = recEvent::GetIdStr( eID );
             htm << "<tr>\n<td>";
             if( e1 ) {
-                htm << 
-                    "<a href='tfp:E" << e1 << 
+                htm <<
+                    "<a href='tfp:E" << e1 <<
                     "'><b>" << eIdStr << "</b></a>"
                 ;
             } else {
@@ -156,13 +155,13 @@ wxString tfpWriteEventRecordPage( idt erID )
             }
             htm << "</td>\n<td>";
             if( e2 ) {
-                htm << 
-                    "<a href='tfp:E" << e2 << 
+                htm <<
+                    "<a href='tfp:E" << e2 <<
                     "'><b>" << eIdStr << "</b></a>"
                 ;
             }
-            htm << 
-                "</td>\n<td>" << recEvent::GetTitle( eID ) << 
+            htm <<
+                "</td>\n<td>" << recEvent::GetTitle( eID ) <<
                 "</td>\n</tr>\n"
             ;
         }
@@ -175,7 +174,7 @@ wxString tfpWriteEventRecordPage( idt erID )
             "<tr>\n<th>Event</th><th>Title</th></tr>\n"
             "<tr>\n<td><a href='tfpe:cE" << erID <<
             "'><img src='memory:blank.png' width='80' height='20' alt='Add Event'></a>"
-            "</td>\n<td>" << recEventRecord::GetTitle( erID ) << 
+            "</td>\n<td>" << recEventum::GetTitle( erID ) <<
             "</td>\n</tr>\n"
             "</table>\n"
         ;
@@ -185,4 +184,4 @@ wxString tfpWriteEventRecordPage( idt erID )
     return htm;
 }
 
-// End of src/tfp/tfpWrEventRecord.cpp Source
+// End of src/tfp/tfpWrEventum.cpp Source

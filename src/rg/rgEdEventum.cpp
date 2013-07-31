@@ -1,11 +1,10 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/rg/rgEdEvidEvent.cpp
+ * Name:        src/rg/rgEdEventum.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Edit database Event entity dialog.
+ * Purpose:     Edit database Eventum entity dialog.
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     25th February 2013
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2013, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -41,17 +40,17 @@
 #include <rec/recPersona.h>
 
 #include "rg/rgDialogs.h"
-#include "rgEdEventRecord.h"
+#include "rgEdEventum.h"
 #include "rgEdReference.h"
 
-bool rgEditEventRecord( wxWindow* wind, idt erID )
+bool rgEditEventum( wxWindow* wind, idt erID )
 {
     wxASSERT( erID != 0 );
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
     bool ret = false;
 
-    rgDlgEditEventRecord* dialog = new rgDlgEditEventRecord( wind, erID );
+    rgDlgEditEventum* dialog = new rgDlgEditEventum( wind, erID );
 
     if( dialog->ShowModal() == wxID_OK ) {
         recDb::ReleaseSavepoint( savepoint );
@@ -62,8 +61,8 @@ bool rgEditEventRecord( wxWindow* wind, idt erID )
     dialog->Destroy();
     return ret;
 }
-// Create a new EventRecord from the reference document
-idt rgCreateEventRecord( wxWindow* wind, idt refID )
+// Create a new Eventum from the reference document
+idt rgCreateEventum( wxWindow* wind, idt refID )
 {
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
@@ -150,7 +149,7 @@ idt rgCreateEventRecord( wxWindow* wind, idt refID )
         );
     }
 
-    recEventRecord er(0);
+    recEventum er(0);
     er.FSetTitle( title );
     er.FSetTypeID( typeID );
     er.FSetDate1ID( dateID1 );
@@ -160,8 +159,8 @@ idt rgCreateEventRecord( wxWindow* wind, idt refID )
     idt erID = er.FGetID();
     recReferenceEntity::Create( refID, recReferenceEntity::TYPE_Event, erID );
 
-    recEventPersona ep1(0);
-    ep1.FSetEventRecID( erID );
+    recEventumPersona ep1(0);
+    ep1.FSetEventumID( erID );
     ep1.FSetPerID( perID1 );
     ep1.FSetRoleID( role1 );
     ep1.FSetPerSeq( 1 );
@@ -169,8 +168,8 @@ idt rgCreateEventRecord( wxWindow* wind, idt refID )
     recIdVec indID1s = recPersona::GetIndividualIDs( perID1 );
     recIdVec indID2s;
     if( person2 ) {
-        recEventPersona ep2(0);
-        ep2.FSetEventRecID( erID );
+        recEventumPersona ep2(0);
+        ep2.FSetEventumID( erID );
         ep2.FSetPerID( perID2 );
         ep2.FSetRoleID( role2 );
         ep2.FSetPerSeq( 2 );
@@ -188,7 +187,7 @@ idt rgCreateEventRecord( wxWindow* wind, idt refID )
         }
     }
 
-    if( rgEditEventRecord( wind, erID ) ) {
+    if( rgEditEventum( wind, erID ) ) {
         recDb::ReleaseSavepoint( savepoint );
     } else {
         recDb::Rollback( savepoint );
@@ -197,7 +196,7 @@ idt rgCreateEventRecord( wxWindow* wind, idt refID )
     return erID;
 }
 
-idt rgCreatePersonalEventRecord( wxWindow* wind, idt refID, const wxString& role )
+idt rgCreatePersonalEventum( wxWindow* wind, idt refID, const wxString& role )
 {
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
@@ -216,7 +215,7 @@ idt rgCreatePersonalEventRecord( wxWindow* wind, idt refID, const wxString& role
 
     wxString title = wxString::Format(
         _("%s of %s"),
-        recEventType::GetTypeStr( eveTypeID ), recPersona::GetNameStr( perID ) 
+        recEventType::GetTypeStr( eveTypeID ), recPersona::GetNameStr( perID )
     );
 
     idt date1ID, date2ID;
@@ -247,7 +246,7 @@ idt rgCreatePersonalEventRecord( wxWindow* wind, idt refID, const wxString& role
         }
     }
 
-    recEventRecord eve(0);
+    recEventum eve(0);
     eve.FSetTitle( title );
     eve.FSetTypeID( eveTypeID );
     eve.FSetDate1ID( date1ID );
@@ -257,8 +256,8 @@ idt rgCreatePersonalEventRecord( wxWindow* wind, idt refID, const wxString& role
     eve.Save();
     idt eveID = eve.FGetID();
 
-    recEventPersona ep(0);
-    ep.FSetEventRecID( eveID );
+    recEventumPersona ep(0);
+    ep.FSetEventumID( eveID );
     ep.FSetPerID( perID );
     ep.FSetRoleID( roleID );
     ep.FSetNote( note );
@@ -275,20 +274,20 @@ idt rgCreatePersonalEventRecord( wxWindow* wind, idt refID, const wxString& role
 }
 
 //============================================================================
-//-------------------------[ rgDlgEditEventRecord ]---------------------------
+//-------------------------[ rgDlgEditEventum ]-------------------------------
 //============================================================================
 
-BEGIN_EVENT_TABLE( rgDlgEditEventRecord, wxDialog )
-    EVT_MENU( ID_EDEE_OPTN_EDIT,       rgDlgEditEventRecord::OnOptnEdit )
-    EVT_MENU( ID_EDEE_OPTN_UNLINK,     rgDlgEditEventRecord::OnOptnUnlink )
-    EVT_MENU( ID_EDEE_OPTN_CREATE,     rgDlgEditEventRecord::OnOptnCreate )
-    EVT_MENU( ID_EDEE_OPTN_CREATE_REL, rgDlgEditEventRecord::OnOptnCreateRel )
+BEGIN_EVENT_TABLE( rgDlgEditEventum, wxDialog )
+    EVT_MENU( ID_EDEE_OPTN_EDIT,       rgDlgEditEventum::OnOptnEdit )
+    EVT_MENU( ID_EDEE_OPTN_UNLINK,     rgDlgEditEventum::OnOptnUnlink )
+    EVT_MENU( ID_EDEE_OPTN_CREATE,     rgDlgEditEventum::OnOptnCreate )
+    EVT_MENU( ID_EDEE_OPTN_CREATE_REL, rgDlgEditEventum::OnOptnCreateRel )
 END_EVENT_TABLE()
 
-rgDlgEditEventRecord::rgDlgEditEventRecord( wxWindow* parent, idt erID )
-    : m_event(erID), fbRgEditEventRecord( parent )
+rgDlgEditEventum::rgDlgEditEventum( wxWindow* parent, idt erID )
+    : m_event(erID), fbRgEditEventum( parent )
 {
-    m_refID = recEventRecord::FindReferenceID( erID );
+    m_refID = recEventum::FindReferenceID( erID );
     wxASSERT( m_refID != 0 );
 
     m_date1ID = m_event.FGetDate1ID();
@@ -304,7 +303,7 @@ rgDlgEditEventRecord::rgDlgEditEventRecord( wxWindow* parent, idt erID )
     m_listConclusion->InsertColumn( COL_EveTitle, _("Title") );
 }
 
-bool rgDlgEditEventRecord::TransferDataToWindow()
+bool rgDlgEditEventum::TransferDataToWindow()
 {
     wxASSERT( m_event.GetID() != 0 );
     m_staticType->SetLabel( m_event.GetTypeStr() );
@@ -318,13 +317,13 @@ bool rgDlgEditEventRecord::TransferDataToWindow()
     m_textCtrlNote->SetValue( m_event.f_note );
     ListLinkedPersona();
     ListEvents();
-    m_staticEventRecID->SetLabel( m_event.GetIdStr() );
+    m_staticEventumID->SetLabel( m_event.GetIdStr() );
     return true;
 }
 
-void rgDlgEditEventRecord::ListLinkedPersona()
+void rgDlgEditEventum::ListLinkedPersona()
 {
-    m_eps = m_event.GetEventPersonas();
+    m_eps = m_event.GetEventumPersonas();
     m_personas.clear();
     recPersona per;
     m_listPersona->DeleteAllItems();
@@ -338,9 +337,9 @@ void rgDlgEditEventRecord::ListLinkedPersona()
     }
 }
 
-void rgDlgEditEventRecord::ListEvents()
+void rgDlgEditEventum::ListEvents()
 {
-    m_eers = m_event.GetEveEveRecords();
+    m_eers = m_event.GetEventEventums();
     m_listConclusion->DeleteAllItems();
     for( size_t i = 0 ; i < m_eers.size() ; i++ ) {
         idt eveID = m_eers[i].FGetEventID();
@@ -350,20 +349,20 @@ void rgDlgEditEventRecord::ListEvents()
     m_listConclusion->SetColumnWidth( COL_EveTitle, wxLIST_AUTOSIZE );
 }
 
-bool rgDlgEditEventRecord::TransferDataFromWindow()
+bool rgDlgEditEventum::TransferDataFromWindow()
 {
     wxASSERT( m_event.FGetTypeID() != 0 );
 
     m_event.FSetTitle( m_textCtrlTitle->GetValue() );
     m_event.FSetNote( m_textCtrlNote->GetValue() );
 
-    m_event.UpdateDatePoint(); 
+    m_event.UpdateDatePoint();
     m_event.Save();
 
     return true;
 }
 
-void rgDlgEditEventRecord::OnDate1Button( wxCommandEvent& event )
+void rgDlgEditEventum::OnDate1Button( wxCommandEvent& event )
 {
     m_button = EEEB_Date1;
     wxMenu* menu = new wxMenu;
@@ -378,7 +377,7 @@ void rgDlgEditEventRecord::OnDate1Button( wxCommandEvent& event )
     delete menu;
 }
 
-void rgDlgEditEventRecord::OnDate2Button( wxCommandEvent& event )
+void rgDlgEditEventum::OnDate2Button( wxCommandEvent& event )
 {
     m_button = EEEB_Date2;
     wxMenu* menu = new wxMenu;
@@ -393,7 +392,7 @@ void rgDlgEditEventRecord::OnDate2Button( wxCommandEvent& event )
     delete menu;
 }
 
-void rgDlgEditEventRecord::OnPlaceButton( wxCommandEvent& event )
+void rgDlgEditEventum::OnPlaceButton( wxCommandEvent& event )
 {
     m_button = EEEB_Place;
     if( m_placeID ) {
@@ -407,7 +406,7 @@ void rgDlgEditEventRecord::OnPlaceButton( wxCommandEvent& event )
     }
 }
 
-void rgDlgEditEventRecord::OnOptnEdit( wxCommandEvent& event )
+void rgDlgEditEventum::OnOptnEdit( wxCommandEvent& event )
 {
     switch( m_button )
     {
@@ -432,7 +431,7 @@ void rgDlgEditEventRecord::OnOptnEdit( wxCommandEvent& event )
     }
 }
 
-void rgDlgEditEventRecord::OnOptnUnlink( wxCommandEvent& event )
+void rgDlgEditEventum::OnOptnUnlink( wxCommandEvent& event )
 {
     switch( m_button )
     {
@@ -455,13 +454,13 @@ void rgDlgEditEventRecord::OnOptnUnlink( wxCommandEvent& event )
     m_event.Save();
 }
 
-void rgDlgEditEventRecord::OnOptnCreate( wxCommandEvent& event )
+void rgDlgEditEventum::OnOptnCreate( wxCommandEvent& event )
 {
     switch( m_button )
     {
     case EEEB_Date1:
-        if( ! rgSelectDateFromReference( 
-            this, &m_date1ID, m_refID, _("Select Event Record Date"), rgSELSTYLE_Create 
+        if( ! rgSelectDateFromReference(
+            this, &m_date1ID, m_refID, _("Select Event Record Date"), rgSELSTYLE_Create
         ) ) {
             return;
         }
@@ -469,8 +468,8 @@ void rgDlgEditEventRecord::OnOptnCreate( wxCommandEvent& event )
         m_event.FSetDate1ID( m_date1ID );
         break;
     case EEEB_Date2:
-        if( ! rgSelectDateFromReference( 
-            this, &m_date2ID, m_refID, _("Select Event Record End Date"), rgSELSTYLE_Create 
+        if( ! rgSelectDateFromReference(
+            this, &m_date2ID, m_refID, _("Select Event Record End Date"), rgSELSTYLE_Create
         ) ) {
             return;
         }
@@ -478,8 +477,8 @@ void rgDlgEditEventRecord::OnOptnCreate( wxCommandEvent& event )
         m_event.FSetDate2ID( m_date2ID );
         break;
     case EEEB_Place:
-        if( ! rgSelectPlaceFromReference( 
-            this, &m_placeID, m_refID, _("Select Event Record Place"), rgSELSTYLE_Create 
+        if( ! rgSelectPlaceFromReference(
+            this, &m_placeID, m_refID, _("Select Event Record Place"), rgSELSTYLE_Create
         ) ) {
             return;
         }
@@ -490,14 +489,14 @@ void rgDlgEditEventRecord::OnOptnCreate( wxCommandEvent& event )
     m_event.Save();
 }
 
-void rgDlgEditEventRecord::OnOptnCreateRel( wxCommandEvent& event )
+void rgDlgEditEventum::OnOptnCreateRel( wxCommandEvent& event )
 {
     idt id;
     switch( m_button )
     {
     case EEEB_Date1:
-        if( ! rgSelectDateFromReference( 
-            this, &id, m_refID, _("Select Base Date"), rgSELSTYLE_Create 
+        if( ! rgSelectDateFromReference(
+            this, &id, m_refID, _("Select Base Date"), rgSELSTYLE_Create
         ) ) {
             return;
         }
@@ -511,8 +510,8 @@ void rgDlgEditEventRecord::OnOptnCreateRel( wxCommandEvent& event )
         m_staticDate1->SetLabel( recDate::GetStr( m_date1ID ) );
         break;
     case EEEB_Date2:
-        if( ! rgSelectDateFromReference( 
-            this, &id, m_refID, _("Select Base Date"), rgSELSTYLE_Create 
+        if( ! rgSelectDateFromReference(
+            this, &id, m_refID, _("Select Base Date"), rgSELSTYLE_Create
         ) ) {
             return;
         }
@@ -532,7 +531,7 @@ void rgDlgEditEventRecord::OnOptnCreateRel( wxCommandEvent& event )
     m_event.Save();
 }
 
-void rgDlgEditEventRecord::OnAddPer( wxCommandEvent& event )
+void rgDlgEditEventum::OnAddPer( wxCommandEvent& event )
 {
     idt perID = rgSelectPersona( this, m_refID );
     if( perID == 0 ) {
@@ -543,7 +542,7 @@ void rgDlgEditEventRecord::OnAddPer( wxCommandEvent& event )
     }
 }
 
-void rgDlgEditEventRecord::OnEditPer( wxCommandEvent& event )
+void rgDlgEditEventum::OnEditPer( wxCommandEvent& event )
 {
     long row = m_listPersona->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
@@ -556,7 +555,7 @@ void rgDlgEditEventRecord::OnEditPer( wxCommandEvent& event )
     }
 }
 
-void rgDlgEditEventRecord::OnDeletePer( wxCommandEvent& event )
+void rgDlgEditEventum::OnDeletePer( wxCommandEvent& event )
 {
     long row = m_listPersona->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
@@ -564,7 +563,7 @@ void rgDlgEditEventRecord::OnDeletePer( wxCommandEvent& event )
         return;
     }
     idt epID = m_eps[row].FGetID();
-    int ans = wxMessageBox( 
+    int ans = wxMessageBox(
         _("Remove the link between the Persona and this Event from database?"),
         _("Delete Link"),
         wxYES_NO | wxCANCEL, this
@@ -572,23 +571,23 @@ void rgDlgEditEventRecord::OnDeletePer( wxCommandEvent& event )
     if( ans != wxYES ) {
         return;
     }
-    recEventPersona::Delete( epID );
+    recEventumPersona::Delete( epID );
     ListLinkedPersona();
 }
 
-void rgDlgEditEventRecord::OnAddCon( wxCommandEvent& event )
+void rgDlgEditEventum::OnAddCon( wxCommandEvent& event )
 {
     wxMessageBox( _("Not yet implimented"), "OnAddCon" );
 }
 
-void rgDlgEditEventRecord::OnEditCon( wxCommandEvent& event )
+void rgDlgEditEventum::OnEditCon( wxCommandEvent& event )
 {
     wxMessageBox( _("Not yet implimented"), "OnEditCon" );
 }
 
-void rgDlgEditEventRecord::OnDeleteCon( wxCommandEvent& event )
+void rgDlgEditEventum::OnDeleteCon( wxCommandEvent& event )
 {
     wxMessageBox( _("Not yet implimented"), "OnDeleteCon" );
 }
 
-// End of src/rg/rgEdEvidEvent.cpp file
+// End of src/rg/rgEdEventum.cpp file

@@ -220,9 +220,9 @@ class fbRgEditEvent : public wxDialog
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class fbRgEditEventEventRec
+/// Class fbRgEditEventEventum
 ///////////////////////////////////////////////////////////////////////////////
-class fbRgEditEventEventRec : public wxDialog 
+class fbRgEditEventEventum : public wxDialog 
 {
 	private:
 	
@@ -230,7 +230,7 @@ class fbRgEditEventEventRec : public wxDialog
 		wxStaticText* m_staticText1;
 		wxStaticText* m_staticEvent;
 		wxStaticText* m_staticText2;
-		wxStaticText* m_staticEventRec;
+		wxStaticText* m_staticEventum;
 		wxStaticText* m_staticText3;
 		wxStaticText* m_staticRef;
 		wxStaticText* m_staticText4;
@@ -244,15 +244,15 @@ class fbRgEditEventEventRec : public wxDialog
 	
 	public:
 		
-		fbRgEditEventEventRec( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Link Event to Event Record"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
-		~fbRgEditEventEventRec();
+		fbRgEditEventEventum( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Link Event to Eventum"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
+		~fbRgEditEventEventum();
 	
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class fbRgEditEventRecord
+/// Class fbRgEditEventum
 ///////////////////////////////////////////////////////////////////////////////
-class fbRgEditEventRecord : public wxDialog 
+class fbRgEditEventum : public wxDialog 
 {
 	private:
 	
@@ -282,7 +282,7 @@ class fbRgEditEventRecord : public wxDialog
 		wxButton* m_buttonEditCon;
 		wxButton* m_buttonDeleteCon;
 		wxStaticLine* m_staticline12;
-		wxStaticText* m_staticEventRecID;
+		wxStaticText* m_staticEventumID;
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
 		
@@ -300,8 +300,8 @@ class fbRgEditEventRecord : public wxDialog
 	
 	public:
 		
-		fbRgEditEventRecord( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Event Record"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
-		~fbRgEditEventRecord();
+		fbRgEditEventum( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Eventum"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
+		~fbRgEditEventum();
 	
 };
 

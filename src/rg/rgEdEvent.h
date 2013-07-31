@@ -3,10 +3,8 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Edit database Individual Event dialog header.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     9 October 2010
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2010, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -55,7 +53,7 @@ private:
 
     bool TransferDataToWindow();
     void ListLinkedIndividuals();
-    void ListEventRecords();
+    void ListEventums();
     bool TransferDataFromWindow();
 
     void OnDate1Button( wxCommandEvent& event );
@@ -76,7 +74,7 @@ private:
     idt       m_placeID;
 
     recIndEventVec     m_ies;
-    recEveEveRecordVec m_eers;
+    recEventEventumVec m_eers;
 };
 
 #endif // RGEDEVENT_H

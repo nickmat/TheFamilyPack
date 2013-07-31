@@ -3,10 +3,8 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Class used to display linked Individual Event data.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     21 November 2012
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2010, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -33,7 +31,7 @@
 #include <map>
 
 #include <rec/recEvent.h>
-#include <rec/recEventRecord.h>
+#include <rec/recEventum.h>
 #include <rec/recIndividual.h>
 #include <rec/recPlace.h>
 
@@ -54,7 +52,7 @@ public:
 private:
     void UnloadFiles();
     bool CreateDateImageFile();
-    static void DrawDateImage( 
+    static void DrawDateImage(
         wxDC& dc, const recDate& date, long start, double scale, const wxColour& color );
 
     recEvent  m_event;
@@ -64,7 +62,7 @@ private:
 
     recIndEventVec    m_ies;
     recIndividualVec  m_individuals;
-    recEventRecordVec m_refEvents;
+    recEventumVec     m_refEvents;
 
     recIdVec    m_refIDs;
     recIdVec    m_personaIDs;

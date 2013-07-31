@@ -1,11 +1,10 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/tfp/tfpWrEventRecIndex.cpp
+ * Name:        src/tfp/tfpWrEventumIndex.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Functions to write to screen and compare EventRecord's.
+ * Purpose:     Functions to write to screen and compare Eventum's.
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     14th July 2013
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2013, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -35,14 +34,14 @@
 #include "wx/wx.h"
 #endif
 
-#include <rec/recEventRecord.h>
+#include <rec/recEventum.h>
 #include <rec/recEvent.h>
 
 #include "tfpWr.h"
 
-wxString tfpWriteEventRecordIndex()
+wxString tfpWriteEventumIndex()
 {
-    wxSQLite3Table result = recEventRecord::GetTitleList();
+    wxSQLite3Table result = recEventum::GetTitleList();
     size_t size = (size_t) result.GetRowCount();
 
     wxString htm;
@@ -55,7 +54,7 @@ wxString tfpWriteEventRecordIndex()
 
     for( size_t i = 0 ; i < size ; i++ ) {
         result.SetRow( i );
-        htm << "<tr>\n<td><a href='tfp:ER"
+        htm << "<tr>\n<td><a href='tfp:Em"
             << result.GetAsString( 0 )
             << "'><b>ER"
             << result.GetAsString( 0 )
@@ -68,15 +67,15 @@ wxString tfpWriteEventRecordIndex()
     return htm;
 }
 
-wxString tfpWriteEventRecordPagedIndex( idt begCnt )
+wxString tfpWriteEventumPagedIndex( idt begCnt )
 {
     int maxsize = recEvent::UserCount();
     if( maxsize <= tfpWR_PAGE_MAX ) {
         return tfpWriteEventIndex();
     }
-    wxString pmenu = tfpWritePagedIndexMenu( begCnt, maxsize, "tfp:ER" );
+    wxString pmenu = tfpWritePagedIndexMenu( begCnt, maxsize, "tfp:Em" );
 
-    wxSQLite3Table result = recEventRecord::GetTitleList( begCnt, tfpWR_PAGE_MAX );
+    wxSQLite3Table result = recEventum::GetTitleList( begCnt, tfpWR_PAGE_MAX );
     size_t size = (size_t) result.GetRowCount();
     result.SetRow( 0 );
     idt beg = GET_ID( result.GetInt64( 0 ) );
@@ -86,26 +85,26 @@ wxString tfpWriteEventRecordPagedIndex( idt begCnt )
     wxString htm;
     htm <<
         tfpWrHeadTfp( "Event Record List" ) <<
-        "<h1>Reference Document Index from " << recEventRecord::GetIdStr( beg ) <<
-        " to " << recEventRecord::GetIdStr( end ) <<
+        "<h1>Reference Document Index from " << recEventum::GetIdStr( beg ) <<
+        " to " << recEventum::GetIdStr( end ) <<
         "</h1>\n" << pmenu <<
         "<table class='data'>\n"
         "<tr><th>ID</th><th>Title</th></tr>\n"
     ;
     for( size_t i = 0 ; i < size ; i++ ) {
         result.SetRow( i );
-        htm << 
-            "<tr><td><a href='tfp:ER" << result.GetAsString( 0 ) <<
-            "'><b>ER" << result.GetAsString( 0 ) <<
+        htm <<
+            "<tr><td><a href='tfp:Em" << result.GetAsString( 0 ) <<
+            "'><b>Em" << result.GetAsString( 0 ) <<
             "</b></a></td><td> " << result.GetAsString( 1 ) <<
             "</td></tr>\n"
         ;
     }
-    htm << 
+    htm <<
         "</table>\n" << pmenu <<
-        "<br>\n" << tfpWrTailTfp() 
+        "<br>\n" << tfpWrTailTfp()
     ;
     return htm;
 }
 
-// End of src/tfp/tfpWrEventRecIndex.cpp Source
+// End of src/tfp/tfpWrEventumIndex.cpp Source

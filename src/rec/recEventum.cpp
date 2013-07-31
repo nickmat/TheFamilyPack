@@ -1,11 +1,10 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/rec/recEventRecord.cpp
+ * Name:        src/rec/recEventum.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Manage SQLite3 EventRecord table.
+ * Purpose:     Manage SQLite3 Eventum table.
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     20th April 2013
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2013, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -36,17 +35,17 @@
 #include "wx/wx.h"
 #endif
 
-#include <rec/recEventRecord.h>
+#include <rec/recEventum.h>
 #include <rec/recEventType.h>
 #include <rec/recEvent.h>
 #include <rec/recPlace.h>
 
 
 //============================================================================
-//-------------------------[ recEventRecord ]---------------------------------
+//-------------------------[ recEventum ]-------------------------------------
 //============================================================================
 
-recEventRecord::recEventRecord( const recEventRecord& e )
+recEventum::recEventum( const recEventum& e )
 {
     f_id       = e.f_id;
     f_title    = e.f_title;
@@ -58,7 +57,7 @@ recEventRecord::recEventRecord( const recEventRecord& e )
     f_date_pt  = e.f_date_pt;
 }
 
-void recEventRecord::Clear()
+void recEventum::Clear()
 {
     f_id       = 0;
     f_title    = wxEmptyString;
@@ -70,7 +69,7 @@ void recEventRecord::Clear()
     f_date_pt  = 0;
 }
 
-void recEventRecord::Save()
+void recEventum::Save()
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -79,10 +78,10 @@ void recEventRecord::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO EventRecord "
+            "INSERT INTO Eventum "
             "(title, type_id, date1_id, date2_id, place_id, note, date_pt) "
             "VALUES ('%q', "ID", "ID", "ID", "ID", '%q', %ld);",
-            UTF8_(f_title), f_type_id, f_date1_id, f_date2_id, f_place_id, 
+            UTF8_(f_title), f_type_id, f_date1_id, f_date2_id, f_place_id,
             UTF8_(f_note), f_date_pt
         );
         s_db->ExecuteUpdate( sql );
@@ -93,7 +92,7 @@ void recEventRecord::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO EventRecord "
+                "INSERT INTO Eventum "
                 "(id, title, type_id, date1_id, date2_id, place_id, note, date_pt) "
                 "VALUES ("ID", '%q', "ID", "ID", "ID", "ID", '%q', %ld);",
                 f_id, UTF8_(f_title), f_type_id, f_date1_id, f_date2_id, f_place_id,
@@ -102,11 +101,11 @@ void recEventRecord::Save()
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE EventRecord SET "
+                "UPDATE Eventum SET "
                 "title='%q', type_id="ID", date1_id="ID", date2_id="ID", place_id="ID", "
                 "note='%q', date_pt=%ld "
                 "WHERE id="ID";",
-                UTF8_(f_title), f_type_id, f_date1_id, f_date2_id, f_place_id, 
+                UTF8_(f_title), f_type_id, f_date1_id, f_date2_id, f_place_id,
                 UTF8_(f_note), f_date_pt, f_id
             );
         }
@@ -114,7 +113,7 @@ void recEventRecord::Save()
     }
 }
 
-bool recEventRecord::Read()
+bool recEventum::Read()
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -126,7 +125,7 @@ bool recEventRecord::Read()
 
     sql.Format(
         "SELECT title, type_id, date1_id, date2_id, place_id, note, date_pt "
-        "FROM EventRecord WHERE id="ID";",
+        "FROM Eventum WHERE id="ID";",
         f_id
     );
     result = s_db->GetTable( sql );
@@ -147,7 +146,7 @@ bool recEventRecord::Read()
     return true;
 }
 
-wxString recEventRecord::SetAutoTitle( const wxString& name1, const wxString& name2 )
+wxString recEventum::SetAutoTitle( const wxString& name1, const wxString& name2 )
 {
     f_title = wxEmptyString;
     wxString n1, n2;
@@ -175,7 +174,7 @@ wxString recEventRecord::SetAutoTitle( const wxString& name1, const wxString& na
     return f_title;
 }
 
-wxString recEventRecord::GetDetailStr() const
+wxString recEventum::GetDetailStr() const
 {
     wxString str;
     str << recDate::GetStr( f_date1_id );
@@ -186,12 +185,12 @@ wxString recEventRecord::GetDetailStr() const
     return str;
 }
 
-wxString recEventRecord::GetTypeStr() const
+wxString recEventum::GetTypeStr() const
 {
     return recEventType::GetTypeStr( f_type_id );
 }
 
-wxString recEventRecord::GetDateStr() const
+wxString recEventum::GetDateStr() const
 {
     wxString str;
     str << recDate::GetStr( f_date1_id );
@@ -201,54 +200,54 @@ wxString recEventRecord::GetDateStr() const
     return str;
 }
 
-wxString recEventRecord::GetAddressStr() const
+wxString recEventum::GetAddressStr() const
 {
     return recPlace::GetAddressStr( f_place_id );
 }
 
-recET_GRP recEventRecord::GetTypeGroup() const
+recET_GRP recEventum::GetTypeGroup() const
 {
     return recEventType::GetGroup( f_type_id );
 }
-    
 
-wxString recEventRecord::GetDetailStr( idt id )
+
+wxString recEventum::GetDetailStr( idt id )
 {
-    recEventRecord e( id );
+    recEventum e( id );
     return e.GetDetailStr();
 }
 
-wxString recEventRecord::GetTypeStr( idt id )
+wxString recEventum::GetTypeStr( idt id )
 {
     idt typeID = ExecuteID(
-        "SELECT type_id FROM EventRecord WHERE id="ID";", id
+        "SELECT type_id FROM Eventum WHERE id="ID";", id
     );
     return recEventType::GetTypeStr( typeID );
 }
 
-wxString recEventRecord::GetTitle( idt evID )
+wxString recEventum::GetTitle( idt evID )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3ResultSet result;
 
-    sql.Format( "SELECT title FROM EventRecord WHERE id="ID";", evID );
+    sql.Format( "SELECT title FROM Eventum WHERE id="ID";", evID );
     result = s_db->ExecuteQuery( sql );
     return result.GetAsString( 0 );
 }
 
-idt recEventRecord::GetDate1ID( idt evID )
+idt recEventum::GetDate1ID( idt evID )
 {
     if( evID == 0 ) return 0;
-    return ExecuteID( "SELECT date1_id FROM EventRecord WHERE id="ID";", evID );
+    return ExecuteID( "SELECT date1_id FROM Eventum WHERE id="ID";", evID );
 }
 
-wxString recEventRecord::GetDateStr( idt evID )
+wxString recEventum::GetDateStr( idt evID )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3ResultSet result;
     wxString str;
 
-    sql.Format( "SELECT date1_id, date2_id FROM EventRecord WHERE id="ID";", evID );
+    sql.Format( "SELECT date1_id, date2_id FROM Eventum WHERE id="ID";", evID );
     result = s_db->ExecuteQuery( sql );
     if( result.Eof() ) return str;
 
@@ -261,39 +260,39 @@ wxString recEventRecord::GetDateStr( idt evID )
     return str;
 }
 
-wxString recEventRecord::GetAddressStr( idt evID )
+wxString recEventum::GetAddressStr( idt evID )
 {
     idt placeID = ExecuteID(
-        "SELECT place_id FROM EventRecord WHERE id="ID";", evID
+        "SELECT place_id FROM Eventum WHERE id="ID";", evID
     );
     return recPlace::GetAddressStr( placeID );
 }
 
-wxString recEventRecord::GetNote( idt id )
+wxString recEventum::GetNote( idt id )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3ResultSet result;
 
-    sql.Format( "SELECT note FROM EventRecord WHERE id="ID";", id );
+    sql.Format( "SELECT note FROM Eventum WHERE id="ID";", id );
     result = s_db->ExecuteQuery( sql );
     return result.GetAsString( 0 );
 }
 
-recEveEveRecordVec recEventRecord::GetEveEveRecords( idt erID )
+recEventEventumVec recEventum::GetEventEventums( idt erID )
 {
-    recEveEveRecordVec vec;
+    recEventEventumVec vec;
     wxSQLite3StatementBuffer sql;
     wxSQLite3ResultSet result;
 
     sql.Format(
         "SELECT id, event_id, conf, note FROM "
-        "  EventEventRecord WHERE event_rec_id="ID";",
+        "  EventEventum WHERE eventum_id="ID";",
         erID
     );
     result = s_db->ExecuteQuery( sql );
 
-    recEventEventRecord eer(0);
-    eer.FSetEventRecID( erID );
+    recEventEventum eer(0);
+    eer.FSetEventumID( erID );
     while( result.NextRow() ) {
         eer.FSetID( GET_ID( result.GetInt64( 0 ) ) );
         eer.FSetEventID( GET_ID( result.GetInt64( 1 ) ) );
@@ -304,13 +303,13 @@ recEveEveRecordVec recEventRecord::GetEveEveRecords( idt erID )
     return vec;
 }
 
-bool recEventRecord::IsFamilyEvent( idt eveID )
+bool recEventum::IsFamilyEvent( idt eveID )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3ResultSet result;
 
     sql.Format(
-        "SELECT ET.grp FROM EventRecord E, EventType ET"
+        "SELECT ET.grp FROM Eventum E, EventType ET"
         " WHERE E.type_id=ET.id AND E.id="ID";",
         eveID
     );
@@ -322,20 +321,20 @@ bool recEventRecord::IsFamilyEvent( idt eveID )
     return false;
 }
 
-recEventPersonaVec recEventRecord::GetEventPersonas()
+recEventumPersonaVec recEventum::GetEventumPersonas()
 {
-    recEventPersonaVec vec;
+    recEventumPersonaVec vec;
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
         "SELECT id, per_id, role_id, note "
-        "FROM EventPersona WHERE event_rec_id="ID";",
+        "FROM EventumPersona WHERE eventum_id="ID";",
         f_id
     );
     wxSQLite3Table table = s_db->GetTable( sql );
 
-    recEventPersona record;
-    record.FSetEventRecID( f_id );
+    recEventumPersona record;
+    record.FSetEventumID( f_id );
     for( int i = 0 ; i < table.GetRowCount() ; i++ )
     {
         table.SetRow( i );
@@ -348,13 +347,13 @@ recEventPersonaVec recEventRecord::GetEventPersonas()
     return vec;
 }
 
-void recEventRecord::UpdateDatePoint( idt evID )
+void recEventum::UpdateDatePoint( idt evID )
 {
-    recEventRecord ev(evID);
+    recEventum ev(evID);
     ev.UpdateDatePoint();
 }
 
-void recEventRecord::UpdateDatePoint()
+void recEventum::UpdateDatePoint()
 {
     recET_GRP grp = recEventType::GetGroup( f_type_id );
     switch( grp )
@@ -369,7 +368,7 @@ void recEventRecord::UpdateDatePoint()
     f_date_pt = recDate::GetDatePoint( f_date1_id );
 }
 
-void recEventRecord::RemoveFromDatabase()
+void recEventum::RemoveFromDatabase()
 {
     if( f_id <= 0 ) {
         // Don't delete universal events.
@@ -379,7 +378,7 @@ void recEventRecord::RemoveFromDatabase()
 
     // TODO: Ensure Event is removed from reference statement.
     sql.Format(
-        "DELETE FROM EventPersona WHERE event_rec_id="ID";"
+        "DELETE FROM EventumPersona WHERE eventum_id="ID";"
         "DELETE FROM ReferenceEntity WHERE entity_type=2 AND entity_id="ID";",
         f_id, f_id
     );
@@ -389,54 +388,54 @@ void recEventRecord::RemoveFromDatabase()
     Clear();
 }
 
-void recEventRecord::RemoveFromDatabase( idt id )
+void recEventum::RemoveFromDatabase( idt id )
 {
     if( id <= 0 ) {
         // Don't delete universal events.
         return;
     }
-    recEventRecord eve(id);
+    recEventum eve(id);
     eve.RemoveFromDatabase();
 }
 
-void recEventRecord::RemoveIncOrphansFromDatabase( idt id )
+void recEventum::RemoveIncOrphansFromDatabase( idt id )
 {
     if( id <= 0 ) {
         // Don't delete universal events.
         return;
     }
-    recEventRecord eve(id);
+    recEventum eve(id);
     RemoveFromDatabase( eve.f_id );
     recDate::DeleteIfOrphaned( eve.f_date1_id );
     recDate::DeleteIfOrphaned( eve.f_date2_id );
     recPlace::DeleteIfOrphaned( eve.f_place_id );
-    // TODO: Delete orphaned EventType and/or EventTypeRole 
+    // TODO: Delete orphaned EventType and/or EventTypeRole
 }
 
-void recEventRecord::RemoveDates( idt dateID )
+void recEventum::RemoveDates( idt dateID )
 {
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "UPDATE EventRecord SET date1_id=0, date_pt=0 WHERE date1_id="ID";"
-        "UPDATE EventRecord SET date2_id=0 WHERE date2_id="ID";",
+        "UPDATE Eventum SET date1_id=0, date_pt=0 WHERE date1_id="ID";"
+        "UPDATE Eventum SET date2_id=0 WHERE date2_id="ID";",
         dateID, dateID
     );
     s_db->ExecuteUpdate( sql );
 }
 
-void recEventRecord::RemovePlace( idt placeID )
+void recEventum::RemovePlace( idt placeID )
 {
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "UPDATE EventRecord SET place_id=0 WHERE place_id="ID";",
+        "UPDATE Eventum SET place_id=0 WHERE place_id="ID";",
         placeID
     );
     s_db->ExecuteUpdate( sql );
 }
 
-void recEventRecord::DeleteIfOrphaned( idt id )
+void recEventum::DeleteIfOrphaned( idt id )
 {
     if( id <= 0 ) {
         // Don't delete universal dates.
@@ -444,7 +443,7 @@ void recEventRecord::DeleteIfOrphaned( idt id )
     }
     wxSQLite3StatementBuffer sql;
 
-    sql.Format( "SELECT COUNT(*) FROM EventPersona WHERE event_rec_id="ID";", id );
+    sql.Format( "SELECT COUNT(*) FROM EventumPersona WHERE eventum_id="ID";", id );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
     sql.Format(
         "SELECT COUNT(*) FROM ReferenceEntity"
@@ -458,55 +457,55 @@ void recEventRecord::DeleteIfOrphaned( idt id )
     RemoveFromDatabase( id );
 }
 
-wxSQLite3Table recEventRecord::GetTitleList()
+wxSQLite3Table recEventum::GetTitleList()
 {
-    return s_db->GetTable( "SELECT id, title FROM EventRecord ORDER BY id;" );
+    return s_db->GetTable( "SELECT id, title FROM Eventum ORDER BY id;" );
 }
 
-wxSQLite3Table recEventRecord::GetTitleList( idt offset, int limit )
+wxSQLite3Table recEventum::GetTitleList( idt offset, int limit )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "SELECT id, title FROM EventRecord ORDER BY id LIMIT "ID", %d;",
+        "SELECT id, title FROM Eventum ORDER BY id LIMIT "ID", %d;",
         offset, limit
     );
     return s_db->GetTable( sql );
 }
 
-int recEventRecord::GetLastPerSeqNumber( idt eventID )
+int recEventum::GetLastPerSeqNumber( idt eventID )
 {
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "SELECT MAX(per_seq) FROM EventPersona WHERE event_rec_id="ID";",
+        "SELECT MAX(per_seq) FROM EventumPersona WHERE eventum_id="ID";",
         eventID
     );
     return s_db->ExecuteScalar( sql );
 }
 
 
-recIdVec recEventRecord::FindMatchingEvents( recEVENT_Link link ) const
+recIdVec recEventum::FindMatchingEvents( recEVENT_Link link ) const
 {
     recIdVec eveIDs;
     wxSQLite3StatementBuffer sql;
 
     if( link == recEVENT_Link_EvEvRec ) {
         sql.Format(
-            // This query finds Event's which match the EventRecord, 
-            // by using the EventEventRecord table.
-            "SELECT event_id FROM EventEventRecord"
-            " WHERE event_rec_id="ID
+            // This query finds Event's which match the Eventum,
+            // by using the EventEventum table.
+            "SELECT event_id FROM EventEventum"
+            " WHERE eventum_id="ID
             " ORDER BY event_id;",
             f_id
         );
     } else { // recEVENT_Link_IndPer
         sql.Format(
-            // This query finds Event's which match the EventRecord, 
+            // This query finds Event's which match the Eventum,
             // by matching the linked prime Persona with their Indiviuals.
             "SELECT IE.event_id"
-            " FROM EventPersona EP, IndividualPersona IP,"
+            " FROM EventumPersona EP, IndividualPersona IP,"
             " IndividualEvent IE, EventTypeRole ETR"
-            " WHERE EP.event_rec_id="ID
+            " WHERE EP.eventum_id="ID
             " AND EP.per_id=IP.per_id AND IP.ind_id=IE.ind_id AND EP.role_id=IE.role_id"
             " AND EP.role_id=ETR.id AND ETR.prime>0"
             " GROUP BY IE.event_id"
@@ -523,7 +522,7 @@ recIdVec recEventRecord::FindMatchingEvents( recEVENT_Link link ) const
     return eveIDs;
 }
 
-recCheckIdVec recEventRecord::FindCheckedMatchingEvents() const
+recCheckIdVec recEventum::FindCheckedMatchingEvents() const
 {
     recCheckIdVec list;
     recIdVec e1 = FindMatchingEvents( recEVENT_Link_EvEvRec );
@@ -548,4 +547,4 @@ recCheckIdVec recEventRecord::FindCheckedMatchingEvents() const
     return list;
 }
 
-// End of src/rec/recEventRecord.cpp file
+// End of src/rec/recEventum.cpp file

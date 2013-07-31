@@ -3,10 +3,8 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Manage SQLite3 Persona, Attribute and AttributeType records.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2010, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -181,9 +179,9 @@ recNameVec recPersona::ReadNames( idt perID )
     return list;
 }
 
-recEventPersonaVec recPersona::ReadEventPersonas( idt perID, recEventOrder order )
+recEventumPersonaVec recPersona::ReadEventumPersonas( idt perID, recEventOrder order )
 {
-    recEventPersonaVec list;
+    recEventumPersonaVec list;
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
 
@@ -204,35 +202,35 @@ recEventPersonaVec recPersona::ReadEventPersonas( idt perID, recEventOrder order
     }
 
     sql.Format(
-        "SELECT EP.id, event_rec_id, role_id, EP.note, per_seq FROM EventPersona EP"
-        " INNER JOIN Event E ON E.id=event_rec_id"
-        " WHERE per_id="ID" ORDER BY %s;", 
+        "SELECT EP.id, eventum_id, role_id, EP.note, per_seq FROM EventumPersona EP"
+        " INNER JOIN Event E ON E.id=eventum_id"
+        " WHERE per_id="ID" ORDER BY %s;",
         perID, UTF8_(orderStr)
     );
     result = s_db->GetTable( sql );
 
     list.reserve( result.GetRowCount() );
-    recEventPersona record;
+    recEventumPersona record;
     record.f_per_id = perID;
     for( int i = 0 ; i < result.GetRowCount() ; i++ )
     {
         result.SetRow( i );
-        record.f_id       = GET_ID( result.GetInt64( 0 ) );
-        record.f_event_rec_id = GET_ID( result.GetInt64( 1 ) );
-        record.f_role_id  = GET_ID( result.GetInt64( 2 ) );
-        record.f_note     = result.GetAsString( 3 );
-        record.f_per_seq  = result.GetInt( 4 );
+        record.f_id         = GET_ID( result.GetInt64( 0 ) );
+        record.f_eventum_id = GET_ID( result.GetInt64( 1 ) );
+        record.f_role_id    = GET_ID( result.GetInt64( 2 ) );
+        record.f_note       = result.GetAsString( 3 );
+        record.f_per_seq    = result.GetInt( 4 );
         list.push_back( record );
     }
     return list;
 }
 
-int recPersona::GetMaxEventRecordSeqNumber( idt perID )
+int recPersona::GetMaxEventumSeqNumber( idt perID )
 {
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "SELECT MAX(per_seq) FROM EventPersona WHERE per_id="ID";",
+        "SELECT MAX(per_seq) FROM EventumPersona WHERE per_id="ID";",
         perID
     );
     return s_db->ExecuteScalar( sql );
@@ -316,7 +314,7 @@ void recPersona::RemoveFromDatabase()
         names[i].RemoveFromDatabase();
     }
     sql.Format(
-        "DELETE FROM EventPersona WHERE per_id="ID";"
+        "DELETE FROM EventumPersona WHERE per_id="ID";"
         "DELETE FROM Relationship WHERE per1_id="ID" OR per2_id="ID";",
         f_id, f_id, f_id
     );
@@ -324,7 +322,7 @@ void recPersona::RemoveFromDatabase()
 
 
     Delete();
-    // TODO: Delete orphaned EventType and/or EventTypeRole 
+    // TODO: Delete orphaned EventType and/or EventTypeRole
     Clear();
 }
 

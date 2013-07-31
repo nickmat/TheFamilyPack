@@ -3,10 +3,8 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Edit database Individual Event dialog.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     9 October 2010
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2010, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -41,7 +39,7 @@
 
 #include <rec/recDate.h>
 #include <rec/recPlace.h>
-#include <rec/recEventRecord.h>
+#include <rec/recEventum.h>
 #include <rg/rgDialogs.h>
 
 #include "rgEdEvent.h"
@@ -141,7 +139,7 @@ idt rgCreateIndEvent( wxWindow* wind, idt ind1ID, idt ind2ID, idt famID )
 idt rgCreateEventFromRecord( wxWindow* wind, idt erID )
 {
     wxASSERT( erID != 0 );
-    recEventRecord er(erID);
+    recEventum er(erID);
 
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
@@ -157,13 +155,13 @@ idt rgCreateEventFromRecord( wxWindow* wind, idt erID )
     e.Save();
     idt eID = e.FGetID();
 
-    recEventEventRecord eer(0);
+    recEventEventum eer(0);
     eer.FSetEventID( eID );
-    eer.FSetEventRecID( erID );
+    eer.FSetEventumID( erID );
     eer.FSetConf( 0.999 );
     eer.Save();
 
-    recEventPersonaVec pers = er.GetEventPersonas();
+    recEventumPersonaVec pers = er.GetEventumPersonas();
     for( size_t i = 0 ; i < pers.size() ; i++ ) {
         recIdVec indIDs = recPersona::GetIndividualIDs( pers[i].FGetPerID() );
         for( size_t j = 0 ; j < indIDs.size() ; j++ ) {
@@ -221,7 +219,7 @@ bool rgDlgEditEvent::TransferDataToWindow()
     m_textCtrlPlace->SetValue( recPlace::GetAddressStr( m_placeID ) );
     m_textCtrlNote->SetValue( m_event.f_note );
     ListLinkedIndividuals();
-    ListEventRecords();
+    ListEventums();
     m_staticEventID->SetLabel( m_event.GetIdStr() );
     return true;
 }
@@ -241,14 +239,14 @@ void rgDlgEditEvent::ListLinkedIndividuals()
     m_listIndividual->SetColumnWidth( COL_Role, wxLIST_AUTOSIZE );
 }
 
-void rgDlgEditEvent::ListEventRecords()
+void rgDlgEditEvent::ListEventums()
 {
-    m_eers = m_event.GetEveEveRecords();
+    m_eers = m_event.GetEventEventums();
     m_listRecord->DeleteAllItems();
     for( size_t i = 0 ; i < m_eers.size() ; i++ ) {
-        idt erID = m_eers[i].FGetEventRecID();
-        idt refID = recEventRecord::FindReferenceID( erID );
-        m_listRecord->InsertItem( i, recEventRecord::GetIdStr( erID ) );
+        idt erID = m_eers[i].FGetEventumID();
+        idt refID = recEventum::FindReferenceID( erID );
+        m_listRecord->InsertItem( i, recEventum::GetIdStr( erID ) );
         m_listRecord->SetItem( i, COL_RefID, recReference::GetIdStr( refID ) );
         m_listRecord->SetItem( i, COL_RefTitle, recReference::GetTitle( refID ) );
     }
@@ -321,7 +319,7 @@ bool rgDlgEditEvent::TransferDataFromWindow()
     }
     m_event.FSetNote( m_textCtrlNote->GetValue() );
 
-    m_event.UpdateDatePoint(); 
+    m_event.UpdateDatePoint();
     m_event.Save();
 
     for( size_t i = 0 ; i < m_ies.size() ; i++ ) {
@@ -405,7 +403,7 @@ void rgDlgEditEvent::OnDelInd( wxCommandEvent& event )
         return;
     }
     idt ieID = m_ies[row].FGetID();
-    int ans = wxMessageBox( 
+    int ans = wxMessageBox(
         _("Remove the link between the Individual and this Event from database?"),
         _("Delete Link"),
         wxYES_NO | wxCANCEL, this

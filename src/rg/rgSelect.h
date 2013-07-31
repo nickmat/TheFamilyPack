@@ -3,10 +3,8 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Base rgSelect dialog class and other declarations, GUI only.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     19 November 2012
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2012, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -84,8 +82,8 @@ class rgDlgSelectDate : public rgSelect
     };
     static wxString sm_colHeaders[COL_MAX];
 public:
-    rgDlgSelectDate( 
-        wxWindow* parent = NULL, 
+    rgDlgSelectDate(
+        wxWindow* parent = NULL,
         unsigned style = rgSELSTYLE_None,
         const wxString& title = _("Select Date")
     ) : rgSelect( parent, sm_colHeaders, COL_MAX, style, title ) {}
@@ -102,8 +100,8 @@ class rgDlgSelectPlace : public rgSelect
     };
     static wxString sm_colHeaders[COL_MAX];
 public:
-    rgDlgSelectPlace( 
-        wxWindow* parent = NULL, 
+    rgDlgSelectPlace(
+        wxWindow* parent = NULL,
         unsigned style = rgSELSTYLE_None,
         const wxString& title = _("Select Place")
     ) : rgSelect( parent, sm_colHeaders, COL_MAX, style, title ) {}
@@ -120,8 +118,8 @@ class rgDlgSelectEventType : public rgSelect
     };
     static wxString sm_colHeaders[COL_MAX];
 public:
-    rgDlgSelectEventType( 
-        wxWindow* parent = NULL, 
+    rgDlgSelectEventType(
+        wxWindow* parent = NULL,
         unsigned style = rgSELSTYLE_None,
         const wxString& title = _("Select Event Type")
     ) : rgSelect( parent, sm_colHeaders, COL_MAX, style, title ) {}
@@ -138,8 +136,8 @@ class rgDlgSelectIndividual : public rgSelect
     };
     static wxString sm_colHeaders[COL_MAX];
 public:
-    rgDlgSelectIndividual( 
-        wxWindow* parent = NULL, 
+    rgDlgSelectIndividual(
+        wxWindow* parent = NULL,
         unsigned style = rgSELSTYLE_None,
         const wxString& title = _("Select Individual")
     ) : rgSelect( parent, sm_colHeaders, COL_MAX, style, title ) {}
@@ -157,10 +155,10 @@ class rgDlgSelectPersona : public rgSelect
     };
     static wxString sm_colHeaders[COL_MAX];
 public:
-    rgDlgSelectPersona( 
-        wxWindow* parent, unsigned style = rgSELSTYLE_None, 
+    rgDlgSelectPersona(
+        wxWindow* parent, unsigned style = rgSELSTYLE_None,
         const wxString& title = _("Select Persona") )
-        : m_sex(SEX_Unstated), 
+        : m_sex(SEX_Unstated),
         rgSelect( parent, sm_colHeaders, COL_MAX, style, title )
     {}
 
@@ -179,20 +177,20 @@ private:
 };
 
 //-------------------------------------------------------------------------------
-//-------------------[ rgDlgSelectEventRecord ]----------------------------------
+//-------------------[ rgDlgSelectEventum ]----------------------------------
 //-------------------------------------------------------------------------------
 
-class rgDlgSelectEventRecord : public rgSelect
+class rgDlgSelectEventum : public rgSelect
 {
     enum {
         COL_ID, COL_Title, COL_MAX
     };
     static wxString sm_colHeaders[COL_MAX];
 public:
-    rgDlgSelectEventRecord( 
+    rgDlgSelectEventum(
         wxWindow* parent = NULL,
         unsigned style = rgSELSTYLE_None,
-        const wxString& title = _("Select Event Record")
+        const wxString& title = _("Select Eventum")
     ) : rgSelect( parent, sm_colHeaders, COL_MAX, style, title ) {}
 };
 

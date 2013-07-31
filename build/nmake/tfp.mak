@@ -71,8 +71,8 @@ TFP_OBJECTS =  \
 	tfp_tfpWrChart.obj \
 	tfp_tfpWrEvent.obj \
 	tfp_tfpWrEventIndex.obj \
-	tfp_tfpWrEventRecIndex.obj \
-	tfp_tfpWrEventRecord.obj \
+	tfp_tfpWrEventum.obj \
+	tfp_tfpWrEventumIndex.obj \
 	tfp_tfpWrFamily.obj \
 	tfp_tfpWrIndividual.obj \
 	tfp_tfpWrName.obj \
@@ -154,8 +154,8 @@ REC_OBJECTS =  \
 	rec_recDatabase.obj \
 	rec_recDate.obj \
 	rec_recEvent.obj \
-	rec_recEventRecord.obj \
 	rec_recEventType.obj \
+	rec_recEventum.obj \
 	rec_recFilterEvent.obj \
 	rec_recGedParse.obj \
 	rec_recHelper.obj \
@@ -194,9 +194,9 @@ RECGUI_OBJECTS =  \
 	recgui_rgEdContact.obj \
 	recgui_rgEdDate.obj \
 	recgui_rgEdEvent.obj \
-	recgui_rgEdEventEventRec.obj \
-	recgui_rgEdEventRecord.obj \
+	recgui_rgEdEventEventum.obj \
 	recgui_rgEdEventType.obj \
+	recgui_rgEdEventum.obj \
 	recgui_rgEdFamily.obj \
 	recgui_rgEdIndividual.obj \
 	recgui_rgEdName.obj \
@@ -213,7 +213,7 @@ RECGUI_OBJECTS =  \
 	recgui_rgEdUser.obj \
 	recgui_rgIndividual.obj \
 	recgui_rgSelect.obj \
-	recgui_rgSelIndEvent.obj \
+	recgui_rgSelEvent.obj \
 	recgui_rgTableCtrl.obj
 
 ### Conditionally set variables: ###
@@ -454,11 +454,11 @@ tfp_tfpWrEvent.obj: .\..\..\src\tfp\tfpWrEvent.cpp
 tfp_tfpWrEventIndex.obj: .\..\..\src\tfp\tfpWrEventIndex.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrEventIndex.cpp
 
-tfp_tfpWrEventRecIndex.obj: .\..\..\src\tfp\tfpWrEventRecIndex.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrEventRecIndex.cpp
+tfp_tfpWrEventum.obj: .\..\..\src\tfp\tfpWrEventum.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrEventum.cpp
 
-tfp_tfpWrEventRecord.obj: .\..\..\src\tfp\tfpWrEventRecord.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrEventRecord.cpp
+tfp_tfpWrEventumIndex.obj: .\..\..\src\tfp\tfpWrEventumIndex.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrEventumIndex.cpp
 
 tfp_tfpWrFamily.obj: .\..\..\src\tfp\tfpWrFamily.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrFamily.cpp
@@ -553,11 +553,11 @@ rec_recDate.obj: .\..\..\src\rec\recDate.cpp
 rec_recEvent.obj: .\..\..\src\rec\recEvent.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recEvent.cpp
 
-rec_recEventRecord.obj: .\..\..\src\rec\recEventRecord.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recEventRecord.cpp
-
 rec_recEventType.obj: .\..\..\src\rec\recEventType.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recEventType.cpp
+
+rec_recEventum.obj: .\..\..\src\rec\recEventum.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recEventum.cpp
 
 rec_recFilterEvent.obj: .\..\..\src\rec\recFilterEvent.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recFilterEvent.cpp
@@ -634,14 +634,14 @@ recgui_rgEdDate.obj: .\..\..\src\rg\rgEdDate.cpp
 recgui_rgEdEvent.obj: .\..\..\src\rg\rgEdEvent.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdEvent.cpp
 
-recgui_rgEdEventEventRec.obj: .\..\..\src\rg\rgEdEventEventRec.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdEventEventRec.cpp
-
-recgui_rgEdEventRecord.obj: .\..\..\src\rg\rgEdEventRecord.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdEventRecord.cpp
+recgui_rgEdEventEventum.obj: .\..\..\src\rg\rgEdEventEventum.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdEventEventum.cpp
 
 recgui_rgEdEventType.obj: .\..\..\src\rg\rgEdEventType.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdEventType.cpp
+
+recgui_rgEdEventum.obj: .\..\..\src\rg\rgEdEventum.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdEventum.cpp
 
 recgui_rgEdFamily.obj: .\..\..\src\rg\rgEdFamily.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdFamily.cpp
@@ -691,8 +691,8 @@ recgui_rgIndividual.obj: .\..\..\src\rg\rgIndividual.cpp
 recgui_rgSelect.obj: .\..\..\src\rg\rgSelect.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgSelect.cpp
 
-recgui_rgSelIndEvent.obj: .\..\..\src\rg\rgSelIndEvent.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgSelIndEvent.cpp
+recgui_rgSelEvent.obj: .\..\..\src\rg\rgSelEvent.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgSelEvent.cpp
 
 recgui_rgTableCtrl.obj: .\..\..\src\rg\rgTableCtrl.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgTableCtrl.cpp

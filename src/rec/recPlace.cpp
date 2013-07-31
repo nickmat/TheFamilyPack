@@ -3,10 +3,8 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Manage SQLite3 database
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2010, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -237,7 +235,7 @@ void recPlace::DeleteIfOrphaned( idt id )
     sql.Format( "SELECT COUNT(*) FROM Event WHERE place_id="ID";", id );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
 
-    sql.Format( "SELECT COUNT(*) FROM EventRecord WHERE place_id="ID";", id );
+    sql.Format( "SELECT COUNT(*) FROM Eventum WHERE place_id="ID";", id );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
 
     sql.Format( "SELECT COUNT(*) FROM Source WHERE sub_place_id="ID" OR loc_place_id="ID";", id, id );

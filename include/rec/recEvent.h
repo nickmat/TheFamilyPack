@@ -1,13 +1,10 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Name:        include/rec/recEvent.h
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Manage SQLite3 Event, EventTypeRole and
- *              RecEventPersona records.
+ * Purpose:     Manage SQLite3 Event, EventTypeRole and EventumPersona records.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2010, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -88,7 +85,7 @@ public:
     static wxString GetIdStr( idt evID ) { return wxString::Format( "E"ID, evID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
-    static idt CreateFromEventRecord( idt erID );
+    static idt CreateFromEventum( idt erID );
 
     wxString SetAutoTitle( const wxString& name1, const wxString& name2 = wxEmptyString );
     static void SetDatePeriodToInclude( idt eventID, idt dateID );
@@ -108,9 +105,9 @@ public:
     static void UpdateDatePoint( idt evID );
     void UpdateDatePoint();
 
-    static recEventRecordVec FindEquivRefEvents( idt evetID );
-    static recEveEveRecordVec GetEveEveRecords( idt eveID );
-    recEveEveRecordVec GetEveEveRecords() const { return GetEveEveRecords( f_id ); }
+    static recEventumVec FindEquivRefEvents( idt evetID );
+    static recEventEventumVec GetEventEventums( idt eveID );
+    recEventEventumVec GetEventEventums() const { return GetEventEventums( f_id ); }
 
     static bool IsFamilyEvent( idt eveID );
     bool IsFamilyEvent() const { return IsFamilyEvent( f_id ); }
@@ -155,37 +152,37 @@ inline bool operator!=( const recEvent& r1, const recEvent& r2 )
 
 
 //============================================================================
-//-------------------------[ recEventEventRecord ]----------------------------
+//-------------------------[ recEventEventum ]--------------------------------
 //============================================================================
 
-class recEventEventRecord : public recDb
+class recEventEventum : public recDb
 {
     idt      f_event_id;
-    idt      f_event_rec_id;
+    idt      f_eventum_id;
     double   f_conf;
     wxString f_note;
 
 public:
-    recEventEventRecord() {}
-    recEventEventRecord( idt id ) : recDb(id) { Read(); }
-    recEventEventRecord( const recEventEventRecord& link );
+    recEventEventum() {}
+    recEventEventum( idt id ) : recDb(id) { Read(); }
+    recEventEventum( const recEventEventum& link );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "EventEventRecord" );
+    TABLE_NAME_MEMBERS( "EventEventum" );
 
     idt FGetEventID() const { return f_event_id; }
-    idt FGetEventRecID() const { return f_event_rec_id; }
+    idt FGetEventumID() const { return f_eventum_id; }
     double FGetConf() const { return f_conf; }
     wxString FGetNote() const { return f_note; }
 
     void FSetEventID( idt eveID ) { f_event_id = eveID; }
-    void FSetEventRecID( idt erID ) { f_event_rec_id = erID; }
+    void FSetEventumID( idt erID ) { f_eventum_id = erID; }
     void FSetConf( double conf ) { f_conf = conf; }
     void FSetNote( const wxString& note ) { f_note = note; }
 
-    static wxString GetIdStr( idt eerID ) { return wxString::Format( "EER"ID, eerID ); }
+    static wxString GetIdStr( idt eerID ) { return wxString::Format( "EEm"ID, eerID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     static idt Create( idt eID, idt erID, double conf = 0.999, const wxString& note = wxEmptyString );
@@ -196,21 +193,21 @@ public:
 
 /*! The two entities are equal, ignoring the record id.
  */
-inline bool recEquivalent( const recEventEventRecord& d1, const recEventEventRecord& d2 )
+inline bool recEquivalent( const recEventEventum& d1, const recEventEventum& d2 )
 {
     return
         d1.FGetEventID()    == d2.FGetEventID()    &&
-        d1.FGetEventRecID() == d2.FGetEventRecID() &&
+        d1.FGetEventumID() == d2.FGetEventumID()   &&
         d1.FGetConf()       == d2.FGetConf()       &&
         d1.FGetNote()       == d2.FGetNote();
 }
 
-inline bool operator==( const recEventEventRecord& d1, const recEventEventRecord& d2 )
+inline bool operator==( const recEventEventum& d1, const recEventEventum& d2 )
 {
     return recEquivalent( d1, d2 ) && d1.f_id == d2.f_id;
 }
 
-inline bool operator!=( const recEventEventRecord& d1, const recEventEventRecord& d2 )
+inline bool operator!=( const recEventEventum& d1, const recEventEventum& d2 )
 {
     return !(d1 == d2);
 }
@@ -322,34 +319,34 @@ inline bool operator!=( const recEventTypeRole& r1, const recEventTypeRole& r2 )
 }
 
 //============================================================================
-//-------------------------[ recEventPersona ]--------------------------------
+//-------------------------[ recEventumPersona ]------------------------------
 //============================================================================
 
-class recEventPersona : public recDb
+class recEventumPersona : public recDb
 {
 public:
-    idt      f_event_rec_id;
+    idt      f_eventum_id;
     idt      f_per_id;
     idt      f_role_id;
     wxString f_note;
     int      f_per_seq;
 
-    recEventPersona() {}
-    recEventPersona( idt id ) : recDb(id) { Read(); }
-    recEventPersona( const recEventPersona& pe );
+    recEventumPersona() {}
+    recEventumPersona( idt id ) : recDb(id) { Read(); }
+    recEventumPersona( const recEventumPersona& pe );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "EventPersona" );
+    TABLE_NAME_MEMBERS( "EventumPersona" );
 
-    idt FGetEventRecID() const { return f_event_rec_id; }
+    idt FGetEventumID() const { return f_eventum_id; }
     idt FGetPerID() const { return f_per_id; }
     idt FGetRoleID() const { return f_role_id; }
     wxString FGetNote() const { return f_note; }
     int FGetPerSeq() const { return f_per_seq; }
 
-    void FSetEventRecID( idt erID ) { f_event_rec_id = erID; }
+    void FSetEventumID( idt erID ) { f_eventum_id = erID; }
     void FSetPerID( idt perID ) { f_per_id = perID; }
     void FSetRoleID( idt roleID ) { f_role_id = roleID; }
     void FSetNote( const wxString& note ) { f_note = note; }
@@ -367,22 +364,22 @@ public:
     bool LinkExists() const;
 };
 
-inline bool recEquivalent( const recEventPersona& r1, const recEventPersona& r2 )
+inline bool recEquivalent( const recEventumPersona& r1, const recEventumPersona& r2 )
 {
     return
-        r1.f_event_rec_id == r2.f_event_rec_id &&
+        r1.f_eventum_id == r2.f_eventum_id &&
         r1.f_per_id   == r2.f_per_id   &&
         r1.f_role_id  == r2.f_role_id  &&
         r1.f_note     == r2.f_note     &&
         r1.f_per_seq  == r2.f_per_seq;
 }
 
-inline bool operator==( const recEventPersona& r1, const recEventPersona& r2 )
+inline bool operator==( const recEventumPersona& r1, const recEventumPersona& r2 )
 {
     return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
 }
 
-inline bool operator!=( const recEventPersona& r1, const recEventPersona& r2 )
+inline bool operator!=( const recEventumPersona& r1, const recEventumPersona& r2 )
 {
     return !(r1 == r2);
 }

@@ -32,18 +32,18 @@
 
 
 class recEvent;
-typedef std::vector< recEvent >            recEventVec;
+typedef std::vector< recEvent >      recEventVec;
 class recEventType;
 typedef std::vector< recEventType >  recEventTypeVec;
-class recEventRecord;
-typedef std::vector< recEventRecord > recEventRecordVec;
+class recEventum;
+typedef std::vector< recEventum >    recEventumVec;
 
 class recEventTypeRole;
 typedef std::vector< recEventTypeRole >    recEventTypeRoleVec;
-class recEventEventRecord;
-typedef std::vector< recEventEventRecord > recEveEveRecordVec;
-class recEventPersona;
-typedef std::vector< recEventPersona >     recEventPersonaVec;
+class recEventEventum;
+typedef std::vector< recEventEventum >     recEventEventumVec;
+class recEventumPersona;
+typedef std::vector< recEventumPersona >   recEventumPersonaVec;
 class recIndividualEvent;
 typedef std::vector< recIndividualEvent >  recIndEventVec;
 class recFamilyEvent;
