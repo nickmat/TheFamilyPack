@@ -14,6 +14,9 @@
 # Project related configuration options
 #---------------------------------------------------------------------------
 
+INPUT                  = ..\..\include\rg
+#                         ..\..\src\rg
+
 # This tag specifies the encoding used for all characters in the config file
 # that follow. The default is UTF-8 which is also the encoding used for all
 # text before the first occurrence of this tag. Doxygen uses libiconv (or the
@@ -25,7 +28,7 @@ DOXYFILE_ENCODING      = UTF-8
 # The PROJECT_NAME tag is a single word (or a sequence of words surrounded
 # by quotes) that should identify the project.
 
-PROJECT_NAME           = "The Family Pack"
+PROJECT_NAME           = "TFP Database GUI/Dialog Library"
 
 # The PROJECT_NUMBER tag can be used to enter a project or revision number.
 # This could be handy for archiving the generated documentation or
@@ -38,7 +41,7 @@ PROJECT_NUMBER         = v0.3.0.1.1 pre-alpha
 # If a relative path is entered, it will be relative to the location
 # where doxygen was started. If left blank the current directory will be used.
 
-OUTPUT_DIRECTORY       = tfp
+OUTPUT_DIRECTORY       = recgui
 
 # If the CREATE_SUBDIRS tag is set to YES, then doxygen will create
 # 4096 sub-directories (in 2 levels) under the output directory of each output
@@ -590,7 +593,9 @@ WARN_LOGFILE           =
 # directories like "/usr/src/myproject". Separate the files or directories
 # with spaces.
 
-INPUT                  = ..\..\src\tfp
+# Move to top of file
+# INPUT                  = ..\..\include\rg \
+#                         ..\..\src\rg
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding, which is
@@ -623,7 +628,7 @@ RECURSIVE              = YES
 # excluded from the INPUT source files. This way you can easily exclude a
 # subdirectory from a directory tree whose root is specified with the INPUT tag.
 
-EXCLUDE                = ../../src/cal
+EXCLUDE                = ../../src/rec
 
 # The EXCLUDE_SYMLINKS tag can be used select whether or not files or
 # directories that are symbolic links (a Unix filesystem feature) are excluded
