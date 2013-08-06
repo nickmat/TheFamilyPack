@@ -75,6 +75,8 @@ private:
     void UpdatePersonas( idt perID = 0 );
     void UpdateEntities( idt reID = 0 );
 
+    wxString GetSelectedText() const;
+
     void OnTool( wxCommandEvent& event );
 
 	void OnStatementViewChanged( wxBookCtrlEvent& event );

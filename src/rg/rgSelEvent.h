@@ -1,13 +1,11 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/rg/rgSelIndEvent.h
+ * Name:        src/rg/rgSelEvent.h
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Select Event dialog header.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     5th December 2012
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2012, Nick Matthews.
+ * Copyright:   Copyright (c) 2012-2013, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -27,8 +25,8 @@
 
 */
 
-#ifndef RGSELINDEVENT_H
-#define RGSELINDEVENT_H
+#ifndef RGSELEVENT_H
+#define RGSELEVENT_H
 
 #include <rec/recFilterEvent.h>
 
@@ -88,4 +86,4 @@ private:
     recIdVec  m_indIDs;
 };
 
-#endif // RGSELINDEVENT_H
+#endif // RGSELEVENT_H

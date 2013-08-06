@@ -243,6 +243,18 @@ void rgDlgEditReference::UpdateEntities( idt reID )
     }
 }
 
+wxString rgDlgEditReference::GetSelectedText() const
+{
+    switch( m_notebookTop->GetSelection() )
+    {
+    case 0: // Source
+        return m_textCtrlStatement->GetStringSelection();
+    case 1: // View
+        return m_webview->GetSelectedText();
+    }
+    return wxEmptyString;
+}
+
 void rgDlgEditReference::OnTool( wxCommandEvent& event )
 {
     switch( event.GetId() )
@@ -322,7 +334,7 @@ void rgDlgEditReference::OnPersonaAddMenuOp( wxCommandEvent& event )
     per.Save();
     idt perID = per.FGetID();
 
-    wxString nameStr = m_textCtrlStatement->GetStringSelection();
+    wxString nameStr = GetSelectedText();
     idt nameID = rgCreatePersonaName( this, perID, rgCRNAME_EditExtend, nameStr );
     if( nameID ) {
         recDb::ReleaseSavepoint( savepoint );
@@ -399,7 +411,7 @@ void rgDlgEditReference::OnNewName( wxCommandEvent& event )
         return;
     }
 
-    wxString nameStr = m_textCtrlStatement->GetStringSelection();
+    wxString nameStr = GetSelectedText();
     idt nameID = rgCreatePersonaName( this, perID, rgCRNAME_EditExtend, nameStr );
     if( nameID ) {
         recDb::ReleaseSavepoint( savepoint );
@@ -412,7 +424,7 @@ void rgDlgEditReference::OnNewName( wxCommandEvent& event )
 
 void rgDlgEditReference::OnNewDate( wxCommandEvent& event )
 {
-    idt dateID = rgCreateDate( this, m_textCtrlStatement->GetStringSelection() );
+    idt dateID = rgCreateDate( this, GetSelectedText() );
     if( dateID ) {
         idt reID = CreateRefEntity( recReferenceEntity::TYPE_Date, dateID );
         UpdateEntities( reID );
@@ -421,7 +433,7 @@ void rgDlgEditReference::OnNewDate( wxCommandEvent& event )
 
 void rgDlgEditReference::OnNewDateAge( wxCommandEvent& event )
 {
-    wxString valStr = m_textCtrlStatement->GetStringSelection();
+    wxString valStr = GetSelectedText();
     long val;
     if( !valStr.ToLong( &val ) ) {
         val = 0;
@@ -452,7 +464,7 @@ void rgDlgEditReference::OnNewDateAge( wxCommandEvent& event )
 
 void rgDlgEditReference::OnNewPlace( wxCommandEvent& event )
 {
-    idt placeID = rgCreatePlace( this, m_textCtrlStatement->GetStringSelection() );
+    idt placeID = rgCreatePlace( this, GetSelectedText() );
     if( placeID ) {
         idt reID = CreateRefEntity( recReferenceEntity::TYPE_Place, placeID );
         UpdateEntities( reID );
@@ -470,7 +482,7 @@ void rgDlgEditReference::OnNewEvent( wxCommandEvent& cmnd_event )
 void rgDlgEditReference::OnNewPersonalEvent( wxCommandEvent& event )
 {
     idt eveID = rgCreatePersonalEventum(
-        this, m_reference.FGetID(), m_textCtrlStatement->GetStringSelection()
+        this, m_reference.FGetID(), GetSelectedText()
     );
     if( eveID ) {
         idt reID = CreateRefEntity( recReferenceEntity::TYPE_Event, eveID );
@@ -481,7 +493,7 @@ void rgDlgEditReference::OnNewPersonalEvent( wxCommandEvent& event )
 void rgDlgEditReference::OnNewRelationship( wxCommandEvent& event )
 {
     idt relID = rgCreatePersonaRelationship(
-        this, m_reference.FGetID(), m_textCtrlStatement->GetStringSelection()
+        this, m_reference.FGetID(), GetSelectedText()
     );
     if( relID ) {
         idt reID = CreateRefEntity( recReferenceEntity::TYPE_Relationship, relID );

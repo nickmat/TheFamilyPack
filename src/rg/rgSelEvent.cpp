@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/rg/rgSelIndEvent.cpp
+ * Name:        src/rg/rgSelEvent.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Select Event dialog.
  * Author:      Nick Matthews
@@ -367,4 +367,4 @@ void rgDlgSelectEvent::Refresh()
     }
 }
 
-// End of src/rg/rgSelIndEvent.cpp file
+// End of src/rg/rgSelEvent.cpp file
