@@ -72,6 +72,7 @@ public:
     void SetAddress( const wxString& str ) { return SetAddress( f_id, str ); }
     static void SetAddress( idt placeID, const wxString& str );
     static idt Create( const wxString& str );
+    static idt Create( idt placeID ); // Clone
 
     wxString GetAddressStr() const { return GetAddressStr( f_id ); }
     static wxString GetAddressStr( idt id );

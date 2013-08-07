@@ -613,45 +613,6 @@ idt rgDlgEditReference::CreateRefEntity( recReferenceEntity::Type type, idt entI
     re.Save();
     return re.FGetID();
 }
-#if 0
-bool rgDlgEditReference::SelectDate(
-    idt* dateID, const wxString& title, unsigned style )
-{
-    wxASSERT( dateID );  // Can't handle NULL pointer
-
-    unsigned retButton;
-    *dateID = rgSelectDate( this, style, &retButton, recD_FILTER_Reference, m_reference.FGetID() );
-    if( retButton == rgSELSTYLE_Create ) {
-        CreateRefEntity( recReferenceEntity::TYPE_Date, *dateID );
-    }
-    if( *dateID == 0 ) {
-        if( retButton == rgSELSTYLE_Unknown ) {
-            return true;
-        }
-        return false;
-    }
-    return true;
-}
-
-bool rgDlgEditReference::SelectPlace(
-    idt* placeID, const wxString& title, unsigned style )
-{
-    wxASSERT( placeID );  // Can't handle NULL pointer
-
-    unsigned retButton;
-    *placeID = rgSelectPlace( this, style, &retButton, recP_FILTER_Reference, m_reference.FGetID() );
-    if( retButton == rgSELSTYLE_Create ) {
-        CreateRefEntity( recReferenceEntity::TYPE_Place, *placeID );
-    }
-    if( *placeID == 0 ) {
-        if( retButton == rgSELSTYLE_Unknown ) {
-            return true;
-        }
-        return false;
-    }
-    return true;
-}
-#endif
 
 void rgDlgEditReference::InsertEntityListItem( size_t row )
 {

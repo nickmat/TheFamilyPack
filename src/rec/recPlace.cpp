@@ -143,6 +143,14 @@ idt recPlace::Create( const wxString& str )
     return place.FGetID();
 }
 
+idt recPlace::Create( idt placeID )
+{
+    if( placeID == 0 ) {
+        return 0;
+    }
+    return Create( GetAddressStr( placeID ) );
+}
+
 wxString recPlace::GetAddressStr( idt id )
 {
     if( id == 0 ) return wxEmptyString;

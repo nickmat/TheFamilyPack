@@ -155,9 +155,9 @@ idt recEvent::CreateFromEventum( idt erID )
 
     e.f_title    = er.f_title;
     e.f_type_id  = er.f_type_id;
-    e.f_date1_id = er.f_date1_id;
-    e.f_date2_id = er.f_date2_id;
-    e.f_place_id = er.f_place_id;
+    e.f_date1_id = recDate::Create( er.f_date1_id );
+    e.f_date2_id = recDate::Create( er.f_date2_id );
+    e.f_place_id = recPlace::Create( er.f_place_id );
     e.f_note     = er.f_note;
     e.f_date_pt  = er.f_date_pt;
 

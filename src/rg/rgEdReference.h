@@ -5,7 +5,6 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     26th February 2013
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2013, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -42,9 +41,6 @@ class rgDlgEditReference : public fbRgEditReference
 public:
     /** Constructor */
     rgDlgEditReference( wxWindow* parent, idt refID );
-
-//   bool SelectDate( idt* dateID, const wxString& title, unsigned style );
-//    bool SelectPlace( idt* placeID, const wxString& title, unsigned style );
 
 private:
     DECLARE_EVENT_TABLE()

@@ -974,7 +974,7 @@ void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
     if( display.StartsWith( "FI" ) ) {
         idt indID = recGetID( display.Mid(2) );
         id = recIndividual::GetFamilyID( indID );
-    } else if( display.StartsWith( "ER" ) ) {
+    } else if( display.StartsWith( "E^" ) || display.StartsWith( "Em" ) ) {
         id = recGetID( display.Mid(2) );
     } else {
         id = recGetID( display.Mid(1) );
@@ -991,7 +991,7 @@ void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
             ret = rgEditReference( this, id );
             break;
         case 'E':
-            if( uch1.GetValue() == 'R' ) {
+            if( uch1.GetValue() == 'm' ) {
                 ret = rgEditEventum( this, id );
             } else {
                 ret = rgEditEvent( this, id );
@@ -1599,11 +1599,12 @@ void TfpFrame::RefreshEditMenu()
             m_menuEditEvent->SetLabel( tfpID_EDIT_EVENT_CURRENT, name );
             m_menuEditEvent->Enable( tfpID_EDIT_EVENT_CURRENT, true );
             m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
-        } else if( disp.size() >= 3 && disp.GetChar( 1 ) == 'R' && wxIsdigit( disp.GetChar( 2 ) ) ) {
+        } else if( disp.size() >= 3 && (
+                ( disp.GetChar( 1 ) == 'm' && wxIsdigit( disp.GetChar( 2 ) ) ) ||
+                ( disp.GetChar( 1 ) == '^' && wxIsdigit( disp.GetChar( 2 ) ) )
+                ) ) {
             m_editEventID = recGetID( disp.Mid( 2 ) );
             name = recEventum::GetTitle( m_editEventID );
-//            m_menuEditEvent->SetLabel( tfpID_EDIT_EVENT_CURRENT, name );
-//            m_menuEditEvent->Enable( tfpID_EDIT_EVENT_CURRENT, true );
             m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
         }
         break;

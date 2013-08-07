@@ -61,7 +61,7 @@ bool rgEditEventum( wxWindow* wind, idt erID )
     dialog->Destroy();
     return ret;
 }
-// Create a new Eventum from the reference document
+// Create a new Eventum from the reference document id
 idt rgCreateEventum( wxWindow* wind, idt refID )
 {
     const wxString savepoint = recDb::GetSavepointStr();
