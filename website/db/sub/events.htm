@@ -30,13 +30,11 @@
 </blockquote>
 
 <div class="diag"><img src="tfp-event.png" alt="Event Subsystem" /></div>
-<h2>Events</h2>
 <p>
- Under construction.
+ The Event table represents events which we have reason to believe actually happened. The very similar Eventum table is used to represent a record of those events, as recorded in the <a href='references.htm'>Reference statements</a>. Individuals are linked to Events using the IndividualEvent table, which will also indicate the role played by the Individual. In a similar fashion, the EventumPersona table can link a Persona to an Eventum and record their role. Both the IndividualEvent and EventumPersona tables share the same EventTypeRole table. The EventType table is also shared by both the Event and Eventum tables. Event's are linked to their Eventum records by the EventEventum table. The FamilyEvent table holds a separate link between an Event and the Family for family event types. Note that, as Individual and Persona records are linked by the IndividualPersona table, this can set up a redundant circlar link - this is explored further in the <a href='../ov/event-eventum.htm'>Event - Eventum overview</a> page.
 </p>
 
 <h3>Event Types</h3>
-
 
 <table class='basic lfloat' width='50%'>
 <tr><th colspan='0'>EventType Groups</th></tr>
@@ -51,6 +49,13 @@
 <tr><td>8</td><td>Personal</td><td>These are events which last the lifetime of an individual. Although the details may change over time, at any given time they normally have a single state. ie Occupation, Physical appearance or Residency</td></tr>
 <tr><td>7</td><td>Other</td><td>Anything which does not fit into the other Groups</td></tr>
 </table>
+
+<p>
+ A list of Event Types and the Roles normally associated with them is maintained as part of the core data - see the <a href='../../com/core/ets.htm'>Core Data: EventTypes</a> page for a current list. The user is free to extend this list as required. All Types are categorised into one of the groups shown opposite. This list cannot be extended by the user, although a future database version may.
+</p>
+<p>
+ The Group designated for an EventType has a significant effect on the way the Event is handled by the application.
+</p>
 
 </div>
 
