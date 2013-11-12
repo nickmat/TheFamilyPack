@@ -4,13 +4,13 @@ Build Instructions
 The tfp build system is based on the bakefile program used by the wxWidgets
 library.
 
-The build is slightly complicated because of the use of a custom utility 
+The build is slightly complicated because of the use of a custom utility
 "file2cpp" which is used to imbed text files into the program. (It was also
 used for image files, but these are now in xpm format.) As both the input and
-output files of the file2cpp program are supplied, the utility is only 
+output files of the file2cpp program are supplied, the utility is only
 required if you need to edit the input files. If you have the file2cpp program
 installed on your system, you may use the *-dep build folders, otherwise use
-the folder without the -dep suffix. 
+the folder without the -dep suffix.
 
 The build process has been tested on Windows with MS Visual C++ 2008 express
 with both the IDE and nmake.
@@ -20,15 +20,15 @@ The Gnu/Linux build has been tested on Linux Mint 14 and Ubuntu 11.10
 Windows Build
 ~~~~~~~~~~~~~
 
-1) Download and install wxWidgets version 2.9.4.
+1) Download and install wxWidgets version 3.0.0.
    Ensure the environment variable WXWIN is set to wxWidgets root folder.
 
 2) To compile the test program, download and install the CppUnit framework.
    Set the environment variable CPPUNIT to the library folder.
 
-3) To start the IDE, open the tfp\build\vc9 (or vc9-dep) folder and 
-   double click the tfp.sln file. 
-   
+3) To start the IDE, open the tfp\build\vc9 (or vc9-dep) folder and
+   double click the tfp.sln file.
+
    To compile from the commandline, open the Visual Studio 2008 (or equivalent)
    Command Prompt and navigate to the tfp\build\nmake (or nmake-dep) folder
    and, for the debug build, enter:-
@@ -61,7 +61,7 @@ when using the MS Visual Studio IDE as follows:-
 Note that there are some drawbacks to the above changes if you are making
 commits to subversion. After commiting you may need to recompile a couple of
 times so the new version number is picked up. If anyone knows a better system
-that achieves the same end, please let me know. 
+that achieves the same end, please let me know.
 
 Gnu/Linux Build
 ~~~~~~~~~~~~~~~
@@ -81,7 +81,7 @@ Gnu/Linux Build
     make
     ./tfp
    should run The family Pack program.
-   
+
 Note, the gnu build only includes the libraries and main program - not the
 test program or utilities. Anyone with development experience on unix systems
 should have no difficulty building these if required.
@@ -92,7 +92,7 @@ Mac/OSX Build
 1) Download the wxWidgets library (to a folder which we will named wx) and The
    Family Pack code (to a folder which we will name tfp) together in the same
    folder.
-   
+
 2) In the terminal, navigate to the wx folder:-
     mkdir build-osx
     cd build-osx
@@ -101,7 +101,7 @@ Mac/OSX Build
 
 3) Also in the terminal, navigate to the tfp/build/gnu folder:-
     make WX_CONFIG=../../../wx/build-osx/wx-config
-    
+
 4) Create a application bundle with the resulting tfp binary file.
    (I am still investigating the best way of going about this)
 

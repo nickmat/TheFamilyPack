@@ -80,7 +80,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions=""
-				AdditionalDependencies="$(SolutionDir)$(ConfigurationName)\recguiu.lib $(SolutionDir)$(ConfigurationName)\recu.lib $(SolutionDir)$(ConfigurationName)\calendaru.lib $(SolutionDir)$(ConfigurationName)\wxsqlite3u.lib wxmsw29u_webview.lib wxmsw29u_adv.lib wxmsw29u_core.lib wxbase29u.lib wxtiff.lib wxjpeg.lib wxpng.lib wxzlib.lib wxregexu.lib wxexpat.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib"
+				AdditionalDependencies="$(SolutionDir)$(ConfigurationName)\recguiu.lib $(SolutionDir)$(ConfigurationName)\recu.lib $(SolutionDir)$(ConfigurationName)\calendaru.lib $(SolutionDir)$(ConfigurationName)\wxsqlite3u.lib wxmsw30u_webview.lib wxmsw30u_adv.lib wxmsw30u_core.lib wxbase30u.lib wxtiff.lib wxjpeg.lib wxpng.lib wxzlib.lib wxregexu.lib wxexpat.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib"
 				OutputFile="$(SolutionDir)$(ConfigurationName)\tfp.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -175,7 +175,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions=""
-				AdditionalDependencies="$(SolutionDir)$(ConfigurationName)\recguiud.lib $(SolutionDir)$(ConfigurationName)\recud.lib $(SolutionDir)$(ConfigurationName)\calendarud.lib $(SolutionDir)$(ConfigurationName)\wxsqlite3ud.lib wxmsw29ud_webview.lib wxmsw29ud_adv.lib wxmsw29ud_core.lib wxbase29ud.lib wxtiffd.lib wxjpegd.lib wxpngd.lib wxzlibd.lib wxregexud.lib wxexpatd.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib"
+				AdditionalDependencies="$(SolutionDir)$(ConfigurationName)\recguiud.lib $(SolutionDir)$(ConfigurationName)\recud.lib $(SolutionDir)$(ConfigurationName)\calendarud.lib $(SolutionDir)$(ConfigurationName)\wxsqlite3ud.lib wxmsw30ud_webview.lib wxmsw30ud_adv.lib wxmsw30ud_core.lib wxbase30ud.lib wxtiffd.lib wxjpegd.lib wxpngd.lib wxzlibd.lib wxregexud.lib wxexpatd.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib"
 				OutputFile="$(SolutionDir)$(ConfigurationName)\tfp.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"

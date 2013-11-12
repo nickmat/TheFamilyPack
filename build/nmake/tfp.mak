@@ -34,7 +34,7 @@ LDFLAGS =
 WX_DEBUG = 1
 
 # Version of the wx library to build against. 
-WX_VERSION = 29
+WX_VERSION = 30
 
 # The directory where wxWidgets library is installed 
 WX_DIR = $(WXWIN)
