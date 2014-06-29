@@ -1,8 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <title>The Family Pack - Database: Subsystems</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <link rel='stylesheet' type='text/css' href='../../tfp.css' />
 </head>
 <body>
@@ -57,32 +57,78 @@
 
 <h2>Subsystems</h2>
 <p>
- We can break the database design into four parts, Administration, Evidence and Conclusions. The Conclusions can further be divided into Interpretation, Conclusions and elements common to both.
-</p>
-
-<p>
- We can break the database design into four parts, Administration, Evidence, Interpretation and Conclusions.
+ We can first divide the database design into three parts, Administration, Evidence and Conclusions. The Conclusions part can then further be divided into Interpretation, Results and Common for the elements common to both.
 </p>
 
 <h3>Administration</h3>
 <p>
- The Administration area of the database is the least developed section, only the basic minimum is being implemented. A System table hold basic system wide settings. A version table will enable an automatic update process to be developed, for when changes are made to the database design. The User subsystem holds per user system settings and details of the researchers that have contributed to the database. The Contact subsystem stores contact information for any part of the system that requires it.
+ The Administration area of the database is the least developed section, only the basic minimum is currently being implemented.
 </p>
+<dl>
+ <dt>System</dt>
+ <dd>Manages global settings used by the database.</dd>
+ <dt>Version</dt>
+ <dd>The database version number, used to manage database updates.</dd>
+ <dt>Contacts</dt>
+ <dd>Manages contact information for various parts of the system.</dd>
+ <dt>User</dt>
+ <dd>Handles per user system settings and details of the researchers that have contributed to the database.</dd>
+</dl>
 
 <h3>Evidence</h3>
 <p>
  The evidence section centres around the Reference table which is supported by the Source, Citation and Repository subsystems.
 </p>
-
-<h3>Interpretation</h3>
-<p>
- This is the area where the main work is done. The information presented in the Evidence section is broken down into its constituent parts: Sources, Dates, Places, Names, Relationships and Events. Events and Personas are used to glue all these entities back together again so the computer program can make use of it.
-</p>
+<dl>
+ <dt>Sources</dt>
+ <dd>Covers Citations, Sorces and Repositories.</dd>
+ <dt>References</dt>
+ <dd>Document transcriptions, descriptions and notes that make up the evidence.
+</dl>
 
 <h3>Conclusions</h3>
 <p>
+ The information presented in the Evidence section is broken down into its constituent parts: Sources, Dates, Places, Personas, Names, Relationships and Eventums. Personas and Eventums are used to glue all these entities back together again and are linked to the Events, Individuals and Families that are the end results of the proccess.
+</p>
+
+<h4>Common</h4>
+<p>
+ These subsystems are used by both the Interpretation and Results.
+</p>
+<dl>
+ <dt>Dates</dt>
+ <dd>A subsystem to handle dates, date ranges and date convertions.</dd>
+ <dt>Places</dt>
+ <dd>A subsystem to cover place names and locations.</dd>
+ <dt>Names</dt>
+ <dd>A subsystem that handles name parts and titles.</dd>
+ <dt>Event Types</dt>
+ <dd>Part of the Event subsystem that describes event types and the roles that are involved.</dd>
+</dl>
+
+<h4>Interpretation</h4>
+<p>
+ This is the area where the main work is done.
+</p>
+<dl>
+ <dt>Personas</dt>
+ <dd>The Persona is the representation of a person as they appear in in a reference document.</dd>
+ <dt>Eventums</dt>
+ <dd>The Eventum is the representation of an event as it appears in in a reference document.</dd>
+ <dt>Relationships</dt>
+ <dd>Relationships are used to describe how Personas are related to each other.</dd>
+</dl>
+
+<h4>Results</h4>
+<p>
  The Individuals and Family relationships are the results of the interpretion of the evidence, using various tables to tie things back to the interpretation.
 </p>
+<dl>
+ <dt>Individuals</dt>
+ <dd>The Individuals and Family links that result from the interpretion.</dd>
+ <dt>Events</dt>
+ <dd>The part of the Event subsytem that describe the real events we believe occurred.</dd>
+</dl>
 
 </div>
 
@@ -100,6 +146,7 @@
 </div>
 <!-- Start of StatCounter Code for Default Guide -->
 <script type="text/javascript">
+/*<![CDATA[*/
 var sc_project=9849896;
 var sc_invisible=1;
 var sc_security="8230fdb2";
@@ -108,12 +155,13 @@ var scJsHost = (("https:" == document.location.protocol) ?
 document.write("<sc"+"ript type='text/javascript' src='" +
 scJsHost+
 "statcounter.com/counter/counter.js'></"+"script>");
+/*]]>*/
 </script>
 <noscript><div class="statcounter"><a title="free hit
 counters" href="http://statcounter.com/"
 target="_blank"><img class="statcounter"
 src="http://c.statcounter.com/9849896/0/8230fdb2/1/"
-alt="free hit counters"></a></div></noscript>
+alt="free hit counters" /></a></div></noscript>
 <!-- End of StatCounter Code for Default Guide -->
 </body>
 </html>
