@@ -321,7 +321,7 @@ bool recEventum::IsFamilyEvent( idt eveID )
     return false;
 }
 
-recEventumPersonaVec recEventum::GetEventumPersonas()
+recEventumPersonaVec recEventum::GetEventumPersonas( idt emID )
 {
     recEventumPersonaVec vec;
     wxSQLite3StatementBuffer sql;
@@ -329,12 +329,12 @@ recEventumPersonaVec recEventum::GetEventumPersonas()
     sql.Format(
         "SELECT id, per_id, role_id, note "
         "FROM EventumPersona WHERE eventum_id="ID";",
-        f_id
+        emID
     );
     wxSQLite3Table table = s_db->GetTable( sql );
 
     recEventumPersona record;
-    record.FSetEventumID( f_id );
+    record.FSetEventumID( emID );
     for( int i = 0 ; i < table.GetRowCount() ; i++ )
     {
         table.SetRow( i );

@@ -105,7 +105,9 @@ public:
     static bool IsFamilyEvent( idt eveID );
     bool IsFamilyEvent() const { return IsFamilyEvent( f_id ); }
 
-    recEventumPersonaVec GetEventumPersonas();
+    static recEventumPersonaVec GetEventumPersonas( idt emID );
+    recEventumPersonaVec GetEventumPersonas() const { return GetEventumPersonas( f_id ); }
+
     static wxSQLite3Table GetTitleList();
     static wxSQLite3Table GetTitleList( idt offset, int limit );
 
