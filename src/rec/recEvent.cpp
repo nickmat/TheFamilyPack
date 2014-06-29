@@ -341,7 +341,7 @@ bool recEvent::IsFamilyEvent( idt eveID )
     return false;
 }
 
-recIndEventVec recEvent::GetIndividualEvents()
+recIndEventVec recEvent::GetIndividualEvents( idt eID )
 {
     recIndEventVec vec;
     recIndividualEvent record;
@@ -351,11 +351,11 @@ recIndEventVec recEvent::GetIndividualEvents()
         "SELECT id, ind_id, role_id, note, ind_seq"
         " FROM IndividualEvent WHERE event_id="ID
         " ORDER BY id;",
-        f_id
+        eID
     );
     wxSQLite3Table table = s_db->GetTable( sql );
 
-    record.f_event_id = f_id;
+    record.f_event_id = eID;
     for( int i = 0 ; i < table.GetRowCount() ; i++ )
     {
         table.SetRow( i );

@@ -112,7 +112,9 @@ public:
     static bool IsFamilyEvent( idt eveID );
     bool IsFamilyEvent() const { return IsFamilyEvent( f_id ); }
 
-    recIndEventVec GetIndividualEvents();
+    static recIndEventVec GetIndividualEvents( idt eID );
+    recIndEventVec GetIndividualEvents() const { return GetIndividualEvents( f_id ); }
+
     static wxSQLite3Table GetTitleList();
     static wxSQLite3Table GetTitleList( idt offset, int limit );
 
