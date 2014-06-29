@@ -5,7 +5,6 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2010-2013, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -26,17 +25,15 @@
 
 */
 
-#ifndef RECLINK_H
-#define RECLINK_H
+#ifndef REC_RECINDPERSONA_H
+#define REC_RECINDPERSONA_H
 
 #include <rec/recDatabase.h>
 #include <rec/recEvent.h>
 
-
 //============================================================================
-//                 recIndividualPersona
+//-------------------------[ recIndividualPersona ]---------------------------
 //============================================================================
-
 
 class recIndividualPersona : public recDb
 {
@@ -89,4 +86,4 @@ inline bool operator!=( const recIndividualPersona& d1, const recIndividualPerso
     return !(d1 == d2);
 }
 
-#endif // RECLINK_H
+#endif // REC_RECINDPERSONA_H

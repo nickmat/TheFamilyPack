@@ -3,10 +3,8 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Manage SQLite3 Place, PlacePart and PlacePartType.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2010, Nick Matthews.
  * Licence:     GNU GPLv3
  *
