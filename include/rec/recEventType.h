@@ -155,7 +155,7 @@ public:
     bool HasDateSpan() const;
     static bool HasDateSpan( idt etID );
 
-    wxString GetGroupStr() const { return GetGroupStr( f_grp ); }
+    wxString GetGroupStr() const { return GetGroupValueStr( f_grp ); }
     static wxString GetGroupStr( idt etID );
     static wxString GetGroupValueStr( recET_GRP grp );
 
