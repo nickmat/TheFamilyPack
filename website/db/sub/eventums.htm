@@ -1,13 +1,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<title>The Family Pack - Database: Events</title>
+<title>The Family Pack - Database: Eventums</title>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <link rel='stylesheet' type='text/css' href='../../tfp.css' />
 </head>
 <body>
 
-<h1><a  href="../../index.htm"><img id="logo" src="../../tfp5.gif" alt="Logo" /></a>The Family Pack<br/>Database: Events</h1>
+<h1><a  href="../../index.htm"><img id="logo" src="../../tfp5.gif" alt="Logo" /></a>The Family Pack<br/>
+Database: Eventums</h1>
 
 <div id="page" class="database">
 
@@ -15,24 +16,27 @@
   <a href="../../index.htm" class="m-item">Home</a>
   <a href="../database.htm" class="m-item level1">Database</a>
   <a href="subsystems.htm" class="m-item level2">Subsystems</a>
-  <a href="events.htm" class="m-item level3 thispage">Events</a>
-  <a href="individuals.htm" class="m-item prev">&lt;&lt;</a>
-  <a href="../ov/overview.htm" class="m-item next">&gt;&gt;</a>
+  <a href="eventums.htm" class="m-item level3 thispage">Eventums</a>
+  <a href="personas.htm" class="m-item prev">&lt;&lt;</a>
+  <a href="individuals.htm" class="m-item next">&gt;&gt;</a>
 </div>
 
 <div id="content" class="nomenu">
 
-<blockquote class="short">
+<blockquote>
 <p>
- And now the sequence of events in no particular order.
 </p>
-<p class="attribute">Dan Rather</p>
+<p class="attribute"></p>
 </blockquote>
 
-<div class="diag"><img src="tfp-event.png" alt="Event Subsystem" /></div>
+<div class="diag"><img src="tfp-eventum.png" alt="Eventum Subsystem" /></div>
 <p>
- The Event table represents events which we have reason to believe actually happened. Individuals are linked to Events using the IndividualEvent table, which will also indicate the role played by the Individual. In addition, events in the Family-Union and Other-Family groups are linked to the families in question with the FamilyEvent record. The Event record may be linked to the Eventum evidence record by the EventEventum record. The link between these records is further explored in the <a href='../ov/event-eventum.htm'>Event - Eventum overview</a> page.
+ The Eventum entity is used to represent a record of an event, as recorded in the <a href='references.htm'>Reference statements</a>. The roles in the eventum are carried out by the Persona who are linked to the Eventum by the EventumPersona record. The Persona, Dates and Places which are linked to the Eventums also linked to to the same Reference document.
 </p>
+<p>
+ The Event entity, by contrast, represents the actual event we believe occured, these are linked by the EventEventum record. Both the Eventum and Event share the same group catorgories, types and roles, as described in the Event Type subsystem. The link between these records is further explored in the <a href='../ov/event-eventum.htm'>Event - Eventum overview</a> page.
+</p>
+
 </div>
 
 <hr />
@@ -44,8 +48,7 @@
   </p>
 </div>
 
-<div id='create-date'><p> 7<sup>th</sup> September 2010
-. . . . Last updated 2<sup>nd</sup> July 2014</p></div>
+<div id='create-date'><p> 2<sup>nd</sup> July 2014</p></div>
 
 </div>
 <!-- Start of StatCounter Code for Default Guide -->

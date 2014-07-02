@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>The Family Pack - Database: Event Typess</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel='stylesheet' type='text/css' href='../../tfp.css' />
+</head>
+<body>
+
+<h1><a  href="../../index.htm"><img id="logo" src="../../tfp5.gif" alt="Logo" /></a>The Family Pack<br/>
+Database: Event Types</h1>
+
+<div id="page" class="database">
+
+<div id="crumbs">
+  <a href="../../index.htm" class="m-item">Home</a>
+  <a href="../database.htm" class="m-item level1">Database</a>
+  <a href="subsystems.htm" class="m-item level2">Subsystems</a>
+  <a href="eventtypes.htm" class="m-item level3 thispage">Event Types</a>
+  <a href="names.htm" class="m-item prev">&lt;&lt;</a>
+  <a href="personas.htm" class="m-item next">&gt;&gt;</a>
+</div>
+
+<div id="content" class="nomenu">
+
+<blockquote class="short">
+<p>
+</p>
+<p class="attribute"></p>
+</blockquote>
+
+<div class="diag"><img src="tfp-eventtype.png" alt="Event Type Subsystem" /></div>
+<p>
+ There are two distinct representations of Events in the database. The Event table which represents the real events we believe happened in the past and the Eventum table which represents the documented record of an event. Both these tables use a common system of event groups, types and roles. The link between these records is explored further in the <a href='../ov/event-eventum.htm'>Event - Eventum overview</a> page.
+</p>
+
+<h3>Event Types</h3>
+
+<table class='basic lfloat' width='50%'>
+<tr><th colspan='0'>EventType Groups</th></tr>
+<tr><th>Group</th><th>Name</th><th>Description</th></tr>
+<tr><td>0</td><td>Unstated</td><td>Normally an invalid value.</td></tr>
+<tr><td>1</td><td>Birth</td><td>The single birth event for an individual.</td></tr>
+<tr><td>2</td><td>Near&nbsp;Birth</td><td>ie Baptism or Birth registration. If the date of birth is not known, then the date of this event can be used as an approimation</td></tr>
+<tr><td>5</td><td>Death</td><td>The single death event for an individual.</td></tr>
+<tr><td>6</td><td>Near&nbsp;Death</td><td>ie Burial or Death registration. If the date of death is not known, then the date of this event can be used as an approimation</td></tr>
+<tr><td>3</td><td>Family&nbsp;Union</td><td>Normally a Marriage, but can be any event which signifies the offical start of the relationship.</td></tr>
+<tr><td>4</td><td>Other&nbsp;Family</td><td>Any family event in which both partners are equally equally prime, other than a official union event. It may occur before (engagment) or after (divorce) the union event.</td></tr>
+<tr><td>8</td><td>Personal</td><td>These are events which last the lifetime of an individual. Although the details may change over time, at any given time they normally have a single state. ie Occupation, Physical appearance or Residency</td></tr>
+<tr><td>7</td><td>Other</td><td>Anything which does not fit into the other Groups</td></tr>
+</table>
+
+<p>
+ A list of Event Types and the Roles normally associated with them is maintained as part of the core data - see the <a href='../../com/core/ets.htm'>Core Data: EventTypes</a> page for a current list. The user is free to extend this list as required. All Types are categorised into one of the groups shown opposite. This list cannot be extended by the user, although a future database version may.
+</p>
+<p>
+ The Group designated for an EventType has a significant effect on the way the Event is handled by the application.
+</p>
+
+</div>
+
+<hr />
+<div id='valid'>
+  <p>
+    <a href="http://validator.w3.org/check?uri=referer"><img
+        src="../../valid-xhtml10-blue.png"
+        alt="Valid XHTML 1.0 Strict" height="31" width="88" /></a>
+  </p>
+</div>
+
+<div id='create-date'><p> 2<sup>nd</sup> July 2014</p></div>
+
+</div>
+<!-- Start of StatCounter Code for Default Guide -->
+<script type="text/javascript">
+/*<![CDATA[*/
+var sc_project=9849896;
+var sc_invisible=1;
+var sc_security="8230fdb2";
+var scJsHost = (("https:" == document.location.protocol) ?
+"https://secure." : "http://www.");
+document.write("<sc"+"ript type='text/javascript' src='" +
+scJsHost+
+"statcounter.com/counter/counter.js'></"+"script>");
+/*]]>*/
+</script>
+<noscript><div class="statcounter"><a title="free hit
+counters" href="http://statcounter.com/"
+target="_blank"><img class="statcounter"
+src="http://c.statcounter.com/9849896/0/8230fdb2/1/"
+alt="free hit counters" /></a></div></noscript>
+<!-- End of StatCounter Code for Default Guide -->
+</body>
+</html>
