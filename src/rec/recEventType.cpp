@@ -252,7 +252,7 @@ recEventTypeRoleVec recEventType::GetRoles( idt typeID )
 
     sql.Format(
         "SELECT id, prime, official, name FROM EventTypeRole"
-        " WHERE type_id="ID" ORDER BY prime DESC, name;",
+        " WHERE type_id="ID" ORDER BY prime DESC, official, name;",
         typeID
     );
     wxSQLite3Table table = s_db->GetTable( sql );

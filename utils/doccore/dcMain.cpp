@@ -1,27 +1,25 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Name:        util/doccore/dcMain.cpp
- * Project:     The Family Pack: Genealogy data storage and display program.
+ * Project:     DocCore: Program to create webpage documenting TFP common data.
  * Purpose:     The source file for the create core data tables program.
- * Purpose:     Application main and supporting functions
  * Author:      Nick Matthews
- * Modified by:
+ * Website:     http://thefamilypack.org
  * Created:     25th November 2012
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2005 - 2009, Nick Matthews.
+ * Copyright:   Copyright (c) 2012 - 2014, Nick Matthews.
  * Licence:     GNU GPLv3
  *
- *  file2cpp is free software: you can redistribute it and/or modify
+ *  doccore is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  file2cpp is distributed in the hope that it will be useful,
+ *  doccore is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with file2cpp.  If not, see <http://www.gnu.org/licenses/>.
+ *  along with doccore.  If not, see <http://www.gnu.org/licenses/>.
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -179,7 +177,7 @@ wxString GetHtmEnd( int level )
         "var sc_security=\"8230fdb2\";\n"
         "var scJsHost = ((\"https:\" == document.location.protocol) ?\n"
         "\"https://secure.\" : \"http://www.\");\n"
-        "document.write(\"<sc\"+\"ript type='text/javascript' src='\" + \n"
+        "document.write(\"<sc\"+\"ript type='text/javascript' src='\" +\n"
         "scJsHost+\n"
         "\"statcounter.com/counter/counter.js'></\"+\"script>\");\n"
         "/*]]>*/\n"
@@ -206,7 +204,7 @@ wxString WrTblEventType( int* order )
         "<tr><td>0</td><td>NULL</td><td>NULL</td><td>Place holder for invalid Event Type.</td></tr>\n"
     ;
     for( size_t i = 0 ; order[i] != 0 ; i++ ) {
-        unsigned flag = 0x0001 << (order[i]-1);
+        unsigned flag = 0x0001 << order[i];
         recEventTypeVec ets = recEventType::ReadVec( flag );
         for( size_t j = 0 ; j < ets.size() ; j++ ) {
             idt etID = ets[j].FGetID();
@@ -237,7 +235,7 @@ wxString WrTblEventTypeRole( int* order )
         "<tr><td>0</td><td>NULL</td><td>NULL</td><td>NULL</td><td>NULL</td></tr>\n"
     ;
     for( size_t i = 0 ; order[i] != 0 ; i++ ) {
-        unsigned flag = 0x0001 << (order[i]-1);
+        unsigned flag = 0x0001 << order[i];
         recEventTypeVec ets = recEventType::ReadVec( flag );
         for( size_t j = 0 ; j < ets.size() ; j++ ) {
             recEventTypeRoleVec etrs = recEventType::GetRoles( ets[j].FGetID() );
