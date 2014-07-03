@@ -853,7 +853,7 @@ idt recFamily::Find( idt ind1ID, idt ind2ID )
 
     sql.Format(
         "SELECT id FROM Family"
-        " WHERE (husb="ID" AND wife="ID") OR (husb="ID" AND wife="ID");",
+        " WHERE (husb_id="ID" AND wife_id="ID") OR (husb_id="ID" AND wife_id="ID");",
         ind1ID, ind2ID, ind2ID, ind1ID
     );
     result = s_db->ExecuteQuery( sql );
