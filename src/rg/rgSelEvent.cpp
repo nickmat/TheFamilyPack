@@ -149,6 +149,7 @@ bool rgDlgSelectEvent::TransferDataToWindow()
     if( m_indIDs.size() ) {
         m_textCtrlIndID->SetValue( recIdVecToStr<recIndividual>( m_indIDs ) );
     }
+    Refresh();
     return true;
 }
 
@@ -169,11 +170,19 @@ bool rgDlgSelectEvent::TransferDataFromWindow()
 
 void rgDlgSelectEvent::OnIdle( wxIdleEvent& event )
 {
+    bool changed = false;
     if( m_begDatePt != m_fe.GetBegDatePt() ||
         m_endDatePt != m_fe.GetEndDatePt()
     ) {
         m_fe.SetBegDatePt( m_begDatePt );
         m_fe.SetEndDatePt( m_endDatePt );
+        changed = true;
+    }
+    if( IndIDsChanged() ) {
+        m_fe.SetIndIDs( m_indIDs );
+        changed = true;
+    }
+    if( changed ) {
         Refresh();
     }
 }
@@ -248,20 +257,7 @@ void rgDlgSelectEvent::OnEndDateText( wxCommandEvent& event )
 void rgDlgSelectEvent::OnIndIdText( wxCommandEvent& event )
 {
     wxString str = m_textCtrlIndID->GetValue();
-    recIdVec indIDs = recIndividual::GetIdVecFromStr( str );
-
-    if( indIDs.size() != m_indIDs.size() ) {
-        m_indIDs = indIDs;
-        Refresh();
-        return;
-    }
-    for( size_t i = 0 ; i < indIDs.size() ; i++ ) {
-        if( indIDs[i] != m_indIDs[i] ) {
-            m_indIDs = indIDs;
-            Refresh();
-            return;
-        }
-    }
+    m_indIDs = recIndividual::GetIdVecFromStr( str );
 }
 
 void rgDlgSelectEvent::OnListEventItemDeselected( wxListEvent& event )
@@ -282,6 +278,21 @@ void rgDlgSelectEvent::OnCreateButton( wxCommandEvent& event )
 {
     m_create = true;
     EndDialog( wxID_OK );
+}
+
+bool rgDlgSelectEvent::IndIDsChanged() const
+{
+    const recIdVec& indIDs = m_fe.GetIndIDs();
+
+    if( indIDs.size() != m_indIDs.size() ) {
+        return true;
+    }
+    for( size_t i = 0 ; i < indIDs.size() ; i++ ) {
+        if( indIDs[i] != m_indIDs[i] ) {
+            return true;
+        }
+    }
+    return false;
 }
 
 void rgDlgSelectEvent::SetGroupAll( bool check )

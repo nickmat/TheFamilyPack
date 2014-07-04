@@ -68,6 +68,8 @@ private:
     void OnListEventItemSelected( wxListEvent& event );
     void OnCreateButton( wxCommandEvent& event );
 
+    bool IndIDsChanged() const;
+
     void SetGroupAll( bool check );
     void CreateTypeList();
     void UpdateTypeCtrl();

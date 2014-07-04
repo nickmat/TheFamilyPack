@@ -97,7 +97,7 @@ public:
     long GetTypeIndexFromID( idt etID ) const;
     long GetBegDatePt() const { return m_begDate; }
     long GetEndDatePt() const { return m_endDate; }
-    recIdVec GetIndIDs() const { return m_indIDs; }
+    const recIdVec& GetIndIDs() const { return m_indIDs; }
     wxSQLite3Table* GetTable() { return &m_table; }
     size_t GetTableSize();
     idt GetIdForRow( size_t i );
