@@ -77,10 +77,10 @@ idt rgCreateIndEventEventum( wxWindow* wind, idt eID, idt erID )
 }
 
 idt rgFindOrCreateIndEvent(
-    wxWindow* wind, idt erID, double conf, idt indID, idt roleID )
+    wxWindow* wind, idt erID, double conf, idt id, idt roleID )
 {
     wxASSERT( erID != 0 );
-    wxASSERT( indID != 0 );
+    wxASSERT( id != 0 ); // id is either indID or famID, depending on event type
     idt eID = 0;
     recIdVec eIDs;
     recEventum er(erID);
@@ -90,7 +90,7 @@ idt rgFindOrCreateIndEvent(
     {
     case recET_GRP_Birth:
     case recET_GRP_Death:
-        eID = recIndividual::FindEvent( indID, grp );
+        eID = recIndividual::FindEvent( id, roleID );
         if( eID == 0 ) {
             eID = recEvent::CreateFromEventum( erID );
         }
@@ -108,12 +108,15 @@ idt rgFindOrCreateIndEvent(
             );
             sse.SetGroupsChecked( recEventTypeGrpToFilter( grp ) );
             sse.AddTypeChecked( er.FGetTypeID() );
-            sse.AddIndID( indID );
+            sse.AddIndID( id );
 
-            eID = rgSelectEvent( wind, rgSELSTYLE_None, &sse );
+            unsigned button;
+            eID = rgSelectEvent( wind, rgSELSTYLE_Create, &sse, &button );
+            if( button == rgSELSTYLE_Create ) {
+                eID = recEvent::CreateFromEventum( erID );
+            }
         }
         break;
-#if 0
     case recET_GRP_FamUnion:
     case recET_GRP_FamOther:
         {
@@ -128,19 +131,58 @@ idt rgFindOrCreateIndEvent(
             for( size_t i = 0 ; i < indIDs.size() ; i++ ) {
                 sse.AddIndID( indIDs[i] );
             }
-            eID = rgSelectEvent( wind, rgSELSTYLE_None, &sse );
+            unsigned button;
+            eID = rgSelectEvent( wind, rgSELSTYLE_Create, &sse, &button );
+            if( button == rgSELSTYLE_Create ) {
+                eID = recEvent::CreateFromEventum( erID );
+                recFamilyEvent::Create( eID, id );
+            }
         }
         break;
-#endif
+    default:
+        wxASSERT( false ); // Shouldn't be here.
     }
 
     if( eID ) {
         // Now we have an Event, create the Event Eventum links
-        recEventEventum::Create( eID, erID, conf );
-        recIndividualEvent::Create( indID, eID, roleID );
+        idt eemID = recEventEventum::Create( eID, erID, conf );
+        NormaliseEventEventumLinks( eemID );
     }
 
     return eID;
+}
+
+void NormaliseEventEventumLinks( idt eemID )
+{
+    recEventEventum eem(eemID);
+    wxASSERT( eem.FGetID() != 0 );
+
+    recEventumPersonaVec emps = recEventum::GetEventumPersonas( eem.FGetEventumID() );
+    recIndEventVec ies = recEvent::GetIndividualEvents( eem.FGetEventID() );
+    for( size_t i = 0 ; i < emps.size() ; i++ ) {
+        recIdVec indIDs = recPersona::GetIndividualIDs( emps[i].FGetPerID() );
+        for( size_t j = 0 ; j < indIDs.size() ; j++ ) {
+            bool ok = false;
+            for( size_t k = 0 ; k < ies.size() ; k++ ) {
+                if( indIDs[j] == ies[k].FGetIndID() ) {
+                    ok = true;
+                    break;
+                } else {
+                    ok = false;
+                }
+            }
+            if( ! ok ) {
+                // Create an IndividualEvent to match EventumPersona
+                recIndividualEvent ie(0);
+                ie.FSetIndID( indIDs[j] );
+                ie.FSetEventID( eem.FGetEventID() );
+                ie.FSetRoleID( emps[i].FGetRoleID() );
+                ie.FSetNote( emps[i].FGetNote() );
+                ie.FSetIndSeq( recIndividual::GetMaxEventSeqNumber( indIDs[j] ) + 1 );
+                ie.Save();
+            }
+        }
+    }
 }
 
 //============================================================================

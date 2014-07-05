@@ -83,6 +83,7 @@ extern idt rgFindOrCreateIndEvent(
     double conf,
     idt id,  // Individual or Family depending on Event Group
     idt roleID );
+extern void NormaliseEventEventumLinks( idt eemID );
 
 // See src/rg/rgEdEventType.cpp
 extern bool rgEditEventType( wxWindow* wind, idt etID );
@@ -213,7 +214,6 @@ extern idt rgSelectEvent(
     wxWindow* wind,
     unsigned flag = rgSELSTYLE_None,
     recSelSetEvent* filter = NULL,
-    bool* ok = NULL,
-    idt indID = 0 );
+    unsigned* button = NULL );
 
 #endif // RGDIALOGS_H
