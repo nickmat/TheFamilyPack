@@ -1314,4 +1314,15 @@ bool recFamilyEvent::Read()
     return true;
 }
 
+idt recFamilyEvent::Create( idt eveID, idt famID, const wxString& note )
+{
+    recFamilyEvent fe(0);
+    fe.FSetEventID( eveID );
+    fe.FSetFamID( famID );
+    fe.FSetNote( note );
+    fe.FSetFamSeq( recFamily::GetMaxEventSeqNumber( famID ) + 1 );
+    fe.Save();
+    return fe.FGetID();
+}
+
 // End of recEvent.cpp file

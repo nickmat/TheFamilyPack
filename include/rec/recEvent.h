@@ -484,6 +484,8 @@ public:
 
     static wxString GetIdStr( idt feID ) { return wxString::Format( "FE"ID, feID ); }
     wxString GetIdStr() const { return GetIdStr( FGetID() ); }
+
+    static idt Create( idt eveID, idt famID, const wxString& note = wxEmptyString );
 };
 
 /*! The two entities are equal, ignoring the record id.

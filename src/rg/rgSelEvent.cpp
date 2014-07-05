@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     5th December 2012
- * Copyright:   Copyright (c) 2012-2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2012-2014, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -51,7 +51,7 @@ bool rgSelectEventList( wxWindow* wind, recSelSetEvent* evefilter )
 
 idt rgSelectEvent(
      wxWindow* wind, unsigned selstyle, recSelSetEvent* exfilter, 
-     bool* ok, idt indID )
+     unsigned* button )
 {
     idt eveID = 0;
     bool cont = true;
@@ -59,16 +59,14 @@ idt rgSelectEvent(
     if( fe == NULL ) {
         fe = new recSelSetEvent;
     }
-    if( ok ) *ok = false;
+    if( button ) *button = rgSELSTYLE_None;
 
     rgDlgSelectEvent* dialog = new rgDlgSelectEvent( wind, selstyle, *fe );
     if( dialog->ShowModal() == wxID_OK ) {
-        if( ok ) *ok = true;
         if( dialog->GetCreatePressed() ) {
-            eveID = rgCreateIndEvent( wind, indID );
-            if( eveID == 0 && ok ) *ok = false;
+            if( button ) *button = rgSELSTYLE_Create;
         } else if( dialog->GetUnknownPressed() ) {
-            eveID = 0;
+            if( button ) *button = rgSELSTYLE_Unknown;
         } else {
             eveID = dialog->GetID();
         }
@@ -85,7 +83,8 @@ idt rgSelectEvent(
 //-------------------------------------------------------------------------------
 
 rgDlgSelectEvent::rgDlgSelectEvent( wxWindow* parent, unsigned selstyle, recSelSetEvent& sse )
-    : m_create(false), m_selList(false), m_sse(&sse), m_fe(sse),
+    : m_create(false), m_selList(false),
+    m_sse(&sse), m_fe(sse),
     m_begDatePt(0), m_endDatePt(0), fbRgSelectEvent( parent )
 {
     wxSize sz = m_listEvent->GetClientSize();
