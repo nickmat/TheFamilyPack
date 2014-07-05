@@ -239,6 +239,8 @@ calTokenVec calParser::ParseStr( const wxString& str, calSYNTAX syn )
         }
         if( type == calTOKEN_Number ) {
             outStr.ToCLong( &num );
+        } else if( type == calTOKEN_RangeSep ) {
+            num = 0;
         } else {
             num = GetValue( outStr );
             if( num == calLabelNotFound ) {
