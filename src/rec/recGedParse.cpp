@@ -3,10 +3,8 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Read GEDCOM import files.
  * Author:      Nick Matthews
- * Modified by:
  * Created:     19 September 2011
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2011, Nick Matthews.
+ * Copyright:   Copyright (c) 2011-2014, Nick Matthews.
  * Website:     http://thefamilypack.org
  * Licence:     GNU GPLv3
  *
@@ -106,12 +104,30 @@ public:
     void Save() { m_fam.Save(); }
 };
 
+class GedSource
+{
+public:
+    GedSource( idt refID ) : m_ref(0) {
+        m_ref.FSetID( refID );
+    }
+
+    void SetTitle( const wxString& str ) { m_ref.FSetTitle( str ); }
+    void SetText( const wxString& str ) { m_ref.FSetStatement( m_ref.FGetStatement() + str ); }
+    void Save() {
+        if( m_ref.FGetTitle().empty() ) {
+            wxString stat = m_ref.FGetStatement();
+            size_t pos = stat.find( '\n' );
+            m_ref.FSetTitle( stat.substr( 0, pos ) );
+        }
+        m_ref.Save();
+    }
+
+private:
+    recReference m_ref;
+};
+
 class GedSubmitter
 {
-private:
-    recResearcher  m_res;
-    recContactList m_cl;
-
 public:
     GedSubmitter( idt resID );
 
@@ -119,6 +135,10 @@ public:
 
     void SaveContact( recContactType::Type type, const wxString& value );
     void Save() { m_res.Save(); }
+
+private:
+    recResearcher  m_res;
+    recContactList m_cl;
 };
 
 bool recGedParse::Import( unsigned flags )
@@ -128,13 +148,19 @@ bool recGedParse::Import( unsigned flags )
         wxPD_CAN_ABORT | wxPD_APP_MODAL | wxPD_ELAPSED_TIME | wxPD_ESTIMATED_TIME | wxPD_REMAINING_TIME
     );
     bool ok = true;
-    if( !Pass1() ) ok = false;
-    if( ok ) {
-        m_filestream.SeekI( 0 );
-        if( !Pass2() ) ok = false;
-    }
-    if( ok && ! (flags & recGED_IMPORT_NO_POST_OPS) ) {
-        ok = DoPostOperations();
+    try {
+        if( !Pass1() ) ok = false;
+        if( ok ) {
+            m_filestream.SeekI( 0 );
+            if( !Pass2() ) ok = false;
+        }
+        if( ok && ! (flags & recGED_IMPORT_NO_POST_OPS) ) {
+            ok = DoPostOperations();
+        }
+    } catch( wxSQLite3Exception& e ) {
+        recDb::ErrorMessage( e );
+        recDb::Rollback();
+        ok = false;
     }
     recProgressClose( m_progress );
     return ok;
@@ -154,7 +180,7 @@ bool recGedParse::Pass1()
     wxString xref;
     unsigned long num;
     unsigned index;
-    unsigned famCount=0, indiCount=0, submCount=0;
+    unsigned famCount=0, indiCount=0, sourCount=0, submCount=0;
 
     m_lineNum = 0;
     recProgressPulse( m_progress, _("Examining file...") );
@@ -179,13 +205,26 @@ bool recGedParse::Pass1()
         str = tk.GetNextToken();
 
         if(      str.Cmp( "INDI" ) == 0 ) {
-            if( m_indiUseXref ) index = (unsigned) num;
-            else index = ++indiCount;
+            if( m_indiUseXref ) {
+                index = (unsigned) num;
+            } else {
+                index = ++indiCount;
+            }
             m_indiMap[xref] = index;
         } else if( str.Cmp( "FAM"  ) == 0 ) {
-            if( m_famUseXref ) index = (unsigned) num;
-            else index = ++famCount;
+            if( m_famUseXref ) {
+                index = (unsigned) num;
+            } else {
+                index = ++famCount;
+            }
             m_famMap[xref] = index;
+        } else if( str.Cmp( "SOUR"  ) == 0 ) {
+            if( m_sourUseXref ) {
+                index = (unsigned) num;
+            } else {
+                index = ++sourCount;
+            }
+            m_sourMap[xref] = index;
         } else if( str.Cmp( "SUBM" ) == 0 ) {
             m_submMap[xref] = ++submCount;
         }
@@ -220,6 +259,9 @@ bool recGedParse::Pass2()
             case tagFAM:
                 ReadFam( 1 );
                 break;
+            case tagSOUR:
+                ReadSour( 1 );
+                break;
             case tagSUBM:
                 ReadSubm( 1 );
                 break;
@@ -249,18 +291,19 @@ bool recGedParse::ReadNextLine()
     wxString xref;
     unsigned long num;
 
-    m_lineNum++;
+    wxStringTokenizer tk;
+    do {
+        if( m_input.GetInputStream().Eof() == true ) {
+            m_tag = tag_END;
+            return false;
+        }
+        tk.SetString( m_input.ReadLine() );
+        m_lineNum++;
+    } while( tk.HasMoreTokens() == false );
+
     m_level = 0;
     m_tag = tagNULL;
     m_text.empty();
-
-    if( m_input.GetInputStream().Eof() == true ) {
-        m_tag = tag_END;
-        return false;
-    }
-
-    wxStringTokenizer tk( m_input.ReadLine() );
-    if( tk.HasMoreTokens() == false ) return false;
 
     str = tk.GetNextToken();
     if( str.ToULong( &num ) == false ) return false;
@@ -281,24 +324,38 @@ bool recGedParse::ReadNextLine()
 
         if(      str.Cmp( "INDI" ) == 0 ) m_tag = tagINDI;
         else if( str.Cmp( "FAM"  ) == 0 ) m_tag = tagFAM;
+        else if( str.Cmp( "SOUR" ) == 0 ) m_tag = tagSOUR;
         else if( str.Cmp( "SUBM" ) == 0 ) m_tag = tagSUBM;
         return true;
     }
 
-
     if(      str.Cmp( "HUSB" ) == 0 ) m_tag = tagHUSB;
     else if( str.Cmp( "WIFE" ) == 0 ) m_tag = tagWIFE;
     else if( str.Cmp( "CHIL" ) == 0 ) m_tag = tagCHIL;
+    else if( str.Cmp( "SOUR" ) == 0 ) m_tag = tagSOUR;
     else if( str.Cmp( "SUBM" ) == 0 ) m_tag = tagSUBM;
 
     if( m_tag != tagNULL ) {
         if( tk.HasMoreTokens() == false ) return true;
-        str = tk.GetNextToken();
-        m_xref = str.Mid( 1 ).BeforeFirst( wxS('@') );
+        str = tk.GetString();
+        if( str.substr( 0, 1 ) == "@" ) {
+            m_xref = str.Mid( 1 ).BeforeFirst( wxS('@') );
+        } else {
+            m_xref = "";
+            m_text = str;
+        }
         return true;
     }
 
-    if(      str.Cmp( "CONT" ) == 0 ) m_tag = tagCONT;
+    if(      str.Cmp( "TEXT" ) == 0 ) m_tag = tagTEXT;
+    else if( str.Cmp( "CONT" ) == 0 ) m_tag = tagCONT;
+    else if( str.Cmp( "CONC" ) == 0 ) 
+    {
+        // EasyTree uses CONC instead of CONT
+        if( m_fileSource == FS_EasyTree ) m_tag = tagCONT;
+        else m_tag = tagCONC;
+    }
+    else if( str.Cmp( "TITL" ) == 0 ) m_tag = tagTITL;
     else if( str.Cmp( "NAME" ) == 0 ) m_tag = tagNAME;
     else if( str.Cmp( "SEX"  ) == 0 ) m_tag = tagSEX;
     else if( str.Cmp( "BIRT" ) == 0 ) m_tag = tagBIRT;
@@ -337,6 +394,9 @@ void recGedParse::ReadHead( int level )
             {
             case tagSUBM:
                 m_user = m_submMap[ m_xref ];
+                break;
+            case tagSOUR:
+                m_fileSource = ReadFileSource( level+1 );
                 break;
             case tag_END:
                 cont = FALSE;
@@ -512,6 +572,9 @@ void recGedParse::ReadIndEvent( GedIndividual& gind, int level )
                 break;
             case tagPLAC:
                 ev.FSetPlaceID( ParseEvPlace( level+1 ) );
+                break;
+            case tagSOUR:
+                ReadEventSource( ev, gind.GetIndID(), level+1 );
                 break;
             case tag_END:
                 cont = FALSE;
@@ -780,6 +843,42 @@ idt recGedParse::ParseEvPlace( int level )
     return place.f_id;
 }
 
+void recGedParse::ReadEventSource( const recEvent& eve, idt indID, int level )
+{
+    if( m_xref.empty() ) {
+        // TODO: Gedcom not using source records.
+        return;
+    }
+    if( indID == 0 ) {
+        return;
+    }
+    idt refID = m_sourMap[ m_xref ];
+    if( refID == 0 ) {
+        return;
+    }
+    // Create Reference if it doesn't exist.
+    recReference ref(refID);
+    if( ref.FGetID() == 0 ) {
+        ref.FSetID( refID );
+        ref.Save();
+    }
+    // We don't have enough info to create an Eventum to
+    // link to the Event.
+    // All we will do for now is add an unnamed Persona to link the 
+    // Individual to the Reference.
+    recIdVec pers = recPersona::FindIndividualReferenceLink( indID, refID );
+    if( pers.empty() ) {
+        recPersona per(0);
+        per.FSetRefID( refID );
+        per.Save();
+        recIndividualPersona ip(0);
+        ip.FSetIndID( indID );
+        ip.FSetPerID( per.FGetID() );
+        ip.FSetConf( 0.99 );
+        ip.Save();
+    }
+}
+
 void recGedParse::ReadFam( int level )
 {
     GedFamily gfam( m_famMap[ m_index ] );
@@ -855,6 +954,10 @@ void recGedParse::ReadFamEvent( GedFamily& gfam, int level )
             case tagPLAC:
                 ev.FSetPlaceID( ParseEvPlace( level+1 ) );
                 break;
+            case tagSOUR:
+                ReadEventSource( ev, gfam.GetHusbIndId(), level+1 );
+                ReadEventSource( ev, gfam.GetWifeIndId(), level+1 );
+                break;
             case tag_END:
                 cont = FALSE;
                 continue;
@@ -875,6 +978,32 @@ void recGedParse::ReadFamEvent( GedFamily& gfam, int level )
     seq = recIndividual::GetMaxEventSeqNumber( gfam.GetWifeIndId() ) + 1;
     ieWife.FSetIndSeq( seq );
     if( ieWife.FGetIndID() ) ieWife.Save();
+}
+
+void recGedParse::ReadSour( int level )
+{
+    GedSource gsour( m_sourMap[ m_index ] );
+    bool titleset = false;
+
+    bool cont = ReadNextLine();
+    while( cont && m_level >= level ) {
+        if( m_level == level ) {
+            switch( m_tag )
+            {
+            case tagTITL:
+                gsour.SetTitle( ReadText( level + 1, m_text ) );
+                continue;
+            case tagTEXT:
+                gsour.SetText( ReadText( level + 1, m_text ) );
+                continue;
+            case tag_END:
+                cont = false;
+                continue;
+            }
+        }
+        cont = ReadNextLine();
+    }
+    gsour.Save();
 }
 
 void recGedParse::ReadSubm( int level )
@@ -912,6 +1041,14 @@ void recGedParse::ReadSubm( int level )
         cont = ReadNextLine();
     }
     gsubm.Save();
+}
+
+recGedParse::FileSource recGedParse::ReadFileSource( int level )
+{
+    if(  m_text.compare( "EasyTree" ) == 0 ) {
+        return FS_EasyTree;
+    }
+    return FS_UNKNOWN;
 }
 
 wxString recGedParse::ReadAddr( int level )
@@ -968,6 +1105,31 @@ wxString recGedParse::ReadAddr( int level )
     if( !addr1.IsEmpty() && !addrCont.IsEmpty() ) addr1 << "\n";
     addr1 << addrCont;
     return addr1;
+}
+
+wxString recGedParse::ReadText( int level, const wxString& start )
+{
+    wxString text = start;
+
+    bool cont = ReadNextLine();
+    while( cont && m_level >= level ) {
+        if( m_level == level ) {
+            switch( m_tag )
+            {
+            case tagCONC:
+                text += m_text;
+                break;
+            case tagCONT:
+                text += "\n" + m_text;
+                break;
+            case tag_END:
+                cont = false;
+                continue;
+            }
+        }
+        cont = ReadNextLine();
+    }
+    return text;
 }
 
 void GedFamily::UpdateIndividual( idt indID )

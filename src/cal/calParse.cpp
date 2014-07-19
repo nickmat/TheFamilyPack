@@ -3,10 +3,8 @@
  * Project:     Cal: A general purpose calendar library.
  * Purpose:     Class to parse a date string into tokens.
  * Author:      Nick Matthews
- * Modified by:
  * Created:     20th December 2012
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2012, Nick Matthews.
+ * Copyright:   Copyright (c) 2012-2014, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify

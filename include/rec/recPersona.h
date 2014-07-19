@@ -100,6 +100,9 @@ public:
     static wxString GetIndividualIdStr( idt perID );
     wxString GetIndividualIdStr() const { return GetIndividualIdStr( f_id ); }
 
+    // Find all Persona ID's that link an Individual to a Reference
+    static recIdVec FindIndividualReferenceLink( idt indID, idt refID );
+
     // Delete Persona record and remove all records that reference it.
     void RemoveFromDatabase();
     static void RemoveFromDatabase( idt id );

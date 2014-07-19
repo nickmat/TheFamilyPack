@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2010-2014, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -130,23 +130,7 @@ Sex recPersona::GetSex( idt id )
     recPersona per(id);
     return per.f_sex;
 }
-#if 0
-idt recPersona::GetDefaultNameID( idt id )
-{
-    wxString str;
-    wxSQLite3StatementBuffer sql;
 
-    sql.Format(
-        "SELECT id FROM Name WHERE per_id="ID" ORDER BY sequence;",
-        id
-    );
-    wxSQLite3Table result = s_db->GetTable( sql );
-    if( result.GetRowCount() > 0 ) {
-        return GET_ID( result.GetInt64( 0 ) );
-    }
-    return 0;
-}
-#endif
 recNameVec recPersona::ReadNames( idt perID )
 {
     recNameVec list;
@@ -300,6 +284,25 @@ wxString recPersona::GetIndividualIdStr( idt perID )
         str << recIndividual::GetIdStr( inds[i] );
     }
     return str;
+}
+
+recIdVec recPersona::FindIndividualReferenceLink( idt indID, idt refID )
+{
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "SELECT P.id FROM"
+        " Persona P, IndividualPersona IP WHERE"
+        " IP.ind_id="ID" AND IP.per_id=P.id AND P.ref_id="ID";",
+        indID, refID
+    );
+    wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
+
+    recIdVec vec;
+    while( result.NextRow() ) {
+        vec.push_back( GET_ID( result.GetInt64( 0 ) ) );
+    }
+    return vec;
 }
 
 void recPersona::RemoveFromDatabase()

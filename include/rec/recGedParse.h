@@ -3,10 +3,8 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Read GEDCOM import file header.
  * Author:      Nick Matthews
- * Modified by:
  * Created:     19 September 2011
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2011, Nick Matthews.
+ * Copyright:   Copyright (c) 2011-2014, Nick Matthews.
  * Website:     http://thefamilypack.org
  * Licence:     GNU GPLv3
  *
@@ -38,6 +36,7 @@
 
 typedef std::map< wxString, unsigned > XrefMap;
 
+class recEvent;
 class GedIndividual;
 class GedFamily;
 class GedSubmitter;
@@ -49,29 +48,39 @@ class recGedParse
 public:
     recGedParse( const wxString& fname ) 
         : m_filestream(fname), m_input(m_filestream), m_progress(NULL),
+        m_fileSource(FS_UNKNOWN),
         m_level(0), m_tag(tagNULL),
-        m_indiUseXref(false), m_famUseXref(false),
+        m_indiUseXref(false), m_famUseXref(false), m_sourUseXref(false),
         m_totalCount(0),
         m_user(0)
     {}
 
     bool Import( unsigned flags = 0 );
 
-    void SetUseXref( bool useXref ) { m_indiUseXref = m_famUseXref = useXref; }
+    void SetUseXref( bool useXref ) { 
+        m_indiUseXref = m_famUseXref = m_sourUseXref = useXref; }
     bool DoPostOperations();
 
 private:
+    enum FileSource {
+        FS_UNKNOWN,
+        FS_EasyTree   // Generations EasyTree
+    };
     enum Tag {
         tagNULL, // Invalid or unset value.
         tagINDI, /* Index of INDIVIDUAL, a person */
         tagFAM,  /* Index of FAMILY, a couple and their children */
+        tagSOUR, /* Index of SOURCE, a source note */
         tagSUBM, // Index of Submitter (Researcher) record.
         tagNAME, /* NAME, (one of) the name a person is known by */
         tagADDR, // ADDRESS, Postal address for Submitter
         tagADR1,
         tagADR2,
         tagADR3,
+        tagTEXT,
         tagCONT, // Continuation on next line.
+        tagCONC, // Continuation without whitespace.
+        tagTITL,
         tagPHON, // PHONE, Telephone number.
         tagEMAI, // EMAIL ADDRESS as defined in (draft) GEDCOM 5.5.1
         tagFAX,  // FAX number.
@@ -106,10 +115,14 @@ private:
     void ReadName( GedIndividual& gind, int level );
     void ReadSex( GedIndividual& gind );
     void ReadIndEvent( GedIndividual& gind, int level );
+    void ReadEventSource( const recEvent& eve, idt indID, int level );
     void ReadFam( int level );
     void ReadFamEvent( GedFamily& gfam, int level );
+    void ReadSour( int level );
     void ReadSubm( int level );
+    FileSource ReadFileSource( int level );
     wxString ReadAddr( int level );
+    wxString ReadText( int level, const wxString& start );
     idt ParseEvPlace( int level );
     idt ParseEvDate( int level, idt* d2ID );
     wxString ParseDate( recDate* date, const wxString& str );
@@ -118,6 +131,7 @@ private:
     wxFileInputStream m_filestream;
     wxTextInputStream m_input;
     void*             m_progress;
+    FileSource m_fileSource;
     // Current line
     static int m_lineNum; // Leave this static to aid debugging.
     int      m_level;
@@ -130,6 +144,8 @@ private:
     XrefMap  m_indiMap;
     bool     m_famUseXref;
     XrefMap  m_famMap;
+    bool     m_sourUseXref;
+    XrefMap  m_sourMap;
     XrefMap  m_submMap;
     unsigned m_totalCount;
     // Global settings
