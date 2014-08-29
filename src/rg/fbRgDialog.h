@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Oct  8 2012)
+// C++ code generated with wxFormBuilder (version Jun  5 2014)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -635,6 +635,11 @@ class fbRgEditReference : public wxDialog
 		wxNotebook* m_notebookTop;
 		wxPanel* m_panelSource;
 		wxToolBar* m_toolBar1;
+		wxToolBarToolBase* m_toolCut; 
+		wxToolBarToolBase* m_toolCopy; 
+		wxToolBarToolBase* m_toolPaste; 
+		wxToolBarToolBase* m_toolUndo; 
+		wxToolBarToolBase* m_toolRedo; 
 		wxTextCtrl* m_textCtrlStatement;
 		wxPanel* m_panelView;
 		wxWebView* m_webview;

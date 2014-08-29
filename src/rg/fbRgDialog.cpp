@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Oct  8 2012)
+// C++ code generated with wxFormBuilder (version Jun  5 2014)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -2005,17 +2005,17 @@ fbRgEditReference::fbRgEditReference( wxWindow* parent, wxWindowID id, const wxS
 	bSizer53 = new wxBoxSizer( wxVERTICAL );
 	
 	m_toolBar1 = new wxToolBar( m_panelSource, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_HORIZONTAL ); 
-	m_toolBar1->AddTool( tfpID_EDREF_OnCut, _("Cut"), wxBitmap( cut_xpm ), wxNullBitmap, wxITEM_NORMAL, _("Cut"), wxEmptyString, NULL ); 
+	m_toolCut = m_toolBar1->AddTool( tfpID_EDREF_OnCut, _("Cut"), wxBitmap( cut_xpm ), wxNullBitmap, wxITEM_NORMAL, _("Cut"), wxEmptyString, NULL ); 
 	
-	m_toolBar1->AddTool( tfpID_EDREF_OnCopy, _("Copy"), wxBitmap( copy_xpm ), wxNullBitmap, wxITEM_NORMAL, _("Copy"), wxEmptyString, NULL ); 
+	m_toolCopy = m_toolBar1->AddTool( tfpID_EDREF_OnCopy, _("Copy"), wxBitmap( copy_xpm ), wxNullBitmap, wxITEM_NORMAL, _("Copy"), wxEmptyString, NULL ); 
 	
-	m_toolBar1->AddTool( tfpID_EDREF_OnPaste, _("Paste"), wxBitmap( paste_xpm ), wxNullBitmap, wxITEM_NORMAL, _("Paste"), wxEmptyString, NULL ); 
+	m_toolPaste = m_toolBar1->AddTool( tfpID_EDREF_OnPaste, _("Paste"), wxBitmap( paste_xpm ), wxNullBitmap, wxITEM_NORMAL, _("Paste"), wxEmptyString, NULL ); 
 	
 	m_toolBar1->AddSeparator(); 
 	
-	m_toolBar1->AddTool( tfpID_EDREF_OnUndo, _("Undo"), wxBitmap( undo_xpm ), wxNullBitmap, wxITEM_NORMAL, _("Undo"), wxEmptyString, NULL ); 
+	m_toolUndo = m_toolBar1->AddTool( tfpID_EDREF_OnUndo, _("Undo"), wxBitmap( undo_xpm ), wxNullBitmap, wxITEM_NORMAL, _("Undo"), wxEmptyString, NULL ); 
 	
-	m_toolBar1->AddTool( tfpID_EDREF_OnRedo, _("Redo"), wxBitmap( redo_xpm ), wxNullBitmap, wxITEM_NORMAL, _("Redo"), wxEmptyString, NULL ); 
+	m_toolRedo = m_toolBar1->AddTool( tfpID_EDREF_OnRedo, _("Redo"), wxBitmap( redo_xpm ), wxNullBitmap, wxITEM_NORMAL, _("Redo"), wxEmptyString, NULL ); 
 	
 	m_toolBar1->Realize(); 
 	
@@ -2164,11 +2164,11 @@ fbRgEditReference::fbRgEditReference( wxWindow* parent, wxWindowID id, const wxS
 	
 	// Connect Events
 	m_notebookTop->Connect( wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, wxNotebookEventHandler( fbRgEditReference::OnStatementViewChanged ), NULL, this );
-	this->Connect( tfpID_EDREF_OnCut, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbRgEditReference::OnTool ) );
-	this->Connect( tfpID_EDREF_OnCopy, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbRgEditReference::OnTool ) );
-	this->Connect( tfpID_EDREF_OnPaste, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbRgEditReference::OnTool ) );
-	this->Connect( tfpID_EDREF_OnUndo, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbRgEditReference::OnTool ) );
-	this->Connect( tfpID_EDREF_OnRedo, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbRgEditReference::OnTool ) );
+	this->Connect( m_toolCut->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbRgEditReference::OnTool ) );
+	this->Connect( m_toolCopy->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbRgEditReference::OnTool ) );
+	this->Connect( m_toolPaste->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbRgEditReference::OnTool ) );
+	this->Connect( m_toolUndo->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbRgEditReference::OnTool ) );
+	this->Connect( m_toolRedo->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbRgEditReference::OnTool ) );
 	m_notebookBottom->Connect( wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, wxNotebookEventHandler( fbRgEditReference::OnEntityViewChanged ), NULL, this );
 	m_buttonPersonaAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditReference::OnPersonaAddButton ), NULL, this );
 	m_buttonPersonaEdit->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditReference::OnPersonaEditButton ), NULL, this );
@@ -2184,11 +2184,11 @@ fbRgEditReference::~fbRgEditReference()
 {
 	// Disconnect Events
 	m_notebookTop->Disconnect( wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, wxNotebookEventHandler( fbRgEditReference::OnStatementViewChanged ), NULL, this );
-	this->Disconnect( tfpID_EDREF_OnCut, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbRgEditReference::OnTool ) );
-	this->Disconnect( tfpID_EDREF_OnCopy, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbRgEditReference::OnTool ) );
-	this->Disconnect( tfpID_EDREF_OnPaste, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbRgEditReference::OnTool ) );
-	this->Disconnect( tfpID_EDREF_OnUndo, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbRgEditReference::OnTool ) );
-	this->Disconnect( tfpID_EDREF_OnRedo, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbRgEditReference::OnTool ) );
+	this->Disconnect( m_toolCut->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbRgEditReference::OnTool ) );
+	this->Disconnect( m_toolCopy->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbRgEditReference::OnTool ) );
+	this->Disconnect( m_toolPaste->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbRgEditReference::OnTool ) );
+	this->Disconnect( m_toolUndo->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbRgEditReference::OnTool ) );
+	this->Disconnect( m_toolRedo->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbRgEditReference::OnTool ) );
 	m_notebookBottom->Disconnect( wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, wxNotebookEventHandler( fbRgEditReference::OnEntityViewChanged ), NULL, this );
 	m_buttonPersonaAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditReference::OnPersonaAddButton ), NULL, this );
 	m_buttonPersonaEdit->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditReference::OnPersonaEditButton ), NULL, this );
