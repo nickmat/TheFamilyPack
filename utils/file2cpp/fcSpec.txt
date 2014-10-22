@@ -1,12 +1,10 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Name:        fcSpec.txt
- * Project:     file2cpp: Convert text and binary files to c code.
+ * Project:     file2cpp: Convert text and binary files to C/C++ code.
  * Purpose:     Program Specification
  * Author:      Nick Matthews
- * Modified by:
  * Created:     6th October 2009
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2009, Nick Matthews.
+ * Copyright:   Copyright (c) 2009 - 2014, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  file2cpp is free software: you can redistribute it and/or modify
@@ -29,7 +27,7 @@ the sequence ... @{filename} ... is replaced with:-
 
 ... {  /* filename */
  nn,nn,nn, ... nn
-} ... 
+} ...
 
 and the sequence ... @(options)prefix"filename"postfix; ... is replaced with:-
 
@@ -45,27 +43,27 @@ the text and remove comments and/or whitespace first, as shown below.
 options (zero or more in any order):-
 
   r  trim right - remove spaces and tabs from the end of all lines.
-  
+
   l  trim left - remove spaces and tabs from the start of all lines.
-  
+
   m  multiple blank line removal - leave a single blank line.
 
   c  compact - remove all blank lines.
-  
+
 commenttype:  remove comments as defined by the commenttype:-
 
   .c    C multi line comments               /* ... */
   .cpp  C comments plus C++ line comments   // ... \n
   .xml  xml comments                        <!-- ... -->
   .tcl  tcl line comments                   # ... \n
-  
+
   The program has a rudimentry understanding of the file syntax
   to locate comments. It should not get confused with comment
   sequences in strings or character sequences. With care, these
   can be used for other file types - such as .c for Cascading
   Style Sheets (.css) or SQL files (.sql). Other file types can
   be added if needed in the future.
-  
+
   Files are processed in the following order:
   1. remove comments
   2. Right trim
@@ -110,7 +108,7 @@ size_t sizeof_test_txt = sizeof(test_txt);
 
 const wchar_t* test =  /* test.txt */
  L" Hello\n"
- L"\"world\"!\n"
+ L"\"world\"!\n";
 ____________________________________________________
 
 Command Line Switches:

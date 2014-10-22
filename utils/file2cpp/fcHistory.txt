@@ -1,12 +1,10 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Name:        fcHistory.txt
- * Project:     file2cpp: Convert text and binary files to c code.
+ * Project:     file2cpp: Convert text and binary files to C/C++ code.
  * Purpose:     Program revision history
  * Author:      Nick Matthews
- * Modified by:
  * Created:     6th October 2009
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2009, Nick Matthews.
+ * Copyright:   Copyright (c) 2009 - 2014, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  file2cpp is free software: you can redistribute it and/or modify
@@ -27,6 +25,10 @@
 
    Revision History
    ~~~~~~~~~~~~~~~~
+22oct14  v0.4.1
+    Cleared bug whereby format string for text files did not recognise the
+    newline as a terminating character.
+
  1nov12  v0.4.0
    Added -s switch. Subversion friendly. When set, if "RCS-ID" and "$Id:" occur
    in the same line in the format-file, the $ from $Id: is removed.

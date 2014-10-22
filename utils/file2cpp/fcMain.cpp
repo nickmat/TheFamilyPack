@@ -1,12 +1,10 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Name:        fcMain.cpp
- * Project:     file2cpp: Convert text and binary files to c code
+ * Project:     file2cpp: Convert text and binary files to C/C++ code
  * Purpose:     Application main and supporting functions
  * Author:      Nick Matthews
- * Modified by:
  * Created:     9th December 2005
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2005 - 2009, Nick Matthews.
+ * Copyright:   Copyright (c) 2005 - 2014, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  file2cpp is free software: you can redistribute it and/or modify
@@ -42,19 +40,18 @@
 #include <wx/cmdline.h>
 #include <wx/tokenzr.h>
 
-#define VERSION   "0.4.0"
+#define VERSION   "0.4.1"
 #define PROGNAME  "file2cpp"
+#define COPYRIGHT "Copyright (c) 2009 - 2014 Nick Matthews"
+#ifdef _DEBUG
+#define STATUS    " Debug"
+#else
+#define STATUS
+#endif
 
 const wxString g_version = VERSION;
 const wxString g_progName = PROGNAME;
-
-#ifdef _DEBUG
-const wxString g_title = PROGNAME " - Version " VERSION " Debug\n"
-                         "Copyright (c) 2009, 2012 Nick Matthews\n\n";
-#else
-const wxString g_title = PROGNAME " - Version " VERSION "\n"
-                         "Copyright (c) 2009, 2012 Nick Matthews\n\n";
-#endif
+const wxString g_title = PROGNAME " - Version " VERSION STATUS "\n" COPYRIGHT "\n\n";
 
 bool g_verbose = false;
 bool g_quiet   = false;
@@ -187,8 +184,8 @@ int main( int argc, char** argv )
     if( g_verbose ) {
         wxPrintf( "Writing output file \"%s\".\n", outName.GetFullPath() );
     }
-    wxString heading = wxString::Format( 
-        "/* %s - File created by %s */\n\n", 
+    wxString heading = wxString::Format(
+        "/* %s - File created by %s */\n\n",
         outName.GetFullPath(),
         g_progName
     );
@@ -212,6 +209,7 @@ int ProccessInFile( wxTextFile& inFile, wxFFile& outFile )
         if( g_svn && line.find( "RCS-ID" ) != wxString::npos ) {
             DisableSvnId( &line );
         }
+        skip = SKIP_NONE;
         end = line.end();
         for( it = line.begin() ; it != end ; it++ ) {
             if( skip != SKIP_NONE ) {
@@ -365,7 +363,7 @@ SkipType DoAtCommand( wxFFile& outFile, cit_t it, cit_t end )
                     } else if( Compare( it, end, ".tcl" ) ) {
                         mod.remove = FCOMMENT_TCL;
                         it += 3;
-                    } 
+                    }
                     break;
                 }
             }
@@ -538,10 +536,10 @@ void OutputText( wxString& filename, wxFFile& outFile, TextMod& mod )
             emptyblock = false;
         }
         if( mod.trimL ) out.Trim( false );
-        outFile.Write( 
-            "\n " + mod.prefix + "\"" 
-            + out 
-            + "\\n\"" + mod.postfix 
+        outFile.Write(
+            "\n " + mod.prefix + "\""
+            + out
+            + "\\n\"" + mod.postfix
         );
     }
 }
