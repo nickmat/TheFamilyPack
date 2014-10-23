@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        fcMain.cpp
+ * Name:        file2cpp.cpp
  * Project:     file2cpp: Convert text and binary files to C/C++ code
  * Purpose:     Application main and supporting functions
  * Author:      Nick Matthews

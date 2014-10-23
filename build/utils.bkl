@@ -43,7 +43,7 @@
     <app-type>console</app-type>
     <runtime-libs>dynamic</runtime-libs>
 
-    <sources>$(LOCAL_UTIL)/file2cpp/fcMain.cpp</sources>
+    <sources>$(LOCAL_UTIL)/file2cpp/file2cpp.cpp</sources>
     <wx-lib>base</wx-lib>
   </exe>
 

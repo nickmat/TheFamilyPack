@@ -123,7 +123,7 @@ FILE2CPP_CXXFLAGS = /MD$(VAR_23) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) \
 	/I$(WX_DIR)\include $(VAR) $(VAR_22) $(p) /Fdfile2cpp.pdb /D_CONSOLE /GR /EHsc \
 	$(CPPFLAGS) $(CXXFLAGS)
 FILE2CPP_OBJECTS =  \
-	file2cpp_fcMain.obj
+	file2cpp_file2cpp.obj
 DOCCORE_CXXFLAGS = /MD$(VAR_23) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) \
 	/D__WXMSW__ \
 	/I$(WX_DIR)\lib\$(COMPILER_PREFIX)$(WXCPU)_lib\msw$(WXLIBPOSTFIX) \
@@ -529,8 +529,8 @@ tests_testDatabase.obj: .\..\..\tests\rec\testDatabase.cpp
 calcalc_calCalc.obj: .\..\..\utils\cal\calCalc.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(CALCALC_CXXFLAGS) .\..\..\utils\cal\calCalc.cpp
 
-file2cpp_fcMain.obj: .\..\..\utils\file2cpp\fcMain.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(FILE2CPP_CXXFLAGS) .\..\..\utils\file2cpp\fcMain.cpp
+file2cpp_file2cpp.obj: .\..\..\utils\file2cpp\file2cpp.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(FILE2CPP_CXXFLAGS) .\..\..\utils\file2cpp\file2cpp.cpp
 
 doccore_dcMain.obj: .\..\..\utils\doccore\dcMain.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(DOCCORE_CXXFLAGS) .\..\..\utils\doccore\dcMain.cpp
