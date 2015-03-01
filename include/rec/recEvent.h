@@ -425,7 +425,7 @@ public:
 
     static idt Create( idt indID, idt eID, idt roleID, const wxString& note = wxEmptyString );
 
-    bool Find( idt indID, idt eveID );
+    bool Find( idt indID, idt eveID, idt roleID = 0 );
 
     static wxString GetRoleStr( idt indID, idt typeID );
     wxString GetRoleStr( idt typeID ) const { return GetRoleStr( f_ind_id, typeID ); }

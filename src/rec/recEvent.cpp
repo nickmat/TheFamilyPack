@@ -1180,7 +1180,7 @@ idt recIndividualEvent::Create( idt indID, idt eID, idt roleID, const wxString& 
     return ie.FGetID();
 }
 
-bool recIndividualEvent::Find( idt indID, idt eveID )
+bool recIndividualEvent::Find( idt indID, idt eveID, idt roleID )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -1190,11 +1190,20 @@ bool recIndividualEvent::Find( idt indID, idt eveID )
         return false;
     }
 
-    sql.Format(
-        "SELECT id, role_id, note, ind_seq "
-        "FROM IndividualEvent WHERE ind_id="ID" AND event_id="ID";",
-        indID, eveID
-    );
+    if( roleID == 0 ) {
+        sql.Format(
+            "SELECT id, role_id, note, ind_seq "
+            "FROM IndividualEvent WHERE ind_id="ID" AND event_id="ID";",
+            indID, eveID
+        );
+    } else {
+        sql.Format(
+            "SELECT id, role_id, note, ind_seq"
+            " FROM IndividualEvent"
+            " WHERE ind_id="ID" AND event_id="ID" AND role_id="ID";",
+            indID, eveID, roleID
+        );
+    }
     result = s_db->GetTable( sql );
 
     if( result.GetRowCount() != 1 )
