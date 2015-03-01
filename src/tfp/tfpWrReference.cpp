@@ -164,16 +164,18 @@ wxString tfpWriteReferencePage( idt refID )
     recIdVec perIDs = ref.GetPersonaList();
     if( perIDs.size() ) {
         htm <<
-            "<tr><th colspan='3'>Persona</th></tr>\n"
+            "<tr><th colspan='5'>Persona</th></tr>\n"
         ;
         for( size_t i = 0 ; i < perIDs.size() ; i++ ) {
-            idt perID = perIDs[i];
+            recPersona per(perIDs[i]);
             htm <<
-                "<tr><td>" << recPersona::GetIdStr( perID ) <<
-                "</td><td>" <<  recPersona::GetNameStr( perID ) <<
+                "<tr><td>" << per.GetIdStr() <<
+                "</td><td>" << per.GetNameStr() <<
+                "</td><td>" << recGetSexStr( per.FGetSex() ) <<
+                "</td><td>" << per.FGetNote() <<
                 "</td><td><b>"
             ;
-            recIdVec indIDs = recPersona::GetIndividualIDs( perID ); 
+            recIdVec indIDs = per.GetIndividualIDs(); 
             for( size_t j = 0 ; j < indIDs.size() ; j++ ) {
                 if( j > 0 ) {
                     htm << ", ";
