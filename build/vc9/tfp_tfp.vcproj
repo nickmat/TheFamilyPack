@@ -309,6 +309,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\tfp\tfpWrPersona.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\tfp\tfpWrReference.cpp"
 				>
 			</File>

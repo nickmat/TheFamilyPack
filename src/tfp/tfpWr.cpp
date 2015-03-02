@@ -141,7 +141,11 @@ wxString tfpWritePagedIndexMenu( idt begCnt, size_t maxsize, const wxString pref
 
 wxString GetSexClass( idt indID, Sex pref )
 {
-    Sex sex = recIndividual::GetSex( indID );
+    return tfpGetSexClass( recIndividual::GetSex( indID ), pref );
+}
+
+wxString tfpGetSexClass( Sex sex, Sex pref )
+{
     if( sex == SEX_Unstated ) {
         sex = pref;
     }

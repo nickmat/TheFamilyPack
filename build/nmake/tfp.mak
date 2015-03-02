@@ -77,6 +77,7 @@ TFP_OBJECTS =  \
 	tfp_tfpWrIndividual.obj \
 	tfp_tfpWrName.obj \
 	tfp_tfpWrNotes.obj \
+	tfp_tfpWrPersona.obj \
 	tfp_tfpWrReference.obj \
 	tfp_dummy.obj
 TFP_RESOURCES =  \
@@ -471,6 +472,9 @@ tfp_tfpWrName.obj: .\..\..\src\tfp\tfpWrName.cpp
 
 tfp_tfpWrNotes.obj: .\..\..\src\tfp\tfpWrNotes.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrNotes.cpp
+
+tfp_tfpWrPersona.obj: .\..\..\src\tfp\tfpWrPersona.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrPersona.cpp
 
 tfp_tfpWrReference.obj: .\..\..\src\tfp\tfpWrReference.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrReference.cpp

@@ -169,8 +169,9 @@ wxString tfpWriteReferencePage( idt refID )
         for( size_t i = 0 ; i < perIDs.size() ; i++ ) {
             recPersona per(perIDs[i]);
             htm <<
-                "<tr><td>" << per.GetIdStr() <<
-                "</td><td>" << per.GetNameStr() <<
+                "<tr><td><b><a href='tfp:Pa" << recGetStr( per.FGetID() ) <<
+                "'>" << per.GetIdStr() <<
+                "</a></b></td><td>" << per.GetNameStr() <<
                 "</td><td>" << recGetSexStr( per.FGetSex() ) <<
                 "</td><td>" << per.FGetNote() <<
                 "</td><td><b>"

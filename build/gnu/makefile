@@ -85,6 +85,7 @@ TFP_OBJECTS =  \
 	tfp_tfpWrIndividual.o \
 	tfp_tfpWrName.o \
 	tfp_tfpWrNotes.o \
+	tfp_tfpWrPersona.o \
 	tfp_tfpWrReference.o \
 	tfp_dummy.o
 CALENDAR_CXXFLAGS = $(VAR) $(VAR_4) -I../../include/cal -I../../include \
@@ -297,6 +298,9 @@ tfp_tfpWrName.o: ./../../src/tfp/tfpWrName.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
 tfp_tfpWrNotes.o: ./../../src/tfp/tfpWrNotes.cpp
+	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
+
+tfp_tfpWrPersona.o: ./../../src/tfp/tfpWrPersona.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
 tfp_tfpWrReference.o: ./../../src/tfp/tfpWrReference.cpp

@@ -1727,6 +1727,9 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
     if( name.compare( "Pa" ) == 0 ) {
         return tfpWritePersonIndex();
     }
+    if( name.compare( 0, 2, "Pa" ) == 0 ) {
+        return tfpWritePersonaPage( num1 );
+    }
     if( name.compare( 0, 1, "P" ) == 0 && success ) {
         return tfpWritePlace( num );
     }
