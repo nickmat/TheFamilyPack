@@ -187,7 +187,7 @@ recEventumPersonaVec recPersona::ReadEventumPersonas( idt perID, recEventOrder o
 
     sql.Format(
         "SELECT EP.id, eventum_id, role_id, EP.note, per_seq FROM EventumPersona EP"
-        " INNER JOIN Event E ON E.id=eventum_id"
+        " INNER JOIN Eventum E ON E.id=eventum_id"
         " WHERE per_id="ID" ORDER BY %s;",
         perID, UTF8_(orderStr)
     );
