@@ -5,8 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     21st January 2013
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2013-2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -139,7 +138,7 @@ wxString tfpWritePagedIndexMenu( idt begCnt, size_t maxsize, const wxString pref
     return mnu;
 }
 
-wxString GetSexClass( idt indID, Sex pref )
+wxString tfpGetIndSexClass( idt indID, Sex pref )
 {
     return tfpGetSexClass( recIndividual::GetSex( indID ), pref );
 }
@@ -158,7 +157,7 @@ wxString tfpGetSexClass( Sex sex, Sex pref )
     return "neut";
 }
 
-wxString wxGetRowClass( int row )
+wxString tfpGetRowClass( int row )
 {
     return ( row % 2 ) ? "odd" : "even";
 }

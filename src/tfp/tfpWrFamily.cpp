@@ -3,11 +3,9 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Write screen Family page functions.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     7 October 2010
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2010-2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -88,7 +86,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
         if( husbFams.size() > iL && husbFams[iL].FGetHusbID() ) {
             indID = husbFams[iL].FGetHusbID();
             htm << 
-                "<td class='" << GetSexClass( indID, SEX_Male ) <<
+                "<td class='" << tfpGetIndSexClass( indID, SEX_Male ) <<
                 "'><a href='tfp:F" << husbFams[iL].FGetID() << 
                 "'>" << recIndividual::GetName( indID ) <<
                 "</a>" << tfpGetEpitaphPlus( indID, GE_NewLine ) <<
@@ -110,7 +108,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
         if( husbFams.size() > iL && husbFams[iL].FGetWifeID() ) {
             indID = husbFams[iL].FGetWifeID();
             htm << 
-                "<td class='" << GetSexClass( indID, SEX_Female ) << 
+                "<td class='" << tfpGetIndSexClass( indID, SEX_Female ) << 
                 "'><a href='tfp:F" << husbFams[iL].FGetID() <<
                 "'>" << recIndividual::GetName( indID ) <<
                 "</a>" << tfpGetEpitaphPlus( indID, GE_NewLine ) <<
@@ -134,7 +132,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
         if( wifeFams.size() > iR && wifeFams[iR].FGetHusbID() ) {
             indID = wifeFams[iR].FGetHusbID();
             htm << 
-                "<td class='" << GetSexClass( indID, SEX_Male ) <<
+                "<td class='" << tfpGetIndSexClass( indID, SEX_Male ) <<
                 "'>\n<a href='tfp:F" << wifeFams[iR].FGetID() << 
                 "'>" << recIndividual::GetName( indID ) <<
                 "</a>" << tfpGetEpitaphPlus( indID, GE_NewLine ) <<
@@ -155,7 +153,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
         if( wifeFams.size() > iR && wifeFams[iR].FGetWifeID() ) {
             indID = wifeFams[iR].FGetWifeID();
             htm <<
-                "<td class='" << GetSexClass( indID, SEX_Female ) <<
+                "<td class='" << tfpGetIndSexClass( indID, SEX_Female ) <<
                 "'>\n<a href='tfp:F" << wifeFams[iR].FGetID() << 
                 "'>" << recIndividual::GetName( indID ) <<
                 "</a>" << tfpGetEpitaphPlus( indID, GE_NewLine ) <<
@@ -200,7 +198,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
 
     // The happy couple
     htm << "<tr>\n<td class='couple "
-        << GetSexClass( fam.f_husb_id, SEX_Male )
+        << tfpGetIndSexClass( fam.f_husb_id, SEX_Male )
         << "'>";
     if( fam.f_husb_id == 0 ) {
         htm << "<a href='tfpe:IL" << fam.f_id
@@ -212,7 +210,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
             << recIndividual::GetEpitaph( fam.f_husb_id );
     }
     htm << "</td>\n<td class='couple "
-        << GetSexClass( fam.f_wife_id, SEX_Female )
+        << tfpGetIndSexClass( fam.f_wife_id, SEX_Female )
         << "'>";
     if( fam.f_wife_id == 0 ) {
         htm << "<a href='tfpe:IR" << fam.f_id
@@ -376,7 +374,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
         for( i = 0 ; i < kids.size() ; i++ ) {
             indID = kids[i].FGetID();
             htm <<
-                "<tr>\n<td class='" << GetSexClass( indID ) << 
+                "<tr>\n<td class='" << tfpGetIndSexClass( indID ) << 
                 " kids'><b><a href='tfp:FI" << indID <<
                 "'>" << kids[i].FGetName() <<
                 "</a></b>&nbsp;&nbsp;" << kids[i].f_epitaph <<
@@ -404,7 +402,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
                 indID = husbFams[i].FGetHusbID();
                 if( indID ) {
                     htm << 
-                        "<tr>\n<td class='" << GetSexClass( indID ) <<
+                        "<tr>\n<td class='" << tfpGetIndSexClass( indID ) <<
                         "'><a href='tfp:F" << famID <<
                         "," << i << "," << iR <<
                         "'>" << recIndividual::GetName( indID ) <<
@@ -415,7 +413,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
                 indID = husbFams[i].FGetWifeID();
                 if( indID ) {
                     htm << 
-                        "<tr>\n<td class='" << GetSexClass( indID ) <<
+                        "<tr>\n<td class='" << tfpGetIndSexClass( indID ) <<
                         "'>\n<a href='tfp:F" << famID <<
                         "," << i << "," << iR << 
                         "'>" << recIndividual::GetName( indID ) <<
@@ -440,7 +438,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
                     continue;
                 }
                 htm << "<tr>\n<td class='"
-                    << GetSexClass( indID, SEX_Female )
+                    << tfpGetIndSexClass( indID, SEX_Female )
                     << "'>\n<a href='tfp:F"
                     << husbWives[i].FGetID() << "'>";            // FamID,
                 if( indID == 0 ) {
@@ -470,7 +468,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
                 indID = wifeFams[i].FGetHusbID();
                 if( indID ) {
                     htm << 
-                        "<tr>\n<td class='" << GetSexClass( indID ) <<
+                        "<tr>\n<td class='" << tfpGetIndSexClass( indID ) <<
                         "'><a href='tfp:F" << famID <<
                         "," << i << "," << iL <<
                         "'>" << recIndividual::GetName( indID ) <<
@@ -481,7 +479,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
                 indID = wifeFams[i].FGetWifeID();
                 if( indID ) {
                     htm << 
-                        "<tr>\n<td class='" << GetSexClass( indID ) <<
+                        "<tr>\n<td class='" << tfpGetIndSexClass( indID ) <<
                         "'>\n<a href='tfp:F" << famID <<
                         "," << i << "," << iL << 
                         "'>" << recIndividual::GetName( indID ) <<
@@ -506,7 +504,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
                     continue;
                 }
                 htm << "<tr>\n<td class='"
-                    << GetSexClass( indID, SEX_Male )
+                    << tfpGetIndSexClass( indID, SEX_Male )
                     << "'>\n<a href='tfp:F"
                     << wifeHusbs[i].FGetID() << "'>";            // FamID,
                 if( indID == 0 ) {

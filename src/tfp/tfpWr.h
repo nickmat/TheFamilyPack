@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        tfpWr.h
+ * Name:        src/tfp/tfpWr.h
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Write screen page functions.
  * Author:      Nick Matthews
@@ -36,9 +36,9 @@ extern wxString tfpWrHeadTfp( const wxString& title, const wxString& css = wxEmp
 extern wxString tfpWrTailTfp();
 #define tfpWR_PAGE_MAX 100
 extern wxString tfpWritePagedIndexMenu( idt begCnt, size_t maxsize, const wxString prefix );
-extern wxString GetSexClass( idt indID, Sex pref = SEX_Unknown );
+extern wxString tfpGetIndSexClass( idt indID, Sex pref = SEX_Unknown );
 extern wxString tfpGetSexClass( Sex sex, Sex pref = SEX_Unknown );
-extern wxString wxGetRowClass( int row );
+extern wxString tfpGetRowClass( int row );
 enum GET_EPITAPH_Prefix { GE_None, GE_Spaces, GE_NewLine };
 extern wxString tfpGetEpitaphPlus( idt indID, GET_EPITAPH_Prefix prefix = GE_Spaces );
 extern wxString tfpNormaliseSpaces( const wxString& str );

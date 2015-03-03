@@ -68,7 +68,7 @@ wxString tfpWritePersonaPage( idt perID )
         htm << "</tr>\n<tr>\n"
             "<td><b><a href='tfp:I" << indIDs[i] <<
             "'>" << recIndividual::GetIdStr( indIDs[i] ) <<
-            "</a></b></td><td class='" << GetSexClass( indIDs[i] ) <<
+            "</a></b></td><td class='" << tfpGetIndSexClass( indIDs[i] ) <<
             "'>" << recIndividual::GetDescriptionStr( indIDs[i] ) <<
             "</td>";
     }

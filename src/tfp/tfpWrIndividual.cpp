@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     7 October 2010
- * Copyright:   Copyright (c) 2010-2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2010-2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -66,7 +66,7 @@ wxString tfpWriteIndividualPage( idt indID )
 
         // Individual record
         "<table class='data'>\n<tr>\n"
-        "<td>Name:</td><td class='subject " << GetSexClass( ind.FGetID() ) <<
+        "<td>Name:</td><td class='subject " << tfpGetIndSexClass( ind.FGetID() ) <<
         "'><a href='tfp:F" << ind.FGetFamID() <<
         "'>" << ind.FGetName() <<
         "</a> " << ind.FGetEpitaph() <<
@@ -115,7 +115,7 @@ wxString tfpWriteIndividualPage( idt indID )
                 "</tr>\n<tr>\n"
                 "<td><b>" << recIndividual::GetIdStr( hID ) <<
                 "</b></td>\n<td>Father:"
-                "</td>\n<td class='" << GetSexClass( hID ) <<
+                "</td>\n<td class='" << tfpGetIndSexClass( hID ) <<
                 "'><a href='tfp:I" << hID <<
                 "'>" << recIndividual::GetName( hID ) <<
                 "</a> " << recIndividual::GetEpitaph( hID ) <<
@@ -129,7 +129,7 @@ wxString tfpWriteIndividualPage( idt indID )
                 "</tr>\n<tr>\n"
                 "<td><b>" << recIndividual::GetIdStr( wID ) <<
                 "</b></td>\n<td>Mother:"
-                "</td>\n<td class='" << GetSexClass( wID ) <<
+                "</td>\n<td class='" << tfpGetIndSexClass( wID ) <<
                 "'><a href='tfp:I" << wID <<
                 "'>" << recIndividual::GetName( wID ) <<
                 "</a> " << recIndividual::GetEpitaph( wID ) <<
@@ -160,7 +160,7 @@ wxString tfpWriteIndividualPage( idt indID )
                 "'>" << recIndividual::GetIdStr( spouseID ) <<
                 "</a></b></td>\n<td><a href='tfp:F" << famID <<
                 "'>Spouse " << i+1 << "</a>:</td>\n"
-                "<td class='" << GetSexClass( spouseID ) <<
+                "<td class='" << tfpGetIndSexClass( spouseID ) <<
                 "'><a href='tfp:I" << spouseID <<
                 "'>" << spouse.FGetName() <<
                 "</a></b> " << spouse.f_epitaph <<
@@ -196,7 +196,7 @@ wxString tfpWriteIndividualPage( idt indID )
                 ;
             }
             htm <<
-                "<td class='" << GetSexClass( cID ) <<
+                "<td class='" << tfpGetIndSexClass( cID ) <<
                 "'><a href='tfp:I" << cID <<
                 "'>" << children[j].FGetName() <<
                 "</a> " << children[j].FGetEpitaph() <<

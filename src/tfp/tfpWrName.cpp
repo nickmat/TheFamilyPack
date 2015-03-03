@@ -3,11 +3,9 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Write screen Name index functions.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     7 October 2010
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2010-2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -64,7 +62,7 @@ static wxString WriteIndex( wxSQLite3ResultSet& table )
             }
             if( name.GetChar(0) != letter )
             {
-                rowclass = wxGetRowClass( ++row );
+                rowclass = tfpGetRowClass( ++row );
                 letter = name.GetChar(0);
                 if( row1st == true )
                 {
@@ -149,7 +147,7 @@ wxString tfpWriteIndividualList( const wxString& sname )
         htm << "<table class='data'>\n";
         while( result.NextRow() )
         {
-            wxString rowclass = wxGetRowClass( ++row );
+            wxString rowclass = tfpGetRowClass( ++row );
             idt indID = GET_ID( result.GetInt64( 2 ) );
             htm << 
                 "<tr>\n<td class='" << rowclass <<

@@ -92,7 +92,7 @@ wxString tfpWriteEventPage( idt eventID, rgCompareEvent* ce )
             recIndividual ind(ies[i].FGetIndID());
             htm
                 << "<tr>\n<td>" << recEventTypeRole::GetName( ies[i].FGetRoleID() )
-                << "</td>\n<td class='" << GetSexClass( ind.FGetID() )
+                << "</td>\n<td class='" << tfpGetIndSexClass( ind.FGetID() )
                 << "'>\n<b><a href='tfp:I" << ind.FGetID()
                 << "'>" << ind.FGetName()
                 << "</a></b>"
