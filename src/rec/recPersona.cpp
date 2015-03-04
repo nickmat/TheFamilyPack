@@ -200,7 +200,7 @@ recEventaPersonaVec recPersona::ReadEventaPersonas( idt perID, recEventOrder ord
     {
         result.SetRow( i );
         record.f_id         = GET_ID( result.GetInt64( 0 ) );
-        record.f_eventum_id = GET_ID( result.GetInt64( 1 ) );
+        record.f_eventa_id  = GET_ID( result.GetInt64( 1 ) );
         record.f_role_id    = GET_ID( result.GetInt64( 2 ) );
         record.f_note       = result.GetAsString( 3 );
         record.f_per_seq    = result.GetInt( 4 );

@@ -160,7 +160,7 @@ inline bool operator!=( const recEvent& r1, const recEvent& r2 )
 class recEventEventa : public recDb
 {
     idt      f_event_id;
-    idt      f_eventum_id;
+    idt      f_eventa_id;
     double   f_conf;
     wxString f_note;
 
@@ -175,12 +175,12 @@ public:
     TABLE_NAME_MEMBERS( "EventEventum" );
 
     idt FGetEventID() const { return f_event_id; }
-    idt FGetEventaID() const { return f_eventum_id; }
+    idt FGetEventaID() const { return f_eventa_id; }
     double FGetConf() const { return f_conf; }
     wxString FGetNote() const { return f_note; }
 
     void FSetEventID( idt eveID ) { f_event_id = eveID; }
-    void FSetEventaID( idt erID ) { f_eventum_id = erID; }
+    void FSetEventaID( idt erID ) { f_eventa_id = erID; }
     void FSetConf( double conf ) { f_conf = conf; }
     void FSetNote( const wxString& note ) { f_note = note; }
 
@@ -327,7 +327,7 @@ inline bool operator!=( const recEventTypeRole& r1, const recEventTypeRole& r2 )
 class recEventaPersona : public recDb
 {
 public:
-    idt      f_eventum_id;
+    idt      f_eventa_id;
     idt      f_per_id;
     idt      f_role_id;
     wxString f_note;
@@ -342,13 +342,13 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "EventumPersona" );
 
-    idt FGetEventaID() const { return f_eventum_id; }
+    idt FGetEventaID() const { return f_eventa_id; }
     idt FGetPerID() const { return f_per_id; }
     idt FGetRoleID() const { return f_role_id; }
     wxString FGetNote() const { return f_note; }
     int FGetPerSeq() const { return f_per_seq; }
 
-    void FSetEventaID( idt erID ) { f_eventum_id = erID; }
+    void FSetEventaID( idt erID ) { f_eventa_id = erID; }
     void FSetPerID( idt perID ) { f_per_id = perID; }
     void FSetRoleID( idt roleID ) { f_role_id = roleID; }
     void FSetNote( const wxString& note ) { f_note = note; }
@@ -369,7 +369,7 @@ public:
 inline bool recEquivalent( const recEventaPersona& r1, const recEventaPersona& r2 )
 {
     return
-        r1.f_eventum_id == r2.f_eventum_id &&
+        r1.f_eventa_id == r2.f_eventa_id &&
         r1.f_per_id   == r2.f_per_id   &&
         r1.f_role_id  == r2.f_role_id  &&
         r1.f_note     == r2.f_note     &&

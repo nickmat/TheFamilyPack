@@ -177,11 +177,11 @@ void rgDlgEditPersona::UpdateEventList( idt eveID )
     m_listEvent->DeleteAllItems();
     int row = -1;
     for( size_t i = 0 ; i < m_evpers.size() ; i++ ) {
-        m_listEvent->InsertItem( i, recEvent::GetIdStr( m_evpers[i].f_eventum_id ) );
+        m_listEvent->InsertItem( i, recEvent::GetIdStr( m_evpers[i].f_eventa_id ) );
         m_listEvent->SetItem( i, EV_COL_Role, recEventTypeRole::GetName( m_evpers[i].f_role_id ) );
-        m_listEvent->SetItem( i, EV_COL_Title, recEvent::GetTitle( m_evpers[i].f_eventum_id ) );
-        m_listEvent->SetItem( i, EV_COL_Date, recEvent::GetDateStr( m_evpers[i].f_eventum_id ) );
-        m_listEvent->SetItem( i, EV_COL_Place, recEvent::GetAddressStr( m_evpers[i].f_eventum_id ) );
+        m_listEvent->SetItem( i, EV_COL_Title, recEvent::GetTitle( m_evpers[i].f_eventa_id ) );
+        m_listEvent->SetItem( i, EV_COL_Date, recEvent::GetDateStr( m_evpers[i].f_eventa_id ) );
+        m_listEvent->SetItem( i, EV_COL_Place, recEvent::GetAddressStr( m_evpers[i].f_eventa_id ) );
         if( eveID == m_evpers[i].FGetEventaID() ) {
             m_listEvent->SetItemState( i, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
             row = i;
