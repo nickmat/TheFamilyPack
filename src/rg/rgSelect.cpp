@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     21 November 2012
- * Copyright:   Copyright (c) 2012, Nick Matthews.
+ * Copyright:   Copyright (c) 2012-2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -35,7 +35,7 @@
 #endif
 
 #include <rec/recEvent.h>
-#include <rec/recEventum.h>
+#include <rec/recEventa.h>
 #include "rgSelect.h"
 #include "rgTableCtrl.h"
 
@@ -536,16 +536,16 @@ void rgDlgSelectPersona::OnCreatePersona( wxCommandEvent& event )
 }
 
 //-------------------------------------------------------------------------------
-//-------------------[ rgDlgSelectEventum ]--------------------------------------
+//--------------------[ rgDlgSelectEventa ]--------------------------------------
 //-------------------------------------------------------------------------------
 
-idt rgSelectEquivalentEventum( wxWindow* wind, idt eventID )
+idt rgSelectEquivalentEventa( wxWindow* wind, idt eventID )
 {
-    recEventumVec ers = recEvent::FindEquivRefEvents( eventID );
+    recEventaVec ers = recEvent::FindEquivRefEvents( eventID );
     if( ers.size() == 0 ) {
         return 0;
     }
-    rgDlgSelectEventum* dialog = new rgDlgSelectEventum( wind, rgSELSTYLE_None );
+    rgDlgSelectEventa* dialog = new rgDlgSelectEventa( wind, rgSELSTYLE_None );
     wxArrayString table;
     for( size_t i = 0 ; i < ers.size() ; i++ ) {
         table.push_back( ers[i].GetIdStr() );
@@ -560,7 +560,7 @@ idt rgSelectEquivalentEventum( wxWindow* wind, idt eventID )
     return id;
 }
 
-wxString rgDlgSelectEventum::sm_colHeaders[COL_MAX] = { _("ID"), _("Title") };
+wxString rgDlgSelectEventa::sm_colHeaders[COL_MAX] = { _("ID"), _("Title") };
 
 
 // End of src/rg/rgSelect.cpp file

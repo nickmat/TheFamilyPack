@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3rd October 2010
- * Copyright:   Copyright (c) 2010-2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2010-2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -36,7 +36,7 @@
 #endif
 
 #include <rec/recEvent.h>
-#include <rec/recEventum.h>
+#include <rec/recEventa.h>
 #include <rec/recPlace.h>
 #include <rec/recIndividual.h>
 
@@ -148,10 +148,10 @@ bool recEvent::Read()
     return true;
 }
 
-idt recEvent::CreateFromEventum( idt erID )
+idt recEvent::CreateFromEventa( idt erID )
 {
     recEvent e(0);
-    recEventum er(erID);
+    recEventa er(erID);
 
     e.f_title    = er.f_title;
     e.f_type_id  = er.f_type_id;
@@ -390,9 +390,9 @@ void recEvent::UpdateDatePoint()
     f_date_pt = recDate::GetDatePoint( f_date1_id );
 }
 
-recEventumVec recEvent::FindEquivRefEvents( idt indEventID )
+recEventaVec recEvent::FindEquivRefEvents( idt indEventID )
 {
-    recEventumVec vec;
+    recEventaVec vec;
     wxSQLite3StatementBuffer sql;
     wxSQLite3ResultSet result;
 
@@ -413,7 +413,7 @@ recEventumVec recEvent::FindEquivRefEvents( idt indEventID )
     result = s_db->ExecuteQuery( sql );
 
     while( result.NextRow() ) {
-        recEventum e(0);
+        recEventa e(0);
         e.f_id       = GET_ID( result.GetInt64( 0 ) );
         e.f_title    = result.GetAsString( 1 );
         e.f_type_id  = GET_ID( result.GetInt64( 2 ) );
@@ -426,9 +426,9 @@ recEventumVec recEvent::FindEquivRefEvents( idt indEventID )
     return vec;
 }
 
-recEventEventumVec recEvent::GetEventEventums( idt eveID )
+recEventEventaVec recEvent::GetEventEventas( idt eveID )
 {
-    recEventEventumVec vec;
+    recEventEventaVec vec;
     wxSQLite3StatementBuffer sql;
     wxSQLite3ResultSet result;
 
@@ -439,11 +439,11 @@ recEventEventumVec recEvent::GetEventEventums( idt eveID )
     );
     result = s_db->ExecuteQuery( sql );
 
-    recEventEventum eer(0);
+    recEventEventa eer(0);
     eer.FSetEventID( eveID );
     while( result.NextRow() ) {
         eer.FSetID( GET_ID( result.GetInt64( 0 ) ) );
-        eer.FSetEventumID( GET_ID( result.GetInt64( 1 ) ) );
+        eer.FSetEventaID( GET_ID( result.GetInt64( 1 ) ) );
         eer.FSetConf( result.GetDouble( 2 ) );
         eer.FSetNote( result.GetAsString( 3 ) );
         vec.push_back( eer );
@@ -556,10 +556,10 @@ wxSQLite3Table recEvent::GetTitleList( idt offset, int limit )
 
 
 //============================================================================
-//-------------------------[ recEventEventum ]--------------------------------
+//--------------------------[ recEventEventa ]--------------------------------
 //============================================================================
 
-recEventEventum::recEventEventum( const recEventEventum& d )
+recEventEventa::recEventEventa( const recEventEventa& d )
 {
     f_id           = d.f_id;
     f_event_id     = d.f_event_id;
@@ -568,7 +568,7 @@ recEventEventum::recEventEventum( const recEventEventum& d )
     f_note         = d.f_note;
 }
 
-void recEventEventum::Clear()
+void recEventEventa::Clear()
 {
     f_id           = 0;
     f_event_id     = 0;
@@ -577,7 +577,7 @@ void recEventEventum::Clear()
     f_note         = wxEmptyString;
 }
 
-void recEventEventum::Save()
+void recEventEventa::Save()
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -618,7 +618,7 @@ void recEventEventum::Save()
     }
 }
 
-bool recEventEventum::Read()
+bool recEventEventa::Read()
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -648,12 +648,12 @@ bool recEventEventum::Read()
     return true;
 }
 
-idt recEventEventum::Create( idt eID, idt erID, double conf, const wxString& note )
+idt recEventEventa::Create( idt eID, idt erID, double conf, const wxString& note )
 {
-    recEventEventum eer(0);
+    recEventEventa eer(0);
 
     eer.FSetEventID( eID );
-    eer.FSetEventumID( erID );
+    eer.FSetEventaID( erID );
     eer.FSetConf( conf );
     eer.FSetNote( note );
     eer.Save();
@@ -665,7 +665,7 @@ idt recEventEventum::Create( idt eID, idt erID, double conf, const wxString& not
 /*! Given the per_id and ind_id settings, find the matching record
  *  and read in the full record.
  */
-bool recEventEventum::Find()
+bool recEventEventa::Find()
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -687,9 +687,9 @@ bool recEventEventum::Find()
     return true;
 }
 
-/*! Given the Event id and Eventum id, find the matching record id.
+/*! Given the Event id and Eventa id, find the matching record id.
  */
-idt recEventEventum::Find( idt eID, idt erID )
+idt recEventEventa::Find( idt eID, idt erID )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -952,10 +952,10 @@ idt recEventTypeRole::FindOrCreate( const wxString& name, idt type, Prime prime,
 }
 
 //============================================================================
-//-------------------------[ recEventumPersona ]------------------------------
+//--------------------------[ recEventaPersona ]------------------------------
 //============================================================================
 
-recEventumPersona::recEventumPersona( const recEventumPersona& ep )
+recEventaPersona::recEventaPersona( const recEventaPersona& ep )
 {
     f_id           = ep.f_id;
     f_eventum_id   = ep.f_eventum_id;
@@ -965,7 +965,7 @@ recEventumPersona::recEventumPersona( const recEventumPersona& ep )
     f_per_seq      = ep.f_per_seq;
 }
 
-void recEventumPersona::Clear()
+void recEventaPersona::Clear()
 {
     f_id           = 0;
     f_eventum_id   = 0;
@@ -975,7 +975,7 @@ void recEventumPersona::Clear()
     f_per_seq      = 0;
 }
 
-void recEventumPersona::Save()
+void recEventaPersona::Save()
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -1013,7 +1013,7 @@ void recEventumPersona::Save()
     }
 }
 
-bool recEventumPersona::Read()
+bool recEventaPersona::Read()
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -1044,7 +1044,7 @@ bool recEventumPersona::Read()
     return true;
 }
 
-wxString recEventumPersona::GetRoleStr( idt perID, idt typeID )
+wxString recEventaPersona::GetRoleStr( idt perID, idt typeID )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
@@ -1056,7 +1056,7 @@ wxString recEventumPersona::GetRoleStr( idt perID, idt typeID )
     return ExecuteStr( sql );
 }
 
-bool recEventumPersona::LinkExists() const
+bool recEventaPersona::LinkExists() const
 {
     if( f_per_id == 0 || f_eventum_id == 0 || f_role_id == 0 ) {
         return false;

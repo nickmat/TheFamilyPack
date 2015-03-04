@@ -598,7 +598,7 @@ fbRgEditEvent::~fbRgEditEvent()
 	
 }
 
-fbRgEditEventEventum::fbRgEditEventEventum( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+fbRgEditEventEventa::fbRgEditEventEventa( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
 	
@@ -622,15 +622,15 @@ fbRgEditEventEventum::fbRgEditEventEventum( wxWindow* parent, wxWindowID id, con
 	
 	fgSizer3->Add( m_staticEvent, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_staticText2 = new wxStaticText( this, wxID_ANY, _("Eventum:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText2 = new wxStaticText( this, wxID_ANY, _("Eventa:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText2->Wrap( -1 );
 	fgSizer3->Add( m_staticText2, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT, 5 );
 	
-	m_staticEventum = new wxStaticText( this, wxID_ANY, _("Em0: Title"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticEventum->Wrap( -1 );
-	m_staticEventum->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
+	m_staticEventa = new wxStaticText( this, wxID_ANY, _("Ea0: Title"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticEventa->Wrap( -1 );
+	m_staticEventa->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
 	
-	fgSizer3->Add( m_staticEventum, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	fgSizer3->Add( m_staticEventa, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	m_staticText3 = new wxStaticText( this, wxID_ANY, _("Reference:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText3->Wrap( -1 );
@@ -665,7 +665,7 @@ fbRgEditEventEventum::fbRgEditEventEventum( wxWindow* parent, wxWindowID id, con
 	wxBoxSizer* bSizerDismiss;
 	bSizerDismiss = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_staticEvEvRecID = new wxStaticText( this, wxID_ANY, _("EEm0"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticEvEvRecID = new wxStaticText( this, wxID_ANY, _("EEa0"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticEvEvRecID->Wrap( -1 );
 	m_staticEvEvRecID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 72, 90, 92, false, wxEmptyString ) );
 	
@@ -689,11 +689,11 @@ fbRgEditEventEventum::fbRgEditEventEventum( wxWindow* parent, wxWindowID id, con
 	bSizer11->Fit( this );
 }
 
-fbRgEditEventEventum::~fbRgEditEventEventum()
+fbRgEditEventEventa::~fbRgEditEventEventa()
 {
 }
 
-fbRgEditEventum::fbRgEditEventum( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+fbRgEditEventa::fbRgEditEventa( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
 	
@@ -839,11 +839,11 @@ fbRgEditEventum::fbRgEditEventum( wxWindow* parent, wxWindowID id, const wxStrin
 	wxBoxSizer* bSizerDismiss;
 	bSizerDismiss = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_staticEventumID = new wxStaticText( this, wxID_ANY, _("Em0"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticEventumID->Wrap( -1 );
-	m_staticEventumID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 72, 90, 92, false, wxT("Times New Roman") ) );
+	m_staticEventaID = new wxStaticText( this, wxID_ANY, _("Ea0"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticEventaID->Wrap( -1 );
+	m_staticEventaID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 72, 90, 92, false, wxT("Times New Roman") ) );
 	
-	bSizerDismiss->Add( m_staticEventumID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	bSizerDismiss->Add( m_staticEventaID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	
 	bSizerDismiss->Add( 0, 0, 1, wxEXPAND, 5 );
@@ -865,29 +865,29 @@ fbRgEditEventum::fbRgEditEventum( wxWindow* parent, wxWindowID id, const wxStrin
 	this->Centre( wxBOTH );
 	
 	// Connect Events
-	m_buttonDate1->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventum::OnDate1Button ), NULL, this );
-	m_buttonDate2->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventum::OnDate2Button ), NULL, this );
-	m_buttonPlace->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventum::OnPlaceButton ), NULL, this );
-	m_buttonAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventum::OnAddPer ), NULL, this );
-	m_buttonEdit->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventum::OnEditPer ), NULL, this );
-	m_buttonDelete->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventum::OnDeletePer ), NULL, this );
-	m_buttonAddCon->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventum::OnAddCon ), NULL, this );
-	m_buttonEditCon->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventum::OnEditCon ), NULL, this );
-	m_buttonDeleteCon->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventum::OnDeleteCon ), NULL, this );
+	m_buttonDate1->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventa::OnDate1Button ), NULL, this );
+	m_buttonDate2->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventa::OnDate2Button ), NULL, this );
+	m_buttonPlace->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventa::OnPlaceButton ), NULL, this );
+	m_buttonAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventa::OnAddPer ), NULL, this );
+	m_buttonEdit->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventa::OnEditPer ), NULL, this );
+	m_buttonDelete->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventa::OnDeletePer ), NULL, this );
+	m_buttonAddCon->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventa::OnAddCon ), NULL, this );
+	m_buttonEditCon->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventa::OnEditCon ), NULL, this );
+	m_buttonDeleteCon->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventa::OnDeleteCon ), NULL, this );
 }
 
-fbRgEditEventum::~fbRgEditEventum()
+fbRgEditEventa::~fbRgEditEventa()
 {
 	// Disconnect Events
-	m_buttonDate1->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventum::OnDate1Button ), NULL, this );
-	m_buttonDate2->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventum::OnDate2Button ), NULL, this );
-	m_buttonPlace->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventum::OnPlaceButton ), NULL, this );
-	m_buttonAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventum::OnAddPer ), NULL, this );
-	m_buttonEdit->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventum::OnEditPer ), NULL, this );
-	m_buttonDelete->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventum::OnDeletePer ), NULL, this );
-	m_buttonAddCon->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventum::OnAddCon ), NULL, this );
-	m_buttonEditCon->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventum::OnEditCon ), NULL, this );
-	m_buttonDeleteCon->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventum::OnDeleteCon ), NULL, this );
+	m_buttonDate1->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventa::OnDate1Button ), NULL, this );
+	m_buttonDate2->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventa::OnDate2Button ), NULL, this );
+	m_buttonPlace->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventa::OnPlaceButton ), NULL, this );
+	m_buttonAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventa::OnAddPer ), NULL, this );
+	m_buttonEdit->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventa::OnEditPer ), NULL, this );
+	m_buttonDelete->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventa::OnDeletePer ), NULL, this );
+	m_buttonAddCon->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventa::OnAddCon ), NULL, this );
+	m_buttonEditCon->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventa::OnEditCon ), NULL, this );
+	m_buttonDeleteCon->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventa::OnDeleteCon ), NULL, this );
 	
 }
 

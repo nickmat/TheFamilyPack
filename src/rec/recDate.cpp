@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010-2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2010-2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify

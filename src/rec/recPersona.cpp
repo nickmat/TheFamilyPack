@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010-2014, Nick Matthews.
+ * Copyright:   Copyright (c) 2010-2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -163,9 +163,9 @@ recNameVec recPersona::ReadNames( idt perID )
     return list;
 }
 
-recEventumPersonaVec recPersona::ReadEventumPersonas( idt perID, recEventOrder order )
+recEventaPersonaVec recPersona::ReadEventaPersonas( idt perID, recEventOrder order )
 {
-    recEventumPersonaVec list;
+    recEventaPersonaVec list;
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
 
@@ -194,7 +194,7 @@ recEventumPersonaVec recPersona::ReadEventumPersonas( idt perID, recEventOrder o
     result = s_db->GetTable( sql );
 
     list.reserve( result.GetRowCount() );
-    recEventumPersona record;
+    recEventaPersona record;
     record.f_per_id = perID;
     for( int i = 0 ; i < result.GetRowCount() ; i++ )
     {
@@ -209,7 +209,7 @@ recEventumPersonaVec recPersona::ReadEventumPersonas( idt perID, recEventOrder o
     return list;
 }
 
-int recPersona::GetMaxEventumSeqNumber( idt perID )
+int recPersona::GetMaxEventaSeqNumber( idt perID )
 {
     wxSQLite3StatementBuffer sql;
 

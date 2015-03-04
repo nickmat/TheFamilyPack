@@ -89,13 +89,13 @@ wxString tfpWritePersonaPage( idt perID )
     htm << "</tr>\n</table>\n";
 
     // Eventa
-    recEventumPersonaVec eps = per.ReadEventumPersonas();
+    recEventaPersonaVec eps = per.ReadEventaPersonas();
     htm <<
         "<table class='data'>\n<tr>\n"
         "<th colspan='4'>Eventa</th>\n";
     for( size_t i = 0 ; i < eps.size() ; i++ ) {
-        idt eaID = eps[i].FGetEventumID();
-        recEventum ea( eaID );
+        idt eaID = eps[i].FGetEventaID();
+        recEventa ea( eaID );
         wxString cat1, cat2, dStr, pStr;
         if( ea.FGetDate1ID() || ea.FGetPlaceID() ) {
             cat1 = "<br>\n";

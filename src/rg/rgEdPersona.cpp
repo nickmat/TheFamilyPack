@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     9 October 2010
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2010-2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -173,7 +173,7 @@ void rgDlgEditPersona::UpdateNameList( idt nameID )
 
 void rgDlgEditPersona::UpdateEventList( idt eveID )
 {
-    m_evpers = m_persona.ReadEventumPersonas( m_order );
+    m_evpers = m_persona.ReadEventaPersonas( m_order );
     m_listEvent->DeleteAllItems();
     int row = -1;
     for( size_t i = 0 ; i < m_evpers.size() ; i++ ) {
@@ -182,7 +182,7 @@ void rgDlgEditPersona::UpdateEventList( idt eveID )
         m_listEvent->SetItem( i, EV_COL_Title, recEvent::GetTitle( m_evpers[i].f_eventum_id ) );
         m_listEvent->SetItem( i, EV_COL_Date, recEvent::GetDateStr( m_evpers[i].f_eventum_id ) );
         m_listEvent->SetItem( i, EV_COL_Place, recEvent::GetAddressStr( m_evpers[i].f_eventum_id ) );
-        if( eveID == m_evpers[i].FGetEventumID() ) {
+        if( eveID == m_evpers[i].FGetEventaID() ) {
             m_listEvent->SetItemState( i, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
             row = i;
         }
@@ -335,7 +335,7 @@ void rgDlgEditPersona::OnNameDownButton( wxCommandEvent& event )
 
 void rgDlgEditPersona::OnEventAddButton( wxCommandEvent& event )
 {
-    idt eveID = rgCreateEventum( this, m_refID );
+    idt eveID = rgCreateEventa( this, m_refID );
     if( eveID ) {
         recReferenceEntity::Create( m_refID, recReferenceEntity::TYPE_Event, eveID );
         UpdateEventList( eveID );
@@ -349,8 +349,8 @@ void rgDlgEditPersona::OnEventEditButton( wxCommandEvent& event )
         wxMessageBox( _("No row selected"), _("Edit Event"), wxOK | wxCENTRE, this );
         return;
     }
-    idt eventID = m_evpers[row].FGetEventumID();
-    if( rgEditEventum( this, eventID ) ) {
+    idt eventID = m_evpers[row].FGetEventaID();
+    if( rgEditEventa( this, eventID ) ) {
         UpdateEventList( eventID );
     }
 }
@@ -362,7 +362,7 @@ void rgDlgEditPersona::OnEventDeleteButton( wxCommandEvent& event )
         wxMessageBox( _("No row selected"), _("Delete From Event") );
         return;
     }
-    idt eveID = m_evpers[row].FGetEventumID();
+    idt eveID = m_evpers[row].FGetEventaID();
     wxString mess = wxString::Format(
         "Remove %s %s from Event %s\n%s?",
         m_persona.GetNameStr(), m_persona.GetIdStr(),
@@ -391,7 +391,7 @@ void rgDlgEditPersona::OnEventUpButton( wxCommandEvent& event )
     m_evpers[row].Save();
     m_evpers[row-1].FSetPerSeq( seq );
     m_evpers[row-1].Save();
-    UpdateEventList( m_evpers[row].FGetEventumID() );
+    UpdateEventList( m_evpers[row].FGetEventaID() );
 }
 
 void rgDlgEditPersona::OnEventDownButton( wxCommandEvent& event )
@@ -409,7 +409,7 @@ void rgDlgEditPersona::OnEventDownButton( wxCommandEvent& event )
     m_evpers[row].Save();
     m_evpers[row+1].FSetPerSeq( seq );
     m_evpers[row+1].Save();
-    UpdateEventList( m_evpers[row].FGetEventumID() );
+    UpdateEventList( m_evpers[row].FGetEventaID() );
 }
 
 void rgDlgEditPersona::OnOrderBy( wxCommandEvent& event )
@@ -430,7 +430,7 @@ void rgDlgEditPersona::OnOrderBy( wxCommandEvent& event )
         return;
     }
     long row = m_listEvent->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-    idt eveID = ( row >= 0 ) ? m_evpers[row].FGetEventumID() : 0;
+    idt eveID = ( row >= 0 ) ? m_evpers[row].FGetEventaID() : 0;
     UpdateEventList( eveID );
 }
 

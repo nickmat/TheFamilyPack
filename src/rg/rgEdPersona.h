@@ -94,7 +94,7 @@ private:
     recPersona          m_persona;
     recIdVec            m_indLinks;
     recNameVec          m_names;
-    recEventumPersonaVec  m_evpers;
+    recEventaPersonaVec  m_evpers;
     recEventOrder       m_order;
     recRelationshipVec  m_relationships;
 

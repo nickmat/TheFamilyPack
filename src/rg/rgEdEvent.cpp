@@ -39,7 +39,7 @@
 
 #include <rec/recDate.h>
 #include <rec/recPlace.h>
-#include <rec/recEventum.h>
+#include <rec/recEventa.h>
 #include <rg/rgDialogs.h>
 
 #include "rgEdEvent.h"
@@ -139,7 +139,7 @@ idt rgCreateIndEvent( wxWindow* wind, idt ind1ID, idt ind2ID, idt famID )
 idt rgCreateEventFromRecord( wxWindow* wind, idt erID )
 {
     wxASSERT( erID != 0 );
-    recEventum er(erID);
+    recEventa er(erID);
 
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
@@ -155,13 +155,13 @@ idt rgCreateEventFromRecord( wxWindow* wind, idt erID )
     e.Save();
     idt eID = e.FGetID();
 
-    recEventEventum eer(0);
+    recEventEventa eer(0);
     eer.FSetEventID( eID );
-    eer.FSetEventumID( erID );
+    eer.FSetEventaID( erID );
     eer.FSetConf( 0.999 );
     eer.Save();
 
-    recEventumPersonaVec pers = er.GetEventumPersonas();
+    recEventaPersonaVec pers = er.GetEventaPersonas();
     for( size_t i = 0 ; i < pers.size() ; i++ ) {
         recIdVec indIDs = recPersona::GetIndividualIDs( pers[i].FGetPerID() );
         for( size_t j = 0 ; j < indIDs.size() ; j++ ) {
@@ -219,7 +219,7 @@ bool rgDlgEditEvent::TransferDataToWindow()
     m_textCtrlPlace->SetValue( recPlace::GetAddressStr( m_placeID ) );
     m_textCtrlNote->SetValue( m_event.f_note );
     ListLinkedIndividuals();
-    ListEventums();
+    ListEventas();
     m_staticEventID->SetLabel( m_event.GetIdStr() );
     return true;
 }
@@ -239,14 +239,14 @@ void rgDlgEditEvent::ListLinkedIndividuals()
     m_listIndividual->SetColumnWidth( COL_Role, wxLIST_AUTOSIZE );
 }
 
-void rgDlgEditEvent::ListEventums()
+void rgDlgEditEvent::ListEventas()
 {
-    m_eers = m_event.GetEventEventums();
+    m_eers = m_event.GetEventEventas();
     m_listRecord->DeleteAllItems();
     for( size_t i = 0 ; i < m_eers.size() ; i++ ) {
-        idt erID = m_eers[i].FGetEventumID();
-        idt refID = recEventum::FindReferenceID( erID );
-        m_listRecord->InsertItem( i, recEventum::GetIdStr( erID ) );
+        idt erID = m_eers[i].FGetEventaID();
+        idt refID = recEventa::FindReferenceID( erID );
+        m_listRecord->InsertItem( i, recEventa::GetIdStr( erID ) );
         m_listRecord->SetItem( i, COL_RefID, recReference::GetIdStr( refID ) );
         m_listRecord->SetItem( i, COL_RefTitle, recReference::GetTitle( refID ) );
     }

@@ -253,15 +253,15 @@ wxString tfpWriteIndividualPage( idt indID )
     htm << "</tr>\n</table>\n";
 
     // Get linked Events Records
-    wxSQLite3ResultSet eSet = ind.GetEventumSet();
+    wxSQLite3ResultSet eSet = ind.GetEventaSet();
     htm <<
         "<table class='data'>\n<tr>\n"
         "<th colspan='4'>Event Records</th>\n";
     while( eSet.NextRow() ) {
         idt erID = GET_ID( eSet.GetInt64( 0 ) );
-        recEventum er( erID );
+        recEventa er( erID );
         idt roleID = GET_ID( eSet.GetInt64( 1 ) );
-        idt refID = recEventum::FindReferenceID( erID );
+        idt refID = recEventa::FindReferenceID( erID );
 
         wxString cat1, cat2, dStr, pStr;
         if( er.FGetDate1ID() || er.FGetPlaceID() ) {

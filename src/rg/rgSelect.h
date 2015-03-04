@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     19 November 2012
- * Copyright:   Copyright (c) 2012, Nick Matthews.
+ * Copyright:   Copyright (c) 2012-2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -177,20 +177,20 @@ private:
 };
 
 //-------------------------------------------------------------------------------
-//-------------------[ rgDlgSelectEventum ]----------------------------------
+//------------------------[ rgDlgSelectEventa ]----------------------------------
 //-------------------------------------------------------------------------------
 
-class rgDlgSelectEventum : public rgSelect
+class rgDlgSelectEventa : public rgSelect
 {
     enum {
         COL_ID, COL_Title, COL_MAX
     };
     static wxString sm_colHeaders[COL_MAX];
 public:
-    rgDlgSelectEventum(
+    rgDlgSelectEventa(
         wxWindow* parent = NULL,
         unsigned style = rgSELSTYLE_None,
-        const wxString& title = _("Select Eventum")
+        const wxString& title = _("Select Eventa")
     ) : rgSelect( parent, sm_colHeaders, COL_MAX, style, title ) {}
 };
 

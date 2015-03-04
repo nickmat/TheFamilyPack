@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     30th September 2010
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2010-2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -75,7 +75,7 @@ private:
         CPPUNIT_TEST( TestEvent );
         CPPUNIT_TEST( TestEventType );
         CPPUNIT_TEST( TestEventTypeRole );
-        CPPUNIT_TEST( TestEventumPersona );
+        CPPUNIT_TEST( TestEventaPersona );
         CPPUNIT_TEST( TestReference );
         CPPUNIT_TEST( TestReferenceEntity );
         CPPUNIT_TEST( TestIndividual );
@@ -96,7 +96,7 @@ private:
     void TestEvent();
     void TestEventType();
     void TestEventTypeRole();
-    void TestEventumPersona();
+    void TestEventaPersona();
     void TestReference();
     void TestReferenceEntity();
     void TestIndividual();
@@ -680,15 +680,15 @@ void RecTestCase::TestEventTypeRole()
     CPPUNIT_ASSERT( recEventTypeRole::Exists( 999 ) == false );
 }
 
-void RecTestCase::TestEventumPersona()
+void RecTestCase::TestEventaPersona()
 {
     idt id;
     CPPUNIT_ASSERT_NO_THROW( AddTestData() );
 
-    recEventumPersona record1;
+    recEventaPersona record1;
     record1.FSetID( 0 );
 
-    record1.FSetEventumID( 1 );    // Needs to exist
+    record1.FSetEventaID( 1 );    // Needs to exist
     record1.FSetPerID( 3 );      // Needs to exist
     record1.FSetRoleID( 10000 ); // Doesn't exist, make Save() throw
     record1.FSetNote( "Good person" );
@@ -702,12 +702,12 @@ void RecTestCase::TestEventumPersona()
     id = record1.FGetID();
     CPPUNIT_ASSERT( id == 1 );
 
-    recEventumPersona record2;
+    recEventaPersona record2;
     record2.FSetID( record1.FGetID() );
     CPPUNIT_ASSERT_NO_THROW( record2.Read() );
     CPPUNIT_ASSERT( record1 == record2 );
 
-    record1.FSetEventumID( 19 );    // Needs to exist
+    record1.FSetEventaID( 19 );    // Needs to exist
     record1.FSetPerID( 20 );      // Needs to exist
     record1.FSetRoleID( recEventTypeRole::ROLE_Baptism_Baptised );
     record1.FSetNote( "Who he?" );
@@ -735,9 +735,9 @@ void RecTestCase::TestEventumPersona()
     CPPUNIT_ASSERT_NO_THROW( record1.Delete() );
     CPPUNIT_ASSERT( record1.Exists() == false );
 
-    CPPUNIT_ASSERT( recEventumPersona::Exists( 999 ) == true );
-    CPPUNIT_ASSERT_NO_THROW( recEventumPersona::Delete( 999 ) );
-    CPPUNIT_ASSERT( recEventumPersona::Exists( 999 ) == false );
+    CPPUNIT_ASSERT( recEventaPersona::Exists( 999 ) == true );
+    CPPUNIT_ASSERT_NO_THROW( recEventaPersona::Delete( 999 ) );
+    CPPUNIT_ASSERT( recEventaPersona::Exists( 999 ) == false );
 }
 
 void RecTestCase::TestReference()

@@ -74,25 +74,25 @@ extern bool rgEditEvent( wxWindow* wind, idt eveID );
 extern idt rgCreateIndEvent( wxWindow* wind, idt ind1ID, idt ind2ID = 0, idt famID = 0 );
 extern idt rgCreateEventFromRecord( wxWindow* wind, idt erID );
 
-// See src/rg/rgEdEventEventum.cpp
-extern bool rgEditEventEventum( wxWindow* wind, idt eerID );
-extern idt rgCreateIndEventEventum( wxWindow* wind, idt eID, idt erID );
+// See src/rg/rgEdEventEventa.cpp
+extern bool rgEditEventEventa( wxWindow* wind, idt eerID );
+extern idt rgCreateIndEventEventa( wxWindow* wind, idt eID, idt erID );
 extern idt rgFindOrCreateIndEvent(
     wxWindow* wind,
     idt erID,
     double conf,
     idt id,  // Individual or Family depending on Event Group
     idt roleID );
-extern void NormaliseEventEventumLinks( idt eemID );
+extern void NormaliseEventEventaLinks( idt eemID );
 
 // See src/rg/rgEdEventType.cpp
 extern bool rgEditEventType( wxWindow* wind, idt etID );
 extern idt rgCreateEventType( wxWindow* wind );
 
-// See src/rg/rgEdEventum.cpp
-extern bool rgEditEventum( wxWindow* wind, idt eveID );
-extern idt rgCreateEventum( wxWindow* wind, idt refID );
-extern idt rgCreatePersonalEventum( wxWindow* wind, idt refID, const wxString& role );
+// See src/rg/rgEdEventa.cpp
+extern bool rgEditEventa( wxWindow* wind, idt eveID );
+extern idt rgCreateEventa( wxWindow* wind, idt refID );
+extern idt rgCreatePersonalEventa( wxWindow* wind, idt refID, const wxString& role );
 
 // See src/rg/rgEdFamily.cpp
 extern bool rgEditFamily( wxWindow* wind, idt famID );
@@ -206,7 +206,7 @@ extern idt rgSelectPersona(
     rgSELPER flag = rgSELPER_Default,
     unsigned* retbutton = NULL );
 
-extern idt rgSelectEquivalentEventum( wxWindow* wind, idt eventID );
+extern idt rgSelectEquivalentEventa( wxWindow* wind, idt eventID );
 
 // See src/rg/rgSelIndEvent.cpp
 extern bool rgSelectEventList( wxWindow* wind, recSelSetEvent* exfilter );

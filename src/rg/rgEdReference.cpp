@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     26th February 2013
- * Copyright:   Copyright (c) 2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2013-2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -38,7 +38,7 @@
 #include <rec/recDate.h>
 #include <rec/recPlace.h>
 #include <rec/recPersona.h>
-#include <rec/recEventum.h>
+#include <rec/recEventa.h>
 
 #include <rg/rgDialogs.h>
 #include "rgEdReference.h"
@@ -473,7 +473,7 @@ void rgDlgEditReference::OnNewPlace( wxCommandEvent& event )
 
 void rgDlgEditReference::OnNewEvent( wxCommandEvent& cmnd_event )
 {
-    idt eveID = rgCreateEventum( this, m_reference.FGetID() );
+    idt eveID = rgCreateEventa( this, m_reference.FGetID() );
     if( eveID ) {
         UpdateEntities();// reID );
     }
@@ -481,7 +481,7 @@ void rgDlgEditReference::OnNewEvent( wxCommandEvent& cmnd_event )
 
 void rgDlgEditReference::OnNewPersonalEvent( wxCommandEvent& event )
 {
-    idt eveID = rgCreatePersonalEventum(
+    idt eveID = rgCreatePersonalEventa(
         this, m_reference.FGetID(), GetSelectedText()
     );
     if( eveID ) {
@@ -521,7 +521,7 @@ void rgDlgEditReference::OnEditEntityButton( wxCommandEvent& event )
         if( rgEditPersonaRelationship( this, id ) ) break;
         return;
     case recReferenceEntity::TYPE_Event:
-        if( rgEditEventum( this, id ) ) break;
+        if( rgEditEventa( this, id ) ) break;
         return;
     case recReferenceEntity::TYPE_Name:
         if( rgEditName( this, id ) ) break;
@@ -558,7 +558,7 @@ void rgDlgEditReference::OnDeleteEntityButton( wxCommandEvent& event )
         recName::RemoveFromDatabase( entID );
         break;
     case recReferenceEntity::TYPE_Event:
-        recEventum::RemoveFromDatabase( entID );
+        recEventa::RemoveFromDatabase( entID );
         break;
     default:
         wxMessageBox( _("Element cannot be deleted"), _("Delete") );
@@ -637,8 +637,8 @@ void rgDlgEditReference::InsertEntityListItem( size_t row )
         m_listEntities->SetItem( row, ENT_COL_Value, recRelationship::GetValue1Str( entID ) );
         break;
     case recReferenceEntity::TYPE_Event:
-        m_listEntities->SetItem( row, ENT_COL_Number, recEventum::GetIdStr( entID ) );
-        m_listEntities->SetItem( row, ENT_COL_Value, recEventum::GetTitle( entID ) );
+        m_listEntities->SetItem( row, ENT_COL_Number, recEventa::GetIdStr( entID ) );
+        m_listEntities->SetItem( row, ENT_COL_Value, recEventa::GetTitle( entID ) );
         break;
     default:
         m_listEntities->SetItem( row, ENT_COL_Value, _("Unknown Reference Entity") );

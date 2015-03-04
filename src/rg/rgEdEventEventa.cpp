@@ -1,7 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Name:        src/rg/rgEdEventEventa.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Edit an EventEventum record dialog header.
+ * Purpose:     Edit an EventEventa record dialog header.
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     7th May 2013
@@ -41,12 +41,12 @@
 #include "rg/rgDialogs.h"
 #include "rgEdEventEventa.h"
 
-bool rgEditEventEventum( wxWindow* wind, idt eerID )
+bool rgEditEventEventa( wxWindow* wind, idt eerID )
 {
     wxASSERT( eerID != 0 );
     const wxString savepoint = recDb::GetSavepointStr();
     bool ret = false;
-    rgDlgEditEventEventum* dialog = new rgDlgEditEventEventum( wind, eerID );
+    rgDlgEditEventEventa* dialog = new rgDlgEditEventEventa( wind, eerID );
 
     recDb::Savepoint( savepoint );
     if( dialog->ShowModal() == wxID_OK )
@@ -60,15 +60,15 @@ bool rgEditEventEventum( wxWindow* wind, idt eerID )
     return ret;
 }
 
-idt rgCreateIndEventEventum( wxWindow* wind, idt eID, idt erID )
+idt rgCreateIndEventEventa( wxWindow* wind, idt eID, idt erID )
 {
     wxASSERT( eID != 0 && erID != 0 );
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
 
-    idt eerID = recEventEventum::Create( eID, erID );
+    idt eerID = recEventEventa::Create( eID, erID );
 
-    if( rgEditEventEventum( wind, eerID ) ) {
+    if( rgEditEventEventa( wind, eerID ) ) {
         recDb::ReleaseSavepoint( savepoint );
         return eerID;
     }
@@ -83,7 +83,7 @@ idt rgFindOrCreateIndEvent(
     wxASSERT( id != 0 ); // id is either indID or famID, depending on event type
     idt eID = 0;
     recIdVec eIDs;
-    recEventum er(erID);
+    recEventa er(erID);
     recET_GRP grp = er.GetTypeGroup();
 
     switch( grp )
@@ -92,7 +92,7 @@ idt rgFindOrCreateIndEvent(
     case recET_GRP_Death:
         eID = recIndividual::FindEvent( id, roleID );
         if( eID == 0 ) {
-            eID = recEvent::CreateFromEventum( erID );
+            eID = recEvent::CreateFromEventa( erID );
         }
         eIDs.push_back( eID );
         break;
@@ -113,7 +113,7 @@ idt rgFindOrCreateIndEvent(
             unsigned button;
             eID = rgSelectEvent( wind, rgSELSTYLE_Create, &sse, &button );
             if( button == rgSELSTYLE_Create ) {
-                eID = recEvent::CreateFromEventum( erID );
+                eID = recEvent::CreateFromEventa( erID );
             }
         }
         break;
@@ -134,7 +134,7 @@ idt rgFindOrCreateIndEvent(
             unsigned button;
             eID = rgSelectEvent( wind, rgSELSTYLE_Create, &sse, &button );
             if( button == rgSELSTYLE_Create ) {
-                eID = recEvent::CreateFromEventum( erID );
+                eID = recEvent::CreateFromEventa( erID );
                 recFamilyEvent::Create( eID, id );
             }
         }
@@ -144,20 +144,20 @@ idt rgFindOrCreateIndEvent(
     }
 
     if( eID ) {
-        // Now we have an Event, create the Event Eventum links
-        idt eemID = recEventEventum::Create( eID, erID, conf );
-        NormaliseEventEventumLinks( eemID );
+        // Now we have an Event, create the Event Eventa links
+        idt eemID = recEventEventa::Create( eID, erID, conf );
+        NormaliseEventEventaLinks( eemID );
     }
 
     return eID;
 }
 
-void NormaliseEventEventumLinks( idt eemID )
+void NormaliseEventEventaLinks( idt eemID )
 {
-    recEventEventum eem(eemID);
+    recEventEventa eem(eemID);
     wxASSERT( eem.FGetID() != 0 );
 
-    recEventumPersonaVec emps = recEventum::GetEventumPersonas( eem.FGetEventumID() );
+    recEventaPersonaVec emps = recEventa::GetEventaPersonas( eem.FGetEventaID() );
     recIndEventVec ies = recEvent::GetIndividualEvents( eem.FGetEventID() );
     for( size_t i = 0 ; i < emps.size() ; i++ ) {
         recIdVec indIDs = recPersona::GetIndividualIDs( emps[i].FGetPerID() );
@@ -172,7 +172,7 @@ void NormaliseEventEventumLinks( idt eemID )
                 }
             }
             if( ! ok ) {
-                // Create an IndividualEvent to match EventumPersona
+                // Create an IndividualEvent to match EventaPersona
                 recIndividualEvent ie(0);
                 ie.FSetIndID( indIDs[j] );
                 ie.FSetEventID( eem.FGetEventID() );
@@ -186,10 +186,10 @@ void NormaliseEventEventumLinks( idt eemID )
 }
 
 //============================================================================
-//-------------------------[ rgDlgEditEventEventum ]--------------------------
+//--------------------------[ rgDlgEditEventEventa ]--------------------------
 //============================================================================
 
-bool rgDlgEditEventEventum::TransferDataToWindow()
+bool rgDlgEditEventEventa::TransferDataToWindow()
 {
     wxASSERT( m_eer.FGetID() != 0 );
 
@@ -197,12 +197,12 @@ bool rgDlgEditEventEventum::TransferDataToWindow()
     wxString eStr = recEvent::GetIdStr( eID ) + ": " + recEvent::GetTitle( eID );
     m_staticEvent->SetLabel( eStr );
 
-    idt erID = m_eer.FGetEventumID();
-    wxString erStr = recEventum::GetIdStr( erID )
-        + ": " + recEventum::GetTitle( erID );
-    m_staticEventum->SetLabel( erStr );
+    idt erID = m_eer.FGetEventaID();
+    wxString erStr = recEventa::GetIdStr( erID )
+        + ": " + recEventa::GetTitle( erID );
+    m_staticEventa->SetLabel( erStr );
 
-    idt rID = recEventum::FindReferenceID( erID );
+    idt rID = recEventa::FindReferenceID( erID );
     wxString rStr = recReference::GetIdStr( rID )
         + ": " + recReference::GetTitle( rID );
     m_staticRef->SetLabel( rStr );
@@ -216,7 +216,7 @@ bool rgDlgEditEventEventum::TransferDataToWindow()
     return true;
 }
 
-bool rgDlgEditEventEventum::TransferDataFromWindow()
+bool rgDlgEditEventEventa::TransferDataFromWindow()
 {
     double conf;
     m_textCtrlConf->GetValue().ToDouble( &conf );

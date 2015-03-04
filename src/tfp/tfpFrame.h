@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     24 September 2010
- * Copyright:   Copyright (c) 2010-2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2010-2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -112,9 +112,9 @@ public:
     void OnListAllEvents( wxCommandEvent& event );
     void OnListPagedEvents( wxCommandEvent& event );
     void OnListSelectedEvents( wxCommandEvent& event );
-    void OnListAllEventums( wxCommandEvent& event );
-    void OnListPagedEventums( wxCommandEvent& event );
-    void OnListSelectedEventums( wxCommandEvent& event );
+    void OnListAllEventas( wxCommandEvent& event );
+    void OnListPagedEventas( wxCommandEvent& event );
+    void OnListSelectedEventas( wxCommandEvent& event );
     void OnListResearchers( wxCommandEvent& event );
 
     void OnPedChart( wxCommandEvent& event );
@@ -195,7 +195,7 @@ enum
     tfpID_EDIT_RESEARCHER,
     tfpID_EDIT_CORE_MENU,
 
-    // Items in this group are handled 
+    // Items in this group are handled
     // by TfpFrame::OnEditContext
     tfpID_EDIT_CONTEXT_BEG,
     tfpID_EDIT_INDIVIDUAL_LEFT,
@@ -231,17 +231,17 @@ enum
     tfpID_FIND_EVENT_ID,
     tfpID_LIST_SURNAME_INDEX,
     tfpID_LIST_PERSONAS,
-	tfpID_LIST_INDIVIDUALS,
-	tfpID_LIST_REFERENCE_MENU,
-	tfpID_LIST_ALL_REFERENCES,
-	tfpID_LIST_PAGED_REFERENCES,
-	tfpID_LIST_EVENT_MENU,
-	tfpID_LIST_ALL_EVENTS,
-	tfpID_LIST_PAGED_EVENTS,
-	tfpID_LIST_SELECTED_EVENTS,
-	tfpID_LIST_ALL_EVENTUMS,
-	tfpID_LIST_PAGED_EVENTUMS,
-	tfpID_LIST_SELECTED_EVENTUMS,
+    tfpID_LIST_INDIVIDUALS,
+    tfpID_LIST_REFERENCE_MENU,
+    tfpID_LIST_ALL_REFERENCES,
+    tfpID_LIST_PAGED_REFERENCES,
+    tfpID_LIST_EVENT_MENU,
+    tfpID_LIST_ALL_EVENTS,
+    tfpID_LIST_PAGED_EVENTS,
+    tfpID_LIST_SELECTED_EVENTS,
+    tfpID_LIST_ALL_EVENTUMS,
+    tfpID_LIST_PAGED_EVENTUMS,
+    tfpID_LIST_SELECTED_EVENTUMS,
     tfpID_LIST_RESEARCHERS,
     tfpID_PED_CHART,
     tfpID_DESC_CHART,

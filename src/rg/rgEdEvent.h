@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     9 October 2010
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2010-2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -53,7 +53,7 @@ private:
 
     bool TransferDataToWindow();
     void ListLinkedIndividuals();
-    void ListEventums();
+    void ListEventas();
     bool TransferDataFromWindow();
 
     void OnDate1Button( wxCommandEvent& event );
@@ -74,7 +74,7 @@ private:
     idt       m_placeID;
 
     recIndEventVec     m_ies;
-    recEventEventumVec m_eers;
+    recEventEventaVec  m_eers;
 };
 
 #endif // RGEDEVENT_H

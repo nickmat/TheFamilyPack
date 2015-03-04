@@ -147,8 +147,8 @@ public:
     recIndEventVec GetEvents( recEventOrder order = recEO_DatePt ) const
         { return GetEvents( f_id, order ); }
 
-    wxSQLite3ResultSet GetEventumSet() const { return GetEventumSet( f_id ); }
-    static wxSQLite3ResultSet GetEventumSet( idt indID );
+    wxSQLite3ResultSet GetEventaSet() const { return GetEventaSet( f_id ); }
+    static wxSQLite3ResultSet GetEventaSet( idt indID );
 
     wxSQLite3ResultSet GetReferenceSet() const { return GetReferenceSet( f_id ); }
     static wxSQLite3ResultSet GetReferenceSet( idt indID );

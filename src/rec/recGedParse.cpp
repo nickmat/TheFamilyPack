@@ -4,7 +4,7 @@
  * Purpose:     Read GEDCOM import files.
  * Author:      Nick Matthews
  * Created:     19 September 2011
- * Copyright:   Copyright (c) 2011-2014, Nick Matthews.
+ * Copyright:   Copyright (c) 2011-2015, Nick Matthews.
  * Website:     http://thefamilypack.org
  * Licence:     GNU GPLv3
  *
@@ -52,7 +52,7 @@ private:
     int                  m_nameSeq;
 
 public:
-    GedIndividual( idt indID ) : m_ind(0), m_nameSeq(0) { 
+    GedIndividual( idt indID ) : m_ind(0), m_nameSeq(0) {
         m_ind.FSetID( indID );
         m_ind.Save();
     }
@@ -75,18 +75,18 @@ private:
     int       m_childSeq;
 
 public:
-    GedFamily( idt famID ) 
-        : m_fam(0), m_childSeq(0) 
+    GedFamily( idt famID )
+        : m_fam(0), m_childSeq(0)
     {
         m_fam.FSetID( famID );
         m_fam.Save();
     }
 
-    void SetHusb( idt indID ) { 
+    void SetHusb( idt indID ) {
         m_fam.f_husb_id = indID;
-        UpdateIndividual( indID ); 
+        UpdateIndividual( indID );
     }
-    void SetWife( idt indID ) { 
+    void SetWife( idt indID ) {
         m_fam.f_wife_id = indID;
         UpdateIndividual( indID );
     }
@@ -246,8 +246,8 @@ bool recGedParse::Pass2()
     while( cont ) {
         if( m_level == 0 ) {
             if( m_progress ) {
-                wxString message = wxString::Format( 
-                    _("Line number = %d of %d"), m_lineNum, m_totalCount 
+                wxString message = wxString::Format(
+                    _("Line number = %d of %d"), m_lineNum, m_totalCount
                 );
                 if( recProgressUpdate( m_progress, m_lineNum/100, message ) == false ) {
                     recDb::Rollback();
@@ -356,7 +356,7 @@ bool recGedParse::ReadNextLine()
 
     if(      str.Cmp( "TEXT" ) == 0 ) m_tag = tagTEXT;
     else if( str.Cmp( "CONT" ) == 0 ) m_tag = tagCONT;
-    else if( str.Cmp( "CONC" ) == 0 ) 
+    else if( str.Cmp( "CONC" ) == 0 )
     {
         // EasyTree uses CONC instead of CONT
         if( m_fileSource == FS_EasyTree ) m_tag = tagCONT;
@@ -715,7 +715,7 @@ idt recGedParse::ParseEvDate( int level, idt* d2ID  )
             date.FSetDescrip( m_text );
         } else {
             ParseDate( &date2, tkz.GetString() );
-            long beg = wxMin( 
+            long beg = wxMin(
                 date.GetDatePoint( recDate::DATE_POINT_Beg ),
                 date2.GetDatePoint( recDate::DATE_POINT_Beg )
             );
@@ -871,9 +871,9 @@ void recGedParse::ReadEventSource( const recEvent& eve, idt indID, int level )
         ref.FSetID( refID );
         ref.Save();
     }
-    // We don't have enough info to create an Eventum to
+    // We don't have enough info to create an Eventa to
     // link to the Event.
-    // All we will do for now is add an unnamed Persona to link the 
+    // All we will do for now is add an unnamed Persona to link the
     // Individual to the Reference.
     recIdVec pers = recPersona::FindIndividualReferenceLink( indID, refID );
     if( pers.empty() ) {
@@ -1085,7 +1085,7 @@ wxString recGedParse::ReadAddr( int level )
                 addr3 = m_text;
                 break;
             case tagCONT:
-                switch( addrCnt ) 
+                switch( addrCnt )
                 {
                 case 0:
                     addr2 = m_text;
@@ -1161,9 +1161,9 @@ void GedFamily::AddChild( idt indID )
     fi.Save();
 }
 
-GedSubmitter::GedSubmitter( idt resID ) 
+GedSubmitter::GedSubmitter( idt resID )
     : m_res(resID)
-{ 
+{
     m_cl.ReadID( m_res.FGetConListID() );
 
     if( m_cl.FGetID() == 0 ) {

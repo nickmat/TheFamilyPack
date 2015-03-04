@@ -1,7 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Name:        src/rg/rgEdEventa.h
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Edit database Eventum entity dialog header.
+ * Purpose:     Edit database Eventa entity dialog header.
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     25th February 2013
@@ -34,15 +34,15 @@
 #include "fbRgDialog.h"
 
 //============================================================================
-//-------------------------[ rgDlgEditEventum]--------------------------------
+//--------------------------[ rgDlgEditEventa]--------------------------------
 //============================================================================
 
-/** Implementing rgDlgEditEventum */
-class rgDlgEditEventum : public fbRgEditEventum
+/** Implementing rgDlgEditEventa */
+class rgDlgEditEventa : public fbRgEditEventa
 {
     DECLARE_EVENT_TABLE()
 public:
-    rgDlgEditEventum( wxWindow* parent, idt eventID );
+    rgDlgEditEventa( wxWindow* parent, idt eventID );
 private:
     enum ColPer {
         COL_PerID, COL_Name, COL_Role, COL_Note, COL_MAX
@@ -80,7 +80,7 @@ private:
     void OnDeleteCon( wxCommandEvent& event );
 
     idt            m_refID;
-    recEventum     m_event;
+    recEventa      m_event;
     idt            m_date1ID;
     idt            m_date2ID;
     idt            m_placeID;
@@ -88,10 +88,10 @@ private:
     enum Button {
         EEEB_Date1, EEEB_Date2, EEEB_Place
     };
-    Button              m_button;
-    recEventumPersonaVec  m_eps;
-    recPersonaVec       m_personas;
-    recEventEventumVec  m_eers;
+    Button               m_button;
+    recEventaPersonaVec  m_eps;
+    recPersonaVec        m_personas;
+    recEventEventaVec    m_eers;
 };
 
 #endif // RG_RGEDEVENTA_H

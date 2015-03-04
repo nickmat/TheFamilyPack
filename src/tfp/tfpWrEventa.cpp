@@ -1,7 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Name:        src/tfp/tfpWrEventa.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Functions to write to screen and compare Eventum's.
+ * Purpose:     Functions to write to screen and compare Eventa's.
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     24 October 2010
@@ -53,17 +53,17 @@ wxString GetSexClassPer( idt perID )
     return "neut";
 }
 
-wxString tfpWriteEventumPage( idt erID )
+wxString tfpWriteEventaPage( idt erID )
 {
     wxString htm;
     if( erID == 0 ) return wxEmptyString;
-    recEventum er(erID);
+    recEventa er(erID);
     idt refID = recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, erID );
 
 
     htm <<
-        tfpWrHeadTfp( "Eventum " + er.GetIdStr() ) <<
-        "<h1>Eventum " << er.GetIdStr() << ": " << er.FGetTitle() << "</h1>\n"
+        tfpWrHeadTfp( "Eventa " + er.GetIdStr() ) <<
+        "<h1>Eventa " << er.GetIdStr() << ": " << er.FGetTitle() << "</h1>\n"
         "<table class='data'>\n<tr>\n<td>"
     ;
     if( er.FGetDate1ID() ) {
@@ -96,7 +96,7 @@ wxString tfpWriteEventumPage( idt erID )
         "</tr>\n</table>\n"
     ;
 
-    recEventumPersonaVec eps = er.GetEventumPersonas();
+    recEventaPersonaVec eps = er.GetEventaPersonas();
     if( eps.size() ) {
         htm <<
             "<table class='data'>\n<tr>\n"
@@ -174,7 +174,7 @@ wxString tfpWriteEventumPage( idt erID )
             "<tr>\n<th>Event</th><th>Title</th></tr>\n"
             "<tr>\n<td><a href='tfpe:cE" << erID <<
             "'><img src='memory:blank.png' width='80' height='20' alt='Add Event'></a>"
-            "</td>\n<td>" << recEventum::GetTitle( erID ) <<
+            "</td>\n<td>" << recEventa::GetTitle( erID ) <<
             "</td>\n</tr>\n"
             "</table>\n"
         ;

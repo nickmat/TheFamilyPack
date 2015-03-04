@@ -105,20 +105,20 @@ wxString tfpWriteEventPage( idt eventID, rgCompareEvent* ce )
         htm << "</table>\n";
     }
 
-    recEventEventumVec eers = eve.GetEventEventums();
+    recEventEventaVec eers = eve.GetEventEventas();
     if( eers.size() ) {
         htm <<
             "<table class='data'>\n<tr>\n"
             "<th>Record</th>\n<th>Conf</th>\n<th>Title</th>\n</tr>\n"
         ;
         for( size_t i = 0 ; i < eers.size() ; i++ ) {
-            idt eerID = eers[i].FGetEventumID();
+            idt eerID = eers[i].FGetEventaID();
             htm <<
                 "<tr>\n"
                 "<td><b><a href='tfp:Em" << eerID <<
-                "'>" <<  recEventum::GetIdStr( eerID ) << "</a></b></td>\n"
+                "'>" <<  recEventa::GetIdStr( eerID ) << "</a></b></td>\n"
                 "<td>" << eers[i].FGetConf() << "</td>\n"
-                "<td>" << recEventum::GetTitle( eerID ) << "</td>\n"
+                "<td>" << recEventa::GetTitle( eerID ) << "</td>\n"
                 "</tr>\n"
             ;
         }
@@ -132,7 +132,7 @@ wxString tfpWriteEventPage( idt eventID, rgCompareEvent* ce )
             ce->GetRefPlacesTable()
         ;
     } else {
-        htm << "<p><a href='tfp:E^" << eventID << "'>Show Eventums</a></p>\n";
+        htm << "<p><a href='tfp:E^" << eventID << "'>Show Eventas</a></p>\n";
     }
 
     htm << tfpWrTailTfp();

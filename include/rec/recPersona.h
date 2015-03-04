@@ -83,12 +83,12 @@ public:
     static recNameVec ReadNames( idt perID );
     recNameVec ReadNames() const { return ReadNames( f_id ); }
 
-    static recEventumPersonaVec ReadEventumPersonas( idt perID, recEventOrder order = recEO_DatePt );
-    recEventumPersonaVec ReadEventumPersonas( recEventOrder order = recEO_DatePt ) const
-        { return ReadEventumPersonas( f_id, order ); }
+    static recEventaPersonaVec ReadEventaPersonas( idt perID, recEventOrder order = recEO_DatePt );
+    recEventaPersonaVec ReadEventaPersonas( recEventOrder order = recEO_DatePt ) const
+        { return ReadEventaPersonas( f_id, order ); }
 
-    static int GetMaxEventumSeqNumber( idt perID );
-    int GetMaxEventumSeqNumber() const { return GetMaxEventumSeqNumber( f_id ); }
+    static int GetMaxEventaSeqNumber( idt perID );
+    int GetMaxEventaSeqNumber() const { return GetMaxEventaSeqNumber( f_id ); }
 
     static recRelationshipVec ReadRelationships( idt perID );
     recRelationshipVec ReadRelationships() { return ReadRelationships( f_id ); }

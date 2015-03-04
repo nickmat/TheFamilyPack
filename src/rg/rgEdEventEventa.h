@@ -1,7 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Name:        src/rg/rgEdEventEventa.h
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Edit an EventEventum record dialog header.
+ * Purpose:     Edit an EventEventa record dialog header.
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     7th May 2013
@@ -32,20 +32,20 @@
 #include "fbRgDialog.h"
 
 //============================================================================
-//-------------------------[ rgDlgEditEventEventum ]--------------------------
+//--------------------------[ rgDlgEditEventEventa ]--------------------------
 //============================================================================
 
-class rgDlgEditEventEventum : public fbRgEditEventEventum
+class rgDlgEditEventEventa : public fbRgEditEventEventa
 {
 public:
-    rgDlgEditEventEventum( wxWindow* parent, idt eerID )
-        : m_eer(eerID), fbRgEditEventEventum( parent ) {}
+    rgDlgEditEventEventa( wxWindow* parent, idt eerID )
+        : m_eer(eerID), fbRgEditEventEventa( parent ) {}
 
 private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
 
-    recEventEventum m_eer;
+    recEventEventa m_eer;
 };
 
 #endif // RG_RGEDEVENTEVENTA_H

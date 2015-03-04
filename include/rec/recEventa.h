@@ -1,7 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Name:        include/rec/recEventa.h
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Manage SQLite3 Eventum table.
+ * Purpose:     Manage SQLite3 Eventa table.
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     20th April 2013
@@ -35,10 +35,10 @@
 
 
 //============================================================================
-//-------------------------[ recEventum ]-------------------------------------
+//--------------------------[ recEventa ]-------------------------------------
 //============================================================================
 
-class recEventum : public recDb
+class recEventa : public recDb
 {
 public:
     wxString f_title;
@@ -49,9 +49,9 @@ public:
     wxString f_note;
     long     f_date_pt;
 
-    recEventum() {}
-    recEventum( idt id ) : recDb(id) { Read(); }
-    recEventum( const recEventum& event );
+    recEventa() {}
+    recEventa( idt id ) : recDb(id) { Read(); }
+    recEventa( const recEventa& event );
 
     void Clear();
     void Save();
@@ -99,14 +99,14 @@ public:
     static idt FindReferenceID( idt erID ) {
         return recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, erID );
     }
-    static recEventEventumVec GetEventEventums( idt erID );
-    recEventEventumVec GetEventEventums() const { return GetEventEventums( f_id ); }
+    static recEventEventaVec GetEventEventas( idt erID );
+    recEventEventaVec GetEventEventas() const { return GetEventEventas( f_id ); }
 
     static bool IsFamilyEvent( idt eveID );
     bool IsFamilyEvent() const { return IsFamilyEvent( f_id ); }
 
-    static recEventumPersonaVec GetEventumPersonas( idt emID );
-    recEventumPersonaVec GetEventumPersonas() const { return GetEventumPersonas( f_id ); }
+    static recEventaPersonaVec GetEventaPersonas( idt emID );
+    recEventaPersonaVec GetEventaPersonas() const { return GetEventaPersonas( f_id ); }
 
     static wxSQLite3Table GetTitleList();
     static wxSQLite3Table GetTitleList( idt offset, int limit );
@@ -115,7 +115,7 @@ public:
     int GetLastPerSeqNumber() const { return GetLastPerSeqNumber( f_id ); }
 
     // Find matching Event records by following the links:-
-    // Eventum/Persona(prime Role) -> Persona/Individual link -> Individual/Event(matching role)
+    // Eventa/Persona(prime Role) -> Persona/Individual link -> Individual/Event(matching role)
     // Depending on the type and group of the event, loosely match Date and Place.
     enum recEVENT_Link { recEVENT_Link_EvEvRec, recEVENT_Link_IndPer };
     recIdVec FindMatchingEvents( recEVENT_Link link = recEVENT_Link_EvEvRec ) const;

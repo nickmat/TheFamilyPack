@@ -1,11 +1,11 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Name:        src/rg/rgEdPerIndEvent.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Edit an EventumPersona or IndividualEvent record dialog.
+ * Purpose:     Edit an EventaPersona or IndividualEvent record dialog.
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     23 November 2012
- * Copyright:   Copyright (c) 2012, Nick Matthews.
+ * Copyright:   Copyright (c) 2012-2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -112,9 +112,9 @@ bool rgCreatePerEventRole( wxWindow* wind, idt perID, idt erID, idt roleID )
     wxASSERT( erID != 0 ); // TODO: Select an Event from a list
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
-    recEventumPersona ep(0);
+    recEventaPersona ep(0);
     ep.FSetPerID( perID );
-    ep.FSetEventumID( erID );
+    ep.FSetEventaID( erID );
     ep.FSetRoleID( roleID );
     ep.FSetPerSeq( recIndividual::GetMaxEventSeqNumber( perID ) );
     ep.Save();
@@ -221,13 +221,13 @@ void rgDlgIndEvent::OnAddRoleButton( wxCommandEvent& event )
 rgDlgPerEvent::rgDlgPerEvent( wxWindow* parent, idt epID, rgSHOWROLE filter )
     : m_ep(epID), m_filter(filter), fbRgPerIndEvent( parent )
 {
-    m_event.ReadID( m_ep.FGetEventumID() );
+    m_event.ReadID( m_ep.FGetEventaID() );
 }
 
 bool rgDlgPerEvent::TransferDataToWindow()
 {
     wxASSERT( m_ep.FGetID() != 0 );
-    wxASSERT( m_ep.FGetEventumID() != 0 );
+    wxASSERT( m_ep.FGetEventaID() != 0 );
     wxASSERT( m_ep.FGetPerID() != 0 );
 
     m_staticPerInd->SetLabel( "Persona:" );

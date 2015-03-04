@@ -1,7 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Name:        src/tfp/tfpWrEventaIndex.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Functions to write to screen and compare Eventum's.
+ * Purpose:     Functions to write to screen and compare Eventa's.
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     14th July 2013
@@ -40,9 +40,9 @@
 #include <rec/recEventa.h>
 
 
-wxString tfpWriteEventumIndex()
+wxString tfpWriteEventaIndex()
 {
-    wxSQLite3Table result = recEventum::GetTitleList();
+    wxSQLite3Table result = recEventa::GetTitleList();
     size_t size = (size_t) result.GetRowCount();
 
     wxString htm;
@@ -68,7 +68,7 @@ wxString tfpWriteEventumIndex()
     return htm;
 }
 
-wxString tfpWriteEventumPagedIndex( idt begCnt )
+wxString tfpWriteEventaPagedIndex( idt begCnt )
 {
     int maxsize = recEvent::UserCount();
     if( maxsize <= tfpWR_PAGE_MAX ) {
@@ -76,7 +76,7 @@ wxString tfpWriteEventumPagedIndex( idt begCnt )
     }
     wxString pmenu = tfpWritePagedIndexMenu( begCnt, maxsize, "tfp:Em" );
 
-    wxSQLite3Table result = recEventum::GetTitleList( begCnt, tfpWR_PAGE_MAX );
+    wxSQLite3Table result = recEventa::GetTitleList( begCnt, tfpWR_PAGE_MAX );
     size_t size = (size_t) result.GetRowCount();
     result.SetRow( 0 );
     idt beg = GET_ID( result.GetInt64( 0 ) );
@@ -86,8 +86,8 @@ wxString tfpWriteEventumPagedIndex( idt begCnt )
     wxString htm;
     htm <<
         tfpWrHeadTfp( "Event Record List" ) <<
-        "<h1>Reference Document Index from " << recEventum::GetIdStr( beg ) <<
-        " to " << recEventum::GetIdStr( end ) <<
+        "<h1>Reference Document Index from " << recEventa::GetIdStr( beg ) <<
+        " to " << recEventa::GetIdStr( end ) <<
         "</h1>\n" << pmenu <<
         "<table class='data'>\n"
         "<tr><th>ID</th><th>Title</th></tr>\n"
@@ -108,4 +108,4 @@ wxString tfpWriteEventumPagedIndex( idt begCnt )
     return htm;
 }
 
-// End of src/tfp/tfpWrEventumIndex.cpp Source
+// End of src/tfp/tfpWrEventaIndex.cpp Source

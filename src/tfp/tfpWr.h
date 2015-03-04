@@ -54,11 +54,11 @@ extern wxString tfpCreateDescChart( idt indID );
 extern wxString tfpWriteEventPage( idt eveID, rgCompareEvent* ce );
 
 // See tfpWrEventa.cpp
-extern wxString tfpWriteEventumPage( idt erID );
+extern wxString tfpWriteEventaPage( idt erID );
 
 // See tfpWrEventaIndex.cpp
-extern wxString tfpWriteEventumIndex();
-extern wxString tfpWriteEventumPagedIndex( idt begCnt );
+extern wxString tfpWriteEventaIndex();
+extern wxString tfpWriteEventaPagedIndex( idt begCnt );
 
 // See tfpWrEventIndex.cpp
 extern wxString tfpWriteEventIndex();

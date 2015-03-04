@@ -1,11 +1,11 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Name:        include/rec/recEvent.h
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Manage SQLite3 Event, EventTypeRole and EventumPersona records.
+ * Purpose:     Manage SQLite3 Event, EventTypeRole and EventaPersona records.
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2010-2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -85,7 +85,7 @@ public:
     static wxString GetIdStr( idt evID ) { return wxString::Format( "E"ID, evID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
-    static idt CreateFromEventum( idt erID );
+    static idt CreateFromEventa( idt erID );
 
     wxString SetAutoTitle( const wxString& name1, const wxString& name2 = wxEmptyString );
     static void SetDatePeriodToInclude( idt eventID, idt dateID );
@@ -105,9 +105,9 @@ public:
     static void UpdateDatePoint( idt evID );
     void UpdateDatePoint();
 
-    static recEventumVec FindEquivRefEvents( idt evetID );
-    static recEventEventumVec GetEventEventums( idt eveID );
-    recEventEventumVec GetEventEventums() const { return GetEventEventums( f_id ); }
+    static recEventaVec FindEquivRefEvents( idt evetID );
+    static recEventEventaVec GetEventEventas( idt eveID );
+    recEventEventaVec GetEventEventas() const { return GetEventEventas( f_id ); }
 
     static bool IsFamilyEvent( idt eveID );
     bool IsFamilyEvent() const { return IsFamilyEvent( f_id ); }
@@ -154,10 +154,10 @@ inline bool operator!=( const recEvent& r1, const recEvent& r2 )
 
 
 //============================================================================
-//-------------------------[ recEventEventum ]--------------------------------
+//--------------------------[ recEventEventa ]--------------------------------
 //============================================================================
 
-class recEventEventum : public recDb
+class recEventEventa : public recDb
 {
     idt      f_event_id;
     idt      f_eventum_id;
@@ -165,9 +165,9 @@ class recEventEventum : public recDb
     wxString f_note;
 
 public:
-    recEventEventum() {}
-    recEventEventum( idt id ) : recDb(id) { Read(); }
-    recEventEventum( const recEventEventum& link );
+    recEventEventa() {}
+    recEventEventa( idt id ) : recDb(id) { Read(); }
+    recEventEventa( const recEventEventa& link );
 
     void Clear();
     void Save();
@@ -175,12 +175,12 @@ public:
     TABLE_NAME_MEMBERS( "EventEventum" );
 
     idt FGetEventID() const { return f_event_id; }
-    idt FGetEventumID() const { return f_eventum_id; }
+    idt FGetEventaID() const { return f_eventum_id; }
     double FGetConf() const { return f_conf; }
     wxString FGetNote() const { return f_note; }
 
     void FSetEventID( idt eveID ) { f_event_id = eveID; }
-    void FSetEventumID( idt erID ) { f_eventum_id = erID; }
+    void FSetEventaID( idt erID ) { f_eventum_id = erID; }
     void FSetConf( double conf ) { f_conf = conf; }
     void FSetNote( const wxString& note ) { f_note = note; }
 
@@ -195,21 +195,21 @@ public:
 
 /*! The two entities are equal, ignoring the record id.
  */
-inline bool recEquivalent( const recEventEventum& d1, const recEventEventum& d2 )
+inline bool recEquivalent( const recEventEventa& d1, const recEventEventa& d2 )
 {
     return
         d1.FGetEventID()    == d2.FGetEventID()    &&
-        d1.FGetEventumID() == d2.FGetEventumID()   &&
+        d1.FGetEventaID()   == d2.FGetEventaID()   &&
         d1.FGetConf()       == d2.FGetConf()       &&
         d1.FGetNote()       == d2.FGetNote();
 }
 
-inline bool operator==( const recEventEventum& d1, const recEventEventum& d2 )
+inline bool operator==( const recEventEventa& d1, const recEventEventa& d2 )
 {
     return recEquivalent( d1, d2 ) && d1.f_id == d2.f_id;
 }
 
-inline bool operator!=( const recEventEventum& d1, const recEventEventum& d2 )
+inline bool operator!=( const recEventEventa& d1, const recEventEventa& d2 )
 {
     return !(d1 == d2);
 }
@@ -321,10 +321,10 @@ inline bool operator!=( const recEventTypeRole& r1, const recEventTypeRole& r2 )
 }
 
 //============================================================================
-//-------------------------[ recEventumPersona ]------------------------------
+//--------------------------[ recEventaPersona ]------------------------------
 //============================================================================
 
-class recEventumPersona : public recDb
+class recEventaPersona : public recDb
 {
 public:
     idt      f_eventum_id;
@@ -333,22 +333,22 @@ public:
     wxString f_note;
     int      f_per_seq;
 
-    recEventumPersona() {}
-    recEventumPersona( idt id ) : recDb(id) { Read(); }
-    recEventumPersona( const recEventumPersona& pe );
+    recEventaPersona() {}
+    recEventaPersona( idt id ) : recDb(id) { Read(); }
+    recEventaPersona( const recEventaPersona& pe );
 
     void Clear();
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "EventumPersona" );
 
-    idt FGetEventumID() const { return f_eventum_id; }
+    idt FGetEventaID() const { return f_eventum_id; }
     idt FGetPerID() const { return f_per_id; }
     idt FGetRoleID() const { return f_role_id; }
     wxString FGetNote() const { return f_note; }
     int FGetPerSeq() const { return f_per_seq; }
 
-    void FSetEventumID( idt erID ) { f_eventum_id = erID; }
+    void FSetEventaID( idt erID ) { f_eventum_id = erID; }
     void FSetPerID( idt perID ) { f_per_id = perID; }
     void FSetRoleID( idt roleID ) { f_role_id = roleID; }
     void FSetNote( const wxString& note ) { f_note = note; }
@@ -366,7 +366,7 @@ public:
     bool LinkExists() const;
 };
 
-inline bool recEquivalent( const recEventumPersona& r1, const recEventumPersona& r2 )
+inline bool recEquivalent( const recEventaPersona& r1, const recEventaPersona& r2 )
 {
     return
         r1.f_eventum_id == r2.f_eventum_id &&
@@ -376,12 +376,12 @@ inline bool recEquivalent( const recEventumPersona& r1, const recEventumPersona&
         r1.f_per_seq  == r2.f_per_seq;
 }
 
-inline bool operator==( const recEventumPersona& r1, const recEventumPersona& r2 )
+inline bool operator==( const recEventaPersona& r1, const recEventaPersona& r2 )
 {
     return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
 }
 
-inline bool operator!=( const recEventumPersona& r1, const recEventumPersona& r2 )
+inline bool operator!=( const recEventaPersona& r1, const recEventaPersona& r2 )
 {
     return !(r1 == r2);
 }
