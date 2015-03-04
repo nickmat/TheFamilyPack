@@ -147,6 +147,9 @@ bool recGedParse::Import( unsigned flags )
         _("Reading Gedcom"), _("Proccessing..."),
         wxPD_CAN_ABORT | wxPD_APP_MODAL | wxPD_ELAPSED_TIME | wxPD_ESTIMATED_TIME | wxPD_REMAINING_TIME
     );
+    if( flags & recGED_IMPORT_NO_SOUR_REC ) {
+        m_noSourRec = true;
+    }
     bool ok = true;
     try {
         if( !Pass1() ) ok = false;
@@ -218,7 +221,7 @@ bool recGedParse::Pass1()
                 index = ++famCount;
             }
             m_famMap[xref] = index;
-        } else if( str.Cmp( "SOUR"  ) == 0 ) {
+        } else if( str.Cmp( "SOUR" ) == 0 && !m_noSourRec ) {
             if( m_sourUseXref ) {
                 index = (unsigned) num;
             } else {
@@ -260,7 +263,11 @@ bool recGedParse::Pass2()
                 ReadFam( 1 );
                 break;
             case tagSOUR:
-                ReadSour( 1 );
+                if( !m_noSourRec ) {
+                    ReadSour( 1 );
+                } else {
+                    cont = ReadNextLine();
+                }
                 break;
             case tagSUBM:
                 ReadSubm( 1 );
@@ -574,7 +581,9 @@ void recGedParse::ReadIndEvent( GedIndividual& gind, int level )
                 ev.FSetPlaceID( ParseEvPlace( level+1 ) );
                 break;
             case tagSOUR:
-                ReadEventSource( ev, gind.GetIndID(), level+1 );
+                if( !m_noSourRec ) {
+                    ReadEventSource( ev, gind.GetIndID(), level+1 );
+                }
                 break;
             case tag_END:
                 cont = FALSE;
@@ -955,8 +964,10 @@ void recGedParse::ReadFamEvent( GedFamily& gfam, int level )
                 ev.FSetPlaceID( ParseEvPlace( level+1 ) );
                 break;
             case tagSOUR:
-                ReadEventSource( ev, gfam.GetHusbIndId(), level+1 );
-                ReadEventSource( ev, gfam.GetWifeIndId(), level+1 );
+                if( !m_noSourRec ) {
+                    ReadEventSource( ev, gfam.GetHusbIndId(), level+1 );
+                    ReadEventSource( ev, gfam.GetWifeIndId(), level+1 );
+                }
                 break;
             case tag_END:
                 cont = FALSE;

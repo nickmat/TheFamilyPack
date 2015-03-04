@@ -41,7 +41,8 @@ class GedIndividual;
 class GedFamily;
 class GedSubmitter;
 
-#define recGED_IMPORT_NO_POST_OPS 0x01
+#define recGED_IMPORT_NO_POST_OPS 0x01 // Do not automatically run DoPostOperations.
+#define recGED_IMPORT_NO_SOUR_REC 0x02 // Ignore all SOUR records.
 
 class recGedParse
 {
@@ -52,7 +53,7 @@ public:
         m_level(0), m_tag(tagNULL),
         m_indiUseXref(false), m_famUseXref(false), m_sourUseXref(false),
         m_totalCount(0),
-        m_user(0)
+        m_user(0), m_noSourRec(false)
     {}
 
     bool Import( unsigned flags = 0 );
@@ -150,6 +151,7 @@ private:
     unsigned m_totalCount;
     // Global settings
     unsigned m_user;
+    bool     m_noSourRec;
 };
 
 #endif // RECGEDPARSE_H
