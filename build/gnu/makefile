@@ -78,9 +78,9 @@ TFP_OBJECTS =  \
 	tfp_tfpWrAdmin.o \
 	tfp_tfpWrChart.o \
 	tfp_tfpWrEvent.o \
+	tfp_tfpWrEventa.o \
+	tfp_tfpWrEventaIndex.o \
 	tfp_tfpWrEventIndex.o \
-	tfp_tfpWrEventum.o \
-	tfp_tfpWrEventumIndex.o \
 	tfp_tfpWrFamily.o \
 	tfp_tfpWrIndividual.o \
 	tfp_tfpWrName.o \
@@ -116,8 +116,8 @@ REC_OBJECTS =  \
 	rec_recDatabase.o \
 	rec_recDate.o \
 	rec_recEvent.o \
+	rec_recEventa.o \
 	rec_recEventType.o \
-	rec_recEventum.o \
 	rec_recFilterEvent.o \
 	rec_recGedParse.o \
 	rec_recHelper.o \
@@ -150,9 +150,9 @@ RECGUI_OBJECTS =  \
 	recgui_rgEdContact.o \
 	recgui_rgEdDate.o \
 	recgui_rgEdEvent.o \
-	recgui_rgEdEventEventum.o \
+	recgui_rgEdEventa.o \
+	recgui_rgEdEventEventa.o \
 	recgui_rgEdEventType.o \
-	recgui_rgEdEventum.o \
 	recgui_rgEdFamily.o \
 	recgui_rgEdIndividual.o \
 	recgui_rgEdName.o \
@@ -279,13 +279,13 @@ tfp_tfpWrChart.o: ./../../src/tfp/tfpWrChart.cpp
 tfp_tfpWrEvent.o: ./../../src/tfp/tfpWrEvent.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
+tfp_tfpWrEventa.o: ./../../src/tfp/tfpWrEventa.cpp
+	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
+
+tfp_tfpWrEventaIndex.o: ./../../src/tfp/tfpWrEventaIndex.cpp
+	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
+
 tfp_tfpWrEventIndex.o: ./../../src/tfp/tfpWrEventIndex.cpp
-	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
-
-tfp_tfpWrEventum.o: ./../../src/tfp/tfpWrEventum.cpp
-	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
-
-tfp_tfpWrEventumIndex.o: ./../../src/tfp/tfpWrEventumIndex.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
 tfp_tfpWrFamily.o: ./../../src/tfp/tfpWrFamily.cpp
@@ -360,10 +360,10 @@ rec_recDate.o: ./../../src/rec/recDate.cpp
 rec_recEvent.o: ./../../src/rec/recEvent.cpp
 	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
 
-rec_recEventType.o: ./../../src/rec/recEventType.cpp
+rec_recEventa.o: ./../../src/rec/recEventa.cpp
 	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
 
-rec_recEventum.o: ./../../src/rec/recEventum.cpp
+rec_recEventType.o: ./../../src/rec/recEventType.cpp
 	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
 
 rec_recFilterEvent.o: ./../../src/rec/recFilterEvent.cpp
@@ -441,13 +441,13 @@ recgui_rgEdDate.o: ./../../src/rg/rgEdDate.cpp
 recgui_rgEdEvent.o: ./../../src/rg/rgEdEvent.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
-recgui_rgEdEventEventum.o: ./../../src/rg/rgEdEventEventum.cpp
+recgui_rgEdEventa.o: ./../../src/rg/rgEdEventa.cpp
+	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
+
+recgui_rgEdEventEventa.o: ./../../src/rg/rgEdEventEventa.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgEdEventType.o: ./../../src/rg/rgEdEventType.cpp
-	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
-
-recgui_rgEdEventum.o: ./../../src/rg/rgEdEventum.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgEdFamily.o: ./../../src/rg/rgEdFamily.cpp

@@ -34,14 +34,14 @@
 #include "wx/wx.h"
 #endif
 
-#include <rec/recIndividual.h>
-#include <rec/recEvent.h>
-#include <rec/recEventum.h>
-#include <rec/recPersona.h>
-#include <rec/recName.h>
-#include <rec/recReference.h>
-
 #include "tfpWr.h"
+
+#include <rec/recEvent.h>
+#include <rec/recEventa.h>
+#include <rec/recIndividual.h>
+#include <rec/recName.h>
+#include <rec/recPersona.h>
+#include <rec/recReference.h>
 
 wxString tfpWriteIndividualPage( idt indID )
 {

@@ -224,7 +224,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\rg\rgEdEventEventum.cpp"
+				RelativePath="..\..\src\rg\rgEdEventEventa.cpp"
 				>
 			</File>
 			<File
@@ -232,7 +232,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\rg\rgEdEventum.cpp"
+				RelativePath="..\..\src\rg\rgEdEventa.cpp"
 				>
 			</File>
 			<File
@@ -350,7 +350,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\rg\rgEdEventEventum.h"
+				RelativePath="..\..\src\rg\rgEdEventEventa.h"
 				>
 			</File>
 			<File
@@ -358,7 +358,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\rg\rgEdEventum.h"
+				RelativePath="..\..\src\rg\rgEdEventa.h"
 				>
 			</File>
 			<File

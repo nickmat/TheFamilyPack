@@ -6,7 +6,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     23rd February 2009
- * Copyright:   Copyright (c) 2005 - 2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2005 - 2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -91,9 +91,9 @@
     <sources>$(LOCAL_SRC)/tfp/tfpWrAdmin.cpp</sources>
     <sources>$(LOCAL_SRC)/tfp/tfpWrChart.cpp</sources>
     <sources>$(LOCAL_SRC)/tfp/tfpWrEvent.cpp</sources>
+    <sources>$(LOCAL_SRC)/tfp/tfpWrEventa.cpp</sources>
+    <sources>$(LOCAL_SRC)/tfp/tfpWrEventaIndex.cpp</sources>
     <sources>$(LOCAL_SRC)/tfp/tfpWrEventIndex.cpp</sources>
-    <sources>$(LOCAL_SRC)/tfp/tfpWrEventum.cpp</sources>
-    <sources>$(LOCAL_SRC)/tfp/tfpWrEventumIndex.cpp</sources>
     <sources>$(LOCAL_SRC)/tfp/tfpWrFamily.cpp</sources>
     <sources>$(LOCAL_SRC)/tfp/tfpWrIndividual.cpp</sources>
     <sources>$(LOCAL_SRC)/tfp/tfpWrName.cpp</sources>

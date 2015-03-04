@@ -1,11 +1,11 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/rg/rgEdEventum.cpp
+ * Name:        src/rg/rgEdEventa.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Edit database Eventum entity dialog.
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     25th February 2013
- * Copyright:   Copyright (c) 2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2013-2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -40,7 +40,7 @@
 #include <rec/recPersona.h>
 
 #include "rg/rgDialogs.h"
-#include "rgEdEventum.h"
+#include "rgEdEventa.h"
 #include "rgEdReference.h"
 
 bool rgEditEventum( wxWindow* wind, idt erID )
@@ -590,4 +590,4 @@ void rgDlgEditEventum::OnDeleteCon( wxCommandEvent& event )
     wxMessageBox( _("Not yet implimented"), "OnDeleteCon" );
 }
 
-// End of src/rg/rgEdEventum.cpp file
+// End of src/rg/rgEdEventa.cpp file

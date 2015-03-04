@@ -1,11 +1,11 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/rec/recEventum.cpp
+ * Name:        src/rec/recEventa.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Manage SQLite3 Eventum table.
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     20th April 2013
- * Copyright:   Copyright (c) 2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2013-2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -35,7 +35,7 @@
 #include "wx/wx.h"
 #endif
 
-#include <rec/recEventum.h>
+#include <rec/recEventa.h>
 #include <rec/recEventType.h>
 #include <rec/recEvent.h>
 #include <rec/recPlace.h>
@@ -547,4 +547,4 @@ recCheckIdVec recEventum::FindCheckedMatchingEvents() const
     return list;
 }
 
-// End of src/rec/recEventum.cpp file
+// End of src/rec/recEventa.cpp file

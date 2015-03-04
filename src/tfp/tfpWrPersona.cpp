@@ -36,7 +36,7 @@
 
 #include "tfpWr.h"
 
-#include <rec/recEventum.h>
+#include <rec/recEventa.h>
 #include <rec/recIndividual.h>
 #include <rec/recPersona.h>
 

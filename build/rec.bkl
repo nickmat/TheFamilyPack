@@ -6,7 +6,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     5th October 2010
- * Copyright:   Copyright (c) 2010-2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2010-2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -48,8 +48,8 @@
     <sources>$(LOCAL_SRC)/rec/recDatabase.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recDate.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recEvent.cpp</sources>
+    <sources>$(LOCAL_SRC)/rec/recEventa.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recEventType.cpp</sources>
-    <sources>$(LOCAL_SRC)/rec/recEventum.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recFilterEvent.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recGedParse.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recHelper.cpp</sources>
@@ -71,8 +71,8 @@
     <headers>$(LOCAL_INC)/rec/recDb.h</headers>
     <headers>$(LOCAL_INC)/rec/recDate.h</headers>
     <headers>$(LOCAL_INC)/rec/recEvent.h</headers>
+    <headers>$(LOCAL_INC)/rec/recEventa.h</headers>
     <headers>$(LOCAL_INC)/rec/recEventType.h</headers>
-    <headers>$(LOCAL_INC)/rec/recEventum.h</headers>
     <headers>$(LOCAL_INC)/rec/recFilterEvent.h</headers>
     <headers>$(LOCAL_INC)/rec/recGedParse.h</headers>
     <headers>$(LOCAL_INC)/rec/recHelper.h</headers>
@@ -117,9 +117,9 @@
     <sources>$(LOCAL_SRC)/rg/rgEdContact.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdDate.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdEvent.cpp</sources>
-    <sources>$(LOCAL_SRC)/rg/rgEdEventEventum.cpp</sources>
+    <sources>$(LOCAL_SRC)/rg/rgEdEventa.cpp</sources>
+    <sources>$(LOCAL_SRC)/rg/rgEdEventEventa.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdEventType.cpp</sources>
-    <sources>$(LOCAL_SRC)/rg/rgEdEventum.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdFamily.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdIndividual.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdName.cpp</sources>
@@ -149,8 +149,8 @@
     <headers>$(LOCAL_SRC)/rg/rgEdContact.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdDate.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdEvent.h</headers>
-    <headers>$(LOCAL_SRC)/rg/rgEdEventEventum.h</headers>
-    <headers>$(LOCAL_SRC)/rg/rgEdEventum.h</headers>
+    <headers>$(LOCAL_SRC)/rg/rgEdEventa.h</headers>
+    <headers>$(LOCAL_SRC)/rg/rgEdEventEventa.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdEventType.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdFamily.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdIndividual.h</headers>

@@ -1,11 +1,11 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/tfp/tfpWrEventumIndex.cpp
+ * Name:        src/tfp/tfpWrEventaIndex.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Functions to write to screen and compare Eventum's.
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     14th July 2013
- * Copyright:   Copyright (c) 2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2013-2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -34,10 +34,11 @@
 #include "wx/wx.h"
 #endif
 
-#include <rec/recEventum.h>
-#include <rec/recEvent.h>
-
 #include "tfpWr.h"
+
+#include <rec/recEvent.h>
+#include <rec/recEventa.h>
+
 
 wxString tfpWriteEventumIndex()
 {

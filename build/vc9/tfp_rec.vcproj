@@ -238,7 +238,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\rec\recEventum.cpp"
+				RelativePath="..\..\src\rec\recEventa.cpp"
 				>
 			</File>
 			<File
@@ -332,7 +332,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\rec\recEventum.h"
+				RelativePath="..\..\include\rec\recEventa.h"
 				>
 			</File>
 			<File

@@ -1,11 +1,11 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        include/rec/recEventum.h
+ * Name:        include/rec/recEventa.h
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Manage SQLite3 Eventum table.
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     20th April 2013
- * Copyright:   Copyright (c) 2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2013-2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -25,8 +25,8 @@
 
 */
 
-#ifndef REC_RECEVENTUM_H
-#define REC_RECEVENTUM_H
+#ifndef REC_RECEVENTA_H
+#define REC_RECEVENTA_H
 
 #include <rec/recDatabase.h>
 #include <rec/recEventType.h>
@@ -132,4 +132,4 @@ public:
     static void DeleteIfOrphaned( idt id );
 };
 
-#endif // REC_RECEVENTUM_H
+#endif // REC_RECEVENTA_H

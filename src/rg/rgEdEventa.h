@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/rg/rgEdEventum.h
+ * Name:        src/rg/rgEdEventa.h
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Edit database Eventum entity dialog header.
  * Author:      Nick Matthews
@@ -25,10 +25,10 @@
 
 */
 
-#ifndef RGEDEVENTUM_H
-#define RGEDEVENTUM_H
+#ifndef RG_RGEDEVENTA_H
+#define RG_RGEDEVENTA_H
 
-#include <rec/recEventum.h>
+#include <rec/recEventa.h>
 #include <rec/recReference.h>
 
 #include "fbRgDialog.h"
@@ -94,4 +94,4 @@ private:
     recEventEventumVec  m_eers;
 };
 
-#endif // RGEDEVENTUM_H
+#endif // RG_RGEDEVENTA_H

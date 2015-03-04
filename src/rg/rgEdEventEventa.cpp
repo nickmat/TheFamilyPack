@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/rg/rgEdEventEventum.cpp
+ * Name:        src/rg/rgEdEventEventa.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Edit an EventEventum record dialog header.
  * Author:      Nick Matthews
@@ -39,7 +39,7 @@
 #include <rec/recIndividual.h>
 
 #include "rg/rgDialogs.h"
-#include "rgEdEventEventum.h"
+#include "rgEdEventEventa.h"
 
 bool rgEditEventEventum( wxWindow* wind, idt eerID )
 {
@@ -227,4 +227,4 @@ bool rgDlgEditEventEventum::TransferDataFromWindow()
     return true;
 }
 
-// End of src/rg/rgEdEventEventum.cpp file
+// End of src/rg/rgEdEventEventa.cpp file

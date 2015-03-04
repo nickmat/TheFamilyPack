@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     7th October 2010
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2010-2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -53,17 +53,17 @@ extern wxString tfpCreateDescChart( idt indID );
 // See tfpWrEvent.cpp
 extern wxString tfpWriteEventPage( idt eveID, rgCompareEvent* ce );
 
+// See tfpWrEventa.cpp
+extern wxString tfpWriteEventumPage( idt erID );
+
+// See tfpWrEventaIndex.cpp
+extern wxString tfpWriteEventumIndex();
+extern wxString tfpWriteEventumPagedIndex( idt begCnt );
+
 // See tfpWrEventIndex.cpp
 extern wxString tfpWriteEventIndex();
 extern wxString tfpWriteEventPagedIndex( idt begCnt );
 extern wxString tfpWriteEventSelection( recSelSetEvent& filter );
-
-// See tfpWrEventum.cpp
-extern wxString tfpWriteEventumPage( idt erID );
-
-// See tfpWrEventumIndex.cpp
-extern wxString tfpWriteEventumIndex();
-extern wxString tfpWriteEventumPagedIndex( idt begCnt );
 
 // See tfpWrFamily.cpp
 extern wxString tfpWriteFamilyPage( idt famID, size_t iL = 0, size_t iR = 0 );

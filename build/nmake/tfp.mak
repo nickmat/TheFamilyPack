@@ -70,9 +70,9 @@ TFP_OBJECTS =  \
 	tfp_tfpWrAdmin.obj \
 	tfp_tfpWrChart.obj \
 	tfp_tfpWrEvent.obj \
+	tfp_tfpWrEventa.obj \
+	tfp_tfpWrEventaIndex.obj \
 	tfp_tfpWrEventIndex.obj \
-	tfp_tfpWrEventum.obj \
-	tfp_tfpWrEventumIndex.obj \
 	tfp_tfpWrFamily.obj \
 	tfp_tfpWrIndividual.obj \
 	tfp_tfpWrName.obj \
@@ -155,8 +155,8 @@ REC_OBJECTS =  \
 	rec_recDatabase.obj \
 	rec_recDate.obj \
 	rec_recEvent.obj \
+	rec_recEventa.obj \
 	rec_recEventType.obj \
-	rec_recEventum.obj \
 	rec_recFilterEvent.obj \
 	rec_recGedParse.obj \
 	rec_recHelper.obj \
@@ -195,9 +195,9 @@ RECGUI_OBJECTS =  \
 	recgui_rgEdContact.obj \
 	recgui_rgEdDate.obj \
 	recgui_rgEdEvent.obj \
-	recgui_rgEdEventEventum.obj \
+	recgui_rgEdEventa.obj \
+	recgui_rgEdEventEventa.obj \
 	recgui_rgEdEventType.obj \
-	recgui_rgEdEventum.obj \
 	recgui_rgEdFamily.obj \
 	recgui_rgEdIndividual.obj \
 	recgui_rgEdName.obj \
@@ -452,14 +452,14 @@ tfp_tfpWrChart.obj: .\..\..\src\tfp\tfpWrChart.cpp
 tfp_tfpWrEvent.obj: .\..\..\src\tfp\tfpWrEvent.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrEvent.cpp
 
+tfp_tfpWrEventa.obj: .\..\..\src\tfp\tfpWrEventa.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrEventa.cpp
+
+tfp_tfpWrEventaIndex.obj: .\..\..\src\tfp\tfpWrEventaIndex.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrEventaIndex.cpp
+
 tfp_tfpWrEventIndex.obj: .\..\..\src\tfp\tfpWrEventIndex.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrEventIndex.cpp
-
-tfp_tfpWrEventum.obj: .\..\..\src\tfp\tfpWrEventum.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrEventum.cpp
-
-tfp_tfpWrEventumIndex.obj: .\..\..\src\tfp\tfpWrEventumIndex.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrEventumIndex.cpp
 
 tfp_tfpWrFamily.obj: .\..\..\src\tfp\tfpWrFamily.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrFamily.cpp
@@ -557,11 +557,11 @@ rec_recDate.obj: .\..\..\src\rec\recDate.cpp
 rec_recEvent.obj: .\..\..\src\rec\recEvent.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recEvent.cpp
 
+rec_recEventa.obj: .\..\..\src\rec\recEventa.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recEventa.cpp
+
 rec_recEventType.obj: .\..\..\src\rec\recEventType.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recEventType.cpp
-
-rec_recEventum.obj: .\..\..\src\rec\recEventum.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recEventum.cpp
 
 rec_recFilterEvent.obj: .\..\..\src\rec\recFilterEvent.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recFilterEvent.cpp
@@ -638,14 +638,14 @@ recgui_rgEdDate.obj: .\..\..\src\rg\rgEdDate.cpp
 recgui_rgEdEvent.obj: .\..\..\src\rg\rgEdEvent.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdEvent.cpp
 
-recgui_rgEdEventEventum.obj: .\..\..\src\rg\rgEdEventEventum.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdEventEventum.cpp
+recgui_rgEdEventa.obj: .\..\..\src\rg\rgEdEventa.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdEventa.cpp
+
+recgui_rgEdEventEventa.obj: .\..\..\src\rg\rgEdEventEventa.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdEventEventa.cpp
 
 recgui_rgEdEventType.obj: .\..\..\src\rg\rgEdEventType.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdEventType.cpp
-
-recgui_rgEdEventum.obj: .\..\..\src\rg\rgEdEventum.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdEventum.cpp
 
 recgui_rgEdFamily.obj: .\..\..\src\rg\rgEdFamily.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdFamily.cpp

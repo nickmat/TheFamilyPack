@@ -1,11 +1,11 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/rg/rgEdEventEventum.h
+ * Name:        src/rg/rgEdEventEventa.h
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Edit an EventEventum record dialog header.
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     7th May 2013
- * Copyright:   Copyright (c) 2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2013-2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -24,10 +24,10 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 */
 
-#ifndef RG_RGEDEVENTEVENTUM_H
-#define RG_RGEDEVENTEVENTUM_H
+#ifndef RG_RGEDEVENTEVENTA_H
+#define RG_RGEDEVENTEVENTA_H
 
-#include <rec/recEventum.h>
+#include <rec/recEventa.h>
 
 #include "fbRgDialog.h"
 
@@ -48,4 +48,4 @@ private:
     recEventEventum m_eer;
 };
 
-#endif // RG_RGEDEVENTEVENTUM_H
+#endif // RG_RGEDEVENTEVENTA_H

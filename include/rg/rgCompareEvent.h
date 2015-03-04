@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     21 November 2012
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2010-2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -28,12 +28,12 @@
 #ifndef RGCOMPAREEVENT_H
 #define RGCOMPAREEVENT_H
 
-#include <map>
-
 #include <rec/recEvent.h>
-#include <rec/recEventum.h>
+#include <rec/recEventa.h>
 #include <rec/recIndividual.h>
 #include <rec/recPlace.h>
+
+#include <map>
 
 typedef std::map< idt, recIdVec > IndPerMap;
 
