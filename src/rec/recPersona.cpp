@@ -186,8 +186,8 @@ recEventaPersonaVec recPersona::ReadEventaPersonas( idt perID, recEventOrder ord
     }
 
     sql.Format(
-        "SELECT EP.id, eventum_id, role_id, EP.note, per_seq FROM EventumPersona EP"
-        " INNER JOIN Eventum E ON E.id=eventum_id"
+        "SELECT EP.id, eventa_id, role_id, EP.note, per_seq FROM EventaPersona EP"
+        " INNER JOIN Eventa E ON E.id=eventa_id"
         " WHERE per_id="ID" ORDER BY %s;",
         perID, UTF8_(orderStr)
     );
@@ -214,7 +214,7 @@ int recPersona::GetMaxEventaSeqNumber( idt perID )
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "SELECT MAX(per_seq) FROM EventumPersona WHERE per_id="ID";",
+        "SELECT MAX(per_seq) FROM EventaPersona WHERE per_id="ID";",
         perID
     );
     return s_db->ExecuteScalar( sql );
@@ -317,7 +317,7 @@ void recPersona::RemoveFromDatabase()
         names[i].RemoveFromDatabase();
     }
     sql.Format(
-        "DELETE FROM EventumPersona WHERE per_id="ID";"
+        "DELETE FROM EventaPersona WHERE per_id="ID";"
         "DELETE FROM Relationship WHERE per1_id="ID" OR per2_id="ID";",
         f_id, f_id, f_id
     );

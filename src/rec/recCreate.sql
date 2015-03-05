@@ -84,10 +84,10 @@ CREATE TABLE Event (
   date_pt INTEGER NOT NULL
 );
 
-CREATE TABLE EventEventum (
+CREATE TABLE EventEventa (
   id INTEGER PRIMARY KEY,
   event_id INTEGER NOT NULL REFERENCES Event(id),
-  eventum_id INTEGER NOT NULL REFERENCES Eventum(id),
+  eventa_id INTEGER NOT NULL REFERENCES Eventa(id),
   conf FLOAT NOT NULL,
   note TEXT
 );
@@ -106,7 +106,7 @@ CREATE TABLE EventTypeRole (
   name TEXT
 );
 
-CREATE TABLE Eventum (
+CREATE TABLE Eventa (
   id INTEGER PRIMARY KEY,
   title TEXT NOT NULL,
   type_id INTEGER NOT NULL REFERENCES EventType(id),
@@ -117,9 +117,9 @@ CREATE TABLE Eventum (
   date_pt INTEGER NOT NULL
 );
 
-CREATE TABLE EventumPersona (
+CREATE TABLE EventaPersona (
   id INTEGER PRIMARY KEY,
-  eventum_id INTEGER NOT NULL REFERENCES Eventum(id),
+  eventa_id INTEGER NOT NULL REFERENCES Eventa(id),
   per_id INTEGER NOT NULL REFERENCES Persona(id),
   role_id INTEGER NOT NULL REFERENCES EventTypeRole(id),
   note TEXT NOT NULL,

@@ -243,7 +243,7 @@ void recPlace::DeleteIfOrphaned( idt id )
     sql.Format( "SELECT COUNT(*) FROM Event WHERE place_id="ID";", id );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
 
-    sql.Format( "SELECT COUNT(*) FROM Eventum WHERE place_id="ID";", id );
+    sql.Format( "SELECT COUNT(*) FROM Eventa WHERE place_id="ID";", id );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
 
     sql.Format( "SELECT COUNT(*) FROM Source WHERE sub_place_id="ID" OR loc_place_id="ID";", id, id );

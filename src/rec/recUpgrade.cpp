@@ -41,8 +41,8 @@
 const int recVerMajor    = 0;
 const int recVerMinor    = 0;
 const int recVerRev      = 10;
-const int recVerTest     = 6;
-const wxStringCharType* recVerStr = wxS("TFPD-0.0.10.6");
+const int recVerTest     = 7;
+const wxStringCharType* recVerStr = wxS("TFPD-0.0.10.7");
 
 //============================================================================
 //                 Code to upgrade old versions
@@ -353,6 +353,54 @@ void UpgradeTest0_0_10_5to0_0_10_6()
     recDb::GetDb()->ExecuteUpdate( query );
 }
 
+void UpgradeTest0_0_10_6to0_0_10_7()
+{
+    // Version 0.0.10.6 to 0.0.10.7
+    // Changeing Eventum term to Eventa
+    // Rename table Eventum to Eventa
+    // Rename table EventEventum to EventEventa
+    // Rename column EventEveta.eventum_id to eventa_id
+    // Rename table EventumPersona to EventaPersona
+    // Rename column EventaPersona.eventum_id to eventa_id
+
+    char* query =
+        "BEGIN;\n"
+
+        "ALTER TABLE Eventum RENAME TO Eventa;\n"
+
+        "CREATE TABLE EventEventa (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  event_id INTEGER NOT NULL REFERENCES Event(id),\n"
+        "  eventa_id INTEGER NOT NULL REFERENCES Eventa(id),\n"
+        "  conf FLOAT NOT NULL,\n"
+        "  note TEXT\n"
+        ");\n"
+        "INSERT INTO EventEventa"
+        " (id, event_id, eventa_id, conf, note)"
+        " SELECT id, event_id, eventum_id, conf, note"
+        " FROM EventEventum;\n"
+        "DROP TABLE EventEventum;\n"
+
+        "CREATE TABLE EventaPersona (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  eventa_id INTEGER NOT NULL REFERENCES Eventa(id),\n"
+        "  per_id INTEGER NOT NULL REFERENCES Persona(id),\n"
+        "  role_id INTEGER NOT NULL REFERENCES EventTypeRole(id),\n"
+        "  note TEXT NOT NULL,\n"
+        "  per_seq INTEGER NOT NULL\n"
+        ");\n"
+        "INSERT INTO EventaPersona"
+        " (id, eventa_id, per_id, role_id, note, per_seq)"
+        " SELECT id, eventum_id, per_id, role_id, note, per_seq"
+        " FROM EventumPersona;\n"
+        "DROP TABLE EventumPersona;\n"
+
+        "UPDATE Version SET test=7 WHERE id=1;\n"
+        "COMMIT;\n"
+    ;
+    recDb::GetDb()->ExecuteUpdate( query );
+}
+
 void UpgradeRev0_0_10toCurrent( int test )
 {
     switch( test )
@@ -363,6 +411,7 @@ void UpgradeRev0_0_10toCurrent( int test )
     case 3: UpgradeTest0_0_10_3to0_0_10_4();
     case 4: UpgradeTest0_0_10_4to0_0_10_5();
     case 5: UpgradeTest0_0_10_5to0_0_10_6();
+    case 6: UpgradeTest0_0_10_6to0_0_10_7();
     }
 }
 

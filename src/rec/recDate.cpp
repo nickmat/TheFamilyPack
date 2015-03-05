@@ -475,7 +475,7 @@ void recDate::DeleteIfOrphaned( idt id )
     sql.Format( "SELECT COUNT(*) FROM Event WHERE date1_id="ID" OR date2_id="ID";", id, id );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
 
-    sql.Format( "SELECT COUNT(*) FROM Eventum WHERE date1_id="ID" OR date2_id="ID";", id, id );
+    sql.Format( "SELECT COUNT(*) FROM Eventa WHERE date1_id="ID" OR date2_id="ID";", id, id );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
 
     sql.Format( "SELECT COUNT(*) FROM Place WHERE date1_id="ID" OR date2_id="ID";", id, id );

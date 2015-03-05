@@ -398,16 +398,16 @@ recEventaVec recEvent::FindEquivRefEvents( idt indEventID )
 
     sql.Format(
         "SELECT id, title, type_id, date1_id, date2_id, place_id, note FROM "
-        "  Eventum "
+        "  Eventa "
         "JOIN "
-        "   (SELECT EP.eventum_id FROM "
-        "   IndividualEvent IE, IndividualPersona IP, EventumPersona EP "
+        "   (SELECT EP.eventa_id FROM "
+        "   IndividualEvent IE, IndividualPersona IP, EventaPersona EP "
         "   WHERE IE.event_id="ID
         "     AND IP.ind_id=IE.ind_id "
         "     AND EP.per_id=IP.per_id "
         "     AND IE.role_id=EP.role_id "
-        "    GROUP BY eventum_id) "
-        "ON id=eventum_id;",
+        "    GROUP BY eventa_id) "
+        "ON id=eventa_id;",
         indEventID, indEventID
     );
     result = s_db->ExecuteQuery( sql );
@@ -433,8 +433,8 @@ recEventEventaVec recEvent::GetEventEventas( idt eveID )
     wxSQLite3ResultSet result;
 
     sql.Format(
-        "SELECT id, eventum_id, conf, note FROM "
-        "  EventEventum WHERE event_id="ID";",
+        "SELECT id, eventa_id, conf, note FROM "
+        "  EventEventa WHERE event_id="ID";",
         eveID
     );
     result = s_db->ExecuteQuery( sql );
@@ -525,7 +525,7 @@ void recEvent::DeleteIfOrphaned( idt id )
     }
     wxSQLite3StatementBuffer sql;
 
-    sql.Format( "SELECT COUNT(*) FROM EventumPersona WHERE event_id="ID";", id );
+    sql.Format( "SELECT COUNT(*) FROM EventaPersona WHERE event_id="ID";", id );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
     sql.Format(
         "SELECT COUNT(*) FROM ReferenceEntity"
@@ -586,8 +586,8 @@ void recEventEventa::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO EventEventum "
-            "(event_id, eventum_id, conf, note) "
+            "INSERT INTO EventEventa "
+            "(event_id, eventa_id, conf, note) "
             "VALUES ("ID", "ID", %f, '%q');",
             f_event_id, f_eventa_id, f_conf, UTF8_(f_note)
         );
@@ -599,15 +599,15 @@ void recEventEventa::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO EventEventum "
-                "(id, event_id, eventum_id, conf, note) "
+                "INSERT INTO EventEventa "
+                "(id, event_id, eventa_id, conf, note) "
                 "VALUES ("ID", "ID", "ID", %f, '%q');",
                 f_id, f_event_id, f_eventa_id, f_conf, UTF8_(f_note)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE EventEventum SET event_id="ID", eventum_id="ID", "
+                "UPDATE EventEventa SET event_id="ID", eventa_id="ID", "
                 "conf=%f, note='%q' "
                 "WHERE id="ID";",
                 f_event_id, f_eventa_id, f_conf,
@@ -629,8 +629,8 @@ bool recEventEventa::Read()
     }
 
     sql.Format(
-        "SELECT event_id, eventum_id, conf, note "
-        "FROM EventEventum WHERE id="ID";",
+        "SELECT event_id, eventa_id, conf, note "
+        "FROM EventEventa WHERE id="ID";",
         f_id
     );
     result = s_db->GetTable( sql );
@@ -673,8 +673,8 @@ bool recEventEventa::Find()
     if( f_event_id == 0 || f_eventa_id == 0 ) return false; // Only find single record
 
     sql.Format(
-        "SELECT id, conf, note FROM EventEventum "
-        "WHERE event_id="ID" AND eventum_id="ID";",
+        "SELECT id, conf, note FROM EventEventa "
+        "WHERE event_id="ID" AND eventa_id="ID";",
         f_event_id, f_eventa_id
     );
     result = s_db->GetTable( sql );
@@ -697,8 +697,8 @@ idt recEventEventa::Find( idt eID, idt erID )
     if( eID == 0 || erID == 0 ) return 0; // Only find single record
 
     sql.Format(
-        "SELECT id FROM EventEventum "
-        "WHERE event_id="ID" AND eventum_id="ID";",
+        "SELECT id FROM EventEventa "
+        "WHERE event_id="ID" AND eventa_id="ID";",
         eID, erID
     );
     result = s_db->GetTable( sql );
@@ -984,7 +984,7 @@ void recEventaPersona::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO EventumPersona (eventum_id, per_id, role_id, note, per_seq) "
+            "INSERT INTO EventaPersona (eventa_id, per_id, role_id, note, per_seq) "
             "VALUES ("ID", "ID", "ID", '%q', %d);",
             f_eventa_id, f_per_id, f_role_id, UTF8_(f_note), f_per_seq
         );
@@ -996,14 +996,14 @@ void recEventaPersona::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO EventumPersona (id, eventum_id, per_id, role_id, note, per_seq) "
+                "INSERT INTO EventaPersona (id, eventa_id, per_id, role_id, note, per_seq) "
                 "VALUES ("ID", "ID", "ID", "ID", '%q', %d);",
                 f_id, f_eventa_id, f_per_id, f_role_id, UTF8_(f_note), f_per_seq
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE EventumPersona SET eventum_id="ID", per_id="ID", role_id="ID", "
+                "UPDATE EventaPersona SET eventa_id="ID", per_id="ID", role_id="ID", "
                 "note='%q', per_seq=%d "
                 "WHERE id="ID";",
                 f_eventa_id, f_per_id, f_role_id, UTF8_(f_note), f_per_seq, f_id
@@ -1024,8 +1024,8 @@ bool recEventaPersona::Read()
     }
 
     sql.Format(
-        "SELECT id, eventum_id, per_id, role_id, note, per_seq "
-        "FROM EventumPersona WHERE id="ID";",
+        "SELECT id, eventa_id, per_id, role_id, note, per_seq "
+        "FROM EventaPersona WHERE id="ID";",
         f_id
     );
     result = s_db->GetTable( sql );
@@ -1048,7 +1048,7 @@ wxString recEventaPersona::GetRoleStr( idt perID, idt typeID )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "SELECT ETR.name FROM EventumPersona EP, EventTypeRole ETR"
+        "SELECT ETR.name FROM EventaPersona EP, EventTypeRole ETR"
         " WHERE EP.role_id=ETR.id AND EP.per_id="ID" AND ETR.type_id="ID
         " ORDER BY EP.per_seq;",
         perID, typeID
@@ -1064,8 +1064,8 @@ bool recEventaPersona::LinkExists() const
 
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "SELECT COUNT(*) FROM EventumPersona "
-        "WHERE eventum_id="ID" AND per_id="ID" AND role_id="ID";",
+        "SELECT COUNT(*) FROM EventaPersona "
+        "WHERE eventa_id="ID" AND per_id="ID" AND role_id="ID";",
         f_eventa_id, f_per_id, f_role_id
     );
 

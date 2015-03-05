@@ -9,6 +9,19 @@ On Open Database it now asks permission before updating an older version file.
 
 bug - Converting dates with the year -1 to a string didn't show the year.
 
+
+Database changes TFPD-0.0.10.6 -> 0.0.10.7
+
+Eventum table renamed Eventa.
+
+EventEventum table renamed EventEventa.
+  eventum_id column renamed eventa_id
+
+EventumPersona table renamed EventaPersona.
+  eventum_id column renamed eventa_id
+
+....
+
 Database changes from 0.0.9.25
 0.0.10.0  Remove blank F1 Family record from new database.
 

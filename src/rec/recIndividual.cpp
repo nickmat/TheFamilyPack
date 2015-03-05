@@ -486,12 +486,12 @@ wxSQLite3ResultSet recIndividual::GetEventaSet( idt indID )
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "SELECT eventum_id, role_id FROM"
-        "   (SELECT DISTINCT eventum_id, role_id FROM EventumPersona EP"
+        "SELECT eventa_id, role_id FROM"
+        "   (SELECT DISTINCT eventa_id, role_id FROM EventaPersona EP"
         "  INNER JOIN"
         "   (SELECT per_id AS ip_per_id FROM IndividualPersona WHERE ind_id="ID")"
         "  ON EP.per_id=ip_per_id)"
-        " INNER JOIN Eventum WHERE id=eventum_id"
+        " INNER JOIN Eventa WHERE id=eventa_id"
         " ORDER BY date_pt;",
         indID
     );
