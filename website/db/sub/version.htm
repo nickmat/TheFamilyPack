@@ -41,6 +41,9 @@
 <p>
  The Version table holds a single row which ties the database to a precise definition. The intention is to allow any program to know what to expect and, if appropriate, update the database. The database specification, in this case, includes the core data, but not other common data.
 </p>
+<p>
+ The version number of the database is independant of the version number of the TFP program. The program about box should give details of the versions used.
+</p>
 <h3>major</h3>
 <p>
  Once the database reaches a point where it is "production ready" and fully usable, the major version number will be set to 1. Thereafter the the major version number will increase only when a significant change is made, one in which data loss may occur when updating an older version.
@@ -55,7 +58,7 @@
 </p>
 <h3>test</h3>
 <p>
- This value is used during development to facilitate making small changes, some of which may be reversed, before the final release of the program version. Databases created or updated by released programs will always have this value set to zero.
+ This value is used during development to facilitate making small changes, some of which may be reversed, before the final release of the program version. Databases created or updated by released programs should always have this value set to zero.
 </p>
 
 </div>
