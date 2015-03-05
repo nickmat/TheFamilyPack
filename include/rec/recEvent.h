@@ -172,7 +172,7 @@ public:
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "EventEventum" );
+    TABLE_NAME_MEMBERS( "EventEventa" );
 
     idt FGetEventID() const { return f_event_id; }
     idt FGetEventaID() const { return f_eventa_id; }
@@ -184,7 +184,7 @@ public:
     void FSetConf( double conf ) { f_conf = conf; }
     void FSetNote( const wxString& note ) { f_note = note; }
 
-    static wxString GetIdStr( idt eerID ) { return wxString::Format( "EEm"ID, eerID ); }
+    static wxString GetIdStr( idt eerID ) { return wxString::Format( "EEa"ID, eerID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     static idt Create( idt eID, idt erID, double conf = 0.999, const wxString& note = wxEmptyString );
@@ -340,7 +340,7 @@ public:
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "EventumPersona" );
+    TABLE_NAME_MEMBERS( "EventaPersona" );
 
     idt FGetEventaID() const { return f_eventa_id; }
     idt FGetPerID() const { return f_per_id; }

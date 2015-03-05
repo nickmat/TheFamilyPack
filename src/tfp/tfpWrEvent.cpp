@@ -115,7 +115,7 @@ wxString tfpWriteEventPage( idt eventID, rgCompareEvent* ce )
             idt eerID = eers[i].FGetEventaID();
             htm <<
                 "<tr>\n"
-                "<td><b><a href='tfp:Em" << eerID <<
+                "<td><b><a href='tfp:Ea" << eerID <<
                 "'>" <<  recEventa::GetIdStr( eerID ) << "</a></b></td>\n"
                 "<td>" << eers[i].FGetConf() << "</td>\n"
                 "<td>" << recEventa::GetTitle( eerID ) << "</td>\n"

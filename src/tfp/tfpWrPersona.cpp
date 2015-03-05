@@ -119,7 +119,7 @@ wxString tfpWritePersonaPage( idt perID )
         }
         htm <<
             "</tr>\n<tr>\n" <<
-            "<td><b><a href='tfp:Em" << eaID <<
+            "<td><b><a href='tfp:Ea" << eaID <<
             "'>" << ea.GetIdStr() <<
             "</a></b></td>\n<td>" << ea.GetTypeStr() <<
             ":</td>\n<td>" << recEventTypeRole::GetName( eps[i].FGetRoleID() ) <<

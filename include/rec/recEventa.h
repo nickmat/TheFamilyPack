@@ -56,7 +56,7 @@ public:
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "Eventum" );
+    TABLE_NAME_MEMBERS( "Eventa" );
 
     wxString FGetTitle() const { return f_title; }
     idt FGetTypeID() const { return f_type_id; }
@@ -77,7 +77,7 @@ public:
 
     wxString SetAutoTitle( const wxString& name1, const wxString& name2 = wxEmptyString );
 
-    static wxString GetIdStr( idt evID ) { return wxString::Format( "Em"ID, evID ); }
+    static wxString GetIdStr( idt evID ) { return wxString::Format( "Ea"ID, evID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     wxString GetDetailStr() const;

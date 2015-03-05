@@ -288,7 +288,7 @@ wxString tfpWriteIndividualPage( idt indID )
             "</tr>\n<tr>\n" <<
             "<td><b><a href='tfp:R" << refID <<
             "'>" << recReference::GetIdStr( refID ) <<
-            "</a>: <a href='tfp:Em" << erID <<
+            "</a>: <a href='tfp:Ea" << erID <<
             "'>" << er.GetIdStr() <<
             "</b></td>\n<td>" << er.GetTypeStr() <<
             ":</td>\n<td>" << recEventTypeRole::GetName( roleID ) <<

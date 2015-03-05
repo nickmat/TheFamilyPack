@@ -55,7 +55,7 @@ wxString tfpWriteEventaIndex()
 
     for( size_t i = 0 ; i < size ; i++ ) {
         result.SetRow( i );
-        htm << "<tr>\n<td><a href='tfp:Em"
+        htm << "<tr>\n<td><a href='tfp:Ea"
             << result.GetAsString( 0 )
             << "'><b>ER"
             << result.GetAsString( 0 )
@@ -74,7 +74,7 @@ wxString tfpWriteEventaPagedIndex( idt begCnt )
     if( maxsize <= tfpWR_PAGE_MAX ) {
         return tfpWriteEventIndex();
     }
-    wxString pmenu = tfpWritePagedIndexMenu( begCnt, maxsize, "tfp:Em" );
+    wxString pmenu = tfpWritePagedIndexMenu( begCnt, maxsize, "tfp:Ea" );
 
     wxSQLite3Table result = recEventa::GetTitleList( begCnt, tfpWR_PAGE_MAX );
     size_t size = (size_t) result.GetRowCount();
@@ -95,8 +95,8 @@ wxString tfpWriteEventaPagedIndex( idt begCnt )
     for( size_t i = 0 ; i < size ; i++ ) {
         result.SetRow( i );
         htm <<
-            "<tr><td><a href='tfp:Em" << result.GetAsString( 0 ) <<
-            "'><b>Em" << result.GetAsString( 0 ) <<
+            "<tr><td><a href='tfp:Ea" << result.GetAsString( 0 ) <<
+            "'><b>Ea" << result.GetAsString( 0 ) <<
             "</b></a></td><td> " << result.GetAsString( 1 ) <<
             "</td></tr>\n"
         ;

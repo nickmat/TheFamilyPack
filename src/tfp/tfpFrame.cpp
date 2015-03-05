@@ -227,7 +227,7 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     menuListEvent->Append( tfpID_LIST_PAGED_EVENTS, _("&Paged Events") );
     menuListEvent->Append( tfpID_LIST_SELECTED_EVENTS, _("&Selected Events...") );
     menuListEvent->AppendSeparator();
-    menuListEvent->Append( tfpID_LIST_ALL_EVENTUMS, _("All Eventu&ms") );
+    menuListEvent->Append( tfpID_LIST_ALL_EVENTUMS, _("All Even&tas") );
     menuListEvent->Append( tfpID_LIST_PAGED_EVENTUMS, _("Pa&ged Eventas") );
     menuListEvent->Append( tfpID_LIST_SELECTED_EVENTUMS, _("Se&lected Eventas...") );
 
@@ -749,14 +749,14 @@ void TfpFrame::OnListSelectedEvents( wxCommandEvent& event )
  */
 void TfpFrame::OnListAllEventas( wxCommandEvent& event )
 {
-    DisplayHtmPage( "Em" );
+    DisplayHtmPage( "Ea" );
 }
 
 /*! \brief Called on a List/Paged Eventas menu option event.
  */
 void TfpFrame::OnListPagedEventas( wxCommandEvent& event )
 {
-    DisplayHtmPage( "Em,0" );
+    DisplayHtmPage( "Ea,0" );
 }
 
 /*! \brief Called on a List/Selected Eventas menu option event.
@@ -765,7 +765,7 @@ void TfpFrame::OnListSelectedEventas( wxCommandEvent& event )
 {
     wxMessageBox( "Not yet implimented", "OnListSelectedEventas" );
 //    if( rgSelectIndEventaList( this, &m_emFilter ) ) {
-//        DisplayHtmPage( "Em$" );
+//        DisplayHtmPage( "Ea$" );
 //    }
 }
 
@@ -974,7 +974,7 @@ void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
     if( display.StartsWith( "FI" ) ) {
         idt indID = recGetID( display.Mid(2) );
         id = recIndividual::GetFamilyID( indID );
-    } else if( display.StartsWith( "E^" ) || display.StartsWith( "Em" ) ) {
+    } else if( display.StartsWith( "E^" ) || display.StartsWith( "Ea" ) ) {
         id = recGetID( display.Mid(2) );
     } else {
         id = recGetID( display.Mid(1) );
@@ -991,7 +991,7 @@ void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
             ret = rgEditReference( this, id );
             break;
         case 'E':
-            if( uch1.GetValue() == 'm' ) {
+            if( uch1.GetValue() == 'a' ) {
                 ret = rgEditEventa( this, id );
             } else {
                 ret = rgEditEvent( this, id );
@@ -1600,7 +1600,7 @@ void TfpFrame::RefreshEditMenu()
             m_menuEditEvent->Enable( tfpID_EDIT_EVENT_CURRENT, true );
             m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
         } else if( disp.size() >= 3 && (
-                ( disp.GetChar( 1 ) == 'm' && wxIsdigit( disp.GetChar( 2 ) ) ) ||
+                ( disp.GetChar( 1 ) == 'a' && wxIsdigit( disp.GetChar( 2 ) ) ) ||
                 ( disp.GetChar( 1 ) == '^' && wxIsdigit( disp.GetChar( 2 ) ) )
                 ) ) {
             m_editEventID = recGetID( disp.Mid( 2 ) );
@@ -1679,17 +1679,17 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
     if( name.compare( "E$" ) == 0 ) {
         return tfpWriteEventSelection( m_selEvent );
     }
-    if( name.compare( "Em" ) == 0 ) {
+    if( name.compare( "Ea" ) == 0 ) {
         return tfpWriteEventaIndex();
     }
 // We don't have a Eventa filter yet!
-//    if( name.compare( "Em$" ) == 0 ) {
+//    if( name.compare( "Ea$" ) == 0 ) {
 //        return tfpWriteEventaSelection( m_erFilter );
 //    }
-    if( name.compare( 0, 2, "Em" ) == 0 && success1 ) {
+    if( name.compare( 0, 2, "Ea" ) == 0 && success1 ) {
         return tfpWriteEventaPage( num1 );
     }
-    if( name.compare( 0, 3, "Em," ) == 0 && success2 ) {
+    if( name.compare( 0, 3, "Ea," ) == 0 && success2 ) {
         return tfpWriteEventaPagedIndex( num2 );
     }
     if( name.compare( 0, 1, "E" ) == 0 && success ) {

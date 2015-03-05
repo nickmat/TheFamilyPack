@@ -47,7 +47,7 @@ static wxString GetHref( const recReferenceEntity& ref )
     switch( ref.FGetEntityType() )
     {
     case recReferenceEntity::TYPE_Event:
-        return "tfp:Em" + idStr;
+        return "tfp:Ea" + idStr;
     case recReferenceEntity::TYPE_Place:
         return "tfpi:P" + idStr;
     case recReferenceEntity::TYPE_Date:
@@ -79,14 +79,14 @@ wxString tfpWriteReferenceIndex()
     ;
     for( int i = 0 ; i < result.GetRowCount() ; i++ ) {
         result.SetRow( i );
-        htm << 
+        htm <<
             "<tr><td><a href='tfp:R" << result.GetAsString( 0 ) <<
             "'><b>R" << result.GetAsString( 0 ) <<
             "</b></a></td><td> " << result.GetAsString( 1 ) <<
             "</td></tr>\n"
         ;
     }
-    htm << 
+    htm <<
         "</table>\n<p>\nTotal References found: " <<
         result.GetRowCount() <<
         "\n</p>\n"
@@ -124,16 +124,16 @@ wxString tfpWriteReferencePagedIndex( idt begCnt )
     ;
     for( size_t i = 0 ; i < size ; i++ ) {
         result.SetRow( i );
-        htm << 
+        htm <<
             "<tr><td><a href='tfp:R" << result.GetAsString( 0 ) <<
             "'><b>R" << result.GetAsString( 0 ) <<
             "</b></a></td><td> " << result.GetAsString( 1 ) <<
             "</td></tr>\n"
         ;
     }
-    htm << 
+    htm <<
         "</table>\n" << pmenu <<
-        "<br>\n" << tfpWrTailTfp() 
+        "<br>\n" << tfpWrTailTfp()
     ;
     return htm;
 }
@@ -176,7 +176,7 @@ wxString tfpWriteReferencePage( idt refID )
                 "</td><td>" << per.FGetNote() <<
                 "</td><td><b>"
             ;
-            recIdVec indIDs = per.GetIndividualIDs(); 
+            recIdVec indIDs = per.GetIndividualIDs();
             for( size_t j = 0 ; j < indIDs.size() ; j++ ) {
                 if( j > 0 ) {
                     htm << ", ";
