@@ -1,12 +1,10 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        tfpVersion.cpp
+ * Name:        src/tfp/tfpVersion.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Version constants, functions and revision history.
  * Author:      Nick Matthews
- * Modified by:
  * Created:     24 September 2010
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010-2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2010-2015, Nick Matthews.
  * Website:     http://thefamilypack.org
  * Licence:     GNU GPLv3
  *

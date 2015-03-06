@@ -1,11 +1,9 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        tfpVersion.h
+ * Name:        src/tfp/tfpVersion.h
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Version constants and functions header.
  * Author:      Nick Matthews
- * Modified by:
  * Created:     24 September 2010
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2010, Nick Matthews.
  * Website:     http://thefamilypack.org
  * Licence:     GNU GPLv3
