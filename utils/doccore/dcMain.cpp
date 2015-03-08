@@ -339,7 +339,7 @@ int main( int argc, char** argv )
         wxPrintf( "Database Version %s\n", recVerStr );
     }
 
-    int grporder[] = { 1, 2, 5, 6, 3, 4, 8, 7, 0 };
+    int grporder[] = { 1, 2, 5, 6, 8, 9, 7, 3, 10, 4, 0 };
 
     CreateNewDatabase();
     NavVec nps;

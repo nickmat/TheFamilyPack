@@ -37,12 +37,10 @@ The Family Pack<br/>Core Data: Event Types</h1>
 <tr><td>-2</td><td>5 "Death"</td><td>Death</td><td></td></tr>
 <tr><td>-5</td><td>6 "Near Death"</td><td>Burial</td><td></td></tr>
 <tr><td>-16</td><td>6</td><td>Register Death</td><td></td></tr>
-<tr><td>-3</td><td>3 "Family Union"</td><td>Marriage</td><td></td></tr>
-<tr><td>-20</td><td>3</td><td>Civl Partnership</td><td></td></tr>
-<tr><td>-9</td><td>4 "Other Family"</td><td>Divorce</td><td></td></tr>
 <tr><td>-17</td><td>8 "Personal"</td><td>Residence</td><td></td></tr>
 <tr><td>-18</td><td>8</td><td>Occupation</td><td></td></tr>
 <tr><td>-19</td><td>8</td><td>Condition</td><td>Marital Status</td></tr>
+<tr><td>-21</td><td>9 "Relationship"</td><td>Relation</td><td></td></tr>
 <tr><td>-6</td><td>7 "Other"</td><td>Adult Baptism</td><td></td></tr>
 <tr><td>-7</td><td>7</td><td>Census</td><td></td></tr>
 <tr><td>-8</td><td>7</td><td>Confirmation</td><td></td></tr>
@@ -51,6 +49,10 @@ The Family Pack<br/>Core Data: Event Types</h1>
 <tr><td>-12</td><td>7</td><td>Graduation</td><td></td></tr>
 <tr><td>-13</td><td>7</td><td>Probate</td><td></td></tr>
 <tr><td>-14</td><td>7</td><td>Will</td><td></td></tr>
+<tr><td>-3</td><td>3 "Family Union"</td><td>Marriage</td><td></td></tr>
+<tr><td>-20</td><td>3</td><td>Civl Partnership</td><td></td></tr>
+<tr><td>-22</td><td>10 "Family Relationship"</td><td>Family</td><td></td></tr>
+<tr><td>-9</td><td>4 "Other Family"</td><td>Divorce</td><td></td></tr>
 </table>
 <table class='basic core'>
 <tr><th colspan='0'>EventTypeRole Core Data</th></tr>
@@ -80,27 +82,6 @@ The Family Pack<br/>Core Data: Event Types</h1>
 <tr><td>-58</td><td>-16</td><td>0</td><td></td><td>Mentioned</td></tr>
 <tr><td>-56</td><td>-16</td><td>0</td><td></td><td>Registrant</td></tr>
 <tr><td>-57</td><td>-16</td><td>0</td><td>Yes</td><td>Registrar</td></tr>
-<tr><td>-59</td><td>-3 "Marriage"</td><td>3</td><td></td><td>Spouse</td></tr>
-<tr><td>-8</td><td>-3</td><td>2</td><td></td><td>Bride</td></tr>
-<tr><td>-7</td><td>-3</td><td>1</td><td></td><td>Groom</td></tr>
-<tr><td>-18</td><td>-3</td><td>0</td><td></td><td>Best Man</td></tr>
-<tr><td>-17</td><td>-3</td><td>0</td><td></td><td>Bridesmaid</td></tr>
-<tr><td>-13</td><td>-3</td><td>0</td><td></td><td>Father of Bride</td></tr>
-<tr><td>-11</td><td>-3</td><td>0</td><td></td><td>Father of Groom</td></tr>
-<tr><td>-15</td><td>-3</td><td>0</td><td></td><td>Give away Bride</td></tr>
-<tr><td>-16</td><td>-3</td><td>0</td><td></td><td>Maid of Honour</td></tr>
-<tr><td>-14</td><td>-3</td><td>0</td><td></td><td>Mother of Bride</td></tr>
-<tr><td>-12</td><td>-3</td><td>0</td><td></td><td>Mother of Groom</td></tr>
-<tr><td>-19</td><td>-3</td><td>0</td><td></td><td>Pageboy</td></tr>
-<tr><td>-20</td><td>-3</td><td>0</td><td></td><td>Present</td></tr>
-<tr><td>-10</td><td>-3</td><td>0</td><td></td><td>Witness</td></tr>
-<tr><td>-9</td><td>-3</td><td>0</td><td>Yes</td><td>Officiator</td></tr>
-<tr><td>-68</td><td>-20 "Civl Partnership"</td><td>3</td><td></td><td>Partner</td></tr>
-<tr><td>-71</td><td>-20</td><td>0</td><td></td><td>Present</td></tr>
-<tr><td>-70</td><td>-20</td><td>0</td><td></td><td>Witness</td></tr>
-<tr><td>-69</td><td>-20</td><td>0</td><td>Yes</td><td>Officiator</td></tr>
-<tr><td>-37</td><td>-9 "Divorce"</td><td>2</td><td></td><td>Wife</td></tr>
-<tr><td>-36</td><td>-9</td><td>1</td><td></td><td>Husband</td></tr>
 <tr><td>-64</td><td>-17 "Residence"</td><td>0</td><td></td><td>Boarder</td></tr>
 <tr><td>-61</td><td>-17</td><td>0</td><td></td><td>Family</td></tr>
 <tr><td>-63</td><td>-17</td><td>0</td><td></td><td>Lodger</td></tr>
@@ -108,6 +89,7 @@ The Family Pack<br/>Core Data: Event Types</h1>
 <tr><td>-65</td><td>-18 "Occupation"</td><td>1</td><td></td><td>Occupation</td></tr>
 <tr><td>-66</td><td>-18</td><td>0</td><td></td><td>Employer</td></tr>
 <tr><td>-67</td><td>-19 "Condition"</td><td>1</td><td></td><td>Condition</td></tr>
+<tr><td>-72</td><td>-21 "Relation"</td><td>1</td><td></td><td>Subject</td></tr>
 <tr><td>-29</td><td>-6 "Adult Baptism"</td><td>1</td><td></td><td>Baptised</td></tr>
 <tr><td>-31</td><td>-6</td><td>0</td><td></td><td>Present</td></tr>
 <tr><td>-30</td><td>-6</td><td>0</td><td>Yes</td><td>Officiator</td></tr>
@@ -127,6 +109,31 @@ The Family Pack<br/>Core Data: Event Types</h1>
 <tr><td>-46</td><td>-14</td><td>0</td><td></td><td>Executor</td></tr>
 <tr><td>-49</td><td>-14</td><td>0</td><td></td><td>Witness</td></tr>
 <tr><td>-48</td><td>-14</td><td>0</td><td>Yes</td><td>Solicitor</td></tr>
+<tr><td>-59</td><td>-3 "Marriage"</td><td>3</td><td></td><td>Spouse</td></tr>
+<tr><td>-8</td><td>-3</td><td>2</td><td></td><td>Bride</td></tr>
+<tr><td>-7</td><td>-3</td><td>1</td><td></td><td>Groom</td></tr>
+<tr><td>-18</td><td>-3</td><td>0</td><td></td><td>Best Man</td></tr>
+<tr><td>-17</td><td>-3</td><td>0</td><td></td><td>Bridesmaid</td></tr>
+<tr><td>-13</td><td>-3</td><td>0</td><td></td><td>Father of Bride</td></tr>
+<tr><td>-11</td><td>-3</td><td>0</td><td></td><td>Father of Groom</td></tr>
+<tr><td>-15</td><td>-3</td><td>0</td><td></td><td>Give away Bride</td></tr>
+<tr><td>-16</td><td>-3</td><td>0</td><td></td><td>Maid of Honour</td></tr>
+<tr><td>-14</td><td>-3</td><td>0</td><td></td><td>Mother of Bride</td></tr>
+<tr><td>-12</td><td>-3</td><td>0</td><td></td><td>Mother of Groom</td></tr>
+<tr><td>-19</td><td>-3</td><td>0</td><td></td><td>Pageboy</td></tr>
+<tr><td>-20</td><td>-3</td><td>0</td><td></td><td>Present</td></tr>
+<tr><td>-10</td><td>-3</td><td>0</td><td></td><td>Witness</td></tr>
+<tr><td>-9</td><td>-3</td><td>0</td><td>Yes</td><td>Officiator</td></tr>
+<tr><td>-68</td><td>-20 "Civl Partnership"</td><td>3</td><td></td><td>Partner</td></tr>
+<tr><td>-71</td><td>-20</td><td>0</td><td></td><td>Present</td></tr>
+<tr><td>-70</td><td>-20</td><td>0</td><td></td><td>Witness</td></tr>
+<tr><td>-69</td><td>-20</td><td>0</td><td>Yes</td><td>Officiator</td></tr>
+<tr><td>-75</td><td>-22 "Family"</td><td>3</td><td></td><td>Partner</td></tr>
+<tr><td>-74</td><td>-22</td><td>2</td><td></td><td>Wife</td></tr>
+<tr><td>-73</td><td>-22</td><td>1</td><td></td><td>Husband</td></tr>
+<tr><td>-76</td><td>-22</td><td>0</td><td></td><td>Child</td></tr>
+<tr><td>-37</td><td>-9 "Divorce"</td><td>2</td><td></td><td>Wife</td></tr>
+<tr><td>-36</td><td>-9</td><td>1</td><td></td><td>Husband</td></tr>
 </table>
 </div>
 <hr />
@@ -137,7 +144,7 @@ src='../../valid-xhtml10-blue.png'
 alt='Valid XHTML 1.0 Strict' height='31' width='88' /></a>
 </p>
 </div>
-<div id='create-date'><p>2<sup>nd</sup> July 2014</p></div>
+<div id='create-date'><p>8<sup>th</sup> March 2015</p></div>
 </div>
 <!-- Start of StatCounter Code for Default Guide -->
 <script type="text/javascript">

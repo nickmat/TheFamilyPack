@@ -42,7 +42,7 @@ class recSelSetEvent
 {
 public:
     recSelSetEvent() 
-      : m_grpsEnabled(recET_FILTER_GrpAllValid), m_grpsChecked(0),
+      : m_grpsEnabled(recET_GRP_FILTER_AllValid), m_grpsChecked(0),
         m_calScheme(CALENDAR_SCH_Gregorian)//, m_indID(0)
     {}
 

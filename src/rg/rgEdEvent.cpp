@@ -72,9 +72,9 @@ idt rgCreateIndEvent( wxWindow* wind, idt ind1ID, idt ind2ID, idt famID )
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
 
-    unsigned grpfilter = recET_FILTER_GrpAll;
+    unsigned grpfilter = recET_GRP_FILTER_All;
     if( ind2ID ) {
-        grpfilter = recET_FILTER_GrpFamily;
+        grpfilter = recET_GRP_FILTER_Family;
     }
     idt typeID = rgSelectEventType( wind, rgSELSTYLE_Create, NULL, grpfilter );
     if( typeID == 0 ) {

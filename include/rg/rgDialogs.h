@@ -183,7 +183,7 @@ extern idt rgSelectPlace(
 extern idt rgSelectEventType(
     wxWindow* wind,
     unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL,
-    unsigned grpfilter = recET_FILTER_GrpAll );
+    unsigned grpfilter = recET_GRP_FILTER_All );
 
 extern idt rgSelectIndividual(
     wxWindow* wind,

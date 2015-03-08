@@ -207,7 +207,7 @@ idt rgCreatePersonalEventa( wxWindow* wind, idt refID, const wxString& role )
         return 0;
     }
 
-    idt eveTypeID = rgSelectEventType( wind, rgSELSTYLE_Create, NULL, recET_FILTER_GrpPersonal );
+    idt eveTypeID = rgSelectEventType( wind, rgSELSTYLE_Create, NULL, recET_GRP_FILTER_Personal );
     if( eveTypeID == 0 ) {
         recDb::Rollback( savepoint );
         return 0;

@@ -150,7 +150,9 @@ wxString recEventType::GetGroupValueStr( recET_GRP grp )
         _("Death"),
         _("Near Death"),
         _("Other"),
-        _("Personal")
+        _("Personal"),
+        _("Relationship"),
+        _("Family Relationship")
     };
     return grparray[grp];
 }
@@ -185,49 +187,57 @@ recET_GRP recEventType::GetGroup( idt id )
 recEventTypeVec recEventType::ReadVec( unsigned filter )
 {
     recEventTypeVec vec;
-    if( filter == recET_FILTER_GrpNone ) {
+    if( filter == recET_GRP_FILTER_None ) {
         return vec;
     }
     wxString query = "SELECT id, grp, name FROM EventType WHERE ";
-    if( filter == recET_FILTER_GrpAll ) {
+    if( filter == recET_GRP_FILTER_All ) {
         query << "NOT grp=0 ";
     } else {
         bool started = false;
-        if( filter & recET_FILTER_GrpUnstated ) {
+        if( filter & recET_GRP_FILTER_Unstated ) {
             if( started ) query << "OR "; else started = true;
             query << "grp=0 ";
         }
-        if( filter & recET_FILTER_GrpBirth ) {
+        if( filter & recET_GRP_FILTER_Birth ) {
             if( started ) query << "OR "; else started = true;
             query << "grp=1 ";
         }
-        if( filter & recET_FILTER_GrpNrBirth ) {
+        if( filter & recET_GRP_FILTER_NrBirth ) {
             if( started ) query << "OR "; else started = true;
             query << "grp=2 ";
         }
-        if( filter & recET_FILTER_GrpFamUnion ) {
+        if( filter & recET_GRP_FILTER_FamUnion ) {
             if( started ) query << "OR "; else started = true;
             query << "grp=3 ";
         }
-        if( filter & recET_FILTER_GrpFamOther ) {
+        if( filter & recET_GRP_FILTER_FamOther ) {
             if( started ) query << "OR "; else started = true;
             query << "grp=4 ";
         }
-        if( filter & recET_FILTER_GrpDeath ) {
+        if( filter & recET_GRP_FILTER_Death ) {
             if( started ) query << "OR "; else started = true;
             query << "grp=5 ";
         }
-        if( filter & recET_FILTER_GrpNrDeath ) {
+        if( filter & recET_GRP_FILTER_NrDeath ) {
             if( started ) query << "OR "; else started = true;
             query << "grp=6 ";
         }
-        if( filter & recET_FILTER_GrpOther ) {
+        if( filter & recET_GRP_FILTER_Other ) {
             if( started ) query << "OR "; else started = true;
             query << "grp=7 ";
         }
-        if( filter & recET_FILTER_GrpPersonal ) {
+        if( filter & recET_GRP_FILTER_Personal ) {
             if( started ) query << "OR "; else started = true;
             query << "grp=8 ";
+        }
+        if( filter & recET_GRP_FILTER_Relation ) {
+            if( started ) query << "OR "; else started = true;
+            query << "grp=9 ";
+        }
+        if( filter & recET_GRP_FILTER_FamRelation ) {
+            if( started ) query << "OR "; else started = true;
+            query << "grp=10 ";
         }
     }
     query << "ORDER BY id DESC;";

@@ -41,8 +41,8 @@
 const int recVerMajor    = 0;
 const int recVerMinor    = 0;
 const int recVerRev      = 10;
-const int recVerTest     = 7;
-const wxStringCharType* recVerStr = wxS("TFPD-0.0.10.7");
+const int recVerTest     = 8;
+const wxStringCharType* recVerStr = wxS("TFPD-0.0.10.8");
 
 //============================================================================
 //                 Code to upgrade old versions
@@ -401,6 +401,30 @@ void UpgradeTest0_0_10_6to0_0_10_7()
     recDb::GetDb()->ExecuteUpdate( query );
 }
 
+void UpgradeTest0_0_10_7to0_0_10_8()
+{
+    // Version 0.0.10.7 to 0.0.10.8
+    // Add EventType rows and their EventTypeRole rows
+    // for the Relation and Family events.
+
+    char* query =
+        "BEGIN;\n"
+
+        "INSERT INTO EventType (id, grp, name) VALUES(-21, 9, 'Relation');"
+        "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-72, -21, 1, 0, 'Subject');"
+
+        "INSERT INTO EventType (id, grp, name) VALUES(-22, 10, 'Family');"
+        "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-73, -22, 1, 0, 'Husband');"
+        "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-74, -22, 2, 0, 'Wife');"
+        "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-75, -22, 3, 0, 'Partner');"
+        "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-76, -22, 0, 0, 'Child');"
+
+        "UPDATE Version SET test=8 WHERE id=1;\n"
+        "COMMIT;\n"
+    ;
+    recDb::GetDb()->ExecuteUpdate( query );
+}
+
 void UpgradeRev0_0_10toCurrent( int test )
 {
     switch( test )
@@ -412,6 +436,7 @@ void UpgradeRev0_0_10toCurrent( int test )
     case 4: UpgradeTest0_0_10_4to0_0_10_5();
     case 5: UpgradeTest0_0_10_5to0_0_10_6();
     case 6: UpgradeTest0_0_10_6to0_0_10_7();
+    case 7: UpgradeTest0_0_10_7to0_0_10_8();
     }
 }
 

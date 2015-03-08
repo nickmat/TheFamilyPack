@@ -240,7 +240,16 @@ INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-69, -20, 
 INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-70, -20, 0, 0, 'Witness');
 INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-71, -20, 0, 0, 'Present');
 
-/* Next EventTypeRole id = -72 */
+INSERT INTO EventType (id, grp, name) VALUES(-21, 9, 'Relation');
+INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-72, -21, 1, 0, 'Subject');
+
+INSERT INTO EventType (id, grp, name) VALUES(-22, 10, 'Family');
+INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-73, -22, 1, 0, 'Husband');
+INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-74, -22, 2, 0, 'Wife');
+INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-75, -22, 3, 0, 'Partner');
+INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-76, -22, 0, 0, 'Child');
+
+/* Next EventTypeRole id = -77 */
 
 CREATE TABLE Family (
   id INTEGER PRIMARY KEY,
@@ -473,7 +482,7 @@ INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 0, 1, 'F1');
 INSERT INTO UserSetting (id, user_id, property, val) VALUES(2, 1, 1, 'F1');
 
 /* The Version table has only this one row */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 7);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 8);
 
 COMMIT;
 
