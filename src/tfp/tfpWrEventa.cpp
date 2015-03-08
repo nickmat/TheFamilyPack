@@ -109,8 +109,9 @@ wxString tfpWriteEventaPage( idt erID )
             htm <<
                 "<tr>\n<td>" <<
                 recEventTypeRole::GetName( eps[i].FGetRoleID() ) <<
-                "</td>\n<td>" << per.GetIdStr() <<
-                "</td>\n<td class='" << GetSexClassPer( per.FGetID() ) <<
+                "</td>\n<td><b><a href='tfp:Pa" << recGetStr( per.FGetID() ) <<
+                "'>" << per.GetIdStr() <<
+                "</a></b></td>\n<td class='" << GetSexClassPer( per.FGetID() ) <<
                 "'>" << per.GetNameStr() <<
                 "</td>\n<td>" << eps[i].f_note <<
                 " </td>\n<td><b>"
