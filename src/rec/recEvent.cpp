@@ -390,6 +390,36 @@ void recEvent::UpdateDatePoint()
     f_date_pt = recDate::GetDatePoint( f_date1_id );
 }
 
+recEventVec recEvent::GetLowerEvents( idt eventID )
+{
+    recEventVec vec;
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3ResultSet result;
+
+    sql.Format(
+        "SELECT id, title, type_id, date1_id, date2_id, place_id, note, date_pt"
+        " FROM Event WHERE higher_id="ID
+        " ORDER BY date_pt;",
+        eventID
+    );
+    result = s_db->ExecuteQuery( sql );
+
+    recEvent e(0);
+    e.f_higher_id = eventID;
+    while( result.NextRow() ) {
+        e.f_id       = GET_ID( result.GetInt64( 0 ) );
+        e.f_title    = result.GetAsString( 1 );
+        e.f_type_id  = GET_ID( result.GetInt64( 2 ) );
+        e.f_date1_id = GET_ID( result.GetInt64( 3 ) );
+        e.f_date2_id = GET_ID( result.GetInt64( 4 ) );
+        e.f_place_id = GET_ID( result.GetInt64( 5 ) );
+        e.f_note     = result.GetAsString( 6 );
+        e.f_date_pt  = (long) result.GetInt( 7 );
+        vec.push_back( e );
+    }
+    return vec;
+}
+
 recEventaVec recEvent::FindEquivRefEvents( idt indEventID )
 {
     recEventaVec vec;
@@ -541,14 +571,19 @@ void recEvent::DeleteIfOrphaned( idt id )
 
 wxSQLite3Table recEvent::GetTitleList()
 {
-    return s_db->GetTable( "SELECT id, title FROM Event ORDER BY id;" );
+    return s_db->GetTable( 
+        "SELECT id, title FROM Event"
+        " WHERE higher_id=0 ORDER BY id;"
+    );
 }
 
 wxSQLite3Table recEvent::GetTitleList( idt offset, int limit )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "SELECT id, title FROM Event ORDER BY id LIMIT "ID", %d;",
+        "SELECT id, title FROM Event"
+        " WHERE higher_id=0"
+        " ORDER BY id LIMIT "ID", %d;",
         offset, limit
     );
     return s_db->GetTable( sql );

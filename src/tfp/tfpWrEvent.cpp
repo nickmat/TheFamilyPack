@@ -78,6 +78,14 @@ wxString tfpWriteEventPage( idt eventID, rgCompareEvent* ce )
     } else {
         htm << "<b>Place:</b>";
     }
+    if( eve.FGetHigherID() ) {
+        htm <<
+            "</td>\n</tr>\n<tr>\n"
+            "<td><b><a href='tfp:E" << eve.FGetHigherID() <<
+            "'>Part of: " << recEvent::GetIdStr( eve.FGetHigherID() ) <<
+            "</a></b> " << recEvent::GetTitle( eve.FGetHigherID() )
+        ;
+    }
     htm <<
         "</td>\n</tr>\n<tr>\n"
         "<td><b>Note: </b>" << eve.f_note << "</td>\n</tr>\n"
@@ -123,6 +131,50 @@ wxString tfpWriteEventPage( idt eventID, rgCompareEvent* ce )
             ;
         }
         htm << "</table>\n";
+    }
+
+    // List lower (included) events
+    recEventVec es = eve.GetLowerEvents();
+    if( es.size() ) {
+        htm <<
+            "<table class='data'>\n<tr>\n"
+            "<th colspan='3'>Included Events</th>\n";
+        for( size_t i = 0 ; i < es.size() ; i++ ) {
+            wxString cat1, cat2, dStr, pStr;
+            if( es[i].FGetDate1ID() || es[i].FGetPlaceID() ) {
+                cat1 = "<br>\n";
+            }
+            if( es[i].FGetDate1ID() && es[i].FGetPlaceID() ) {
+                cat2 = ", ";
+            }
+            if( es[i].FGetDate1ID() ) {
+                dStr <<
+                    "<a href='tfpi:D" << es[i].FGetDate1ID() <<
+                    "'>" << es[i].GetDateStr() <<
+                    "</a>"
+                ;
+            }
+            if( es[i].FGetPlaceID() ) {
+                pStr <<
+                    "<a href='tfpi:P" << es[i].FGetPlaceID() <<
+                    "'>" << es[i].GetAddressStr() <<
+                    "</a>"
+                ;
+            }
+            htm <<
+                "</tr>\n<tr>\n" <<
+                "<td><b><a href='tfp:E" << es[i].FGetID() <<
+                "'>" << es[i].GetIdStr() <<
+                "</a></b></td>\n<td>" << es[i].GetTypeStr() <<
+                "</td><td>" << es[i].FGetTitle() <<
+                cat1 << dStr << cat2 << pStr
+            ;
+            if( es[i].FGetNote().size() ) {
+                htm << "<br>\n" << ies[i].FGetNote();
+            }
+            htm << "</td>\n";
+        }
+        htm << "</tr>\n</table>\n";
     }
 
     if( ce ) {

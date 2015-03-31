@@ -105,6 +105,9 @@ public:
     static void UpdateDatePoint( idt evID );
     void UpdateDatePoint();
 
+    static recEventVec GetLowerEvents( idt eventID );
+    recEventVec GetLowerEvents() const { return GetLowerEvents( f_id ); }
+
     static recEventaVec FindEquivRefEvents( idt evetID );
     static recEventEventaVec GetEventEventas( idt eveID );
     recEventEventaVec GetEventEventas() const { return GetEventEventas( f_id ); }

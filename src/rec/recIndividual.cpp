@@ -461,7 +461,7 @@ recIndEventVec recIndividual::GetEvents( idt indID, recEventOrder order )
     sql.Format(
         "SELECT IE.id, event_id, role_id, IE.note, ind_seq FROM IndividualEvent IE"
         " INNER JOIN Event E ON E.id=event_id"
-        " WHERE ind_id="ID" ORDER BY %s;",
+        " WHERE higher_id=0 AND ind_id="ID" ORDER BY %s;",
         indID, UTF8_(orderStr)
     );
     result = s_db->GetTable( sql );

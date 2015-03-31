@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     25th November 2012
- * Copyright:   Copyright (c) 2012 - 2014, Nick Matthews.
+ * Copyright:   Copyright (c) 2012 - 2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  doccore is free software: you can redistribute it and/or modify
@@ -41,7 +41,7 @@
 #include <wx/cmdline.h>
 #include <rec/recDb.h>
 
-#define VERSION   "0.1.0"
+#define VERSION   "0.2.0"
 #define PROGNAME  "doccore - Create core data html tables"
 
 const wxString g_version = VERSION;
@@ -49,10 +49,10 @@ const wxString g_progName = PROGNAME;
 
 #ifdef NDEBUG
 const wxString g_title = PROGNAME " - Version " VERSION "\n"
-                         "Copyright (c) 2012 Nick Matthews\n\n";
+                         "Copyright (c) 2012-2015 Nick Matthews\n\n";
 #else
 const wxString g_title = PROGNAME " - Version " VERSION " Debug\n"
-                         "Copyright (c) 2012 Nick Matthews\n\n";
+                         "Copyright (c) 2012-2015 Nick Matthews\n\n";
 #endif
 
 bool g_verbose = false;
