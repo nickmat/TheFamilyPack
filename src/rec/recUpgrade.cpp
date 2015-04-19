@@ -41,8 +41,8 @@
 const int recVerMajor    = 0;
 const int recVerMinor    = 0;
 const int recVerRev      = 10;
-const int recVerTest     = 8;
-const wxStringCharType* recVerStr = wxS("TFPD-0.0.10.8");
+const int recVerTest     = 9;
+const wxStringCharType* recVerStr = wxS("TFPD-0.0.10.9");
 
 //============================================================================
 //                 Code to upgrade old versions
@@ -425,6 +425,36 @@ void UpgradeTest0_0_10_7to0_0_10_8()
     recDb::GetDb()->ExecuteUpdate( query );
 }
 
+void UpgradeTest0_0_10_8to0_0_10_9()
+{
+    // Version 0.0.10.8 to 0.0.10.9
+    // Add FamilyEventa and FamilyIndEventa tables.
+    // These are new so there is no data to move.
+
+    char* query =
+        "BEGIN;\n"
+
+        "CREATE TABLE FamilyEventa (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  fam_id INTEGER NOT NULL REFERENCES Family(id),\n"
+        "  eventa_id INTEGER NOT NULL REFERENCES Eventa(id),\n"
+        "  conf FLOAT NOT NULL,\n"
+        "  note TEXT\n"
+        ");\n"
+        "CREATE TABLE FamilyIndEventa (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  fam_ind_id INTEGER NOT NULL REFERENCES FamilyIndividual(id),\n"
+        "  eventa_id INTEGER NOT NULL REFERENCES Eventa(id),\n"
+        "  conf FLOAT NOT NULL,\n"
+        "  note TEXT\n"
+        ");\n"
+
+        "UPDATE Version SET test=9 WHERE id=1;\n"
+        "COMMIT;\n"
+    ;
+    recDb::GetDb()->ExecuteUpdate( query );
+}
+
 void UpgradeRev0_0_10toCurrent( int test )
 {
     switch( test )
@@ -437,6 +467,7 @@ void UpgradeRev0_0_10toCurrent( int test )
     case 5: UpgradeTest0_0_10_5to0_0_10_6();
     case 6: UpgradeTest0_0_10_6to0_0_10_7();
     case 7: UpgradeTest0_0_10_7to0_0_10_8();
+    case 8: UpgradeTest0_0_10_8to0_0_10_9();
     }
 }
 

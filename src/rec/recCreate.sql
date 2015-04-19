@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     22nd March 2008
- * Copyright:   Copyright (c) 2008 - 2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2008 - 2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -265,6 +265,22 @@ CREATE TABLE FamilyEvent (
   fam_seq INTEGER NOT NULL
 );
 
+CREATE TABLE FamilyEventa (
+  id INTEGER PRIMARY KEY,
+  fam_id INTEGER NOT NULL REFERENCES Family(id),
+  eventa_id INTEGER NOT NULL REFERENCES Eventa(id),
+  conf FLOAT NOT NULL,
+  note TEXT
+);
+
+CREATE TABLE FamilyIndEventa (
+  id INTEGER PRIMARY KEY,
+  fam_ind_id INTEGER NOT NULL REFERENCES FamilyIndividual(id),
+  eventa_id INTEGER NOT NULL REFERENCES Eventa(id),
+  conf FLOAT NOT NULL,
+  note TEXT
+);
+
 CREATE TABLE FamilyIndividual (
   id INTEGER PRIMARY KEY,
   fam_id INTEGER NOT NULL,
@@ -482,7 +498,7 @@ INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 0, 1, 'F1');
 INSERT INTO UserSetting (id, user_id, property, val) VALUES(2, 1, 1, 'F1');
 
 /* The Version table has only this one row */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 8);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 9);
 
 COMMIT;
 
