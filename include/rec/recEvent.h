@@ -224,7 +224,7 @@ inline bool operator!=( const recEventEventa& d1, const recEventEventa& d2 )
 class recEventTypeRole : public recDb
 {
 public:
-    enum Role {  // predefined entries, only given if reqired by the program
+    enum Role {  // predefined entries, only given if required by the program
         ROLE_Unstated               = 0,
         ROLE_Birth_Born             = -1,
         ROLE_Birth_Mother           = -2,
@@ -250,7 +250,11 @@ public:
         ROLE_Residence_Visitor      = -62,
         ROLE_Occupation             = -65,
         ROLE_Condition              = -67,
-        ROLE_MAX                    = 24 // size of list
+        ROLE_Family_Husband         = -73,
+        ROLE_Family_Wife            = -74,
+        ROLE_Family_Partner         = -75,
+        ROLE_Family_Child           = -76,
+        ROLE_MAX                    = 29 // size of list
     };
     enum Prime {
         PRIME_Ignore = -1,
