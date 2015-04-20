@@ -29,8 +29,10 @@
 #define REC_RECEVENTA_H
 
 #include <rec/recDatabase.h>
-#include <rec/recEventType.h>
 #include <rec/recDate.h>
+#include <rec/recEventType.h>
+#include <rec/recFamEventa.h>
+#include <rec/recFamIndEventa.h>
 #include <rec/recReference.h>
 
 
@@ -113,6 +115,12 @@ public:
 
     static int GetLastPerSeqNumber( idt eventID );
     int GetLastPerSeqNumber() const { return GetLastPerSeqNumber( f_id ); }
+
+    static recFamilyEventaVec GetFamilyEventas( idt eaID );
+    recFamilyEventaVec GetFamilyEventas() const { return GetFamilyEventas( f_id ); }
+
+    static recFamilyIndEventaVec GetFamilyIndEventas( idt eaID );
+    recFamilyIndEventaVec GetFamilyIndEventas() const { return GetFamilyIndEventas( f_id ); }
 
     // Find matching Event records by following the links:-
     // Eventa/Persona(prime Role) -> Persona/Individual link -> Individual/Event(matching role)

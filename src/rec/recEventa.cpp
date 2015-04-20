@@ -36,7 +36,6 @@
 #endif
 
 #include <rec/recEventa.h>
-#include <rec/recEventType.h>
 #include <rec/recEvent.h>
 #include <rec/recPlace.h>
 
@@ -483,6 +482,55 @@ int recEventa::GetLastPerSeqNumber( idt eventID )
     return s_db->ExecuteScalar( sql );
 }
 
+recFamilyEventaVec recEventa::GetFamilyEventas( idt eaID )
+{
+    recFamilyEventaVec vec;
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3ResultSet result;
+
+    sql.Format(
+        "SELECT id, fam_id, conf, note FROM "
+        "  FamilyEventa WHERE eventa_id="ID";",
+        eaID
+    );
+    result = s_db->ExecuteQuery( sql );
+
+    recFamilyEventa fea(0);
+    fea.FSetEventaID( eaID );
+    while( result.NextRow() ) {
+        fea.FSetID( GET_ID( result.GetInt64( 0 ) ) );
+        fea.FSetFamID( GET_ID( result.GetInt64( 1 ) ) );
+        fea.FSetConf( result.GetDouble( 2 ) );
+        fea.FSetNote( result.GetAsString( 3 ) );
+        vec.push_back( fea );
+    }
+    return vec;
+}
+
+recFamilyIndEventaVec recEventa::GetFamilyIndEventas( idt eaID )
+{
+    recFamilyIndEventaVec vec;
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3ResultSet result;
+
+    sql.Format(
+        "SELECT id, fam_ind_id, conf, note FROM "
+        "  FamilyIndEventa WHERE eventa_id="ID";",
+        eaID
+    );
+    result = s_db->ExecuteQuery( sql );
+
+    recFamilyIndEventa fiea(0);
+    fiea.FSetEventaID( eaID );
+    while( result.NextRow() ) {
+        fiea.FSetID( GET_ID( result.GetInt64( 0 ) ) );
+        fiea.FSetFamIndID( GET_ID( result.GetInt64( 1 ) ) );
+        fiea.FSetConf( result.GetDouble( 2 ) );
+        fiea.FSetNote( result.GetAsString( 3 ) );
+        vec.push_back( fiea );
+    }
+    return vec;
+}
 
 recIdVec recEventa::FindMatchingEvents( recEVENT_Link link ) const
 {

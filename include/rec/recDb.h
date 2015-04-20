@@ -34,6 +34,8 @@
 #include <rec/recEvent.h>
 #include <rec/recEventa.h>
 #include <rec/recEventType.h>
+#include <rec/recFamEventa.h>
+#include <rec/recFamIndEventa.h>
 #include <rec/recGedParse.h>
 #include <rec/recIndividual.h>
 #include <rec/recInterface.h>

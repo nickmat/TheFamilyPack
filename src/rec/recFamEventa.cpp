@@ -69,7 +69,7 @@ void recFamilyEventa::Save()
         // Add new record
         sql.Format(
             "INSERT INTO FamilyEventa "
-            "(event_id, fam_id, conf, note) "
+            "(fam_id, eventa_id, conf, note) "
             "VALUES ("ID", "ID", %f, '%q');",
             f_fam_id, f_eventa_id, f_conf, UTF8_(f_note)
         );

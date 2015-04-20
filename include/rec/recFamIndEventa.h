@@ -30,6 +30,9 @@
 
 #include <rec/recDatabase.h>
 
+class recFamilyIndEventa;
+typedef std::vector< recFamilyIndEventa >   recFamilyIndEventaVec;
+
 //============================================================================
 //--------------------------[ recFamilyIndEventa ]----------------------------
 //============================================================================

@@ -39,9 +39,10 @@
 #include <rec/recEvent.h>
 #include <rec/recEventa.h>
 #include <rec/recIndividual.h>
+#include <rec/recIndividual.h>
 #include <rec/recPersona.h>
 
-wxString GetSexClassPer( idt perID )
+static wxString GetSexClassPer( idt perID )
 {
     Sex sex = recPersona::GetSex( perID );
     switch( sex ) {
@@ -53,11 +54,118 @@ wxString GetSexClassPer( idt perID )
     return "neut";
 }
 
+static wxString DisplayFamilyConclusions( const recEventa& ea )
+{
+    wxString htm;
+    recFamilyEventaVec feas = ea.GetFamilyEventas();
+    htm <<
+        "<table class='data'>\n"
+        "<tr>\n<th>ID</th><th>Relationship</th><th>Names</th><th>Confidence</th><th>Note</th>\n</tr>\n"
+    ;
+    for( size_t i = 0 ; i < feas.size() ; i++ ) {
+        recFamily fam(feas[i].FGetFamID());
+        htm << 
+            "<tr><td><a href='tfp:F" << fam.FGetID() <<
+            "'><b>" << fam.GetIdStr() <<
+            "</b></a></td><td>Union</td><td>"
+        ;
+
+        if( fam.FGetHusbID() ) {
+            htm << recIndividual::GetDescriptionStr( fam.FGetHusbID() );
+            if( fam.FGetWifeID() ) {
+                htm << "<br>";
+            }
+        }
+        if( fam.FGetWifeID() ) {
+            htm << recIndividual::GetDescriptionStr( fam.FGetWifeID() );
+        }
+        htm <<
+            "</td><td>" << feas[i].FGetConf() <<
+            "</td><td>" << feas[i].FGetNote() <<
+            "</td></tr>\n"
+        ;
+    }
+    recFamilyIndEventaVec fieas = ea.GetFamilyIndEventas();
+    for( size_t i = 0 ; i < fieas.size() ; i++ ) {
+        recFamilyIndividual fi(fieas[i].FGetFamIndID());
+        htm << 
+            "<tr><td><a href='tfp:F" << fi.FGetFamID() <<
+            "'><b>" << recFamily::GetIdStr( fi.FGetFamID() ) <<
+            "</b></a></td><td>Child</td><td>"
+            << recIndividual::GetDescriptionStr( fi.FGetIndID() ) <<
+            "</td><td>" << fieas[i].FGetConf() <<
+            "</td><td>" << fieas[i].FGetNote() <<
+            "</td></tr>\n"
+        ;
+
+    }
+    htm << "</table>\n";
+    return htm;
+}
+
+static wxString DisplayConclusions( const recEventa& er )
+{
+    idt erID = er.FGetID();
+    wxString htm;
+    recCheckIdVec ces = er.FindCheckedMatchingEvents();
+    if( ces.size() ) {
+        htm <<
+            "<table class='data'>\n"
+            "<tr>\n<th>Direct Link</th><th>Indirect Link</th><th>Title</th></tr>\n"
+        ;
+        for( size_t i = 0 ; i < ces.size() ; i++ ) {
+            idt e1 = ces[i].GetFirstID();
+            idt e2 = ces[i].GetSecondID();
+            idt eID = ( e1 ) ? e1 : e2;
+            wxString eIdStr = recEvent::GetIdStr( eID );
+            htm << "<tr>\n<td>";
+            if( e1 ) {
+                htm <<
+                    "<a href='tfp:E" << e1 <<
+                    "'><b>" << eIdStr << "</b></a>"
+                ;
+            } else {
+                htm <<
+                    "<a href='tfpe:cEER" << e2 << "," << erID <<
+                    "'><img src='memory:blank.png' width='80' height='20' alt='Add Direct Link'></a>"
+                ;
+            }
+            htm << "</td>\n<td>";
+            if( e2 ) {
+                htm <<
+                    "<a href='tfp:E" << e2 <<
+                    "'><b>" << eIdStr << "</b></a>"
+                ;
+            }
+            htm <<
+                "</td>\n<td>" << recEvent::GetTitle( eID ) <<
+                "</td>\n</tr>\n"
+            ;
+        }
+        htm << "</table>\n";
+    } else {
+        // There is no matching Event, so create opportunity to add one
+        // with "Create matching Event" button.
+        htm <<
+            "<table class='data'>\n"
+            "<tr>\n<th>Event</th><th>Title</th></tr>\n"
+            "<tr>\n<td><a href='tfpe:cE" << erID <<
+            "'><img src='memory:blank.png' width='80' height='20' alt='Add Event'></a>"
+            "</td>\n<td>" << recEventa::GetTitle( erID ) <<
+            "</td>\n</tr>\n"
+            "</table>\n"
+        ;
+    }
+    return htm;
+}
+
+
 wxString tfpWriteEventaPage( idt erID )
 {
     wxString htm;
     if( erID == 0 ) return wxEmptyString;
     recEventa er(erID);
+    recET_GRP grp = er.GetTypeGroup();
     idt refID = recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, erID );
 
 
@@ -131,54 +239,10 @@ wxString tfpWriteEventaPage( idt erID )
         htm << "</table>\n";
     }
 
-    recCheckIdVec ces = er.FindCheckedMatchingEvents();
-    if( ces.size() ) {
-        htm <<
-            "<table class='data'>\n"
-            "<tr>\n<th>Direct Link</th><th>Indirect Link</th><th>Title</th></tr>\n"
-        ;
-        for( size_t i = 0 ; i < ces.size() ; i++ ) {
-            idt e1 = ces[i].GetFirstID();
-            idt e2 = ces[i].GetSecondID();
-            idt eID = ( e1 ) ? e1 : e2;
-            wxString eIdStr = recEvent::GetIdStr( eID );
-            htm << "<tr>\n<td>";
-            if( e1 ) {
-                htm <<
-                    "<a href='tfp:E" << e1 <<
-                    "'><b>" << eIdStr << "</b></a>"
-                ;
-            } else {
-                htm <<
-                    "<a href='tfpe:cEER" << e2 << "," << erID <<
-                    "'><img src='memory:blank.png' width='80' height='20' alt='Add Direct Link'></a>"
-                ;
-            }
-            htm << "</td>\n<td>";
-            if( e2 ) {
-                htm <<
-                    "<a href='tfp:E" << e2 <<
-                    "'><b>" << eIdStr << "</b></a>"
-                ;
-            }
-            htm <<
-                "</td>\n<td>" << recEvent::GetTitle( eID ) <<
-                "</td>\n</tr>\n"
-            ;
-        }
-        htm << "</table>\n";
+    if( grp == recET_GRP_FamRelation ) {
+        htm << DisplayFamilyConclusions( er );
     } else {
-        // There is no matching Event, see if we need one.
-        // Get list of all Individuals linked to the linked Persona.
-        htm <<
-            "<table class='data'>\n"
-            "<tr>\n<th>Event</th><th>Title</th></tr>\n"
-            "<tr>\n<td><a href='tfpe:cE" << erID <<
-            "'><img src='memory:blank.png' width='80' height='20' alt='Add Event'></a>"
-            "</td>\n<td>" << recEventa::GetTitle( erID ) <<
-            "</td>\n</tr>\n"
-            "</table>\n"
-        ;
+        htm << DisplayConclusions( er );
     }
 
     htm << tfpWrTailTfp();
