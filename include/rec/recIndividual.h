@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 - 2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -62,11 +62,12 @@ class recIndividual : public recDb
 {
 public:
     Sex      f_sex;
+    idt      f_fam_id;
+    wxString f_note;
+    int      f_privacy;
     wxString f_name;
     wxString f_surname;
     wxString f_epitaph;
-    wxString f_note;
-    idt      f_fam_id;
 
     recIndividual() {}
     recIndividual( idt id ) : recDb(id) { Read(); }
@@ -83,24 +84,27 @@ public:
     static recIdVec GetIdVecFromStr( const wxString& str ) { return recIdVecFromStr( "I", str ); }
 
     Sex FGetSex() const { return f_sex; }
+    idt FGetFamID() const { return f_fam_id; }
+    wxString FGetNote() const { return f_note; }
+    int FGetPrivacy() const { return f_privacy; }
     wxString FGetName() const { return f_name; }
     wxString FGetSurname() const { return f_surname; }
     wxString FGetEpitaph() const { return f_epitaph; }
-    wxString FGetNote() const { return f_note; }
-    idt FGetFamID() const { return f_fam_id; }
 
     void FSetSex( Sex sex ) { f_sex = sex; }
+    void FSetFamID( idt famID ) { f_fam_id = famID; }
+    void FSetNote( const wxString& note ) { f_note = note; }
+    void FSetPrivacy( int privacy ) { f_privacy = privacy; }
     void FSetName( const wxString& name ) { f_name = name; }
     void FSetSurname( const wxString& surname ) { f_surname = surname; }
     void FSetEpitaph( const wxString& epitaph ) { f_epitaph = epitaph; }
-    void FSetNote( const wxString& note ) { f_note = note; }
-    void FSetFamID( idt famID ) { f_fam_id = famID; }
 
+    static Sex GetSex( idt indID );
+    static idt GetFamilyID( idt indID );
+    static int GetPrivacy( idt indID );
     static wxString GetName( idt indID );
     static wxString GetSurname( idt indID );
     static wxString GetEpitaph( idt indID );
-    static Sex GetSex( idt indID );
-    static idt GetFamilyID( idt indID );
 
     static recIndividualVec ReadVec( unsigned sexfilter = recInd_FILTER_SexAll );
 
@@ -116,6 +120,7 @@ public:
     recNameVec GetNames() const { return recName::GetNames( f_id, 0 ); }
 
     void UpdateEpitaph();
+    static void UpdateEpitaph( idt indID );
     void UpdateNames();
     void UpdateDefaultFamily();
     void Update();
@@ -174,11 +179,12 @@ inline bool recEquivalent( const recIndividual& r1, const recIndividual& r2 )
 {
     return
         r1.f_sex     == r2.f_sex     &&
+        r1.f_fam_id  == r2.f_fam_id  &&
+        r1.f_note    == r2.f_note    &&
+        r1.f_privacy == r2.f_privacy &&
         r1.f_name    == r2.f_name    &&
         r1.f_surname == r2.f_surname &&
-        r1.f_epitaph == r2.f_epitaph &&
-        r1.f_note    == r2.f_note    &&
-        r1.f_fam_id  == r2.f_fam_id;
+        r1.f_epitaph == r2.f_epitaph;
 }
 
 inline bool operator==( const recIndividual& r1, const recIndividual& r2 )

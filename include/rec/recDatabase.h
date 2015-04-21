@@ -151,6 +151,8 @@ public:
 
     bool EqualID( const recDb& r2 ) const { return f_id == r2.f_id; }
 
+    static int ExecuteInt( const wxSQLite3StatementBuffer& sql );
+    static int ExecuteInt( const char* format, idt id );
     static idt ExecuteID( const wxSQLite3StatementBuffer& sql );
     static idt ExecuteID( const char* format, idt id );
     static wxString ExecuteStr( const wxSQLite3StatementBuffer& sql );

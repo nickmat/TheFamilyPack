@@ -209,6 +209,21 @@ int recDb::GetCount( const char* name )
     return s_db->ExecuteScalar( sql );
 }
 
+int recDb::ExecuteInt( const wxSQLite3StatementBuffer& sql )
+{
+    wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
+    return result.GetInt( 0 );
+}
+
+int recDb::ExecuteInt( const char* format, idt id )
+{
+    wxSQLite3StatementBuffer sql;
+    sql.Format( format, id );
+
+    wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
+    return result.GetInt( 0 );
+}
+
 idt recDb::ExecuteID( const wxSQLite3StatementBuffer& sql )
 {
     wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );

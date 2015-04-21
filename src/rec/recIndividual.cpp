@@ -52,22 +52,24 @@ recIndividual::recIndividual( const recIndividual& i )
 {
     f_id      = i.f_id;
     f_sex     = i.f_sex;
+    f_fam_id  = i.f_fam_id;
+    f_note    = i.f_note;
+    f_privacy = i.f_privacy;
     f_name    = i.f_name;
     f_surname = i.f_surname;
     f_epitaph = i.f_epitaph;
-    f_note    = i.f_note;
-    f_fam_id  = i.f_fam_id;
 }
 
 void recIndividual::Clear()
 {
     f_id      = 0;
     f_sex     = SEX_Unstated;
+    f_fam_id  = 0;
+    f_note    = wxEmptyString;
+    f_privacy = 0;
     f_name    = wxEmptyString;
     f_surname = wxEmptyString;
     f_epitaph = wxEmptyString;
-    f_note    = wxEmptyString;
-    f_fam_id  = 0;
 }
 
 void recIndividual::Save()
@@ -81,10 +83,11 @@ void recIndividual::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO Individual (sex, name, surname, epitaph, note, fam_id)"
-            " VALUES (%u, '%q', '%q', '%q', '%q', "ID");",
-            f_sex, UTF8_(f_name), UTF8_(f_surname), UTF8_(f_epitaph),
-            UTF8_(f_note), f_fam_id
+            "INSERT INTO Individual"
+            " (sex, fam_id, note, privacy, name, surname, epitaph)"
+            " VALUES (%u, "ID", '%q', %d, '%q', '%q', '%q');",
+            f_sex, f_fam_id, UTF8_(f_note), f_privacy,
+            UTF8_(f_name), UTF8_(f_surname), UTF8_(f_epitaph)
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -94,19 +97,21 @@ void recIndividual::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO Individual (id, sex, name, surname, epitaph, note, fam_id)"
-                " VALUES ("ID", %u, '%q', '%q', '%q', '%q', "ID");",
-                f_id, f_sex, UTF8_(f_name), UTF8_(f_surname), UTF8_(f_epitaph),
-                UTF8_(f_note), f_fam_id
+                "INSERT INTO Individual"
+                " (id, sex, fam_id, note, privacy, name, surname, epitaph)"
+                " VALUES ("ID", %u, "ID", '%q', %d, '%q', '%q', '%q');",
+                f_id, f_sex, f_fam_id, UTF8_(f_note), f_privacy,
+                UTF8_(f_name), UTF8_(f_surname), UTF8_(f_epitaph)
             );
         } else {
             // Update existing record
             sql.Format(
                 "UPDATE Individual"
-                " SET sex=%u, name='%q', surname='%q', epitaph='%q', note='%q', fam_id="ID""
+                " SET sex=%u, fam_id="ID", note='%q', privacy=%d,"
+                " name='%q', surname='%q', epitaph='%q'"
                 " WHERE id="ID";",
-                f_sex, UTF8_(f_name), UTF8_(f_surname), UTF8_(f_epitaph), UTF8_(f_note),
-                f_fam_id, f_id
+                f_sex, f_fam_id, UTF8_(f_note), f_privacy,
+                UTF8_(f_name), UTF8_(f_surname), UTF8_(f_epitaph), f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -124,7 +129,7 @@ bool recIndividual::Read()
     }
 
     sql.Format(
-        "SELECT sex, name, surname, epitaph, note, fam_id"
+        "SELECT sex, fam_id, note, privacy, name, surname, epitaph"
         " FROM Individual WHERE id="ID";", f_id
     );
     result = s_db->GetTable( sql );
@@ -136,18 +141,19 @@ bool recIndividual::Read()
     }
     result.SetRow( 0 );
     f_sex     = (Sex) result.GetInt( 0 );
-    f_name    = result.GetAsString( 1 );
-    f_surname = result.GetAsString( 2 );
-    f_epitaph = result.GetAsString( 3 );
-    f_note    = result.GetAsString( 4 );
-    f_fam_id  = GET_ID( result.GetInt64( 5 ) );
+    f_fam_id  = GET_ID( result.GetInt64( 1 ) );
+    f_note    = result.GetAsString( 2 );
+    f_privacy = result.GetInt( 3 );
+    f_name    = result.GetAsString( 4 );
+    f_surname = result.GetAsString( 5 );
+    f_epitaph = result.GetAsString( 6 );
     return true;
 }
 
 recIndividualVec recIndividual::ReadVec( unsigned sexfilter )
 {
     wxString query =
-        "SELECT id, sex, name, surname, epitaph, note, fam_id FROM ";
+        "SELECT id, sex, fam_id, note, name, surname, epitaph FROM ";
     wxString queryMid = "Individual WHERE ";
     if( sexfilter == recInd_FILTER_SexAll ) {
         query << "Individual ";
@@ -184,11 +190,12 @@ recIndividualVec recIndividual::ReadVec( unsigned sexfilter )
     while( result.NextRow() ) {
         ind.f_id      = GET_ID( result.GetInt64( 0 ) );
         ind.f_sex     = (Sex) result.GetInt( 1 );
-        ind.f_name    = result.GetAsString( 2 );
-        ind.f_surname = result.GetAsString( 3 );
-        ind.f_epitaph = result.GetAsString( 4 );
-        ind.f_note    = result.GetAsString( 5 );
-        ind.f_fam_id  = GET_ID( result.GetInt64( 6 ) );
+        ind.f_fam_id  = GET_ID( result.GetInt64( 2 ) );
+        ind.f_note    = result.GetAsString( 3 );
+        ind.f_privacy = result.GetInt( 4 );
+        ind.f_name    = result.GetAsString( 5 );
+        ind.f_surname = result.GetAsString( 6 );
+        ind.f_epitaph = result.GetAsString( 7 );
         inds.push_back( ind );
     }
     return inds;
@@ -210,6 +217,13 @@ wxString recIndividual::GetDescriptionStr( idt indID )
     return name;
 }
 
+void recIndividual::UpdateEpitaph( idt indID )
+{
+    recIndividual ind(indID);
+    ind.UpdateEpitaph();
+    ind.Save();
+}
+
 void recIndividual::UpdateEpitaph()
 {
     idt bDateID, dDateID;
@@ -227,7 +241,6 @@ void recIndividual::UpdateEpitaph()
         return;
     }
 
-    wxString str;
     f_epitaph = "(";
     if( bDateID ) {
         f_epitaph << recDate::GetYear( bDateID );
@@ -282,6 +295,32 @@ void recIndividual::Update( idt indID )
     ind.Save();
 }
 
+Sex recIndividual::GetSex( idt indID )
+{
+    if( indID == 0 ) {
+        return SEX_Unstated;
+    }
+    wxSQLite3StatementBuffer sql;
+    sql.Format( "SELECT sex FROM Individual WHERE id="ID";", indID );
+    return (Sex) s_db->ExecuteScalar( sql );
+}
+
+idt recIndividual::GetFamilyID( idt indID )
+{
+    if( indID == 0 ) {
+        return 0;
+    }
+    return ExecuteID( "SELECT fam_id FROM Individual WHERE id="ID";", indID );
+}
+
+int recIndividual::GetPrivacy( idt indID )
+{
+    if( indID == 0 ) {
+        return 0;
+    }
+    return ExecuteInt( "SELECT privacy FROM Individual WHERE id="ID";", indID );
+}
+
 wxString recIndividual::GetName( idt indID )
 {
     if( indID == 0 ) {
@@ -304,24 +343,6 @@ wxString recIndividual::GetEpitaph( idt indID )
         return wxEmptyString;
     }
     return ExecuteStr( "SELECT epitaph FROM Individual WHERE id="ID";", indID );
-}
-
-Sex recIndividual::GetSex( idt indID )
-{
-    if( indID == 0 ) {
-        return SEX_Unstated;
-    }
-    wxSQLite3StatementBuffer sql;
-    sql.Format( "SELECT sex FROM Individual WHERE id="ID";", indID );
-    return (Sex) s_db->ExecuteScalar( sql );
-}
-
-idt recIndividual::GetFamilyID( idt indID )
-{
-    if( indID == 0 ) {
-        return 0;
-    }
-    return ExecuteID( "SELECT fam_id FROM Individual WHERE id="ID";", indID );
 }
 
 idt recIndividual::FindEvent( idt indID, idt roleID )

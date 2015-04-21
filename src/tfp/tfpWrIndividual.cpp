@@ -82,8 +82,9 @@ wxString tfpWriteIndividualPage( idt indID )
     }
     htm <<
         "</td></tr>\n<tr>\n"
-        "<td>ID, Sex:</td><td>" << ind.GetIdStr() <<
-        ", " << recGetSexStr( ind.FGetSex() ) << "</td>\n"
+        "<td colspan='2'>ID: <b>" << ind.GetIdStr() <<
+        "</b> Sex: <b>" << recGetSexStr( ind.FGetSex() ) <<
+        "</b> Privacy: <b>" << ind.FGetPrivacy() << "</b></td>\n"
         "</tr>\n<tr>\n"
         "<td>Note:</td><td>" << ind.FGetNote() << "</td>\n"
         "</tr>\n</table>\n"

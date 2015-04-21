@@ -41,8 +41,8 @@
 const int recVerMajor    = 0;
 const int recVerMinor    = 0;
 const int recVerRev      = 10;
-const int recVerTest     = 9;
-const wxStringCharType* recVerStr = wxS("TFPD-0.0.10.9");
+const int recVerTest     = 10;
+const wxStringCharType* recVerStr = wxS("TFPD-0.0.10.10");
 
 //============================================================================
 //                 Code to upgrade old versions
@@ -455,6 +455,38 @@ void UpgradeTest0_0_10_8to0_0_10_9()
     recDb::GetDb()->ExecuteUpdate( query );
 }
 
+void UpgradeTest0_0_10_9to0_0_10_10()
+{
+    // Version 0.0.10.9 to 0.0.10.10
+    // Add privacy column to Individual table.
+    // Default value is 0 (no privacy).
+
+    char* query =
+        "BEGIN;\n"
+
+        "ALTER TABLE Individual RENAME TO OldIndividual;\n"
+        "CREATE TABLE Individual (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  sex INTEGER NOT NULL,\n"
+        "  fam_id INTEGER NOT NULL,\n"
+        "  note TEXT NOT NULL,\n"
+        "  privacy INTEGER NOT NULL,\n"
+        "  name TEXT,\n"
+        "  surname TEXT,\n"
+        "  epitaph TEXT\n"
+        ");\n"
+        "INSERT INTO Individual\n"
+        " (id, sex, fam_id, note, privacy, name, surname, epitaph)\n"
+        " SELECT id, sex, fam_id, note, 0, name, surname, epitaph\n"
+        " FROM OldIndividual;\n"
+        "DROP TABLE OldIndividual;\n"
+
+        "UPDATE Version SET test=10 WHERE id=1;\n"
+        "COMMIT;\n"
+    ;
+    recDb::GetDb()->ExecuteUpdate( query );
+}
+
 void UpgradeRev0_0_10toCurrent( int test )
 {
     switch( test )
@@ -468,6 +500,7 @@ void UpgradeRev0_0_10toCurrent( int test )
     case 6: UpgradeTest0_0_10_6to0_0_10_7();
     case 7: UpgradeTest0_0_10_7to0_0_10_8();
     case 8: UpgradeTest0_0_10_8to0_0_10_9();
+    case 9: UpgradeTest0_0_10_9to0_0_10_10();
     }
 }
 
