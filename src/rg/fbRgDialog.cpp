@@ -53,13 +53,20 @@ fbRgCreateIndividual::fbRgCreateIndividual( wxWindow* parent, wxWindowID id, con
 	
 	m_staticText12 = new wxStaticText( this, wxID_ANY, _("Sex:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText12->Wrap( -1 );
-	bSizer92->Add( m_staticText12, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	bSizer92->Add( m_staticText12, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxLEFT, 5 );
 	
 	wxString m_choiceSexChoices[] = { _("Unstated"), _("Male"), _("Female"), _("Unknown") };
 	int m_choiceSexNChoices = sizeof( m_choiceSexChoices ) / sizeof( wxString );
-	m_choiceSex = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceSexNChoices, m_choiceSexChoices, 0 );
+	m_choiceSex = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxSize( -1,-1 ), m_choiceSexNChoices, m_choiceSexChoices, 0 );
 	m_choiceSex->SetSelection( 0 );
 	bSizer92->Add( m_choiceSex, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_staticText13 = new wxStaticText( this, wxID_ANY, _("Privacy:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText13->Wrap( -1 );
+	bSizer92->Add( m_staticText13, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxLEFT, 5 );
+	
+	m_spinPrivacy = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 60,-1 ), wxSP_ARROW_KEYS, 0, 100, 0 );
+	bSizer92->Add( m_spinPrivacy, 0, wxALL, 5 );
 	
 	
 	bSizer91->Add( bSizer92, 0, wxEXPAND, 5 );
@@ -1240,7 +1247,7 @@ fbRgEditIndividual::fbRgEditIndividual( wxWindow* parent, wxWindowID id, const w
 	
 	m_staticText11 = new wxStaticText( m_panel1, wxID_ANY, _("Sex:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText11->Wrap( -1 );
-	bSizer102->Add( m_staticText11, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	bSizer102->Add( m_staticText11, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxLEFT, 5 );
 	
 	wxString m_choiceSexChoices[] = { _("Unstated"), _("Male"), _("Female"), _("Unknown") };
 	int m_choiceSexNChoices = sizeof( m_choiceSexChoices ) / sizeof( wxString );
@@ -1248,15 +1255,22 @@ fbRgEditIndividual::fbRgEditIndividual( wxWindow* parent, wxWindowID id, const w
 	m_choiceSex->SetSelection( 0 );
 	bSizer102->Add( m_choiceSex, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
+	m_staticText12 = new wxStaticText( m_panel1, wxID_ANY, _("Privacy:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText12->Wrap( -1 );
+	bSizer102->Add( m_staticText12, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxLEFT, 5 );
+	
+	m_spinPrivacy = new wxSpinCtrl( m_panel1, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 60,-1 ), wxSP_ARROW_KEYS, 0, 100, 0 );
+	bSizer102->Add( m_spinPrivacy, 0, wxALL, 5 );
+	
 	
 	bSizer101->Add( bSizer102, 0, wxEXPAND, 5 );
 	
 	wxBoxSizer* bSizer103;
 	bSizer103 = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_staticText12 = new wxStaticText( m_panel1, wxID_ANY, _("Note:"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText12->Wrap( -1 );
-	bSizer103->Add( m_staticText12, 0, wxALL, 5 );
+	m_staticText13 = new wxStaticText( m_panel1, wxID_ANY, _("Note:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText13->Wrap( -1 );
+	bSizer103->Add( m_staticText13, 0, wxALL, 5 );
 	
 	m_textCtrlNote = new wxTextCtrl( m_panel1, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 350,100 ), wxTE_MULTILINE );
 	bSizer103->Add( m_textCtrlNote, 1, wxALL|wxEXPAND, 5 );

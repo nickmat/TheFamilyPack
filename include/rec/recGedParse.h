@@ -4,7 +4,7 @@
  * Purpose:     Read GEDCOM import file header.
  * Author:      Nick Matthews
  * Created:     19 September 2011
- * Copyright:   Copyright (c) 2011-2014, Nick Matthews.
+ * Copyright:   Copyright (c) 2011-2015, Nick Matthews.
  * Website:     http://thefamilypack.org
  * Licence:     GNU GPLv3
  *

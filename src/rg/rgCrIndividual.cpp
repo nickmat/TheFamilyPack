@@ -3,11 +3,9 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Create database Individual entity dialog.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     9 October 2010
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 - 2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -45,6 +43,7 @@ idt rgCreateIndividual(
     wxWindow* parent,
     idt famID,
     Sex sex,
+    int privacy,
     unsigned flags, 
     const wxString& name1,
     const wxString& name2
@@ -55,6 +54,7 @@ idt rgCreateIndividual(
 
     rgDlgCreateIndividual* dialog = new rgDlgCreateIndividual( parent, famID );
     dialog->SetSex( sex );
+    dialog->SetPrivacy( privacy );
     if( flags & rgCRNAME_Sur_Given ) {
         dialog->SetSurname( name1 );
         dialog->SetGiven( name2 );
@@ -96,6 +96,7 @@ bool rgDlgCreateIndividual::TransferDataToWindow()
         + recFamily::GetIdStr( m_individual.FGetFamID() );
     m_staticIndID->SetLabel( idStr );
     m_choiceSex->SetSelection( m_sex );
+    m_spinPrivacy->SetValue( m_privacy );
     m_textSurname->SetValue( m_surname );
     m_textGiven->SetFocus();
     return true;
@@ -104,6 +105,7 @@ bool rgDlgCreateIndividual::TransferDataToWindow()
 bool rgDlgCreateIndividual::TransferDataFromWindow()
 {
     m_individual.FSetSex( (Sex) m_choiceSex->GetSelection() );
+    m_individual.FSetPrivacy( m_spinPrivacy->GetValue() );
     m_individual.FSetNote( m_textNote->GetValue() );
 
     int seq = m_name.AddNameParts( m_textGiven->GetValue(), NAME_TYPE_Given_name, 0 );

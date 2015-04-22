@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     21 November 2012
- * Copyright:   Copyright (c) 2012, Nick Matthews.
+ * Copyright:   Copyright (c) 2012 - 2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -160,7 +160,7 @@ extern bool rgEditUserSettings( wxWindow* wind );
 
 // See src/rg/rgEdIndividual.cpp
 extern idt rgAddNewIndividual(
-    wxWindow* wind, Sex sex, const wxString& surname = wxEmptyString, idt famID = 0 );
+    wxWindow* wind, Sex sex, int privacy = 0, const wxString& surname = wxEmptyString, idt famID = 0 );
 extern bool rgAddNewParent( wxWindow* wind, idt indID, Sex sex );
 extern bool rgAddExistParent( wxWindow* wind, idt indID, Sex sex );
 extern bool rgAddNewSpouse( wxWindow* wind, idt indID, Sex sex );

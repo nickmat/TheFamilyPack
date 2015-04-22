@@ -3,10 +3,8 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Functions to create and edit Individuals and Families.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     3rd March 2013
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2013, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -45,7 +43,7 @@
 //#include "rgEdIndividual.h"
 
 
-idt rgAddNewIndividual( wxWindow* wind, Sex sex, const wxString& surname, idt famID )
+idt rgAddNewIndividual( wxWindow* wind, Sex sex, int privacy, const wxString& surname, idt famID )
 {
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
@@ -56,7 +54,7 @@ idt rgAddNewIndividual( wxWindow* wind, Sex sex, const wxString& surname, idt fa
         famID = fam.FGetID();
     }
 
-    idt indID = rgCreateIndividual( wind, famID, sex, rgCRNAME_Sur_Given, surname );
+    idt indID = rgCreateIndividual( wind, famID, sex, privacy, rgCRNAME_Sur_Given, surname );
     if( indID == 0 ) {
         recDb::Rollback( savepoint );
         return 0;
@@ -78,6 +76,7 @@ bool rgAddNewParent( wxWindow* wind, idt indID, Sex sex )
     recDb::Savepoint( savepoint );
     bool ret = false;
 
+    int privacy = 0;
     idt famID = 0;
     recFamilyVec parents = recIndividual::GetParentList( indID );
 
@@ -127,7 +126,7 @@ bool rgAddNewParent( wxWindow* wind, idt indID, Sex sex )
         surname = recIndividual::GetSurname( indID );
     }
 
-    idt parentID = rgAddNewIndividual( wind, sex, surname, famID );
+    idt parentID = rgAddNewIndividual( wind, sex, privacy, surname, famID );
     if( parentID ) {
         recFamilyIndividual fi(0);
         fi.FSetFamID( recIndividual::GetFamilyID( parentID ) );
@@ -184,6 +183,7 @@ bool rgAddNewSpouse( wxWindow* wind, idt indID, Sex sex )
     recDb::Savepoint( savepoint );
     bool ret = false;
 
+    int privacy = recIndividual::GetPrivacy( indID );
     idt famID = recIndividual::GetFamilyID( indID );
     recFamily fam(famID);
     if( sex == SEX_Female ) {
@@ -201,7 +201,7 @@ bool rgAddNewSpouse( wxWindow* wind, idt indID, Sex sex )
     }
     famID = fam.FGetID();
 
-    if( rgAddNewIndividual( wind, sex, "", famID ) != 0 ) {
+    if( rgAddNewIndividual( wind, sex, privacy, "", famID ) != 0 ) {
         recDb::ReleaseSavepoint( savepoint );
         ret = true;
     } else {
@@ -291,6 +291,7 @@ idt rgAddNewChild( wxWindow* wind, idt famID, Sex sex )
 {
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
+    int privacy = 0;
 
     // TODO: Allow for other naming systems
     wxString surname;
@@ -301,9 +302,10 @@ idt rgAddNewChild( wxWindow* wind, idt famID, Sex sex )
     }
     if( parentID ) {
         surname = recIndividual::GetSurname( parentID );
+        privacy = recIndividual::GetPrivacy( parentID );
     }
 
-    idt indID = rgAddNewIndividual( wind, sex, surname );
+    idt indID = rgAddNewIndividual( wind, sex, privacy, surname );
     if( indID ) {
         recFamilyIndividual fi(0);
         fi.FSetFamID( famID );

@@ -3,11 +3,9 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Create database Individual entity dialog header.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     9 October 2010
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 - 2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -38,6 +36,7 @@
 
 extern idt rgCreateIndividual( wxWindow* parent, idt famID,
     Sex sex = SEX_Unknown,
+    int privacy = 0,
     unsigned flags = rgCRNAME_Default, 
     const wxString& name1 = wxEmptyString,
     const wxString& name2 = wxEmptyString );
@@ -54,6 +53,7 @@ public:
     idt GetIndID() const { return m_individual.FGetID(); }
 
     void SetSex( Sex sex ) { m_sex = sex; }
+    void SetPrivacy( int privacy ) { m_privacy = privacy; }
     void SetGiven( const wxString& name ) { m_given = name; }
     void SetSurname( const wxString& name ) { m_surname = name; }
 
@@ -62,6 +62,7 @@ private:
     bool TransferDataFromWindow();
 
     Sex            m_sex;
+    int            m_privacy;
     wxString       m_given;
     wxString       m_surname;
 

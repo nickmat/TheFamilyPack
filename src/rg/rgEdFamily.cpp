@@ -3,11 +3,9 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Edit database Family entity dialog.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     9 October 2010
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 - 2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -252,17 +250,20 @@ void rgDlgEditFamily::OnEditID( wxCommandEvent& event )
 {
     idt indID;
     Sex sex;
+    int privacy;
 
     if( m_editbutton == EDBUT_Husb ) {
         indID = m_family.FGetHusbID();
         sex = SEX_Male;
+        privacy = recIndividual::GetPrivacy( m_family.FGetWifeID() );
     } else {  // m_editbutton == EDBUT_Wife
         indID = m_family.FGetWifeID();
         sex = SEX_Female;
+        privacy = recIndividual::GetPrivacy( m_family.FGetHusbID() );
     }
 
     if( indID == 0 ) {
-        indID = rgAddNewIndividual( this, sex, "", m_family.FGetID() );
+        indID = rgAddNewIndividual( this, sex, privacy, "", m_family.FGetID() );
         if( m_editbutton == EDBUT_Husb ) {
             m_family.FSetHusbID( indID );
         } else {

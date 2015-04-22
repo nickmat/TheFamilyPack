@@ -21,6 +21,7 @@ class rgStrTableCtrl;
 #include <wx/colour.h>
 #include <wx/settings.h>
 #include <wx/choice.h>
+#include <wx/spinctrl.h>
 #include <wx/sizer.h>
 #include <wx/textctrl.h>
 #include <wx/statline.h>
@@ -54,6 +55,8 @@ class fbRgCreateIndividual : public wxDialog
 		wxStaticText* m_staticName;
 		wxStaticText* m_staticText12;
 		wxChoice* m_choiceSex;
+		wxStaticText* m_staticText13;
+		wxSpinCtrl* m_spinPrivacy;
 		wxStaticText* m_staticText21;
 		wxTextCtrl* m_textGiven;
 		wxStaticText* m_staticText22;
@@ -414,6 +417,8 @@ class fbRgEditIndividual : public wxDialog
 		wxStaticText* m_staticText11;
 		wxChoice* m_choiceSex;
 		wxStaticText* m_staticText12;
+		wxSpinCtrl* m_spinPrivacy;
+		wxStaticText* m_staticText13;
 		wxTextCtrl* m_textCtrlNote;
 		wxPanel* m_panel2;
 		wxListCtrl* m_listName;

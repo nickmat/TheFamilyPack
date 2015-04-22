@@ -3,11 +3,9 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Edit database Individual entity dialog.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     9 October 2010
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 - 2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -89,9 +87,10 @@ bool rgDlgEditIndividual::TransferDataToWindow()
 {
     wxASSERT( m_individual.FGetID() != 0 );
 
-    m_staticTextEpitaph->SetLabel( m_individual.f_epitaph );
-    m_choiceSex->SetSelection( (int) m_individual.f_sex );
-    m_textCtrlNote->SetValue(  m_individual.f_note );
+    m_staticTextEpitaph->SetLabel( m_individual.FGetEpitaph() );
+    m_choiceSex->SetSelection( (int) m_individual.FGetSex() );
+    m_spinPrivacy->SetValue( m_individual.FGetPrivacy() );
+    m_textCtrlNote->SetValue(  m_individual.FGetNote() );
     m_staticIndID->SetLabel( m_individual.GetIdStr() );
 
     UpdateNameList();
@@ -104,12 +103,13 @@ bool rgDlgEditIndividual::TransferDataToWindow()
 
 bool rgDlgEditIndividual::TransferDataFromWindow()
 {
-    m_individual.f_sex = (Sex) m_choiceSex->GetSelection();
-    m_individual.f_note = m_textCtrlNote->GetValue();
+    m_individual.FSetSex( (Sex) m_choiceSex->GetSelection() );
+    m_individual.FSetPrivacy( m_spinPrivacy->GetValue() );
+    m_individual.FSetNote( m_textCtrlNote->GetValue() );
 
     for( size_t i = 0 ; i < m_names.size() ; i++ ) {
-        if( m_names[i].f_sequence != i+1 ) {
-            m_names[i].f_sequence = i+1;
+        if( m_names[i].FGetSequence() != i+1 ) {
+            m_names[i].FSetSequence( i+1 );
             m_names[i].Save();
         }
     }
