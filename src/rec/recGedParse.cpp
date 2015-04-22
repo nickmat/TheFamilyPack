@@ -64,6 +64,7 @@ public:
 
     void SetIndId( idt indID ) { m_ind.f_id = indID; }
     void SetSex( Sex sex ) { m_ind.FSetSex( sex ); }
+    void SetPrivacy( int privacy ) { m_ind.FSetPrivacy( privacy ); }
 
     void Save() { m_ind.UpdateNames(); m_ind.Save(); }
 };
@@ -436,6 +437,9 @@ void recGedParse::ReadIndi( int level )
             case tagOCCU:
                 ReadIndEvent( gind, level+1 );
                 continue;
+            case tag_PRI:
+                ReadPrivacy( gind );
+                continue;
             case tag_END:
                 cont = false;
                 continue;
@@ -517,6 +521,14 @@ void recGedParse::ReadSex( GedIndividual& gind )
         sex = SEX_Unknown;
     }
     gind.SetSex( sex );
+    ReadNextLine();
+}
+
+void recGedParse::ReadPrivacy( GedIndividual& gind )
+{
+    if( m_text == "Y" ) {
+        gind.SetPrivacy( 50 );
+    }
     ReadNextLine();
 }
 

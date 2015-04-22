@@ -115,6 +115,7 @@ private:
     void ReadIndi( int level );
     void ReadName( GedIndividual& gind, int level );
     void ReadSex( GedIndividual& gind );
+    void ReadPrivacy( GedIndividual& gind );
     void ReadIndEvent( GedIndividual& gind, int level );
     void ReadEventSource( const recEvent& eve, idt indID, int level );
     void ReadFam( int level );
