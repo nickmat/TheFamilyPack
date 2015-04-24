@@ -48,16 +48,20 @@ wxString tfpWritePersonaPage( idt perID )
     htm <<
         tfpWrHeadTfp( "Persona " + per.GetIdStr() ) <<
 
-        // Individual record
+        // Persona record
         "<table class='data'>\n<tr>\n"
+        "<th colspan='2'>Persona's Details</th>\n</tr>\n<tr>\n"
         "<td>Name:</td>\n<td class='subject " << tfpGetSexClass( per.FGetSex() ) <<
         "'>" << per.GetNameStr() <<
         "</td>\n</tr>\n<tr>\n"
-        "<td>ID, Sex:</td><td>" << per.GetIdStr() <<
-        ", " << recGetSexStr( per.FGetSex() ) << "</td>\n"
-        "</tr>\n<tr>\n"
-        "<td>Note:</td><td>" << per.FGetNote() << "</td>\n"
-        "</tr>\n</table>\n"
+        "<td colspan='2'>ID: <b>" << per.GetIdStr() <<
+        "</b> Sex: <b>" << recGetSexStr( per.FGetSex() ) <<
+        "</b></td>\n</tr>\n<tr>\n"
+        "<td>Note:</td><td>" << per.FGetNote() << "</td>\n</tr>\n<tr>\n"
+        "<td><b><a href='tfp:R" << per.FGetRefID() <<
+        "'>" << recReference::GetIdStr( per.FGetRefID() ) <<
+        "</a></b></td><td>" << recReference::GetTitle( per.FGetRefID() ) <<
+        "</td></tr></table>\n"
     ;
     // Individual Links
     recIdVec indIDs = per.GetIndividualIDs();

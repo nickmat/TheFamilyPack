@@ -66,6 +66,7 @@ wxString tfpWriteIndividualPage( idt indID )
 
         // Individual record
         "<table class='data'>\n<tr>\n"
+        "<th colspan='2'>Individual's Details</th>\n</tr>\n<tr>\n"
         "<td>Name:</td><td class='subject " << tfpGetIndSexClass( ind.FGetID() ) <<
         "'><a href='tfp:F" << ind.FGetFamID() <<
         "'>" << ind.FGetName() <<
@@ -93,7 +94,7 @@ wxString tfpWriteIndividualPage( idt indID )
     recNameVec names = ind.GetNames();
     htm <<
         "<table class='data'>\n<tr>\n"
-        "<th colspan='3'>Names</th>";
+        "<th colspan='3'>Names</th>\n";
     for( size_t i = 0 ; i < names.size() ; i++ ) {
         htm << "</tr>\n<tr>\n"
             "<td><b><a href='tfpi:N" << names[i].FGetID() <<
