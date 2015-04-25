@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     9 October 2010
- * Copyright:   Copyright (c) 2010-2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 - 2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -105,9 +105,6 @@ rgDlgEditPersona::rgDlgEditPersona( wxWindow* parent, idt perID )
     m_listEvent->InsertColumn( EV_COL_Title, _("Title") );
     m_listEvent->InsertColumn( EV_COL_Date, _("Date") );
     m_listEvent->InsertColumn( EV_COL_Place, _("Place") );
-
-    m_listRel->InsertColumn( RC_Number, _("Number") );
-    m_listRel->InsertColumn( RC_Value, _("Value") );
 }
 
 bool rgDlgEditPersona::TransferDataToWindow()
@@ -124,7 +121,6 @@ bool rgDlgEditPersona::TransferDataToWindow()
 
     UpdateNameList();
     UpdateEventList();
-    UpdateRelList();
     return true;
 }
 
@@ -197,27 +193,6 @@ void rgDlgEditPersona::UpdateEventList( idt eveID )
     }
 }
 
-void rgDlgEditPersona::UpdateRelList( idt relID )
-{
-    m_relationships = m_persona.ReadRelationships();
-    m_listRel->DeleteAllItems();
-    int row = -1;
-    for( size_t i = 0 ; i < m_relationships.size() ; i++ ) {
-        m_listRel->InsertItem( i, m_relationships[i].GetIdStr() );
-        m_listRel->SetItem( i, RC_Value, m_relationships[i].GetRelOfPersonaStr( m_persona.f_id ) );
-        if( relID == m_relationships[i].FGetID() ) {
-            m_listRel->SetItemState( i, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
-            row = i;
-        }
-    }
-    if( m_relationships.size() ) {
-        m_listRel->SetColumnWidth( RC_Value, -1 );
-    }
-    if( row >= 0 ) {
-        m_listRel->EnsureVisible( row );
-    }
-}
-
 void rgDlgEditPersona::OnPageChanged( wxBookCtrlEvent& event )
 {
     Page page = (Page) m_notebook->GetSelection();
@@ -230,9 +205,6 @@ void rgDlgEditPersona::OnPageChanged( wxBookCtrlEvent& event )
         break;
     case PAGE_Event:
         UpdateEventList();
-        break;
-    case PAGE_Rel:
-        UpdateRelList();
         break;
     default:
         wxASSERT( false );
@@ -432,48 +404,6 @@ void rgDlgEditPersona::OnOrderBy( wxCommandEvent& event )
     long row = m_listEvent->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     idt eveID = ( row >= 0 ) ? m_evpers[row].FGetEventaID() : 0;
     UpdateEventList( eveID );
-}
-
-void rgDlgEditPersona::OnRelAddButton( wxCommandEvent& event )
-{
-    idt relID = rgCreatePersonaRelationship( this, m_refID, "", m_persona.FGetID() );
-    if( relID ) {
-        recReferenceEntity::Create( m_refID, recReferenceEntity::TYPE_Relationship, relID );
-        UpdateRelList( relID );
-    }
-}
-
-void rgDlgEditPersona::OnRelEditButton( wxCommandEvent& event )
-{
-    long row = m_listRel->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-    if( row < 0 ) {
-        wxMessageBox( _("No row selected"), _("Edit Relationship") );
-        return;
-    }
-    idt relID = m_relationships[row].FGetID();
-    if( rgEditPersonaRelationship( this, relID ) ) {
-        UpdateRelList( relID );
-    }
-}
-
-void rgDlgEditPersona::OnRelDeleteButton( wxCommandEvent& event )
-{
-    long row = m_listRel->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-    if( row < 0 ) {
-        wxMessageBox( _("No row selected"), _("Delete Relationship") );
-        return;
-    }
-    idt relID = m_relationships[row].FGetID();
-    wxString mess = wxString::Format(
-        "Remove Relationship %s\n%s\nfrom Persona?",
-        m_relationships[row].GetIdStr(), m_relationships[row].FGetDescrip()
-    );
-    int ans = wxMessageBox( mess, _("Delete Relationship"), wxYES_NO | wxCANCEL, this );
-    if( ans != wxYES ) {
-        return;
-    }
-    m_relationships[row].Delete();
-    UpdateRelList();
 }
 
 // End of dlgEdPersona.cpp file

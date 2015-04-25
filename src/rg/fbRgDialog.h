@@ -558,11 +558,6 @@ class fbRgEditPersona : public wxDialog
 		wxButton* m_buttonEventUp;
 		wxButton* m_buttonEventDn;
 		wxRadioBox* m_radioBox3;
-		wxPanel* m_panel4;
-		wxListCtrl* m_listRel;
-		wxButton* m_buttonRelAdd;
-		wxButton* m_buttonRelEdit;
-		wxButton* m_buttonRelDel;
 		wxStaticLine* m_staticline1;
 		wxStaticText* m_staticPerID;
 		wxButton* m_buttonSave1;
@@ -582,9 +577,6 @@ class fbRgEditPersona : public wxDialog
 		virtual void OnEventUpButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnEventDownButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnOrderBy( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnRelAddButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnRelEditButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnRelDeleteButton( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:
