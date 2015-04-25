@@ -1000,6 +1000,11 @@ void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
         case 'I':
             ret = rgEditIndividual( this, id );
             break;
+        case 'P':
+            if( uch1.GetValue() == 'a' ) {
+                ret = rgEditPersona( this, recGetID( display.Mid(2) ) );
+            }
+            break;
         }
         if( ret == true ) {
             recDb::Commit();
@@ -1611,6 +1616,13 @@ void TfpFrame::RefreshEditMenu()
     case 'R':
         if( disp.size() >= 2 &&
             ( wxIsdigit( disp.GetChar( 1 ) ) || disp.GetChar( 1 ) == '$' )
+        ) {
+            m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
+        }
+        break;
+    case 'P':
+        if( disp.size() >= 3 && disp.GetChar( 1 ) == 'a'
+            && wxIsdigit( disp.GetChar( 2 ) ) 
         ) {
             m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
         }
