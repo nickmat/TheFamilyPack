@@ -41,8 +41,8 @@
 const int recVerMajor    = 0;
 const int recVerMinor    = 0;
 const int recVerRev      = 10;
-const int recVerTest     = 10;
-const wxStringCharType* recVerStr = wxS("TFPD-0.0.10.10");
+const int recVerTest     = 11;
+const wxStringCharType* recVerStr = wxS("TFPD-0.0.10.11");
 
 //============================================================================
 //                 Code to upgrade old versions
@@ -487,6 +487,24 @@ void UpgradeTest0_0_10_9to0_0_10_10()
     recDb::GetDb()->ExecuteUpdate( query );
 }
 
+void UpgradeTest0_0_10_10to0_0_10_11()
+{
+    // Version 0.0.10.10 to 0.0.10.11
+    // Remove Relationship table (We now use Family Event group.
+    // Data is removed, no attempt to transfer.
+
+    char* query =
+        "BEGIN;\n"
+
+        "DELETE FROM ReferenceEntity WHERE entity_type=5;\n"
+        "DROP TABLE Relationship;\n"
+
+        "UPDATE Version SET test=11 WHERE id=1;\n"
+        "COMMIT;\n"
+    ;
+    recDb::GetDb()->ExecuteUpdate( query );
+}
+
 void UpgradeRev0_0_10toCurrent( int test )
 {
     switch( test )
@@ -501,6 +519,7 @@ void UpgradeRev0_0_10toCurrent( int test )
     case 7: UpgradeTest0_0_10_7to0_0_10_8();
     case 8: UpgradeTest0_0_10_8to0_0_10_9();
     case 9: UpgradeTest0_0_10_9to0_0_10_10();
+    case 10: UpgradeTest0_0_10_10to0_0_10_11();
     }
 }
 

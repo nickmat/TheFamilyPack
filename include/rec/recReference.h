@@ -49,8 +49,8 @@ public:
         TYPE_Event         = 2,
         TYPE_Place         = 3,
         TYPE_Date          = 4,
-        TYPE_Spare2        = 5,
-        TYPE_Spare         = 6,
+        TYPE_Spare2        = 5, // Was Relationship
+        TYPE_Spare         = 6, // Was Attribute
         TYPE_Name          = 7,
         TYPE_MAX           = 8
     };

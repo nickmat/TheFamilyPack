@@ -42,7 +42,6 @@
 #include <rec/recEventa.h>
 #include <rec/recEvent.h>
 #include <rec/recEventType.h>
-#include <rec/recRelationship.h>
 
 
 recReference::recReference( const recReference& r )
