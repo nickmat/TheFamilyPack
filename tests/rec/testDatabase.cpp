@@ -139,22 +139,22 @@ void RecTestCase::AddTestData()
         " (id, title, higher_id, type_id, date1_id, date2_id, place_id, note, date_pt)"
         " VALUES(19, 'Test 19', 0, -1, 0, 0, 0, '', 0);\n"
 
-        "INSERT INTO Eventum"
+        "INSERT INTO Eventa"
         " (id, title, type_id, date1_id, date2_id, place_id, note, date_pt)"
         " VALUES(1, 'Test 1', -1, 0, 0, 0, '', 0);\n"
-        "INSERT INTO Eventum"
+        "INSERT INTO Eventa"
         " (id, title, type_id, date1_id, date2_id, place_id, note, date_pt)"
         " VALUES(19, 'Test 19', -1, 0, 0, 0, '', 0);\n"
 
         "INSERT INTO Persona (id, sex, ref_id, note) VALUES(4, 0, 0, '');\n"
         "INSERT INTO Individual"
-        " (id, sex, name, surname, epitaph, note, fam_id)"
-        " VALUES (3, 1, 'Name', 'Surname', '', 'Note', 0);\n"
+        " (id, sex, fam_id, note, privacy, name, surname, epitaph)"
+        " VALUES (3, 1, 0, 'Note', 0, 'Name', 'Surname', '');\n"
 
         "INSERT INTO Persona (id, sex, ref_id, note) VALUES(19, 0, 0, '');\n"
         "INSERT INTO Individual"
-        " (id, sex, name, surname, epitaph, note, fam_id)"
-        " VALUES (20, 1, 'Name', 'Surname', '', 'Note', 0);\n"
+        " (id, sex, fam_id, note, privacy, name, surname, epitaph)"
+        " VALUES (20, 1, 0, 'Note', 0, 'Name', 'Surname', '');\n"
 
         "INSERT INTO Persona (id, sex, ref_id, note) VALUES(3, 0, 0, '');\n"
         "INSERT INTO Persona (id, sex, ref_id, note) VALUES(20, 0, 0, '');\n"
