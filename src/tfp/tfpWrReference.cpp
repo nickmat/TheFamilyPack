@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     24 October 2010
- * Copyright:   Copyright (c) 2010-2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 - 2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -52,8 +52,6 @@ static wxString GetHref( const recReferenceEntity& ref )
         return "tfpi:P" + idStr;
     case recReferenceEntity::TYPE_Date:
         return "tfpi:D" + idStr;
-    case recReferenceEntity::TYPE_Relationship:
-        return "tfpi:Rs" + idStr;
     case recReferenceEntity::TYPE_Name:
         return "tfpi:N" + idStr;
     }

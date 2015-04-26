@@ -809,7 +809,7 @@ void RecTestCase::TestReferenceEntity()
     record2.f_id = record1.f_id;
     record2.Read();
     CPPUNIT_ASSERT( record1 == record2 );
-
+#if 0
     record1.f_ref_id = 10;
     record1.f_entity_type = recReferenceEntity::TYPE_Relationship;
     record1.f_entity_id = 11;
@@ -819,7 +819,7 @@ void RecTestCase::TestReferenceEntity()
     CPPUNIT_ASSERT( record1.f_id == id );
     record2.Read();
     CPPUNIT_ASSERT( record1 == record2 );
-
+#endif
     record1.f_id = 999;
     record1.f_entity_id = 8888;
     // f_id = 999 which doesn't exists, so create new record with no change to f_id.

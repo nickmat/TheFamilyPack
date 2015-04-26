@@ -3,11 +3,9 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Manage SQLite3 Reference and ReferenceEntity records.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 - 2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -51,7 +49,7 @@ public:
         TYPE_Event         = 2,
         TYPE_Place         = 3,
         TYPE_Date          = 4,
-        TYPE_Relationship  = 5,
+        TYPE_Spare2        = 5,
         TYPE_Spare         = 6,
         TYPE_Name          = 7,
         TYPE_MAX           = 8

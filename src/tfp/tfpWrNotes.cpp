@@ -3,11 +3,9 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Functions to write html notes to screen.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     21 January 2012
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 - 2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -38,7 +36,6 @@
 
 #include <rec/recDate.h>
 #include <rec/recPlace.h>
-#include <rec/recRelationship.h>
 #include <rec/recPersona.h>
 
 #include "tfpWr.h"
@@ -129,26 +126,6 @@ wxString tfpWriteName( idt nameID )
     }
        
     htm << "</table>\n" << tfpWrTailTfp();
-
-    return htm;
-}
-
-wxString tfpWriteRelationship( idt rsID )
-{
-    recRelationship rs(rsID);
-    if( rs.FGetID() == 0 ) return wxEmptyString;
-
-    wxString htm;
-    htm <<
-        tfpWrHeadTfp( "Relationship" ) <<
-        "<h1>Relationship " << rs.GetIdStr() << "</h1>\n" <<
-        recPersona::GetIdStr( rs.f_per1_id ) << " and " <<
-        recPersona::GetIdStr( rs.f_per2_id ) << " have the relationship " <<
-        rs.f_descrip << ", so:<br><br>" <<
-        rs.GetValue1Str() << "<br><br>" <<
-        rs.GetValue2Str() <<
-        tfpWrTailTfp()
-    ;
 
     return htm;
 }

@@ -687,37 +687,6 @@ class fbRgEditReference : public wxDialog
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class fbRgEditRelationship
-///////////////////////////////////////////////////////////////////////////////
-class fbRgEditRelationship : public wxDialog 
-{
-	private:
-	
-	protected:
-		wxButton* m_buttonPerson1;
-		wxTextCtrl* m_textCtrlPersona1;
-		wxStaticText* m_staticText75;
-		wxTextCtrl* m_textCtrlDescrip;
-		wxButton* m_buttonPersona2;
-		wxTextCtrl* m_textCtrlPersona2;
-		wxStaticLine* m_staticline18;
-		wxStaticText* m_staticRsNumber;
-		wxButton* m_buttonSave;
-		wxButton* m_buttonCancel;
-		
-		// Virtual event handlers, overide them in your derived class
-		virtual void OnPersona1Button( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnPersona2Button( wxCommandEvent& event ) { event.Skip(); }
-		
-	
-	public:
-		
-		fbRgEditRelationship( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Relationship"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
-		~fbRgEditRelationship();
-	
-};
-
-///////////////////////////////////////////////////////////////////////////////
 /// Class fbRgEditRelativeDate
 ///////////////////////////////////////////////////////////////////////////////
 class fbRgEditRelativeDate : public wxDialog 

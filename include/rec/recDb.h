@@ -44,7 +44,6 @@
 #include <rec/recPersona.h>
 #include <rec/recPlace.h>
 #include <rec/recReference.h>
-#include <rec/recRelationship.h>
 #include <rec/recSource.h>
 #include <rec/recSystem.h>
 #include <rec/recUser.h>

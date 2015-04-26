@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     26th February 2013
- * Copyright:   Copyright (c) 2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2013 - 2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -59,7 +59,6 @@ private:
         ID_EDREF_NEW_PLACE,
         ID_EDREF_NEW_EVENT,
         ID_EDREF_NEW_PER_EVENT,
-        ID_EDREF_NEW_REL,
         ID_ADDPER_MALE,
         ID_ADDPER_FEMALE,
         ID_ADDPER_UNKNOWN
@@ -92,7 +91,6 @@ private:
     void OnNewPlace( wxCommandEvent& event );
     void OnNewEvent( wxCommandEvent& event );
     void OnNewPersonalEvent( wxCommandEvent& event );
-    void OnNewRelationship( wxCommandEvent& event );
     void OnEditEntityButton( wxCommandEvent& event );
     void OnDeleteEntityButton( wxCommandEvent& event );
     void OnUpEntityButton( wxCommandEvent& event );

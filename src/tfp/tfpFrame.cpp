@@ -1757,9 +1757,6 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
     if( name.compare( "Re" ) == 0 ) {
         return tfpWriteResearcherList();
     }
-    if( name.compare( 0, 2, "Rs" ) == 0 && success1 ) {
-        return tfpWriteRelationship( num1 );
-    }
 
     return wxString::Format(
         "<html><head><title>Error</title></head>"

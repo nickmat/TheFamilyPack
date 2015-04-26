@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 - 2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -32,7 +32,6 @@
 #include <rec/recReference.h>
 #include <rec/recName.h>
 #include <rec/recEvent.h>
-#include <rec/recRelationship.h>
 
 class recPersona;
 typedef std::vector< recPersona >  recPersonaVec;
@@ -89,9 +88,6 @@ public:
 
     static int GetMaxEventaSeqNumber( idt perID );
     int GetMaxEventaSeqNumber() const { return GetMaxEventaSeqNumber( f_id ); }
-
-    static recRelationshipVec ReadRelationships( idt perID );
-    recRelationshipVec ReadRelationships() { return ReadRelationships( f_id ); }
 
     // Get a list of linked to Individual's
     static recIdVec GetIndividualIDs( idt perID );

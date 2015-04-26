@@ -137,7 +137,6 @@ BEGIN_EVENT_TABLE( rgDlgEditReference, wxDialog )
     EVT_MENU( ID_EDREF_NEW_PLACE,    rgDlgEditReference::OnNewPlace )
     EVT_MENU( ID_EDREF_NEW_EVENT,    rgDlgEditReference::OnNewEvent )
     EVT_MENU( ID_EDREF_NEW_PER_EVENT,rgDlgEditReference::OnNewPersonalEvent )
-    EVT_MENU( ID_EDREF_NEW_REL,      rgDlgEditReference::OnNewRelationship )
     EVT_MENU_RANGE( ID_ADDPER_MALE, ID_ADDPER_UNKNOWN, rgDlgEditReference::OnPersonaAddMenuOp )
 END_EVENT_TABLE()
 
@@ -386,7 +385,6 @@ void rgDlgEditReference::OnAddEntityButton( wxCommandEvent& event )
     menu->Append( ID_EDREF_NEW_DATE_AGE, _("Date a&ge") );
     menu->Append( ID_EDREF_NEW_PLACE, _("&Place") );
     menu->Append( ID_EDREF_NEW_NAME, _("&Name") );
-    menu->Append( ID_EDREF_NEW_REL, _("&Relationship") );
     menu->Append( ID_EDREF_NEW_EVENT, _("&Event") );
     menu->Append( ID_EDREF_NEW_PER_EVENT, _("Personal E&vent") );
     PopupMenu( menu );
@@ -490,17 +488,6 @@ void rgDlgEditReference::OnNewPersonalEvent( wxCommandEvent& event )
     }
 }
 
-void rgDlgEditReference::OnNewRelationship( wxCommandEvent& event )
-{
-    idt relID = rgCreatePersonaRelationship(
-        this, m_reference.FGetID(), GetSelectedText()
-    );
-    if( relID ) {
-        idt reID = CreateRefEntity( recReferenceEntity::TYPE_Relationship, relID );
-        UpdateEntities( reID );
-    }
-}
-
 void rgDlgEditReference::OnEditEntityButton( wxCommandEvent& event )
 {
     long row = m_listEntities->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
@@ -516,9 +503,6 @@ void rgDlgEditReference::OnEditEntityButton( wxCommandEvent& event )
         return;
     case recReferenceEntity::TYPE_Place:
         if( rgEditPlace( this, id ) ) break;
-        return;
-    case recReferenceEntity::TYPE_Relationship:
-        if( rgEditPersonaRelationship( this, id ) ) break;
         return;
     case recReferenceEntity::TYPE_Event:
         if( rgEditEventa( this, id ) ) break;
@@ -549,10 +533,6 @@ void rgDlgEditReference::OnDeleteEntityButton( wxCommandEvent& event )
         break;
     case recReferenceEntity::TYPE_Place:
         recPlace::RemoveFromDatabase( entID );
-        break;
-    case recReferenceEntity::TYPE_Relationship:
-        recRelationship::Delete( entID );
-        recReferenceEntity::Delete( reID );
         break;
     case recReferenceEntity::TYPE_Name:
         recName::RemoveFromDatabase( entID );
@@ -631,10 +611,6 @@ void rgDlgEditReference::InsertEntityListItem( size_t row )
     case recReferenceEntity::TYPE_Place:
         m_listEntities->SetItem( row, ENT_COL_Number, recPlace::GetIdStr( entID ) );
         m_listEntities->SetItem( row, ENT_COL_Value, recPlace::GetAddressStr( entID ) );
-        break;
-    case recReferenceEntity::TYPE_Relationship:
-        m_listEntities->SetItem( row, ENT_COL_Number, recRelationship::GetIdStr( entID ) );
-        m_listEntities->SetItem( row, ENT_COL_Value, recRelationship::GetValue1Str( entID ) );
         break;
     case recReferenceEntity::TYPE_Event:
         m_listEntities->SetItem( row, ENT_COL_Number, recEventa::GetIdStr( entID ) );

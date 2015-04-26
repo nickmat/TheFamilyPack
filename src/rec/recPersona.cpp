@@ -220,37 +220,6 @@ int recPersona::GetMaxEventaSeqNumber( idt perID )
     return s_db->ExecuteScalar( sql );
 }
 
-recRelationshipVec recPersona::ReadRelationships( idt perID )
-{
-    recRelationshipVec list;
-    recRelationship rel;
-    wxSQLite3StatementBuffer sql;
-    wxSQLite3Table result;
-
-    if( perID == 0 ) {
-        return list;
-    }
-
-    sql.Format(
-        "SELECT id, per1_id, per2_id, descrip FROM "
-        "Relationship WHERE per1_id="ID" OR per2_id="ID";",
-        perID, perID
-    );
-    result = s_db->GetTable( sql );
-
-    list.reserve( result.GetRowCount() );
-    for( int i = 0 ; i < result.GetRowCount() ; i++ )
-    {
-        result.SetRow( i );
-        rel.f_id      = GET_ID( result.GetInt64( 0 ) );
-        rel.f_per1_id = GET_ID( result.GetInt64( 1 ) );
-        rel.f_per2_id = GET_ID( result.GetInt64( 2 ) );
-        rel.f_descrip = result.GetAsString( 3 );
-        list.push_back( rel );
-    }
-    return list;
-}
-
 recIdVec recPersona::GetIndividualIDs( idt perID )
 {
     recIdVec vec;

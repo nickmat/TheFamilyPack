@@ -4,7 +4,7 @@
  * Purpose:     Manage SQLite3 Reference and ReferenceEntity records.
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
- * Created:     3 October 2010
+ * Created:     3 October 2010 - 2015
  * Copyright:   Copyright (c) 2010-2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -236,8 +236,8 @@ const wxString recReferenceEntity::sm_typeStr[recReferenceEntity::TYPE_MAX] = {
     _("Event"),        // TYPE_Event
     _("Place"),        // TYPE_Place
     _("Date"),         // TYPE_Date
-    _("Relationship"), // TYPE_Relationship
-    _("Attribute"),    // TYPE_Attribute
+    _("Spare2"),       // TYPE_Relationship 
+    _("Spare"),        // TYPE_Attribute
     _("Name")          // TYPE_Name
 };
 
@@ -354,8 +354,6 @@ wxString recReferenceEntity::GetEntityIdStr() const
         return recPlace::GetIdStr( f_entity_id );
     case TYPE_Date:
         return recDate::GetIdStr( f_entity_id );
-    case TYPE_Relationship:
-        return recRelationship::GetIdStr( f_entity_id );
     case TYPE_Name:
         return recName::GetIdStr( f_entity_id );
     }
@@ -372,8 +370,6 @@ wxString recReferenceEntity::GetEntityStr() const
         return recPlace::GetAddressStr( f_entity_id );
     case TYPE_Date:
         return recDate::GetStr( f_entity_id );
-    case TYPE_Relationship:
-        return recRelationship::GetValue1Str( f_entity_id );
     case TYPE_Name:
         return recName::GetNameStr( f_entity_id );
     }

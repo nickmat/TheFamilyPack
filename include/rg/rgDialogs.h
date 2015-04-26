@@ -135,11 +135,6 @@ extern bool rgSelectDateFromReference(
 extern bool rgSelectPlaceFromReference(
     wxWindow* wind, idt* placeID, idt refID, const wxString& title, unsigned style );
 
-// See src/rg/rgEdRelationship.cpp
-extern bool rgEditPersonaRelationship( wxWindow* wind, idt relID );
-extern idt rgCreatePersonaRelationship(
-    wxWindow* wind, idt refID, const wxString& value = "", idt per1ID = 0, idt per2ID = 0 );
-
 // See src/rg/rgEdRelDate.cpp
 extern bool rgEditRelativeDate( wxWindow* wind, idt dateID );
 extern idt rgCreateRelativeDate( wxWindow* wind, idt baseID, long value = 0 );

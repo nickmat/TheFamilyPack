@@ -82,7 +82,6 @@ extern wxString tfpWriteIndividualList( const wxString& surname );
 extern wxString tfpWriteDate( idt dateID );
 extern wxString tfpWritePlace( idt placeID );
 extern wxString tfpWriteName( idt nameID );
-extern wxString tfpWriteRelationship( idt rsID );
 
 // See tfpWrPersona.cpp
 extern wxString tfpWritePersonaPage( idt perID );

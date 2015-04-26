@@ -61,7 +61,6 @@
     <sources>$(LOCAL_SRC)/rec/recPersona.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recPlace.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recReference.cpp</sources>
-    <sources>$(LOCAL_SRC)/rec/recRelationship.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recSource.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recSystem.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recUser.cpp</sources>
@@ -87,7 +86,6 @@
     <headers>$(LOCAL_INC)/rec/recPersona.h</headers>
     <headers>$(LOCAL_INC)/rec/recPlace.h</headers>
     <headers>$(LOCAL_INC)/rec/recReference.h</headers>
-    <headers>$(LOCAL_INC)/rec/recRelationship.h</headers>
     <headers>$(LOCAL_INC)/rec/recSource.h</headers>
     <headers>$(LOCAL_INC)/rec/recSystem.h</headers>
     <headers>$(LOCAL_INC)/rec/recUser.h</headers>
@@ -132,7 +130,6 @@
     <sources>$(LOCAL_SRC)/rg/rgEdPersona.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdPlace.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdReference.cpp</sources>
-    <sources>$(LOCAL_SRC)/rg/rgEdRelationship.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdRelDate.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdResearcher.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdRole.cpp</sources>
@@ -164,7 +161,6 @@
     <headers>$(LOCAL_SRC)/rg/rgEdPersona.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdPlace.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdReference.h</headers>
-    <headers>$(LOCAL_SRC)/rg/rgEdRelationship.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdRelDate.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdResearcher.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdRole.h</headers>
