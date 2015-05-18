@@ -60,7 +60,7 @@
   <set var="LOCAL_TESTS">$(REL_ROOT)/tests</set>
   <set var="LOCAL_SAMP">$(REL_ROOT)/sample</set>
   <set var="LOCAL_UTIL">$(REL_ROOT)/utils</set>
-  <set var="CPPUNIT_DIR">$(DOLLAR)($(ENV_VAR)CPPUNIT)</set>
+  <set var="CPPUNIT_DIR">$(DOLLAR)(CPPUNIT)</set>
 
   <if cond="NO_DEPS=='0'">
 
