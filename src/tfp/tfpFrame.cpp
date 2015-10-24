@@ -895,7 +895,7 @@ void TfpFrame::OnAboutDatabase( wxCommandEvent& event )
     wxMessageBox(
         wxString::Format(
             _("Database \"%s\"\nVersion %s"),
-            m_dbFileName, recVersion::GetVersionStr()
+            recDb::GetFileName(), recVersion::GetVersionStr()
         ),
         _("About TFP Database"),
         wxOK | wxICON_INFORMATION,
@@ -1485,7 +1485,6 @@ int TfpFrame::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )
 void TfpFrame::SetDatabaseOpen( const wxString& path )
 {
     wxFileName dbfile( path );
-    m_dbFileName = dbfile.GetFullPath();
     m_titleFmt = wxString::Format( "TFP: %s, %%s", dbfile.GetName() );
     SetMenuBar( m_menuOpenDB );
     m_toolbar->EnableTool( tfpID_LIST_SURNAME_INDEX, true );
@@ -1497,7 +1496,6 @@ void TfpFrame::SetDatabaseOpen( const wxString& path )
 
 void TfpFrame::SetNoDatabase()
 {
-    m_dbFileName = wxEmptyString;
     SetTitle( "The Family Pack" );
     SetMenuBar( m_menuClosedDB );
     m_toolbar->EnableTool( tfpID_LIST_SURNAME_INDEX, false );

@@ -68,7 +68,6 @@ private:
     StringVec           m_ctxmenuPages;
     bool                m_webPageAllow;
 
-    wxString            m_dbFileName;
     wxString            m_titleFmt;
 
     rgCompareEvent      m_compEvent;
