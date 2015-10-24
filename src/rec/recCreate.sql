@@ -84,6 +84,26 @@ CREATE TABLE Event (
   date_pt INTEGER NOT NULL
 );
 
+CREATE TABLE Eventa (
+  id INTEGER PRIMARY KEY,
+  title TEXT NOT NULL,
+  type_id INTEGER NOT NULL REFERENCES EventType(id),
+  date1_id INTEGER NOT NULL,
+  date2_id INTEGER NOT NULL,
+  place_id INTEGER NOT NULL,
+  note TEXT NOT NULL,
+  date_pt INTEGER NOT NULL
+);
+
+CREATE TABLE EventaPersona (
+  id INTEGER PRIMARY KEY,
+  eventa_id INTEGER NOT NULL REFERENCES Eventa(id),
+  per_id INTEGER NOT NULL REFERENCES Persona(id),
+  role_id INTEGER NOT NULL REFERENCES EventTypeRole(id),
+  note TEXT NOT NULL,
+  per_seq INTEGER NOT NULL
+);
+
 CREATE TABLE EventEventa (
   id INTEGER PRIMARY KEY,
   event_id INTEGER NOT NULL REFERENCES Event(id),
@@ -104,26 +124,6 @@ CREATE TABLE EventTypeRole (
   prime INTEGER,
   official INTEGER,
   name TEXT
-);
-
-CREATE TABLE Eventa (
-  id INTEGER PRIMARY KEY,
-  title TEXT NOT NULL,
-  type_id INTEGER NOT NULL REFERENCES EventType(id),
-  date1_id INTEGER NOT NULL,
-  date2_id INTEGER NOT NULL,
-  place_id INTEGER NOT NULL,
-  note TEXT NOT NULL,
-  date_pt INTEGER NOT NULL
-);
-
-CREATE TABLE EventaPersona (
-  id INTEGER PRIMARY KEY,
-  eventa_id INTEGER NOT NULL REFERENCES Eventa(id),
-  per_id INTEGER NOT NULL REFERENCES Persona(id),
-  role_id INTEGER NOT NULL REFERENCES EventTypeRole(id),
-  note TEXT NOT NULL,
-  per_seq INTEGER NOT NULL
 );
 
 INSERT INTO EventType (id) VALUES(0);
