@@ -70,6 +70,7 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_OPEN_FILE, TfpFrame::OnOpenFile )
     EVT_MENU( tfpID_CLOSE_FILE, TfpFrame::OnCloseFile )
     EVT_MENU( tfpID_IMPORT_GEDCOM, TfpFrame::OnImportGedcom )
+    EVT_MENU( tfpID_EXPORT_GEDCOM, TfpFrame::OnExportGedcom )
     EVT_MENU( tfpID_EXPORT_HTML, TfpFrame::OnExportHtml )
     EVT_MENU( tfpID_PRINT, TfpFrame::OnPrint )
     EVT_MENU( tfpID_PREVIEW, TfpFrame::OnPreview )
@@ -141,6 +142,7 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     menuFile->AppendSeparator();
     menuFile->Append( tfpID_IMPORT_GEDCOM, _("&Import GEDCOM file") );
     menuFile->AppendSeparator();
+    menuFile->Append( tfpID_EXPORT_GEDCOM, _("Export &GEDCOM file") );
     menuFile->Append( tfpID_EXPORT_HTML, _("&Export HTML files") );
     menuFile->AppendSeparator();
     menuFile->Append( tfpID_PRINT, _("&Print...\tCtrl-P") );
@@ -376,6 +378,13 @@ void TfpFrame::OnImportGedcom( wxCommandEvent& event )
         recDb::ErrorMessage( e );
         recDb::Rollback();
     }
+}
+
+/*! \brief Called on a Export GEDCOM menu option event.
+ */
+void TfpFrame::OnExportGedcom( wxCommandEvent& event )
+{
+    wxMessageBox( _("Not yet implimented"), "OnExportGedcom" );
 }
 
 /*! \brief Called on a Export Html menu option event.

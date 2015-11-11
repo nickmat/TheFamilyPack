@@ -84,6 +84,7 @@ public:
     void OnOpenFile( wxCommandEvent& event );
     void OnCloseFile( wxCommandEvent& event );
     void OnImportGedcom( wxCommandEvent& event );
+    void OnExportGedcom( wxCommandEvent& event );
     void OnExportHtml( wxCommandEvent& event );
     void OnPrint( wxCommandEvent& event );
     void OnPreview( wxCommandEvent& event );
@@ -176,6 +177,7 @@ enum
     tfpID_OPEN_FILE,
     tfpID_CLOSE_FILE,
     tfpID_IMPORT_GEDCOM,
+    tfpID_EXPORT_GEDCOM,
     tfpID_EXPORT_HTML,
     tfpID_PRINT,
     tfpID_PREVIEW,
