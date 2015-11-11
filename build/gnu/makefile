@@ -69,6 +69,7 @@ TFP_CXXFLAGS = $(VAR) $(VAR_4) -I../../include -I../../src `$(WX_CONFIG) \
 	--cxxflags $(WX_CONFIG_FLAGS)` $(CPPFLAGS) $(CXXFLAGS)
 TFP_OBJECTS =  \
 	tfp_tfpApp.o \
+	tfp_tfpExportGed.o \
 	tfp_tfpFrame.o \
 	tfp_tfpMemory.o \
 	tfp_tfpNote.o \
@@ -118,7 +119,10 @@ REC_OBJECTS =  \
 	rec_recEvent.o \
 	rec_recEventa.o \
 	rec_recEventType.o \
+	rec_recFamEventa.o \
+	rec_recFamIndEventa.o \
 	rec_recFilterEvent.o \
+	rec_recGedExport.o \
 	rec_recGedParse.o \
 	rec_recHelper.o \
 	rec_recIndividual.o \
@@ -127,7 +131,6 @@ REC_OBJECTS =  \
 	rec_recPersona.o \
 	rec_recPlace.o \
 	rec_recReference.o \
-	rec_recRelationship.o \
 	rec_recSource.o \
 	rec_recSystem.o \
 	rec_recUser.o \
@@ -161,7 +164,6 @@ RECGUI_OBJECTS =  \
 	recgui_rgEdPersona.o \
 	recgui_rgEdPlace.o \
 	recgui_rgEdReference.o \
-	recgui_rgEdRelationship.o \
 	recgui_rgEdRelDate.o \
 	recgui_rgEdResearcher.o \
 	recgui_rgEdRole.o \
@@ -250,6 +252,9 @@ librecgui.a: $(RECGUI_OBJECTS)
 	$(RANLIB) $@
 
 tfp_tfpApp.o: ./../../src/tfp/tfpApp.cpp
+	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
+
+tfp_tfpExportGed.o: ./../../src/tfp/tfpExportGed.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
 tfp_tfpFrame.o: ./../../src/tfp/tfpFrame.cpp
@@ -366,7 +371,16 @@ rec_recEventa.o: ./../../src/rec/recEventa.cpp
 rec_recEventType.o: ./../../src/rec/recEventType.cpp
 	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
 
+rec_recFamEventa.o: ./../../src/rec/recFamEventa.cpp
+	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
+
+rec_recFamIndEventa.o: ./../../src/rec/recFamIndEventa.cpp
+	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
+
 rec_recFilterEvent.o: ./../../src/rec/recFilterEvent.cpp
+	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
+
+rec_recGedExport.o: ./../../src/rec/recGedExport.cpp
 	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
 
 rec_recGedParse.o: ./../../src/rec/recGedParse.cpp
@@ -391,9 +405,6 @@ rec_recPlace.o: ./../../src/rec/recPlace.cpp
 	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
 
 rec_recReference.o: ./../../src/rec/recReference.cpp
-	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
-
-rec_recRelationship.o: ./../../src/rec/recRelationship.cpp
 	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
 
 rec_recSource.o: ./../../src/rec/recSource.cpp
@@ -472,9 +483,6 @@ recgui_rgEdPlace.o: ./../../src/rg/rgEdPlace.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgEdReference.o: ./../../src/rg/rgEdReference.cpp
-	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
-
-recgui_rgEdRelationship.o: ./../../src/rg/rgEdRelationship.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgEdRelDate.o: ./../../src/rg/rgEdRelDate.cpp

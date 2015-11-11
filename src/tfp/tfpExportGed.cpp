@@ -1,11 +1,11 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        recDb.h
+ * Name:        src/tfp/tfpExportGed.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Manage SQLite3 database, combined header.
+ * Purpose:     Export GEDCOM data files.
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
- * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010-2015, Nick Matthews.
+ * Created:     11th November 2015
+ * Copyright:   Copyright (c) 2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -15,7 +15,7 @@
  *
  *  The Family Pack is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
@@ -25,29 +25,26 @@
 
 */
 
-#ifndef RECDB_H
-#define RECDB_H
+#include "wx/wxprec.h"
 
-#include <rec/recContact.h>
-#include <rec/recDatabase.h>
-#include <rec/recDate.h>
-#include <rec/recEvent.h>
-#include <rec/recEventa.h>
-#include <rec/recEventType.h>
-#include <rec/recFamEventa.h>
-#include <rec/recFamIndEventa.h>
+#ifdef __BORLANDC__
+#pragma hdrstop
+#endif
+
+#ifndef WX_PRECOMP
+#include "wx/wx.h"
+#endif
+
+#include "tfpExport.h"
+
 #include <rec/recGedExport.h>
-#include <rec/recGedParse.h>
-#include <rec/recIndividual.h>
-#include <rec/recInterface.h>
-#include <rec/recIndPersona.h>
-#include <rec/recName.h>
-#include <rec/recPersona.h>
-#include <rec/recPlace.h>
-#include <rec/recReference.h>
-#include <rec/recSource.h>
-#include <rec/recSystem.h>
-#include <rec/recUser.h>
-#include <rec/recVersion.h>
 
-#endif // RECDB_H
+#include <wx/wfstream.h>
+
+
+bool tfpExportGedcom( wxString& path )
+{
+    return true;
+}
+
+// End of src/tfp/tfpExportGed.cpp Source

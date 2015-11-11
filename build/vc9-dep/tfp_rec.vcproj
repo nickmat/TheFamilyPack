@@ -275,7 +275,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rec\recFamEventa.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rec\recFamIndEventa.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rec\recFilterEvent.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rec\recGedExport.cpp"
 				>
 			</File>
 			<File
@@ -308,10 +320,6 @@
 			</File>
 			<File
 				RelativePath="..\..\src\rec\recReference.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\rec\recRelationship.cpp"
 				>
 			</File>
 			<File
@@ -369,7 +377,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\include\rec\recFamEventa.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\rec\recFamIndEventa.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\include\rec\recFilterEvent.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\rec\recGedExport.h"
 				>
 			</File>
 			<File
@@ -406,10 +426,6 @@
 			</File>
 			<File
 				RelativePath="..\..\include\rec\recReference.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\rec\recRelationship.h"
 				>
 			</File>
 			<File

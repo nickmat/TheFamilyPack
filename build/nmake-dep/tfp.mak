@@ -61,6 +61,7 @@ TFP_CXXFLAGS = /MD$(VAR_23) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) /D__WXMSW__
 	$(CPPFLAGS) $(CXXFLAGS)
 TFP_OBJECTS =  \
 	tfp_tfpApp.obj \
+	tfp_tfpExportGed.obj \
 	tfp_tfpFrame.obj \
 	tfp_tfpMemory.obj \
 	tfp_tfpNote.obj \
@@ -157,7 +158,10 @@ REC_OBJECTS =  \
 	rec_recEvent.obj \
 	rec_recEventa.obj \
 	rec_recEventType.obj \
+	rec_recFamEventa.obj \
+	rec_recFamIndEventa.obj \
 	rec_recFilterEvent.obj \
+	rec_recGedExport.obj \
 	rec_recGedParse.obj \
 	rec_recHelper.obj \
 	rec_recIndividual.obj \
@@ -166,7 +170,6 @@ REC_OBJECTS =  \
 	rec_recPersona.obj \
 	rec_recPlace.obj \
 	rec_recReference.obj \
-	rec_recRelationship.obj \
 	rec_recSource.obj \
 	rec_recSystem.obj \
 	rec_recUser.obj \
@@ -206,7 +209,6 @@ RECGUI_OBJECTS =  \
 	recgui_rgEdPersona.obj \
 	recgui_rgEdPlace.obj \
 	recgui_rgEdReference.obj \
-	recgui_rgEdRelationship.obj \
 	recgui_rgEdRelDate.obj \
 	recgui_rgEdResearcher.obj \
 	recgui_rgEdRole.obj \
@@ -435,6 +437,9 @@ recgui$(WXLIBPOSTFIX).lib: $(RECGUI_OBJECTS)
 tfp_tfpApp.obj: .\..\..\src\tfp\tfpApp.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpApp.cpp
 
+tfp_tfpExportGed.obj: .\..\..\src\tfp\tfpExportGed.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpExportGed.cpp
+
 tfp_tfpFrame.obj: .\..\..\src\tfp\tfpFrame.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpFrame.cpp
 
@@ -573,8 +578,17 @@ rec_recEventa.obj: .\..\..\src\rec\recEventa.cpp
 rec_recEventType.obj: .\..\..\src\rec\recEventType.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recEventType.cpp
 
+rec_recFamEventa.obj: .\..\..\src\rec\recFamEventa.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recFamEventa.cpp
+
+rec_recFamIndEventa.obj: .\..\..\src\rec\recFamIndEventa.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recFamIndEventa.cpp
+
 rec_recFilterEvent.obj: .\..\..\src\rec\recFilterEvent.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recFilterEvent.cpp
+
+rec_recGedExport.obj: .\..\..\src\rec\recGedExport.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recGedExport.cpp
 
 rec_recGedParse.obj: .\..\..\src\rec\recGedParse.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recGedParse.cpp
@@ -599,9 +613,6 @@ rec_recPlace.obj: .\..\..\src\rec\recPlace.cpp
 
 rec_recReference.obj: .\..\..\src\rec\recReference.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recReference.cpp
-
-rec_recRelationship.obj: .\..\..\src\rec\recRelationship.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recRelationship.cpp
 
 rec_recSource.obj: .\..\..\src\rec\recSource.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recSource.cpp
@@ -680,9 +691,6 @@ recgui_rgEdPlace.obj: .\..\..\src\rg\rgEdPlace.cpp
 
 recgui_rgEdReference.obj: .\..\..\src\rg\rgEdReference.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdReference.cpp
-
-recgui_rgEdRelationship.obj: .\..\..\src\rg\rgEdRelationship.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdRelationship.cpp
 
 recgui_rgEdRelDate.obj: .\..\..\src\rg\rgEdRelDate.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdRelDate.cpp

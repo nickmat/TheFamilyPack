@@ -272,10 +272,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\rg\rgEdRelationship.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\rg\rgEdResearcher.cpp"
 				>
 			</File>
@@ -395,10 +391,6 @@
 			</File>
 			<File
 				RelativePath="..\..\src\rg\rgEdRelDate.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\rg\rgEdRelationship.h"
 				>
 			</File>
 			<File

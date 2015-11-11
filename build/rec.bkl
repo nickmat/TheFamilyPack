@@ -53,6 +53,7 @@
     <sources>$(LOCAL_SRC)/rec/recFamEventa.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recFamIndEventa.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recFilterEvent.cpp</sources>
+    <sources>$(LOCAL_SRC)/rec/recGedExport.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recGedParse.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recHelper.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recIndividual.cpp</sources>
@@ -77,6 +78,7 @@
     <headers>$(LOCAL_INC)/rec/recFamEventa.h</headers>
     <headers>$(LOCAL_INC)/rec/recFamIndEventa.h</headers>
     <headers>$(LOCAL_INC)/rec/recFilterEvent.h</headers>
+    <headers>$(LOCAL_INC)/rec/recGedExport.h</headers>
     <headers>$(LOCAL_INC)/rec/recGedParse.h</headers>
     <headers>$(LOCAL_INC)/rec/recHelper.h</headers>
     <headers>$(LOCAL_INC)/rec/recIndividual.h</headers>

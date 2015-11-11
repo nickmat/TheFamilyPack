@@ -82,6 +82,7 @@
     <runtime-libs>dynamic</runtime-libs>
 
     <sources>$(LOCAL_SRC)/tfp/tfpApp.cpp</sources>
+    <sources>$(LOCAL_SRC)/tfp/tfpExportGed.cpp</sources>
     <sources>$(LOCAL_SRC)/tfp/tfpFrame.cpp</sources>
     <sources>$(LOCAL_SRC)/tfp/tfpMemory.cpp</sources>
     <sources>$(LOCAL_SRC)/tfp/tfpNote.cpp</sources>
@@ -102,6 +103,7 @@
     <sources>$(LOCAL_SRC)/tfp/tfpWrReference.cpp</sources>
 
     <headers>$(LOCAL_SRC)/tfp/tfpApp.h</headers>
+    <headers>$(LOCAL_SRC)/tfp/tfpExport.h</headers>
     <headers>$(LOCAL_SRC)/tfp/tfpFrame.h</headers>
     <headers>$(LOCAL_SRC)/tfp/tfpMemory.h</headers>
     <headers>$(LOCAL_SRC)/tfp/tfpNote.h</headers>

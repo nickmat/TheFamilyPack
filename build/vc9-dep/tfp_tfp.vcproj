@@ -288,6 +288,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\tfp\tfpExportGed.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\tfp\tfpFrame.cpp"
 				>
 			</File>
@@ -367,6 +371,10 @@
 			>
 			<File
 				RelativePath="..\..\src\tfp\tfpApp.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\tfp\tfpExport.h"
 				>
 			</File>
 			<File
