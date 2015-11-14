@@ -153,6 +153,8 @@ public:
     static int ExecuteInt( const char* format, idt id );
     static idt ExecuteID( const wxSQLite3StatementBuffer& sql );
     static idt ExecuteID( const char* format, idt id );
+    static recIdVec ExecuteIdVec( const wxSQLite3StatementBuffer& sql );
+    static recIdVec ExecuteIdVec( const char* format, idt id );
     static wxString ExecuteStr( const wxSQLite3StatementBuffer& sql );
     static wxString ExecuteStr( const char* format, idt id );
 };

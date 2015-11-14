@@ -237,6 +237,23 @@ idt recDb::ExecuteID( const char* format, idt id )
     return GET_ID( result.GetInt64( 0 ) );
 }
 
+recIdVec recDb::ExecuteIdVec( const wxSQLite3StatementBuffer& sql )
+{
+    wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
+    recIdVec ids;
+    while( result.NextRow() ) {
+        ids.push_back( GET_ID( result.GetInt64( 0 ) ) );
+    }
+    return ids;
+}
+
+recIdVec recDb::ExecuteIdVec( const char* format, idt id )
+{
+    wxSQLite3StatementBuffer sql;
+    sql.Format( format, id );
+    return ExecuteIdVec( sql );
+}
+
 wxString recDb::ExecuteStr( const wxSQLite3StatementBuffer& sql )
 {
     wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
