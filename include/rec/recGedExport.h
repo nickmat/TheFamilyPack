@@ -28,5 +28,32 @@
 #ifndef RECGEDEXPORT_H
 #define RECGEDEXPORT_H
 
+#include <rec/recDatabase.h>
+#include <wx/wfstream.h>
+#include <wx/txtstrm.h>
+
+class recFamily;
+
+class recGedExport
+{
+public:
+    recGedExport( wxOutputStream& stream ) : m_out(stream), m_privacy(0) {}
+
+    void SetPrivacy( int privacy ) { m_privacy = privacy; }
+
+    bool Export();
+
+private:
+    void ExportIndividual( idt indID, int level );
+    void ExportFamily( const recFamily& fam, int level );
+    void ExportIndEvents( idt indID, recET_GRP grp, int level );
+    void ExportFamEvents( idt famID, int level );
+    void ExportEvents( const recIdVec& events, int level );
+    void ExportDate( idt dateID, int level );
+    void ExportPlace( idt placeID, int level );
+
+    wxTextOutputStream m_out;
+    int m_privacy;
+};
 
 #endif // RECGEDEXPORT_H
