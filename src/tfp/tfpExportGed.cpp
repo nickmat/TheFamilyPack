@@ -39,11 +39,26 @@
 
 #include <rec/recGedExport.h>
 
+#include <wx/filename.h>
 #include <wx/wfstream.h>
 
 
 bool tfpExportGedcom( wxString& path )
 {
+    wxFileName fname( path );
+    wxFFileOutputStream outfile( fname.GetFullPath() );
+    if( !outfile.IsOk() ) return false;
+    try {
+        recGedExport ged( outfile );
+        if( !ged.Export() ) {
+            recMessage( _("Error Writing GEDCOM File"), _("Export") );
+            return true;
+        }
+
+    } catch( wxSQLite3Exception& e ) {
+        recDb::ErrorMessage( e );
+        recDb::Rollback();
+    }
     return true;
 }
 

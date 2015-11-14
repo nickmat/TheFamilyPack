@@ -37,11 +37,9 @@
 #include "wx/wx.h"
 #endif
 
-#include <wx/wfstream.h>
+#include "tfpRd.h"
 
 #include <rec/recGedParse.h>
-
-#include "tfpRd.h"
 
 
 bool tfpReadGedcom( wxString& path )

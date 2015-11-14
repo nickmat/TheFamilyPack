@@ -46,11 +46,12 @@
 #include <rec/recUser.h>
 #include <rg/rgDialogs.h>
 
-#include "tfpFrame.h"
 #include "tfpApp.h"
-#include "tfpVersion.h"
+#include "tfpExport.h"
+#include "tfpFrame.h"
 #include "tfpMemory.h"
 #include "tfpRd.h"
+#include "tfpVersion.h"
 #include "tfpWr.h"
 
 #include "img/forward.xpm"
@@ -384,7 +385,22 @@ void TfpFrame::OnImportGedcom( wxCommandEvent& event )
  */
 void TfpFrame::OnExportGedcom( wxCommandEvent& event )
 {
-    wxMessageBox( _("Not yet implimented"), "OnExportGedcom" );
+    wxString caption = _("Save GEDCOM As");
+    wxString wildcard = "GEDCOM (*.ged)|*.ged";
+    wxString defaultDir = ".";
+    wxString defaultFName = wxEmptyString;
+
+    wxFileDialog dialog( this, caption, defaultDir, defaultFName, wildcard, wxFD_OPEN );
+    if( dialog.ShowModal() == wxID_OK )
+    {
+        wxString path = dialog.GetPath();
+        if( tfpExportGedcom( path ) )
+        {
+            wxMessageBox( _("GEDCOM Saved OK"), _("Export") );
+        } else {
+            wxMessageBox( _("Error Reading GEDCOM File"), _("Export") );
+        }
+    }
 }
 
 /*! \brief Called on a Export Html menu option event.
