@@ -91,6 +91,47 @@ inline wxString recGetIDStr( idt id ) { return id ? recGetStr( id ) : ""; }
 enum Sex { SEX_Unstated, SEX_Male, SEX_Female, SEX_Unknown };
 extern wxString recGetSexStr( Sex sex );
 
+// Event/Eventa groups
+enum recET_GRP_FILTER {
+    recET_GRP_FILTER_Unstated    = 0x0001,
+    recET_GRP_FILTER_Birth       = 0x0002,
+    recET_GRP_FILTER_NrBirth     = 0x0004,
+    recET_GRP_FILTER_FamUnion    = 0x0008,
+    recET_GRP_FILTER_FamOther    = 0x0010,
+    recET_GRP_FILTER_Death       = 0x0020,
+    recET_GRP_FILTER_NrDeath     = 0x0040,
+    recET_GRP_FILTER_Other       = 0x0080,
+    recET_GRP_FILTER_Personal    = 0x0100,
+    recET_GRP_FILTER_Relation    = 0x0200,
+    recET_GRP_FILTER_FamRelation = 0x0400,
+
+    recET_GRP_FILTER_None        = 0x0000,
+    recET_GRP_FILTER_All         = 0x07ff,
+    recET_GRP_FILTER_AllValid    = 0x07fe,
+    recET_GRP_FILTER_Family = (
+        recET_GRP_FILTER_FamUnion |
+        recET_GRP_FILTER_FamOther |
+        recET_GRP_FILTER_FamRelation
+    )
+};
+
+enum recET_GRP {
+    recET_GRP_Unstated,    // 0
+    recET_GRP_Birth,       // 1
+    recET_GRP_NrBirth,     // 2
+    recET_GRP_FamUnion,    // 3
+    recET_GRP_FamOther,    // 4
+    recET_GRP_Death,       // 5
+    recET_GRP_NrDeath,     // 6
+    recET_GRP_Other,       // 7
+    recET_GRP_Personal,    // 8
+    recET_GRP_Relation,    // 9
+    recET_GRP_FamRelation, // 10
+    recET_GRP_MAX          // 11
+};
+
+inline recET_GRP_FILTER recEventTypeGrpToFilter( recET_GRP grp ) { return  recET_GRP_FILTER(1 << grp); }
+
 // Used for searching for records with binary fields
 enum TriLogic { TRILOGIC_false, TRILOGIC_true, TRILOGIC_both };
 
