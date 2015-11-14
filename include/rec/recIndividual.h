@@ -107,6 +107,7 @@ public:
     static wxString GetEpitaph( idt indID );
 
     static recIndividualVec ReadVec( unsigned sexfilter = recInd_FILTER_SexAll );
+    static recIdVec GetIdVec();
 
     static idt GetNameID( idt indID ) { return recName::GetDefaultNameID( indID, 0 ); }
     idt GetNameID() const { return recName::GetDefaultNameID( f_id, 0 ); }
@@ -229,6 +230,7 @@ public:
     static recIdVec GetCoupleAsIdVec( idt famID );
 
     static recIdVec GetFamilyIdVec();
+    static recFamilyVec GetFamilyVec();
 
     bool Decode( const wxString& str );
 
@@ -253,6 +255,8 @@ public:
     static recFamIndVec GetChildLinks( idt famID );
     static recFamilyEventVec GetEvents( idt famID );
     recFamilyEventVec GetEvents() const { return GetEvents( f_id ); }
+    static recIdVec GetEventIDs( idt famID );
+    recIdVec GetEventIDs() const { return GetEventIDs( f_id ); }
 
     static int GetMaxEventSeqNumber( idt famID );
     int GetMaxEventSeqNumber() const { return GetMaxEventSeqNumber( f_id ); }

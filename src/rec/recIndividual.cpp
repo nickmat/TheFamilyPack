@@ -201,6 +201,11 @@ recIndividualVec recIndividual::ReadVec( unsigned sexfilter )
     return inds;
 }
 
+recIdVec recIndividual::GetIdVec()
+{
+    return ExecuteIdVec( "SELECT id FROM Individual ORDER BY id;", 0 );
+}
+
 wxString recIndividual::GetDescriptionStr( idt indID )
 {
     recIndividual ind(indID);
@@ -799,6 +804,23 @@ recIdVec recFamily::GetFamilyIdVec()
     return famIDs;
 }
 
+recFamilyVec recFamily::GetFamilyVec()
+{
+    recFamilyVec fams;
+    wxSQLite3ResultSet result;
+
+    result = s_db->ExecuteQuery( "SELECT id, husb_id, wife_id FROM Family;" );
+
+    recFamily fam(0);
+    while( result.NextRow() ) {
+        fam.f_id = GET_ID( result.GetInt64( 0 ) );
+        fam.f_husb_id = GET_ID( result.GetInt64( 1 ) );
+        fam.f_wife_id = GET_ID( result.GetInt64( 2 ) );
+        fams.push_back( fam );
+    }
+    return fams;
+}
+
 // Decode the string which is in the form "Fx1" or
 // "Fx1,x2,x3" where x1 is the Family id
 // x2 is the husband id and x3 the wife id.
@@ -1050,6 +1072,16 @@ recFamilyEventVec recFamily::GetEvents( idt famID )
         fes.push_back( fe );
     }
     return fes;
+}
+
+recIdVec recFamily::GetEventIDs( idt famID )
+{
+    const char* fmt =
+        "SELECT event_id FROM FamilyEvent"
+        " WHERE fam_id="ID
+        " ORDER BY fam_seq;"
+    ;
+    return ExecuteIdVec( fmt, famID );
 }
 
 int recFamily::GetMaxEventSeqNumber( idt famID )
