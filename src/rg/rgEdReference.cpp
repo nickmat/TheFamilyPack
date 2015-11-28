@@ -157,6 +157,7 @@ bool rgDlgEditReference::TransferDataToWindow()
     wxASSERT( m_reference.FGetID() != 0 );
     m_staticRefID->SetLabel( m_reference.GetIdStr()  );
     m_textCtrlTitle->SetValue( m_reference.FGetTitle() );
+    m_textCtrlUserRef->SetValue( m_reference.FGetUserRef() );
     m_textCtrlStatement->SetValue(  m_reference.FGetStatement() );
 
     UpdateHtml();
@@ -168,6 +169,7 @@ bool rgDlgEditReference::TransferDataToWindow()
 bool rgDlgEditReference::TransferDataFromWindow()
 {
     m_reference.FSetTitle( m_textCtrlTitle->GetValue() );
+    m_reference.FSetUserRef( m_textCtrlUserRef->GetValue() );
     m_reference.FSetStatement( m_textCtrlStatement->GetValue() );
     m_reference.Save();
     return true;

@@ -217,7 +217,8 @@ bool rgDlgEditEvent::TransferDataToWindow()
         m_textCtrlDate2->Enable( false );
     }
     m_textCtrlPlace->SetValue( recPlace::GetAddressStr( m_placeID ) );
-    m_textCtrlNote->SetValue( m_event.f_note );
+    m_textCtrlUserRef->SetValue( m_event.FGetUserRef() );
+    m_textCtrlNote->SetValue( m_event.FGetNote() );
     ListLinkedIndividuals();
     ListEventas();
     m_staticEventID->SetLabel( m_event.GetIdStr() );
@@ -317,6 +318,7 @@ bool rgDlgEditEvent::TransferDataFromWindow()
             m_event.FSetPlaceID( m_placeID );
         }
     }
+    m_event.FSetUserRef( m_textCtrlUserRef->GetValue() );
     m_event.FSetNote( m_textCtrlNote->GetValue() );
 
     m_event.UpdateDatePoint();

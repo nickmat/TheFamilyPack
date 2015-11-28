@@ -420,6 +420,7 @@ fbRgEditEvent::fbRgEditEvent( wxWindow* parent, wxWindowID id, const wxString& t
 	wxBoxSizer* bSizer114;
 	bSizer114 = new wxBoxSizer( wxHORIZONTAL );
 	
+	wxStaticText* m_staticText2;
 	m_staticText2 = new wxStaticText( this, wxID_ANY, _("Title:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText2->Wrap( -1 );
 	bSizer114->Add( m_staticText2, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
@@ -439,6 +440,7 @@ fbRgEditEvent::fbRgEditEvent( wxWindow* parent, wxWindowID id, const wxString& t
 	fgSizer10->SetFlexibleDirection( wxBOTH );
 	fgSizer10->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_ALL );
 	
+	wxStaticText* m_staticText1;
 	m_staticText1 = new wxStaticText( m_panel1, wxID_ANY, _("Event Type:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText1->Wrap( -1 );
 	fgSizer10->Add( m_staticText1, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
@@ -466,6 +468,14 @@ fbRgEditEvent::fbRgEditEvent( wxWindow* parent, wxWindowID id, const wxString& t
 	
 	m_textCtrlPlace = new wxTextCtrl( m_panel1, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer10->Add( m_textCtrlPlace, 1, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
+	
+	wxStaticText* m_staticText117;
+	m_staticText117 = new wxStaticText( m_panel1, wxID_ANY, _("User Ref:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText117->Wrap( -1 );
+	fgSizer10->Add( m_staticText117, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_textCtrlUserRef = new wxTextCtrl( m_panel1, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer10->Add( m_textCtrlUserRef, 1, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
 	
 	
 	m_panel1->SetSizer( fgSizer10 );
@@ -1959,18 +1969,30 @@ fbRgEditReference::fbRgEditReference( wxWindow* parent, wxWindowID id, const wxS
 	wxBoxSizer* bSizer49;
 	bSizer49 = new wxBoxSizer( wxVERTICAL );
 	
-	wxBoxSizer* bSizer51;
-	bSizer51 = new wxBoxSizer( wxHORIZONTAL );
+	wxFlexGridSizer* fgSizer20;
+	fgSizer20 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer20->AddGrowableCol( 1 );
+	fgSizer20->SetFlexibleDirection( wxBOTH );
+	fgSizer20->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
+	wxStaticText* m_staticText401;
 	m_staticText401 = new wxStaticText( this, wxID_ANY, _("Title:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText401->Wrap( -1 );
-	bSizer51->Add( m_staticText401, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	fgSizer20->Add( m_staticText401, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT, 5 );
 	
 	m_textCtrlTitle = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer51->Add( m_textCtrlTitle, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	fgSizer20->Add( m_textCtrlTitle, 1, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
+	
+	wxStaticText* m_staticText118;
+	m_staticText118 = new wxStaticText( this, wxID_ANY, _("User Ref:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText118->Wrap( -1 );
+	fgSizer20->Add( m_staticText118, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+	
+	m_textCtrlUserRef = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer20->Add( m_textCtrlUserRef, 1, wxALIGN_CENTER_VERTICAL|wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
 	
-	bSizer49->Add( bSizer51, 0, wxEXPAND, 5 );
+	bSizer49->Add( fgSizer20, 0, wxEXPAND, 5 );
 	
 	m_splitter1 = new wxSplitterWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_3D|wxSP_3DSASH|wxSP_NO_XP_THEME );
 	m_splitter1->SetSashGravity( 0.75 );

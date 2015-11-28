@@ -140,25 +140,28 @@ wxString tfpWriteReferencePage( idt refID )
 {
     wxString htm;
     recReference ref(refID);
-    if( ref.f_id == 0 ) return wxEmptyString;
+    if( ref.FGetID() == 0 ) return wxEmptyString;
     recIdVec indIDs;
 
     htm <<
         tfpWrHeadTfp( "Reference " + ref.GetIdStr(), "tab" ) <<
-        "<h1>" << ref.GetIdStr() << ": " << ref.f_title << "</h1>\n"
+        "<h1>" << ref.GetIdStr() << ": " << ref.FGetTitle() << "</h1>\n"
     ;
 
-    if( ref.f_statement.compare( 0, 9, "<!-- HTML" ) == 0 ) {
+    if( ref.FGetStatement().compare( 0, 9, "<!-- HTML" ) == 0 ) {
         htm <<
-            "</div>\n" << ref.f_statement << "\n<div class='tfp'>\n"
+            "</div>\n" << ref.FGetStatement() << "\n<div class='tfp'>\n"
         ;
     } else { // treat as text
         htm << "<pre>"
-            << ref.f_statement
+            << ref.FGetStatement()
             << "</pre>";
     }
 
-    htm << "<hr>\n<table class='data'>\n";
+    htm <<
+        "<div>\n<p><b>User Ref:</b> " << ref.FGetUserRef() << "</p>\n</div>\n" 
+        "<hr>\n<table class='data'>\n"
+    ;
     recIdVec perIDs = ref.GetPersonaList();
     if( perIDs.size() ) {
         htm <<

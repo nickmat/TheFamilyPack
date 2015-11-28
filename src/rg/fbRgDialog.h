@@ -174,11 +174,9 @@ class fbRgEditEvent : public wxDialog
 	private:
 	
 	protected:
-		wxStaticText* m_staticText2;
 		wxTextCtrl* m_textCtrlTitle;
 		wxNotebook* m_notebook6;
 		wxPanel* m_panel1;
-		wxStaticText* m_staticText1;
 		wxStaticText* m_staticType;
 		wxButton* m_buttonDate1;
 		wxTextCtrl* m_textCtrlDate1;
@@ -186,6 +184,7 @@ class fbRgEditEvent : public wxDialog
 		wxTextCtrl* m_textCtrlDate2;
 		wxButton* m_buttonPlace;
 		wxTextCtrl* m_textCtrlPlace;
+		wxTextCtrl* m_textCtrlUserRef;
 		wxPanel* m_panel23;
 		wxTextCtrl* m_textCtrlNote;
 		wxPanel* m_panel2;
@@ -625,8 +624,8 @@ class fbRgEditReference : public wxDialog
 			tfpID_EDREF_OnRedo
 		};
 		
-		wxStaticText* m_staticText401;
 		wxTextCtrl* m_textCtrlTitle;
+		wxTextCtrl* m_textCtrlUserRef;
 		wxSplitterWindow* m_splitter1;
 		wxPanel* m_panelTop;
 		wxNotebook* m_notebookTop;
