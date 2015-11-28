@@ -55,19 +55,21 @@ recEvent::recEvent( const recEvent& e )
     f_place_id  = e.f_place_id;
     f_note      = e.f_note;
     f_date_pt   = e.f_date_pt;
+    f_user_ref  = e.f_user_ref;
 }
 
 void recEvent::Clear()
 {
     f_id        = 0;
-    f_title     = wxEmptyString;
+    f_title     = "";
     f_higher_id = 0;
     f_type_id   = 0;
     f_date1_id  = 0;
     f_date2_id  = 0;
     f_place_id  = 0;
-    f_note      = wxEmptyString;
+    f_note      = "";
     f_date_pt   = 0;
+    f_user_ref  = "";
 }
 
 void recEvent::Save()
@@ -79,11 +81,12 @@ void recEvent::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO Event "
-            "(title, higher_id, type_id, date1_id, date2_id, place_id, note, date_pt) "
-            "VALUES ('%q', "ID", "ID", "ID", "ID", "ID", '%q', %ld);",
+            "INSERT INTO Event"
+            " (title, higher_id, type_id, date1_id, date2_id, place_id,"
+            " note, date_pt, user_ref)"
+            " VALUES ('%q', "ID", "ID", "ID", "ID", "ID", '%q', %ld, '%q');",
             UTF8_(f_title), f_higher_id, f_type_id, f_date1_id, f_date2_id, f_place_id,
-            UTF8_(f_note), f_date_pt
+            UTF8_(f_note), f_date_pt, UTF8_(f_user_ref)
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -93,21 +96,22 @@ void recEvent::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO Event "
-                "(id, title, higher_id, type_id, date1_id, date2_id, place_id, note, date_pt) "
-                "VALUES ("ID", '%q', "ID", "ID", "ID", "ID", "ID", '%q', %ld);",
+                "INSERT INTO Event"
+                " (id, title, higher_id, type_id, date1_id, date2_id, place_id,"
+                " note, date_pt, user_ref)"
+                " VALUES ("ID", '%q', "ID", "ID", "ID", "ID", "ID", '%q', %ld, '%q');",
                 f_id, UTF8_(f_title), f_higher_id, f_type_id, f_date1_id, f_date2_id, f_place_id,
-                UTF8_(f_note), f_date_pt
+                UTF8_(f_note), f_date_pt, UTF8_(f_user_ref)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE Event SET "
-                "title='%q', higher_id="ID", type_id="ID", date1_id="ID", date2_id="ID", place_id="ID", "
-                "note='%q', date_pt=%ld "
-                "WHERE id="ID";",
+                "UPDATE Event SET"
+                " title='%q', higher_id="ID", type_id="ID", date1_id="ID", date2_id="ID","
+                " place_id="ID", note='%q', date_pt=%ld, user_ref='%q'"
+                " WHERE id="ID";",
                 UTF8_(f_title), f_higher_id, f_type_id, f_date1_id, f_date2_id, f_place_id,
-                UTF8_(f_note), f_date_pt, f_id
+                UTF8_(f_note), f_date_pt, UTF8_(f_user_ref), f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -125,8 +129,9 @@ bool recEvent::Read()
     }
 
     sql.Format(
-        "SELECT title, higher_id, type_id, date1_id, date2_id, place_id, note, date_pt "
-        "FROM Event WHERE id="ID";",
+        "SELECT title, higher_id, type_id, date1_id, date2_id, place_id,"
+        " note, date_pt, user_ref"
+        " FROM Event WHERE id="ID";",
         f_id
     );
     result = s_db->GetTable( sql );
@@ -145,6 +150,7 @@ bool recEvent::Read()
     f_place_id  = GET_ID( result.GetInt64( 5 ) );
     f_note      = result.GetAsString( 6 );
     f_date_pt   = (long) result.GetInt( 7 );
+    f_user_ref  = result.GetAsString( 8 );
     return true;
 }
 
@@ -397,7 +403,8 @@ recEventVec recEvent::GetLowerEvents( idt eventID )
     wxSQLite3ResultSet result;
 
     sql.Format(
-        "SELECT id, title, type_id, date1_id, date2_id, place_id, note, date_pt"
+        "SELECT id, title, type_id, date1_id, date2_id, place_id,"
+        " note, date_pt, user_ref"
         " FROM Event WHERE higher_id="ID
         " ORDER BY date_pt;",
         eventID
@@ -415,6 +422,7 @@ recEventVec recEvent::GetLowerEvents( idt eventID )
         e.f_place_id = GET_ID( result.GetInt64( 5 ) );
         e.f_note     = result.GetAsString( 6 );
         e.f_date_pt  = (long) result.GetInt( 7 );
+        e.f_user_ref = result.GetAsString( 8 );
         vec.push_back( e );
     }
     return vec;

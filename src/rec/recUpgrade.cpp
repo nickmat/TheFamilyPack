@@ -41,8 +41,8 @@
 const int recVerMajor    = 0;
 const int recVerMinor    = 0;
 const int recVerRev      = 10;
-const int recVerTest     = 11;
-const wxStringCharType* recVerStr = wxS("TFPD-0.0.10.11");
+const int recVerTest     = 12;                              // <<======<<<<
+const wxStringCharType* recVerStr = wxS("TFPD-0.0.10.12");  // <<======<<<<
 
 //============================================================================
 //                 Code to upgrade old versions
@@ -490,7 +490,7 @@ void UpgradeTest0_0_10_9to0_0_10_10()
 void UpgradeTest0_0_10_10to0_0_10_11()
 {
     // Version 0.0.10.10 to 0.0.10.11
-    // Remove Relationship table (We now use Family Event group.
+    // Remove Relationship table (We now use Family Event group).
     // Data is removed, no attempt to transfer.
 
     char* query =
@@ -500,6 +500,58 @@ void UpgradeTest0_0_10_10to0_0_10_11()
         "DROP TABLE Relationship;\n"
 
         "UPDATE Version SET test=11 WHERE id=1;\n"
+        "COMMIT;\n"
+    ;
+    recDb::GetDb()->ExecuteUpdate( query );
+}
+
+void UpgradeTest0_0_10_11to0_0_10_12()
+{
+    // Version 0.0.10.11 to 0.0.10.12
+    // Add user_ref column to Event table.
+    // Default value is NULL.
+
+    char* query =
+        "BEGIN;\n"
+
+        "ALTER TABLE Event RENAME TO OldEvent;\n"
+
+        "CREATE TABLE Event (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  title TEXT NOT NULL,\n"
+        "  higher_id INTEGER NOT NULL,\n"
+        "  type_id INTEGER NOT NULL REFERENCES EventType(id),\n"
+        "  date1_id INTEGER NOT NULL,\n"
+        "  date2_id INTEGER NOT NULL,\n"
+        "  place_id INTEGER NOT NULL,\n"
+        "  note TEXT NOT NULL,\n"
+        "  date_pt INTEGER NOT NULL,\n"
+        "  user_ref TEXT\n"
+        ");\n"
+
+        "INSERT INTO Event\n"
+        " (id, title, higher_id, type_id, date1_id, date2_id,\n"
+        "  place_id, note, date_pt, user_ref)\n"
+        " SELECT id, title, higher_id, type_id, date1_id, date2_id,\n"
+        "  place_id, note, date_pt, NULL\n"
+        " FROM OldEvent;\n"
+        "DROP TABLE OldEvent;\n"
+
+        "ALTER TABLE Reference RENAME TO OldReference;\n"
+        "CREATE TABLE Reference (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  title TEXT NOT NULL,\n"
+        "  statement TEXT NOT NULL,\n"
+        "  user_ref TEXT\n"
+        ");\n"
+
+        "INSERT INTO Reference\n"
+        " (id, title, statement, user_ref)\n"
+        " SELECT id, title, statement, NULL\n"
+        " FROM OldReference;\n"
+        "DROP TABLE OldReference;\n"
+
+        "UPDATE Version SET test=12 WHERE id=1;\n"
         "COMMIT;\n"
     ;
     recDb::GetDb()->ExecuteUpdate( query );
@@ -520,6 +572,7 @@ void UpgradeRev0_0_10toCurrent( int test )
     case 8: UpgradeTest0_0_10_8to0_0_10_9();
     case 9: UpgradeTest0_0_10_9to0_0_10_10();
     case 10: UpgradeTest0_0_10_10to0_0_10_11();
+    case 11: UpgradeTest0_0_10_11to0_0_10_12();
     }
 }
 

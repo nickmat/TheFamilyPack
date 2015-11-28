@@ -119,6 +119,7 @@ class recReference : public recDb
 public:
     wxString f_title;
     wxString f_statement;
+    wxString f_user_ref;
 
     recReference() {}
     recReference( idt id ) : recDb(id) { Read(); }
@@ -131,9 +132,11 @@ public:
 
     wxString FGetTitle() const { return f_title; }
     wxString FGetStatement() const { return f_statement; }
+    wxString FGetUserRef() const { return f_user_ref; }
 
     void FSetTitle( const wxString& title ) { f_title = title; }
     void FSetStatement( const wxString& statement ) { f_statement = statement; }
+    void FSetUserRef( const wxString& ur ) { f_user_ref = ur; }
 
     static wxString GetIdStr( idt refID ) { return wxString::Format( "R"ID, refID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
@@ -166,8 +169,10 @@ public:
 inline bool recEquivalent( const recReference& r1, const recReference& r2 )
 {
     return
-        r1.f_title  == r2.f_title  &&
-        r1.f_statement == r2.f_statement;
+        r1.f_title     == r2.f_title     &&
+        r1.f_statement == r2.f_statement &&
+        r1.f_user_ref  == r2.f_user_ref
+    ;
 }
 
 inline bool operator==( const recReference& r1, const recReference& r2 )

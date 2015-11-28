@@ -87,8 +87,9 @@ wxString tfpWriteEventPage( idt eventID, rgCompareEvent* ce )
         ;
     }
     htm <<
-        "</td>\n</tr>\n<tr>\n"
-        "<td><b>Note: </b>" << eve.f_note << "</td>\n</tr>\n"
+        "</td>\n</tr>\n"
+        "<tr>\n<td><b>Note: </b>" << eve.FGetNote() << "</td>\n</tr>\n"
+        "<tr>\n<td><b>User Ref: </b>" << eve.FGetUserRef() << "</td>\n</tr>\n"
         "</table>\n"
     ;
 

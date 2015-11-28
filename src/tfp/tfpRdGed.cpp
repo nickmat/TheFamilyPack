@@ -3,11 +3,9 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Read GEDCOM import files.
  * Author:      Nick Matthews
- * Modified by:
- * Created:     19 September 2011
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2011, Nick Matthews.
  * Website:     http://thefamilypack.org
+ * Created:     19 September 2011
+ * Copyright:   Copyright (c) 2011, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify

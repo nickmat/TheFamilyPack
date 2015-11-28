@@ -49,13 +49,15 @@ recReference::recReference( const recReference& r )
     f_id        = r.f_id;
     f_title     = r.f_title;
     f_statement = r.f_statement;
+    f_user_ref  = r.f_user_ref;
 }
 
 void recReference::Clear()
 {
     f_id        = 0;
-    f_title     = wxEmptyString;
-    f_statement = wxEmptyString;
+    f_title     = "";
+    f_statement = "";
+    f_user_ref  = "";
 }
 
 void recReference::Save()
@@ -67,9 +69,9 @@ void recReference::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO Reference (title, statement)"
-            "VALUES ('%q', '%q');",
-            UTF8_(f_title), UTF8_(f_statement)
+            "INSERT INTO Reference (title, statement, user_ref)"
+            "VALUES ('%q', '%q', '%q');",
+            UTF8_(f_title), UTF8_(f_statement), UTF8_(f_user_ref)
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -79,15 +81,16 @@ void recReference::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO Reference (id, title, statement)"
-                "VALUES ("ID", '%q', '%q');",
-                f_id, UTF8_(f_title), UTF8_(f_statement)
+                "INSERT INTO Reference (id, title, statement, user_ref)"
+                " VALUES ("ID", '%q', '%q', '%q');",
+                f_id, UTF8_(f_title), UTF8_(f_statement), UTF8_(f_user_ref)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE Reference SET title='%q', statement='%q' WHERE id="ID";",
-                UTF8_(f_title), UTF8_(f_statement), f_id
+                "UPDATE Reference SET title='%q', statement='%q', user_ref='%q'"
+                " WHERE id="ID";",
+                UTF8_(f_title), UTF8_(f_statement), UTF8_(f_user_ref), f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -104,7 +107,11 @@ bool recReference::Read()
         return false;
     }
 
-    sql.Format( "SELECT * FROM Reference WHERE id="ID";", f_id );
+    sql.Format(
+        "SELECT title, statement, user_ref"
+        " FROM Reference WHERE id="ID";",
+        f_id
+    );
     result = s_db->GetTable( sql );
 
     if( result.GetRowCount() != 1 )
@@ -113,8 +120,9 @@ bool recReference::Read()
         return false;
     }
     result.SetRow( 0 );
-    f_title     = result.GetAsString( 1 );
-    f_statement = result.GetAsString( 2 );
+    f_title     = result.GetAsString( 0 );
+    f_statement = result.GetAsString( 1 );
+    f_user_ref  = result.GetAsString( 2 );
     return true;
 }
 

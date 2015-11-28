@@ -53,6 +53,7 @@ public:
     idt      f_place_id;
     wxString f_note;
     long     f_date_pt;
+    wxString f_user_ref;
 
     recEvent() {}
     recEvent( idt id ) : recDb(id) { Read(); }
@@ -71,6 +72,7 @@ public:
     idt FGetPlaceID() const { return f_place_id; }
     wxString FGetNote() const { return f_note; }
     long FGetDatePt() const { return f_date_pt; }
+    wxString FGetUserRef() const { return f_user_ref; }
 
     void FSetTitle( const wxString& title ) { f_title = title; }
     void FSetHigherID( idt eveID ) { f_higher_id = eveID; }
@@ -81,6 +83,7 @@ public:
     void FSetNote( const wxString& note ) { f_note = note; }
     void FSetDatePt( idt datePt ) { f_date_pt = datePt; }
     void FSetDatePt( recDate::DatePoint dp ) { f_date_pt = recDate::GetDatePoint( f_date1_id, dp ); }
+    void FSetUserRef( const wxString& ur ) { f_user_ref = ur; }
 
     static wxString GetIdStr( idt evID ) { return wxString::Format( "E"ID, evID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
@@ -142,7 +145,9 @@ inline bool recEquivalent( const recEvent& r1, const recEvent& r2 )
         r1.f_date2_id  == r2.f_date2_id  &&
         r1.f_place_id  == r2.f_place_id  &&
         r1.f_note      == r2.f_note      &&
-        r1.f_date_pt   == r2.f_date_pt;
+        r1.f_date_pt   == r2.f_date_pt   &&
+        r1.f_user_ref  == r2.f_user_ref
+    ;
 }
 
 inline bool operator==( const recEvent& r1, const recEvent& r2 )
