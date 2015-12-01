@@ -362,6 +362,11 @@
      <td>Integer Not null</td>
      <td>A single day used to order lists of events.</td>
     </tr>
+    <tr>
+     <td>user_ref</td>
+     <td>Text</td>
+     <td>Optional user defined reference code.</td>
+    </tr>
 
     <tr id="Eventa">
      <td colspan="3" class="filler"><a href="#">Top</a></td>
@@ -742,6 +747,11 @@
      <td>Unique key identifying an IndividualEvent.</td>
     </tr>
     <tr>
+     <td>higher_id</td>
+     <td>Integer Not null FK</td>
+     <td>Unique identifier that indicates a higher IndividualEvent which contains this IndividualEvent.</td>
+    </tr>
+    <tr>
      <td>ind_id</td>
      <td>Integer Not null FK</td>
      <td>Pointer to an Individual</td>
@@ -1023,6 +1033,11 @@
       An XML document containing a statement whuch may include a Transcription,
       Translation, Summary of a Source or simple text statement.
      </td>
+    </tr>
+    <tr>
+     <td>user_ref</td>
+     <td>Text</td>
+     <td>Optional user defined reference code.</td>
     </tr>
 
     <tr id="ReferenceEntity">
