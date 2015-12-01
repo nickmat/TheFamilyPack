@@ -16,7 +16,7 @@
   <a href="../../index.htm" class="m-item">Home</a>
   <a href="../database.htm" class="m-item level1">Database</a>
   <a href="overview.htm" class="m-item level2">Overview</a>
-  <a href="event-eventum.htm" class="m-item level3 thispage">Event-Eventa</a>
+  <a href="event-eventa.htm" class="m-item level3 thispage">Event-Eventa</a>
   <a href="gentech-gtdm.htm" class="m-item prev">&lt;&lt;</a>
   <a href="../../com/common.htm" class="m-item next">&gt;&gt;</a>
 </div>
@@ -36,9 +36,41 @@
  Page under construction.
 </p>
 <p>
- The diagram shows a simplified (?) version of the links between the Persona, Eventa, Event and Individual entities. The first thing to notice about this relationship is that is cyclic and thus contains redundant data. This means that if any of the four link records (EP, EE, IE or IP) are missing, they can be reconstructed.
+ The diagram shows a simplified (?) version of the links between
+ the Persona, Eventa, Event and Individual entities.
+ The first thing to notice about this relationship is that is cyclic
+ and thus contains redundant data.
+ This means that if any of the four link records (EP, EEa, IE or IP) are missing,
+ they can be reconstructed.
+</p>
+<p>
+ The diagram also shows that although the Event and Eventa share a 'Type',
+ they have separate 'Date' and 'Place' records.
+ The eventa's date and place records will be specific to the reference document,
+ whist the event's date and place may be generalised,
+ and possibly linked to several eventa.
 </p>
 
+<h2>Personal Events</h2>
+<img src='personal-events.png' alt='Personal Events' style='float: right;' />
+<p>
+ Personal events are those events, that help describe a person.
+ They given various names by other systems: Properties, Facts, Attributes, Characteristics
+ or Traits prompting the acronym PFACT (perhaps this should now become PEFACT).
+ They are events such as 'Occupation' or 'Residency'.
+</p>
+<p>
+ Personal events tend to extend over a period of time, they may slowly change
+ (such as personal description ie hair colour) or suddenly (as in residency).
+ When they appear in historic records, they generally describe the event
+ as it appears on a particular day. We can refer to these as 'Snapshot Events'.
+</p>
+<p>
+ Each individual has a single event for any given personal event type,
+ we call this the 'Summary Event'.
+ The summary event is made up of one or more separate events
+ obtained from the historic record.
+</p>
 
 
 </div>
