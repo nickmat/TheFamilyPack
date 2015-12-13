@@ -535,12 +535,11 @@ void recGedParse::ReadPrivacy( GedIndividual& gind )
 void recGedParse::ReadIndEvent( GedIndividual& gind, int level )
 {
     recEvent ev(0);
-    ev.Save(); // We need the id number
     recIndividualEvent ie(0);
-    ie.FSetEventID( ev.FGetID() );
     ie.FSetIndID( gind.GetIndID() );
     wxString titlefmt;
-    recDate::DatePoint dp;
+    recDate::DatePoint dp = recDate::DATE_POINT_Mid;
+    bool unique = false; // true if only one event type per individual
 
     switch( m_tag )
     {
@@ -549,6 +548,7 @@ void recGedParse::ReadIndEvent( GedIndividual& gind, int level )
         ie.FSetRoleID( recEventTypeRole::ROLE_Birth_Born );
         titlefmt = _("Birth of %s");
         dp = recDate::DATE_POINT_Beg;
+        unique = true;
         break;
     case tagCHR:
         ev.FSetTypeID( recEventType::ET_Baptism );
@@ -561,6 +561,7 @@ void recGedParse::ReadIndEvent( GedIndividual& gind, int level )
         ie.FSetRoleID( recEventTypeRole::ROLE_Death_Died );
         titlefmt = _("Death of %s");
         dp = recDate::DATE_POINT_End;
+        unique = true;
         break;
     case tagBURI:
         ev.FSetTypeID( recEventType::ET_Burial );
@@ -572,12 +573,22 @@ void recGedParse::ReadIndEvent( GedIndividual& gind, int level )
         ev.FSetTypeID( recEventType::ET_Occupation );
         ie.FSetRoleID( recEventTypeRole::FindOrCreate( m_text, recEventType::ET_Occupation ) );
         titlefmt = _("Occupation of %s");
-        dp = recDate::DATE_POINT_Mid;
+        unique = true;
         break;
     default:
-        ev.Delete();
+        ReadNextLine();
         return; // do nothing
     }
+    if( unique ) {
+        idt unique_eID = recIndividual::GetPersonalEvent( gind.GetIndID(), ev.FGetTypeID() );
+        if( unique_eID != 0 ) {
+            // TODO: Should we add these as lower events?
+            ReadNextLine();
+            return; // Currently, do nothing
+        }
+    }
+    ev.Save(); // We need the id number
+    ie.FSetEventID( ev.FGetID() );
 
     bool cont = ReadNextLine();
     while( cont && m_level >= level ) {

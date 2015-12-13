@@ -48,7 +48,7 @@ private:
     void ExportFamily( const recFamily& fam, int level );
     void ExportIndEvents( idt indID, recET_GRP grp, int level );
     void ExportFamEvents( idt famID, int level );
-    void ExportEvents( const recIdVec& events, int level );
+    void ExportEvents( const recIdVec& events, int level, idt id );
     void ExportDate( idt dateID, int level );
     void ExportPlace( idt placeID, int level );
 

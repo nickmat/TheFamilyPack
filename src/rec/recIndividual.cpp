@@ -408,6 +408,21 @@ recIdVec recIndividual::FindEvents( idt indID, recET_GRP grp )
     return eIDs;
 }
 
+idt recIndividual::GetPersonalEvent( idt indID, idt etID )
+{
+    if( indID == 0 || etID == 0 ) return 0;
+
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT IE.event_id FROM IndividualEvent IE, Event E"
+        " WHERE IE.event_id=E.id AND IE.ind_id="ID" AND E.type_id="ID
+        " AND IE.higher_id=0;",
+        indID, etID
+    );
+    return ExecuteID( sql );
+}
+
+
 recFamilyVec recIndividual::GetFamilyList( idt ind )
 {
     recFamilyVec families;
@@ -487,13 +502,14 @@ recIndEventVec recIndividual::GetEvents( idt indID, recEventOrder order )
     sql.Format(
         "SELECT IE.id, event_id, role_id, IE.note, ind_seq FROM IndividualEvent IE"
         " INNER JOIN Event E ON E.id=event_id"
-        " WHERE higher_id=0 AND ind_id="ID" ORDER BY %s;",
+        " WHERE IE.higher_id=0 AND ind_id="ID" ORDER BY %s;",
         indID, UTF8_(orderStr)
     );
     result = s_db->GetTable( sql );
 
     list.reserve( result.GetRowCount() );
     record.f_ind_id = indID;
+    record.f_higher_id = 0;
     for( int i = 0 ; i < result.GetRowCount() ; i++ )
     {
         result.SetRow( i );

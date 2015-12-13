@@ -406,6 +406,7 @@ class recIndividualEvent : public recDb
 {
 public:
     idt      f_ind_id;
+    idt      f_higher_id;
     idt      f_event_id;
     idt      f_role_id;
     wxString f_note;
@@ -420,12 +421,14 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "IndividualEvent" );
 
+    idt FGetHigherID() const { return f_higher_id; }
     idt FGetIndID() const { return f_ind_id; }
     idt FGetEventID() const { return f_event_id; }
     idt FGetRoleID() const { return f_role_id; }
     wxString FGetNote() const { return f_note; }
     int FGetIndSeq() const { return f_ind_seq; }
 
+    void FSetHigherID( idt ieID ) { f_higher_id = ieID; }
     void FSetIndID( idt indID ) { f_ind_id = indID; }
     void FSetEventID( idt eventID ) { f_event_id = eventID; }
     void FSetRoleID( idt roleID ) { f_role_id = roleID; }
@@ -446,11 +449,13 @@ public:
 inline bool recEquivalent( const recIndividualEvent& r1, const recIndividualEvent& r2 )
 {
     return
-        r1.f_ind_id   == r2.f_ind_id   &&
-        r1.f_event_id == r2.f_event_id &&
-        r1.f_role_id  == r2.f_role_id  &&
-        r1.f_note     == r2.f_note     &&
-        r1.f_ind_seq  == r2.f_ind_seq;
+        r1.f_higher_id == r2.f_higher_id &&
+        r1.f_ind_id    == r2.f_ind_id    &&
+        r1.f_event_id  == r2.f_event_id  &&
+        r1.f_role_id   == r2.f_role_id   &&
+        r1.f_note      == r2.f_note      &&
+        r1.f_ind_seq   == r2.f_ind_seq
+    ;
 }
 
 inline bool operator==( const recIndividualEvent& r1, const recIndividualEvent& r2 )

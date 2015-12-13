@@ -1687,6 +1687,7 @@ bool TfpFrame::DisplayHomePage()
 
 wxString TfpFrame::GetDisplayText( const wxString& name )
 {
+    // TODO: We need to do this in a try ... catch framework.
     wxASSERT( name.size() > 0 );
     wxLongLong_t num, num1 = 0, num2 = 0;
     bool success, success1 = false, success2 = false;

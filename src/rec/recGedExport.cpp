@@ -106,6 +106,7 @@ void recGedExport::ExportIndividual( idt indID, int level )
     ExportIndEvents( indID, recET_GRP_NrBirth, level );
     ExportIndEvents( indID, recET_GRP_Death, level );
     ExportIndEvents( indID, recET_GRP_NrDeath, level );
+    ExportIndEvents( indID, recET_GRP_Personal, level );
     int pri = recIndividual::GetPrivacy( indID );
     if( pri >= 50 ) {
         m_out << level << " _PRI Y\n";
@@ -143,21 +144,22 @@ void recGedExport::ExportFamily( const recFamily& fam, int level )
 void recGedExport::ExportIndEvents( idt indID, recET_GRP grp, int level )
 {
     recIdVec events = recIndividual::FindEvents( indID, grp );
-    ExportEvents( events, level );
+    ExportEvents( events, level, indID );
 }
 
 void recGedExport::ExportFamEvents( idt famID, int level )
 {
     recIdVec events = recFamily::GetEventIDs( famID );
-    ExportEvents( events, level );
+    ExportEvents( events, level, famID );
 }
 
-void recGedExport::ExportEvents( const recIdVec& events, int level )
+void recGedExport::ExportEvents( const recIdVec& events, int level, idt id )
 {
     for( size_t i = 0 ; i < events.size() ; i++ ) {
         recEvent eve( events[i] );
-        wxString tag;
         idt type = eve.FGetTypeID();
+        recEventType et( type );
+        wxString tag, desc;
         switch( type )
         {
         case recEventType::ET_Birth: tag = "BIRT"; break;
@@ -165,9 +167,16 @@ void recGedExport::ExportEvents( const recIdVec& events, int level )
         case recEventType::ET_Death: tag = "DEAT"; break;
         case recEventType::ET_Burial: tag = "BURI"; break;
         case recEventType::ET_Marriage: tag = "MARR"; break;
+        case recEventType::ET_Occupation: tag = "OCCU"; break;
         default: continue;
         }
-        m_out << level << " " << tag << "\n";
+        if( et.FGetGrp() == recET_GRP_Personal ) {
+            if( eve.FGetHigherID() != 0 ) {
+                continue; // only interested in top-most event
+            }
+            desc = " " + recIndividualEvent::GetRoleStr( id, type );
+        }
+        m_out << level << " " << tag << desc << "\n";
         // TODO: Handle date period (where date2 != 0)
         ExportDate( eve.FGetDate1ID(), level + 1 );
         ExportPlace( eve.FGetPlaceID(), level + 1 );

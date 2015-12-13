@@ -135,6 +135,9 @@ public:
     static recIdVec FindEvents( idt indID, recET_GRP grp );
     recIdVec FindEvents( recET_GRP grp ) const { return FindEvents( f_id, grp ); }
 
+    static idt GetPersonalEvent( idt indID, idt etID );
+    idt GetPersonalEvent( idt etID ) const { return GetPersonalEvent( f_id, etID ); }
+
     idt GetBirthEvent() const { return FindGroupEvent( recET_GRP_Birth ); }
     idt GetNrBirthEvent() const { return FindGroupEvent( recET_GRP_NrBirth ); }
     idt GetDeathEvent() const { return FindGroupEvent( recET_GRP_Death ); }

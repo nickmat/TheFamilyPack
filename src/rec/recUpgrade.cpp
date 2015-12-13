@@ -41,8 +41,8 @@
 const int recVerMajor    = 0;
 const int recVerMinor    = 0;
 const int recVerRev      = 10;
-const int recVerTest     = 12;                              // <<======<<<<
-const wxStringCharType* recVerStr = wxS("TFPD-0.0.10.12");  // <<======<<<<
+const int recVerTest     = 13;                              // <<======<<<<
+const wxStringCharType* recVerStr = wxS("TFPD-0.0.10.13");  // <<======<<<<
 
 //============================================================================
 //                 Code to upgrade old versions
@@ -508,7 +508,7 @@ void UpgradeTest0_0_10_10to0_0_10_11()
 void UpgradeTest0_0_10_11to0_0_10_12()
 {
     // Version 0.0.10.11 to 0.0.10.12
-    // Add user_ref column to Event table.
+    // Add user_ref column to Event and Reference tables.
     // Default value is NULL.
 
     char* query =
@@ -557,6 +557,39 @@ void UpgradeTest0_0_10_11to0_0_10_12()
     recDb::GetDb()->ExecuteUpdate( query );
 }
 
+void UpgradeTest0_0_10_12to0_0_10_13()
+{
+    // Version 0.0.10.12 to 0.0.10.13
+    // Add higher_id column to IndividualEvent table.
+    // Default value is 0.
+
+    char* query =
+        "BEGIN;\n"
+
+        "ALTER TABLE IndividualEvent RENAME TO OldIndividualEvent;\n"
+
+        "CREATE TABLE IndividualEvent (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  higher_id INTEGER NOT NULL,\n"
+        "  ind_id INTEGER NOT NULL REFERENCES Individual(id),\n"
+        "  event_id INTEGER NOT NULL REFERENCES Event(id),\n"
+        "  role_id INTEGER NOT NULL REFERENCES EventTypeRole(id),\n"
+        "  note TEXT NOT NULL,\n"
+        "  ind_seq INTEGER NOT NULL\n"
+        ");\n"
+
+        "INSERT INTO IndividualEvent\n"
+        " (id, higher_id, ind_id, event_id, role_id, note, ind_seq)\n"
+        " SELECT id, 0, ind_id, event_id, role_id, note, ind_seq\n"
+        " FROM OldIndividualEvent;\n"
+        "DROP TABLE OldIndividualEvent;\n"
+
+        "UPDATE Version SET test=13 WHERE id=1;\n"
+        "COMMIT;\n"
+    ;
+    recDb::GetDb()->ExecuteUpdate( query );
+}
+
 void UpgradeRev0_0_10toCurrent( int test )
 {
     switch( test )
@@ -573,6 +606,7 @@ void UpgradeRev0_0_10toCurrent( int test )
     case 9: UpgradeTest0_0_10_9to0_0_10_10();
     case 10: UpgradeTest0_0_10_10to0_0_10_11();
     case 11: UpgradeTest0_0_10_11to0_0_10_12();
+    case 12: UpgradeTest0_0_10_12to0_0_10_13();
     }
 }
 

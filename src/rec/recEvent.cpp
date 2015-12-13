@@ -1124,22 +1124,24 @@ bool recEventaPersona::LinkExists() const
 
 recIndividualEvent::recIndividualEvent( const recIndividualEvent& ep )
 {
-    f_id       = ep.f_id;
-    f_ind_id   = ep.f_ind_id;
-    f_event_id = ep.f_event_id;
-    f_role_id  = ep.f_role_id;
-    f_note     = ep.f_note;
-    f_ind_seq  = ep.f_ind_seq;
+    f_id        = ep.f_id;
+    f_higher_id = ep.f_higher_id;
+    f_ind_id    = ep.f_ind_id;
+    f_event_id  = ep.f_event_id;
+    f_role_id   = ep.f_role_id;
+    f_note      = ep.f_note;
+    f_ind_seq   = ep.f_ind_seq;
 }
 
 void recIndividualEvent::Clear()
 {
-    f_id       = 0;
-    f_ind_id   = 0;
-    f_event_id = 0;
-    f_role_id  = 0;
-    f_note     = wxEmptyString;
-    f_ind_seq  = 0;
+    f_id        = 0;
+    f_higher_id = 0;
+    f_ind_id    = 0;
+    f_event_id  = 0;
+    f_role_id   = 0;
+    f_note      = "";
+    f_ind_seq   = 0;
 }
 
 void recIndividualEvent::Save()
@@ -1151,9 +1153,10 @@ void recIndividualEvent::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO IndividualEvent (ind_id, event_id, role_id, note, ind_seq) "
-            "VALUES ("ID", "ID", "ID", '%q', %d);",
-            f_ind_id, f_event_id, f_role_id, UTF8_(f_note), f_ind_seq
+            "INSERT INTO IndividualEvent"
+            " (higher_id, ind_id, event_id, role_id, note, ind_seq)"
+            " VALUES ("ID", "ID", "ID", "ID", '%q', %d);",
+            f_higher_id, f_ind_id, f_event_id, f_role_id, UTF8_(f_note), f_ind_seq
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -1163,17 +1166,20 @@ void recIndividualEvent::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO IndividualEvent (id, ind_id, event_id, role_id, note, ind_seq) "
-                "VALUES ("ID", "ID", "ID", "ID", '%q', %d);",
-                f_id, f_ind_id, f_event_id, f_role_id, UTF8_(f_note), f_ind_seq
+                "INSERT INTO IndividualEvent"
+                " (id, higher_id, ind_id, event_id, role_id, note, ind_seq) "
+                "VALUES ("ID", "ID", "ID", "ID", "ID", '%q', %d);",
+                f_id, f_higher_id, f_ind_id, f_event_id, f_role_id, UTF8_(f_note), f_ind_seq
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE IndividualEvent SET ind_id="ID", event_id="ID", role_id="ID", "
-                "note='%q', ind_seq=%d "
-                "WHERE id="ID";",
-                f_ind_id, f_event_id, f_role_id, UTF8_(f_note), f_ind_seq, f_id
+                "UPDATE IndividualEvent"
+                " SET higher_id="ID", ind_id="ID", event_id="ID", role_id="ID","
+                " note='%q', ind_seq=%d"
+                " WHERE id="ID";",
+                f_higher_id, f_ind_id, f_event_id, f_role_id,
+                UTF8_(f_note), f_ind_seq, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -1191,7 +1197,7 @@ bool recIndividualEvent::Read()
     }
 
     sql.Format(
-        "SELECT ind_id, event_id, role_id, note, ind_seq "
+        "SELECT higher_id, ind_id, event_id, role_id, note, ind_seq "
         "FROM IndividualEvent WHERE id="ID";",
         f_id
     );
@@ -1203,11 +1209,12 @@ bool recIndividualEvent::Read()
         return false;
     }
     result.SetRow( 0 );
-    f_ind_id   = GET_ID( result.GetInt64( 0 ) );
-    f_event_id = GET_ID( result.GetInt64( 1 ) );
-    f_role_id  = GET_ID( result.GetInt64( 2 ) );
-    f_note     = result.GetAsString( 3 );
-    f_ind_seq  = result.GetInt( 4 );
+    f_higher_id = GET_ID( result.GetInt64( 0 ) );
+    f_ind_id    = GET_ID( result.GetInt64( 1 ) );
+    f_event_id  = GET_ID( result.GetInt64( 2 ) );
+    f_role_id   = GET_ID( result.GetInt64( 3 ) );
+    f_note      = result.GetAsString( 4 );
+    f_ind_seq   = result.GetInt( 5 );
     return true;
 }
 
@@ -1235,13 +1242,13 @@ bool recIndividualEvent::Find( idt indID, idt eveID, idt roleID )
 
     if( roleID == 0 ) {
         sql.Format(
-            "SELECT id, role_id, note, ind_seq "
+            "SELECT id, higher_id, role_id, note, ind_seq "
             "FROM IndividualEvent WHERE ind_id="ID" AND event_id="ID";",
             indID, eveID
         );
     } else {
         sql.Format(
-            "SELECT id, role_id, note, ind_seq"
+            "SELECT id, higher_id, role_id, note, ind_seq"
             " FROM IndividualEvent"
             " WHERE ind_id="ID" AND event_id="ID" AND role_id="ID";",
             indID, eveID, roleID
@@ -1255,12 +1262,13 @@ bool recIndividualEvent::Find( idt indID, idt eveID, idt roleID )
         return false;
     }
     result.SetRow( 0 );
-    f_id       = GET_ID( result.GetInt64( 0 ) );
-    f_ind_id   = indID;
-    f_event_id = eveID;
-    f_role_id  = GET_ID( result.GetInt64( 1 ) );
-    f_note     = result.GetAsString( 2 );
-    f_ind_seq  = result.GetInt( 3 );
+    f_id        = GET_ID( result.GetInt64( 0 ) );
+    f_higher_id = GET_ID( result.GetInt64( 1 ) );
+    f_ind_id    = indID;
+    f_event_id  = eveID;
+    f_role_id   = GET_ID( result.GetInt64( 2 ) );
+    f_note      = result.GetAsString( 3 );
+    f_ind_seq   = result.GetInt( 4 );
     return true;
 }
 
