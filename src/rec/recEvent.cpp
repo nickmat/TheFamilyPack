@@ -615,9 +615,9 @@ void recEventEventa::Clear()
 {
     f_id           = 0;
     f_event_id     = 0;
-    f_eventa_id   = 0;
+    f_eventa_id    = 0;
     f_conf         = 0;
-    f_note         = wxEmptyString;
+    f_note         = "";
 }
 
 void recEventEventa::Save()
@@ -691,19 +691,45 @@ bool recEventEventa::Read()
     return true;
 }
 
-idt recEventEventa::Create( idt eID, idt erID, double conf, const wxString& note )
+idt recEventEventa::Create( idt eID, idt eaID, double conf, const wxString& note )
 {
-    recEventEventa eer(0);
-
-    eer.FSetEventID( eID );
-    eer.FSetEventaID( erID );
-    eer.FSetConf( conf );
-    eer.FSetNote( note );
-    eer.Save();
-
-    return eer.FGetID();
+    recEventEventa eea(eID, eaID, conf, note);
+    eea.Save();
+    return eea.FGetID();
 }
 
+void recEventEventa::NormaliseIndEventLinks() const
+{
+    wxASSERT( FGetID() != 0 );
+
+    recEventaPersonaVec eps = recEventa::GetEventaPersonas( FGetEventaID() );
+    recIndEventVec ies = recEvent::GetIndividualEvents( FGetEventID() );
+    for( size_t i = 0 ; i < eps.size() ; i++ ) {
+        recIdVec indIDs = recPersona::GetIndividualIDs( eps[i].FGetPerID() );
+        for( size_t j = 0 ; j < indIDs.size() ; j++ ) {
+            bool ok = false;
+            for( size_t k = 0 ; k < ies.size() ; k++ ) {
+                if( indIDs[j] == ies[k].FGetIndID() ) {
+                    ok = true;
+                    break;
+                } else {
+                    ok = false;
+                }
+            }
+            if( ! ok ) {
+                // Create an IndividualEvent to match EventaPersona.
+                // TODO: Check for, and set, higher_id field.
+                recIndividualEvent ie(0);
+                ie.FSetIndID( indIDs[j] );
+                ie.FSetEventID( FGetEventID() );
+                ie.FSetRoleID( eps[i].FGetRoleID() );
+                ie.FSetNote( eps[i].FGetNote() );
+                ie.FSetIndSeq( recIndividual::GetMaxEventSeqNumber( indIDs[j] ) + 1 );
+                ie.Save();
+            }
+        }
+    }
+}
 
 /*! Given the per_id and ind_id settings, find the matching record
  *  and read in the full record.

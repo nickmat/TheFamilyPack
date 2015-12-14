@@ -176,6 +176,8 @@ public:
     recEventEventa() {}
     recEventEventa( idt id ) : recDb(id) { Read(); }
     recEventEventa( const recEventEventa& link );
+    recEventEventa( idt eID, idt eaID, double conf = 0.999, const wxString& note = "" )
+        : recDb(0), f_event_id(eID), f_eventa_id(eaID), f_conf(conf), f_note(note) {}
 
     void Clear();
     void Save();
@@ -196,6 +198,9 @@ public:
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     static idt Create( idt eID, idt erID, double conf = 0.999, const wxString& note = wxEmptyString );
+
+    // Ensure all corresponding IndividualEvent links exist, create if not. 
+    void NormaliseIndEventLinks() const;
 
     bool Find();
     static idt Find( idt eID, idt erID );

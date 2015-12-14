@@ -83,7 +83,6 @@ extern idt rgFindOrCreateIndEvent(
     double conf,
     idt id,  // Individual or Family depending on Event Group
     idt roleID );
-extern void NormaliseEventEventaLinks( idt eemID );
 
 // See src/rg/rgEdEventType.cpp
 extern bool rgEditEventType( wxWindow* wind, idt etID );

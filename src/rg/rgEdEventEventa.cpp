@@ -77,14 +77,14 @@ idt rgCreateIndEventEventa( wxWindow* wind, idt eID, idt erID )
 }
 
 idt rgFindOrCreateIndEvent(
-    wxWindow* wind, idt erID, double conf, idt id, idt roleID )
+    wxWindow* wind, idt eaID, double conf, idt id, idt roleID )
 {
-    wxASSERT( erID != 0 );
+    wxASSERT( eaID != 0 );
     wxASSERT( id != 0 ); // id is either indID or famID, depending on event type
     idt eID = 0;
     recIdVec eIDs;
-    recEventa er(erID);
-    recET_GRP grp = er.GetTypeGroup();
+    recEventa ea(eaID);
+    recET_GRP grp = ea.GetTypeGroup();
 
     switch( grp )
     {
@@ -92,7 +92,7 @@ idt rgFindOrCreateIndEvent(
     case recET_GRP_Death:
         eID = recIndividual::FindEvent( id, roleID );
         if( eID == 0 ) {
-            eID = recEvent::CreateFromEventa( erID );
+            eID = recEvent::CreateFromEventa( eaID );
         }
         eIDs.push_back( eID );
         break;
@@ -107,13 +107,13 @@ idt rgFindOrCreateIndEvent(
                 recET_GRP_FILTER_Other
             );
             sse.SetGroupsChecked( recEventTypeGrpToFilter( grp ) );
-            sse.AddTypeChecked( er.FGetTypeID() );
+            sse.AddTypeChecked( ea.FGetTypeID() );
             sse.AddIndID( id );
 
             unsigned button;
             eID = rgSelectEvent( wind, rgSELSTYLE_Create, &sse, &button );
             if( button == rgSELSTYLE_Create ) {
-                eID = recEvent::CreateFromEventa( erID );
+                eID = recEvent::CreateFromEventa( eaID );
             }
         }
         break;
@@ -126,7 +126,7 @@ idt rgFindOrCreateIndEvent(
                 recET_GRP_FILTER_FamOther
             );
             sse.SetGroupsChecked( recEventTypeGrpToFilter( grp ) );
-            sse.AddTypeChecked( er.FGetTypeID() );
+            sse.AddTypeChecked( ea.FGetTypeID() );
             recIdVec indIDs = recFamily::GetCoupleAsIdVec( id );
             for( size_t i = 0 ; i < indIDs.size() ; i++ ) {
                 sse.AddIndID( indIDs[i] );
@@ -134,7 +134,7 @@ idt rgFindOrCreateIndEvent(
             unsigned button;
             eID = rgSelectEvent( wind, rgSELSTYLE_Create, &sse, &button );
             if( button == rgSELSTYLE_Create ) {
-                eID = recEvent::CreateFromEventa( erID );
+                eID = recEvent::CreateFromEventa( eaID );
                 recFamilyEvent::Create( eID, id );
             }
         }
@@ -145,44 +145,12 @@ idt rgFindOrCreateIndEvent(
 
     if( eID ) {
         // Now we have an Event, create the Event Eventa links
-        idt eemID = recEventEventa::Create( eID, erID, conf );
-        NormaliseEventEventaLinks( eemID );
+        recEventEventa eea( eID, eaID, conf );
+        eea.Save();
+        eea.NormaliseIndEventLinks();
     }
 
     return eID;
-}
-
-void NormaliseEventEventaLinks( idt eemID )
-{
-    recEventEventa eem(eemID);
-    wxASSERT( eem.FGetID() != 0 );
-
-    recEventaPersonaVec emps = recEventa::GetEventaPersonas( eem.FGetEventaID() );
-    recIndEventVec ies = recEvent::GetIndividualEvents( eem.FGetEventID() );
-    for( size_t i = 0 ; i < emps.size() ; i++ ) {
-        recIdVec indIDs = recPersona::GetIndividualIDs( emps[i].FGetPerID() );
-        for( size_t j = 0 ; j < indIDs.size() ; j++ ) {
-            bool ok = false;
-            for( size_t k = 0 ; k < ies.size() ; k++ ) {
-                if( indIDs[j] == ies[k].FGetIndID() ) {
-                    ok = true;
-                    break;
-                } else {
-                    ok = false;
-                }
-            }
-            if( ! ok ) {
-                // Create an IndividualEvent to match EventaPersona
-                recIndividualEvent ie(0);
-                ie.FSetIndID( indIDs[j] );
-                ie.FSetEventID( eem.FGetEventID() );
-                ie.FSetRoleID( emps[i].FGetRoleID() );
-                ie.FSetNote( emps[i].FGetNote() );
-                ie.FSetIndSeq( recIndividual::GetMaxEventSeqNumber( indIDs[j] ) + 1 );
-                ie.Save();
-            }
-        }
-    }
 }
 
 //============================================================================
