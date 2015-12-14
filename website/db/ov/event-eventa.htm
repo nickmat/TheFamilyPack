@@ -33,9 +33,6 @@
 <h2>Persona - Eventa - Event - Individual</h2>
 <img src='event-eventa.png' alt='Event-Eventa' style='float: right;' />
 <p>
- Page under construction.
-</p>
-<p>
  The diagram shows a simplified (?) version of the links between
  the Persona, Eventa, Event and Individual entities.
  The first thing to notice about this relationship is that is cyclic
@@ -71,7 +68,40 @@
  The summary event is made up of one or more separate events
  obtained from the historic record.
 </p>
+<p>
+ An example:
+ we have a record (say a census) that gives the occupation of a Persona as "Journeyman Mason".
+ The Persona has already been linked to an Individual
+ so these records and a IP link have previously been created.
+ We then create an Eventa of Type "Occupation" and create an EP record which links
+ the Persona. The EP link has the note "Journeyman Mason" attached
+ and points to the "Mason" Role record.
+</p>
+<p>
+ Because the Persona has already been linked to an Individual,
+ this will cause an Event record to be created
+ and linked to the Eventa record with a EEa link
+ and the Individual with a IE record.
+ This IE record will also point to the higher IE record of the Summary Event.
+ If the Summary Event does not exist, then it will be created.
+</p>
 
+<h2>Family Relationships Event</h2>
+<img src='family-eventa.png' alt='Family Relationships Event' style='float: right;' />
+<p>
+ A 'Family' record is a specialised event which only exists on the Conclusion side.
+ The Family record has the links to two partners built-in to the record,
+ and the IE links to the children are replaced with FI links.
+</p>
+<p>
+ To represent the family on the Evidence side we use an Eventa record
+ of Type "Family Relationship".
+ This Eventa can have one or two Partner Persona and zero or more Child Persona attached.
+</p>
+<p>
+ Note, the FIEa link record shown in the diagram is currently experimental
+ and may be removed in the released version.
+</p>
 
 </div>
 
