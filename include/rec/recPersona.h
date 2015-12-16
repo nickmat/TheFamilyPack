@@ -32,6 +32,7 @@
 #include <rec/recReference.h>
 #include <rec/recName.h>
 #include <rec/recEvent.h>
+#include <rec/recEventaPersona.h>
 
 class recPersona;
 typedef std::vector< recPersona >  recPersonaVec;

@@ -37,8 +37,8 @@
 
 
 #include <rec/recPersona.h>
+
 #include <rec/recIndividual.h>
-#include <rec/recDate.h>
 
 recPersona::recPersona( const recPersona& p )
 {

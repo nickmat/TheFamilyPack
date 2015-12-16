@@ -118,13 +118,18 @@ REC_OBJECTS =  \
 	rec_recDate.o \
 	rec_recEvent.o \
 	rec_recEventa.o \
+	rec_recEventaPersona.o \
+	rec_recEventEventa.o \
 	rec_recEventType.o \
+	rec_recEventTypeRole.o \
+	rec_recFamEvent.o \
 	rec_recFamEventa.o \
 	rec_recFamIndEventa.o \
 	rec_recFilterEvent.o \
 	rec_recGedExport.o \
 	rec_recGedParse.o \
 	rec_recHelper.o \
+	rec_recIndEvent.o \
 	rec_recIndividual.o \
 	rec_recIndPersona.o \
 	rec_recName.o \
@@ -368,7 +373,19 @@ rec_recEvent.o: ./../../src/rec/recEvent.cpp
 rec_recEventa.o: ./../../src/rec/recEventa.cpp
 	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
 
+rec_recEventaPersona.o: ./../../src/rec/recEventaPersona.cpp
+	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
+
+rec_recEventEventa.o: ./../../src/rec/recEventEventa.cpp
+	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
+
 rec_recEventType.o: ./../../src/rec/recEventType.cpp
+	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
+
+rec_recEventTypeRole.o: ./../../src/rec/recEventTypeRole.cpp
+	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
+
+rec_recFamEvent.o: ./../../src/rec/recFamEvent.cpp
 	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
 
 rec_recFamEventa.o: ./../../src/rec/recFamEventa.cpp
@@ -387,6 +404,9 @@ rec_recGedParse.o: ./../../src/rec/recGedParse.cpp
 	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
 
 rec_recHelper.o: ./../../src/rec/recHelper.cpp
+	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
+
+rec_recIndEvent.o: ./../../src/rec/recIndEvent.cpp
 	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
 
 rec_recIndividual.o: ./../../src/rec/recIndividual.cpp

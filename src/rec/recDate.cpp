@@ -36,8 +36,10 @@
 #endif
 
 #include <rec/recDate.h>
+
 #include <rec/recEvent.h>
 #include <rec/recPlace.h>
+#include <rec/recReference.h>
 #include <rec/recSource.h>
 
 const wxString recDate::s_prefStr[recDate::PREF_Max] = {

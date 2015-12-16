@@ -32,6 +32,7 @@
 
 #include <rec/recDatabase.h>
 #include <rec/recEvent.h>
+#include <rec/recFamEvent.h>
 #include <rec/recPersona.h>
 
 class recIndividual;

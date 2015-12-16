@@ -36,8 +36,9 @@
 #endif
 
 #include <rec/recPlace.h>
-#include <rec/recDate.h>
+
 #include <rec/recEvent.h>
+#include <rec/recReference.h>
 #include <rec/recSource.h>
 
 

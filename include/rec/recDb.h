@@ -33,11 +33,16 @@
 #include <rec/recDate.h>
 #include <rec/recEvent.h>
 #include <rec/recEventa.h>
+#include <rec/recEventaPersona.h>
+#include <rec/recEventEventa.h>
 #include <rec/recEventType.h>
+#include <rec/recEventTypeRole.h>
+#include <rec/recFamEvent.h>
 #include <rec/recFamEventa.h>
 #include <rec/recFamIndEventa.h>
 #include <rec/recGedExport.h>
 #include <rec/recGedParse.h>
+#include <rec/recIndEvent.h>
 #include <rec/recIndividual.h>
 #include <rec/recInterface.h>
 #include <rec/recIndPersona.h>

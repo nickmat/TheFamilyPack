@@ -30,7 +30,9 @@
 
 #include <rec/recDatabase.h>
 #include <rec/recDate.h>
+#include <rec/recEventaPersona.h>
 #include <rec/recEventType.h>
+#include <rec/recEventEventa.h>
 #include <rec/recFamEventa.h>
 #include <rec/recFamIndEventa.h>
 #include <rec/recReference.h>

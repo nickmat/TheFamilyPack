@@ -28,7 +28,7 @@
 #ifndef REC_RECEVENTTYPE_H
 #define REC_RECEVENTTYPE_H
 
-#include <rec/recDatabase.h>
+#include <rec/recEventTypeRole.h>
 
 
 class recEvent;
@@ -37,17 +37,6 @@ class recEventType;
 typedef std::vector< recEventType >  recEventTypeVec;
 class recEventa;
 typedef std::vector< recEventa >    recEventaVec;
-
-class recEventTypeRole;
-typedef std::vector< recEventTypeRole >    recEventTypeRoleVec;
-class recEventEventa;
-typedef std::vector< recEventEventa >     recEventEventaVec;
-class recEventaPersona;
-typedef std::vector< recEventaPersona >   recEventaPersonaVec;
-class recIndividualEvent;
-typedef std::vector< recIndividualEvent >  recIndEventVec;
-class recFamilyEvent;
-typedef std::vector< recFamilyEvent >      recFamilyEventVec;
 
 //============================================================================
 //-------------------------[ recEventType ]-----------------------------------
@@ -115,7 +104,6 @@ public:
     static wxString GetTypeStr( idt id );
     wxString GetTypeStr() const { return f_name; }
     static recET_GRP GetGroup( idt id );
-//    recET_GRP GetGroup() const { return f_grp; }
 
     static recEventTypeVec ReadVec( unsigned filter = recET_GRP_FILTER_AllValid );
 

@@ -234,11 +234,27 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rec\recEventEventa.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rec\recEventType.cpp"
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rec\recEventTypeRole.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rec\recEventa.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rec\recEventaPersona.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rec\recFamEvent.cpp"
 				>
 			</File>
 			<File
@@ -263,6 +279,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\rec\recHelper.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rec\recIndEvent.cpp"
 				>
 			</File>
 			<File
@@ -336,11 +356,27 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\include\rec\recEventEventa.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\include\rec\recEventType.h"
 				>
 			</File>
 			<File
+				RelativePath="..\..\include\rec\recEventTypeRole.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\include\rec\recEventa.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\rec\recEventaPersona.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\rec\recFamEvent.h"
 				>
 			</File>
 			<File
@@ -365,6 +401,10 @@
 			</File>
 			<File
 				RelativePath="..\..\include\rec\recHelper.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\rec\recIndEvent.h"
 				>
 			</File>
 			<File

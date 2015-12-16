@@ -157,13 +157,18 @@ REC_OBJECTS =  \
 	rec_recDate.obj \
 	rec_recEvent.obj \
 	rec_recEventa.obj \
+	rec_recEventaPersona.obj \
+	rec_recEventEventa.obj \
 	rec_recEventType.obj \
+	rec_recEventTypeRole.obj \
+	rec_recFamEvent.obj \
 	rec_recFamEventa.obj \
 	rec_recFamIndEventa.obj \
 	rec_recFilterEvent.obj \
 	rec_recGedExport.obj \
 	rec_recGedParse.obj \
 	rec_recHelper.obj \
+	rec_recIndEvent.obj \
 	rec_recIndividual.obj \
 	rec_recIndPersona.obj \
 	rec_recName.obj \
@@ -565,8 +570,20 @@ rec_recEvent.obj: .\..\..\src\rec\recEvent.cpp
 rec_recEventa.obj: .\..\..\src\rec\recEventa.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recEventa.cpp
 
+rec_recEventaPersona.obj: .\..\..\src\rec\recEventaPersona.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recEventaPersona.cpp
+
+rec_recEventEventa.obj: .\..\..\src\rec\recEventEventa.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recEventEventa.cpp
+
 rec_recEventType.obj: .\..\..\src\rec\recEventType.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recEventType.cpp
+
+rec_recEventTypeRole.obj: .\..\..\src\rec\recEventTypeRole.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recEventTypeRole.cpp
+
+rec_recFamEvent.obj: .\..\..\src\rec\recFamEvent.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recFamEvent.cpp
 
 rec_recFamEventa.obj: .\..\..\src\rec\recFamEventa.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recFamEventa.cpp
@@ -585,6 +602,9 @@ rec_recGedParse.obj: .\..\..\src\rec\recGedParse.cpp
 
 rec_recHelper.obj: .\..\..\src\rec\recHelper.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recHelper.cpp
+
+rec_recIndEvent.obj: .\..\..\src\rec\recIndEvent.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recIndEvent.cpp
 
 rec_recIndividual.obj: .\..\..\src\rec\recIndividual.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recIndividual.cpp

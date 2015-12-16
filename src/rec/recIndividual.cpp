@@ -35,14 +35,10 @@
 #include "wx/wx.h"
 #endif
 
+#include <rec/recIndividual.h>
+
 #include <wx/tokenzr.h>
 
-#include <rec/recIndividual.h>
-#include <rec/recDate.h>
-#include <rec/recPlace.h>
-#include <rec/recEvent.h>
-#include <rec/recPersona.h>
-#include <rec/recName.h>
 
 //============================================================================
 //-------------------------[ recIndividual ]----------------------------------
