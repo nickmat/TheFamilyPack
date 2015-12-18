@@ -3,11 +3,9 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Manage SQLite3 Name, NamePart, NamePartType and NameStyle records.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     22 November 2010
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 - 2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -37,9 +35,11 @@
 #include "wx/wx.h"
 #endif
 
-#include <wx/tokenzr.h>
-
 #include <rec/recName.h>
+
+#include <rec/recPersona.h>
+
+#include <wx/tokenzr.h>
 
 
 //============================================================================
@@ -321,6 +321,33 @@ int recName::GetNextSequence( idt indID, idt perID )
     wxSQLite3StatementBuffer sql;
     sql.Format( "SELECT MAX(sequence) FROM Name WHERE %s="ID";", owner, perID );
     return s_db->ExecuteScalar( sql ) + 1;
+}
+
+idt recName::CreateIndNameFromPersona( idt indID, idt perID )
+{
+    if( indID == 0 || perID == 0 ) {
+        return 0;
+    }
+    idt pnID = recPersona::GetNameID( perID );
+    if( pnID == 0 ) {
+        return 0;
+    }
+    recName pn(pnID);
+    recName name(0);
+    name.FSetIndID( indID );
+    name.FSetTypeID( pn.FGetTypeID() );
+    name.SetNextSequence();
+    name.Save();
+
+    recNamePartVec parts = pn.GetParts();
+    for( size_t i = 0 ; i < parts.size() ; i++ ) {
+        recNamePart p(parts[i]);
+        p.FSetID( 0 );
+        p.FSetNameID( name.FGetID() );
+        p.FSetValue( p.FGetValue().Capitalize() );
+        p.Save();
+    }
+    return name.FGetID();
 }
 
 bool recName::FindPersona( idt perID, idt styleID )
