@@ -394,6 +394,18 @@ unsigned recDate::GetCompareFlags( const recDate& date ) const
     return flags;
 }
 
+bool recDate::IsOverlap( const recDate& date ) const
+{
+    unsigned flags = GetCompareFlags( date );
+    return ( flags & recDate::CF_Overlap ) != 0;
+}
+
+bool recDate::IsConsistent( const recDate& date ) const
+{
+    unsigned flags = GetCompareFlags( date );
+    return ( flags & recDate::CF_Overlap || flags & recDate::CF_WithinType ) != 0;
+}
+
 bool recDate::IsUsedAsBase( idt id )
 {
     wxSQLite3StatementBuffer sql;

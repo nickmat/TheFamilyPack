@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010-2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 - 2015, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -177,7 +177,17 @@ public:
         return f_type & ( FLG_AFTER | FLG_RANGE | FLG_BEFORE ); 
     }
 
+    // See enum CompareFlag
     unsigned GetCompareFlags( const recDate& date ) const;
+
+    // Return true if there is any overlap in date ranges
+    bool IsOverlap( const recDate& date ) const;
+    bool IsOverlap( idt dateID ) const { recDate date(dateID); return IsOverlap(date); }
+    static bool IsOverlap( idt d1ID, idt d2ID ) { recDate date(d1ID); return date.IsOverlap(d2ID); }
+    // Return true if either About or constant with Before and After (or overlap)
+    bool IsConsistent( const recDate& date ) const;
+    bool IsConsistent( idt dateID ) const { recDate date(dateID); return IsConsistent(date); }
+    static bool IsConsistent( idt d1ID, idt d2ID ) { recDate date(d1ID); return date.IsConsistent(d2ID); }
 
     bool IsRelative() const { return ( f_rel_id != 0 ); }
     static bool IsRelative( idt dateID ) { recDate date(dateID); return date.IsRelative(); }
