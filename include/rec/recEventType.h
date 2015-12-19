@@ -66,7 +66,10 @@ public:
         ET_Residence    = -17,
         ET_Occupation   = -18,
         ET_Condition    = -19,
-        ET_MAX          = 20     // Size of list
+        ET_CivilPartner = -20,
+        ET_Relation     = -21,
+        ET_Family       = -22,
+        ET_MAX          = 23     // Size of list
     };
 
     recET_GRP f_grp;
