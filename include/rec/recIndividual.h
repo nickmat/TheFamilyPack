@@ -265,6 +265,11 @@ public:
     static int GetMaxEventSeqNumber( idt famID );
     int GetMaxEventSeqNumber() const { return GetMaxEventSeqNumber( f_id ); }
 
+    bool IsSingleton() const;
+    static bool IsSingleton( idt famID ) { recFamily fam(famID); return fam.IsSingleton(); }
+
+    static idt FindOrCreate( idt ind1ID, idt ind2ID );
+
     static void RemoveFromEvents( idt famID, idt indID );
     void RemoveFromEvents( idt indID ) const { RemoveFromEvents( f_id, indID ); }
 };

@@ -1107,6 +1107,55 @@ int recFamily::GetMaxEventSeqNumber( idt famID )
     return s_db->ExecuteScalar( sql );
 }
 
+// A singleton family is one without a partner, attached children
+// or FamilyEvent's.
+bool recFamily::IsSingleton() const
+{
+    if( FGetHusbID() && FGetWifeID() ) {
+        return false;
+    }
+    if( GetChildCount() != 0 ) {
+        return false;
+    }
+    recFamilyEventVec es = GetEvents();
+    if( es.size() ) {
+        return false;
+    }
+    return true;
+}
+
+// We will find, modify or create a family for these two individuals.
+idt recFamily::FindOrCreate( idt ind1ID, idt ind2ID )
+{
+    idt famID = recFamily::Find( ind1ID, ind2ID );
+    if( famID ) {
+        // The family exists already.
+        return famID;
+    }
+    famID = recIndividual::GetFamilyID( ind1ID );
+    if( recFamily::IsSingleton( famID ) ) {
+        // We will use this family
+        idt fam2ID = recIndividual::GetFamilyID( ind2ID );
+        if( recFamily::IsSingleton( fam2ID ) ) {
+            recIndividual ind2(ind2ID);
+            ind2.FSetFamID( famID );
+            ind2.Save();
+            // This is no longer needed
+            recFamily::Delete( fam2ID );
+        }
+        recFamily fam(famID);
+        if( fam.FGetWifeID() == 0 ) {
+            fam.FSetWifeID( ind2ID );
+        } else {
+            assert( fam.FGetHusbID() == 0 );
+            fam.FSetHusbID( ind2ID );
+        }
+        fam.Save();
+        return fam.FGetID();
+    }
+    return 0;
+}
+
 void recFamily::RemoveFromEvents( idt famID, idt indID )
 {
     if( famID == 0 || indID == 0 ) return;
