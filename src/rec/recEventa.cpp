@@ -36,7 +36,10 @@
 #endif
 
 #include <rec/recEventa.h>
+
 #include <rec/recEvent.h>
+#include <rec/recIndividual.h>
+#include <rec/recPersona.h>
 #include <rec/recPlace.h>
 
 
@@ -594,5 +597,70 @@ recCheckIdVec recEventa::FindCheckedMatchingEvents() const
     }
     return list;
 }
+
+void recEventa::CreateFamilyLink() const
+{
+    recEventaPersonaVec eapas = GetEventaPersonas();
+    recIdVec partners; // The id's of the parent persona, size should be 1 or 2.
+    for( size_t i = 0 ; i < eapas.size() ; i++ ) {
+        recEventTypeRole ro(eapas[i].FGetRoleID());
+        if( ro.FGetPrime() > 0 ) {
+            partners.push_back( eapas[i].FGetPerID() );
+        }
+    }
+    if( partners.empty() ) {
+        return;
+    }
+    wxASSERT( partners.size() <= 2 );
+
+    recIdVec fams; // List of possible families.
+    if( partners.size() == 2 ) {
+        recIdVec ind1s = recPersona::GetIndividualIDs( partners[0] );
+        recIdVec ind2s = recPersona::GetIndividualIDs( partners[1] );
+        // Go through all possibilities
+        for( size_t i = 0 ; i < ind1s.size() ; i++ ) {
+            for( size_t j = 0 ; j < ind2s.size() ; j++ ) {
+                idt famID = recFamily::FindOrCreate( ind1s[i], ind2s[j] );
+                if( famID ) {
+                    fams.push_back( famID );
+                }
+            }
+        }
+    } else if( partners.size() == 1 ) {
+        // TODO: 
+        wxASSERT( false );
+    }
+    if( fams.empty() ) {
+        return; // No family to link?
+    }
+    for( size_t i = 0 ; i < fams.size() ; i++ ) {
+        recFamilyEventa::Create( fams[i], FGetID() );
+    }
+
+    recIdVec children;
+    for( size_t i = 0 ; i < eapas.size() ; i++ ) {
+        recEventTypeRole ro(eapas[i].FGetRoleID());
+        if( ro.FGetPrime() == 0 ) {
+            children.push_back( eapas[i].FGetPerID() );
+        }
+    }
+
+    for( size_t i = 0 ; i < fams.size() ; i++ ) {
+        for( size_t j = 0 ; j < children.size() ; j++ ) {
+            recIdVec inds = recPersona::GetIndividualIDs( children[j] );
+            for( size_t k = 0 ; k < inds.size() ; k++ ) {
+                recFamilyIndividual fi(0);
+                fi.FSetFamID( fams[i] );
+                fi.FSetIndID( inds[k] );
+                if( fi.Find() && fi.FGetID() ) {
+                    continue;
+                }
+                fi.Save();
+                recFamilyIndEventa::Create( fi.FGetID(), FGetID() );
+            }
+        }
+    }
+}
+
 
 // End of src/rec/recEventa.cpp file

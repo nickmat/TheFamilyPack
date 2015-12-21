@@ -131,6 +131,9 @@ public:
     recIdVec FindMatchingEvents( recEVENT_Link link = recEVENT_Link_EvEvRec ) const;
     recCheckIdVec FindCheckedMatchingEvents() const;
 
+    void CreateFamilyLink() const;
+    static void CreateFamilyLink( idt eaID ) { recEventa ea(eaID); ea.CreateFamilyLink(); }
+
     static void RemoveDates( idt dateID ); // removes date if found, replacing with 0
     static void RemovePlace( idt placeID ); // removes place if found, replacing with 0
 
