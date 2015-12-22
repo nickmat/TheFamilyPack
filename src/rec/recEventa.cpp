@@ -601,11 +601,13 @@ recCheckIdVec recEventa::FindCheckedMatchingEvents() const
 void recEventa::CreateFamilyLink() const
 {
     recEventaPersonaVec eapas = GetEventaPersonas();
-    recIdVec partners; // The id's of the parent persona, size should be 1 or 2.
+    recIdVec partners, children;
     for( size_t i = 0 ; i < eapas.size() ; i++ ) {
         recEventTypeRole ro(eapas[i].FGetRoleID());
         if( ro.FGetPrime() > 0 ) {
             partners.push_back( eapas[i].FGetPerID() );
+        } else {
+            children.push_back( eapas[i].FGetPerID() );
         }
     }
     if( partners.empty() ) {
@@ -630,32 +632,21 @@ void recEventa::CreateFamilyLink() const
         // TODO: 
         wxASSERT( false );
     }
-    if( fams.empty() ) {
-        return; // No family to link?
-    }
     for( size_t i = 0 ; i < fams.size() ; i++ ) {
         recFamilyEventa::Create( fams[i], FGetID() );
-    }
-
-    recIdVec children;
-    for( size_t i = 0 ; i < eapas.size() ; i++ ) {
-        recEventTypeRole ro(eapas[i].FGetRoleID());
-        if( ro.FGetPrime() == 0 ) {
-            children.push_back( eapas[i].FGetPerID() );
-        }
-    }
-
-    for( size_t i = 0 ; i < fams.size() ; i++ ) {
         for( size_t j = 0 ; j < children.size() ; j++ ) {
             recIdVec inds = recPersona::GetIndividualIDs( children[j] );
             for( size_t k = 0 ; k < inds.size() ; k++ ) {
                 recFamilyIndividual fi(0);
                 fi.FSetFamID( fams[i] );
                 fi.FSetIndID( inds[k] );
-                if( fi.Find() && fi.FGetID() ) {
-                    continue;
+                fi.Find();
+                if( fi.FGetID() == 0 ) {
+                    // Doesn't exist, so create it.
+                    fi.FSetSeqChild( recFamily::GetChildNextSequence( fams[i] ) );
+                    fi.FSetSeqParent( recFamily::GetParentNextSequence( inds[k] ) );
+                    fi.Save();
                 }
-                fi.Save();
                 recFamilyIndEventa::Create( fi.FGetID(), FGetID() );
             }
         }
