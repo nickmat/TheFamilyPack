@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     22 November 2010
- * Copyright:   Copyright (c) 2010 - 2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 - 2016, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -88,6 +88,7 @@ public:
     static idt GetPerID( idt nameID );
 
     static idt CreateName( const wxString& nameStr, idt style = 0 );
+    static idt Create( const wxString& nameStr, idt indID, idt perID, idt style, int* pseq );
 
     int AddNameParts( const wxString& nameStr, recStdNameType type = NAME_TYPE_Unstated, int seq = 0 ) const;
     int AddNamePart( const wxString& nameStr, recStdNameType type, int seq ) const;

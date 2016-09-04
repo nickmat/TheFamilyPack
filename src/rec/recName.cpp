@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     22 November 2010
- * Copyright:   Copyright (c) 2010 - 2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 - 2016, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -144,6 +144,19 @@ idt recName::CreateName( const wxString& nameStr, idt style )
 {
     recName name(0);
     name.f_style_id = style;
+    name.Save();
+    name.AddNameParts( nameStr );
+    return name.f_id;
+}
+
+idt recName::Create( const wxString& nameStr, idt indID, idt perID, idt style, int* pseq )
+{
+    assert( pseq != NULL ); // TODO: Allow for NULL
+    recName name(0);
+    name.f_ind_id = indID;
+    name.f_per_id = perID;
+    name.f_style_id = style;
+    name.f_sequence = ++(*pseq);
     name.Save();
     name.AddNameParts( nameStr );
     return name.f_id;
