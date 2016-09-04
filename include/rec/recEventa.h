@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     20th April 2013
- * Copyright:   Copyright (c) 2013-2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2013-2016, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -79,6 +79,9 @@ public:
     void FSetDatePt( idt datePt ) { f_date_pt = datePt; }
     void FSetDatePt( recDate::DatePoint dp ) { f_date_pt = recDate::GetDatePoint( f_date1_id, dp ); }
 
+    idt CreateFromEvent( const recEvent& eve );
+    static idt CreateFromEvent( idt eveID );
+
     wxString SetAutoTitle( const wxString& name1, const wxString& name2 = wxEmptyString );
 
     static wxString GetIdStr( idt evID ) { return wxString::Format( "Ea"ID, evID ); }
@@ -109,7 +112,7 @@ public:
     static bool IsFamilyEvent( idt eveID );
     bool IsFamilyEvent() const { return IsFamilyEvent( f_id ); }
 
-    static recEventaPersonaVec GetEventaPersonas( idt emID );
+    static recEventaPersonaVec GetEventaPersonas( idt eaID );
     recEventaPersonaVec GetEventaPersonas() const { return GetEventaPersonas( f_id ); }
 
     static wxSQLite3Table GetTitleList();
@@ -128,11 +131,13 @@ public:
     // Eventa/Persona(prime Role) -> Persona/Individual link -> Individual/Event(matching role)
     // Depending on the type and group of the event, loosely match Date and Place.
     enum recEVENT_Link { recEVENT_Link_EvEvRec, recEVENT_Link_IndPer };
-    recIdVec FindMatchingEvents( recEVENT_Link link = recEVENT_Link_EvEvRec ) const;
-    recCheckIdVec FindCheckedMatchingEvents() const;
+    recIdVec FindLinkedEvents( recEVENT_Link link = recEVENT_Link_EvEvRec ) const;
+    recCheckIdVec FindCheckedLinkedEvents() const;
 
     void CreateFamilyLink() const;
     static void CreateFamilyLink( idt eaID ) { recEventa ea(eaID); ea.CreateFamilyLink(); }
+    void CreatePersonalEvent() const;
+    static void CreatePersonalEvent( idt eaID ) { recEventa ea(eaID); ea.CreatePersonalEvent(); }
 
     static void RemoveDates( idt dateID ); // removes date if found, replacing with 0
     static void RemovePlace( idt placeID ); // removes place if found, replacing with 0

@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010-2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2010-2016, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -33,6 +33,7 @@
 #include <rec/recIndEvent.h>
 #include <rec/recEventType.h>
 #include <rec/recEventEventa.h>
+#include <rec/recEventa.h>
 
 
 //============================================================================
@@ -85,7 +86,11 @@ public:
     static wxString GetIdStr( idt evID ) { return wxString::Format( "E"ID, evID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
+    idt CreateFromEventa( const recEventa& eventa );
     static idt CreateFromEventa( idt erID );
+
+    void CreateRolesFromEventa( idt eaID ) const { CreateRolesFromEventa( f_id, eaID ); }
+    static void CreateRolesFromEventa( idt eID, idt eaID );
 
     wxString SetAutoTitle( const wxString& name1, const wxString& name2 = wxEmptyString );
     static void SetDatePeriodToInclude( idt eventID, idt dateID );
@@ -108,7 +113,10 @@ public:
     static recEventVec GetLowerEvents( idt eventID );
     recEventVec GetLowerEvents() const { return GetLowerEvents( f_id ); }
 
-    static recEventaVec FindEquivRefEvents( idt evetID );
+    static recEventaVec FindEquivRefEvents( idt eveID );
+    recEventaVec FindEquivRefEvents() const { return FindEquivRefEvents( f_id ); }
+    static recEventaVec GetEventas( idt eveID );
+    recEventaVec GetEventas() const { return GetEventas( f_id ); }
     static recEventEventaVec GetEventEventas( idt eveID );
     recEventEventaVec GetEventEventas() const { return GetEventEventas( f_id ); }
 

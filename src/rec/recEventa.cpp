@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     20th April 2013
- * Copyright:   Copyright (c) 2013-2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2013-2016, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -39,6 +39,7 @@
 
 #include <rec/recEvent.h>
 #include <rec/recIndividual.h>
+#include <rec/recIndEvent.h>
 #include <rec/recPersona.h>
 #include <rec/recPlace.h>
 
@@ -146,6 +147,27 @@ bool recEventa::Read()
     f_note     = result.GetAsString( 5 );
     f_date_pt  = (long) result.GetInt( 6 );
     return true;
+}
+
+idt recEventa::CreateFromEvent( const recEvent& eve )
+{
+    Clear();
+    f_title    = eve.FGetTitle();
+    f_type_id  = eve.FGetTypeID();
+    f_date1_id = recDate::Create( eve.FGetDate1ID() );
+    f_date2_id = recDate::Create( eve.FGetDate2ID() );
+    f_place_id = recPlace::Create( eve.FGetPlaceID() );
+    f_note     = eve.FGetNote();
+    f_date_pt  = eve.FGetDatePt();
+    Save();
+    return f_id;
+}
+
+idt recEventa::CreateFromEvent( idt eveID )
+{
+    recEvent eve(eveID);
+    recEventa ea;
+    return ea.CreateFromEvent( eve );
 }
 
 wxString recEventa::SetAutoTitle( const wxString& name1, const wxString& name2 )
@@ -535,7 +557,7 @@ recFamilyIndEventaVec recEventa::GetFamilyIndEventas( idt eaID )
     return vec;
 }
 
-recIdVec recEventa::FindMatchingEvents( recEVENT_Link link ) const
+recIdVec recEventa::FindLinkedEvents( recEVENT_Link link ) const
 {
     recIdVec eveIDs;
     wxSQLite3StatementBuffer sql;
@@ -573,11 +595,11 @@ recIdVec recEventa::FindMatchingEvents( recEVENT_Link link ) const
     return eveIDs;
 }
 
-recCheckIdVec recEventa::FindCheckedMatchingEvents() const
+recCheckIdVec recEventa::FindCheckedLinkedEvents() const
 {
     recCheckIdVec list;
-    recIdVec e1 = FindMatchingEvents( recEVENT_Link_EvEvRec );
-    recIdVec e2 = FindMatchingEvents( recEVENT_Link_IndPer );
+    recIdVec e1 = FindLinkedEvents( recEVENT_Link_EvEvRec );
+    recIdVec e2 = FindLinkedEvents( recEVENT_Link_IndPer );
 
     // This assumes e1 and e2 are both in ascending order
     for( size_t i = 0, j = 0 ; i < e1.size() || j < e2.size() ; ) {
@@ -629,8 +651,13 @@ void recEventa::CreateFamilyLink() const
             }
         }
     } else if( partners.size() == 1 ) {
-        // TODO: 
-        wxASSERT( false );
+        recIdVec inds = recPersona::GetIndividualIDs( partners[0] );
+        for( size_t i = 0 ; i < inds.size() ; i++ ) {
+            idt famID = recFamily::FindOrCreate( inds[i], 0 );
+            if( famID ) {
+                fams.push_back( famID );
+            }
+        }
     }
     for( size_t i = 0 ; i < fams.size() ; i++ ) {
         recFamilyEventa::Create( fams[i], FGetID() );
@@ -653,5 +680,42 @@ void recEventa::CreateFamilyLink() const
     }
 }
 
+void recEventa::CreatePersonalEvent() const
+{
+    recEvent eve(0);
+    recEventaPersonaVec eapas = GetEventaPersonas();
+    for( size_t i = 0 ; i < eapas.size() ; i++ ) {
+        recEventTypeRole ro(eapas[i].FGetRoleID());
+        if( ro.FGetPrime() == 0 ) {
+            continue;
+        }
+        // List of Individuls associated with this Persona
+        recIdVec indIDs = recPersona::GetIndividualIDs( eapas[i].FGetPerID() );
+        for( size_t j = 0 ; j < indIDs.size() ; j++ ) {
+            if( eve.FGetID() == 0 ) {
+                // About time we created the Event
+                eve.CreateFromEventa( *this );
+                recEventEventa::Create( eve.FGetID(), f_id );
+            }
+            // Find summary IndividualEvent
+            idt ieSumID = recIndividual::GetPersonalSummaryIE( indIDs[j], ro.FGetTypeID() );
+            if( ieSumID == 0 ) {
+                // Create the summary personal Event.
+                recEvent e(0);
+                e.FSetTypeID( FGetTypeID() );
+                e.SetAutoTitle( recIndividual::GetName( indIDs[j] ) + _(" - Summary") );
+                e.Save();
+                ieSumID = recIndividualEvent::Create( indIDs[j], e.FGetID(), ro.FGetID() );
+            }
+            recIndividualEvent ie(0);
+            ie.FSetHigherID( ieSumID );
+            ie.FSetIndID( indIDs[j] );
+            ie.FSetEventID( eve.FGetID() );
+            ie.FSetRoleID( ro.FGetID() );
+            ie.FSetNote( eapas[i].FGetNote() );
+            ie.Save();
+        }
+    }
+}
 
 // End of src/rec/recEventa.cpp file

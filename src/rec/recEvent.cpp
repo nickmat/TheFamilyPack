@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3rd October 2010
- * Copyright:   Copyright (c) 2010-2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2010-2016, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -154,21 +154,46 @@ bool recEvent::Read()
     return true;
 }
 
-idt recEvent::CreateFromEventa( idt erID )
+idt recEvent::CreateFromEventa( const recEventa& ea )
 {
-    recEvent e(0);
-    recEventa er(erID);
+    Clear();
+    f_title    = ea.FGetTitle();
+    f_type_id  = ea.FGetTypeID();
+    f_date1_id = recDate::Create( ea.FGetDate1ID() );
+    f_date2_id = recDate::Create( ea.FGetDate2ID() );
+    f_place_id = recPlace::Create( ea.FGetPlaceID() );
+    f_note     = ea.FGetNote();
+    f_date_pt  = ea.FGetDatePt();
+    Save();
+    return f_id;
+}
 
-    e.f_title    = er.f_title;
-    e.f_type_id  = er.f_type_id;
-    e.f_date1_id = recDate::Create( er.f_date1_id );
-    e.f_date2_id = recDate::Create( er.f_date2_id );
-    e.f_place_id = recPlace::Create( er.f_place_id );
-    e.f_note     = er.f_note;
-    e.f_date_pt  = er.f_date_pt;
+idt recEvent::CreateFromEventa( idt eaID )
+{
+    recEventa ea(eaID);
+    recEvent e;
+    return e.CreateFromEventa( ea );
+}
 
-    e.Save();
-    return e.FGetID();
+void recEvent::CreateRolesFromEventa( idt eID, idt eaID )
+{
+    recEventaPersonaVec epas = recEventa::GetEventaPersonas( eaID );
+    for( size_t i = 0 ; i < epas.size() ; i++ ) {
+        recIdVec indIDs = recPersona::GetIndividualIDs( epas[i].FGetPerID() );
+        for( size_t j = 0 ; j < indIDs.size() ; j++ ) {
+            recIndividualEvent ie;
+            if( ie.Find( indIDs[j], eID, epas[i].FGetRoleID() ) ) {
+                continue;
+            }
+            ie.FSetIndID( indIDs[j] );
+            ie.FSetEventID( eID );
+            ie.FSetRoleID( epas[i].FGetRoleID() );
+            ie.FSetNote( epas[i].FGetNote() );
+            ie.FSetIndSeq( recIndividual::GetMaxEventSeqNumber( indIDs[j] ) + 1 );
+            ie.Save();
+            recIndividual::UpdateEpitaph( indIDs[j] );
+        }
+    }
 }
 
 wxString recEvent::SetAutoTitle( const wxString& name1, const wxString& name2 )
@@ -446,7 +471,37 @@ recEventaVec recEvent::FindEquivRefEvents( idt indEventID )
         "     AND IE.role_id=EP.role_id "
         "    GROUP BY eventa_id) "
         "ON id=eventa_id;",
-        indEventID, indEventID
+        indEventID
+    );
+    result = s_db->ExecuteQuery( sql );
+
+    while( result.NextRow() ) {
+        recEventa e(0);
+        e.f_id       = GET_ID( result.GetInt64( 0 ) );
+        e.f_title    = result.GetAsString( 1 );
+        e.f_type_id  = GET_ID( result.GetInt64( 2 ) );
+        e.f_date1_id = GET_ID( result.GetInt64( 3 ) );
+        e.f_date2_id = GET_ID( result.GetInt64( 4 ) );
+        e.f_place_id = GET_ID( result.GetInt64( 5 ) );
+        e.f_note     = result.GetAsString( 6 );
+        vec.push_back( e );
+    }
+    return vec;
+}
+
+recEventaVec recEvent::GetEventas( idt eveID )
+{
+    recEventaVec vec;
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3ResultSet result;
+
+    sql.Format(
+        "SELECT EA.id, EA.title, EA.type_id,"
+        " EA.date1_id, EA.date2_id, EA.place_id, EA.note"
+        " FROM Eventa EA, EventEventa EE"
+        " WHERE EE.event_id="ID" AND EA.id=EE.eventa_id;",
+        eveID
+
     );
     result = s_db->ExecuteQuery( sql );
 
