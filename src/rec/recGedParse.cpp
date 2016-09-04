@@ -583,8 +583,8 @@ void recGedParse::ReadIndEvent( GedIndividual& gind, int level )
         return; // do nothing
     }
     if( unique ) {
-        idt unique_eID = recIndividual::GetPersonalEvent( gind.GetIndID(), ev.FGetTypeID() );
-        if( unique_eID != 0 ) {
+        idt unique_ieID = recIndividual::GetPersonalSummaryIE( gind.GetIndID(), ev.FGetTypeID() );
+        if( unique_ieID != 0 ) {
             // TODO: Should we add these as lower events?
             ReadNextLine();
             return; // Currently, do nothing
