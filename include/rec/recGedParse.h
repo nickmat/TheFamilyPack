@@ -69,40 +69,43 @@ private:
     };
     enum Tag {
         tagNULL, // Invalid or unset value.
-        tagINDI, /* Index of INDIVIDUAL, a person */
-        tagFAM,  /* Index of FAMILY, a couple and their children */
-        tagSOUR, /* Index of SOURCE, a source note */
-        tagSUBM, // Index of Submitter (Researcher) record.
-        tagNAME, /* NAME, (one of) the name a person is known by */
+
         tagADDR, // ADDRESS, Postal address for Submitter
         tagADR1,
         tagADR2,
         tagADR3,
-        tagTEXT,
-        tagCONT, // Continuation on next line.
-        tagCONC, // Continuation without whitespace.
-        tagTITL,
-        tagPHON, // PHONE, Telephone number.
-        tagEMAI, // EMAIL ADDRESS as defined in (draft) GEDCOM 5.5.1
-        tagFAX,  // FAX number.
-        tagWWW,  // Web address.
-        tagSEX,  /* SEX, M for Male, F for Female */
         tagBIRT, /* BIRTH, birth event */
-        tagCHR,  /* CHRISTENING, christening or baptism event */
-        tagDEAT, /* DEATH, death event */
         tagBURI, /* BURIAL, burial event */
-        tagOCCU, /* OCCUPATION, Occupation or Profession attribute */
-        tagDATE, /* DATE, a calender day event */
-        tagPLAC, /* PLACE, a place name (Address) */
-        tagFAMS, /* FAMILY_SPOUSE, family in which a person appears as a spouse. */
-        tagFAMC, /* FAMILY_CHILD, family in which a person appears as a child. */
-        tagHUSB, /* HUSBAND, person - male partner in family */
-        tagWIFE, /* WIFE, person - female partner in family */
-        tagMARR, /* MARRIAGE, marriage event */
         tagCHIL, /* CHILD, person - (one of) child member of family */
-        tag_PRI, /* PRIVATE, person - if Y, details should not be made public */
+        tagCHR,  /* CHRISTENING, christening or baptism event */
+        tagCONC, // Continuation without whitespace.
+        tagCONT, // Continuation on next line.
+        tagDATE, /* DATE, a calender day event */
+        tagDEAT, /* DEATH, death event */
+        tagEMAI, // EMAIL ADDRESS as defined in (draft) GEDCOM 5.5.1
+        tagFAM,  /* Index of FAMILY, a couple and their children */
+        tagFAMC, /* FAMILY_CHILD, family in which a person appears as a child. */
+        tagFAMS, /* FAMILY_SPOUSE, family in which a person appears as a spouse. */
+        tagFAX,  // FAX number.
         tagHEAD, // HEADER, required. File always starts with this section.
+        tagHUSB, /* HUSBAND, person - male partner in family */
+        tagINDI, /* Index of INDIVIDUAL, a person */
+        tagMARR, /* MARRIAGE, marriage event */
+        tagNAME, /* NAME, (one of) the name a person is known by */
+        tagNOTE, /* NOTE, A note object, index to a note object or a text note */
+        tagOCCU, /* OCCUPATION, Occupation or Profession attribute */
+        tagPHON, // PHONE, Telephone number.
+        tagPLAC, /* PLACE, a place name (Address) */
+        tagSEX,  /* SEX, M for Male, F for Female */
+        tagSOUR, /* Index of SOURCE, a source note */
+        tagSUBM, // Index of Submitter (Researcher) record.
+        tagTEXT,
+        tagTITL,
         tagTRLR, // TRAILER, required. It specifies the end of the data, use tag_END
+        tagWIFE, /* WIFE, person - female partner in family */
+        tagWWW,  // Web address.
+        tag_PRI, /* PRIVATE, person - if Y, details should not be made public */
+
         tag_END  /* _END, end of file */
     };
 
@@ -117,13 +120,14 @@ private:
     void ReadSex( GedIndividual& gind );
     void ReadPrivacy( GedIndividual& gind );
     void ReadIndEvent( GedIndividual& gind, int level );
-    void ReadEventSource( const recEvent& eve, idt indID, int level );
+    void ReadEventSource( recEvent& eve, idt indID, int level );
     void ReadFam( int level );
     void ReadFamEvent( GedFamily& gfam, int level );
     void ReadSour( int level );
     void ReadSubm( int level );
     FileSource ReadFileSource( int level );
     wxString ReadAddr( int level );
+    wxString ReadTextNote( int level );
     wxString ReadText( int level, const wxString& start );
     idt ParseEvPlace( int level );
     idt ParseEvDate( int level, idt* d2ID );

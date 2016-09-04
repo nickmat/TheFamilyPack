@@ -311,7 +311,8 @@ bool recGedParse::ReadNextLine()
 
     m_level = 0;
     m_tag = tagNULL;
-    m_text.empty();
+    m_text.clear();
+    m_xref.clear();
 
     str = tk.GetNextToken();
     if( str.ToULong( &num ) == false ) return false;
@@ -334,6 +335,7 @@ bool recGedParse::ReadNextLine()
         else if( str.Cmp( "FAM"  ) == 0 ) m_tag = tagFAM;
         else if( str.Cmp( "SOUR" ) == 0 ) m_tag = tagSOUR;
         else if( str.Cmp( "SUBM" ) == 0 ) m_tag = tagSUBM;
+        else if( str.Cmp( "NOTE" ) == 0 ) m_tag = tagNOTE;
         return true;
     }
 
@@ -342,6 +344,7 @@ bool recGedParse::ReadNextLine()
     else if( str.Cmp( "CHIL" ) == 0 ) m_tag = tagCHIL;
     else if( str.Cmp( "SOUR" ) == 0 ) m_tag = tagSOUR;
     else if( str.Cmp( "SUBM" ) == 0 ) m_tag = tagSUBM;
+    else if( str.Cmp( "NOTE" ) == 0 ) m_tag = tagNOTE;
 
     if( m_tag != tagNULL ) {
         if( tk.HasMoreTokens() == false ) return true;
@@ -349,7 +352,6 @@ bool recGedParse::ReadNextLine()
         if( str.substr( 0, 1 ) == "@" ) {
             m_xref = str.Mid( 1 ).BeforeFirst( wxS('@') );
         } else {
-            m_xref = "";
             m_text = str;
         }
         return true;
@@ -373,6 +375,7 @@ bool recGedParse::ReadNextLine()
     else if( str.Cmp( "OCCU" ) == 0 ) m_tag = tagOCCU;
     else if( str.Cmp( "DATE" ) == 0 ) m_tag = tagDATE;
     else if( str.Cmp( "PLAC" ) == 0 ) m_tag = tagPLAC;
+    else if( str.Cmp( "NOTE" ) == 0 ) m_tag = tagNOTE;
     else if( str.Cmp( "FAMS" ) == 0 ) m_tag = tagFAMS;
     else if( str.Cmp( "FAMC" ) == 0 ) m_tag = tagFAMC;
     else if( str.Cmp( "MARR" ) == 0 ) m_tag = tagMARR;
@@ -603,6 +606,9 @@ void recGedParse::ReadIndEvent( GedIndividual& gind, int level )
             case tagPLAC:
                 ev.FSetPlaceID( ParseEvPlace( level+1 ) );
                 break;
+            case tagNOTE:
+                ev.FSetNote( ReadTextNote( level+1 ) );
+                continue;
             case tagSOUR:
                 if( !m_noSourRec ) {
                     ReadEventSource( ev, gind.GetIndID(), level+1 );
@@ -875,7 +881,7 @@ idt recGedParse::ParseEvPlace( int level )
     return place.f_id;
 }
 
-void recGedParse::ReadEventSource( const recEvent& eve, idt indID, int level )
+void recGedParse::ReadEventSource( recEvent& eve, idt indID, int level )
 {
     if( m_xref.empty() ) {
         // TODO: Gedcom not using source records.
@@ -895,7 +901,17 @@ void recGedParse::ReadEventSource( const recEvent& eve, idt indID, int level )
         ref.Save();
     }
     // We don't have enough info to create an Eventa to
-    // link to the Event.
+    // link to the Event. Just add a reference string to the Event.user_ref.
+    wxString uref = eve.FGetUserRef();
+    if( !uref.empty() ) {
+        uref += ", ";
+    }
+    size_t pos = uref.find( m_xref+"," ); // Check for duplicate
+    if( pos == wxString::npos ) {
+        uref += m_xref;
+        eve.FSetUserRef( uref );
+    }
+
     // All we will do for now is add an unnamed Persona to link the
     // Individual to the Reference.
     recIdVec pers = recPersona::FindIndividualReferenceLink( indID, refID );
@@ -986,6 +1002,9 @@ void recGedParse::ReadFamEvent( GedFamily& gfam, int level )
             case tagPLAC:
                 ev.FSetPlaceID( ParseEvPlace( level+1 ) );
                 break;
+            case tagNOTE:
+                ev.FSetNote( ReadTextNote( level+1 ) );
+                continue;
             case tagSOUR:
                 if( !m_noSourRec ) {
                     ReadEventSource( ev, gfam.GetHusbIndId(), level+1 );
@@ -1139,6 +1158,14 @@ wxString recGedParse::ReadAddr( int level )
     if( !addr1.IsEmpty() && !addrCont.IsEmpty() ) addr1 << "\n";
     addr1 << addrCont;
     return addr1;
+}
+
+wxString recGedParse::ReadTextNote( int level )
+{
+    if( m_xref.empty() ) {
+        return ReadText( level, m_text );
+    }
+    return "";
 }
 
 wxString recGedParse::ReadText( int level, const wxString& start )
