@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     10th December 2012
- * Copyright:   Copyright (c) 2012-2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2012-2016, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -62,7 +62,8 @@ void rgCompareEvent::Reset( idt eveID )
     m_rePlaces.clear();
 
     // The list of events we will be comparing with.
-    m_refEvents = recEvent::FindEquivRefEvents( m_event.f_id );
+    m_refEvents = m_event.GetEventas();
+
     for( size_t i = 0 ; i < m_refEvents.size() ; i++ ) {
         idt refID = recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, m_refEvents[i].f_id );
         m_refIDs.push_back( refID );
@@ -116,7 +117,7 @@ wxString rgCompareEvent::GetRefEventsTable()
     } else {
         htm <<
             "<table class='data'>\n<tr>\n"
-            "<th>No Reference Event Records available</th>\n"
+            "<th>No Reference Documents available</th>\n"
             "</tr>\n</table>\n"
         ;
     }
