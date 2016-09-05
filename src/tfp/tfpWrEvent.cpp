@@ -114,20 +114,27 @@ wxString tfpWriteEventPage( idt eventID, rgCompareEvent* ce )
         htm << "</table>\n";
     }
 
-    recEventEventaVec eers = eve.GetEventEventas();
-    if( eers.size() ) {
+    recEventEventaVec eeas = eve.GetEventEventas();
+    if( eeas.size() ) {
         htm <<
             "<table class='data'>\n<tr>\n"
-            "<th>Record</th>\n<th>Conf</th>\n<th>Title</th>\n</tr>\n"
+            "<th colspan='2'>Reference Document</th>\n"
+            "<th colspan='2'>Eventa</th>\n"
+            "<th>Conf</th>\n</tr>\n"
         ;
-        for( size_t i = 0 ; i < eers.size() ; i++ ) {
-            idt eerID = eers[i].FGetEventaID();
+        for( size_t i = 0 ; i < eeas.size() ; i++ ) {
+            idt eeaID = eeas[i].FGetEventaID();
+            idt refID = recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, eeaID );
+            wxString refTitle = recReference::GetTitle( refID );
             htm <<
                 "<tr>\n"
-                "<td><b><a href='tfp:Ea" << eerID <<
-                "'>" <<  recEventa::GetIdStr( eerID ) << "</a></b></td>\n"
-                "<td>" << eers[i].FGetConf() << "</td>\n"
-                "<td>" << recEventa::GetTitle( eerID ) << "</td>\n"
+                "<td><b><a href='tfp:R" << refID <<
+                "'>" << recReference::GetIdStr( refID ) << "</a></b></td>\n"
+                "<td>" << refTitle << "</td>\n"
+                "<td><b><a href='tfp:Ea" << eeaID <<
+                "'>" <<  recEventa::GetIdStr( eeaID ) << "</a></b></td>\n"
+                "<td>" << recEventa::GetTitle( eeaID ) << "</td>\n"
+                "<td>" << eeas[i].FGetConf() << "</td>\n"
                 "</tr>\n"
             ;
         }
@@ -180,12 +187,11 @@ wxString tfpWriteEventPage( idt eventID, rgCompareEvent* ce )
 
     if( ce ) {
         htm <<
-            ce->GetRefEventsTable() <<
             ce->GetRefDatesTable() <<
             ce->GetRefPlacesTable()
         ;
     } else {
-        htm << "<p><a href='tfp:E^" << eventID << "'>Show Eventas</a></p>\n";
+        htm << "<p><a href='tfp:E^" << eventID << "'>Show Eventa Details</a></p>\n";
     }
 
     htm << tfpWrTailTfp();
