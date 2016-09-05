@@ -107,7 +107,7 @@ static wxString DisplayConclusions( const recEventa& er )
 {
     idt erID = er.FGetID();
     wxString htm;
-    recCheckIdVec ces = er.FindCheckedMatchingEvents();
+    recCheckIdVec ces = er.FindCheckedLinkedEvents();
     if( ces.size() ) {
         htm <<
             "<table class='data'>\n"
