@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Jun  5 2014)
+// C++ code generated with wxFormBuilder (version Jun 17 2015)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -423,7 +423,7 @@ fbRgEditEvent::fbRgEditEvent( wxWindow* parent, wxWindowID id, const wxString& t
 	wxStaticText* m_staticText2;
 	m_staticText2 = new wxStaticText( this, wxID_ANY, _("Title:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText2->Wrap( -1 );
-	bSizer114->Add( m_staticText2, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
+	bSizer114->Add( m_staticText2, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
 	m_textCtrlTitle = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 350,-1 ), 0 );
 	bSizer114->Add( m_textCtrlTitle, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
@@ -472,7 +472,7 @@ fbRgEditEvent::fbRgEditEvent( wxWindow* parent, wxWindowID id, const wxString& t
 	wxStaticText* m_staticText117;
 	m_staticText117 = new wxStaticText( m_panel1, wxID_ANY, _("User Ref:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText117->Wrap( -1 );
-	fgSizer10->Add( m_staticText117, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
+	fgSizer10->Add( m_staticText117, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT, 5 );
 	
 	m_textCtrlUserRef = new wxTextCtrl( m_panel1, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer10->Add( m_textCtrlUserRef, 1, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
@@ -487,7 +487,7 @@ fbRgEditEvent::fbRgEditEvent( wxWindow* parent, wxWindowID id, const wxString& t
 	bSizer115 = new wxBoxSizer( wxVERTICAL );
 	
 	m_textCtrlNote = new wxTextCtrl( m_panel23, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( -1,100 ), wxTE_MULTILINE );
-	bSizer115->Add( m_textCtrlNote, 1, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
+	bSizer115->Add( m_textCtrlNote, 1, wxALL|wxEXPAND, 5 );
 	
 	
 	m_panel23->SetSizer( bSizer115 );
@@ -2937,16 +2937,16 @@ fbRgSelectEvent::fbRgSelectEvent( wxWindow* parent, wxWindowID id, const wxStrin
 	sbSizer1 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Event Group") ), wxHORIZONTAL );
 	
 	wxArrayString m_checkListGrpChoices;
-	m_checkListGrp = new wxCheckListBox( this, wxID_ANY, wxDefaultPosition, wxSize( -1,110 ), m_checkListGrpChoices, wxLB_NEEDED_SB );
+	m_checkListGrp = new wxCheckListBox( sbSizer1->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxSize( -1,110 ), m_checkListGrpChoices, wxLB_NEEDED_SB );
 	sbSizer1->Add( m_checkListGrp, 0, wxALL|wxEXPAND, 5 );
 	
 	wxBoxSizer* bSizer11;
 	bSizer11 = new wxBoxSizer( wxVERTICAL );
 	
-	m_buttonSelectGrp = new wxButton( this, wxID_ANY, _("Select All"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonSelectGrp = new wxButton( sbSizer1->GetStaticBox(), wxID_ANY, _("Select All"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer11->Add( m_buttonSelectGrp, 0, wxALL, 5 );
 	
-	m_buttonClearGrp = new wxButton( this, wxID_ANY, _("Clear All"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonClearGrp = new wxButton( sbSizer1->GetStaticBox(), wxID_ANY, _("Clear All"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer11->Add( m_buttonClearGrp, 0, wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
 	
@@ -2964,18 +2964,18 @@ fbRgSelectEvent::fbRgSelectEvent( wxWindow* parent, wxWindowID id, const wxStrin
 	fgSizer13->SetFlexibleDirection( wxBOTH );
 	fgSizer13->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_staticText37 = new wxStaticText( this, wxID_ANY, _("Dates After:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText37 = new wxStaticText( sbSizer3->GetStaticBox(), wxID_ANY, _("Dates After:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText37->Wrap( -1 );
 	fgSizer13->Add( m_staticText37, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT|wxTOP|wxBOTTOM|wxLEFT, 5 );
 	
-	m_textCtrlBegDatePt = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textCtrlBegDatePt = new wxTextCtrl( sbSizer3->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer13->Add( m_textCtrlBegDatePt, 0, wxALL|wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_staticText38 = new wxStaticText( this, wxID_ANY, _("Dates Before:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText38 = new wxStaticText( sbSizer3->GetStaticBox(), wxID_ANY, _("Dates Before:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText38->Wrap( -1 );
 	fgSizer13->Add( m_staticText38, 0, wxTOP|wxBOTTOM|wxLEFT|wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT, 5 );
 	
-	m_textCtrlEndDatePt = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textCtrlEndDatePt = new wxTextCtrl( sbSizer3->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer13->Add( m_textCtrlEndDatePt, 0, wxALL|wxEXPAND, 5 );
 	
 	
@@ -2994,16 +2994,16 @@ fbRgSelectEvent::fbRgSelectEvent( wxWindow* parent, wxWindowID id, const wxStrin
 	sbSizer2 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Event Type") ), wxHORIZONTAL );
 	
 	wxArrayString m_checkListTypeChoices;
-	m_checkListType = new wxCheckListBox( this, wxID_ANY, wxDefaultPosition, wxSize( -1,110 ), m_checkListTypeChoices, wxLB_NEEDED_SB );
+	m_checkListType = new wxCheckListBox( sbSizer2->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxSize( -1,110 ), m_checkListTypeChoices, wxLB_NEEDED_SB );
 	sbSizer2->Add( m_checkListType, 0, wxALL|wxEXPAND, 5 );
 	
 	wxBoxSizer* bSizer12;
 	bSizer12 = new wxBoxSizer( wxVERTICAL );
 	
-	m_buttonSelectType = new wxButton( this, wxID_ANY, _("Select All"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonSelectType = new wxButton( sbSizer2->GetStaticBox(), wxID_ANY, _("Select All"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer12->Add( m_buttonSelectType, 0, wxALL, 5 );
 	
-	m_buttonClearType = new wxButton( this, wxID_ANY, _("Clear All"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonClearType = new wxButton( sbSizer2->GetStaticBox(), wxID_ANY, _("Clear All"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer12->Add( m_buttonClearType, 0, wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
 	
