@@ -379,22 +379,23 @@ recIndEventVec recEvent::GetIndividualEvents( idt eID )
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "SELECT id, ind_id, role_id, note, ind_seq"
+        "SELECT id, higher_id, ind_id, role_id, note, ind_seq"
         " FROM IndividualEvent WHERE event_id="ID
         " ORDER BY id;",
         eID
     );
     wxSQLite3Table table = s_db->GetTable( sql );
 
-    record.f_event_id = eID;
+    record.FSetEventID( eID );
     for( int i = 0 ; i < table.GetRowCount() ; i++ )
     {
         table.SetRow( i );
-        record.f_id = GET_ID( table.GetInt64( 0 ) );
-        record.f_ind_id = GET_ID( table.GetInt64( 1 ) );
-        record.f_role_id = GET_ID( table.GetInt64( 2 ) );
-        record.f_note = table.GetAsString( 3 );
-        record.f_ind_seq = table.GetInt( 4 );
+        record.FSetID( GET_ID( table.GetInt64( 0 ) ) );
+        record.FSetHigherID( GET_ID( table.GetInt64( 1 ) ) );
+        record.FSetIndID( GET_ID( table.GetInt64( 2 ) ) );
+        record.FSetRoleID( GET_ID( table.GetInt64( 3 ) ) );
+        record.FSetNote( table.GetAsString( 4 ) );
+        record.FSetIndSeq( table.GetInt( 5 ) );
         vec.push_back( record );
     }
     return vec;
