@@ -2795,16 +2795,16 @@ fbRgPerIndEvent::fbRgPerIndEvent( wxWindow* parent, wxWindowID id, const wxStrin
 	wxArrayString m_choiceRoleChoices;
 	m_choiceRole = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceRoleChoices, 0 );
 	m_choiceRole->SetSelection( 0 );
-	bSizer14->Add( m_choiceRole, 0, wxALL|wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
+	bSizer14->Add( m_choiceRole, 0, wxALL|wxEXPAND, 5 );
 	
 	
 	bSizer14->Add( 0, 0, 1, wxEXPAND, 5 );
 	
 	m_buttonAdd = new wxButton( this, wxID_ANY, _("Add Role"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer14->Add( m_buttonAdd, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	bSizer14->Add( m_buttonAdd, 0, wxALL, 5 );
 	
 	
-	fgSizer3->Add( bSizer14, 1, wxEXPAND, 5 );
+	fgSizer3->Add( bSizer14, 0, wxEXPAND, 5 );
 	
 	m_staticText4 = new wxStaticText( this, wxID_ANY, _("Note:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText4->Wrap( -1 );
