@@ -138,6 +138,8 @@ public:
 
     static idt GetPersonalSummaryIE( idt indID, idt etID );
     idt GetPersonalSummaryIE( idt etID ) const { return GetPersonalSummaryIE( f_id, etID ); }
+    static idt GetPersonalSummaryEvent( idt indID, idt etID );
+    idt GetPersonalSummaryEvent( idt etID ) const { return GetPersonalSummaryEvent( f_id, etID ); }
 
     idt GetBirthEvent() const { return FindGroupEvent( recET_GRP_Birth ); }
     idt GetNrBirthEvent() const { return FindGroupEvent( recET_GRP_NrBirth ); }

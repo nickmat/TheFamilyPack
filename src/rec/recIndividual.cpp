@@ -418,6 +418,20 @@ idt recIndividual::GetPersonalSummaryIE( idt indID, idt etID )
     return ExecuteID( sql );
 }
 
+idt recIndividual::GetPersonalSummaryEvent( idt indID, idt etID )
+{
+    if( indID == 0 || etID == 0 ) return 0;
+
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT IE.event_id FROM IndividualEvent IE, EventTypeRole ET"
+        " WHERE IE.role_id=ET.id AND IE.ind_id="ID
+        " AND ET.type_id="ID" AND IE.higher_id=0;",
+        indID, etID
+    );
+    return ExecuteID( sql );
+}
+
 recFamilyVec recIndividual::GetFamilyList( idt ind )
 {
     recFamilyVec families;
