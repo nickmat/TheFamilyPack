@@ -858,9 +858,8 @@ class fbRgPerIndEvent : public wxDialog
 		wxStaticText* m_staticText2;
 		wxStaticText* m_staticEvent;
 		wxStaticText* m_staticEventID;
-		wxStaticText* m_staticText3;
+		wxButton* m_buttonRole;
 		wxChoice* m_choiceRole;
-		wxButton* m_buttonAdd;
 		wxStaticText* m_staticText4;
 		wxTextCtrl* m_textCtrlNote;
 		wxStaticLine* m_staticline1;
@@ -869,12 +868,12 @@ class fbRgPerIndEvent : public wxDialog
 		wxButton* m_buttonCancel;
 		
 		// Virtual event handlers, overide them in your derived class
-		virtual void OnAddRoleButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnRoleButton( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:
 		
-		fbRgPerIndEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Link Individual to Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 400,231 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
+		fbRgPerIndEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Link Individual to Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 400,250 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbRgPerIndEvent();
 	
 };

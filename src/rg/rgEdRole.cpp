@@ -66,6 +66,10 @@ idt rgCreateRole( wxWindow* wind, idt etID )
 
     recEventTypeRole role(0);
     role.FSetTypeID( etID );
+    recET_GRP grp = recEventType::GetGroup( etID );
+    if( grp == recET_GRP_Personal ) {
+        role.FSetPrime( recEventTypeRole::PRIME_First );
+    }
     role.Save();
     idt roleID = role.FGetID();
     if( rgEditRole( wind, roleID ) ) {

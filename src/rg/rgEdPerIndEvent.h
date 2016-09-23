@@ -50,7 +50,10 @@ private:
     void SetRoleList( idt selection );
     idt GetRoleID() const;
 
-    void OnAddRoleButton( wxCommandEvent& event );
+    void OnRoleButton( wxCommandEvent& event );
+    void OnPopupClick1( wxCommandEvent& event );
+    void OnEditRole();
+    void OnCreateRole();
 
     recEvent            m_event;
     recIndividualEvent  m_ie;

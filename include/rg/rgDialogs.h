@@ -32,6 +32,16 @@
 
 class rgDlgEditReference;
 
+enum {  // Used for popup menus
+    rgID_START = 2000,
+
+    rgID_PERINDEVENT_CREATE_ROLE,
+    rgID_PERINDEVENT_EDIT_ROLE,
+    rgID_PERINDEVENT_DELETE_ROLE,
+
+    rgID_LAST
+};
+
 enum {
     rgSELSTYLE_None       = 0x0000,
     rgSELSTYLE_Create     = 0x0001,   // Show Create button
@@ -71,7 +81,12 @@ extern idt rgCreateDate( wxWindow* wind, const wxString& dateStr = wxEmptyString
 
 // See src/rg/rgEdEvent.cpp
 extern bool rgEditEvent( wxWindow* wind, idt eveID );
-extern idt rgCreateIndEvent( wxWindow* wind, idt ind1ID, idt ind2ID = 0, idt famID = 0 );
+extern idt rgCreateIndEvent(
+    wxWindow* wind, idt ind1ID, idt ind2ID = 0, idt famID = 0,
+    unsigned grpfilter = recET_GRP_FILTER_All );
+extern idt rgCreateDefaultIndEvent(
+    wxWindow* wind, idt ind1ID, idt ind2ID, recET_GRP grp );
+extern idt rgCreatePersonalEvent( wxWindow* wind, idt ind1ID, recEventType::EType etype );
 extern idt rgCreateEventFromRecord( wxWindow* wind, idt erID );
 
 // See src/rg/rgEdEventEventa.cpp

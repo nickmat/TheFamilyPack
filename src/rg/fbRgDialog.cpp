@@ -2785,33 +2785,20 @@ fbRgPerIndEvent::fbRgPerIndEvent( wxWindow* parent, wxWindowID id, const wxStrin
 	
 	fgSizer3->Add( bSizer13, 1, wxEXPAND, 5 );
 	
-	m_staticText3 = new wxStaticText( this, wxID_ANY, _("Role:"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText3->Wrap( -1 );
-	fgSizer3->Add( m_staticText3, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT, 5 );
-	
-	wxBoxSizer* bSizer14;
-	bSizer14 = new wxBoxSizer( wxHORIZONTAL );
+	m_buttonRole = new wxButton( this, wxID_ANY, _("Role:"), wxDefaultPosition, wxDefaultSize, wxBU_RIGHT );
+	fgSizer3->Add( m_buttonRole, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
 	wxArrayString m_choiceRoleChoices;
 	m_choiceRole = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceRoleChoices, 0 );
 	m_choiceRole->SetSelection( 0 );
-	bSizer14->Add( m_choiceRole, 0, wxALL|wxEXPAND, 5 );
-	
-	
-	bSizer14->Add( 0, 0, 1, wxEXPAND, 5 );
-	
-	m_buttonAdd = new wxButton( this, wxID_ANY, _("Add Role"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer14->Add( m_buttonAdd, 0, wxALL, 5 );
-	
-	
-	fgSizer3->Add( bSizer14, 0, wxEXPAND, 5 );
+	fgSizer3->Add( m_choiceRole, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
 	
 	m_staticText4 = new wxStaticText( this, wxID_ANY, _("Note:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText4->Wrap( -1 );
 	fgSizer3->Add( m_staticText4, 0, wxALL|wxALIGN_RIGHT, 5 );
 	
 	m_textCtrlNote = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_WORDWRAP );
-	fgSizer3->Add( m_textCtrlNote, 0, wxALL|wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
+	fgSizer3->Add( m_textCtrlNote, 1, wxALL|wxEXPAND, 5 );
 	
 	
 	bSizer11->Add( fgSizer3, 1, wxEXPAND, 5 );
@@ -2845,13 +2832,13 @@ fbRgPerIndEvent::fbRgPerIndEvent( wxWindow* parent, wxWindowID id, const wxStrin
 	this->Layout();
 	
 	// Connect Events
-	m_buttonAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgPerIndEvent::OnAddRoleButton ), NULL, this );
+	m_buttonRole->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgPerIndEvent::OnRoleButton ), NULL, this );
 }
 
 fbRgPerIndEvent::~fbRgPerIndEvent()
 {
 	// Disconnect Events
-	m_buttonAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgPerIndEvent::OnAddRoleButton ), NULL, this );
+	m_buttonRole->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgPerIndEvent::OnRoleButton ), NULL, this );
 	
 }
 

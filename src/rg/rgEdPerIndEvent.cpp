@@ -206,7 +206,42 @@ idt rgDlgIndEvent::GetRoleID() const
     return 0;
 }
 
-void rgDlgIndEvent::OnAddRoleButton( wxCommandEvent& event )
+void rgDlgIndEvent::OnRoleButton( wxCommandEvent& event )
+{
+    wxMenu menu;
+    menu.Append( rgID_PERINDEVENT_CREATE_ROLE, "&Create" );
+    menu.Append( rgID_PERINDEVENT_EDIT_ROLE, "&Edit" );
+    menu.Append( rgID_PERINDEVENT_DELETE_ROLE, "&Delete" );
+//    menu.Connect( 
+    menu.Bind( wxEVT_COMMAND_MENU_SELECTED, &rgDlgIndEvent::OnPopupClick1, this );
+    PopupMenu( &menu );
+}
+
+void rgDlgIndEvent::OnPopupClick1( wxCommandEvent& event )
+{
+ 	switch( event.GetId() ) {
+    case rgID_PERINDEVENT_CREATE_ROLE:
+        OnCreateRole();
+        break;
+    case rgID_PERINDEVENT_EDIT_ROLE:
+        OnEditRole();
+        break;
+    case rgID_PERINDEVENT_DELETE_ROLE:
+        // TODO: Can only delete if unused
+        wxMessageBox( "Not yet available!" );
+        break;
+    }
+}
+
+void rgDlgIndEvent::OnEditRole()
+{
+    idt roleID = GetRoleID();
+    if( rgEditRole( this, roleID ) ) {
+        SetRoleList( roleID );
+    }
+}
+
+void rgDlgIndEvent::OnCreateRole()
 {
     idt roleID = rgCreateRole( this, m_event.FGetTypeID() );
     if( roleID ) {

@@ -66,14 +66,14 @@ bool rgEditEvent( wxWindow* wind, idt eveID )
 }
 
 
-idt rgCreateIndEvent( wxWindow* wind, idt ind1ID, idt ind2ID, idt famID )
+idt rgCreateIndEvent(
+    wxWindow* wind, idt ind1ID, idt ind2ID, idt famID, unsigned grpfilter )
 {
     wxASSERT( ind1ID != 0 );
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
 
-    unsigned grpfilter = recET_GRP_FILTER_All;
-    if( ind2ID ) {
+    if( ind2ID && grpfilter == recET_GRP_FILTER_All ) {
         grpfilter = recET_GRP_FILTER_Family;
     }
     idt typeID = rgSelectEventType( wind, rgSELSTYLE_Create, NULL, grpfilter );
@@ -134,6 +134,96 @@ idt rgCreateIndEvent( wxWindow* wind, idt ind1ID, idt ind2ID, idt famID )
     }
     recDb::ReleaseSavepoint( savepoint );
     return eveID;
+}
+
+idt rgCreateDefaultIndEvent( wxWindow* wind, idt ind1ID, idt ind2ID, recET_GRP grp )
+{
+    wxASSERT( ind1ID != 0 );
+    // TODO: Determine what the default Event (for the given group)
+    // by examining the individual (for some culture identity).
+    recEventType::EType typeID;
+    recEventTypeRole::Role roleID, role2ID = recEventTypeRole::ROLE_Marriage_Bride;
+    switch( grp )
+    {
+    case recET_GRP_FamUnion:
+        typeID = recEventType::ET_Marriage;
+        roleID = recEventTypeRole::ROLE_Marriage_Groom;
+        break;
+    case recET_GRP_Birth:
+        typeID = recEventType::ET_Birth;
+        roleID = recEventTypeRole::ROLE_Birth_Born;
+        break;
+    case recET_GRP_NrBirth:
+        typeID = recEventType::ET_Baptism;
+        roleID = recEventTypeRole::ROLE_Baptism_Baptised;
+        break;
+    case recET_GRP_Death:
+        typeID = recEventType::ET_Death;
+        roleID = recEventTypeRole::ROLE_Death_Died;
+        break;
+    case recET_GRP_NrDeath:
+        typeID = recEventType::ET_Burial;
+        roleID = recEventTypeRole::ROLE_Burial_Deceased;
+        break;
+    default:
+        return 0;
+    }
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+
+    recEvent eve(0);
+    eve.FSetTypeID( typeID );
+    eve.SetAutoTitle(
+        recIndividual::GetName( ind1ID ),
+        recIndividual::GetName( ind2ID )
+    );
+    eve.Save();
+    idt eveID = eve.GetID();
+
+    recIndividualEvent ie(0);
+    ie.FSetEventID( eveID );
+    ie.FSetIndID( ind1ID );
+    ie.FSetRoleID( roleID );
+    ie.FSetIndSeq( recIndividual::GetMaxEventSeqNumber( ind1ID ) + 1 );
+    ie.Save();
+    if( ind2ID ) {
+        ie.Clear();
+        ie.FSetEventID( eveID );
+        ie.FSetIndID( ind2ID );
+        ie.FSetRoleID( role2ID );
+        ie.FSetIndSeq( recIndividual::GetMaxEventSeqNumber( ind2ID ) + 1 );
+        ie.Save();
+        idt famID = recFamily::Find( ind1ID, ind2ID );
+        wxASSERT( famID != 0 );
+        recFamilyEvent fe(0);
+        fe.FSetFamID( famID );
+        fe.FSetEventID( eveID );
+        fe.FSetFamSeq( recFamily::GetMaxEventSeqNumber( famID ) + 1 );
+        fe.Save();
+    }
+    if( ! rgEditEvent( wind, eveID ) ) {
+        recDb::Rollback( savepoint );
+        return 0;
+    }
+    recDb::ReleaseSavepoint( savepoint );
+    return eveID;
+}
+
+idt rgCreatePersonalEvent( wxWindow* wind, idt indID, recEventType::EType etype )
+{
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+
+    recEvent eve(0);
+    eve.FSetTypeID( etype );
+    eve.SetAutoTitle( recIndividual::GetName( indID ) );
+    eve.Save();
+    if( !rgCreateIndEventRole( wind, indID, eve.FGetID(), 0 ) ) {
+        recDb::Rollback( savepoint );
+        return 0;
+    }
+    recDb::ReleaseSavepoint( savepoint );
+    return eve.FGetID();
 }
 
 idt rgCreateEventFromRecord( wxWindow* wind, idt erID )
