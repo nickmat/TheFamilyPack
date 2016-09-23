@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     25 September 2010
- * Copyright:   Copyright (c) 2010-2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 - 2016, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -1313,6 +1313,26 @@ void TfpFrame::DoEdit( const wxString& href )
             if( id ) ret = true;
         } else if( href.StartsWith( "cE" ) ) {
             id = rgCreateEventFromRecord( this, recGetID( href.Mid(2) ) );
+            if( id ) ret = true;
+        } else if( href.StartsWith( "Em" ) ) {
+            idt indID1, indID2;
+            recGetIDs( href.substr(2), &indID1, &indID2 );
+            id = rgCreateDefaultIndEvent( this, indID1, indID2, recET_GRP_FamUnion );
+            if( id ) ret = true;
+        } else if( href.StartsWith( "Eb" ) ) {
+            id = rgCreateDefaultIndEvent( this, recGetID( href.Mid(2) ), 0, recET_GRP_Birth );
+            if( id ) ret = true;
+        } else if( href.StartsWith( "Enb" ) ) {
+            id = rgCreateDefaultIndEvent( this, recGetID( href.Mid(3) ), 0, recET_GRP_NrBirth );
+            if( id ) ret = true;
+        } else if( href.StartsWith( "Ed" ) ) {
+            id = rgCreateDefaultIndEvent( this, recGetID( href.Mid(2) ), 0, recET_GRP_Death );
+            if( id ) ret = true;
+        } else if( href.StartsWith( "End" ) ) {
+            id = rgCreateDefaultIndEvent( this, recGetID( href.Mid(3) ), 0, recET_GRP_NrDeath );
+            if( id ) ret = true;
+        } else if( href.StartsWith( "Eo" ) ) {
+            id = rgCreatePersonalEvent( this, recGetID( href.Mid(2) ), recEventType::ET_Occupation );
             if( id ) ret = true;
         } else if( href.StartsWith( "IL" ) ) {
             id = rgAddNewIndividual( this, SEX_Male, 0, "", recGetID( href.Mid(2) ) );
