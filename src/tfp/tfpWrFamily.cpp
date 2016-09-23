@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     7 October 2010
- * Copyright:   Copyright (c) 2010-2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2010-2016, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -193,7 +193,17 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
             "</td>\n</tr>\n"
         ;
     } else {
-        htm << "<tr>\n<td colspan='2' class='both'><b>Marriage:</b></td>\n</tr>\n";
+        htm << "<tr>\n<td colspan='2' class='both'><b>";
+        if( fam.FGetHusbID() && fam.FGetWifeID() ) {
+            htm <<
+                "<a href='tfpe:Em" << fam.FGetHusbID() <<
+                "," << fam.FGetWifeID() << "," << famID <<
+                "' title='Add Event'>Marriage</a>:"
+            ;
+        } else {
+            htm << "Marriage";
+        }
+        htm << "</b></td>\n</tr>\n";
     }
 
     // The happy couple
@@ -232,6 +242,11 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
             "</a>: </b>" << recEvent::GetDetailStr( eveID ) <<
             "</td>\n"
         ;
+    } else if( fam.FGetHusbID() ) {
+        htm <<
+            "<tr>\n<td><b><a href='tfpe:Eb" << fam.FGetHusbID() <<
+            "' title='Add Event'>Birth</a>:</b></td>\n"
+        ;
     } else {
         htm << "<tr>\n<td><b>Birth:</b></td>\n";
     }
@@ -242,6 +257,11 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
             "'>" << recEvent::GetTypeStr( eveID ) <<
             "</a>: </b>" << recEvent::GetDetailStr( eveID ) <<
             "</td>\n</tr>\n"
+        ;
+    } else if( fam.FGetWifeID() ) {
+        htm <<
+            "<td><b><a href='tfpe:Eb" << fam.FGetWifeID() <<
+            "' title='Add Event'>Birth</a>:</b></td>\n</tr>\n"
         ;
     } else {
         htm << "<td><b>Birth:</b></td>\n</tr>\n";
@@ -255,6 +275,11 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
             "</a>: </b>" << recEvent::GetDetailStr( eveID ) <<
             "</td>\n"
         ;
+    } else if( fam.FGetHusbID() ) {
+        htm <<
+            "<tr>\n<td><b><a href='tfpe:Enb" << fam.FGetHusbID() <<
+            "' title='Add Event'>Baptism</a>:</b></td>\n"
+        ;
     } else {
         htm << "<tr>\n<td><b>Baptism:</b></td>\n";
     }
@@ -265,6 +290,11 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
             "'>" << recEvent::GetTypeStr( eveID ) <<
             "</a>: </b>" << recEvent::GetDetailStr( eveID ) <<
             "</td>\n</tr>\n"
+        ;
+    } else if( fam.FGetWifeID() ) {
+        htm <<
+            "<td><b><a href='tfpe:Enb" << fam.FGetWifeID() <<
+            "' title='Add Event'>Baptism</a>:</b></td>\n</tr>\n"
         ;
     } else {
         htm << "<td><b>Baptism:</b></td>\n</tr>\n";
@@ -278,6 +308,11 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
             "</a>: </b>" << recEvent::GetDetailStr( eveID ) <<
             "</td>\n"
         ;
+    } else if( fam.FGetHusbID() ) {
+        htm <<
+            "<tr>\n<td><b><a href='tfpe:Ed" << fam.FGetHusbID() <<
+            "' title='Add Event'>Death</a>:</b></td>\n"
+        ;
     } else {
         htm << "<tr>\n<td><b>Death:</b></td>\n";
     }
@@ -288,6 +323,11 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
             "'>" << recEvent::GetTypeStr( eveID ) <<
             "</a>: </b>" << recEvent::GetDetailStr( eveID ) <<
             "</td>\n</tr>\n"
+        ;
+    } else if( fam.FGetWifeID() ) {
+        htm <<
+            "<td><b><a href='tfpe:Ed" << fam.FGetWifeID() <<
+            "' title='Add Event'>Death</a>:</b></td>\n</tr>\n"
         ;
     } else {
         htm << "<td><b>Death:</b></td>\n</tr>\n";
@@ -301,6 +341,11 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
             "</a>: </b>" << recEvent::GetDetailStr( eveID ) <<
             "</td>\n"
         ;
+    } else if( fam.FGetHusbID() ) {
+        htm <<
+            "<tr>\n<td><b><a href='tfpe:End" << fam.FGetHusbID() <<
+            "' title='Add Event'>Burial</a>:</b></td>\n"
+        ;
     } else {
         htm << "<tr>\n<td><b>Burial:</b></td>\n";
     }
@@ -312,15 +357,47 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
             "</a>: </b>" << recEvent::GetDetailStr( eveID ) <<
             "</td>\n</tr>\n"
         ;
+    } else if( fam.FGetWifeID() ) {
+        htm <<
+            "<td><b><a href='tfpe:End" << fam.FGetWifeID() <<
+            "' title='Add Event'>Burial</a>:</b></td>\n</tr>\n"
+        ;
     } else {
         htm << "<td><b>Burial:</b></td>\n</tr>\n";
     }
 
-    htm << "<tr>\n<td>\n<b>Occ: </b>"
-        << recIndividualEvent::GetRoleStr( hIndID, recEventType::ET_Occupation )
-        << "\n</td>\n<td>\n<b>Occ: </b>"
-        << recIndividualEvent::GetRoleStr( wIndID, recEventType::ET_Occupation )
-        << "\n</td>\n</tr>\n";
+    idt ieID = husb.GetPersonalSummaryIE( recEventType::ET_Occupation );
+    if( ieID ) {
+        recIndividualEvent ie(ieID);
+        htm << 
+            "<tr>\n<td><b><a href='tfp:E" << ie.FGetEventID() <<
+            "'>Occ:</a>: </b>" << recEventTypeRole::GetName( ie.FGetRoleID() ) <<
+            "</td>\n"
+        ;
+    } else if( fam.FGetHusbID() ) {
+        htm <<
+            "<tr>\n<td><b><a href='tfpe:Eo" << fam.FGetHusbID() <<
+            "' title='Add Event'>Occ</a>:</b></td>\n"
+        ;
+    } else {
+        htm << "<tr>\n<td><b>Occ:</b></td>\n";
+    }
+    ieID = wife.GetPersonalSummaryIE( recEventType::ET_Occupation );
+    if( ieID ) {
+        recIndividualEvent ie(ieID);
+        htm << 
+            "<td><b><a href='tfp:E" << ie.FGetEventID() <<
+            "'>Occ:</a>: </b>" << recEventTypeRole::GetName( ie.FGetRoleID() ) <<
+            "</td>\n</tr>\n"
+        ;
+    } else if( fam.FGetWifeID() ) {
+        htm <<
+            "<td><b><a href='tfpe:Eo" << fam.FGetWifeID() <<
+            "' title='Add Event'>Occ</a>:</b></td>\n</tr>\n"
+        ;
+    } else {
+        htm << "<td><b>Occ:</b></td>\n</tr>\n";
+    }
 
     // Individuals Status bar
     htm << "<tr>\n<td class='status'>\n";
