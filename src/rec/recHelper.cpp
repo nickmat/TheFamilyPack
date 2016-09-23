@@ -46,14 +46,26 @@ idt recGetID( const wxString& str )
     return id;
 }
 
-bool recGetIDs( const wxString& str, idt* id1, idt* id2 )
+bool recGetIDs( const wxString& str, idt* id1, idt* id2, idt* id3 )
 {
+    wxASSERT( id1 && id2 ); 
     *id1 = recGetID( str );
-    size_t pos = str.find_first_of( wxS(',') );
+    size_t pos = str.find( ',' );
     if( pos == wxString::npos ) {
         *id2 = 0;
+        if( id3 ) {
+            *id3 = 0;
+        }
     } else {
         *id2 = recGetID( str.substr( pos + 1 ) );
+        if( id3 ) {
+            pos = str.find( ',', pos + 1 );
+            if( pos != wxString::npos ) {
+                *id3 = recGetID( str.substr( pos + 1 ) );
+            } else {
+                *id3 = 0;
+            }
+        }
     }
     return *id1 != 0 && *id2 != 0;
 }

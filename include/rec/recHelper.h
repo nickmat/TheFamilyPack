@@ -84,7 +84,7 @@ extern idt recIdFromStr( const wxString& prefix, const wxString idStr );
 
 // Convert the given commer delimited string into two idt's
 // return true if both are non-zero.
-extern bool recGetIDs( const wxString& str, idt* id1, idt* id2 );
+extern bool recGetIDs( const wxString& str, idt* id1, idt* id2, idt* id3 = NULL );
 inline wxString recGetStr( idt id ) { return wxString::Format( ID, id ); }
 inline wxString recGetIDStr( idt id ) { return id ? recGetStr( id ) : ""; }
 
