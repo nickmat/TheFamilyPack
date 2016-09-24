@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     9 October 2010
- * Copyright:   Copyright (c) 2010-2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 - 2016, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -417,6 +417,7 @@ bool rgDlgEditEvent::TransferDataFromWindow()
     for( size_t i = 0 ; i < m_ies.size() ; i++ ) {
         m_ies[i].FSetIndSeq( i + 1 );
         m_ies[i].Save();
+        recIndividual::UpdateEpitaph( m_ies[i].FGetIndID() );
     }
 
     return true;
@@ -503,7 +504,9 @@ void rgDlgEditEvent::OnDelInd( wxCommandEvent& event )
     if( ans != wxYES ) {
         return;
     }
+    idt indID = m_ies[row].FGetIndID();
     recIndividualEvent::Delete( ieID );
+    recIndividual::UpdateEpitaph( indID ); // We may have changed it
     ListLinkedIndividuals();
 }
 
