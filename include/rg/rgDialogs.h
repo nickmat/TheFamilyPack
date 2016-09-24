@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     21 November 2012
- * Copyright:   Copyright (c) 2012 - 2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2012 - 2016, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -32,12 +32,11 @@
 
 class rgDlgEditReference;
 
-enum {  // Used for popup menus
+enum {  // Used for popup menus, we put them here to ensure unique values.
     rgID_START = 2000,
 
-    rgID_PERINDEVENT_CREATE_ROLE,
+    rgID_PERINDEVENT_CREATE_ROLE, // src/rg/rgEdPerIndEvent.cpp
     rgID_PERINDEVENT_EDIT_ROLE,
-    rgID_PERINDEVENT_DELETE_ROLE,
 
     rgID_LAST
 };

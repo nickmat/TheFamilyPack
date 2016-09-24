@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     23 November 2012
- * Copyright:   Copyright (c) 2012-2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2012 - 2016, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -211,13 +211,11 @@ void rgDlgIndEvent::OnRoleButton( wxCommandEvent& event )
     wxMenu menu;
     menu.Append( rgID_PERINDEVENT_CREATE_ROLE, "&Create" );
     menu.Append( rgID_PERINDEVENT_EDIT_ROLE, "&Edit" );
-    menu.Append( rgID_PERINDEVENT_DELETE_ROLE, "&Delete" );
-//    menu.Connect( 
-    menu.Bind( wxEVT_COMMAND_MENU_SELECTED, &rgDlgIndEvent::OnPopupClick1, this );
+    menu.Bind( wxEVT_COMMAND_MENU_SELECTED, &rgDlgIndEvent::OnPopupClick, this );
     PopupMenu( &menu );
 }
 
-void rgDlgIndEvent::OnPopupClick1( wxCommandEvent& event )
+void rgDlgIndEvent::OnPopupClick( wxCommandEvent& event )
 {
  	switch( event.GetId() ) {
     case rgID_PERINDEVENT_CREATE_ROLE:
@@ -225,10 +223,6 @@ void rgDlgIndEvent::OnPopupClick1( wxCommandEvent& event )
         break;
     case rgID_PERINDEVENT_EDIT_ROLE:
         OnEditRole();
-        break;
-    case rgID_PERINDEVENT_DELETE_ROLE:
-        // TODO: Can only delete if unused
-        wxMessageBox( "Not yet available!" );
         break;
     }
 }
