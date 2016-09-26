@@ -218,12 +218,15 @@ idt rgCreatePersonalEvent( wxWindow* wind, idt indID, recEventType::EType etype 
     eve.FSetTypeID( etype );
     eve.SetAutoTitle( recIndividual::GetName( indID ) );
     eve.Save();
-    if( !rgCreateIndEventRole( wind, indID, eve.FGetID(), 0 ) ) {
+    idt eveID = eve.FGetID();
+    if( !rgCreateIndEventRole( wind, indID, eveID, 0 ) ||
+        !rgEditEvent( wind, eveID )
+    ) {
         recDb::Rollback( savepoint );
         return 0;
     }
     recDb::ReleaseSavepoint( savepoint );
-    return eve.FGetID();
+    return eveID;
 }
 
 idt rgCreateEventFromRecord( wxWindow* wind, idt erID )
