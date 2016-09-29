@@ -197,6 +197,10 @@ div.tfp table.data th {
     border: 2px solid #777;
 }
 
+div.tfp table.data td {
+    vertical-align: top;
+}
+
 table.diag td {
     border-width: 1px 2px;
     padding: 0 0.5em;

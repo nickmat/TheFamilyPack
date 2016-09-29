@@ -87,7 +87,7 @@ wxString tfpWriteIndividualPage( idt indID )
         "</b> Sex: <b>" << recGetSexStr( ind.FGetSex() ) <<
         "</b> Privacy: <b>" << ind.FGetPrivacy() << "</b></td>\n"
         "</tr>\n<tr>\n"
-        "<td>Note:</td><td>" << ind.FGetNote() << "</td>\n"
+        "<td>Note:</td><td><pre>" << ind.FGetNote() << "</pre></td>\n"
         "</tr>\n</table>\n"
     ;
     // Names
@@ -193,7 +193,7 @@ wxString tfpWriteIndividualPage( idt indID )
             ;
             if( j == 0 ) {
                 htm <<
-                    "<td valign='top' rowspan='" << children.size() <<
+                    "<td rowspan='" << children.size() <<
                     "'>Children:</td>\n"
                 ;
             }
