@@ -1031,7 +1031,7 @@ fbRgEditFamily::fbRgEditFamily( wxWindow* parent, wxWindowID id, const wxString&
 	fgSizer17->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
 	m_buttonHusb = new wxButton( m_panel17, wxID_ANY, _("Husband:"), wxDefaultPosition, wxDefaultSize, wxBU_RIGHT );
-	fgSizer17->Add( m_buttonHusb, 1, wxALIGN_CENTER_VERTICAL|wxEXPAND|wxALIGN_RIGHT|wxALL, 5 );
+	fgSizer17->Add( m_buttonHusb, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT|wxALL, 5 );
 	
 	m_staticHusbName = new wxStaticText( m_panel17, wxID_ANY, _("Name"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticHusbName->Wrap( -1 );
@@ -1144,7 +1144,7 @@ fbRgEditFamily::fbRgEditFamily( wxWindow* parent, wxWindowID id, const wxString&
 	bSizer122->Fit( m_panel21 );
 	m_notebook->AddPage( m_panel21, _("Events"), false );
 	
-	bSizer117->Add( m_notebook, 1, wxEXPAND|wxALL, 5 );
+	bSizer117->Add( m_notebook, 0, wxALL|wxEXPAND, 5 );
 	
 	m_staticline1 = new wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
 	bSizer117->Add( m_staticline1, 0, wxEXPAND|wxALL, 0 );
