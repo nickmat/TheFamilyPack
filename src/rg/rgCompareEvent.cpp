@@ -114,12 +114,6 @@ wxString rgCompareEvent::GetRefEventsTable()
             ;
         }
         htm << "</table>\n";
-    } else {
-        htm <<
-            "<table class='data'>\n<tr>\n"
-            "<th>No Reference Documents available</th>\n"
-            "</tr>\n</table>\n"
-        ;
     }
 
     return htm;
@@ -156,12 +150,6 @@ wxString rgCompareEvent::GetRefDatesTable()
             ;
         }
         htm << "</table>\n";
-    } else {
-        htm <<
-            "<table class='data'>\n<tr>\n"
-            "<th>No Reference dates available</th>\n"
-            "</tr>\n</table>\n"
-        ;
     }
 
     return htm;
@@ -295,12 +283,6 @@ wxString rgCompareEvent::GetRefPlacesTable()
             ;
         }
         htm << "</table>\n";
-    } else {
-        htm <<
-            "<table class='data'>\n<tr>\n"
-            "<th>No Reference places available</th>\n"
-            "</tr>\n</table>\n"
-        ;
     }
 
     return htm;
