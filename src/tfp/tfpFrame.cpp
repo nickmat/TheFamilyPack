@@ -1749,10 +1749,7 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
         return tfpWriteEventaPagedIndex( num2 );
     }
     if( name.compare( 0, 1, "E" ) == 0 && success ) {
-        return tfpWriteEventPage( num, NULL );
-    }
-    if( name.compare( 0, 2, "E^" ) == 0 && success1 ) {
-        return tfpWriteEventPage( num1, &m_compEvent );
+        return tfpWriteEventPage( num, &m_compEvent );
     }
     if( name.compare( 0, 2, "E," ) == 0 && success1 ) {
         return tfpWriteEventPagedIndex( num1 );

@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     24 October 2010
- * Copyright:   Copyright (c) 2010-2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2016, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -45,10 +45,11 @@
 
 wxString tfpWriteEventPage( idt eventID, rgCompareEvent* ce )
 {
-    if( ce ) ce->Reset( eventID );
     wxString htm;
     recEvent eve(eventID);
-    if( eve.f_id == 0 ) return wxEmptyString;
+    if( eve.FGetID() == 0 ) return htm;
+    wxASSERT( ce != NULL );
+    ce->Reset( eventID );
 
     htm <<
         tfpWrHeadTfp( "Event " + eve.GetIdStr() ) <<
@@ -185,16 +186,7 @@ wxString tfpWriteEventPage( idt eventID, rgCompareEvent* ce )
         htm << "</tr>\n</table>\n";
     }
 
-    if( ce ) {
-        htm <<
-            ce->GetRefDatesTable() <<
-            ce->GetRefPlacesTable()
-        ;
-    } else {
-        htm << "<p><a href='tfp:E^" << eventID << "'>Show Eventa Details</a></p>\n";
-    }
-
-    htm << tfpWrTailTfp();
+    htm << ce->GetRefDatesTable() << ce->GetRefPlacesTable() << tfpWrTailTfp();
 
     return htm;
 }
