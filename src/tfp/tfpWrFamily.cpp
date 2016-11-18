@@ -426,7 +426,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
     if( indID != 0 ) {
         htm << 
             "<b>" << recIndividual::GetIdStr( indID ) << 
-            "</b>&nbsp;&nbsp;<a href='tfpc:MH" << indID <<
+            "</b>&nbsp;&nbsp;<a href='tfpc:MW" << indID <<
             "'><img src='memory:menu.png' alt='Edit Individual'></a>\n"
             "&nbsp;&nbsp;<a href='tfpc:MR" << indID <<
             "'><img src=memory:fam.png alt='Family'></a>"
