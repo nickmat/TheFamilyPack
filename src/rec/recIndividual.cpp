@@ -149,7 +149,7 @@ bool recIndividual::Read()
 recIndividualVec recIndividual::ReadVec( unsigned sexfilter )
 {
     wxString query =
-        "SELECT id, sex, fam_id, note, name, surname, epitaph FROM ";
+        "SELECT id, sex, fam_id, note, privacy, name, surname, epitaph FROM ";
     wxString queryMid = "Individual WHERE ";
     if( sexfilter == recInd_FILTER_SexAll ) {
         query << "Individual ";
