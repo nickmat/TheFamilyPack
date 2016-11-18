@@ -254,11 +254,11 @@ wxString tfpWriteIndividualPage( idt indID )
     }
     htm << "</tr>\n</table>\n";
 
-    // Get linked Events Records
+    // Get linked Eventas
     wxSQLite3ResultSet eSet = ind.GetEventaSet();
     htm <<
         "<table class='data'>\n<tr>\n"
-        "<th colspan='4'>Event Records</th>\n";
+        "<th colspan='4'>Eventas</th>\n";
     while( eSet.NextRow() ) {
         idt erID = GET_ID( eSet.GetInt64( 0 ) );
         recEventa er( erID );
