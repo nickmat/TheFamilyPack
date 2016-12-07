@@ -46,8 +46,8 @@
 wxString tfpWriteIndividualPage( idt indID )
 {
     wxString htm;
-    size_t i, j;
     recIndividual ind( indID );
+    if( ind.FGetID() == 0 ) return htm;
     recFamilyVec parents = ind.GetParentList();
     recFamilyVec families = ind.GetFamilyList();
     wxASSERT( families.size() > 0 );
@@ -183,7 +183,7 @@ wxString tfpWriteIndividualPage( idt indID )
             ;
         }
         // Children
-        for( j = 0 ; j < children.size() ; j++ ) {
+        for( size_t j = 0 ; j < children.size() ; j++ ) {
             idt cID = children[j].FGetID();
             htm <<
                 "</tr>\n<tr>\n" <<
@@ -214,7 +214,7 @@ wxString tfpWriteIndividualPage( idt indID )
     htm <<
         "<table class='data'>\n<tr>\n"
         "<th colspan='4'>Events</th>\n";
-    for( i = 0 ; i < ies.size() ; i++ ) {
+    for( size_t i = 0 ; i < ies.size() ; i++ ) {
         idt eveID = ies[i].FGetEventID();
         recEvent eve( eveID );
         wxString cat1, cat2, dStr, pStr;

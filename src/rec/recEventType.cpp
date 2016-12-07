@@ -318,4 +318,21 @@ recEventTypeRoleVec recEventType::GetPrimeRoles( idt typeID, int prime )
     return vec;
 }
 
+idt recEventType::GetSummaryRole( idt typeID )
+{
+    // TODO: This should be found by adding a boolian "summary" field 
+    // to the recEventTypeRole table.
+    switch( typeID )
+    {
+    case ET_Residence:
+        return recEventTypeRole::ROLE_Residence_Summary;
+    case ET_Condition:
+        return recEventTypeRole::ROLE_Condition_Summary;
+    case ET_Occupation:
+        return recEventTypeRole::ROLE_Occupation_Summary;
+    default:
+        return recEventTypeRole::ROLE_Unstated;
+    }
+}
+
 // End of src/rec/recEventType.cpp file

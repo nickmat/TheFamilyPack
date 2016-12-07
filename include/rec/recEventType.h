@@ -113,6 +113,8 @@ public:
     static recEventTypeRoleVec GetRoles( idt typeID );
     recEventTypeRoleVec GetRoles() const { return GetRoles( FGetID() ); }
     static recEventTypeRoleVec GetPrimeRoles( idt typeID, int prime = 0 );
+
+    static idt GetSummaryRole( idt typeID );
 };
 
 inline bool recEquivalent( const recEventType& r1, const recEventType& r2 )

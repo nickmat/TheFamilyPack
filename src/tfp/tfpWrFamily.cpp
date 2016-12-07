@@ -55,6 +55,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
     wxString epitaph;
 
     recFamily fam(famID);
+    if( fam.FGetID() == 0 ) return htm;
     recIndividual husb( fam.f_husb_id );
     recIndividual wife( fam.f_wife_id );
     recFamilyVec husbFams = husb.GetParentList();

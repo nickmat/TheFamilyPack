@@ -59,10 +59,11 @@ void rgCompareEvent::Reset( idt eveID )
     m_personaIDs.clear();
     m_indPerMap.clear();
     m_reDate1s.clear();
+    m_reDate2s.clear();
     m_rePlaces.clear();
 
     // The list of events we will be comparing with.
-    m_refEvents = m_event.GetEventas();
+    m_refEvents = m_event.GetEventasIncludeLower();
 
     for( size_t i = 0 ; i < m_refEvents.size() ; i++ ) {
         idt refID = recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, m_refEvents[i].f_id );
@@ -70,8 +71,10 @@ void rgCompareEvent::Reset( idt eveID )
         // Get list of Persona's for this Reference.
         recIdVec pIDs = recReference::GetPersonaList( refID );
         m_personaIDs.insert( m_personaIDs.end(), pIDs.begin(), pIDs.end() );
-        recDate date( m_refEvents[i].FGetDate1ID() );
-        m_reDate1s.push_back( date );
+        recDate date1( m_refEvents[i].FGetDate1ID() );
+        m_reDate1s.push_back( date1 );
+        recDate date2( m_refEvents[i].FGetDate2ID() );
+        m_reDate2s.push_back( date2 );
         recPlace place( m_refEvents[i].FGetPlaceID() );
         m_rePlaces.push_back( place );
     }
@@ -130,16 +133,16 @@ wxString rgCompareEvent::GetRefDatesTable()
             "<th colspan='2'>Date</th>\n"
             "<th colspan='2'>Reference Document</th>\n"
             "</tr>\n<tr>\n"
-            "<td>" << m_date1.GetStr() << "</td>\n"
+            "<td>" << m_date1.GetPeriodStr( m_date2 ) << "</td>\n"
             "<td class='diag'><img src='memory:" << m_dateImageFN << "' alt=''></td>\n"
             "<td><b>" << m_event.GetIdStr() << "</b></td>\n"
-            "<td></td>"
+            "<td>" << m_event.FGetTitle() << "</td>"
             "</tr>\n"
         ;
         for( size_t i = 0 ; i < m_reDate1s.size() ; i++ ) {
             htm <<
                 "<tr>\n"
-                "<td>" << m_reDate1s[i].GetStr() << "</td>\n"
+                "<td>" << m_reDate1s[i].GetPeriodStr( m_reDate2s[i] ) << "</td>\n"
                 "<td class='diag'><img src='memory:" << m_dateImageFNs[i] << "' alt=''></td>\n"
                 "<td><b><a href='tfp:R" << m_refIDs[i] <<
                 "'>" << recReference::GetIdStr( m_refIDs[i] ) <<
@@ -163,9 +166,15 @@ bool rgCompareEvent::CreateDateImageFile()
     size_t i;
     long min, max;
 
-    if( m_date1.f_jdn ) {
-        min = m_date1.f_jdn;
-        max = min + m_date1.f_range;
+    if( m_date1.FGetJdn() && m_date2.FGetJdn() == 0 ) {
+        min = m_date1.FGetJdn();
+        max = m_date1.GetEndJdn();
+    } else if( m_date1.FGetJdn() == 0 && m_date2.FGetJdn() ) {
+        min = m_date2.FGetJdn();
+        max = m_date2.GetEndJdn();
+    } else if( m_date1.FGetJdn() && m_date2.FGetJdn() ) {
+        min = m_date1.FGetJdn();
+        max = m_date2.GetEndJdn();
     } else {
         for( i = 0, min = 0 ; i < m_reDate1s.size() ; i++ ) {
             min = m_reDate1s[i].GetDatePoint();
@@ -193,13 +202,15 @@ bool rgCompareEvent::CreateDateImageFile()
     max += 365;
     double scale = (double) 200 / ( max - min );
     DrawDateImage( dc, m_date1, min, scale, *wxBLACK );
+    DrawDateImage( dc, m_date2, min, scale, *wxBLACK );
+    int beg = ( m_date1.FGetJdn() - min ) * scale;
+    int end = ( ( m_date2.FGetJdn() ? m_date2.GetEndJdn() : m_date1.GetEndJdn() ) - min ) * scale;
+    dc.DrawLine( beg, 20, end, 20 );
     wxString filename;
     filename << ++unique << "date.bmp";
     wxMemoryFSHandler::AddFile( filename, bitmap, wxBITMAP_TYPE_BMP );
     m_dateImageFN = filename;
 
-    int beg = ( m_date1.f_jdn - min ) * scale;
-    int end = ( m_date1.f_jdn + m_date1.f_range - min ) * scale;
     for( i = 0 ; i < m_reDate1s.size() ; i++ ) {
         dc.Clear();
         dc.SetPen( *wxBLACK );
@@ -218,6 +229,7 @@ bool rgCompareEvent::CreateDateImageFile()
             color = *wxRED;
         }
         DrawDateImage( dc, m_reDate1s[i], min, scale, color );
+        DrawDateImage( dc, m_reDate2s[i], min, scale, color );
         filename.clear();
         filename << ++unique << "date" << i << ".bmp";
         wxMemoryFSHandler::AddFile( filename, bitmap, wxBITMAP_TYPE_BMP );
@@ -229,25 +241,25 @@ bool rgCompareEvent::CreateDateImageFile()
 }
 
 void rgCompareEvent::DrawDateImage(
-    wxDC& dc, const recDate& date, long start, double scale, const wxColour& color )
+    wxDC& dc, const recDate& date1, long start, double scale, const wxColour& color )
 {
-    int beg = ( date.f_jdn - start ) * scale;
-    int end = ( date.f_jdn + date.f_range - start ) * scale;
-    int taper = 365 * scale;
+    int beg = ( date1.f_jdn - start ) * scale;
+    int end = ( date1.f_jdn + date1.f_range - start ) * scale;
+    int taper = wxMax( 10, 365 * scale );
     dc.SetPen( color );
     dc.SetBrush( color );
-    if( date.f_type & recDate::FLG_BEFORE ) {
+    if( date1.f_type & recDate::FLG_BEFORE ) {
         wxRect r( beg-taper, 10, taper, 20 );
         dc.GradientFillLinear( r, *wxWHITE, color, wxRIGHT );
     }
-    if( date.f_range ) {
+    if( date1.f_range ) {
         dc.DrawRectangle( wxRect( beg, 10, end-beg, 20 ) );
         dc.DrawLine( beg, 0, beg, 40 );
         dc.DrawLine( end, 0, end, 40 );
     } else {
         dc.DrawLine( beg, 0, beg, 40 );
    }
-    if( date.f_type & recDate::FLG_AFTER ) {
+    if( date1.f_type & recDate::FLG_AFTER ) {
         wxRect r( end, 10, taper, 20 );
         dc.GradientFillLinear( r, *wxWHITE, color, wxLEFT );
     }
@@ -266,7 +278,7 @@ wxString rgCompareEvent::GetRefPlacesTable()
             "</tr>\n<tr>\n"
             "<td>" << m_place.GetAddressStr() << "</td>\n"
             "<td><b>" << m_event.GetIdStr() << "</b></td>\n"
-            "<td></td>"
+            "<td>" << m_event.FGetTitle() << "</td>"
             "</tr>\n"
         ;
         for( size_t i = 0 ; i < m_rePlaces.size() ; i++ ) {

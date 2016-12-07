@@ -97,20 +97,45 @@ wxString tfpWriteEventPage( idt eventID, rgCompareEvent* ce )
     recIndEventVec ies = eve.GetIndividualEvents();
     if( !ies.empty() ) {
         htm << "<table class='data'>\n<tr>\n"
-               "<th>Role</th>\n<th>Individual</th>\n<th>Note</th>\n</tr>\n";
+               "<th>Role</th>\n<th colspan='2'>Individual</th>\n<th>Note</th>\n<th>Link</th>\n</tr>\n";
         for( size_t i = 0 ; i < ies.size() ; i++ ) {
             recIndividual ind(ies[i].FGetIndID());
             htm
                 << "<tr>\n<td>" << recEventTypeRole::GetName( ies[i].FGetRoleID() )
-                << "</td>\n<td class='" << tfpGetIndSexClass( ind.FGetID() )
-                << "'>\n<b><a href='tfp:I" << ind.FGetID()
+                << "</td>\n<td><a href='tfp:I" << ind.FGetID()
+                << "'><b>" << ind.GetIdStr() 
+                << "</b></a></td>\n<td class='" << tfpGetIndSexClass( ind.FGetID() )
+                << "'>\n<b><a href='tfp:F" << ind.FGetFamID()
                 << "'>" << ind.FGetName()
                 << "</a></b>"
-               << " <a href='tfpc:MR" << ind.FGetID()
-               << "'><img src='memory:fam.png' alt='Family'></a>"
-               << "</td>\n<td>" << ies[i].f_note
-               << " </td>\n</tr>\n"
-           ;
+                << " <a href='tfpc:MR" << ind.FGetID()
+                << "'><img src='memory:fam.png' alt='Family'></a>"
+                << "</td>\n<td>" << ies[i].FGetNote()
+                << "</td>\n"
+            ;
+            if( ies[i].FGetHigherID() != 0 ) {
+                recIndividualEvent higher_e( ies[i].FGetHigherID() );
+                htm
+                    << "<td><a href='tfp:E" << higher_e.FGetEventID()
+                    << "'><b>" << recEvent::GetIdStr( higher_e.FGetEventID() ) 
+                    << "</b></a></td>\n"
+                ;
+            } else {
+                htm << "<td> </td>\n";
+            }
+            htm << "</tr>\n";
+            recIndEventVec lower_ies = ies[i].GetLowerIndEvents();
+            for( size_t j = 0 ; j < lower_ies.size() ; j++ ) {
+                recEvent lower_e(lower_ies[j].FGetEventID());
+                htm
+                    << "<tr>\n<td>" << recEventTypeRole::GetName( lower_ies[j].FGetRoleID() )
+                    << "</td>\n<td> </td>\n<td>" << lower_e.FGetTitle()
+                    << "</td>\n<td>" << lower_e.FGetNote()
+                    << "</td>\n<td><a href='tfp:E" << lower_e.FGetID()
+                    << "'><b>" << lower_e.GetIdStr() 
+                    << "</b></a></td>\n</tr>\n"
+                ;
+            }
         }
         htm << "</table>\n";
     }

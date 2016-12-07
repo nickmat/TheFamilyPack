@@ -704,8 +704,11 @@ void recEventa::CreatePersonalEvent() const
                 recEvent e(0);
                 e.FSetTypeID( FGetTypeID() );
                 e.SetAutoTitle( recIndividual::GetName( indIDs[j] ) + _(" - Summary") );
+                e.FSetDate1ID( recIndividual::CreateBirthDate( indIDs[j] ) );
+                e.FSetDate2ID( recIndividual::CreateDeathDate( indIDs[j] ) );
                 e.Save();
-                ieSumID = recIndividualEvent::Create( indIDs[j], e.FGetID(), ro.FGetID() );
+                idt sum_etrID = recEventType::GetSummaryRole( FGetTypeID() );
+                ieSumID = recIndividualEvent::Create( indIDs[j], e.FGetID(), sum_etrID );
             }
             recIndividualEvent ie(0);
             ie.FSetHigherID( ieSumID );

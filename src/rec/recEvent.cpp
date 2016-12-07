@@ -491,19 +491,21 @@ recEventaVec recEvent::FindEquivRefEvents( idt indEventID )
     return vec;
 }
 
-recEventaVec recEvent::GetEventas( idt eveID )
+recEventaVec recEvent::GetEventasIncludeLower( idt eveID )
 {
     recEventaVec vec;
     wxSQLite3StatementBuffer sql;
     wxSQLite3ResultSet result;
 
     sql.Format(
-        "SELECT EA.id, EA.title, EA.type_id,"
-        " EA.date1_id, EA.date2_id, EA.place_id, EA.note"
-        " FROM Eventa EA, EventEventa EE"
-        " WHERE EE.event_id="ID" AND EA.id=EE.eventa_id;",
-        eveID
-
+        "SELECT DISTINCT EA.id, EA.title, EA.type_id,"
+        " EA.date1_id, EA.date2_id, EA.place_id, EA.note, EA.date_pt"
+        " FROM IndividualEvent IE, EventEventa EE, Eventa EA,"
+        " (SELECT id FROM IndividualEvent WHERE event_id="ID") IE2"
+        " WHERE (IE.higher_id=IE2.id OR IE.event_id="ID")"
+        " AND IE.event_id=EE.event_id AND EE.eventa_id=EA.id"
+        " ORDER BY EA.date_pt;",
+        eveID, eveID
     );
     result = s_db->ExecuteQuery( sql );
 
@@ -516,6 +518,7 @@ recEventaVec recEvent::GetEventas( idt eveID )
         e.f_date2_id = GET_ID( result.GetInt64( 4 ) );
         e.f_place_id = GET_ID( result.GetInt64( 5 ) );
         e.f_note     = result.GetAsString( 6 );
+        e.f_date_pt  = (long) result.GetInt( 7 );
         vec.push_back( e );
     }
     return vec;

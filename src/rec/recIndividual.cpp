@@ -303,9 +303,9 @@ Sex recIndividual::GetSex( idt indID )
     if( indID == 0 ) {
         return SEX_Unstated;
     }
-    wxSQLite3StatementBuffer sql;
-    sql.Format( "SELECT sex FROM Individual WHERE id="ID";", indID );
-    return (Sex) s_db->ExecuteScalar( sql );
+    int i = ExecuteInt( "SELECT sex FROM Individual WHERE id="ID";", indID );
+    wxASSERT( i >= 0 && i <= SEX_Unknown );
+    return Sex( i );
 }
 
 idt recIndividual::GetFamilyID( idt indID )
@@ -432,6 +432,42 @@ idt recIndividual::GetPersonalSummaryEvent( idt indID, idt etID )
         indID, etID
     );
     return ExecuteID( sql );
+}
+
+idt recIndividual::CreateBirthDate( idt indID )
+{
+    recDate::TypePrefix prefix = recDate::PREF_Unstated;
+    recEvent e( GetBirthEvent( indID ) );
+    if( e.FGetID() == 0 ) {
+        e.ReadID( GetNrBirthEvent( indID ) );
+        prefix = recDate::PREF_OrBefore;
+    }
+    if( e.FGetDate1ID() == 0 ) {
+        return 0; // No event or date found
+    }
+    recDate date( e.FGetDate1ID() );
+    date.FSetID( 0 );
+    date.FSetType( date.FGetType() | prefix );
+    date.Save();
+    return date.FGetID();
+}
+
+idt recIndividual::CreateDeathDate( idt indID )
+{
+    recDate::TypePrefix prefix = recDate::PREF_Unstated;
+    recEvent e( GetDeathEvent( indID ) );
+    if( e.FGetID() == 0 ) {
+        e.ReadID( GetNrDeathEvent( indID ) );
+        prefix = recDate::PREF_OrBefore;
+    }
+    if( e.FGetDate1ID() == 0 ) {
+        return 0; // No event or date found
+    }
+    recDate date( e.FGetDate1ID() );
+    date.FSetID( 0 );
+    date.FSetType( date.FGetType() | prefix );
+    date.Save();
+    return date.FGetID();
 }
 
 recFamilyVec recIndividual::GetFamilyList( idt ind )
@@ -691,7 +727,11 @@ void recIndividual::RemoveFromDatabase()
     }
     wxSQLite3StatementBuffer sql;
 
-    recFamilyVec families = GetFamilyList();
+    recNameVec names = GetNames();
+    for( size_t i = 0 ; i < names.size() ; i++ ) {
+        names[i].RemoveFromDatabase();
+    }
+
     sql.Format(
         // TODO: Remove ContactList if orphaned
         "DELETE FROM FamilyIndividual WHERE ind_id="ID";"
@@ -699,12 +739,10 @@ void recIndividual::RemoveFromDatabase()
         "DELETE FROM Family WHERE husb_id=0 AND wife_id="ID";"
         "DELETE FROM IndividualEvent WHERE ind_id="ID";"
         "DELETE FROM IndividualPersona WHERE ind_id="ID";",
-        f_id, f_id, f_id, f_id
+        f_id, f_id, f_id, f_id, f_id
     );
     s_db->ExecuteUpdate( sql );
 
-//    recPersona::RemoveFromDatabase( f_per_id );
-    // TODO: Remove orphaned Name
     Delete();
     // TODO: Delete orphaned EventType and/or EventTypeRole
     Clear();

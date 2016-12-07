@@ -150,6 +150,9 @@ public:
     static idt GetDeathEvent( idt id ) { return FindGroupEvent( id, recET_GRP_Death ); }
     static idt GetNrDeathEvent( idt id ) { return FindGroupEvent( id, recET_GRP_NrDeath ); }
 
+    static idt CreateBirthDate( idt indID );
+    static idt CreateDeathDate( idt indID );
+
     static recFamilyVec GetFamilyList( idt indID );
     recFamilyVec GetFamilyList() const { return GetFamilyList( f_id ); }
     static recFamilyVec GetParentList( idt indID );

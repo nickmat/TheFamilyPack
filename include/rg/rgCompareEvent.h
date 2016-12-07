@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     21 November 2012
- * Copyright:   Copyright (c) 2010-2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2016, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -53,7 +53,7 @@ private:
     void UnloadFiles();
     bool CreateDateImageFile();
     static void DrawDateImage(
-        wxDC& dc, const recDate& date, long start, double scale, const wxColour& color );
+        wxDC& dc, const recDate& date1, long start, double scale, const wxColour& color );
 
     recEvent  m_event;
     recDate   m_date1;
@@ -68,6 +68,7 @@ private:
     recIdVec    m_personaIDs;
     IndPerMap   m_indPerMap;
     recDateVec  m_reDate1s;
+    recDateVec  m_reDate2s;
     recPlaceVec m_rePlaces;
 
     wxString    m_dateImageFN;

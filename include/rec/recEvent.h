@@ -115,8 +115,10 @@ public:
 
     static recEventaVec FindEquivRefEvents( idt eveID );
     recEventaVec FindEquivRefEvents() const { return FindEquivRefEvents( f_id ); }
-    static recEventaVec GetEventas( idt eveID );
-    recEventaVec GetEventas() const { return GetEventas( f_id ); }
+
+    static recEventaVec GetEventasIncludeLower( idt eveID );
+    recEventaVec GetEventasIncludeLower() const { return GetEventasIncludeLower( f_id ); }
+
     static recEventEventaVec GetEventEventas( idt eveID );
     recEventEventaVec GetEventEventas() const { return GetEventEventas( f_id ); }
 
