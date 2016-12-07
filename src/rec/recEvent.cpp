@@ -461,7 +461,7 @@ recEventaVec recEvent::FindEquivRefEvents( idt indEventID )
     wxSQLite3ResultSet result;
 
     sql.Format(
-        "SELECT id, title, type_id, date1_id, date2_id, place_id, note FROM "
+        "SELECT id, title, type_id, date1_id, date2_id, place_id, note, date_pt FROM "
         "  Eventa "
         "JOIN "
         "   (SELECT EP.eventa_id FROM "
@@ -485,6 +485,7 @@ recEventaVec recEvent::FindEquivRefEvents( idt indEventID )
         e.f_date2_id = GET_ID( result.GetInt64( 4 ) );
         e.f_place_id = GET_ID( result.GetInt64( 5 ) );
         e.f_note     = result.GetAsString( 6 );
+        e.f_date_pt  = (long) result.GetInt( 7 );
         vec.push_back( e );
     }
     return vec;
