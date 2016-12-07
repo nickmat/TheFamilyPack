@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     14th December 2015
- * Copyright:   Copyright (c) 2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2015 ~ 2016, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -43,9 +43,14 @@ public:
         ROLE_Birth_Mother           = -2,
         ROLE_Baptism_Baptised       = -21,
         ROLE_Baptism_Parent         = -22,
-        ROLE_Census_Listed          = -32,
-        ROLE_Death_Died             = -5,
         ROLE_Burial_Deceased        = -26,
+        ROLE_Census_Listed          = -32,
+        ROLE_Condition_Summary      = -67,
+        ROLE_Death_Died             = -5,
+        ROLE_Family_Child           = -76,
+        ROLE_Family_Husband         = -73,
+        ROLE_Family_Partner         = -75,
+        ROLE_Family_Wife            = -74,
         ROLE_Marriage_Bride         = -8,
         ROLE_Marriage_FatherOfBride = -13,
         ROLE_Marriage_FatherOfGroom = -11,
@@ -59,15 +64,14 @@ public:
         ROLE_RegDeath_Died          = -55,
         ROLE_Residence_Boarder      = -64,
         ROLE_Residence_Family       = -61,
+        ROLE_Residence_Inmate       = -86,
         ROLE_Residence_Lodger       = -63,
+        ROLE_Residence_Resident     = -87, // Anything not currently defined
+        ROLE_Residence_Staff        = -85,
+        ROLE_Residence_Summary      = -77,
         ROLE_Residence_Visitor      = -62,
-        ROLE_Occupation             = -65,
-        ROLE_Condition              = -67,
-        ROLE_Family_Husband         = -73,
-        ROLE_Family_Wife            = -74,
-        ROLE_Family_Partner         = -75,
-        ROLE_Family_Child           = -76,
-        ROLE_MAX                    = 29 // size of list
+        ROLE_Occupation_Summary     = -65,
+        ROLE_MAX                    = 33 // size of list
     };
     enum Prime {
         PRIME_Ignore = -1,

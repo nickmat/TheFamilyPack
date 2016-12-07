@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3rd April 2013
- * Copyright:   Copyright (c) 2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2013 ~ 2016, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -41,8 +41,8 @@
 const int recVerMajor    = 0;
 const int recVerMinor    = 0;
 const int recVerRev      = 10;
-const int recVerTest     = 13;                              // <<======<<<<
-const wxStringCharType* recVerStr = wxS("TFPD-0.0.10.13");  // <<======<<<<
+const int recVerTest     = 14;                              // <<======<<<<
+const wxStringCharType* recVerStr = wxS("TFPD-0.0.10.14");  // <<======<<<<
 
 //============================================================================
 //                 Code to upgrade old versions
@@ -590,6 +590,43 @@ void UpgradeTest0_0_10_12to0_0_10_13()
     recDb::GetDb()->ExecuteUpdate( query );
 }
 
+void UpgradeTest0_0_10_13to0_0_10_14()
+{
+    // Version 0.0.10.13 to 0.0.10.14
+    // Changes and additions to EventTypeRole records.
+
+    char* query =
+        "BEGIN;\n"
+
+        // Residence
+        "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-77, -17, 1, 0, 'Summary');\n"
+        "UPDATE EventTypeRole SET prime=1 WHERE id=-61;\n"  // Was prime = 0
+        "UPDATE EventTypeRole SET prime=1 WHERE id=-62;\n"
+        "UPDATE EventTypeRole SET prime=1 WHERE id=-63;\n"
+        "UPDATE EventTypeRole SET prime=1 WHERE id=-64;\n"
+        "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-85, -17, 1, 0, 'Staff');\n"
+        "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-86, -17, 1, 0, 'Inmate');\n"
+        "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-87, -17, 1, 0, 'Resident');\n"
+
+        // Occupation (name was 'Occupation')
+        "UPDATE EventTypeRole SET name='Summary' WHERE id=-65;\n"
+
+        // Condition
+        "UPDATE EventTypeRole SET name='Summary' WHERE id=-67;\n" // Was name = 'Condition'
+        "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-78, -19, 1, 0, 'Single');\n"
+        "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-79, -19, 1, 0, 'Married');\n"
+        "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-80, -19, 1, 0, 'Partner');\n"
+        "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-81, -19, 1, 0, 'Civil Partner');\n"
+        "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-82, -19, 1, 0, 'Widowed');\n"
+        "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-83, -19, 1, 0, 'Divorced');\n"
+        "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-84, -19, 1, 0, 'Separated');\n"
+
+        "UPDATE Version SET test=14 WHERE id=1;\n"
+        "COMMIT;\n"
+    ;
+    recDb::GetDb()->ExecuteUpdate( query );
+}
+
 void UpgradeRev0_0_10toCurrent( int test )
 {
     switch( test )
@@ -607,6 +644,7 @@ void UpgradeRev0_0_10toCurrent( int test )
     case 10: UpgradeTest0_0_10_10to0_0_10_11();
     case 11: UpgradeTest0_0_10_11to0_0_10_12();
     case 12: UpgradeTest0_0_10_12to0_0_10_13();
+    case 13: UpgradeTest0_0_10_13to0_0_10_14();
     }
 }
 
