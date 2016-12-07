@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     14th December 2015
- * Copyright:   Copyright (c) 2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2015 ~ 2016, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -192,6 +192,41 @@ bool recIndividualEvent::Find( idt indID, idt eveID, idt roleID )
     f_note      = result.GetAsString( 3 );
     f_ind_seq   = result.GetInt( 4 );
     return true;
+}
+
+recIdVec recIndividualEvent::GetLowerIndEventIDs( idt ieID )
+{
+    return recDb::ExecuteIdVec(
+        "SELECT id FROM IndividualEvent WHERE higher_id="ID";", ieID
+    );
+}
+
+recIndEventVec recIndividualEvent::GetLowerIndEvents( idt ieID )
+{
+    recIndEventVec vec;
+    recIndividualEvent record;
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "SELECT IE.id, IE.ind_id, IE.event_id, IE.role_id, IE.note, IE.ind_seq"
+        " FROM IndividualEvent IE, Event E"
+        " WHERE IE.event_id=E.id AND IE.higher_id="ID
+        " ORDER BY E.date_pt;",
+        ieID
+    );
+    wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
+
+    record.FSetHigherID( ieID );
+    while( result.NextRow() ) {
+        record.FSetID( GET_ID( result.GetInt64( 0 ) ) );
+        record.FSetIndID( GET_ID( result.GetInt64( 1 ) ) );
+        record.FSetEventID( GET_ID( result.GetInt64( 2 ) ) );
+        record.FSetRoleID( GET_ID( result.GetInt64( 3 ) ) );
+        record.FSetNote( result.GetAsString( 4 ) );
+        record.FSetIndSeq( result.GetInt( 5 ) );
+        vec.push_back( record );
+    }
+    return vec;
 }
 
 wxString recIndividualEvent::GetRoleStr( idt indID, idt typeID )

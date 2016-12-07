@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     14th December 2015
- * Copyright:   Copyright (c) 2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2015 ~ 2016, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -30,6 +30,8 @@
 
 #include <rec/recDatabase.h>
 
+class recIndividualEvent;
+typedef std::vector< recIndividualEvent >  recIndEventVec;
 
 //============================================================================
 //-------------------------[ recIndividualEvent ]-----------------------------
@@ -75,6 +77,11 @@ public:
 
     bool Find( idt indID, idt eveID, idt roleID = 0 );
 
+    static recIdVec GetLowerIndEventIDs( idt ieID );
+    recIdVec GetLowerIndEventIDs() const { return GetLowerIndEventIDs( f_id ); }
+    static recIndEventVec GetLowerIndEvents( idt ieID );
+    recIndEventVec GetLowerIndEvents() const { return GetLowerIndEvents( f_id ); }
+
     static wxString GetRoleStr( idt indID, idt typeID );
     wxString GetRoleStr( idt typeID ) const { return GetRoleStr( f_ind_id, typeID ); }
 };
@@ -101,6 +108,5 @@ inline bool operator!=( const recIndividualEvent& r1, const recIndividualEvent& 
     return !(r1 == r2);
 }
 
-typedef std::vector< recIndividualEvent >  recIndEventVec;
 
 #endif // REC_RECINDEVENT_H
