@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010-2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2016, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -323,6 +323,24 @@ wxString recDate::GetStr( idt id )
     return d.GetStr();
 }
 
+wxString recDate::GetPeriodStr( const recDate& date2 ) const
+{
+    wxString str2 = date2.GetStr();
+    if( str2.empty() ) {
+        return GetStr();
+    }
+    return GetStr() + " To " + str2;
+}
+
+wxString recDate::GetPeriodStr( idt d1ID, idt d2ID )
+{
+    wxString str2 = recDate::GetStr( d2ID );
+    if( str2.empty() ) {
+        return recDate::GetStr( d1ID );
+    }
+    return recDate::GetStr( d1ID ) + " To " + str2;
+}
+
 int recDate::GetYear( CalendarScheme scheme )
 {
     long jdn;
@@ -534,6 +552,7 @@ void recDate::RemoveFromDatabase( idt id )
     Delete( date.FGetRelID() );
     Delete( id );
 }
+
 
 //-----------------------------------------------------
 //      recRelativeDate
