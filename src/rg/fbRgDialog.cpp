@@ -213,7 +213,7 @@ fbRgCreateName::fbRgCreateName( wxWindow* parent, wxWindowID id, const wxString&
 	fgSizer20->Add( m_staticPerIndID, 0, wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT|wxLEFT, 2 );
 	
 	
-	bSizerDismiss->Add( fgSizer20, 0, wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
+	bSizerDismiss->Add( fgSizer20, 0, wxEXPAND, 5 );
 	
 	
 	bSizerDismiss->Add( 0, 0, 1, wxEXPAND, 5 );
