@@ -87,6 +87,7 @@ rgDlgCreateIndividual::rgDlgCreateIndividual( wxWindow* parent, idt famID )
     m_individual.FSetFamID( famID );
     m_individual.Save();
     m_name.FSetIndID( m_individual.FGetID() );
+    m_name.FSetSequence( 1 );
     m_name.Save();
 }
 
