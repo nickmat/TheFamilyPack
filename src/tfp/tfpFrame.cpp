@@ -1757,7 +1757,7 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
     if( name.compare( 0, 2, "FI" ) == 0 && success1 ) {
         return tfpWriteIndFamilyPage( num1 );
     }
-    if( name.compare( 0, 1, "F" ) == 0 && success ) {
+    if( name.compare( 0, 1, "F" ) == 0 ) {
         // Note, Family Page may have alternate parents
         // so name string requires further decoding.
         return tfpWriteFamilyPage( name.Mid(1) );

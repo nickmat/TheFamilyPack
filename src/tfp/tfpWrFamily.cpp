@@ -548,7 +548,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
                     htm << 
                         "<tr>\n<td class='" << tfpGetIndSexClass( indID ) <<
                         "'><a href='tfp:F" << famID <<
-                        "," << i << "," << iL <<
+                        "," << iL << "," << i <<
                         "'>" << recIndividual::GetName( indID ) <<
                         "</a>&nbsp;&nbsp;<a href='tfpc:MR" << indID <<
                         "'><img src=memory:fam.png></a></td>\n</tr>\n"
@@ -559,7 +559,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
                     htm << 
                         "<tr>\n<td class='" << tfpGetIndSexClass( indID ) <<
                         "'>\n<a href='tfp:F" << famID <<
-                        "," << i << "," << iL << 
+                        "," << iL << "," << i << 
                         "'>" << recIndividual::GetName( indID ) <<
                         "</a>&nbsp;&nbsp;<a href='tfpc:MR" << indID <<
                         "'><img src=memory:fam.png></a></td>\n</tr>\n"
