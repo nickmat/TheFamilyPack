@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010 - 2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -168,7 +168,7 @@ bool recDb::DeleteRecord( const char* name, idt id )
     }
 
     wxSQLite3StatementBuffer sql;
-    sql.Format( "DELETE FROM %q WHERE id="ID";", name, id );
+    sql.Format( "DELETE FROM %q WHERE id=" ID ";", name, id );
 
     if( s_db->ExecuteUpdate( sql ) != 1 ) {
         return false;
@@ -183,7 +183,7 @@ bool recDb::RecordExists( const char* name, idt id )
     }
 
     wxSQLite3StatementBuffer sql;
-    sql.Format( "SELECT COUNT(*) FROM %q WHERE id="ID";", name, id );
+    sql.Format( "SELECT COUNT(*) FROM %q WHERE id=" ID ";", name, id );
 
     if( s_db->ExecuteScalar( sql ) != 1 ) {
         return false;

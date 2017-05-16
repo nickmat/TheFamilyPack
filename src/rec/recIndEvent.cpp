@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     14th December 2015
- * Copyright:   Copyright (c) 2015 ~ 2016, Nick Matthews.
+ * Copyright:   Copyright (c) 2015 ~ 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -77,7 +77,7 @@ void recIndividualEvent::Save()
         sql.Format(
             "INSERT INTO IndividualEvent"
             " (higher_id, ind_id, event_id, role_id, note, ind_seq)"
-            " VALUES ("ID", "ID", "ID", "ID", '%q', %d);",
+            " VALUES (" ID ", " ID ", " ID ", " ID ", '%q', %d);",
             f_higher_id, f_ind_id, f_event_id, f_role_id, UTF8_(f_note), f_ind_seq
         );
         s_db->ExecuteUpdate( sql );
@@ -90,16 +90,16 @@ void recIndividualEvent::Save()
             sql.Format(
                 "INSERT INTO IndividualEvent"
                 " (id, higher_id, ind_id, event_id, role_id, note, ind_seq) "
-                "VALUES ("ID", "ID", "ID", "ID", "ID", '%q', %d);",
+                "VALUES (" ID ", " ID ", " ID ", " ID ", " ID ", '%q', %d);",
                 f_id, f_higher_id, f_ind_id, f_event_id, f_role_id, UTF8_(f_note), f_ind_seq
             );
         } else {
             // Update existing record
             sql.Format(
                 "UPDATE IndividualEvent"
-                " SET higher_id="ID", ind_id="ID", event_id="ID", role_id="ID","
+                " SET higher_id=" ID ", ind_id=" ID ", event_id=" ID ", role_id=" ID ","
                 " note='%q', ind_seq=%d"
-                " WHERE id="ID";",
+                " WHERE id=" ID ";",
                 f_higher_id, f_ind_id, f_event_id, f_role_id,
                 UTF8_(f_note), f_ind_seq, f_id
             );
@@ -120,7 +120,7 @@ bool recIndividualEvent::Read()
 
     sql.Format(
         "SELECT higher_id, ind_id, event_id, role_id, note, ind_seq "
-        "FROM IndividualEvent WHERE id="ID";",
+        "FROM IndividualEvent WHERE id=" ID ";",
         f_id
     );
     result = s_db->GetTable( sql );
@@ -165,14 +165,14 @@ bool recIndividualEvent::Find( idt indID, idt eveID, idt roleID )
     if( roleID == 0 ) {
         sql.Format(
             "SELECT id, higher_id, role_id, note, ind_seq "
-            "FROM IndividualEvent WHERE ind_id="ID" AND event_id="ID";",
+            "FROM IndividualEvent WHERE ind_id=" ID " AND event_id=" ID ";",
             indID, eveID
         );
     } else {
         sql.Format(
             "SELECT id, higher_id, role_id, note, ind_seq"
             " FROM IndividualEvent"
-            " WHERE ind_id="ID" AND event_id="ID" AND role_id="ID";",
+            " WHERE ind_id=" ID " AND event_id=" ID " AND role_id=" ID ";",
             indID, eveID, roleID
         );
     }
@@ -197,7 +197,7 @@ bool recIndividualEvent::Find( idt indID, idt eveID, idt roleID )
 recIdVec recIndividualEvent::GetLowerIndEventIDs( idt ieID )
 {
     return recDb::ExecuteIdVec(
-        "SELECT id FROM IndividualEvent WHERE higher_id="ID";", ieID
+        "SELECT id FROM IndividualEvent WHERE higher_id=" ID ";", ieID
     );
 }
 
@@ -210,7 +210,7 @@ recIndEventVec recIndividualEvent::GetLowerIndEvents( idt ieID )
     sql.Format(
         "SELECT IE.id, IE.ind_id, IE.event_id, IE.role_id, IE.note, IE.ind_seq"
         " FROM IndividualEvent IE, Event E"
-        " WHERE IE.event_id=E.id AND IE.higher_id="ID
+        " WHERE IE.event_id=E.id AND IE.higher_id=" ID
         " ORDER BY E.date_pt;",
         ieID
     );
@@ -234,7 +234,7 @@ wxString recIndividualEvent::GetRoleStr( idt indID, idt typeID )
     wxSQLite3StatementBuffer sql;
     sql.Format(
         "SELECT ETR.name FROM IndividualEvent IE, EventTypeRole ETR"
-        " WHERE IE.role_id=ETR.id AND IE.ind_id="ID" AND ETR.type_id="ID
+        " WHERE IE.role_id=ETR.id AND IE.ind_id=" ID " AND ETR.type_id=" ID
         " ORDER BY IE.ind_seq;",
         indID, typeID
     );

@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     14th December 2015
- * Copyright:   Copyright (c) 2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2015 ~ 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -72,7 +72,7 @@ void recEventTypeRole::Save()
         // Add new record
         sql.Format(
             "INSERT INTO EventTypeRole (type_id, prime, official, name) "
-            "VALUES ("ID", %d, %d, '%q');",
+            "VALUES (" ID ", %d, %d, '%q');",
             f_type_id, f_prime, BOOL_(f_official), UTF8_(f_name)
         );
         s_db->ExecuteUpdate( sql );
@@ -84,15 +84,15 @@ void recEventTypeRole::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO EventTypeRole (id, type_id, prime, official, name) "
-                "VALUES ("ID", "ID", %d, %d, '%q');",
+                "VALUES (" ID ", " ID ", %d, %d, '%q');",
                 f_id, f_type_id, f_prime, BOOL_(f_official), UTF8_(f_name)
             );
         } else {
             // Update existing record
             sql.Format(
                 "UPDATE EventTypeRole "
-                "SET type_id="ID", prime=%d, official=%d, name='%q' "
-                "WHERE id="ID";",
+                "SET type_id=" ID ", prime=%d, official=%d, name='%q' "
+                "WHERE id=" ID ";",
                 f_type_id, f_prime, BOOL_(f_official), UTF8_(f_name), f_id
             );
         }
@@ -112,7 +112,7 @@ bool recEventTypeRole::Read()
 
     sql.Format(
         "SELECT type_id, prime, official, name "
-        "FROM EventTypeRole WHERE id="ID";",
+        "FROM EventTypeRole WHERE id=" ID ";",
         f_id
     );
     result = s_db->GetTable( sql );
@@ -240,7 +240,7 @@ idt recEventTypeRole::Find( const wxString& name, idt type, Prime prime, TriLogi
     }
     sql.Format(
         "SELECT id FROM EventTypeRole "
-        "WHERE type_id="ID"%s%s AND name LIKE '%q';",
+        "WHERE type_id=" ID "%s%s AND name LIKE '%q';",
         type, UTF8_(primeCondition), UTF8_(officialCondition), UTF8_(name)
     );
     result = s_db->GetTable( sql );
@@ -259,7 +259,7 @@ idt recEventTypeRole::FindOrCreate( const wxString& name, idt type, Prime prime,
 
     sql.Format(
         "SELECT id FROM EventTypeRole "
-        "WHERE type_id="ID" AND prime=%d AND official=%d AND name LIKE '%q';",
+        "WHERE type_id=" ID " AND prime=%d AND official=%d AND name LIKE '%q';",
         type, prime, official, UTF8_(name)
     );
     result = s_db->GetTable( sql );

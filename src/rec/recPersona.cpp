@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010-2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -65,7 +65,7 @@ void recPersona::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO Persona (sex, ref_id, note) VALUES (%u, "ID", '%q');",
+            "INSERT INTO Persona (sex, ref_id, note) VALUES (%u, " ID ", '%q');",
             f_sex, f_ref_id, UTF8_(f_note)
         );
         s_db->ExecuteUpdate( sql );
@@ -77,13 +77,13 @@ void recPersona::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO Persona (id, sex, ref_id, note) "
-                "VALUES ("ID", %u, "ID", '%q');",
+                "VALUES (" ID ", %u, " ID ", '%q');",
                 f_id, f_sex, f_ref_id, UTF8_(f_note)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE Persona SET sex=%u, ref_id="ID", note='%q' WHERE id="ID";",
+                "UPDATE Persona SET sex=%u, ref_id=" ID ", note='%q' WHERE id=" ID ";",
                 f_sex, f_ref_id, UTF8_(f_note), f_id
             );
         }
@@ -101,7 +101,7 @@ bool recPersona::Read()
         return false;
     }
 
-    sql.Format( "SELECT sex, ref_id, note FROM Persona WHERE id="ID";", f_id );
+    sql.Format( "SELECT sex, ref_id, note FROM Persona WHERE id=" ID ";", f_id );
     result = s_db->GetTable( sql );
 
     if( result.GetRowCount() != 1 )
@@ -143,7 +143,7 @@ recNameVec recPersona::ReadNames( idt perID )
     }
 
     sql.Format(
-        "SELECT id, ind_id, style_id, sequence FROM Name WHERE per_id="ID" "
+        "SELECT id, ind_id, style_id, sequence FROM Name WHERE per_id=" ID " "
         "ORDER BY sequence;",
         perID
     );
@@ -188,7 +188,7 @@ recEventaPersonaVec recPersona::ReadEventaPersonas( idt perID, recEventOrder ord
     sql.Format(
         "SELECT EP.id, eventa_id, role_id, EP.note, per_seq FROM EventaPersona EP"
         " INNER JOIN Eventa E ON E.id=eventa_id"
-        " WHERE per_id="ID" ORDER BY %s;",
+        " WHERE per_id=" ID " ORDER BY %s;",
         perID, UTF8_(orderStr)
     );
     result = s_db->GetTable( sql );
@@ -214,7 +214,7 @@ int recPersona::GetMaxEventaSeqNumber( idt perID )
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "SELECT MAX(per_seq) FROM EventaPersona WHERE per_id="ID";",
+        "SELECT MAX(per_seq) FROM EventaPersona WHERE per_id=" ID ";",
         perID
     );
     return s_db->ExecuteScalar( sql );
@@ -231,7 +231,7 @@ recIdVec recPersona::GetIndividualIDs( idt perID )
     }
 
     sql.Format(
-        "SELECT ind_id FROM IndividualPersona WHERE per_id="ID" ORDER BY id;",
+        "SELECT ind_id FROM IndividualPersona WHERE per_id=" ID " ORDER BY id;",
         perID
     );
     result = s_db->GetTable( sql );
@@ -262,7 +262,7 @@ recIdVec recPersona::FindIndividualReferenceLink( idt indID, idt refID )
     sql.Format(
         "SELECT P.id FROM"
         " Persona P, IndividualPersona IP WHERE"
-        " IP.ind_id="ID" AND IP.per_id=P.id AND P.ref_id="ID";",
+        " IP.ind_id=" ID " AND IP.per_id=P.id AND P.ref_id=" ID ";",
         indID, refID
     );
     wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
@@ -286,8 +286,8 @@ void recPersona::RemoveFromDatabase()
         names[i].RemoveFromDatabase();
     }
     sql.Format(
-        "DELETE FROM EventaPersona WHERE per_id="ID";"
-        "DELETE FROM Relationship WHERE per1_id="ID" OR per2_id="ID";",
+        "DELETE FROM EventaPersona WHERE per_id=" ID ";"
+        "DELETE FROM Relationship WHERE per1_id=" ID " OR per2_id=" ID ";",
         f_id, f_id, f_id
     );
     s_db->ExecuteUpdate( sql );

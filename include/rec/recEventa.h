@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     20th April 2013
- * Copyright:   Copyright (c) 2013-2016, Nick Matthews.
+ * Copyright:   Copyright (c) 2013 ~ 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -84,7 +84,7 @@ public:
 
     wxString SetAutoTitle( const wxString& name1, const wxString& name2 = wxEmptyString );
 
-    static wxString GetIdStr( idt evID ) { return wxString::Format( "Ea"ID, evID ); }
+    static wxString GetIdStr( idt evID ) { return wxString::Format( "Ea" ID, evID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     wxString GetDetailStr() const;

@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010-2016, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -83,7 +83,7 @@ public:
     void FSetDatePt( recDate::DatePoint dp ) { f_date_pt = recDate::GetDatePoint( f_date1_id, dp ); }
     void FSetUserRef( const wxString& ur ) { f_user_ref = ur; }
 
-    static wxString GetIdStr( idt evID ) { return wxString::Format( "E"ID, evID ); }
+    static wxString GetIdStr( idt evID ) { return wxString::Format( "E" ID, evID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     idt CreateFromEventa( const recEventa& eventa );

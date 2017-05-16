@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     22 November 2010
- * Copyright:   Copyright (c) 2010 - 2016, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 - 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -81,7 +81,7 @@ public:
     void FSetTypeID( idt typeID ) { f_style_id = typeID; }
     void FSetSequence( int seq ) { f_sequence = seq; }
 
-    static wxString GetIdStr( idt nameID ) { return wxString::Format( "N"ID, nameID ); }
+    static wxString GetIdStr( idt nameID ) { return wxString::Format( "N" ID, nameID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     static idt GetIndID( idt nameID );
@@ -173,7 +173,7 @@ public:
     void FSetValue( const wxString& val ) { f_val = val; }
     void FSetNameSeq( int nameSeq ) { f_sequence = nameSeq; }
 
-    static wxString GetIdStr( idt npID ) { return wxString::Format( "NP"ID, npID ); }
+    static wxString GetIdStr( idt npID ) { return wxString::Format( "NP" ID, npID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     static wxString GetValue( idt id );
@@ -235,7 +235,7 @@ public:
     void FSetGroup( NTYPE_Grp group ) { f_grp = group; }
     void FSetName( const wxString& name ) { f_name = name; }
 
-    static wxString GetIdStr( idt nptID ) { return wxString::Format( "NPT"ID, nptID ); }
+    static wxString GetIdStr( idt nptID ) { return wxString::Format( "NPT" ID, nptID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     static wxString GetTypeStr( idt id );
@@ -291,7 +291,7 @@ public:
 
     void FSetName( const wxString& name ) { f_name = name; }
 
-    static wxString GetIdStr( idt ntID ) { return wxString::Format( "NT"ID, ntID ); }
+    static wxString GetIdStr( idt ntID ) { return wxString::Format( "NT" ID, ntID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     static wxString GetStyleStr( idt id );

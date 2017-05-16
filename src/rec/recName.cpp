@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     22 November 2010
- * Copyright:   Copyright (c) 2010 - 2016, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -74,7 +74,7 @@ void recName::Save()
         // Add new record
         sql.Format(
             "INSERT INTO Name (ind_id, per_id, style_id, sequence)"
-            "VALUES ("ID", "ID", "ID", %d);",
+            "VALUES (" ID ", " ID ", " ID ", %d);",
             f_ind_id, f_per_id, f_style_id, f_sequence
         );
         s_db->ExecuteUpdate( sql );
@@ -86,13 +86,13 @@ void recName::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO Name (id, ind_id, per_id, style_id, sequence)"
-                "VALUES ("ID", "ID", "ID", "ID", %d);",
+                "VALUES (" ID ", " ID ", " ID ", " ID ", %d);",
                 f_id, f_ind_id, f_per_id, f_style_id, f_sequence
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE Name SET ind_id="ID", per_id="ID", style_id="ID", sequence=%d WHERE id="ID";",
+                "UPDATE Name SET ind_id=" ID ", per_id=" ID ", style_id=" ID ", sequence=%d WHERE id=" ID ";",
                 f_ind_id, f_per_id, f_style_id, f_sequence, f_id
             );
         }
@@ -112,7 +112,7 @@ bool recName::Read()
 
     sql.Format(
         "SELECT ind_id, per_id, style_id, sequence "
-        "FROM Name WHERE id="ID";",
+        "FROM Name WHERE id=" ID ";",
         f_id
     );
     result = s_db->GetTable( sql );
@@ -132,12 +132,12 @@ bool recName::Read()
 
 idt recName::GetIndID( idt nameID )
 {
-    return ExecuteID( "SELECT ind_id FROM Name WHERE id="ID";", nameID );
+    return ExecuteID( "SELECT ind_id FROM Name WHERE id=" ID ";", nameID );
 }
 
 idt recName::GetPerID( idt nameID )
 {
-    return ExecuteID( "SELECT per_id FROM Name WHERE id="ID";", nameID );
+    return ExecuteID( "SELECT per_id FROM Name WHERE id=" ID ";", nameID );
 }
 
 idt recName::CreateName( const wxString& nameStr, idt style )
@@ -207,7 +207,7 @@ idt recName::GetDefaultNameID( idt indID, idt perID )
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "SELECT id FROM Name WHERE ind_id="ID" AND per_id="ID" ORDER BY sequence;",
+        "SELECT id FROM Name WHERE ind_id=" ID " AND per_id=" ID " ORDER BY sequence;",
         indID, perID
     );
     wxSQLite3Table result = s_db->GetTable( sql );
@@ -236,7 +236,7 @@ recNameVec recName::GetNames( idt indID, idt perID )
 
     sql.Format(
         "SELECT id, style_id, sequence FROM Name"
-        " WHERE ind_id="ID" AND per_id="ID" ORDER BY sequence;",
+        " WHERE ind_id=" ID " AND per_id=" ID " ORDER BY sequence;",
         indID, perID
     );
     result = s_db->GetTable( sql );
@@ -264,10 +264,10 @@ void recName::RemoveFromDatabase( idt id )
 
     // TODO: Ensure Event is removed from reference statement.
     sql.Format(
-        "DELETE FROM NamePart WHERE name_id="ID";"
+        "DELETE FROM NamePart WHERE name_id=" ID ";"
         "DELETE FROM ReferenceEntity "
-             "WHERE entity_type=7 AND entity_id="ID";"
-        "DELETE FROM Name WHERE id="ID";",
+             "WHERE entity_type=7 AND entity_id=" ID ";"
+        "DELETE FROM Name WHERE id=" ID ";",
         id, id, id
     );
     s_db->ExecuteUpdate( sql );
@@ -280,7 +280,7 @@ wxString recName::GetNameStr( idt id )
     wxSQLite3StatementBuffer sql;
     sql.Format(
         "SELECT val FROM NamePart "
-        "WHERE name_id="ID" "
+        "WHERE name_id=" ID " "
         "ORDER BY sequence;",
         id
     );
@@ -304,7 +304,7 @@ wxString recName::GetNamePartStr( idt nameID, idt partID )
     wxSQLite3StatementBuffer sql;
     sql.Format(
         "SELECT val FROM NamePart "
-        "WHERE name_id="ID" AND type_id="ID" "
+        "WHERE name_id=" ID " AND type_id=" ID " "
         "ORDER BY sequence;",
         nameID, partID
     );
@@ -332,7 +332,7 @@ int recName::GetNextSequence( idt indID, idt perID )
         return 1;
     }
     wxSQLite3StatementBuffer sql;
-    sql.Format( "SELECT MAX(sequence) FROM Name WHERE %s="ID";", owner, perID );
+    sql.Format( "SELECT MAX(sequence) FROM Name WHERE %s=" ID ";", owner, perID );
     return s_db->ExecuteScalar( sql ) + 1;
 }
 
@@ -369,7 +369,7 @@ bool recName::FindPersona( idt perID, idt styleID )
     wxSQLite3Table result;
 
     sql.Format(
-        "SELECT id FROM Name WHERE per_id="ID" AND style_id="ID" "
+        "SELECT id FROM Name WHERE per_id=" ID " AND style_id=" ID " "
         "ORDER BY sequence;",
         perID, styleID
     );
@@ -399,7 +399,7 @@ recNamePartVec recName::GetParts( idt nameID )
 
     sql.Format(
         "SELECT id, type_id, val, sequence FROM NamePart "
-        "WHERE name_id="ID" ORDER BY sequence;",
+        "WHERE name_id=" ID " ORDER BY sequence;",
         nameID
     );
     result = s_db->GetTable( sql );
@@ -450,7 +450,7 @@ void recNamePart::Save()
         // Add new record
         sql.Format(
             "INSERT INTO NamePart (name_id, type_id, val, sequence)"
-            "VALUES ("ID", "ID", '%q', %d);",
+            "VALUES (" ID ", " ID ", '%q', %d);",
             f_name_id, f_type_id, UTF8_(f_val), f_sequence
         );
         s_db->ExecuteUpdate( sql );
@@ -462,14 +462,14 @@ void recNamePart::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO NamePart (id, name_id, type_id, val, sequence)"
-                "VALUES ("ID", "ID", "ID", '%q', %d);",
+                "VALUES (" ID ", " ID ", " ID ", '%q', %d);",
                 f_id, f_name_id, f_type_id, UTF8_(f_val), f_sequence
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE NamePart SET name_id="ID", type_id="ID", val='%q', sequence=%d "
-                "WHERE id="ID";",
+                "UPDATE NamePart SET name_id=" ID ", type_id=" ID ", val='%q', sequence=%d "
+                "WHERE id=" ID ";",
                 f_name_id, f_type_id, UTF8_(f_val), f_sequence, f_id
             );
         }
@@ -489,7 +489,7 @@ bool recNamePart::Read()
 
     sql.Format(
         "SELECT name_id, type_id, val, sequence "
-        "FROM NamePart WHERE id="ID";",
+        "FROM NamePart WHERE id=" ID ";",
         f_id
     );
     result = s_db->GetTable( sql );
@@ -512,7 +512,7 @@ wxString recNamePart::GetValue( idt id )
     if( id == 0 ) return wxEmptyString;
 
     wxSQLite3StatementBuffer sql;
-    sql.Format( "SELECT val FROM NamePart WHERE id="ID";", id );
+    sql.Format( "SELECT val FROM NamePart WHERE id=" ID ";", id );
     wxSQLite3Table result = s_db->GetTable( sql );
 
     if( result.GetRowCount() == 0 )
@@ -581,13 +581,13 @@ void recNamePartType::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO NamePartType (id, grp, name) "
-                "VALUES ("ID", %d, '%q');",
+                "VALUES (" ID ", %d, '%q');",
                 f_id, f_grp, UTF8_(f_name)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE NamePartType SET grp=%d, name='%q' WHERE id="ID";",
+                "UPDATE NamePartType SET grp=%d, name='%q' WHERE id=" ID ";",
                 f_grp, UTF8_(f_name), f_id
             );
         }
@@ -605,7 +605,7 @@ bool recNamePartType::Read()
         return false;
     }
 
-    sql.Format( "SELECT grp, name FROM NamePartType WHERE id="ID";", f_id );
+    sql.Format( "SELECT grp, name FROM NamePartType WHERE id=" ID ";", f_id );
     result = s_db->GetTable( sql );
 
     if( result.GetRowCount() != 1 )
@@ -704,13 +704,13 @@ void recNameStyle::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO NameStyle (id, name) "
-                "VALUES ("ID", '%q');",
+                "VALUES (" ID ", '%q');",
                 f_id, UTF8_(f_name)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE NameStyle SET name='%q' WHERE id="ID";",
+                "UPDATE NameStyle SET name='%q' WHERE id=" ID ";",
                 UTF8_(f_name), f_id
             );
         }
@@ -728,7 +728,7 @@ bool recNameStyle::Read()
         return false;
     }
 
-    sql.Format( "SELECT name FROM NameStyle WHERE id="ID";", f_id );
+    sql.Format( "SELECT name FROM NameStyle WHERE id=" ID ";", f_id );
     result = s_db->GetTable( sql );
 
     if( result.GetRowCount() != 1 )

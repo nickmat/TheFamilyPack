@@ -4,8 +4,8 @@
  * Purpose:     Manage SQLite3 Reference and ReferenceEntity records.
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
- * Created:     3 October 2010 - 2015
- * Copyright:   Copyright (c) 2010-2015, Nick Matthews.
+ * Created:     3 October 2010
+ * Copyright:   Copyright (c) 2010 ~ 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -82,14 +82,14 @@ void recReference::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO Reference (id, title, statement, user_ref)"
-                " VALUES ("ID", '%q', '%q', '%q');",
+                " VALUES (" ID ", '%q', '%q', '%q');",
                 f_id, UTF8_(f_title), UTF8_(f_statement), UTF8_(f_user_ref)
             );
         } else {
             // Update existing record
             sql.Format(
                 "UPDATE Reference SET title='%q', statement='%q', user_ref='%q'"
-                " WHERE id="ID";",
+                " WHERE id=" ID ";",
                 UTF8_(f_title), UTF8_(f_statement), UTF8_(f_user_ref), f_id
             );
         }
@@ -109,7 +109,7 @@ bool recReference::Read()
 
     sql.Format(
         "SELECT title, statement, user_ref"
-        " FROM Reference WHERE id="ID";",
+        " FROM Reference WHERE id=" ID ";",
         f_id
     );
     result = s_db->GetTable( sql );
@@ -128,7 +128,7 @@ bool recReference::Read()
 
 wxString recReference::GetTitle( idt refID )
 {
-    return ExecuteStr( "SELECT title FROM Reference WHERE id="ID";", refID );
+    return ExecuteStr( "SELECT title FROM Reference WHERE id=" ID ";", refID );
 }
 
 recRefEntVec recReference::ReadReferenceEntitys()
@@ -144,7 +144,7 @@ recRefEntVec recReference::ReadReferenceEntitys()
 
     sql.Format(
         "SELECT id, entity_type, entity_id, sequence FROM ReferenceEntity "
-        "WHERE ref_id="ID" ORDER BY sequence;",
+        "WHERE ref_id=" ID " ORDER BY sequence;",
         f_id
     );
     result = s_db->GetTable( sql );
@@ -172,7 +172,7 @@ wxSQLite3Table recReference::GetTitleList( idt offset, int limit )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "SELECT id, title FROM Reference ORDER BY id LIMIT "ID", %d;",
+        "SELECT id, title FROM Reference ORDER BY id LIMIT " ID ", %d;",
         offset, limit
     );
     return s_db->GetTable( sql );
@@ -182,7 +182,7 @@ int recReference::GetNextEntitySequence( idt refID )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "SELECT MAX(sequence) FROM ReferenceEntity WHERE ref_id="ID";",
+        "SELECT MAX(sequence) FROM ReferenceEntity WHERE ref_id=" ID ";",
         refID
     );
     return s_db->ExecuteScalar( sql )+1;
@@ -195,7 +195,7 @@ recIdVec recReference::GetPersonaList( idt refID )
     wxSQLite3ResultSet result;
 
     sql.Format(
-        "SELECT id FROM Persona WHERE ref_id="ID";",
+        "SELECT id FROM Persona WHERE ref_id=" ID ";",
         refID
     );
     result = s_db->ExecuteQuery( sql );
@@ -210,7 +210,7 @@ int recReference::GetPersonaCount( idt refID )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "SELECT COUNT(*) FROM Persona WHERE ref_id="ID";",
+        "SELECT COUNT(*) FROM Persona WHERE ref_id=" ID ";",
         refID
     );
     return s_db->ExecuteScalar( sql );
@@ -224,7 +224,7 @@ recIdVec recReference::GetIdVecForEntity( idt refID, recReferenceEntity::Type ty
 
     sql.Format(
         "SELECT entity_id FROM ReferenceEntity"
-        " WHERE entity_type=%d AND ref_id="ID";",
+        " WHERE entity_type=%d AND ref_id=" ID ";",
         (int) type, refID
     );
     result = s_db->ExecuteQuery( sql );
@@ -277,7 +277,7 @@ void recReferenceEntity::Save()
         sql.Format(
             "INSERT INTO ReferenceEntity "
             "(ref_id, entity_type, entity_id, sequence)"
-            "VALUES ("ID", %u, "ID", %d);",
+            "VALUES (" ID ", %u, " ID ", %d);",
             f_ref_id, f_entity_type, f_entity_id, f_sequence
         );
         s_db->ExecuteUpdate( sql );
@@ -290,15 +290,15 @@ void recReferenceEntity::Save()
             sql.Format(
                 "INSERT INTO ReferenceEntity "
                 "(id, ref_id, entity_type, entity_id, sequence)"
-                "VALUES ("ID", "ID", %u, "ID", %d);",
+                "VALUES (" ID ", " ID ", %u, " ID ", %d);",
                 f_id, f_ref_id, f_entity_type, f_entity_id, f_sequence
             );
         } else {
             // Update existing record
             sql.Format(
                 "UPDATE ReferenceEntity SET "
-                "ref_id="ID", entity_type=%u, entity_id="ID", sequence=%d "
-                "WHERE id="ID";",
+                "ref_id=" ID ", entity_type=%u, entity_id=" ID ", sequence=%d "
+                "WHERE id=" ID ";",
                 f_ref_id, f_entity_type, f_entity_id, f_sequence, f_id
             );
         }
@@ -318,7 +318,7 @@ bool recReferenceEntity::Read()
 
     sql.Format(
         "SELECT ref_id, entity_type, entity_id, sequence "
-        "FROM ReferenceEntity WHERE id="ID";",
+        "FROM ReferenceEntity WHERE id=" ID ";",
         f_id
     );
     result = s_db->GetTable( sql );
@@ -388,7 +388,7 @@ idt recReferenceEntity::FindReferenceID( Type type, idt entityID )
     wxSQLite3StatementBuffer sql;
     sql.Format(
         "SELECT ref_id FROM ReferenceEntity "
-        "WHERE entity_type=%d AND entity_id="ID";",
+        "WHERE entity_type=%d AND entity_id=" ID ";",
         (int) type, entityID
     );
 
@@ -400,7 +400,7 @@ void recReferenceEntity::Delete( Type type, idt entityID )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "DELETE FROM ReferenceEntity WHERE entity_type=%d AND entity_id="ID";",
+        "DELETE FROM ReferenceEntity WHERE entity_type=%d AND entity_id=" ID ";",
         (int) type, entityID
     );
     s_db->ExecuteUpdate( sql );

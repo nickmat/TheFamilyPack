@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     20th April 2013
- * Copyright:   Copyright (c) 2013-2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2013 ~ 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -76,13 +76,13 @@ void recEventType::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO EventType (id, grp, name) VALUES ("ID", %d, '%q');",
+                "INSERT INTO EventType (id, grp, name) VALUES (" ID ", %d, '%q');",
                 f_id, f_grp, UTF8_(f_name)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE EventType SET grp=%d, name='%q' WHERE id="ID";",
+                "UPDATE EventType SET grp=%d, name='%q' WHERE id=" ID ";",
                 f_grp, UTF8_(f_name), f_id
             );
         }
@@ -100,7 +100,7 @@ bool recEventType::Read()
         return false;
     }
 
-    sql.Format( "SELECT grp, name FROM EventType WHERE id="ID";", f_id );
+    sql.Format( "SELECT grp, name FROM EventType WHERE id=" ID ";", f_id );
     result = s_db->GetTable( sql );
 
     if( result.GetRowCount() != 1 )
@@ -128,7 +128,7 @@ bool recEventType::HasDateSpan() const
 
 wxString recEventType::GetName( idt tID )
 {
-    return ExecuteStr( "SELECT name FROM EventType WHERE id="ID";", tID );
+    return ExecuteStr( "SELECT name FROM EventType WHERE id=" ID ";", tID );
 }
 
 bool recEventType::HasDateSpan( idt etID )
@@ -261,7 +261,7 @@ recEventTypeRoleVec recEventType::GetRoles( idt typeID )
 
     sql.Format(
         "SELECT id, prime, official, name FROM EventTypeRole"
-        " WHERE type_id="ID" ORDER BY prime DESC, official, name;",
+        " WHERE type_id=" ID " ORDER BY prime DESC, official, name;",
         typeID
     );
     wxSQLite3Table table = s_db->GetTable( sql );
@@ -302,7 +302,7 @@ recEventTypeRoleVec recEventType::GetPrimeRoles( idt typeID, int prime )
     }
     sql.Format(
         "SELECT id, name FROM EventTypeRole "
-        "WHERE type_id="ID" AND (%q) ORDER BY id DESC;",
+        "WHERE type_id=" ID " AND (%q) ORDER BY id DESC;",
         typeID, UTF8_(filter)
     );
     wxSQLite3Table table = s_db->GetTable( sql );

@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     14th December 2015
- * Copyright:   Copyright (c) 2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2015 ~ 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -72,7 +72,7 @@ void recFamilyEvent::Save()
         // Add new record
         sql.Format(
             "INSERT INTO FamilyEvent (fam_id, event_id, note, fam_seq) "
-            "VALUES ("ID", "ID", '%q', %d);",
+            "VALUES (" ID ", " ID ", '%q', %d);",
             f_fam_id, f_event_id, UTF8_(f_note), f_fam_seq
         );
         s_db->ExecuteUpdate( sql );
@@ -84,14 +84,14 @@ void recFamilyEvent::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO FamilyEvent (id, fam_id, event_id, note, fam_seq) "
-                "VALUES ("ID", "ID", "ID", '%q', %d);",
+                "VALUES (" ID ", " ID ", " ID ", '%q', %d);",
                 f_id, f_fam_id, f_event_id, UTF8_(f_note), f_fam_seq
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE FamilyEvent SET fam_id="ID", event_id="ID", note='%q',"
-                " fam_seq=%d WHERE id="ID";",
+                "UPDATE FamilyEvent SET fam_id=" ID ", event_id=" ID ", note='%q',"
+                " fam_seq=%d WHERE id=" ID ";",
                 f_fam_id, f_event_id, UTF8_(f_note), f_fam_seq, f_id
             );
         }
@@ -111,7 +111,7 @@ bool recFamilyEvent::Read()
 
     sql.Format(
         "SELECT fam_id, event_id, note, fam_seq"
-        " FROM FamilyEvent WHERE id="ID";",
+        " FROM FamilyEvent WHERE id=" ID ";",
         f_id
     );
     result = s_db->GetTable( sql );

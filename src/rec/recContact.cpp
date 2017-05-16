@@ -3,11 +3,9 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Manage the SQLite3 Contact records.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     25 February 2011
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2011, Nick Matthews.
+ * Copyright:   Copyright (c) 2011 ~ 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -70,7 +68,7 @@ void recContact::Save()
         // Add new record
         sql.Format(
             "INSERT INTO Contact (type_id, list_id, val) "
-            "VALUES ("ID", "ID", '%q');",
+            "VALUES (" ID ", " ID ", '%q');",
             f_type_id, f_list_id, UTF8_(f_val)
         );
         s_db->ExecuteUpdate( sql );
@@ -82,14 +80,14 @@ void recContact::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO Contact (id, type_id, list_id, val) "
-                "VALUES ("ID", "ID", "ID", '%q');",
+                "VALUES (" ID ", " ID ", " ID ", '%q');",
                 f_id, f_type_id, f_list_id, UTF8_(f_val)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE Contact SET type_id="ID", list_id="ID", val='%q' "
-                "WHERE id="ID";",
+                "UPDATE Contact SET type_id=" ID ", list_id=" ID ", val='%q' "
+                "WHERE id=" ID ";",
                 f_type_id, f_list_id, UTF8_(f_val), f_id
             );
         }
@@ -109,7 +107,7 @@ bool recContact::Read()
 
     sql.Format(
         "SELECT type_id, list_id, val "
-        "FROM Contact WHERE id="ID";",
+        "FROM Contact WHERE id=" ID ";",
         f_id
     );
     result = s_db->GetTable( sql );
@@ -187,13 +185,13 @@ void recContactList::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO ContactList (id, ind_id) "
-                "VALUES ("ID", %q);",
+                "VALUES (" ID ", %q);",
                 f_id, ID_OR_NULL( f_ind_id )
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE ContactList SET ind_id=%q WHERE id="ID";",
+                "UPDATE ContactList SET ind_id=%q WHERE id=" ID ";",
                 ID_OR_NULL( f_ind_id ), f_id
             );
         }
@@ -211,7 +209,7 @@ bool recContactList::Read()
         return false;
     }
 
-    sql.Format( "SELECT ind_id FROM ContactList WHERE id="ID";", f_id );
+    sql.Format( "SELECT ind_id FROM ContactList WHERE id=" ID ";", f_id );
     result = s_db->GetTable( sql );
 
     if( result.GetRowCount() != 1 ) {
@@ -232,7 +230,7 @@ recContactVec recContactList::GetContacts( idt listID )
     wxSQLite3StatementBuffer sql;
     sql.Format(
         "SELECT id, type_id, val"
-        " FROM Contact WHERE list_id="ID";",
+        " FROM Contact WHERE list_id=" ID ";",
         listID
     );
     wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
@@ -250,7 +248,7 @@ recContactVec recContactList::GetContacts( idt listID )
 
 idt recContactList::FindIndID( idt indID )
 {
-    return ExecuteID( "SELECT id FROM ContactList WHERE ind_id="ID";", indID );
+    return ExecuteID( "SELECT id FROM ContactList WHERE ind_id=" ID ";", indID );
 }
 
 void recContactList::Assimilate( idt targetID ) const
@@ -259,7 +257,7 @@ void recContactList::Assimilate( idt targetID ) const
 
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "UPDATE Contact SET list_id="ID" WHERE list_id="ID";",
+        "UPDATE Contact SET list_id=" ID " WHERE list_id=" ID ";",
         f_id, targetID
     );
     s_db->ExecuteUpdate( sql );
@@ -303,13 +301,13 @@ void recContactType::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO ContactType (id, name) "
-                "VALUES ("ID", '%q');",
+                "VALUES (" ID ", '%q');",
                 f_id, UTF8_(f_name)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE ContactType SET name='%q' WHERE id="ID";",
+                "UPDATE ContactType SET name='%q' WHERE id=" ID ";",
                 UTF8_(f_name), f_id
             );
         }
@@ -327,7 +325,7 @@ bool recContactType::Read()
         return false;
     }
 
-    sql.Format( "SELECT name FROM ContactType WHERE id="ID";", f_id );
+    sql.Format( "SELECT name FROM ContactType WHERE id=" ID ";", f_id );
     result = s_db->GetTable( sql );
 
     if( result.GetRowCount() != 1 )
@@ -414,7 +412,7 @@ void recResearcher::Save()
         // Add new record
         sql.Format(
             "INSERT INTO Researcher (name, comments, con_list_id)"
-            " VALUES ('%q', '%q', "ID");",
+            " VALUES ('%q', '%q', " ID ");",
             UTF8_(f_name), UTF8_(f_comments), f_con_list_id
         );
         s_db->ExecuteUpdate( sql );
@@ -426,14 +424,14 @@ void recResearcher::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO Researcher (id, name, comments, con_list_id)"
-                " VALUES ("ID", '%q', '%q', "ID");",
+                " VALUES (" ID ", '%q', '%q', " ID ");",
                 f_id, UTF8_(f_name), UTF8_(f_comments), f_con_list_id
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE Researcher SET name='%q', comments='%q', con_list_id="ID
-                " WHERE id="ID";",
+                "UPDATE Researcher SET name='%q', comments='%q', con_list_id=" ID
+                " WHERE id=" ID ";",
                 UTF8_(f_name), UTF8_(f_comments), f_con_list_id, f_id
             );
         }
@@ -452,7 +450,7 @@ bool recResearcher::Read()
     }
 
     sql.Format(
-        "SELECT name, comments, con_list_id FROM Researcher WHERE id="ID";",
+        "SELECT name, comments, con_list_id FROM Researcher WHERE id=" ID ";",
         f_id
     );
     result = s_db->GetTable( sql );
@@ -479,7 +477,7 @@ bool recResearcher::Equivalent( const recResearcher& r2 ) const
 
 idt recResearcher::GetUserID() const
 {
-    return ExecuteID( "SELECT id FROM User WHERE res_id="ID";", f_id );
+    return ExecuteID( "SELECT id FROM User WHERE res_id=" ID ";", f_id );
 }
 
 wxString recResearcher::GetUserIdStr() const
@@ -510,7 +508,7 @@ recResearcherVec recResearcher::GetResearchers()
 
 wxString recResearcher::GetNameStr( idt resID )
 {
-    return ExecuteStr( "SELECT name FROM Researcher WHERE id="ID";", resID );
+    return ExecuteStr( "SELECT name FROM Researcher WHERE id=" ID ";", resID );
 }
 
 // End of recContact.cpp file

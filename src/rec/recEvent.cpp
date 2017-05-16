@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3rd October 2010
- * Copyright:   Copyright (c) 2010-2016, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -84,7 +84,7 @@ void recEvent::Save()
             "INSERT INTO Event"
             " (title, higher_id, type_id, date1_id, date2_id, place_id,"
             " note, date_pt, user_ref)"
-            " VALUES ('%q', "ID", "ID", "ID", "ID", "ID", '%q', %ld, '%q');",
+            " VALUES ('%q', " ID ", " ID ", " ID ", " ID ", " ID ", '%q', %ld, '%q');",
             UTF8_(f_title), f_higher_id, f_type_id, f_date1_id, f_date2_id, f_place_id,
             UTF8_(f_note), f_date_pt, UTF8_(f_user_ref)
         );
@@ -99,7 +99,7 @@ void recEvent::Save()
                 "INSERT INTO Event"
                 " (id, title, higher_id, type_id, date1_id, date2_id, place_id,"
                 " note, date_pt, user_ref)"
-                " VALUES ("ID", '%q', "ID", "ID", "ID", "ID", "ID", '%q', %ld, '%q');",
+                " VALUES (" ID ", '%q', " ID ", " ID ", " ID ", " ID ", " ID ", '%q', %ld, '%q');",
                 f_id, UTF8_(f_title), f_higher_id, f_type_id, f_date1_id, f_date2_id, f_place_id,
                 UTF8_(f_note), f_date_pt, UTF8_(f_user_ref)
             );
@@ -107,9 +107,9 @@ void recEvent::Save()
             // Update existing record
             sql.Format(
                 "UPDATE Event SET"
-                " title='%q', higher_id="ID", type_id="ID", date1_id="ID", date2_id="ID","
-                " place_id="ID", note='%q', date_pt=%ld, user_ref='%q'"
-                " WHERE id="ID";",
+                " title='%q', higher_id=" ID ", type_id=" ID ", date1_id=" ID ", date2_id=" ID ","
+                " place_id=" ID ", note='%q', date_pt=%ld, user_ref='%q'"
+                " WHERE id=" ID ";",
                 UTF8_(f_title), f_higher_id, f_type_id, f_date1_id, f_date2_id, f_place_id,
                 UTF8_(f_note), f_date_pt, UTF8_(f_user_ref), f_id
             );
@@ -131,7 +131,7 @@ bool recEvent::Read()
     sql.Format(
         "SELECT title, higher_id, type_id, date1_id, date2_id, place_id,"
         " note, date_pt, user_ref"
-        " FROM Event WHERE id="ID";",
+        " FROM Event WHERE id=" ID ";",
         f_id
     );
     result = s_db->GetTable( sql );
@@ -296,7 +296,7 @@ wxString recEvent::GetDetailStr( idt id )
 wxString recEvent::GetTypeStr( idt id )
 {
     idt typeID = ExecuteID(
-        "SELECT type_id FROM Event WHERE id="ID";", id
+        "SELECT type_id FROM Event WHERE id=" ID ";", id
     );
     return recEventType::GetTypeStr( typeID );
 }
@@ -306,7 +306,7 @@ wxString recEvent::GetTitle( idt evID )
     wxSQLite3StatementBuffer sql;
     wxSQLite3ResultSet result;
 
-    sql.Format( "SELECT title FROM Event WHERE id="ID";", evID );
+    sql.Format( "SELECT title FROM Event WHERE id=" ID ";", evID );
     result = s_db->ExecuteQuery( sql );
     return result.GetAsString( 0 );
 }
@@ -314,7 +314,7 @@ wxString recEvent::GetTitle( idt evID )
 idt recEvent::GetDate1ID( idt evID )
 {
     if( evID == 0 ) return 0;
-    return ExecuteID( "SELECT date1_id FROM Event WHERE id="ID";", evID );
+    return ExecuteID( "SELECT date1_id FROM Event WHERE id=" ID ";", evID );
 }
 
 wxString recEvent::GetDateStr( idt evID )
@@ -323,7 +323,7 @@ wxString recEvent::GetDateStr( idt evID )
     wxSQLite3ResultSet result;
     wxString str;
 
-    sql.Format( "SELECT date1_id, date2_id FROM Event WHERE id="ID";", evID );
+    sql.Format( "SELECT date1_id, date2_id FROM Event WHERE id=" ID ";", evID );
     result = s_db->ExecuteQuery( sql );
     if( result.Eof() ) return str;
 
@@ -339,7 +339,7 @@ wxString recEvent::GetDateStr( idt evID )
 wxString recEvent::GetAddressStr( idt evID )
 {
     idt placeID = ExecuteID(
-        "SELECT place_id FROM Event WHERE id="ID";", evID
+        "SELECT place_id FROM Event WHERE id=" ID ";", evID
     );
     return recPlace::GetAddressStr( placeID );
 }
@@ -349,7 +349,7 @@ wxString recEvent::GetNote( idt id )
     wxSQLite3StatementBuffer sql;
     wxSQLite3ResultSet result;
 
-    sql.Format( "SELECT note FROM Event WHERE id="ID";", id );
+    sql.Format( "SELECT note FROM Event WHERE id=" ID ";", id );
     result = s_db->ExecuteQuery( sql );
     return result.GetAsString( 0 );
 }
@@ -361,7 +361,7 @@ bool recEvent::IsFamilyEvent( idt eveID )
 
     sql.Format(
         "SELECT ET.grp FROM Event E, EventType ET"
-        " WHERE E.type_id=ET.id AND E.id="ID";",
+        " WHERE E.type_id=ET.id AND E.id=" ID ";",
         eveID
     );
     result = s_db->ExecuteQuery( sql );
@@ -380,7 +380,7 @@ recIndEventVec recEvent::GetIndividualEvents( idt eID )
 
     sql.Format(
         "SELECT id, higher_id, ind_id, role_id, note, ind_seq"
-        " FROM IndividualEvent WHERE event_id="ID
+        " FROM IndividualEvent WHERE event_id=" ID
         " ORDER BY id;",
         eID
     );
@@ -431,7 +431,7 @@ recEventVec recEvent::GetLowerEvents( idt eventID )
     sql.Format(
         "SELECT id, title, type_id, date1_id, date2_id, place_id,"
         " note, date_pt, user_ref"
-        " FROM Event WHERE higher_id="ID
+        " FROM Event WHERE higher_id=" ID
         " ORDER BY date_pt;",
         eventID
     );
@@ -466,7 +466,7 @@ recEventaVec recEvent::FindEquivRefEvents( idt indEventID )
         "JOIN "
         "   (SELECT EP.eventa_id FROM "
         "   IndividualEvent IE, IndividualPersona IP, EventaPersona EP "
-        "   WHERE IE.event_id="ID
+        "   WHERE IE.event_id=" ID
         "     AND IP.ind_id=IE.ind_id "
         "     AND EP.per_id=IP.per_id "
         "     AND IE.role_id=EP.role_id "
@@ -501,8 +501,8 @@ recEventaVec recEvent::GetEventasIncludeLower( idt eveID )
         "SELECT DISTINCT EA.id, EA.title, EA.type_id,"
         " EA.date1_id, EA.date2_id, EA.place_id, EA.note, EA.date_pt"
         " FROM IndividualEvent IE, EventEventa EE, Eventa EA,"
-        " (SELECT id FROM IndividualEvent WHERE event_id="ID") IE2"
-        " WHERE (IE.higher_id=IE2.id OR IE.event_id="ID")"
+        " (SELECT id FROM IndividualEvent WHERE event_id=" ID ") IE2"
+        " WHERE (IE.higher_id=IE2.id OR IE.event_id=" ID ")"
         " AND IE.event_id=EE.event_id AND EE.eventa_id=EA.id"
         " ORDER BY EA.date_pt;",
         eveID, eveID
@@ -532,7 +532,7 @@ recEventEventaVec recEvent::GetEventEventas( idt eveID )
 
     sql.Format(
         "SELECT id, eventa_id, conf, note FROM "
-        "  EventEventa WHERE event_id="ID";",
+        "  EventEventa WHERE event_id=" ID ";",
         eveID
     );
     result = s_db->ExecuteQuery( sql );
@@ -558,8 +558,8 @@ void recEvent::RemoveFromDatabase()
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "DELETE FROM IndividualEvent WHERE event_id="ID";"
-        "DELETE FROM FamilyEvent WHERE event_id="ID";",
+        "DELETE FROM IndividualEvent WHERE event_id=" ID ";"
+        "DELETE FROM FamilyEvent WHERE event_id=" ID ";",
         f_id, f_id
     );
     s_db->ExecuteUpdate( sql );
@@ -597,8 +597,8 @@ void recEvent::RemoveDates( idt dateID )
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "UPDATE Event SET date1_id=0, date_pt=0 WHERE date1_id="ID";"
-        "UPDATE Event SET date2_id=0 WHERE date2_id="ID";",
+        "UPDATE Event SET date1_id=0, date_pt=0 WHERE date1_id=" ID ";"
+        "UPDATE Event SET date2_id=0 WHERE date2_id=" ID ";",
         dateID, dateID
     );
     s_db->ExecuteUpdate( sql );
@@ -609,7 +609,7 @@ void recEvent::RemovePlace( idt placeID )
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "UPDATE Event SET place_id=0 WHERE place_id="ID";",
+        "UPDATE Event SET place_id=0 WHERE place_id=" ID ";",
         placeID
     );
     s_db->ExecuteUpdate( sql );
@@ -623,15 +623,15 @@ void recEvent::DeleteIfOrphaned( idt id )
     }
     wxSQLite3StatementBuffer sql;
 
-    sql.Format( "SELECT COUNT(*) FROM EventaPersona WHERE event_id="ID";", id );
+    sql.Format( "SELECT COUNT(*) FROM EventaPersona WHERE event_id=" ID ";", id );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
     sql.Format(
         "SELECT COUNT(*) FROM ReferenceEntity"
-        " WHERE entity_type=2 AND entity_id="ID";",
+        " WHERE entity_type=2 AND entity_id=" ID ";",
         id
     );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
-    sql.Format( "SELECT COUNT(*) FROM IndividualEvent WHERE event_id="ID";", id );
+    sql.Format( "SELECT COUNT(*) FROM IndividualEvent WHERE event_id=" ID ";", id );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
 
     RemoveFromDatabase( id );
@@ -651,7 +651,7 @@ wxSQLite3Table recEvent::GetTitleList( idt offset, int limit )
     sql.Format(
         "SELECT id, title FROM Event"
         " WHERE higher_id=0"
-        " ORDER BY id LIMIT "ID", %d;",
+        " ORDER BY id LIMIT " ID ", %d;",
         offset, limit
     );
     return s_db->GetTable( sql );

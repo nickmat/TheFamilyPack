@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010 ~ 2016, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -99,7 +99,7 @@ void recDate::Save()
         sql.Format(
             "INSERT INTO Date "
             "(jdn, range, rel_id, type, descrip, record_sch, display_sch) "
-            "VALUES (%ld, %ld, "ID", %u, '%q', %d, %d);",
+            "VALUES (%ld, %ld, " ID ", %u, '%q', %d, %d);",
             f_jdn, f_range, f_rel_id, f_type, UTF8_(f_descrip),
             f_record_sch, f_display_sch
         );
@@ -113,16 +113,16 @@ void recDate::Save()
             sql.Format(
                 "INSERT INTO Date "
                 "(id, jdn, range, rel_id, type, descrip, record_sch, display_sch) "
-                "VALUES ("ID", %ld, %ld, "ID", %u, '%q', %d, %d);",
+                "VALUES (" ID ", %ld, %ld, " ID ", %u, '%q', %d, %d);",
                 f_id, f_jdn, f_range, f_rel_id, f_type, UTF8_(f_descrip),
                 f_record_sch, f_display_sch
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE Date SET jdn=%ld, range=%ld, rel_id="ID", "
+                "UPDATE Date SET jdn=%ld, range=%ld, rel_id=" ID ", "
                 "type=%u, descrip='%q', record_sch=%d, display_sch=%d "
-                "WHERE id="ID";",
+                "WHERE id=" ID ";",
                 f_jdn, f_range, f_rel_id, f_type, UTF8_(f_descrip),
                 f_record_sch, f_display_sch, f_id
             );
@@ -143,7 +143,7 @@ bool recDate::Read()
 
     sql.Format(
         "SELECT jdn, range, rel_id, type, descrip, record_sch, display_sch "
-        "FROM Date WHERE id="ID";",
+        "FROM Date WHERE id=" ID ";",
         f_id
     );
     result = s_db->GetTable( sql );
@@ -428,7 +428,7 @@ bool recDate::IsUsedAsBase( idt id )
 {
     wxSQLite3StatementBuffer sql;
 
-    sql.Format( "SELECT COUNT(*) FROM RelativeDate WHERE base_id="ID";", id );
+    sql.Format( "SELECT COUNT(*) FROM RelativeDate WHERE base_id=" ID ";", id );
     if( s_db->ExecuteScalar( sql ) > 0 ) {
         return true;
     }
@@ -442,7 +442,7 @@ recIdVec recDate::GetRelativeIdList( idt dateID )
     wxSQLite3StatementBuffer sql;
     wxSQLite3ResultSet result;
 
-    sql.Format( "SELECT id FROM RelativeDate WHERE base_id="ID";", dateID );
+    sql.Format( "SELECT id FROM RelativeDate WHERE base_id=" ID ";", dateID );
     result = s_db->ExecuteQuery( sql );
 
     while( result.NextRow() ) {
@@ -456,7 +456,7 @@ bool recDate::IsUsedInEvent( idt id )
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "SELECT COUNT(*) FROM Event WHERE date1_id="ID" OR date2_id="ID";",
+        "SELECT COUNT(*) FROM Event WHERE date1_id=" ID " OR date2_id=" ID ";",
         id, id
     );
     if( s_db->ExecuteScalar( sql ) > 0 ) {
@@ -470,7 +470,7 @@ bool recDate::IsUsedInSource( idt id )
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "SELECT COUNT(*) FROM Source WHERE sub_date1_id="ID" OR sub_date2_id="ID";",
+        "SELECT COUNT(*) FROM Source WHERE sub_date1_id=" ID " OR sub_date2_id=" ID ";",
         id, id
     );
     if( s_db->ExecuteScalar( sql ) > 0 ) {
@@ -484,7 +484,7 @@ bool recDate::IsUsedInPlace( idt id )
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "SELECT COUNT(*) FROM Place WHERE date1_id="ID" OR date2_id="ID";",
+        "SELECT COUNT(*) FROM Place WHERE date1_id=" ID " OR date2_id=" ID ";",
         id, id
     );
     if( s_db->ExecuteScalar( sql ) > 0 ) {
@@ -501,31 +501,31 @@ void recDate::DeleteIfOrphaned( idt id )
     }
     wxSQLite3StatementBuffer sql;
 
-    sql.Format( "SELECT COUNT(*) FROM RelativeDate WHERE base_id="ID";", id );
+    sql.Format( "SELECT COUNT(*) FROM RelativeDate WHERE base_id=" ID ";", id );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
 
-    sql.Format( "SELECT COUNT(*) FROM Event WHERE date1_id="ID" OR date2_id="ID";", id, id );
+    sql.Format( "SELECT COUNT(*) FROM Event WHERE date1_id=" ID " OR date2_id=" ID ";", id, id );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
 
-    sql.Format( "SELECT COUNT(*) FROM Eventa WHERE date1_id="ID" OR date2_id="ID";", id, id );
+    sql.Format( "SELECT COUNT(*) FROM Eventa WHERE date1_id=" ID " OR date2_id=" ID ";", id, id );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
 
-    sql.Format( "SELECT COUNT(*) FROM Place WHERE date1_id="ID" OR date2_id="ID";", id, id );
+    sql.Format( "SELECT COUNT(*) FROM Place WHERE date1_id=" ID " OR date2_id=" ID ";", id, id );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
 
-    sql.Format( "SELECT COUNT(*) FROM Source WHERE sub_date1_id="ID" OR sub_date2_id="ID";", id, id );
+    sql.Format( "SELECT COUNT(*) FROM Source WHERE sub_date1_id=" ID " OR sub_date2_id=" ID ";", id, id );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
 
     sql.Format(
         "SELECT COUNT(*) FROM ReferenceEntity"
-        " WHERE entity_type=4 AND entity_id="ID";",
+        " WHERE entity_type=4 AND entity_id=" ID ";",
         id
     );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
 
-    idt relID = ExecuteID( "SELECT rel_id FROM Date WHERE id="ID";", id );
+    idt relID = ExecuteID( "SELECT rel_id FROM Date WHERE id=" ID ";", id );
     if( relID ) {
-        idt baseID = ExecuteID( "SELECT base_id FROM RelativeDate WHERE id="ID";", relID );
+        idt baseID = ExecuteID( "SELECT base_id FROM RelativeDate WHERE id=" ID ";", relID );
         recRelativeDate::Delete( relID );
         DeleteIfOrphaned( baseID );
     }
@@ -592,7 +592,7 @@ void recRelativeDate::Save()
         sql.Format(
             "INSERT INTO RelativeDate "
             "(val, range, unit, base_id, type, scheme) "
-            "VALUES (%ld, %ld, %d, "ID", %d, %d);",
+            "VALUES (%ld, %ld, %d, " ID ", %d, %d);",
             f_val, f_range, f_unit, f_base_id, f_type, f_scheme
         );
         s_db->ExecuteUpdate( sql );
@@ -605,15 +605,15 @@ void recRelativeDate::Save()
             sql.Format(
                 "INSERT INTO RelativeDate "
                 "(id, val, range, unit, base_id, type, scheme) "
-                "VALUES ("ID", %ld, %ld, %d, "ID", %d, %d);",
+                "VALUES (" ID ", %ld, %ld, %d, " ID ", %d, %d);",
                 f_id, f_val, f_range, f_unit, f_base_id, f_type, f_scheme
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE RelativeDate SET val=%ld, range=%ld, unit=%d, base_id="ID", "
+                "UPDATE RelativeDate SET val=%ld, range=%ld, unit=%d, base_id=" ID ", "
                 "type=%d, scheme=%d "
-                "WHERE id="ID";",
+                "WHERE id=" ID ";",
                 f_val, f_range, f_unit, f_base_id, f_type, f_scheme, f_id
             );
         }
@@ -633,7 +633,7 @@ bool recRelativeDate::Read()
 
     sql.Format(
         "SELECT val, range, unit, base_id, type, scheme"
-        " FROM RelativeDate WHERE id="ID";",
+        " FROM RelativeDate WHERE id=" ID ";",
         f_id
     );
     result = s_db->GetTable( sql );
@@ -718,7 +718,7 @@ bool recRelativeDate::CalculateDate( recDate* date ) const
 
 idt recRelativeDate::GetParentDate( idt rdID )
 {
-    return ExecuteID( "SELECT id FROM Date WHERE rel_id="ID";", rdID );
+    return ExecuteID( "SELECT id FROM Date WHERE rel_id=" ID ";", rdID );
 }
 
 void recRelativeDate::RemoveFromDatabase( idt rdID )

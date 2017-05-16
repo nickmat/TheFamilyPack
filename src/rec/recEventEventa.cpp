@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     14th December 2015
- * Copyright:   Copyright (c) 2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2015 ~ 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -73,7 +73,7 @@ void recEventEventa::Save()
         sql.Format(
             "INSERT INTO EventEventa "
             "(event_id, eventa_id, conf, note) "
-            "VALUES ("ID", "ID", %f, '%q');",
+            "VALUES (" ID ", " ID ", %f, '%q');",
             f_event_id, f_eventa_id, f_conf, UTF8_(f_note)
         );
         s_db->ExecuteUpdate( sql );
@@ -86,15 +86,15 @@ void recEventEventa::Save()
             sql.Format(
                 "INSERT INTO EventEventa "
                 "(id, event_id, eventa_id, conf, note) "
-                "VALUES ("ID", "ID", "ID", %f, '%q');",
+                "VALUES (" ID ", " ID ", " ID ", %f, '%q');",
                 f_id, f_event_id, f_eventa_id, f_conf, UTF8_(f_note)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE EventEventa SET event_id="ID", eventa_id="ID", "
+                "UPDATE EventEventa SET event_id=" ID ", eventa_id=" ID ", "
                 "conf=%f, note='%q' "
-                "WHERE id="ID";",
+                "WHERE id=" ID ";",
                 f_event_id, f_eventa_id, f_conf,
                 UTF8_(f_note), f_id
             );
@@ -115,7 +115,7 @@ bool recEventEventa::Read()
 
     sql.Format(
         "SELECT event_id, eventa_id, conf, note "
-        "FROM EventEventa WHERE id="ID";",
+        "FROM EventEventa WHERE id=" ID ";",
         f_id
     );
     result = s_db->GetTable( sql );
@@ -185,7 +185,7 @@ bool recEventEventa::Find()
 
     sql.Format(
         "SELECT id, conf, note FROM EventEventa "
-        "WHERE event_id="ID" AND eventa_id="ID";",
+        "WHERE event_id=" ID " AND eventa_id=" ID ";",
         f_event_id, f_eventa_id
     );
     result = s_db->GetTable( sql );
@@ -209,7 +209,7 @@ idt recEventEventa::Find( idt eID, idt erID )
 
     sql.Format(
         "SELECT id FROM EventEventa "
-        "WHERE event_id="ID" AND eventa_id="ID";",
+        "WHERE event_id=" ID " AND eventa_id=" ID ";",
         eID, erID
     );
     result = s_db->GetTable( sql );

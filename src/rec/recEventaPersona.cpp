@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     14th December 2015
- * Copyright:   Copyright (c) 2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2015 ~ 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -76,7 +76,7 @@ void recEventaPersona::Save()
         // Add new record
         sql.Format(
             "INSERT INTO EventaPersona (eventa_id, per_id, role_id, note, per_seq) "
-            "VALUES ("ID", "ID", "ID", '%q', %d);",
+            "VALUES (" ID ", " ID ", " ID ", '%q', %d);",
             f_eventa_id, f_per_id, f_role_id, UTF8_(f_note), f_per_seq
         );
         s_db->ExecuteUpdate( sql );
@@ -88,15 +88,15 @@ void recEventaPersona::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO EventaPersona (id, eventa_id, per_id, role_id, note, per_seq) "
-                "VALUES ("ID", "ID", "ID", "ID", '%q', %d);",
+                "VALUES (" ID ", " ID ", " ID ", " ID ", '%q', %d);",
                 f_id, f_eventa_id, f_per_id, f_role_id, UTF8_(f_note), f_per_seq
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE EventaPersona SET eventa_id="ID", per_id="ID", role_id="ID", "
+                "UPDATE EventaPersona SET eventa_id=" ID ", per_id=" ID ", role_id=" ID ", "
                 "note='%q', per_seq=%d "
-                "WHERE id="ID";",
+                "WHERE id=" ID ";",
                 f_eventa_id, f_per_id, f_role_id, UTF8_(f_note), f_per_seq, f_id
             );
         }
@@ -116,7 +116,7 @@ bool recEventaPersona::Read()
 
     sql.Format(
         "SELECT id, eventa_id, per_id, role_id, note, per_seq "
-        "FROM EventaPersona WHERE id="ID";",
+        "FROM EventaPersona WHERE id=" ID ";",
         f_id
     );
     result = s_db->GetTable( sql );
@@ -140,7 +140,7 @@ wxString recEventaPersona::GetRoleStr( idt perID, idt typeID )
     wxSQLite3StatementBuffer sql;
     sql.Format(
         "SELECT ETR.name FROM EventaPersona EP, EventTypeRole ETR"
-        " WHERE EP.role_id=ETR.id AND EP.per_id="ID" AND ETR.type_id="ID
+        " WHERE EP.role_id=ETR.id AND EP.per_id=" ID " AND ETR.type_id=" ID
         " ORDER BY EP.per_seq;",
         perID, typeID
     );
@@ -156,7 +156,7 @@ bool recEventaPersona::LinkExists() const
     wxSQLite3StatementBuffer sql;
     sql.Format(
         "SELECT COUNT(*) FROM EventaPersona "
-        "WHERE eventa_id="ID" AND per_id="ID" AND role_id="ID";",
+        "WHERE eventa_id=" ID " AND per_id=" ID " AND role_id=" ID ";",
         f_eventa_id, f_per_id, f_role_id
     );
 

@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     20th April 2013
- * Copyright:   Copyright (c) 2013-2016, Nick Matthews.
+ * Copyright:   Copyright (c) 2013 ~ 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -83,7 +83,7 @@ void recEventa::Save()
         sql.Format(
             "INSERT INTO Eventa "
             "(title, type_id, date1_id, date2_id, place_id, note, date_pt) "
-            "VALUES ('%q', "ID", "ID", "ID", "ID", '%q', %ld);",
+            "VALUES ('%q', " ID ", " ID ", " ID ", " ID ", '%q', %ld);",
             UTF8_(f_title), f_type_id, f_date1_id, f_date2_id, f_place_id,
             UTF8_(f_note), f_date_pt
         );
@@ -97,7 +97,7 @@ void recEventa::Save()
             sql.Format(
                 "INSERT INTO Eventa "
                 "(id, title, type_id, date1_id, date2_id, place_id, note, date_pt) "
-                "VALUES ("ID", '%q', "ID", "ID", "ID", "ID", '%q', %ld);",
+                "VALUES (" ID ", '%q', " ID ", " ID ", " ID ", " ID ", '%q', %ld);",
                 f_id, UTF8_(f_title), f_type_id, f_date1_id, f_date2_id, f_place_id,
                 UTF8_(f_note), f_date_pt
             );
@@ -105,9 +105,9 @@ void recEventa::Save()
             // Update existing record
             sql.Format(
                 "UPDATE Eventa SET "
-                "title='%q', type_id="ID", date1_id="ID", date2_id="ID", place_id="ID", "
+                "title='%q', type_id=" ID ", date1_id=" ID ", date2_id=" ID ", place_id=" ID ", "
                 "note='%q', date_pt=%ld "
-                "WHERE id="ID";",
+                "WHERE id=" ID ";",
                 UTF8_(f_title), f_type_id, f_date1_id, f_date2_id, f_place_id,
                 UTF8_(f_note), f_date_pt, f_id
             );
@@ -128,7 +128,7 @@ bool recEventa::Read()
 
     sql.Format(
         "SELECT title, type_id, date1_id, date2_id, place_id, note, date_pt "
-        "FROM Eventa WHERE id="ID";",
+        "FROM Eventa WHERE id=" ID ";",
         f_id
     );
     result = s_db->GetTable( sql );
@@ -244,7 +244,7 @@ wxString recEventa::GetDetailStr( idt id )
 wxString recEventa::GetTypeStr( idt id )
 {
     idt typeID = ExecuteID(
-        "SELECT type_id FROM Eventa WHERE id="ID";", id
+        "SELECT type_id FROM Eventa WHERE id=" ID ";", id
     );
     return recEventType::GetTypeStr( typeID );
 }
@@ -254,7 +254,7 @@ wxString recEventa::GetTitle( idt evID )
     wxSQLite3StatementBuffer sql;
     wxSQLite3ResultSet result;
 
-    sql.Format( "SELECT title FROM Eventa WHERE id="ID";", evID );
+    sql.Format( "SELECT title FROM Eventa WHERE id=" ID ";", evID );
     result = s_db->ExecuteQuery( sql );
     return result.GetAsString( 0 );
 }
@@ -262,7 +262,7 @@ wxString recEventa::GetTitle( idt evID )
 idt recEventa::GetDate1ID( idt evID )
 {
     if( evID == 0 ) return 0;
-    return ExecuteID( "SELECT date1_id FROM Eventa WHERE id="ID";", evID );
+    return ExecuteID( "SELECT date1_id FROM Eventa WHERE id=" ID ";", evID );
 }
 
 wxString recEventa::GetDateStr( idt evID )
@@ -271,7 +271,7 @@ wxString recEventa::GetDateStr( idt evID )
     wxSQLite3ResultSet result;
     wxString str;
 
-    sql.Format( "SELECT date1_id, date2_id FROM Eventa WHERE id="ID";", evID );
+    sql.Format( "SELECT date1_id, date2_id FROM Eventa WHERE id=" ID ";", evID );
     result = s_db->ExecuteQuery( sql );
     if( result.Eof() ) return str;
 
@@ -287,7 +287,7 @@ wxString recEventa::GetDateStr( idt evID )
 wxString recEventa::GetAddressStr( idt evID )
 {
     idt placeID = ExecuteID(
-        "SELECT place_id FROM Eventa WHERE id="ID";", evID
+        "SELECT place_id FROM Eventa WHERE id=" ID ";", evID
     );
     return recPlace::GetAddressStr( placeID );
 }
@@ -297,7 +297,7 @@ wxString recEventa::GetNote( idt id )
     wxSQLite3StatementBuffer sql;
     wxSQLite3ResultSet result;
 
-    sql.Format( "SELECT note FROM Eventa WHERE id="ID";", id );
+    sql.Format( "SELECT note FROM Eventa WHERE id=" ID ";", id );
     result = s_db->ExecuteQuery( sql );
     return result.GetAsString( 0 );
 }
@@ -310,7 +310,7 @@ recEventEventaVec recEventa::GetEventEventas( idt erID )
 
     sql.Format(
         "SELECT id, event_id, conf, note FROM "
-        "  EventEventa WHERE eventa_id="ID";",
+        "  EventEventa WHERE eventa_id=" ID ";",
         erID
     );
     result = s_db->ExecuteQuery( sql );
@@ -334,7 +334,7 @@ bool recEventa::IsFamilyEvent( idt eveID )
 
     sql.Format(
         "SELECT ET.grp FROM Eventa E, EventType ET"
-        " WHERE E.type_id=ET.id AND E.id="ID";",
+        " WHERE E.type_id=ET.id AND E.id=" ID ";",
         eveID
     );
     result = s_db->ExecuteQuery( sql );
@@ -352,7 +352,7 @@ recEventaPersonaVec recEventa::GetEventaPersonas( idt emID )
 
     sql.Format(
         "SELECT id, per_id, role_id, note "
-        "FROM EventaPersona WHERE eventa_id="ID";",
+        "FROM EventaPersona WHERE eventa_id=" ID ";",
         emID
     );
     wxSQLite3Table table = s_db->GetTable( sql );
@@ -402,8 +402,8 @@ void recEventa::RemoveFromDatabase()
 
     // TODO: Ensure Event is removed from reference statement.
     sql.Format(
-        "DELETE FROM EventaPersona WHERE eventa_id="ID";"
-        "DELETE FROM ReferenceEntity WHERE entity_type=2 AND entity_id="ID";",
+        "DELETE FROM EventaPersona WHERE eventa_id=" ID ";"
+        "DELETE FROM ReferenceEntity WHERE entity_type=2 AND entity_id=" ID ";",
         f_id, f_id
     );
     s_db->ExecuteUpdate( sql );
@@ -441,8 +441,8 @@ void recEventa::RemoveDates( idt dateID )
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "UPDATE Eventa SET date1_id=0, date_pt=0 WHERE date1_id="ID";"
-        "UPDATE Eventa SET date2_id=0 WHERE date2_id="ID";",
+        "UPDATE Eventa SET date1_id=0, date_pt=0 WHERE date1_id=" ID ";"
+        "UPDATE Eventa SET date2_id=0 WHERE date2_id=" ID ";",
         dateID, dateID
     );
     s_db->ExecuteUpdate( sql );
@@ -453,7 +453,7 @@ void recEventa::RemovePlace( idt placeID )
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "UPDATE Eventa SET place_id=0 WHERE place_id="ID";",
+        "UPDATE Eventa SET place_id=0 WHERE place_id=" ID ";",
         placeID
     );
     s_db->ExecuteUpdate( sql );
@@ -467,15 +467,15 @@ void recEventa::DeleteIfOrphaned( idt id )
     }
     wxSQLite3StatementBuffer sql;
 
-    sql.Format( "SELECT COUNT(*) FROM EventaPersona WHERE eventa_id="ID";", id );
+    sql.Format( "SELECT COUNT(*) FROM EventaPersona WHERE eventa_id=" ID ";", id );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
     sql.Format(
         "SELECT COUNT(*) FROM ReferenceEntity"
-        " WHERE entity_type=2 AND entity_id="ID";",
+        " WHERE entity_type=2 AND entity_id=" ID ";",
         id
     );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
-    sql.Format( "SELECT COUNT(*) FROM IndividualEvent WHERE event_id="ID";", id );
+    sql.Format( "SELECT COUNT(*) FROM IndividualEvent WHERE event_id=" ID ";", id );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
 
     RemoveFromDatabase( id );
@@ -490,7 +490,7 @@ wxSQLite3Table recEventa::GetTitleList( idt offset, int limit )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "SELECT id, title FROM Eventa ORDER BY id LIMIT "ID", %d;",
+        "SELECT id, title FROM Eventa ORDER BY id LIMIT " ID ", %d;",
         offset, limit
     );
     return s_db->GetTable( sql );
@@ -501,7 +501,7 @@ int recEventa::GetLastPerSeqNumber( idt eventID )
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "SELECT MAX(per_seq) FROM EventaPersona WHERE eventa_id="ID";",
+        "SELECT MAX(per_seq) FROM EventaPersona WHERE eventa_id=" ID ";",
         eventID
     );
     return s_db->ExecuteScalar( sql );
@@ -515,7 +515,7 @@ recFamilyEventaVec recEventa::GetFamilyEventas( idt eaID )
 
     sql.Format(
         "SELECT id, fam_id, conf, note FROM "
-        "  FamilyEventa WHERE eventa_id="ID";",
+        "  FamilyEventa WHERE eventa_id=" ID ";",
         eaID
     );
     result = s_db->ExecuteQuery( sql );
@@ -540,7 +540,7 @@ recFamilyIndEventaVec recEventa::GetFamilyIndEventas( idt eaID )
 
     sql.Format(
         "SELECT id, fam_ind_id, conf, note FROM "
-        "  FamilyIndEventa WHERE eventa_id="ID";",
+        "  FamilyIndEventa WHERE eventa_id=" ID ";",
         eaID
     );
     result = s_db->ExecuteQuery( sql );
@@ -567,7 +567,7 @@ recIdVec recEventa::FindLinkedEvents( recEVENT_Link link ) const
             // This query finds Event's which match the Eventa,
             // by using the EventEventa table.
             "SELECT event_id FROM EventEventa"
-            " WHERE eventa_id="ID
+            " WHERE eventa_id=" ID
             " ORDER BY event_id;",
             f_id
         );
@@ -578,7 +578,7 @@ recIdVec recEventa::FindLinkedEvents( recEVENT_Link link ) const
             "SELECT IE.event_id"
             " FROM EventaPersona EP, IndividualPersona IP,"
             " IndividualEvent IE, EventTypeRole ETR"
-            " WHERE EP.eventa_id="ID
+            " WHERE EP.eventa_id=" ID
             " AND EP.per_id=IP.per_id AND IP.ind_id=IE.ind_id AND EP.role_id=IE.role_id"
             " AND EP.role_id=ETR.id AND ETR.prime>0"
             " GROUP BY IE.event_id"

@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010-2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -65,7 +65,7 @@ void recPlace::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO Place (date1_id, date2_id) VALUES ("ID", "ID");",
+            "INSERT INTO Place (date1_id, date2_id) VALUES (" ID ", " ID ");",
             f_date1_id, f_date2_id
         );
         s_db->ExecuteUpdate( sql );
@@ -77,13 +77,13 @@ void recPlace::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO Place (id, date1_id, date2_id)"
-                "VALUES ("ID", "ID", "ID");",
+                "VALUES (" ID ", " ID ", " ID ");",
                 f_id, f_date1_id, f_date2_id
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE Place SET date1_id="ID", date2_id="ID" WHERE id="ID";",
+                "UPDATE Place SET date1_id=" ID ", date2_id=" ID " WHERE id=" ID ";",
                 f_date1_id, f_date2_id, f_id
             );
         }
@@ -101,7 +101,7 @@ bool recPlace::Read()
         return false;
     }
 
-    sql.Format( "SELECT * FROM Place WHERE id="ID";", f_id );
+    sql.Format( "SELECT * FROM Place WHERE id=" ID ";", f_id );
     result = s_db->GetTable( sql );
 
     if( result.GetRowCount() != 1 )
@@ -161,7 +161,7 @@ wxString recPlace::GetAddressStr( idt id )
     wxSQLite3Table result;
 
     sql.Format(
-        "SELECT val FROM PlacePart WHERE place_id="ID" "
+        "SELECT val FROM PlacePart WHERE place_id=" ID " "
         "ORDER BY sequence;", id
     );
     result = s_db->GetTable( sql );
@@ -190,7 +190,7 @@ recPlacePartVec recPlace::GetPlaceParts( idt placeID )
     recPlacePartVec ppList;
 
     sql.Format(
-        "SELECT * FROM PlacePart WHERE place_id="ID" ORDER BY sequence;",
+        "SELECT * FROM PlacePart WHERE place_id=" ID " ORDER BY sequence;",
         placeID
     );
     result = s_db->GetTable( sql );
@@ -213,8 +213,8 @@ void recPlace::RemoveDates( idt dateID )
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "UPDATE Place SET date1_id=0 WHERE date1_id="ID";"
-        "UPDATE Place SET date2_id=0 WHERE date2_id="ID";",
+        "UPDATE Place SET date1_id=0 WHERE date1_id=" ID ";"
+        "UPDATE Place SET date2_id=0 WHERE date2_id=" ID ";",
         dateID, dateID
     );
     s_db->ExecuteUpdate( sql );
@@ -241,19 +241,19 @@ void recPlace::DeleteIfOrphaned( idt id )
     }
     wxSQLite3StatementBuffer sql;
 
-    sql.Format( "SELECT COUNT(*) FROM Event WHERE place_id="ID";", id );
+    sql.Format( "SELECT COUNT(*) FROM Event WHERE place_id=" ID ";", id );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
 
-    sql.Format( "SELECT COUNT(*) FROM Eventa WHERE place_id="ID";", id );
+    sql.Format( "SELECT COUNT(*) FROM Eventa WHERE place_id=" ID ";", id );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
 
-    sql.Format( "SELECT COUNT(*) FROM Source WHERE sub_place_id="ID" OR loc_place_id="ID";", id, id );
+    sql.Format( "SELECT COUNT(*) FROM Source WHERE sub_place_id=" ID " OR loc_place_id=" ID ";", id, id );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
 
     // TODO: Ensure Place is removed from reference statement.
     sql.Format(
         "SELECT COUNT(*) FROM ReferenceEntity"
-        " WHERE entity_type=3 AND entity_id="ID";",
+        " WHERE entity_type=3 AND entity_id=" ID ";",
         id
     );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
@@ -298,7 +298,7 @@ void recPlacePart::Save()
         // Add new record
         sql.Format(
             "INSERT INTO PlacePart (type_id, place_id, val, sequence) "
-            "VALUES ("ID", "ID", '%q', %u);",
+            "VALUES (" ID ", " ID ", '%q', %u);",
             f_type_id, f_place_id, UTF8_(f_val), f_sequence
         );
         s_db->ExecuteUpdate( sql );
@@ -310,14 +310,14 @@ void recPlacePart::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO PlacePart (id, type_id, place_id, val, sequence) "
-                "VALUES ("ID", "ID", "ID", '%q', %u);",
+                "VALUES (" ID ", " ID ", " ID ", '%q', %u);",
                 f_id, f_type_id, f_place_id, UTF8_(f_val), f_sequence
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE PlacePart SET type_id="ID", place_id="ID", val='%q', sequence=%u "
-                "WHERE id="ID";",
+                "UPDATE PlacePart SET type_id=" ID ", place_id=" ID ", val='%q', sequence=%u "
+                "WHERE id=" ID ";",
                 f_type_id, f_place_id, UTF8_(f_val), f_sequence, f_id
             );
         }
@@ -335,7 +335,7 @@ bool recPlacePart::Read()
         return false;
     }
 
-    sql.Format( "SELECT * FROM PlacePart WHERE id="ID";", f_id );
+    sql.Format( "SELECT * FROM PlacePart WHERE id=" ID ";", f_id );
     result = s_db->GetTable( sql );
 
     if( result.GetRowCount() != 1 )
@@ -386,13 +386,13 @@ void recPlacePartType::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO PlacePartType (id, name)"
-                "VALUES ("ID", '%q');",
+                "VALUES (" ID ", '%q');",
                 f_id, UTF8_(f_name)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE PlacePartType SET name='%q' WHERE id="ID";",
+                "UPDATE PlacePartType SET name='%q' WHERE id=" ID ";",
                 UTF8_(f_name), f_id
             );
         }
@@ -410,7 +410,7 @@ bool recPlacePartType::Read()
         return false;
     }
 
-    sql.Format( "SELECT * FROM PlacePartType WHERE id="ID";", f_id );
+    sql.Format( "SELECT * FROM PlacePartType WHERE id=" ID ";", f_id );
     result = s_db->GetTable( sql );
 
     if( result.GetRowCount() != 1 )

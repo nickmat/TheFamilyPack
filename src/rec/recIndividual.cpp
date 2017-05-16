@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010 - 2016, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -81,7 +81,7 @@ void recIndividual::Save()
         sql.Format(
             "INSERT INTO Individual"
             " (sex, fam_id, note, privacy, name, surname, epitaph)"
-            " VALUES (%u, "ID", '%q', %d, '%q', '%q', '%q');",
+            " VALUES (%u, " ID ", '%q', %d, '%q', '%q', '%q');",
             f_sex, f_fam_id, UTF8_(f_note), f_privacy,
             UTF8_(f_name), UTF8_(f_surname), UTF8_(f_epitaph)
         );
@@ -95,7 +95,7 @@ void recIndividual::Save()
             sql.Format(
                 "INSERT INTO Individual"
                 " (id, sex, fam_id, note, privacy, name, surname, epitaph)"
-                " VALUES ("ID", %u, "ID", '%q', %d, '%q', '%q', '%q');",
+                " VALUES (" ID ", %u, " ID ", '%q', %d, '%q', '%q', '%q');",
                 f_id, f_sex, f_fam_id, UTF8_(f_note), f_privacy,
                 UTF8_(f_name), UTF8_(f_surname), UTF8_(f_epitaph)
             );
@@ -103,9 +103,9 @@ void recIndividual::Save()
             // Update existing record
             sql.Format(
                 "UPDATE Individual"
-                " SET sex=%u, fam_id="ID", note='%q', privacy=%d,"
+                " SET sex=%u, fam_id=" ID ", note='%q', privacy=%d,"
                 " name='%q', surname='%q', epitaph='%q'"
-                " WHERE id="ID";",
+                " WHERE id=" ID ";",
                 f_sex, f_fam_id, UTF8_(f_note), f_privacy,
                 UTF8_(f_name), UTF8_(f_surname), UTF8_(f_epitaph), f_id
             );
@@ -126,7 +126,7 @@ bool recIndividual::Read()
 
     sql.Format(
         "SELECT sex, fam_id, note, privacy, name, surname, epitaph"
-        " FROM Individual WHERE id="ID";", f_id
+        " FROM Individual WHERE id=" ID ";", f_id
     );
     result = s_db->GetTable( sql );
 
@@ -303,7 +303,7 @@ Sex recIndividual::GetSex( idt indID )
     if( indID == 0 ) {
         return SEX_Unstated;
     }
-    int i = ExecuteInt( "SELECT sex FROM Individual WHERE id="ID";", indID );
+    int i = ExecuteInt( "SELECT sex FROM Individual WHERE id=" ID ";", indID );
     wxASSERT( i >= 0 && i <= SEX_Unknown );
     return Sex( i );
 }
@@ -313,7 +313,7 @@ idt recIndividual::GetFamilyID( idt indID )
     if( indID == 0 ) {
         return 0;
     }
-    return ExecuteID( "SELECT fam_id FROM Individual WHERE id="ID";", indID );
+    return ExecuteID( "SELECT fam_id FROM Individual WHERE id=" ID ";", indID );
 }
 
 int recIndividual::GetPrivacy( idt indID )
@@ -321,7 +321,7 @@ int recIndividual::GetPrivacy( idt indID )
     if( indID == 0 ) {
         return 0;
     }
-    return ExecuteInt( "SELECT privacy FROM Individual WHERE id="ID";", indID );
+    return ExecuteInt( "SELECT privacy FROM Individual WHERE id=" ID ";", indID );
 }
 
 wxString recIndividual::GetName( idt indID )
@@ -329,7 +329,7 @@ wxString recIndividual::GetName( idt indID )
     if( indID == 0 ) {
         return wxEmptyString;
     }
-    return ExecuteStr( "SELECT name FROM Individual WHERE id="ID";", indID );
+    return ExecuteStr( "SELECT name FROM Individual WHERE id=" ID ";", indID );
 }
 
 wxString recIndividual::GetSurname( idt indID )
@@ -337,7 +337,7 @@ wxString recIndividual::GetSurname( idt indID )
     if( indID == 0 ) {
         return wxEmptyString;
     }
-    return ExecuteStr( "SELECT surname FROM Individual WHERE id="ID";", indID );
+    return ExecuteStr( "SELECT surname FROM Individual WHERE id=" ID ";", indID );
 }
 
 wxString recIndividual::GetEpitaph( idt indID )
@@ -345,7 +345,7 @@ wxString recIndividual::GetEpitaph( idt indID )
     if( indID == 0 ) {
         return wxEmptyString;
     }
-    return ExecuteStr( "SELECT epitaph FROM Individual WHERE id="ID";", indID );
+    return ExecuteStr( "SELECT epitaph FROM Individual WHERE id=" ID ";", indID );
 }
 
 idt recIndividual::FindEvent( idt indID, idt roleID )
@@ -354,7 +354,7 @@ idt recIndividual::FindEvent( idt indID, idt roleID )
 
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "SELECT event_id FROM IndividualEvent WHERE ind_id="ID" AND role_id ="ID";",
+        "SELECT event_id FROM IndividualEvent WHERE ind_id=" ID " AND role_id =" ID ";",
         indID, roleID
     );
     return ExecuteID( sql );
@@ -372,7 +372,7 @@ idt recIndividual::FindGroupEvent( idt indID, recET_GRP grp )
         "  INNER JOIN "
         "  EventType T ON R.type_id=T.id "
         "  WHERE T.grp=%d AND R.prime=1) "
-        "ON rid=IE.role_id WHERE IE.ind_id="ID" "
+        "ON rid=IE.role_id WHERE IE.ind_id=" ID " "
         "ORDER BY IE.ind_seq;",
         grp, indID
     );
@@ -394,7 +394,7 @@ recIdVec recIndividual::FindEvents( idt indID, recET_GRP grp )
         "  INNER JOIN "
         "  EventType T ON R.type_id=T.id "
         "  WHERE T.grp=%d AND R.prime=1) "
-        "ON rid=IE.role_id WHERE IE.ind_id="ID" "
+        "ON rid=IE.role_id WHERE IE.ind_id=" ID " "
         "ORDER BY IE.ind_seq;",
         grp, indID
     );
@@ -413,8 +413,8 @@ idt recIndividual::GetPersonalSummaryIE( idt indID, idt etID )
     wxSQLite3StatementBuffer sql;
     sql.Format(
         "SELECT IE.id FROM IndividualEvent IE, EventTypeRole ET"
-        " WHERE IE.role_id=ET.id AND IE.ind_id="ID
-        " AND ET.type_id="ID" AND IE.higher_id=0;",
+        " WHERE IE.role_id=ET.id AND IE.ind_id=" ID
+        " AND ET.type_id=" ID " AND IE.higher_id=0;",
         indID, etID
     );
     return ExecuteID( sql );
@@ -427,8 +427,8 @@ idt recIndividual::GetPersonalSummaryEvent( idt indID, idt etID )
     wxSQLite3StatementBuffer sql;
     sql.Format(
         "SELECT IE.event_id FROM IndividualEvent IE, EventTypeRole ET"
-        " WHERE IE.role_id=ET.id AND IE.ind_id="ID
-        " AND ET.type_id="ID" AND IE.higher_id=0;",
+        " WHERE IE.role_id=ET.id AND IE.ind_id=" ID
+        " AND ET.type_id=" ID " AND IE.higher_id=0;",
         indID, etID
     );
     return ExecuteID( sql );
@@ -481,7 +481,7 @@ recFamilyVec recIndividual::GetFamilyList( idt ind )
 
     sql.Format(
         "SELECT id, husb_id, wife_id FROM Family "
-        "WHERE husb_id="ID" OR wife_id="ID";",
+        "WHERE husb_id=" ID " OR wife_id=" ID ";",
         ind, ind
     );
     result = s_db->GetTable( sql );
@@ -508,7 +508,7 @@ recFamilyVec recIndividual::GetParentList( idt indID )
     sql.Format(
         "SELECT F.id, F.husb_id, F.wife_id "
         "FROM Family F, FamilyIndividual FI "
-        "WHERE F.id=FI.fam_id AND FI.ind_id="ID";",
+        "WHERE F.id=FI.fam_id AND FI.ind_id=" ID ";",
         indID
     );
     result = s_db->GetTable( sql );
@@ -549,7 +549,7 @@ recIndEventVec recIndividual::GetEvents( idt indID, recEventOrder order )
     sql.Format(
         "SELECT IE.id, event_id, role_id, IE.note, ind_seq FROM IndividualEvent IE"
         " INNER JOIN Event E ON E.id=event_id"
-        " WHERE IE.higher_id=0 AND ind_id="ID" ORDER BY %s;",
+        " WHERE IE.higher_id=0 AND ind_id=" ID " ORDER BY %s;",
         indID, UTF8_(orderStr)
     );
     result = s_db->GetTable( sql );
@@ -578,7 +578,7 @@ wxSQLite3ResultSet recIndividual::GetEventaSet( idt indID )
         "SELECT eventa_id, role_id FROM"
         "   (SELECT DISTINCT eventa_id, role_id FROM EventaPersona EP"
         "  INNER JOIN"
-        "   (SELECT per_id AS ip_per_id FROM IndividualPersona WHERE ind_id="ID")"
+        "   (SELECT per_id AS ip_per_id FROM IndividualPersona WHERE ind_id=" ID ")"
         "  ON EP.per_id=ip_per_id)"
         " INNER JOIN Eventa WHERE id=eventa_id"
         " ORDER BY date_pt;",
@@ -594,7 +594,7 @@ wxSQLite3ResultSet recIndividual::GetReferenceSet( idt indID )
     sql.Format(
         "SELECT R.id, R.title "
         "FROM IndividualPersona IP, Persona P, Reference R "
-        "WHERE IP.ind_id="ID" AND IP.per_id=P.id AND P.ref_id=R.id;",
+        "WHERE IP.ind_id=" ID " AND IP.per_id=P.id AND P.ref_id=R.id;",
         indID
     );
     return s_db->ExecuteQuery( sql );
@@ -691,7 +691,7 @@ int recIndividual::GetMaxEventSeqNumber( idt indID )
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "SELECT MAX(ind_seq) FROM IndividualEvent WHERE ind_id="ID";",
+        "SELECT MAX(ind_seq) FROM IndividualEvent WHERE ind_id=" ID ";",
         indID
     );
     return s_db->ExecuteScalar( sql );
@@ -734,11 +734,11 @@ void recIndividual::RemoveFromDatabase()
 
     sql.Format(
         // TODO: Remove ContactList if orphaned
-        "DELETE FROM FamilyIndividual WHERE ind_id="ID";"
-        "DELETE FROM Family WHERE husb_id="ID" AND wife_id=0;"
-        "DELETE FROM Family WHERE husb_id=0 AND wife_id="ID";"
-        "DELETE FROM IndividualEvent WHERE ind_id="ID";"
-        "DELETE FROM IndividualPersona WHERE ind_id="ID";",
+        "DELETE FROM FamilyIndividual WHERE ind_id=" ID" ;"
+        "DELETE FROM Family WHERE husb_id=" ID " AND wife_id=0;"
+        "DELETE FROM Family WHERE husb_id=0 AND wife_id=" ID ";"
+        "DELETE FROM IndividualEvent WHERE ind_id=" ID ";"
+        "DELETE FROM IndividualPersona WHERE ind_id=" ID ";",
         f_id, f_id, f_id, f_id, f_id
     );
     s_db->ExecuteUpdate( sql );
@@ -785,7 +785,7 @@ void recFamily::Save()
         // Add new record
         sql.Format(
             "INSERT INTO Family (husb_id, wife_id) "
-            "VALUES ("ID", "ID");",
+            "VALUES (" ID ", " ID ");",
             f_husb_id, f_wife_id
         );
         s_db->ExecuteUpdate( sql );
@@ -797,14 +797,14 @@ void recFamily::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO Family (id, husb_id, wife_id) "
-                "VALUES ("ID", "ID", "ID");",
+                "VALUES (" ID ", " ID ", " ID ");",
                 f_id, f_husb_id, f_wife_id
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE Family SET husb_id="ID", wife_id="ID" "
-                "WHERE id="ID";",
+                "UPDATE Family SET husb_id=" ID ", wife_id=" ID " "
+                "WHERE id=" ID ";",
                 f_husb_id, f_wife_id, f_id
             );
         }
@@ -823,7 +823,7 @@ bool recFamily::Read()
     }
 
     sql.Format(
-        "SELECT husb_id, wife_id FROM Family WHERE id="ID";",
+        "SELECT husb_id, wife_id FROM Family WHERE id=" ID ";",
         f_id
     );
     result = s_db->GetTable( sql );
@@ -931,7 +931,7 @@ idt recFamily::GetUnionEvent( idt famID )
 
     sql.Format(
         "SELECT FE.event_id FROM FamilyEvent FE, Event E, EventType ET"
-        " WHERE FE.fam_id="ID" AND FE.event_id=E.id AND E.type_id=ET.id"
+        " WHERE FE.fam_id=" ID " AND FE.event_id=E.id AND E.type_id=ET.id"
         " AND ET.grp=3 ORDER BY FE.fam_seq",
         famID
     );
@@ -960,7 +960,7 @@ idt recFamily::Find( idt ind1ID, idt ind2ID )
 
     sql.Format(
         "SELECT id FROM Family"
-        " WHERE (husb_id="ID" AND wife_id="ID") OR (husb_id="ID" AND wife_id="ID");",
+        " WHERE (husb_id=" ID " AND wife_id=" ID ") OR (husb_id=" ID " AND wife_id=" ID ");",
         ind1ID, ind2ID, ind2ID, ind1ID
     );
     result = s_db->ExecuteQuery( sql );
@@ -996,7 +996,7 @@ bool recFamily::ReadParents( idt ind )
     wxSQLite3ResultSet result;
 
     sql.Format(
-        "SELECT fam_id FROM FamilyIndividual WHERE ind_id="ID";", ind
+        "SELECT fam_id FROM FamilyIndividual WHERE ind_id=" ID ";", ind
     );
     result = s_db->ExecuteQuery( sql );
     f_id =  GET_ID( result.GetInt64( 0 ) );
@@ -1013,7 +1013,7 @@ recIndividualList recFamily::GetChildren( idt fam )
     if( fam == 0 ) return children;
 
     sql.Format(
-        "SELECT ind_id FROM FamilyIndividual WHERE fam_id="ID" "
+        "SELECT ind_id FROM FamilyIndividual WHERE fam_id=" ID " "
         "ORDER BY seq_child ASC;", fam
     );
     result = s_db->GetTable( sql );
@@ -1037,7 +1037,7 @@ recIdVec recFamily::GetChildrenIds( idt fam )
     if( fam == 0 ) return children;
 
     sql.Format(
-        "SELECT ind_id FROM FamilyIndividual WHERE fam_id="ID" "
+        "SELECT ind_id FROM FamilyIndividual WHERE fam_id=" ID " "
         "ORDER BY seq_child ASC;", fam
     );
     result = s_db->GetTable( sql );
@@ -1055,7 +1055,7 @@ int recFamily::GetChildCount( idt famID )
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "SELECT COUNT(*) FROM FamilyIndividual WHERE fam_id="ID";",
+        "SELECT COUNT(*) FROM FamilyIndividual WHERE fam_id=" ID ";",
         famID
     );
     return s_db->ExecuteScalar( sql );
@@ -1066,7 +1066,7 @@ int recFamily::GetChildNextSequence( idt famID )
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "SELECT MAX(seq_child) FROM FamilyIndividual WHERE fam_id="ID";",
+        "SELECT MAX(seq_child) FROM FamilyIndividual WHERE fam_id=" ID ";",
         famID
     );
     return s_db->ExecuteScalar( sql ) + 1;
@@ -1077,7 +1077,7 @@ int recFamily::GetParentNextSequence( idt indID )
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "SELECT MAX(seq_parent) FROM FamilyIndividual WHERE ind_id="ID";",
+        "SELECT MAX(seq_parent) FROM FamilyIndividual WHERE ind_id=" ID ";",
         indID
     );
     return s_db->ExecuteScalar( sql ) + 1;
@@ -1094,7 +1094,7 @@ recFamIndVec recFamily::GetChildLinks( idt famID )
 
     sql.Format(
         "SELECT id, ind_id, seq_child, seq_parent FROM FamilyIndividual"
-        " WHERE fam_id="ID" ORDER BY seq_child ASC;", famID
+        " WHERE fam_id=" ID " ORDER BY seq_child ASC;", famID
     );
     result = s_db->GetTable( sql );
 
@@ -1122,7 +1122,7 @@ recFamilyEventVec recFamily::GetEvents( idt famID )
 
     sql.Format(
         "SELECT id, event_id, note, fam_seq FROM FamilyEvent"
-        " WHERE fam_id="ID" ORDER BY fam_seq;", famID
+        " WHERE fam_id=" ID " ORDER BY fam_seq;", famID
     );
     result = s_db->GetTable( sql );
 
@@ -1143,7 +1143,7 @@ recIdVec recFamily::GetEventIDs( idt famID )
 {
     const char* fmt =
         "SELECT event_id FROM FamilyEvent"
-        " WHERE fam_id="ID
+        " WHERE fam_id=" ID
         " ORDER BY fam_seq;"
     ;
     return ExecuteIdVec( fmt, famID );
@@ -1154,7 +1154,7 @@ int recFamily::GetMaxEventSeqNumber( idt famID )
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "SELECT MAX(fam_seq) FROM FamilyEvent WHERE fam_id="ID";",
+        "SELECT MAX(fam_seq) FROM FamilyEvent WHERE fam_id=" ID ";",
         famID
     );
     return s_db->ExecuteScalar( sql );
@@ -1217,7 +1217,7 @@ void recFamily::RemoveFromEvents( idt famID, idt indID )
     recFamilyEventVec fes = GetEvents( famID );
     for( size_t i = 0 ; i < fes.size() ; i++ ) {
         sql.Format(
-            "DELETE FROM IndividualEvent WHERE ind_id="ID" AND event_id="ID";",
+            "DELETE FROM IndividualEvent WHERE ind_id=" ID " AND event_id=" ID ";",
             indID, fes[i].FGetEventID()
         );
         s_db->ExecuteUpdate( sql );
@@ -1256,7 +1256,7 @@ void recFamilyIndividual::Save()
         // Add new record
         sql.Format(
             "INSERT INTO FamilyIndividual (fam_id, ind_id, seq_child, seq_parent)"
-            " VALUES ("ID", "ID", %d, %d);",
+            " VALUES (" ID ", " ID ", %d, %d);",
             f_fam_id, f_ind_id, f_seq_child, f_seq_parent
         );
         s_db->ExecuteUpdate( sql );
@@ -1268,15 +1268,15 @@ void recFamilyIndividual::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO FamilyIndividual (id, fam_id, ind_id, seq_child, seq_parent)"
-                " VALUES ("ID", "ID", "ID", %d, %d);",
+                " VALUES (" ID ", " ID ", " ID ", %d, %d);",
                 f_id, f_fam_id, f_ind_id, f_seq_child, f_seq_parent
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE FamilyIndividual SET fam_id="ID", ind_id="ID","
+                "UPDATE FamilyIndividual SET fam_id=" ID ", ind_id=" ID ","
                 " seq_child=%d, seq_parent=%d"
-                " WHERE id="ID";",
+                " WHERE id=" ID ";",
                 f_fam_id, f_ind_id, f_seq_child, f_seq_parent, f_id
             );
         }
@@ -1296,7 +1296,7 @@ bool recFamilyIndividual::Read()
 
     sql.Format(
         "SELECT ind_id, fam_id, seq_child, seq_parent FROM FamilyIndividual "
-        "WHERE id="ID";", f_id
+        "WHERE id=" ID ";", f_id
     );
     result = s_db->GetTable( sql );
 
@@ -1322,7 +1322,7 @@ bool recFamilyIndividual::Find()
 
     sql.Format(
         "SELECT id, seq_child, seq_parent FROM FamilyIndividual "
-        "WHERE fam_id="ID" AND ind_id="ID";",
+        "WHERE fam_id=" ID " AND ind_id=" ID ";",
         f_fam_id, f_ind_id
     );
     result = s_db->GetTable( sql );

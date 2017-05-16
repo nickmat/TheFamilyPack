@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010 - 2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 - 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -79,7 +79,7 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "Individual" );
 
-    static wxString GetIdStr( idt indID ) { return wxString::Format( "I"ID, indID ); }
+    static wxString GetIdStr( idt indID ) { return wxString::Format( "I" ID, indID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
     static idt GetIdFromStr( const wxString& str ) { return recIdFromStr( "I", str ); }
     static recIdVec GetIdVecFromStr( const wxString& str ) { return recIdVecFromStr( "I", str ); }
@@ -232,7 +232,7 @@ public:
     void FSetHusbID( idt hID ) { f_husb_id = hID; }
     void FSetWifeID( idt wID ) { f_wife_id = wID; }
 
-    static wxString GetIdStr( idt indID ) { return wxString::Format( "F"ID, indID ); }
+    static wxString GetIdStr( idt indID ) { return wxString::Format( "F" ID, indID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     recIdVec GetCoupleAsIdVec() const;

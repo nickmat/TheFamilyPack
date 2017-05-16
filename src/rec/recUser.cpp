@@ -3,11 +3,9 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Manage the SQLite3 User records.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     25 February 2011
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2011, Nick Matthews.
+ * Copyright:   Copyright (c) 2011 ~ 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -64,7 +62,7 @@ void recUser::Save()
     if( f_id == 0 ) {
         // Add new record
         sql.Format(
-            "INSERT INTO User (res_id) VALUES ("ID");",
+            "INSERT INTO User (res_id) VALUES (" ID ");",
             f_res_id
         );
         s_db->ExecuteUpdate( sql );
@@ -74,13 +72,13 @@ void recUser::Save()
         if( !Exists() ) {
             // Add new record
             sql.Format(
-                "INSERT INTO User (id, res_id) VALUES ("ID", "ID");",
+                "INSERT INTO User (id, res_id) VALUES (" ID ", " ID ");",
                 f_id, f_res_id
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE User SET res_id="ID" WHERE id="ID";",
+                "UPDATE User SET res_id=" ID " WHERE id=" ID ";",
                 f_res_id, f_id
             );
         }
@@ -99,7 +97,7 @@ bool recUser::Read()
     }
 
     sql.Format(
-        "SELECT res_id FROM User WHERE id="ID";",
+        "SELECT res_id FROM User WHERE id=" ID ";",
         f_id
     );
     result = s_db->GetTable( sql );
@@ -143,7 +141,7 @@ wxString recUser::GetSetting( idt userID, recUserSetting::Property prop )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "SELECT val FROM UserSetting WHERE user_id="ID" AND property=%d;",
+        "SELECT val FROM UserSetting WHERE user_id=" ID " AND property=%d;",
         userID, prop
     );
     wxSQLite3Table result = s_db->GetTable( sql );
@@ -192,7 +190,7 @@ void recUserSetting::Save()
     if( f_id == 0 ) {
         // Add new record
         sql.Format(
-            "INSERT INTO UserSetting (user_id, property, val) VALUES ("ID", %d, '%q');",
+            "INSERT INTO UserSetting (user_id, property, val) VALUES (" ID ", %d, '%q');",
             f_user_id, f_property, UTF8_(f_val)
         );
         s_db->ExecuteUpdate( sql );
@@ -203,13 +201,13 @@ void recUserSetting::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO UserSetting (id, user_id, property, val)"
-                " VALUES ("ID", "ID", %d, '%q');",
+                " VALUES (" ID ", " ID ", %d, '%q');",
                 f_id, f_user_id, f_property, UTF8_(f_val)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE UserSetting SET user_id="ID", property=%d, val='%q' WHERE id="ID";",
+                "UPDATE UserSetting SET user_id=" ID ", property=%d, val='%q' WHERE id=" ID ";",
                 f_user_id, f_property, UTF8_(f_val), f_id
             );
         }
@@ -228,7 +226,7 @@ bool recUserSetting::Read()
     }
 
     sql.Format(
-        "SELECT user_id, property, val FROM UserSetting WHERE id="ID";",
+        "SELECT user_id, property, val FROM UserSetting WHERE id=" ID ";",
         f_id
     );
     result = s_db->GetTable( sql );
@@ -256,7 +254,7 @@ void recUserSetting::Find( idt userID, recUserSetting::Property prop )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "SELECT id, val FROM UserSetting WHERE user_id="ID" AND property=%d;",
+        "SELECT id, val FROM UserSetting WHERE user_id=" ID " AND property=%d;",
         userID, prop
     );
     wxSQLite3Table result = s_db->GetTable( sql );

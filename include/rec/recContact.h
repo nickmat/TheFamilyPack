@@ -7,7 +7,7 @@
  * Website:     http://thefamilypack.org
  * Created:     25 February 2011
  * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2011, Nick Matthews.
+ * Copyright:   Copyright (c) 2011 ~ 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -62,7 +62,7 @@ public:
 
     void FSetIndID( idt indID ) { f_ind_id = indID; }
 
-    static wxString GetIdStr( idt resID ) { return wxString::Format( "CL"ID, resID ); }
+    static wxString GetIdStr( idt resID ) { return wxString::Format( "CL" ID, resID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     static recContactVec GetContacts( idt listID );
@@ -119,7 +119,7 @@ public:
 
     void FSetName( const wxString name ) { f_name = name; }
 
-    static wxString GetIdStr( idt resID ) { return wxString::Format( "CT"ID, resID ); }
+    static wxString GetIdStr( idt resID ) { return wxString::Format( "CT" ID, resID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     static wxString GetTypeStr( idt typeID );
@@ -166,7 +166,7 @@ public:
     void FSetListID( idt listID ) { f_list_id = listID; }
     void FSetValue( const wxString& value ) { f_val = value; }
 
-    static wxString GetIdStr( idt resID ) { return wxString::Format( "C"ID, resID ); }
+    static wxString GetIdStr( idt resID ) { return wxString::Format( "C" ID, resID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     wxString GetTypeStr() const { return recContactType::GetTypeStr( f_type_id ); }
@@ -213,7 +213,7 @@ public:
     void FSetComments( const wxString& com ) { f_comments = com; }
     void FSetConListID( idt clID ) { f_con_list_id = clID; }
 
-    static wxString GetIdStr( idt resID ) { return wxString::Format( "Re"ID, resID ); }
+    static wxString GetIdStr( idt resID ) { return wxString::Format( "Re" ID, resID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     static wxString GetNameStr( idt resID );

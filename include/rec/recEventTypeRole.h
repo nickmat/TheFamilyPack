@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     14th December 2015
- * Copyright:   Copyright (c) 2015 ~ 2016, Nick Matthews.
+ * Copyright:   Copyright (c) 2015 ~ 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -112,7 +112,7 @@ public:
     void FSetOfficial( bool official ) { f_official = official; }
     void FSetName( const wxString& name ) { f_name = name; }
 
-    static wxString GetIdStr( idt evID ) { return wxString::Format( "Ro"ID, evID ); }
+    static wxString GetIdStr( idt evID ) { return wxString::Format( "Ro" ID, evID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     static wxString GetName( idt roleID );

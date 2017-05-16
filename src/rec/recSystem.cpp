@@ -3,11 +3,9 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Manage the SQLite3 System records.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     30 March 2012
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2012, Nick Matthews.
+ * Copyright:   Copyright (c) 2012 ~ 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -73,13 +71,13 @@ void recSystem::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO System (id, val)"
-                " VALUES ("ID" '%q');",
+                " VALUES (" ID " '%q');",
                 f_id, UTF8_(f_val)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE System SET val='%q' WHERE id="ID";",
+                "UPDATE System SET val='%q' WHERE id=" ID ";",
                 UTF8_(f_val), f_id
             );
         }
@@ -98,7 +96,7 @@ bool recSystem::Read()
     }
 
     sql.Format(
-        "SELECT val FROM System WHERE id="ID";",
+        "SELECT val FROM System WHERE id=" ID ";",
         f_id
     );
     result = s_db->GetTable( sql );

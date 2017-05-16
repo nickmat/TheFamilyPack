@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     19th April 2015
- * Copyright:   Copyright (c) 2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2015 ~ 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -70,7 +70,7 @@ void recFamilyEventa::Save()
         sql.Format(
             "INSERT INTO FamilyEventa "
             "(fam_id, eventa_id, conf, note) "
-            "VALUES ("ID", "ID", %f, '%q');",
+            "VALUES (" ID ", " ID ", %f, '%q');",
             f_fam_id, f_eventa_id, f_conf, UTF8_(f_note)
         );
         s_db->ExecuteUpdate( sql );
@@ -83,15 +83,15 @@ void recFamilyEventa::Save()
             sql.Format(
                 "INSERT INTO FamilyEventa "
                 "(id, fam_id, eventa_id, conf, note) "
-                "VALUES ("ID", "ID", "ID", %f, '%q');",
+                "VALUES (" ID ", " ID ", " ID ", %f, '%q');",
                 f_id, f_fam_id, f_eventa_id, f_conf, UTF8_(f_note)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE FamilyEventa SET fam_id="ID", eventa_id="ID", "
+                "UPDATE FamilyEventa SET fam_id=" ID ", eventa_id=" ID ", "
                 "conf=%f, note='%q' "
-                "WHERE id="ID";",
+                "WHERE id=" ID ";",
                 f_fam_id, f_eventa_id, f_conf,
                 UTF8_(f_note), f_id
             );
@@ -112,7 +112,7 @@ bool recFamilyEventa::Read()
 
     sql.Format(
         "SELECT fam_id, eventa_id, conf, note "
-        "FROM FamilyEventa WHERE id="ID";",
+        "FROM FamilyEventa WHERE id=" ID ";",
         f_id
     );
     result = s_db->GetTable( sql );
@@ -156,7 +156,7 @@ bool recFamilyEventa::Find()
 
     sql.Format(
         "SELECT id, conf, note FROM FamilyEventa "
-        "WHERE fam_id="ID" AND eventa_id="ID";",
+        "WHERE fam_id=" ID " AND eventa_id=" ID ";",
         f_fam_id, f_eventa_id
     );
     result = s_db->GetTable( sql );

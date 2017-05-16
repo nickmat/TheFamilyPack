@@ -3,11 +3,9 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Manage the SQLite3 Source record.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     22 November 2010
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -76,7 +74,7 @@ void recSource::Save()
         sql.Format(
             "INSERT INTO Source (higher_id, sub_date1_id, sub_date2_id, "
             "sub_place_id, loc_place_id, res_id, comments) "
-            "VALUES ("ID", "ID", "ID", "ID", "ID", "ID", '%q');",
+            "VALUES (" ID ", " ID ", " ID ", " ID ", " ID ", " ID ", '%q');",
             f_higher_id, f_sub_date1_id, f_sub_date2_id, f_sub_place_id,
             f_loc_place_id, f_res_id, UTF8_(f_comments)
         );
@@ -90,16 +88,16 @@ void recSource::Save()
             sql.Format(
                 "INSERT INTO Source (id, higher_id, sub_date1_id, sub_date2_id, "
                 "sub_place_id, loc_place_id, res_id, comments) "
-                "VALUES ("ID", "ID", "ID", "ID", "ID", "ID", "ID", '%q');",
+                "VALUES (" ID ", " ID ", " ID ", " ID ", " ID ", " ID ", " ID ", '%q');",
                 f_id, f_higher_id, f_sub_date1_id, f_sub_date2_id, f_sub_place_id,
                 f_loc_place_id, f_res_id, UTF8_(f_comments)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE Source SET higher_id="ID", sub_date1_id="ID", sub_date2_id="ID", "
-                "sub_place_id="ID", loc_place_id="ID", res_id="ID", comments='%q' "
-                "WHERE id="ID";",
+                "UPDATE Source SET higher_id=" ID ", sub_date1_id=" ID ", sub_date2_id=" ID ", "
+                "sub_place_id=" ID ", loc_place_id=" ID ", res_id=" ID ", comments='%q' "
+                "WHERE id=" ID ";",
                 f_higher_id, f_sub_date1_id, f_sub_date2_id, f_sub_place_id,
                 f_loc_place_id, f_res_id, UTF8_(f_comments), f_id
             );
@@ -121,7 +119,7 @@ bool recSource::Read()
     sql.Format(
         "SELECT higher_id, sub_date1_id, sub_date2_id, "
         "sub_place_id, loc_place_id, res_id, comments "
-        "FROM Source WHERE id="ID";",
+        "FROM Source WHERE id=" ID ";",
         f_id
     );
     result = s_db->GetTable( sql );
@@ -147,8 +145,8 @@ void recSource::RemoveDates( idt dateID )
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "UPDATE Source SET sub_date1_id=0 WHERE sub_date1_id="ID";"
-        "UPDATE Source SET sub_date2_id=0 WHERE sub_date2_id="ID";",
+        "UPDATE Source SET sub_date1_id=0 WHERE sub_date1_id=" ID ";"
+        "UPDATE Source SET sub_date2_id=0 WHERE sub_date2_id=" ID ";",
         dateID, dateID
     );
     s_db->ExecuteUpdate( sql );
@@ -159,8 +157,8 @@ void recSource::RemovePlace( idt placeID )
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "UPDATE Source SET sub_place_id=0 WHERE sub_place_id="ID";"
-        "UPDATE Source SET loc_place_id=0 WHERE loc_place_id="ID";",
+        "UPDATE Source SET sub_place_id=0 WHERE sub_place_id=" ID ";"
+        "UPDATE Source SET loc_place_id=0 WHERE loc_place_id=" ID ";",
         placeID, placeID
     );
     s_db->ExecuteUpdate( sql );
@@ -195,7 +193,7 @@ void recCitationPart::Save()
         // Add new record
         sql.Format(
             "INSERT INTO CitationPart (type_id, source_id, val) "
-            "VALUES ("ID", "ID", '%q');",
+            "VALUES (" ID ", " ID ", '%q');",
             f_type_id, f_source_id, UTF8_(f_val)
         );
         s_db->ExecuteUpdate( sql );
@@ -207,14 +205,14 @@ void recCitationPart::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO CitationPart (id, type_id, source_id, val) "
-                "VALUES ("ID", "ID", "ID", '%q');",
+                "VALUES (" ID ", " ID ", " ID ", '%q');",
                 f_id, f_type_id, f_source_id, UTF8_(f_val)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE CitationPart SET type_id="ID", source_id="ID", val='%q' "
-                "WHERE id="ID";",
+                "UPDATE CitationPart SET type_id=" ID ", source_id=" ID ", val='%q' "
+                "WHERE id=" ID ";",
                 f_type_id, f_source_id, UTF8_(f_val), f_id
             );
         }
@@ -234,7 +232,7 @@ bool recCitationPart::Read()
 
     sql.Format(
         "SELECT type_id, source_id, val "
-        "FROM CitationPart WHERE id="ID";",
+        "FROM CitationPart WHERE id=" ID ";",
         f_id
     );
     result = s_db->GetTable( sql );
@@ -288,13 +286,13 @@ void recCitationPartType::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO CitationPartType (id, name) "
-                "VALUES ("ID", '%q');",
+                "VALUES (" ID ", '%q');",
                 f_id, UTF8_(f_name)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE CitationPartType SET name='%q' WHERE id="ID";",
+                "UPDATE CitationPartType SET name='%q' WHERE id=" ID ";",
                 UTF8_(f_name), f_id
             );
         }
@@ -312,7 +310,7 @@ bool recCitationPartType::Read()
         return false;
     }
 
-    sql.Format( "SELECT name FROM CitationPartType WHERE id="ID";", f_id );
+    sql.Format( "SELECT name FROM CitationPartType WHERE id=" ID ";", f_id );
     result = s_db->GetTable( sql );
 
     if( result.GetRowCount() != 1 )
@@ -411,14 +409,14 @@ void recRepository::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO Repository (id, name, access, comments) "
-                "VALUES ("ID", '%q', '%q', '%q');",
+                "VALUES (" ID ", '%q', '%q', '%q');",
                 f_id, UTF8_(f_name), UTF8_(f_access), UTF8_(f_comments)
             );
         } else {
             // Update existing record
             sql.Format(
                 "UPDATE Repository SET name='%q', access='%q', comments='%q' "
-                "WHERE id="ID";",
+                "WHERE id=" ID ";",
                 UTF8_(f_name), UTF8_(f_access), UTF8_(f_comments), f_id
             );
         }
@@ -437,7 +435,7 @@ bool recRepository::Read()
     }
 
     sql.Format(
-        "SELECT name, access, comments FROM Repository WHERE id="ID";",
+        "SELECT name, access, comments FROM Repository WHERE id=" ID ";",
         f_id
     );
     result = s_db->GetTable( sql );
@@ -486,7 +484,7 @@ void recRepositorySource::Save()
         // Add new record
         sql.Format(
             "INSERT INTO RepositorySource (repos_id, source_id, call_num, descrip) "
-            "VALUES ("ID", "ID", '%q', '%q');",
+            "VALUES (" ID ", " ID ", '%q', '%q');",
             f_repos_id, f_source_id, UTF8_(f_call_num), UTF8_(f_descrip)
         );
         s_db->ExecuteUpdate( sql );
@@ -498,14 +496,14 @@ void recRepositorySource::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO RepositorySource (id, repos_id, source_id, call_num, descrip) "
-                "VALUES ("ID", "ID", "ID", '%q', '%q');",
+                "VALUES (" ID ", " ID ", " ID ", '%q', '%q');",
                 f_id, f_repos_id, f_source_id, UTF8_(f_call_num), UTF8_(f_descrip)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE RepositorySource SET repos_id="ID", source_id="ID", "
-                "call_num='%q', descrip='%q' WHERE id="ID";",
+                "UPDATE RepositorySource SET repos_id=" ID ", source_id=" ID ", "
+                "call_num='%q', descrip='%q' WHERE id=" ID ";",
                 f_repos_id, f_source_id, UTF8_(f_call_num), UTF8_(f_descrip), f_id
             );
         }
@@ -524,7 +522,7 @@ bool recRepositorySource::Read()
     }
 
     sql.Format(
-        "SELECT repos_id, source_id, call_num, descrip FROM RepositorySource WHERE id="ID";",
+        "SELECT repos_id, source_id, call_num, descrip FROM RepositorySource WHERE id=" ID ";",
         f_id
     );
     result = s_db->GetTable( sql );

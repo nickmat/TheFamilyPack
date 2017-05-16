@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     14th December 2015
- * Copyright:   Copyright (c) 2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2015 ~ 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -64,7 +64,7 @@ public:
     void FSetNote( const wxString& note ) { f_note = note; }
     void FSetPerSeq( int perSeq ) { f_per_seq = perSeq; }
 
-    static wxString GetIdStr( idt epID ) { return wxString::Format( "EP"ID, epID ); }
+    static wxString GetIdStr( idt epID ) { return wxString::Format( "EP" ID, epID ); }
     wxString GetIdStr() const { return GetIdStr( FGetID() ); }
 
     static wxString GetRoleStr( idt perID, idt typeID );

@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     14th December 2015
- * Copyright:   Copyright (c) 2015 ~ 2016, Nick Matthews.
+ * Copyright:   Copyright (c) 2015 ~ 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -70,7 +70,7 @@ public:
     void FSetNote( const wxString& note ) { f_note = note; }
     void FSetIndSeq( int indSeq ) { f_ind_seq = indSeq; }
 
-    static wxString GetIdStr( idt ieID ) { return wxString::Format( "IE"ID, ieID ); }
+    static wxString GetIdStr( idt ieID ) { return wxString::Format( "IE" ID, ieID ); }
     wxString GetIdStr() const { return GetIdStr( FGetID() ); }
 
     static idt Create( idt indID, idt eID, idt roleID, const wxString& note = wxEmptyString );

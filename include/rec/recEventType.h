@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     20th April 2013
- * Copyright:   Copyright (c) 2013-2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2013 ~ 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -84,7 +84,7 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "EventType" );
 
-    static wxString GetIdStr( idt evID ) { return wxString::Format( "ET"ID, evID ); }
+    static wxString GetIdStr( idt evID ) { return wxString::Format( "ET" ID, evID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     recET_GRP FGetGrp() const { return f_grp; }

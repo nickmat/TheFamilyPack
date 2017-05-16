@@ -5,8 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010-2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -72,7 +71,7 @@ void recIndividualPersona::Save()
         sql.Format(
             "INSERT INTO IndividualPersona "
             "(ind_id, per_id, conf, note) "
-            "VALUES ("ID", "ID", %f, '%q');",
+            "VALUES (" ID ", " ID ", %f, '%q');",
             f_ind_id, f_per_id, f_conf, UTF8_(f_note)
         );
         s_db->ExecuteUpdate( sql );
@@ -85,15 +84,15 @@ void recIndividualPersona::Save()
             sql.Format(
                 "INSERT INTO IndividualPersona "
                 "(id, ind_id, per_id, conf, note) "
-                "VALUES ("ID", "ID", "ID", %f, '%q');",
+                "VALUES (" ID ", " ID ", " ID ", %f, '%q');",
                 f_id, f_ind_id, f_per_id, f_conf, UTF8_(f_note)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE IndividualPersona SET ind_id="ID", per_id="ID", "
+                "UPDATE IndividualPersona SET ind_id=" ID ", per_id=" ID ", "
                 "conf=%f, note='%q' "
-                "WHERE id="ID";",
+                "WHERE id=" ID ";",
                 f_ind_id, f_per_id, f_conf,
                 UTF8_(f_note), f_id
             );
@@ -114,7 +113,7 @@ bool recIndividualPersona::Read()
 
     sql.Format(
         "SELECT ind_id, per_id, conf, note"
-        " FROM IndividualPersona WHERE id="ID";",
+        " FROM IndividualPersona WHERE id=" ID ";",
         f_id
     );
     result = s_db->GetTable( sql );
@@ -144,7 +143,7 @@ bool recIndividualPersona::Find()
 
     sql.Format(
         "SELECT id, conf, note FROM IndividualPersona "
-        "WHERE ind_id="ID" AND per_id="ID";",
+        "WHERE ind_id=" ID " AND per_id=" ID ";",
         f_ind_id, f_per_id
     );
     result = s_db->GetTable( sql );

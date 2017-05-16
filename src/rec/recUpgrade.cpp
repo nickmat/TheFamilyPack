@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3rd April 2013
- * Copyright:   Copyright (c) 2013 ~ 2016, Nick Matthews.
+ * Copyright:   Copyright (c) 2013 ~ 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -146,11 +146,11 @@ void UpgradeTest0_0_10_1to0_0_10_2()
             "  (SELECT DISTINCT event_id FROM "
             "   (SELECT EP.event_id, LP.ind_per_id FROM "
             "   LinkPersona LP, EventPersona EP, Event E, EventTypeRole R "
-            "   WHERE LP.ref_per_id=EP.per_id AND EP.role_id=R.id AND E.id="ID" "
+            "   WHERE LP.ref_per_id=EP.per_id AND EP.role_id=R.id AND E.id=" ID " "
             "    AND R.type_id=E.type_id AND NOT R.prime=0) "
             "  JOIN "
             "   (SELECT I.per_id FROM IndividualEvent IE, Individual I"
-            "    WHERE IE.ind_id=I.id AND IE.event_id="ID") "
+            "    WHERE IE.ind_id=I.id AND IE.event_id=" ID ") "
             "  ON ind_per_id=per_id) "
             "ON id=event_id;",
             eventID, eventID
@@ -161,7 +161,7 @@ void UpgradeTest0_0_10_1to0_0_10_2()
             sql2.Format(
                 "INSERT INTO EventEventRecord "
                 "(event_id, event_rec_id, conf, note) "
-                "VALUES ("ID", "ID", 0.999, '');",
+                "VALUES (" ID ", " ID ", 0.999, '');",
                 eventID, GET_ID( result.GetInt64( 0 ) )
             );
             recDb::GetDb()->ExecuteUpdate( sql2 );

@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010 ~ 2016, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -145,7 +145,7 @@ public:
     long GetEndJdn() const { return f_jdn + f_range; }
     void SetEndJdn( long jdn ) { f_range = jdn - f_jdn; }
 
-    static wxString GetIdStr( idt indID ) { return wxString::Format( "D"ID, indID ); }
+    static wxString GetIdStr( idt indID ) { return wxString::Format( "D" ID, indID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     void SetDefaults();
@@ -284,7 +284,7 @@ public:
 
     void SetDefaults();
 
-    static wxString GetIdStr( idt rdID ) { return wxString::Format( "RD"ID, rdID ); }
+    static wxString GetIdStr( idt rdID ) { return wxString::Format( "RD" ID, rdID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     bool CalculateDate( recDate* date ) const;

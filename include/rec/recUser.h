@@ -3,11 +3,9 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Manage the SQLite3 User record header.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     25 February 2011
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2011, Nick Matthews.
+ * Copyright:   Copyright (c) 2011 ~ 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -109,11 +107,11 @@ public:
 
     void FSetResID( idt resID ) { f_res_id = resID; }
 
-    static wxString GetIdStr( idt userID ) { return wxString::Format( "U"ID, userID ); }
+    static wxString GetIdStr( idt userID ) { return wxString::Format( "U" ID, userID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     idt FindFirst( idt resID )
-        { return ExecuteID( "SELECT id FROM User WHERE res_id="ID" ORDER BY id;", resID ); }
+        { return ExecuteID( "SELECT id FROM User WHERE res_id=" ID " ORDER BY id;", resID ); }
 
     static recUserVec GetUsers();
 
