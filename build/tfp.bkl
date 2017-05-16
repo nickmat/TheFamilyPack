@@ -146,7 +146,7 @@
     <set var="MAIN_SRC">../$(REL_ROOT)/tfp/src</set>
     <include file="../../tfp_ext/build/ext.bkl"/>
     <include file="../../tfp_fill/build/fill.bkl"/>
-    <include file="../../tfp_place/build/place.bkl"/>
+    <!-- <include file="../../tfp_place/build/place.bkl"/> -->
   </if>
 
 </makefile>
