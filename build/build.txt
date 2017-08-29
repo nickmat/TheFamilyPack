@@ -5,15 +5,16 @@ The tfp build system is based on the bakefile program used by the wxWidgets
 library.
 
 The build is slightly complicated because of the use of a custom utility
-"file2cpp" which is used to imbed text files into the program. (It was also
+"file2cpp" which is used to embed text files into the program. (It was also
 used for image files, but these are now in xpm format.) As both the input and
 output files of the file2cpp program are supplied, the utility is only
-required if you need to edit the input files. If you have the file2cpp program
-installed on your system, you may use the *-dep build folders, otherwise use
-the folder without the -dep suffix.
+required if you need to edit the input files. The nmake-dep/tfp.mak file will
+automatically create these files if the file2cpp program is in the path.
 
-The build process has been tested on Windows with MS Visual C++ 2008 express
-with both the IDE and nmake.
+If you are using Visual Studio, you will need to make the text files manually,
+details are coming shortly.
+
+The build process is currently being modified to allow for the c++11 standard.
 
 The Gnu/Linux build has been tested on Linux Mint 14 and Ubuntu 11.10
 
