@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectName>rec</ProjectName>
+    <ProjectGuid>{1A037570-C3CC-5D6A-9C10-F55F1A29680C}</ProjectGuid>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>14.0.23107.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)$(Configuration)\rec\</IntDir>
+    <TargetName>$(ProjectName)u</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)$(Configuration)\rec\</IntDir>
+    <TargetName>$(ProjectName)ud</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>WIN32;_LIB;_UNICODE;__WXMSW__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_lib\mswu;$(WXWIN)\include;..\..\include\rec;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>MaxSpeed</Optimization>
+      <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_lib\mswu;$(WXWIN)\include;..\..\include\rec;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_LIB;_UNICODE;__WXMSW__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>wx/wxprec.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>$(SolutionDir)$(Configuration)\wxprec_rec.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>$(SolutionDir)$(Configuration)\rec\</ObjectFileName>
+      <ProgramDataBaseFileName>$(SolutionDir)$(Configuration)\recu.pdb</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat />
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_UNICODE;__WXMSW__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+      <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_lib\mswu;$(WXWIN)\include;..\..\include\rec;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Lib>
+      <OutputFile>$(SolutionDir)$(Configuration)\recu.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+    <Bscmake>
+      <OutputFile>$(SolutionDir)$(Configuration)\tfp_rec.bsc</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>WIN32;_LIB;_UNICODE;__WXDEBUG__;__WXMSW__;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_lib\mswud;$(WXWIN)\include;..\..\include\rec;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_lib\mswud;$(WXWIN)\include;..\..\include\rec;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_LIB;_UNICODE;__WXDEBUG__;__WXMSW__;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>wx/wxprec.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>$(SolutionDir)$(Configuration)\wxprec_rec.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>$(SolutionDir)$(Configuration)\rec\</ObjectFileName>
+      <ProgramDataBaseFileName>$(SolutionDir)$(Configuration)\recud.pdb</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_UNICODE;__WXDEBUG__;__WXMSW__;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+      <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_lib\mswud;$(WXWIN)\include;..\..\include\rec;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Lib>
+      <OutputFile>$(SolutionDir)$(Configuration)\recud.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+    <Bscmake>
+      <OutputFile>$(SolutionDir)$(Configuration)\tfp_rec.bsc</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\dummy.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\src\rec\recContact.cpp" />
+    <ClCompile Include="..\..\src\rec\recDatabase.cpp" />
+    <ClCompile Include="..\..\src\rec\recDate.cpp" />
+    <ClCompile Include="..\..\src\rec\recEvent.cpp" />
+    <ClCompile Include="..\..\src\rec\recEventa.cpp" />
+    <ClCompile Include="..\..\src\rec\recEventaPersona.cpp" />
+    <ClCompile Include="..\..\src\rec\recEventEventa.cpp" />
+    <ClCompile Include="..\..\src\rec\recEventType.cpp" />
+    <ClCompile Include="..\..\src\rec\recEventTypeRole.cpp" />
+    <ClCompile Include="..\..\src\rec\recFamEvent.cpp" />
+    <ClCompile Include="..\..\src\rec\recFamEventa.cpp" />
+    <ClCompile Include="..\..\src\rec\recFamIndEventa.cpp" />
+    <ClCompile Include="..\..\src\rec\recFilterEvent.cpp" />
+    <ClCompile Include="..\..\src\rec\recGedExport.cpp" />
+    <ClCompile Include="..\..\src\rec\recGedParse.cpp" />
+    <ClCompile Include="..\..\src\rec\recHelper.cpp" />
+    <ClCompile Include="..\..\src\rec\recIndEvent.cpp" />
+    <ClCompile Include="..\..\src\rec\recIndividual.cpp" />
+    <ClCompile Include="..\..\src\rec\recIndPersona.cpp" />
+    <ClCompile Include="..\..\src\rec\recName.cpp" />
+    <ClCompile Include="..\..\src\rec\recPersona.cpp" />
+    <ClCompile Include="..\..\src\rec\recPlace.cpp" />
+    <ClCompile Include="..\..\src\rec\recReference.cpp" />
+    <ClCompile Include="..\..\src\rec\recSource.cpp" />
+    <ClCompile Include="..\..\src\rec\recSystem.cpp" />
+    <ClCompile Include="..\..\src\rec\recUpgrade.cpp" />
+    <ClCompile Include="..\..\src\rec\recUser.cpp" />
+    <ClCompile Include="..\..\src\rec\recVersion.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\rec\recContact.h" />
+    <ClInclude Include="..\..\include\rec\recDatabase.h" />
+    <ClInclude Include="..\..\include\rec\recDate.h" />
+    <ClInclude Include="..\..\include\rec\recDb.h" />
+    <ClInclude Include="..\..\include\rec\recEvent.h" />
+    <ClInclude Include="..\..\include\rec\recEventa.h" />
+    <ClInclude Include="..\..\include\rec\recEventaPersona.h" />
+    <ClInclude Include="..\..\include\rec\recEventEventa.h" />
+    <ClInclude Include="..\..\include\rec\recEventType.h" />
+    <ClInclude Include="..\..\include\rec\recEventTypeRole.h" />
+    <ClInclude Include="..\..\include\rec\recFamEvent.h" />
+    <ClInclude Include="..\..\include\rec\recFamEventa.h" />
+    <ClInclude Include="..\..\include\rec\recFamIndEventa.h" />
+    <ClInclude Include="..\..\include\rec\recFilterEvent.h" />
+    <ClInclude Include="..\..\include\rec\recGedExport.h" />
+    <ClInclude Include="..\..\include\rec\recGedParse.h" />
+    <ClInclude Include="..\..\include\rec\recHelper.h" />
+    <ClInclude Include="..\..\include\rec\recIndEvent.h" />
+    <ClInclude Include="..\..\include\rec\recIndividual.h" />
+    <ClInclude Include="..\..\include\rec\recIndPersona.h" />
+    <ClInclude Include="..\..\include\rec\recInterface.h" />
+    <ClInclude Include="..\..\include\rec\recName.h" />
+    <ClInclude Include="..\..\include\rec\recPersona.h" />
+    <ClInclude Include="..\..\include\rec\recPlace.h" />
+    <ClInclude Include="..\..\include\rec\recReference.h" />
+    <ClInclude Include="..\..\include\rec\recSource.h" />
+    <ClInclude Include="..\..\include\rec\recSystem.h" />
+    <ClInclude Include="..\..\include\rec\recUser.h" />
+    <ClInclude Include="..\..\include\rec\recVersion.h" />
+    <ClInclude Include="..\..\src\rec\recDatabaseCreate.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

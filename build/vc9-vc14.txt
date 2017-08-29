@@ -1,0 +1,26 @@
+The legacy version of the bakefile program is used to create the build files
+used by this project. Bakefile builds vc9 (Visual Studio 2008) project
+files, these being the latest version possible using legacy bakefile. In
+order to use the vc14 compiler (Visual Studio 2015) we must use Visual
+Studios own conversion process.
+
+The conversion works well, but when compiling the libraries a warning
+(MSB8012) is produced in connection with the library names. These warnings
+can be avoided by making the following changes.
+
+For each library project context menu select 'Properties' and
+on the 'Configuration Properties' - 'General' page,
+line 'Target Name' change 
+
+'$(ProjectName)' to '$(ProjectName)ud' for the Debug Configuration and
+
+'$(ProjectName)' to '$(ProjectName)u' for the Release Configuration.
+
+This is required for the following libraries:-
+  calendar
+  rec
+  reccl
+  recgui
+  wxsqlite3
+
+This will have to be repeated each time these library projects are changed.

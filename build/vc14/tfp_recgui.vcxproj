@@ -1,0 +1,185 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectName>recgui</ProjectName>
+    <ProjectGuid>{EB4B4B6F-41DD-54F7-91B0-A39320462AB8}</ProjectGuid>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>14.0.23107.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)$(Configuration)\recgui\</IntDir>
+    <TargetName>$(ProjectName)u</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)$(Configuration)\recgui\</IntDir>
+    <TargetName>$(ProjectName)ud</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>WIN32;_LIB;_UNICODE;__WXMSW__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_lib\mswu;$(WXWIN)\include;..\..\include\rec;..\..\include\rg;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>MaxSpeed</Optimization>
+      <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_lib\mswu;$(WXWIN)\include;..\..\include\rec;..\..\include\rg;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_LIB;_UNICODE;__WXMSW__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <ObjectFileName>$(SolutionDir)$(Configuration)\recgui\</ObjectFileName>
+      <ProgramDataBaseFileName>$(SolutionDir)$(Configuration)\recguiu.pdb</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat />
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_UNICODE;__WXMSW__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+      <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_lib\mswu;$(WXWIN)\include;..\..\include\rec;..\..\include\rg;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Lib>
+      <OutputFile>$(SolutionDir)$(Configuration)\recguiu.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+    <Bscmake>
+      <OutputFile>$(SolutionDir)$(Configuration)\tfp_recgui.bsc</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>WIN32;_LIB;_UNICODE;__WXDEBUG__;__WXMSW__;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_lib\mswud;$(WXWIN)\include;..\..\include\rec;..\..\include\rg;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_lib\mswud;$(WXWIN)\include;..\..\include\rec;..\..\include\rg;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_LIB;_UNICODE;__WXDEBUG__;__WXMSW__;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <ObjectFileName>$(SolutionDir)$(Configuration)\recgui\</ObjectFileName>
+      <ProgramDataBaseFileName>$(SolutionDir)$(Configuration)\recguiud.pdb</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_UNICODE;__WXDEBUG__;__WXMSW__;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+      <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_lib\mswud;$(WXWIN)\include;..\..\include\rec;..\..\include\rg;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Lib>
+      <OutputFile>$(SolutionDir)$(Configuration)\recguiud.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+    <Bscmake>
+      <OutputFile>$(SolutionDir)$(Configuration)\tfp_recgui.bsc</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\rg\fbRgDialog.cpp" />
+    <ClCompile Include="..\..\src\rg\recgui.cpp" />
+    <ClCompile Include="..\..\src\rg\rgCompareEvent.cpp" />
+    <ClCompile Include="..\..\src\rg\rgCrIndividual.cpp" />
+    <ClCompile Include="..\..\src\rg\rgCrName.cpp" />
+    <ClCompile Include="..\..\src\rg\rgEdContact.cpp" />
+    <ClCompile Include="..\..\src\rg\rgEdDate.cpp" />
+    <ClCompile Include="..\..\src\rg\rgEdEvent.cpp" />
+    <ClCompile Include="..\..\src\rg\rgEdEventa.cpp" />
+    <ClCompile Include="..\..\src\rg\rgEdEventEventa.cpp" />
+    <ClCompile Include="..\..\src\rg\rgEdEventType.cpp" />
+    <ClCompile Include="..\..\src\rg\rgEdFamily.cpp" />
+    <ClCompile Include="..\..\src\rg\rgEdIndividual.cpp" />
+    <ClCompile Include="..\..\src\rg\rgEdName.cpp" />
+    <ClCompile Include="..\..\src\rg\rgEdNamePart.cpp" />
+    <ClCompile Include="..\..\src\rg\rgEdPerIndEvent.cpp" />
+    <ClCompile Include="..\..\src\rg\rgEdPersona.cpp" />
+    <ClCompile Include="..\..\src\rg\rgEdPlace.cpp" />
+    <ClCompile Include="..\..\src\rg\rgEdReference.cpp" />
+    <ClCompile Include="..\..\src\rg\rgEdRelDate.cpp" />
+    <ClCompile Include="..\..\src\rg\rgEdResearcher.cpp" />
+    <ClCompile Include="..\..\src\rg\rgEdRole.cpp" />
+    <ClCompile Include="..\..\src\rg\rgEdSystem.cpp" />
+    <ClCompile Include="..\..\src\rg\rgEdUser.cpp" />
+    <ClCompile Include="..\..\src\rg\rgIndividual.cpp" />
+    <ClCompile Include="..\..\src\rg\rgSelect.cpp" />
+    <ClCompile Include="..\..\src\rg\rgSelEvent.cpp" />
+    <ClCompile Include="..\..\src\rg\rgTableCtrl.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\rg\rgCompareEvent.h" />
+    <ClInclude Include="..\..\include\rg\rgDialogs.h" />
+    <ClInclude Include="..\..\src\rg\fbRgDialog.h" />
+    <ClInclude Include="..\..\src\rg\rgCommon.h" />
+    <ClInclude Include="..\..\src\rg\rgCrIndividual.h" />
+    <ClInclude Include="..\..\src\rg\rgCrName.h" />
+    <ClInclude Include="..\..\src\rg\rgEdContact.h" />
+    <ClInclude Include="..\..\src\rg\rgEdDate.h" />
+    <ClInclude Include="..\..\src\rg\rgEdEvent.h" />
+    <ClInclude Include="..\..\src\rg\rgEdEventa.h" />
+    <ClInclude Include="..\..\src\rg\rgEdEventEventa.h" />
+    <ClInclude Include="..\..\src\rg\rgEdEventType.h" />
+    <ClInclude Include="..\..\src\rg\rgEdFamily.h" />
+    <ClInclude Include="..\..\src\rg\rgEdIndividual.h" />
+    <ClInclude Include="..\..\src\rg\rgEdName.h" />
+    <ClInclude Include="..\..\src\rg\rgEdNamePart.h" />
+    <ClInclude Include="..\..\src\rg\rgEdPerIndEvent.h" />
+    <ClInclude Include="..\..\src\rg\rgEdPersona.h" />
+    <ClInclude Include="..\..\src\rg\rgEdPlace.h" />
+    <ClInclude Include="..\..\src\rg\rgEdReference.h" />
+    <ClInclude Include="..\..\src\rg\rgEdRelDate.h" />
+    <ClInclude Include="..\..\src\rg\rgEdResearcher.h" />
+    <ClInclude Include="..\..\src\rg\rgEdRole.h" />
+    <ClInclude Include="..\..\src\rg\rgEdSystem.h" />
+    <ClInclude Include="..\..\src\rg\rgEdUser.h" />
+    <ClInclude Include="..\..\src\rg\rgSelect.h" />
+    <ClInclude Include="..\..\src\rg\rgSelEvent.h" />
+    <ClInclude Include="..\..\src\rg\rgTableCtrl.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
