@@ -1,15 +1,13 @@
-/* ..\..\src\rec\generated\recSql.ci - File created by file2cpp */
+/* ..\recDatabaseCreate.h - File created by file2cpp */
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        recSql.f2c
+ * Name:        src/rec/embed/recDatabaseCreate.f2c
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     SQL text compiled from SQL files. Format file for file2cpp.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     10th April 2008
- * RCS-ID:      Id: recSql.f2c 37 2010-10-03 12:39:31Z nickmat $
- * Copyright:   Copyright (c) 2008 - 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2008 - 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -433,6 +431,6 @@ static const char* createdb =  /* recCreate.sql */
  "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 14);\n"
  "COMMIT;\n";
 
-/* End of recSql.f2c */
+/* End of recDatabaseCreate.f2c */
 
 

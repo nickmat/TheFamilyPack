@@ -6,7 +6,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     5th October 2010
- * Copyright:   Copyright (c) 2010-2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -30,14 +30,14 @@
 <!--  <if cond="ALLOW_LOCAL_DEPENDENCIES=='1'"> -->
   <if cond="NO_DEPS=='0'">
 
-    <action id="$(LOCAL_SRC)/rec/generated/recSql.ci">
-      <command>file2cpp -v -o $(LOCAL_SRC)/rec/generated/recSql.ci $(LOCAL_SRC)/rec/recSql.f2c</command>
-      <depends-on-file>$(LOCAL_SRC)/rec/recSql.f2c</depends-on-file>
-      <depends-on-file>$(LOCAL_SRC)/rec/recCreate.sql</depends-on-file>
+    <action id="$(LOCAL_SRC)/rec/recDatabaseCreate.h">
+      <command>file2cpp -v -o $(LOCAL_SRC)/rec/recDatabaseCreate.h $(LOCAL_SRC)/rec/embed/recDatabaseCreate.f2c</command>
+      <depends-on-file>$(LOCAL_SRC)/rec/embed/recDatabaseCreate.f2c</depends-on-file>
+      <depends-on-file>$(LOCAL_SRC)/rec/embed/recCreate.sql</depends-on-file>
     </action>
 
     <action id="$(LOCAL_SRC)/rec/recDatabase.cpp">
-      <depends-on-file>$(LOCAL_SRC)/rec/generated/recSql.ci</depends-on-file>
+      <depends-on-file>$(LOCAL_SRC)/rec/recDatabaseCreate.h</depends-on-file>
     </action>
 
   </if>
@@ -75,6 +75,7 @@
 
     <headers>$(LOCAL_INC)/rec/recContact.h</headers>
     <headers>$(LOCAL_INC)/rec/recDatabase.h</headers>
+    <headers>$(LOCAL_SRC)/rec/recDatabaseCreate.h</headers>
     <headers>$(LOCAL_INC)/rec/recDb.h</headers>
     <headers>$(LOCAL_INC)/rec/recDate.h</headers>
     <headers>$(LOCAL_INC)/rec/recEvent.h</headers>

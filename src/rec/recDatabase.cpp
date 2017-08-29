@@ -43,7 +43,7 @@
 #include <cal/calendar.h>
 
 // SQL script to create new database
-#include "generated/recSql.ci"
+#include "recDatabaseCreate.h"
 
 extern void recInitialize()
 {
