@@ -21,13 +21,13 @@ The Gnu/Linux build has been tested on Linux Mint 14 and Ubuntu 11.10
 Windows Build
 ~~~~~~~~~~~~~
 
-1) Download and install wxWidgets version 3.0.0.
+1) Download and install wxWidgets version 3.1.0.
    Ensure the environment variable WXWIN is set to wxWidgets root folder.
 
 2) To compile the test program, download and install the CppUnit framework.
-   Set the environment variable CPPUNIT to the library folder.
+   Set the environment variable CPPUNIT to the library root folder.
 
-3) To start the IDE, open the tfp\build\vc9 (or vc9-dep) folder and
+3) To start the IDE, open the tfp\build\vc9 folder and
    double click the tfp.sln file.
 
    To compile from the commandline, open the Visual Studio 2008 (or equivalent)
@@ -37,32 +37,6 @@ Windows Build
    or, for the release build:-
        nmake -f tfp.mak -D WX_DEBUG=0
 
-Add Subversion Version Number
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-By default, the version number of the last subversion commit is not included as
-part of the tfp version number as displayed in the program. This can be added
-when using the MS Visual Studio IDE as follows:-
-
-    Open the tfp project properties dialog and make the following changes.
-      Configuration Properties
-        C/C++
-          Preprocessor
-            Preprocessor Definitions:
-              Add TFP_WORKING to list
-              for both Debug and Release Configurations
-        Build Events
-          Pre-Build Event
-            Command Line:
-              Add "..\getsvnver.bat"
-            Description:
-              Add "Update with svn version number"
-              for both Debug and Release Configurations
-
-Note that there are some drawbacks to the above changes if you are making
-commits to subversion. After commiting you may need to recompile a couple of
-times so the new version number is picked up. If anyone knows a better system
-that achieves the same end, please let me know.
 
 Gnu/Linux Build
 ~~~~~~~~~~~~~~~
