@@ -374,10 +374,10 @@ test_for_selected_wxbuild:
 	@if not exist $(WX_DIR)\lib\$(COMPILER_PREFIX)$(WXCPU)_lib\msw$(WXLIBPOSTFIX)\wx\setup.h \
 	exit 1
 
-../../src/generated/tfpText.ci: ..\..\src\tfpText.f2c ..\..\src\startup.htm ..\..\src\tfp.css
-	file2cpp -v -o ../../src/generated/tfpText.ci ../../src/tfpText.f2c
+../../src/generated/tfpText.ci: ..\..\src\embed\tfpText.f2c ..\..\src\embed\startup.htm ..\..\src\embed\tab.css ..\..\src\embed\tfp.css
+	file2cpp -v -o ../../src/tfpText.h ../../src/embed/tfpText.f2c
 
-../../src/tfpMemory.cpp: ..\..\src\generated\tfpText.ci
+../../src/tfpMemory.cpp: ..\..\src\tfpText.h
 
 tfp.exe: tfp_dummy.obj  $(TFP_OBJECTS) tfp_tfp.res recgui$(WXLIBPOSTFIX).lib rec$(WXLIBPOSTFIX).lib calendar$(WXLIBPOSTFIX).lib wxsqlite3$(WXLIBPOSTFIX).lib
 	link /NOLOGO /OUT:$@  /LIBPATH:$(WX_DIR)\lib\$(COMPILER_PREFIX)$(WXCPU)_lib $(WXMACHINE_FLAG) $(VAR_13) /pdb:"tfp.pdb" $(____tfp__DEBUGINFO_9) /SUBSYSTEM:WINDOWS $(LDFLAGS) @<<

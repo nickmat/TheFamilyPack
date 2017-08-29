@@ -6,7 +6,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     23rd February 2009
- * Copyright:   Copyright (c) 2005 - 2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2005 ~ 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -65,14 +65,15 @@
   <if cond="NO_DEPS=='0'">
 
     <action id="$(LOCAL_SRC)/generated/tfpText.ci">
-      <command>file2cpp -v -o $(LOCAL_SRC)/generated/tfpText.ci $(LOCAL_SRC)/tfpText.f2c</command>
-      <depends-on-file>$(LOCAL_SRC)/tfpText.f2c</depends-on-file>
-      <depends-on-file>$(LOCAL_SRC)/startup.htm</depends-on-file>
-      <depends-on-file>$(LOCAL_SRC)/tfp.css</depends-on-file>
+      <command>file2cpp -v -o $(LOCAL_SRC)/tfpText.h $(LOCAL_SRC)/embed/tfpText.f2c</command>
+      <depends-on-file>$(LOCAL_SRC)/embed/tfpText.f2c</depends-on-file>
+      <depends-on-file>$(LOCAL_SRC)/embed/startup.htm</depends-on-file>
+      <depends-on-file>$(LOCAL_SRC)/embed/tab.css</depends-on-file>
+      <depends-on-file>$(LOCAL_SRC)/embed/tfp.css</depends-on-file>
     </action>
 
     <action id="$(LOCAL_SRC)/tfpMemory.cpp">
-      <depends-on-file>$(LOCAL_SRC)/generated/tfpText.ci</depends-on-file>
+      <depends-on-file>$(LOCAL_SRC)/tfpText.h</depends-on-file>
     </action>
 
   </if>
@@ -108,6 +109,7 @@
     <headers>$(LOCAL_SRC)/tfp/tfpMemory.h</headers>
     <headers>$(LOCAL_SRC)/tfp/tfpNote.h</headers>
     <headers>$(LOCAL_SRC)/tfp/tfpRd.h</headers>
+    <headers>$(LOCAL_SRC)/tfp/tfpText.h</headers>
     <headers>$(LOCAL_SRC)/tfp/tfpVersion.h</headers>
     <headers>$(LOCAL_SRC)/tfp/tfpWr.h</headers>
 

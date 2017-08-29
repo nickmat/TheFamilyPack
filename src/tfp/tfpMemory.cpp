@@ -3,10 +3,8 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Load image and text files into memory filesystem.
  * Author:      Nick Matthews
- * Modified by:
  * Created:     26 September 2010
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2017, Nick Matthews.
  * Website:     http://thefamilypack.org
  * Licence:     GNU GPLv3
  *
@@ -44,7 +42,7 @@
 #include "tfpVersion.h"
 
 #include "img/logo6.xpm"
-#include "generated/tfpText.ci"
+#include "tfpText.h"
 
 #include "img/cht/dss.xpm"
 #include "img/cht/ds.xpm"

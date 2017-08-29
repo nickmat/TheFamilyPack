@@ -1,14 +1,12 @@
-/* ..\..\src\tfp\generated\tfpText.ci - File created by file2cpp */
+/* ..\tfpText.h - File created by file2cpp */
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        tfpText.f2c
+ * Name:        src/tfp/embed/tfpText.f2c
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Screen texts collected from files. Format file for file2cpp.
  * Author:      Nick Matthews
- * Modified by:
  * Created:     26 September 2010
- * RCS-ID:      Id: tfpText.f2c 503 2013-07-03 02:21:45Z nickmat $
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2017, Nick Matthews.
  * Website:     http://thefamilypack.org
  * Licence:     GNU GPLv3
  *

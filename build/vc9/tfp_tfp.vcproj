@@ -351,6 +351,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\tfp\tfpText.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\tfp\tfpVersion.h"
 				>
 			</File>
