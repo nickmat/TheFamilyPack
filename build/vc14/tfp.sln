@@ -10,8 +10,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tests", "tfp_tests.vcxproj"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "calcalc", "tfp_calcalc.vcxproj", "{7BE3D8D9-F9D1-5EDB-9425-F959CF820215}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "file2cpp", "tfp_file2cpp.vcxproj", "{ED319679-F89D-5A53-8D29-F5389EC29EAD}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "doccore", "tfp_doccore.vcxproj", "{6E8A500C-82B9-57E4-80EA-49F1AA5C7DF4}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "wxsqlite3", "tfp_wxsqlite3.vcxproj", "{45D7308E-CFFD-5887-8A1C-3D8F6E095C88}"
@@ -44,10 +42,6 @@ Global
 		{7BE3D8D9-F9D1-5EDB-9425-F959CF820215}.Debug|Win32.Build.0 = Debug|Win32
 		{7BE3D8D9-F9D1-5EDB-9425-F959CF820215}.Release|Win32.ActiveCfg = Release|Win32
 		{7BE3D8D9-F9D1-5EDB-9425-F959CF820215}.Release|Win32.Build.0 = Release|Win32
-		{ED319679-F89D-5A53-8D29-F5389EC29EAD}.Debug|Win32.ActiveCfg = Debug|Win32
-		{ED319679-F89D-5A53-8D29-F5389EC29EAD}.Debug|Win32.Build.0 = Debug|Win32
-		{ED319679-F89D-5A53-8D29-F5389EC29EAD}.Release|Win32.ActiveCfg = Release|Win32
-		{ED319679-F89D-5A53-8D29-F5389EC29EAD}.Release|Win32.Build.0 = Release|Win32
 		{6E8A500C-82B9-57E4-80EA-49F1AA5C7DF4}.Debug|Win32.ActiveCfg = Debug|Win32
 		{6E8A500C-82B9-57E4-80EA-49F1AA5C7DF4}.Debug|Win32.Build.0 = Debug|Win32
 		{6E8A500C-82B9-57E4-80EA-49F1AA5C7DF4}.Release|Win32.ActiveCfg = Release|Win32

@@ -39,14 +39,6 @@
     <wx-lib>base</wx-lib>
   </exe>
 
-  <exe id="file2cpp" template="wxconsole,wxlike">
-    <app-type>console</app-type>
-    <runtime-libs>dynamic</runtime-libs>
-
-    <sources>$(LOCAL_UTIL)/file2cpp/file2cpp.cpp</sources>
-    <wx-lib>base</wx-lib>
-  </exe>
-
   <exe id="doccore" template="wxconsole,wxlike">
     <app-type>console</app-type>
     <runtime-libs>dynamic</runtime-libs>

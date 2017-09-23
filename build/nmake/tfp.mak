@@ -54,9 +54,9 @@ TARGET_CPU = X86
 ### Variables: ###
 
 COMPILER_PREFIX = vc
-TFP_CXXFLAGS = /MD$(VAR_23) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) /D__WXMSW__ \
+TFP_CXXFLAGS = /MD$(VAR_19) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) /D__WXMSW__ \
 	/I$(WX_DIR)\lib\$(COMPILER_PREFIX)$(WXCPU)_lib\msw$(WXLIBPOSTFIX) \
-	/I$(WX_DIR)\include $(VAR) $(VAR_22) $(p) /Fdtfp.pdb /D_WINDOWS \
+	/I$(WX_DIR)\include $(VAR) $(VAR_18) $(p) /Fdtfp.pdb /D_WINDOWS \
 	/I..\..\include /I..\..\src /GR /EHsc /Yu"wx/wxprec.h" /Fp"wxprec_tfp.pch" \
 	$(CPPFLAGS) $(CXXFLAGS)
 TFP_OBJECTS =  \
@@ -83,10 +83,10 @@ TFP_OBJECTS =  \
 	tfp_dummy.obj
 TFP_RESOURCES =  \
 	tfp_tfp.res
-CALENDAR_CXXFLAGS = /MD$(VAR_23) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) \
+CALENDAR_CXXFLAGS = /MD$(VAR_19) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) \
 	/D__WXMSW__ \
 	/I$(WX_DIR)\lib\$(COMPILER_PREFIX)$(WXCPU)_lib\msw$(WXLIBPOSTFIX) \
-	/I$(WX_DIR)\include $(VAR) $(VAR_22) $(p) /Fdcalendar$(WXLIBPOSTFIX).pdb \
+	/I$(WX_DIR)\include $(VAR) $(VAR_18) $(p) /Fdcalendar$(WXLIBPOSTFIX).pdb \
 	/I..\..\include\cal /I..\..\include /GR /EHsc /Yu"wx/wxprec.h" \
 	/Fp"wxprec_calendar.pch" $(CPPFLAGS) $(CXXFLAGS)
 CALENDAR_OBJECTS =  \
@@ -101,10 +101,10 @@ CALENDAR_OBJECTS =  \
 	calendar_calParse.obj \
 	calendar_calRecord.obj \
 	calendar_dummy.obj
-TESTS_CXXFLAGS = /MD$(VAR_23) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) \
+TESTS_CXXFLAGS = /MD$(VAR_19) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) \
 	/D__WXMSW__ \
 	/I$(WX_DIR)\lib\$(COMPILER_PREFIX)$(WXCPU)_lib\msw$(WXLIBPOSTFIX) \
-	/I$(WX_DIR)\include $(VAR) $(VAR_22) $(p) /Fdtests.pdb /D_CONSOLE \
+	/I$(WX_DIR)\include $(VAR) $(VAR_18) $(p) /Fdtests.pdb /D_CONSOLE \
 	/I..\..\include /I..\..\tests /I$(CPPUNIT)\include /GR /EHsc /Yu"testprec.h" \
 	/Fp"wxprec_tests.pch" $(CPPFLAGS) $(CXXFLAGS)
 TESTS_OBJECTS =  \
@@ -112,43 +112,36 @@ TESTS_OBJECTS =  \
 	tests_test.obj \
 	tests_testCalendar.obj \
 	tests_testDatabase.obj
-CALCALC_CXXFLAGS = /MD$(VAR_23) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) \
+CALCALC_CXXFLAGS = /MD$(VAR_19) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) \
 	/D__WXMSW__ \
 	/I$(WX_DIR)\lib\$(COMPILER_PREFIX)$(WXCPU)_lib\msw$(WXLIBPOSTFIX) \
-	/I$(WX_DIR)\include $(VAR) $(VAR_22) $(p) /Fdcalcalc.pdb /D_CONSOLE \
+	/I$(WX_DIR)\include $(VAR) $(VAR_18) $(p) /Fdcalcalc.pdb /D_CONSOLE \
 	/I..\..\include /GR /EHsc $(CPPFLAGS) $(CXXFLAGS)
 CALCALC_OBJECTS =  \
 	calcalc_calCalc.obj
-FILE2CPP_CXXFLAGS = /MD$(VAR_23) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) \
+DOCCORE_CXXFLAGS = /MD$(VAR_19) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) \
 	/D__WXMSW__ \
 	/I$(WX_DIR)\lib\$(COMPILER_PREFIX)$(WXCPU)_lib\msw$(WXLIBPOSTFIX) \
-	/I$(WX_DIR)\include $(VAR) $(VAR_22) $(p) /Fdfile2cpp.pdb /D_CONSOLE /GR /EHsc \
-	$(CPPFLAGS) $(CXXFLAGS)
-FILE2CPP_OBJECTS =  \
-	file2cpp_file2cpp.obj
-DOCCORE_CXXFLAGS = /MD$(VAR_23) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) \
-	/D__WXMSW__ \
-	/I$(WX_DIR)\lib\$(COMPILER_PREFIX)$(WXCPU)_lib\msw$(WXLIBPOSTFIX) \
-	/I$(WX_DIR)\include $(VAR) $(VAR_22) $(p) /Fddoccore.pdb /D_CONSOLE \
+	/I$(WX_DIR)\include $(VAR) $(VAR_18) $(p) /Fddoccore.pdb /D_CONSOLE \
 	/I..\..\include /GR /EHsc $(CPPFLAGS) $(CXXFLAGS)
 DOCCORE_OBJECTS =  \
 	doccore_dcMain.obj
-WXSQLITE3_CFLAGS = /MD$(VAR_23) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) \
+WXSQLITE3_CFLAGS = /MD$(VAR_19) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) \
 	/D__WXMSW__ \
 	/I$(WX_DIR)\lib\$(COMPILER_PREFIX)$(WXCPU)_lib\msw$(WXLIBPOSTFIX) \
-	/I$(WX_DIR)\include $(VAR) $(VAR_22) $(p) /Fdwxsqlite3$(WXLIBPOSTFIX).pdb \
+	/I$(WX_DIR)\include $(VAR) $(VAR_18) $(p) /Fdwxsqlite3$(WXLIBPOSTFIX).pdb \
 	/DSQLITE_ENABLE_RTREE /I..\..\include $(CPPFLAGS) $(CFLAGS)
-WXSQLITE3_CXXFLAGS = /MD$(VAR_23) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) \
+WXSQLITE3_CXXFLAGS = /MD$(VAR_19) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) \
 	/D__WXMSW__ \
 	/I$(WX_DIR)\lib\$(COMPILER_PREFIX)$(WXCPU)_lib\msw$(WXLIBPOSTFIX) \
-	/I$(WX_DIR)\include $(VAR) $(VAR_22) $(p) /Fdwxsqlite3$(WXLIBPOSTFIX).pdb \
+	/I$(WX_DIR)\include $(VAR) $(VAR_18) $(p) /Fdwxsqlite3$(WXLIBPOSTFIX).pdb \
 	/DSQLITE_ENABLE_RTREE /I..\..\include /GR /EHsc $(CPPFLAGS) $(CXXFLAGS)
 WXSQLITE3_OBJECTS =  \
 	wxsqlite3_wxsqlite3.obj \
 	wxsqlite3_sqlite3.obj
-REC_CXXFLAGS = /MD$(VAR_23) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) /D__WXMSW__ \
+REC_CXXFLAGS = /MD$(VAR_19) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) /D__WXMSW__ \
 	/I$(WX_DIR)\lib\$(COMPILER_PREFIX)$(WXCPU)_lib\msw$(WXLIBPOSTFIX) \
-	/I$(WX_DIR)\include $(VAR) $(VAR_22) $(p) /Fdrec$(WXLIBPOSTFIX).pdb \
+	/I$(WX_DIR)\include $(VAR) $(VAR_18) $(p) /Fdrec$(WXLIBPOSTFIX).pdb \
 	/I..\..\include\rec /I..\..\include /GR /EHsc /Yu"wx/wxprec.h" \
 	/Fp"wxprec_rec.pch" $(CPPFLAGS) $(CXXFLAGS)
 REC_OBJECTS =  \
@@ -181,17 +174,17 @@ REC_OBJECTS =  \
 	rec_recUpgrade.obj \
 	rec_recVersion.obj \
 	rec_dummy.obj
-RECCL_CXXFLAGS = /MD$(VAR_23) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) \
+RECCL_CXXFLAGS = /MD$(VAR_19) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) \
 	/D__WXMSW__ \
 	/I$(WX_DIR)\lib\$(COMPILER_PREFIX)$(WXCPU)_lib\msw$(WXLIBPOSTFIX) \
-	/I$(WX_DIR)\include $(VAR) $(VAR_22) $(p) /Fdreccl$(WXLIBPOSTFIX).pdb \
+	/I$(WX_DIR)\include $(VAR) $(VAR_18) $(p) /Fdreccl$(WXLIBPOSTFIX).pdb \
 	/I..\..\include\rec /I..\..\include /GR /EHsc $(CPPFLAGS) $(CXXFLAGS)
 RECCL_OBJECTS =  \
 	reccl_reccl.obj
-RECGUI_CXXFLAGS = /MD$(VAR_23) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) \
+RECGUI_CXXFLAGS = /MD$(VAR_19) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) \
 	/D__WXMSW__ \
 	/I$(WX_DIR)\lib\$(COMPILER_PREFIX)$(WXCPU)_lib\msw$(WXLIBPOSTFIX) \
-	/I$(WX_DIR)\include $(VAR) $(VAR_22) $(p) /Fdrecgui$(WXLIBPOSTFIX).pdb \
+	/I$(WX_DIR)\include $(VAR) $(VAR_18) $(p) /Fdrecgui$(WXLIBPOSTFIX).pdb \
 	/I..\..\include\rec /I..\..\include\rg /I..\..\include /GR /EHsc $(CPPFLAGS) \
 	$(CXXFLAGS)
 RECGUI_OBJECTS =  \
@@ -248,13 +241,13 @@ ______tfp__DEBUGINFO_6_p_1 = /d _DEBUG
 ____tfp__DEBUGINFO_9 = 
 !endif
 !if "$(WX_DEBUG)" == "1"
-____tfp__DEBUGINFO_9 = $(VAR_15)
+____tfp__DEBUGINFO_9 = $(VAR_11)
 !endif
 !if "$(WX_DEBUG)" == "0"
 ____tests__DEBUGINFO_34 = 
 !endif
 !if "$(WX_DEBUG)" == "1"
-____tests__DEBUGINFO_34 = $(VAR_15)
+____tests__DEBUGINFO_34 = $(VAR_11)
 !endif
 !if "$(WX_DEBUG)" == "0"
 ____WX_DEBUG_39_p = cppunit.lib
@@ -266,31 +259,25 @@ ____WX_DEBUG_39_p = cppunitd.lib
 ____calcalc__DEBUGINFO_49 = 
 !endif
 !if "$(WX_DEBUG)" == "1"
-____calcalc__DEBUGINFO_49 = $(VAR_15)
+____calcalc__DEBUGINFO_49 = $(VAR_11)
 !endif
 !if "$(WX_DEBUG)" == "0"
-____file2cpp__DEBUGINFO_62 = 
+____doccore__DEBUGINFO_62 = 
 !endif
 !if "$(WX_DEBUG)" == "1"
-____file2cpp__DEBUGINFO_62 = $(VAR_15)
+____doccore__DEBUGINFO_62 = $(VAR_11)
 !endif
 !if "$(WX_DEBUG)" == "0"
-____doccore__DEBUGINFO_75 = 
+VAR_9 = 
 !endif
 !if "$(WX_DEBUG)" == "1"
-____doccore__DEBUGINFO_75 = $(VAR_15)
+VAR_9 = /DEBUG
 !endif
 !if "$(WX_DEBUG)" == "0"
-VAR_13 = 
+VAR_11 = /opt:ref /opt:icf
 !endif
 !if "$(WX_DEBUG)" == "1"
-VAR_13 = /DEBUG
-!endif
-!if "$(WX_DEBUG)" == "0"
-VAR_15 = /opt:ref /opt:icf
-!endif
-!if "$(WX_DEBUG)" == "1"
-VAR_15 = 
+VAR_11 = 
 !endif
 !if "$(WX_DEBUG)" == "1"
 __WXDEBUG_DEFINE_p = /D__WXDEBUG__
@@ -314,10 +301,10 @@ VAR = /O2
 VAR = /Od
 !endif
 !if "$(WX_DEBUG)" == "0"
-VAR_22 = 
+VAR_18 = 
 !endif
 !if "$(WX_DEBUG)" == "1"
-VAR_22 = /Zi
+VAR_18 = /Zi
 !endif
 !if "$(WX_DEBUG)" == "0"
 p = 
@@ -326,16 +313,16 @@ p =
 p = /D_DEBUG
 !endif
 !if "$(WX_DEBUG)" == "0"
-VAR_23 = 
+VAR_19 = 
 !endif
 !if "$(WX_DEBUG)" == "1"
-VAR_23 = d
+VAR_19 = d
 !endif
 
 
 ### Targets: ###
 
-all: test_for_selected_wxbuild tfp.exe calendar$(WXLIBPOSTFIX).lib tests.exe calcalc.exe file2cpp.exe doccore.exe wxsqlite3$(WXLIBPOSTFIX).lib rec$(WXLIBPOSTFIX).lib reccl$(WXLIBPOSTFIX).lib recgui$(WXLIBPOSTFIX).lib
+all: test_for_selected_wxbuild tfp.exe calendar$(WXLIBPOSTFIX).lib tests.exe calcalc.exe doccore.exe wxsqlite3$(WXLIBPOSTFIX).lib rec$(WXLIBPOSTFIX).lib reccl$(WXLIBPOSTFIX).lib recgui$(WXLIBPOSTFIX).lib
 
 clean: 
 	-if exist .\*.obj del .\*.obj
@@ -351,9 +338,6 @@ clean:
 	-if exist calcalc.exe del calcalc.exe
 	-if exist calcalc.ilk del calcalc.ilk
 	-if exist calcalc.pdb del calcalc.pdb
-	-if exist file2cpp.exe del file2cpp.exe
-	-if exist file2cpp.ilk del file2cpp.ilk
-	-if exist file2cpp.pdb del file2cpp.pdb
 	-if exist doccore.exe del doccore.exe
 	-if exist doccore.ilk del doccore.ilk
 	-if exist doccore.pdb del doccore.pdb
@@ -375,7 +359,7 @@ test_for_selected_wxbuild:
 	exit 1
 
 tfp.exe: tfp_dummy.obj  $(TFP_OBJECTS) tfp_tfp.res recgui$(WXLIBPOSTFIX).lib rec$(WXLIBPOSTFIX).lib calendar$(WXLIBPOSTFIX).lib wxsqlite3$(WXLIBPOSTFIX).lib
-	link /NOLOGO /OUT:$@  /LIBPATH:$(WX_DIR)\lib\$(COMPILER_PREFIX)$(WXCPU)_lib $(WXMACHINE_FLAG) $(VAR_13) /pdb:"tfp.pdb" $(____tfp__DEBUGINFO_9) /SUBSYSTEM:WINDOWS $(LDFLAGS) @<<
+	link /NOLOGO /OUT:$@  /LIBPATH:$(WX_DIR)\lib\$(COMPILER_PREFIX)$(WXCPU)_lib $(WXMACHINE_FLAG) $(VAR_9) /pdb:"tfp.pdb" $(____tfp__DEBUGINFO_9) /SUBSYSTEM:WINDOWS $(LDFLAGS) @<<
 	$(TFP_OBJECTS) $(TFP_RESOURCES)  recgui$(WXLIBPOSTFIX).lib rec$(WXLIBPOSTFIX).lib calendar$(WXLIBPOSTFIX).lib wxsqlite3$(WXLIBPOSTFIX).lib wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_webview.lib wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_adv.lib wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_core.lib wxbase$(WX_VERSION)$(WXLIBPOSTFIX).lib wxtiff$(WX3RDPARTYLIBPOSTFIX).lib wxjpeg$(WX3RDPARTYLIBPOSTFIX).lib wxpng$(WX3RDPARTYLIBPOSTFIX).lib wxzlib$(WX3RDPARTYLIBPOSTFIX).lib wxregex$(WXLIBPOSTFIX).lib wxexpat$(WX3RDPARTYLIBPOSTFIX).lib kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib oleacc.lib
 <<
 
@@ -386,22 +370,17 @@ calendar$(WXLIBPOSTFIX).lib: calendar_dummy.obj  $(CALENDAR_OBJECTS)
 <<
 
 tests.exe: tests_dummy.obj  $(TESTS_OBJECTS) calendar$(WXLIBPOSTFIX).lib wxsqlite3$(WXLIBPOSTFIX).lib reccl$(WXLIBPOSTFIX).lib rec$(WXLIBPOSTFIX).lib
-	link /NOLOGO /OUT:$@  /LIBPATH:$(WX_DIR)\lib\$(COMPILER_PREFIX)$(WXCPU)_lib $(WXMACHINE_FLAG) $(VAR_13) /pdb:"tests.pdb" $(____tests__DEBUGINFO_34) /SUBSYSTEM:CONSOLE /LIBPATH:$(CPPUNIT)\lib $(LDFLAGS) @<<
+	link /NOLOGO /OUT:$@  /LIBPATH:$(WX_DIR)\lib\$(COMPILER_PREFIX)$(WXCPU)_lib $(WXMACHINE_FLAG) $(VAR_9) /pdb:"tests.pdb" $(____tests__DEBUGINFO_34) /SUBSYSTEM:CONSOLE /LIBPATH:$(CPPUNIT)\lib $(LDFLAGS) @<<
 	$(TESTS_OBJECTS)   calendar$(WXLIBPOSTFIX).lib wxsqlite3$(WXLIBPOSTFIX).lib reccl$(WXLIBPOSTFIX).lib rec$(WXLIBPOSTFIX).lib $(____WX_DEBUG_39_p) wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_core.lib wxbase$(WX_VERSION)$(WXLIBPOSTFIX).lib wxbase$(WX_VERSION)$(WXLIBPOSTFIX)_net.lib wxtiff$(WX3RDPARTYLIBPOSTFIX).lib wxjpeg$(WX3RDPARTYLIBPOSTFIX).lib wxpng$(WX3RDPARTYLIBPOSTFIX).lib wxzlib$(WX3RDPARTYLIBPOSTFIX).lib wxregex$(WXLIBPOSTFIX).lib wxexpat$(WX3RDPARTYLIBPOSTFIX).lib kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib oleacc.lib
 <<
 
 calcalc.exe: $(CALCALC_OBJECTS) calendar$(WXLIBPOSTFIX).lib
-	link /NOLOGO /OUT:$@  /LIBPATH:$(WX_DIR)\lib\$(COMPILER_PREFIX)$(WXCPU)_lib $(WXMACHINE_FLAG) $(VAR_13) /pdb:"calcalc.pdb" $(____calcalc__DEBUGINFO_49) /SUBSYSTEM:CONSOLE $(LDFLAGS) @<<
+	link /NOLOGO /OUT:$@  /LIBPATH:$(WX_DIR)\lib\$(COMPILER_PREFIX)$(WXCPU)_lib $(WXMACHINE_FLAG) $(VAR_9) /pdb:"calcalc.pdb" $(____calcalc__DEBUGINFO_49) /SUBSYSTEM:CONSOLE $(LDFLAGS) @<<
 	$(CALCALC_OBJECTS)   calendar$(WXLIBPOSTFIX).lib wxbase$(WX_VERSION)$(WXLIBPOSTFIX).lib wxtiff$(WX3RDPARTYLIBPOSTFIX).lib wxjpeg$(WX3RDPARTYLIBPOSTFIX).lib wxpng$(WX3RDPARTYLIBPOSTFIX).lib wxzlib$(WX3RDPARTYLIBPOSTFIX).lib wxregex$(WXLIBPOSTFIX).lib wxexpat$(WX3RDPARTYLIBPOSTFIX).lib kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib oleacc.lib
 <<
 
-file2cpp.exe: $(FILE2CPP_OBJECTS)
-	link /NOLOGO /OUT:$@  /LIBPATH:$(WX_DIR)\lib\$(COMPILER_PREFIX)$(WXCPU)_lib $(WXMACHINE_FLAG) $(VAR_13) /pdb:"file2cpp.pdb" $(____file2cpp__DEBUGINFO_62) /SUBSYSTEM:CONSOLE $(LDFLAGS) @<<
-	$(FILE2CPP_OBJECTS)   wxbase$(WX_VERSION)$(WXLIBPOSTFIX).lib wxtiff$(WX3RDPARTYLIBPOSTFIX).lib wxjpeg$(WX3RDPARTYLIBPOSTFIX).lib wxpng$(WX3RDPARTYLIBPOSTFIX).lib wxzlib$(WX3RDPARTYLIBPOSTFIX).lib wxregex$(WXLIBPOSTFIX).lib wxexpat$(WX3RDPARTYLIBPOSTFIX).lib kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib oleacc.lib
-<<
-
 doccore.exe: $(DOCCORE_OBJECTS) calendar$(WXLIBPOSTFIX).lib wxsqlite3$(WXLIBPOSTFIX).lib rec$(WXLIBPOSTFIX).lib reccl$(WXLIBPOSTFIX).lib
-	link /NOLOGO /OUT:$@  /LIBPATH:$(WX_DIR)\lib\$(COMPILER_PREFIX)$(WXCPU)_lib $(WXMACHINE_FLAG) $(VAR_13) /pdb:"doccore.pdb" $(____doccore__DEBUGINFO_75) /SUBSYSTEM:CONSOLE $(LDFLAGS) @<<
+	link /NOLOGO /OUT:$@  /LIBPATH:$(WX_DIR)\lib\$(COMPILER_PREFIX)$(WXCPU)_lib $(WXMACHINE_FLAG) $(VAR_9) /pdb:"doccore.pdb" $(____doccore__DEBUGINFO_62) /SUBSYSTEM:CONSOLE $(LDFLAGS) @<<
 	$(DOCCORE_OBJECTS)   calendar$(WXLIBPOSTFIX).lib wxsqlite3$(WXLIBPOSTFIX).lib rec$(WXLIBPOSTFIX).lib reccl$(WXLIBPOSTFIX).lib wxbase$(WX_VERSION)$(WXLIBPOSTFIX).lib wxtiff$(WX3RDPARTYLIBPOSTFIX).lib wxjpeg$(WX3RDPARTYLIBPOSTFIX).lib wxpng$(WX3RDPARTYLIBPOSTFIX).lib wxzlib$(WX3RDPARTYLIBPOSTFIX).lib wxregex$(WXLIBPOSTFIX).lib wxexpat$(WX3RDPARTYLIBPOSTFIX).lib kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib oleacc.lib
 <<
 
@@ -542,9 +521,6 @@ tests_testDatabase.obj: .\..\..\tests\rec\testDatabase.cpp
 
 calcalc_calCalc.obj: .\..\..\utils\cal\calCalc.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(CALCALC_CXXFLAGS) .\..\..\utils\cal\calCalc.cpp
-
-file2cpp_file2cpp.obj: .\..\..\utils\file2cpp\file2cpp.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(FILE2CPP_CXXFLAGS) .\..\..\utils\file2cpp\file2cpp.cpp
 
 doccore_dcMain.obj: .\..\..\utils\doccore\dcMain.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(DOCCORE_CXXFLAGS) .\..\..\utils\doccore\dcMain.cpp
