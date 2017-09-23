@@ -1,3 +1,3 @@
-file2cpp -v -o../tfpText.h tfpText.f2c
+file2cpp tfpText.f2c -o ../tfpText.h -V
 
 pause

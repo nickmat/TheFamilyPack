@@ -1,3 +1,3 @@
-file2cpp -v -o../recDatabaseCreate.h recDatabaseCreate.f2c
+file2cpp recDatabaseCreate.f2c -o ../recDatabaseCreate.h -V
 
 pause

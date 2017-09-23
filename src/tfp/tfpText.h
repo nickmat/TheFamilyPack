@@ -1,4 +1,4 @@
-/* ..\tfpText.h - File created by file2cpp */
+/* ../tfpText.h - File created by file2cpp 1.0.0 */
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Name:        src/tfp/embed/tfpText.f2c
