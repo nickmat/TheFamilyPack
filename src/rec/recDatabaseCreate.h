@@ -230,6 +230,7 @@ static const char* createdb =  /* recCreate.sql */
  "  husb_id INTEGER,\n"
  "  wife_id INTEGER\n"
  ");\n"
+ "INSERT INTO Family (id, husb_id, wife_id) VALUES(1, 0, 0);\n"
  "CREATE TABLE FamilyEvent (\n"
  "  id INTEGER PRIMARY KEY,\n"
  "  fam_id INTEGER NOT NULL REFERENCES Family(id),\n"

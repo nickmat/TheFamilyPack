@@ -270,6 +270,8 @@ CREATE TABLE Family (
   wife_id INTEGER
 );
 
+INSERT INTO Family (id, husb_id, wife_id) VALUES(1, 0, 0);
+
 CREATE TABLE FamilyEvent (
   id INTEGER PRIMARY KEY,
   fam_id INTEGER NOT NULL REFERENCES Family(id),
