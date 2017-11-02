@@ -720,41 +720,44 @@ bool recIndividual::CreateMissingFamilies()
     return true;
 }
 
-void recIndividual::RemoveFromDatabase()
+void recIndividual::RemoveFromDatabase( idt indID )
 {
-    if( f_id <= 0 ) {
+    // TODO: Delete orphaned EventType and/or EventTypeRole
+    // TODO: Remove ContactList if orphaned
+    if( indID <= 0 ) {
         return;
     }
-    wxSQLite3StatementBuffer sql;
 
-    recNameVec names = GetNames();
-    for( size_t i = 0 ; i < names.size() ; i++ ) {
+    recNameVec names = GetNames( indID );
+    for ( size_t i = 0; i < names.size(); i++ ) {
         names[i].RemoveFromDatabase();
     }
 
+    recFamilyVec families = GetFamilyList( indID );
+    for ( size_t i = 0; i < families.size(); i++ ) {
+        if ( families[i].f_husb_id == indID ) {
+            families[i].f_husb_id = 0;
+        }
+        if ( families[i].f_wife_id == indID ) {
+            families[i].f_wife_id = 0;
+        }
+        if ( families[i].f_husb_id == 0 && families[i].f_wife_id == 0 ) {
+            families[i].RemoveFromDatabase();
+        } else {
+            families[i].Save();
+        }
+    }
+
+    wxSQLite3StatementBuffer sql;
     sql.Format(
-        // TODO: Remove ContactList if orphaned
-        "DELETE FROM FamilyIndividual WHERE ind_id=" ID" ;"
-        "DELETE FROM Family WHERE husb_id=" ID " AND wife_id=0;"
-        "DELETE FROM Family WHERE husb_id=0 AND wife_id=" ID ";"
+        "DELETE FROM FamilyIndividual WHERE ind_id=" ID " ;"
         "DELETE FROM IndividualEvent WHERE ind_id=" ID ";"
         "DELETE FROM IndividualPersona WHERE ind_id=" ID ";",
-        f_id, f_id, f_id, f_id, f_id
+        indID, indID, indID
     );
     s_db->ExecuteUpdate( sql );
 
-    Delete();
-    // TODO: Delete orphaned EventType and/or EventTypeRole
-    Clear();
-}
-
-void recIndividual::RemoveFromDatabase( idt id )
-{
-    if( id <= 0 ) {
-        return;
-    }
-    recIndividual ind(id);
-    ind.RemoveFromDatabase();
+    Delete( indID );
 }
 
 //============================================================================
@@ -1222,6 +1225,20 @@ void recFamily::RemoveFromEvents( idt famID, idt indID )
         );
         s_db->ExecuteUpdate( sql );
     }
+}
+
+void recFamily::RemoveFromDatabase( idt famID )
+{
+    // We are not responsible for deleting the Individuals.
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "DELETE FROM FamilyIndividual WHERE fam_id=" ID " ;"
+        "DELETE FROM FamilyEventa WHERE fam_id=" ID " ;"
+        "DELETE FROM FamilyEvent WHERE fam_id=" ID " ;",
+        famID, famID, famID
+    );
+    s_db->ExecuteUpdate( sql );
+    Delete( famID );
 }
 
 //============================================================================

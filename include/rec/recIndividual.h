@@ -181,7 +181,7 @@ public:
     static bool CreateMissingFamilies();
 
     // Delete Individual and remove all references to it.
-    void RemoveFromDatabase();
+    void RemoveFromDatabase() { RemoveFromDatabase( f_id ); }
     static void RemoveFromDatabase( idt id );
 };
 
@@ -277,6 +277,9 @@ public:
 
     static void RemoveFromEvents( idt famID, idt indID );
     void RemoveFromEvents( idt indID ) const { RemoveFromEvents( f_id, indID ); }
+
+    static void RemoveFromDatabase( idt famID );
+    void RemoveFromDatabase() { RemoveFromDatabase( f_id ); }
 };
 
 inline bool recEquivalent( const recFamily& r1, const recFamily& r2 )
