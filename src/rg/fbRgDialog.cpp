@@ -2618,7 +2618,7 @@ fbRgEditSystem::fbRgEditSystem( wxWindow* parent, wxWindowID id, const wxString&
 	fgSizer14->Add( 0, 0, 1, wxEXPAND, 5 );
 	
 	
-	bSizer81->Add( fgSizer14, 0, wxEXPAND|wxALIGN_CENTER_HORIZONTAL, 5 );
+	bSizer81->Add( fgSizer14, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
 	
 	m_staticline1 = new wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
 	bSizer81->Add( m_staticline1, 0, wxEXPAND|wxALL, 0 );
@@ -2676,10 +2676,10 @@ fbRgEditUserSettings::fbRgEditUserSettings( wxWindow* parent, wxWindowID id, con
 	fgSizer15->Add( m_staticText, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT|wxALL, 5 );
 	
 	m_textCtrlHome = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 200,-1 ), 0 );
-	fgSizer15->Add( m_textCtrlHome, 0, wxALL|wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
+	fgSizer15->Add( m_textCtrlHome, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	
-	bSizer83->Add( fgSizer15, 0, wxALIGN_CENTER_HORIZONTAL|wxEXPAND, 5 );
+	bSizer83->Add( fgSizer15, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
 	
 	m_staticline1 = new wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
 	bSizer83->Add( m_staticline1, 0, wxEXPAND|wxALL, 0 );
