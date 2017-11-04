@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     25 September 2010
- * Copyright:   Copyright (c) 2010 - 2016, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -1095,8 +1095,13 @@ void TfpFrame::OnNavigationRequest( wxWebViewEvent& evt )
 void TfpFrame::OnHtmCtxMenu( wxCommandEvent& event )
 {
     bool ret = false;
-    Sex sex;
-    idt id = recGetID( m_ctxmenuref.Mid(1) );
+    idt id = recGetID( m_ctxmenuref.substr( 1 ) );
+    idt id2 = 0;
+    size_t pos = m_ctxmenuref.find( '+' );
+    if ( pos != wxString::npos ) {
+        id2 = recGetID( m_ctxmenuref.substr( pos + 1 ) );
+    }
+    Sex sex = ( m_ctxmenuref.substr( 0, 1 ) == "H" ) ? SEX_Female : SEX_Male;
 
     recDb::Begin();
     try {
@@ -1129,8 +1134,7 @@ void TfpFrame::OnHtmCtxMenu( wxCommandEvent& event )
             ret = rgAddNewParent( this, id, SEX_Male );
             break;
         case tfpID_HCTXMENU_EDIT_NEW_SPOUSE:
-            sex = ( m_ctxmenuref.GetChar(0) == 'H' ) ? SEX_Female : SEX_Male;
-            ret = rgAddNewSpouse( this, id, sex );
+            ret = rgAddNewSpouse( this, id, sex, id2 );
             break;
         case tfpID_HCTXMENU_EDIT_EXIST_MOTHER:
             ret = rgAddExistParent( this, id, SEX_Female );
@@ -1139,7 +1143,6 @@ void TfpFrame::OnHtmCtxMenu( wxCommandEvent& event )
             ret = rgAddExistParent( this, id, SEX_Male );
             break;
         case tfpID_HCTXMENU_EDIT_EXIST_SPOUSE:
-            sex = ( m_ctxmenuref.GetChar(0) == 'H' ) ? SEX_Female : SEX_Male;
             ret = rgAddExistSpouse( this, id, sex );
             break;
         case tfpID_HCTXMENU_EDIT_DELETE_IND:

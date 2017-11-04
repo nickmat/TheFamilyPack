@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3rd March 2013
- * Copyright:   Copyright (c) 2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2013 ~ 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -177,37 +177,46 @@ bool rgAddExistParent( wxWindow* wind, idt indID, Sex sex )
     return true;
 }
 
-bool rgAddNewSpouse( wxWindow* wind, idt indID, Sex sex )
+bool rgAddNewSpouse( wxWindow* wind, idt indID, Sex sex, idt famID )
 {
-    const wxString savepoint = recDb::GetSavepointStr();
-    recDb::Savepoint( savepoint );
-    bool ret = false;
-
-    int privacy = recIndividual::GetPrivacy( indID );
-    idt famID = recIndividual::GetFamilyID( indID );
     recFamily fam(famID);
-    if( sex == SEX_Female ) {
-        if( fam.f_wife_id != 0 ) {
-            fam.Clear();
-            fam.f_husb_id = indID;
-            fam.Save();
+    bool newfam = false;
+    if ( fam.FGetHusbID() == 0 || fam.FGetWifeID() == 0 ) {
+        if ( fam.GetChildCount() > 0 ) {
+            // One parent family.
+            int ans = wxMessageBox( "Add partner to current family?", "", wxYES_NO | wxCANCEL );
+            if ( ans == wxCANCEL ) {
+                return false;
+            }
+            if ( ans == wxNO ) {
+                newfam = true;
+            }
         }
     } else {
-        if( fam.f_husb_id != 0 ) {
-            fam.Clear();
-            fam.f_wife_id = indID;
-            fam.Save();
-        }
+        newfam = true;
     }
-    famID = fam.FGetID();
+    int privacy = recIndividual::GetPrivacy( indID );
+
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+
+    if ( newfam ) {
+        fam.Clear();
+        if ( sex == SEX_Female ) {
+            fam.FSetHusbID( indID );
+        } else {
+            fam.FSetWifeID( indID );
+        }
+        fam.Save();
+        famID = fam.FGetID();
+    }
 
     if( rgAddNewIndividual( wind, sex, privacy, "", famID ) != 0 ) {
         recDb::ReleaseSavepoint( savepoint );
-        ret = true;
-    } else {
-        recDb::Rollback( savepoint );
+        return true;
     }
-    return ret;
+    recDb::Rollback( savepoint );
+    return false;
 }
 
 bool rgAddExistSpouse( wxWindow* wind, idt indID, Sex sex )
