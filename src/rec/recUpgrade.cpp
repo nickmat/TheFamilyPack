@@ -41,8 +41,8 @@
 const int recVerMajor    = 0;
 const int recVerMinor    = 0;
 const int recVerRev      = 10;
-const int recVerTest     = 14;                              // <<======<<<<
-const wxStringCharType* recVerStr = wxS("TFPD-0.0.10.14");  // <<======<<<<
+const int recVerTest     = 15;                              // <<======<<<<
+const wxStringCharType* recVerStr = wxS("TFPD-0.0.10.15");  // <<======<<<<
 
 //============================================================================
 //                 Code to upgrade old versions
@@ -623,6 +623,25 @@ void UpgradeTest0_0_10_13to0_0_10_14()
 
         "UPDATE Version SET test=14 WHERE id=1;\n"
         "COMMIT;\n"
+        ;
+    recDb::GetDb()->ExecuteUpdate( query );
+}
+
+void UpgradeTest0_0_10_14to0_0_10_15()
+{
+    // Version 0.0.10.14 to 0.0.10.15
+    // Add seed Family F1 record if it doesn't exist.
+
+    int cnt = recDb::GetDb()->ExecuteScalar( "SELECT COUNT(*) FROM Family WHERE id=1;" );
+    wxString query;
+
+    query << "BEGIN;\n";
+    if ( cnt == 0 ) {
+        query << "INSERT INTO Family (id, husb_id, wife_id) VALUES(1, 0, 0);\n";
+    }
+    query <<
+        "UPDATE Version SET test=15 WHERE id=1;\n"
+        "COMMIT;\n"
     ;
     recDb::GetDb()->ExecuteUpdate( query );
 }
@@ -645,6 +664,7 @@ void UpgradeRev0_0_10toCurrent( int test )
     case 11: UpgradeTest0_0_10_11to0_0_10_12();
     case 12: UpgradeTest0_0_10_12to0_0_10_13();
     case 13: UpgradeTest0_0_10_13to0_0_10_14();
+    case 14: UpgradeTest0_0_10_14to0_0_10_15();
     }
 }
 

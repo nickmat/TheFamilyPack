@@ -429,7 +429,7 @@ static const char* createdb =  /* recCreate.sql */
  "INSERT INTO System (id, val) VALUES(1, '1');\n"
  "INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 0, 1, 'F1');\n"
  "INSERT INTO UserSetting (id, user_id, property, val) VALUES(2, 1, 1, 'F1');\n"
- "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 14);\n"
+ "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 15);\n"
  "COMMIT;\n";
 
 /* End of recDatabaseCreate.f2c */

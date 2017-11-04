@@ -270,6 +270,7 @@ CREATE TABLE Family (
   wife_id INTEGER
 );
 
+/* Seed database with the first family record */
 INSERT INTO Family (id, husb_id, wife_id) VALUES(1, 0, 0);
 
 CREATE TABLE FamilyEvent (
@@ -509,7 +510,7 @@ INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 0, 1, 'F1');
 INSERT INTO UserSetting (id, user_id, property, val) VALUES(2, 1, 1, 'F1');
 
 /* The Version table has only this one row */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 14);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 15);
 
 COMMIT;
 
