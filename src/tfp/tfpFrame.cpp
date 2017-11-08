@@ -715,7 +715,7 @@ void TfpFrame::OnFindEventID( wxCommandEvent& event )
  */
 void TfpFrame::OnListIndex( wxCommandEvent& event )
 {
-    DisplayHtmPage( "N" );
+    DisplayHtmPage( "ND" );
 }
 
 /*! \brief Called on a List Personas menu option event.
@@ -730,7 +730,7 @@ void TfpFrame::OnListPersonas( wxCommandEvent& event )
  */
 void TfpFrame::OnListIndividuals( wxCommandEvent& event )
 {
-    DisplayHtmPage( "N*" );
+    DisplayHtmPage( "ND*" );
 }
 
 /*! \brief Called on a List References menu option event.
@@ -1768,20 +1768,23 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
     if( name.compare( 0, 1, "I" ) == 0 && success ) {
         return tfpWriteIndividualPage( num );
     }
-    if( name.compare( "N" ) == 0 ) {
+    if ( name.compare( "ND" ) == 0 ) {  // Was "N"
         return tfpWriteIndividualIndex();
     }
-    if( name.compare( "N*" ) == 0 ) {
+    if ( name.compare( "NP" ) == 0 ) {  // Was "Pa"
+        return tfpWritePersonIndex();
+    }
+    if ( name.compare( "ND*" ) == 0 ) { // Was "N*"
         return tfpWriteIndividualList( "" );
     }
-    if( name.compare( 0, 1, "N" ) == 0 && ! success ) {
-        return tfpWriteIndividualList( name.Mid( 1 ) );
+    if ( name.compare( 0, 3, "ND+" ) == 0 && !success2 ) { // Was "N<Name>" 
+        return tfpWriteIndividualList( name.Mid( 3 ) );
+    }
+    if ( name.compare( 0, 3, "ND=" ) == 0 && !success2 ) { // Was "N<L>" 
+        return tfpWriteIndividualList( name.Mid( 3 ) );
     }
     if( name.compare( 0, 1, "N" ) == 0 && success ) {
         return tfpWriteName( num );
-    }
-    if( name.compare( "Pa" ) == 0 ) {
-        return tfpWritePersonIndex();
     }
     if( name.compare( 0, 2, "Pa" ) == 0 ) {
         return tfpWritePersonaPage( num1 );

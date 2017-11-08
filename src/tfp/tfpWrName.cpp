@@ -74,7 +74,7 @@ static wxString WriteIndex( wxSQLite3ResultSet& table )
                 // Start new line
                 htm <<
                     "<tr>\n<td class='" << rowclass <<
-                    "'><a href='tfp:N" << letter <<
+                    "'><a href='tfp:ND=" << letter <<
                     "'><b>" << letter <<
                     "</b></a></td>\n<td class='" << rowclass <<
                     "'>"
@@ -86,7 +86,7 @@ static wxString WriteIndex( wxSQLite3ResultSet& table )
                 htm << ", ";
             }
             htm << 
-                "\n<a href='tfp:N" << name <<
+                "\n<a href='tfp:ND+" << name <<
                 "'><b>" << name <<
                 "</b></a>"
             ;
