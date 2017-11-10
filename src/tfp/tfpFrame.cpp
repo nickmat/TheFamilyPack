@@ -715,15 +715,14 @@ void TfpFrame::OnFindEventID( wxCommandEvent& event )
  */
 void TfpFrame::OnListIndex( wxCommandEvent& event )
 {
-    DisplayHtmPage( "ND" );
+    DisplayHtmPage( "NI" );
 }
 
 /*! \brief Called on a List Personas menu option event.
  */
 void TfpFrame::OnListPersonas( wxCommandEvent& event )
 {
-    wxMessageBox( "Not yet implimented", "OnListPersonas" );
-//    DisplayHtmPage( "Pa" );
+    DisplayHtmPage( "NP" );
 }
 
 /*! \brief Called on a  List Individuals menu option event.
@@ -1768,20 +1767,20 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
     if( name.compare( 0, 1, "I" ) == 0 && success ) {
         return tfpWriteIndividualPage( num );
     }
-    if ( name.compare( "ND" ) == 0 ) {  // Was "N"
-        return tfpWriteIndividualIndex();
+    if ( name.compare( "NI" ) == 0 ) {
+        return tfpWriteSurnameIndex( recSG_Individual );
     }
-    if ( name.compare( "NP" ) == 0 ) {  // Was "Pa"
-        return tfpWritePersonIndex();
+    if ( name.compare( "NP" ) == 0 ) {
+        return tfpWriteSurnameIndex( recSG_Persona );
     }
-    if ( name.compare( "ND*" ) == 0 ) { // Was "N*"
-        return tfpWriteIndividualList( "" );
+    if ( name.compare( "ND*" ) == 0 ) { 
+        return tfpWriteIndividualList();
     }
-    if ( name.compare( 0, 3, "ND+" ) == 0 && !success2 ) { // Was "N<Name>" 
-        return tfpWriteIndividualList( name.Mid( 3 ) );
+    if ( name.compare( 0, 3, "NI+" ) == 0 && !success2 ) {
+        return tfpWriteNameList( name.Mid( 3 ), recSG_Individual );
     }
-    if ( name.compare( 0, 3, "ND=" ) == 0 && !success2 ) { // Was "N<L>" 
-        return tfpWriteIndividualList( name.Mid( 3 ) );
+    if ( name.compare( 0, 3, "NP+" ) == 0 && !success2 ) {
+        return tfpWriteNameList( name.Mid( 3 ), recSG_Persona );
     }
     if( name.compare( 0, 1, "N" ) == 0 && success ) {
         return tfpWriteName( num );

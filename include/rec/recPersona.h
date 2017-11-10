@@ -74,6 +74,9 @@ public:
     static idt Create( idt refID, Sex sex = SEX_Unstated );
 
     static Sex GetSex( idt id );
+    static idt GetRefID( idt id ) {
+        return recDb::ExecuteID( "SELECT ref_id FROM Persona WHERE id=" ID ";", id );
+    }
 
     static idt GetNameID( idt perID ) { return recName::GetDefaultNameID( 0, perID ); }
     idt GetNameID() const { return recName::GetDefaultNameID( 0, f_id ); }

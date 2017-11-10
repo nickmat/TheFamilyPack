@@ -321,6 +321,72 @@ wxString recName::GetNamePartStr( idt nameID, idt partID )
     return str;
 }
 
+wxSQLite3ResultSet recName::GetSurnameIndex( recSurnameGroup surnamegrp )
+{
+    const char* grp;
+    switch ( surnamegrp ) {
+    case recSG_Individual:
+        grp = "per_id";
+        break;
+    case recSG_Persona:
+        grp = "ind_id";
+        break;
+    default:
+        return wxSQLite3ResultSet();
+    }
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT NP.val FROM NamePart NP, Name N"
+        " WHERE N.%s=0 AND N.id=NP.name_id AND NP.type_id=-2"
+        " GROUP BY NP.val;", grp
+    );
+    return s_db->ExecuteQuery( sql );
+}
+
+recNameVec recName::GetNameList( const wxString& surname, recSurnameGroup sng )
+{
+    recNameVec list;
+
+    if ( surname.empty() ) {
+        return list;
+    }
+
+    const char* grp;
+    switch ( sng ) {
+    case recSG_Individual:
+        grp = "per_id";
+        break;
+    case recSG_Persona:
+        grp = "ind_id";
+        break;
+    default:
+        return list;
+    }
+
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT N.id, N.ind_id, N.per_id, N.style_id, N.sequence"
+        " FROM Name N, NamePart NP"
+        " WHERE NP.type_id=-2 AND N.id=NP.name_id AND N.%s=0 AND NP.val='%q';",
+        grp, UTF8_( surname )
+    );
+    wxSQLite3Table result = s_db->GetTable( sql );
+
+    recName name( 0 );
+    list.reserve( result.GetRowCount() );
+    for ( int i = 0; i < result.GetRowCount(); i++ )
+    {
+        result.SetRow( i );
+        name.FSetID( GET_ID( result.GetInt64( 0 ) ) );
+        name.FSetIndID( GET_ID( result.GetInt64( 1 ) ) );
+        name.FSetPerID( GET_ID( result.GetInt64( 2 ) ) );
+        name.FSetTypeID( GET_ID( result.GetInt64( 3 ) ) );
+        name.FSetSequence( result.GetInt( 4 ) );
+        list.push_back( name );
+    }
+    return list;
+}
+
 int recName::GetNextSequence( idt indID, idt perID )
 {
     const char* owner;

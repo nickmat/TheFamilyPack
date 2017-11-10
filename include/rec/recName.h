@@ -111,6 +111,9 @@ public:
         { return GetNamePartStr( id, NAME_TYPE_Surname ); }
     wxString GetSurname() const { return GetNamePartStr( NAME_TYPE_Surname ); }
 
+    static wxSQLite3ResultSet GetSurnameIndex( recSurnameGroup sng );
+    static recNameVec GetNameList( const wxString& surname, recSurnameGroup sng );
+
     static int GetNextSequence( idt indID, idt perID );
     void SetNextSequence() { f_sequence = GetNextSequence( f_ind_id, f_per_id ); }
 

@@ -168,9 +168,7 @@ public:
     wxSQLite3ResultSet GetReferenceSet() const { return GetReferenceSet( f_id ); }
     static wxSQLite3ResultSet GetReferenceSet( idt indID );
 
-    static wxSQLite3ResultSet GetNameSet( wxString name );
-    static wxSQLite3ResultSet GetNameSet( Sex sex );
-    static wxSQLite3ResultSet GetSurnameSet();
+    static wxSQLite3ResultSet GetNameSet();
 
     static recIndRelVec GetIndRelationships( idt indID );
     recIndRelVec GetIndRelationships() const { return GetIndRelationships( f_id ); }

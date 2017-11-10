@@ -6,7 +6,7 @@
  * Website:     http://thefamilypack.org
  * Created:     30th April 2013
  * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2013 ~ 2017, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -90,6 +90,11 @@ inline wxString recGetIDStr( idt id ) { return id ? recGetStr( id ) : ""; }
 
 enum Sex { SEX_Unstated, SEX_Male, SEX_Female, SEX_Unknown };
 extern wxString recGetSexStr( Sex sex );
+
+// Surname grouping.
+enum recSurnameGroup {
+    recSG_DefaultInd, recSG_Individual, recSG_Persona, recSG_All, recSG_MAX
+};
 
 // Event/Eventa groups
 enum recET_GRP_FILTER {

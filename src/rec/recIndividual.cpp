@@ -600,57 +600,11 @@ wxSQLite3ResultSet recIndividual::GetReferenceSet( idt indID )
     return s_db->ExecuteQuery( sql );
 }
 
-wxSQLite3ResultSet recIndividual::GetNameSet( wxString surname )
-{
-    wxSQLite3StatementBuffer sql;
-
-    if( surname.length() == 0 ) {
-        // Full list
-        sql.Format(
-            "SELECT name, epitaph, id FROM Individual "
-            "ORDER BY surname, name, epitaph;"
-        );
-    } else if( surname.length() == 1 ) {
-        // Name beginning with letter
-        wxString name = surname + wxT("%");
-        sql.Format(
-            "SELECT name, epitaph, id FROM Individual "
-            "WHERE surname LIKE '%q' ORDER BY surname, name, epitaph;",
-            UTF8_(name)
-        );
-    } else {
-        // All matching the given surname
-        sql.Format(
-            "SELECT name, epitaph, id FROM Individual "
-            "WHERE surname='%q' ORDER BY surname, name, epitaph;",
-            UTF8_(surname)
-        );
-    }
-    return s_db->ExecuteQuery( sql );
-}
-
-wxSQLite3ResultSet recIndividual::GetNameSet( Sex sex )
-{
-    wxSQLite3StatementBuffer sql;
-
-    if( sex == SEX_Unstated ) {
-        sql.Format(
-            "SELECT id, surname, name, epitaph FROM Individual "
-            "ORDER BY surname, name;"
-        );
-    } else {
-        sql.Format(
-            "SELECT I.id, surname, name, epitaph FROM Individual "
-            "WHERE sex=%d ORDER BY surname, name;", sex
-        );
-    }
-    return s_db->ExecuteQuery( sql );
-}
-
-wxSQLite3ResultSet recIndividual::GetSurnameSet()
+wxSQLite3ResultSet recIndividual::GetNameSet()
 {
     return s_db->ExecuteQuery(
-        "SELECT surname FROM Individual GROUP BY surname;"
+        "SELECT name, epitaph, id FROM Individual"
+        " ORDER BY surname, name, epitaph;"
     );
 }
 
