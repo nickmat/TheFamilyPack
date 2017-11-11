@@ -147,6 +147,7 @@
     <set var="MAIN_INC">../$(REL_ROOT)/tfp/include</set>
     <set var="MAIN_SRC">../$(REL_ROOT)/tfp/src</set>
     <include file="../../tfp_ext/build/ext.bkl"/>
+    <include file="../../tfp_wor/build/wor.bkl"/>
     <include file="../../tfp_fill/build/fill.bkl"/>
     <!-- <include file="../../tfp_place/build/place.bkl"/> -->
   </if>
