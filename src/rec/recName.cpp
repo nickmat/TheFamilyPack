@@ -347,29 +347,35 @@ recNameVec recName::GetNameList( const wxString& surname, recSurnameGroup sng )
 {
     recNameVec list;
 
-    if ( surname.empty() ) {
-        return list;
-    }
-
-    const char* grp;
+    const char* not_grp;
     switch ( sng ) {
     case recSG_Individual:
-        grp = "per_id";
+        not_grp = "per_id";
         break;
     case recSG_Persona:
-        grp = "ind_id";
+        not_grp = "ind_id";
         break;
     default:
         return list;
     }
 
     wxSQLite3StatementBuffer sql;
-    sql.Format(
-        "SELECT N.id, N.ind_id, N.per_id, N.style_id, N.sequence"
-        " FROM Name N, NamePart NP"
-        " WHERE NP.type_id=-2 AND N.id=NP.name_id AND N.%s=0 AND NP.val='%q';",
-        grp, UTF8_( surname )
-    );
+    if ( surname.empty() ) {
+        // Select all names for group.
+        sql.Format(
+            "SELECT N.id, N.ind_id, N.per_id, N.style_id, N.sequence"
+            " FROM Name N, NamePart NP"
+            " WHERE NP.type_id=-2 AND N.id=NP.name_id AND N.%s=0;",
+            not_grp
+        );
+    } else {
+        sql.Format(
+            "SELECT N.id, N.ind_id, N.per_id, N.style_id, N.sequence"
+            " FROM Name N, NamePart NP"
+            " WHERE NP.type_id=-2 AND N.id=NP.name_id AND N.%s=0 AND NP.val='%q';",
+            not_grp, UTF8_( surname )
+        );
+    }
     wxSQLite3Table result = s_db->GetTable( sql );
 
     recName name( 0 );
