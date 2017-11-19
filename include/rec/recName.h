@@ -104,6 +104,9 @@ public:
     static wxString GetNameStr( idt id );
     wxString GetNameStr() const { return GetNameStr( f_id ); }
 
+    static wxString GetTypeStr( idt id );
+    wxString GetTypeStr() const;
+
     static wxString GetNamePartStr( idt nameID, idt partID );
     wxString GetNamePartStr( idt partID ) const
         { return GetNamePartStr( f_id, partID ); }

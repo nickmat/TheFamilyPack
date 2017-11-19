@@ -297,6 +297,23 @@ wxString recName::GetNameStr( idt id )
     return str;
 }
 
+wxString recName::GetTypeStr() const
+{
+    return ExecuteStr(
+        "SELECT name FROM NameStyle WHERE id=" ID ";",
+        f_style_id
+    );
+}
+
+wxString recName::GetTypeStr( idt id )
+{
+    return ExecuteStr(
+        "SELECT NS.name FROM Name N, NameStyle NS"
+        " WHERE N.id=" ID " AND N.style_id=NS.id;",
+        id
+    );
+}
+
 wxString recName::GetNamePartStr( idt nameID, idt partID )
 {
     if( nameID == 0 ) return wxEmptyString;
