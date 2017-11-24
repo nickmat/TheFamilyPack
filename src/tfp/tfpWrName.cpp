@@ -108,7 +108,7 @@ static wxString WriteIndex( wxSQLite3ResultSet& table, recSurnameGroup sng )
             ;
             count++;
         }
-        htm << "</tr>\n</table>\n";
+        htm << "\n</td>\n</tr>\n</table>\n";
     } else {
         htm << "<p>No Names found!</p>\n";
     }
