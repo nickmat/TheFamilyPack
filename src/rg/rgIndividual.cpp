@@ -54,6 +54,17 @@ idt rgAddNewIndividual( wxWindow* wind, Sex sex, int privacy, const wxString& su
         famID = fam.FGetID();
     }
 
+    if ( privacy < 0 ) {
+        idt partnerID = fam.FGetHusbID();
+        if ( partnerID == 0 ) {
+            partnerID = fam.FGetWifeID();
+        }
+        if ( partnerID == 0 ) {
+            privacy = 0;
+        } else {
+            privacy = recIndividual::GetPrivacy( partnerID );
+        }
+    }
     idt indID = rgCreateIndividual( wind, famID, sex, privacy, rgCRNAME_Sur_Given, surname );
     if( indID == 0 ) {
         recDb::Rollback( savepoint );

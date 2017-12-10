@@ -1337,10 +1337,10 @@ void TfpFrame::DoEdit( const wxString& href )
             id = rgCreatePersonalEvent( this, recGetID( href.Mid(2) ), recEventType::ET_Occupation );
             if( id ) ret = true;
         } else if( href.StartsWith( "IL" ) ) {
-            id = rgAddNewIndividual( this, SEX_Male, 0, "", recGetID( href.Mid(2) ) );
+            id = rgAddNewIndividual( this, SEX_Male, -1, "", recGetID( href.Mid(2) ) );
             if( id ) ret = true;
         } else if( href.StartsWith( "IR" ) ) {
-            id = rgAddNewIndividual( this, SEX_Female, 0, "", recGetID( href.Mid(2) ) );
+            id = rgAddNewIndividual( this, SEX_Female, -1, "", recGetID( href.Mid(2) ) );
             if( id ) ret = true;
         } else if( href.StartsWith( "IF" ) ) {
             ret = rgAddNewParent( this, recGetID( href.Mid(2) ), SEX_Female );
