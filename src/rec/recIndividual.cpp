@@ -270,8 +270,15 @@ void recIndividual::UpdateDefaultFamily()
 {
     recFamilyVec families = GetFamilyList();
     if( families.size() == 0 ) {
-        wxASSERT( false ); // We shouldn't have this situation
-        f_fam_id = 0; // [TODO: We should create a new family] <<================<<<<<<
+        // Create a new family.
+        recFamily fam( 0 );
+        if ( f_sex == SEX_Female ) {
+            fam.FSetWifeID( f_id );
+        } else {
+            fam.FSetHusbID( f_id );
+        }
+        fam.Save();
+        f_fam_id = fam.FGetID();
         return;
     }
     for( size_t i = 0 ; i < families.size() ; i++ ) {
