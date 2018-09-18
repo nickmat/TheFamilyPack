@@ -1,0 +1,56 @@
+{
+    "project": "TheFamilyPack",
+    "home-url": "http://thefamilypack.org",
+    "color-top": "#eef",
+    "color-border": "#ddf",
+    "logo-shadow": false,
+    "site-css": "sys/tfp.css",
+    "sourceforge-url": "https://sourceforge.net/projects/thefamilypack/",
+    "github-url": "https://github.com/nickmat/TheFamilyPack",
+    "download-url": "https://sourceforge.net/projects/thefamilypack/files",
+    "stats-text": "statistics.txt",
+    "site": { "folder": "web-new", "subtitle": "Home Page", "label": "Home", "content": [
+        { "folder": "new", "name": "news", "label": "News" },
+        { "folder": "man", "name": "manual0-0", "label": "Manual", "title": "Manual", "subtitle": "Introduction", "content": [
+        ]},
+        { "folder": "db", "name": "database", "label": "Database", "title": "Database V0.0.10.11", "subtitle": "Introduction", "content": [
+            { "name": "dbdesign", "label": "Definitions", "subtitle": "Design", "css": "big-list" },
+            { "name": "dbdiagram", "label": "Diagram" },
+            { "folder": "sub", "name": "subsystems", "label": "Sub-Systems", "subtitle": "Sub-Systems", "content": [
+                { "name": "system", "label": "System", "subtitle": "System Settings" },
+                { "name": "version", "label": "Version", "subtitle": "Version Control" },
+                { "name": "contact", "label": "Contact", "subtitle": "Contact Sub-System" },
+                { "name": "user", "label": "User", "subtitle": "User Sub-System" },
+                { "name": "sources", "label": "Sources", "subtitle": "Sources Sub-System" },
+                { "name": "references", "label": "References", "subtitle": "Reference Sub-System" },
+                { "name": "dates", "label": "Dates", "subtitle": "Date Sub-System" },
+                { "name": "places", "label": "Places", "subtitle": "Place Sub-System" },
+                { "name": "names", "label": "Names", "subtitle": "Name Sub-System" },
+                { "name": "eventtypes", "label": "Event Types", "subtitle": "Event Type Sub-System" },
+                { "name": "personas", "label": "Personas", "subtitle": "Persona Sub-System" },
+                { "name": "eventas", "label": "Eventas", "subtitle": "Eventa Sub-System" },
+                { "name": "individuals", "label": "Individuals", "subtitle": "Individuals & Families" },
+                { "name": "events", "label": "Events", "subtitle": "Event Sub-System" }            
+            ]},
+            { "folder": "ov", "name": "overview", "label": "Overview", "content": [
+                { "name": "gentech-gtdm", "label": "GenTech GDM", "subtitle": "Differences to GenTech GDM" },
+                { "name": "event-eventa", "label": "Event-Eventa", "subtitle": "Event-Eventa Relationship" }            
+            ]}
+        ]},
+        { "folder": "com", "name": "common", "label": "Common Data", "subtitle": "Common Data", "content": [
+            { "folder": "core", "name": "core", "label": "Core", "subtitle": "Core Data", "content": [
+                { "name": "ets", "label": "Event Types", "subtitle": "Core Data: Event Types" }
+            ]},
+            { "folder": "place", "name": "places", "label": "Places", "subtitle": "Places - A Gazetteer" },
+            { "folder": "history", "name": "history", "label": "History", "subtitle": "Historical Events" },
+            { "folder": "source", "name": "sources", "label": "Sources", "subtitle": "Sources and Repositories" },
+            { "folder": "name", "name": "names", "label": "Names", "subtitle": "Names" }
+        ]},
+        { "folder": "dev", "name": "develop", "label": "Development", "title": "Development", "subtitle": "Introduction", "content": [
+            { "name": "routemap", "label": "Route Map", "title": "Development" },
+            { "name": "history", "label": "Release History", "title": "Development" },
+            { "name": "recprefix", "label": "Prefixes", "subtitle": "Record Prefixes" }
+        ]},
+        { "name": "support", "label": "Support", "subtitle": "Support" }
+    ]}
+}

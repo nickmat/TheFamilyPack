@@ -1,31 +1,39 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
 <head>
-<title>The Family Pack - Database: Dates</title>
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-<link rel="icon" type="image/png" href="../../logo1.png" />
-<link rel='stylesheet' type='text/css' href='../../tfp.css' />
+ <title>TheFamilyPack - Contact</title>
+ <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+ <link rel='icon' type='image/png' href='../../sys/logo32x32.png' />
+ <link rel='stylesheet' type='text/css' href='../../sys/livery.css' />
+ <link rel='stylesheet' type='text/css' href='../../sys/tfp.css' />
 </head>
 <body>
 
-<h1><a  href="../../index.htm"><img id="logo" src="../../tfp5.gif" alt="Logo" /></a>The Family Pack<br/>Database: Contact</h1>
+ <div class='heading'>
+  <div class='logo'>
+   <a  href='http://thefamilypack.org'>
+    <img class='logo' src='../../sys/logo266x100.png' alt='Logo' />
+   </a>
+  </div>
+  TheFamilyPack - Database V0.0.10.11<br />Contact Sub-System
+  <div class='clear'></div>
+ </div>
 
-<div id="page" class="database">
+ <div class="crumbs">
+  <a href='../../index.htm' class='m-item'>Home</a>
+  <a href='../../db/database.htm' class='m-item'>Database</a>
+  <a href='../../db/sub/subsystems.htm' class='m-item'>Sub-Systems</a>
+  <a href='contact.htm' class='m-item thispage'>Contact</a>
+  <a href='../../db/sub/user.htm' class='m-item nav'>►</a>
+  <a href='../../db/sub/version.htm' class='m-item nav'>◄</a>
+ </div>
 
-<div id="crumbs">
-  <a href="../../index.htm" class="m-item">Home</a>
-  <a href="../database.htm" class="m-item level1">Database</a>
-  <a href="subsystems.htm" class="m-item level2">Subsystems</a>
-  <a href="contact.htm" class="m-item level3 thispage">Contact</a>
-  <a href="version.htm" class="m-item prev">&lt;&lt;</a>
-  <a href="user.htm" class="m-item next">&gt;&gt;</a>
-</div>
-
-<div id="content" class="nomenu">
+<div id='content' class='nomenu'>
 
 <blockquote>
 <p>
- Email is a wonderful thing for people whose role in life is to be on top of things. But not for me; my role is to be on the bottom of things.
+ Email is a wonderful thing for people whose role in life is to be on top of things.
+ But not for me; my role is to be on the bottom of things.
 </p>
 <p class="attribute">Donald Knuth</p>
 </blockquote>
@@ -33,32 +41,40 @@
 <div class="diag"><img src="tfp-contact.png" alt="Contact Subsystem" /></div>
 <h2>Contact Subsystem</h2>
 <p>
- A single contact system is used for all entities that are contactable. Note that since all Users are also Researchers, a Users contact details can be found by looking up the relevant Researcher. If a Researcher is also an Individual in the database, only one contact list is needed.
+ A single contact system is used for all entities that are contactable.
+ Note that since all Users are also Researchers,
+ a Users contact details can be found by looking up the relevant Researcher.
+ If a Researcher is also an Individual in the database, only one contact list is needed.
 </p>
 
 <h3>Contact List</h3>
 <table class="basic rfloat">
- <tr><th colspan="0">ContactList table Core Data</th></tr>
+ <tr><th colspan="3">ContactList table Core Data</th></tr>
  <tr><th>[id]</th><th>[ind_id]</th><th> </th></tr>
  <tr><td>0</td><td>NULL</td><td>List associated with Unstated Reasearcher</td></tr>
  <tr><td>1</td><td>NULL</td><td>List associated with initial default Reasearcher</td></tr>
 </table>
 <p>
- This table is used to collect the various contact values available for a single entity. It is expected that most contact lists will be associated with Individuals although naturally this will be confined to living Individuals. The <span class="field">[ind_id]</span> column is used to point to the Individual concerned.
+ This table is used to collect the various contact values available for a single entity.
+ It is expected that most contact lists will be associated with Individuals
+ although naturally this will be confined to living Individuals.
+ The <span class="field">[ind_id]</span> column is used to point to the Individual concerned.
 </p>
 <p>
- The Contact List may also be pointed to by a Researcher entry (and thus indirectly by a User) and by a Repository.
+ The Contact List may also be pointed to by a Researcher entry
+ (and thus indirectly by a User) and by a Repository.
 </p>
 
 <h3>Contact</h3>
 <p>
- The Contact value <span class="field">[val]</span> is normally a text string, but could in some cases be a number or ID.
+ The Contact value <span class="field">[val]</span> is normally a text string,
+ but could in some cases be a number or ID.
 </p>
 
 <h3>Contact Type</h3>
 
 <table class="basic rfloat">
- <tr><th colspan="0">ContactType table Core Data</th></tr>
+ <tr><th colspan="3">ContactType table Core Data</th></tr>
  <tr><th>[id]</th><th>[name]</th><th> </th></tr>
  <tr><td>0</td><td> </td><td>Unstated type</td></tr>
  <tr><td>-1</td><td>Address</td><td></td></tr>
@@ -72,20 +88,29 @@
  The ContactType table is prefilled with core data as shown on the right. This can be extended by the user (using positive ID numbers) as we find more varied ways of contacting each other.
 </p>
 
-</div>
+</div><!--id=content-->
 
-<hr />
-<div id='valid'>
+ <div class="crumbs">
+  <a href='../../index.htm' class='m-item'>Home</a>
+  <a href='../../db/database.htm' class='m-item'>Database</a>
+  <a href='../../db/sub/subsystems.htm' class='m-item'>Sub-Systems</a>
+  <a href='contact.htm' class='m-item thispage'>Contact</a>
+  <a href='../../db/sub/user.htm' class='m-item nav'>►</a>
+  <a href='../../db/sub/version.htm' class='m-item nav'>◄</a>
+ </div>
+
+ <div class='tail'></div>
+
+ <div id='valid'>
   <p>
-    <a href="http://validator.w3.org/check?uri=referer"><img
-        src="../../valid-xhtml10-blue.png"
-        alt="Valid XHTML 1.0 Strict" height="31" width="88" /></a>
+   <a href='http://validator.w3.org/check?uri=referer'>
+    <img src='../../sys/valid-xhtml10.png' alt='Valid XHTML 1.0 Strict' height='31' width='88' />
+   </a>
   </p>
-</div>
+ </div>
 
-<div id='create-date'><p> 16<sup>th</sup> November 2010</p></div>
+ <div id='create-date'><p> 16<sup>th</sup> November 2010</p></div>
 
-</div>
 <!-- Start of StatCounter Code for Default Guide -->
 <script type="text/javascript">
 /*<![CDATA[*/
@@ -105,5 +130,6 @@ target="_blank"><img class="statcounter"
 src="http://c.statcounter.com/9849896/0/8230fdb2/1/"
 alt="free hit counters" /></a></div></noscript>
 <!-- End of StatCounter Code for Default Guide -->
+
 </body>
 </html>

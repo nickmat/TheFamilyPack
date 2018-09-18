@@ -1,0 +1,23 @@
+/* The Family Pack - Home Website CSS File */
+
+
+div.diag {
+ margin-top: 1em;
+ text-align: center;
+}
+
+img.fig {
+ display: block;
+ margin-top: 1em;
+ margin-left: auto;
+ margin-right: auto;
+}
+
+
+span.field {
+ font-family: courier, monospace;
+ font-size: larger;
+ font-weight: bold;
+}
+
+/* End of tfp.css file */

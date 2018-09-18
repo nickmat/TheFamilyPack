@@ -1,27 +1,34 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
 <head>
-<title>The Family Pack - Database: Version</title>
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-<link rel="icon" type="image/png" href="../../logo1.png" />
-<link rel='stylesheet' type='text/css' href='../../tfp.css' />
+ <title>TheFamilyPack - Version</title>
+ <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+ <link rel='icon' type='image/png' href='../../sys/logo32x32.png' />
+ <link rel='stylesheet' type='text/css' href='../../sys/livery.css' />
+ <link rel='stylesheet' type='text/css' href='../../sys/tfp.css' />
 </head>
 <body>
 
-<h1><a  href="../../index.htm"><img id="logo" src="../../tfp5.gif" alt="Logo" /></a>The Family Pack<br/>Database: Version</h1>
+ <div class='heading'>
+  <div class='logo'>
+   <a  href='http://thefamilypack.org'>
+    <img class='logo' src='../../sys/logo266x100.png' alt='Logo' />
+   </a>
+  </div>
+  TheFamilyPack - Database V0.0.10.11<br />Version Control
+  <div class='clear'></div>
+ </div>
 
-<div id="page">
+ <div class="crumbs">
+  <a href='../../index.htm' class='m-item'>Home</a>
+  <a href='../../db/database.htm' class='m-item'>Database</a>
+  <a href='../../db/sub/subsystems.htm' class='m-item'>Sub-Systems</a>
+  <a href='version.htm' class='m-item thispage'>Version</a>
+  <a href='../../db/sub/contact.htm' class='m-item nav'>►</a>
+  <a href='../../db/sub/system.htm' class='m-item nav'>◄</a>
+ </div>
 
-<div id="crumbs">
-  <a href="../../index.htm" class="m-item">Home</a>
-  <a href="../database.htm" class="m-item level1">Database</a>
-  <a href="subsystems.htm" class="m-item level2">Subsystems</a>
-  <a href="version.htm" class="m-item level3 thispage">Version</a>
-  <a href="system.htm" class="m-item prev">&lt;&lt;</a>
-  <a href="contact.htm" class="m-item next">&gt;&gt;</a>
-</div>
-
-<div id="content" class="nomenu">
+<div id='content' class='nomenu'>
 
 <blockquote>
 <p>
@@ -33,48 +40,74 @@
 <div class="diag"><img src="tfp-version.png" alt="Version Subsystem" /></div>
 <h2>Version</h2>
 <table class="basic rfloat">
- <tr><th colspan="0">Version table Core Data</th></tr>
+ <tr><th colspan="5">Version table Core Data</th></tr>
  <tr><th>[id]</th><th>[major]</th><th>[minor]</th><th>[revision]</th><th>[test]</th></tr>
  <tr><td>1</td><td>0</td><td>0</td><td>10</td><td>0</td></tr>
 </table>
 
 <p>
- The Version table holds a single row which ties the database to a precise definition. The intention is to allow any program to know what to expect and, if appropriate, update the database. The database specification, in this case, includes the core data, but not other common data.
+ The Version table holds a single row which ties the database to a precise definition.
+ The intention is to allow any program to know what to expect and,
+ if appropriate, update the database.
+ The database specification, in this case,
+ includes the core data, but not other common data.
 </p>
 <p>
- The version number of the database is independant of the version number of the TFP program. The program about box should give details of the versions used.
+ The version number of the database is independent of the version number of the TFP program.
+ The program about box should give details of the versions used.
 </p>
 <h3>major</h3>
 <p>
- Once the database reaches a point where it is "production ready" and fully usable, the major version number will be set to 1. Thereafter the the major version number will increase only when a significant change is made, one in which data loss may occur when updating an older version.
+ Once the database reaches a point where it is "production ready" and fully usable,
+ the major version number will be set to 1.
+ Thereafter the the major version number will increase only when a significant change is made,
+ one in which data loss may occur when updating an older version.
 </p>
 <h3>minor</h3>
 <p>
- In general, a program is designed to work with a given major/minor version. If the program detects an older version it may offer the option of updating the database to bring it to a state the program can use. If the database has a higher major/minor version than the program is designed for, the program must reject the file.
+ In general, a program is designed to work with a given major/minor version.
+ If the program detects an older version it may offer the option of updating the database
+ to bring it to a state the program can use.
+ If the database has a higher major/minor version than the program is designed for,
+ the program must reject the file.
 </p>
 <h3>revision</h3>
 <p>
- Small changes to the database are indicated by increasing the revision number. Typically this will be an addition to the the core data although it may involve other changes. A program may offer to update an older revision, but if the offer is not taken up, it should still work.
+ Small changes to the database are indicated by increasing the revision number.
+ Typically this will be an addition to the the core data although it may involve other changes.
+ A program may offer to update an older revision,
+ but if the offer is not taken up, it should still work.
 </p>
 <h3>test</h3>
 <p>
- This value is used during development to facilitate making small changes, some of which may be reversed, before the final release of the program version. Databases created or updated by released programs should always have this value set to zero.
+ This value is used during development to facilitate making small changes,
+ some of which may be reversed, before the final release of the program version.
+ Databases created or updated by released programs should always have this value set to zero.
 </p>
 
-</div>
+</div><!--id=content-->
 
-<hr />
-<div id='valid'>
+ <div class="crumbs">
+  <a href='../../index.htm' class='m-item'>Home</a>
+  <a href='../../db/database.htm' class='m-item'>Database</a>
+  <a href='../../db/sub/subsystems.htm' class='m-item'>Sub-Systems</a>
+  <a href='version.htm' class='m-item thispage'>Version</a>
+  <a href='../../db/sub/contact.htm' class='m-item nav'>►</a>
+  <a href='../../db/sub/system.htm' class='m-item nav'>◄</a>
+ </div>
+
+ <div class='tail'></div>
+
+ <div id='valid'>
   <p>
-    <a href="http://validator.w3.org/check?uri=referer"><img
-        src="../../valid-xhtml10-blue.png"
-        alt="Valid XHTML 1.0 Strict" height="31" width="88" /></a>
+   <a href='http://validator.w3.org/check?uri=referer'>
+    <img src='../../sys/valid-xhtml10.png' alt='Valid XHTML 1.0 Strict' height='31' width='88' />
+   </a>
   </p>
-</div>
+ </div>
 
-<div id='create-date'><p> 16<sup>th</sup> November 2010</p></div>
+ <div id='create-date'><p> 16<sup>th</sup> November 2010</p></div>
 
-</div>
 <!-- Start of StatCounter Code for Default Guide -->
 <script type="text/javascript">
 /*<![CDATA[*/
@@ -94,5 +127,6 @@ target="_blank"><img class="statcounter"
 src="http://c.statcounter.com/9849896/0/8230fdb2/1/"
 alt="free hit counters" /></a></div></noscript>
 <!-- End of StatCounter Code for Default Guide -->
+
 </body>
 </html>

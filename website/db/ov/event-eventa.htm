@@ -1,27 +1,34 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
 <head>
-<title>The Family Pack - Database: Events</title>
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-<link rel="icon" type="image/png" href="../../logo1.png" />
-<link rel='stylesheet' type='text/css' href='../../tfp.css' />
+ <title>TheFamilyPack - Event-Eventa</title>
+ <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+ <link rel='icon' type='image/png' href='../../sys/logo32x32.png' />
+ <link rel='stylesheet' type='text/css' href='../../sys/livery.css' />
+ <link rel='stylesheet' type='text/css' href='../../sys/tfp.css' />
 </head>
 <body>
 
-<h1><a  href="../../index.htm"><img id="logo" src="../../tfp5.gif" alt="Logo" /></a>The Family Pack<br/>Database: Event-Eventa</h1>
+ <div class='heading'>
+  <div class='logo'>
+   <a  href='http://thefamilypack.org'>
+    <img class='logo' src='../../sys/logo266x100.png' alt='Logo' />
+   </a>
+  </div>
+  TheFamilyPack - Database V0.0.10.11<br />Event-Eventa Relationship
+  <div class='clear'></div>
+ </div>
 
-<div id="page" class="database">
+ <div class="crumbs">
+  <a href='../../index.htm' class='m-item'>Home</a>
+  <a href='../../db/database.htm' class='m-item'>Database</a>
+  <a href='../../db/ov/overview.htm' class='m-item'>Overview</a>
+  <a href='event-eventa.htm' class='m-item thispage'>Event-Eventa</a>
+  <a href='../../com/common.htm' class='m-item nav'>►</a>
+  <a href='../../db/ov/gentech-gtdm.htm' class='m-item nav'>◄</a>
+ </div>
 
-<div id="crumbs">
-  <a href="../../index.htm" class="m-item">Home</a>
-  <a href="../database.htm" class="m-item level1">Database</a>
-  <a href="overview.htm" class="m-item level2">Overview</a>
-  <a href="event-eventa.htm" class="m-item level3 thispage">Event-Eventa</a>
-  <a href="gentech-gtdm.htm" class="m-item prev">&lt;&lt;</a>
-  <a href="../../com/common.htm" class="m-item next">&gt;&gt;</a>
-</div>
-
-<div id="content" class="nomenu">
+<div id='content' class='nomenu'>
 
 <blockquote>
 <p>
@@ -31,7 +38,7 @@
 </blockquote>
 
 <h2>Persona - Eventa - Event - Individual</h2>
-<img src='event-eventa.png' alt='Event-Eventa' style='float: right;' />
+<img src='event-eventa.png' alt='Event-Eventa' class='diag rfloat' />
 <p>
  The diagram shows a simplified (?) version of the links between
  the Persona, Eventa, Event and Individual entities.
@@ -48,8 +55,8 @@
  and possibly linked to several eventa.
 </p>
 
-<h2>Personal Events</h2>
-<img src='personal-events.png' alt='Personal Events' style='float: right;' />
+<h2 class='clear'>Personal Events</h2>
+<img src='personal-events.png' alt='Personal Events' class='diag rfloat' />
 <p>
  Personal events are those events, that help describe a person.
  They given various names by other systems: Properties, Facts, Attributes, Characteristics
@@ -58,7 +65,7 @@
 </p>
 <p>
  Personal events tend to extend over a period of time, they may slowly change
- (such as personal description ie hair colour) or suddenly (as in residency).
+ (such as personal description i.e. hair colour) or suddenly (as in residency).
  When they appear in historic records, they generally describe the event
  as it appears on a particular day. We can refer to these as 'Snapshot Events'.
 </p>
@@ -86,8 +93,8 @@
  If the Summary Event does not exist, then it will be created.
 </p>
 
-<h2>Family Relationships Event</h2>
-<img src='family-eventa.png' alt='Family Relationships Event' style='float: right;' />
+<h2 class='clear'>Family Relationships Event</h2>
+<img src='family-eventa.png' alt='Family Relationships Event' class='diag rfloat' />
 <p>
  A 'Family' record is a specialised event which only exists on the Conclusion side.
  The Family record has the links to two partners built-in to the record,
@@ -103,20 +110,29 @@
  and may be removed in the released version.
 </p>
 
-</div>
+</div><!--id=content-->
 
-<hr />
-<div id='valid'>
+ <div class="crumbs">
+  <a href='../../index.htm' class='m-item'>Home</a>
+  <a href='../../db/database.htm' class='m-item'>Database</a>
+  <a href='../../db/ov/overview.htm' class='m-item'>Overview</a>
+  <a href='event-eventa.htm' class='m-item thispage'>Event-Eventa</a>
+  <a href='../../com/common.htm' class='m-item nav'>►</a>
+  <a href='../../db/ov/gentech-gtdm.htm' class='m-item nav'>◄</a>
+ </div>
+
+ <div class='tail'></div>
+
+ <div id='valid'>
   <p>
-    <a href="http://validator.w3.org/check?uri=referer"><img
-        src="../../valid-xhtml10-blue.png"
-        alt="Valid XHTML 1.0 Strict" height="31" width="88" /></a>
+   <a href='http://validator.w3.org/check?uri=referer'>
+    <img src='../../sys/valid-xhtml10.png' alt='Valid XHTML 1.0 Strict' height='31' width='88' />
+   </a>
   </p>
-</div>
+ </div>
 
-<div id='create-date'><p> 4<sup>th</sup> August 2013</p></div>
+ <div id='create-date'><p> 4<sup>th</sup> August 2013</p></div>
 
-</div>
 <!-- Start of StatCounter Code for Default Guide -->
 <script type="text/javascript">
 /*<![CDATA[*/
@@ -136,5 +152,6 @@ target="_blank"><img class="statcounter"
 src="http://c.statcounter.com/9849896/0/8230fdb2/1/"
 alt="free hit counters" /></a></div></noscript>
 <!-- End of StatCounter Code for Default Guide -->
+
 </body>
 </html>

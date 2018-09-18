@@ -1,44 +1,56 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
 <head>
-<title>The Family Pack - Database</title>
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-<link rel="icon" type="image/png" href="../logo1.png" />
-<link rel='stylesheet' type='text/css' href='../tfp.css' />
+ <title>TheFamilyPack - Database</title>
+ <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+ <link rel='icon' type='image/png' href='../sys/logo32x32.png' />
+ <link rel='stylesheet' type='text/css' href='../sys/livery.css' />
+ <link rel='stylesheet' type='text/css' href='../sys/tfp.css' />
 </head>
 <body>
 
-<h1><a href="../../index.htm"><img id="logo" src="../tfp5.gif" alt="Logo" /></a>The Family Pack<br/>Database</h1>
+ <div class='heading'>
+  <div class='logo'>
+   <a  href='http://thefamilypack.org'>
+    <img class='logo' src='../sys/logo266x100.png' alt='Logo' />
+   </a>
+  </div>
+  TheFamilyPack - Database V0.0.10.11<br />Introduction
+  <div class='clear'></div>
+ </div>
 
-<div id="page" class="database">
+ <div class="crumbs">
+  <a href='../index.htm' class='m-item'>Home</a>
+  <a href='database.htm' class='m-item thispage'>Database</a>
+  <a href='../db/dbdesign.htm' class='m-item nav'>►</a>
+  <a href='../man/manual0-0.htm' class='m-item nav'>◄</a>
+ </div>
 
-<div id="crumbs">
-  <a href="../index.htm" class="m-item">Home</a>
-  <a href="database.htm" class="m-item level1 thispage">Database</a>
-  <a href="../man/manual0-0.htm" class="m-item prev">&lt;&lt;</a>
-  <a href="dbdesign.htm" class="m-item next">&gt;&gt;</a>
-</div>
-<div id="menu">
-  <a href="dbdesign.htm" class="m-item">Definitions</a>
-  <a href="dbdiagram.htm" class="m-item">Diagram</a>
-  <a href="sub/subsystems.htm" class="m-item">Subsystems</a>
-  <a href="ov/overview.htm" class="m-item">Overview</a>
-  <a href="../map.htm" class="m-item">Site Map</a>
-  <p style="text-align: center;">
-    The project page at<br />
-    <a href="http://sourceforge.net/projects/thefamilypack">
-      <img src="http://sflogo.sourceforge.net/sflogo.php?group_id=353528&amp;type=13"
-        width="120" height="30"
-        alt="Get The Family Pack at SourceForge.net. Fast, secure and Free Open Source software downloads"
-      />
-    </a>
-    <a href="http://sourceforge.net/projects/thefamilypack/files">
-      <img src="../download-button.png" alt="Download" />
-    </a>
-  </p>
-</div>
+ <div class='menu'>
+  <a href='../db/dbdesign.htm' class='m-item'>Definitions</a>
+  <a href='../db/dbdiagram.htm' class='m-item'>Diagram</a>
+  <a href='../db/sub/subsystems.htm' class='m-item'>Sub-Systems</a>
+  <a href='../db/ov/overview.htm' class='m-item'>Overview</a>
+  <a href='../map.htm' class='m-item'>Site Map</a>
+  <div class='menu-plus'>
+   The project page at<br />
+   <a href='https://sourceforge.net/projects/thefamilypack/'>
+    <img src='../sys/sf-logo-13.png'
+     width='120' height='30'
+     alt='SourceForge.net'
+    />
+   </a><br />
+   Code repository at<br />
+   <a href='https://github.com/nickmat/TheFamilyPack'>
+    <img src='../sys/github_logo.png' height='30' alt='GitHub' />
+   </a><br />
+   <a href='https://sourceforge.net/projects/thefamilypack/files'>
+    <img src='../sys/download-button.png' alt='Download' />
+   </a>
+  </div>
+ </div>
 
-<div id="content">
+<div id='content'>
 
 <blockquote class="long">
 <p>
@@ -70,21 +82,28 @@
 <p>
  First class objects are associated with a short alpha code - such as 'E' for Event and 'Ea' for Eventa. These codes may be combined the records id key and used as a unique identifier for that record. These codes, together with the closely linked display page codes, are listed on the "<a href='../dev/recprefix.htm'>Record Prefix</a>" page.
 </p>
-</div>
+</div><!--id=content-->
 
-<hr/>
-<div id='valid'>
+ <div class="crumbs">
+  <a href='../index.htm' class='m-item'>Home</a>
+  <a href='database.htm' class='m-item thispage'>Database</a>
+  <a href='../db/dbdesign.htm' class='m-item nav'>►</a>
+  <a href='../man/manual0-0.htm' class='m-item nav'>◄</a>
+ </div>
+
+ <div class='tail'></div>
+
+ <div id='valid'>
   <p>
-    <a href="http://validator.w3.org/check?uri=referer"><img
-        src="../valid-xhtml10-blue.png"
-        alt="Valid XHTML 1.0 Strict" height="31" width="88" /></a>
+   <a href='http://validator.w3.org/check?uri=referer'>
+    <img src='../sys/valid-xhtml10.png' alt='Valid XHTML 1.0 Strict' height='31' width='88' />
+   </a>
   </p>
-</div>
+ </div>
 
-<div id='create-date'><p>21<sup>st</sup> September 2010
+ <div id='create-date'><p>21<sup>st</sup> September 2010
 . . . . Last updated 30<sup>th</sup> June 2014</p></div>
 
-</div>
 <!-- Start of StatCounter Code for Default Guide -->
 <script type="text/javascript">
 /*<![CDATA[*/
@@ -104,5 +123,6 @@ target="_blank"><img class="statcounter"
 src="http://c.statcounter.com/9849896/0/8230fdb2/1/"
 alt="free hit counters" /></a></div></noscript>
 <!-- End of StatCounter Code for Default Guide -->
+
 </body>
 </html>
