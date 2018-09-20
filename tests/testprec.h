@@ -1,5 +1,5 @@
 #include "wx/wxprec.h"
-#include "wx/cppunit.h"
+#include "cppunit.h"
 
 // define wxHAVE_U_ESCAPE if the compiler supports \uxxxx character constants
 #if (defined(__VISUALC__) && (__VISUALC__ >= 1300)) || \
