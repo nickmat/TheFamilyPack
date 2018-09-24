@@ -130,6 +130,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="..\..\src\rec\recAssociate.cpp" />
     <ClCompile Include="..\..\src\rec\recContact.cpp" />
     <ClCompile Include="..\..\src\rec\recDatabase.cpp" />
     <ClCompile Include="..\..\src\rec\recDate.cpp" />
@@ -143,12 +144,16 @@
     <ClCompile Include="..\..\src\rec\recFamEventa.cpp" />
     <ClCompile Include="..\..\src\rec\recFamIndEventa.cpp" />
     <ClCompile Include="..\..\src\rec\recFilterEvent.cpp" />
+    <ClCompile Include="..\..\src\rec\recGallery.cpp" />
+    <ClCompile Include="..\..\src\rec\recGalleryMedia.cpp" />
     <ClCompile Include="..\..\src\rec\recGedExport.cpp" />
     <ClCompile Include="..\..\src\rec\recGedParse.cpp" />
     <ClCompile Include="..\..\src\rec\recHelper.cpp" />
     <ClCompile Include="..\..\src\rec\recIndEvent.cpp" />
     <ClCompile Include="..\..\src\rec\recIndividual.cpp" />
     <ClCompile Include="..\..\src\rec\recIndPersona.cpp" />
+    <ClCompile Include="..\..\src\rec\recMedia.cpp" />
+    <ClCompile Include="..\..\src\rec\recMediaData.cpp" />
     <ClCompile Include="..\..\src\rec\recName.cpp" />
     <ClCompile Include="..\..\src\rec\recPersona.cpp" />
     <ClCompile Include="..\..\src\rec\recPlace.cpp" />
@@ -160,6 +165,7 @@
     <ClCompile Include="..\..\src\rec\recVersion.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\include\rec\recAssociate.h" />
     <ClInclude Include="..\..\include\rec\recContact.h" />
     <ClInclude Include="..\..\include\rec\recDatabase.h" />
     <ClInclude Include="..\..\include\rec\recDate.h" />
@@ -174,6 +180,8 @@
     <ClInclude Include="..\..\include\rec\recFamEventa.h" />
     <ClInclude Include="..\..\include\rec\recFamIndEventa.h" />
     <ClInclude Include="..\..\include\rec\recFilterEvent.h" />
+    <ClInclude Include="..\..\include\rec\recGallery.h" />
+    <ClInclude Include="..\..\include\rec\recGalleryMedia.h" />
     <ClInclude Include="..\..\include\rec\recGedExport.h" />
     <ClInclude Include="..\..\include\rec\recGedParse.h" />
     <ClInclude Include="..\..\include\rec\recHelper.h" />
@@ -181,6 +189,8 @@
     <ClInclude Include="..\..\include\rec\recIndividual.h" />
     <ClInclude Include="..\..\include\rec\recIndPersona.h" />
     <ClInclude Include="..\..\include\rec\recInterface.h" />
+    <ClInclude Include="..\..\include\rec\recMedia.h" />
+    <ClInclude Include="..\..\include\rec\recMediaData.h" />
     <ClInclude Include="..\..\include\rec\recName.h" />
     <ClInclude Include="..\..\include\rec\recPersona.h" />
     <ClInclude Include="..\..\include\rec\recPlace.h" />

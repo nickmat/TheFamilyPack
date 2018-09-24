@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     22nd March 2008
- * Copyright:   Copyright (c) 2008 ~ 2016, Nick Matthews.
+ * Copyright:   Copyright (c) 2008 ~ 2018, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -31,6 +31,13 @@ PRAGMA legacy_file_format=OFF;
 PRAGMA foreign_keys=ON;
 
 BEGIN;
+
+CREATE TABLE Associate (
+  id INTEGER PRIMARY KEY NOT NULL,
+  path TEXT NULL
+);
+
+INSERT INTO Associate (id) VALUES(0);
 
 CREATE TABLE CitationPart (
   id INTEGER PRIMARY KEY,
@@ -305,6 +312,20 @@ CREATE TABLE FamilyIndividual (
   seq_parent INTEGER NOT NULL
 );
 
+CREATE TABLE Gallery (
+  id INTEGER PRIMARY KEY NOT NULL,
+  title TEXT NOT NULL,
+  desc TEXT NULL
+);
+
+CREATE TABLE GalleryMedia (
+  id INTEGER PRIMARY KEY NOT NULL,
+  title TEXT NULL,
+  gal_id INT NOT NULL REFERENCES Gallery(id),
+  med_id INT NOT NULL REFERENCES Media(id),
+  med_seq INT NOT NULL
+);
+
 CREATE TABLE Individual (
   id INTEGER PRIMARY KEY,
   sex INTEGER NOT NULL,
@@ -332,6 +353,24 @@ CREATE TABLE IndividualPersona (
   per_id INTEGER NOT NULL REFERENCES Persona(id),
   conf FLOAT NOT NULL,
   note TEXT
+);
+
+CREATE TABLE Media (
+  id INTEGER PRIMARY KEY NOT NULL,
+  data_id INT NOT NULL REFERENCES MediaData(id),
+  ass_id INT NOT NULL REFERENCES Associate(id),
+  ref_id INT NOT NULL REFERENCES Reference(id),
+  privacy INT NOT NULL,
+  title TEXT NULL,
+  note, TEXT NULL
+);
+
+CREATE TABLE MediaData (
+  id INTEGER PRIMARY KEY NOT NULL,
+  data BLOB NOT NULL,
+  privacy INT NOT NULL,
+  copyright TEXT NULL,
+  file TEXT NOT NULL
 );
 
 CREATE TABLE Name (
@@ -510,7 +549,7 @@ INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 0, 1, 'F1');
 INSERT INTO UserSetting (id, user_id, property, val) VALUES(2, 1, 1, 'F1');
 
 /* The Version table has only this one row */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 15);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 16);
 
 COMMIT;
 

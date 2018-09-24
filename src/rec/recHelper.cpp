@@ -174,5 +174,17 @@ void recIdVecAddIfUnique( recIdVec& vec, idt id )
     vec.push_back( id );
 }
 
+wxString GetBlobFormatStr( const wxMemoryBuffer& buf )
+{
+    static const char* const lut = "0123456789ABCDEF";
+    unsigned char* cp = static_cast<unsigned char*>( buf.GetData() );
+    wxString str;
+    str.reserve( buf.GetDataLen() * 2 + 1 );
+    for ( size_t i = 0; i < buf.GetDataLen(); i++ ) {
+        str += lut[cp[i] >> 4];
+        str += lut[cp[i] & 15];
+    }
+    return str;
+}
 
 // End of src/rec/recHelper.cpp file

@@ -158,4 +158,6 @@ extern recIdVec recIdVecFromStr( const wxString& prefix, const wxString list );
 
 extern void recIdVecAddIfUnique( recIdVec& vec, idt id );
 
+extern wxString GetBlobFormatStr( const wxMemoryBuffer& buf );
+
 #endif // REC_RECHELPER_H

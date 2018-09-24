@@ -44,6 +44,7 @@
 
   <lib id="rec" template="wx-lib,wxlike">
     <libname>rec$(WXLIBPOSTFIX)</libname>
+    <sources>$(LOCAL_SRC)/rec/recAssociate.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recContact.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recDatabase.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recDate.cpp</sources>
@@ -57,12 +58,16 @@
     <sources>$(LOCAL_SRC)/rec/recFamEventa.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recFamIndEventa.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recFilterEvent.cpp</sources>
+    <sources>$(LOCAL_SRC)/rec/recGallery.cpp</sources>
+    <sources>$(LOCAL_SRC)/rec/recGalleryMedia.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recGedExport.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recGedParse.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recHelper.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recIndEvent.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recIndividual.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recIndPersona.cpp</sources>
+    <sources>$(LOCAL_SRC)/rec/recMedia.cpp</sources>
+    <sources>$(LOCAL_SRC)/rec/recMediaData.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recName.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recPersona.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recPlace.cpp</sources>
@@ -73,6 +78,7 @@
     <sources>$(LOCAL_SRC)/rec/recUpgrade.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recVersion.cpp</sources>
 
+    <headers>$(LOCAL_INC)/rec/recAssociate.h</headers>
     <headers>$(LOCAL_INC)/rec/recContact.h</headers>
     <headers>$(LOCAL_INC)/rec/recDatabase.h</headers>
     <headers>$(LOCAL_SRC)/rec/recDatabaseCreate.h</headers>
@@ -88,6 +94,8 @@
     <headers>$(LOCAL_INC)/rec/recFamEventa.h</headers>
     <headers>$(LOCAL_INC)/rec/recFamIndEventa.h</headers>
     <headers>$(LOCAL_INC)/rec/recFilterEvent.h</headers>
+    <headers>$(LOCAL_INC)/rec/recGallery.h</headers>
+    <headers>$(LOCAL_INC)/rec/recGalleryMedia.h</headers>
     <headers>$(LOCAL_INC)/rec/recGedExport.h</headers>
     <headers>$(LOCAL_INC)/rec/recGedParse.h</headers>
     <headers>$(LOCAL_INC)/rec/recHelper.h</headers>
@@ -95,6 +103,8 @@
     <headers>$(LOCAL_INC)/rec/recIndividual.h</headers>
     <headers>$(LOCAL_INC)/rec/recInterface.h</headers>
     <headers>$(LOCAL_INC)/rec/recIndPersona.h</headers>
+    <headers>$(LOCAL_INC)/rec/recMedia.h</headers>
+    <headers>$(LOCAL_INC)/rec/recMediaData.h</headers>
     <headers>$(LOCAL_INC)/rec/recName.h</headers>
     <headers>$(LOCAL_INC)/rec/recPersona.h</headers>
     <headers>$(LOCAL_INC)/rec/recPlace.h</headers>

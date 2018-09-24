@@ -16,7 +16,7 @@
     <img class='logo' src='../sys/logo266x100.png' alt='Logo' />
    </a>
   </div>
-  TheFamilyPack - Database V0.0.10.11<br />Design
+  TheFamilyPack - Database V0.0.10.16<br />Design
   <div class='clear'></div>
  </div>
 
@@ -37,90 +37,114 @@
 <p class="attribute">Carly Fiorina</p>
 </blockquote>
 
-  <table class="index">
-   <tr>
+<table class="index">
+  <tr>
+    <td><a href="#Associate">Associate</a></td>
     <td><a href="#CitationPart">CitationPart</a></td>
     <td><a href="#CitationPartType">CitationPartType</a></td>
     <td><a href="#Contact">Contact</a></td>
     <td><a href="#ContactList">ContactList</a></td>
     <td><a href="#ContactType">ContactType</a></td>
+  </tr>
+  <tr>
     <td><a href="#Date">Date</a></td>
-   </tr>
-   <tr>
     <td><a href="#Event">Event</a></td>
     <td><a href="#Eventa">Eventa</a></td>
     <td><a href="#EventaPersona">EventaPersona</a></td>
     <td><a href="#EventEventa">EventEventa</a></td>
     <td><a href="#EventType">EventType</a></td>
+  </tr>
+  <tr>
     <td><a href="#EventTypeRole">EventTypeRole</a></td>
-   </tr>
-   <tr>
     <td><a href="#Family">Family</a></td>
     <td><a href="#FamilyEvent">FamilyEvent</a></td>
     <td><a href="#FamilyEventa">FamilyEventa</a></td>
     <td><a href="#FamilyIndEventa">FamilyIndEventa</a></td>
     <td><a href="#FamilyIndividual">FamilyIndividual</a></td>
+  </tr>
+  <tr>
+    <td><a href="#Gallery">Gallery</a></td>
+    <td><a href="#GalleryMedia">GalleryMedia</a></td>
     <td><a href="#Individual">Individual</a></td>
-   </tr>
-   <tr>
     <td><a href="#IndividualEvent">IndividualEvent</a></td>
     <td><a href="#IndividualPersona">IndividualPersona</a></td>
+    <td><a href="#Media">Media</a></td>
+  </tr>
+  <tr>
+    <td><a href="#MediaData">MediaData</a></td>
     <td><a href="#Name">Name</a></td>
     <td><a href="#NamePart">NamePart</a></td>
     <td><a href="#NamePartType">NamePartType</a></td>
     <td><a href="#NameStyle">NameStyle</a></td>
-   </tr>
-   <tr>
     <td><a href="#Persona">Persona</a></td>
+  </tr>
+  <tr>
     <td><a href="#Place">Place</a></td>
     <td><a href="#PlacePart">PlacePart</a></td>
     <td><a href="#PlacePartType">PlacePartType</a></td>
     <td><a href="#Reference">Reference</a></td>
     <td><a href="#ReferenceEntity">ReferenceEntity</a></td>
-   </tr>
-   <tr>
     <td><a href="#RelativeDate">RelativeDate</a></td>
+  </tr>
+  <tr>
     <td><a href="#Repository">Repository</a></td>
     <td><a href="#RepositorySource">RepositorySource</a></td>
     <td><a href="#Researcher">Researcher</a></td>
     <td><a href="#Source">Source</a></td>
     <td><a href="#System">System</a></td>
-   </tr>
-   <tr>
     <td><a href="#User">User</a></td>
+  </tr>
+  <tr>
     <td><a href="#UserSetting">UserSetting</a></td>
     <td><a href="#Version">Version</a></td>
-    <td colspan='3' class="na">&nbsp;</td>
-   </tr>
+    <td colspan='4' class="na">&nbsp;</td>
+  </tr>
   </table>
 
   <table class='big-list'>
-   <thead>
-    <tr>
-     <th>Table Name<br/>field name</th>
-     <th>Type</th>
-     <th>Description</th>
-    </tr>
-   </thead>
-   <tbody>
+    <thead>
+      <tr>
+        <th>Table Name<br/>field name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
 
-    <tr id="CitationPart">
-     <td colspan="3" class="filler"><a href="#">Top</a></td>
-    </tr>
-    <tr class="head">
-     <td colspan="3"><b>CitationPart</b></td>
-    </tr>
-    <tr>
-     <td>id</td>
-     <td>Integer PK</td>
-     <td>Unique key identifying a Citation Part</td>
-    </tr>
-    <tr>
-     <td>source_id</td>
-     <td>Int</td>
-     <td>The unique key in Source for which this is a citation part.</td>
-    </tr>
-    <tr>
+    <tbody>
+      <tr id="Associate">
+        <td colspan="3" class="filler"><a href="#">Top</a></td>
+      </tr>
+      <tr class="head">
+        <td colspan="3"><b>Associate</b></td>
+      </tr>
+      <tr>
+        <td>id</td>
+        <td>Integer PK</td>
+        <td>Unique key identifying an Associated Database.</td>
+      </tr>
+      <tr>
+        <td>path</td>
+        <td>Text Null</td>
+        <td>The file path (relative to current database) to associated database.</td>
+      </tr>
+
+      <tr id="CitationPart">
+        <td colspan="3" class="filler"><a href="#">Top</a></td>
+      </tr>
+      <tr class="head">
+        <td colspan="3"><b>CitationPart</b></td>
+      </tr>
+      <tr>
+        <td>id</td>
+        <td>Integer PK</td>
+        <td>Unique key identifying a Citation Part.</td>
+      </tr>
+      <tr>
+        <td>source_id</td>
+        <td>Int</td>
+        <td>The unique key in Source for which this is a citation part.</td>
+      </tr>
+     <tr>
      <td>type_id</td>
      <td>Int</td>
      <td>The unique key in Citation Part Type that identifies the type of citation part that this is, such as Publication City, Author, or Title.</td>
@@ -605,39 +629,92 @@
     </tr>
 
     <tr id="FamilyIndividual">
-     <td colspan="3" class="filler"><a href="#">Top</a></td>
-    </tr>
-    <tr class="head">
-     <td colspan="3"><b>FamilyIndividual</b></td>
-    </tr>
-    <tr>
-     <td>id</td>
-     <td>Integer PK</td>
-     <td>Unique key identifying a FamilyIndividual</td>
-    </tr>
-    <tr>
-     <td>fam_id</td>
-     <td>Integer Not null</td>
-     <td>Pointer to the Family that the Individual is a child of.</td>
-    </tr>
-    <tr>
-     <td>ind_id</td>
-     <td>Integer Not null</td>
-     <td>Pointer to the Individual</td>
-    </tr>
-    <tr>
-     <td>seq_child</td>
-     <td>Integer Not null</td>
-     <td>Sequence of the child Individuals in the Family, normally in age order</td>
-    </tr>
-    <tr>
-     <td>seq_parent</td>
-     <td>Integer Not null</td>
-     <td>Where an individual is the child of more than one family, (ie genetic child and adopted child) this value will sequence the order of the the families.</td>
-    </tr>
+        <td colspan="3" class="filler"><a href="#">Top</a></td>
+      </tr>
+      <tr class="head">
+        <td colspan="3"><b>FamilyIndividual</b></td>
+      </tr>
+      <tr>
+        <td>id</td>
+        <td>Integer PK</td>
+        <td>Unique key identifying a FamilyIndividual</td>
+      </tr>
+      <tr>
+        <td>fam_id</td>
+        <td>Integer Not null</td>
+        <td>Pointer to the Family that the Individual is a child of.</td>
+      </tr>
+      <tr>
+        <td>ind_id</td>
+        <td>Integer Not null</td>
+        <td>Pointer to the Individual</td>
+      </tr>
+      <tr>
+        <td>seq_child</td>
+        <td>Integer Not null</td>
+        <td>Sequence of the child Individuals in the Family, normally in age order</td>
+      </tr>
+      <tr>
+        <td>seq_parent</td>
+        <td>Integer Not null</td>
+        <td>Where an individual is the child of more than one family, (ie genetic child and adopted child) this value will sequence the order of the the families.</td>
+      </tr>
 
-    <tr id="Individual">
-     <td colspan="3" class="filler"><a href="#">Top</a></td>
+      <tr id="Gallery">
+          <td colspan="3" class="filler"><a href="#">Top</a></td>
+      </tr>
+      <tr class="head">
+        <td colspan="3"><b>Gallery</b></td>
+      </tr>
+      <tr>
+        <td>id</td>
+        <td>Integer PK</td>
+        <td>Unique key identifying a Gallery.</td>
+      </tr>
+      <tr>
+        <td>title</td>
+        <td>Text Not null</td>
+        <td>A one line title for the Gallery.</td>
+      </tr>
+      <tr>
+        <td>desc</td>
+        <td>Text Null</td>
+        <td>A full description of the Gallery.</td>
+      </tr>
+  
+      <tr id="GalleryMedia">
+          <td colspan="3" class="filler"><a href="#">Top</a></td>
+      </tr>
+      <tr class="head">
+        <td colspan="3"><b>GalleryMedia</b></td>
+      </tr>
+      <tr>
+        <td>id</td>
+        <td>Int PK</td>
+        <td>Unique key identifying the Gallery media.</td>
+      </tr>
+      <tr>
+          <td>title</td>
+          <td>Text Null</td>
+          <td>An alternative one line title for the Media when displayed in the Gallery.</td>
+      </tr>
+      <tr>
+        <td>med_id</td>
+        <td>Int Not null FK</td>
+        <td>Pointer to the Media item to be displayed in the Gallery.</td>
+      </tr>
+      <tr>
+        <td>gal_id</td>
+        <td>Int Not null FK</td>
+        <td>Pointer to the Gallery.</td>
+      </tr>
+      <tr>
+        <td>med_seq</td>
+        <td>Int Not null</td>
+        <td>Sequence the Media is to be displayed in the Gallery.</td>
+      </tr>
+  
+    <td colspan="3" class="filler"><a href="#">Top</a></td>
     </tr>
     <tr class="head">
      <td colspan="3"><b>Individual</b></td>
@@ -665,7 +742,7 @@
     <tr>
      <td>privacy</td>
      <td>Integer</td>
-     <td>A value indicating the privacy level for the Indvidual.</td>
+     <td>A value indicating the privacy level for the Individual.</td>
     </tr>
     <tr>
      <td>name</td>
@@ -757,6 +834,80 @@
      <td>Optional note that relates to this Individual - Persona link</td>
     </tr>
 
+    <tr id="Media">
+      <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+      <td colspan="3"><b>Media</b></td>
+    </tr>
+    <tr>
+      <td>id</td>
+      <td>Integer PK</td>
+      <td>Unique key identifying a Media item.</td>
+    </tr>
+    <tr>
+      <td>data_id</td>
+      <td>Int Not null FK</td>
+      <td>Pointer to the record holding the media data. May not be in current database.</td>
+    </tr>
+    <tr>
+      <td>ass_id</td>
+      <td>Int Not null FK</td>
+      <td>Pointer to the associated database holding the data record.</td>
+    </tr>
+    <tr>
+      <td>ref_id</td>
+      <td>Int Not null FK</td>
+      <td>Pointer to a Reference record.</td>
+    </tr>
+    <tr>
+      <td>privacy</td>
+      <td>Int Not null</td>
+      <td>A value indicating the privacy level for the Media.</td>
+    </tr>
+    <tr>
+      <td>title</td>
+      <td>Text Null</td>
+      <td>The one line title text for the Media. Use Reference title if not given.</td>
+    </tr>
+    <tr>
+      <td>note</td>
+      <td>Text Null</td>
+      <td>Additional text to support the Media. Is in addition to the Reference statement.</td>
+    </tr>
+
+    <tr id="MediaData">
+      <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+      <td colspan="3"><b>MediaData</b></td>
+    </tr>
+    <tr>
+      <td>id</td>
+      <td>Integer PK</td>
+      <td>Unique key identifying a MediaData item.</td>
+    </tr>
+    <tr>
+      <td>data</td>
+      <td>Blob Not null</td>
+      <td>The binary data that makes up the media file.</td>
+    </tr>
+    <tr>
+      <td>ass_id</td>
+      <td>Int Not null FK</td>
+      <td>Pointer to the associated database holding the data record.</td>
+    </tr>
+    <tr>
+      <td>privacy</td>
+      <td>Int Not null</td>
+      <td>A default value indicating the privacy level for the Media.</td>
+    </tr>
+    <tr>
+      <td>copyright</td>
+      <td>Text Null</td>
+      <td>An optional text string holding copyright information.</td>
+    </tr>
+        
     <tr id="Name">
      <td colspan="3" class="filler"><a href="#">Top</a></td>
     </tr>

@@ -13,7 +13,7 @@
         { "folder": "new", "name": "news", "label": "News" },
         { "folder": "man", "name": "manual0-0", "label": "Manual", "title": "Manual", "subtitle": "Introduction", "content": [
         ]},
-        { "folder": "db", "name": "database", "label": "Database", "title": "Database V0.0.10.11", "subtitle": "Introduction", "content": [
+        { "folder": "db", "name": "database", "label": "Database", "title": "Database V0.0.10.16", "subtitle": "Introduction", "content": [
             { "name": "dbdesign", "label": "Definitions", "subtitle": "Design", "css": "big-list" },
             { "name": "dbdiagram", "label": "Diagram" },
             { "folder": "sub", "name": "subsystems", "label": "Sub-Systems", "subtitle": "Sub-Systems", "content": [
@@ -30,14 +30,15 @@
                 { "name": "personas", "label": "Personas", "subtitle": "Persona Sub-System" },
                 { "name": "eventas", "label": "Eventas", "subtitle": "Eventa Sub-System" },
                 { "name": "individuals", "label": "Individuals", "subtitle": "Individuals & Families" },
-                { "name": "events", "label": "Events", "subtitle": "Event Sub-System" }            
+                { "name": "events", "label": "Events", "subtitle": "Event Sub-System" },
+                { "name": "media", "label": "Media", "subtitle": "Media Sub-System" }
             ]},
             { "folder": "ov", "name": "overview", "label": "Overview", "content": [
                 { "name": "gentech-gtdm", "label": "GenTech GDM", "subtitle": "Differences to GenTech GDM" },
                 { "name": "event-eventa", "label": "Event-Eventa", "subtitle": "Event-Eventa Relationship" }            
             ]}
         ]},
-        { "folder": "com", "name": "common", "label": "Common Data", "subtitle": "Common Data", "content": [
+        { "folder": "com", "name": "common", "label": "Common Data", "title": "Common Data", "subtitle": "Introduction", "content": [
             { "folder": "core", "name": "core", "label": "Core", "subtitle": "Core Data", "content": [
                 { "name": "ets", "label": "Event Types", "subtitle": "Core Data: Event Types" }
             ]},
@@ -51,6 +52,6 @@
             { "name": "history", "label": "Release History", "title": "Development" },
             { "name": "recprefix", "label": "Prefixes", "subtitle": "Record Prefixes" }
         ]},
-        { "name": "support", "label": "Support", "subtitle": "Support" }
+        { "name": "support", "label": "Support", "title": "", "subtitle": "Support" }
     ]}
 }

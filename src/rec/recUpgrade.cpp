@@ -41,8 +41,8 @@
 const int recVerMajor    = 0;
 const int recVerMinor    = 0;
 const int recVerRev      = 10;
-const int recVerTest     = 15;                              // <<======<<<<
-const wxStringCharType* recVerStr = wxS("TFPD-0.0.10.15");  // <<======<<<<
+const int recVerTest     = 16;                              // <<======<<<<
+const wxStringCharType* recVerStr = wxS("TFPD-0.0.10.16");  // <<======<<<<
 
 //============================================================================
 //                 Code to upgrade old versions
@@ -646,6 +646,55 @@ void UpgradeTest0_0_10_14to0_0_10_15()
     recDb::GetDb()->ExecuteUpdate( query );
 }
 
+void UpgradeTest0_0_10_15to0_0_10_16()
+{
+    // Version 0.0.10.15 to 0.0.10.16
+    // Add Media and othe tables.
+    // No existing data is affected.
+
+    char* query =
+        "BEGIN;\n"
+
+        "CREATE TABLE Associate (\n"
+        "  id INTEGER PRIMARY KEY NOT NULL,\n"
+        "  path TEXT NULL\n"
+        ");\n"
+        "INSERT INTO Associate (id) VALUES(0);\n"
+        "CREATE TABLE Gallery (\n"
+        "  id INTEGER PRIMARY KEY NOT NULL,\n"
+        "  title TEXT NOT NULL,\n"
+        "  desc TEXT NULL\n"
+        ");\n"
+        "CREATE TABLE GalleryMedia (\n"
+        "  id INTEGER PRIMARY KEY NOT NULL,\n"
+        "  title TEXT NULL,\n"
+        "  gal_id INT NOT NULL REFERENCES Gallery(id),\n"
+        "  med_id INT NOT NULL REFERENCES Media(id),\n"
+        "  med_seq INT NOT NULL\n"
+        ");\n"
+        "CREATE TABLE Media (\n"
+        "  id INTEGER PRIMARY KEY NOT NULL,\n"
+        "  data_id INT NOT NULL REFERENCES MediaData(id),\n"
+        "  ass_id INT NOT NULL REFERENCES Associate(id),\n"
+        "  ref_id INT NOT NULL REFERENCES Reference(id),\n"
+        "  privacy INT NOT NULL,\n"
+        "  title TEXT NULL,\n"
+        "  note, TEXT NULL\n"
+        ");\n"
+        "CREATE TABLE MediaData (\n"
+        "  id INTEGER PRIMARY KEY NOT NULL,\n"
+        "  data BLOB NOT NULL,\n"
+        "  privacy INT NOT NULL,\n"
+        "  copyright TEXT NULL,\n"
+        "  file TEXT NOT NULL\n"
+        ");\n"
+
+        "UPDATE Version SET test=16 WHERE id=1;\n"
+        "COMMIT;\n"
+    ;
+    recDb::GetDb()->ExecuteUpdate( query );
+}
+
 void UpgradeRev0_0_10toCurrent( int test )
 {
     switch( test )
@@ -665,6 +714,7 @@ void UpgradeRev0_0_10toCurrent( int test )
     case 12: UpgradeTest0_0_10_12to0_0_10_13();
     case 13: UpgradeTest0_0_10_13to0_0_10_14();
     case 14: UpgradeTest0_0_10_14to0_0_10_15();
+    case 15: UpgradeTest0_0_10_15to0_0_10_16();
     }
 }
 
