@@ -641,6 +641,11 @@ class fbRgEditReference : public wxDialog
 		wxWebView* m_webview;
 		wxPanel* m_panelBottom;
 		wxNotebook* m_notebookBottom;
+		wxPanel* m_panelMedia;
+		wxListCtrl* m_listCtrl18;
+		wxButton* m_buttonMediaAdd;
+		wxButton* m_buttonMediaEdit;
+		wxButton* m_buttonMediaDel;
 		wxPanel* m_panelPersona;
 		wxListCtrl* m_listPersona;
 		wxButton* m_buttonPersonaAdd;
@@ -662,6 +667,9 @@ class fbRgEditReference : public wxDialog
 		virtual void OnStatementViewChanged( wxNotebookEvent& event ) { event.Skip(); }
 		virtual void OnTool( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnEntityViewChanged( wxNotebookEvent& event ) { event.Skip(); }
+		virtual void OnMediaAddButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnMediaEditButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnMediaDeleteButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPersonaAddButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPersonaEditButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPersonaDeleteButton( wxCommandEvent& event ) { event.Skip(); }

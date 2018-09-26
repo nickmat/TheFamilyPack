@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     26th February 2013
- * Copyright:   Copyright (c) 2013 - 2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2013 ~ 2018, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -67,6 +67,7 @@ private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
     void UpdateHtml();
+    void UpdateMedias( idt medID = 0 );
     void UpdatePersonas( idt perID = 0 );
     void UpdateEntities( idt reID = 0 );
 
@@ -77,6 +78,10 @@ private:
 	void OnStatementViewChanged( wxBookCtrlEvent& event );
 	void OnEntityViewChanged( wxBookCtrlEvent& event );
 
+    // Media tab buttons
+    void OnMediaAddButton( wxCommandEvent& event ) override;
+    void OnMediaEditButton( wxCommandEvent& event ) override;
+    void OnMediaDeleteButton( wxCommandEvent& event ) override;
     // Persona tab buttons
     void OnPersonaAddButton( wxCommandEvent& event );
     void OnPersonaAddMenuOp( wxCommandEvent& event );

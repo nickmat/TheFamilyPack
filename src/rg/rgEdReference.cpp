@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     26th February 2013
- * Copyright:   Copyright (c) 2013-2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2013 ~ 2018, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -200,6 +200,11 @@ void rgDlgEditReference::UpdateHtml()
     m_webview->SetPage( htm, "" );
 }
 
+void rgDlgEditReference::UpdateMedias( idt medID )
+{
+    wxMessageBox( _( "Not yet implimented" ), "UpdateMedias" );
+}
+
 void rgDlgEditReference::UpdatePersonas( idt perID )
 {
     m_personaIDs = m_reference.GetPersonaList();
@@ -292,15 +297,33 @@ void rgDlgEditReference::OnEntityViewChanged( wxBookCtrlEvent& event )
     switch( m_notebookBottom->GetSelection() )
     {
     case 0:
-        UpdatePersonas();
+        UpdateMedias();
         break;
     case 1:
+        UpdatePersonas();
+        break;
+    case 2:
         UpdateEntities();
         break;
     default:
         wxASSERT( false );
     }
     m_panelBottom->PostSizeEvent();
+}
+
+void rgDlgEditReference::OnMediaAddButton( wxCommandEvent & event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnMediaAddButton" );
+}
+
+void rgDlgEditReference::OnMediaEditButton( wxCommandEvent & event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnMediaEditButton" );
+}
+
+void rgDlgEditReference::OnMediaDeleteButton( wxCommandEvent & event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnMediaDeleteButton" );
 }
 
 void rgDlgEditReference::OnPersonaAddButton( wxCommandEvent& event )
