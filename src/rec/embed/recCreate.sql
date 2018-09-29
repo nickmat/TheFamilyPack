@@ -315,7 +315,7 @@ CREATE TABLE FamilyIndividual (
 CREATE TABLE Gallery (
   id INTEGER PRIMARY KEY NOT NULL,
   title TEXT NOT NULL,
-  desc TEXT NULL
+  note TEXT NULL
 );
 
 CREATE TABLE GalleryMedia (

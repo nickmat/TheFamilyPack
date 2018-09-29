@@ -43,6 +43,7 @@ recMediaData::recMediaData( const recMediaData& n )
     f_data = n.f_data;
     f_privacy = n.f_privacy;
     f_copyright = n.f_copyright;
+    f_file = f_file;
 }
 
 void recMediaData::Clear()
@@ -51,6 +52,7 @@ void recMediaData::Clear()
     f_data.Clear();
     f_privacy = 0;
     f_copyright.clear();
+    f_file.clear();
 }
 
 void recMediaData::Save()
@@ -62,9 +64,9 @@ void recMediaData::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO MediaData (data, privacy, copyright)"
-            " VALUES (x'%q', %d, '%q');",
-            UTF8_( GetBlobFormatStr( f_data ) ), f_privacy, UTF8_( f_copyright )
+            "INSERT INTO MediaData (data, privacy, copyright, file)"
+            " VALUES (x'%q', %d, '%q', '%q');",
+            UTF8_( GetBlobFormatStr( f_data ) ), f_privacy, UTF8_( f_copyright ), UTF8_( f_file )
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -74,17 +76,17 @@ void recMediaData::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO MediaData (id, data, privacy, copyright)"
+                "INSERT INTO MediaData (id, data, privacy, copyright, file)"
                 " VALUES (" ID ", x'%q', %d, '%q');",
                 f_id, UTF8_( GetBlobFormatStr( f_data ) ),
-                f_privacy, UTF8_( f_copyright )
+                f_privacy, UTF8_( f_copyright ), UTF8_( f_file )
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE MediaData SET data=x'%q', privacy=%d, copyright='%q' WHERE id=" ID ";",
+                "UPDATE MediaData SET data=x'%q', privacy=%d, copyright='%q', file='%q' WHERE id=" ID ";",
                 UTF8_( GetBlobFormatStr( f_data ) ),
-                f_privacy, UTF8_( f_copyright ), f_id
+                f_privacy, UTF8_( f_copyright ), UTF8_( f_file ), f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -101,7 +103,7 @@ bool recMediaData::Read()
     }
 
     sql.Format(
-        "SELECT data, privacy, copyright, seq_med"
+        "SELECT data, privacy, copyright, file"
         " FROM MediaData WHERE id=" ID ";",
         f_id
     );
@@ -116,6 +118,7 @@ bool recMediaData::Read()
     result.GetBlob( 0, f_data );
     f_privacy = result.GetInt( 1 );
     f_copyright = result.GetAsString( 2 );
+    f_file = result.GetAsString( 3 );
     return true;
 }
 
@@ -124,7 +127,8 @@ bool recMediaData::Equivalent( const recMediaData& r2 ) const
     return
         f_data == r2.f_data   &&
         f_privacy == r2.f_privacy   &&
-        f_copyright == r2.f_copyright;
+        f_copyright == r2.f_copyright   &&
+        f_file == r2.f_file;
 }
 
 

@@ -46,15 +46,18 @@ public:
     wxMemoryBuffer FGetData() const { return f_data; }
     int FGetPrivacy() const { return f_privacy; }
     wxString FGetCopyright() const { return f_copyright; }
+    wxString FGetFile() const { return f_file; }
 
     void FSetData( const wxMemoryBuffer& data ) { f_data = data; }
     void FSetPrivacy( int privacy ) { f_privacy = privacy; }
     void FSetCopyright( const wxString& copyright ) { f_copyright = copyright; }
+    void FSetFile( const wxString& file ) { f_file = file; }
 
 private:
     wxMemoryBuffer f_data;
     int            f_privacy;
     wxString       f_copyright;
+    wxString       f_file;
 };
 
 inline bool operator==( const recMediaData& r1, const recMediaData& r2 )

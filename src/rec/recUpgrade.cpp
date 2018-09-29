@@ -663,7 +663,7 @@ void UpgradeTest0_0_10_15to0_0_10_16()
         "CREATE TABLE Gallery (\n"
         "  id INTEGER PRIMARY KEY NOT NULL,\n"
         "  title TEXT NOT NULL,\n"
-        "  desc TEXT NULL\n"
+        "  note TEXT NULL\n"
         ");\n"
         "CREATE TABLE GalleryMedia (\n"
         "  id INTEGER PRIMARY KEY NOT NULL,\n"

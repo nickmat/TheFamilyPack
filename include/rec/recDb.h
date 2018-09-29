@@ -28,6 +28,7 @@
 #ifndef RECDB_H
 #define RECDB_H
 
+#include <rec/recAssociate.h>
 #include <rec/recContact.h>
 #include <rec/recDatabase.h>
 #include <rec/recDate.h>
@@ -40,12 +41,18 @@
 #include <rec/recFamEvent.h>
 #include <rec/recFamEventa.h>
 #include <rec/recFamIndEventa.h>
+#include <rec/recFilterEvent.h>
+#include <rec/recGallery.h>
+#include <rec/recGalleryMedia.h>
 #include <rec/recGedExport.h>
 #include <rec/recGedParse.h>
 #include <rec/recIndEvent.h>
 #include <rec/recIndividual.h>
 #include <rec/recInterface.h>
 #include <rec/recIndPersona.h>
+#include <rec/recInterface.h>
+#include <rec/recMedia.h>
+#include <rec/recMediaData.h>
 #include <rec/recName.h>
 #include <rec/recPersona.h>
 #include <rec/recPlace.h>

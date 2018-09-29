@@ -49,8 +49,8 @@ public:
     int FGetMedSeq() const { return f_med_seq; }
 
     void FSetTitle( const wxString& title ) { f_title = title; }
-    void FSetIndID( idt galID ) { f_gal_id = galID; }
-    void FSetPerID( idt medID ) { f_med_id = medID; }
+    void FSetGalID( idt galID ) { f_gal_id = galID; }
+    void FSetMedID( idt medID ) { f_med_id = medID; }
     void FSetMedSeq( int seq ) { f_med_seq = seq; }
 
 private:
