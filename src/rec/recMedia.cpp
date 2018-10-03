@@ -70,7 +70,7 @@ void recMedia::Save()
         sql.Format(
             "INSERT INTO Media (data_id, ass_id, ref_id, privacy, title, note)"
             " VALUES (" ID ", " ID ", " ID ", %d, '%q', '%q');",
-            f_data_id, f_ass_id, f_ref_id, f_privacy, f_title, f_note
+            f_data_id, f_ass_id, f_ref_id, f_privacy, UTF8_( f_title ), UTF8_( f_note )
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -82,7 +82,7 @@ void recMedia::Save()
             sql.Format(
                 "INSERT INTO Media (id, data_id, ass_id, ref_id, privacy, title, note)"
                 " VALUES (" ID ", " ID ", " ID ", " ID ", %d, '%q', '%q');",
-                f_id, f_data_id, f_ass_id, f_ref_id, f_privacy, f_title, f_note
+                f_id, f_data_id, f_ass_id, f_ref_id, f_privacy, UTF8_( f_title ), UTF8_( f_note )
             );
         } else {
             // Update existing record
@@ -90,7 +90,7 @@ void recMedia::Save()
                 "UPDATE Media"
                 " SET data_id=" ID ", ass_id=" ID ", ref_id=" ID ", privacy=%d,"
                 " title='%q', note='%q' WHERE id=" ID ";",
-                f_data_id, f_ass_id, f_ref_id, f_privacy, f_title, f_note, f_id
+                f_data_id, f_ass_id, f_ref_id, f_privacy, UTF8_( f_title ), UTF8_( f_note ), f_id
             );
         }
         s_db->ExecuteUpdate( sql );
