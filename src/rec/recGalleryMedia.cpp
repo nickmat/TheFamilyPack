@@ -131,5 +131,11 @@ bool recGalleryMedia::Equivalent( const recGalleryMedia& r2 ) const
         f_med_seq == r2.f_med_seq;
 }
 
+void recGalleryMedia::SetNextMedSequence( idt galID )
+{
+    f_med_seq = recDb::ExecuteInt(
+        "SELECT MAX(med_seq) FROM GalleryMedia WHERE gal_id=" ID ";", galID ) + 1;
+}
+
 
 // End of recGalleryMedia.cpp file

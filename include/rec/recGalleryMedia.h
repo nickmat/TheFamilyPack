@@ -53,6 +53,8 @@ public:
     void FSetMedID( idt medID ) { f_med_id = medID; }
     void FSetMedSeq( int seq ) { f_med_seq = seq; }
 
+    void SetNextMedSequence( idt galID );
+
 private:
     wxString f_title;
     idt      f_gal_id;
