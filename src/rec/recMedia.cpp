@@ -141,5 +141,10 @@ bool recMedia::Equivalent( const recMedia& r2 ) const
     ;
 }
 
+wxString recMedia::GetTitle( idt medID )
+{
+    return ExecuteStr( "SELECT title FROM Media WHERE id=" ID ";", medID );
+}
+
 
 // End of recMedia.cpp file

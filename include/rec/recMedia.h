@@ -60,6 +60,8 @@ public:
     static wxString GetIdStr( idt medID ) { return wxString::Format( "M" ID, medID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
+    static wxString GetTitle( idt medID );
+
 private:
     idt      f_data_id;
     idt      f_ass_id;
