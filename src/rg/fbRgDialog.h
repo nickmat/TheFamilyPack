@@ -35,6 +35,7 @@ class rgStrTableCtrl;
 #include <wx/listctrl.h>
 #include <wx/notebook.h>
 #include <wx/radiobox.h>
+#include "rgImagePanel.h"
 #include <wx/toolbar.h>
 #include <wx/webview.h>
 #include <wx/splitter.h>
@@ -462,6 +463,28 @@ class fbRgEditIndividual : public wxDialog
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/// Class fbRgEditMedia
+///////////////////////////////////////////////////////////////////////////////
+class fbRgEditMedia : public wxDialog 
+{
+	private:
+	
+	protected:
+		wxTextCtrl* m_textCtrlTitle;
+		rgImagePanel* m_imagePanel;
+		wxStaticLine* m_staticline12;
+		wxStaticText* m_staticMediaID;
+		wxButton* m_buttonSave;
+		wxButton* m_buttonCancel;
+	
+	public:
+		
+		fbRgEditMedia( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Media"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
+		~fbRgEditMedia();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
 /// Class fbRgEditName
 ///////////////////////////////////////////////////////////////////////////////
 class fbRgEditName : public wxDialog 
@@ -642,7 +665,7 @@ class fbRgEditReference : public wxDialog
 		wxPanel* m_panelBottom;
 		wxNotebook* m_notebookBottom;
 		wxPanel* m_panelMedia;
-		wxListCtrl* m_listCtrl18;
+		wxListCtrl* m_listMedia;
 		wxButton* m_buttonMediaAdd;
 		wxButton* m_buttonMediaEdit;
 		wxButton* m_buttonMediaDel;

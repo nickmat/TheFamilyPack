@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     21 November 2012
- * Copyright:   Copyright (c) 2012 ~ 2017, Nick Matthews.
+ * Copyright:   Copyright (c) 2012 ~ 2018, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -112,6 +112,9 @@ extern bool rgEditFamily( wxWindow* wind, idt famID );
 
 // See src/rg/rgEdIndividual.cpp
 extern bool rgEditIndividual( wxWindow* wind, idt indID );
+
+// See src/rg/rgEdMedia.cpp
+extern bool rgEditMedia( wxWindow* wind, idt medID );
 
 // See src/rg/rgEdName.cpp
 extern bool rgEditName( wxWindow* wind, idt nameID );

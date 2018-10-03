@@ -36,9 +36,10 @@
 #endif
 
 #include <rec/recDate.h>
-#include <rec/recPlace.h>
-#include <rec/recPersona.h>
 #include <rec/recEventa.h>
+#include <rec/recMedia.h>
+#include <rec/recPersona.h>
+#include <rec/recPlace.h>
 
 #include <rg/rgDialogs.h>
 #include "rgEdReference.h"
@@ -147,9 +148,12 @@ rgDlgEditReference::rgDlgEditReference( wxWindow* parent, idt refID )
     m_listEntities->InsertColumn( ENT_COL_Type, _("Type") );
     m_listEntities->InsertColumn( ENT_COL_Value, _("Value") );
 
-    m_listPersona->InsertColumn( PER_COL_Number, _("Number") );
-    m_listPersona->InsertColumn( PER_COL_Name, _("Name") );
-    m_listPersona->InsertColumn( PER_COL_Individuals, _("Individuals") );
+    m_listPersona->InsertColumn( PER_COL_Number, _( "Number" ) );
+    m_listPersona->InsertColumn( PER_COL_Name, _( "Name" ) );
+    m_listPersona->InsertColumn( PER_COL_Individuals, _( "Individuals" ) );
+
+    m_listMedia->InsertColumn( MED_COL_Number, _( "Number" ) );
+    m_listMedia->InsertColumn( MED_COL_Title, _( "Title" ) );
 }
 
 bool rgDlgEditReference::TransferDataToWindow()
@@ -202,7 +206,21 @@ void rgDlgEditReference::UpdateHtml()
 
 void rgDlgEditReference::UpdateMedias( idt medID )
 {
-    wxMessageBox( _( "Not yet implimented" ), "UpdateMedias" );
+    m_mediaIDs = m_reference.GetMediaList();
+    m_listMedia->DeleteAllItems();
+    int row = -1;
+    for ( size_t i = 0; i < m_mediaIDs.size(); i++ ) {
+        m_listMedia->InsertItem( i, recMedia::GetIdStr( m_mediaIDs[i] ) );
+        m_listMedia->SetItem( i, MED_COL_Title, recMedia::GetTitle( m_mediaIDs[i] ) );
+        if ( medID == m_mediaIDs[i] ) {
+            m_listMedia->SetItemState( i, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+            row = i;
+        }
+    }
+    m_listMedia->SetColumnWidth( MED_COL_Title, -1 );
+    if ( row >= 0 ) {
+        m_listMedia->EnsureVisible( row );
+    }
 }
 
 void rgDlgEditReference::UpdatePersonas( idt perID )
@@ -318,7 +336,15 @@ void rgDlgEditReference::OnMediaAddButton( wxCommandEvent & event )
 
 void rgDlgEditReference::OnMediaEditButton( wxCommandEvent & event )
 {
-    wxMessageBox( _( "Not yet implimented" ), "OnMediaEditButton" );
+    long row = m_listMedia->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if ( row < 0 ) {
+        wxMessageBox( _( "No row selected" ), _( "Edit Media" ) );
+        return;
+    }
+    idt medID = m_mediaIDs[row];
+    if ( rgEditMedia( this, medID ) ) {
+        UpdateMedias( medID );
+    }
 }
 
 void rgDlgEditReference::OnMediaDeleteButton( wxCommandEvent & event )
@@ -373,7 +399,7 @@ void rgDlgEditReference::OnPersonaEditButton( wxCommandEvent& event )
 {
     long row = m_listPersona->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
-        wxMessageBox( _("No row selected"), _("Edit Entity") );
+        wxMessageBox( _("No row selected"), _("Edit Persona") );
         return;
     }
     idt perID = m_personaIDs[row];

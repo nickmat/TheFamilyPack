@@ -244,6 +244,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rg\rgEdMedia.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rg\rgEdName.cpp"
 				>
 			</File>
@@ -285,6 +289,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\rg\rgEdUser.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgImagePanel.cpp"
 				>
 			</File>
 			<File
@@ -366,6 +374,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rg\rgEdMedia.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rg\rgEdName.h"
 				>
 			</File>
@@ -407,6 +419,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\rg\rgEdUser.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgImagePanel.h"
 				>
 			</File>
 			<File

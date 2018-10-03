@@ -1452,6 +1452,68 @@ fbRgEditIndividual::~fbRgEditIndividual()
 	
 }
 
+fbRgEditMedia::fbRgEditMedia( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	
+	wxBoxSizer* bSizer122;
+	bSizer122 = new wxBoxSizer( wxVERTICAL );
+	
+	wxBoxSizer* bSizer114;
+	bSizer114 = new wxBoxSizer( wxHORIZONTAL );
+	
+	wxStaticText* m_staticText2;
+	m_staticText2 = new wxStaticText( this, wxID_ANY, _("Title:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText2->Wrap( -1 );
+	bSizer114->Add( m_staticText2, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
+	m_textCtrlTitle = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( -1,-1 ), 0 );
+	bSizer114->Add( m_textCtrlTitle, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	
+	bSizer122->Add( bSizer114, 0, wxEXPAND, 5 );
+	
+	m_imagePanel = new rgImagePanel( this );
+	m_imagePanel->SetMinSize( wxSize( 400,400 ) );
+	
+	bSizer122->Add( m_imagePanel, 1, wxALL|wxEXPAND, 5 );
+	
+	m_staticline12 = new wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
+	bSizer122->Add( m_staticline12, 0, wxEXPAND | wxALL, 5 );
+	
+	wxBoxSizer* bSizerDismiss;
+	bSizerDismiss = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_staticMediaID = new wxStaticText( this, wxID_ANY, _("M00"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticMediaID->Wrap( -1 );
+	m_staticMediaID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Times New Roman") ) );
+	
+	bSizerDismiss->Add( m_staticMediaID, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	
+	bSizerDismiss->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	m_buttonSave = new wxButton( this, wxID_OK, _("Save"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizerDismiss->Add( m_buttonSave, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxLEFT, 5 );
+	
+	m_buttonCancel = new wxButton( this, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizerDismiss->Add( m_buttonCancel, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
+	
+	bSizer122->Add( bSizerDismiss, 0, wxEXPAND, 5 );
+	
+	
+	this->SetSizer( bSizer122 );
+	this->Layout();
+	bSizer122->Fit( this );
+	
+	this->Centre( wxBOTH );
+}
+
+fbRgEditMedia::~fbRgEditMedia()
+{
+}
+
 fbRgEditName::fbRgEditName( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
@@ -2058,8 +2120,8 @@ fbRgEditReference::fbRgEditReference( wxWindow* parent, wxWindowID id, const wxS
 	wxBoxSizer* bSizer120;
 	bSizer120 = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_listCtrl18 = new wxListCtrl( m_panelMedia, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_HRULES|wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_VRULES );
-	bSizer120->Add( m_listCtrl18, 1, wxALL|wxEXPAND, 5 );
+	m_listMedia = new wxListCtrl( m_panelMedia, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_HRULES|wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_VRULES );
+	bSizer120->Add( m_listMedia, 1, wxALL|wxEXPAND, 5 );
 	
 	wxBoxSizer* bSizer571;
 	bSizer571 = new wxBoxSizer( wxVERTICAL );

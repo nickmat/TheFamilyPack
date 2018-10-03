@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010 ~ 2017, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2018, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -213,6 +213,34 @@ int recReference::GetPersonaCount( idt refID )
         "SELECT COUNT(*) FROM Persona WHERE ref_id=" ID ";",
         refID
     );
+    return s_db->ExecuteScalar( sql );
+}
+
+recIdVec recReference::GetMediaList( idt refID )
+{
+    recIdVec vec;
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3ResultSet result;
+
+    sql.Format(
+        "SELECT id FROM Media WHERE ref_id=" ID ";",
+        refID
+        );
+    result = s_db->ExecuteQuery( sql );
+
+    while ( result.NextRow() ) {
+        vec.push_back( GET_ID( result.GetInt64( 0 ) ) );
+    }
+    return vec;
+}
+
+int recReference::GetMediaCount( idt refID )
+{
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT COUNT(*) FROM Media WHERE ref_id=" ID ";",
+        refID
+        );
     return s_db->ExecuteScalar( sql );
 }
 

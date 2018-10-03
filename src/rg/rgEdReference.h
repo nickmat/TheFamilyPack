@@ -51,6 +51,9 @@ private:
     enum PersonaColumn {
         PER_COL_Number, PER_COL_Name, PER_COL_Individuals, PER_COL_MAX
     };
+    enum MediaColumn {
+        MED_COL_Number, MED_COL_Title, MED_COL_MAX
+    };
     enum {
         ID_EDREF_NEW_SOURCE = 1100,
         ID_EDREF_NEW_NAME,
@@ -107,6 +110,7 @@ private:
     recReference  m_reference;
     recRefEntVec  m_entities;
     recIdVec      m_personaIDs;
+    recIdVec      m_mediaIDs;
 };
 
 #endif // RGEDREFERENCE_H

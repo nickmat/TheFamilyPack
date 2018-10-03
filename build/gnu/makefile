@@ -168,6 +168,7 @@ RECGUI_OBJECTS =  \
 	recgui_rgEdEventType.o \
 	recgui_rgEdFamily.o \
 	recgui_rgEdIndividual.o \
+	recgui_rgEdMedia.o \
 	recgui_rgEdName.o \
 	recgui_rgEdNamePart.o \
 	recgui_rgEdPerIndEvent.o \
@@ -179,6 +180,7 @@ RECGUI_OBJECTS =  \
 	recgui_rgEdRole.o \
 	recgui_rgEdSystem.o \
 	recgui_rgEdUser.o \
+	recgui_rgImagePanel.o \
 	recgui_rgIndividual.o \
 	recgui_rgSelect.o \
 	recgui_rgSelEvent.o \
@@ -507,6 +509,9 @@ recgui_rgEdFamily.o: ./../../src/rg/rgEdFamily.cpp
 recgui_rgEdIndividual.o: ./../../src/rg/rgEdIndividual.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
+recgui_rgEdMedia.o: ./../../src/rg/rgEdMedia.cpp
+	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
+
 recgui_rgEdName.o: ./../../src/rg/rgEdName.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
@@ -538,6 +543,9 @@ recgui_rgEdSystem.o: ./../../src/rg/rgEdSystem.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgEdUser.o: ./../../src/rg/rgEdUser.cpp
+	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
+
+recgui_rgImagePanel.o: ./../../src/rg/rgImagePanel.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgIndividual.o: ./../../src/rg/rgIndividual.cpp

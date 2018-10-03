@@ -6,7 +6,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     5th October 2010
- * Copyright:   Copyright (c) 2010 ~ 2017, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2018, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -147,6 +147,7 @@
     <sources>$(LOCAL_SRC)/rg/rgEdEventType.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdFamily.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdIndividual.cpp</sources>
+    <sources>$(LOCAL_SRC)/rg/rgEdMedia.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdName.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdNamePart.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdPerIndEvent.cpp</sources>
@@ -158,6 +159,7 @@
     <sources>$(LOCAL_SRC)/rg/rgEdRole.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdSystem.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdUser.cpp</sources>
+    <sources>$(LOCAL_SRC)/rg/rgImagePanel.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgIndividual.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgSelect.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgSelEvent.cpp</sources>
@@ -178,6 +180,7 @@
     <headers>$(LOCAL_SRC)/rg/rgEdEventType.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdFamily.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdIndividual.h</headers>
+    <headers>$(LOCAL_SRC)/rg/rgEdMedia.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdName.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdNamePart.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdPerIndEvent.h</headers>
@@ -189,6 +192,7 @@
     <headers>$(LOCAL_SRC)/rg/rgEdRole.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdSystem.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdUser.h</headers>
+    <headers>$(LOCAL_SRC)/rg/rgImagePanel.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgSelect.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgSelEvent.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgTableCtrl.h</headers>
