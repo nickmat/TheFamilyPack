@@ -43,8 +43,6 @@ public:
     rgDlgEditReference( wxWindow* parent, idt refID );
 
 private:
-    DECLARE_EVENT_TABLE()
-
     enum EntityColumn {
         ENT_COL_Type, ENT_COL_Number, ENT_COL_Value, ENT_COL_MAX
     };

@@ -130,16 +130,6 @@ extern bool rgSelectPlaceFromReference(
 //-------------------------[ rgDlgEditReference ]-----------------------------
 //============================================================================
 
-BEGIN_EVENT_TABLE( rgDlgEditReference, wxDialog )
-    EVT_MENU( ID_EDREF_NEW_SOURCE,   rgDlgEditReference::OnNewSource )
-    EVT_MENU( ID_EDREF_NEW_NAME,     rgDlgEditReference::OnNewName )
-    EVT_MENU( ID_EDREF_NEW_DATE,     rgDlgEditReference::OnNewDate )
-    EVT_MENU( ID_EDREF_NEW_DATE_AGE, rgDlgEditReference::OnNewDateAge )
-    EVT_MENU( ID_EDREF_NEW_PLACE,    rgDlgEditReference::OnNewPlace )
-    EVT_MENU( ID_EDREF_NEW_EVENT,    rgDlgEditReference::OnNewEvent )
-    EVT_MENU( ID_EDREF_NEW_PER_EVENT,rgDlgEditReference::OnNewPersonalEvent )
-    EVT_MENU_RANGE( ID_ADDPER_MALE, ID_ADDPER_UNKNOWN, rgDlgEditReference::OnPersonaAddMenuOp )
-END_EVENT_TABLE()
 
 rgDlgEditReference::rgDlgEditReference( wxWindow* parent, idt refID )
     : m_reference(refID), fbRgEditReference( parent )
@@ -154,6 +144,15 @@ rgDlgEditReference::rgDlgEditReference( wxWindow* parent, idt refID )
 
     m_listMedia->InsertColumn( MED_COL_Number, _( "Number" ) );
     m_listMedia->InsertColumn( MED_COL_Title, _( "Title" ) );
+
+    Bind( wxEVT_MENU, &rgDlgEditReference::OnNewSource, this, ID_EDREF_NEW_SOURCE );
+    Bind( wxEVT_MENU, &rgDlgEditReference::OnNewName, this, ID_EDREF_NEW_NAME );
+    Bind( wxEVT_MENU, &rgDlgEditReference::OnNewDate, this, ID_EDREF_NEW_DATE );
+    Bind( wxEVT_MENU, &rgDlgEditReference::OnNewDateAge, this, ID_EDREF_NEW_DATE_AGE );
+    Bind( wxEVT_MENU, &rgDlgEditReference::OnNewPlace, this, ID_EDREF_NEW_PLACE );
+    Bind( wxEVT_MENU, &rgDlgEditReference::OnNewEvent, this, ID_EDREF_NEW_EVENT );
+    Bind( wxEVT_MENU, &rgDlgEditReference::OnNewPersonalEvent, this, ID_EDREF_NEW_PER_EVENT );
+    Bind( wxEVT_MENU, &rgDlgEditReference::OnPersonaAddMenuOp, this, ID_ADDPER_MALE, ID_ADDPER_UNKNOWN );
 }
 
 bool rgDlgEditReference::TransferDataToWindow()
