@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3rd April 2013
- * Copyright:   Copyright (c) 2013 ~ 2017, Nick Matthews.
+ * Copyright:   Copyright (c) 2013 ~ 2018, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -41,8 +41,8 @@
 const int recVerMajor    = 0;
 const int recVerMinor    = 0;
 const int recVerRev      = 10;
-const int recVerTest     = 16;                              // <<======<<<<
-const wxStringCharType* recVerStr = wxS("TFPD-0.0.10.16");  // <<======<<<<
+const int recVerTest     = 17;                              // <<======<<<<
+const wxStringCharType* recVerStr = wxS("TFPD-0.0.10.17");  // <<======<<<<
 
 //============================================================================
 //                 Code to upgrade old versions
@@ -691,7 +691,26 @@ void UpgradeTest0_0_10_15to0_0_10_16()
 
         "UPDATE Version SET test=16 WHERE id=1;\n"
         "COMMIT;\n"
-    ;
+        ;
+    recDb::GetDb()->ExecuteUpdate( query );
+}
+
+void UpgradeTest0_0_10_16to0_0_10_17()
+{
+    // Version 0.0.10.16 to 0.0.10.16
+    // Add EventType and EventTypeRole records for Media Event.
+
+    char* query =
+        "BEGIN;\n"
+
+        "INSERT INTO EventType (id, grp, name) VALUES(-23, 7, 'Media');\n"
+        "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-88, -23, 1, 0, 'Subject');\n"
+        "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-89, -23, 0, 0, 'Producer');\n"
+        "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-90, -23, 0, 0, 'Commentator');\n"
+
+        "UPDATE Version SET test=17 WHERE id=1;\n"
+        "COMMIT;\n"
+        ;
     recDb::GetDb()->ExecuteUpdate( query );
 }
 
@@ -715,6 +734,7 @@ void UpgradeRev0_0_10toCurrent( int test )
     case 13: UpgradeTest0_0_10_13to0_0_10_14();
     case 14: UpgradeTest0_0_10_14to0_0_10_15();
     case 15: UpgradeTest0_0_10_15to0_0_10_16();
+    case 16: UpgradeTest0_0_10_16to0_0_10_17();
     }
 }
 

@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     14th December 2015
- * Copyright:   Copyright (c) 2015 ~ 2017, Nick Matthews.
+ * Copyright:   Copyright (c) 2015 ~ 2018, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -71,7 +71,10 @@ public:
         ROLE_Residence_Summary      = -77,
         ROLE_Residence_Visitor      = -62,
         ROLE_Occupation_Summary     = -65,
-        ROLE_MAX                    = 33 // size of list
+        ROLE_Media_Subject          = -88,
+        ROLE_Media_Producer         = -89,
+        ROLE_Media_Commentator      = -90,
+        ROLE_MAX                    = 36 // size of list
     };
     enum Prime {
         PRIME_Ignore = -1,

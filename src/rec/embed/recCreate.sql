@@ -269,7 +269,12 @@ INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-74, -22, 
 INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-75, -22, 3, 0, 'Partner');
 INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-76, -22, 0, 0, 'Child');
 
-/* Next EventTypeRole id = -88 */
+INSERT INTO EventType (id, grp, name) VALUES(-23, 7, 'Media');
+INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-88, -23, 1, 0, 'Subject');
+INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-89, -23, 0, 0, 'Producer');
+INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-90, -23, 0, 0, 'Commentator');
+
+/* Next EventTypeRole id = -91 */
 
 CREATE TABLE Family (
   id INTEGER PRIMARY KEY,
@@ -549,7 +554,7 @@ INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 0, 1, 'F1');
 INSERT INTO UserSetting (id, user_id, property, val) VALUES(2, 1, 1, 'F1');
 
 /* The Version table has only this one row */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 16);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 17);
 
 COMMIT;
 

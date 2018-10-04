@@ -230,6 +230,10 @@ static const char* createdb =  /* recCreate.sql */
  "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-74, -22, 2, 0, 'Wife');\n"
  "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-75, -22, 3, 0, 'Partner');\n"
  "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-76, -22, 0, 0, 'Child');\n"
+ "INSERT INTO EventType (id, grp, name) VALUES(-23, 7, 'Media');\n"
+ "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-88, -23, 1, 0, 'Subject');\n"
+ "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-89, -23, 0, 0, 'Producer');\n"
+ "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-90, -23, 0, 0, 'Commentator');\n"
  "CREATE TABLE Family (\n"
  "  id INTEGER PRIMARY KEY,\n"
  "  husb_id INTEGER,\n"
@@ -462,7 +466,7 @@ static const char* createdb =  /* recCreate.sql */
  "INSERT INTO System (id, val) VALUES(1, '1');\n"
  "INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 0, 1, 'F1');\n"
  "INSERT INTO UserSetting (id, user_id, property, val) VALUES(2, 1, 1, 'F1');\n"
- "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 16);\n"
+ "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 17);\n"
  "COMMIT;\n";
 
 /* End of recDatabaseCreate.f2c */
