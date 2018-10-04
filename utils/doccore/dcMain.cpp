@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     25th November 2012
- * Copyright:   Copyright (c) 2012 - 2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2012 ~ 2018, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  doccore is free software: you can redistribute it and/or modify
@@ -39,9 +39,12 @@
 #include <vector>
 #include <wx/ffile.h>
 #include <wx/cmdline.h>
+//#include <wx/sstream.h>
+#include <wx/textfile.h>
+
 #include <rec/recDb.h>
 
-#define VERSION   "0.2.0"
+#define VERSION   "0.2.1"
 #define PROGNAME  "doccore - Create core data html tables"
 
 const wxString g_version = VERSION;
@@ -49,149 +52,57 @@ const wxString g_progName = PROGNAME;
 
 #ifdef NDEBUG
 const wxString g_title = PROGNAME " - Version " VERSION "\n"
-                         "Copyright (c) 2012-2015 Nick Matthews\n\n";
+                         "Copyright (c) 2012 ~ 2018 Nick Matthews\n\n";
 #else
 const wxString g_title = PROGNAME " - Version " VERSION " Debug\n"
-                         "Copyright (c) 2012-2015 Nick Matthews\n\n";
+                         "Copyright (c) 2012 ~ 2018 Nick Matthews\n\n";
 #endif
 
 bool g_verbose = false;
 bool g_quiet   = false;
 
-struct NavPair {
-    NavPair( const wxString& p, const wxString& n ) : path(p), name(n) {}
-    wxString path;
-    wxString name;
-};
-typedef std::vector<NavPair> NavVec;
 
-/***************************************************************************
- **  GetTodayStr  Return the current date as a htm marked up string.
- **  ~~~~~~~~~~~  
- */
-
-wxString GetTodayStr()
+wxString GetFileContents( const wxString& filename )
 {
-    static wxString month[] = { 
-        "January", "Febuary", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-    };
-    time_t now;
-    time( &now );
-    struct tm* tp = localtime( &now );
-    wxString str;
-
-    str << tp->tm_mday
-        << "<sup>";
-
-    switch( tp->tm_mday )
-    {
-    case 1: case 21: case 31:
-        str << "st";
-        break;
-    case 2: case 22:
-        str << "nd";
-        break;
-    case 3: case 23:
-        str << "rd";
-        break;
-    default:
-        str << "th";
+    wxString text;
+    wxTextFile file( filename );
+    file.Open();
+    for ( ;;) {
+        text += file.GetNextLine();
+        if ( file.Eof() ) {
+            break;
+        }
+        text += "\n";
     }
-    str << "</sup> "
-        << month[ tp->tm_mon ]
-        << " " 
-        << tp->tm_year + 1900;
-
-   return str;
+    return text;
 }
 
-wxString GetHtmBeg( const wxString& title, int level, const NavVec& nps )
+wxString GetHtmBeg( const wxString& existing )
 {
-    wxString lstr;
-    for( int i = 0 ; i < level ; i++ ) {
-        lstr << "../";
+    size_t pos = existing.find( "<div id='content'" );
+    if ( pos == wxString::npos ) {
+        return wxString();
     }
-    wxString htm;
+    wxString htm = existing.substr( 0, pos );
     htm <<
-        "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">"
-        "<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>\n"
-        "<head>\n"
-        "<title>TFPD - " << title << "</title>\n"
-        "<meta http-equiv='Content-Type' content='text/html;charset=utf-8' />\n"
-        "<meta name='Generator' content='doccore from The Family Pack' />\n"
-        "<link rel='icon' type='image/png' href='" << lstr << "logo1.png' />\n"
-        "<link rel='stylesheet' type='text/css' href='" << lstr << "tfp.css' />\n"
-        "</head>\n"
-        "<body>\n"
-        "<h1><a  href='" << lstr << "index.htm'><img id='logo' src='" << lstr << "tfp5.gif' alt='Logo' /></a>\n"
-        "The Family Pack<br/>Core Data: Event Types</h1>\n"
-        "<div id='page' class='database'>\n"
-        "<div id='crumbs'>\n"
-    ;
-    for( size_t i = 0 ; i < nps.size() ; i++ ) {
-        wxString lclass;
-        if( i > 0 ) lclass << " level" << i; 
-        htm << "<a href='" << nps[i].path 
-            << "' class='m-item";
-        if( i+3 == nps.size() ) htm << lclass << " thispage";
-        else if( i+2 == nps.size() ) htm << " prev";
-        else if( i+1 == nps.size() ) htm << " next";
-        else htm << lclass;
-        htm << "'>" << nps[i].name << "</a>\n";
-    }
-    htm << "</div>\n<div id='content' class='nomenu'>\n\n"
+        "<div id='content'>\n\n"
         "<blockquote>\n"
         "<p>\n"
         "<!-- Quote -->\n"
         "</p>\n"
         "<p class='attribute'><!-- Attr --></p>\n"
         "</blockquote>\n\n"
-    ;
+        ;
     return htm;
 }
 
-wxString GetHtmEnd( int level )
+wxString GetHtmEnd( const wxString& existing )
 {
-    wxString lstr;
-    for( int i = 0 ; i < level ; i++ ) {
-        lstr << "../";
+    size_t pos = existing.find( "</div><!--id=content-->" );
+    if ( pos == wxString::npos ) {
+        return wxString();
     }
-    wxString htm;
-    htm << "</div>\n"
-        "<hr />\n"
-        "<div id='valid'>\n"
-        "<p>\n"
-        "<a href='http://validator.w3.org/check?uri=referer'><img\n"
-        "src='" << lstr << "valid-xhtml10-blue.png'\n"
-        "alt='Valid XHTML 1.0 Strict' height='31' width='88' /></a>\n"
-        "</p>\n"
-        "</div>\n"
-        "<div id='create-date'><p>" << GetTodayStr() << "</p></div>\n"
-        "</div>\n"
-        "<!-- Start of StatCounter Code for Default Guide -->\n"
-        "<script type=\"text/javascript\">\n"
-        "/*<![CDATA[*/\n"
-        "var sc_project=9849896;\n"
-        "var sc_invisible=1;\n"
-        "var sc_security=\"8230fdb2\";\n"
-        "var scJsHost = ((\"https:\" == document.location.protocol) ?\n"
-        "\"https://secure.\" : \"http://www.\");\n"
-        "document.write(\"<sc\"+\"ript type='text/javascript' src='\" +\n"
-        "scJsHost+\n"
-        "\"statcounter.com/counter/counter.js'></\"+\"script>\");\n"
-        "/*]]>*/\n"
-        "</script>\n"
-        "<noscript><div class=\"statcounter\"><a title=\"free hit\n"
-        "counters\" href=\"http://statcounter.com/\"\n"
-        "target=\"_blank\"><img class=\"statcounter\"\n"
-        "src=\"http://c.statcounter.com/9849896/0/8230fdb2/1/\"\n"
-        "alt=\"free hit counters\" /></a></div></noscript>\n"
-        "<!-- End of StatCounter Code for Default Guide -->\n"
-
-        "</body>\n</html>\n"
-    ;
-    return htm;
+    return existing.substr( pos );
 }
 
 wxString WrTblEventType( int* order )
@@ -199,7 +110,7 @@ wxString WrTblEventType( int* order )
     wxString htm;
     htm <<
         "<table class='basic core'>\n"
-        "<tr><th colspan='0'>EventType Core Data</th></tr>\n"
+        "<tr><th colspan='4'>EventType Core Data</th></tr>\n"
         "<tr><th>[id]</th><th>[grp]</th><th>[name]</th><th></th></tr>\n"
         "<tr><td>0</td><td>NULL</td><td>NULL</td><td>Place holder for invalid Event Type.</td></tr>\n"
     ;
@@ -230,7 +141,7 @@ wxString WrTblEventTypeRole( int* order )
     wxString htm;
     htm <<
         "<table class='basic core'>\n"
-        "<tr><th colspan='0'>EventTypeRole Core Data</th></tr>\n"
+        "<tr><th colspan='5'>EventTypeRole Core Data</th></tr>\n"
         "<tr><th>[id]</th><th>[type_id]</th><th>[prime]</th><th>[official]</th><th>[name]</th></tr>\n"
         "<tr><td>0</td><td>NULL</td><td>NULL</td><td>NULL</td><td>NULL</td></tr>\n"
     ;
@@ -342,25 +253,19 @@ int main( int argc, char** argv )
     int grporder[] = { 1, 2, 5, 6, 8, 9, 7, 3, 10, 4, 0 };
 
     CreateNewDatabase();
-    NavVec nps;
-    nps.push_back( NavPair( "../../index.htm", "Home" ) );
-    nps.push_back( NavPair( "../common.htm", "Common Data" ) );
-    nps.push_back( NavPair( "core.htm", "Core" ) );
-    nps.push_back( NavPair( "ets.htm", "Event Types" ) );
-    nps.push_back( NavPair( "core.htm", "&lt;&lt;" ) );
-    nps.push_back( NavPair( "../place/places.htm", "&gt;&gt;" ) );
 
+    wxString existing = GetFileContents( outfn );
     wxString htm;
-    htm << GetHtmBeg( "Core Data: Event Types", 2, nps )
+    htm << GetHtmBeg( existing )
         << WrTblEventType( grporder ) 
         << WrTblEventTypeRole( grporder ) 
-        << GetHtmEnd( 2 );
+        << GetHtmEnd( existing )
+        ;
     OutputFile( htm, outfn );
 
     if( htm.IsEmpty() ) {
         ok = false;
     }
-    delete recDb::GetDb();
     wxUninitialize();
     if( ok ) {
         return EXIT_SUCCESS;
