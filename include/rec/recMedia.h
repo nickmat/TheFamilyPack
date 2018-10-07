@@ -30,6 +30,9 @@
 
 #include <rec/recDatabase.h>
 
+class recMedia;
+using  recMediaVec = std::vector< recMedia >;
+
 class recMedia : public recDb
 {
 public:

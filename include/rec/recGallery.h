@@ -29,6 +29,10 @@
 #define RECGALLERY_H
 
 #include <rec/recDatabase.h>
+#include <rec/recMedia.h>
+
+class recGallery;
+using  recGalleryVec = std::vector< recGallery >;
 
 class recGallery : public recDb
 {
@@ -52,6 +56,11 @@ public:
 
     static wxString GetIdStr( idt galID ) { return wxString::Format( "G" ID, galID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
+
+    static recGalleryVec GetGalleries();
+
+    static recMediaVec GetMediaVec( idt galID );
+    recMediaVec GetMediaVec() const { return GetMediaVec( f_id ); }
 
 private:
     wxString f_title;
