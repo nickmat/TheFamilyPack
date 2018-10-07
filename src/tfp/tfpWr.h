@@ -70,6 +70,10 @@ extern wxString tfpWriteFamilyPage( idt famID, size_t iL = 0, size_t iR = 0 );
 extern wxString tfpWriteFamilyPage( const wxString& str );
 extern wxString tfpWriteIndFamilyPage( idt indID );
 
+// See tfpWrGallery.cpp
+extern wxString tfpWriteGalleryList();
+extern wxString tfpWriteGalleryPage( idt galID );
+
 // See tfpWrIndividual.cpp
 extern wxString tfpWriteIndividualPage( idt indID );
 

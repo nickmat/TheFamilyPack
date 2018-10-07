@@ -157,6 +157,7 @@
     <ClCompile Include="..\..\src\tfp\tfpWrEventaIndex.cpp" />
     <ClCompile Include="..\..\src\tfp\tfpWrEventIndex.cpp" />
     <ClCompile Include="..\..\src\tfp\tfpWrFamily.cpp" />
+    <ClCompile Include="..\..\src\tfp\tfpWrGallery.cpp" />
     <ClCompile Include="..\..\src\tfp\tfpWrIndividual.cpp" />
     <ClCompile Include="..\..\src\tfp\tfpWrName.cpp" />
     <ClCompile Include="..\..\src\tfp\tfpWrNotes.cpp" />

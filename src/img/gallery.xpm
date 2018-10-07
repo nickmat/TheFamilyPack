@@ -1,0 +1,26 @@
+/* XPM */
+static char* gallery_xpm[] = {
+/* columns rows colours chars-per-pixel */
+"16 16 4 1 ",
+"B c Black",
+"G c #cd853f",
+". c #87ceeb",
+"  c None",
+/* pixels */
+"                ",
+"                ",
+"GG  GG  GG GGG  ",
+"GBBBBBBBBBBBB   ",
+" B.........GB G ",
+" B..........B BG",
+"GB..........B B ",
+"GB..........B BG",
+" B..........B BG",
+"GB.........GB BG",
+"GBBBBBBBBBBBB B ",
+"GG  GG  GG GG B ",
+"   BBBBBBBBBBBBG",
+"  GGG  GG  GG GG",
+"                ",
+"                "
+};

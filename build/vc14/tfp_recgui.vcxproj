@@ -133,6 +133,7 @@
     <ClCompile Include="..\..\src\rg\rgEdEventType.cpp" />
     <ClCompile Include="..\..\src\rg\rgEdFamily.cpp" />
     <ClCompile Include="..\..\src\rg\rgEdIndividual.cpp" />
+    <ClCompile Include="..\..\src\rg\rgEdMedia.cpp" />
     <ClCompile Include="..\..\src\rg\rgEdName.cpp" />
     <ClCompile Include="..\..\src\rg\rgEdNamePart.cpp" />
     <ClCompile Include="..\..\src\rg\rgEdPerIndEvent.cpp" />
@@ -144,6 +145,7 @@
     <ClCompile Include="..\..\src\rg\rgEdRole.cpp" />
     <ClCompile Include="..\..\src\rg\rgEdSystem.cpp" />
     <ClCompile Include="..\..\src\rg\rgEdUser.cpp" />
+    <ClCompile Include="..\..\src\rg\rgImagePanel.cpp" />
     <ClCompile Include="..\..\src\rg\rgIndividual.cpp" />
     <ClCompile Include="..\..\src\rg\rgSelect.cpp" />
     <ClCompile Include="..\..\src\rg\rgSelEvent.cpp" />
@@ -164,6 +166,7 @@
     <ClInclude Include="..\..\src\rg\rgEdEventType.h" />
     <ClInclude Include="..\..\src\rg\rgEdFamily.h" />
     <ClInclude Include="..\..\src\rg\rgEdIndividual.h" />
+    <ClInclude Include="..\..\src\rg\rgEdMedia.h" />
     <ClInclude Include="..\..\src\rg\rgEdName.h" />
     <ClInclude Include="..\..\src\rg\rgEdNamePart.h" />
     <ClInclude Include="..\..\src\rg\rgEdPerIndEvent.h" />
@@ -175,6 +178,7 @@
     <ClInclude Include="..\..\src\rg\rgEdRole.h" />
     <ClInclude Include="..\..\src\rg\rgEdSystem.h" />
     <ClInclude Include="..\..\src\rg\rgEdUser.h" />
+    <ClInclude Include="..\..\src\rg\rgImagePanel.h" />
     <ClInclude Include="..\..\src\rg\rgSelect.h" />
     <ClInclude Include="..\..\src\rg\rgSelEvent.h" />
     <ClInclude Include="..\..\src\rg\rgTableCtrl.h" />

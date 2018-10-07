@@ -301,6 +301,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\tfp\tfpWrGallery.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\tfp\tfpWrIndividual.cpp"
 				>
 			</File>

@@ -60,6 +60,7 @@
 #include "img/home.xpm"
 #include "img/findref.xpm"
 #include "img/findevent.xpm"
+#include "img/gallery.xpm"
 
 #ifndef wxHAS_IMAGES_IN_RESOURCES
     #include "img/tfp.xpm"
@@ -90,8 +91,9 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_FIND_INDIVIDUAL_ID, TfpFrame::OnFindIndividualID )
     EVT_MENU( tfpID_FIND_EVENT_ID, TfpFrame::OnFindEventID )
     EVT_MENU( tfpID_LIST_SURNAME_INDEX, TfpFrame::OnListIndex )
-    EVT_MENU( tfpID_LIST_INDIVIDUALS, TfpFrame::OnListIndividuals )
     EVT_MENU( tfpID_LIST_PERSONAS, TfpFrame::OnListPersonas )
+    EVT_MENU( tfpID_LIST_INDIVIDUALS, TfpFrame::OnListIndividuals )
+    EVT_MENU( tfpID_LIST_GALLERIES, TfpFrame::OnListGalleries )
     EVT_MENU( tfpID_LIST_ALL_REFERENCES, TfpFrame::OnListReferences )
     EVT_MENU( tfpID_LIST_PAGED_REFERENCES, TfpFrame::OnListPagedReferences )
     EVT_MENU( tfpID_LIST_ALL_EVENTS, TfpFrame::OnListAllEvents )
@@ -237,7 +239,8 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     wxMenu* menuList = new wxMenu;
     menuList->Append( tfpID_LIST_SURNAME_INDEX, _("&Surname Index\tAlt-S") );
     menuList->Append( tfpID_LIST_PERSONAS, _("Person&a Index\tAlt-A") );
-    menuList->Append( tfpID_LIST_INDIVIDUALS, _("&Individuals\tAlt-I") );
+    menuList->Append( tfpID_LIST_INDIVIDUALS, _( "&Individuals\tAlt-I" ) );
+    menuList->Append( tfpID_LIST_GALLERIES, _( "&Galleries\tAlt-G" ) );
     menuList->Append( tfpID_LIST_REFERENCE_MENU, _("&References"), menuListRef );
     menuList->Append( tfpID_LIST_EVENT_MENU, _("&Events"), menuListEvent );
     menuList->Append( tfpID_LIST_RESEARCHERS, _("Resear&chers\tAlt-C") );
@@ -291,13 +294,15 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     wxBitmap bmpFind( find_xpm );
     wxBitmap bmpFindeve( findevent_xpm );
     wxBitmap bmpFindref( findref_xpm );
+    wxBitmap bmpGalleries( gallery_xpm );
     wxBitmap bmpHome( home_xpm );
     m_toolbar->AddTool( tfpID_FIND_BACK, _("Back"), bmpBack );
     m_toolbar->AddTool( tfpID_FIND_FORWARD, _("Forward"), bmpForward );
     m_toolbar->AddSeparator();
     m_toolbar->AddTool( tfpID_LIST_SURNAME_INDEX, _("Index"), bmpFind );
     m_toolbar->AddTool( tfpID_LIST_PAGED_EVENTS, _("Events"), bmpFindeve );
-    m_toolbar->AddTool( tfpID_LIST_PAGED_REFERENCES, _("References"), bmpFindref );
+    m_toolbar->AddTool( tfpID_LIST_PAGED_REFERENCES, _( "References" ), bmpFindref );
+    m_toolbar->AddTool( tfpID_LIST_GALLERIES, _( "Galleries" ), bmpGalleries );
     m_toolbar->AddSeparator();
     m_toolbar->AddTool( tfpID_GOTO_HOME, _("Home"), bmpHome );
     m_toolbar->AddSeparator();
@@ -730,6 +735,11 @@ void TfpFrame::OnListPersonas( wxCommandEvent& event )
 void TfpFrame::OnListIndividuals( wxCommandEvent& event )
 {
     DisplayHtmPage( "ND*" );
+}
+
+void TfpFrame::OnListGalleries( wxCommandEvent & event )
+{
+    DisplayHtmPage( "G" );
 }
 
 /*! \brief Called on a List References menu option event.
@@ -1537,6 +1547,7 @@ void TfpFrame::SetDatabaseOpen( const wxString& path )
     m_toolbar->EnableTool( tfpID_LIST_SURNAME_INDEX, true );
     m_toolbar->EnableTool( tfpID_LIST_PAGED_EVENTS, true );
     m_toolbar->EnableTool( tfpID_LIST_PAGED_REFERENCES, true );
+    m_toolbar->EnableTool( tfpID_LIST_GALLERIES, true );
     m_toolbar->EnableTool( tfpID_GOTO_HOME, true );
     m_showpage->Enable( true );
 }
@@ -1548,6 +1559,7 @@ void TfpFrame::SetNoDatabase()
     m_toolbar->EnableTool( tfpID_LIST_SURNAME_INDEX, false );
     m_toolbar->EnableTool( tfpID_LIST_PAGED_EVENTS, false );
     m_toolbar->EnableTool( tfpID_LIST_PAGED_REFERENCES, false );
+    m_toolbar->EnableTool( tfpID_GOTO_HOME, false );
     m_toolbar->EnableTool( tfpID_GOTO_HOME, false );
     m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, false );
     m_showpage->Enable( false );
@@ -1763,6 +1775,12 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
         // Note, Family Page may have alternate parents
         // so name string requires further decoding.
         return tfpWriteFamilyPage( name.Mid(1) );
+    }
+    if ( name.compare( "G" ) == 0 ) {
+        return tfpWriteGalleryList();
+    }
+    if ( name.compare( 0, 1, "G" ) == 0 && success ) {
+        return tfpWriteGalleryPage( num  );
     }
     if( name.compare( 0, 1, "I" ) == 0 && success ) {
         return tfpWriteIndividualPage( num );

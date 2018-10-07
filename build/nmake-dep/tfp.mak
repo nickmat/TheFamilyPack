@@ -75,6 +75,7 @@ TFP_OBJECTS =  \
 	tfp_tfpWrEventaIndex.obj \
 	tfp_tfpWrEventIndex.obj \
 	tfp_tfpWrFamily.obj \
+	tfp_tfpWrGallery.obj \
 	tfp_tfpWrIndividual.obj \
 	tfp_tfpWrName.obj \
 	tfp_tfpWrNotes.obj \
@@ -469,6 +470,9 @@ tfp_tfpWrEventIndex.obj: .\..\..\src\tfp\tfpWrEventIndex.cpp
 
 tfp_tfpWrFamily.obj: .\..\..\src\tfp\tfpWrFamily.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrFamily.cpp
+
+tfp_tfpWrGallery.obj: .\..\..\src\tfp\tfpWrGallery.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrGallery.cpp
 
 tfp_tfpWrIndividual.obj: .\..\..\src\tfp\tfpWrIndividual.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrIndividual.cpp
