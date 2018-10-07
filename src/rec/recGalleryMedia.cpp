@@ -78,7 +78,7 @@ void recGalleryMedia::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO GalleryMedia (id, title, gal_id, med_id, med_seq)"
-                " VALUES (" ID ", " ID ", " ID ", '%q', %d);",
+                " VALUES (" ID ", '%q', " ID ", " ID ", %d);",
                 f_id, UTF8_( f_title ), f_gal_id, f_med_id, f_med_seq
                 );
         } else {
