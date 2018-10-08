@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     25 September 2010
- * Copyright:   Copyright (c) 2010 ~ 2017, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2018, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -1687,9 +1687,10 @@ void TfpFrame::RefreshEditMenu()
     }
 }
 
-bool TfpFrame::DisplayHtmPage( const wxString& name )
+bool TfpFrame::DisplayHtmPage( const wxString& pagename )
 {
     wxBusyCursor wait;
+    wxString name( pagename );
 
     wxString text = GetDisplayText( name );
     if( !text.IsEmpty() ) {
@@ -1719,8 +1720,9 @@ bool TfpFrame::DisplayHomePage()
     return DisplayHtmPage( recGetHomeDisplay() );
 }
 
-wxString TfpFrame::GetDisplayText( const wxString& name )
+wxString TfpFrame::GetDisplayText( wxString& name )
 {
+    name.MakeUpper();
     // TODO: We need to do this in a try ... catch framework.
     wxASSERT( name.size() > 0 );
     wxLongLong_t num, num1 = 0, num2 = 0;
@@ -1749,17 +1751,21 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
     if( name.compare( "E$" ) == 0 ) {
         return tfpWriteEventSelection( m_selEvent );
     }
-    if( name.compare( "Ea" ) == 0 ) {
+    if( name.compare( "EA" ) == 0 ) {
+        name.MakeCapitalized();
         return tfpWriteEventaIndex();
     }
 // We don't have a Eventa filter yet!
-//    if( name.compare( "Ea$" ) == 0 ) {
+//    if( name.compare( "EA$" ) == 0 ) {
+//        name.MakeCapitalized();
 //        return tfpWriteEventaSelection( m_erFilter );
 //    }
-    if( name.compare( 0, 2, "Ea" ) == 0 && success1 ) {
+    if( name.compare( 0, 2, "EA" ) == 0 && success1 ) {
+        name.MakeCapitalized();
         return tfpWriteEventaPage( num1 );
     }
-    if( name.compare( 0, 3, "Ea," ) == 0 && success2 ) {
+    if( name.compare( 0, 3, "EA," ) == 0 && success2 ) {
+        name.MakeCapitalized();
         return tfpWriteEventaPagedIndex( num2 );
     }
     if( name.compare( 0, 1, "E" ) == 0 && success ) {
@@ -1803,7 +1809,8 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
     if( name.compare( 0, 1, "N" ) == 0 && success ) {
         return tfpWriteName( num );
     }
-    if( name.compare( 0, 2, "Pa" ) == 0 ) {
+    if( name.compare( 0, 2, "PA" ) == 0 ) {
+        name.MakeCapitalized();
         return tfpWritePersonaPage( num1 );
     }
     if( name.compare( 0, 1, "P" ) == 0 && success ) {
@@ -1818,7 +1825,8 @@ wxString TfpFrame::GetDisplayText( const wxString& name )
     if( name.compare( 0, 1, "R" ) == 0 && success ) {
         return tfpWriteReferencePage( num );
     }
-    if( name.compare( "Re" ) == 0 ) {
+    if( name.compare( "RE" ) == 0 ) {
+        name.MakeCapitalized();
         return tfpWriteResearcherList();
     }
 

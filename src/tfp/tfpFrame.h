@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     24 September 2010
- * Copyright:   Copyright (c) 2010-2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2018, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -165,7 +165,7 @@ public:
     bool DisplayHtmPage( const wxString& name );
     void RefreshHtmPage();
     bool DisplayHomePage();
-    wxString GetDisplayText( const wxString& name );
+    wxString GetDisplayText( wxString& name );
 };
 
 #define tfpMAX_MENU_ITEMS 50
