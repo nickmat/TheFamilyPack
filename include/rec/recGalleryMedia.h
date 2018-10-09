@@ -55,6 +55,8 @@ public:
 
     void SetNextMedSequence( idt galID );
 
+    static wxString GetTitle( idt galID, idt medID );
+
 private:
     wxString f_title;
     idt      f_gal_id;

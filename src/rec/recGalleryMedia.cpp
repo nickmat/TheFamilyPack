@@ -1,3 +1,4 @@
+#include "..\..\include\rec\recGalleryMedia.h"
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Name:        src/rec/recGalleryMedia.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
@@ -135,6 +136,16 @@ void recGalleryMedia::SetNextMedSequence( idt galID )
 {
     f_med_seq = recDb::ExecuteInt(
         "SELECT MAX(med_seq) FROM GalleryMedia WHERE gal_id=" ID ";", galID ) + 1;
+}
+
+wxString recGalleryMedia::GetTitle( idt galID, idt medID )
+{
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT title FROM GalleryMedia WHERE gal_id=" ID " AND med_id=" ID ";",
+        galID, medID
+    );
+    return recDb::ExecuteStr( sql );
 }
 
 
