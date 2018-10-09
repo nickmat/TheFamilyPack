@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     21st January 2013
- * Copyright:   Copyright (c) 2013-2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2013 ~ 2018, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -34,12 +34,16 @@
 #include "wx/wx.h"
 #endif
 
-#include <rec/recContact.h>
-#include <rec/recUser.h>
-#include <rec/recSystem.h>
-#include <rec/recIndividual.h>
-
 #include "tfpWr.h"
+
+#include <rec/recContact.h>
+#include <rec/recIndividual.h>
+#include <rec/recMediaData.h>
+#include <rec/recSystem.h>
+#include <rec/recUser.h>
+
+#include <wx/fs_mem.h>
+#include <wx/mstream.h>
 
 wxString tfpWrHeadTfp( const wxString& title, const wxString& css )
 {
@@ -198,6 +202,24 @@ wxString tfpNormaliseSpaces( const wxString& str )
         out.replace( pos, 3, " " );
     }
     return out;
+}
+
+wxString tfpGetMediaDataFile( idt mdID, idt assID )
+{
+    assert( assID == 0 );
+    wxString filename = recMediaData::GetFileName( mdID ) + ".jpg";
+    // Read into the virtual file system, unless it already exists.
+    wxFileSystem fs;
+    wxString memfilename = "memory:" + filename;
+    wxString fn = fs.FindFirst( memfilename );
+    if ( fn.empty() ) {
+        recMediaData md( mdID );
+        wxMemoryBuffer buf = md.FGetData();
+        wxMemoryInputStream stream( buf.GetData(), buf.GetDataLen() );
+        wxImage image( stream, wxBITMAP_TYPE_JPEG );
+        wxMemoryFSHandler::AddFile( filename, image, wxBITMAP_TYPE_JPEG );
+    }
+    return memfilename;
 }
 
 // End of src/tfp/tfpWr.cpp Source

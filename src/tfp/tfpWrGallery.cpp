@@ -41,6 +41,7 @@
 #include <rec/recGalleryMedia.h>
 #include <rec/recMedia.h>
 #include <rec/recMediaData.h>
+#include <rec/recReference.h>
 
 
 wxString tfpWriteGalleryList()
@@ -83,9 +84,36 @@ wxString tfpWriteGalleryPage( idt galID )
 
     htm << tfpWrHeadTfp( "Gallery " + gal.GetIdStr() );
 
-    htm << "<h1>" << gal.GetIdStr() << ": " << gal.FGetTitle() << "</h1>\n";
+    htm << "<h1>" << gal.GetIdStr() << ": " << gal.FGetTitle() << "</h1>\n"
+        << "<p>" << gal.FGetNote() << "</p>\n"
+        ;
 
-    htm << "<p>Found " << meds.size() << " Media items.</p>";
+    if ( meds.empty() ) {
+        htm << "<p>No Media Items Found.</p>\n";
+    } else {
+        htm <<
+            "<table class='data'>\n"
+            "<tr><th>Image</th><th>ID</th><th>Title</th></tr>\n"
+            ;
+        for ( auto med : meds ) {
+            wxString title = recGalleryMedia::GetTitle( galID, med.FGetID() );
+            if ( title.empty() ) {
+                title = med.FGetTitle();
+            }
+            wxString fn = tfpGetMediaDataFile( med.FGetDataID(), med.FGetAssID() );
+            recReference ref( med.FGetRefID() );
+            htm << "<tr>\n<td rowspan='2'><a href='" << fn << "'><img src='" 
+                << fn << "' alt='' height='200' /></a></td>"
+                "<td><a href='tfp:M" << med.FGetID()
+                << "'><b>" << med.GetIdStr()
+                << "</b></a></td>\n<td>" << title
+                << "</td>\n</tr>\n"
+                "<tr>\n<td colspan='2'>" << ref.FGetStatement()
+                << "</td>\n</tr>\n"
+                ;
+        }
+        htm << "</table>\n";
+    }
 
     htm << tfpWrTailTfp();
     return htm;
