@@ -131,5 +131,10 @@ bool recMediaData::Equivalent( const recMediaData& r2 ) const
         f_file == r2.f_file;
 }
 
+wxString recMediaData::GetFileName( idt mdID )
+{
+    return recDb::ExecuteStr( "SELECT file FROM MediaData WHERE id=" ID ";", mdID );
+}
+
 
 // End of recMediaData.cpp file

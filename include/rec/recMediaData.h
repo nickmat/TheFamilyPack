@@ -53,6 +53,8 @@ public:
     void FSetCopyright( const wxString& copyright ) { f_copyright = copyright; }
     void FSetFile( const wxString& file ) { f_file = file; }
 
+    static wxString GetFileName( idt mdID );
+
 private:
     wxMemoryBuffer f_data;
     int            f_privacy;
