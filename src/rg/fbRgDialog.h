@@ -41,6 +41,8 @@ class rgStrTableCtrl;
 #include <wx/splitter.h>
 #include <wx/checklst.h>
 #include <wx/statbox.h>
+#include <wx/slider.h>
+#include <wx/frame.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -988,6 +990,44 @@ class fbRgSelectEvent : public wxDialog
 		
 		fbRgSelectEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Select Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbRgSelectEvent();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class fbRgViewMedia
+///////////////////////////////////////////////////////////////////////////////
+class fbRgViewMedia : public wxFrame 
+{
+	private:
+	
+	protected:
+		wxToolBar* m_toolBar2;
+		wxButton* m_buttonFit;
+		wxButton* m_buttonPlus;
+		wxSlider* m_sliderZoom;
+		wxButton* m_buttonMinus;
+		wxTextCtrl* m_textCtrlZoom;
+		wxButton* m_button100Percent;
+		wxButton* m_buttonExport;
+		wxButton* m_buttonPrint;
+		rgImagePanel* m_imageViewer;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnButtonFit( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonPlus( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnZoomSlider( wxScrollEvent& event ) { event.Skip(); }
+		virtual void OnButtonMinus( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSetZoom( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButton100Percent( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonExport( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonPrint( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		fbRgViewMedia( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("View Image"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		
+		~fbRgViewMedia();
 	
 };
 

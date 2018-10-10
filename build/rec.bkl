@@ -164,6 +164,7 @@
     <sources>$(LOCAL_SRC)/rg/rgSelect.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgSelEvent.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgTableCtrl.cpp</sources>
+    <sources>$(LOCAL_SRC)/rg/rgViewMedia.cpp</sources>
 
     <headers>$(LOCAL_INC)/rg/rgCompareEvent.h</headers>
     <headers>$(LOCAL_INC)/rg/rgDialogs.h</headers>
@@ -196,6 +197,7 @@
     <headers>$(LOCAL_SRC)/rg/rgSelect.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgSelEvent.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgTableCtrl.h</headers>
+    <headers>$(LOCAL_SRC)/rg/rgViewMedia.h</headers>
 
     <include>$(LOCAL_INC)/rec</include>
     <include>$(LOCAL_INC)/rg</include>

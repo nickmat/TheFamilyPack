@@ -227,4 +227,7 @@ extern idt rgSelectEvent(
     recSelSetEvent* filter = NULL,
     unsigned* button = NULL );
 
+// See src/rg/rgViewMedia.cpp
+extern void rgViewMedia( wxWindow* wind, idt medID );
+
 #endif // RGDIALOGS_H

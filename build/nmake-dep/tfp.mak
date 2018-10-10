@@ -223,7 +223,8 @@ RECGUI_OBJECTS =  \
 	recgui_rgIndividual.obj \
 	recgui_rgSelect.obj \
 	recgui_rgSelEvent.obj \
-	recgui_rgTableCtrl.obj
+	recgui_rgTableCtrl.obj \
+	recgui_rgViewMedia.obj
 
 ### Conditionally set variables: ###
 
@@ -746,4 +747,7 @@ recgui_rgSelEvent.obj: .\..\..\src\rg\rgSelEvent.cpp
 
 recgui_rgTableCtrl.obj: .\..\..\src\rg\rgTableCtrl.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgTableCtrl.cpp
+
+recgui_rgViewMedia.obj: .\..\..\src\rg\rgViewMedia.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgViewMedia.cpp
 

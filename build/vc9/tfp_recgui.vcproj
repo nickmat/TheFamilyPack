@@ -311,6 +311,10 @@
 				RelativePath="..\..\src\rg\rgTableCtrl.cpp"
 				>
 			</File>
+			<File
+				RelativePath="..\..\src\rg\rgViewMedia.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -435,6 +439,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\rg\rgTableCtrl.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgViewMedia.h"
 				>
 			</File>
 		</Filter>

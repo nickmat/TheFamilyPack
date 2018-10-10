@@ -185,7 +185,8 @@ RECGUI_OBJECTS =  \
 	recgui_rgIndividual.o \
 	recgui_rgSelect.o \
 	recgui_rgSelEvent.o \
-	recgui_rgTableCtrl.o
+	recgui_rgTableCtrl.o \
+	recgui_rgViewMedia.o
 
 ### Conditionally set variables: ###
 
@@ -562,6 +563,9 @@ recgui_rgSelEvent.o: ./../../src/rg/rgSelEvent.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgTableCtrl.o: ./../../src/rg/rgTableCtrl.cpp
+	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
+
+recgui_rgViewMedia.o: ./../../src/rg/rgViewMedia.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 .PHONY: all install uninstall clean
