@@ -207,7 +207,7 @@ wxString tfpNormaliseSpaces( const wxString& str )
 wxString tfpGetMediaDataFile( idt mdID, idt assID )
 {
     assert( assID == 0 );
-    wxString filename = recMediaData::GetFileName( mdID ) + ".jpg";
+    wxString filename = recMediaData::GetFileName( mdID ) + ".bmp";
     // Read into the virtual file system, unless it already exists.
     wxFileSystem fs;
     wxString memfilename = "memory:" + filename;
@@ -217,7 +217,10 @@ wxString tfpGetMediaDataFile( idt mdID, idt assID )
         wxMemoryBuffer buf = md.FGetData();
         wxMemoryInputStream stream( buf.GetData(), buf.GetDataLen() );
         wxImage image( stream, wxBITMAP_TYPE_JPEG );
-        wxMemoryFSHandler::AddFile( filename, image, wxBITMAP_TYPE_JPEG );
+        double scale = 200.0 / image.GetHeight();
+        int width = scale * image.GetWidth();
+        wxBitmap bmp = wxBitmap( image.Scale( width, 200 ) );
+        wxMemoryFSHandler::AddFile( filename, bmp, wxBITMAP_TYPE_BMP );
     }
     return memfilename;
 }
