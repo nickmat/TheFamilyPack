@@ -102,8 +102,8 @@ wxString tfpWriteGalleryPage( idt galID )
             }
             wxString fn = tfpGetMediaDataFile( med.FGetDataID(), med.FGetAssID() );
             recReference ref( med.FGetRefID() );
-            htm << "<tr>\n<td rowspan='2'><a href='" << fn << "'><img src='" 
-                << fn << "' alt='' height='200' /></a></td>"
+            htm << "<tr>\n<td rowspan='2'><a href='tfpv:M" << med.FGetID()
+                << "'><img src='" << fn << "' alt='' height='200' /></a></td>"
                 "<td><a href='tfp:M" << med.FGetID()
                 << "'><b>" << med.GetIdStr()
                 << "</b></a></td>\n<td>" << title

@@ -151,6 +151,7 @@ public:
     void DoEdit( const wxString& href );
     void DoSelectionUpdate( const wxString& display );
     void DoPopupNote( const wxString& href );
+    void DoPopupViewer( const wxString& href );
     void DoHtmCtxMenu( const wxString& ref );
     int AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID );
 

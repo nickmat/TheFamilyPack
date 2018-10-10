@@ -1080,8 +1080,12 @@ void TfpFrame::OnNavigationRequest( wxWebViewEvent& evt )
         DoEdit( url.Mid( 5 ) );
         return;
     }
-    if( url.StartsWith( "tfpi:" ) ) {
+    if ( url.StartsWith( "tfpi:" ) ) {
         DoPopupNote( url.Mid( 5 ) );
+        return;
+    }
+    if ( url.StartsWith( "tfpv:" ) ) {
+        DoPopupViewer( url.Mid( 5 ) );
         return;
     }
     if( url.StartsWith( "tfpc:" ) ) {
@@ -1402,6 +1406,21 @@ void TfpFrame::DoPopupNote( const wxString& ref )
 {
     dlgNote* note = new dlgNote( this, ref );
     note->Show();
+}
+
+void TfpFrame::DoPopupViewer( const wxString & href )
+{
+    if ( href.StartsWith( "M" ) ) {
+        idt medID = recGetID( href.substr( 1 ) );
+        if ( medID ) {
+            rgViewMedia( this, medID );
+            return;
+        }
+    }
+    wxMessageBox(
+        wxString::Format( _( "Unable to view [%s]" ), href ),
+        _( "Unknown Media" )
+        );
 }
 
 void TfpFrame::DoHtmCtxMenu( const wxString& ref )
