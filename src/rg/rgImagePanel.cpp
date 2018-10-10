@@ -60,6 +60,13 @@ bool rgImagePanel::SetImage( const wxMemoryBuffer& buf )
     return false;
 }
 
+bool rgImagePanel::SetImage( const recMedia& med )
+{
+    assert( med.FGetAssID() == 0 ); // Don't use external data yet.
+    recMediaData md( med.FGetID() );
+    return SetImage( md.FGetData() );
+}
+
 void rgImagePanel::PaintEvent( wxPaintEvent& evt )
 {
     // depending on your system you may need to look at double-buffered dcs

@@ -31,7 +31,7 @@
 #include <wx/panel.h>
 
 #include <rec/recHelper.h>
-
+class recMedia;
 
 class rgImagePanel : public wxPanel
 {
@@ -39,6 +39,7 @@ public:
     rgImagePanel( wxWindow* parent );
 
     bool SetImage( const wxMemoryBuffer& buf );
+    bool SetImage( const recMedia& med );
 
 private:
     void PaintEvent( wxPaintEvent& evt );
