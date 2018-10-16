@@ -37,8 +37,30 @@ class rgViewMediaForm : public fbRgViewMedia
 public:
     rgViewMediaForm( wxWindow* parent, idt medID );
 
+    void SetScale( double scale );
+
 private:
-    recMedia     m_media;
+    void EnableScroll( bool enable );
+
+    void OnChangeScale( rgImageScaleEvent& event );
+    void OnZoomSlider( wxCommandEvent& event );
+    // Virtual event handlers
+    void OnCheckScroll( wxCommandEvent& event ) override;
+    void OnButtonPlus( wxCommandEvent& event ) override;
+    void OnButtonMinus( wxCommandEvent& event ) override;
+    void OnSetZoom( wxCommandEvent& event ) override;
+    void OnButton100Percent( wxCommandEvent& event ) override;
+    void OnButtonExport( wxCommandEvent& event ) override;
+    void OnButtonPrint( wxCommandEvent& event ) override;
+
+    recMedia m_media;
+    bool     m_scrollEnabled;
+    double   m_upper;
+    // below are constants based on m_upper
+    double   m_lower; // 1 / m_upper
+    double   m_b;     // m_upper * m_upper
+    double   m_k;     // log10( m_b )
+
 };
 
 #endif // SRC_RG_RGVIEWMEDIA_H

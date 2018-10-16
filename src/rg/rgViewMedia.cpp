@@ -53,9 +53,94 @@ void rgViewMedia( wxWindow* wind, idt medID )
 //============================================================================
 
 rgViewMediaForm::rgViewMediaForm( wxWindow* parent, idt medID )
-    : m_media(medID), fbRgViewMedia( parent )
+    : m_media(medID), m_scrollEnabled(false), m_upper(10), fbRgViewMedia( parent )
 {
+    Bind( rgEVT_IMAGE_SCALE, &rgViewMediaForm::OnChangeScale, this );
+    Bind( wxEVT_SLIDER, &rgViewMediaForm::OnZoomSlider, this );
+    m_lower = 1 / m_upper;
+    m_b = m_upper * m_upper;
+    m_k = std::log10( m_b );
     m_imageViewer->SetImage( m_media );
+    EnableScroll( false );
 }
+
+void rgViewMediaForm::SetScale( double scale )
+{
+    wxString scalestr = wxString::Format( "%.1f", scale * 100 );
+    if ( scale > m_upper ) {
+        SetScale( m_upper );
+        return;
+    }
+    if ( scale < m_lower ) {
+        SetScale( m_lower );
+        return;
+    }
+    m_textCtrlZoom->SetValue( scalestr );
+    int thumb = double( 100 ) *( std::log10( scale ) / m_k + 0.5 );
+    m_sliderZoom->SetValue( thumb );
+
+}
+
+void rgViewMediaForm::EnableScroll( bool enable )
+{
+    m_scrollEnabled = enable;
+    m_buttonPlus->Enable( enable );
+    m_sliderZoom->Enable( enable );
+    m_buttonMinus->Enable( enable );
+    m_textCtrlZoom->Enable( enable );
+    m_button100Percent->Enable( enable );
+    m_buttonExport->Enable( enable );
+    m_buttonPrint->Enable( enable );
+}
+
+void rgViewMediaForm::OnChangeScale( rgImageScaleEvent & event )
+{
+    SetScale( event.GetScale() );
+}
+
+void rgViewMediaForm::OnZoomSlider( wxCommandEvent& event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnZoomSlider" );
+}
+
+void rgViewMediaForm::OnCheckScroll( wxCommandEvent& event )
+{
+    if ( !m_scrollEnabled ) {
+        wxMessageBox( _( "Scroll view not yet implimented" ), "OnButtonPlus" );
+    }
+    EnableScroll( !m_scrollEnabled );
+}
+
+void rgViewMediaForm::OnButtonPlus( wxCommandEvent& event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnButtonPlus" );
+}
+
+void rgViewMediaForm::OnButtonMinus( wxCommandEvent& event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnButtonMinus" );
+}
+
+void rgViewMediaForm::OnSetZoom( wxCommandEvent& event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnSetZoom" );
+}
+
+void rgViewMediaForm::OnButton100Percent( wxCommandEvent& event )
+{
+    SetScale( 1.0 );
+    wxMessageBox( _( "Not yet implimented" ), "OnSetZoom" );
+}
+
+void rgViewMediaForm::OnButtonExport( wxCommandEvent& event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnButtonExport" );
+}
+
+void rgViewMediaForm::OnButtonPrint( wxCommandEvent& event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnButtonPrint" );
+}
+
 
 // End of src/rg/rgViewMedia.cpp file

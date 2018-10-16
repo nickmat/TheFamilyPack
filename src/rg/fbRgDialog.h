@@ -1001,8 +1001,7 @@ class fbRgViewMedia : public wxFrame
 	private:
 	
 	protected:
-		wxToolBar* m_toolBar2;
-		wxButton* m_buttonFit;
+		wxCheckBox* m_checkScroll;
 		wxButton* m_buttonPlus;
 		wxSlider* m_sliderZoom;
 		wxButton* m_buttonMinus;
@@ -1013,9 +1012,8 @@ class fbRgViewMedia : public wxFrame
 		rgImagePanel* m_imageViewer;
 		
 		// Virtual event handlers, overide them in your derived class
-		virtual void OnButtonFit( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnCheckScroll( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnButtonPlus( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnZoomSlider( wxScrollEvent& event ) { event.Skip(); }
 		virtual void OnButtonMinus( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSetZoom( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnButton100Percent( wxCommandEvent& event ) { event.Skip(); }

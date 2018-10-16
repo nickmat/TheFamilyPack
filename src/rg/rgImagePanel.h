@@ -31,9 +31,10 @@
 #include <wx/panel.h>
 
 #include <rec/recHelper.h>
+
 class recMedia;
 
-class rgImagePanel : public wxPanel
+class rgImagePanel : public wxScrolledWindow
 {
 public:
     rgImagePanel( wxWindow* parent );
@@ -46,6 +47,7 @@ private:
     void OnSize( wxSizeEvent& event );
     void Render( wxDC& dc );
 
+    wxWindow* m_parent;
     wxImage  m_image;
     int      m_width;
     int      m_height;
@@ -53,5 +55,31 @@ private:
     int      m_x;
     int      m_y;
 };
+
+class rgImageScaleEvent;
+wxDECLARE_EVENT( rgEVT_IMAGE_SCALE, rgImageScaleEvent );
+
+class rgImageScaleEvent : public wxCommandEvent
+{
+public:
+    rgImageScaleEvent( wxEventType commandType = rgEVT_IMAGE_SCALE, int id = 0 )
+        : wxCommandEvent( commandType, id ) { }
+
+    // You *must* copy here the data to be transported
+    rgImageScaleEvent( const rgImageScaleEvent& event )
+        : wxCommandEvent( event ) {
+        this->SetScale( event.GetScale() );
+    }
+
+    // Required for sending with wxPostEvent()
+    wxEvent* Clone() const { return new rgImageScaleEvent( *this ); }
+
+    double GetScale() const { return m_scale; }
+    void SetScale( double scale ) { m_scale = scale; }
+
+private:
+    double m_scale;
+};
+
 
 #endif // SRC_RG_RGIMAGEPANEL_H
