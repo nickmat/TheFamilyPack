@@ -1,26 +1,26 @@
 /* XPM */
-static const char * event_xpm[] = {
+static char* event_xpm[] = {
 /* columns rows colors chars-per-pixel */
-"16 15 5 1",
-". c Black",
-"X c Blue",
-"Y c Red",
-"G c Green",
+"16 16 4 1 ",
+"B c black",
+"r c red",
+"b c blue",
 "  c None",
 /* pixels */
-"       .X....   ",
-"       .XXXXX.  ",
-"       .X....   ",
-"      .Y.       ",
-"      .Y.       ",
-"     .YYY.      ",
-"     .YYY.      ",
-"    .YYYYY.     ",
-"    .YYYYY.     ",
-"   .YYYYYYY.    ",
-" GG.YYY YYY.GGGG",
-" GG.YYY YYY.GGGG",
-" GG.YYY  YY.GGGG",
-" GG.YYY  YY.GGGG",
-" GGGGGGGGGGGGGGG"
+"        b       ",
+"        bbbb    ",
+"       BB       ",
+"     BBrrBB     ",
+"    BBrrrrBB    ",
+"  BBrrrrrrrrBB  ",
+" BrrrrrrrrrrrrB ",
+" BrBrrBrrBrrBrB ",
+"  BBBBBBBBBBBB  ",
+"  BrrrrrrrrrrB  ",
+"  BrrrrrrrrrrB  ",
+"  BrrrBBBBrrrB  ",
+"  BrrrB  BrrrB  ",
+"  BBBBB  BBBBB  ",
+"                ",
+"                "
 };

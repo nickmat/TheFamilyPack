@@ -58,8 +58,8 @@
 #include "img/back.xpm"
 #include "img/find.xpm"
 #include "img/home.xpm"
-#include "img/findref.xpm"
-#include "img/findevent.xpm"
+#include "img/ref.xpm"
+#include "img/event.xpm"
 #include "img/gallery.xpm"
 
 #ifndef wxHAS_IMAGES_IN_RESOURCES
@@ -292,16 +292,16 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     wxBitmap bmpForward( forward_xpm );
     wxBitmap bmpBack( back_xpm );
     wxBitmap bmpFind( find_xpm );
-    wxBitmap bmpFindeve( findevent_xpm );
-    wxBitmap bmpFindref( findref_xpm );
+    wxBitmap bmpEvents( event_xpm );
+    wxBitmap bmpRefs( ref_xpm );
     wxBitmap bmpGalleries( gallery_xpm );
     wxBitmap bmpHome( home_xpm );
     m_toolbar->AddTool( tfpID_FIND_BACK, _("Back"), bmpBack );
     m_toolbar->AddTool( tfpID_FIND_FORWARD, _("Forward"), bmpForward );
     m_toolbar->AddSeparator();
     m_toolbar->AddTool( tfpID_LIST_SURNAME_INDEX, _("Index"), bmpFind );
-    m_toolbar->AddTool( tfpID_LIST_PAGED_EVENTS, _("Events"), bmpFindeve );
-    m_toolbar->AddTool( tfpID_LIST_PAGED_REFERENCES, _( "References" ), bmpFindref );
+    m_toolbar->AddTool( tfpID_LIST_PAGED_EVENTS, _("Events"), bmpEvents );
+    m_toolbar->AddTool( tfpID_LIST_PAGED_REFERENCES, _( "References" ), bmpRefs );
     m_toolbar->AddTool( tfpID_LIST_GALLERIES, _( "Galleries" ), bmpGalleries );
     m_toolbar->AddSeparator();
     m_toolbar->AddTool( tfpID_GOTO_HOME, _("Home"), bmpHome );
@@ -1578,7 +1578,7 @@ void TfpFrame::SetNoDatabase()
     m_toolbar->EnableTool( tfpID_LIST_SURNAME_INDEX, false );
     m_toolbar->EnableTool( tfpID_LIST_PAGED_EVENTS, false );
     m_toolbar->EnableTool( tfpID_LIST_PAGED_REFERENCES, false );
-    m_toolbar->EnableTool( tfpID_GOTO_HOME, false );
+    m_toolbar->EnableTool( tfpID_LIST_GALLERIES, false );
     m_toolbar->EnableTool( tfpID_GOTO_HOME, false );
     m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, false );
     m_showpage->Enable( false );
