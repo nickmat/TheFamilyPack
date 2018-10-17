@@ -134,8 +134,9 @@
 
   <lib id="recgui" template="wx-lib,wxlike">
     <libname>recgui$(WXLIBPOSTFIX)</libname>
-    <sources>$(LOCAL_SRC)/rg/recgui.cpp</sources>
+    <sources>$(LOCAL_SRC)/rg/fb/fbRgViewMedia.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/fbRgDialog.cpp</sources>
+    <sources>$(LOCAL_SRC)/rg/recgui.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgCompareEvent.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgCrIndividual.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgCrName.cpp</sources>
@@ -168,7 +169,9 @@
 
     <headers>$(LOCAL_INC)/rg/rgCompareEvent.h</headers>
     <headers>$(LOCAL_INC)/rg/rgDialogs.h</headers>
+    <headers>$(LOCAL_INC)/rg/rgImagePanel.h</headers>
 
+    <headers>$(LOCAL_SRC)/rg/fb/fbRgViewMedia.h</headers>
     <headers>$(LOCAL_SRC)/rg/fbRgDialog.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgCommon.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgCrIndividual.h</headers>
@@ -193,7 +196,6 @@
     <headers>$(LOCAL_SRC)/rg/rgEdRole.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdSystem.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdUser.h</headers>
-    <headers>$(LOCAL_SRC)/rg/rgImagePanel.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgSelect.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgSelEvent.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgTableCtrl.h</headers>

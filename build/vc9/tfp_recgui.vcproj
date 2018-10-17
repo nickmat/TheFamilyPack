@@ -196,6 +196,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rg\fb\fbRgViewMedia.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rg\recgui.cpp"
 				>
 			</File>
@@ -326,6 +330,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rg\fb\fbRgViewMedia.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rg\rgCommon.h"
 				>
 			</File>
@@ -426,7 +434,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\rg\rgImagePanel.h"
+				RelativePath="..\..\include\rg\rgImagePanel.h"
 				>
 			</File>
 			<File

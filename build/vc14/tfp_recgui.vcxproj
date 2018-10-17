@@ -13,6 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectName>recgui</ProjectName>
     <ProjectGuid>{EB4B4B6F-41DD-54F7-91B0-A39320462AB8}</ProjectGuid>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -43,10 +44,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)$(Configuration)\recgui\</IntDir>
+    <TargetName>$(ProjectName)u</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)$(Configuration)\recgui\</IntDir>
+    <TargetName>$(ProjectName)ud</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl>
@@ -118,6 +121,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\rg\fbRgDialog.cpp" />
+    <ClCompile Include="..\..\src\rg\fb\fbRgViewMedia.cpp" />
     <ClCompile Include="..\..\src\rg\recgui.cpp" />
     <ClCompile Include="..\..\src\rg\rgCompareEvent.cpp" />
     <ClCompile Include="..\..\src\rg\rgCrIndividual.cpp" />
@@ -152,7 +156,9 @@
   <ItemGroup>
     <ClInclude Include="..\..\include\rg\rgCompareEvent.h" />
     <ClInclude Include="..\..\include\rg\rgDialogs.h" />
+    <ClInclude Include="..\..\include\rg\rgImagePanel.h" />
     <ClInclude Include="..\..\src\rg\fbRgDialog.h" />
+    <ClInclude Include="..\..\src\rg\fb\fbRgViewMedia.h" />
     <ClInclude Include="..\..\src\rg\rgCommon.h" />
     <ClInclude Include="..\..\src\rg\rgCrIndividual.h" />
     <ClInclude Include="..\..\src\rg\rgCrName.h" />
@@ -176,7 +182,6 @@
     <ClInclude Include="..\..\src\rg\rgEdRole.h" />
     <ClInclude Include="..\..\src\rg\rgEdSystem.h" />
     <ClInclude Include="..\..\src\rg\rgEdUser.h" />
-    <ClInclude Include="..\..\src\rg\rgImagePanel.h" />
     <ClInclude Include="..\..\src\rg\rgSelect.h" />
     <ClInclude Include="..\..\src\rg\rgSelEvent.h" />
     <ClInclude Include="..\..\src\rg\rgTableCtrl.h" />

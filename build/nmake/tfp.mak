@@ -194,8 +194,9 @@ RECGUI_CXXFLAGS = /MD$(VAR_19) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) \
 	/I..\..\include\rec /I..\..\include\rg /I..\..\include /GR /EHsc $(CPPFLAGS) \
 	$(CXXFLAGS)
 RECGUI_OBJECTS =  \
-	recgui_recgui.obj \
+	recgui_fbRgViewMedia.obj \
 	recgui_fbRgDialog.obj \
+	recgui_recgui.obj \
 	recgui_rgCompareEvent.obj \
 	recgui_rgCrIndividual.obj \
 	recgui_rgCrName.obj \
@@ -648,11 +649,14 @@ rec_dummy.obj: .\..\..\src\dummy.cpp
 reccl_reccl.obj: .\..\..\src\rc\reccl.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECCL_CXXFLAGS) .\..\..\src\rc\reccl.cpp
 
-recgui_recgui.obj: .\..\..\src\rg\recgui.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\recgui.cpp
+recgui_fbRgViewMedia.obj: .\..\..\src\rg\fb\fbRgViewMedia.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\fb\fbRgViewMedia.cpp
 
 recgui_fbRgDialog.obj: .\..\..\src\rg\fbRgDialog.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\fbRgDialog.cpp
+
+recgui_recgui.obj: .\..\..\src\rg\recgui.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\recgui.cpp
 
 recgui_rgCompareEvent.obj: .\..\..\src\rg\rgCompareEvent.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgCompareEvent.cpp

@@ -30,7 +30,7 @@
 
 #include <rec/recMedia.h>
 
-#include "fbRgDialog.h"
+#include "fb/fbRgViewMedia.h"
 
 class rgViewMediaForm : public fbRgViewMedia
 {

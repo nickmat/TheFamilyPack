@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/rg/rgImagePanel.h
+ * Name:        include/rg/rgImagePanel.h
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     An Image Panel to display Media objects.
  * Author:      Nick Matthews
@@ -25,8 +25,8 @@
 
 */
 
-#ifndef SRC_RG_RGIMAGEPANEL_H
-#define SRC_RG_RGIMAGEPANEL_H
+#ifndef INCLUDE_RG_RGIMAGEPANEL_H
+#define INCLUDE_RG_RGIMAGEPANEL_H
 
 #include <wx/panel.h>
 
@@ -82,4 +82,4 @@ private:
 };
 
 
-#endif // SRC_RG_RGIMAGEPANEL_H
+#endif // INCLUDE_RG_RGIMAGEPANEL_H
