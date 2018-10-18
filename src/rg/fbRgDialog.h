@@ -35,7 +35,6 @@ class rgStrTableCtrl;
 #include <wx/listctrl.h>
 #include <wx/notebook.h>
 #include <wx/radiobox.h>
-#include "rgImagePanel.h"
 #include <wx/toolbar.h>
 #include <wx/webview.h>
 #include <wx/splitter.h>
@@ -459,28 +458,6 @@ class fbRgEditIndividual : public wxDialog
 		
 		fbRgEditIndividual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Individual"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbRgEditIndividual();
-	
-};
-
-///////////////////////////////////////////////////////////////////////////////
-/// Class fbRgEditMedia
-///////////////////////////////////////////////////////////////////////////////
-class fbRgEditMedia : public wxDialog 
-{
-	private:
-	
-	protected:
-		wxTextCtrl* m_textCtrlTitle;
-		rgImagePanel* m_imagePanel;
-		wxStaticLine* m_staticline12;
-		wxStaticText* m_staticMediaID;
-		wxButton* m_buttonSave;
-		wxButton* m_buttonCancel;
-	
-	public:
-		
-		fbRgEditMedia( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Media"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
-		~fbRgEditMedia();
 	
 };
 

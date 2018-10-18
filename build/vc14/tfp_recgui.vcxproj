@@ -121,6 +121,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\rg\fbRgDialog.cpp" />
+    <ClCompile Include="..\..\src\rg\fb\fbRgEditMedia.cpp" />
     <ClCompile Include="..\..\src\rg\fb\fbRgViewMedia.cpp" />
     <ClCompile Include="..\..\src\rg\recgui.cpp" />
     <ClCompile Include="..\..\src\rg\rgCompareEvent.cpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="..\..\include\rg\rgDialogs.h" />
     <ClInclude Include="..\..\include\rg\rgImagePanel.h" />
     <ClInclude Include="..\..\src\rg\fbRgDialog.h" />
+    <ClInclude Include="..\..\src\rg\fb\fbRgEditMedia.h" />
     <ClInclude Include="..\..\src\rg\fb\fbRgViewMedia.h" />
     <ClInclude Include="..\..\src\rg\rgCommon.h" />
     <ClInclude Include="..\..\src\rg\rgCrIndividual.h" />

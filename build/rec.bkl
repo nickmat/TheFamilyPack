@@ -134,6 +134,7 @@
 
   <lib id="recgui" template="wx-lib,wxlike">
     <libname>recgui$(WXLIBPOSTFIX)</libname>
+    <sources>$(LOCAL_SRC)/rg/fb/fbRgEditMedia.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/fb/fbRgViewMedia.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/fbRgDialog.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/recgui.cpp</sources>
@@ -171,6 +172,7 @@
     <headers>$(LOCAL_INC)/rg/rgDialogs.h</headers>
     <headers>$(LOCAL_INC)/rg/rgImagePanel.h</headers>
 
+    <headers>$(LOCAL_SRC)/rg/fb/fbRgEditMedia.h</headers>
     <headers>$(LOCAL_SRC)/rg/fb/fbRgViewMedia.h</headers>
     <headers>$(LOCAL_SRC)/rg/fbRgDialog.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgCommon.h</headers>

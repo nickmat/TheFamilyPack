@@ -31,7 +31,7 @@
 #include <rec/recMedia.h>
 #include <rec/recMediaData.h>
 
-#include "fbRgDialog.h"
+#include "fb/fbRgEditMedia.h"
 
 class rgDlgEditMedia : public fbRgEditMedia
 {
