@@ -1,0 +1,10 @@
+build/gnu
+!build/gnu/GNUmakefile
+build/nmake
+!build/nmake/tfp.mak
+# This is used for all Windows development
+build/vc-working
+# And this is used when converting from vc9 to vc14 (or higher)
+build/vc
+# Used for test files.
+run
