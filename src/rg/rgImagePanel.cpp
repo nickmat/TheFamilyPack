@@ -42,13 +42,16 @@
 #include <rec/recMedia.h>
 #include <rec/recMediaData.h>
 
+
 wxDEFINE_EVENT( rgEVT_IMAGE_SCALE, rgImageScaleEvent );
 
 rgImagePanel::rgImagePanel( wxWindow* parent )
-   : m_parent(parent), m_width(-1), m_height(-1), m_x(0), m_y(0),
-    wxScrolledWindow( parent )
+    : m_parent( parent ), m_scroll(false), m_width( -1 ), m_height( -1 ), m_x( 0 ), m_y( 0 ),
+    wxScrolledCanvas( parent )
 {
-    Bind( wxEVT_PAINT, &rgImagePanel::PaintEvent, this );
+    SetScrollRate( 10, 10 );
+    SetBackgroundColour( *wxWHITE );
+    Bind( wxEVT_PAINT, &rgImagePanel::OnPaint, this );
     Bind( wxEVT_SIZE, &rgImagePanel::OnSize, this );
 }
 
@@ -56,10 +59,18 @@ bool rgImagePanel::SetImage( const wxMemoryBuffer& buf )
 {
     wxMemoryInputStream stream( buf.GetData(), buf.GetDataLen() );
     m_image.LoadFile( stream, wxBITMAP_TYPE_JPEG );
-    if ( m_image.Ok() ) {
-        return true;
+    if ( !m_image.Ok() ) {
+        return false;
     }
-    return false;
+    m_width = m_image.GetWidth();
+    m_height = m_image.GetHeight();
+    m_bitmap = wxBitmap( m_image );
+    if ( m_scroll ) {
+        SetVirtualSize( m_bitmap.GetWidth(), m_bitmap.GetHeight() );
+    } else {
+        SetVirtualSize( 0, 0 );
+    }
+    return true;
 }
 
 bool rgImagePanel::SetImage( const recMedia& med )
@@ -69,13 +80,31 @@ bool rgImagePanel::SetImage( const recMedia& med )
     return SetImage( md.FGetData() );
 }
 
-void rgImagePanel::PaintEvent( wxPaintEvent& evt )
+void rgImagePanel::SetScrollMode( bool scroll )
+{
+    if ( scroll == m_scroll ) {
+        return;
+    }
+    m_scroll = scroll;
+    if ( !m_bitmap.IsOk() ) {
+        return;
+    }
+    if ( scroll ) {
+        SetVirtualSize( m_bitmap.GetWidth(), m_bitmap.GetHeight() );
+    } else {
+        SetVirtualSize( 0, 0 );
+    }
+    Refresh();
+}
+
+void rgImagePanel::OnPaint( wxPaintEvent& evt )
 {
     wxPaintDC dc( this );
     Render( dc );
 }
 
-void rgImagePanel::OnSize( wxSizeEvent& event ) {
+void rgImagePanel::OnSize( wxSizeEvent& event )
+{
     Refresh();
     event.Skip();
 }
@@ -84,8 +113,7 @@ void rgImagePanel::Render( wxDC& dc )
 {
     int neww, newh;
     dc.GetSize( &neww, &newh );
-
-    if ( neww != m_width || newh != m_height )
+    if ( !m_scroll && ( neww != m_width || newh != m_height ) )
     {
         int h = m_image.GetHeight();
         int w = m_image.GetWidth();
@@ -104,14 +132,17 @@ void rgImagePanel::Render( wxDC& dc )
         }
         m_x = ( neww - m_width ) / 2;
         m_y = ( newh - m_height ) / 2;
-        m_resized = wxBitmap( m_image.Scale( m_width, m_height ) );
+        m_bitmap = wxBitmap( m_image.Scale( m_width, m_height ) );
 
         rgImageScaleEvent event;
         event.SetScale( scale );
         wxPostEvent( m_parent, event );
+    } else if ( m_scroll ) {
+        PrepareDC( dc );
+        m_x = ( neww > m_width ) ? ( neww - m_width ) / 2 : 0;
+        m_y = ( newh > m_height ) ? ( newh - m_height ) / 2 : 0;
     }
-    dc.DrawBitmap( m_resized, m_x, m_y, false );
+    dc.DrawBitmap( m_bitmap, m_x, m_y, false );
 }
-
 
 // End of src/rg/rgImagePanel.cpp file

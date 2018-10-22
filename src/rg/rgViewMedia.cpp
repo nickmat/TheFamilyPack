@@ -105,10 +105,9 @@ void rgViewMediaForm::OnZoomSlider( wxCommandEvent& event )
 
 void rgViewMediaForm::OnCheckScroll( wxCommandEvent& event )
 {
-    if ( !m_scrollEnabled ) {
-        wxMessageBox( _( "Scroll view not yet implimented" ), "OnButtonPlus" );
-    }
-    EnableScroll( !m_scrollEnabled );
+    bool scroll = event.GetInt() != 0;
+    m_imageViewer->SetScrollMode( scroll );
+    EnableScroll( scroll );
 }
 
 void rgViewMediaForm::OnButtonPlus( wxCommandEvent& event )

@@ -34,7 +34,7 @@
 
 class recMedia;
 
-class rgImagePanel : public wxScrolledWindow
+class rgImagePanel : public wxScrolledCanvas
 {
 public:
     rgImagePanel( wxWindow* parent );
@@ -42,16 +42,19 @@ public:
     bool SetImage( const wxMemoryBuffer& buf );
     bool SetImage( const recMedia& med );
 
+    void SetScrollMode( bool scroll );
+
 private:
-    void PaintEvent( wxPaintEvent& evt );
+    void OnPaint( wxPaintEvent& evt );
     void OnSize( wxSizeEvent& event );
     void Render( wxDC& dc );
 
     wxWindow* m_parent;
     wxImage  m_image;
+    bool     m_scroll;
     int      m_width;
     int      m_height;
-    wxBitmap m_resized;
+    wxBitmap m_bitmap;
     int      m_x;
     int      m_y;
 };

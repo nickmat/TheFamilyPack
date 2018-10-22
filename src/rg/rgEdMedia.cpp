@@ -70,6 +70,7 @@ bool rgDlgEditMedia::TransferDataToWindow()
 
     m_staticMediaID->SetLabel( m_media.GetIdStr() );
     m_textCtrlTitle->SetValue( m_media.FGetTitle() );
+    m_imagePanel->SetScrollMode( true );
     m_imagePanel->SetImage( m_md.FGetData() );
     return true;
 }
