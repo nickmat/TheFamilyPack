@@ -66,7 +66,7 @@ bool rgImagePanel::SetImage( const wxMemoryBuffer& buf )
     m_height = m_image.GetHeight();
     m_bitmap = wxBitmap( m_image );
     if ( m_scroll ) {
-        SetVirtualSize( m_bitmap.GetWidth(), m_bitmap.GetHeight() );
+        SetVirtualSize( m_width, m_height );
     } else {
         SetVirtualSize( 0, 0 );
     }
@@ -94,6 +94,21 @@ void rgImagePanel::SetScrollMode( bool scroll )
     } else {
         SetVirtualSize( 0, 0 );
     }
+    Refresh();
+}
+
+void rgImagePanel::SetScale( double scale )
+{
+    if ( !m_scroll ) {
+        return;
+    }
+    m_width = scale * m_image.GetWidth();
+    m_height = scale * m_image.GetHeight();
+    m_bitmap = wxBitmap( m_image.Scale( m_width, m_height ) );
+    SetVirtualSize( m_width, m_height );
+    rgImageScaleEvent event;
+    event.SetScale( scale );
+    wxPostEvent( m_parent, event );
     Refresh();
 }
 

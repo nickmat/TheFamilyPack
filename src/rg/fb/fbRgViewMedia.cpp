@@ -33,18 +33,17 @@ fbRgViewMedia::fbRgViewMedia( wxWindow* parent, wxWindowID id, const wxString& t
 	m_toolBar->AddControl( m_checkScroll );
 	m_toolBar->AddSeparator(); 
 	
-	m_buttonPlus = new wxButton( m_toolBar, wxID_ANY, _("+"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT );
-	m_toolBar->AddControl( m_buttonPlus );
-	m_sliderZoom = new wxSlider( m_toolBar, wxID_ANY, 50, 0, 100, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL );
-	m_toolBar->AddControl( m_sliderZoom );
 	m_buttonMinus = new wxButton( m_toolBar, wxID_ANY, _("-"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT );
 	m_toolBar->AddControl( m_buttonMinus );
+	m_sliderZoom = new wxSlider( m_toolBar, wxID_ANY, 50, 0, 100, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL );
+	m_toolBar->AddControl( m_sliderZoom );
+	m_buttonPlus = new wxButton( m_toolBar, wxID_ANY, _("+"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT );
+	m_toolBar->AddControl( m_buttonPlus );
 	m_toolBar->AddSeparator(); 
 	
-	wxStaticText* m_staticText1;
-	m_staticText1 = new wxStaticText( m_toolBar, wxID_ANY, _("Zoom:"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText1->Wrap( -1 );
-	m_toolBar->AddControl( m_staticText1 );
+	m_staticTextZoom = new wxStaticText( m_toolBar, wxID_ANY, _("Zoom:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextZoom->Wrap( -1 );
+	m_toolBar->AddControl( m_staticTextZoom );
 	m_textCtrlZoom = new wxTextCtrl( m_toolBar, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), wxTE_PROCESS_ENTER );
 	m_toolBar->AddControl( m_textCtrlZoom );
 	m_toolBar->AddSeparator(); 
@@ -62,7 +61,7 @@ fbRgViewMedia::fbRgViewMedia( wxWindow* parent, wxWindowID id, const wxString& t
 	bSizer1->Add( m_toolBar, 0, wxEXPAND, 5 );
 	
 	m_imageViewer = new rgImagePanel( this );
-	m_imageViewer->SetMinSize( wxSize( 500,500 ) );
+	m_imageViewer->SetMinSize( wxSize( 600,400 ) );
 	
 	bSizer1->Add( m_imageViewer, 1, wxALL|wxEXPAND, 0 );
 	
@@ -75,8 +74,9 @@ fbRgViewMedia::fbRgViewMedia( wxWindow* parent, wxWindowID id, const wxString& t
 	
 	// Connect Events
 	m_checkScroll->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( fbRgViewMedia::OnCheckScroll ), NULL, this );
-	m_buttonPlus->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgViewMedia::OnButtonPlus ), NULL, this );
 	m_buttonMinus->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgViewMedia::OnButtonMinus ), NULL, this );
+	m_sliderZoom->Connect( wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler( fbRgViewMedia::OnZoomSlider ), NULL, this );
+	m_buttonPlus->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgViewMedia::OnButtonPlus ), NULL, this );
 	m_textCtrlZoom->Connect( wxEVT_COMMAND_TEXT_ENTER, wxCommandEventHandler( fbRgViewMedia::OnSetZoom ), NULL, this );
 	m_button100Percent->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgViewMedia::OnButton100Percent ), NULL, this );
 	m_buttonExport->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgViewMedia::OnButtonExport ), NULL, this );
@@ -87,8 +87,9 @@ fbRgViewMedia::~fbRgViewMedia()
 {
 	// Disconnect Events
 	m_checkScroll->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( fbRgViewMedia::OnCheckScroll ), NULL, this );
-	m_buttonPlus->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgViewMedia::OnButtonPlus ), NULL, this );
 	m_buttonMinus->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgViewMedia::OnButtonMinus ), NULL, this );
+	m_sliderZoom->Disconnect( wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler( fbRgViewMedia::OnZoomSlider ), NULL, this );
+	m_buttonPlus->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgViewMedia::OnButtonPlus ), NULL, this );
 	m_textCtrlZoom->Disconnect( wxEVT_COMMAND_TEXT_ENTER, wxCommandEventHandler( fbRgViewMedia::OnSetZoom ), NULL, this );
 	m_button100Percent->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgViewMedia::OnButton100Percent ), NULL, this );
 	m_buttonExport->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgViewMedia::OnButtonExport ), NULL, this );

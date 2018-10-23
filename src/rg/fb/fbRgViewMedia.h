@@ -37,9 +37,10 @@ class fbRgViewMedia : public wxFrame
 	
 	protected:
 		wxCheckBox* m_checkScroll;
-		wxButton* m_buttonPlus;
-		wxSlider* m_sliderZoom;
 		wxButton* m_buttonMinus;
+		wxSlider* m_sliderZoom;
+		wxButton* m_buttonPlus;
+		wxStaticText* m_staticTextZoom;
 		wxTextCtrl* m_textCtrlZoom;
 		wxButton* m_button100Percent;
 		wxButton* m_buttonExport;
@@ -48,8 +49,9 @@ class fbRgViewMedia : public wxFrame
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnCheckScroll( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnButtonPlus( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnButtonMinus( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnZoomSlider( wxScrollEvent& event ) { event.Skip(); }
+		virtual void OnButtonPlus( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSetZoom( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnButton100Percent( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnButtonExport( wxCommandEvent& event ) { event.Skip(); }

@@ -41,8 +41,9 @@ public:
 
     bool SetImage( const wxMemoryBuffer& buf );
     bool SetImage( const recMedia& med );
-
     void SetScrollMode( bool scroll );
+
+    void SetScale( double scale );
 
 private:
     void OnPaint( wxPaintEvent& evt );

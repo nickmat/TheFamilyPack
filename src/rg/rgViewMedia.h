@@ -32,20 +32,22 @@
 
 #include "fb/fbRgViewMedia.h"
 
-class rgViewMediaForm : public fbRgViewMedia
+class rgViewMediaFrame : public fbRgViewMedia
 {
 public:
-    rgViewMediaForm( wxWindow* parent, idt medID );
+    rgViewMediaFrame( wxWindow* parent, idt medID );
 
-    void SetScale( double scale );
+    void SetToolbarScale( double scale );
 
 private:
     void EnableScroll( bool enable );
+    double ThumbToScale( int thumb );
+    int ScaleToThumb( double scale );
 
     void OnChangeScale( rgImageScaleEvent& event );
-    void OnZoomSlider( wxCommandEvent& event );
     // Virtual event handlers
     void OnCheckScroll( wxCommandEvent& event ) override;
+    void OnZoomSlider( wxScrollEvent& event ) override;
     void OnButtonPlus( wxCommandEvent& event ) override;
     void OnButtonMinus( wxCommandEvent& event ) override;
     void OnSetZoom( wxCommandEvent& event ) override;
@@ -60,7 +62,8 @@ private:
     double   m_lower; // 1 / m_upper
     double   m_b;     // m_upper * m_upper
     double   m_k;     // log10( m_b )
-
+    int       m_prevThumb;
+    const int m_stepThumb = 5;
 };
 
 #endif // SRC_RG_RGVIEWMEDIA_H

@@ -40,10 +40,11 @@
 
 #include <wx/colour.h>
 
+
 void rgViewMedia( wxWindow* wind, idt medID )
 {
     wxASSERT( medID != 0 );
-    rgViewMediaForm* frame = new rgViewMediaForm( wind, medID );
+    rgViewMediaFrame* frame = new rgViewMediaFrame( wind, medID );
     frame->SetBackgroundColour( *wxWHITE );
     frame->Show();
 }
@@ -52,11 +53,11 @@ void rgViewMedia( wxWindow* wind, idt medID )
 //-------------------------[ rgViewMediaForm ]--------------------------------
 //============================================================================
 
-rgViewMediaForm::rgViewMediaForm( wxWindow* parent, idt medID )
-    : m_media(medID), m_scrollEnabled(false), m_upper(10), fbRgViewMedia( parent )
+rgViewMediaFrame::rgViewMediaFrame( wxWindow* parent, idt medID )
+    : m_media(medID), m_scrollEnabled(false), m_upper(4), m_prevThumb(-1),
+    fbRgViewMedia( parent )
 {
-    Bind( rgEVT_IMAGE_SCALE, &rgViewMediaForm::OnChangeScale, this );
-    Bind( wxEVT_SLIDER, &rgViewMediaForm::OnZoomSlider, this );
+    Bind( rgEVT_IMAGE_SCALE, &rgViewMediaFrame::OnChangeScale, this );
     m_lower = 1 / m_upper;
     m_b = m_upper * m_upper;
     m_k = std::log10( m_b );
@@ -64,82 +65,109 @@ rgViewMediaForm::rgViewMediaForm( wxWindow* parent, idt medID )
     EnableScroll( false );
 }
 
-void rgViewMediaForm::SetScale( double scale )
+void rgViewMediaFrame::SetToolbarScale( double scale )
 {
     wxString scalestr = wxString::Format( "%.1f", scale * 100 );
-    if ( scale > m_upper ) {
-        SetScale( m_upper );
-        return;
-    }
-    if ( scale < m_lower ) {
-        SetScale( m_lower );
-        return;
-    }
     m_textCtrlZoom->SetValue( scalestr );
-    int thumb = double( 100 ) *( std::log10( scale ) / m_k + 0.5 );
+    int thumb = ScaleToThumb( scale );
     m_sliderZoom->SetValue( thumb );
-
+    m_prevThumb = thumb;
 }
 
-void rgViewMediaForm::EnableScroll( bool enable )
+void rgViewMediaFrame::EnableScroll( bool enable )
 {
     m_scrollEnabled = enable;
     m_buttonPlus->Enable( enable );
     m_sliderZoom->Enable( enable );
     m_buttonMinus->Enable( enable );
+    m_staticTextZoom->Enable( enable );
     m_textCtrlZoom->Enable( enable );
     m_button100Percent->Enable( enable );
     m_buttonExport->Enable( enable );
     m_buttonPrint->Enable( enable );
 }
 
-void rgViewMediaForm::OnChangeScale( rgImageScaleEvent & event )
+double rgViewMediaFrame::ThumbToScale( int thumb )
 {
-    SetScale( event.GetScale() );
+    return std::pow( m_b, ( double( thumb ) / 100 ) - 0.5 );
 }
 
-void rgViewMediaForm::OnZoomSlider( wxCommandEvent& event )
+int rgViewMediaFrame::ScaleToThumb( double scale )
 {
-    wxMessageBox( _( "Not yet implimented" ), "OnZoomSlider" );
+    return double( 100 ) *( std::log10( scale ) / m_k + 0.5 );
 }
 
-void rgViewMediaForm::OnCheckScroll( wxCommandEvent& event )
+void rgViewMediaFrame::OnChangeScale( rgImageScaleEvent & event )
 {
-    bool scroll = event.GetInt() != 0;
+    SetToolbarScale( event.GetScale() );
+}
+
+void rgViewMediaFrame::OnZoomSlider( wxScrollEvent& event )
+{
+    int thumb = event.GetInt();
+    if ( thumb == m_prevThumb ) {
+        return; // Ignore if nothing changes
+    }
+    double scale = ThumbToScale( thumb );
+    m_imageViewer->SetScale( scale );
+}
+
+void rgViewMediaFrame::OnCheckScroll( wxCommandEvent& event )
+{
+    bool scroll = ( event.GetInt() != 0 );
     m_imageViewer->SetScrollMode( scroll );
     EnableScroll( scroll );
 }
 
-void rgViewMediaForm::OnButtonPlus( wxCommandEvent& event )
+void rgViewMediaFrame::OnButtonPlus( wxCommandEvent& event )
 {
-    wxMessageBox( _( "Not yet implimented" ), "OnButtonPlus" );
+    int thumb = m_sliderZoom->GetValue() + m_stepThumb;
+    if( thumb > 100 ){
+        thumb = 100;
+    }
+    if ( thumb == m_prevThumb ) {
+        return; // Ignore if nothing changes
+    }
+    double scale = ThumbToScale( thumb );
+    m_imageViewer->SetScale( scale );
 }
 
-void rgViewMediaForm::OnButtonMinus( wxCommandEvent& event )
+void rgViewMediaFrame::OnButtonMinus( wxCommandEvent& event )
 {
-    wxMessageBox( _( "Not yet implimented" ), "OnButtonMinus" );
+    int thumb = m_sliderZoom->GetValue() - m_stepThumb;
+    if ( thumb < 0 ) {
+        thumb = 0;
+    }
+    if ( thumb == m_prevThumb ) {
+        return; // Ignore if nothing changes
+    }
+    double scale = ThumbToScale( thumb );
+    m_imageViewer->SetScale( scale );
 }
 
-void rgViewMediaForm::OnSetZoom( wxCommandEvent& event )
+void rgViewMediaFrame::OnSetZoom( wxCommandEvent& event )
 {
-    wxMessageBox( _( "Not yet implimented" ), "OnSetZoom" );
+    wxString zoomStr = m_textCtrlZoom->GetValue();
+    double zoom;
+    if ( zoomStr.ToDouble( &zoom ) ) {
+        double scale = zoom / 100;
+        m_imageViewer->SetScale( scale );
+    }
 }
 
-void rgViewMediaForm::OnButton100Percent( wxCommandEvent& event )
+void rgViewMediaFrame::OnButton100Percent( wxCommandEvent& event )
 {
-    SetScale( 1.0 );
-    wxMessageBox( _( "Not yet implimented" ), "OnSetZoom" );
+    m_imageViewer->SetScale( 1.0 );
 }
 
-void rgViewMediaForm::OnButtonExport( wxCommandEvent& event )
+void rgViewMediaFrame::OnButtonExport( wxCommandEvent& event )
 {
     wxMessageBox( _( "Not yet implimented" ), "OnButtonExport" );
 }
 
-void rgViewMediaForm::OnButtonPrint( wxCommandEvent& event )
+void rgViewMediaFrame::OnButtonPrint( wxCommandEvent& event )
 {
     wxMessageBox( _( "Not yet implimented" ), "OnButtonPrint" );
 }
-
 
 // End of src/rg/rgViewMedia.cpp file
