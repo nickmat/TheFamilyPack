@@ -5,6 +5,6 @@ build/nmake
 # This is used for all Windows development
 build/vc-working
 # And this is used when converting from vc9 to vc14 (or higher)
-build/vc
+build/vc9-ex
 # Used for test files.
 run
