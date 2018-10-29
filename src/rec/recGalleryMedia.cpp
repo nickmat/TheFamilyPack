@@ -1,4 +1,3 @@
-#include "..\..\include\rec\recGalleryMedia.h"
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Name:        src/rec/recGalleryMedia.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
@@ -85,7 +84,8 @@ void recGalleryMedia::Save()
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE GalleryMedia SET title='%q', gal_id=" ID ", med_id=" ID ", med_seq=%d WHERE id=" ID ";",
+                "UPDATE GalleryMedia SET title='%q', gal_id=" ID ", med_id=" ID
+                ", med_seq=%d WHERE id=" ID ";",
                 UTF8_( f_title ), f_gal_id, f_med_id, f_med_seq, f_id
                 );
         }
@@ -107,7 +107,7 @@ bool recGalleryMedia::Read()
         "SELECT title, gal_id, med_id, med_seq"
         " FROM GalleryMedia WHERE id=" ID ";",
         f_id
-        );
+    );
     result = s_db->GetTable( sql );
 
     if ( result.GetRowCount() != 1 )
@@ -126,10 +126,35 @@ bool recGalleryMedia::Read()
 bool recGalleryMedia::Equivalent( const recGalleryMedia& r2 ) const
 {
     return
-        f_title == r2.f_title &&
-        f_gal_id == r2.f_gal_id   &&
-        f_med_id == r2.f_med_id   &&
+        f_title == r2.f_title    &&
+        f_gal_id == r2.f_gal_id  &&
+        f_med_id == r2.f_med_id  &&
         f_med_seq == r2.f_med_seq;
+}
+
+bool recGalleryMedia::ReadGalleryMedia( idt galID, idt medID )
+{
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "SELECT id, title, med_seq"
+        " FROM GalleryMedia WHERE gal_id=" ID " AND med_id=" ID ";",
+        galID, medID
+    );
+    wxSQLite3Table result = s_db->GetTable( sql );
+
+    if ( result.GetRowCount() != 1 )
+    {
+        Clear();
+        return false;
+    }
+    f_gal_id = galID;
+    f_med_id = medID;
+    result.SetRow( 0 );
+    f_id = GET_ID( result.GetInt64( 0 ) );
+    f_title = result.GetAsString( 1 );
+    f_med_seq = result.GetInt( 2 );
+    return true;
 }
 
 void recGalleryMedia::SetNextMedSequence( idt galID )
@@ -148,5 +173,12 @@ wxString recGalleryMedia::GetTitle( idt galID, idt medID )
     return recDb::ExecuteStr( sql );
 }
 
+wxString recGalleryMediaMedia::GetTitle() const
+{
+    if ( m_gm.FGetTitle().empty() ) {
+        return m_med.FGetTitle();
+    }
+    return m_gm.FGetTitle();
+}
 
 // End of recGalleryMedia.cpp file

@@ -33,6 +33,8 @@
 
 class recGallery;
 using  recGalleryVec = std::vector< recGallery >;
+class recGalleryMediaMedia;
+using recGalleryMediaMediaVec = std::vector< recGalleryMediaMedia >;
 
 class recGallery : public recDb
 {
@@ -61,6 +63,9 @@ public:
 
     static recMediaVec GetMediaVec( idt galID );
     recMediaVec GetMediaVec() const { return GetMediaVec( f_id ); }
+
+    static recGalleryMediaMediaVec GetGalleryMediaMediaVec( idt galID );
+    recGalleryMediaMediaVec GetGalleryMediaMediaVec() const { return GetGalleryMediaMediaVec( f_id ); }
 
 private:
     wxString f_title;

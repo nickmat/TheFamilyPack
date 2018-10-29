@@ -37,6 +37,8 @@
 
 #include <rec/recGallery.h>
 
+#include <rec/recGalleryMedia.h>
+
 
 recGallery::recGallery( const recGallery& at )
 {
@@ -159,6 +161,40 @@ recMediaVec recGallery::GetMediaVec( idt galID )
         meds.push_back( med );
     }
     return meds;
+}
+
+recGalleryMediaMediaVec recGallery::GetGalleryMediaMediaVec( idt galID )
+{
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT M.id, M.data_id, M.ass_id, M.ref_id, M.privacy, M.title, M.note,"
+        " GM.id, GM.title, GM.med_seq FROM Media M, GalleryMedia GM"
+        " WHERE M.id=GM.med_id AND GM.gal_id=" ID
+        " ORDER BY GM.med_seq;",
+        galID
+        );
+    wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
+
+    recGalleryMediaMedia gmm;
+    recGalleryMedia& gm = gmm.GetGalleryMedia();
+    gm.FSetGalID( galID );
+    recMedia& med = gmm.GetMedia();
+    recGalleryMediaMediaVec gmms;
+    while ( result.NextRow() ) {
+        med.FSetID( GET_ID( result.GetInt64( 0 ) ) );
+        med.FSetDataID( GET_ID( result.GetInt64( 1 ) ) );
+        med.FSetAssID( GET_ID( result.GetInt64( 2 ) ) );
+        med.FSetRefID( GET_ID( result.GetInt64( 3 ) ) );
+        med.FSetPrivacy( result.GetInt( 4 ) );
+        med.FSetTitle( result.GetAsString( 5 ) );
+        med.FSetNote( result.GetAsString( 6 ) );
+        gm.FSetID( GET_ID( result.GetInt64( 7 ) ) );
+        gm.FSetTitle( result.GetAsString( 8 ) );
+        gm.FSetMedID( med.FGetID() );
+        gm.FSetMedSeq( GET_ID( result.GetInt64( 9 ) ) );
+        gmms.push_back( gmm );
+    }
+    return gmms;
 }
 
 // End of src/rec/recGallery.cpp file

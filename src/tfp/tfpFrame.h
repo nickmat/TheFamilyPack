@@ -27,6 +27,7 @@
 #ifndef TFPFRAME_H
 #define TFPFRAME_H
 
+#include <wx/frame.h>
 #include <rec/recDatabase.h>
 #include <rec/recFilterEvent.h>
 #include <rg/rgCompareEvent.h>
@@ -94,6 +95,7 @@ public:
     void OnEditContext( wxCommandEvent& event );
     void OnEditNewReference( wxCommandEvent& event );
     void OnEditReference( wxCommandEvent& event );
+    void OnEditGallery( wxCommandEvent& event );
     void OnEditResearcher( wxCommandEvent& event );
 
     void OnEditIndividual( wxCommandEvent& event );
@@ -195,6 +197,7 @@ enum
     tfpID_EDIT_REFERENCE_MENU,
     tfpID_EDIT_REFERENCE,
     tfpID_EDIT_NEW_REFERENCE,
+    tfpID_EDIT_GALLERY,
     tfpID_EDIT_RESEARCHER,
     tfpID_EDIT_CORE_MENU,
 

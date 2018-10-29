@@ -121,6 +121,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\rg\fbRgDialog.cpp" />
+    <ClCompile Include="..\..\src\rg\fb\fbRgEditGallery.cpp" />
     <ClCompile Include="..\..\src\rg\fb\fbRgEditMedia.cpp" />
     <ClCompile Include="..\..\src\rg\fb\fbRgViewMedia.cpp" />
     <ClCompile Include="..\..\src\rg\recgui.cpp" />
@@ -134,6 +135,7 @@
     <ClCompile Include="..\..\src\rg\rgEdEventEventa.cpp" />
     <ClCompile Include="..\..\src\rg\rgEdEventType.cpp" />
     <ClCompile Include="..\..\src\rg\rgEdFamily.cpp" />
+    <ClCompile Include="..\..\src\rg\rgEdGallery.cpp" />
     <ClCompile Include="..\..\src\rg\rgEdIndividual.cpp" />
     <ClCompile Include="..\..\src\rg\rgEdMedia.cpp" />
     <ClCompile Include="..\..\src\rg\rgEdName.cpp" />
@@ -159,6 +161,7 @@
     <ClInclude Include="..\..\include\rg\rgDialogs.h" />
     <ClInclude Include="..\..\include\rg\rgImagePanel.h" />
     <ClInclude Include="..\..\src\rg\fbRgDialog.h" />
+    <ClInclude Include="..\..\src\rg\fb\fbRgEditGallery.h" />
     <ClInclude Include="..\..\src\rg\fb\fbRgEditMedia.h" />
     <ClInclude Include="..\..\src\rg\fb\fbRgViewMedia.h" />
     <ClInclude Include="..\..\src\rg\rgCommon.h" />
@@ -171,6 +174,7 @@
     <ClInclude Include="..\..\src\rg\rgEdEventEventa.h" />
     <ClInclude Include="..\..\src\rg\rgEdEventType.h" />
     <ClInclude Include="..\..\src\rg\rgEdFamily.h" />
+    <ClInclude Include="..\..\src\rg\rgEdGallery.h" />
     <ClInclude Include="..\..\src\rg\rgEdIndividual.h" />
     <ClInclude Include="..\..\src\rg\rgEdMedia.h" />
     <ClInclude Include="..\..\src\rg\rgEdName.h" />

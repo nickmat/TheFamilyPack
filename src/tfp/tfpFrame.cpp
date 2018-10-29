@@ -86,6 +86,7 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
 //    EVT_MENU( tfpID_EDIT_EVENT_NEW, TfpFrame::OnEditEventNew )
     EVT_MENU( tfpID_EDIT_NEW_REFERENCE, TfpFrame::OnEditNewReference )
     EVT_MENU( tfpID_EDIT_REFERENCE, TfpFrame::OnEditReference )
+    EVT_MENU( tfpID_EDIT_GALLERY, TfpFrame::OnEditGallery )
     EVT_MENU( tfpID_EDIT_RESEARCHER, TfpFrame::OnEditResearcher )
     EVT_MENU( tfpID_FIND_FAMILY_ID, TfpFrame::OnFindFamilyID )
     EVT_MENU( tfpID_FIND_INDIVIDUAL_ID, TfpFrame::OnFindIndividualID )
@@ -215,7 +216,8 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     menuEdit->Append( tfpID_EDIT_IND_MENU, _("&Individual"), m_menuEditInd );
     menuEdit->Append( tfpID_EDIT_EVENT_MENU, _("&Event"), m_menuEditEvent );
     menuEdit->Append( tfpID_EDIT_REFERENCE_MENU, _("&Reference"), m_menuEditReference );
-    menuEdit->Append( tfpID_EDIT_RESEARCHER, _("R&esearcher...") );
+    menuEdit->Append( tfpID_EDIT_GALLERY, _( "&Gallery..." ) );
+    menuEdit->Append( tfpID_EDIT_RESEARCHER, _( "R&esearcher..." ) );
     menuEdit->Append( tfpID_EDIT_CORE_MENU, _("&Core Data"), menuEdCore );
 
     wxMenu* menuFind = new wxMenu;
@@ -634,7 +636,6 @@ void TfpFrame::OnEditReference( wxCommandEvent& event )
 {
     long num = wxGetNumberFromUser(
         _("Enter the Reference ID number"),
-
         _("Reference ID:"),
         _("Edit Reference"),
         (long) 0, (long) 0, (long) INT_MAX, this
@@ -655,15 +656,39 @@ void TfpFrame::OnEditReference( wxCommandEvent& event )
     }
 }
 
+void TfpFrame::OnEditGallery( wxCommandEvent& event )
+{
+    long num = wxGetNumberFromUser(
+        _( "Enter the Gallery ID or 0 for new Gallery" ),
+        _( "Gallery ID:" ),
+        _( "Edit Gallery" ),
+        (long)0, (long)0, (long)INT_MAX
+        );
+    if ( num < 0 ) return;
+
+    recDb::Begin();
+    try {
+        if ( rgEditGallery( this, (idt)num ) ) {
+            recDb::Commit();
+            RefreshHtmPage();
+        } else {
+            recDb::Rollback();
+        }
+    }
+    catch ( wxSQLite3Exception& e ) {
+        recDb::ErrorMessage( e );
+        recDb::Rollback();
+    }
+}
+
 /*! \brief Called on a Edit Researcher menu option event.
  */
 void TfpFrame::OnEditResearcher( wxCommandEvent& event )
 {
     long num = wxGetNumberFromUser(
-        wxT("Enter the Researcher ID or 0 for new Researcher"),
-
-        wxT("Researcher ID:"),
-        wxT("Edit Researcher"),
+        _("Enter the Researcher ID or 0 for new Researcher"),
+        _("Researcher ID:"),
+        _("Edit Researcher"),
         (long) 0, (long) 0, (long) INT_MAX
     );
     if( num < 0 ) return;

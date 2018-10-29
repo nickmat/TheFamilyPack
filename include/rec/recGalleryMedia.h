@@ -29,6 +29,7 @@
 #define RECGALLERYMEDIA_H
 
 #include <rec/recDatabase.h>
+#include <rec/recMedia.h>
 
 class recGalleryMedia : public recDb
 {
@@ -36,6 +37,7 @@ public:
     recGalleryMedia() {}
     recGalleryMedia( idt id ) : recDb( id ) { Read(); }
     recGalleryMedia( const recGalleryMedia& name );
+    recGalleryMedia( idt galID, idt medID ) { ReadGalleryMedia( galID, medID ); }
 
     void Clear();
     void Save();
@@ -52,6 +54,8 @@ public:
     void FSetGalID( idt galID ) { f_gal_id = galID; }
     void FSetMedID( idt medID ) { f_med_id = medID; }
     void FSetMedSeq( int seq ) { f_med_seq = seq; }
+
+    bool ReadGalleryMedia( idt galID, idt medID );
 
     void SetNextMedSequence( idt galID );
 
@@ -73,5 +77,26 @@ inline bool operator!=( const recGalleryMedia& r1, const recGalleryMedia& r2 )
 {
     return !( r1 == r2 );
 }
+
+using  recGalleryMediaVec = std::vector< recGalleryMedia >;
+
+class recGalleryMediaMedia
+{
+public:
+    recGalleryMediaMedia() : m_gm( 0 ), m_med( 0 ) {}
+    recGalleryMediaMedia( idt galID, idt medID )
+        : m_gm( galID, medID ), m_med( medID ) {}
+
+    recGalleryMedia& GetGalleryMedia() { return m_gm; }
+    recMedia& GetMedia() { return m_med; }
+
+    idt GetMedID() const { return m_med.FGetID(); }
+    wxString GetMedIdStr() const { return m_med.GetIdStr(); }
+    wxString GetTitle() const;
+
+private:
+    recGalleryMedia m_gm;
+    recMedia        m_med;
+};
 
 #endif // RECGALLERYMEDIA_H

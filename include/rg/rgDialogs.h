@@ -110,6 +110,9 @@ extern idt rgCreatePersonalEventa( wxWindow* wind, idt refID, const wxString& ro
 // See src/rg/rgEdFamily.cpp
 extern bool rgEditFamily( wxWindow* wind, idt famID );
 
+// See src/rg/rgEdGallery.cpp
+extern bool rgEditGallery( wxWindow* parent, idt galID );
+
 // See src/rg/rgEdIndividual.cpp
 extern bool rgEditIndividual( wxWindow* wind, idt indID );
 

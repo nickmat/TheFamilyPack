@@ -14,6 +14,9 @@
     <ClCompile Include="..\..\src\rg\fbRgDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\rg\fb\fbRgEditGallery.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\rg\fb\fbRgEditMedia.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -51,6 +54,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\rg\rgEdFamily.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\rg\rgEdGallery.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\rg\rgEdIndividual.cpp">
@@ -115,6 +121,9 @@
     <ClInclude Include="..\..\src\rg\fbRgDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\rg\fb\fbRgEditGallery.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\src\rg\fb\fbRgEditMedia.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -155,6 +164,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\rg\rgEdFamily.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\rg\rgEdGallery.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\rg\rgEdIndividual.h">
