@@ -80,42 +80,43 @@ wxString tfpWriteGalleryPage( idt galID )
         return htm;
     }
     
-    recMediaVec meds = gal.GetMediaVec();
-
-    htm << tfpWrHeadTfp( "Gallery " + gal.GetIdStr() );
-
-    htm << "<h1>" << gal.GetIdStr() << ": " << gal.FGetTitle() << "</h1>\n"
+    recGalleryMediaMediaVec gmms = gal.GetGalleryMediaMediaVec();
+    bool started = false;
+    htm << tfpWrHeadTfp( "Gallery " + gal.GetIdStr(), "tab" )
+        << "<h1>" << gal.GetIdStr() << ": " << gal.FGetTitle() << "</h1>\n"
         << "<p>" << gal.FGetNote() << "</p>\n"
-        ;
-
-    if ( meds.empty() ) {
-        htm << "<p>No Media Items Found.</p>\n";
-    } else {
-        htm <<
-            "<table class='data'>\n"
-            "<tr><th>Image</th><th>ID</th><th>Title</th></tr>\n"
-            ;
-        for ( auto med : meds ) {
-            wxString title = recGalleryMedia::GetTitle( galID, med.FGetID() );
-            if ( title.empty() ) {
-                title = med.FGetTitle();
+        "<table class='media'>\n"
+    ;
+    if ( !gal.FGetNote().empty() ) {
+        htm << "<tr>\n<td colspan='3'>" << gal.FGetNote() << "</td>\n</tr>\n";
+        started = true;
+    }
+    if ( !gmms.empty() ) {
+        for ( auto gmm : gmms ) {
+            if ( started ) {
+                htm << "<tr>\n<td colspan='3' class='gap'>&nbsp;</td>\n</tr>\n";
+            } else {
+                started = true;
             }
+            recMedia& med = gmm.GetMedia();
             wxString fn = tfpGetMediaDataFile( med.FGetDataID(), med.FGetAssID() );
             recReference ref( med.FGetRefID() );
-            htm << "<tr>\n<td rowspan='2'><a href='tfpv:M" << med.FGetID()
+            htm << "<tr>\n<td rowspan='2'><a href='tfpv:M"
+                << med.FGetID()
                 << "'><img src='" << fn << "' alt='' height='200' /></a></td>"
                 "<td><a href='tfp:M" << med.FGetID()
                 << "'><b>" << med.GetIdStr()
-                << "</b></a></td>\n<td>" << title
+                << "</b></a></td>\n<td class='title'>" << gmm.GetTitle()
                 << "</td>\n</tr>\n"
                 "<tr>\n<td colspan='2'>" << ref.FGetStatement()
                 << "</td>\n</tr>\n"
-                ;
+            ;
         }
-        htm << "</table>\n";
+    } 
+    if ( !started ) {
+        htm << "<tr>\n<td>Empty Gallery.</td>\n</tr>\n";
     }
-
-    htm << tfpWrTailTfp();
+    htm << "</table>\n" << tfpWrTailTfp();
     return htm;
 }
 

@@ -1,13 +1,11 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/tfp/tab.css
+ * Name:        src/tfp/embed/tab.css
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Style sheet for reference documents with tabular data.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     3rd July 2013
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2013 ~ 2018, Nick Matthews.
  * Website:     http://thefamilypack.org
  * Licence:     GNU GPLv3
  *
@@ -147,3 +145,24 @@ table.layout td {
     padding: 0;
 }
 
+table.media {
+    border-collapse: collapse;
+    border: none;
+}
+
+table.media td {
+    border: 1px solid black;
+    text-align: center;
+    vertical-align: middle;
+}
+
+table.media td.title {
+    font-size: 1.25em;
+    font-weight: bold;
+}
+
+table.media td.gap {
+    background-color: transparent;
+    border: none;
+    font-size: 0.5em;
+}
