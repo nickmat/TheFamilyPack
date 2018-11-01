@@ -84,7 +84,6 @@ wxString tfpWriteGalleryPage( idt galID )
     bool started = false;
     htm << tfpWrHeadTfp( "Gallery " + gal.GetIdStr(), "tab" )
         << "<h1>" << gal.GetIdStr() << ": " << gal.FGetTitle() << "</h1>\n"
-        << "<p>" << gal.FGetNote() << "</p>\n"
         "<table class='media'>\n"
     ;
     if ( !gal.FGetNote().empty() ) {
