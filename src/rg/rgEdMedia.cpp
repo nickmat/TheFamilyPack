@@ -58,6 +58,10 @@ bool rgEditMedia( wxWindow* wind, idt medID )
     return ret;
 }
 
+//============================================================================
+//                 rgDlgEditMedia dialog
+//============================================================================
+
 rgDlgEditMedia::rgDlgEditMedia( wxWindow* parent, idt medID )
     : m_media( medID ), fbRgEditMedia( parent )
 {
@@ -70,7 +74,7 @@ bool rgDlgEditMedia::TransferDataToWindow()
 
     m_staticMediaID->SetLabel( m_media.GetIdStr() );
     m_textCtrlTitle->SetValue( m_media.FGetTitle() );
-    m_imagePanel->SetScrollMode( true );
+    m_imagePanel->SetScrollMode( false );
     m_imagePanel->SetImage( m_md.FGetData() );
     return true;
 }
