@@ -24,6 +24,7 @@
 #include <wx/image.h>
 #include <wx/icon.h>
 #include <wx/listctrl.h>
+#include <wx/menu.h>
 #include <wx/button.h>
 #include <wx/notebook.h>
 #include <wx/statline.h>
@@ -44,8 +45,9 @@ class fbRgEditGallery : public wxDialog
 		wxTextCtrl* m_textCtrlNote;
 		wxListCtrl* m_listImage;
 		wxButton* m_buttonImageAdd;
+		wxMenu* m_popupAddMedia;
 		wxButton* m_buttonImageEdit;
-		wxButton* m_buttonImageDel;
+		wxButton* m_buttonImageRemove;
 		wxButton* m_buttonImageUp;
 		wxButton* m_buttonImageDn;
 		wxButton* m_buttonViewImage;
@@ -54,11 +56,13 @@ class fbRgEditGallery : public wxDialog
 		wxButton* m_buttonCancel;
 		
 		// Virtual event handlers, overide them in your derived class
-		virtual void OnNameAddButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnNameEditButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnNameDeleteButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnNameUpButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnNameDownButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnMediaAddButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAddNewMedia( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAddExistingMedia( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnMediaEditButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnMediaRemoveButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnMediaUpButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnMediaDownButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnViewImage( wxCommandEvent& event ) { event.Skip(); }
 		
 	
@@ -66,6 +70,11 @@ class fbRgEditGallery : public wxDialog
 		
 		fbRgEditGallery( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Gallery"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
 		~fbRgEditGallery();
+		
+		void m_buttonImageAddOnContextMenu( wxMouseEvent &event )
+		{
+			m_buttonImageAdd->PopupMenu( m_popupAddMedia, event.GetPosition() );
+		}
 	
 };
 

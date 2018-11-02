@@ -59,6 +59,7 @@ bool rgEditGallery( wxWindow* parent, idt galID  )
     dialog.Destroy();
     return ret;
 }
+
 //============================================================================
 //                 rgDlgEditGallery dialog
 //============================================================================
@@ -106,50 +107,130 @@ bool rgDlgEditGallery::TransferDataFromWindow()
             gm.Save();
         }
     }
+    m_gallery.Save();
     return true;
 }
 
-void rgDlgEditGallery::UpdateMediaList()
+void rgDlgEditGallery::UpdateMediaList( idt medID )
 {
     m_gmms = m_gallery.GetGalleryMediaMediaVec();
-    long row = 0;
+    m_listImage->DeleteAllItems();
+    long row = 0, sel = -1;
     for ( auto gmm : m_gmms ) {
         m_listImage->InsertItem( row, gmm.GetMedIdStr() );
         m_listImage->SetItem( row, IC_title, gmm.GetTitle() );
-        m_listImage->EnsureVisible( row );
+        if ( medID == gmm.GetMedID() ) {
+            m_listImage->SetItemState( row, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+            sel = row;
+        }
         row++;
     }
-    m_listImage->SetColumnWidth( IC_title, wxLIST_AUTOSIZE );
+    if ( !m_gmms.empty() ) {
+        m_listImage->SetColumnWidth( IC_title, wxLIST_AUTOSIZE );
+    }
+    if ( sel >= 0 ) {
+        m_listImage->EnsureVisible( sel );
+    }
 }
 
-void rgDlgEditGallery::OnNameAddButton( wxCommandEvent& event )
+void rgDlgEditGallery::OnMediaAddButton( wxCommandEvent& event )
 {
-    wxMessageBox( _( "Not yet implimented" ), "OnNameAddButton" );
+    wxSize s = m_buttonImageAdd->GetSize();
+    m_buttonImageAdd->PopupMenu( m_popupAddMedia, 0, s.y );
 }
 
-void rgDlgEditGallery::OnNameEditButton( wxCommandEvent& event )
+void rgDlgEditGallery::OnAddNewMedia( wxCommandEvent & event )
 {
-    wxMessageBox( _( "Not yet implimented" ), "OnNameEditButton" );
+    wxMessageBox( _( "Not yet implimented" ), "OnAddNewMedia" );
 }
 
-void rgDlgEditGallery::OnNameDeleteButton( wxCommandEvent& event )
+void rgDlgEditGallery::OnAddExistingMedia( wxCommandEvent & event )
 {
-    wxMessageBox( _( "Not yet implimented" ), "OnNameDeleteButton" );
+    wxMessageBox( _( "Not yet implimented" ), "OnAddExistingMedia" );
 }
 
-void rgDlgEditGallery::OnNameUpButton( wxCommandEvent& event )
+void rgDlgEditGallery::OnMediaEditButton( wxCommandEvent& event )
 {
-    wxMessageBox( _( "Not yet implimented" ), "OnNameUpButton" );
+    long row = m_listImage->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if ( row < 0 ) {
+        wxMessageBox( _( "Row not selected" ), _( "Media Up" ) );
+        return;
+    }
+    idt medID = m_gmms[row].GetMedID();
+    if ( rgEditMedia( this, medID ) ) {
+        UpdateMediaList( medID );
+    }
 }
 
-void rgDlgEditGallery::OnNameDownButton( wxCommandEvent& event )
+void rgDlgEditGallery::OnMediaRemoveButton( wxCommandEvent& event )
 {
-    wxMessageBox( _( "Not yet implimented" ), "OnNameDownButton" );
+    long row = m_listImage->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if ( row < 0 ) {
+        wxMessageBox( _( "Row not selected" ), _( "Remove from Gallery" ) );
+        return;
+    }
+    recGalleryMedia& gm = m_gmms[row].GetGalleryMedia();
+    recMedia& med = m_gmms[row].GetMedia();
+    wxString mess = wxString::Format(
+        _( "Remove Media %s: %s\nfrom Gallery %s" ),
+        med.GetIdStr(), m_gmms[row].GetTitle(), m_gallery.GetIdStr()
+    );
+    int ans = wxMessageBox( mess, _( "Remove Media" ), wxYES_NO | wxCANCEL, this );
+    if ( ans != wxYES ) {
+        return;
+    }
+    gm.Delete();
+    UpdateMediaList();
+}
+
+void rgDlgEditGallery::OnMediaUpButton( wxCommandEvent& event )
+{
+    long row = m_listImage->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if ( row < 0 ) {
+        wxMessageBox( _( "Row not selected" ), _( "Media Up" ) );
+        return;
+    }
+    if ( row == 0 ) {
+        return; // Already at top.
+    }
+    recGalleryMedia& gm = m_gmms[row].GetGalleryMedia();
+    recGalleryMedia& gm_prev = m_gmms[row - 1].GetGalleryMedia();
+    int seq = gm.FGetMedSeq();
+    gm.FSetMedSeq( gm_prev.FGetMedSeq() );
+    gm.Save();
+    gm_prev.FSetMedSeq( seq );
+    gm_prev.Save();
+    UpdateMediaList( gm.FGetMedID() );
+}
+
+void rgDlgEditGallery::OnMediaDownButton( wxCommandEvent& event )
+{
+    long row = m_listImage->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if ( row < 0 ) {
+        wxMessageBox( _( "Row not selected" ), _( "Media Down" ) );
+        return;
+    }
+    if ( row == m_listImage->GetItemCount() - 1 ) {
+        return; // Already at bottom.
+    }
+    recGalleryMedia& gm = m_gmms[row].GetGalleryMedia();
+    recGalleryMedia& gm_next = m_gmms[row + 1].GetGalleryMedia();
+    int seq = gm.FGetMedSeq();
+    gm.FSetMedSeq( gm_next.FGetMedSeq() );
+    gm.Save();
+    gm_next.FSetMedSeq( seq );
+    gm_next.Save();
+    UpdateMediaList( gm.FGetMedID() );
 }
 
 void rgDlgEditGallery::OnViewImage( wxCommandEvent& event )
 {
-    wxMessageBox( _( "Not yet implimented" ), "OnViewImage" );
+    long row = m_listImage->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if ( row < 0 ) {
+        wxMessageBox( _( "Row not selected" ), _( "View Media" ) );
+        return;
+    }
+    rgViewMedia( this, m_gmms[row].GetMedID() );
 }
 
 // End of src/rg/rgEdGallery.cpp

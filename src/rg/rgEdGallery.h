@@ -34,7 +34,7 @@
 #include <rec/recGalleryMedia.h>
 
 //============================================================================
-//                 dlgEditIndPersona dialog
+//                 rgDlgEditGallery dialog
 //============================================================================
 
 class rgDlgEditGallery : public fbRgEditGallery
@@ -55,17 +55,19 @@ private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
 
-    void UpdateMediaList();
+    void UpdateMediaList( idt medID = 0 );
 
     // Virtual event handlers, overide them in your derived class
-    void OnNameAddButton( wxCommandEvent& event ) override;
-    void OnNameEditButton( wxCommandEvent& event ) override;
-    void OnNameDeleteButton( wxCommandEvent& event ) override;
-    void OnNameUpButton( wxCommandEvent& event ) override;
-    void OnNameDownButton( wxCommandEvent& event ) override;
+    void OnMediaAddButton( wxCommandEvent& event ) override;
+    void OnAddNewMedia( wxCommandEvent& event ) override;
+    void OnAddExistingMedia( wxCommandEvent& event ) override;
+    void OnMediaEditButton( wxCommandEvent& event ) override;
+    void OnMediaRemoveButton( wxCommandEvent& event ) override;
+    void OnMediaUpButton( wxCommandEvent& event ) override;
+    void OnMediaDownButton( wxCommandEvent& event ) override;
     void OnViewImage( wxCommandEvent& event ) override;
 
-    recGallery  m_gallery;
+    recGallery              m_gallery;
     recGalleryMediaMediaVec m_gmms;
 };
 
