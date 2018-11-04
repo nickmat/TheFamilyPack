@@ -720,10 +720,10 @@ fbRgEditEventa::fbRgEditEventa( wxWindow* parent, wxWindowID id, const wxString&
 	
 	m_staticText2 = new wxStaticText( this, wxID_ANY, _("Title:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText2->Wrap( -1 );
-	bSizer118->Add( m_staticText2, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
+	bSizer118->Add( m_staticText2, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
 	m_textCtrlTitle = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 350,-1 ), 0 );
-	bSizer118->Add( m_textCtrlTitle, 1, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
+	bSizer118->Add( m_textCtrlTitle, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	
 	bSizer1->Add( bSizer118, 0, wxEXPAND, 5 );
@@ -778,7 +778,7 @@ fbRgEditEventa::fbRgEditEventa( wxWindow* parent, wxWindowID id, const wxString&
 	bSizer120 = new wxBoxSizer( wxVERTICAL );
 	
 	m_textCtrlNote = new wxTextCtrl( m_panel25, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( -1,100 ), wxTE_MULTILINE );
-	bSizer120->Add( m_textCtrlNote, 1, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
+	bSizer120->Add( m_textCtrlNote, 1, wxALL|wxEXPAND, 5 );
 	
 	
 	m_panel25->SetSizer( bSizer120 );
