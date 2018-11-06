@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     20th April 2013
- * Copyright:   Copyright (c) 2013 ~ 2017, Nick Matthews.
+ * Copyright:   Copyright (c) 2013 ~ 2018, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -345,20 +345,21 @@ bool recEventa::IsFamilyEvent( idt eveID )
     return false;
 }
 
-recEventaPersonaVec recEventa::GetEventaPersonas( idt emID )
+recEventaPersonaVec recEventa::GetEventaPersonas( idt eaID )
 {
     recEventaPersonaVec vec;
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "SELECT id, per_id, role_id, note "
-        "FROM EventaPersona WHERE eventa_id=" ID ";",
-        emID
+        "SELECT id, per_id, role_id, note, per_seq"
+        " FROM EventaPersona WHERE eventa_id=" ID
+        " ORDER BY per_seq;",
+        eaID
     );
     wxSQLite3Table table = s_db->GetTable( sql );
 
     recEventaPersona record;
-    record.FSetEventaID( emID );
+    record.FSetEventaID( eaID );
     for( int i = 0 ; i < table.GetRowCount() ; i++ )
     {
         table.SetRow( i );
@@ -366,6 +367,7 @@ recEventaPersonaVec recEventa::GetEventaPersonas( idt emID )
         record.f_per_id = GET_ID( table.GetInt64( 1 ) );
         record.f_role_id = GET_ID( table.GetInt64( 2 ) );
         record.f_note = table.GetAsString( 3 );
+        record.f_per_seq = table.GetInt( 4 );
         vec.push_back( record );
     }
     return vec;
@@ -557,67 +559,30 @@ recFamilyIndEventaVec recEventa::GetFamilyIndEventas( idt eaID )
     return vec;
 }
 
-recIdVec recEventa::FindLinkedEvents( recEVENT_Link link ) const
+recIdVec recEventa::FindLinkedEvents() const
 {
-    recIdVec eveIDs;
-    wxSQLite3StatementBuffer sql;
-
-    if( link == recEVENT_Link_EvEvRec ) {
-        sql.Format(
-            // This query finds Event's which match the Eventa,
-            // by using the EventEventa table.
-            "SELECT event_id FROM EventEventa"
-            " WHERE eventa_id=" ID
-            " ORDER BY event_id;",
-            f_id
-        );
-    } else { // recEVENT_Link_IndPer
-        sql.Format(
-            // This query finds Event's which match the Eventa,
-            // by matching the linked prime Persona with their Indiviuals.
-            "SELECT IE.event_id"
-            " FROM EventaPersona EP, IndividualPersona IP,"
-            " IndividualEvent IE, EventTypeRole ETR"
-            " WHERE EP.eventa_id=" ID
-            " AND EP.per_id=IP.per_id AND IP.ind_id=IE.ind_id AND EP.role_id=IE.role_id"
-            " AND EP.role_id=ETR.id AND ETR.prime>0"
-            " GROUP BY IE.event_id"
-            " ORDER BY IE.event_id;",
-            f_id
-        );
-    }
-    wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
-
-    while( result.NextRow() ) {
-        eveIDs.push_back( GET_ID( result.GetInt64( 0 ) ) );
-    }
-
-    return eveIDs;
+    return ExecuteIdVec(
+        "SELECT event_id FROM EventEventa"
+        " WHERE eventa_id=" ID
+        " ORDER BY event_id;",
+        f_id
+    );
 }
 
-recCheckIdVec recEventa::FindCheckedLinkedEvents() const
+recIdVec recEventa::FindLinkedEventsViaInd() const
 {
-    recCheckIdVec list;
-    recIdVec e1 = FindLinkedEvents( recEVENT_Link_EvEvRec );
-    recIdVec e2 = FindLinkedEvents( recEVENT_Link_IndPer );
-
-    // This assumes e1 and e2 are both in ascending order
-    for( size_t i = 0, j = 0 ; i < e1.size() || j < e2.size() ; ) {
-        recCheckID chk;
-        if( i == e1.size() ) {
-            chk.SetIDs( 0, e2[j++] );
-        } else if( j == e2.size() ) {
-            chk.SetIDs( e1[i++], 0 );
-        } else if( e1[i] == e2[j] ) {
-            chk.SetIDs( e1[i++], e2[j++] );
-        } else if( e1[i] > e2[j] ) {
-            chk.SetIDs( e1[i++], 0 );
-        } else {
-            chk.SetIDs( 0, e2[j++] );
-        }
-        list.push_back( chk );
-    }
-    return list;
+    return ExecuteIdVec(
+        "SELECT IE.event_id"
+        " FROM EventaPersona EP, IndividualPersona IP,"
+        " IndividualEvent IE, EventTypeRole ETR"
+        " WHERE EP.eventa_id=" ID
+        " AND EP.per_id=IP.per_id AND IP.ind_id=IE.ind_id"
+        " AND EP.role_id=IE.role_id"
+        " AND EP.role_id=ETR.id AND ETR.prime>0"
+        " GROUP BY IE.event_id"
+        " ORDER BY IE.event_id;",
+        f_id
+    );
 }
 
 void recEventa::CreateFamilyLink() const

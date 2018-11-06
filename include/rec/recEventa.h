@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     20th April 2013
- * Copyright:   Copyright (c) 2013 ~ 2017, Nick Matthews.
+ * Copyright:   Copyright (c) 2013 ~ 2018, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -127,12 +127,11 @@ public:
     static recFamilyIndEventaVec GetFamilyIndEventas( idt eaID );
     recFamilyIndEventaVec GetFamilyIndEventas() const { return GetFamilyIndEventas( f_id ); }
 
+    recIdVec FindLinkedEvents() const;
     // Find matching Event records by following the links:-
     // Eventa/Persona(prime Role) -> Persona/Individual link -> Individual/Event(matching role)
     // Depending on the type and group of the event, loosely match Date and Place.
-    enum recEVENT_Link { recEVENT_Link_EvEvRec, recEVENT_Link_IndPer };
-    recIdVec FindLinkedEvents( recEVENT_Link link = recEVENT_Link_EvEvRec ) const;
-    recCheckIdVec FindCheckedLinkedEvents() const;
+    recIdVec FindLinkedEventsViaInd() const;
 
     void CreateFamilyLink() const;
     static void CreateFamilyLink( idt eaID ) { recEventa ea(eaID); ea.CreateFamilyLink(); }

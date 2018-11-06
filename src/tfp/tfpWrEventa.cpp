@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     24 October 2010
- * Copyright:   Copyright (c) 2010-2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2018, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -44,14 +44,7 @@
 
 static wxString GetSexClassPer( idt perID )
 {
-    Sex sex = recPersona::GetSex( perID );
-    switch( sex ) {
-    case SEX_Male:
-        return "male";
-    case SEX_Female:
-        return "fem";
-    }
-    return "neut";
+    return tfpGetSexClass( recPersona::GetSex( perID ) );
 }
 
 static wxString DisplayFamilyConclusions( const recEventa& ea )
@@ -107,38 +100,17 @@ static wxString DisplayConclusions( const recEventa& er )
 {
     idt erID = er.FGetID();
     wxString htm;
-    recCheckIdVec ces = er.FindCheckedLinkedEvents();
-    if( ces.size() ) {
+    recIdVec eveIDs = er.FindLinkedEvents();
+    if( eveIDs.size() ) {
         htm <<
             "<table class='data'>\n"
-            "<tr>\n<th>Direct Link</th><th>Indirect Link</th><th>Title</th></tr>\n"
+            "<tr>\n<th>Event ID</th><th>Title</th></tr>\n"
         ;
-        for( size_t i = 0 ; i < ces.size() ; i++ ) {
-            idt e1 = ces[i].GetFirstID();
-            idt e2 = ces[i].GetSecondID();
-            idt eID = ( e1 ) ? e1 : e2;
-            wxString eIdStr = recEvent::GetIdStr( eID );
-            htm << "<tr>\n<td>";
-            if( e1 ) {
-                htm <<
-                    "<a href='tfp:E" << e1 <<
-                    "'><b>" << eIdStr << "</b></a>"
-                ;
-            } else {
-                htm <<
-                    "<a href='tfpe:cEER" << e2 << "," << erID <<
-                    "'><img src='memory:blank.png' width='80' height='20' alt='Add Direct Link'></a>"
-                ;
-            }
-            htm << "</td>\n<td>";
-            if( e2 ) {
-                htm <<
-                    "<a href='tfp:E" << e2 <<
-                    "'><b>" << eIdStr << "</b></a>"
-                ;
-            }
-            htm <<
-                "</td>\n<td>" << recEvent::GetTitle( eID ) <<
+        for( size_t i = 0 ; i < eveIDs.size() ; i++ ) {
+            idt eID = eveIDs[i];
+            htm << "<tr>\n<td><a href='tfp:E" << eID << "'><b>"
+                << recEvent::GetIdStr( eID ) << "</b></a></td>\n<td>"
+                << recEvent::GetTitle( eID ) <<
                 "</td>\n</tr>\n"
             ;
         }
