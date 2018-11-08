@@ -158,6 +158,8 @@ RECGUI_CXXFLAGS = $(VAR) $(VAR_4) -I../../include/rec -I../../include/rg \
 RECGUI_OBJECTS =  \
 	recgui_fbRgEditGallery.o \
 	recgui_fbRgEditMedia.o \
+	recgui_fbRgEditReference.o \
+	recgui_fbRgSelect.o \
 	recgui_fbRgViewMedia.o \
 	recgui_fbRgDialog.o \
 	recgui_recgui.o \
@@ -483,6 +485,12 @@ recgui_fbRgEditGallery.o: ./../../src/rg/fb/fbRgEditGallery.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_fbRgEditMedia.o: ./../../src/rg/fb/fbRgEditMedia.cpp
+	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
+
+recgui_fbRgEditReference.o: ./../../src/rg/fb/fbRgEditReference.cpp
+	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
+
+recgui_fbRgSelect.o: ./../../src/rg/fb/fbRgSelect.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_fbRgViewMedia.o: ./../../src/rg/fb/fbRgViewMedia.cpp

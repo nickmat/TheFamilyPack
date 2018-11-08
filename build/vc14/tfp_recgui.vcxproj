@@ -123,6 +123,8 @@
     <ClCompile Include="..\..\src\rg\fbRgDialog.cpp" />
     <ClCompile Include="..\..\src\rg\fb\fbRgEditGallery.cpp" />
     <ClCompile Include="..\..\src\rg\fb\fbRgEditMedia.cpp" />
+    <ClCompile Include="..\..\src\rg\fb\fbRgEditReference.cpp" />
+    <ClCompile Include="..\..\src\rg\fb\fbRgSelect.cpp" />
     <ClCompile Include="..\..\src\rg\fb\fbRgViewMedia.cpp" />
     <ClCompile Include="..\..\src\rg\recgui.cpp" />
     <ClCompile Include="..\..\src\rg\rgCompareEvent.cpp" />
@@ -163,6 +165,8 @@
     <ClInclude Include="..\..\src\rg\fbRgDialog.h" />
     <ClInclude Include="..\..\src\rg\fb\fbRgEditGallery.h" />
     <ClInclude Include="..\..\src\rg\fb\fbRgEditMedia.h" />
+    <ClInclude Include="..\..\src\rg\fb\fbRgEditReference.h" />
+    <ClInclude Include="..\..\src\rg\fb\fbRgSelect.h" />
     <ClInclude Include="..\..\src\rg\fb\fbRgViewMedia.h" />
     <ClInclude Include="..\..\src\rg\rgCommon.h" />
     <ClInclude Include="..\..\src\rg\rgCrIndividual.h" />

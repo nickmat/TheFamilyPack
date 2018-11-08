@@ -20,6 +20,12 @@
     <ClCompile Include="..\..\src\rg\fb\fbRgEditMedia.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\rg\fb\fbRgEditReference.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\rg\fb\fbRgSelect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\rg\fb\fbRgViewMedia.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -125,6 +131,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\rg\fb\fbRgEditMedia.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\rg\fb\fbRgEditReference.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\rg\fb\fbRgSelect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\rg\fb\fbRgViewMedia.h">

@@ -196,6 +196,8 @@ RECGUI_CXXFLAGS = /MD$(VAR_19) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) \
 RECGUI_OBJECTS =  \
 	recgui_fbRgEditGallery.obj \
 	recgui_fbRgEditMedia.obj \
+	recgui_fbRgEditReference.obj \
+	recgui_fbRgSelect.obj \
 	recgui_fbRgViewMedia.obj \
 	recgui_fbRgDialog.obj \
 	recgui_recgui.obj \
@@ -667,6 +669,12 @@ recgui_fbRgEditGallery.obj: .\..\..\src\rg\fb\fbRgEditGallery.cpp
 
 recgui_fbRgEditMedia.obj: .\..\..\src\rg\fb\fbRgEditMedia.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\fb\fbRgEditMedia.cpp
+
+recgui_fbRgEditReference.obj: .\..\..\src\rg\fb\fbRgEditReference.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\fb\fbRgEditReference.cpp
+
+recgui_fbRgSelect.obj: .\..\..\src\rg\fb\fbRgSelect.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\fb\fbRgSelect.cpp
 
 recgui_fbRgViewMedia.obj: .\..\..\src\rg\fb\fbRgViewMedia.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\fb\fbRgViewMedia.cpp

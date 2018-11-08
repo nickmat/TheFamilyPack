@@ -30,7 +30,7 @@
 
 #include <rec/recReference.h>
 
-#include "fbRgDialog.h"
+#include "fb/fbRgEditReference.h"
 
 //============================================================================
 //-------------------------[ rgDlgEditReference ]-----------------------------

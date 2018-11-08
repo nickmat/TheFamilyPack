@@ -204,6 +204,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rg\fb\fbRgEditReference.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\fb\fbRgSelect.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rg\fb\fbRgViewMedia.cpp"
 				>
 			</File>
@@ -347,6 +355,14 @@
 			</File>
 			<File
 				RelativePath="..\..\src\rg\fb\fbRgEditMedia.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\fb\fbRgEditReference.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\fb\fbRgSelect.h"
 				>
 			</File>
 			<File

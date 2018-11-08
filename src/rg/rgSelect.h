@@ -29,7 +29,7 @@
 
 #include <rec/recDatabase.h>
 
-#include "fbRgDialog.h"
+#include "fb/fbRgSelect.h"
 #include "rg/rgDialogs.h"
 
 class rgSelect : public fbRgSelect
