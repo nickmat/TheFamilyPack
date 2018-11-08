@@ -26,7 +26,7 @@
         <property name="ui_table">UI</property>
         <property name="use_enum">1</property>
         <property name="use_microsoft_bom">0</property>
-        <object class="Dialog" expanded="0">
+        <object class="Dialog" expanded="1">
             <property name="aui_managed">0</property>
             <property name="aui_manager_style">wxAUI_MGR_DEFAULT</property>
             <property name="bg"></property>
@@ -88,7 +88,7 @@
             <event name="OnSetFocus"></event>
             <event name="OnSize"></event>
             <event name="OnUpdateUI"></event>
-            <object class="wxBoxSizer" expanded="0">
+            <object class="wxBoxSizer" expanded="1">
                 <property name="minimum_size"></property>
                 <property name="name">bSizer49</property>
                 <property name="orient">wxVERTICAL</property>
@@ -141,7 +141,7 @@
                                 <property name="gripper">0</property>
                                 <property name="hidden"></property>
                                 <property name="id">wxID_ANY</property>
-                                <property name="label">Title:</property>
+                                <property name="label">&amp;Title:</property>
                                 <property name="max_size"></property>
                                 <property name="maximize_button">0</property>
                                 <property name="maximum_size"></property>
@@ -315,7 +315,7 @@
                                 <property name="gripper">0</property>
                                 <property name="hidden">0</property>
                                 <property name="id">wxID_ANY</property>
-                                <property name="label">User Ref:</property>
+                                <property name="label">User &amp;Ref:</property>
                                 <property name="max_size"></property>
                                 <property name="maximize_button">0</property>
                                 <property name="maximum_size"></property>
@@ -459,11 +459,11 @@
                         </object>
                     </object>
                 </object>
-                <object class="sizeritem" expanded="0">
+                <object class="sizeritem" expanded="1">
                     <property name="border">5</property>
                     <property name="flag">wxEXPAND</property>
                     <property name="proportion">1</property>
-                    <object class="wxSplitterWindow" expanded="0">
+                    <object class="wxSplitterWindow" expanded="1">
                         <property name="BottomDockable">1</property>
                         <property name="LeftDockable">1</property>
                         <property name="RightDockable">1</property>
@@ -547,7 +547,7 @@
                         <event name="OnSplitterSashPosChanging"></event>
                         <event name="OnSplitterUnsplit"></event>
                         <event name="OnUpdateUI"></event>
-                        <object class="splitteritem" expanded="0">
+                        <object class="splitteritem" expanded="1">
                             <object class="wxPanel" expanded="0">
                                 <property name="BottomDockable">1</property>
                                 <property name="LeftDockable">1</property>
@@ -711,7 +711,7 @@
                                             <event name="OnUpdateUI"></event>
                                             <object class="notebookpage" expanded="0">
                                                 <property name="bitmap"></property>
-                                                <property name="label">Source</property>
+                                                <property name="label">S&amp;ource</property>
                                                 <property name="select">0</property>
                                                 <object class="wxPanel" expanded="0">
                                                     <property name="BottomDockable">1</property>
@@ -878,7 +878,7 @@
                                                                 <object class="tool" expanded="0">
                                                                     <property name="bitmap">Load From File; ..\..\img\ed\cut.xpm</property>
                                                                     <property name="context_menu">0</property>
-                                                                    <property name="id">tfpID_EDREF_OnCut</property>
+                                                                    <property name="id">wxID_ANY</property>
                                                                     <property name="kind">wxITEM_NORMAL</property>
                                                                     <property name="label">Cut</property>
                                                                     <property name="name">m_toolCut</property>
@@ -891,7 +891,7 @@
                                                                     <event name="OnAuiToolBarRightClick"></event>
                                                                     <event name="OnAuiToolBarToolDropDown"></event>
                                                                     <event name="OnMenuSelection"></event>
-                                                                    <event name="OnToolClicked">OnTool</event>
+                                                                    <event name="OnToolClicked">OnToolCut</event>
                                                                     <event name="OnToolEnter"></event>
                                                                     <event name="OnToolRClicked"></event>
                                                                     <event name="OnUpdateUI"></event>
@@ -899,7 +899,7 @@
                                                                 <object class="tool" expanded="0">
                                                                     <property name="bitmap">Load From File; ../..\img\ed\copy.xpm</property>
                                                                     <property name="context_menu">0</property>
-                                                                    <property name="id">tfpID_EDREF_OnCopy</property>
+                                                                    <property name="id">wxID_ANY</property>
                                                                     <property name="kind">wxITEM_NORMAL</property>
                                                                     <property name="label">Copy</property>
                                                                     <property name="name">m_toolCopy</property>
@@ -912,7 +912,7 @@
                                                                     <event name="OnAuiToolBarRightClick"></event>
                                                                     <event name="OnAuiToolBarToolDropDown"></event>
                                                                     <event name="OnMenuSelection"></event>
-                                                                    <event name="OnToolClicked">OnTool</event>
+                                                                    <event name="OnToolClicked">OnToolCopy</event>
                                                                     <event name="OnToolEnter"></event>
                                                                     <event name="OnToolRClicked"></event>
                                                                     <event name="OnUpdateUI"></event>
@@ -920,7 +920,7 @@
                                                                 <object class="tool" expanded="0">
                                                                     <property name="bitmap">Load From File; ../..\img\ed\paste.xpm</property>
                                                                     <property name="context_menu">0</property>
-                                                                    <property name="id">tfpID_EDREF_OnPaste</property>
+                                                                    <property name="id">wxID_ANY</property>
                                                                     <property name="kind">wxITEM_NORMAL</property>
                                                                     <property name="label">Paste</property>
                                                                     <property name="name">m_toolPaste</property>
@@ -933,7 +933,7 @@
                                                                     <event name="OnAuiToolBarRightClick"></event>
                                                                     <event name="OnAuiToolBarToolDropDown"></event>
                                                                     <event name="OnMenuSelection"></event>
-                                                                    <event name="OnToolClicked">OnTool</event>
+                                                                    <event name="OnToolClicked">OnToolPaste</event>
                                                                     <event name="OnToolEnter"></event>
                                                                     <event name="OnToolRClicked"></event>
                                                                     <event name="OnUpdateUI"></event>
@@ -944,7 +944,7 @@
                                                                 <object class="tool" expanded="0">
                                                                     <property name="bitmap">Load From File; ../..\img\ed\undo.xpm</property>
                                                                     <property name="context_menu">0</property>
-                                                                    <property name="id">tfpID_EDREF_OnUndo</property>
+                                                                    <property name="id">wxID_ANY</property>
                                                                     <property name="kind">wxITEM_NORMAL</property>
                                                                     <property name="label">Undo</property>
                                                                     <property name="name">m_toolUndo</property>
@@ -957,7 +957,7 @@
                                                                     <event name="OnAuiToolBarRightClick"></event>
                                                                     <event name="OnAuiToolBarToolDropDown"></event>
                                                                     <event name="OnMenuSelection"></event>
-                                                                    <event name="OnToolClicked">OnTool</event>
+                                                                    <event name="OnToolClicked">OnToolUndo</event>
                                                                     <event name="OnToolEnter"></event>
                                                                     <event name="OnToolRClicked"></event>
                                                                     <event name="OnUpdateUI"></event>
@@ -965,7 +965,7 @@
                                                                 <object class="tool" expanded="0">
                                                                     <property name="bitmap">Load From File; ../..\img\ed\redo.xpm</property>
                                                                     <property name="context_menu">0</property>
-                                                                    <property name="id">tfpID_EDREF_OnRedo</property>
+                                                                    <property name="id">wxID_ANY</property>
                                                                     <property name="kind">wxITEM_NORMAL</property>
                                                                     <property name="label">Redo</property>
                                                                     <property name="name">m_toolRedo</property>
@@ -978,7 +978,7 @@
                                                                     <event name="OnAuiToolBarRightClick"></event>
                                                                     <event name="OnAuiToolBarToolDropDown"></event>
                                                                     <event name="OnMenuSelection"></event>
-                                                                    <event name="OnToolClicked">OnTool</event>
+                                                                    <event name="OnToolClicked">OnToolRedo</event>
                                                                     <event name="OnToolEnter"></event>
                                                                     <event name="OnToolRClicked"></event>
                                                                     <event name="OnUpdateUI"></event>
@@ -1081,7 +1081,7 @@
                                             </object>
                                             <object class="notebookpage" expanded="0">
                                                 <property name="bitmap"></property>
-                                                <property name="label">View</property>
+                                                <property name="label">&amp;View</property>
                                                 <property name="select">1</property>
                                                 <object class="wxPanel" expanded="0">
                                                     <property name="BottomDockable">1</property>
@@ -1255,8 +1255,8 @@
                                 </object>
                             </object>
                         </object>
-                        <object class="splitteritem" expanded="0">
-                            <object class="wxPanel" expanded="0">
+                        <object class="splitteritem" expanded="1">
+                            <object class="wxPanel" expanded="1">
                                 <property name="BottomDockable">1</property>
                                 <property name="LeftDockable">1</property>
                                 <property name="RightDockable">1</property>
@@ -1330,16 +1330,16 @@
                                 <event name="OnSetFocus"></event>
                                 <event name="OnSize"></event>
                                 <event name="OnUpdateUI"></event>
-                                <object class="wxBoxSizer" expanded="0">
+                                <object class="wxBoxSizer" expanded="1">
                                     <property name="minimum_size"></property>
                                     <property name="name">bSizer55</property>
                                     <property name="orient">wxVERTICAL</property>
                                     <property name="permission">none</property>
-                                    <object class="sizeritem" expanded="0">
+                                    <object class="sizeritem" expanded="1">
                                         <property name="border">5</property>
                                         <property name="flag">wxEXPAND|wxALL</property>
                                         <property name="proportion">1</property>
-                                        <object class="wxNotebook" expanded="0">
+                                        <object class="wxNotebook" expanded="1">
                                             <property name="BottomDockable">1</property>
                                             <property name="LeftDockable">1</property>
                                             <property name="RightDockable">1</property>
@@ -1417,11 +1417,11 @@
                                             <event name="OnSetFocus"></event>
                                             <event name="OnSize"></event>
                                             <event name="OnUpdateUI"></event>
-                                            <object class="notebookpage" expanded="0">
+                                            <object class="notebookpage" expanded="1">
                                                 <property name="bitmap"></property>
-                                                <property name="label">Media</property>
+                                                <property name="label">&amp;Media</property>
                                                 <property name="select">0</property>
-                                                <object class="wxPanel" expanded="0">
+                                                <object class="wxPanel" expanded="1">
                                                     <property name="BottomDockable">1</property>
                                                     <property name="LeftDockable">1</property>
                                                     <property name="RightDockable">1</property>
@@ -1495,7 +1495,7 @@
                                                     <event name="OnSetFocus"></event>
                                                     <event name="OnSize"></event>
                                                     <event name="OnUpdateUI"></event>
-                                                    <object class="wxBoxSizer" expanded="0">
+                                                    <object class="wxBoxSizer" expanded="1">
                                                         <property name="minimum_size"></property>
                                                         <property name="name">bSizer120</property>
                                                         <property name="orient">wxHORIZONTAL</property>
@@ -1605,11 +1605,11 @@
                                                                 <event name="OnUpdateUI"></event>
                                                             </object>
                                                         </object>
-                                                        <object class="sizeritem" expanded="0">
+                                                        <object class="sizeritem" expanded="1">
                                                             <property name="border">5</property>
                                                             <property name="flag">wxEXPAND</property>
                                                             <property name="proportion">0</property>
-                                                            <object class="wxBoxSizer" expanded="0">
+                                                            <object class="wxBoxSizer" expanded="1">
                                                                 <property name="minimum_size"></property>
                                                                 <property name="name">bSizer571</property>
                                                                 <property name="orient">wxVERTICAL</property>
@@ -1647,7 +1647,7 @@
                                                                         <property name="gripper">0</property>
                                                                         <property name="hidden"></property>
                                                                         <property name="id">wxID_ANY</property>
-                                                                        <property name="label">Add</property>
+                                                                        <property name="label">&amp;Add</property>
                                                                         <property name="max_size"></property>
                                                                         <property name="maximize_button">0</property>
                                                                         <property name="maximum_size"></property>
@@ -1735,7 +1735,7 @@
                                                                         <property name="gripper">0</property>
                                                                         <property name="hidden"></property>
                                                                         <property name="id">wxID_ANY</property>
-                                                                        <property name="label">Edit</property>
+                                                                        <property name="label">&amp;Edit</property>
                                                                         <property name="max_size"></property>
                                                                         <property name="maximize_button">0</property>
                                                                         <property name="maximum_size"></property>
@@ -1823,7 +1823,7 @@
                                                                         <property name="gripper">0</property>
                                                                         <property name="hidden"></property>
                                                                         <property name="id">wxID_ANY</property>
-                                                                        <property name="label">Delete</property>
+                                                                        <property name="label">&amp;Delete</property>
                                                                         <property name="max_size"></property>
                                                                         <property name="maximize_button">0</property>
                                                                         <property name="maximum_size"></property>
@@ -1883,11 +1883,11 @@
                                                     </object>
                                                 </object>
                                             </object>
-                                            <object class="notebookpage" expanded="0">
+                                            <object class="notebookpage" expanded="1">
                                                 <property name="bitmap"></property>
-                                                <property name="label">Persona</property>
+                                                <property name="label">&amp;Persona</property>
                                                 <property name="select">0</property>
-                                                <object class="wxPanel" expanded="0">
+                                                <object class="wxPanel" expanded="1">
                                                     <property name="BottomDockable">1</property>
                                                     <property name="LeftDockable">1</property>
                                                     <property name="RightDockable">1</property>
@@ -1961,7 +1961,7 @@
                                                     <event name="OnSetFocus"></event>
                                                     <event name="OnSize"></event>
                                                     <event name="OnUpdateUI"></event>
-                                                    <object class="wxBoxSizer" expanded="0">
+                                                    <object class="wxBoxSizer" expanded="1">
                                                         <property name="minimum_size"></property>
                                                         <property name="name">bSizer56</property>
                                                         <property name="orient">wxHORIZONTAL</property>
@@ -2071,20 +2071,20 @@
                                                                 <event name="OnUpdateUI"></event>
                                                             </object>
                                                         </object>
-                                                        <object class="sizeritem" expanded="0">
+                                                        <object class="sizeritem" expanded="1">
                                                             <property name="border">5</property>
                                                             <property name="flag">wxEXPAND</property>
                                                             <property name="proportion">0</property>
-                                                            <object class="wxBoxSizer" expanded="0">
+                                                            <object class="wxBoxSizer" expanded="1">
                                                                 <property name="minimum_size"></property>
                                                                 <property name="name">bSizer57</property>
                                                                 <property name="orient">wxVERTICAL</property>
                                                                 <property name="permission">none</property>
-                                                                <object class="sizeritem" expanded="0">
+                                                                <object class="sizeritem" expanded="1">
                                                                     <property name="border">5</property>
                                                                     <property name="flag">wxALIGN_CENTER_HORIZONTAL|wxALL</property>
                                                                     <property name="proportion">0</property>
-                                                                    <object class="wxButton" expanded="0">
+                                                                    <object class="wxButton" expanded="1">
                                                                         <property name="BottomDockable">1</property>
                                                                         <property name="LeftDockable">1</property>
                                                                         <property name="RightDockable">1</property>
@@ -2113,7 +2113,7 @@
                                                                         <property name="gripper">0</property>
                                                                         <property name="hidden"></property>
                                                                         <property name="id">wxID_ANY</property>
-                                                                        <property name="label">Add</property>
+                                                                        <property name="label">&amp;Add</property>
                                                                         <property name="max_size"></property>
                                                                         <property name="maximize_button">0</property>
                                                                         <property name="maximum_size"></property>
@@ -2166,6 +2166,56 @@
                                                                         <event name="OnSetFocus"></event>
                                                                         <event name="OnSize"></event>
                                                                         <event name="OnUpdateUI"></event>
+                                                                        <object class="wxMenu" expanded="1">
+                                                                            <property name="label">Add Persona</property>
+                                                                            <property name="name">m_menuAddPersona</property>
+                                                                            <property name="permission">protected</property>
+                                                                            <object class="wxMenuItem" expanded="1">
+                                                                                <property name="bitmap"></property>
+                                                                                <property name="checked">0</property>
+                                                                                <property name="enabled">1</property>
+                                                                                <property name="help"></property>
+                                                                                <property name="id">wxID_ANY</property>
+                                                                                <property name="kind">wxITEM_NORMAL</property>
+                                                                                <property name="label">Add &amp;Male Persona</property>
+                                                                                <property name="name">m_menuAddMale</property>
+                                                                                <property name="permission">none</property>
+                                                                                <property name="shortcut"></property>
+                                                                                <property name="unchecked_bitmap"></property>
+                                                                                <event name="OnMenuSelection">OnAddMalePersona</event>
+                                                                                <event name="OnUpdateUI"></event>
+                                                                            </object>
+                                                                            <object class="wxMenuItem" expanded="1">
+                                                                                <property name="bitmap"></property>
+                                                                                <property name="checked">0</property>
+                                                                                <property name="enabled">1</property>
+                                                                                <property name="help"></property>
+                                                                                <property name="id">wxID_ANY</property>
+                                                                                <property name="kind">wxITEM_NORMAL</property>
+                                                                                <property name="label">Add &amp;Female Persona</property>
+                                                                                <property name="name">m_menuAddFemale</property>
+                                                                                <property name="permission">none</property>
+                                                                                <property name="shortcut"></property>
+                                                                                <property name="unchecked_bitmap"></property>
+                                                                                <event name="OnMenuSelection">OnAddFemalePersona</event>
+                                                                                <event name="OnUpdateUI"></event>
+                                                                            </object>
+                                                                            <object class="wxMenuItem" expanded="1">
+                                                                                <property name="bitmap"></property>
+                                                                                <property name="checked">0</property>
+                                                                                <property name="enabled">1</property>
+                                                                                <property name="help"></property>
+                                                                                <property name="id">wxID_ANY</property>
+                                                                                <property name="kind">wxITEM_NORMAL</property>
+                                                                                <property name="label">Add &amp;Unknown Persona</property>
+                                                                                <property name="name">m_menuAddUnknownPersona</property>
+                                                                                <property name="permission">none</property>
+                                                                                <property name="shortcut"></property>
+                                                                                <property name="unchecked_bitmap"></property>
+                                                                                <event name="OnMenuSelection">OnAddUnknownPersona</event>
+                                                                                <event name="OnUpdateUI"></event>
+                                                                            </object>
+                                                                        </object>
                                                                     </object>
                                                                 </object>
                                                                 <object class="sizeritem" expanded="0">
@@ -2201,7 +2251,7 @@
                                                                         <property name="gripper">0</property>
                                                                         <property name="hidden"></property>
                                                                         <property name="id">wxID_ANY</property>
-                                                                        <property name="label">Edit</property>
+                                                                        <property name="label">&amp;Edit</property>
                                                                         <property name="max_size"></property>
                                                                         <property name="maximize_button">0</property>
                                                                         <property name="maximum_size"></property>
@@ -2289,7 +2339,7 @@
                                                                         <property name="gripper">0</property>
                                                                         <property name="hidden"></property>
                                                                         <property name="id">wxID_ANY</property>
-                                                                        <property name="label">Delete</property>
+                                                                        <property name="label">&amp;Delete</property>
                                                                         <property name="max_size"></property>
                                                                         <property name="maximize_button">0</property>
                                                                         <property name="maximum_size"></property>
@@ -2351,7 +2401,7 @@
                                             </object>
                                             <object class="notebookpage" expanded="0">
                                                 <property name="bitmap"></property>
-                                                <property name="label">Entities</property>
+                                                <property name="label">Ent&amp;ities</property>
                                                 <property name="select">1</property>
                                                 <object class="wxPanel" expanded="0">
                                                     <property name="BottomDockable">1</property>
@@ -2579,7 +2629,7 @@
                                                                         <property name="gripper">0</property>
                                                                         <property name="hidden"></property>
                                                                         <property name="id">wxID_ANY</property>
-                                                                        <property name="label">Add</property>
+                                                                        <property name="label">&amp;Add</property>
                                                                         <property name="max_size"></property>
                                                                         <property name="maximize_button">0</property>
                                                                         <property name="maximum_size"></property>
@@ -2632,6 +2682,116 @@
                                                                         <event name="OnSetFocus"></event>
                                                                         <event name="OnSize"></event>
                                                                         <event name="OnUpdateUI"></event>
+                                                                        <object class="wxMenu" expanded="1">
+                                                                            <property name="label">Add Entity</property>
+                                                                            <property name="name">m_menuAddEntity</property>
+                                                                            <property name="permission">protected</property>
+                                                                            <object class="wxMenuItem" expanded="1">
+                                                                                <property name="bitmap"></property>
+                                                                                <property name="checked">0</property>
+                                                                                <property name="enabled">1</property>
+                                                                                <property name="help"></property>
+                                                                                <property name="id">wxID_ANY</property>
+                                                                                <property name="kind">wxITEM_NORMAL</property>
+                                                                                <property name="label">&amp;Source</property>
+                                                                                <property name="name">m_menuAddSource</property>
+                                                                                <property name="permission">none</property>
+                                                                                <property name="shortcut"></property>
+                                                                                <property name="unchecked_bitmap"></property>
+                                                                                <event name="OnMenuSelection">OnNewSource</event>
+                                                                                <event name="OnUpdateUI"></event>
+                                                                            </object>
+                                                                            <object class="wxMenuItem" expanded="1">
+                                                                                <property name="bitmap"></property>
+                                                                                <property name="checked">0</property>
+                                                                                <property name="enabled">1</property>
+                                                                                <property name="help"></property>
+                                                                                <property name="id">wxID_ANY</property>
+                                                                                <property name="kind">wxITEM_NORMAL</property>
+                                                                                <property name="label">&amp;Date</property>
+                                                                                <property name="name">m_menuAddDate</property>
+                                                                                <property name="permission">none</property>
+                                                                                <property name="shortcut"></property>
+                                                                                <property name="unchecked_bitmap"></property>
+                                                                                <event name="OnMenuSelection">OnNewDate</event>
+                                                                                <event name="OnUpdateUI"></event>
+                                                                            </object>
+                                                                            <object class="wxMenuItem" expanded="1">
+                                                                                <property name="bitmap"></property>
+                                                                                <property name="checked">0</property>
+                                                                                <property name="enabled">1</property>
+                                                                                <property name="help"></property>
+                                                                                <property name="id">wxID_ANY</property>
+                                                                                <property name="kind">wxITEM_NORMAL</property>
+                                                                                <property name="label">Date A&amp;ge</property>
+                                                                                <property name="name">m_menuAddDateAge</property>
+                                                                                <property name="permission">none</property>
+                                                                                <property name="shortcut"></property>
+                                                                                <property name="unchecked_bitmap"></property>
+                                                                                <event name="OnMenuSelection">OnNewDateAge</event>
+                                                                                <event name="OnUpdateUI"></event>
+                                                                            </object>
+                                                                            <object class="wxMenuItem" expanded="1">
+                                                                                <property name="bitmap"></property>
+                                                                                <property name="checked">0</property>
+                                                                                <property name="enabled">1</property>
+                                                                                <property name="help"></property>
+                                                                                <property name="id">wxID_ANY</property>
+                                                                                <property name="kind">wxITEM_NORMAL</property>
+                                                                                <property name="label">&amp;Place</property>
+                                                                                <property name="name">m_menuAddPlace</property>
+                                                                                <property name="permission">none</property>
+                                                                                <property name="shortcut"></property>
+                                                                                <property name="unchecked_bitmap"></property>
+                                                                                <event name="OnMenuSelection">OnNewPlace</event>
+                                                                                <event name="OnUpdateUI"></event>
+                                                                            </object>
+                                                                            <object class="wxMenuItem" expanded="1">
+                                                                                <property name="bitmap"></property>
+                                                                                <property name="checked">0</property>
+                                                                                <property name="enabled">1</property>
+                                                                                <property name="help"></property>
+                                                                                <property name="id">wxID_ANY</property>
+                                                                                <property name="kind">wxITEM_NORMAL</property>
+                                                                                <property name="label">&amp;Name</property>
+                                                                                <property name="name">m_menuAddName</property>
+                                                                                <property name="permission">none</property>
+                                                                                <property name="shortcut"></property>
+                                                                                <property name="unchecked_bitmap"></property>
+                                                                                <event name="OnMenuSelection">OnNewName</event>
+                                                                                <event name="OnUpdateUI"></event>
+                                                                            </object>
+                                                                            <object class="wxMenuItem" expanded="1">
+                                                                                <property name="bitmap"></property>
+                                                                                <property name="checked">0</property>
+                                                                                <property name="enabled">1</property>
+                                                                                <property name="help"></property>
+                                                                                <property name="id">wxID_ANY</property>
+                                                                                <property name="kind">wxITEM_NORMAL</property>
+                                                                                <property name="label">&amp;Eventa</property>
+                                                                                <property name="name">m_menuAddEventa</property>
+                                                                                <property name="permission">none</property>
+                                                                                <property name="shortcut"></property>
+                                                                                <property name="unchecked_bitmap"></property>
+                                                                                <event name="OnMenuSelection">OnNewEventa</event>
+                                                                                <event name="OnUpdateUI"></event>
+                                                                            </object>
+                                                                            <object class="wxMenuItem" expanded="1">
+                                                                                <property name="bitmap"></property>
+                                                                                <property name="checked">0</property>
+                                                                                <property name="enabled">1</property>
+                                                                                <property name="help"></property>
+                                                                                <property name="id">wxID_ANY</property>
+                                                                                <property name="kind">wxITEM_NORMAL</property>
+                                                                                <property name="label">Personal E&amp;venta</property>
+                                                                                <property name="name">m_menuAddPersonalEventa</property>
+                                                                                <property name="permission">none</property>
+                                                                                <property name="shortcut"></property>
+                                                                                <property name="unchecked_bitmap"></property>
+                                                                                <event name="OnMenuSelection">OnNewPersonalEventa</event>
+                                                                                <event name="OnUpdateUI"></event>
+                                                                            </object>
+                                                                        </object>
                                                                     </object>
                                                                 </object>
                                                                 <object class="sizeritem" expanded="0">
@@ -2667,7 +2827,7 @@
                                                                         <property name="gripper">0</property>
                                                                         <property name="hidden"></property>
                                                                         <property name="id">wxID_ANY</property>
-                                                                        <property name="label">Edit</property>
+                                                                        <property name="label">&amp;Edit</property>
                                                                         <property name="max_size"></property>
                                                                         <property name="maximize_button">0</property>
                                                                         <property name="maximum_size"></property>
@@ -2755,7 +2915,7 @@
                                                                         <property name="gripper">0</property>
                                                                         <property name="hidden"></property>
                                                                         <property name="id">wxID_ANY</property>
-                                                                        <property name="label">Delete</property>
+                                                                        <property name="label">&amp;Delete</property>
                                                                         <property name="max_size"></property>
                                                                         <property name="maximize_button">0</property>
                                                                         <property name="maximum_size"></property>
@@ -2852,7 +3012,7 @@
                                                                                 <property name="gripper">0</property>
                                                                                 <property name="hidden"></property>
                                                                                 <property name="id">wxID_ANY</property>
-                                                                                <property name="label">Up</property>
+                                                                                <property name="label">&amp;Up</property>
                                                                                 <property name="max_size"></property>
                                                                                 <property name="maximize_button">0</property>
                                                                                 <property name="maximum_size"></property>
@@ -2940,7 +3100,7 @@
                                                                                 <property name="gripper">0</property>
                                                                                 <property name="hidden"></property>
                                                                                 <property name="id">wxID_ANY</property>
-                                                                                <property name="label">Down</property>
+                                                                                <property name="label">Do&amp;wn</property>
                                                                                 <property name="max_size"></property>
                                                                                 <property name="maximize_button">0</property>
                                                                                 <property name="maximum_size"></property>
@@ -3225,7 +3385,7 @@
                                 <property name="gripper">0</property>
                                 <property name="hidden"></property>
                                 <property name="id">wxID_OK</property>
-                                <property name="label">Save</property>
+                                <property name="label">&amp;Save</property>
                                 <property name="max_size"></property>
                                 <property name="maximize_button">0</property>
                                 <property name="maximum_size"></property>
@@ -3313,7 +3473,7 @@
                                 <property name="gripper">0</property>
                                 <property name="hidden"></property>
                                 <property name="id">wxID_CANCEL</property>
-                                <property name="label">Cancel</property>
+                                <property name="label">&amp;Cancel</property>
                                 <property name="max_size"></property>
                                 <property name="maximize_button">0</property>
                                 <property name="maximum_size"></property>

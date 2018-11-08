@@ -144,15 +144,6 @@ rgDlgEditReference::rgDlgEditReference( wxWindow* parent, idt refID )
 
     m_listMedia->InsertColumn( MED_COL_Number, _( "Number" ) );
     m_listMedia->InsertColumn( MED_COL_Title, _( "Title" ) );
-
-    Bind( wxEVT_MENU, &rgDlgEditReference::OnNewSource, this, ID_EDREF_NEW_SOURCE );
-    Bind( wxEVT_MENU, &rgDlgEditReference::OnNewName, this, ID_EDREF_NEW_NAME );
-    Bind( wxEVT_MENU, &rgDlgEditReference::OnNewDate, this, ID_EDREF_NEW_DATE );
-    Bind( wxEVT_MENU, &rgDlgEditReference::OnNewDateAge, this, ID_EDREF_NEW_DATE_AGE );
-    Bind( wxEVT_MENU, &rgDlgEditReference::OnNewPlace, this, ID_EDREF_NEW_PLACE );
-    Bind( wxEVT_MENU, &rgDlgEditReference::OnNewEvent, this, ID_EDREF_NEW_EVENT );
-    Bind( wxEVT_MENU, &rgDlgEditReference::OnNewPersonalEvent, this, ID_EDREF_NEW_PER_EVENT );
-    Bind( wxEVT_MENU, &rgDlgEditReference::OnPersonaAddMenuOp, this, ID_ADDPER_MALE, ID_ADDPER_UNKNOWN );
 }
 
 bool rgDlgEditReference::TransferDataToWindow()
@@ -278,28 +269,6 @@ wxString rgDlgEditReference::GetSelectedText() const
     return wxEmptyString;
 }
 
-void rgDlgEditReference::OnTool( wxCommandEvent& event )
-{
-    switch( event.GetId() )
-    {
-    case tfpID_EDREF_OnCut:
-        m_textCtrlStatement->Cut();
-        break;
-    case tfpID_EDREF_OnCopy:
-        m_textCtrlStatement->Copy();
-        break;
-    case tfpID_EDREF_OnPaste:
-        m_textCtrlStatement->Paste();
-        break;
-    case tfpID_EDREF_OnUndo:
-        m_textCtrlStatement->Undo();
-        break;
-    case tfpID_EDREF_OnRedo:
-        m_textCtrlStatement->Redo();
-        break;
-    }
-}
-
 void rgDlgEditReference::OnStatementViewChanged( wxBookCtrlEvent& event )
 {
     if( m_notebookTop->GetSelection() == 1 ) {
@@ -307,6 +276,31 @@ void rgDlgEditReference::OnStatementViewChanged( wxBookCtrlEvent& event )
         UpdateHtml();
     }
     m_panelTop->PostSizeEvent();
+}
+
+void rgDlgEditReference::OnToolCut( wxCommandEvent& event )
+{
+    m_textCtrlStatement->Cut();
+}
+
+void rgDlgEditReference::OnToolCopy( wxCommandEvent& event )
+{
+    m_textCtrlStatement->Copy();
+}
+
+void rgDlgEditReference::OnToolPaste( wxCommandEvent& event )
+{
+    m_textCtrlStatement->Paste();
+}
+
+void rgDlgEditReference::OnToolUndo( wxCommandEvent& event )
+{
+    m_textCtrlStatement->Undo();
+}
+
+void rgDlgEditReference::OnToolRedo( wxCommandEvent& event )
+{
+    m_textCtrlStatement->Redo();
 }
 
 void rgDlgEditReference::OnEntityViewChanged( wxBookCtrlEvent& event )
@@ -353,33 +347,33 @@ void rgDlgEditReference::OnMediaDeleteButton( wxCommandEvent & event )
 
 void rgDlgEditReference::OnPersonaAddButton( wxCommandEvent& event )
 {
-    wxMenu* menu = new wxMenu;
-    menu->Append( ID_ADDPER_MALE, _("Add &Male Persona") );
-    menu->Append( ID_ADDPER_FEMALE, _("Add &Female Persona") );
-    menu->Append( ID_ADDPER_UNKNOWN, _("Add &Unknown Persona") );
-    PopupMenu( menu );
-    delete menu;
+    wxSize s = m_buttonPersonaAdd->GetSize();
+    m_buttonPersonaAdd->PopupMenu( m_menuAddPersona, 0, s.y );
 }
 
-void rgDlgEditReference::OnPersonaAddMenuOp( wxCommandEvent& event )
+void rgDlgEditReference::OnAddMalePersona( wxCommandEvent & event )
+{
+    AddPersona( SEX_Male );
+}
+
+void rgDlgEditReference::OnAddFemalePersona( wxCommandEvent & event )
+{
+    AddPersona( SEX_Female );
+}
+
+void rgDlgEditReference::OnAddUnknownPersona( wxCommandEvent & event )
+{
+    AddPersona( SEX_Unknown );
+}
+
+void rgDlgEditReference::AddPersona( Sex sex )
 {
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
 
     recPersona per(0);
     per.FSetRefID( m_reference.FGetID() );
-    switch( event.GetId() )
-    {
-    case ID_ADDPER_MALE:
-        per.FSetSex( SEX_Male );
-        break;
-    case ID_ADDPER_FEMALE:
-        per.FSetSex( SEX_Female );
-        break;
-    case ID_ADDPER_UNKNOWN:
-        per.FSetSex( SEX_Unknown );
-        break;
-    }
+    per.FSetSex( sex );
     per.Save();
     idt perID = per.FGetID();
 
@@ -429,45 +423,13 @@ void rgDlgEditReference::OnPersonaDeleteButton( wxCommandEvent& event )
 
 void rgDlgEditReference::OnAddEntityButton( wxCommandEvent& event )
 {
-    wxMenu* menu = new wxMenu;
-    menu->Append( ID_EDREF_NEW_SOURCE, _("&Source") );
-    menu->Append( ID_EDREF_NEW_DATE, _("&Date") );
-    menu->Append( ID_EDREF_NEW_DATE_AGE, _("Date a&ge") );
-    menu->Append( ID_EDREF_NEW_PLACE, _("&Place") );
-    menu->Append( ID_EDREF_NEW_NAME, _("&Name") );
-    menu->Append( ID_EDREF_NEW_EVENT, _("&Event") );
-    menu->Append( ID_EDREF_NEW_PER_EVENT, _("Personal E&vent") );
-    PopupMenu( menu );
-    delete menu;
+    wxSize s = m_buttonAdd->GetSize();
+    m_buttonAdd->PopupMenu( m_menuAddEntity, 0, s.y );
 }
 
 void rgDlgEditReference::OnNewSource( wxCommandEvent& event )
 {
     wxMessageBox( "Not yet implimented", "OnNewSource" );
-}
-
-void rgDlgEditReference::OnNewName( wxCommandEvent& event )
-{
-    const wxString savepoint = recDb::GetSavepointStr();
-    recDb::Savepoint( savepoint );
-
-    idt perID = rgSelectPersona(
-        this, m_reference.GetID(), rgSELSTYLE_Create, rgSELPER_CreateUnnamed
-    );
-    if( perID == 0 ) {
-        recDb::Rollback( savepoint );
-        return;
-    }
-
-    wxString nameStr = GetSelectedText();
-    idt nameID = rgCreatePersonaName( this, perID, rgCRNAME_EditExtend, nameStr );
-    if( nameID ) {
-        recDb::ReleaseSavepoint( savepoint );
-        idt reID = CreateRefEntity( recReferenceEntity::TYPE_Name, nameID );
-        UpdateEntities( reID );
-    } else {
-        recDb::Rollback( savepoint );
-    }
 }
 
 void rgDlgEditReference::OnNewDate( wxCommandEvent& event )
@@ -519,7 +481,31 @@ void rgDlgEditReference::OnNewPlace( wxCommandEvent& event )
     }
 }
 
-void rgDlgEditReference::OnNewEvent( wxCommandEvent& cmnd_event )
+void rgDlgEditReference::OnNewName( wxCommandEvent& event )
+{
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+
+    idt perID = rgSelectPersona(
+        this, m_reference.GetID(), rgSELSTYLE_Create, rgSELPER_CreateUnnamed
+        );
+    if ( perID == 0 ) {
+        recDb::Rollback( savepoint );
+        return;
+    }
+
+    wxString nameStr = GetSelectedText();
+    idt nameID = rgCreatePersonaName( this, perID, rgCRNAME_EditExtend, nameStr );
+    if ( nameID ) {
+        recDb::ReleaseSavepoint( savepoint );
+        idt reID = CreateRefEntity( recReferenceEntity::TYPE_Name, nameID );
+        UpdateEntities( reID );
+    } else {
+        recDb::Rollback( savepoint );
+    }
+}
+
+void rgDlgEditReference::OnNewEventa( wxCommandEvent& cmnd_event )
 {
     idt eveID = rgCreateEventa( this, m_reference.FGetID() );
     if( eveID ) {
@@ -527,7 +513,7 @@ void rgDlgEditReference::OnNewEvent( wxCommandEvent& cmnd_event )
     }
 }
 
-void rgDlgEditReference::OnNewPersonalEvent( wxCommandEvent& event )
+void rgDlgEditReference::OnNewPersonalEventa( wxCommandEvent& event )
 {
     idt eveID = rgCreatePersonalEventa(
         this, m_reference.FGetID(), GetSelectedText()

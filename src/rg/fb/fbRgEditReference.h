@@ -28,6 +28,7 @@
 #include <wx/notebook.h>
 #include <wx/listctrl.h>
 #include <wx/button.h>
+#include <wx/menu.h>
 #include <wx/splitter.h>
 #include <wx/statline.h>
 #include <wx/dialog.h>
@@ -42,15 +43,6 @@ class fbRgEditReference : public wxDialog
 	private:
 	
 	protected:
-		enum
-		{
-			tfpID_EDREF_OnCut = 1000,
-			tfpID_EDREF_OnCopy,
-			tfpID_EDREF_OnPaste,
-			tfpID_EDREF_OnUndo,
-			tfpID_EDREF_OnRedo
-		};
-		
 		wxTextCtrl* m_textCtrlTitle;
 		wxTextCtrl* m_textCtrlUserRef;
 		wxSplitterWindow* m_splitter1;
@@ -76,11 +68,13 @@ class fbRgEditReference : public wxDialog
 		wxPanel* m_panelPersona;
 		wxListCtrl* m_listPersona;
 		wxButton* m_buttonPersonaAdd;
+		wxMenu* m_menuAddPersona;
 		wxButton* m_buttonPersonaEdit;
 		wxButton* m_buttonPersonaDel;
 		wxPanel* m_panelEntities;
 		wxListCtrl* m_listEntities;
 		wxButton* m_buttonAdd;
+		wxMenu* m_menuAddEntity;
 		wxButton* m_buttonEdit;
 		wxButton* m_buttonDel;
 		wxButton* m_buttonUp;
@@ -92,15 +86,29 @@ class fbRgEditReference : public wxDialog
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnStatementViewChanged( wxNotebookEvent& event ) { event.Skip(); }
-		virtual void OnTool( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnToolCut( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnToolCopy( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnToolPaste( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnToolUndo( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnToolRedo( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnEntityViewChanged( wxNotebookEvent& event ) { event.Skip(); }
 		virtual void OnMediaAddButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnMediaEditButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnMediaDeleteButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPersonaAddButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAddMalePersona( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAddFemalePersona( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAddUnknownPersona( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPersonaEditButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPersonaDeleteButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAddEntityButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnNewSource( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnNewDate( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnNewDateAge( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnNewPlace( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnNewName( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnNewEventa( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnNewPersonalEventa( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnEditEntityButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDeleteEntityButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnUpEntityButton( wxCommandEvent& event ) { event.Skip(); }
@@ -116,6 +124,16 @@ class fbRgEditReference : public wxDialog
 		{
 			m_splitter1->SetSashPosition( 265 );
 			m_splitter1->Disconnect( wxEVT_IDLE, wxIdleEventHandler( fbRgEditReference::m_splitter1OnIdle ), NULL, this );
+		}
+		
+		void m_buttonPersonaAddOnContextMenu( wxMouseEvent &event )
+		{
+			m_buttonPersonaAdd->PopupMenu( m_menuAddPersona, event.GetPosition() );
+		}
+		
+		void m_buttonAddOnContextMenu( wxMouseEvent &event )
+		{
+			m_buttonAdd->PopupMenu( m_menuAddEntity, event.GetPosition() );
 		}
 	
 };

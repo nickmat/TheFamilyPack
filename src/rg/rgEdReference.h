@@ -52,18 +52,6 @@ private:
     enum MediaColumn {
         MED_COL_Number, MED_COL_Title, MED_COL_MAX
     };
-    enum {
-        ID_EDREF_NEW_SOURCE = 1100,
-        ID_EDREF_NEW_NAME,
-        ID_EDREF_NEW_DATE,
-        ID_EDREF_NEW_DATE_AGE,
-        ID_EDREF_NEW_PLACE,
-        ID_EDREF_NEW_EVENT,
-        ID_EDREF_NEW_PER_EVENT,
-        ID_ADDPER_MALE,
-        ID_ADDPER_FEMALE,
-        ID_ADDPER_UNKNOWN
-    };
 
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
@@ -74,33 +62,39 @@ private:
 
     wxString GetSelectedText() const;
 
-    void OnTool( wxCommandEvent& event );
+	void OnStatementViewChanged( wxBookCtrlEvent& event ) override;
+    void OnToolCut( wxCommandEvent& event ) override;
+    void OnToolCopy( wxCommandEvent& event ) override;
+    void OnToolPaste( wxCommandEvent& event ) override;
+    void OnToolUndo( wxCommandEvent& event ) override;
+    void OnToolRedo( wxCommandEvent& event ) override;
 
-	void OnStatementViewChanged( wxBookCtrlEvent& event );
-	void OnEntityViewChanged( wxBookCtrlEvent& event );
-
+    void OnEntityViewChanged( wxBookCtrlEvent& event ) override;
     // Media tab buttons
     void OnMediaAddButton( wxCommandEvent& event ) override;
     void OnMediaEditButton( wxCommandEvent& event ) override;
     void OnMediaDeleteButton( wxCommandEvent& event ) override;
     // Persona tab buttons
-    void OnPersonaAddButton( wxCommandEvent& event );
-    void OnPersonaAddMenuOp( wxCommandEvent& event );
-    void OnPersonaEditButton( wxCommandEvent& event );
-    void OnPersonaDeleteButton( wxCommandEvent& event );
+    void OnPersonaAddButton( wxCommandEvent& event ) override;
+    void OnAddMalePersona( wxCommandEvent& event ) override;
+    void OnAddFemalePersona( wxCommandEvent& event ) override;
+    void OnAddUnknownPersona( wxCommandEvent& event ) override;
+    void AddPersona( Sex sex );
+    void OnPersonaEditButton( wxCommandEvent& event ) override;
+    void OnPersonaDeleteButton( wxCommandEvent& event ) override;
     // Entity tab buttons
-    void OnAddEntityButton( wxCommandEvent& event );
-    void OnNewSource( wxCommandEvent& event );
-    void OnNewName( wxCommandEvent& event );
-    void OnNewDate( wxCommandEvent& event );
-    void OnNewDateAge( wxCommandEvent& event );
-    void OnNewPlace( wxCommandEvent& event );
-    void OnNewEvent( wxCommandEvent& event );
-    void OnNewPersonalEvent( wxCommandEvent& event );
-    void OnEditEntityButton( wxCommandEvent& event );
-    void OnDeleteEntityButton( wxCommandEvent& event );
-    void OnUpEntityButton( wxCommandEvent& event );
-    void OnDownEntityButton( wxCommandEvent& event );
+    void OnAddEntityButton( wxCommandEvent& event ) override;
+    void OnNewSource( wxCommandEvent& event ) override;
+    void OnNewDate( wxCommandEvent& event ) override;
+    void OnNewDateAge( wxCommandEvent& event ) override;
+    void OnNewPlace( wxCommandEvent& event ) override;
+    void OnNewName( wxCommandEvent& event ) override;
+    void OnNewEventa( wxCommandEvent& event ) override;
+    void OnNewPersonalEventa( wxCommandEvent& event ) override;
+    void OnEditEntityButton( wxCommandEvent& event ) override;
+    void OnDeleteEntityButton( wxCommandEvent& event ) override;
+    void OnUpEntityButton( wxCommandEvent& event ) override;
+    void OnDownEntityButton( wxCommandEvent& event ) override;
 
     idt CreateRefEntity( recReferenceEntity::Type type, idt entID );
     void InsertEntityListItem( size_t row );
