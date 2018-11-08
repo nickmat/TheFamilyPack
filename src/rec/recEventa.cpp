@@ -585,6 +585,31 @@ recIdVec recEventa::FindLinkedEventsViaInd() const
     );
 }
 
+recCheckIdVec recEventa::FindCheckedLinkedEvents() const
+{
+    recCheckIdVec list;
+    recIdVec e1 = FindLinkedEvents();
+    recIdVec e2 = FindLinkedEventsViaInd();
+
+    // This assumes e1 and e2 are both in ascending order
+    for ( size_t i = 0, j = 0; i < e1.size() || j < e2.size(); ) {
+        recCheckID chk;
+        if ( i == e1.size() ) {
+            chk.SetIDs( 0, e2[j++] );
+        } else if ( j == e2.size() ) {
+            chk.SetIDs( e1[i++], 0 );
+        } else if ( e1[i] == e2[j] ) {
+            chk.SetIDs( e1[i++], e2[j++] );
+        } else if ( e1[i] > e2[j] ) {
+            chk.SetIDs( e1[i++], 0 );
+        } else {
+            chk.SetIDs( 0, e2[j++] );
+        }
+        list.push_back( chk );
+    }
+    return list;
+}
+
 void recEventa::CreateFamilyLink() const
 {
     recEventaPersonaVec eapas = GetEventaPersonas();

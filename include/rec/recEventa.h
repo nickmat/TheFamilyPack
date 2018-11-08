@@ -132,6 +132,7 @@ public:
     // Eventa/Persona(prime Role) -> Persona/Individual link -> Individual/Event(matching role)
     // Depending on the type and group of the event, loosely match Date and Place.
     recIdVec FindLinkedEventsViaInd() const;
+    recCheckIdVec FindCheckedLinkedEvents() const;
 
     void CreateFamilyLink() const;
     static void CreateFamilyLink( idt eaID ) { recEventa ea(eaID); ea.CreateFamilyLink(); }
