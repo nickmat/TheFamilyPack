@@ -187,11 +187,12 @@ div.tfp table.data {
     border-collapse: collapse;
     margin: 1em auto;
     border: 2px solid #777;
+    width: 95%;
 }
 
 div.tfp table.data th {
     text-align: center;
-    text-weight: bold;
+    font-weight: bold;
     background-color: #e7e7e7;
     padding: 0 0.5em;
     border: 2px solid #777;
