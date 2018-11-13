@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     11th November 2015
- * Copyright:   Copyright (c) 2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2015 ~ 2018, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -143,7 +143,7 @@ void recGedExport::ExportFamily( const recFamily& fam, int level )
 
 void recGedExport::ExportIndEvents( idt indID, recET_GRP grp, int level )
 {
-    recIdVec events = recIndividual::FindEvents( indID, grp );
+    recIdVec events = recIndividual::FindGroupEvents( indID, grp );
     ExportEvents( events, level, indID );
 }
 

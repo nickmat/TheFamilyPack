@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010 ~ 2017, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2018, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -386,7 +386,7 @@ idt recIndividual::FindGroupEvent( idt indID, recET_GRP grp )
     return ExecuteID( sql );
 }
 
-recIdVec recIndividual::FindEvents( idt indID, recET_GRP grp )
+recIdVec recIndividual::FindGroupEvents( idt indID, recET_GRP grp )
 {
     recIdVec eIDs;
     if( indID == 0 || grp == recET_GRP_Unstated ) {
