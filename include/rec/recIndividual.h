@@ -133,6 +133,8 @@ public:
     static idt FindGroupEvent( idt indID, recET_GRP grp );
     idt FindGroupEvent( recET_GRP grp ) const { return FindGroupEvent( f_id, grp ); }
 
+    static recIdVec FindEvents( idt indID, idt roleID );
+    recIdVec FindEvents( idt roleID ) const { return FindEvents( f_id, roleID ); }
     static recIdVec FindGroupEvents( idt indID, recET_GRP grp );
     recIdVec FindGroupEvents( recET_GRP grp ) const { return FindGroupEvents( f_id, grp ); }
 

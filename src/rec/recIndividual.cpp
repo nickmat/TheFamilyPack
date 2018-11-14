@@ -361,7 +361,7 @@ idt recIndividual::FindEvent( idt indID, idt roleID )
 
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "SELECT event_id FROM IndividualEvent WHERE ind_id=" ID " AND role_id =" ID ";",
+        "SELECT event_id FROM IndividualEvent WHERE ind_id=" ID " AND role_id=" ID ";",
         indID, roleID
     );
     return ExecuteID( sql );
@@ -384,6 +384,18 @@ idt recIndividual::FindGroupEvent( idt indID, recET_GRP grp )
         grp, indID
     );
     return ExecuteID( sql );
+}
+
+recIdVec recIndividual::FindEvents( idt indID, idt roleID )
+{
+    if ( indID == 0 || roleID == 0 ) return recIdVec();
+
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT event_id FROM IndividualEvent WHERE ind_id=" ID " AND role_id=" ID ";",
+        indID, roleID
+    );
+    return ExecuteIdVec( sql );
 }
 
 recIdVec recIndividual::FindGroupEvents( idt indID, recET_GRP grp )

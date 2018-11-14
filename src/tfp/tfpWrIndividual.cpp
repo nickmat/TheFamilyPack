@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     7 October 2010
- * Copyright:   Copyright (c) 2010-2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2018, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -39,6 +39,7 @@
 #include <rec/recEvent.h>
 #include <rec/recEventa.h>
 #include <rec/recIndividual.h>
+#include <rec/recMedia.h>
 #include <rec/recName.h>
 #include <rec/recPersona.h>
 #include <rec/recReference.h>
@@ -55,14 +56,8 @@ wxString tfpWriteIndividualPage( idt indID )
     bool single = ( families.size() > 1 || families[0].GetSpouseID( indID ) ||
         families[0].GetChildCount() ) ? false : true;
 
-    htm <<
-        "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
-        "\"http://www.w3.org/TR/html4/loose.dtd\">\n"
-        "<html>\n<head>\n"
-        "<title>Individual " << ind.GetIdStr() << "</title>\n"
-        "<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>\n"
-        "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>\n"
-        "</head>\n<body>\n<div class='tfp'>\n"
+    htm << 
+        tfpWrHeadTfp( ind.GetIdStr(), "tab" ) <<
 
         // Individual record
         "<table class='data'>\n<tr>\n"
@@ -320,7 +315,48 @@ wxString tfpWriteIndividualPage( idt indID )
             "</td>\n"
         ;
     }
-    htm << "</tr>\n</table>\n</div>\n</body>\n</html>\n";
+    htm << "</tr>\n</table>\n";
+
+    recIdVec mes = ind.FindEvents( recEventTypeRole::ROLE_Media_Subject );
+    bool started = false;
+    if ( !mes.empty() ) {
+        htm << "<table class='media'>\n";
+        for ( idt meID : mes ) {
+            recIdVec refs = recEvent::GetReferenceIDs( meID );
+            recIndividualEvent ie( 0 );
+            ie.Find( indID, meID, recEventTypeRole::ROLE_Media_Subject );
+            for ( idt refID : refs ) {
+                recReference ref( refID );
+                recIdVec medIDs = ref.GetMediaList( refID );
+                if ( !medIDs.empty() ) {
+                    recMedia med( medIDs[0] );
+                    wxString fn = tfpGetMediaDataFile( med.FGetDataID(), med.FGetAssID() );
+                    wxString title = ie.FGetNote();
+                    if ( title.empty() ) {
+                        title = med.FGetTitle();
+                    }
+                    if ( started ) {
+                        htm << "<tr>\n<td colspan='3' class='gap'>&nbsp;</td>\n</tr>\n";
+                    } else {
+                        started = true;
+                    }
+                    htm << "<tr>\n<td rowspan='2'><a href='tfpv:M"
+                        << med.FGetID()
+                        << "'><img src='" << fn << "' alt='' height='200' /></a></td>"
+                        "<td><a href='tfp:M" << med.FGetID()
+                        << "'><b>" << med.GetIdStr()
+                        << "</b></a></td>\n<td class='title'>" << title
+                        << "</td>\n</tr>\n"
+                        "<tr>\n<td colspan='2'>" << ref.FGetStatement()
+                        << "</td>\n</tr>\n"
+                    ;
+                }
+            }
+        }
+        htm << "</table>\n";
+    }
+
+    htm << tfpWrTailTfp();
 
     return htm;
 }

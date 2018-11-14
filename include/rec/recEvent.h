@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010 ~ 2017, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2018, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -115,6 +115,9 @@ public:
 
     static recEventaVec FindEquivRefEvents( idt eveID );
     recEventaVec FindEquivRefEvents() const { return FindEquivRefEvents( f_id ); }
+
+    static recIdVec GetReferenceIDs( idt eveID );
+    recIdVec GetReferenceIDs() const { return GetReferenceIDs( f_id ); }
 
     static recEventaVec GetEventasIncludeLower( idt eveID );
     recEventaVec GetEventasIncludeLower() const { return GetEventasIncludeLower( f_id ); }
