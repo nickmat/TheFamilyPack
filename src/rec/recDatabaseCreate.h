@@ -85,6 +85,7 @@ static const char* createdb =  /* recCreate.sql */
  "CREATE TABLE Eventa (\n"
  "  id INTEGER PRIMARY KEY,\n"
  "  title TEXT NOT NULL,\n"
+ "  ref_id INTEGER NOT NULL REFERENCES Reference(id),\n"
  "  type_id INTEGER NOT NULL REFERENCES EventType(id),\n"
  "  date1_id INTEGER NOT NULL,\n"
  "  date2_id INTEGER NOT NULL,\n"
@@ -466,7 +467,7 @@ static const char* createdb =  /* recCreate.sql */
  "INSERT INTO System (id, val) VALUES(1, '1');\n"
  "INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 0, 1, 'F1');\n"
  "INSERT INTO UserSetting (id, user_id, property, val) VALUES(2, 1, 1, 'F1');\n"
- "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 17);\n"
+ "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 18);\n"
  "COMMIT;\n";
 
 /* End of recDatabaseCreate.f2c */

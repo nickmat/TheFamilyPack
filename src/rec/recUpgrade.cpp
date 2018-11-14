@@ -41,8 +41,8 @@
 const int recVerMajor    = 0;
 const int recVerMinor    = 0;
 const int recVerRev      = 10;
-const int recVerTest     = 17;                              // <<======<<<<
-const wxStringCharType* recVerStr = wxS("TFPD-0.0.10.17");  // <<======<<<<
+const int recVerTest     = 18;                              // <<======<<<<
+const wxStringCharType* recVerStr = wxS("TFPD-0.0.10.18");  // <<======<<<<
 
 //============================================================================
 //                 Code to upgrade old versions
@@ -697,7 +697,7 @@ void UpgradeTest0_0_10_15to0_0_10_16()
 
 void UpgradeTest0_0_10_16to0_0_10_17()
 {
-    // Version 0.0.10.16 to 0.0.10.16
+    // Version 0.0.10.16 to 0.0.10.17
     // Add EventType and EventTypeRole records for Media Event.
 
     char* query =
@@ -709,6 +709,45 @@ void UpgradeTest0_0_10_16to0_0_10_17()
         "INSERT INTO EventTypeRole (id, type_id, prime, official, name) VALUES(-90, -23, 0, 0, 'Commentator');\n"
 
         "UPDATE Version SET test=17 WHERE id=1;\n"
+        "COMMIT;\n"
+        ;
+    recDb::GetDb()->ExecuteUpdate( query );
+}
+
+void UpgradeTest0_0_10_17to0_0_10_18()
+{
+    // Version 0.0.10.17 to 0.0.10.18
+    // Add ref_id field to Eventa records.
+    // Remove Eventa records from ReferenceEntity table.
+
+    char* query =
+        "BEGIN;\n"
+
+        "ALTER TABLE Eventa RENAME TO OldEventa;\n"
+        "CREATE TABLE Eventa (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  title TEXT NOT NULL,\n"
+        "  ref_id INTEGER NOT NULL REFERENCES Reference(id),\n"
+        "  type_id INTEGER NOT NULL REFERENCES EventType(id),\n"
+        "  date1_id INTEGER NOT NULL,\n"
+        "  date2_id INTEGER NOT NULL,\n"
+        "  place_id INTEGER NOT NULL,\n"
+        "  note TEXT NOT NULL,\n"
+        "  date_pt INTEGER NOT NULL\n"
+        ");\n"
+
+        "INSERT INTO Eventa\n"
+        " (id, title, ref_id, type_id, date1_id, date2_id,\n"
+        "  place_id, note, date_pt)\n"
+        " SELECT E.id, E.title, RE.ref_id, E.type_id, E.date1_id,\n"
+        "  E.date2_id, E.place_id, E.note, E.date_pt\n"
+        " FROM OldEventa E, ReferenceEntity RE\n"
+        " WHERE E.id=RE.entity_id AND RE.entity_type=2;\n"
+        "DROP TABLE OldEventa;\n"
+
+        "DELETE FROM ReferenceEntity WHERE entity_type=2;\n"
+
+        "UPDATE Version SET test=18 WHERE id=1;\n"
         "COMMIT;\n"
         ;
     recDb::GetDb()->ExecuteUpdate( query );
@@ -735,6 +774,7 @@ void UpgradeRev0_0_10toCurrent( int test )
     case 14: UpgradeTest0_0_10_14to0_0_10_15();
     case 15: UpgradeTest0_0_10_15to0_0_10_16();
     case 16: UpgradeTest0_0_10_16to0_0_10_17();
+    case 17: UpgradeTest0_0_10_17to0_0_10_18();
     }
 }
 

@@ -357,6 +357,11 @@
      <td>The name of the Event, such as "Marriage of John Smith and Mary Jones".</td>
     </tr>
     <tr>
+     <td>ref_id</td>
+     <td>Integer Not null FK</td>
+     <td>The Reference Document that was the source of the Eventa.</td>
+    </tr>
+    <tr>
      <td>type_id</td>
      <td>Integer Not null FK</td>
      <td>Unique identifier that indicates to which Event Type this eventa belongs.</td>
@@ -1158,7 +1163,7 @@
     <tr>
      <td>entity_type</td>
      <td>Integer</td>
-     <td>A value indicating the Entity type, 1=Source, 2=Event, 3=Place, 4=Date, 5=Relationship, 6=Attribute</td>
+     <td>A value indicating the Entity type, 1=Source, 3=Place, 4=Date, 7=Name</td>
     </tr>
     <tr>
      <td>entity_id</td>
