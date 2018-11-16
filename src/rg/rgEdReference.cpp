@@ -134,16 +134,21 @@ extern bool rgSelectPlaceFromReference(
 rgDlgEditReference::rgDlgEditReference( wxWindow* parent, idt refID )
     : m_reference(refID), fbRgEditReference( parent )
 {
-    m_listEntities->InsertColumn( ENT_COL_Number, _("ID") );
-    m_listEntities->InsertColumn( ENT_COL_Type, _("Type") );
-    m_listEntities->InsertColumn( ENT_COL_Value, _("Value") );
+    m_listMedia->InsertColumn( MED_COL_Number, _( "Number" ) );
+    m_listMedia->InsertColumn( MED_COL_Title, _( "Title" ) );
 
     m_listPersona->InsertColumn( PER_COL_Number, _( "Number" ) );
     m_listPersona->InsertColumn( PER_COL_Name, _( "Name" ) );
     m_listPersona->InsertColumn( PER_COL_Individuals, _( "Individuals" ) );
 
-    m_listMedia->InsertColumn( MED_COL_Number, _( "Number" ) );
-    m_listMedia->InsertColumn( MED_COL_Title, _( "Title" ) );
+    m_listEventa->InsertColumn( EA_COL_Number, _( "Number" ) );
+    m_listEventa->InsertColumn( EA_COL_Title, _( "Title" ) );
+    m_listEventa->InsertColumn( EA_COL_Event, _( "Events" ) );
+
+    m_listEntities->InsertColumn( ENT_COL_Number, _("ID") );
+    m_listEntities->InsertColumn( ENT_COL_Type, _("Type") );
+    m_listEntities->InsertColumn( ENT_COL_Value, _("Value") );
+
 }
 
 bool rgDlgEditReference::TransferDataToWindow()
@@ -155,7 +160,6 @@ bool rgDlgEditReference::TransferDataToWindow()
     m_textCtrlStatement->SetValue(  m_reference.FGetStatement() );
 
     UpdateHtml();
-    UpdatePersonas();
     UpdateEntities();
     return true;
 }
@@ -233,6 +237,26 @@ void rgDlgEditReference::UpdatePersonas( idt perID )
     }
 }
 
+void rgDlgEditReference::UpdateEventas( idt eaID )
+{
+    m_eventaIDs = m_reference.GetEventaList();
+    m_listEventa->DeleteAllItems();
+    int row = -1;
+    for ( size_t i = 0; i < m_eventaIDs.size(); i++ ) {
+        m_listEventa->InsertItem( i, recEventa::GetIdStr( m_eventaIDs[i] ) );
+        m_listEventa->SetItem( i, EA_COL_Title, recEventa::GetTitle( m_eventaIDs[i] ) );
+        m_listEventa->SetItem( i, EA_COL_Event, recEventa::GetLinkedEventIDsStr( m_eventaIDs[i] ) );
+        if ( eaID == m_eventaIDs[i] ) {
+            m_listEventa->SetItemState( i, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+            row = i;
+        }
+    }
+    m_listEventa->SetColumnWidth( EA_COL_Title, -1 );
+    if ( row >= 0 ) {
+        m_listEventa->EnsureVisible( row );
+    }
+}
+
 void rgDlgEditReference::UpdateEntities( idt reID )
 {
     m_entities = m_reference.ReadReferenceEntitys();
@@ -261,9 +285,9 @@ wxString rgDlgEditReference::GetSelectedText() const
 {
     switch( m_notebookTop->GetSelection() )
     {
-    case 0: // Source
+    case TPAGE_Source:
         return m_textCtrlStatement->GetStringSelection();
-    case 1: // View
+    case TPAGE_View:
         return m_webview->GetSelectedText();
     }
     return wxEmptyString;
@@ -307,13 +331,16 @@ void rgDlgEditReference::OnEntityViewChanged( wxBookCtrlEvent& event )
 {
     switch( m_notebookBottom->GetSelection() )
     {
-    case 0:
+    case BPAGE_Media:
         UpdateMedias();
         break;
-    case 1:
+    case BPAGE_Persona:
         UpdatePersonas();
         break;
-    case 2:
+    case BPAGE_Eventa:
+        UpdateEventas();
+        break;
+    case BPAGE_Entity:
         UpdateEntities();
         break;
     default:
@@ -421,6 +448,63 @@ void rgDlgEditReference::OnPersonaDeleteButton( wxCommandEvent& event )
     UpdatePersonas();
 }
 
+void rgDlgEditReference::OnEventaAddButton( wxCommandEvent & event )
+{
+    wxSize s = m_buttonEventaAdd->GetSize();
+    m_buttonPersonaAdd->PopupMenu( m_menuAddEventa, 0, s.y );
+}
+
+void rgDlgEditReference::OnNewEventa( wxCommandEvent& cmnd_event )
+{
+    idt eaID = rgCreateEventa( this, m_reference.FGetID() );
+    if ( eaID ) {
+        UpdateEventas( eaID );
+    }
+}
+
+void rgDlgEditReference::OnNewPersonalEventa( wxCommandEvent& event )
+{
+    idt eaID = rgCreatePersonalEventa(
+        this, m_reference.FGetID(), GetSelectedText()
+        );
+    if ( eaID ) {
+        UpdateEventas( eaID );
+    }
+}
+
+void rgDlgEditReference::OnEventaEditButton( wxCommandEvent & event )
+{
+    long row = m_listEventa->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if ( row < 0 ) {
+        wxMessageBox( _( "No row selected" ), _( "Edit Eventa" ) );
+        return;
+    }
+    idt eaID = m_eventaIDs[row];
+    if ( rgEditEventa( this, eaID ) ) {
+        UpdateEventas( eaID );
+    }
+}
+
+void rgDlgEditReference::OnEventaDeleteButton( wxCommandEvent & event )
+{
+    long row = m_listEventa->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if ( row < 0 ) {
+        wxMessageBox( _( "No row selected" ), _( "Delete Eventa" ) );
+        return;
+    }
+    idt eaID = m_eventaIDs[row];
+    wxString mess = wxString::Format(
+        "Remove Eventa %s: %s\nfrom Database?",
+        recEventa::GetIdStr( eaID ), recEventa::GetTitle( eaID )
+        );
+    int ans = wxMessageBox( mess, _( "Delete Eventa" ), wxYES_NO | wxCANCEL, this );
+    if ( ans != wxYES ) {
+        return;
+    }
+    recEventa::RemoveFromDatabase( eaID );
+    UpdateEventas();
+}
+
 void rgDlgEditReference::OnAddEntityButton( wxCommandEvent& event )
 {
     wxSize s = m_buttonAdd->GetSize();
@@ -505,25 +589,6 @@ void rgDlgEditReference::OnNewName( wxCommandEvent& event )
     }
 }
 
-void rgDlgEditReference::OnNewEventa( wxCommandEvent& cmnd_event )
-{
-    idt eveID = rgCreateEventa( this, m_reference.FGetID() );
-    if( eveID ) {
-        UpdateEntities();// reID );
-    }
-}
-
-void rgDlgEditReference::OnNewPersonalEventa( wxCommandEvent& event )
-{
-    idt eveID = rgCreatePersonalEventa(
-        this, m_reference.FGetID(), GetSelectedText()
-    );
-    if( eveID ) {
-        idt reID = CreateRefEntity( recReferenceEntity::TYPE_Event, eveID );
-        UpdateEntities( reID );
-    }
-}
-
 void rgDlgEditReference::OnEditEntityButton( wxCommandEvent& event )
 {
     long row = m_listEntities->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
@@ -539,9 +604,6 @@ void rgDlgEditReference::OnEditEntityButton( wxCommandEvent& event )
         return;
     case recReferenceEntity::TYPE_Place:
         if( rgEditPlace( this, id ) ) break;
-        return;
-    case recReferenceEntity::TYPE_Event:
-        if( rgEditEventa( this, id ) ) break;
         return;
     case recReferenceEntity::TYPE_Name:
         if( rgEditName( this, id ) ) break;
@@ -572,9 +634,6 @@ void rgDlgEditReference::OnDeleteEntityButton( wxCommandEvent& event )
         break;
     case recReferenceEntity::TYPE_Name:
         recName::RemoveFromDatabase( entID );
-        break;
-    case recReferenceEntity::TYPE_Event:
-        recEventa::RemoveFromDatabase( entID );
         break;
     default:
         wxMessageBox( _("Element cannot be deleted"), _("Delete") );
@@ -647,10 +706,6 @@ void rgDlgEditReference::InsertEntityListItem( size_t row )
     case recReferenceEntity::TYPE_Place:
         m_listEntities->SetItem( row, ENT_COL_Number, recPlace::GetIdStr( entID ) );
         m_listEntities->SetItem( row, ENT_COL_Value, recPlace::GetAddressStr( entID ) );
-        break;
-    case recReferenceEntity::TYPE_Event:
-        m_listEntities->SetItem( row, ENT_COL_Number, recEventa::GetIdStr( entID ) );
-        m_listEntities->SetItem( row, ENT_COL_Value, recEventa::GetTitle( entID ) );
         break;
     default:
         m_listEntities->SetItem( row, ENT_COL_Value, _("Unknown Reference Entity") );

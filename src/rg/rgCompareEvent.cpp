@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     10th December 2012
- * Copyright:   Copyright (c) 2012-2016, Nick Matthews.
+ * Copyright:   Copyright (c) 2012 ~ 2018, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -66,7 +66,7 @@ void rgCompareEvent::Reset( idt eveID )
     m_refEvents = m_event.GetEventasIncludeLower();
 
     for( size_t i = 0 ; i < m_refEvents.size() ; i++ ) {
-        idt refID = recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, m_refEvents[i].f_id );
+        idt refID = m_refEvents[i].FGetRefID();
         m_refIDs.push_back( refID );
         // Get list of Persona's for this Reference.
         recIdVec pIDs = recReference::GetPersonaList( refID );

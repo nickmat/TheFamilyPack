@@ -43,14 +43,23 @@ public:
     rgDlgEditReference( wxWindow* parent, idt refID );
 
 private:
-    enum EntityColumn {
-        ENT_COL_Type, ENT_COL_Number, ENT_COL_Value, ENT_COL_MAX
+    enum TopPage {
+        TPAGE_Source, TPAGE_View, TPAGE_MAX
+    };
+    enum BotPage {
+        BPAGE_Media, BPAGE_Persona, BPAGE_Eventa, BPAGE_Entity, BPAGE_MAX
+    };
+    enum MediaColumn {
+        MED_COL_Number, MED_COL_Title, MED_COL_MAX
     };
     enum PersonaColumn {
         PER_COL_Number, PER_COL_Name, PER_COL_Individuals, PER_COL_MAX
     };
-    enum MediaColumn {
-        MED_COL_Number, MED_COL_Title, MED_COL_MAX
+    enum EventaColumn {
+        EA_COL_Number, EA_COL_Title, EA_COL_Event, EA_COL_MAX
+    };
+    enum EntityColumn {
+        ENT_COL_Type, ENT_COL_Number, ENT_COL_Value, ENT_COL_MAX
     };
 
     bool TransferDataToWindow();
@@ -58,6 +67,7 @@ private:
     void UpdateHtml();
     void UpdateMedias( idt medID = 0 );
     void UpdatePersonas( idt perID = 0 );
+    void UpdateEventas( idt eaID = 0 );
     void UpdateEntities( idt reID = 0 );
 
     wxString GetSelectedText() const;
@@ -82,6 +92,12 @@ private:
     void AddPersona( Sex sex );
     void OnPersonaEditButton( wxCommandEvent& event ) override;
     void OnPersonaDeleteButton( wxCommandEvent& event ) override;
+    // Eventa tab buttons
+    void OnEventaAddButton( wxCommandEvent& event ) override;
+    void OnNewEventa( wxCommandEvent& event ) override;
+    void OnNewPersonalEventa( wxCommandEvent& event ) override;
+    void OnEventaEditButton( wxCommandEvent& event ) override;
+    void OnEventaDeleteButton( wxCommandEvent& event ) override;
     // Entity tab buttons
     void OnAddEntityButton( wxCommandEvent& event ) override;
     void OnNewSource( wxCommandEvent& event ) override;
@@ -89,8 +105,6 @@ private:
     void OnNewDateAge( wxCommandEvent& event ) override;
     void OnNewPlace( wxCommandEvent& event ) override;
     void OnNewName( wxCommandEvent& event ) override;
-    void OnNewEventa( wxCommandEvent& event ) override;
-    void OnNewPersonalEventa( wxCommandEvent& event ) override;
     void OnEditEntityButton( wxCommandEvent& event ) override;
     void OnDeleteEntityButton( wxCommandEvent& event ) override;
     void OnUpEntityButton( wxCommandEvent& event ) override;
@@ -100,9 +114,10 @@ private:
     void InsertEntityListItem( size_t row );
 
     recReference  m_reference;
-    recRefEntVec  m_entities;
-    recIdVec      m_personaIDs;
     recIdVec      m_mediaIDs;
+    recIdVec      m_personaIDs;
+    recIdVec      m_eventaIDs;
+    recRefEntVec  m_entities;
 };
 
 #endif // RGEDREFERENCE_H

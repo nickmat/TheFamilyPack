@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     7th May 2013
- * Copyright:   Copyright (c) 2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2013 ~ 2018, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -170,7 +170,7 @@ bool rgDlgEditEventEventa::TransferDataToWindow()
         + ": " + recEventa::GetTitle( erID );
     m_staticEventa->SetLabel( erStr );
 
-    idt rID = recEventa::FindReferenceID( erID );
+    idt rID = recEventa::GetRefID( erID );
     wxString rStr = recReference::GetIdStr( rID )
         + ": " + recReference::GetTitle( rID );
     m_staticRef->SetLabel( rStr );

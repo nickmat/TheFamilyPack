@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     9 October 2010
- * Copyright:   Copyright (c) 2010 - 2016, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2018, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -339,7 +339,7 @@ void rgDlgEditEvent::ListEventas()
     m_listRecord->DeleteAllItems();
     for( size_t i = 0 ; i < m_eers.size() ; i++ ) {
         idt erID = m_eers[i].FGetEventaID();
-        idt refID = recEventa::FindReferenceID( erID );
+        idt refID = recEventa::GetRefID( erID );
         m_listRecord->InsertItem( i, recEventa::GetIdStr( erID ) );
         m_listRecord->SetItem( i, COL_RefID, recReference::GetIdStr( refID ) );
         m_listRecord->SetItem( i, COL_RefTitle, recReference::GetTitle( refID ) );

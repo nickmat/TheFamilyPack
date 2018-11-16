@@ -71,6 +71,12 @@ class fbRgEditReference : public wxDialog
 		wxMenu* m_menuAddPersona;
 		wxButton* m_buttonPersonaEdit;
 		wxButton* m_buttonPersonaDel;
+		wxPanel* m_panelEventa;
+		wxListCtrl* m_listEventa;
+		wxButton* m_buttonEventaAdd;
+		wxMenu* m_menuAddEventa;
+		wxButton* m_buttonEventaEdit;
+		wxButton* m_buttonEventaDel;
 		wxPanel* m_panelEntities;
 		wxListCtrl* m_listEntities;
 		wxButton* m_buttonAdd;
@@ -101,14 +107,17 @@ class fbRgEditReference : public wxDialog
 		virtual void OnAddUnknownPersona( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPersonaEditButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPersonaDeleteButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEventaAddButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnNewEventa( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnNewPersonalEventa( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEventaEditButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEventaDeleteButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAddEntityButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnNewSource( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnNewDate( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnNewDateAge( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnNewPlace( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnNewName( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnNewEventa( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnNewPersonalEventa( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnEditEntityButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDeleteEntityButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnUpEntityButton( wxCommandEvent& event ) { event.Skip(); }
@@ -129,6 +138,11 @@ class fbRgEditReference : public wxDialog
 		void m_buttonPersonaAddOnContextMenu( wxMouseEvent &event )
 		{
 			m_buttonPersonaAdd->PopupMenu( m_menuAddPersona, event.GetPosition() );
+		}
+		
+		void m_buttonEventaAddOnContextMenu( wxMouseEvent &event )
+		{
+			m_buttonEventaAdd->PopupMenu( m_menuAddEventa, event.GetPosition() );
 		}
 		
 		void m_buttonAddOnContextMenu( wxMouseEvent &event )

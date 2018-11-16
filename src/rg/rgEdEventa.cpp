@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     25th February 2013
- * Copyright:   Copyright (c) 2013-2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2013 ~ 2018, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -151,13 +151,13 @@ idt rgCreateEventa( wxWindow* wind, idt refID )
 
     recEventa er(0);
     er.FSetTitle( title );
+    er.FSetRefID( refID );
     er.FSetTypeID( typeID );
     er.FSetDate1ID( dateID1 );
     er.FSetDate2ID( dateID2 );
     er.FSetPlaceID( placeID );
     er.Save();
     idt erID = er.FGetID();
-    recReferenceEntity::Create( refID, recReferenceEntity::TYPE_Event, erID );
 
     recEventaPersona ep1(0);
     ep1.FSetEventaID( erID );
@@ -248,6 +248,7 @@ idt rgCreatePersonalEventa( wxWindow* wind, idt refID, const wxString& role )
 
     recEventa eve(0);
     eve.FSetTitle( title );
+    eve.FSetRefID( refID );
     eve.FSetTypeID( eveTypeID );
     eve.FSetDate1ID( date1ID );
     eve.FSetDate2ID( date2ID );
@@ -287,7 +288,7 @@ END_EVENT_TABLE()
 rgDlgEditEventa::rgDlgEditEventa( wxWindow* parent, idt erID )
     : m_event(erID), fbRgEditEventa( parent )
 {
-    m_refID = recEventa::FindReferenceID( erID );
+    m_refID = recEventa::GetRefID( erID );
     wxASSERT( m_refID != 0 );
 
     m_date1ID = m_event.FGetDate1ID();

@@ -191,6 +191,44 @@ fbRgEditReference::fbRgEditReference( wxWindow* parent, wxWindowID id, const wxS
 	m_panelPersona->Layout();
 	bSizer56->Fit( m_panelPersona );
 	m_notebookBottom->AddPage( m_panelPersona, _("&Persona"), false );
+	m_panelEventa = new wxPanel( m_notebookBottom, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer1201;
+	bSizer1201 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_listEventa = new wxListCtrl( m_panelEventa, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_HRULES|wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_VRULES );
+	bSizer1201->Add( m_listEventa, 1, wxALL|wxEXPAND, 5 );
+	
+	wxBoxSizer* bSizer5711;
+	bSizer5711 = new wxBoxSizer( wxVERTICAL );
+	
+	m_buttonEventaAdd = new wxButton( m_panelEventa, wxID_ANY, _("&Add"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_menuAddEventa = new wxMenu();
+	wxMenuItem* m_menuAddGenEventa;
+	m_menuAddGenEventa = new wxMenuItem( m_menuAddEventa, wxID_ANY, wxString( _("Add &General Eventa") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menuAddEventa->Append( m_menuAddGenEventa );
+	
+	wxMenuItem* m_menuAddPerEventa;
+	m_menuAddPerEventa = new wxMenuItem( m_menuAddEventa, wxID_ANY, wxString( _("Add Personal &Eventa") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menuAddEventa->Append( m_menuAddPerEventa );
+	
+	m_buttonEventaAdd->Connect( wxEVT_RIGHT_DOWN, wxMouseEventHandler( fbRgEditReference::m_buttonEventaAddOnContextMenu ), NULL, this ); 
+	
+	bSizer5711->Add( m_buttonEventaAdd, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+	
+	m_buttonEventaEdit = new wxButton( m_panelEventa, wxID_ANY, _("&Edit"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer5711->Add( m_buttonEventaEdit, 0, wxALIGN_CENTER_HORIZONTAL|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+	
+	m_buttonEventaDel = new wxButton( m_panelEventa, wxID_ANY, _("&Delete"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer5711->Add( m_buttonEventaDel, 0, wxALIGN_CENTER_HORIZONTAL|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+	
+	
+	bSizer1201->Add( bSizer5711, 0, wxEXPAND, 5 );
+	
+	
+	m_panelEventa->SetSizer( bSizer1201 );
+	m_panelEventa->Layout();
+	bSizer1201->Fit( m_panelEventa );
+	m_notebookBottom->AddPage( m_panelEventa, _("Eventa"), false );
 	m_panelEntities = new wxPanel( m_notebookBottom, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer58;
 	bSizer58 = new wxBoxSizer( wxHORIZONTAL );
@@ -224,14 +262,6 @@ fbRgEditReference::fbRgEditReference( wxWindow* parent, wxWindowID id, const wxS
 	wxMenuItem* m_menuAddName;
 	m_menuAddName = new wxMenuItem( m_menuAddEntity, wxID_ANY, wxString( _("&Name") ) , wxEmptyString, wxITEM_NORMAL );
 	m_menuAddEntity->Append( m_menuAddName );
-	
-	wxMenuItem* m_menuAddEventa;
-	m_menuAddEventa = new wxMenuItem( m_menuAddEntity, wxID_ANY, wxString( _("&Eventa") ) , wxEmptyString, wxITEM_NORMAL );
-	m_menuAddEntity->Append( m_menuAddEventa );
-	
-	wxMenuItem* m_menuAddPersonalEventa;
-	m_menuAddPersonalEventa = new wxMenuItem( m_menuAddEntity, wxID_ANY, wxString( _("Personal E&venta") ) , wxEmptyString, wxITEM_NORMAL );
-	m_menuAddEntity->Append( m_menuAddPersonalEventa );
 	
 	m_buttonAdd->Connect( wxEVT_RIGHT_DOWN, wxMouseEventHandler( fbRgEditReference::m_buttonAddOnContextMenu ), NULL, this ); 
 	
@@ -319,14 +349,17 @@ fbRgEditReference::fbRgEditReference( wxWindow* parent, wxWindowID id, const wxS
 	this->Connect( m_menuAddUnknownPersona->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbRgEditReference::OnAddUnknownPersona ) );
 	m_buttonPersonaEdit->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditReference::OnPersonaEditButton ), NULL, this );
 	m_buttonPersonaDel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditReference::OnPersonaDeleteButton ), NULL, this );
+	m_buttonEventaAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditReference::OnEventaAddButton ), NULL, this );
+	this->Connect( m_menuAddGenEventa->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbRgEditReference::OnNewEventa ) );
+	this->Connect( m_menuAddPerEventa->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbRgEditReference::OnNewPersonalEventa ) );
+	m_buttonEventaEdit->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditReference::OnEventaEditButton ), NULL, this );
+	m_buttonEventaDel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditReference::OnEventaDeleteButton ), NULL, this );
 	m_buttonAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditReference::OnAddEntityButton ), NULL, this );
 	this->Connect( m_menuAddSource->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbRgEditReference::OnNewSource ) );
 	this->Connect( m_menuAddDate->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbRgEditReference::OnNewDate ) );
 	this->Connect( m_menuAddDateAge->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbRgEditReference::OnNewDateAge ) );
 	this->Connect( m_menuAddPlace->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbRgEditReference::OnNewPlace ) );
 	this->Connect( m_menuAddName->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbRgEditReference::OnNewName ) );
-	this->Connect( m_menuAddEventa->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbRgEditReference::OnNewEventa ) );
-	this->Connect( m_menuAddPersonalEventa->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbRgEditReference::OnNewPersonalEventa ) );
 	m_buttonEdit->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditReference::OnEditEntityButton ), NULL, this );
 	m_buttonDel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditReference::OnDeleteEntityButton ), NULL, this );
 	m_buttonUp->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditReference::OnUpEntityButton ), NULL, this );
@@ -352,19 +385,23 @@ fbRgEditReference::~fbRgEditReference()
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbRgEditReference::OnAddUnknownPersona ) );
 	m_buttonPersonaEdit->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditReference::OnPersonaEditButton ), NULL, this );
 	m_buttonPersonaDel->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditReference::OnPersonaDeleteButton ), NULL, this );
+	m_buttonEventaAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditReference::OnEventaAddButton ), NULL, this );
+	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbRgEditReference::OnNewEventa ) );
+	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbRgEditReference::OnNewPersonalEventa ) );
+	m_buttonEventaEdit->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditReference::OnEventaEditButton ), NULL, this );
+	m_buttonEventaDel->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditReference::OnEventaDeleteButton ), NULL, this );
 	m_buttonAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditReference::OnAddEntityButton ), NULL, this );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbRgEditReference::OnNewSource ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbRgEditReference::OnNewDate ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbRgEditReference::OnNewDateAge ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbRgEditReference::OnNewPlace ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbRgEditReference::OnNewName ) );
-	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbRgEditReference::OnNewEventa ) );
-	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbRgEditReference::OnNewPersonalEventa ) );
 	m_buttonEdit->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditReference::OnEditEntityButton ), NULL, this );
 	m_buttonDel->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditReference::OnDeleteEntityButton ), NULL, this );
 	m_buttonUp->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditReference::OnUpEntityButton ), NULL, this );
 	m_buttonDn->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditReference::OnDownEntityButton ), NULL, this );
 	
 	delete m_menuAddPersona; 
+	delete m_menuAddEventa; 
 	delete m_menuAddEntity; 
 }

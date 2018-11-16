@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     9 October 2010
- * Copyright:   Copyright (c) 2010 - 2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2018, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -307,10 +307,9 @@ void rgDlgEditPersona::OnNameDownButton( wxCommandEvent& event )
 
 void rgDlgEditPersona::OnEventAddButton( wxCommandEvent& event )
 {
-    idt eveID = rgCreateEventa( this, m_refID );
-    if( eveID ) {
-        recReferenceEntity::Create( m_refID, recReferenceEntity::TYPE_Event, eveID );
-        UpdateEventList( eveID );
+    idt eaID = rgCreateEventa( this, m_refID );
+    if( eaID ) {
+        UpdateEventList( eaID );
     }
 }
 
