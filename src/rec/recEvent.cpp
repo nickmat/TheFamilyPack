@@ -494,12 +494,9 @@ recEventaVec recEvent::FindEquivRefEvents( idt indEventID )
 recIdVec recEvent::GetReferenceIDs( idt eveID )
 {
     return ExecuteIdVec(
-        "SELECT RE.ref_id"
-        " FROM EventEventa EE, ReferenceEntity RE"
-        " WHERE RE.entity_type=2"
-        "  AND EE.event_id=" ID
-        "  AND EE.eventa_id=RE.entity_id"
-        " ORDER BY RE.sequence;",
+        "SELECT EA.ref_id"
+        " FROM EventEventa EE, Eventa EA"
+        " WHERE EE.event_id=" ID " AND EE.eventa_id=EA.id;",
         eveID
     );
 }
