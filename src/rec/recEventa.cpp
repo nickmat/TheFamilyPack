@@ -152,29 +152,6 @@ bool recEventa::Read()
     return true;
 }
 
-#if 0
-idt recEventa::CreateFromEvent( const recEvent& eve )
-{
-    Clear();
-    f_title    = eve.FGetTitle();
-    f_type_id  = eve.FGetTypeID();
-    f_date1_id = recDate::Create( eve.FGetDate1ID() );
-    f_date2_id = recDate::Create( eve.FGetDate2ID() );
-    f_place_id = recPlace::Create( eve.FGetPlaceID() );
-    f_note     = eve.FGetNote();
-    f_date_pt  = eve.FGetDatePt();
-    Save();
-    return f_id;
-}
-
-idt recEventa::CreateFromEvent( idt eveID )
-{
-    recEvent eve(eveID);
-    recEventa ea;
-    return ea.CreateFromEvent( eve );
-}
-#endif
-
 wxString recEventa::SetAutoTitle( const wxString& name1, const wxString& name2 )
 {
     f_title = wxEmptyString;
