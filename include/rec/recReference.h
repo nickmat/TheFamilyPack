@@ -46,7 +46,7 @@ public:
     enum Type {
         TYPE_Unstated      = 0,
         TYPE_Source        = 1,
-        TYPE_Event         = 2,
+        TYPE_Spare3        = 2, // Was Event[a]
         TYPE_Place         = 3,
         TYPE_Date          = 4,
         TYPE_Spare2        = 5, // Was Relationship
@@ -157,6 +157,10 @@ public:
     static recIdVec GetMediaList( idt refID );
     recIdVec GetMediaList() const { return GetMediaList( f_id ); }
     static int GetMediaCount( idt refID );
+
+    static recIdVec GetEventaList( idt refID );
+    recIdVec GetEventaList() const { return GetEventaList( f_id ); }
+    static int GetEventaCount( idt refID );
 
     static recIdVec GetIdVecForEntity( idt refID, recReferenceEntity::Type type );
 

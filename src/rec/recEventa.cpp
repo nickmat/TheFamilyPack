@@ -52,6 +52,7 @@ recEventa::recEventa( const recEventa& e )
 {
     f_id       = e.f_id;
     f_title    = e.f_title;
+    f_ref_id   = e.f_ref_id;
     f_type_id  = e.f_type_id;
     f_date1_id = e.f_date1_id;
     f_date2_id = e.f_date2_id;
@@ -64,6 +65,7 @@ void recEventa::Clear()
 {
     f_id       = 0;
     f_title    = wxEmptyString;
+    f_ref_id   = 0;
     f_type_id  = 0;
     f_date1_id = 0;
     f_date2_id = 0;
@@ -82,9 +84,9 @@ void recEventa::Save()
         // Add new record
         sql.Format(
             "INSERT INTO Eventa "
-            "(title, type_id, date1_id, date2_id, place_id, note, date_pt) "
-            "VALUES ('%q', " ID ", " ID ", " ID ", " ID ", '%q', %ld);",
-            UTF8_(f_title), f_type_id, f_date1_id, f_date2_id, f_place_id,
+            "(title, ref_id, type_id, date1_id, date2_id, place_id, note, date_pt) "
+            "VALUES ('%q', " ID ", " ID ", " ID ", " ID ", " ID ", '%q', %ld);",
+            UTF8_(f_title), f_ref_id, f_type_id, f_date1_id, f_date2_id, f_place_id,
             UTF8_(f_note), f_date_pt
         );
         s_db->ExecuteUpdate( sql );
@@ -96,19 +98,19 @@ void recEventa::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO Eventa "
-                "(id, title, type_id, date1_id, date2_id, place_id, note, date_pt) "
-                "VALUES (" ID ", '%q', " ID ", " ID ", " ID ", " ID ", '%q', %ld);",
-                f_id, UTF8_(f_title), f_type_id, f_date1_id, f_date2_id, f_place_id,
+                "(id, title, ref_id, type_id, date1_id, date2_id, place_id, note, date_pt) "
+                "VALUES (" ID ", '%q', " ID ", " ID ", " ID ", " ID ", " ID ", '%q', %ld);",
+                f_id, UTF8_(f_title), f_ref_id, f_type_id, f_date1_id, f_date2_id, f_place_id,
                 UTF8_(f_note), f_date_pt
             );
         } else {
             // Update existing record
             sql.Format(
                 "UPDATE Eventa SET "
-                "title='%q', type_id=" ID ", date1_id=" ID ", date2_id=" ID ", place_id=" ID ", "
+                "title='%q', ref_id=" ID ", type_id=" ID ", date1_id=" ID ", date2_id=" ID ", place_id=" ID ", "
                 "note='%q', date_pt=%ld "
                 "WHERE id=" ID ";",
-                UTF8_(f_title), f_type_id, f_date1_id, f_date2_id, f_place_id,
+                UTF8_(f_title), f_ref_id, f_type_id, f_date1_id, f_date2_id, f_place_id,
                 UTF8_(f_note), f_date_pt, f_id
             );
         }
@@ -127,8 +129,8 @@ bool recEventa::Read()
     }
 
     sql.Format(
-        "SELECT title, type_id, date1_id, date2_id, place_id, note, date_pt "
-        "FROM Eventa WHERE id=" ID ";",
+        "SELECT title, ref_id, type_id, date1_id, date2_id, place_id, note, date_pt"
+        " FROM Eventa WHERE id=" ID ";",
         f_id
     );
     result = s_db->GetTable( sql );
@@ -140,15 +142,17 @@ bool recEventa::Read()
     }
     result.SetRow( 0 );
     f_title    = result.GetAsString( 0 );
-    f_type_id  = GET_ID( result.GetInt64( 1 ) );
-    f_date1_id = GET_ID( result.GetInt64( 2 ) );
-    f_date2_id = GET_ID( result.GetInt64( 3 ) );
-    f_place_id = GET_ID( result.GetInt64( 4 ) );
-    f_note     = result.GetAsString( 5 );
-    f_date_pt  = (long) result.GetInt( 6 );
+    f_ref_id = GET_ID( result.GetInt64( 1 ) );
+    f_type_id = GET_ID( result.GetInt64( 2 ) );
+    f_date1_id = GET_ID( result.GetInt64( 3 ) );
+    f_date2_id = GET_ID( result.GetInt64( 4 ) );
+    f_place_id = GET_ID( result.GetInt64( 5 ) );
+    f_note     = result.GetAsString( 6 );
+    f_date_pt  = (long) result.GetInt( 7 );
     return true;
 }
 
+#if 0
 idt recEventa::CreateFromEvent( const recEvent& eve )
 {
     Clear();
@@ -169,6 +173,7 @@ idt recEventa::CreateFromEvent( idt eveID )
     recEventa ea;
     return ea.CreateFromEvent( eve );
 }
+#endif
 
 wxString recEventa::SetAutoTitle( const wxString& name1, const wxString& name2 )
 {
@@ -259,9 +264,15 @@ wxString recEventa::GetTitle( idt evID )
     return result.GetAsString( 0 );
 }
 
+idt recEventa::GetRefID( idt eaID )
+{
+    if ( eaID == 0 ) return 0;
+    return ExecuteID( "SELECT ref_id FROM Eventa WHERE id=" ID ";", eaID );
+}
+
 idt recEventa::GetDate1ID( idt evID )
 {
-    if( evID == 0 ) return 0;
+    if ( evID == 0 ) return 0;
     return ExecuteID( "SELECT date1_id FROM Eventa WHERE id=" ID ";", evID );
 }
 
@@ -471,14 +482,12 @@ void recEventa::DeleteIfOrphaned( idt id )
 
     sql.Format( "SELECT COUNT(*) FROM EventaPersona WHERE eventa_id=" ID ";", id );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
-    sql.Format(
-        "SELECT COUNT(*) FROM ReferenceEntity"
-        " WHERE entity_type=2 AND entity_id=" ID ";",
-        id
-    );
+    sql.Format( "SELECT COUNT(*) FROM EventEventa WHERE eventa_id=" ID ";", id );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
-    sql.Format( "SELECT COUNT(*) FROM IndividualEvent WHERE event_id=" ID ";", id );
-    if( s_db->ExecuteScalar( sql ) > 0 ) return;
+    sql.Format( "SELECT COUNT(*) FROM FamilyIndEventa WHERE event_id=" ID ";", id );
+    if ( s_db->ExecuteScalar( sql ) > 0 ) return;
+    sql.Format( "SELECT COUNT(*) FROM FamilyEventa WHERE event_id=" ID ";", id );
+    if ( s_db->ExecuteScalar( sql ) > 0 ) return;
 
     RemoveFromDatabase( id );
 }
@@ -559,14 +568,27 @@ recFamilyIndEventaVec recEventa::GetFamilyIndEventas( idt eaID )
     return vec;
 }
 
-recIdVec recEventa::FindLinkedEvents() const
+recIdVec recEventa::GetLinkedEventIDs( idt eaID )
 {
     return ExecuteIdVec(
         "SELECT event_id FROM EventEventa"
         " WHERE eventa_id=" ID
         " ORDER BY event_id;",
-        f_id
-    );
+        eaID
+        );
+}
+
+wxString recEventa::GetLinkedEventIDsStr( idt eaID )
+{
+    recIdVec eveIDs = GetLinkedEventIDs( eaID );
+    wxString str;
+    for ( size_t i = 0; i < eveIDs.size(); i++ ) {
+        if ( i ) {
+            str << ", ";
+        }
+        str << recEvent::GetIdStr( eveIDs[i] );
+    }
+    return str;
 }
 
 recIdVec recEventa::FindLinkedEventsViaInd() const
@@ -588,7 +610,7 @@ recIdVec recEventa::FindLinkedEventsViaInd() const
 recCheckIdVec recEventa::FindCheckedLinkedEvents() const
 {
     recCheckIdVec list;
-    recIdVec e1 = FindLinkedEvents();
+    recIdVec e1 = GetLinkedEventIDs();
     recIdVec e2 = FindLinkedEventsViaInd();
 
     // This assumes e1 and e2 are both in ascending order

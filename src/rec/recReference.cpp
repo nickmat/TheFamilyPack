@@ -185,82 +185,48 @@ int recReference::GetNextEntitySequence( idt refID )
         "SELECT MAX(sequence) FROM ReferenceEntity WHERE ref_id=" ID ";",
         refID
     );
-    return s_db->ExecuteScalar( sql )+1;
+    return ExecuteInt( sql ) + 1;
 }
 
 recIdVec recReference::GetPersonaList( idt refID )
 {
-    recIdVec vec;
-    wxSQLite3StatementBuffer sql;
-    wxSQLite3ResultSet result;
-
-    sql.Format(
-        "SELECT id FROM Persona WHERE ref_id=" ID ";",
-        refID
-    );
-    result = s_db->ExecuteQuery( sql );
-
-    while( result.NextRow() ) {
-        vec.push_back( GET_ID( result.GetInt64( 0 ) ) );
-    }
-    return vec;
+    return ExecuteIdVec( "SELECT id FROM Persona WHERE ref_id=" ID ";", refID );
 }
 
 int recReference::GetPersonaCount( idt refID )
 {
-    wxSQLite3StatementBuffer sql;
-    sql.Format(
-        "SELECT COUNT(*) FROM Persona WHERE ref_id=" ID ";",
-        refID
-    );
-    return s_db->ExecuteScalar( sql );
+    return ExecuteInt( "SELECT COUNT(*) FROM Persona WHERE ref_id=" ID ";", refID );
 }
 
 recIdVec recReference::GetMediaList( idt refID )
 {
-    recIdVec vec;
-    wxSQLite3StatementBuffer sql;
-    wxSQLite3ResultSet result;
-
-    sql.Format(
-        "SELECT id FROM Media WHERE ref_id=" ID ";",
-        refID
-        );
-    result = s_db->ExecuteQuery( sql );
-
-    while ( result.NextRow() ) {
-        vec.push_back( GET_ID( result.GetInt64( 0 ) ) );
-    }
-    return vec;
+    return ExecuteIdVec( "SELECT id FROM Media WHERE ref_id=" ID ";", refID );
 }
 
 int recReference::GetMediaCount( idt refID )
 {
-    wxSQLite3StatementBuffer sql;
-    sql.Format(
-        "SELECT COUNT(*) FROM Media WHERE ref_id=" ID ";",
-        refID
-        );
-    return s_db->ExecuteScalar( sql );
+    return ExecuteInt( "SELECT COUNT(*) FROM Media WHERE ref_id=" ID ";", refID );
+}
+
+recIdVec recReference::GetEventaList( idt refID )
+{
+    return ExecuteIdVec( "SELECT id FROM Eventa WHERE ref_id=" ID ";", refID );
+}
+
+int recReference::GetEventaCount( idt refID )
+{
+    return ExecuteInt( "SELECT COUNT(*) FROM Eventa WHERE ref_id=" ID ";", refID );
 }
 
 recIdVec recReference::GetIdVecForEntity( idt refID, recReferenceEntity::Type type )
 {
-    recIdVec vec;
     wxSQLite3StatementBuffer sql;
-    wxSQLite3ResultSet result;
-
     sql.Format(
         "SELECT entity_id FROM ReferenceEntity"
         " WHERE entity_type=%d AND ref_id=" ID ";",
         (int) type, refID
     );
-    result = s_db->ExecuteQuery( sql );
-
-    while( result.NextRow() ) {
-        vec.push_back( GET_ID( result.GetInt64( 0 ) ) );
-    }
-    return vec;
+    return ExecuteIdVec( sql );
 }
 
 //----------------------------------------------------------
@@ -268,7 +234,7 @@ recIdVec recReference::GetIdVecForEntity( idt refID, recReferenceEntity::Type ty
 const wxString recReferenceEntity::sm_typeStr[recReferenceEntity::TYPE_MAX] = {
     _("Default"),      // TYPE_Unstated
     _("Source"),       // TYPE_Source
-    _("Event"),        // TYPE_Event
+    _("Spare3"),       // TYPE_Event
     _("Place"),        // TYPE_Place
     _("Date"),         // TYPE_Date
     _("Spare2"),       // TYPE_Relationship 
@@ -383,8 +349,6 @@ wxString recReferenceEntity::GetEntityIdStr() const
 {
     switch( f_entity_type )
     {
-    case TYPE_Event:
-        return recEventa::GetIdStr( f_entity_id );
     case TYPE_Place:
         return recPlace::GetIdStr( f_entity_id );
     case TYPE_Date:
@@ -399,8 +363,6 @@ wxString recReferenceEntity::GetEntityStr() const
 {
     switch( f_entity_type )
     {
-    case TYPE_Event:
-        return recEventa::GetTitle( f_entity_id );
     case TYPE_Place:
         return recPlace::GetAddressStr( f_entity_id );
     case TYPE_Date:

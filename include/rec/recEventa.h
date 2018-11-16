@@ -46,6 +46,7 @@ class recEventa : public recDb
 {
 public:
     wxString f_title;
+    idt      f_ref_id;
     idt      f_type_id;
     idt      f_date1_id;
     idt      f_date2_id;
@@ -63,6 +64,7 @@ public:
     TABLE_NAME_MEMBERS( "Eventa" );
 
     wxString FGetTitle() const { return f_title; }
+    idt FGetRefID() const { return f_ref_id; }
     idt FGetTypeID() const { return f_type_id; }
     idt FGetDate1ID() const { return f_date1_id; }
     idt FGetDate2ID() const { return f_date2_id; }
@@ -71,6 +73,7 @@ public:
     long FGetDatePt() const { return f_date_pt; }
 
     void FSetTitle( const wxString& title ) { f_title = title; }
+    void FSetRefID( idt refID ) { f_ref_id = refID; }
     void FSetTypeID( idt typeID ) { f_type_id = typeID; }
     void FSetDate1ID( idt date1ID ) { f_date1_id = date1ID; }
     void FSetDate2ID( idt date2ID ) { f_date2_id = date2ID; }
@@ -79,8 +82,8 @@ public:
     void FSetDatePt( idt datePt ) { f_date_pt = datePt; }
     void FSetDatePt( recDate::DatePoint dp ) { f_date_pt = recDate::GetDatePoint( f_date1_id, dp ); }
 
-    idt CreateFromEvent( const recEvent& eve );
-    static idt CreateFromEvent( idt eveID );
+//    idt CreateFromEvent( const recEvent& eve );
+//    static idt CreateFromEvent( idt eveID );
 
     wxString SetAutoTitle( const wxString& name1, const wxString& name2 = wxEmptyString );
 
@@ -92,20 +95,21 @@ public:
     wxString GetDateStr() const;
     wxString GetAddressStr() const;
     recET_GRP GetTypeGroup() const;
-    static wxString GetDetailStr( idt evID );
-    static wxString GetTypeStr( idt evID );
-    static wxString GetTitle( idt evID );
-    static wxString GetNote( idt evID );
-    static wxString GetDateStr( idt evID );
-    static wxString GetAddressStr( idt evID );
-    static idt GetDate1ID( idt evID );
-    static void UpdateDatePoint( idt evID );
+    static wxString GetDetailStr( idt eaID );
+    static wxString GetTypeStr( idt eaID );
+    static wxString GetTitle( idt eaID );
+    static wxString GetNote( idt eaID );
+    static wxString GetDateStr( idt eaID );
+    static wxString GetAddressStr( idt eaID );
+    static idt GetRefID( idt eaID );
+    static idt GetDate1ID( idt eaID );
+    static void UpdateDatePoint( idt eaID );
     void UpdateDatePoint();
 
-    idt FindReferenceID() const { return FindReferenceID( f_id ); }
-    static idt FindReferenceID( idt erID ) {
-        return recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, erID );
-    }
+//    idt FindReferenceID() const { return FindReferenceID( f_id ); }
+//    static idt FindReferenceID( idt erID ) {
+//        return recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, erID );
+//    }
     static recEventEventaVec GetEventEventas( idt erID );
     recEventEventaVec GetEventEventas() const { return GetEventEventas( f_id ); }
 
@@ -127,7 +131,12 @@ public:
     static recFamilyIndEventaVec GetFamilyIndEventas( idt eaID );
     recFamilyIndEventaVec GetFamilyIndEventas() const { return GetFamilyIndEventas( f_id ); }
 
-    recIdVec FindLinkedEvents() const;
+    static recIdVec GetLinkedEventIDs( idt eaID );
+    recIdVec GetLinkedEventIDs() const { return GetLinkedEventIDs( f_id ); }
+    // Commer delimited string of linked Event ID strings.
+    static wxString GetLinkedEventIDsStr( idt eaID );
+    wxString GetLinkedEventIDsStr() const { return GetLinkedEventIDsStr( f_id ); }
+
     // Find matching Event records by following the links:-
     // Eventa/Persona(prime Role) -> Persona/Individual link -> Individual/Event(matching role)
     // Depending on the type and group of the event, loosely match Date and Place.
