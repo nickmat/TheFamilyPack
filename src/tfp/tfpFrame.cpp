@@ -1789,100 +1789,106 @@ wxString TfpFrame::GetDisplayText( wxString& name )
         success2 = name.Mid(3).ToLongLong( &num2 );
     }
 
-    if( name.compare( 0, 2, "CD" ) == 0 && success1 ) {
-        return tfpCreateDescChart( num1 );
+    try {
+        if ( name.compare( 0, 2, "CD" ) == 0 && success1 ) {
+            return tfpCreateDescChart( num1 );
+        }
+        if ( name.compare( 0, 2, "CP" ) == 0 && success1 ) {
+            return tfpCreatePedChart( num1 );
+        }
+        if ( name.compare( 0, 1, "D" ) == 0 && success ) {
+            return tfpWriteDate( num );
+        }
+        if ( name.compare( "E" ) == 0 ) {
+            return tfpWriteEventIndex();
+        }
+        if ( name.compare( "E$" ) == 0 ) {
+            return tfpWriteEventSelection( m_selEvent );
+        }
+        if ( name.compare( "EA" ) == 0 ) {
+            name.MakeCapitalized(); // We want Ea
+            return tfpWriteEventaIndex();
+        }
+        // We don't have a Eventa filter yet!
+        //    if( name.compare( "EA$" ) == 0 ) {
+        //        name.MakeCapitalized();
+        //        return tfpWriteEventaSelection( m_erFilter );
+        //    }
+        if ( name.compare( 0, 2, "EA" ) == 0 && success1 ) {
+            name.MakeCapitalized();  // We want Ea
+            return tfpWriteEventaPage( num1 );
+        }
+        if ( name.compare( 0, 3, "EA," ) == 0 && success2 ) {
+            name.MakeCapitalized(); // We want Ea,
+            return tfpWriteEventaPagedIndex( num2 );
+        }
+        if ( name.compare( 0, 1, "E" ) == 0 && success ) {
+            return tfpWriteEventPage( num, &m_compEvent );
+        }
+        if ( name.compare( 0, 2, "E," ) == 0 && success1 ) {
+            return tfpWriteEventPagedIndex( num1 );
+        }
+        if ( name.compare( 0, 2, "FI" ) == 0 && success1 ) {
+            return tfpWriteIndFamilyPage( num1 );
+        }
+        if ( name.compare( 0, 1, "F" ) == 0 ) {
+            // Note, Family Page may have alternate parents
+            // so name string requires further decoding.
+            return tfpWriteFamilyPage( name.Mid( 1 ) );
+        }
+        if ( name.compare( "G" ) == 0 ) {
+            return tfpWriteGalleryList();
+        }
+        if ( name.compare( 0, 1, "G" ) == 0 && success ) {
+            return tfpWriteGalleryPage( num );
+        }
+        if ( name.compare( 0, 1, "I" ) == 0 && success ) {
+            return tfpWriteIndividualPage( num );
+        }
+        if ( name.compare( "NI" ) == 0 ) {
+            return tfpWriteSurnameIndex( recSG_Individual );
+        }
+        if ( name.compare( "NP" ) == 0 ) {
+            return tfpWriteSurnameIndex( recSG_Persona );
+        }
+        if ( name.compare( "ND*" ) == 0 ) {
+            return tfpWriteIndividualList();
+        }
+        if ( name.compare( 0, 3, "NI+" ) == 0 && !success2 ) {
+            name = name.Mid( 0, 3 ) + pagename.Mid( 3 ); // Don't capitalize the name part.
+            return tfpWriteNameList( name.Mid( 3 ), recSG_Individual );
+        }
+        if ( name.compare( 0, 3, "NP+" ) == 0 && !success2 ) {
+            name = name.Mid( 0, 3 ) + pagename.Mid( 3 ); // Don't capitalize the name part.
+            return tfpWriteNameList( name.Mid( 3 ), recSG_Persona );
+        }
+        if ( name.compare( 0, 1, "N" ) == 0 && success ) {
+            return tfpWriteName( num );
+        }
+        if ( name.compare( 0, 2, "PA" ) == 0 ) {
+            name.MakeCapitalized(); // We want Pa
+            return tfpWritePersonaPage( num1 );
+        }
+        if ( name.compare( 0, 1, "P" ) == 0 && success ) {
+            return tfpWritePlace( num );
+        }
+        if ( name.compare( "R" ) == 0 ) {
+            return tfpWriteReferenceIndex();
+        }
+        if ( name.compare( 0, 2, "R," ) == 0 && success1 ) {
+            return tfpWriteReferencePagedIndex( num1 );
+        }
+        if ( name.compare( 0, 1, "R" ) == 0 && success ) {
+            return tfpWriteReferencePage( num );
+        }
+        if ( name.compare( "RE" ) == 0 ) {
+            name.MakeCapitalized(); // We want Re
+            return tfpWriteResearcherList();
+        }
     }
-    if( name.compare( 0, 2, "CP" ) == 0 && success1 ) {
-        return tfpCreatePedChart( num1 );
-    }
-    if( name.compare( 0, 1, "D" ) == 0 && success ) {
-        return tfpWriteDate( num );
-    }
-    if( name.compare( "E" ) == 0 ) {
-        return tfpWriteEventIndex();
-    }
-    if( name.compare( "E$" ) == 0 ) {
-        return tfpWriteEventSelection( m_selEvent );
-    }
-    if( name.compare( "EA" ) == 0 ) {
-        name.MakeCapitalized(); // We want Ea
-        return tfpWriteEventaIndex();
-    }
-// We don't have a Eventa filter yet!
-//    if( name.compare( "EA$" ) == 0 ) {
-//        name.MakeCapitalized();
-//        return tfpWriteEventaSelection( m_erFilter );
-//    }
-    if( name.compare( 0, 2, "EA" ) == 0 && success1 ) {
-        name.MakeCapitalized();  // We want Ea
-        return tfpWriteEventaPage( num1 );
-    }
-    if( name.compare( 0, 3, "EA," ) == 0 && success2 ) {
-        name.MakeCapitalized(); // We want Ea,
-        return tfpWriteEventaPagedIndex( num2 );
-    }
-    if( name.compare( 0, 1, "E" ) == 0 && success ) {
-        return tfpWriteEventPage( num, &m_compEvent );
-    }
-    if( name.compare( 0, 2, "E," ) == 0 && success1 ) {
-        return tfpWriteEventPagedIndex( num1 );
-    }
-    if( name.compare( 0, 2, "FI" ) == 0 && success1 ) {
-        return tfpWriteIndFamilyPage( num1 );
-    }
-    if( name.compare( 0, 1, "F" ) == 0 ) {
-        // Note, Family Page may have alternate parents
-        // so name string requires further decoding.
-        return tfpWriteFamilyPage( name.Mid(1) );
-    }
-    if ( name.compare( "G" ) == 0 ) {
-        return tfpWriteGalleryList();
-    }
-    if ( name.compare( 0, 1, "G" ) == 0 && success ) {
-        return tfpWriteGalleryPage( num  );
-    }
-    if( name.compare( 0, 1, "I" ) == 0 && success ) {
-        return tfpWriteIndividualPage( num );
-    }
-    if ( name.compare( "NI" ) == 0 ) {
-        return tfpWriteSurnameIndex( recSG_Individual );
-    }
-    if ( name.compare( "NP" ) == 0 ) {
-        return tfpWriteSurnameIndex( recSG_Persona );
-    }
-    if ( name.compare( "ND*" ) == 0 ) { 
-        return tfpWriteIndividualList();
-    }
-    if ( name.compare( 0, 3, "NI+" ) == 0 && !success2 ) {
-        name = name.Mid( 0, 3 ) + pagename.Mid( 3 ); // Don't capitalize the name part.
-        return tfpWriteNameList( name.Mid( 3 ), recSG_Individual );
-    }
-    if ( name.compare( 0, 3, "NP+" ) == 0 && !success2 ) {
-        name = name.Mid( 0, 3 ) + pagename.Mid( 3 ); // Don't capitalize the name part.
-        return tfpWriteNameList( name.Mid( 3 ), recSG_Persona );
-    }
-    if( name.compare( 0, 1, "N" ) == 0 && success ) {
-        return tfpWriteName( num );
-    }
-    if( name.compare( 0, 2, "PA" ) == 0 ) {
-        name.MakeCapitalized(); // We want Pa
-        return tfpWritePersonaPage( num1 );
-    }
-    if( name.compare( 0, 1, "P" ) == 0 && success ) {
-        return tfpWritePlace( num );
-    }
-    if( name.compare( "R" ) == 0 ) {
-        return tfpWriteReferenceIndex();
-    }
-    if( name.compare( 0, 2, "R," ) == 0 && success1 ) {
-        return tfpWriteReferencePagedIndex( num1 );
-    }
-    if( name.compare( 0, 1, "R" ) == 0 && success ) {
-        return tfpWriteReferencePage( num );
-    }
-    if( name.compare( "RE" ) == 0 ) {
-        name.MakeCapitalized(); // We want Re
-        return tfpWriteResearcherList();
+    catch ( wxSQLite3Exception& e ) {
+        recDb::ErrorMessage( e );
+        recDb::Rollback();
     }
 
     return wxString::Format(
