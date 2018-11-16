@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     24 October 2010
- * Copyright:   Copyright (c) 2010 ~ 2016, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2018, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -149,17 +149,17 @@ wxString tfpWriteEventPage( idt eventID, rgCompareEvent* ce )
             "<th>Conf</th>\n</tr>\n"
         ;
         for( size_t i = 0 ; i < eeas.size() ; i++ ) {
-            idt eeaID = eeas[i].FGetEventaID();
-            idt refID = recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, eeaID );
+            idt eaID = eeas[i].FGetEventaID();
+            idt refID = recEventa::GetRefID( eaID );
             wxString refTitle = recReference::GetTitle( refID );
             htm <<
                 "<tr>\n"
                 "<td><b><a href='tfp:R" << refID <<
                 "'>" << recReference::GetIdStr( refID ) << "</a></b></td>\n"
                 "<td>" << refTitle << "</td>\n"
-                "<td><b><a href='tfp:Ea" << eeaID <<
-                "'>" <<  recEventa::GetIdStr( eeaID ) << "</a></b></td>\n"
-                "<td>" << recEventa::GetTitle( eeaID ) << "</td>\n"
+                "<td><b><a href='tfp:Ea" << eaID <<
+                "'>" <<  recEventa::GetIdStr( eaID ) << "</a></b></td>\n"
+                "<td>" << recEventa::GetTitle( eaID ) << "</td>\n"
                 "<td>" << eeas[i].FGetConf() << "</td>\n"
                 "</tr>\n"
             ;

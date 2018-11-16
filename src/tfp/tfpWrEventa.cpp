@@ -100,7 +100,7 @@ static wxString DisplayConclusions( const recEventa& er )
 {
     idt erID = er.FGetID();
     wxString htm;
-    recIdVec eveIDs = er.FindLinkedEvents();
+    recIdVec eveIDs = er.GetLinkedEventIDs();
     if( eveIDs.size() ) {
         htm <<
             "<table class='data'>\n"
@@ -138,8 +138,7 @@ wxString tfpWriteEventaPage( idt erID )
     if( erID == 0 ) return wxEmptyString;
     recEventa er(erID);
     recET_GRP grp = er.GetTypeGroup();
-    idt refID = recReferenceEntity::FindReferenceID( recReferenceEntity::TYPE_Event, erID );
-
+    idt refID = er.FGetRefID();
 
     htm <<
         tfpWrHeadTfp( "Eventa " + er.GetIdStr() ) <<

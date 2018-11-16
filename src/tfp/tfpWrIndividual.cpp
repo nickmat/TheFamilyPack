@@ -258,7 +258,7 @@ wxString tfpWriteIndividualPage( idt indID )
         idt erID = GET_ID( eSet.GetInt64( 0 ) );
         recEventa er( erID );
         idt roleID = GET_ID( eSet.GetInt64( 1 ) );
-        idt refID = recEventa::FindReferenceID( erID );
+        idt refID = er.FGetRefID();
 
         wxString cat1, cat2, dStr, pStr;
         if( er.FGetDate1ID() || er.FGetPlaceID() ) {

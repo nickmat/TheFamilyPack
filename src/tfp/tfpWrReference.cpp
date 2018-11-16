@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     24 October 2010
- * Copyright:   Copyright (c) 2010 - 2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2018, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -46,8 +46,6 @@ static wxString GetHref( const recReferenceEntity& ref )
     wxString idStr = recGetStr( ref.FGetEntityID() );
     switch( ref.FGetEntityType() )
     {
-    case recReferenceEntity::TYPE_Event:
-        return "tfp:Ea" + idStr;
     case recReferenceEntity::TYPE_Place:
         return "tfpi:P" + idStr;
     case recReferenceEntity::TYPE_Date:
@@ -164,9 +162,7 @@ wxString tfpWriteReferencePage( idt refID )
     ;
     recIdVec perIDs = ref.GetPersonaList();
     if( perIDs.size() ) {
-        htm <<
-            "<tr><th colspan='5'>Persona</th></tr>\n"
-        ;
+        htm << "<tr><th colspan='5'>Persona</th></tr>\n";
         for( size_t i = 0 ; i < perIDs.size() ; i++ ) {
             recPersona per(perIDs[i]);
             htm <<
@@ -192,6 +188,35 @@ wxString tfpWriteReferencePage( idt refID )
         }
     } else {
         htm << "<tr><th>No Persona Entered</th></tr>\n";
+    }
+    htm << "</table>\n<table class='data'>\n";
+
+    recIdVec eaIDs = ref.GetEventaList();
+    if ( !eaIDs.empty() ) {
+        htm << "<tr><th colspan='4'>Eventa</th></tr>\n";
+        for ( idt eaID : eaIDs ) {
+            recEventa ea( eaID );
+            htm <<
+                "<tr><td><b><a href='tfp:Ea" << recGetStr( ea.FGetID() ) <<
+                "'>" << ea.GetIdStr() <<
+                "</a></b></td><td>" << ea.FGetTitle() <<
+                "</td><td>" << ea.FGetNote() <<
+                "</td><td><b>"
+            ;
+            recIdVec eveIDs = ea.GetLinkedEventIDs();
+            for ( idt eveID : eveIDs ) {
+                if ( eveID != *eveIDs.begin() ) {
+                    htm << ", ";
+                }
+                htm <<
+                    "<a href='tfp:E" << eveID <<
+                    "'>" << recEvent::GetIdStr( eveID ) <<
+                    "</a>"
+                ;
+            }
+        }
+    } else {
+        htm << "<tr><th>No Eventa Entered</th></tr>\n";
     }
     htm << "</table>\n<table class='data'>\n";
 
