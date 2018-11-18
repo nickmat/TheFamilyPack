@@ -166,6 +166,7 @@ public:
 
     wxString GetDisplay() const { return m_back[m_back.size()-1]; }
     bool DisplayHtmPage( const wxString& name );
+    bool DisplayReferenceLinkPage( const wxString& name );
     void RefreshHtmPage();
     bool DisplayHomePage();
     wxString GetDisplayText( wxString& name );

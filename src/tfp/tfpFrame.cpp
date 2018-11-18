@@ -1100,11 +1100,15 @@ void TfpFrame::OnNavigationRequest( wxWebViewEvent& evt )
         // do nothing
         return;
     }
-    if( url.StartsWith( "tfp:" ) ) {
+    if ( url.StartsWith( "tfp:" ) ) {
         DisplayHtmPage( url.Mid( 4 ) );
         return;
     }
-    if( url.StartsWith( "tfpe:" ) ) {
+    if ( url.StartsWith( "tfpr:" ) ) {
+        DisplayReferenceLinkPage( url.Mid( 5 ) );
+        return;
+    }
+    if ( url.StartsWith( "tfpe:" ) ) {
         DoEdit( url.Mid( 5 ) );
         return;
     }
@@ -1709,11 +1713,8 @@ void TfpFrame::RefreshEditMenu()
             m_menuEditEvent->Enable( tfpID_EDIT_EVENT_CURRENT, true );
             m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
         } else if( disp.size() >= 3 && (
-                ( disp.GetChar( 1 ) == 'a' && wxIsdigit( disp.GetChar( 2 ) ) ) ||
-                ( disp.GetChar( 1 ) == '^' && wxIsdigit( disp.GetChar( 2 ) ) )
-                ) ) {
-            m_editEventID = recGetID( disp.Mid( 2 ) );
-            name = recEventa::GetTitle( m_editEventID );
+            ( disp.GetChar( 1 ) == 'a' && wxIsdigit( disp.GetChar( 2 ) ) )
+        ) ) { // Ea<number>
             m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
         }
         break;
@@ -1727,7 +1728,7 @@ void TfpFrame::RefreshEditMenu()
     case 'P':
         if( disp.size() >= 3 && disp.GetChar( 1 ) == 'a'
             && wxIsdigit( disp.GetChar( 2 ) ) 
-        ) {
+        ) { // Pa<number>
             m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
         }
         break;
@@ -1756,6 +1757,23 @@ bool TfpFrame::DisplayHtmPage( const wxString& pagename )
     return false;
 }
 
+bool TfpFrame::DisplayReferenceLinkPage( const wxString & name )
+{
+    if ( name.compare( 0, 2, "Pa" ) == 0 && name.size() > 2 ) {
+        wxLongLong_t id;
+        wxString value = name.substr( 2 );
+        if ( value.ToLongLong( &id ) ) {
+            recIdVec indIDs = recPersona::GetIndividualIDs( id );
+            if ( indIDs.size() == 1 ) {
+                DisplayHtmPage( recIndividual::GetIdStr( indIDs[0] ) );
+                return true;
+            }
+        }
+    }
+    DisplayHtmPage( name );
+    return true;
+}
+
 void TfpFrame::RefreshHtmPage()
 {
     wxString name = GetCurrentName();
@@ -1776,7 +1794,6 @@ wxString TfpFrame::GetDisplayText( wxString& name )
 {
     wxString pagename( name );
     name.MakeUpper();
-    // TODO: We need to do this in a try ... catch framework.
     wxASSERT( name.size() > 0 );
     wxLongLong_t num, num1 = 0, num2 = 0;
     bool success, success1 = false, success2 = false;
