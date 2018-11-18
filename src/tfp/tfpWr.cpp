@@ -44,6 +44,7 @@
 
 #include <wx/fs_mem.h>
 #include <wx/mstream.h>
+#include <wx/tokenzr.h>
 
 wxString tfpWrHeadTfp( const wxString& title, const wxString& css )
 {
@@ -56,14 +57,16 @@ wxString tfpWrHeadTfp( const wxString& title, const wxString& css )
         "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>\n"
     ;
     if( css.size() ) {
-        htm <<
-            "<link rel='stylesheet' type='text/css' href='memory:" << css <<
-            ".css'>\n"
-        ;
+        wxStringTokenizer tokenizer( css, ";" );
+        while ( tokenizer.HasMoreTokens() ) {
+            wxString file = tokenizer.GetNextToken();
+            htm <<
+                "<link rel='stylesheet' type='text/css' href='memory:" << file <<
+                ".css'>\n"
+            ;
+        }
     }
-    htm <<
-        "</head>\n<body>\n<div class='tfp'>\n"
-    ;
+    htm << "</head>\n<body>\n<div class='tfp'>\n";
     return htm;
 }
 
