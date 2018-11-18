@@ -326,8 +326,7 @@ wxString tfpWriteIndividualPage( idt indID )
             recIndividualEvent ie( 0 );
             ie.Find( indID, meID, recEventTypeRole::ROLE_Media_Subject );
             for ( idt refID : refs ) {
-                recReference ref( refID );
-                recIdVec medIDs = ref.GetMediaList( refID );
+                recIdVec medIDs = recReference::GetMediaList( refID );
                 if ( !medIDs.empty() ) {
                     recMedia med( medIDs[0] );
                     wxString fn = tfpGetMediaDataFile( med.FGetDataID(), med.FGetAssID() );
@@ -347,7 +346,7 @@ wxString tfpWriteIndividualPage( idt indID )
                         << "'><b>" << med.GetIdStr()
                         << "</b></a></td>\n<td class='title'>" << title
                         << "</td>\n</tr>\n"
-                        "<tr>\n<td colspan='2'>" << ref.FGetStatement()
+                        "<tr>\n<td colspan='2'>" << med.FGetNote()
                         << "</td>\n</tr>\n"
                     ;
                 }
