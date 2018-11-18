@@ -35,9 +35,11 @@
 #endif
 
 #include <rec/recReference.h>
-#include <rec/recPersona.h>
-#include <rec/recIndividual.h>
+
 #include <rec/recEvent.h>
+#include <rec/recIndividual.h>
+#include <rec/recMedia.h>
+#include <rec/recPersona.h>
 
 #include "tfpWr.h"
 
@@ -157,9 +159,32 @@ wxString tfpWriteReferencePage( idt refID )
     }
 
     htm <<
-        "<div>\n<p><b>User Ref:</b> " << ref.FGetUserRef() << "</p>\n</div>\n" 
-        "<hr>\n<table class='data'>\n"
+        "<div>\n<p><b>User Ref:</b> " << ref.FGetUserRef() << "</p>\n</div>\n"
+        "<hr>\n"
     ;
+
+    recIdVec medIDs = ref.GetMediaList( refID );
+    if ( !medIDs.empty() ) {
+        htm << "<table class='media'>\n<tr><th colspan='3'>Media</th></tr>\n";
+        for ( idt medID : medIDs ) {
+            recMedia med( medID );
+            wxString fn = tfpGetMediaDataFile( med.FGetDataID(), med.FGetAssID() );
+            htm << "<tr>\n<td rowspan='2'><a href='tfpv:M"
+                << med.FGetID()
+                << "'><img src='" << fn << "' alt='' height='100' /></a></td>"
+                "<td><a href='tfp:M" << med.FGetID()
+                << "'><b>" << med.GetIdStr()
+                << "</b></a></td>\n<td class='title'>" << med.FGetTitle()
+                << "</td>\n</tr>\n"
+                "<tr>\n<td colspan='2'>" << med.FGetNote()
+                << "</td>\n</tr>\n"
+            ;
+        }
+        htm << "</table>\n";
+    }
+
+
+    htm << "<table class='data'>\n";
     recIdVec perIDs = ref.GetPersonaList();
     if( perIDs.size() ) {
         htm << "<tr><th colspan='5'>Persona</th></tr>\n";
