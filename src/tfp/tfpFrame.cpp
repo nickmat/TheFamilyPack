@@ -1760,12 +1760,20 @@ bool TfpFrame::DisplayHtmPage( const wxString& pagename )
 bool TfpFrame::DisplayReferenceLinkPage( const wxString & name )
 {
     if ( name.compare( 0, 2, "Pa" ) == 0 && name.size() > 2 ) {
-        wxLongLong_t id;
-        wxString value = name.substr( 2 );
-        if ( value.ToLongLong( &id ) ) {
+        idt id = recGetID( name.substr( 2 ) );
+        if ( id ) {
             recIdVec indIDs = recPersona::GetIndividualIDs( id );
-            if ( indIDs.size() == 1 ) {
+            if ( !indIDs.empty() ) {
                 DisplayHtmPage( recIndividual::GetIdStr( indIDs[0] ) );
+                return true;
+            }
+        }
+    } else if ( name.compare( 0, 2, "Ea" ) == 0 && name.size() > 2 ) {
+        idt id = recGetID( name.substr( 2 ) );
+        if ( id ) {
+            recIdVec eveIDs = recEventa::GetLinkedEventIDs( id );
+            if ( !eveIDs.empty() ) {
+                DisplayHtmPage( recEvent::GetIdStr( eveIDs[0] ) );
                 return true;
             }
         }
