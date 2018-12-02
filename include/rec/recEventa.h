@@ -115,6 +115,7 @@ public:
     static wxSQLite3Table GetTitleList();
     static wxSQLite3Table GetTitleList( idt offset, int limit );
 
+    // NOTE: Use, void recEventaPersona::SetNextPerSequence( idt eaID );
     static int GetLastPerSeqNumber( idt eventID );
     int GetLastPerSeqNumber() const { return GetLastPerSeqNumber( f_id ); }
 

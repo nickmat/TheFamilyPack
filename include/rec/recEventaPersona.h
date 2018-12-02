@@ -64,6 +64,9 @@ public:
     void FSetNote( const wxString& note ) { f_note = note; }
     void FSetPerSeq( int perSeq ) { f_per_seq = perSeq; }
 
+    static idt CreateLink( idt eaID, idt perID, idt roleID, const wxString& note = "" );
+    void SetNextPerSequence( idt eaID );
+
     static wxString GetIdStr( idt epID ) { return wxString::Format( "EP" ID, epID ); }
     wxString GetIdStr() const { return GetIdStr( FGetID() ); }
 

@@ -1,3 +1,5 @@
+#include "..\..\include\rec\recEventaPersona.h"
+#include "..\..\include\rec\recEventaPersona.h"
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Name:        src/rec/recEventaPersona.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
@@ -133,6 +135,28 @@ bool recEventaPersona::Read()
     f_note         = result.GetAsString( 4 );
     f_per_seq      = result.GetInt( 5 );
     return true;
+}
+
+idt recEventaPersona::CreateLink( idt eaID, idt perID, idt roleID, const wxString & note )
+{
+    if ( eaID == 0 || perID == 0 ) return 0;
+    recEventaPersona ep( 0 );
+    ep.FSetRoleID( roleID );
+    ep.FSetEventaID( eaID );
+    ep.FSetPerID( perID );
+    ep.FSetNote( note );
+    ep.SetNextPerSequence( eaID );
+    ep.Save();
+    return ep.FGetID();
+}
+
+void recEventaPersona::SetNextPerSequence( idt eaID )
+{
+    int seq = ExecuteInt(
+        "SELECT MAX(per_seq) FROM EventaPersona WHERE eventa_id=" ID ";",
+        eaID
+    );
+    FSetPerSeq( seq + 1 );
 }
 
 wxString recEventaPersona::GetRoleStr( idt perID, idt typeID )
