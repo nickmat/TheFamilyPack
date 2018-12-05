@@ -78,6 +78,9 @@ extern wxString tfpWriteGalleryPage( idt galID );
 // See tfpWrIndividual.cpp
 extern wxString tfpWriteIndividualPage( idt indID );
 
+// See tfpWrMedia.cpp
+extern wxString tfpWriteMediaPage( idt medID );
+
 // See tfpWrName.cpp
 extern wxString tfpWriteSurnameIndex( recSurnameGroup sng );
 extern wxString tfpWriteNameList( const wxString& sname, recSurnameGroup sng );

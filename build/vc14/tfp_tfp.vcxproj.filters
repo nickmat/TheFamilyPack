@@ -69,6 +69,9 @@
     <ClCompile Include="..\..\src\tfp\tfpWrIndividual.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\tfp\tfpWrMedia.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\tfp\tfpWrName.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

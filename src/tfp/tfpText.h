@@ -408,6 +408,9 @@ static const char s_tab_css[] =  /* tab.css */
  "background-color: transparent;\n"
  "border: none;\n"
  "font-size: 0.5em;\n"
+ "}\n"
+ "table.data td.media {\n"
+ "text-align: center;\n"
  "}\n";
 
 /* End of tfpText.f2c */

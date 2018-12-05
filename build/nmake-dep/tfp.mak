@@ -77,6 +77,7 @@ TFP_OBJECTS =  \
 	tfp_tfpWrFamily.obj \
 	tfp_tfpWrGallery.obj \
 	tfp_tfpWrIndividual.obj \
+	tfp_tfpWrMedia.obj \
 	tfp_tfpWrName.obj \
 	tfp_tfpWrNotes.obj \
 	tfp_tfpWrPersona.obj \
@@ -483,6 +484,9 @@ tfp_tfpWrGallery.obj: .\..\..\src\tfp\tfpWrGallery.cpp
 
 tfp_tfpWrIndividual.obj: .\..\..\src\tfp\tfpWrIndividual.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrIndividual.cpp
+
+tfp_tfpWrMedia.obj: .\..\..\src\tfp\tfpWrMedia.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrMedia.cpp
 
 tfp_tfpWrName.obj: .\..\..\src\tfp\tfpWrName.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrName.cpp

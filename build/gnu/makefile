@@ -85,6 +85,7 @@ TFP_OBJECTS =  \
 	tfp_tfpWrFamily.o \
 	tfp_tfpWrGallery.o \
 	tfp_tfpWrIndividual.o \
+	tfp_tfpWrMedia.o \
 	tfp_tfpWrName.o \
 	tfp_tfpWrNotes.o \
 	tfp_tfpWrPersona.o \
@@ -320,6 +321,9 @@ tfp_tfpWrGallery.o: ./../../src/tfp/tfpWrGallery.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
 tfp_tfpWrIndividual.o: ./../../src/tfp/tfpWrIndividual.cpp
+	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
+
+tfp_tfpWrMedia.o: ./../../src/tfp/tfpWrMedia.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
 tfp_tfpWrName.o: ./../../src/tfp/tfpWrName.cpp

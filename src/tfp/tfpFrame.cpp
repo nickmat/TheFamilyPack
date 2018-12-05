@@ -1870,6 +1870,9 @@ wxString TfpFrame::GetDisplayText( wxString& name )
         if ( name.compare( 0, 1, "I" ) == 0 && success ) {
             return tfpWriteIndividualPage( num );
         }
+        if ( name.compare( 0, 1, "M" ) == 0 && success ) {
+            return tfpWriteMediaPage( num );
+        }
         if ( name.compare( "NI" ) == 0 ) {
             return tfpWriteSurnameIndex( recSG_Individual );
         }

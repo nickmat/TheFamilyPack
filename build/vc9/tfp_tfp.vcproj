@@ -309,6 +309,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\tfp\tfpWrMedia.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\tfp\tfpWrName.cpp"
 				>
 			</File>

@@ -35,7 +35,7 @@ class recMediaData : public recDb
 public:
     recMediaData() {}
     recMediaData( idt id ) : recDb( id ) { Read(); }
-    recMediaData( const recMediaData& name );
+    recMediaData( const recMediaData& md );
 
     void Clear();
     void Save();
@@ -52,6 +52,9 @@ public:
     void FSetPrivacy( int privacy ) { f_privacy = privacy; }
     void FSetCopyright( const wxString& copyright ) { f_copyright = copyright; }
     void FSetFile( const wxString& file ) { f_file = file; }
+
+    static wxString GetIdStr( idt medID ) { return wxString::Format( "MD" ID, medID ); }
+    wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     static wxString GetFileName( idt mdID );
 

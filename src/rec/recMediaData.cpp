@@ -133,7 +133,7 @@ bool recMediaData::Equivalent( const recMediaData& r2 ) const
 
 wxString recMediaData::GetFileName( idt mdID )
 {
-    return recDb::ExecuteStr( "SELECT file FROM MediaData WHERE id=" ID ";", mdID );
+    return ExecuteStr( "SELECT file FROM MediaData WHERE id=" ID ";", mdID );
 }
 
 

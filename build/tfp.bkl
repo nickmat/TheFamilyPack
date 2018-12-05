@@ -99,6 +99,7 @@
     <sources>$(LOCAL_SRC)/tfp/tfpWrFamily.cpp</sources>
     <sources>$(LOCAL_SRC)/tfp/tfpWrGallery.cpp</sources>
     <sources>$(LOCAL_SRC)/tfp/tfpWrIndividual.cpp</sources>
+    <sources>$(LOCAL_SRC)/tfp/tfpWrMedia.cpp</sources>
     <sources>$(LOCAL_SRC)/tfp/tfpWrName.cpp</sources>
     <sources>$(LOCAL_SRC)/tfp/tfpWrNotes.cpp</sources>
     <sources>$(LOCAL_SRC)/tfp/tfpWrPersona.cpp</sources>
