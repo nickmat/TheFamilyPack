@@ -39,6 +39,7 @@
 #include <rec/recAssociate.h>
 #include <rec/recMedia.h>
 #include <rec/recMediaData.h>
+#include <rec/recReference.h>
 
 
 wxString tfpWriteMediaPage( idt medID )
@@ -51,8 +52,8 @@ wxString tfpWriteMediaPage( idt medID )
     recAssociate ass( med.FGetAssID() );
     recMediaData md( med.FGetDataID() );
     wxString fn = tfpGetMediaDataFile( med.FGetDataID(), med.FGetAssID() );
-    wxString dataPath = ( med.FGetAssID() == 0 ) ? "Local" : ass.FGetPath()  +
-        ": " + md.FGetFile();
+    wxString dataPath = ( med.FGetAssID() == 0 ) ? "Main" : ass.FGetPath();
+    dataPath += ": " + md.FGetFile();
     wxString dataIdStr = ass.GetIdStr() + ":" + md.GetIdStr();
     wxString copyright = md.FGetCopyright();
     if ( copyright.empty() ) {
@@ -81,6 +82,12 @@ wxString tfpWriteMediaPage( idt medID )
         "<td>" << med.FGetNote() << "</td>\n"
         "</tr>\n"
         "<tr>\n"
+        "<td>Reference:</td>\n"
+        "<td><b><a href='tfp:R" << med.FGetRefID() <<
+        "'>" << recReference::GetIdStr( med.FGetRefID() ) <<
+        "</a></b> " << recReference::GetTitle( med.FGetRefID() ) << "</td>\n"
+        "</tr>\n"
+        "<tr>\n"
         "<th colspan='2'>Media Data Details</th>\n"
         "</tr>\n"
         "<tr>\n"
@@ -89,7 +96,7 @@ wxString tfpWriteMediaPage( idt medID )
         "</tr>\n"
         "<tr>\n"
         "<td colspan='2'>ID: <b>" << dataIdStr << "</b>"
-        " Privacy: <b>" << md.FGetPrivacy() << "</b>" 
+        " Privacy: <b>" << md.FGetPrivacy() << "</b>"
         " Copyright: <b>" << copyright << "</b></td>\n"
         "</tr>\n"
         "</table>\n" << tfpWrTailTfp()
