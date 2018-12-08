@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010 - 2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2018, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -119,11 +119,6 @@ public:
         { s_db->ReleaseSavepoint( str ); }
     static void Rollback( const wxString& str ) { s_db->Rollback( str ); }
 
-
-    /*! Return a the table name.
-     */
-    virtual const char* GetTableName() const = 0;
-
     /*! Clear all data to default values.
      */
     virtual void Clear() = 0;
@@ -159,13 +154,15 @@ public:
     static wxString ExecuteStr( const char* format, idt id );
 };
 
-#define TABLE_NAME_MEMBERS( T )                                        \
-    const char* GetTableName() const { return (T); }                   \
-    bool Delete() { return DeleteRecord( (T), f_id ); }                \
-    static bool Delete( idt id ) { return DeleteRecord( (T), id ); }   \
-    bool Exists() { return RecordExists( (T), f_id ); }                \
-    static bool Exists( idt id ) { return RecordExists( (T), id ); }   \
-    static int UserCount() { return GetUserCount(T); }                 \
-    static int Count() { return GetCount(T); }
+#define TABLE_NAME_MEMBERS( T )                                                \
+    static constexpr const char* s_tablename = T;                              \
+    bool Delete() const { return DeleteRecord( s_tablename, f_id ); }          \
+    static bool Delete( idt id ) { return DeleteRecord( s_tablename, id ); }   \
+    bool Exists() const { return RecordExists( s_tablename, f_id ); }          \
+    static bool Exists( idt id ) { return RecordExists( s_tablename, id ); }   \
+    static int UserCount() { return GetUserCount( s_tablename ); }             \
+    static int Count() { return GetCount( s_tablename ); }                     \
+    static bool TableExists( const wxString& db = wxEmptyString ) {            \
+        return  s_db->TableExists( s_tablename, db ); }
 
 #endif // RECDATABASE_H
