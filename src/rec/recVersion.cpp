@@ -65,8 +65,8 @@ bool recVersion::Read()
     }
 
     sql.Format(
-        "SELECT data_id, ass_id, ref_id, privacy, title, note"
-        " FROM Media WHERE id=" ID ";",
+        "SELECT major, minor, revision, test"
+        " FROM Version WHERE id=" ID ";",
         f_id
     );
     wxSQLite3Table result = s_db->GetTable( sql );
