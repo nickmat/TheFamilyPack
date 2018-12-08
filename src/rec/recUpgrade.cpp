@@ -37,12 +37,21 @@
 
 #include <rec/recVersion.h>
 
-// This is the database version that this program is designed to work with.
-const int recVerMajor    = 0;
-const int recVerMinor    = 0;
-const int recVerRev      = 10;
-const int recVerTest     = 18;                              // <<======<<<<
-const wxStringCharType* recVerStr = wxS("TFPD-0.0.10.18");  // <<======<<<<
+// This is the database full version that this program is designed to work with.
+const int recVerMajor = 0;
+const int recVerMinor = 0;
+const int recVerRev = 10;
+const int recVerTest = 19;                                    // <<======<<<<
+const wxStringCharType* recVerStr = wxS( "TFPD-0.0.10.19" );  // <<======<<<<
+
+// This is the database Media only version that this program can work with.
+// If the full version matches, then this is assumed to match as well.
+// If one is full and one Media-only then these should match.
+const int recMediaVerMajor = 0;
+const int recMediaVerMinor = 0;
+const int recMediaVerRev = 0;
+const int recMediaVerTest = 1;                                 // <<======<<<<
+const wxStringCharType* recMediaVerStr = wxS( "MD-0.0.0.1" );  // <<======<<<<
 
 //============================================================================
 //                 Code to upgrade old versions
@@ -753,6 +762,21 @@ void UpgradeTest0_0_10_17to0_0_10_18()
     recDb::GetDb()->ExecuteUpdate( query );
 }
 
+void UpgradeTest0_0_10_18to0_0_10_19()
+{
+    // Version 0.0.10.18 to 0.0.10.19
+    // Add Version record 2, the Media-only version number.
+    // Initialised at Version 0.0.0.1
+
+    char* query =
+        "BEGIN;\n"
+        "INSERT INTO Version ( id, major, minor, revision, test ) VALUES( 2, 0, 0, 0, 1 );\n"
+        "UPDATE Version SET test=19 WHERE id=1;\n"
+        "COMMIT;\n"
+    ;
+    recDb::GetDb()->ExecuteUpdate( query );
+}
+
 void UpgradeRev0_0_10toCurrent( int test )
 {
     switch( test )
@@ -775,6 +799,7 @@ void UpgradeRev0_0_10toCurrent( int test )
     case 15: UpgradeTest0_0_10_15to0_0_10_16();
     case 16: UpgradeTest0_0_10_16to0_0_10_17();
     case 17: UpgradeTest0_0_10_17to0_0_10_18();
+    case 18: UpgradeTest0_0_10_18to0_0_10_19();
     }
 }
 
@@ -782,7 +807,7 @@ void UpgradeRev0_0_10toCurrent( int test )
 
 bool recDoUpgrade()
 {
-    recVersion v;
+    recVersion v( recDb::DT_Full );
     if( v.IsEqual( recVerMajor, recVerMinor, recVerRev, recVerTest ) ) {
         return true; // Already current vertion
     }

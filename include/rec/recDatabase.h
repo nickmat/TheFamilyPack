@@ -37,6 +37,12 @@ extern void recUninitialize();
 class recDb
 {
 public:
+    enum DatabaseType {
+        DT_NULL,
+        DT_Full,
+        DT_MediaOnly,
+        DT_MAX
+    };
     enum CreateFlags {
         CREATE_DB_STD_EXT = 0x0001,
         CREATE_DB_ENUM_FN = 0x0002

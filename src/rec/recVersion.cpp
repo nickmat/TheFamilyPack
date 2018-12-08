@@ -5,8 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     24 October 2010
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010-2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2018, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -58,7 +57,18 @@ void recVersion::Clear()
 
 bool recVersion::Read()
 {
-    char* sql = "SELECT major, minor, revision, test FROM Version WHERE id=1;";
+    wxSQLite3StatementBuffer sql;
+
+    if ( f_id == 0 ) {
+        Clear();
+        return false;
+    }
+
+    sql.Format(
+        "SELECT data_id, ass_id, ref_id, privacy, title, note"
+        " FROM Media WHERE id=" ID ";",
+        f_id
+    );
     wxSQLite3Table result = s_db->GetTable( sql );
     if( result.GetRowCount() != 1 ) {
         Clear();
@@ -75,7 +85,7 @@ bool recVersion::Read()
 
 wxString recVersion::GetVersionStr()
 {
-    recVersion v;
+    recVersion v( DT_Full );
     return wxString::Format(
         "%d.%d.%d.%d",
         v.f_major, v.f_minor, v.f_revision, v.f_test

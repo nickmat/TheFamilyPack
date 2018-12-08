@@ -554,8 +554,10 @@ INSERT INTO System (id, val) VALUES(1, '1');
 INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 0, 1, 'F1');
 INSERT INTO UserSetting (id, user_id, property, val) VALUES(2, 1, 1, 'F1');
 
-/* The Version table has only this one row */
+/* The Version table row 1 is the full TFPD database */
 INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 18);
+/* Row 2 is the Media-only database */
+INSERT INTO Version (id, major, minor, revision, test) VALUES(2, 0, 0, 0, 1);
 
 COMMIT;
 

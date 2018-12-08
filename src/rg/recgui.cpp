@@ -3,11 +3,9 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Manage the rec lib GUI interface functions.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     22 October 2012
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2012, Nick Matthews.
+ * Copyright:   Copyright (c) 2012 ~ 2018, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -83,7 +81,7 @@ int recGetSingleChoiceIndex( const wxString& caption, const wxArrayString& choic
 
 bool recPermissionToUpgrade()
 {
-    recVersion v;
+    recVersion v( recDb::DT_Full );
     wxString mess = wxString::Format(
         _("Upgrade database from version from V%s to V%s"), 
         v.GetVersionStr(), recVerStr

@@ -5,8 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     24 October 2010
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010-2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2018, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -39,15 +38,22 @@ extern const int recVerRev;
 extern const int recVerTest;
 extern const wxStringCharType* recVerStr;
 
+extern const int recMediaVerMajor;
+extern const int recMediaVerMinor;
+extern const int recMediaVerRev;
+extern const int recMediaVerTest;
+extern const wxStringCharType* recMediaVerStr;
+
 extern bool recDoUpgrade();
 
 
 class recVersion : public recDb
 {
 public:
-    recVersion() { Read(); }
+    recVersion() {}
+    recVersion( idt id ) : recDb( id ) { Read(); }
     recVersion( const recVersion& ver );
-    bool Read();
+    bool Read() override;
 
     int FGetMajor() const { return f_major; }
     int FGetMinor() const { return f_minor; }
@@ -72,8 +78,8 @@ public:
         int major, int minor = -1, int revision = -1, int test = -1 ) const;
 
 private:
-    void Clear();
-    void Save() { wxASSERT( false ); }
+    void Clear() override;
+    void Save() override { wxASSERT( false ); }
     TABLE_NAME_MEMBERS( "Version" );
 
     int  f_major;
