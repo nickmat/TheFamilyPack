@@ -89,7 +89,7 @@ idt rgCreateIndEvent(
         recIndividual::GetName( ind2ID )
     );
     eve.Save();
-    idt eveID = eve.GetID();
+    idt eveID = eve.FGetID();
 
     recIndividualEvent ie(0);
     ie.FSetEventID( eveID );
@@ -178,7 +178,7 @@ idt rgCreateDefaultIndEvent( wxWindow* wind, idt ind1ID, idt ind2ID, recET_GRP g
         recIndividual::GetName( ind2ID )
     );
     eve.Save();
-    idt eveID = eve.GetID();
+    idt eveID = eve.FGetID();
 
     recIndividualEvent ie(0);
     ie.FSetEventID( eveID );
@@ -299,7 +299,7 @@ rgDlgEditEvent::rgDlgEditEvent( wxWindow* parent, idt eventID )
 
 bool rgDlgEditEvent::TransferDataToWindow()
 {
-    wxASSERT( m_event.GetID() != 0 );
+    wxASSERT( m_event.FGetID() != 0 );
     m_staticType->SetLabel( m_event.GetTypeStr() );
     m_textCtrlTitle->SetValue( m_event.FGetTitle() );
     m_textCtrlDate1->SetValue( recDate::GetStr( m_date1ID ) );

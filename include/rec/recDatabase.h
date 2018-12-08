@@ -137,8 +137,6 @@ public:
     virtual bool Read() = 0;
     bool ReadID( idt id ) { f_id = id; return Read(); }
 
-    idt GetID() const { return f_id; }
-    void SetID( idt id ) { f_id = id; }
     idt FGetID() const { return f_id; }
     void FSetID( idt id ) { f_id = id; }
 

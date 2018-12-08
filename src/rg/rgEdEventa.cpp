@@ -306,7 +306,7 @@ rgDlgEditEventa::rgDlgEditEventa( wxWindow* parent, idt erID )
 
 bool rgDlgEditEventa::TransferDataToWindow()
 {
-    wxASSERT( m_event.GetID() != 0 );
+    wxASSERT( m_event.FGetID() != 0 );
     m_staticType->SetLabel( m_event.GetTypeStr() );
     m_textCtrlTitle->SetValue( m_event.FGetTitle() );
     m_staticDate1->SetLabel( recDate::GetStr( m_date1ID ) );

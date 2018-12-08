@@ -571,7 +571,7 @@ void rgDlgEditReference::OnNewName( wxCommandEvent& event )
     recDb::Savepoint( savepoint );
 
     idt perID = rgSelectPersona(
-        this, m_reference.GetID(), rgSELSTYLE_Create, rgSELPER_CreateUnnamed
+        this, m_reference.FGetID(), rgSELSTYLE_Create, rgSELPER_CreateUnnamed
         );
     if ( perID == 0 ) {
         recDb::Rollback( savepoint );
