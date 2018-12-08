@@ -1,5 +1,3 @@
-#include "..\..\include\rec\recEventaPersona.h"
-#include "..\..\include\rec\recEventaPersona.h"
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Name:        src/rec/recEventaPersona.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
