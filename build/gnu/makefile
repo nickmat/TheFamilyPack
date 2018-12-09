@@ -157,6 +157,7 @@ RECGUI_CXXFLAGS = $(VAR) $(VAR_4) -I../../include/rec -I../../include/rg \
 	-I../../include `$(WX_CONFIG) --cxxflags $(WX_CONFIG_FLAGS)` $(CPPFLAGS) \
 	$(CXXFLAGS)
 RECGUI_OBJECTS =  \
+	recgui_fbRgCreateDatabase.o \
 	recgui_fbRgEditGallery.o \
 	recgui_fbRgEditMedia.o \
 	recgui_fbRgEditReference.o \
@@ -165,6 +166,7 @@ RECGUI_OBJECTS =  \
 	recgui_fbRgDialog.o \
 	recgui_recgui.o \
 	recgui_rgCompareEvent.o \
+	recgui_rgCrDatabase.o \
 	recgui_rgCrIndividual.o \
 	recgui_rgCrName.o \
 	recgui_rgEdContact.o \
@@ -485,6 +487,9 @@ rec_dummy.o: ./../../src/dummy.cpp
 reccl_reccl.o: ./../../src/rc/reccl.cpp
 	$(CXX) -c -o $@ $(RECCL_CXXFLAGS) $(CPPDEPS) $<
 
+recgui_fbRgCreateDatabase.o: ./../../src/rg/fb/fbRgCreateDatabase.cpp
+	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
+
 recgui_fbRgEditGallery.o: ./../../src/rg/fb/fbRgEditGallery.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
@@ -507,6 +512,9 @@ recgui_recgui.o: ./../../src/rg/recgui.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgCompareEvent.o: ./../../src/rg/rgCompareEvent.cpp
+	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
+
+recgui_rgCrDatabase.o: ./../../src/rg/rgCrDatabase.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgCrIndividual.o: ./../../src/rg/rgCrIndividual.cpp

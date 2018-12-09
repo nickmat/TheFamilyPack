@@ -192,6 +192,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath="..\..\src\rg\fb\fbRgCreateDatabase.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rg\fbRgDialog.cpp"
 				>
 			</File>
@@ -221,6 +225,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\rg\rgCompareEvent.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgCrDatabase.cpp"
 				>
 			</File>
 			<File
@@ -346,6 +354,10 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath="..\..\src\rg\fb\fbRgCreateDatabase.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rg\fbRgDialog.h"
 				>
 			</File>
@@ -375,6 +387,10 @@
 			</File>
 			<File
 				RelativePath="..\..\include\rg\rgCompareEvent.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgCrDatabase.h"
 				>
 			</File>
 			<File

@@ -134,6 +134,7 @@
 
   <lib id="recgui" template="wx-lib,wxlike">
     <libname>recgui$(WXLIBPOSTFIX)</libname>
+    <sources>$(LOCAL_SRC)/rg/fb/fbRgCreateDatabase.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/fb/fbRgEditGallery.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/fb/fbRgEditMedia.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/fb/fbRgEditReference.cpp</sources>
@@ -142,6 +143,7 @@
     <sources>$(LOCAL_SRC)/rg/fbRgDialog.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/recgui.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgCompareEvent.cpp</sources>
+    <sources>$(LOCAL_SRC)/rg/rgCrDatabase.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgCrIndividual.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgCrName.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdContact.cpp</sources>
@@ -176,6 +178,7 @@
     <headers>$(LOCAL_INC)/rg/rgDialogs.h</headers>
     <headers>$(LOCAL_INC)/rg/rgImagePanel.h</headers>
 
+    <headers>$(LOCAL_SRC)/rg/fb/fbRgCreateDatabase.h</headers>
     <headers>$(LOCAL_SRC)/rg/fb/fbRgEditGallery.h</headers>
     <headers>$(LOCAL_SRC)/rg/fb/fbRgEditMedia.h</headers>
     <headers>$(LOCAL_SRC)/rg/fb/fbRgEditReference.h</headers>
@@ -183,6 +186,7 @@
     <headers>$(LOCAL_SRC)/rg/fb/fbRgViewMedia.h</headers>
     <headers>$(LOCAL_SRC)/rg/fbRgDialog.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgCommon.h</headers>
+    <headers>$(LOCAL_SRC)/rg/rgCrDatabase.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgCrIndividual.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgCrName.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdContact.h</headers>

@@ -195,6 +195,7 @@ RECGUI_CXXFLAGS = /MD$(VAR_19) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) \
 	/I..\..\include\rec /I..\..\include\rg /I..\..\include /GR /EHsc $(CPPFLAGS) \
 	$(CXXFLAGS)
 RECGUI_OBJECTS =  \
+	recgui_fbRgCreateDatabase.obj \
 	recgui_fbRgEditGallery.obj \
 	recgui_fbRgEditMedia.obj \
 	recgui_fbRgEditReference.obj \
@@ -203,6 +204,7 @@ RECGUI_OBJECTS =  \
 	recgui_fbRgDialog.obj \
 	recgui_recgui.obj \
 	recgui_rgCompareEvent.obj \
+	recgui_rgCrDatabase.obj \
 	recgui_rgCrIndividual.obj \
 	recgui_rgCrName.obj \
 	recgui_rgEdContact.obj \
@@ -658,6 +660,9 @@ rec_dummy.obj: .\..\..\src\dummy.cpp
 reccl_reccl.obj: .\..\..\src\rc\reccl.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECCL_CXXFLAGS) .\..\..\src\rc\reccl.cpp
 
+recgui_fbRgCreateDatabase.obj: .\..\..\src\rg\fb\fbRgCreateDatabase.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\fb\fbRgCreateDatabase.cpp
+
 recgui_fbRgEditGallery.obj: .\..\..\src\rg\fb\fbRgEditGallery.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\fb\fbRgEditGallery.cpp
 
@@ -681,6 +686,9 @@ recgui_recgui.obj: .\..\..\src\rg\recgui.cpp
 
 recgui_rgCompareEvent.obj: .\..\..\src\rg\rgCompareEvent.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgCompareEvent.cpp
+
+recgui_rgCrDatabase.obj: .\..\..\src\rg\rgCrDatabase.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgCrDatabase.cpp
 
 recgui_rgCrIndividual.obj: .\..\..\src\rg\rgCrIndividual.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgCrIndividual.cpp

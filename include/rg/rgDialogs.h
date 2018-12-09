@@ -49,6 +49,9 @@ enum {
     rgSELSTYLE_SelList    = 0x0100    // Selects the full list
 };
 
+// See src/rg/rgCrDatabase.cpp
+extern bool rgCreateDatabase( wxWindow* wnd );
+
 // See src/rg/rgCrName.cpp
 enum {
     rgCRNAME_Default    = 0x0000, // Use default settings to decode name1 string.
