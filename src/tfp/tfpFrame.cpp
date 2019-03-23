@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     25 September 2010
- * Copyright:   Copyright (c) 2010 ~ 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2019, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -70,6 +70,10 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_NEW_WINDOW, TfpFrame::OnNewWindow )
     EVT_MENU( tfpID_NEW_FILE, TfpFrame::OnNewFile )
     EVT_MENU( tfpID_OPEN_FILE, TfpFrame::OnOpenFile )
+    EVT_MENU( tfpID_FILE_ATTACH_NEW_FULL, TfpFrame::OnAttachNewFile )
+    EVT_MENU( tfpID_FILE_ATTACH_NEW_MEDIA, TfpFrame::OnAttachNewFile )
+    EVT_MENU( tfpID_FILE_ATTACH_OPEN, TfpFrame::OnAttachOpenFile )
+    EVT_MENU_RANGE( tfpID_FILE_ATTACH_CLOSE_0, tfpID_FILE_ATTACH_CLOSE_LAST, TfpFrame::OnAttachCloseFile )
     EVT_MENU( tfpID_CLOSE_FILE, TfpFrame::OnCloseFile )
     EVT_MENU( tfpID_IMPORT_GEDCOM, TfpFrame::OnImportGedcom )
     EVT_MENU( tfpID_EXPORT_GEDCOM, TfpFrame::OnExportGedcom )
@@ -137,11 +141,24 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     SetIcon( wxICON( tfp ) );
 
     // create a menu bar for use with an open database
+    wxMenu* menuFileAttachNew = new wxMenu;
+    menuFileAttachNew->Append( tfpID_FILE_ATTACH_NEW_FULL, _( "&Full" ) );
+    menuFileAttachNew->Append( tfpID_FILE_ATTACH_NEW_MEDIA, _( "&Media Only" ) );
+
+    m_menuFileAttachClose = new wxMenu;
+
+    wxMenu* menuFileAttach = new wxMenu;
+    menuFileAttach->Append( tfpID_FILE_ATTACH_NEW, _( "&New" ), menuFileAttachNew );
+    menuFileAttach->Append( tfpID_FILE_ATTACH_OPEN, _( "&Open" ) );
+    menuFileAttach->Append( tfpID_FILE_ATTACH_CLOSE, _( "&Close" ), m_menuFileAttachClose );
+    menuFileAttach->Enable( tfpID_FILE_ATTACH_CLOSE, false );
+
     wxMenu *menuFile = new wxMenu;
     menuFile->Append( tfpID_NEW_WINDOW, _("New &Window\tCtrl-W") );
     menuFile->AppendSeparator();
     menuFile->Append( tfpID_NEW_FILE, _("&New Database\tCtrl-N") );
     menuFile->Append( tfpID_OPEN_FILE, _("&Open Database\tCtrl-O") );
+    menuFile->Append( tfpID_FILE_ATTACH_MENU, _( "&Attach Database" ), menuFileAttach );
     menuFile->Append( tfpID_CLOSE_FILE, _("&Close Database") );
     menuFile->AppendSeparator();
     menuFile->Append( tfpID_IMPORT_GEDCOM, _("&Import GEDCOM file") );
@@ -364,6 +381,34 @@ void TfpFrame::OnNewFile( wxCommandEvent& event )
 void TfpFrame::OnOpenFile( wxCommandEvent& event )
 {
     OpenFile();
+}
+
+void TfpFrame::OnAttachNewFile( wxCommandEvent & event )
+{
+    wxString mess;
+    switch ( event.GetId() )
+    {
+    case tfpID_FILE_ATTACH_NEW_FULL:
+        mess = "Create new full file nyd";
+        break;
+    case tfpID_FILE_ATTACH_NEW_MEDIA:
+        mess = "Create new media only file nyd";
+        break;
+    default:
+        mess = "Unknown Command!";
+        break;
+    }
+    wxMessageBox( mess, "OnAttachNewFile" );
+}
+
+void TfpFrame::OnAttachOpenFile( wxCommandEvent & event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnAttachOpenFile" );
+}
+
+void TfpFrame::OnAttachCloseFile( wxCommandEvent & event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnAttachCloseFile" );
 }
 
 /*! \brief Called on a Close File menu option event.

@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     24 September 2010
- * Copyright:   Copyright (c) 2010 ~ 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2019, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -54,6 +54,7 @@ private:
     wxMenuBar*          m_menuClosedDB;
     wxToolBar*          m_toolbar;
     wxStatusBar*        m_statusbar;
+    wxMenu*             m_menuFileAttachClose;
     wxMenu*             m_menuEditInd;
     idt                 m_EditIndLeft;
     idt                 m_EditIndRight;
@@ -83,6 +84,9 @@ public:
     void OnNewWindow( wxCommandEvent& event );
     void OnNewFile( wxCommandEvent& event );
     void OnOpenFile( wxCommandEvent& event );
+    void OnAttachNewFile( wxCommandEvent& event );
+    void OnAttachOpenFile( wxCommandEvent& event );
+    void OnAttachCloseFile( wxCommandEvent& event );
     void OnCloseFile( wxCommandEvent& event );
     void OnImportGedcom( wxCommandEvent& event );
     void OnExportGedcom( wxCommandEvent& event );
@@ -180,6 +184,14 @@ enum
     tfpID_NEW_WINDOW = wxID_HIGHEST+1,
     tfpID_NEW_FILE,
     tfpID_OPEN_FILE,
+    tfpID_FILE_ATTACH_MENU,
+    tfpID_FILE_ATTACH_NEW,
+    tfpID_FILE_ATTACH_NEW_FULL,
+    tfpID_FILE_ATTACH_NEW_MEDIA,
+    tfpID_FILE_ATTACH_OPEN,
+    tfpID_FILE_ATTACH_CLOSE,
+    tfpID_FILE_ATTACH_CLOSE_0,
+    tfpID_FILE_ATTACH_CLOSE_LAST = tfpID_FILE_ATTACH_CLOSE_0 + 10,
     tfpID_CLOSE_FILE,
     tfpID_IMPORT_GEDCOM,
     tfpID_EXPORT_GEDCOM,
