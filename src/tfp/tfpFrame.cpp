@@ -151,7 +151,6 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     menuFileAttach->Append( tfpID_FILE_ATTACH_NEW, _( "&New" ), menuFileAttachNew );
     menuFileAttach->Append( tfpID_FILE_ATTACH_OPEN, _( "&Open" ) );
     menuFileAttach->Append( tfpID_FILE_ATTACH_CLOSE, _( "&Close" ), m_menuFileAttachClose );
-    menuFileAttach->Enable( tfpID_FILE_ATTACH_CLOSE, false );
 
     wxMenu *menuFile = new wxMenu;
     menuFile->Append( tfpID_NEW_WINDOW, _("New &Window\tCtrl-W") );
@@ -383,32 +382,78 @@ void TfpFrame::OnOpenFile( wxCommandEvent& event )
     OpenFile();
 }
 
-void TfpFrame::OnAttachNewFile( wxCommandEvent & event )
+void TfpFrame::OnAttachNewFile( wxCommandEvent& event )
 {
+    if ( event.GetId() == tfpID_FILE_ATTACH_NEW_FULL ) {
+        wxMessageBox( "Create new full file nyd", "OnAttachNewFile" );
+        return;
+    }
+    wxASSERT( event.GetId() == tfpID_FILE_ATTACH_NEW_MEDIA );
+
+    wxString caption = _( "Create TFP Database" );
+    wxTextEntryDialog namedlg( this, "Database name", caption );
+    if ( namedlg.ShowModal() != wxID_OK ) {
+        return;
+    }
+    wxString dbname = namedlg.GetValue();
+
+    wxFileName fname( recDb::GetFileName() );
+    wxString defaultDir( fname.GetPath() );
+    wxDirDialog dirdlg( this, caption, defaultDir );
+    if ( dirdlg.ShowModal() != wxID_OK ) {
+        return;
+    }
+    wxString path = dirdlg.GetPath();
+
+    wxFileName dbfilename;
+    dbfilename.SetPath( path );
+    dbfilename.SetName( dbname );
+    dbfilename.SetExt( "tfpd" );
+    wxString dbpath = dbfilename.GetFullPath();
+
+    recDb::CreateReturn ret = recDb::CreateDbFile( dbpath, recDb::DT_MediaOnly );
     wxString mess;
-    switch ( event.GetId() )
+    switch ( ret )
     {
-    case tfpID_FILE_ATTACH_NEW_FULL:
-        mess = "Create new full file nyd";
-        break;
-    case tfpID_FILE_ATTACH_NEW_MEDIA:
-        mess = "Create new media only file nyd";
+    case recDb::CR_OK:
+        recDb::AttachDb( dbpath, dbname );
+        RefreshAttachedCloseMenu();
+        return;
+    case recDb::CR_FileExists:
+        mess = wxString::Format("Database aready exists.\n%s", dbpath );
         break;
     default:
-        mess = "Unknown Command!";
+        mess = wxString::Format( "Create Database Error No %d", ret );
         break;
     }
-    wxMessageBox( mess, "OnAttachNewFile" );
+    wxMessageBox( mess, "Attach Error" );
 }
 
-void TfpFrame::OnAttachOpenFile( wxCommandEvent & event )
+void TfpFrame::OnAttachOpenFile( wxCommandEvent& event )
 {
-    wxMessageBox( _( "Not yet implimented" ), "OnAttachOpenFile" );
+    wxString caption = _( "Select TFP Database to Attach" );
+    wxString wildcard = _( "TFP Database (*.tfpd)|*.tfpd" );
+    wxString defaultDir = ".";
+    wxString defaultFName = wxEmptyString;
+
+    wxFileDialog dialog( this, caption, defaultDir, defaultFName, wildcard, wxFD_OPEN );
+    if ( dialog.ShowModal() == wxID_OK ) {
+        wxString path = dialog.GetPath();
+        wxFileName fname( path );
+        wxString dbname = fname.GetName();
+        if ( !recDb::AttachDb( path, dbname ) ) {
+            wxMessageBox( wxString::Format( "Unable to attach database\n%s", path), "Attach Error" );
+            m_changeState = recDb::GetChange();
+        }
+        RefreshAttachedCloseMenu();
+    }
 }
 
-void TfpFrame::OnAttachCloseFile( wxCommandEvent & event )
+void TfpFrame::OnAttachCloseFile( wxCommandEvent& event )
 {
-    wxMessageBox( _( "Not yet implimented" ), "OnAttachCloseFile" );
+    wxString dbname = m_menuFileAttachClose->GetLabelText( event.GetId() );
+    recDb::DetachDb( dbname );
+    RefreshAttachedCloseMenu();
 }
 
 /*! \brief Called on a Close File menu option event.
@@ -996,10 +1041,20 @@ void TfpFrame::OnAbout( wxCommandEvent& event )
  */
 void TfpFrame::OnAboutDatabase( wxCommandEvent& event )
 {
+    StringVec attached = recDb::GetAttachedDbList();
+    wxString attached_list;
+    for ( auto str: attached ) {
+        if ( attached_list.empty() ) {
+            attached_list = "\nAttached databases: ";
+        }else{
+            attached_list += ", ";
+        }
+        attached_list += str;
+    }
     wxMessageBox(
         wxString::Format(
-            _("Database \"%s\"\nVersion %s"),
-            recDb::GetFileName(), recVersion::GetVersionStr()
+            _("Database \"%s\"\nVersion %s%s"),
+            recDb::GetFileName(), recVersion::GetVersionStr(), attached_list
         ),
         _("About TFP Database"),
         wxOK | wxICON_INFORMATION,
@@ -1782,6 +1837,29 @@ void TfpFrame::RefreshEditMenu()
             m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
         }
         break;
+    }
+    RefreshAttachedCloseMenu();
+}
+
+void TfpFrame::RefreshAttachedCloseMenu()
+{
+    StringVec attached = recDb::GetAttachedDbList();
+    m_menuFileAttachClose->GetParent()->Enable( tfpID_FILE_ATTACH_CLOSE, !attached.empty() );
+    for ( size_t i = 0; i < 10; i++ ) {
+        int id = tfpID_FILE_ATTACH_CLOSE_0 + i;
+        wxMenuItem* item = m_menuFileAttachClose->FindItem( id );
+        if ( i >= attached.size() ) {
+            if ( item ) {
+                m_menuFileAttachClose->Delete( item );
+                continue;
+            }
+            break;
+        }
+        if ( item ) {
+            m_menuFileAttachClose->SetLabel( id, attached[i] );
+        } else {
+            m_menuFileAttachClose->Append( id, attached[i] );
+        }
     }
 }
 

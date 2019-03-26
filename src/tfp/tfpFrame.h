@@ -167,6 +167,7 @@ public:
     void PushHtmName( const wxString& name );
     wxString GetCurrentName();
     void RefreshEditMenu();
+    void RefreshAttachedCloseMenu();
 
     wxString GetDisplay() const { return m_back[m_back.size()-1]; }
     bool DisplayHtmPage( const wxString& name );

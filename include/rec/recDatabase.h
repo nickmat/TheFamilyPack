@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010 ~ 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2019, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -42,6 +42,12 @@ public:
         DT_Full,
         DT_MediaOnly,
         DT_MAX
+    };
+    enum CreateReturn {
+        CR_OK,
+        CR_FileExists,
+        CR_CannotOpen,
+        CR_UnknownType
     };
     enum CreateFlags {
         CREATE_DB_STD_EXT = 0x0001,
@@ -80,19 +86,36 @@ public:
     static void SetDb( wxSQLite3Database* db ) { s_db = db; }
     static wxSQLite3Database* GetDb() { return s_db; }
 
+    /*! Create a new database file and then close it.
+    *  Returns CR_OK if the file is successfully created.
+    */
+    static CreateReturn CreateDbFile( const wxString& fname, DatabaseType type );
+
     /*! Creates a new database with the given filename. If the flag
-     *  CREATE_DB_STD_EXT is set, the standard file extension ".tfpd"
-     *  is used. If CREATE_DB_ENUM_FN is set, then if the filename
-     *  already exists then a new name is created by appending (n) to
-     *  the name, where n is the lowest number (starting from 2) that
-     *  gives a unique name.
-     */
+    *  CREATE_DB_STD_EXT is set, the standard file extension ".tfpd"
+    *  is used. If CREATE_DB_ENUM_FN is set, then if the filename
+    *  already exists then a new name is created by appending (n) to
+    *  the name, where n is the lowest number (starting from 2) that
+    *  gives a unique name.
+    */
     static bool CreateDb( const wxString& fname, unsigned flags );
 
     /*! Opens an existing database file, providing there is not an existing
      *  database open and the file exists.
      */
     static bool OpenDb( const wxString& fname );
+
+    /*! Attach fname to database as dbname.
+    */
+    static bool AttachDb( const wxString& fname, const wxString& dbname );
+
+    /*! Detach dbname from database.
+    */
+    static bool DetachDb( const wxString& dbname );
+
+    /*! Get a list of attached databases.
+    */
+    static StringVec GetAttachedDbList();
 
     /*! Closes the existing database file.
      */
