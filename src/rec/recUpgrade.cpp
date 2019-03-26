@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3rd April 2013
- * Copyright:   Copyright (c) 2013 ~ 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2013 ~ 2019, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -809,7 +809,11 @@ bool recDoUpgrade()
 {
     recVersion v( recDb::DT_Full );
     if( v.IsEqual( recVerMajor, recVerMinor, recVerRev, recVerTest ) ) {
-        return true; // Already current vertion
+        return true; // Already current version
+    }
+    if ( v.IsEqual( 0, 0, 0, 0 ) ){
+        recMessage( _( "Not a Full database type." ), _( "Database Check" ) );
+        return false;
     }
     if( v.IsLessThan( 0, 0, 9, 25 ) ) {
         recMessage(

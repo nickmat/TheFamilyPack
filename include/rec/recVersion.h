@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     24 October 2010
- * Copyright:   Copyright (c) 2010 ~ 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2019, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -68,7 +68,7 @@ public:
      *  version. If not, handle updating the database and return true. 
      *  Or, if it is not possible to update, return false.
      */
-    static bool Manage() { return recDoUpgrade(); }
+    static bool Manage();
 
     bool IsEqual( 
         int major, int minor = -1, int revision = -1, int test = -1 ) const;

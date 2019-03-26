@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     24 October 2010
- * Copyright:   Copyright (c) 2010 ~ 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2019, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -90,6 +90,14 @@ wxString recVersion::GetVersionStr()
         "%d.%d.%d.%d",
         v.f_major, v.f_minor, v.f_revision, v.f_test
     );
+}
+
+bool recVersion::Manage()
+{
+    if ( !s_db->IsOpen() || !recVersion::TableExists() ) {
+        return false;
+    }
+    return recDoUpgrade();
 }
 
 bool recVersion::IsEqual( int major, int minor, int revision, int test ) const

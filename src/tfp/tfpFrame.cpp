@@ -460,10 +460,7 @@ void TfpFrame::OnAttachCloseFile( wxCommandEvent& event )
  */
 void TfpFrame::OnCloseFile( wxCommandEvent& event )
 {
-    recDb::CloseDb();
-    SetNoDatabase();
-    m_browser->LoadURL( "memory:startup.htm" );
-    m_changeState = recDb::GetChange();
+    CloseFile();
 }
 
 /*! \brief Called on a Inport GEDCOM File menu option event.
@@ -1364,7 +1361,7 @@ bool TfpFrame::NewFile()
 bool TfpFrame::OpenFile()
 {
     bool ret = false;
-    wxString caption = _("Select TFP Database");
+    wxString caption = _("Open Database");
     wxString wildcard = _("TFP Database (*.tfpd)|*.tfpd");
     wxString defaultDir = ".";
     wxString defaultFName = wxEmptyString;
@@ -1372,16 +1369,40 @@ bool TfpFrame::OpenFile()
     wxFileDialog dialog( this, caption, defaultDir, defaultFName, wildcard, wxFD_OPEN );
     if( dialog.ShowModal() == wxID_OK ) {
         wxString path = dialog.GetPath();
+        if ( !wxFileExists( path ) ) {
+            wxMessageBox( _( "File not found!" ), caption );
+            return false;
+        }
+        if ( recDb::IsOpen() ) {
+            wxMessageDialog dlg(
+                this, _( "Current database will be closed first." ),
+                caption, wxOK | wxCANCEL | wxCENTRE
+            );
+            if ( dlg.ShowModal() != wxID_OK ) {
+                return false;
+            }
+            recDb::CloseDb();
+        }
         if( recDb::OpenDb( path ) == true ) {
             SetDatabaseOpen( path );
             DisplayHomePage();
             ret = true;
         } else {
-            // No change if fail.
-            m_changeState = recDb::GetChange();
+            wxMessageBox( _( "Problem opening database!" ), caption );
+            CloseFile();
         }
     }
     return ret;
+}
+
+void TfpFrame::CloseFile()
+{
+    if ( recDb::IsOpen() ) {
+        recDb::CloseDb();
+    }
+    SetNoDatabase();
+    m_browser->LoadURL( "memory:startup.htm" );
+    m_changeState = recDb::GetChange();
 }
 
 bool TfpFrame::ImportGedcom()

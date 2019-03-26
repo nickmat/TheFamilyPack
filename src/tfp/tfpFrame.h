@@ -150,6 +150,7 @@ public:
 
     bool NewFile();
     bool OpenFile();
+    void CloseFile();
     bool ImportGedcom();
     void OpenTestFile();
 
