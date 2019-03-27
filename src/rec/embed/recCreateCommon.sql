@@ -1,11 +1,11 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/rec/embed/recDatabaseCreate.f2c
+ * Name:        src/rec/embed/recCreateCommon.sql
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     SQL text compiled from SQL files. Format file for file2cpp.
+ * Purpose:     SQL text to create the common part of a .tfpd database.
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
- * Created:     10th April 2008
- * Copyright:   Copyright (c) 2008 ~ 2019, Nick Matthews.
+ * Created:     17th March 2019
+ * Copyright:   Copyright (c) 2019, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -22,13 +22,24 @@
  *  along with The Family Pack.  If not, see <http://www.gnu.org/licenses/>.
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
 */
 
-static const char* createCommonDb = @(cr.c)"recCreateCommon.sql";
+/* This pragma makes the database more efficient, but means the database
+   can only be used by tools created with SQLite version 3.3.0 or later
+   (released Jan 2006) */
+PRAGMA legacy_file_format=OFF;
+PRAGMA foreign_keys=ON;
 
-static const char* createMediaDb = @(cr.c)"recCreateMedia.sql";
+BEGIN;
 
-static const char* createFullDb = @(cr.c)"recCreateFull.sql";
+CREATE TABLE Version (
+  id INTEGER PRIMARY KEY,
+  major INTEGER,
+  minor INTEGER,
+  revision INTEGER,
+  test INTEGER
+);
 
-/* End of src/rec/embed/recDatabaseCreate.f2c */
+COMMIT;
+
+/* End of src/rec/embed/recCreateCommon.sql */

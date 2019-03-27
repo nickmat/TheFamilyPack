@@ -7,7 +7,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     10th April 2008
- * Copyright:   Copyright (c) 2008 ~ 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2008 ~ 2019, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -27,9 +27,32 @@
 
 */
 
-static const char* createdb =  /* recCreate.sql */
+static const char* createCommonDb =  /* recCreateCommon.sql */
  "PRAGMA legacy_file_format=OFF;\n"
  "PRAGMA foreign_keys=ON;\n"
+ "BEGIN;\n"
+ "CREATE TABLE Version (\n"
+ "  id INTEGER PRIMARY KEY,\n"
+ "  major INTEGER,\n"
+ "  minor INTEGER,\n"
+ "  revision INTEGER,\n"
+ "  test INTEGER\n"
+ ");\n"
+ "COMMIT;\n";
+
+static const char* createMediaDb =  /* recCreateMedia.sql */
+ "BEGIN;\n"
+ "CREATE TABLE MediaData (\n"
+ "  id INTEGER PRIMARY KEY NOT NULL,\n"
+ "  data BLOB NOT NULL,\n"
+ "  privacy INT NOT NULL,\n"
+ "  copyright TEXT NULL,\n"
+ "  file TEXT NOT NULL\n"
+ ");\n"
+ "INSERT INTO Version (id, major, minor, revision, test) VALUES(2, 0, 0, 0, 1);\n"
+ "COMMIT;\n";
+
+static const char* createFullDb =  /* recCreateFull.sql */
  "BEGIN;\n"
  "CREATE TABLE Associate (\n"
  "  id INTEGER PRIMARY KEY NOT NULL,\n"
@@ -316,13 +339,6 @@ static const char* createdb =  /* recCreate.sql */
  "  title TEXT NULL,\n"
  "  note, TEXT NULL\n"
  ");\n"
- "CREATE TABLE MediaData (\n"
- "  id INTEGER PRIMARY KEY NOT NULL,\n"
- "  data BLOB NOT NULL,\n"
- "  privacy INT NOT NULL,\n"
- "  copyright TEXT NULL,\n"
- "  file TEXT NOT NULL\n"
- ");\n"
  "CREATE TABLE Name (\n"
  "  id INTEGER PRIMARY KEY,\n"
  "  ind_id INTEGER NOT NULL,\n"
@@ -444,13 +460,6 @@ static const char* createdb =  /* recCreate.sql */
  "  property INTEGER NOT NULL,\n"
  "  val TEXT NOT NULL\n"
  ");\n"
- "CREATE TABLE Version (\n"
- "  id INTEGER PRIMARY KEY,\n"
- "  major INTEGER,\n"
- "  minor INTEGER,\n"
- "  revision INTEGER,\n"
- "  test INTEGER\n"
- ");\n"
  "INSERT INTO ContactType (id, name) VALUES(0, '');\n"
  "INSERT INTO ContactType (id, name) VALUES(-1, 'Address');\n"
  "INSERT INTO ContactType (id, name) VALUES(-2, 'Telephone');\n"
@@ -468,30 +477,6 @@ static const char* createdb =  /* recCreate.sql */
  "INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 0, 1, 'F1');\n"
  "INSERT INTO UserSetting (id, user_id, property, val) VALUES(2, 1, 1, 'F1');\n"
  "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 18);\n"
- "INSERT INTO Version (id, major, minor, revision, test) VALUES(2, 0, 0, 0, 1);\n"
  "COMMIT;\n";
 
-static const char* createMediaDb =  /* recCreateMedia.sql */
- "PRAGMA legacy_file_format=OFF;\n"
- "PRAGMA foreign_keys=ON;\n"
- "BEGIN;\n"
- "CREATE TABLE MediaData (\n"
- "  id INTEGER PRIMARY KEY NOT NULL,\n"
- "  data BLOB NOT NULL,\n"
- "  privacy INT NOT NULL,\n"
- "  copyright TEXT NULL,\n"
- "  file TEXT NOT NULL\n"
- ");\n"
- "CREATE TABLE Version (\n"
- "  id INTEGER PRIMARY KEY,\n"
- "  major INTEGER,\n"
- "  minor INTEGER,\n"
- "  revision INTEGER,\n"
- "  test INTEGER\n"
- ");\n"
- "INSERT INTO Version (id, major, minor, revision, test) VALUES(2, 0, 0, 0, 1);\n"
- "COMMIT;\n";
-
-/* End of recDatabaseCreate.f2c */
-
-
+/* End of src/rec/embed/recDatabaseCreate.f2c */

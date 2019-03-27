@@ -84,9 +84,12 @@ recDb::CreateReturn recDb::CreateDbFile( const wxString& fname, DatabaseType typ
     switch ( type )
     {
     case DT_Full:
-        db.ExecuteUpdate( createdb );
+        db.ExecuteUpdate( createCommonDb );
+        db.ExecuteUpdate( createMediaDb );
+        db.ExecuteUpdate( createFullDb );
         break;
     case DT_MediaOnly:
+        db.ExecuteUpdate( createCommonDb );
         db.ExecuteUpdate( createMediaDb );
         break;
     default:
@@ -127,9 +130,12 @@ bool recDb::CreateDb( const wxString& fname, unsigned flags )
     }
 
     wxString dbfname = dbfile.GetFullPath();
-    s_db->Open( dbfname );
-    s_db->ExecuteUpdate( createdb );
-    return true;
+    CreateReturn ret = CreateDbFile( dbfname, DT_Full );
+    if ( ret == CR_OK ) {
+        s_db->Open( dbfname );
+        return true;
+    }
+    return false;
 }
 
 bool recDb::OpenDb( const wxString& fname )
