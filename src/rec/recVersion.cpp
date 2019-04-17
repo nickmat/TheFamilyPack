@@ -83,9 +83,9 @@ bool recVersion::Read()
 }
 
 
-wxString recVersion::GetVersionStr()
+wxString recVersion::GetVersionStr( recDb::DatabaseType type )
 {
-    recVersion v( DT_Full );
+    recVersion v( type );
     return wxString::Format(
         "%d.%d.%d.%d",
         v.f_major, v.f_minor, v.f_revision, v.f_test

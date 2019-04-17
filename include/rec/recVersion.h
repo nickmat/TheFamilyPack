@@ -61,8 +61,8 @@ public:
     int FGetTest() const { return f_test; }
 
     /*! Return the database full version string.
-     */
-    static wxString GetVersionStr();
+    */
+    static wxString GetVersionStr( recDb::DatabaseType type = recDb::DT_Full );
 
     /*! Check whether the database version is compatable with the program
      *  version. If not, handle updating the database and return true. 

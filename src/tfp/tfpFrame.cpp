@@ -1010,25 +1010,7 @@ void TfpFrame::OnHelpWebHome( wxCommandEvent& event )
  */
 void TfpFrame::OnAbout( wxCommandEvent& event )
 {
-    wxMessageBox(
-        wxString::Format(
-            _("%s"
-            "For TFP Database Version %s.\n"
-            "Built with %s and SQLite %s\n"
-            "by %s\n"
-            "running under %s."),
-
-            tfpTitle,
-            recVerStr,
-            wxVERSION_STRING,
-            wxSQLite3Database::GetVersion(),
-            tfpGetCompilerVersion(),
-            wxGetOsDescription().c_str()
-        ),
-        _("About The Family Pack"),
-        wxOK | wxICON_INFORMATION,
-        this
-    );
+    DoPopupNote( "About" );
 }
 
 /*! \brief Called on a Help, About Database menu option event.
@@ -1959,6 +1941,9 @@ wxString TfpFrame::GetDisplayText( wxString& name )
     }
 
     try {
+        if ( name.compare( "ABOUT" ) == 0 ) {
+            return tfpWriteAbout();
+        }
         if ( name.compare( 0, 2, "CD" ) == 0 && success1 ) {
             return tfpCreateDescChart( num1 );
         }

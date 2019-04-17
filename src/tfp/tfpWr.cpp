@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     21st January 2013
- * Copyright:   Copyright (c) 2013 ~ 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2013 ~ 2019, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -46,7 +46,7 @@
 #include <wx/mstream.h>
 #include <wx/tokenzr.h>
 
-wxString tfpWrHeadTfp( const wxString& title, const wxString& css )
+wxString tfpWrHead( const wxString& title, const wxString& css )
 {
     wxString htm;
     htm <<
@@ -54,25 +54,47 @@ wxString tfpWrHeadTfp( const wxString& title, const wxString& css )
         "<html>\n<head>\n"
         "<title>" << title << "</title>\n"
         "<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>\n"
-        "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>\n"
-    ;
-    if( css.size() ) {
+        ;
+    if ( css.size() ) {
         wxStringTokenizer tokenizer( css, ";" );
         while ( tokenizer.HasMoreTokens() ) {
             wxString file = tokenizer.GetNextToken();
             htm <<
                 "<link rel='stylesheet' type='text/css' href='memory:" << file <<
                 ".css'>\n"
-            ;
+                ;
         }
     }
-    htm << "</head>\n<body>\n<div class='tfp'>\n";
+    htm << "</head>\n<body>\n";
     return htm;
 }
 
-wxString tfpWrTailTfp()
+wxString tfpWrTail()
 {
-    return "</div>\n</body>\n</html>\n";
+    return "</body>\n</html>\n";
+}
+
+wxString tfpWrHeadTfp( const wxString& title, const wxString& css )
+{
+    wxString css_list( "tfp" );
+    if ( !css.empty() ) {
+        css_list += ";" + css;
+    }
+    return tfpWrHead( title, css_list ) + "<div class='tfp'>\n";
+}
+
+wxString tfpWrHeadInfo( const wxString& title, const wxString& css )
+{
+    wxString css_list( "info" );
+    if ( !css.empty() ) {
+        css_list += ";" + css;
+    }
+    return tfpWrHead( title, css_list );
+}
+
+wxString tfpWrTailDiv()
+{
+    return "</div>\n" + tfpWrTail();
 }
 
 wxString tfpWritePagedIndexMenu( idt begCnt, size_t maxsize, const wxString prefix )

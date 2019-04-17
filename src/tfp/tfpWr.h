@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     7th October 2010
- * Copyright:   Copyright (c) 2010 ~ 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2019, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -32,8 +32,13 @@ class rgCompareEvent;
 class recSelSetEvent;
 
 // See tfpWr.cpp
+extern wxString tfpWrHead( const wxString& title, const wxString& css = wxEmptyString );
+extern wxString tfpWrTail();
 extern wxString tfpWrHeadTfp( const wxString& title, const wxString& css = wxEmptyString );
-extern wxString tfpWrTailTfp();
+extern wxString tfpWrTailDiv();
+inline wxString tfpWrTailTfp() { return tfpWrTailDiv(); }
+extern wxString tfpWrHeadInfo( const wxString& title, const wxString& css = wxEmptyString );
+inline wxString tfpWrTailInfo() { return tfpWrTail(); }
 #define tfpWR_PAGE_MAX 100
 extern wxString tfpWritePagedIndexMenu( idt begCnt, size_t maxsize, const wxString prefix );
 extern wxString tfpGetIndSexClass( idt indID, Sex pref = SEX_Unknown );
@@ -90,6 +95,7 @@ extern wxString tfpWriteIndividualList();
 extern wxString tfpWriteDate( idt dateID );
 extern wxString tfpWritePlace( idt placeID );
 extern wxString tfpWriteName( idt nameID );
+extern wxString tfpWriteAbout();
 
 // See tfpWrPersona.cpp
 extern wxString tfpWritePersonaPage( idt perID );

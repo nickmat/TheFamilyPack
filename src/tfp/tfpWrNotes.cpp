@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     21 January 2012
- * Copyright:   Copyright (c) 2010 - 2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2019, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -34,11 +34,14 @@
 #include "wx/wx.h"
 #endif
 
-#include <rec/recDate.h>
-#include <rec/recPlace.h>
-#include <rec/recPersona.h>
-
 #include "tfpWr.h"
+
+#include "tfpVersion.h"
+
+#include <rec/recDate.h>
+#include <rec/recPersona.h>
+#include <rec/recPlace.h>
+#include <rec/recVersion.h>
 
 namespace { 
 
@@ -127,6 +130,43 @@ wxString tfpWriteName( idt nameID )
        
     htm << "</table>\n" << tfpWrTailTfp();
 
+    return htm;
+}
+
+wxString tfpWriteAbout()
+{
+    wxString htm = tfpWrHeadInfo( "About" );
+
+    htm <<
+        "<div class='heading'>\n"
+        "<a  href='http://thefamilypack.org'>\n"
+        "<img src='memory:logo6.png' alt='Logo' />\n"
+        "</a>\n"
+        "About<br>The Family Pack"
+        "<div class='clear'></div>\n"
+        "</div>\n"
+        "<div class='info'>\n"
+        "<table class='plist'>\n"
+        "<tr><td class='prop'>Program Version:</td><td>" << tfpHtmVersion << "</td></tr>\n"
+        "<tr><td class='prop'>Database Version:</td><td>" << recVerStr << "</td></tr>\n"
+        "<tr><td class='prop'>"
+        "Libraries:</td><td>" << wxVERSION_STRING << ", SQLite " << wxSQLite3Database::GetVersion() <<
+        "</td></tr>\n"
+        "<tr><td class='prop'>Website:</td><td>"
+        "<a class='web' href='http://thefamilypack.org'>thefamilypack.org</a>"
+        "</td></tr>\n"
+        "<tr><td class='prop'>Built by:</td><td>" << tfpGetCompilerVersion() << "</td></tr>\n"
+        "<tr><td class='prop'>Runnining under:</td><td>" << wxGetOsDescription() << "</td></tr>\n"
+        "</table>\n"
+        "<div class='button'>\n"
+        "<p>\n"
+        "<a href='tfpc:Close'>OK</a>\n"
+        "</p>\n"
+        "</div>\n"
+        "<div class='clear'></div>\n"
+        "</div>\n"
+        << tfpWrTailInfo() 
+    ;
     return htm;
 }
 

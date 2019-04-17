@@ -6,7 +6,7 @@
  * Website:     http://thefamilypack.org
  * Created:     21 January 2012
  * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2012 - 2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2012 ~ 2019, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -48,12 +48,11 @@
 
 dlgNote::dlgNote( TfpFrame* parent, const wxString& name )
     : wxDialog(
-        (wxWindow*) parent, wxID_ANY, "Note "+name, wxDefaultPosition, wxDefaultSize,
+        (wxWindow*) parent, wxID_ANY, "Note "+name, wxDefaultPosition, wxSize( 450, 300 ),
         wxCAPTION | wxCLOSE_BOX | wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER
     )
 {
     m_frame = parent;
-    SetSizeHints( wxDefaultSize, wxDefaultSize );
 
     wxBoxSizer* bSizer1 = new wxBoxSizer( wxVERTICAL );
 
@@ -90,6 +89,15 @@ bool dlgNote::TransferDataToWindow()
 void dlgNote::OnNavigationRequest( wxWebViewEvent& evt )
 {
     wxString url = evt.GetURL();
+    if ( url == "tfpc:Close" ) {
+        Close();
+        return;
+    }
+    if ( url.StartsWith( "http:" ) || url.StartsWith( "https:" ) ) {
+        Close();
+        wxLaunchDefaultBrowser( url );
+        return;
+    }
 
     recDb::Begin();
     try {
@@ -99,10 +107,8 @@ void dlgNote::OnNavigationRequest( wxWebViewEvent& evt )
             ret = rgEditDate( this, recGetID( url.Mid(6) ) );
         } else if( url.StartsWith( "tfpe:P" ) ) {
             ret = rgEditPlace( this, recGetID( url.Mid(6) ) );
-        } else if( url.StartsWith( "tfpe:N" ) ) {
-            ret = rgEditName( this, recGetID( url.Mid(6) ) );
-//        } else if( url.StartsWith( "tfpe:Rs" ) ) {
-//            ret = rgEditRelationship( recGetID( url.Mid(7) ) );
+        } else if ( url.StartsWith( "tfpe:N" ) ) {
+            ret = rgEditName( this, recGetID( url.Mid( 6 ) ) );
         }
         if( ret == true ) {
             recDb::Commit();
