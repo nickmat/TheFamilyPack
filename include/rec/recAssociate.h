@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     19th September 2018
- * Copyright:   Copyright (c) 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2018 ~ 2019, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -46,7 +46,7 @@ public:
 
     wxString FGetPath() const { return f_path; }
 
-    void FSetValue( const wxString& value ) { f_path = value; }
+    void FSetPath( const wxString& path ) { f_path = path; }
 
     static wxString GetIdStr( idt assID ) { return wxString::Format( "A" ID, assID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
