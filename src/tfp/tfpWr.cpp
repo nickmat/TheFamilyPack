@@ -36,6 +36,7 @@
 
 #include "tfpWr.h"
 
+#include <rec/recAssociate.h>
 #include <rec/recContact.h>
 #include <rec/recIndividual.h>
 #include <rec/recMediaData.h>
@@ -231,14 +232,14 @@ wxString tfpNormaliseSpaces( const wxString& str )
 
 wxString tfpGetMediaDataFile( idt mdID, idt assID )
 {
-    assert( assID == 0 );
-    wxString filename = recMediaData::GetFileName( mdID ) + ".bmp";
+    wxString assDb = recAssociate::GetPath( assID );
+    wxString filename = recMediaData::GetFileName( assDb, mdID ) + ".bmp";
     // Read into the virtual file system, unless it already exists.
     wxFileSystem fs;
     wxString memfilename = "memory:" + filename;
     wxString fn = fs.FindFirst( memfilename );
     if ( fn.empty() ) {
-        recMediaData md( mdID );
+        recMediaData md( assDb, mdID );
         wxMemoryBuffer buf = md.FGetData();
         wxMemoryInputStream stream( buf.GetData(), buf.GetDataLen() );
         wxImage image( stream, wxBITMAP_TYPE_JPEG );

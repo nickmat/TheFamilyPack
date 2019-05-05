@@ -57,6 +57,7 @@ protected:
     static wxSQLite3Database* s_db;
     static long               s_change;
     static long               s_spnumber;
+    static recAssMap          s_assmap;
 
 public:
     /*! Delete the given record in the given table.
@@ -65,7 +66,7 @@ public:
 
     /*! Return true if the given record exists in the given table.
      */
-    static bool RecordExists( const char* table, idt id );
+    static bool RecordExists( const char* table, idt id, const wxString& dbname );
 
     /*! Return the number of User (above 0) records in the given table.
      */
@@ -121,6 +122,10 @@ public:
      */
     static void CloseDb();
 
+    /*! Add entry to the attached Associate database map.
+     */
+    static void AddAssociate( idt assID, const wxString& path ) { s_assmap[assID] = path; }
+
     /*! Do a global systems check and update.
      *  Could take a while.
      */
@@ -157,13 +162,15 @@ public:
      *  database is checked to see if the record already exists - if it
      *  does it is updated - if not it is created.
      */
-    virtual void Save() = 0;
+    virtual void Save() { Save( "Main" ); }
+    virtual void Save( const wxString& dbname ) { wxASSERT( false ); } /* TODO: make pure virtual member function? */
 
     /*! If the record does not exist, all fields are cleared and the function
      *  returns false; If the record exists, the fields are updated and the
      *  function returns true.
      */
-    virtual bool Read() = 0;
+    virtual bool Read() { return Read( "Main" ); }
+    virtual bool Read( const wxString& dbname ) { Clear(); return false; } /* TODO: make pure virtual member function? */
     bool ReadID( idt id ) { f_id = id; return Read(); }
 
     idt FGetID() const { return f_id; }
@@ -185,8 +192,10 @@ public:
     static constexpr const char* s_tablename = T;                              \
     bool Delete() const { return DeleteRecord( s_tablename, f_id ); }          \
     static bool Delete( idt id ) { return DeleteRecord( s_tablename, id ); }   \
-    bool Exists() const { return RecordExists( s_tablename, f_id ); }          \
-    static bool Exists( idt id ) { return RecordExists( s_tablename, id ); }   \
+    bool Exists( const wxString& dbname = "Main" ) const {                     \
+        return RecordExists( s_tablename, f_id, dbname ); }                    \
+    static bool Exists( idt id, const wxString& dbname = "Main"  ) {           \
+        return RecordExists( s_tablename, id, dbname ); }                      \
     static int UserCount() { return GetUserCount( s_tablename ); }             \
     static int Count() { return GetCount( s_tablename ); }                     \
     static bool TableExists( const wxString& db = wxEmptyString ) {            \

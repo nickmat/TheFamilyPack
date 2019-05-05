@@ -5,7 +5,7 @@
 * Author:      Nick Matthews
 * Website:     http://thefamilypack.org
 * Created:     2nd October 2018
-* Copyright:   Copyright (c) 2018, Nick Matthews.
+* Copyright:   Copyright (c) 2018 ~ 2019, Nick Matthews.
 * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -75,8 +75,7 @@ bool rgImagePanel::SetImage( const wxMemoryBuffer& buf )
 
 bool rgImagePanel::SetImage( const recMedia& med )
 {
-    assert( med.FGetAssID() == 0 ); // Don't use external data yet.
-    recMediaData md( med.FGetID() );
+    recMediaData md( med.FGetDataID(), med.FGetAssID() );
     return SetImage( md.FGetData() );
 }
 

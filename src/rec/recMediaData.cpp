@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     19th September 2018
- * Copyright:   Copyright (c) 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2018 ~ 2019, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -37,6 +37,18 @@
 
 #include <rec/recMediaData.h>
 
+#include <rec/recAssociate.h>
+
+recMediaData::recMediaData( idt id, idt assID ) : recDb( id )
+{
+    wxString dbname = recAssociate::GetPath( assID );
+    if ( dbname.empty() ) {
+        Clear();
+    } else {
+        Read( dbname );
+    }
+}
+
 recMediaData::recMediaData( const recMediaData& n )
 {
     f_id = n.f_id;
@@ -55,7 +67,7 @@ void recMediaData::Clear()
     f_file.clear();
 }
 
-void recMediaData::Save()
+void recMediaData::Save( const wxString & dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -64,28 +76,30 @@ void recMediaData::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO MediaData (data, privacy, copyright, file)"
+            "INSERT INTO %q.MediaData (data, privacy, copyright, file)"
             " VALUES (x'%q', %d, '%q', '%q');",
-            UTF8_( GetBlobFormatStr( f_data ) ), f_privacy, UTF8_( f_copyright ), UTF8_( f_file )
+            UTF8_( dbname ), UTF8_( GetBlobFormatStr( f_data ) ), f_privacy,
+            UTF8_( f_copyright ), UTF8_( f_file )
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
     } else {
         // Does record exist
-        if ( !Exists() )
+        if ( !Exists( dbname ) )
         {
             // Add new record
             sql.Format(
-                "INSERT INTO MediaData (id, data, privacy, copyright, file)"
+                "INSERT INTO %q.MediaData (id, data, privacy, copyright, file)"
                 " VALUES (" ID ", x'%q', %d, '%q');",
-                f_id, UTF8_( GetBlobFormatStr( f_data ) ),
+                UTF8_( dbname ), f_id, UTF8_( GetBlobFormatStr( f_data ) ),
                 f_privacy, UTF8_( f_copyright ), UTF8_( f_file )
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE MediaData SET data=x'%q', privacy=%d, copyright='%q', file='%q' WHERE id=" ID ";",
-                UTF8_( GetBlobFormatStr( f_data ) ),
+                "UPDATE %q.MediaData SET data=x'%q', privacy=%d, copyright='%q', file='%q'"
+                " WHERE id=" ID ";",
+                UTF8_( dbname ), UTF8_( GetBlobFormatStr( f_data ) ),
                 f_privacy, UTF8_( f_copyright ), UTF8_( f_file ), f_id
             );
         }
@@ -93,7 +107,7 @@ void recMediaData::Save()
     }
 }
 
-bool recMediaData::Read()
+bool recMediaData::Read( const wxString & dbname )
 {
     wxSQLite3StatementBuffer sql;
 
@@ -104,8 +118,8 @@ bool recMediaData::Read()
 
     sql.Format(
         "SELECT data, privacy, copyright, file"
-        " FROM MediaData WHERE id=" ID ";",
-        f_id
+        " FROM %q.MediaData WHERE id=" ID ";",
+        UTF8_( dbname ), f_id
     );
     wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
 
@@ -131,9 +145,11 @@ bool recMediaData::Equivalent( const recMediaData& r2 ) const
         f_file == r2.f_file;
 }
 
-wxString recMediaData::GetFileName( idt mdID )
+wxString recMediaData::GetFileName( const wxString& assDb, idt mdID )
 {
-    return ExecuteStr( "SELECT file FROM MediaData WHERE id=" ID ";", mdID );
+    wxSQLite3StatementBuffer sql;
+    sql.Format( "SELECT file FROM %q.MediaData WHERE id=" ID ";", UTF8_( assDb ), mdID );
+    return ExecuteStr( sql );
 }
 
 

@@ -6,7 +6,7 @@
  * Website:     http://thefamilypack.org
  * Created:     30th April 2013
  * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2013 ~ 2017, Nick Matthews.
+ * Copyright:   Copyright (c) 2013 ~ 2019, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -29,6 +29,7 @@
 #ifndef REC_RECHELPER_H
 #define REC_RECHELPER_H
 
+#include <map>
 #include <vector>
 
 #include <wx/wxsqlite3.h>
@@ -52,6 +53,7 @@ typedef std::vector< bool > BoolVec;
 
 typedef std::vector< idt >  recIdVec;
 
+typedef std::map< idt, wxString > recAssMap;
 
 // This class is used when we want to compare two lists that have been
 // obtained by separate routes. The normal pattern is that either

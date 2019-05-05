@@ -51,6 +51,8 @@ public:
     static wxString GetIdStr( idt assID ) { return wxString::Format( "A" ID, assID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
+    static wxString GetPath( idt assID );
+
 private:
     wxString f_path;
 };

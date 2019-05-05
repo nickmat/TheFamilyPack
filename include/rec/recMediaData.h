@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     19th September 2018
- * Copyright:   Copyright (c) 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2018 ~ 2019, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -35,11 +35,13 @@ class recMediaData : public recDb
 public:
     recMediaData() {}
     recMediaData( idt id ) : recDb( id ) { Read(); }
+    recMediaData( idt id, idt assID );
+    recMediaData( const wxString dbname, idt id ) : recDb( id ) { Read( dbname ); }
     recMediaData( const recMediaData& md );
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
     TABLE_NAME_MEMBERS( "MediaData" );
     bool Equivalent( const recMediaData& r2 ) const;
 
@@ -56,7 +58,7 @@ public:
     static wxString GetIdStr( idt medID ) { return wxString::Format( "MD" ID, medID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
-    static wxString GetFileName( idt mdID );
+    static wxString GetFileName( const wxString& assDb, idt mdID );
 
 private:
     wxMemoryBuffer f_data;

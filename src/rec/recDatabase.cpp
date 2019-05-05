@@ -50,6 +50,7 @@ extern void recInitialize()
     if( recDb::GetDb() == NULL ) {
         recDb::SetDb( new wxSQLite3Database() );
     }
+    recDb::AddAssociate( 0, "Main" );
     calInit();
 }
 
@@ -66,6 +67,7 @@ extern void recUninitialize()
 wxSQLite3Database* recDb::s_db = NULL;
 long               recDb::s_change = 0;
 long               recDb::s_spnumber = 0;
+recAssMap          recDb::s_assmap;
 
 
 recDb::CreateReturn recDb::CreateDbFile( const wxString& fname, DatabaseType type )
@@ -165,10 +167,23 @@ bool recDb::OpenDb( const wxString& fname )
 
 bool recDb::AttachDb( const wxString& fname, const wxString& dbname )
 {
+    wxFileName dbMain_( recDb::GetFileName() );
+    wxString dbPath_( dbMain_.GetPath() );
+    wxString cwdPath_( wxGetCwd() );
+
+
     wxFileName dbfile( fname );
     dbfile.SetExt( "tfpd" );
     if ( !dbfile.FileExists() ) {
-        return false;
+        if ( !dbfile.IsRelative() ) {
+            return false;
+        }
+        wxFileName dbMain( recDb::GetFileName() );
+        wxString dbPath( dbMain.GetPath() );
+        dbfile.SetCwd( dbPath );
+        if ( !dbfile.FileExists() ) {
+            return false;
+        }
     }
     wxString dbfname = dbfile.GetFullPath();
     wxSQLite3StatementBuffer sql;
@@ -249,14 +264,14 @@ bool recDb::DeleteRecord( const char* name, idt id )
     return true;
 }
 
-bool recDb::RecordExists( const char* name, idt id )
+bool recDb::RecordExists( const char* name, idt id, const wxString& dbname )
 {
     if( id == 0 ) {
         return false;
     }
 
     wxSQLite3StatementBuffer sql;
-    sql.Format( "SELECT COUNT(*) FROM %q WHERE id=" ID ";", name, id );
+    sql.Format( "SELECT COUNT(*) FROM %q.%q WHERE id=" ID ";", UTF8_( dbname ), name, id );
 
     if( s_db->ExecuteScalar( sql ) != 1 ) {
         return false;

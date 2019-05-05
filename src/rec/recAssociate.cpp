@@ -107,4 +107,25 @@ bool recAssociate::Read()
     return true;
 }
 
+wxString recAssociate::GetPath( idt assID )
+{
+    if ( s_assmap.count( assID ) == 1 ) {
+        return s_assmap[assID];
+    }
+    recAssociate ass( assID );
+    wxString path = ass.FGetPath();
+    if ( path.empty() ) {
+        return path;
+    }
+    // Check if it's already attached.
+    if ( s_db->GetDatabaseFilename( path ).empty() ) {
+        if ( AttachDb( path, path ) ) {
+            s_assmap[assID] = path;
+        } else {
+            return wxString();
+        }
+    }
+    return s_assmap[assID];
+}
+
 // End of recAssociate.cpp file
