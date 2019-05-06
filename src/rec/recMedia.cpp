@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     19th September 2018
- * Copyright:   Copyright (c) 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2018 ~ 2019, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -146,5 +146,21 @@ wxString recMedia::GetTitle( idt medID )
     return ExecuteStr( "SELECT title FROM Media WHERE id=" ID ";", medID );
 }
 
+wxSQLite3Table recMedia::GetMediaList()
+{
+    return s_db->GetTable(
+        "SELECT id, ass_id, ref_id, title FROM Media ORDER BY id;"
+    );
+}
+
+wxSQLite3Table recMedia::GetMediaList( idt offset, int limit )
+{
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT id, ass_id, ref_id, title FROM Media ORDER BY id LIMIT " ID ", %d;",
+        offset, limit
+    );
+    return s_db->GetTable( sql );
+}
 
 // End of recMedia.cpp file

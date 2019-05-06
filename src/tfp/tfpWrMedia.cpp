@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3rd November 2018
- * Copyright:   Copyright (c) 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2018 ~ 2019, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -100,6 +100,83 @@ wxString tfpWriteMediaPage( idt medID )
         " Copyright: <b>" << copyright << "</b></td>\n"
         "</tr>\n"
         "</table>\n" << tfpWrTailTfp()
+    ;
+    return htm;
+}
+
+wxString tfpWriteMediaIndex()
+{
+    static wxString htm;
+    static long lastchange( 0 );
+
+    if ( !htm.IsEmpty() && recDb::GetChange() == lastchange ) {
+        return htm;
+    }
+    wxSQLite3Table result = recMedia::GetMediaList();
+
+    htm <<
+        tfpWrHeadTfp( "Media List" ) <<
+        "<h1>Media List</h1>\n"
+        "<table class='data'>\n"
+        "<tr><th>ID</th><th>Database</th><th>Reference</th><th>Title</th></tr>\n"
+    ;
+    for ( int i = 0; i < result.GetRowCount(); i++ ) {
+        result.SetRow( i );
+        htm <<
+            "<tr><td><a href='tfp:M" << result.GetAsString( 0 ) <<
+            "'><b>M" << result.GetAsString( 0 ) <<
+            "</b></a></td><td>" << recAssociate::GetPath( GET_ID( result.GetInt64( 1 ) ) ) <<
+            "</td><td><a href='tfp:R" << result.GetAsString( 2 ) <<
+            "'><b>R" << result.GetAsString( 2 ) <<
+            "</b></a></td><td> " << result.GetAsString( 3 ) <<
+            "</td></tr>\n"
+        ;
+    }
+    htm << "</table>\n" << tfpWrTailTfp();
+
+    lastchange = recDb::GetChange();
+    return htm;
+}
+
+wxString tfpWriteMediaPagedIndex( idt begCnt )
+{
+    int maxsize = recMedia::UserCount();
+    if ( maxsize <= tfpWR_PAGE_MAX ) {
+        return tfpWriteMediaIndex();
+    }
+    wxString pmenu = tfpWritePagedIndexMenu( begCnt, maxsize, "tfp:M" );
+
+    wxSQLite3Table result = recMedia::GetMediaList( begCnt, tfpWR_PAGE_MAX );
+    size_t size = (size_t)result.GetRowCount();
+    result.SetRow( 0 );
+    idt beg = GET_ID( result.GetInt64( 0 ) );
+    result.SetRow( size - 1 );
+    idt end = GET_ID( result.GetInt64( 0 ) );
+
+    wxString htm;
+    htm <<
+        tfpWrHeadTfp( "Media List" ) <<
+        "<h1>Media Index from " << recReference::GetIdStr( beg ) <<
+        " to " << recReference::GetIdStr( end ) <<
+        "</h1>\n" << pmenu <<
+        "<table class='data'>\n"
+        "<tr><th>ID</th><th>Database</th><th>Reference</th><th>Title</th></tr>\n"
+    ;
+    for ( size_t i = 0; i < size; i++ ) {
+        result.SetRow( i );
+        htm <<
+            "<tr><td><a href='tfp:M" << result.GetAsString( 0 ) <<
+            "'><b>M" << result.GetAsString( 0 ) <<
+            "</b></a></td><td>" << recAssociate::GetPath( GET_ID( result.GetInt64( 1 ) ) ) <<
+            "</td><td><a href='tfp:R" << result.GetAsString( 2 ) <<
+            "'><b>R" << result.GetAsString( 2 ) <<
+            "</b></a></td><td> " << result.GetAsString( 3 ) <<
+            "</td></tr>\n"
+        ;
+    }
+    htm <<
+        "</table>\n" << pmenu <<
+        "<br>\n" << tfpWrTailTfp()
     ;
     return htm;
 }

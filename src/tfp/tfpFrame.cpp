@@ -99,6 +99,8 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_LIST_PERSONAS, TfpFrame::OnListPersonas )
     EVT_MENU( tfpID_LIST_INDIVIDUALS, TfpFrame::OnListIndividuals )
     EVT_MENU( tfpID_LIST_GALLERIES, TfpFrame::OnListGalleries )
+    EVT_MENU( tfpID_LIST_MEDIA_LIST, TfpFrame::OnListMediaList )
+    EVT_MENU( tfpID_LIST_MEDIA_PAGED_LIST, TfpFrame::OnListMediaPagedList )
     EVT_MENU( tfpID_LIST_ALL_REFERENCES, TfpFrame::OnListReferences )
     EVT_MENU( tfpID_LIST_PAGED_REFERENCES, TfpFrame::OnListPagedReferences )
     EVT_MENU( tfpID_LIST_ALL_EVENTS, TfpFrame::OnListAllEvents )
@@ -222,8 +224,8 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     m_menuEditEvent->Append( tfpID_EDIT_EVENT_NEW_CON, _("&New Conclusion Event") );
 
     m_menuEditReference = new wxMenu;
-    m_menuEditReference->Append( tfpID_EDIT_REFERENCE, _("&Reference...") );
-    m_menuEditReference->Append( tfpID_EDIT_NEW_REFERENCE, _("&New Reference") );
+    m_menuEditReference->Append( tfpID_EDIT_REFERENCE, _( "&Reference..." ) );
+    m_menuEditReference->Append( tfpID_EDIT_NEW_REFERENCE, _( "&New Reference" ) );
 
     wxMenu* menuEdCore = new wxMenu;
     menuEdCore->Append( tfpID_EDIT_EVENT_TYPE, _("&Event Types...") );
@@ -241,9 +243,14 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     menuFind->Append( tfpID_FIND_INDIVIDUAL_ID, _("&Individual ID...") );
     menuFind->Append( tfpID_FIND_EVENT_ID, _("&Event ID...") );
 
+    wxMenu* menuListMedia = new wxMenu;
+    menuListMedia->Append( tfpID_LIST_GALLERIES, _( "&Galleries\tAlt-G" ) );
+    menuListMedia->Append( tfpID_LIST_MEDIA_LIST, _( "&All Media\tAlt-M" ) );
+    menuListMedia->Append( tfpID_LIST_MEDIA_PAGED_LIST, _( "&Paged Media" ) );
+
     wxMenu* menuListRef = new wxMenu;
-    menuListRef->Append( tfpID_LIST_ALL_REFERENCES, _("&All References\tAlt-R") );
-    menuListRef->Append( tfpID_LIST_PAGED_REFERENCES, _("&Paged References") );
+    menuListRef->Append( tfpID_LIST_ALL_REFERENCES, _( "&All References\tAlt-R" ) );
+    menuListRef->Append( tfpID_LIST_PAGED_REFERENCES, _( "&Paged References" ) );
 
     wxMenu* menuListEvent = new wxMenu;
     menuListEvent->Append( tfpID_LIST_ALL_EVENTS, _("&All Events\tAlt-E") );
@@ -258,8 +265,8 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     menuList->Append( tfpID_LIST_SURNAME_INDEX, _("&Surname Index\tAlt-S") );
     menuList->Append( tfpID_LIST_PERSONAS, _("Person&a Index\tAlt-A") );
     menuList->Append( tfpID_LIST_INDIVIDUALS, _( "&Individuals\tAlt-I" ) );
-    menuList->Append( tfpID_LIST_GALLERIES, _( "&Galleries\tAlt-G" ) );
-    menuList->Append( tfpID_LIST_REFERENCE_MENU, _("&References"), menuListRef );
+    menuList->Append( tfpID_LIST_MEDIA_MENU, _( "&Media" ), menuListMedia );
+    menuList->Append( tfpID_LIST_REFERENCE_MENU, _( "&References" ), menuListRef );
     menuList->Append( tfpID_LIST_EVENT_MENU, _("&Events"), menuListEvent );
     menuList->Append( tfpID_LIST_RESEARCHERS, _("Resear&chers\tAlt-C") );
 
@@ -852,6 +859,16 @@ void TfpFrame::OnListIndividuals( wxCommandEvent& event )
 void TfpFrame::OnListGalleries( wxCommandEvent & event )
 {
     DisplayHtmPage( "G" );
+}
+
+void TfpFrame::OnListMediaList( wxCommandEvent & event )
+{
+    DisplayHtmPage( "M" );
+}
+
+void TfpFrame::OnListMediaPagedList( wxCommandEvent & event )
+{
+    DisplayHtmPage( "M,0" );
 }
 
 /*! \brief Called on a List References menu option event.
@@ -1998,6 +2015,12 @@ wxString TfpFrame::GetDisplayText( wxString& name )
         }
         if ( name.compare( 0, 1, "I" ) == 0 && success ) {
             return tfpWriteIndividualPage( num );
+        }
+        if ( name.compare( "M" ) == 0 ) {
+            return tfpWriteMediaIndex();
+        }
+        if ( name.compare( 0, 2, "M," ) == 0 && success1 ) {
+            return tfpWriteMediaPagedIndex( num1 );
         }
         if ( name.compare( 0, 1, "M" ) == 0 && success ) {
             return tfpWriteMediaPage( num );
