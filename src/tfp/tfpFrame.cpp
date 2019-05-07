@@ -101,6 +101,7 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_LIST_GALLERIES, TfpFrame::OnListGalleries )
     EVT_MENU( tfpID_LIST_MEDIA_LIST, TfpFrame::OnListMediaList )
     EVT_MENU( tfpID_LIST_MEDIA_PAGED_LIST, TfpFrame::OnListMediaPagedList )
+    EVT_MENU( tfpID_LIST_MEDIADATA_LIST, TfpFrame::OnListMediaDataList )
     EVT_MENU( tfpID_LIST_ALL_REFERENCES, TfpFrame::OnListReferences )
     EVT_MENU( tfpID_LIST_PAGED_REFERENCES, TfpFrame::OnListPagedReferences )
     EVT_MENU( tfpID_LIST_ALL_EVENTS, TfpFrame::OnListAllEvents )
@@ -247,6 +248,8 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     menuListMedia->Append( tfpID_LIST_GALLERIES, _( "&Galleries\tAlt-G" ) );
     menuListMedia->Append( tfpID_LIST_MEDIA_LIST, _( "&All Media\tAlt-M" ) );
     menuListMedia->Append( tfpID_LIST_MEDIA_PAGED_LIST, _( "&Paged Media" ) );
+    menuListMedia->AppendSeparator();
+    menuListMedia->Append( tfpID_LIST_MEDIADATA_LIST, _( "All Media &Data" ) );
 
     wxMenu* menuListRef = new wxMenu;
     menuListRef->Append( tfpID_LIST_ALL_REFERENCES, _( "&All References\tAlt-R" ) );
@@ -869,6 +872,11 @@ void TfpFrame::OnListMediaList( wxCommandEvent & event )
 void TfpFrame::OnListMediaPagedList( wxCommandEvent & event )
 {
     DisplayHtmPage( "M,0" );
+}
+
+void TfpFrame::OnListMediaDataList( wxCommandEvent & event )
+{
+    DisplayHtmPage( "MD" );
 }
 
 /*! \brief Called on a List References menu option event.
@@ -2018,6 +2026,9 @@ wxString TfpFrame::GetDisplayText( wxString& name )
         }
         if ( name.compare( "M" ) == 0 ) {
             return tfpWriteMediaIndex();
+        }
+        if ( name.compare( "MD" ) == 0 ) {
+            return tfpWriteMediaDataIndex();
         }
         if ( name.compare( 0, 2, "M," ) == 0 && success1 ) {
             return tfpWriteMediaPagedIndex( num1 );

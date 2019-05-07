@@ -116,6 +116,7 @@ public:
     void OnListGalleries( wxCommandEvent& event );
     void OnListMediaList( wxCommandEvent& event );
     void OnListMediaPagedList( wxCommandEvent& event );
+    void OnListMediaDataList( wxCommandEvent& event );
     void OnListReferences( wxCommandEvent& event );
     void OnListPagedReferences( wxCommandEvent& event );
     void OnListAllEvents( wxCommandEvent& event );
@@ -259,6 +260,7 @@ enum
     tfpID_LIST_GALLERIES,
     tfpID_LIST_MEDIA_LIST,
     tfpID_LIST_MEDIA_PAGED_LIST,
+    tfpID_LIST_MEDIADATA_LIST,
     tfpID_LIST_REFERENCE_MENU,
     tfpID_LIST_ALL_REFERENCES,
     tfpID_LIST_PAGED_REFERENCES,

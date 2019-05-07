@@ -152,5 +152,13 @@ wxString recMediaData::GetFileName( const wxString& assDb, idt mdID )
     return ExecuteStr( sql );
 }
 
+wxSQLite3Table recMediaData::GetMediaDataList( const wxString& dbname )
+{
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT id, privacy, copyright, file FROM %q.MediaData ORDER BY file;", UTF8_( dbname )
+    );
+    return s_db->GetTable( sql );
+}
 
 // End of recMediaData.cpp file

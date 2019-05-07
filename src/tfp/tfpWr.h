@@ -87,6 +87,7 @@ extern wxString tfpWriteIndividualPage( idt indID );
 extern wxString tfpWriteMediaPage( idt medID );
 extern wxString tfpWriteMediaIndex();
 extern wxString tfpWriteMediaPagedIndex( idt begCnt );
+extern wxString tfpWriteMediaDataIndex();
 
 // See tfpWrName.cpp
 extern wxString tfpWriteSurnameIndex( recSurnameGroup sng );

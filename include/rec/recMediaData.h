@@ -60,6 +60,8 @@ public:
 
     static wxString GetFileName( const wxString& assDb, idt mdID );
 
+    static wxSQLite3Table GetMediaDataList( const wxString& dbname = "Main" );
+
 private:
     wxMemoryBuffer f_data;
     int            f_privacy;

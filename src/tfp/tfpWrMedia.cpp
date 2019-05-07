@@ -181,4 +181,38 @@ wxString tfpWriteMediaPagedIndex( idt begCnt )
     return htm;
 }
 
+wxString tfpWriteMediaDataIndex()
+{
+    static wxString htm;
+    static long lastchange( 0 );
+
+    if ( !htm.IsEmpty() && recDb::GetChange() == lastchange ) {
+        return htm;
+    }
+    wxSQLite3Table result = recMediaData::GetMediaDataList();
+
+    htm <<
+        tfpWrHeadTfp( "Media Data List" ) <<
+        "<h1>Media Data List</h1>\n"
+        "<table class='data'>\n"
+        "<tr><th colspan='4'>Main</th></tr>\n"
+        "<tr><th>Name</th><th>ID</th><th>Privacy</th><th>Copyright</th></tr>\n"
+        ;
+    for ( int i = 0; i < result.GetRowCount(); i++ ) {
+        result.SetRow( i );
+        htm <<
+            "<tr><td>" << result.GetAsString( 3 ) <<
+            "</td><td><a href='tfp:MD" << result.GetAsString( 0 ) <<
+            "'><b>MD" << result.GetAsString( 0 ) <<
+            "</b></a></td><td>" << result.GetInt( 1 ) <<
+            "</td><td>" << result.GetAsString( 2 ) <<
+            "</td></tr>\n"
+            ;
+    }
+    htm << "</table>\n" << tfpWrTailTfp();
+
+    lastchange = recDb::GetChange();
+    return htm;
+}
+
 // End of src/tfp/tfpWrMedia.cpp Source
