@@ -73,6 +73,12 @@ bool rgImagePanel::SetImage( const wxMemoryBuffer& buf )
     return true;
 }
 
+bool rgImagePanel::SetImage( idt medID, idt assID )
+{
+    recMediaData md( medID, assID );
+    return SetImage( md.FGetData() );
+}
+
 bool rgImagePanel::SetImage( const recMedia& med )
 {
     recMediaData md( med.FGetDataID(), med.FGetAssID() );

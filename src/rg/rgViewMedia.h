@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     10 October 2018
- * Copyright:   Copyright (c) 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2018 ~ 2019, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -29,6 +29,7 @@
 #define SRC_RG_RGVIEWMEDIA_H
 
 #include <rec/recMedia.h>
+#include <rec/recMediaData.h>
 
 #include "fb/fbRgViewMedia.h"
 
@@ -36,6 +37,7 @@ class rgViewMediaFrame : public fbRgViewMedia
 {
 public:
     rgViewMediaFrame( wxWindow* parent, idt medID );
+    rgViewMediaFrame( wxWindow* parent, idt mdID, idt assID );
 
     void SetToolbarScale( double scale );
 
@@ -55,6 +57,7 @@ private:
     void OnButtonExport( wxCommandEvent& event ) override;
     void OnButtonPrint( wxCommandEvent& event ) override;
 
+    recMediaData m_mediadata;
     recMedia m_media;
     bool     m_scrollEnabled;
     double   m_upper;

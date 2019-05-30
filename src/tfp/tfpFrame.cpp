@@ -1570,7 +1570,14 @@ void TfpFrame::DoPopupNote( const wxString& ref )
 
 void TfpFrame::DoPopupViewer( const wxString & href )
 {
-    if ( href.StartsWith( "M" ) ) {
+    if ( href.StartsWith( "MD" ) ) {
+        idt mdID, assID;
+        recGetIDs( href.substr( 2 ), &mdID, &assID );
+        if ( mdID ) {
+            rgViewMedia( this, mdID, assID );
+            return;
+        }
+    } else if ( href.StartsWith( "M" ) ) {
         idt medID = recGetID( href.substr( 1 ) );
         if ( medID ) {
             rgViewMedia( this, medID );
@@ -2032,6 +2039,9 @@ wxString TfpFrame::GetDisplayText( wxString& name )
         }
         if ( name.compare( 0, 2, "M," ) == 0 && success1 ) {
             return tfpWriteMediaPagedIndex( num1 );
+        }
+        if ( name.compare( 0, 2, "MD" ) == 0 && success ) {
+            return tfpWriteMediaPage( num );
         }
         if ( name.compare( 0, 1, "M" ) == 0 && success ) {
             return tfpWriteMediaPage( num );

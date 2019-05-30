@@ -167,11 +167,6 @@ bool recDb::OpenDb( const wxString& fname )
 
 bool recDb::AttachDb( const wxString& fname, const wxString& dbname )
 {
-    wxFileName dbMain_( recDb::GetFileName() );
-    wxString dbPath_( dbMain_.GetPath() );
-    wxString cwdPath_( wxGetCwd() );
-
-
     wxFileName dbfile( fname );
     dbfile.SetExt( "tfpd" );
     if ( !dbfile.FileExists() ) {
@@ -197,6 +192,12 @@ bool recDb::DetachDb( const wxString& dbname )
     wxSQLite3StatementBuffer sql;
     sql.Format( "DETACH DATABASE '%q';", UTF8_( dbname ) );
     s_db->ExecuteUpdate( sql );
+    for ( auto a : s_assmap ) {
+        if ( a.second == dbname ) {
+            s_assmap.erase( a.first );
+            break;
+        }
+    }
     return true;
 }
 
@@ -214,6 +215,16 @@ StringVec recDb::GetAttachedDbList()
         vec.push_back( name );
     }
     return vec;
+}
+
+idt recDb::GetAttachedDbAssID( const wxString& dbname )
+{
+    for ( auto a : s_assmap ) {
+        if ( a.second == dbname ) {
+            return a.first;
+        }
+    }
+    return 0;
 }
 
 void recDb::CloseDb() 

@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     10 October 2018
- * Copyright:   Copyright (c) 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2018 ~ 2019, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -49,12 +49,32 @@ void rgViewMedia( wxWindow* wind, idt medID )
     frame->Show();
 }
 
+void rgViewMedia( wxWindow* wind, idt mdID, idt assID )
+{
+    rgViewMediaFrame* frame = new rgViewMediaFrame( wind, mdID, assID );
+    frame->SetBackgroundColour( *wxWHITE );
+    frame->Show();
+}
+
 //============================================================================
 //-------------------------[ rgViewMediaForm ]--------------------------------
 //============================================================================
 
 rgViewMediaFrame::rgViewMediaFrame( wxWindow* parent, idt medID )
     : m_media(medID), m_scrollEnabled(false), m_upper(4), m_prevThumb(-1),
+    fbRgViewMedia( parent )
+{
+    Bind( rgEVT_IMAGE_SCALE, &rgViewMediaFrame::OnChangeScale, this );
+    m_lower = 1 / m_upper;
+    m_b = m_upper * m_upper;
+    m_k = std::log10( m_b );
+    m_imageViewer->SetImage( m_media );
+    EnableScroll( false );
+}
+
+rgViewMediaFrame::rgViewMediaFrame( wxWindow * parent, idt mdID, idt assID )
+    : m_media( recMediaData::FindMedia(mdID, assID) ), m_mediadata(mdID),
+    m_scrollEnabled( false ), m_upper( 4 ), m_prevThumb( -1 ),
     fbRgViewMedia( parent )
 {
     Bind( rgEVT_IMAGE_SCALE, &rgViewMediaFrame::OnChangeScale, this );

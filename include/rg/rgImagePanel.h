@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     2nd October 2018
- * Copyright:   Copyright (c) 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2018 ~ 2019, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -40,6 +40,7 @@ public:
     rgImagePanel( wxWindow* parent );
 
     bool SetImage( const wxMemoryBuffer& buf );
+    bool SetImage( idt medID, idt assID );
     bool SetImage( const recMedia& med );
     void SetScrollMode( bool scroll );
 

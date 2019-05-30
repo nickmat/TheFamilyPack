@@ -38,6 +38,7 @@
 #include <rec/recMediaData.h>
 
 #include <rec/recAssociate.h>
+#include <rec/recMedia.h>
 
 recMediaData::recMediaData( idt id, idt assID ) : recDb( id )
 {
@@ -150,6 +151,18 @@ wxString recMediaData::GetFileName( const wxString& assDb, idt mdID )
     wxSQLite3StatementBuffer sql;
     sql.Format( "SELECT file FROM %q.MediaData WHERE id=" ID ";", UTF8_( assDb ), mdID );
     return ExecuteStr( sql );
+}
+
+idt recMediaData::FindMedia( idt mdID, idt assID )
+{
+    if ( !recMedia::TableExists() ) {
+        return 0;
+    }
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT id FROM Media WHERE data_id=" ID " AND ass_id=" ID ";", mdID, assID
+    );
+    return ExecuteID( sql );
 }
 
 wxSQLite3Table recMediaData::GetMediaDataList( const wxString& dbname )

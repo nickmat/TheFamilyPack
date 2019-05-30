@@ -183,35 +183,43 @@ wxString tfpWriteMediaPagedIndex( idt begCnt )
 
 wxString tfpWriteMediaDataIndex()
 {
-    static wxString htm;
-    static long lastchange( 0 );
+    // TODO: Cache this result.
+    StringVec attached = recDb::GetAttachedDbList();
+    attached.insert( attached.begin(), "Main" );
 
-    if ( !htm.IsEmpty() && recDb::GetChange() == lastchange ) {
-        return htm;
-    }
-    wxSQLite3Table result = recMediaData::GetMediaDataList();
+    wxString htm = tfpWrHeadTfp( "Media Data List" );
+    htm << "<h1>Media Data List</h1>\n";
 
-    htm <<
-        tfpWrHeadTfp( "Media Data List" ) <<
-        "<h1>Media Data List</h1>\n"
-        "<table class='data'>\n"
-        "<tr><th colspan='4'>Main</th></tr>\n"
-        "<tr><th>Name</th><th>ID</th><th>Privacy</th><th>Copyright</th></tr>\n"
-        ;
-    for ( int i = 0; i < result.GetRowCount(); i++ ) {
-        result.SetRow( i );
+    for ( auto aname : attached ) {
+        wxSQLite3Table result = recMediaData::GetMediaDataList( aname );
+        if ( result.GetRowCount() == 0 ) {
+            continue;
+        }
+        idt assID = recDb::GetAttachedDbAssID( aname );
+        if ( assID == 0 && aname != "Main" ) {
+            continue;
+        }
         htm <<
-            "<tr><td>" << result.GetAsString( 3 ) <<
-            "</td><td><a href='tfp:MD" << result.GetAsString( 0 ) <<
-            "'><b>MD" << result.GetAsString( 0 ) <<
-            "</b></a></td><td>" << result.GetInt( 1 ) <<
-            "</td><td>" << result.GetAsString( 2 ) <<
-            "</td></tr>\n"
+            "<table class='data'>\n"
+            "<tr><th colspan='4'>" << aname << "</th></tr>\n"
+            "<tr><th>Name</th><th>ID</th><th>Privacy</th><th>Copyright</th></tr>\n"
+        ;
+        for ( int i = 0; i < result.GetRowCount(); i++ ) {
+            result.SetRow( i );
+            htm <<
+                "<tr><td>" << result.GetAsString( 3 ) <<
+                "</td><td><a href='tfpv:MD" << result.GetAsString( 0 ) <<
+                "," << assID <<
+                "'><b>MD" << result.GetAsString( 0 ) <<
+                "</b></a></td><td>" << result.GetInt( 1 ) <<
+                "</td><td>" << result.GetAsString( 2 ) <<
+                "</td></tr>\n"
             ;
+        }
+        htm << "</table>\n";
     }
-    htm << "</table>\n" << tfpWrTailTfp();
+    htm << tfpWrTailTfp();
 
-    lastchange = recDb::GetChange();
     return htm;
 }
 

@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     19th September 2018
- * Copyright:   Copyright (c) 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2018 ~ 2019, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -124,6 +124,8 @@ wxString recAssociate::GetPath( idt assID )
         } else {
             return wxString();
         }
+    } else {
+        s_assmap[assID] = path;
     }
     return s_assmap[assID];
 }
