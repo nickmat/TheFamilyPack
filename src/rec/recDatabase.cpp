@@ -64,10 +64,11 @@ extern void recUninitialize()
     calUninit();
 }
 
-wxSQLite3Database* recDb::s_db = NULL;
-long               recDb::s_change = 0;
-long               recDb::s_spnumber = 0;
-recAssMap          recDb::s_assmap;
+wxSQLite3Database*  recDb::s_db = NULL;
+recDb::DatabaseType recDb::s_dbtype = DT_NULL;
+long                recDb::s_change = 0;
+long                recDb::s_spnumber = 0;
+recAssMap           recDb::s_assmap;
 
 
 recDb::CreateReturn recDb::CreateDbFile( const wxString& fname, DatabaseType type )
@@ -140,29 +141,30 @@ bool recDb::CreateDb( const wxString& fname, unsigned flags )
     return false;
 }
 
-bool recDb::OpenDb( const wxString& fname )
+recDb::DatabaseType recDb::OpenDb( const wxString& fname )
 {
     if( IsOpen() ) {
         recMessage( _("Database already open."), _("Open Database") );
-        return false;
+        return DT_NULL;
     }
 
     try {
         s_db->Open( fname, wxEmptyString, WXSQLITE_OPEN_READWRITE );
     } catch( wxSQLite3Exception& e ) {
         recDb::ErrorMessage( e );
-        return false;
+        return DT_NULL;
     }
     if( !IsOpen() ) {
         recMessage( _("Unable to open Database."), _("Open Database") );
-        return false;
+        return DT_NULL;
     }
 
-    bool success = recVersion::Manage();
-    if( success == false ) {
+//    bool success = recVersion::Manage();
+    DatabaseType type = recVersion::Manage();
+    if( type == DT_NULL ) {
         CloseDb();
     }
-    return success;
+    return type;
 }
 
 bool recDb::AttachDb( const wxString& fname, const wxString& dbname )
@@ -230,7 +232,10 @@ idt recDb::GetAttachedDbAssID( const wxString& dbname )
 void recDb::CloseDb() 
 { 
     s_db->Close();
+    s_dbtype = DT_NULL;
     ++s_change;
+    s_assmap.clear();
+    s_assmap[0] = "Main";
 }
 
 bool recDb::GlobalUpdate()

@@ -92,12 +92,28 @@ wxString recVersion::GetVersionStr( recDb::DatabaseType type )
     );
 }
 
-bool recVersion::Manage()
+recDb::DatabaseType recVersion::Manage()
 {
+    s_dbtype = DT_NULL;
     if ( !s_db->IsOpen() || !recVersion::TableExists() ) {
-        return false;
+        return DT_NULL;
     }
-    return recDoUpgrade();
+
+    recVersion v( DT_Full );
+    if ( !v.IsEqual( 0, 0, 0, 0 ) ) {
+        if ( recDoFullUpgrade() ) {
+            s_dbtype = DT_Full;
+        }
+    }
+
+    v.ReadID( DT_MediaOnly );
+    if ( !v.IsEqual( 0, 0, 0, 0 ) ) {
+        if ( recDoMediaUpgrade() && s_dbtype == DT_NULL ) {
+            s_dbtype = DT_MediaOnly;
+        }
+    }
+
+    return s_dbtype;
 }
 
 bool recVersion::IsEqual( int major, int minor, int revision, int test ) const

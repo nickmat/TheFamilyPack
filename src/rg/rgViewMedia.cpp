@@ -64,11 +64,12 @@ rgViewMediaFrame::rgViewMediaFrame( wxWindow* parent, idt medID )
     : m_media(medID), m_scrollEnabled(false), m_upper(4), m_prevThumb(-1),
     fbRgViewMedia( parent )
 {
+    m_mediadata.ReadID( m_media.FGetDataID(), m_media.FGetAssID() );
     Bind( rgEVT_IMAGE_SCALE, &rgViewMediaFrame::OnChangeScale, this );
     m_lower = 1 / m_upper;
     m_b = m_upper * m_upper;
     m_k = std::log10( m_b );
-    m_imageViewer->SetImage( m_media );
+    m_imageViewer->SetImage( m_mediadata.FGetData() );
     EnableScroll( false );
 }
 
@@ -81,7 +82,7 @@ rgViewMediaFrame::rgViewMediaFrame( wxWindow * parent, idt mdID, idt assID )
     m_lower = 1 / m_upper;
     m_b = m_upper * m_upper;
     m_k = std::log10( m_b );
-    m_imageViewer->SetImage( m_media );
+    m_imageViewer->SetImage( m_mediadata.FGetData() );
     EnableScroll( false );
 }
 

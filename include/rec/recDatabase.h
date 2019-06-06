@@ -55,6 +55,7 @@ public:
     };
 protected:
     static wxSQLite3Database* s_db;
+    static DatabaseType       s_dbtype;
     static long               s_change;
     static long               s_spnumber;
     static recAssMap          s_assmap;
@@ -104,7 +105,7 @@ public:
     /*! Opens an existing database file, providing there is not an existing
      *  database open and the file exists.
      */
-    static bool OpenDb( const wxString& fname );
+    static DatabaseType OpenDb( const wxString& fname );
 
     /*! Attach fname to database as dbname.
     */

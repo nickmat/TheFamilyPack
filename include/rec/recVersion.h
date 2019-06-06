@@ -44,7 +44,8 @@ extern const int recMediaVerRev;
 extern const int recMediaVerTest;
 extern const wxStringCharType* recMediaVerStr;
 
-extern bool recDoUpgrade();
+extern bool recDoFullUpgrade();
+extern bool recDoMediaUpgrade();
 
 
 class recVersion : public recDb
@@ -68,7 +69,7 @@ public:
      *  version. If not, handle updating the database and return true. 
      *  Or, if it is not possible to update, return false.
      */
-    static bool Manage();
+    static DatabaseType Manage();
 
     bool IsEqual( 
         int major, int minor = -1, int revision = -1, int test = -1 ) const;

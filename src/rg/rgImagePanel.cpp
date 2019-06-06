@@ -73,18 +73,6 @@ bool rgImagePanel::SetImage( const wxMemoryBuffer& buf )
     return true;
 }
 
-bool rgImagePanel::SetImage( idt medID, idt assID )
-{
-    recMediaData md( medID, assID );
-    return SetImage( md.FGetData() );
-}
-
-bool rgImagePanel::SetImage( const recMedia& med )
-{
-    recMediaData md( med.FGetDataID(), med.FGetAssID() );
-    return SetImage( md.FGetData() );
-}
-
 void rgImagePanel::SetScrollMode( bool scroll )
 {
     if ( scroll == m_scroll ) {

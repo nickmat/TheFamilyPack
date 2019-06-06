@@ -803,58 +803,97 @@ void UpgradeRev0_0_10toCurrent( int test )
     }
 }
 
+void MediaUpgradeRev0_0_0toCurrent( int test )
+{
+    // Still on initial version.
+}
+
 } // namespace
 
-bool recDoUpgrade()
+
+bool recDoFullUpgrade()
 {
-    recVersion v( recDb::DT_Full );
-    if( v.IsEqual( recVerMajor, recVerMinor, recVerRev, recVerTest ) ) {
+    recVersion ver( recDb::DT_Full );
+    if ( ver.IsEqual( recVerMajor, recVerMinor, recVerRev, recVerTest ) ) {
         return true; // Already current version
     }
-    if ( v.IsEqual( 0, 0, 0, 0 ) ){
-        recMessage( _( "Not a Full database type." ), _( "Database Check" ) );
-        return false;
-    }
-    if( v.IsLessThan( 0, 0, 9, 25 ) ) {
+    if ( ver.IsLessThan( 0, 0, 9, 25 ) ) {
         recMessage(
             wxString::Format(
-                _("Cannot read old database version %s file."),
-                v.GetVersionStr()
-            ),
-            _("Upgrade Test")
-        );
+                _( "Cannot read old database version %s file." ),
+                ver.GetVersionStr()
+                ),
+            _( "Upgrade Test" )
+            );
         return false;
     }
-    if( v.IsMoreThan( recVerMajor, recVerMinor, recVerRev, recVerTest ) ) {
+    if ( ver.IsMoreThan( recVerMajor, recVerMinor, recVerRev, recVerTest ) ) {
         recMessage(
             wxString::Format(
-                _("Cannot read future database version %s file."),
-                v.GetVersionStr()
-            ),
-            _("Upgrade Test")
-        );
+                _( "Cannot read future database version %s file." ),
+                ver.GetVersionStr()
+                ),
+            _( "Upgrade Test" )
+            );
         return false;
     }
-    if( recPermissionToUpgrade() == false ) {
+    if ( recPermissionToUpgrade() == false ) {
         return false;
     }
 
     try {
-        if( v.IsEqual( 0, 0, 9 ) ) {
-            UpgradeRev0_0_9to10( v.FGetTest() );
-            v.Read();
+        if ( ver.IsEqual( 0, 0, 9 ) ) {
+            UpgradeRev0_0_9to10( ver.FGetTest() );
+            ver.ReadID( recDb::DT_Full );
         }
-        if( v.IsEqual( 0, 0, 10 ) ) {
-            UpgradeRev0_0_10toCurrent( v.FGetTest() );
-            v.Read();
+        if ( ver.IsEqual( 0, 0, 10 ) ) {
+            UpgradeRev0_0_10toCurrent( ver.FGetTest() );
+            ver.ReadID( recDb::DT_Full );
         }
-    } catch( wxSQLite3Exception& e ) {
+    }
+    catch ( wxSQLite3Exception& e ) {
         recDb::ErrorMessage( e );
         recDb::Rollback();
         return false;
     }
 
-    wxASSERT( v.IsEqual( recVerMajor, recVerMinor, recVerRev, recVerTest ) );
+    wxASSERT( ver.IsEqual( recVerMajor, recVerMinor, recVerRev, recVerTest ) );
+    return true;
+}
+
+bool recDoMediaUpgrade()
+{
+    recVersion ver( recDb::DT_MediaOnly );
+    if ( ver.IsEqual( recMediaVerMajor, recMediaVerMinor, recMediaVerRev, recMediaVerTest ) ) {
+        return true; // Already current version
+    }
+    if ( ver.IsMoreThan( recMediaVerMajor, recMediaVerMinor, recMediaVerRev, recMediaVerTest ) ) {
+        recMessage(
+            wxString::Format(
+                _( "Cannot read future media database version %s file." ),
+                ver.GetVersionStr()
+                ),
+            _( "Upgrade Test" )
+            );
+        return false;
+    }
+    if ( recPermissionToUpgrade() == false ) {
+        return false;
+    }
+
+    try {
+        if ( ver.IsEqual( 0, 0, 0 ) ) {
+            MediaUpgradeRev0_0_0toCurrent( ver.FGetTest() );
+            ver.ReadID( recDb::DT_MediaOnly );
+        }
+    }
+    catch ( wxSQLite3Exception& e ) {
+        recDb::ErrorMessage( e );
+        recDb::Rollback();
+        return false;
+    }
+
+    wxASSERT( ver.IsEqual( recVerMajor, recVerMinor, recVerRev, recVerTest ) );
     return true;
 }
 

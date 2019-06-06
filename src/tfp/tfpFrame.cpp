@@ -1390,10 +1390,15 @@ bool TfpFrame::OpenFile()
             }
             recDb::CloseDb();
         }
-        if( recDb::OpenDb( path ) == true ) {
+        recDb::DatabaseType type = recDb::OpenDb( path );
+        if ( type == recDb::DT_Full ) {
             SetDatabaseOpen( path );
             DisplayHomePage();
             ret = true;
+        } else if( type == recDb::DT_MediaOnly ){
+            SetNoDatabase();
+            m_browser->SetPage( GetDisplayText( wxString( "MD" ) ), "" );
+            m_changeState = recDb::GetChange();
         } else {
             wxMessageBox( _( "Problem opening database!" ), caption );
             CloseFile();

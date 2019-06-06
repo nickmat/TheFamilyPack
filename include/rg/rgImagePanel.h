@@ -40,8 +40,6 @@ public:
     rgImagePanel( wxWindow* parent );
 
     bool SetImage( const wxMemoryBuffer& buf );
-    bool SetImage( idt medID, idt assID );
-    bool SetImage( const recMedia& med );
     void SetScrollMode( bool scroll );
 
     void SetScale( double scale );

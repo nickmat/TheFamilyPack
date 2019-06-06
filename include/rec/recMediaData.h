@@ -35,13 +35,14 @@ class recMediaData : public recDb
 public:
     recMediaData() {}
     recMediaData( idt id ) : recDb( id ) { Read(); }
-    recMediaData( idt id, idt assID );
+    recMediaData( idt id, idt assID ) { ReadID( id, assID ); }
     recMediaData( const wxString dbname, idt id ) : recDb( id ) { Read( dbname ); }
     recMediaData( const recMediaData& md );
 
     void Clear();
     void Save( const wxString& dbname = "Main" );
     bool Read( const wxString& dbname = "Main" );
+    bool ReadID( idt id, idt assID );
     TABLE_NAME_MEMBERS( "MediaData" );
     bool Equivalent( const recMediaData& r2 ) const;
 

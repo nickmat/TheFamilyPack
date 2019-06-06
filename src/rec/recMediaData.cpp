@@ -40,16 +40,6 @@
 #include <rec/recAssociate.h>
 #include <rec/recMedia.h>
 
-recMediaData::recMediaData( idt id, idt assID ) : recDb( id )
-{
-    wxString dbname = recAssociate::GetPath( assID );
-    if ( dbname.empty() ) {
-        Clear();
-    } else {
-        Read( dbname );
-    }
-}
-
 recMediaData::recMediaData( const recMediaData& n )
 {
     f_id = n.f_id;
@@ -135,6 +125,17 @@ bool recMediaData::Read( const wxString & dbname )
     f_copyright = result.GetAsString( 2 );
     f_file = result.GetAsString( 3 );
     return true;
+}
+
+bool recMediaData::ReadID( idt id, idt assID )
+{
+    wxString dbname = recAssociate::GetPath( assID );
+    if ( dbname.empty() ) {
+        Clear();
+        return false;
+    }
+    f_id = id;
+    return Read( dbname );
 }
 
 bool recMediaData::Equivalent( const recMediaData& r2 ) const
