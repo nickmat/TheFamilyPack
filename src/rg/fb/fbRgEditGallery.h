@@ -1,12 +1,11 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Jan  9 2017)
+// C++ code generated with wxFormBuilder (version Oct 26 2018)
 // http://www.wxformbuilder.org/
 //
-// PLEASE DO "NOT" EDIT THIS FILE!
+// PLEASE DO *NOT* EDIT THIS FILE!
 ///////////////////////////////////////////////////////////////////////////
 
-#ifndef __FBRGEDITGALLERY_H__
-#define __FBRGEDITGALLERY_H__
+#pragma once
 
 #include <wx/artprov.h>
 #include <wx/xrc/xmlres.h>
@@ -35,10 +34,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 /// Class fbRgEditGallery
 ///////////////////////////////////////////////////////////////////////////////
-class fbRgEditGallery : public wxDialog 
+class fbRgEditGallery : public wxDialog
 {
 	private:
-	
+
 	protected:
 		wxTextCtrl* m_textCtrlTitle;
 		wxNotebook* m_notebook;
@@ -54,7 +53,7 @@ class fbRgEditGallery : public wxDialog
 		wxStaticText* m_staticGalID;
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
-		
+
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnMediaAddButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAddNewMedia( wxCommandEvent& event ) { event.Skip(); }
@@ -64,18 +63,17 @@ class fbRgEditGallery : public wxDialog
 		virtual void OnMediaUpButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnMediaDownButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnViewImage( wxCommandEvent& event ) { event.Skip(); }
-		
-	
+
+
 	public:
-		
-		fbRgEditGallery( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Gallery"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
+
+		fbRgEditGallery( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Gallery"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
 		~fbRgEditGallery();
-		
+
 		void m_buttonImageAddOnContextMenu( wxMouseEvent &event )
 		{
 			m_buttonImageAdd->PopupMenu( m_popupAddMedia, event.GetPosition() );
 		}
-	
+
 };
 
-#endif //__FBRGEDITGALLERY_H__

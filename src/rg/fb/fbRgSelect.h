@@ -1,12 +1,11 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Jan  9 2017)
+// C++ code generated with wxFormBuilder (version Oct 26 2018)
 // http://www.wxformbuilder.org/
 //
-// PLEASE DO "NOT" EDIT THIS FILE!
+// PLEASE DO *NOT* EDIT THIS FILE!
 ///////////////////////////////////////////////////////////////////////////
 
-#ifndef __FBRGSELECT_H__
-#define __FBRGSELECT_H__
+#pragma once
 
 #include <wx/artprov.h>
 #include <wx/xrc/xmlres.h>
@@ -21,6 +20,9 @@ class rgStrTableCtrl;
 #include <wx/string.h>
 #include <wx/sizer.h>
 #include <wx/statline.h>
+#include <wx/bitmap.h>
+#include <wx/image.h>
+#include <wx/icon.h>
 #include <wx/button.h>
 #include <wx/dialog.h>
 
@@ -29,10 +31,10 @@ class rgStrTableCtrl;
 ///////////////////////////////////////////////////////////////////////////////
 /// Class fbRgSelect
 ///////////////////////////////////////////////////////////////////////////////
-class fbRgSelect : public wxDialog 
+class fbRgSelect : public wxDialog
 {
 	private:
-	
+
 	protected:
 		rgStrTableCtrl* m_listCtrl;
 		wxStaticLine* m_staticline;
@@ -41,19 +43,18 @@ class fbRgSelect : public wxDialog
 		wxButton* m_buttonUnknown;
 		wxButton* m_buttonSelect;
 		wxButton* m_buttonCancel;
-		
+
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnIdle( wxIdleEvent& event ) { event.Skip(); }
 		virtual void OnCreateButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnFilterButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnUnknownButton( wxCommandEvent& event ) { event.Skip(); }
-		
-	
+
+
 	public:
-		
-		fbRgSelect( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Select"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
+
+		fbRgSelect( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Select"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
 		~fbRgSelect();
-	
+
 };
 
-#endif //__FBRGSELECT_H__

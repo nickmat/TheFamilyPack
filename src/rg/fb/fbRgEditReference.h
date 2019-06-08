@@ -1,12 +1,11 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Jan  9 2017)
+// C++ code generated with wxFormBuilder (version Oct 26 2018)
 // http://www.wxformbuilder.org/
 //
-// PLEASE DO "NOT" EDIT THIS FILE!
+// PLEASE DO *NOT* EDIT THIS FILE!
 ///////////////////////////////////////////////////////////////////////////
 
-#ifndef __FBRGEDITREFERENCE_H__
-#define __FBRGEDITREFERENCE_H__
+#pragma once
 
 #include <wx/artprov.h>
 #include <wx/xrc/xmlres.h>
@@ -38,10 +37,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 /// Class fbRgEditReference
 ///////////////////////////////////////////////////////////////////////////////
-class fbRgEditReference : public wxDialog 
+class fbRgEditReference : public wxDialog
 {
 	private:
-	
+
 	protected:
 		wxTextCtrl* m_textCtrlTitle;
 		wxTextCtrl* m_textCtrlUserRef;
@@ -50,11 +49,11 @@ class fbRgEditReference : public wxDialog
 		wxNotebook* m_notebookTop;
 		wxPanel* m_panelSource;
 		wxToolBar* m_toolBar1;
-		wxToolBarToolBase* m_toolCut; 
-		wxToolBarToolBase* m_toolCopy; 
-		wxToolBarToolBase* m_toolPaste; 
-		wxToolBarToolBase* m_toolUndo; 
-		wxToolBarToolBase* m_toolRedo; 
+		wxToolBarToolBase* m_toolCut;
+		wxToolBarToolBase* m_toolCopy;
+		wxToolBarToolBase* m_toolPaste;
+		wxToolBarToolBase* m_toolUndo;
+		wxToolBarToolBase* m_toolRedo;
 		wxTextCtrl* m_textCtrlStatement;
 		wxPanel* m_panelView;
 		wxWebView* m_webview;
@@ -89,7 +88,7 @@ class fbRgEditReference : public wxDialog
 		wxStaticText* m_staticRefID;
 		wxButton* m_buttonSave1;
 		wxButton* m_buttonCancel1;
-		
+
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnStatementViewChanged( wxNotebookEvent& event ) { event.Skip(); }
 		virtual void OnToolCut( wxCommandEvent& event ) { event.Skip(); }
@@ -122,34 +121,33 @@ class fbRgEditReference : public wxDialog
 		virtual void OnDeleteEntityButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnUpEntityButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDownEntityButton( wxCommandEvent& event ) { event.Skip(); }
-		
-	
+
+
 	public:
-		
-		fbRgEditReference( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Reference"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
+
+		fbRgEditReference( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Reference"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
 		~fbRgEditReference();
-		
+
 		void m_splitter1OnIdle( wxIdleEvent& )
 		{
 			m_splitter1->SetSashPosition( 265 );
 			m_splitter1->Disconnect( wxEVT_IDLE, wxIdleEventHandler( fbRgEditReference::m_splitter1OnIdle ), NULL, this );
 		}
-		
+
 		void m_buttonPersonaAddOnContextMenu( wxMouseEvent &event )
 		{
 			m_buttonPersonaAdd->PopupMenu( m_menuAddPersona, event.GetPosition() );
 		}
-		
+
 		void m_buttonEventaAddOnContextMenu( wxMouseEvent &event )
 		{
 			m_buttonEventaAdd->PopupMenu( m_menuAddEventa, event.GetPosition() );
 		}
-		
+
 		void m_buttonAddOnContextMenu( wxMouseEvent &event )
 		{
 			m_buttonAdd->PopupMenu( m_menuAddEntity, event.GetPosition() );
 		}
-	
+
 };
 
-#endif //__FBRGEDITREFERENCE_H__
