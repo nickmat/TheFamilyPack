@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     19 November 2012
- * Copyright:   Copyright (c) 2012-2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2012 ~ 2019, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -47,6 +47,7 @@ public:
     void SetFilterPressed( bool on = true ) { m_filter = on; }
     void SetUnknownButton( bool on = true );
     void SetUnknownPressed( bool on = true ) { m_unknown = on; }
+    void SetSelectedRow( long row );
     // Returns the 1st column of the selected row converted to an ID.
     virtual idt GetSelectedID();
     virtual long GetSelectedRow();
@@ -85,8 +86,8 @@ public:
     rgDlgSelectDate(
         wxWindow* parent = NULL,
         unsigned style = rgSELSTYLE_None,
-        const wxString& title = _("Select Date")
-    ) : rgSelect( parent, sm_colHeaders, COL_MAX, style, title ) {}
+        const wxString& title = _( "Select Date" )
+        ) : rgSelect( parent, sm_colHeaders, COL_MAX, style, title ) {}
 };
 
 //-------------------------------------------------------------------------------
