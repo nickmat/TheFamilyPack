@@ -127,6 +127,7 @@
     <ClCompile Include="..\..\src\rg\fb\fbRgSelect.cpp" />
     <ClCompile Include="..\..\src\rg\fb\fbRgViewMedia.cpp" />
     <ClCompile Include="..\..\src\rg\recgui.cpp" />
+    <ClCompile Include="..\..\src\rg\rgAssociate.cpp" />
     <ClCompile Include="..\..\src\rg\rgCompareEvent.cpp" />
     <ClCompile Include="..\..\src\rg\rgCrIndividual.cpp" />
     <ClCompile Include="..\..\src\rg\rgCrName.cpp" />
@@ -168,6 +169,7 @@
     <ClInclude Include="..\..\src\rg\fb\fbRgEditReference.h" />
     <ClInclude Include="..\..\src\rg\fb\fbRgSelect.h" />
     <ClInclude Include="..\..\src\rg\fb\fbRgViewMedia.h" />
+    <ClInclude Include="..\..\src\rg\rgAssociate.h" />
     <ClInclude Include="..\..\src\rg\rgCommon.h" />
     <ClInclude Include="..\..\src\rg\rgCrIndividual.h" />
     <ClInclude Include="..\..\src\rg\rgCrName.h" />

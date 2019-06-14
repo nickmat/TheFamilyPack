@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     21 November 2012
- * Copyright:   Copyright (c) 2012 ~ 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2012 ~ 2019, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -48,6 +48,14 @@ enum {
     rgSELSTYLE_Unknown    = 0x0004,   // Show Unknown button (for Unknown value)
     rgSELSTYLE_SelList    = 0x0100    // Selects the full list
 };
+
+// See src/rg/rgAssociate.cpp
+extern bool rgEditAssociate( wxWindow* wind );
+extern idt rgCreateAssociate( wxWindow* wind );
+extern idt rgSelectAssociate(
+    wxWindow* wind,
+    unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL
+);
 
 // See src/rg/rgCrName.cpp
 enum {

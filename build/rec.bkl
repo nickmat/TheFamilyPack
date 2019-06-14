@@ -6,7 +6,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     5th October 2010
- * Copyright:   Copyright (c) 2010 ~ 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2019, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -141,6 +141,7 @@
     <sources>$(LOCAL_SRC)/rg/fb/fbRgViewMedia.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/fbRgDialog.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/recgui.cpp</sources>
+    <sources>$(LOCAL_SRC)/rg/rgAssociate.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgCompareEvent.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgCrIndividual.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgCrName.cpp</sources>
@@ -182,6 +183,7 @@
     <headers>$(LOCAL_SRC)/rg/fb/fbRgSelect.h</headers>
     <headers>$(LOCAL_SRC)/rg/fb/fbRgViewMedia.h</headers>
     <headers>$(LOCAL_SRC)/rg/fbRgDialog.h</headers>
+    <headers>$(LOCAL_SRC)/rg/rgAssociate.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgCommon.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgCrIndividual.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgCrName.h</headers>

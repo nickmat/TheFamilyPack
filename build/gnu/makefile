@@ -164,6 +164,7 @@ RECGUI_OBJECTS =  \
 	recgui_fbRgViewMedia.o \
 	recgui_fbRgDialog.o \
 	recgui_recgui.o \
+	recgui_rgAssociate.o \
 	recgui_rgCompareEvent.o \
 	recgui_rgCrIndividual.o \
 	recgui_rgCrName.o \
@@ -504,6 +505,9 @@ recgui_fbRgDialog.o: ./../../src/rg/fbRgDialog.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_recgui.o: ./../../src/rg/recgui.cpp
+	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
+
+recgui_rgAssociate.o: ./../../src/rg/rgAssociate.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgCompareEvent.o: ./../../src/rg/rgCompareEvent.cpp

@@ -220,6 +220,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rg\rgAssociate.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rg\rgCompareEvent.cpp"
 				>
 			</File>
@@ -367,6 +371,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\rg\fb\fbRgViewMedia.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgAssociate.h"
 				>
 			</File>
 			<File
