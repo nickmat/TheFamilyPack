@@ -92,6 +92,7 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_EDIT_REFERENCE, TfpFrame::OnEditReference )
     EVT_MENU( tfpID_EDIT_GALLERY, TfpFrame::OnEditGallery )
     EVT_MENU( tfpID_EDIT_RESEARCHER, TfpFrame::OnEditResearcher )
+    EVT_MENU( tfpID_EDIT_ASSOCIATE, TfpFrame::OnEditAssociate )
     EVT_MENU( tfpID_FIND_FAMILY_ID, TfpFrame::OnFindFamilyID )
     EVT_MENU( tfpID_FIND_INDIVIDUAL_ID, TfpFrame::OnFindIndividualID )
     EVT_MENU( tfpID_FIND_EVENT_ID, TfpFrame::OnFindEventID )
@@ -238,6 +239,7 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     menuEdit->Append( tfpID_EDIT_GALLERY, _( "&Gallery..." ) );
     menuEdit->Append( tfpID_EDIT_RESEARCHER, _( "R&esearcher..." ) );
     menuEdit->Append( tfpID_EDIT_CORE_MENU, _("&Core Data"), menuEdCore );
+    menuEdit->Append( tfpID_EDIT_ASSOCIATE, _( "&Associate database..." ) );
 
     wxMenu* menuFind = new wxMenu;
     menuFind->Append( tfpID_FIND_FAMILY_ID, _("&Family ID...") );
@@ -809,6 +811,23 @@ void TfpFrame::OnEditResearcher( wxCommandEvent& event )
         }
     }
     catch( wxSQLite3Exception& e ) {
+        recDb::ErrorMessage( e );
+        recDb::Rollback();
+    }
+}
+
+void TfpFrame::OnEditAssociate( wxCommandEvent & event )
+{
+    recDb::Begin();
+    try {
+        if ( rgEditAssociate( this ) ) {
+            recDb::Commit();
+            RefreshHtmPage();
+        } else {
+            recDb::Rollback();
+        }
+    }
+    catch ( wxSQLite3Exception& e ) {
         recDb::ErrorMessage( e );
         recDb::Rollback();
     }

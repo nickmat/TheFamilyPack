@@ -101,6 +101,7 @@ public:
     void OnEditReference( wxCommandEvent& event );
     void OnEditGallery( wxCommandEvent& event );
     void OnEditResearcher( wxCommandEvent& event );
+    void OnEditAssociate( wxCommandEvent& event );
 
     void OnEditIndividual( wxCommandEvent& event );
     void OnAddNewIndMale( wxCommandEvent& event );
@@ -218,6 +219,7 @@ enum
     tfpID_EDIT_GALLERY,
     tfpID_EDIT_RESEARCHER,
     tfpID_EDIT_CORE_MENU,
+    tfpID_EDIT_ASSOCIATE,
 
     // Items in this group are handled
     // by TfpFrame::OnEditContext
