@@ -30,6 +30,9 @@
 
 #include <rec/recDatabase.h>
 
+class recAssociate;
+typedef std::vector< recAssociate >  recAssociateVec;
+
 class recAssociate : public recDb
 {
 public:
@@ -51,7 +54,11 @@ public:
     static wxString GetIdStr( idt assID ) { return wxString::Format( "A" ID, assID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
+    static idt Create( const wxString& path );
+
     static wxString GetPath( idt assID );
+
+    static recAssociateVec GetList();
 
 private:
     wxString f_path;

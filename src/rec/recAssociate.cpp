@@ -107,6 +107,14 @@ bool recAssociate::Read()
     return true;
 }
 
+idt recAssociate::Create( const wxString & path )
+{
+    recAssociate ass( 0 );
+    ass.FSetPath( path );
+    ass.Save();
+    return ass.FGetID();
+}
+
 wxString recAssociate::GetPath( idt assID )
 {
     if ( s_assmap.count( assID ) == 1 ) {
@@ -128,6 +136,22 @@ wxString recAssociate::GetPath( idt assID )
         s_assmap[assID] = path;
     }
     return s_assmap[assID];
+}
+
+recAssociateVec recAssociate::GetList()
+{
+    wxSQLite3ResultSet result = s_db->ExecuteQuery(
+        "SELECT id, path FROM Associate"
+        " WHERE id>0 ORDER BY id ASC;"
+    );
+    recAssociateVec vec;
+    recAssociate ass( 0 );
+    while ( result.NextRow() ) {
+        ass.FSetID( GET_ID( result.GetInt64( 0 ) ) );
+        ass.FSetPath( result.GetAsString( 1 ) );
+        vec.push_back( ass );
+    }
+    return vec;
 }
 
 // End of recAssociate.cpp file
