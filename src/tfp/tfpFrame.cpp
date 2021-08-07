@@ -1660,10 +1660,8 @@ void TfpFrame::DoHtmCtxMenu( const wxString& ref )
 
 int TfpFrame::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )
 {
-    recFamilyVec families;
     size_t c = 0, i, j;
-    recIndividualList inds;
-    wxLongLong_t indID;
+    idt indID;
     ref.Mid( 1 ).ToLongLong( &indID );
     m_ctxmenuPages.clear();
     wxString page;
@@ -1675,7 +1673,7 @@ int TfpFrame::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )
     wxMenu* parmenu = new wxMenu;
     menu->Append( tfpID_INDMENU_PARENTS, "Parents", parmenu );
 
-    families = recIndividual::GetParentList( indID );
+    recFamilyVec families = recIndividual::GetParentList( indID );
     int items = c;
     for( i = 0 ; i < families.size() ; i++ ) {
         if( families[i].f_husb_id != 0 ) {
@@ -1693,6 +1691,7 @@ int TfpFrame::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )
 
     wxMenu* sibmenu = new wxMenu;
     menu->Append( tfpID_INDMENU_SIBLINGS, "Siblings", sibmenu );
+    recIndividualList inds;
     items = c;
     for( i = 0 ; i < families.size() ; i++ ) {
         inds = families[i].GetChildren();
@@ -1702,7 +1701,6 @@ int TfpFrame::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )
             m_ctxmenuPages.push_back( "FI"+recGetStr( inds[j].f_id ) );
             c++;
         }
-        inds.empty();
     }
     if( items == c ) {
         menu->Enable( tfpID_INDMENU_SIBLINGS, false );
@@ -1710,7 +1708,6 @@ int TfpFrame::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )
 
     wxMenu* marmenu = new wxMenu;
     menu->Append( tfpID_INDMENU_SPOUSES, "Spouses", marmenu );
-    families.empty();
     families = recIndividual::GetFamilyList( indID );
     items = c;
     for( i = 0 ; i < families.size() ; i++ ) {
@@ -1733,7 +1730,6 @@ int TfpFrame::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )
     menu->Append( tfpID_INDMENU_CHILDREN, "Children", kidmenu );
     items = c;
     for( i = 0 ; i < families.size() ; i++ ) {
-        inds.empty();
         inds = families[i].GetChildren();
         for( j = 0 ; j < inds.size() ; j++ ) {
             kidmenu->Append( cmd_ID + c, inds[j].FGetName() );
@@ -1744,8 +1740,6 @@ int TfpFrame::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )
     if( items == c ) {
         menu->Enable( tfpID_INDMENU_CHILDREN, false );
     }
-    families.clear();
-    inds.clear();
     return c;
 }
 
