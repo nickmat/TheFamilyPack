@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     22nd March 2008
- * Copyright:   Copyright (c) 2008 ~ 2019, Nick Matthews.
+ * Copyright:   Copyright (c) 2008 .. 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -541,7 +541,7 @@ INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 0, 1, 'F1');
 INSERT INTO UserSetting (id, user_id, property, val) VALUES(2, 1, 1, 'F1');
 
 /* The Version table row 1 is the full TFPD database */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 18);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 19);
 
 COMMIT;
 
