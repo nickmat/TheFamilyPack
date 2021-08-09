@@ -41,7 +41,7 @@ class rgDlgEditFamily : public fbRgEditFamily
     DECLARE_CLASS( dlgEditFamily )
     DECLARE_EVENT_TABLE()
 
-    enum EDBUT_Type { EDBUT_Husb, EDBUT_Wife };
+    enum class EDBUT_Type { Husb, Wife };
 
 protected:
     enum {

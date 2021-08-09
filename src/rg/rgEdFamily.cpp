@@ -82,7 +82,7 @@ BEGIN_EVENT_TABLE( rgDlgEditFamily, wxDialog )
 END_EVENT_TABLE()
 
 rgDlgEditFamily::rgDlgEditFamily( wxWindow* parent, idt famID )
-    : m_family(famID), m_editbutton(EDBUT_Husb), m_order(recEO_DatePt),
+    : m_family(famID), m_editbutton(EDBUT_Type::Husb), m_order(recEO_DatePt),
     m_currentRow(0), fbRgEditFamily( parent )
 {
     m_listChildren->InsertColumn( CC_Number, _("Number"), wxLIST_FORMAT_LEFT, 60 );
@@ -217,13 +217,13 @@ void rgDlgEditFamily::OnPageChanged( wxBookCtrlEvent& event )
 
 void rgDlgEditFamily::OnHusbButton( wxCommandEvent& event )
 {
-    m_editbutton = EDBUT_Husb;
+    m_editbutton = EDBUT_Type::Husb;
     EditSpouseMenu( m_family.f_husb_id );
 }
 
 void rgDlgEditFamily::OnWifeButton( wxCommandEvent& event )
 {
-    m_editbutton = EDBUT_Wife;
+    m_editbutton = EDBUT_Type::Wife;
     EditSpouseMenu( m_family.f_wife_id );
 }
 
@@ -254,7 +254,7 @@ void rgDlgEditFamily::OnEditID( wxCommandEvent& event )
     Sex sex;
     int privacy;
 
-    if( m_editbutton == EDBUT_Husb ) {
+    if( m_editbutton == EDBUT_Type::Husb ) {
         indID = m_family.FGetHusbID();
         sex = SEX_Male;
         privacy = recIndividual::GetPrivacy( m_family.FGetWifeID() );
@@ -266,7 +266,7 @@ void rgDlgEditFamily::OnEditID( wxCommandEvent& event )
 
     if( indID == 0 ) {
         indID = rgAddNewIndividual( this, sex, privacy, "", m_family.FGetID() );
-        if( m_editbutton == EDBUT_Husb ) {
+        if( m_editbutton == EDBUT_Type::Husb ) {
             m_family.FSetHusbID( indID );
         } else {
             m_family.FSetWifeID( indID );
@@ -282,7 +282,7 @@ void rgDlgEditFamily::OnRemoveID( wxCommandEvent& event )
 {
     idt indID;
 
-    if( m_editbutton == EDBUT_Husb ) {
+    if( m_editbutton == EDBUT_Type::Husb ) {
         if( m_family.FGetWifeID() == 0 ) {
             return;  // Can't remove both spouses
         }
@@ -304,7 +304,7 @@ void rgDlgEditFamily::OnRemoveID( wxCommandEvent& event )
 
 void rgDlgEditFamily::OnDeleteID( wxCommandEvent& event )
 {
-    if( m_editbutton == EDBUT_Husb ) {
+    if( m_editbutton == EDBUT_Type::Husb ) {
         if( m_family.FGetWifeID() == 0 ) {
             return;  // Can't remove both spouses
         }
@@ -324,7 +324,7 @@ void rgDlgEditFamily::OnDeleteID( wxCommandEvent& event )
 
 void rgDlgEditFamily::OnAddExistID( wxCommandEvent& event )
 {
-    if( m_editbutton == EDBUT_Husb ) {
+    if( m_editbutton == EDBUT_Type::Husb ) {
         rgAddExistSpouse( this, m_family.FGetWifeID(), SEX_Male );
     } else {
         rgAddExistSpouse( this, m_family.FGetHusbID(), SEX_Female );
