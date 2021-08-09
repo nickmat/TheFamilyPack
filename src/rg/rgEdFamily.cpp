@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     9 October 2010
- * Copyright:   Copyright (c) 2010 - 2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 .. 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -81,7 +81,7 @@ BEGIN_EVENT_TABLE( rgDlgEditFamily, wxDialog )
     EVT_MENU( rgID_DLGEDFAM_DELETE_EVENT, rgDlgEditFamily::OnDeleteEvent )
 END_EVENT_TABLE()
 
-rgDlgEditFamily::rgDlgEditFamily( wxWindow* parent, idt famID ) 
+rgDlgEditFamily::rgDlgEditFamily( wxWindow* parent, idt famID )
     : m_family(famID), m_editbutton(EDBUT_Husb), m_order(recEO_DatePt),
     m_currentRow(0), fbRgEditFamily( parent )
 {
@@ -143,7 +143,7 @@ void rgDlgEditFamily::UpdateChildList( idt curIndID )
 {
     m_fis = m_family.GetChildLinks();
     m_listChildren->DeleteAllItems();
-    int row = -1;
+    long row = -1;
     for( size_t i = 0 ; i < m_fis.size() ; i++ ) {
         idt indID = m_fis[i].FGetIndID();
         m_listChildren->InsertItem( i, recIndividual::GetIdStr( indID ) );
@@ -165,13 +165,14 @@ void rgDlgEditFamily::UpdateChildList( idt curIndID )
     if( row >= 0 ) {
         m_listChildren->EnsureVisible( row );
     }
+    ChildButtonsEnable( row );
 }
 
 void rgDlgEditFamily::UpdateEventList( idt curEveID )
 {
     m_fes = m_family.GetEvents();
     m_listEvent->DeleteAllItems();
-    int row = -1;
+    long row = -1;
     for( size_t i = 0 ; i < m_fes.size() ; i++ ) {
         idt eveID = m_fes[i].FGetEventID();
         m_listEvent->InsertItem( i, recEvent::GetIdStr( eveID ) );
@@ -191,6 +192,7 @@ void rgDlgEditFamily::UpdateEventList( idt curEveID )
     if( row >= 0 ) {
         m_listEvent->EnsureVisible( row );
     }
+    EventButtonsEnable( row );
 }
 
 void rgDlgEditFamily::OnPageChanged( wxBookCtrlEvent& event )
@@ -331,6 +333,29 @@ void rgDlgEditFamily::OnAddExistID( wxCommandEvent& event )
     UpdateNames();
 }
 
+void rgDlgEditFamily::ChildButtonsEnable( long row )
+{
+    if( row < 0 ) {
+        m_buttonEdit->Disable();
+        m_buttonDel->Disable();
+        m_buttonUp->Disable();
+        m_buttonDn->Disable();
+        return;
+    }
+    m_buttonEdit->Enable();
+    m_buttonDel->Enable();
+    if( row == 0 ) {
+        m_buttonUp->Disable();
+    } else {
+        m_buttonUp->Enable();
+    }
+    if( row == m_listChildren->GetItemCount() - 1 ) {
+        m_buttonDn->Disable();
+    } else {
+        m_buttonDn->Enable();
+    }
+}
+
 void rgDlgEditFamily::OnChildAddButton( wxCommandEvent& event )
 {
     wxMenu* menu = new wxMenu;
@@ -367,6 +392,17 @@ void rgDlgEditFamily::OnAddChild( wxCommandEvent& event )
     if( indID ) {
         UpdateChildList( indID );
     }
+}
+
+void rgDlgEditFamily::OnChildSelect( wxListEvent& event )
+{
+    long row = m_listChildren->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    ChildButtonsEnable( row );
+}
+
+void rgDlgEditFamily::OnChildDeselect( wxListEvent& event )
+{
+    ChildButtonsEnable( -1 );
 }
 
 void rgDlgEditFamily::OnChildEditButton( wxCommandEvent& event )
@@ -430,6 +466,31 @@ void rgDlgEditFamily::OnChildDownButton( wxCommandEvent& event )
 }
 
 
+void rgDlgEditFamily::EventButtonsEnable( long row )
+{
+    if( row < 0 ) {
+        m_buttonEventEdit->Disable();
+        m_buttonEventDel->Disable();
+        m_buttonEventUp->Disable();
+        m_buttonEventDn->Disable();
+        return;
+    }
+    m_buttonEventEdit->Enable();
+    m_buttonEventDel->Enable();
+    if( row == 0 ) {
+        m_buttonEventUp->Disable();
+    }
+    else {
+        m_buttonEventUp->Enable();
+    }
+    if( row == m_listEvent->GetItemCount() - 1 ) {
+        m_buttonEventDn->Disable();
+    }
+    else {
+        m_buttonEventDn->Enable();
+    }
+}
+
 void rgDlgEditFamily::OnEventAddButton( wxCommandEvent& event )
 {
     idt eveID; 
@@ -441,6 +502,17 @@ void rgDlgEditFamily::OnEventAddButton( wxCommandEvent& event )
     if( eveID ) {
         UpdateEventList( eveID );
     }
+}
+
+void rgDlgEditFamily::OnEventSelect( wxListEvent& event )
+{
+    long row = m_listEvent->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    EventButtonsEnable( row );
+}
+
+void rgDlgEditFamily::OnEventDeselect( wxListEvent& event )
+{
+    EventButtonsEnable( -1 );
 }
 
 void rgDlgEditFamily::OnEventEditButton( wxCommandEvent& event )

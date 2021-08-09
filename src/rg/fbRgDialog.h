@@ -375,11 +375,15 @@ class fbRgEditFamily : public wxDialog
 		virtual void OnPageChanged( wxNotebookEvent& event ) { event.Skip(); }
 		virtual void OnHusbButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnWifeButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnChildDeselect( wxListEvent& event ) { event.Skip(); }
+		virtual void OnChildSelect( wxListEvent& event ) { event.Skip(); }
 		virtual void OnChildAddButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnChildEditButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnChildDeleteButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnChildUpButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnChildDownButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEventDeselect( wxListEvent& event ) { event.Skip(); }
+		virtual void OnEventSelect( wxListEvent& event ) { event.Skip(); }
 		virtual void OnEventAddButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnEventEditButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnEventDeleteButton( wxCommandEvent& event ) { event.Skip(); }

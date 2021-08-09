@@ -3,11 +3,9 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Edit database Family entity dialog header.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     9 October 2010
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 .. 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -78,31 +76,37 @@ private:
     void UpdateChildList( idt indID = 0 );
     void UpdateEventList( idt eveID = 0 );
 
-    void OnPageChanged( wxBookCtrlEvent& event );
+    void OnPageChanged( wxBookCtrlEvent& event ) override;
 
-    void OnHusbButton( wxCommandEvent& event );
-    void OnWifeButton( wxCommandEvent& event );
+    void OnHusbButton( wxCommandEvent& event ) override;
+    void OnWifeButton( wxCommandEvent& event ) override;
     void EditSpouseMenu( idt indID );
     void OnEditID( wxCommandEvent& event );
     void OnRemoveID( wxCommandEvent& event );
     void OnDeleteID( wxCommandEvent& event );
     void OnAddExistID( wxCommandEvent& event );
 
-    void OnChildAddButton( wxCommandEvent& event );
+    void ChildButtonsEnable( long row );
+    void OnChildAddButton( wxCommandEvent& event ) override;
     void OnAddChild( wxCommandEvent& event );
-    void OnChildEditButton( wxCommandEvent& event );
-    void OnChildDeleteButton( wxCommandEvent& event );
-    void OnChildUpButton( wxCommandEvent& event );
-    void OnChildDownButton( wxCommandEvent& event );
+    void OnChildSelect( wxListEvent& event ) override;
+    void OnChildDeselect( wxListEvent& event ) override;
+    void OnChildEditButton( wxCommandEvent& event ) override;
+    void OnChildDeleteButton( wxCommandEvent& event ) override;
+    void OnChildUpButton( wxCommandEvent& event ) override;
+    void OnChildDownButton( wxCommandEvent& event ) override;
 
-    void OnEventAddButton( wxCommandEvent& event );
-	void OnEventEditButton( wxCommandEvent& event );
-	void OnEventDeleteButton( wxCommandEvent& event );
+    void EventButtonsEnable( long row );
+    void OnEventAddButton( wxCommandEvent& event ) override;
+    void OnEventSelect( wxListEvent& event ) override;
+    void OnEventDeselect( wxListEvent& event ) override;
+    void OnEventEditButton( wxCommandEvent& event ) override;
+	void OnEventDeleteButton( wxCommandEvent& event ) override;
 	void OnUnlinkEvent( wxCommandEvent& event );
 	void OnDeleteEvent( wxCommandEvent& event );
-    void OnEventUpButton( wxCommandEvent& event );
-    void OnEventDownButton( wxCommandEvent& event );
-    void OnEventOrderBy( wxCommandEvent& event );
+    void OnEventUpButton( wxCommandEvent& event ) override;
+    void OnEventDownButton( wxCommandEvent& event ) override;
+    void OnEventOrderBy( wxCommandEvent& event ) override;
 
 
     recFamily         m_family;
