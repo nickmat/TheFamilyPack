@@ -48,6 +48,9 @@
             { "folder": "name", "name": "names", "label": "Names", "subtitle": "Names" }
         ]},
         { "folder": "dev", "name": "develop", "label": "Development", "title": "Development", "subtitle": "Introduction", "content": [
+            { "folder": "man", "name": "index", "label": "V0.3.0.1.1 Manual", "title": "TFP 0.3.0.1.1 Manual", "subtitle": "Introduction", "content": [
+                { "folder": "tutorial", "name": "index", "label": "Tutorial", "subtitle": "Getting Started" }
+            ]},
             { "name": "routemap", "label": "Route Map", "title": "Development" },
             { "name": "history", "label": "Release History", "title": "Development" },
             { "name": "recprefix", "label": "Prefixes", "subtitle": "Record Prefixes" }
