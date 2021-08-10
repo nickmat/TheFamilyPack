@@ -54,7 +54,7 @@
 #define VERSION_NUM   "0.3.0.1.1"
 
 
-#define VERSION   VERSION_NUM TFP_SVNVERSION VERSION_STATUS VERSION_CONFIG
+#define VERSION   VERSION_NUM TFP_SVNVERSION VERSION_STATUS VERSION_CONFIG " " __DATE__
 
 /*! A string containing the current full version number.
  */
@@ -63,7 +63,7 @@ const char* tfpVersion = VERSION;
 /*! A string containing the current full version number formated for html.
  */
 const char* tfpHtmVersion = 
-    "<b>" VERSION_NUM "</b>" TFP_SVNVERSION VERSION_STATUS VERSION_CONFIG;
+    "<b>" VERSION_NUM "</b>" TFP_SVNVERSION VERSION_STATUS VERSION_CONFIG " " __DATE__;
 
 /*! A string containing a long hand version name and copyright message.
  */
