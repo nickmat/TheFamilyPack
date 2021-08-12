@@ -37,10 +37,12 @@
 
 #include "tfpVersion.h"
 
+#if 0
 #ifdef TFP_WORKING
 #include "svnver.h"
 #else
 #define TFP_SVNVERSION ""
+#endif
 #endif
 
 #define VERSION_STATUS   " pre-alpha"
@@ -51,10 +53,11 @@
 #define VERSION_CONFIG   ""
 #endif
 
-#define VERSION_NUM   "0.3.0.1.1"
+#define RELEASE_NUM   " R1"
+#define VERSION_NUM   "0.3.0.1.1" RELEASE_NUM
 
 
-#define VERSION   VERSION_NUM TFP_SVNVERSION VERSION_STATUS VERSION_CONFIG " " __DATE__
+#define VERSION   VERSION_NUM VERSION_STATUS VERSION_CONFIG " " __DATE__
 
 /*! A string containing the current full version number.
  */
@@ -63,7 +66,7 @@ const char* tfpVersion = VERSION;
 /*! A string containing the current full version number formated for html.
  */
 const char* tfpHtmVersion = 
-    "<b>" VERSION_NUM "</b>" TFP_SVNVERSION VERSION_STATUS VERSION_CONFIG " " __DATE__;
+    "<b>" VERSION_NUM "</b>" VERSION_STATUS VERSION_CONFIG " " __DATE__;
 
 /*! A string containing a long hand version name and copyright message.
  */
@@ -87,9 +90,18 @@ const char* tfpTitle = "The Family Pack - Version " VERSION "\n"
 
  28mar13  v0.3.0.1.0  First public pre-alpha release.
 
- active   v0.3.0.1.1  Extend calendar system.
-                      Split events into Conclusion Events and Evidence Events
-
+ 12aug21  v0.3.0.1.1 R1  Extend calendar system, add Islamic tabular calendar.
+                    Split events into conclusion events "Event" and evidence
+                    events "Eventa". (Other names were used and rejected.)
+                    Add "Media" table to hold scans and photos.
+                    Devise "Media-only" database and allow these to be attached.
+                      to the "Full" database - to avoid size bloat of database.
+                    Add Gallery object to show collections of photos.
+                    Create  media viewer window to separately show built-in
+                      photos and resize them.
+                    Remove "Relationship" table.
+                    Export GEDCOM file option added.
+                    Page names are no longer case sensitive.
 
  See also webpage http://thefamilypack.org/dev/routemap.htm
 

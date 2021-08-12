@@ -3,11 +3,9 @@
 ;* Project:     The Family Pack: Genealogy data storage and display program.
 ;* Purpose:     NSIS Windows installer script.
 ;* Author:      Nick Matthews
-;* Modified by:
 ;* Website:     http://thefamilypack.org
 ;* Created:     18th March 2012
-;* RCS-ID:      $Id: recCreate.sql 236 2012-03-16 16:22:17Z nickmat $
-;* Copyright:   Copyright (c) 2008 - 2010, Nick Matthews.
+;* Copyright:   Copyright (c) 2012 .. 2021, Nick Matthews.
 ;* Licence:     GNU GPLv3
 ;*
 ;*  The Family Pack is free software: you can redistribute it and/or modify
@@ -35,10 +33,10 @@
 !define APP_EXE       "tfp03.exe"
 !define VERSION_DOT   "0.3.0.1.1"
 ;!define VERSION_UND   "0_3_0_1_0"
-!define VERSION_TXT   "V${VERSION_DOT} pre-alpha"
+!define VERSION_TXT   "V${VERSION_DOT} R1 pre-alpha"
 !define LICENSE       "license.txt"
-!define DESCRIPTION   "Genealogical Application Installer"
-!define COPYRIGHT     "2013 @ Nick Matthews"
+!define DESCRIPTION   "The Family Pack Application Installer"
+!define COPYRIGHT     "2013 .. 2021 @ Nick Matthews"
 
 !define DOC_PATH      "$DOCUMENTS\${TFPNAME}"
 !define EXAMPLE_PATH  "$DOCUMENTS\${TFPNAME}\Examples"

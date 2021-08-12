@@ -1,29 +1,37 @@
 The Family Pack - Change log.
 
-TFP 0.3.0.1.1 - active
+TFP 0.3.0.1.1 R1 - 12th August 2021
+
+This is an interim release.
+
+    NOT FOR PRODUCTIVE USE - EXPECT BUGS!
+
+The documentation for this program is now
+being published on the website thefamilypack.org
+at https://thefamilypack.org/dev/man/index.htm
+
+Events split into Event and Eventa tables
+ analogous to Individual and Persona tables.
+ An Eventa is a record of an event whereas
+ an Event represents the event itself.
+
+Remove "Relationship" table.
+
+Added a Media table to hold photos (or video, audio, scans etc.).
+Added Gallery record to hold collections of related photos.
+Link Media to a Reference record so a scan or photo can be held
+ with a linked text representation.
+
+Add Export GEDCOM file added.
 
 Added the Islamic Tabular (arithmetic) and Hebrew calendars schemes to the
 Calendar Library.
 
 On Open Database it now asks permission before updating an older version file.
 
-bug - Converting dates with the year -1 to a string didn't show the year.
+Other changes are recorded in the git repository log.
+See https://github.com/nickmat/TheFamilyPack
 
-
-Database changes TFPD-0.0.10.6 -> 0.0.10.7
-
-Eventum table renamed Eventa.
-
-EventEventum table renamed EventEventa.
-  eventum_id column renamed eventa_id
-
-EventumPersona table renamed EventaPersona.
-  eventum_id column renamed eventa_id
-
-....
-
-Database changes from 0.0.9.25
-0.0.10.0  Remove blank F1 Family record from new database.
 
 TFP 0.3.0.1.0 - 28th March 2013
 First Release.
