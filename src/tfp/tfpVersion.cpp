@@ -37,14 +37,6 @@
 
 #include "tfpVersion.h"
 
-#if 0
-#ifdef TFP_WORKING
-#include "svnver.h"
-#else
-#define TFP_SVNVERSION ""
-#endif
-#endif
-
 #define VERSION_STATUS   " pre-alpha"
 
 #ifdef _DEBUG
@@ -53,7 +45,7 @@
 #define VERSION_CONFIG   ""
 #endif
 
-#define RELEASE_NUM   " R1"
+#define RELEASE_NUM   " R2"
 #define VERSION_NUM   "0.3.0.1.1" RELEASE_NUM
 
 
@@ -102,6 +94,8 @@ const char* tfpTitle = "The Family Pack - Version " VERSION "\n"
                     Remove "Relationship" table.
                     Export GEDCOM file option added.
                     Page names are no longer case sensitive.
+
+active    v0.3.0.1.1 R2  Add Reference templates.
 
  See also webpage http://thefamilypack.org/dev/routemap.htm
 
