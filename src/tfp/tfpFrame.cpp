@@ -89,6 +89,7 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
 //    EVT_MENU( tfpID_EDIT_EVENT_CURRENT, TfpFrame::OnEditEventCurrent )
 //    EVT_MENU( tfpID_EDIT_EVENT_NEW, TfpFrame::OnEditEventNew )
     EVT_MENU( tfpID_EDIT_NEW_REFERENCE, TfpFrame::OnEditNewReference )
+    EVT_MENU( tfpID_EDIT_REF_TEMPLATE, TfpFrame::OnEditRefTemplate )
     EVT_MENU( tfpID_EDIT_REFERENCE, TfpFrame::OnEditReference )
     EVT_MENU( tfpID_EDIT_GALLERY, TfpFrame::OnEditGallery )
     EVT_MENU( tfpID_EDIT_RESEARCHER, TfpFrame::OnEditResearcher )
@@ -228,6 +229,7 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     m_menuEditReference = new wxMenu;
     m_menuEditReference->Append( tfpID_EDIT_REFERENCE, _( "&Reference..." ) );
     m_menuEditReference->Append( tfpID_EDIT_NEW_REFERENCE, _( "&New Reference" ) );
+    m_menuEditReference->Append( tfpID_EDIT_REF_TEMPLATE, _( "Reference &Template" ) );
 
     wxMenu* menuEdCore = new wxMenu;
     menuEdCore->Append( tfpID_EDIT_EVENT_TYPE, _("&Event Types...") );
@@ -727,6 +729,11 @@ void TfpFrame::OnEditNewReference( wxCommandEvent& event )
         recDb::ErrorMessage( e );
         recDb::Rollback();
     }
+}
+
+void TfpFrame::OnEditRefTemplate( wxCommandEvent& event )
+{
+    wxMessageBox( "Not yet implimented", "OnEditRefTemplate" );
 }
 
 /*! \brief Called on a Edit Reference menu option event.

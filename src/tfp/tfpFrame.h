@@ -98,6 +98,7 @@ public:
 
     void OnEditContext( wxCommandEvent& event );
     void OnEditNewReference( wxCommandEvent& event );
+    void OnEditRefTemplate( wxCommandEvent& event );
     void OnEditReference( wxCommandEvent& event );
     void OnEditGallery( wxCommandEvent& event );
     void OnEditResearcher( wxCommandEvent& event );
@@ -216,6 +217,7 @@ enum
     tfpID_EDIT_REFERENCE_MENU,
     tfpID_EDIT_REFERENCE,
     tfpID_EDIT_NEW_REFERENCE,
+    tfpID_EDIT_REF_TEMPLATE,
     tfpID_EDIT_GALLERY,
     tfpID_EDIT_RESEARCHER,
     tfpID_EDIT_CORE_MENU,
