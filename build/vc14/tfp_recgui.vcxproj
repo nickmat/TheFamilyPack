@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -13,18 +13,17 @@
   <PropertyGroup Label="Globals">
     <ProjectName>recgui</ProjectName>
     <ProjectGuid>{EB4B4B6F-41DD-54F7-91B0-A39320462AB8}</ProjectGuid>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -39,17 +38,15 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <_ProjectFileVersion>14.0.23107.0</_ProjectFileVersion>
+    <_ProjectFileVersion>16.0.30709.64</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)$(Configuration)\recgui\</IntDir>
-    <TargetName>$(ProjectName)u</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)$(Configuration)\recgui\</IntDir>
-    <TargetName>$(ProjectName)ud</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl>
@@ -154,6 +151,7 @@
     <ClCompile Include="..\..\src\rg\rgEdUser.cpp" />
     <ClCompile Include="..\..\src\rg\rgImagePanel.cpp" />
     <ClCompile Include="..\..\src\rg\rgIndividual.cpp" />
+    <ClCompile Include="..\..\src\rg\rgRefTemplate.cpp" />
     <ClCompile Include="..\..\src\rg\rgSelect.cpp" />
     <ClCompile Include="..\..\src\rg\rgSelEvent.cpp" />
     <ClCompile Include="..\..\src\rg\rgTableCtrl.cpp" />
@@ -194,6 +192,7 @@
     <ClInclude Include="..\..\src\rg\rgEdRole.h" />
     <ClInclude Include="..\..\src\rg\rgEdSystem.h" />
     <ClInclude Include="..\..\src\rg\rgEdUser.h" />
+    <ClInclude Include="..\..\src\rg\rgRefTemplate.h" />
     <ClInclude Include="..\..\src\rg\rgSelect.h" />
     <ClInclude Include="..\..\src\rg\rgSelEvent.h" />
     <ClInclude Include="..\..\src\rg\rgTableCtrl.h" />

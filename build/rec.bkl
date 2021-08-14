@@ -168,6 +168,7 @@
     <sources>$(LOCAL_SRC)/rg/rgEdUser.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgImagePanel.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgIndividual.cpp</sources>
+    <sources>$(LOCAL_SRC)/rg/rgRefTemplate.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgSelect.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgSelEvent.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgTableCtrl.cpp</sources>
@@ -208,6 +209,7 @@
     <headers>$(LOCAL_SRC)/rg/rgEdRole.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdSystem.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdUser.h</headers>
+    <headers>$(LOCAL_SRC)/rg/rgRefTemplate.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgSelect.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgSelEvent.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgTableCtrl.h</headers>
