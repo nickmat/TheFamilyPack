@@ -65,7 +65,7 @@ WX_VERSION_MAJOR = $(shell echo $(WX_VERSION) | cut -c1,1)
 WX_VERSION_MINOR = $(shell echo $(WX_VERSION) | cut -c2,2)
 WX_CONFIG_FLAGS = $(WX_CONFIG_UNICODE_FLAG) $(WX_CONFIG_SHARED_FLAG) \
 	--toolkit=$(WX_PORT) --version=$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)
-TFP_CXXFLAGS = $(VAR) $(VAR_4) -I../../include -I../../src `$(WX_CONFIG) \
+TFP_CXXFLAGS = $(VAR) $(VAR_5) -I../../include -I../../src `$(WX_CONFIG) \
 	--cxxflags $(WX_CONFIG_FLAGS)` $(CPPFLAGS) $(CXXFLAGS)
 TFP_OBJECTS =  \
 	tfp_tfpApp.o \
@@ -91,7 +91,7 @@ TFP_OBJECTS =  \
 	tfp_tfpWrPersona.o \
 	tfp_tfpWrReference.o \
 	tfp_dummy.o
-CALENDAR_CXXFLAGS = $(VAR) $(VAR_4) -I../../include/cal -I../../include \
+CALENDAR_CXXFLAGS = $(VAR) $(VAR_5) -I../../include/cal -I../../include \
 	`$(WX_CONFIG) --cxxflags $(WX_CONFIG_FLAGS)` $(CPPFLAGS) $(CXXFLAGS)
 CALENDAR_OBJECTS =  \
 	calendar_calAstro.o \
@@ -105,14 +105,19 @@ CALENDAR_OBJECTS =  \
 	calendar_calParse.o \
 	calendar_calRecord.o \
 	calendar_dummy.o
-WXSQLITE3_CFLAGS = $(VAR) $(VAR_4) -DSQLITE_ENABLE_RTREE -I../../include \
+WXSQLITE3_CFLAGS = $(VAR) $(VAR_5) -DSQLITE_ENABLE_RTREE -I../../include \
 	`$(WX_CONFIG) --cflags $(WX_CONFIG_FLAGS)` $(CPPFLAGS) $(CFLAGS)
-WXSQLITE3_CXXFLAGS = $(VAR) $(VAR_4) -DSQLITE_ENABLE_RTREE -I../../include \
+WXSQLITE3_CXXFLAGS = $(VAR) $(VAR_5) -DSQLITE_ENABLE_RTREE -I../../include \
 	`$(WX_CONFIG) --cxxflags $(WX_CONFIG_FLAGS)` $(CPPFLAGS) $(CXXFLAGS)
 WXSQLITE3_OBJECTS =  \
 	wxsqlite3_wxsqlite3.o \
 	wxsqlite3_sqlite3.o
-REC_CXXFLAGS = $(VAR) $(VAR_4) -I../../include/rec -I../../include `$(WX_CONFIG) \
+HXML5_CXXFLAGS = $(VAR) $(VAR_5) -I../../include -I../../include/hxml5 \
+	$(CPPFLAGS) $(CXXFLAGS)
+HXML5_OBJECTS =  \
+	hxml5_hxml5.o \
+	hxml5_pugixml.o
+REC_CXXFLAGS = $(VAR) $(VAR_5) -I../../include/rec -I../../include `$(WX_CONFIG) \
 	--cxxflags $(WX_CONFIG_FLAGS)` $(CPPFLAGS) $(CXXFLAGS)
 REC_OBJECTS =  \
 	rec_recAssociate.o \
@@ -149,11 +154,11 @@ REC_OBJECTS =  \
 	rec_recUpgrade.o \
 	rec_recVersion.o \
 	rec_dummy.o
-RECCL_CXXFLAGS = $(VAR) $(VAR_4) -I../../include/rec -I../../include \
+RECCL_CXXFLAGS = $(VAR) $(VAR_5) -I../../include/rec -I../../include \
 	`$(WX_CONFIG) --cxxflags $(WX_CONFIG_FLAGS)` $(CPPFLAGS) $(CXXFLAGS)
 RECCL_OBJECTS =  \
 	reccl_reccl.o
-RECGUI_CXXFLAGS = $(VAR) $(VAR_4) -I../../include/rec -I../../include/rg \
+RECGUI_CXXFLAGS = $(VAR) $(VAR_5) -I../../include/rec -I../../include/rg \
 	-I../../include `$(WX_CONFIG) --cxxflags $(WX_CONFIG_FLAGS)` $(CPPFLAGS) \
 	$(CXXFLAGS)
 RECGUI_OBJECTS =  \
@@ -218,16 +223,16 @@ ifeq ($(WX_DEBUG),1)
 VAR = -O0
 endif
 ifeq ($(WX_DEBUG),0)
-VAR_4 = 
+VAR_5 = 
 endif
 ifeq ($(WX_DEBUG),1)
-VAR_4 = -g
+VAR_5 = -g
 endif
 
 
 ### Targets: ###
 
-all: test_for_selected_wxbuild tfp libcalendar.a libwxsqlite3.a librec.a libreccl.a librecgui.a
+all: test_for_selected_wxbuild tfp libcalendar.a libwxsqlite3.a libhxml5.a librec.a libreccl.a librecgui.a
 
 install: 
 
@@ -239,6 +244,7 @@ clean:
 	rm -f tfp
 	rm -f libcalendar.a
 	rm -f libwxsqlite3.a
+	rm -f libhxml5.a
 	rm -f librec.a
 	rm -f libreccl.a
 	rm -f librecgui.a
@@ -246,8 +252,8 @@ clean:
 test_for_selected_wxbuild: 
 	@$(WX_CONFIG) $(WX_CONFIG_FLAGS)
 
-tfp: $(TFP_OBJECTS) librecgui.a librec.a libcalendar.a libwxsqlite3.a
-	$(CXX) -o $@ $(TFP_OBJECTS)  $(VAR_4)  $(LDFLAGS)  librecgui.a librec.a libcalendar.a libwxsqlite3.a `$(WX_CONFIG) $(WX_CONFIG_FLAGS) --libs webview,adv,core,base`
+tfp: $(TFP_OBJECTS) librecgui.a librec.a libcalendar.a libwxsqlite3.a libhxml5.a
+	$(CXX) -o $@ $(TFP_OBJECTS)  $(VAR_5)  $(LDFLAGS)  librecgui.a librec.a libcalendar.a libwxsqlite3.a libhxml5.a `$(WX_CONFIG) $(WX_CONFIG_FLAGS) --libs webview,adv,core,base`
 
 libcalendar.a: $(CALENDAR_OBJECTS)
 	rm -f $@
@@ -257,6 +263,11 @@ libcalendar.a: $(CALENDAR_OBJECTS)
 libwxsqlite3.a: $(WXSQLITE3_OBJECTS)
 	rm -f $@
 	$(AR) rcu $@ $(WXSQLITE3_OBJECTS)
+	$(RANLIB) $@
+
+libhxml5.a: $(HXML5_OBJECTS)
+	rm -f $@
+	$(AR) rcu $@ $(HXML5_OBJECTS)
 	$(RANLIB) $@
 
 librec.a: $(REC_OBJECTS)
@@ -381,6 +392,12 @@ wxsqlite3_wxsqlite3.o: ./../../3rdparty/wxsqlite3/wxsqlite3.cpp
 
 wxsqlite3_sqlite3.o: ./../../3rdparty/wxsqlite3/sqlite3.c
 	$(CC) -c -o $@ $(WXSQLITE3_CFLAGS) $(CPPDEPS) $<
+
+hxml5_hxml5.o: ./../../src/hxml5/hxml5.cpp
+	$(CXX) -c -o $@ $(HXML5_CXXFLAGS) $(CPPDEPS) $<
+
+hxml5_pugixml.o: ./../../src/hxml5/pugixml.cpp
+	$(CXX) -c -o $@ $(HXML5_CXXFLAGS) $(CPPDEPS) $<
 
 rec_recAssociate.o: ./../../src/rec/recAssociate.cpp
 	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<

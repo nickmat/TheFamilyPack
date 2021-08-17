@@ -14,6 +14,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "doccore", "tfp_doccore.vcxp
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "wxsqlite3", "tfp_wxsqlite3.vcxproj", "{45D7308E-CFFD-5887-8A1C-3D8F6E095C88}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hxml5", "tfp_hxml5.vcxproj", "{F25250B6-FCD0-5E43-B5E4-0C36EC0392C7}"
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rec", "tfp_rec.vcxproj", "{1A037570-C3CC-5D6A-9C10-F55F1A29680C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "reccl", "tfp_reccl.vcxproj", "{0A017726-DEB1-5261-A1E6-2AAA1988DB2B}"
@@ -50,6 +52,10 @@ Global
 		{45D7308E-CFFD-5887-8A1C-3D8F6E095C88}.Debug|Win32.Build.0 = Debug|Win32
 		{45D7308E-CFFD-5887-8A1C-3D8F6E095C88}.Release|Win32.ActiveCfg = Release|Win32
 		{45D7308E-CFFD-5887-8A1C-3D8F6E095C88}.Release|Win32.Build.0 = Release|Win32
+		{F25250B6-FCD0-5E43-B5E4-0C36EC0392C7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F25250B6-FCD0-5E43-B5E4-0C36EC0392C7}.Debug|Win32.Build.0 = Debug|Win32
+		{F25250B6-FCD0-5E43-B5E4-0C36EC0392C7}.Release|Win32.ActiveCfg = Release|Win32
+		{F25250B6-FCD0-5E43-B5E4-0C36EC0392C7}.Release|Win32.Build.0 = Release|Win32
 		{1A037570-C3CC-5D6A-9C10-F55F1A29680C}.Debug|Win32.ActiveCfg = Debug|Win32
 		{1A037570-C3CC-5D6A-9C10-F55F1A29680C}.Debug|Win32.Build.0 = Debug|Win32
 		{1A037570-C3CC-5D6A-9C10-F55F1A29680C}.Release|Win32.ActiveCfg = Release|Win32
@@ -67,6 +73,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {11F61A29-FCC9-49D0-A8CB-06D220753B06}
+		SolutionGuid = {E8926967-4EC9-41A2-8021-0B0AB91226A1}
 	EndGlobalSection
 EndGlobal
