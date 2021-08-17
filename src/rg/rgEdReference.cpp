@@ -35,15 +35,16 @@
 #include "wx/wx.h"
 #endif
 
+#include "rgEdReference.h"
+
+#include <rg/rgDialogs.h>
+#include "rgSelect.h"
+
 #include <rec/recDate.h>
 #include <rec/recEventa.h>
 #include <rec/recMedia.h>
 #include <rec/recPersona.h>
 #include <rec/recPlace.h>
-
-#include <rg/rgDialogs.h>
-#include "rgEdReference.h"
-#include "rgSelect.h"
 
 bool rgEditReference( wxWindow* parent, idt refID )
 {
@@ -85,6 +86,12 @@ idt rgCreateReference( wxWindow* parent )
         return refID;
     }
     recDb::Rollback( savepoint );
+    return 0;
+}
+
+idt rgCreateReference( wxWindow* parent, const wxString& reftemplate )
+{
+    EnterTemplateData( parent, reftemplate );
     return 0;
 }
 

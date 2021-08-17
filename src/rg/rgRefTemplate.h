@@ -28,6 +28,6 @@
 #ifndef SRC_RG_RGREFTEMPLATE_H
 #define SRC_RG_RGREFTEMPLATE_H
 
-
+extern void EnterTemplateData( wxWindow* parent, const wxString& reftemplate );
 
 #endif // SRC_RG_RGREFTEMPLATE_H

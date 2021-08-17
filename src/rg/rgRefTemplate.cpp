@@ -29,5 +29,9 @@
 
 #ifndef WX_PRECOMP
 #include "wx/wx.h"
+#include "rgRefTemplate.h"
 #endif
 
+void EnterTemplateData( wxWindow* parent, const wxString& reftemplate )
+{
+}

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<makefile>
+
+  <lib id="hxml5" template="wxlike">
+    <libname>hxml5$(WXLIBPOSTFIX)</libname>
+
+    <sources>$(LOCAL_SRC)/hxml5/hxml5.cpp</sources>
+    <sources>$(LOCAL_SRC)/hxml5/pugixml.cpp</sources>
+
+    <headers>$(LOCAL_INC)/hxml5/hxml5.h</headers>
+    <headers>$(LOCAL_INC)/hxml5/pugiconfig.h</headers>
+    <headers>$(LOCAL_INC)/hxml5/pugixml.h</headers>
+
+    <include>$(LOCAL_INC)</include>
+    <include>$(LOCAL_INC)/hxml5</include>
+  </lib>
+
+</makefile>

@@ -157,6 +157,7 @@ extern idt rgCreatePlace( wxWindow* wind, const wxString& placeStr = wxEmptyStri
 // See src/rg/rgEdReference.cpp
 extern bool rgEditReference( wxWindow* wind, idt refID );
 extern idt rgCreateReference( wxWindow* wind );
+extern idt rgCreateReference( wxWindow* wind, const wxString& reftemplate );
 extern bool rgSelectDateFromReference(
     wxWindow* wind, idt* dateID, idt refID, const wxString& title, unsigned style );
 extern bool rgSelectPlaceFromReference(
