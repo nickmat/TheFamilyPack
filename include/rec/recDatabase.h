@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010 ~ 2019, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 .. 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -43,11 +43,11 @@ public:
         DT_MediaOnly,
         DT_MAX
     };
-    enum CreateReturn {
-        CR_OK,
-        CR_FileExists,
-        CR_CannotOpen,
-        CR_UnknownType
+    enum class CreateReturn {
+        OK,
+        FileExists,
+        CannotOpen,
+        UnknownType
     };
     enum CreateFlags {
         CREATE_DB_STD_EXT = 0x0001,

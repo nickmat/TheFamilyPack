@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010 ~ 2019, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 .. 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -76,13 +76,13 @@ recDb::CreateReturn recDb::CreateDbFile( const wxString& fname, DatabaseType typ
     wxFileName dbfile( fname );
     dbfile.SetExt( "tfpd" );
     if ( dbfile.FileExists() ) {
-        return CR_FileExists;
+        return CreateReturn::FileExists;
     }
     wxString dbfname = dbfile.GetFullPath();
     wxSQLite3Database db;
     db.Open( dbfname );
     if ( !db.IsOpen() ) {
-        return CR_CannotOpen;
+        return CreateReturn::CannotOpen;
     }
     switch ( type )
     {
@@ -97,10 +97,10 @@ recDb::CreateReturn recDb::CreateDbFile( const wxString& fname, DatabaseType typ
         break;
     default:
         db.Close();
-        return CR_UnknownType;
+        return CreateReturn::UnknownType;
     }
     db.Close();
-    return CR_OK;
+    return CreateReturn::OK;
 }
 
 bool recDb::CreateDb( const wxString& fname, unsigned flags )
@@ -134,7 +134,7 @@ bool recDb::CreateDb( const wxString& fname, unsigned flags )
 
     wxString dbfname = dbfile.GetFullPath();
     CreateReturn ret = CreateDbFile( dbfname, DT_Full );
-    if ( ret == CR_OK ) {
+    if ( ret == CreateReturn::OK ) {
         s_db->Open( dbfname );
         return true;
     }

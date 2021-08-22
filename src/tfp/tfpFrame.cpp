@@ -429,11 +429,11 @@ void TfpFrame::OnAttachNewFile( wxCommandEvent& event )
     wxString mess;
     switch ( ret )
     {
-    case recDb::CR_OK:
+    case recDb::CreateReturn::OK:
         recDb::AttachDb( dbpath, dbname );
         RefreshAttachedCloseMenu();
         return;
-    case recDb::CR_FileExists:
+    case recDb::CreateReturn::FileExists:
         mess = wxString::Format("Database aready exists.\n%s", dbpath );
         break;
     default:
