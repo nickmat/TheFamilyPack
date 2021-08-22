@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     21 November 2012
- * Copyright:   Copyright (c) 2012 ~ 2019, Nick Matthews.
+ * Copyright:   Copyright (c) 2012 .. 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -157,7 +157,7 @@ extern idt rgCreatePlace( wxWindow* wind, const wxString& placeStr = wxEmptyStri
 // See src/rg/rgEdReference.cpp
 extern bool rgEditReference( wxWindow* wind, idt refID );
 extern idt rgCreateReference( wxWindow* wind );
-extern idt rgCreateReference( wxWindow* wind, const wxString& reftemplate );
+extern idt rgCreateReferenceFromTemplate( wxWindow* wind, const wxString& reftemplate );
 extern bool rgSelectDateFromReference(
     wxWindow* wind, idt* dateID, idt refID, const wxString& title, unsigned style );
 extern bool rgSelectPlaceFromReference(

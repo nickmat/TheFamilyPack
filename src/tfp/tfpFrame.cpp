@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     25 September 2010
- * Copyright:   Copyright (c) 2010 ~ 2019, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 .. 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -745,11 +745,9 @@ void TfpFrame::OnEditRefTemplate( wxCommandEvent& event )
     if( dialog.ShowModal() == wxID_OK )
     {
         wxString path = dialog.GetPath();
-        wxMessageBox( "Template: " + path, "OnEditRefTemplate" );
-
         recDb::Begin();
         try {
-            if( rgCreateReference( this ) == 0 ) {
+            if( rgCreateReferenceFromTemplate( this, path ) == 0 ) {
                 recDb::Rollback();
             }
             else {
@@ -762,7 +760,6 @@ void TfpFrame::OnEditRefTemplate( wxCommandEvent& event )
             recDb::Rollback();
         }
     }
-    wxMessageBox( "Not yet implimented", "OnEditRefTemplate" );
 }
 
 /*! \brief Called on a Edit Reference menu option event.

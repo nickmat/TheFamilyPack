@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     26th February 2013
- * Copyright:   Copyright (c) 2013 ~ 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2013 .. 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -38,7 +38,9 @@
 #include "rgEdReference.h"
 
 #include <rg/rgDialogs.h>
+
 #include "rgSelect.h"
+#include "rgRefTemplate.h"
 
 #include <rec/recDate.h>
 #include <rec/recEventa.h>
@@ -89,9 +91,23 @@ idt rgCreateReference( wxWindow* parent )
     return 0;
 }
 
-idt rgCreateReference( wxWindow* parent, const wxString& reftemplate )
+idt rgCreateReferenceFromTemplate( wxWindow* parent, const wxString& reftemplate )
 {
-    EnterTemplateData( parent, reftemplate );
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+
+    rgRefData data;
+    recReference ref( 0 );
+    ref.Save();
+    data.m_ref_id = ref.FGetID();
+
+    if( rgEnterTemplateData( parent, reftemplate, data ) ) {
+        if( rgEditReference( parent, data.m_ref_id ) ) {
+            recDb::ReleaseSavepoint( savepoint );
+            return data.m_ref_id;
+        }
+    }
+    recDb::Rollback( savepoint );
     return 0;
 }
 
