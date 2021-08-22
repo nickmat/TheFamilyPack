@@ -41,6 +41,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "reccl", "tfp_reccl.vcproj", "{0A017726-DEB1-5261-A1E6-2AAA1988DB2B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "recgui", "tfp_recgui.vcproj", "{EB4B4B6F-41DD-54F7-91B0-A39320462AB8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F25250B6-FCD0-5E43-B5E4-0C36EC0392C7} = {F25250B6-FCD0-5E43-B5E4-0C36EC0392C7}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

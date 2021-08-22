@@ -218,6 +218,8 @@
     <include>$(LOCAL_INC)/rec</include>
     <include>$(LOCAL_INC)/rg</include>
     <include>$(LOCAL_INC)</include>
+
+    <library>hxml5</library>
   </lib>
 
 </makefile>

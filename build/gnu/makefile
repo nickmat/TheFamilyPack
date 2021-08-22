@@ -280,7 +280,7 @@ libreccl.a: $(RECCL_OBJECTS)
 	$(AR) rcu $@ $(RECCL_OBJECTS)
 	$(RANLIB) $@
 
-librecgui.a: $(RECGUI_OBJECTS)
+librecgui.a: $(RECGUI_OBJECTS) libhxml5.a
 	rm -f $@
 	$(AR) rcu $@ $(RECGUI_OBJECTS)
 	$(RANLIB) $@

@@ -443,7 +443,7 @@ reccl$(WXLIBPOSTFIX).lib: $(RECCL_OBJECTS)
 	$(RECCL_OBJECTS)
 <<
 
-recgui$(WXLIBPOSTFIX).lib: $(RECGUI_OBJECTS)
+recgui$(WXLIBPOSTFIX).lib: $(RECGUI_OBJECTS) hxml5$(WXLIBPOSTFIX).lib
 	if exist $@ del $@
 	link /LIB /NOLOGO /OUT:$@ @<<
 	$(RECGUI_OBJECTS)
