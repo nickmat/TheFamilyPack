@@ -166,6 +166,7 @@ RECGUI_OBJECTS =  \
 	recgui_fbRgEditMedia.o \
 	recgui_fbRgEditReference.o \
 	recgui_fbRgSelect.o \
+	recgui_fbRgSetupReference.o \
 	recgui_fbRgViewMedia.o \
 	recgui_fbRgDialog.o \
 	recgui_recgui.o \
@@ -199,6 +200,7 @@ RECGUI_OBJECTS =  \
 	recgui_rgRefTemplate.o \
 	recgui_rgSelect.o \
 	recgui_rgSelEvent.o \
+	recgui_rgSetupReference.o \
 	recgui_rgTableCtrl.o \
 	recgui_rgViewMedia.o
 
@@ -516,6 +518,9 @@ recgui_fbRgEditReference.o: ./../../src/rg/fb/fbRgEditReference.cpp
 recgui_fbRgSelect.o: ./../../src/rg/fb/fbRgSelect.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
+recgui_fbRgSetupReference.o: ./../../src/rg/fb/fbRgSetupReference.cpp
+	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
+
 recgui_fbRgViewMedia.o: ./../../src/rg/fb/fbRgViewMedia.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
@@ -613,6 +618,9 @@ recgui_rgSelect.o: ./../../src/rg/rgSelect.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgSelEvent.o: ./../../src/rg/rgSelEvent.cpp
+	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
+
+recgui_rgSetupReference.o: ./../../src/rg/rgSetupReference.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgTableCtrl.o: ./../../src/rg/rgTableCtrl.cpp

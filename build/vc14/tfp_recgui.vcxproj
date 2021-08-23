@@ -122,6 +122,7 @@
     <ClCompile Include="..\..\src\rg\fb\fbRgEditMedia.cpp" />
     <ClCompile Include="..\..\src\rg\fb\fbRgEditReference.cpp" />
     <ClCompile Include="..\..\src\rg\fb\fbRgSelect.cpp" />
+    <ClCompile Include="..\..\src\rg\fb\fbRgSetupReference.cpp" />
     <ClCompile Include="..\..\src\rg\fb\fbRgViewMedia.cpp" />
     <ClCompile Include="..\..\src\rg\recgui.cpp" />
     <ClCompile Include="..\..\src\rg\rgAssociate.cpp" />
@@ -154,6 +155,7 @@
     <ClCompile Include="..\..\src\rg\rgRefTemplate.cpp" />
     <ClCompile Include="..\..\src\rg\rgSelect.cpp" />
     <ClCompile Include="..\..\src\rg\rgSelEvent.cpp" />
+    <ClCompile Include="..\..\src\rg\rgSetupReference.cpp" />
     <ClCompile Include="..\..\src\rg\rgTableCtrl.cpp" />
     <ClCompile Include="..\..\src\rg\rgViewMedia.cpp" />
   </ItemGroup>
@@ -166,6 +168,7 @@
     <ClInclude Include="..\..\src\rg\fb\fbRgEditMedia.h" />
     <ClInclude Include="..\..\src\rg\fb\fbRgEditReference.h" />
     <ClInclude Include="..\..\src\rg\fb\fbRgSelect.h" />
+    <ClInclude Include="..\..\src\rg\fb\fbRgSetupReference.h" />
     <ClInclude Include="..\..\src\rg\fb\fbRgViewMedia.h" />
     <ClInclude Include="..\..\src\rg\rgAssociate.h" />
     <ClInclude Include="..\..\src\rg\rgCommon.h" />
@@ -195,8 +198,15 @@
     <ClInclude Include="..\..\src\rg\rgRefTemplate.h" />
     <ClInclude Include="..\..\src\rg\rgSelect.h" />
     <ClInclude Include="..\..\src\rg\rgSelEvent.h" />
+    <ClInclude Include="..\..\src\rg\rgSetupReference.h" />
     <ClInclude Include="..\..\src\rg\rgTableCtrl.h" />
     <ClInclude Include="..\..\src\rg\rgViewMedia.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="tfp_hxml5.vcxproj">
+      <Project>{f25250b6-fcd0-5e43-b5e4-0c36ec0392c7}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -212,6 +212,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rg\fb\fbRgSetupReference.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rg\fb\fbRgViewMedia.cpp"
 				>
 			</File>
@@ -340,6 +344,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rg\rgSetupReference.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rg\rgTableCtrl.cpp"
 				>
 			</File>
@@ -371,6 +379,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\rg\fb\fbRgSelect.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\fb\fbRgSetupReference.h"
 				>
 			</File>
 			<File
@@ -499,6 +511,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\rg\rgSelect.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgSetupReference.h"
 				>
 			</File>
 			<File
