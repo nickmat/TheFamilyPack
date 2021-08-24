@@ -46,6 +46,12 @@ fbRgSetupReferenceDialog::fbRgSetupReferenceDialog( wxWindow* parent, wxWindowID
 	bSizer571->Add( m_buttonMediaDel, 0, wxALIGN_CENTER_HORIZONTAL|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 
 
+	bSizer571->Add( 0, 0, 1, wxEXPAND, 5 );
+
+	m_buttonMediaView = new wxButton( this, wxID_ANY, _("&View"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer571->Add( m_buttonMediaView, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+
+
 	bSizer20->Add( bSizer571, 1, wxEXPAND, 5 );
 
 
@@ -65,7 +71,7 @@ fbRgSetupReferenceDialog::fbRgSetupReferenceDialog( wxWindow* parent, wxWindowID
 	m_textCtrlTemplate = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer2->Add( m_textCtrlTemplate, 1, wxALIGN_CENTER_VERTICAL|wxEXPAND|wxBOTTOM|wxLEFT, 5 );
 
-	m_buttonTemplateBrowse = new wxButton( this, wxID_ANY, _("Browse..."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonTemplateBrowse = new wxButton( this, wxID_ANY, _("&Browse..."), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer2->Add( m_buttonTemplateBrowse, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 
 	wxStaticText* m_staticText7;
@@ -111,16 +117,24 @@ fbRgSetupReferenceDialog::fbRgSetupReferenceDialog( wxWindow* parent, wxWindowID
 	this->Centre( wxBOTH );
 
 	// Connect Events
+	m_listMedia->Connect( wxEVT_COMMAND_LIST_ITEM_DESELECTED, wxListEventHandler( fbRgSetupReferenceDialog::OnMediaDeselect ), NULL, this );
+	m_listMedia->Connect( wxEVT_COMMAND_LIST_ITEM_SELECTED, wxListEventHandler( fbRgSetupReferenceDialog::OnMediaSelect ), NULL, this );
 	m_buttonMediaAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSetupReferenceDialog::OnMediaAddButton ), NULL, this );
 	m_buttonMediaEdit->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSetupReferenceDialog::OnMediaEditButton ), NULL, this );
 	m_buttonMediaDel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSetupReferenceDialog::OnMediaDeleteButton ), NULL, this );
+	m_buttonMediaView->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSetupReferenceDialog::OnMediaView ), NULL, this );
+	m_buttonTemplateBrowse->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSetupReferenceDialog::OnTemplateBrowse ), NULL, this );
 }
 
 fbRgSetupReferenceDialog::~fbRgSetupReferenceDialog()
 {
 	// Disconnect Events
+	m_listMedia->Disconnect( wxEVT_COMMAND_LIST_ITEM_DESELECTED, wxListEventHandler( fbRgSetupReferenceDialog::OnMediaDeselect ), NULL, this );
+	m_listMedia->Disconnect( wxEVT_COMMAND_LIST_ITEM_SELECTED, wxListEventHandler( fbRgSetupReferenceDialog::OnMediaSelect ), NULL, this );
 	m_buttonMediaAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSetupReferenceDialog::OnMediaAddButton ), NULL, this );
 	m_buttonMediaEdit->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSetupReferenceDialog::OnMediaEditButton ), NULL, this );
 	m_buttonMediaDel->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSetupReferenceDialog::OnMediaDeleteButton ), NULL, this );
+	m_buttonMediaView->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSetupReferenceDialog::OnMediaView ), NULL, this );
+	m_buttonTemplateBrowse->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSetupReferenceDialog::OnTemplateBrowse ), NULL, this );
 
 }

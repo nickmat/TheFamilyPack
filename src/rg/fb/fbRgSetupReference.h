@@ -40,6 +40,7 @@ class fbRgSetupReferenceDialog : public wxDialog
 		wxButton* m_buttonMediaAdd;
 		wxButton* m_buttonMediaEdit;
 		wxButton* m_buttonMediaDel;
+		wxButton* m_buttonMediaView;
 		wxTextCtrl* m_textCtrlTemplate;
 		wxButton* m_buttonTemplateBrowse;
 		wxTextCtrl* m_textCtrlRefTitle;
@@ -49,9 +50,13 @@ class fbRgSetupReferenceDialog : public wxDialog
 		wxButton* m_buttonCancel1;
 
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnMediaDeselect( wxListEvent& event ) { event.Skip(); }
+		virtual void OnMediaSelect( wxListEvent& event ) { event.Skip(); }
 		virtual void OnMediaAddButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnMediaEditButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnMediaDeleteButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnMediaView( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnTemplateBrowse( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:
