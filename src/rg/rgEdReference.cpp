@@ -41,6 +41,7 @@
 
 #include "rgSelect.h"
 #include "rgRefTemplate.h"
+#include "rgSetupReference.h"
 
 #include <rec/recDate.h>
 #include <rec/recEventa.h>
@@ -91,17 +92,18 @@ idt rgCreateReference( wxWindow* parent )
     return 0;
 }
 
-idt rgCreateReferenceFromTemplate( wxWindow* parent, const wxString& reftemplate )
+idt rgCreateReferenceFromTemplate( wxWindow* parent )
 {
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
 
-    rgRefData data;
     recReference ref( 0 );
     ref.Save();
-    data.m_ref_id = ref.FGetID();
+    idt refID = ref.FGetID();
+    rgRefData data;
+    data.m_ref_id = refID;
 
-    if( rgEnterTemplateData( parent, reftemplate, data ) ) {
+    if( rgGetRefSetupData( parent, refID, data ) ) {
         if( rgEditReference( parent, data.m_ref_id ) ) {
             recDb::ReleaseSavepoint( savepoint );
             return data.m_ref_id;

@@ -31,6 +31,7 @@
 #include <rec/recIndividual.h>
 
 class rgDlgEditReference;
+class rgRefData;
 
 enum {  // Used for popup menus, we put them here to ensure unique values.
     rgID_START = 2000,
@@ -157,7 +158,7 @@ extern idt rgCreatePlace( wxWindow* wind, const wxString& placeStr = wxEmptyStri
 // See src/rg/rgEdReference.cpp
 extern bool rgEditReference( wxWindow* wind, idt refID );
 extern idt rgCreateReference( wxWindow* wind );
-extern idt rgCreateReferenceFromTemplate( wxWindow* wind, const wxString& reftemplate );
+extern idt rgCreateReferenceFromTemplate( wxWindow* wind );
 extern bool rgSelectDateFromReference(
     wxWindow* wind, idt* dateID, idt refID, const wxString& title, unsigned style );
 extern bool rgSelectPlaceFromReference(
@@ -238,6 +239,9 @@ extern idt rgSelectEvent(
     unsigned flag = rgSELSTYLE_None,
     recSelSetEvent* filter = NULL,
     unsigned* button = NULL );
+
+// See scr/rg/rgSetupReference.cpp
+extern bool rgGetRefSetupData( wxWindow* parent, idt refID, rgRefData& data );
 
 // See src/rg/rgViewMedia.cpp
 extern void rgViewMedia( wxWindow* wind, idt medID );

@@ -733,32 +733,19 @@ void TfpFrame::OnEditNewReference( wxCommandEvent& event )
 
 void TfpFrame::OnEditRefTemplate( wxCommandEvent& event )
 {
-    // For now templates are files, but we want them to become
-    // common data.
-    bool ret = false;
-    wxString caption = _( "Select template file" );
-    wxString wildcard = "xhtml (*.htm)|*.htm";
-    wxString defaultDir = ".";
-    wxString defaultFName = wxEmptyString;
-
-    wxFileDialog dialog( this, caption, defaultDir, defaultFName, wildcard, wxFD_OPEN );
-    if( dialog.ShowModal() == wxID_OK )
-    {
-        wxString path = dialog.GetPath();
-        recDb::Begin();
-        try {
-            if( rgCreateReferenceFromTemplate( this, path ) == 0 ) {
-                recDb::Rollback();
-            }
-            else {
-                recDb::Commit();
-                RefreshHtmPage();
-            }
-        }
-        catch( wxSQLite3Exception& e ) {
-            recDb::ErrorMessage( e );
+    recDb::Begin();
+    try {
+        if( rgCreateReferenceFromTemplate( this ) == 0 ) {
             recDb::Rollback();
         }
+        else {
+            recDb::Commit();
+            RefreshHtmPage();
+        }
+    }
+    catch( wxSQLite3Exception& e ) {
+        recDb::ErrorMessage( e );
+        recDb::Rollback();
     }
 }
 

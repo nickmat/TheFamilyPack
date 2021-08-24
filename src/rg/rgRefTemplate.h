@@ -66,8 +66,6 @@ public:
 	rgDataBlockVec m_blocks;
 };
 
-extern bool rgEnterTemplateData( wxWindow* parent, const wxString& reftemplate, rgRefData& data );
-
 //============================================================================
 //-------------------------[ rgEditRefTemplate ]------------------------------
 //============================================================================

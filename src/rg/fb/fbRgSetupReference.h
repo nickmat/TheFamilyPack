@@ -19,6 +19,7 @@
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
+#include <wx/menu.h>
 #include <wx/button.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
@@ -38,6 +39,7 @@ class fbRgSetupReferenceDialog : public wxDialog
 	protected:
 		wxListCtrl* m_listMedia;
 		wxButton* m_buttonMediaAdd;
+		wxMenu* m_popupAddMedia;
 		wxButton* m_buttonMediaEdit;
 		wxButton* m_buttonMediaDel;
 		wxButton* m_buttonMediaView;
@@ -46,13 +48,15 @@ class fbRgSetupReferenceDialog : public wxDialog
 		wxTextCtrl* m_textCtrlRefTitle;
 		wxStaticLine* m_staticline1;
 		wxStaticText* m_staticRefID;
-		wxButton* m_buttonSave1;
-		wxButton* m_buttonCancel1;
+		wxButton* m_buttonSave;
+		wxButton* m_buttonCancel;
 
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnMediaDeselect( wxListEvent& event ) { event.Skip(); }
 		virtual void OnMediaSelect( wxListEvent& event ) { event.Skip(); }
 		virtual void OnMediaAddButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAddNewMedia( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAddExistingMedia( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnMediaEditButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnMediaDeleteButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnMediaView( wxCommandEvent& event ) { event.Skip(); }
@@ -63,6 +67,11 @@ class fbRgSetupReferenceDialog : public wxDialog
 
 		fbRgSetupReferenceDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Setup New Reference"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
 		~fbRgSetupReferenceDialog();
+
+		void m_buttonMediaAddOnContextMenu( wxMouseEvent &event )
+		{
+			m_buttonMediaAdd->PopupMenu( m_popupAddMedia, event.GetPosition() );
+		}
 
 };
 

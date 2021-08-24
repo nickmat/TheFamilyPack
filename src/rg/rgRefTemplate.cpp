@@ -88,7 +88,7 @@ namespace {
         wxMessageBox( block.m_title, "rgEnterTemplateData" );
     }
 }
-
+#if 0
 bool rgEnterTemplateData( 
     wxWindow* parent, const wxString& reftemplate, rgRefData& data )
 {
@@ -110,7 +110,7 @@ bool rgEnterTemplateData(
     }
     return true;
 }
-
+#endif
 
 //============================================================================
 //-------------------------[ rgEditRefTemplate ]------------------------------

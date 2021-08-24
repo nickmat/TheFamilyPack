@@ -41,6 +41,23 @@
 
 #include <rec/recMedia.h>
 
+bool rgGetRefSetupData( wxWindow* parent, idt refID, rgRefData& data )
+{
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+    bool ret = false;
+    rgDlgSetupReference dialog( parent, refID );
+
+    if( dialog.ShowModal() == wxID_OK ) {
+        recDb::ReleaseSavepoint( savepoint );
+        ret = true;
+    }
+    else {
+        recDb::Rollback( savepoint );
+    }
+    return ret;
+}
+
 //============================================================================
 //-------------------------[ rgDlgSetupReference ]-----------------------------
 //============================================================================
@@ -55,6 +72,10 @@ rgDlgSetupReference::rgDlgSetupReference( wxWindow* parent, idt refID )
 
 bool rgDlgSetupReference::TransferDataToWindow()
 {
+    wxASSERT( m_reference.FGetID() != 0 );
+    m_staticRefID->SetLabel( m_reference.GetIdStr() );
+    m_textCtrlRefTitle->SetValue( m_reference.FGetTitle() );
+    UpdateMedias( 0 );
     return false;
 }
 
@@ -77,6 +98,19 @@ void rgDlgSetupReference::OnMediaSelect( wxListEvent& event )
 
 void rgDlgSetupReference::OnMediaAddButton( wxCommandEvent& event )
 {
+    wxSize s = m_buttonMediaAdd->GetSize();
+    m_buttonMediaAdd->PopupMenu( m_popupAddMedia, 0, s.y );
+}
+
+
+void rgDlgSetupReference::OnAddNewMedia( wxCommandEvent& event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnAddNewMedia" );
+}
+
+void rgDlgSetupReference::OnAddExistingMedia( wxCommandEvent& event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnAddExistingMedia" );
 }
 
 void rgDlgSetupReference::OnMediaEditButton( wxCommandEvent& event )
@@ -93,7 +127,20 @@ void rgDlgSetupReference::OnMediaView( wxCommandEvent& event )
 
 void rgDlgSetupReference::OnTemplateBrowse( wxCommandEvent& event )
 {
-}
+    // For now templates are files, but we want them to become
+    // common data.
+    bool ret = false;
+    wxString caption = _( "Select template file" );
+    wxString wildcard = "xhtml (*.htm)|*.htm";
+    wxString defaultDir = ".";
+    wxString defaultFName = wxEmptyString;
 
+    wxFileDialog dialog( this, caption, defaultDir, defaultFName, wildcard, wxFD_OPEN );
+    if( dialog.ShowModal() == wxID_OK )
+    {
+        wxString path = dialog.GetPath();
+        m_textCtrlTemplate->SetValue( path );
+    }
+}
 
 // End of src/rg/rgSetupReference.cpp file

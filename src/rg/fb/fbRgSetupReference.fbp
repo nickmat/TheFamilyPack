@@ -70,7 +70,7 @@
                         <object class="sizeritem" expanded="1">
                             <property name="border">5</property>
                             <property name="flag">wxTOP|wxBOTTOM|wxLEFT</property>
-                            <property name="proportion">0</property>
+                            <property name="proportion">1</property>
                             <object class="wxListCtrl" expanded="1">
                                 <property name="BottomDockable">1</property>
                                 <property name="LeftDockable">1</property>
@@ -134,7 +134,7 @@
                         <object class="sizeritem" expanded="1">
                             <property name="border">5</property>
                             <property name="flag">wxEXPAND</property>
-                            <property name="proportion">1</property>
+                            <property name="proportion">0</property>
                             <object class="wxBoxSizer" expanded="1">
                                 <property name="minimum_size"></property>
                                 <property name="name">bSizer571</property>
@@ -211,6 +211,39 @@
                                         <property name="window_name"></property>
                                         <property name="window_style"></property>
                                         <event name="OnButtonClick">OnMediaAddButton</event>
+                                        <object class="wxMenu" expanded="1">
+                                            <property name="label">Add Media</property>
+                                            <property name="name">m_popupAddMedia</property>
+                                            <property name="permission">protected</property>
+                                            <object class="wxMenuItem" expanded="1">
+                                                <property name="bitmap"></property>
+                                                <property name="checked">0</property>
+                                                <property name="enabled">1</property>
+                                                <property name="help">Add an external image to the Reference</property>
+                                                <property name="id">wxID_ANY</property>
+                                                <property name="kind">wxITEM_NORMAL</property>
+                                                <property name="label">&amp;New Media</property>
+                                                <property name="name">m_opAddNewMedia</property>
+                                                <property name="permission">none</property>
+                                                <property name="shortcut"></property>
+                                                <property name="unchecked_bitmap"></property>
+                                                <event name="OnMenuSelection">OnAddNewMedia</event>
+                                            </object>
+                                            <object class="wxMenuItem" expanded="1">
+                                                <property name="bitmap"></property>
+                                                <property name="checked">0</property>
+                                                <property name="enabled">1</property>
+                                                <property name="help">Add an image from the database to the Reference</property>
+                                                <property name="id">wxID_ANY</property>
+                                                <property name="kind">wxITEM_NORMAL</property>
+                                                <property name="label">&amp;Eexisting Media</property>
+                                                <property name="name">m_opAddExistingMedia</property>
+                                                <property name="permission">none</property>
+                                                <property name="shortcut"></property>
+                                                <property name="unchecked_bitmap"></property>
+                                                <event name="OnMenuSelection">OnAddExistingMedia</event>
+                                            </object>
+                                        </object>
                                     </object>
                                 </object>
                                 <object class="sizeritem" expanded="1">
@@ -972,7 +1005,7 @@
                                 <property name="minimize_button">0</property>
                                 <property name="minimum_size"></property>
                                 <property name="moveable">1</property>
-                                <property name="name">m_buttonSave1</property>
+                                <property name="name">m_buttonSave</property>
                                 <property name="pane_border">1</property>
                                 <property name="pane_position"></property>
                                 <property name="pane_size"></property>
@@ -1044,7 +1077,7 @@
                                 <property name="minimize_button">0</property>
                                 <property name="minimum_size"></property>
                                 <property name="moveable">1</property>
-                                <property name="name">m_buttonCancel1</property>
+                                <property name="name">m_buttonCancel</property>
                                 <property name="pane_border">1</property>
                                 <property name="pane_position"></property>
                                 <property name="pane_size"></property>

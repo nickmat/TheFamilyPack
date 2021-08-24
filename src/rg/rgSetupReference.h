@@ -54,6 +54,8 @@ private:
     void OnMediaDeselect( wxListEvent& event ) override;
     void OnMediaSelect( wxListEvent& event ) override;
     void OnMediaAddButton( wxCommandEvent& event ) override;
+    void OnAddNewMedia( wxCommandEvent& event ) override;
+    void OnAddExistingMedia( wxCommandEvent& event ) override;
     void OnMediaEditButton( wxCommandEvent& event ) override;
     void OnMediaDeleteButton( wxCommandEvent& event ) override;
     void OnMediaView( wxCommandEvent& event ) override;
