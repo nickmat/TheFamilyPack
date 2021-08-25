@@ -236,7 +236,7 @@
                                                 <property name="help">Add an image from the database to the Reference</property>
                                                 <property name="id">wxID_ANY</property>
                                                 <property name="kind">wxITEM_NORMAL</property>
-                                                <property name="label">&amp;Eexisting Media</property>
+                                                <property name="label">&amp;Existing Media</property>
                                                 <property name="name">m_opAddExistingMedia</property>
                                                 <property name="permission">none</property>
                                                 <property name="shortcut"></property>

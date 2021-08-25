@@ -50,6 +50,7 @@ private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
     void UpdateMedias( idt medID = 0 );
+    void MediaButtonsEnable( long row );
 
     void OnMediaDeselect( wxListEvent& event ) override;
     void OnMediaSelect( wxListEvent& event ) override;

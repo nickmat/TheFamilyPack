@@ -86,14 +86,65 @@ bool rgDlgSetupReference::TransferDataFromWindow()
 
 void rgDlgSetupReference::UpdateMedias( idt medID )
 {
+    m_mediaIDs = recReference::GetMediaList( m_reference.FGetID() );
+    long row = 0, sel = -1;
+    for( idt mediaID : m_mediaIDs ) {
+        m_listMedia->InsertItem( row, mediaID );
+        m_listMedia->SetItem( row, MED_COL_Title, recMedia::GetTitle( mediaID ) );
+        if( mediaID == medID ) {
+            m_listMedia->SetItemState( row, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+            sel = row;
+        }
+        row++;
+    }
+    if( !m_mediaIDs.empty() ) {
+        m_listMedia->SetColumnWidth( MED_COL_Title, wxLIST_AUTOSIZE );
+    }
+    if( sel >= 0 ) {
+        m_listMedia->EnsureVisible( sel );
+    }
+    MediaButtonsEnable( sel );
+}
+
+void rgDlgSetupReference::MediaButtonsEnable( long row )
+{
+    if( row < 0 ) {
+        m_buttonMediaEdit->Disable();
+        m_buttonMediaDel->Disable();
+//        m_buttonUp->Disable();
+//        m_buttonDn->Disable();
+        m_buttonMediaView->Disable();
+        return;
+    }
+    m_buttonMediaEdit->Enable();
+    m_buttonMediaDel->Enable();
+    // TODO: Add a ref order field to the Media table.
+#if 0
+    if( row == 0 ) {
+        m_buttonUp->Disable();
+    }
+    else {
+        m_buttonUp->Enable();
+    }
+    if( row == m_listChildren->GetItemCount() - 1 ) {
+        m_buttonDn->Disable();
+    }
+    else {
+        m_buttonDn->Enable();
+    }
+#endif
+    m_buttonMediaView->Enable();
 }
 
 void rgDlgSetupReference::OnMediaDeselect( wxListEvent& event )
 {
+    MediaButtonsEnable( -1 );
 }
 
 void rgDlgSetupReference::OnMediaSelect( wxListEvent& event )
 {
+    long row = m_listMedia->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    MediaButtonsEnable( row );
 }
 
 void rgDlgSetupReference::OnMediaAddButton( wxCommandEvent& event )
@@ -102,10 +153,19 @@ void rgDlgSetupReference::OnMediaAddButton( wxCommandEvent& event )
     m_buttonMediaAdd->PopupMenu( m_popupAddMedia, 0, s.y );
 }
 
-
 void rgDlgSetupReference::OnAddNewMedia( wxCommandEvent& event )
 {
-    wxMessageBox( _( "Not yet implimented" ), "OnAddNewMedia" );
+    wxString caption = _( "Select Media file" );
+    wxString wildcard = "Image (*.jpg)|*.jpg";
+    wxString defaultDir = ".";
+    wxString defaultFName = wxEmptyString;
+
+    wxFileDialog dialog( this, caption, defaultDir, defaultFName, wildcard, wxFD_OPEN );
+    if( dialog.ShowModal() == wxID_OK )
+    {
+        wxString path = dialog.GetPath();
+        wxMessageBox( _( "Path: " + path ), "OnAddNewMedia" );
+    }
 }
 
 void rgDlgSetupReference::OnAddExistingMedia( wxCommandEvent& event )
@@ -115,21 +175,28 @@ void rgDlgSetupReference::OnAddExistingMedia( wxCommandEvent& event )
 
 void rgDlgSetupReference::OnMediaEditButton( wxCommandEvent& event )
 {
+    wxMessageBox( _( "Not yet implimented" ), "OnMediaEditButton" );
 }
 
 void rgDlgSetupReference::OnMediaDeleteButton( wxCommandEvent& event )
 {
+    wxMessageBox( _( "Not yet implimented" ), "OnMediaDeleteButton" );
 }
 
 void rgDlgSetupReference::OnMediaView( wxCommandEvent& event )
 {
+    long row = m_listMedia->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row < 0 ) {
+        wxMessageBox( _( "Row not selected" ), _( "View Media" ) );
+        return;
+    }
+    rgViewMedia( this, m_mediaIDs[row] );
 }
 
 void rgDlgSetupReference::OnTemplateBrowse( wxCommandEvent& event )
 {
     // For now templates are files, but we want them to become
     // common data.
-    bool ret = false;
     wxString caption = _( "Select template file" );
     wxString wildcard = "xhtml (*.htm)|*.htm";
     wxString defaultDir = ".";

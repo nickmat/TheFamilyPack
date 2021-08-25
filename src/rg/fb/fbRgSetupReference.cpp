@@ -43,7 +43,7 @@ fbRgSetupReferenceDialog::fbRgSetupReferenceDialog( wxWindow* parent, wxWindowID
 	m_popupAddMedia->Append( m_opAddNewMedia );
 
 	wxMenuItem* m_opAddExistingMedia;
-	m_opAddExistingMedia = new wxMenuItem( m_popupAddMedia, wxID_ANY, wxString( _("&Eexisting Media") ) , _("Add an image from the database to the Reference"), wxITEM_NORMAL );
+	m_opAddExistingMedia = new wxMenuItem( m_popupAddMedia, wxID_ANY, wxString( _("&Existing Media") ) , _("Add an image from the database to the Reference"), wxITEM_NORMAL );
 	m_popupAddMedia->Append( m_opAddExistingMedia );
 
 	m_buttonMediaAdd->Connect( wxEVT_RIGHT_DOWN, wxMouseEventHandler( fbRgSetupReferenceDialog::m_buttonMediaAddOnContextMenu ), NULL, this );
