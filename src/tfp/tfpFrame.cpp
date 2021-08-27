@@ -1210,6 +1210,9 @@ void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
         case 'G':
             ret = rgEditGallery( this, id );
             break;
+        case 'M':
+            ret = rgEditMedia( this, id );
+            break;
         }
         if( ret == true ) {
             recDb::Commit();
@@ -1906,7 +1909,12 @@ void TfpFrame::RefreshEditMenu()
         }
         break;
     case 'G':
-        if ( disp.size() >= 2 && wxIsdigit( disp.GetChar( 1 ) ) ) {
+        if( disp.size() >= 2 && wxIsdigit( disp.GetChar( 1 ) ) ) {
+            m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
+        }
+        break;
+    case 'M':
+        if( disp.size() >= 2 && wxIsdigit( disp.GetChar( 1 ) ) ) {
             m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
         }
         break;
