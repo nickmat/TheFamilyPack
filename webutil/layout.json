@@ -52,6 +52,31 @@
                 { "folder": "tutorial", "name": "index", "label": "Tutorial", "subtitle": "Getting Started", "content": [
                     { "name": "family", "label": "Family", "subtitle": "Family Entries" },
                     { "name": "individual", "label": "Individual", "subtitle": "Individual Entries" }
+                ]},
+                { "folder": "db", "name": "database", "label": "Database", "title": "Database V0.0.10.16", "subtitle": "Introduction", "content": [
+                    { "name": "dbdesign", "label": "Definitions", "subtitle": "Design", "css": "big-list" },
+                    { "name": "dbdiagram", "label": "Diagram" },
+                    { "folder": "sub", "name": "subsystems", "label": "Sub-Systems", "subtitle": "Sub-Systems", "content": [
+                        { "name": "system", "label": "System", "subtitle": "System Settings" },
+                        { "name": "version", "label": "Version", "subtitle": "Version Control" },
+                        { "name": "contact", "label": "Contact", "subtitle": "Contact Sub-System" },
+                        { "name": "user", "label": "User", "subtitle": "User Sub-System" },
+                        { "name": "sources", "label": "Sources", "subtitle": "Sources Sub-System" },
+                        { "name": "references", "label": "References", "subtitle": "Reference Sub-System" },
+                        { "name": "dates", "label": "Dates", "subtitle": "Date Sub-System" },
+                        { "name": "places", "label": "Places", "subtitle": "Place Sub-System" },
+                        { "name": "names", "label": "Names", "subtitle": "Name Sub-System" },
+                        { "name": "eventtypes", "label": "Event Types", "subtitle": "Event Type Sub-System" },
+                        { "name": "personas", "label": "Personas", "subtitle": "Persona Sub-System" },
+                        { "name": "eventas", "label": "Eventas", "subtitle": "Eventa Sub-System" },
+                        { "name": "individuals", "label": "Individuals", "subtitle": "Individuals & Families" },
+                        { "name": "events", "label": "Events", "subtitle": "Event Sub-System" },
+                        { "name": "media", "label": "Media", "subtitle": "Media Sub-System" }
+                    ]},
+                    { "folder": "ov", "name": "overview", "label": "Overview", "content": [
+                        { "name": "gentech-gtdm", "label": "GenTech GDM", "subtitle": "Differences to GenTech GDM" },
+                        { "name": "event-eventa", "label": "Event-Eventa", "subtitle": "Event-Eventa Relationship" }            
+                    ]}
                 ]}
             ]},
             { "name": "routemap", "label": "Route Map", "title": "Development" },

@@ -1,0 +1,1503 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<head>
+ <title>TheFamilyPack - Definitions</title>
+ <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+ <link rel='icon' type='image/png' href='../../../sys/logo32x32.png' />
+ <link rel='stylesheet' type='text/css' href='../../../sys/livery.css' />
+ <link rel='stylesheet' type='text/css' href='../../../sys/tfp.css' />
+ <link rel='stylesheet' type='text/css' href='../../../sys/big-list.css' />
+</head>
+<body>
+
+ <div class='heading'>
+  <div class='logo'>
+   <a  href='http://thefamilypack.org'>
+    <img class='logo' src='../../../sys/logo266x100.png' alt='Logo' />
+   </a>
+  </div>
+  TheFamilyPack - Database V0.0.10.16<br />Design
+  <div class='clear'></div>
+ </div>
+
+ <div class="crumbs">
+  <a href='../../../index.htm' class='m-item'>Home</a>
+  <a href='../../../dev/develop.htm' class='m-item'>Development</a>
+  <a href='../../../dev/man/index.htm' class='m-item'>V0.3.0.1.1 Manual</a>
+  <a href='../../../dev/man/db/database.htm' class='m-item'>Database</a>
+  <a href='dbdesign.htm' class='m-item thispage'>Definitions</a>
+  <a href='../../../dev/man/db/dbdiagram.htm' class='m-item nav'>►</a>
+  <a href='../../../dev/man/db/database.htm' class='m-item nav'>◄</a>
+ </div>
+
+<div id='content' class='nomenu'>
+
+<blockquote class="short">
+<p>
+ The goal is to transform data into information, and information into insight.
+</p>
+<p class="attribute">Carly Fiorina</p>
+</blockquote>
+
+<table class="index">
+  <tr>
+    <td><a href="#Associate">Associate</a></td>
+    <td><a href="#CitationPart">CitationPart</a></td>
+    <td><a href="#CitationPartType">CitationPartType</a></td>
+    <td><a href="#Contact">Contact</a></td>
+    <td><a href="#ContactList">ContactList</a></td>
+    <td><a href="#ContactType">ContactType</a></td>
+  </tr>
+  <tr>
+    <td><a href="#Date">Date</a></td>
+    <td><a href="#Event">Event</a></td>
+    <td><a href="#Eventa">Eventa</a></td>
+    <td><a href="#EventaPersona">EventaPersona</a></td>
+    <td><a href="#EventEventa">EventEventa</a></td>
+    <td><a href="#EventType">EventType</a></td>
+  </tr>
+  <tr>
+    <td><a href="#EventTypeRole">EventTypeRole</a></td>
+    <td><a href="#Family">Family</a></td>
+    <td><a href="#FamilyEvent">FamilyEvent</a></td>
+    <td><a href="#FamilyEventa">FamilyEventa</a></td>
+    <td><a href="#FamilyIndEventa">FamilyIndEventa</a></td>
+    <td><a href="#FamilyIndividual">FamilyIndividual</a></td>
+  </tr>
+  <tr>
+    <td><a href="#Gallery">Gallery</a></td>
+    <td><a href="#GalleryMedia">GalleryMedia</a></td>
+    <td><a href="#Individual">Individual</a></td>
+    <td><a href="#IndividualEvent">IndividualEvent</a></td>
+    <td><a href="#IndividualPersona">IndividualPersona</a></td>
+    <td><a href="#Media">Media</a></td>
+  </tr>
+  <tr>
+    <td><a href="#MediaData">MediaData</a></td>
+    <td><a href="#Name">Name</a></td>
+    <td><a href="#NamePart">NamePart</a></td>
+    <td><a href="#NamePartType">NamePartType</a></td>
+    <td><a href="#NameStyle">NameStyle</a></td>
+    <td><a href="#Persona">Persona</a></td>
+  </tr>
+  <tr>
+    <td><a href="#Place">Place</a></td>
+    <td><a href="#PlacePart">PlacePart</a></td>
+    <td><a href="#PlacePartType">PlacePartType</a></td>
+    <td><a href="#Reference">Reference</a></td>
+    <td><a href="#ReferenceEntity">ReferenceEntity</a></td>
+    <td><a href="#RelativeDate">RelativeDate</a></td>
+  </tr>
+  <tr>
+    <td><a href="#Repository">Repository</a></td>
+    <td><a href="#RepositorySource">RepositorySource</a></td>
+    <td><a href="#Researcher">Researcher</a></td>
+    <td><a href="#Source">Source</a></td>
+    <td><a href="#System">System</a></td>
+    <td><a href="#User">User</a></td>
+  </tr>
+  <tr>
+    <td><a href="#UserSetting">UserSetting</a></td>
+    <td><a href="#Version">Version</a></td>
+    <td colspan='4' class="na">&nbsp;</td>
+  </tr>
+  </table>
+
+  <table class='big-list'>
+    <thead>
+      <tr>
+        <th>Table Name<br/>field name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr id="Associate">
+        <td colspan="3" class="filler"><a href="#">Top</a></td>
+      </tr>
+      <tr class="head">
+        <td colspan="3"><b>Associate</b></td>
+      </tr>
+      <tr>
+        <td>id</td>
+        <td>Integer PK</td>
+        <td>Unique key identifying an Associated Database.</td>
+      </tr>
+      <tr>
+        <td>path</td>
+        <td>Text Null</td>
+        <td>The file path (relative to current database) to associated database.</td>
+      </tr>
+
+      <tr id="CitationPart">
+        <td colspan="3" class="filler"><a href="#">Top</a></td>
+      </tr>
+      <tr class="head">
+        <td colspan="3"><b>CitationPart</b></td>
+      </tr>
+      <tr>
+        <td>id</td>
+        <td>Integer PK</td>
+        <td>Unique key identifying a Citation Part.</td>
+      </tr>
+      <tr>
+        <td>source_id</td>
+        <td>Int</td>
+        <td>The unique key in Source for which this is a citation part.</td>
+      </tr>
+     <tr>
+     <td>type_id</td>
+     <td>Int</td>
+     <td>The unique key in Citation Part Type that identifies the type of citation part that this is, such as Publication City, Author, or Title.</td>
+    </tr>
+    <tr>
+     <td>val</td>
+     <td>Text</td>
+     <td>The actual value of this citation part, such as Baltimore, Thomas Smith, or Wills of Prince George's County, Maryland 1695-1710</td>
+    </tr>
+
+    <tr id="CitationPartType">
+     <td colspan="4" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>CitationPartType</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Int PK</td>
+     <td>Unique key identifying a Citation Part Type</td>
+    </tr>
+    <tr>
+     <td>name</td>
+     <td>Text</td>
+     <td>The actual name of the citation part, such as author, compiler, editor, transcriber, or place of publication.</td>
+    </tr>
+
+    <tr id="Contact">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>Contact</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying an Contact.</td>
+    </tr>
+    <tr>
+     <td>type_id</td>
+     <td>Integer Not null FK</td>
+     <td>Pointer to a ContactType for this contact.</td>
+    </tr>
+    <tr>
+     <td>list_id</td>
+     <td>Integer Not null FK</td>
+     <td>Pointer to an ContactList record that this formas a part of</td>
+    </tr>
+    <tr>
+     <td>val</td>
+     <td>Text</td>
+     <td>The Contact details, Address, Telephone number, email address etc.</td>
+    </tr>
+
+    <tr id="ContactList">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>ContactList</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying an ContactList</td>
+    </tr>
+    <tr>
+     <td>ind_id</td>
+     <td>Integer FK</td>
+     <td>Optional pointer to an Individual record that this is a list of contacts for.</td>
+    </tr>
+
+    <tr id="ContactType">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>ContactType</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying an ContactType</td>
+    </tr>
+    <tr>
+     <td>name</td>
+     <td>Text Not null</td>
+     <td>Name of the Contact Type. ie Address, Telephone, Email, etc.</td>
+    </tr>
+
+    <tr id="Date">
+     <td colspan="4" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>Date</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a Date.</td>
+    </tr>
+    <tr>
+     <td>jdn</td>
+     <td>Integer</td>
+     <td>The start date of a range, stored as a Julian day number.</td>
+    </tr>
+    <tr>
+     <td>range</td>
+     <td>Integer</td>
+     <td>The inclusive number of days in the date range. A value of 0 indicates a range of 1 day</td>
+    </tr>
+    <tr>
+     <td>rel_id</td>
+     <td>Integer</td>
+     <td>If the date is based on a relative date, this points to the RelativeDate record.</td>
+    </tr>
+    <tr>
+     <td>type</td>
+     <td>Integer</td>
+     <td>
+      A collection of flags indicating the type of dates held:<br/>
+      1=About, 2=Before, 4=After.
+     </td>
+    </tr>
+    <tr>
+     <td>descrip</td>
+     <td>Text</td>
+     <td>A text representation of the date in addition or in place of the date number</td>
+    </tr>
+    <tr>
+     <td>record_sch</td>
+     <td>Integer</td>
+     <td>A number indicating the date scheme used to record the date,<br/>Unstated, Unknown, Unlisted, Gregorian, Julian, English, Scottish etc</td>
+    </tr>
+    <tr>
+     <td>display_sch</td>
+     <td>Integer</td>
+     <td>A number indicating the default date scheme used for the date display,<br/>Unstated, Unknown, Unlisted, Gregorian, Julian, English, Scottish etc</td>
+    </tr>
+
+    <tr id="Event">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>Event</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying an Event</td>
+    </tr>
+    <tr>
+     <td>title</td>
+     <td>Text Not null</td>
+     <td>The name of the Event, such as "Marriage of John Smith and Mary Jones".</td>
+    </tr>
+    <tr>
+     <td>higher_id</td>
+     <td>Integer Not null FK</td>
+     <td>Unique identifier that indicates a higher Event which contains this event.</td>
+    </tr>
+    <tr>
+     <td>type_id</td>
+     <td>Integer Not null FK</td>
+     <td>Unique identifier that indicates to which Event Type this event belongs.</td>
+    </tr>
+    <tr>
+     <td>date1_id</td>
+     <td>Integer Not null FK</td>
+     <td>The point date associated with the Event.</td>
+    </tr>
+    <tr>
+     <td>date2_id</td>
+     <td>Integer Not null FK</td>
+     <td>The optional second date if a date range is associated with the Event.</td>
+    </tr>
+    <tr>
+     <td>place_id</td>
+     <td>Integer Not null FK</td>
+     <td>Unique identifier in Place that indicates where this Event took place.</td>
+    </tr>
+    <tr>
+     <td>note</td>
+     <td>Text</td>
+     <td>Optional note that relates to the Event.</td>
+    </tr>
+    <tr>
+     <td>date_pt</td>
+     <td>Integer Not null</td>
+     <td>A single day used to order lists of events.</td>
+    </tr>
+    <tr>
+     <td>user_ref</td>
+     <td>Text</td>
+     <td>Optional user defined reference code.</td>
+    </tr>
+
+    <tr id="Eventa">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>Eventa</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying an Eventa</td>
+    </tr>
+    <tr>
+     <td>title</td>
+     <td>Text Not null</td>
+     <td>The name of the Event, such as "Marriage of John Smith and Mary Jones".</td>
+    </tr>
+    <tr>
+     <td>ref_id</td>
+     <td>Integer Not null FK</td>
+     <td>The Reference Document that was the source of the Eventa.</td>
+    </tr>
+    <tr>
+     <td>type_id</td>
+     <td>Integer Not null FK</td>
+     <td>Unique identifier that indicates to which Event Type this eventa belongs.</td>
+    </tr>
+    <tr>
+     <td>date1_id</td>
+     <td>Integer Not null FK</td>
+     <td>The point date associated with the Eventa.</td>
+    </tr>
+    <tr>
+     <td>date2_id</td>
+     <td>Integer Not null FK</td>
+     <td>The optional second date if a date range is associated with the Eventa.</td>
+    </tr>
+    <tr>
+     <td>place_id</td>
+     <td>Integer Not null FK</td>
+     <td>Unique identifier in Place that indicates where this Eventa took place.</td>
+    </tr>
+    <tr>
+     <td>note</td>
+     <td>Text</td>
+     <td>Optional note that relates to the Eventa.</td>
+    </tr>
+    <tr>
+     <td>date_pt</td>
+     <td>Integer Not null</td>
+     <td>A single day used to order lists of events.</td>
+    </tr>
+
+    <tr id="EventaPersona">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>EventaPersona</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td class="nw">Integer PK</td>
+     <td>Unique key identifying an EventaPersona.</td>
+    </tr>
+    <tr>
+     <td>eventa_id</td>
+     <td>Integer Not null FK</td>
+     <td>Pointer to an Eventa</td>
+    </tr>
+    <tr>
+     <td>per_id</td>
+     <td>Integer Not null FK</td>
+     <td>Pointer to a Persona</td>
+    </tr>
+    <tr>
+     <td>role_id</td>
+     <td>Integer Not null FK</td>
+     <td>Points to the role played by the Persona</td>
+    </tr>
+    <tr>
+     <td>note</td>
+     <td>Text Not null</td>
+     <td>Optional note that relates to the Persona</td>
+    </tr>
+    <tr>
+     <td>per_seq</td>
+     <td>Integer Not null</td>
+     <td>The sequence of personas included in a given eventa record.</td>
+    </tr>
+
+    <tr id="EventEventa">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>EventEventa</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td class="nw">Integer PK</td>
+     <td>Unique key identifying an EventEventa.</td>
+    </tr>
+    <tr>
+     <td>event_id</td>
+     <td>Integer Not null FK</td>
+     <td>Pointer to an Event</td>
+    </tr>
+    <tr>
+     <td>eventa_id</td>
+     <td>Integer Not null FK</td>
+     <td>Pointer to an Eventa</td>
+    </tr>
+    <tr>
+     <td>conf</td>
+     <td>Float Not null</td>
+     <td>A value, less than one, to indicate the confidence that the link is correct</td>
+    </tr>
+    <tr>
+     <td>note</td>
+     <td>Text</td>
+     <td>Optional note that relates to the link between the events</td>
+    </tr>
+
+    <tr id="EventType">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>EventType</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a Event Type</td>
+    </tr>
+    <tr>
+     <td>grp</td>
+     <td>Integer</td>
+     <td>Holds 0=Unstated, 1=Birth, 2=Nr Birth (Baptism), 3=Marriage, 4=Family, 5=Death, 6=Nr Death (Burial), 7=Other</td>
+    </tr>
+    <tr>
+     <td>name</td>
+     <td>Text</td>
+     <td>The name of this event type.  An example might be Marriage or Burial, or Battle.</td>
+    </tr>
+
+    <tr id="EventTypeRole">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>EventTypeRole</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a Event Type Role</td>
+    </tr>
+    <tr>
+     <td>type_id</td>
+     <td>Integer</td>
+     <td>Unique key that identifies the Event Type to which these members belong.</td>
+    </tr>
+    <tr>
+     <td>prime</td>
+     <td>Integer</td>
+     <td>Flag, 1=Primary role, ie the new born for birth or bride and groom in wedding.</td>
+    </tr>
+    <tr>
+     <td>official</td>
+     <td>Integer</td>
+     <td>Flag, 1=Official role, ie Registrar for certificate or clergy for church service.</td>
+    </tr>
+    <tr>
+     <td>name</td>
+     <td>Text</td>
+     <td>The value that distinguishes the different members of the event type, such as role (bride, groom, witness).</td>
+    </tr>
+
+    <tr id="Family">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>Family</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td class="nw">Integer PK</td>
+     <td>Unique key identifying a Family</td>
+    </tr>
+    <tr>
+     <td>husd_id</td>
+     <td>Integer</td>
+     <td>Pointer to the Individual who is the male partner</td>
+    </tr>
+    <tr>
+     <td>wife_id</td>
+     <td>Integer</td>
+     <td>Pointer to the Individual who is the female partner</td>
+    </tr>
+
+    <tr id="FamilyEvent">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>FamilyEvent</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td class="nw">Integer PK</td>
+     <td>Unique key identifying a FamilyEvent</td>
+    </tr>
+    <tr>
+     <td>fam_id</td>
+     <td>Integer Not null FK</td>
+     <td>Pointer to a Family associated with the Event</td>
+    </tr>
+    <tr>
+     <td>event_id</td>
+     <td>Integer Not null FK</td>
+     <td>Pointer to the Event associated with a Family</td>
+    </tr>
+    <tr>
+     <td>note</td>
+     <td>Text</td>
+     <td>Optional note that relates to the Family - Event link</td>
+    </tr>
+    <tr>
+     <td>fam_seq</td>
+     <td>Integer Not null</td>
+     <td>Sequence of the Event within the Family</td>
+    </tr>
+
+    <tr id="FamilyEventa">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>FamilyEventa</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td class="nw">Integer PK</td>
+     <td>Unique key identifying a FamilyEventa</td>
+    </tr>
+    <tr>
+     <td>fam_id</td>
+     <td>Integer Not null FK</td>
+     <td>Pointer to a Family associated with the Eventa</td>
+    </tr>
+    <tr>
+     <td>eventa_id</td>
+     <td>Integer Not null FK</td>
+     <td>Pointer to the Eventa associated with a Family</td>
+    </tr>
+    <tr>
+     <td>conf</td>
+     <td>Float Not null</td>
+     <td>A value, less than one, to indicate the confidence that the link is correct</td>
+    </tr>
+    <tr>
+     <td>note</td>
+     <td>Text</td>
+     <td>Optional note that relates to the Family - Eventa link</td>
+    </tr>
+
+    <tr id="FamilyIndEventa">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>FamilyIndEventa</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td class="nw">Integer PK</td>
+     <td>Unique key identifying a FamilyIndEventa</td>
+    </tr>
+    <tr>
+     <td>fam_ind_id</td>
+     <td>Integer Not null FK</td>
+     <td>Pointer to a Family Individual relationship associated with the Eventa</td>
+    </tr>
+    <tr>
+     <td>eventa_id</td>
+     <td>Integer Not null FK</td>
+     <td>Pointer to the Eventa associated with a Family Individual link</td>
+    </tr>
+    <tr>
+     <td>conf</td>
+     <td>Float Not null</td>
+     <td>A value, less than one, to indicate the confidence that the link is correct</td>
+    </tr>
+    <tr>
+     <td>note</td>
+     <td>Text</td>
+     <td>Optional note that relates to the Family Individual - Eventa link</td>
+    </tr>
+
+    <tr id="FamilyIndividual">
+        <td colspan="3" class="filler"><a href="#">Top</a></td>
+      </tr>
+      <tr class="head">
+        <td colspan="3"><b>FamilyIndividual</b></td>
+      </tr>
+      <tr>
+        <td>id</td>
+        <td>Integer PK</td>
+        <td>Unique key identifying a FamilyIndividual</td>
+      </tr>
+      <tr>
+        <td>fam_id</td>
+        <td>Integer Not null</td>
+        <td>Pointer to the Family that the Individual is a child of.</td>
+      </tr>
+      <tr>
+        <td>ind_id</td>
+        <td>Integer Not null</td>
+        <td>Pointer to the Individual</td>
+      </tr>
+      <tr>
+        <td>seq_child</td>
+        <td>Integer Not null</td>
+        <td>Sequence of the child Individuals in the Family, normally in age order</td>
+      </tr>
+      <tr>
+        <td>seq_parent</td>
+        <td>Integer Not null</td>
+        <td>Where an individual is the child of more than one family, (ie genetic child and adopted child) this value will sequence the order of the the families.</td>
+      </tr>
+
+      <tr id="Gallery">
+          <td colspan="3" class="filler"><a href="#">Top</a></td>
+      </tr>
+      <tr class="head">
+        <td colspan="3"><b>Gallery</b></td>
+      </tr>
+      <tr>
+        <td>id</td>
+        <td>Integer PK</td>
+        <td>Unique key identifying a Gallery.</td>
+      </tr>
+      <tr>
+        <td>title</td>
+        <td>Text Not null</td>
+        <td>A one line title for the Gallery.</td>
+      </tr>
+      <tr>
+        <td>desc</td>
+        <td>Text Null</td>
+        <td>A full description of the Gallery.</td>
+      </tr>
+  
+      <tr id="GalleryMedia">
+          <td colspan="3" class="filler"><a href="#">Top</a></td>
+      </tr>
+      <tr class="head">
+        <td colspan="3"><b>GalleryMedia</b></td>
+      </tr>
+      <tr>
+        <td>id</td>
+        <td>Int PK</td>
+        <td>Unique key identifying the Gallery media.</td>
+      </tr>
+      <tr>
+          <td>title</td>
+          <td>Text Null</td>
+          <td>An alternative one line title for the Media when displayed in the Gallery.</td>
+      </tr>
+      <tr>
+        <td>med_id</td>
+        <td>Int Not null FK</td>
+        <td>Pointer to the Media item to be displayed in the Gallery.</td>
+      </tr>
+      <tr>
+        <td>gal_id</td>
+        <td>Int Not null FK</td>
+        <td>Pointer to the Gallery.</td>
+      </tr>
+      <tr>
+        <td>med_seq</td>
+        <td>Int Not null</td>
+        <td>Sequence the Media is to be displayed in the Gallery.</td>
+      </tr>
+  
+    <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>Individual</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying an Individual</td>
+    </tr>
+    <tr>
+     <td>sex</td>
+     <td>Integer</td>
+     <td>This holds 0=Unstated, 1=Male, 2=Female and 3=Unknown.</td>
+    </tr>
+    <tr>
+     <td>fam_id</td>
+     <td>Integer Not null FK</td>
+     <td>Pointer to the default (preferred) Family ID</td>
+    </tr>
+    <tr>
+     <td>note</td>
+     <td>Text</td>
+     <td>Any narrative necessary to distinguish this individual.</td>
+    </tr>
+    <tr>
+     <td>privacy</td>
+     <td>Integer</td>
+     <td>A value indicating the privacy level for the Individual.</td>
+    </tr>
+    <tr>
+     <td>name</td>
+     <td>Text</td>
+     <td>The full name or names that this Individual is known by. NOTE: Redundant field created from Persona/Names</td>
+    </tr>
+    <tr>
+     <td>surname</td>
+     <td>Text</td>
+     <td>The surname name that this Individual is known by. NOTE: Redundant field created from Persona/Names</td>
+    </tr>
+    <tr>
+     <td>epitaph</td>
+     <td>Text</td>
+     <td>The short date epitaph string ie (1914 - 1987). NOTE: Redundant field created from Events</td>
+    </tr>
+
+    <tr id="IndividualEvent">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>IndividualEvent</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td class="nw">Integer PK</td>
+     <td>Unique key identifying an IndividualEvent.</td>
+    </tr>
+    <tr>
+     <td>higher_id</td>
+     <td>Integer Not null FK</td>
+     <td>Unique identifier that indicates a higher IndividualEvent which contains this IndividualEvent.</td>
+    </tr>
+    <tr>
+     <td>ind_id</td>
+     <td>Integer Not null FK</td>
+     <td>Pointer to an Individual</td>
+    </tr>
+    <tr>
+     <td>event_id</td>
+     <td>Integer Not null FK</td>
+     <td>Pointer to the Event</td>
+    </tr>
+    <tr>
+     <td>role_id</td>
+     <td>Integer Not null FK</td>
+     <td>Points to the role played by the Individual</td>
+    </tr>
+    <tr>
+     <td>note</td>
+     <td>Text Not null</td>
+     <td>Optional note that relates to the Individual</td>
+    </tr>
+    <tr>
+     <td>ind_seq</td>
+     <td>Integer Not null</td>
+     <td>The sequence of Individuals included in a given event.</td>
+    </tr>
+
+    <tr id="IndividualPersona">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>IndividualPersona</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td class="nw">Integer PK</td>
+     <td>Unique key identifying a IndividualPersona record.</td>
+    </tr>
+    <tr>
+     <td>ind_id</td>
+     <td>Integer Not null FK</td>
+     <td>Pointer to an Individual</td>
+    </tr>
+    <tr>
+     <td>per_id</td>
+     <td>Integer Not null FK</td>
+     <td>Pointer to a Persona associated with a Reference</td>
+    </tr>
+    <tr>
+     <td>conf</td>
+     <td>Float Not null</td>
+     <td>A value, less than one, to indicate the confidence that the link is correct</td>
+    </tr>
+    <tr>
+     <td>note</td>
+     <td>Text</td>
+     <td>Optional note that relates to this Individual - Persona link</td>
+    </tr>
+
+    <tr id="Media">
+      <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+      <td colspan="3"><b>Media</b></td>
+    </tr>
+    <tr>
+      <td>id</td>
+      <td>Integer PK</td>
+      <td>Unique key identifying a Media item.</td>
+    </tr>
+    <tr>
+      <td>data_id</td>
+      <td>Int Not null FK</td>
+      <td>Pointer to the record holding the media data. May not be in current database.</td>
+    </tr>
+    <tr>
+      <td>ass_id</td>
+      <td>Int Not null FK</td>
+      <td>Pointer to the associated database holding the data record.</td>
+    </tr>
+    <tr>
+      <td>ref_id</td>
+      <td>Int Not null FK</td>
+      <td>Pointer to a Reference record.</td>
+    </tr>
+    <tr>
+      <td>privacy</td>
+      <td>Int Not null</td>
+      <td>A value indicating the privacy level for the Media.</td>
+    </tr>
+    <tr>
+      <td>title</td>
+      <td>Text Null</td>
+      <td>The one line title text for the Media. Use Reference title if not given.</td>
+    </tr>
+    <tr>
+      <td>note</td>
+      <td>Text Null</td>
+      <td>Additional text to support the Media. Is in addition to the Reference statement.</td>
+    </tr>
+
+    <tr id="MediaData">
+      <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+      <td colspan="3"><b>MediaData</b></td>
+    </tr>
+    <tr>
+      <td>id</td>
+      <td>Integer PK</td>
+      <td>Unique key identifying a MediaData item.</td>
+    </tr>
+    <tr>
+      <td>data</td>
+      <td>Blob Not null</td>
+      <td>The binary data that makes up the media file.</td>
+    </tr>
+    <tr>
+      <td>ass_id</td>
+      <td>Int Not null FK</td>
+      <td>Pointer to the associated database holding the data record.</td>
+    </tr>
+    <tr>
+      <td>privacy</td>
+      <td>Int Not null</td>
+      <td>A default value indicating the privacy level for the Media.</td>
+    </tr>
+    <tr>
+      <td>copyright</td>
+      <td>Text Null</td>
+      <td>An optional text string holding copyright information.</td>
+    </tr>
+        
+    <tr id="Name">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>Name</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a Name.</td>
+    </tr>
+    <tr>
+     <td>ind_id</td>
+     <td>Integer Not null FK</td>
+     <td>Pointer to a Individual ID.</td>
+    </tr>
+    <tr>
+     <td>per_id</td>
+     <td>Integer Not null FK</td>
+     <td>Pointer to a Persona ID. Either the ind_id or per_id column should be 0.</td>
+    </tr>
+    <tr>
+     <td>style_id</td>
+     <td>Integer Not null FK</td>
+     <td>Pointer to a NameStyle ID to indicate the type of name, ie Married or Alias etc.</td>
+    </tr>
+    <tr>
+     <td>sequence</td>
+     <td>Integer</td>
+     <td>Sequence of the Name within the Individual or Persona. The default name is the first in the list.</td>
+    </tr>
+
+    <tr id="NamePart">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>NamePart</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a NamePart.</td>
+    </tr>
+    <tr>
+     <td>name_id</td>
+     <td>Integer Not null FK</td>
+     <td>Pointer to the Name ID that this part belongs to.</td>
+    </tr>
+    <tr>
+     <td>type_id</td>
+     <td>Integer Not null FK</td>
+     <td>Identifier that indicates to which NamePartType this name belongs.</td>
+    </tr>
+    <tr>
+     <td>val</td>
+     <td>Text</td>
+     <td>The value of the Name, such as "John" where type_id points to "Given name".</td>
+    </tr>
+    <tr>
+     <td>sequence</td>
+     <td>Integer Not null</td>
+     <td>A number to show a name's position in the full name</td>
+    </tr>
+
+    <tr id="NamePartType">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>NamePartType</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a NamePartType.</td>
+    </tr>
+    <tr>
+     <td>grp</td>
+     <td>Integer Not null</td>
+     <td>Holds 0=Unstated, 1=Name part, 2=Title</td>
+    </tr>
+    <tr>
+     <td>name</td>
+     <td>Text Not null</td>
+     <td>Name of the NamePartType, ie "Given name" or "Rank"</td>
+    </tr>
+
+    <tr id="NameStyle">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>NameStyle</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a NameStyle</td>
+    </tr>
+    <tr>
+     <td>name</td>
+     <td>Text Not null</td>
+     <td>Name of the NameStyle, ie "Birth name" or "Married name"</td>
+    </tr>
+
+    <tr id="Persona">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>Persona</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a Persona.</td>
+    </tr>
+    <tr>
+     <td>sex</td>
+     <td>Integer</td>
+     <td>This holds 0=Unstated, 1=Male, 2=Female and 3=Unknown.</td>
+    </tr>
+    <tr>
+     <td>ref_id</td>
+     <td>Integer</td>
+     <td>If this persona was created by a reference entity, this identifies the Reference.</td>
+    </tr>
+    <tr>
+     <td>note</td>
+     <td>Text</td>
+     <td>Any narrative necessary to distinguish this person.</td>
+    </tr>
+
+    <tr id="Place">
+     <td colspan="4" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>Place</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a Place</td>
+    </tr>
+    <tr>
+     <td>date1_id</td>
+     <td>Integer</td>
+     <td>A pointer to a Date when this Place was first recorded or the boundry set</td>
+    </tr>
+    <tr>
+     <td>date2_id</td>
+     <td>Integer</td>
+     <td>A pointer to a Date when this Place is no longer recongnised or the boundry was changed</td>
+    </tr>
+
+    <tr id="PlacePart">
+     <td colspan="4" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>PlacePart</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a PlacePart</td>
+    </tr>
+    <tr>
+     <td>type_id</td>
+     <td>Integer</td>
+     <td>A pointer to a PlacePartType that identifies the type of PlacePart this is.<br/>ie Town, Parish, County</td>
+    </tr>
+    <tr>
+     <td>place_id</td>
+     <td>Integer</td>
+     <td>A pointer to a Place that this forms a part of</td>
+    </tr>
+    <tr>
+     <td>val</td>
+     <td>Text</td>
+     <td>The actual name of the place part</td>
+    </tr>
+    <tr>
+     <td>sequence</td>
+     <td>Integer</td>
+     <td>A number to show the place parts position in the full place name (ie address)</td>
+    </tr>
+
+    <tr id="PlacePartType">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>PlacePartType</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a PlacePartType</td>
+    </tr>
+    <tr>
+     <td>name</td>
+     <td>Text</td>
+     <td>The name of the PlacePart, such as Town, Country etc.</td>
+    </tr>
+
+    <tr id="Reference">
+     <td colspan="4" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>Reference</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a Reference record</td>
+    </tr>
+    <tr>
+     <td>title</td>
+     <td>Text</td>
+     <td>Title of the reference doucument</td>
+    </tr>
+    <tr>
+     <td>statement</td>
+     <td>Text</td>
+     <td>
+      An XML document containing a statement whuch may include a Transcription,
+      Translation, Summary of a Source or simple text statement.
+     </td>
+    </tr>
+    <tr>
+     <td>user_ref</td>
+     <td>Text</td>
+     <td>Optional user defined reference code.</td>
+    </tr>
+
+    <tr id="ReferenceEntity">
+     <td colspan="4" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>ReferenceEntity</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a ReferenceEntity</td>
+    </tr>
+    <tr>
+     <td>ref_id</td>
+     <td>Integer</td>
+     <td>Pointer to the Reference record</td>
+    </tr>
+    <tr>
+     <td>entity_type</td>
+     <td>Integer</td>
+     <td>A value indicating the Entity type, 1=Source, 3=Place, 4=Date, 7=Name</td>
+    </tr>
+    <tr>
+     <td>entity_id</td>
+     <td>Integer</td>
+     <td>Pointer to the Entity record</td>
+    </tr>
+    <tr>
+     <td>sequence</td>
+     <td>Integer</td>
+     <td>A number to give an entity's position in the list of a reference's entities</td>
+    </tr>
+
+    <tr id="RelativeDate">
+     <td colspan="4" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>RelativeDate</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a RelativeDate.</td>
+    </tr>
+    <tr>
+     <td>val</td>
+     <td>Integer</td>
+     <td>The relative value.</td>
+    </tr>
+    <tr>
+     <td>range</td>
+     <td>Integer</td>
+     <td>The relative range</td>
+    </tr>
+    <tr>
+     <td>unit</td>
+     <td>Integer</td>
+     <td>Sets the units for val and range: 0=Unstated, 1=Year, 2=Month, 3=Week and 4=Day.</td>
+    </tr>
+    <tr>
+     <td>base_id</td>
+     <td>Integer Not null FK</td>
+     <td>A pointer to the date the value is relative to.</td>
+    </tr>
+    <tr>
+     <td>type</td>
+     <td>Integer</td>
+     <td>Indicates how the relative date is to be interpreted, 0=Unstated, 1=Age rounded down</td>
+    </tr>
+    <tr>
+     <td>scheme</td>
+     <td>Integer</td>
+     <td>A number indicating the date scheme used for the date calculation</td>
+    </tr>
+
+    <tr id="Repository">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>Repository</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a Repository</td>
+    </tr>
+    <tr>
+     <td>name</td>
+     <td>Text Not null</td>
+     <td>The full name of the Repository.  May be an institution or an individual</td>
+    </tr>
+    <tr>
+     <td>access</td>
+     <td>Text</td>
+     <td>Details of access, such as the hours that the Repository is open to the public.</td>
+    </tr>
+    <tr>
+     <td>comments</td>
+     <td>Text</td>
+     <td>Any pertinent comments about the repository, such as the need to obtain a researcher?s card, restrictions on the use of laptops, etc</td>
+    </tr>
+    <tr>
+     <td>con_list_id</td>
+     <td>Integer Not null FK</td>
+     <td>Unique key that identifies a ContactList for the repository.</td>
+    </tr>
+
+    <tr id="RepositorySource">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>RepositorySource</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a Repository Source
+         <i>Not required by GDM</i></td>
+    </tr>
+    <tr>
+     <td>repos_id</td>
+     <td>Integer</td>
+     <td>Unique key that identifies a specific Repository.</td>
+    </tr>
+    <tr>
+     <td>source_id</td>
+     <td>Integer</td>
+     <td>Unique key that identifies a specific Source.</td>
+    </tr>
+    <tr>
+     <td>call_num</td>
+     <td>Text</td>
+     <td>Optional, the unique call number for a particular Source in a particular Repository.</td>
+    </tr>
+    <tr>
+     <td>descrip</td>
+     <td>Text</td>
+     <td>Optional notes about the particular Source in the Repository, such as notes describing the condition of the copy represented by the particular call number.</td>
+    </tr>
+
+    <tr id="Researcher">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>Researcher</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Int PK</td>
+     <td>Unique key identifying a Researcher. The default is the unknown Reseacher zero</td>
+    </tr>
+    <tr>
+     <td>name</td>
+     <td>Text Not null</td>
+     <td>The full name of the researcher.</td>
+    </tr>
+    <tr>
+     <td>comments</td>
+     <td>Text</td>
+     <td>Optional comments about the researcher</td>
+    </tr>
+    <tr>
+     <td>con_list_id</td>
+     <td>Integer Not null FK</td>
+     <td>Unique key that identifies a ContactList for the Researcher.</td>
+    </tr>
+
+    <tr id="Source">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>Source</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a Source</td>
+    </tr>
+    <tr>
+     <td>higher_id</td>
+     <td>Integer</td>
+     <td>Unique key that identifies the next higher level Source associated with this Source.</td>
+    </tr>
+    <tr>
+     <td>sub_date1_id</td>
+     <td>Integer</td>
+     <td>Optional, the start or only date associated with this Source.</td>
+    </tr>
+    <tr>
+     <td>sub_date2_id</td>
+     <td>Integer</td>
+     <td>Optional, the end date associated with this Source.</td>
+    </tr>
+    <tr>
+     <td>sub_place_id</td>
+     <td>Integer</td>
+     <td>Unique key that identifies the Place of the subject of this Source.</td>
+    </tr>
+    <tr>
+     <td>loc_place_id</td>
+     <td>Integer</td>
+     <td>Unique key that identifies the Place of the location or jurisdiction of the record.</td>
+    </tr>
+    <tr>
+     <td>res_id</td>
+     <td>Integer</td>
+     <td>Unique key in Researcher that identifies the person who gathered this Source record.</td>
+    </tr>
+    <tr>
+     <td>comments</td>
+     <td>Text</td>
+     <td>Any comments about the Source.</td>
+    </tr>
+
+    <tr id="System">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>System</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a System Setting</td>
+    </tr>
+    <tr>
+     <td>val</td>
+     <td>Text Not null</td>
+     <td>The value of the setting, may be text or a foreign key.</td>
+    </tr>
+
+    <tr id="User">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>User</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a User</td>
+    </tr>
+    <tr>
+     <td>res_id</td>
+     <td>Integer Not null FK</td>
+     <td>A pointer to the Researcher corresponding to the User. Zero indicates the default User.</td>
+    </tr>
+
+    <tr id="UserSetting">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>UserSetting</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a UserSetting.</td>
+    </tr>
+    <tr>
+     <td>user_id</td>
+     <td>Integer Not null FK</td>
+     <td>A pointer to the User for which the setting applies.</td>
+    </tr>
+    <tr>
+     <td>property</td>
+     <td>Integer Not null</td>
+     <td>A value indicating the property being set.</td>
+    </tr>
+    <tr>
+     <td>val</td>
+     <td>Text Not null</td>
+     <td>The value of the setting, may be text or a foreign key.</td>
+    </tr>
+
+    <tr id="Version">
+     <td colspan="3" class="filler"><a href="#">Top</a></td>
+    </tr>
+    <tr class="head">
+     <td colspan="3"><b>Version</b></td>
+    </tr>
+    <tr>
+     <td>id</td>
+     <td>Integer PK</td>
+     <td>Unique key identifying a Version record, although only one record is used</td>
+    </tr>
+    <tr>
+     <td>major</td>
+     <td>Integer</td>
+     <td>The Major version number. A change to this indicates a major change in the Database structure</td>
+    </tr>
+    <tr>
+     <td>minor</td>
+     <td>Integer</td>
+     <td>The Minor version number. A change to this number indicates a possible non-reversable change</td>
+    </tr>
+    <tr>
+     <td>revision</td>
+     <td>Integer</td>
+     <td>The Revision number. Changes to this number are reversable (ie it does not need to match the program)</td>
+    </tr>
+    <tr>
+     <td>test</td>
+     <td>Integer</td>
+     <td>A Test number. Always zero in released code. Used only during development for testing changes.</td>
+    </tr>
+
+   </tbody>
+  </table>
+  <br />
+</div><!--id=content-->
+
+ <div class="crumbs">
+  <a href='../../../index.htm' class='m-item'>Home</a>
+  <a href='../../../dev/develop.htm' class='m-item'>Development</a>
+  <a href='../../../dev/man/index.htm' class='m-item'>V0.3.0.1.1 Manual</a>
+  <a href='../../../dev/man/db/database.htm' class='m-item'>Database</a>
+  <a href='dbdesign.htm' class='m-item thispage'>Definitions</a>
+  <a href='../../../dev/man/db/dbdiagram.htm' class='m-item nav'>►</a>
+  <a href='../../../dev/man/db/database.htm' class='m-item nav'>◄</a>
+ </div>
+
+ <div class='tail'></div>
+
+ <div id='valid'>
+  <p>
+   <a href='http://validator.w3.org/check?uri=referer'>
+    <img src='../../../sys/valid-xhtml10.png' alt='Valid XHTML 1.0 Strict' height='31' width='88' />
+   </a>
+  </p>
+ </div>
+
+ <div id='create-date'><p> 7<sup>th</sup> September 2010</p></div>
+
+<!-- Start of StatCounter Code for Default Guide -->
+<script type="text/javascript">
+/*<![CDATA[*/
+var sc_project=9849896;
+var sc_invisible=1;
+var sc_security="8230fdb2";
+var scJsHost = (("https:" == document.location.protocol) ?
+"https://secure." : "http://www.");
+document.write("<sc"+"ript type='text/javascript' src='" +
+scJsHost+
+"statcounter.com/counter/counter.js'></"+"script>");
+/*]]>*/
+</script>
+<noscript><div class="statcounter"><a title="free hit
+counters" href="http://statcounter.com/"
+target="_blank"><img class="statcounter"
+src="http://c.statcounter.com/9849896/0/8230fdb2/1/"
+alt="free hit counters" /></a></div></noscript>
+<!-- End of StatCounter Code for Default Guide -->
+
+</body>
+</html>

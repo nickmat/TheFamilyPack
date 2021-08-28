@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<head>
+ <title>TheFamilyPack - Database</title>
+ <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+ <link rel='icon' type='image/png' href='../../../sys/logo32x32.png' />
+ <link rel='stylesheet' type='text/css' href='../../../sys/livery.css' />
+ <link rel='stylesheet' type='text/css' href='../../../sys/tfp.css' />
+</head>
+<body>
+
+ <div class='heading'>
+  <div class='logo'>
+   <a  href='http://thefamilypack.org'>
+    <img class='logo' src='../../../sys/logo266x100.png' alt='Logo' />
+   </a>
+  </div>
+  TheFamilyPack - Database V0.0.10.16<br />Introduction
+  <div class='clear'></div>
+ </div>
+
+ <div class="crumbs">
+  <a href='../../../index.htm' class='m-item'>Home</a>
+  <a href='../../../dev/develop.htm' class='m-item'>Development</a>
+  <a href='../../../dev/man/index.htm' class='m-item'>V0.3.0.1.1 Manual</a>
+  <a href='database.htm' class='m-item thispage'>Database</a>
+  <a href='../../../dev/man/db/dbdesign.htm' class='m-item nav'>►</a>
+  <a href='../../../dev/man/tutorial/individual.htm' class='m-item nav'>◄</a>
+ </div>
+
+ <div class='menu'>
+  <a href='../../../dev/man/db/dbdesign.htm' class='m-item'>Definitions</a>
+  <a href='../../../dev/man/db/dbdiagram.htm' class='m-item'>Diagram</a>
+  <a href='../../../dev/man/db/sub/subsystems.htm' class='m-item'>Sub-Systems</a>
+  <a href='../../../dev/man/db/ov/overview.htm' class='m-item'>Overview</a>
+  <a href='../../../map.htm' class='m-item'>Site Map</a>
+  <div class='menu-plus'>
+   The project page at<br />
+   <a href='https://sourceforge.net/projects/thefamilypack/'>
+    <img src='../../../sys/sf-logo-13.png'
+     width='120' height='30'
+     alt='SourceForge.net'
+    />
+   </a><br />
+   Code repository at<br />
+   <a href='https://github.com/nickmat/TheFamilyPack'>
+    <img src='../../../sys/github_logo.png' height='30' alt='GitHub' />
+   </a><br />
+   <a href='https://sourceforge.net/projects/thefamilypack/files'>
+    <img src='../../../sys/download-button.png' alt='Download' />
+   </a>
+  </div>
+ </div>
+
+<div id='content'>
+
+<blockquote class="long">
+<p>
+ To understand the mysteries of life you must look around and within. You will see patterns everywhere; patterns that seem to manifest themselves over and over again. These patterns exist intertwined within nature and man bridging the gap between the enigma of self and universe. You see them in spiraling galaxies and the Mandelbrot fractal of fossilized Ammonoidea; growing from the unknown to atoms to molecules to solar systems to galaxies to the paradoxical expanses of the universe with origins and destinations unknown; just like us in birth and death. The similarities of tree branches, rivers and blood veins. The power of cellular division and nuclear fission, the patterns of finger prints like endoplasmic reticulum, or a black opal's play of fire like the nebula of supernova. Moon shots are like protoplasmic lurches, while simple thoughts and observations of the nature around us take us beyond the unknown. The clues to the great mystery are all around us and deep within us.
+</p>
+<p class="attribute">Bryant H McGill</p>
+</blockquote>
+
+<h2>Introduction</h2>
+<p>
+ Whilst the starting point for this database was the <a href="http://www.ngsgenealogy.org/cs/GenTech_Projects">GenTech Genealogical Data Model</a>, significant changes have been made and with more to come, the TFP database should be treated in its own right as a separate design.
+</p>
+<p>
+ The current status of the database can best be described as experimental. Most of the entities in the diagram have been implemented in a test program, but some areas - such as data confidence (or Surety) are missing. Other areas, like the Places subsystem are in need of a major change. Whilst yet others like the Citation/Source entities are carried over wholesale from the GDM and have yet to be fully tested.
+</p>
+<p>
+ The database is divided into three broad areas, Administration, Evidence and Conclusions. The administration area is the lest developed, but will be the area where overall genealogy project using the database is organised. The evidence section is where all the factual data is held and is probably the area that is most experimental. The conclusions area is where the collected facts are organised and turned into genealogy trees and is further divided into Interpretation and Results with a Common area supporting them.
+</p>
+<h2>General Principles</h2>
+<p>
+ The data is held in a relational database using the SQL standard. Currently SQLite3 is used but other SQL systems may be used in the future.
+</p>
+<p>
+ In describing the database TFP uses the following conventions. SQL keywords are written in UPPER CASE, table names in CamelCase and column names in lower_case with underscores as necessary. Table names are generally written in full whilst column names are often abbreviated.
+</p>
+<p>
+ All tables will include an explicit unique id key field, even when the field is not strictly needed. All user created records have a positive id's greater than zero. Zero id's are reserved, their meaning depending on the context. Negative id's are used for common data copied from the common database.
+</p>
+<p>
+ First class objects are associated with a short alpha code - such as 'E' for Event and 'Ea' for Eventa. These codes may be combined the records id key and used as a unique identifier for that record. These codes, together with the closely linked display page codes, are listed on the "<a href='../dev/recprefix.htm'>Record Prefix</a>" page.
+</p>
+</div><!--id=content-->
+
+ <div class="crumbs">
+  <a href='../../../index.htm' class='m-item'>Home</a>
+  <a href='../../../dev/develop.htm' class='m-item'>Development</a>
+  <a href='../../../dev/man/index.htm' class='m-item'>V0.3.0.1.1 Manual</a>
+  <a href='database.htm' class='m-item thispage'>Database</a>
+  <a href='../../../dev/man/db/dbdesign.htm' class='m-item nav'>►</a>
+  <a href='../../../dev/man/tutorial/individual.htm' class='m-item nav'>◄</a>
+ </div>
+
+ <div class='tail'></div>
+
+ <div id='valid'>
+  <p>
+   <a href='http://validator.w3.org/check?uri=referer'>
+    <img src='../../../sys/valid-xhtml10.png' alt='Valid XHTML 1.0 Strict' height='31' width='88' />
+   </a>
+  </p>
+ </div>
+
+ <div id='create-date'><p>21<sup>st</sup> September 2010
+. . . . Last updated 30<sup>th</sup> June 2014</p></div>
+
+<!-- Start of StatCounter Code for Default Guide -->
+<script type="text/javascript">
+/*<![CDATA[*/
+var sc_project=9849896;
+var sc_invisible=1;
+var sc_security="8230fdb2";
+var scJsHost = (("https:" == document.location.protocol) ?
+"https://secure." : "http://www.");
+document.write("<sc"+"ript type='text/javascript' src='" +
+scJsHost+
+"statcounter.com/counter/counter.js'></"+"script>");
+/*]]>*/
+</script>
+<noscript><div class="statcounter"><a title="free hit
+counters" href="http://statcounter.com/"
+target="_blank"><img class="statcounter"
+src="http://c.statcounter.com/9849896/0/8230fdb2/1/"
+alt="free hit counters" /></a></div></noscript>
+<!-- End of StatCounter Code for Default Guide -->
+
+</body>
+</html>
