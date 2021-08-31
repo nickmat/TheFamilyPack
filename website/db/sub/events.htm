@@ -24,7 +24,7 @@
   <a href='../../db/database.htm' class='m-item'>Database</a>
   <a href='../../db/sub/subsystems.htm' class='m-item'>Sub-Systems</a>
   <a href='events.htm' class='m-item thispage'>Events</a>
-  <a href='../../db/sub/media.htm' class='m-item nav'>►</a>
+  <a href='../../com/common.htm' class='m-item nav'>►</a>
   <a href='../../db/sub/individuals.htm' class='m-item nav'>◄</a>
  </div>
 
@@ -38,9 +38,28 @@
 </blockquote>
 
 <div class="diag"><img src="tfp-event.png" alt="Event Subsystem" /></div>
+<h2>Events</h2>
 <p>
- The Event table represents events which we have reason to believe actually happened. Individuals are linked to Events using the IndividualEvent table, which will also indicate the role played by the Individual. In addition, events in the Family-Union and Other-Family groups are linked to the families in question with the FamilyEvent record. The Event record may be linked to the Eventa evidence record by the EventEventa record. The link between these records is further explored in the <a href='../ov/event-eventa.htm'>Event - Eventa overview</a> page.
+ Under construction.
 </p>
+
+<h3>Event Types</h3>
+
+
+<table class='basic lfloat' width='50%'>
+<tr><th colspan='0'>EventType Groups</th></tr>
+<tr><th>Group</th><th>Name</th><th>Description</th></tr>
+<tr><td>0</td><td>Unstated</td><td>Normally an invalid value.</td></tr>
+<tr><td>1</td><td>Birth</td><td>The single birth event for an individual.</td></tr>
+<tr><td>2</td><td>Near&nbsp;Birth</td><td>ie Baptism or Birth registration. If the date of birth is not known, then the date of this event can be used as an approimation</td></tr>
+<tr><td>5</td><td>Death</td><td>The single death event for an individual.</td></tr>
+<tr><td>6</td><td>Near&nbsp;Death</td><td>ie Burial or Death registration. If the date of death is not known, then the date of this event can be used as an approimation</td></tr>
+<tr><td>3</td><td>Family&nbsp;Union</td><td>Normally a Marriage, but can be any event which signifies the offical start of the relationship.</td></tr>
+<tr><td>4</td><td>Other&nbsp;Family</td><td>Any family event in which both partners are equally equally prime, other than a official union event. It may occur before (engagment) or after (divorce) the union event.</td></tr>
+<tr><td>8</td><td>Personal</td><td>These are events which last the lifetime of an individual. Although the details may change over time, at any given time they normally have a single state. ie Occupation, Physical appearance or Residency</td></tr>
+<tr><td>7</td><td>Other</td><td>Anything which does not fit into the other Groups</td></tr>
+</table>
+
 </div><!--id=content-->
 
  <div class="crumbs">
@@ -48,7 +67,7 @@
   <a href='../../db/database.htm' class='m-item'>Database</a>
   <a href='../../db/sub/subsystems.htm' class='m-item'>Sub-Systems</a>
   <a href='events.htm' class='m-item thispage'>Events</a>
-  <a href='../../db/sub/media.htm' class='m-item nav'>►</a>
+  <a href='../../com/common.htm' class='m-item nav'>►</a>
   <a href='../../db/sub/individuals.htm' class='m-item nav'>◄</a>
  </div>
 
@@ -62,8 +81,7 @@
   </p>
  </div>
 
- <div id='create-date'><p> 7<sup>th</sup> September 2010
-. . . . Last updated 2<sup>nd</sup> July 2014</p></div>
+ <div id='create-date'><p> 7<sup>th</sup> September 2010</p></div>
 
 <!-- Start of StatCounter Code for Default Guide -->
 <script type="text/javascript">

@@ -900,11 +900,6 @@
       <td>The binary data that makes up the media file.</td>
     </tr>
     <tr>
-      <td>ass_id</td>
-      <td>Int Not null FK</td>
-      <td>Pointer to the associated database holding the data record.</td>
-    </tr>
-    <tr>
       <td>privacy</td>
       <td>Int Not null</td>
       <td>A default value indicating the privacy level for the Media.</td>
@@ -913,6 +908,11 @@
       <td>copyright</td>
       <td>Text Null</td>
       <td>An optional text string holding copyright information.</td>
+    </tr>
+    <tr>
+      <td>file</td>
+      <td>Text Not null</td>
+      <td>Unique relative path and filename.</td>
     </tr>
         
     <tr id="Name">

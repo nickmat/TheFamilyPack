@@ -26,16 +26,9 @@
                 { "name": "dates", "label": "Dates", "subtitle": "Date Sub-System" },
                 { "name": "places", "label": "Places", "subtitle": "Place Sub-System" },
                 { "name": "names", "label": "Names", "subtitle": "Name Sub-System" },
-                { "name": "eventtypes", "label": "Event Types", "subtitle": "Event Type Sub-System" },
                 { "name": "personas", "label": "Personas", "subtitle": "Persona Sub-System" },
-                { "name": "eventas", "label": "Eventas", "subtitle": "Eventa Sub-System" },
                 { "name": "individuals", "label": "Individuals", "subtitle": "Individuals & Families" },
-                { "name": "events", "label": "Events", "subtitle": "Event Sub-System" },
-                { "name": "media", "label": "Media", "subtitle": "Media Sub-System" }
-            ]},
-            { "folder": "ov", "name": "overview", "label": "Overview", "content": [
-                { "name": "gentech-gtdm", "label": "GenTech GDM", "subtitle": "Differences to GenTech GDM" },
-                { "name": "event-eventa", "label": "Event-Eventa", "subtitle": "Event-Eventa Relationship" }            
+                { "name": "events", "label": "Events", "subtitle": "Event Sub-System" }
             ]}
         ]},
         { "folder": "com", "name": "common", "label": "Common Data", "title": "Common Data", "subtitle": "Introduction", "content": [
