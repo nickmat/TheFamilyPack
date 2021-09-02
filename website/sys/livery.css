@@ -255,3 +255,66 @@ clear: left;
 .rclear {
 clear: right;
 }
+div.note {
+	margin: 5px 40px 5px 60px;
+	padding: 0 10px;
+	border-bottom: 2px solid darkgreen;
+	border-right:  1px solid darkgreen;
+	color: darkgreen;
+	background-color: greenyellow;
+	overflow: hidden;
+}
+div.note div.inner {
+	margin: 10px 5px 10px 5px;
+	border: 1px solid darkgreen;
+	background-color: greenyellow;
+	padding: 0 15px;
+}
+div.h {
+	font-size: 20px;
+}
+div.warning {
+	margin: 5px 40px 5px 60px;
+	padding: 0 10px;
+	border-bottom: 2px solid darkred;
+	border-right:  1px solid darkred;
+	color: darkred;
+	background-color: lightcoral ;
+	overflow: hidden;
+}
+div.warning div.inner {
+	margin: 10px 5px 10px 5px;
+	border: 1px solid darkred;
+	background-color: lightcoral;
+	padding: 0 15px;
+}
+div.tip {
+	margin: 5px 40px 5px 60px;
+	padding: 0 10px;
+	border-bottom: 2px solid darkorange;
+	border-right:  1px solid darkorange;
+	color: rgb(126, 124, 3);
+	background-color:rgb(255, 243, 136) ;
+	overflow: hidden;
+}
+div.tip div.inner {
+	margin: 10px 5px 10px 5px;
+	border: 1px solid darkorange;
+	background-color: rgb(255, 243, 136);
+	padding: 0 15px;
+}
+div.code {
+	margin: 5px 40px 5px 60px;
+	padding: 0 10px;
+	border-bottom: 2px solid rgb(48, 48, 48);
+	border-right:  1px solid rgb(48, 48, 48);
+	color: rgb(48, 48, 48);
+	background-color:rgb(223, 223, 223);
+	overflow: hidden;
+}
+div.code div.inner {
+	margin: 10px 5px 10px 5px;
+	border: 1px solid rgb(48, 48, 48);
+	padding: 0 15px;
+	overflow-x: auto;
+}
