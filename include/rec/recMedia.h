@@ -49,6 +49,7 @@ public:
     idt FGetDataID() const { return f_data_id; }
     idt FGetAssID() const { return f_ass_id; }
     idt FGetRefID() const { return f_ref_id; }
+    int FGetRefSeq() const { return f_ref_seq; }
     int FGetPrivacy() const { return f_privacy; }
     wxString FGetTitle() const { return f_title; }
     wxString FGetNote() const { return f_note; }
@@ -56,6 +57,7 @@ public:
     void FSetDataID( idt dataID ) { f_data_id = dataID; }
     void FSetAssID( idt assID ) { f_ass_id = assID; }
     void FSetRefID( idt refID ) { f_ref_id = refID; }
+    void FSetRefSeq( int refseq ) { f_ref_seq = refseq; }
     void FSetPrivacy( int privacy ) { f_privacy = privacy; }
     void FSetTitle( const wxString& title ) { f_title = title; }
     void FSetNote( const wxString& note ) { f_note = note; }
@@ -72,6 +74,7 @@ private:
     idt      f_data_id;
     idt      f_ass_id;
     idt      f_ref_id;
+    int      f_ref_seq;
     int      f_privacy;
     wxString f_title;
     wxString f_note;

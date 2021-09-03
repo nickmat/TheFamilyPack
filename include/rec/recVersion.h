@@ -69,7 +69,7 @@ public:
      *  version. If not, handle updating the database and return true. 
      *  Or, if it is not possible to update, return false.
      */
-    static DatabaseType Manage();
+    static DatabaseType Manage( const wxString& dbname = "main" );
 
     bool IsEqual( 
         int major, int minor = -1, int revision = -1, int test = -1 ) const;

@@ -30,14 +30,16 @@ BEGIN;
 
 CREATE TABLE MediaData (
   id INTEGER PRIMARY KEY NOT NULL,
+  title TEXT NULL,
   data BLOB NOT NULL,
+  type INT NOT NULL,
   privacy INT NOT NULL,
   copyright TEXT NULL,
   file TEXT NOT NULL
 );
 
 /* The Version table id=2 for MediaData section of database */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(2, 0, 0, 0, 1);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(2, 0, 0, 0, 2);
 
 COMMIT;
 

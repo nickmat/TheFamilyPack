@@ -48,13 +48,15 @@ public:
     bool Equivalent( const recAssociate& r2 ) const { return f_path == r2.f_path; }
 
     wxString FGetPath() const { return f_path; }
+    wxString FGetComment() const { return f_comment; }
 
     void FSetPath( const wxString& path ) { f_path = path; }
+    void FSetComment( const wxString& comment ) { f_comment = comment; }
 
     static wxString GetIdStr( idt assID ) { return wxString::Format( "A" ID, assID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
-    static idt Create( const wxString& path );
+    static idt Create( const wxString& path, const wxString& comment = "" );
 
     static wxString GetPath( idt assID );
 
@@ -62,6 +64,7 @@ public:
 
 private:
     wxString f_path;
+    wxString f_comment;
 };
 
 inline bool operator==( const recAssociate& r1, const recAssociate& r2 )

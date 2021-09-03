@@ -43,6 +43,7 @@ recMedia::recMedia( const recMedia& n )
     f_data_id = n.f_data_id;
     f_ass_id = n.f_ass_id;
     f_ref_id = n.f_ref_id;
+    f_ref_seq = n.f_ref_seq;
     f_privacy = n.f_privacy;
     f_title = n.f_title;
     f_note = n.f_note;
@@ -54,6 +55,7 @@ void recMedia::Clear()
     f_data_id = 0;
     f_ass_id = 0;
     f_ref_id = 0;
+    f_ref_seq = 0;
     f_privacy = 0;
     f_title.clear();
     f_note.clear();
@@ -68,9 +70,9 @@ void recMedia::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO Media (data_id, ass_id, ref_id, privacy, title, note)"
-            " VALUES (" ID ", " ID ", " ID ", %d, '%q', '%q');",
-            f_data_id, f_ass_id, f_ref_id, f_privacy, UTF8_( f_title ), UTF8_( f_note )
+            "INSERT INTO Media (data_id, ass_id, ref_id, ref_seq, privacy, title, note)"
+            " VALUES (" ID ", " ID ", " ID ", %d, %d, '%q', '%q');",
+            f_data_id, f_ass_id, f_ref_id, f_ref_seq, f_privacy, UTF8_( f_title ), UTF8_( f_note )
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -80,17 +82,17 @@ void recMedia::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO Media (id, data_id, ass_id, ref_id, privacy, title, note)"
-                " VALUES (" ID ", " ID ", " ID ", " ID ", %d, '%q', '%q');",
-                f_id, f_data_id, f_ass_id, f_ref_id, f_privacy, UTF8_( f_title ), UTF8_( f_note )
+                "INSERT INTO Media (id, data_id, ass_id, ref_id, ref_seq, privacy, title, note)"
+                " VALUES (" ID ", " ID ", " ID ", " ID ", %d, %d, '%q', '%q');",
+                f_id, f_data_id, f_ass_id, f_ref_id, f_ref_seq, f_privacy, UTF8_( f_title ), UTF8_( f_note )
             );
         } else {
             // Update existing record
             sql.Format(
                 "UPDATE Media"
-                " SET data_id=" ID ", ass_id=" ID ", ref_id=" ID ", privacy=%d,"
+                " SET data_id=" ID ", ass_id=" ID ", ref_id=" ID ", ref_seq=%d, privacy=%d,"
                 " title='%q', note='%q' WHERE id=" ID ";",
-                f_data_id, f_ass_id, f_ref_id, f_privacy, UTF8_( f_title ), UTF8_( f_note ), f_id
+                f_data_id, f_ass_id, f_ref_id, f_ref_seq, f_privacy, UTF8_( f_title ), UTF8_( f_note ), f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -108,7 +110,7 @@ bool recMedia::Read()
     }
 
     sql.Format(
-        "SELECT data_id, ass_id, ref_id, privacy, title, note"
+        "SELECT data_id, ass_id, ref_id, ref_seq, privacy, title, note"
         " FROM Media WHERE id=" ID ";",
         f_id
     );
@@ -124,19 +126,21 @@ bool recMedia::Read()
     f_ass_id = GET_ID( result.GetInt64( 1 ) );
     f_ref_id = GET_ID( result.GetInt64( 2 ) );
     f_privacy = result.GetInt( 3 );
-    f_title = result.GetAsString( 4 );
-    f_note = result.GetAsString( 5 );
+    f_ref_seq = result.GetInt( 4 );
+    f_title = result.GetAsString( 5 );
+    f_note = result.GetAsString( 6 );
     return true;
 }
 
 bool recMedia::Equivalent( const recMedia& r2 ) const
 {
     return
-        f_data_id == r2.f_data_id   &&
+        f_data_id == r2.f_data_id &&
         f_ass_id == r2.f_ass_id   &&
         f_ref_id == r2.f_ref_id   &&
-        f_privacy == r2.f_privacy   &&
-        f_title == r2.f_title   &&
+        f_ref_seq == r2.f_ref_seq &&
+        f_privacy == r2.f_privacy &&
+        f_title == r2.f_title     &&
         f_note == r2.f_note
     ;
 }

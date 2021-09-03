@@ -92,7 +92,7 @@ wxString recVersion::GetVersionStr( recDb::DatabaseType type )
     );
 }
 
-recDb::DatabaseType recVersion::Manage()
+recDb::DatabaseType recVersion::Manage( const wxString& dbname )
 {
     s_dbtype = DT_NULL;
     if ( !s_db->IsOpen() || !recVersion::TableExists() ) {

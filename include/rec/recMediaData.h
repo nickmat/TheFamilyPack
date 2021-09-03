@@ -33,6 +33,8 @@
 class recMediaData : public recDb
 {
 public:
+    enum class Mime { null_mime, image_png, image_jpeg, image_gif };
+
     recMediaData() {}
     recMediaData( idt id ) : recDb( id ) { Read(); }
     recMediaData( idt id, idt assID ) { ReadID( id, assID ); }
@@ -46,12 +48,16 @@ public:
     TABLE_NAME_MEMBERS( "MediaData" );
     bool Equivalent( const recMediaData& r2 ) const;
 
+    wxString FGetTitle() const { return f_title; }
     wxMemoryBuffer FGetData() const { return f_data; }
+    Mime FGetType() const { return f_type; }
     int FGetPrivacy() const { return f_privacy; }
     wxString FGetCopyright() const { return f_copyright; }
     wxString FGetFile() const { return f_file; }
 
+    void FSetTitle( const wxString& title ) { f_title = title; }
     void FSetData( const wxMemoryBuffer& data ) { f_data = data; }
+    void FSetType( Mime type ) { f_type = type; }
     void FSetPrivacy( int privacy ) { f_privacy = privacy; }
     void FSetCopyright( const wxString& copyright ) { f_copyright = copyright; }
     void FSetFile( const wxString& file ) { f_file = file; }
@@ -64,10 +70,14 @@ public:
     static idt FindMedia( idt mdID, idt assID );
     idt FindMedia( idt assID ) const { return FindMedia( f_id, assID ); }
 
+    bool ImportData( wxString& filename );
+
     static wxSQLite3Table GetMediaDataList( const wxString& dbname = "Main" );
 
 private:
+    wxString       f_title;
     wxMemoryBuffer f_data;
+    Mime           f_type;
     int            f_privacy;
     wxString       f_copyright;
     wxString       f_file;

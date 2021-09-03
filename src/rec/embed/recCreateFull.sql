@@ -32,7 +32,8 @@ BEGIN;
 
 CREATE TABLE Associate (
   id INTEGER PRIMARY KEY NOT NULL,
-  path TEXT NULL
+  path TEXT NULL,
+  comment TEXT NULL
 );
 
 INSERT INTO Associate (id) VALUES(0);
@@ -364,6 +365,7 @@ CREATE TABLE Media (
   data_id INT NOT NULL REFERENCES MediaData(id),
   ass_id INT NOT NULL REFERENCES Associate(id),
   ref_id INT NOT NULL REFERENCES Reference(id),
+  ref_seq INT NOT NULL,
   privacy INT NOT NULL,
   title TEXT NULL,
   note, TEXT NULL
@@ -541,7 +543,7 @@ INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 0, 1, 'F1');
 INSERT INTO UserSetting (id, user_id, property, val) VALUES(2, 1, 1, 'F1');
 
 /* The Version table row 1 is the full TFPD database */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 19);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 20);
 
 COMMIT;
 

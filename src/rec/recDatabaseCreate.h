@@ -44,19 +44,22 @@ static const char* createMediaDb =  /* recCreateMedia.sql */
  "BEGIN;\n"
  "CREATE TABLE MediaData (\n"
  "  id INTEGER PRIMARY KEY NOT NULL,\n"
+ "  title TEXT NULL,\n"
  "  data BLOB NOT NULL,\n"
+ "  type INT NOT NULL,\n"
  "  privacy INT NOT NULL,\n"
  "  copyright TEXT NULL,\n"
  "  file TEXT NOT NULL\n"
  ");\n"
- "INSERT INTO Version (id, major, minor, revision, test) VALUES(2, 0, 0, 0, 1);\n"
+ "INSERT INTO Version (id, major, minor, revision, test) VALUES(2, 0, 0, 0, 2);\n"
  "COMMIT;\n";
 
 static const char* createFullDb =  /* recCreateFull.sql */
  "BEGIN;\n"
  "CREATE TABLE Associate (\n"
  "  id INTEGER PRIMARY KEY NOT NULL,\n"
- "  path TEXT NULL\n"
+ "  path TEXT NULL,\n"
+ "  comment TEXT NULL\n"
  ");\n"
  "INSERT INTO Associate (id) VALUES(0);\n"
  "CREATE TABLE CitationPart (\n"
@@ -335,6 +338,7 @@ static const char* createFullDb =  /* recCreateFull.sql */
  "  data_id INT NOT NULL REFERENCES MediaData(id),\n"
  "  ass_id INT NOT NULL REFERENCES Associate(id),\n"
  "  ref_id INT NOT NULL REFERENCES Reference(id),\n"
+ "  ref_seq INT NOT NULL,\n"
  "  privacy INT NOT NULL,\n"
  "  title TEXT NULL,\n"
  "  note, TEXT NULL\n"
@@ -476,7 +480,7 @@ static const char* createFullDb =  /* recCreateFull.sql */
  "INSERT INTO System (id, val) VALUES(1, '1');\n"
  "INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 0, 1, 'F1');\n"
  "INSERT INTO UserSetting (id, user_id, property, val) VALUES(2, 1, 1, 'F1');\n"
- "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 19);\n"
+ "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 20);\n"
  "COMMIT;\n";
 
 /* End of src/rec/embed/recDatabaseCreate.f2c */

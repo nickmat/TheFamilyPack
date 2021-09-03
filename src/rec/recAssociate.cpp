@@ -41,12 +41,14 @@ recAssociate::recAssociate( const recAssociate& at )
 {
     f_id = at.f_id;
     f_path = at.f_path;
+    f_comment = at.f_comment;
 }
 
 void recAssociate::Clear()
 {
     f_id = 0;
-    f_path = "";
+    f_path.clear();
+    f_comment.clear();
 }
 
 void recAssociate::Save()
@@ -58,8 +60,8 @@ void recAssociate::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO Associate (path) VALUES ('%q');",
-            UTF8_( f_path )
+            "INSERT INTO Associate (path, comment) VALUES ('%q', '%q');",
+            UTF8_( f_path ), UTF8_( f_comment )
             );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -69,15 +71,15 @@ void recAssociate::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO Associate (id, path) "
-                "VALUES (" ID ", '%q');",
-                f_id, UTF8_( f_path )
+                "INSERT INTO Associate (id, path, comment) "
+                "VALUES (" ID ", '%q', '%q');",
+                f_id, UTF8_( f_path ), UTF8_( f_comment )
                 );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE Associate SET path='%q' WHERE id=" ID ";",
-                UTF8_( f_path ), f_id
+                "UPDATE Associate SET path='%q', comment='%q' WHERE id=" ID ";",
+                UTF8_( f_path ), UTF8_( f_comment ), f_id
                 );
         }
         s_db->ExecuteUpdate( sql );
@@ -94,7 +96,7 @@ bool recAssociate::Read()
         return false;
     }
 
-    sql.Format( "SELECT path FROM Associate WHERE id=" ID ";", f_id );
+    sql.Format( "SELECT path, comment FROM Associate WHERE id=" ID ";", f_id );
     result = s_db->GetTable( sql );
 
     if ( result.GetRowCount() != 1 )
@@ -104,13 +106,15 @@ bool recAssociate::Read()
     }
     result.SetRow( 0 );
     f_path = result.GetAsString( 0 );
+    f_comment = result.GetAsString( 1 );
     return true;
 }
 
-idt recAssociate::Create( const wxString & path )
+idt recAssociate::Create( const wxString & path, const wxString& comment )
 {
     recAssociate ass( 0 );
     ass.FSetPath( path );
+    ass.FSetComment( comment );
     ass.Save();
     return ass.FGetID();
 }
@@ -149,6 +153,7 @@ recAssociateVec recAssociate::GetList()
     while ( result.NextRow() ) {
         ass.FSetID( GET_ID( result.GetInt64( 0 ) ) );
         ass.FSetPath( result.GetAsString( 1 ) );
+        ass.FSetComment( result.GetAsString( 2 ) );
         vec.push_back( ass );
     }
     return vec;

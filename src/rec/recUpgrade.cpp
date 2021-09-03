@@ -41,8 +41,8 @@
 const int recVerMajor = 0;
 const int recVerMinor = 0;
 const int recVerRev = 10;
-const int recVerTest = 19;                                    // <<======<<<<
-const wxStringCharType* recVerStr = wxS( "TFPD-0.0.10.19" );  // <<======<<<<
+const int recVerTest = 20;                                    // <<======<<<<
+const wxStringCharType* recVerStr = wxS( "TFPD-0.0.10.20" );  // <<======<<<<
 
 // This is the database Media only version that this program can work with.
 // If the full version matches, then this is assumed to match as well.
@@ -50,8 +50,8 @@ const wxStringCharType* recVerStr = wxS( "TFPD-0.0.10.19" );  // <<======<<<<
 const int recMediaVerMajor = 0;
 const int recMediaVerMinor = 0;
 const int recMediaVerRev = 0;
-const int recMediaVerTest = 1;                                 // <<======<<<<
-const wxStringCharType* recMediaVerStr = wxS( "MD-0.0.0.1" );  // <<======<<<<
+const int recMediaVerTest = 2;                                 // <<======<<<<
+const wxStringCharType* recMediaVerStr = wxS( "MD-0.0.0.2" );  // <<======<<<<
 
 //============================================================================
 //                 Code to upgrade old versions
@@ -773,8 +773,56 @@ void UpgradeTest0_0_10_18to0_0_10_19()
         "INSERT INTO Version ( id, major, minor, revision, test ) VALUES( 2, 0, 0, 0, 1 );\n"
         "UPDATE Version SET test=19 WHERE id=1;\n"
         "COMMIT;\n"
-    ;
+        ;
     recDb::GetDb()->ExecuteUpdate( query );
+}
+
+// Forward declare Media update.
+void mdUpgradeTest0_0_0_1to0_0_0_2();
+
+void UpgradeTest0_0_10_19to0_0_10_20()
+{
+    // Version 0.0.10.19 to 0.0.10.20
+
+    char* query =
+        "BEGIN;\n"
+
+        "ALTER TABLE Associate RENAME TO OldAssociate;\n"
+        "CREATE TABLE Associate (\n"
+        "  id INTEGER PRIMARY KEY NOT NULL,\n"
+        "  path TEXT NULL,\n"
+        "  comment TEXT NULL\n"
+        ");\n"
+        "INSERT INTO Associate"
+        " (id, path, comment)"
+        " SELECT id, path, ' '"
+        " FROM OldAssociate;\n"
+        "DROP TABLE OldAssociate;\n"
+
+        "ALTER TABLE Media RENAME TO OldMedia;\n"
+        "CREATE TABLE Media (\n"
+        "  id INTEGER PRIMARY KEY NOT NULL,\n"
+        "  data_id INT NOT NULL REFERENCES MediaData(id),\n"
+        "  ass_id INT NOT NULL REFERENCES Associate(id),\n"
+        "  ref_id INT NOT NULL REFERENCES Reference(id),\n"
+        "  ref_seq INT NOT NULL,\n"
+        "  privacy INT NOT NULL,\n"
+        "  title TEXT NULL,\n"
+        "  note, TEXT NULL\n"
+        ");\n"
+        "INSERT INTO Media"
+        " (id, data_id, ass_id, ref_id, ref_seq, privacy, title, note)"
+        " SELECT id, data_id, ass_id, ref_id, 1, privacy, title, note"
+        " FROM OldMedia;\n"
+        "DROP TABLE OldMedia;\n"
+
+        "UPDATE Version SET test=20 WHERE id=1;\n"
+        
+        "COMMIT;\n"
+        ;
+    recDb::GetDb()->ExecuteUpdate( query );
+    // Update to MediaData required as well.
+    mdUpgradeTest0_0_0_1to0_0_0_2();
 }
 
 void UpgradeRev0_0_10toCurrent( int test )
@@ -800,11 +848,46 @@ void UpgradeRev0_0_10toCurrent( int test )
     case 16: UpgradeTest0_0_10_16to0_0_10_17();
     case 17: UpgradeTest0_0_10_17to0_0_10_18();
     case 18: UpgradeTest0_0_10_18to0_0_10_19();
+    case 19: UpgradeTest0_0_10_19to0_0_10_20();
     }
 }
 
-void MediaUpgradeRev0_0_0toCurrent( int test )
+void mdUpgradeTest0_0_0_1to0_0_0_2()
 {
+    // MediaData Version 0.0.0.1 to 0.0.0.2
+    // Add title and type fields to MediaData
+
+    char* query =
+        "BEGIN;\n"
+
+        "ALTER TABLE MediaData RENAME TO OldMediaData;\n"
+        "CREATE TABLE MediaData (\n"
+        "  id INTEGER PRIMARY KEY NOT NULL,\n"
+        "  title TEXT NULL,\n"
+        "  data BLOB NOT NULL,\n"
+        "  type INT NOT NULL,\n"
+        "  privacy INT NOT NULL,\n"
+        "  copyright TEXT NULL,\n"
+        "  file TEXT NOT NULL\n"
+        ");\n"
+        "INSERT INTO MediaData"
+        " (id, title, data, type, privacy, copyright, file)"
+        " SELECT id, ' ', data, 1, privacy, copyright, file"
+        " FROM OldMediaData;\n"
+        "DROP TABLE OldMediaData;\n"
+
+        "UPDATE Version SET test=2 WHERE id=2;\n"
+        "COMMIT;\n"
+        ;
+    recDb::GetDb()->ExecuteUpdate( query );
+}
+
+void mdUpgradeRev0_0_0toCurrent( int test )
+{
+    switch( test )
+    {
+    case 1: mdUpgradeTest0_0_0_1to0_0_0_2();  // Fall thru intended
+    }
     // Still on initial version.
 }
 
@@ -883,7 +966,7 @@ bool recDoMediaUpgrade()
 
     try {
         if ( ver.IsEqual( 0, 0, 0 ) ) {
-            MediaUpgradeRev0_0_0toCurrent( ver.FGetTest() );
+            mdUpgradeRev0_0_0toCurrent( ver.FGetTest() );
             ver.ReadID( recDb::DT_MediaOnly );
         }
     }
