@@ -74,7 +74,7 @@ bool recVersion::Read()
         Clear();
         return false;
     }
-    f_id       = 1;
+//    f_id       = 1;
     f_major    = result.GetInt( 0 );
     f_minor    = result.GetInt( 1 );
     f_revision = result.GetInt( 2 );
