@@ -65,13 +65,13 @@ extern void recUninitialize()
 }
 
 wxSQLite3Database*  recDb::s_db = NULL;
-recDb::DatabaseType recDb::s_dbtype = DT_NULL;
+recDb::DbType       recDb::s_dbtype = DbType::db_null;
 long                recDb::s_change = 0;
 long                recDb::s_spnumber = 0;
 recAssMap           recDb::s_assmap;
 
 
-recDb::CreateReturn recDb::CreateDbFile( const wxString& fname, DatabaseType type )
+recDb::CreateReturn recDb::CreateDbFile( const wxString& fname, DbType type )
 {
     wxFileName dbfile( fname );
     dbfile.SetExt( "tfpd" );
@@ -86,12 +86,12 @@ recDb::CreateReturn recDb::CreateDbFile( const wxString& fname, DatabaseType typ
     }
     switch ( type )
     {
-    case DT_Full:
+    case DbType::full:
         db.ExecuteUpdate( createCommonDb );
         db.ExecuteUpdate( createMediaDb );
         db.ExecuteUpdate( createFullDb );
         break;
-    case DT_MediaOnly:
+    case DbType::media_data_only:
         db.ExecuteUpdate( createCommonDb );
         db.ExecuteUpdate( createMediaDb );
         break;
@@ -133,7 +133,7 @@ bool recDb::CreateDb( const wxString& fname, unsigned flags )
     }
 
     wxString dbfname = dbfile.GetFullPath();
-    CreateReturn ret = CreateDbFile( dbfname, DT_Full );
+    CreateReturn ret = CreateDbFile( dbfname, DbType::full );
     if ( ret == CreateReturn::OK ) {
         s_db->Open( dbfname );
         return true;
@@ -141,27 +141,26 @@ bool recDb::CreateDb( const wxString& fname, unsigned flags )
     return false;
 }
 
-recDb::DatabaseType recDb::OpenDb( const wxString& fname )
+recDb::DbType recDb::OpenDb( const wxString& fname )
 {
     if( IsOpen() ) {
         recMessage( _("Database already open."), _("Open Database") );
-        return DT_NULL;
+        return DbType::db_null;
     }
 
     try {
         s_db->Open( fname, wxEmptyString, WXSQLITE_OPEN_READWRITE );
     } catch( wxSQLite3Exception& e ) {
         recDb::ErrorMessage( e );
-        return DT_NULL;
+        return DbType::db_null;
     }
     if( !IsOpen() ) {
         recMessage( _("Unable to open Database."), _("Open Database") );
-        return DT_NULL;
+        return DbType::db_null;
     }
 
-//    bool success = recVersion::Manage();
-    DatabaseType type = recVersion::Manage();
-    if( type == DT_NULL ) {
+    DbType type = recVersion::Manage();
+    if( type == DbType::db_null ) {
         CloseDb();
     }
     return type;
@@ -232,7 +231,7 @@ idt recDb::GetAttachedDbAssID( const wxString& dbname )
 void recDb::CloseDb() 
 { 
     s_db->Close();
-    s_dbtype = DT_NULL;
+    s_dbtype = DbType::db_null;
     ++s_change;
     s_assmap.clear();
     s_assmap[0] = "Main";

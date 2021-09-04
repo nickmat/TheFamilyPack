@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3rd April 2013
- * Copyright:   Copyright (c) 2013 ~ 2019, Nick Matthews.
+ * Copyright:   Copyright (c) 2013 .. 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -896,7 +896,7 @@ void mdUpgradeRev0_0_0toCurrent( int test )
 
 bool recDoFullUpgrade()
 {
-    recVersion ver( recDb::DT_Full );
+    recVersion ver( recDb::DbType::full );
     if ( ver.IsEqual( recVerMajor, recVerMinor, recVerRev, recVerTest ) ) {
         return true; // Already current version
     }
@@ -927,11 +927,11 @@ bool recDoFullUpgrade()
     try {
         if ( ver.IsEqual( 0, 0, 9 ) ) {
             UpgradeRev0_0_9to10( ver.FGetTest() );
-            ver.ReadID( recDb::DT_Full );
+            ver.ReadType( recDb::DbType::full );
         }
         if ( ver.IsEqual( 0, 0, 10 ) ) {
             UpgradeRev0_0_10toCurrent( ver.FGetTest() );
-            ver.ReadID( recDb::DT_Full );
+            ver.ReadType( recDb::DbType::full );
         }
     }
     catch ( wxSQLite3Exception& e ) {
@@ -946,7 +946,7 @@ bool recDoFullUpgrade()
 
 bool recDoMediaUpgrade()
 {
-    recVersion ver( recDb::DT_MediaOnly );
+    recVersion ver( recDb::DbType::media_data_only );
     if ( ver.IsEqual( recMediaVerMajor, recMediaVerMinor, recMediaVerRev, recMediaVerTest ) ) {
         return true; // Already current version
     }
@@ -967,7 +967,7 @@ bool recDoMediaUpgrade()
     try {
         if ( ver.IsEqual( 0, 0, 0 ) ) {
             mdUpgradeRev0_0_0toCurrent( ver.FGetTest() );
-            ver.ReadID( recDb::DT_MediaOnly );
+            ver.ReadType( recDb::DbType::media_data_only );
         }
     }
     catch ( wxSQLite3Exception& e ) {

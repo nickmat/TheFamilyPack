@@ -425,7 +425,7 @@ void TfpFrame::OnAttachNewFile( wxCommandEvent& event )
     dbfilename.SetExt( "tfpd" );
     wxString dbpath = dbfilename.GetFullPath();
 
-    recDb::CreateReturn ret = recDb::CreateDbFile( dbpath, recDb::DT_MediaOnly );
+    recDb::CreateReturn ret = recDb::CreateDbFile( dbpath, recDb::DbType::media_data_only );
     wxString mess;
     switch ( ret )
     {
@@ -1432,12 +1432,12 @@ bool TfpFrame::OpenFile()
             }
             recDb::CloseDb();
         }
-        recDb::DatabaseType type = recDb::OpenDb( path );
-        if ( type == recDb::DT_Full ) {
+        recDb::DbType type = recDb::OpenDb( path );
+        if ( type == recDb::DbType::full ) {
             SetDatabaseOpen( path );
             DisplayHomePage();
             ret = true;
-        } else if( type == recDb::DT_MediaOnly ){
+        } else if( type == recDb::DbType::media_data_only ){
             SetNoDatabase();
             m_browser->SetPage( GetDisplayText( wxString( "MD" ) ), "" );
             m_changeState = recDb::GetChange();

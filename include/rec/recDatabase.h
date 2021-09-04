@@ -37,11 +37,11 @@ extern void recUninitialize();
 class recDb
 {
 public:
-    enum DatabaseType {
-        DT_NULL,
-        DT_Full,
-        DT_MediaOnly,
-        DT_MAX
+    enum class DbType {
+        db_null,
+        full,
+        media_data_only,
+        db_max
     };
     enum class CreateReturn {
         OK,
@@ -55,7 +55,7 @@ public:
     };
 protected:
     static wxSQLite3Database* s_db;
-    static DatabaseType       s_dbtype;
+    static DbType             s_dbtype;
     static long               s_change;
     static long               s_spnumber;
     static recAssMap          s_assmap;
@@ -91,7 +91,7 @@ public:
     /*! Create a new database file and then close it.
     *  Returns CR_OK if the file is successfully created.
     */
-    static CreateReturn CreateDbFile( const wxString& fname, DatabaseType type );
+    static CreateReturn CreateDbFile( const wxString& fname, DbType type );
 
     /*! Creates a new database with the given filename. If the flag
     *  CREATE_DB_STD_EXT is set, the standard file extension ".tfpd"
@@ -105,7 +105,7 @@ public:
     /*! Opens an existing database file, providing there is not an existing
      *  database open and the file exists.
      */
-    static DatabaseType OpenDb( const wxString& fname );
+    static DbType OpenDb( const wxString& fname );
 
     /*! Attach fname to database as dbname.
     */

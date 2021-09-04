@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     24 October 2010
- * Copyright:   Copyright (c) 2010 ~ 2019, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 .. 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -74,7 +74,6 @@ bool recVersion::Read()
         Clear();
         return false;
     }
-//    f_id       = 1;
     f_major    = result.GetInt( 0 );
     f_minor    = result.GetInt( 1 );
     f_revision = result.GetInt( 2 );
@@ -83,7 +82,7 @@ bool recVersion::Read()
 }
 
 
-wxString recVersion::GetVersionStr( recDb::DatabaseType type )
+wxString recVersion::GetVersionStr( recDb::DbType type )
 {
     recVersion v( type );
     return wxString::Format(
@@ -92,24 +91,24 @@ wxString recVersion::GetVersionStr( recDb::DatabaseType type )
     );
 }
 
-recDb::DatabaseType recVersion::Manage( const wxString& dbname )
+recDb::DbType recVersion::Manage( const wxString& dbname )
 {
-    s_dbtype = DT_NULL;
+    s_dbtype = DbType::db_null;
     if ( !s_db->IsOpen() || !recVersion::TableExists() ) {
-        return DT_NULL;
+        return DbType::db_null;
     }
 
-    recVersion v( DT_Full );
+    recVersion v( DbType::full );
     if ( !v.IsEqual( 0, 0, 0, 0 ) ) {
         if ( recDoFullUpgrade() ) {
-            s_dbtype = DT_Full;
+            s_dbtype = DbType::full;
         }
     }
 
-    v.ReadID( DT_MediaOnly );
+    v.ReadID( idt( DbType::media_data_only) );
     if ( !v.IsEqual( 0, 0, 0, 0 ) ) {
-        if ( recDoMediaUpgrade() && s_dbtype == DT_NULL ) {
-            s_dbtype = DT_MediaOnly;
+        if ( recDoMediaUpgrade() && s_dbtype == DbType::db_null ) {
+            s_dbtype = DbType::media_data_only;
         }
     }
 

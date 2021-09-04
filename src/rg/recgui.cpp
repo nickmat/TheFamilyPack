@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     22 October 2012
- * Copyright:   Copyright (c) 2012 ~ 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2012 .. 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -81,7 +81,7 @@ int recGetSingleChoiceIndex( const wxString& caption, const wxArrayString& choic
 
 bool recPermissionToUpgrade()
 {
-    recVersion v( recDb::DT_Full );
+    recVersion v( recDb::DbType::full );
     wxString mess = wxString::Format(
         _("Upgrade database from version from V%s to V%s"), 
         v.GetVersionStr(), recVerStr

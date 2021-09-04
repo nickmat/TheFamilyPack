@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     24 October 2010
- * Copyright:   Copyright (c) 2010 ~ 2019, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 .. 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -52,9 +52,10 @@ class recVersion : public recDb
 {
 public:
     recVersion() {}
-    recVersion( idt id ) : recDb( id ) { Read(); }
+    recVersion( DbType id ) : recDb( idt( id ) ) { Read(); }
     recVersion( const recVersion& ver );
     bool Read() override;
+    bool ReadType( DbType id ) { f_id = idt( id ); return Read(); }
 
     int FGetMajor() const { return f_major; }
     int FGetMinor() const { return f_minor; }
@@ -63,13 +64,13 @@ public:
 
     /*! Return the database full version string.
     */
-    static wxString GetVersionStr( recDb::DatabaseType type = recDb::DT_Full );
+    static wxString GetVersionStr( recDb::DbType type = recDb::DbType::full );
 
     /*! Check whether the database version is compatable with the program
      *  version. If not, handle updating the database and return true. 
      *  Or, if it is not possible to update, return false.
      */
-    static DatabaseType Manage( const wxString& dbname = "main" );
+    static DbType Manage( const wxString& dbname = "main" );
 
     bool IsEqual( 
         int major, int minor = -1, int revision = -1, int test = -1 ) const;
