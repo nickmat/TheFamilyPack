@@ -144,6 +144,14 @@ public:
      */
     static wxString GetFileName();
 
+    /*! Return the database type 
+    */
+    static DbType GetDatabaseType( const wxString& dbname );
+
+    /* Return a short text description of the database type
+    */
+    static wxString GetDatabaseTypeDesc( DbType type );
+
     /*! Returns the current change value.
      */
     static long GetChange() { return s_change; }

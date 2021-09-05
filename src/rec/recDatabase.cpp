@@ -257,6 +257,30 @@ wxString recDb::GetFileName()
     return fn;
 }
 
+recDb::DbType recDb::GetDatabaseType( const wxString& dbname )
+{
+    recVersion ver( DbType::full, dbname );
+    if( !ver.IsEqual( 0, 0, 0, 0 ) ) {
+        return DbType::full;
+    }
+    ver.ReadType( DbType::media_data_only, dbname );
+    if( !ver.IsEqual( 0, 0, 0, 0 ) ) {
+        return DbType::media_data_only;
+    }
+    return DbType::db_null;
+}
+
+wxString recDb::GetDatabaseTypeDesc( DbType type )
+{
+    switch( type ) {
+    case DbType::full:
+        return _("Full");
+    case DbType::media_data_only:
+        return _("Media Data");
+    }
+    return _( "Unknown" );
+}
+
 void recDb::ErrorMessage( wxSQLite3Exception& e )
 {
     wxString err;
