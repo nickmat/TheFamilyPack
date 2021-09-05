@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     19th September 2018
- * Copyright:   Copyright (c) 2018 ~ 2019, Nick Matthews.
+ * Copyright:   Copyright (c) 2018 .. 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -41,9 +41,9 @@ public:
     recMediaData( const wxString dbname, idt id ) : recDb( id ) { Read( dbname ); }
     recMediaData( const recMediaData& md );
 
-    void Clear();
-    void Save( const wxString& dbname = "Main" );
-    bool Read( const wxString& dbname = "Main" );
+    void Clear() override;
+    void Save( const wxString& dbname = "Main" ) override;
+    bool Read( const wxString& dbname = "Main" ) override;
     bool ReadID( idt id, idt assID );
     TABLE_NAME_MEMBERS( "MediaData" );
     bool Equivalent( const recMediaData& r2 ) const;

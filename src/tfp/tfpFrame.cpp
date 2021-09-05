@@ -1094,10 +1094,11 @@ void TfpFrame::OnAboutDatabase( wxCommandEvent& event )
         }
         attached_list += str;
     }
+
     wxMessageBox(
         wxString::Format(
             _("Database \"%s\"\nVersion %s%s"),
-            recDb::GetFileName(), recVersion::GetVersionStr(), attached_list
+            recDb::GetFileName(), recGetCurrentVersionStr(), attached_list
         ),
         _("About TFP Database"),
         wxOK | wxICON_INFORMATION,

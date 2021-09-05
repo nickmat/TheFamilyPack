@@ -185,6 +185,12 @@ bool recDb::AttachDb( const wxString& fname, const wxString& dbname )
     wxSQLite3StatementBuffer sql;
     sql.Format( "ATTACH DATABASE '%q' AS '%q';", UTF8_( dbfname ), UTF8_( dbname ) );
     s_db->ExecuteUpdate( sql );
+
+    DbType type = recVersion::Manage( dbname );
+    if( type == DbType::db_null ) {
+        DetachDb( dbname );
+        return false;
+    }
     return true;
 }
 

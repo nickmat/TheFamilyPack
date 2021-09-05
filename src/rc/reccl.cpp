@@ -3,11 +3,9 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Manage the rec lib command line interface functions.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     22 October 2012
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2012, Nick Matthews.
+ * Copyright:   Copyright (c) 2012..2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -73,7 +71,7 @@ int recGetSingleChoiceIndex( const wxString& caption, const wxArrayString& choic
     return 0;
 }
 
-bool recPermissionToUpgrade()
+bool recPermissionToUpgrade( const wxString& from, const wxString& to )
 {
     return false; // Can't upgrade from the command line.
 }

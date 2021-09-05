@@ -44,27 +44,35 @@ extern const int recMediaVerRev;
 extern const int recMediaVerTest;
 extern const wxStringCharType* recMediaVerStr;
 
-extern bool recDoFullUpgrade();
-extern bool recDoMediaUpgrade();
+extern wxString recGetCurrentVersionStr();
+extern wxString recGetCurrentVersionStr( recDb::DbType type );
+
+extern bool recDoMediaUpgrade( const wxString& dbname );
+extern bool recDoFullUpgrade( const wxString& dbname );
 
 
 class recVersion : public recDb
 {
 public:
     recVersion() {}
-    recVersion( DbType id ) : recDb( idt( id ) ) { Read(); }
+    recVersion( DbType id, const wxString& dbname ) : recDb( idt( id ) ) { Read( dbname ); }
+    recVersion( const wxString dbname, idt id ) : recDb( id ) { Read( dbname ); }
     recVersion( const recVersion& ver );
-    bool Read() override;
-    bool ReadType( DbType id ) { f_id = idt( id ); return Read(); }
+    bool Read( const wxString& dbname = "Main" ) override;
+    bool ReadType( DbType id, const wxString& dbname = "Main" ) { 
+        f_id = idt( id );
+        return Read( dbname);
+    }
 
     int FGetMajor() const { return f_major; }
     int FGetMinor() const { return f_minor; }
     int FGetRevision() const { return f_revision; }
     int FGetTest() const { return f_test; }
 
-    /*! Return the database full version string.
+    /*! Return the database version number string.
     */
-    static wxString GetVersionStr( recDb::DbType type = recDb::DbType::full );
+    static wxString GetVersionStr( DbType type, const wxString& dbname = "main" );
+    wxString GetVersionStr();
 
     /*! Check whether the database version is compatable with the program
      *  version. If not, handle updating the database and return true. 

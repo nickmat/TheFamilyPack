@@ -41,8 +41,8 @@
 const int recVerMajor = 0;
 const int recVerMinor = 0;
 const int recVerRev = 10;
-const int recVerTest = 20;                                    // <<======<<<<
-const wxStringCharType* recVerStr = wxS( "TFPD-0.0.10.20" );  // <<======<<<<
+const int recVerTest = 20;                                     // <<======<<<<
+const wxStringCharType* recVerStr = wxS( "TFPD-v0.0.10.20" );  // <<======<<<<
 
 // This is the database Media only version that this program can work with.
 // If the full version matches, then this is assumed to match as well.
@@ -50,12 +50,109 @@ const wxStringCharType* recVerStr = wxS( "TFPD-0.0.10.20" );  // <<======<<<<
 const int recMediaVerMajor = 0;
 const int recMediaVerMinor = 0;
 const int recMediaVerRev = 0;
-const int recMediaVerTest = 2;                                 // <<======<<<<
-const wxStringCharType* recMediaVerStr = wxS( "MD-0.0.0.2" );  // <<======<<<<
+const int recMediaVerTest = 2;                                  // <<======<<<<
+const wxStringCharType* recMediaVerStr = wxS( "MDD-v0.0.0.2" ); // <<======<<<<
+
+wxString recGetCurrentVersionStr()
+{
+    recDb::DbType type = recDb::GetDatabaseType( "Main" );
+    return recGetCurrentVersionStr( type );
+}
+
+wxString recGetCurrentVersionStr( recDb::DbType type )
+{
+    switch( type ) {
+    case recDb::DbType::full:
+        return recVerStr;
+    case recDb::DbType::media_data_only:
+        return recMediaVerStr;
+    }
+    return _( "Unknown database type" );
+}
 
 //============================================================================
 //                 Code to upgrade old versions
 //============================================================================
+
+namespace {
+
+    void mdUpgradeTest0_0_0_1to0_0_0_2( const wxString& dbname )
+    {
+        // MediaData Version 0.0.0.1 to 0.0.0.2
+        // Add title and type fields to MediaData
+
+        wxString update = "BEGIN;\n";
+
+        update <<
+            "CREATE TABLE " << dbname << ".NewMediaData (\n"
+            "  id INTEGER PRIMARY KEY NOT NULL,\n"
+            "  title TEXT NULL,\n"
+            "  data BLOB NOT NULL,\n"
+            "  type INT NOT NULL,\n"
+            "  privacy INT NOT NULL,\n"
+            "  copyright TEXT NULL,\n"
+            "  file TEXT NOT NULL\n"
+            ");\n"
+            "INSERT INTO " << dbname << ".NewMediaData"
+            " (id, title, data, type, privacy, copyright, file)"
+            " SELECT id, ' ', data, 1, privacy, copyright, file"
+            " FROM " << dbname << ".MediaData;\n"
+            "DROP TABLE " << dbname << ".MediaData;\n"
+            "ALTER TABLE " << dbname << ".NewMediaData RENAME TO MediaData;\n"
+
+            "UPDATE " << dbname << ".Version SET test=2 WHERE id=2;\n"
+            "COMMIT;\n"
+            ;
+        recDb::GetDb()->ExecuteUpdate( update );
+    }
+
+    void mdUpgradeRev0_0_0toCurrent( int test, const wxString& dbname )
+    {
+        switch( test )
+        {
+        case 1: mdUpgradeTest0_0_0_1to0_0_0_2( dbname );  // Fall thru intended
+        }
+    }
+
+} // namspace
+
+bool recDoMediaUpgrade( const wxString& dbname )
+{
+    recVersion ver( recDb::DbType::media_data_only, dbname );
+    if( ver.IsEqual( recMediaVerMajor, recMediaVerMinor, recMediaVerRev, recMediaVerTest ) ) {
+        return true; // Already current version
+    }
+    wxString verstr = ver.GetVersionStr();
+    if( ver.IsMoreThan( recMediaVerMajor, recMediaVerMinor, recMediaVerRev, recMediaVerTest ) ) {
+        recMessage(
+            wxString::Format(
+                _( "Cannot read future media database version %s file." ),
+                verstr
+            ),
+            _( "Upgrade Test" )
+        );
+        return false;
+    }
+    if( recPermissionToUpgrade( verstr, recMediaVerStr ) == false ) {
+        return false;
+    }
+
+    try {
+        if( ver.IsEqual( 0, 0, 0 ) ) {
+            mdUpgradeRev0_0_0toCurrent( ver.FGetTest(), dbname );
+            ver.ReadType( recDb::DbType::media_data_only );
+        }
+    }
+    catch( wxSQLite3Exception& e ) {
+        recDb::ErrorMessage( e );
+        recDb::Rollback();
+        return false;
+    }
+
+    wxASSERT( ver.IsEqual( recMediaVerMajor, recMediaVerMinor, recMediaVerRev, recMediaVerTest ) );
+    return true;
+}
+
 
 namespace {
 
@@ -777,30 +874,34 @@ void UpgradeTest0_0_10_18to0_0_10_19()
     recDb::GetDb()->ExecuteUpdate( query );
 }
 
-// Forward declare Media update.
-void mdUpgradeTest0_0_0_1to0_0_0_2();
-
-void UpgradeTest0_0_10_19to0_0_10_20()
+void UpgradeTest0_0_10_19to0_0_10_20( const wxString& dbname )
 {
     // Version 0.0.10.19 to 0.0.10.20
+    // NOTE: Change in format of updating tables
+    // 1) Now allow for updating attached databases.
+    // 2) Use recommended order of operations:-
+    //     Create new table.
+    //     Copy data across.
+    //     Drop old table.
+    //     Rename new into old.
 
-    char* query =
-        "BEGIN;\n"
+    // Update Associate and Media tables
 
-        "ALTER TABLE Associate RENAME TO OldAssociate;\n"
-        "CREATE TABLE Associate (\n"
+    wxString update = "BEGIN;\n";
+
+    update << "CREATE TABLE " << dbname << ".NewAssociate (\n"
         "  id INTEGER PRIMARY KEY NOT NULL,\n"
         "  path TEXT NULL,\n"
         "  comment TEXT NULL\n"
         ");\n"
-        "INSERT INTO Associate"
+        "INSERT INTO " << dbname << ".NewAssociate"
         " (id, path, comment)"
         " SELECT id, path, ' '"
-        " FROM OldAssociate;\n"
-        "DROP TABLE OldAssociate;\n"
+        " FROM " << dbname << ".Associate;\n"
+        "DROP TABLE " << dbname << ".Associate;\n"
+        "ALTER TABLE " << dbname << ".NewAssociate RENAME TO Associate;\n"
 
-        "ALTER TABLE Media RENAME TO OldMedia;\n"
-        "CREATE TABLE Media (\n"
+        "CREATE TABLE " << dbname << ".NewMedia (\n"
         "  id INTEGER PRIMARY KEY NOT NULL,\n"
         "  data_id INT NOT NULL REFERENCES MediaData(id),\n"
         "  ass_id INT NOT NULL REFERENCES Associate(id),\n"
@@ -810,22 +911,23 @@ void UpgradeTest0_0_10_19to0_0_10_20()
         "  title TEXT NULL,\n"
         "  note, TEXT NULL\n"
         ");\n"
-        "INSERT INTO Media"
+        "INSERT INTO " << dbname << ".NewMedia"
         " (id, data_id, ass_id, ref_id, ref_seq, privacy, title, note)"
         " SELECT id, data_id, ass_id, ref_id, 1, privacy, title, note"
-        " FROM OldMedia;\n"
-        "DROP TABLE OldMedia;\n"
+        " FROM " << dbname << ".Media;\n"
+        "DROP TABLE " << dbname << ".Media;\n"
+        "ALTER TABLE " << dbname << ".NewMedia RENAME TO Media;\n"
 
-        "UPDATE Version SET test=20 WHERE id=1;\n"
-        
+        "UPDATE " << dbname << ".Version SET test=20 WHERE id=1;\n"
+
         "COMMIT;\n"
         ;
-    recDb::GetDb()->ExecuteUpdate( query );
+    recDb::GetDb()->ExecuteUpdate( update );
     // Update to MediaData required as well.
-    mdUpgradeTest0_0_0_1to0_0_0_2();
+    mdUpgradeTest0_0_0_1to0_0_0_2( dbname );
 }
 
-void UpgradeRev0_0_10toCurrent( int test )
+void UpgradeRev0_0_10toCurrent( int test, const wxString& dbname )
 {
     switch( test )
     {
@@ -848,63 +950,25 @@ void UpgradeRev0_0_10toCurrent( int test )
     case 16: UpgradeTest0_0_10_16to0_0_10_17();
     case 17: UpgradeTest0_0_10_17to0_0_10_18();
     case 18: UpgradeTest0_0_10_18to0_0_10_19();
-    case 19: UpgradeTest0_0_10_19to0_0_10_20();
+    case 19: UpgradeTest0_0_10_19to0_0_10_20( dbname );
     }
-}
-
-void mdUpgradeTest0_0_0_1to0_0_0_2()
-{
-    // MediaData Version 0.0.0.1 to 0.0.0.2
-    // Add title and type fields to MediaData
-
-    char* query =
-        "BEGIN;\n"
-
-        "ALTER TABLE MediaData RENAME TO OldMediaData;\n"
-        "CREATE TABLE MediaData (\n"
-        "  id INTEGER PRIMARY KEY NOT NULL,\n"
-        "  title TEXT NULL,\n"
-        "  data BLOB NOT NULL,\n"
-        "  type INT NOT NULL,\n"
-        "  privacy INT NOT NULL,\n"
-        "  copyright TEXT NULL,\n"
-        "  file TEXT NOT NULL\n"
-        ");\n"
-        "INSERT INTO MediaData"
-        " (id, title, data, type, privacy, copyright, file)"
-        " SELECT id, ' ', data, 1, privacy, copyright, file"
-        " FROM OldMediaData;\n"
-        "DROP TABLE OldMediaData;\n"
-
-        "UPDATE Version SET test=2 WHERE id=2;\n"
-        "COMMIT;\n"
-        ;
-    recDb::GetDb()->ExecuteUpdate( query );
-}
-
-void mdUpgradeRev0_0_0toCurrent( int test )
-{
-    switch( test )
-    {
-    case 1: mdUpgradeTest0_0_0_1to0_0_0_2();  // Fall thru intended
-    }
-    // Still on initial version.
 }
 
 } // namespace
 
 
-bool recDoFullUpgrade()
+bool recDoFullUpgrade( const wxString& dbname )
 {
-    recVersion ver( recDb::DbType::full );
+    recVersion ver( recDb::DbType::full, dbname );
     if ( ver.IsEqual( recVerMajor, recVerMinor, recVerRev, recVerTest ) ) {
         return true; // Already current version
     }
+    wxString verstr = ver.GetVersionStr();
     if ( ver.IsLessThan( 0, 0, 9, 25 ) ) {
         recMessage(
             wxString::Format(
                 _( "Cannot read old database version %s file." ),
-                ver.GetVersionStr()
+                verstr
                 ),
             _( "Upgrade Test" )
             );
@@ -914,13 +978,13 @@ bool recDoFullUpgrade()
         recMessage(
             wxString::Format(
                 _( "Cannot read future database version %s file." ),
-                ver.GetVersionStr()
+                verstr
                 ),
             _( "Upgrade Test" )
             );
         return false;
     }
-    if ( recPermissionToUpgrade() == false ) {
+    if ( recPermissionToUpgrade( verstr, recVerStr ) == false ) {
         return false;
     }
 
@@ -930,44 +994,8 @@ bool recDoFullUpgrade()
             ver.ReadType( recDb::DbType::full );
         }
         if ( ver.IsEqual( 0, 0, 10 ) ) {
-            UpgradeRev0_0_10toCurrent( ver.FGetTest() );
+            UpgradeRev0_0_10toCurrent( ver.FGetTest(), dbname );
             ver.ReadType( recDb::DbType::full );
-        }
-    }
-    catch ( wxSQLite3Exception& e ) {
-        recDb::ErrorMessage( e );
-        recDb::Rollback();
-        return false;
-    }
-
-    wxASSERT( ver.IsEqual( recVerMajor, recVerMinor, recVerRev, recVerTest ) );
-    return true;
-}
-
-bool recDoMediaUpgrade()
-{
-    recVersion ver( recDb::DbType::media_data_only );
-    if ( ver.IsEqual( recMediaVerMajor, recMediaVerMinor, recMediaVerRev, recMediaVerTest ) ) {
-        return true; // Already current version
-    }
-    if ( ver.IsMoreThan( recMediaVerMajor, recMediaVerMinor, recMediaVerRev, recMediaVerTest ) ) {
-        recMessage(
-            wxString::Format(
-                _( "Cannot read future media database version %s file." ),
-                ver.GetVersionStr()
-                ),
-            _( "Upgrade Test" )
-            );
-        return false;
-    }
-    if ( recPermissionToUpgrade() == false ) {
-        return false;
-    }
-
-    try {
-        if ( ver.IsEqual( 0, 0, 0 ) ) {
-            mdUpgradeRev0_0_0toCurrent( ver.FGetTest() );
-            ver.ReadType( recDb::DbType::media_data_only );
         }
     }
     catch ( wxSQLite3Exception& e ) {

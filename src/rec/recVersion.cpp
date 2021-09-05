@@ -55,7 +55,7 @@ void recVersion::Clear()
     f_test     = 0;
 }
 
-bool recVersion::Read()
+bool recVersion::Read( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
 
@@ -66,8 +66,8 @@ bool recVersion::Read()
 
     sql.Format(
         "SELECT major, minor, revision, test"
-        " FROM Version WHERE id=" ID ";",
-        f_id
+        " FROM %q.Version WHERE id=" ID ";",
+        UTF8_( dbname ), f_id
     );
     wxSQLite3Table result = s_db->GetTable( sql );
     if( result.GetRowCount() != 1 ) {
@@ -81,13 +81,29 @@ bool recVersion::Read()
     return true;
 }
 
-
-wxString recVersion::GetVersionStr( recDb::DbType type )
+wxString recVersion::GetVersionStr( recDb::DbType type, const wxString& dbname )
 {
-    recVersion v( type );
+    recVersion v( type, dbname );
+    return v.GetVersionStr();
+}
+
+wxString recVersion::GetVersionStr()
+{
+    wxString prefix;
+    switch( DbType(f_id) )
+    {
+    case DbType::full:
+        prefix = "TFP";
+        break;
+    case DbType::media_data_only:
+        prefix = "MD";
+        break;
+    default:
+        return _( "Unknown Database Type" );
+    }
     return wxString::Format(
-        "%d.%d.%d.%d",
-        v.f_major, v.f_minor, v.f_revision, v.f_test
+        "D%s-v%d.%d.%d.%d",
+        prefix, f_major, f_minor, f_revision, f_test
     );
 }
 
@@ -98,16 +114,17 @@ recDb::DbType recVersion::Manage( const wxString& dbname )
         return DbType::db_null;
     }
 
-    recVersion v( DbType::full );
+    recVersion v;
+    v.ReadType( DbType::full, dbname );
     if ( !v.IsEqual( 0, 0, 0, 0 ) ) {
-        if ( recDoFullUpgrade() ) {
+        if ( recDoFullUpgrade( dbname ) ) {
             s_dbtype = DbType::full;
         }
     }
 
-    v.ReadID( idt( DbType::media_data_only) );
+    v.ReadType( DbType::media_data_only, dbname );
     if ( !v.IsEqual( 0, 0, 0, 0 ) ) {
-        if ( recDoMediaUpgrade() && s_dbtype == DbType::db_null ) {
+        if ( recDoMediaUpgrade( dbname ) && s_dbtype == DbType::db_null ) {
             s_dbtype = DbType::media_data_only;
         }
     }

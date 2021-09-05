@@ -164,7 +164,13 @@ void rgDlgSetupReference::OnAddNewMedia( wxCommandEvent& event )
     if( dialog.ShowModal() == wxID_OK )
     {
         wxString path = dialog.GetPath();
-        wxMessageBox( _( "Path: " + path ), "OnAddNewMedia" );
+        unsigned style = rgSELSTYLE_Create | rgSELSTYLE_Unknown;
+        unsigned button = rgSELSTYLE_None;
+        idt assID = rgSelectAssociate( this, style, &button );
+        if( assID != 0 || button == rgSELSTYLE_Unknown ) {
+
+        }
+//        wxMessageBox( _( "Path: " + path ), "OnAddNewMedia" );
     }
 }
 

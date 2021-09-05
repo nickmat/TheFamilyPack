@@ -79,12 +79,11 @@ int recGetSingleChoiceIndex( const wxString& caption, const wxArrayString& choic
     return wxGetSingleChoiceIndex( wxEmptyString, caption, choices );
 }
 
-bool recPermissionToUpgrade()
+bool recPermissionToUpgrade( const wxString& from, const wxString& to )
 {
-    recVersion v( recDb::DbType::full );
     wxString mess = wxString::Format(
-        _("Upgrade database from version from V%s to V%s"), 
-        v.GetVersionStr(), recVerStr
+        _("Upgrade database from version from %s to %s"), 
+        from, to
     );
     int ans = wxMessageBox( mess, _("Upgrade Database"), wxYES_NO | wxCANCEL );
     if( ans == wxYES ) {
