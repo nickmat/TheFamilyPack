@@ -70,6 +70,30 @@ bool recGetIDs( const wxString& str, idt* id1, idt* id2, idt* id3 )
     return *id1 != 0 && *id2 != 0;
 }
 
+// The string can be formatted in one of 3 ways,
+// 1)  nnn,nnn   Number followed by number, meaning depends on context. recSplitStrRet::number
+// 2)  nnn:Ann   Number follows by Associate id number.                 recSplitStrRet::associate                   
+// 3)  nnn,aaaa  Number folloed by text name of attached database       recSplitStrRet::text
+recSplitStrRet recSplitStr( const wxString& str, idt* id1, idt* id2, wxString* dbname )
+{
+    *id1 = recGetID( str );
+    size_t pos = str.find( ":A" );
+    if( pos != wxString::npos ) {
+        *id2 = recGetID( str.substr( pos + 2 ) );
+        return recSplitStrRet::associate;
+    }
+    pos = str.find( "," );
+    if( pos != wxString::npos ) {
+        *id2 = recGetID( str.substr( pos + 1 ) );
+        if( *id2 != 0 ) {
+            return recSplitStrRet::number;
+        }
+        *dbname = str.substr( pos + 1 );
+        return recSplitStrRet::text;
+    }
+    return recSplitStrRet::none;
+}
+
 wxString recGetSexStr( Sex sex )
 {
     static wxString sexarray[] = {
