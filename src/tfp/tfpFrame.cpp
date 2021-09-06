@@ -1619,11 +1619,21 @@ void TfpFrame::DoPopupNote( const wxString& ref )
 void TfpFrame::DoPopupViewer( const wxString & href )
 {
     if ( href.StartsWith( "MD" ) ) {
+        // Note, format MDn,Am then n is MDataID and m is AssID.
+        // m can be zero ("main" database).
+        // format MDn,dbname then dname is a currently attached database
         idt mdID, assID;
-        recGetIDs( href.substr( 2 ), &mdID, &assID );
+        wxString dbname;
+        recSplitStrRet ret = recSplitStr( href.substr( 2 ), &mdID, &assID, &dbname );
         if ( mdID ) {
-            rgViewMedia( this, mdID, assID );
-            return;
+            if( ret == recSplitStrRet::associate ) {
+                rgViewMedia( this, mdID, assID );
+                return;
+            }
+            if( ret == recSplitStrRet::text ) {
+                rgViewMedia( this, mdID, dbname );
+                return;
+            }
         }
     } else if ( href.StartsWith( "M" ) ) {
         idt medID = recGetID( href.substr( 1 ) );

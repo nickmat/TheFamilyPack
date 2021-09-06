@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3rd November 2018
- * Copyright:   Copyright (c) 2018 ~ 2019, Nick Matthews.
+ * Copyright:   Copyright (c) 2018 .. 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -183,36 +183,40 @@ wxString tfpWriteMediaPagedIndex( idt begCnt )
 
 wxString tfpWriteMediaDataIndex()
 {
-    // TODO: Cache this result.
-    StringVec attached = recDb::GetAttachedDbList();
-    attached.insert( attached.begin(), "Main" );
+    StringVec attached = recDb::GetDatabaseList();
 
     wxString htm = tfpWrHeadTfp( "Media Data List" );
     htm << "<h1>Media Data List</h1>\n";
 
-    for ( auto aname : attached ) {
-        wxSQLite3Table result = recMediaData::GetMediaDataList( aname );
+    for( size_t i = 0; i < attached.size();  i++ ) {
+        wxString dbname = attached[i];
+        wxSQLite3Table result = recMediaData::GetMediaDataList( dbname );
         if ( result.GetRowCount() == 0 ) {
             continue;
         }
-        idt assID = recDb::GetAttachedDbAssID( aname );
-        if ( assID == 0 && aname != "Main" ) {
-            continue;
+        idt assID = recDb::GetAttachedDbAssID( dbname );
+        wxString assIdStr, attPostfix;
+        if( assID > 0 ) {
+            // The Associate table must exist if we have a valid id.
+            assIdStr << " " << recAssociate::GetIdStr( assID );
         }
+        attPostfix << "," << dbname;
         htm <<
             "<table class='data'>\n"
-            "<tr><th colspan='4'>" << aname << "</th></tr>\n"
-            "<tr><th>Name</th><th>ID</th><th>Privacy</th><th>Copyright</th></tr>\n"
+            "<tr><th colspan='6'>" << dbname << assIdStr << "</th></tr>\n"
+            "<tr><th>ID</th><th>Title</th><th>File</th><th>Type</th><th>Privacy</th><th>Copyright</th></tr>\n"
         ;
         for ( int i = 0; i < result.GetRowCount(); i++ ) {
             result.SetRow( i );
+            recMediaData::Mime mime = recMediaData::Mime( result.GetInt( 2 ) );
             htm <<
-                "<tr><td>" << result.GetAsString( 3 ) <<
-                "</td><td><a href='tfpv:MD" << result.GetAsString( 0 ) <<
-                "," << assID <<
+                "<tr><td><a href='tfpv:MD" << result.GetAsString( 0 ) << attPostfix << // ID
                 "'><b>MD" << result.GetAsString( 0 ) <<
-                "</b></a></td><td>" << result.GetInt( 1 ) <<
-                "</td><td>" << result.GetAsString( 2 ) <<
+                "</b></a></td><td>" << result.GetAsString( 1 ) <<  // Title
+                "</td><td>" << result.GetAsString( 5 ) <<  // File
+                "</td><td>" << recMediaData::GetMimeStr( mime ) <<  // File Type
+                "</td><td>" << result.GetInt( 3 ) <<  // Privacy
+                "</td><td>" << result.GetAsString( 4 ) <<  // Copyright
                 "</td></tr>\n"
             ;
         }
