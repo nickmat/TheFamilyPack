@@ -177,6 +177,16 @@ idt recMediaData::FindMedia( idt mdID, idt assID )
     return ExecuteID( sql );
 }
 
+wxString recMediaData::GetMimeStr( Mime mime )
+{
+    switch( mime ) {
+    case Mime::image_png: return "image/png";
+    case Mime::image_jpeg: return "image/jpeg";
+    case Mime::image_gif: return "image/gif";
+    }
+    return "unknown";
+}
+
 bool recMediaData::ImportData( wxString& filename )
 {
     wxFile infile( filename );
@@ -191,7 +201,7 @@ wxSQLite3Table recMediaData::GetMediaDataList( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "SELECT id, privacy, copyright, file FROM %q.MediaData ORDER BY file;", UTF8_( dbname )
+        "SELECT id, title, type, privacy, copyright, file FROM %q.MediaData ORDER BY file;", UTF8_( dbname )
     );
     return s_db->GetTable( sql );
 }

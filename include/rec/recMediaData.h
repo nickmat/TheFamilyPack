@@ -67,6 +67,8 @@ public:
 
     static wxString GetFileName( const wxString& assDb, idt mdID );
 
+    static wxString GetMimeStr( Mime mime );
+
     static idt FindMedia( idt mdID, idt assID );
     idt FindMedia( idt assID ) const { return FindMedia( f_id, assID ); }
 
