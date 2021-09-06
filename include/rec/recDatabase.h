@@ -119,7 +119,7 @@ public:
     */
     static StringVec GetAttachedDbList();
 
-    /*! Get a list of all databases.
+    /*! Get a list of all databases, including "main".
     */
     static StringVec GetDatabaseList();
 
