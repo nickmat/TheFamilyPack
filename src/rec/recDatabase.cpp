@@ -214,11 +214,24 @@ StringVec recDb::GetAttachedDbList()
         s_db->ExecuteQuery( "PRAGMA database_list;" );
 
     StringVec vec;
-    while ( result.NextRow() ) {
+    while( result.NextRow() ) {
         wxString name = result.GetAsString( 1 );
-        if ( name == "main" ) {
+        if( name == "main" ) {
             continue;
         }
+        vec.push_back( name );
+    }
+    return vec;
+}
+
+StringVec recDb::GetDatabaseList()
+{
+    wxSQLite3ResultSet result =
+        s_db->ExecuteQuery( "PRAGMA database_list;" );
+
+    StringVec vec;
+    while( result.NextRow() ) {
+        wxString name = result.GetAsString( 1 );
         vec.push_back( name );
     }
     return vec;

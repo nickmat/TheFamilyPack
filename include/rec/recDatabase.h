@@ -119,6 +119,10 @@ public:
     */
     static StringVec GetAttachedDbList();
 
+    /*! Get a list of all databases.
+    */
+    static StringVec GetDatabaseList();
+
     /*! Get a list of attached databases.
     */
     static idt GetAttachedDbAssID( const wxString& dbname );
