@@ -246,5 +246,6 @@ extern bool rgGetRefSetupData( wxWindow* parent, idt refID, rgRefData& data );
 // See src/rg/rgViewMedia.cpp
 extern void rgViewMedia( wxWindow* wind, idt medID );
 extern void rgViewMedia( wxWindow* wind, idt mdID, idt assID );
+extern void rgViewMedia( wxWindow* wind, idt mdID, const wxString& dbname );
 
 #endif // RGDIALOGS_H

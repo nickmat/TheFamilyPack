@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     10 October 2018
- * Copyright:   Copyright (c) 2018 ~ 2019, Nick Matthews.
+ * Copyright:   Copyright (c) 2018 .. 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -56,6 +56,14 @@ void rgViewMedia( wxWindow* wind, idt mdID, idt assID )
     frame->Show();
 }
 
+void rgViewMedia( wxWindow* wind, idt mdID, const wxString& dbname )
+{
+    rgViewMediaFrame* frame = new rgViewMediaFrame( wind, mdID, dbname );
+    frame->SetBackgroundColour( *wxWHITE );
+    frame->Show();
+}
+
+
 //============================================================================
 //-------------------------[ rgViewMediaForm ]--------------------------------
 //============================================================================
@@ -86,6 +94,18 @@ rgViewMediaFrame::rgViewMediaFrame( wxWindow * parent, idt mdID, idt assID )
     EnableScroll( false );
 }
 
+rgViewMediaFrame::rgViewMediaFrame( wxWindow* parent, idt mdID, const wxString& dbname )
+    : m_media(0), m_mediadata(dbname,mdID),
+    m_scrollEnabled( false ), m_upper( 4 ), m_prevThumb( -1 ),
+    fbRgViewMedia( parent )
+{
+    Bind( rgEVT_IMAGE_SCALE, &rgViewMediaFrame::OnChangeScale, this );
+    m_lower = 1 / m_upper;
+    m_b = m_upper * m_upper;
+    m_k = std::log10( m_b );
+    m_imageViewer->SetImage( m_mediadata.FGetData() );
+    EnableScroll( false );
+}
 void rgViewMediaFrame::SetToolbarScale( double scale )
 {
     wxString scalestr = wxString::Format( "%.1f", scale * 100 );

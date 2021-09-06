@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     10 October 2018
- * Copyright:   Copyright (c) 2018 ~ 2019, Nick Matthews.
+ * Copyright:   Copyright (c) 2018 .. 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -38,6 +38,7 @@ class rgViewMediaFrame : public fbRgViewMedia
 public:
     rgViewMediaFrame( wxWindow* parent, idt medID );
     rgViewMediaFrame( wxWindow* parent, idt mdID, idt assID );
+    rgViewMediaFrame( wxWindow* parent, idt mdID, const wxString& dbname );
 
     void SetToolbarScale( double scale );
 
