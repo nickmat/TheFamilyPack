@@ -123,7 +123,7 @@ public:
     */
     static StringVec GetDatabaseList();
 
-    /*! Get a list of attached databases.
+    /*! Get Associate ID of attached database.
     */
     static idt GetAttachedDbAssID( const wxString& dbname );
 
