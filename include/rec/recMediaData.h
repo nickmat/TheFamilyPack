@@ -65,14 +65,15 @@ public:
     static wxString GetIdStr( idt medID ) { return wxString::Format( "MD" ID, medID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
+    static wxString GetDbname( const wxString& link, idt* mdID, idt* assID );
     static wxString GetFileName( const wxString& assDb, idt mdID );
-
     static wxString GetMimeStr( Mime mime );
 
     static idt FindMedia( idt mdID, idt assID );
     idt FindMedia( idt assID ) const { return FindMedia( f_id, assID ); }
 
     bool ImportData( wxString& filename );
+    wxString CreateMemoryFile() const;
 
     static wxSQLite3Table GetMediaDataList( const wxString& dbname = "Main" );
 

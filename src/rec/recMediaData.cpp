@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     19th September 2018
- * Copyright:   Copyright (c) 2018 ~ 2019, Nick Matthews.
+ * Copyright:   Copyright (c) 2018 .. 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -41,6 +41,9 @@
 #include <rec/recMedia.h>
 
 #include <wx/file.h>
+#include <wx/filesys.h>
+#include <wx/fs_mem.h>
+#include <wx/mstream.h>
 
 recMediaData::recMediaData( const recMediaData& n )
 {
@@ -158,6 +161,29 @@ bool recMediaData::Equivalent( const recMediaData& r2 ) const
         f_file == r2.f_file;
 }
 
+// The link can be formatted in one of 2 ways,
+// 2)  MDnnn:Ann   Number follows by Associate id number.            recSplitStrRet::associate                   
+// 3)  MDnnn,aaaa  Number folloed by text name of attached database. recSplitStrRet::text
+wxString recMediaData::GetDbname( const wxString& link, idt* mdID, idt* assID )
+{
+    if( !link.StartsWith( "MD" ) ) {
+        return "";
+    }
+    wxString dbname;
+    switch( recSplitStr( link.substr( 2 ), mdID, assID, &dbname ) ) {
+    case recSplitStrRet::text:
+        *assID = recDb::GetAttachedDbAssID( dbname );
+        break;
+    case recSplitStrRet::associate:
+        dbname = recAssociate::GetPath( *assID );
+        break;
+    }
+    if( *mdID == 0 ) {
+        return "";
+    }
+    return dbname;
+}
+
 wxString recMediaData::GetFileName( const wxString& assDb, idt mdID )
 {
     wxSQLite3StatementBuffer sql;
@@ -195,6 +221,25 @@ bool recMediaData::ImportData( wxString& filename )
     size_t iRead = infile.Read( tmp, fLen );
     f_data.UngetAppendBuf( iRead );
     return !f_data.IsEmpty();
+}
+
+wxString recMediaData::CreateMemoryFile() const
+{
+    wxString filename = FGetFile() + ".bmp";
+    wxString memfilename = "memory:" + filename;
+    // Read into the virtual file system, unless it already exists.
+    wxFileSystem fs;
+    wxString fn = fs.FindFirst( memfilename );
+    if( fn.empty() ) {
+        wxMemoryBuffer buf = FGetData();
+        wxMemoryInputStream stream( buf.GetData(), buf.GetDataLen() );
+        wxImage image( stream, wxBITMAP_TYPE_JPEG );
+        double scale = 200.0 / image.GetHeight();
+        int width = scale * image.GetWidth();
+        wxBitmap bmp = wxBitmap( image.Scale( width, 200 ) );
+        wxMemoryFSHandler::AddFile( filename, bmp, wxBITMAP_TYPE_BMP );
+    }
+    return memfilename;
 }
 
 wxSQLite3Table recMediaData::GetMediaDataList( const wxString& dbname )
