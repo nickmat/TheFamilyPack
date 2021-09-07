@@ -1616,7 +1616,7 @@ void TfpFrame::DoPopupNote( const wxString& ref )
     note->Show();
 }
 
-void TfpFrame::DoPopupViewer( const wxString & href )
+void TfpFrame::DoPopupViewer( const wxString& href )
 {
     if ( href.StartsWith( "MD" ) ) {
         // Note, format MDn,Am then n is MDataID and m is AssID.
@@ -2097,8 +2097,8 @@ wxString TfpFrame::GetDisplayText( wxString& name )
         if ( name.compare( 0, 2, "M," ) == 0 && success1 ) {
             return tfpWriteMediaPagedIndex( num1 );
         }
-        if ( name.compare( 0, 2, "MD" ) == 0 && success ) {
-            return tfpWriteMediaPage( num );
+        if ( name.compare( 0, 2, "MD" ) == 0 ) {
+            return tfpWriteMediaDataPage( pagename );
         }
         if ( name.compare( 0, 1, "M" ) == 0 && success ) {
             return tfpWriteMediaPage( num );

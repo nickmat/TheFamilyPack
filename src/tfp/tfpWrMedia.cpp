@@ -52,7 +52,7 @@ wxString tfpWriteMediaPage( idt medID )
     recAssociate ass( med.FGetAssID() );
     recMediaData md( med.FGetDataID() );
     wxString fn = tfpGetMediaDataFile( med.FGetDataID(), med.FGetAssID() );
-    wxString dataPath = ( med.FGetAssID() == 0 ) ? "Main" : ass.FGetPath();
+    wxString dataPath = ( med.FGetAssID() == 0 ) ? "main" : ass.FGetPath();
     dataPath += ": " + md.FGetFile();
     wxString dataIdStr = ass.GetIdStr() + ":" + md.GetIdStr();
     wxString copyright = md.FGetCopyright();
@@ -181,6 +181,53 @@ wxString tfpWriteMediaPagedIndex( idt begCnt )
     return htm;
 }
 
+wxString tfpWriteMediaDataPage( const wxString& link )
+{
+    wxString htm;
+    // Note, format MDn,Am then n is MDataID and m is AssID.
+    // m can be zero ("main" database).
+    // format MDn,dbname then dname is a currently attached database
+    idt mdID = 0, assID = 0;
+    wxString dbname = recMediaData::GetDbname( link, &mdID, &assID );
+    wxASSERT( !dbname.empty() );
+    recMediaData md( dbname, mdID );
+    wxString memoryfile = md.CreateMemoryFile();
+
+    // Write page here
+    htm << tfpWrHeadTfp( "MediaData " + md.GetIdStr(), "tab" ) <<
+        "<h1>Media Data " << md.GetIdStr() << ": " << md.FGetTitle() << "</h1>\n"
+        "<table class='data'>\n"
+
+        "<tr>\n"
+        "<td colspan='2' class='media'><a href = 'tfpv:M" << md.FGetID() << "'>"
+        "<img src='" << memoryfile << "' alt='' height='200' /></a></td>\n"
+        "</tr>\n"
+
+        "<tr>\n"
+        "<td>Path:</td>\n"
+        "<td><b>" << md.FGetFile() << "</b></td>\n"
+        "</tr>\n"
+
+        "<tr>\n"
+        "<td>Type:</td>\n"
+        "<td><b>" << recMediaData::GetMimeStr( md.FGetType() ) << "</b></td>\n"
+        "</tr>\n"
+
+        "<tr>\n"
+        "<td>Copyright:</td>\n"
+        "<td><b>" << md.FGetCopyright() << "</b></td>\n"
+        "</tr>\n"
+
+        "<tr>\n"
+        "<td>Privacy:</td>\n"
+        "<td><b>" << md.FGetPrivacy() << "</b></td>\n"
+        "</tr>\n"
+
+        "</table>\n" << tfpWrTailTfp()
+        ;
+    return htm;
+}
+
 wxString tfpWriteMediaDataIndex()
 {
     StringVec attached = recDb::GetDatabaseList();
@@ -210,7 +257,7 @@ wxString tfpWriteMediaDataIndex()
             result.SetRow( i );
             recMediaData::Mime mime = recMediaData::Mime( result.GetInt( 2 ) );
             htm <<
-                "<tr><td><a href='tfpv:MD" << result.GetAsString( 0 ) << attPostfix << // ID
+                "<tr><td><a href='tfp:MD" << result.GetAsString( 0 ) << attPostfix << // ID
                 "'><b>MD" << result.GetAsString( 0 ) <<
                 "</b></a></td><td>" << result.GetAsString( 1 ) <<  // Title
                 "</td><td>" << result.GetAsString( 5 ) <<  // File
