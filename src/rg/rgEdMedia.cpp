@@ -38,6 +38,7 @@
 #include "rg/rgDialogs.h"
 #include "rgEdMedia.h"
 
+#include <rec/recAssociate.h>
 
 bool rgEditMedia( wxWindow* wind, idt medID )
 {
@@ -58,6 +59,26 @@ bool rgEditMedia( wxWindow* wind, idt medID )
     return ret;
 }
 
+bool rgEditMediaData( wxWindow* wind, idt mdID, const wxString& dbname )
+{
+    wxASSERT( mdID != 0 && !dbname.empty() );
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+    bool ret = false;
+
+    rgDlgEditMediaData* dialog = new rgDlgEditMediaData( wind, mdID, dbname );
+
+    if( dialog->ShowModal() == wxID_OK ) {
+        recDb::ReleaseSavepoint( savepoint );
+        ret = true;
+    }
+    else {
+        recDb::Rollback( savepoint );
+    }
+    dialog->Destroy();
+    return ret;
+}
+
 //============================================================================
 //                 rgDlgEditMedia dialog
 //============================================================================
@@ -72,10 +93,16 @@ bool rgDlgEditMedia::TransferDataToWindow()
 {
     wxASSERT( m_md.FGetID() != 0 );
 
-    m_staticMediaID->SetLabel( m_media.GetIdStr() );
+    m_staticMediaID->SetLabel( m_media.GetIdStr() + ", "
+        + recAssociate::GetIdStr( m_media.FGetAssID() ) + ":"
+        + recMediaData::GetIdStr( m_media.FGetDataID() ) );
     m_textCtrlTitle->SetValue( m_media.FGetTitle() );
+    m_textCtrlNote->SetValue( m_media.FGetNote() );
     m_imagePanel->SetScrollMode( false );
     m_imagePanel->SetImage( m_md.FGetData() );
+    idt refID = m_media.FGetRefID();
+    m_textCtrlRefID->SetValue( recGetStr( refID ) );
+    m_staticTextRefTitle->SetLabel( recReference::GetTitle( refID ) );
     return true;
 }
 
@@ -85,5 +112,44 @@ bool rgDlgEditMedia::TransferDataFromWindow()
     m_media.Save();
     return true;
 }
+
+
+//============================================================================
+//                 rgDlgEditMediaData dialog
+//============================================================================
+
+rgDlgEditMediaData::rgDlgEditMediaData( wxWindow* parent, idt mdID, const wxString& dbname )
+    : m_md( dbname, mdID ), m_dbname( dbname ),
+    fbRgEditMediaData( parent )
+{
+    m_choiceFileType->Append( m_md.GetMimeList() );
+}
+
+bool rgDlgEditMediaData::TransferDataToWindow()
+{
+    wxASSERT( m_md.FGetID() != 0 );
+
+    m_textCtrlTitle->SetValue( m_md.FGetTitle() );
+    m_textCtrlFile->SetValue( m_md.FGetFile() );
+    m_choiceFileType->SetSelection( int( m_md.FGetType() ) - 1 );
+    m_textCtrlCopyright->SetValue( m_md.FGetCopyright() );
+    m_spinPrivacy->SetValue( m_md.FGetPrivacy() );
+    m_imagePanel->SetScrollMode( false );
+    m_imagePanel->SetImage( m_md.FGetData() );
+    m_staticMediaDataID->SetLabel( m_md.GetIdStr() + "," + m_dbname );
+    return true;
+}
+
+bool rgDlgEditMediaData::TransferDataFromWindow()
+{
+    m_md.FSetTitle( m_textCtrlTitle->GetValue() );
+    m_md.FSetFile( m_textCtrlFile->GetValue() );
+    m_md.FSetType( recMediaData::Mime( m_choiceFileType->GetSelection() + 1 ) );
+    m_md.FSetCopyright( m_textCtrlCopyright->GetValue() );
+    m_md.FSetPrivacy( m_spinPrivacy->GetValue() );
+    m_md.Save();
+    return true;
+}
+
 
 // End of src/rg/rgEdMedia.cpp file

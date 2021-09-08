@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     2nd October 2018
- * Copyright:   Copyright (c) 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2018..2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -33,6 +33,10 @@
 
 #include "fb/fbRgEditMedia.h"
 
+//============================================================================
+//                 rgDlgEditMedia dialog
+//============================================================================
+
 class rgDlgEditMedia : public fbRgEditMedia
 {
 public:
@@ -44,6 +48,23 @@ private:
 
     recMedia     m_media;
     recMediaData m_md;
+};
+
+//============================================================================
+//                 rgDlgEditMediaData dialog
+//============================================================================
+
+class rgDlgEditMediaData : public fbRgEditMediaData
+{
+public:
+    rgDlgEditMediaData( wxWindow* parent, idt mdID, const wxString& dbname );
+
+private:
+    bool TransferDataToWindow();
+    bool TransferDataFromWindow();
+
+    recMediaData m_md;
+    wxString     m_dbname;
 };
 
 #endif // SRC_RG_RGEDMEDIA_H

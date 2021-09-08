@@ -18,13 +18,17 @@
 #include <wx/settings.h>
 #include <wx/textctrl.h>
 #include <wx/sizer.h>
+#include <wx/panel.h>
 #include <rg/rgImagePanel.h>
+#include <wx/splitter.h>
 #include <wx/statline.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
 #include <wx/button.h>
 #include <wx/dialog.h>
+#include <wx/choice.h>
+#include <wx/spinctrl.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -37,7 +41,17 @@ class fbRgEditMedia : public wxDialog
 
 	protected:
 		wxTextCtrl* m_textCtrlTitle;
+		wxSplitterWindow* m_splitter1;
+		wxPanel* m_panelNote;
+		wxStaticText* m_staticText7;
+		wxTextCtrl* m_textCtrlNote;
+		wxPanel* m_panelImage;
 		rgImagePanel* m_imagePanel;
+		wxStaticText* m_staticText;
+		wxTextCtrl* m_textCtrlRefID;
+		wxStaticText* m_staticTextRefTitle;
+		wxStaticText* m_staticText3;
+		wxTextCtrl* m_textCtrlFile;
 		wxStaticText* m_staticMediaID;
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
@@ -46,6 +60,38 @@ class fbRgEditMedia : public wxDialog
 
 		fbRgEditMedia( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Media"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
 		~fbRgEditMedia();
+
+		void m_splitter1OnIdle( wxIdleEvent& )
+		{
+			m_splitter1->SetSashPosition( 100 );
+			m_splitter1->Disconnect( wxEVT_IDLE, wxIdleEventHandler( fbRgEditMedia::m_splitter1OnIdle ), NULL, this );
+		}
+
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class fbRgEditMediaData
+///////////////////////////////////////////////////////////////////////////////
+class fbRgEditMediaData : public wxDialog
+{
+	private:
+
+	protected:
+		wxTextCtrl* m_textCtrlTitle;
+		wxTextCtrl* m_textCtrlFile;
+		wxChoice* m_choiceFileType;
+		wxTextCtrl* m_textCtrlCopyright;
+		wxSpinCtrl* m_spinPrivacy;
+		wxPanel* m_panelImage;
+		rgImagePanel* m_imagePanel;
+		wxStaticText* m_staticMediaDataID;
+		wxButton* m_buttonSave;
+		wxButton* m_buttonCancel;
+
+	public:
+
+		fbRgEditMediaData( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Media Data"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE );
+		~fbRgEditMediaData();
 
 };
 

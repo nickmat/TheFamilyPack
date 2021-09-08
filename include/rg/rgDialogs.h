@@ -127,6 +127,7 @@ extern bool rgEditIndividual( wxWindow* wind, idt indID );
 
 // See src/rg/rgEdMedia.cpp
 extern bool rgEditMedia( wxWindow* wind, idt medID );
+extern bool rgEditMediaData( wxWindow* wind, idt mdID, const wxString& dbname );
 
 // See src/rg/rgEdName.cpp
 extern bool rgEditName( wxWindow* wind, idt nameID );

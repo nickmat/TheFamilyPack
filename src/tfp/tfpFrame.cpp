@@ -1212,7 +1212,18 @@ void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
             ret = rgEditGallery( this, id );
             break;
         case 'M':
-            ret = rgEditMedia( this, id );
+            if( uch1.GetValue() == 'D' ) {
+                // MD<num>,<dbname>
+                size_t pos = display.find( ',' );
+                if( pos == wxString::npos || display.length() == pos ) {
+                    break;
+                }
+                idt mdID = recGetID( display.substr( 2 ) );
+                ret = rgEditMediaData( this, mdID, display.substr( pos + 1 ) );
+            }
+            else {
+                ret = rgEditMedia( this, id );
+            }
             break;
         }
         if( ret == true ) {
@@ -1925,7 +1936,12 @@ void TfpFrame::RefreshEditMenu()
         }
         break;
     case 'M':
-        if( disp.size() >= 2 && wxIsdigit( disp.GetChar( 1 ) ) ) {
+        if( disp.size() >= 3 && disp.GetChar( 1 ) == 'D'
+            && wxIsdigit( disp.GetChar( 2 ) )
+            ) { // MD<number>
+            m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
+        }
+        if( disp.size() >= 2 && wxIsdigit( disp.GetChar( 1 ) ) ) { // M<number>
             m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
         }
         break;
