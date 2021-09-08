@@ -206,11 +206,21 @@ idt recMediaData::FindMedia( idt mdID, idt assID )
 wxString recMediaData::GetMimeStr( Mime mime )
 {
     switch( mime ) {
-    case Mime::image_png: return "image/png";
     case Mime::image_jpeg: return "image/jpeg";
+    case Mime::image_png: return "image/png";
     case Mime::image_gif: return "image/gif";
     }
     return "unknown";
+}
+
+StringVec recMediaData::GetMimeList()
+{
+    StringVec types;
+    size_t end = size_t( Mime::max_mime );
+    for( size_t i = 1; i < end; i++ ) {
+        types.push_back( GetMimeStr( Mime( i ) ) );
+    }
+    return types;
 }
 
 bool recMediaData::ImportData( wxString& filename )

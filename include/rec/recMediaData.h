@@ -33,7 +33,7 @@
 class recMediaData : public recDb
 {
 public:
-    enum class Mime { null_mime, image_png, image_jpeg, image_gif };
+    enum class Mime { null_mime, image_jpeg, image_png, image_gif, max_mime };
 
     recMediaData() {}
     recMediaData( idt id ) : recDb( id ) { Read(); }
@@ -68,6 +68,7 @@ public:
     static wxString GetDbname( const wxString& link, idt* mdID, idt* assID );
     static wxString GetFileName( const wxString& assDb, idt mdID );
     static wxString GetMimeStr( Mime mime );
+    static StringVec GetMimeList();
 
     static idt FindMedia( idt mdID, idt assID );
     idt FindMedia( idt assID ) const { return FindMedia( f_id, assID ); }
