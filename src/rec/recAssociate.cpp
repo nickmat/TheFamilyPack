@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     19th September 2018
- * Copyright:   Copyright (c) 2018 ~ 2019, Nick Matthews.
+ * Copyright:   Copyright (c) 2018 .. 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -145,7 +145,7 @@ wxString recAssociate::GetPath( idt assID )
 recAssociateVec recAssociate::GetList()
 {
     wxSQLite3ResultSet result = s_db->ExecuteQuery(
-        "SELECT id, path FROM Associate"
+        "SELECT id, path, comment FROM Associate"
         " WHERE id>0 ORDER BY id ASC;"
     );
     recAssociateVec vec;
