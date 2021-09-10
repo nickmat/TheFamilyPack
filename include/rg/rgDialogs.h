@@ -51,7 +51,7 @@ enum {
 };
 
 // See src/rg/rgAssociate.cpp
-extern bool rgEditAssociate( wxWindow* wind );
+extern bool rgEditAssociate( wxWindow* wind, idt assID );
 extern idt rgCreateAssociate( wxWindow* wind );
 extern idt rgSelectAssociate(
     wxWindow* wind,

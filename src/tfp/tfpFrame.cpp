@@ -840,7 +840,8 @@ void TfpFrame::OnEditAssociate( wxCommandEvent & event )
 {
     recDb::Begin();
     try {
-        if ( rgEditAssociate( this ) ) {
+        idt assID = rgSelectAssociate( this );
+        if ( assID && rgEditAssociate( this, assID ) ) {
             recDb::Commit();
             RefreshHtmPage();
         } else {

@@ -41,12 +41,12 @@
 #include <rec/recAssociate.h>
 #include <wx/filename.h>
 
-bool rgEditAssociate( wxWindow * wind )
+bool rgEditAssociate( wxWindow * wind, idt assID )
 {
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
     bool ret = false;
-    idt assID = rgSelectAssociate( wind );
+//    idt assID = rgSelectAssociate( wind );
 
     if ( assID != 0 ) {
         rgDlgEditAssociate dialog( wind, assID );
