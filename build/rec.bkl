@@ -6,7 +6,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     5th October 2010
- * Copyright:   Copyright (c) 2010 ~ 2019, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -134,6 +134,7 @@
 
   <lib id="recgui" template="wx-lib,wxlike">
     <libname>recgui$(WXLIBPOSTFIX)</libname>
+    <sources>$(LOCAL_SRC)/rg/fb/fbRgEditAssociate.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/fb/fbRgEditGallery.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/fb/fbRgEditMedia.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/fb/fbRgEditReference.cpp</sources>
@@ -180,6 +181,7 @@
     <headers>$(LOCAL_INC)/rg/rgDialogs.h</headers>
     <headers>$(LOCAL_INC)/rg/rgImagePanel.h</headers>
 
+    <headers>$(LOCAL_SRC)/rg/fb/fbRgEditAssociate.h</headers>
     <headers>$(LOCAL_SRC)/rg/fb/fbRgEditGallery.h</headers>
     <headers>$(LOCAL_SRC)/rg/fb/fbRgEditMedia.h</headers>
     <headers>$(LOCAL_SRC)/rg/fb/fbRgEditReference.h</headers>

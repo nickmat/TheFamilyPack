@@ -162,6 +162,7 @@ RECGUI_CXXFLAGS = $(VAR) $(VAR_5) -I../../include/rec -I../../include/rg \
 	-I../../include `$(WX_CONFIG) --cxxflags $(WX_CONFIG_FLAGS)` $(CPPFLAGS) \
 	$(CXXFLAGS)
 RECGUI_OBJECTS =  \
+	recgui_fbRgEditAssociate.o \
 	recgui_fbRgEditGallery.o \
 	recgui_fbRgEditMedia.o \
 	recgui_fbRgEditReference.o \
@@ -505,6 +506,9 @@ rec_dummy.o: ./../../src/dummy.cpp
 
 reccl_reccl.o: ./../../src/rc/reccl.cpp
 	$(CXX) -c -o $@ $(RECCL_CXXFLAGS) $(CPPDEPS) $<
+
+recgui_fbRgEditAssociate.o: ./../../src/rg/fb/fbRgEditAssociate.cpp
+	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_fbRgEditGallery.o: ./../../src/rg/fb/fbRgEditGallery.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<

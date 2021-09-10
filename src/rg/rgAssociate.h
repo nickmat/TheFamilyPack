@@ -5,7 +5,7 @@
 * Author:      Nick Matthews
 * Website:     http://thefamilypack.org
 * Created:     12th June 2019
-* Copyright:   Copyright (c) 2019 Nick Matthews.
+* Copyright:   Copyright (c) 2019..2021 Nick Matthews.
 * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -27,7 +27,26 @@
 #ifndef RGASSOCIATE_H
 #define RGASSOCIATE_H
 
+#include "fb/fbRgEditAssociate.h"
 #include "rgSelect.h"
+
+#include <rec/recAssociate.h>
+
+//-------------------------------------------------------------------------------
+//-------------------[ rgDlgEditAssociate ]-----------------------------------------
+//-------------------------------------------------------------------------------
+
+class rgDlgEditAssociate : public fbRgEditAssociate
+{
+public:
+    rgDlgEditAssociate( wxWindow* parent, idt assID );
+
+private:
+    bool TransferDataToWindow();
+    bool TransferDataFromWindow();
+
+    recAssociate m_ass;
+};
 
 //-------------------------------------------------------------------------------
 //-------------------[ rgDlgSelectAssociate ]-----------------------------------------

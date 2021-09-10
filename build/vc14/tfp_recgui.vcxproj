@@ -38,7 +38,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <_ProjectFileVersion>16.0.30709.64</_ProjectFileVersion>
+    <_ProjectFileVersion>16.0.31624.102</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
@@ -118,6 +118,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\rg\fbRgDialog.cpp" />
+    <ClCompile Include="..\..\src\rg\fb\fbRgEditAssociate.cpp" />
     <ClCompile Include="..\..\src\rg\fb\fbRgEditGallery.cpp" />
     <ClCompile Include="..\..\src\rg\fb\fbRgEditMedia.cpp" />
     <ClCompile Include="..\..\src\rg\fb\fbRgEditReference.cpp" />
@@ -164,6 +165,7 @@
     <ClInclude Include="..\..\include\rg\rgDialogs.h" />
     <ClInclude Include="..\..\include\rg\rgImagePanel.h" />
     <ClInclude Include="..\..\src\rg\fbRgDialog.h" />
+    <ClInclude Include="..\..\src\rg\fb\fbRgEditAssociate.h" />
     <ClInclude Include="..\..\src\rg\fb\fbRgEditGallery.h" />
     <ClInclude Include="..\..\src\rg\fb\fbRgEditMedia.h" />
     <ClInclude Include="..\..\src\rg\fb\fbRgEditReference.h" />

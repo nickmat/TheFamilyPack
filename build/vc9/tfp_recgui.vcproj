@@ -196,6 +196,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rg\fb\fbRgEditAssociate.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rg\fb\fbRgEditGallery.cpp"
 				>
 			</File>
@@ -363,6 +367,10 @@
 			>
 			<File
 				RelativePath="..\..\src\rg\fbRgDialog.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\fb\fbRgEditAssociate.h"
 				>
 			</File>
 			<File

@@ -201,6 +201,7 @@ RECGUI_CXXFLAGS = /MD$(VAR_21) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) \
 	/I..\..\include\rec /I..\..\include\rg /I..\..\include /GR /EHsc $(CPPFLAGS) \
 	$(CXXFLAGS)
 RECGUI_OBJECTS =  \
+	recgui_fbRgEditAssociate.obj \
 	recgui_fbRgEditGallery.obj \
 	recgui_fbRgEditMedia.obj \
 	recgui_fbRgEditReference.obj \
@@ -690,6 +691,9 @@ rec_dummy.obj: .\..\..\src\dummy.cpp
 
 reccl_reccl.obj: .\..\..\src\rc\reccl.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECCL_CXXFLAGS) .\..\..\src\rc\reccl.cpp
+
+recgui_fbRgEditAssociate.obj: .\..\..\src\rg\fb\fbRgEditAssociate.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\fb\fbRgEditAssociate.cpp
 
 recgui_fbRgEditGallery.obj: .\..\..\src\rg\fb\fbRgEditGallery.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\fb\fbRgEditGallery.cpp

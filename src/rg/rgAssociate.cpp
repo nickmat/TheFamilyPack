@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     12th June 2019
- * Copyright:   Copyright (c) 2019 Nick Matthews.
+ * Copyright:   Copyright (c) 2019..2021 Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -43,20 +43,15 @@
 
 bool rgEditAssociate( wxWindow * wind )
 {
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
     bool ret = false;
     idt assID = rgSelectAssociate( wind );
 
     if ( assID != 0 ) {
-        const wxString savepoint = recDb::GetSavepointStr();
-        recDb::Savepoint( savepoint );
+        rgDlgEditAssociate dialog( wind, assID );
 
-        recAssociate ass( assID );
-        wxTextEntryDialog assdlg( wind, _( "Database path:" ), _( "Create Associated Database" ) );
-        assdlg.SetValue( ass.FGetPath() );
-
-        if ( assdlg.ShowModal() == wxID_OK ) {
-            ass.FSetPath( assdlg.GetValue() );
-            ass.Save();
+        if ( dialog.ShowModal() == wxID_OK ) {
             recDb::ReleaseSavepoint( savepoint );
             ret = true;
         } else {
@@ -127,6 +122,31 @@ idt rgSelectAssociate( wxWindow* wind, unsigned flag, unsigned* retbutton )
     }
 
     return assID;
+}
+
+//-------------------------------------------------------------------------------
+//-------------------[ rgDlgEditAssociate ]-----------------------------------------
+//-------------------------------------------------------------------------------
+
+rgDlgEditAssociate::rgDlgEditAssociate( wxWindow* parent, idt assID )
+    : m_ass( assID ), fbRgEditAssociate( parent )
+{
+}
+
+bool rgDlgEditAssociate::TransferDataToWindow()
+{
+    m_staticAssID->SetLabel( m_ass.GetIdStr() );
+    m_textCtrlName->SetValue( m_ass.FGetPath() );
+    m_textCtrlComment->SetValue( m_ass.FGetComment() );
+    return true;
+}
+
+bool rgDlgEditAssociate::TransferDataFromWindow()
+{
+    m_ass.FSetPath( m_textCtrlName->GetValue() );
+    m_ass.FSetComment( m_textCtrlComment->GetValue() );
+    m_ass.Save();
+    return true;
 }
 
 //-------------------------------------------------------------------------------
