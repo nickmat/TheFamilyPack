@@ -55,7 +55,7 @@ private:
 class rgDlgSelectAssociate : public rgSelect
 {
     enum {
-        COL_ID, COL_Path, COL_MAX
+        COL_ID, COL_Path, COL_comment, COL_MAX
     };
     static wxString sm_colHeaders[COL_MAX];
 public:

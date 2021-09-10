@@ -46,7 +46,6 @@ bool rgEditAssociate( wxWindow * wind, idt assID )
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
     bool ret = false;
-//    idt assID = rgSelectAssociate( wind );
 
     if ( assID != 0 ) {
         rgDlgEditAssociate dialog( wind, assID );
@@ -94,6 +93,7 @@ idt rgSelectAssociate( wxWindow* wind, unsigned flag, unsigned* retbutton )
         for ( auto ass : vec ) {
             table.push_back( ass.GetIdStr() );
             table.push_back( ass.FGetPath() );
+            table.push_back( ass.FGetComment() );
         }
         dialog.SetTable( table );
         if ( vec.size() == 1 ) {
@@ -153,6 +153,8 @@ bool rgDlgEditAssociate::TransferDataFromWindow()
 //-------------------[ rgDlgSelectAssociate ]-----------------------------------------
 //-------------------------------------------------------------------------------
 
-wxString rgDlgSelectAssociate::sm_colHeaders[COL_MAX] = { _( "ID" ), _( "Path" ) };
+wxString rgDlgSelectAssociate::sm_colHeaders[COL_MAX] = {
+    _( "ID" ), _( "Name" ), _( "Comment" )
+};
 
 // End of src/rg/rgAssociate.cpp file
