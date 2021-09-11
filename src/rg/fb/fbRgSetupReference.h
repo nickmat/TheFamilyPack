@@ -22,6 +22,7 @@
 #include <wx/menu.h>
 #include <wx/button.h>
 #include <wx/sizer.h>
+#include <wx/statbox.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
 #include <wx/statline.h>
@@ -40,13 +41,16 @@ class fbRgSetupReferenceDialog : public wxDialog
 		wxListCtrl* m_listMedia;
 		wxButton* m_buttonMediaAdd;
 		wxMenu* m_popupAddMedia;
+		wxMenuItem* m_opAddNewMedia;
+		wxMenuItem* m_opAddExistingMedia;
 		wxButton* m_buttonMediaEdit;
 		wxButton* m_buttonMediaDel;
+		wxButton* m_buttonMediaUp;
+		wxButton* m_buttonMediaDn;
 		wxButton* m_buttonMediaView;
 		wxTextCtrl* m_textCtrlTemplate;
 		wxButton* m_buttonTemplateBrowse;
 		wxTextCtrl* m_textCtrlRefTitle;
-		wxStaticLine* m_staticline1;
 		wxStaticText* m_staticRefID;
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
@@ -59,7 +63,9 @@ class fbRgSetupReferenceDialog : public wxDialog
 		virtual void OnAddExistingMedia( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnMediaEditButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnMediaDeleteButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnMediaView( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnMediaUpButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnMediaDownButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnMediaViewButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnTemplateBrowse( wxCommandEvent& event ) { event.Skip(); }
 
 

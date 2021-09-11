@@ -27,46 +27,56 @@ fbRgSetupReferenceDialog::fbRgSetupReferenceDialog( wxWindow* parent, wxWindowID
 	wxBoxSizer* bSizer16;
 	bSizer16 = new wxBoxSizer( wxVERTICAL );
 
-	wxBoxSizer* bSizer20;
-	bSizer20 = new wxBoxSizer( wxHORIZONTAL );
+	wxStaticBoxSizer* sbSizer1;
+	sbSizer1 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Media:") ), wxHORIZONTAL );
 
-	m_listMedia = new wxListCtrl( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_HRULES|wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_VRULES );
-	bSizer20->Add( m_listMedia, 1, wxTOP|wxBOTTOM|wxLEFT, 5 );
+	m_listMedia = new wxListCtrl( sbSizer1->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_HRULES|wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_VRULES );
+	sbSizer1->Add( m_listMedia, 1, wxBOTTOM|wxLEFT|wxEXPAND, 5 );
 
 	wxBoxSizer* bSizer571;
 	bSizer571 = new wxBoxSizer( wxVERTICAL );
 
-	m_buttonMediaAdd = new wxButton( this, wxID_ANY, _("&Add"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonMediaAdd = new wxButton( sbSizer1->GetStaticBox(), wxID_ANY, _("&Add"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_popupAddMedia = new wxMenu();
-	wxMenuItem* m_opAddNewMedia;
 	m_opAddNewMedia = new wxMenuItem( m_popupAddMedia, wxID_ANY, wxString( _("&New Media") ) , _("Add an external image to the Reference"), wxITEM_NORMAL );
 	m_popupAddMedia->Append( m_opAddNewMedia );
 
-	wxMenuItem* m_opAddExistingMedia;
 	m_opAddExistingMedia = new wxMenuItem( m_popupAddMedia, wxID_ANY, wxString( _("&Existing Media") ) , _("Add an image from the database to the Reference"), wxITEM_NORMAL );
 	m_popupAddMedia->Append( m_opAddExistingMedia );
 
 	m_buttonMediaAdd->Connect( wxEVT_RIGHT_DOWN, wxMouseEventHandler( fbRgSetupReferenceDialog::m_buttonMediaAddOnContextMenu ), NULL, this );
 
-	bSizer571->Add( m_buttonMediaAdd, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+	bSizer571->Add( m_buttonMediaAdd, 0, wxALIGN_CENTER_HORIZONTAL|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 
-	m_buttonMediaEdit = new wxButton( this, wxID_ANY, _("&Edit"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonMediaEdit = new wxButton( sbSizer1->GetStaticBox(), wxID_ANY, _("&Edit"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer571->Add( m_buttonMediaEdit, 0, wxALIGN_CENTER_HORIZONTAL|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 
-	m_buttonMediaDel = new wxButton( this, wxID_ANY, _("&Delete"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonMediaDel = new wxButton( sbSizer1->GetStaticBox(), wxID_ANY, _("&Delete"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer571->Add( m_buttonMediaDel, 0, wxALIGN_CENTER_HORIZONTAL|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 
+	wxBoxSizer* bSizer5;
+	bSizer5 = new wxBoxSizer( wxHORIZONTAL );
 
-	bSizer571->Add( 0, 0, 1, wxEXPAND, 5 );
+	m_buttonMediaUp = new wxButton( sbSizer1->GetStaticBox(), wxID_ANY, _("&Up"), wxDefaultPosition, wxSize( 35,-1 ), 0 );
+	bSizer5->Add( m_buttonMediaUp, 1, wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 
-	m_buttonMediaView = new wxButton( this, wxID_ANY, _("&View"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonMediaDn = new wxButton( sbSizer1->GetStaticBox(), wxID_ANY, _("Do&wn"), wxDefaultPosition, wxSize( 35,-1 ), 0 );
+	bSizer5->Add( m_buttonMediaDn, 1, wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+
+
+	bSizer571->Add( bSizer5, 1, wxEXPAND, 5 );
+
+
+	bSizer571->Add( 0, 0, 0, 0, 5 );
+
+	m_buttonMediaView = new wxButton( sbSizer1->GetStaticBox(), wxID_ANY, _("&View"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer571->Add( m_buttonMediaView, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 
 
-	bSizer20->Add( bSizer571, 0, wxEXPAND, 5 );
+	sbSizer1->Add( bSizer571, 0, wxEXPAND, 5 );
 
 
-	bSizer16->Add( bSizer20, 1, wxEXPAND, 5 );
+	bSizer16->Add( sbSizer1, 1, wxEXPAND, 5 );
 
 	wxFlexGridSizer* fgSizer2;
 	fgSizer2 = new wxFlexGridSizer( 0, 3, 0, 0 );
@@ -96,6 +106,7 @@ fbRgSetupReferenceDialog::fbRgSetupReferenceDialog( wxWindow* parent, wxWindowID
 
 	bSizer16->Add( fgSizer2, 0, wxEXPAND, 5 );
 
+	wxStaticLine* m_staticline1;
 	m_staticline1 = new wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
 	bSizer16->Add( m_staticline1, 0, wxEXPAND | wxALL, 5 );
 
@@ -135,7 +146,9 @@ fbRgSetupReferenceDialog::fbRgSetupReferenceDialog( wxWindow* parent, wxWindowID
 	m_popupAddMedia->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbRgSetupReferenceDialog::OnAddExistingMedia ), this, m_opAddExistingMedia->GetId());
 	m_buttonMediaEdit->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSetupReferenceDialog::OnMediaEditButton ), NULL, this );
 	m_buttonMediaDel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSetupReferenceDialog::OnMediaDeleteButton ), NULL, this );
-	m_buttonMediaView->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSetupReferenceDialog::OnMediaView ), NULL, this );
+	m_buttonMediaUp->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSetupReferenceDialog::OnMediaUpButton ), NULL, this );
+	m_buttonMediaDn->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSetupReferenceDialog::OnMediaDownButton ), NULL, this );
+	m_buttonMediaView->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSetupReferenceDialog::OnMediaViewButton ), NULL, this );
 	m_buttonTemplateBrowse->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSetupReferenceDialog::OnTemplateBrowse ), NULL, this );
 }
 
@@ -147,7 +160,9 @@ fbRgSetupReferenceDialog::~fbRgSetupReferenceDialog()
 	m_buttonMediaAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSetupReferenceDialog::OnMediaAddButton ), NULL, this );
 	m_buttonMediaEdit->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSetupReferenceDialog::OnMediaEditButton ), NULL, this );
 	m_buttonMediaDel->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSetupReferenceDialog::OnMediaDeleteButton ), NULL, this );
-	m_buttonMediaView->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSetupReferenceDialog::OnMediaView ), NULL, this );
+	m_buttonMediaUp->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSetupReferenceDialog::OnMediaUpButton ), NULL, this );
+	m_buttonMediaDn->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSetupReferenceDialog::OnMediaDownButton ), NULL, this );
+	m_buttonMediaView->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSetupReferenceDialog::OnMediaViewButton ), NULL, this );
 	m_buttonTemplateBrowse->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgSetupReferenceDialog::OnTemplateBrowse ), NULL, this );
 
 	delete m_popupAddMedia;

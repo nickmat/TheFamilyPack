@@ -59,7 +59,9 @@ private:
     void OnAddExistingMedia( wxCommandEvent& event ) override;
     void OnMediaEditButton( wxCommandEvent& event ) override;
     void OnMediaDeleteButton( wxCommandEvent& event ) override;
-    void OnMediaView( wxCommandEvent& event ) override;
+    void OnMediaUpButton( wxCommandEvent& event ) override;
+    void OnMediaDownButton( wxCommandEvent& event ) override;
+    void OnMediaViewButton( wxCommandEvent& event ) override;
     void OnTemplateBrowse( wxCommandEvent& event ) override;
 
     recReference  m_reference;

@@ -111,28 +111,25 @@ void rgDlgSetupReference::MediaButtonsEnable( long row )
     if( row < 0 ) {
         m_buttonMediaEdit->Disable();
         m_buttonMediaDel->Disable();
-//        m_buttonUp->Disable();
-//        m_buttonDn->Disable();
+        m_buttonMediaUp->Disable();
+        m_buttonMediaDn->Disable();
         m_buttonMediaView->Disable();
         return;
     }
     m_buttonMediaEdit->Enable();
     m_buttonMediaDel->Enable();
-    // TODO: Add a ref order field to the Media table.
-#if 0
     if( row == 0 ) {
-        m_buttonUp->Disable();
+        m_buttonMediaUp->Disable();
     }
     else {
-        m_buttonUp->Enable();
+        m_buttonMediaUp->Enable();
     }
-    if( row == m_listChildren->GetItemCount() - 1 ) {
-        m_buttonDn->Disable();
+    if( row == m_listMedia->GetItemCount() - 1 ) {
+        m_buttonMediaDn->Disable();
     }
     else {
-        m_buttonDn->Enable();
+        m_buttonMediaDn->Enable();
     }
-#endif
     m_buttonMediaView->Enable();
 }
 
@@ -189,7 +186,17 @@ void rgDlgSetupReference::OnMediaDeleteButton( wxCommandEvent& event )
     wxMessageBox( _( "Not yet implimented" ), "OnMediaDeleteButton" );
 }
 
-void rgDlgSetupReference::OnMediaView( wxCommandEvent& event )
+void rgDlgSetupReference::OnMediaUpButton( wxCommandEvent& event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnMediaUpButton" );
+}
+
+void rgDlgSetupReference::OnMediaDownButton( wxCommandEvent& event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnMediaDeleteButton" );
+}
+
+void rgDlgSetupReference::OnMediaViewButton( wxCommandEvent& event )
 {
     long row = m_listMedia->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
