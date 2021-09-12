@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     21st January 2013
- * Copyright:   Copyright (c) 2013 ~ 2019, Nick Matthews.
+ * Copyright:   Copyright (c) 2013 .. 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -232,7 +232,7 @@ wxString tfpNormaliseSpaces( const wxString& str )
 
 wxString tfpGetMediaDataFile( idt mdID, idt assID )
 {
-    wxString assDb = recAssociate::GetPath( assID );
+    wxString assDb = recAssociate::GetAttachedName( assID );
     wxString filename = recMediaData::GetFileName( assDb, mdID ) + ".bmp";
     // Read into the virtual file system, unless it already exists.
     wxFileSystem fs;

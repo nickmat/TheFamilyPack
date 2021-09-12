@@ -133,7 +133,7 @@ public:
 
     /*! Add entry to the attached Associate database map.
      */
-    static void AddAssociate( idt assID, const wxString& path ) { s_assmap[assID] = path; }
+    static void AddAssociateMap( idt assID, const wxString& path ) { s_assmap[assID] = path; }
 
     /*! Do a global systems check and update.
      *  Could take a while.

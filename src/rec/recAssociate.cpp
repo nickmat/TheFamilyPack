@@ -119,7 +119,7 @@ idt recAssociate::Create( const wxString & path, const wxString& comment )
     return ass.FGetID();
 }
 
-wxString recAssociate::GetPath( idt assID )
+wxString recAssociate::GetAttachedName( idt assID )
 {
     if ( s_assmap.count( assID ) == 1 ) {
         return s_assmap[assID];

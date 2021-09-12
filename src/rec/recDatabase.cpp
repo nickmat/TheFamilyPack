@@ -50,7 +50,6 @@ extern void recInitialize()
     if( recDb::GetDb() == NULL ) {
         recDb::SetDb( new wxSQLite3Database() );
     }
-    recDb::AddAssociate( 0, "Main" );
     calInit();
 }
 
@@ -136,6 +135,7 @@ bool recDb::CreateDb( const wxString& fname, unsigned flags )
     CreateReturn ret = CreateDbFile( dbfname, DbType::full );
     if ( ret == CreateReturn::OK ) {
         s_db->Open( dbfname );
+        AddAssociateMap( 0, "Main" );
         return true;
     }
     return false;
@@ -162,19 +162,21 @@ recDb::DbType recDb::OpenDb( const wxString& fname )
     DbType type = recVersion::Manage();
     if( type == DbType::db_null ) {
         CloseDb();
+        return DbType::db_null;
     }
+    AddAssociateMap( 0, "Main" );
     return type;
 }
 
 bool recDb::AttachDb( const wxString& fname, const wxString& dbname )
 {
     wxFileName dbfile( fname );
+    wxFileName dbMain( recDb::GetFileName() );
     dbfile.SetExt( "tfpd" );
     if ( !dbfile.FileExists() ) {
         if ( !dbfile.IsRelative() ) {
             return false;
         }
-        wxFileName dbMain( recDb::GetFileName() );
         wxString dbPath( dbMain.GetPath() );
         dbfile.SetCwd( dbPath );
         if ( !dbfile.FileExists() ) {
@@ -184,7 +186,13 @@ bool recDb::AttachDb( const wxString& fname, const wxString& dbname )
     wxString dbfname = dbfile.GetFullPath();
     wxSQLite3StatementBuffer sql;
     sql.Format( "ATTACH DATABASE '%q' AS '%q';", UTF8_( dbfname ), UTF8_( dbname ) );
-    s_db->ExecuteUpdate( sql );
+    try {
+        s_db->ExecuteUpdate( sql );
+    }
+    catch( wxSQLite3Exception& e ) {
+        recDb::ErrorMessage( e );
+        return false;
+    }
 
     DbType type = recVersion::Manage( dbname );
     if( type == DbType::db_null ) {
@@ -253,7 +261,6 @@ void recDb::CloseDb()
     s_dbtype = DbType::db_null;
     ++s_change;
     s_assmap.clear();
-    s_assmap[0] = "Main";
 }
 
 bool recDb::GlobalUpdate()

@@ -125,7 +125,7 @@ wxString tfpWriteMediaIndex()
         htm <<
             "<tr><td><a href='tfp:M" << result.GetAsString( 0 ) <<
             "'><b>M" << result.GetAsString( 0 ) <<
-            "</b></a></td><td>" << recAssociate::GetPath( GET_ID( result.GetInt64( 1 ) ) ) <<
+            "</b></a></td><td>" << recAssociate::GetAttachedName( GET_ID( result.GetInt64( 1 ) ) ) <<
             "</td><td><a href='tfp:R" << result.GetAsString( 2 ) <<
             "'><b>R" << result.GetAsString( 2 ) <<
             "</b></a></td><td> " << result.GetAsString( 3 ) <<
@@ -167,7 +167,7 @@ wxString tfpWriteMediaPagedIndex( idt begCnt )
         htm <<
             "<tr><td><a href='tfp:M" << result.GetAsString( 0 ) <<
             "'><b>M" << result.GetAsString( 0 ) <<
-            "</b></a></td><td>" << recAssociate::GetPath( GET_ID( result.GetInt64( 1 ) ) ) <<
+            "</b></a></td><td>" << recAssociate::GetAttachedName( GET_ID( result.GetInt64( 1 ) ) ) <<
             "</td><td><a href='tfp:R" << result.GetAsString( 2 ) <<
             "'><b>R" << result.GetAsString( 2 ) <<
             "</b></a></td><td> " << result.GetAsString( 3 ) <<

@@ -141,7 +141,7 @@ bool recMediaData::Read( const wxString & dbname )
 
 bool recMediaData::ReadID( idt id, idt assID )
 {
-    wxString dbname = recAssociate::GetPath( assID );
+    wxString dbname = recAssociate::GetAttachedName( assID );
     if ( dbname.empty() ) {
         Clear();
         return false;
@@ -175,7 +175,7 @@ wxString recMediaData::GetDbname( const wxString& link, idt* mdID, idt* assID )
         *assID = recDb::GetAttachedDbAssID( dbname );
         break;
     case recSplitStrRet::associate:
-        dbname = recAssociate::GetPath( *assID );
+        dbname = recAssociate::GetAttachedName( *assID );
         break;
     }
     if( *mdID == 0 ) {

@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     19th September 2018
- * Copyright:   Copyright (c) 2018 ~ 2019, Nick Matthews.
+ * Copyright:   Copyright (c) 2018 ~ 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -58,7 +58,10 @@ public:
 
     static idt Create( const wxString& path, const wxString& comment = "" );
 
-    static wxString GetPath( idt assID );
+    /* Returns the attached database schema name.
+    *  If the database is not currently attached, will attempt to attach first.
+    */
+    static wxString GetAttachedName( idt assID );
 
     static recAssociateVec GetList();
 
