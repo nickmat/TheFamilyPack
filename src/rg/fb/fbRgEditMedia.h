@@ -88,9 +88,13 @@ class fbRgEditMediaData : public wxDialog
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
 
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnLeftDClick( wxMouseEvent& event ) { event.Skip(); }
+
+
 	public:
 
-		fbRgEditMediaData( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Media Data"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE );
+		fbRgEditMediaData( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Media Data"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
 		~fbRgEditMediaData();
 
 };

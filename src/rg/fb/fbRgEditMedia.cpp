@@ -229,7 +229,7 @@ fbRgEditMediaData::fbRgEditMediaData( wxWindow* parent, wxWindowID id, const wxS
 	wxBoxSizer* bSizerDismiss;
 	bSizerDismiss = new wxBoxSizer( wxHORIZONTAL );
 
-	m_staticMediaDataID = new wxStaticText( this, wxID_ANY, _("MD0,dbname"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticMediaDataID = new wxStaticText( this, wxID_ANY, _("A0:MD0"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticMediaDataID->Wrap( -1 );
 	m_staticMediaDataID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Times New Roman") ) );
 
@@ -253,8 +253,14 @@ fbRgEditMediaData::fbRgEditMediaData( wxWindow* parent, wxWindowID id, const wxS
 	bSizer8->Fit( this );
 
 	this->Centre( wxBOTH );
+
+	// Connect Events
+	m_imagePanel->Connect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( fbRgEditMediaData::OnLeftDClick ), NULL, this );
 }
 
 fbRgEditMediaData::~fbRgEditMediaData()
 {
+	// Disconnect Events
+	m_imagePanel->Disconnect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( fbRgEditMediaData::OnLeftDClick ), NULL, this );
+
 }

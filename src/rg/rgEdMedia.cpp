@@ -151,5 +151,10 @@ bool rgDlgEditMediaData::TransferDataFromWindow()
     return true;
 }
 
+void rgDlgEditMediaData::OnLeftDClick( wxMouseEvent& event )
+{
+    rgViewMedia( this, m_md.FGetID(), m_dbname );
+}
+
 
 // End of src/rg/rgEdMedia.cpp file
