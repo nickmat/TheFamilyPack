@@ -55,7 +55,9 @@ extern bool rgEditAssociate( wxWindow* wind, idt assID );
 extern idt rgCreateAssociate( wxWindow* wind );
 extern idt rgSelectAssociate(
     wxWindow* wind,
-    unsigned flag = rgSELSTYLE_Create, unsigned* retbutton = NULL
+    unsigned flag = rgSELSTYLE_Create,
+    unsigned* retbutton = NULL,
+    const wxString& title = ""
 );
 
 // See src/rg/rgCrName.cpp
@@ -194,6 +196,10 @@ extern idt rgAddNewChild( wxWindow* wind, idt famID, Sex sex );
 extern idt rgAddExistChild( wxWindow* wind, idt famID, Sex sex );
 extern bool rgDeleteIndividual( wxWindow* wind, idt indID );
 
+// See src/rg/RefTemplate.cpp
+extern bool rgEnterTemplateData(
+    wxWindow* parent, const wxString& reftemplate, rgRefData& data );
+
 // See src/rg/rgSelect.cpp
 extern idt rgSelectDate(
     wxWindow* wind,
@@ -242,7 +248,7 @@ extern idt rgSelectEvent(
     unsigned* button = NULL );
 
 // See scr/rg/rgSetupReference.cpp
-extern bool rgGetRefSetupData( wxWindow* parent, idt refID, rgRefData& data );
+extern idt rgGetRefSetupData( wxWindow* parent, idt assID );
 
 // See src/rg/rgViewMedia.cpp
 extern void rgViewMedia( wxWindow* wind, idt medID );

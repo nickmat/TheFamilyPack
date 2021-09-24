@@ -93,15 +93,17 @@ bool rgDlgEditMedia::TransferDataToWindow()
 {
     wxASSERT( m_md.FGetID() != 0 );
 
-    m_staticMediaID->SetLabel( m_media.GetIdStr() + ", "
-        + recAssociate::GetIdStr( m_media.FGetAssID() ) + ":"
-        + recMediaData::GetIdStr( m_media.FGetDataID() ) );
+    idt refID = m_media.FGetRefID();
+    m_staticMediaID->SetLabel( m_media.GetIdStr() );
     m_textCtrlTitle->SetValue( m_media.FGetTitle() );
     m_textCtrlNote->SetValue( m_media.FGetNote() );
     m_imagePanel->SetScrollMode( false );
     m_imagePanel->SetImage( m_md.FGetData() );
-    idt refID = m_media.FGetRefID();
-    m_textCtrlRefID->SetValue( recGetStr( refID ) );
+    m_staticText_mdID->SetLabel(
+        recAssociate::GetIdStr( m_media.FGetAssID() ) + ":" +
+        recMediaData::GetIdStr( m_media.FGetDataID() ) );
+    m_spinCtrlPrivacy->SetValue( m_media.FGetPrivacy() );
+    m_staticTextRefID->SetLabel( recReference::GetIdStr( refID ) );
     m_staticTextRefTitle->SetLabel( recReference::GetTitle( refID ) );
     return true;
 }
@@ -109,8 +111,15 @@ bool rgDlgEditMedia::TransferDataToWindow()
 bool rgDlgEditMedia::TransferDataFromWindow()
 {
     m_media.FSetTitle( m_textCtrlTitle->GetValue() );
+    m_media.FSetNote( m_textCtrlNote->GetValue() );
+    m_media.FSetPrivacy( m_spinCtrlPrivacy->GetValue() );
     m_media.Save();
     return true;
+}
+
+void rgDlgEditMedia::OnImageLeftDClick( wxMouseEvent& event )
+{
+    rgViewMedia( this, m_media.FGetDataID(), m_media.FGetAssID() );
 }
 
 
@@ -147,11 +156,11 @@ bool rgDlgEditMediaData::TransferDataFromWindow()
     m_md.FSetType( recMediaData::Mime( m_choiceFileType->GetSelection() + 1 ) );
     m_md.FSetCopyright( m_textCtrlCopyright->GetValue() );
     m_md.FSetPrivacy( m_spinPrivacy->GetValue() );
-    m_md.Save();
+    m_md.Save( m_dbname );
     return true;
 }
 
-void rgDlgEditMediaData::OnLeftDClick( wxMouseEvent& event )
+void rgDlgEditMediaData::OnImageLeftDClick( wxMouseEvent& event )
 {
     rgViewMedia( this, m_md.FGetID(), m_dbname );
 }

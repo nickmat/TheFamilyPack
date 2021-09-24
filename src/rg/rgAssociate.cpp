@@ -80,11 +80,12 @@ idt rgCreateAssociate( wxWindow* wind )
     return 0;
 }
 
-idt rgSelectAssociate( wxWindow* wind, unsigned flag, unsigned* retbutton )
+idt rgSelectAssociate( wxWindow* wind, unsigned flag, unsigned* retbutton, const wxString& title )
 {
     idt assID = 0;
     if ( retbutton ) *retbutton = rgSELSTYLE_None;
-    rgDlgSelectAssociate dialog( wind, flag );
+    rgDlgSelectAssociate dialog( wind, flag, title );
+    dialog.SetUnknownButtonLabel( "Main" );
 
     bool cont = true;
     while ( cont ) {

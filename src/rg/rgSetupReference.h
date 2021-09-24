@@ -32,6 +32,8 @@
 
 #include "fb/fbRgSetupReference.h"
 
+class rgRefData;
+
 //============================================================================
 //-------------------------[ rgDlgSetupReference ]-----------------------------
 //============================================================================
@@ -40,7 +42,9 @@ class rgDlgSetupReference : public fbRgSetupReferenceDialog
 {
 public:
     /** Constructor */
-    rgDlgSetupReference( wxWindow* parent, idt refID );
+    rgDlgSetupReference( wxWindow* parent, rgRefData& data, idt assID );
+
+    wxString GetTemplateFile() const { return m_template; }
 
 private:
     enum MediaColumn {
@@ -63,8 +67,13 @@ private:
     void OnMediaDownButton( wxCommandEvent& event ) override;
     void OnMediaViewButton( wxCommandEvent& event ) override;
     void OnTemplateBrowse( wxCommandEvent& event ) override;
+    void OnNext( wxCommandEvent& event );// override;
 
     recReference  m_reference;
+    rgRefData&    m_data;
+//    idt           m_assID;
+    StringVec     m_dbnames;
+//    int           m_dbname_index;
     recIdVec      m_mediaIDs;
     wxString      m_template;
 };

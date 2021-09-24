@@ -46,6 +46,8 @@ private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
 
+    void OnImageLeftDClick( wxMouseEvent& event ) override;
+    
     recMedia     m_media;
     recMediaData m_md;
 };
@@ -63,7 +65,7 @@ private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
 
-    void OnLeftDClick( wxMouseEvent& event ) override;
+    void OnImageLeftDClick( wxMouseEvent& event ) override;
 
     recMediaData m_md;
     wxString     m_dbname;

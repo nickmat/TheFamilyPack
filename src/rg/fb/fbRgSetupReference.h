@@ -16,14 +16,15 @@
 #include <wx/colour.h>
 #include <wx/settings.h>
 #include <wx/string.h>
+#include <wx/stattext.h>
+#include <wx/choice.h>
+#include <wx/sizer.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
 #include <wx/menu.h>
 #include <wx/button.h>
-#include <wx/sizer.h>
 #include <wx/statbox.h>
-#include <wx/stattext.h>
 #include <wx/textctrl.h>
 #include <wx/statline.h>
 #include <wx/dialog.h>
@@ -39,6 +40,7 @@ class fbRgSetupReferenceDialog : public wxDialog
 
 	protected:
 		wxListCtrl* m_listMedia;
+		wxChoice* m_choiceMediaDb;
 		wxButton* m_buttonMediaAdd;
 		wxMenu* m_popupAddMedia;
 		wxMenuItem* m_opAddNewMedia;

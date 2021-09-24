@@ -733,19 +733,9 @@ void TfpFrame::OnEditNewReference( wxCommandEvent& event )
 
 void TfpFrame::OnEditRefTemplate( wxCommandEvent& event )
 {
-    recDb::Begin();
-    try {
-        if( rgCreateReferenceFromTemplate( this ) == 0 ) {
-            recDb::Rollback();
-        }
-        else {
-            recDb::Commit();
-            RefreshHtmPage();
-        }
-    }
-    catch( wxSQLite3Exception& e ) {
-        recDb::ErrorMessage( e );
-        recDb::Rollback();
+    idt refID = rgCreateReferenceFromTemplate( this );
+    if( refID != 0 ) {
+        DisplayHtmPage( "R" + recGetIDStr( refID ) );
     }
 }
 

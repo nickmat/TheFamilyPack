@@ -33,6 +33,8 @@
 
 #include "rgRefTemplate.h"
 
+#include <rg/rgDialogs.h>
+
 #include <hxml5/pugixml.hpp>
 
 using namespace pugi;
@@ -88,7 +90,7 @@ namespace {
         wxMessageBox( block.m_title, "rgEnterTemplateData" );
     }
 }
-#if 0
+
 bool rgEnterTemplateData( 
     wxWindow* parent, const wxString& reftemplate, rgRefData& data )
 {
@@ -110,7 +112,6 @@ bool rgEnterTemplateData(
     }
     return true;
 }
-#endif
 
 //============================================================================
 //-------------------------[ rgEditRefTemplate ]------------------------------

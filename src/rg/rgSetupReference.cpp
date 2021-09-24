@@ -37,25 +37,57 @@
 
 #include "rgSetupReference.h"
 
+#include "rgRefTemplate.h"
+
 #include <rg/rgDialogs.h>
 
+#include <rec/recAssociate.h>
 #include <rec/recMedia.h>
+#include <rec/recMediaData.h>
 
-bool rgGetRefSetupData( wxWindow* parent, idt refID, rgRefData& data )
+
+static bool GetSetupData( wxWindow* wind, rgRefData& data, idt assID )
 {
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
-    bool ret = false;
-    rgDlgSetupReference dialog( parent, refID );
 
-    if( dialog.ShowModal() == wxID_OK ) {
+    rgDlgSetupReference dialog( wind, data, assID );
+
+    if( dialog.ShowModal() != wxID_OK ) {
+        recDb::Rollback( savepoint );
+        return false;
+    }
+
+    if( !rgEnterTemplateData( wind, dialog.GetTemplateFile(), data ) ) {
+        recDb::Rollback( savepoint );
+        return false;
+    }
+
+    recDb::ReleaseSavepoint( savepoint );
+    return true;
+}
+
+
+
+idt rgGetRefSetupData( wxWindow* parent, idt assID )
+{
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+
+    recReference ref( 0 );
+    ref.Save();
+    idt refID = ref.FGetID();
+    rgRefData data;
+    data.m_ref_id = refID;
+
+    if( GetSetupData( parent, data, assID ) ) {
         recDb::ReleaseSavepoint( savepoint );
-        ret = true;
     }
     else {
         recDb::Rollback( savepoint );
+        return 0;
     }
-    return ret;
+    return refID;
 }
 
 //============================================================================
@@ -63,11 +95,23 @@ bool rgGetRefSetupData( wxWindow* parent, idt refID, rgRefData& data )
 //============================================================================
 
 
-rgDlgSetupReference::rgDlgSetupReference( wxWindow* parent, idt refID )
-    : m_reference( refID ), fbRgSetupReferenceDialog( parent )
+rgDlgSetupReference::rgDlgSetupReference( wxWindow* parent, rgRefData& data, idt assID )
+    : m_reference(data.m_ref_id ), m_data(data),
+    m_dbnames( recDb::GetDatabaseList() ), // m_assID( assID ), 
+    fbRgSetupReferenceDialog( parent )
 {
     m_listMedia->InsertColumn( MED_COL_Number, _( "Number" ) );
     m_listMedia->InsertColumn( MED_COL_Title, _( "Title" ) );
+    m_choiceMediaDb->Append( m_dbnames );
+    wxString dbname = recAssociate::GetAttachedName( assID );
+    int index = 0;
+    for( size_t i = 0; i < m_dbnames.size(); i++ ) {
+        if( dbname.compare( m_dbnames[i] ) == 0 ) {
+            index = i;
+            break;
+        }
+    }
+    m_choiceMediaDb->SetSelection( index );
 }
 
 bool rgDlgSetupReference::TransferDataToWindow()
@@ -76,12 +120,15 @@ bool rgDlgSetupReference::TransferDataToWindow()
     m_staticRefID->SetLabel( m_reference.GetIdStr() );
     m_textCtrlRefTitle->SetValue( m_reference.FGetTitle() );
     UpdateMedias( 0 );
-    return false;
+    return true;
 }
 
 bool rgDlgSetupReference::TransferDataFromWindow()
 {
-    return false;
+    m_reference.FSetTitle( m_textCtrlRefTitle->GetValue() );
+    m_reference.Save();
+    m_template = m_textCtrlTemplate->GetValue();
+    return true;
 }
 
 void rgDlgSetupReference::UpdateMedias( idt medID )
@@ -89,7 +136,7 @@ void rgDlgSetupReference::UpdateMedias( idt medID )
     m_mediaIDs = recReference::GetMediaList( m_reference.FGetID() );
     long row = 0, sel = -1;
     for( idt mediaID : m_mediaIDs ) {
-        m_listMedia->InsertItem( row, mediaID );
+        m_listMedia->InsertItem( row, recMedia::GetIdStr( mediaID ) );
         m_listMedia->SetItem( row, MED_COL_Title, recMedia::GetTitle( mediaID ) );
         if( mediaID == medID ) {
             m_listMedia->SetItemState( row, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
@@ -158,17 +205,31 @@ void rgDlgSetupReference::OnAddNewMedia( wxCommandEvent& event )
     wxString defaultFName = wxEmptyString;
 
     wxFileDialog dialog( this, caption, defaultDir, defaultFName, wildcard, wxFD_OPEN );
-    if( dialog.ShowModal() == wxID_OK )
-    {
-        wxString path = dialog.GetPath();
-        unsigned style = rgSELSTYLE_Create | rgSELSTYLE_Unknown;
-        unsigned button = rgSELSTYLE_None;
-        idt assID = rgSelectAssociate( this, style, &button );
-        if( assID != 0 || button == rgSELSTYLE_Unknown ) {
-
-        }
-//        wxMessageBox( _( "Path: " + path ), "OnAddNewMedia" );
+    if( dialog.ShowModal() != wxID_OK ) {
+        return;
     }
+    wxString path = dialog.GetPath();
+    int index = m_choiceMediaDb->GetSelection();
+    wxString dbname = m_dbnames[index];
+    idt assID = recDb::GetAttachedDbAssID( dbname );
+
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+
+    recMediaData md( 0 );
+    md.ImportData( path );
+    md.Save( dbname );
+    if( !rgEditMediaData( this, md.FGetID(), dbname ) ) {
+        recDb::Rollback( savepoint );
+        return;
+    }
+    idt medID = recMedia::Create( md.FGetID(), assID, m_reference.FGetID() );
+    if( !rgEditMedia( this, medID ) ) {
+        recDb::Rollback( savepoint );
+        return;
+    }
+    recDb::ReleaseSavepoint( savepoint );
+    UpdateMedias( 0 );
 }
 
 void rgDlgSetupReference::OnAddExistingMedia( wxCommandEvent& event )
@@ -221,6 +282,11 @@ void rgDlgSetupReference::OnTemplateBrowse( wxCommandEvent& event )
         wxString path = dialog.GetPath();
         m_textCtrlTemplate->SetValue( path );
     }
+}
+
+void rgDlgSetupReference::OnNext( wxCommandEvent& event )
+{
+    EndModal( wxID_OK );
 }
 
 // End of src/rg/rgSetupReference.cpp file

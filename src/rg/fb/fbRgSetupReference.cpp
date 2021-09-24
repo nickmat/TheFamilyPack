@@ -28,10 +28,32 @@ fbRgSetupReferenceDialog::fbRgSetupReferenceDialog( wxWindow* parent, wxWindowID
 	bSizer16 = new wxBoxSizer( wxVERTICAL );
 
 	wxStaticBoxSizer* sbSizer1;
-	sbSizer1 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Media:") ), wxHORIZONTAL );
+	sbSizer1 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("&Media:") ), wxHORIZONTAL );
+
+	wxBoxSizer* bSizer6;
+	bSizer6 = new wxBoxSizer( wxVERTICAL );
 
 	m_listMedia = new wxListCtrl( sbSizer1->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_HRULES|wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_VRULES );
-	sbSizer1->Add( m_listMedia, 1, wxBOTTOM|wxLEFT|wxEXPAND, 5 );
+	bSizer6->Add( m_listMedia, 0, wxEXPAND, 5 );
+
+	wxBoxSizer* bSizer7;
+	bSizer7 = new wxBoxSizer( wxHORIZONTAL );
+
+	wxStaticText* m_staticText4;
+	m_staticText4 = new wxStaticText( sbSizer1->GetStaticBox(), wxID_ANY, _("New Med&ia Database:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText4->Wrap( -1 );
+	bSizer7->Add( m_staticText4, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	wxArrayString m_choiceMediaDbChoices;
+	m_choiceMediaDb = new wxChoice( sbSizer1->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceMediaDbChoices, 0 );
+	m_choiceMediaDb->SetSelection( 0 );
+	bSizer7->Add( m_choiceMediaDb, 1, wxALL, 5 );
+
+
+	bSizer6->Add( bSizer7, 1, wxEXPAND, 5 );
+
+
+	sbSizer1->Add( bSizer6, 1, wxEXPAND, 5 );
 
 	wxBoxSizer* bSizer571;
 	bSizer571 = new wxBoxSizer( wxVERTICAL );
@@ -85,7 +107,7 @@ fbRgSetupReferenceDialog::fbRgSetupReferenceDialog( wxWindow* parent, wxWindowID
 	fgSizer2->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 
 	wxStaticText* m_staticText6;
-	m_staticText6 = new wxStaticText( this, wxID_ANY, _("Template:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText6 = new wxStaticText( this, wxID_ANY, _("&Template:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText6->Wrap( -1 );
 	fgSizer2->Add( m_staticText6, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxLEFT, 5 );
 
@@ -96,7 +118,7 @@ fbRgSetupReferenceDialog::fbRgSetupReferenceDialog( wxWindow* parent, wxWindowID
 	fgSizer2->Add( m_buttonTemplateBrowse, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 
 	wxStaticText* m_staticText7;
-	m_staticText7 = new wxStaticText( this, wxID_ANY, _("Ref. Title:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText7 = new wxStaticText( this, wxID_ANY, _("&Ref. Title:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText7->Wrap( -1 );
 	fgSizer2->Add( m_staticText7, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 
@@ -122,7 +144,7 @@ fbRgSetupReferenceDialog::fbRgSetupReferenceDialog( wxWindow* parent, wxWindowID
 
 	bSizerDismiss->Add( 0, 0, 1, wxEXPAND, 5 );
 
-	m_buttonSave = new wxButton( this, wxID_OK, _("&Save"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonSave = new wxButton( this, wxID_OK, _("&Next"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizerDismiss->Add( m_buttonSave, 0, wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxLEFT, 5 );
 
 	m_buttonCancel = new wxButton( this, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0 );

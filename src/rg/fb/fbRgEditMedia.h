@@ -21,6 +21,7 @@
 #include <wx/panel.h>
 #include <rg/rgImagePanel.h>
 #include <wx/splitter.h>
+#include <wx/spinctrl.h>
 #include <wx/statline.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
@@ -28,7 +29,6 @@
 #include <wx/button.h>
 #include <wx/dialog.h>
 #include <wx/choice.h>
-#include <wx/spinctrl.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -38,6 +38,7 @@
 class fbRgEditMedia : public wxDialog
 {
 	private:
+		wxStaticText* m_staticText14;
 
 	protected:
 		wxTextCtrl* m_textCtrlTitle;
@@ -48,13 +49,17 @@ class fbRgEditMedia : public wxDialog
 		wxPanel* m_panelImage;
 		rgImagePanel* m_imagePanel;
 		wxStaticText* m_staticText;
-		wxTextCtrl* m_textCtrlRefID;
+		wxStaticText* m_staticText_mdID;
+		wxSpinCtrl* m_spinCtrlPrivacy;
+		wxStaticText* m_staticTextRefID;
 		wxStaticText* m_staticTextRefTitle;
-		wxStaticText* m_staticText3;
-		wxTextCtrl* m_textCtrlFile;
 		wxStaticText* m_staticMediaID;
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
+
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnImageLeftDClick( wxMouseEvent& event ) { event.Skip(); }
+
 
 	public:
 
@@ -89,7 +94,7 @@ class fbRgEditMediaData : public wxDialog
 		wxButton* m_buttonCancel;
 
 		// Virtual event handlers, overide them in your derived class
-		virtual void OnLeftDClick( wxMouseEvent& event ) { event.Skip(); }
+		virtual void OnImageLeftDClick( wxMouseEvent& event ) { event.Skip(); }
 
 
 	public:

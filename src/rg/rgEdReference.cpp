@@ -40,9 +40,8 @@
 #include <rg/rgDialogs.h>
 
 #include "rgSelect.h"
-#include "rgRefTemplate.h"
-#include "rgSetupReference.h"
 
+#include <rec/recAssociate.h>
 #include <rec/recDate.h>
 #include <rec/recEventa.h>
 #include <rec/recMedia.h>
@@ -94,23 +93,34 @@ idt rgCreateReference( wxWindow* parent )
 
 idt rgCreateReferenceFromTemplate( wxWindow* parent )
 {
-    const wxString savepoint = recDb::GetSavepointStr();
-    recDb::Savepoint( savepoint );
-
-    recReference ref( 0 );
-    ref.Save();
-    idt refID = ref.FGetID();
-    rgRefData data;
-    data.m_ref_id = refID;
-
-    if( rgGetRefSetupData( parent, refID, data ) ) {
-        if( rgEditReference( parent, data.m_ref_id ) ) {
-            recDb::ReleaseSavepoint( savepoint );
-            return data.m_ref_id;
+    // Ensure media database is attached before we begin.
+    unsigned style = rgSELSTYLE_Create | rgSELSTYLE_Unknown;
+    unsigned button = rgSELSTYLE_None;
+    idt assID = rgSelectAssociate( parent, style, &button, "Check Media Database is Connected");
+    if( assID != 0 || button == rgSELSTYLE_Unknown ) {
+        wxString asspath = recAssociate::GetAttachedName( assID );
+        if( asspath.empty() ) {
+            return 0;
         }
     }
-    recDb::Rollback( savepoint );
-    return 0;
+
+    idt refID = 0;
+    recDb::Begin();
+    try {
+        refID = rgGetRefSetupData( parent, assID );
+        if( refID ) {
+            recDb::Commit();
+        }
+        else {
+            refID = 0;
+            recDb::Rollback();
+        }
+    }
+    catch( wxSQLite3Exception& e ) {
+        refID = 0;
+        recDb::ErrorMessage( e );
+    }
+    return refID;
 }
 
 extern bool rgSelectDateFromReference(
