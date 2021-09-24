@@ -178,6 +178,7 @@ namespace pugi
 #else
 #	include <stdint.h>
 #endif
+#include <compare>
 
 // Memory allocation
 PUGI__NS_BEGIN
@@ -4116,6 +4117,20 @@ PUGI__NS_BEGIN
 		{
 			if (!node->first_child)
 			{
+				if( flags & format_html5_empty_element_tags ) {
+					char_t* voidtags[] =
+					{
+						"area", "base", "br", "col", "embed", "hr", "img", "input",
+						"keygen", "link", "meta", "param", "source", "track", "wbr"
+					};
+					flags |= format_no_empty_element_tags;
+					for( auto tag : voidtags ) {
+						if( strcmp( name, tag ) == 0 ) {
+							flags &= ~format_no_empty_element_tags;
+							break;
+						}
+					}
+				}
 				if (flags & format_no_empty_element_tags)
 				{
 					writer.write('>', '<', '/');
