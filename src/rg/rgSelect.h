@@ -47,6 +47,7 @@ public:
     void SetFilterPressed( bool on = true ) { m_filter = on; }
     void SetUnknownButton( bool on = true );
     void SetUnknownPressed( bool on = true ) { m_unknown = on; }
+    void SetUnknownButtonLabel( const wxString& label ) { m_buttonUnknown->SetLabel( label ); }
     void SetSelectedRow( long row );
     // Returns the 1st column of the selected row converted to an ID.
     virtual idt GetSelectedID();
