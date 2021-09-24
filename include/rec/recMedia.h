@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     19th September 2018
- * Copyright:   Copyright (c) 2018 ~ 2019, Nick Matthews.
+ * Copyright:   Copyright (c) 2018 ~ 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -64,6 +64,9 @@ public:
 
     static wxString GetIdStr( idt medID ) { return wxString::Format( "M" ID, medID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
+
+    static idt Create( idt mdID, idt assID, idt refID );
+    static int GetNextRefSeq( idt refID );
 
     static wxString GetTitle( idt medID );
 

@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     19th September 2018
- * Copyright:   Copyright (c) 2018 ~ 2019, Nick Matthews.
+ * Copyright:   Copyright (c) 2018 ~ 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -36,6 +36,7 @@
 #endif
 
 #include <rec/recMedia.h>
+#include <rec/recMediaData.h>
 
 recMedia::recMedia( const recMedia& n )
 {
@@ -125,8 +126,8 @@ bool recMedia::Read()
     f_data_id = GET_ID( result.GetInt64( 0 ) );
     f_ass_id = GET_ID( result.GetInt64( 1 ) );
     f_ref_id = GET_ID( result.GetInt64( 2 ) );
-    f_privacy = result.GetInt( 3 );
-    f_ref_seq = result.GetInt( 4 );
+    f_ref_seq = result.GetInt( 3 );
+    f_privacy = result.GetInt( 4 );
     f_title = result.GetAsString( 5 );
     f_note = result.GetAsString( 6 );
     return true;
@@ -143,6 +144,26 @@ bool recMedia::Equivalent( const recMedia& r2 ) const
         f_title == r2.f_title     &&
         f_note == r2.f_note
     ;
+}
+
+idt recMedia::Create( idt mdID, idt assID, idt refID )
+{
+    recMedia med( 0 );
+    recMediaData md( mdID, assID );
+
+    med.f_data_id = mdID;
+    med.f_ass_id = assID;
+    med.f_ref_id = refID;
+    med.f_ref_seq = recMedia::GetNextRefSeq( refID );
+    med.f_privacy = md.FGetPrivacy();
+    med.f_title = md.FGetTitle();
+    med.Save();
+    return med.f_id;
+}
+
+int recMedia::GetNextRefSeq( idt refID )
+{
+    return ExecuteInt( "SELECT MAX(ref_seq) FROM Media WHERE ref_id=" ID ";", refID ) + 1;
 }
 
 wxString recMedia::GetTitle( idt medID )
