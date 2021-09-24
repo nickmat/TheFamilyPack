@@ -62,6 +62,7 @@ class rgRefData
 public:
 	idt            m_ref_id;
 	pugi::xml_node m_h1_node;
+	pugi::xml_node m_content;
 	std::string    m_title;
 	rgDataBlockVec m_blocks;
 };

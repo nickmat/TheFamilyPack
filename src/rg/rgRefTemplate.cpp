@@ -89,17 +89,49 @@ namespace {
     void enter_block_data( rgDataBlock& block ) {
         wxMessageBox( block.m_title, "rgEnterTemplateData" );
     }
+
+    bool find_content_node( xml_node& node, rgRefData& data )
+    {
+        for( xml_node next = node.first_child(); next; next = next.next_sibling() ) {
+            if( next.type() != node_element ) {
+                continue;
+            }
+            xml_attribute root_attr = next.attribute( "data_root" );
+            if( root_attr ) {
+                data.m_content = next;
+                return true;
+            }
+            if( find_content_node( next, data ) ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    struct xml_string_writer : pugi::xml_writer
+    {
+        wxString result;
+        virtual void write( const void* str_data, size_t size )
+        {
+            result.append( static_cast<const char*>(str_data), size );
+        }
+    };
 }
 
 bool rgEnterTemplateData( 
     wxWindow* parent, const wxString& reftemplate, rgRefData& data )
 {
     xml_document doc;
-    xml_parse_result result = doc.load_file( reftemplate.ToUTF8() );
+    unsigned pflags = parse_comments | parse_ws_pcdata
+        | parse_escapes | parse_eol;
+    xml_parse_result result = doc.load_file( reftemplate.ToUTF8(), pflags );
     if( !result ) {
         return false;
     }
-    find_next_block_node( doc.document_element(), data );
+    if( !find_content_node( doc.document_element(), data ) ) {
+        return false;
+    }
+    find_next_block_node( data.m_content, data );
 
     for( auto block : data.m_blocks ) {
         rgEditRefTemplate dialog( parent, block, data.m_ref_id );
@@ -110,6 +142,12 @@ bool rgEnterTemplateData(
             return false;
         }
     }
+    xml_string_writer writer;
+    unsigned wflags = format_raw | format_html5_empty_element_tags;
+    data.m_content.print( writer, "", wflags );
+    recReference ref( data.m_ref_id );
+    ref.FSetStatement( "<!-- HTML -->\n" + writer.result );
+    ref.Save();
     return true;
 }
 
