@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010 ~ 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -117,6 +117,7 @@ inline bool operator!=( const recReferenceEntity& r1, const recReferenceEntity& 
 class recReference : public recDb
 {
 public:
+    idt      f_higher_id;
     wxString f_title;
     wxString f_statement;
     wxString f_user_ref;
@@ -130,10 +131,12 @@ public:
     bool Read();
     TABLE_NAME_MEMBERS( "Reference" );
 
+    idt FGetHigherId() const { return f_higher_id; }
     wxString FGetTitle() const { return f_title; }
     wxString FGetStatement() const { return f_statement; }
     wxString FGetUserRef() const { return f_user_ref; }
 
+    idt FSetHigherId( idt refID ) { f_higher_id = refID; }
     void FSetTitle( const wxString& title ) { f_title = title; }
     void FSetStatement( const wxString& statement ) { f_statement = statement; }
     void FSetUserRef( const wxString& ur ) { f_user_ref = ur; }
@@ -177,7 +180,8 @@ public:
 inline bool recEquivalent( const recReference& r1, const recReference& r2 )
 {
     return
-        r1.f_title     == r2.f_title     &&
+        r1.f_higher_id == r2.f_higher_id &&
+        r1.f_title     == r2.f_title &&
         r1.f_statement == r2.f_statement &&
         r1.f_user_ref  == r2.f_user_ref
     ;

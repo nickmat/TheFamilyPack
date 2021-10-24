@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010 ~ 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 ~ 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -47,6 +47,7 @@
 recReference::recReference( const recReference& r )
 {
     f_id        = r.f_id;
+    f_higher_id = r.f_higher_id;
     f_title     = r.f_title;
     f_statement = r.f_statement;
     f_user_ref  = r.f_user_ref;
@@ -55,6 +56,7 @@ recReference::recReference( const recReference& r )
 void recReference::Clear()
 {
     f_id        = 0;
+    f_higher_id = 0;
     f_title     = "";
     f_statement = "";
     f_user_ref  = "";
@@ -69,9 +71,9 @@ void recReference::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO Reference (title, statement, user_ref)"
-            "VALUES ('%q', '%q', '%q');",
-            UTF8_(f_title), UTF8_(f_statement), UTF8_(f_user_ref)
+            "INSERT INTO Reference (higher_id, title, statement, user_ref)"
+            "VALUES (" ID ", '%q', '%q', '%q');",
+            f_higher_id, UTF8_(f_title), UTF8_(f_statement), UTF8_(f_user_ref)
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -81,16 +83,16 @@ void recReference::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO Reference (id, title, statement, user_ref)"
-                " VALUES (" ID ", '%q', '%q', '%q');",
-                f_id, UTF8_(f_title), UTF8_(f_statement), UTF8_(f_user_ref)
+                "INSERT INTO Reference (id, higher_id, title, statement, user_ref)"
+                " VALUES (" ID ", " ID ", '%q', '%q', '%q');",
+                f_id, f_higher_id, UTF8_(f_title), UTF8_(f_statement), UTF8_(f_user_ref)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE Reference SET title='%q', statement='%q', user_ref='%q'"
+                "UPDATE Reference SET higher_id=" ID ", title = '%q', statement = '%q', user_ref = '%q'"
                 " WHERE id=" ID ";",
-                UTF8_(f_title), UTF8_(f_statement), UTF8_(f_user_ref), f_id
+                f_higher_id, UTF8_(f_title), UTF8_(f_statement), UTF8_(f_user_ref), f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -108,7 +110,7 @@ bool recReference::Read()
     }
 
     sql.Format(
-        "SELECT title, statement, user_ref"
+        "SELECT higher_id, title, statement, user_ref"
         " FROM Reference WHERE id=" ID ";",
         f_id
     );
@@ -120,9 +122,10 @@ bool recReference::Read()
         return false;
     }
     result.SetRow( 0 );
-    f_title     = result.GetAsString( 0 );
-    f_statement = result.GetAsString( 1 );
-    f_user_ref  = result.GetAsString( 2 );
+    f_higher_id = GET_ID( result.GetInt64( 0 ) );
+    f_title     = result.GetAsString( 1 );
+    f_statement = result.GetAsString( 2 );
+    f_user_ref  = result.GetAsString( 3 );
     return true;
 }
 

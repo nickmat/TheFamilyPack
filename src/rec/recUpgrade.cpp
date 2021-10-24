@@ -41,8 +41,8 @@
 const int recVerMajor = 0;
 const int recVerMinor = 0;
 const int recVerRev = 10;
-const int recVerTest = 20;                                     // <<======<<<<
-const wxStringCharType* recVerStr = wxS( "TFPD-v0.0.10.20" );  // <<======<<<<
+const int recVerTest = 21;                                     // <<======<<<<
+const wxStringCharType* recVerStr = wxS( "TFPD-v0.0.10.21" );  // <<======<<<<
 
 // This is the database Media only version that this program can work with.
 // If the full version matches, then this is assumed to match as well.
@@ -927,6 +927,43 @@ void UpgradeTest0_0_10_19to0_0_10_20( const wxString& dbname )
     mdUpgradeTest0_0_0_1to0_0_0_2( dbname );
 }
 
+void UpgradeTest0_0_10_20to0_0_10_21( const wxString& dbname )
+{
+    // Version 0.0.10.20 to 0.0.10.21
+    // NOTE: Change in format of updating tables
+    // 1) Now allow for updating attached databases.
+    // 2) Use recommended order of operations:-
+    //     Create new table.
+    //     Copy data across.
+    //     Drop old table.
+    //     Rename new into old.
+
+    // Update Reference table, add higher_id field.
+
+    wxString update = "BEGIN;\n";
+
+    update << "CREATE TABLE " << dbname << ".NewReference (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  higher_id INTEGER,\n"
+        "  title TEXT NOT NULL,\n"
+        "  statement TEXT NOT NULL,\n"
+        "  user_ref TEXT\n"
+        ");\n"
+
+        "INSERT INTO " << dbname << ".NewReference"
+        " (id, higher_id, title, statement, user_ref)"
+        " SELECT id, 0, title, statement, user_ref"
+        " FROM " << dbname << ".Reference;\n"
+        "DROP TABLE " << dbname << ".Reference;\n"
+        "ALTER TABLE " << dbname << ".NewReference RENAME TO Reference;\n"
+
+        "UPDATE " << dbname << ".Version SET test=21 WHERE id=1;\n"
+
+        "COMMIT;\n"
+        ;
+    recDb::GetDb()->ExecuteUpdate( update );
+}
+
 void UpgradeRev0_0_10toCurrent( int test, const wxString& dbname )
 {
     switch( test )
@@ -951,6 +988,7 @@ void UpgradeRev0_0_10toCurrent( int test, const wxString& dbname )
     case 17: UpgradeTest0_0_10_17to0_0_10_18();
     case 18: UpgradeTest0_0_10_18to0_0_10_19();
     case 19: UpgradeTest0_0_10_19to0_0_10_20( dbname );
+    case 20: UpgradeTest0_0_10_20to0_0_10_21( dbname );
     }
 }
 

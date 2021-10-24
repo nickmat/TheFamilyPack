@@ -443,6 +443,7 @@ INSERT INTO PlacePartType (id, name) VALUES(-1, 'Address');
 
 CREATE TABLE Reference (
   id INTEGER PRIMARY KEY,
+  higher_id INTEGER,
   title TEXT NOT NULL,
   statement TEXT NOT NULL,
   user_ref TEXT
@@ -543,7 +544,7 @@ INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 0, 1, 'F1');
 INSERT INTO UserSetting (id, user_id, property, val) VALUES(2, 1, 1, 'F1');
 
 /* The Version table row 1 is the full TFPD database */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 20);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 21);
 
 COMMIT;
 
