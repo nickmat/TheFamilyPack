@@ -269,6 +269,7 @@ namespace pugi
 	const unsigned int format_attribute_single_quote = 0x200;
 
 	// Use html5 friendly empty element tags. Only the list of html5 void elements are treated as empty.
+    // See http://www.w3.org/TR/html-polyglot/#empty-elements
 	const unsigned int format_html5_empty_element_tags = 0x400;
 
 	// The default set of formatting flags.

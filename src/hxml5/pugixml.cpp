@@ -4117,7 +4117,8 @@ PUGI__NS_BEGIN
 		{
 			if (!node->first_child)
 			{
-				if( flags & format_html5_empty_element_tags ) {
+				if ( flags & format_html5_empty_element_tags )
+				{
 					char_t* voidtags[] =
 					{
 						"area", "base", "br", "col", "embed", "hr", "img", "input",
