@@ -108,6 +108,36 @@ namespace {
         return false;
     }
 
+    bool process_content( xml_node& node, rgRefData& data )
+    {
+        for( xml_node next = node.first_child(); next; next = next.next_sibling() ) {
+            if( next.type() != node_element ) {
+                continue;
+            }
+            xml_attribute block_attr = next.attribute( "data-block" );
+            if( block_attr ) {
+                rgDataBlock block;
+                block.m_node = next;
+                block.m_title = block_attr.value();
+                process_block( next, block.m_entries );
+                data.m_blocks.push_back( block );
+                continue;
+            }
+            block_attr = next.attribute( "data-part" );
+            if( block_attr ) {
+                string text= next.text().get();
+                data.m_partmap[block_attr.value()] = text;
+            }
+            block_attr = next.attribute( "data-title" );
+            if( block_attr ) {
+                data.m_h1_node = next;
+                data.m_title = block_attr.value();
+            }
+            process_content( next, data );
+        }
+        return true;
+    }
+
     struct xml_string_writer : pugi::xml_writer
     {
         wxString result;
@@ -131,6 +161,11 @@ bool rgEnterTemplateData(
     if( !find_content_node( doc.document_element(), data ) ) {
         return false;
     }
+    if( !process_content( data.m_content, data ) ) {
+        return false;
+    }
+
+#if 0
     find_next_block_node( data.m_content, data );
 
     for( auto block : data.m_blocks ) {
@@ -142,6 +177,7 @@ bool rgEnterTemplateData(
             return false;
         }
     }
+#endif
     xml_string_writer writer;
     unsigned wflags = format_raw | format_html5_empty_element_tags;
     data.m_content.print( writer, "", wflags );

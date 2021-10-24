@@ -56,6 +56,7 @@ public:
 };
 
 using rgDataBlockVec = std::vector<rgDataBlock>;
+using rgStringMap = std::map<std::string, std::string>;
 
 class rgRefData
 {
@@ -65,6 +66,7 @@ public:
 	pugi::xml_node m_content;
 	std::string    m_title;
 	rgDataBlockVec m_blocks;
+	rgStringMap    m_partmap;
 };
 
 //============================================================================
