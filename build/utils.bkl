@@ -4,10 +4,8 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     The bakefile source for building the calendar library.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     28th September 2010
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2005 - 2009, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -44,6 +42,36 @@
     <runtime-libs>dynamic</runtime-libs>
 
     <sources>$(LOCAL_UTIL)/doccore/dcMain.cpp</sources>
+    <include>$(LOCAL_INC)</include>
+
+    <library>calendar</library>
+    <library>wxsqlite3</library>
+    <library>rec</library>
+    <library>reccl</library>
+
+    <wx-lib>base</wx-lib>
+  </exe>
+
+  <exe id="cdm" template="wxconsole,wxlike">
+    <app-type>console</app-type>
+    <runtime-libs>dynamic</runtime-libs>
+
+    <sources>$(LOCAL_UTIL)/cdm/cdmMain.cpp</sources>
+    <include>$(LOCAL_INC)</include>
+
+    <library>calendar</library>
+    <library>wxsqlite3</library>
+    <library>rec</library>
+    <library>reccl</library>
+
+    <wx-lib>base</wx-lib>
+  </exe>
+
+  <exe id="cdb" template="wxconsole,wxlike">
+    <app-type>console</app-type>
+    <runtime-libs>dynamic</runtime-libs>
+
+    <sources>$(LOCAL_UTIL)/cdb/cdbMain.cpp</sources>
     <include>$(LOCAL_INC)</include>
 
     <library>calendar</library>
