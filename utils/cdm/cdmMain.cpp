@@ -40,6 +40,9 @@
 
 #include <rec/recDb.h>
 
+#include <iostream>
+#include <fstream>
+
 #define VERSION   "0.1.0"
 #define PROGNAME  "cdm - TFP Common Data Management"
 
@@ -57,6 +60,29 @@ const wxString g_title = PROGNAME " - Version " VERSION " Debug\n"
 bool g_verbose = false;
 bool g_quiet   = false;
 
+using TableMap = std::map<std::string, idt>;
+
+TableMap ReadMasterList( std::string& titles)
+{
+    TableMap master;
+    std::ifstream infile( "tables.csv" );
+    if( !infile ) {
+        return master;
+    }
+    getline( infile, titles );
+
+    while( !infile.eof() ) {
+        std::string str;
+        recCsvRead( infile, str );
+        if( str.empty() ) {
+            break;
+        }
+        idt next;
+        recCsvRead( infile, next );
+        master[str] = next;
+    }
+    return master;
+}
 
 /*#*************************************************************************
  **  main
@@ -65,7 +91,6 @@ bool g_quiet   = false;
 
 int main( int argc, char** argv )
 {
-    bool ok = true;
     static const wxCmdLineEntryDesc desc[] = {
         { wxCMD_LINE_SWITCH, "h", "help", "show this help message",
             wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP },
@@ -104,18 +129,23 @@ int main( int argc, char** argv )
     recDb::SetDb( new wxSQLite3Database() );
 
     if( ! g_quiet ) {
-        wxPrintf( "%s", g_title );
+        std::cout << g_title << "\n";
     }
     if( g_verbose ) {
-        wxPrintf( "SQLite3 version: %s\n", wxSQLite3Database::GetVersion() );
-        wxPrintf( "Database Version %s\n", recVerStr );
+        std::cout << "SQLite3 version: " << wxSQLite3Database::GetVersion() << "\n";
+        std::cout << "Database Version: " << recVerStr << "\n";
+        std::cout << "Working Dir: " << wxGetCwd() << "\n";
+    }
+
+    std::string titles;
+    TableMap tables = ReadMasterList( titles );
+    std::cout << titles << "\n";
+    for( auto table : tables ) {
+        std::cout << table.first << ": " << table.second << "\n";
     }
 
     wxUninitialize();
-    if( ok ) {
-        return EXIT_SUCCESS;
-    }
-    return EXIT_FAILURE;
+    return EXIT_SUCCESS;
 }
 
 /* End of util/cdm/cdmMain.cpp file */
