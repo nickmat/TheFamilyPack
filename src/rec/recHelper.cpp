@@ -211,4 +211,69 @@ wxString GetBlobFormatStr( const wxMemoryBuffer& buf )
     return str;
 }
 
+std::istream& recCsvRead( std::istream& in, std::string& str )
+{
+    str.clear();
+    char ch;
+    in.get( ch );
+    if( ch != '"' ) {
+        // All strings must be quoted.
+        in.setstate( std::ios::failbit );
+        return in;
+    }
+    bool inquotes = true;
+    for( ;;) {
+        in.get( ch );
+        if( ch == '"' ) {
+            in.get( ch );
+            if( ch != '"' ) {
+                break;
+            }
+        }
+        if( in.eof() ) {
+            in.setstate( std::ios::failbit );
+            break;
+        }
+        str.push_back( ch );
+    }
+    if( !in.eof() ) {
+        if( ch != '\n' && ch != ',' ) {
+            in.setstate( std::ios::failbit );
+        }
+    }
+    return in;
+}
+
+std::istream& recCsvRead( std::istream& in, wxString& str )
+{
+    std::string stdstr;
+    recCsvRead( in, stdstr );
+    str = stdstr;
+    in.setstate( std::ios::failbit );
+    return in;
+}
+
+std::istream& recCsvRead( std::istream& in, idt& id )
+{
+    std::string str;
+    char ch;
+    for( ;;) {
+        in.get( ch );
+        if( ch == ',' || ch == '\n' || in.eof() ) {
+            break;
+        }
+        str.push_back( ch );
+    }
+    id = recGetID( str );
+    return in;
+}
+
+std::istream& recCsvRead( std::istream& in, int& num )
+{
+    idt id;
+    recCsvRead( in, id );
+    num = (int)id;
+    return in;
+}
+
 // End of src/rec/recHelper.cpp file

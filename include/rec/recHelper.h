@@ -28,8 +28,10 @@
 #ifndef REC_RECHELPER_H
 #define REC_RECHELPER_H
 
+#include <string>
 #include <map>
 #include <vector>
+#include <iostream>
 
 #include <wx/wxsqlite3.h>
 
@@ -180,5 +182,12 @@ extern recIdVec recIdVecFromStr( const wxString& prefix, const wxString list );
 extern void recIdVecAddIfUnique( recIdVec& vec, idt id );
 
 extern wxString GetBlobFormatStr( const wxMemoryBuffer& buf );
+
+// Read/Write CSV files
+
+std::istream& recCsvRead( std::istream& in, std::string& str );
+std::istream& recCsvRead( std::istream& in, wxString& str );
+std::istream& recCsvRead( std::istream& in, idt& id );
+std::istream& recCsvRead( std::istream& in, int& num );
 
 #endif // REC_RECHELPER_H
