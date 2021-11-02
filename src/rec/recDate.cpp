@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010 ~ 2017, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 .. 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -493,6 +493,54 @@ bool recDate::IsUsedInPlace( idt id )
     return false;
 }
 
+void recDate::Renumber( idt id, idt to_id )
+{
+    if( id == 0 ) {
+        return;
+    }
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "UPDATE RelativeDate SET base_id=" ID " WHERE base_id=" ID ";",
+        to_id, id );
+    s_db->ExecuteUpdate( sql );
+
+    sql.Format(
+        "UPDATE Event SET date1_id=" ID " WHERE date1_id=" ID "; "
+        "UPDATE Event SET date2_id=" ID " WHERE date2_id=" ID ";",
+        to_id, id, to_id, id );
+    s_db->ExecuteUpdate( sql );
+
+    sql.Format(
+        "UPDATE Eventa SET date1_id=" ID " WHERE date1_id=" ID "; "
+        "UPDATE Eventa SET date2_id=" ID " WHERE date2_id=" ID ";",
+        to_id, id, to_id, id );
+    s_db->ExecuteUpdate( sql );
+
+    sql.Format(
+        "UPDATE Place SET date1_id=" ID " WHERE date1_id=" ID "; "
+        "UPDATE Place SET date2_id=" ID " WHERE date2_id=" ID ";",
+        to_id, id, to_id, id );
+    s_db->ExecuteUpdate( sql );
+
+    sql.Format(
+        "UPDATE Source SET sub_date1_id=" ID " WHERE sub_date1_id=" ID "; "
+        "UPDATE Source SET sub_date2_id=" ID " WHERE sub_date2_id=" ID ";",
+        to_id, id, to_id, id );
+    s_db->ExecuteUpdate( sql );
+
+    sql.Format(
+        "UPDATE ReferenceEntity SET entity_id=" ID
+        " WHERE entity_type=4 AND entity_id=" ID ";",
+        to_id, id );
+    s_db->ExecuteUpdate( sql );
+
+    sql.Format(
+        "UPDATE Date SET id=" ID " WHERE id=" ID ";",
+        to_id, id );
+    s_db->ExecuteUpdate( sql );
+}
+
 void recDate::DeleteIfOrphaned( idt id )
 {
     if( id <= 0 ) {
@@ -539,7 +587,7 @@ void recDate::RemoveFromDatabase( idt id )
     }
     if( IsUsedAsBase( id ) ) {
         recIdVec rels = GetRelativeIdList( id );
-        for( size_t i = 0 ; i < rels.size() ; i++ ) {
+        for( size_t i = 0; i < rels.size(); i++ ) {
             recRelativeDate::RemoveFromDatabase( rels[i] );
         }
     }
@@ -548,7 +596,7 @@ void recDate::RemoveFromDatabase( idt id )
     recSource::RemoveDates( id );
     recReferenceEntity::Delete( recReferenceEntity::TYPE_Date, id );
     // If this is a relative date, remove the relative part.
-    recDate date(id);
+    recDate date( id );
     Delete( date.FGetRelID() );
     Delete( id );
 }
@@ -653,6 +701,11 @@ bool recRelativeDate::Read()
     return true;
 }
 
+idt recRelativeDate::GetParentDate( idt rdID )
+{
+    return ExecuteID( "SELECT id FROM Date WHERE rel_id=" ID ";", rdID );
+}
+
 void recRelativeDate::SetDefaults()
 {
     // TODO: The default scheme should be a system/user setting.
@@ -716,14 +769,28 @@ bool recRelativeDate::CalculateDate( recDate* date ) const
     return true;
 }
 
-idt recRelativeDate::GetParentDate( idt rdID )
+void recRelativeDate::Renumber( idt id, idt to_id )
 {
-    return ExecuteID( "SELECT id FROM Date WHERE rel_id=" ID ";", rdID );
+    if( id == 0 ) {
+        return;
+    }
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "UPDATE Date SET rel_id=" ID " WHERE rel_id=" ID ";",
+        to_id, id );
+    s_db->ExecuteUpdate( sql );
+
+    sql.Format(
+        "UPDATE RelativeDate SET id=" ID " WHERE id=" ID ";",
+        to_id, id );
+    s_db->ExecuteUpdate( sql );
 }
 
 void recRelativeDate::RemoveFromDatabase( idt rdID )
 {
     recDate::RemoveFromDatabase( GetParentDate( rdID ) );
 }
+
 
 // End of recDate.cpp file

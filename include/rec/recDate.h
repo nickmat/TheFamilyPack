@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010 ~ 2017, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 .. 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -203,6 +203,8 @@ public:
     bool IsUsedInPlace() const { return IsUsedInPlace( f_id ); }
     static bool IsUsedInPlace( idt dateID );
 
+    static void Renumber( idt fromID, idt toID );
+
     static void DeleteIfOrphaned( idt dateID );
     static void RemoveFromDatabase( idt dateID );
 };
@@ -288,6 +290,8 @@ public:
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     bool CalculateDate( recDate* date ) const;
+
+    static void Renumber( idt fromID, idt toID );
 
     static void RemoveFromDatabase( idt rdID );
 };
