@@ -90,6 +90,8 @@ public:
     wxString GetEntityStr() const; 
 
     static idt FindReferenceID( Type type, idt entityID );
+
+    static void Renumber( idt fromID, idt toID );
 };
 
 inline bool recEquivalent( const recReferenceEntity& r1, const recReferenceEntity& r2 )
@@ -175,6 +177,7 @@ public:
         { return GetIdVecForEntity( refID, recReferenceEntity::TYPE_Date ); }
     recIdVec GetDateIdVec() const { return GetDateIdVec( f_id ); }
 
+    static void Renumber( idt fromID, idt toID );
 };
 
 inline bool recEquivalent( const recReference& r1, const recReference& r2 )

@@ -232,6 +232,39 @@ recIdVec recReference::GetIdVecForEntity( idt refID, recReferenceEntity::Type ty
     return ExecuteIdVec( sql );
 }
 
+void recReference::Renumber( idt id, idt to_id )
+{
+    if( id == 0 ) {
+        return;
+    }
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "UPDATE Media SET ref_id=" ID " WHERE ref_id=" ID ";",
+        to_id, id );
+    s_db->ExecuteUpdate( sql );
+
+    sql.Format(
+        "UPDATE Persona SET ref_id=" ID " WHERE ref_id=" ID ";",
+        to_id, id );
+    s_db->ExecuteUpdate( sql );
+
+    sql.Format(
+        "UPDATE Eventa SET ref_id=" ID " WHERE ref_id=" ID ";",
+        to_id, id );
+    s_db->ExecuteUpdate( sql );
+
+    sql.Format(
+        "UPDATE ReferenceEntity SET ref_id=" ID " WHERE ref_id=" ID ";",
+        to_id, id );
+    s_db->ExecuteUpdate( sql );
+
+    sql.Format(
+        "UPDATE Reference SET id=" ID " WHERE id=" ID ";",
+        to_id, id );
+    s_db->ExecuteUpdate( sql );
+}
+
 //----------------------------------------------------------
 
 const wxString recReferenceEntity::sm_typeStr[recReferenceEntity::TYPE_MAX] = {
@@ -387,6 +420,19 @@ idt recReferenceEntity::FindReferenceID( Type type, idt entityID )
 
     wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
     return GET_ID( result.GetInt64( 0 ) );
+}
+
+void recReferenceEntity::Renumber( idt id, idt to_id )
+{
+    if( id == 0 ) {
+        return;
+    }
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "UPDATE ReferenceEntity SET id=" ID " WHERE id=" ID ";",
+        to_id, id );
+    s_db->ExecuteUpdate( sql );
 }
 
 void recReferenceEntity::Delete( Type type, idt entityID )
