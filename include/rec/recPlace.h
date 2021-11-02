@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010 ~ 2017, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 .. 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -78,6 +78,8 @@ public:
     recPlacePartVec GetPlaceParts() const { return GetPlaceParts( f_id ); }
     static recPlacePartVec GetPlaceParts( idt placeID );
 
+    static void Renumber( idt fromID, idt toID );
+
     static void RemoveDates( idt dateID );
     static void RemoveFromDatabase( idt placeID );
 
@@ -132,6 +134,8 @@ public:
     void FSetPlaceID( idt placeID ) { f_place_id = placeID; }
     void FSetValue( const wxString& value ) { f_val = value; }
     void FSetSequence( int seq ) { f_sequence = seq; }
+
+    static void Renumber( idt fromID, idt toID );
 };
 
 inline bool recEquivalent( const recPlacePart& r1, const recPlacePart& r2 )

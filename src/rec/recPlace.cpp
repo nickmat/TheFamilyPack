@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010 ~ 2017, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 .. 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -208,6 +208,46 @@ recPlacePartVec recPlace::GetPlaceParts( idt placeID )
     return ppList;
 }
 
+void recPlace::Renumber( idt id, idt to_id )
+{
+    if( id == 0 ) {
+        return;
+    }
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "UPDATE PlacePart SET place_id=" ID " WHERE place_id=" ID ";",
+        to_id, id );
+    s_db->ExecuteUpdate( sql );
+
+    sql.Format(
+        "UPDATE Event SET place_id=" ID " WHERE place_id=" ID ";",
+        to_id, id );
+    s_db->ExecuteUpdate( sql );
+
+    sql.Format(
+        "UPDATE Eventa SET place_id=" ID " WHERE place_id=" ID ";",
+        to_id, id );
+    s_db->ExecuteUpdate( sql );
+
+    sql.Format(
+        "UPDATE Source SET sub_place_id=" ID " WHERE sub_place_id=" ID "; "
+        "UPDATE Source SET loc_place_id=" ID " WHERE loc_place_id=" ID ";",
+        to_id, id, to_id, id );
+    s_db->ExecuteUpdate( sql );
+
+    sql.Format(
+        "UPDATE ReferenceEntity SET entity_id=" ID
+        " WHERE entity_type=3 AND entity_id=" ID ";",
+        to_id, id );
+    s_db->ExecuteUpdate( sql );
+
+    sql.Format(
+        "UPDATE Place SET id=" ID " WHERE id=" ID ";",
+        to_id, id );
+    s_db->ExecuteUpdate( sql );
+}
+
 void recPlace::RemoveDates( idt dateID )
 {
     wxSQLite3StatementBuffer sql;
@@ -349,6 +389,19 @@ bool recPlacePart::Read()
     f_val      = result.GetAsString( 3 );
     f_sequence = result.GetInt( 4 );
     return true;
+}
+
+void recPlacePart::Renumber( idt id, idt to_id )
+{
+    if( id == 0 ) {
+        return;
+    }
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "UPDATE PlacePart SET id=" ID " WHERE id=" ID ";",
+        to_id, id );
+    s_db->ExecuteUpdate( sql );
 }
 
 //----------------------------------------------------------
