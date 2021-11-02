@@ -78,6 +78,10 @@ public:
      */
     static int GetCount( const char* table );
 
+    /*! Return a list of all user (positive) id records in the given table.
+     */
+    static recIdVec GetPositiveIDs( const char* table, const wxString& dbname );
+
     idt   f_id;
 
     /*! Default constructor, does nothing. */
@@ -216,6 +220,8 @@ public:
     static int UserCount() { return GetUserCount( s_tablename ); }             \
     static int Count() { return GetCount( s_tablename ); }                     \
     static bool TableExists( const wxString& db = wxEmptyString ) {            \
-        return  s_db->TableExists( s_tablename, db ); }
+        return  s_db->TableExists( s_tablename, db ); }                        \
+    static recIdVec PositiveIDs( const wxString& dbname = "Main" ) {           \
+        return GetPositiveIDs( s_tablename, dbname ); }
 
 #endif // RECDATABASE_H

@@ -360,6 +360,14 @@ int recDb::GetCount( const char* name )
     return s_db->ExecuteScalar( sql );
 }
 
+recIdVec recDb::GetPositiveIDs( const char* table, const wxString& dbname )
+{
+    wxSQLite3StatementBuffer sql;
+    sql.Format( "SELECT id FROM %q.%q WHERE id>0;", UTF8_( dbname ), table );
+
+    return ExecuteIdVec( sql );
+}
+
 int recDb::ExecuteInt( const wxSQLite3StatementBuffer& sql )
 {
     wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
