@@ -35,7 +35,6 @@
 #include <vector>
 #include <wx/ffile.h>
 #include <wx/cmdline.h>
-//#include <wx/sstream.h>
 #include <wx/textfile.h>
 
 #include <rec/recDb.h>
@@ -62,6 +61,16 @@ bool g_quiet   = false;
 
 using TableMap = std::map<std::string, idt>;
 
+template <class T>
+idt RenumberTable( idt next_id ) {
+    recIdVec pos_ids = T::PositiveIDs();
+    for( idt id : pos_ids ) {
+        T::Renumber( id, next_id );
+        --next_id;
+    }
+    return next_id;
+}
+
 TableMap ReadMasterList( std::string& titles)
 {
     TableMap master;
@@ -82,6 +91,21 @@ TableMap ReadMasterList( std::string& titles)
         master[str] = next;
     }
     return master;
+}
+
+bool WriteMasterList( const TableMap& master, const std::string& titles )
+{
+    std::ofstream ofile( "tables.csv", std::ios::trunc );
+    if( !ofile ) {
+        return false;
+    }
+
+    ofile << titles + "\n";
+    for( auto ent : master ) {
+        recCsvWrite( ofile, ent.first );
+        recCsvWrite( ofile, ent.second, '\n' );
+    }
+    return true;
 }
 
 /*#*************************************************************************
@@ -126,7 +150,7 @@ int main( int argc, char** argv )
         g_quiet = false;
         g_verbose = true;
     }
-    recDb::SetDb( new wxSQLite3Database() );
+    recInitialize();
 
     if( ! g_quiet ) {
         std::cout << g_title << "\n";
@@ -139,11 +163,43 @@ int main( int argc, char** argv )
 
     std::string titles;
     TableMap tables = ReadMasterList( titles );
+    if( tables.empty() ) {
+        std::cout << "\nERROR: Can't read tables.csv\n";
+        return EXIT_FAILURE;
+    }
     std::cout << titles << "\n";
     for( auto table : tables ) {
         std::cout << table.first << ": " << table.second << "\n";
     }
+    TableMap tables_out = tables;
 
+    wxString inputDb( "input.tfpd" );
+    if( !wxFileExists( inputDb ) || recDb::OpenDb( inputDb ) != recDb::DbType::full ) {
+        std::cout << "\nERROR: Can't open input.tfpd\n";
+        recUninitialize();
+        return EXIT_FAILURE;
+    }
+
+    recDb::Begin();
+    try {
+        tables_out["Date"] = RenumberTable<recDate>( tables["Date"] );
+        tables_out["RelativeDate"] = RenumberTable<recRelativeDate>( tables["RelativeDate"] );
+        tables_out["Place"] = RenumberTable<recPlace>( tables["Place"] );
+        tables_out["PlacePart"] = RenumberTable<recPlacePart>( tables["PlacePart"] );
+        tables_out["Reference"] = RenumberTable<recReference>( tables["Reference"] );
+        tables_out["ReferenceEntity"] = 
+            RenumberTable<recReferenceEntity>( tables["ReferenceEntity"] );
+        recDb::Commit();
+    }
+    catch( wxSQLite3Exception& e ) {
+        recDb::ErrorMessage( e );
+        recDb::Rollback();
+        recUninitialize();
+        return EXIT_FAILURE;
+    }
+    WriteMasterList( tables_out, titles );
+
+    recUninitialize();
     wxUninitialize();
     return EXIT_SUCCESS;
 }
