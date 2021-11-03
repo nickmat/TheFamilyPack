@@ -71,6 +71,23 @@ idt RenumberTable( idt next_id ) {
     return next_id;
 }
 
+template <class T>
+bool WriteTable( const std::string& fname, idt start_id )
+{
+    std::ofstream ofile( fname, std::ios::app );
+    if( !ofile ) {
+        return false;
+    }
+    if( ofile.tellp() == 0 ) {
+        ofile << T::CsvTitles();
+    }
+    while( T::Exists( start_id ) ) {
+        T::CsvWrite( ofile, start_id );
+        --start_id;
+    }
+    return true;
+}
+
 TableMap ReadMasterList( std::string& titles)
 {
     TableMap master;
@@ -197,6 +214,26 @@ int main( int argc, char** argv )
         recUninitialize();
         return EXIT_FAILURE;
     }
+
+    if( tables_out["Date"] != tables["Date"] ) {
+        WriteTable<recDate>( "data/Date.csv", tables["Date"] );
+    }
+    if( tables_out["RelativeDate"] != tables["RelativeDate"] ) {
+        WriteTable<recRelativeDate>( "data/RelativeDate.csv", tables["RelativeDate"] );
+    }
+    if( tables_out["Place"] != tables["Place"] ) {
+        WriteTable<recPlace>( "data/Place.csv", tables["Place"] );
+    }
+    if( tables_out["PlacePart"] != tables["PlacePart"] ) {
+        WriteTable<recPlacePart>( "data/PlacePart.csv", tables["PlacePart"] );
+    }
+    if( tables_out["Reference"] != tables["Reference"] ) {
+        WriteTable<recReference>( "data/Reference.csv", tables["Reference"] );
+    }
+    if( tables_out["ReferenceEntity"] != tables["ReferenceEntity"] ) {
+        WriteTable<recReferenceEntity>( "data/ReferenceEntity.csv", tables["ReferenceEntity"] );
+    }
+
     WriteMasterList( tables_out, titles );
 
     recUninitialize();
