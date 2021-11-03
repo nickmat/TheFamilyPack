@@ -248,6 +248,21 @@ void recPlace::Renumber( idt id, idt to_id )
     s_db->ExecuteUpdate( sql );
 }
 
+std::string recPlace::CsvTitles()
+{
+    return std::string(
+        "ID, Start Date, End Date\n"
+    );
+}
+
+void recPlace::CsvWrite( std::ostream& out, idt id )
+{
+    recPlace place( id );
+    recCsvWrite( out, place.FGetID() );
+    recCsvWrite( out, place.FGetDate1ID() );
+    recCsvWrite( out, place.FGetDate2ID(), '\n' );
+}
+
 void recPlace::RemoveDates( idt dateID )
 {
     wxSQLite3StatementBuffer sql;
@@ -402,6 +417,21 @@ void recPlacePart::Renumber( idt id, idt to_id )
         "UPDATE PlacePart SET id=" ID " WHERE id=" ID ";",
         to_id, id );
     s_db->ExecuteUpdate( sql );
+}
+
+std::string recPlacePart::CsvTitles()
+{
+    return std::string( "ID, Place ID, Type ID, Value, Sequence\n" );
+}
+
+void recPlacePart::CsvWrite( std::ostream& out, idt id )
+{
+    recPlacePart pp( id );
+    recCsvWrite( out, pp.FGetID() );
+    recCsvWrite( out, pp.FGetPlaceID() );
+    recCsvWrite( out, pp.FGetTypeID() );
+    recCsvWrite( out, pp.FGetValue() );
+    recCsvWrite( out, pp.FGetSequence(), '\n' );
 }
 
 //----------------------------------------------------------

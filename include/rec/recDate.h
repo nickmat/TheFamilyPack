@@ -204,6 +204,8 @@ public:
     static bool IsUsedInPlace( idt dateID );
 
     static void Renumber( idt fromID, idt toID );
+    static std::string CsvTitles();
+    static void CsvWrite( std::ostream& out, idt id );
 
     static void DeleteIfOrphaned( idt dateID );
     static void RemoveFromDatabase( idt dateID );
@@ -292,6 +294,8 @@ public:
     bool CalculateDate( recDate* date ) const;
 
     static void Renumber( idt fromID, idt toID );
+    static std::string CsvTitles();
+    static void CsvWrite( std::ostream& out, idt id );
 
     static void RemoveFromDatabase( idt rdID );
 };

@@ -265,6 +265,21 @@ void recReference::Renumber( idt id, idt to_id )
     s_db->ExecuteUpdate( sql );
 }
 
+std::string recReference::CsvTitles()
+{
+    return std::string( "ID, Higher ID, Title, Statement, User Reference\n");
+}
+
+void recReference::CsvWrite( std::ostream& out, idt id )
+{
+    recReference ref( id );
+    recCsvWrite( out, ref.FGetID() );
+    recCsvWrite( out, ref.FGetHigherId() );
+    recCsvWrite( out, ref.FGetTitle() );
+    recCsvWrite( out, ref.FGetStatement() );
+    recCsvWrite( out, ref.FGetUserRef(), '\n' );
+}
+
 //----------------------------------------------------------
 
 const wxString recReferenceEntity::sm_typeStr[recReferenceEntity::TYPE_MAX] = {
@@ -433,6 +448,21 @@ void recReferenceEntity::Renumber( idt id, idt to_id )
         "UPDATE ReferenceEntity SET id=" ID " WHERE id=" ID ";",
         to_id, id );
     s_db->ExecuteUpdate( sql );
+}
+
+std::string recReferenceEntity::CsvTitles()
+{
+    return std::string( "ID, Reference ID, Entity Type, Entity ID, Sequence\n" );
+}
+
+void recReferenceEntity::CsvWrite( std::ostream& out, idt id )
+{
+    recReferenceEntity re( id );
+    recCsvWrite( out, re.FGetID() );
+    recCsvWrite( out, re.FGetRefID() );
+    recCsvWrite( out, re.FGetEntityType() );
+    recCsvWrite( out, re.FGetEntityID() );
+    recCsvWrite( out, re.FGetSequence(), '\n' );
 }
 
 void recReferenceEntity::Delete( Type type, idt entityID )

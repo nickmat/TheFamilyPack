@@ -92,6 +92,8 @@ public:
     static idt FindReferenceID( Type type, idt entityID );
 
     static void Renumber( idt fromID, idt toID );
+    static std::string CsvTitles();
+    static void CsvWrite( std::ostream& out, idt id );
 };
 
 inline bool recEquivalent( const recReferenceEntity& r1, const recReferenceEntity& r2 )
@@ -178,6 +180,8 @@ public:
     recIdVec GetDateIdVec() const { return GetDateIdVec( f_id ); }
 
     static void Renumber( idt fromID, idt toID );
+    static std::string CsvTitles();
+    static void CsvWrite( std::ostream& out, idt id );
 };
 
 inline bool recEquivalent( const recReference& r1, const recReference& r2 )

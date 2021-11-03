@@ -541,6 +541,27 @@ void recDate::Renumber( idt id, idt to_id )
     s_db->ExecuteUpdate( sql );
 }
 
+std::string recDate::CsvTitles()
+{
+    return std::string(
+        "ID, Start Date, Range, Relative ID, Type Flags, Description,"
+        " Recorded Scheme, Display Scheme\n"
+    );
+}
+
+void recDate::CsvWrite( std::ostream& out, idt id )
+{
+    recDate date( id );
+    recCsvWrite( out, date.FGetID() );
+    recCsvWrite( out, date.FGetJdn() );
+    recCsvWrite( out, date.FGetRange() );
+    recCsvWrite( out, date.FGetRelID() );
+    recCsvWrite( out, date.FGetType() );
+    recCsvWrite( out, date.FGetDescrip() );
+    recCsvWrite( out, date.FGetRecordSch() );
+    recCsvWrite( out, date.FGetDisplaySch(), '\n' );
+}
+
 void recDate::DeleteIfOrphaned( idt id )
 {
     if( id <= 0 ) {
@@ -785,6 +806,23 @@ void recRelativeDate::Renumber( idt id, idt to_id )
         "UPDATE RelativeDate SET id=" ID " WHERE id=" ID ";",
         to_id, id );
     s_db->ExecuteUpdate( sql );
+}
+
+std::string recRelativeDate::CsvTitles()
+{
+    return std::string( "ID, Value, Range, Unit, Base ID, Type, Scheme\n" );
+}
+
+void recRelativeDate::CsvWrite( std::ostream& out, idt id )
+{
+    recRelativeDate rel( id );
+    recCsvWrite( out, rel.FGetID() );
+    recCsvWrite( out, rel.FGetVal() );
+    recCsvWrite( out, rel.FGetRange() );
+    recCsvWrite( out, rel.FGetUnit() );
+    recCsvWrite( out, rel.FGetBaseID() );
+    recCsvWrite( out, rel.FGetType() );
+    recCsvWrite( out, rel.FGetScheme(), '\n' );
 }
 
 void recRelativeDate::RemoveFromDatabase( idt rdID )

@@ -79,6 +79,8 @@ public:
     static recPlacePartVec GetPlaceParts( idt placeID );
 
     static void Renumber( idt fromID, idt toID );
+    static std::string CsvTitles();
+    static void CsvWrite( std::ostream& out, idt id );
 
     static void RemoveDates( idt dateID );
     static void RemoveFromDatabase( idt placeID );
@@ -136,6 +138,8 @@ public:
     void FSetSequence( int seq ) { f_sequence = seq; }
 
     static void Renumber( idt fromID, idt toID );
+    static std::string CsvTitles();
+    static void CsvWrite( std::ostream& out, idt id );
 };
 
 inline bool recEquivalent( const recPlacePart& r1, const recPlacePart& r2 )
