@@ -194,5 +194,6 @@ std::ostream& recCsvWrite( std::ostream& out, const std::string& str, char term 
 std::ostream& recCsvWrite( std::ostream& out, const wxString& str, char term = ',' );
 std::ostream& recCsvWrite( std::ostream& out, idt id, char term = ',' );
 std::ostream& recCsvWrite( std::ostream& out, int num, char term = ',' );
+std::ostream& recCsvWrite( std::ostream& out, unsigned num, char term = ',' );
 
 #endif // REC_RECHELPER_H

@@ -307,5 +307,10 @@ std::ostream& recCsvWrite( std::ostream& out, int num, char term )
     return out;
 }
 
+std::ostream& recCsvWrite( std::ostream& out, unsigned num, char term )
+{
+    out << num << term;
+    return out;
+}
 
 // End of src/rec/recHelper.cpp file
