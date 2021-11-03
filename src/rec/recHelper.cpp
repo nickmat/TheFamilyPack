@@ -276,4 +276,36 @@ std::istream& recCsvRead( std::istream& in, int& num )
     return in;
 }
 
+std::ostream& recCsvWrite( std::ostream& out, const std::string& str, char term )
+{
+    out.put( '"' );
+    for( auto ch : str ) {
+        if( ch == '"' ) {
+            out.put( '"' );
+        }
+        out.put( ch );
+    }
+    out.put( '"' );
+    out.put( term );
+    return out;
+}
+
+std::ostream& recCsvWrite( std::ostream& out, const wxString& str, char term )
+{
+    return recCsvWrite( out, str.ToStdString(), term );
+}
+
+std::ostream& recCsvWrite( std::ostream& out, idt id, char term )
+{
+    out << id << term;
+    return out;
+}
+
+std::ostream& recCsvWrite( std::ostream& out, int num, char term )
+{
+    out << num << term;
+    return out;
+}
+
+
 // End of src/rec/recHelper.cpp file

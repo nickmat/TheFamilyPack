@@ -190,4 +190,9 @@ std::istream& recCsvRead( std::istream& in, wxString& str );
 std::istream& recCsvRead( std::istream& in, idt& id );
 std::istream& recCsvRead( std::istream& in, int& num );
 
+std::ostream& recCsvWrite( std::ostream& out, const std::string& str, char term = ',' );
+std::ostream& recCsvWrite( std::ostream& out, const wxString& str, char term = ',' );
+std::ostream& recCsvWrite( std::ostream& out, idt id, char term = ',' );
+std::ostream& recCsvWrite( std::ostream& out, int num, char term = ',' );
+
 #endif // REC_RECHELPER_H
