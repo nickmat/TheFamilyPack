@@ -174,7 +174,7 @@ int main( int argc, char** argv )
     }
     if( g_verbose ) {
         std::cout << "SQLite3 version: " << wxSQLite3Database::GetVersion() << "\n";
-        std::cout << "Database Version: " << recVerStr << "\n";
+        std::cout << "Database Version: " << recFullVersion << "\n";
         std::cout << "Working Dir: " << wxGetCwd() << "\n";
     }
 

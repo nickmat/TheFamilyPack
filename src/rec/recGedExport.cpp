@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     11th November 2015
- * Copyright:   Copyright (c) 2015 ~ 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2015 .. 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -45,7 +45,7 @@ bool recGedExport::Export()
     m_out <<
         "0 HEAD\n"
         "1 SOUR TFP\n"
-        "2 VERS " << recVerStr << "\n"
+        "2 VERS " << recFullVersion << "\n"
         "2 NAME The Family Pack\n"
         "1 SUBM @" << recUser::GetIdStr( cuser ) << "@\n"
         "1 GEDC\n"

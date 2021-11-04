@@ -41,8 +41,8 @@
 const int recVerMajor = 0;
 const int recVerMinor = 0;
 const int recVerRev = 10;
-const int recVerTest = 21;                                     // <<======<<<<
-const wxStringCharType* recVerStr = wxS( "TFPD-v0.0.10.21" );  // <<======<<<<
+const int recVerTest = 21;                       // <<======<<<<
+const char* recFullVersion = "TFPD-v0.0.10.21";  // <<======<<<<
 
 // This is the database Media only version that this program can work with.
 // If the full version matches, then this is assumed to match as well.
@@ -50,8 +50,8 @@ const wxStringCharType* recVerStr = wxS( "TFPD-v0.0.10.21" );  // <<======<<<<
 const int recMediaVerMajor = 0;
 const int recMediaVerMinor = 0;
 const int recMediaVerRev = 0;
-const int recMediaVerTest = 2;                                  // <<======<<<<
-const wxStringCharType* recMediaVerStr = wxS( "MDD-v0.0.0.2" ); // <<======<<<<
+const int recMediaVerTest = 2;                   // <<======<<<<
+const char* recMediaVersion = "MDD-v0.0.0.2";    // <<======<<<<
 
 wxString recGetCurrentVersionStr()
 {
@@ -63,9 +63,9 @@ wxString recGetCurrentVersionStr( recDb::DbType type )
 {
     switch( type ) {
     case recDb::DbType::full:
-        return recVerStr;
+        return recFullVersion;
     case recDb::DbType::media_data_only:
-        return recMediaVerStr;
+        return recMediaVersion;
     }
     return _( "Unknown database type" );
 }
@@ -133,7 +133,7 @@ bool recDoMediaUpgrade( const wxString& dbname )
         );
         return false;
     }
-    if( recPermissionToUpgrade( verstr, recMediaVerStr ) == false ) {
+    if( recPermissionToUpgrade( verstr, recMediaVersion ) == false ) {
         return false;
     }
 
@@ -1022,7 +1022,7 @@ bool recDoFullUpgrade( const wxString& dbname )
             );
         return false;
     }
-    if ( recPermissionToUpgrade( verstr, recVerStr ) == false ) {
+    if ( recPermissionToUpgrade( verstr, recFullVersion ) == false ) {
         return false;
     }
 

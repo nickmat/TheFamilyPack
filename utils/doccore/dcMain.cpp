@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     25th November 2012
- * Copyright:   Copyright (c) 2012 ~ 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2012 .. 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  doccore is free software: you can redistribute it and/or modify
@@ -247,7 +247,7 @@ int main( int argc, char** argv )
     if( g_verbose ) {
         wxPrintf( "Output project file [%s]\n", outfn );
         wxPrintf( "SQLite3 version: %s\n", wxSQLite3Database::GetVersion() );
-        wxPrintf( "Database Version %s\n", recVerStr );
+        wxPrintf( "Database Version %s\n", recFullVersion );
     }
 
     int grporder[] = { 1, 2, 5, 6, 8, 9, 7, 3, 10, 4, 0 };

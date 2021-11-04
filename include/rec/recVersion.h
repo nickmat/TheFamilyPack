@@ -36,13 +36,13 @@ extern const int recVerMajor;
 extern const int recVerMinor;
 extern const int recVerRev;
 extern const int recVerTest;
-extern const wxStringCharType* recVerStr;
+extern const char* recFullVersion;
 
 extern const int recMediaVerMajor;
 extern const int recMediaVerMinor;
 extern const int recMediaVerRev;
 extern const int recMediaVerTest;
-extern const wxStringCharType* recMediaVerStr;
+extern const char* recMediaVersion;
 
 extern wxString recGetCurrentVersionStr();
 extern wxString recGetCurrentVersionStr( recDb::DbType type );
