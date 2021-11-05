@@ -65,7 +65,6 @@ bool g_quiet   = false;
 
 int main( int argc, char** argv )
 {
-    bool ok = true;
     static const wxCmdLineEntryDesc desc[] = {
         { wxCMD_LINE_SWITCH, "h", "help", "show this help message",
             wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP },
@@ -97,25 +96,29 @@ int main( int argc, char** argv )
     if( parser.Found( "q" ) ) {
         g_quiet = true;
     }
+
     if( true /* parser.Found( "v" ) */ ) {
         g_quiet = false;
         g_verbose = true;
     }
-    recDb::SetDb( new wxSQLite3Database() );
+    recInitialize();
 
-    if( ! g_quiet ) {
-        wxPrintf( "%s", g_title );
+    if( !g_quiet ) {
+        std::cout << g_title << "\n";
     }
     if( g_verbose ) {
-        wxPrintf( "SQLite3 version: %s\n", wxSQLite3Database::GetVersion() );
-        wxPrintf( "Database Version %s\n", recVerStr );
+        std::cout << "SQLite3 version: " << wxSQLite3Database::GetVersion() << "\n";
+        std::cout << "Database Version: " << recFullVersion << "\n";
+        std::cout << "Working Dir: " << wxGetCwd() << "\n";
     }
 
+    // Main prog
+
+
+
+    recUninitialize();
     wxUninitialize();
-    if( ok ) {
-        return EXIT_SUCCESS;
-    }
-    return EXIT_FAILURE;
+    return EXIT_SUCCESS;
 }
 
 /* End of util/cdb/cdbMain.cpp file */
