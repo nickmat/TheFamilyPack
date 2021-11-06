@@ -40,6 +40,9 @@
 
 #include <rec/recDb.h>
 
+#include <iostream>
+#include <fstream>
+
 #define VERSION   "0.1.0"
 #define PROGNAME  "cdb - TFP Common Database Build"
 
@@ -56,6 +59,28 @@ const wxString g_title = PROGNAME " - Version " VERSION " Debug\n"
 
 bool g_verbose = false;
 bool g_quiet   = false;
+
+template <class T>
+bool EnterTable( const std::string& fname )
+{
+    std::ifstream ifile( fname );
+    if( !ifile ) {
+        return false;
+    }
+    std::string titles;
+    std::getline( ifile, titles ); // Get rid of the title line
+    // We could check titles here to detect change in format
+
+    bool ret = true;
+    while( ret ) {
+        T record( 0 );
+        ret = record.CsvRead( ifile );
+        if( ret ) {
+            record.Save();
+        }
+    }
+    return true;
+}
 
 
 /*#*************************************************************************
@@ -97,7 +122,7 @@ int main( int argc, char** argv )
         g_quiet = true;
     }
 
-    if( true /* parser.Found( "v" ) */ ) {
+    if( true /* parser.Found( "v" ) */ ) { // Set switches while testing
         g_quiet = false;
         g_verbose = true;
     }
@@ -107,14 +132,60 @@ int main( int argc, char** argv )
         std::cout << g_title << "\n";
     }
     if( g_verbose ) {
-        std::cout << "SQLite3 version: " << wxSQLite3Database::GetVersion() << "\n";
+        std::cout << "SQLite3 version: " << wxSQLite3Database::GetVersion().c_str() << "\n";
         std::cout << "Database Version: " << recFullVersion << "\n";
         std::cout << "Working Dir: " << wxGetCwd() << "\n";
     }
 
     // Main prog
+    wxString filename = "cd-test.tfpd";
+    recDb::DbType dbtype = recDb::DbType::full;
+    recDb::CreateReturn ret = recDb::CreateDbFile( filename, dbtype );
+    switch( ret )
+    {
+    case recDb::CreateReturn::OK:
+        break;
+    case recDb::CreateReturn::FileExists:
+        std::cout << "File already exists\n";
+        return EXIT_FAILURE;
+    case recDb::CreateReturn::UnknownType:
+        std::cout << "Unknown database type\n";
+        return EXIT_FAILURE;
+    case recDb::CreateReturn::CannotOpen:
+        std::cout << "Unable to create database\n";
+        return EXIT_FAILURE;
+    }
+    if( recDb::OpenDb( filename ) != dbtype ) {
+        std::cout << "Error opening database file\n";
+        return EXIT_FAILURE;
+    }
+    if( g_verbose ) {
+        std::cout << "Created and opened \"" << filename << "\" database file\n";
+    }
 
+    // Do all the clever stuff
+    if( EnterTable<recDate>( "data/Date.csv" ) ) {
+        std::cout << "Reading Date.csv\n";
+    } 
+    if( EnterTable<recRelativeDate>( "data/RelativeDate.csv" ) ) {
+        std::cout << "Reading RelativeDate.csv\n";
+    }
+    if( EnterTable<recPlace>( "data/Place.csv" ) ) {
+        std::cout << "Reading Place.csv\n";
+    }
+    if( EnterTable<recPlacePart>( "data/PlacePart.csv" ) ) {
+        std::cout << "Reading PlacePart.csv\n";
+    }
+    if( EnterTable<recReference>( "data/Reference.csv" ) ) {
+        std::cout << "Reading Reference.csv\n";
+    }
+    if( EnterTable<recReferenceEntity>( "data/ReferenceEntity.csv" ) ) {
+        std::cout << "Reading ReferenceEntity.csv\n";
+    }
 
+    if( g_verbose ) {
+        std::cout << "Closed \"" << filename << "\" database file\n";
+    }
 
     recUninitialize();
     wxUninitialize();
