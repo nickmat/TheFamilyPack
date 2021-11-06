@@ -249,7 +249,6 @@ std::istream& recCsvRead( std::istream& in, wxString& str )
     std::string stdstr;
     recCsvRead( in, stdstr );
     str = stdstr;
-    in.setstate( std::ios::failbit );
     return in;
 }
 
@@ -259,7 +258,7 @@ std::istream& recCsvRead( std::istream& in, idt& id )
     char ch;
     for( ;;) {
         in.get( ch );
-        if( ch == ',' || ch == '\n' || in.eof() ) {
+        if( ch == ',' || ch == '\n' || in.eof() || !in ) {
             break;
         }
         str.push_back( ch );
@@ -273,6 +272,22 @@ std::istream& recCsvRead( std::istream& in, int& num )
     idt id;
     recCsvRead( in, id );
     num = (int)id;
+    return in;
+}
+
+std::istream& recCsvRead( std::istream& in, unsigned& num )
+{
+    idt id;
+    recCsvRead( in, id );
+    num = (unsigned)id;
+    return in;
+}
+
+std::istream& recCsvRead( std::istream& in, long& num )
+{
+    idt id;
+    recCsvRead( in, id );
+    num = (long)id;
     return in;
 }
 

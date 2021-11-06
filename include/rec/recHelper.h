@@ -189,6 +189,8 @@ std::istream& recCsvRead( std::istream& in, std::string& str );
 std::istream& recCsvRead( std::istream& in, wxString& str );
 std::istream& recCsvRead( std::istream& in, idt& id );
 std::istream& recCsvRead( std::istream& in, int& num );
+std::istream& recCsvRead( std::istream& in, unsigned& num );
+std::istream& recCsvRead( std::istream& in, long& num );
 
 std::ostream& recCsvWrite( std::ostream& out, const std::string& str, char term = ',' );
 std::ostream& recCsvWrite( std::ostream& out, const wxString& str, char term = ',' );
