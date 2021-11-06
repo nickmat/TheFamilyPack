@@ -263,6 +263,14 @@ void recPlace::CsvWrite( std::ostream& out, idt id )
     recCsvWrite( out, place.FGetDate2ID(), '\n' );
 }
 
+bool recPlace::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    recCsvRead( in, f_date1_id );
+    recCsvRead( in, f_date2_id );
+    return bool( in );
+}
+
 void recPlace::RemoveDates( idt dateID )
 {
     wxSQLite3StatementBuffer sql;
@@ -432,6 +440,16 @@ void recPlacePart::CsvWrite( std::ostream& out, idt id )
     recCsvWrite( out, pp.FGetTypeID() );
     recCsvWrite( out, pp.FGetValue() );
     recCsvWrite( out, pp.FGetSequence(), '\n' );
+}
+
+bool recPlacePart::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    recCsvRead( in, f_type_id );
+    recCsvRead( in, f_place_id );
+    recCsvRead( in, f_val );
+    recCsvRead( in, f_sequence );
+    return bool( in );
 }
 
 //----------------------------------------------------------

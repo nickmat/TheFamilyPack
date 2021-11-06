@@ -81,6 +81,7 @@ public:
     static void Renumber( idt fromID, idt toID );
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );
+    bool CsvRead( std::istream& in );
 
     static void RemoveDates( idt dateID );
     static void RemoveFromDatabase( idt placeID );
@@ -140,6 +141,7 @@ public:
     static void Renumber( idt fromID, idt toID );
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );
+    bool CsvRead( std::istream& in );
 };
 
 inline bool recEquivalent( const recPlacePart& r1, const recPlacePart& r2 )

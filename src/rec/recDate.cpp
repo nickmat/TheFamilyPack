@@ -562,6 +562,19 @@ void recDate::CsvWrite( std::ostream& out, idt id )
     recCsvWrite( out, date.FGetDisplaySch(), '\n' );
 }
 
+bool recDate::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    recCsvRead( in, f_jdn );
+    recCsvRead( in, f_range );
+    recCsvRead( in, f_rel_id );
+    recCsvRead( in, f_type );
+    recCsvRead( in, f_descrip );
+    recCsvRead( in, (int&) f_record_sch );
+    recCsvRead( in, (int&) f_display_sch );
+    return bool( in );
+}
+
 void recDate::DeleteIfOrphaned( idt id )
 {
     if( id <= 0 ) {
@@ -823,6 +836,18 @@ void recRelativeDate::CsvWrite( std::ostream& out, idt id )
     recCsvWrite( out, rel.FGetBaseID() );
     recCsvWrite( out, rel.FGetType() );
     recCsvWrite( out, rel.FGetScheme(), '\n' );
+}
+
+bool recRelativeDate::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    recCsvRead( in, f_val );
+    recCsvRead( in, f_range );
+    recCsvRead( in, (int&) f_unit );
+    recCsvRead( in, f_base_id );
+    recCsvRead( in, (int&) f_type );
+    recCsvRead( in, (int&) f_scheme );
+    return bool( in );
 }
 
 void recRelativeDate::RemoveFromDatabase( idt rdID )

@@ -280,6 +280,16 @@ void recReference::CsvWrite( std::ostream& out, idt id )
     recCsvWrite( out, ref.FGetUserRef(), '\n' );
 }
 
+bool recReference::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    recCsvRead( in, f_higher_id );
+    recCsvRead( in, f_title );
+    recCsvRead( in, f_statement );
+    recCsvRead( in, f_user_ref );
+    return bool( in );
+}
+
 //----------------------------------------------------------
 
 const wxString recReferenceEntity::sm_typeStr[recReferenceEntity::TYPE_MAX] = {
@@ -463,6 +473,16 @@ void recReferenceEntity::CsvWrite( std::ostream& out, idt id )
     recCsvWrite( out, re.FGetEntityType() );
     recCsvWrite( out, re.FGetEntityID() );
     recCsvWrite( out, re.FGetSequence(), '\n' );
+}
+
+bool recReferenceEntity::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    recCsvRead( in, f_ref_id );
+    recCsvRead( in, (int&) f_entity_type );
+    recCsvRead( in, f_entity_id );
+    recCsvRead( in, f_sequence );
+    return bool( in );
 }
 
 void recReferenceEntity::Delete( Type type, idt entityID )
