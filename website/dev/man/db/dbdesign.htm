@@ -16,7 +16,7 @@
     <img class='logo' src='../../../sys/logo266x100.png' alt='Logo' />
    </a>
   </div>
-  TheFamilyPack - Database V0.0.10.16<br />Design
+  TheFamilyPack - Database V0.0.10.22<br />Design
   <div class='clear'></div>
  </div>
 
@@ -41,65 +41,64 @@
 
 <table class="index">
   <tr>
+    <td><a href="#Archive">Archive</a></td>
+    <td><a href="#ArchiveReference">ArchiveReference</a></td>
     <td><a href="#Associate">Associate</a></td>
     <td><a href="#CitationPart">CitationPart</a></td>
     <td><a href="#CitationPartType">CitationPartType</a></td>
     <td><a href="#Contact">Contact</a></td>
-    <td><a href="#ContactList">ContactList</a></td>
-    <td><a href="#ContactType">ContactType</a></td>
   </tr>
   <tr>
+    <td><a href="#ContactList">ContactList</a></td>
+    <td><a href="#ContactType">ContactType</a></td>
     <td><a href="#Date">Date</a></td>
     <td><a href="#Event">Event</a></td>
     <td><a href="#Eventa">Eventa</a></td>
     <td><a href="#EventaPersona">EventaPersona</a></td>
-    <td><a href="#EventEventa">EventEventa</a></td>
-    <td><a href="#EventType">EventType</a></td>
   </tr>
   <tr>
+    <td><a href="#EventEventa">EventEventa</a></td>
+    <td><a href="#EventType">EventType</a></td>
     <td><a href="#EventTypeRole">EventTypeRole</a></td>
     <td><a href="#Family">Family</a></td>
     <td><a href="#FamilyEvent">FamilyEvent</a></td>
     <td><a href="#FamilyEventa">FamilyEventa</a></td>
-    <td><a href="#FamilyIndEventa">FamilyIndEventa</a></td>
-    <td><a href="#FamilyIndividual">FamilyIndividual</a></td>
   </tr>
   <tr>
+    <td><a href="#FamilyIndEventa">FamilyIndEventa</a></td>
+    <td><a href="#FamilyIndividual">FamilyIndividual</a></td>
     <td><a href="#Gallery">Gallery</a></td>
     <td><a href="#GalleryMedia">GalleryMedia</a></td>
     <td><a href="#Individual">Individual</a></td>
     <td><a href="#IndividualEvent">IndividualEvent</a></td>
-    <td><a href="#IndividualPersona">IndividualPersona</a></td>
-    <td><a href="#Media">Media</a></td>
   </tr>
   <tr>
+    <td><a href="#IndividualPersona">IndividualPersona</a></td>
+    <td><a href="#Media">Media</a></td>
     <td><a href="#MediaData">MediaData</a></td>
     <td><a href="#Name">Name</a></td>
     <td><a href="#NamePart">NamePart</a></td>
     <td><a href="#NamePartType">NamePartType</a></td>
-    <td><a href="#NameStyle">NameStyle</a></td>
-    <td><a href="#Persona">Persona</a></td>
   </tr>
   <tr>
+    <td><a href="#NameStyle">NameStyle</a></td>
+    <td><a href="#Persona">Persona</a></td>
     <td><a href="#Place">Place</a></td>
     <td><a href="#PlacePart">PlacePart</a></td>
     <td><a href="#PlacePartType">PlacePartType</a></td>
     <td><a href="#Reference">Reference</a></td>
+  </tr>
+  <tr>
     <td><a href="#ReferenceEntity">ReferenceEntity</a></td>
     <td><a href="#RelativeDate">RelativeDate</a></td>
-  </tr>
-  <tr>
-    <td><a href="#Repository">Repository</a></td>
-    <td><a href="#RepositorySource">RepositorySource</a></td>
     <td><a href="#Researcher">Researcher</a></td>
-    <td><a href="#Source">Source</a></td>
     <td><a href="#System">System</a></td>
     <td><a href="#User">User</a></td>
+    <td><a href="#UserSetting">UserSetting</a></td>
   </tr>
   <tr>
-    <td><a href="#UserSetting">UserSetting</a></td>
     <td><a href="#Version">Version</a></td>
-    <td colspan='4' class="na">&nbsp;</td>
+    <td colspan='5' class="na">&nbsp;</td>
   </tr>
   </table>
 
@@ -113,7 +112,66 @@
     </thead>
 
     <tbody>
-      <tr id="Associate">
+      <tr id="Archive">
+        <td colspan="3" class="filler"><a href="#">Top</a></td>
+       </tr>
+       <tr class="head">
+        <td colspan="3"><b>Archive</b></td>
+       </tr>
+       <tr>
+        <td>id</td>
+        <td>Integer PK</td>
+        <td>Unique key identifying a Archive</td>
+       </tr>
+       <tr>
+        <td>name</td>
+        <td>Text Not null</td>
+        <td>The full name of the Archive.  May be an institution or an individual</td>
+       </tr>
+       <tr>
+        <td>note</td>
+        <td>Text</td>
+        <td>Any pertinent notes about the Archive, such as the need to obtain a researcher's card, restrictions on the use of laptops, etc</td>
+       </tr>
+       <tr>
+        <td>con_list_id</td>
+        <td>Integer Not null FK</td>
+        <td>Unique key that identifies a ContactList for the Archive.</td>
+       </tr>
+   
+       <tr id="ArchiveReference">
+        <td colspan="3" class="filler"><a href="#">Top</a></td>
+       </tr>
+       <tr class="head">
+        <td colspan="3"><b>ArchiveReference</b></td>
+       </tr>
+       <tr>
+        <td>id</td>
+        <td>Integer PK</td>
+        <td>Unique key identifying a Archive Reference
+       </tr>
+       <tr>
+        <td>archive_id</td>
+        <td>Integer</td>
+        <td>Unique key that identifies a specific Archive.</td>
+       </tr>
+       <tr>
+        <td>ref_id</td>
+        <td>Integer</td>
+        <td>Unique key that identifies a specific Reference.</td>
+       </tr>
+       <tr>
+        <td>call_num</td>
+        <td>Text</td>
+        <td>Optional, the unique call number for a particular Reference in a particular Archive.</td>
+       </tr>
+       <tr>
+        <td>note</td>
+        <td>Text</td>
+        <td>Optional notes about the particular Reference in the Archive, such as notes describing the condition of the copy represented by the particular call number.</td>
+       </tr>
+   
+       <tr id="Associate">
         <td colspan="3" class="filler"><a href="#">Top</a></td>
       </tr>
       <tr class="head">
@@ -128,6 +186,11 @@
         <td>path</td>
         <td>Text Null</td>
         <td>The file path (relative to current database) to associated database.</td>
+      </tr>
+      <tr>
+        <td>comment</td>
+        <td>Text Null</td>
+        <td>Short comment to help identify the database in a list.</td>
       </tr>
 
       <tr id="CitationPart">
@@ -868,6 +931,11 @@
       <td>Pointer to a Reference record.</td>
     </tr>
     <tr>
+      <td>ref_seq</td>
+      <td>Int Not null</td>
+      <td>Number to indicate the order to be listed within a reference.</td>
+    </tr>
+    <tr>
       <td>privacy</td>
       <td>Int Not null</td>
       <td>A value indicating the privacy level for the Media.</td>
@@ -895,9 +963,19 @@
       <td>Unique key identifying a MediaData item.</td>
     </tr>
     <tr>
+      <td>title</td>
+      <td>Text Not null</td>
+      <td>A title for the media that can be used without context. Also used as the default title.</td>
+    </tr>
+    <tr>
       <td>data</td>
       <td>Blob Not null</td>
       <td>The binary data that makes up the media file.</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>Text Not null</td>
+      <td>The format type of the media data. Use the recognized Mime type text.</td>
     </tr>
     <tr>
       <td>privacy</td>
@@ -1123,29 +1201,40 @@
      <td colspan="3"><b>Reference</b></td>
     </tr>
     <tr>
-     <td>id</td>
-     <td>Integer PK</td>
-     <td>Unique key identifying a Reference record</td>
-    </tr>
-    <tr>
+      <td>id</td>
+      <td>Integer PK</td>
+      <td>Unique key identifying a Reference record</td>
+     </tr>
+     <tr>
+      <td>higher_id</td>
+      <td>Integer FK</td>
+      <td>Unique key identifying a higher Reference record, that this one forms a part.</td>
+     </tr>
+      <tr>
      <td>title</td>
      <td>Text</td>
-     <td>Title of the reference doucument</td>
+     <td>Title of the reference document</td>
     </tr>
     <tr>
      <td>statement</td>
      <td>Text</td>
      <td>
-      An XML document containing a statement whuch may include a Transcription,
+      An document containing a statement which may include a Transcription,
       Translation, Summary of a Source or simple text statement.
+      The document may be optionally marked up and provide links to the various elements.
      </td>
     </tr>
     <tr>
-     <td>user_ref</td>
-     <td>Text</td>
-     <td>Optional user defined reference code.</td>
-    </tr>
-
+      <td>res_id</td>
+      <td>Integer FK</td>
+      <td>Key identifying the researcher who created this record.</td>
+     </tr>
+     <tr>
+      <td>user_ref</td>
+      <td>Text</td>
+      <td>Optional user defined reference code.</td>
+     </tr>
+  
     <tr id="ReferenceEntity">
      <td colspan="4" class="filler"><a href="#">Top</a></td>
     </tr>
@@ -1165,7 +1254,7 @@
     <tr>
      <td>entity_type</td>
      <td>Integer</td>
-     <td>A value indicating the Entity type, 1=Source, 3=Place, 4=Date, 7=Name</td>
+     <td>A value indicating the Entity type, 3=Place, 4=Date, 7=Name</td>
     </tr>
     <tr>
      <td>entity_id</td>
@@ -1220,71 +1309,6 @@
      <td>A number indicating the date scheme used for the date calculation</td>
     </tr>
 
-    <tr id="Repository">
-     <td colspan="3" class="filler"><a href="#">Top</a></td>
-    </tr>
-    <tr class="head">
-     <td colspan="3"><b>Repository</b></td>
-    </tr>
-    <tr>
-     <td>id</td>
-     <td>Integer PK</td>
-     <td>Unique key identifying a Repository</td>
-    </tr>
-    <tr>
-     <td>name</td>
-     <td>Text Not null</td>
-     <td>The full name of the Repository.  May be an institution or an individual</td>
-    </tr>
-    <tr>
-     <td>access</td>
-     <td>Text</td>
-     <td>Details of access, such as the hours that the Repository is open to the public.</td>
-    </tr>
-    <tr>
-     <td>comments</td>
-     <td>Text</td>
-     <td>Any pertinent comments about the repository, such as the need to obtain a researcher?s card, restrictions on the use of laptops, etc</td>
-    </tr>
-    <tr>
-     <td>con_list_id</td>
-     <td>Integer Not null FK</td>
-     <td>Unique key that identifies a ContactList for the repository.</td>
-    </tr>
-
-    <tr id="RepositorySource">
-     <td colspan="3" class="filler"><a href="#">Top</a></td>
-    </tr>
-    <tr class="head">
-     <td colspan="3"><b>RepositorySource</b></td>
-    </tr>
-    <tr>
-     <td>id</td>
-     <td>Integer PK</td>
-     <td>Unique key identifying a Repository Source
-         <i>Not required by GDM</i></td>
-    </tr>
-    <tr>
-     <td>repos_id</td>
-     <td>Integer</td>
-     <td>Unique key that identifies a specific Repository.</td>
-    </tr>
-    <tr>
-     <td>source_id</td>
-     <td>Integer</td>
-     <td>Unique key that identifies a specific Source.</td>
-    </tr>
-    <tr>
-     <td>call_num</td>
-     <td>Text</td>
-     <td>Optional, the unique call number for a particular Source in a particular Repository.</td>
-    </tr>
-    <tr>
-     <td>descrip</td>
-     <td>Text</td>
-     <td>Optional notes about the particular Source in the Repository, such as notes describing the condition of the copy represented by the particular call number.</td>
-    </tr>
-
     <tr id="Researcher">
      <td colspan="3" class="filler"><a href="#">Top</a></td>
     </tr>
@@ -1310,53 +1334,6 @@
      <td>con_list_id</td>
      <td>Integer Not null FK</td>
      <td>Unique key that identifies a ContactList for the Researcher.</td>
-    </tr>
-
-    <tr id="Source">
-     <td colspan="3" class="filler"><a href="#">Top</a></td>
-    </tr>
-    <tr class="head">
-     <td colspan="3"><b>Source</b></td>
-    </tr>
-    <tr>
-     <td>id</td>
-     <td>Integer PK</td>
-     <td>Unique key identifying a Source</td>
-    </tr>
-    <tr>
-     <td>higher_id</td>
-     <td>Integer</td>
-     <td>Unique key that identifies the next higher level Source associated with this Source.</td>
-    </tr>
-    <tr>
-     <td>sub_date1_id</td>
-     <td>Integer</td>
-     <td>Optional, the start or only date associated with this Source.</td>
-    </tr>
-    <tr>
-     <td>sub_date2_id</td>
-     <td>Integer</td>
-     <td>Optional, the end date associated with this Source.</td>
-    </tr>
-    <tr>
-     <td>sub_place_id</td>
-     <td>Integer</td>
-     <td>Unique key that identifies the Place of the subject of this Source.</td>
-    </tr>
-    <tr>
-     <td>loc_place_id</td>
-     <td>Integer</td>
-     <td>Unique key that identifies the Place of the location or jurisdiction of the record.</td>
-    </tr>
-    <tr>
-     <td>res_id</td>
-     <td>Integer</td>
-     <td>Unique key in Researcher that identifies the person who gathered this Source record.</td>
-    </tr>
-    <tr>
-     <td>comments</td>
-     <td>Text</td>
-     <td>Any comments about the Source.</td>
     </tr>
 
     <tr id="System">
@@ -1429,7 +1406,7 @@
     <tr>
      <td>id</td>
      <td>Integer PK</td>
-     <td>Unique key identifying a Version record, although only one record is used</td>
+     <td>Unique key identifying a Version record, 1=Full database version, 2=Media Data database version</td>
     </tr>
     <tr>
      <td>major</td>
@@ -1439,17 +1416,17 @@
     <tr>
      <td>minor</td>
      <td>Integer</td>
-     <td>The Minor version number. A change to this number indicates a possible non-reversable change</td>
+     <td>The Minor version number. A change to this number indicates a possible non-reversible change</td>
     </tr>
     <tr>
      <td>revision</td>
      <td>Integer</td>
-     <td>The Revision number. Changes to this number are reversable (ie it does not need to match the program)</td>
+     <td>The Revision number. Changes to this number are reversible (ie it does not need to match the program)</td>
     </tr>
     <tr>
      <td>test</td>
      <td>Integer</td>
-     <td>A Test number. Always zero in released code. Used only during development for testing changes.</td>
+     <td>A Test number. Always zero in released code. Used during development for testing changes.</td>
     </tr>
 
    </tbody>
