@@ -39,11 +39,11 @@ typedef std::vector< recCitationPartType >  recCitationPartTypeVec;
 
 class recCitationPart : public recDb
 {
-public:
-    idt     f_type_id;
-    idt     f_source_id;
+    idt f_type_id;
+    idt f_ref_id;
     wxString f_val;
 
+public:
     recCitationPart() {}
     recCitationPart( idt id ) : recDb(id) { Read(); }
     recCitationPart( const recCitationPart& source );
@@ -52,20 +52,20 @@ public:
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "CitationPart" );
+    bool Equivalent( const recCitationPart& r2 ) const;
 
+    idt FGetTypeId() const { return f_type_id; }
+    idt FGetRefId() const { return f_ref_id; }
+    wxString FGetVal() const { return f_val; }
+
+    void FSetTypeId( idt type_id ) { f_type_id = type_id; }
+    void FSetRefId( idt ref_id ) { f_ref_id = ref_id; }
+    void FSetVal( const wxString& val ) { f_val = val; }
 };
-
-inline bool recEquivalent( const recCitationPart& r1, const recCitationPart& r2 )
-{
-    return
-        r1.f_type_id   == r2.f_type_id   &&
-        r1.f_source_id == r2.f_source_id &&
-        r1.f_val       == r2.f_val;
-}
 
 inline bool operator==( const recCitationPart& r1, const recCitationPart& r2 )
 {
-    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
+    return r1.Equivalent( r2 ) && r1.EqualID( r2 );
 }
 
 inline bool operator!=( const recCitationPart& r1, const recCitationPart& r2 )
@@ -79,9 +79,9 @@ inline bool operator!=( const recCitationPart& r1, const recCitationPart& r2 )
 
 class recCitationPartType : public recDb
 {
-public:
     wxString  f_name;
 
+public:
     recCitationPartType() {}
     recCitationPartType( idt id ) : recDb(id) { Read(); }
     recCitationPartType( const recCitationPartType& at );
@@ -90,21 +90,20 @@ public:
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "CitationPartType" );
+    bool Equivalent( const recCitationPartType& r2 ) const { return f_name == r2.f_name; }
+
+    wxString FGetName() const { return f_name; }
+
+    void FSetName( const wxString& name ) { f_name = name; }
 
     static wxString GetStr( idt id );
 
     static recCitationPartTypeVec GetList();
 };
 
-inline bool recEquivalent( const recCitationPartType& r1, const recCitationPartType& r2 )
-{
-    return
-        r1.f_name == r2.f_name;
-}
-
 inline bool operator==( const recCitationPartType& r1, const recCitationPartType& r2 )
 {
-    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
+    return r1.Equivalent( r2 ) && r1.EqualID( r2 );
 }
 
 inline bool operator!=( const recCitationPartType& r1, const recCitationPartType& r2 )

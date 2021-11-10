@@ -40,30 +40,29 @@
 
 recCitationPart::recCitationPart( const recCitationPart& cp )
 {
-    f_type_id   = cp.f_type_id;
-    f_source_id = cp.f_source_id;
-    f_val       = cp.f_val;
+    f_type_id = cp.f_type_id;
+    f_ref_id = cp.f_ref_id;
+    f_val = cp.f_val;
 }
 
 void recCitationPart::Clear()
 {
-    f_type_id   = 0;
-    f_source_id = 0;
-    f_val       = wxEmptyString;
+    f_type_id = 0;
+    f_ref_id = 0;
+    f_val.clear();
 }
 
 void recCitationPart::Save()
 {
     wxSQLite3StatementBuffer sql;
-    wxSQLite3Table result;
 
     if( f_id == 0 )
     {
         // Add new record
         sql.Format(
-            "INSERT INTO CitationPart (type_id, source_id, val) "
+            "INSERT INTO CitationPart (type_id, ref_id, val) "
             "VALUES (" ID ", " ID ", '%q');",
-            f_type_id, f_source_id, UTF8_(f_val)
+            f_type_id, f_ref_id, UTF8_(f_val)
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -73,16 +72,16 @@ void recCitationPart::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO CitationPart (id, type_id, source_id, val) "
+                "INSERT INTO CitationPart (id, type_id, ref_id, val) "
                 "VALUES (" ID ", " ID ", " ID ", '%q');",
-                f_id, f_type_id, f_source_id, UTF8_(f_val)
+                f_id, f_type_id, f_ref_id, UTF8_(f_val)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE CitationPart SET type_id=" ID ", source_id=" ID ", val='%q' "
+                "UPDATE CitationPart SET type_id=" ID ", ref_id=" ID ", val='%q' "
                 "WHERE id=" ID ";",
-                f_type_id, f_source_id, UTF8_(f_val), f_id
+                f_type_id, f_ref_id, UTF8_(f_val), f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -100,7 +99,7 @@ bool recCitationPart::Read()
     }
 
     sql.Format(
-        "SELECT type_id, source_id, val "
+        "SELECT type_id, ref_id, val "
         "FROM CitationPart WHERE id=" ID ";",
         f_id
     );
@@ -112,10 +111,18 @@ bool recCitationPart::Read()
         return false;
     }
     result.SetRow( 0 );
-    f_type_id   = GET_ID( result.GetInt64( 0 ) );
-    f_source_id = GET_ID( result.GetInt64( 1 ) );
-    f_val       = result.GetAsString( 2 );
+    f_type_id = GET_ID( result.GetInt64( 0 ) );
+    f_ref_id = GET_ID( result.GetInt64( 1 ) );
+    f_val = result.GetAsString( 2 );
     return true;
+}
+
+bool recCitationPart::Equivalent( const recCitationPart& r2 ) const
+{
+    return
+        f_type_id == r2.f_type_id &&
+        f_ref_id == r2.f_ref_id &&
+        f_val == r2.f_val;
 }
 
 //============================================================================
@@ -137,7 +144,6 @@ void recCitationPartType::Clear()
 void recCitationPartType::Save()
 {
     wxSQLite3StatementBuffer sql;
-    wxSQLite3Table result;
 
     if( f_id == 0 )
     {

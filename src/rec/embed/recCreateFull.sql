@@ -30,6 +30,21 @@
 
 BEGIN;
 
+CREATE TABLE Archive (
+  id INTEGER PRIMARY KEY,
+  name TEXT NOT NULL,
+  note TEXT,
+  con_list_id INTEGER NOT NULL REFERENCES ContactList(id)
+);
+
+CREATE TABLE ArchiveReference (
+  id INTEGER PRIMARY KEY,
+  archive_id INTEGER NOT NULL REFERENCES Archive(id),
+  ref_id INTEGER NOT NULL REFERENCES Reference(id),
+  call_num TEXT,
+  note TEXT
+);
+
 CREATE TABLE Associate (
   id INTEGER PRIMARY KEY NOT NULL,
   path TEXT NULL,
@@ -40,14 +55,14 @@ INSERT INTO Associate (id) VALUES(0);
 
 CREATE TABLE CitationPart (
   id INTEGER PRIMARY KEY,
-  source_id INTEGER,
-  type_id INTEGER,
-  val TEXT
+  ref_id INTEGER NOT NULL REFERENCES Reference(id),
+  type_id INTEGER NOT NULL REFERENCES CitationPartType(id),
+  val TEXT NOT NULL
 );
 
 CREATE TABLE CitationPartType (
   id INTEGER PRIMARY KEY,
-  name TEXT
+  name TEXT NOT NULL
 );
 
 CREATE TABLE Contact (
@@ -446,7 +461,8 @@ CREATE TABLE Reference (
   higher_id INTEGER,
   title TEXT NOT NULL,
   statement TEXT NOT NULL,
-  user_ref TEXT
+  res_id INTEGER NULL REFERENCES Researcher(id),
+  user_ref TEXT NULL
 );
 
 CREATE TABLE ReferenceEntity (
@@ -467,38 +483,11 @@ CREATE TABLE RelativeDate (
   scheme INTEGER
 );
 
-CREATE TABLE Repository (
-  id INTEGER PRIMARY KEY,
-  name TEXT NOT NULL,
-  access TEXT,
-  comments TEXT,
-  con_list_id INTEGER NOT NULL REFERENCES ContactList(id)
-);
-
-CREATE TABLE RepositorySource (
-  id INTEGER PRIMARY KEY,
-  repos_id INTEGER,
-  source_id INTEGER,
-  call_num TEXT,
-  desc TEXT
-);
-
 CREATE TABLE Researcher (  /* See System Settings below for initial entries */
   id INTEGER PRIMARY KEY,
   name TEXT NOT NULL,
   comments TEXT,
   con_list_id INTEGER NOT NULL REFERENCES ContactList(id)
-);
-
-CREATE TABLE Source (
-  id INTEGER PRIMARY KEY,
-  higher_id INTEGER,
-  sub_date1_id INTEGER,
-  sub_date2_id INTEGER,
-  sub_place_id INTEGER,
-  loc_place_id INTEGER,
-  res_id INTEGER,
-  comments TEXT
 );
 
 CREATE TABLE System (  /* See System Settings below for initial entries */
@@ -544,7 +533,7 @@ INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 0, 1, 'F1');
 INSERT INTO UserSetting (id, user_id, property, val) VALUES(2, 1, 1, 'F1');
 
 /* The Version table row 1 is the full TFPD database */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 21);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 22);
 
 COMMIT;
 

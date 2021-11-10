@@ -32,86 +32,88 @@
 
 
 //============================================================================
-//                 recRepository
+//                 recArchive
 //============================================================================
 
-class recRepository : public recDb
+class recArchive : public recDb
 {
-public:
     wxString  f_name;
-    wxString  f_access;
-    wxString  f_comments;
+    wxString  f_note;
+    idt       f_con_list_id;
 
-    recRepository() {}
-    recRepository( idt id ) : recDb(id) { Read(); }
-    recRepository( const recRepository& at );
-
-    void Clear();
-    void Save();
-    bool Read();
-    TABLE_NAME_MEMBERS( "Repository" );
-};
-
-inline bool recEquivalent( const recRepository& r1, const recRepository& r2 )
-{
-    return
-        r1.f_name     == r2.f_name    &&
-        r1.f_access   == r2.f_access  &&
-        r1.f_comments == r2.f_comments;
-}
-
-inline bool operator==( const recRepository& r1, const recRepository& r2 )
-{
-    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
-}
-
-inline bool operator!=( const recRepository& r1, const recRepository& r2 )
-{
-    return !(r1 == r2);
-}
-
-
-//============================================================================
-//                 recRepositorySource
-//============================================================================
-
-class recRepositorySource : public recDb
-{
 public:
-    idt      f_repos_id;
-    idt      f_source_id;
-    wxString  f_call_num;
-    wxString  f_descrip;
-
-    recRepositorySource() {}
-    recRepositorySource( idt id ) : recDb(id) { Read(); }
-    recRepositorySource( const recRepositorySource& at );
+    recArchive() {}
+    recArchive( idt id ) : recDb(id) { Read(); }
+    recArchive( const recArchive& at );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "RepositorySource" );
+    TABLE_NAME_MEMBERS( "Archive" );
+    bool Equivalent( const recArchive& r2 ) const;
+
+    wxString FGetName() const { return f_name; }
+    wxString FGetNote() const { return f_note; }
+    idt FGetConListId() const { return f_con_list_id; }
+
+    void FSetName( const wxString& name ) { f_name = name; }
+    void FSetNote( const wxString& note ) { f_note = note; }
+    void FSetConListId( idt con_list_id ) { f_con_list_id = con_list_id; }
 };
 
-inline bool recEquivalent( const recRepositorySource& r1, const recRepositorySource& r2 )
+inline bool operator==( const recArchive& r1, const recArchive& r2 )
 {
-    return
-        r1.f_repos_id  == r2.f_repos_id  &&
-        r1.f_source_id == r2.f_source_id &&
-        r1.f_call_num  == r2.f_call_num  &&
-        r1.f_descrip   == r2.f_descrip;
+    return r1.Equivalent( r2 ) && r1.EqualID( r2 );
 }
 
-inline bool operator==( const recRepositorySource& r1, const recRepositorySource& r2 )
-{
-    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
-}
-
-inline bool operator!=( const recRepositorySource& r1, const recRepositorySource& r2 )
+inline bool operator!=( const recArchive& r1, const recArchive& r2 )
 {
     return !(r1 == r2);
 }
 
+
+//============================================================================
+//                 recArchiveReference
+//============================================================================
+
+class recArchiveReference : public recDb
+{
+    idt      f_archive_id;
+    idt      f_ref_id;
+    wxString f_call_num;
+    wxString f_note;
+
+public:
+    recArchiveReference() {}
+    recArchiveReference( idt id ) : recDb(id) { Read(); }
+    recArchiveReference( const recArchiveReference& at );
+
+    void Clear();
+    void Save();
+    bool Read();
+    TABLE_NAME_MEMBERS( "ArchiveReference" );
+    bool Equivalent( const recArchiveReference& r2 ) const;
+
+    idt FGetArchiveId() const { return f_archive_id; }
+    idt FGetRefId() const { return f_ref_id; }
+    wxString FGetCallNum() const { return f_call_num; }
+    wxString FGetNote() const { return f_note; }
+
+    void FSetArchiveId( idt archive_id ) { f_archive_id = archive_id; }
+    void FSetRefId( idt ref_id ) { f_ref_id = ref_id; }
+    void FSetCallNum( const wxString& call_num ) { f_call_num = call_num; }
+    void FSetNote( const wxString& note ) { f_note = note; }
+};
+
+inline bool operator==( const recArchiveReference& r1, const recArchiveReference& r2 )
+{
+    return r1.Equivalent( r2 ) && r1.EqualID( r2 );
+}
+
+inline bool operator!=( const recArchiveReference& r1, const recArchiveReference& r2 )
+{
+    return !(r1 == r2);
+}
 
 
 #endif // RECARCHIVE_H

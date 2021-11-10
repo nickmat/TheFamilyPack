@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        include/rec/recArchive.cpp
+ * Name:        src/rec/recArchive.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Manage the Archive database records.
  * Author:      Nick Matthews
@@ -34,37 +34,36 @@
 #include <rec/recArchive.h>
 
 //============================================================================
-//                 recRepository
+//                 recArchive
 //============================================================================
 
-recRepository::recRepository( const recRepository& at )
+recArchive::recArchive( const recArchive& at )
 {
-    f_id       = at.f_id;
-    f_name     = at.f_name;
-    f_access   = at.f_access;
-    f_comments = at.f_comments;
+    f_id = at.f_id;
+    f_name = at.f_name;
+    f_note = at.f_note;
+    f_con_list_id = at.f_con_list_id;
 }
 
-void recRepository::Clear()
+void recArchive::Clear()
 {
-    f_id       = 0;
-    f_name     = wxEmptyString;
-    f_access   = wxEmptyString;
-    f_comments = wxEmptyString;
+    f_id = 0;
+    f_name.clear();
+    f_note.clear();
+    f_con_list_id = 0;
 }
 
-void recRepository::Save()
+void recArchive::Save()
 {
     wxSQLite3StatementBuffer sql;
-    wxSQLite3Table result;
 
     if( f_id == 0 )
     {
         // Add new record
         sql.Format(
-            "INSERT INTO Repository (name, access, comments) "
-            "VALUES ('%q', '%q', '%q');",
-            UTF8_(f_name), UTF8_(f_access), UTF8_(f_comments)
+            "INSERT INTO Archive (name, note, con_list_id)"
+            " VALUES ('%q', '%q', " ID ");",
+            UTF8_(f_name), UTF8_(f_note), f_con_list_id
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -74,23 +73,23 @@ void recRepository::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO Repository (id, name, access, comments) "
-                "VALUES (" ID ", '%q', '%q', '%q');",
-                f_id, UTF8_(f_name), UTF8_(f_access), UTF8_(f_comments)
+                "INSERT INTO Archive (id, name, note, con_list_id)"
+                " VALUES (" ID ", '%q', '%q', " ID ");",
+                f_id, UTF8_(f_name), UTF8_(f_note), f_con_list_id
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE Repository SET name='%q', access='%q', comments='%q' "
-                "WHERE id=" ID ";",
-                UTF8_(f_name), UTF8_(f_access), UTF8_(f_comments), f_id
+                "UPDATE Archive SET name='%q', note='%q', con_list_id=" ID
+                " WHERE id=" ID ";",
+                UTF8_(f_name), UTF8_(f_note), f_con_list_id, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
     }
 }
 
-bool recRepository::Read()
+bool recArchive::Read()
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -101,7 +100,7 @@ bool recRepository::Read()
     }
 
     sql.Format(
-        "SELECT name, access, comments FROM Repository WHERE id=" ID ";",
+        "SELECT name, note, con_list_id FROM Archive WHERE id=" ID ";",
         f_id
     );
     result = s_db->GetTable( sql );
@@ -112,46 +111,53 @@ bool recRepository::Read()
         return false;
     }
     result.SetRow( 0 );
-    f_name     = result.GetAsString( 0 );
-    f_access   = result.GetAsString( 1 );
-    f_comments = result.GetAsString( 2 );
+    f_name = result.GetAsString( 0 );
+    f_note = result.GetAsString( 1 );
+    f_con_list_id = GET_ID( result.GetInt64( 2 ) );
     return true;
 }
 
-//============================================================================
-//                 recRepositorySource
-//============================================================================
-
-recRepositorySource::recRepositorySource( const recRepositorySource& at )
+bool recArchive::Equivalent( const recArchive& r2 ) const
 {
-    f_id        = at.f_id;
-    f_repos_id  = at.f_repos_id;
-    f_source_id = at.f_source_id;
-    f_call_num  = at.f_call_num;
-    f_descrip   = at.f_descrip;
+    return
+        f_name == r2.f_name &&
+        f_note == r2.f_note &&
+        f_con_list_id == r2.f_con_list_id;
 }
 
-void recRepositorySource::Clear()
+//============================================================================
+//                 recArchiveReference
+//============================================================================
+
+recArchiveReference::recArchiveReference( const recArchiveReference& at )
 {
-    f_id        = 0;
-    f_repos_id  = 0;
-    f_source_id = 0;
-    f_call_num  = wxEmptyString;
-    f_descrip   = wxEmptyString;
+    f_id         = at.f_id;
+    f_archive_id = at.f_archive_id;
+    f_ref_id     = at.f_ref_id;
+    f_call_num   = at.f_call_num;
+    f_note       = at.f_note;
 }
 
-void recRepositorySource::Save()
+void recArchiveReference::Clear()
+{
+    f_id = 0;
+    f_archive_id = 0;
+    f_ref_id = 0;
+    f_call_num.clear();
+    f_note.clear();
+}
+
+void recArchiveReference::Save()
 {
     wxSQLite3StatementBuffer sql;
-    wxSQLite3Table result;
 
     if( f_id == 0 )
     {
         // Add new record
         sql.Format(
-            "INSERT INTO RepositorySource (repos_id, source_id, call_num, descrip) "
-            "VALUES (" ID ", " ID ", '%q', '%q');",
-            f_repos_id, f_source_id, UTF8_(f_call_num), UTF8_(f_descrip)
+            "INSERT INTO ArchiveReference (archive_id, ref_id, call_num, note)"
+            " VALUES (" ID ", " ID ", '%q', '%q');",
+            f_archive_id, f_ref_id, UTF8_(f_call_num), UTF8_(f_note)
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -161,23 +167,23 @@ void recRepositorySource::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO RepositorySource (id, repos_id, source_id, call_num, descrip) "
-                "VALUES (" ID ", " ID ", " ID ", '%q', '%q');",
-                f_id, f_repos_id, f_source_id, UTF8_(f_call_num), UTF8_(f_descrip)
+                "INSERT INTO ArchiveReference (id, archive_id, ref_id, call_num, note)"
+                " VALUES (" ID ", " ID ", " ID ", '%q', '%q');",
+                f_id, f_archive_id, f_ref_id, UTF8_(f_call_num), UTF8_(f_note)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE RepositorySource SET repos_id=" ID ", source_id=" ID ", "
-                "call_num='%q', descrip='%q' WHERE id=" ID ";",
-                f_repos_id, f_source_id, UTF8_(f_call_num), UTF8_(f_descrip), f_id
+                "UPDATE ArchiveReference SET archive_id=" ID ", ref_id=" ID ","
+                " call_num='%q', note='%q' WHERE id=" ID ";",
+                f_archive_id, f_ref_id, UTF8_(f_call_num), UTF8_(f_note), f_id
             );
         }
         s_db->ExecuteUpdate( sql );
     }
 }
 
-bool recRepositorySource::Read()
+bool recArchiveReference::Read()
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -188,7 +194,7 @@ bool recRepositorySource::Read()
     }
 
     sql.Format(
-        "SELECT repos_id, source_id, call_num, descrip FROM RepositorySource WHERE id=" ID ";",
+        "SELECT archive_id, ref_id, call_num, note FROM ArchiveReference WHERE id=" ID ";",
         f_id
     );
     result = s_db->GetTable( sql );
@@ -199,11 +205,20 @@ bool recRepositorySource::Read()
         return false;
     }
     result.SetRow( 0 );
-    f_repos_id  = GET_ID( result.GetInt64( 0 ) );
-    f_source_id = GET_ID( result.GetInt64( 1 ) );
-    f_call_num  = result.GetAsString( 2 );
-    f_descrip   = result.GetAsString( 3 );
+    f_archive_id  = GET_ID( result.GetInt64( 0 ) );
+    f_ref_id = GET_ID( result.GetInt64( 1 ) );
+    f_call_num = result.GetAsString( 2 );
+    f_note = result.GetAsString( 3 );
     return true;
 }
 
-// End of recSource.cpp file
+bool recArchiveReference::Equivalent( const recArchiveReference& r2 ) const
+{
+    return
+        f_archive_id == r2.f_archive_id &&
+        f_ref_id == r2.f_ref_id &&
+        f_call_num == r2.f_call_num &&
+        f_note == r2.f_note;
+}
+
+// End of src/rec/recArchive.cpp file
