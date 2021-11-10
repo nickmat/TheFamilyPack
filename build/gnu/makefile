@@ -120,7 +120,9 @@ HXML5_OBJECTS =  \
 REC_CXXFLAGS = $(VAR) $(VAR_5) -I../../include/rec -I../../include `$(WX_CONFIG) \
 	--cxxflags $(WX_CONFIG_FLAGS)` $(CPPFLAGS) $(CXXFLAGS)
 REC_OBJECTS =  \
+	rec_recArchive.o \
 	rec_recAssociate.o \
+	rec_recCitation.o \
 	rec_recContact.o \
 	rec_recDatabase.o \
 	rec_recDate.o \
@@ -148,7 +150,6 @@ REC_OBJECTS =  \
 	rec_recPersona.o \
 	rec_recPlace.o \
 	rec_recReference.o \
-	rec_recSource.o \
 	rec_recSystem.o \
 	rec_recUser.o \
 	rec_recUpgrade.o \
@@ -402,7 +403,13 @@ hxml5_hxml5.o: ./../../src/hxml5/hxml5.cpp
 hxml5_pugixml.o: ./../../src/hxml5/pugixml.cpp
 	$(CXX) -c -o $@ $(HXML5_CXXFLAGS) $(CPPDEPS) $<
 
+rec_recArchive.o: ./../../src/rec/recArchive.cpp
+	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
+
 rec_recAssociate.o: ./../../src/rec/recAssociate.cpp
+	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
+
+rec_recCitation.o: ./../../src/rec/recCitation.cpp
 	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
 
 rec_recContact.o: ./../../src/rec/recContact.cpp
@@ -484,9 +491,6 @@ rec_recPlace.o: ./../../src/rec/recPlace.cpp
 	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
 
 rec_recReference.o: ./../../src/rec/recReference.cpp
-	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
-
-rec_recSource.o: ./../../src/rec/recSource.cpp
 	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
 
 rec_recSystem.o: ./../../src/rec/recSystem.cpp

@@ -39,7 +39,6 @@
 
 #include <rec/recEvent.h>
 #include <rec/recReference.h>
-#include <rec/recSource.h>
 
 
 recPlace::recPlace( const recPlace& p )
@@ -231,12 +230,6 @@ void recPlace::Renumber( idt id, idt to_id )
     s_db->ExecuteUpdate( sql );
 
     sql.Format(
-        "UPDATE Source SET sub_place_id=" ID " WHERE sub_place_id=" ID "; "
-        "UPDATE Source SET loc_place_id=" ID " WHERE loc_place_id=" ID ";",
-        to_id, id, to_id, id );
-    s_db->ExecuteUpdate( sql );
-
-    sql.Format(
         "UPDATE ReferenceEntity SET entity_id=" ID
         " WHERE entity_type=3 AND entity_id=" ID ";",
         to_id, id );
@@ -286,7 +279,6 @@ void recPlace::RemoveDates( idt dateID )
 void recPlace::RemoveFromDatabase( idt placeID )
 {
     recEvent::RemovePlace( placeID );
-    recSource::RemovePlace( placeID );
 
     recPlacePartVec parts = recPlace::GetPlaceParts( placeID );
     for( size_t i = 0 ; i < parts.size() ; i++ ) {
@@ -308,9 +300,6 @@ void recPlace::DeleteIfOrphaned( idt id )
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
 
     sql.Format( "SELECT COUNT(*) FROM Eventa WHERE place_id=" ID ";", id );
-    if( s_db->ExecuteScalar( sql ) > 0 ) return;
-
-    sql.Format( "SELECT COUNT(*) FROM Source WHERE sub_place_id=" ID " OR loc_place_id=" ID ";", id, id );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
 
     // TODO: Ensure Place is removed from reference statement.

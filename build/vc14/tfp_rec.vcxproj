@@ -38,7 +38,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <_ProjectFileVersion>16.0.31624.102</_ProjectFileVersion>
+    <_ProjectFileVersion>16.0.31727.243</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
@@ -127,7 +127,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="..\..\src\rec\recArchive.cpp" />
     <ClCompile Include="..\..\src\rec\recAssociate.cpp" />
+    <ClCompile Include="..\..\src\rec\recCitation.cpp" />
     <ClCompile Include="..\..\src\rec\recContact.cpp" />
     <ClCompile Include="..\..\src\rec\recDatabase.cpp" />
     <ClCompile Include="..\..\src\rec\recDate.cpp" />
@@ -155,14 +157,15 @@
     <ClCompile Include="..\..\src\rec\recPersona.cpp" />
     <ClCompile Include="..\..\src\rec\recPlace.cpp" />
     <ClCompile Include="..\..\src\rec\recReference.cpp" />
-    <ClCompile Include="..\..\src\rec\recSource.cpp" />
     <ClCompile Include="..\..\src\rec\recSystem.cpp" />
     <ClCompile Include="..\..\src\rec\recUpgrade.cpp" />
     <ClCompile Include="..\..\src\rec\recUser.cpp" />
     <ClCompile Include="..\..\src\rec\recVersion.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\include\rec\recArchive.h" />
     <ClInclude Include="..\..\include\rec\recAssociate.h" />
+    <ClInclude Include="..\..\include\rec\recCitation.h" />
     <ClInclude Include="..\..\include\rec\recContact.h" />
     <ClInclude Include="..\..\include\rec\recDatabase.h" />
     <ClInclude Include="..\..\include\rec\recDate.h" />
@@ -192,7 +195,6 @@
     <ClInclude Include="..\..\include\rec\recPersona.h" />
     <ClInclude Include="..\..\include\rec\recPlace.h" />
     <ClInclude Include="..\..\include\rec\recReference.h" />
-    <ClInclude Include="..\..\include\rec\recSource.h" />
     <ClInclude Include="..\..\include\rec\recSystem.h" />
     <ClInclude Include="..\..\include\rec\recUser.h" />
     <ClInclude Include="..\..\include\rec\recVersion.h" />

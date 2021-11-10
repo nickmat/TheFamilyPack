@@ -40,7 +40,6 @@
 #include <rec/recEvent.h>
 #include <rec/recPlace.h>
 #include <rec/recReference.h>
-#include <rec/recSource.h>
 
 const wxString recDate::s_prefStr[recDate::PREF_Max] = {
     _("Unstated"),       // PREF_Unstated
@@ -524,12 +523,6 @@ void recDate::Renumber( idt id, idt to_id )
     s_db->ExecuteUpdate( sql );
 
     sql.Format(
-        "UPDATE Source SET sub_date1_id=" ID " WHERE sub_date1_id=" ID "; "
-        "UPDATE Source SET sub_date2_id=" ID " WHERE sub_date2_id=" ID ";",
-        to_id, id, to_id, id );
-    s_db->ExecuteUpdate( sql );
-
-    sql.Format(
         "UPDATE ReferenceEntity SET entity_id=" ID
         " WHERE entity_type=4 AND entity_id=" ID ";",
         to_id, id );
@@ -595,9 +588,6 @@ void recDate::DeleteIfOrphaned( idt id )
     sql.Format( "SELECT COUNT(*) FROM Place WHERE date1_id=" ID " OR date2_id=" ID ";", id, id );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
 
-    sql.Format( "SELECT COUNT(*) FROM Source WHERE sub_date1_id=" ID " OR sub_date2_id=" ID ";", id, id );
-    if( s_db->ExecuteScalar( sql ) > 0 ) return;
-
     sql.Format(
         "SELECT COUNT(*) FROM ReferenceEntity"
         " WHERE entity_type=4 AND entity_id=" ID ";",
@@ -627,7 +617,6 @@ void recDate::RemoveFromDatabase( idt id )
     }
     recEvent::RemoveDates( id );
     recPlace::RemoveDates( id );
-    recSource::RemoveDates( id );
     recReferenceEntity::Delete( recReferenceEntity::TYPE_Date, id );
     // If this is a relative date, remove the relative part.
     recDate date( id );

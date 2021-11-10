@@ -165,7 +165,9 @@ REC_CXXFLAGS = /MD$(VAR_29) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) /D__WXMSW__
 	/I..\..\include\rec /I..\..\include /GR /EHsc /Yu"wx/wxprec.h" \
 	/Fp"wxprec_rec.pch" $(CPPFLAGS) $(CXXFLAGS)
 REC_OBJECTS =  \
+	rec_recArchive.obj \
 	rec_recAssociate.obj \
+	rec_recCitation.obj \
 	rec_recContact.obj \
 	rec_recDatabase.obj \
 	rec_recDate.obj \
@@ -193,7 +195,6 @@ REC_OBJECTS =  \
 	rec_recPersona.obj \
 	rec_recPlace.obj \
 	rec_recReference.obj \
-	rec_recSource.obj \
 	rec_recSystem.obj \
 	rec_recUser.obj \
 	rec_recUpgrade.obj \
@@ -623,8 +624,14 @@ hxml5_hxml5.obj: .\..\..\src\hxml5\hxml5.cpp
 hxml5_pugixml.obj: .\..\..\src\hxml5\pugixml.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(HXML5_CXXFLAGS) .\..\..\src\hxml5\pugixml.cpp
 
+rec_recArchive.obj: .\..\..\src\rec\recArchive.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recArchive.cpp
+
 rec_recAssociate.obj: .\..\..\src\rec\recAssociate.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recAssociate.cpp
+
+rec_recCitation.obj: .\..\..\src\rec\recCitation.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recCitation.cpp
 
 rec_recContact.obj: .\..\..\src\rec\recContact.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recContact.cpp
@@ -706,9 +713,6 @@ rec_recPlace.obj: .\..\..\src\rec\recPlace.cpp
 
 rec_recReference.obj: .\..\..\src\rec\recReference.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recReference.cpp
-
-rec_recSource.obj: .\..\..\src\rec\recSource.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recSource.cpp
 
 rec_recSystem.obj: .\..\..\src\rec\recSystem.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recSystem.cpp

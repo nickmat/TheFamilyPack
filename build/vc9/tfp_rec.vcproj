@@ -218,7 +218,15 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\src\rec\recArchive.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rec\recAssociate.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rec\recCitation.cpp"
 				>
 			</File>
 			<File
@@ -330,10 +338,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\rec\recSource.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\rec\recSystem.cpp"
 				>
 			</File>
@@ -356,7 +360,15 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath="..\..\include\rec\recArchive.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\include\rec\recAssociate.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\rec\recCitation.h"
 				>
 			</File>
 			<File
@@ -477,10 +489,6 @@
 			</File>
 			<File
 				RelativePath="..\..\include\rec\recReference.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\rec\recSource.h"
 				>
 			</File>
 			<File

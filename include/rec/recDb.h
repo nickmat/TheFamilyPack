@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010-2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 .. 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -22,15 +22,16 @@
  *  along with The Family Pack.  If not, see <http://www.gnu.org/licenses/>.
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
+ 
 */
 
 #ifndef RECDB_H
 #define RECDB_H
 
+#include <rec/recArchive.h>
 #include <rec/recAssociate.h>
+#include <rec/recCitation.h>
 #include <rec/recContact.h>
-#include <rec/recDatabase.h>
 #include <rec/recDate.h>
 #include <rec/recEvent.h>
 #include <rec/recEventa.h>
@@ -57,7 +58,6 @@
 #include <rec/recPersona.h>
 #include <rec/recPlace.h>
 #include <rec/recReference.h>
-#include <rec/recSource.h>
 #include <rec/recSystem.h>
 #include <rec/recUser.h>
 #include <rec/recVersion.h>

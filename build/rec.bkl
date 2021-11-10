@@ -44,7 +44,9 @@
 
   <lib id="rec" template="wx-lib,wxlike">
     <libname>rec$(WXLIBPOSTFIX)</libname>
+    <sources>$(LOCAL_SRC)/rec/recArchive.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recAssociate.cpp</sources>
+    <sources>$(LOCAL_SRC)/rec/recCitation.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recContact.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recDatabase.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recDate.cpp</sources>
@@ -72,13 +74,14 @@
     <sources>$(LOCAL_SRC)/rec/recPersona.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recPlace.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recReference.cpp</sources>
-    <sources>$(LOCAL_SRC)/rec/recSource.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recSystem.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recUser.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recUpgrade.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recVersion.cpp</sources>
 
+    <headers>$(LOCAL_INC)/rec/recArchive.h</headers>
     <headers>$(LOCAL_INC)/rec/recAssociate.h</headers>
+    <headers>$(LOCAL_INC)/rec/recCitation.h</headers>
     <headers>$(LOCAL_INC)/rec/recContact.h</headers>
     <headers>$(LOCAL_INC)/rec/recDatabase.h</headers>
     <headers>$(LOCAL_SRC)/rec/recDatabaseCreate.h</headers>
@@ -109,7 +112,6 @@
     <headers>$(LOCAL_INC)/rec/recPersona.h</headers>
     <headers>$(LOCAL_INC)/rec/recPlace.h</headers>
     <headers>$(LOCAL_INC)/rec/recReference.h</headers>
-    <headers>$(LOCAL_INC)/rec/recSource.h</headers>
     <headers>$(LOCAL_INC)/rec/recSystem.h</headers>
     <headers>$(LOCAL_INC)/rec/recUser.h</headers>
     <headers>$(LOCAL_INC)/rec/recVersion.h</headers>
@@ -229,4 +231,3 @@
   </lib>
 
 </makefile>
-
