@@ -93,6 +93,7 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_EDIT_REFERENCE, TfpFrame::OnEditReference )
     EVT_MENU( tfpID_EDIT_GALLERY, TfpFrame::OnEditGallery )
     EVT_MENU( tfpID_EDIT_RESEARCHER, TfpFrame::OnEditResearcher )
+    EVT_MENU( tfpID_EDIT_ARCHIVE, TfpFrame::OnEditArchive )
     EVT_MENU( tfpID_EDIT_ASSOCIATE, TfpFrame::OnEditAssociate )
     EVT_MENU( tfpID_FIND_FAMILY_ID, TfpFrame::OnFindFamilyID )
     EVT_MENU( tfpID_FIND_INDIVIDUAL_ID, TfpFrame::OnFindIndividualID )
@@ -240,6 +241,7 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
     menuEdit->Append( tfpID_EDIT_REFERENCE_MENU, _("&Reference"), m_menuEditReference );
     menuEdit->Append( tfpID_EDIT_GALLERY, _( "&Gallery..." ) );
     menuEdit->Append( tfpID_EDIT_RESEARCHER, _( "R&esearcher..." ) );
+    menuEdit->Append( tfpID_EDIT_ARCHIVE, _( "Archi&ve..." ) );
     menuEdit->Append( tfpID_EDIT_CORE_MENU, _("&Core Data"), menuEdCore );
     menuEdit->Append( tfpID_EDIT_ASSOCIATE, _( "&Associate database..." ) );
 
@@ -817,6 +819,42 @@ void TfpFrame::OnEditResearcher( wxCommandEvent& event )
             recDb::Commit();
             RefreshHtmPage();
         } else {
+            recDb::Rollback();
+        }
+    }
+    catch( wxSQLite3Exception& e ) {
+        recDb::ErrorMessage( e );
+        recDb::Rollback();
+    }
+}
+
+void TfpFrame::OnEditArchive( wxCommandEvent& event )
+{
+    long num = wxGetNumberFromUser(
+        _( "Enter the Archive ID or 0 for new Archive" ),
+        _( "Archive ID:" ),
+        _( "Edit Archive" ),
+        (long)0, (long)0, (long)INT_MAX
+    );
+    if( num < 0 ) return;
+
+    recDb::Begin();
+    try {
+        bool ret = false;
+        if( num == 0 ) {
+            idt resID = rgCreateArchive( this );
+            if( resID != 0 ) {
+                ret = true;
+            }
+        }
+        else {
+            ret = rgEditArchive( this, (idt)num );
+        }
+        if( ret == true ) {
+            recDb::Commit();
+            RefreshHtmPage();
+        }
+        else {
             recDb::Rollback();
         }
     }
