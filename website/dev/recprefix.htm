@@ -38,54 +38,59 @@
 
 <h2>TFP Database Record and Screen Prefixes</h2>
 <p>
- The following prefixes will be used to indicate record and screen types. As currently used, case is significant.
+ The following codes and prefixes will be used to indicate record and screen types.
+ Note, case is no longer significant.
 </p>
 <table class="basic">
- <tr><th>Format</th><th>Record</th><th>Display</th></tr>
- <tr><td>A&lt;id&gt;</td><td>Attribute</td><td>Attribute Note</td></tr>
- <tr><td>C&lt;id&gt;</td><td>Contact</td><td> </td></tr>
- <tr><td>CD&lt;id&gt;</td><td> </td><td>Descendant Chart for Individual</td></tr>
- <tr><td>CL&lt;id&gt;</td><td>ContactList</td><td> </td></tr>
- <tr><td>CP&lt;id&gt;</td><td> </td><td>Pedegree Chart for Individual</td></tr>
- <tr><td>CT&lt;id&gt;</td><td>ContactType</td><td> </td></tr>
- <tr><td>D&lt;id&gt;</td><td>Date</td><td>Date Note</td></tr>
- <tr><td>E</td><td> </td><td>Event List</td></tr>
- <tr><td>E,&lt;Page&gt;</td><td> </td><td>Paged Event List</td></tr>
- <tr><td>E$</td><td> </td><td>Selected Event List</td></tr>
- <tr><td>E&lt;id&gt;</td><td>Event</td><td>Event</td></tr>
- <tr><td>Ea</td><td> </td><td>Eventa List</td></tr>
- <tr><td>Ea,&lt;Page&gt;</td><td> </td><td>Paged Eventa List</td></tr>
- <tr><td>Ea$</td><td> </td><td>Selected Eventa List</td></tr>
- <tr><td>Ea&lt;id&gt;</td><td>Eventa</td><td>Eventa</td></tr>
- <tr><td>EE&lt;id&gt;</td><td>EventEventa</td><td> </td></tr>
- <tr><td>EP&lt;id&gt;</td><td>EventaPersona</td><td> </td></tr>
- <tr><td>ET&lt;id&gt;</td><td>EventType</td><td> </td></tr>
- <tr><td>F&lt;id&gt;</td><td>Family</td><td>Immediate Family</td></tr>
- <tr><td>FI&lt;id&gt;</td><td> </td><td>Default Family for Individual</td></tr>
- <tr><td>I&lt;id&gt;</td><td>Individual</td><td>Individual</td></tr>
- <tr><td>NI</td><td> </td><td>Individual Surname Index</td></tr>
- <tr><td>NP</td><td> </td><td>Persona Surname Index</td></tr>
- <tr><td>ND*</td><td> </td><td>Individual Default Name List</td></tr>
- <tr><td>NI+&lt;Surname&gt;</td><td> </td><td>List of Individuals with Surname</td></tr>
- <tr><td>NP+&lt;Surname&gt;</td><td> </td><td>List of Persona with Surname</td></tr>
- <tr><td>N&lt;id&gt;</td><td>Name</td><td>Name Note</td></tr>
- <tr><td>NP&lt;id&gt;</td><td>NamePart</td><td> </td></tr>
- <tr><td>P&lt;id&gt;</td><td>Place</td><td>Place Note</td></tr>
- <tr><td>Pa&lt;id&gt;</td><td>Persona</td><td>Persona</td></tr>
- <tr><td>R</td><td> </td><td>Reference List</td></tr>
- <tr><td>R,&lt;Page&gt;</td><td> </td><td>Paged Reference List</td></tr>
- <tr><td>R&lt;id&gt;</td><td>Reference</td><td>Reference</td></tr>
- <tr><td>Re</td><td> </td><td>Researcher List</td></tr>
- <tr><td>Re&lt;id&gt;</td><td>Researcher</td><td> </td></tr>
- <tr><td>Rp&lt;id&gt;</td><td>Repository</td><td> </td></tr>
- <tr><td>Rs&lt;id&gt;</td><td>Relationship</td><td>Relationship Note</td></tr>
- <tr><td>Ro&lt;id&gt;</td><td>EventTypeRole</td><td> </td></tr>
- <tr><td>S&lt;id&gt;</td><td>Source</td><td> </td></tr>
- <tr><td>U&lt;id&gt;</td><td>User</td><td> </td></tr>
- <tr><th colspan='3'>Possible future:</th></tr>
- <tr><td>Im&lt;id&gt;</td><td>Image</td><td> </td></tr>
- <tr><td>M&lt;id&gt;</td><td>Media</td><td> </td></tr>
- <tr><td>G&lt;id&gt;</td><td>Gallery</td><td> </td></tr>
+ <tr><th>Format</th><th>Record</th><th>Display</th><th>Note</th></tr>
+ <tr><td>A&lt;id&gt;</td><td>Associate</td><td></td><td>An associated database</td></tr>
+ <tr><td>About</td><td></td><td>Program details</td><td></td></tr>
+ <tr><td>Ar&lt;id&gt;</td><td>Archive</td><td> </td><td>A Reference source</td></tr>
+ <tr><td>C&lt;id&gt;</td><td>Contact</td><td> </td><td></td></tr>
+ <tr><td>CD&lt;id&gt;</td><td> </td><td>Descendant Chart for Individual</td><td></td></tr>
+ <tr><td>CL&lt;id&gt;</td><td>ContactList</td><td> </td><td></td></tr>
+ <tr><td>CP&lt;id&gt;</td><td> </td><td>Pedigree Chart for Individual</td><td></td></tr>
+ <tr><td>CT&lt;id&gt;</td><td>ContactType</td><td> </td><td></td></tr>
+ <tr><td>D&lt;id&gt;</td><td>Date</td><td>Date Note</td><td></td></tr>
+ <tr><td>E</td><td> </td><td>Event List</td><td></td></tr>
+ <tr><td>E,&lt;Page&gt;</td><td> </td><td>Paged Event List</td><td></td></tr>
+ <tr><td>E$</td><td> </td><td>Selected Event List</td><td></td></tr>
+ <tr><td>E&lt;id&gt;</td><td>Event</td><td>Event</td><td></td></tr>
+ <tr><td>Ea</td><td> </td><td>Eventa List</td><td></td></tr>
+ <tr><td>Ea,&lt;Page&gt;</td><td> </td><td>Paged Eventa List</td><td></td></tr>
+ <tr><td>Ea$</td><td> </td><td>Selected Eventa List</td><td></td></tr>
+ <tr><td>Ea&lt;id&gt;</td><td>Eventa</td><td>Eventa</td><td></td></tr>
+ <tr><td>EE&lt;id&gt;</td><td>EventEventa</td><td> </td><td></td></tr>
+ <tr><td>EP&lt;id&gt;</td><td>EventaPersona</td><td> </td><td></td></tr>
+ <tr><td>ET&lt;id&gt;</td><td>EventType</td><td> </td><td></td></tr>
+ <tr><td>F&lt;id&gt;</td><td>Family</td><td>Immediate Family</td><td></td></tr>
+ <tr><td>FI&lt;id&gt;</td><td> </td><td>Default Family for Individual</td><td></td></tr>
+ <tr><td>G</td><td></td><td>Gallery List</td><td></td></tr>
+ <tr><td>G&lt;id&gt;</td><td>Gallery</td><td>Gallery</td><td></td></tr>
+ <tr><td>I&lt;id&gt;</td><td>Individual</td><td>Individual</td><td></td></tr>
+ <tr><td>M</td><td></td><td>Media list</td><td></td></tr>
+ <tr><td>M&lt;id&gt;</td><td>Media</td><td> </td><td>Images or other media</td></tr>
+ <tr><td>MD</td><td></td><td> Media Data list</td><td>Includes associated databases</td></tr>
+ <tr><td>MD&lt;id&gt;</td><td>MediaData</td><td> </td><td>Digital representation of Media</td></tr>
+ <tr><td>NI</td><td> </td><td>Individual Surname Index</td><td></td></tr>
+ <tr><td>NP</td><td> </td><td>Persona Surname Index</td><td></td></tr>
+ <tr><td>ND*</td><td> </td><td>Individual Default Name List</td><td></td></tr>
+ <tr><td>NI+&lt;Surname&gt;</td><td> </td><td>List of Individuals with Surname</td><td></td></tr>
+ <tr><td>NP+&lt;Surname&gt;</td><td> </td><td>List of Persona with Surname</td><td></td></tr>
+ <tr><td>N&lt;id&gt;</td><td>Name</td><td>Name Note</td><td></td></tr>
+ <tr><td>NP&lt;id&gt;</td><td>NamePart</td><td> </td><td></td></tr>
+ <tr><td>P&lt;id&gt;</td><td>Place</td><td>Place Note</td><td></td></tr>
+ <tr><td>Pa&lt;id&gt;</td><td>Persona</td><td>Persona</td><td></td></tr>
+ <tr><td>R</td><td> </td><td>Reference List</td><td></td></tr>
+ <tr><td>R,&lt;Page&gt;</td><td> </td><td>Paged Reference List</td><td></td></tr>
+ <tr><td>R&lt;id&gt;</td><td>Reference</td><td>Reference</td><td></td></tr>
+ <tr><td>Re</td><td> </td><td>Researcher List</td><td></td></tr>
+ <tr><td>Re&lt;id&gt;</td><td>Researcher</td><td> </td><td></td></tr>
+ <tr><td>Ro&lt;id&gt;</td><td>EventTypeRole</td><td> </td><td></td></tr>
+ <tr><td>U&lt;id&gt;</td><td>User</td><td> </td><td></td></tr>
+ <tr><th colspan='3'>Possible future:</th><td></td></tr>
+ <tr><td>T&lt;id&gt;</td><td>Template</td><td> </td><td>For creating Reference's</td></tr>
+ <tr><td>L&lt;id&gt;</td><td>Location</td><td> </td><td>Alternative to Place</td></tr>
 </table>
 </div><!--id=content-->
 
