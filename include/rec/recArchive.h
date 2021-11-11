@@ -59,6 +59,9 @@ public:
     void FSetName( const wxString& name ) { f_name = name; }
     void FSetNote( const wxString& note ) { f_note = note; }
     void FSetConListId( idt con_list_id ) { f_con_list_id = con_list_id; }
+
+    static wxString GetIdStr( idt arcID ) { return wxString::Format( "Ar" ID, arcID ); }
+    wxString GetIdStr() const { return GetIdStr( f_id ); }
 };
 
 inline bool operator==( const recArchive& r1, const recArchive& r2 )
