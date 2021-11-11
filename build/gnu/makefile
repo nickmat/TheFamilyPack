@@ -163,6 +163,7 @@ RECGUI_CXXFLAGS = $(VAR) $(VAR_5) -I../../include/rec -I../../include/rg \
 	-I../../include `$(WX_CONFIG) --cxxflags $(WX_CONFIG_FLAGS)` $(CPPFLAGS) \
 	$(CXXFLAGS)
 RECGUI_OBJECTS =  \
+	recgui_fbRgEditArchive.o \
 	recgui_fbRgEditAssociate.o \
 	recgui_fbRgEditGallery.o \
 	recgui_fbRgEditMedia.o \
@@ -176,6 +177,7 @@ RECGUI_OBJECTS =  \
 	recgui_rgCompareEvent.o \
 	recgui_rgCrIndividual.o \
 	recgui_rgCrName.o \
+	recgui_rgEdArchive.o \
 	recgui_rgEdContact.o \
 	recgui_rgEdDate.o \
 	recgui_rgEdEvent.o \
@@ -511,6 +513,9 @@ rec_dummy.o: ./../../src/dummy.cpp
 reccl_reccl.o: ./../../src/rc/reccl.cpp
 	$(CXX) -c -o $@ $(RECCL_CXXFLAGS) $(CPPDEPS) $<
 
+recgui_fbRgEditArchive.o: ./../../src/rg/fb/fbRgEditArchive.cpp
+	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
+
 recgui_fbRgEditAssociate.o: ./../../src/rg/fb/fbRgEditAssociate.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
@@ -548,6 +553,9 @@ recgui_rgCrIndividual.o: ./../../src/rg/rgCrIndividual.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgCrName.o: ./../../src/rg/rgCrName.cpp
+	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
+
+recgui_rgEdArchive.o: ./../../src/rg/rgEdArchive.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgEdContact.o: ./../../src/rg/rgEdContact.cpp

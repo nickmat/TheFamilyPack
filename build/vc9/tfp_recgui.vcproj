@@ -196,6 +196,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rg\fb\fbRgEditArchive.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rg\fb\fbRgEditAssociate.cpp"
 				>
 			</File>
@@ -241,6 +245,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\rg\rgCrName.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgEdArchive.cpp"
 				>
 			</File>
 			<File
@@ -370,6 +378,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rg\fb\fbRgEditArchive.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rg\fb\fbRgEditAssociate.h"
 				>
 			</File>
@@ -419,6 +431,10 @@
 			</File>
 			<File
 				RelativePath="..\..\include\rg\rgDialogs.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgEdArchive.h"
 				>
 			</File>
 			<File

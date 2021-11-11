@@ -50,6 +50,10 @@ enum {
     rgSELSTYLE_SelList    = 0x0100    // Selects the full list
 };
 
+// See src/rg/rgEdArchive.cpp
+extern bool rgEditArchive( wxWindow* wind, idt arcID );
+extern idt rgCreateArchive( wxWindow* wind );
+
 // See src/rg/rgAssociate.cpp
 extern bool rgEditAssociate( wxWindow* wind, idt assID );
 extern idt rgCreateAssociate( wxWindow* wind );
