@@ -45,6 +45,9 @@
     <ClCompile Include="..\..\src\tfp\tfpWrAdmin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\tfp\tfpWrArchive.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\tfp\tfpWrChart.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

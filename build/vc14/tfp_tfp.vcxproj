@@ -38,7 +38,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <_ProjectFileVersion>16.0.31624.102</_ProjectFileVersion>
+    <_ProjectFileVersion>16.0.31727.243</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
@@ -151,6 +151,7 @@
     <ClCompile Include="..\..\src\tfp\tfpVersion.cpp" />
     <ClCompile Include="..\..\src\tfp\tfpWr.cpp" />
     <ClCompile Include="..\..\src\tfp\tfpWrAdmin.cpp" />
+    <ClCompile Include="..\..\src\tfp\tfpWrArchive.cpp" />
     <ClCompile Include="..\..\src\tfp\tfpWrChart.cpp" />
     <ClCompile Include="..\..\src\tfp\tfpWrEvent.cpp" />
     <ClCompile Include="..\..\src\tfp\tfpWrEventa.cpp" />

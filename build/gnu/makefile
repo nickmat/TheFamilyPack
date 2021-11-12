@@ -77,6 +77,7 @@ TFP_OBJECTS =  \
 	tfp_tfpVersion.o \
 	tfp_tfpWr.o \
 	tfp_tfpWrAdmin.o \
+	tfp_tfpWrArchive.o \
 	tfp_tfpWrChart.o \
 	tfp_tfpWrEvent.o \
 	tfp_tfpWrEventa.o \
@@ -316,6 +317,9 @@ tfp_tfpWr.o: ./../../src/tfp/tfpWr.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
 tfp_tfpWrAdmin.o: ./../../src/tfp/tfpWrAdmin.cpp
+	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
+
+tfp_tfpWrArchive.o: ./../../src/tfp/tfpWrArchive.cpp
 	$(CXX) -c -o $@ $(TFP_CXXFLAGS) $(CPPDEPS) $<
 
 tfp_tfpWrChart.o: ./../../src/tfp/tfpWrChart.cpp

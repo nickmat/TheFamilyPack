@@ -69,6 +69,7 @@ TFP_OBJECTS =  \
 	tfp_tfpVersion.obj \
 	tfp_tfpWr.obj \
 	tfp_tfpWrAdmin.obj \
+	tfp_tfpWrArchive.obj \
 	tfp_tfpWrChart.obj \
 	tfp_tfpWrEvent.obj \
 	tfp_tfpWrEventa.obj \
@@ -521,6 +522,9 @@ tfp_tfpWr.obj: .\..\..\src\tfp\tfpWr.cpp
 
 tfp_tfpWrAdmin.obj: .\..\..\src\tfp\tfpWrAdmin.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrAdmin.cpp
+
+tfp_tfpWrArchive.obj: .\..\..\src\tfp\tfpWrArchive.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrArchive.cpp
 
 tfp_tfpWrChart.obj: .\..\..\src\tfp\tfpWrChart.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(TFP_CXXFLAGS) .\..\..\src\tfp\tfpWrChart.cpp

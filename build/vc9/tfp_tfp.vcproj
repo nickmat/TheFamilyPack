@@ -277,6 +277,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\tfp\tfpWrArchive.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\tfp\tfpWrChart.cpp"
 				>
 			</File>

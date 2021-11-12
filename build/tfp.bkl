@@ -91,6 +91,7 @@
     <sources>$(LOCAL_SRC)/tfp/tfpVersion.cpp</sources>
     <sources>$(LOCAL_SRC)/tfp/tfpWr.cpp</sources>
     <sources>$(LOCAL_SRC)/tfp/tfpWrAdmin.cpp</sources>
+    <sources>$(LOCAL_SRC)/tfp/tfpWrArchive.cpp</sources>
     <sources>$(LOCAL_SRC)/tfp/tfpWrChart.cpp</sources>
     <sources>$(LOCAL_SRC)/tfp/tfpWrEvent.cpp</sources>
     <sources>$(LOCAL_SRC)/tfp/tfpWrEventa.cpp</sources>
