@@ -125,6 +125,25 @@ bool recArchive::Equivalent( const recArchive& r2 ) const
         f_con_list_id == r2.f_con_list_id;
 }
 
+recArchiveVec recArchive::GetFullList()
+{
+    recArchiveVec list;
+    wxSQLite3ResultSet result = s_db->ExecuteQuery(
+        "SELECT id, name, note, con_list_id FROM Archive"
+        " ORDER BY id;"
+    );
+
+    recArchive arch( 0 );
+    while( result.NextRow() ) {
+        arch.FSetID( GET_ID( result.GetInt64( 0 ) ) );
+        arch.FSetName( result.GetAsString( 1 ) );
+        arch.FSetNote( result.GetAsString( 2 ) );
+        arch.FSetConListId( GET_ID( result.GetInt64( 3 ) ) );
+        list.push_back( arch );
+    }
+    return list;
+}
+
 //============================================================================
 //                 recArchiveReference
 //============================================================================

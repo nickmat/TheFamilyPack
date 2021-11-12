@@ -30,6 +30,8 @@
 
 #include <rec/recDatabase.h>
 
+class recArchive;
+using recArchiveVec = std::vector<recArchive>;
 
 //============================================================================
 //                 recArchive
@@ -62,6 +64,8 @@ public:
 
     static wxString GetIdStr( idt arcID ) { return wxString::Format( "Ar" ID, arcID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
+
+    static recArchiveVec GetFullList();
 };
 
 inline bool operator==( const recArchive& r1, const recArchive& r2 )
