@@ -129,6 +129,7 @@ public:
     void OnListPagedEventas( wxCommandEvent& event );
     void OnListSelectedEventas( wxCommandEvent& event );
     void OnListResearchers( wxCommandEvent& event );
+    void OnListArchives( wxCommandEvent& event );
 
     void OnPedChart( wxCommandEvent& event );
     void OnDescChart( wxCommandEvent& event );
@@ -278,6 +279,7 @@ enum
     tfpID_LIST_PAGED_EVENTUMS,
     tfpID_LIST_SELECTED_EVENTUMS,
     tfpID_LIST_RESEARCHERS,
+    tfpID_LIST_ARCHIVES,
     tfpID_PED_CHART,
     tfpID_DESC_CHART,
     tfpID_SYSTEM_SETTING,

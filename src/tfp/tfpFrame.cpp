@@ -114,6 +114,7 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_LIST_PAGED_EVENTUMS, TfpFrame::OnListPagedEventas )
     EVT_MENU( tfpID_LIST_SELECTED_EVENTUMS, TfpFrame::OnListSelectedEventas )
     EVT_MENU( tfpID_LIST_RESEARCHERS, TfpFrame::OnListResearchers )
+    EVT_MENU( tfpID_LIST_ARCHIVES, TfpFrame::OnListArchives )
     EVT_MENU( tfpID_PED_CHART, TfpFrame::OnPedChart )
     EVT_MENU( tfpID_DESC_CHART, TfpFrame::OnDescChart )
     EVT_MENU( tfpID_SYSTEM_SETTING, TfpFrame::OnSystemOptions )
@@ -272,12 +273,13 @@ TfpFrame::TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& siz
 
     wxMenu* menuList = new wxMenu;
     menuList->Append( tfpID_LIST_SURNAME_INDEX, _("&Surname Index\tAlt-S") );
-    menuList->Append( tfpID_LIST_PERSONAS, _("Person&a Index\tAlt-A") );
+    menuList->Append( tfpID_LIST_PERSONAS, _("&Persona Index\tAlt-P") );
     menuList->Append( tfpID_LIST_INDIVIDUALS, _( "&Individuals\tAlt-I" ) );
     menuList->Append( tfpID_LIST_MEDIA_MENU, _( "&Media" ), menuListMedia );
     menuList->Append( tfpID_LIST_REFERENCE_MENU, _( "&References" ), menuListRef );
     menuList->Append( tfpID_LIST_EVENT_MENU, _("&Events"), menuListEvent );
-    menuList->Append( tfpID_LIST_RESEARCHERS, _("Resear&chers\tAlt-C") );
+    menuList->Append( tfpID_LIST_RESEARCHERS, _( "Resear&chers\tAlt-C" ) );
+    menuList->Append( tfpID_LIST_ARCHIVES, _( "&Archives\tAlt-A" ) );
 
     wxMenu* menuChart = new wxMenu;
     menuChart->Append( tfpID_PED_CHART, _("&Pedigree...") );
@@ -1015,6 +1017,11 @@ void TfpFrame::OnListResearchers( wxCommandEvent& event )
     DisplayHtmPage( "Re" );
 }
 
+void TfpFrame::OnListArchives( wxCommandEvent& event )
+{
+    DisplayHtmPage( "Ar" );
+}
+
 /*! \brief Called on a Pedigree Chart menu option event.
  */
 void TfpFrame::OnPedChart( wxCommandEvent& event )
@@ -1216,6 +1223,9 @@ void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
         bool ret = false;
         switch( uch.GetValue() )
         {
+        case 'A':
+            ret = rgEditArchive( this, recGetID( display.Mid( 2 ) ) );
+            break;
         case 'F':
             ret = rgEditFamily( this, id );
             break;
@@ -1889,6 +1899,13 @@ void TfpFrame::RefreshEditMenu()
 
     switch( uch.GetValue() )
     {
+    case 'A':
+        if( disp.size() >= 3 && disp.GetChar( 1 ) == 'r'
+            && wxIsdigit( disp.GetChar( 2 ) )
+            ) { // Ar<number>
+            m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
+        }
+        break;
     case 'F': {
             recFamily fam(0);
             fam.Decode( disp );
@@ -2078,7 +2095,14 @@ wxString TfpFrame::GetDisplayText( wxString& name )
         if ( name.compare( "ABOUT" ) == 0 ) {
             return tfpWriteAbout();
         }
-        if ( name.compare( 0, 2, "CD" ) == 0 && success1 ) {
+        if( name.compare( "AR" ) == 0 ) {
+            return tfpWriteArchiveIndex();
+        }
+        if( name.compare( 0, 2, "AR" ) == 0 && success1 ) {
+            name.MakeCapitalized();
+            return tfpWriteArchive( num1 );
+        }
+        if( name.compare( 0, 2, "CD" ) == 0 && success1 ) {
             return tfpCreateDescChart( num1 );
         }
         if ( name.compare( 0, 2, "CP" ) == 0 && success1 ) {

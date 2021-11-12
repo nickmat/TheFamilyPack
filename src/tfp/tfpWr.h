@@ -52,6 +52,10 @@ extern wxString tfpGetMediaDataFile( idt mdID, idt assID );
 // See tfpWrAdmin.cpp
 extern wxString tfpWriteResearcherList();
 
+// See tfpWrArchive.cpp
+extern wxString tfpWriteArchiveIndex();
+extern wxString tfpWriteArchive( idt arcID );
+
 // See tfpWrChart.cpp
 extern wxString tfpCreatePedChart( idt indID );
 extern wxString tfpCreateDescChart( idt indID );

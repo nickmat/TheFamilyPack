@@ -36,10 +36,54 @@
 #include <rec/recContact.h>
 
 
-wxString tfpWriteArchiveList()
+wxString tfpWriteArchiveIndex()
+{
+    wxString htm = tfpWrHeadTfp( "Archive Index" );
+    htm <<
+        "<h1>Archive List</h1>\n"
+        "<table class='data'>\n"
+        "<tr><th>ID</th><th>Archive</th><th>Note</th></tr>\n"
+        ;
+    recArchiveVec list = recArchive::GetFullList();
+    for( auto arch : list ) {
+        htm <<
+            "<tr><td><b><a href='tfp:" << arch.GetIdStr() << "'>" << arch.GetIdStr() <<
+            "</a></b></td><td>" << arch.FGetName() <<
+            "</td><td>" << arch.FGetNote() <<
+            "</td></tr>\n"
+            ;
+    }
+    htm << "</table>\n" << tfpWrTailTfp();
+    return htm;
+}
+
+wxString tfpWriteArchive( idt arcID )
 {
     wxString htm;
-
+    recArchive arc( arcID );
+    if( arc.FGetID() == 0 ) {
+        return htm;
+    }
+    htm <<
+        tfpWrHeadTfp( "Archive" ) <<
+        "<h1>Archive " << arc.GetIdStr() <<
+        "<br>\n" << arc.FGetName() <<
+        "</h1>\n"
+        "<table class='data'>\n"
+        "<tr><th colspan='3'>Details</th></tr>\n"
+        "<tr><td colspan='3'>" << arc.FGetNote() <<
+        "</td></tr>\n"
+        ;
+    recContactVec contacts = recContactList::GetContacts( arc.FGetConListId() );
+    for( auto cont : contacts ) {
+        htm <<
+            "<tr><td><b>" << cont.GetIdStr() <<
+            "</b></td><td>" << recContactType::GetTypeStr( cont.FGetTypeID() ) <<
+            "</td><td>" << cont.GetHtmlValue() <<
+            "</td></tr>\n"
+            ;
+    }
+    htm << "</table>\n" << tfpWrTailTfp();
     return htm;
 }
 
