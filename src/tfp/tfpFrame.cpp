@@ -2218,11 +2218,7 @@ wxString TfpFrame::GetDisplayText( wxString& name )
         recDb::Rollback();
     }
 
-    return wxString::Format(
-        "<html><head><title>Error</title></head>"
-        "<body><h1>Error</h1><p>Page [%s] not understood.</p></body></html>",
-        name
-    );
+    return tfpWrErrorPage( name );
 }
 
 // End of tfpFrame.cpp file

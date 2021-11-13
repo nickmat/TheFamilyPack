@@ -93,6 +93,15 @@ wxString tfpWrHeadInfo( const wxString& title, const wxString& css )
     return tfpWrHead( title, css_list );
 }
 
+wxString tfpWrErrorPage( const wxString& name )
+{
+    return wxString::Format(
+        "<html>\n<head><title>Error</title></head>\n"
+        "<body><h1>Error</h1><p>Page [%s] not understood.</p></body>\n</html>",
+        name
+    );
+}
+
 wxString tfpWrTailDiv()
 {
     return "</div>\n" + tfpWrTail();

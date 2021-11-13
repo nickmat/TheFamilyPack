@@ -39,6 +39,7 @@ extern wxString tfpWrTailDiv();
 inline wxString tfpWrTailTfp() { return tfpWrTailDiv(); }
 extern wxString tfpWrHeadInfo( const wxString& title, const wxString& css = wxEmptyString );
 inline wxString tfpWrTailInfo() { return tfpWrTail(); }
+extern wxString tfpWrErrorPage( const wxString& name );
 #define tfpWR_PAGE_MAX 100
 extern wxString tfpWritePagedIndexMenu( idt begCnt, size_t maxsize, const wxString prefix );
 extern wxString tfpGetIndSexClass( idt indID, Sex pref = SEX_Unknown );

@@ -189,7 +189,9 @@ wxString tfpWriteMediaDataPage( const wxString& link )
     // format MDn,dbname then dname is a currently attached database
     idt mdID = 0, assID = 0;
     wxString dbname = recMediaData::GetDbname( link, &mdID, &assID );
-    wxASSERT( !dbname.empty() );
+    if( dbname.empty() ) {
+        return tfpWrErrorPage( link );
+    }
     recMediaData md( dbname, mdID );
     wxString memoryfile = md.CreateMemoryFile();
 
