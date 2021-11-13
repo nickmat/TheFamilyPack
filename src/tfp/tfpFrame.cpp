@@ -2167,7 +2167,7 @@ wxString TfpFrame::GetDisplayText( wxString& name )
             return tfpWriteMediaPagedIndex( num1 );
         }
         if ( name.compare( 0, 2, "MD" ) == 0 ) {
-            return tfpWriteMediaDataPage( pagename );
+            return tfpWriteMediaDataPage( name );
         }
         if ( name.compare( 0, 1, "M" ) == 0 && success ) {
             return tfpWriteMediaPage( num );
