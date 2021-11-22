@@ -256,12 +256,7 @@ void recReference::Renumber( idt id, idt to_id )
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "UPDATE ArchiveReference SET ref_id=" ID " WHERE ref_id=" ID ";",
-        to_id, id );
-    s_db->ExecuteUpdate( sql );
-
-    sql.Format(
-        "UPDATE CitationPart SET ref_id=" ID " WHERE ref_id=" ID ";",
+        "UPDATE Citation SET ref_id=" ID " WHERE ref_id=" ID ";",
         to_id, id );
     s_db->ExecuteUpdate( sql );
 

@@ -34,14 +34,54 @@ class recCitationPartType;
 typedef std::vector< recCitationPartType >  recCitationPartTypeVec;
 
 //============================================================================
+//                 recCitation
+//============================================================================
+
+class recCitation : public recDb
+{
+    idt f_ref_id;
+    int f_ref_seq;
+
+public:
+    recCitation() {}
+    recCitation( idt id ) : recDb( id ) { Read(); }
+    recCitation( const recCitation& source );
+
+    void Clear();
+    void Save();
+    bool Read();
+    TABLE_NAME_MEMBERS( "Citation" );
+    bool Equivalent( const recCitation& r2 ) const;
+
+    idt FGetRefId() const { return f_ref_id; }
+    idt FGetRefSeq() const { return f_ref_seq; }
+
+    void FSetRefId( idt ref_id ) { f_ref_id = ref_id; }
+    void FSetRefSeq( idt ref_seq ) { f_ref_seq = ref_seq; }
+};
+
+inline bool operator==( const recCitation& r1, const recCitation& r2 )
+{
+    return r1.Equivalent( r2 ) && r1.EqualID( r2 );
+}
+
+inline bool operator!=( const recCitation& r1, const recCitation& r2 )
+{
+    return !(r1 == r2);
+}
+
+//============================================================================
 //                 recCitationPart
 //============================================================================
 
 class recCitationPart : public recDb
 {
+    idt f_cit_id;
     idt f_type_id;
-    idt f_ref_id;
     wxString f_val;
+    int f_cit_seq;
+    idt f_con_list_id;
+    wxString f_note;
 
 public:
     recCitationPart() {}
@@ -54,13 +94,18 @@ public:
     TABLE_NAME_MEMBERS( "CitationPart" );
     bool Equivalent( const recCitationPart& r2 ) const;
 
+    idt FGetCitId() const { return f_cit_id; }
     idt FGetTypeId() const { return f_type_id; }
-    idt FGetRefId() const { return f_ref_id; }
     wxString FGetVal() const { return f_val; }
+    int FGetCitSeq() const { return f_cit_seq; }
+    idt FGetConListId() const { return f_con_list_id; }
+    wxString FGetNote() const { return f_note; }
 
+    void FSetCitId( idt citID ) { f_cit_id = citID; }
     void FSetTypeId( idt type_id ) { f_type_id = type_id; }
-    void FSetRefId( idt ref_id ) { f_ref_id = ref_id; }
     void FSetVal( const wxString& val ) { f_val = val; }
+    void FSetConListId( idt clID ) { f_con_list_id = clID; }
+    void FSetNote( const wxString& note ) { f_note = note; }
 };
 
 inline bool operator==( const recCitationPart& r1, const recCitationPart& r2 )
@@ -80,6 +125,8 @@ inline bool operator!=( const recCitationPart& r1, const recCitationPart& r2 )
 class recCitationPartType : public recDb
 {
     wxString  f_name;
+    int f_style;
+    wxString f_comment;
 
 public:
     recCitationPartType() {}
@@ -90,11 +137,15 @@ public:
     void Save();
     bool Read();
     TABLE_NAME_MEMBERS( "CitationPartType" );
-    bool Equivalent( const recCitationPartType& r2 ) const { return f_name == r2.f_name; }
+    bool Equivalent( const recCitationPartType& r2 ) const;
 
     wxString FGetName() const { return f_name; }
+    int FGetStyle() const { return f_style; }
+    wxString FGetComment() const { return f_comment; }
 
     void FSetName( const wxString& name ) { f_name = name; }
+    void FSetStyle( int style ) { f_style = style; }
+    void FSetComment( const wxString& comment ) { f_comment = comment; }
 
     static wxString GetStr( idt id );
 
@@ -110,6 +161,5 @@ inline bool operator!=( const recCitationPartType& r1, const recCitationPartType
 {
     return !(r1 == r2);
 }
-
 
 #endif // RECCITATION_H

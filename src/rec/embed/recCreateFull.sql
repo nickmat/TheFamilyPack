@@ -30,21 +30,6 @@
 
 BEGIN;
 
-CREATE TABLE Archive (
-  id INTEGER PRIMARY KEY,
-  name TEXT NOT NULL,
-  note TEXT,
-  con_list_id INTEGER NOT NULL REFERENCES ContactList(id)
-);
-
-CREATE TABLE ArchiveReference (
-  id INTEGER PRIMARY KEY,
-  archive_id INTEGER NOT NULL REFERENCES Archive(id),
-  ref_id INTEGER NOT NULL REFERENCES Reference(id),
-  call_num TEXT,
-  note TEXT
-);
-
 CREATE TABLE Associate (
   id INTEGER PRIMARY KEY NOT NULL,
   path TEXT NULL,
@@ -53,16 +38,27 @@ CREATE TABLE Associate (
 
 INSERT INTO Associate (id) VALUES(0);
 
-CREATE TABLE CitationPart (
+CREATE TABLE Citation (
   id INTEGER PRIMARY KEY,
   ref_id INTEGER NOT NULL REFERENCES Reference(id),
+  ref_seq INTEGER NOT NULL
+);
+
+CREATE TABLE CitationPart (
+  id INTEGER PRIMARY KEY,
+  cit_id INTEGER NOT NULL REFERENCES Citation(id),
   type_id INTEGER NOT NULL REFERENCES CitationPartType(id),
-  val TEXT NOT NULL
+  val TEXT NOT NULL,
+  cit_seq INTEGER NOT NULL,
+  con_list_id INTEGER NULL,
+  note TEXT NULL
 );
 
 CREATE TABLE CitationPartType (
   id INTEGER PRIMARY KEY,
-  name TEXT NOT NULL
+  name TEXT NOT NULL,
+  style INTEGER NOT NULL,
+  comment TEXT NULL
 );
 
 CREATE TABLE Contact (
@@ -533,7 +529,7 @@ INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 0, 1, 'F1');
 INSERT INTO UserSetting (id, user_id, property, val) VALUES(2, 1, 1, 'F1');
 
 /* The Version table row 1 is the full TFPD database */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 22);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 23);
 
 COMMIT;
 
