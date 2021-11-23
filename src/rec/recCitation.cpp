@@ -43,6 +43,8 @@ recCitation::recCitation( const recCitation& cit )
     f_id = cit.f_id;
     f_ref_id = cit.f_ref_id;
     f_ref_seq = cit.f_ref_seq;
+    f_rep_id = cit.f_rep_id;
+    f_comment = cit.f_comment;
 }
 
 void recCitation::Clear()
@@ -50,6 +52,8 @@ void recCitation::Clear()
     f_id = 0;
     f_ref_id = 0;
     f_ref_seq = 0;
+    f_rep_id = 0;
+    f_comment.clear();
 }
 
 void recCitation::Save()
@@ -60,9 +64,9 @@ void recCitation::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO Citation (ref_id, ref_seq)"
-            " VALUES (" ID ", %d);",
-            f_ref_id, f_ref_seq
+            "INSERT INTO Citation (ref_id, ref_seq, rep_id, comment)"
+            " VALUES (" ID ", %d, " ID ", '%q'); ",
+            f_ref_id, f_ref_seq, f_rep_id, UTF8_( f_comment )
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -73,17 +77,17 @@ void recCitation::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO Citation (id, ref_id, ref_seq)"
-                " VALUES (" ID ", " ID ", %d);",
-                f_id, f_ref_id, f_ref_seq
+                "INSERT INTO Citation (id, ref_id, ref_seq, rep_id, comment)"
+                " VALUES (" ID ", " ID ", %d, " ID ", '%q');",
+                f_id, f_ref_id, f_ref_seq, f_rep_id, UTF8_( f_comment )
             );
         }
         else {
             // Update existing record
             sql.Format(
-                "UPDATE Citation SET ref_id=" ID ", ref_seq=%d"
+                "UPDATE Citation SET ref_id=" ID ", ref_seq=%d, rep_id=" ID ", comment='%q'"
                 " WHERE id=" ID ";",
-                f_ref_id, f_ref_seq, f_id
+                f_ref_id, f_ref_seq, f_rep_id, UTF8_( f_comment ), f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -101,7 +105,7 @@ bool recCitation::Read()
     }
 
     sql.Format(
-        "SELECT ref_id, ref_seq"
+        "SELECT ref_id, ref_seq, rep_id, comment"
         " FROM Citation WHERE id=" ID ";",
         f_id
     );
@@ -115,6 +119,8 @@ bool recCitation::Read()
     result.SetRow( 0 );
     f_ref_id = GET_ID( result.GetInt64( 0 ) );
     f_ref_seq = result.GetInt( 1 );
+    f_rep_id = GET_ID( result.GetInt64( 2 ) );
+    f_comment = result.GetAsString( 3 );
     return true;
 }
 
@@ -122,7 +128,124 @@ bool recCitation::Equivalent( const recCitation& r2 ) const
 {
     return
         f_ref_id == r2.f_ref_id &&
-        f_ref_seq == r2.f_ref_seq;
+        f_ref_seq == r2.f_ref_seq &&
+        f_rep_id == r2.f_rep_id &&
+        f_comment == r2.f_comment
+        ;
+}
+
+//============================================================================
+//                 recRepository
+//============================================================================
+
+recRepository::recRepository( const recRepository& cp )
+{
+    f_id = cp.f_id;
+    f_name = cp.f_name;
+    f_note = cp.f_note;
+    f_con_list_id = cp.f_con_list_id;
+}
+
+void recRepository::Clear()
+{
+    f_id = 0;
+    f_name.clear();
+    f_note.clear();
+    f_con_list_id = 0;
+}
+
+void recRepository::Save()
+{
+    wxSQLite3StatementBuffer sql;
+
+    if( f_id == 0 )
+    {
+        // Add new record
+        sql.Format(
+            "INSERT INTO Repository (name, note, con_list_id)"
+            " VALUES ('%q', '%q', " ID ");",
+            UTF8_( f_name ), UTF8_( f_note ), f_con_list_id
+        );
+        s_db->ExecuteUpdate( sql );
+        f_id = GET_ID( s_db->GetLastRowId() );
+    }
+    else {
+        // Does record exist
+        if( !Exists() )
+        {
+            // Add new record
+            sql.Format(
+                "INSERT INTO Repository (id, name, note, con_list_id)"
+                " VALUES (" ID ", '%q', '%q', " ID ");",
+                f_id, UTF8_( f_name ), UTF8_( f_note ), f_con_list_id
+            );
+        }
+        else {
+            // Update existing record
+            sql.Format(
+                "UPDATE Repository SET name='%q', note='%q', con_list_id=" ID
+                " WHERE id=" ID ";",
+                UTF8_( f_name ), UTF8_( f_note ), f_con_list_id, f_id
+            );
+        }
+        s_db->ExecuteUpdate( sql );
+    }
+}
+
+bool recRepository::Read()
+{
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( f_id == 0 ) {
+        Clear();
+        return false;
+    }
+
+    sql.Format(
+        "SELECT name, note, con_list_id"
+        " FROM Repository WHERE id=" ID ";",
+        f_id
+    );
+    result = s_db->GetTable( sql );
+
+    if( result.GetRowCount() != 1 )
+    {
+        Clear();
+        return false;
+    }
+    result.SetRow( 0 );
+    f_name = result.GetAsString( 0 );
+    f_note = result.GetAsString( 1 );
+    f_con_list_id = GET_ID( result.GetInt64( 2 ) );
+    return true;
+}
+
+bool recRepository::Equivalent( const recRepository& r2 ) const
+{
+    return
+        f_name == r2.f_name &&
+        f_note == r2.f_note &&
+        f_con_list_id == r2.f_con_list_id;
+}
+
+recRepositoryVec recRepository::GetFullList()
+{
+    recRepositoryVec list;
+    wxSQLite3ResultSet result = s_db->ExecuteQuery(
+        "SELECT id, name, note, con_list_id FROM Repository"
+        " ORDER BY id;"
+    );
+
+    recRepository arch( 0 );
+    while( result.NextRow() ) {
+        arch.FSetID( GET_ID( result.GetInt64( 0 ) ) );
+        arch.FSetName( result.GetAsString( 1 ) );
+        arch.FSetNote( result.GetAsString( 2 ) );
+        arch.FSetConListId( GET_ID( result.GetInt64( 3 ) ) );
+        list.push_back( arch );
+    }
+    return list;
 }
 
 //============================================================================
@@ -136,8 +259,7 @@ recCitationPart::recCitationPart( const recCitationPart& cp )
     f_type_id = cp.f_type_id;
     f_val = cp.f_val;
     f_cit_seq = cp.f_cit_seq;
-    f_con_list_id = cp.f_con_list_id;
-    f_note = cp.f_note;
+    f_comment = cp.f_comment;
 }
 
 void recCitationPart::Clear()
@@ -147,8 +269,7 @@ void recCitationPart::Clear()
     f_type_id = 0;
     f_val.clear();
     f_cit_seq = 0;
-    f_con_list_id = 0;
-    f_note.clear();
+    f_comment.clear();
 }
 
 void recCitationPart::Save()
@@ -159,9 +280,9 @@ void recCitationPart::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO CitationPart (cit_id, type_id, val, cit_seq, con_list_id, note)"
-            " VALUES (" ID ", " ID ", '%q', %d, " ID ", '%q');",
-            f_cit_id, f_type_id, UTF8_( f_val ), f_cit_seq, f_con_list_id, UTF8_( f_note )
+            "INSERT INTO CitationPart (cit_id, type_id, val, cit_seq, comment)"
+            " VALUES (" ID ", " ID ", '%q', %d, '%q');",
+            f_cit_id, f_type_id, UTF8_( f_val ), f_cit_seq, UTF8_( f_comment )
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -172,20 +293,20 @@ void recCitationPart::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO CitationPart (id, cit_id, type_id, val, cit_seq, con_list_id, note)"
-                " VALUES (" ID ", " ID ", " ID ", '%q', %d, " ID ", '%q');",
+                "INSERT INTO CitationPart (id, cit_id, type_id, val, cit_seq, comment)"
+                " VALUES (" ID ", " ID ", " ID ", '%q', %d, '%q');",
                 f_id, f_cit_id, f_type_id, UTF8_( f_val ),
-                f_cit_seq, f_con_list_id, UTF8_( f_note )
+                f_cit_seq, UTF8_( f_comment )
             );
         }
         else {
             // Update existing record
             sql.Format(
                 "UPDATE CitationPart SET cit_id=" ID ", type_id=" ID ", val='%q',"
-                " cit_seq=%d, con_list_id=" ID ", note='%q'"
+                " cit_seq=%d, comment='%q'"
                 " WHERE id=" ID ";",
                 f_cit_id, f_type_id, UTF8_( f_val ),
-                f_cit_seq, f_con_list_id, UTF8_( f_note ), f_id
+                f_cit_seq, UTF8_( f_comment ), f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -203,7 +324,7 @@ bool recCitationPart::Read()
     }
 
     sql.Format(
-        "SELECT cit_id, type_id, val, cit_seq, con_list_id, note"
+        "SELECT cit_id, type_id, val, cit_seq, comment"
         " FROM CitationPart WHERE id=" ID ";",
         f_id
     );
@@ -219,8 +340,7 @@ bool recCitationPart::Read()
     f_type_id = GET_ID( result.GetInt64( 1 ) );
     f_val = result.GetAsString( 2 );
     f_cit_seq = result.GetInt( 3 );
-    f_con_list_id = GET_ID( result.GetInt64( 4 ) );
-    f_note = result.GetAsString( 5 );
+    f_comment = result.GetAsString( 4 );
     return true;
 }
 
@@ -231,8 +351,7 @@ bool recCitationPart::Equivalent( const recCitationPart& r2 ) const
         f_type_id == r2.f_type_id &&
         f_val == r2.f_val &&
         f_cit_seq == r2.f_cit_seq &&
-        f_con_list_id == r2.f_con_list_id &&
-        f_note == r2.f_note;
+        f_comment == r2.f_comment;
 }
 
 //============================================================================

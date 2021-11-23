@@ -31,7 +31,7 @@
 #include "fb/fbRgEditArchive.h"
 
 
-#include <rec/recArchive.h>
+#include <rec/recCitation.h>
 #include <rec/recContact.h>
 
 
@@ -52,7 +52,7 @@ private:
     void OnButtonDelete( wxCommandEvent& event );
 
 
-    recArchive     m_archive;
+    recRepository  m_archive;
     recContactList m_list;
     recContactVec  m_contacts;
 };

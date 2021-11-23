@@ -32,7 +32,7 @@
 
 #include "tfpWr.h"
 
-#include <rec/recArchive.h>
+#include <rec/recCitation.h>
 #include <rec/recContact.h>
 
 
@@ -44,7 +44,7 @@ wxString tfpWriteArchiveIndex()
         "<table class='data'>\n"
         "<tr><th>ID</th><th>Archive</th><th>Note</th></tr>\n"
         ;
-    recArchiveVec list = recArchive::GetFullList();
+    recRepositoryVec list = recRepository::GetFullList();
     for( auto arch : list ) {
         htm <<
             "<tr><td><b><a href='tfp:" << arch.GetIdStr() << "'>" << arch.GetIdStr() <<
@@ -60,7 +60,7 @@ wxString tfpWriteArchiveIndex()
 wxString tfpWriteArchive( idt arcID )
 {
     wxString htm;
-    recArchive arc( arcID );
+    recRepository arc( arcID );
     if( arc.FGetID() == 0 ) {
         return htm;
     }

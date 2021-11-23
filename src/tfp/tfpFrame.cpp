@@ -41,6 +41,7 @@
 #include <wx/webviewfshandler.h>
 #include <wx/numdlg.h>
 
+#include <rec/recCitation.h>
 #include <rec/recIndividual.h>
 #include <rec/recVersion.h>
 #include <rec/recUser.h>

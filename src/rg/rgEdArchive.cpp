@@ -65,7 +65,7 @@ idt rgCreateArchive( wxWindow* wind )
     recContactList list(0);
     list.Save();
 
-    recArchive arc(0);
+    recRepository arc(0);
     arc.FSetConListId( list.FGetID() );
     arc.Save();
     idt arcID = arc.FGetID();

@@ -41,8 +41,8 @@
 const int recVerMajor = 0;
 const int recVerMinor = 0;
 const int recVerRev = 10;
-const int recVerTest = 23;                       // <<======<<<<
-const char* recFullVersion = "TFPD-v0.0.10.23";  // <<======<<<<
+const int recVerTest = 24;                       // <<======<<<<
+const char* recFullVersion = "TFPD-v0.0.10.24";  // <<======<<<<
 
 // This is the database Media only version that this program can work with.
 // If the full version matches, then this is assumed to match as well.
@@ -1052,8 +1052,8 @@ void UpgradeTest0_0_10_22to0_0_10_23( const wxString& dbname )
     wxString update = "BEGIN;\n";
 
     update
-        << "DROP TABLE " << dbname << ".Repository;\n"
-        << "DROP TABLE " << dbname << ".RepositorySource;\n"
+        << "DROP TABLE " << dbname << ".Archive;\n"
+        << "DROP TABLE " << dbname << ".ArchiveReference;\n"
         << "DROP TABLE " << dbname << ".CitationPart;\n"
         << "DROP TABLE " << dbname << ".CitationPartType;\n"
 
@@ -1079,6 +1079,53 @@ void UpgradeTest0_0_10_22to0_0_10_23( const wxString& dbname )
         ");\n"
 
         "UPDATE " << dbname << ".Version SET test=23 WHERE id=1;\n"
+
+        "COMMIT;\n"
+        ;
+    recDb::GetDb()->ExecuteUpdate( update );
+}
+
+void UpgradeTest0_0_10_23to0_0_10_24( const wxString& dbname )
+{
+    // Version 0.0.10.23 to 0.0.10.24
+    // Add Repository table.
+    // Add fields to Citation table, rep_id and comment.
+    // Remove con_list_id field from CitationPart
+    // and rename note to comment.
+
+    // Note: none of the above tables have been actively
+    // used and so no data will be tranfered.
+    // Any data they may have held will be lost.
+
+    wxString update = "BEGIN;\n";
+
+    update
+        << "DROP TABLE " << dbname << ".Citation;\n"
+        << "DROP TABLE " << dbname << ".CitationPart;\n"
+
+        "CREATE TABLE " << dbname << ".Citation (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  ref_id INTEGER NOT NULL REFERENCES Reference(id),\n"
+        "  ref_seq INTEGER NOT NULL,\n"
+        "  rep_id INTEGER NOT NULL REFERENCES Repository(id),\n"
+        "  comment TEXT NULL\n"
+        ");\n"
+        "CREATE TABLE " << dbname << ".CitationPart (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  cit_id INTEGER NOT NULL REFERENCES Citation(id),\n"
+        "  type_id INTEGER NOT NULL REFERENCES CitationPartType(id),\n"
+        "  val TEXT NOT NULL,\n"
+        "  cit_seq INTEGER NOT NULL,\n"
+        "  comment TEXT NULL\n"
+        ");\n"
+        "CREATE TABLE " << dbname << ".Repository (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  name TEXT NOT NULL,\n"
+        "  note TEXT NULL,\n"
+        "  con_list_id INTEGER NULL REFERENCES ContactList(id)\n"
+        ");\n"
+
+        "UPDATE " << dbname << ".Version SET test=24 WHERE id=1;\n"
 
         "COMMIT;\n"
         ;
@@ -1112,6 +1159,7 @@ void UpgradeRev0_0_10toCurrent( int test, const wxString& dbname )
     case 20: UpgradeTest0_0_10_20to0_0_10_21( dbname );
     case 21: UpgradeTest0_0_10_21to0_0_10_22( dbname );
     case 22: UpgradeTest0_0_10_22to0_0_10_23( dbname );
+    case 23: UpgradeTest0_0_10_23to0_0_10_24( dbname );
     }
 }
 
