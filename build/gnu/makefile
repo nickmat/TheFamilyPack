@@ -121,7 +121,6 @@ HXML5_OBJECTS =  \
 REC_CXXFLAGS = $(VAR) $(VAR_5) -I../../include/rec -I../../include `$(WX_CONFIG) \
 	--cxxflags $(WX_CONFIG_FLAGS)` $(CPPFLAGS) $(CXXFLAGS)
 REC_OBJECTS =  \
-	rec_recArchive.o \
 	rec_recAssociate.o \
 	rec_recCitation.o \
 	rec_recContact.o \
@@ -164,8 +163,8 @@ RECGUI_CXXFLAGS = $(VAR) $(VAR_5) -I../../include/rec -I../../include/rg \
 	-I../../include `$(WX_CONFIG) --cxxflags $(WX_CONFIG_FLAGS)` $(CPPFLAGS) \
 	$(CXXFLAGS)
 RECGUI_OBJECTS =  \
-	recgui_fbRgEditArchive.o \
 	recgui_fbRgEditAssociate.o \
+	recgui_fbRgEditCitation.o \
 	recgui_fbRgEditGallery.o \
 	recgui_fbRgEditMedia.o \
 	recgui_fbRgEditReference.o \
@@ -178,7 +177,7 @@ RECGUI_OBJECTS =  \
 	recgui_rgCompareEvent.o \
 	recgui_rgCrIndividual.o \
 	recgui_rgCrName.o \
-	recgui_rgEdArchive.o \
+	recgui_rgEdCitation.o \
 	recgui_rgEdContact.o \
 	recgui_rgEdDate.o \
 	recgui_rgEdEvent.o \
@@ -409,9 +408,6 @@ hxml5_hxml5.o: ./../../src/hxml5/hxml5.cpp
 hxml5_pugixml.o: ./../../src/hxml5/pugixml.cpp
 	$(CXX) -c -o $@ $(HXML5_CXXFLAGS) $(CPPDEPS) $<
 
-rec_recArchive.o: ./../../src/rec/recArchive.cpp
-	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
-
 rec_recAssociate.o: ./../../src/rec/recAssociate.cpp
 	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
 
@@ -517,10 +513,10 @@ rec_dummy.o: ./../../src/dummy.cpp
 reccl_reccl.o: ./../../src/rc/reccl.cpp
 	$(CXX) -c -o $@ $(RECCL_CXXFLAGS) $(CPPDEPS) $<
 
-recgui_fbRgEditArchive.o: ./../../src/rg/fb/fbRgEditArchive.cpp
+recgui_fbRgEditAssociate.o: ./../../src/rg/fb/fbRgEditAssociate.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
-recgui_fbRgEditAssociate.o: ./../../src/rg/fb/fbRgEditAssociate.cpp
+recgui_fbRgEditCitation.o: ./../../src/rg/fb/fbRgEditCitation.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_fbRgEditGallery.o: ./../../src/rg/fb/fbRgEditGallery.cpp
@@ -559,7 +555,7 @@ recgui_rgCrIndividual.o: ./../../src/rg/rgCrIndividual.cpp
 recgui_rgCrName.o: ./../../src/rg/rgCrName.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
-recgui_rgEdArchive.o: ./../../src/rg/rgEdArchive.cpp
+recgui_rgEdCitation.o: ./../../src/rg/rgEdCitation.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgEdContact.o: ./../../src/rg/rgEdContact.cpp

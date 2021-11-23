@@ -196,11 +196,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\rg\fb\fbRgEditArchive.cpp"
+				RelativePath="..\..\src\rg\fb\fbRgEditAssociate.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\rg\fb\fbRgEditAssociate.cpp"
+				RelativePath="..\..\src\rg\fb\fbRgEditCitation.cpp"
 				>
 			</File>
 			<File
@@ -248,7 +248,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\rg\rgEdArchive.cpp"
+				RelativePath="..\..\src\rg\rgEdCitation.cpp"
 				>
 			</File>
 			<File
@@ -378,11 +378,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\rg\fb\fbRgEditArchive.h"
+				RelativePath="..\..\src\rg\fb\fbRgEditAssociate.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\rg\fb\fbRgEditAssociate.h"
+				RelativePath="..\..\src\rg\fb\fbRgEditCitation.h"
 				>
 			</File>
 			<File
@@ -434,7 +434,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\rg\rgEdArchive.h"
+				RelativePath="..\..\src\rg\rgEdCitation.h"
 				>
 			</File>
 			<File

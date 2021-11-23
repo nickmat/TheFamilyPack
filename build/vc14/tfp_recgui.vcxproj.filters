@@ -14,10 +14,10 @@
     <ClCompile Include="..\..\src\rg\fbRgDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\rg\fb\fbRgEditArchive.cpp">
+    <ClCompile Include="..\..\src\rg\fb\fbRgEditAssociate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\rg\fb\fbRgEditAssociate.cpp">
+    <ClCompile Include="..\..\src\rg\fb\fbRgEditCitation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\rg\fb\fbRgEditGallery.cpp">
@@ -53,7 +53,7 @@
     <ClCompile Include="..\..\src\rg\rgCrName.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\rg\rgEdArchive.cpp">
+    <ClCompile Include="..\..\src\rg\rgEdCitation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\rg\rgEdContact.cpp">
@@ -148,10 +148,10 @@
     <ClInclude Include="..\..\src\rg\fbRgDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\rg\fb\fbRgEditArchive.h">
+    <ClInclude Include="..\..\src\rg\fb\fbRgEditAssociate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\rg\fb\fbRgEditAssociate.h">
+    <ClInclude Include="..\..\src\rg\fb\fbRgEditCitation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\rg\fb\fbRgEditGallery.h">
@@ -190,7 +190,7 @@
     <ClInclude Include="..\..\include\rg\rgDialogs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\rg\rgEdArchive.h">
+    <ClInclude Include="..\..\src\rg\rgEdCitation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\rg\rgEdContact.h">

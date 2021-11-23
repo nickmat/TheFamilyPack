@@ -38,7 +38,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <_ProjectFileVersion>16.0.31727.243</_ProjectFileVersion>
+    <_ProjectFileVersion>16.0.31829.152</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
@@ -118,8 +118,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\rg\fbRgDialog.cpp" />
-    <ClCompile Include="..\..\src\rg\fb\fbRgEditArchive.cpp" />
     <ClCompile Include="..\..\src\rg\fb\fbRgEditAssociate.cpp" />
+    <ClCompile Include="..\..\src\rg\fb\fbRgEditCitation.cpp" />
     <ClCompile Include="..\..\src\rg\fb\fbRgEditGallery.cpp" />
     <ClCompile Include="..\..\src\rg\fb\fbRgEditMedia.cpp" />
     <ClCompile Include="..\..\src\rg\fb\fbRgEditReference.cpp" />
@@ -131,7 +131,7 @@
     <ClCompile Include="..\..\src\rg\rgCompareEvent.cpp" />
     <ClCompile Include="..\..\src\rg\rgCrIndividual.cpp" />
     <ClCompile Include="..\..\src\rg\rgCrName.cpp" />
-    <ClCompile Include="..\..\src\rg\rgEdArchive.cpp" />
+    <ClCompile Include="..\..\src\rg\rgEdCitation.cpp" />
     <ClCompile Include="..\..\src\rg\rgEdContact.cpp" />
     <ClCompile Include="..\..\src\rg\rgEdDate.cpp" />
     <ClCompile Include="..\..\src\rg\rgEdEvent.cpp" />
@@ -167,8 +167,8 @@
     <ClInclude Include="..\..\include\rg\rgDialogs.h" />
     <ClInclude Include="..\..\include\rg\rgImagePanel.h" />
     <ClInclude Include="..\..\src\rg\fbRgDialog.h" />
-    <ClInclude Include="..\..\src\rg\fb\fbRgEditArchive.h" />
     <ClInclude Include="..\..\src\rg\fb\fbRgEditAssociate.h" />
+    <ClInclude Include="..\..\src\rg\fb\fbRgEditCitation.h" />
     <ClInclude Include="..\..\src\rg\fb\fbRgEditGallery.h" />
     <ClInclude Include="..\..\src\rg\fb\fbRgEditMedia.h" />
     <ClInclude Include="..\..\src\rg\fb\fbRgEditReference.h" />
@@ -179,7 +179,7 @@
     <ClInclude Include="..\..\src\rg\rgCommon.h" />
     <ClInclude Include="..\..\src\rg\rgCrIndividual.h" />
     <ClInclude Include="..\..\src\rg\rgCrName.h" />
-    <ClInclude Include="..\..\src\rg\rgEdArchive.h" />
+    <ClInclude Include="..\..\src\rg\rgEdCitation.h" />
     <ClInclude Include="..\..\src\rg\rgEdContact.h" />
     <ClInclude Include="..\..\src\rg\rgEdDate.h" />
     <ClInclude Include="..\..\src\rg\rgEdEvent.h" />

@@ -44,7 +44,6 @@
 
   <lib id="rec" template="wx-lib,wxlike">
     <libname>rec$(WXLIBPOSTFIX)</libname>
-    <sources>$(LOCAL_SRC)/rec/recArchive.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recAssociate.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recCitation.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recContact.cpp</sources>
@@ -79,7 +78,6 @@
     <sources>$(LOCAL_SRC)/rec/recUpgrade.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recVersion.cpp</sources>
 
-    <headers>$(LOCAL_INC)/rec/recArchive.h</headers>
     <headers>$(LOCAL_INC)/rec/recAssociate.h</headers>
     <headers>$(LOCAL_INC)/rec/recCitation.h</headers>
     <headers>$(LOCAL_INC)/rec/recContact.h</headers>
@@ -136,8 +134,8 @@
 
   <lib id="recgui" template="wx-lib,wxlike">
     <libname>recgui$(WXLIBPOSTFIX)</libname>
-    <sources>$(LOCAL_SRC)/rg/fb/fbRgEditArchive.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/fb/fbRgEditAssociate.cpp</sources>
+    <sources>$(LOCAL_SRC)/rg/fb/fbRgEditCitation.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/fb/fbRgEditGallery.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/fb/fbRgEditMedia.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/fb/fbRgEditReference.cpp</sources>
@@ -150,7 +148,7 @@
     <sources>$(LOCAL_SRC)/rg/rgCompareEvent.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgCrIndividual.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgCrName.cpp</sources>
-    <sources>$(LOCAL_SRC)/rg/rgEdArchive.cpp</sources>
+    <sources>$(LOCAL_SRC)/rg/rgEdCitation.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdContact.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdDate.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdEvent.cpp</sources>
@@ -185,8 +183,8 @@
     <headers>$(LOCAL_INC)/rg/rgDialogs.h</headers>
     <headers>$(LOCAL_INC)/rg/rgImagePanel.h</headers>
 
-    <headers>$(LOCAL_SRC)/rg/fb/fbRgEditArchive.h</headers>
     <headers>$(LOCAL_SRC)/rg/fb/fbRgEditAssociate.h</headers>
+    <headers>$(LOCAL_SRC)/rg/fb/fbRgEditCitation.h</headers>
     <headers>$(LOCAL_SRC)/rg/fb/fbRgEditGallery.h</headers>
     <headers>$(LOCAL_SRC)/rg/fb/fbRgEditMedia.h</headers>
     <headers>$(LOCAL_SRC)/rg/fb/fbRgEditReference.h</headers>
@@ -198,7 +196,7 @@
     <headers>$(LOCAL_SRC)/rg/rgCommon.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgCrIndividual.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgCrName.h</headers>
-    <headers>$(LOCAL_SRC)/rg/rgEdArchive.h</headers>
+    <headers>$(LOCAL_SRC)/rg/rgEdCitation.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdContact.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdDate.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdEvent.h</headers>

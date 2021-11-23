@@ -28,7 +28,7 @@
 #ifndef RGEDARCHIVE_H
 #define RGEDARCHIVE_H
 
-#include "fb/fbRgEditArchive.h"
+#include "fb/fbRgEditCitation.h"
 
 
 #include <rec/recCitation.h>

@@ -166,7 +166,6 @@ REC_CXXFLAGS = /MD$(VAR_29) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) /D__WXMSW__
 	/I..\..\include\rec /I..\..\include /GR /EHsc /Yu"wx/wxprec.h" \
 	/Fp"wxprec_rec.pch" $(CPPFLAGS) $(CXXFLAGS)
 REC_OBJECTS =  \
-	rec_recArchive.obj \
 	rec_recAssociate.obj \
 	rec_recCitation.obj \
 	rec_recContact.obj \
@@ -215,8 +214,8 @@ RECGUI_CXXFLAGS = /MD$(VAR_29) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) \
 	/I..\..\include\rec /I..\..\include\rg /I..\..\include /GR /EHsc $(CPPFLAGS) \
 	$(CXXFLAGS)
 RECGUI_OBJECTS =  \
-	recgui_fbRgEditArchive.obj \
 	recgui_fbRgEditAssociate.obj \
+	recgui_fbRgEditCitation.obj \
 	recgui_fbRgEditGallery.obj \
 	recgui_fbRgEditMedia.obj \
 	recgui_fbRgEditReference.obj \
@@ -229,7 +228,7 @@ RECGUI_OBJECTS =  \
 	recgui_rgCompareEvent.obj \
 	recgui_rgCrIndividual.obj \
 	recgui_rgCrName.obj \
-	recgui_rgEdArchive.obj \
+	recgui_rgEdCitation.obj \
 	recgui_rgEdContact.obj \
 	recgui_rgEdDate.obj \
 	recgui_rgEdEvent.obj \
@@ -630,9 +629,6 @@ hxml5_hxml5.obj: .\..\..\src\hxml5\hxml5.cpp
 hxml5_pugixml.obj: .\..\..\src\hxml5\pugixml.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(HXML5_CXXFLAGS) .\..\..\src\hxml5\pugixml.cpp
 
-rec_recArchive.obj: .\..\..\src\rec\recArchive.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recArchive.cpp
-
 rec_recAssociate.obj: .\..\..\src\rec\recAssociate.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recAssociate.cpp
 
@@ -738,11 +734,11 @@ rec_dummy.obj: .\..\..\src\dummy.cpp
 reccl_reccl.obj: .\..\..\src\rc\reccl.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECCL_CXXFLAGS) .\..\..\src\rc\reccl.cpp
 
-recgui_fbRgEditArchive.obj: .\..\..\src\rg\fb\fbRgEditArchive.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\fb\fbRgEditArchive.cpp
-
 recgui_fbRgEditAssociate.obj: .\..\..\src\rg\fb\fbRgEditAssociate.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\fb\fbRgEditAssociate.cpp
+
+recgui_fbRgEditCitation.obj: .\..\..\src\rg\fb\fbRgEditCitation.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\fb\fbRgEditCitation.cpp
 
 recgui_fbRgEditGallery.obj: .\..\..\src\rg\fb\fbRgEditGallery.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\fb\fbRgEditGallery.cpp
@@ -780,8 +776,8 @@ recgui_rgCrIndividual.obj: .\..\..\src\rg\rgCrIndividual.cpp
 recgui_rgCrName.obj: .\..\..\src\rg\rgCrName.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgCrName.cpp
 
-recgui_rgEdArchive.obj: .\..\..\src\rg\rgEdArchive.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdArchive.cpp
+recgui_rgEdCitation.obj: .\..\..\src\rg\rgEdCitation.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdCitation.cpp
 
 recgui_rgEdContact.obj: .\..\..\src\rg\rgEdContact.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdContact.cpp

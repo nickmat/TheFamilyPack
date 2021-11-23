@@ -38,7 +38,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <_ProjectFileVersion>16.0.31727.243</_ProjectFileVersion>
+    <_ProjectFileVersion>16.0.31829.152</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
@@ -127,7 +127,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\src\rec\recArchive.cpp" />
     <ClCompile Include="..\..\src\rec\recAssociate.cpp" />
     <ClCompile Include="..\..\src\rec\recCitation.cpp" />
     <ClCompile Include="..\..\src\rec\recContact.cpp" />
@@ -163,7 +162,6 @@
     <ClCompile Include="..\..\src\rec\recVersion.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\rec\recArchive.h" />
     <ClInclude Include="..\..\include\rec\recAssociate.h" />
     <ClInclude Include="..\..\include\rec\recCitation.h" />
     <ClInclude Include="..\..\include\rec\recContact.h" />

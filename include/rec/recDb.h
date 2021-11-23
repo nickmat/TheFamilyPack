@@ -28,7 +28,6 @@
 #ifndef RECDB_H
 #define RECDB_H
 
-#include <rec/recArchive.h>
 #include <rec/recAssociate.h>
 #include <rec/recCitation.h>
 #include <rec/recContact.h>

@@ -35,7 +35,7 @@
 //#include <rec/recIndividual.h>
 
 #include <rg/rgDialogs.h>
-#include "rgEdArchive.h"
+#include "rgEdCitation.h"
 #include "rgCommon.h"
 
 bool rgEditArchive( wxWindow* wind, idt arcID  )
