@@ -29,11 +29,15 @@
 #define RGEDARCHIVE_H
 
 #include "fb/fbRgEditCitation.h"
-
+#include "rgSelect.h"
 
 #include <rec/recCitation.h>
 #include <rec/recContact.h>
 
+
+//============================================================================
+//---------------------------[ rgDlgEditArchive ]-----------------------------
+//============================================================================
 
 class rgDlgEditArchive : public fbRgEditArchive
 {
@@ -55,6 +59,25 @@ private:
     recRepository  m_archive;
     recContactList m_list;
     recContactVec  m_contacts;
+};
+
+
+//============================================================================
+//--------------------------[ rgDlgSelectArchive ]----------------------------
+//============================================================================
+
+class rgDlgSelectArchive : public rgSelect
+{
+    enum {
+        COL_ID, COL_Name, COL_comment, COL_MAX
+    };
+    static wxString sm_colHeaders[COL_MAX];
+public:
+    rgDlgSelectArchive(
+        wxWindow* parent = NULL,
+        unsigned style = rgSELSTYLE_None,
+        const wxString& title = _( "Select Archive" )
+    ) : rgSelect( parent, sm_colHeaders, COL_MAX, style, title ) {}
 };
 
 #endif // RGEDARCHIVE_H

@@ -51,8 +51,14 @@ enum {
 };
 
 // See src/rg/rgEdArchive.cpp
-extern bool rgEditArchive( wxWindow* wind, idt arcID );
+extern bool rgEditArchive( wxWindow* wind, idt arcID, const wxString& title = "" );
 extern idt rgCreateArchive( wxWindow* wind );
+extern idt rgSelectArchive(
+    wxWindow* wind,
+    unsigned flag = rgSELSTYLE_Create,
+    unsigned* retbutton = NULL,
+    const wxString& title = ""
+);
 
 // See src/rg/rgAssociate.cpp
 extern bool rgEditAssociate( wxWindow* wind, idt assID );

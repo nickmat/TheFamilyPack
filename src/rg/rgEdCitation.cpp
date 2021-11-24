@@ -32,13 +32,13 @@
 #endif
 
 //#include <rec/recSystem.h>
-//#include <rec/recIndividual.h>
+#include <rec/recCitation.h>
 
 #include <rg/rgDialogs.h>
 #include "rgEdCitation.h"
 #include "rgCommon.h"
 
-bool rgEditArchive( wxWindow* wind, idt arcID  )
+bool rgEditArchive( wxWindow* wind, idt arcID, const wxString& title )
 {
     wxASSERT( arcID != 0 );
 
@@ -47,6 +47,9 @@ bool rgEditArchive( wxWindow* wind, idt arcID  )
     bool ret = false;
 
     rgDlgEditArchive dialog( wind, arcID );
+    if( !title.empty() ) {
+        dialog.SetTitle( title );
+    }
 
     if( dialog.ShowModal() == wxID_OK ) {
         recDb::ReleaseSavepoint( savepoint );
@@ -70,7 +73,7 @@ idt rgCreateArchive( wxWindow* wind )
     arc.Save();
     idt arcID = arc.FGetID();
 
-    if( rgEditArchive( wind, arcID ) ) {
+    if( rgEditArchive( wind, arcID, _( "Create Archive" ) ) ) {
         recDb::ReleaseSavepoint( savepoint );
         return arcID;
     }
@@ -78,8 +81,53 @@ idt rgCreateArchive( wxWindow* wind )
     return 0;
 }
 
+idt rgSelectArchive( wxWindow* wind, unsigned flag, unsigned* retbutton, const wxString& title )
+{
+    idt arcID = 0;
+    if( retbutton ) *retbutton = rgSELSTYLE_None;
+    rgDlgSelectArchive dialog( wind, flag, title );
+
+    bool cont = true;
+    while( cont ) {
+        recRepositoryVec vec = recRepository::GetFullList();
+        wxArrayString table;
+        for( auto arc : vec ) {
+            table.push_back( arc.GetIdStr() );
+            table.push_back( arc.FGetName() );
+            table.push_back( arc.FGetNote() );
+        }
+        dialog.SetTable( table );
+        if( vec.size() == 1 ) {
+            dialog.SetSelectedRow( 0 );
+        }
+        if( dialog.ShowModal() == wxID_OK ) {
+            if( dialog.GetCreatePressed() ) {
+                arcID = rgCreateArchive( wind );
+                if( arcID ) {
+                    if( retbutton ) *retbutton = rgSELSTYLE_Create;
+                    break;
+                }
+                else {
+                    dialog.SetCreatePressed( false );
+                    continue;
+                }
+            }
+            if( dialog.GetUnknownPressed() ) {
+                if( retbutton ) *retbutton = rgSELSTYLE_Unknown;
+                arcID = 0;
+                break;
+            }
+            size_t item = (size_t)dialog.GetSelectedRow();
+            arcID = vec[item].FGetID();
+        }
+        cont = false;
+    }
+
+    return arcID;
+}
+
 //============================================================================
-//-------------------------[ rgDlgEditArchive ]----------------------------
+//---------------------------[ rgDlgEditArchive ]-----------------------------
 //============================================================================
 
 rgDlgEditArchive::rgDlgEditArchive( wxWindow* parent, idt arcID )
@@ -163,5 +211,14 @@ void rgDlgEditArchive::OnButtonDelete( wxCommandEvent& event )
         wxMessageBox( _("No row selected"), _("Delete Contact") );
     }
 }
+
+
+//============================================================================
+//--------------------------[ rgDlgSelectArchive ]----------------------------
+//============================================================================
+
+wxString rgDlgSelectArchive::sm_colHeaders[COL_MAX] = {
+    _( "ID" ), _( "Name" ), _( "Comment" )
+};
 
 // End of src/rg/rgEdArchive.cpp file
