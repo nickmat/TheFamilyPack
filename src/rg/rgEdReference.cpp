@@ -233,6 +233,11 @@ void rgDlgEditReference::UpdateHtml()
     m_webview->SetPage( htm, "" );
 }
 
+void rgDlgEditReference::UpdateCitations( idt citID )
+{
+    // TODO:
+}
+
 void rgDlgEditReference::UpdateMedias( idt medID )
 {
     m_mediaIDs = m_reference.GetMediaList();
@@ -366,6 +371,9 @@ void rgDlgEditReference::OnEntityViewChanged( wxBookCtrlEvent& event )
 {
     switch( m_notebookBottom->GetSelection() )
     {
+    case BPAGE_Citation:
+        UpdateCitations();
+        break;
     case BPAGE_Media:
         UpdateMedias();
         break;
@@ -382,6 +390,31 @@ void rgDlgEditReference::OnEntityViewChanged( wxBookCtrlEvent& event )
         wxASSERT( false );
     }
     m_panelBottom->PostSizeEvent();
+}
+
+void rgDlgEditReference::OnCitationAddButton( wxCommandEvent& event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnCitationAddButton" );
+}
+
+void rgDlgEditReference::OnCitationEditButton( wxCommandEvent& event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnCitationEditButton" );
+}
+
+void rgDlgEditReference::OnCitationDeleteButton( wxCommandEvent& event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnCitationDeleteButton" );
+}
+
+void rgDlgEditReference::OnCitationUpButton( wxCommandEvent& event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnCitationUpButton" );
+}
+
+void rgDlgEditReference::OnCitationDownButton( wxCommandEvent& event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnCitationDownButton" );
 }
 
 void rgDlgEditReference::OnMediaAddButton( wxCommandEvent & event )
@@ -405,6 +438,21 @@ void rgDlgEditReference::OnMediaEditButton( wxCommandEvent & event )
 void rgDlgEditReference::OnMediaDeleteButton( wxCommandEvent & event )
 {
     wxMessageBox( _( "Not yet implimented" ), "OnMediaDeleteButton" );
+}
+
+void rgDlgEditReference::OnMediaUpButton( wxCommandEvent& event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnMediaUpButton" );
+}
+
+void rgDlgEditReference::OnMediaDownButton( wxCommandEvent& event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnMediaDownButton" );
+}
+
+void rgDlgEditReference::OnMediaViewButton( wxCommandEvent& event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnMediaViewButton" );
 }
 
 void rgDlgEditReference::OnPersonaAddButton( wxCommandEvent& event )
@@ -544,11 +592,6 @@ void rgDlgEditReference::OnAddEntityButton( wxCommandEvent& event )
 {
     wxSize s = m_buttonAdd->GetSize();
     m_buttonAdd->PopupMenu( m_menuAddEntity, 0, s.y );
-}
-
-void rgDlgEditReference::OnNewSource( wxCommandEvent& event )
-{
-    wxMessageBox( "Not yet implimented", "OnNewSource" );
 }
 
 void rgDlgEditReference::OnNewDate( wxCommandEvent& event )

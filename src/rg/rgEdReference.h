@@ -47,7 +47,10 @@ private:
         TPAGE_Source, TPAGE_View, TPAGE_MAX
     };
     enum BotPage {
-        BPAGE_Media, BPAGE_Persona, BPAGE_Eventa, BPAGE_Entity, BPAGE_MAX
+        BPAGE_Citation, BPAGE_Media, BPAGE_Persona, BPAGE_Eventa, BPAGE_Entity, BPAGE_MAX
+    };
+    enum CitationColumn {
+        CIT_COL_Number, CIT_COL_citation, CIT_COL_MAX
     };
     enum MediaColumn {
         MED_COL_Number, MED_COL_Title, MED_COL_MAX
@@ -65,6 +68,7 @@ private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
     void UpdateHtml();
+    void UpdateCitations( idt citID = 0 );
     void UpdateMedias( idt medID = 0 );
     void UpdatePersonas( idt perID = 0 );
     void UpdateEventas( idt eaID = 0 );
@@ -80,10 +84,19 @@ private:
     void OnToolRedo( wxCommandEvent& event ) override;
 
     void OnEntityViewChanged( wxBookCtrlEvent& event ) override;
+    // Citation tab buttons
+    void OnCitationAddButton( wxCommandEvent& event ) override;
+    void OnCitationEditButton( wxCommandEvent& event ) override;
+    void OnCitationDeleteButton( wxCommandEvent& event ) override;
+    void OnCitationUpButton( wxCommandEvent& event ) override;
+    void OnCitationDownButton( wxCommandEvent& event ) override;
     // Media tab buttons
     void OnMediaAddButton( wxCommandEvent& event ) override;
     void OnMediaEditButton( wxCommandEvent& event ) override;
     void OnMediaDeleteButton( wxCommandEvent& event ) override;
+    void OnMediaUpButton( wxCommandEvent& event ) override;
+    void OnMediaDownButton( wxCommandEvent& event ) override;
+    void OnMediaViewButton( wxCommandEvent& event ) override;
     // Persona tab buttons
     void OnPersonaAddButton( wxCommandEvent& event ) override;
     void OnAddMalePersona( wxCommandEvent& event ) override;
@@ -100,7 +113,6 @@ private:
     void OnEventaDeleteButton( wxCommandEvent& event ) override;
     // Entity tab buttons
     void OnAddEntityButton( wxCommandEvent& event ) override;
-    void OnNewSource( wxCommandEvent& event ) override;
     void OnNewDate( wxCommandEvent& event ) override;
     void OnNewDateAge( wxCommandEvent& event ) override;
     void OnNewPlace( wxCommandEvent& event ) override;
