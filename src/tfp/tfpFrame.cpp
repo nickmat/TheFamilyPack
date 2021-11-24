@@ -833,27 +833,11 @@ void TfpFrame::OnEditResearcher( wxCommandEvent& event )
 
 void TfpFrame::OnEditArchive( wxCommandEvent& event )
 {
-    long num = wxGetNumberFromUser(
-        _( "Enter the Archive ID or 0 for new Archive" ),
-        _( "Archive ID:" ),
-        _( "Edit Archive" ),
-        (long)0, (long)0, (long)INT_MAX
-    );
-    if( num < 0 ) return;
-
     recDb::Begin();
     try {
-        bool ret = false;
-        if( num == 0 ) {
-            idt resID = rgCreateArchive( this );
-            if( resID != 0 ) {
-                ret = true;
-            }
-        }
-        else {
-            ret = rgEditArchive( this, (idt)num );
-        }
-        if( ret == true ) {
+        unsigned retbutton = 0;
+        idt arcID = rgSelectArchive( this, rgSELSTYLE_Create, &retbutton );
+        if( arcID && ( retbutton || rgEditArchive( this, arcID ) ) ) {
             recDb::Commit();
             RefreshHtmPage();
         }
