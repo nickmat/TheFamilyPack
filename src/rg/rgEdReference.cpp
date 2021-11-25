@@ -42,6 +42,7 @@
 #include "rgSelect.h"
 
 #include <rec/recAssociate.h>
+#include <rec/recCitation.h>
 #include <rec/recDate.h>
 #include <rec/recEventa.h>
 #include <rec/recMedia.h>
@@ -169,6 +170,9 @@ extern bool rgSelectPlaceFromReference(
 rgDlgEditReference::rgDlgEditReference( wxWindow* parent, idt refID )
     : m_reference(refID), fbRgEditReference( parent )
 {
+    m_listCitation->InsertColumn( CIT_COL_Number, _( "Number" ) );
+    m_listCitation->InsertColumn( CIT_COL_Citation, _( "Citation" ) );
+
     m_listMedia->InsertColumn( MED_COL_Number, _( "Number" ) );
     m_listMedia->InsertColumn( MED_COL_Title, _( "Title" ) );
 
@@ -235,7 +239,21 @@ void rgDlgEditReference::UpdateHtml()
 
 void rgDlgEditReference::UpdateCitations( idt citID )
 {
-    // TODO:
+    m_citationIDs = m_reference.GetCitationList();
+    m_listCitation->DeleteAllItems();
+    int row = -1;
+    for( size_t i = 0; i < m_citationIDs.size(); i++ ) {
+        m_listCitation->InsertItem( i, recCitation::GetIdStr( m_citationIDs[i] ) );
+        m_listCitation->SetItem( i, CIT_COL_Citation, recCitation::GetCitationStr( m_citationIDs[i] ) );
+        if( citID == m_citationIDs[i] ) {
+            m_listCitation->SetItemState( i, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+            row = i;
+        }
+    }
+    m_listCitation->SetColumnWidth( CIT_COL_Citation, -1 );
+    if( row >= 0 ) {
+        m_listCitation->EnsureVisible( row );
+    }
 }
 
 void rgDlgEditReference::UpdateMedias( idt medID )
@@ -323,14 +341,16 @@ void rgDlgEditReference::UpdateEntities( idt reID )
 
 wxString rgDlgEditReference::GetSelectedText() const
 {
-    switch( m_notebookTop->GetSelection() )
+    switch( TPage( m_notebookTop->GetSelection() ) )
     {
-    case TPAGE_Source:
+    case TPage::source:
         return m_textCtrlStatement->GetStringSelection();
-    case TPAGE_View:
+    case TPage::view:
         return m_webview->GetSelectedText();
+    default:
+        wxASSERT( false );
     }
-    return wxEmptyString;
+    return wxString();
 }
 
 void rgDlgEditReference::OnStatementViewChanged( wxBookCtrlEvent& event )
@@ -369,21 +389,21 @@ void rgDlgEditReference::OnToolRedo( wxCommandEvent& event )
 
 void rgDlgEditReference::OnEntityViewChanged( wxBookCtrlEvent& event )
 {
-    switch( m_notebookBottom->GetSelection() )
+    switch( BPage( m_notebookBottom->GetSelection() ) )
     {
-    case BPAGE_Citation:
+    case BPage::citation:
         UpdateCitations();
         break;
-    case BPAGE_Media:
+    case BPage::media:
         UpdateMedias();
         break;
-    case BPAGE_Persona:
+    case BPage::persona:
         UpdatePersonas();
         break;
-    case BPAGE_Eventa:
+    case BPage::eventa:
         UpdateEventas();
         break;
-    case BPAGE_Entity:
+    case BPage::entity:
         UpdateEntities();
         break;
     default:

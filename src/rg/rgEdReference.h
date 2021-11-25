@@ -43,14 +43,10 @@ public:
     rgDlgEditReference( wxWindow* parent, idt refID );
 
 private:
-    enum TopPage {
-        TPAGE_Source, TPAGE_View, TPAGE_MAX
-    };
-    enum BotPage {
-        BPAGE_Citation, BPAGE_Media, BPAGE_Persona, BPAGE_Eventa, BPAGE_Entity, BPAGE_MAX
-    };
+    enum class TPage { source, view, MAX };
+    enum class BPage { citation, media, persona, eventa, entity, MAX };
     enum CitationColumn {
-        CIT_COL_Number, CIT_COL_citation, CIT_COL_MAX
+        CIT_COL_Number, CIT_COL_Citation, CIT_COL_MAX
     };
     enum MediaColumn {
         MED_COL_Number, MED_COL_Title, MED_COL_MAX
@@ -126,6 +122,7 @@ private:
     void InsertEntityListItem( size_t row );
 
     recReference  m_reference;
+    recIdVec      m_citationIDs;
     recIdVec      m_mediaIDs;
     recIdVec      m_personaIDs;
     recIdVec      m_eventaIDs;
