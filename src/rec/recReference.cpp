@@ -207,6 +207,11 @@ int recReference::GetNextEntitySequence( idt refID )
     return ExecuteInt( sql ) + 1;
 }
 
+recIdVec recReference::GetCitationList( idt refID )
+{
+    return ExecuteIdVec( "SELECT id FROM Catition WHERE ref_id=" ID ";", refID );
+}
+
 recIdVec recReference::GetPersonaList( idt refID )
 {
     return ExecuteIdVec( "SELECT id FROM Persona WHERE ref_id=" ID ";", refID );

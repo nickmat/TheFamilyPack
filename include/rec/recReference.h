@@ -162,6 +162,9 @@ public:
     static int GetNextEntitySequence( idt refID );
     int GetNextEntitySequence() const { return GetNextEntitySequence( f_id ); }
 
+    static recIdVec GetCitationList( idt refID );
+    recIdVec GetCitationList() const { return GetCitationList( f_id ); }
+
     static recIdVec GetPersonaList( idt refID );
     recIdVec GetPersonaList() const { return GetPersonaList( f_id ); }
     static int GetPersonaCount( idt refID );
