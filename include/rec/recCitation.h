@@ -33,6 +33,9 @@
 class recRepository;
 using recRepositoryVec = std::vector<recRepository>;
 
+class recCitationPart;
+typedef std::vector< recCitationPart >  recCitationPartVec;
+
 class recCitationPartType;
 typedef std::vector< recCitationPartType >  recCitationPartTypeVec;
 
@@ -151,12 +154,13 @@ public:
     idt FGetTypeId() const { return f_type_id; }
     wxString FGetVal() const { return f_val; }
     int FGetCitSeq() const { return f_cit_seq; }
-    wxString FGetNote() const { return f_comment; }
+    wxString FGetComment() const { return f_comment; }
 
     void FSetCitId( idt citID ) { f_cit_id = citID; }
     void FSetTypeId( idt type_id ) { f_type_id = type_id; }
     void FSetVal( const wxString& val ) { f_val = val; }
-    void FSetNote( const wxString& comment ) { f_comment = comment; }
+    void FSetCitSeq( int seq ) { f_cit_seq = seq; }
+    void FSetComment( const wxString& comment ) { f_comment = comment; }
 };
 
 inline bool operator==( const recCitationPart& r1, const recCitationPart& r2 )
