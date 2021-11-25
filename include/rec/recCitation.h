@@ -70,6 +70,15 @@ public:
     void FSetRefSeq( idt ref_seq ) { f_ref_seq = ref_seq; }
     void FSetRepId( idt repID ) { f_rep_id = repID; }
     void FSetComment( const wxString& comment ) { f_comment = comment; }
+
+    static wxString GetIdStr( idt citID ) { return wxString::Format( "Ci" ID, citID ); }
+    wxString GetIdStr() const { return GetIdStr( f_id ); }
+
+    static recCitationPartVec GetPartList( idt citID );
+    recCitationPartVec GetPartList() const { return GetPartList( f_id ); }
+
+    static wxString GetCitationStr( idt citID );
+    wxString GetCitationStr() const;
 };
 
 inline bool operator==( const recCitation& r1, const recCitation& r2 )

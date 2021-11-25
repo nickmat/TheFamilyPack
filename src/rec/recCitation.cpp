@@ -134,6 +134,55 @@ bool recCitation::Equivalent( const recCitation& r2 ) const
         ;
 }
 
+recCitationPartVec recCitation::GetPartList( idt citID )
+{
+    recCitationPartVec list;
+    if( citID == 0 ) {
+        return list;
+    }
+
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT id, type_id, val, cit_seq, comment FROM CitationPart"
+        " WHERE cit_id=" ID " ORDER BY cit_seq;",
+        citID
+    );
+    wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
+
+    recCitationPart part( 0 );
+    part.FSetCitId( citID );
+    while( result.NextRow() ) {
+        part.FSetID( GET_ID( result.GetInt64( 0 ) ) );
+        part.FSetTypeId( GET_ID( result.GetInt64( 1 ) ) );
+        part.FSetVal( result.GetAsString( 2 ) );
+        part.FSetCitSeq( result.GetInt( 3 ) );
+        part.FSetComment( result.GetAsString( 4 ) );
+        list.push_back( part );
+    }
+    return list;
+}
+
+wxString recCitation::GetCitationStr( idt citID )
+{
+    recCitation cit( citID );
+    return cit.GetCitationStr();
+}
+
+wxString recCitation::GetCitationStr() const
+{
+    wxString citation;
+    if( f_id == 0 ) {
+        return citation;
+    }
+    recRepository rep( f_rep_id );
+    citation = rep.FGetName();
+    recCitationPartVec parts = GetPartList();
+    for( const auto& part : parts ) {
+        citation += ", " + part.FGetVal();
+    }
+    return wxString();
+}
+
 //============================================================================
 //                 recRepository
 //============================================================================
