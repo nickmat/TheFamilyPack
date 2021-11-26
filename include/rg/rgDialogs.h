@@ -30,6 +30,41 @@
 #include <rec/recFilterEvent.h>
 #include <rec/recIndividual.h>
 
+template<class D> bool rgEdit( wxWindow* parent, idt id, const wxString& title )
+{
+    if( !id ) return false;
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+
+    D dialog( parent, id );
+    if( !title.empty() ) {
+        dialog.SetTitle( title );
+    }
+    if( dialog.ShowModal() == wxID_OK ) {
+        recDb::ReleaseSavepoint( savepoint );
+        return true;
+    }
+    recDb::Rollback( savepoint );
+    return false;
+}
+
+template<class R, class D> idt rgCreate( wxWindow* wind, const wxString& title )
+{
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+
+    R rec( 0 );
+    rec.Save();
+    idt recID = rec.FGetID();
+
+    if( rgEdit<D>( wind, recID, title ) ) {
+        recDb::ReleaseSavepoint( savepoint );
+        return recID;
+    }
+    recDb::Rollback( savepoint );
+    return 0;
+}
+
 class rgDlgEditReference;
 class rgRefData;
 
