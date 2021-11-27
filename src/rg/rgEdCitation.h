@@ -36,6 +36,41 @@
 
 
 //============================================================================
+//--------------------------[ rgDlgEditCitation ]-----------------------------
+//============================================================================
+
+class rgDlgEditCitation : public fbRgEditCitation
+{
+    enum PartColumns {
+        PC_citID, PC_value, PC_type, PC_comment, PC_MAX
+    };
+public:
+    rgDlgEditCitation( wxWindow* parent, idt citID );
+
+private:
+    bool TransferDataToWindow();
+    bool TransferDataFromWindow();
+    void UpdateCitation();
+    void UpdateArchive();
+    void UpdatePartList( idt cpID );
+
+    void PartsButtonsEnable( long row );
+    void OnButtonSelectAchive( wxCommandEvent& event ) override;
+    void OnPartDeselect( wxListEvent& event ) override;
+    void OnPartSelect( wxListEvent& event ) override;
+    void OnButtonAdd( wxCommandEvent& event ) override;
+    void OnButtonEdit( wxCommandEvent& event ) override;
+    void OnButtonDelete( wxCommandEvent& event ) override;
+    void OnButtonUp( wxCommandEvent& event ) override;
+    void OnButtonDown( wxCommandEvent& event ) override;
+
+    recCitation        m_citation;
+    recRepository      m_archive;
+    recCitationPartVec m_parts;
+};
+
+
+//============================================================================
 //---------------------------[ rgDlgEditArchive ]-----------------------------
 //============================================================================
 
@@ -51,9 +86,9 @@ private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
 
-    void OnButtonAdd( wxCommandEvent& event );
-    void OnButtonEdit( wxCommandEvent& event );
-    void OnButtonDelete( wxCommandEvent& event );
+    void OnButtonAdd( wxCommandEvent& event ) override;
+    void OnButtonEdit( wxCommandEvent& event ) override;
+    void OnButtonDelete( wxCommandEvent& event ) override;
 
 
     recRepository  m_archive;

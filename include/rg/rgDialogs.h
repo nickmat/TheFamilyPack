@@ -85,20 +85,22 @@ enum {
     rgSELSTYLE_SelList    = 0x0100    // Selects the full list
 };
 
-// See src/rg/rgEdArchive.cpp
-extern bool rgEditArchive( wxWindow* wind, idt arcID, const wxString& title = "" );
-extern idt rgCreateArchive( wxWindow* wind );
-extern idt rgSelectArchive(
+// See src/rg/rgAssociate.cpp
+extern bool rgEditAssociate( wxWindow* wind, idt assID );
+extern idt rgCreateAssociate( wxWindow* wind );
+extern idt rgSelectAssociate(
     wxWindow* wind,
     unsigned flag = rgSELSTYLE_Create,
     unsigned* retbutton = NULL,
     const wxString& title = ""
 );
 
-// See src/rg/rgAssociate.cpp
-extern bool rgEditAssociate( wxWindow* wind, idt assID );
-extern idt rgCreateAssociate( wxWindow* wind );
-extern idt rgSelectAssociate(
+// See src/rg/rgEdCitation.cpp
+extern bool rgEditCitation( wxWindow* wind, idt citID, const wxString& title = "" );
+extern idt rgCreateCitation( wxWindow* wind, idt refID );
+extern bool rgEditArchive( wxWindow* wind, idt citID, const wxString& title = "" );
+extern idt rgCreateArchive( wxWindow* wind );
+extern idt rgSelectArchive(
     wxWindow* wind,
     unsigned flag = rgSELSTYLE_Create,
     unsigned* retbutton = NULL,

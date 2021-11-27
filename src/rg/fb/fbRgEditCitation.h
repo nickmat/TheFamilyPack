@@ -17,17 +17,57 @@
 #include <wx/colour.h>
 #include <wx/settings.h>
 #include <wx/textctrl.h>
-#include <wx/sizer.h>
-#include <wx/listctrl.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
 #include <wx/button.h>
+#include <wx/sizer.h>
+#include <wx/listctrl.h>
 #include <wx/statbox.h>
 #include <wx/statline.h>
 #include <wx/dialog.h>
 
 ///////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class fbRgEditCitation
+///////////////////////////////////////////////////////////////////////////////
+class fbRgEditCitation : public wxDialog
+{
+	private:
+
+	protected:
+		wxTextCtrl* m_textCtrlCitation;
+		wxTextCtrl* m_textCtrlComment;
+		wxTextCtrl* m_textCtrlArchive;
+		wxButton* m_buttonSelectArchive;
+		wxListCtrl* m_listParts;
+		wxButton* m_buttonAdd;
+		wxButton* m_buttonEdit;
+		wxButton* m_buttonDelete;
+		wxButton* m_buttonUp;
+		wxButton* m_buttonDown;
+		wxStaticText* m_staticRefCiID;
+		wxButton* m_buttonSave;
+		wxButton* m_buttonCancel;
+
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnButtonSelectAchive( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnPartDeselect( wxListEvent& event ) { event.Skip(); }
+		virtual void OnPartSelect( wxListEvent& event ) { event.Skip(); }
+		virtual void OnButtonAdd( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonEdit( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonDelete( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonUp( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonDown( wxCommandEvent& event ) { event.Skip(); }
+
+
+	public:
+
+		fbRgEditCitation( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Citation"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,320 ), long style = wxDEFAULT_DIALOG_STYLE );
+		~fbRgEditCitation();
+
+};
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Class fbRgEditArchive
@@ -48,6 +88,8 @@ class fbRgEditArchive : public wxDialog
 		wxButton* m_buttonCancel1;
 
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnContactDeselected( wxListEvent& event ) { event.Skip(); }
+		virtual void OnContactSelected( wxListEvent& event ) { event.Skip(); }
 		virtual void OnButtonAdd( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnButtonEdit( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnButtonDelete( wxCommandEvent& event ) { event.Skip(); }

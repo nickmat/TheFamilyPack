@@ -414,7 +414,10 @@ void rgDlgEditReference::OnEntityViewChanged( wxBookCtrlEvent& event )
 
 void rgDlgEditReference::OnCitationAddButton( wxCommandEvent& event )
 {
-    wxMessageBox( _( "Not yet implimented" ), "OnCitationAddButton" );
+    idt citID = rgCreateCitation( this, m_reference.FGetID() );
+    if( citID ) {
+        UpdateCitations( citID );
+    }
 }
 
 void rgDlgEditReference::OnCitationEditButton( wxCommandEvent& event )

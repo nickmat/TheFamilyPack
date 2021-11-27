@@ -38,6 +38,31 @@
 #include "rgEdCitation.h"
 #include "rgCommon.h"
 
+
+bool rgEditCitation( wxWindow* wind, idt citID, const wxString& title )
+{
+    return rgEdit<rgDlgEditCitation>( wind, citID, title );
+}
+
+idt rgCreateCitation( wxWindow* wind, idt refID )
+{
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+
+    recCitation cit( 0 );
+    cit.FSetRefId( refID );
+    cit.FSetRefSeq( cit.GetNextRefSequence( refID ) );
+    cit.Save();
+    idt citID = cit.FGetID();
+
+    if( rgEditCitation( wind, citID, _( "Create Citation" ) ) ) {
+        recDb::ReleaseSavepoint( savepoint );
+        return citID;
+    }
+    recDb::Rollback( savepoint );
+    return 0;
+}
+
 bool rgEditArchive( wxWindow* wind, idt arcID, const wxString& title )
 {
     wxASSERT( arcID != 0 );
@@ -124,6 +149,148 @@ idt rgSelectArchive( wxWindow* wind, unsigned flag, unsigned* retbutton, const w
     }
 
     return arcID;
+}
+
+//============================================================================
+//--------------------------[ rgDlgEditCitation ]-----------------------------
+//============================================================================
+
+rgDlgEditCitation::rgDlgEditCitation( wxWindow* parent, idt citID )
+    : m_citation( citID ), fbRgEditCitation( parent )
+{
+    m_archive.ReadID( m_citation.FGetRefId() );
+    m_parts = m_citation.GetPartList();
+
+    m_listParts->InsertColumn( PC_citID, _( "ID" ), wxLIST_FORMAT_LEFT, 60 );
+    m_listParts->InsertColumn( PC_value, _( "Value" ) );
+    m_listParts->InsertColumn( PC_type, _( "Type" ) );
+    m_listParts->InsertColumn( PC_comment, _( "Comment" ) );
+}
+
+bool rgDlgEditCitation::TransferDataToWindow()
+{
+    UpdateCitation();
+    m_textCtrlComment->SetValue( m_citation.FGetComment() );
+    UpdateArchive();
+    UpdatePartList( 0 );
+    wxString idStr = recReference::GetIdStr( m_citation.FGetRefId() )
+        + ":" + m_citation.GetIdStr();
+    m_staticRefCiID->SetLabel( idStr );
+    return true;
+}
+
+bool rgDlgEditCitation::TransferDataFromWindow()
+{
+    return true;
+}
+
+void rgDlgEditCitation::UpdateCitation()
+{
+    m_textCtrlCitation->SetValue( m_citation.GetCitationStr() );
+}
+
+void rgDlgEditCitation::UpdateArchive()
+{
+    wxString arcStr = m_archive.GetIdStr( m_citation.FGetRepId() )
+        + ": " + m_archive.FGetName();
+    m_textCtrlArchive->SetValue( arcStr );
+}
+
+void rgDlgEditCitation::UpdatePartList( idt cpID )
+{
+    m_parts = m_citation.GetPartList();
+    m_listParts->DeleteAllItems();
+    long row = -1;
+    for( size_t i = 0; i < m_parts.size(); i++ ) {
+        m_listParts->InsertItem( i, m_parts[i].GetIdStr() );
+        m_listParts->SetItem( i, PC_value, m_parts[i].FGetVal() );
+        m_listParts->SetItem( i, PC_type, recCitationPartType::GetStr( m_parts[i].FGetTypeId() ) );
+        m_listParts->SetItem( i, PC_comment, m_parts[i].FGetComment() );
+        if( cpID == m_parts[i].FGetID() ) {
+            m_listParts->SetItemState( i, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+            row = i;
+        }
+        // Correct errors and gaps in sequence numbers.
+        if( m_parts[i].FGetCitSeq() != i + 1 ) {
+            m_parts[i].FSetCitSeq( i + 1 );
+            m_parts[i].Save();
+        }
+    }
+    if( !m_parts.empty() ) {
+        m_listParts->SetColumnWidth( PC_value, wxLIST_AUTOSIZE );
+    }
+    if( row >= 0 ) {
+        m_listParts->EnsureVisible( row );
+    }
+    PartsButtonsEnable( row );
+}
+
+
+void rgDlgEditCitation::PartsButtonsEnable( long row )
+{
+    if( row < 0 ) {
+        m_buttonEdit->Disable();
+        m_buttonDelete->Disable();
+        m_buttonUp->Disable();
+        m_buttonDown->Disable();
+        return;
+    }
+    m_buttonEdit->Enable();
+    m_buttonDelete->Enable();
+    if( row == 0 ) {
+        m_buttonUp->Disable();
+    }
+    else {
+        m_buttonUp->Enable();
+    }
+    if( row == m_listParts->GetItemCount() - 1 ) {
+        m_buttonDown->Disable();
+    }
+    else {
+        m_buttonDown->Enable();
+    }
+}
+
+
+void rgDlgEditCitation::OnButtonSelectAchive( wxCommandEvent& event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnButtonSelectAchive" );
+}
+
+void rgDlgEditCitation::OnPartDeselect( wxListEvent& event )
+{
+    PartsButtonsEnable( -1 );
+}
+
+void rgDlgEditCitation::OnPartSelect( wxListEvent& event )
+{
+    long row = m_listParts->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    PartsButtonsEnable( row );
+}
+
+void rgDlgEditCitation::OnButtonAdd( wxCommandEvent& event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnButtonAdd" );
+}
+
+void rgDlgEditCitation::OnButtonEdit( wxCommandEvent& event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnButtonEdit" );
+}
+
+void rgDlgEditCitation::OnButtonDelete( wxCommandEvent& event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnButtonDelete" );
+}
+
+void rgDlgEditCitation::OnButtonUp( wxCommandEvent& event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnButtonUp" );
+}
+
+void rgDlgEditCitation::OnButtonDown( wxCommandEvent& event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnButtonDown" );
 }
 
 //============================================================================
