@@ -134,6 +134,18 @@ bool recCitation::Equivalent( const recCitation& r2 ) const
         ;
 }
 
+int recCitation::GetNextRefSequence( idt refID ) const
+{
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "SELECT MAX(ref_seq) FROM Citation WHERE ref_id=" ID ";",
+        refID
+    );
+    return s_db->ExecuteScalar( sql ) + 1;
+}
+
+
 recCitationPartVec recCitation::GetPartList( idt citID )
 {
     recCitationPartVec list;

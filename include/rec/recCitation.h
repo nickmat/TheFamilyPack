@@ -74,6 +74,8 @@ public:
     static wxString GetIdStr( idt citID ) { return wxString::Format( "Ci" ID, citID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
+    int GetNextRefSequence( idt refID ) const;
+
     static recCitationPartVec GetPartList( idt citID );
     recCitationPartVec GetPartList() const { return GetPartList( f_id ); }
 
