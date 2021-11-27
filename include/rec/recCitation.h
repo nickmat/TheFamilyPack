@@ -172,6 +172,9 @@ public:
     void FSetVal( const wxString& val ) { f_val = val; }
     void FSetCitSeq( int seq ) { f_cit_seq = seq; }
     void FSetComment( const wxString& comment ) { f_comment = comment; }
+
+    static wxString GetIdStr( idt repID ) { return wxString::Format( "CiP" ID, repID ); }
+    wxString GetIdStr() const { return GetIdStr( f_id ); }
 };
 
 inline bool operator==( const recCitationPart& r1, const recCitationPart& r2 )
