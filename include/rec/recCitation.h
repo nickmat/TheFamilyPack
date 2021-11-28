@@ -218,6 +218,9 @@ public:
     void FSetStyle( int style ) { f_style = style; }
     void FSetComment( const wxString& comment ) { f_comment = comment; }
 
+    static wxString GetIdStr( idt ciptID ) { return wxString::Format( "CiPT" ID, ciptID ); }
+    wxString GetIdStr() const { return GetIdStr( f_id ); }
+
     static wxString GetStr( idt id );
 
     static recCitationPartTypeVec GetList();
