@@ -415,6 +415,17 @@ bool recCitationPart::Equivalent( const recCitationPart& r2 ) const
         f_comment == r2.f_comment;
 }
 
+int recCitationPart::GetNextCitationSeq( idt citID ) const
+{
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "SELECT MAX(cit_seq) FROM CitationPart WHERE cit_id=" ID ";",
+        citID
+    );
+    return s_db->ExecuteScalar( sql ) + 1;
+}
+
 //============================================================================
 //                 recCitationPartType
 //============================================================================

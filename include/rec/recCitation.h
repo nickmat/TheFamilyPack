@@ -175,6 +175,8 @@ public:
 
     static wxString GetIdStr( idt repID ) { return wxString::Format( "CiP" ID, repID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
+
+    int GetNextCitationSeq( idt citID ) const;
 };
 
 inline bool operator==( const recCitationPart& r1, const recCitationPart& r2 )
