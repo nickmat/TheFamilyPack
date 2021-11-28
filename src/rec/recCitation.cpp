@@ -192,7 +192,7 @@ wxString recCitation::GetCitationStr() const
     for( const auto& part : parts ) {
         citation += ", " + part.FGetVal();
     }
-    return wxString();
+    return citation;
 }
 
 //============================================================================
