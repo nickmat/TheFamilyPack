@@ -151,6 +151,41 @@ idt rgSelectArchive( wxWindow* wind, unsigned flag, unsigned* retbutton, const w
     return arcID;
 }
 
+bool rgEditCitationPart( wxWindow* wind, idt cipID, const wxString& title )
+{
+    return rgEdit<rgDlgEditCitationPart>( wind, cipID, title );
+}
+
+idt rgCreateCitationPart( wxWindow* wind, idt citID )
+{
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+
+    recCitationPart part( 0 );
+    part.FSetCitId( citID );
+    part.FSetCitSeq( part.GetNextCitationSeq( citID ) );
+    part.Save();
+    idt partID = part.FGetID();
+
+    if( rgEditCitationPart( wind, partID, _( "Create Citation Part" ) ) ) {
+        recDb::ReleaseSavepoint( savepoint );
+        return partID;
+    }
+    recDb::Rollback( savepoint );
+    return 0;
+}
+
+bool rgEditCitationPartType( wxWindow* wind, idt cipID, const wxString& title )
+{
+    return rgEdit<rgDlgEditCitationPart>( wind, cipID, title );
+}
+
+idt rgCreateCitationPartType( wxWindow* wind )
+{
+    return rgCreate<recCitationPartType, rgDlgEditCitationPartType>(
+        wind, _( "Create Citation Part Type" )
+    );
+}
 //============================================================================
 //--------------------------[ rgDlgEditCitation ]-----------------------------
 //============================================================================
@@ -181,6 +216,8 @@ bool rgDlgEditCitation::TransferDataToWindow()
 
 bool rgDlgEditCitation::TransferDataFromWindow()
 {
+    m_citation.FSetComment( m_textCtrlComment->GetValue() );
+    m_citation.Save();
     return true;
 }
 
@@ -223,6 +260,7 @@ void rgDlgEditCitation::UpdatePartList( idt cpID )
         m_listParts->EnsureVisible( row );
     }
     PartsButtonsEnable( row );
+    UpdateCitation();
 }
 
 
@@ -254,7 +292,14 @@ void rgDlgEditCitation::PartsButtonsEnable( long row )
 
 void rgDlgEditCitation::OnButtonSelectAchive( wxCommandEvent& event )
 {
-    wxMessageBox( _( "Not yet implimented" ), "OnButtonSelectAchive" );
+    idt orig_arcID = m_archive.FGetID();
+    idt arcID = rgSelectArchive( this, rgSELSTYLE_Create );
+    if( arcID != orig_arcID ) {
+        m_archive.ReadID( arcID );
+        m_citation.FSetRepId( arcID );
+        UpdateArchive();
+        UpdateCitation();
+    }
 }
 
 void rgDlgEditCitation::OnPartDeselect( wxListEvent& event )
@@ -270,7 +315,10 @@ void rgDlgEditCitation::OnPartSelect( wxListEvent& event )
 
 void rgDlgEditCitation::OnButtonAdd( wxCommandEvent& event )
 {
-    wxMessageBox( _( "Not yet implimented" ), "OnButtonAdd" );
+    idt cipID = rgCreateCitationPart( this, m_citation.FGetID() );
+    if( cipID ) {
+        UpdatePartList( cipID );
+    }
 }
 
 void rgDlgEditCitation::OnButtonEdit( wxCommandEvent& event )
@@ -388,4 +436,87 @@ wxString rgDlgSelectArchive::sm_colHeaders[COL_MAX] = {
     _( "ID" ), _( "Name" ), _( "Comment" )
 };
 
-// End of src/rg/rgEdArchive.cpp file
+//============================================================================
+//------------------------[ rgDlgEditCitationPart ]---------------------------
+//============================================================================
+
+rgDlgEditCitationPart::rgDlgEditCitationPart( wxWindow* parent, idt cipID )
+    : m_part( cipID ), fbRgEditCitationPart( parent )
+{
+}
+
+bool rgDlgEditCitationPart::TransferDataToWindow()
+{
+    UpdatePartType( m_part.FGetTypeId() );
+    m_textCtrlValue->SetValue( m_part.FGetVal() );
+    m_textCtrlComment->SetValue( m_part.FGetComment() );
+    m_staticCipID->SetLabel(
+        recCitation::GetIdStr( m_part.FGetCitId() ) + ":" + m_part.GetIdStr()
+    );
+    return true;
+}
+
+bool rgDlgEditCitationPart::TransferDataFromWindow()
+{
+    int type = m_choiceType->GetSelection();
+    if( type <= 0 ) {
+        wxMessageBox( _( "Please select a Citation Part Type" ), _( "Citation Part Type Required" ) );
+        return false;
+    }
+    m_part.FSetTypeId( m_types[type-1].FGetID() );
+    m_part.FSetVal( m_textCtrlValue->GetValue() );
+    m_part.FSetComment( m_textCtrlComment->GetValue() );
+    m_part.Save();
+    return true;
+}
+
+void rgDlgEditCitationPart::UpdatePartType( idt ciptID )
+{
+    m_choiceType->Clear();
+    m_choiceType->Append( _( "<Select Type>" ) );
+    m_choiceType->SetSelection( 0 );
+    m_types = recCitationPartType::GetList();
+    for( size_t i = 0; i < m_types.size(); i++ ) {
+        m_choiceType->Append( m_types[i].FGetName() );
+        if( ciptID == m_types[i].FGetID() ) {
+            m_choiceType->SetSelection( (int)i + 1 );
+        }
+    }
+}
+
+void rgDlgEditCitationPart::OnButtonTypeAdd( wxCommandEvent& event )
+{
+    idt ciptID = rgCreateCitationPartType( this );
+    if( ciptID ) {
+        m_part.FSetTypeId( ciptID );
+        UpdatePartType( ciptID );
+    }
+}
+
+
+//============================================================================
+//----------------------[ rgDlgEditCitationPartType ]-------------------------
+//============================================================================
+
+rgDlgEditCitationPartType::rgDlgEditCitationPartType( wxWindow* parent, idt ciptID )
+    : m_type(ciptID), fbRgEditCitationPartType(parent)
+{
+}
+
+bool rgDlgEditCitationPartType::TransferDataToWindow()
+{
+    m_staticCiPT_ID->SetLabel( m_type.GetIdStr() );
+    m_textCtrlName->SetValue( m_type.FGetName() );
+    m_textCtrlComment->SetValue( m_type.FGetComment() );
+    return true;
+}
+
+bool rgDlgEditCitationPartType::TransferDataFromWindow()
+{
+    m_type.FSetName( m_textCtrlName->GetValue() );
+    m_type.FSetComment( m_textCtrlComment->GetValue() );
+    m_type.Save();
+    return true;
+}
+
+// End of src/rg/rgEdCitation.cpp file

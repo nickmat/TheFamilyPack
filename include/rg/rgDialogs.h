@@ -106,6 +106,10 @@ extern idt rgSelectArchive(
     unsigned* retbutton = NULL,
     const wxString& title = ""
 );
+extern bool rgEditCitationPart( wxWindow* wind, idt cipID, const wxString& title = "" );
+extern idt rgCreateCitationPart( wxWindow* wind, idt citID );
+extern bool rgEditCitationPartType( wxWindow* wind, idt ciptID, const wxString& title = "" );
+extern idt rgCreateCitationPartType( wxWindow* wind );
 
 // See src/rg/rgCrName.cpp
 enum {

@@ -115,4 +115,43 @@ public:
     ) : rgSelect( parent, sm_colHeaders, COL_MAX, style, title ) {}
 };
 
+
+//============================================================================
+//------------------------[ rgDlgEditCitationPart ]---------------------------
+//============================================================================
+
+class rgDlgEditCitationPart : public fbRgEditCitationPart
+{
+public:
+    rgDlgEditCitationPart( wxWindow* parent, idt cipID );
+
+private:
+    bool TransferDataToWindow();
+    bool TransferDataFromWindow();
+    void UpdatePartType( idt ciptID );
+
+    void OnButtonTypeAdd( wxCommandEvent& event ) override;
+
+    recCitationPart        m_part;
+    recCitationPartTypeVec m_types;
+};
+
+
+//============================================================================
+//----------------------[ rgDlgEditCitationPartType ]-------------------------
+//============================================================================
+
+class rgDlgEditCitationPartType : public fbRgEditCitationPartType
+{
+public:
+    rgDlgEditCitationPartType( wxWindow* parent, idt ciptID );
+
+private:
+    bool TransferDataToWindow();
+    bool TransferDataFromWindow();
+
+    recCitationPartType  m_type;
+};
+
+
 #endif // RGEDARCHIVE_H

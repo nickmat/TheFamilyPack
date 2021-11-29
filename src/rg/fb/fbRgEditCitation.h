@@ -26,6 +26,7 @@
 #include <wx/statbox.h>
 #include <wx/statline.h>
 #include <wx/dialog.h>
+#include <wx/choice.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -84,8 +85,8 @@ class fbRgEditArchive : public wxDialog
 		wxButton* m_buttonEdit;
 		wxButton* m_buttonDelete;
 		wxStaticText* m_staticArcID;
-		wxButton* m_buttonSave1;
-		wxButton* m_buttonCancel1;
+		wxButton* m_buttonSave;
+		wxButton* m_buttonCancel;
 
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnContactDeselected( wxListEvent& event ) { event.Skip(); }
@@ -99,6 +100,56 @@ class fbRgEditArchive : public wxDialog
 
 		fbRgEditArchive( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Archive"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE );
 		~fbRgEditArchive();
+
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class fbRgEditCitationPart
+///////////////////////////////////////////////////////////////////////////////
+class fbRgEditCitationPart : public wxDialog
+{
+	private:
+
+	protected:
+		wxChoice* m_choiceType;
+		wxButton* m_buttonTypeAdd;
+		wxTextCtrl* m_textCtrlValue;
+		wxTextCtrl* m_textCtrlComment;
+		wxStaticText* m_staticCipID;
+		wxButton* m_buttonSave;
+		wxButton* m_buttonCancel;
+
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnButtonTypeAdd( wxCommandEvent& event ) { event.Skip(); }
+
+
+	public:
+
+		fbRgEditCitationPart( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Citation Part"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE );
+		~fbRgEditCitationPart();
+
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class fbRgEditCitationPartType
+///////////////////////////////////////////////////////////////////////////////
+class fbRgEditCitationPartType : public wxDialog
+{
+	private:
+
+	protected:
+		wxTextCtrl* m_textCtrlName;
+		wxTextCtrl* m_textCtrlComment;
+		wxChoice* m_choiceStyle;
+		wxStaticLine* m_staticline9;
+		wxStaticText* m_staticCiPT_ID;
+		wxButton* m_buttonSave;
+		wxButton* m_buttonCancel;
+
+	public:
+
+		fbRgEditCitationPartType( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Citation Part Type"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE );
+		~fbRgEditCitationPartType();
 
 };
 
