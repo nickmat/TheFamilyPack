@@ -162,11 +162,11 @@ recCitationPartVec recCitation::GetPartList( idt citID )
     wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
 
     recCitationPart part( 0 );
-    part.FSetCitId( citID );
+    part.FSetCitID( citID );
     while( result.NextRow() ) {
         part.FSetID( GET_ID( result.GetInt64( 0 ) ) );
-        part.FSetTypeId( GET_ID( result.GetInt64( 1 ) ) );
-        part.FSetVal( result.GetAsString( 2 ) );
+        part.FSetTypeID( GET_ID( result.GetInt64( 1 ) ) );
+        part.FSetValue( result.GetAsString( 2 ) );
         part.FSetCitSeq( result.GetInt( 3 ) );
         part.FSetComment( result.GetAsString( 4 ) );
         list.push_back( part );
@@ -190,7 +190,7 @@ wxString recCitation::GetCitationStr() const
     citation = rep.FGetName();
     recCitationPartVec parts = GetPartList();
     for( const auto& part : parts ) {
-        citation += ", " + part.FGetVal();
+        citation += ", " + part.FGetValue();
     }
     return citation;
 }
@@ -303,7 +303,7 @@ recRepositoryVec recRepository::GetFullList()
         arch.FSetID( GET_ID( result.GetInt64( 0 ) ) );
         arch.FSetName( result.GetAsString( 1 ) );
         arch.FSetNote( result.GetAsString( 2 ) );
-        arch.FSetConListId( GET_ID( result.GetInt64( 3 ) ) );
+        arch.FSetConListID( GET_ID( result.GetInt64( 3 ) ) );
         list.push_back( arch );
     }
     return list;

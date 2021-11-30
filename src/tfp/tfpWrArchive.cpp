@@ -74,7 +74,7 @@ wxString tfpWriteArchive( idt arcID )
         "<tr><td colspan='3'>" << arc.FGetNote() <<
         "</td></tr>\n"
         ;
-    recContactVec contacts = recContactList::GetContacts( arc.FGetConListId() );
+    recContactVec contacts = recContactList::GetContacts( arc.FGetConListID() );
     for( auto cont : contacts ) {
         htm <<
             "<tr><td><b>" << cont.GetIdStr() <<

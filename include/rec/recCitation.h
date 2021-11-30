@@ -61,14 +61,14 @@ public:
     TABLE_NAME_MEMBERS( "Citation" );
     bool Equivalent( const recCitation& r2 ) const;
 
-    idt FGetRefId() const { return f_ref_id; }
+    idt FGetRefID() const { return f_ref_id; }
     idt FGetRefSeq() const { return f_ref_seq; }
-    idt FGetRepId() const { return f_rep_id; }
+    idt FGetRepID() const { return f_rep_id; }
     wxString FGetComment() const { return f_comment; }
 
-    void FSetRefId( idt refID ) { f_ref_id = refID; }
+    void FSetRefID( idt refID ) { f_ref_id = refID; }
     void FSetRefSeq( idt ref_seq ) { f_ref_seq = ref_seq; }
-    void FSetRepId( idt repID ) { f_rep_id = repID; }
+    void FSetRepID( idt repID ) { f_rep_id = repID; }
     void FSetComment( const wxString& comment ) { f_comment = comment; }
 
     static wxString GetIdStr( idt citID ) { return wxString::Format( "Ci" ID, citID ); }
@@ -116,11 +116,11 @@ public:
 
     wxString FGetName() const { return f_name; }
     wxString FGetNote() const { return f_note; }
-    idt FGetConListId() const { return f_con_list_id; }
+    idt FGetConListID() const { return f_con_list_id; }
 
     void FSetName( const wxString& name ) { f_name = name; }
     void FSetNote( const wxString& note ) { f_note = note; }
-    void FSetConListId( idt clID ) { f_con_list_id = clID; }
+    void FSetConListID( idt clID ) { f_con_list_id = clID; }
 
     static wxString GetIdStr( idt repID ) { return wxString::Format( "Ar" ID, repID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
@@ -161,15 +161,15 @@ public:
     TABLE_NAME_MEMBERS( "CitationPart" );
     bool Equivalent( const recCitationPart& r2 ) const;
 
-    idt FGetCitId() const { return f_cit_id; }
-    idt FGetTypeId() const { return f_type_id; }
-    wxString FGetVal() const { return f_val; }
+    idt FGetCitID() const { return f_cit_id; }
+    idt FGetTypeID() const { return f_type_id; }
+    wxString FGetValue() const { return f_val; }
     int FGetCitSeq() const { return f_cit_seq; }
     wxString FGetComment() const { return f_comment; }
 
-    void FSetCitId( idt citID ) { f_cit_id = citID; }
-    void FSetTypeId( idt type_id ) { f_type_id = type_id; }
-    void FSetVal( const wxString& val ) { f_val = val; }
+    void FSetCitID( idt citID ) { f_cit_id = citID; }
+    void FSetTypeID( idt type_id ) { f_type_id = type_id; }
+    void FSetValue( const wxString& val ) { f_val = val; }
     void FSetCitSeq( int seq ) { f_cit_seq = seq; }
     void FSetComment( const wxString& comment ) { f_comment = comment; }
 
