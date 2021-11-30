@@ -105,10 +105,15 @@ void dlgNote::OnNavigationRequest( wxWebViewEvent& evt )
 
         if( url.StartsWith( "tfpe:D" ) ) {
             ret = rgEditDate( this, recGetID( url.Mid(6) ) );
-        } else if( url.StartsWith( "tfpe:P" ) ) {
+        }
+        else if( url.StartsWith( "tfpe:P" ) ) {
             ret = rgEditPlace( this, recGetID( url.Mid(6) ) );
-        } else if ( url.StartsWith( "tfpe:N" ) ) {
+        }
+        else if ( url.StartsWith( "tfpe:N" ) ) {
             ret = rgEditName( this, recGetID( url.Mid( 6 ) ) );
+        }
+        else if( url.StartsWith( "tfpe:Ci" ) ) {
+            ret = rgEditCitation( this, recGetID( url.Mid( 7 ) ) );
         }
         if( ret == true ) {
             recDb::Commit();
@@ -117,7 +122,8 @@ void dlgNote::OnNavigationRequest( wxWebViewEvent& evt )
         } else {
             recDb::Rollback();
         }
-    } catch( wxSQLite3Exception& e ) {
+    } 
+    catch( wxSQLite3Exception& e ) {
         recDb::ErrorMessage( e );
         recDb::Rollback();
     }

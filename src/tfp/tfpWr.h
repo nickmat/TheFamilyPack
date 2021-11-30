@@ -101,6 +101,7 @@ extern wxString tfpWriteNameList( const wxString& sname, recSurnameGroup sng );
 extern wxString tfpWriteIndividualList();
 
 // See tfpWrNote.cpp
+extern wxString tfpWriteCitation( idt citID );
 extern wxString tfpWriteDate( idt dateID );
 extern wxString tfpWritePlace( idt placeID );
 extern wxString tfpWriteName( idt nameID );

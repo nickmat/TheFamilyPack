@@ -38,6 +38,7 @@
 
 #include "tfpVersion.h"
 
+#include <rec/recCitation.h>
 #include <rec/recDate.h>
 #include <rec/recPersona.h>
 #include <rec/recPlace.h>
@@ -63,6 +64,25 @@ wxString GetHtmDateData( const recDate& date )
 }
 
 } // namespace
+
+wxString tfpWriteCitation( idt citID )
+{
+    wxString htm;
+    recCitation cit( citID );
+    if( cit.FGetID() == 0 ) return htm;
+    recRepository arc( cit.FGetRepID() );
+
+    htm <<
+        tfpWrHeadTfp( "Citation" ) <<
+        "<h1>Citation " << cit.GetIdStr() <<
+        " <a href='tfpe:" << cit.GetIdStr() <<
+        "'><img src='memory:edit.png'></a></h1>\n"
+        "<p>" << cit.GetCitationStr() << "</p>\n"
+        "<p>Comment: " << cit.FGetComment() << "</p>\n"
+        << tfpWrTailTfp()
+    ;
+    return htm;
+}
 
 wxString tfpWriteDate( idt dateID )
 {

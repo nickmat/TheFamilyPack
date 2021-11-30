@@ -36,6 +36,7 @@
 
 #include <rec/recReference.h>
 
+#include <rec/recCitation.h>
 #include <rec/recEvent.h>
 #include <rec/recIndividual.h>
 #include <rec/recMedia.h>
@@ -163,10 +164,31 @@ wxString tfpWriteReferencePage( idt refID )
         "<hr>\n"
     ;
 
+    recIdVec citIDs = ref.GetCitationList( refID );
+    htm << "<table class='data'>\n";
+    if( !citIDs.empty() ) {
+        htm << "<table class='data'>\n<tr><th colspan='3'>Citation</th></tr>\n";
+        for( idt citID : citIDs ) {
+            recCitation cit( citID );
+            htm <<
+                "<tr><td><b><a href='tfpi:" << cit.GetIdStr() <<
+                "'>" << cit.GetIdStr() <<
+                "</a></b></td><td>" << cit.GetCitationStr() <<
+                "</td><td>" << cit.FGetComment() <<
+                "</td></tr>\n"
+            ;
+        }
+    }
+    else {
+        htm << "<tr><th>No Citation Entered</th></tr>\n";
+    }
+    htm << "</table>\n";
+
     recIdVec medIDs = ref.GetMediaList( refID );
-    if ( !medIDs.empty() ) {
-        htm << "<table class='media'>\n<tr><th colspan='3'>Media</th></tr>\n";
-        for ( idt medID : medIDs ) {
+    htm << "<table class='media'>\n";
+    if( !medIDs.empty() ) {
+        htm << "<tr><th colspan='3'>Media</th></tr>\n";
+        for( idt medID : medIDs ) {
             recMedia med( medID );
             wxString fn = tfpGetMediaDataFile( med.FGetDataID(), med.FGetAssID() );
             htm << "<tr>\n<td rowspan='2'><a href='tfpv:M"
@@ -178,11 +200,13 @@ wxString tfpWriteReferencePage( idt refID )
                 << "</td>\n</tr>\n"
                 "<tr>\n<td colspan='2'>" << med.FGetNote()
                 << "</td>\n</tr>\n"
-            ;
+                ;
         }
-        htm << "</table>\n";
     }
-
+    else {
+        htm << "<tr><th>No Media Entered</th></tr>\n";
+    }
+    htm << "</table>\n";
 
     htm << "<table class='data'>\n";
     recIdVec perIDs = ref.GetPersonaList();

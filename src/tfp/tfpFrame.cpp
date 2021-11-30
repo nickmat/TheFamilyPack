@@ -2090,6 +2090,10 @@ wxString TfpFrame::GetDisplayText( wxString& name )
         if( name.compare( 0, 2, "CD" ) == 0 && success1 ) {
             return tfpCreateDescChart( num1 );
         }
+        if( name.compare( 0, 2, "CI" ) == 0 && success1 ) {
+            name.MakeCapitalized(); // We want Ci,
+            return tfpWriteCitation( num1 );
+        }
         if ( name.compare( 0, 2, "CP" ) == 0 && success1 ) {
             return tfpCreatePedChart( num1 );
         }
