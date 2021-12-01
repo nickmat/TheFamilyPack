@@ -289,6 +289,10 @@ void rgDlgEditCitation::PartsButtonsEnable( long row )
     }
 }
 
+void rgDlgEditCitation::OnButtonSelectExtends( wxCommandEvent& event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnButtonSelectExtends" );
+}
 
 void rgDlgEditCitation::OnButtonSelectAchive( wxCommandEvent& event )
 {

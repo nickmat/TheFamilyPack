@@ -40,6 +40,8 @@ class fbRgEditCitation : public wxDialog
 	protected:
 		wxTextCtrl* m_textCtrlCitation;
 		wxTextCtrl* m_textCtrlComment;
+		wxTextCtrl* m_textCtrlExtends;
+		wxButton* m_buttonSelectExtends;
 		wxTextCtrl* m_textCtrlArchive;
 		wxButton* m_buttonSelectArchive;
 		wxListCtrl* m_listParts;
@@ -53,6 +55,7 @@ class fbRgEditCitation : public wxDialog
 		wxButton* m_buttonCancel;
 
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnButtonSelectExtends( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnButtonSelectAchive( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPartDeselect( wxListEvent& event ) { event.Skip(); }
 		virtual void OnPartSelect( wxListEvent& event ) { event.Skip(); }
@@ -65,7 +68,7 @@ class fbRgEditCitation : public wxDialog
 
 	public:
 
-		fbRgEditCitation( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Citation"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,320 ), long style = wxDEFAULT_DIALOG_STYLE );
+		fbRgEditCitation( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Citation"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,350 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~fbRgEditCitation();
 
 };

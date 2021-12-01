@@ -50,6 +50,23 @@ fbRgEditCitation::fbRgEditCitation( wxWindow* parent, wxWindowID id, const wxStr
 	m_textCtrlComment = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer12->Add( m_textCtrlComment, 1, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT, 5 );
 
+	wxStaticText* m_staticText19;
+	m_staticText19 = new wxStaticText( this, wxID_ANY, _("E&xtends:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText19->Wrap( -1 );
+	fgSizer12->Add( m_staticText19, 0, wxBOTTOM|wxRIGHT|wxLEFT|wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT, 5 );
+
+	wxBoxSizer* bSizer111;
+	bSizer111 = new wxBoxSizer( wxHORIZONTAL );
+
+	m_textCtrlExtends = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+	bSizer111->Add( m_textCtrlExtends, 1, wxEXPAND|wxBOTTOM|wxRIGHT, 5 );
+
+	m_buttonSelectExtends = new wxButton( this, wxID_ANY, _("Select"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer111->Add( m_buttonSelectExtends, 0, wxBOTTOM|wxRIGHT, 5 );
+
+
+	fgSizer12->Add( bSizer111, 1, wxEXPAND, 5 );
+
 	wxStaticText* m_staticText11;
 	m_staticText11 = new wxStaticText( this, wxID_ANY, _("Archive:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText11->Wrap( -1 );
@@ -138,6 +155,7 @@ fbRgEditCitation::fbRgEditCitation( wxWindow* parent, wxWindowID id, const wxStr
 	this->Centre( wxBOTH );
 
 	// Connect Events
+	m_buttonSelectExtends->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditCitation::OnButtonSelectExtends ), NULL, this );
 	m_buttonSelectArchive->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditCitation::OnButtonSelectAchive ), NULL, this );
 	m_listParts->Connect( wxEVT_COMMAND_LIST_ITEM_DESELECTED, wxListEventHandler( fbRgEditCitation::OnPartDeselect ), NULL, this );
 	m_listParts->Connect( wxEVT_COMMAND_LIST_ITEM_SELECTED, wxListEventHandler( fbRgEditCitation::OnPartSelect ), NULL, this );
@@ -151,6 +169,7 @@ fbRgEditCitation::fbRgEditCitation( wxWindow* parent, wxWindowID id, const wxStr
 fbRgEditCitation::~fbRgEditCitation()
 {
 	// Disconnect Events
+	m_buttonSelectExtends->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditCitation::OnButtonSelectExtends ), NULL, this );
 	m_buttonSelectArchive->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditCitation::OnButtonSelectAchive ), NULL, this );
 	m_listParts->Disconnect( wxEVT_COMMAND_LIST_ITEM_DESELECTED, wxListEventHandler( fbRgEditCitation::OnPartDeselect ), NULL, this );
 	m_listParts->Disconnect( wxEVT_COMMAND_LIST_ITEM_SELECTED, wxListEventHandler( fbRgEditCitation::OnPartSelect ), NULL, this );

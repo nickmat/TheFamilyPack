@@ -55,6 +55,7 @@ private:
     void UpdatePartList( idt cpID );
 
     void PartsButtonsEnable( long row );
+    void OnButtonSelectExtends( wxCommandEvent& event ) override;
     void OnButtonSelectAchive( wxCommandEvent& event ) override;
     void OnPartDeselect( wxListEvent& event ) override;
     void OnPartSelect( wxListEvent& event ) override;
