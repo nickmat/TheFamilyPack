@@ -45,6 +45,7 @@ typedef std::vector< recCitationPartType >  recCitationPartTypeVec;
 
 class recCitation : public recDb
 {
+    idt f_higher_id;
     idt f_ref_id;
     int f_ref_seq;
     idt f_rep_id;
@@ -61,11 +62,13 @@ public:
     TABLE_NAME_MEMBERS( "Citation" );
     bool Equivalent( const recCitation& r2 ) const;
 
+    idt FGetHigherID() const { return f_higher_id; }
     idt FGetRefID() const { return f_ref_id; }
     idt FGetRefSeq() const { return f_ref_seq; }
     idt FGetRepID() const { return f_rep_id; }
     wxString FGetComment() const { return f_comment; }
 
+    void FSetHigherID( idt highID ) { f_higher_id = highID; }
     void FSetRefID( idt refID ) { f_ref_id = refID; }
     void FSetRefSeq( idt ref_seq ) { f_ref_seq = ref_seq; }
     void FSetRepID( idt repID ) { f_rep_id = repID; }

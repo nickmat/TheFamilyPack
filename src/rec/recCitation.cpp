@@ -41,6 +41,7 @@
 recCitation::recCitation( const recCitation& cit )
 {
     f_id = cit.f_id;
+    f_higher_id = cit.f_higher_id;
     f_ref_id = cit.f_ref_id;
     f_ref_seq = cit.f_ref_seq;
     f_rep_id = cit.f_rep_id;
@@ -50,6 +51,7 @@ recCitation::recCitation( const recCitation& cit )
 void recCitation::Clear()
 {
     f_id = 0;
+    f_higher_id = 0;
     f_ref_id = 0;
     f_ref_seq = 0;
     f_rep_id = 0;
@@ -64,9 +66,9 @@ void recCitation::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO Citation (ref_id, ref_seq, rep_id, comment)"
-            " VALUES (" ID ", %d, " ID ", '%q'); ",
-            f_ref_id, f_ref_seq, f_rep_id, UTF8_( f_comment )
+            "INSERT INTO Citation (higher_id, ref_id, ref_seq, rep_id, comment)"
+            " VALUES (" ID ", " ID ", %d, " ID ", '%q'); ",
+            f_higher_id, f_ref_id, f_ref_seq, f_rep_id, UTF8_( f_comment )
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -77,17 +79,18 @@ void recCitation::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO Citation (id, ref_id, ref_seq, rep_id, comment)"
-                " VALUES (" ID ", " ID ", %d, " ID ", '%q');",
-                f_id, f_ref_id, f_ref_seq, f_rep_id, UTF8_( f_comment )
+                "INSERT INTO Citation (id, higher_id, ref_id, ref_seq, rep_id, comment)"
+                " VALUES (" ID ", " ID ", " ID ", %d, " ID ", '%q');",
+                f_id, f_higher_id, f_ref_id, f_ref_seq, f_rep_id, UTF8_( f_comment )
             );
         }
         else {
             // Update existing record
             sql.Format(
-                "UPDATE Citation SET ref_id=" ID ", ref_seq=%d, rep_id=" ID ", comment='%q'"
+                "UPDATE Citation SET higher_id=" ID ", ref_id=" ID ", ref_seq=%d,"
+                " rep_id=" ID ", comment='%q'"
                 " WHERE id=" ID ";",
-                f_ref_id, f_ref_seq, f_rep_id, UTF8_( f_comment ), f_id
+                f_higher_id, f_ref_id, f_ref_seq, f_rep_id, UTF8_( f_comment ), f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -105,7 +108,7 @@ bool recCitation::Read()
     }
 
     sql.Format(
-        "SELECT ref_id, ref_seq, rep_id, comment"
+        "SELECT higher_id, ref_id, ref_seq, rep_id, comment"
         " FROM Citation WHERE id=" ID ";",
         f_id
     );
@@ -117,16 +120,18 @@ bool recCitation::Read()
         return false;
     }
     result.SetRow( 0 );
-    f_ref_id = GET_ID( result.GetInt64( 0 ) );
-    f_ref_seq = result.GetInt( 1 );
-    f_rep_id = GET_ID( result.GetInt64( 2 ) );
-    f_comment = result.GetAsString( 3 );
+    f_higher_id = GET_ID( result.GetInt64( 0 ) );
+    f_ref_id = GET_ID( result.GetInt64( 1 ) );
+    f_ref_seq = result.GetInt( 2 );
+    f_rep_id = GET_ID( result.GetInt64( 3 ) );
+    f_comment = result.GetAsString( 4 );
     return true;
 }
 
 bool recCitation::Equivalent( const recCitation& r2 ) const
 {
     return
+        f_higher_id == r2.f_higher_id &&
         f_ref_id == r2.f_ref_id &&
         f_ref_seq == r2.f_ref_seq &&
         f_rep_id == r2.f_rep_id &&
@@ -186,8 +191,13 @@ wxString recCitation::GetCitationStr() const
     if( f_id == 0 ) {
         return citation;
     }
-    recRepository rep( f_rep_id );
-    citation = rep.FGetName();
+    if( f_higher_id ) {
+        citation = recCitation::GetCitationStr( f_higher_id );
+    }
+    else {
+        recRepository rep( f_rep_id );
+        citation = rep.FGetName();
+    }
     recCitationPartVec parts = GetPartList();
     for( const auto& part : parts ) {
         citation += ", " + part.FGetValue();

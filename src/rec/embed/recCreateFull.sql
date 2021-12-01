@@ -40,6 +40,7 @@ INSERT INTO Associate (id) VALUES(0);
 
 CREATE TABLE Citation (
   id INTEGER PRIMARY KEY,
+  higher_id INTEGER NOT NULL,
   ref_id INTEGER NOT NULL REFERENCES Reference(id),
   ref_seq INTEGER NOT NULL,
   rep_id INTEGER NOT NULL REFERENCES Repository(id),
@@ -537,7 +538,7 @@ INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 0, 1, 'F1');
 INSERT INTO UserSetting (id, user_id, property, val) VALUES(2, 1, 1, 'F1');
 
 /* The Version table row 1 is the full TFPD database */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 24);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 25);
 
 COMMIT;
 

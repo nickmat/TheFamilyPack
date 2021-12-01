@@ -41,8 +41,8 @@
 const int recVerMajor = 0;
 const int recVerMinor = 0;
 const int recVerRev = 10;
-const int recVerTest = 24;                       // <<======<<<<
-const char* recFullVersion = "TFPD-v0.0.10.24";  // <<======<<<<
+const int recVerTest = 25;                       // <<======<<<<
+const char* recFullVersion = "TFPD-v0.0.10.25";  // <<======<<<<
 
 // This is the database Media only version that this program can work with.
 // If the full version matches, then this is assumed to match as well.
@@ -1132,6 +1132,39 @@ void UpgradeTest0_0_10_23to0_0_10_24( const wxString& dbname )
     recDb::GetDb()->ExecuteUpdate( update );
 }
 
+void UpgradeTest0_0_10_24to0_0_10_25( const wxString& dbname )
+{
+    // Version 0.0.10.24 to 0.0.10.25
+
+    // Add higher_id field to Citation table.
+
+    wxString update = "BEGIN;\n";
+
+    update <<
+        "CREATE TABLE " << dbname << ".NewCitation (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  higher_id INTEGER NOT NULL,\n"
+        "  ref_id INTEGER NOT NULL REFERENCES Reference(id),\n"
+        "  ref_seq INTEGER NOT NULL,\n"
+        "  rep_id INTEGER NOT NULL REFERENCES Repository(id),\n"
+        "  comment TEXT NULL\n"
+        ");\n"
+
+        "INSERT INTO " << dbname << ".NewCitation"
+        " (id, higher_id, ref_id, ref_seq, rep_id, comment)\n"
+        " SELECT id, 0, ref_id, ref_seq, rep_id, comment\n"
+        " FROM " << dbname << ".Citation;\n"
+
+        "DROP TABLE " << dbname << ".Citation;\n"
+        "ALTER TABLE " << dbname << ".NewCitation RENAME TO Citation;\n"
+
+        "UPDATE " << dbname << ".Version SET test=25 WHERE id=1;\n"
+
+        "COMMIT;\n"
+        ;
+    recDb::GetDb()->ExecuteUpdate( update );
+}
+
 void UpgradeRev0_0_10toCurrent( int test, const wxString& dbname )
 {
     switch( test )
@@ -1160,6 +1193,7 @@ void UpgradeRev0_0_10toCurrent( int test, const wxString& dbname )
     case 21: UpgradeTest0_0_10_21to0_0_10_22( dbname );
     case 22: UpgradeTest0_0_10_22to0_0_10_23( dbname );
     case 23: UpgradeTest0_0_10_23to0_0_10_24( dbname );
+    case 24: UpgradeTest0_0_10_24to0_0_10_25( dbname );
     }
 }
 
