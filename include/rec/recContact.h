@@ -73,6 +73,11 @@ public:
     // Merge in Contacts from target ContactList and then delete it.
     void Assimilate( idt targetID ) const;
 
+    static void Renumber( idt fromID, idt toID );
+    static std::string CsvTitles();
+    static void CsvWrite( std::ostream& out, idt id );
+    bool CsvRead( std::istream& in );
+
 private:
     idt  f_ind_id;
 };
@@ -171,6 +176,11 @@ public:
 
     wxString GetTypeStr() const { return recContactType::GetTypeStr( f_type_id ); }
     wxString GetHtmlValue( const wxString prefixHref = wxEmptyString ) const;
+
+    static void Renumber( idt fromID, idt toID );
+    static std::string CsvTitles();
+    static void CsvWrite( std::ostream& out, idt id );
+    bool CsvRead( std::istream& in );
 
 private:
     idt      f_type_id;

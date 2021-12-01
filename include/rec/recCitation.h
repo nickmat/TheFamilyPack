@@ -84,6 +84,11 @@ public:
 
     static wxString GetCitationStr( idt citID );
     wxString GetCitationStr() const;
+
+    static void Renumber( idt fromID, idt toID );
+    static std::string CsvTitles();
+    static void CsvWrite( std::ostream& out, idt id );
+    bool CsvRead( std::istream& in );
 };
 
 inline bool operator==( const recCitation& r1, const recCitation& r2 )
@@ -129,6 +134,11 @@ public:
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     static recRepositoryVec GetFullList();
+
+    static void Renumber( idt fromID, idt toID );
+    static std::string CsvTitles();
+    static void CsvWrite( std::ostream& out, idt id );
+    bool CsvRead( std::istream& in );
 };
 
 inline bool operator==( const recRepository& r1, const recRepository& r2 )
@@ -180,6 +190,11 @@ public:
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     int GetNextCitationSeq( idt citID ) const;
+
+    static void Renumber( idt fromID, idt toID );
+    static std::string CsvTitles();
+    static void CsvWrite( std::ostream& out, idt id );
+    bool CsvRead( std::istream& in );
 };
 
 inline bool operator==( const recCitationPart& r1, const recCitationPart& r2 )
@@ -227,6 +242,11 @@ public:
     static wxString GetStr( idt id );
 
     static recCitationPartTypeVec GetList();
+
+    static void Renumber( idt fromID, idt toID );
+    static std::string CsvTitles();
+    static void CsvWrite( std::ostream& out, idt id );
+    bool CsvRead( std::istream& in );
 };
 
 inline bool operator==( const recCitationPartType& r1, const recCitationPartType& r2 )

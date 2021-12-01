@@ -205,6 +205,57 @@ wxString recCitation::GetCitationStr() const
     return citation;
 }
 
+void recCitation::Renumber( idt id, idt to_id )
+{
+    if( id == 0 ) {
+        return;
+    }
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "UPDATE CitationPart SET cit_id=" ID " WHERE cit_id=" ID ";",
+        to_id, id );
+    s_db->ExecuteUpdate( sql );
+
+    sql.Format(
+        "UPDATE Citation SET higher_id=" ID " WHERE higher_id=" ID ";",
+        to_id, id );
+    s_db->ExecuteUpdate( sql );
+
+    sql.Format(
+        "UPDATE Citation SET id=" ID " WHERE id=" ID ";",
+        to_id, id );
+    s_db->ExecuteUpdate( sql );
+}
+
+std::string recCitation::CsvTitles()
+{
+    return std::string(
+        "ID, Higher ID, Reference ID, Reference Sequence, Repository ID, Comment\n" );
+}
+
+void recCitation::CsvWrite( std::ostream& out, idt id )
+{
+    recCitation cit( id );
+    recCsvWrite( out, cit.FGetID() );
+    recCsvWrite( out, cit.FGetHigherID() );
+    recCsvWrite( out, cit.FGetRefID() );
+    recCsvWrite( out, cit.FGetRefSeq() );
+    recCsvWrite( out, cit.FGetRepID() );
+    recCsvWrite( out, cit.FGetComment(), '\n' );
+}
+
+bool recCitation::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    recCsvRead( in, f_higher_id );
+    recCsvRead( in, f_ref_id );
+    recCsvRead( in, f_ref_seq );
+    recCsvRead( in, f_rep_id );
+    recCsvRead( in, f_comment );
+    return bool( in );
+}
+
 //============================================================================
 //                 recRepository
 //============================================================================
@@ -317,6 +368,47 @@ recRepositoryVec recRepository::GetFullList()
         list.push_back( arch );
     }
     return list;
+}
+
+void recRepository::Renumber( idt id, idt to_id )
+{
+    if( id == 0 ) {
+        return;
+    }
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "UPDATE Citation SET rep_id=" ID " WHERE rep_id=" ID ";",
+        to_id, id );
+    s_db->ExecuteUpdate( sql );
+
+    sql.Format(
+        "UPDATE Repository SET id=" ID " WHERE id=" ID ";",
+        to_id, id );
+    s_db->ExecuteUpdate( sql );
+}
+
+std::string recRepository::CsvTitles()
+{
+    return std::string( "ID, Name, Note, Contact List ID\n" );
+}
+
+void recRepository::CsvWrite( std::ostream& out, idt id )
+{
+    recRepository rep( id );
+    recCsvWrite( out, rep.FGetID() );
+    recCsvWrite( out, rep.FGetName() );
+    recCsvWrite( out, rep.FGetNote() );
+    recCsvWrite( out, rep.FGetConListID(), '\n' );
+}
+
+bool recRepository::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    recCsvRead( in, f_name );
+    recCsvRead( in, f_note );
+    recCsvRead( in, f_con_list_id );
+    return bool( in );
 }
 
 //============================================================================
@@ -434,6 +526,47 @@ int recCitationPart::GetNextCitationSeq( idt citID ) const
         citID
     );
     return s_db->ExecuteScalar( sql ) + 1;
+}
+
+void recCitationPart::Renumber( idt id, idt to_id )
+{
+    if( id == 0 ) {
+        return;
+    }
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "UPDATE CitationPart SET id=" ID " WHERE id=" ID ";",
+        to_id, id );
+    s_db->ExecuteUpdate( sql );
+}
+
+std::string recCitationPart::CsvTitles()
+{
+    return std::string(
+        "ID, Citation ID, Citation Part Type, Value, Citation Sequence, Comment\n" );
+}
+
+void recCitationPart::CsvWrite( std::ostream& out, idt id )
+{
+    recCitationPart cip( id );
+    recCsvWrite( out, cip.FGetID() );
+    recCsvWrite( out, cip.FGetCitID() );
+    recCsvWrite( out, cip.FGetTypeID() );
+    recCsvWrite( out, cip.FGetValue() );
+    recCsvWrite( out, cip.FGetCitSeq() );
+    recCsvWrite( out, cip.FGetComment(), '\n' );
+}
+
+bool recCitationPart::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    recCsvRead( in, f_cit_id );
+    recCsvRead( in, f_type_id );
+    recCsvRead( in, f_val );
+    recCsvRead( in, f_cit_seq );
+    recCsvRead( in, f_comment );
+    return bool( in );
 }
 
 //============================================================================
@@ -575,6 +708,47 @@ recCitationPartTypeVec recCitationPartType::GetList()
         list.push_back( cpt );
     }
     return list;
+}
+
+void recCitationPartType::Renumber( idt id, idt to_id )
+{
+    if( id == 0 ) {
+        return;
+    }
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "UPDATE CitationPart SET type_id=" ID " WHERE type_id=" ID ";",
+        to_id, id );
+    s_db->ExecuteUpdate( sql );
+
+    sql.Format(
+        "UPDATE CitationPartType SET id=" ID " WHERE id=" ID ";",
+        to_id, id );
+    s_db->ExecuteUpdate( sql );
+}
+
+std::string recCitationPartType::CsvTitles()
+{
+    return std::string( "ID, Name, Style, Comment\n" );
+}
+
+void recCitationPartType::CsvWrite( std::ostream& out, idt id )
+{
+    recCitationPartType cipt( id );
+    recCsvWrite( out, cipt.FGetID() );
+    recCsvWrite( out, cipt.FGetName() );
+    recCsvWrite( out, cipt.FGetStyle() );
+    recCsvWrite( out, cipt.FGetComment(), '\n' );
+}
+
+bool recCitationPartType::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    recCsvRead( in, f_name );
+    recCsvRead( in, f_style );
+    recCsvRead( in, f_comment );
+    return bool( in );
 }
 
 // End of src/rec/recCitation.cpp file

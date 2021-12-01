@@ -150,6 +150,42 @@ wxString recContact::GetHtmlValue( const wxString prefixHref ) const
     return wxString::Format( format, prefixHref, f_val, f_val );
 }
 
+void recContact::Renumber( idt id, idt to_id )
+{
+    if( id == 0 ) {
+        return;
+    }
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "UPDATE Contact SET id=" ID " WHERE id=" ID ";",
+        to_id, id );
+    s_db->ExecuteUpdate( sql );
+}
+
+std::string recContact::CsvTitles()
+{
+    return std::string( "ID, Contact Type ID, Contact List ID, Value\n" );
+}
+
+void recContact::CsvWrite( std::ostream& out, idt id )
+{
+    recContact con( id );
+    recCsvWrite( out, con.FGetID() );
+    recCsvWrite( out, con.FGetTypeID() );
+    recCsvWrite( out, con.FGetListID() );
+    recCsvWrite( out, con.FGetValue(), '\n' );
+}
+
+bool recContact::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    recCsvRead( in, f_type_id );
+    recCsvRead( in, f_list_id );
+    recCsvRead( in, f_val );
+    return bool( in );
+}
+
 //============================================================================
 //                 recContactList
 //============================================================================
@@ -262,6 +298,53 @@ void recContactList::Assimilate( idt targetID ) const
     );
     s_db->ExecuteUpdate( sql );
     Delete( targetID );
+}
+
+void recContactList::Renumber( idt id, idt to_id )
+{
+    if( id == 0 ) {
+        return;
+    }
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "UPDATE Contact SET list_id=" ID " WHERE list_id=" ID ";",
+        to_id, id );
+    s_db->ExecuteUpdate( sql );
+
+    sql.Format(
+        "UPDATE Researcher SET con_list_id=" ID " WHERE con_list_id=" ID ";",
+        to_id, id );
+    s_db->ExecuteUpdate( sql );
+
+    sql.Format(
+        "UPDATE Repository SET con_list_id=" ID " WHERE con_list_id=" ID ";",
+        to_id, id );
+    s_db->ExecuteUpdate( sql );
+
+    sql.Format(
+        "UPDATE ContactList SET id=" ID " WHERE id=" ID ";",
+        to_id, id );
+    s_db->ExecuteUpdate( sql );
+}
+
+std::string recContactList::CsvTitles()
+{
+    return std::string("ID, Individual ID\n");
+}
+
+void recContactList::CsvWrite( std::ostream& out, idt id )
+{
+    recContactList cl( id );
+    recCsvWrite( out, cl.FGetID() );
+    recCsvWrite( out, cl.FGetIndID(), '\n' );
+}
+
+bool recContactList::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    recCsvRead( in, f_ind_id );
+    return bool( in );
 }
 
 //============================================================================
