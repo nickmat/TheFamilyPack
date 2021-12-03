@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     25 February 2011
- * Copyright:   Copyright (c) 2011 ~ 2017, Nick Matthews.
+ * Copyright:   Copyright (c) 2011 .. 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -210,8 +210,8 @@ void recContactList::Save()
     if( f_id == 0 ) {
         // Add new record
         sql.Format(
-            "INSERT INTO ContactList (ind_id) VALUES (" ID ");",
-            f_ind_id
+            "INSERT INTO ContactList (ind_id) VALUES (%s);",
+            ID_OR_NULL( f_ind_id )
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -221,14 +221,14 @@ void recContactList::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO ContactList (id, ind_id) "
-                "VALUES (" ID ", " ID ");",
-                f_id, f_ind_id
+                "VALUES (" ID ", %s);",
+                f_id, ID_OR_NULL( f_ind_id )
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE ContactList SET ind_id=" ID " WHERE id=" ID ";",
-                f_ind_id, f_id
+                "UPDATE ContactList SET ind_id=%s WHERE id=" ID ";",
+                ID_OR_NULL( f_ind_id ), f_id
             );
         }
         s_db->ExecuteUpdate( sql );
