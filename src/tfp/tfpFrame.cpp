@@ -1435,8 +1435,8 @@ bool TfpFrame::NewFile()
         if( recDb::CreateDb( path, flags ) == true )
         {
             SetDatabaseOpen( path );
-            // Start with the 1st (empty) Family.
-            DisplayHtmPage( "F1" );
+            // TODO: Put initilize database dialog here
+            DisplayHomePage();
             ret = true;
         }
     }
