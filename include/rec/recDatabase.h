@@ -91,6 +91,7 @@ public:
 
     static void SetDb( wxSQLite3Database* db ) { s_db = db; }
     static wxSQLite3Database* GetDb() { return s_db; }
+    static DbType GetDbType() { return s_dbtype; }
 
     /*! Create a new database file and then close it.
     *  Returns CR_OK if the file is successfully created.
