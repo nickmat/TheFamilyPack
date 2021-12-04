@@ -195,6 +195,7 @@ REC_OBJECTS =  \
 	rec_recPersona.obj \
 	rec_recPlace.obj \
 	rec_recReference.obj \
+	rec_recResearcher.obj \
 	rec_recSystem.obj \
 	rec_recUser.obj \
 	rec_recUpgrade.obj \
@@ -725,6 +726,9 @@ rec_recPlace.obj: .\..\..\src\rec\recPlace.cpp
 
 rec_recReference.obj: .\..\..\src\rec\recReference.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recReference.cpp
+
+rec_recResearcher.obj: .\..\..\src\rec\recResearcher.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recResearcher.cpp
 
 rec_recSystem.obj: .\..\..\src\rec\recSystem.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recSystem.cpp

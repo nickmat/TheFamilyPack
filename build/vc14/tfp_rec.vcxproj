@@ -156,6 +156,7 @@
     <ClCompile Include="..\..\src\rec\recPersona.cpp" />
     <ClCompile Include="..\..\src\rec\recPlace.cpp" />
     <ClCompile Include="..\..\src\rec\recReference.cpp" />
+    <ClCompile Include="..\..\src\rec\recResearcher.cpp" />
     <ClCompile Include="..\..\src\rec\recSystem.cpp" />
     <ClCompile Include="..\..\src\rec\recUpgrade.cpp" />
     <ClCompile Include="..\..\src\rec\recUser.cpp" />
@@ -193,6 +194,7 @@
     <ClInclude Include="..\..\include\rec\recPersona.h" />
     <ClInclude Include="..\..\include\rec\recPlace.h" />
     <ClInclude Include="..\..\include\rec\recReference.h" />
+    <ClInclude Include="..\..\include\rec\recResearcher.h" />
     <ClInclude Include="..\..\include\rec\recSystem.h" />
     <ClInclude Include="..\..\include\rec\recUser.h" />
     <ClInclude Include="..\..\include\rec\recVersion.h" />

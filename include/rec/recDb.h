@@ -57,6 +57,7 @@
 #include <rec/recPersona.h>
 #include <rec/recPlace.h>
 #include <rec/recReference.h>
+#include <rec/recResearcher.h>
 #include <rec/recSystem.h>
 #include <rec/recUser.h>
 #include <rec/recVersion.h>

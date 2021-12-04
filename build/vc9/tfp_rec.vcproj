@@ -334,6 +334,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rec\recResearcher.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rec\recSystem.cpp"
 				>
 			</File>
@@ -481,6 +485,10 @@
 			</File>
 			<File
 				RelativePath="..\..\include\rec\recReference.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\rec\recResearcher.h"
 				>
 			</File>
 			<File

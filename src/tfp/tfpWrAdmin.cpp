@@ -37,6 +37,7 @@
 #endif
 
 #include <rec/recContact.h>
+#include <rec/recResearcher.h>
 #include <rec/recUser.h>
 #include <rec/recSystem.h>
 #include <rec/recIndividual.h>

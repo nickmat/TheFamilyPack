@@ -3,11 +3,9 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Manage the SQLite3 Contact record header.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     25 February 2011
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2011 ~ 2017, Nick Matthews.
+ * Copyright:   Copyright (c) 2011 .. 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -35,11 +33,9 @@
 class recContactList;
 class recContact;
 class recContactType;
-class recResearcher;
 typedef std::vector< recContactList >  recContactListVec;
 typedef std::vector< recContact >  recContactVec;
 typedef std::vector< recContactType >  recContactTypeVec;
-typedef std::vector< recResearcher >  recResearcherVec;
 
 //============================================================================
 //                 recContactList
@@ -48,7 +44,7 @@ typedef std::vector< recResearcher >  recResearcherVec;
 class recContactList : public recDb
 {
 public:
-    recContactList() {}
+    recContactList() : f_ind_id(0) {}
     recContactList( idt id ) : recDb(id) { Read(); }
     recContactList( const recContactList& at );
 
@@ -198,57 +194,5 @@ inline bool operator!=( const recContact& r1, const recContact& r2 )
     return !(r1 == r2);
 }
 
-//============================================================================
-//                 recResearcher
-//============================================================================
-
-class recResearcher : public recDb
-{
-public:
-    recResearcher() {}
-    recResearcher( idt id ) : recDb(id) { Read(); }
-    recResearcher( const recResearcher& res );
-
-    void Clear();
-    void Save();
-    bool Read();
-    TABLE_NAME_MEMBERS( "Researcher" )
-    bool Equivalent( const recResearcher& r2 ) const;
-
-    wxString FGetName() const { return f_name; }
-    wxString FGetComments() const { return f_comments; }
-    idt FGetConListID() const { return f_con_list_id; }
-
-    void FSetName( const wxString& name ) { f_name = name; }
-    void FSetComments( const wxString& com ) { f_comments = com; }
-    void FSetConListID( idt clID ) { f_con_list_id = clID; }
-
-    static wxString GetIdStr( idt resID ) { return wxString::Format( "Re" ID, resID ); }
-    wxString GetIdStr() const { return GetIdStr( f_id ); }
-
-    static wxString GetNameStr( idt resID );
-
-    idt GetUserID() const;
-    wxString GetUserIdStr() const;
-    recContactVec GetContacts() const { return recContactList::GetContacts( f_con_list_id ); }
-
-    static recResearcherVec GetResearchers();
-
-private:
-    wxString  f_name;
-    wxString  f_comments;
-    idt       f_con_list_id;
-};
-
-
-inline bool operator==( const recResearcher& r1, const recResearcher& r2 )
-{
-    return r1.Equivalent( r2 ) && r1.EqualID( r2 );
-}
-
-inline bool operator!=( const recResearcher& r1, const recResearcher& r2 )
-{
-    return !(r1 == r2);
-}
 
 #endif // RECCONTACT_H

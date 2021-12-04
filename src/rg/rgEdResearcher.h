@@ -29,7 +29,7 @@
 #ifndef RGEDRESEARCHER_H
 #define RGEDRESEARCHER_H
 
-#include <rec/recContact.h>
+#include <rec/recResearcher.h>
 #include <rec/recUser.h>
 
 #include "fbRgDialog.h"

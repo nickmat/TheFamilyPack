@@ -150,6 +150,7 @@ REC_OBJECTS =  \
 	rec_recPersona.o \
 	rec_recPlace.o \
 	rec_recReference.o \
+	rec_recResearcher.o \
 	rec_recSystem.o \
 	rec_recUser.o \
 	rec_recUpgrade.o \
@@ -493,6 +494,9 @@ rec_recPlace.o: ./../../src/rec/recPlace.cpp
 	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
 
 rec_recReference.o: ./../../src/rec/recReference.cpp
+	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
+
+rec_recResearcher.o: ./../../src/rec/recResearcher.cpp
 	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
 
 rec_recSystem.o: ./../../src/rec/recSystem.cpp

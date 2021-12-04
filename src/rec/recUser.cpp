@@ -37,6 +37,7 @@
 
 #include <rec/recUser.h>
 #include <rec/recContact.h>
+#include <rec/recResearcher.h>
 
 //============================================================================
 //                 recUser
