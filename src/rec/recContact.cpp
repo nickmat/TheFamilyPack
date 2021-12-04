@@ -210,8 +210,8 @@ void recContactList::Save()
     if( f_id == 0 ) {
         // Add new record
         sql.Format(
-            "INSERT INTO ContactList (ind_id) VALUES (%s);",
-            ID_OR_NULL( f_ind_id )
+            "INSERT INTO ContactList (ind_id) VALUES (NULLIF(" ID ", 0));",
+            f_ind_id
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -221,14 +221,14 @@ void recContactList::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO ContactList (id, ind_id) "
-                "VALUES (" ID ", %s);",
-                f_id, ID_OR_NULL( f_ind_id )
+                "VALUES (" ID ", NULLIF(" ID ", 0));",
+                f_id, f_ind_id
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE ContactList SET ind_id=%s WHERE id=" ID ";",
-                ID_OR_NULL( f_ind_id ), f_id
+                "UPDATE ContactList SET ind_id=NULLIF(" ID ", 0) WHERE id=" ID ";",
+                f_ind_id, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -495,7 +495,7 @@ void recResearcher::Save()
         // Add new record
         sql.Format(
             "INSERT INTO Researcher (name, comments, con_list_id)"
-            " VALUES ('%q', '%q', " ID ");",
+            " VALUES ('%q', NULLIF('%q', ''), NULLIF(" ID ", 0));",
             UTF8_(f_name), UTF8_(f_comments), f_con_list_id
         );
         s_db->ExecuteUpdate( sql );
@@ -507,13 +507,14 @@ void recResearcher::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO Researcher (id, name, comments, con_list_id)"
-                " VALUES (" ID ", '%q', '%q', " ID ");",
+                " VALUES (" ID ", NULLIF('%q', ''), '%q', NULLIF(" ID ", 0));",
                 f_id, UTF8_(f_name), UTF8_(f_comments), f_con_list_id
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE Researcher SET name='%q', comments='%q', con_list_id=" ID
+                "UPDATE Researcher SET name='%q', comments=NULLIF('%q', ''),"
+                " con_list_id=NULLIF(" ID ", 0)"
                 " WHERE id=" ID ";",
                 UTF8_(f_name), UTF8_(f_comments), f_con_list_id, f_id
             );
