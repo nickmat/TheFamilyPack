@@ -1422,22 +1422,27 @@ void TfpFrame::OnCloseWindow( wxCloseEvent& event )
 bool TfpFrame::NewFile()
 {
     bool ret = false;
-    wxString caption = _("Create TFP Database");
-    wxString wildcard = _("TFP Database (*.tfpd)|*.tfpd");
+    wxString caption = _( "Create TFP Database" );
+    wxString wildcard = _( "TFP Database (*.tfpd)|*.tfpd" );
     wxString defaultDir = ".";
     wxString defaultFName = wxEmptyString;
 
     wxFileDialog dialog( this, caption, defaultDir, defaultFName, wildcard, wxFD_OPEN );
     if( dialog.ShowModal() == wxID_OK )
     {
-        wxString path = dialog.GetPath();
-        unsigned flags = recDb::CREATE_DB_STD_EXT | recDb::CREATE_DB_ENUM_FN;
-        if( recDb::CreateDb( path, flags ) == true )
-        {
-            SetDatabaseOpen( path );
-            // TODO: Put initilize database dialog here
-            DisplayHomePage();
-            ret = true;
+        try {
+            wxString path = dialog.GetPath();
+            unsigned flags = recDb::CREATE_DB_STD_EXT | recDb::CREATE_DB_ENUM_FN;
+            if( recDb::CreateDb( path, flags ) == true )
+            {
+                SetDatabaseOpen( path );
+                // TODO: Put initilize database dialog here
+                DisplayHomePage();
+                ret = true;
+            }
+        }
+        catch( wxSQLite3Exception& e ) {
+            recDb::ErrorMessage( e );
         }
     }
     return ret;
@@ -1453,33 +1458,40 @@ bool TfpFrame::OpenFile()
 
     wxFileDialog dialog( this, caption, defaultDir, defaultFName, wildcard, wxFD_OPEN );
     if( dialog.ShowModal() == wxID_OK ) {
-        wxString path = dialog.GetPath();
-        if ( !wxFileExists( path ) ) {
-            wxMessageBox( _( "File not found!" ), caption );
-            return false;
-        }
-        if ( recDb::IsOpen() ) {
-            wxMessageDialog dlg(
-                this, _( "Current database will be closed first." ),
-                caption, wxOK | wxCANCEL | wxCENTRE
-            );
-            if ( dlg.ShowModal() != wxID_OK ) {
+        try {
+            wxString path = dialog.GetPath();
+            if( !wxFileExists( path ) ) {
+                wxMessageBox( _( "File not found!" ), caption );
                 return false;
             }
-            recDb::CloseDb();
+            if( recDb::IsOpen() ) {
+                wxMessageDialog dlg(
+                    this, _( "Current database will be closed first." ),
+                    caption, wxOK | wxCANCEL | wxCENTRE
+                );
+                if( dlg.ShowModal() != wxID_OK ) {
+                    return false;
+                }
+                recDb::CloseDb();
+            }
+            recDb::DbType type = recDb::OpenDb( path );
+            if( type == recDb::DbType::full ) {
+                SetDatabaseOpen( path );
+                DisplayHomePage();
+                ret = true;
+            }
+            else if( type == recDb::DbType::media_data_only ) {
+                SetNoDatabase();
+                m_browser->SetPage( GetDisplayText( wxString( "MD" ) ), "" );
+                m_changeState = recDb::GetChange();
+            }
+            else {
+                wxMessageBox( _( "Problem opening database!" ), caption );
+                CloseFile();
+            }
         }
-        recDb::DbType type = recDb::OpenDb( path );
-        if ( type == recDb::DbType::full ) {
-            SetDatabaseOpen( path );
-            DisplayHomePage();
-            ret = true;
-        } else if( type == recDb::DbType::media_data_only ){
-            SetNoDatabase();
-            m_browser->SetPage( GetDisplayText( wxString( "MD" ) ), "" );
-            m_changeState = recDb::GetChange();
-        } else {
-            wxMessageBox( _( "Problem opening database!" ), caption );
-            CloseFile();
+        catch( wxSQLite3Exception& e ) {
+            recDb::ErrorMessage( e );
         }
     }
     return ret;
@@ -1506,14 +1518,20 @@ bool TfpFrame::ImportGedcom()
     wxFileDialog dialog( this, caption, defaultDir, defaultFName, wildcard, wxFD_OPEN );
     if( dialog.ShowModal() == wxID_OK )
     {
-        wxString path = dialog.GetPath();
-        if( tfpReadGedcom( path ) )
-        {
-            SetDatabaseOpen( path );
-            DisplayHtmPage( "F1" );
-            ret = true;
-        } else {
-            wxMessageBox( _("Error Reading GEDCOM File"), _("Import") );
+        try {
+            wxString path = dialog.GetPath();
+            if( tfpReadGedcom( path ) )
+            {
+                SetDatabaseOpen( path );
+                DisplayHomePage();
+                ret = true;
+            }
+            else {
+                wxMessageBox( _( "Error Reading GEDCOM File" ), _( "Import" ) );
+            }
+        }
+        catch( wxSQLite3Exception& e ) {
+            recDb::ErrorMessage( e );
         }
     }
     return ret;
@@ -2057,7 +2075,11 @@ void TfpFrame::RefreshHtmPage()
 
 bool TfpFrame::DisplayHomePage()
 {
-    return DisplayHtmPage( recGetHomeDisplay() );
+    wxString page = recGetHomeDisplay();
+    if( page.empty() ) {
+        page = "BLANK";
+    }
+    return DisplayHtmPage( page );
 }
 
 wxString TfpFrame::GetDisplayText( wxString& name )
