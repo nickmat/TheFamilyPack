@@ -53,6 +53,9 @@ public:
         CREATE_DB_STD_EXT = 0x0001,
         CREATE_DB_ENUM_FN = 0x0002
     };
+    enum class ListFilter {
+        user, common, all
+    };
 protected:
     static wxSQLite3Database* s_db;
     static DbType             s_dbtype;
