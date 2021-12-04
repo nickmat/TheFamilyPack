@@ -295,9 +295,6 @@ CREATE TABLE Family (
   wife_id INTEGER
 );
 
-/* Seed database with the first family record */
-INSERT INTO Family (id, husb_id, wife_id) VALUES(1, 0, 0);
-
 CREATE TABLE FamilyEvent (
   id INTEGER PRIMARY KEY,
   fam_id INTEGER NOT NULL REFERENCES Family(id),
@@ -492,7 +489,7 @@ CREATE TABLE Researcher (  /* See System Settings below for initial entries */
   id INTEGER PRIMARY KEY,
   name TEXT NOT NULL,
   comments TEXT,
-  con_list_id INTEGER NOT NULL REFERENCES ContactList(id)
+  con_list_id INTEGER REFERENCES ContactList(id)
 );
 
 CREATE TABLE System (  /* See System Settings below for initial entries */
@@ -523,19 +520,13 @@ INSERT INTO ContactType (id, name) VALUES(-4, 'Email');
 INSERT INTO ContactType (id, name) VALUES(-5, 'Website');
 INSERT INTO ContactType (id, name) VALUES(-6, 'Fax');
 
-INSERT INTO ContactList (id) VALUES(0);
-INSERT INTO ContactList (id) VALUES(1);
+INSERT INTO Researcher (id, name, comments, con_list_id) VALUES(-1, 'Anonymous', NULL, NULL);
 
-INSERT INTO Researcher (id, name, comments, con_list_id) VALUES(0, '', '', 0);
-INSERT INTO Researcher (id, name, comments, con_list_id) VALUES(1, 'Anonymous', '', 1);
+INSERT INTO User (id, res_id) VALUES(1, -1); /* Set User U1 to Anomymous */
 
-INSERT INTO User (id, res_id) VALUES(0, 0);
-INSERT INTO User (id, res_id) VALUES(1, 1);
+INSERT INTO System (id, val) VALUES(1, '1'); /* User U1 */
 
-INSERT INTO System (id, val) VALUES(1, '1');
-
-INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 0, 1, 'F1');
-INSERT INTO UserSetting (id, user_id, property, val) VALUES(2, 1, 1, 'F1');
+INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 1, 1, 'R');
 
 /* The Version table row 1 is the full TFPD database */
 INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 25);

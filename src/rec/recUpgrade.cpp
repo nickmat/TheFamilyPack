@@ -41,8 +41,8 @@
 const int recVerMajor = 0;
 const int recVerMinor = 0;
 const int recVerRev = 10;
-const int recVerTest = 25;                       // <<======<<<<
-const char* recFullVersion = "TFPD-v0.0.10.25";  // <<======<<<<
+const int recVerTest = 26;                       // <<======<<<<
+const char* recFullVersion = "TFPD-v0.0.10.26";  // <<======<<<<
 
 // This is the database Media only version that this program can work with.
 // If the full version matches, then this is assumed to match as well.
@@ -1165,6 +1165,50 @@ void UpgradeTest0_0_10_24to0_0_10_25( const wxString& dbname )
     recDb::GetDb()->ExecuteUpdate( update );
 }
 
+void UpgradeTest0_0_10_25to0_0_10_26( const wxString& dbname )
+{
+    // Version 0.0.10.25 to 0.0.10.26
+
+    // Change to initial common records.
+    // No longer seeded with blank Family F1
+    // If we want it we will have to add it after creation.
+    // Anonymous researcher now part of common data.
+    // Create new researcher after database creation, if required.
+    // Researcher record can have a null con_list_id (but not 0)
+
+    wxString update = "BEGIN;\n";
+
+    update <<
+        "DELETE FROM " << dbname << ".ContactList WHERE id=0;\n"
+        "DELETE FROM " << dbname << ".Researcher WHERE id=0;\n"
+        "DELETE FROM " << dbname << ".User WHERE id=0;\n"
+        "DELETE FROM " << dbname << ".UserSetting WHERE user_id=0;\n"
+
+        "CREATE TABLE " << dbname << ".NewResearcher (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  name TEXT NOT NULL,\n"
+        "  comments TEXT,\n"
+        "  con_list_id INTEGER REFERENCES ContactList(id)\n"
+        ");\n"
+
+        "INSERT INTO " << dbname << ".NewResearcher"
+        " (id, name, comments, con_list_id)\n"
+        " SELECT id, name, comments, con_list_id\n"
+        " FROM " << dbname << ".Researcher;\n"
+
+        "DROP TABLE " << dbname << ".Researcher;\n"
+        "ALTER TABLE " << dbname << ".NewResearcher RENAME TO Researcher;\n"
+
+        "INSERT INTO " << dbname << ".Researcher (id, name, comments, con_list_id)"
+        " VALUES(-1, 'Anonymous', NULL, NULL);\n"
+
+        "UPDATE " << dbname << ".Version SET test=26 WHERE id=1;\n"
+
+        "COMMIT;\n"
+        ;
+    recDb::GetDb()->ExecuteUpdate( update );
+}
+
 void UpgradeRev0_0_10toCurrent( int test, const wxString& dbname )
 {
     switch( test )
@@ -1194,6 +1238,7 @@ void UpgradeRev0_0_10toCurrent( int test, const wxString& dbname )
     case 22: UpgradeTest0_0_10_22to0_0_10_23( dbname );
     case 23: UpgradeTest0_0_10_23to0_0_10_24( dbname );
     case 24: UpgradeTest0_0_10_24to0_0_10_25( dbname );
+    case 25: UpgradeTest0_0_10_25to0_0_10_26( dbname );
     }
 }
 
