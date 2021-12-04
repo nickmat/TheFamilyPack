@@ -88,7 +88,7 @@ public:
     idt   f_id;
 
     /*! Default constructor, does nothing. */
-    recDb() {}
+    recDb() : f_id(0) {}
     /*! Constructor with id, reads the record for the given id. */
     recDb( idt id ) : f_id(id) {}
 
