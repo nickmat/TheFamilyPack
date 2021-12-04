@@ -116,9 +116,12 @@ recDb::DbType recVersion::Manage( const wxString& dbname )
 
     recVersion v;
     v.ReadType( DbType::full, dbname );
-    if ( !v.IsEqual( 0, 0, 0, 0 ) ) {
+    if ( !v.IsEqual( 0, 0, 0, 0 ) ) { // if full database 
         if ( recDoFullUpgrade( dbname ) ) {
             s_dbtype = DbType::full;
+        }
+        else {
+            return s_dbtype;
         }
     }
 
