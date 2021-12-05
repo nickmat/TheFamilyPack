@@ -1201,6 +1201,8 @@ void UpgradeTest0_0_10_25to0_0_10_26( const wxString& dbname )
 
         "INSERT INTO " << dbname << ".Researcher (id, name, comments, con_list_id)"
         " VALUES(-1, 'Anonymous', NULL, NULL);\n"
+        "INSERT INTO " << dbname << ".Researcher (id, name, comments, con_list_id)"
+        " VALUES(0, '', NULL, NULL);\n"
 
         "UPDATE " << dbname << ".Version SET test=26 WHERE id=1;\n"
 
