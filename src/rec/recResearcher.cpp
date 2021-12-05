@@ -140,21 +140,38 @@ wxString recResearcher::GetUserIdStr() const
     return recUser::GetIdStr( uID );
 }
 
-recResearcherVec recResearcher::GetResearchers()
+recResearcherVec recResearcher::GetResearchers( ListFilter filter )
 {
     recResearcherVec list;
-    wxSQLite3ResultSet result = s_db->ExecuteQuery(
-        "SELECT id, name, comments, con_list_id FROM Researcher"
-        " WHERE id>0 ORDER BY id;"
-    );
+    recResearcher res;
 
-    recResearcher res(0);
-    while( result.NextRow() ) {
-        res.FSetID( GET_ID( result.GetInt64( 0 ) ) );
-        res.FSetName( result.GetAsString( 1 ) );
-        res.FSetComments( result.GetAsString( 2 ) );
-        res.FSetConListID( GET_ID( result.GetInt64( 3 ) ) );
-        list.push_back( res );
+    if( filter == ListFilter::all || filter == ListFilter::user ) {
+        wxSQLite3ResultSet result = s_db->ExecuteQuery(
+            "SELECT id, name, comments, con_list_id FROM Researcher"
+            " WHERE id>0 ORDER BY id;"
+        );
+
+        while( result.NextRow() ) {
+            res.FSetID( GET_ID( result.GetInt64( 0 ) ) );
+            res.FSetName( result.GetAsString( 1 ) );
+            res.FSetComments( result.GetAsString( 2 ) );
+            res.FSetConListID( GET_ID( result.GetInt64( 3 ) ) );
+            list.push_back( res );
+        }
+    }
+    if( filter == ListFilter::all || filter == ListFilter::common ) {
+        wxSQLite3ResultSet result = s_db->ExecuteQuery(
+            "SELECT id, name, comments, con_list_id FROM Researcher"
+            " WHERE id<0 ORDER BY id;"
+        );
+
+        while( result.NextRow() ) {
+            res.FSetID( GET_ID( result.GetInt64( 0 ) ) );
+            res.FSetName( result.GetAsString( 1 ) );
+            res.FSetComments( result.GetAsString( 2 ) );
+            res.FSetConListID( GET_ID( result.GetInt64( 3 ) ) );
+            list.push_back( res );
+        }
     }
     return list;
 }

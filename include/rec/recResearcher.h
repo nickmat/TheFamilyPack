@@ -69,7 +69,7 @@ public:
     wxString GetUserIdStr() const;
     recContactVec GetContacts() const { return recContactList::GetContacts( f_con_list_id ); }
 
-    static recResearcherVec GetResearchers();
+    static recResearcherVec GetResearchers( ListFilter filter = ListFilter::all );
 
 private:
     wxString  f_name;

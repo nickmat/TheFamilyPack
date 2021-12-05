@@ -521,6 +521,7 @@ INSERT INTO ContactType (id, name) VALUES(-5, 'Website');
 INSERT INTO ContactType (id, name) VALUES(-6, 'Fax');
 
 INSERT INTO Researcher (id, name, comments, con_list_id) VALUES(-1, 'Anonymous', NULL, NULL);
+INSERT INTO Researcher (id, name, comments, con_list_id) VALUES(0, '', NULL, NULL);
 
 INSERT INTO User (id, res_id) VALUES(1, -1); /* Set User U1 to Anomymous */
 

@@ -467,6 +467,7 @@ static const char* createFullDb =  /* recCreateFull.sql */
  "INSERT INTO ContactType (id, name) VALUES(-5, 'Website');\n"
  "INSERT INTO ContactType (id, name) VALUES(-6, 'Fax');\n"
  "INSERT INTO Researcher (id, name, comments, con_list_id) VALUES(-1, 'Anonymous', NULL, NULL);\n"
+ "INSERT INTO Researcher (id, name, comments, con_list_id) VALUES(0, '', NULL, NULL);\n"
  "INSERT INTO User (id, res_id) VALUES(1, -1);\n"
  "INSERT INTO System (id, val) VALUES(1, '1');\n"
  "INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 1, 1, 'R');\n"
