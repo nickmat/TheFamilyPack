@@ -530,7 +530,7 @@ INSERT INTO System (id, val) VALUES(1, '1'); /* User U1 */
 INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 1, 1, 'R');
 
 /* The Version table row 1 is the full TFPD database */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 25);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 26);
 
 COMMIT;
 
