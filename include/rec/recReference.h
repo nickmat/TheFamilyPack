@@ -128,7 +128,7 @@ public:
     idt      f_res_id;
     wxString f_user_ref;
 
-    recReference() {}
+    recReference() : f_higher_id(0), f_res_id(0) {}
     recReference( idt id ) : recDb(id) { Read(); }
     recReference( const recReference& ref );
 
@@ -144,10 +144,10 @@ public:
     idt FGetResId() const { return f_res_id; }
     wxString FGetUserRef() const { return f_user_ref; }
 
-    idt FSetHigherId( idt refID ) { f_higher_id = refID; }
+    void FSetHigherId( idt refID ) { f_higher_id = refID; }
     void FSetTitle( const wxString& title ) { f_title = title; }
     void FSetStatement( const wxString& statement ) { f_statement = statement; }
-    idt FSetResId( idt resID ) { f_res_id = resID; }
+    void FSetResId( idt resID ) { f_res_id = resID; }
     void FSetUserRef( const wxString& ur ) { f_user_ref = ur; }
 
     static wxString GetIdStr( idt refID ) { return wxString::Format( "R" ID, refID ); }
