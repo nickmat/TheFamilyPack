@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     25 February 2011
- * Copyright:   Copyright (c) 2011 ~ 2017, Nick Matthews.
+ * Copyright:   Copyright (c) 2011 .. 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -120,11 +120,11 @@ bool recUser::Equivalent( const recUser& r2 ) const
 recUserVec recUser::GetUsers()
 {
     recUserVec vec;
-
-    wxSQLite3ResultSet result = 
-        s_db->ExecuteQuery( "SELECT id, res_id FROM User;" );
-
     recUser user;
+
+    wxSQLite3ResultSet result = s_db->ExecuteQuery(
+        "SELECT id, res_id FROM User WHERE id>0 ORDER BY id DESC;"
+    );
     while( result.NextRow() ) {
         user.f_id = GET_ID( result.GetInt64( 0 ) );
         user.f_res_id = GET_ID( result.GetInt64( 1 ) );
