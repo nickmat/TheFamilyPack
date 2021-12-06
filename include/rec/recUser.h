@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     25 February 2011
- * Copyright:   Copyright (c) 2011 ~ 2017, Nick Matthews.
+ * Copyright:   Copyright (c) 2011 .. 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -137,6 +137,9 @@ inline wxString recGetHomeDisplay() {
     return recUser::GetSetting( recGetCurrentUser(), recUserSetting::UP_HomeScreen );
 }
 
-
+inline idt recGetCurrentResearcher() {
+    recUser user( recGetCurrentUser() );
+    return user.FGetResID();
+}
 
 #endif // RECUSER_H
