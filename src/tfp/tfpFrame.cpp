@@ -2026,6 +2026,9 @@ bool TfpFrame::DisplayHtmPage( const wxString& pagename )
     wxString name( pagename );
 
     wxString text = GetDisplayText( name );
+    if( text.empty() ) {
+        text = tfpWrErrorPage( pagename );
+    }
     if( !text.IsEmpty() ) {
         SetTitle( wxString::Format( m_titleFmt, name ) );
         PushHtmName( name );
