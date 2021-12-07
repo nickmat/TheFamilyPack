@@ -513,4 +513,41 @@ bool recPlacePartType::Read()
     return true;
 }
 
+void recPlacePartType::Renumber( idt id, idt to_id )
+{
+    if( id == 0 ) {
+        return;
+    }
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "UPDATE PlacePart SET type_id=" ID " WHERE type_id=" ID ";",
+        to_id, id );
+    s_db->ExecuteUpdate( sql );
+
+    sql.Format(
+        "UPDATE PlacePartType SET id=" ID " WHERE id=" ID ";",
+        to_id, id );
+    s_db->ExecuteUpdate( sql );
+}
+
+std::string recPlacePartType::CsvTitles()
+{
+    return std::string("ID, Name\n");
+}
+
+void recPlacePartType::CsvWrite( std::ostream& out, idt id )
+{
+    recPlacePartType ppt( id );
+    recCsvWrite( out, ppt.FGetID() );
+    recCsvWrite( out, ppt.FGetName(), '\n' );
+}
+
+bool recPlacePartType::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    recCsvRead( in, f_name );
+    return bool( in );
+}
+
 // End of recPlace.cpp file

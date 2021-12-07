@@ -188,6 +188,12 @@ public:
     wxString FGetName() const { return f_name; }
 
     void FSetName( const wxString& name ) { f_name = name; }
+
+    static void Renumber( idt fromID, idt toID );
+    static std::string CsvTitles();
+    static void CsvWrite( std::ostream& out, idt id );
+    bool CsvRead( std::istream& in );
+
 };
 
 inline bool recEquivalent( const recPlacePartType& r1, const recPlacePartType& r2 )

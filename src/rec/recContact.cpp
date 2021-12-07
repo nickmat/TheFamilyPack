@@ -465,5 +465,42 @@ recContactTypeVec recContactType::GetList()
     return list;
 }
 
+void recContactType::Renumber( idt id, idt to_id )
+{
+    if( id == 0 ) {
+        return;
+    }
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "UPDATE Contact SET type_id=" ID " WHERE type_id=" ID ";",
+        to_id, id );
+    s_db->ExecuteUpdate( sql );
+
+    sql.Format(
+        "UPDATE ContactType SET id=" ID " WHERE id=" ID ";",
+        to_id, id );
+    s_db->ExecuteUpdate( sql );
+}
+
+std::string recContactType::CsvTitles()
+{
+    return std::string( "ID, Name\n" );
+}
+
+void recContactType::CsvWrite( std::ostream& out, idt id )
+{
+    recContactType ct( id );
+    recCsvWrite( out, ct.FGetID() );
+    recCsvWrite( out, ct.FGetName(), '\n' );
+}
+
+bool recContactType::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    recCsvRead( in, f_name );
+    return bool( in );
+}
+
 
 // End of recContact.cpp file

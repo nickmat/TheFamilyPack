@@ -128,6 +128,11 @@ bool recResearcher::Equivalent( const recResearcher& r2 ) const
         f_con_list_id == r2.f_con_list_id;
 }
 
+wxString recResearcher::GetNameStr( idt resID )
+{
+    return ExecuteStr( "SELECT name FROM Researcher WHERE id=" ID ";", resID );
+}
+
 idt recResearcher::GetUserID() const
 {
     return ExecuteID( "SELECT id FROM User WHERE res_id=" ID ";", f_id );
@@ -176,9 +181,50 @@ recResearcherVec recResearcher::GetResearchers( ListFilter filter )
     return list;
 }
 
-wxString recResearcher::GetNameStr( idt resID )
+void recResearcher::Renumber( idt id, idt to_id )
 {
-    return ExecuteStr( "SELECT name FROM Researcher WHERE id=" ID ";", resID );
+    if( id == 0 ) {
+        return;
+    }
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "UPDATE User SET res_id=" ID " WHERE res_id=" ID ";",
+        to_id, id );
+    s_db->ExecuteUpdate( sql );
+
+    sql.Format(
+        "UPDATE Reference SET res_id=" ID " WHERE res_id=" ID ";",
+        to_id, id );
+    s_db->ExecuteUpdate( sql );
+
+    sql.Format(
+        "UPDATE Researcher SET id=" ID " WHERE id=" ID ";",
+        to_id, id );
+    s_db->ExecuteUpdate( sql );
+}
+
+std::string recResearcher::CsvTitles()
+{
+    return std::string("ID, Name, Comments, Contact List ID\n");
+}
+
+void recResearcher::CsvWrite( std::ostream& out, idt id )
+{
+    recResearcher res( id );
+    recCsvWrite( out, res.FGetID() );
+    recCsvWrite( out, res.FGetName() );
+    recCsvWrite( out, res.FGetComments() );
+    recCsvWrite( out, res.FGetConListID(), '\n' );
+}
+
+bool recResearcher::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    recCsvRead( in, f_name );
+    recCsvRead( in, f_comments );
+    recCsvRead( in, f_con_list_id );
+    return bool( in );
 }
 
 // End of recContact.cpp file
