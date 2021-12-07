@@ -45,23 +45,33 @@ fbRgEditReference::fbRgEditReference( wxWindow* parent, wxWindowID id, const wxS
 	fgSizer20->Add( m_staticText401, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT, 5 );
 
 	m_textCtrlTitle = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer20->Add( m_textCtrlTitle, 1, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
+	fgSizer20->Add( m_textCtrlTitle, 1, wxALIGN_CENTER_VERTICAL|wxEXPAND|wxTOP|wxBOTTOM|wxRIGHT, 5 );
 
-	wxStaticText* m_staticText4;
-	m_staticText4 = new wxStaticText( this, wxID_ANY, _("Higher Ref:"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText4->Wrap( -1 );
-	fgSizer20->Add( m_staticText4, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+	m_buttonHigherRef = new wxButton( this, wxID_ANY, _("&Higher Ref:"), wxDefaultPosition, wxDefaultSize, wxBU_RIGHT );
+	fgSizer20->Add( m_buttonHigherRef, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 
 	m_textCtrlHigherRef = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
-	fgSizer20->Add( m_textCtrlHigherRef, 1, wxALIGN_CENTER_VERTICAL|wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+	fgSizer20->Add( m_textCtrlHigherRef, 1, wxALIGN_CENTER_VERTICAL|wxEXPAND|wxBOTTOM|wxRIGHT, 5 );
 
-	wxStaticText* m_staticText118;
-	m_staticText118 = new wxStaticText( this, wxID_ANY, _("User &Label:"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText118->Wrap( -1 );
-	fgSizer20->Add( m_staticText118, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+	m_buttonResearcher = new wxButton( this, wxID_ANY, _("&Researcher:"), wxDefaultPosition, wxDefaultSize, wxBU_RIGHT );
+	fgSizer20->Add( m_buttonResearcher, 0, wxBOTTOM|wxRIGHT|wxLEFT|wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT, 5 );
+
+	wxBoxSizer* bSizer20;
+	bSizer20 = new wxBoxSizer( wxHORIZONTAL );
+
+	m_textCtrlResearcher = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+	bSizer20->Add( m_textCtrlResearcher, 1, wxBOTTOM|wxRIGHT|wxALIGN_CENTER_VERTICAL, 5 );
+
+	wxStaticText* m_staticText5;
+	m_staticText5 = new wxStaticText( this, wxID_ANY, _("User Re&f:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText5->Wrap( -1 );
+	bSizer20->Add( m_staticText5, 0, wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 
 	m_textCtrlUserRef = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer20->Add( m_textCtrlUserRef, 1, wxALIGN_CENTER_VERTICAL|wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+	bSizer20->Add( m_textCtrlUserRef, 1, wxBOTTOM|wxRIGHT|wxALIGN_CENTER_VERTICAL, 5 );
+
+
+	fgSizer20->Add( bSizer20, 1, wxEXPAND, 0 );
 
 
 	bSizer49->Add( fgSizer20, 0, wxEXPAND, 5 );
@@ -168,7 +178,7 @@ fbRgEditReference::fbRgEditReference( wxWindow* parent, wxWindowID id, const wxS
 	m_panelCitation->SetSizer( bSizer1202 );
 	m_panelCitation->Layout();
 	bSizer1202->Fit( m_panelCitation );
-	m_notebookBottom->AddPage( m_panelCitation, _("Citation"), false );
+	m_notebookBottom->AddPage( m_panelCitation, _("&1 Citation"), false );
 	m_panelMedia = new wxPanel( m_notebookBottom, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer120;
 	bSizer120 = new wxBoxSizer( wxHORIZONTAL );
@@ -210,7 +220,7 @@ fbRgEditReference::fbRgEditReference( wxWindow* parent, wxWindowID id, const wxS
 	m_panelMedia->SetSizer( bSizer120 );
 	m_panelMedia->Layout();
 	bSizer120->Fit( m_panelMedia );
-	m_notebookBottom->AddPage( m_panelMedia, _("&Media"), false );
+	m_notebookBottom->AddPage( m_panelMedia, _("&2 Media"), false );
 	m_panelPersona = new wxPanel( m_notebookBottom, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer56;
 	bSizer56 = new wxBoxSizer( wxHORIZONTAL );
@@ -252,7 +262,7 @@ fbRgEditReference::fbRgEditReference( wxWindow* parent, wxWindowID id, const wxS
 	m_panelPersona->SetSizer( bSizer56 );
 	m_panelPersona->Layout();
 	bSizer56->Fit( m_panelPersona );
-	m_notebookBottom->AddPage( m_panelPersona, _("&Persona"), false );
+	m_notebookBottom->AddPage( m_panelPersona, _("&3 Persona"), false );
 	m_panelEventa = new wxPanel( m_notebookBottom, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer1201;
 	bSizer1201 = new wxBoxSizer( wxHORIZONTAL );
@@ -290,7 +300,7 @@ fbRgEditReference::fbRgEditReference( wxWindow* parent, wxWindowID id, const wxS
 	m_panelEventa->SetSizer( bSizer1201 );
 	m_panelEventa->Layout();
 	bSizer1201->Fit( m_panelEventa );
-	m_notebookBottom->AddPage( m_panelEventa, _("Eventa"), false );
+	m_notebookBottom->AddPage( m_panelEventa, _("&4 Eventa"), false );
 	m_panelEntities = new wxPanel( m_notebookBottom, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer58;
 	bSizer58 = new wxBoxSizer( wxHORIZONTAL );
@@ -350,7 +360,7 @@ fbRgEditReference::fbRgEditReference( wxWindow* parent, wxWindowID id, const wxS
 	m_panelEntities->SetSizer( bSizer58 );
 	m_panelEntities->Layout();
 	bSizer58->Fit( m_panelEntities );
-	m_notebookBottom->AddPage( m_panelEntities, _("Ent&ities"), true );
+	m_notebookBottom->AddPage( m_panelEntities, _("&5 Entities"), true );
 
 	bSizer55->Add( m_notebookBottom, 1, wxALL|wxEXPAND, 5 );
 
@@ -392,6 +402,8 @@ fbRgEditReference::fbRgEditReference( wxWindow* parent, wxWindowID id, const wxS
 	bSizer49->Fit( this );
 
 	// Connect Events
+	m_buttonHigherRef->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditReference::OnButtonHigherRef ), NULL, this );
+	m_buttonResearcher->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditReference::OnButtonResearcher ), NULL, this );
 	m_notebookTop->Connect( wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, wxNotebookEventHandler( fbRgEditReference::OnStatementViewChanged ), NULL, this );
 	this->Connect( m_toolCut->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbRgEditReference::OnToolCut ) );
 	this->Connect( m_toolCopy->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbRgEditReference::OnToolCopy ) );
@@ -435,6 +447,8 @@ fbRgEditReference::fbRgEditReference( wxWindow* parent, wxWindowID id, const wxS
 fbRgEditReference::~fbRgEditReference()
 {
 	// Disconnect Events
+	m_buttonHigherRef->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditReference::OnButtonHigherRef ), NULL, this );
+	m_buttonResearcher->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditReference::OnButtonResearcher ), NULL, this );
 	m_notebookTop->Disconnect( wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, wxNotebookEventHandler( fbRgEditReference::OnStatementViewChanged ), NULL, this );
 	this->Disconnect( m_toolCut->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbRgEditReference::OnToolCut ) );
 	this->Disconnect( m_toolCopy->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( fbRgEditReference::OnToolCopy ) );

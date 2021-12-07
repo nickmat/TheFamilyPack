@@ -17,16 +17,16 @@
 #include <wx/colour.h>
 #include <wx/settings.h>
 #include <wx/textctrl.h>
-#include <wx/sizer.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
+#include <wx/button.h>
+#include <wx/sizer.h>
 #include <wx/toolbar.h>
 #include <wx/panel.h>
 #include <wx/webview.h>
 #include <wx/notebook.h>
 #include <wx/listctrl.h>
-#include <wx/button.h>
 #include <wx/menu.h>
 #include <wx/splitter.h>
 #include <wx/statline.h>
@@ -43,7 +43,10 @@ class fbRgEditReference : public wxDialog
 
 	protected:
 		wxTextCtrl* m_textCtrlTitle;
+		wxButton* m_buttonHigherRef;
 		wxTextCtrl* m_textCtrlHigherRef;
+		wxButton* m_buttonResearcher;
+		wxTextCtrl* m_textCtrlResearcher;
 		wxTextCtrl* m_textCtrlUserRef;
 		wxSplitterWindow* m_splitter1;
 		wxPanel* m_panelTop;
@@ -100,6 +103,8 @@ class fbRgEditReference : public wxDialog
 		wxButton* m_buttonCancel1;
 
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnButtonHigherRef( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonResearcher( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnStatementViewChanged( wxNotebookEvent& event ) { event.Skip(); }
 		virtual void OnToolCut( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnToolCopy( wxCommandEvent& event ) { event.Skip(); }

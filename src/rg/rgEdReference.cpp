@@ -48,6 +48,8 @@
 #include <rec/recMedia.h>
 #include <rec/recPersona.h>
 #include <rec/recPlace.h>
+#include <rec/recResearcher.h>
+#include <rec/recUser.h>
 
 bool rgEditReference( wxWindow* parent, idt refID )
 {
@@ -80,7 +82,8 @@ idt rgCreateReference( wxWindow* parent )
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
 
-    recReference ref(0);
+    recReference ref;
+    ref.FSetResId( recGetCurrentResearcher() );
     ref.Save();
     idt refID = ref.FGetID();
 
@@ -195,6 +198,9 @@ bool rgDlgEditReference::TransferDataToWindow()
     wxASSERT( m_reference.FGetID() != 0 );
     m_staticRefID->SetLabel( m_reference.GetIdStr()  );
     m_textCtrlTitle->SetValue( m_reference.FGetTitle() );
+    m_textCtrlHigherRef->SetValue( recReference::GetTitle( m_reference.FGetHigherId() ) );
+    recResearcher res( m_reference.FGetResId() );
+    m_textCtrlResearcher->SetValue( res.GetIdStr() + ": " + res.FGetName() );
     m_textCtrlUserRef->SetValue( m_reference.FGetUserRef() );
     m_textCtrlStatement->SetValue(  m_reference.FGetStatement() );
 
@@ -351,6 +357,16 @@ wxString rgDlgEditReference::GetSelectedText() const
         wxASSERT( false );
     }
     return wxString();
+}
+
+void rgDlgEditReference::OnButtonHigherRef( wxCommandEvent& event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnButtonHigherRef" );
+}
+
+void rgDlgEditReference::OnButtonResearcher( wxCommandEvent& event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnButtonResearcher" );
 }
 
 void rgDlgEditReference::OnStatementViewChanged( wxBookCtrlEvent& event )

@@ -72,6 +72,9 @@ private:
 
     wxString GetSelectedText() const;
 
+    void OnButtonHigherRef( wxCommandEvent& event ) override;
+    void OnButtonResearcher( wxCommandEvent& event ) override;
+
 	void OnStatementViewChanged( wxBookCtrlEvent& event ) override;
     void OnToolCut( wxCommandEvent& event ) override;
     void OnToolCopy( wxCommandEvent& event ) override;
