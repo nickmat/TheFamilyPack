@@ -3,10 +3,8 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Edit database System Settings dialog.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     10 April 2012
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2012, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -70,28 +68,20 @@ rgDlgEditSystem::rgDlgEditSystem( wxWindow* parent )
 
 bool rgDlgEditSystem::TransferDataToWindow()
 {
-    for( size_t i = 0 ; i < m_users.size() ; i++ ) {
-        if( i == 0 ) {
-            m_choiceUser->Append( _("<Select User>") );
-        } else {
-            m_choiceUser->Append( m_users[i].GetNameStr() );
-        }
-        if( m_userID == m_users[i].FGetID() ) {
-            m_choiceUser->SetSelection( (int) i );
+    for( auto& user : m_users ) {
+        m_choiceUser->Append( user.GetNameStr() );
+        if( user.FGetID() == m_userID ) {
+            size_t cnt = m_choiceUser->GetCount() - 1;
+            m_choiceUser->SetSelection( cnt );
         }
     }
-
     return true;
 }
 
 bool rgDlgEditSystem::TransferDataFromWindow()
 {
-    int user = m_choiceUser->GetSelection();
-    if( user <= 0 ) {
-        wxMessageBox( _("Please select a User"), _("User Required") );
-        return false;
-    }
-    recSetCurrentUser( (idt) user );
+    int i = m_choiceUser->GetSelection();
+    recSetCurrentUser( m_users[i].FGetID() );
     return true;
 }
 
