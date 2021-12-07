@@ -164,11 +164,38 @@ int main( int argc, char** argv )
     }
 
     // Do all the clever stuff
+    if( EnterTable<recContactType>( "data/ContactType.csv" ) ) {
+        std::cout << "Reading ContactType.csv\n";
+    }
+    if( EnterTable<recContactList>( "data/ContactList.csv" ) ) {
+        std::cout << "Reading ContactList.csv\n";
+    }
+    if( EnterTable<recContact>( "data/Contact.csv" ) ) {
+        std::cout << "Reading Contact.csv\n";
+    }
+    if( EnterTable<recResearcher>( "data/Researcher.csv" ) ) {
+        std::cout << "Reading Researcher.csv\n";
+    }
+    if( EnterTable<recRepository>( "data/Repository.csv" ) ) {
+        std::cout << "Reading Repository.csv\n";
+    }
+    if( EnterTable<recCitationPartType>( "data/CitationPartType.csv" ) ) {
+        std::cout << "Reading CitationPartType.csv\n";
+    }
+    if( EnterTable<recCitation>( "data/Citation.csv" ) ) {
+        std::cout << "Reading Citation.csv\n";
+    }
+    if( EnterTable<recCitationPart>( "data/CitationPart.csv" ) ) {
+        std::cout << "Reading CitationPart.csv\n";
+    }
     if( EnterTable<recDate>( "data/Date.csv" ) ) {
         std::cout << "Reading Date.csv\n";
-    } 
+    }
     if( EnterTable<recRelativeDate>( "data/RelativeDate.csv" ) ) {
         std::cout << "Reading RelativeDate.csv\n";
+    }
+    if( EnterTable<recPlacePartType>( "data/PlacePartType.csv" ) ) {
+        std::cout << "Reading PlacePartType.csv\n";
     }
     if( EnterTable<recPlace>( "data/Place.csv" ) ) {
         std::cout << "Reading Place.csv\n";
