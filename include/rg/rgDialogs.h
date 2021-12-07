@@ -225,6 +225,12 @@ extern idt rgCreateRelativeDate( wxWindow* wind, idt baseID, long value = 0 );
 // See src/rg/rgEdResearcher.cpp
 extern bool rgEditResearcher( wxWindow* wind, idt conID );
 extern idt rgCreateResearcher( wxWindow* wind );
+extern idt rgSelectResearcher(
+    wxWindow* wind,
+    unsigned flag = rgSELSTYLE_Create,
+    unsigned* retbutton = NULL,
+    const wxString& title = ""
+);
 
 // See src/rg/rgEdRole.cpp
 extern bool rgEditRole( wxWindow* wind, idt roleID );

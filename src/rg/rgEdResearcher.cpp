@@ -5,8 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     11th January 2013
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2013 .. 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -82,6 +81,51 @@ idt rgCreateResearcher( wxWindow* wind )
     }
     recDb::Rollback( savepoint );
     return 0;
+}
+
+idt rgSelectResearcher( wxWindow* wind, unsigned flag, unsigned* retbutton, const wxString& title )
+{
+    idt resID = 0;
+    if( retbutton ) *retbutton = rgSELSTYLE_None;
+    rgDlgSelectResearcher dialog( wind, flag, title );
+
+    bool cont = true;
+    while( cont ) {
+        recResearcherVec vec = recResearcher::GetResearchers( recDb::ListFilter::all );
+        wxArrayString table;
+        for( auto res : vec ) {
+            table.push_back( res.GetIdStr() );
+            table.push_back( res.FGetName() );
+            table.push_back( res.FGetComments() );
+        }
+        dialog.SetTable( table );
+        if( vec.size() == 1 ) {
+            dialog.SetSelectedRow( 0 );
+        }
+        if( dialog.ShowModal() == wxID_OK ) {
+            if( dialog.GetCreatePressed() ) {
+                resID = rgCreateArchive( wind );
+                if( resID ) {
+                    if( retbutton ) *retbutton = rgSELSTYLE_Create;
+                    break;
+                }
+                else {
+                    dialog.SetCreatePressed( false );
+                    continue;
+                }
+            }
+            if( dialog.GetUnknownPressed() ) {
+                if( retbutton ) *retbutton = rgSELSTYLE_Unknown;
+                resID = 0;
+                break;
+            }
+            size_t item = (size_t)dialog.GetSelectedRow();
+            resID = vec[item].FGetID();
+        }
+        cont = false;
+    }
+
+    return resID;
 }
 
 //============================================================================
@@ -251,5 +295,13 @@ void rgDlgEditResearcher::OnButtonDelete( wxCommandEvent& event )
         wxMessageBox( _("No row selected"), _("Delete Contact") );
     }
 }
+
+//============================================================================
+//-------------------------[ rgDlgSelectResearcher ]--------------------------
+//============================================================================
+
+wxString rgDlgSelectResearcher::sm_colHeaders[COL_MAX] = {
+    _( "ID" ), _( "Name" ), _( "Comment" )
+};
 
 // End of src/rg/rgEdResearcher.cpp file

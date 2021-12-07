@@ -33,6 +33,7 @@
 #include <rec/recUser.h>
 
 #include "fbRgDialog.h"
+#include "rgSelect.h"
 
 class rgDlgEditResearcher : public fbRgEditResearcher
 {
@@ -61,5 +62,24 @@ private:
     recContactList m_list;
     recContactVec  m_contacts;
 };
+
+//============================================================================
+//-------------------------[ rgDlgSelectResearcher ]--------------------------
+//============================================================================
+
+class rgDlgSelectResearcher : public rgSelect
+{
+    enum {
+        COL_ID, COL_Name, COL_comment, COL_MAX
+    };
+    static wxString sm_colHeaders[COL_MAX];
+public:
+    rgDlgSelectResearcher(
+        wxWindow* parent = NULL,
+        unsigned style = rgSELSTYLE_None,
+        const wxString& title = _( "Select Researcher" )
+    ) : rgSelect( parent, sm_colHeaders, COL_MAX, style, title ) {}
+};
+
 
 #endif // RGEDRESEARCHER_H
