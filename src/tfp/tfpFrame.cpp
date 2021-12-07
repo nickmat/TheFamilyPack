@@ -2029,15 +2029,12 @@ bool TfpFrame::DisplayHtmPage( const wxString& pagename )
     if( text.empty() ) {
         text = tfpWrErrorPage( pagename );
     }
-    if( !text.IsEmpty() ) {
-        SetTitle( wxString::Format( m_titleFmt, name ) );
-        PushHtmName( name );
-        m_browser->SetPage( text, "" );
-        RefreshEditMenu();
-        m_changeState = recDb::GetChange();
-        return true;
-    }
-    return false;
+    SetTitle( wxString::Format( m_titleFmt, name ) );
+    PushHtmName( name );
+    m_browser->SetPage( text, "" );
+    RefreshEditMenu();
+    m_changeState = recDb::GetChange();
+    return true;
 }
 
 bool TfpFrame::DisplayReferenceLinkPage( const wxString & name )
