@@ -44,7 +44,15 @@
 
 bool rgEditResearcher( wxWindow* wind, idt resID  )
 {
+    if( !recResearcher::Exists( resID ) ) {
+        wxMessageBox( 
+            "Researcher " + recResearcher::GetIdStr(resID) + " not found.",
+            "Error"
+        );
+        return false;
+    }
     wxASSERT( resID != 0 );
+
 
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
