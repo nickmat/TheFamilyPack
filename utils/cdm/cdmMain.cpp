@@ -199,20 +199,23 @@ int main( int argc, char** argv )
 
     recDb::Begin();
     try {
-        tables_out["ContactList"] = RenumberTable<recContactList>( tables["ContactList"] );
-        tables_out["Contact"] = RenumberTable<recContact>( tables["Contact"] );
-        tables_out["Repository"] = RenumberTable<recRepository>( tables["Repository"] );
-        tables_out["Date"] = RenumberTable<recDate>( tables["Date"] );
-        tables_out["RelativeDate"] = RenumberTable<recRelativeDate>( tables["RelativeDate"] );
-        tables_out["Place"] = RenumberTable<recPlace>( tables["Place"] );
-        tables_out["PlacePart"] = RenumberTable<recPlacePart>( tables["PlacePart"] );
-        tables_out["Reference"] = RenumberTable<recReference>( tables["Reference"] );
-        tables_out["ReferenceEntity"] = 
-            RenumberTable<recReferenceEntity>( tables["ReferenceEntity"] );
         tables_out["Citation"] = RenumberTable<recCitation>( tables["Citation"] );
         tables_out["CitationPartType"] =
             RenumberTable<recCitationPartType>( tables["CitationPartType"] );
         tables_out["CitationPart"] = RenumberTable<recCitationPart>( tables["CitationPart"] );
+        tables_out["Contact"] = RenumberTable<recContact>( tables["Contact"] );
+        tables_out["ContactList"] = RenumberTable<recContactList>( tables["ContactList"] );
+        tables_out["ContactType"] = RenumberTable<recContactType>( tables["ContactType"] );
+        tables_out["Date"] = RenumberTable<recDate>( tables["Date"] );
+        tables_out["Place"] = RenumberTable<recPlace>( tables["Place"] );
+        tables_out["PlacePart"] = RenumberTable<recPlacePart>( tables["PlacePart"] );
+        tables_out["PlacePartType"] = RenumberTable<recPlacePart>( tables["PlacePartType"] );
+        tables_out["Reference"] = RenumberTable<recReference>( tables["Reference"] );
+        tables_out["ReferenceEntity"] = 
+            RenumberTable<recReferenceEntity>( tables["ReferenceEntity"] );
+        tables_out["RelativeDate"] = RenumberTable<recRelativeDate>( tables["RelativeDate"] );
+        tables_out["Repository"] = RenumberTable<recRepository>( tables["Repository"] );
+        tables_out["Researcher"] = RenumberTable<recResearcher>( tables["Researcher"] );
         recDb::Commit();
     }
     catch( wxSQLite3Exception& e ) {
@@ -222,34 +225,6 @@ int main( int argc, char** argv )
         return EXIT_FAILURE;
     }
 
-    
-    if( tables_out["ContactList"] != tables["ContactList"] ) {
-        WriteTable<recContactList>( "data/ContactList.csv", tables["ContactList"] );
-    }
-    if( tables_out["Contact"] != tables["Contact"] ) {
-        WriteTable<recContact>( "data/Contact.csv", tables["Contact"] );
-    }
-    if( tables_out["Repository"] != tables["Repository"] ) {
-        WriteTable<recRepository>( "data/Repository.csv", tables["Repository"] );
-    }
-    if( tables_out["Date"] != tables["Date"] ) {
-        WriteTable<recDate>( "data/Date.csv", tables["Date"] );
-    }
-    if( tables_out["RelativeDate"] != tables["RelativeDate"] ) {
-        WriteTable<recRelativeDate>( "data/RelativeDate.csv", tables["RelativeDate"] );
-    }
-    if( tables_out["Place"] != tables["Place"] ) {
-        WriteTable<recPlace>( "data/Place.csv", tables["Place"] );
-    }
-    if( tables_out["PlacePart"] != tables["PlacePart"] ) {
-        WriteTable<recPlacePart>( "data/PlacePart.csv", tables["PlacePart"] );
-    }
-    if( tables_out["Reference"] != tables["Reference"] ) {
-        WriteTable<recReference>( "data/Reference.csv", tables["Reference"] );
-    }
-    if( tables_out["ReferenceEntity"] != tables["ReferenceEntity"] ) {
-        WriteTable<recReferenceEntity>( "data/ReferenceEntity.csv", tables["ReferenceEntity"] );
-    }
     if( tables_out["Citation"] != tables["Citation"] ) {
         WriteTable<recCitation>( "data/Citation.csv", tables["Citation"] );
     }
@@ -258,6 +233,42 @@ int main( int argc, char** argv )
     }
     if( tables_out["CitationPart"] != tables["CitationPart"] ) {
         WriteTable<recCitationPart>( "data/CitationPart.csv", tables["CitationPart"] );
+    }
+    if( tables_out["Contact"] != tables["Contact"] ) {
+        WriteTable<recContact>( "data/Contact.csv", tables["Contact"] );
+    }
+    if( tables_out["ContactList"] != tables["ContactList"] ) {
+        WriteTable<recContactList>( "data/ContactList.csv", tables["ContactList"] );
+    }
+    if( tables_out["ContactType"] != tables["ContactType"] ) {
+        WriteTable<recContactType>( "data/ContactType.csv", tables["ContactType"] );
+    }
+    if( tables_out["Date"] != tables["Date"] ) {
+        WriteTable<recDate>( "data/Date.csv", tables["Date"] );
+    }
+    if( tables_out["Place"] != tables["Place"] ) {
+        WriteTable<recPlace>( "data/Place.csv", tables["Place"] );
+    }
+    if( tables_out["PlacePart"] != tables["PlacePart"] ) {
+        WriteTable<recPlacePart>( "data/PlacePart.csv", tables["PlacePart"] );
+    }
+    if( tables_out["PlacePartType"] != tables["PlacePartType"] ) {
+        WriteTable<recPlacePart>( "data/PlacePartType.csv", tables["PlacePartType"] );
+    }
+    if( tables_out["Reference"] != tables["Reference"] ) {
+        WriteTable<recReference>( "data/Reference.csv", tables["Reference"] );
+    }
+    if( tables_out["ReferenceEntity"] != tables["ReferenceEntity"] ) {
+        WriteTable<recReferenceEntity>( "data/ReferenceEntity.csv", tables["ReferenceEntity"] );
+    }
+    if( tables_out["RelativeDate"] != tables["RelativeDate"] ) {
+        WriteTable<recRelativeDate>( "data/RelativeDate.csv", tables["RelativeDate"] );
+    }
+    if( tables_out["Repository"] != tables["Repository"] ) {
+        WriteTable<recRepository>( "data/Repository.csv", tables["Repository"] );
+    }
+    if( tables_out["Researcher"] != tables["Researcher"] ) {
+        WriteTable<recResearcher>( "data/Researcher.csv", tables["Researcher"] );
     }
 
     WriteMasterList( tables_out, titles );
