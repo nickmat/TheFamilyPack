@@ -99,7 +99,7 @@ idt rgSelectResearcher( wxWindow* wind, unsigned flag, unsigned* retbutton, cons
 
     bool cont = true;
     while( cont ) {
-        recResearcherVec vec = recResearcher::GetResearchers( recDb::ListFilter::all );
+        recResearcherVec vec = recResearcher::GetResearchers( recDb::Coverage::all );
         wxArrayString table;
         for( auto res : vec ) {
             table.push_back( res.GetIdStr() );

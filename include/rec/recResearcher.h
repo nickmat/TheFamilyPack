@@ -69,7 +69,7 @@ public:
     wxString GetUserIdStr() const;
     recContactVec GetContacts() const { return recContactList::GetContacts( f_con_list_id ); }
 
-    static recResearcherVec GetResearchers( ListFilter filter = ListFilter::all );
+    static recResearcherVec GetResearchers( Coverage filter = Coverage::all );
 
     static void Renumber( idt fromID, idt toID );
     static std::string CsvTitles();

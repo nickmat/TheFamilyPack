@@ -145,12 +145,12 @@ wxString recResearcher::GetUserIdStr() const
     return recUser::GetIdStr( uID );
 }
 
-recResearcherVec recResearcher::GetResearchers( ListFilter filter )
+recResearcherVec recResearcher::GetResearchers( Coverage filter )
 {
     recResearcherVec list;
     recResearcher res;
 
-    if( filter == ListFilter::all || filter == ListFilter::user ) {
+    if( filter == Coverage::all || filter == Coverage::user ) {
         wxSQLite3ResultSet result = s_db->ExecuteQuery(
             "SELECT id, name, comments, con_list_id FROM Researcher"
             " WHERE id>0 ORDER BY id;"
@@ -164,7 +164,7 @@ recResearcherVec recResearcher::GetResearchers( ListFilter filter )
             list.push_back( res );
         }
     }
-    if( filter == ListFilter::all || filter == ListFilter::common ) {
+    if( filter == Coverage::all || filter == Coverage::common ) {
         wxSQLite3ResultSet result = s_db->ExecuteQuery(
             "SELECT id, name, comments, con_list_id FROM Researcher"
             " WHERE id<0 ORDER BY id;"

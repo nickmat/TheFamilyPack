@@ -53,7 +53,7 @@ public:
         CREATE_DB_STD_EXT = 0x0001,
         CREATE_DB_ENUM_FN = 0x0002
     };
-    enum class ListFilter {
+    enum class Coverage {
         user, common, all
     };
 protected:
