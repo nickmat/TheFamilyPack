@@ -193,7 +193,7 @@ idt rgCreateCitationPartType( wxWindow* wind )
 rgDlgEditCitation::rgDlgEditCitation( wxWindow* parent, idt citID )
     : m_citation( citID ), fbRgEditCitation( parent )
 {
-    m_archive.ReadID( m_citation.FGetRefID() );
+    m_archive.ReadID( m_citation.FGetRepID() );
     m_parts = m_citation.GetPartList();
 
     m_listParts->InsertColumn( PC_citID, _( "ID" ), wxLIST_FORMAT_LEFT, 60 );
