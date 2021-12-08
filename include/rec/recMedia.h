@@ -65,6 +65,9 @@ public:
     static wxString GetIdStr( idt medID ) { return wxString::Format( "M" ID, medID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
+    wxString GetDataIdStr() const { return wxString::Format( "A" ID ":MD" ID, f_ass_id, f_data_id ); }
+    static wxString GetDataIdStr( idt medID ) { recMedia med( medID ); return med.GetDataIdStr(); }
+
     static idt Create( idt mdID, idt assID, idt refID );
     static int GetNextRefSeq( idt refID );
 
