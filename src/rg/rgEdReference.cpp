@@ -260,6 +260,7 @@ void rgDlgEditReference::UpdateCitations( idt citID )
     if( row >= 0 ) {
         m_listCitation->EnsureVisible( row );
     }
+    CitationButtonsEnable( row );
 }
 
 void rgDlgEditReference::UpdateMedias( idt medID )
@@ -279,6 +280,7 @@ void rgDlgEditReference::UpdateMedias( idt medID )
     if ( row >= 0 ) {
         m_listMedia->EnsureVisible( row );
     }
+    MediaButtonsEnable( row );
 }
 
 void rgDlgEditReference::UpdatePersonas( idt perID )
@@ -299,6 +301,7 @@ void rgDlgEditReference::UpdatePersonas( idt perID )
     if( row >= 0 ) {
         m_listPersona->EnsureVisible( row );
     }
+    PersonaButtonsEnable( row );
 }
 
 void rgDlgEditReference::UpdateEventas( idt eaID )
@@ -319,6 +322,7 @@ void rgDlgEditReference::UpdateEventas( idt eaID )
     if ( row >= 0 ) {
         m_listEventa->EnsureVisible( row );
     }
+    EventaButtonsEnable( row );
 }
 
 void rgDlgEditReference::UpdateEntities( idt reID )
@@ -343,6 +347,7 @@ void rgDlgEditReference::UpdateEntities( idt reID )
     if( row >= 0 ) {
         m_listEntities->EnsureVisible( row );
     }
+    EntityButtonsEnable( row );
 }
 
 wxString rgDlgEditReference::GetSelectedText() const
@@ -428,6 +433,43 @@ void rgDlgEditReference::OnEntityViewChanged( wxBookCtrlEvent& event )
     m_panelBottom->PostSizeEvent();
 }
 
+void rgDlgEditReference::CitationButtonsEnable( long row )
+{
+    if( row < 0 ) {
+        m_buttonCitationEdit->Disable();
+        m_buttonCitationDel->Disable();
+        m_buttonCitationUp->Disable();
+        m_buttonCitationDn->Disable();
+        return;
+    }
+    m_buttonCitationEdit->Enable();
+    m_buttonCitationDel->Enable();
+    if( row == 0 ) {
+        m_buttonCitationUp->Disable();
+    }
+    else {
+        m_buttonCitationDn->Enable();
+    }
+    if( row == m_listCitation->GetItemCount() - 1 ) {
+        m_buttonCitationDn->Disable();
+    }
+    else {
+        m_buttonCitationUp->Enable();
+    }
+}
+
+void rgDlgEditReference::OnCitationDeselect( wxListEvent& event )
+{
+    CitationButtonsEnable( -1 );
+}
+
+void rgDlgEditReference::OnCitationSelect( wxListEvent& event )
+{
+    long row = m_listCitation->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    CitationButtonsEnable( row );
+}
+
+
 void rgDlgEditReference::OnCitationAddButton( wxCommandEvent& event )
 {
     idt citID = rgCreateCitation( this, m_reference.FGetID() );
@@ -454,6 +496,44 @@ void rgDlgEditReference::OnCitationUpButton( wxCommandEvent& event )
 void rgDlgEditReference::OnCitationDownButton( wxCommandEvent& event )
 {
     wxMessageBox( _( "Not yet implimented" ), "OnCitationDownButton" );
+}
+
+void rgDlgEditReference::MediaButtonsEnable( long row )
+{
+    if( row < 0 ) {
+        m_buttonMediaEdit->Disable();
+        m_buttonMediaDel->Disable();
+        m_buttonMediaUp->Disable();
+        m_buttonMediaDn->Disable();
+        m_buttonMediaView->Disable();
+        return;
+    }
+    m_buttonMediaEdit->Enable();
+    m_buttonMediaDel->Enable();
+    m_buttonMediaView->Enable();
+    if( row == 0 ) {
+        m_buttonMediaUp->Disable();
+    }
+    else {
+        m_buttonMediaDn->Enable();
+    }
+    if( row == m_listMedia->GetItemCount() - 1 ) {
+        m_buttonMediaDn->Disable();
+    }
+    else {
+        m_buttonMediaUp->Enable();
+    }
+}
+
+void rgDlgEditReference::OnMediaDeselect( wxListEvent& event )
+{
+    MediaButtonsEnable( -1 );
+}
+
+void rgDlgEditReference::OnMediaSelect( wxListEvent& event )
+{
+    long row = m_listMedia->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    MediaButtonsEnable( row );
 }
 
 void rgDlgEditReference::OnMediaAddButton( wxCommandEvent & event )
@@ -492,6 +572,28 @@ void rgDlgEditReference::OnMediaDownButton( wxCommandEvent& event )
 void rgDlgEditReference::OnMediaViewButton( wxCommandEvent& event )
 {
     wxMessageBox( _( "Not yet implimented" ), "OnMediaViewButton" );
+}
+
+void rgDlgEditReference::PersonaButtonsEnable( long row )
+{
+    if( row < 0 ) {
+        m_buttonPersonaEdit->Disable();
+        m_buttonPersonaDel->Disable();
+        return;
+    }
+    m_buttonPersonaEdit->Enable();
+    m_buttonPersonaDel->Enable();
+}
+
+void rgDlgEditReference::OnPersonaDeselect( wxListEvent& event )
+{
+    PersonaButtonsEnable( -1 );
+}
+
+void rgDlgEditReference::OnPersonaSelect( wxListEvent& event )
+{
+    long row = m_listPersona->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    PersonaButtonsEnable( row );
 }
 
 void rgDlgEditReference::OnPersonaAddButton( wxCommandEvent& event )
@@ -570,6 +672,28 @@ void rgDlgEditReference::OnPersonaDeleteButton( wxCommandEvent& event )
     UpdatePersonas();
 }
 
+void rgDlgEditReference::EventaButtonsEnable( long row )
+{
+    if( row < 0 ) {
+        m_buttonEventaEdit->Disable();
+        m_buttonEventaDel->Disable();
+        return;
+    }
+    m_buttonEventaEdit->Enable();
+    m_buttonEventaDel->Enable();
+}
+
+void rgDlgEditReference::OnEventaDeselect( wxListEvent& event )
+{
+    EventaButtonsEnable( -1 );
+}
+
+void rgDlgEditReference::OnEventaSelect( wxListEvent& event )
+{
+    long row = m_listEventa->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    EventaButtonsEnable( row );
+}
+
 void rgDlgEditReference::OnEventaAddButton( wxCommandEvent & event )
 {
     wxSize s = m_buttonEventaAdd->GetSize();
@@ -625,6 +749,42 @@ void rgDlgEditReference::OnEventaDeleteButton( wxCommandEvent & event )
     }
     recEventa::RemoveFromDatabase( eaID );
     UpdateEventas();
+}
+
+void rgDlgEditReference::EntityButtonsEnable( long row )
+{
+    if( row < 0 ) {
+        m_buttonEdit->Disable();
+        m_buttonDel->Disable();
+        m_buttonUp->Disable();
+        m_buttonDn->Disable();
+        return;
+    }
+    m_buttonEdit->Enable();
+    m_buttonDel->Enable();
+    if( row == 0 ) {
+        m_buttonUp->Disable();
+    }
+    else {
+        m_buttonDn->Enable();
+    }
+    if( row == m_listEntities->GetItemCount() - 1 ) {
+        m_buttonDn->Disable();
+    }
+    else {
+        m_buttonUp->Enable();
+    }
+}
+
+void rgDlgEditReference::OnEntityDeselect( wxListEvent& event )
+{
+    EntityButtonsEnable( -1 );
+}
+
+void rgDlgEditReference::OnEntitySelect( wxListEvent& event )
+{
+    long row = m_listEntities->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    EntityButtonsEnable( row );
 }
 
 void rgDlgEditReference::OnAddEntityButton( wxCommandEvent& event )

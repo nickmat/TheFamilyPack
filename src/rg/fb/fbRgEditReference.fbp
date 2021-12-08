@@ -1404,6 +1404,8 @@
                                                                 <property name="window_extra_style"></property>
                                                                 <property name="window_name"></property>
                                                                 <property name="window_style"></property>
+                                                                <event name="OnListItemDeselected">OnCitationDeselect</event>
+                                                                <event name="OnListItemSelected">OnCitationSelect</event>
                                                             </object>
                                                         </object>
                                                         <object class="sizeritem" expanded="1">
@@ -1916,6 +1918,8 @@
                                                                 <property name="window_extra_style"></property>
                                                                 <property name="window_name"></property>
                                                                 <property name="window_style"></property>
+                                                                <event name="OnListItemDeselected">OnMediaDeselect</event>
+                                                                <event name="OnListItemSelected">OnMediaSelect</event>
                                                             </object>
                                                         </object>
                                                         <object class="sizeritem" expanded="1">
@@ -2501,6 +2505,8 @@
                                                                 <property name="window_extra_style"></property>
                                                                 <property name="window_name"></property>
                                                                 <property name="window_style"></property>
+                                                                <event name="OnListItemDeselected">OnPersonaDeselect</event>
+                                                                <event name="OnListItemSelected">OnPersonaSelect</event>
                                                             </object>
                                                         </object>
                                                         <object class="sizeritem" expanded="1">
@@ -2903,6 +2909,8 @@
                                                                 <property name="window_extra_style"></property>
                                                                 <property name="window_name"></property>
                                                                 <property name="window_style"></property>
+                                                                <event name="OnListItemDeselected">OnEventaDeselect</event>
+                                                                <event name="OnListItemSelected">OnEventaSelect</event>
                                                             </object>
                                                         </object>
                                                         <object class="sizeritem" expanded="1">
@@ -3291,6 +3299,8 @@
                                                                 <property name="window_extra_style"></property>
                                                                 <property name="window_name"></property>
                                                                 <property name="window_style"></property>
+                                                                <event name="OnListItemDeselected">OnEntityDeselect</event>
+                                                                <event name="OnListItemSelected">OnEntitySelect</event>
                                                             </object>
                                                         </object>
                                                         <object class="sizeritem" expanded="1">

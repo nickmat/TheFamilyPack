@@ -83,13 +83,20 @@ private:
     void OnToolRedo( wxCommandEvent& event ) override;
 
     void OnEntityViewChanged( wxBookCtrlEvent& event ) override;
+
     // Citation tab buttons
+    void CitationButtonsEnable( long row );
+    void OnCitationDeselect( wxListEvent& event ) override;
+    void OnCitationSelect( wxListEvent& event ) override;
     void OnCitationAddButton( wxCommandEvent& event ) override;
     void OnCitationEditButton( wxCommandEvent& event ) override;
     void OnCitationDeleteButton( wxCommandEvent& event ) override;
     void OnCitationUpButton( wxCommandEvent& event ) override;
     void OnCitationDownButton( wxCommandEvent& event ) override;
     // Media tab buttons
+    void MediaButtonsEnable( long row );
+    void OnMediaDeselect( wxListEvent& event ) override;
+    void OnMediaSelect( wxListEvent& event ) override;
     void OnMediaAddButton( wxCommandEvent& event ) override;
     void OnMediaEditButton( wxCommandEvent& event ) override;
     void OnMediaDeleteButton( wxCommandEvent& event ) override;
@@ -97,6 +104,9 @@ private:
     void OnMediaDownButton( wxCommandEvent& event ) override;
     void OnMediaViewButton( wxCommandEvent& event ) override;
     // Persona tab buttons
+    void PersonaButtonsEnable( long row );
+    void OnPersonaDeselect( wxListEvent& event ) override;
+    void OnPersonaSelect( wxListEvent& event ) override;
     void OnPersonaAddButton( wxCommandEvent& event ) override;
     void OnAddMalePersona( wxCommandEvent& event ) override;
     void OnAddFemalePersona( wxCommandEvent& event ) override;
@@ -105,12 +115,18 @@ private:
     void OnPersonaEditButton( wxCommandEvent& event ) override;
     void OnPersonaDeleteButton( wxCommandEvent& event ) override;
     // Eventa tab buttons
+    void EventaButtonsEnable( long row );
+    void OnEventaDeselect( wxListEvent& event ) override;
+    void OnEventaSelect( wxListEvent& event ) override;
     void OnEventaAddButton( wxCommandEvent& event ) override;
     void OnNewEventa( wxCommandEvent& event ) override;
     void OnNewPersonalEventa( wxCommandEvent& event ) override;
     void OnEventaEditButton( wxCommandEvent& event ) override;
     void OnEventaDeleteButton( wxCommandEvent& event ) override;
     // Entity tab buttons
+    void EntityButtonsEnable( long row );
+    void OnEntityDeselect( wxListEvent& event ) override;
+    void OnEntitySelect( wxListEvent& event ) override;
     void OnAddEntityButton( wxCommandEvent& event ) override;
     void OnNewDate( wxCommandEvent& event ) override;
     void OnNewDateAge( wxCommandEvent& event ) override;

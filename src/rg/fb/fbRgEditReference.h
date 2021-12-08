@@ -112,28 +112,38 @@ class fbRgEditReference : public wxDialog
 		virtual void OnToolUndo( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnToolRedo( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnEntityViewChanged( wxNotebookEvent& event ) { event.Skip(); }
+		virtual void OnCitationDeselect( wxListEvent& event ) { event.Skip(); }
+		virtual void OnCitationSelect( wxListEvent& event ) { event.Skip(); }
 		virtual void OnCitationAddButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCitationEditButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCitationDeleteButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCitationUpButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCitationDownButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnMediaDeselect( wxListEvent& event ) { event.Skip(); }
+		virtual void OnMediaSelect( wxListEvent& event ) { event.Skip(); }
 		virtual void OnMediaAddButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnMediaEditButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnMediaDeleteButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnMediaUpButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnMediaDownButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnMediaViewButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnPersonaDeselect( wxListEvent& event ) { event.Skip(); }
+		virtual void OnPersonaSelect( wxListEvent& event ) { event.Skip(); }
 		virtual void OnPersonaAddButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAddMalePersona( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAddFemalePersona( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAddUnknownPersona( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPersonaEditButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPersonaDeleteButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEventaDeselect( wxListEvent& event ) { event.Skip(); }
+		virtual void OnEventaSelect( wxListEvent& event ) { event.Skip(); }
 		virtual void OnEventaAddButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnNewEventa( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnNewPersonalEventa( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnEventaEditButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnEventaDeleteButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEntityDeselect( wxListEvent& event ) { event.Skip(); }
+		virtual void OnEntitySelect( wxListEvent& event ) { event.Skip(); }
 		virtual void OnAddEntityButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnNewDate( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnNewDateAge( wxCommandEvent& event ) { event.Skip(); }
