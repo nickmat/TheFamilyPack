@@ -339,10 +339,16 @@ wxString tfpWriteIndividualPage( idt indID )
                     } else {
                         started = true;
                     }
-                    htm << "<tr>\n<td rowspan='2'><a href='tfpv:M"
-                        << med.FGetID()
-                        << "'><img src='" << fn << "' alt='' height='200' /></a></td>"
-                        "<td><a href='tfp:M" << med.FGetID()
+                    htm << "<tr>\n<td rowspan='2'>";
+                    if( fn.empty() ) {
+                        htm << med.GetDataIdStr() << " Not Found.";
+                    }
+                    else {
+                        htm << "<a href = 'tfpv:M" << med.FGetID()
+                            << "'><img src='" << fn << "' alt='' height='200' /></a>";
+                    }
+                    htm << 
+                        "</td><td><a href='tfp:M" << med.FGetID()
                         << "'><b>" << med.GetIdStr()
                         << "</b></a></td>\n<td class='title'>" << title
                         << "</td>\n</tr>\n"

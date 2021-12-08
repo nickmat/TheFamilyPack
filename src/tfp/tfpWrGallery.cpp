@@ -100,10 +100,15 @@ wxString tfpWriteGalleryPage( idt galID )
             recMedia& med = gmm.GetMedia();
             wxString fn = tfpGetMediaDataFile( med.FGetDataID(), med.FGetAssID() );
             recReference ref( med.FGetRefID() );
-            htm << "<tr>\n<td rowspan='2'><a href='tfpv:M"
-                << med.FGetID()
-                << "'><img src='" << fn << "' alt='' height='200' /></a></td>"
-                "<td><a href='tfp:M" << med.FGetID()
+            htm << "<tr>\n<td rowspan='2'>";                ;
+            if( fn.empty() ) {
+                htm << med.GetDataIdStr() << " Not Found.";
+            }
+            else {
+                htm << "<a href = 'tfpv:M" << med.FGetID()
+                    << "'><img src='" << fn << "' alt='' height='200' /></a>";
+            }
+            htm <<"</td><td><a href='tfp:M" << med.FGetID()
                 << "'><b>" << med.GetIdStr()
                 << "</b></a></td>\n<td class='title'>" << gmm.GetTitle()
                 << "</td>\n</tr>\n"

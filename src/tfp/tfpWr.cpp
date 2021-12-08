@@ -242,6 +242,9 @@ wxString tfpNormaliseSpaces( const wxString& str )
 wxString tfpGetMediaDataFile( idt mdID, idt assID )
 {
     wxString assDb = recAssociate::GetAttachedName( assID );
+    if( assDb.empty() ) {
+        return wxString();
+    }
     wxString filename = recMediaData::GetFileName( assDb, mdID ) + ".bmp";
     // Read into the virtual file system, unless it already exists.
     wxFileSystem fs;

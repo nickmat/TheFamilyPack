@@ -70,8 +70,16 @@ wxString tfpWriteMediaPage( idt medID )
         "<td>" << med.FGetTitle() << "</td>\n"
         "</tr>\n"
         "<tr>\n"
-        "<td colspan='2' class='media'><a href = 'tfpv:M" << med.FGetID() << "'>"
-        "<img src='" << fn << "' alt='' height='200' /></a></td>\n"
+        "<td colspan='2' class='media'>"
+    ;
+    if( fn.empty() ) {
+        htm << med.GetDataIdStr() << " Not Found.";
+    }
+    else {
+        htm << "<a href = 'tfpv:M" << med.FGetID()
+            << "'><img src='" << fn << "' alt='' height='200' /></a>";
+    }
+    htm << "</td>\n"
         "</tr>\n"
         "<tr>\n"
         "<td colspan='2'>ID: <b>" << med.GetIdStr() << "</b>"

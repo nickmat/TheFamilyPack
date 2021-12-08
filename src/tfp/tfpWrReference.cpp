@@ -191,9 +191,16 @@ wxString tfpWriteReferencePage( idt refID )
         for( idt medID : medIDs ) {
             recMedia med( medID );
             wxString fn = tfpGetMediaDataFile( med.FGetDataID(), med.FGetAssID() );
-            htm << "<tr>\n<td rowspan='2'><a href='tfpv:M"
-                << med.FGetID()
-                << "'><img src='" << fn << "' alt='' height='100' /></a></td>"
+            htm << "<tr>\n<td rowspan='2'>";
+            if( fn.empty() ) {
+                htm << med.GetDataIdStr() << " Not Found.";
+            }
+            else {
+                htm << "<a href = 'tfpv:M" << med.FGetID()
+                    << "'><img src='" << fn << "' alt='' height='200' /></a>";
+            }
+            htm <<
+                "</td>"
                 "<td><a href='tfp:M" << med.FGetID()
                 << "'><b>" << med.GetIdStr()
                 << "</b></a></td>\n<td class='title'>" << med.FGetTitle()
