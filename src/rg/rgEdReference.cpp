@@ -480,12 +480,30 @@ void rgDlgEditReference::OnCitationAddButton( wxCommandEvent& event )
 
 void rgDlgEditReference::OnCitationEditButton( wxCommandEvent& event )
 {
-    wxMessageBox( _( "Not yet implimented" ), "OnCitationEditButton" );
+    long row = m_listCitation->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    wxASSERT( row != wxNOT_FOUND ); // Should not have been enabled then!
+    idt citID = m_citationIDs[row];
+    if( rgEditCitation( this, citID ) ) {
+        UpdateCitations( citID );
+    }
 }
 
 void rgDlgEditReference::OnCitationDeleteButton( wxCommandEvent& event )
 {
-    wxMessageBox( _( "Not yet implimented" ), "OnCitationDeleteButton" );
+    long row = m_listCitation->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    wxASSERT( row != wxNOT_FOUND ); // Should not have been enabled then!
+    idt citID = m_citationIDs[row];
+    wxMessageDialog dlg(
+        this,
+        recCitation::GetCitationStr(citID) +
+        "\n Remove Citation from database?",
+        "Confirm Delete", wxOK | wxCANCEL | wxCENTRE
+    );
+    if( dlg.ShowModal() != wxID_OK ) {
+        return;
+    }
+    recCitation::RemoveFromDatabase( citID );
+    UpdateCitations( citID );
 }
 
 void rgDlgEditReference::OnCitationUpButton( wxCommandEvent& event )
