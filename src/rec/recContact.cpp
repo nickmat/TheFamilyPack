@@ -347,6 +347,21 @@ bool recContactList::CsvRead( std::istream& in )
     return bool( in );
 }
 
+bool recContactList::RemoveFromDatabase( idt clID, Coverage limit )
+{
+    if( (clID < 0 && limit == Coverage::user) || (clID > 0 && limit == Coverage::common) ) {
+        return false;
+    }
+
+    recContactVec contacts = recContactList::GetContacts( clID );
+    for( auto& con : contacts ) {
+        con.Delete();
+        recContactType::DeleteIfOrphaned( con.FGetTypeID(), Coverage::user );
+    }
+    recContactList::Delete( clID );
+    return false;
+}
+
 //============================================================================
 //                 recContactType
 //============================================================================
@@ -500,6 +515,20 @@ bool recContactType::CsvRead( std::istream& in )
     recCsvRead( in, f_id );
     recCsvRead( in, f_name );
     return bool( in );
+}
+
+void recContactType::DeleteIfOrphaned( idt ctID, Coverage limit )
+{
+    if( (ctID < 0 && limit == Coverage::user) || (ctID > 0 && limit == Coverage::common) ) {
+        return;
+    }
+
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format( "SELECT COUNT(*) FROM Contact WHERE type_id=" ID ";", ctID );
+    if( s_db->ExecuteScalar( sql ) > 0 ) return;
+
+    Delete( ctID );
 }
 
 

@@ -32,6 +32,7 @@
 #endif
 
 #include <rec/recCitation.h>
+#include <rec/recContact.h>
 
 
 //============================================================================
@@ -256,6 +257,28 @@ bool recCitation::CsvRead( std::istream& in )
     return bool( in );
 }
 
+bool recCitation::RemoveFromDatabase( idt citID, Coverage limit )
+{
+    if( (citID < 0 && limit == Coverage::user) || (citID > 0 && limit == Coverage::common) ) {
+        return false;
+    }
+    wxSQLite3StatementBuffer sql;
+
+    // Can't delete if it has children, delete them first.
+    sql.Format( "SELECT COUNT(*) FROM Citation WHERE higher_id=" ID ";", citID );
+    if( s_db->ExecuteScalar( sql ) > 0 ) return false;
+
+    recCitation cit( citID );
+    recCitationPartVec parts = GetPartList( citID );
+    Delete( citID );
+    for( auto& part : parts ) {
+        part.Delete();
+        recCitationPartType::DeleteIfOrphaned( part.FGetTypeID(), limit );
+    }
+    recRepository::DeleteIfOrphaned( cit.FGetRepID(), limit );
+    return true;
+}
+
 //============================================================================
 //                 recRepository
 //============================================================================
@@ -409,6 +432,23 @@ bool recRepository::CsvRead( std::istream& in )
     recCsvRead( in, f_note );
     recCsvRead( in, f_con_list_id );
     return bool( in );
+}
+
+void recRepository::DeleteIfOrphaned( idt repID, Coverage limit )
+{
+    if( (repID < 0 && limit == Coverage::user) || (repID > 0 && limit == Coverage::common) ) {
+        return;
+    }
+
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format( "SELECT COUNT(*) FROM Citation WHERE rep_id=" ID ";", repID );
+    if( s_db->ExecuteScalar( sql ) > 0 ) return;
+
+    recRepository rep( repID );
+    Delete( repID );
+
+    recContactList::RemoveFromDatabase( rep.FGetConListID(), limit );
 }
 
 //============================================================================
@@ -749,6 +789,20 @@ bool recCitationPartType::CsvRead( std::istream& in )
     recCsvRead( in, f_style );
     recCsvRead( in, f_comment );
     return bool( in );
+}
+
+void recCitationPartType::DeleteIfOrphaned( idt cptID, Coverage limit )
+{
+    if( (cptID < 0 && limit == Coverage::user) || (cptID > 0 && limit == Coverage::common) ) {
+        return;
+    }
+
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format( "SELECT COUNT(*) FROM CitationPart WHERE type_id=" ID ";", cptID );
+    if( s_db->ExecuteScalar( sql ) > 0 ) return;
+
+    Delete( cptID );
 }
 
 // End of src/rec/recCitation.cpp file

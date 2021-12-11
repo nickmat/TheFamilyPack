@@ -74,6 +74,8 @@ public:
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
 
+    static bool RemoveFromDatabase( idt clID, Coverage limit = Coverage::user );
+
 private:
     idt  f_ind_id;
 };
@@ -131,6 +133,8 @@ public:
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
+
+    static void DeleteIfOrphaned( idt ctID, Coverage limit = Coverage::user );
 
 private:
     wxString  f_name;

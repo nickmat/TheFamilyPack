@@ -85,10 +85,12 @@ public:
     static wxString GetCitationStr( idt citID );
     wxString GetCitationStr() const;
 
-    static void Renumber( idt fromID, idt toID );
+    static void Renumber( idt id, idt to_id );
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
+
+    static bool RemoveFromDatabase( idt citID, Coverage limit = Coverage::user );
 };
 
 inline bool operator==( const recCitation& r1, const recCitation& r2 )
@@ -139,6 +141,8 @@ public:
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
+
+    static void DeleteIfOrphaned( idt cptID, Coverage limit = Coverage::user );
 };
 
 inline bool operator==( const recRepository& r1, const recRepository& r2 )
@@ -247,6 +251,8 @@ public:
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
+
+    static void DeleteIfOrphaned( idt cptID, Coverage limit = Coverage::user );
 };
 
 inline bool operator==( const recCitationPartType& r1, const recCitationPartType& r2 )
