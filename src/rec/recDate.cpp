@@ -617,7 +617,7 @@ void recDate::RemoveFromDatabase( idt id )
     }
     recEvent::RemoveDates( id );
     recPlace::RemoveDates( id );
-    recReferenceEntity::Delete( recReferenceEntity::TYPE_Date, id );
+    recReferenceEntity::DeleteType( recReferenceEntity::TYPE_Date, id );
     // If this is a relative date, remove the relative part.
     recDate date( id );
     Delete( date.FGetRelID() );

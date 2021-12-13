@@ -40,7 +40,7 @@ typedef std::vector< recReferenceEntity >  recRefEntVec;
 //-----------------------------------------------------
 
 
-class recReferenceEntity : public recDb
+class recReferenceEntity : public recDbT< recReferenceEntity>
 {
 public:
     enum Type {
@@ -55,20 +55,20 @@ public:
         TYPE_MAX           = 8
     };
     static const wxString sm_typeStr[TYPE_MAX];
+    static constexpr const char* s_tablename = "ReferenceEntity";
 
     idt      f_ref_id;
     Type     f_entity_type;
     idt      f_entity_id;
     int      f_sequence;
 
-    recReferenceEntity() {}
-    recReferenceEntity( idt id ) : recDb(id) { Read(); }
+    recReferenceEntity() : f_ref_id(0), f_entity_type(TYPE_Unstated), f_entity_id(0), f_sequence(0) {}
+    recReferenceEntity( idt id ) : recDbT(id) { Read(); }
     recReferenceEntity( const recReferenceEntity& re );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "ReferenceEntity" );
 
     idt FGetRefID() const { return f_ref_id; }
     Type FGetEntityType() const { return f_entity_type; }
@@ -81,7 +81,7 @@ public:
     void FSetSequence( int seq ) { f_sequence = seq; }
 
     static void Create( idt refID, Type type, idt entID, int* pseq = NULL );
-    static void Delete( Type type, idt entityID );
+    static void DeleteType( Type type, idt entityID );
 
     wxString GetTypeStr() const { return sm_typeStr[f_entity_type]; }
     static wxString GetTypeStr( Type etype ) { return sm_typeStr[etype]; }
@@ -119,9 +119,11 @@ inline bool operator!=( const recReferenceEntity& r1, const recReferenceEntity& 
 //      recReference
 //-----------------------------------------------------
 
-class recReference : public recDb
+class recReference : public recDbT<recReference>
 {
 public:
+    static constexpr const char* s_tablename = "Reference";
+
     idt      f_higher_id;
     wxString f_title;
     wxString f_statement;
@@ -129,13 +131,12 @@ public:
     wxString f_user_ref;
 
     recReference() : f_higher_id(0), f_res_id(0) {}
-    recReference( idt id ) : recDb(id) { Read(); }
+    recReference( idt id ) : recDbT(id) { Read(); }
     recReference( const recReference& ref );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "Reference" );
     bool Equivalent( const recReference& r2 ) const;
 
     idt FGetHigherId() const { return f_higher_id; }

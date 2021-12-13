@@ -284,7 +284,7 @@ void recPlace::RemoveFromDatabase( idt placeID )
     for( size_t i = 0 ; i < parts.size() ; i++ ) {
         parts[i].Delete();
     }
-    recReferenceEntity::Delete( recReferenceEntity::TYPE_Place, placeID );
+    recReferenceEntity::DeleteType( recReferenceEntity::TYPE_Place, placeID );
     Delete( placeID );
 }
 

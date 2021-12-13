@@ -228,4 +228,32 @@ public:
     static recIdVec PositiveIDs( const wxString& dbname = "Main" ) {           \
         return GetPositiveIDs( s_tablename, dbname ); }
 
+template <class T>
+class recDbT : public recDb
+{
+public:
+    recDbT<T>() : recDb() {}
+    recDbT<T>( int id ) : recDb( id ) {}
+
+    static const char* TableName() { return T::s_tablename; }
+    const char* GetTableName() const { return T::s_tablename; }
+
+    bool Delete()  { return DeleteRecord( T::s_tablename, f_id ); }
+    static bool Delete( idt id ) { return DeleteRecord( T::s_tablename, id ); }
+    bool Exists( const wxString& dbname = "Main" ) const {
+        return RecordExists( T::s_tablename, f_id, dbname );
+    }
+    static bool Exists( idt id, const wxString& dbname = "Main" ) {
+        return RecordExists( T::s_tablename, id, dbname );
+    }
+    static int UserCount() { return GetUserCount( T::s_tablename ); }
+    static int Count() { return GetCount( T::s_tablename ); }
+    static bool TableExists( const wxString& db = wxEmptyString ) {
+        return  s_db->TableExists( T::s_tablename, db );
+    }
+    static recIdVec PositiveIDs( const wxString& dbname = "Main" ) {
+        return GetPositiveIDs( T::s_tablename, dbname );
+    }
+};
+
 #endif // RECDATABASE_H

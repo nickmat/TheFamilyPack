@@ -518,7 +518,7 @@ bool recReferenceEntity::CsvRead( std::istream& in )
     return bool( in );
 }
 
-void recReferenceEntity::Delete( Type type, idt entityID )
+void recReferenceEntity::DeleteType( Type type, idt entityID )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
