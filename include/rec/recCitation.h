@@ -43,7 +43,7 @@ typedef std::vector< recCitationPartType >  recCitationPartTypeVec;
 //                 recCitation
 //============================================================================
 
-class recCitation : public recDb
+class recCitation : public recDbT<recCitation>
 {
     idt f_higher_id;
     idt f_ref_id;
@@ -52,14 +52,15 @@ class recCitation : public recDb
     wxString f_comment;
 
 public:
-    recCitation() {}
-    recCitation( idt id ) : recDb( id ) { Read(); }
+    static constexpr const char* s_tablename = "Citation";
+
+    recCitation() : f_higher_id(0), f_ref_id(0), f_ref_seq(0), f_rep_id(0) {}
+    recCitation( idt id ) : recDbT( id ) { Read(); }
     recCitation( const recCitation& source );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "Citation" );
     bool Equivalent( const recCitation& r2 ) const;
 
     idt FGetHigherID() const { return f_higher_id; }
@@ -107,21 +108,22 @@ inline bool operator!=( const recCitation& r1, const recCitation& r2 )
 //                 recRepository
 //============================================================================
 
-class recRepository : public recDb
+class recRepository : public recDbT< recRepository>
 {
     wxString f_name;
     wxString f_note;
     idt f_con_list_id;
 
 public:
-    recRepository() {}
-    recRepository( idt id ) : recDb( id ) { Read(); }
+    static constexpr const char* s_tablename = "Repository";
+
+    recRepository() : f_con_list_id(0) {}
+    recRepository( idt id ) : recDbT( id ) { Read(); }
     recRepository( const recRepository& source );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "Repository" );
     bool Equivalent( const recRepository& r2 ) const;
 
     wxString FGetName() const { return f_name; }
@@ -159,7 +161,7 @@ inline bool operator!=( const recRepository& r1, const recRepository& r2 )
 //                 recCitationPart
 //============================================================================
 
-class recCitationPart : public recDb
+class recCitationPart : public recDbT< recCitationPart>
 {
     idt f_cit_id;
     idt f_type_id;
@@ -168,14 +170,15 @@ class recCitationPart : public recDb
     wxString f_comment;
 
 public:
-    recCitationPart() {}
-    recCitationPart( idt id ) : recDb( id ) { Read(); }
+    static constexpr const char* s_tablename = "CitationPart";
+
+    recCitationPart() : f_cit_id(0), f_type_id(0), f_cit_seq(0) {}
+    recCitationPart( idt id ) : recDbT( id ) { Read(); }
     recCitationPart( const recCitationPart& source );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "CitationPart" );
     bool Equivalent( const recCitationPart& r2 ) const;
 
     idt FGetCitID() const { return f_cit_id; }
@@ -215,21 +218,22 @@ inline bool operator!=( const recCitationPart& r1, const recCitationPart& r2 )
 //                 recCitationPartType
 //============================================================================
 
-class recCitationPartType : public recDb
+class recCitationPartType : public recDbT< recCitationPartType>
 {
     wxString  f_name;
     int f_style;
     wxString f_comment;
 
 public:
-    recCitationPartType() {}
-    recCitationPartType( idt id ) : recDb(id) { Read(); }
+    static constexpr const char* s_tablename = "CitationPartType";
+
+    recCitationPartType() : f_style(0) {}
+    recCitationPartType( idt id ) : recDbT(id) { Read(); }
     recCitationPartType( const recCitationPartType& at );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "CitationPartType" );
     bool Equivalent( const recCitationPartType& r2 ) const;
 
     wxString FGetName() const { return f_name; }
