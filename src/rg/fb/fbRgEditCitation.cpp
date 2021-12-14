@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Oct 26 2018)
+// C++ code generated with wxFormBuilder (version 3.10.1-0-g8feb16b3)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -50,45 +50,23 @@ fbRgEditCitation::fbRgEditCitation( wxWindow* parent, wxWindowID id, const wxStr
 	m_textCtrlComment = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer12->Add( m_textCtrlComment, 1, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT, 5 );
 
-	wxStaticText* m_staticText19;
-	m_staticText19 = new wxStaticText( this, wxID_ANY, _("E&xtends:"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText19->Wrap( -1 );
-	fgSizer12->Add( m_staticText19, 0, wxBOTTOM|wxRIGHT|wxLEFT|wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT, 5 );
-
-	wxBoxSizer* bSizer111;
-	bSizer111 = new wxBoxSizer( wxHORIZONTAL );
+	m_buttonSelectExtends = new wxButton( this, wxID_ANY, _("E&xtends:"), wxDefaultPosition, wxDefaultSize, wxBU_RIGHT );
+	fgSizer12->Add( m_buttonSelectExtends, 0, wxBOTTOM|wxRIGHT, 5 );
 
 	m_textCtrlExtends = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
-	bSizer111->Add( m_textCtrlExtends, 1, wxEXPAND|wxBOTTOM|wxRIGHT, 5 );
+	fgSizer12->Add( m_textCtrlExtends, 1, wxEXPAND|wxBOTTOM|wxRIGHT, 5 );
 
-	m_buttonSelectExtends = new wxButton( this, wxID_ANY, _("Select"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer111->Add( m_buttonSelectExtends, 0, wxBOTTOM|wxRIGHT, 5 );
-
-
-	fgSizer12->Add( bSizer111, 1, wxEXPAND, 5 );
-
-	wxStaticText* m_staticText11;
-	m_staticText11 = new wxStaticText( this, wxID_ANY, _("Archive:"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText11->Wrap( -1 );
-	fgSizer12->Add( m_staticText11, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
-
-	wxBoxSizer* bSizer11;
-	bSizer11 = new wxBoxSizer( wxHORIZONTAL );
+	m_buttonSelectArchive = new wxButton( this, wxID_ANY, _("A&rchive:"), wxDefaultPosition, wxDefaultSize, wxBU_RIGHT );
+	fgSizer12->Add( m_buttonSelectArchive, 0, wxBOTTOM|wxRIGHT, 5 );
 
 	m_textCtrlArchive = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
-	bSizer11->Add( m_textCtrlArchive, 1, wxEXPAND|wxBOTTOM|wxRIGHT, 5 );
-
-	m_buttonSelectArchive = new wxButton( this, wxID_ANY, _("Se&lect"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer11->Add( m_buttonSelectArchive, 0, wxBOTTOM|wxRIGHT, 5 );
-
-
-	fgSizer12->Add( bSizer11, 1, wxEXPAND, 0 );
+	fgSizer12->Add( m_textCtrlArchive, 1, wxEXPAND|wxBOTTOM|wxRIGHT, 5 );
 
 
 	bSizer4->Add( fgSizer12, 0, wxEXPAND, 5 );
 
 	wxStaticBoxSizer* sbSizer1;
-	sbSizer1 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Parts:") ), wxHORIZONTAL );
+	sbSizer1 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("&Parts:") ), wxHORIZONTAL );
 
 	m_listParts = new wxListCtrl( sbSizer1->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxSize( 300,125 ), wxLC_HRULES|wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_VRULES );
 	sbSizer1->Add( m_listParts, 1, wxALL|wxEXPAND, 5 );
@@ -111,7 +89,7 @@ fbRgEditCitation::fbRgEditCitation( wxWindow* parent, wxWindowID id, const wxStr
 	m_buttonUp = new wxButton( sbSizer1->GetStaticBox(), wxID_ANY, _("&Up"), wxDefaultPosition, wxSize( 35,-1 ), 0 );
 	bSizer12->Add( m_buttonUp, 1, wxBOTTOM|wxRIGHT, 5 );
 
-	m_buttonDown = new wxButton( sbSizer1->GetStaticBox(), wxID_ANY, _("&Down"), wxDefaultPosition, wxSize( 35,-1 ), 0 );
+	m_buttonDown = new wxButton( sbSizer1->GetStaticBox(), wxID_ANY, _("Do&wn"), wxDefaultPosition, wxSize( 35,-1 ), 0 );
 	bSizer12->Add( m_buttonDown, 1, wxBOTTOM, 5 );
 
 
@@ -132,17 +110,17 @@ fbRgEditCitation::fbRgEditCitation( wxWindow* parent, wxWindowID id, const wxStr
 
 	m_staticRefCiID = new wxStaticText( this, wxID_ANY, _("R0:Ci0"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticRefCiID->Wrap( -1 );
-	m_staticRefCiID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Times New Roman") ) );
+	m_staticRefCiID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxT("Times New Roman") ) );
 
 	bSizerDismiss->Add( m_staticRefCiID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
 
 	bSizerDismiss->Add( 0, 0, 1, wxEXPAND, 5 );
 
-	m_buttonSave = new wxButton( this, wxID_OK, _("Save"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonSave = new wxButton( this, wxID_OK, _("&Save"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizerDismiss->Add( m_buttonSave, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxLEFT, 5 );
 
-	m_buttonCancel = new wxButton( this, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonCancel = new wxButton( this, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizerDismiss->Add( m_buttonCancel, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
 
@@ -196,26 +174,26 @@ fbRgEditArchive::fbRgEditArchive( wxWindow* parent, wxWindowID id, const wxStrin
 	fgSizer12->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 
 	wxStaticText* m_staticText64;
-	m_staticText64 = new wxStaticText( this, wxID_ANY, _("Name:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText64 = new wxStaticText( this, wxID_ANY, _("&Name:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText64->Wrap( -1 );
 	fgSizer12->Add( m_staticText64, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
 
 	m_textCtrlName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer12->Add( m_textCtrlName, 1, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
+	fgSizer12->Add( m_textCtrlName, 1, wxALIGN_CENTER_VERTICAL|wxEXPAND|wxTOP|wxBOTTOM|wxRIGHT, 5 );
 
 	wxStaticText* m_staticText65;
-	m_staticText65 = new wxStaticText( this, wxID_ANY, _("Note:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText65 = new wxStaticText( this, wxID_ANY, _("N&ote:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText65->Wrap( -1 );
-	fgSizer12->Add( m_staticText65, 0, wxALL|wxALIGN_RIGHT, 5 );
+	fgSizer12->Add( m_staticText65, 0, wxALIGN_RIGHT|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 
 	m_textCtrlNote = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_WORDWRAP );
-	fgSizer12->Add( m_textCtrlNote, 1, wxALL|wxEXPAND, 5 );
+	fgSizer12->Add( m_textCtrlNote, 1, wxEXPAND|wxBOTTOM|wxRIGHT, 5 );
 
 
 	bSizer48->Add( fgSizer12, 1, wxEXPAND, 5 );
 
 	wxStaticBoxSizer* sbSizer1;
-	sbSizer1 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Contacts:") ), wxHORIZONTAL );
+	sbSizer1 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Con&tacts:") ), wxHORIZONTAL );
 
 	m_listContacts = new wxListCtrl( sbSizer1->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxSize( 300,125 ), wxLC_HRULES|wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_VRULES );
 	sbSizer1->Add( m_listContacts, 1, wxALL|wxEXPAND, 5 );
@@ -223,13 +201,13 @@ fbRgEditArchive::fbRgEditArchive( wxWindow* parent, wxWindowID id, const wxStrin
 	wxBoxSizer* bSizer50;
 	bSizer50 = new wxBoxSizer( wxVERTICAL );
 
-	m_buttonAdd = new wxButton( sbSizer1->GetStaticBox(), wxID_ANY, _("Add"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonAdd = new wxButton( sbSizer1->GetStaticBox(), wxID_ANY, _("&Add"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer50->Add( m_buttonAdd, 0, wxALL, 5 );
 
-	m_buttonEdit = new wxButton( sbSizer1->GetStaticBox(), wxID_ANY, _("Edit"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonEdit = new wxButton( sbSizer1->GetStaticBox(), wxID_ANY, _("&Edit"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer50->Add( m_buttonEdit, 0, wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 
-	m_buttonDelete = new wxButton( sbSizer1->GetStaticBox(), wxID_ANY, _("Delete"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonDelete = new wxButton( sbSizer1->GetStaticBox(), wxID_ANY, _("&Delete"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer50->Add( m_buttonDelete, 0, wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 
 
@@ -247,17 +225,17 @@ fbRgEditArchive::fbRgEditArchive( wxWindow* parent, wxWindowID id, const wxStrin
 
 	m_staticArcID = new wxStaticText( this, wxID_ANY, _("Ar0"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticArcID->Wrap( -1 );
-	m_staticArcID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Times New Roman") ) );
+	m_staticArcID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxT("Times New Roman") ) );
 
 	bSizerDismiss->Add( m_staticArcID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
 
 	bSizerDismiss->Add( 0, 0, 1, wxEXPAND, 5 );
 
-	m_buttonSave = new wxButton( this, wxID_OK, _("Save"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonSave = new wxButton( this, wxID_OK, _("&Save"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizerDismiss->Add( m_buttonSave, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxLEFT, 5 );
 
-	m_buttonCancel = new wxButton( this, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonCancel = new wxButton( this, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizerDismiss->Add( m_buttonCancel, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
 
@@ -325,42 +303,42 @@ fbRgEditCitationPart::fbRgEditCitationPart( wxWindow* parent, wxWindowID id, con
 	wxStaticText* m_staticText11;
 	m_staticText11 = new wxStaticText( this, wxID_ANY, _("&Value:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText11->Wrap( -1 );
-	fgSizer3->Add( m_staticText11, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	fgSizer3->Add( m_staticText11, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 
 	m_textCtrlValue = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 300,-1 ), 0 );
-	fgSizer3->Add( m_textCtrlValue, 1, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxRIGHT, 5 );
+	fgSizer3->Add( m_textCtrlValue, 1, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT, 5 );
 
 	wxStaticText* m_staticText13;
 	m_staticText13 = new wxStaticText( this, wxID_ANY, _("C&omment:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText13->Wrap( -1 );
-	fgSizer3->Add( m_staticText13, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
+	fgSizer3->Add( m_staticText13, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 
 	m_textCtrlComment = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer3->Add( m_textCtrlComment, 1, wxEXPAND|wxTOP|wxBOTTOM|wxRIGHT|wxALIGN_CENTER_VERTICAL, 5 );
+	fgSizer3->Add( m_textCtrlComment, 1, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT, 5 );
 
 
 	bSizer9->Add( fgSizer3, 1, wxEXPAND, 5 );
 
 	wxStaticLine* m_staticline3;
 	m_staticline3 = new wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
-	bSizer9->Add( m_staticline3, 0, wxEXPAND | wxALL, 5 );
+	bSizer9->Add( m_staticline3, 0, wxEXPAND|wxTOP|wxRIGHT|wxLEFT, 5 );
 
 	wxBoxSizer* bSizerDismiss;
 	bSizerDismiss = new wxBoxSizer( wxHORIZONTAL );
 
 	m_staticCipID = new wxStaticText( this, wxID_ANY, _("Ci0:CiP0"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticCipID->Wrap( -1 );
-	m_staticCipID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Times New Roman") ) );
+	m_staticCipID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxT("Times New Roman") ) );
 
 	bSizerDismiss->Add( m_staticCipID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
 
 	bSizerDismiss->Add( 0, 0, 1, wxEXPAND, 5 );
 
-	m_buttonSave = new wxButton( this, wxID_OK, _("Save"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonSave = new wxButton( this, wxID_OK, _("&Save"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizerDismiss->Add( m_buttonSave, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxLEFT, 5 );
 
-	m_buttonCancel = new wxButton( this, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonCancel = new wxButton( this, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizerDismiss->Add( m_buttonCancel, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
 
@@ -399,7 +377,7 @@ fbRgEditCitationPartType::fbRgEditCitationPartType( wxWindow* parent, wxWindowID
 	fgSizer4->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 
 	wxStaticText* m_staticText14;
-	m_staticText14 = new wxStaticText( this, wxID_ANY, _("Name:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText14 = new wxStaticText( this, wxID_ANY, _("&Name:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText14->Wrap( -1 );
 	fgSizer4->Add( m_staticText14, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -407,45 +385,45 @@ fbRgEditCitationPartType::fbRgEditCitationPartType( wxWindow* parent, wxWindowID
 	fgSizer4->Add( m_textCtrlName, 0, wxEXPAND|wxTOP|wxBOTTOM|wxRIGHT, 5 );
 
 	wxStaticText* m_staticText15;
-	m_staticText15 = new wxStaticText( this, wxID_ANY, _("Comment:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText15 = new wxStaticText( this, wxID_ANY, _("C&omment:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText15->Wrap( -1 );
-	fgSizer4->Add( m_staticText15, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
+	fgSizer4->Add( m_staticText15, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 
 	m_textCtrlComment = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer4->Add( m_textCtrlComment, 0, wxEXPAND|wxTOP|wxBOTTOM|wxRIGHT|wxALIGN_CENTER_VERTICAL, 5 );
+	fgSizer4->Add( m_textCtrlComment, 0, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT, 5 );
 
 	wxStaticText* m_staticText18;
-	m_staticText18 = new wxStaticText( this, wxID_ANY, _("Style:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText18 = new wxStaticText( this, wxID_ANY, _("St&yle:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText18->Wrap( -1 );
-	fgSizer4->Add( m_staticText18, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
+	fgSizer4->Add( m_staticText18, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 
 	wxArrayString m_choiceStyleChoices;
 	m_choiceStyle = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceStyleChoices, 0 );
 	m_choiceStyle->SetSelection( 0 );
-	fgSizer4->Add( m_choiceStyle, 0, wxALIGN_CENTER_VERTICAL|wxEXPAND|wxTOP|wxBOTTOM|wxRIGHT, 5 );
+	fgSizer4->Add( m_choiceStyle, 0, wxALIGN_CENTER_VERTICAL|wxEXPAND|wxBOTTOM|wxRIGHT, 5 );
 
 
 	bSizer12->Add( fgSizer4, 1, wxEXPAND, 5 );
 
 	m_staticline9 = new wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
-	bSizer12->Add( m_staticline9, 0, wxEXPAND | wxALL, 5 );
+	bSizer12->Add( m_staticline9, 0, wxEXPAND|wxTOP|wxRIGHT|wxLEFT, 5 );
 
 	wxBoxSizer* bSizerDismiss;
 	bSizerDismiss = new wxBoxSizer( wxHORIZONTAL );
 
 	m_staticCiPT_ID = new wxStaticText( this, wxID_ANY, _("CiPT0"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticCiPT_ID->Wrap( -1 );
-	m_staticCiPT_ID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Times New Roman") ) );
+	m_staticCiPT_ID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxT("Times New Roman") ) );
 
-	bSizerDismiss->Add( m_staticCiPT_ID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	bSizerDismiss->Add( m_staticCiPT_ID, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
 
 	bSizerDismiss->Add( 0, 0, 1, wxEXPAND, 5 );
 
-	m_buttonSave = new wxButton( this, wxID_OK, _("Save"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonSave = new wxButton( this, wxID_OK, _("&Save"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizerDismiss->Add( m_buttonSave, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxLEFT, 5 );
 
-	m_buttonCancel = new wxButton( this, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonCancel = new wxButton( this, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizerDismiss->Add( m_buttonCancel, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
 
