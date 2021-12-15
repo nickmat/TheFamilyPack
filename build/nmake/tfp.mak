@@ -221,6 +221,7 @@ RECGUI_OBJECTS =  \
 	recgui_fbRgEditMedia.obj \
 	recgui_fbRgEditReference.obj \
 	recgui_fbRgSelect.obj \
+	recgui_fbRgSetupDatabase.obj \
 	recgui_fbRgSetupReference.obj \
 	recgui_fbRgViewMedia.obj \
 	recgui_fbRgDialog.obj \
@@ -256,6 +257,7 @@ RECGUI_OBJECTS =  \
 	recgui_rgRefTemplate.obj \
 	recgui_rgSelect.obj \
 	recgui_rgSelEvent.obj \
+	recgui_rgSetupDatabase.obj \
 	recgui_rgSetupReference.obj \
 	recgui_rgTableCtrl.obj \
 	recgui_rgViewMedia.obj
@@ -756,6 +758,9 @@ recgui_fbRgEditReference.obj: .\..\..\src\rg\fb\fbRgEditReference.cpp
 recgui_fbRgSelect.obj: .\..\..\src\rg\fb\fbRgSelect.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\fb\fbRgSelect.cpp
 
+recgui_fbRgSetupDatabase.obj: .\..\..\src\rg\fb\fbRgSetupDatabase.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\fb\fbRgSetupDatabase.cpp
+
 recgui_fbRgSetupReference.obj: .\..\..\src\rg\fb\fbRgSetupReference.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\fb\fbRgSetupReference.cpp
 
@@ -860,6 +865,9 @@ recgui_rgSelect.obj: .\..\..\src\rg\rgSelect.cpp
 
 recgui_rgSelEvent.obj: .\..\..\src\rg\rgSelEvent.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgSelEvent.cpp
+
+recgui_rgSetupDatabase.obj: .\..\..\src\rg\rgSetupDatabase.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgSetupDatabase.cpp
 
 recgui_rgSetupReference.obj: .\..\..\src\rg\rgSetupReference.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgSetupReference.cpp

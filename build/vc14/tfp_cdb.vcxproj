@@ -38,7 +38,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <_ProjectFileVersion>16.0.31727.243</_ProjectFileVersion>
+    <_ProjectFileVersion>16.0.31829.152</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
@@ -133,6 +133,24 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\utils\cdb\cdbMain.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="tfp_calendar.vcxproj">
+      <Project>{66f1bdf6-69b1-5480-909e-2e4bca59ed09}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="tfp_rec.vcxproj">
+      <Project>{1a037570-c3cc-5d6a-9c10-f55f1a29680c}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="tfp_reccl.vcxproj">
+      <Project>{0a017726-deb1-5261-a1e6-2aaa1988db2b}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="tfp_wxsqlite3.vcxproj">
+      <Project>{45d7308e-cffd-5887-8a1c-3d8f6e095c88}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

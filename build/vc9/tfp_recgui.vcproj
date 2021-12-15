@@ -220,6 +220,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rg\fb\fbRgSetupDatabase.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rg\fb\fbRgSetupReference.cpp"
 				>
 			</File>
@@ -356,6 +360,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rg\rgSetupDatabase.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rg\rgSetupReference.cpp"
 				>
 			</File>
@@ -383,6 +391,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\rg\fb\fbRgEditCitation.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\fb\fbRgEditDatabase.h"
 				>
 			</File>
 			<File
@@ -535,6 +547,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\rg\rgSelect.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgSetupDatabase.h"
 				>
 			</File>
 			<File
