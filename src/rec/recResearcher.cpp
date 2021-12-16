@@ -76,7 +76,7 @@ void recResearcher::Save()
             // Add new record
             sql.Format(
                 "INSERT INTO Researcher (id, name, comments, con_list_id)"
-                " VALUES (" ID ", NULLIF('%q', ''), '%q', NULLIF(" ID ", 0));",
+                " VALUES (" ID ", '%q', NULLIF('%q', ''), NULLIF(" ID ", 0));",
                 f_id, UTF8_(f_name), UTF8_(f_comments), f_con_list_id
             );
         } else {
