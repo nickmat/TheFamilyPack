@@ -40,23 +40,24 @@ typedef std::vector< recUserSetting >  recUserSettingVec;
 //                 recUserSetting
 //============================================================================
 
-class recUserSetting : public recDb
+class recUserSetting : public recDbT< recUserSetting>
 {
 public:
+    static constexpr const char* s_tablename = "UserSetting";
+
     enum class Property {
         unstated = 0,
         home_screen,
         max_property
     };
 
-    recUserSetting() {}
-    recUserSetting( idt id ) : recDb(id) { Read(); }
+    recUserSetting() : f_user_id( 0 ), f_property( Property::unstated ) {}
+    recUserSetting( idt id ) : recDbT(id) { Read(); }
     recUserSetting( const recUserSetting& user );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "UserSetting" )
     bool Equivalent( const recUserSetting& r2 ) const;
 
     idt FGetUserID() const { return f_user_id; }
@@ -90,17 +91,18 @@ inline bool operator!=( const recUserSetting& r1, const recUserSetting& r2 )
 //                 recUser
 //============================================================================
 
-class recUser : public recDb
+class recUser : public recDbT< recUser>
 {
 public:
-    recUser() {}
-    recUser( idt id ) : recDb(id) { Read(); }
+    static constexpr const char* s_tablename = "User";
+
+    recUser() : f_res_id(0) {}
+    recUser( idt id ) : recDbT(id) { Read(); }
     recUser( const recUser& user );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "User" )
     bool Equivalent( const recUser& r2 ) const;
 
     idt FGetResID() const { return f_res_id; }
