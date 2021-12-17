@@ -65,7 +65,7 @@ rgDlgEditUserSettings::rgDlgEditUserSettings( wxWindow* parent )
     : fbRgEditUserSettings( parent )
 {
     m_user.ReadID( recGetCurrentUser() );
-    m_homeStr = m_user.GetSetting( recUserSetting::UP_HomeScreen );
+    m_homeStr = m_user.GetSetting( recUserSetting::Property::home_screen );
 }
 
 bool rgDlgEditUserSettings::TransferDataToWindow()
@@ -83,7 +83,7 @@ bool rgDlgEditUserSettings::TransferDataFromWindow()
     recUserSetting us;
     m_homeStr = m_textCtrlHome->GetValue();
 
-    us.Find( m_user.FGetID(), recUserSetting::UP_HomeScreen );
+    us.Find( m_user.FGetID(), recUserSetting::Property::home_screen );
     us.FSetValue( m_homeStr );
     us.Save();
 

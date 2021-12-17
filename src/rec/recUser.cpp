@@ -179,7 +179,7 @@ void recUserSetting::Clear()
 {
     f_id       = 0;
     f_user_id  = 0;
-    f_property = UP_Unstated;
+    f_property = Property::unstated;
     f_val      = wxEmptyString;
 }
 

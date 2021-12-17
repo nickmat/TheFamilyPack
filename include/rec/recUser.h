@@ -43,10 +43,10 @@ typedef std::vector< recUserSetting >  recUserSettingVec;
 class recUserSetting : public recDb
 {
 public:
-    enum Property {
-        UP_Unstated = 0,
-        UP_HomeScreen,
-        UP_MAX
+    enum class Property {
+        unstated = 0,
+        home_screen,
+        max_property
     };
 
     recUserSetting() {}
@@ -134,7 +134,7 @@ inline bool operator!=( const recUser& r1, const recUser& r2 )
 }
 
 inline wxString recGetHomeDisplay() {
-    return recUser::GetSetting( recGetCurrentUser(), recUserSetting::UP_HomeScreen );
+    return recUser::GetSetting( recGetCurrentUser(), recUserSetting::Property::home_screen );
 }
 
 inline idt recGetCurrentResearcher() {
