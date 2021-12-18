@@ -169,6 +169,7 @@ RECGUI_OBJECTS =  \
 	recgui_fbRgEditGallery.o \
 	recgui_fbRgEditMedia.o \
 	recgui_fbRgEditReference.o \
+	recgui_fbRgEditResearcher.o \
 	recgui_fbRgSelect.o \
 	recgui_fbRgSetupDatabase.o \
 	recgui_fbRgSetupReference.o \
@@ -532,6 +533,9 @@ recgui_fbRgEditMedia.o: ./../../src/rg/fb/fbRgEditMedia.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_fbRgEditReference.o: ./../../src/rg/fb/fbRgEditReference.cpp
+	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
+
+recgui_fbRgEditResearcher.o: ./../../src/rg/fb/fbRgEditResearcher.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_fbRgSelect.o: ./../../src/rg/fb/fbRgSelect.cpp

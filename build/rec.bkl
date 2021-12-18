@@ -141,6 +141,7 @@
     <sources>$(LOCAL_SRC)/rg/fb/fbRgEditGallery.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/fb/fbRgEditMedia.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/fb/fbRgEditReference.cpp</sources>
+    <sources>$(LOCAL_SRC)/rg/fb/fbRgEditResearcher.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/fb/fbRgSelect.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/fb/fbRgSetupDatabase.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/fb/fbRgSetupReference.cpp</sources>
@@ -193,6 +194,7 @@
     <headers>$(LOCAL_SRC)/rg/fb/fbRgEditMedia.h</headers>
     <headers>$(LOCAL_SRC)/rg/fb/fbRgEditDatabase.h</headers>
     <headers>$(LOCAL_SRC)/rg/fb/fbRgEditReference.h</headers>
+    <headers>$(LOCAL_SRC)/rg/fb/fbRgEditResearcher.h</headers>
     <headers>$(LOCAL_SRC)/rg/fb/fbRgSelect.h</headers>
     <headers>$(LOCAL_SRC)/rg/fb/fbRgSetupReference.h</headers>
     <headers>$(LOCAL_SRC)/rg/fb/fbRgViewMedia.h</headers>

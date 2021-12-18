@@ -56,18 +56,15 @@ bool rgEditResearcher( wxWindow* wind, idt resID  )
 
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
-    bool ret = false;
 
-    rgDlgEditResearcher* dialog = new rgDlgEditResearcher( wind, resID );
+    rgDlgEditResearcher dialog( wind, resID );
 
-    if( dialog->ShowModal() == wxID_OK ) {
+    if( dialog.ShowModal() == wxID_OK ) {
         recDb::ReleaseSavepoint( savepoint );
-        ret = true;
-    } else {
-        recDb::Rollback( savepoint );
+        return true;
     }
-    dialog->Destroy();
-    return ret;
+    recDb::Rollback( savepoint );
+    return false;
 }
 
 idt rgCreateResearcher( wxWindow* wind )
@@ -143,9 +140,10 @@ idt rgSelectResearcher( wxWindow* wind, unsigned flag, unsigned* retbutton, cons
 rgDlgEditResearcher::rgDlgEditResearcher( wxWindow* parent, idt resID )
     : m_researcher(resID), fbRgEditResearcher( parent )
 {
-    m_user.ReadID( m_user.FindFirst( m_researcher.FGetID() ) );
     m_list.ReadID( m_researcher.FGetConListID() );
     m_contacts = m_researcher.GetContacts();
+    m_userID = m_researcher.GetUserID();
+    m_currentUserID = recGetCurrentUser();
 
     wxListItem itemCol;
     itemCol.SetText( _("ID") );
@@ -162,26 +160,12 @@ bool rgDlgEditResearcher::TransferDataToWindow()
 
     m_textCtrlName->SetValue( m_researcher.FGetName() );
     m_textCtrlComment->SetValue( m_researcher.FGetComments() );
-    idt indID = m_list.FGetIndID();
-    m_staticIndName->SetLabel( recIndividual::GetName( indID ) );
-    m_staticIndID->SetLabel( recIndividual::GetIdStr( indID ) );
 
-    for( size_t i = 0 ; i < m_contacts.size() ; i++ ) {
-        m_listContacts->InsertItem( i, m_contacts[i].GetIdStr() );
-        m_listContacts->SetItem( i, COL_Type, m_contacts[i].GetTypeStr() );
-        m_listContacts->SetItem( i, COL_Value, m_contacts[i].FGetValue() );
-    }
-
+    m_textCtrlUser->SetValue( recUser::GetIdStr( m_userID ) );
+    m_checkBoxCurrentUser->SetValue( m_userID == m_currentUserID );
+    UpdateIndividual();
     m_staticResID->SetLabel( m_researcher.GetIdStr() );
-
-    if( m_user.FGetResID() ) {
-        m_staticUserID->SetLabel( m_user.GetIdStr() );
-        m_checkBoxUser->SetValue( true );
-    } else {
-        m_staticUserID->SetLabel( wxEmptyString );
-        m_checkBoxUser->SetValue( false );
-    }
-
+    UpdateContacts( -1 );
     return true;
 }
 
@@ -189,118 +173,134 @@ bool rgDlgEditResearcher::TransferDataFromWindow()
 {
     m_researcher.FSetName( m_textCtrlName->GetValue() );
     m_researcher.FSetComments( m_textCtrlComment->GetValue() );
+    m_researcher.Save();
 
-    if( m_checkBoxUser->GetValue() == true ) {
-        if( m_user.FGetID() == 0 ) {
-            // Create a new user.
-            m_user.FSetResID( m_researcher.FGetID() );
-            m_user.Save();
+    bool set_curr = m_checkBoxCurrentUser->GetValue();
+    if( set_curr && m_userID != m_currentUserID ) {
+        if( m_userID == 0 ) {
+            recUser user;
+            user.FSetResID( m_researcher.FGetID() );
+            user.Save();
+            m_userID = user.FGetID();
         }
-    } else {
-        if( m_user.FGetID() != 0 ) {
-            // Remove user if not current.
-            if( m_user.FGetID() != recGetCurrentUser() ) {
-                // TODO: Remove user's settings.
-                m_user.Delete();
-            }
+        recSetCurrentUser( m_userID );
+    }
+    if( !set_curr ) {
+        if( m_currentUserID == 0 || m_userID == m_currentUserID ) {
+            m_currentUserID = -1; // Anonymous
         }
+        recSetCurrentUser( m_currentUserID );
     }
 
-    m_researcher.Save();
     return true;
 }
 
-void rgDlgEditResearcher::AddIndLink()
+void rgDlgEditResearcher::UpdateIndividual()
 {
-    idt indID = rgSelectIndividual( this );
+    idt indID = m_list.FGetIndID();
+    wxString indName;
+    if( indID == 0 ) {
+        indName = "< Linked to Individual in Database >";
+    }
+    else {
+        indName << recIndividual::GetIdStr( indID ) <<
+            ": " << recIndividual::GetName( indID );
+    }
+    m_textCtrlIndivitual->SetLabel( indName );
+}
+
+void rgDlgEditResearcher::UpdateContacts( idt conID )
+{
+    m_contacts = m_researcher.GetContacts();
+    m_listContacts->DeleteAllItems();
+    int row = -1;
+    for( size_t i = 0; i < m_contacts.size(); i++ ) {
+        m_listContacts->InsertItem( i, m_contacts[i].GetIdStr() );
+        m_listContacts->SetItem( i, COL_Type, m_contacts[i].GetTypeStr() );
+        m_listContacts->SetItem( i, COL_Value, m_contacts[i].FGetValue() );
+        if( conID == m_contacts[i].FGetID() ) {
+            m_listContacts->SetItemState( i, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+            row = i;
+        }
+    }
+    m_listContacts->SetColumnWidth( COL_Value, -1 );
+    if( row >= 0 ) {
+        m_listContacts->EnsureVisible( row );
+    }
+    ContactButtonsEnable( row );
+}
+
+void rgDlgEditResearcher::OnIndButton( wxCommandEvent& event )
+{
+    // TODO: More work to do about sharing and combining contacts
+    // when changing links between Researchers and Individuals.
+    int indID = rgSelectIndividual( this );
     if( indID == 0 ) {
         return;
     }
-    m_list.FSetIndID( 0 );
-    // Look for an existing list for the new Individual
-    idt newCLID = recContactList::FindIndID( indID );
-    if( newCLID ) {
-        // Add Contacts 
-        m_list.Assimilate( newCLID );
-    }
     m_list.FSetIndID( indID );
     m_list.Save();
-    m_staticIndName->SetLabel( recIndividual::GetName( indID ) );
-    m_staticIndID->SetLabel( recIndividual::GetIdStr( indID ) );
+    UpdateIndividual();
+    UpdateContacts( -1 );
 }
 
-void rgDlgEditResearcher::OnOptnChange( wxCommandEvent& event )
+void rgDlgEditResearcher::ContactButtonsEnable( int row )
 {
-    AddIndLink();
-}
-
-void rgDlgEditResearcher::OnOptnUnlink( wxCommandEvent& event )
-{
-    // TODO: Currently the Researcher retains the contact list
-    // and the Individual will no longer have a contact list.
-    // We should give the option for the list to be retained by the
-    // Researcher or by the Individual, or duplicated and held by both.
-    // If duplicated we should advise that both lists should be checked
-    // and inapproriate contacts deleted.
-    m_list.FSetIndID( 0 );
-    m_staticIndName->SetLabel( "" );
-    m_staticIndID->SetLabel( "" );
-}
-
-void rgDlgEditResearcher::OnButtonInd( wxCommandEvent& event )
-{
-    if( m_list.FGetIndID() == 0 ) {
-        AddIndLink();
+    // TODO: Add list sequence field to Contact table
+    if( row < 0 ) {
+        m_buttonEdit->Disable();
+        m_buttonDelete->Disable();
         return;
     }
-    wxMenu* menu = new wxMenu;
-    wxMenuItem* optnChange = menu->Append( wxID_ANY, _("&Change") );
-    wxMenuItem* optnUnlink = menu->Append( wxID_ANY, _("&Unlink") );
-    rgCONNECT_MI( optnChange, rgDlgEditResearcher::OnOptnChange );
-    rgCONNECT_MI( optnUnlink, rgDlgEditResearcher::OnOptnUnlink );
-    PopupMenu( menu );
-    rgDISCONNECT_MI( optnChange, rgDlgEditResearcher::OnOptnChange );
-    rgDISCONNECT_MI( optnUnlink, rgDlgEditResearcher::OnOptnUnlink );
-    delete menu;
+    m_buttonEdit->Enable();
+    m_buttonDelete->Enable();
+}
+
+void rgDlgEditResearcher::OnContactDeselected( wxListEvent& event )
+{
+    ContactButtonsEnable( -1 );
+}
+
+void rgDlgEditResearcher::OnContactSelected( wxListEvent& event )
+{
+    long row = m_listContacts->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    ContactButtonsEnable( row );
 }
 
 void rgDlgEditResearcher::OnButtonAdd( wxCommandEvent& event )
 {
     idt conID = rgCreateContact( this, m_list.FGetID() );
     if( conID ) {
-        recContact con(conID);
-        int row = m_contacts.size();
-        m_listContacts->InsertItem( row, con.GetIdStr() );
-        m_listContacts->SetItem( row, COL_Type, con.GetTypeStr() );
-        m_listContacts->SetItem( row, COL_Value, con.FGetValue() );
-        m_contacts.push_back( con );
+        UpdateContacts( conID );
     }
 }
 
 void rgDlgEditResearcher::OnButtonEdit( wxCommandEvent& event )
 {
     long row = m_listContacts->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-    if( row < 0 ) {
-        wxMessageBox( _("No row selected"), _("Edit Contact") );
-        return;
-    }
-    if( rgEditContact( this, m_contacts[row].FGetID() ) ) {
-        m_contacts[row].Read();
-        m_listContacts->SetItem( row, COL_ConID, m_contacts[row].GetIdStr() );
-        m_listContacts->SetItem( row, COL_Type, m_contacts[row].GetTypeStr() );
-        m_listContacts->SetItem( row, COL_Value, m_contacts[row].FGetValue() );
+    wxASSERT( row != wxNOT_FOUND ); // Should not have been enabled then!
+    idt conID = m_contacts[row].FGetID();
+    if( rgEditContact( this, conID ) ) {
+        UpdateContacts( conID );
     }
 }
 
 void rgDlgEditResearcher::OnButtonDelete( wxCommandEvent& event )
 {
     long row = m_listContacts->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-    if( row >= 0 ) {
-        m_listContacts->DeleteItem( row );
+    wxASSERT( row != wxNOT_FOUND ); // Should not have been enabled then!
+    idt conID = m_contacts[row].FGetID();
+    wxMessageDialog dlg(
+        this,
+        m_contacts[row].GetIdStr() + ": " +
+        m_contacts[row].GetTypeStr() + ":\n" +
+        m_contacts[row].FGetValue() +
+        "\n Remove Citation from database?",
+        "Confirm Delete", wxOK | wxCANCEL | wxCENTRE
+    );
+    if( dlg.ShowModal() == wxID_OK ) {
         m_contacts[row].Delete();
-        m_contacts.erase( m_contacts.begin() + row );
-    } else {
-        wxMessageBox( _("No row selected"), _("Delete Contact") );
+        UpdateContacts( -1 );
     }
 }
 

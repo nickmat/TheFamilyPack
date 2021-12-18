@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Oct 26 2018)
+// C++ code generated with wxFormBuilder (version 3.10.1-0-g8feb16b3)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -23,10 +23,10 @@ class rgRecEventTableCtrl;
 #include <wx/sizer.h>
 #include <wx/textctrl.h>
 #include <wx/statline.h>
+#include <wx/button.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
-#include <wx/button.h>
 #include <wx/dialog.h>
 #include <wx/checkbox.h>
 #include <wx/panel.h>
@@ -63,13 +63,14 @@ class fbRgCreateIndividual : public wxDialog
 		wxButton* m_buttonSave1;
 		wxButton* m_buttonCancel1;
 
-		// Virtual event handlers, overide them in your derived class
+		// Virtual event handlers, override them in your derived class
 		virtual void OnIdle( wxIdleEvent& event ) { event.Skip(); }
 
 
 	public:
 
 		fbRgCreateIndividual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Create Individual"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxSYSTEM_MENU );
+
 		~fbRgCreateIndividual();
 
 };
@@ -99,6 +100,7 @@ class fbRgCreateName : public wxDialog
 	public:
 
 		fbRgCreateName( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Create Name"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+
 		~fbRgCreateName();
 
 };
@@ -123,6 +125,7 @@ class fbRgEditContact : public wxDialog
 	public:
 
 		fbRgEditContact( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Contact"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+
 		~fbRgEditContact();
 
 };
@@ -150,13 +153,14 @@ class fbRgEditDate : public wxDialog
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
 
-		// Virtual event handlers, overide them in your derived class
+		// Virtual event handlers, override them in your derived class
 		virtual void OnIdle( wxIdleEvent& event ) { event.Skip(); }
 
 
 	public:
 
 		fbRgEditDate( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Date"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+
 		~fbRgEditDate();
 
 };
@@ -197,7 +201,7 @@ class fbRgEditEvent : public wxDialog
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
 
-		// Virtual event handlers, overide them in your derived class
+		// Virtual event handlers, override them in your derived class
 		virtual void OnDate1Button( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDate2Button( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPlaceButton( wxCommandEvent& event ) { event.Skip(); }
@@ -212,6 +216,7 @@ class fbRgEditEvent : public wxDialog
 	public:
 
 		fbRgEditEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+
 		~fbRgEditEvent();
 
 };
@@ -242,6 +247,7 @@ class fbRgEditEventEventa : public wxDialog
 	public:
 
 		fbRgEditEventEventa( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Link Event to Eventa"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+
 		~fbRgEditEventEventa();
 
 };
@@ -283,7 +289,7 @@ class fbRgEditEventa : public wxDialog
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
 
-		// Virtual event handlers, overide them in your derived class
+		// Virtual event handlers, override them in your derived class
 		virtual void OnDate1Button( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDate2Button( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPlaceButton( wxCommandEvent& event ) { event.Skip(); }
@@ -298,6 +304,7 @@ class fbRgEditEventa : public wxDialog
 	public:
 
 		fbRgEditEventa( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Eventa"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+
 		~fbRgEditEventa();
 
 };
@@ -323,7 +330,7 @@ class fbRgEditEventType : public wxDialog
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
 
-		// Virtual event handlers, overide them in your derived class
+		// Virtual event handlers, override them in your derived class
 		virtual void OnButtonRoleAdd( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnButtonRoleEdit( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnButtonRoleDelete( wxCommandEvent& event ) { event.Skip(); }
@@ -332,6 +339,7 @@ class fbRgEditEventType : public wxDialog
 	public:
 
 		fbRgEditEventType( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Event Type"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+
 		~fbRgEditEventType();
 
 };
@@ -371,7 +379,7 @@ class fbRgEditFamily : public wxDialog
 		wxButton* m_buttonSave1;
 		wxButton* m_buttonCancel1;
 
-		// Virtual event handlers, overide them in your derived class
+		// Virtual event handlers, override them in your derived class
 		virtual void OnPageChanged( wxNotebookEvent& event ) { event.Skip(); }
 		virtual void OnHusbButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnWifeButton( wxCommandEvent& event ) { event.Skip(); }
@@ -395,6 +403,7 @@ class fbRgEditFamily : public wxDialog
 	public:
 
 		fbRgEditFamily( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Family"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+
 		~fbRgEditFamily();
 
 };
@@ -438,7 +447,7 @@ class fbRgEditIndividual : public wxDialog
 		wxButton* m_buttonSave1;
 		wxButton* m_buttonCancel1;
 
-		// Virtual event handlers, overide them in your derived class
+		// Virtual event handlers, override them in your derived class
 		virtual void OnPageChanged( wxNotebookEvent& event ) { event.Skip(); }
 		virtual void OnNameAddButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnNameEditButton( wxCommandEvent& event ) { event.Skip(); }
@@ -456,6 +465,7 @@ class fbRgEditIndividual : public wxDialog
 	public:
 
 		fbRgEditIndividual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Individual"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+
 		~fbRgEditIndividual();
 
 };
@@ -483,7 +493,7 @@ class fbRgEditName : public wxDialog
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
 
-		// Virtual event handlers, overide them in your derived class
+		// Virtual event handlers, override them in your derived class
 		virtual void OnPartAddButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPartEditButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPartDeleteButton( wxCommandEvent& event ) { event.Skip(); }
@@ -494,6 +504,7 @@ class fbRgEditName : public wxDialog
 	public:
 
 		fbRgEditName( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Name"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+
 		~fbRgEditName();
 
 };
@@ -518,6 +529,7 @@ class fbRgEditNamePart : public wxDialog
 	public:
 
 		fbRgEditNamePart( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Name Part"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+
 		~fbRgEditNamePart();
 
 };
@@ -561,7 +573,7 @@ class fbRgEditPersona : public wxDialog
 		wxButton* m_buttonSave1;
 		wxButton* m_buttonCancel1;
 
-		// Virtual event handlers, overide them in your derived class
+		// Virtual event handlers, override them in your derived class
 		virtual void OnPageChanged( wxNotebookEvent& event ) { event.Skip(); }
 		virtual void OnIndLinkButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnNameAddButton( wxCommandEvent& event ) { event.Skip(); }
@@ -580,6 +592,7 @@ class fbRgEditPersona : public wxDialog
 	public:
 
 		fbRgEditPersona( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Persona"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+
 		~fbRgEditPersona();
 
 };
@@ -602,6 +615,7 @@ class fbRgEditPlace : public wxDialog
 	public:
 
 		fbRgEditPlace( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Place"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+
 		~fbRgEditPlace();
 
 };
@@ -634,7 +648,7 @@ class fbRgEditRelativeDate : public wxDialog
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
 
-		// Virtual event handlers, overide them in your derived class
+		// Virtual event handlers, override them in your derived class
 		virtual void OnIdle( wxIdleEvent& event ) { event.Skip(); }
 		virtual void OnBaseButton( wxCommandEvent& event ) { event.Skip(); }
 
@@ -642,47 +656,8 @@ class fbRgEditRelativeDate : public wxDialog
 	public:
 
 		fbRgEditRelativeDate( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Relative Date"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+
 		~fbRgEditRelativeDate();
-
-};
-
-///////////////////////////////////////////////////////////////////////////////
-/// Class fbRgEditResearcher
-///////////////////////////////////////////////////////////////////////////////
-class fbRgEditResearcher : public wxDialog
-{
-	private:
-
-	protected:
-		wxStaticText* m_staticText64;
-		wxTextCtrl* m_textCtrlName;
-		wxStaticText* m_staticText65;
-		wxTextCtrl* m_textCtrlComment;
-		wxButton* m_buttonInd;
-		wxStaticText* m_staticIndName;
-		wxStaticText* m_staticIndID;
-		wxListCtrl* m_listContacts;
-		wxButton* m_buttonAdd;
-		wxButton* m_buttonEdit;
-		wxButton* m_buttonDelete;
-		wxStaticLine* m_staticline14;
-		wxStaticText* m_staticResID;
-		wxCheckBox* m_checkBoxUser;
-		wxStaticText* m_staticUserID;
-		wxButton* m_buttonSave1;
-		wxButton* m_buttonCancel1;
-
-		// Virtual event handlers, overide them in your derived class
-		virtual void OnButtonInd( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnButtonAdd( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnButtonEdit( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnButtonDelete( wxCommandEvent& event ) { event.Skip(); }
-
-
-	public:
-
-		fbRgEditResearcher( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Researcher"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE );
-		~fbRgEditResearcher();
 
 };
 
@@ -709,13 +684,14 @@ class fbRgEditRole : public wxDialog
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
 
-		// Virtual event handlers, overide them in your derived class
+		// Virtual event handlers, override them in your derived class
 		virtual void OnChoicePrime( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:
 
 		fbRgEditRole( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Role"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 300,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+
 		~fbRgEditRole();
 
 };
@@ -737,6 +713,7 @@ class fbRgEditSystem : public wxDialog
 	public:
 
 		fbRgEditSystem( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("System Settings"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+
 		~fbRgEditSystem();
 
 };
@@ -761,6 +738,7 @@ class fbRgEditUserSettings : public wxDialog
 	public:
 
 		fbRgEditUserSettings( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("User Settings"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+
 		~fbRgEditUserSettings();
 
 };
@@ -788,13 +766,14 @@ class fbRgPerIndEvent : public wxDialog
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
 
-		// Virtual event handlers, overide them in your derived class
+		// Virtual event handlers, override them in your derived class
 		virtual void OnRoleButton( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:
 
 		fbRgPerIndEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Link Individual to Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 400,250 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+
 		~fbRgPerIndEvent();
 
 };
@@ -826,7 +805,7 @@ class fbRgSelectEvent : public wxDialog
 		wxButton* m_buttonSelect;
 		wxButton* m_buttonCancel;
 
-		// Virtual event handlers, overide them in your derived class
+		// Virtual event handlers, override them in your derived class
 		virtual void OnIdle( wxIdleEvent& event ) { event.Skip(); }
 		virtual void OnGroupCheckSelect( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnGroupCheckToggled( wxCommandEvent& event ) { event.Skip(); }
@@ -847,6 +826,7 @@ class fbRgSelectEvent : public wxDialog
 	public:
 
 		fbRgSelectEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Select Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+
 		~fbRgSelectEvent();
 
 };

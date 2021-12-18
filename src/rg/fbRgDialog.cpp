@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Oct 26 2018)
+// C++ code generated with wxFormBuilder (version 3.10.1-0-g8feb16b3)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -38,7 +38,7 @@ fbRgCreateIndividual::fbRgCreateIndividual( wxWindow* parent, wxWindowID id, con
 
 	m_staticName = new wxStaticText( this, wxID_ANY, _("Name"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticName->Wrap( -1 );
-	m_staticName->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxEmptyString ) );
+	m_staticName->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
 	bSizer92->Add( m_staticName, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -104,7 +104,7 @@ fbRgCreateIndividual::fbRgCreateIndividual( wxWindow* parent, wxWindowID id, con
 
 	m_staticIndID = new wxStaticText( this, wxID_ANY, _("I0"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticIndID->Wrap( -1 );
-	m_staticIndID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Times New Roman") ) );
+	m_staticIndID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxT("Times New Roman") ) );
 
 	bSizerDismiss->Add( m_staticIndID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -191,7 +191,7 @@ fbRgCreateName::fbRgCreateName( wxWindow* parent, wxWindowID id, const wxString&
 
 	m_staticNameID = new wxStaticText( this, wxID_ANY, _("N0"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticNameID->Wrap( -1 );
-	m_staticNameID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Times New Roman") ) );
+	m_staticNameID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxT("Times New Roman") ) );
 
 	fgSizer20->Add( m_staticNameID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 2 );
 
@@ -200,7 +200,7 @@ fbRgCreateName::fbRgCreateName( wxWindow* parent, wxWindowID id, const wxString&
 
 	m_staticPerIndID = new wxStaticText( this, wxID_ANY, _("Pa0"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticPerIndID->Wrap( -1 );
-	m_staticPerIndID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Times New Roman") ) );
+	m_staticPerIndID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxT("Times New Roman") ) );
 
 	fgSizer20->Add( m_staticPerIndID, 0, wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT|wxLEFT, 2 );
 
@@ -272,7 +272,7 @@ fbRgEditContact::fbRgEditContact( wxWindow* parent, wxWindowID id, const wxStrin
 
 	m_staticContactID = new wxStaticText( this, wxID_ANY, _("C0"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticContactID->Wrap( -1 );
-	m_staticContactID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Times New Roman") ) );
+	m_staticContactID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxT("Times New Roman") ) );
 
 	bSizerDismiss->Add( m_staticContactID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -316,7 +316,7 @@ fbRgEditDate::fbRgEditDate( wxWindow* parent, wxWindowID id, const wxString& tit
 
 	m_staticOutput = new wxStaticText( this, wxID_ANY, _("Date String"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticOutput->Wrap( -1 );
-	m_staticOutput->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxEmptyString ) );
+	m_staticOutput->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
 	fgSizer11->Add( m_staticOutput, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -368,7 +368,7 @@ fbRgEditDate::fbRgEditDate( wxWindow* parent, wxWindowID id, const wxString& tit
 
 	m_staticDateID = new wxStaticText( this, wxID_ANY, _("R0"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticDateID->Wrap( -1 );
-	m_staticDateID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Times New Roman") ) );
+	m_staticDateID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxT("Times New Roman") ) );
 
 	bSizerDismiss->Add( m_staticDateID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -439,7 +439,7 @@ fbRgEditEvent::fbRgEditEvent( wxWindow* parent, wxWindowID id, const wxString& t
 
 	m_staticType = new wxStaticText( m_panel1, wxID_ANY, _("Birth"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticType->Wrap( -1 );
-	m_staticType->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxEmptyString ) );
+	m_staticType->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
 	fgSizer10->Add( m_staticType, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -557,7 +557,7 @@ fbRgEditEvent::fbRgEditEvent( wxWindow* parent, wxWindowID id, const wxString& t
 
 	m_staticEventID = new wxStaticText( this, wxID_ANY, _("E0"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticEventID->Wrap( -1 );
-	m_staticEventID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Times New Roman") ) );
+	m_staticEventID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxT("Times New Roman") ) );
 
 	bSizerDismiss->Add( m_staticEventID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -627,7 +627,7 @@ fbRgEditEventEventa::fbRgEditEventEventa( wxWindow* parent, wxWindowID id, const
 
 	m_staticEvent = new wxStaticText( this, wxID_ANY, _("E0: Title"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticEvent->Wrap( -1 );
-	m_staticEvent->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxEmptyString ) );
+	m_staticEvent->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
 	fgSizer3->Add( m_staticEvent, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -637,7 +637,7 @@ fbRgEditEventEventa::fbRgEditEventEventa( wxWindow* parent, wxWindowID id, const
 
 	m_staticEventa = new wxStaticText( this, wxID_ANY, _("Ea0: Title"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticEventa->Wrap( -1 );
-	m_staticEventa->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxEmptyString ) );
+	m_staticEventa->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
 	fgSizer3->Add( m_staticEventa, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -647,7 +647,7 @@ fbRgEditEventEventa::fbRgEditEventEventa( wxWindow* parent, wxWindowID id, const
 
 	m_staticRef = new wxStaticText( this, wxID_ANY, _("R0: Title"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticRef->Wrap( -1 );
-	m_staticRef->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxEmptyString ) );
+	m_staticRef->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
 	fgSizer3->Add( m_staticRef, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -676,7 +676,7 @@ fbRgEditEventEventa::fbRgEditEventEventa( wxWindow* parent, wxWindowID id, const
 
 	m_staticEvEvRecID = new wxStaticText( this, wxID_ANY, _("EEa0"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticEvEvRecID->Wrap( -1 );
-	m_staticEvEvRecID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxEmptyString ) );
+	m_staticEvEvRecID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
 	bSizerDismiss->Add( m_staticEvEvRecID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -737,7 +737,7 @@ fbRgEditEventa::fbRgEditEventa( wxWindow* parent, wxWindowID id, const wxString&
 
 	m_staticType = new wxStaticText( m_panel1, wxID_ANY, _("Birth"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticType->Wrap( -1 );
-	m_staticType->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxEmptyString ) );
+	m_staticType->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
 	fgSizer10->Add( m_staticType, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -850,7 +850,7 @@ fbRgEditEventa::fbRgEditEventa( wxWindow* parent, wxWindowID id, const wxString&
 
 	m_staticEventaID = new wxStaticText( this, wxID_ANY, _("Ea0"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticEventaID->Wrap( -1 );
-	m_staticEventaID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Times New Roman") ) );
+	m_staticEventaID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxT("Times New Roman") ) );
 
 	bSizerDismiss->Add( m_staticEventaID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -958,7 +958,7 @@ fbRgEditEventType::fbRgEditEventType( wxWindow* parent, wxWindowID id, const wxS
 
 	m_staticTypeID = new wxStaticText( this, wxID_ANY, _("ET0"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTypeID->Wrap( -1 );
-	m_staticTypeID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Times New Roman") ) );
+	m_staticTypeID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxT("Times New Roman") ) );
 
 	bSizerDismiss->Add( m_staticTypeID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -1006,7 +1006,7 @@ fbRgEditFamily::fbRgEditFamily( wxWindow* parent, wxWindowID id, const wxString&
 
 	m_staticNames = new wxStaticText( this, wxID_ANY, _("Name and Name"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticNames->Wrap( -1 );
-	m_staticNames->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxEmptyString ) );
+	m_staticNames->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
 	bSizer118->Add( m_staticNames, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
@@ -1145,7 +1145,7 @@ fbRgEditFamily::fbRgEditFamily( wxWindow* parent, wxWindowID id, const wxString&
 
 	m_staticFamID = new wxStaticText( this, wxID_ANY, _("F0"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticFamID->Wrap( -1 );
-	m_staticFamID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Times New Roman") ) );
+	m_staticFamID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxT("Times New Roman") ) );
 
 	bSizerDismiss->Add( m_staticFamID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -1227,7 +1227,7 @@ fbRgEditIndividual::fbRgEditIndividual( wxWindow* parent, wxWindowID id, const w
 
 	m_staticPerName = new wxStaticText( this, wxID_ANY, _("Name"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticPerName->Wrap( -1 );
-	m_staticPerName->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxEmptyString ) );
+	m_staticPerName->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
 	bSizer99->Add( m_staticPerName, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -1247,7 +1247,7 @@ fbRgEditIndividual::fbRgEditIndividual( wxWindow* parent, wxWindowID id, const w
 
 	m_staticTextEpitaph = new wxStaticText( m_panel1, wxID_ANY, _("Dates"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextEpitaph->Wrap( -1 );
-	m_staticTextEpitaph->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxEmptyString ) );
+	m_staticTextEpitaph->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
 	bSizer102->Add( m_staticTextEpitaph, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -1400,7 +1400,7 @@ fbRgEditIndividual::fbRgEditIndividual( wxWindow* parent, wxWindowID id, const w
 
 	m_staticIndID = new wxStaticText( this, wxID_ANY, _("I0"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticIndID->Wrap( -1 );
-	m_staticIndID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Times New Roman") ) );
+	m_staticIndID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxT("Times New Roman") ) );
 
 	bSizerDismiss->Add( m_staticIndID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -1472,7 +1472,7 @@ fbRgEditName::fbRgEditName( wxWindow* parent, wxWindowID id, const wxString& tit
 
 	m_staticName = new wxStaticText( this, wxID_ANY, _("Name"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticName->Wrap( -1 );
-	m_staticName->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxEmptyString ) );
+	m_staticName->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
 	fgSizer11->Add( m_staticName, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -1538,7 +1538,7 @@ fbRgEditName::fbRgEditName( wxWindow* parent, wxWindowID id, const wxString& tit
 
 	m_staticNameID = new wxStaticText( this, wxID_ANY, _("N0"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticNameID->Wrap( -1 );
-	m_staticNameID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Times New Roman") ) );
+	m_staticNameID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxT("Times New Roman") ) );
 
 	bSizerDismiss->Add( m_staticNameID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -1619,7 +1619,7 @@ fbRgEditNamePart::fbRgEditNamePart( wxWindow* parent, wxWindowID id, const wxStr
 
 	m_staticNamePartID = new wxStaticText( this, wxID_ANY, _("NP0:N0"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticNamePartID->Wrap( -1 );
-	m_staticNamePartID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Times New Roman") ) );
+	m_staticNamePartID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxT("Times New Roman") ) );
 
 	bSizerDismiss->Add( m_staticNamePartID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -1663,7 +1663,7 @@ fbRgEditPersona::fbRgEditPersona( wxWindow* parent, wxWindowID id, const wxStrin
 
 	m_staticPerName = new wxStaticText( this, wxID_ANY, _("Name"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticPerName->Wrap( -1 );
-	m_staticPerName->SetFont( wxFont( 10, wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxEmptyString ) );
+	m_staticPerName->SetFont( wxFont( 10, wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
 	bSizer64->Add( m_staticPerName, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -1731,7 +1731,7 @@ fbRgEditPersona::fbRgEditPersona( wxWindow* parent, wxWindowID id, const wxStrin
 
 	m_staticIndId = new wxStaticText( m_panel1, wxID_ANY, _("I0"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticIndId->Wrap( -1 );
-	m_staticIndId->SetFont( wxFont( 10, wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxEmptyString ) );
+	m_staticIndId->SetFont( wxFont( 10, wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
 	bSizer70->Add( m_staticIndId, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
@@ -1848,7 +1848,7 @@ fbRgEditPersona::fbRgEditPersona( wxWindow* parent, wxWindowID id, const wxStrin
 
 	m_staticPerID = new wxStaticText( this, wxID_ANY, _("Pa0"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticPerID->Wrap( -1 );
-	m_staticPerID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxEmptyString ) );
+	m_staticPerID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
 	bSizerDismiss->Add( m_staticPerID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -1932,7 +1932,7 @@ fbRgEditPlace::fbRgEditPlace( wxWindow* parent, wxWindowID id, const wxString& t
 
 	m_staticPlaceID = new wxStaticText( this, wxID_ANY, _("P0"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticPlaceID->Wrap( -1 );
-	m_staticPlaceID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Times New Roman") ) );
+	m_staticPlaceID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxT("Times New Roman") ) );
 
 	bSizerDismiss->Add( m_staticPlaceID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -1978,7 +1978,7 @@ fbRgEditRelativeDate::fbRgEditRelativeDate( wxWindow* parent, wxWindowID id, con
 
 	m_staticOutput = new wxStaticText( this, wxID_ANY, _("Date String"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticOutput->Wrap( -1 );
-	m_staticOutput->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxEmptyString ) );
+	m_staticOutput->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
 	fgSizer11->Add( m_staticOutput, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -2054,7 +2054,7 @@ fbRgEditRelativeDate::fbRgEditRelativeDate( wxWindow* parent, wxWindowID id, con
 
 	m_staticDateID = new wxStaticText( this, wxID_ANY, _("R0"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticDateID->Wrap( -1 );
-	m_staticDateID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Times New Roman") ) );
+	m_staticDateID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxT("Times New Roman") ) );
 
 	bSizerDismiss->Add( m_staticDateID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -2090,142 +2090,6 @@ fbRgEditRelativeDate::~fbRgEditRelativeDate()
 
 }
 
-fbRgEditResearcher::fbRgEditResearcher( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
-{
-	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
-
-	wxBoxSizer* bSizer48;
-	bSizer48 = new wxBoxSizer( wxVERTICAL );
-
-	wxFlexGridSizer* fgSizer12;
-	fgSizer12 = new wxFlexGridSizer( 0, 2, 0, 0 );
-	fgSizer12->AddGrowableCol( 1 );
-	fgSizer12->AddGrowableRow( 1 );
-	fgSizer12->SetFlexibleDirection( wxBOTH );
-	fgSizer12->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-
-	m_staticText64 = new wxStaticText( this, wxID_ANY, _("Name:"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText64->Wrap( -1 );
-	fgSizer12->Add( m_staticText64, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
-
-	m_textCtrlName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer12->Add( m_textCtrlName, 1, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
-
-	m_staticText65 = new wxStaticText( this, wxID_ANY, _("Comment:"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText65->Wrap( -1 );
-	fgSizer12->Add( m_staticText65, 0, wxALL|wxALIGN_RIGHT, 5 );
-
-	m_textCtrlComment = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_WORDWRAP );
-	fgSizer12->Add( m_textCtrlComment, 1, wxALL|wxEXPAND, 5 );
-
-	m_buttonInd = new wxButton( this, wxID_ANY, _("Individual:"), wxDefaultPosition, wxDefaultSize, wxBU_RIGHT );
-	fgSizer12->Add( m_buttonInd, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT, 5 );
-
-	wxBoxSizer* bSizer54;
-	bSizer54 = new wxBoxSizer( wxHORIZONTAL );
-
-	m_staticIndName = new wxStaticText( this, wxID_ANY, _("Individual"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticIndName->Wrap( -1 );
-	m_staticIndName->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxEmptyString ) );
-
-	bSizer54->Add( m_staticIndName, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
-
-
-	bSizer54->Add( 0, 0, 1, wxEXPAND, 5 );
-
-	m_staticIndID = new wxStaticText( this, wxID_ANY, _("I0"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticIndID->Wrap( -1 );
-	m_staticIndID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Times New Roman") ) );
-
-	bSizer54->Add( m_staticIndID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
-
-
-	fgSizer12->Add( bSizer54, 1, wxEXPAND, 5 );
-
-
-	bSizer48->Add( fgSizer12, 1, wxEXPAND, 5 );
-
-	wxBoxSizer* bSizer49;
-	bSizer49 = new wxBoxSizer( wxHORIZONTAL );
-
-	m_listContacts = new wxListCtrl( this, wxID_ANY, wxDefaultPosition, wxSize( 300,125 ), wxLC_HRULES|wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_VRULES );
-	bSizer49->Add( m_listContacts, 1, wxALL|wxEXPAND, 5 );
-
-	wxBoxSizer* bSizer50;
-	bSizer50 = new wxBoxSizer( wxVERTICAL );
-
-	m_buttonAdd = new wxButton( this, wxID_ANY, _("Add"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer50->Add( m_buttonAdd, 0, wxALL, 5 );
-
-	m_buttonEdit = new wxButton( this, wxID_ANY, _("Edit"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer50->Add( m_buttonEdit, 0, wxBOTTOM|wxRIGHT|wxLEFT, 5 );
-
-	m_buttonDelete = new wxButton( this, wxID_ANY, _("Delete"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer50->Add( m_buttonDelete, 0, wxBOTTOM|wxRIGHT|wxLEFT, 5 );
-
-
-	bSizer49->Add( bSizer50, 0, wxEXPAND, 5 );
-
-
-	bSizer48->Add( bSizer49, 1, wxEXPAND, 5 );
-
-	m_staticline14 = new wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
-	bSizer48->Add( m_staticline14, 0, wxEXPAND | wxALL, 0 );
-
-	wxBoxSizer* bSizerDismiss;
-	bSizerDismiss = new wxBoxSizer( wxHORIZONTAL );
-
-	m_staticResID = new wxStaticText( this, wxID_ANY, _("Re0"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticResID->Wrap( -1 );
-	m_staticResID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Times New Roman") ) );
-
-	bSizerDismiss->Add( m_staticResID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
-
-	m_checkBoxUser = new wxCheckBox( this, wxID_ANY, _("User"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizerDismiss->Add( m_checkBoxUser, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
-
-	m_staticUserID = new wxStaticText( this, wxID_ANY, _("U0"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticUserID->Wrap( -1 );
-	m_staticUserID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Times New Roman") ) );
-
-	bSizerDismiss->Add( m_staticUserID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
-
-
-	bSizerDismiss->Add( 0, 0, 1, wxEXPAND, 5 );
-
-	m_buttonSave1 = new wxButton( this, wxID_OK, _("Save"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizerDismiss->Add( m_buttonSave1, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxLEFT, 5 );
-
-	m_buttonCancel1 = new wxButton( this, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizerDismiss->Add( m_buttonCancel1, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-
-
-	bSizer48->Add( bSizerDismiss, 0, wxEXPAND, 5 );
-
-
-	this->SetSizer( bSizer48 );
-	this->Layout();
-	bSizer48->Fit( this );
-
-	this->Centre( wxBOTH );
-
-	// Connect Events
-	m_buttonInd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditResearcher::OnButtonInd ), NULL, this );
-	m_buttonAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditResearcher::OnButtonAdd ), NULL, this );
-	m_buttonEdit->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditResearcher::OnButtonEdit ), NULL, this );
-	m_buttonDelete->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditResearcher::OnButtonDelete ), NULL, this );
-}
-
-fbRgEditResearcher::~fbRgEditResearcher()
-{
-	// Disconnect Events
-	m_buttonInd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditResearcher::OnButtonInd ), NULL, this );
-	m_buttonAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditResearcher::OnButtonAdd ), NULL, this );
-	m_buttonEdit->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditResearcher::OnButtonEdit ), NULL, this );
-	m_buttonDelete->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditResearcher::OnButtonDelete ), NULL, this );
-
-}
-
 fbRgEditRole::fbRgEditRole( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
@@ -2250,7 +2114,7 @@ fbRgEditRole::fbRgEditRole( wxWindow* parent, wxWindowID id, const wxString& tit
 
 	m_staticEventType = new wxStaticText( this, wxID_ANY, _("Event Type"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticEventType->Wrap( -1 );
-	m_staticEventType->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("MS Shell Dlg 2") ) );
+	m_staticEventType->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxT("MS Shell Dlg 2") ) );
 
 	bSizer111->Add( m_staticEventType, 0, wxALL|wxALIGN_BOTTOM, 5 );
 
@@ -2259,7 +2123,7 @@ fbRgEditRole::fbRgEditRole( wxWindow* parent, wxWindowID id, const wxString& tit
 
 	m_staticEventTypeID = new wxStaticText( this, wxID_ANY, _("ET0"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticEventTypeID->Wrap( -1 );
-	m_staticEventTypeID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Times New Roman") ) );
+	m_staticEventTypeID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxT("Times New Roman") ) );
 
 	bSizer111->Add( m_staticEventTypeID, 0, wxALL|wxALIGN_BOTTOM, 5 );
 
@@ -2274,7 +2138,7 @@ fbRgEditRole::fbRgEditRole( wxWindow* parent, wxWindowID id, const wxString& tit
 
 	m_staticTypeGroup = new wxStaticText( this, wxID_ANY, _("Type Group"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTypeGroup->Wrap( -1 );
-	m_staticTypeGroup->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("MS Shell Dlg 2") ) );
+	m_staticTypeGroup->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxT("MS Shell Dlg 2") ) );
 
 	fgSizer11->Add( m_staticTypeGroup, 0, wxALL, 5 );
 
@@ -2317,7 +2181,7 @@ fbRgEditRole::fbRgEditRole( wxWindow* parent, wxWindowID id, const wxString& tit
 
 	m_staticRoleID = new wxStaticText( this, wxID_ANY, _("R0"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticRoleID->Wrap( -1 );
-	m_staticRoleID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Times New Roman") ) );
+	m_staticRoleID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxT("Times New Roman") ) );
 
 	bSizerDismiss->Add( m_staticRoleID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -2427,7 +2291,7 @@ fbRgEditUserSettings::fbRgEditUserSettings( wxWindow* parent, wxWindowID id, con
 
 	m_staticUserName = new wxStaticText( this, wxID_ANY, _("Name"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticUserName->Wrap( -1 );
-	m_staticUserName->SetFont( wxFont( 10, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("MS Shell Dlg 2") ) );
+	m_staticUserName->SetFont( wxFont( 10, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxT("MS Shell Dlg 2") ) );
 
 	fgSizer15->Add( m_staticUserName, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -2449,7 +2313,7 @@ fbRgEditUserSettings::fbRgEditUserSettings( wxWindow* parent, wxWindowID id, con
 
 	m_staticUserID = new wxStaticText( this, wxID_ANY, _("U0"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticUserID->Wrap( -1 );
-	m_staticUserID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxEmptyString ) );
+	m_staticUserID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
 	bSizerDismiss->Add( m_staticUserID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -2498,7 +2362,7 @@ fbRgPerIndEvent::fbRgPerIndEvent( wxWindow* parent, wxWindowID id, const wxStrin
 
 	m_staticName = new wxStaticText( this, wxID_ANY, _("Name"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticName->Wrap( -1 );
-	m_staticName->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxEmptyString ) );
+	m_staticName->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
 	bSizer12->Add( m_staticName, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -2507,7 +2371,7 @@ fbRgPerIndEvent::fbRgPerIndEvent( wxWindow* parent, wxWindowID id, const wxStrin
 
 	m_staticNameID = new wxStaticText( this, wxID_ANY, _("I0"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticNameID->Wrap( -1 );
-	m_staticNameID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxEmptyString ) );
+	m_staticNameID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
 	bSizer12->Add( m_staticNameID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -2523,7 +2387,7 @@ fbRgPerIndEvent::fbRgPerIndEvent( wxWindow* parent, wxWindowID id, const wxStrin
 
 	m_staticEvent = new wxStaticText( this, wxID_ANY, _("Birth"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticEvent->Wrap( -1 );
-	m_staticEvent->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxEmptyString ) );
+	m_staticEvent->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
 	bSizer13->Add( m_staticEvent, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -2532,7 +2396,7 @@ fbRgPerIndEvent::fbRgPerIndEvent( wxWindow* parent, wxWindowID id, const wxStrin
 
 	m_staticEventID = new wxStaticText( this, wxID_ANY, _("E0"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticEventID->Wrap( -1 );
-	m_staticEventID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxEmptyString ) );
+	m_staticEventID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
 	bSizer13->Add( m_staticEventID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -2565,7 +2429,7 @@ fbRgPerIndEvent::fbRgPerIndEvent( wxWindow* parent, wxWindowID id, const wxStrin
 
 	m_staticRoleID = new wxStaticText( this, wxID_ANY, _("IE0"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticRoleID->Wrap( -1 );
-	m_staticRoleID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxEmptyString ) );
+	m_staticRoleID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
 	bSizerDismiss->Add( m_staticRoleID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 

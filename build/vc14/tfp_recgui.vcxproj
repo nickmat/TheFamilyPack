@@ -123,6 +123,7 @@
     <ClCompile Include="..\..\src\rg\fb\fbRgEditGallery.cpp" />
     <ClCompile Include="..\..\src\rg\fb\fbRgEditMedia.cpp" />
     <ClCompile Include="..\..\src\rg\fb\fbRgEditReference.cpp" />
+    <ClCompile Include="..\..\src\rg\fb\fbRgEditResearcher.cpp" />
     <ClCompile Include="..\..\src\rg\fb\fbRgSelect.cpp" />
     <ClCompile Include="..\..\src\rg\fb\fbRgSetupDatabase.cpp" />
     <ClCompile Include="..\..\src\rg\fb\fbRgSetupReference.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="..\..\src\rg\fb\fbRgEditGallery.h" />
     <ClInclude Include="..\..\src\rg\fb\fbRgEditMedia.h" />
     <ClInclude Include="..\..\src\rg\fb\fbRgEditReference.h" />
+    <ClInclude Include="..\..\src\rg\fb\fbRgEditResearcher.h" />
     <ClInclude Include="..\..\src\rg\fb\fbRgSelect.h" />
     <ClInclude Include="..\..\src\rg\fb\fbRgSetupReference.h" />
     <ClInclude Include="..\..\src\rg\fb\fbRgViewMedia.h" />

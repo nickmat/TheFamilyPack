@@ -5,8 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     11th January 2013
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2013 .. 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -32,7 +31,7 @@
 #include <rec/recResearcher.h>
 #include <rec/recUser.h>
 
-#include "fbRgDialog.h"
+#include "fb/fbRgEditResearcher.h"
 #include "rgSelect.h"
 
 class rgDlgEditResearcher : public fbRgEditResearcher
@@ -46,21 +45,23 @@ public:
 private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
+    void UpdateIndividual();
+    void UpdateContacts( idt conID );
 
-    void AddIndLink();
-    void OnOptnChange( wxCommandEvent& event );
-    void OnOptnUnlink( wxCommandEvent& event );
+    void OnIndButton( wxCommandEvent& event ) override;
 
-    void OnButtonInd( wxCommandEvent& event );
-    void OnButtonAdd( wxCommandEvent& event );
-    void OnButtonEdit( wxCommandEvent& event );
-    void OnButtonDelete( wxCommandEvent& event );
-
+    void ContactButtonsEnable( int row );
+    void OnContactDeselected( wxListEvent& event ) override;
+    void OnContactSelected( wxListEvent& event ) override;
+    void OnButtonAdd( wxCommandEvent& event ) override;
+    void OnButtonEdit( wxCommandEvent& event ) override;
+    void OnButtonDelete( wxCommandEvent& event ) override;
 
     recResearcher  m_researcher;
-    recUser        m_user;
     recContactList m_list;
     recContactVec  m_contacts;
+    idt            m_userID;
+    idt            m_currentUserID;
 };
 
 //============================================================================

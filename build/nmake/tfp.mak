@@ -220,6 +220,7 @@ RECGUI_OBJECTS =  \
 	recgui_fbRgEditGallery.obj \
 	recgui_fbRgEditMedia.obj \
 	recgui_fbRgEditReference.obj \
+	recgui_fbRgEditResearcher.obj \
 	recgui_fbRgSelect.obj \
 	recgui_fbRgSetupDatabase.obj \
 	recgui_fbRgSetupReference.obj \
@@ -754,6 +755,9 @@ recgui_fbRgEditMedia.obj: .\..\..\src\rg\fb\fbRgEditMedia.cpp
 
 recgui_fbRgEditReference.obj: .\..\..\src\rg\fb\fbRgEditReference.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\fb\fbRgEditReference.cpp
+
+recgui_fbRgEditResearcher.obj: .\..\..\src\rg\fb\fbRgEditResearcher.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\fb\fbRgEditResearcher.cpp
 
 recgui_fbRgSelect.obj: .\..\..\src\rg\fb\fbRgSelect.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\fb\fbRgSelect.cpp
