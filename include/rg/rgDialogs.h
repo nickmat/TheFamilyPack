@@ -304,6 +304,9 @@ extern idt rgSelectEvent(
     recSelSetEvent* filter = NULL,
     unsigned* button = NULL );
 
+// See scr/rg/rgSetupDatabase.cpp
+extern bool rgSetupDatabase( wxWindow* wind, const wxString& daname );
+
 // See scr/rg/rgSetupReference.cpp
 extern idt rgGetRefSetupData( wxWindow* parent, idt assID );
 

@@ -1435,6 +1435,7 @@ bool TfpFrame::NewFile()
             unsigned flags = recDb::CREATE_DB_STD_EXT | recDb::CREATE_DB_ENUM_FN;
             if( recDb::CreateDb( path, flags ) == true )
             {
+                rgSetupDatabase( this, path );
                 SetDatabaseOpen( path );
                 // TODO: Put initilize database dialog here
                 DisplayHomePage();

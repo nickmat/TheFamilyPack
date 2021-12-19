@@ -36,12 +36,16 @@ class fbRgSetupDatabase : public wxDialog
 	private:
 
 	protected:
-		wxTextCtrl* m_textCtrlName;
-		wxButton* m_button3;
-		wxComboBox* m_comboBox2;
+		wxTextCtrl* m_textCtrlUserName;
+		wxButton* m_buttonContacts;
+		wxComboBox* m_comboBoxHomePage;
 		wxStaticText* m_staticDbName;
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
+
+		// Virtual event handlers, override them in your derived class
+		virtual void OnContactsButton( wxCommandEvent& event ) { event.Skip(); }
+
 
 	public:
 

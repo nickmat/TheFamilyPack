@@ -38,23 +38,26 @@
 #include "rgSetupDatabase.h"
 #include "rg/rgDialogs.h"
 
+#include <rec/recResearcher.h>
+#include <rec/recSystem.h>
 
-bool rgSetupDatabase( wxWindow * wind )
+/* Note, when this dialog is called we know no data has been entered
+ * yet into the database. So we can setup User U1 directly.
+ */
+
+bool rgSetupDatabase( wxWindow * wind, const wxString& dbname )
 {
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
-    bool ret = false;
 
-    rgDlgSetupDatabase dialog( wind );
+    rgDlgSetupDatabase dialog( wind, dbname );
 
     if ( dialog.ShowModal() == wxID_OK ) {
         recDb::ReleaseSavepoint( savepoint );
-        ret = true;
+        return true;
     }
-    else {
-        recDb::Rollback( savepoint );
-    }
-    return ret;
+    recDb::Rollback( savepoint );
+    return false;
 }
 
 
@@ -62,19 +65,67 @@ bool rgSetupDatabase( wxWindow * wind )
 //-------------------[ rgDlgSetupDatabase ]--------------------------------------
 //-------------------------------------------------------------------------------
 
-rgDlgSetupDatabase::rgDlgSetupDatabase( wxWindow* parent )
-    : fbRgSetupDatabase( parent )
+rgDlgSetupDatabase::rgDlgSetupDatabase( wxWindow* parent, const wxString& dbname )
+    : m_database_name(dbname),  fbRgSetupDatabase( parent )
 {
+    m_user_setting.Find( 1, recUserSetting::Property::home_screen );
 }
 
 bool rgDlgSetupDatabase::TransferDataToWindow()
 {
+    m_staticDbName->SetLabel( m_database_name );
+    recContactList cl( 0 );
+    cl.Save();
+    idt clID = cl.FGetID();
+    recResearcher res( 0 );
+    res.FSetID( 1 );
+    res.FSetConListID( clID );
+    res.Save();
+    recUser user( 1 );
+    user.FSetResID( res.FGetID() );
+    user.Save();
+    recSetCurrentUser( 1 );
     return true;
 }
 
 bool rgDlgSetupDatabase::TransferDataFromWindow()
 {
+    SetResearcherName();
+    wxString home = m_comboBoxHomePage->GetValue();
+    home.Trim( false );
+    if( !home.empty() ) {
+        size_t pos = home.find( ' ' );
+        if( pos != wxString::npos ) {
+            home = home.substr( 0, pos - 1 );
+        }
+        if( home.compare( "F1" ) == 0 ) {
+            recFamily fam( 0 );
+            fam.FSetID( 1 );
+            fam.Save();
+        }
+        m_user_setting.FSetValue( home );
+        m_user_setting.Save();
+    }
     return true;
+}
+
+void rgDlgSetupDatabase::SetResearcherName()
+{
+    wxString name = m_textCtrlUserName->GetValue();
+    if( !name.empty() ) {
+        recResearcher res( 1 );
+        res.FSetName( name );
+        res.Save();
+    }
+}
+
+void rgDlgSetupDatabase::OnContactsButton( wxCommandEvent& event )
+{
+    SetResearcherName();
+    if( rgEditResearcher( this, 1 ) ) {
+        recResearcher res( 1 );
+        m_textCtrlUserName->SetValue( res.FGetName() );
+    }
 }
 
 // End of src/rg/rgSetupDatabase.cpp file

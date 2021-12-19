@@ -29,6 +29,8 @@
 
 #include "fb/fbRgSetupDatabase.h"
 
+#include <rec/recUser.h>
+
 
 //-------------------------------------------------------------------------------
 //-------------------[ rgDlgSetupDatabase ]--------------------------------------
@@ -37,12 +39,18 @@
 class rgDlgSetupDatabase : public fbRgSetupDatabase
 {
 public:
-    rgDlgSetupDatabase( wxWindow* parent );
+    rgDlgSetupDatabase( wxWindow* parent, const wxString& dbname );
 
 private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
 
+    void SetResearcherName();
+
+    void OnContactsButton( wxCommandEvent& event ) override;
+
+    wxString       m_database_name;
+    recUserSetting m_user_setting;
 };
 
 #endif // SRC_RG_RGSETUPDATABASE_H
