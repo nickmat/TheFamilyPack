@@ -90,7 +90,13 @@ bool rgDlgSetupDatabase::TransferDataToWindow()
 
 bool rgDlgSetupDatabase::TransferDataFromWindow()
 {
-    SetResearcherName();
+    wxString name = m_textCtrlUserName->GetValue();
+    if( name.empty() ) {
+        name = "Unnamed"; // We don't want a blank name!
+    }
+    recResearcher res( 1 );
+    res.FSetName( name );
+    res.Save();
     wxString home = m_comboBoxHomePage->GetValue();
     home.Trim( false );
     if( !home.empty() ) {
@@ -109,19 +115,12 @@ bool rgDlgSetupDatabase::TransferDataFromWindow()
     return true;
 }
 
-void rgDlgSetupDatabase::SetResearcherName()
-{
-    wxString name = m_textCtrlUserName->GetValue();
-    if( !name.empty() ) {
-        recResearcher res( 1 );
-        res.FSetName( name );
-        res.Save();
-    }
-}
-
 void rgDlgSetupDatabase::OnContactsButton( wxCommandEvent& event )
 {
-    SetResearcherName();
+    wxString name = m_textCtrlUserName->GetValue();
+    recResearcher res( 1 );
+    res.FSetName( name );
+    res.Save();
     if( rgEditResearcher( this, 1 ) ) {
         recResearcher res( 1 );
         m_textCtrlUserName->SetValue( res.FGetName() );

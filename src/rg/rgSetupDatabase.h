@@ -45,8 +45,6 @@ private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
 
-    void SetResearcherName();
-
     void OnContactsButton( wxCommandEvent& event ) override;
 
     wxString       m_database_name;
