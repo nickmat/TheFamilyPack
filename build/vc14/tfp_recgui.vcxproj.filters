@@ -190,9 +190,6 @@
     <ClInclude Include="..\..\src\rg\rgAssociate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\rg\rgCommon.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\rg\rgCompareEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>

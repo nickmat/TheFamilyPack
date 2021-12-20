@@ -40,7 +40,6 @@
 
 #include <rg/rgDialogs.h>
 #include "rgEdResearcher.h"
-#include "rgCommon.h"
 
 bool rgEditResearcher( wxWindow* wind, idt resID  )
 {

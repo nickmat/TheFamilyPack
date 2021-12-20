@@ -36,7 +36,6 @@
 
 #include <rg/rgDialogs.h>
 #include "rgEdCitation.h"
-#include "rgCommon.h"
 
 
 bool rgEditCitation( wxWindow* wind, idt citID, const wxString& title )

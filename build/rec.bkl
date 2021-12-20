@@ -200,7 +200,6 @@
     <headers>$(LOCAL_SRC)/rg/fb/fbRgViewMedia.h</headers>
     <headers>$(LOCAL_SRC)/rg/fbRgDialog.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgAssociate.h</headers>
-    <headers>$(LOCAL_SRC)/rg/rgCommon.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgCrIndividual.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgCrName.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdCitation.h</headers>
