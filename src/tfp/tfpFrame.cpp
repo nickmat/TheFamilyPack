@@ -1418,7 +1418,6 @@ void TfpFrame::OnCloseWindow( wxCloseEvent& event )
     this->Destroy();
 }
 
-
 bool TfpFrame::NewFile()
 {
     bool ret = false;
@@ -1428,22 +1427,22 @@ bool TfpFrame::NewFile()
     wxString defaultFName = wxEmptyString;
 
     wxFileDialog dialog( this, caption, defaultDir, defaultFName, wildcard, wxFD_OPEN );
-    if( dialog.ShowModal() == wxID_OK )
-    {
-        try {
-            wxString path = dialog.GetPath();
-            unsigned flags = recDb::CREATE_DB_STD_EXT | recDb::CREATE_DB_ENUM_FN;
-            if( recDb::CreateDb( path, flags ) == true )
-            {
+    if( dialog.ShowModal() == wxID_OK ) {
+        wxString path = dialog.GetPath();
+        unsigned flags = recDb::CREATE_DB_STD_EXT | recDb::CREATE_DB_ENUM_FN;
+        if( recDb::CreateDb( path, flags ) == true ) {
+            recDb::Begin();
+            try {
                 rgSetupDatabase( this, path );
-                SetDatabaseOpen( path );
-                // TODO: Put initilize database dialog here
-                DisplayHomePage();
-                ret = true;
+                recDb::Commit();
             }
-        }
-        catch( wxSQLite3Exception& e ) {
-            recDb::ErrorMessage( e );
+            catch( wxSQLite3Exception& e ) {
+                recDb::ErrorMessage( e );
+                recDb::Rollback();
+            }
+            SetDatabaseOpen( path );
+            DisplayHomePage();
+            ret = true;
         }
     }
     return ret;
