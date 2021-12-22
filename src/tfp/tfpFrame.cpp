@@ -1429,11 +1429,12 @@ bool TfpFrame::NewFile()
     wxFileDialog dialog( this, caption, defaultDir, defaultFName, wildcard, wxFD_OPEN );
     if( dialog.ShowModal() == wxID_OK ) {
         wxString path = dialog.GetPath();
+        wxString fname = dialog.GetFilename();
         unsigned flags = recDb::CREATE_DB_STD_EXT | recDb::CREATE_DB_ENUM_FN;
         if( recDb::CreateDb( path, flags ) == true ) {
             recDb::Begin();
             try {
-                rgSetupDatabase( this, path );
+                rgSetupDatabase( this, fname );
                 recDb::Commit();
             }
             catch( wxSQLite3Exception& e ) {
