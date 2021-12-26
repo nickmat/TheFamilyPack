@@ -33,18 +33,18 @@
 class recAssociate;
 typedef std::vector< recAssociate >  recAssociateVec;
 
-class recAssociate : public recDb
+class recAssociate : public recDbT<recAssociate>
 {
 public:
+    static constexpr const char* s_tablename = "Associate";
 
     recAssociate() {}
-    recAssociate( idt id ) : recDb( id ) { Read(); }
+    recAssociate( idt id ) : recDbT( id ) { Read(); }
     recAssociate( const recAssociate& source );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "Associate" );
     bool Equivalent( const recAssociate& r2 ) const { return f_path == r2.f_path; }
 
     wxString FGetPath() const { return f_path; }
