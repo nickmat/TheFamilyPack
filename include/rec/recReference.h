@@ -69,6 +69,7 @@ public:
     void Clear();
     void Save();
     bool Read();
+    bool Equivalent( const recReferenceEntity& r2 ) const;
 
     idt FGetRefID() const { return f_ref_id; }
     Type FGetEntityType() const { return f_entity_type; }
@@ -97,23 +98,6 @@ public:
     bool CsvRead( std::istream& in );
 };
 
-inline bool recEquivalent( const recReferenceEntity& r1, const recReferenceEntity& r2 )
-{
-    return
-        r1.f_ref_id      == r2.f_ref_id      &&
-        r1.f_entity_type == r2.f_entity_type &&
-        r1.f_entity_id   == r2.f_entity_id;
-}
-
-inline bool operator==( const recReferenceEntity& r1, const recReferenceEntity& r2 )
-{
-    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
-}
-
-inline bool operator!=( const recReferenceEntity& r1, const recReferenceEntity& r2 )
-{
-    return !(r1 == r2);
-}
 
 //-----------------------------------------------------
 //      recReference
@@ -194,14 +178,5 @@ public:
     bool CsvRead( std::istream& in );
 };
 
-inline bool operator==( const recReference& r1, const recReference& r2 )
-{
-    return r1.Equivalent( r2 ) && r1.EqualID( r2 );
-}
-
-inline bool operator!=( const recReference& r1, const recReference& r2 )
-{
-    return !(r1 == r2);
-}
 
 #endif // RECREFERENCE_H

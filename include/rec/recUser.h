@@ -76,16 +76,6 @@ private:
     wxString f_val;
 };
 
-inline bool operator==( const recUserSetting& r1, const recUserSetting& r2 )
-{
-    return r1.Equivalent( r2 ) && r1.EqualID( r2 );
-}
-
-inline bool operator!=( const recUserSetting& r1, const recUserSetting& r2 )
-{
-    return !(r1 == r2);
-}
-
 
 //============================================================================
 //                 recUser
@@ -124,16 +114,6 @@ public:
 private:
     idt  f_res_id;
 };
-
-inline bool operator==( const recUser& r1, const recUser& r2 )
-{
-    return r1.Equivalent( r2 ) && r1.EqualID( r2 );
-}
-
-inline bool operator!=( const recUser& r1, const recUser& r2 )
-{
-    return !(r1 == r2);
-}
 
 inline wxString recGetHomeDisplay() {
     return recUser::GetSetting( recGetCurrentUser(), recUserSetting::Property::home_screen );

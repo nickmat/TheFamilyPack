@@ -424,6 +424,14 @@ bool recReferenceEntity::Read()
     return true;
 }
 
+bool recReferenceEntity::Equivalent( const recReferenceEntity& r2 ) const
+{
+    return
+        f_ref_id == r2.f_ref_id &&
+        f_entity_type == r2.f_entity_type &&
+        f_entity_id == r2.f_entity_id;
+}
+
 void recReferenceEntity::Create( idt refID, Type type, idt entID, int* pseq )
 {
     recReferenceEntity re;

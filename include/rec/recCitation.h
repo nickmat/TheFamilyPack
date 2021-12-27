@@ -94,15 +94,6 @@ public:
     static bool RemoveFromDatabase( idt citID, Coverage limit = Coverage::user );
 };
 
-inline bool operator==( const recCitation& r1, const recCitation& r2 )
-{
-    return r1.Equivalent( r2 ) && r1.EqualID( r2 );
-}
-
-inline bool operator!=( const recCitation& r1, const recCitation& r2 )
-{
-    return !(r1 == r2);
-}
 
 //============================================================================
 //                 recRepository
@@ -147,15 +138,6 @@ public:
     static void DeleteIfOrphaned( idt cptID, Coverage limit = Coverage::user );
 };
 
-inline bool operator==( const recRepository& r1, const recRepository& r2 )
-{
-    return r1.Equivalent( r2 ) && r1.EqualID( r2 );
-}
-
-inline bool operator!=( const recRepository& r1, const recRepository& r2 )
-{
-    return !(r1 == r2);
-}
 
 //============================================================================
 //                 recCitationPart
@@ -204,15 +186,6 @@ public:
     bool CsvRead( std::istream& in );
 };
 
-inline bool operator==( const recCitationPart& r1, const recCitationPart& r2 )
-{
-    return r1.Equivalent( r2 ) && r1.EqualID( r2 );
-}
-
-inline bool operator!=( const recCitationPart& r1, const recCitationPart& r2 )
-{
-    return !(r1 == r2);
-}
 
 //============================================================================
 //                 recCitationPartType
@@ -258,15 +231,5 @@ public:
 
     static void DeleteIfOrphaned( idt cptID, Coverage limit = Coverage::user );
 };
-
-inline bool operator==( const recCitationPartType& r1, const recCitationPartType& r2 )
-{
-    return r1.Equivalent( r2 ) && r1.EqualID( r2 );
-}
-
-inline bool operator!=( const recCitationPartType& r1, const recCitationPartType& r2 )
-{
-    return !(r1 == r2);
-}
 
 #endif // RECCITATION_H

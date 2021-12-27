@@ -254,6 +254,15 @@ public:
     static recIdVec PositiveIDs( const wxString& dbname = "Main" ) {
         return GetPositiveIDs( T::s_tablename, dbname );
     }
+
+    virtual bool Equivalent( const T& ) const = 0;
+
+    bool operator==( const T& record ) const {
+        return Equivalent( record ) && EqualID( record );
+    }
+    bool operator!=( const T& record ) const {
+        return !Equivalent( record ) || !EqualID( record );
+    }
 };
 
 #endif // RECDATABASE_H

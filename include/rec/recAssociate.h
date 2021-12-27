@@ -70,15 +70,4 @@ private:
     wxString f_comment;
 };
 
-inline bool operator==( const recAssociate& r1, const recAssociate& r2 )
-{
-    return r1.Equivalent( r2 ) && r1.EqualID( r2 );
-}
-
-inline bool operator!=( const recAssociate& r1, const recAssociate& r2 )
-{
-    return !( r1 == r2 );
-}
-
-
 #endif // RECASSOCIATE_H
