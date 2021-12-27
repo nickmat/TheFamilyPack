@@ -152,9 +152,14 @@ bool recMediaData::ReadID( idt id, idt assID )
 
 bool recMediaData::Equivalent( const recMediaData& r2 ) const
 {
+    /* If we need this, then a way to compare
+       wxMemoryBuffer data is required.
+    */
+    wxASSERT( false ); 
     return
         f_title == r2.f_title &&
-        f_data == r2.f_data   &&
+//      TODO: write a wxMemoryBuffer compare function.
+//        f_data == r2.f_data   &&
         f_type == r2.f_type &&
         f_privacy == r2.f_privacy   &&
         f_copyright == r2.f_copyright   &&
