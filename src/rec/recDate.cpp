@@ -163,6 +163,19 @@ bool recDate::Read()
     return true;
 }
 
+bool recDate::Equivalent( const recDate& r2 ) const
+{
+    return
+        f_jdn == r2.f_jdn &&
+        f_range == r2.f_range &&
+        f_rel_id == r2.f_rel_id &&
+        f_type == r2.f_type &&
+        f_descrip == r2.f_descrip &&
+        f_record_sch == r2.f_record_sch &&
+        f_display_sch == r2.f_display_sch
+    ;
+}
+
 void recDate::SetDefaults()
 {
     // TODO: The default record/display scheme should be a system/user setting.
@@ -722,6 +735,20 @@ bool recRelativeDate::Read()
     f_type    = (Type) result.GetInt( 4 );
     f_scheme  = (CalendarScheme) result.GetInt( 5 );
     return true;
+}
+
+/*! The two entities are equal, ignoring the record id.
+ */
+bool recRelativeDate::Equivalent( const recRelativeDate& r2 ) const
+{
+    return
+        f_val == r2.f_val &&
+        f_range == r2.f_range &&
+        f_unit == r2.f_unit &&
+        f_base_id == r2.f_base_id &&
+        f_type == r2.f_type &&
+        f_scheme == r2.f_scheme
+    ;
 }
 
 idt recRelativeDate::GetParentDate( idt rdID )

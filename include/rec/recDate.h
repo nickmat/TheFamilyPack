@@ -48,9 +48,11 @@ enum {
 //      recDate
 //-----------------------------------------------------
 
-class recDate : public recDb
+class recDate : public recDbT<recDate>
 {
 public:
+    static constexpr const char* s_tablename = "Date";
+
     enum TypeFlag {
         FLG_NULL   = 0x00,
         FLG_AFTER  = 0x01,
@@ -100,31 +102,16 @@ public:
     CalendarScheme  f_record_sch;   // Original convertion scheme
     CalendarScheme  f_display_sch;  // Default display scheme
                                     // See cal/calendar.h for values
-    recDate() {}
-    recDate( idt id ) : recDb(id) { Read(); }
+    recDate() : f_jdn(0), f_range(0), f_rel_id(0), f_type(FLG_NULL),
+        f_record_sch(CALENDAR_SCH_Unstated),
+        f_display_sch(CALENDAR_SCH_Unstated) {}
+    recDate( idt id ) : recDbT(id) { Read(); }
     recDate( const recDate& date );
 
     void Clear();
     void Save();
     bool Read();
-    /*! Impliments the member functions:
-     *
-     *  // Returns table name string.\n
-     *  const char* GetTableName() const;
-     *
-     *  // Delete the current record.\n
-     *  bool Delete();
-     *
-     *  // Return true if current record exists.\n
-     *  bool Exists();
-     *
-     *  // Delete the given record, static function.\n
-     *  static bool Delete( idt id );
-     *
-     *  // Return true if given record exists, static function.\n
-     *  static bool Exists( idt id );
-     */
-    TABLE_NAME_MEMBERS( "Date" );
+    bool Equivalent( const recDate& r2 ) const;
 
     long FGetJdn() const { return f_jdn; }
     long FGetRange() const { return f_range; }
@@ -212,37 +199,15 @@ public:
     static void RemoveFromDatabase( idt dateID );
 };
 
-/*! The two entities are equal, ignoring the record id.
- */
-inline bool recEquivalent( const recDate& d1, const recDate& d2 )
-{
-    return
-        d1.f_jdn         == d2.f_jdn        &&
-        d1.f_range       == d2.f_range      &&
-        d1.f_rel_id      == d2.f_rel_id     &&
-        d1.f_type        == d2.f_type       &&
-        d1.f_descrip     == d2.f_descrip    &&
-        d1.f_record_sch  == d2.f_record_sch &&
-        d1.f_display_sch == d2.f_display_sch;
-}
-
-inline bool operator==( const recDate& d1, const recDate& d2 )
-{
-    return recEquivalent( d1, d2 ) && d1.f_id == d2.f_id;
-}
-
-inline bool operator!=( const recDate& d1, const recDate& d2 )
-{
-    return !(d1 == d2);
-}
 
 //-----------------------------------------------------
 //      recRelativeDate
 //-----------------------------------------------------
 
-class recRelativeDate : public recDb
+class recRelativeDate : public recDbT<recRelativeDate>
 {
 public:
+    static constexpr const char* s_tablename = "RelativeDate";
 
     enum Type {
         TYPE_Unstated,
@@ -260,14 +225,17 @@ public:
     Type            f_type;
     CalendarScheme  f_scheme;
 
-    recRelativeDate() {}
-    recRelativeDate( idt id ) : recDb(id) { Read(); }
+    recRelativeDate() : f_val(0), f_range(0), f_base_id(0),
+        f_unit( CALENDAR_UNIT_Unstated ),
+        f_type( TYPE_Unstated ) ,
+        f_scheme( CALENDAR_SCH_Unstated ) {}
+    recRelativeDate( idt id ) : recDbT(id) { Read(); }
     recRelativeDate( const recRelativeDate& date );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "RelativeDate" );
+    bool Equivalent( const recRelativeDate& r2 ) const;
 
     long FGetVal() const { return f_val; }
     long FGetValue() const { return f_val; }
@@ -302,27 +270,5 @@ public:
     static void RemoveFromDatabase( idt rdID );
 };
 
-/*! The two entities are equal, ignoring the record id.
- */
-inline bool recEquivalent( const recRelativeDate& d1, const recRelativeDate& d2 )
-{
-    return
-        d1.f_val     == d2.f_val     &&
-        d1.f_range   == d2.f_range   &&
-        d1.f_unit    == d2.f_unit    &&
-        d1.f_base_id == d2.f_base_id &&
-        d1.f_type    == d2.f_type    &&
-        d1.f_scheme  == d2.f_scheme;
-}
-
-inline bool operator==( const recRelativeDate& d1, const recRelativeDate& d2 )
-{
-    return recEquivalent( d1, d2 ) && d1.f_id == d2.f_id;
-}
-
-inline bool operator!=( const recRelativeDate& d1, const recRelativeDate& d2 )
-{
-    return !(d1 == d2);
-}
 
 #endif // RECDATE_H
