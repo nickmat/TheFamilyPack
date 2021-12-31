@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010 ~ 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 .. 2021, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -40,9 +40,11 @@
 //-------------------------[ recEvent ]---------------------------------------
 //============================================================================
 
-class recEvent : public recDb
+class recEvent : public recDbT<recEvent>
 {
 public:
+    static constexpr const char* s_tablename = "Event";
+
     wxString f_title;
     idt      f_higher_id;
     idt      f_type_id;
@@ -53,14 +55,15 @@ public:
     long     f_date_pt;
     wxString f_user_ref;
 
-    recEvent() {}
-    recEvent( idt id ) : recDb(id) { Read(); }
+    recEvent() : f_higher_id(0), f_type_id(0), f_date1_id(0), f_date2_id(0),
+        f_place_id(0), f_date_pt(0) {}
+    recEvent( idt id ) : recDbT(id) { Read(); }
     recEvent( const recEvent& event );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "Event" );
+    bool Equivalent( const recEvent& r2 ) const;
 
     wxString FGetTitle() const { return f_title; }
     idt FGetHigherID() const { return f_higher_id; }
@@ -144,30 +147,5 @@ public:
 
     static void DeleteIfOrphaned( idt id );
 };
-
-inline bool recEquivalent( const recEvent& r1, const recEvent& r2 )
-{
-    return
-        r1.f_title     == r2.f_title     &&
-        r1.f_higher_id == r2.f_higher_id &&
-        r1.f_type_id   == r2.f_type_id   &&
-        r1.f_date1_id  == r2.f_date1_id  &&
-        r1.f_date2_id  == r2.f_date2_id  &&
-        r1.f_place_id  == r2.f_place_id  &&
-        r1.f_note      == r2.f_note      &&
-        r1.f_date_pt   == r2.f_date_pt   &&
-        r1.f_user_ref  == r2.f_user_ref
-    ;
-}
-
-inline bool operator==( const recEvent& r1, const recEvent& r2 )
-{
-    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
-}
-
-inline bool operator!=( const recEvent& r1, const recEvent& r2 )
-{
-    return !(r1 == r2);
-}
 
 #endif // REC_RECEVENT_H
