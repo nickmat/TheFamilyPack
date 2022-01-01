@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010 .. 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2010 .. 2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -255,7 +255,10 @@ public:
         return GetPositiveIDs( T::s_tablename, dbname );
     }
 
-    virtual bool Equivalent( const T& ) const = 0;
+    virtual bool Equivalent( const T& ) const {
+        wxASSERT( false ); // Equivalent is not needed for all record types.
+        return false;
+    }
 
     bool operator==( const T& record ) const {
         return Equivalent( record ) && EqualID( record );
