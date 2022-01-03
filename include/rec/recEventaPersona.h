@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     14th December 2015
- * Copyright:   Copyright (c) 2015 ~ 2017, Nick Matthews.
+ * Copyright:   Copyright (c) 2015..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -34,23 +34,26 @@
 //--------------------------[ recEventaPersona ]------------------------------
 //============================================================================
 
-class recEventaPersona : public recDb
+class recEventaPersona : public recDbT<recEventaPersona>
 {
 public:
+    static constexpr const char* s_tablename = "EventaPersona";
+
     idt      f_eventa_id;
     idt      f_per_id;
     idt      f_role_id;
     wxString f_note;
     int      f_per_seq;
 
-    recEventaPersona() {}
-    recEventaPersona( idt id ) : recDb(id) { Read(); }
+    recEventaPersona() 
+        : f_eventa_id(0), f_per_id(0), f_role_id(0), f_per_seq(0) {}
+    recEventaPersona( idt id ) : recDbT(id) { Read(); }
     recEventaPersona( const recEventaPersona& pe );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "EventaPersona" );
+    bool Equivalent( const recEventaPersona& r2 ) const;
 
     idt FGetEventaID() const { return f_eventa_id; }
     idt FGetPerID() const { return f_per_id; }
@@ -78,26 +81,6 @@ public:
      */
     bool LinkExists() const;
 };
-
-inline bool recEquivalent( const recEventaPersona& r1, const recEventaPersona& r2 )
-{
-    return
-        r1.f_eventa_id == r2.f_eventa_id &&
-        r1.f_per_id   == r2.f_per_id   &&
-        r1.f_role_id  == r2.f_role_id  &&
-        r1.f_note     == r2.f_note     &&
-        r1.f_per_seq  == r2.f_per_seq;
-}
-
-inline bool operator==( const recEventaPersona& r1, const recEventaPersona& r2 )
-{
-    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
-}
-
-inline bool operator!=( const recEventaPersona& r1, const recEventaPersona& r2 )
-{
-    return !(r1 == r2);
-}
 
 typedef std::vector< recEventaPersona >   recEventaPersonaVec;
 
