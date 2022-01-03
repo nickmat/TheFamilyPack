@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     4th December 2021
- * Copyright:   Copyright (c) 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2021 .. 2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -53,11 +53,11 @@ public:
     bool Equivalent( const recResearcher& r2 ) const;
 
     wxString FGetName() const { return f_name; }
-    wxString FGetComments() const { return f_comments; }
+    wxString FGetComment() const { return f_comment; }
     idt FGetConListID() const { return f_con_list_id; }
 
     void FSetName( const wxString& name ) { f_name = name; }
-    void FSetComments( const wxString& com ) { f_comments = com; }
+    void FSetComment( const wxString& com ) { f_comment = com; }
     void FSetConListID( idt clID ) { f_con_list_id = clID; }
 
     static wxString GetIdStr( idt resID ) { return wxString::Format( "Re" ID, resID ); }
@@ -78,7 +78,7 @@ public:
 
 private:
     wxString  f_name;
-    wxString  f_comments;
+    wxString  f_comment;
     idt       f_con_list_id;
 };
 

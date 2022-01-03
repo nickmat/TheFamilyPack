@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     11th January 2013
- * Copyright:   Copyright (c) 2013 .. 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2013 .. 2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -100,7 +100,7 @@ idt rgSelectResearcher( wxWindow* wind, unsigned flag, unsigned* retbutton, cons
         for( auto res : vec ) {
             table.push_back( res.GetIdStr() );
             table.push_back( res.FGetName() );
-            table.push_back( res.FGetComments() );
+            table.push_back( res.FGetComment() );
         }
         dialog.SetTable( table );
         if( vec.size() == 1 ) {
@@ -158,7 +158,7 @@ bool rgDlgEditResearcher::TransferDataToWindow()
     wxASSERT( m_researcher.FGetID() != 0 );
 
     m_textCtrlName->SetValue( m_researcher.FGetName() );
-    m_textCtrlComment->SetValue( m_researcher.FGetComments() );
+    m_textCtrlComment->SetValue( m_researcher.FGetComment() );
 
     m_textCtrlUser->SetValue( recUser::GetIdStr( m_userID ) );
     m_checkBoxCurrentUser->SetValue( m_userID == m_currentUserID );
@@ -171,7 +171,7 @@ bool rgDlgEditResearcher::TransferDataToWindow()
 bool rgDlgEditResearcher::TransferDataFromWindow()
 {
     m_researcher.FSetName( m_textCtrlName->GetValue() );
-    m_researcher.FSetComments( m_textCtrlComment->GetValue() );
+    m_researcher.FSetComment( m_textCtrlComment->GetValue() );
     m_researcher.Save();
 
     bool set_curr = m_checkBoxCurrentUser->GetValue();

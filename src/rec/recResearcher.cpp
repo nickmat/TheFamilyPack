@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     4th December 2021
- * Copyright:   Copyright (c) 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2021 .. 2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -42,7 +42,7 @@ recResearcher::recResearcher( const recResearcher& res )
 {
     f_id          = res.f_id;
     f_name        = res.f_name;
-    f_comments    = res.f_comments;
+    f_comment    = res.f_comment;
     f_con_list_id = res.f_con_list_id;
 }
 
@@ -50,7 +50,7 @@ void recResearcher::Clear()
 {
     f_id          = 0;
     f_name        = wxEmptyString;
-    f_comments    = wxEmptyString;
+    f_comment     = wxEmptyString;
     f_con_list_id = 0;
 }
 
@@ -65,7 +65,7 @@ void recResearcher::Save()
         sql.Format(
             "INSERT INTO Researcher (name, comments, con_list_id)"
             " VALUES ('%q', NULLIF('%q', ''), NULLIF(" ID ", 0));",
-            UTF8_(f_name), UTF8_(f_comments), f_con_list_id
+            UTF8_(f_name), UTF8_(f_comment), f_con_list_id
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -77,7 +77,7 @@ void recResearcher::Save()
             sql.Format(
                 "INSERT INTO Researcher (id, name, comments, con_list_id)"
                 " VALUES (" ID ", '%q', NULLIF('%q', ''), NULLIF(" ID ", 0));",
-                f_id, UTF8_(f_name), UTF8_(f_comments), f_con_list_id
+                f_id, UTF8_(f_name), UTF8_(f_comment), f_con_list_id
             );
         } else {
             // Update existing record
@@ -85,7 +85,7 @@ void recResearcher::Save()
                 "UPDATE Researcher SET name='%q', comments=NULLIF('%q', ''),"
                 " con_list_id=NULLIF(" ID ", 0)"
                 " WHERE id=" ID ";",
-                UTF8_(f_name), UTF8_(f_comments), f_con_list_id, f_id
+                UTF8_(f_name), UTF8_(f_comment), f_con_list_id, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -115,7 +115,7 @@ bool recResearcher::Read()
     }
     result.SetRow( 0 );
     f_name        = result.GetAsString( 0 );
-    f_comments    = result.GetAsString( 1 );
+    f_comment    = result.GetAsString( 1 );
     f_con_list_id = GET_ID( result.GetInt64( 2 ) );
     return true;
 }
@@ -124,7 +124,7 @@ bool recResearcher::Equivalent( const recResearcher& r2 ) const
 {
     return
         f_name        == r2.f_name     &&
-        f_comments    == r2.f_comments &&
+        f_comment     == r2.f_comment  &&
         f_con_list_id == r2.f_con_list_id;
 }
 
@@ -159,7 +159,7 @@ recResearcherVec recResearcher::GetResearchers( Coverage filter )
         while( result.NextRow() ) {
             res.FSetID( GET_ID( result.GetInt64( 0 ) ) );
             res.FSetName( result.GetAsString( 1 ) );
-            res.FSetComments( result.GetAsString( 2 ) );
+            res.FSetComment( result.GetAsString( 2 ) );
             res.FSetConListID( GET_ID( result.GetInt64( 3 ) ) );
             list.push_back( res );
         }
@@ -173,7 +173,7 @@ recResearcherVec recResearcher::GetResearchers( Coverage filter )
         while( result.NextRow() ) {
             res.FSetID( GET_ID( result.GetInt64( 0 ) ) );
             res.FSetName( result.GetAsString( 1 ) );
-            res.FSetComments( result.GetAsString( 2 ) );
+            res.FSetComment( result.GetAsString( 2 ) );
             res.FSetConListID( GET_ID( result.GetInt64( 3 ) ) );
             list.push_back( res );
         }
@@ -214,7 +214,7 @@ void recResearcher::CsvWrite( std::ostream& out, idt id )
     recResearcher res( id );
     recCsvWrite( out, res.FGetID() );
     recCsvWrite( out, res.FGetName() );
-    recCsvWrite( out, res.FGetComments() );
+    recCsvWrite( out, res.FGetComment() );
     recCsvWrite( out, res.FGetConListID(), '\n' );
 }
 
@@ -222,7 +222,7 @@ bool recResearcher::CsvRead( std::istream& in )
 {
     recCsvRead( in, f_id );
     recCsvRead( in, f_name );
-    recCsvRead( in, f_comments );
+    recCsvRead( in, f_comment );
     recCsvRead( in, f_con_list_id );
     return bool( in );
 }

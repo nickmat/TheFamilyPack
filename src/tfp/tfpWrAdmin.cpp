@@ -1,13 +1,11 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        tfpWrAdmin.cpp
+ * Name:        src/tfp/tfpWrAdmin.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Write screen Administration Info functions.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     7 April 2012
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2012, Nick Matthews.
+ * Copyright:   Copyright (c) 2012..1022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -36,13 +34,13 @@
 #include "wx/wx.h"
 #endif
 
+#include "tfpWr.h"
+
 #include <rec/recContact.h>
 #include <rec/recResearcher.h>
 #include <rec/recUser.h>
 #include <rec/recSystem.h>
 #include <rec/recIndividual.h>
-
-#include "tfpWr.h"
 
 
 wxString tfpWriteResearcherList()
@@ -63,7 +61,7 @@ wxString tfpWriteResearcherList()
     ;
 
     for( size_t i = 0 ; i < list.size() ; i++ ) {
-        size_t note = ( list[i].FGetComments().size() ) ? 1 : 0;
+        size_t note = ( list[i].FGetComment().size() ) ? 1 : 0;
         recContactList cl( list[i].FGetConListID() );
         idt userID = list[i].GetUserID();
         recContactVec contacts = list[i].GetContacts();
@@ -78,7 +76,7 @@ wxString tfpWriteResearcherList()
         ;
         if( note ) {
             htm << 
-                "<td colspan='3'>" << list[i].FGetComments() <<
+                "<td colspan='3'>" << list[i].FGetComment() <<
                 "</td>\n</tr>\n"
             ;
         }
@@ -121,4 +119,4 @@ wxString tfpWriteResearcherList()
     return htm;
 }
 
-// End of tfpWrAdmin.cpp Source
+// End of src/tfp/tfpWrAdmin.cpp Source
