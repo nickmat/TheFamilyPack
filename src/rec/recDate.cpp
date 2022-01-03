@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010 .. 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -380,13 +380,13 @@ long recDate::GetDatePoint( DatePoint dp )
 
     switch( dp )
     {
-    case DATE_POINT_Beg:
+    case DatePoint::beg:
         jdn = f_jdn;
         break;
-    case DATE_POINT_Mid:
+    case DatePoint::mid:
         jdn = f_jdn + ( f_range / 2 );
         break;
-    case DATE_POINT_End:
+    case DatePoint::end:
         jdn = f_jdn + f_range;
         break;
     default:

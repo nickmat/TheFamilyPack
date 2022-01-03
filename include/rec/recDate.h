@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010 .. 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -88,11 +88,7 @@ public:
     static const wxString s_prefStr[PREF_Max];
     static const wxString s_prefFormat[PREF_Max];
 
-    enum DatePoint {
-        DATE_POINT_Beg,
-        DATE_POINT_Mid,
-        DATE_POINT_End
-    };
+    enum class DatePoint { beg, mid, end };
 
     long            f_jdn;
     long            f_range;
@@ -159,8 +155,8 @@ public:
 
     int GetYear( CalendarScheme sch = CALENDAR_SCH_Unstated );
     static int GetYear( idt id, CalendarScheme sch = CALENDAR_SCH_Unstated );
-    long GetDatePoint( DatePoint dp = DATE_POINT_Mid );
-    static long GetDatePoint( idt id, DatePoint dp = DATE_POINT_Mid );
+    long GetDatePoint( DatePoint dp = DatePoint::mid );
+    static long GetDatePoint( idt id, DatePoint dp = DatePoint::mid );
 
     unsigned GetTypePrefix() const {
         return f_type & ( FLG_AFTER | FLG_RANGE | FLG_BEFORE ); 

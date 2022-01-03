@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     11th November 2015
- * Copyright:   Copyright (c) 2015 .. 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2015..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -190,7 +190,7 @@ void recGedExport::ExportDate( idt dateID, int level )
     recDate::TypePrefix type = (recDate::TypePrefix) date.FGetType();
     if( type == recDate::PREF_Unstated || type == recDate::PREF_Not ) return;
 
-    long beg = date.GetDatePoint( recDate::DATE_POINT_Beg );
+    long beg = date.GetDatePoint( recDate::DatePoint::beg );
     if( beg == 0 ) {
         wxString text = date.FGetDescrip();
         if( !text.empty() ){
@@ -229,7 +229,7 @@ void recGedExport::ExportDate( idt dateID, int level )
     size_t pos = datestr.find( '~' );
     if( pos != wxString::npos ) {
         // treat as BET and AFT dates
-        long end = date.GetDatePoint( recDate::DATE_POINT_End );
+        long end = date.GetDatePoint( recDate::DatePoint::end );
         wxString begstr = calStrFromJdn( beg, sch ).Upper();
         wxString endstr = calStrFromJdn( end, sch ).Upper();
         m_out << level << " DATE BET" << calEsc << " " << begstr 

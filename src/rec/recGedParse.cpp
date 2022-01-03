@@ -4,7 +4,7 @@
  * Purpose:     Read GEDCOM import files.
  * Author:      Nick Matthews
  * Created:     19 September 2011
- * Copyright:   Copyright (c) 2011-2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2011..2022, Nick Matthews.
  * Website:     http://thefamilypack.org
  * Licence:     GNU GPLv3
  *
@@ -541,7 +541,7 @@ void recGedParse::ReadIndEvent( GedIndividual& gind, int level )
     recIndividualEvent ie(0);
     ie.FSetIndID( gind.GetIndID() );
     wxString titlefmt;
-    recDate::DatePoint dp = recDate::DATE_POINT_Mid;
+    recDate::DatePoint dp = recDate::DatePoint::mid;
     bool unique = false; // true if only one event type per individual
 
     switch( m_tag )
@@ -550,27 +550,27 @@ void recGedParse::ReadIndEvent( GedIndividual& gind, int level )
         ev.FSetTypeID( recEventType::ET_Birth );
         ie.FSetRoleID( recEventTypeRole::ROLE_Birth_Born );
         titlefmt = _("Birth of %s");
-        dp = recDate::DATE_POINT_Beg;
+        dp = recDate::DatePoint::beg;
         unique = true;
         break;
     case tagCHR:
         ev.FSetTypeID( recEventType::ET_Baptism );
         ie.FSetRoleID( recEventTypeRole::ROLE_Baptism_Baptised );
         titlefmt = _("Baptism of %s");
-        dp = recDate::DATE_POINT_Beg;
+        dp = recDate::DatePoint::beg;
         break;
     case tagDEAT:
         ev.FSetTypeID( recEventType::ET_Death );
         ie.FSetRoleID( recEventTypeRole::ROLE_Death_Died );
         titlefmt = _("Death of %s");
-        dp = recDate::DATE_POINT_End;
+        dp = recDate::DatePoint::end;
         unique = true;
         break;
     case tagBURI:
         ev.FSetTypeID( recEventType::ET_Burial );
         ie.FSetRoleID( recEventTypeRole::ROLE_Burial_Deceased );
         titlefmt = _("Burial of %s");
-        dp = recDate::DATE_POINT_End;
+        dp = recDate::DatePoint::end;
         break;
     case tagOCCU:
         ev.FSetTypeID( recEventType::ET_Occupation );
@@ -720,7 +720,7 @@ idt recGedParse::ParseEvDate( int level, idt* d2ID  )
     date2.FSetDisplaySch( sch );
     if( period != wxEmptyString ) {
         if( period.compare( "TO" ) == 0 ) {
-            date2.FSetJdn( date.GetDatePoint( recDate::DATE_POINT_Beg ) );
+            date2.FSetJdn( date.GetDatePoint( recDate::DatePoint::beg ) );
             date2.FSetType( recDate::PREF_Before );
             date2.Save();
             *d2ID = date.FGetID();
@@ -731,7 +731,7 @@ idt recGedParse::ParseEvDate( int level, idt* d2ID  )
         if( token.compare( "TO" ) ) {
             ParseDate( &date2, tkz.GetString() );
         } else {
-            date2.FSetJdn( date.GetDatePoint( recDate::DATE_POINT_End ) );
+            date2.FSetJdn( date.GetDatePoint( recDate::DatePoint::end ) );
             date2.FSetType( recDate::PREF_After );
         }
         date2.Save();
@@ -745,12 +745,12 @@ idt recGedParse::ParseEvDate( int level, idt* d2ID  )
         } else {
             ParseDate( &date2, tkz.GetString() );
             long beg = wxMin(
-                date.GetDatePoint( recDate::DATE_POINT_Beg ),
-                date2.GetDatePoint( recDate::DATE_POINT_Beg )
+                date.GetDatePoint( recDate::DatePoint::beg ),
+                date2.GetDatePoint( recDate::DatePoint::beg )
             );
             long end = wxMax(
-                date.GetDatePoint( recDate::DATE_POINT_End ),
-                date2.GetDatePoint( recDate::DATE_POINT_End )
+                date.GetDatePoint( recDate::DatePoint::end ),
+                date2.GetDatePoint( recDate::DatePoint::end )
             );
             date.FSetJdn( beg );
             date.FSetRange( end - beg );

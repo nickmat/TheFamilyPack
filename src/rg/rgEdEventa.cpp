@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     25th February 2013
- * Copyright:   Copyright (c) 2013 ~ 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2013..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -253,7 +253,7 @@ idt rgCreatePersonalEventa( wxWindow* wind, idt refID, const wxString& role )
     eve.FSetDate1ID( date1ID );
     eve.FSetDate2ID( date2ID );
     eve.FSetPlaceID( placeID );
-    eve.FSetDatePt( recDate::DATE_POINT_Mid );
+    eve.SetDatePt( recDate::DatePoint::mid );
     eve.Save();
     idt eveID = eve.FGetID();
 

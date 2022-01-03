@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     20th April 2013
- * Copyright:   Copyright (c) 2013 ~ 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2013..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -374,10 +374,10 @@ void recEventa::UpdateDatePoint()
     {
     case recET_GRP_Birth:
     case recET_GRP_NrBirth:
-        f_date_pt = recDate::GetDatePoint( f_date1_id, recDate::DATE_POINT_Beg );
+        f_date_pt = recDate::GetDatePoint( f_date1_id, recDate::DatePoint::beg );
     case recET_GRP_Death:
     case recET_GRP_NrDeath:
-        f_date_pt = recDate::GetDatePoint( f_date1_id, recDate::DATE_POINT_End );
+        f_date_pt = recDate::GetDatePoint( f_date1_id, recDate::DatePoint::end );
     }
     f_date_pt = recDate::GetDatePoint( f_date1_id );
 }
