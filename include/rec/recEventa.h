@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     20th April 2013
- * Copyright:   Copyright (c) 2013 ~ 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2013 .. 2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -42,9 +42,11 @@
 //--------------------------[ recEventa ]-------------------------------------
 //============================================================================
 
-class recEventa : public recDb
+class recEventa : public recDbT<recEventa>
 {
 public:
+    static constexpr const char* s_tablename = "Event";
+
     wxString f_title;
     idt      f_ref_id;
     idt      f_type_id;
@@ -54,14 +56,14 @@ public:
     wxString f_note;
     long     f_date_pt;
 
-    recEventa() {}
-    recEventa( idt id ) : recDb(id) { Read(); }
+    recEventa() : f_ref_id( 0 ), f_type_id( 0 ), f_date1_id( 0 ), f_date2_id( 0 ),
+        f_place_id( 0 ), f_date_pt( 0 ) {}
+    recEventa( idt id ) : recDbT(id) { Read(); }
     recEventa( const recEventa& event );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "Eventa" );
 
     wxString FGetTitle() const { return f_title; }
     idt FGetRefID() const { return f_ref_id; }
