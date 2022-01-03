@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     14th December 2015
- * Copyright:   Copyright (c) 2015 ~ 2017, Nick Matthews.
+ * Copyright:   Copyright (c) 2015..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -35,7 +35,7 @@
 //--------------------------[ recEventEventa ]--------------------------------
 //============================================================================
 
-class recEventEventa : public recDb
+class recEventEventa : public recDbT<recEventEventa>
 {
     idt      f_event_id;
     idt      f_eventa_id;
@@ -43,16 +43,18 @@ class recEventEventa : public recDb
     wxString f_note;
 
 public:
-    recEventEventa() {}
-    recEventEventa( idt id ) : recDb(id) { Read(); }
+    static constexpr const char* s_tablename = "EventEventa";
+
+    recEventEventa() : f_event_id(0), f_eventa_id(0), f_conf(0.0) {}
+    recEventEventa( idt id ) : recDbT(id) { Read(); }
     recEventEventa( const recEventEventa& link );
     recEventEventa( idt eID, idt eaID, double conf = 0.999, const wxString& note = "" )
-        : recDb(0), f_event_id(eID), f_eventa_id(eaID), f_conf(conf), f_note(note) {}
+        : recDbT(0), f_event_id(eID), f_eventa_id(eaID), f_conf(conf), f_note(note) {}
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "EventEventa" );
+    bool Equivalent( const recEventEventa& r2 ) const;
 
     idt FGetEventID() const { return f_event_id; }
     idt FGetEventaID() const { return f_eventa_id; }
@@ -75,27 +77,6 @@ public:
     bool Find();
     static idt Find( idt eID, idt erID );
 };
-
-/*! The two entities are equal, ignoring the record id.
- */
-inline bool recEquivalent( const recEventEventa& d1, const recEventEventa& d2 )
-{
-    return
-        d1.FGetEventID()    == d2.FGetEventID()    &&
-        d1.FGetEventaID()   == d2.FGetEventaID()   &&
-        d1.FGetConf()       == d2.FGetConf()       &&
-        d1.FGetNote()       == d2.FGetNote();
-}
-
-inline bool operator==( const recEventEventa& d1, const recEventEventa& d2 )
-{
-    return recEquivalent( d1, d2 ) && d1.f_id == d2.f_id;
-}
-
-inline bool operator!=( const recEventEventa& d1, const recEventEventa& d2 )
-{
-    return !(d1 == d2);
-}
 
 typedef std::vector< recEventEventa > recEventEventaVec;
 
