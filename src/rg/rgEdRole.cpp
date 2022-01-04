@@ -3,11 +3,9 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Edit an EventTypeRole record dialog, GUI only.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     21 November 2012
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2012, Nick Matthews.
+ * Copyright:   Copyright (c) 2012..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -66,8 +64,8 @@ idt rgCreateRole( wxWindow* wind, idt etID )
 
     recEventTypeRole role(0);
     role.FSetTypeID( etID );
-    recET_GRP grp = recEventType::GetGroup( etID );
-    if( grp == recET_GRP_Personal ) {
+    recEventTypeGrp grp = recEventType::GetGroup( etID );
+    if( grp == recEventTypeGrp::personal ) {
         role.FSetPrime( recEventTypeRole::PRIME_First );
     }
     role.Save();
@@ -104,16 +102,16 @@ bool rgDlgEditRole::TransferDataToWindow()
     primeList.push_back( _("No") );
     switch( m_et.FGetGrp() )
     {
-    case recET_GRP_Birth:
-    case recET_GRP_NrBirth:
-    case recET_GRP_Death:
-    case recET_GRP_NrDeath:
-    case recET_GRP_Other:
-    case recET_GRP_Personal:
+    case recEventTypeGrp::birth:
+    case recEventTypeGrp::nr_birth:
+    case recEventTypeGrp::death:
+    case recEventTypeGrp::nr_death:
+    case recEventTypeGrp::other:
+    case recEventTypeGrp::personal:
         primeList.push_back( _("Prime Role") );
         break;
-    case recET_GRP_FamUnion:
-    case recET_GRP_FamOther:
+    case recEventTypeGrp::fam_union:
+    case recEventTypeGrp::fam_other:
         primeList.push_back( _("1st Prime Role") );
         primeList.push_back( _("2nd Prime Role") );
         primeList.push_back( _("Either Prime Role") );

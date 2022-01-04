@@ -102,11 +102,11 @@ void recGedExport::ExportIndividual( idt indID, int level )
     } else if( sex == SEX_Female ) {
         m_out << level << " SEX F\n";
     }
-    ExportIndEvents( indID, recET_GRP_Birth, level );
-    ExportIndEvents( indID, recET_GRP_NrBirth, level );
-    ExportIndEvents( indID, recET_GRP_Death, level );
-    ExportIndEvents( indID, recET_GRP_NrDeath, level );
-    ExportIndEvents( indID, recET_GRP_Personal, level );
+    ExportIndEvents( indID, recEventTypeGrp::birth, level );
+    ExportIndEvents( indID, recEventTypeGrp::nr_birth, level );
+    ExportIndEvents( indID, recEventTypeGrp::death, level );
+    ExportIndEvents( indID, recEventTypeGrp::nr_death, level );
+    ExportIndEvents( indID, recEventTypeGrp::personal, level );
     int pri = recIndividual::GetPrivacy( indID );
     if( pri >= 50 ) {
         m_out << level << " _PRI Y\n";
@@ -141,7 +141,7 @@ void recGedExport::ExportFamily( const recFamily& fam, int level )
     }
 }
 
-void recGedExport::ExportIndEvents( idt indID, recET_GRP grp, int level )
+void recGedExport::ExportIndEvents( idt indID, recEventTypeGrp grp, int level )
 {
     recIdVec events = recIndividual::FindGroupEvents( indID, grp );
     ExportEvents( events, level, indID );
@@ -170,7 +170,7 @@ void recGedExport::ExportEvents( const recIdVec& events, int level, idt id )
         case recEventType::ET_Occupation: tag = "OCCU"; break;
         default: continue;
         }
-        if( et.FGetGrp() == recET_GRP_Personal ) {
+        if( et.FGetGrp() == recEventTypeGrp::personal ) {
             if( eve.FGetHigherID() != 0 ) {
                 continue; // only interested in top-most event
             }

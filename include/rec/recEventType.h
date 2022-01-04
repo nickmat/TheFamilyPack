@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     20th April 2013
- * Copyright:   Copyright (c) 2013 ~ 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2013..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -75,10 +75,10 @@ public:
         ET_MAX          = 24     // Size of list
     };
 
-    recET_GRP f_grp;
-    wxString  f_name;
+    recEventTypeGrp f_grp;
+    wxString        f_name;
 
-    recEventType() : f_grp( recET_GRP_Unstated ) {}
+    recEventType() : f_grp( recEventTypeGrp::unstated ) {}
     recEventType( idt id ) : recDbT(id) { Read(); }
     recEventType( const recEventType& et );
 
@@ -90,10 +90,10 @@ public:
     static wxString GetIdStr( idt evID ) { return wxString::Format( "ET" ID, evID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
-    recET_GRP FGetGrp() const { return f_grp; }
+    recEventTypeGrp FGetGrp() const { return f_grp; }
     wxString FGetName() const { return f_name; }
 
-    void FSetGrp( recET_GRP grp ) { f_grp = grp; }
+    void FSetGrp( recEventTypeGrp grp ) { f_grp = grp; }
     void FSetName( wxString name ) { f_name = name; }
 
     static wxString GetName( idt typeID );
@@ -103,13 +103,13 @@ public:
 
     wxString GetGroupStr() const { return GetGroupValueStr( f_grp ); }
     static wxString GetGroupStr( idt etID );
-    static wxString GetGroupValueStr( recET_GRP grp );
+    static wxString GetGroupValueStr( recEventTypeGrp grp );
 
     static wxArrayString GetGroupStrings( size_t start = 0 );
 
     static wxString GetTypeStr( idt id );
     wxString GetTypeStr() const { return f_name; }
-    static recET_GRP GetGroup( idt id );
+    static recEventTypeGrp GetGroup( idt id );
 
     static recEventTypeVec ReadVec( unsigned filter = recET_GRP_FILTER_AllValid );
 

@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     21 November 2012
- * Copyright:   Copyright (c) 2012 .. 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2012..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -146,7 +146,7 @@ extern idt rgCreateIndEvent(
     wxWindow* wind, idt ind1ID, idt ind2ID = 0, idt famID = 0,
     unsigned grpfilter = recET_GRP_FILTER_All );
 extern idt rgCreateDefaultIndEvent(
-    wxWindow* wind, idt ind1ID, idt ind2ID, recET_GRP grp );
+    wxWindow* wind, idt ind1ID, idt ind2ID, recEventTypeGrp grp );
 extern idt rgCreatePersonalEvent( wxWindow* wind, idt ind1ID, recEventType::EType etype );
 extern idt rgCreateEventFromRecord( wxWindow* wind, idt erID );
 

@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     20th April 2013
- * Copyright:   Copyright (c) 2013 ~ 2017, Nick Matthews.
+ * Copyright:   Copyright (c) 2013..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -52,7 +52,7 @@ recEventType::recEventType( const recEventType& et )
 void recEventType::Clear()
 {
     f_id   = 0;
-    f_grp  = recET_GRP_Unstated;
+    f_grp  = recEventTypeGrp::unstated;
     f_name = wxEmptyString;
 }
 
@@ -109,7 +109,7 @@ bool recEventType::Read()
         return false;
     }
     result.SetRow( 0 );
-    f_grp = (recET_GRP) result.GetInt( 0 );
+    f_grp = recEventTypeGrp( result.GetInt( 0 ) );
     f_name = result.GetAsString( 1 );
     return true;
 }
@@ -126,8 +126,8 @@ bool recEventType::HasDateSpan() const
 {
     switch( f_grp )
     {
-    case recET_GRP_Other:
-    case recET_GRP_Personal:
+    case recEventTypeGrp::other:
+    case recEventTypeGrp::personal:
         return true;
     default:
         return false;
@@ -145,10 +145,10 @@ bool recEventType::HasDateSpan( idt etID )
     return et.HasDateSpan();
 }
 
-wxString recEventType::GetGroupValueStr( recET_GRP grp )
+wxString recEventType::GetGroupValueStr( recEventTypeGrp grp )
 {
-    wxASSERT( grp >= 0 && grp < recET_GRP_MAX );
-    static wxString grparray[recET_GRP_MAX] = {
+    wxASSERT( unsigned(grp) < unsigned(recEventTypeGrp::max) );
+    static wxString grparray[size_t(recEventTypeGrp::max)] = {
         _("Unstated"),
         _("Birth"),
         _("Near Birth"),
@@ -161,7 +161,7 @@ wxString recEventType::GetGroupValueStr( recET_GRP grp )
         _("Relationship"),
         _("Family Relationship")
     };
-    return grparray[grp];
+    return grparray[size_t(grp)];
 }
 
 wxString recEventType::GetGroupStr( idt etID )
@@ -173,8 +173,8 @@ wxString recEventType::GetGroupStr( idt etID )
 wxArrayString recEventType::GetGroupStrings( size_t start )
 {
     wxArrayString strs;
-    for( size_t i = start ; i < recET_GRP_MAX ; i++ ) {
-        strs.push_back( GetGroupStr( (recET_GRP) i ) );
+    for( size_t i = start ; i < size_t(recEventTypeGrp::max) ; i++ ) {
+        strs.push_back( GetGroupValueStr( recEventTypeGrp( i ) ) );
     }
     return strs;
 }
@@ -185,7 +185,7 @@ wxString recEventType::GetTypeStr( idt id )
     return et.f_name;
 }
 
-recET_GRP recEventType::GetGroup( idt id )
+recEventTypeGrp recEventType::GetGroup( idt id )
 {
     recEventType et( id );
     return et.f_grp;
@@ -253,7 +253,7 @@ recEventTypeVec recEventType::ReadVec( unsigned filter )
     recEventType et;
     while( result.NextRow() ) {
         et.FSetID( GET_ID( result.GetInt64( 0 ) ) );
-        et.FSetGrp( (recET_GRP) result.GetInt( 1 ) );
+        et.FSetGrp( recEventTypeGrp( result.GetInt( 1 ) ) );
         et.FSetName( result.GetAsString( 2 ) );
         vec.push_back( et );
     }

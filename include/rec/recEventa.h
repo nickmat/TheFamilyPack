@@ -94,7 +94,7 @@ public:
     wxString GetTypeStr() const;
     wxString GetDateStr() const;
     wxString GetAddressStr() const;
-    recET_GRP GetTypeGroup() const;
+    recEventTypeGrp GetTypeGroup() const;
     static wxString GetDetailStr( idt eaID );
     static wxString GetTypeStr( idt eaID );
     static wxString GetTitle( idt eaID );

@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     30th April 2013
- * Copyright:   Copyright (c) 2013 .. 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2013..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -123,22 +123,22 @@ enum recET_GRP_FILTER {
     )
 };
 
-enum recET_GRP {
-    recET_GRP_Unstated,    // 0
-    recET_GRP_Birth,       // 1
-    recET_GRP_NrBirth,     // 2
-    recET_GRP_FamUnion,    // 3
-    recET_GRP_FamOther,    // 4
-    recET_GRP_Death,       // 5
-    recET_GRP_NrDeath,     // 6
-    recET_GRP_Other,       // 7
-    recET_GRP_Personal,    // 8
-    recET_GRP_Relation,    // 9
-    recET_GRP_FamRelation, // 10
-    recET_GRP_MAX          // 11
+enum class recEventTypeGrp {
+    unstated,     // 0
+    birth,        // 1
+    nr_birth,     // 2
+    fam_union,    // 3
+    fam_other,    // 4
+    death,        // 5
+    nr_death,     // 6
+    other,        // 7
+    personal,     // 8
+    relation,     // 9
+    fam_relation, // 10
+    max           // 11
 };
 
-inline recET_GRP_FILTER recEventTypeGrpToFilter( recET_GRP grp ) { return  recET_GRP_FILTER(1 << grp); }
+inline recET_GRP_FILTER recEventTypeGrpToFilter( recEventTypeGrp grp ) { return  recET_GRP_FILTER(1 << unsigned(grp)); }
 
 enum recEntity {
     recENT_NULL,

@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     25th November 2012
- * Copyright:   Copyright (c) 2012 .. 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2012..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  doccore is free software: you can redistribute it and/or modify
@@ -119,8 +119,8 @@ wxString WrTblEventType( int* order )
         recEventTypeVec ets = recEventType::ReadVec( flag );
         for( size_t j = 0 ; j < ets.size() ; j++ ) {
             idt etID = ets[j].FGetID();
-            htm << "<tr><td>" << etID 
-                << "</td><td>" << ets[j].FGetGrp();
+            htm << "<tr><td>" << etID
+                << "</td><td>" << unsigned( ets[j].FGetGrp() );
             if( j == 0 ) {
                 htm << " \"" << ets[0].GetGroupStr() << "\"";
             }

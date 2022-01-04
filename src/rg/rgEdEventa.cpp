@@ -81,22 +81,22 @@ idt rgCreateEventa( wxWindow* wind, idt refID )
 
     switch( etype.f_grp )
     {
-    case recET_GRP_Birth:
+    case recEventTypeGrp::birth:
         role1 = recEventTypeRole::ROLE_Birth_Born;
         break;
-    case recET_GRP_NrBirth:
+    case recEventTypeGrp::nr_birth:
         break;
-    case recET_GRP_Death:
+    case recEventTypeGrp::death:
         role1 = recEventTypeRole::ROLE_Death_Died;
         break;
-    case recET_GRP_NrDeath:
+    case recEventTypeGrp::nr_death:
         break;
-    case recET_GRP_FamUnion:
+    case recEventTypeGrp::fam_union:
         person2 = true;
         role1 = recEventTypeRole::ROLE_Marriage_Groom;
         role2 = recEventTypeRole::ROLE_Marriage_Bride;
         break;
-    case recET_GRP_FamOther:
+    case recEventTypeGrp::fam_other:
         person2 = true;
         break;
     default:

@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     24 October 2010
- * Copyright:   Copyright (c) 2010 ~ 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -137,7 +137,7 @@ wxString tfpWriteEventaPage( idt erID )
     wxString htm;
     if( erID == 0 ) return wxEmptyString;
     recEventa er(erID);
-    recET_GRP grp = er.GetTypeGroup();
+    recEventTypeGrp grp = er.GetTypeGroup();
     idt refID = er.FGetRefID();
 
     htm <<
@@ -210,7 +210,7 @@ wxString tfpWriteEventaPage( idt erID )
         htm << "</table>\n";
     }
 
-    if( grp == recET_GRP_FamRelation ) {
+    if( grp == recEventTypeGrp::fam_relation ) {
         htm << DisplayFamilyConclusions( er );
     } else {
         htm << DisplayConclusions( er );

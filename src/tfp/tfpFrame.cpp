@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     25 September 2010
- * Copyright:   Copyright (c) 2010 .. 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -1595,19 +1595,19 @@ void TfpFrame::DoEdit( const wxString& href )
         } else if( href.StartsWith( "Em" ) ) {
             idt indID1, indID2;
             recGetIDs( href.substr(2), &indID1, &indID2 );
-            id = rgCreateDefaultIndEvent( this, indID1, indID2, recET_GRP_FamUnion );
+            id = rgCreateDefaultIndEvent( this, indID1, indID2, recEventTypeGrp::fam_union );
             if( id ) ret = true;
         } else if( href.StartsWith( "Eb" ) ) {
-            id = rgCreateDefaultIndEvent( this, recGetID( href.Mid(2) ), 0, recET_GRP_Birth );
+            id = rgCreateDefaultIndEvent( this, recGetID( href.Mid(2) ), 0, recEventTypeGrp::birth );
             if( id ) ret = true;
         } else if( href.StartsWith( "Enb" ) ) {
-            id = rgCreateDefaultIndEvent( this, recGetID( href.Mid(3) ), 0, recET_GRP_NrBirth );
+            id = rgCreateDefaultIndEvent( this, recGetID( href.Mid(3) ), 0, recEventTypeGrp::nr_birth );
             if( id ) ret = true;
         } else if( href.StartsWith( "Ed" ) ) {
-            id = rgCreateDefaultIndEvent( this, recGetID( href.Mid(2) ), 0, recET_GRP_Death );
+            id = rgCreateDefaultIndEvent( this, recGetID( href.Mid(2) ), 0, recEventTypeGrp::death );
             if( id ) ret = true;
         } else if( href.StartsWith( "End" ) ) {
-            id = rgCreateDefaultIndEvent( this, recGetID( href.Mid(3) ), 0, recET_GRP_NrDeath );
+            id = rgCreateDefaultIndEvent( this, recGetID( href.Mid(3) ), 0, recEventTypeGrp::nr_death );
             if( id ) ret = true;
         } else if( href.StartsWith( "Eo" ) ) {
             id = rgCreatePersonalEvent( this, recGetID( href.Mid(2) ), recEventType::ET_Occupation );

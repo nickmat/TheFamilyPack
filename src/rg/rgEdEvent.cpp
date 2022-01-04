@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     9 October 2010
- * Copyright:   Copyright (c) 2010 ~ 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -136,7 +136,7 @@ idt rgCreateIndEvent(
     return eveID;
 }
 
-idt rgCreateDefaultIndEvent( wxWindow* wind, idt ind1ID, idt ind2ID, recET_GRP grp )
+idt rgCreateDefaultIndEvent( wxWindow* wind, idt ind1ID, idt ind2ID, recEventTypeGrp grp )
 {
     wxASSERT( ind1ID != 0 );
     // TODO: Determine what the default Event (for the given group)
@@ -145,23 +145,23 @@ idt rgCreateDefaultIndEvent( wxWindow* wind, idt ind1ID, idt ind2ID, recET_GRP g
     recEventTypeRole::Role roleID, role2ID = recEventTypeRole::ROLE_Marriage_Bride;
     switch( grp )
     {
-    case recET_GRP_FamUnion:
+    case recEventTypeGrp::fam_union:
         typeID = recEventType::ET_Marriage;
         roleID = recEventTypeRole::ROLE_Marriage_Groom;
         break;
-    case recET_GRP_Birth:
+    case recEventTypeGrp::birth:
         typeID = recEventType::ET_Birth;
         roleID = recEventTypeRole::ROLE_Birth_Born;
         break;
-    case recET_GRP_NrBirth:
+    case recEventTypeGrp::nr_birth:
         typeID = recEventType::ET_Baptism;
         roleID = recEventTypeRole::ROLE_Baptism_Baptised;
         break;
-    case recET_GRP_Death:
+    case recEventTypeGrp::death:
         typeID = recEventType::ET_Death;
         roleID = recEventTypeRole::ROLE_Death_Died;
         break;
-    case recET_GRP_NrDeath:
+    case recEventTypeGrp::nr_death:
         typeID = recEventType::ET_Burial;
         roleID = recEventTypeRole::ROLE_Burial_Deceased;
         break;

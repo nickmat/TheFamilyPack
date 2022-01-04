@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     11th November 2015
- * Copyright:   Copyright (c) 2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2015..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -46,7 +46,7 @@ public:
 private:
     void ExportIndividual( idt indID, int level );
     void ExportFamily( const recFamily& fam, int level );
-    void ExportIndEvents( idt indID, recET_GRP grp, int level );
+    void ExportIndEvents( idt indID, recEventTypeGrp grp, int level );
     void ExportFamEvents( idt famID, int level );
     void ExportEvents( const recIdVec& events, int level, idt id );
     void ExportDate( idt dateID, int level );

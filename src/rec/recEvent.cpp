@@ -296,7 +296,7 @@ wxString recEvent::GetAddressStr() const
     return recPlace::GetAddressStr( f_place_id );
 }
 
-recET_GRP recEvent::GetTypeGroup() const
+recEventTypeGrp recEvent::GetTypeGroup() const
 {
     return recEventType::GetGroup( f_type_id );
 }
@@ -380,8 +380,8 @@ bool recEvent::IsFamilyEvent( idt eveID )
         eveID
     );
     result = s_db->ExecuteQuery( sql );
-    recET_GRP grp = (recET_GRP) result.GetInt( 0 );
-    if( grp == recET_GRP_FamUnion || recET_GRP_FamOther ) {
+    recEventTypeGrp grp = recEventTypeGrp( result.GetInt( 0 ) );
+    if( grp == recEventTypeGrp::fam_union || grp == recEventTypeGrp::fam_other ) {
         return true;
     }
     return false;
@@ -424,14 +424,14 @@ void recEvent::UpdateDatePoint( idt evID )
 
 void recEvent::UpdateDatePoint()
 {
-    recET_GRP grp = recEventType::GetGroup( f_type_id );
+    recEventTypeGrp grp = recEventType::GetGroup( f_type_id );
     switch( grp )
     {
-    case recET_GRP_Birth:
-    case recET_GRP_NrBirth:
+    case recEventTypeGrp::birth:
+    case recEventTypeGrp::nr_birth:
         f_date_pt = recDate::GetDatePoint( f_date1_id, recDate::DatePoint::beg );
-    case recET_GRP_Death:
-    case recET_GRP_NrDeath:
+    case recEventTypeGrp::death:
+    case recEventTypeGrp::nr_death:
         f_date_pt = recDate::GetDatePoint( f_date1_id, recDate::DatePoint::end );
     }
     f_date_pt = recDate::GetDatePoint( f_date1_id );

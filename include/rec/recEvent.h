@@ -103,7 +103,7 @@ public:
     wxString GetTypeStr() const;
     wxString GetDateStr() const;
     wxString GetAddressStr() const;
-    recET_GRP GetTypeGroup() const;
+    recEventTypeGrp GetTypeGroup() const;
     static wxString GetDetailStr( idt evID );
     static wxString GetTypeStr( idt evID );
     static wxString GetTitle( idt evID );

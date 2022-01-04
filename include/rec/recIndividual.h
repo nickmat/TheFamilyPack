@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010 ~ 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -130,27 +130,27 @@ public:
 
     static idt FindEvent( idt indID, idt roleID );
     idt FindEvent( idt roleID ) const { return FindEvent( f_id, roleID ); }
-    static idt FindGroupEvent( idt indID, recET_GRP grp );
-    idt FindGroupEvent( recET_GRP grp ) const { return FindGroupEvent( f_id, grp ); }
+    static idt FindGroupEvent( idt indID, recEventTypeGrp grp );
+    idt FindGroupEvent( recEventTypeGrp grp ) const { return FindGroupEvent( f_id, grp ); }
 
     static recIdVec FindEvents( idt indID, idt roleID );
     recIdVec FindEvents( idt roleID ) const { return FindEvents( f_id, roleID ); }
-    static recIdVec FindGroupEvents( idt indID, recET_GRP grp );
-    recIdVec FindGroupEvents( recET_GRP grp ) const { return FindGroupEvents( f_id, grp ); }
+    static recIdVec FindGroupEvents( idt indID, recEventTypeGrp grp );
+    recIdVec FindGroupEvents( recEventTypeGrp grp ) const { return FindGroupEvents( f_id, grp ); }
 
     static idt GetPersonalSummaryIE( idt indID, idt etID );
     idt GetPersonalSummaryIE( idt etID ) const { return GetPersonalSummaryIE( f_id, etID ); }
     static idt GetPersonalSummaryEvent( idt indID, idt etID );
     idt GetPersonalSummaryEvent( idt etID ) const { return GetPersonalSummaryEvent( f_id, etID ); }
 
-    idt GetBirthEvent() const { return FindGroupEvent( recET_GRP_Birth ); }
-    idt GetNrBirthEvent() const { return FindGroupEvent( recET_GRP_NrBirth ); }
-    idt GetDeathEvent() const { return FindGroupEvent( recET_GRP_Death ); }
-    idt GetNrDeathEvent() const { return FindGroupEvent( recET_GRP_NrDeath ); }
-    static idt GetBirthEvent( idt id ) { return FindGroupEvent( id, recET_GRP_Birth ); }
-    static idt GetNrBirthEvent( idt id ) { return FindGroupEvent( id, recET_GRP_NrBirth ); }
-    static idt GetDeathEvent( idt id ) { return FindGroupEvent( id, recET_GRP_Death ); }
-    static idt GetNrDeathEvent( idt id ) { return FindGroupEvent( id, recET_GRP_NrDeath ); }
+    idt GetBirthEvent() const { return FindGroupEvent( recEventTypeGrp::birth ); }
+    idt GetNrBirthEvent() const { return FindGroupEvent( recEventTypeGrp::nr_birth ); }
+    idt GetDeathEvent() const { return FindGroupEvent( recEventTypeGrp::death ); }
+    idt GetNrDeathEvent() const { return FindGroupEvent( recEventTypeGrp::nr_death ); }
+    static idt GetBirthEvent( idt id ) { return FindGroupEvent( id, recEventTypeGrp::birth ); }
+    static idt GetNrBirthEvent( idt id ) { return FindGroupEvent( id, recEventTypeGrp::nr_birth ); }
+    static idt GetDeathEvent( idt id ) { return FindGroupEvent( id, recEventTypeGrp::death ); }
+    static idt GetNrDeathEvent( idt id ) { return FindGroupEvent( id, recEventTypeGrp::nr_death ); }
 
     static idt CreateBirthDate( idt indID );
     static idt CreateDeathDate( idt indID );

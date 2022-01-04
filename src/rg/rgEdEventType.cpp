@@ -3,11 +3,9 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Edit an EventType record dialog, GUI only.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     21 November 2012
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2012, Nick Matthews.
+ * Copyright:   Copyright (c) 2012..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -95,7 +93,7 @@ bool rgDlgEditEventType::TransferDataToWindow()
 {
     wxArrayString groupList = recEventType::GetGroupStrings();
     m_choiceGroup->Set( groupList );
-    m_choiceGroup->SetSelection( recET_GRP_Other );
+    m_choiceGroup->SetSelection( int( recEventTypeGrp::other ) );
 
     for( size_t i = 0 ; i < m_roles.size() ; i++ ) {
         m_listRole->InsertItem( i, m_roles[i].GetIdStr() );
@@ -112,7 +110,7 @@ bool rgDlgEditEventType::TransferDataToWindow()
 
 bool rgDlgEditEventType::TransferDataFromWindow()
 {
-    m_et.FSetGrp( (recET_GRP) m_choiceGroup->GetSelection() );
+    m_et.FSetGrp( recEventTypeGrp( m_choiceGroup->GetSelection() ) );
     m_et.FSetName( m_textCtrlValue->GetValue() );
     m_et.Save();
     return true;

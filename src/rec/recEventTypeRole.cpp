@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     14th December 2015
- * Copyright:   Copyright (c) 2015 ~ 2017, Nick Matthews.
+ * Copyright:   Copyright (c) 2015..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -139,16 +139,16 @@ wxString recEventTypeRole::GetName( idt roleID )
 wxString recEventTypeRole::GetPrimeStr() const
 {
     wxString str;
-    recET_GRP group = recEventType::GetGroup( f_type_id );
+    recEventTypeGrp group = recEventType::GetGroup( f_type_id );
 
     switch( group )
     {
-    case recET_GRP_Birth:
-    case recET_GRP_NrBirth:
-    case recET_GRP_Death:
-    case recET_GRP_NrDeath:
-    case recET_GRP_Other:
-    case recET_GRP_Personal:
+    case recEventTypeGrp::birth:
+    case recEventTypeGrp::nr_birth:
+    case recEventTypeGrp::death:
+    case recEventTypeGrp::nr_death:
+    case recEventTypeGrp::other:
+    case recEventTypeGrp::personal:
         switch( f_prime )
         {
         case PRIME_None:
@@ -161,8 +161,8 @@ wxString recEventTypeRole::GetPrimeStr() const
             str = _("?");
         }
         break;
-    case recET_GRP_FamUnion:
-    case recET_GRP_FamOther:
+    case recEventTypeGrp::fam_union:
+    case recEventTypeGrp::fam_other:
         switch( f_prime )
         {
         case PRIME_None:

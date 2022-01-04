@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     7th May 2013
- * Copyright:   Copyright (c) 2013 ~ 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2013..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -84,21 +84,21 @@ idt rgFindOrCreateIndEvent(
     idt eID = 0;
     recIdVec eIDs;
     recEventa ea(eaID);
-    recET_GRP grp = ea.GetTypeGroup();
+    recEventTypeGrp grp = ea.GetTypeGroup();
 
     switch( grp )
     {
-    case recET_GRP_Birth:
-    case recET_GRP_Death:
+    case recEventTypeGrp::birth:
+    case recEventTypeGrp::death:
         eID = recIndividual::FindEvent( id, roleID );
         if( eID == 0 ) {
             eID = recEvent::CreateFromEventa( eaID );
         }
         eIDs.push_back( eID );
         break;
-    case recET_GRP_NrBirth:
-    case recET_GRP_NrDeath:
-    case recET_GRP_Other:
+    case recEventTypeGrp::nr_birth:
+    case recEventTypeGrp::nr_death:
+    case recEventTypeGrp::other:
         {
             recSelSetEvent sse;
             sse.SetGroupsEnabled(
@@ -117,8 +117,8 @@ idt rgFindOrCreateIndEvent(
             }
         }
         break;
-    case recET_GRP_FamUnion:
-    case recET_GRP_FamOther:
+    case recEventTypeGrp::fam_union:
+    case recEventTypeGrp::fam_other:
         {
             recSelSetEvent sse;
             sse.SetGroupsEnabled(

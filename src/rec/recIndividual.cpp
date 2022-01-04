@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010 ~ 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -367,9 +367,9 @@ idt recIndividual::FindEvent( idt indID, idt roleID )
     return ExecuteID( sql );
 }
 
-idt recIndividual::FindGroupEvent( idt indID, recET_GRP grp )
+idt recIndividual::FindGroupEvent( idt indID, recEventTypeGrp grp )
 {
-    if( indID == 0 || grp == recET_GRP_Unstated ) return 0;
+    if( indID == 0 || grp == recEventTypeGrp::unstated ) return 0;
 
     wxSQLite3StatementBuffer sql;
     sql.Format(
@@ -398,10 +398,10 @@ recIdVec recIndividual::FindEvents( idt indID, idt roleID )
     return ExecuteIdVec( sql );
 }
 
-recIdVec recIndividual::FindGroupEvents( idt indID, recET_GRP grp )
+recIdVec recIndividual::FindGroupEvents( idt indID, recEventTypeGrp grp )
 {
     recIdVec eIDs;
-    if( indID == 0 || grp == recET_GRP_Unstated ) {
+    if( indID == 0 || grp == recEventTypeGrp::unstated ) {
         return eIDs;
     }
 

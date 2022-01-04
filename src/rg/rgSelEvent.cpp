@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     5th December 2012
- * Copyright:   Copyright (c) 2012-2014, Nick Matthews.
+ * Copyright:   Copyright (c) 2012..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -127,10 +127,10 @@ bool rgDlgSelectEvent::TransferDataToWindow()
     wxArrayString grpStrings;
     BoolVec grpsChkd;
 
-    for( int i = 0 ; i < recET_GRP_MAX ; i++ ) {
+    for( unsigned i = 0 ; i < unsigned(recEventTypeGrp::max) ; i++ ) {
         unsigned flag = 1 << i;
         if( m_fe.GetGroupsEnabled() & flag ) {
-            grpStrings.push_back( recEventType::GetGroupValueStr( (recET_GRP) i ) );
+            grpStrings.push_back( recEventType::GetGroupValueStr( recEventTypeGrp( i ) ) );
             m_grps.push_back( i );
             grpsChkd.push_back( (m_fe.GetGroupsChecked() & flag) != 0 );  
         }
