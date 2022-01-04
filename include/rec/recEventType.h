@@ -42,9 +42,11 @@ typedef std::vector< recEventa >    recEventaVec;
 //-------------------------[ recEventType ]-----------------------------------
 //============================================================================
 
-class recEventType : public recDb
+class recEventType : public recDbT<recEventType>
 {
 public:
+    static constexpr const char* s_tablename = "EventType";
+
     enum EType {  // predefined entries, match with recCreate.sql
         ET_Unstated     = 0,
         ET_Birth        = -1,
@@ -76,14 +78,14 @@ public:
     recET_GRP f_grp;
     wxString  f_name;
 
-    recEventType() {}
-    recEventType( idt id ) : recDb(id) { Read(); }
+    recEventType() : f_grp( recET_GRP_Unstated ) {}
+    recEventType( idt id ) : recDbT(id) { Read(); }
     recEventType( const recEventType& et );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "EventType" );
+    bool Equivalent( const recEventType& r2 ) const;
 
     static wxString GetIdStr( idt evID ) { return wxString::Format( "ET" ID, evID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
@@ -117,22 +119,5 @@ public:
 
     static idt GetSummaryRole( idt typeID );
 };
-
-inline bool recEquivalent( const recEventType& r1, const recEventType& r2 )
-{
-    return
-        r1.f_grp  == r2.f_grp  &&
-        r1.f_name == r2.f_name;
-}
-
-inline bool operator==( const recEventType& r1, const recEventType& r2 )
-{
-    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
-}
-
-inline bool operator!=( const recEventType& r1, const recEventType& r2 )
-{
-    return !(r1 == r2);
-}
 
 #endif // REC_RECEVENTTYPE_H

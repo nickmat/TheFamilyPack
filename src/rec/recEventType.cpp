@@ -114,6 +114,14 @@ bool recEventType::Read()
     return true;
 }
 
+bool recEventType::Equivalent( const recEventType& r2 ) const
+{
+    return
+        f_grp == r2.f_grp &&
+        f_name == r2.f_name
+    ;
+}
+
 bool recEventType::HasDateSpan() const
 {
     switch( f_grp )
