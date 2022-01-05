@@ -37,7 +37,7 @@
 class recEventTypeRole : public recDbT<recEventTypeRole>
 {
 public:
-    static constexpr const char* s_tablename = "EventType";
+    static constexpr const char* s_tablename = "EventTypeRole";
 
     enum Role {  // predefined entries, only given if required by the program
         ROLE_Unstated               = 0,

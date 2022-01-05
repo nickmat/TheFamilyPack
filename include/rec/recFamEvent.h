@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     14th December 2015
- * Copyright:   Copyright (c) 2015 ~ 2017, Nick Matthews.
+ * Copyright:   Copyright (c) 2015..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -35,22 +35,24 @@
 //-------------------------[ recFamilyEvent ]---------------------------------
 //============================================================================
 
-class recFamilyEvent : public recDb
+class recFamilyEvent : public recDbT<recFamilyEvent>
 {
 public:
+    static constexpr const char* s_tablename = "FamilyEvent";
+
     idt      f_fam_id;
     idt      f_event_id;
     wxString f_note;
     int      f_fam_seq;
 
-    recFamilyEvent() {}
-    recFamilyEvent( idt id ) : recDb(id) { Read(); }
+    recFamilyEvent() : f_fam_id(0), f_event_id(0), f_fam_seq(0) {}
+    recFamilyEvent( idt id ) : recDbT(id) { Read(); }
     recFamilyEvent( const recFamilyEvent& link );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "FamilyEvent" );
+    bool Equivalent( const recFamilyEvent& r2 ) const;
 
     idt FGetFamID() const { return f_fam_id; }
     idt FGetEventID() const { return f_event_id; }
@@ -67,27 +69,6 @@ public:
 
     static idt Create( idt eveID, idt famID, const wxString& note = wxEmptyString );
 };
-
-/*! The two entities are equal, ignoring the record id.
- */
-inline bool recEquivalent( const recFamilyEvent& r1, const recFamilyEvent& r2 )
-{
-    return
-        r1.f_fam_id   == r2.f_fam_id   &&
-        r1.f_event_id == r2.f_event_id &&
-        r1.f_note     == r2.f_note     &&
-        r1.f_fam_seq  == r2.f_fam_seq;
-}
-
-inline bool operator==( const recFamilyEvent& d1, const recFamilyEvent& d2 )
-{
-    return recEquivalent( d1, d2 ) && d1.f_id == d2.f_id;
-}
-
-inline bool operator!=( const recFamilyEvent& d1, const recFamilyEvent& d2 )
-{
-    return !(d1 == d2);
-}
 
 typedef std::vector< recFamilyEvent >      recFamilyEventVec;
 
