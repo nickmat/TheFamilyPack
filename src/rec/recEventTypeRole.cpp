@@ -130,6 +130,16 @@ bool recEventTypeRole::Read()
     return true;
 }
 
+bool recEventTypeRole::Equivalent( const recEventTypeRole& r2 ) const
+{
+    return
+        f_type_id == r2.f_type_id &&
+        f_prime == r2.f_prime &&
+        f_official == r2.f_official &&
+        f_name == r2.f_name
+    ;
+}
+
 wxString recEventTypeRole::GetName( idt roleID )
 {
     recEventTypeRole role( roleID );

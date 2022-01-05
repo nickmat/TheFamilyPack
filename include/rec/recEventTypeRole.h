@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     14th December 2015
- * Copyright:   Copyright (c) 2015 ~ 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2015..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -34,9 +34,11 @@
 //-------------------------[ recEventTypeRole ]-------------------------------
 //============================================================================
 
-class recEventTypeRole : public recDb
+class recEventTypeRole : public recDbT<recEventTypeRole>
 {
 public:
+    static constexpr const char* s_tablename = "EventType";
+
     enum Role {  // predefined entries, only given if required by the program
         ROLE_Unstated               = 0,
         ROLE_Birth_Born             = -1,
@@ -96,14 +98,14 @@ public:
     bool      f_official;
     wxString  f_name;
 
-    recEventTypeRole() {}
-    recEventTypeRole( idt id ) : recDb(id) { Read(); }
+    recEventTypeRole() : f_type_id(0), f_prime(false), f_official(false) {}
+    recEventTypeRole( idt id ) : recDbT(id) { Read(); }
     recEventTypeRole( const recEventTypeRole& etr );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "EventTypeRole" );
+    bool Equivalent( const recEventTypeRole& r2 ) const;
 
     idt FGetTypeID() const { return f_type_id; }
     int FGetPrime() const { return f_prime; }
@@ -127,25 +129,6 @@ public:
     static idt Find( const wxString& name, idt type, Prime prime = PRIME_Ignore, TriLogic official = TRILOGIC_both );
     static idt FindOrCreate( const wxString& name, idt type, Prime prime = PRIME_First, bool official = false );
 };
-
-inline bool recEquivalent( const recEventTypeRole& r1, const recEventTypeRole& r2 )
-{
-    return
-        r1.f_type_id  == r2.f_type_id  &&
-        r1.f_prime    == r2.f_prime    &&
-        r1.f_official == r2.f_official &&
-        r1.f_name     == r2.f_name;
-}
-
-inline bool operator==( const recEventTypeRole& r1, const recEventTypeRole& r2 )
-{
-    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
-}
-
-inline bool operator!=( const recEventTypeRole& r1, const recEventTypeRole& r2 )
-{
-    return !(r1 == r2);
-}
 
 typedef std::vector< recEventTypeRole >    recEventTypeRoleVec;
 
