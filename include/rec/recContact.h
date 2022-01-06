@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     25 February 2011
- * Copyright:   Copyright (c) 2011 .. 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2011..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -41,18 +41,21 @@ typedef std::vector< recContactType >  recContactTypeVec;
 //                 recContactList
 //============================================================================
 
-class recContactList : public recDb
+class recContactList : public recDbT<recContactList>
 {
 public:
+    static constexpr const char* s_tablename = "ContactList";
+
     recContactList() : f_ind_id(0) {}
-    recContactList( idt id ) : recDb(id) { Read(); }
+    recContactList( idt id ) : recDbT(id) { Read(); }
     recContactList( const recContactList& at );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "ContactList" );
-    bool Equivalent( const recContactList& r2 ) const { return f_ind_id == r2.f_ind_id; };
+    bool Equivalent( const recContactList& r2 ) const {
+        return f_ind_id == r2.f_ind_id;
+    }
 
     idt FGetIndID() const { return f_ind_id; }
 
@@ -80,23 +83,15 @@ private:
     idt  f_ind_id;
 };
 
-inline bool operator==( const recContactList& r1, const recContactList& r2 )
-{
-    return r1.Equivalent( r2 ) && r1.EqualID( r2 );
-}
-
-inline bool operator!=( const recContactList& r1, const recContactList& r2 )
-{
-    return !(r1 == r2);
-}
-
 //============================================================================
 //                 recContactType
 //============================================================================
 
-class recContactType : public recDb
+class recContactType : public recDbT<recContactType>
 {
 public:
+    static constexpr const char* s_tablename = "ContactType";
+
     enum Type {
         CT_Unstated = 0,
         CT_Address = -1,
@@ -109,13 +104,12 @@ public:
     };
 
     recContactType() {}
-    recContactType( idt id ) : recDb(id) { Read(); }
+    recContactType( idt id ) : recDbT(id) { Read(); }
     recContactType( const recContactType& at );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "ContactType" );
     bool Equivalent( const recContactType& r2 ) const { return f_name == r2.f_name; };
 
     wxString FGetName() const { return f_name; }
@@ -140,32 +134,23 @@ private:
     wxString  f_name;
 };
 
-inline bool operator==( const recContactType& r1, const recContactType& r2 )
-{
-    return r1.Equivalent( r2 ) && r1.EqualID( r2 );
-}
-
-inline bool operator!=( const recContactType& r1, const recContactType& r2 )
-{
-    return !(r1 == r2);
-}
 
 //============================================================================
 //                 recContact
 //============================================================================
 
-class recContact : public recDb
+class recContact : public recDbT<recContact>
 {
 public:
+    static constexpr const char* s_tablename = "Contact";
 
-    recContact() {}
-    recContact( idt id ) : recDb(id) { Read(); }
+    recContact() : f_type_id(0), f_list_id(0) {}
+    recContact( idt id ) : recDbT(id) { Read(); }
     recContact( const recContact& source );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "Contact" )
     bool Equivalent( const recContact& r2 ) const;
 
     idt FGetTypeID() const { return f_type_id; }
@@ -192,16 +177,6 @@ private:
     idt      f_list_id;
     wxString f_val;
 };
-
-inline bool operator==( const recContact& r1, const recContact& r2 )
-{
-    return r1.Equivalent( r2 ) && r1.EqualID( r2 );
-}
-
-inline bool operator!=( const recContact& r1, const recContact& r2 )
-{
-    return !(r1 == r2);
-}
 
 
 #endif // RECCONTACT_H
