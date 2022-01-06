@@ -45,7 +45,7 @@
 class recEventa : public recDbT<recEventa>
 {
 public:
-    static constexpr const char* s_tablename = "Event";
+    static constexpr const char* s_tablename = "Eventa";
 
     wxString f_title;
     idt      f_ref_id;
