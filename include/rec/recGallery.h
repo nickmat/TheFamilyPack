@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     19th September 2018
- * Copyright:   Copyright (c) 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2018..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -36,18 +36,18 @@ using  recGalleryVec = std::vector< recGallery >;
 class recGalleryMediaMedia;
 using recGalleryMediaMediaVec = std::vector< recGalleryMediaMedia >;
 
-class recGallery : public recDb
+class recGallery : public recDbT<recGallery>
 {
 public:
+    static constexpr const char* s_tablename = "Gallery";
 
     recGallery() {}
-    recGallery( idt id ) : recDb( id ) { Read(); }
+    recGallery( idt id ) : recDbT( id ) { Read(); }
     recGallery( const recGallery& source );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "Gallery" );
     bool Equivalent( const recGallery& r2 ) const;
 
     wxString FGetTitle() const { return f_title; }
@@ -71,16 +71,6 @@ private:
     wxString f_title;
     wxString f_note;
 };
-
-inline bool operator==( const recGallery& r1, const recGallery& r2 )
-{
-    return r1.Equivalent( r2 ) && r1.EqualID( r2 );
-}
-
-inline bool operator!=( const recGallery& r1, const recGallery& r2 )
-{
-    return !( r1 == r2 );
-}
 
 
 #endif // RECGALLERY_H
