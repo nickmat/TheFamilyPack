@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     19th April 2015
- * Copyright:   Copyright (c) 2015 ~ 2017, Nick Matthews.
+ * Copyright:   Copyright (c) 2015..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -37,7 +37,7 @@ typedef std::vector< recFamilyEventa >   recFamilyEventaVec;
 //--------------------------[ recFamilyEventa ]-------------------------------
 //============================================================================
 
-class recFamilyEventa : public recDb
+class recFamilyEventa : public recDbT<recFamilyEventa>
 {
     idt      f_fam_id;
     idt      f_eventa_id;
@@ -45,14 +45,16 @@ class recFamilyEventa : public recDb
     wxString f_note;
 
 public:
-    recFamilyEventa() {}
-    recFamilyEventa( idt id ) : recDb(id) { Read(); }
+    static constexpr const char* s_tablename = "FamilyEventa";
+
+    recFamilyEventa() : f_fam_id(0), f_eventa_id(0), f_conf(0.0) {}
+    recFamilyEventa( idt id ) : recDbT(id) { Read(); }
     recFamilyEventa( const recFamilyEventa& link );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "FamilyEventa" );
+    bool Equivalent( const recFamilyEventa& r2 ) const;
 
     idt FGetFamID() const { return f_fam_id; }
     idt FGetEventaID() const { return f_eventa_id; }
@@ -73,25 +75,5 @@ public:
     static idt Find( idt famID, idt eaID );
 };
 
-/*! The two entities are equal, ignoring the record id.
- */
-inline bool recEquivalent( const recFamilyEventa& d1, const recFamilyEventa& d2 )
-{
-    return
-        d1.FGetFamID()      == d2.FGetFamID()      &&
-        d1.FGetEventaID()   == d2.FGetEventaID()   &&
-        d1.FGetConf()       == d2.FGetConf()       &&
-        d1.FGetNote()       == d2.FGetNote();
-}
-
-inline bool operator==( const recFamilyEventa& d1, const recFamilyEventa& d2 )
-{
-    return recEquivalent( d1, d2 ) && d1.f_id == d2.f_id;
-}
-
-inline bool operator!=( const recFamilyEventa& d1, const recFamilyEventa& d2 )
-{
-    return !(d1 == d2);
-}
 
 #endif // REC_RECFAMEVENTA_H

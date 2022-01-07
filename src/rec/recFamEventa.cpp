@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     19th April 2015
- * Copyright:   Copyright (c) 2015 ~ 2017, Nick Matthews.
+ * Copyright:   Copyright (c) 2015..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -128,6 +128,16 @@ bool recFamilyEventa::Read()
     f_conf         = result.GetDouble( 2 );
     f_note         = result.GetAsString( 3 );
     return true;
+}
+
+bool recFamilyEventa::Equivalent( const recFamilyEventa& r2 ) const
+{
+    return
+        FGetFamID() == r2.FGetFamID() &&
+        FGetEventaID() == r2.FGetEventaID() &&
+        FGetConf() == r2.FGetConf() &&
+        FGetNote() == r2.FGetNote()
+    ;
 }
 
 idt recFamilyEventa::Create( idt famID, idt eaID, double conf, const wxString& note )
