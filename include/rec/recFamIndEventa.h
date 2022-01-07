@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     19th April 2015
- * Copyright:   Copyright (c) 2015 ~ 2017, Nick Matthews.
+ * Copyright:   Copyright (c) 2015..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -37,7 +37,7 @@ typedef std::vector< recFamilyIndEventa >   recFamilyIndEventaVec;
 //--------------------------[ recFamilyIndEventa ]----------------------------
 //============================================================================
 
-class recFamilyIndEventa : public recDb
+class recFamilyIndEventa : public recDbT<recFamilyIndEventa>
 {
     idt      f_fam_ind_id;
     idt      f_eventa_id;
@@ -45,14 +45,16 @@ class recFamilyIndEventa : public recDb
     wxString f_note;
 
 public:
-    recFamilyIndEventa() {}
-    recFamilyIndEventa( idt id ) : recDb(id) { Read(); }
+    static constexpr const char* s_tablename = "FamilyIndEventa";
+
+    recFamilyIndEventa() : f_fam_ind_id(0), f_eventa_id(0), f_conf(0.0) {}
+    recFamilyIndEventa( idt id ) : recDbT(id) { Read(); }
     recFamilyIndEventa( const recFamilyIndEventa& link );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "FamilyIndEventa" );
+    bool Equivalent( const recFamilyIndEventa& r2 ) const;
 
     idt FGetFamIndID() const { return f_fam_ind_id; }
     idt FGetEventaID() const { return f_eventa_id; }
@@ -72,26 +74,5 @@ public:
     bool Find();
     static idt Find( idt fiID, idt eaID );
 };
-
-/*! The two entities are equal, ignoring the record id.
- */
-inline bool recEquivalent( const recFamilyIndEventa& d1, const recFamilyIndEventa& d2 )
-{
-    return
-        d1.FGetFamIndID()   == d2.FGetFamIndID()   &&
-        d1.FGetEventaID()   == d2.FGetEventaID()   &&
-        d1.FGetConf()       == d2.FGetConf()       &&
-        d1.FGetNote()       == d2.FGetNote();
-}
-
-inline bool operator==( const recFamilyIndEventa& d1, const recFamilyIndEventa& d2 )
-{
-    return recEquivalent( d1, d2 ) && d1.f_id == d2.f_id;
-}
-
-inline bool operator!=( const recFamilyIndEventa& d1, const recFamilyIndEventa& d2 )
-{
-    return !(d1 == d2);
-}
 
 #endif // REC_RECFAMINDEVENTA_H
