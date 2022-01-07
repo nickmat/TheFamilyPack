@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     19th September 2018
- * Copyright:   Copyright (c) 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2018..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -31,18 +31,19 @@
 #include <rec/recDatabase.h>
 #include <rec/recMedia.h>
 
-class recGalleryMedia : public recDb
+class recGalleryMedia : public recDbT<recGalleryMedia>
 {
 public:
-    recGalleryMedia() {}
-    recGalleryMedia( idt id ) : recDb( id ) { Read(); }
+    static constexpr const char* s_tablename = "GalleryMedia";
+
+    recGalleryMedia() : f_gal_id(0), f_med_id(0), f_med_seq(0) {}
+    recGalleryMedia( idt id ) : recDbT( id ) { Read(); }
     recGalleryMedia( const recGalleryMedia& name );
     recGalleryMedia( idt galID, idt medID ) { ReadGalleryMedia( galID, medID ); }
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "GalleryMedia" );
     bool Equivalent( const recGalleryMedia& r2 ) const;
 
     wxString FGetTitle() const { return f_title; }
@@ -68,15 +69,6 @@ private:
     int      f_med_seq;
 };
 
-inline bool operator==( const recGalleryMedia& r1, const recGalleryMedia& r2 )
-{
-    return r1.Equivalent( r2 ) && r1.EqualID( r2 );
-}
-
-inline bool operator!=( const recGalleryMedia& r1, const recGalleryMedia& r2 )
-{
-    return !( r1 == r2 );
-}
 
 using  recGalleryMediaVec = std::vector< recGalleryMedia >;
 
