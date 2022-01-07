@@ -362,7 +362,7 @@ bool recGedParse::ReadNextLine()
     else if( str.Cmp( "CONC" ) == 0 )
     {
         // EasyTree uses CONC instead of CONT
-        if( m_fileSource == FS_EasyTree ) m_tag = tagCONT;
+        if( m_fileSource == FileSource::EasyTree ) m_tag = tagCONT;
         else m_tag = tagCONC;
     }
     else if( str.Cmp( "TITL" ) == 0 ) m_tag = tagTITL;
@@ -1099,9 +1099,9 @@ void recGedParse::ReadSubm( int level )
 recGedParse::FileSource recGedParse::ReadFileSource( int level )
 {
     if(  m_text.compare( "EasyTree" ) == 0 ) {
-        return FS_EasyTree;
+        return FileSource::EasyTree;
     }
-    return FS_UNKNOWN;
+    return FileSource::unknown;
 }
 
 wxString recGedParse::ReadAddr( int level )

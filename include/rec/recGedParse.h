@@ -4,7 +4,7 @@
  * Purpose:     Read GEDCOM import file header.
  * Author:      Nick Matthews
  * Created:     19 September 2011
- * Copyright:   Copyright (c) 2011-2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2011..2022, Nick Matthews.
  * Website:     http://thefamilypack.org
  * Licence:     GNU GPLv3
  *
@@ -49,7 +49,7 @@ class recGedParse
 public:
     recGedParse( const wxString& fname ) 
         : m_filestream(fname), m_input(m_filestream), m_progress(NULL),
-        m_fileSource(FS_UNKNOWN),
+        m_fileSource(FileSource::unknown),
         m_level(0), m_tag(tagNULL),
         m_indiUseXref(false), m_famUseXref(false), m_sourUseXref(false),
         m_totalCount(0),
@@ -63,9 +63,9 @@ public:
     bool DoPostOperations();
 
 private:
-    enum FileSource {
-        FS_UNKNOWN,
-        FS_EasyTree   // Generations EasyTree
+    enum class FileSource {
+        unknown,
+        EasyTree   // Generations EasyTree
     };
     enum Tag {
         tagNULL, // Invalid or unset value.
