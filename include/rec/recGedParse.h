@@ -50,7 +50,7 @@ public:
     recGedParse( const wxString& fname ) 
         : m_filestream(fname), m_input(m_filestream), m_progress(NULL),
         m_fileSource(FileSource::unknown),
-        m_level(0), m_tag(tagNULL),
+        m_level(0), m_tag(Tag::null),
         m_indiUseXref(false), m_famUseXref(false), m_sourUseXref(false),
         m_totalCount(0),
         m_user(0), m_noSourRec(false)
@@ -67,46 +67,46 @@ private:
         unknown,
         EasyTree   // Generations EasyTree
     };
-    enum Tag {
-        tagNULL, // Invalid or unset value.
+    enum class Tag {
+        null, // Invalid or unset value.
 
-        tagADDR, // ADDRESS, Postal address for Submitter
-        tagADR1,
-        tagADR2,
-        tagADR3,
-        tagBIRT, /* BIRTH, birth event */
-        tagBURI, /* BURIAL, burial event */
-        tagCHIL, /* CHILD, person - (one of) child member of family */
-        tagCHR,  /* CHRISTENING, christening or baptism event */
-        tagCONC, // Continuation without whitespace.
-        tagCONT, // Continuation on next line.
-        tagDATE, /* DATE, a calender day event */
-        tagDEAT, /* DEATH, death event */
-        tagEMAI, // EMAIL ADDRESS as defined in (draft) GEDCOM 5.5.1
-        tagFAM,  /* Index of FAMILY, a couple and their children */
-        tagFAMC, /* FAMILY_CHILD, family in which a person appears as a child. */
-        tagFAMS, /* FAMILY_SPOUSE, family in which a person appears as a spouse. */
-        tagFAX,  // FAX number.
-        tagHEAD, // HEADER, required. File always starts with this section.
-        tagHUSB, /* HUSBAND, person - male partner in family */
-        tagINDI, /* Index of INDIVIDUAL, a person */
-        tagMARR, /* MARRIAGE, marriage event */
-        tagNAME, /* NAME, (one of) the name a person is known by */
-        tagNOTE, /* NOTE, A note object, index to a note object or a text note */
-        tagOCCU, /* OCCUPATION, Occupation or Profession attribute */
-        tagPHON, // PHONE, Telephone number.
-        tagPLAC, /* PLACE, a place name (Address) */
-        tagSEX,  /* SEX, M for Male, F for Female */
-        tagSOUR, /* Index of SOURCE, a source note */
-        tagSUBM, // Index of Submitter (Researcher) record.
-        tagTEXT,
-        tagTITL,
-        tagTRLR, // TRAILER, required. It specifies the end of the data, use tag_END
-        tagWIFE, /* WIFE, person - female partner in family */
-        tagWWW,  // Web address.
-        tag_PRI, /* PRIVATE, person - if Y, details should not be made public */
+        ADDR, // ADDRESS, Postal address for Submitter
+        ADR1,
+        ADR2,
+        ADR3,
+        BIRT, /* BIRTH, birth event */
+        BURI, /* BURIAL, burial event */
+        CHIL, /* CHILD, person - (one of) child member of family */
+        CHR,  /* CHRISTENING, christening or baptism event */
+        CONC, // Continuation without whitespace.
+        CONT, // Continuation on next line.
+        DATE, /* DATE, a calender day event */
+        DEAT, /* DEATH, death event */
+        EMAI, // EMAIL ADDRESS as defined in (draft) GEDCOM 5.5.1
+        FAM,  /* Index of FAMILY, a couple and their children */
+        FAMC, /* FAMILY_CHILD, family in which a person appears as a child. */
+        FAMS, /* FAMILY_SPOUSE, family in which a person appears as a spouse. */
+        FAX,  // FAX number.
+        HEAD, // HEADER, required. File always starts with this section.
+        HUSB, /* HUSBAND, person - male partner in family */
+        INDI, /* Index of INDIVIDUAL, a person */
+        MARR, /* MARRIAGE, marriage event */
+        NAME, /* NAME, (one of) the name a person is known by */
+        NOTE, /* NOTE, A note object, index to a note object or a text note */
+        OCCU, /* OCCUPATION, Occupation or Profession attribute */
+        PHON, // PHONE, Telephone number.
+        PLAC, /* PLACE, a place name (Address) */
+        SEX,  /* SEX, M for Male, F for Female */
+        SOUR, /* Index of SOURCE, a source note */
+        SUBM, // Index of Submitter (Researcher) record.
+        TEXT,
+        TITL,
+        TRLR, // TRAILER, required. It specifies the end of the data, use tag_END
+        WIFE, /* WIFE, person - female partner in family */
+        WWW,  // Web address.
+        _PRI, /* PRIVATE, person - if Y, details should not be made public */
 
-        tag_END  /* _END, end of file */
+        _END  /* _END, end of file */
     };
 
     bool Pass1();

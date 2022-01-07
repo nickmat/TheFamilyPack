@@ -257,27 +257,27 @@ bool recGedParse::Pass2()
             }
             switch( m_tag )
             {
-            case tagINDI:
+            case Tag::INDI:
                 ReadIndi( 1 );
                 break;
-            case tagFAM:
+            case Tag::FAM:
                 ReadFam( 1 );
                 break;
-            case tagSOUR:
+            case Tag::SOUR:
                 if( !m_noSourRec ) {
                     ReadSour( 1 );
                 } else {
                     cont = ReadNextLine();
                 }
                 break;
-            case tagSUBM:
+            case Tag::SUBM:
                 ReadSubm( 1 );
                 break;
-            case tagHEAD:
+            case Tag::HEAD:
                 ReadHead( 1 );
                 break;
-            case tagTRLR:
-            case tag_END:
+            case Tag::TRLR:
+            case Tag::_END:
                 cont = false;
                 break;
             default:
@@ -302,7 +302,7 @@ bool recGedParse::ReadNextLine()
     wxStringTokenizer tk;
     do {
         if( m_input.GetInputStream().Eof() == true ) {
-            m_tag = tag_END;
+            m_tag = Tag::_END;
             return false;
         }
         tk.SetString( m_input.ReadLine() );
@@ -310,7 +310,7 @@ bool recGedParse::ReadNextLine()
     } while( tk.HasMoreTokens() == false );
 
     m_level = 0;
-    m_tag = tagNULL;
+    m_tag = Tag::null;
     m_text.clear();
     m_xref.clear();
 
@@ -321,8 +321,8 @@ bool recGedParse::ReadNextLine()
     if( tk.HasMoreTokens() == false ) return false;
     str = tk.GetNextToken();
 
-    if(      str.Cmp( "TRLR" ) == 0 ) m_tag = tag_END;
-    if( m_tag != tagNULL ) return true;
+    if(      str.Cmp( "TRLR" ) == 0 ) m_tag = Tag::_END;
+    if( m_tag != Tag::null ) return true;
 
     if( str[0] == wxS('@') )
     {
@@ -331,22 +331,22 @@ bool recGedParse::ReadNextLine()
         if( tk.HasMoreTokens() == false ) return false;
         str = tk.GetNextToken();
 
-        if(      str.Cmp( "INDI" ) == 0 ) m_tag = tagINDI;
-        else if( str.Cmp( "FAM"  ) == 0 ) m_tag = tagFAM;
-        else if( str.Cmp( "SOUR" ) == 0 ) m_tag = tagSOUR;
-        else if( str.Cmp( "SUBM" ) == 0 ) m_tag = tagSUBM;
-        else if( str.Cmp( "NOTE" ) == 0 ) m_tag = tagNOTE;
+        if(      str.Cmp( "INDI" ) == 0 ) m_tag = Tag::INDI;
+        else if( str.Cmp( "FAM"  ) == 0 ) m_tag = Tag::FAM;
+        else if( str.Cmp( "SOUR" ) == 0 ) m_tag = Tag::SOUR;
+        else if( str.Cmp( "SUBM" ) == 0 ) m_tag = Tag::SUBM;
+        else if( str.Cmp( "NOTE" ) == 0 ) m_tag = Tag::NOTE;
         return true;
     }
 
-    if(      str.Cmp( "HUSB" ) == 0 ) m_tag = tagHUSB;
-    else if( str.Cmp( "WIFE" ) == 0 ) m_tag = tagWIFE;
-    else if( str.Cmp( "CHIL" ) == 0 ) m_tag = tagCHIL;
-    else if( str.Cmp( "SOUR" ) == 0 ) m_tag = tagSOUR;
-    else if( str.Cmp( "SUBM" ) == 0 ) m_tag = tagSUBM;
-    else if( str.Cmp( "NOTE" ) == 0 ) m_tag = tagNOTE;
+    if(      str.Cmp( "HUSB" ) == 0 ) m_tag = Tag::HUSB;
+    else if( str.Cmp( "WIFE" ) == 0 ) m_tag = Tag::WIFE;
+    else if( str.Cmp( "CHIL" ) == 0 ) m_tag = Tag::CHIL;
+    else if( str.Cmp( "SOUR" ) == 0 ) m_tag = Tag::SOUR;
+    else if( str.Cmp( "SUBM" ) == 0 ) m_tag = Tag::SUBM;
+    else if( str.Cmp( "NOTE" ) == 0 ) m_tag = Tag::NOTE;
 
-    if( m_tag != tagNULL ) {
+    if( m_tag != Tag::null ) {
         if( tk.HasMoreTokens() == false ) return true;
         str = tk.GetString();
         if( str.substr( 0, 1 ) == "@" ) {
@@ -357,39 +357,39 @@ bool recGedParse::ReadNextLine()
         return true;
     }
 
-    if(      str.Cmp( "TEXT" ) == 0 ) m_tag = tagTEXT;
-    else if( str.Cmp( "CONT" ) == 0 ) m_tag = tagCONT;
+    if(      str.Cmp( "TEXT" ) == 0 ) m_tag = Tag::TEXT;
+    else if( str.Cmp( "CONT" ) == 0 ) m_tag = Tag::CONT;
     else if( str.Cmp( "CONC" ) == 0 )
     {
         // EasyTree uses CONC instead of CONT
-        if( m_fileSource == FileSource::EasyTree ) m_tag = tagCONT;
-        else m_tag = tagCONC;
+        if( m_fileSource == FileSource::EasyTree ) m_tag = Tag::CONT;
+        else m_tag = Tag::CONC;
     }
-    else if( str.Cmp( "TITL" ) == 0 ) m_tag = tagTITL;
-    else if( str.Cmp( "NAME" ) == 0 ) m_tag = tagNAME;
-    else if( str.Cmp( "SEX"  ) == 0 ) m_tag = tagSEX;
-    else if( str.Cmp( "BIRT" ) == 0 ) m_tag = tagBIRT;
-    else if( str.Cmp( "CHR"  ) == 0 ) m_tag = tagCHR;
-    else if( str.Cmp( "DEAT" ) == 0 ) m_tag = tagDEAT;
-    else if( str.Cmp( "BURI" ) == 0 ) m_tag = tagBURI;
-    else if( str.Cmp( "OCCU" ) == 0 ) m_tag = tagOCCU;
-    else if( str.Cmp( "DATE" ) == 0 ) m_tag = tagDATE;
-    else if( str.Cmp( "PLAC" ) == 0 ) m_tag = tagPLAC;
-    else if( str.Cmp( "NOTE" ) == 0 ) m_tag = tagNOTE;
-    else if( str.Cmp( "FAMS" ) == 0 ) m_tag = tagFAMS;
-    else if( str.Cmp( "FAMC" ) == 0 ) m_tag = tagFAMC;
-    else if( str.Cmp( "MARR" ) == 0 ) m_tag = tagMARR;
-    else if( str.Cmp( "HEAD" ) == 0 ) m_tag = tagHEAD;
-    else if( str.Cmp( "ADDR" ) == 0 ) m_tag = tagADDR;
-    else if( str.Cmp( "ADR1" ) == 0 ) m_tag = tagADR1;
-    else if( str.Cmp( "ADR2" ) == 0 ) m_tag = tagADR2;
-    else if( str.Cmp( "ADR3" ) == 0 ) m_tag = tagADR3;
-    else if( str.Cmp( "PHON" ) == 0 ) m_tag = tagPHON;
-    else if( str.Cmp( "EMAI" ) == 0 ) m_tag = tagEMAI;
-    else if( str.Cmp( "EMAL" ) == 0 ) m_tag = tagEMAI; // Generations 8.5 (at least) uses EMAL.
-    else if( str.Cmp( "FAX"  ) == 0 ) m_tag = tagFAX;
-    else if( str.Cmp( "WWW"  ) == 0 ) m_tag = tagWWW;
-    else if( str.Cmp( "_PRI" ) == 0 ) m_tag = tag_PRI;
+    else if( str.Cmp( "TITL" ) == 0 ) m_tag = Tag::TITL;
+    else if( str.Cmp( "NAME" ) == 0 ) m_tag = Tag::NAME;
+    else if( str.Cmp( "SEX"  ) == 0 ) m_tag = Tag::SEX;
+    else if( str.Cmp( "BIRT" ) == 0 ) m_tag = Tag::BIRT;
+    else if( str.Cmp( "CHR"  ) == 0 ) m_tag = Tag::CHR;
+    else if( str.Cmp( "DEAT" ) == 0 ) m_tag = Tag::DEAT;
+    else if( str.Cmp( "BURI" ) == 0 ) m_tag = Tag::BURI;
+    else if( str.Cmp( "OCCU" ) == 0 ) m_tag = Tag::OCCU;
+    else if( str.Cmp( "DATE" ) == 0 ) m_tag = Tag::DATE;
+    else if( str.Cmp( "PLAC" ) == 0 ) m_tag = Tag::PLAC;
+    else if( str.Cmp( "NOTE" ) == 0 ) m_tag = Tag::NOTE;
+    else if( str.Cmp( "FAMS" ) == 0 ) m_tag = Tag::FAMS;
+    else if( str.Cmp( "FAMC" ) == 0 ) m_tag = Tag::FAMC;
+    else if( str.Cmp( "MARR" ) == 0 ) m_tag = Tag::MARR;
+    else if( str.Cmp( "HEAD" ) == 0 ) m_tag = Tag::HEAD;
+    else if( str.Cmp( "ADDR" ) == 0 ) m_tag = Tag::ADDR;
+    else if( str.Cmp( "ADR1" ) == 0 ) m_tag = Tag::ADR1;
+    else if( str.Cmp( "ADR2" ) == 0 ) m_tag = Tag::ADR2;
+    else if( str.Cmp( "ADR3" ) == 0 ) m_tag = Tag::ADR3;
+    else if( str.Cmp( "PHON" ) == 0 ) m_tag = Tag::PHON;
+    else if( str.Cmp( "EMAI" ) == 0 ) m_tag = Tag::EMAI;
+    else if( str.Cmp( "EMAL" ) == 0 ) m_tag = Tag::EMAI; // Generations 8.5 (at least) uses EMAL.
+    else if( str.Cmp( "FAX"  ) == 0 ) m_tag = Tag::FAX;
+    else if( str.Cmp( "WWW"  ) == 0 ) m_tag = Tag::WWW;
+    else if( str.Cmp( "_PRI" ) == 0 ) m_tag = Tag::_PRI;
 
     m_text = tk.GetString();
 
@@ -403,13 +403,13 @@ void recGedParse::ReadHead( int level )
         if( m_level == level ) {
             switch( m_tag )
             {
-            case tagSUBM:
+            case Tag::SUBM:
                 m_user = m_submMap[ m_xref ];
                 break;
-            case tagSOUR:
+            case Tag::SOUR:
                 m_fileSource = ReadFileSource( level+1 );
                 break;
-            case tag_END:
+            case Tag::_END:
                 cont = FALSE;
                 continue;
             }
@@ -427,23 +427,23 @@ void recGedParse::ReadIndi( int level )
         if( m_level == level ) {
             switch( m_tag )
             {
-            case tagNAME:
+            case Tag::NAME:
                 ReadName( gind, level+1 );
                 continue;
-            case tagSEX:
+            case Tag::SEX:
                 ReadSex( gind );
                 continue;
-            case tagBIRT:
-            case tagCHR:
-            case tagDEAT:
-            case tagBURI:
-            case tagOCCU:
+            case Tag::BIRT:
+            case Tag::CHR:
+            case Tag::DEAT:
+            case Tag::BURI:
+            case Tag::OCCU:
                 ReadIndEvent( gind, level+1 );
                 continue;
-            case tag_PRI:
+            case Tag::_PRI:
                 ReadPrivacy( gind );
                 continue;
-            case tag_END:
+            case Tag::_END:
                 cont = false;
                 continue;
             }
@@ -546,33 +546,33 @@ void recGedParse::ReadIndEvent( GedIndividual& gind, int level )
 
     switch( m_tag )
     {
-    case tagBIRT:
+    case Tag::BIRT:
         ev.FSetTypeID( recEventType::ET_Birth );
         ie.FSetRoleID( recEventTypeRole::ROLE_Birth_Born );
         titlefmt = _("Birth of %s");
         dp = recDate::DatePoint::beg;
         unique = true;
         break;
-    case tagCHR:
+    case Tag::CHR:
         ev.FSetTypeID( recEventType::ET_Baptism );
         ie.FSetRoleID( recEventTypeRole::ROLE_Baptism_Baptised );
         titlefmt = _("Baptism of %s");
         dp = recDate::DatePoint::beg;
         break;
-    case tagDEAT:
+    case Tag::DEAT:
         ev.FSetTypeID( recEventType::ET_Death );
         ie.FSetRoleID( recEventTypeRole::ROLE_Death_Died );
         titlefmt = _("Death of %s");
         dp = recDate::DatePoint::end;
         unique = true;
         break;
-    case tagBURI:
+    case Tag::BURI:
         ev.FSetTypeID( recEventType::ET_Burial );
         ie.FSetRoleID( recEventTypeRole::ROLE_Burial_Deceased );
         titlefmt = _("Burial of %s");
         dp = recDate::DatePoint::end;
         break;
-    case tagOCCU:
+    case Tag::OCCU:
         ev.FSetTypeID( recEventType::ET_Occupation );
         ie.FSetRoleID( recEventTypeRole::FindOrCreate( m_text, recEventType::ET_Occupation ) );
         titlefmt = _("Occupation of %s");
@@ -599,22 +599,22 @@ void recGedParse::ReadIndEvent( GedIndividual& gind, int level )
             idt date2ID = 0;
             switch( m_tag )
             {
-            case tagDATE:
+            case Tag::DATE:
                 ev.FSetDate1ID( ParseEvDate( level+1, &date2ID ) );
                 ev.FSetDate2ID( date2ID );
                 break;
-            case tagPLAC:
+            case Tag::PLAC:
                 ev.FSetPlaceID( ParseEvPlace( level+1 ) );
                 break;
-            case tagNOTE:
+            case Tag::NOTE:
                 ev.FSetNote( ReadTextNote( level+1 ) );
                 continue;
-            case tagSOUR:
+            case Tag::SOUR:
                 if( !m_noSourRec ) {
                     ReadEventSource( ev, gind.GetIndID(), level+1 );
                 }
                 break;
-            case tag_END:
+            case Tag::_END:
                 cont = FALSE;
                 continue;
             }
@@ -936,19 +936,19 @@ void recGedParse::ReadFam( int level )
         if( m_level == level ) {
             switch( m_tag )
             {
-            case tagHUSB:
+            case Tag::HUSB:
                 gfam.SetHusb( m_indiMap[ m_xref ] );
                 break;
-            case tagWIFE:
+            case Tag::WIFE:
                 gfam.SetWife( m_indiMap[ m_xref ] );
                 break;
-            case tagCHIL:
+            case Tag::CHIL:
                 gfam.AddChild( m_indiMap[ m_xref ] );
                 break;
-            case tagMARR:
+            case Tag::MARR:
                 ReadFamEvent( gfam, level+1 );
                 continue;
-            case tag_END:
+            case Tag::_END:
                 cont = FALSE;
                 continue;
             }
@@ -978,7 +978,7 @@ void recGedParse::ReadFamEvent( GedFamily& gfam, int level )
 
     switch( m_tag )
     {
-    case tagMARR:
+    case Tag::MARR:
         ev.FSetTypeID( recEventType::ET_Marriage );
         ieHusb.FSetRoleID( recEventTypeRole::ROLE_Marriage_Groom );
         ieWife.FSetRoleID( recEventTypeRole::ROLE_Marriage_Bride );
@@ -995,23 +995,23 @@ void recGedParse::ReadFamEvent( GedFamily& gfam, int level )
             idt date2ID = 0;
             switch( m_tag )
             {
-            case tagDATE:
+            case Tag::DATE:
                 ev.FSetDate1ID( ParseEvDate( level+1, &date2ID ) );
                 ev.FSetDate2ID( date2ID );
                 break;
-            case tagPLAC:
+            case Tag::PLAC:
                 ev.FSetPlaceID( ParseEvPlace( level+1 ) );
                 break;
-            case tagNOTE:
+            case Tag::NOTE:
                 ev.FSetNote( ReadTextNote( level+1 ) );
                 continue;
-            case tagSOUR:
+            case Tag::SOUR:
                 if( !m_noSourRec ) {
                     ReadEventSource( ev, gfam.GetHusbIndId(), level+1 );
                     ReadEventSource( ev, gfam.GetWifeIndId(), level+1 );
                 }
                 break;
-            case tag_END:
+            case Tag::_END:
                 cont = FALSE;
                 continue;
             }
@@ -1043,13 +1043,13 @@ void recGedParse::ReadSour( int level )
         if( m_level == level ) {
             switch( m_tag )
             {
-            case tagTITL:
+            case Tag::TITL:
                 gsour.SetTitle( ReadText( level + 1, m_text ) );
                 continue;
-            case tagTEXT:
+            case Tag::TEXT:
                 gsour.SetText( ReadText( level + 1, m_text ) );
                 continue;
-            case tag_END:
+            case Tag::_END:
                 cont = false;
                 continue;
             }
@@ -1068,25 +1068,25 @@ void recGedParse::ReadSubm( int level )
         if( m_level == level ) {
             switch( m_tag )
             {
-            case tagNAME:
+            case Tag::NAME:
                 gsubm.SetName( m_text );
                 break;
-            case tagADDR:
+            case Tag::ADDR:
                 gsubm.SaveContact( recContactType::CT_Address, ReadAddr( level + 1 ) );
                 continue;
-            case tagPHON:
+            case Tag::PHON:
                 gsubm.SaveContact( recContactType::CT_Telephone, m_text );
                 break;
-            case tagEMAI:
+            case Tag::EMAI:
                 gsubm.SaveContact( recContactType::CT_Email, m_text );
                 break;
-            case tagFAX:
+            case Tag::FAX:
                 gsubm.SaveContact( recContactType::CT_Fax, m_text );
                 break;
-            case tagWWW:
+            case Tag::WWW:
                 gsubm.SaveContact( recContactType::CT_Website, m_text );
                 break;
-            case tag_END:
+            case Tag::_END:
                 cont = FALSE;
                 continue;
             }
@@ -1117,16 +1117,16 @@ wxString recGedParse::ReadAddr( int level )
         if( m_level == level ) {
             switch( m_tag )
             {
-            case tagADR1:
+            case Tag::ADR1:
                 addr1 = m_text;
                 break;
-            case tagADR2:
+            case Tag::ADR2:
                 addr2 = m_text;
                 break;
-            case tagADR3:
+            case Tag::ADR3:
                 addr3 = m_text;
                 break;
-            case tagCONT:
+            case Tag::CONT:
                 switch( addrCnt )
                 {
                 case 0:
@@ -1144,7 +1144,7 @@ wxString recGedParse::ReadAddr( int level )
                     addrCont << m_text;
                 }
                 break;
-            case tag_END:
+            case Tag::_END:
                 cont = FALSE;
                 continue;
             }
@@ -1177,13 +1177,13 @@ wxString recGedParse::ReadText( int level, const wxString& start )
         if( m_level == level ) {
             switch( m_tag )
             {
-            case tagCONC:
+            case Tag::CONC:
                 text += m_text;
                 break;
-            case tagCONT:
+            case Tag::CONT:
                 text += "\n" + m_text;
                 break;
-            case tag_END:
+            case Tag::_END:
                 cont = false;
                 continue;
             }
