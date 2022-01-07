@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     14th December 2015
- * Copyright:   Copyright (c) 2015 ~ 2017, Nick Matthews.
+ * Copyright:   Copyright (c) 2015..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -37,9 +37,11 @@ typedef std::vector< recIndividualEvent >  recIndEventVec;
 //-------------------------[ recIndividualEvent ]-----------------------------
 //============================================================================
 
-class recIndividualEvent : public recDb
+class recIndividualEvent : public recDbT<recIndividualEvent>
 {
 public:
+    static constexpr const char* s_tablename = "IndividualEvent";
+
     idt      f_ind_id;
     idt      f_higher_id;
     idt      f_event_id;
@@ -47,14 +49,15 @@ public:
     wxString f_note;
     int      f_ind_seq;
 
-    recIndividualEvent() {}
-    recIndividualEvent( idt id ) : recDb(id) { Read(); }
+    recIndividualEvent() : f_ind_id(0), f_higher_id(0),
+        f_event_id(0), f_role_id(0), f_ind_seq(0) {}
+    recIndividualEvent( idt id ) : recDbT(id) { Read(); }
     recIndividualEvent( const recIndividualEvent& pe );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "IndividualEvent" );
+    bool Equivalent( const recIndividualEvent& r2 ) const;
 
     idt FGetHigherID() const { return f_higher_id; }
     idt FGetIndID() const { return f_ind_id; }
