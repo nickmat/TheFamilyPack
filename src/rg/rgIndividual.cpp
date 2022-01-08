@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3rd March 2013
- * Copyright:   Copyright (c) 2013 ~ 2017, Nick Matthews.
+ * Copyright:   Copyright (c) 2013..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -35,13 +35,12 @@
 #include "wx/wx.h"
 #endif
 
-#include <rec/recIndividual.h>
-//#include <rec/recLink.h>
 
 #include <rg/rgDialogs.h>
 #include "rgCrIndividual.h"
-//#include "rgEdIndividual.h"
 
+#include <rec/recFamily.h>
+#include <rec/recIndividual.h>
 
 idt rgAddNewIndividual( wxWindow* wind, Sex sex, int privacy, const wxString& surname, idt famID )
 {
@@ -89,7 +88,7 @@ bool rgAddNewParent( wxWindow* wind, idt indID, Sex sex )
 
     int privacy = 0;
     idt famID = 0;
-    recFamilyVec parents = recIndividual::GetParentList( indID );
+    recFamilyVec parents = recFamily::GetParentList( indID );
 
     if( parents.size() ) {
         if( parents.size() == 1 ) {
@@ -169,7 +168,7 @@ bool rgAddExistParent( wxWindow* wind, idt indID, Sex sex )
         recDb::ReleaseSavepoint( savepoint );
         return false;
     }
-    recFamilyVec families = recIndividual::GetFamilyList( parentID );
+    recFamilyVec families = recFamily::GetFamilyList( parentID );
     wxASSERT( families.size() > 0 );
     size_t i = 0;
     if( families.size() > 1 ) {

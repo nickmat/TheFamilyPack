@@ -1,11 +1,11 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Name:        tfpWrIndividual.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Write screen for a Individual function.
+ * Purpose:     Write screen for an Individual function.
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     7 October 2010
- * Copyright:   Copyright (c) 2010 ~ 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -38,6 +38,7 @@
 
 #include <rec/recEvent.h>
 #include <rec/recEventa.h>
+#include <rec/recFamily.h>
 #include <rec/recIndividual.h>
 #include <rec/recMedia.h>
 #include <rec/recName.h>
@@ -49,8 +50,8 @@ wxString tfpWriteIndividualPage( idt indID )
     wxString htm;
     recIndividual ind( indID );
     if( ind.FGetID() == 0 ) return htm;
-    recFamilyVec parents = ind.GetParentList();
-    recFamilyVec families = ind.GetFamilyList();
+    recFamilyVec parents = recFamily::GetParentList( indID );
+    recFamilyVec families = recFamily::GetFamilyList( indID );
     wxASSERT( families.size() > 0 );
     recIndividual spouse;
     bool single = ( families.size() > 1 || families[0].GetSpouseID( indID ) ||

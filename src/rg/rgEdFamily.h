@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     9 October 2010
- * Copyright:   Copyright (c) 2010 .. 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -28,7 +28,7 @@
 #ifndef  RGEDITFAMILY_H
 #define  RGEDITFAMILY_H
 
-#include <rec/recIndividual.h>
+#include <rec/recFamily.h>
 
 #include "fbRgDialog.h"
 

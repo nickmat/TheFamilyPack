@@ -111,11 +111,11 @@ void recGedExport::ExportIndividual( idt indID, int level )
     if( pri >= 50 ) {
         m_out << level << " _PRI Y\n";
     }
-    recFamilyVec fam = recIndividual::GetParentList( indID );
+    recFamilyVec fam = recFamily::GetParentList( indID );
     for( size_t i = 0 ; i < fam.size() ; i++ ) {
         m_out << level << " FAMC @" << fam[i].GetIdStr() << "@\n";
     }
-    fam = recIndividual::GetFamilyList( indID );
+    fam = recFamily::GetFamilyList( indID );
     for( size_t i = 0 ; i < fam.size() ; i++ ) {
         m_out << level << " FAMS @" << fam[i].GetIdStr() << "@\n";
     }

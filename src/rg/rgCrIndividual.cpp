@@ -39,6 +39,9 @@
 
 #include "rgCrIndividual.h"
 
+#include <rec/recFamily.h>
+
+
 idt rgCreateIndividual( 
     wxWindow* parent,
     idt famID,

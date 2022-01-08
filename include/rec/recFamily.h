@@ -88,6 +88,9 @@ public:
     static recIdVec FindVec( const recIdVec& ind1IDs, const recIdVec& ind2IDs );
 
     bool ReadParents( idt indID );
+    static recFamilyVec GetFamilyList( idt indID );
+    static recFamilyVec GetParentList( idt indID );
+
     static recIndividualList GetChildren( idt famID );
     recIndividualList GetChildren() const { return GetChildren( f_id ); }
     static recIdVec GetChildrenIds( idt famID );

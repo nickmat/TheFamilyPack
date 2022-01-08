@@ -3,11 +3,9 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Write screen Chart functions.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     7 October 2010
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -36,6 +34,7 @@
 #include "wx/wx.h"
 #endif
 
+#include <rec/recFamily.h>
 #include <rec/recIndividual.h>
 
 #include "tfpWr.h"
@@ -110,10 +109,10 @@ void WrPedCht( idt indID, Sex sex, int gen )
         return;
     }
     recIndividual ind( indID );
-    if( ind.f_id == 0 ) return;
+    if( ind.FGetID() == 0 ) return;
     recFamily fam( 0 );
 
-    recFamilyVec famList = ind.GetParentList();
+    recFamilyVec famList = recFamily::GetParentList( indID );
     if( famList.size() > 0 ) {
         fam = famList[0];
     }
@@ -184,7 +183,7 @@ wxString tfpCreateDescChart( idt indID )
 void WrDescCht( idt indID, int gen )
 {
     recIdVec children;
-    recFamilyVec families = recIndividual::GetFamilyList( indID );
+    recFamilyVec families = recFamily::GetFamilyList( indID );
     for( size_t i = 0 ; i < families.size() ; i++ )
     {
         idt famID = families[i].f_id;

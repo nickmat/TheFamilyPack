@@ -1,7 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        recIndividual.h
+ * Name:        include/rec/recIndividual.h
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Manage SQLite3 Family, FamilyIndividual and Individual records.
+ * Purpose:     Manage SQLite3 Individual record.
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
@@ -33,15 +33,11 @@
 #include <rec/recDatabase.h>
 #include <rec/recEvent.h>
 #include <rec/recFamEvent.h>
-#include <rec/recFamily.h>
-//#include <rec/recFamilyIndividual.h>
 #include <rec/recPersona.h>
 
 class recIndividual;
 typedef std::vector< recIndividual >  recIndividualList;
 typedef std::vector< recIndividual >  recIndividualVec;
-class recFamily;
-typedef std::vector< recFamily >  recFamilyVec;
 
 //============================================================================
 //-------------------------[ recIndividual ]----------------------------------
@@ -152,11 +148,6 @@ public:
 
     static idt CreateBirthDate( idt indID );
     static idt CreateDeathDate( idt indID );
-
-    static recFamilyVec GetFamilyList( idt indID );
-    recFamilyVec GetFamilyList() const { return GetFamilyList( f_id ); }
-    static recFamilyVec GetParentList( idt indID );
-    recFamilyVec GetParentList() const { return GetParentList( f_id ); }
 
     static recIndEventVec GetEvents( idt indID, recEventOrder order = recEO_DatePt );
     recIndEventVec GetEvents( recEventOrder order = recEO_DatePt ) const

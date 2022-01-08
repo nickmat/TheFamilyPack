@@ -36,6 +36,7 @@
 #endif
 
 #include <rec/recDate.h>
+#include <rec/recFamily.h>
 #include <rec/recPlace.h>
 #include <rec/recPersona.h>
 

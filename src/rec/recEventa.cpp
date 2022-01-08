@@ -38,6 +38,7 @@
 #include <rec/recEventa.h>
 
 #include <rec/recEvent.h>
+#include <rec/recFamily.h>
 #include <rec/recIndividual.h>
 #include <rec/recIndEvent.h>
 #include <rec/recPersona.h>

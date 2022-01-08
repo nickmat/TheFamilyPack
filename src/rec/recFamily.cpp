@@ -282,6 +282,62 @@ bool recFamily::ReadParents( idt ind )
     return Read();
 }
 
+recFamilyVec recFamily::GetFamilyList( idt ind )
+{
+    recFamilyVec families;
+    recFamily family;
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( ind == 0 ) return families;
+
+    sql.Format(
+        "SELECT id, husb_id, wife_id FROM Family "
+        "WHERE husb_id=" ID " OR wife_id=" ID ";",
+        ind, ind
+    );
+    result = s_db->GetTable( sql );
+
+    for( int i = 0; i < result.GetRowCount(); i++ ) {
+        result.SetRow( i );
+        family.f_id = GET_ID( result.GetInt64( 0 ) );
+        family.f_husb_id = GET_ID( result.GetInt64( 1 ) );
+        family.f_wife_id = GET_ID( result.GetInt64( 2 ) );
+        families.push_back( family );
+    }
+    return families;
+}
+
+recFamilyVec recFamily::GetParentList( idt indID )
+{
+    recFamily parent;
+    recFamilyVec parents;
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3Table result;
+
+    if( indID == 0 ) return parents;
+
+    sql.Format(
+        "SELECT F.id, F.husb_id, F.wife_id "
+        "FROM Family F, FamilyIndividual FI "
+        "WHERE F.id=FI.fam_id AND FI.ind_id=" ID ";",
+        indID
+    );
+    result = s_db->GetTable( sql );
+
+    for( int i = 0; i < result.GetRowCount(); i++ ) {
+        result.SetRow( i );
+        parent.f_id = GET_ID( result.GetInt64( 0 ) );
+        parent.f_husb_id = GET_ID( result.GetInt64( 1 ) );
+        parent.f_wife_id = GET_ID( result.GetInt64( 2 ) );
+        parents.push_back( parent );
+    }
+    return parents;
+}
+
+
+
+
 recIndividualList recFamily::GetChildren( idt fam )
 {
     recIndividualList children;

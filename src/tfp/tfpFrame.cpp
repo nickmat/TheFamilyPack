@@ -42,6 +42,7 @@
 #include <wx/numdlg.h>
 
 #include <rec/recCitation.h>
+#include <rec/recFamily.h>
 #include <rec/recIndividual.h>
 #include <rec/recVersion.h>
 #include <rec/recUser.h>
@@ -1761,7 +1762,7 @@ int TfpFrame::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )
     wxMenu* parmenu = new wxMenu;
     menu->Append( tfpID_INDMENU_PARENTS, "Parents", parmenu );
 
-    recFamilyVec families = recIndividual::GetParentList( indID );
+    recFamilyVec families = recFamily::GetParentList( indID );
     int items = c;
     for( i = 0 ; i < families.size() ; i++ ) {
         if( families[i].f_husb_id != 0 ) {
@@ -1796,7 +1797,7 @@ int TfpFrame::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )
 
     wxMenu* marmenu = new wxMenu;
     menu->Append( tfpID_INDMENU_SPOUSES, "Spouses", marmenu );
-    families = recIndividual::GetFamilyList( indID );
+    families = recFamily::GetFamilyList( indID );
     items = c;
     for( i = 0 ; i < families.size() ; i++ ) {
         if( families[i].f_husb_id != 0 && families[i].f_husb_id != indID ) {

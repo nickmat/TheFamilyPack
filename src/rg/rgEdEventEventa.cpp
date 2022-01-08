@@ -34,12 +34,14 @@
 #include "wx/wx.h"
 #endif
 
-#include <rec/recEvent.h>
-#include <rec/recReference.h>
-#include <rec/recIndividual.h>
-
 #include "rg/rgDialogs.h"
 #include "rgEdEventEventa.h"
+
+#include <rec/recEvent.h>
+#include <rec/recFamily.h>
+#include <rec/recIndividual.h>
+#include <rec/recReference.h>
+
 
 bool rgEditEventEventa( wxWindow* wind, idt eerID )
 {

@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     15th December 2021
- * Copyright:   Copyright (c) 2021 Nick Matthews.
+ * Copyright:   Copyright (c) 2021..2022 Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -38,6 +38,7 @@
 #include "rgSetupDatabase.h"
 #include "rg/rgDialogs.h"
 
+#include <rec/recFamily.h>
 #include <rec/recResearcher.h>
 #include <rec/recSystem.h>
 

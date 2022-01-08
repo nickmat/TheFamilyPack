@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     7 October 2010
- * Copyright:   Copyright (c) 2010 ~ 2017, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -36,8 +36,9 @@
 
 #include <wx/tokenzr.h>
 
-#include <rec/recIndividual.h>
 #include <rec/recEvent.h>
+#include <rec/recFamily.h>
+#include <rec/recIndividual.h>
 #include <rec/recPersona.h>
 
 #include "tfpWr.h"
@@ -55,18 +56,18 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
     if ( fam.FGetID() == 0 ) {
         return htm;
     }
-    recIndividual husb( fam.f_husb_id );
-    recIndividual wife( fam.f_wife_id );
-    recFamilyVec husbFams = husb.GetParentList();
-    recFamilyVec wifeFams = wife.GetParentList();
+    idt hIndID = fam.FGetHusbID();
+    idt wIndID = fam.FGetWifeID();
 
-    idt hIndID = husb.FGetID();
-    idt wIndID = wife.FGetID();
-    idt eveID, indID;
+    recIndividual husb( hIndID );
+    recIndividual wife( wIndID );
+
+    recFamilyVec husbFams = recFamily::GetParentList( hIndID );
+    recFamilyVec wifeFams = recFamily::GetParentList( wIndID );
 
     recIndividualList kids = fam.GetChildren();
-    recFamilyVec husbWives = recIndividual::GetFamilyList( husb.f_id );
-    recFamilyVec wifeHusbs = recIndividual::GetFamilyList( wife.f_id );
+    recFamilyVec husbWives = recFamily::GetFamilyList( hIndID );
+    recFamilyVec wifeHusbs = recFamily::GetFamilyList( wIndID );
 
     htm << "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
            "\"http://www.w3.org/TR/html4/loose.dtd\">\n"
@@ -84,7 +85,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
     // Hubands Father
     if( fam.FGetHusbID() ) {
         if( husbFams.size() > iL && husbFams[iL].FGetHusbID() ) {
-            indID = husbFams[iL].FGetHusbID();
+            idt indID = husbFams[iL].FGetHusbID();
             htm << 
                 "<td class='" << tfpGetIndSexClass( indID, SEX_Male ) <<
                 "'><a href='tfp:F" << husbFams[iL].FGetID() << 
@@ -106,7 +107,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
     // Husbands Mother
     if( fam.FGetHusbID() ) {
         if( husbFams.size() > iL && husbFams[iL].FGetWifeID() ) {
-            indID = husbFams[iL].FGetWifeID();
+            idt indID = husbFams[iL].FGetWifeID();
             htm << 
                 "<td class='" << tfpGetIndSexClass( indID, SEX_Female ) << 
                 "'><a href='tfp:F" << husbFams[iL].FGetID() <<
@@ -130,7 +131,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
     // Wifes Father
     if( fam.FGetWifeID() ) {
         if( wifeFams.size() > iR && wifeFams[iR].FGetHusbID() ) {
-            indID = wifeFams[iR].FGetHusbID();
+            idt indID = wifeFams[iR].FGetHusbID();
             htm << 
                 "<td class='" << tfpGetIndSexClass( indID, SEX_Male ) <<
                 "'>\n<a href='tfp:F" << wifeFams[iR].FGetID() << 
@@ -151,7 +152,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
     // Wife Mother
     if( fam.FGetWifeID() ) {
         if( wifeFams.size() > iR && wifeFams[iR].FGetWifeID() ) {
-            indID = wifeFams[iR].FGetWifeID();
+            idt indID = wifeFams[iR].FGetWifeID();
             htm <<
                 "<td class='" << tfpGetIndSexClass( indID, SEX_Female ) <<
                 "'>\n<a href='tfp:F" << wifeFams[iR].FGetID() << 
@@ -184,7 +185,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
     }
 
     // Marriage event
-    eveID = fam.GetUnionEvent();
+    idt eveID = fam.GetUnionEvent();
     if( eveID ) {
         htm << 
             "<tr>\n<td colspan='2' class='both'><b><a href='tfp:E" << eveID <<
@@ -401,7 +402,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
 
     // Individuals Status bar
     htm << "<tr>\n<td class='status'>\n";
-    indID = fam.FGetHusbID();
+    idt indID = fam.FGetHusbID();
     if( indID != 0 ) {
         htm <<
             "<b>" << recIndividual::GetIdStr( indID ) <<
