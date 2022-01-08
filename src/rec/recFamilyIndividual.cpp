@@ -124,6 +124,16 @@ bool recFamilyIndividual::Read()
     return true;
 }
 
+bool recFamilyIndividual::Equivalent( const recFamilyIndividual& r2 ) const
+{
+    return
+        f_fam_id == r2.f_fam_id &&
+        f_ind_id == r2.f_ind_id &&
+        f_seq_child == r2.f_seq_child &&
+        f_seq_parent == r2.f_seq_parent
+    ;
+}
+
 bool recFamilyIndividual::Find()
 {
     wxSQLite3StatementBuffer sql;

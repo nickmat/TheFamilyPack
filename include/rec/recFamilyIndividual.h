@@ -42,22 +42,25 @@ typedef std::vector< recFamilyIndividual >  recFamIndVec;
 //-------------------------[ recFamilyIndividual ]----------------------------
 //============================================================================
 
-class recFamilyIndividual : public recDb
+class recFamilyIndividual : public recDbT< recFamilyIndividual>
 {
 public:
+    static constexpr const char* s_tablename = "FamilyIndividual";
+
     idt f_fam_id;
     idt f_ind_id;
     int f_seq_child;
     int f_seq_parent;
 
-    recFamilyIndividual() {}
-    recFamilyIndividual( idt id ) : recDb(id) { Read(); }
+    recFamilyIndividual() : f_fam_id(0), f_ind_id(0),
+        f_seq_child(0), f_seq_parent(0) {}
+    recFamilyIndividual( idt id ) : recDbT(id) { Read(); }
     recFamilyIndividual( const recFamilyIndividual& fi );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "FamilyIndividual" );
+    bool Equivalent( const recFamilyIndividual& r2 ) const;
 
     idt FGetFamID() const { return f_fam_id; }
     idt FGetIndID() const { return f_ind_id; }
@@ -72,23 +75,5 @@ public:
     bool Find();
 };
 
-inline bool recEquivalent( const recFamilyIndividual& r1, const recFamilyIndividual& r2 )
-{
-    return
-        r1.f_fam_id     == r2.f_fam_id     &&
-        r1.f_ind_id     == r2.f_ind_id     &&
-        r1.f_seq_child  == r2.f_seq_child  &&
-        r1.f_seq_parent == r2.f_seq_parent;
-}
-
-inline bool operator==( const recFamilyIndividual& r1, const recFamilyIndividual& r2 )
-{
-    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
-}
-
-inline bool operator!=( const recFamilyIndividual& r1, const recFamilyIndividual& r2 )
-{
-    return !(r1 == r2);
-}
 
 #endif // RECFAMILYINDIVIDUAL_H
