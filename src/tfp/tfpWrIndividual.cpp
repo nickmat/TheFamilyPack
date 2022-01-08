@@ -137,13 +137,13 @@ wxString tfpWriteIndividualPage( idt indID )
         }
     }
     for( size_t i = 0 ; i < families.size() ; i++ ) {
+        idt famID = families[i].FGetID();
         idt spouseID = families[i].GetSpouseID( indID );
-        recIndividualList children = families[i].GetChildren();
+        recIndividualVec children = recIndividual::GetChildren( famID );
         if( spouseID == 0 && children.size() == 0 ) {
             // Family is single individual
             continue;
         }
-        idt famID = families[i].FGetID();
         spouse.ReadID( spouseID );
 
         htm <<

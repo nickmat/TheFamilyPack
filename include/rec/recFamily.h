@@ -28,20 +28,13 @@
 #ifndef RECFAMILY_H
 #define RECFAMILY_H
 
-#include <vector>
-
 #include <rec/recDatabase.h>
-#include <rec/recEvent.h>
-#include <rec/recFamEvent.h>
+
 #include <rec/recFamilyIndividual.h>
-#include <rec/recIndividual.h>
-#include <rec/recPersona.h>
+
 
 class recFamily;
 typedef std::vector< recFamily >  recFamilyVec;
-class recIndividual;
-typedef std::vector< recIndividual >  recIndividualList;
-typedef std::vector< recIndividual >  recIndividualVec;
 
 //============================================================================
 //-------------------------[ recFamily ]--------------------------------------
@@ -91,8 +84,6 @@ public:
     static recFamilyVec GetFamilyList( idt indID );
     static recFamilyVec GetParentList( idt indID );
 
-    static recIndividualList GetChildren( idt famID );
-    recIndividualList GetChildren() const { return GetChildren( f_id ); }
     static recIdVec GetChildrenIds( idt famID );
     recIdVec GetChildrenIds() const { return GetChildrenIds( f_id ); }
     static int GetChildCount( idt famID );

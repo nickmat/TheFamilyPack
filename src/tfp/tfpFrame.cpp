@@ -1780,10 +1780,10 @@ int TfpFrame::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )
 
     wxMenu* sibmenu = new wxMenu;
     menu->Append( tfpID_INDMENU_SIBLINGS, "Siblings", sibmenu );
-    recIndividualList inds;
+    recIndividualVec inds;
     items = c;
     for( i = 0 ; i < families.size() ; i++ ) {
-        inds = families[i].GetChildren();
+        inds = recIndividual::GetChildren( families[i].FGetID() );
         for( j = 0 ; j < inds.size() ; j++ ) {
             if( inds[j].f_id == indID ) continue;
             sibmenu->Append( cmd_ID + c, inds[j].FGetName() );
@@ -1819,7 +1819,7 @@ int TfpFrame::AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID )
     menu->Append( tfpID_INDMENU_CHILDREN, "Children", kidmenu );
     items = c;
     for( i = 0 ; i < families.size() ; i++ ) {
-        inds = families[i].GetChildren();
+        inds = recIndividual::GetChildren( families[i].FGetID() );
         for( j = 0 ; j < inds.size() ; j++ ) {
             kidmenu->Append( cmd_ID + c, inds[j].FGetName() );
             m_ctxmenuPages.push_back( "FI"+recGetStr( inds[j].f_id ) );

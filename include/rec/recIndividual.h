@@ -36,7 +36,6 @@
 #include <rec/recPersona.h>
 
 class recIndividual;
-typedef std::vector< recIndividual >  recIndividualList;
 typedef std::vector< recIndividual >  recIndividualVec;
 
 //============================================================================
@@ -121,6 +120,8 @@ public:
     void UpdateDefaultFamily();
     void Update();
     static void Update( idt indID );
+
+    static recIndividualVec GetChildren( idt famID );
 
     static idt FindEvent( idt indID, idt roleID );
     idt FindEvent( idt roleID ) const { return FindEvent( f_id, roleID ); }

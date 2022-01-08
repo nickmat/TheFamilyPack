@@ -33,6 +33,8 @@
 
 #include <rec/recFamily.h>
 
+#include <rec/recIndividual.h>
+
 #include <wx/tokenzr.h>
 
 
@@ -333,34 +335,6 @@ recFamilyVec recFamily::GetParentList( idt indID )
         parents.push_back( parent );
     }
     return parents;
-}
-
-
-
-
-recIndividualList recFamily::GetChildren( idt fam )
-{
-    recIndividualList children;
-    recIndividual ind;
-    wxSQLite3StatementBuffer sql;
-    wxSQLite3Table result;
-
-    if( fam == 0 ) return children;
-
-    sql.Format(
-        "SELECT ind_id FROM FamilyIndividual WHERE fam_id=" ID " "
-        "ORDER BY seq_child ASC;", fam
-    );
-    result = s_db->GetTable( sql );
-
-    for( int i = 0 ; i < result.GetRowCount() ; i++ )
-    {
-        result.SetRow( i );
-        ind.f_id = GET_ID( result.GetInt64( 0 ) );
-        ind.Read();
-        children.push_back( ind );
-    }
-    return children;
 }
 
 recIdVec recFamily::GetChildrenIds( idt fam )

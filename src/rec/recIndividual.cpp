@@ -303,6 +303,30 @@ void recIndividual::Update( idt indID )
     }
 }
 
+recIndividualVec recIndividual::GetChildren( idt famID )
+{
+    recIndividualVec children;
+
+    if( famID == 0 ) return children;
+
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT ind_id FROM FamilyIndividual WHERE fam_id=" ID " "
+        "ORDER BY seq_child ASC;", famID
+    );
+    wxSQLite3Table result = s_db->GetTable( sql );
+
+    recIndividual ind;
+    for( int i = 0; i < result.GetRowCount(); i++ )
+    {
+        result.SetRow( i );
+        ind.f_id = GET_ID( result.GetInt64( 0 ) );
+        ind.Read();
+        children.push_back( ind );
+    }
+    return children;
+}
+
 Sex recIndividual::GetSex( idt indID )
 {
     if( indID == 0 ) {
