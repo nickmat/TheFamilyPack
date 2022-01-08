@@ -144,6 +144,19 @@ bool recIndividual::Read()
     return true;
 }
 
+bool recIndividual::Equivalent( const recIndividual& r2 ) const
+{
+    return
+        f_sex == r2.f_sex &&
+        f_fam_id == r2.f_fam_id &&
+        f_note == r2.f_note &&
+        f_privacy == r2.f_privacy &&
+        f_name == r2.f_name &&
+        f_surname == r2.f_surname &&
+        f_epitaph == r2.f_epitaph
+    ;
+}
+
 recIndividualVec recIndividual::ReadVec( unsigned sexfilter )
 {
     wxString query =

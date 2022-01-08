@@ -52,9 +52,11 @@ enum {
     recInd_FILTER_SexFemalePlus = (recInd_FILTER_SexFemale | recInd_FILTER_SexUnstated | recInd_FILTER_SexUnknown)
 };
 
-class recIndividual : public recDb
+class recIndividual : public recDbT< recIndividual>
 {
 public:
+    static constexpr const char* s_tablename = "Individual";
+
     Sex      f_sex;
     idt      f_fam_id;
     wxString f_note;
@@ -63,14 +65,14 @@ public:
     wxString f_surname;
     wxString f_epitaph;
 
-    recIndividual() {}
-    recIndividual( idt id ) : recDb(id) { Read(); }
+    recIndividual() : f_sex(SEX_Unstated), f_fam_id(0), f_privacy(0) {}
+    recIndividual( idt id ) : recDbT(id) { Read(); }
     recIndividual( const recIndividual& ind );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "Individual" );
+    bool Equivalent( const recIndividual& r2 ) const;
 
     static wxString GetIdStr( idt indID ) { return wxString::Format( "I" ID, indID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
@@ -171,28 +173,6 @@ public:
     void RemoveFromDatabase() { RemoveFromDatabase( f_id ); }
     static void RemoveFromDatabase( idt id );
 };
-
-inline bool recEquivalent( const recIndividual& r1, const recIndividual& r2 )
-{
-    return
-        r1.f_sex     == r2.f_sex     &&
-        r1.f_fam_id  == r2.f_fam_id  &&
-        r1.f_note    == r2.f_note    &&
-        r1.f_privacy == r2.f_privacy &&
-        r1.f_name    == r2.f_name    &&
-        r1.f_surname == r2.f_surname &&
-        r1.f_epitaph == r2.f_epitaph;
-}
-
-inline bool operator==( const recIndividual& r1, const recIndividual& r2 )
-{
-    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
-}
-
-inline bool operator!=( const recIndividual& r1, const recIndividual& r2 )
-{
-    return !(r1 == r2);
-}
 
 
 #endif // RECINDIVIDUAL_H
