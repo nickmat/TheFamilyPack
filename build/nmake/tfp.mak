@@ -179,6 +179,8 @@ REC_OBJECTS =  \
 	rec_recEventTypeRole.obj \
 	rec_recFamEvent.obj \
 	rec_recFamEventa.obj \
+	rec_recFamily.obj \
+	rec_recFamilyIndividual.obj \
 	rec_recFamIndEventa.obj \
 	rec_recFilterEvent.obj \
 	rec_recGallery.obj \
@@ -671,6 +673,12 @@ rec_recFamEvent.obj: .\..\..\src\rec\recFamEvent.cpp
 
 rec_recFamEventa.obj: .\..\..\src\rec\recFamEventa.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recFamEventa.cpp
+
+rec_recFamily.obj: .\..\..\src\rec\recFamily.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recFamily.cpp
+
+rec_recFamilyIndividual.obj: .\..\..\src\rec\recFamilyIndividual.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recFamilyIndividual.cpp
 
 rec_recFamIndEventa.obj: .\..\..\src\rec\recFamIndEventa.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recFamIndEventa.cpp

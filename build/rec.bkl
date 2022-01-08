@@ -57,6 +57,8 @@
     <sources>$(LOCAL_SRC)/rec/recEventTypeRole.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recFamEvent.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recFamEventa.cpp</sources>
+    <sources>$(LOCAL_SRC)/rec/recFamily.cpp</sources>
+    <sources>$(LOCAL_SRC)/rec/recFamilyIndividual.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recFamIndEventa.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recFilterEvent.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recGallery.cpp</sources>
@@ -94,6 +96,8 @@
     <headers>$(LOCAL_INC)/rec/recEventTypeRole.h</headers>
     <headers>$(LOCAL_INC)/rec/recFamEvent.h</headers>
     <headers>$(LOCAL_INC)/rec/recFamEventa.h</headers>
+    <headers>$(LOCAL_INC)/rec/recFamily.h</headers>
+    <headers>$(LOCAL_INC)/rec/recFamilyIndividual.h</headers>
     <headers>$(LOCAL_INC)/rec/recFamIndEventa.h</headers>
     <headers>$(LOCAL_INC)/rec/recFilterEvent.h</headers>
     <headers>$(LOCAL_INC)/rec/recGallery.h</headers>

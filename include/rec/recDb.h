@@ -40,6 +40,8 @@
 #include <rec/recEventTypeRole.h>
 #include <rec/recFamEvent.h>
 #include <rec/recFamEventa.h>
+#include <rec/recFamily.h>
+#include <rec/recFamilyIndividual.h>
 #include <rec/recFamIndEventa.h>
 #include <rec/recFilterEvent.h>
 #include <rec/recGallery.h>

@@ -56,6 +56,12 @@
     <ClCompile Include="..\..\src\rec\recFamIndEventa.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\rec\recFamily.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\rec\recFamilyIndividual.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\rec\recFilterEvent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -164,6 +170,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\rec\recFamIndEventa.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\rec\recFamily.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\rec\recFamilyIndividual.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\rec\recFilterEvent.h">

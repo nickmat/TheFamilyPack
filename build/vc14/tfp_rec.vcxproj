@@ -141,6 +141,8 @@
     <ClCompile Include="..\..\src\rec\recEventTypeRole.cpp" />
     <ClCompile Include="..\..\src\rec\recFamEvent.cpp" />
     <ClCompile Include="..\..\src\rec\recFamEventa.cpp" />
+    <ClCompile Include="..\..\src\rec\recFamily.cpp" />
+    <ClCompile Include="..\..\src\rec\recFamilyIndividual.cpp" />
     <ClCompile Include="..\..\src\rec\recFamIndEventa.cpp" />
     <ClCompile Include="..\..\src\rec\recFilterEvent.cpp" />
     <ClCompile Include="..\..\src\rec\recGallery.cpp" />
@@ -178,6 +180,8 @@
     <ClInclude Include="..\..\include\rec\recEventTypeRole.h" />
     <ClInclude Include="..\..\include\rec\recFamEvent.h" />
     <ClInclude Include="..\..\include\rec\recFamEventa.h" />
+    <ClInclude Include="..\..\include\rec\recFamily.h" />
+    <ClInclude Include="..\..\include\rec\recFamilyIndividual.h" />
     <ClInclude Include="..\..\include\rec\recFamIndEventa.h" />
     <ClInclude Include="..\..\include\rec\recFilterEvent.h" />
     <ClInclude Include="..\..\include\rec\recGallery.h" />

@@ -33,6 +33,8 @@
 #include <rec/recDatabase.h>
 #include <rec/recEvent.h>
 #include <rec/recFamEvent.h>
+#include <rec/recFamily.h>
+//#include <rec/recFamilyIndividual.h>
 #include <rec/recPersona.h>
 
 class recIndividual;
@@ -40,8 +42,6 @@ typedef std::vector< recIndividual >  recIndividualList;
 typedef std::vector< recIndividual >  recIndividualVec;
 class recFamily;
 typedef std::vector< recFamily >  recFamilyVec;
-class recFamilyIndividual;
-typedef std::vector< recFamilyIndividual >  recFamIndVec;
 
 //============================================================================
 //-------------------------[ recIndividual ]----------------------------------
@@ -202,149 +202,5 @@ inline bool operator!=( const recIndividual& r1, const recIndividual& r2 )
     return !(r1 == r2);
 }
 
-//============================================================================
-//-------------------------[ recFamily ]--------------------------------------
-//============================================================================
-
-class recFamily : public recDb
-{
-public:
-    idt     f_husb_id;
-    idt     f_wife_id;
-
-    recFamily() {}
-    recFamily( idt id ) : recDb(id) { Read(); }
-    recFamily( const recFamily& family );
-
-    void Clear();
-    void Save();
-    bool Read();
-    TABLE_NAME_MEMBERS( "Family" );
-
-    idt FGetHusbID() const { return f_husb_id; }
-    idt FGetWifeID() const { return f_wife_id; }
-
-    void FSetHusbID( idt hID ) { f_husb_id = hID; }
-    void FSetWifeID( idt wID ) { f_wife_id = wID; }
-
-    static wxString GetIdStr( idt indID ) { return wxString::Format( "F" ID, indID ); }
-    wxString GetIdStr() const { return GetIdStr( f_id ); }
-
-    recIdVec GetCoupleAsIdVec() const;
-    static recIdVec GetCoupleAsIdVec( idt famID );
-
-    static recIdVec GetFamilyIdVec();
-    static recFamilyVec GetFamilyVec();
-
-    bool Decode( const wxString& str );
-
-    static idt GetUnionEvent( idt famID );
-    idt GetUnionEvent() const { return GetUnionEvent( f_id ); }
-
-    idt GetSpouseID( idt indID ) const;
-    static idt Find( idt ind1ID, idt ind2ID );
-    void Find() { f_id = Find( f_husb_id, f_wife_id ); Read(); }
-    static recIdVec FindVec( const recIdVec& ind1IDs, const recIdVec& ind2IDs );
-
-    bool ReadParents( idt indID );
-    static recIndividualList GetChildren( idt famID );
-    recIndividualList GetChildren() const { return GetChildren( f_id ); }
-    static recIdVec GetChildrenIds( idt famID );
-    recIdVec GetChildrenIds() const { return GetChildrenIds( f_id ); }
-    static int GetChildCount( idt famID );
-    int GetChildCount() const { return GetChildCount( f_id ); }
-    static int GetChildNextSequence( idt famID );
-    static int GetParentNextSequence( idt indID );
-    recFamIndVec GetChildLinks() { return GetChildLinks( f_id ); }
-    static recFamIndVec GetChildLinks( idt famID );
-    static recFamilyEventVec GetEvents( idt famID );
-    recFamilyEventVec GetEvents() const { return GetEvents( f_id ); }
-    static recIdVec GetEventIDs( idt famID );
-    recIdVec GetEventIDs() const { return GetEventIDs( f_id ); }
-
-    static int GetMaxEventSeqNumber( idt famID );
-    int GetMaxEventSeqNumber() const { return GetMaxEventSeqNumber( f_id ); }
-
-    bool IsSingleton() const;
-    static bool IsSingleton( idt famID ) { recFamily fam(famID); return fam.IsSingleton(); }
-
-    static idt FindOrCreate( idt ind1ID, idt ind2ID );
-
-    static void RemoveFromEvents( idt famID, idt indID );
-    void RemoveFromEvents( idt indID ) const { RemoveFromEvents( f_id, indID ); }
-
-    static void RemoveFromDatabase( idt famID );
-    void RemoveFromDatabase() { RemoveFromDatabase( f_id ); }
-};
-
-inline bool recEquivalent( const recFamily& r1, const recFamily& r2 )
-{
-    return
-        r1.f_husb_id  == r2.f_husb_id &&
-        r1.f_wife_id  == r2.f_wife_id;
-}
-
-inline bool operator==( const recFamily& r1, const recFamily& r2 )
-{
-    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
-}
-
-inline bool operator!=( const recFamily& r1, const recFamily& r2 )
-{
-    return !(r1 == r2);
-}
-
-//============================================================================
-//-------------------------[ recFamilyIndividual ]----------------------------
-//============================================================================
-
-class recFamilyIndividual : public recDb
-{
-public:
-    idt f_fam_id;
-    idt f_ind_id;
-    int f_seq_child;
-    int f_seq_parent;
-
-    recFamilyIndividual() {}
-    recFamilyIndividual( idt id ) : recDb(id) { Read(); }
-    recFamilyIndividual( const recFamilyIndividual& fi );
-
-    void Clear();
-    void Save();
-    bool Read();
-    TABLE_NAME_MEMBERS( "FamilyIndividual" );
-
-    idt FGetFamID() const { return f_fam_id; }
-    idt FGetIndID() const { return f_ind_id; }
-    int FGetSeqChild() const { return f_seq_child; }
-    int FSetSeqParent() const { return f_seq_parent; }
-
-    void FSetFamID( idt famID ) { f_fam_id = famID; }
-    void FSetIndID( idt indID ) { f_ind_id = indID; }
-    void FSetSeqChild( int seq ) { f_seq_child = seq; }
-    void FSetSeqParent( int seq ) { f_seq_parent = seq; }
-
-    bool Find();
-};
-
-inline bool recEquivalent( const recFamilyIndividual& r1, const recFamilyIndividual& r2 )
-{
-    return
-        r1.f_fam_id     == r2.f_fam_id     &&
-        r1.f_ind_id     == r2.f_ind_id     &&
-        r1.f_seq_child  == r2.f_seq_child  &&
-        r1.f_seq_parent == r2.f_seq_parent;
-}
-
-inline bool operator==( const recFamilyIndividual& r1, const recFamilyIndividual& r2 )
-{
-    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
-}
-
-inline bool operator!=( const recFamilyIndividual& r1, const recFamilyIndividual& r2 )
-{
-    return !(r1 == r2);
-}
 
 #endif // RECINDIVIDUAL_H

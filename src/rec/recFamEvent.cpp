@@ -37,7 +37,7 @@
 
 #include <rec/recFamEvent.h>
 
-#include <rec/recIndividual.h>
+#include <rec/recFamily.h>
 
 
 //============================================================================

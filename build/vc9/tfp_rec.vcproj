@@ -274,6 +274,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rec\recFamily.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rec\recFamilyIndividual.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rec\recFilterEvent.cpp"
 				>
 			</File>
@@ -421,6 +429,14 @@
 			</File>
 			<File
 				RelativePath="..\..\include\rec\recFamIndEventa.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\rec\recFamily.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\rec\recFamilyIndividual.h"
 				>
 			</File>
 			<File
