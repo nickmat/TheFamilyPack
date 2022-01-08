@@ -40,20 +40,22 @@ typedef std::vector< recFamily >  recFamilyVec;
 //-------------------------[ recFamily ]--------------------------------------
 //============================================================================
 
-class recFamily : public recDb
+class recFamily : public recDbT<recFamily>
 {
 public:
+    static constexpr const char* s_tablename = "Family";
+
     idt     f_husb_id;
     idt     f_wife_id;
 
-    recFamily() {}
-    recFamily( idt id ) : recDb(id) { Read(); }
+    recFamily() : f_husb_id(0), f_wife_id(0) {}
+    recFamily( idt id ) : recDbT(id) { Read(); }
     recFamily( const recFamily& family );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "Family" );
+    bool Equivalent( const recFamily& r2 ) const;
 
     idt FGetHusbID() const { return f_husb_id; }
     idt FGetWifeID() const { return f_wife_id; }
@@ -112,21 +114,5 @@ public:
     void RemoveFromDatabase() { RemoveFromDatabase( f_id ); }
 };
 
-inline bool recEquivalent( const recFamily& r1, const recFamily& r2 )
-{
-    return
-        r1.f_husb_id  == r2.f_husb_id &&
-        r1.f_wife_id  == r2.f_wife_id;
-}
-
-inline bool operator==( const recFamily& r1, const recFamily& r2 )
-{
-    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
-}
-
-inline bool operator!=( const recFamily& r1, const recFamily& r2 )
-{
-    return !(r1 == r2);
-}
 
 #endif // RECINDIVIDUAL_H

@@ -120,6 +120,14 @@ bool recFamily::Read()
     return true;
 }
 
+bool recFamily::Equivalent( const recFamily& r2 ) const
+{
+    return
+        f_husb_id == r2.f_husb_id &&
+        f_wife_id == r2.f_wife_id
+    ;
+}
+
 recIdVec recFamily::GetCoupleAsIdVec() const
 {
     recIdVec ids;
