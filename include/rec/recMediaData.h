@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     19th September 2018
- * Copyright:   Copyright (c) 2018 .. 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2018..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -30,22 +30,23 @@
 
 #include <rec/recDatabase.h>
 
-class recMediaData : public recDb
+class recMediaData : public recDbT<recMediaData>
 {
 public:
+    static constexpr const char* s_tablename = "MediaData";
+
     enum class Mime { null_mime, image_jpeg, image_png, image_gif, max_mime };
 
-    recMediaData() {}
-    recMediaData( idt id ) : recDb( id ) { Read(); }
+    recMediaData() : f_type(Mime::null_mime), f_privacy(0) {}
+    recMediaData( idt id ) : recDbT( id ) { Read(); }
     recMediaData( idt id, idt assID ) { ReadID( id, assID ); }
-    recMediaData( const wxString dbname, idt id ) : recDb( id ) { Read( dbname ); }
+    recMediaData( const wxString dbname, idt id ) : recDbT( id ) { Read( dbname ); }
     recMediaData( const recMediaData& md );
 
     void Clear() override;
     void Save( const wxString& dbname = "Main" ) override;
     bool Read( const wxString& dbname = "Main" ) override;
     bool ReadID( idt id, idt assID );
-    TABLE_NAME_MEMBERS( "MediaData" );
     bool Equivalent( const recMediaData& r2 ) const;
 
     wxString FGetTitle() const { return f_title; }
@@ -86,15 +87,5 @@ private:
     wxString       f_copyright;
     wxString       f_file;
 };
-
-inline bool operator==( const recMediaData& r1, const recMediaData& r2 )
-{
-    return r1.Equivalent( r2 ) && r1.EqualID( r2 );
-}
-
-inline bool operator!=( const recMediaData& r1, const recMediaData& r2 )
-{
-    return !( r1 == r2 );
-}
 
 #endif // RECMEDIADATA_H

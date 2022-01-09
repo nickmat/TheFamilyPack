@@ -3,11 +3,9 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Manage the SQLite3 System record header.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     30 March 2012
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2012, Nick Matthews.
+ * Copyright:   Copyright (c) 2012..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -38,9 +36,11 @@ typedef std::vector< recSystem > recSystemVec;
 //                 recSystem
 //============================================================================
 
-class recSystem : public recDb
+class recSystem : public recDbT<recSystem>
 {
 public:
+    static constexpr const char* s_tablename = "System";
+
     enum Property {
         SP_Unstated = 0,
         SP_CurrentUser = 1,
@@ -48,13 +48,12 @@ public:
     };
 
     recSystem() {}
-    recSystem( idt id ) : recDb(id) { Read(); }
+    recSystem( idt id ) : recDbT(id) { Read(); }
     recSystem( const recSystem& user );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "System" )
     bool Equivalent( const recSystem& r2 ) const;
 
     wxString FGetValue() const { return f_val; }
@@ -70,16 +69,6 @@ public:
 private:
     wxString f_val;
 };
-
-inline bool operator==( const recSystem& r1, const recSystem& r2 )
-{
-    return r1.Equivalent( r2 ) && r1.EqualID( r2 );
-}
-
-inline bool operator!=( const recSystem& r1, const recSystem& r2 )
-{
-    return !(r1 == r2);
-}
 
 inline void recSetCurrentUser( idt userID ) {
     recSystem::SetProperyValue( recSystem::SP_CurrentUser, userID );

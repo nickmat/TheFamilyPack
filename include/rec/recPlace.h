@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010 .. 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -41,20 +41,22 @@ enum {
     recP_FILTER_Reference = 0x0001,
 };
 
-class recPlace : public recDb
+class recPlace : public recDbT<recPlace>
 {
 public:
+    static constexpr const char* s_tablename = "Place";
+
     idt  f_date1_id;
     idt  f_date2_id;
 
-    recPlace() {}
-    recPlace( idt id ) : recDb(id) { Read(); }
+    recPlace() : f_date1_id(0), f_date2_id(0) {}
+    recPlace( idt id ) : recDbT(id) { Read(); }
     recPlace( const recPlace& place );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "Place" );
+    bool Equivalent( const recPlace& r2 ) const;
 
     idt FGetDate1ID() const { return f_date1_id; }
     idt FGetDate2ID() const { return f_date2_id; }
@@ -89,44 +91,27 @@ public:
     static void DeleteIfOrphaned( idt placeID );
 };
 
-/*! The two entities are equal, ignoring the record id.
- */
-inline bool recEquivalent( const recPlace& r1, const recPlace& r2 )
-{
-    return
-        r1.f_date1_id == r2.f_date1_id &&
-        r1.f_date2_id == r2.f_date2_id;
-}
-
-inline bool operator==( const recPlace& r1, const recPlace& r2 )
-{
-    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
-}
-
-inline bool operator!=( const recPlace& r1, const recPlace& r2 )
-{
-    return !(r1 == r2);
-}
 
 //----------------------------------------------------------
 
-
-class recPlacePart : public recDb
+class recPlacePart : public recDbT<recPlacePart>
 {
 public:
+    static constexpr const char* s_tablename = "PlacePart";
+
     idt      f_type_id;
     idt      f_place_id;
     wxString f_val;
     int      f_sequence;
 
-    recPlacePart() {}
-    recPlacePart( idt id ) : recDb(id) { Read(); }
+    recPlacePart() : f_type_id(0), f_place_id(0), f_sequence(0) {}
+    recPlacePart( idt id ) : recDbT(id) { Read(); }
     recPlacePart( const recPlacePart& pp );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "PlacePart" );
+    bool Equivalent( const recPlacePart& r2 ) const;
 
     idt FGetTypeID() const { return f_type_id; }
     idt FGetPlaceID() const { return f_place_id; }
@@ -144,31 +129,14 @@ public:
     bool CsvRead( std::istream& in );
 };
 
-inline bool recEquivalent( const recPlacePart& r1, const recPlacePart& r2 )
-{
-    return
-        r1.f_type_id  == r2.f_type_id  &&
-        r1.f_place_id == r2.f_place_id &&
-        r1.f_val      == r2.f_val      &&
-        r1.f_sequence == r2.f_sequence;
-}
-
-inline bool operator==( const recPlacePart& r1, const recPlacePart& r2 )
-{
-    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
-}
-
-inline bool operator!=( const recPlacePart& r1, const recPlacePart& r2 )
-{
-    return !(r1 == r2);
-}
 
 //----------------------------------------------------------
 
-
-class recPlacePartType : public recDb
+class recPlacePartType : public recDbT<recPlacePartType>
 {
 public:
+    static constexpr const char* s_tablename = "PlacePartType";
+
     enum Type {
         TYPE_Address = -1,
         TYPE_MAX = 1  // Number of entries
@@ -177,13 +145,15 @@ public:
     wxString f_name;
 
     recPlacePartType() {}
-    recPlacePartType( idt id ) : recDb(id) { Read(); }
+    recPlacePartType( idt id ) : recDbT(id) { Read(); }
     recPlacePartType( const recPlacePartType& ppt );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "PlacePartType" );
+    bool Equivalent( const recPlacePartType& r2 ) const {
+        return f_name == r2.f_name;
+    }
 
     wxString FGetName() const { return f_name; }
 
@@ -193,24 +163,7 @@ public:
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
-
 };
-
-inline bool recEquivalent( const recPlacePartType& r1, const recPlacePartType& r2 )
-{
-    return
-        r1.f_name == r2.f_name;
-}
-
-inline bool operator==( const recPlacePartType& r1, const recPlacePartType& r2 )
-{
-    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
-}
-
-inline bool operator!=( const recPlacePartType& r1, const recPlacePartType& r2 )
-{
-    return !(r1 == r2);
-}
 
 
 #endif // RECPLACE_H

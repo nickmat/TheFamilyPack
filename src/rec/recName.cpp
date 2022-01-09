@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     22 November 2010
- * Copyright:   Copyright (c) 2010 ~ 2017, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -128,6 +128,16 @@ bool recName::Read()
     f_style_id = GET_ID( result.GetInt64( 2 ) );
     f_sequence = result.GetInt( 3 );
     return true;
+}
+
+bool recName::Equivalent( const recName& r2 ) const
+{
+    return
+        f_ind_id == r2.f_ind_id &&
+        f_per_id == r2.f_per_id &&
+        f_style_id == r2.f_style_id &&
+        f_sequence == r2.f_sequence
+    ;
 }
 
 idt recName::GetIndID( idt nameID )
@@ -596,6 +606,16 @@ bool recNamePart::Read()
     return true;
 }
 
+bool recNamePart::Equivalent( const recNamePart& r2 ) const
+{
+    return
+        f_name_id == r2.f_name_id &&
+        f_type_id == r2.f_type_id &&
+        f_val == r2.f_val &&
+        f_sequence == r2.f_sequence
+    ;
+}
+
 wxString recNamePart::GetValue( idt id )
 {
     if( id == 0 ) return wxEmptyString;
@@ -706,6 +726,14 @@ bool recNamePartType::Read()
     f_grp  = (NTYPE_Grp) result.GetInt( 0 );
     f_name = result.GetAsString( 1 );
     return true;
+}
+
+bool recNamePartType::Equivalent( const recNamePartType& r2 ) const
+{
+    return
+        f_grp == r2.f_grp &&
+        f_name == r2.f_name
+    ;
 }
 
 wxString recNamePartType::GetTypeStr( idt id )

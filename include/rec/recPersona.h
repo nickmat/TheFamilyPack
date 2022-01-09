@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010 ~ 2017, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -44,21 +44,23 @@ enum recEventOrder {
     recEO_FamSeq
 };
 
-class recPersona : public recDb
+class recPersona : public recDbT<recPersona>
 {
 public:
+    static constexpr const char* s_tablename = "Persona";
+
     Sex      f_sex;
     idt      f_ref_id;
     wxString f_note;
 
-    recPersona() {}
-    recPersona( idt id ) : recDb(id) { Read(); }
+    recPersona() : f_sex( SEX_Unstated ), f_ref_id(0) {}
+    recPersona( idt id ) : recDbT(id) { Read(); }
     recPersona( const recPersona& persona );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "Persona" );
+    bool Equivalent( const recPersona& r2 ) const;
 
     Sex FGetSex() const { return f_sex; }
     idt FGetRefID() const { return f_ref_id; }
@@ -107,23 +109,5 @@ public:
     void RemoveFromDatabase();
     static void RemoveFromDatabase( idt id );
 };
-
-inline bool recEquivalent( const recPersona& r1, const recPersona& r2 )
-{
-    return
-        r1.f_sex     == r2.f_sex     &&
-        r1.f_ref_id  == r2.f_ref_id  &&
-        r1.f_note    == r2.f_note;
-}
-
-inline bool operator==( const recPersona& r1, const recPersona& r2 )
-{
-    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
-}
-
-inline bool operator!=( const recPersona& r1, const recPersona& r2 )
-{
-    return !(r1 == r2);
-}
 
 #endif // RECPERSONA_H

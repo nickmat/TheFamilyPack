@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     22 November 2010
- * Copyright:   Copyright (c) 2010 - 2017, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -54,22 +54,24 @@ enum recStdNameType  // These match the create.sql file
 //-------------------------[ recName ]----------------------------------------
 //============================================================================
 
-class recName : public recDb
+class recName : public recDbT<recName>
 {
 public:
+    static constexpr const char* s_tablename = "Name";
+
     idt  f_ind_id;
     idt  f_per_id;
     idt  f_style_id;
     int  f_sequence;
 
-    recName() {}
-    recName( idt id ) : recDb(id) { Read(); }
+    recName() : f_ind_id(0), f_per_id(0), f_style_id(0), f_sequence(0) {}
+    recName( idt id ) : recDbT(id) { Read(); }
     recName( const recName& name );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "Name" );
+    bool Equivalent( const recName& r2 ) const;
 
     idt FGetIndID() const { return f_ind_id; }
     idt FGetPerID() const { return f_per_id; }
@@ -128,46 +130,29 @@ public:
     recNamePartVec GetParts() const { return GetParts( f_id ); }
 };
 
-inline bool recEquivalent( const recName& r1, const recName& r2 )
-{
-    return
-        r1.f_ind_id   == r2.f_ind_id   &&
-        r1.f_per_id   == r2.f_per_id   &&
-        r1.f_style_id == r2.f_style_id &&
-        r1.f_sequence == r2.f_sequence;
-}
-
-inline bool operator==( const recName& r1, const recName& r2 )
-{
-    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
-}
-
-inline bool operator!=( const recName& r1, const recName& r2 )
-{
-    return !(r1 == r2);
-}
-
 
 //============================================================================
 //-------------------------[ recNamePart ]------------------------------------
 //============================================================================
 
-class recNamePart : public recDb
+class recNamePart : public recDbT<recNamePart>
 {
 public:
+    static constexpr const char* s_tablename = "NamePart";
+
     idt       f_name_id;
     idt       f_type_id;
     wxString  f_val;
     int       f_sequence;
 
-    recNamePart() {}
-    recNamePart( idt id ) : recDb(id) { Read(); }
+    recNamePart() : f_name_id(0), f_type_id(0), f_sequence(0) {}
+    recNamePart( idt id ) : recDbT(id) { Read(); }
     recNamePart( const recNamePart& attr );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "NamePart" );
+    bool Equivalent( const recNamePart& r2 ) const;
 
     idt FGetNameID() const { return f_name_id; }
     idt FGetTypeID() const { return f_type_id; }
@@ -191,33 +176,16 @@ public:
     }
 };
 
-inline bool recEquivalent( const recNamePart& r1, const recNamePart& r2 )
-{
-    return
-        r1.f_name_id  == r2.f_name_id  &&
-        r1.f_type_id  == r2.f_type_id  &&
-        r1.f_val      == r2.f_val      &&
-        r1.f_sequence == r2.f_sequence;
-}
-
-inline bool operator==( const recNamePart& r1, const recNamePart& r2 )
-{
-    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
-}
-
-inline bool operator!=( const recNamePart& r1, const recNamePart& r2 )
-{
-    return !(r1 == r2);
-}
-
 
 //============================================================================
 //-------------------------[ recNamePartType ]--------------------------------
 //============================================================================
 
-class recNamePartType : public recDb
+class recNamePartType : public recDbT<recNamePartType>
 {
 public:
+    static constexpr const char* s_tablename = "NamePartType";
+
     enum NTYPE_Grp {
         NTYPE_Grp_Unstated, NTYPE_Grp_Name, NTYPE_Grp_Title,
         NTYPE_Grp_Other
@@ -226,14 +194,14 @@ public:
     NTYPE_Grp f_grp;
     wxString  f_name;
 
-    recNamePartType() {}
-    recNamePartType( idt id ) : recDb(id) { Read(); }
+    recNamePartType() : f_grp( NTYPE_Grp_Unstated ) {}
+    recNamePartType( idt id ) : recDbT(id) { Read(); }
     recNamePartType( const recNamePartType& at );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "NameType" );
+    bool Equivalent( const recNamePartType& r2 ) const;
 
     NTYPE_Grp FGetGroup() const { return f_grp; }
     wxString FGetName() const { return f_name; }
@@ -249,31 +217,16 @@ public:
     static recNamePartTypeVec GetTypeList();
 };
 
-inline bool recEquivalent( const recNamePartType& r1, const recNamePartType& r2 )
-{
-    return
-        r1.f_grp   == r2.f_grp &&
-        r1.f_name == r2.f_name;
-}
-
-inline bool operator==( const recNamePartType& r1, const recNamePartType& r2 )
-{
-    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
-}
-
-inline bool operator!=( const recNamePartType& r1, const recNamePartType& r2 )
-{
-    return !(r1 == r2);
-}
-
 
 //============================================================================
 //-------------------------[ recNameStyle ]-----------------------------------
 //============================================================================
 
-class recNameStyle : public recDb
+class recNameStyle : public recDbT<recNameStyle>
 {
 public:
+    static constexpr const char* s_tablename = "NameStyle";
+
     enum Style {
         NS_Default = 0, // Recorded (ie Name as recorded in documents)
         NS_Birth   = -1,
@@ -285,13 +238,15 @@ public:
     wxString  f_name;
 
     recNameStyle() {}
-    recNameStyle( idt id ) : recDb(id) { Read(); }
+    recNameStyle( idt id ) : recDbT(id) { Read(); }
     recNameStyle( const recNameStyle& at );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "NameStyle" );
+    bool Equivalent( const recNameStyle& r2 ) const {
+        return f_name == r2.f_name;
+    }
 
     wxString FGetName() const { return f_name; }
 
@@ -304,21 +259,5 @@ public:
 
     static recNameStyleVec GetStyleList();
 };
-
-inline bool recEquivalent( const recNameStyle& r1, const recNameStyle& r2 )
-{
-    return
-        r1.f_name == r2.f_name;
-}
-
-inline bool operator==( const recNameStyle& r1, const recNameStyle& r2 )
-{
-    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
-}
-
-inline bool operator!=( const recNameStyle& r1, const recNameStyle& r2 )
-{
-    return !(r1 == r2);
-}
 
 #endif // RECNAME_H

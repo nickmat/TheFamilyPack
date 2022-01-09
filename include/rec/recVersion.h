@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     24 October 2010
- * Copyright:   Copyright (c) 2010 .. 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -51,12 +51,14 @@ extern bool recDoMediaUpgrade( const wxString& dbname );
 extern bool recDoFullUpgrade( const wxString& dbname );
 
 
-class recVersion : public recDb
+class recVersion : public recDbT<recVersion>
 {
 public:
-    recVersion() {}
-    recVersion( DbType id, const wxString& dbname ) : recDb( idt( id ) ) { Read( dbname ); }
-    recVersion( const wxString dbname, idt id ) : recDb( id ) { Read( dbname ); }
+    static constexpr const char* s_tablename = "Version";
+
+    recVersion() : f_major(0), f_minor(0), f_revision(0), f_test(0) {}
+    recVersion( DbType id, const wxString& dbname ) : recDbT( idt( id ) ) { Read( dbname ); }
+    recVersion( const wxString dbname, idt id ) : recDbT( id ) { Read( dbname ); }
     recVersion( const recVersion& ver );
     bool Read( const wxString& dbname = "Main" ) override;
     bool ReadType( DbType id, const wxString& dbname = "Main" ) { 
@@ -90,7 +92,6 @@ public:
 private:
     void Clear() override;
     void Save() override { wxASSERT( false ); }
-    TABLE_NAME_MEMBERS( "Version" );
 
     int  f_major;
     int  f_minor;

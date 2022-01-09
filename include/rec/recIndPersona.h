@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010-2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -35,22 +35,24 @@
 //-------------------------[ recIndividualPersona ]---------------------------
 //============================================================================
 
-class recIndividualPersona : public recDb
+class recIndividualPersona : public recDbT<recIndividualPersona>
 {
 public:
+    static constexpr const char* s_tablename = "IndividualPersona";
+
     idt      f_ind_id;
     idt      f_per_id;
     double   f_conf;
     wxString f_note;
 
-    recIndividualPersona() {}
-    recIndividualPersona( idt id ) : recDb(id) { Read(); }
+    recIndividualPersona() : f_ind_id(0), f_per_id(0), f_conf(0.0) {}
+    recIndividualPersona( idt id ) : recDbT(id) { Read(); }
     recIndividualPersona( const recIndividualPersona& link );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "IndividualPersona" );
+    bool Equivalent( const recIndividualPersona& r2 ) const;
 
     idt FGetIndID() const { return f_ind_id; }
     idt FGetPerID() const { return f_per_id; }
@@ -64,26 +66,5 @@ public:
 
     bool Find();
 };
-
-/*! The two entities are equal, ignoring the record id.
- */
-inline bool recEquivalent( const recIndividualPersona& d1, const recIndividualPersona& d2 )
-{
-    return
-        d1.f_ind_id == d2.f_ind_id &&
-        d1.f_per_id == d2.f_per_id &&
-        d1.f_conf   == d2.f_conf   &&
-        d1.f_note   == d2.f_note;
-}
-
-inline bool operator==( const recIndividualPersona& d1, const recIndividualPersona& d2 )
-{
-    return recEquivalent( d1, d2 ) && d1.f_id == d2.f_id;
-}
-
-inline bool operator!=( const recIndividualPersona& d1, const recIndividualPersona& d2 )
-{
-    return !(d1 == d2);
-}
 
 #endif // REC_RECINDPERSONA_H

@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010 .. 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -112,6 +112,14 @@ bool recPlace::Read()
     f_date1_id = GET_ID( result.GetInt64( 1 ) );
     f_date2_id = GET_ID( result.GetInt64( 2 ) );
     return true;
+}
+
+bool recPlace::Equivalent( const recPlace& r2 ) const
+{
+    return
+        f_date1_id == r2.f_date1_id &&
+        f_date2_id == r2.f_date2_id
+    ;
 }
 
 void recPlace::SetAddress( idt placeID, const wxString& str )
@@ -401,6 +409,16 @@ bool recPlacePart::Read()
     f_val      = result.GetAsString( 3 );
     f_sequence = result.GetInt( 4 );
     return true;
+}
+
+bool recPlacePart::Equivalent( const recPlacePart& r2 ) const
+{
+    return
+        f_type_id == r2.f_type_id &&
+        f_place_id == r2.f_place_id &&
+        f_val == r2.f_val &&
+        f_sequence == r2.f_sequence
+    ;
 }
 
 void recPlacePart::Renumber( idt id, idt to_id )

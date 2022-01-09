@@ -39,17 +39,18 @@ typedef std::vector< recResearcher >  recResearcherVec;
 //                 recResearcher
 //============================================================================
 
-class recResearcher : public recDb
+class recResearcher : public recDbT<recResearcher>
 {
 public:
+    static constexpr const char* s_tablename = "Researcher";
+
     recResearcher() : f_con_list_id(0) {}
-    recResearcher( idt id ) : recDb(id) { Read(); }
+    recResearcher( idt id ) : recDbT(id) { Read(); }
     recResearcher( const recResearcher& res );
 
     void Clear();
     void Save();
     bool Read();
-    TABLE_NAME_MEMBERS( "Researcher" )
     bool Equivalent( const recResearcher& r2 ) const;
 
     wxString FGetName() const { return f_name; }
@@ -82,15 +83,5 @@ private:
     idt       f_con_list_id;
 };
 
-
-inline bool operator==( const recResearcher& r1, const recResearcher& r2 )
-{
-    return r1.Equivalent( r2 ) && r1.EqualID( r2 );
-}
-
-inline bool operator!=( const recResearcher& r1, const recResearcher& r2 )
-{
-    return !(r1 == r2);
-}
 
 #endif // RECRESEARCHER_H

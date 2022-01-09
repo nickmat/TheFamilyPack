@@ -213,20 +213,6 @@ public:
     static wxString ExecuteStr( const char* format, idt id );
 };
 
-#define TABLE_NAME_MEMBERS( T )                                                \
-    static constexpr const char* s_tablename = T;                              \
-    bool Delete() const { return DeleteRecord( s_tablename, f_id ); }          \
-    static bool Delete( idt id ) { return DeleteRecord( s_tablename, id ); }   \
-    bool Exists( const wxString& dbname = "Main" ) const {                     \
-        return RecordExists( s_tablename, f_id, dbname ); }                    \
-    static bool Exists( idt id, const wxString& dbname = "Main"  ) {           \
-        return RecordExists( s_tablename, id, dbname ); }                      \
-    static int UserCount() { return GetUserCount( s_tablename ); }             \
-    static int Count() { return GetCount( s_tablename ); }                     \
-    static bool TableExists( const wxString& db = wxEmptyString ) {            \
-        return  s_db->TableExists( s_tablename, db ); }                        \
-    static recIdVec PositiveIDs( const wxString& dbname = "Main" ) {           \
-        return GetPositiveIDs( s_tablename, dbname ); }
 
 template <class T>
 class recDbT : public recDb

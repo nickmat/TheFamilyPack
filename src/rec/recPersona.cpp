@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010 ~ 2017, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -114,6 +114,15 @@ bool recPersona::Read()
     f_ref_id = GET_ID( result.GetInt64( 1 ) );
     f_note = result.GetAsString( 2 );
     return true;
+}
+
+bool recPersona::Equivalent( const recPersona& r2 ) const
+{
+    return
+        f_sex == r2.f_sex &&
+        f_ref_id == r2.f_ref_id &&
+        f_note == r2.f_note
+    ;
 }
 
 idt recPersona::Create( idt refID, Sex sex )
