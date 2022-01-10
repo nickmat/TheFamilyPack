@@ -15,7 +15,7 @@
     <img class='logo' src='../../../../sys/logo266x100.png' alt='Logo' />
    </a>
   </div>
-  TheFamilyPack - Database V0.0.10.22<br />User Sub-System
+  TheFamilyPack - Database V0.0.10.26<br />User Sub-System
   <div class='clear'></div>
  </div>
 
@@ -31,7 +31,7 @@
   <a href='../../../../dev/man/db/database.htm' class='m-item'>Database</a>
   <a href='../../../../dev/man/db/sub/subsystems.htm' class='m-item'>Sub-Systems</a>
   <a href='user.htm' class='m-item thispage'>User</a>
-  <a href='../../../../dev/man/db/sub/archives.htm' class='m-item nav'>►</a>
+  <a href='../../../../dev/man/db/sub/citations.htm' class='m-item nav'>►</a>
   <a href='../../../../dev/man/db/sub/contact.htm' class='m-item nav'>◄</a>
  </div>
 
@@ -48,64 +48,86 @@
 
 <h2>Users and Researchers</h2>
 <p>
- These tables document the people involved in creating the data held in the database.
- Users document the persons directly creating the database content whilst Researchers document all the data,
- including data that may have been imported from another database.
- Hence, all Users are Researchers but not all Researchers are Users.
+  These tables document the people involved in using the database.
+  The <b>User</b> is the person either viewing the contents
+  or, more actively, creating the database content.
+  Since any user can create content,
+  they are always associated with a <b>Researcher</b> record.
+  When Reference documents are created,
+  the current Researcher is recorded with the reference.
+  If a Reference document is imported from another database,
+  only the associated Researcher will also be imported,
+  not the User.
+  Thus, all Users are Researchers but not all Researchers are Users.
 </p>
 
 <h3>User</h3>
 
 <table class="basic core rfloat">
- <tr><th colspan="3">User table Core Data</th></tr>
- <tr><th>[id] ID</th><th>[res_id] Researcher</th><th></th></tr>
- <tr><td>0</td><td>0</td><td>Place holder for the default User</td></tr>
- <tr><td>1 (U1)</td><td>1 (Re1)</td><td>The initial User</td></tr>
+  <tr><th colspan="3">User table Core Data</th></tr>
+  <tr><th>[id] ID</th><th>[res_id] Researcher</th><th></th></tr>
+  <tr><td>1 (U1)</td><td>-1 (Re-1)</td><td>The initial User</td></tr>
 </table>
-
 <p>
- The User table is where settings that personalise the database and its display.
- All users are automatically listed as a researcher,
- this may be used in the future to tag changes made to the database.
- The only other setting at the moment is the home page family id.
+  The User table is where settings that personalise the database and its display.
+  An initial user (<b>U1</b>) is created by default
+  and is associated with the Anonymous Researcher (<b>Re-1</b>).
+  The User's default home page will be the Name Index (<b>NI</b>) page.
+</p>
+<p>
+  If using The Family Pack program,
+  the default settings may be changed with the Setup Database dialog
+  which is presented when the database is created. 
+</p>
+<p>
+  Note that User records cannot form part of the common data,
+  and so only positive ID numbers can exist.
+  Further, the <b>U1</b> record must exist and cannot be deleted.
 </p>
 
 <h3 class='clear'>User Settings</h3>
 
-<table class="basic core rfloat">
- <tr><th colspan="4">UserSetting table Core Data</th></tr>
- <tr><th>[id] ID</th><th>[user_id] User</th><th>[property]</th><th>[val] Value</th></tr>
- <tr><td>1</td><td>0</td><td>1</td><td>F1</td></tr>
- <tr><td>2</td><td>1 (U1)</td><td>1</td><td>F1</td></tr>
-</table>
-
 <table class="basic lfloat" width="45%">
  <tr><th colspan="4">User Settings Properties</th></tr>
  <tr><th>Property</th><th>Description</th><th>Default Value</th><th>Notes</th></tr>
- <tr><td>1</td><td>Home Screen</td><td>F1</td>
-  <td>The initial page displayed and the page used when the 'Home' button is pressed.</td></tr>
+ <tr><td>1</td><td>Home Screen</td><td>'NI' (Name Index)</td>
+  <td>The initial page displayed and the page<br>linked to the 'Home' button.</td></tr>
 </table>
-
+<table class="basic core rfloat">
+ <tr><th colspan="4">UserSetting table Core Data</th></tr>
+ <tr><th>[id] ID</th><th>[user_id] User</th><th>[property]</th><th>[val] Value</th></tr>
+ <tr><td>1</td><td>1 (U1)</td><td>1</td><td>'NI'</td></tr>
+</table>
 <p>
- Various settings may be held for each user.
- When a new user is created, the initial settings are set to the Default User settings.
+  The only user setting available so far, is the Home Page setting.
+  In the future, additional setting may be added.
+  When a new user is created, the initial settings are set to the Default settings.
 </p>
 
 <h3 class='clear'>Researcher</h3>
 
 <table class="basic core rfloat">
- <tr><th colspan="5">Researcher table Core Data</th></tr>
- <tr><th>[id] ID</th><th>[name]</th><th>[comments]</th><th>[con_list_id]</th><th></th></tr>
- <tr><td>0</td><td></td><td></td><td>0</td><td>Place holder for Unstated Researcher</td></tr>
- <tr><td>1 (Re1)</td><td>Anonymous</td><td></td><td>1</td><td>The initial Researcher</td></tr>
+  <tr><th colspan="5">Researcher table Core Data</th></tr>
+  <tr><th>[id] ID</th><th>[name]</th><th>[comments]</th><th>[con_list_id]</th><th></th></tr>
+  <tr><td>-1 (Re-1)</td><td>'Anonymous'</td><td>NULL</td><td>NULL</td><td>A general anonymous setting</td></tr>
+  <tr><td>0</td><td>''</td><td>NULL</td><td>NULL</td><td>Unstated</td></tr>
 </table>
 
 <p>
- Anyone who has had a hand in creating the data in the database
- and who needs to be credited can be listed in this table.
- Eventually, these entries will be linked to the data entries in the database.
- When a new database is created,
- the creator will normally be given the opportunity to edit the initial Re1 entry.
+  Anyone who has had a hand in creating the data in the database
+  and who needs to be credited can be listed in this table.
+  The entries are linked to the Reference Documents in the database.
+  By default, <b>Re-1</b> the Anonymous researcher is used.
+  When a new database is created,
+  the creator will normally be given the opportunity to create a new entry.
+</p>
+<p>
+  A Researcher can have a Contact List connected to it,
+  so other users of the data can contact them.
+</p>
+<p>
+  The Researcher can be linked to an Individual in the database.
+  This is achieved using the <b>Contact List</b> record's <b>ind_id</b> field.
 </p>
 
 </div><!--id=content-->
@@ -122,7 +144,7 @@
   <a href='../../../../dev/man/db/database.htm' class='m-item'>Database</a>
   <a href='../../../../dev/man/db/sub/subsystems.htm' class='m-item'>Sub-Systems</a>
   <a href='user.htm' class='m-item thispage'>User</a>
-  <a href='../../../../dev/man/db/sub/archives.htm' class='m-item nav'>►</a>
+  <a href='../../../../dev/man/db/sub/citations.htm' class='m-item nav'>►</a>
   <a href='../../../../dev/man/db/sub/contact.htm' class='m-item nav'>◄</a>
  </div>
 

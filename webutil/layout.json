@@ -46,7 +46,7 @@
                     { "name": "family", "label": "Family", "subtitle": "Family Entries" },
                     { "name": "individual", "label": "Individual", "subtitle": "Individual Entries" }
                 ]},
-                { "folder": "db", "name": "database", "label": "Database", "title": "Database V0.0.10.22", "subtitle": "Introduction", "content": [
+                { "folder": "db", "name": "database", "label": "Database", "title": "Database V0.0.10.26", "subtitle": "Introduction", "content": [
                     { "name": "dbdesign", "label": "Definitions", "subtitle": "Design", "css": "big-list" },
                     { "name": "dbdiagram", "label": "Diagram" },
                     { "folder": "sub", "name": "subsystems", "label": "Sub-Systems", "subtitle": "Sub-Systems", "content": [
@@ -54,7 +54,7 @@
                         { "name": "version", "label": "Version", "subtitle": "Version Control" },
                         { "name": "contact", "label": "Contact", "subtitle": "Contact Sub-System" },
                         { "name": "user", "label": "User", "subtitle": "User Sub-System" },
-                        { "name": "archives", "label": "Archives", "subtitle": "Archives Sub-System" },
+                        { "name": "citations", "label": "Citations", "subtitle": "Citations Sub-System" },
                         { "name": "references", "label": "References", "subtitle": "Reference Sub-System" },
                         { "name": "dates", "label": "Dates", "subtitle": "Date Sub-System" },
                         { "name": "places", "label": "Places", "subtitle": "Place Sub-System" },
