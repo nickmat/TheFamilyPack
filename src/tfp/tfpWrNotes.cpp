@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     21 January 2012
- * Copyright:   Copyright (c) 2010 .. 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -170,7 +170,9 @@ wxString tfpWriteAbout()
         "<tr><td class='prop'>Program Version:</td><td>" << tfpHtmVersion << "</td></tr>\n"
         "<tr><td class='prop'>Database Version:</td><td>" << recFullVersion << "</td></tr>\n"
         "<tr><td class='prop'>"
-        "Libraries:</td><td>" << wxVERSION_STRING << ", SQLite " << wxSQLite3Database::GetVersion() <<
+        "Libraries:</td><td>" << wxVERSION_STRING <<
+        "<br>" << wxSQLite3Database::GetWrapperVersion() <<
+        " and SQLite " << wxSQLite3Database::GetVersion() <<
         "</td></tr>\n"
         "<tr><td class='prop'>Website:</td><td>"
         "<a class='web' href='http://thefamilypack.org'>thefamilypack.org</a>"
