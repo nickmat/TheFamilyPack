@@ -118,16 +118,16 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\3rdparty\wxsqlite3\sqlite3.c" />
+    <ClCompile Include="..\..\3rdparty\wxsqlite3\sqlite3mc_amalgamation.c" />
     <ClCompile Include="..\..\3rdparty\wxsqlite3\wxsqlite3.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\3rdparty\wxsqlite3\sqlite3.h" />
-    <ClInclude Include="..\..\3rdparty\wxsqlite3\sqlite3ext.h" />
+    <ClInclude Include="..\..\3rdparty\wxsqlite3\sqlite3mc_amalgamation.h" />
+    <ClInclude Include="..\..\3rdparty\wxsqlite3\sqlite3mc_config.h" />
     <ClInclude Include="..\..\include\wx\wxsqlite3.h" />
     <ClInclude Include="..\..\include\wx\wxsqlite3def.h" />
-    <ClInclude Include="..\..\include\wx\wxsqlite3dyn.h" />
     <ClInclude Include="..\..\include\wx\wxsqlite3opt.h" />
+    <ClInclude Include="..\..\include\wx\wxsqlite3_version.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

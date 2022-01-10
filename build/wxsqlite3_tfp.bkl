@@ -5,14 +5,16 @@
   <lib id="wxsqlite3" template="wx-lib,wxlike">
     <libname>wxsqlite3$(WXLIBPOSTFIX)</libname>
     <define>SQLITE_ENABLE_RTREE</define>
+    <sources>$(REL_ROOT)/3rdparty/wxsqlite3/sqlite3mc_amalgamation.c</sources>
     <sources>$(REL_ROOT)/3rdparty/wxsqlite3/wxsqlite3.cpp</sources>
-    <sources>$(REL_ROOT)/3rdparty/wxsqlite3/sqlite3.c</sources>
-    <headers>$(REL_ROOT)/3rdparty/wxsqlite3/sqlite3.h</headers>
-    <headers>$(REL_ROOT)/3rdparty/wxsqlite3/sqlite3ext.h</headers>
+
+    <headers>$(REL_ROOT)/3rdparty/wxsqlite3/sqlite3mc_amalgamation.h</headers>
+    <headers>$(REL_ROOT)/3rdparty/wxsqlite3/sqlite3mc_config.h</headers>
     <headers>$(LOCAL_INC)/wx/wxsqlite3.h</headers>
+    <headers>$(LOCAL_INC)/wx/wxsqlite3_version.h</headers>
     <headers>$(LOCAL_INC)/wx/wxsqlite3def.h</headers>
-    <headers>$(LOCAL_INC)/wx/wxsqlite3dyn.h</headers>
     <headers>$(LOCAL_INC)/wx/wxsqlite3opt.h</headers>
+
     <include>$(LOCAL_INC)</include>
   </lib>
 

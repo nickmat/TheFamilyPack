@@ -152,8 +152,8 @@ WXSQLITE3_CXXFLAGS = /MD$(VAR_29) /DWIN32 /D_UNICODE $(__WXDEBUG_DEFINE_p) \
 	/I$(WX_DIR)\include $(VAR) $(VAR_28) $(p) /Fdwxsqlite3$(WXLIBPOSTFIX).pdb \
 	/DSQLITE_ENABLE_RTREE /I..\..\include /GR /EHsc $(CPPFLAGS) $(CXXFLAGS)
 WXSQLITE3_OBJECTS =  \
-	wxsqlite3_wxsqlite3.obj \
-	wxsqlite3_sqlite3.obj
+	wxsqlite3_sqlite3mc_amalgamation.obj \
+	wxsqlite3_wxsqlite3.obj
 HXML5_CXXFLAGS = /MD$(VAR_29) /DWIN32 $(VAR) $(VAR_28) $(p) \
 	/Fdhxml5$(WXLIBPOSTFIX).pdb /I..\..\include /I..\..\include\hxml5 /GR /EHsc \
 	$(CPPFLAGS) $(CXXFLAGS)
@@ -633,11 +633,11 @@ cdm_cdmMain.obj: .\..\..\utils\cdm\cdmMain.cpp
 cdb_cdbMain.obj: .\..\..\utils\cdb\cdbMain.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(CDB_CXXFLAGS) .\..\..\utils\cdb\cdbMain.cpp
 
+wxsqlite3_sqlite3mc_amalgamation.obj: .\..\..\3rdparty\wxsqlite3\sqlite3mc_amalgamation.c
+	$(CC) /c /nologo /TC /Fo$@ $(WXSQLITE3_CFLAGS) .\..\..\3rdparty\wxsqlite3\sqlite3mc_amalgamation.c
+
 wxsqlite3_wxsqlite3.obj: .\..\..\3rdparty\wxsqlite3\wxsqlite3.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(WXSQLITE3_CXXFLAGS) .\..\..\3rdparty\wxsqlite3\wxsqlite3.cpp
-
-wxsqlite3_sqlite3.obj: .\..\..\3rdparty\wxsqlite3\sqlite3.c
-	$(CC) /c /nologo /TC /Fo$@ $(WXSQLITE3_CFLAGS) .\..\..\3rdparty\wxsqlite3\sqlite3.c
 
 hxml5_hxml5.obj: .\..\..\src\hxml5\hxml5.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(HXML5_CXXFLAGS) .\..\..\src\hxml5\hxml5.cpp

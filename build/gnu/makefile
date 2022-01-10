@@ -111,8 +111,8 @@ WXSQLITE3_CFLAGS = $(VAR) $(VAR_5) -DSQLITE_ENABLE_RTREE -I../../include \
 WXSQLITE3_CXXFLAGS = $(VAR) $(VAR_5) -DSQLITE_ENABLE_RTREE -I../../include \
 	`$(WX_CONFIG) --cxxflags $(WX_CONFIG_FLAGS)` $(CPPFLAGS) $(CXXFLAGS)
 WXSQLITE3_OBJECTS =  \
-	wxsqlite3_wxsqlite3.o \
-	wxsqlite3_sqlite3.o
+	wxsqlite3_sqlite3mc_amalgamation.o \
+	wxsqlite3_wxsqlite3.o
 HXML5_CXXFLAGS = $(VAR) $(VAR_5) -I../../include -I../../include/hxml5 \
 	$(CPPFLAGS) $(CXXFLAGS)
 HXML5_OBJECTS =  \
@@ -402,11 +402,11 @@ calendar_calRecord.o: ./../../src/cal/calRecord.cpp
 calendar_dummy.o: ./../../src/dummy.cpp
 	$(CXX) -c -o $@ $(CALENDAR_CXXFLAGS) $(CPPDEPS) $<
 
+wxsqlite3_sqlite3mc_amalgamation.o: ./../../3rdparty/wxsqlite3/sqlite3mc_amalgamation.c
+	$(CC) -c -o $@ $(WXSQLITE3_CFLAGS) $(CPPDEPS) $<
+
 wxsqlite3_wxsqlite3.o: ./../../3rdparty/wxsqlite3/wxsqlite3.cpp
 	$(CXX) -c -o $@ $(WXSQLITE3_CXXFLAGS) $(CPPDEPS) $<
-
-wxsqlite3_sqlite3.o: ./../../3rdparty/wxsqlite3/sqlite3.c
-	$(CC) -c -o $@ $(WXSQLITE3_CFLAGS) $(CPPDEPS) $<
 
 hxml5_hxml5.o: ./../../src/hxml5/hxml5.cpp
 	$(CXX) -c -o $@ $(HXML5_CXXFLAGS) $(CPPDEPS) $<

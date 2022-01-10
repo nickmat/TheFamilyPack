@@ -11,7 +11,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\3rdparty\wxsqlite3\sqlite3.c">
+    <ClCompile Include="..\..\3rdparty\wxsqlite3\sqlite3mc_amalgamation.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\3rdparty\wxsqlite3\wxsqlite3.cpp">
@@ -19,19 +19,19 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\3rdparty\wxsqlite3\sqlite3.h">
+    <ClInclude Include="..\..\3rdparty\wxsqlite3\sqlite3mc_amalgamation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\3rdparty\wxsqlite3\sqlite3ext.h">
+    <ClInclude Include="..\..\3rdparty\wxsqlite3\sqlite3mc_config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\wx\wxsqlite3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\wx\wxsqlite3def.h">
+    <ClInclude Include="..\..\include\wx\wxsqlite3_version.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\wx\wxsqlite3dyn.h">
+    <ClInclude Include="..\..\include\wx\wxsqlite3def.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\wx\wxsqlite3opt.h">
