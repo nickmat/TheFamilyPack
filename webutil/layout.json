@@ -32,6 +32,7 @@
             ]}
         ]},
         { "folder": "com", "name": "common", "label": "Common Data", "title": "Common Data", "subtitle": "Introduction", "content": [
+            { "name": "manage", "label": "Data Management", "subtitle": "Common Data Management" },
             { "folder": "core", "name": "core", "label": "Core", "subtitle": "Core Data", "content": [
                 { "name": "ets", "label": "Event Types", "subtitle": "Core Data: Event Types" }
             ]},
