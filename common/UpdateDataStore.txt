@@ -1,0 +1,17 @@
+Running the cdm.exe program.
+
+NOTE: This describes to initial process to create the common database.
+It is expected to evolve as the database and system grows.
+
+The program expects the following files to be in the current working directory:-
+
+tables.csv   List a common data tables and the next common data id (negative) number.
+input.tfpd   Contains input records to be transferred to common data pool.
+
+All positive numbers in the input database are to be converted
+to negative common numbers. These are then written to csv files.
+The csv files will use the table name as a filename (with .csv extension).
+If the file already exists, the new records are appended to the file,
+otherwise a new file is created.
+
+Finally the tables.csv file is rewritten with updated 'next id numbers'.
