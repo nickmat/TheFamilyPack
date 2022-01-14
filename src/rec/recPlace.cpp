@@ -436,15 +436,15 @@ void recPlacePart::Renumber( idt id, idt to_id )
 
 std::string recPlacePart::CsvTitles()
 {
-    return std::string( "ID, Place ID, Type ID, Value, Sequence\n" );
+    return std::string( "ID, Type ID, Place ID, Value, Sequence\n" );
 }
 
 void recPlacePart::CsvWrite( std::ostream& out, idt id )
 {
     recPlacePart pp( id );
     recCsvWrite( out, pp.FGetID() );
-    recCsvWrite( out, pp.FGetPlaceID() );
     recCsvWrite( out, pp.FGetTypeID() );
+    recCsvWrite( out, pp.FGetPlaceID() );
     recCsvWrite( out, pp.FGetValue() );
     recCsvWrite( out, pp.FGetSequence(), '\n' );
 }
