@@ -4,7 +4,7 @@
  * Purpose:     Version constants, functions and revision history.
  * Author:      Nick Matthews
  * Created:     24 September 2010
- * Copyright:   Copyright (c) 2010..2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Website:     http://thefamilypack.org
  * Licence:     GNU GPLv3
  *
@@ -45,7 +45,7 @@
 #define VERSION_CONFIG   ""
 #endif
 
-#define RELEASE_NUM   " R2"
+#define RELEASE_NUM   " R3"
 #define VERSION_NUM   "0.3.0.1.1" RELEASE_NUM
 
 
@@ -95,7 +95,11 @@ const char* tfpTitle = "The Family Pack - Version " VERSION "\n"
                     Export GEDCOM file option added.
                     Page names are no longer case sensitive.
 
-active    v0.3.0.1.1 R2  Add Reference templates.
+active    v0.3.0.1.1 R2  Improve Create Database with new Setup Database dialog.
+                    Active the source Citataion records with new dialogs.
+                    Update Reference dialog which now allows for a hierarchy.
+
+active    v0.3.0.1.1 R3  Add Reference templates.
 
  See also webpage http://thefamilypack.org/dev/routemap.htm
 
