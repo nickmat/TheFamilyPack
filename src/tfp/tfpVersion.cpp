@@ -63,7 +63,7 @@ const char* tfpHtmVersion =
 /*! A string containing a long hand version name and copyright message.
  */
 const char* tfpTitle = "The Family Pack - Version " VERSION "\n"
-                         "Copyright (c) 2010 .. 2021 Nick Matthews\n\n";
+                         "Copyright (c) 2010..2022 Nick Matthews\n\n";
 
 /*************************************************************************//**
 
