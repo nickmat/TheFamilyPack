@@ -3,11 +3,9 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Program App class
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     24 September 2010
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -60,14 +58,16 @@ bool TfpApp::OnInit()
     m_webviewFSHandler = wxSharedPtr<wxWebViewHandler>( new wxWebViewFSHandler( "memory" ) );
 
     recInitialize();
+
+    wxString dbfname;
     if( argc > 1 ) {
         // 1st comand line argument is assumed to be a database file
-        wxString dbFName( argv[1] );
-        recDb::OpenDb( dbFName );
+        dbfname = argv[1];
     }
 
     TfpFrame* frame = new TfpFrame( 
-        "The Family Pack", wxDefaultPosition, wxSize( 900, 700 )
+        "The Family Pack", wxDefaultPosition, wxSize( 900, 700 ),
+        dbfname
     );
     frame->Show(true);
 

@@ -77,7 +77,9 @@ private:
 
 public:
     // ctor and dtor
-    TfpFrame( const wxString& title, const wxPoint& pos, const wxSize& size );
+    TfpFrame( const wxString& title,
+        const wxPoint& pos, const wxSize& size,
+        const wxString& dbfname );
     virtual ~TfpFrame();
 
     // event handlers
@@ -157,6 +159,7 @@ public:
 
     bool NewFile();
     bool OpenFile();
+    bool OpenFilename( const wxString& dbfname );
     void CloseFile();
     bool ImportGedcom();
     void OpenTestFile();
