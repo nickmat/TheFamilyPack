@@ -34,6 +34,8 @@
 extern void recInitialize();
 extern void recUninitialize();
 
+extern wxString recGetHomeDisplay();
+
 class recDb
 {
 public:

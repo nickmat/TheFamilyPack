@@ -115,10 +115,6 @@ private:
     idt  f_res_id;
 };
 
-inline wxString recGetHomeDisplay() {
-    return recUser::GetSetting( recGetCurrentUser(), recUserSetting::Property::home_screen );
-}
-
 inline idt recGetCurrentResearcher() {
     recUser user( recGetCurrentUser() );
     return user.FGetResID();

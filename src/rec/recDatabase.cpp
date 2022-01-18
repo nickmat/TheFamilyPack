@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010 .. 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -35,12 +35,16 @@
 #include "wx/wx.h"
 #endif
 
-#include <wx/filename.h>
 
 #include <rec/recDatabase.h>
-#include <rec/recVersion.h>
+
 #include <rec/recIndividual.h>
-#include <cal/calendar.h>
+#include <rec/recMediaData.h>
+#include <rec/recSystem.h>
+#include <rec/recUser.h>
+#include <rec/recVersion.h>
+
+#include <wx/filename.h>
 
 // SQL script to create new database
 #include "recDatabaseCreate.h"
@@ -62,6 +66,22 @@ extern void recUninitialize()
     }
     calUninit();
 }
+
+wxString recGetHomeDisplay()
+{
+    if( recUser::TableExists() ) {
+        return recUser::GetSetting( 
+            recGetCurrentUser(), recUserSetting::Property::home_screen 
+        );
+    }
+    // Test for MediaData Only database.
+    if( recMediaData::TableExists() ) {
+        return "MD";
+    }
+    // Give up.
+    return "About";
+}
+
 
 wxSQLite3Database*  recDb::s_db = NULL;
 recDb::DbType       recDb::s_dbtype = DbType::db_null;
