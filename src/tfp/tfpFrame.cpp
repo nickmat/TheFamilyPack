@@ -45,7 +45,6 @@
 #include <rec/recFamily.h>
 #include <rec/recIndividual.h>
 #include <rec/recVersion.h>
-#include <rec/recUser.h>
 #include <rg/rgDialogs.h>
 
 #include "tfpApp.h"
@@ -310,6 +309,25 @@ END_EVENT_TABLE()
     m_menuOpenDB->Append( menuTools, _( "&Tools" ) );
     m_menuOpenDB->Append( menuHelp, _( "&Help" ) );
 
+    // Menu bar for use with MediaData database
+    wxMenu* menuMediaFile = new wxMenu;
+    menuMediaFile->Append( tfpID_NEW_FILE, _( "&New File\tCtrl-N" ) );
+    menuMediaFile->Append( tfpID_OPEN_FILE, _( "&Open File\tCtrl-O" ) );
+    menuMediaFile->AppendSeparator();
+    menuMediaFile->Append( tfpID_IMPORT_GEDCOM, _( "&Import GEDCOM file" ) );
+    menuMediaFile->AppendSeparator();
+    menuMediaFile->Append( wxID_EXIT, _( "E&xit" ) );
+
+    wxMenu* menuMediaHelp = new wxMenu;
+    menuMediaHelp->Append( tfpID_HELP_WEB_HOME, _( "The Family Pack &Website" ) );
+    menuMediaHelp->Append( tfpID_HELP_ABOUT_DB, _( "About &Database" ) );
+    menuMediaHelp->Append( wxID_ABOUT, _( "&About \"The Family Pack\"" ) );
+
+    m_menuMediaDB = new wxMenuBar;
+    m_menuMediaDB->Append( menuMediaFile, _( "&File" ) );
+    m_menuMediaDB->Append( menuMediaHelp, _( "&Help" ) );
+    SetMenuBar( m_menuMediaDB );
+
     // Menu bar for use with closed database
     wxMenu* menuInitFile = new wxMenu;
     menuInitFile->Append( tfpID_NEW_FILE, _( "&New File\tCtrl-N" ) );
@@ -361,16 +379,11 @@ END_EVENT_TABLE()
     m_browser->RegisterHandler( GetWebViewMemoryHandler() );
     m_browser->EnableHistory( false ); // We handle our own history.
 
+    SetNoDatabase();
     if( !dbfname.empty() ) {
         OpenFilename( dbfname );
     }
-    if( recDb::IsOpen() ) {
-        SetDatabaseOpen( recDb::GetFileName() );
-        DisplayHomePage();
-        return;
-    }
-    else {
-        SetNoDatabase();
+    if( !recDb::IsOpen() ) {
         m_browser->LoadURL( "memory:startup.htm" );
     }
 }
@@ -381,6 +394,9 @@ TfpFrame::~TfpFrame()
 {
     if( GetMenuBar() != m_menuOpenDB ) {
         wxDELETE( m_menuOpenDB );
+    }
+    if( GetMenuBar() != m_menuMediaDB ) {
+        wxDELETE( m_menuMediaDB );
     }
     if( GetMenuBar() != m_menuClosedDB ) {
         wxDELETE( m_menuClosedDB );
@@ -1493,19 +1509,21 @@ bool TfpFrame::OpenFilename( const wxString& dbfname )
             recDb::CloseDb();
         }
         recDb::DbType type = recDb::OpenDb( dbfname );
-        if( type == recDb::DbType::full ) {
+        switch( type )
+        {
+        case recDb::DbType::full:
             SetDatabaseOpen( dbfname );
-            DisplayHomePage();
-        }
-        else if( type == recDb::DbType::media_data_only ) {
-            SetNoDatabase();
-            m_browser->SetPage( GetDisplayText( wxString( "MD" ) ), "" );
-            m_changeState = recDb::GetChange();
-        }
-        else {
+            break;
+        case recDb::DbType::media_data_only:
+            SetMediaDatabase( dbfname );
+            break;
+        default:
+            m_browser->LoadURL( "memory:startup.htm" );
             wxMessageBox( _( "Problem opening database!" ), caption );
             CloseFile();
+            return false;
         }
+        DisplayHomePage();
     }
     catch( wxSQLite3Exception& e ) {
         recDb::ErrorMessage( e );
@@ -1858,6 +1876,19 @@ void TfpFrame::SetDatabaseOpen( const wxString& path )
     m_toolbar->EnableTool( tfpID_LIST_GALLERIES, true );
     m_toolbar->EnableTool( tfpID_GOTO_HOME, true );
     m_showpage->Enable( true );
+}
+
+void TfpFrame::SetMediaDatabase( const wxString& path )
+{
+    wxFileName dbfile( path );
+    m_titleFmt = wxString::Format( "TFP: %s, %%s", dbfile.GetName() );
+    SetMenuBar( m_menuMediaDB );
+    m_toolbar->EnableTool( tfpID_LIST_SURNAME_INDEX, false );
+    m_toolbar->EnableTool( tfpID_LIST_PAGED_EVENTS, false );
+    m_toolbar->EnableTool( tfpID_LIST_PAGED_REFERENCES, false );
+    m_toolbar->EnableTool( tfpID_LIST_GALLERIES, false );
+    m_toolbar->EnableTool( tfpID_GOTO_HOME, true );
+    m_showpage->Enable( false );
 }
 
 void TfpFrame::SetNoDatabase()

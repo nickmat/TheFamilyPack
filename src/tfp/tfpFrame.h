@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     24 September 2010
- * Copyright:   Copyright (c) 2010 ~ 2019, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -51,6 +51,7 @@ private:
 
     long                m_changeState;
     wxMenuBar*          m_menuOpenDB;
+    wxMenuBar*          m_menuMediaDB;
     wxMenuBar*          m_menuClosedDB;
     wxToolBar*          m_toolbar;
     wxStatusBar*        m_statusbar;
@@ -173,6 +174,7 @@ public:
     int AddFamiliesToMenu( const wxString& ref, wxMenu* menu, int cmd_ID );
 
     void SetDatabaseOpen( const wxString& path );
+    void SetMediaDatabase( const wxString& path );
     void SetNoDatabase();
 
     void PushHtmName( const wxString& name );
