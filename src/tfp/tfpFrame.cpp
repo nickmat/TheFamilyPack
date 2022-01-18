@@ -1089,19 +1089,8 @@ void TfpFrame::OnUserOptions( wxCommandEvent& event )
 
 void TfpFrame::OnSystemCheck( wxCommandEvent& event )
 {
-    recDb::Begin();
-    try {
-        if( recDb::GlobalUpdate() ) {
-            recDb::Commit();
-            RefreshHtmPage();
-        } else {
-            recDb::Rollback();
-        }
-    }
-    catch( wxSQLite3Exception& e ) {
-        recDb::ErrorMessage( e );
-        recDb::Rollback();
-    }
+    // Unsure whether this is required or not.
+    wxMessageBox( "Not yet implimented", "OnSystemCheck" );
 }
 
 /*! \brief Called on a Help, TFP Website menu option event.

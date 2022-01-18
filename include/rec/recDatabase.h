@@ -145,11 +145,6 @@ public:
      */
     static void AddAssociateMap( idt assID, const wxString& path ) { s_assmap[assID] = path; }
 
-    /*! Do a global systems check and update.
-     *  Could take a while.
-     */
-    static bool GlobalUpdate();
-
     /*! Returns true if the database is currently open.
     */
     static bool IsOpen() { return s_db->IsOpen(); }

@@ -283,17 +283,6 @@ void recDb::CloseDb()
     s_assmap.clear();
 }
 
-bool recDb::GlobalUpdate()
-{
-    recIndividualVec inds = recIndividual::ReadVec();
-    for( size_t i = 0 ; i < inds.size() ; i++ ) {
-        inds[i].Update();
-        inds[i].Save();
-    }
-    bool ok = recIndividual::CreateMissingFamilies();
-    return ok;
-}
-
 wxString recDb::GetFileName()
 {
     wxString fn;
