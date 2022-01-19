@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3rd November 2018
- * Copyright:   Copyright (c) 2018 .. 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2018..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -209,7 +209,8 @@ wxString tfpWriteMediaDataPage( const wxString& link )
         "<table class='data'>\n"
 
         "<tr>\n"
-        "<td colspan='2' class='media'><a href = 'tfpv:M" << md.FGetID() << "'>"
+        "<td colspan='2' class='media'><a href = 'tfpv:MD" << md.FGetID() << 
+        "," << dbname << "'>"
         "<img src='" << memoryfile << "' alt='' height='200' /></a></td>\n"
         "</tr>\n"
 
