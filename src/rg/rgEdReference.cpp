@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     26th February 2013
- * Copyright:   Copyright (c) 2013 .. 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2013..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -622,17 +622,17 @@ void rgDlgEditReference::OnPersonaAddButton( wxCommandEvent& event )
 
 void rgDlgEditReference::OnAddMalePersona( wxCommandEvent & event )
 {
-    AddPersona( SEX_Male );
+    AddPersona( Sex::male );
 }
 
 void rgDlgEditReference::OnAddFemalePersona( wxCommandEvent & event )
 {
-    AddPersona( SEX_Female );
+    AddPersona( Sex::female );
 }
 
 void rgDlgEditReference::OnAddUnknownPersona( wxCommandEvent & event )
 {
-    AddPersona( SEX_Unknown );
+    AddPersona( Sex::unknown );
 }
 
 void rgDlgEditReference::AddPersona( Sex sex )

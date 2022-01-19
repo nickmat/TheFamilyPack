@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     21st January 2013
- * Copyright:   Copyright (c) 2013 .. 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2013..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -184,13 +184,13 @@ wxString tfpGetIndSexClass( idt indID, Sex pref )
 
 wxString tfpGetSexClass( Sex sex, Sex pref )
 {
-    if( sex == SEX_Unstated ) {
+    if( sex == Sex::unstated ) {
         sex = pref;
     }
     switch( sex ) {
-    case SEX_Male: 
+    case Sex::male:
         return "male";
-    case SEX_Female: 
+    case Sex::female:
         return "fem";
     }
     return "neut";

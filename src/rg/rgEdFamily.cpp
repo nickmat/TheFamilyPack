@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     9 October 2010
- * Copyright:   Copyright (c) 2010 .. 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -256,11 +256,11 @@ void rgDlgEditFamily::OnEditID( wxCommandEvent& event )
 
     if( m_editbutton == EDBUT_Type::Husb ) {
         indID = m_family.FGetHusbID();
-        sex = SEX_Male;
+        sex = Sex::male;
         privacy = recIndividual::GetPrivacy( m_family.FGetWifeID() );
     } else {  // m_editbutton == EDBUT_Wife
         indID = m_family.FGetWifeID();
-        sex = SEX_Female;
+        sex = Sex::female;
         privacy = recIndividual::GetPrivacy( m_family.FGetHusbID() );
     }
 
@@ -325,9 +325,9 @@ void rgDlgEditFamily::OnDeleteID( wxCommandEvent& event )
 void rgDlgEditFamily::OnAddExistID( wxCommandEvent& event )
 {
     if( m_editbutton == EDBUT_Type::Husb ) {
-        rgAddExistSpouse( this, m_family.FGetWifeID(), SEX_Male );
+        rgAddExistSpouse( this, m_family.FGetWifeID(), Sex::male );
     } else {
-        rgAddExistSpouse( this, m_family.FGetHusbID(), SEX_Female );
+        rgAddExistSpouse( this, m_family.FGetHusbID(), Sex::female );
     }
     m_family.Read();
     UpdateNames();
@@ -377,16 +377,16 @@ void rgDlgEditFamily::OnAddChild( wxCommandEvent& event )
     switch( event.GetId() )
     {
     case rgID_DLGEDFAM_ADDNEWSON:
-        indID = rgAddNewChild( this, m_family.FGetID(), SEX_Male );
+        indID = rgAddNewChild( this, m_family.FGetID(), Sex::male );
         break;
     case rgID_DLGEDFAM_ADDNEWDAUR:
-        indID = rgAddNewChild( this, m_family.FGetID(), SEX_Female );
+        indID = rgAddNewChild( this, m_family.FGetID(), Sex::female );
         break;
     case rgID_DLGEDFAM_ADDEXISTSON:
-        indID = rgAddExistChild( this, m_family.FGetID(), SEX_Male );
+        indID = rgAddExistChild( this, m_family.FGetID(), Sex::male );
         break;
     case rgID_DLGEDFAM_ADDEXISTDAUR:
-        indID = rgAddExistChild( this, m_family.FGetID(), SEX_Female );
+        indID = rgAddExistChild( this, m_family.FGetID(), Sex::female );
         break;
     }
     if( indID ) {

@@ -515,13 +515,13 @@ void recGedParse::ReadSex( GedIndividual& gind )
     switch( (wxChar) text.GetChar( 0 ) )
     {
     case 'M':
-        sex = SEX_Male;
+        sex = Sex::male;
         break;
     case 'F':
-        sex = SEX_Female;
+        sex = Sex::female;
         break;
     default:
-        sex = SEX_Unknown;
+        sex = Sex::unknown;
     }
     gind.SetSex( sex );
     ReadNextLine();

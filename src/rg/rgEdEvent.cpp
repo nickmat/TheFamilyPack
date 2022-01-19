@@ -99,8 +99,8 @@ idt rgCreateIndEvent(
     rgSHOWROLE sr = rgSHOWROLE_PrimeAll;
     if( ind2ID ) {
         Sex sex = recIndividual::GetSex( ind1ID );
-        if( sex == SEX_Male ) sr = rgSHOWROLE_PrimeMale;
-        if( sex == SEX_Female ) sr = rgSHOWROLE_PrimeFemale;
+        if( sex == Sex::male ) sr = rgSHOWROLE_PrimeMale;
+        if( sex == Sex::female ) sr = rgSHOWROLE_PrimeFemale;
     }
     if( ! rgEditIndEventRole( wind, ie.FGetID(), sr )  ) {
         recDb::Rollback( savepoint );
@@ -114,8 +114,8 @@ idt rgCreateIndEvent(
         ie.Save();
         sr = rgSHOWROLE_PrimeAll;
         Sex sex = recIndividual::GetSex( ind2ID );
-        if( sex == SEX_Male ) sr = rgSHOWROLE_PrimeMale;
-        if( sex == SEX_Female ) sr = rgSHOWROLE_PrimeFemale;
+        if( sex == Sex::male ) sr = rgSHOWROLE_PrimeMale;
+        if( sex == Sex::female ) sr = rgSHOWROLE_PrimeFemale;
         if( ! rgEditIndEventRole( wind, ie.FGetID(), sr )  ) {
             recDb::Rollback( savepoint );
             return 0;

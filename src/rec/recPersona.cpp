@@ -51,7 +51,7 @@ recPersona::recPersona( const recPersona& p )
 void recPersona::Clear()
 {
     f_id      = 0;
-    f_sex     = SEX_Unstated;
+    f_sex     = Sex::unstated;
     f_ref_id  = 0;
     f_note    = wxEmptyString;
 }

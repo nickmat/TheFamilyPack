@@ -448,7 +448,7 @@ void RecTestCase::TestPersona()
     recPersona persona1;
     persona1.f_id = 0;
 
-    persona1.f_sex = SEX_Male;
+    persona1.f_sex = Sex::male;
     persona1.f_ref_id = 10;
     persona1.f_note = "Someone";
     // f_id = 0 so create new record and set f_id to new value.
@@ -461,7 +461,7 @@ void RecTestCase::TestPersona()
     persona2.Read();
     CPPUNIT_ASSERT( persona1 == persona2 );
 
-    persona1.f_sex = SEX_Female;
+    persona1.f_sex = Sex::female;
     persona1.f_ref_id = 22;
     persona1.f_note = "Another one";
     // f_id = 1 which exists, so amend record leaving f_id to old value.
@@ -847,7 +847,7 @@ void RecTestCase::TestIndividual()
     recIndividual record1;
     record1.f_id = 0;
 
-    record1.FSetSex( SEX_Male );
+    record1.FSetSex( Sex::male );
     record1.f_surname     = "Matthews";
     record1.f_name        = "Nick Matthews";
     record1.f_epitaph     = "(1948-)";
@@ -863,7 +863,7 @@ void RecTestCase::TestIndividual()
     record2.Read();
     CPPUNIT_ASSERT( record1 == record2 );
 
-    record1.FSetSex( SEX_Male );
+    record1.FSetSex( Sex::male );
     record1.f_surname     = "Bloggs";
     record1.f_name        = "Fred Bloggs";
     record1.f_epitaph     = "(1948-)";

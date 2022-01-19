@@ -91,7 +91,7 @@ inline wxString recGetIDStr( idt id ) { return id ? recGetStr( id ) : ""; }
 enum class recSplitStrRet { none, number, associate, text };
 extern recSplitStrRet recSplitStr( const wxString& str, idt* id1, idt* id2, wxString* dbname );
 
-enum Sex { SEX_Unstated, SEX_Male, SEX_Female, SEX_Unknown };
+enum class Sex { unstated, male, female, unknown };
 extern wxString recGetSexStr( Sex sex );
 
 // Surname grouping.

@@ -57,7 +57,7 @@ recIndividual::recIndividual( const recIndividual& i )
 void recIndividual::Clear()
 {
     f_id      = 0;
-    f_sex     = SEX_Unstated;
+    f_sex     = Sex::unstated;
     f_fam_id  = 0;
     f_note    = wxEmptyString;
     f_privacy = 0;
@@ -283,7 +283,7 @@ void recIndividual::UpdateDefaultFamily()
     if( families.empty() ) {
         // Create a new family.
         recFamily fam( 0 );
-        if ( f_sex == SEX_Female ) {
+        if ( f_sex == Sex::female ) {
             fam.FSetWifeID( f_id );
         } else {
             fam.FSetHusbID( f_id );
@@ -343,10 +343,10 @@ recIndividualVec recIndividual::GetChildren( idt famID )
 Sex recIndividual::GetSex( idt indID )
 {
     if( indID == 0 ) {
-        return SEX_Unstated;
+        return Sex::unstated;
     }
     int i = ExecuteInt( "SELECT sex FROM Individual WHERE id=" ID ";", indID );
-    wxASSERT( i >= 0 && i <= SEX_Unknown );
+    wxASSERT( i >= 0 && i <= static_cast<int>(Sex::unknown) );
     return Sex( i );
 }
 
@@ -630,7 +630,7 @@ bool recIndividual::CreateMissingFamilies()
         if( indID <= 0 ) continue;
         Sex sex = (Sex) result.GetInt( 1 );
         recFamily fam(0);
-        if( sex == SEX_Female ) {
+        if( sex == Sex::female ) {
             fam.f_wife_id = indID;
         } else {
             fam.f_husb_id = indID;

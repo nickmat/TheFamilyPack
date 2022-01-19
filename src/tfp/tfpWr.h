@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     7th October 2010
- * Copyright:   Copyright (c) 2010 ~ 2019, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -42,8 +42,8 @@ inline wxString tfpWrTailInfo() { return tfpWrTail(); }
 extern wxString tfpWrErrorPage( const wxString& name );
 #define tfpWR_PAGE_MAX 100
 extern wxString tfpWritePagedIndexMenu( idt begCnt, size_t maxsize, const wxString prefix );
-extern wxString tfpGetIndSexClass( idt indID, Sex pref = SEX_Unknown );
-extern wxString tfpGetSexClass( Sex sex, Sex pref = SEX_Unknown );
+extern wxString tfpGetIndSexClass( idt indID, Sex pref = Sex::unknown );
+extern wxString tfpGetSexClass( Sex sex, Sex pref = Sex::unknown );
 extern wxString tfpGetRowClass( int row );
 enum GET_EPITAPH_Prefix { GE_None, GE_Spaces, GE_NewLine };
 extern wxString tfpGetEpitaphPlus( idt indID, GET_EPITAPH_Prefix prefix = GE_Spaces );

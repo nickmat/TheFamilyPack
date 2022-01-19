@@ -592,7 +592,7 @@ void TfpFrame::OnAddNewIndMale( wxCommandEvent& event )
     idt id = 0;
     recDb::Begin();
     try {
-        id = rgAddNewIndividual( this, SEX_Male );
+        id = rgAddNewIndividual( this, Sex::male );
         if( id != 0 ) {
             recDb::Commit();
             wxString str;
@@ -614,7 +614,7 @@ void TfpFrame::OnAddNewIndFemale( wxCommandEvent& event )
     idt id = 0;
     recDb::Begin();
     try {
-        id = rgAddNewIndividual( this, SEX_Female );
+        id = rgAddNewIndividual( this, Sex::female );
         if( id != 0 ) {
             recDb::Commit();
             wxString str;
@@ -644,23 +644,23 @@ void TfpFrame::OnEditContext( wxCommandEvent& event )
             ret = rgEditIndividual( this, m_EditIndLeft );
             break;
         case tfpID_EDIT_NEW_MOTHER_LEFT:
-            ret = rgAddNewParent( this, m_EditIndLeft, SEX_Female );
+            ret = rgAddNewParent( this, m_EditIndLeft, Sex::female );
             break;
         case tfpID_EDIT_NEW_FATHER_LEFT:
-            ret = rgAddNewParent( this, m_EditIndLeft, SEX_Male );
+            ret = rgAddNewParent( this, m_EditIndLeft, Sex::male );
             break;
         case tfpID_EDIT_NEW_SPOUSE_LEFT:
-            id = rgAddNewIndividual( this, SEX_Female, 0, "", m_EditFamily );
+            id = rgAddNewIndividual( this, Sex::female, 0, "", m_EditFamily );
             if( id ) ret = true;
             break;
         case tfpID_EDIT_EXIST_MOTHER_LEFT:
-            ret = rgAddExistParent( this, m_EditIndLeft, SEX_Female );
+            ret = rgAddExistParent( this, m_EditIndLeft, Sex::female );
             break;
         case tfpID_EDIT_EXIST_FATHER_LEFT:
-            ret = rgAddExistParent( this, m_EditIndLeft, SEX_Male );
+            ret = rgAddExistParent( this, m_EditIndLeft, Sex::male );
             break;
         case tfpID_EDIT_EXIST_SPOUSE_LEFT:
-            ret = rgAddExistSpouse( this, m_EditIndLeft, SEX_Female );
+            ret = rgAddExistSpouse( this, m_EditIndLeft, Sex::female );
             break;
         case tfpID_EDIT_DELETE_IND_LEFT:
             ret = rgDeleteIndividual( this, m_EditIndLeft );
@@ -669,23 +669,23 @@ void TfpFrame::OnEditContext( wxCommandEvent& event )
             ret = rgEditIndividual( this, m_EditIndRight );
             break;
         case tfpID_EDIT_NEW_MOTHER_RIGHT:
-            ret = rgAddNewParent( this, m_EditIndRight, SEX_Female );
+            ret = rgAddNewParent( this, m_EditIndRight, Sex::female );
             break;
         case tfpID_EDIT_NEW_FATHER_RIGHT:
-            ret = rgAddNewParent( this, m_EditIndRight, SEX_Male );
+            ret = rgAddNewParent( this, m_EditIndRight, Sex::male );
             break;
         case tfpID_EDIT_NEW_SPOUSE_RIGHT:
-            id = rgAddNewIndividual( this, SEX_Male, 0, "", m_EditFamily );
+            id = rgAddNewIndividual( this, Sex::male, 0, "", m_EditFamily );
             if( id ) ret = true;
             break;
         case tfpID_EDIT_EXIST_MOTHER_RIGHT:
-            ret = rgAddExistParent( this, m_EditIndRight, SEX_Female );
+            ret = rgAddExistParent( this, m_EditIndRight, Sex::female );
             break;
         case tfpID_EDIT_EXIST_FATHER_RIGHT:
-            ret = rgAddExistParent( this, m_EditIndRight, SEX_Male );
+            ret = rgAddExistParent( this, m_EditIndRight, Sex::male );
             break;
         case tfpID_EDIT_EXIST_SPOUSE_RIGHT:
-            ret = rgAddExistSpouse( this, m_EditIndRight, SEX_Female );
+            ret = rgAddExistSpouse( this, m_EditIndRight, Sex::female );
             break;
         case tfpID_EDIT_DELETE_IND_RIGHT:
             ret = rgDeleteIndividual( this, m_EditIndRight );
@@ -694,19 +694,19 @@ void TfpFrame::OnEditContext( wxCommandEvent& event )
             ret = rgEditFamily( this, m_EditFamily );
             break;
         case tfpID_EDIT_NEW_SON:
-            id = rgAddNewChild( this, m_EditFamily, SEX_Male );
+            id = rgAddNewChild( this, m_EditFamily, Sex::male );
             if( id ) ret = true;
             break;
         case tfpID_EDIT_NEW_DAUR:
-            id = rgAddNewChild( this, m_EditFamily, SEX_Female );
+            id = rgAddNewChild( this, m_EditFamily, Sex::female );
             if( id ) ret = true;
             break;
         case tfpID_EDIT_EXIST_SON:
-            id = rgAddExistChild( this, m_EditFamily, SEX_Male );
+            id = rgAddExistChild( this, m_EditFamily, Sex::male );
             if( id ) ret = true;
             break;
         case tfpID_EDIT_EXIST_DAUR:
-            id = rgAddExistChild( this, m_EditFamily, SEX_Female );
+            id = rgAddExistChild( this, m_EditFamily, Sex::female );
             if( id ) ret = true;
             break;
         case tfpID_EDIT_EVENT_CURRENT:
@@ -1343,7 +1343,7 @@ void TfpFrame::OnHtmCtxMenu( wxCommandEvent& event )
     if ( pos != wxString::npos ) {
         id2 = recGetID( m_ctxmenuref.substr( pos + 1 ) );
     }
-    Sex sex = ( m_ctxmenuref.substr( 0, 1 ) == "H" ) ? SEX_Female : SEX_Male;
+    Sex sex = ( m_ctxmenuref.substr( 0, 1 ) == "H" ) ? Sex::female : Sex::male;
 
     recDb::Begin();
     try {
@@ -1353,36 +1353,36 @@ void TfpFrame::OnHtmCtxMenu( wxCommandEvent& event )
             ret = rgEditFamily( this, id );
             break;
         case tfpID_HCTXMENU_EDIT_NEW_SON:
-            if( rgAddNewChild( this, id, SEX_Male ) != 0 ) ret = true;
+            if( rgAddNewChild( this, id, Sex::male ) != 0 ) ret = true;
             break;
         case tfpID_HCTXMENU_EDIT_NEW_DAUR:
-            if( rgAddNewChild( this, id, SEX_Female ) != 0 ) ret = true;
+            if( rgAddNewChild( this, id, Sex::female ) != 0 ) ret = true;
             break;
         case tfpID_HCTXMENU_EDIT_EXIST_SON:
-            id = rgAddExistChild( this, id, SEX_Male );
+            id = rgAddExistChild( this, id, Sex::male );
             if( id ) ret = true;
             break;
         case tfpID_HCTXMENU_EDIT_EXIST_DAUR:
-            id = rgAddExistChild( this, id, SEX_Female );
+            id = rgAddExistChild( this, id, Sex::female );
             if( id ) ret = true;
             break;
         case tfpID_HCTXMENU_EDIT_INDIVIDUAL:
             ret = rgEditIndividual( this, id );
             break;
         case tfpID_HCTXMENU_EDIT_NEW_MOTHER:
-            ret = rgAddNewParent( this, id, SEX_Female );
+            ret = rgAddNewParent( this, id, Sex::female );
             break;
         case tfpID_HCTXMENU_EDIT_NEW_FATHER:
-            ret = rgAddNewParent( this, id, SEX_Male );
+            ret = rgAddNewParent( this, id, Sex::male );
             break;
         case tfpID_HCTXMENU_EDIT_NEW_SPOUSE:
             ret = rgAddNewSpouse( this, id, sex, id2 );
             break;
         case tfpID_HCTXMENU_EDIT_EXIST_MOTHER:
-            ret = rgAddExistParent( this, id, SEX_Female );
+            ret = rgAddExistParent( this, id, Sex::female );
             break;
         case tfpID_HCTXMENU_EDIT_EXIST_FATHER:
-            ret = rgAddExistParent( this, id, SEX_Male );
+            ret = rgAddExistParent( this, id, Sex::male );
             break;
         case tfpID_HCTXMENU_EDIT_EXIST_SPOUSE:
             ret = rgAddExistSpouse( this, id, sex );
@@ -1636,15 +1636,15 @@ void TfpFrame::DoEdit( const wxString& href )
             id = rgCreatePersonalEvent( this, recGetID( href.Mid(2) ), recEventType::ET_Occupation );
             if( id ) ret = true;
         } else if( href.StartsWith( "IL" ) ) {
-            id = rgAddNewIndividual( this, SEX_Male, -1, "", recGetID( href.Mid(2) ) );
+            id = rgAddNewIndividual( this, Sex::male, -1, "", recGetID( href.Mid(2) ) );
             if( id ) ret = true;
         } else if( href.StartsWith( "IR" ) ) {
-            id = rgAddNewIndividual( this, SEX_Female, -1, "", recGetID( href.Mid(2) ) );
+            id = rgAddNewIndividual( this, Sex::female, -1, "", recGetID( href.Mid(2) ) );
             if( id ) ret = true;
         } else if( href.StartsWith( "IF" ) ) {
-            ret = rgAddNewParent( this, recGetID( href.Mid(2) ), SEX_Female );
+            ret = rgAddNewParent( this, recGetID( href.Mid(2) ), Sex::female );
         } else if( href.StartsWith( "IM" ) ) {
-            ret = rgAddNewParent( this, recGetID( href.Mid(2) ), SEX_Male );
+            ret = rgAddNewParent( this, recGetID( href.Mid(2) ), Sex::male );
         } else if( href.StartsWith( "I" ) ) {
             ret = rgEditIndividual( this, recGetID( href.Mid(1) ) );
         } else if( href.StartsWith( "Re" ) ) {

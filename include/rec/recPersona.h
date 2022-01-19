@@ -53,7 +53,7 @@ public:
     idt      f_ref_id;
     wxString f_note;
 
-    recPersona() : f_sex( SEX_Unstated ), f_ref_id(0) {}
+    recPersona() : f_sex( Sex::unstated ), f_ref_id(0) {}
     recPersona( idt id ) : recDbT(id) { Read(); }
     recPersona( const recPersona& persona );
 
@@ -73,7 +73,7 @@ public:
     static wxString GetIdStr( idt perID ) { return wxString::Format( "Pa" ID, perID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
-    static idt Create( idt refID, Sex sex = SEX_Unstated );
+    static idt Create( idt refID, Sex sex = Sex::unstated );
 
     static Sex GetSex( idt id );
     static idt GetRefID( idt id ) {

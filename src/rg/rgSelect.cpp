@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     21 November 2012
- * Copyright:   Copyright (c) 2012 ~ 2019, Nick Matthews.
+ * Copyright:   Copyright (c) 2012..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -363,7 +363,7 @@ idt rgSelectIndividual( wxWindow* wind, unsigned flag, unsigned* retbutton, unsi
         if( dialog->ShowModal() == wxID_OK ) {
             if( dialog->GetCreatePressed() ) {
                 if( retbutton ) *retbutton = rgSELSTYLE_Create;
-                id = rgAddNewIndividual( wind, SEX_Unstated );
+                id = rgAddNewIndividual( wind, Sex::unstated );
                 if( id ) {
                     cont = false;
                 } else {
@@ -396,10 +396,10 @@ idt rgSelectIndividual( wxWindow* wind, Sex sex )
     unsigned filter;
     switch( sex )
     {
-    case SEX_Male:
+    case Sex::male:
         filter = recInd_FILTER_SexMale;
         break;
-    case SEX_Female:
+    case Sex::female:
         filter = recInd_FILTER_SexFemale;
         break;
     default:
@@ -424,7 +424,7 @@ idt rgSelectIndividual( wxWindow* wind, recIdVec indIDs, unsigned flag, unsigned
         if( dialog->ShowModal() == wxID_OK ) {
             if( dialog->GetCreatePressed() ) {
                 if( retbutton ) *retbutton = rgSELSTYLE_Create;
-                id = rgAddNewIndividual( wind, SEX_Unstated );
+                id = rgAddNewIndividual( wind, Sex::unstated );
                 if( id ) {
                     cont = false;
                 } else {
@@ -527,13 +527,13 @@ void rgDlgSelectPersona::OnCreatePersona( wxCommandEvent& event )
     switch( event.GetId() )
     {
     case rgID_SELCREATPER_MALE:
-        m_sex = SEX_Male;
+        m_sex = Sex::male;
         break;
     case rgID_SELCREATPER_FEMALE:
-        m_sex = SEX_Female;
+        m_sex = Sex::female;
         break;
     case rgID_SELCREATPER_UNKNOWN:
-        m_sex = SEX_Unknown;
+        m_sex = Sex::unknown;
         break;
     }
     SetCreatePressed();

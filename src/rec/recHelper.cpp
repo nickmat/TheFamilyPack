@@ -104,7 +104,7 @@ wxString recGetSexStr( Sex sex )
     static wxString sexarray[] = {
         _("Unstated"), _("Male"), _("Female"), _("Unknown")
     };
-    return sexarray[sex];
+    return sexarray[static_cast<size_t>(sex)];
 }
 
 wxString recHTMLifyStr( const wxString& str )

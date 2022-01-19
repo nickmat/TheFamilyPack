@@ -97,9 +97,9 @@ void recGedExport::ExportIndividual( idt indID, int level )
         m_out << "\n";
     }
     Sex sex = recIndividual::GetSex( indID );
-    if( sex == SEX_Male ) {
+    if( sex == Sex::male ) {
         m_out << level << " SEX M\n";
-    } else if( sex == SEX_Female ) {
+    } else if( sex == Sex::female ) {
         m_out << level << " SEX F\n";
     }
     ExportIndEvents( indID, recEventTypeGrp::birth, level );

@@ -69,7 +69,7 @@ idt rgAddNewIndividual( wxWindow* wind, Sex sex, int privacy, const wxString& su
         recDb::Rollback( savepoint );
         return 0;
     }
-    if( sex == SEX_Female && fam.FGetWifeID() == 0 ) {
+    if( sex == Sex::female && fam.FGetWifeID() == 0 ) {
         fam.FSetWifeID( indID );
     } else {
         wxASSERT( fam.FGetHusbID() == 0 );
@@ -92,9 +92,9 @@ bool rgAddNewParent( wxWindow* wind, idt indID, Sex sex )
 
     if( parents.size() ) {
         if( parents.size() == 1 ) {
-            if( parents[0].f_husb_id == 0 && sex != SEX_Female ) {
+            if( parents[0].f_husb_id == 0 && sex != Sex::female ) {
                 famID = parents[0].f_id;
-            } else if( parents[0].f_wife_id == 0 && sex == SEX_Female ) {
+            } else if( parents[0].f_wife_id == 0 && sex == Sex::female ) {
                 famID = parents[0].f_id;
             }
         }
@@ -103,9 +103,9 @@ bool rgAddNewParent( wxWindow* wind, idt indID, Sex sex )
             IntVec rows;
             idt parID;
             for( size_t i = 0 ; i < parents.size() ; i++ ) {
-                if( sex == SEX_Female && parents[i].f_wife_id == 0 ) {
+                if( sex == Sex::female && parents[i].f_wife_id == 0 ) {
                     parID = parents[i].f_husb_id;
-                } else if( sex == SEX_Male && parents[i].f_husb_id == 0 ) {
+                } else if( sex == Sex::male && parents[i].f_husb_id == 0 ) {
                     parID = parents[i].f_wife_id;
                 } else {
                     parID = 0;
@@ -132,7 +132,7 @@ bool rgAddNewParent( wxWindow* wind, idt indID, Sex sex )
     }
 
     wxString surname;
-    if( sex == SEX_Male ) {
+    if( sex == Sex::male ) {
         surname = recIndividual::GetSurname( indID );
     }
 
@@ -212,7 +212,7 @@ bool rgAddNewSpouse( wxWindow* wind, idt indID, Sex sex, idt famID )
 
     if ( newfam ) {
         fam.Clear();
-        if ( sex == SEX_Female ) {
+        if ( sex == Sex::female ) {
             fam.FSetHusbID( indID );
         } else {
             fam.FSetWifeID( indID );
@@ -241,8 +241,8 @@ bool rgAddExistSpouse( wxWindow* wind, idt indID, Sex sex )
     recFamily fam;
     fam.f_id = ind.f_fam_id;
     fam.Read();
-    if( sex == SEX_Male ) {
-        spouse.f_id = rgSelectIndividual( wind, SEX_Male );
+    if( sex == Sex::male ) {
+        spouse.f_id = rgSelectIndividual( wind, Sex::male );
         if( spouse.f_id != 0 ) {
             spouse.Read();
             if( fam.f_husb_id == 0 ) { // No husband yet
@@ -270,7 +270,7 @@ bool rgAddExistSpouse( wxWindow* wind, idt indID, Sex sex )
             }
         }
     } else { // SEX_Male
-        spouse.f_id = rgSelectIndividual( wind, SEX_Female );
+        spouse.f_id = rgSelectIndividual( wind, Sex::female );
         if( spouse.f_id != 0 ) {
             spouse.Read();
             if( fam.f_wife_id == 0 ) { // No wives yet

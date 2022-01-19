@@ -65,7 +65,7 @@ public:
     wxString f_surname;
     wxString f_epitaph;
 
-    recIndividual() : f_sex(SEX_Unstated), f_fam_id(0), f_privacy(0) {}
+    recIndividual() : f_sex( Sex::unstated), f_fam_id(0), f_privacy(0) {}
     recIndividual( idt id ) : recDbT(id) { Read(); }
     recIndividual( const recIndividual& ind );
 

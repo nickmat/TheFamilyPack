@@ -96,7 +96,7 @@ wxString tfpCreatePedChart( idt indID )
         "<table class='chart'>\n"
     ;
 
-    WrPedCht( indID, SEX_Unstated, 0 );
+    WrPedCht( indID, Sex::unstated, 0 );
 
     htm << "</table>\n\n</body>\n</html>\n";
 
@@ -122,11 +122,11 @@ void WrPedCht( idt indID, Sex sex, int gen )
     GenPChart[gen] = HTM_CHART_GIF_BLANK;
     if( fam.f_husb_id != 0 )
     {
-        WrPedCht( fam.f_husb_id, SEX_Male, gen+1 );
+        WrPedCht( fam.f_husb_id, Sex::male, gen+1 );
     }
 
-    if( sex == SEX_Male ) GenPChart[gen-1] = HTM_CHART_GIF_PTOP;
-    if( sex == SEX_Female ) GenPChart[gen-1] = HTM_CHART_GIF_PEND;
+    if( sex == Sex::male ) GenPChart[gen-1] = HTM_CHART_GIF_PTOP;
+    if( sex == Sex::female ) GenPChart[gen-1] = HTM_CHART_GIF_PEND;
 
     // Write out the given person
     htm << "<tr>\n<td><img src='memory:sss.png'></td>\n";
@@ -144,13 +144,13 @@ void WrPedCht( idt indID, Sex sex, int gen )
     }
     htm << "</tr>\n";
 
-    if( sex == SEX_Male ) GenPChart[gen-1] = HTM_CHART_GIF_PUP;
-    if( sex == SEX_Female ) GenPChart[gen-1] = HTM_CHART_GIF_BLANK;
+    if( sex == Sex::male ) GenPChart[gen-1] = HTM_CHART_GIF_PUP;
+    if( sex == Sex::female ) GenPChart[gen-1] = HTM_CHART_GIF_BLANK;
 
     GenPChart[gen] = HTM_CHART_GIF_PDN;
     if( fam.f_wife_id != 0 )
     {
-        WrPedCht( fam.f_wife_id, SEX_Female, gen+1 );
+        WrPedCht( fam.f_wife_id, Sex::female, gen+1 );
     }
 }
 

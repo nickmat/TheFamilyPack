@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     19 November 2012
- * Copyright:   Copyright (c) 2012 .. 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2012..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -160,7 +160,7 @@ public:
     rgDlgSelectPersona(
         wxWindow* parent, unsigned style = rgSELSTYLE_None,
         const wxString& title = _("Select Persona") )
-        : m_sex(SEX_Unstated),
+        : m_sex( Sex::unstated),
         rgSelect( parent, sm_colHeaders, COL_MAX, style, title )
     {}
 

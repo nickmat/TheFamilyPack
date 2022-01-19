@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     9 October 2010
- * Copyright:   Copyright (c) 2010 - 2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -35,7 +35,7 @@
 #include "fbRgDialog.h"
 
 extern idt rgCreateIndividual( wxWindow* parent, idt famID,
-    Sex sex = SEX_Unknown,
+    Sex sex = Sex::unknown,
     int privacy = 0,
     unsigned flags = rgCRNAME_Default, 
     const wxString& name1 = wxEmptyString,

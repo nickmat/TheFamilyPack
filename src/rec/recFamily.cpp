@@ -189,7 +189,7 @@ bool recFamily::Decode( const wxString& str )
         Read();
         if( f_id == 0 ) {
             Sex sex = recIndividual::GetSex( indID );
-            if( sex == SEX_Female ) {
+            if( sex == Sex::female ) {
                 f_wife_id = indID;
             } else {
                 f_husb_id = indID;
