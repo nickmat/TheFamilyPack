@@ -205,7 +205,7 @@ bool recDb::AttachDb( const wxString& fname, const wxString& dbname )
     }
     wxString dbfname = dbfile.GetFullPath();
     wxSQLite3StatementBuffer sql;
-    sql.Format( "ATTACH DATABASE '%q' AS '%q';", UTF8_( dbfname ), UTF8_( dbname ) );
+    sql.Format( "ATTACH DATABASE '%q' AS \"%s\";", UTF8_( dbfname ), UTF8_( dbname ) );
     try {
         s_db->ExecuteUpdate( sql );
     }
@@ -225,7 +225,7 @@ bool recDb::AttachDb( const wxString& fname, const wxString& dbname )
 bool recDb::DetachDb( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
-    sql.Format( "DETACH DATABASE '%q';", UTF8_( dbname ) );
+    sql.Format( "DETACH DATABASE \"%s\";", UTF8_( dbname ) );
     s_db->ExecuteUpdate( sql );
     for ( auto a : s_assmap ) {
         if ( a.second == dbname ) {
@@ -345,7 +345,7 @@ bool recDb::RecordExists( const char* name, idt id, const wxString& dbname )
     }
 
     wxSQLite3StatementBuffer sql;
-    sql.Format( "SELECT COUNT(*) FROM %q.%q WHERE id=" ID ";", UTF8_( dbname ), name, id );
+    sql.Format( "SELECT COUNT(*) FROM \"%s\".%q WHERE id=" ID ";", UTF8_( dbname ), name, id );
 
     if( s_db->ExecuteScalar( sql ) != 1 ) {
         return false;
@@ -372,7 +372,7 @@ int recDb::GetCount( const char* name )
 recIdVec recDb::GetPositiveIDs( const char* table, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
-    sql.Format( "SELECT id FROM %q.%q WHERE id>0;", UTF8_( dbname ), table );
+    sql.Format( "SELECT id FROM \"%s\".%q WHERE id>0;", UTF8_( dbname ), table );
 
     return ExecuteIdVec( sql );
 }

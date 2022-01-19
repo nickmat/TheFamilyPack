@@ -76,7 +76,7 @@ void recMediaData::Save( const wxString & dbname )
     {
         // Add new record
         sql.Format(
-            "INSERT INTO %q.MediaData (title, data, type, privacy, copyright, file)"
+            "INSERT INTO \"%s\".MediaData (title, data, type, privacy, copyright, file)"
             " VALUES ('%q', x'%q', %d, %d, '%q', '%q');",
             UTF8_( dbname ), UTF8_( f_title ), UTF8_( GetBlobFormatStr( f_data ) ),
             f_type, f_privacy, UTF8_( f_copyright ), UTF8_( f_file )
@@ -89,7 +89,7 @@ void recMediaData::Save( const wxString & dbname )
         {
             // Add new record
             sql.Format(
-                "INSERT INTO %q.MediaData (id, title, data, type, privacy, copyright, file)"
+                "INSERT INTO \"%s\".MediaData (id, title, data, type, privacy, copyright, file)"
                 " VALUES (" ID ", '%q', x'%q', %d, %d, '%q', '%q');",
                 UTF8_( dbname ), f_id, UTF8_( f_title ), UTF8_( GetBlobFormatStr( f_data ) ),
                 f_type, f_privacy, UTF8_( f_copyright ), UTF8_( f_file )
@@ -97,7 +97,7 @@ void recMediaData::Save( const wxString & dbname )
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE %q.MediaData SET title='%q', data=x'%q', type=%d,"
+                "UPDATE \"%s\".MediaData SET title='%q', data=x'%q', type=%d,"
                 " privacy=%d, copyright='%q', file='%q'"
                 " WHERE id=" ID ";",
                 UTF8_( dbname ), UTF8_( f_title ), UTF8_( GetBlobFormatStr( f_data ) ),
@@ -119,7 +119,7 @@ bool recMediaData::Read( const wxString & dbname )
 
     sql.Format(
         "SELECT title, data, type, privacy, copyright, file"
-        " FROM %q.MediaData WHERE id=" ID ";",
+        " FROM \"%s\".MediaData WHERE id=" ID ";",
         UTF8_( dbname ), f_id
     );
     wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
@@ -261,7 +261,7 @@ wxSQLite3Table recMediaData::GetMediaDataList( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "SELECT id, title, type, privacy, copyright, file FROM %q.MediaData ORDER BY file;", UTF8_( dbname )
+        "SELECT id, title, type, privacy, copyright, file FROM \"%s\".MediaData ORDER BY file;", UTF8_( dbname )
     );
     return s_db->GetTable( sql );
 }

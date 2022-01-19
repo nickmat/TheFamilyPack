@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     24 October 2010
- * Copyright:   Copyright (c) 2010 .. 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -66,7 +66,7 @@ bool recVersion::Read( const wxString& dbname )
 
     sql.Format(
         "SELECT major, minor, revision, test"
-        " FROM %q.Version WHERE id=" ID ";",
+        " FROM \"%s\".Version WHERE id=" ID ";",
         UTF8_( dbname ), f_id
     );
     wxSQLite3Table result = s_db->GetTable( sql );
