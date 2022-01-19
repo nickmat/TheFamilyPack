@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     30th April 2013
- * Copyright:   Copyright (c) 2013..2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2013..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -89,6 +89,11 @@ recSplitStrRet recSplitStr( const wxString& str, idt* id1, idt* id2, wxString* d
             return recSplitStrRet::number;
         }
         *dbname = str.substr( pos + 1 );
+        return recSplitStrRet::text;
+    }
+    if( *id1 != 0 ) {
+        *id2 = 0;
+        *dbname = "main";
         return recSplitStrRet::text;
     }
     return recSplitStrRet::none;
