@@ -188,6 +188,13 @@ public:
     void RefreshHtmPage();
     bool DisplayHomePage();
     wxString GetDisplayText( wxString& name );
+
+private:
+    void CreateFullMenuRW();
+    void CreateMediaMenu();
+    void CreateClosedMenu();
+    void CreateFullToolbar();
+
 };
 
 #define tfpMAX_MENU_ITEMS 50

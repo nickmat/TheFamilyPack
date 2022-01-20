@@ -152,226 +152,10 @@ END_EVENT_TABLE()
     // Set frames Icon
     SetIcon( wxICON( tfp ) );
 
-    // create a menu bar for use with an open database
-    wxMenu* menuFileAttachNew = new wxMenu;
-    menuFileAttachNew->Append( tfpID_FILE_ATTACH_NEW_FULL, _( "&Full" ) );
-    menuFileAttachNew->Append( tfpID_FILE_ATTACH_NEW_MEDIA, _( "&Media Only" ) );
-
-    m_menuFileAttachClose = new wxMenu;
-
-    wxMenu* menuFileAttach = new wxMenu;
-    menuFileAttach->Append( tfpID_FILE_ATTACH_NEW, _( "&New" ), menuFileAttachNew );
-    menuFileAttach->Append( tfpID_FILE_ATTACH_OPEN, _( "&Open" ) );
-    menuFileAttach->Append( tfpID_FILE_ATTACH_CLOSE, _( "&Close" ), m_menuFileAttachClose );
-
-    wxMenu* menuFile = new wxMenu;
-    menuFile->Append( tfpID_NEW_WINDOW, _( "New &Window\tCtrl-W" ) );
-    menuFile->AppendSeparator();
-    menuFile->Append( tfpID_NEW_FILE, _( "&New Database\tCtrl-N" ) );
-    menuFile->Append( tfpID_OPEN_FILE, _( "&Open Database\tCtrl-O" ) );
-    menuFile->Append( tfpID_FILE_ATTACH_MENU, _( "&Attach Database" ), menuFileAttach );
-    menuFile->Append( tfpID_CLOSE_FILE, _( "&Close Database" ) );
-    menuFile->AppendSeparator();
-    menuFile->Append( tfpID_IMPORT_GEDCOM, _( "&Import GEDCOM file" ) );
-    menuFile->AppendSeparator();
-    menuFile->Append( tfpID_EXPORT_GEDCOM, _( "Export &GEDCOM file" ) );
-    menuFile->Append( tfpID_EXPORT_HTML, _( "&Export HTML files" ) );
-    menuFile->AppendSeparator();
-    menuFile->Append( tfpID_PRINT, _( "&Print...\tCtrl-P" ) );
-    menuFile->Append( tfpID_PREVIEW, _( "Pre&view\tCtrl-Shift-P" ) );
-    menuFile->Append( tfpID_PAGE_SETUP, _( "Page Set&up..." ) );
-    menuFile->AppendSeparator();
-    menuFile->Append( wxID_EXIT, _( "E&xit" ) );
-
-    wxMenu* menuEdIndL = new wxMenu;
-    menuEdIndL->Append( tfpID_EDIT_INDIVIDUAL_LEFT, _( "&Edit Individual" ) );
-    menuEdIndL->AppendSeparator();
-    menuEdIndL->Append( tfpID_EDIT_NEW_MOTHER_LEFT, _( "Add new &Mother" ) );
-    menuEdIndL->Append( tfpID_EDIT_NEW_FATHER_LEFT, _( "Add new &Father" ) );
-    menuEdIndL->Append( tfpID_EDIT_NEW_SPOUSE_LEFT, _( "Add new &Spouse" ) );
-    menuEdIndL->AppendSeparator();
-    menuEdIndL->Append( tfpID_EDIT_EXIST_MOTHER_LEFT, _( "Add existing M&other" ) );
-    menuEdIndL->Append( tfpID_EDIT_EXIST_FATHER_LEFT, _( "Add existing F&ather" ) );
-    menuEdIndL->Append( tfpID_EDIT_EXIST_SPOUSE_LEFT, _( "Add existing S&pouse" ) );
-    menuEdIndL->AppendSeparator();
-    menuEdIndL->Append( tfpID_EDIT_DELETE_IND_LEFT, _( "&Delete Individual" ) );
-
-    wxMenu* menuEdIndR = new wxMenu;
-    menuEdIndR->Append( tfpID_EDIT_INDIVIDUAL_RIGHT, _( "&Edit Individual" ) );
-    menuEdIndR->AppendSeparator();
-    menuEdIndR->Append( tfpID_EDIT_NEW_MOTHER_RIGHT, _( "Add new &Mother" ) );
-    menuEdIndR->Append( tfpID_EDIT_NEW_FATHER_RIGHT, _( "Add new &Father" ) );
-    menuEdIndR->Append( tfpID_EDIT_NEW_SPOUSE_RIGHT, _( "Add new &Spouse" ) );
-    menuEdIndR->AppendSeparator();
-    menuEdIndR->Append( tfpID_EDIT_EXIST_MOTHER_RIGHT, _( "Add existing M&other" ) );
-    menuEdIndR->Append( tfpID_EDIT_EXIST_FATHER_RIGHT, _( "Add existing F&ather" ) );
-    menuEdIndR->Append( tfpID_EDIT_EXIST_SPOUSE_RIGHT, _( "Add existing S&pouse" ) );
-    menuEdIndR->AppendSeparator();
-    menuEdIndR->Append( tfpID_EDIT_DELETE_IND_RIGHT, _( "&Delete Individual" ) );
-
-    wxMenu* menuEdFam = new wxMenu;
-    menuEdFam->Append( tfpID_EDIT_FAMILY, _( "&Edit Family" ) );
-    menuEdFam->AppendSeparator();
-    menuEdFam->Append( tfpID_EDIT_NEW_SON, _( "Add new &Son" ) );
-    menuEdFam->Append( tfpID_EDIT_NEW_DAUR, _( "Add new &Daughter" ) );
-    menuEdFam->AppendSeparator();
-    menuEdFam->Append( tfpID_EDIT_EXIST_SON, _( "Add existing S&on" ) );
-    menuEdFam->Append( tfpID_EDIT_EXIST_DAUR, _( "Add existing D&aughter" ) );
-
-    m_menuEditInd = new wxMenu;
-    m_menuEditInd->Append( tfpID_EDIT_IND_LEFT, "? ?..", menuEdIndL );
-    m_menuEditInd->Append( tfpID_EDIT_IND_RIGHT, "? ?..", menuEdIndR );
-    m_menuEditInd->Append( tfpID_EDIT_FAMILY_MENU, _( "F&amily" ), menuEdFam );
-    m_menuEditInd->AppendSeparator();
-    m_menuEditInd->Append( tfpID_EDIT_INDIVIDUAL, _( "Existing &Individual.." ) );
-    m_menuEditInd->AppendSeparator();
-    m_menuEditInd->Append( tfpID_EDIT_IND_NEW_MALE, _( "Add New &Male..." ) );
-    m_menuEditInd->Append( tfpID_EDIT_IND_NEW_FEMALE, _( "Add New &Female..." ) );
-
-    m_menuEditEvent = new wxMenu;
-    m_menuEditEvent->Append( tfpID_EDIT_EVENT_CURRENT, _( "None" ) );
-    m_menuEditEvent->Append( tfpID_EDIT_EVENT_SELECT, _( "&Select Event" ) );
-    m_menuEditEvent->Append( tfpID_EDIT_EVENT_NEW_CON, _( "&New Conclusion Event" ) );
-
-    m_menuEditReference = new wxMenu;
-    m_menuEditReference->Append( tfpID_EDIT_REFERENCE, _( "&Reference..." ) );
-    m_menuEditReference->Append( tfpID_EDIT_NEW_REFERENCE, _( "&New Reference" ) );
-    m_menuEditReference->Append( tfpID_EDIT_REF_TEMPLATE, _( "Reference &Template" ) );
-
-    wxMenu* menuEdCore = new wxMenu;
-    menuEdCore->Append( tfpID_EDIT_EVENT_TYPE, _( "&Event Types..." ) );
-
-    wxMenu* menuEdit = new wxMenu;
-    menuEdit->Append( tfpID_EDIT_IND_MENU, _( "&Individual" ), m_menuEditInd );
-    menuEdit->Append( tfpID_EDIT_EVENT_MENU, _( "&Event" ), m_menuEditEvent );
-    menuEdit->Append( tfpID_EDIT_REFERENCE_MENU, _( "&Reference" ), m_menuEditReference );
-    menuEdit->Append( tfpID_EDIT_GALLERY, _( "&Gallery..." ) );
-    menuEdit->Append( tfpID_EDIT_RESEARCHER, _( "R&esearcher..." ) );
-    menuEdit->Append( tfpID_EDIT_ARCHIVE, _( "Archi&ve..." ) );
-    menuEdit->Append( tfpID_EDIT_CORE_MENU, _( "&Core Data" ), menuEdCore );
-    menuEdit->Append( tfpID_EDIT_ASSOCIATE, _( "&Associate database..." ) );
-
-    wxMenu* menuFind = new wxMenu;
-    menuFind->Append( tfpID_FIND_FAMILY_ID, _( "&Family ID..." ) );
-    menuFind->Append( tfpID_FIND_INDIVIDUAL_ID, _( "&Individual ID..." ) );
-    menuFind->Append( tfpID_FIND_EVENT_ID, _( "&Event ID..." ) );
-
-    wxMenu* menuListMedia = new wxMenu;
-    menuListMedia->Append( tfpID_LIST_GALLERIES, _( "&Galleries\tAlt-G" ) );
-    menuListMedia->Append( tfpID_LIST_MEDIA_LIST, _( "&All Media\tAlt-M" ) );
-    menuListMedia->Append( tfpID_LIST_MEDIA_PAGED_LIST, _( "&Paged Media" ) );
-    menuListMedia->AppendSeparator();
-    menuListMedia->Append( tfpID_LIST_MEDIADATA_LIST, _( "All Media &Data" ) );
-
-    wxMenu* menuListRef = new wxMenu;
-    menuListRef->Append( tfpID_LIST_ALL_REFERENCES, _( "&All References\tAlt-R" ) );
-    menuListRef->Append( tfpID_LIST_PAGED_REFERENCES, _( "&Paged References" ) );
-
-    wxMenu* menuListEvent = new wxMenu;
-    menuListEvent->Append( tfpID_LIST_ALL_EVENTS, _( "&All Events\tAlt-E" ) );
-    menuListEvent->Append( tfpID_LIST_PAGED_EVENTS, _( "&Paged Events" ) );
-    menuListEvent->Append( tfpID_LIST_SELECTED_EVENTS, _( "&Selected Events..." ) );
-    menuListEvent->AppendSeparator();
-    menuListEvent->Append( tfpID_LIST_ALL_EVENTUMS, _( "All Even&tas" ) );
-    menuListEvent->Append( tfpID_LIST_PAGED_EVENTUMS, _( "Pa&ged Eventas" ) );
-    menuListEvent->Append( tfpID_LIST_SELECTED_EVENTUMS, _( "Se&lected Eventas..." ) );
-
-    wxMenu* menuList = new wxMenu;
-    menuList->Append( tfpID_LIST_SURNAME_INDEX, _( "&Surname Index\tAlt-S" ) );
-    menuList->Append( tfpID_LIST_PERSONAS, _( "&Persona Index\tAlt-P" ) );
-    menuList->Append( tfpID_LIST_INDIVIDUALS, _( "&Individuals\tAlt-I" ) );
-    menuList->Append( tfpID_LIST_MEDIA_MENU, _( "&Media" ), menuListMedia );
-    menuList->Append( tfpID_LIST_REFERENCE_MENU, _( "&References" ), menuListRef );
-    menuList->Append( tfpID_LIST_EVENT_MENU, _( "&Events" ), menuListEvent );
-    menuList->Append( tfpID_LIST_RESEARCHERS, _( "Resear&chers\tAlt-C" ) );
-    menuList->Append( tfpID_LIST_ARCHIVES, _( "&Archives\tAlt-A" ) );
-
-    wxMenu* menuChart = new wxMenu;
-    menuChart->Append( tfpID_PED_CHART, _( "&Pedigree..." ) );
-    menuChart->Append( tfpID_DESC_CHART, _( "&Descendant..." ) );
-
-    wxMenu* menuTools = new wxMenu;
-    menuTools->Append( tfpID_SYSTEM_SETTING, _( "&System Options..." ) );
-    menuTools->Append( tfpID_USER_SETTING, _( "&User Options..." ) );
-    menuTools->Append( tfpID_TOOL_SYSTEM_CHECK, _( "Systems &Check" ) );
-
-    wxMenu* menuHelp = new wxMenu;
-    menuHelp->Append( tfpID_HELP_WEB_HOME, _( "The Family Pack &Website" ) );
-    menuHelp->Append( tfpID_HELP_ABOUT_DB, _( "About &Database" ) );
-    menuHelp->Append( wxID_ABOUT, _( "&About \"The Family Pack\"" ) );
-
-    m_menuOpenDB = new wxMenuBar;
-    m_menuOpenDB->Append( menuFile, _( "&File" ) );
-    m_menuOpenDB->Append( menuEdit, _( "&Edit" ) );
-    m_menuOpenDB->Append( menuFind, _( "F&ind" ) );
-    m_menuOpenDB->Append( menuList, _( "&List" ) );
-    m_menuOpenDB->Append( menuChart, _( "&Chart" ) );
-    m_menuOpenDB->Append( menuTools, _( "&Tools" ) );
-    m_menuOpenDB->Append( menuHelp, _( "&Help" ) );
-
-    // Menu bar for use with MediaData database
-    wxMenu* menuMediaFile = new wxMenu;
-    menuMediaFile->Append( tfpID_NEW_FILE, _( "&New File\tCtrl-N" ) );
-    menuMediaFile->Append( tfpID_OPEN_FILE, _( "&Open File\tCtrl-O" ) );
-    menuMediaFile->AppendSeparator();
-    menuMediaFile->Append( tfpID_IMPORT_GEDCOM, _( "&Import GEDCOM file" ) );
-    menuMediaFile->AppendSeparator();
-    menuMediaFile->Append( wxID_EXIT, _( "E&xit" ) );
-
-    wxMenu* menuMediaHelp = new wxMenu;
-    menuMediaHelp->Append( tfpID_HELP_WEB_HOME, _( "The Family Pack &Website" ) );
-    menuMediaHelp->Append( tfpID_HELP_ABOUT_DB, _( "About &Database" ) );
-    menuMediaHelp->Append( wxID_ABOUT, _( "&About \"The Family Pack\"" ) );
-
-    m_menuMediaDB = new wxMenuBar;
-    m_menuMediaDB->Append( menuMediaFile, _( "&File" ) );
-    m_menuMediaDB->Append( menuMediaHelp, _( "&Help" ) );
-    SetMenuBar( m_menuMediaDB );
-
-    // Menu bar for use with closed database
-    wxMenu* menuInitFile = new wxMenu;
-    menuInitFile->Append( tfpID_NEW_FILE, _( "&New File\tCtrl-N" ) );
-    menuInitFile->Append( tfpID_OPEN_FILE, _( "&Open File\tCtrl-O" ) );
-    menuInitFile->AppendSeparator();
-    menuInitFile->Append( tfpID_IMPORT_GEDCOM, _( "&Import GEDCOM file" ) );
-    menuInitFile->AppendSeparator();
-    menuInitFile->Append( wxID_EXIT, _( "E&xit" ) );
-
-    wxMenu* menuInitHelp = new wxMenu;
-    menuInitHelp->Append( tfpID_HELP_WEB_HOME, _( "The Family Pack &Website" ) );
-    menuInitHelp->Append( wxID_ABOUT, _( "&About \"The Family Pack\"" ) );
-
-    m_menuClosedDB = new wxMenuBar;
-    m_menuClosedDB->Append( menuInitFile, _( "&File" ) );
-    m_menuClosedDB->Append( menuInitHelp, _( "&Help" ) );
-    SetMenuBar( m_menuClosedDB );
-
-    // Add toolbar
-    m_toolbar = CreateToolBar();
-    m_showpage = new wxTextCtrl( m_toolbar, tfpID_SHOW_PAGE, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER );
-    wxBitmap bmpForward( forward_xpm );
-    wxBitmap bmpBack( back_xpm );
-    wxBitmap bmpFind( find_xpm );
-    wxBitmap bmpEvents( event_xpm );
-    wxBitmap bmpRefs( ref_xpm );
-    wxBitmap bmpGalleries( gallery_xpm );
-    wxBitmap bmpHome( home_xpm );
-    m_toolbar->AddTool( tfpID_FIND_BACK, _( "Back" ), bmpBack );
-    m_toolbar->AddTool( tfpID_FIND_FORWARD, _( "Forward" ), bmpForward );
-    m_toolbar->AddSeparator();
-    m_toolbar->AddTool( tfpID_LIST_SURNAME_INDEX, _( "Index" ), bmpFind );
-    m_toolbar->AddTool( tfpID_LIST_PAGED_EVENTS, _( "Events" ), bmpEvents );
-    m_toolbar->AddTool( tfpID_LIST_PAGED_REFERENCES, _( "References" ), bmpRefs );
-    m_toolbar->AddTool( tfpID_LIST_GALLERIES, _( "Galleries" ), bmpGalleries );
-    m_toolbar->AddSeparator();
-    m_toolbar->AddTool( tfpID_GOTO_HOME, _( "Home" ), bmpHome );
-    m_toolbar->AddSeparator();
-    m_toolbar->AddControl( m_showpage );
-    m_toolbar->AddSeparator();
-    m_toolbar->AddTool( tfpID_PAGE_ITEM_EDIT, _( "Edit" ), *imgEditBitmap );
-    m_toolbar->Realize();
-    SetToolBar( m_toolbar );
-
+    CreateFullMenuRW();
+    CreateMediaMenu();
+    CreateClosedMenu();
+    CreateFullToolbar();
     m_statusbar = CreateStatusBar();
 
     m_webPageAllow = false;
@@ -2268,6 +2052,236 @@ wxString TfpFrame::GetDisplayText( wxString& name )
 
     return tfpWrErrorPage( name );
 }
+
+void TfpFrame::CreateFullMenuRW()
+{
+    // create a menu bar for use with an open database
+    wxMenu* menuFileAttachNew = new wxMenu;
+    menuFileAttachNew->Append( tfpID_FILE_ATTACH_NEW_FULL, _( "&Full" ) );
+    menuFileAttachNew->Append( tfpID_FILE_ATTACH_NEW_MEDIA, _( "&Media Only" ) );
+
+    m_menuFileAttachClose = new wxMenu;
+
+    wxMenu* menuFileAttach = new wxMenu;
+    menuFileAttach->Append( tfpID_FILE_ATTACH_NEW, _( "&New" ), menuFileAttachNew );
+    menuFileAttach->Append( tfpID_FILE_ATTACH_OPEN, _( "&Open" ) );
+    menuFileAttach->Append( tfpID_FILE_ATTACH_CLOSE, _( "&Close" ), m_menuFileAttachClose );
+
+    wxMenu* menuFile = new wxMenu;
+    menuFile->Append( tfpID_NEW_WINDOW, _( "New &Window\tCtrl-W" ) );
+    menuFile->AppendSeparator();
+    menuFile->Append( tfpID_NEW_FILE, _( "&New Database\tCtrl-N" ) );
+    menuFile->Append( tfpID_OPEN_FILE, _( "&Open Database\tCtrl-O" ) );
+    menuFile->Append( tfpID_FILE_ATTACH_MENU, _( "&Attach Database" ), menuFileAttach );
+    menuFile->Append( tfpID_CLOSE_FILE, _( "&Close Database" ) );
+    menuFile->AppendSeparator();
+    menuFile->Append( tfpID_IMPORT_GEDCOM, _( "&Import GEDCOM file" ) );
+    menuFile->AppendSeparator();
+    menuFile->Append( tfpID_EXPORT_GEDCOM, _( "Export &GEDCOM file" ) );
+    menuFile->Append( tfpID_EXPORT_HTML, _( "&Export HTML files" ) );
+    menuFile->AppendSeparator();
+    menuFile->Append( tfpID_PRINT, _( "&Print...\tCtrl-P" ) );
+    menuFile->Append( tfpID_PREVIEW, _( "Pre&view\tCtrl-Shift-P" ) );
+    menuFile->Append( tfpID_PAGE_SETUP, _( "Page Set&up..." ) );
+    menuFile->AppendSeparator();
+    menuFile->Append( wxID_EXIT, _( "E&xit" ) );
+
+    wxMenu* menuEdIndL = new wxMenu;
+    menuEdIndL->Append( tfpID_EDIT_INDIVIDUAL_LEFT, _( "&Edit Individual" ) );
+    menuEdIndL->AppendSeparator();
+    menuEdIndL->Append( tfpID_EDIT_NEW_MOTHER_LEFT, _( "Add new &Mother" ) );
+    menuEdIndL->Append( tfpID_EDIT_NEW_FATHER_LEFT, _( "Add new &Father" ) );
+    menuEdIndL->Append( tfpID_EDIT_NEW_SPOUSE_LEFT, _( "Add new &Spouse" ) );
+    menuEdIndL->AppendSeparator();
+    menuEdIndL->Append( tfpID_EDIT_EXIST_MOTHER_LEFT, _( "Add existing M&other" ) );
+    menuEdIndL->Append( tfpID_EDIT_EXIST_FATHER_LEFT, _( "Add existing F&ather" ) );
+    menuEdIndL->Append( tfpID_EDIT_EXIST_SPOUSE_LEFT, _( "Add existing S&pouse" ) );
+    menuEdIndL->AppendSeparator();
+    menuEdIndL->Append( tfpID_EDIT_DELETE_IND_LEFT, _( "&Delete Individual" ) );
+
+    wxMenu* menuEdIndR = new wxMenu;
+    menuEdIndR->Append( tfpID_EDIT_INDIVIDUAL_RIGHT, _( "&Edit Individual" ) );
+    menuEdIndR->AppendSeparator();
+    menuEdIndR->Append( tfpID_EDIT_NEW_MOTHER_RIGHT, _( "Add new &Mother" ) );
+    menuEdIndR->Append( tfpID_EDIT_NEW_FATHER_RIGHT, _( "Add new &Father" ) );
+    menuEdIndR->Append( tfpID_EDIT_NEW_SPOUSE_RIGHT, _( "Add new &Spouse" ) );
+    menuEdIndR->AppendSeparator();
+    menuEdIndR->Append( tfpID_EDIT_EXIST_MOTHER_RIGHT, _( "Add existing M&other" ) );
+    menuEdIndR->Append( tfpID_EDIT_EXIST_FATHER_RIGHT, _( "Add existing F&ather" ) );
+    menuEdIndR->Append( tfpID_EDIT_EXIST_SPOUSE_RIGHT, _( "Add existing S&pouse" ) );
+    menuEdIndR->AppendSeparator();
+    menuEdIndR->Append( tfpID_EDIT_DELETE_IND_RIGHT, _( "&Delete Individual" ) );
+
+    wxMenu* menuEdFam = new wxMenu;
+    menuEdFam->Append( tfpID_EDIT_FAMILY, _( "&Edit Family" ) );
+    menuEdFam->AppendSeparator();
+    menuEdFam->Append( tfpID_EDIT_NEW_SON, _( "Add new &Son" ) );
+    menuEdFam->Append( tfpID_EDIT_NEW_DAUR, _( "Add new &Daughter" ) );
+    menuEdFam->AppendSeparator();
+    menuEdFam->Append( tfpID_EDIT_EXIST_SON, _( "Add existing S&on" ) );
+    menuEdFam->Append( tfpID_EDIT_EXIST_DAUR, _( "Add existing D&aughter" ) );
+
+    m_menuEditInd = new wxMenu;
+    m_menuEditInd->Append( tfpID_EDIT_IND_LEFT, "? ?..", menuEdIndL );
+    m_menuEditInd->Append( tfpID_EDIT_IND_RIGHT, "? ?..", menuEdIndR );
+    m_menuEditInd->Append( tfpID_EDIT_FAMILY_MENU, _( "F&amily" ), menuEdFam );
+    m_menuEditInd->AppendSeparator();
+    m_menuEditInd->Append( tfpID_EDIT_INDIVIDUAL, _( "Existing &Individual.." ) );
+    m_menuEditInd->AppendSeparator();
+    m_menuEditInd->Append( tfpID_EDIT_IND_NEW_MALE, _( "Add New &Male..." ) );
+    m_menuEditInd->Append( tfpID_EDIT_IND_NEW_FEMALE, _( "Add New &Female..." ) );
+
+    m_menuEditEvent = new wxMenu;
+    m_menuEditEvent->Append( tfpID_EDIT_EVENT_CURRENT, _( "None" ) );
+    m_menuEditEvent->Append( tfpID_EDIT_EVENT_SELECT, _( "&Select Event" ) );
+    m_menuEditEvent->Append( tfpID_EDIT_EVENT_NEW_CON, _( "&New Conclusion Event" ) );
+
+    m_menuEditReference = new wxMenu;
+    m_menuEditReference->Append( tfpID_EDIT_REFERENCE, _( "&Reference..." ) );
+    m_menuEditReference->Append( tfpID_EDIT_NEW_REFERENCE, _( "&New Reference" ) );
+    m_menuEditReference->Append( tfpID_EDIT_REF_TEMPLATE, _( "Reference &Template" ) );
+
+    wxMenu* menuEdCore = new wxMenu;
+    menuEdCore->Append( tfpID_EDIT_EVENT_TYPE, _( "&Event Types..." ) );
+
+    wxMenu* menuEdit = new wxMenu;
+    menuEdit->Append( tfpID_EDIT_IND_MENU, _( "&Individual" ), m_menuEditInd );
+    menuEdit->Append( tfpID_EDIT_EVENT_MENU, _( "&Event" ), m_menuEditEvent );
+    menuEdit->Append( tfpID_EDIT_REFERENCE_MENU, _( "&Reference" ), m_menuEditReference );
+    menuEdit->Append( tfpID_EDIT_GALLERY, _( "&Gallery..." ) );
+    menuEdit->Append( tfpID_EDIT_RESEARCHER, _( "R&esearcher..." ) );
+    menuEdit->Append( tfpID_EDIT_ARCHIVE, _( "Archi&ve..." ) );
+    menuEdit->Append( tfpID_EDIT_CORE_MENU, _( "&Core Data" ), menuEdCore );
+    menuEdit->Append( tfpID_EDIT_ASSOCIATE, _( "&Associate database..." ) );
+
+    wxMenu* menuFind = new wxMenu;
+    menuFind->Append( tfpID_FIND_FAMILY_ID, _( "&Family ID..." ) );
+    menuFind->Append( tfpID_FIND_INDIVIDUAL_ID, _( "&Individual ID..." ) );
+    menuFind->Append( tfpID_FIND_EVENT_ID, _( "&Event ID..." ) );
+
+    wxMenu* menuListMedia = new wxMenu;
+    menuListMedia->Append( tfpID_LIST_GALLERIES, _( "&Galleries\tAlt-G" ) );
+    menuListMedia->Append( tfpID_LIST_MEDIA_LIST, _( "&All Media\tAlt-M" ) );
+    menuListMedia->Append( tfpID_LIST_MEDIA_PAGED_LIST, _( "&Paged Media" ) );
+    menuListMedia->AppendSeparator();
+    menuListMedia->Append( tfpID_LIST_MEDIADATA_LIST, _( "All Media &Data" ) );
+
+    wxMenu* menuListRef = new wxMenu;
+    menuListRef->Append( tfpID_LIST_ALL_REFERENCES, _( "&All References\tAlt-R" ) );
+    menuListRef->Append( tfpID_LIST_PAGED_REFERENCES, _( "&Paged References" ) );
+
+    wxMenu* menuListEvent = new wxMenu;
+    menuListEvent->Append( tfpID_LIST_ALL_EVENTS, _( "&All Events\tAlt-E" ) );
+    menuListEvent->Append( tfpID_LIST_PAGED_EVENTS, _( "&Paged Events" ) );
+    menuListEvent->Append( tfpID_LIST_SELECTED_EVENTS, _( "&Selected Events..." ) );
+    menuListEvent->AppendSeparator();
+    menuListEvent->Append( tfpID_LIST_ALL_EVENTUMS, _( "All Even&tas" ) );
+    menuListEvent->Append( tfpID_LIST_PAGED_EVENTUMS, _( "Pa&ged Eventas" ) );
+    menuListEvent->Append( tfpID_LIST_SELECTED_EVENTUMS, _( "Se&lected Eventas..." ) );
+
+    wxMenu* menuList = new wxMenu;
+    menuList->Append( tfpID_LIST_SURNAME_INDEX, _( "&Surname Index\tAlt-S" ) );
+    menuList->Append( tfpID_LIST_PERSONAS, _( "&Persona Index\tAlt-P" ) );
+    menuList->Append( tfpID_LIST_INDIVIDUALS, _( "&Individuals\tAlt-I" ) );
+    menuList->Append( tfpID_LIST_MEDIA_MENU, _( "&Media" ), menuListMedia );
+    menuList->Append( tfpID_LIST_REFERENCE_MENU, _( "&References" ), menuListRef );
+    menuList->Append( tfpID_LIST_EVENT_MENU, _( "&Events" ), menuListEvent );
+    menuList->Append( tfpID_LIST_RESEARCHERS, _( "Resear&chers\tAlt-C" ) );
+    menuList->Append( tfpID_LIST_ARCHIVES, _( "&Archives\tAlt-A" ) );
+
+    wxMenu* menuChart = new wxMenu;
+    menuChart->Append( tfpID_PED_CHART, _( "&Pedigree..." ) );
+    menuChart->Append( tfpID_DESC_CHART, _( "&Descendant..." ) );
+
+    wxMenu* menuTools = new wxMenu;
+    menuTools->Append( tfpID_SYSTEM_SETTING, _( "&System Options..." ) );
+    menuTools->Append( tfpID_USER_SETTING, _( "&User Options..." ) );
+    menuTools->Append( tfpID_TOOL_SYSTEM_CHECK, _( "Systems &Check" ) );
+
+    wxMenu* menuHelp = new wxMenu;
+    menuHelp->Append( tfpID_HELP_WEB_HOME, _( "The Family Pack &Website" ) );
+    menuHelp->Append( tfpID_HELP_ABOUT_DB, _( "About &Database" ) );
+    menuHelp->Append( wxID_ABOUT, _( "&About \"The Family Pack\"" ) );
+
+    m_menuOpenDB = new wxMenuBar;
+    m_menuOpenDB->Append( menuFile, _( "&File" ) );
+    m_menuOpenDB->Append( menuEdit, _( "&Edit" ) );
+    m_menuOpenDB->Append( menuFind, _( "F&ind" ) );
+    m_menuOpenDB->Append( menuList, _( "&List" ) );
+    m_menuOpenDB->Append( menuChart, _( "&Chart" ) );
+    m_menuOpenDB->Append( menuTools, _( "&Tools" ) );
+    m_menuOpenDB->Append( menuHelp, _( "&Help" ) );
+}
+
+void TfpFrame::CreateMediaMenu()
+{
+    // Menu bar for use with MediaData database
+    wxMenu* menuMediaFile = new wxMenu;
+    menuMediaFile->Append( tfpID_NEW_FILE, _( "&New File\tCtrl-N" ) );
+    menuMediaFile->Append( tfpID_OPEN_FILE, _( "&Open File\tCtrl-O" ) );
+    menuMediaFile->AppendSeparator();
+    menuMediaFile->Append( tfpID_IMPORT_GEDCOM, _( "&Import GEDCOM file" ) );
+    menuMediaFile->AppendSeparator();
+    menuMediaFile->Append( wxID_EXIT, _( "E&xit" ) );
+
+    wxMenu* menuMediaHelp = new wxMenu;
+    menuMediaHelp->Append( tfpID_HELP_WEB_HOME, _( "The Family Pack &Website" ) );
+    menuMediaHelp->Append( tfpID_HELP_ABOUT_DB, _( "About &Database" ) );
+    menuMediaHelp->Append( wxID_ABOUT, _( "&About \"The Family Pack\"" ) );
+
+    m_menuMediaDB = new wxMenuBar;
+    m_menuMediaDB->Append( menuMediaFile, _( "&File" ) );
+    m_menuMediaDB->Append( menuMediaHelp, _( "&Help" ) );
+}
+
+void TfpFrame::CreateClosedMenu()
+{
+    // Menu bar for use with closed database
+    wxMenu* menuInitFile = new wxMenu;
+    menuInitFile->Append( tfpID_NEW_FILE, _( "&New File\tCtrl-N" ) );
+    menuInitFile->Append( tfpID_OPEN_FILE, _( "&Open File\tCtrl-O" ) );
+    menuInitFile->AppendSeparator();
+    menuInitFile->Append( tfpID_IMPORT_GEDCOM, _( "&Import GEDCOM file" ) );
+    menuInitFile->AppendSeparator();
+    menuInitFile->Append( wxID_EXIT, _( "E&xit" ) );
+
+    wxMenu* menuInitHelp = new wxMenu;
+    menuInitHelp->Append( tfpID_HELP_WEB_HOME, _( "The Family Pack &Website" ) );
+    menuInitHelp->Append( wxID_ABOUT, _( "&About \"The Family Pack\"" ) );
+
+    m_menuClosedDB = new wxMenuBar;
+    m_menuClosedDB->Append( menuInitFile, _( "&File" ) );
+    m_menuClosedDB->Append( menuInitHelp, _( "&Help" ) );
+}
+
+void TfpFrame::CreateFullToolbar()
+{
+    m_toolbar = CreateToolBar();
+    m_showpage = new wxTextCtrl( m_toolbar, tfpID_SHOW_PAGE, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER );
+    wxBitmap bmpForward( forward_xpm );
+    wxBitmap bmpBack( back_xpm );
+    wxBitmap bmpFind( find_xpm );
+    wxBitmap bmpEvents( event_xpm );
+    wxBitmap bmpRefs( ref_xpm );
+    wxBitmap bmpGalleries( gallery_xpm );
+    wxBitmap bmpHome( home_xpm );
+    m_toolbar->AddTool( tfpID_FIND_BACK, _( "Back" ), bmpBack );
+    m_toolbar->AddTool( tfpID_FIND_FORWARD, _( "Forward" ), bmpForward );
+    m_toolbar->AddSeparator();
+    m_toolbar->AddTool( tfpID_LIST_SURNAME_INDEX, _( "Index" ), bmpFind );
+    m_toolbar->AddTool( tfpID_LIST_PAGED_EVENTS, _( "Events" ), bmpEvents );
+    m_toolbar->AddTool( tfpID_LIST_PAGED_REFERENCES, _( "References" ), bmpRefs );
+    m_toolbar->AddTool( tfpID_LIST_GALLERIES, _( "Galleries" ), bmpGalleries );
+    m_toolbar->AddSeparator();
+    m_toolbar->AddTool( tfpID_GOTO_HOME, _( "Home" ), bmpHome );
+    m_toolbar->AddSeparator();
+    m_toolbar->AddControl( m_showpage );
+    m_toolbar->AddSeparator();
+    m_toolbar->AddTool( tfpID_PAGE_ITEM_EDIT, _( "Edit" ), *imgEditBitmap );
+    m_toolbar->Realize();
+    SetToolBar( m_toolbar );
+}
+
 
 // End of tfpFrame.cpp file
 
