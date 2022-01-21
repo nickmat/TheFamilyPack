@@ -102,11 +102,6 @@ wxString tfpWrErrorPage( const wxString& name )
     );
 }
 
-wxString tfpWrTailDiv()
-{
-    return "</div>\n" + tfpWrTail();
-}
-
 wxString tfpWritePagedIndexMenu( idt begCnt, size_t maxsize, const wxString prefix )
 {
     int maxrows = tfpWR_PAGE_MAX;

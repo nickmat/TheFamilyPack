@@ -35,8 +35,7 @@ class recSelSetEvent;
 extern wxString tfpWrHead( const wxString& title, const wxString& css = wxEmptyString );
 extern wxString tfpWrTail();
 extern wxString tfpWrHeadTfp( const wxString& title, const wxString& css = wxEmptyString );
-extern wxString tfpWrTailDiv();
-inline wxString tfpWrTailTfp() { return tfpWrTailDiv(); }
+inline wxString tfpWrTailTfp() { return "</div>\n" + tfpWrTail(); }
 extern wxString tfpWrHeadInfo( const wxString& title, const wxString& css = wxEmptyString );
 inline wxString tfpWrTailInfo() { return tfpWrTail(); }
 extern wxString tfpWrErrorPage( const wxString& name );
