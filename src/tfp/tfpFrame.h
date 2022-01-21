@@ -187,7 +187,7 @@ public:
     bool DisplayReferenceLinkPage( const wxString& name );
     void RefreshHtmPage();
     bool DisplayHomePage();
-    wxString GetDisplayText( wxString& name );
+    wxString GetDisplayText( const wxString& pname );
 
 private:
     void CreateFullMenuRW();

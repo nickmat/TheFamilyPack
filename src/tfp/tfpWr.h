@@ -39,6 +39,7 @@ inline wxString tfpWrTailTfp() { return "</div>\n" + tfpWrTail(); }
 extern wxString tfpWrHeadInfo( const wxString& title, const wxString& css = wxEmptyString );
 inline wxString tfpWrTailInfo() { return tfpWrTail(); }
 extern wxString tfpWrErrorPage( const wxString& name );
+extern wxString tfpWrStartPage();
 #define tfpWR_PAGE_MAX 100
 extern wxString tfpWritePagedIndexMenu( idt begCnt, size_t maxsize, const wxString prefix );
 extern wxString tfpGetIndSexClass( idt indID, Sex pref = Sex::unknown );

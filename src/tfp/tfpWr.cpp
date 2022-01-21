@@ -36,6 +36,8 @@
 
 #include "tfpWr.h"
 
+#include "tfpVersion.h"
+
 #include <rec/recAssociate.h>
 #include <rec/recContact.h>
 #include <rec/recIndividual.h>
@@ -100,6 +102,43 @@ wxString tfpWrErrorPage( const wxString& name )
         "<body><h1>Error</h1><p>Page [%s] not understood.</p></body>\n</html>",
         name
     );
+}
+
+wxString tfpWrStartPage()
+{
+    wxString htm =
+        tfpWrHead( "Startup", "tfp") <<
+        "<table class='logo'>\n"
+        "<tr>\n"
+        "<td>\n"
+        "<img src='memory:logo6.png'>\n"
+        "</td>\n"
+        "<td class='title'>\n"
+        "<font size='+4'><b>The Family Pack</b></font>\n"
+        "</td>\n"
+        "</tr>\n"
+        "</table>\n"
+        "<div class='pagesel control'>\n"
+        "<p>\n"
+        "<br><br><b>Actions:-</b><br>\n"
+        "<a href='tfpc:Open'>Open an existing Database</a>\n"
+        "<br>\n"
+        "<a href='tfpc:New'>Create a new Database</a>\n"
+        "<br>\n"
+        "<a href='tfpc:Import'>Import a GEDCOM file</a>\n"
+        "</p>\n"
+        "</div>\n"
+        "<p>\n"
+        "<a class='web' href='http://thefamilypack.org'>http://thefamilypack.org</a><br>\n"
+        "<br>\n"
+        "<b>TFP</b> " << tfpHtmVersion << "\n"
+#ifdef _DEBUG
+        "<br><br><a href='tfpc:Test'>Test html page</a>\n"
+#endif
+        "</p>\n"
+        << tfpWrTail()
+    ;
+    return htm;
 }
 
 wxString tfpWritePagedIndexMenu( idt begCnt, size_t maxsize, const wxString prefix )

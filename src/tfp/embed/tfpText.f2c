@@ -4,7 +4,7 @@
  * Purpose:     Screen texts collected from files. Format file for file2cpp.
  * Author:      Nick Matthews
  * Created:     26 September 2010
- * Copyright:   Copyright (c) 2010 ~ 2019, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Website:     http://thefamilypack.org
  * Licence:     GNU GPLv3
  *
@@ -24,8 +24,6 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 */
-
-static const char s_startup_htm[] = @(lrc.xml)"startup.htm";
 
 static const char s_tfp_css[] = @(lrc.c)"tfp.css";
 static const char s_info_css[] = @(lrc.c)"info.css";

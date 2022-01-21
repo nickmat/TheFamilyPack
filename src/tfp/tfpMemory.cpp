@@ -4,7 +4,7 @@
  * Purpose:     Load image and text files into memory filesystem.
  * Author:      Nick Matthews
  * Created:     26 September 2010
- * Copyright:   Copyright (c) 2010 ~ 2019, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Website:     http://thefamilypack.org
  * Licence:     GNU GPLv3
  *
@@ -39,7 +39,6 @@
 #include <wx/fs_mem.h>
 
 #include "tfpMemory.h"
-#include "tfpVersion.h"
 
 #include "img/logo6.xpm"
 #include "tfpText.h"
@@ -92,15 +91,6 @@ void tfpLoadMemoryFiles()
     wxFileSystem::AddHandler( new wxMemoryFSHandler );
     wxBitmap logo6Bitmap( logo6_xpm );
     wxMemoryFSHandler::AddFile( "logo6.png", logo6Bitmap, wxBITMAP_TYPE_PNG );
-#ifdef _DEBUG
-    wxString v;
-    v << tfpHtmVersion << "<br><br><a href='tfpc:Test'>Test html page</a>";
-    wxString startupText( wxString::Format( s_startup_htm, v ) );
-#else
-    wxString startupText( wxString::Format( s_startup_htm, tfpHtmVersion ) );
-#endif
-
-    wxMemoryFSHandler::AddFile( "startup.htm", startupText );
     wxMemoryFSHandler::AddFile( "tfp.css", s_tfp_css );
     wxMemoryFSHandler::AddFile( "tab.css", s_tab_css );
     wxMemoryFSHandler::AddFile( "info.css", s_info_css );

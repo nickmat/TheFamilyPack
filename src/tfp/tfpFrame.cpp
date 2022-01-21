@@ -168,7 +168,7 @@ END_EVENT_TABLE()
         OpenFilename( dbfname );
     }
     if( !recDb::IsOpen() ) {
-        m_browser->LoadURL( "memory:startup.htm" );
+        m_browser->SetPage( GetDisplayText( "start" ), "" );
     }
 }
 
@@ -1291,7 +1291,7 @@ bool TfpFrame::OpenFilename( const wxString& dbfname )
             SetMediaDatabase( dbfname );
             break;
         default:
-            m_browser->LoadURL( "memory:startup.htm" );
+            m_browser->SetPage( GetDisplayText( "start" ), "" );
             wxMessageBox( _( "Problem opening database!" ), caption );
             CloseFile();
             return false;
@@ -1311,7 +1311,7 @@ void TfpFrame::CloseFile()
         recDb::CloseDb();
     }
     SetNoDatabase();
-    m_browser->LoadURL( "memory:startup.htm" );
+    m_browser->SetPage( GetDisplayText( "start" ), "" );
     m_changeState = recDb::GetChange();
 }
 
@@ -1903,9 +1903,9 @@ bool TfpFrame::DisplayHomePage()
     return DisplayHtmPage( page );
 }
 
-wxString TfpFrame::GetDisplayText( wxString& name )
+wxString TfpFrame::GetDisplayText( const wxString& pname )
 {
-    wxString pagename( name );
+    wxString name( pname );
     name.MakeUpper();
     wxASSERT( name.size() > 0 );
     wxLongLong_t num, num1 = 0, num2 = 0;
@@ -1920,8 +1920,11 @@ wxString TfpFrame::GetDisplayText( wxString& name )
     }
 
     try {
-        if ( name.compare( "ABOUT" ) == 0 ) {
+        if( name.compare( "ABOUT" ) == 0 ) {
             return tfpWriteAbout();
+        }
+        if( name.compare( "START" ) == 0 ) {
+            return tfpWrStartPage();
         }
         if( name.compare( "AR" ) == 0 ) {
             return tfpWriteArchiveIndex();
@@ -2014,11 +2017,11 @@ wxString TfpFrame::GetDisplayText( wxString& name )
             return tfpWriteIndividualList();
         }
         if ( name.compare( 0, 3, "NI+" ) == 0 && !success2 ) {
-            name = name.Mid( 0, 3 ) + pagename.Mid( 3 ); // Don't capitalize the name part.
+            name = name.Mid( 0, 3 ) + pname.Mid( 3 ); // Don't capitalize the name part.
             return tfpWriteNameList( name.Mid( 3 ), recSG_Individual );
         }
         if ( name.compare( 0, 3, "NP+" ) == 0 && !success2 ) {
-            name = name.Mid( 0, 3 ) + pagename.Mid( 3 ); // Don't capitalize the name part.
+            name = name.Mid( 0, 3 ) + pname.Mid( 3 ); // Don't capitalize the name part.
             return tfpWriteNameList( name.Mid( 3 ), recSG_Persona );
         }
         if ( name.compare( 0, 1, "N" ) == 0 && success ) {

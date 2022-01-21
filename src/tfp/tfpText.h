@@ -6,7 +6,7 @@
  * Purpose:     Screen texts collected from files. Format file for file2cpp.
  * Author:      Nick Matthews
  * Created:     26 September 2010
- * Copyright:   Copyright (c) 2010 ~ 2019, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Website:     http://thefamilypack.org
  * Licence:     GNU GPLv3
  *
@@ -26,43 +26,6 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 */
-
-static const char s_startup_htm[] =  /* startup.htm */
- "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n"
- "<html>\n"
- "<head>\n"
- "<title>The Family Pack StartUp</title>\n"
- "<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>\n"
- "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>\n"
- "</head>\n"
- "<body>\n"
- "<table class='logo'>\n"
- "<tr>\n"
- "<td>\n"
- "<img src='memory:logo6.png'>\n"
- "</td>\n"
- "<td class='title'>\n"
- "<font size='+4'><b>The Family Pack</b></font>\n"
- "</td>\n"
- "</tr>\n"
- "</table>\n"
- "<div class='pagesel control'>\n"
- "<p>\n"
- "<br><br><b>Actions:-</b><br>\n"
- "<a href='tfpc:Open'>Open an existing Database</a>\n"
- "<br>\n"
- "<a href='tfpc:New'>Create a new Database</a>\n"
- "<br>\n"
- "<a href='tfpc:Import'>Import a GEDCOM file</a>\n"
- "</p>\n"
- "</div>\n"
- "<p>\n"
- "<a class='web' href='http://thefamilypack.org'>http://thefamilypack.org</a><br>\n"
- "<br>\n"
- "<b>TFP</b> %s\n"
- "</p>\n"
- "</body>\n"
- "</html>\n";
 
 static const char s_tfp_css[] =  /* tfp.css */
  "body {\n"
