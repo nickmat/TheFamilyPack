@@ -1,12 +1,11 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        dlgNote.cpp
+ * Name:        src/tfp/tfpNote.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Display html text as a note.
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     21 January 2012
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2012 ~ 2019, Nick Matthews.
+ * Copyright:   Copyright (c) 2012..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -36,14 +35,16 @@
 #include "wx/wx.h"
 #endif
 
-#include <wx/webview.h>
-#include <wx/webviewfshandler.h>
+#include "tfpNote.h"
+
+#include "tfpFrame.h"
+#include "tfpWr.h"
 
 #include <rec/recDatabase.h>
 #include <rg/rgDialogs.h>
-#include "tfpFrame.h"
-#include "tfpNote.h"
-#include "tfpWr.h"
+
+#include <wx/webview.h>
+#include <wx/webviewfshandler.h>
 
 
 dlgNote::dlgNote( TfpFrame* parent, const wxString& name )
