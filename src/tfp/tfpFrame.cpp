@@ -167,9 +167,6 @@ END_EVENT_TABLE()
     if( !dbfname.empty() ) {
         OpenFilename( dbfname );
     }
-    if( !recDb::IsOpen() ) {
-        m_browser->SetPage( GetDisplayText( "start" ), "" );
-    }
 }
 
 /*! \brief Frame destructor.
@@ -290,6 +287,7 @@ void TfpFrame::OnAttachCloseFile( wxCommandEvent& event )
 void TfpFrame::OnCloseFile( wxCommandEvent& event )
 {
     CloseFile();
+    SetNoDatabase();
 }
 
 /*! \brief Called on a Inport GEDCOM File menu option event.
@@ -1282,16 +1280,7 @@ bool TfpFrame::OpenFilename( const wxString& dbfname )
             recDb::CloseDb();
         }
         recDb::DbType type = recDb::OpenDb( dbfname );
-        switch( type )
-        {
-        case recDb::DbType::full:
-            SetDatabaseOpen( dbfname );
-            break;
-        case recDb::DbType::media_data_only:
-            SetMediaDatabase( dbfname );
-            break;
-        default:
-            m_browser->SetPage( GetDisplayText( "start" ), "" );
+        if( !SetDatabaseMenu( dbfname, type ) ) {
             wxMessageBox( _( "Problem opening database!" ), caption );
             CloseFile();
             return false;
@@ -1310,8 +1299,6 @@ void TfpFrame::CloseFile()
     if ( recDb::IsOpen() ) {
         recDb::CloseDb();
     }
-    SetNoDatabase();
-    m_browser->SetPage( GetDisplayText( "start" ), "" );
     m_changeState = recDb::GetChange();
 }
 
@@ -1679,6 +1666,7 @@ void TfpFrame::SetNoDatabase()
     m_toolbar->EnableTool( tfpID_FIND_BACK, false );
     m_forward.clear();
     m_toolbar->EnableTool( tfpID_FIND_FORWARD, false );
+    m_browser->SetPage( GetDisplayText( "start" ), "" );
 }
 
 void TfpFrame::PushHtmName( const wxString& name )
@@ -2283,6 +2271,24 @@ void TfpFrame::CreateFullToolbar()
     m_toolbar->AddTool( tfpID_PAGE_ITEM_EDIT, _( "Edit" ), *imgEditBitmap );
     m_toolbar->Realize();
     SetToolBar( m_toolbar );
+}
+
+bool TfpFrame::SetDatabaseMenu( const wxString& dbfname, recDb::DbType type )
+{
+    switch( type )
+    {
+    case recDb::DbType::full:
+        SetDatabaseOpen( dbfname );
+        break;
+    case recDb::DbType::media_data_only:
+        SetMediaDatabase( dbfname );
+        break;
+    default:
+        SetNoDatabase();
+        return false;
+    }
+    DisplayHomePage();
+    return true;
 }
 
 

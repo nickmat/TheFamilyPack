@@ -195,6 +195,7 @@ private:
     void CreateClosedMenu();
     void CreateFullToolbar();
 
+    bool SetDatabaseMenu( const wxString& dbfname, recDb::DbType type );
 };
 
 #define tfpMAX_MENU_ITEMS 50
