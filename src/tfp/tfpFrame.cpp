@@ -141,11 +141,11 @@ END_EVENT_TABLE()
  *  Create the window Icon, Menu bar, Status bar and Html control.
  *  Set the window to display the splash screen.
  */
-    TfpFrame::TfpFrame(
-        const wxString& title,
-        const wxPoint& pos,
-        const wxSize& size,
-        const wxString& dbfname )
+TfpFrame::TfpFrame(
+    const wxString& title,
+    const wxPoint& pos,
+    const wxSize& size,
+    const wxString& dbfname )
     : wxFrame( (wxFrame*) nullptr, wxID_ANY, title, pos, size )
 {
     m_changeState = recDb::GetChange();
@@ -166,6 +166,11 @@ END_EVENT_TABLE()
     SetNoDatabase();
     if( !dbfname.empty() ) {
         OpenFilename( dbfname );
+    }
+    else if( recDb::IsOpen() ) {
+        wxString fname = recDb::GetFileName();
+        recDb::DbType type = recDb::GetDatabaseType( "main" );
+        SetDatabaseMenu( fname, type );
     }
 }
 
