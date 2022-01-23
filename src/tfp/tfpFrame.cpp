@@ -1666,7 +1666,7 @@ void TfpFrame::SetNoDatabase()
     m_toolbar->EnableTool( tfpID_FIND_BACK, false );
     m_forward.clear();
     m_toolbar->EnableTool( tfpID_FIND_FORWARD, false );
-    m_browser->SetPage( GetDisplayText( "start" ), "" );
+    m_browser->SetPage( tfpGetDisplayText( "start" ), "" );
 }
 
 void TfpFrame::PushHtmName( const wxString& name )
@@ -1833,7 +1833,7 @@ bool TfpFrame::DisplayHtmPage( const wxString& name )
 {
     wxBusyCursor wait;
 
-    wxString text = GetDisplayText( name );
+    wxString text = tfpGetDisplayText( name, this );
     if( text.empty() ) {
         text = tfpWrErrorPage( name );
     }
@@ -1875,7 +1875,7 @@ void TfpFrame::RefreshHtmPage()
     wxString name = GetCurrentName();
     SetTitle( wxString::Format( m_titleFmt, name ) );
     if( name.size() ) {
-        m_browser->SetPage( GetDisplayText( name ), "" );
+        m_browser->SetPage( tfpGetDisplayText( name, this ), "" );
         RefreshEditMenu();
     }
     m_changeState = recDb::GetChange();
@@ -1888,11 +1888,6 @@ bool TfpFrame::DisplayHomePage()
         page = "BLANK";
     }
     return DisplayHtmPage( page );
-}
-
-wxString TfpFrame::GetDisplayText( const wxString& pname )
-{
-    return tfpGetDisplayText( pname, this );
 }
 
 void TfpFrame::CreateFullMenuRW()

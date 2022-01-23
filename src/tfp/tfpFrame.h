@@ -191,7 +191,6 @@ private:
     bool DisplayReferenceLinkPage( const wxString& name );
     void RefreshHtmPage();
     bool DisplayHomePage();
-    wxString GetDisplayText( const wxString& pname );
 
     void CreateFullMenuRW();
     void CreateMediaMenu();

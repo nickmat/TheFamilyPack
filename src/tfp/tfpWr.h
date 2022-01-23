@@ -50,7 +50,7 @@ extern wxString tfpGetEpitaphPlus( idt indID, GET_EPITAPH_Prefix prefix = GE_Spa
 extern wxString tfpNormaliseSpaces( const wxString& str );
 extern wxString tfpGetMediaDataFile( idt mdID, idt assID );
 
-extern wxString tfpGetDisplayText( const wxString& pagename, TfpFrame* frame  );
+extern wxString tfpGetDisplayText( const wxString& pagename, TfpFrame* frame = nullptr  );
 
 // See tfpWrAdmin.cpp
 extern wxString tfpWriteResearcherList();
