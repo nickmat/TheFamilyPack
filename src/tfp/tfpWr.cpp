@@ -298,10 +298,32 @@ wxString tfpGetMediaDataFile( idt mdID, idt assID )
     return memfilename;
 }
 
+wxString tfpNormalisePageName( const wxString& name )
+{
+    wxString uname = name.Upper();
+    if( uname.compare( 0, 2, "AR" ) == 0 ||
+        uname.compare( 0, 2, "CI" ) == 0 ||
+        uname.compare( 0, 2, "EA" ) == 0 ||
+        uname.compare( 0, 2, "PA" ) == 0 ||
+        uname.compare( 0, 2, "RE" ) == 0 ||
+        uname.compare( "ABOUT" ) == 0 ||
+        uname.compare( "START" ) == 0 
+        )
+    {
+        return uname.Capitalize();
+    }
+    if( uname.compare( 0, 3, "NI+" ) == 0 ||
+        uname.compare( 0, 3, "NP+" ) == 0 )
+    {
+        // Don't capitalize the name part.
+        return uname.Mid( 0, 3 ) + name.Mid( 3 );
+    }
+    return uname;
+}
+
 wxString tfpGetDisplayText( const wxString& pagename, TfpFrame* frame )
 {
-    wxString name( pagename );
-    name.MakeUpper();
+    wxString name = pagename.Upper();
     wxASSERT( name.size() > 0 );
     wxLongLong_t num, num1 = 0, num2 = 0;
     bool success, success1 = false, success2 = false;
@@ -325,14 +347,12 @@ wxString tfpGetDisplayText( const wxString& pagename, TfpFrame* frame )
             return tfpWriteArchiveIndex();
         }
         if( name.compare( 0, 2, "AR" ) == 0 && success1 ) {
-            name.MakeCapitalized();
             return tfpWriteArchive( num1 );
         }
         if( name.compare( 0, 2, "CD" ) == 0 && success1 ) {
             return tfpCreateDescChart( num1 );
         }
         if( name.compare( 0, 2, "CI" ) == 0 && success1 ) {
-            name.MakeCapitalized(); // We want Ci,
             return tfpWriteCitation( num1 );
         }
         if( name.compare( 0, 2, "CP" ) == 0 && success1 ) {
@@ -348,20 +368,16 @@ wxString tfpGetDisplayText( const wxString& pagename, TfpFrame* frame )
             return tfpWriteEventSelection( frame );
         }
         if( name.compare( "EA" ) == 0 ) {
-            name.MakeCapitalized(); // We want Ea
             return tfpWriteEventaIndex();
         }
         // We don't have a Eventa filter yet!
         //    if( name.compare( "EA$" ) == 0 ) {
-        //        name.MakeCapitalized();
         //        return tfpWriteEventaSelection( m_erFilter );
         //    }
         if( name.compare( 0, 2, "EA" ) == 0 && success1 ) {
-            name.MakeCapitalized();  // We want Ea
             return tfpWriteEventaPage( num1 );
         }
         if( name.compare( 0, 3, "EA," ) == 0 && success2 ) {
-            name.MakeCapitalized(); // We want Ea,
             return tfpWriteEventaPagedIndex( num2 );
         }
         if( name.compare( 0, 1, "E" ) == 0 && success ) {
@@ -412,18 +428,15 @@ wxString tfpGetDisplayText( const wxString& pagename, TfpFrame* frame )
             return tfpWriteIndividualList();
         }
         if( name.compare( 0, 3, "NI+" ) == 0 && !success2 ) {
-            name = name.Mid( 0, 3 ) + pagename.Mid( 3 ); // Don't capitalize the name part.
-            return tfpWriteNameList( name.Mid( 3 ), recSG_Individual );
+            return tfpWriteNameList( pagename.Mid( 3 ), recSG_Individual );
         }
         if( name.compare( 0, 3, "NP+" ) == 0 && !success2 ) {
-            name = name.Mid( 0, 3 ) + pagename.Mid( 3 ); // Don't capitalize the name part.
-            return tfpWriteNameList( name.Mid( 3 ), recSG_Persona );
+            return tfpWriteNameList( pagename.Mid( 3 ), recSG_Persona );
         }
         if( name.compare( 0, 1, "N" ) == 0 && success ) {
             return tfpWriteName( num );
         }
         if( name.compare( 0, 2, "PA" ) == 0 ) {
-            name.MakeCapitalized(); // We want Pa
             return tfpWritePersonaPage( num1 );
         }
         if( name.compare( 0, 1, "P" ) == 0 && success ) {
@@ -439,7 +452,6 @@ wxString tfpGetDisplayText( const wxString& pagename, TfpFrame* frame )
             return tfpWriteReferencePage( num );
         }
         if( name.compare( "RE" ) == 0 ) {
-            name.MakeCapitalized(); // We want Re
             return tfpWriteResearcherList();
         }
     }

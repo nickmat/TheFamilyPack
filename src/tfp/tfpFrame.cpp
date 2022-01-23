@@ -1833,12 +1833,13 @@ bool TfpFrame::DisplayHtmPage( const wxString& name )
 {
     wxBusyCursor wait;
 
+    wxString norm = tfpNormalisePageName( name );
     wxString text = tfpGetDisplayText( name, this );
     if( text.empty() ) {
-        text = tfpWrErrorPage( name );
+        text = tfpWrErrorPage( norm );
     }
-    SetTitle( wxString::Format( m_titleFmt, name ) );
-    PushHtmName( name );
+    SetTitle( wxString::Format( m_titleFmt, norm ) );
+    PushHtmName( norm );
     m_browser->SetPage( text, "" );
     RefreshEditMenu();
     m_changeState = recDb::GetChange();
