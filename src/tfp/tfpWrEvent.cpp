@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     24 October 2010
- * Copyright:   Copyright (c) 2010 ~ 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -36,6 +36,8 @@
 
 #include "tfpWr.h"
 
+#include "tfpFrame.h"
+
 #include <rec/recEvent.h>
 #include <rec/recEventa.h>
 #include <rec/recIndividual.h>
@@ -43,13 +45,16 @@
 
 #include <rg/rgCompareEvent.h>
 
-wxString tfpWriteEventPage( idt eventID, rgCompareEvent* ce )
+wxString tfpWriteEventPage( idt eventID, TfpFrame* frame )
 {
+    if( frame == nullptr ) {
+        return "";
+    }
+    rgCompareEvent& ce = frame->GetCompareEventData();
     wxString htm;
     recEvent eve(eventID);
     if( eve.FGetID() == 0 ) return htm;
-    wxASSERT( ce != NULL );
-    ce->Reset( eventID );
+    ce.Reset( eventID );
 
     htm <<
         tfpWrHeadTfp( "Event " + eve.GetIdStr() ) <<
@@ -211,7 +216,7 @@ wxString tfpWriteEventPage( idt eventID, rgCompareEvent* ce )
         htm << "</tr>\n</table>\n";
     }
 
-    htm << ce->GetRefDatesTable() << ce->GetRefPlacesTable() << tfpWrTailTfp();
+    htm << ce.GetRefDatesTable() << ce.GetRefPlacesTable() << tfpWrTailTfp();
 
     return htm;
 }

@@ -83,7 +83,7 @@ dlgNote::~dlgNote()
 
 bool dlgNote::TransferDataToWindow()
 {
-    m_browser->SetPage( m_frame->GetDisplayText( m_name ), "" );
+    m_browser->SetPage( tfpGetDisplayText( m_name, m_frame ), "" );
     return true;
 }
 
@@ -118,7 +118,7 @@ void dlgNote::OnNavigationRequest( wxWebViewEvent& evt )
         }
         if( ret == true ) {
             recDb::Commit();
-            m_browser->SetPage( m_frame->GetDisplayText( m_name ), "" );
+            m_browser->SetPage( tfpGetDisplayText( m_name, m_frame ), "" );
             m_cond = recDb::GetChange();
         } else {
             recDb::Rollback();
@@ -134,7 +134,7 @@ void dlgNote::OnIdle( wxIdleEvent& event )
 {
     if( m_cond != recDb::GetChange() ) {
         if( recDb::IsOpen() ) {
-            m_browser->SetPage( m_frame->GetDisplayText( m_name ), "" );
+            m_browser->SetPage( tfpGetDisplayText( m_name, m_frame ), "" );
             m_cond = recDb::GetChange();
         } else {
             Close( true );

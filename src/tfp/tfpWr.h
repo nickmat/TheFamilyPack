@@ -28,8 +28,8 @@
 #define TFPWR_H
 
 #include <rec/recDatabase.h>
-class rgCompareEvent;
-class recSelSetEvent;
+
+class TfpFrame;
 
 // See tfpWr.cpp
 extern wxString tfpWrHead( const wxString& title, const wxString& css = wxEmptyString );
@@ -50,6 +50,8 @@ extern wxString tfpGetEpitaphPlus( idt indID, GET_EPITAPH_Prefix prefix = GE_Spa
 extern wxString tfpNormaliseSpaces( const wxString& str );
 extern wxString tfpGetMediaDataFile( idt mdID, idt assID );
 
+extern wxString tfpGetDisplayText( const wxString& pagename, TfpFrame* frame  );
+
 // See tfpWrAdmin.cpp
 extern wxString tfpWriteResearcherList();
 
@@ -62,7 +64,7 @@ extern wxString tfpCreatePedChart( idt indID );
 extern wxString tfpCreateDescChart( idt indID );
 
 // See tfpWrEvent.cpp
-extern wxString tfpWriteEventPage( idt eveID, rgCompareEvent* ce );
+extern wxString tfpWriteEventPage( idt eveID, TfpFrame* frame );
 
 // See tfpWrEventa.cpp
 extern wxString tfpWriteEventaPage( idt erID );
@@ -74,7 +76,7 @@ extern wxString tfpWriteEventaPagedIndex( idt begCnt );
 // See tfpWrEventIndex.cpp
 extern wxString tfpWriteEventIndex();
 extern wxString tfpWriteEventPagedIndex( idt begCnt );
-extern wxString tfpWriteEventSelection( recSelSetEvent& filter );
+extern wxString tfpWriteEventSelection( TfpFrame* frame );
 
 // See tfpWrFamily.cpp
 extern wxString tfpWriteFamilyPage( idt famID, size_t iL = 0, size_t iR = 0 );

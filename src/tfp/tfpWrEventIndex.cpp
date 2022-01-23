@@ -5,8 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     24 October 2010
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010-2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -35,10 +34,12 @@
 #include "wx/wx.h"
 #endif
 
+#include "tfpWr.h"
+
+#include "tfpFrame.h"
+
 #include <rec/recEvent.h>
 #include <rec/recFilterEvent.h>
-
-#include "tfpWr.h"
 
 
 wxString tfpWriteEventIndex()
@@ -122,26 +123,23 @@ wxString tfpWriteEventPagedIndex( idt begCnt )
     return htm;
 }
 
-wxString tfpWriteEventSelection( recSelSetEvent& filter )
+wxString tfpWriteEventSelection( TfpFrame* frame )
 {
-    recFilterEvent fe(filter);
+    if( frame == nullptr ) {
+        return "";
+    }
+    recSelSetEvent& filter = frame->GetSelectedSetEvents();
+    recFilterEvent fe( filter );
 
     fe.CreateEventTable();
     wxSQLite3Table* result = fe.GetTable();
     size_t size = (size_t) result->GetRowCount();
 
-    wxString htm =
-        "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
-        "\"http://www.w3.org/TR/html4/loose.dtd\">\n"
-        "<html>\n<head>\n"
-        "<title>Event List</title>\n"
-        "<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>\n"
-        "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>\n"
-        "</head>\n<body>\n<div class='tfp'>\n"
-        "<h1>Selected Event List</h1>"
-    ;
+    wxString htm;
 
-    htm << "<table class='frame'>\n<tr>\n<td class='support'><br>\n";
+    htm << tfpWrHeadTfp( "Event List" ) <<
+        "<h1>Selected Event List</h1>\n"
+        "<table class='frame'>\n<tr>\n<td class='support'><br>\n";
     wxString begDate = filter.GetBegDateStr();
     wxString endDate = filter.GetEndDateStr();
     if( begDate.size() || endDate.size() ) {
@@ -157,17 +155,16 @@ wxString tfpWriteEventSelection( recSelSetEvent& filter )
 
     recIdVec typeIDs = fe.GetTypeIDVec();
     htm << "<p class='indent nowrap'>\nEvent Types:<b><br>\n";
-    for( size_t i = 0 ; i < typeIDs.size() ; i++ ) {
+    for( size_t i = 0; i < typeIDs.size(); i++ ) {
         htm << recEventType::GetTypeStr( typeIDs[i] ) << "<br>\n";
     }
-    htm << "</b></p>\n";
-
-    htm <<
+    htm << 
+        "</b></p>\n"
         "</td><td class='frame'>"
         "<table class='data'>\n"
         "<tr><th>ID</th><th>Title</th><th>Year</th></tr>\n"
-    ;
-    for( size_t i = 0 ; i < size ; i++ ) {
+        ;
+    for( size_t i = 0; i < size; i++ ) {
         result->SetRow( i );
         long jdn = result->GetInt( 2 );
         wxString yearStr;
@@ -187,11 +184,10 @@ wxString tfpWriteEventSelection( recSelSetEvent& filter )
             << yearStr
             << "</td>\n</tr>\n";
     }
-    htm << "</table>\n";
-
-    htm << "</td>\n</tr>\n</table>\n";
-
-    htm << "</div>\n</body>\n</html>\n";
+    htm <<
+        "</table>\n"
+        "</td>\n</tr>\n</table>\n" << tfpWrTailTfp()
+    ;
     return htm;
 }
 

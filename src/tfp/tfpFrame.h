@@ -83,6 +83,10 @@ public:
         const wxString& dbfname );
     virtual ~TfpFrame();
 
+    rgCompareEvent& GetCompareEventData() { return m_compEvent; }
+    recSelSetEvent& GetSelectedSetEvents() { return m_selEvent; }
+
+private:
     // event handlers
     void OnNewWindow( wxCommandEvent& event );
     void OnNewFile( wxCommandEvent& event );
@@ -189,7 +193,6 @@ public:
     bool DisplayHomePage();
     wxString GetDisplayText( const wxString& pname );
 
-private:
     void CreateFullMenuRW();
     void CreateMediaMenu();
     void CreateClosedMenu();
