@@ -33,7 +33,7 @@
 !define APP_EXE       "tfp03.exe"
 !define VERSION_DOT   "0.3.0.1.1"
 ;!define VERSION_UND   "0_3_0_1_0"
-!define VERSION_TXT   "V${VERSION_DOT} R2 pre-alpha"
+!define VERSION_TXT   "V${VERSION_DOT} R3 pre-alpha"
 !define LICENSE       "license.txt"
 !define DESCRIPTION   "The Family Pack Application Installer"
 !define COPYRIGHT     "2013 .. 2022 @ Nick Matthews"
