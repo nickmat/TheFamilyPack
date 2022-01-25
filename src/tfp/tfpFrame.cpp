@@ -68,7 +68,6 @@
 #endif
 
 BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
-    EVT_MENU( tfpID_NEW_WINDOW, TfpFrame::OnNewWindow )
     EVT_MENU( tfpID_NEW_FILE, TfpFrame::OnNewFile )
     EVT_MENU( tfpID_OPEN_FILE, TfpFrame::OnOpenFile )
     EVT_MENU( tfpID_FILE_ATTACH_NEW_FULL, TfpFrame::OnAttachNewFile )
@@ -121,6 +120,8 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_SYSTEM_SETTING, TfpFrame::OnSystemOptions )
     EVT_MENU( tfpID_USER_SETTING, TfpFrame::OnUserOptions )
     EVT_MENU( tfpID_TOOL_SYSTEM_CHECK, TfpFrame::OnSystemCheck )
+    EVT_MENU( tfpID_WINDOW_NEW, TfpFrame::OnWindowNew )
+    EVT_MENU( tfpID_WINDOW_CLOSE, TfpFrame::OnWindowClose )
     EVT_MENU( tfpID_HELP_WEB_HOME, TfpFrame::OnHelpWebHome )
     EVT_MENU( tfpID_HELP_ABOUT_DB, TfpFrame::OnAboutDatabase )
     EVT_MENU( wxID_ABOUT, TfpFrame::OnAbout )
@@ -187,16 +188,6 @@ TfpFrame::~TfpFrame()
     if( GetMenuBar() != m_menuClosedDB ) {
         wxDELETE( m_menuClosedDB );
     }
-}
-
-/*! \brief Called on a New Window menu option event.
- */
-void TfpFrame::OnNewWindow( wxCommandEvent& event )
-{
-    TfpFrame* frame = new TfpFrame(
-        "The Family Pack", wxDefaultPosition, wxSize( 900, 700 ), ""
-    );
-    frame->Show(true);
 }
 
 /*! \brief Called on a New File menu option event.
@@ -361,8 +352,8 @@ void TfpFrame::OnPageSetup( wxCommandEvent& event )
  */
 void TfpFrame::OnQuit( wxCommandEvent& event )
 {
-    // true is to force the frame to close
-    Close( true );
+    // Close all windows and exit.
+    wxTheApp->Exit();
 }
 
 /*! \brief Called on a Edit Individual menu option event.
@@ -878,6 +869,20 @@ void TfpFrame::OnSystemCheck( wxCommandEvent& event )
 {
     // Unsure whether this is required or not.
     wxMessageBox( "Not yet implimented", "OnSystemCheck" );
+}
+
+void TfpFrame::OnWindowNew( wxCommandEvent& event )
+{
+    TfpFrame* frame = new TfpFrame(
+        "The Family Pack", wxDefaultPosition, wxSize( 900, 700 ), ""
+    );
+    frame->Show( true );
+}
+
+void TfpFrame::OnWindowClose( wxCommandEvent& event )
+{
+    // true is to force the frame to close
+    Close( true );
 }
 
 /*! \brief Called on a Help, TFP Website menu option event.
@@ -1911,8 +1916,6 @@ void TfpFrame::CreateFullMenuRW()
     menuFileAttach->Append( tfpID_FILE_ATTACH_CLOSE, _( "&Close" ), m_menuFileAttachClose );
 
     wxMenu* menuFile = new wxMenu;
-    menuFile->Append( tfpID_NEW_WINDOW, _( "New &Window\tCtrl-W" ) );
-    menuFile->AppendSeparator();
     menuFile->Append( tfpID_NEW_FILE, _( "&New Database\tCtrl-N" ) );
     menuFile->Append( tfpID_OPEN_FILE, _( "&Open Database\tCtrl-O" ) );
     menuFile->Append( tfpID_FILE_ATTACH_MENU, _( "&Attach Database" ), menuFileAttach );
@@ -2041,6 +2044,10 @@ void TfpFrame::CreateFullMenuRW()
     menuTools->Append( tfpID_USER_SETTING, _( "&User Options..." ) );
     menuTools->Append( tfpID_TOOL_SYSTEM_CHECK, _( "Systems &Check" ) );
 
+    wxMenu* menuWindow = new wxMenu;
+    menuWindow->Append( tfpID_WINDOW_NEW, _( "&New Window" ) );
+    menuWindow->Append( tfpID_WINDOW_CLOSE, _( "&Close Window" ) );
+
     wxMenu* menuHelp = new wxMenu;
     menuHelp->Append( tfpID_HELP_WEB_HOME, _( "The Family Pack &Website" ) );
     menuHelp->Append( tfpID_HELP_ABOUT_DB, _( "About &Database" ) );
@@ -2053,6 +2060,7 @@ void TfpFrame::CreateFullMenuRW()
     m_menuOpenDB->Append( menuList, _( "&List" ) );
     m_menuOpenDB->Append( menuChart, _( "&Chart" ) );
     m_menuOpenDB->Append( menuTools, _( "&Tools" ) );
+    m_menuOpenDB->Append( menuWindow, _( "&Window" ) );
     m_menuOpenDB->Append( menuHelp, _( "&Help" ) );
 }
 

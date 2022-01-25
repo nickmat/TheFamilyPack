@@ -88,7 +88,6 @@ public:
 
 private:
     // event handlers
-    void OnNewWindow( wxCommandEvent& event );
     void OnNewFile( wxCommandEvent& event );
     void OnOpenFile( wxCommandEvent& event );
     void OnAttachNewFile( wxCommandEvent& event );
@@ -144,6 +143,9 @@ private:
     void OnSystemOptions( wxCommandEvent& event );
     void OnUserOptions( wxCommandEvent& event );
     void OnSystemCheck( wxCommandEvent& event );
+
+    void OnWindowNew( wxCommandEvent& event );
+    void OnWindowClose( wxCommandEvent& event );
 
     void OnHelpWebHome( wxCommandEvent& event );
     void OnAboutDatabase( wxCommandEvent& event );
@@ -205,8 +207,7 @@ private:
 enum
 {
     // menu items
-    tfpID_NEW_WINDOW = wxID_HIGHEST+1,
-    tfpID_NEW_FILE,
+    tfpID_NEW_FILE = wxID_HIGHEST+1,
     tfpID_OPEN_FILE,
     tfpID_FILE_ATTACH_MENU,
     tfpID_FILE_ATTACH_NEW,
@@ -300,6 +301,8 @@ enum
     tfpID_SYSTEM_SETTING,
     tfpID_USER_SETTING,
     tfpID_TOOL_SYSTEM_CHECK,
+    tfpID_WINDOW_NEW,
+    tfpID_WINDOW_CLOSE,
     tfpID_HELP_WEB_HOME,
     tfpID_HELP_ABOUT_DB,
     tfpID_FIND_BACK,
