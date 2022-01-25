@@ -45,7 +45,7 @@
 #define VERSION_CONFIG   ""
 #endif
 
-#define RELEASE_NUM   " R3"
+#define RELEASE_NUM   " R4"
 #define VERSION_NUM   "0.3.0.1.1" RELEASE_NUM
 
 
@@ -95,11 +95,13 @@ const char* tfpTitle = "The Family Pack - Version " VERSION "\n"
                     Export GEDCOM file option added.
                     Page names are no longer case sensitive.
 
-active    v0.3.0.1.1 R2  Improve Create Database with new Setup Database dialog.
+14jan22  v0.3.0.1.1 R2  Improve Create Database with new Setup Database dialog.
                     Active the source Citataion records with new dialogs.
                     Update Reference dialog which now allows for a hierarchy.
 
-active    v0.3.0.1.1 R3  Add Reference templates.
+23jan22  v0.3.0.1.1 R3  Fix problems opening databases and new windows.
+
+active   v0.3.0.1.1 R4  Compare and copy records between databases.
 
  See also webpage http://thefamilypack.org/dev/routemap.htm
 
