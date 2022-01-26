@@ -64,8 +64,8 @@ private:
     idt                 m_editEventID;
     wxMenu*             m_menuEditReference;
     wxTextCtrl*         m_showpage;
-    wxArrayString       m_back;
-    wxArrayString       m_forward;
+    StringVec           m_back;
+    StringVec           m_forward;
     wxWebView*          m_browser;
     wxString            m_ctxmenuref;
     StringVec           m_ctxmenuPages;

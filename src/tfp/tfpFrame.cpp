@@ -942,8 +942,10 @@ void TfpFrame::OnFindBack( wxCommandEvent& event )
 
     if( ind > 1 ) {
         --ind;
-        m_forward.push_back( m_back[ind] );
-        m_toolbar->EnableTool( tfpID_FIND_FORWARD, true );
+        if( m_back[ind] != "Error" ) {
+            m_forward.push_back( m_back[ind] );
+            m_toolbar->EnableTool( tfpID_FIND_FORWARD, true );
+        }
         m_back.pop_back();
         if( ind == 1 ) {
             m_toolbar->EnableTool( tfpID_FIND_BACK, false );
@@ -1847,6 +1849,7 @@ bool TfpFrame::DisplayHtmPage( const wxString& name )
     wxString text = tfpGetDisplayText( name, this );
     if( text.empty() ) {
         text = tfpWrErrorPage( norm );
+        norm = "Error";
     }
     SetTitle( wxString::Format( m_titleFmt, norm ) );
     PushHtmName( norm );
@@ -1885,8 +1888,13 @@ void TfpFrame::RefreshHtmPage()
 {
     wxString name = GetCurrentName();
     SetTitle( wxString::Format( m_titleFmt, name ) );
-    if( name.size() ) {
-        m_browser->SetPage( tfpGetDisplayText( name, this ), "" );
+    if( !name.empty() ) {
+        wxString text = tfpGetDisplayText( name, this );
+        if( text.empty() ) {
+            text = tfpWrErrorPage( name );
+            m_back[m_back.size() - 1] = "Error";
+        }
+        m_browser->SetPage( text, "" );
         RefreshEditMenu();
     }
     m_changeState = recDb::GetChange();
