@@ -33,6 +33,7 @@
 #include <rg/rgCompareEvent.h>
 #include "tfpNote.h"
 
+class TfpApp;
 class wxWebView;
 class wxWebViewEvent;
 
@@ -49,12 +50,16 @@ class TfpFrame : public wxFrame
 private:
     DECLARE_EVENT_TABLE()
 
+    TfpApp*             m_tfpApp;
     long                m_changeState;
     wxMenuBar*          m_menuOpenDB;
     wxMenuBar*          m_menuMediaDB;
     wxMenuBar*          m_menuClosedDB;
     wxToolBar*          m_toolbar;
     wxStatusBar*        m_statusbar;
+    wxMenu*             m_menuWindow;
+    wxMenuItem*         m_menuWindowItem[10];
+    size_t              m_menuWindowItemSize;
     wxMenu*             m_menuFileAttachClose;
     wxMenu*             m_menuEditInd;
     idt                 m_EditIndLeft;
@@ -78,7 +83,7 @@ private:
 
 public:
     // ctor and dtor
-    TfpFrame( const wxString& title,
+    TfpFrame( TfpApp* app, const wxString& title,
         const wxPoint& pos, const wxSize& size,
         const wxString& dbfname );
     virtual ~TfpFrame();
@@ -88,6 +93,8 @@ public:
 
 private:
     // event handlers
+    void OnMenuOpen( wxMenuEvent& event );
+    void UpdateWindowMenu();
     void OnNewFile( wxCommandEvent& event );
     void OnOpenFile( wxCommandEvent& event );
     void OnAttachNewFile( wxCommandEvent& event );
@@ -303,6 +310,16 @@ enum
     tfpID_TOOL_SYSTEM_CHECK,
     tfpID_WINDOW_NEW,
     tfpID_WINDOW_CLOSE,
+    tfpID_WINDOW_01,
+    tfpID_WINDOW_02,
+    tfpID_WINDOW_03,
+    tfpID_WINDOW_04,
+    tfpID_WINDOW_05,
+    tfpID_WINDOW_06,
+    tfpID_WINDOW_07,
+    tfpID_WINDOW_08,
+    tfpID_WINDOW_09,
+    tfpID_WINDOW_10,
     tfpID_HELP_WEB_HOME,
     tfpID_HELP_ABOUT_DB,
     tfpID_FIND_BACK,

@@ -66,7 +66,8 @@ bool TfpApp::OnInit()
     }
 
     TfpFrame* frame = new TfpFrame( 
-        "The Family Pack", wxDefaultPosition, wxSize( 900, 700 ),
+        this, "The Family Pack", 
+        wxDefaultPosition, wxSize( 900, 700 ),
         dbfname
     );
     frame->Show(true);
@@ -83,6 +84,16 @@ int TfpApp::OnExit()
     recUninitialize();
     tfpDeleteBitmaps();
     return 0;
+}
+
+void TfpApp::CloseFrame( TfpFrame* frame )
+{
+    for( auto i = m_frames.begin(); i != m_frames.end(); i++ ) {
+        if( frame == *i ) {
+            m_frames.erase( i );
+            return;
+        }
+    }
 }
 
 wxSharedPtr<wxWebViewHandler> GetWebViewMemoryHandler()

@@ -30,13 +30,17 @@
 #ifndef TFPAPP_H
 #define TFPAPP_H
 
+#include <vector>
+
 class wxWebViewHandler;
+class TfpFrame;
 
 //! The application class. As required by wxWidgets.
 class TfpApp : public wxApp
 {
 private:
     wxSharedPtr<wxWebViewHandler> m_webviewFSHandler;
+    std::vector<TfpFrame*>        m_frames;
 
 public:
     TfpApp() {}
@@ -44,6 +48,13 @@ public:
     virtual int OnExit();
 
     wxSharedPtr<wxWebViewHandler> GetWebViewFSHandler() { return m_webviewFSHandler; }
+
+    std::vector<TfpFrame*>& Frames() { return m_frames; }
+
+    void AddFrame( TfpFrame* frame ) { m_frames.push_back( frame ); }
+    size_t GetFramesSize() const { return m_frames.size(); }
+    void CloseFrame( TfpFrame* frame );
+    void CloseAll() { m_frames.clear(); }
 };
 
 wxDECLARE_APP( TfpApp );

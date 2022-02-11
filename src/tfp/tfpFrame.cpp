@@ -68,6 +68,7 @@
 #endif
 
 BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
+    EVT_MENU_OPEN( TfpFrame::OnMenuOpen )
     EVT_MENU( tfpID_NEW_FILE, TfpFrame::OnNewFile )
     EVT_MENU( tfpID_OPEN_FILE, TfpFrame::OnOpenFile )
     EVT_MENU( tfpID_FILE_ATTACH_NEW_FULL, TfpFrame::OnAttachNewFile )
@@ -143,12 +144,14 @@ END_EVENT_TABLE()
  *  Set the window to display the splash screen.
  */
 TfpFrame::TfpFrame(
+    TfpApp* app,
     const wxString& title,
     const wxPoint& pos,
     const wxSize& size,
     const wxString& dbfname )
-    : wxFrame( (wxFrame*) nullptr, wxID_ANY, title, pos, size )
+    : m_tfpApp(app), wxFrame( (wxFrame*) nullptr, wxID_ANY, title, pos, size )
 {
+    app->AddFrame( this );
     m_changeState = recDb::GetChange();
     // Set frames Icon
     SetIcon( wxICON( tfp ) );
@@ -179,6 +182,7 @@ TfpFrame::TfpFrame(
  */
 TfpFrame::~TfpFrame()
 {
+    m_tfpApp->CloseFrame( this );
     if( GetMenuBar() != m_menuOpenDB ) {
         wxDELETE( m_menuOpenDB );
     }
@@ -187,6 +191,43 @@ TfpFrame::~TfpFrame()
     }
     if( GetMenuBar() != m_menuClosedDB ) {
         wxDELETE( m_menuClosedDB );
+    }
+}
+
+void TfpFrame::OnMenuOpen( wxMenuEvent& event )
+{
+    wxMenu* menu = event.GetMenu();
+    if( menu == m_menuWindow ) {
+        UpdateWindowMenu();
+    }
+    event.Skip();
+}
+
+void TfpFrame::UpdateWindowMenu()
+{
+    for( size_t i = 0; i < m_menuWindowItemSize; i++ ) {
+        m_menuWindow->Remove( m_menuWindowItem[i] );
+    }
+    
+    m_menuWindowItemSize = m_tfpApp->GetFramesSize();
+    if( m_menuWindowItemSize > 10 ) {
+        m_menuWindowItemSize = 10;
+    }
+    wxString title;
+    for( size_t i = 0; i < m_menuWindowItemSize; i++ ) {
+        title.clear();
+        if( i < 9 ) {
+            title << "&" << (i + 1) << " ";
+        }
+        else {
+            title << "1&0 ";
+        }
+        title << m_tfpApp->Frames()[i]->GetTitle();
+        m_menuWindowItem[i]->SetItemLabel( title );
+        m_menuWindow->Append( m_menuWindowItem[i] );
+        if( m_tfpApp->Frames()[i] == this ) {
+            m_menuWindowItem[i]->Check();
+        }
     }
 }
 
@@ -874,15 +915,14 @@ void TfpFrame::OnSystemCheck( wxCommandEvent& event )
 void TfpFrame::OnWindowNew( wxCommandEvent& event )
 {
     TfpFrame* frame = new TfpFrame(
-        "The Family Pack", wxDefaultPosition, wxSize( 900, 700 ), ""
+        m_tfpApp, "The Family Pack", wxDefaultPosition, wxSize( 900, 700 ), ""
     );
     frame->Show( true );
 }
 
 void TfpFrame::OnWindowClose( wxCommandEvent& event )
 {
-    // true is to force the frame to close
-    Close( true );
+    Destroy();
 }
 
 /*! \brief Called on a Help, TFP Website menu option event.
@@ -1224,7 +1264,7 @@ void TfpFrame::OnIdle( wxIdleEvent& event )
  */
 void TfpFrame::OnCloseWindow( wxCloseEvent& event )
 {
-    this->Destroy();
+    Destroy();
 }
 
 bool TfpFrame::NewFile()
@@ -2052,9 +2092,21 @@ void TfpFrame::CreateFullMenuRW()
     menuTools->Append( tfpID_USER_SETTING, _( "&User Options..." ) );
     menuTools->Append( tfpID_TOOL_SYSTEM_CHECK, _( "Systems &Check" ) );
 
-    wxMenu* menuWindow = new wxMenu;
-    menuWindow->Append( tfpID_WINDOW_NEW, _( "&New Window" ) );
-    menuWindow->Append( tfpID_WINDOW_CLOSE, _( "&Close Window" ) );
+    m_menuWindow = new wxMenu;
+    m_menuWindow->Append( tfpID_WINDOW_NEW, _( "&New Window" ) );
+    m_menuWindow->Append( tfpID_WINDOW_CLOSE, _( "&Close Window" ) );
+    m_menuWindow->AppendSeparator();
+    m_menuWindowItem[0] = m_menuWindow->AppendCheckItem( tfpID_WINDOW_01, "&1" );
+    m_menuWindowItem[1] = m_menuWindow->AppendCheckItem( tfpID_WINDOW_02, "&2" );
+    m_menuWindowItem[2] = m_menuWindow->AppendCheckItem( tfpID_WINDOW_03, "&3" );
+    m_menuWindowItem[3] = m_menuWindow->AppendCheckItem( tfpID_WINDOW_04, "&4" );
+    m_menuWindowItem[4] = m_menuWindow->AppendCheckItem( tfpID_WINDOW_05, "&5" );
+    m_menuWindowItem[5] = m_menuWindow->AppendCheckItem( tfpID_WINDOW_06, "&6" );
+    m_menuWindowItem[6] = m_menuWindow->AppendCheckItem( tfpID_WINDOW_07, "&7" );
+    m_menuWindowItem[7] = m_menuWindow->AppendCheckItem( tfpID_WINDOW_08, "&8" );
+    m_menuWindowItem[8] = m_menuWindow->AppendCheckItem( tfpID_WINDOW_09, "&9" );
+    m_menuWindowItem[9] = m_menuWindow->AppendCheckItem( tfpID_WINDOW_10, "1&0" );
+    m_menuWindowItemSize = 10;
 
     wxMenu* menuHelp = new wxMenu;
     menuHelp->Append( tfpID_HELP_WEB_HOME, _( "The Family Pack &Website" ) );
@@ -2068,7 +2120,7 @@ void TfpFrame::CreateFullMenuRW()
     m_menuOpenDB->Append( menuList, _( "&List" ) );
     m_menuOpenDB->Append( menuChart, _( "&Chart" ) );
     m_menuOpenDB->Append( menuTools, _( "&Tools" ) );
-    m_menuOpenDB->Append( menuWindow, _( "&Window" ) );
+    m_menuOpenDB->Append( m_menuWindow, _( "&Window" ) );
     m_menuOpenDB->Append( menuHelp, _( "&Help" ) );
 }
 
