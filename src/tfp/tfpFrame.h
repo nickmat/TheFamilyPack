@@ -153,6 +153,7 @@ private:
 
     void OnWindowNew( wxCommandEvent& event );
     void OnWindowClose( wxCommandEvent& event );
+    void OnWindowWindows( wxCommandEvent& event );
 
     void OnHelpWebHome( wxCommandEvent& event );
     void OnAboutDatabase( wxCommandEvent& event );
@@ -320,6 +321,7 @@ enum
     tfpID_WINDOW_08,
     tfpID_WINDOW_09,
     tfpID_WINDOW_10,
+    tfpID_WINDOW_WINDOWS,
     tfpID_HELP_WEB_HOME,
     tfpID_HELP_ABOUT_DB,
     tfpID_FIND_BACK,

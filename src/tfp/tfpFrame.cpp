@@ -123,6 +123,7 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_TOOL_SYSTEM_CHECK, TfpFrame::OnSystemCheck )
     EVT_MENU( tfpID_WINDOW_NEW, TfpFrame::OnWindowNew )
     EVT_MENU( tfpID_WINDOW_CLOSE, TfpFrame::OnWindowClose )
+    EVT_MENU( tfpID_WINDOW_WINDOWS, TfpFrame::OnWindowWindows )
     EVT_MENU( tfpID_HELP_WEB_HOME, TfpFrame::OnHelpWebHome )
     EVT_MENU( tfpID_HELP_ABOUT_DB, TfpFrame::OnAboutDatabase )
     EVT_MENU( wxID_ABOUT, TfpFrame::OnAbout )
@@ -208,6 +209,7 @@ void TfpFrame::UpdateWindowMenu()
     for( size_t i = 0; i < m_menuWindowItemSize; i++ ) {
         m_menuWindow->Remove( m_menuWindowItem[i] );
     }
+    wxMenuItem* windows = m_menuWindow->Remove( tfpID_WINDOW_WINDOWS );
     
     m_menuWindowItemSize = m_tfpApp->GetFramesSize();
     if( m_menuWindowItemSize > 10 ) {
@@ -229,6 +231,7 @@ void TfpFrame::UpdateWindowMenu()
             m_menuWindowItem[i]->Check();
         }
     }
+    m_menuWindow->Append( windows );
 }
 
 /*! \brief Called on a New File menu option event.
@@ -923,6 +926,11 @@ void TfpFrame::OnWindowNew( wxCommandEvent& event )
 void TfpFrame::OnWindowClose( wxCommandEvent& event )
 {
     Destroy();
+}
+
+void TfpFrame::OnWindowWindows( wxCommandEvent& event )
+{
+    wxMessageBox( "Not yet implimented", "OnWindowWindows" );
 }
 
 /*! \brief Called on a Help, TFP Website menu option event.
@@ -2107,6 +2115,7 @@ void TfpFrame::CreateFullMenuRW()
     m_menuWindowItem[8] = m_menuWindow->AppendCheckItem( tfpID_WINDOW_09, "&9" );
     m_menuWindowItem[9] = m_menuWindow->AppendCheckItem( tfpID_WINDOW_10, "1&0" );
     m_menuWindowItemSize = 10;
+    m_menuWindow->Append( tfpID_WINDOW_WINDOWS, _( "&Windows..." ) );
 
     wxMenu* menuHelp = new wxMenu;
     menuHelp->Append( tfpID_HELP_WEB_HOME, _( "The Family Pack &Website" ) );
