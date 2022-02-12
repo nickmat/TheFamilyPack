@@ -229,9 +229,7 @@ void TfpFrame::UpdateWindowMenu()
         title << frame->GetTitle();
         m_menuWindowItem[i]->SetItemLabel( title );
         m_menuWindow->Append( m_menuWindowItem[i] );
-        if( frame == this ) {
-            m_menuWindowItem[i]->Check();
-        }
+        m_menuWindowItem[i]->Check( frame == this );
     }
     m_menuWindow->Append( windows );
 }
