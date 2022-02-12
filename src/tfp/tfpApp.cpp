@@ -96,6 +96,14 @@ void TfpApp::CloseFrame( TfpFrame* frame )
     }
 }
 
+TfpFrame* TfpApp::GetTfpFrame( size_t index ) const
+{
+    if( index < m_frames.size() ) {
+        return m_frames[index];
+    }
+    return nullptr;
+}
+
 wxSharedPtr<wxWebViewHandler> GetWebViewMemoryHandler()
 {
     return wxGetApp().GetWebViewFSHandler();

@@ -123,6 +123,7 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_TOOL_SYSTEM_CHECK, TfpFrame::OnSystemCheck )
     EVT_MENU( tfpID_WINDOW_NEW, TfpFrame::OnWindowNew )
     EVT_MENU( tfpID_WINDOW_CLOSE, TfpFrame::OnWindowClose )
+    EVT_MENU_RANGE( tfpID_WINDOW_01, tfpID_WINDOW_01+10, TfpFrame::OnSelectWindow )
     EVT_MENU( tfpID_WINDOW_WINDOWS, TfpFrame::OnWindowWindows )
     EVT_MENU( tfpID_HELP_WEB_HOME, TfpFrame::OnHelpWebHome )
     EVT_MENU( tfpID_HELP_ABOUT_DB, TfpFrame::OnAboutDatabase )
@@ -926,6 +927,16 @@ void TfpFrame::OnWindowNew( wxCommandEvent& event )
 void TfpFrame::OnWindowClose( wxCommandEvent& event )
 {
     Destroy();
+}
+
+void TfpFrame::OnSelectWindow( wxCommandEvent& event )
+{
+    size_t index = event.GetId() - tfpID_WINDOW_01;
+    TfpFrame* frame = m_tfpApp->GetTfpFrame( index );
+    wxASSERT( frame != nullptr );
+    if( frame ) {
+        frame->SetFocus();
+    }
 }
 
 void TfpFrame::OnWindowWindows( wxCommandEvent& event )

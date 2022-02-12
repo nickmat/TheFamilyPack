@@ -153,6 +153,7 @@ private:
 
     void OnWindowNew( wxCommandEvent& event );
     void OnWindowClose( wxCommandEvent& event );
+    void OnSelectWindow( wxCommandEvent& event );
     void OnWindowWindows( wxCommandEvent& event );
 
     void OnHelpWebHome( wxCommandEvent& event );

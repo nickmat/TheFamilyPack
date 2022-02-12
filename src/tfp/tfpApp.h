@@ -55,6 +55,7 @@ public:
     size_t GetFramesSize() const { return m_frames.size(); }
     void CloseFrame( TfpFrame* frame );
     void CloseAll() { m_frames.clear(); }
+    TfpFrame* GetTfpFrame( size_t index ) const;
 };
 
 wxDECLARE_APP( TfpApp );
