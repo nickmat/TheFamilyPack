@@ -49,8 +49,6 @@ public:
 
     wxSharedPtr<wxWebViewHandler> GetWebViewFSHandler() { return m_webviewFSHandler; }
 
-    std::vector<TfpFrame*>& Frames() { return m_frames; }
-
     void AddFrame( TfpFrame* frame ) { m_frames.push_back( frame ); }
     size_t GetFramesSize() const { return m_frames.size(); }
     void CloseFrame( TfpFrame* frame );

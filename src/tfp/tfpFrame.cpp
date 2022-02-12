@@ -225,10 +225,11 @@ void TfpFrame::UpdateWindowMenu()
         else {
             title << "1&0 ";
         }
-        title << m_tfpApp->Frames()[i]->GetTitle();
+        TfpFrame* frame = m_tfpApp->GetTfpFrame( i );
+        title << frame->GetTitle();
         m_menuWindowItem[i]->SetItemLabel( title );
         m_menuWindow->Append( m_menuWindowItem[i] );
-        if( m_tfpApp->Frames()[i] == this ) {
+        if( frame == this ) {
             m_menuWindowItem[i]->Check();
         }
     }
