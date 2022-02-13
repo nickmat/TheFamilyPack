@@ -184,7 +184,9 @@ TfpFrame::TfpFrame(
  */
 TfpFrame::~TfpFrame()
 {
-    m_tfpApp->CloseFrame( this );
+    for( size_t i = m_menuWindowItemSize; i < 10; i++ ) {
+        wxDELETE( m_menuWindowItem[i] );
+    }
     if( GetMenuBar() != m_menuOpenDB ) {
         wxDELETE( m_menuOpenDB );
     }
@@ -194,6 +196,7 @@ TfpFrame::~TfpFrame()
     if( GetMenuBar() != m_menuClosedDB ) {
         wxDELETE( m_menuClosedDB );
     }
+    m_tfpApp->CloseFrame( this );
 }
 
 void TfpFrame::OnMenuOpen( wxMenuEvent& event )
