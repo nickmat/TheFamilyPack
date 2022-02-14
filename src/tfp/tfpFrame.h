@@ -61,6 +61,7 @@ private:
     wxMenuItem*         m_menuWindowItem[10];
     size_t              m_menuWindowItemSize;
     wxMenu*             m_menuFileAttachClose;
+    wxMenu*             m_menuFileExternalClose;
     wxMenu*             m_menuEditInd;
     idt                 m_EditIndLeft;
     idt                 m_EditIndRight;
@@ -97,10 +98,12 @@ private:
     void UpdateWindowMenu();
     void OnNewFile( wxCommandEvent& event );
     void OnOpenFile( wxCommandEvent& event );
+    void OnCloseFile( wxCommandEvent& event );
     void OnAttachNewFile( wxCommandEvent& event );
     void OnAttachOpenFile( wxCommandEvent& event );
     void OnAttachCloseFile( wxCommandEvent& event );
-    void OnCloseFile( wxCommandEvent& event );
+    void OnExternalOpenFile( wxCommandEvent& event );
+    void OnExternalCloseFile( wxCommandEvent& event );
     void OnImportGedcom( wxCommandEvent& event );
     void OnExportGedcom( wxCommandEvent& event );
     void OnExportHtml( wxCommandEvent& event );
@@ -218,6 +221,7 @@ enum
     // menu items
     tfpID_NEW_FILE = wxID_HIGHEST+1,
     tfpID_OPEN_FILE,
+    tfpID_CLOSE_FILE,
     tfpID_FILE_ATTACH_MENU,
     tfpID_FILE_ATTACH_NEW,
     tfpID_FILE_ATTACH_NEW_FULL,
@@ -226,7 +230,11 @@ enum
     tfpID_FILE_ATTACH_CLOSE,
     tfpID_FILE_ATTACH_CLOSE_0,
     tfpID_FILE_ATTACH_CLOSE_LAST = tfpID_FILE_ATTACH_CLOSE_0 + 10,
-    tfpID_CLOSE_FILE,
+    tfpID_FILE_EXTERNAL_MENU,
+    tfpID_FILE_EXTERNAL_OPEN,
+    tfpID_FILE_EXTERNAL_CLOSE,
+    tfpID_FILE_EXTERNAL_CLOSE_0,
+    tfpID_FILE_EXTERNAL_CLOSE_LAST = tfpID_FILE_EXTERNAL_CLOSE_0 + 10,
     tfpID_IMPORT_GEDCOM,
     tfpID_EXPORT_GEDCOM,
     tfpID_EXPORT_HTML,

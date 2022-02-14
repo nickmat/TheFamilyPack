@@ -71,11 +71,13 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU_OPEN( TfpFrame::OnMenuOpen )
     EVT_MENU( tfpID_NEW_FILE, TfpFrame::OnNewFile )
     EVT_MENU( tfpID_OPEN_FILE, TfpFrame::OnOpenFile )
+    EVT_MENU( tfpID_CLOSE_FILE, TfpFrame::OnCloseFile )
     EVT_MENU( tfpID_FILE_ATTACH_NEW_FULL, TfpFrame::OnAttachNewFile )
     EVT_MENU( tfpID_FILE_ATTACH_NEW_MEDIA, TfpFrame::OnAttachNewFile )
     EVT_MENU( tfpID_FILE_ATTACH_OPEN, TfpFrame::OnAttachOpenFile )
     EVT_MENU_RANGE( tfpID_FILE_ATTACH_CLOSE_0, tfpID_FILE_ATTACH_CLOSE_LAST, TfpFrame::OnAttachCloseFile )
-    EVT_MENU( tfpID_CLOSE_FILE, TfpFrame::OnCloseFile )
+    EVT_MENU( tfpID_FILE_EXTERNAL_OPEN, TfpFrame::OnExternalOpenFile )
+    EVT_MENU_RANGE( tfpID_FILE_EXTERNAL_CLOSE_0, tfpID_FILE_EXTERNAL_CLOSE_LAST, TfpFrame::OnExternalCloseFile )
     EVT_MENU( tfpID_IMPORT_GEDCOM, TfpFrame::OnImportGedcom )
     EVT_MENU( tfpID_EXPORT_GEDCOM, TfpFrame::OnExportGedcom )
     EVT_MENU( tfpID_EXPORT_HTML, TfpFrame::OnExportHtml )
@@ -123,7 +125,7 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_TOOL_SYSTEM_CHECK, TfpFrame::OnSystemCheck )
     EVT_MENU( tfpID_WINDOW_NEW, TfpFrame::OnWindowNew )
     EVT_MENU( tfpID_WINDOW_CLOSE, TfpFrame::OnWindowClose )
-    EVT_MENU_RANGE( tfpID_WINDOW_01, tfpID_WINDOW_01+9, TfpFrame::OnSelectWindow )
+    EVT_MENU_RANGE( tfpID_WINDOW_01, tfpID_WINDOW_10, TfpFrame::OnSelectWindow )
     EVT_MENU( tfpID_WINDOW_WINDOWS, TfpFrame::OnWindowWindows )
     EVT_MENU( tfpID_HELP_WEB_HOME, TfpFrame::OnHelpWebHome )
     EVT_MENU( tfpID_HELP_ABOUT_DB, TfpFrame::OnAboutDatabase )
@@ -251,6 +253,14 @@ void TfpFrame::OnOpenFile( wxCommandEvent& event )
     OpenFile();
 }
 
+/*! \brief Called on a Close File menu option event.
+ */
+void TfpFrame::OnCloseFile( wxCommandEvent& event )
+{
+    CloseFile();
+    SetNoDatabase();
+}
+
 void TfpFrame::OnAttachNewFile( wxCommandEvent& event )
 {
     if ( event.GetId() == tfpID_FILE_ATTACH_NEW_FULL ) {
@@ -325,12 +335,14 @@ void TfpFrame::OnAttachCloseFile( wxCommandEvent& event )
     RefreshAttachedCloseMenu();
 }
 
-/*! \brief Called on a Close File menu option event.
- */
-void TfpFrame::OnCloseFile( wxCommandEvent& event )
+void TfpFrame::OnExternalOpenFile( wxCommandEvent& event )
 {
-    CloseFile();
-    SetNoDatabase();
+    wxMessageBox( _( "Not yet implimented" ), "OnExternalOpenFile" );
+}
+
+void TfpFrame::OnExternalCloseFile( wxCommandEvent& event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnExternalCloseFile" );
 }
 
 /*! \brief Called on a Inport GEDCOM File menu option event.
@@ -1984,16 +1996,23 @@ void TfpFrame::CreateFullMenuRW()
     menuFileAttach->Append( tfpID_FILE_ATTACH_OPEN, _( "&Open" ) );
     menuFileAttach->Append( tfpID_FILE_ATTACH_CLOSE, _( "&Close" ), m_menuFileAttachClose );
 
+    m_menuFileExternalClose = new wxMenu;
+
+    wxMenu* menuFileExternal = new wxMenu;
+    menuFileExternal->Append( tfpID_FILE_EXTERNAL_OPEN, _( "&Open" ) );
+    menuFileExternal->Append( tfpID_FILE_EXTERNAL_CLOSE, _( "&Close" ), m_menuFileExternalClose );
+
     wxMenu* menuFile = new wxMenu;
     menuFile->Append( tfpID_NEW_FILE, _( "&New Database\tCtrl-N" ) );
     menuFile->Append( tfpID_OPEN_FILE, _( "&Open Database\tCtrl-O" ) );
-    menuFile->Append( tfpID_FILE_ATTACH_MENU, _( "&Attach Database" ), menuFileAttach );
     menuFile->Append( tfpID_CLOSE_FILE, _( "&Close Database" ) );
+    menuFile->Append( tfpID_FILE_ATTACH_MENU, _( "&Associate Database" ), menuFileAttach );
+    menuFile->Append( tfpID_FILE_EXTERNAL_MENU, _( "&External Database" ), menuFileExternal );
     menuFile->AppendSeparator();
     menuFile->Append( tfpID_IMPORT_GEDCOM, _( "&Import GEDCOM file" ) );
     menuFile->AppendSeparator();
     menuFile->Append( tfpID_EXPORT_GEDCOM, _( "Export &GEDCOM file" ) );
-    menuFile->Append( tfpID_EXPORT_HTML, _( "&Export HTML files" ) );
+    menuFile->Append( tfpID_EXPORT_HTML, _( "Export &HTML files" ) );
     menuFile->AppendSeparator();
     menuFile->Append( tfpID_PRINT, _( "&Print...\tCtrl-P" ) );
     menuFile->Append( tfpID_PREVIEW, _( "Pre&view\tCtrl-Shift-P" ) );
