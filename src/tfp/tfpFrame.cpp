@@ -295,7 +295,7 @@ void TfpFrame::OnAttachNewFile( wxCommandEvent& event )
     switch ( ret )
     {
     case recDb::CreateReturn::OK:
-        recDb::AttachDb( dbpath, dbname );
+        recDb::OpenAssociateDb( dbpath, dbname );
         RefreshAttachedCloseMenu();
         return;
     case recDb::CreateReturn::FileExists:
@@ -320,10 +320,10 @@ void TfpFrame::OnAttachOpenFile( wxCommandEvent& event )
         wxString path = dialog.GetPath();
         wxFileName fname( path );
         wxString dbname = fname.GetName();
-        if ( !recDb::AttachDb( path, dbname ) ) {
+        if ( recDb::OpenAssociateDb( path, dbname ).empty() ) {
             wxMessageBox( wxString::Format( "Unable to attach database\n%s", path), "Attach Error" );
-            m_changeState = recDb::GetChange();
         }
+        m_changeState = recDb::GetChange();
         RefreshAttachedCloseMenu();
     }
 }
@@ -331,7 +331,7 @@ void TfpFrame::OnAttachOpenFile( wxCommandEvent& event )
 void TfpFrame::OnAttachCloseFile( wxCommandEvent& event )
 {
     wxString dbname = m_menuFileAttachClose->GetLabelText( event.GetId() );
-    recDb::DetachDb( dbname );
+    recDb::CloseAssociateDb( dbname );
     RefreshAttachedCloseMenu();
 }
 
@@ -1894,7 +1894,7 @@ void TfpFrame::RefreshEditMenu()
 
 void TfpFrame::RefreshAttachedCloseMenu()
 {
-    StringVec attached = recDb::GetAttachedDbList();
+    StringVec attached = recDb::GetAssociatedDbList();
     m_menuFileAttachClose->GetParent()->Enable( tfpID_FILE_ATTACH_CLOSE, !attached.empty() );
     for ( size_t i = 0; i < 10; i++ ) {
         int id = tfpID_FILE_ATTACH_CLOSE_0 + i;
