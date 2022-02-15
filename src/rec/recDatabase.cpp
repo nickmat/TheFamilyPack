@@ -88,7 +88,7 @@ recDb::DbType       recDb::s_dbtype = DbType::db_null;
 long                recDb::s_change = 0;
 long                recDb::s_spnumber = 0;
 recAssMap           recDb::s_assmap;
-
+StringVec           recDb::s_assvec;
 
 recDb::CreateReturn recDb::CreateDbFile( const wxString& fname, DbType type )
 {
@@ -188,6 +188,15 @@ recDb::DbType recDb::OpenDb( const wxString& fname )
     return type;
 }
 
+wxString recDb::OpenAssociateDb( const wxString& fname, const wxString& dbname )
+{
+    if( AttachDb( fname, dbname ) ) {
+        s_assvec.push_back( dbname );
+        return dbname;
+    }
+    return wxString();
+}
+
 bool recDb::AttachDb( const wxString& fname, const wxString& dbname )
 {
     wxFileName dbfile( fname );
@@ -227,12 +236,6 @@ bool recDb::DetachDb( const wxString& dbname )
     wxSQLite3StatementBuffer sql;
     sql.Format( "DETACH DATABASE \"%s\";", UTF8_( dbname ) );
     s_db->ExecuteUpdate( sql );
-    for ( auto a : s_assmap ) {
-        if ( a.second == dbname ) {
-            s_assmap.erase( a.first );
-            break;
-        }
-    }
     return true;
 }
 
@@ -281,6 +284,23 @@ void recDb::CloseDb()
     s_dbtype = DbType::db_null;
     ++s_change;
     s_assmap.clear();
+}
+
+void recDb::CloseAssociateDb( const wxString& dbname )
+{
+    DetachDb( dbname );
+    for( auto& a : s_assmap ) {
+        if( a.second == dbname ) {
+            s_assmap.erase( a.first );
+            break;
+        }
+    }
+    for( auto& n = s_assvec.begin(); n != s_assvec.end(); n++ ) {
+        if( *n == dbname ) {
+            s_assvec.erase( n );
+            break;
+        }
+    }
 }
 
 wxString recDb::GetFileName()

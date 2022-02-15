@@ -58,12 +58,14 @@ public:
     enum class Coverage {
         user, common, all
     };
+
 protected:
     static wxSQLite3Database* s_db;
     static DbType             s_dbtype;
     static long               s_change;
     static long               s_spnumber;
     static recAssMap          s_assmap;
+    static StringVec          s_assvec;
 
 public:
     /*! Delete the given record in the given table.
@@ -117,6 +119,10 @@ public:
      */
     static DbType OpenDb( const wxString& fname );
 
+    /*! Opens an existing database file as an Associate Database,
+     */
+    static wxString OpenAssociateDb( const wxString& fname, const wxString& dbname );
+
     /*! Attach fname to database as dbname.
     */
     static bool AttachDb( const wxString& fname, const wxString& dbname );
@@ -133,6 +139,10 @@ public:
     */
     static StringVec GetDatabaseList();
 
+    /*! Get a list of Associated databases.
+    */
+    static StringVec GetAssociatedDbList() { return s_assvec; }
+
     /*! Get Associate ID of attached database.
     */
     static idt GetAttachedDbAssID( const wxString& dbname );
@@ -140,6 +150,10 @@ public:
     /*! Closes the existing database file.
      */
     static void CloseDb();
+
+    /*! Closes an attached Associate database file.
+     */
+    static void CloseAssociateDb( const wxString& dbname );
 
     /*! Add entry to the attached Associate database map.
      */

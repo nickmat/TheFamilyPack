@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     19th September 2018
- * Copyright:   Copyright (c) 2018 .. 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2018..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -133,11 +133,13 @@ wxString recAssociate::GetAttachedName( idt assID )
     if ( s_db->GetDatabaseFilename( path ).empty() ) {
         if ( AttachDb( path, path ) ) {
             s_assmap[assID] = path;
+            s_assvec.push_back( path );
         } else {
             return wxString();
         }
     } else {
         s_assmap[assID] = path;
+        s_assvec.push_back( path );
     }
     return s_assmap[assID];
 }
