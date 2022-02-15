@@ -155,7 +155,7 @@ bool recDb::CreateDb( const wxString& fname, unsigned flags )
     CreateReturn ret = CreateDbFile( dbfname, DbType::full );
     if ( ret == CreateReturn::OK ) {
         s_db->Open( dbfname );
-        AddAssociateMap( 0, "Main" );
+        s_assmap[0] = "Main";
         return true;
     }
     return false;
@@ -184,7 +184,7 @@ recDb::DbType recDb::OpenDb( const wxString& fname )
         CloseDb();
         return DbType::db_null;
     }
-    AddAssociateMap( 0, "Main" );
+    s_assmap[0] = "Main";
     return type;
 }
 

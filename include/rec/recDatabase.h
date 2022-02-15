@@ -155,10 +155,6 @@ public:
      */
     static void CloseAssociateDb( const wxString& dbname );
 
-    /*! Add entry to the attached Associate database map.
-     */
-    static void AddAssociateMap( idt assID, const wxString& path ) { s_assmap[assID] = path; }
-
     /*! Returns true if the database is currently open.
     */
     static bool IsOpen() { return s_db->IsOpen(); }
