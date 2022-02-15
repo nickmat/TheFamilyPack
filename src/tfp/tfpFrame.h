@@ -57,10 +57,11 @@ private:
     wxMenuBar*          m_menuClosedDB;
     wxToolBar*          m_toolbar;
     wxStatusBar*        m_statusbar;
+    wxMenu*             m_menuFileAssociate;
+    wxMenu*             m_menuFileAssociateClose;
     wxMenu*             m_menuWindow;
     wxMenuItem*         m_menuWindowItem[10];
     size_t              m_menuWindowItemSize;
-    wxMenu*             m_menuFileAttachClose;
     wxMenu*             m_menuFileExternalClose;
     wxMenu*             m_menuEditInd;
     idt                 m_EditIndLeft;
@@ -96,6 +97,7 @@ private:
     // event handlers
     void OnMenuOpen( wxMenuEvent& event );
     void UpdateWindowMenu();
+    void UpdateFileAssociateMenu();
     void OnNewFile( wxCommandEvent& event );
     void OnOpenFile( wxCommandEvent& event );
     void OnCloseFile( wxCommandEvent& event );
@@ -198,7 +200,6 @@ private:
     void PushHtmName( const wxString& name );
     wxString GetCurrentName();
     void RefreshEditMenu();
-    void RefreshAttachedCloseMenu();
 
     wxString GetDisplay() const { return m_back[m_back.size()-1]; }
     bool DisplayHtmPage( const wxString& name );
