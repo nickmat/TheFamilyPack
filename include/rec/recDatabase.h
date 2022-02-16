@@ -224,13 +224,17 @@ public:
     bool EqualID( const recDb& r2 ) const { return f_id == r2.f_id; }
 
     static int ExecuteInt( const wxSQLite3StatementBuffer& sql );
-    static int ExecuteInt( const char* format, idt id );
+    static int ExecuteInt( const char* format, idt id, const wxString& dbname = "Main" );
+    static int ExecuteInt( const char* format, const wxString& dbname, idt id );
     static idt ExecuteID( const wxSQLite3StatementBuffer& sql );
-    static idt ExecuteID( const char* format, idt id );
+    static idt ExecuteID( const char* format, idt id, const wxString& dbname = "Main" );
+    static idt ExecuteID( const char* format, const wxString& dbname, idt id );
     static recIdVec ExecuteIdVec( const wxSQLite3StatementBuffer& sql );
-    static recIdVec ExecuteIdVec( const char* format, idt id );
+    static recIdVec ExecuteIdVec( const char* format, idt id, const wxString& dbname = "Main" );
+    static recIdVec ExecuteIdVec( const char* format, const wxString& dbname, idt id );
     static wxString ExecuteStr( const wxSQLite3StatementBuffer& sql );
-    static wxString ExecuteStr( const char* format, idt id );
+    static wxString ExecuteStr( const char* format, idt id, const wxString& dbname = "Main" );
+    static wxString ExecuteStr( const char* format, const wxString& dbname, idt id );
 };
 
 
