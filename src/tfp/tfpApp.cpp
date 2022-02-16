@@ -66,9 +66,8 @@ bool TfpApp::OnInit()
     }
 
     TfpFrame* frame = new TfpFrame( 
-        this, 
-        wxDefaultPosition, wxSize( 900, 700 ),
-        dbfname
+        this, wxDefaultPosition, wxSize( 900, 700 ),
+        dbfname, "Main"
     );
     frame->Show(true);
 

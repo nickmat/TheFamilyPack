@@ -51,6 +51,7 @@ private:
     DECLARE_EVENT_TABLE()
 
     TfpApp*             m_tfpApp;
+    wxString            m_dbname;
     long                m_changeState;
     wxMenuBar*          m_menuOpenDB;
     wxMenuBar*          m_menuMediaDB;
@@ -86,9 +87,8 @@ private:
 
 public:
     // ctor and dtor
-    TfpFrame( TfpApp* app,
-        const wxPoint& pos, const wxSize& size,
-        const wxString& dbfname );
+    TfpFrame( TfpApp* app, const wxPoint& pos, const wxSize& size,
+        const wxString& dbfilename, const wxString& dbname );
     virtual ~TfpFrame();
 
     rgCompareEvent& GetCompareEventData() { return m_compEvent; }

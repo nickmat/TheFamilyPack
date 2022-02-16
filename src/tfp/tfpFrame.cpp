@@ -151,10 +151,12 @@ TfpFrame::TfpFrame(
     TfpApp* app,
     const wxPoint& pos,
     const wxSize& size,
-    const wxString& dbfname )
+    const wxString& dbfilename,
+    const wxString& dbname )
     : m_tfpApp(app), wxFrame( (wxFrame*) nullptr, wxID_ANY, "TFP", pos, size )
 {
     app->AddFrame( this );
+    m_dbname = dbname;
     m_changeState = recDb::GetChange();
     // Set frames Icon
     SetIcon( wxICON( tfp ) );
@@ -171,12 +173,12 @@ TfpFrame::TfpFrame(
     m_browser->EnableHistory( false ); // We handle our own history.
 
     SetNoDatabase();
-    if( !dbfname.empty() ) {
-        OpenFilename( dbfname );
+    if( !dbfilename.empty() ) {
+        OpenFilename( dbfilename );
     }
     else if( recDb::IsOpen() ) {
         wxString fname = recDb::GetFileName();
-        recDb::DbType type = recDb::GetDatabaseType( "main" );
+        recDb::DbType type = recDb::GetDatabaseType( m_dbname );
         SetDatabaseMenu( fname, type );
     }
 }
@@ -1006,8 +1008,7 @@ void TfpFrame::OnSystemCheck( wxCommandEvent& event )
 void TfpFrame::OnWindowNew( wxCommandEvent& event )
 {
     TfpFrame* frame = new TfpFrame(
-        m_tfpApp, wxDefaultPosition, wxSize( 900, 700 ), ""
-    );
+        m_tfpApp, wxDefaultPosition, wxSize( 900, 700 ), "", m_dbname );
     frame->Show( true );
 }
 
