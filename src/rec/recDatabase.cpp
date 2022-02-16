@@ -410,6 +410,20 @@ int recDb::GetCount( const char* name )
     return s_db->ExecuteScalar( sql );
 }
 
+bool recDb::DoesTableExist( const char* table, const wxString& dbname )
+{
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT COUNT(*) FROM \"%s\".sqlite_master"
+        " WHERE type='table' AND name='%q' COLLATE NOCASE;",
+        UTF8_( dbname ), table
+    );
+    if( s_db->ExecuteScalar( sql ) == 1 ) {
+        return true;
+    }
+    return false;
+}
+
 recIdVec recDb::GetPositiveIDs( const char* table, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;

@@ -86,6 +86,8 @@ public:
      */
     static int GetCount( const char* table );
 
+    static bool DoesTableExist( const char* table, const wxString& dbname );
+
     /*! Return a list of all user (positive) id records in the given table.
      */
     static recIdVec GetPositiveIDs( const char* table, const wxString& dbname );
@@ -258,8 +260,8 @@ public:
     }
     static int UserCount() { return GetUserCount( T::s_tablename ); }
     static int Count() { return GetCount( T::s_tablename ); }
-    static bool TableExists( const wxString& db = wxEmptyString ) {
-        return  s_db->TableExists( T::s_tablename, db );
+    static bool TableExists( const wxString& dbname = "Main" ) {
+        return DoesTableExist( T::s_tablename, dbname );
     }
     static recIdVec PositiveIDs( const wxString& dbname = "Main" ) {
         return GetPositiveIDs( T::s_tablename, dbname );
