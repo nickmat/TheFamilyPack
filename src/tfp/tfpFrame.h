@@ -62,6 +62,7 @@ private:
     wxMenu*             m_menuWindow;
     wxMenuItem*         m_menuWindowItem[10];
     size_t              m_menuWindowItemSize;
+    wxMenu*             m_menuFileExternal;
     wxMenu*             m_menuFileExternalClose;
     wxMenu*             m_menuEditInd;
     idt                 m_EditIndLeft;
@@ -98,6 +99,7 @@ private:
     void OnMenuOpen( wxMenuEvent& event );
     void UpdateWindowMenu();
     void UpdateFileAssociateMenu();
+    void UpdateFileExternalMenu();
     void OnNewFile( wxCommandEvent& event );
     void OnOpenFile( wxCommandEvent& event );
     void OnCloseFile( wxCommandEvent& event );

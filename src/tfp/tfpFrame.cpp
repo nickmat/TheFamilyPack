@@ -210,6 +210,9 @@ void TfpFrame::OnMenuOpen( wxMenuEvent& event )
     else if( menu == m_menuFileAssociate ) {
         UpdateFileAssociateMenu();
     }
+    else if( menu == m_menuFileExternal ) {
+        UpdateFileExternalMenu();
+    }
     event.Skip();
 }
 
@@ -265,6 +268,34 @@ void TfpFrame::UpdateFileAssociateMenu()
             }
             else {
                 m_menuFileAssociateClose->Append( id, asslist[i] );
+            }
+        }
+    }
+}
+
+void TfpFrame::UpdateFileExternalMenu()
+{
+    StringVec extlist = recDb::GetExternalDbList();
+    if( extlist.empty() ) {
+        m_menuFileExternal->Enable( tfpID_FILE_EXTERNAL_CLOSE, false );
+    }
+    else {
+        m_menuFileExternal->Enable( tfpID_FILE_EXTERNAL_CLOSE, true );
+        for( size_t i = 0; i < 10; i++ ) {
+            int id = tfpID_FILE_EXTERNAL_CLOSE_0 + i;
+            wxMenuItem* item = m_menuFileExternalClose->FindItem( id );
+            if( i >= extlist.size() ) {
+                if( item ) {
+                    m_menuFileExternalClose->Delete( item );
+                    continue;
+                }
+                break;
+            }
+            if( item ) {
+                m_menuFileExternalClose->SetLabel( id, extlist[i] );
+            }
+            else {
+                m_menuFileExternalClose->Append( id, extlist[i] );
             }
         }
     }
@@ -365,12 +396,27 @@ void TfpFrame::OnAttachCloseFile( wxCommandEvent& event )
 
 void TfpFrame::OnExternalOpenFile( wxCommandEvent& event )
 {
-    wxMessageBox( _( "Not yet implimented" ), "OnExternalOpenFile" );
+    wxString caption = _( "Select External TFP Database to Attach" );
+    wxString wildcard = _( "TFP Database (*.tfpd)|*.tfpd" );
+    wxString defaultDir = ".";
+    wxString defaultFName = wxEmptyString;
+
+    wxFileDialog dialog( this, caption, defaultDir, defaultFName, wildcard, wxFD_OPEN );
+    if( dialog.ShowModal() == wxID_OK ) {
+        wxString path = dialog.GetPath();
+        wxFileName fname( path );
+        wxString dbname = fname.GetName();
+        if( recDb::OpenExternalDb( path, dbname ).empty() ) {
+            wxMessageBox( wxString::Format( "Unable to attach database\n%s", path ), "Attach Error" );
+        }
+        m_changeState = recDb::GetChange();
+    }
 }
 
 void TfpFrame::OnExternalCloseFile( wxCommandEvent& event )
 {
-    wxMessageBox( _( "Not yet implimented" ), "OnExternalCloseFile" );
+    wxString dbname = m_menuFileExternalClose->GetLabelText( event.GetId() );
+    recDb::CloseExternalDb( dbname );
 }
 
 /*! \brief Called on a Inport GEDCOM File menu option event.
@@ -2003,16 +2049,16 @@ void TfpFrame::CreateFullMenuRW()
 
     m_menuFileExternalClose = new wxMenu;
 
-    wxMenu* menuFileExternal = new wxMenu;
-    menuFileExternal->Append( tfpID_FILE_EXTERNAL_OPEN, _( "&Open" ) );
-    menuFileExternal->Append( tfpID_FILE_EXTERNAL_CLOSE, _( "&Close" ), m_menuFileExternalClose );
+    m_menuFileExternal = new wxMenu;
+    m_menuFileExternal->Append( tfpID_FILE_EXTERNAL_OPEN, _( "&Open" ) );
+    m_menuFileExternal->Append( tfpID_FILE_EXTERNAL_CLOSE, _( "&Close" ), m_menuFileExternalClose );
 
     wxMenu* menuFile = new wxMenu;
     menuFile->Append( tfpID_NEW_FILE, _( "&New Database\tCtrl-N" ) );
     menuFile->Append( tfpID_OPEN_FILE, _( "&Open Database\tCtrl-O" ) );
     menuFile->Append( tfpID_CLOSE_FILE, _( "&Close Database" ) );
     menuFile->Append( tfpID_FILE_ATTACH_MENU, _( "&Associate Database" ), m_menuFileAssociate );
-    menuFile->Append( tfpID_FILE_EXTERNAL_MENU, _( "&External Database" ), menuFileExternal );
+    menuFile->Append( tfpID_FILE_EXTERNAL_MENU, _( "&External Database" ), m_menuFileExternal );
     menuFile->AppendSeparator();
     menuFile->Append( tfpID_IMPORT_GEDCOM, _( "&Import GEDCOM file" ) );
     menuFile->AppendSeparator();
