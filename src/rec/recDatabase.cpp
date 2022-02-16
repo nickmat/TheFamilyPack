@@ -89,6 +89,7 @@ long                recDb::s_change = 0;
 long                recDb::s_spnumber = 0;
 recAssMap           recDb::s_assmap;
 StringVec           recDb::s_assvec;
+StringVec           recDb::s_extvec;
 
 recDb::CreateReturn recDb::CreateDbFile( const wxString& fname, DbType type )
 {
@@ -197,6 +198,15 @@ wxString recDb::OpenAssociateDb( const wxString& fname, const wxString& dbname )
     return wxString();
 }
 
+wxString recDb::OpenExternalDb( const wxString& fname, const wxString& dbname )
+{
+    if( AttachDb( fname, dbname ) ) {
+        s_extvec.push_back( dbname );
+        return dbname;
+    }
+    return wxString();
+}
+
 bool recDb::AttachDb( const wxString& fname, const wxString& dbname )
 {
     wxFileName dbfile( fname );
@@ -298,6 +308,17 @@ void recDb::CloseAssociateDb( const wxString& dbname )
     for( auto& n = s_assvec.begin(); n != s_assvec.end(); n++ ) {
         if( *n == dbname ) {
             s_assvec.erase( n );
+            break;
+        }
+    }
+}
+
+void recDb::CloseExternalDb( const wxString& dbname )
+{
+    DetachDb( dbname );
+    for( auto& n = s_extvec.begin(); n != s_extvec.end(); n++ ) {
+        if( *n == dbname ) {
+            s_extvec.erase( n );
             break;
         }
     }

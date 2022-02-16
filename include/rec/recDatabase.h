@@ -66,6 +66,7 @@ protected:
     static long               s_spnumber;
     static recAssMap          s_assmap;
     static StringVec          s_assvec;
+    static StringVec          s_extvec;
 
 public:
     /*! Delete the given record in the given table.
@@ -123,6 +124,10 @@ public:
      */
     static wxString OpenAssociateDb( const wxString& fname, const wxString& dbname );
 
+    /*! Opens an existing database file as an External Database,
+     */
+    static wxString OpenExternalDb( const wxString& fname, const wxString& dbname );
+
     /*! Attach fname to database as dbname.
     */
     static bool AttachDb( const wxString& fname, const wxString& dbname );
@@ -143,6 +148,10 @@ public:
     */
     static StringVec GetAssociatedDbList() { return s_assvec; }
 
+    /*! Get a list of External databases.
+    */
+    static StringVec GetExternalDbList() { return s_extvec; }
+
     /*! Get Associate ID of attached database.
     */
     static idt GetAttachedDbAssID( const wxString& dbname );
@@ -154,6 +163,10 @@ public:
     /*! Closes an attached Associate database file.
      */
     static void CloseAssociateDb( const wxString& dbname );
+
+    /*! Closes an attached External database file.
+     */
+    static void CloseExternalDb( const wxString& dbname );
 
     /*! Returns true if the database is currently open.
     */
