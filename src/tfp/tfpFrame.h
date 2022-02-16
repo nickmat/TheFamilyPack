@@ -86,7 +86,7 @@ private:
 
 public:
     // ctor and dtor
-    TfpFrame( TfpApp* app, const wxString& title,
+    TfpFrame( TfpApp* app,
         const wxPoint& pos, const wxSize& size,
         const wxString& dbfname );
     virtual ~TfpFrame();

@@ -149,11 +149,10 @@ END_EVENT_TABLE()
  */
 TfpFrame::TfpFrame(
     TfpApp* app,
-    const wxString& title,
     const wxPoint& pos,
     const wxSize& size,
     const wxString& dbfname )
-    : m_tfpApp(app), wxFrame( (wxFrame*) nullptr, wxID_ANY, title, pos, size )
+    : m_tfpApp(app), wxFrame( (wxFrame*) nullptr, wxID_ANY, "TFP", pos, size )
 {
     app->AddFrame( this );
     m_changeState = recDb::GetChange();
@@ -1007,7 +1006,7 @@ void TfpFrame::OnSystemCheck( wxCommandEvent& event )
 void TfpFrame::OnWindowNew( wxCommandEvent& event )
 {
     TfpFrame* frame = new TfpFrame(
-        m_tfpApp, "The Family Pack", wxDefaultPosition, wxSize( 900, 700 ), ""
+        m_tfpApp, wxDefaultPosition, wxSize( 900, 700 ), ""
     );
     frame->Show( true );
 }

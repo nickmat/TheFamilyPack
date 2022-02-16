@@ -66,7 +66,7 @@ bool TfpApp::OnInit()
     }
 
     TfpFrame* frame = new TfpFrame( 
-        this, "The Family Pack", 
+        this, 
         wxDefaultPosition, wxSize( 900, 700 ),
         dbfname
     );
