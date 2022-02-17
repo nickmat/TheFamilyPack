@@ -54,7 +54,7 @@ bool recGedExport::Export()
         "1 CHAR UTF-8\n"
     ;
 
-    recUserVec users = recUser::GetUsers();
+    recUserVec users = recUser::GetUsers( m_dbname );
     for( size_t i = 0 ; i < users.size() ; i++ ) {
         if( users[i].FGetID() == 0 ) {
             continue;

@@ -34,7 +34,7 @@
 extern void recInitialize();
 extern void recUninitialize();
 
-extern wxString recGetHomeDisplay();
+extern wxString recGetHomeDisplay( const wxString& dbname );
 
 class recDb
 {

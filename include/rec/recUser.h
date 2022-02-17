@@ -52,12 +52,12 @@ public:
     };
 
     recUserSetting() : f_user_id( 0 ), f_property( Property::unstated ) {}
-    recUserSetting( idt id ) : recDbT(id) { Read(); }
+    recUserSetting( idt id, const wxString& dbname = "Main" ) : recDbT( id ) { Read( dbname ); }
     recUserSetting( const recUserSetting& user );
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recUserSetting& r2 ) const;
 
     idt FGetUserID() const { return f_user_id; }
@@ -68,7 +68,7 @@ public:
     void FSetProperty( Property up ) { f_property = up; }
     void FSetValue( const wxString& val ) { f_val = val; }
 
-    void Find( idt userID, recUserSetting::Property prop );
+    void Find( idt userID, recUserSetting::Property prop, const wxString& dbname = "Main" );
 
 private:
     idt      f_user_id;
@@ -87,12 +87,12 @@ public:
     static constexpr const char* s_tablename = "User";
 
     recUser() : f_res_id(0) {}
-    recUser( idt id ) : recDbT(id) { Read(); }
+    recUser( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }
     recUser( const recUser& user );
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recUser& r2 ) const;
 
     idt FGetResID() const { return f_res_id; }
@@ -102,14 +102,19 @@ public:
     static wxString GetIdStr( idt userID ) { return wxString::Format( "U" ID, userID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
-    idt FindFirst( idt resID )
-        { return ExecuteID( "SELECT id FROM User WHERE res_id=" ID " ORDER BY id;", resID ); }
+    idt FindFirst( const wxString& dbname, idt resID )
+    {
+        return ExecuteID(
+            "SELECT id FROM \"%s\".User WHERE res_id=" ID " ORDER BY id;",
+            dbname, resID );
+    }
 
-    static recUserVec GetUsers();
+    static recUserVec GetUsers( const wxString& dbname = "Main");
 
     wxString GetNameStr() const;
-    static wxString GetSetting( idt userID, recUserSetting::Property prop );
-    wxString GetSetting( recUserSetting::Property prop ) const { return GetSetting( f_id, prop ); }
+    static wxString GetSetting( const wxString& dbname, idt userID, recUserSetting::Property prop );
+    wxString GetSetting( const wxString& dbname, recUserSetting::Property prop ) const {
+        return GetSetting( dbname, f_id, prop ); }
 
 private:
     idt  f_res_id;

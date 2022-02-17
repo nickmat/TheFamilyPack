@@ -67,16 +67,21 @@ extern void recUninitialize()
     calUninit();
 }
 
-wxString recGetHomeDisplay()
+wxString recGetHomeDisplay( const wxString& dbname )
 {
-    if( recUser::TableExists() ) {
-        return recUser::GetSetting( 
-            recGetCurrentUser(), recUserSetting::Property::home_screen 
-        );
+    try {
+        if( recUser::TableExists( dbname ) ) {
+            return recUser::GetSetting(
+                dbname, recGetCurrentUser(), recUserSetting::Property::home_screen
+            );
+        }
+        // Test for MediaData Only database.
+        if( recMediaData::TableExists( dbname ) ) {
+            return "MD";
+        }
     }
-    // Test for MediaData Only database.
-    if( recMediaData::TableExists() ) {
-        return "MD";
+    catch( wxSQLite3Exception& e ) {
+        recDb::ErrorMessage( e );
     }
     // Give up.
     return "About";

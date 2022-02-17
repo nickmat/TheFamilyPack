@@ -37,7 +37,8 @@ class recFamily;
 class recGedExport
 {
 public:
-    recGedExport( wxOutputStream& stream ) : m_out(stream), m_privacy(0) {}
+    recGedExport( wxOutputStream& stream, const wxString& dbname = "Main" )
+        : m_out(stream), m_dbname(dbname), m_privacy(0) {}
 
     void SetPrivacy( int privacy ) { m_privacy = privacy; }
 
@@ -53,6 +54,7 @@ private:
     void ExportPlace( idt placeID, int level );
 
     wxTextOutputStream m_out;
+    wxString m_dbname;
     int m_privacy;
 };
 
