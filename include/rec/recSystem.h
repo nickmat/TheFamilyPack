@@ -41,10 +41,10 @@ class recSystem : public recDbT<recSystem>
 public:
     static constexpr const char* s_tablename = "System";
 
-    enum Property {
-        SP_Unstated = 0,
-        SP_CurrentUser = 1,
-        SP_MAX
+    enum class Property {
+        unstated = 0,
+        current_user = 1,
+        max_property
     };
 
     recSystem() {}
@@ -71,11 +71,11 @@ private:
 };
 
 inline void recSetCurrentUser( idt userID ) {
-    recSystem::SetProperyValue( recSystem::SP_CurrentUser, userID );
+    recSystem::SetProperyValue( recSystem::Property::current_user, userID );
 }
 
 inline idt recGetCurrentUser( const wxString& dbname = "Main" ) {
-    return recSystem::GetPropertyValueID( recSystem::SP_CurrentUser, dbname );
+    return recSystem::GetPropertyValueID( recSystem::Property::current_user, dbname );
 }
 
 #endif // RECSYSTEM_H

@@ -37,11 +37,10 @@
 
 #include "rec/recDb.h"
 
-//#include <wx/filename.h>
 
 bool recGedExport::Export()
 {
-    idt cuser = recSystem::GetPropertyValueID( recSystem::SP_CurrentUser );
+    idt cuser = recGetCurrentUser( m_dbname );
     m_out <<
         "0 HEAD\n"
         "1 SOUR TFP\n"
