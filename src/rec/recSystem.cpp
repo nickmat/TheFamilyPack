@@ -52,7 +52,7 @@ void recSystem::Clear()
     f_val      = wxEmptyString;
 }
 
-void recSystem::Save()
+void recSystem::Save( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -60,8 +60,8 @@ void recSystem::Save()
     if( f_id == 0 ) {
         // Add new record
         sql.Format(
-            "INSERT INTO System (val) VALUES ('%q');",
-            UTF8_(f_val)
+            "INSERT INTO \"%s\".System (val) VALUES ('%q');",
+            UTF8_( dbname ), UTF8_(f_val)
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -70,22 +70,22 @@ void recSystem::Save()
         if( !Exists() ) {
             // Add new record
             sql.Format(
-                "INSERT INTO System (id, val)"
+                "INSERT INTO \"%s\".System (id, val)"
                 " VALUES (" ID " '%q');",
-                f_id, UTF8_(f_val)
+                UTF8_( dbname ), f_id, UTF8_(f_val)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE System SET val='%q' WHERE id=" ID ";",
-                UTF8_(f_val), f_id
+                "UPDATE \"%s\".System SET val='%q' WHERE id=" ID ";",
+                UTF8_( dbname ), UTF8_(f_val), f_id
             );
         }
         s_db->ExecuteUpdate( sql );
     }
 }
 
-bool recSystem::Read()
+bool recSystem::Read( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -96,8 +96,8 @@ bool recSystem::Read()
     }
 
     sql.Format(
-        "SELECT val FROM System WHERE id=" ID ";",
-        f_id
+        "SELECT val FROM \"%s\".System WHERE id=" ID ";",
+        UTF8_( dbname ), f_id
     );
     result = s_db->GetTable( sql );
 
@@ -115,15 +115,15 @@ bool recSystem::Equivalent( const recSystem& r2 ) const
     return f_val == r2.f_val;
 }
 
-wxString recSystem::GetPropertyValue( Property sp )
+wxString recSystem::GetPropertyValue( Property sp, const wxString& dbname )
 {
-    recSystem sys((idt) sp);
+    recSystem sys((idt) sp, dbname );
     return sys.FGetValue();
 }
 
-idt recSystem::GetPropertyValueID( Property sp )
+idt recSystem::GetPropertyValueID( Property sp, const wxString& dbname )
 {
-    recSystem sys((idt) sp);
+    recSystem sys((idt) sp, dbname );
     return recGetID( sys.FGetValue() );
 }
 

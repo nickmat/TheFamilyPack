@@ -48,20 +48,20 @@ public:
     };
 
     recSystem() {}
-    recSystem( idt id ) : recDbT(id) { Read(); }
+    recSystem( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }
     recSystem( const recSystem& user );
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recSystem& r2 ) const;
 
     wxString FGetValue() const { return f_val; }
 
     void FSetValue( const wxString& val ) { f_val = val; }
 
-    static wxString GetPropertyValue( Property sp );
-    static idt GetPropertyValueID( Property sp );
+    static wxString GetPropertyValue( Property sp, const wxString& dbname = "Main" );
+    static idt GetPropertyValueID( Property sp, const wxString& dbname = "Main" );
 
     static void SetProperyValue( Property sp, const wxString& value );
     static void SetProperyValue( Property sp, idt id );
@@ -74,8 +74,8 @@ inline void recSetCurrentUser( idt userID ) {
     recSystem::SetProperyValue( recSystem::SP_CurrentUser, userID );
 }
 
-inline idt recGetCurrentUser() {
-    return recSystem::GetPropertyValueID( recSystem::SP_CurrentUser );
+inline idt recGetCurrentUser( const wxString& dbname = "Main" ) {
+    return recSystem::GetPropertyValueID( recSystem::SP_CurrentUser, dbname );
 }
 
 #endif // RECSYSTEM_H

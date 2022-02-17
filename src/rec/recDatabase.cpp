@@ -71,8 +71,9 @@ wxString recGetHomeDisplay( const wxString& dbname )
 {
     try {
         if( recUser::TableExists( dbname ) ) {
+            idt userID = recGetCurrentUser( dbname );
             return recUser::GetSetting(
-                dbname, recGetCurrentUser(), recUserSetting::Property::home_screen
+                dbname, userID, recUserSetting::Property::home_screen
             );
         }
         // Test for MediaData Only database.
