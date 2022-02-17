@@ -409,8 +409,11 @@ void TfpFrame::OnExternalOpenFile( wxCommandEvent& event )
         wxString dbname = fname.GetName();
         if( recDb::OpenExternalDb( path, dbname ).empty() ) {
             wxMessageBox( wxString::Format( "Unable to attach database\n%s", path ), "Attach Error" );
+            return;
         }
-        m_changeState = recDb::GetChange();
+        TfpFrame* frame = new TfpFrame(
+            m_tfpApp, wxDefaultPosition, wxSize( 900, 700 ), "", dbname );
+        frame->Show( true );
     }
 }
 
@@ -2026,7 +2029,7 @@ void TfpFrame::RefreshHtmPage()
 
 bool TfpFrame::DisplayHomePage()
 {
-    wxString page = recGetHomeDisplay();
+    wxString page = recGetHomeDisplay( m_dbname );
     if( page.empty() ) {
         page = "BLANK";
     }
