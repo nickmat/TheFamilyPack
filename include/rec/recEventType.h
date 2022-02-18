@@ -79,12 +79,12 @@ public:
     wxString        f_name;
 
     recEventType() : f_grp( recEventTypeGrp::unstated ) {}
-    recEventType( idt id ) : recDbT(id) { Read(); }
+    recEventType( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }
     recEventType( const recEventType& et );
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recEventType& r2 ) const;
 
     static wxString GetIdStr( idt evID ) { return wxString::Format( "ET" ID, evID ); }
@@ -96,26 +96,30 @@ public:
     void FSetGrp( recEventTypeGrp grp ) { f_grp = grp; }
     void FSetName( wxString name ) { f_name = name; }
 
-    static wxString GetName( idt typeID );
+    static wxString GetName( idt typeID, const wxString& dbname = "Main" );
 
     bool HasDateSpan() const;
-    static bool HasDateSpan( idt etID );
+    static bool HasDateSpan( idt etID, const wxString& dbname = "Main" );
 
-    wxString GetGroupStr() const { return GetGroupValueStr( f_grp ); }
-    static wxString GetGroupStr( idt etID );
+    wxString GetGroupStr() const {
+        return GetGroupValueStr( f_grp ); }
+    static wxString GetGroupStr( idt etID, const wxString& dbname = "Main" );
     static wxString GetGroupValueStr( recEventTypeGrp grp );
 
     static wxArrayString GetGroupStrings( size_t start = 0 );
 
-    static wxString GetTypeStr( idt id );
+    static wxString GetTypeStr( idt id, const wxString& dbname = "Main" );
     wxString GetTypeStr() const { return f_name; }
-    static recEventTypeGrp GetGroup( idt id );
+    static recEventTypeGrp GetGroup( idt id, const wxString& dbname = "Main" );
 
-    static recEventTypeVec ReadVec( unsigned filter = recET_GRP_FILTER_AllValid );
+    static recEventTypeVec ReadVec(
+        unsigned filter = recET_GRP_FILTER_AllValid, const wxString& dbname = "Main" );
 
-    static recEventTypeRoleVec GetRoles( idt typeID );
-    recEventTypeRoleVec GetRoles() const { return GetRoles( FGetID() ); }
-    static recEventTypeRoleVec GetPrimeRoles( idt typeID, int prime = 0 );
+    static recEventTypeRoleVec GetRoles( idt typeID, const wxString& dbname = "Main" );
+    recEventTypeRoleVec GetRoles( const wxString& dbname = "Main" ) const {
+        return GetRoles( FGetID(), dbname ); }
+    static recEventTypeRoleVec GetPrimeRoles(
+        idt typeID, int prime = 0, const wxString& dbname = "Main" );
 
     static idt GetSummaryRole( idt typeID );
 };

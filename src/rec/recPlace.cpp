@@ -159,7 +159,7 @@ idt recPlace::Create( idt placeID )
     return Create( GetAddressStr( placeID ) );
 }
 
-wxString recPlace::GetAddressStr( idt id )
+wxString recPlace::GetAddressStr( idt id, const wxString& dbname )
 {
     if( id == 0 ) return wxEmptyString;
 
@@ -168,8 +168,8 @@ wxString recPlace::GetAddressStr( idt id )
     wxSQLite3Table result;
 
     sql.Format(
-        "SELECT val FROM PlacePart WHERE place_id=" ID " "
-        "ORDER BY sequence;", id
+        "SELECT val FROM \"%s\".PlacePart WHERE place_id=" ID " "
+        "ORDER BY sequence;", UTF8_( dbname ), id
     );
     result = s_db->GetTable( sql );
 

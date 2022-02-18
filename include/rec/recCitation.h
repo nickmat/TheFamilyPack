@@ -55,12 +55,12 @@ public:
     static constexpr const char* s_tablename = "Citation";
 
     recCitation() : f_higher_id(0), f_ref_id(0), f_ref_seq(0), f_rep_id(0) {}
-    recCitation( idt id ) : recDbT( id ) { Read(); }
+    recCitation( idt id, const wxString& dbname = "Main" ) : recDbT( id ) { Read( dbname ); }
     recCitation( const recCitation& source );
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recCitation& r2 ) const;
 
     idt FGetHigherID() const { return f_higher_id; }
@@ -80,11 +80,12 @@ public:
 
     int GetNextRefSequence( idt refID ) const;
 
-    static recCitationPartVec GetPartList( idt citID );
-    recCitationPartVec GetPartList() const { return GetPartList( f_id ); }
+    static recCitationPartVec GetPartList( idt citID, const wxString& dbname = "Main" );
+    recCitationPartVec GetPartList( const wxString& dbname = "Main" ) const {
+        return GetPartList( f_id, dbname ); }
 
-    static wxString GetCitationStr( idt citID );
-    wxString GetCitationStr() const;
+    static wxString GetCitationStr( idt citID, const wxString& dbname = "Main" );
+    wxString GetCitationStr( const wxString& dbname = "Main" ) const;
 
     static void Renumber( idt id, idt to_id );
     static std::string CsvTitles();
@@ -109,12 +110,12 @@ public:
     static constexpr const char* s_tablename = "Repository";
 
     recRepository() : f_con_list_id(0) {}
-    recRepository( idt id ) : recDbT( id ) { Read(); }
+    recRepository( idt id, const wxString& dbname = "Main" ) : recDbT( id ) { Read( dbname ); }
     recRepository( const recRepository& source );
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recRepository& r2 ) const;
 
     wxString FGetName() const { return f_name; }
@@ -128,7 +129,7 @@ public:
     static wxString GetIdStr( idt repID ) { return wxString::Format( "Ar" ID, repID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
-    static recRepositoryVec GetFullList();
+    static recRepositoryVec GetFullList( const wxString& dbname = "Main" );
 
     static void Renumber( idt fromID, idt toID );
     static std::string CsvTitles();
@@ -155,12 +156,12 @@ public:
     static constexpr const char* s_tablename = "CitationPart";
 
     recCitationPart() : f_cit_id(0), f_type_id(0), f_cit_seq(0) {}
-    recCitationPart( idt id ) : recDbT( id ) { Read(); }
+    recCitationPart( idt id, const wxString& dbname = "Main" ) : recDbT( id ) { Read( dbname ); }
     recCitationPart( const recCitationPart& source );
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recCitationPart& r2 ) const;
 
     idt FGetCitID() const { return f_cit_id; }
@@ -201,12 +202,12 @@ public:
     static constexpr const char* s_tablename = "CitationPartType";
 
     recCitationPartType() : f_style(0) {}
-    recCitationPartType( idt id ) : recDbT(id) { Read(); }
+    recCitationPartType( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }
     recCitationPartType( const recCitationPartType& at );
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recCitationPartType& r2 ) const;
 
     wxString FGetName() const { return f_name; }
@@ -220,9 +221,9 @@ public:
     static wxString GetIdStr( idt ciptID ) { return wxString::Format( "CiPT" ID, ciptID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
-    static wxString GetStr( idt id );
+    static wxString GetStr( idt id, const wxString& dbname = "Main" );
 
-    static recCitationPartTypeVec GetList();
+    static recCitationPartTypeVec GetList( const wxString& dbname = "Main" );
 
     static void Renumber( idt fromID, idt toID );
     static std::string CsvTitles();

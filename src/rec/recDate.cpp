@@ -87,7 +87,7 @@ void recDate::Clear()
     f_display_sch = CALENDAR_SCH_Unstated;
 }
 
-void recDate::Save()
+void recDate::Save( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -96,10 +96,10 @@ void recDate::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO Date "
+            "INSERT INTO \"%s\".Date "
             "(jdn, range, rel_id, type, descrip, record_sch, display_sch) "
             "VALUES (%ld, %ld, " ID ", %u, '%q', %d, %d);",
-            f_jdn, f_range, f_rel_id, f_type, UTF8_(f_descrip),
+            UTF8_( dbname ), f_jdn, f_range, f_rel_id, f_type, UTF8_(f_descrip),
             f_record_sch, f_display_sch
         );
         s_db->ExecuteUpdate( sql );
@@ -110,19 +110,19 @@ void recDate::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO Date "
+                "INSERT INTO \"%s\".Date "
                 "(id, jdn, range, rel_id, type, descrip, record_sch, display_sch) "
                 "VALUES (" ID ", %ld, %ld, " ID ", %u, '%q', %d, %d);",
-                f_id, f_jdn, f_range, f_rel_id, f_type, UTF8_(f_descrip),
+                UTF8_( dbname ), f_id, f_jdn, f_range, f_rel_id, f_type, UTF8_(f_descrip),
                 f_record_sch, f_display_sch
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE Date SET jdn=%ld, range=%ld, rel_id=" ID ", "
+                "UPDATE \"%s\".Date SET jdn=%ld, range=%ld, rel_id=" ID ", "
                 "type=%u, descrip='%q', record_sch=%d, display_sch=%d "
                 "WHERE id=" ID ";",
-                f_jdn, f_range, f_rel_id, f_type, UTF8_(f_descrip),
+                UTF8_( dbname ), f_jdn, f_range, f_rel_id, f_type, UTF8_(f_descrip),
                 f_record_sch, f_display_sch, f_id
             );
         }
@@ -130,7 +130,7 @@ void recDate::Save()
     }
 }
 
-bool recDate::Read()
+bool recDate::Read( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -142,8 +142,8 @@ bool recDate::Read()
 
     sql.Format(
         "SELECT jdn, range, rel_id, type, descrip, record_sch, display_sch "
-        "FROM Date WHERE id=" ID ";",
-        f_id
+        "FROM \"%s\".Date WHERE id=" ID ";",
+        UTF8_( dbname ), f_id
     );
     result = s_db->GetTable( sql );
 
@@ -329,9 +329,9 @@ wxString recDate::GetStr( CalendarScheme scheme ) const
     );
 }
 
-wxString recDate::GetStr( idt id )
+wxString recDate::GetStr( idt id, const wxString& dbname )
 {
-    recDate d( id );
+    recDate d( id, dbname );
     return d.GetStr();
 }
 
@@ -665,7 +665,7 @@ void recRelativeDate::Clear()
     f_scheme  = CALENDAR_SCH_Unstated;
 }
 
-void recRelativeDate::Save()
+void recRelativeDate::Save( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -674,10 +674,10 @@ void recRelativeDate::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO RelativeDate "
+            "INSERT INTO \"%s\".RelativeDate "
             "(val, range, unit, base_id, type, scheme) "
             "VALUES (%ld, %ld, %d, " ID ", %d, %d);",
-            f_val, f_range, f_unit, f_base_id, f_type, f_scheme
+            UTF8_( dbname ), f_val, f_range, f_unit, f_base_id, f_type, f_scheme
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -687,25 +687,25 @@ void recRelativeDate::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO RelativeDate "
+                "INSERT INTO \"%s\".RelativeDate "
                 "(id, val, range, unit, base_id, type, scheme) "
                 "VALUES (" ID ", %ld, %ld, %d, " ID ", %d, %d);",
-                f_id, f_val, f_range, f_unit, f_base_id, f_type, f_scheme
+                UTF8_( dbname ), f_id, f_val, f_range, f_unit, f_base_id, f_type, f_scheme
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE RelativeDate SET val=%ld, range=%ld, unit=%d, base_id=" ID ", "
+                "UPDATE \"%s\".RelativeDate SET val=%ld, range=%ld, unit=%d, base_id=" ID ", "
                 "type=%d, scheme=%d "
                 "WHERE id=" ID ";",
-                f_val, f_range, f_unit, f_base_id, f_type, f_scheme, f_id
+                UTF8_( dbname ), f_val, f_range, f_unit, f_base_id, f_type, f_scheme, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
     }
 }
 
-bool recRelativeDate::Read()
+bool recRelativeDate::Read( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -717,8 +717,8 @@ bool recRelativeDate::Read()
 
     sql.Format(
         "SELECT val, range, unit, base_id, type, scheme"
-        " FROM RelativeDate WHERE id=" ID ";",
-        f_id
+        " FROM \"%s\".RelativeDate WHERE id=" ID ";",
+        UTF8_( dbname ), f_id
     );
     result = s_db->GetTable( sql );
 

@@ -74,8 +74,9 @@ public:
     static idt Create( const wxString& str );
     static idt Create( idt placeID ); // Clone
 
-    wxString GetAddressStr() const { return GetAddressStr( f_id ); }
-    static wxString GetAddressStr( idt id );
+    wxString GetAddressStr( const wxString& dbname = "Main" ) const {
+        return GetAddressStr( f_id, dbname ); }
+    static wxString GetAddressStr( idt id, const wxString& dbname = "Main" );
 
     recPlacePartVec GetPlaceParts() const { return GetPlaceParts( f_id ); }
     static recPlacePartVec GetPlaceParts( idt placeID );

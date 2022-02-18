@@ -75,7 +75,7 @@ void recEventa::Clear()
     f_date_pt  = 0;
 }
 
-void recEventa::Save()
+void recEventa::Save( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -84,11 +84,11 @@ void recEventa::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO Eventa "
+            "INSERT INTO \"%s\".Eventa "
             "(title, ref_id, type_id, date1_id, date2_id, place_id, note, date_pt) "
             "VALUES ('%q', " ID ", " ID ", " ID ", " ID ", " ID ", '%q', %ld);",
-            UTF8_(f_title), f_ref_id, f_type_id, f_date1_id, f_date2_id, f_place_id,
-            UTF8_(f_note), f_date_pt
+            UTF8_( dbname ), UTF8_(f_title), f_ref_id, f_type_id,
+            f_date1_id, f_date2_id, f_place_id, UTF8_(f_note), f_date_pt
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -98,28 +98,28 @@ void recEventa::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO Eventa "
+                "INSERT INTO \"%s\".Eventa "
                 "(id, title, ref_id, type_id, date1_id, date2_id, place_id, note, date_pt) "
                 "VALUES (" ID ", '%q', " ID ", " ID ", " ID ", " ID ", " ID ", '%q', %ld);",
-                f_id, UTF8_(f_title), f_ref_id, f_type_id, f_date1_id, f_date2_id, f_place_id,
-                UTF8_(f_note), f_date_pt
+                UTF8_( dbname ), f_id, UTF8_(f_title), f_ref_id, f_type_id,
+                f_date1_id, f_date2_id, f_place_id, UTF8_(f_note), f_date_pt
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE Eventa SET "
+                "UPDATE \"%s\".Eventa SET "
                 "title='%q', ref_id=" ID ", type_id=" ID ", date1_id=" ID ", date2_id=" ID ", place_id=" ID ", "
                 "note='%q', date_pt=%ld "
                 "WHERE id=" ID ";",
-                UTF8_(f_title), f_ref_id, f_type_id, f_date1_id, f_date2_id, f_place_id,
-                UTF8_(f_note), f_date_pt, f_id
+                UTF8_( dbname ), UTF8_(f_title), f_ref_id, f_type_id,
+                f_date1_id, f_date2_id, f_place_id, UTF8_(f_note), f_date_pt, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
     }
 }
 
-bool recEventa::Read()
+bool recEventa::Read( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -131,8 +131,8 @@ bool recEventa::Read()
 
     sql.Format(
         "SELECT title, ref_id, type_id, date1_id, date2_id, place_id, note, date_pt"
-        " FROM Eventa WHERE id=" ID ";",
-        f_id
+        " FROM \"%s\".Eventa WHERE id=" ID ";",
+        UTF8_( dbname ), f_id
     );
     result = s_db->GetTable( sql );
 
@@ -153,7 +153,8 @@ bool recEventa::Read()
     return true;
 }
 
-wxString recEventa::SetAutoTitle( const wxString& name1, const wxString& name2 )
+wxString recEventa::SetAutoTitle(
+    const wxString& name1, const wxString& name2, const wxString& dbname )
 {
     f_title = wxEmptyString;
     wxString n1, n2;
@@ -164,7 +165,7 @@ wxString recEventa::SetAutoTitle( const wxString& name1, const wxString& name2 )
         n1 = name2;
         n2 = name1;
     }
-    wxString type = recEventType::GetTypeStr( f_type_id );
+    wxString type = recEventType::GetTypeStr( f_type_id, dbname );
     if( type.size() ) {
         f_title << type << " of ";
     } else {
@@ -181,86 +182,96 @@ wxString recEventa::SetAutoTitle( const wxString& name1, const wxString& name2 )
     return f_title;
 }
 
-wxString recEventa::GetDetailStr() const
+wxString recEventa::GetDetailStr( const wxString& dbname ) const
 {
     wxString str;
-    str << recDate::GetStr( f_date1_id );
+    str << recDate::GetStr( f_date1_id, dbname );
     if( !str.empty() && f_place_id != 0 ) {
         str << ", ";
     }
-    str << recPlace::GetAddressStr( f_place_id );
+    str << recPlace::GetAddressStr( f_place_id, dbname );
     return str;
 }
 
-wxString recEventa::GetTypeStr() const
+wxString recEventa::GetTypeStr( const wxString& dbname ) const
 {
-    return recEventType::GetTypeStr( f_type_id );
+    return recEventType::GetTypeStr( f_type_id, dbname );
 }
 
-wxString recEventa::GetDateStr() const
+wxString recEventa::GetDateStr( const wxString& dbname ) const
 {
     wxString str;
-    str << recDate::GetStr( f_date1_id );
+    str << recDate::GetStr( f_date1_id, dbname );
     if( f_date2_id != 0 ) {
-        str << _(" To ") << recDate::GetStr( f_date2_id );
+        str << _(" To ") << recDate::GetStr( f_date2_id, dbname );
     }
     return str;
 }
 
-wxString recEventa::GetAddressStr() const
+wxString recEventa::GetAddressStr( const wxString& dbname ) const
 {
-    return recPlace::GetAddressStr( f_place_id );
+    return recPlace::GetAddressStr( f_place_id, dbname );
 }
 
-recEventTypeGrp recEventa::GetTypeGroup() const
+recEventTypeGrp recEventa::GetTypeGroup( const wxString& dbname ) const
 {
-    return recEventType::GetGroup( f_type_id );
+    return recEventType::GetGroup( f_type_id, dbname );
 }
 
 
-wxString recEventa::GetDetailStr( idt id )
+wxString recEventa::GetDetailStr( idt id, const wxString& dbname )
 {
-    recEventa e( id );
-    return e.GetDetailStr();
+    recEventa e( id, dbname );
+    return e.GetDetailStr( dbname );
 }
 
-wxString recEventa::GetTypeStr( idt id )
+wxString recEventa::GetTypeStr( idt id, const wxString& dbname )
 {
     idt typeID = ExecuteID(
-        "SELECT type_id FROM Eventa WHERE id=" ID ";", id
+        "SELECT type_id FROM \"%s\".Eventa WHERE id=" ID ";",
+        UTF8_( dbname ), id
     );
     return recEventType::GetTypeStr( typeID );
 }
 
-wxString recEventa::GetTitle( idt evID )
+wxString recEventa::GetTitle( idt evID, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3ResultSet result;
 
-    sql.Format( "SELECT title FROM Eventa WHERE id=" ID ";", evID );
+    sql.Format( "SELECT title FROM \"%s\".Eventa WHERE id=" ID ";", UTF8_( dbname ), evID );
     result = s_db->ExecuteQuery( sql );
     return result.GetAsString( 0 );
 }
 
-idt recEventa::GetRefID( idt eaID )
+idt recEventa::GetRefID( idt eaID, const wxString& dbname )
 {
     if ( eaID == 0 ) return 0;
-    return ExecuteID( "SELECT ref_id FROM Eventa WHERE id=" ID ";", eaID );
+    return ExecuteID(
+        "SELECT ref_id FROM \"%s\".Eventa WHERE id=" ID ";",
+        UTF8_( dbname ), eaID
+    );
 }
 
-idt recEventa::GetDate1ID( idt evID )
+idt recEventa::GetDate1ID( idt evID, const wxString& dbname )
 {
     if ( evID == 0 ) return 0;
-    return ExecuteID( "SELECT date1_id FROM Eventa WHERE id=" ID ";", evID );
+    return ExecuteID(
+        "SELECT date1_id FROM \"%s\".Eventa WHERE id=" ID ";",
+        UTF8_( dbname ), evID
+    );
 }
 
-wxString recEventa::GetDateStr( idt evID )
+wxString recEventa::GetDateStr( idt evID, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3ResultSet result;
     wxString str;
 
-    sql.Format( "SELECT date1_id, date2_id FROM Eventa WHERE id=" ID ";", evID );
+    sql.Format(
+        "SELECT date1_id, date2_id FROM \"%s\".Eventa WHERE id=" ID ";",
+        UTF8_( dbname ), evID
+    );
     result = s_db->ExecuteQuery( sql );
     if( result.Eof() ) return str;
 
@@ -273,25 +284,29 @@ wxString recEventa::GetDateStr( idt evID )
     return str;
 }
 
-wxString recEventa::GetAddressStr( idt evID )
+wxString recEventa::GetAddressStr( idt evID, const wxString& dbname )
 {
     idt placeID = ExecuteID(
-        "SELECT place_id FROM Eventa WHERE id=" ID ";", evID
+        "SELECT place_id FROM \"%s\".Eventa WHERE id=" ID ";",
+        UTF8_( dbname ), evID
     );
     return recPlace::GetAddressStr( placeID );
 }
 
-wxString recEventa::GetNote( idt id )
+wxString recEventa::GetNote( idt id, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3ResultSet result;
 
-    sql.Format( "SELECT note FROM Eventa WHERE id=" ID ";", id );
+    sql.Format(
+        "SELECT note FROM \"%s\".Eventa WHERE id=" ID ";",
+        UTF8_( dbname ), id
+    );
     result = s_db->ExecuteQuery( sql );
     return result.GetAsString( 0 );
 }
 
-recEventEventaVec recEventa::GetEventEventas( idt erID )
+recEventEventaVec recEventa::GetEventEventas( idt erID, const wxString& dbname )
 {
     recEventEventaVec vec;
     wxSQLite3StatementBuffer sql;
@@ -299,8 +314,8 @@ recEventEventaVec recEventa::GetEventEventas( idt erID )
 
     sql.Format(
         "SELECT id, event_id, conf, note FROM "
-        "  EventEventa WHERE eventa_id=" ID ";",
-        erID
+        "  \"%s\".EventEventa WHERE eventa_id=" ID ";",
+        UTF8_( dbname ), erID
     );
     result = s_db->ExecuteQuery( sql );
 
@@ -316,15 +331,15 @@ recEventEventaVec recEventa::GetEventEventas( idt erID )
     return vec;
 }
 
-bool recEventa::IsFamilyEvent( idt eveID )
+bool recEventa::IsFamilyEvent( idt eveID, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3ResultSet result;
 
     sql.Format(
-        "SELECT ET.grp FROM Eventa E, EventType ET"
+        "SELECT ET.grp FROM \"%s\".Eventa E, \"%s\".EventType ET"
         " WHERE E.type_id=ET.id AND E.id=" ID ";",
-        eveID
+        UTF8_( dbname ), UTF8_( dbname ), eveID
     );
     result = s_db->ExecuteQuery( sql );
     recEventTypeGrp grp = recEventTypeGrp( result.GetInt( 0 ) );
@@ -334,16 +349,16 @@ bool recEventa::IsFamilyEvent( idt eveID )
     return false;
 }
 
-recEventaPersonaVec recEventa::GetEventaPersonas( idt eaID )
+recEventaPersonaVec recEventa::GetEventaPersonas( idt eaID, const wxString& dbname )
 {
     recEventaPersonaVec vec;
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
         "SELECT id, per_id, role_id, note, per_seq"
-        " FROM EventaPersona WHERE eventa_id=" ID
+        " FROM \"%s\".EventaPersona WHERE eventa_id=" ID
         " ORDER BY per_seq;",
-        eaID
+        UTF8_( dbname ), UTF8_( dbname ), eaID
     );
     wxSQLite3Table table = s_db->GetTable( sql );
 
@@ -362,15 +377,15 @@ recEventaPersonaVec recEventa::GetEventaPersonas( idt eaID )
     return vec;
 }
 
-void recEventa::UpdateDatePoint( idt evID )
+void recEventa::UpdateDatePoint( idt evID, const wxString& dbname )
 {
-    recEventa ev(evID);
-    ev.UpdateDatePoint();
+    recEventa ev( evID, dbname );
+    ev.UpdateDatePoint( dbname );
 }
 
-void recEventa::UpdateDatePoint()
+void recEventa::UpdateDatePoint( const wxString& dbname )
 {
-    recEventTypeGrp grp = recEventType::GetGroup( f_type_id );
+    recEventTypeGrp grp = recEventType::GetGroup( f_type_id, dbname );
     switch( grp )
     {
     case recEventTypeGrp::birth:
@@ -470,17 +485,21 @@ void recEventa::DeleteIfOrphaned( idt id )
     RemoveFromDatabase( id );
 }
 
-wxSQLite3Table recEventa::GetTitleList()
-{
-    return s_db->GetTable( "SELECT id, title FROM Eventa ORDER BY id;" );
-}
-
-wxSQLite3Table recEventa::GetTitleList( idt offset, int limit )
+wxSQLite3Table recEventa::GetTitleList( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "SELECT id, title FROM Eventa ORDER BY id LIMIT " ID ", %d;",
-        offset, limit
+        "SELECT id, title FROM \"%s\".Eventa ORDER BY id;", UTF8_( dbname )
+    );
+    return s_db->GetTable( sql );
+}
+
+wxSQLite3Table recEventa::GetTitleList( idt offset, int limit, const wxString& dbname )
+{
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT id, title FROM \"%s\".Eventa ORDER BY id LIMIT " ID ", %d;",
+        UTF8_( dbname ), offset, limit
     );
     return s_db->GetTable( sql );
 }
@@ -490,13 +509,13 @@ int recEventa::GetLastPerSeqNumber( idt eventID )
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "SELECT MAX(per_seq) FROM EventaPersona WHERE eventa_id=" ID ";",
+        "SELECT MAX(per_seq) FROM \"%s\".EventaPersona WHERE eventa_id=" ID ";",
         eventID
     );
     return s_db->ExecuteScalar( sql );
 }
 
-recFamilyEventaVec recEventa::GetFamilyEventas( idt eaID )
+recFamilyEventaVec recEventa::GetFamilyEventas( idt eaID, const wxString& dbname )
 {
     recFamilyEventaVec vec;
     wxSQLite3StatementBuffer sql;
@@ -504,8 +523,8 @@ recFamilyEventaVec recEventa::GetFamilyEventas( idt eaID )
 
     sql.Format(
         "SELECT id, fam_id, conf, note FROM "
-        "  FamilyEventa WHERE eventa_id=" ID ";",
-        eaID
+        "  \"%s\".FamilyEventa WHERE eventa_id=" ID ";",
+        UTF8_( dbname ), eaID
     );
     result = s_db->ExecuteQuery( sql );
 
@@ -521,7 +540,7 @@ recFamilyEventaVec recEventa::GetFamilyEventas( idt eaID )
     return vec;
 }
 
-recFamilyIndEventaVec recEventa::GetFamilyIndEventas( idt eaID )
+recFamilyIndEventaVec recEventa::GetFamilyIndEventas( idt eaID, const wxString& dbname )
 {
     recFamilyIndEventaVec vec;
     wxSQLite3StatementBuffer sql;
@@ -529,8 +548,8 @@ recFamilyIndEventaVec recEventa::GetFamilyIndEventas( idt eaID )
 
     sql.Format(
         "SELECT id, fam_ind_id, conf, note FROM "
-        "  FamilyIndEventa WHERE eventa_id=" ID ";",
-        eaID
+        "  \"%s\".FamilyIndEventa WHERE eventa_id=" ID ";",
+        UTF8_( dbname ), eaID
     );
     result = s_db->ExecuteQuery( sql );
 
@@ -546,19 +565,19 @@ recFamilyIndEventaVec recEventa::GetFamilyIndEventas( idt eaID )
     return vec;
 }
 
-recIdVec recEventa::GetLinkedEventIDs( idt eaID )
+recIdVec recEventa::GetLinkedEventIDs( idt eaID, const wxString& dbname )
 {
     return ExecuteIdVec(
-        "SELECT event_id FROM EventEventa"
+        "SELECT event_id FROM \"%s\".EventEventa"
         " WHERE eventa_id=" ID
         " ORDER BY event_id;",
-        eaID
-        );
+        UTF8_( dbname ), eaID
+    );
 }
 
-wxString recEventa::GetLinkedEventIDsStr( idt eaID )
+wxString recEventa::GetLinkedEventIDsStr( idt eaID, const wxString& dbname )
 {
-    recIdVec eveIDs = GetLinkedEventIDs( eaID );
+    recIdVec eveIDs = GetLinkedEventIDs( eaID, dbname );
     wxString str;
     for ( size_t i = 0; i < eveIDs.size(); i++ ) {
         if ( i ) {
@@ -569,27 +588,29 @@ wxString recEventa::GetLinkedEventIDsStr( idt eaID )
     return str;
 }
 
-recIdVec recEventa::FindLinkedEventsViaInd() const
+recIdVec recEventa::FindLinkedEventsViaInd( const wxString& dbname ) const
 {
-    return ExecuteIdVec(
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
         "SELECT IE.event_id"
-        " FROM EventaPersona EP, IndividualPersona IP,"
-        " IndividualEvent IE, EventTypeRole ETR"
+        " FROM \"%s\".EventaPersona EP, \"%s\".IndividualPersona IP,"
+        " \"%s\".IndividualEvent IE, \"%s\".EventTypeRole ETR"
         " WHERE EP.eventa_id=" ID
         " AND EP.per_id=IP.per_id AND IP.ind_id=IE.ind_id"
         " AND EP.role_id=IE.role_id"
         " AND EP.role_id=ETR.id AND ETR.prime>0"
         " GROUP BY IE.event_id"
         " ORDER BY IE.event_id;",
-        f_id
+        UTF8_( dbname ), UTF8_( dbname ), UTF8_( dbname ), UTF8_( dbname ), f_id
     );
+    return ExecuteIdVec( sql );
 }
 
-recCheckIdVec recEventa::FindCheckedLinkedEvents() const
+recCheckIdVec recEventa::FindCheckedLinkedEvents( const wxString& dbname ) const
 {
     recCheckIdVec list;
-    recIdVec e1 = GetLinkedEventIDs();
-    recIdVec e2 = FindLinkedEventsViaInd();
+    recIdVec e1 = GetLinkedEventIDs( dbname );
+    recIdVec e2 = FindLinkedEventsViaInd( dbname );
 
     // This assumes e1 and e2 are both in ascending order
     for ( size_t i = 0, j = 0; i < e1.size() || j < e2.size(); ) {

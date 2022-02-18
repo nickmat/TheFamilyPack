@@ -63,12 +63,12 @@ public:
     int      f_sequence;
 
     recReferenceEntity() : f_ref_id(0), f_entity_type(TYPE_Unstated), f_entity_id(0), f_sequence(0) {}
-    recReferenceEntity( idt id ) : recDbT(id) { Read(); }
+    recReferenceEntity( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }
     recReferenceEntity( const recReferenceEntity& re );
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recReferenceEntity& r2 ) const;
 
     idt FGetRefID() const { return f_ref_id; }
@@ -88,7 +88,7 @@ public:
     static wxString GetTypeStr( Type etype ) { return sm_typeStr[etype]; }
 
     wxString GetEntityIdStr() const; 
-    wxString GetEntityStr() const; 
+    wxString GetEntityStr( const wxString& dbname = "Main" ) const;
 
     static idt FindReferenceID( Type type, idt entityID );
 
@@ -115,12 +115,12 @@ public:
     wxString f_user_ref;
 
     recReference() : f_higher_id(0), f_res_id(0) {}
-    recReference( idt id ) : recDbT(id) { Read(); }
+    recReference( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }
     recReference( const recReference& ref );
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recReference& r2 ) const;
 
     idt FGetHigherId() const { return f_higher_id; }
@@ -138,39 +138,46 @@ public:
     static wxString GetIdStr( idt refID ) { return wxString::Format( "R" ID, refID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
-    static wxString GetTitle( idt refID );
+    static wxString GetTitle( idt refID, const wxString& dbname = "Main" );
 
-    recRefEntVec ReadReferenceEntitys();
-    static wxSQLite3Table GetTitleList();
-    static wxSQLite3Table GetTitleList( idt offset, int limit );
+    recRefEntVec ReadReferenceEntitys( const wxString& dbname = "Main" );
+    static wxSQLite3Table GetTitleList( const wxString& dbname = "Main" );
+    static wxSQLite3Table GetTitleList( idt offset, int limit, const wxString& dbname = "Main" );
 
     static int GetNextEntitySequence( idt refID );
     int GetNextEntitySequence() const { return GetNextEntitySequence( f_id ); }
 
-    static recIdVec GetCitationList( idt refID );
-    recIdVec GetCitationList() const { return GetCitationList( f_id ); }
+    static recIdVec GetCitationList( idt refID, const wxString& dbname = "Main" );
+    recIdVec GetCitationList( const wxString& dbname = "Main" ) const {
+        return GetCitationList( f_id, dbname ); }
 
-    static recIdVec GetPersonaList( idt refID );
-    recIdVec GetPersonaList() const { return GetPersonaList( f_id ); }
-    static int GetPersonaCount( idt refID );
+    static recIdVec GetPersonaList( idt refID, const wxString& dbname = "Main" );
+    recIdVec GetPersonaList( const wxString& dbname = "Main" ) const {
+        return GetPersonaList( f_id, dbname ); }
+    static int GetPersonaCount( idt refID, const wxString& dbname = "Main" );
 
-    static recIdVec GetMediaList( idt refID );
-    recIdVec GetMediaList() const { return GetMediaList( f_id ); }
-    static int GetMediaCount( idt refID );
+    static recIdVec GetMediaList( idt refID, const wxString& dbname = "Main" );
+    recIdVec GetMediaList( const wxString& dbname = "Main" ) const {
+        return GetMediaList( f_id, dbname ); }
+    static int GetMediaCount( idt refID, const wxString& dbname = "Main" );
 
-    static recIdVec GetEventaList( idt refID );
-    recIdVec GetEventaList() const { return GetEventaList( f_id ); }
-    static int GetEventaCount( idt refID );
+    static recIdVec GetEventaList( idt refID, const wxString& dbname = "Main" );
+    recIdVec GetEventaList( const wxString& dbname = "Main" ) const {
+        return GetEventaList( f_id, dbname ); }
+    static int GetEventaCount( idt refID, const wxString& dbname = "Main" );
 
-    static recIdVec GetIdVecForEntity( idt refID, recReferenceEntity::Type type );
+    static recIdVec GetIdVecForEntity(
+        idt refID, recReferenceEntity::Type type, const wxString& dbname = "Main" );
 
-    static recIdVec GetPlaceIdVec( idt refID ) 
-        { return GetIdVecForEntity( refID, recReferenceEntity::TYPE_Place ); }
-    recIdVec GetPlaceIdVec() const { return GetPlaceIdVec( f_id ); }
+    static recIdVec GetPlaceIdVec( idt refID, const wxString& dbname = "Main" )
+        { return GetIdVecForEntity( refID, recReferenceEntity::TYPE_Place, dbname ); }
+    recIdVec GetPlaceIdVec( const wxString& dbname = "Main" ) const {
+        return GetPlaceIdVec( f_id, dbname ); }
 
-    static recIdVec GetDateIdVec( idt refID ) 
-        { return GetIdVecForEntity( refID, recReferenceEntity::TYPE_Date ); }
-    recIdVec GetDateIdVec() const { return GetDateIdVec( f_id ); }
+    static recIdVec GetDateIdVec( idt refID, const wxString& dbname = "Main" )
+        { return GetIdVecForEntity( refID, recReferenceEntity::TYPE_Date, dbname ); }
+    recIdVec GetDateIdVec( const wxString& dbname = "Main" ) const {
+        return GetDateIdVec( f_id, dbname ); }
 
     static void Renumber( idt fromID, idt toID );
     static std::string CsvTitles();

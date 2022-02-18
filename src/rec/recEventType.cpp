@@ -56,7 +56,7 @@ void recEventType::Clear()
     f_name = wxEmptyString;
 }
 
-void recEventType::Save()
+void recEventType::Save( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -65,8 +65,8 @@ void recEventType::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO EventType (grp, name) VALUES (%d, '%q');",
-            f_grp, UTF8_(f_name)
+            "INSERT INTO \"%s\".EventType (grp, name) VALUES (%d, '%q');",
+            UTF8_( dbname ), f_grp, UTF8_(f_name)
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -76,21 +76,21 @@ void recEventType::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO EventType (id, grp, name) VALUES (" ID ", %d, '%q');",
-                f_id, f_grp, UTF8_(f_name)
+                "INSERT INTO \"%s\".EventType (id, grp, name) VALUES (" ID ", %d, '%q');",
+                UTF8_( dbname ), f_id, f_grp, UTF8_(f_name)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE EventType SET grp=%d, name='%q' WHERE id=" ID ";",
-                f_grp, UTF8_(f_name), f_id
+                "UPDATE \"%s\".EventType SET grp=%d, name='%q' WHERE id=" ID ";",
+                UTF8_( dbname ), f_grp, UTF8_(f_name), f_id
             );
         }
         s_db->ExecuteUpdate( sql );
     }
 }
 
-bool recEventType::Read()
+bool recEventType::Read( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -100,7 +100,10 @@ bool recEventType::Read()
         return false;
     }
 
-    sql.Format( "SELECT grp, name FROM EventType WHERE id=" ID ";", f_id );
+    sql.Format( 
+        "SELECT grp, name FROM \"%s\".EventType WHERE id=" ID ";",
+        UTF8_( dbname ), f_id
+    );
     result = s_db->GetTable( sql );
 
     if( result.GetRowCount() != 1 )
@@ -134,14 +137,17 @@ bool recEventType::HasDateSpan() const
     }
 }
 
-wxString recEventType::GetName( idt tID )
+wxString recEventType::GetName( idt tID, const wxString& dbname )
 {
-    return ExecuteStr( "SELECT name FROM EventType WHERE id=" ID ";", tID );
+    return ExecuteStr(
+        "SELECT name FROM \"%s\".EventType WHERE id=" ID ";",
+        UTF8_( dbname ), tID
+    );
 }
 
-bool recEventType::HasDateSpan( idt etID )
+bool recEventType::HasDateSpan( idt etID, const wxString& dbname )
 {
-    recEventType et(etID);
+    recEventType et( etID, dbname );
     return et.HasDateSpan();
 }
 
@@ -164,9 +170,9 @@ wxString recEventType::GetGroupValueStr( recEventTypeGrp grp )
     return grparray[size_t(grp)];
 }
 
-wxString recEventType::GetGroupStr( idt etID )
+wxString recEventType::GetGroupStr( idt etID, const wxString& dbname )
 {
-    recEventType et(etID);
+    recEventType et( etID, dbname );
     return et.GetGroupValueStr( et.FGetGrp() );
 }
 
@@ -179,25 +185,26 @@ wxArrayString recEventType::GetGroupStrings( size_t start )
     return strs;
 }
 
-wxString recEventType::GetTypeStr( idt id )
+wxString recEventType::GetTypeStr( idt id, const wxString& dbname )
 {
-    recEventType et( id );
+    recEventType et( id, dbname );
     return et.f_name;
 }
 
-recEventTypeGrp recEventType::GetGroup( idt id )
+recEventTypeGrp recEventType::GetGroup( idt id, const wxString& dbname )
 {
-    recEventType et( id );
+    recEventType et( id, dbname );
     return et.f_grp;
 }
 
-recEventTypeVec recEventType::ReadVec( unsigned filter )
+recEventTypeVec recEventType::ReadVec( unsigned filter, const wxString& dbname )
 {
     recEventTypeVec vec;
     if( filter == recET_GRP_FILTER_None ) {
         return vec;
     }
-    wxString query = "SELECT id, grp, name FROM EventType WHERE ";
+    wxString query;
+    query << "SELECT id, grp, name FROM " << dbname << ".EventType WHERE ";
     if( filter == recET_GRP_FILTER_All ) {
         query << "NOT grp=0 ";
     } else {
@@ -261,16 +268,16 @@ recEventTypeVec recEventType::ReadVec( unsigned filter )
 }
 
 // Return an vector of roles for this type of event
-recEventTypeRoleVec recEventType::GetRoles( idt typeID )
+recEventTypeRoleVec recEventType::GetRoles( idt typeID, const wxString& dbname )
 {
     recEventTypeRole record;
     recEventTypeRoleVec vec;
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "SELECT id, prime, official, name FROM EventTypeRole"
+        "SELECT id, prime, official, name FROM \"%s\".EventTypeRole"
         " WHERE type_id=" ID " ORDER BY prime DESC, official, name;",
-        typeID
+        UTF8_( dbname ), typeID
     );
     wxSQLite3Table table = s_db->GetTable( sql );
 
@@ -287,7 +294,8 @@ recEventTypeRoleVec recEventType::GetRoles( idt typeID )
     return vec;
 }
 
-recEventTypeRoleVec recEventType::GetPrimeRoles( idt typeID, int prime )
+recEventTypeRoleVec recEventType::GetPrimeRoles(
+    idt typeID, int prime, const wxString& dbname )
 {
     recEventTypeRole record;
     recEventTypeRoleVec vec;
@@ -309,9 +317,9 @@ recEventTypeRoleVec recEventType::GetPrimeRoles( idt typeID, int prime )
         filter = wxString::Format( "prime=%d", prime );
     }
     sql.Format(
-        "SELECT id, name FROM EventTypeRole "
+        "SELECT id, name FROM \"%s\".EventTypeRole "
         "WHERE type_id=" ID " AND (%q) ORDER BY id DESC;",
-        typeID, UTF8_(filter)
+        UTF8_( dbname ), typeID, UTF8_(filter)
     );
     wxSQLite3Table table = s_db->GetTable( sql );
 

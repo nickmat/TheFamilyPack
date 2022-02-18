@@ -65,12 +65,12 @@ public:
     int  f_sequence;
 
     recName() : f_ind_id(0), f_per_id(0), f_style_id(0), f_sequence(0) {}
-    recName( idt id ) : recDbT(id) { Read(); }
+    recName( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }
     recName( const recName& name );
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recName& r2 ) const;
 
     idt FGetIndID() const { return f_ind_id; }
@@ -86,8 +86,8 @@ public:
     static wxString GetIdStr( idt nameID ) { return wxString::Format( "N" ID, nameID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
-    static idt GetIndID( idt nameID );
-    static idt GetPerID( idt nameID );
+    static idt GetIndID( idt nameID, const wxString& dbname = "Main" );
+    static idt GetPerID( idt nameID, const wxString& dbname = "Main" );
 
     static idt CreateName( const wxString& nameStr, idt style = 0 );
     static idt Create( const wxString& nameStr, idt indID, idt perID, idt style, int* pseq );
@@ -95,29 +95,31 @@ public:
     int AddNameParts( const wxString& nameStr, recStdNameType type = NAME_TYPE_Unstated, int seq = 0 ) const;
     int AddNamePart( const wxString& nameStr, recStdNameType type, int seq ) const;
 
-    static idt GetDefaultNameID( idt indID, idt perID );
-    static wxString GetDefaultNameStr( idt indID, idt perID );
-    static recNameVec GetNames( idt indID, idt perID );
+    static idt GetDefaultNameID( idt indID, idt perID, const wxString& dbname = "Main" );
+    static wxString GetDefaultNameStr( idt indID, idt perID, const wxString& dbname = "Main" );
+    static recNameVec GetNames( idt indID, idt perID, const wxString& dbname = "Main" );
 
     // Delete Name and remove all references to it.
     static void RemoveFromDatabase( idt id );
     void RemoveFromDatabase() { RemoveFromDatabase( f_id ); Clear(); }
 
-    static wxString GetNameStr( idt id );
-    wxString GetNameStr() const { return GetNameStr( f_id ); }
+    static wxString GetNameStr( idt id, const wxString& dbname = "Main" );
+    wxString GetNameStr( const wxString& dbname = "Main" ) const {
+        return GetNameStr( f_id, dbname ); }
 
-    static wxString GetTypeStr( idt id );
-    wxString GetTypeStr() const;
+    static wxString GetTypeStr( idt id, const wxString& dbname = "Main" );
+    wxString GetTypeStr( const wxString& dbname = "Main" ) const;
 
-    static wxString GetNamePartStr( idt nameID, idt partID );
-    wxString GetNamePartStr( idt partID ) const
-        { return GetNamePartStr( f_id, partID ); }
-    static wxString GetSurname( idt id ) 
-        { return GetNamePartStr( id, NAME_TYPE_Surname ); }
-    wxString GetSurname() const { return GetNamePartStr( NAME_TYPE_Surname ); }
+    static wxString GetNamePartStr( idt nameID, idt partID, const wxString& dbname = "Main" );
+    wxString GetNamePartStr( idt partID, const wxString& dbname = "Main" ) const
+        { return GetNamePartStr( f_id, partID, dbname ); }
+    static wxString GetSurname( idt id, const wxString& dbname = "Main" )
+        { return GetNamePartStr( id, NAME_TYPE_Surname, dbname ); }
+    wxString GetSurname( const wxString& dbname = "Main" ) const {
+        return GetNamePartStr( NAME_TYPE_Surname, dbname ); }
 
-    static wxSQLite3ResultSet GetSurnameIndex( recSurnameGroup sng );
-    static recNameVec GetNameList( const wxString& surname, recSurnameGroup sng );
+    static wxSQLite3ResultSet GetSurnameIndex( recSurnameGroup sng, const wxString& dbname = "Main" );
+    static recNameVec GetNameList( const wxString& surname, recSurnameGroup sng, const wxString& dbname = "Main" );
 
     static int GetNextSequence( idt indID, idt perID );
     void SetNextSequence() { f_sequence = GetNextSequence( f_ind_id, f_per_id ); }
@@ -126,8 +128,9 @@ public:
 
     bool FindPersona( idt perID, idt styleID = 0 );
 
-    static recNamePartVec GetParts( idt nameID );
-    recNamePartVec GetParts() const { return GetParts( f_id ); }
+    static recNamePartVec GetParts( idt nameID, const wxString& dbname = "Main" );
+    recNamePartVec GetParts( const wxString& dbname = "Main" ) const {
+        return GetParts( f_id, dbname ); }
 };
 
 

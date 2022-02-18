@@ -64,7 +64,7 @@ void recReference::Clear()
     f_user_ref.clear();
 }
 
-void recReference::Save()
+void recReference::Save( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
 
@@ -72,9 +72,9 @@ void recReference::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO Reference (higher_id, title, statement, res_id, user_ref)"
+            "INSERT INTO \"%s\".Reference (higher_id, title, statement, res_id, user_ref)"
             "VALUES (" ID ", '%q', '%q', " ID ", '%q');",
-            f_higher_id, UTF8_(f_title), UTF8_(f_statement), f_res_id, UTF8_(f_user_ref)
+            UTF8_( dbname ), f_higher_id, UTF8_(f_title), UTF8_(f_statement), f_res_id, UTF8_(f_user_ref)
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -84,18 +84,18 @@ void recReference::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO Reference (id, higher_id, title, statement, res_id, user_ref)"
+                "INSERT INTO \"%s\".Reference (id, higher_id, title, statement, res_id, user_ref)"
                 " VALUES (" ID ", " ID ", '%q', '%q', " ID ", '%q');",
-                f_id, f_higher_id, UTF8_(f_title), UTF8_(f_statement),
+                UTF8_( dbname ), f_id, f_higher_id, UTF8_(f_title), UTF8_(f_statement),
                 f_res_id, UTF8_(f_user_ref)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE Reference SET higher_id=" ID ", title = '%q', statement = '%q',"
+                "UPDATE \"%s\".Reference SET higher_id=" ID ", title = '%q', statement = '%q',"
                 " res_id = " ID ", user_ref = '%q'"
                 " WHERE id=" ID ";",
-                f_higher_id, UTF8_(f_title), UTF8_(f_statement),
+                UTF8_( dbname ), f_higher_id, UTF8_(f_title), UTF8_(f_statement),
                 f_res_id, UTF8_(f_user_ref), f_id
             );
         }
@@ -103,7 +103,7 @@ void recReference::Save()
     }
 }
 
-bool recReference::Read()
+bool recReference::Read( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -115,8 +115,8 @@ bool recReference::Read()
 
     sql.Format(
         "SELECT higher_id, title, statement, res_id, user_ref"
-        " FROM Reference WHERE id=" ID ";",
-        f_id
+        " FROM \"%s\".Reference WHERE id=" ID ";",
+        UTF8_( dbname ), f_id
     );
     result = s_db->GetTable( sql );
 
@@ -145,12 +145,15 @@ bool recReference::Equivalent( const recReference& r2 ) const
         ;
 }
 
-wxString recReference::GetTitle( idt refID )
+wxString recReference::GetTitle( idt refID, const wxString& dbname )
 {
-    return ExecuteStr( "SELECT title FROM Reference WHERE id=" ID ";", refID );
+    return ExecuteStr( 
+        "SELECT title FROM \"%s\".Reference WHERE id=" ID ";",
+        UTF8_( dbname ), refID
+    );
 }
 
-recRefEntVec recReference::ReadReferenceEntitys()
+recRefEntVec recReference::ReadReferenceEntitys( const wxString& dbname )
 {
     recRefEntVec vec;
     recReferenceEntity record;
@@ -162,9 +165,9 @@ recRefEntVec recReference::ReadReferenceEntitys()
     }
 
     sql.Format(
-        "SELECT id, entity_type, entity_id, sequence FROM ReferenceEntity "
+        "SELECT id, entity_type, entity_id, sequence FROM \"%s\".ReferenceEntity "
         "WHERE ref_id=" ID " ORDER BY sequence;",
-        f_id
+        UTF8_( dbname ), f_id
     );
     result = s_db->GetTable( sql );
 
@@ -182,17 +185,22 @@ recRefEntVec recReference::ReadReferenceEntitys()
     return vec;
 }
 
-wxSQLite3Table recReference::GetTitleList()
-{
-    return s_db->GetTable( "SELECT id, title FROM Reference ORDER BY id;" );
-}
-
-wxSQLite3Table recReference::GetTitleList( idt offset, int limit )
+wxSQLite3Table recReference::GetTitleList( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "SELECT id, title FROM Reference ORDER BY id LIMIT " ID ", %d;",
-        offset, limit
+        "SELECT id, title FROM \"%s\".Reference ORDER BY id;",
+        UTF8_( dbname )
+    );
+    return s_db->GetTable( sql );
+}
+
+wxSQLite3Table recReference::GetTitleList( idt offset, int limit, const wxString& dbname )
+{
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT id, title FROM \"%s\".Reference ORDER BY id LIMIT " ID ", %d;",
+        UTF8_( dbname ), offset, limit
     );
     return s_db->GetTable( sql );
 }
@@ -207,48 +215,70 @@ int recReference::GetNextEntitySequence( idt refID )
     return ExecuteInt( sql ) + 1;
 }
 
-recIdVec recReference::GetCitationList( idt refID )
+recIdVec recReference::GetCitationList( idt refID, const wxString& dbname )
 {
-    return ExecuteIdVec( "SELECT id FROM Citation WHERE ref_id=" ID ";", refID );
+    return ExecuteIdVec( 
+        "SELECT id FROM \"%s\".Citation WHERE ref_id=" ID ";",
+        UTF8_( dbname ), refID
+    );
 }
 
-recIdVec recReference::GetPersonaList( idt refID )
+recIdVec recReference::GetPersonaList( idt refID, const wxString& dbname )
 {
-    return ExecuteIdVec( "SELECT id FROM Persona WHERE ref_id=" ID ";", refID );
+    return ExecuteIdVec( 
+        "SELECT id FROM \"%s\".Persona WHERE ref_id=" ID ";",
+        UTF8_( dbname ), refID
+    );
 }
 
-int recReference::GetPersonaCount( idt refID )
+int recReference::GetPersonaCount( idt refID, const wxString& dbname )
 {
-    return ExecuteInt( "SELECT COUNT(*) FROM Persona WHERE ref_id=" ID ";", refID );
+    return ExecuteInt(
+        "SELECT COUNT(*) FROM \"%s\".Persona WHERE ref_id=" ID ";",
+        UTF8_( dbname ), refID
+    );
 }
 
-recIdVec recReference::GetMediaList( idt refID )
+recIdVec recReference::GetMediaList( idt refID, const wxString& dbname )
 {
-    return ExecuteIdVec( "SELECT id FROM Media WHERE ref_id=" ID ";", refID );
+    return ExecuteIdVec(
+        "SELECT id FROM \"%s\".Media WHERE ref_id=" ID ";",
+        UTF8_( dbname ), refID
+    );
 }
 
-int recReference::GetMediaCount( idt refID )
+int recReference::GetMediaCount( idt refID, const wxString& dbname )
 {
-    return ExecuteInt( "SELECT COUNT(*) FROM Media WHERE ref_id=" ID ";", refID );
+    return ExecuteInt(
+        "SELECT COUNT(*) FROM \"%s\".Media WHERE ref_id=" ID ";",
+        UTF8_( dbname ), refID
+    );
 }
 
-recIdVec recReference::GetEventaList( idt refID )
+recIdVec recReference::GetEventaList( idt refID, const wxString& dbname )
 {
-    return ExecuteIdVec( "SELECT id FROM Eventa WHERE ref_id=" ID ";", refID );
+    return ExecuteIdVec(
+        "SELECT id FROM \"%s\".Eventa WHERE ref_id=" ID ";",
+        UTF8_( dbname ), refID
+    );
 }
 
-int recReference::GetEventaCount( idt refID )
+int recReference::GetEventaCount( idt refID, const wxString& dbname )
 {
-    return ExecuteInt( "SELECT COUNT(*) FROM Eventa WHERE ref_id=" ID ";", refID );
+    return ExecuteInt(
+        "SELECT COUNT(*) FROM \"%s\".Eventa WHERE ref_id=" ID ";",
+        UTF8_( dbname ), refID
+    );
 }
 
-recIdVec recReference::GetIdVecForEntity( idt refID, recReferenceEntity::Type type )
+recIdVec recReference::GetIdVecForEntity( 
+    idt refID, recReferenceEntity::Type type, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "SELECT entity_id FROM ReferenceEntity"
+        "SELECT entity_id FROM \"%s\".ReferenceEntity"
         " WHERE entity_type=%d AND ref_id=" ID ";",
-        (int) type, refID
+        UTF8_( dbname ), (int) type, refID
     );
     return ExecuteIdVec( sql );
 }
@@ -354,7 +384,7 @@ void recReferenceEntity::Clear()
     f_sequence    = 0;
 }
 
-void recReferenceEntity::Save()
+void recReferenceEntity::Save( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -363,10 +393,10 @@ void recReferenceEntity::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO ReferenceEntity "
+            "INSERT INTO \"%s\".ReferenceEntity "
             "(ref_id, entity_type, entity_id, sequence)"
             "VALUES (" ID ", %u, " ID ", %d);",
-            f_ref_id, f_entity_type, f_entity_id, f_sequence
+            UTF8_( dbname ), f_ref_id, f_entity_type, f_entity_id, f_sequence
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -376,25 +406,25 @@ void recReferenceEntity::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO ReferenceEntity "
+                "INSERT INTO \"%s\".ReferenceEntity "
                 "(id, ref_id, entity_type, entity_id, sequence)"
                 "VALUES (" ID ", " ID ", %u, " ID ", %d);",
-                f_id, f_ref_id, f_entity_type, f_entity_id, f_sequence
+                UTF8_( dbname ), f_id, f_ref_id, f_entity_type, f_entity_id, f_sequence
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE ReferenceEntity SET "
+                "UPDATE \"%s\".ReferenceEntity SET "
                 "ref_id=" ID ", entity_type=%u, entity_id=" ID ", sequence=%d "
                 "WHERE id=" ID ";",
-                f_ref_id, f_entity_type, f_entity_id, f_sequence, f_id
+                UTF8_( dbname ), f_ref_id, f_entity_type, f_entity_id, f_sequence, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
     }
 }
 
-bool recReferenceEntity::Read()
+bool recReferenceEntity::Read( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -406,8 +436,8 @@ bool recReferenceEntity::Read()
 
     sql.Format(
         "SELECT ref_id, entity_type, entity_id, sequence "
-        "FROM ReferenceEntity WHERE id=" ID ";",
-        f_id
+        "FROM \"%s\".ReferenceEntity WHERE id=" ID ";",
+        UTF8_( dbname ), f_id
     );
     result = s_db->GetTable( sql );
 
@@ -461,16 +491,16 @@ wxString recReferenceEntity::GetEntityIdStr() const
     return recGetIDStr( f_entity_id );
 }
 
-wxString recReferenceEntity::GetEntityStr() const
+wxString recReferenceEntity::GetEntityStr( const wxString& dbname ) const
 {
     switch( f_entity_type )
     {
     case TYPE_Place:
-        return recPlace::GetAddressStr( f_entity_id );
+        return recPlace::GetAddressStr( f_entity_id, dbname );
     case TYPE_Date:
-        return recDate::GetStr( f_entity_id );
+        return recDate::GetStr( f_entity_id, dbname );
     case TYPE_Name:
-        return recName::GetNameStr( f_entity_id );
+        return recName::GetNameStr( f_entity_id, dbname );
     }
     return "[Unknown entity]";
 }

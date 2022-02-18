@@ -101,12 +101,12 @@ public:
     recDate() : f_jdn(0), f_range(0), f_rel_id(0), f_type(FLG_NULL),
         f_record_sch(CALENDAR_SCH_Unstated),
         f_display_sch(CALENDAR_SCH_Unstated) {}
-    recDate( idt id ) : recDbT(id) { Read(); }
+    recDate( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }
     recDate( const recDate& date );
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recDate& r2 ) const;
 
     long FGetJdn() const { return f_jdn; }
@@ -149,7 +149,7 @@ public:
     static wxString GetInputJdnStr( idt id );
 
     wxString GetStr( CalendarScheme sch = CALENDAR_SCH_Unstated ) const;
-    static wxString GetStr( idt id );
+    static wxString GetStr( idt id, const wxString& dbname = "Main" );
     wxString GetPeriodStr( const recDate& date2 ) const;
     static wxString GetPeriodStr( idt d1ID, idt d2ID );
 
@@ -225,12 +225,12 @@ public:
         f_unit( CALENDAR_UNIT_Unstated ),
         f_type( TYPE_Unstated ) ,
         f_scheme( CALENDAR_SCH_Unstated ) {}
-    recRelativeDate( idt id ) : recDbT(id) { Read(); }
+    recRelativeDate( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }
     recRelativeDate( const recRelativeDate& date );
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recRelativeDate& r2 ) const;
 
     long FGetVal() const { return f_val; }

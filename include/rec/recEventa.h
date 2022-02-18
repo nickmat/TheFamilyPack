@@ -58,12 +58,12 @@ public:
 
     recEventa() : f_ref_id( 0 ), f_type_id( 0 ), f_date1_id( 0 ), f_date2_id( 0 ),
         f_place_id( 0 ), f_date_pt( 0 ) {}
-    recEventa( idt id ) : recDbT(id) { Read(); }
+    recEventa( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }
     recEventa( const recEventa& event );
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
 
     wxString FGetTitle() const { return f_title; }
     idt FGetRefID() const { return f_ref_id; }
@@ -85,60 +85,68 @@ public:
 
     void SetDatePt( recDate::DatePoint dp ) { f_date_pt = recDate::GetDatePoint( f_date1_id, dp ); }
 
-    wxString SetAutoTitle( const wxString& name1, const wxString& name2 = wxEmptyString );
+    wxString SetAutoTitle(
+        const wxString& name1, const wxString& name2 = "", const wxString& dbname = "Main" );
 
     static wxString GetIdStr( idt evID ) { return wxString::Format( "Ea" ID, evID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
-    wxString GetDetailStr() const;
-    wxString GetTypeStr() const;
-    wxString GetDateStr() const;
-    wxString GetAddressStr() const;
-    recEventTypeGrp GetTypeGroup() const;
-    static wxString GetDetailStr( idt eaID );
-    static wxString GetTypeStr( idt eaID );
-    static wxString GetTitle( idt eaID );
-    static wxString GetNote( idt eaID );
-    static wxString GetDateStr( idt eaID );
-    static wxString GetAddressStr( idt eaID );
-    static idt GetRefID( idt eaID );
-    static idt GetDate1ID( idt eaID );
-    static void UpdateDatePoint( idt eaID );
-    void UpdateDatePoint();
+    wxString GetDetailStr( const wxString& dbname = "Main" ) const;
+    wxString GetTypeStr( const wxString& dbname = "Main" ) const;
+    wxString GetDateStr( const wxString& dbname = "Main" ) const;
+    wxString GetAddressStr( const wxString& dbname = "Main" ) const;
+    recEventTypeGrp GetTypeGroup( const wxString& dbname = "Main" ) const;
+    static wxString GetDetailStr( idt eaID, const wxString& dbname = "Main" );
+    static wxString GetTypeStr( idt eaID, const wxString& dbname = "Main" );
+    static wxString GetTitle( idt eaID, const wxString& dbname = "Main" );
+    static wxString GetNote( idt eaID, const wxString& dbname = "Main" );
+    static wxString GetDateStr( idt eaID, const wxString& dbname = "Main" );
+    static wxString GetAddressStr( idt eaID, const wxString& dbname = "Main" );
+    static idt GetRefID( idt eaID, const wxString& dbname = "Main" );
+    static idt GetDate1ID( idt eaID, const wxString& dbname = "Main" );
+    static void UpdateDatePoint( idt eaID, const wxString& dbname = "Main" );
+    void UpdateDatePoint( const wxString& dbname = "Main" );
 
-    static recEventEventaVec GetEventEventas( idt erID );
-    recEventEventaVec GetEventEventas() const { return GetEventEventas( f_id ); }
+    static recEventEventaVec GetEventEventas( idt erID, const wxString& dbname = "Main" );
+    recEventEventaVec GetEventEventas( const wxString& dbname = "Main" ) const {
+        return GetEventEventas( f_id, dbname ); }
 
-    static bool IsFamilyEvent( idt eveID );
-    bool IsFamilyEvent() const { return IsFamilyEvent( f_id ); }
+    static bool IsFamilyEvent( idt eveID, const wxString& dbname = "Main" );
+    bool IsFamilyEvent( const wxString& dbname = "Main" ) const {
+        return IsFamilyEvent( f_id, dbname ); }
 
-    static recEventaPersonaVec GetEventaPersonas( idt eaID );
-    recEventaPersonaVec GetEventaPersonas() const { return GetEventaPersonas( f_id ); }
+    static recEventaPersonaVec GetEventaPersonas( idt eaID, const wxString& dbname = "Main" );
+    recEventaPersonaVec GetEventaPersonas( const wxString& dbname = "Main" ) const {
+        return GetEventaPersonas( f_id, dbname ); }
 
-    static wxSQLite3Table GetTitleList();
-    static wxSQLite3Table GetTitleList( idt offset, int limit );
+    static wxSQLite3Table GetTitleList( const wxString& dbname = "Main" );
+    static wxSQLite3Table GetTitleList( idt offset, int limit, const wxString& dbname = "Main" );
 
     // NOTE: Use, void recEventaPersona::SetNextPerSequence( idt eaID );
     static int GetLastPerSeqNumber( idt eventID );
     int GetLastPerSeqNumber() const { return GetLastPerSeqNumber( f_id ); }
 
-    static recFamilyEventaVec GetFamilyEventas( idt eaID );
-    recFamilyEventaVec GetFamilyEventas() const { return GetFamilyEventas( f_id ); }
+    static recFamilyEventaVec GetFamilyEventas( idt eaID, const wxString& dbname = "Main" );
+    recFamilyEventaVec GetFamilyEventas( const wxString& dbname = "Main" ) const {
+        return GetFamilyEventas( f_id, dbname ); }
 
-    static recFamilyIndEventaVec GetFamilyIndEventas( idt eaID );
-    recFamilyIndEventaVec GetFamilyIndEventas() const { return GetFamilyIndEventas( f_id ); }
+    static recFamilyIndEventaVec GetFamilyIndEventas( idt eaID, const wxString& dbname = "Main" );
+    recFamilyIndEventaVec GetFamilyIndEventas( const wxString& dbname = "Main" ) const {
+        return GetFamilyIndEventas( f_id, dbname ); }
 
-    static recIdVec GetLinkedEventIDs( idt eaID );
-    recIdVec GetLinkedEventIDs() const { return GetLinkedEventIDs( f_id ); }
+    static recIdVec GetLinkedEventIDs( idt eaID, const wxString& dbname = "Main" );
+    recIdVec GetLinkedEventIDs( const wxString& dbname = "Main" ) const {
+        return GetLinkedEventIDs( f_id, dbname ); }
     // Commer delimited string of linked Event ID strings.
-    static wxString GetLinkedEventIDsStr( idt eaID );
-    wxString GetLinkedEventIDsStr() const { return GetLinkedEventIDsStr( f_id ); }
+    static wxString GetLinkedEventIDsStr( idt eaID, const wxString& dbname = "Main" );
+    wxString GetLinkedEventIDsStr( const wxString& dbname = "Main" ) const {
+        return GetLinkedEventIDsStr( f_id, dbname ); }
 
     // Find matching Event records by following the links:-
     // Eventa/Persona(prime Role) -> Persona/Individual link -> Individual/Event(matching role)
     // Depending on the type and group of the event, loosely match Date and Place.
-    recIdVec FindLinkedEventsViaInd() const;
-    recCheckIdVec FindCheckedLinkedEvents() const;
+    recIdVec FindLinkedEventsViaInd( const wxString& dbname = "Main" ) const;
+    recCheckIdVec FindCheckedLinkedEvents( const wxString& dbname = "Main" ) const;
 
     void CreateFamilyLink() const;
     static void CreateFamilyLink( idt eaID ) { recEventa ea(eaID); ea.CreateFamilyLink(); }

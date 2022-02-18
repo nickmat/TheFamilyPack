@@ -62,7 +62,7 @@ void recMedia::Clear()
     f_note.clear();
 }
 
-void recMedia::Save()
+void recMedia::Save( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -71,9 +71,9 @@ void recMedia::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO Media (data_id, ass_id, ref_id, ref_seq, privacy, title, note)"
+            "INSERT INTO \"%s\".Media (data_id, ass_id, ref_id, ref_seq, privacy, title, note)"
             " VALUES (" ID ", " ID ", " ID ", %d, %d, '%q', '%q');",
-            f_data_id, f_ass_id, f_ref_id, f_ref_seq, f_privacy, UTF8_( f_title ), UTF8_( f_note )
+            UTF8_( dbname ), f_data_id, f_ass_id, f_ref_id, f_ref_seq, f_privacy, UTF8_( f_title ), UTF8_( f_note )
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -83,24 +83,24 @@ void recMedia::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO Media (id, data_id, ass_id, ref_id, ref_seq, privacy, title, note)"
+                "INSERT INTO \"%s\".Media (id, data_id, ass_id, ref_id, ref_seq, privacy, title, note)"
                 " VALUES (" ID ", " ID ", " ID ", " ID ", %d, %d, '%q', '%q');",
-                f_id, f_data_id, f_ass_id, f_ref_id, f_ref_seq, f_privacy, UTF8_( f_title ), UTF8_( f_note )
+                UTF8_( dbname ), f_id, f_data_id, f_ass_id, f_ref_id, f_ref_seq, f_privacy, UTF8_( f_title ), UTF8_( f_note )
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE Media"
+                "UPDATE \"%s\".Media"
                 " SET data_id=" ID ", ass_id=" ID ", ref_id=" ID ", ref_seq=%d, privacy=%d,"
                 " title='%q', note='%q' WHERE id=" ID ";",
-                f_data_id, f_ass_id, f_ref_id, f_ref_seq, f_privacy, UTF8_( f_title ), UTF8_( f_note ), f_id
+                UTF8_( dbname ), f_data_id, f_ass_id, f_ref_id, f_ref_seq, f_privacy, UTF8_( f_title ), UTF8_( f_note ), f_id
             );
         }
         s_db->ExecuteUpdate( sql );
     }
 }
 
-bool recMedia::Read()
+bool recMedia::Read( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -112,8 +112,8 @@ bool recMedia::Read()
 
     sql.Format(
         "SELECT data_id, ass_id, ref_id, ref_seq, privacy, title, note"
-        " FROM Media WHERE id=" ID ";",
-        f_id
+        " FROM \"%s\".Media WHERE id=" ID ";",
+        UTF8_( dbname ), f_id
     );
     result = s_db->GetTable( sql );
 
@@ -166,24 +166,27 @@ int recMedia::GetNextRefSeq( idt refID )
     return ExecuteInt( "SELECT MAX(ref_seq) FROM Media WHERE ref_id=" ID ";", refID ) + 1;
 }
 
-wxString recMedia::GetTitle( idt medID )
+wxString recMedia::GetTitle( idt medID, const wxString& dbname )
 {
-    return ExecuteStr( "SELECT title FROM Media WHERE id=" ID ";", medID );
+    return ExecuteStr( "SELECT title FROM \"%s\".Media WHERE id=" ID ";", UTF8_( dbname ), medID );
 }
 
-wxSQLite3Table recMedia::GetMediaList()
-{
-    return s_db->GetTable(
-        "SELECT id, ass_id, ref_id, title FROM Media ORDER BY id;"
-    );
-}
-
-wxSQLite3Table recMedia::GetMediaList( idt offset, int limit )
+wxSQLite3Table recMedia::GetMediaList( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "SELECT id, ass_id, ref_id, title FROM Media ORDER BY id LIMIT " ID ", %d;",
-        offset, limit
+        "SELECT id, ass_id, ref_id, title FROM \"%s\".Media ORDER BY id;",
+        UTF8_( dbname )
+    );
+    return s_db->GetTable( sql );
+}
+
+wxSQLite3Table recMedia::GetMediaList( idt offset, int limit, const wxString& dbname )
+{
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT id, ass_id, ref_id, title FROM \"%s\".Media ORDER BY id LIMIT " ID ", %d;",
+        UTF8_( dbname ), offset, limit
     );
     return s_db->GetTable( sql );
 }

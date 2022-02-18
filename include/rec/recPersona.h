@@ -54,12 +54,12 @@ public:
     wxString f_note;
 
     recPersona() : f_sex( Sex::unstated ), f_ref_id(0) {}
-    recPersona( idt id ) : recDbT(id) { Read(); }
+    recPersona( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }
     recPersona( const recPersona& persona );
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recPersona& r2 ) const;
 
     Sex FGetSex() const { return f_sex; }
@@ -75,35 +75,41 @@ public:
 
     static idt Create( idt refID, Sex sex = Sex::unstated );
 
-    static Sex GetSex( idt id );
-    static idt GetRefID( idt id ) {
-        return recDb::ExecuteID( "SELECT ref_id FROM Persona WHERE id=" ID ";", id );
-    }
+    static Sex GetSex( idt id, const wxString& dbname = "Main" );
+    static idt GetRefID( idt id, const wxString& dbname = "Main" );
 
     static idt GetNameID( idt perID ) { return recName::GetDefaultNameID( 0, perID ); }
     idt GetNameID() const { return recName::GetDefaultNameID( 0, f_id ); }
-    static wxString GetNameStr( idt perID ) { return recName::GetDefaultNameStr( 0, perID ); }
-    wxString GetNameStr() const { return recName::GetDefaultNameStr( 0, f_id ); }
+    static wxString GetNameStr( idt perID, const wxString& dbname = "Main" ) {
+        return recName::GetDefaultNameStr( 0, perID, dbname ); }
+    wxString GetNameStr( const wxString& dbname = "Main" ) const {
+        return recName::GetDefaultNameStr( 0, f_id, dbname ); }
 
-    static recNameVec ReadNames( idt perID );
-    recNameVec ReadNames() const { return ReadNames( f_id ); }
+    static recNameVec ReadNames( idt perID, const wxString& dbname = "Main" );
+    recNameVec ReadNames( const wxString& dbname = "Main" ) const {
+        return ReadNames( f_id, dbname ); }
 
-    static recEventaPersonaVec ReadEventaPersonas( idt perID, recEventOrder order = recEO_DatePt );
-    recEventaPersonaVec ReadEventaPersonas( recEventOrder order = recEO_DatePt ) const
-        { return ReadEventaPersonas( f_id, order ); }
+    static recEventaPersonaVec ReadEventaPersonas(
+        idt perID, recEventOrder order = recEO_DatePt, const wxString& dbname = "Main" );
+    recEventaPersonaVec ReadEventaPersonas(
+        recEventOrder order = recEO_DatePt, const wxString& dbname = "Main" ) const
+        { return ReadEventaPersonas( f_id, order, dbname ); }
 
     static int GetMaxEventaSeqNumber( idt perID );
     int GetMaxEventaSeqNumber() const { return GetMaxEventaSeqNumber( f_id ); }
 
     // Get a list of linked to Individual's
-    static recIdVec GetIndividualIDs( idt perID );
-    recIdVec GetIndividualIDs() const { return GetIndividualIDs( f_id ); }
+    static recIdVec GetIndividualIDs( idt perID, const wxString& dbname = "Main" );
+    recIdVec GetIndividualIDs( const wxString& dbname = "Main" ) const {
+        return GetIndividualIDs( f_id, dbname ); }
     // Commer delimited string of linked Individual ID strings.
-    static wxString GetIndividualIdStr( idt perID );
-    wxString GetIndividualIdStr() const { return GetIndividualIdStr( f_id ); }
+    static wxString GetIndividualIdStr( idt perID, const wxString& dbname = "Main" );
+    wxString GetIndividualIdStr( const wxString& dbname = "Main" ) const {
+        return GetIndividualIdStr( f_id, dbname ); }
 
     // Find all Persona ID's that link an Individual to a Reference
-    static recIdVec FindIndividualReferenceLink( idt indID, idt refID );
+    static recIdVec FindIndividualReferenceLink(
+        idt indID, idt refID, const wxString& dbname = "Main" );
 
     // Delete Persona record and remove all records that reference it.
     void RemoveFromDatabase();

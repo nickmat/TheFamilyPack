@@ -40,12 +40,12 @@ public:
 
     recMedia() : f_data_id(0), f_ass_id(0), f_ref_id(0),
         f_ref_seq(0), f_privacy(0) {}
-    recMedia( idt id ) : recDbT( id ) { Read(); }
+    recMedia( idt id, const wxString& dbname = "Main" ) : recDbT( id ) { Read( dbname ); }
     recMedia( const recMedia& name );
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recMedia& r2 ) const;
 
     idt FGetDataID() const { return f_data_id; }
@@ -68,15 +68,16 @@ public:
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     wxString GetDataIdStr() const { return wxString::Format( "A" ID ":MD" ID, f_ass_id, f_data_id ); }
-    static wxString GetDataIdStr( idt medID ) { recMedia med( medID ); return med.GetDataIdStr(); }
+    static wxString GetDataIdStr( idt medID, const wxString& dbname = "Main" ) {
+        recMedia med( medID, dbname ); return med.GetDataIdStr(); }
 
     static idt Create( idt mdID, idt assID, idt refID );
     static int GetNextRefSeq( idt refID );
 
-    static wxString GetTitle( idt medID );
+    static wxString GetTitle( idt medID, const wxString& dbname = "Main" );
 
-    static wxSQLite3Table GetMediaList();
-    static wxSQLite3Table GetMediaList( idt offset, int limit );
+    static wxSQLite3Table GetMediaList( const wxString& dbname = "Main" );
+    static wxSQLite3Table GetMediaList( idt offset, int limit, const wxString& dbname = "Main" );
 
 private:
     idt      f_data_id;

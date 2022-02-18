@@ -59,7 +59,7 @@ void recCitation::Clear()
     f_comment.clear();
 }
 
-void recCitation::Save()
+void recCitation::Save( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
 
@@ -67,9 +67,9 @@ void recCitation::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO Citation (higher_id, ref_id, ref_seq, rep_id, comment)"
+            "INSERT INTO \"%s\".Citation (higher_id, ref_id, ref_seq, rep_id, comment)"
             " VALUES (" ID ", " ID ", %d, " ID ", '%q'); ",
-            f_higher_id, f_ref_id, f_ref_seq, f_rep_id, UTF8_( f_comment )
+            UTF8_( dbname ), f_higher_id, f_ref_id, f_ref_seq, f_rep_id, UTF8_( f_comment )
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -80,25 +80,25 @@ void recCitation::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO Citation (id, higher_id, ref_id, ref_seq, rep_id, comment)"
+                "INSERT INTO \"%s\".Citation (id, higher_id, ref_id, ref_seq, rep_id, comment)"
                 " VALUES (" ID ", " ID ", " ID ", %d, " ID ", '%q');",
-                f_id, f_higher_id, f_ref_id, f_ref_seq, f_rep_id, UTF8_( f_comment )
+                UTF8_( dbname ), f_id, f_higher_id, f_ref_id, f_ref_seq, f_rep_id, UTF8_( f_comment )
             );
         }
         else {
             // Update existing record
             sql.Format(
-                "UPDATE Citation SET higher_id=" ID ", ref_id=" ID ", ref_seq=%d,"
+                "UPDATE \"%s\".Citation SET higher_id=" ID ", ref_id=" ID ", ref_seq=%d,"
                 " rep_id=" ID ", comment='%q'"
                 " WHERE id=" ID ";",
-                f_higher_id, f_ref_id, f_ref_seq, f_rep_id, UTF8_( f_comment ), f_id
+                UTF8_( dbname ), f_higher_id, f_ref_id, f_ref_seq, f_rep_id, UTF8_( f_comment ), f_id
             );
         }
         s_db->ExecuteUpdate( sql );
     }
 }
 
-bool recCitation::Read()
+bool recCitation::Read( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -110,8 +110,8 @@ bool recCitation::Read()
 
     sql.Format(
         "SELECT higher_id, ref_id, ref_seq, rep_id, comment"
-        " FROM Citation WHERE id=" ID ";",
-        f_id
+        " FROM \"%s\".Citation WHERE id=" ID ";",
+        UTF8_( dbname ), f_id
     );
     result = s_db->GetTable( sql );
 
@@ -152,7 +152,7 @@ int recCitation::GetNextRefSequence( idt refID ) const
 }
 
 
-recCitationPartVec recCitation::GetPartList( idt citID )
+recCitationPartVec recCitation::GetPartList( idt citID, const wxString& dbname )
 {
     recCitationPartVec list;
     if( citID == 0 ) {
@@ -161,9 +161,9 @@ recCitationPartVec recCitation::GetPartList( idt citID )
 
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "SELECT id, type_id, val, cit_seq, comment FROM CitationPart"
+        "SELECT id, type_id, val, cit_seq, comment FROM \"%s\".CitationPart"
         " WHERE cit_id=" ID " ORDER BY cit_seq;",
-        citID
+        UTF8_( dbname ), citID
     );
     wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
 
@@ -180,26 +180,26 @@ recCitationPartVec recCitation::GetPartList( idt citID )
     return list;
 }
 
-wxString recCitation::GetCitationStr( idt citID )
+wxString recCitation::GetCitationStr( idt citID, const wxString& dbname )
 {
-    recCitation cit( citID );
-    return cit.GetCitationStr();
+    recCitation cit( citID, dbname );
+    return cit.GetCitationStr( dbname );
 }
 
-wxString recCitation::GetCitationStr() const
+wxString recCitation::GetCitationStr( const wxString& dbname ) const
 {
     wxString citation;
     if( f_id == 0 ) {
         return citation;
     }
     if( f_higher_id ) {
-        citation = recCitation::GetCitationStr( f_higher_id );
+        citation = recCitation::GetCitationStr( f_higher_id, dbname );
     }
     else {
-        recRepository rep( f_rep_id );
+        recRepository rep( f_rep_id, dbname );
         citation = rep.FGetName();
     }
-    recCitationPartVec parts = GetPartList();
+    recCitationPartVec parts = GetPartList( dbname );
     for( const auto& part : parts ) {
         citation += ", " + part.FGetValue();
     }
@@ -299,7 +299,7 @@ void recRepository::Clear()
     f_con_list_id = 0;
 }
 
-void recRepository::Save()
+void recRepository::Save( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
 
@@ -307,9 +307,9 @@ void recRepository::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO Repository (name, note, con_list_id)"
+            "INSERT INTO \"%s\".Repository (name, note, con_list_id)"
             " VALUES ('%q', '%q', " ID ");",
-            UTF8_( f_name ), UTF8_( f_note ), f_con_list_id
+            UTF8_( dbname ), UTF8_( f_name ), UTF8_( f_note ), f_con_list_id
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -320,24 +320,24 @@ void recRepository::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO Repository (id, name, note, con_list_id)"
+                "INSERT INTO \"%s\".Repository (id, name, note, con_list_id)"
                 " VALUES (" ID ", '%q', '%q', " ID ");",
-                f_id, UTF8_( f_name ), UTF8_( f_note ), f_con_list_id
+                UTF8_( dbname ), f_id, UTF8_( f_name ), UTF8_( f_note ), f_con_list_id
             );
         }
         else {
             // Update existing record
             sql.Format(
-                "UPDATE Repository SET name='%q', note='%q', con_list_id=" ID
+                "UPDATE \"%s\".Repository SET name='%q', note='%q', con_list_id=" ID
                 " WHERE id=" ID ";",
-                UTF8_( f_name ), UTF8_( f_note ), f_con_list_id, f_id
+                UTF8_( dbname ), UTF8_( f_name ), UTF8_( f_note ), f_con_list_id, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
     }
 }
 
-bool recRepository::Read()
+bool recRepository::Read( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -349,8 +349,8 @@ bool recRepository::Read()
 
     sql.Format(
         "SELECT name, note, con_list_id"
-        " FROM Repository WHERE id=" ID ";",
-        f_id
+        " FROM \"%s\".Repository WHERE id=" ID ";",
+        UTF8_( dbname ), f_id
     );
     result = s_db->GetTable( sql );
 
@@ -374,13 +374,16 @@ bool recRepository::Equivalent( const recRepository& r2 ) const
         f_con_list_id == r2.f_con_list_id;
 }
 
-recRepositoryVec recRepository::GetFullList()
+recRepositoryVec recRepository::GetFullList( const wxString& dbname )
 {
     recRepositoryVec list;
-    wxSQLite3ResultSet result = s_db->ExecuteQuery(
-        "SELECT id, name, note, con_list_id FROM Repository"
-        " ORDER BY id;"
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "SELECT id, name, note, con_list_id FROM \"%s\".Repository"
+        " ORDER BY id;", UTF8_( dbname )
     );
+    wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
 
     recRepository arch( 0 );
     while( result.NextRow() ) {
@@ -475,7 +478,7 @@ void recCitationPart::Clear()
     f_comment.clear();
 }
 
-void recCitationPart::Save()
+void recCitationPart::Save( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
 
@@ -483,9 +486,9 @@ void recCitationPart::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO CitationPart (cit_id, type_id, val, cit_seq, comment)"
+            "INSERT INTO \"%s\".CitationPart (cit_id, type_id, val, cit_seq, comment)"
             " VALUES (" ID ", " ID ", '%q', %d, '%q');",
-            f_cit_id, f_type_id, UTF8_( f_val ), f_cit_seq, UTF8_( f_comment )
+            UTF8_( dbname ), f_cit_id, f_type_id, UTF8_( f_val ), f_cit_seq, UTF8_( f_comment )
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -496,19 +499,19 @@ void recCitationPart::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO CitationPart (id, cit_id, type_id, val, cit_seq, comment)"
+                "INSERT INTO \"%s\".CitationPart (id, cit_id, type_id, val, cit_seq, comment)"
                 " VALUES (" ID ", " ID ", " ID ", '%q', %d, '%q');",
-                f_id, f_cit_id, f_type_id, UTF8_( f_val ),
+                UTF8_( dbname ), f_id, f_cit_id, f_type_id, UTF8_( f_val ),
                 f_cit_seq, UTF8_( f_comment )
             );
         }
         else {
             // Update existing record
             sql.Format(
-                "UPDATE CitationPart SET cit_id=" ID ", type_id=" ID ", val='%q',"
+                "UPDATE \"%s\".CitationPart SET cit_id=" ID ", type_id=" ID ", val='%q',"
                 " cit_seq=%d, comment='%q'"
                 " WHERE id=" ID ";",
-                f_cit_id, f_type_id, UTF8_( f_val ),
+                UTF8_( dbname ), f_cit_id, f_type_id, UTF8_( f_val ),
                 f_cit_seq, UTF8_( f_comment ), f_id
             );
         }
@@ -516,7 +519,7 @@ void recCitationPart::Save()
     }
 }
 
-bool recCitationPart::Read()
+bool recCitationPart::Read( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -528,8 +531,8 @@ bool recCitationPart::Read()
 
     sql.Format(
         "SELECT cit_id, type_id, val, cit_seq, comment"
-        " FROM CitationPart WHERE id=" ID ";",
-        f_id
+        " FROM \"%s\".CitationPart WHERE id=" ID ";",
+        UTF8_( dbname ), f_id
     );
     result = s_db->GetTable( sql );
 
@@ -629,7 +632,7 @@ void recCitationPartType::Clear()
     f_comment.clear();
 }
 
-void recCitationPartType::Save()
+void recCitationPartType::Save( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
 
@@ -637,9 +640,9 @@ void recCitationPartType::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO CitationPartType (name, style, comment)"
+            "INSERT INTO \"%s\".CitationPartType (name, style, comment)"
             " VALUES ('%q', %d, '%q');",
-            UTF8_(f_name), f_style, UTF8_( f_comment)
+            UTF8_( dbname ), UTF8_(f_name), f_style, UTF8_( f_comment)
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -649,23 +652,23 @@ void recCitationPartType::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO CitationPartType (id, name, style, comment) "
+                "INSERT INTO \"%s\".CitationPartType (id, name, style, comment) "
                 "VALUES (" ID ", '%q', %d, '%q');",
-                f_id, UTF8_(f_name), f_style, UTF8_( f_comment )
+                UTF8_( dbname ), f_id, UTF8_(f_name), f_style, UTF8_( f_comment )
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE CitationPartType SET name='%q', style=%d, comment='%q'"
+                "UPDATE \"%s\".CitationPartType SET name='%q', style=%d, comment='%q'"
                 " WHERE id=" ID ";",
-                UTF8_(f_name), f_style, UTF8_( f_comment ), f_id
+                UTF8_( dbname ), UTF8_(f_name), f_style, UTF8_( f_comment ), f_id
             );
         }
         s_db->ExecuteUpdate( sql );
     }
 }
 
-bool recCitationPartType::Read()
+bool recCitationPartType::Read( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -676,8 +679,8 @@ bool recCitationPartType::Read()
     }
 
     sql.Format( 
-        "SELECT name, style, comment FROM CitationPartType WHERE id=" ID ";",
-        f_id
+        "SELECT name, style, comment FROM \"%s\".CitationPartType WHERE id=" ID ";",
+        UTF8_( dbname ), f_id
     );
     result = s_db->GetTable( sql );
 
@@ -702,13 +705,13 @@ bool recCitationPartType::Equivalent( const recCitationPartType& r2 ) const
         ;
 }
 
-wxString recCitationPartType::GetStr( idt id )
+wxString recCitationPartType::GetStr( idt id, const wxString& dbname )
 {
-    recCitationPartType cpt( id );
+    recCitationPartType cpt( id, dbname );
     return cpt.f_name;
 }
 
-recCitationPartTypeVec recCitationPartType::GetList()
+recCitationPartTypeVec recCitationPartType::GetList( const wxString& dbname )
 {
     recCitationPartType cpt;
     recCitationPartTypeVec list;
@@ -718,8 +721,8 @@ recCitationPartTypeVec recCitationPartType::GetList()
 
     // Put standard entries in list.
     sql.Format(
-        "SELECT id, name, style, comment FROM CitationPartType "
-        "WHERE id<=0 ORDER BY id DESC;"
+        "SELECT id, name, style, comment FROM \"%s\".CitationPartType "
+        "WHERE id<=0 ORDER BY id DESC;", UTF8_( dbname )
     );
     result = s_db->GetTable( sql );
 
@@ -734,8 +737,8 @@ recCitationPartTypeVec recCitationPartType::GetList()
 
     // Put user entries in list.
     sql.Format(
-        "SELECT id, name, style, comment FROM CitationPartType "
-        "WHERE id>0 ORDER BY id ASC;"
+        "SELECT id, name, style, comment FROM \"%s\".CitationPartType "
+        "WHERE id>0 ORDER BY id ASC;", UTF8_( dbname )
     );
     result = s_db->GetTable( sql );
 
