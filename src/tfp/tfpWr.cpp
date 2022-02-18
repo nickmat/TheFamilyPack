@@ -274,8 +274,9 @@ wxString tfpNormaliseSpaces( const wxString& str )
     return out;
 }
 
-wxString tfpGetMediaDataFile( idt mdID, idt assID )
+wxString tfpGetMediaDataFile( idt mdID, idt assID, const wxString& dbname )
 {
+    wxASSERT( dbname != "Main" ); // TODO: We can't cope with this yet!
     wxString assDb = recAssociate::GetAttachedName( assID );
     if( assDb.empty() ) {
         return wxString();
@@ -321,7 +322,7 @@ wxString tfpNormalisePageName( const wxString& name )
     return uname;
 }
 
-wxString tfpGetDisplayText( const wxString& pagename, TfpFrame* frame )
+wxString tfpGetDisplayText( const wxString& pagename, const wxString& dbname, TfpFrame* frame )
 {
     wxString name = pagename.Upper();
     wxASSERT( name.size() > 0 );
@@ -443,13 +444,13 @@ wxString tfpGetDisplayText( const wxString& pagename, TfpFrame* frame )
             return tfpWritePlace( num );
         }
         if( name.compare( "R" ) == 0 ) {
-            return tfpWriteReferenceIndex();
+            return tfpWriteReferenceIndex( dbname );
         }
         if( name.compare( 0, 2, "R," ) == 0 && success1 ) {
-            return tfpWriteReferencePagedIndex( num1 );
+            return tfpWriteReferencePagedIndex( num1, dbname );
         }
         if( name.compare( 0, 1, "R" ) == 0 && success ) {
-            return tfpWriteReferencePage( num );
+            return tfpWriteReferencePage( num, dbname );
         }
         if( name.compare( "RE" ) == 0 ) {
             return tfpWriteResearcherList();

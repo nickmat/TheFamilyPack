@@ -48,10 +48,10 @@ extern wxString tfpGetRowClass( int row );
 enum GET_EPITAPH_Prefix { GE_None, GE_Spaces, GE_NewLine };
 extern wxString tfpGetEpitaphPlus( idt indID, GET_EPITAPH_Prefix prefix = GE_Spaces );
 extern wxString tfpNormaliseSpaces( const wxString& str );
-extern wxString tfpGetMediaDataFile( idt mdID, idt assID );
+extern wxString tfpGetMediaDataFile( idt mdID, idt assID, const wxString& dbname = "Main" );
 
 extern wxString tfpNormalisePageName( const wxString& name );
-extern wxString tfpGetDisplayText( const wxString& pagename, TfpFrame* frame = nullptr  );
+extern wxString tfpGetDisplayText( const wxString& pagename, const wxString& dbname, TfpFrame* frame = nullptr  );
 
 // See tfpWrAdmin.cpp
 extern wxString tfpWriteResearcherList();
@@ -114,8 +114,8 @@ extern wxString tfpWriteAbout();
 extern wxString tfpWritePersonaPage( idt perID );
 
 // See tfpWrReference.cpp
-extern wxString tfpWriteReferenceIndex();
-extern wxString tfpWriteReferencePagedIndex( idt begCnt );
-extern wxString tfpWriteReferencePage( idt refID );
+extern wxString tfpWriteReferenceIndex( const wxString& dbname );
+extern wxString tfpWriteReferencePagedIndex( idt begCnt, const wxString& dbname );
+extern wxString tfpWriteReferencePage( idt refID, const wxString& dbname );
 
 #endif // TFPWR_H

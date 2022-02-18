@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     24 October 2010
- * Copyright:   Copyright (c) 2010 ~ 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -59,7 +59,7 @@ static wxString GetHref( const recReferenceEntity& ref )
     return "";
 }
 
-wxString tfpWriteReferenceIndex()
+wxString tfpWriteReferenceIndex( const wxString& dbname )
 {
     static wxString htm;
     static long lastchange(0);
@@ -67,7 +67,7 @@ wxString tfpWriteReferenceIndex()
     if( !htm.IsEmpty() && recDb::GetChange() == lastchange ) {
         return htm;
     }
-    wxSQLite3Table result = recReference::GetTitleList();
+    wxSQLite3Table result = recReference::GetTitleList( dbname );
 
     htm = tfpWrHeadTfp( "Reference List" );
     htm << "<h1>Reference List</h1>\n";
@@ -97,11 +97,11 @@ wxString tfpWriteReferenceIndex()
     return htm;
 }
 
-wxString tfpWriteReferencePagedIndex( idt begCnt )
+wxString tfpWriteReferencePagedIndex( idt begCnt, const wxString& dbname )
 {
     int maxsize = recReference::UserCount();
     if( maxsize <= tfpWR_PAGE_MAX ) {
-        return tfpWriteReferenceIndex();
+        return tfpWriteReferenceIndex( dbname );
     }
     wxString pmenu = tfpWritePagedIndexMenu( begCnt, maxsize, "tfp:R" );
 
@@ -137,10 +137,10 @@ wxString tfpWriteReferencePagedIndex( idt begCnt )
     return htm;
 }
 
-wxString tfpWriteReferencePage( idt refID )
+wxString tfpWriteReferencePage( idt refID, const wxString& dbname )
 {
     wxString htm;
-    recReference ref(refID);
+    recReference ref( refID, dbname );
     if( ref.FGetID() == 0 ) return wxEmptyString;
     recIdVec indIDs;
 
@@ -164,16 +164,16 @@ wxString tfpWriteReferencePage( idt refID )
         "<hr>\n"
     ;
 
-    recIdVec citIDs = ref.GetCitationList( refID );
+    recIdVec citIDs = ref.GetCitationList( refID, dbname );
     htm << "<table class='data'>\n";
     if( !citIDs.empty() ) {
         htm << "<table class='data'>\n<tr><th colspan='3'>Citation</th></tr>\n";
         for( idt citID : citIDs ) {
-            recCitation cit( citID );
+            recCitation cit( citID, dbname );
             htm <<
                 "<tr><td><b><a href='tfpi:" << cit.GetIdStr() <<
                 "'>" << cit.GetIdStr() <<
-                "</a></b></td><td>" << cit.GetCitationStr() <<
+                "</a></b></td><td>" << cit.GetCitationStr( dbname ) <<
                 "</td><td>" << cit.FGetComment() <<
                 "</td></tr>\n"
             ;
@@ -184,13 +184,13 @@ wxString tfpWriteReferencePage( idt refID )
     }
     htm << "</table>\n";
 
-    recIdVec medIDs = ref.GetMediaList( refID );
+    recIdVec medIDs = ref.GetMediaList( refID, dbname );
     htm << "<table class='media'>\n";
     if( !medIDs.empty() ) {
         htm << "<tr><th colspan='3'>Media</th></tr>\n";
         for( idt medID : medIDs ) {
-            recMedia med( medID );
-            wxString fn = tfpGetMediaDataFile( med.FGetDataID(), med.FGetAssID() );
+            recMedia med( medID, dbname );
+            wxString fn = tfpGetMediaDataFile( med.FGetDataID(), med.FGetAssID(), dbname );
             htm << "<tr>\n<td rowspan='2'>";
             if( fn.empty() ) {
                 htm << med.GetDataIdStr() << " Not Found.";
@@ -216,11 +216,11 @@ wxString tfpWriteReferencePage( idt refID )
     htm << "</table>\n";
 
     htm << "<table class='data'>\n";
-    recIdVec perIDs = ref.GetPersonaList();
+    recIdVec perIDs = ref.GetPersonaList( dbname );
     if( perIDs.size() ) {
         htm << "<tr><th colspan='5'>Persona</th></tr>\n";
         for( size_t i = 0 ; i < perIDs.size() ; i++ ) {
-            recPersona per(perIDs[i]);
+            recPersona per(perIDs[i], dbname );
             htm <<
                 "<tr><td><b><a href='tfp:Pa" << recGetStr( per.FGetID() ) <<
                 "'>" << per.GetIdStr() <<
@@ -229,7 +229,7 @@ wxString tfpWriteReferencePage( idt refID )
                 "</td><td>" << per.FGetNote() <<
                 "</td><td><b>"
             ;
-            recIdVec indIDs = per.GetIndividualIDs();
+            recIdVec indIDs = per.GetIndividualIDs( dbname );
             for( size_t j = 0 ; j < indIDs.size() ; j++ ) {
                 if( j > 0 ) {
                     htm << ", ";
@@ -247,11 +247,11 @@ wxString tfpWriteReferencePage( idt refID )
     }
     htm << "</table>\n<table class='data'>\n";
 
-    recIdVec eaIDs = ref.GetEventaList();
+    recIdVec eaIDs = ref.GetEventaList( dbname );
     if ( !eaIDs.empty() ) {
         htm << "<tr><th colspan='4'>Eventa</th></tr>\n";
         for ( idt eaID : eaIDs ) {
-            recEventa ea( eaID );
+            recEventa ea( eaID, dbname );
             htm <<
                 "<tr><td><b><a href='tfp:Ea" << recGetStr( ea.FGetID() ) <<
                 "'>" << ea.GetIdStr() <<
@@ -259,7 +259,7 @@ wxString tfpWriteReferencePage( idt refID )
                 "</td><td>" << ea.FGetNote() <<
                 "</td><td><b>"
             ;
-            recIdVec eveIDs = ea.GetLinkedEventIDs();
+            recIdVec eveIDs = ea.GetLinkedEventIDs( dbname );
             for ( idt eveID : eveIDs ) {
                 if ( eveID != *eveIDs.begin() ) {
                     htm << ", ";
@@ -276,7 +276,7 @@ wxString tfpWriteReferencePage( idt refID )
     }
     htm << "</table>\n<table class='data'>\n";
 
-    recRefEntVec res = ref.ReadReferenceEntitys();
+    recRefEntVec res = ref.ReadReferenceEntitys( dbname );
     if( res.size() ) {
         htm << "<tr><th colspan='3'>Reference Entities</th></tr>\n";
         for( size_t i = 0 ; i < res.size() ; i++ ) {
@@ -284,7 +284,7 @@ wxString tfpWriteReferencePage( idt refID )
                 "<tr><td>" << res[i].GetTypeStr() <<
                 "</td><td><b><a href='" << GetHref( res[i] ) <<
                 "'>" << res[i].GetEntityIdStr() <<
-                "</a></b></td><td>" << res[i].GetEntityStr() <<
+                "</a></b></td><td>" << res[i].GetEntityStr( dbname ) <<
                 "</td></tr>\n"
             ;
         }

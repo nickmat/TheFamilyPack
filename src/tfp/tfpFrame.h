@@ -91,6 +91,8 @@ public:
         const wxString& dbfilename, const wxString& dbname );
     virtual ~TfpFrame();
 
+    const wxString& GetDbName() const { return m_dbname; }
+
     rgCompareEvent& GetCompareEventData() { return m_compEvent; }
     recSelSetEvent& GetSelectedSetEvents() { return m_selEvent; }
 
