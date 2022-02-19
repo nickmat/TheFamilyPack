@@ -391,9 +391,11 @@ void recEventa::UpdateDatePoint( const wxString& dbname )
     case recEventTypeGrp::birth:
     case recEventTypeGrp::nr_birth:
         f_date_pt = recDate::GetDatePoint( f_date1_id, recDate::DatePoint::beg );
+        return;
     case recEventTypeGrp::death:
     case recEventTypeGrp::nr_death:
         f_date_pt = recDate::GetDatePoint( f_date1_id, recDate::DatePoint::end );
+        return;
     }
     f_date_pt = recDate::GetDatePoint( f_date1_id );
 }
