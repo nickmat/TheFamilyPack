@@ -99,13 +99,13 @@ wxString tfpWriteReferenceIndex( const wxString& dbname )
 
 wxString tfpWriteReferencePagedIndex( idt begCnt, const wxString& dbname )
 {
-    int maxsize = recReference::UserCount();
+    int maxsize = recReference::UserCount( dbname );
     if( maxsize <= tfpWR_PAGE_MAX ) {
         return tfpWriteReferenceIndex( dbname );
     }
     wxString pmenu = tfpWritePagedIndexMenu( begCnt, maxsize, "tfp:R" );
 
-    wxSQLite3Table result = recReference::GetTitleList( begCnt, tfpWR_PAGE_MAX );
+    wxSQLite3Table result = recReference::GetTitleList( begCnt, tfpWR_PAGE_MAX, dbname );
     size_t size = (size_t) result.GetRowCount();
     result.SetRow( 0 );
     idt beg = GET_ID( result.GetInt64( 0 ) );
