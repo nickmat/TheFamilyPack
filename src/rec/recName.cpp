@@ -468,29 +468,6 @@ idt recName::CreateIndNameFromPersona( idt indID, idt perID )
     return name.FGetID();
 }
 
-bool recName::FindPersona( idt perID, idt styleID )
-{
-    wxSQLite3StatementBuffer sql;
-    wxSQLite3Table result;
-
-    sql.Format(
-        "SELECT id FROM Name WHERE per_id=" ID " AND style_id=" ID " "
-        "ORDER BY sequence;",
-        perID, styleID
-    );
-    result = s_db->GetTable( sql );
-
-    if( result.GetRowCount() != 1 )
-    {
-        Clear();
-        return false;
-    }
-    result.SetRow( 0 );
-    f_id   = GET_ID( result.GetInt64( 0 ) );
-    Read();
-    return true;
-}
-
 recNamePartVec recName::GetParts( idt nameID, const wxString& dbname )
 {
     recNamePartVec list;

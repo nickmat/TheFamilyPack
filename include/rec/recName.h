@@ -126,8 +126,6 @@ public:
 
     static idt CreateIndNameFromPersona( idt indID, idt perID );
 
-    bool FindPersona( idt perID, idt styleID = 0 );
-
     static recNamePartVec GetParts( idt nameID, const wxString& dbname = "Main" );
     recNamePartVec GetParts( const wxString& dbname = "Main" ) const {
         return GetParts( f_id, dbname ); }
