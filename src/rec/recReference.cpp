@@ -505,19 +505,6 @@ wxString recReferenceEntity::GetEntityStr( const wxString& dbname ) const
     return "[Unknown entity]";
 }
 
-idt recReferenceEntity::FindReferenceID( Type type, idt entityID )
-{
-    wxSQLite3StatementBuffer sql;
-    sql.Format(
-        "SELECT ref_id FROM ReferenceEntity "
-        "WHERE entity_type=%d AND entity_id=" ID ";",
-        (int) type, entityID
-    );
-
-    wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
-    return GET_ID( result.GetInt64( 0 ) );
-}
-
 void recReferenceEntity::Renumber( idt id, idt to_id )
 {
     if( id == 0 ) {

@@ -90,8 +90,6 @@ public:
     wxString GetEntityIdStr() const; 
     wxString GetEntityStr( const wxString& dbname = "Main" ) const;
 
-    static idt FindReferenceID( Type type, idt entityID );
-
     static void Renumber( idt fromID, idt toID );
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );
