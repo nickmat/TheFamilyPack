@@ -400,18 +400,18 @@ bool recDb::RecordExists( const char* name, idt id, const wxString& dbname )
     return true;
 }
 
-int recDb::GetUserCount( const char* name )
+int recDb::GetUserCount( const char* name, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
-    sql.Format( "SELECT COUNT(*) FROM %q WHERE id>0;", name );
+    sql.Format( "SELECT COUNT(*) FROM \"%s\".%q WHERE id>0;", UTF8_( dbname ), name );
 
     return s_db->ExecuteScalar( sql );
 }
 
-int recDb::GetCount( const char* name )
+int recDb::GetCount( const char* name, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
-    sql.Format( "SELECT COUNT(*) FROM %q;", name );
+    sql.Format( "SELECT COUNT(*) FROM \"%s\".%q;", UTF8_( dbname ), name );
 
     return s_db->ExecuteScalar( sql );
 }

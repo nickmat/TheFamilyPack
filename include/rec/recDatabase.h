@@ -79,12 +79,12 @@ public:
 
     /*! Return the number of User (above 0) records in the given table.
      */
-    static int GetUserCount( const char* table );
+    static int GetUserCount( const char* table, const wxString& dbname = "Main" );
 
     /*! Return the total number of records (incl. system and the null record)
      *  in the given table.
      */
-    static int GetCount( const char* table );
+    static int GetCount( const char* table, const wxString& dbname = "Main" );
 
     static bool DoesTableExist( const char* table, const wxString& dbname );
 
@@ -258,8 +258,10 @@ public:
     static bool Exists( idt id, const wxString& dbname = "Main" ) {
         return RecordExists( T::s_tablename, id, dbname );
     }
-    static int UserCount() { return GetUserCount( T::s_tablename ); }
-    static int Count() { return GetCount( T::s_tablename ); }
+    static int UserCount( const wxString& dbname = "Main" ) {
+        return GetUserCount( T::s_tablename, dbname ); }
+    static int Count( const wxString& dbname = "Main" ) {
+        return GetCount( T::s_tablename, dbname ); }
     static bool TableExists( const wxString& dbname = "Main" ) {
         return DoesTableExist( T::s_tablename, dbname );
     }
