@@ -51,7 +51,7 @@ void recAssociate::Clear()
     f_comment.clear();
 }
 
-void recAssociate::Save()
+void recAssociate::Save( const wxString& extdb )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -60,9 +60,9 @@ void recAssociate::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO Associate (path, comment) VALUES ('%q', '%q');",
-            UTF8_( f_path ), UTF8_( f_comment )
-            );
+            "INSERT INTO \"%s\".Associate (path, comment) VALUES ('%q', '%q');",
+            UTF8_( extdb ), UTF8_( f_path ), UTF8_( f_comment )
+        );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
     } else {
@@ -71,22 +71,22 @@ void recAssociate::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO Associate (id, path, comment) "
+                "INSERT INTO \"%s\".Associate (id, path, comment) "
                 "VALUES (" ID ", '%q', '%q');",
-                f_id, UTF8_( f_path ), UTF8_( f_comment )
-                );
+                UTF8_( extdb ), f_id, UTF8_( f_path ), UTF8_( f_comment )
+            );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE Associate SET path='%q', comment='%q' WHERE id=" ID ";",
-                UTF8_( f_path ), UTF8_( f_comment ), f_id
-                );
+                "UPDATE \"%s\".Associate SET path='%q', comment='%q' WHERE id=" ID ";",
+                UTF8_( extdb ), UTF8_( f_path ), UTF8_( f_comment ), f_id
+            );
         }
         s_db->ExecuteUpdate( sql );
     }
 }
 
-bool recAssociate::Read()
+bool recAssociate::Read( const wxString& extdb )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -96,7 +96,10 @@ bool recAssociate::Read()
         return false;
     }
 
-    sql.Format( "SELECT path, comment FROM Associate WHERE id=" ID ";", f_id );
+    sql.Format( 
+        "SELECT path, comment FROM \"%s\".Associate WHERE id=" ID ";",
+        UTF8_( extdb ), f_id
+    );
     result = s_db->GetTable( sql );
 
     if ( result.GetRowCount() != 1 )
@@ -144,12 +147,16 @@ wxString recAssociate::GetAttachedName( idt assID )
     return s_assmap[assID];
 }
 
-recAssociateVec recAssociate::GetList()
+recAssociateVec recAssociate::GetList( const wxString& extdb )
 {
-    wxSQLite3ResultSet result = s_db->ExecuteQuery(
-        "SELECT id, path, comment FROM Associate"
-        " WHERE id>0 ORDER BY id ASC;"
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT id, path, comment FROM \"%s\".Associate"
+        " WHERE id>0 ORDER BY id ASC;",
+        UTF8_( extdb )
     );
+    wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
+
     recAssociateVec vec;
     recAssociate ass( 0 );
     while ( result.NextRow() ) {

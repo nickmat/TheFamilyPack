@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     19th September 2018
- * Copyright:   Copyright (c) 2018 ~ 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2018..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -39,12 +39,12 @@ public:
     static constexpr const char* s_tablename = "Associate";
 
     recAssociate() {}
-    recAssociate( idt id ) : recDbT( id ) { Read(); }
+    recAssociate( idt id, const wxString& extdb = "Main" ) : recDbT( id ) { Read( extdb ); }
     recAssociate( const recAssociate& source );
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& extdb = "Main" );
+    bool Read( const wxString& extdb = "Main" );
     bool Equivalent( const recAssociate& r2 ) const { return f_path == r2.f_path; }
 
     wxString FGetPath() const { return f_path; }
@@ -63,7 +63,7 @@ public:
     */
     static wxString GetAttachedName( idt assID );
 
-    static recAssociateVec GetList();
+    static recAssociateVec GetList( const wxString& extdb = "Main" );
 
 private:
     wxString f_path;
