@@ -122,29 +122,29 @@ idt recAssociate::Create( const wxString & path, const wxString& comment )
     return ass.FGetID();
 }
 
-wxString recAssociate::GetAttachedName( idt assID )
+wxString recAssociate::GetAttachedName( idt assID, const wxString& extdb )
 {
-    if ( s_assmap.count( assID ) == 1 ) {
-        return s_assmap[assID];
+    if ( s_extdbs[extdb].assIdMap.count(assID) == 1 ) {
+        return s_extdbs[extdb].assIdMap[assID];
     }
-    recAssociate ass( assID );
+    recAssociate ass( assID, extdb );
     wxString path = ass.FGetPath();
     if ( path.empty() ) {
-        return path;
+        return wxString();
     }
-    // Check if it's already attached.
-    if ( s_db->GetDatabaseFilename( path ).empty() ) {
-        if ( AttachDb( path, path ) ) {
-            s_assmap[assID] = path;
-            s_assvec.push_back( path );
-        } else {
-            return wxString();
+    wxString cap( path.Capitalize() );
+    StringVec assvec = s_extdbs[extdb].assdbs;
+    for( auto& n = assvec.begin(); n != assvec.end(); n++ ) {
+        if( *n == cap ) {
+            s_extdbs[extdb].assIdMap[assID] = cap;
+            return cap;
         }
-    } else {
-        s_assmap[assID] = path;
-        s_assvec.push_back( path );
     }
-    return s_assmap[assID];
+    cap = recDb::OpenAssociateDb( extdb, path, path );
+    if( !cap.empty() ) {
+        s_extdbs[extdb].assIdMap[assID] = cap;
+    }
+    return cap;
 }
 
 recAssociateVec recAssociate::GetList( const wxString& extdb )

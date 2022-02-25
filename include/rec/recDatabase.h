@@ -35,6 +35,7 @@ extern void recInitialize();
 extern void recUninitialize();
 
 extern wxString recGetHomeDisplay( const wxString& dbname );
+using stringmap = std::map<int, int>;
 
 class recDb
 {
@@ -64,9 +65,9 @@ protected:
     static DbType             s_dbtype;
     static long               s_change;
     static long               s_spnumber;
-    static recAssMap          s_assmap;
-    static StringVec          s_assvec;
-    static StringVec          s_extvec;
+
+    static recExternalDbMap   s_extdbs; // Details of External and Associated db's
+    static StringMap          s_attdbs; // List of attached db's
 
 public:
     /*! Delete the given record in the given table.
@@ -122,17 +123,50 @@ public:
      */
     static DbType OpenDb( const wxString& fname );
 
-    /*! Opens an existing database file as an Associate Database,
+    /*! Returns true if the database is currently open.
+    */
+    static bool IsOpen() { return s_db->IsOpen(); }
+
+    /*! Closes the existing database file.
      */
-    static wxString OpenAssociateDb( const wxString& fname, const wxString& dbname );
+    static void CloseDb();
 
     /*! Opens an existing database file as an External Database,
      */
-    static wxString OpenExternalDb( const wxString& fname, const wxString& dbname );
+    static bool OpenExternalDb( const wxString& fname, const wxString& dbname );
+
+    /*! Get a list of External databases.
+    */
+    static StringVec GetExternalDbList();
+
+    /*! Closes an attached External database file.
+     */
+    static void CloseExternalDb( const wxString& dbname );
+
+    /*! Opens an existing database file as an Associate Database,
+     */
+    static wxString OpenAssociateDb(
+        const wxString& extdb, const wxString& fname, const wxString& dbname );
+
+    /*! Get a list of Associated databases.
+    */
+    static StringVec GetAssociatedDbList( const wxString& extdb );
+
+    /*! Get Associate ID of attached database.
+    */
+    static idt GetAssociateDbAssID( const wxString& extdb, const wxString& dbname );
+
+    /*! Closes an attached Associate database file.
+     */
+    static void CloseAssociateDb( const wxString& extdb, const wxString& dbname );
 
     /*! Attach fname to database as dbname.
     */
-    static bool AttachDb( const wxString& fname, const wxString& dbname );
+    static bool AttachDb( const wxString& extdb, const wxString& fname, const wxString& dbname );
+
+    /*! Attach fname to database as dbname.
+    */
+    static bool IsAttachedDb( const wxString& dbname );
 
     /*! Detach dbname from database.
     */
@@ -141,38 +175,15 @@ public:
     /*! Get a list of attached databases.
     */
     static StringVec GetAttachedDbList();
+    static StringMap GetAttachedDbMap() { return s_attdbs; }
 
     /*! Get a list of all databases, including "main".
     */
     static StringVec GetDatabaseList();
 
-    /*! Get a list of Associated databases.
-    */
-    static StringVec GetAssociatedDbList() { return s_assvec; }
-
-    /*! Get a list of External databases.
-    */
-    static StringVec GetExternalDbList() { return s_extvec; }
-
     /*! Get Associate ID of attached database.
     */
-    static idt GetAttachedDbAssID( const wxString& dbname );
-
-    /*! Closes the existing database file.
-     */
-    static void CloseDb();
-
-    /*! Closes an attached Associate database file.
-     */
-    static void CloseAssociateDb( const wxString& dbname );
-
-    /*! Closes an attached External database file.
-     */
-    static void CloseExternalDb( const wxString& dbname );
-
-    /*! Returns true if the database is currently open.
-    */
-    static bool IsOpen() { return s_db->IsOpen(); }
+    static idt GetAttachedDbAssID_( const wxString& dbname ); // REMOVE:
 
     /*! Returns the full file name of the currently open database.
      */

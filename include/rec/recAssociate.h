@@ -61,7 +61,7 @@ public:
     /* Returns the attached database schema name.
     *  If the database is not currently attached, will attempt to attach first.
     */
-    static wxString GetAttachedName( idt assID );
+    static wxString GetAttachedName( idt assID, const wxString& extdb );
 
     static recAssociateVec GetList( const wxString& extdb = "Main" );
 

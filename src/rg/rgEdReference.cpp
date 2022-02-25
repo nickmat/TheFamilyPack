@@ -102,7 +102,7 @@ idt rgCreateReferenceFromTemplate( wxWindow* parent )
     unsigned button = rgSELSTYLE_None;
     idt assID = rgSelectAssociate( parent, style, &button, "Check Media Database is Connected");
     if( assID != 0 || button == rgSELSTYLE_Unknown ) {
-        wxString asspath = recAssociate::GetAttachedName( assID );
+        wxString asspath = recAssociate::GetAttachedName( assID, "Main");
         if( asspath.empty() ) {
             return 0;
         }

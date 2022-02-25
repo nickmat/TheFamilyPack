@@ -93,10 +93,10 @@ extern wxString tfpWriteIndividualPage( idt indID );
 
 // See tfpWrMedia.cpp
 extern wxString tfpWriteMediaPage( idt medID );
-extern wxString tfpWriteMediaIndex();
-extern wxString tfpWriteMediaPagedIndex( idt begCnt );
-extern wxString tfpWriteMediaDataPage( const wxString& href );
-extern wxString tfpWriteMediaDataIndex();
+extern wxString tfpWriteMediaIndex( const wxString& dbname );
+extern wxString tfpWriteMediaPagedIndex( idt begCnt, const wxString& dbname );
+extern wxString tfpWriteMediaDataPage( const wxString& href, const wxString& dbname );
+extern wxString tfpWriteMediaDataIndex( const wxString& extdb );
 
 // See tfpWrName.cpp
 extern wxString tfpWriteSurnameIndex( recSurnameGroup sng );

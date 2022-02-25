@@ -46,7 +46,7 @@ public:
     void Clear() override;
     void Save( const wxString& dbname = "Main" ) override;
     bool Read( const wxString& dbname = "Main" ) override;
-    bool ReadID( idt id, idt assID );
+    bool ReadID( idt id, idt assID, const wxString& extdb = "Main" );
     bool Equivalent( const recMediaData& r2 ) const;
 
     wxString FGetTitle() const { return f_title; }
@@ -66,7 +66,7 @@ public:
     static wxString GetIdStr( idt medID ) { return wxString::Format( "MD" ID, medID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
-    static wxString GetDbname( const wxString& link, idt* mdID, idt* assID );
+    static wxString GetDbname( const wxString& extdb, const wxString& link, idt* mdID, idt* assID );
     static wxString GetFileName( const wxString& assDb, idt mdID );
     static wxString GetMimeStr( Mime mime );
     static StringVec GetMimeList();

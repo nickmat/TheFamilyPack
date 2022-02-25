@@ -139,9 +139,9 @@ bool recMediaData::Read( const wxString & dbname )
     return true;
 }
 
-bool recMediaData::ReadID( idt id, idt assID )
+bool recMediaData::ReadID( idt id, idt assID, const wxString& extdb )
 {
-    wxString dbname = recAssociate::GetAttachedName( assID );
+    wxString dbname = recAssociate::GetAttachedName( assID, extdb );
     if ( dbname.empty() ) {
         Clear();
         return false;
@@ -169,7 +169,7 @@ bool recMediaData::Equivalent( const recMediaData& r2 ) const
 // The link can be formatted in one of 2 ways,
 // 2)  MDnnn:Ann   Number follows by Associate id number.            recSplitStrRet::associate                   
 // 3)  MDnnn,aaaa  Number folloed by text name of attached database. recSplitStrRet::text
-wxString recMediaData::GetDbname( const wxString& link, idt* mdID, idt* assID )
+wxString recMediaData::GetDbname( const wxString& extdb, const wxString& link, idt* mdID, idt* assID )
 {
     if( !link.StartsWith( "MD" ) ) {
         return "";
@@ -177,10 +177,10 @@ wxString recMediaData::GetDbname( const wxString& link, idt* mdID, idt* assID )
     wxString dbname;
     switch( recSplitStr( link.substr( 2 ), mdID, assID, &dbname ) ) {
     case recSplitStrRet::text:
-        *assID = recDb::GetAttachedDbAssID( dbname );
+        *assID = recDb::GetAssociateDbAssID( extdb, dbname );
         break;
     case recSplitStrRet::associate:
-        dbname = recAssociate::GetAttachedName( *assID );
+        dbname = recAssociate::GetAttachedName( *assID, extdb );
         break;
     }
     if( *mdID == 0 ) {

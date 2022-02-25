@@ -103,7 +103,7 @@ rgDlgSetupReference::rgDlgSetupReference( wxWindow* parent, rgRefData& data, idt
     m_listMedia->InsertColumn( MED_COL_Number, _( "Number" ) );
     m_listMedia->InsertColumn( MED_COL_Title, _( "Title" ) );
     m_choiceMediaDb->Append( m_dbnames );
-    wxString dbname = recAssociate::GetAttachedName( assID );
+    wxString dbname = recAssociate::GetAttachedName( assID, "Main");
     int index = 0;
     for( size_t i = 0; i < m_dbnames.size(); i++ ) {
         if( dbname.compare( m_dbnames[i] ) == 0 ) {
@@ -211,7 +211,7 @@ void rgDlgSetupReference::OnAddNewMedia( wxCommandEvent& event )
     wxString path = dialog.GetPath();
     int index = m_choiceMediaDb->GetSelection();
     wxString dbname = m_dbnames[index];
-    idt assID = recDb::GetAttachedDbAssID( dbname );
+    idt assID = recDb::GetAssociateDbAssID( "Main", dbname );
 
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );

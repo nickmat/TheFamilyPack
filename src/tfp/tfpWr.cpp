@@ -274,10 +274,9 @@ wxString tfpNormaliseSpaces( const wxString& str )
     return out;
 }
 
-wxString tfpGetMediaDataFile( idt mdID, idt assID, const wxString& dbname )
+wxString tfpGetMediaDataFile( idt mdID, idt assID, const wxString& extdb )
 {
-    wxASSERT( dbname != "Main" ); // TODO: We can't cope with this yet!
-    wxString assDb = recAssociate::GetAttachedName( assID );
+    wxString assDb = recAssociate::GetAttachedName( assID, extdb );
     if( assDb.empty() ) {
         return wxString();
     }
@@ -405,16 +404,16 @@ wxString tfpGetDisplayText( const wxString& pagename, const wxString& dbname, Tf
             return tfpWriteIndividualPage( num );
         }
         if( name.compare( "M" ) == 0 ) {
-            return tfpWriteMediaIndex();
+            return tfpWriteMediaIndex( dbname );
         }
         if( name.compare( "MD" ) == 0 ) {
-            return tfpWriteMediaDataIndex();
+            return tfpWriteMediaDataIndex( dbname );
         }
         if( name.compare( 0, 2, "M," ) == 0 && success1 ) {
-            return tfpWriteMediaPagedIndex( num1 );
+            return tfpWriteMediaPagedIndex( num1, dbname );
         }
         if( name.compare( 0, 2, "MD" ) == 0 ) {
-            return tfpWriteMediaDataPage( name );
+            return tfpWriteMediaDataPage( name, dbname );
         }
         if( name.compare( 0, 1, "M" ) == 0 && success ) {
             return tfpWriteMediaPage( num );

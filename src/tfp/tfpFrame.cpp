@@ -248,7 +248,7 @@ void TfpFrame::UpdateWindowMenu()
 
 void TfpFrame::UpdateFileAssociateMenu()
 {
-    StringVec asslist = recDb::GetAssociatedDbList();
+    StringVec asslist = recDb::GetAssociatedDbList( m_dbname );
     if( asslist.empty() ) {
         m_menuFileAssociate->Enable( tfpID_FILE_ATTACH_CLOSE, false );
     }
@@ -358,7 +358,7 @@ void TfpFrame::OnAttachNewFile( wxCommandEvent& event )
     switch ( ret )
     {
     case recDb::CreateReturn::OK:
-        recDb::OpenAssociateDb( dbpath, dbname );
+        recDb::OpenAssociateDb( m_dbname, dbpath, dbname );
         return;
     case recDb::CreateReturn::FileExists:
         mess = wxString::Format("Database aready exists.\n%s", dbpath );
@@ -382,7 +382,7 @@ void TfpFrame::OnAttachOpenFile( wxCommandEvent& event )
         wxString path = dialog.GetPath();
         wxFileName fname( path );
         wxString dbname = fname.GetName();
-        if ( recDb::OpenAssociateDb( path, dbname ).empty() ) {
+        if ( recDb::OpenAssociateDb( m_dbname, path, dbname ).empty() ) {
             wxMessageBox( wxString::Format( "Unable to attach database\n%s", path), "Attach Error" );
         }
         m_changeState = recDb::GetChange();
@@ -391,8 +391,8 @@ void TfpFrame::OnAttachOpenFile( wxCommandEvent& event )
 
 void TfpFrame::OnAttachCloseFile( wxCommandEvent& event )
 {
-    wxString dbname = m_menuFileAssociateClose->GetLabelText( event.GetId() );
-    recDb::CloseAssociateDb( dbname );
+    wxString assdb = m_menuFileAssociateClose->GetLabelText( event.GetId() );
+    recDb::CloseAssociateDb( m_dbname, assdb );
 }
 
 void TfpFrame::OnExternalOpenFile( wxCommandEvent& event )
@@ -407,7 +407,7 @@ void TfpFrame::OnExternalOpenFile( wxCommandEvent& event )
         wxString path = dialog.GetPath();
         wxFileName fname( path );
         wxString dbname = fname.GetName();
-        if( recDb::OpenExternalDb( path, dbname ).empty() ) {
+        if( !recDb::OpenExternalDb( path, dbname ) ) {
             wxMessageBox( wxString::Format( "Unable to attach database\n%s", path ), "Attach Error" );
             return;
         }

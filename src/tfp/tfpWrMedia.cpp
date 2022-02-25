@@ -112,7 +112,7 @@ wxString tfpWriteMediaPage( idt medID )
     return htm;
 }
 
-wxString tfpWriteMediaIndex()
+wxString tfpWriteMediaIndex( const wxString& extdb )
 {
     static wxString htm;
     static long lastchange( 0 );
@@ -133,7 +133,8 @@ wxString tfpWriteMediaIndex()
         htm <<
             "<tr><td><a href='tfp:M" << result.GetAsString( 0 ) <<
             "'><b>M" << result.GetAsString( 0 ) <<
-            "</b></a></td><td>" << recAssociate::GetAttachedName( GET_ID( result.GetInt64( 1 ) ) ) <<
+            "</b></a></td><td>" << recAssociate::GetAttachedName(
+                GET_ID( result.GetInt64( 1 ) ), extdb ) <<
             "</td><td><a href='tfp:R" << result.GetAsString( 2 ) <<
             "'><b>R" << result.GetAsString( 2 ) <<
             "</b></a></td><td> " << result.GetAsString( 3 ) <<
@@ -146,11 +147,11 @@ wxString tfpWriteMediaIndex()
     return htm;
 }
 
-wxString tfpWriteMediaPagedIndex( idt begCnt )
+wxString tfpWriteMediaPagedIndex( idt begCnt, const wxString& extdb )
 {
     int maxsize = recMedia::UserCount();
     if ( maxsize <= tfpWR_PAGE_MAX ) {
-        return tfpWriteMediaIndex();
+        return tfpWriteMediaIndex( extdb );
     }
     wxString pmenu = tfpWritePagedIndexMenu( begCnt, maxsize, "tfp:M" );
 
@@ -175,7 +176,8 @@ wxString tfpWriteMediaPagedIndex( idt begCnt )
         htm <<
             "<tr><td><a href='tfp:M" << result.GetAsString( 0 ) <<
             "'><b>M" << result.GetAsString( 0 ) <<
-            "</b></a></td><td>" << recAssociate::GetAttachedName( GET_ID( result.GetInt64( 1 ) ) ) <<
+            "</b></a></td><td>" << recAssociate::GetAttachedName(
+                GET_ID( result.GetInt64( 1 ) ), extdb ) <<
             "</td><td><a href='tfp:R" << result.GetAsString( 2 ) <<
             "'><b>R" << result.GetAsString( 2 ) <<
             "</b></a></td><td> " << result.GetAsString( 3 ) <<
@@ -189,18 +191,18 @@ wxString tfpWriteMediaPagedIndex( idt begCnt )
     return htm;
 }
 
-wxString tfpWriteMediaDataPage( const wxString& link )
+wxString tfpWriteMediaDataPage( const wxString& link, const wxString& extdb )
 {
     wxString htm;
     // Note, format MDn,Am then n is MDataID and m is AssID.
     // m can be zero ("main" database).
     // format MDn,dbname then dname is a currently attached database
     idt mdID = 0, assID = 0;
-    wxString dbname = recMediaData::GetDbname( link, &mdID, &assID );
-    if( dbname.empty() ) {
+    wxString assdb = recMediaData::GetDbname( extdb, link, &mdID, &assID );
+    if( assdb.empty() ) {
         return tfpWrErrorPage( link );
     }
-    recMediaData md( dbname, mdID );
+    recMediaData md( assdb, mdID );
     wxString memoryfile = md.CreateMemoryFile();
 
     // Write page here
@@ -210,7 +212,7 @@ wxString tfpWriteMediaDataPage( const wxString& link )
 
         "<tr>\n"
         "<td colspan='2' class='media'><a href = 'tfpv:MD" << md.FGetID() << 
-        "," << dbname << "'>"
+        "," << assdb << "'>"
         "<img src='" << memoryfile << "' alt='' height='200' /></a></td>\n"
         "</tr>\n"
 
@@ -239,7 +241,7 @@ wxString tfpWriteMediaDataPage( const wxString& link )
     return htm;
 }
 
-wxString tfpWriteMediaDataIndex()
+wxString tfpWriteMediaDataIndex( const wxString& extdb )
 {
     StringVec attached = recDb::GetDatabaseList();
 
@@ -252,7 +254,7 @@ wxString tfpWriteMediaDataIndex()
         if ( result.GetRowCount() == 0 ) {
             continue;
         }
-        idt assID = recDb::GetAttachedDbAssID( dbname );
+        idt assID = recDb::GetAssociateDbAssID( extdb, dbname );
         wxString assIdStr, attPostfix;
         if( assID > 0 ) {
             // The Associate table must exist if we have a valid id.

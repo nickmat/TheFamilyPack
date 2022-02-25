@@ -43,15 +43,27 @@ typedef wxLongLong_t    idt;
 #define BOOL_(i) ( (i) ? 1 : 0 )
 
 // Useful defines placed here for convenience.
-typedef std::vector< wxString >  StringVec;
+using  StringVec = std::vector< wxString >;
+using  StringMap = std::map< wxString, wxString >;
+
 typedef std::vector< int >  IntVec;
 typedef std::vector< wxLongLong_t > IntegerVec;
 typedef std::vector< double > DoubleVec;
 typedef std::vector< bool > BoolVec;
 
 typedef std::vector< idt >  recIdVec;
+typedef std::map< idt, wxString > recAssMap; // REMOVE
 
-typedef std::map< idt, wxString > recAssMap;
+using recIdStringMap = std::map< idt, wxString >;
+
+struct recExternalDb
+{
+    wxString       dbfilename; // Absolute filename
+    StringVec      assdbs;     // List of dbname's associated to this external db.
+    recIdStringMap assIdMap;   // Map the associate ID to the dbname.
+};
+
+using recExternalDbMap = std::map<wxString,recExternalDb>;
 
 // This class is used when we want to compare two lists that have been
 // obtained by separate routes. The normal pattern is that either

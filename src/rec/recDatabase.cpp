@@ -93,9 +93,8 @@ wxSQLite3Database*  recDb::s_db = NULL;
 recDb::DbType       recDb::s_dbtype = DbType::db_null;
 long                recDb::s_change = 0;
 long                recDb::s_spnumber = 0;
-recAssMap           recDb::s_assmap;
-StringVec           recDb::s_assvec;
-StringVec           recDb::s_extvec;
+recExternalDbMap    recDb::s_extdbs;
+StringMap           recDb::s_attdbs;
 
 recDb::CreateReturn recDb::CreateDbFile( const wxString& fname, DbType type )
 {
@@ -162,7 +161,6 @@ bool recDb::CreateDb( const wxString& fname, unsigned flags )
     CreateReturn ret = CreateDbFile( dbfname, DbType::full );
     if ( ret == CreateReturn::OK ) {
         s_db->Open( dbfname );
-        s_assmap[0] = "Main";
         return true;
     }
     return false;
@@ -191,32 +189,138 @@ recDb::DbType recDb::OpenDb( const wxString& fname )
         CloseDb();
         return DbType::db_null;
     }
-    s_assmap[0] = "Main";
+    s_extdbs["Main"].dbfilename = s_db->GetDatabaseFilename( "main" );
+    s_extdbs["Main"].assIdMap[0] = "Main";
     return type;
 }
 
-wxString recDb::OpenAssociateDb( const wxString& fname, const wxString& dbname )
-{
-    if( AttachDb( fname, dbname ) ) {
-        s_assvec.push_back( dbname );
-        return dbname;
-    }
-    return wxString();
+void recDb::CloseDb() 
+{ 
+    s_db->Close();
+    s_dbtype = DbType::db_null;
+    ++s_change;
+    s_extdbs.clear();
+    s_attdbs.clear();
 }
 
-wxString recDb::OpenExternalDb( const wxString& fname, const wxString& dbname )
+bool recDb::OpenExternalDb( const wxString& fname, const wxString& dbname )
 {
-    if( AttachDb( fname, dbname ) ) {
-        s_extvec.push_back( dbname );
-        return dbname;
+    wxString mess_title = _( "Open External Database" );
+    wxString cap( dbname.Capitalize() );
+    if( s_extdbs.count( cap ) == 1 ) {
+        wxString mess = wxString::Format(
+            _( "External database \"%s\" already open." ), cap
+        );
+        recMessage( mess, mess_title );
+        return false;
     }
-    return wxString();
+    if( s_attdbs.count( cap ) == 1 ) {
+        if( fname.compare( s_attdbs[cap] ) != 0 ) {
+            // It's in the list, but a different filename.
+            wxString mess = wxString::Format(
+                _( "Attached database name \"%s\" already used." ), cap
+            );
+            recMessage( mess, mess_title );
+            return false;
+        }
+    }
+    if( !AttachDb( "Main", fname, cap) ) {
+        wxString mess = wxString::Format(
+            _( "Unable to attach database \"%s\"." ), cap
+        );
+        recMessage( mess, mess_title );
+        return false;
+    }
+    s_extdbs[cap].dbfilename = fname;
+    s_extdbs[cap].assIdMap[0] = cap;
+    return true;
 }
 
-bool recDb::AttachDb( const wxString& fname, const wxString& dbname )
+StringVec recDb::GetExternalDbList()
 {
+    StringVec dbnames;
+    for( auto& extdb : s_extdbs ) {
+        if( extdb.first.CmpNoCase( "Main" ) == 0 ) {
+            continue;
+        }
+        dbnames.push_back( extdb.first );
+    }
+    return dbnames;
+}
+
+void recDb::CloseExternalDb( const wxString& dbname )
+{
+    wxString cap( dbname.Capitalize() );
+    for( size_t i = s_extdbs[cap].assdbs.size(); i > 0; --i ) {
+        wxString assdb = s_extdbs[cap].assdbs[i - 1];
+        s_extdbs[cap].assdbs.pop_back();
+        CloseAssociateDb( cap, assdb );
+    }
+    s_extdbs[cap].assIdMap.clear();
+    s_extdbs.erase( cap );
+
+    DetachDb( cap );
+}
+
+wxString recDb::OpenAssociateDb( const wxString& extdb, const wxString& fname, const wxString& dbname )
+{
+    wxString cap( dbname.Capitalize() );
+    if( !AttachDb( extdb, fname, cap ) ) {
+        wxString mess = wxString::Format(
+            _( "Unable to open \"%s\" database." ), cap
+        );
+        recMessage( mess, _( "Open Associate Database" ) );
+        return wxString();
+    }
+    s_extdbs[extdb].assdbs.push_back( cap );
+    return cap;
+}
+
+StringVec recDb::GetAssociatedDbList( const wxString& extdb )
+{
+    return s_extdbs[extdb].assdbs;
+}
+
+idt recDb::GetAssociateDbAssID( const wxString& extdb, const wxString& dbname )
+{
+    for( auto a : s_extdbs[extdb].assIdMap ) {
+        if( a.second == dbname ) {
+            return a.first;
+        }
+    }
+    return 0;
+}
+
+void recDb::CloseAssociateDb( const wxString& extdb, const wxString& dbname )
+{
+    wxString cap( dbname.Capitalize() );
+    StringVec assvec = s_extdbs[extdb].assdbs;
+    for( auto& n = assvec.begin(); n != assvec.end(); n++ ) {
+        if( *n == cap ) {
+            assvec.erase( n );
+            break;
+        }
+    }
+    recIdStringMap assmap = s_extdbs[extdb].assIdMap;
+    for( auto& a : assmap ) {
+        if( a.second == cap ) {
+            assmap.erase( a.first );
+            break;
+        }
+    }
+    DetachDb( cap );
+}
+
+bool recDb::AttachDb( const wxString& extdb, const wxString& fname, const wxString& dbname )
+{
+    if( s_attdbs.count( dbname ) == 1 ) {
+        return true; // Already attached.
+    }
+    if( dbname.CmpNoCase( "main" ) == 0 || dbname.CmpNoCase( "temp" ) == 0 ) {
+        return false;
+    }
     wxFileName dbfile( fname );
-    wxFileName dbMain( recDb::GetFileName() );
+    wxFileName dbMain( s_extdbs[extdb].dbfilename );
     dbfile.SetExt( "tfpd" );
     if ( !dbfile.FileExists() ) {
         if ( !dbfile.IsRelative() ) {
@@ -227,6 +331,9 @@ bool recDb::AttachDb( const wxString& fname, const wxString& dbname )
         if ( !dbfile.FileExists() ) {
             return false;
         }
+    }
+    if( dbfile.IsRelative() ) {
+        dbfile.MakeAbsolute();
     }
     wxString dbfname = dbfile.GetFullPath();
     wxSQLite3StatementBuffer sql;
@@ -241,17 +348,50 @@ bool recDb::AttachDb( const wxString& fname, const wxString& dbname )
 
     DbType type = recVersion::Manage( dbname );
     if( type == DbType::db_null ) {
-        DetachDb( dbname );
+        recDb::DetachDb( dbname );
+        return false;
+    }
+    s_attdbs[dbname] = dbfname;
+    // Final check to see if attached.
+    wxString filename = s_db->GetDatabaseFilename( dbname );
+    if( filename.empty() ) {
         return false;
     }
     return true;
 }
 
+bool recDb::IsAttachedDb( const wxString& dbname )
+{
+    if( s_attdbs.count( dbname ) == 1 ) {
+        return true;
+    }
+    return false;
+}
+
 bool recDb::DetachDb( const wxString& dbname )
 {
+    if( !IsAttachedDb( dbname ) ) {
+        return false;  // Not attached!
+    }
+    // Assume removed internally first. Is it in use elsewhere?
+    // If so then return true as this is not an error.
+    for( auto& external : s_extdbs ) {
+        if( external.first == dbname ) {
+            return true;
+        }
+        for( auto& associate : external.second.assdbs ) {
+            if( associate == dbname ) {
+                return true; 
+            }
+        }
+    }
+
     wxSQLite3StatementBuffer sql;
     sql.Format( "DETACH DATABASE \"%s\";", UTF8_( dbname ) );
     s_db->ExecuteUpdate( sql );
+
+    s_attdbs.erase( dbname );
+ 
     return true;
 }
 
@@ -284,50 +424,14 @@ StringVec recDb::GetDatabaseList()
     return vec;
 }
 
-idt recDb::GetAttachedDbAssID( const wxString& dbname )
+idt recDb::GetAttachedDbAssID_( const wxString& dbname )
 {
-    for ( auto a : s_assmap ) {
+    for ( auto a : s_assmap_ ) {
         if ( a.second == dbname ) {
             return a.first;
         }
     }
     return 0;
-}
-
-void recDb::CloseDb() 
-{ 
-    s_db->Close();
-    s_dbtype = DbType::db_null;
-    ++s_change;
-    s_assmap.clear();
-}
-
-void recDb::CloseAssociateDb( const wxString& dbname )
-{
-    DetachDb( dbname );
-    for( auto& a : s_assmap ) {
-        if( a.second == dbname ) {
-            s_assmap.erase( a.first );
-            break;
-        }
-    }
-    for( auto& n = s_assvec.begin(); n != s_assvec.end(); n++ ) {
-        if( *n == dbname ) {
-            s_assvec.erase( n );
-            break;
-        }
-    }
-}
-
-void recDb::CloseExternalDb( const wxString& dbname )
-{
-    DetachDb( dbname );
-    for( auto& n = s_extvec.begin(); n != s_extvec.end(); n++ ) {
-        if( *n == dbname ) {
-            s_extvec.erase( n );
-            break;
-        }
-    }
 }
 
 wxString recDb::GetFileName()
