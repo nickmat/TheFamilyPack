@@ -181,10 +181,6 @@ public:
     */
     static StringVec GetDatabaseList();
 
-    /*! Get Associate ID of attached database.
-    */
-    static idt GetAttachedDbAssID_( const wxString& dbname ); // REMOVE:
-
     /*! Returns the full file name of the currently open database.
      */
     static wxString GetFileName();

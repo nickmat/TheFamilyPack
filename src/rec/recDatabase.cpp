@@ -424,16 +424,6 @@ StringVec recDb::GetDatabaseList()
     return vec;
 }
 
-idt recDb::GetAttachedDbAssID_( const wxString& dbname )
-{
-    for ( auto a : s_assmap_ ) {
-        if ( a.second == dbname ) {
-            return a.first;
-        }
-    }
-    return 0;
-}
-
 wxString recDb::GetFileName()
 {
     wxString fn;
