@@ -45,8 +45,8 @@ extern wxString tfpWritePagedIndexMenu( idt begCnt, size_t maxsize, const wxStri
 extern wxString tfpGetIndSexClass( idt indID, Sex pref = Sex::unknown, const wxString& dbname = "Main" );
 extern wxString tfpGetSexClass( Sex sex, Sex pref = Sex::unknown );
 extern wxString tfpGetRowClass( int row );
-enum GET_EPITAPH_Prefix { GE_None, GE_Spaces, GE_NewLine };
-extern wxString tfpGetEpitaphPlus( idt indID, GET_EPITAPH_Prefix prefix = GE_Spaces, const wxString& dbname = "Main" );
+enum class GetEpitaphPrefix { none, spaces, newline };
+extern wxString tfpGetEpitaphPlus( idt indID, GetEpitaphPrefix prefix = GetEpitaphPrefix::none, const wxString& dbname = "Main" );
 extern wxString tfpNormaliseSpaces( const wxString& str );
 extern wxString tfpGetMediaDataFile( idt mdID, idt assID, const wxString& dbname = "Main" );
 

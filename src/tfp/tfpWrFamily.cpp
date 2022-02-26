@@ -90,7 +90,7 @@ wxString tfpWriteFamilyPage( idt famID, const wxString& extdb, size_t iL, size_t
                 "<td class='" << tfpGetIndSexClass( indID, Sex::male, extdb ) <<
                 "'><a href='tfp:F" << husbFams[iL].FGetID() << 
                 "'>" << recIndividual::GetName( indID, extdb ) <<
-                "</a>" << tfpGetEpitaphPlus( indID, GE_NewLine, extdb ) <<
+                "</a>" << tfpGetEpitaphPlus( indID, GetEpitaphPrefix::newline, extdb ) <<
                 "</td>\n"
             ;
         } else {
@@ -112,7 +112,7 @@ wxString tfpWriteFamilyPage( idt famID, const wxString& extdb, size_t iL, size_t
                 "<td class='" << tfpGetIndSexClass( indID, Sex::female, extdb ) <<
                 "'><a href='tfp:F" << husbFams[iL].FGetID() <<
                 "'>" << recIndividual::GetName( indID, extdb ) <<
-                "</a>" << tfpGetEpitaphPlus( indID, GE_NewLine, extdb ) <<
+                "</a>" << tfpGetEpitaphPlus( indID, GetEpitaphPrefix::newline, extdb ) <<
                 "</td>\n"
             ;
         } else {
@@ -136,7 +136,7 @@ wxString tfpWriteFamilyPage( idt famID, const wxString& extdb, size_t iL, size_t
                 "<td class='" << tfpGetIndSexClass( indID, Sex::male, extdb ) <<
                 "'>\n<a href='tfp:F" << wifeFams[iR].FGetID() << 
                 "'>" << recIndividual::GetName( indID, extdb ) <<
-                "</a>" << tfpGetEpitaphPlus( indID, GE_NewLine, extdb ) <<
+                "</a>" << tfpGetEpitaphPlus( indID, GetEpitaphPrefix::newline, extdb ) <<
                 "</td>\n"
             ;
         } else {
@@ -157,7 +157,7 @@ wxString tfpWriteFamilyPage( idt famID, const wxString& extdb, size_t iL, size_t
                 "<td class='" << tfpGetIndSexClass( indID, Sex::female, extdb ) <<
                 "'>\n<a href='tfp:F" << wifeFams[iR].FGetID() << 
                 "'>" << recIndividual::GetName( indID, extdb ) <<
-                "</a>" << tfpGetEpitaphPlus( indID, GE_NewLine, extdb ) <<
+                "</a>" << tfpGetEpitaphPlus( indID, GetEpitaphPrefix::newline, extdb ) <<
                 "</td>\n"
             ;
         } else {

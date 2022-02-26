@@ -237,7 +237,7 @@ wxString tfpGetRowClass( int row )
 }
 
 wxString tfpGetEpitaphPlus(
-    idt indID,  GET_EPITAPH_Prefix prefix, const wxString& dbname )
+    idt indID, GetEpitaphPrefix prefix, const wxString& dbname )
 {
     wxString epitaph = recIndividual::GetEpitaph( indID, dbname );
     wxString prefixStr;
@@ -245,10 +245,10 @@ wxString tfpGetEpitaphPlus(
     if( epitaph.size() ) {
         switch( prefix )
         {
-        case GE_Spaces:
+        case GetEpitaphPrefix::spaces:
             prefixStr = "&nbsp;&nbsp;";
             break;
-        case GE_NewLine:
+        case GetEpitaphPrefix::newline:
             prefixStr = "<br>\n";
             break;
         }
