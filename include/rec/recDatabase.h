@@ -72,7 +72,7 @@ protected:
 public:
     /*! Delete the given record in the given table.
      */
-    static bool DeleteRecord( const char* table, idt id );
+    static bool DeleteRecord( const char* table, idt id, const wxString& dbname );
 
     /*! Return true if the given record exists in the given table.
      */
@@ -257,8 +257,10 @@ public:
     static const char* TableName() { return T::s_tablename; }
     const char* GetTableName() const { return T::s_tablename; }
 
-    bool Delete()  { return DeleteRecord( T::s_tablename, f_id ); }
-    static bool Delete( idt id ) { return DeleteRecord( T::s_tablename, id ); }
+    bool Delete( const wxString& dbname = "Main" )  { 
+        return DeleteRecord( T::s_tablename, f_id, dbname ); }
+    static bool Delete( idt id, const wxString& dbname = "Main" ) { 
+        return DeleteRecord( T::s_tablename, id, dbname ); }
     bool Exists( const wxString& dbname = "Main" ) const {
         return RecordExists( T::s_tablename, f_id, dbname );
     }

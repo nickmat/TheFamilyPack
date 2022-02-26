@@ -464,14 +464,14 @@ void recDb::ErrorMessage( wxSQLite3Exception& e )
     recMessage( err, _("Database Error") );
 }
 
-bool recDb::DeleteRecord( const char* name, idt id )
+bool recDb::DeleteRecord( const char* name, idt id, const wxString& dbname )
 {
     if( id == 0 ) {
         return false;
     }
 
     wxSQLite3StatementBuffer sql;
-    sql.Format( "DELETE FROM %q WHERE id=" ID ";", name, id );
+    sql.Format( "DELETE FROM \"%s\".%q WHERE id=" ID ";", UTF8_( dbname ), name, id );
 
     if( s_db->ExecuteUpdate( sql ) != 1 ) {
         return false;
