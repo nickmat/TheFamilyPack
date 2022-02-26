@@ -212,9 +212,9 @@ wxString tfpWritePagedIndexMenu( idt begCnt, size_t maxsize, const wxString pref
     return mnu;
 }
 
-wxString tfpGetIndSexClass( idt indID, Sex pref )
+wxString tfpGetIndSexClass( idt indID, Sex pref, const wxString& dbname )
 {
-    return tfpGetSexClass( recIndividual::GetSex( indID ), pref );
+    return tfpGetSexClass( recIndividual::GetSex( indID, dbname ), pref );
 }
 
 wxString tfpGetSexClass( Sex sex, Sex pref )
@@ -236,9 +236,10 @@ wxString tfpGetRowClass( int row )
     return ( row % 2 ) ? "odd" : "even";
 }
 
-wxString tfpGetEpitaphPlus( idt indID,  GET_EPITAPH_Prefix prefix )
+wxString tfpGetEpitaphPlus(
+    idt indID,  GET_EPITAPH_Prefix prefix, const wxString& dbname )
 {
-    wxString epitaph = recIndividual::GetEpitaph( indID );
+    wxString epitaph = recIndividual::GetEpitaph( indID, dbname );
     wxString prefixStr;
 
     if( epitaph.size() ) {
@@ -387,12 +388,12 @@ wxString tfpGetDisplayText( const wxString& pagename, const wxString& dbname, Tf
             return tfpWriteEventPagedIndex( num1 );
         }
         if( name.compare( 0, 2, "FI" ) == 0 && success1 ) {
-            return tfpWriteIndFamilyPage( num1 );
+            return tfpWriteIndFamilyPage( num1, dbname );
         }
         if( name.compare( 0, 1, "F" ) == 0 ) {
             // Note, Family Page may have alternate parents
             // so name string requires further decoding.
-            return tfpWriteFamilyPage( name.Mid( 1 ) );
+            return tfpWriteFamilyPage( name.Mid( 1 ), dbname );
         }
         if( name.compare( "G" ) == 0 ) {
             return tfpWriteGalleryList();

@@ -49,25 +49,25 @@
 #define NR_DEATH recEventType::ETYPE_Grp_Nr_Death
 
 
-wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
+wxString tfpWriteFamilyPage( idt famID, const wxString& extdb, size_t iL, size_t iR )
 {
     wxString htm;
-    recFamily fam(famID);
+    recFamily fam( famID, extdb );
     if ( fam.FGetID() == 0 ) {
         return htm;
     }
     idt hIndID = fam.FGetHusbID();
     idt wIndID = fam.FGetWifeID();
 
-    recIndividual husb( hIndID );
-    recIndividual wife( wIndID );
+    recIndividual husb( hIndID, extdb );
+    recIndividual wife( wIndID, extdb );
 
-    recFamilyVec husbFams = recFamily::GetParentList( hIndID );
-    recFamilyVec wifeFams = recFamily::GetParentList( wIndID );
+    recFamilyVec husbFams = recFamily::GetParentList( hIndID, extdb );
+    recFamilyVec wifeFams = recFamily::GetParentList( wIndID, extdb );
 
-    recIndividualVec kids = recIndividual::GetChildren( famID );
-    recFamilyVec husbWives = recFamily::GetFamilyList( hIndID );
-    recFamilyVec wifeHusbs = recFamily::GetFamilyList( wIndID );
+    recIndividualVec kids = recIndividual::GetChildren( famID, extdb );
+    recFamilyVec husbWives = recFamily::GetFamilyList( hIndID, extdb );
+    recFamilyVec wifeHusbs = recFamily::GetFamilyList( wIndID, extdb );
 
     htm << "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
            "\"http://www.w3.org/TR/html4/loose.dtd\">\n"
@@ -87,10 +87,10 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
         if( husbFams.size() > iL && husbFams[iL].FGetHusbID() ) {
             idt indID = husbFams[iL].FGetHusbID();
             htm << 
-                "<td class='" << tfpGetIndSexClass( indID, Sex::male ) <<
+                "<td class='" << tfpGetIndSexClass( indID, Sex::male, extdb ) <<
                 "'><a href='tfp:F" << husbFams[iL].FGetID() << 
-                "'>" << recIndividual::GetName( indID ) <<
-                "</a>" << tfpGetEpitaphPlus( indID, GE_NewLine ) <<
+                "'>" << recIndividual::GetName( indID, extdb ) <<
+                "</a>" << tfpGetEpitaphPlus( indID, GE_NewLine, extdb ) <<
                 "</td>\n"
             ;
         } else {
@@ -109,10 +109,10 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
         if( husbFams.size() > iL && husbFams[iL].FGetWifeID() ) {
             idt indID = husbFams[iL].FGetWifeID();
             htm << 
-                "<td class='" << tfpGetIndSexClass( indID, Sex::female ) <<
+                "<td class='" << tfpGetIndSexClass( indID, Sex::female, extdb ) <<
                 "'><a href='tfp:F" << husbFams[iL].FGetID() <<
-                "'>" << recIndividual::GetName( indID ) <<
-                "</a>" << tfpGetEpitaphPlus( indID, GE_NewLine ) <<
+                "'>" << recIndividual::GetName( indID, extdb ) <<
+                "</a>" << tfpGetEpitaphPlus( indID, GE_NewLine, extdb ) <<
                 "</td>\n"
             ;
         } else {
@@ -133,10 +133,10 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
         if( wifeFams.size() > iR && wifeFams[iR].FGetHusbID() ) {
             idt indID = wifeFams[iR].FGetHusbID();
             htm << 
-                "<td class='" << tfpGetIndSexClass( indID, Sex::male ) <<
+                "<td class='" << tfpGetIndSexClass( indID, Sex::male, extdb ) <<
                 "'>\n<a href='tfp:F" << wifeFams[iR].FGetID() << 
-                "'>" << recIndividual::GetName( indID ) <<
-                "</a>" << tfpGetEpitaphPlus( indID, GE_NewLine ) <<
+                "'>" << recIndividual::GetName( indID, extdb ) <<
+                "</a>" << tfpGetEpitaphPlus( indID, GE_NewLine, extdb ) <<
                 "</td>\n"
             ;
         } else {
@@ -154,10 +154,10 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
         if( wifeFams.size() > iR && wifeFams[iR].FGetWifeID() ) {
             idt indID = wifeFams[iR].FGetWifeID();
             htm <<
-                "<td class='" << tfpGetIndSexClass( indID, Sex::female ) <<
+                "<td class='" << tfpGetIndSexClass( indID, Sex::female, extdb ) <<
                 "'>\n<a href='tfp:F" << wifeFams[iR].FGetID() << 
-                "'>" << recIndividual::GetName( indID ) <<
-                "</a>" << tfpGetEpitaphPlus( indID, GE_NewLine ) <<
+                "'>" << recIndividual::GetName( indID, extdb ) <<
+                "</a>" << tfpGetEpitaphPlus( indID, GE_NewLine, extdb ) <<
                 "</td>\n"
             ;
         } else {
@@ -189,8 +189,8 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
     if( eveID ) {
         htm << 
             "<tr>\n<td colspan='2' class='both'><b><a href='tfp:E" << eveID <<
-            "'>" << recEvent::GetTypeStr( eveID ) <<
-            "</a>: </b>" << recEvent::GetDetailStr( eveID ) <<
+            "'>" << recEvent::GetTypeStr( eveID, extdb ) <<
+            "</a>: </b>" << recEvent::GetDetailStr( eveID, extdb ) <<
             "</td>\n</tr>\n"
         ;
     } else {
@@ -209,38 +209,38 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
 
     // The happy couple
     htm << "<tr>\n<td class='couple "
-        << tfpGetIndSexClass( fam.f_husb_id, Sex::male )
+        << tfpGetIndSexClass( fam.f_husb_id, Sex::male, extdb )
         << "'>";
     if( fam.f_husb_id == 0 ) {
         htm << "<a href='tfpe:IL" << fam.f_id
             << "'><img src='memory:blank.png' width='200' height='40' alt='Add husband'></a>";
     } else {
         htm << "<a href='tfp:I" << fam.f_husb_id
-            << "'>" << recIndividual::GetName( fam.f_husb_id )
+            << "'>" << recIndividual::GetName( fam.f_husb_id, extdb )
             << "</a><br>"
-            << recIndividual::GetEpitaph( fam.f_husb_id );
+            << recIndividual::GetEpitaph( fam.f_husb_id, extdb );
     }
     htm << "</td>\n<td class='couple "
-        << tfpGetIndSexClass( fam.f_wife_id, Sex::female )
+        << tfpGetIndSexClass( fam.f_wife_id, Sex::female, extdb )
         << "'>";
     if( fam.f_wife_id == 0 ) {
         htm << "<a href='tfpe:IR" << fam.f_id
             << "'><img src='memory:blank.png' width='200' height='40' alt='Add wife'></a>";
     } else {
         htm << "<a href='tfp:I" << fam.f_wife_id
-            << "'>" << recIndividual::GetName( fam.f_wife_id )
+            << "'>" << recIndividual::GetName( fam.f_wife_id, extdb )
             << "</a><br>"
-            << recIndividual::GetEpitaph( fam.f_wife_id );
+            << recIndividual::GetEpitaph( fam.f_wife_id, extdb );
     }
     htm << "</td>\n</tr>\n";
 
     // Standard events
-    eveID = husb.GetBirthEvent();
+    eveID = husb.GetBirthEvent( extdb );
     if( eveID ) {
         htm << 
             "<tr>\n<td><b><a href='tfp:E" << eveID <<
-            "'>" << recEvent::GetTypeStr( eveID ) <<
-            "</a>: </b>" << recEvent::GetDetailStr( eveID ) <<
+            "'>" << recEvent::GetTypeStr( eveID, extdb ) <<
+            "</a>: </b>" << recEvent::GetDetailStr( eveID, extdb ) <<
             "</td>\n"
         ;
     } else if( fam.FGetHusbID() ) {
@@ -251,12 +251,12 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
     } else {
         htm << "<tr>\n<td><b>Birth:</b></td>\n";
     }
-    eveID = wife.GetBirthEvent();
+    eveID = wife.GetBirthEvent( extdb );
     if( eveID ) {
         htm << 
             "<td><b><a href='tfp:E" << eveID <<
-            "'>" << recEvent::GetTypeStr( eveID ) <<
-            "</a>: </b>" << recEvent::GetDetailStr( eveID ) <<
+            "'>" << recEvent::GetTypeStr( eveID, extdb ) <<
+            "</a>: </b>" << recEvent::GetDetailStr( eveID, extdb ) <<
             "</td>\n</tr>\n"
         ;
     } else if( fam.FGetWifeID() ) {
@@ -268,12 +268,12 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
         htm << "<td><b>Birth:</b></td>\n</tr>\n";
     }
 
-    eveID = husb.GetNrBirthEvent();
+    eveID = husb.GetNrBirthEvent( extdb );
     if( eveID ) {
         htm << 
             "<tr>\n<td><b><a href='tfp:E" << eveID <<
-            "'>" << recEvent::GetTypeStr( eveID ) <<
-            "</a>: </b>" << recEvent::GetDetailStr( eveID ) <<
+            "'>" << recEvent::GetTypeStr( eveID, extdb ) <<
+            "</a>: </b>" << recEvent::GetDetailStr( eveID, extdb ) <<
             "</td>\n"
         ;
     } else if( fam.FGetHusbID() ) {
@@ -284,12 +284,12 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
     } else {
         htm << "<tr>\n<td><b>Baptism:</b></td>\n";
     }
-    eveID = wife.GetNrBirthEvent();
+    eveID = wife.GetNrBirthEvent( extdb );
     if( eveID ) {
         htm << 
             "<td><b><a href='tfp:E" << eveID <<
-            "'>" << recEvent::GetTypeStr( eveID ) <<
-            "</a>: </b>" << recEvent::GetDetailStr( eveID ) <<
+            "'>" << recEvent::GetTypeStr( eveID, extdb ) <<
+            "</a>: </b>" << recEvent::GetDetailStr( eveID, extdb ) <<
             "</td>\n</tr>\n"
         ;
     } else if( fam.FGetWifeID() ) {
@@ -301,12 +301,12 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
         htm << "<td><b>Baptism:</b></td>\n</tr>\n";
     }
 
-    eveID = husb.GetDeathEvent();
+    eveID = husb.GetDeathEvent( extdb );
     if( eveID ) {
         htm << 
             "<tr>\n<td><b><a href='tfp:E" << eveID <<
-            "'>" << recEvent::GetTypeStr( eveID ) <<
-            "</a>: </b>" << recEvent::GetDetailStr( eveID ) <<
+            "'>" << recEvent::GetTypeStr( eveID, extdb ) <<
+            "</a>: </b>" << recEvent::GetDetailStr( eveID, extdb ) <<
             "</td>\n"
         ;
     } else if( fam.FGetHusbID() ) {
@@ -317,12 +317,12 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
     } else {
         htm << "<tr>\n<td><b>Death:</b></td>\n";
     }
-    eveID = wife.GetDeathEvent();
+    eveID = wife.GetDeathEvent( extdb );
     if( eveID ) {
         htm << 
             "<td><b><a href='tfp:E" << eveID <<
-            "'>" << recEvent::GetTypeStr( eveID ) <<
-            "</a>: </b>" << recEvent::GetDetailStr( eveID ) <<
+            "'>" << recEvent::GetTypeStr( eveID, extdb ) <<
+            "</a>: </b>" << recEvent::GetDetailStr( eveID, extdb ) <<
             "</td>\n</tr>\n"
         ;
     } else if( fam.FGetWifeID() ) {
@@ -334,12 +334,12 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
         htm << "<td><b>Death:</b></td>\n</tr>\n";
     }
 
-    eveID = husb.GetNrDeathEvent();
+    eveID = husb.GetNrDeathEvent( extdb );
     if( eveID ) {
         htm << 
             "<tr>\n<td><b><a href='tfp:E" << eveID <<
-            "'>" << recEvent::GetTypeStr( eveID ) <<
-            "</a>: </b>" << recEvent::GetDetailStr( eveID ) <<
+            "'>" << recEvent::GetTypeStr( eveID, extdb ) <<
+            "</a>: </b>" << recEvent::GetDetailStr( eveID, extdb ) <<
             "</td>\n"
         ;
     } else if( fam.FGetHusbID() ) {
@@ -350,12 +350,12 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
     } else {
         htm << "<tr>\n<td><b>Burial:</b></td>\n";
     }
-    eveID = wife.GetNrDeathEvent();
+    eveID = wife.GetNrDeathEvent( extdb );
     if( eveID ) {
         htm << 
             "<td><b><a href='tfp:E" << eveID <<
-            "'>" << recEvent::GetTypeStr( eveID ) <<
-            "</a>: </b>" << recEvent::GetDetailStr( eveID ) <<
+            "'>" << recEvent::GetTypeStr( eveID, extdb ) <<
+            "</a>: </b>" << recEvent::GetDetailStr( eveID, extdb ) <<
             "</td>\n</tr>\n"
         ;
     } else if( fam.FGetWifeID() ) {
@@ -367,12 +367,12 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
         htm << "<td><b>Burial:</b></td>\n</tr>\n";
     }
 
-    idt ieID = husb.GetPersonalSummaryIE( recEventType::ET_Occupation );
+    idt ieID = husb.GetPersonalSummaryIE( recEventType::ET_Occupation, extdb );
     if( ieID ) {
-        recIndividualEvent ie(ieID);
+        recIndividualEvent ie(ieID, extdb );
         htm << 
             "<tr>\n<td><b><a href='tfp:E" << ie.FGetEventID() <<
-            "'>Occ:</a>: </b>" << recEventTypeRole::GetName( ie.FGetRoleID() ) <<
+            "'>Occ:</a>: </b>" << recEventTypeRole::GetName( ie.FGetRoleID(), extdb ) <<
             "</td>\n"
         ;
     } else if( fam.FGetHusbID() ) {
@@ -383,12 +383,12 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
     } else {
         htm << "<tr>\n<td><b>Occ:</b></td>\n";
     }
-    ieID = wife.GetPersonalSummaryIE( recEventType::ET_Occupation );
+    ieID = wife.GetPersonalSummaryIE( recEventType::ET_Occupation, extdb );
     if( ieID ) {
-        recIndividualEvent ie(ieID);
+        recIndividualEvent ie( ieID, extdb );
         htm << 
             "<td><b><a href='tfp:E" << ie.FGetEventID() <<
-            "'>Occ:</a>: </b>" << recEventTypeRole::GetName( ie.FGetRoleID() ) <<
+            "'>Occ:</a>: </b>" << recEventTypeRole::GetName( ie.FGetRoleID(), extdb ) <<
             "</td>\n</tr>\n"
         ;
     } else if( fam.FGetWifeID() ) {
@@ -452,7 +452,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
         for( size_t i = 0 ; i < kids.size() ; i++ ) {
             indID = kids[i].FGetID();
             htm <<
-                "<tr>\n<td class='" << tfpGetIndSexClass( indID ) << 
+                "<tr>\n<td class='" << tfpGetIndSexClass( indID, Sex::unknown, extdb ) <<
                 " kids'><b><a href='tfp:FI" << indID <<
                 "'>" << kids[i].FGetName() <<
                 "</a></b>&nbsp;&nbsp;" << kids[i].f_epitaph <<
@@ -480,10 +480,10 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
                 indID = husbFams[i].FGetHusbID();
                 if( indID ) {
                     htm << 
-                        "<tr>\n<td class='" << tfpGetIndSexClass( indID ) <<
+                        "<tr>\n<td class='" << tfpGetIndSexClass( indID, Sex::male, extdb ) <<
                         "'><a href='tfp:F" << famID <<
                         "," << i << "," << iR <<
-                        "'>" << recIndividual::GetName( indID ) <<
+                        "'>" << recIndividual::GetName( indID, extdb ) <<
                         "</a>&nbsp;&nbsp;<a href='tfpc:MR" << indID <<
                         "'><img src=memory:fam.png></a></td>\n</tr>\n"
                     ;
@@ -491,10 +491,10 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
                 indID = husbFams[i].FGetWifeID();
                 if( indID ) {
                     htm << 
-                        "<tr>\n<td class='" << tfpGetIndSexClass( indID ) <<
+                        "<tr>\n<td class='" << tfpGetIndSexClass( indID, Sex::female, extdb ) <<
                         "'>\n<a href='tfp:F" << famID <<
                         "," << i << "," << iR << 
-                        "'>" << recIndividual::GetName( indID ) <<
+                        "'>" << recIndividual::GetName( indID, extdb ) <<
                         "</a>&nbsp;&nbsp;<a href='tfpc:MR" << indID <<
                         "'><img src=memory:fam.png></a></td>\n</tr>\n"
                     ;
@@ -516,15 +516,15 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
                     continue;
                 }
                 htm << "<tr>\n<td class='"
-                    << tfpGetIndSexClass( indID, Sex::female )
+                    << tfpGetIndSexClass( indID, Sex::female, extdb )
                     << "'>\n<a href='tfp:F"
-                    << husbWives[i].FGetID() << "'>";            // FamID,
+                    << husbWives[i].FGetID() << "'>";
                 if( indID == 0 ) {
                     htm << "[Unknown]";
                 } else {
-                    htm << recIndividual::GetName( indID ) <<    //  Name
+                    htm << recIndividual::GetName( indID, extdb ) <<
                         "</a>&nbsp;&nbsp;" <<
-                        recIndividual::GetEpitaph( indID ) <<
+                        recIndividual::GetEpitaph( indID, extdb ) <<
                         "&nbsp;&nbsp;<a href='tfpc:MR" << indID <<
                         "'><img src=memory:fam.png>"
                     ;
@@ -546,10 +546,10 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
                 indID = wifeFams[i].FGetHusbID();
                 if( indID ) {
                     htm << 
-                        "<tr>\n<td class='" << tfpGetIndSexClass( indID ) <<
+                        "<tr>\n<td class='" << tfpGetIndSexClass( indID, Sex::male, extdb ) <<
                         "'><a href='tfp:F" << famID <<
                         "," << iL << "," << i <<
-                        "'>" << recIndividual::GetName( indID ) <<
+                        "'>" << recIndividual::GetName( indID, extdb ) <<
                         "</a>&nbsp;&nbsp;<a href='tfpc:MR" << indID <<
                         "'><img src=memory:fam.png></a></td>\n</tr>\n"
                     ;
@@ -557,10 +557,10 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
                 indID = wifeFams[i].FGetWifeID();
                 if( indID ) {
                     htm << 
-                        "<tr>\n<td class='" << tfpGetIndSexClass( indID ) <<
+                        "<tr>\n<td class='" << tfpGetIndSexClass( indID, Sex::female, extdb ) <<
                         "'>\n<a href='tfp:F" << famID <<
                         "," << iL << "," << i << 
-                        "'>" << recIndividual::GetName( indID ) <<
+                        "'>" << recIndividual::GetName( indID, extdb ) <<
                         "</a>&nbsp;&nbsp;<a href='tfpc:MR" << indID <<
                         "'><img src=memory:fam.png></a></td>\n</tr>\n"
                     ;
@@ -582,15 +582,15 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
                     continue;
                 }
                 htm << "<tr>\n<td class='"
-                    << tfpGetIndSexClass( indID, Sex::male )
+                    << tfpGetIndSexClass( indID, Sex::male, extdb )
                     << "'>\n<a href='tfp:F"
-                    << wifeHusbs[i].FGetID() << "'>";            // FamID,
+                    << wifeHusbs[i].FGetID() << "'>";
                 if( indID == 0 ) {
                     htm << "[Unknown]";
                 } else {
-                    htm << recIndividual::GetName( indID ) <<   //  Name
+                    htm << recIndividual::GetName( indID, extdb ) <<
                         "</a>&nbsp;&nbsp;" <<
-                        recIndividual::GetEpitaph( indID ) <<
+                        recIndividual::GetEpitaph( indID, extdb ) <<
                         "&nbsp;&nbsp;<a href='tfpc:MR" << indID <<
                         "'><img src=memory:fam.png>"
                     ;
@@ -609,7 +609,7 @@ wxString tfpWriteFamilyPage( idt famID, size_t iL, size_t iR )
     return htm;
 }
 
-wxString tfpWriteFamilyPage( const wxString& str )
+wxString tfpWriteFamilyPage( const wxString& str, const wxString& extdb )
 {
     unsigned long iL = 0, iR = 0;
     wxStringTokenizer tokenizer( str, "," );
@@ -619,13 +619,13 @@ wxString tfpWriteFamilyPage( const wxString& str )
     token.ToCULong( &iL );
     token = tokenizer.GetNextToken();
     token.ToCULong( &iR );
-    return tfpWriteFamilyPage( famID, iL, iR );
+    return tfpWriteFamilyPage( famID, extdb, iL, iR );
 }
 
-wxString tfpWriteIndFamilyPage( idt indID )
+wxString tfpWriteIndFamilyPage( idt indID, const wxString& extdb )
 {
     idt famID = recIndividual::GetFamilyID( indID );
-    return tfpWriteFamilyPage( famID, 0, 0 );
+    return tfpWriteFamilyPage( famID, extdb, 0, 0 );
 }
 
 // End of tfpWrFam.cpp Source

@@ -42,11 +42,11 @@ extern wxString tfpWrErrorPage( const wxString& name );
 extern wxString tfpWrStartPage();
 #define tfpWR_PAGE_MAX 100
 extern wxString tfpWritePagedIndexMenu( idt begCnt, size_t maxsize, const wxString prefix );
-extern wxString tfpGetIndSexClass( idt indID, Sex pref = Sex::unknown );
+extern wxString tfpGetIndSexClass( idt indID, Sex pref = Sex::unknown, const wxString& dbname = "Main" );
 extern wxString tfpGetSexClass( Sex sex, Sex pref = Sex::unknown );
 extern wxString tfpGetRowClass( int row );
 enum GET_EPITAPH_Prefix { GE_None, GE_Spaces, GE_NewLine };
-extern wxString tfpGetEpitaphPlus( idt indID, GET_EPITAPH_Prefix prefix = GE_Spaces );
+extern wxString tfpGetEpitaphPlus( idt indID, GET_EPITAPH_Prefix prefix = GE_Spaces, const wxString& dbname = "Main" );
 extern wxString tfpNormaliseSpaces( const wxString& str );
 extern wxString tfpGetMediaDataFile( idt mdID, idt assID, const wxString& dbname = "Main" );
 
@@ -80,9 +80,9 @@ extern wxString tfpWriteEventPagedIndex( idt begCnt );
 extern wxString tfpWriteEventSelection( TfpFrame* frame );
 
 // See tfpWrFamily.cpp
-extern wxString tfpWriteFamilyPage( idt famID, size_t iL = 0, size_t iR = 0 );
-extern wxString tfpWriteFamilyPage( const wxString& str );
-extern wxString tfpWriteIndFamilyPage( idt indID );
+extern wxString tfpWriteFamilyPage( idt famID, const wxString& extdb, size_t iL = 0, size_t iR = 0 );
+extern wxString tfpWriteFamilyPage( const wxString& str, const wxString& extdb );
+extern wxString tfpWriteIndFamilyPage( idt indID, const wxString& extdb );
 
 // See tfpWrGallery.cpp
 extern wxString tfpWriteGalleryList();
