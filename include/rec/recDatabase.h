@@ -225,7 +225,7 @@ public:
      */
     virtual bool Read() { return Read( "Main" ); }
     virtual bool Read( const wxString& dbname ) { Clear(); return false; } /* TODO: make pure virtual member function? */
-    bool ReadID( idt id ) { f_id = id; return Read(); }
+    bool ReadID( idt id, const wxString& dbname = "Main" ) { f_id = id; return Read( dbname ); }
 
     idt FGetID() const { return f_id; }
     void FSetID( idt id ) { f_id = id; }
