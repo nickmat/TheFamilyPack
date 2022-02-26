@@ -367,9 +367,9 @@ int recDate::GetYear( CalendarScheme scheme )
     return year;
 }
 
-int recDate::GetYear( idt dateID, CalendarScheme sch )
+int recDate::GetYear( idt dateID, const wxString& dbname, CalendarScheme sch )
 {
-    recDate d(dateID);
+    recDate d( dateID, dbname );
     return d.GetYear( sch );
 }
 
@@ -395,9 +395,9 @@ long recDate::GetDatePoint( DatePoint dp )
     return jdn;
 }
 
-long recDate::GetDatePoint( idt id, DatePoint dp )
+long recDate::GetDatePoint( idt id, DatePoint dp, const wxString& dbname )
 {
-    recDate date(id);
+    recDate date( id, dbname );
     return date.GetDatePoint( dp );
 }
 
@@ -581,7 +581,7 @@ bool recDate::CsvRead( std::istream& in )
     return bool( in );
 }
 
-void recDate::DeleteIfOrphaned( idt id )
+void recDate::DeleteIfOrphaned( idt id, const wxString& dbname )
 {
     if( id <= 0 ) {
         // Don't delete universal dates.
@@ -589,32 +589,53 @@ void recDate::DeleteIfOrphaned( idt id )
     }
     wxSQLite3StatementBuffer sql;
 
-    sql.Format( "SELECT COUNT(*) FROM RelativeDate WHERE base_id=" ID ";", id );
-    if( s_db->ExecuteScalar( sql ) > 0 ) return;
-
-    sql.Format( "SELECT COUNT(*) FROM Event WHERE date1_id=" ID " OR date2_id=" ID ";", id, id );
-    if( s_db->ExecuteScalar( sql ) > 0 ) return;
-
-    sql.Format( "SELECT COUNT(*) FROM Eventa WHERE date1_id=" ID " OR date2_id=" ID ";", id, id );
-    if( s_db->ExecuteScalar( sql ) > 0 ) return;
-
-    sql.Format( "SELECT COUNT(*) FROM Place WHERE date1_id=" ID " OR date2_id=" ID ";", id, id );
-    if( s_db->ExecuteScalar( sql ) > 0 ) return;
-
     sql.Format(
-        "SELECT COUNT(*) FROM ReferenceEntity"
-        " WHERE entity_type=4 AND entity_id=" ID ";",
-        id
+        "SELECT COUNT(*) FROM \"%s\".RelativeDate WHERE base_id=" ID ";",
+        UTF8_( dbname ), id
     );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
 
-    idt relID = ExecuteID( "SELECT rel_id FROM Date WHERE id=" ID ";", id );
+    sql.Format(
+        "SELECT COUNT(*) FROM \"%s\".Event"
+        " WHERE date1_id=" ID " OR date2_id=" ID ";",
+        UTF8_( dbname ), id, id
+    );
+    if( s_db->ExecuteScalar( sql ) > 0 ) return;
+
+    sql.Format(
+        "SELECT COUNT(*) FROM \"%s\".Eventa"
+        " WHERE date1_id=" ID " OR date2_id=" ID ";",
+        UTF8_( dbname ), id, id
+    );
+    if( s_db->ExecuteScalar( sql ) > 0 ) return;
+
+    sql.Format(
+        "SELECT COUNT(*) FROM \"%s\".Place"
+        " WHERE date1_id=" ID " OR date2_id=" ID ";",
+        UTF8_( dbname ), id, id
+    );
+    if( s_db->ExecuteScalar( sql ) > 0 ) return;
+
+    sql.Format(
+        "SELECT COUNT(*) FROM \"%s\".ReferenceEntity"
+        " WHERE entity_type=4 AND entity_id=" ID ";",
+        UTF8_( dbname ), id
+    );
+    if( s_db->ExecuteScalar( sql ) > 0 ) return;
+
+    idt relID = ExecuteID(
+        "SELECT rel_id FROM \"%s\".Date WHERE id=" ID ";",
+        UTF8_( dbname ), id
+    );
     if( relID ) {
-        idt baseID = ExecuteID( "SELECT base_id FROM RelativeDate WHERE id=" ID ";", relID );
-        recRelativeDate::Delete( relID );
-        DeleteIfOrphaned( baseID );
+        idt baseID = ExecuteID(
+            "SELECT base_id FROM \"%s\".RelativeDate WHERE id=" ID ";",
+            UTF8_( dbname ), relID
+        );
+        recRelativeDate::Delete( relID, dbname );
+        DeleteIfOrphaned( baseID, dbname );
     }
-    Delete( id );
+    Delete( id, dbname );
 }
 
 void recDate::RemoveFromDatabase( idt id )

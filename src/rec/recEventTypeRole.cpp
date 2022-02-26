@@ -62,7 +62,7 @@ void recEventTypeRole::Clear()
     f_name     = wxEmptyString;
 }
 
-void recEventTypeRole::Save()
+void recEventTypeRole::Save( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -71,9 +71,9 @@ void recEventTypeRole::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO EventTypeRole (type_id, prime, official, name) "
+            "INSERT INTO \"%s\".EventTypeRole (type_id, prime, official, name) "
             "VALUES (" ID ", %d, %d, '%q');",
-            f_type_id, f_prime, BOOL_(f_official), UTF8_(f_name)
+            UTF8_( dbname ), f_type_id, f_prime, BOOL_(f_official), UTF8_(f_name)
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -83,24 +83,24 @@ void recEventTypeRole::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO EventTypeRole (id, type_id, prime, official, name) "
+                "INSERT INTO \"%s\".EventTypeRole (id, type_id, prime, official, name) "
                 "VALUES (" ID ", " ID ", %d, %d, '%q');",
-                f_id, f_type_id, f_prime, BOOL_(f_official), UTF8_(f_name)
+                UTF8_( dbname ), f_id, f_type_id, f_prime, BOOL_(f_official), UTF8_(f_name)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE EventTypeRole "
+                "UPDATE \"%s\".EventTypeRole "
                 "SET type_id=" ID ", prime=%d, official=%d, name='%q' "
                 "WHERE id=" ID ";",
-                f_type_id, f_prime, BOOL_(f_official), UTF8_(f_name), f_id
+                UTF8_( dbname ), f_type_id, f_prime, BOOL_(f_official), UTF8_(f_name), f_id
             );
         }
         s_db->ExecuteUpdate( sql );
     }
 }
 
-bool recEventTypeRole::Read()
+bool recEventTypeRole::Read( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -112,8 +112,8 @@ bool recEventTypeRole::Read()
 
     sql.Format(
         "SELECT type_id, prime, official, name "
-        "FROM EventTypeRole WHERE id=" ID ";",
-        f_id
+        "FROM \"%s\".EventTypeRole WHERE id=" ID ";",
+        UTF8_( dbname ), f_id
     );
     result = s_db->GetTable( sql );
 
@@ -140,9 +140,9 @@ bool recEventTypeRole::Equivalent( const recEventTypeRole& r2 ) const
     ;
 }
 
-wxString recEventTypeRole::GetName( idt roleID )
+wxString recEventTypeRole::GetName( idt roleID, const wxString& dbname )
 {
-    recEventTypeRole role( roleID );
+    recEventTypeRole role( roleID, dbname );
     return role.f_name;
 }
 

@@ -51,12 +51,12 @@ public:
 
     recIndividualEvent() : f_ind_id(0), f_higher_id(0),
         f_event_id(0), f_role_id(0), f_ind_seq(0) {}
-    recIndividualEvent( idt id ) : recDbT(id) { Read(); }
+    recIndividualEvent( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }
     recIndividualEvent( const recIndividualEvent& pe );
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recIndividualEvent& r2 ) const;
 
     idt FGetHigherID() const { return f_higher_id; }
@@ -78,7 +78,7 @@ public:
 
     static idt Create( idt indID, idt eID, idt roleID, const wxString& note = wxEmptyString );
 
-    bool Find( idt indID, idt eveID, idt roleID = 0 );
+    bool Find( idt indID, idt eveID, idt roleID = 0, const wxString& dbname = "Main" );
 
     static recIdVec GetLowerIndEventIDs( idt ieID );
     recIdVec GetLowerIndEventIDs() const { return GetLowerIndEventIDs( f_id ); }

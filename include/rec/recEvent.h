@@ -57,12 +57,12 @@ public:
 
     recEvent() : f_higher_id(0), f_type_id(0), f_date1_id(0), f_date2_id(0),
         f_place_id(0), f_date_pt(0) {}
-    recEvent( idt id ) : recDbT(id) { Read(); }
+    recEvent( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }
     recEvent( const recEvent& event );
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recEvent& r2 ) const;
 
     wxString FGetTitle() const { return f_title; }
@@ -85,68 +85,78 @@ public:
     void FSetDatePt( idt datePt ) { f_date_pt = datePt; }
     void FSetUserRef( const wxString& ur ) { f_user_ref = ur; }
 
-    void SetDatePt( recDate::DatePoint dp ) { f_date_pt = recDate::GetDatePoint( f_date1_id, dp ); }
+    void SetDatePt( recDate::DatePoint dp, const wxString& dbname = "Main" ) {
+        f_date_pt = recDate::GetDatePoint( f_date1_id, dp, dbname ); }
 
     static wxString GetIdStr( idt evID ) { return wxString::Format( "E" ID, evID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
-    idt CreateFromEventa( const recEventa& eventa );
-    static idt CreateFromEventa( idt erID );
+    idt CreateFromEventa( const recEventa& eventa, const wxString& dbname = "Main" );
+    static idt CreateFromEventa( idt erID, const wxString& dbname = "Main" );
 
-    void CreateRolesFromEventa( idt eaID ) const { CreateRolesFromEventa( f_id, eaID ); }
-    static void CreateRolesFromEventa( idt eID, idt eaID );
+    void CreateRolesFromEventa( idt eaID, const wxString& dbname = "Main" ) const {
+        CreateRolesFromEventa( f_id, eaID, dbname ); }
+    static void CreateRolesFromEventa( idt eID, idt eaID, const wxString& dbname = "Main" );
 
-    wxString SetAutoTitle( const wxString& name1, const wxString& name2 = wxEmptyString );
-    static void SetDatePeriodToInclude( idt eventID, idt dateID );
+    wxString SetAutoTitle(
+        const wxString& name1, const wxString& name2 = wxEmptyString, const wxString& dbname = "Main" );
+    static void SetDatePeriodToInclude( idt eventID, idt dateID, const wxString& dbname = "Main" );
 
-    wxString GetDetailStr() const;
-    wxString GetTypeStr() const;
-    wxString GetDateStr() const;
-    wxString GetAddressStr() const;
-    recEventTypeGrp GetTypeGroup() const;
-    static wxString GetDetailStr( idt evID );
-    static wxString GetTypeStr( idt evID );
-    static wxString GetTitle( idt evID );
-    static wxString GetNote( idt evID );
-    static wxString GetDateStr( idt evID );
-    static wxString GetAddressStr( idt evID );
-    static idt GetDate1ID( idt evID );
-    static void UpdateDatePoint( idt evID );
-    void UpdateDatePoint();
+    wxString GetDetailStr( const wxString& dbname = "Main" ) const;
+    wxString GetTypeStr( const wxString& dbname = "Main" ) const;
+    wxString GetDateStr( const wxString& dbname = "Main" ) const;
+    wxString GetAddressStr( const wxString& dbname = "Main" ) const;
+    recEventTypeGrp GetTypeGroup( const wxString& dbname = "Main" ) const;
+    static wxString GetDetailStr( idt evID, const wxString& dbname = "Main" );
+    static wxString GetTypeStr( idt evID, const wxString& dbname = "Main" );
+    static wxString GetTitle( idt evID, const wxString& dbname = "Main" );
+    static wxString GetNote( idt evID, const wxString& dbname = "Main" );
+    static wxString GetDateStr( idt evID, const wxString& dbname = "Main" );
+    static wxString GetAddressStr( idt evID, const wxString& dbname = "Main" );
+    static idt GetDate1ID( idt evID, const wxString& dbname = "Main" );
+    static void UpdateDatePoint( idt evID, const wxString& dbname = "Main" );
+    void UpdateDatePoint( const wxString& dbname = "Main" );
 
-    static recEventVec GetLowerEvents( idt eventID );
-    recEventVec GetLowerEvents() const { return GetLowerEvents( f_id ); }
+    static recEventVec GetLowerEvents( idt eventID, const wxString& dbname = "Main" );
+    recEventVec GetLowerEvents( const wxString& dbname = "Main" ) const {
+        return GetLowerEvents( f_id, dbname ); }
 
-    static recEventaVec FindEquivRefEvents( idt eveID );
-    recEventaVec FindEquivRefEvents() const { return FindEquivRefEvents( f_id ); }
+    static recEventaVec FindEquivRefEvents( idt eveID, const wxString& dbname = "Main" );
+    recEventaVec FindEquivRefEvents( const wxString& dbname = "Main" ) const {
+        return FindEquivRefEvents( f_id, dbname ); }
 
-    static recIdVec GetReferenceIDs( idt eveID );
-    recIdVec GetReferenceIDs() const { return GetReferenceIDs( f_id ); }
+    static recIdVec GetReferenceIDs( idt eveID, const wxString& dbname = "Main" );
+    recIdVec GetReferenceIDs( const wxString& dbname = "Main" ) const {
+        return GetReferenceIDs( f_id, dbname ); }
 
-    static recEventaVec GetEventasIncludeLower( idt eveID );
-    recEventaVec GetEventasIncludeLower() const { return GetEventasIncludeLower( f_id ); }
+    static recEventaVec GetEventasIncludeLower( idt eveID, const wxString& dbname = "Main" );
+    recEventaVec GetEventasIncludeLower( const wxString& dbname = "Main" ) const {
+        return GetEventasIncludeLower( f_id, dbname ); }
 
-    static recEventEventaVec GetEventEventas( idt eveID );
-    recEventEventaVec GetEventEventas() const { return GetEventEventas( f_id ); }
+    static recEventEventaVec GetEventEventas( idt eveID, const wxString& dbname = "Main" );
+    recEventEventaVec GetEventEventas( const wxString& dbname = "Main" ) const {
+        return GetEventEventas( f_id, dbname ); }
 
-    static bool IsFamilyEvent( idt eveID );
-    bool IsFamilyEvent() const { return IsFamilyEvent( f_id ); }
+    static bool IsFamilyEvent( idt eveID, const wxString& dbname = "Main" );
+    bool IsFamilyEvent( const wxString& dbname = "Main" ) const {
+        return IsFamilyEvent( f_id, dbname ); }
 
-    static recIndEventVec GetIndividualEvents( idt eID );
-    recIndEventVec GetIndividualEvents() const { return GetIndividualEvents( f_id ); }
+    static recIndEventVec GetIndividualEvents( idt eID, const wxString& dbname = "Main" );
+    recIndEventVec GetIndividualEvents( const wxString& dbname = "Main" ) const {
+        return GetIndividualEvents( f_id, dbname ); }
 
-    static wxSQLite3Table GetTitleList();
-    static wxSQLite3Table GetTitleList( idt offset, int limit );
+    static wxSQLite3Table GetTitleList( const wxString& dbname = "Main" );
+    static wxSQLite3Table GetTitleList( idt offset, int limit, const wxString& dbname = "Main" );
 
-    static void RemoveDates( idt dateID ); // removes date if found, replacing with 0
-    static void RemovePlace( idt placeID ); // removes place if found, replacing with 0
+    static void RemoveDates( idt dateID, const wxString& dbname = "Main" ); // removes date if found, replacing with 0
+    static void RemovePlace( idt placeID, const wxString& dbname = "Main" ); // removes place if found, replacing with 0
 
     // Delete Event and remove all references to it.
-    void RemoveFromDatabase();
-    static void RemoveFromDatabase( idt id );
-    static void RemoveIncOrphansFromDatabase( idt id );
+    void RemoveFromDatabase( const wxString& dbname = "Main" );
+    static void RemoveFromDatabase( idt id, const wxString& dbname = "Main" );
+    static void RemoveIncOrphansFromDatabase( idt id, const wxString& dbname = "Main" );
 
-    static void DeleteIfOrphaned( idt id );
+    static void DeleteIfOrphaned( idt id, const wxString& dbname = "Main" );
 };
 
 #endif // REC_RECEVENT_H

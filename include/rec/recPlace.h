@@ -50,12 +50,12 @@ public:
     idt  f_date2_id;
 
     recPlace() : f_date1_id(0), f_date2_id(0) {}
-    recPlace( idt id ) : recDbT(id) { Read(); }
+    recPlace( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }
     recPlace( const recPlace& place );
 
     void Clear();
     void Save();
-    bool Read();
+    bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recPlace& r2 ) const;
 
     idt FGetDate1ID() const { return f_date1_id; }
@@ -78,8 +78,9 @@ public:
         return GetAddressStr( f_id, dbname ); }
     static wxString GetAddressStr( idt id, const wxString& dbname = "Main" );
 
-    recPlacePartVec GetPlaceParts() const { return GetPlaceParts( f_id ); }
-    static recPlacePartVec GetPlaceParts( idt placeID );
+    recPlacePartVec GetPlaceParts( const wxString& dbname = "Main" ) const {
+        return GetPlaceParts( f_id, dbname ); }
+    static recPlacePartVec GetPlaceParts( idt placeID, const wxString& dbname = "Main" );
 
     static void Renumber( idt fromID, idt toID );
     static std::string CsvTitles();
@@ -89,7 +90,7 @@ public:
     static void RemoveDates( idt dateID );
     static void RemoveFromDatabase( idt placeID );
 
-    static void DeleteIfOrphaned( idt placeID );
+    static void DeleteIfOrphaned( idt placeID, const wxString& dbname = "Main" );
 };
 
 

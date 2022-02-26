@@ -66,7 +66,7 @@ void recIndividualEvent::Clear()
     f_ind_seq   = 0;
 }
 
-void recIndividualEvent::Save()
+void recIndividualEvent::Save( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -75,10 +75,11 @@ void recIndividualEvent::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO IndividualEvent"
+            "INSERT INTO \"%s\".IndividualEvent"
             " (higher_id, ind_id, event_id, role_id, note, ind_seq)"
             " VALUES (" ID ", " ID ", " ID ", " ID ", '%q', %d);",
-            f_higher_id, f_ind_id, f_event_id, f_role_id, UTF8_(f_note), f_ind_seq
+            UTF8_( dbname ), f_higher_id, f_ind_id, f_event_id,
+            f_role_id, UTF8_(f_note), f_ind_seq
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -88,19 +89,20 @@ void recIndividualEvent::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO IndividualEvent"
+                "INSERT INTO \"%s\".IndividualEvent"
                 " (id, higher_id, ind_id, event_id, role_id, note, ind_seq) "
                 "VALUES (" ID ", " ID ", " ID ", " ID ", " ID ", '%q', %d);",
-                f_id, f_higher_id, f_ind_id, f_event_id, f_role_id, UTF8_(f_note), f_ind_seq
+                UTF8_( dbname ), f_id, f_higher_id, f_ind_id, f_event_id,
+                f_role_id, UTF8_(f_note), f_ind_seq
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE IndividualEvent"
+                "UPDATE \"%s\".IndividualEvent"
                 " SET higher_id=" ID ", ind_id=" ID ", event_id=" ID ", role_id=" ID ","
                 " note='%q', ind_seq=%d"
                 " WHERE id=" ID ";",
-                f_higher_id, f_ind_id, f_event_id, f_role_id,
+                UTF8_( dbname ), f_higher_id, f_ind_id, f_event_id, f_role_id,
                 UTF8_(f_note), f_ind_seq, f_id
             );
         }
@@ -108,7 +110,7 @@ void recIndividualEvent::Save()
     }
 }
 
-bool recIndividualEvent::Read()
+bool recIndividualEvent::Read( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -120,8 +122,8 @@ bool recIndividualEvent::Read()
 
     sql.Format(
         "SELECT higher_id, ind_id, event_id, role_id, note, ind_seq "
-        "FROM IndividualEvent WHERE id=" ID ";",
-        f_id
+        "FROM \"%s\".IndividualEvent WHERE id=" ID ";",
+        UTF8_( dbname ), f_id
     );
     result = s_db->GetTable( sql );
 
@@ -164,7 +166,8 @@ idt recIndividualEvent::Create( idt indID, idt eID, idt roleID, const wxString& 
     return ie.FGetID();
 }
 
-bool recIndividualEvent::Find( idt indID, idt eveID, idt roleID )
+bool recIndividualEvent::Find(
+    idt indID, idt eveID, idt roleID, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -176,16 +179,17 @@ bool recIndividualEvent::Find( idt indID, idt eveID, idt roleID )
 
     if( roleID == 0 ) {
         sql.Format(
-            "SELECT id, higher_id, role_id, note, ind_seq "
-            "FROM IndividualEvent WHERE ind_id=" ID " AND event_id=" ID ";",
-            indID, eveID
+            "SELECT id, higher_id, role_id, note, ind_seq"
+            " FROM \"%s\".IndividualEvent"
+            " WHERE ind_id=" ID " AND event_id=" ID ";",
+            UTF8_( dbname ), indID, eveID
         );
     } else {
         sql.Format(
             "SELECT id, higher_id, role_id, note, ind_seq"
-            " FROM IndividualEvent"
+            " FROM \"%s\".IndividualEvent"
             " WHERE ind_id=" ID " AND event_id=" ID " AND role_id=" ID ";",
-            indID, eveID, roleID
+            UTF8_( dbname ), indID, eveID, roleID
         );
     }
     result = s_db->GetTable( sql );

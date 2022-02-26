@@ -66,12 +66,12 @@ public:
     wxString f_epitaph;
 
     recIndividual() : f_sex( Sex::unstated), f_fam_id(0), f_privacy(0) {}
-    recIndividual( idt id ) : recDbT(id) { Read(); }
+    recIndividual( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }
     recIndividual( const recIndividual& ind );
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recIndividual& r2 ) const;
 
     static wxString GetIdStr( idt indID ) { return wxString::Format( "I" ID, indID ); }
@@ -95,83 +95,109 @@ public:
     void FSetSurname( const wxString& surname ) { f_surname = surname; }
     void FSetEpitaph( const wxString& epitaph ) { f_epitaph = epitaph; }
 
-    static Sex GetSex( idt indID );
-    static idt GetFamilyID( idt indID );
-    static int GetPrivacy( idt indID );
-    static wxString GetName( idt indID );
-    static wxString GetSurname( idt indID );
-    static wxString GetEpitaph( idt indID );
+    static Sex GetSex( idt indID, const wxString& dbname = "Main" );
+    static idt GetFamilyID( idt indID, const wxString& dbname = "Main" );
+    static int GetPrivacy( idt indID, const wxString& dbname = "Main" );
+    static wxString GetName( idt indID, const wxString& dbname = "Main" );
+    static wxString GetSurname( idt indID, const wxString& dbname = "Main" );
+    static wxString GetEpitaph( idt indID, const wxString& dbname = "Main" );
 
-    static recIndividualVec ReadVec( unsigned sexfilter = recInd_FILTER_SexAll );
-    static recIdVec GetIdVec();
+    static recIndividualVec ReadVec( unsigned sexfilter = recInd_FILTER_SexAll, const wxString& dbname = "Main" );
+    static recIdVec GetIdVec( const wxString& dbname = "Main" );
 
-    static idt GetNameID( idt indID ) { return recName::GetDefaultNameID( indID, 0 ); }
-    idt GetNameID() const { return recName::GetDefaultNameID( f_id, 0 ); }
-    static wxString GetNameStr( idt indID ) { return recName::GetDefaultNameStr( indID, 0 ); }
-    wxString GetNameStr() const { return recName::GetDefaultNameStr( f_id, 0 ); }
-    static wxString GetDescriptionStr( idt indID );
-    wxString GetDescriptionStr() const { return GetDescriptionStr( f_id ); }
+    static idt GetNameID( idt indID, const wxString& dbname = "Main" ) {
+        return recName::GetDefaultNameID( indID, 0, dbname ); }
+    idt GetNameID( const wxString& dbname = "Main" ) const {
+        return recName::GetDefaultNameID( f_id, 0, dbname ); }
+    static wxString GetNameStr( idt indID, const wxString& dbname = "Main" ) {
+        return recName::GetDefaultNameStr( indID, 0, dbname ); }
+    wxString GetNameStr( const wxString& dbname = "Main" ) const {
+        return recName::GetDefaultNameStr( f_id, 0, dbname ); }
+    static wxString GetDescriptionStr( idt indID, const wxString& dbname = "Main" );
+    wxString GetDescriptionStr( const wxString& dbname = "Main" ) const {
+        return GetDescriptionStr( f_id, dbname ); }
 
+    static recNameVec GetNames( idt indID, const wxString& dbname = "Main" ) {
+        return recName::GetNames( indID, 0, dbname ); }
+    recNameVec GetNames( const wxString& dbname = "Main" ) const {
+        return recName::GetNames( f_id, 0, dbname ); }
 
-    static recNameVec GetNames( idt indID ) { return recName::GetNames( indID, 0 ); }
-    recNameVec GetNames() const { return recName::GetNames( f_id, 0 ); }
+    void UpdateEpitaph( const wxString& dbname = "Main" );
+    static void UpdateEpitaph( idt indID, const wxString& dbname = "Main" );
+    void UpdateNames( const wxString& dbname = "Main" );
+    void UpdateDefaultFamily( const wxString& dbname = "Main" );
+    void Update( const wxString& dbname = "Main" );
+    static void Update( idt indID, const wxString& dbname = "Main" );
 
-    void UpdateEpitaph();
-    static void UpdateEpitaph( idt indID );
-    void UpdateNames();
-    void UpdateDefaultFamily();
-    void Update();
-    static void Update( idt indID );
+    static recIndividualVec GetChildren( idt famID, const wxString& dbname = "Main" );
 
-    static recIndividualVec GetChildren( idt famID );
+    static idt FindEvent( idt indID, idt roleID, const wxString& dbname = "Main" );
+    idt FindEvent( idt roleID, const wxString& dbname = "Main" ) const {
+        return FindEvent( f_id, roleID, dbname ); }
+    static idt FindGroupEvent( idt indID, recEventTypeGrp grp, const wxString& dbname = "Main" );
+    idt FindGroupEvent( recEventTypeGrp grp, const wxString& dbname = "Main" ) const {
+        return FindGroupEvent( f_id, grp, dbname ); }
 
-    static idt FindEvent( idt indID, idt roleID );
-    idt FindEvent( idt roleID ) const { return FindEvent( f_id, roleID ); }
-    static idt FindGroupEvent( idt indID, recEventTypeGrp grp );
-    idt FindGroupEvent( recEventTypeGrp grp ) const { return FindGroupEvent( f_id, grp ); }
+    static recIdVec FindEvents( idt indID, idt roleID, const wxString& dbname = "Main" );
+    recIdVec FindEvents( idt roleID, const wxString& dbname = "Main" ) const {
+        return FindEvents( f_id, roleID, dbname ); }
+    static recIdVec FindGroupEvents( idt indID, recEventTypeGrp grp, const wxString& dbname = "Main" );
+    recIdVec FindGroupEvents( recEventTypeGrp grp, const wxString& dbname = "Main" ) const {
+        return FindGroupEvents( f_id, grp, dbname ); }
 
-    static recIdVec FindEvents( idt indID, idt roleID );
-    recIdVec FindEvents( idt roleID ) const { return FindEvents( f_id, roleID ); }
-    static recIdVec FindGroupEvents( idt indID, recEventTypeGrp grp );
-    recIdVec FindGroupEvents( recEventTypeGrp grp ) const { return FindGroupEvents( f_id, grp ); }
+    static idt GetPersonalSummaryIE( idt indID, idt etID, const wxString& dbname = "Main" );
+    idt GetPersonalSummaryIE( idt etID, const wxString& dbname = "Main" ) const {
+        return GetPersonalSummaryIE( f_id, etID, dbname ); }
+    static idt GetPersonalSummaryEvent( idt indID, idt etID, const wxString& dbname = "Main" );
+    idt GetPersonalSummaryEvent( idt etID, const wxString& dbname = "Main" ) const {
+        return GetPersonalSummaryEvent( f_id, etID, dbname ); }
 
-    static idt GetPersonalSummaryIE( idt indID, idt etID );
-    idt GetPersonalSummaryIE( idt etID ) const { return GetPersonalSummaryIE( f_id, etID ); }
-    static idt GetPersonalSummaryEvent( idt indID, idt etID );
-    idt GetPersonalSummaryEvent( idt etID ) const { return GetPersonalSummaryEvent( f_id, etID ); }
+    idt GetBirthEvent( const wxString& dbname = "Main" ) const {
+        return FindGroupEvent( recEventTypeGrp::birth, dbname ); }
+    idt GetNrBirthEvent( const wxString& dbname = "Main" ) const {
+        return FindGroupEvent( recEventTypeGrp::nr_birth, dbname ); }
+    idt GetDeathEvent( const wxString& dbname = "Main" ) const {
+        return FindGroupEvent( recEventTypeGrp::death, dbname ); }
+    idt GetNrDeathEvent( const wxString& dbname = "Main" ) const {
+        return FindGroupEvent( recEventTypeGrp::nr_death, dbname ); }
+    static idt GetBirthEvent( idt id, const wxString& dbname = "Main" ) {
+        return FindGroupEvent( id, recEventTypeGrp::birth, dbname ); }
+    static idt GetNrBirthEvent( idt id, const wxString& dbname = "Main" ) {
+        return FindGroupEvent( id, recEventTypeGrp::nr_birth, dbname ); }
+    static idt GetDeathEvent( idt id, const wxString& dbname = "Main" ) {
+        return FindGroupEvent( id, recEventTypeGrp::death, dbname ); }
+    static idt GetNrDeathEvent( idt id, const wxString& dbname = "Main" ) {
+        return FindGroupEvent( id, recEventTypeGrp::nr_death, dbname ); }
 
-    idt GetBirthEvent() const { return FindGroupEvent( recEventTypeGrp::birth ); }
-    idt GetNrBirthEvent() const { return FindGroupEvent( recEventTypeGrp::nr_birth ); }
-    idt GetDeathEvent() const { return FindGroupEvent( recEventTypeGrp::death ); }
-    idt GetNrDeathEvent() const { return FindGroupEvent( recEventTypeGrp::nr_death ); }
-    static idt GetBirthEvent( idt id ) { return FindGroupEvent( id, recEventTypeGrp::birth ); }
-    static idt GetNrBirthEvent( idt id ) { return FindGroupEvent( id, recEventTypeGrp::nr_birth ); }
-    static idt GetDeathEvent( idt id ) { return FindGroupEvent( id, recEventTypeGrp::death ); }
-    static idt GetNrDeathEvent( idt id ) { return FindGroupEvent( id, recEventTypeGrp::nr_death ); }
+    static idt CreateBirthDate( idt indID, const wxString& dbname = "Main" );
+    static idt CreateDeathDate( idt indID, const wxString& dbname = "Main" );
 
-    static idt CreateBirthDate( idt indID );
-    static idt CreateDeathDate( idt indID );
+    static recIndEventVec GetEvents(
+        idt indID, recEventOrder order = recEO_DatePt, const wxString& dbname = "Main" );
+    recIndEventVec GetEvents( 
+        recEventOrder order = recEO_DatePt, const wxString& dbname = "Main" ) const {
+        return GetEvents( f_id, order, dbname ); }
 
-    static recIndEventVec GetEvents( idt indID, recEventOrder order = recEO_DatePt );
-    recIndEventVec GetEvents( recEventOrder order = recEO_DatePt ) const
-        { return GetEvents( f_id, order ); }
+    wxSQLite3ResultSet GetEventaSet( const wxString& dbname = "Main" ) const {
+        return GetEventaSet( f_id, dbname ); }
+    static wxSQLite3ResultSet GetEventaSet( idt indID, const wxString& dbname = "Main" );
 
-    wxSQLite3ResultSet GetEventaSet() const { return GetEventaSet( f_id ); }
-    static wxSQLite3ResultSet GetEventaSet( idt indID );
+    wxSQLite3ResultSet GetReferenceSet( const wxString& dbname = "Main" ) const {
+        return GetReferenceSet( f_id, dbname ); }
+    static wxSQLite3ResultSet GetReferenceSet( idt indID, const wxString& dbname = "Main" );
 
-    wxSQLite3ResultSet GetReferenceSet() const { return GetReferenceSet( f_id ); }
-    static wxSQLite3ResultSet GetReferenceSet( idt indID );
+    static wxSQLite3ResultSet GetNameSet( const wxString& dbname = "Main" );
 
-    static wxSQLite3ResultSet GetNameSet();
+    static int GetMaxEventSeqNumber( idt indID, const wxString& dbname = "Main" );
+    int GetMaxEventSeqNumber( const wxString& dbname = "Main" ) const {
+        return GetMaxEventSeqNumber( f_id, dbname ); }
 
-    static int GetMaxEventSeqNumber( idt indID );
-    int GetMaxEventSeqNumber() const { return GetMaxEventSeqNumber( f_id ); }
-
-    static bool CreateMissingFamilies();
+    static bool CreateMissingFamilies( const wxString& dbname = "Main" );
 
     // Delete Individual and remove all references to it.
-    void RemoveFromDatabase() { RemoveFromDatabase( f_id ); }
-    static void RemoveFromDatabase( idt id );
+    void RemoveFromDatabase( const wxString& dbname = "Main" ) {
+        RemoveFromDatabase( f_id, dbname ); }
+    static void RemoveFromDatabase( idt id, const wxString& dbname = "Main" );
 };
 
 

@@ -49,12 +49,12 @@ public:
     idt     f_wife_id;
 
     recFamily() : f_husb_id(0), f_wife_id(0) {}
-    recFamily( idt id ) : recDbT(id) { Read(); }
+    recFamily( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }
     recFamily( const recFamily& family );
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recFamily& r2 ) const;
 
     idt FGetHusbID() const { return f_husb_id; }
@@ -67,51 +67,65 @@ public:
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     recIdVec GetCoupleAsIdVec() const;
-    static recIdVec GetCoupleAsIdVec( idt famID );
+    static recIdVec GetCoupleAsIdVec( idt famID, const wxString& dbname = "Main" );
 
-    static recIdVec GetFamilyIdVec();
-    static recFamilyVec GetFamilyVec();
+    static recIdVec GetFamilyIdVec( const wxString& dbname = "Main" );
+    static recFamilyVec GetFamilyVec( const wxString& dbname = "Main" );
 
-    bool Decode( const wxString& str );
+    bool Decode( const wxString& str, const wxString& dbname = "Main" );
 
-    static idt GetUnionEvent( idt famID );
-    idt GetUnionEvent() const { return GetUnionEvent( f_id ); }
+    static idt GetUnionEvent( idt famID, const wxString& dbname = "Main" );
+    idt GetUnionEvent( const wxString& dbname = "Main" ) const {
+        return GetUnionEvent( f_id, dbname ); }
 
     idt GetSpouseID( idt indID ) const;
-    static idt Find( idt ind1ID, idt ind2ID );
-    void Find() { f_id = Find( f_husb_id, f_wife_id ); Read(); }
-    static recIdVec FindVec( const recIdVec& ind1IDs, const recIdVec& ind2IDs );
+    static idt Find( idt ind1ID, idt ind2ID, const wxString& dbname = "Main" );
+    void Find( const wxString& dbname = "Main" ) {
+        f_id = Find( f_husb_id, f_wife_id, dbname ); Read( dbname ); }
+    static recIdVec FindVec(
+        const recIdVec& ind1IDs, const recIdVec& ind2IDs, const wxString& dbname = "Main" );
 
-    bool ReadParents( idt indID );
-    static recFamilyVec GetFamilyList( idt indID );
-    static recFamilyVec GetParentList( idt indID );
+    bool ReadParents( idt indID, const wxString& dbname = "Main" );
+    static recFamilyVec GetFamilyList( idt indID, const wxString& dbname = "Main" );
+    static recFamilyVec GetParentList( idt indID, const wxString& dbname = "Main" );
 
-    static recIdVec GetChildrenIds( idt famID );
-    recIdVec GetChildrenIds() const { return GetChildrenIds( f_id ); }
-    static int GetChildCount( idt famID );
-    int GetChildCount() const { return GetChildCount( f_id ); }
-    static int GetChildNextSequence( idt famID );
-    static int GetParentNextSequence( idt indID );
-    recFamIndVec GetChildLinks() { return GetChildLinks( f_id ); }
-    static recFamIndVec GetChildLinks( idt famID );
-    static recFamilyEventVec GetEvents( idt famID );
-    recFamilyEventVec GetEvents() const { return GetEvents( f_id ); }
-    static recIdVec GetEventIDs( idt famID );
-    recIdVec GetEventIDs() const { return GetEventIDs( f_id ); }
+    static recIdVec GetChildrenIds( idt famID, const wxString& dbname = "Main" );
+    recIdVec GetChildrenIds( const wxString& dbname = "Main" ) const {
+        return GetChildrenIds( f_id, dbname ); }
+    static int GetChildCount( idt famID, const wxString& dbname = "Main" );
+    int GetChildCount( const wxString& dbname = "Main" ) const {
+        return GetChildCount( f_id, dbname ); }
+    static int GetChildNextSequence( idt famID, const wxString& dbname = "Main" );
+    static int GetParentNextSequence( idt indID, const wxString& dbname = "Main" );
+    recFamIndVec GetChildLinks( const wxString& dbname = "Main" ) {
+        return GetChildLinks( f_id, dbname ); }
+    static recFamIndVec GetChildLinks( idt famID, const wxString& dbname = "Main" );
+    static recFamilyEventVec GetEvents( idt famID, const wxString& dbname = "Main" );
+    recFamilyEventVec GetEvents( const wxString& dbname = "Main" ) const {
+        return GetEvents( f_id, dbname ); }
+    static recIdVec GetEventIDs( idt famID, const wxString& dbname = "Main" );
+    recIdVec GetEventIDs( const wxString& dbname = "Main" ) const {
+        return GetEventIDs( f_id, dbname ); }
 
-    static int GetMaxEventSeqNumber( idt famID );
-    int GetMaxEventSeqNumber() const { return GetMaxEventSeqNumber( f_id ); }
+    static int GetMaxEventSeqNumber( idt famID, const wxString& dbname = "Main" );
+    int GetMaxEventSeqNumber( const wxString& dbname = "Main" ) const {
+        return GetMaxEventSeqNumber( f_id, dbname ); }
 
-    bool IsSingleton() const;
-    static bool IsSingleton( idt famID ) { recFamily fam(famID); return fam.IsSingleton(); }
+    bool IsSingleton( const wxString& dbname = "Main" ) const;
+    static bool IsSingleton( idt famID, const wxString& dbname = "Main" ) {
+        recFamily fam( famID, dbname );
+        return fam.IsSingleton( dbname );
+    }
 
-    static idt FindOrCreate( idt ind1ID, idt ind2ID );
+    static idt FindOrCreate( idt ind1ID, idt ind2ID, const wxString& dbname = "Main" );
 
-    static void RemoveFromEvents( idt famID, idt indID );
-    void RemoveFromEvents( idt indID ) const { RemoveFromEvents( f_id, indID ); }
+    static void RemoveFromEvents( idt famID, idt indID, const wxString& dbname = "Main" );
+    void RemoveFromEvents( idt indID, const wxString& dbname = "Main" ) const {
+        RemoveFromEvents( f_id, indID, dbname ); }
 
-    static void RemoveFromDatabase( idt famID );
-    void RemoveFromDatabase() { RemoveFromDatabase( f_id ); }
+    static void RemoveFromDatabase( idt famID, const wxString& dbname = "Main" );
+    void RemoveFromDatabase( const wxString& dbname = "Main" ) {
+        RemoveFromDatabase( f_id, dbname ); }
 };
 
 

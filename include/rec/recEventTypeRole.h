@@ -99,12 +99,12 @@ public:
     wxString  f_name;
 
     recEventTypeRole() : f_type_id(0), f_prime(false), f_official(false) {}
-    recEventTypeRole( idt id ) : recDbT(id) { Read(); }
+    recEventTypeRole( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }
     recEventTypeRole( const recEventTypeRole& etr );
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recEventTypeRole& r2 ) const;
 
     idt FGetTypeID() const { return f_type_id; }
@@ -120,7 +120,7 @@ public:
     static wxString GetIdStr( idt evID ) { return wxString::Format( "Ro" ID, evID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
-    static wxString GetName( idt roleID );
+    static wxString GetName( idt roleID, const wxString& dbname = "Main" );
     wxString GetPrimeStr() const;
 
     static wxString GetTypeAndRoleStr( idt roleID );

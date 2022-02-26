@@ -90,7 +90,7 @@ void recPlace::Save()
     }
 }
 
-bool recPlace::Read()
+bool recPlace::Read( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -100,7 +100,10 @@ bool recPlace::Read()
         return false;
     }
 
-    sql.Format( "SELECT * FROM Place WHERE id=" ID ";", f_id );
+    sql.Format(
+        "SELECT * FROM \"%s\".Place WHERE id=" ID ";",
+        UTF8_( dbname ), f_id
+    );
     result = s_db->GetTable( sql );
 
     if( result.GetRowCount() != 1 )
@@ -188,7 +191,8 @@ wxString recPlace::GetAddressStr( idt id, const wxString& dbname )
     return str;
 }
 
-recPlacePartVec recPlace::GetPlaceParts( idt placeID )
+recPlacePartVec recPlace::GetPlaceParts(
+    idt placeID, const wxString& dbname )
 {
     wxString str;
     wxSQLite3StatementBuffer sql;
@@ -197,8 +201,9 @@ recPlacePartVec recPlace::GetPlaceParts( idt placeID )
     recPlacePartVec ppList;
 
     sql.Format(
-        "SELECT * FROM PlacePart WHERE place_id=" ID " ORDER BY sequence;",
-        placeID
+        "SELECT * FROM \"%s\".PlacePart"
+        " WHERE place_id=" ID " ORDER BY sequence;",
+        UTF8_( dbname ), placeID
     );
     result = s_db->GetTable( sql );
 
@@ -296,7 +301,7 @@ void recPlace::RemoveFromDatabase( idt placeID )
     Delete( placeID );
 }
 
-void recPlace::DeleteIfOrphaned( idt id )
+void recPlace::DeleteIfOrphaned( idt id, const wxString& dbname )
 {
     if( id <= 0 ) {
         // Don't delete universal places.
@@ -304,28 +309,34 @@ void recPlace::DeleteIfOrphaned( idt id )
     }
     wxSQLite3StatementBuffer sql;
 
-    sql.Format( "SELECT COUNT(*) FROM Event WHERE place_id=" ID ";", id );
+    sql.Format( 
+        "SELECT COUNT(*) FROM \"%s\".Event WHERE place_id=" ID ";",
+        UTF8_( dbname ), id
+    );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
 
-    sql.Format( "SELECT COUNT(*) FROM Eventa WHERE place_id=" ID ";", id );
+    sql.Format(
+        "SELECT COUNT(*) FROM \"%s\".Eventa WHERE place_id=" ID ";",
+        UTF8_( dbname ), id
+    );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
 
     // TODO: Ensure Place is removed from reference statement.
     sql.Format(
-        "SELECT COUNT(*) FROM ReferenceEntity"
+        "SELECT COUNT(*) FROM \"%s\".ReferenceEntity"
         " WHERE entity_type=3 AND entity_id=" ID ";",
-        id
+        UTF8_( dbname ), id
     );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
 
-    recPlacePartVec pps = GetPlaceParts( id );
+    recPlacePartVec pps = GetPlaceParts( id, dbname );
     for( size_t i = 0 ; i < pps.size() ; i++ ) {
-        pps[i].Delete();
+        pps[i].Delete( dbname );
     }
-    recPlace place(id);
-    place.Delete();
-    recDate::DeleteIfOrphaned( place.f_date1_id );
-    recDate::DeleteIfOrphaned( place.f_date2_id );
+    recPlace place( id, dbname );
+    place.Delete( dbname );
+    recDate::DeleteIfOrphaned( place.f_date1_id, dbname );
+    recDate::DeleteIfOrphaned( place.f_date2_id, dbname );
 }
 
 //----------------------------------------------------------

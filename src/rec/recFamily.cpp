@@ -56,7 +56,7 @@ void recFamily::Clear()
     f_wife_id  = 0;
 }
 
-void recFamily::Save()
+void recFamily::Save( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -65,9 +65,9 @@ void recFamily::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO Family (husb_id, wife_id) "
+            "INSERT INTO \"%s\".Family (husb_id, wife_id) "
             "VALUES (" ID ", " ID ");",
-            f_husb_id, f_wife_id
+            UTF8_( dbname ), f_husb_id, f_wife_id
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -77,23 +77,23 @@ void recFamily::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO Family (id, husb_id, wife_id) "
+                "INSERT INTO \"%s\".Family (id, husb_id, wife_id) "
                 "VALUES (" ID ", " ID ", " ID ");",
-                f_id, f_husb_id, f_wife_id
+                UTF8_( dbname ), f_id, f_husb_id, f_wife_id
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE Family SET husb_id=" ID ", wife_id=" ID " "
+                "UPDATE \"%s\".Family SET husb_id=" ID ", wife_id=" ID " "
                 "WHERE id=" ID ";",
-                f_husb_id, f_wife_id, f_id
+                UTF8_( dbname ), f_husb_id, f_wife_id, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
     }
 }
 
-bool recFamily::Read()
+bool recFamily::Read( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -104,8 +104,8 @@ bool recFamily::Read()
     }
 
     sql.Format(
-        "SELECT husb_id, wife_id FROM Family WHERE id=" ID ";",
-        f_id
+        "SELECT husb_id, wife_id FROM \"%s\".Family WHERE id=" ID ";",
+        UTF8_( dbname ), f_id
     );
     result = s_db->GetTable( sql );
 
@@ -140,30 +140,35 @@ recIdVec recFamily::GetCoupleAsIdVec() const
     return ids;
 }
 
-recIdVec recFamily::GetCoupleAsIdVec( idt famID )
+recIdVec recFamily::GetCoupleAsIdVec( idt famID, const wxString& dbname )
 {
-    recFamily fam(famID);
+    recFamily fam( famID, dbname );
     return fam.GetCoupleAsIdVec();
 }
 
-recIdVec recFamily::GetFamilyIdVec()
+recIdVec recFamily::GetFamilyIdVec( const wxString& dbname )
 {
     recIdVec famIDs;
-    wxSQLite3ResultSet result;
+    wxSQLite3StatementBuffer sql;
 
-    result = s_db->ExecuteQuery( "SELECT id FROM Family;" );
+    sql.Format( "SELECT id FROM \"%s\".Family;", UTF8_( dbname ) );
+    wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
+
     while( result.NextRow() ) {
         famIDs.push_back( GET_ID( result.GetInt64( 0 ) ) );
     }
     return famIDs;
 }
 
-recFamilyVec recFamily::GetFamilyVec()
+recFamilyVec recFamily::GetFamilyVec( const wxString& dbname )
 {
     recFamilyVec fams;
-    wxSQLite3ResultSet result;
-
-    result = s_db->ExecuteQuery( "SELECT id, husb_id, wife_id FROM Family;" );
+    wxSQLite3StatementBuffer sql;
+    sql.Format( 
+        "SELECT id, husb_id, wife_id FROM \"%s\".Family;",
+        UTF8_( dbname )
+    );
+    wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
 
     recFamily fam(0);
     while( result.NextRow() ) {
@@ -181,12 +186,12 @@ recFamilyVec recFamily::GetFamilyVec()
 // or else string has the form FIx where x
 // is a recIndividual id.
 // Returns true if successful.
-bool recFamily::Decode( const wxString& str )
+bool recFamily::Decode( const wxString& str, const wxString& dbname )
 {
     if( str.StartsWith( "FI" ) ) {
         idt indID = recGetID( str.Mid( 2 ) );
         f_id = recIndividual::GetFamilyID( indID );
-        Read();
+        Read( dbname );
         if( f_id == 0 ) {
             Sex sex = recIndividual::GetSex( indID );
             if( sex == Sex::female ) {
@@ -207,22 +212,23 @@ bool recFamily::Decode( const wxString& str )
             if( !tk.HasMoreTokens() ) return false;
             f_wife_id = recGetID( tk.GetNextToken() );
         } else {
-            Read();
+            Read( dbname );
         }
     }
     return true;
 }
 
-idt recFamily::GetUnionEvent( idt famID )
+idt recFamily::GetUnionEvent( idt famID, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3ResultSet result;
 
     sql.Format(
-        "SELECT FE.event_id FROM FamilyEvent FE, Event E, EventType ET"
+        "SELECT FE.event_id"
+        " FROM \"%s\".FamilyEvent FE, \"%s\".Event E, \"%s\".EventType ET"
         " WHERE FE.fam_id=" ID " AND FE.event_id=E.id AND E.type_id=ET.id"
         " AND ET.grp=3 ORDER BY FE.fam_seq",
-        famID
+        UTF8_( dbname ), UTF8_( dbname ), UTF8_( dbname ), famID
     );
     result = s_db->ExecuteQuery( sql );
     if( result.NextRow() ) {
@@ -242,15 +248,15 @@ idt recFamily::GetSpouseID( idt indID ) const
     return 0;
 }
 
-idt recFamily::Find( idt ind1ID, idt ind2ID )
+idt recFamily::Find( idt ind1ID, idt ind2ID, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3ResultSet result;
 
     sql.Format(
-        "SELECT id FROM Family"
+        "SELECT id FROM \"%s\".Family"
         " WHERE (husb_id=" ID " AND wife_id=" ID ") OR (husb_id=" ID " AND wife_id=" ID ");",
-        ind1ID, ind2ID, ind2ID, ind1ID
+        UTF8_( dbname ), ind1ID, ind2ID, ind2ID, ind1ID
     );
     result = s_db->ExecuteQuery( sql );
     if( result.NextRow() ) {
@@ -259,19 +265,20 @@ idt recFamily::Find( idt ind1ID, idt ind2ID )
     return 0;
 }
 
-recIdVec recFamily::FindVec( const recIdVec& ind1IDs, const recIdVec& ind2IDs )
+recIdVec recFamily::FindVec(
+    const recIdVec& ind1IDs, const recIdVec& ind2IDs, const wxString& dbname )
 {
     recIdVec famIDs;
     for( size_t i = 0 ; i < ind1IDs.size() ; i++ ) {
         for( size_t j = 0 ; j < ind2IDs.size() ; j++ ) {
             idt famID;
 
-            famID = recFamily::Find( ind1IDs[i], 0 );
+            famID = recFamily::Find( ind1IDs[i], 0, dbname );
             recIdVecAddIfUnique( famIDs, famID );
-            famID = recFamily::Find( 0, ind2IDs[j] );
+            famID = recFamily::Find( 0, ind2IDs[j], dbname );
             recIdVecAddIfUnique( famIDs, famID );
 
-            famID = recFamily::Find( ind1IDs[i], ind2IDs[j] );
+            famID = recFamily::Find( ind1IDs[i], ind2IDs[j], dbname );
             recIdVecAddIfUnique( famIDs, famID );
         }
     }
@@ -279,20 +286,21 @@ recIdVec recFamily::FindVec( const recIdVec& ind1IDs, const recIdVec& ind2IDs )
 }
 
 
-bool recFamily::ReadParents( idt ind )
+bool recFamily::ReadParents( idt ind, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3ResultSet result;
 
     sql.Format(
-        "SELECT fam_id FROM FamilyIndividual WHERE ind_id=" ID ";", ind
+        "SELECT fam_id FROM \"%s\".FamilyIndividual WHERE ind_id=" ID ";",
+        UTF8_( dbname ), ind
     );
     result = s_db->ExecuteQuery( sql );
     f_id =  GET_ID( result.GetInt64( 0 ) );
     return Read();
 }
 
-recFamilyVec recFamily::GetFamilyList( idt ind )
+recFamilyVec recFamily::GetFamilyList( idt ind, const wxString& dbname )
 {
     recFamilyVec families;
     recFamily family;
@@ -302,9 +310,9 @@ recFamilyVec recFamily::GetFamilyList( idt ind )
     if( ind == 0 ) return families;
 
     sql.Format(
-        "SELECT id, husb_id, wife_id FROM Family "
+        "SELECT id, husb_id, wife_id FROM \"%s\".Family "
         "WHERE husb_id=" ID " OR wife_id=" ID ";",
-        ind, ind
+        UTF8_( dbname ), ind, ind
     );
     result = s_db->GetTable( sql );
 
@@ -318,7 +326,7 @@ recFamilyVec recFamily::GetFamilyList( idt ind )
     return families;
 }
 
-recFamilyVec recFamily::GetParentList( idt indID )
+recFamilyVec recFamily::GetParentList( idt indID, const wxString& dbname )
 {
     recFamily parent;
     recFamilyVec parents;
@@ -329,9 +337,9 @@ recFamilyVec recFamily::GetParentList( idt indID )
 
     sql.Format(
         "SELECT F.id, F.husb_id, F.wife_id "
-        "FROM Family F, FamilyIndividual FI "
+        "FROM \"%s\".Family F, \"%s\".FamilyIndividual FI "
         "WHERE F.id=FI.fam_id AND FI.ind_id=" ID ";",
-        indID
+        UTF8_( dbname ), UTF8_( dbname ), indID
     );
     result = s_db->GetTable( sql );
 
@@ -345,7 +353,7 @@ recFamilyVec recFamily::GetParentList( idt indID )
     return parents;
 }
 
-recIdVec recFamily::GetChildrenIds( idt fam )
+recIdVec recFamily::GetChildrenIds( idt fam, const wxString& dbname )
 {
     recIdVec children;
     wxSQLite3StatementBuffer sql;
@@ -354,8 +362,9 @@ recIdVec recFamily::GetChildrenIds( idt fam )
     if( fam == 0 ) return children;
 
     sql.Format(
-        "SELECT ind_id FROM FamilyIndividual WHERE fam_id=" ID " "
-        "ORDER BY seq_child ASC;", fam
+        "SELECT ind_id FROM \"%s\".FamilyIndividual WHERE fam_id=" ID
+        " ORDER BY seq_child ASC;",
+        UTF8_( dbname ), fam
     );
     result = s_db->GetTable( sql );
 
@@ -367,40 +376,40 @@ recIdVec recFamily::GetChildrenIds( idt fam )
     return children;
 }
 
-int recFamily::GetChildCount( idt famID )
+int recFamily::GetChildCount( idt famID, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "SELECT COUNT(*) FROM FamilyIndividual WHERE fam_id=" ID ";",
-        famID
+        "SELECT COUNT(*) FROM \"%s\".FamilyIndividual WHERE fam_id=" ID ";",
+        UTF8_( dbname ), famID
     );
     return s_db->ExecuteScalar( sql );
 }
 
-int recFamily::GetChildNextSequence( idt famID )
+int recFamily::GetChildNextSequence( idt famID, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "SELECT MAX(seq_child) FROM FamilyIndividual WHERE fam_id=" ID ";",
-        famID
+        "SELECT MAX(seq_child) FROM \"%s\".FamilyIndividual WHERE fam_id=" ID ";",
+        UTF8_( dbname ), famID
     );
     return s_db->ExecuteScalar( sql ) + 1;
 }
 
-int recFamily::GetParentNextSequence( idt indID )
+int recFamily::GetParentNextSequence( idt indID, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "SELECT MAX(seq_parent) FROM FamilyIndividual WHERE ind_id=" ID ";",
-        indID
+        "SELECT MAX(seq_parent) FROM \"%s\".FamilyIndividual WHERE ind_id=" ID ";",
+        UTF8_( dbname ), indID
     );
     return s_db->ExecuteScalar( sql ) + 1;
 }
 
-recFamIndVec recFamily::GetChildLinks( idt famID )
+recFamIndVec recFamily::GetChildLinks( idt famID, const wxString& dbname )
 {
     recFamIndVec ChildLinks;
     recFamilyIndividual fi;
@@ -410,8 +419,9 @@ recFamIndVec recFamily::GetChildLinks( idt famID )
     if( famID == 0 ) return ChildLinks;
 
     sql.Format(
-        "SELECT id, ind_id, seq_child, seq_parent FROM FamilyIndividual"
-        " WHERE fam_id=" ID " ORDER BY seq_child ASC;", famID
+        "SELECT id, ind_id, seq_child, seq_parent FROM \"%s\".FamilyIndividual"
+        " WHERE fam_id=" ID " ORDER BY seq_child ASC;",
+        UTF8_( dbname ), famID
     );
     result = s_db->GetTable( sql );
 
@@ -428,7 +438,7 @@ recFamIndVec recFamily::GetChildLinks( idt famID )
     return ChildLinks;
 }
 
-recFamilyEventVec recFamily::GetEvents( idt famID )
+recFamilyEventVec recFamily::GetEvents( idt famID, const wxString& dbname )
 {
     recFamilyEventVec fes;
     recFamilyEvent fe;
@@ -438,8 +448,9 @@ recFamilyEventVec recFamily::GetEvents( idt famID )
     if( famID == 0 ) return fes;
 
     sql.Format(
-        "SELECT id, event_id, note, fam_seq FROM FamilyEvent"
-        " WHERE fam_id=" ID " ORDER BY fam_seq;", famID
+        "SELECT id, event_id, note, fam_seq FROM \"%s\".FamilyEvent"
+        " WHERE fam_id=" ID " ORDER BY fam_seq;",
+        UTF8_( dbname ), famID
     );
     result = s_db->GetTable( sql );
 
@@ -456,77 +467,77 @@ recFamilyEventVec recFamily::GetEvents( idt famID )
     return fes;
 }
 
-recIdVec recFamily::GetEventIDs( idt famID )
+recIdVec recFamily::GetEventIDs( idt famID, const wxString& dbname )
 {
     const char* fmt =
-        "SELECT event_id FROM FamilyEvent"
+        "SELECT event_id FROM \"%s\".FamilyEvent"
         " WHERE fam_id=" ID
         " ORDER BY fam_seq;"
     ;
-    return ExecuteIdVec( fmt, famID );
+    return ExecuteIdVec( fmt, UTF8_( dbname ), famID );
 }
 
-int recFamily::GetMaxEventSeqNumber( idt famID )
+int recFamily::GetMaxEventSeqNumber( idt famID, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "SELECT MAX(fam_seq) FROM FamilyEvent WHERE fam_id=" ID ";",
-        famID
+        "SELECT MAX(fam_seq) FROM \"%s\".FamilyEvent WHERE fam_id=" ID ";",
+        UTF8_( dbname ), famID
     );
     return s_db->ExecuteScalar( sql );
 }
 
 // A singleton family is one without a partner, attached children
 // or FamilyEvent's.
-bool recFamily::IsSingleton() const
+bool recFamily::IsSingleton( const wxString& dbname ) const
 {
     if( FGetHusbID() && FGetWifeID() ) {
         return false;
     }
-    if( GetChildCount() != 0 ) {
+    if( GetChildCount( dbname ) != 0 ) {
         return false;
     }
-    recFamilyEventVec es = GetEvents();
-    if( es.size() ) {
-        return false;
+    recFamilyEventVec es = GetEvents( dbname );
+    if( es.empty() ) {
+        return true;
     }
-    return true;
+    return false;
 }
 
 // We will find, modify or create a family for these two individuals.
-idt recFamily::FindOrCreate( idt ind1ID, idt ind2ID )
+idt recFamily::FindOrCreate( idt ind1ID, idt ind2ID, const wxString& dbname )
 {
-    idt famID = recFamily::Find( ind1ID, ind2ID );
+    idt famID = recFamily::Find( ind1ID, ind2ID, dbname );
     if( famID ) {
         // The family exists already.
         return famID;
     }
-    famID = recIndividual::GetFamilyID( ind1ID );
-    if( recFamily::IsSingleton( famID ) ) {
+    famID = recIndividual::GetFamilyID( ind1ID, dbname );
+    if( recFamily::IsSingleton( famID, dbname ) ) {
         // We will use this family
-        idt fam2ID = recIndividual::GetFamilyID( ind2ID );
-        if( recFamily::IsSingleton( fam2ID ) ) {
-            recIndividual ind2(ind2ID);
+        idt fam2ID = recIndividual::GetFamilyID( ind2ID, dbname );
+        if( recFamily::IsSingleton( fam2ID, dbname ) ) {
+            recIndividual ind2( ind2ID, dbname );
             ind2.FSetFamID( famID );
-            ind2.Save();
+            ind2.Save( dbname );
             // This is no longer needed
-            recFamily::Delete( fam2ID );
+            recFamily::Delete( fam2ID, dbname );
         }
-        recFamily fam(famID);
+        recFamily fam( famID, dbname );
         if( fam.FGetWifeID() == 0 ) {
             fam.FSetWifeID( ind2ID );
         } else {
             assert( fam.FGetHusbID() == 0 );
             fam.FSetHusbID( ind2ID );
         }
-        fam.Save();
+        fam.Save( dbname );
         return fam.FGetID();
     }
     return 0;
 }
 
-void recFamily::RemoveFromEvents( idt famID, idt indID )
+void recFamily::RemoveFromEvents( idt famID, idt indID, const wxString& dbname )
 {
     if( famID == 0 || indID == 0 ) return;
 
@@ -534,25 +545,25 @@ void recFamily::RemoveFromEvents( idt famID, idt indID )
     recFamilyEventVec fes = GetEvents( famID );
     for( size_t i = 0 ; i < fes.size() ; i++ ) {
         sql.Format(
-            "DELETE FROM IndividualEvent WHERE ind_id=" ID " AND event_id=" ID ";",
-            indID, fes[i].FGetEventID()
+            "DELETE FROM \"%s\".IndividualEvent WHERE ind_id=" ID " AND event_id=" ID ";",
+            UTF8_( dbname ), indID, fes[i].FGetEventID()
         );
         s_db->ExecuteUpdate( sql );
     }
 }
 
-void recFamily::RemoveFromDatabase( idt famID )
+void recFamily::RemoveFromDatabase( idt famID, const wxString& dbname )
 {
     // We are not responsible for deleting the Individuals.
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "DELETE FROM FamilyIndividual WHERE fam_id=" ID " ;"
-        "DELETE FROM FamilyEventa WHERE fam_id=" ID " ;"
-        "DELETE FROM FamilyEvent WHERE fam_id=" ID " ;",
-        famID, famID, famID
+        "DELETE FROM \"%s\".FamilyIndividual WHERE fam_id=" ID " ;"
+        "DELETE FROM \"%s\".FamilyEventa WHERE fam_id=" ID " ;"
+        "DELETE FROM \"%s\".FamilyEvent WHERE fam_id=" ID " ;",
+        UTF8_( dbname ), famID, UTF8_( dbname ), famID, UTF8_( dbname ), famID
     );
     s_db->ExecuteUpdate( sql );
-    Delete( famID );
+    Delete( famID, dbname );
 }
 
 

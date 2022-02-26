@@ -267,7 +267,7 @@ recNameVec recName::GetNames( idt indID, idt perID, const wxString& dbname )
     return list;
 }
 
-void recName::RemoveFromDatabase( idt id )
+void recName::RemoveFromDatabase( idt id, const wxString& dbname )
 {
     if( id == 0 ) return;
 
@@ -276,11 +276,11 @@ void recName::RemoveFromDatabase( idt id )
 
     // TODO: Ensure Event is removed from reference statement.
     sql.Format(
-        "DELETE FROM NamePart WHERE name_id=" ID ";"
-        "DELETE FROM ReferenceEntity "
+        "DELETE FROM \"%s\".NamePart WHERE name_id=" ID ";"
+        "DELETE FROM \"%s\".ReferenceEntity "
              "WHERE entity_type=7 AND entity_id=" ID ";"
-        "DELETE FROM Name WHERE id=" ID ";",
-        id, id, id
+        "DELETE FROM \"%s\".Name WHERE id=" ID ";",
+        UTF8_( dbname ), id, UTF8_( dbname ), id, UTF8_( dbname ), id
     );
     s_db->ExecuteUpdate( sql );
 }

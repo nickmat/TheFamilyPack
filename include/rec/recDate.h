@@ -154,9 +154,9 @@ public:
     static wxString GetPeriodStr( idt d1ID, idt d2ID );
 
     int GetYear( CalendarScheme sch = CALENDAR_SCH_Unstated );
-    static int GetYear( idt id, CalendarScheme sch = CALENDAR_SCH_Unstated );
+    static int GetYear( idt id, const wxString& dbname = "Main", CalendarScheme sch = CALENDAR_SCH_Unstated );
     long GetDatePoint( DatePoint dp = DatePoint::mid );
-    static long GetDatePoint( idt id, DatePoint dp = DatePoint::mid );
+    static long GetDatePoint( idt id, DatePoint dp = DatePoint::mid, const wxString& dbname = "Main" );
 
     unsigned GetTypePrefix() const {
         return f_type & ( FLG_AFTER | FLG_RANGE | FLG_BEFORE ); 
@@ -191,7 +191,7 @@ public:
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
 
-    static void DeleteIfOrphaned( idt dateID );
+    static void DeleteIfOrphaned( idt dateID, const wxString& dbname = "Main" );
     static void RemoveFromDatabase( idt dateID );
 };
 

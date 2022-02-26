@@ -100,8 +100,9 @@ public:
     static recNameVec GetNames( idt indID, idt perID, const wxString& dbname = "Main" );
 
     // Delete Name and remove all references to it.
-    static void RemoveFromDatabase( idt id );
-    void RemoveFromDatabase() { RemoveFromDatabase( f_id ); Clear(); }
+    static void RemoveFromDatabase( idt id, const wxString& dbname = "Main" );
+    void RemoveFromDatabase( const wxString& dbname = "Main" ) {
+        RemoveFromDatabase( f_id, dbname ); Clear(); }
 
     static wxString GetNameStr( idt id, const wxString& dbname = "Main" );
     wxString GetNameStr( const wxString& dbname = "Main" ) const {
