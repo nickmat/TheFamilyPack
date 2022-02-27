@@ -522,7 +522,7 @@ void recNamePart::Clear()
     f_sequence = 0;
 }
 
-void recNamePart::Save()
+void recNamePart::Save( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -531,9 +531,9 @@ void recNamePart::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO NamePart (name_id, type_id, val, sequence)"
+            "INSERT INTO \"%s\".NamePart (name_id, type_id, val, sequence)"
             "VALUES (" ID ", " ID ", '%q', %d);",
-            f_name_id, f_type_id, UTF8_(f_val), f_sequence
+            UTF8_( dbname ), f_name_id, f_type_id, UTF8_(f_val), f_sequence
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -543,23 +543,23 @@ void recNamePart::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO NamePart (id, name_id, type_id, val, sequence)"
+                "INSERT INTO \"%s\".NamePart (id, name_id, type_id, val, sequence)"
                 "VALUES (" ID ", " ID ", " ID ", '%q', %d);",
-                f_id, f_name_id, f_type_id, UTF8_(f_val), f_sequence
+                UTF8_( dbname ), f_id, f_name_id, f_type_id, UTF8_(f_val), f_sequence
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE NamePart SET name_id=" ID ", type_id=" ID ", val='%q', sequence=%d "
+                "UPDATE \"%s\".NamePart SET name_id=" ID ", type_id=" ID ", val='%q', sequence=%d "
                 "WHERE id=" ID ";",
-                f_name_id, f_type_id, UTF8_(f_val), f_sequence, f_id
+                UTF8_( dbname ), f_name_id, f_type_id, UTF8_(f_val), f_sequence, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
     }
 }
 
-bool recNamePart::Read()
+bool recNamePart::Read( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -571,8 +571,8 @@ bool recNamePart::Read()
 
     sql.Format(
         "SELECT name_id, type_id, val, sequence "
-        "FROM NamePart WHERE id=" ID ";",
-        f_id
+        "FROM \"%s\".NamePart WHERE id=" ID ";",
+        UTF8_( dbname ), f_id
     );
     result = s_db->GetTable( sql );
 
@@ -599,12 +599,15 @@ bool recNamePart::Equivalent( const recNamePart& r2 ) const
     ;
 }
 
-wxString recNamePart::GetValue( idt id )
+wxString recNamePart::GetValue( idt id, const wxString& dbname )
 {
     if( id == 0 ) return wxEmptyString;
 
     wxSQLite3StatementBuffer sql;
-    sql.Format( "SELECT val FROM NamePart WHERE id=" ID ";", id );
+    sql.Format(
+        "SELECT val FROM \"%s\".NamePart WHERE id=" ID ";",
+        UTF8_( dbname ), id
+    );
     wxSQLite3Table result = s_db->GetTable( sql );
 
     if( result.GetRowCount() == 0 )
@@ -614,23 +617,14 @@ wxString recNamePart::GetValue( idt id )
     return result.GetAsString( 0 );
 }
 
-/*! Takes a space delimited list from str and converts it to a list of
- *  of Attributes in sequencial order of given type.
- */
-recNamePartVec recNamePart::ConvertStrToList(
-    const wxString& str, idt type )
+wxSQLite3ResultSet recNamePart::GetSurnameList( const wxString& dbname )
 {
-    recNamePartVec list;
-    recNamePart name(0);
-    name.f_type_id = type;
-
-    wxStringTokenizer tk( str );
-    while( tk.HasMoreTokens() ) {
-        name.f_val = tk.GetNextToken();
-        ++name.f_sequence;
-        list.push_back( name );
-    }
-    return list;
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT val FROM \"%s\".NamePart WHERE type_id=-2 GROUP BY val;",
+        UTF8_( dbname )
+    );
+    return s_db->ExecuteQuery( sql );
 }
 
 
@@ -652,7 +646,7 @@ void recNamePartType::Clear()
     f_name = wxEmptyString;
 }
 
-void recNamePartType::Save()
+void recNamePartType::Save( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -661,8 +655,8 @@ void recNamePartType::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO NamePartType (grp, name) VALUES (%d, '%q');",
-            f_grp, UTF8_(f_name)
+            "INSERT INTO \"%s\".NamePartType (grp, name) VALUES (%d, '%q');",
+            UTF8_( dbname ), f_grp, UTF8_(f_name)
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -672,22 +666,22 @@ void recNamePartType::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO NamePartType (id, grp, name) "
+                "INSERT INTO \"%s\".NamePartType (id, grp, name) "
                 "VALUES (" ID ", %d, '%q');",
-                f_id, f_grp, UTF8_(f_name)
+                UTF8_( dbname ), f_id, f_grp, UTF8_(f_name)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE NamePartType SET grp=%d, name='%q' WHERE id=" ID ";",
-                f_grp, UTF8_(f_name), f_id
+                "UPDATE \"%s\".NamePartType SET grp=%d, name='%q' WHERE id=" ID ";",
+                UTF8_( dbname ), f_grp, UTF8_(f_name), f_id
             );
         }
         s_db->ExecuteUpdate( sql );
     }
 }
 
-bool recNamePartType::Read()
+bool recNamePartType::Read( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -697,7 +691,10 @@ bool recNamePartType::Read()
         return false;
     }
 
-    sql.Format( "SELECT grp, name FROM NamePartType WHERE id=" ID ";", f_id );
+    sql.Format( 
+        "SELECT grp, name FROM \"%s\".NamePartType WHERE id=" ID ";",
+        UTF8_( dbname ), f_id
+    );
     result = s_db->GetTable( sql );
 
     if( result.GetRowCount() != 1 )
@@ -719,13 +716,13 @@ bool recNamePartType::Equivalent( const recNamePartType& r2 ) const
     ;
 }
 
-wxString recNamePartType::GetTypeStr( idt id )
+wxString recNamePartType::GetTypeStr( idt id, const wxString& dbname )
 {
-    recNamePartType npt( id );
+    recNamePartType npt( id, dbname );
     return npt.f_name;
 }
 
-recNamePartTypeVec recNamePartType::GetTypeList()
+recNamePartTypeVec recNamePartType::GetTypeList( const wxString& dbname )
 {
     recNamePartType at;
     recNamePartTypeVec list;
@@ -735,8 +732,9 @@ recNamePartTypeVec recNamePartType::GetTypeList()
 
     // Put standard entries in list.
     sql.Format(
-        "SELECT id, grp, name FROM NamePartType "
-        "WHERE id<0 ORDER BY id DESC;"
+        "SELECT id, grp, name FROM \"%s\".NamePartType "
+        "WHERE id<0 ORDER BY id DESC;",
+        UTF8_( dbname )
     );
     result = s_db->GetTable( sql );
 
@@ -750,8 +748,9 @@ recNamePartTypeVec recNamePartType::GetTypeList()
 
     // Put user entries in list.
     sql.Format(
-        "SELECT id, grp, name FROM NamePartType "
-        "WHERE id>0 ORDER BY id ASC;"
+        "SELECT id, grp, name FROM \"%s\".NamePartType "
+        "WHERE id>0 ORDER BY id ASC;",
+        UTF8_( dbname )
     );
     result = s_db->GetTable( sql );
 
@@ -783,7 +782,7 @@ void recNameStyle::Clear()
     f_name = wxEmptyString;
 }
 
-void recNameStyle::Save()
+void recNameStyle::Save( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -792,8 +791,8 @@ void recNameStyle::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO NameStyle (name) VALUES ('%q');",
-            UTF8_(f_name)
+            "INSERT INTO \"%s\".NameStyle (name) VALUES ('%q');",
+            UTF8_( dbname ), UTF8_(f_name)
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -803,22 +802,22 @@ void recNameStyle::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO NameStyle (id, name) "
+                "INSERT INTO \"%s\".NameStyle (id, name) "
                 "VALUES (" ID ", '%q');",
-                f_id, UTF8_(f_name)
+                UTF8_( dbname ), f_id, UTF8_(f_name)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE NameStyle SET name='%q' WHERE id=" ID ";",
-                UTF8_(f_name), f_id
+                "UPDATE \"%s\".NameStyle SET name='%q' WHERE id=" ID ";",
+                UTF8_( dbname ), UTF8_(f_name), f_id
             );
         }
         s_db->ExecuteUpdate( sql );
     }
 }
 
-bool recNameStyle::Read()
+bool recNameStyle::Read( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -828,7 +827,10 @@ bool recNameStyle::Read()
         return false;
     }
 
-    sql.Format( "SELECT name FROM NameStyle WHERE id=" ID ";", f_id );
+    sql.Format( 
+        "SELECT name FROM \"%s\".NameStyle WHERE id=" ID ";",
+        UTF8_( dbname ), f_id
+    );
     result = s_db->GetTable( sql );
 
     if( result.GetRowCount() != 1 )
@@ -841,13 +843,13 @@ bool recNameStyle::Read()
     return true;
 }
 
-wxString recNameStyle::GetStyleStr( idt id )
+wxString recNameStyle::GetStyleStr( idt id, const wxString& dbname )
 {
-    recNameStyle at( id );
+    recNameStyle at( id, dbname );
     return at.f_name;
 }
 
-recNameStyleVec recNameStyle::GetStyleList()
+recNameStyleVec recNameStyle::GetStyleList( const wxString& dbname )
 {
     recNameStyle at;
     recNameStyleVec list;
@@ -857,8 +859,9 @@ recNameStyleVec recNameStyle::GetStyleList()
 
     // Put standard entries in list.
     sql.Format(
-        "SELECT id, name FROM NameStyle "
-        "WHERE id<=0 ORDER BY id DESC;"
+        "SELECT id, name FROM \"%s\".NameStyle "
+        "WHERE id<=0 ORDER BY id DESC;",
+        UTF8_( dbname )
     );
     result = s_db->GetTable( sql );
 
@@ -871,8 +874,9 @@ recNameStyleVec recNameStyle::GetStyleList()
 
     // Put user entries in list.
     sql.Format(
-        "SELECT id, name FROM NameStyle "
-        "WHERE id>0 ORDER BY id ASC;"
+        "SELECT id, name FROM \"%s\".NameStyle "
+        "WHERE id>0 ORDER BY id ASC;",
+        UTF8_( dbname )
     );
     result = s_db->GetTable( sql );
 

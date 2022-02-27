@@ -148,12 +148,12 @@ public:
     int       f_sequence;
 
     recNamePart() : f_name_id(0), f_type_id(0), f_sequence(0) {}
-    recNamePart( idt id ) : recDbT(id) { Read(); }
+    recNamePart( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }
     recNamePart( const recNamePart& attr );
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recNamePart& r2 ) const;
 
     idt FGetNameID() const { return f_name_id; }
@@ -169,13 +169,8 @@ public:
     static wxString GetIdStr( idt npID ) { return wxString::Format( "NP" ID, npID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
-    static wxString GetValue( idt id );
-    static recNamePartVec ConvertStrToList( const wxString& str, idt type = NAME_TYPE_Given_name );
-    static wxSQLite3ResultSet GetSurnameList() {
-        return s_db->ExecuteQuery(
-            "SELECT val FROM NamePart WHERE type_id=-2 GROUP BY val;"
-        );
-    }
+    static wxString GetValue( idt id, const wxString& dbname = "Main" );
+    static wxSQLite3ResultSet GetSurnameList( const wxString& dbname = "Main" );
 };
 
 
@@ -197,12 +192,12 @@ public:
     wxString  f_name;
 
     recNamePartType() : f_grp( NTYPE_Grp_Unstated ) {}
-    recNamePartType( idt id ) : recDbT(id) { Read(); }
+    recNamePartType( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }
     recNamePartType( const recNamePartType& at );
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recNamePartType& r2 ) const;
 
     NTYPE_Grp FGetGroup() const { return f_grp; }
@@ -214,9 +209,9 @@ public:
     static wxString GetIdStr( idt nptID ) { return wxString::Format( "NPT" ID, nptID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
-    static wxString GetTypeStr( idt id );
+    static wxString GetTypeStr( idt id, const wxString& dbname = "Main" );
 
-    static recNamePartTypeVec GetTypeList();
+    static recNamePartTypeVec GetTypeList( const wxString& dbname = "Main" );
 };
 
 
@@ -240,12 +235,12 @@ public:
     wxString  f_name;
 
     recNameStyle() {}
-    recNameStyle( idt id ) : recDbT(id) { Read(); }
+    recNameStyle( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }
     recNameStyle( const recNameStyle& at );
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recNameStyle& r2 ) const {
         return f_name == r2.f_name;
     }
@@ -257,9 +252,9 @@ public:
     static wxString GetIdStr( idt ntID ) { return wxString::Format( "NT" ID, ntID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
-    static wxString GetStyleStr( idt id );
+    static wxString GetStyleStr( idt id, const wxString& dbname = "Main" );
 
-    static recNameStyleVec GetStyleList();
+    static recNameStyleVec GetStyleList( const wxString& dbname = "Main" );
 };
 
 #endif // RECNAME_H
