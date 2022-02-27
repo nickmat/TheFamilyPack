@@ -1855,6 +1855,11 @@ wxString TfpFrame::GetCurrentName()
 void TfpFrame::RefreshEditMenu()
 {
     wxASSERT( m_back.size() > 0 );
+    if( m_dbname.CmpNoCase( "Main" ) != 0 ) {
+        m_menuOpenDB->EnableTop( 1/* Edit */, false);
+        return;
+    }
+    m_menuOpenDB->EnableTop( 1/* Edit */, true );
     wxString disp = GetDisplay();
     wxUniChar uch = disp.GetChar( 0 );
     wxUniChar uch1;
