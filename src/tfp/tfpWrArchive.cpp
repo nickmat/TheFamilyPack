@@ -36,7 +36,7 @@
 #include <rec/recContact.h>
 
 
-wxString tfpWriteArchiveIndex()
+wxString tfpWriteArchiveIndex( const wxString& extdb )
 {
     wxString htm = tfpWrHeadTfp( "Archive Index" );
     htm <<
@@ -44,7 +44,7 @@ wxString tfpWriteArchiveIndex()
         "<table class='data'>\n"
         "<tr><th>ID</th><th>Archive</th><th>Note</th></tr>\n"
         ;
-    recRepositoryVec list = recRepository::GetFullList();
+    recRepositoryVec list = recRepository::GetFullList( extdb );
     for( auto arch : list ) {
         htm <<
             "<tr><td><b><a href='tfp:" << arch.GetIdStr() << "'>" << arch.GetIdStr() <<
@@ -57,10 +57,10 @@ wxString tfpWriteArchiveIndex()
     return htm;
 }
 
-wxString tfpWriteArchive( idt arcID )
+wxString tfpWriteArchive( idt arcID, const wxString& extdb )
 {
     wxString htm;
-    recRepository arc( arcID );
+    recRepository arc( arcID, extdb );
     if( arc.FGetID() == 0 ) {
         return htm;
     }
@@ -74,11 +74,13 @@ wxString tfpWriteArchive( idt arcID )
         "<tr><td colspan='3'>" << arc.FGetNote() <<
         "</td></tr>\n"
         ;
-    recContactVec contacts = recContactList::GetContacts( arc.FGetConListID() );
+    recContactVec contacts =
+        recContactList::GetContacts( arc.FGetConListID(), extdb );
     for( auto cont : contacts ) {
         htm <<
             "<tr><td><b>" << cont.GetIdStr() <<
-            "</b></td><td>" << recContactType::GetTypeStr( cont.FGetTypeID() ) <<
+            "</b></td><td>" << 
+            recContactType::GetTypeStr( cont.FGetTypeID(), extdb ) <<
             "</td><td>" << cont.GetHtmlValue() <<
             "</td></tr>\n"
             ;

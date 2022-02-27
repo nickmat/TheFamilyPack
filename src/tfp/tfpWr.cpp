@@ -345,10 +345,10 @@ wxString tfpGetDisplayText( const wxString& pagename, const wxString& dbname, Tf
             return tfpWrStartPage();
         }
         if( name.compare( "AR" ) == 0 ) {
-            return tfpWriteArchiveIndex();
+            return tfpWriteArchiveIndex( dbname );
         }
         if( name.compare( 0, 2, "AR" ) == 0 && success1 ) {
-            return tfpWriteArchive( num1 );
+            return tfpWriteArchive( num1, dbname );
         }
         if( name.compare( 0, 2, "CD" ) == 0 && success1 ) {
             return tfpCreateDescChart( num1, dbname );
