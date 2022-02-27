@@ -89,7 +89,7 @@ extern wxString tfpWriteGalleryList();
 extern wxString tfpWriteGalleryPage( idt galID );
 
 // See tfpWrIndividual.cpp
-extern wxString tfpWriteIndividualPage( idt indID );
+extern wxString tfpWriteIndividualPage( idt indID, const wxString& extdb );
 
 // See tfpWrMedia.cpp
 extern wxString tfpWriteMediaPage( idt medID );

@@ -45,17 +45,17 @@
 #include <rec/recPersona.h>
 #include <rec/recReference.h>
 
-wxString tfpWriteIndividualPage( idt indID )
+wxString tfpWriteIndividualPage( idt indID, const wxString& extdb )
 {
     wxString htm;
-    recIndividual ind( indID );
+    recIndividual ind( indID, extdb );
     if( ind.FGetID() == 0 ) return htm;
-    recFamilyVec parents = recFamily::GetParentList( indID );
-    recFamilyVec families = recFamily::GetFamilyList( indID );
+    recFamilyVec parents = recFamily::GetParentList( indID, extdb );
+    recFamilyVec families = recFamily::GetFamilyList( indID, extdb );
     wxASSERT( families.size() > 0 );
     recIndividual spouse;
     bool single = ( families.size() > 1 || families[0].GetSpouseID( indID ) ||
-        families[0].GetChildCount() ) ? false : true;
+        families[0].GetChildCount( extdb ) ) ? false : true;
 
     htm << 
         tfpWrHeadTfp( ind.GetIdStr(), "tab" ) <<
@@ -63,7 +63,7 @@ wxString tfpWriteIndividualPage( idt indID )
         // Individual record
         "<table class='data'>\n<tr>\n"
         "<th colspan='2'>Individual's Details</th>\n</tr>\n<tr>\n"
-        "<td>Name:</td><td class='subject " << tfpGetIndSexClass( ind.FGetID() ) <<
+        "<td>Name:</td><td class='subject " << tfpGetIndSexClass( ind.FGetID(), Sex::unknown, extdb ) <<
         "'><a href='tfp:F" << ind.FGetFamID() <<
         "'>" << ind.FGetName() <<
         "</a> " << ind.FGetEpitaph() <<
@@ -87,7 +87,7 @@ wxString tfpWriteIndividualPage( idt indID )
         "</tr>\n</table>\n"
     ;
     // Names
-    recNameVec names = ind.GetNames();
+    recNameVec names = ind.GetNames( extdb );
     htm <<
         "<table class='data'>\n<tr>\n"
         "<th colspan='3'>Names</th>\n";
@@ -96,7 +96,7 @@ wxString tfpWriteIndividualPage( idt indID )
             "<td><b><a href='tfpi:N" << names[i].FGetID() <<
             "'>" << names[i].GetIdStr() <<
             "</a></b></td><td>" << recNameStyle::GetStyleStr( names[i].FGetTypeID() ) <<
-            "</td><td>" << names[i].GetNameStr() <<
+            "</td><td>" << names[i].GetNameStr( extdb ) <<
             "</td>";
     }
     // Parents
@@ -113,10 +113,10 @@ wxString tfpWriteIndividualPage( idt indID )
                 "</tr>\n<tr>\n"
                 "<td><b>" << recIndividual::GetIdStr( hID ) <<
                 "</b></td>\n<td>Father:"
-                "</td>\n<td class='" << tfpGetIndSexClass( hID ) <<
+                "</td>\n<td class='" << tfpGetIndSexClass( hID, Sex::unknown, extdb ) <<
                 "'><a href='tfp:I" << hID <<
-                "'>" << recIndividual::GetName( hID ) <<
-                "</a> " << recIndividual::GetEpitaph( hID ) <<
+                "'>" << recIndividual::GetName( hID, extdb ) <<
+                "</a> " << recIndividual::GetEpitaph( hID, extdb ) <<
                 " <a href='tfpc:MR" << hID <<
                 "'><img src=memory:fam.png></a></td>\n"
             ;
@@ -127,10 +127,10 @@ wxString tfpWriteIndividualPage( idt indID )
                 "</tr>\n<tr>\n"
                 "<td><b>" << recIndividual::GetIdStr( wID ) <<
                 "</b></td>\n<td>Mother:"
-                "</td>\n<td class='" << tfpGetIndSexClass( wID ) <<
+                "</td>\n<td class='" << tfpGetIndSexClass( wID, Sex::unknown, extdb ) <<
                 "'><a href='tfp:I" << wID <<
-                "'>" << recIndividual::GetName( wID ) <<
-                "</a> " << recIndividual::GetEpitaph( wID ) <<
+                "'>" << recIndividual::GetName( wID, extdb ) <<
+                "</a> " << recIndividual::GetEpitaph( wID, extdb ) <<
                 " <a href='tfpc:MR" << wID <<
                 "'><img src=memory:fam.png></a></td>\n"
             ;
@@ -139,12 +139,12 @@ wxString tfpWriteIndividualPage( idt indID )
     for( size_t i = 0 ; i < families.size() ; i++ ) {
         idt famID = families[i].FGetID();
         idt spouseID = families[i].GetSpouseID( indID );
-        recIndividualVec children = recIndividual::GetChildren( famID );
+        recIndividualVec children = recIndividual::GetChildren( famID, extdb );
         if( spouseID == 0 && children.size() == 0 ) {
             // Family is single individual
             continue;
         }
-        spouse.ReadID( spouseID );
+        spouse.ReadID( spouseID, extdb );
 
         htm <<
             "</tr>\n<tr>\n"
@@ -158,23 +158,23 @@ wxString tfpWriteIndividualPage( idt indID )
                 "'>" << recIndividual::GetIdStr( spouseID ) <<
                 "</a></b></td>\n<td><a href='tfp:F" << famID <<
                 "'>Spouse " << i+1 << "</a>:</td>\n"
-                "<td class='" << tfpGetIndSexClass( spouseID ) <<
+                "<td class='" << tfpGetIndSexClass( spouseID, Sex::unknown, extdb ) <<
                 "'><a href='tfp:I" << spouseID <<
                 "'>" << spouse.FGetName() <<
-                "</a></b> " << spouse.f_epitaph <<
+                "</a></b> " << spouse.FGetEpitaph() <<
                 " <a href='tfpc:MR" << spouseID <<
                 "'><img src=memory:fam.png></a></td>\n"
             ;
         }
         // Union event (marriage)
-        idt marEvID = families[i].GetUnionEvent();
+        idt marEvID = families[i].GetUnionEvent( extdb );
         if( marEvID != 0 ) {
             htm <<
                 "</tr>\n<tr>\n" <<
                 "<td><b><a href='tfp:E" << marEvID <<
                 "'>" << recEvent::GetIdStr( marEvID ) <<
-                "</a></b></td>\n<td>" << recEvent::GetTypeStr( marEvID ) <<
-                ":</td>\n<td><b>" << recEvent::GetDetailStr( marEvID ) <<
+                "</a></b></td>\n<td>" << recEvent::GetTypeStr( marEvID, extdb ) <<
+                ":</td>\n<td><b>" << recEvent::GetDetailStr( marEvID, extdb ) <<
                 "</b></td>\n"
             ;
         }
@@ -194,7 +194,7 @@ wxString tfpWriteIndividualPage( idt indID )
                 ;
             }
             htm <<
-                "<td class='" << tfpGetIndSexClass( cID ) <<
+                "<td class='" << tfpGetIndSexClass( cID, Sex::unknown, extdb ) <<
                 "'><a href='tfp:I" << cID <<
                 "'>" << children[j].FGetName() <<
                 "</a> " << children[j].FGetEpitaph() <<
@@ -206,13 +206,13 @@ wxString tfpWriteIndividualPage( idt indID )
     htm << "</tr>\n</table>\n";
 
     // All Events
-    recIndEventVec ies = ind.GetEvents();
+    recIndEventVec ies = ind.GetEvents( recEO_DatePt, extdb );
     htm <<
         "<table class='data'>\n<tr>\n"
         "<th colspan='4'>Events</th>\n";
     for( size_t i = 0 ; i < ies.size() ; i++ ) {
         idt eveID = ies[i].FGetEventID();
-        recEvent eve( eveID );
+        recEvent eve( eveID, extdb );
         wxString cat1, cat2, dStr, pStr;
         if( eve.FGetDate1ID() || eve.FGetPlaceID() ) {
             cat1 = "<br>\n";
@@ -223,14 +223,14 @@ wxString tfpWriteIndividualPage( idt indID )
         if( eve.FGetDate1ID() ) {
             dStr <<
                 "<a href='tfpi:D" << eve.FGetDate1ID() <<
-                "'>" << eve.GetDateStr() <<
+                "'>" << eve.GetDateStr( extdb ) <<
                 "</a>"
             ;
         }
         if( eve.FGetPlaceID() ) {
             pStr <<
                 "<a href='tfpi:P" << eve.FGetPlaceID() <<
-                "'>" << eve.GetAddressStr() <<
+                "'>" << eve.GetAddressStr( extdb ) <<
                 "</a>"
             ;
         }
@@ -238,8 +238,8 @@ wxString tfpWriteIndividualPage( idt indID )
             "</tr>\n<tr>\n" <<
             "<td><b><a href='tfp:E" << eveID <<
             "'>" << eve.GetIdStr() <<
-            "</a></b></td>\n<td>" << eve.GetTypeStr() <<
-            ":</td>\n<td>" << recEventTypeRole::GetName( ies[i].FGetRoleID() ) <<
+            "</a></b></td>\n<td>" << eve.GetTypeStr( extdb ) <<
+            ":</td>\n<td>" << recEventTypeRole::GetName( ies[i].FGetRoleID(), extdb ) <<
             "</td><td>" << eve.FGetTitle() <<
             cat1 << dStr << cat2 << pStr
         ;
@@ -251,13 +251,13 @@ wxString tfpWriteIndividualPage( idt indID )
     htm << "</tr>\n</table>\n";
 
     // Get linked Eventas
-    wxSQLite3ResultSet eSet = ind.GetEventaSet();
+    wxSQLite3ResultSet eSet = ind.GetEventaSet( extdb );
     htm <<
         "<table class='data'>\n<tr>\n"
         "<th colspan='4'>Eventas</th>\n";
     while( eSet.NextRow() ) {
         idt erID = GET_ID( eSet.GetInt64( 0 ) );
-        recEventa er( erID );
+        recEventa er( erID, extdb );
         idt roleID = GET_ID( eSet.GetInt64( 1 ) );
         idt refID = er.FGetRefID();
 
@@ -271,14 +271,14 @@ wxString tfpWriteIndividualPage( idt indID )
         if( er.FGetDate1ID() ) {
             dStr <<
                 "<a href='tfpi:D" << er.FGetDate1ID() <<
-                "'>" << er.GetDateStr() <<
+                "'>" << er.GetDateStr( extdb ) <<
                 "</a>"
             ;
         }
         if( er.FGetPlaceID() ) {
             pStr <<
                 "<a href='tfpi:P" << er.FGetPlaceID() <<
-                "'>" << er.GetAddressStr() <<
+                "'>" << er.GetAddressStr( extdb ) <<
                 "</a>"
             ;
         }
@@ -288,8 +288,8 @@ wxString tfpWriteIndividualPage( idt indID )
             "'>" << recReference::GetIdStr( refID ) <<
             "</a>: <a href='tfp:Ea" << erID <<
             "'>" << er.GetIdStr() <<
-            "</b></td>\n<td>" << er.GetTypeStr() <<
-            ":</td>\n<td>" << recEventTypeRole::GetName( roleID ) <<
+            "</b></td>\n<td>" << er.GetTypeStr( extdb ) <<
+            ":</td>\n<td>" << recEventTypeRole::GetName( roleID, extdb ) <<
             "</td><td>" << er.FGetTitle() <<
             cat1 << dStr << cat2 << pStr
         ;
@@ -302,7 +302,7 @@ wxString tfpWriteIndividualPage( idt indID )
 
 
     // List all References for linked Personas
-    eSet = ind.GetReferenceSet();
+    eSet = ind.GetReferenceSet( extdb );
     htm <<
         "<table class='data'>\n<tr>\n"
         "<th colspan='2'>Reference Links</th>\n";
@@ -318,19 +318,19 @@ wxString tfpWriteIndividualPage( idt indID )
     }
     htm << "</tr>\n</table>\n";
 
-    recIdVec mes = ind.FindEvents( recEventTypeRole::ROLE_Media_Subject );
+    recIdVec mes = ind.FindEvents( recEventTypeRole::ROLE_Media_Subject, extdb );
     bool started = false;
     if ( !mes.empty() ) {
         htm << "<table class='media'>\n";
         for ( idt meID : mes ) {
-            recIdVec refs = recEvent::GetReferenceIDs( meID );
+            recIdVec refs = recEvent::GetReferenceIDs( meID, extdb );
             recIndividualEvent ie( 0 );
-            ie.Find( indID, meID, recEventTypeRole::ROLE_Media_Subject );
+            ie.Find( indID, meID, recEventTypeRole::ROLE_Media_Subject, extdb );
             for ( idt refID : refs ) {
-                recIdVec medIDs = recReference::GetMediaList( refID );
+                recIdVec medIDs = recReference::GetMediaList( refID, extdb );
                 if ( !medIDs.empty() ) {
-                    recMedia med( medIDs[0] );
-                    wxString fn = tfpGetMediaDataFile( med.FGetDataID(), med.FGetAssID() );
+                    recMedia med( medIDs[0], extdb );
+                    wxString fn = tfpGetMediaDataFile( med.FGetDataID(), med.FGetAssID(), extdb );
                     wxString title = ie.FGetNote();
                     if ( title.empty() ) {
                         title = med.FGetTitle();

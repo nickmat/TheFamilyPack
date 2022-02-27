@@ -402,7 +402,7 @@ wxString tfpGetDisplayText( const wxString& pagename, const wxString& dbname, Tf
             return tfpWriteGalleryPage( num );
         }
         if( name.compare( 0, 1, "I" ) == 0 && success ) {
-            return tfpWriteIndividualPage( num );
+            return tfpWriteIndividualPage( num, dbname );
         }
         if( name.compare( "M" ) == 0 ) {
             return tfpWriteMediaIndex( dbname );

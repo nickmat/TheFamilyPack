@@ -624,7 +624,7 @@ wxString tfpWriteFamilyPage( const wxString& str, const wxString& extdb )
 
 wxString tfpWriteIndFamilyPage( idt indID, const wxString& extdb )
 {
-    idt famID = recIndividual::GetFamilyID( indID );
+    idt famID = recIndividual::GetFamilyID( indID, extdb );
     return tfpWriteFamilyPage( famID, extdb, 0, 0 );
 }
 
