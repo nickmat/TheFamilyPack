@@ -351,13 +351,13 @@ wxString tfpGetDisplayText( const wxString& pagename, const wxString& dbname, Tf
             return tfpWriteArchive( num1 );
         }
         if( name.compare( 0, 2, "CD" ) == 0 && success1 ) {
-            return tfpCreateDescChart( num1 );
+            return tfpCreateDescChart( num1, dbname );
         }
         if( name.compare( 0, 2, "CI" ) == 0 && success1 ) {
             return tfpWriteCitation( num1 );
         }
         if( name.compare( 0, 2, "CP" ) == 0 && success1 ) {
-            return tfpCreatePedChart( num1 );
+            return tfpCreatePedChart( num1, dbname );
         }
         if( name.compare( 0, 1, "D" ) == 0 && success ) {
             return tfpWriteDate( num );

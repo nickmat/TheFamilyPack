@@ -61,8 +61,8 @@ extern wxString tfpWriteArchiveIndex();
 extern wxString tfpWriteArchive( idt arcID );
 
 // See tfpWrChart.cpp
-extern wxString tfpCreatePedChart( idt indID );
-extern wxString tfpCreateDescChart( idt indID );
+extern wxString tfpCreatePedChart( idt indID, const wxString& dbname = "Main" );
+extern wxString tfpCreateDescChart( idt indID, const wxString& dbname = "Main" );
 
 // See tfpWrEvent.cpp
 extern wxString tfpWriteEventPage( idt eveID, TfpFrame* frame );

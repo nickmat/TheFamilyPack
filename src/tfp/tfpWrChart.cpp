@@ -74,14 +74,14 @@ static int GenDChart[100];
 static int GenPChart[100];
 static wxString htm;
 
-static void WrPedCht( idt indID, Sex sex, int gen );
-static void WrDescCht( idt indID, int gen );
-static void WrDescLine( idt indID, idt spouseID, idt famID, int gen );
+static void WrPedCht( idt indID, Sex sex, int gen, const wxString& extdb );
+static void WrDescCht( idt indID, int gen, const wxString& extdb );
+static void WrDescLine( idt indID, idt spouseID, idt famID, int gen, const wxString& extdb );
 
-wxString tfpCreatePedChart( idt indID )
+wxString tfpCreatePedChart( idt indID, const wxString& extdb )
 {
     htm.Clear();
-    recIndividual ind(indID);
+    recIndividual ind( indID, extdb );
 
     wxString name = ind.FGetName();
 
@@ -96,33 +96,33 @@ wxString tfpCreatePedChart( idt indID )
         "<table class='chart'>\n"
     ;
 
-    WrPedCht( indID, Sex::unstated, 0 );
+    WrPedCht( indID, Sex::unstated, 0, extdb );
 
     htm << "</table>\n\n</body>\n</html>\n";
 
     return htm;
 }
 
-void WrPedCht( idt indID, Sex sex, int gen )
+void WrPedCht( idt indID, Sex sex, int gen, const wxString& extdb )
 {
     if( gen == HTM_CHART_GEN_MAX ) {
         return;
     }
-    recIndividual ind( indID );
+    recIndividual ind( indID, extdb );
     if( ind.FGetID() == 0 ) return;
     recFamily fam( 0 );
 
-    recFamilyVec famList = recFamily::GetParentList( indID );
+    recFamilyVec famList = recFamily::GetParentList( indID, extdb );
     if( famList.size() > 0 ) {
         fam = famList[0];
     }
-    wxString famLk = ( ind.f_fam_id ) ? "F"+recGetStr( ind.f_fam_id ) : "FI"+recGetStr( indID );
-
+    wxString famLk = ( ind.FGetFamID() ) ? "F"+recGetStr( ind.FGetFamID() ) : "FI"+recGetStr( indID );
+    
     // Construct Pedigree Chart
     GenPChart[gen] = HTM_CHART_GIF_BLANK;
-    if( fam.f_husb_id != 0 )
+    if( fam.FGetHusbID() != 0 )
     {
-        WrPedCht( fam.f_husb_id, Sex::male, gen+1 );
+        WrPedCht( fam.FGetHusbID(), Sex::male, gen + 1, extdb );
     }
 
     if( sex == Sex::male ) GenPChart[gen-1] = HTM_CHART_GIF_PTOP;
@@ -148,20 +148,20 @@ void WrPedCht( idt indID, Sex sex, int gen )
     if( sex == Sex::female ) GenPChart[gen-1] = HTM_CHART_GIF_BLANK;
 
     GenPChart[gen] = HTM_CHART_GIF_PDN;
-    if( fam.f_wife_id != 0 )
+    if( fam.FGetWifeID() != 0 )
     {
-        WrPedCht( fam.f_wife_id, Sex::female, gen+1 );
+        WrPedCht( fam.FGetWifeID(), Sex::female, gen + 1, extdb );
     }
 }
 
 
 
-wxString tfpCreateDescChart( idt indID )
+wxString tfpCreateDescChart( idt indID, const wxString& extdb )
 {
-    wxString name = recIndividual::GetName( indID );
+    wxString name = recIndividual::GetName( indID, extdb );
     htm.Clear();
 
-    htm << 
+    htm <<
         "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
         "\"http://www.w3.org/TR/html4/loose.dtd\">\n"
         "<html>\n<head>\n<title>Descendant Chart for " << name << "</title>\n"
@@ -172,7 +172,7 @@ wxString tfpCreateDescChart( idt indID )
         "<table class='chart'>\n"
     ;
 
-    WrDescCht( indID, 0 );
+    WrDescCht( indID, 0, extdb );
 
     htm << "</table>\n\n</body>\n</html>\n";
 
@@ -180,20 +180,20 @@ wxString tfpCreateDescChart( idt indID )
 }
 
 // Recursive function which creates Descendants chart
-void WrDescCht( idt indID, int gen )
+void WrDescCht( idt indID, int gen, const wxString& extdb )
 {
     recIdVec children;
-    recFamilyVec families = recFamily::GetFamilyList( indID );
+    recFamilyVec families = recFamily::GetFamilyList( indID, extdb );
     for( size_t i = 0 ; i < families.size() ; i++ )
     {
-        idt famID = families[i].f_id;
-        idt dadID = families[i].f_husb_id;
-        idt mumID = families[i].f_wife_id;
+        idt famID = families[i].FGetID();
+        idt dadID = families[i].FGetHusbID();
+        idt mumID = families[i].FGetWifeID();
 
         if( indID == dadID ) {
-            WrDescLine( dadID, mumID, famID, gen );
+            WrDescLine( dadID, mumID, famID, gen, extdb );
         } else {
-            WrDescLine( mumID, dadID, famID, gen );
+            WrDescLine( mumID, dadID, famID, gen, extdb );
         }
         if( gen > 0 ) {
             if( GenDChart[gen-1] == HTM_CHART_GIF_TEE ) {
@@ -205,22 +205,22 @@ void WrDescCht( idt indID, int gen )
         }
 
         // Add Children, if any
-        children = recFamily::GetChildrenIds( famID );
+        children = recFamily::GetChildrenIds( famID, extdb );
         for( size_t j = 0 ; j < children.size() ; j++ ) {
             if( j == children.size()-1 && i == families.size()-1 ) {
                 GenDChart[gen] = HTM_CHART_GIF_END;
             } else {
                 GenDChart[gen] = HTM_CHART_GIF_TEE;
             }
-            WrDescCht( children[j], gen+1 );
+            WrDescCht( children[j], gen+1, extdb );
         }
     }
-    if( families.size() == 0 ) {
-        WrDescLine( indID, 0, 0, gen );
+    if( !families.empty() == 0 ) {
+        WrDescLine( indID, 0, 0, gen, extdb );
     }
 }
 
-void WrDescLine( idt indID, idt spouseID, idt famID, int gen )
+void WrDescLine( idt indID, idt spouseID, idt famID, int gen, const wxString& extdb )
 {
     int dheight = ( spouseID == 0 ) ? 0 : 1;
     wxString famLk = ( famID ) ? "F"+recGetStr( famID ) : "FI"+recGetStr( indID );
@@ -231,14 +231,14 @@ void WrDescLine( idt indID, idt spouseID, idt famID, int gen )
             htm << "<td  class='name' colspan='" 
                 << HTM_CHART_GEN_MAX - gen << "'><a href='tfp:"
                 << famLk << "'><b>"
-                << recIndividual::GetName( indID )
+                << recIndividual::GetName( indID, extdb )
                 << "</b></a> "
-                << recIndividual::GetEpitaph( indID );
+                << recIndividual::GetEpitaph( indID, extdb );
             if( spouseID != 0 ) {
                 htm << "<br>\n m. <b>"
-                    << recIndividual::GetName( spouseID )
+                    << recIndividual::GetName( spouseID, extdb )
                     << "</b> "
-                    << recIndividual::GetEpitaph( spouseID );
+                    << recIndividual::GetEpitaph( spouseID, extdb );
             }
             htm << "</td>\n";
         } else {
