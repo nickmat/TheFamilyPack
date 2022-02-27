@@ -47,12 +47,12 @@ public:
     static constexpr const char* s_tablename = "ContactList";
 
     recContactList() : f_ind_id(0) {}
-    recContactList( idt id ) : recDbT(id) { Read(); }
+    recContactList( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname); }
     recContactList( const recContactList& at );
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recContactList& r2 ) const {
         return f_ind_id == r2.f_ind_id;
     }
@@ -64,13 +64,14 @@ public:
     static wxString GetIdStr( idt resID ) { return wxString::Format( "CL" ID, resID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
-    static recContactVec GetContacts( idt listID );
-    recContactVec GetContacts() const { return GetContacts( f_id ); }
+    static recContactVec GetContacts( idt listID, const wxString& dbname = "Main" );
+    recContactVec GetContacts( const wxString& dbname = "Main" ) const {
+        return GetContacts( f_id, dbname ); }
 
-    static idt FindIndID( idt indID );
+    static idt FindIndID( idt indID, const wxString& dbname = "Main" );
 
     // Merge in Contacts from target ContactList and then delete it.
-    void Assimilate( idt targetID ) const;
+    void Assimilate( idt targetID, const wxString& dbname = "Main" ) const;
 
     static void Renumber( idt fromID, idt toID );
     static std::string CsvTitles();
@@ -104,12 +105,12 @@ public:
     };
 
     recContactType() {}
-    recContactType( idt id ) : recDbT(id) { Read(); }
+    recContactType( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }
     recContactType( const recContactType& at );
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recContactType& r2 ) const { return f_name == r2.f_name; };
 
     wxString FGetName() const { return f_name; }
@@ -119,9 +120,9 @@ public:
     static wxString GetIdStr( idt resID ) { return wxString::Format( "CT" ID, resID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
-    static wxString GetTypeStr( idt typeID );
+    static wxString GetTypeStr( idt typeID, const wxString& dbname = "Main" );
 
-    static recContactTypeVec GetList();
+    static recContactTypeVec GetList( const wxString& dbname = "Main" );
 
     static void Renumber( idt fromID, idt toID );
     static std::string CsvTitles();
@@ -145,12 +146,12 @@ public:
     static constexpr const char* s_tablename = "Contact";
 
     recContact() : f_type_id(0), f_list_id(0) {}
-    recContact( idt id ) : recDbT(id) { Read(); }
+    recContact( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }
     recContact( const recContact& source );
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recContact& r2 ) const;
 
     idt FGetTypeID() const { return f_type_id; }
@@ -164,7 +165,8 @@ public:
     static wxString GetIdStr( idt resID ) { return wxString::Format( "C" ID, resID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
-    wxString GetTypeStr() const { return recContactType::GetTypeStr( f_type_id ); }
+    wxString GetTypeStr( const wxString& dbname = "Main" ) const {
+        return recContactType::GetTypeStr( f_type_id, dbname ); }
     wxString GetHtmlValue( const wxString prefixHref = wxEmptyString ) const;
 
     static void Renumber( idt fromID, idt toID );

@@ -58,7 +58,7 @@ void recContact::Clear()
     f_val      = wxEmptyString;
 }
 
-void recContact::Save()
+void recContact::Save( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -67,9 +67,9 @@ void recContact::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO Contact (type_id, list_id, val) "
+            "INSERT INTO \"%s\".Contact (type_id, list_id, val) "
             "VALUES (" ID ", " ID ", '%q');",
-            f_type_id, f_list_id, UTF8_(f_val)
+            UTF8_( dbname ), f_type_id, f_list_id, UTF8_(f_val)
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -79,23 +79,23 @@ void recContact::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO Contact (id, type_id, list_id, val) "
+                "INSERT INTO \"%s\".Contact (id, type_id, list_id, val) "
                 "VALUES (" ID ", " ID ", " ID ", '%q');",
-                f_id, f_type_id, f_list_id, UTF8_(f_val)
+                UTF8_( dbname ), f_id, f_type_id, f_list_id, UTF8_(f_val)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE Contact SET type_id=" ID ", list_id=" ID ", val='%q' "
+                "UPDATE \"%s\".Contact SET type_id=" ID ", list_id=" ID ", val='%q' "
                 "WHERE id=" ID ";",
-                f_type_id, f_list_id, UTF8_(f_val), f_id
+                UTF8_( dbname ), f_type_id, f_list_id, UTF8_(f_val), f_id
             );
         }
         s_db->ExecuteUpdate( sql );
     }
 }
 
-bool recContact::Read()
+bool recContact::Read( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -106,9 +106,9 @@ bool recContact::Read()
     }
 
     sql.Format(
-        "SELECT type_id, list_id, val "
-        "FROM Contact WHERE id=" ID ";",
-        f_id
+        "SELECT type_id, list_id, val"
+        " FROM \"%s\".Contact WHERE id=" ID ";",
+        UTF8_( dbname ), f_id
     );
     result = s_db->GetTable( sql );
 
@@ -202,7 +202,7 @@ void recContactList::Clear()
     f_ind_id = 0;
 }
 
-void recContactList::Save()
+void recContactList::Save( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -210,8 +210,8 @@ void recContactList::Save()
     if( f_id == 0 ) {
         // Add new record
         sql.Format(
-            "INSERT INTO ContactList (ind_id) VALUES (NULLIF(" ID ", 0));",
-            f_ind_id
+            "INSERT INTO \"%s\".ContactList (ind_id) VALUES (NULLIF(" ID ", 0));",
+            UTF8_( dbname ), f_ind_id
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -220,22 +220,22 @@ void recContactList::Save()
         if( !Exists() ) {
             // Add new record
             sql.Format(
-                "INSERT INTO ContactList (id, ind_id) "
+                "INSERT INTO \"%s\".ContactList (id, ind_id) "
                 "VALUES (" ID ", NULLIF(" ID ", 0));",
-                f_id, f_ind_id
+                UTF8_( dbname ), f_id, f_ind_id
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE ContactList SET ind_id=NULLIF(" ID ", 0) WHERE id=" ID ";",
-                f_ind_id, f_id
+                "UPDATE \"%s\".ContactList SET ind_id=NULLIF(" ID ", 0) WHERE id=" ID ";",
+                UTF8_( dbname ), f_ind_id, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
     }
 }
 
-bool recContactList::Read()
+bool recContactList::Read( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -245,7 +245,7 @@ bool recContactList::Read()
         return false;
     }
 
-    sql.Format( "SELECT ind_id FROM ContactList WHERE id=" ID ";", f_id );
+    sql.Format( "SELECT ind_id FROM \"%s\".ContactList WHERE id=" ID ";", UTF8_( dbname ), f_id );
     result = s_db->GetTable( sql );
 
     if( result.GetRowCount() != 1 ) {
@@ -257,7 +257,7 @@ bool recContactList::Read()
     return true;
 }
 
-recContactVec recContactList::GetContacts( idt listID )
+recContactVec recContactList::GetContacts( idt listID, const wxString& dbname )
 {
     recContactVec list;
 
@@ -266,8 +266,8 @@ recContactVec recContactList::GetContacts( idt listID )
     wxSQLite3StatementBuffer sql;
     sql.Format(
         "SELECT id, type_id, val"
-        " FROM Contact WHERE list_id=" ID ";",
-        listID
+        " FROM \"%s\".Contact WHERE list_id=" ID ";",
+        UTF8_( dbname ), listID
     );
     wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
 
@@ -282,19 +282,22 @@ recContactVec recContactList::GetContacts( idt listID )
     return list;
 }
 
-idt recContactList::FindIndID( idt indID )
+idt recContactList::FindIndID( idt indID, const wxString& dbname )
 {
-    return ExecuteID( "SELECT id FROM ContactList WHERE ind_id=" ID ";", indID );
+    return ExecuteID( 
+        "SELECT id FROM \"%s\".ContactList WHERE ind_id=" ID ";",
+        UTF8_( dbname ), indID
+    );
 }
 
-void recContactList::Assimilate( idt targetID ) const
+void recContactList::Assimilate( idt targetID, const wxString& dbname ) const
 {
     if( f_id == 0 || targetID == 0 || f_id == targetID ) return;
 
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "UPDATE Contact SET list_id=" ID " WHERE list_id=" ID ";",
-        f_id, targetID
+        "UPDATE \"%s\".Contact SET list_id=" ID " WHERE list_id=" ID ";",
+        UTF8_( dbname ), f_id, targetID
     );
     s_db->ExecuteUpdate( sql );
     Delete( targetID );
@@ -378,7 +381,7 @@ void recContactType::Clear()
     f_name = wxEmptyString;
 }
 
-void recContactType::Save()
+void recContactType::Save( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -387,8 +390,8 @@ void recContactType::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO ContactType (name) VALUES ('%q');",
-            UTF8_(f_name)
+            "INSERT INTO \"%s\".ContactType (name) VALUES ('%q');",
+            UTF8_( dbname ), UTF8_(f_name)
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -398,22 +401,22 @@ void recContactType::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO ContactType (id, name) "
+                "INSERT INTO \"%s\".ContactType (id, name) "
                 "VALUES (" ID ", '%q');",
-                f_id, UTF8_(f_name)
+                UTF8_( dbname ), f_id, UTF8_(f_name)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE ContactType SET name='%q' WHERE id=" ID ";",
-                UTF8_(f_name), f_id
+                "UPDATE \"%s\".ContactType SET name='%q' WHERE id=" ID ";",
+                UTF8_( dbname ), UTF8_(f_name), f_id
             );
         }
         s_db->ExecuteUpdate( sql );
     }
 }
 
-bool recContactType::Read()
+bool recContactType::Read( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -423,7 +426,7 @@ bool recContactType::Read()
         return false;
     }
 
-    sql.Format( "SELECT name FROM ContactType WHERE id=" ID ";", f_id );
+    sql.Format( "SELECT name FROM \"%s\".ContactType WHERE id=" ID ";", UTF8_( dbname ), f_id );
     result = s_db->GetTable( sql );
 
     if( result.GetRowCount() != 1 )
@@ -436,13 +439,13 @@ bool recContactType::Read()
     return true;
 }
 
-wxString recContactType::GetTypeStr( idt typeID )
+wxString recContactType::GetTypeStr( idt typeID, const wxString& dbname )
 {
-    recContactType ct( typeID );
+    recContactType ct( typeID, dbname );
     return ct.f_name;
 }
 
-recContactTypeVec recContactType::GetList()
+recContactTypeVec recContactType::GetList( const wxString& dbname )
 {
     recContactType at;
     recContactTypeVec list;
@@ -452,8 +455,9 @@ recContactTypeVec recContactType::GetList()
 
     // Put standard entries in list.
     sql.Format(
-        "SELECT id, name FROM ContactType "
-        "WHERE id<=0 ORDER BY id DESC;"
+        "SELECT id, name FROM \"%s\".ContactType"
+        " WHERE id<=0 ORDER BY id DESC;",
+        UTF8_( dbname )
     );
     result = s_db->GetTable( sql );
 
@@ -466,8 +470,9 @@ recContactTypeVec recContactType::GetList()
 
     // Put user entries in list.
     sql.Format(
-        "SELECT id, name FROM ContactType "
-        "WHERE id>0 ORDER BY id ASC;"
+        "SELECT id, name FROM \"%s\".ContactType "
+        "WHERE id>0 ORDER BY id ASC;",
+        UTF8_( dbname )
     );
     result = s_db->GetTable( sql );
 
