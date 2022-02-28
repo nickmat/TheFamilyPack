@@ -354,13 +354,13 @@ wxString tfpGetDisplayText( const wxString& pagename, const wxString& dbname, Tf
             return tfpCreateDescChart( num1, dbname );
         }
         if( name.compare( 0, 2, "CI" ) == 0 && success1 ) {
-            return tfpWriteCitation( num1 );
+            return tfpWriteCitation( num1, dbname );
         }
         if( name.compare( 0, 2, "CP" ) == 0 && success1 ) {
             return tfpCreatePedChart( num1, dbname );
         }
         if( name.compare( 0, 1, "D" ) == 0 && success ) {
-            return tfpWriteDate( num );
+            return tfpWriteDate( num, dbname );
         }
         if( name.compare( "E" ) == 0 ) {
             return tfpWriteEventIndex();
@@ -435,13 +435,13 @@ wxString tfpGetDisplayText( const wxString& pagename, const wxString& dbname, Tf
             return tfpWriteNameList( pagename.Mid( 3 ), recSG_Persona );
         }
         if( name.compare( 0, 1, "N" ) == 0 && success ) {
-            return tfpWriteName( num );
+            return tfpWriteName( num, dbname );
         }
         if( name.compare( 0, 2, "PA" ) == 0 ) {
             return tfpWritePersonaPage( num1 );
         }
         if( name.compare( 0, 1, "P" ) == 0 && success ) {
-            return tfpWritePlace( num );
+            return tfpWritePlace( num, dbname );
         }
         if( name.compare( "R" ) == 0 ) {
             return tfpWriteReferenceIndex( dbname );

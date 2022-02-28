@@ -46,7 +46,19 @@
 
 namespace { 
 
-wxString GetHtmDateData( const recDate& date )
+wxString GetHtmEditLink( const wxString& link, const wxString& extdb )
+{
+    wxString htm;
+    if( extdb.CmpNoCase( "Main" ) == 0 ) {
+        htm <<
+            " <a href='tfpe:" << link <<
+            "'><img src='memory:edit.png'></a>"
+            ;
+    }
+    return htm;
+}
+
+wxString GetHtmDateData( const recDate& date, const wxString& extdb )
 {
     wxString htm;
         
@@ -55,93 +67,92 @@ wxString GetHtmDateData( const recDate& date )
            "Display Scheme: " << CalendarSchemeName[date.f_display_sch] << "<br>";
 
     if( date.f_rel_id ) {
-        recRelativeDate rel( date.f_rel_id );
-        recDate base( rel.f_base_id );
+        recRelativeDate rel( date.f_rel_id, extdb );
+        recDate base( rel.f_base_id, extdb );
         htm << "<br>Base on " << base.GetIdStr() << "<br>"
-            << GetHtmDateData( base );
+            << GetHtmDateData( base, extdb );
     }
     return htm;
 }
 
 } // namespace
 
-wxString tfpWriteCitation( idt citID )
+wxString tfpWriteCitation( idt citID, const wxString& extdb )
 {
     wxString htm;
-    recCitation cit( citID );
+    recCitation cit( citID, extdb );
     if( cit.FGetID() == 0 ) return htm;
-    recRepository arc( cit.FGetRepID() );
+    recRepository arc( cit.FGetRepID(), extdb );
 
     htm <<
         tfpWrHeadTfp( "Citation" ) <<
         "<h1>Citation " << cit.GetIdStr() <<
-        " <a href='tfpe:" << cit.GetIdStr() <<
-        "'><img src='memory:edit.png'></a></h1>\n"
-        "<p>" << cit.GetCitationStr() << "</p>\n"
+        GetHtmEditLink( cit.GetIdStr(), extdb ) <<
+        "</h1>\n"
+        "<p>" << cit.GetCitationStr( extdb ) << "</p>\n"
         "<p>Comment: " << cit.FGetComment() << "</p>\n"
         << tfpWrTailTfp()
     ;
     return htm;
 }
 
-wxString tfpWriteDate( idt dateID )
+wxString tfpWriteDate( idt dateID, const wxString& extdb )
 {
-    recDate date(dateID);
+    recDate date( dateID, extdb );
     if( date.FGetID() == 0 ) return wxEmptyString;
 
     wxString htm;
     htm << 
         tfpWrHeadTfp( "Date" ) <<
         "<h1>Date " << date.GetIdStr() <<
-        " <a href='tfpe:D" << date.FGetID() <<
-        "'><img src='memory:edit.png'></a></h1>\n" <<
-        GetHtmDateData( date ) <<
+        GetHtmEditLink( date.GetIdStr(), extdb ) <<
+        "</h1>\n" <<
+        GetHtmDateData( date, extdb ) <<
         tfpWrTailTfp()
     ;
 
     return htm;
 }
 
-wxString tfpWritePlace( idt placeID )
+wxString tfpWritePlace( idt placeID, const wxString& extdb )
 {
-    recPlace place(placeID);
+    recPlace place( placeID, extdb );
     if( place.FGetID() == 0 ) return wxEmptyString;
 
     wxString htm;
     htm <<
         tfpWrHeadTfp( "Place" ) <<
-        "<h1>Place " << place.GetIdStr() << 
-        " <a href='tfpe:P" << place.FGetID() <<
-        "'><img src='memory:edit.png'></a></h1>\n" <<
-        place.GetAddressStr() << "\n" <<
+        "<h1>Place " << place.GetIdStr() <<
+        GetHtmEditLink( place.GetIdStr(), extdb ) <<
+        "</h1>\n" <<
+        place.GetAddressStr( extdb ) << "\n" <<
         tfpWrTailTfp()
     ;
-
     return htm;
 }
 
-wxString tfpWriteName( idt nameID )
+wxString tfpWriteName( idt nameID, const wxString& extdb )
 {
-    recName name(nameID);
+    recName name( nameID, extdb );
     if( name.FGetID() == 0 ) return wxEmptyString;
-    recNamePartVec parts = name.GetParts();
+    recNamePartVec parts = name.GetParts( extdb );
 
     wxString htm;
     htm <<
         tfpWrHeadTfp( "Name" ) <<
         "<h1>Name " << name.GetIdStr() << "<br>\n" <<
-        name.GetNameStr() << 
-        " <a href='tfpe:N" << name.FGetID() <<
-        "'><img src='memory:edit.png'></a></h1>\n"
+        name.GetNameStr( extdb ) <<
+        GetHtmEditLink( name.GetIdStr(), extdb ) <<
+        "</h1>\n"
         "<p>Name Type: <b>" <<
-        recNameStyle::GetStyleStr( name.FGetTypeID() ) <<
+        recNameStyle::GetStyleStr( name.FGetTypeID(), extdb ) <<
         "</b></p>\n<table class='property'>\n"
     ;
 
     for( size_t i = 0 ; i < parts.size() ; i++ ) {
         htm <<
             "<tr>\n<td class='label'>" <<
-            recNamePartType::GetTypeStr( parts[i].FGetTypeID() ) <<
+            recNamePartType::GetTypeStr( parts[i].FGetTypeID(), extdb ) <<
             ":</td>\n<td><b>" <<
             parts[i].FGetValue() <<
             "</b></td>\n</tr>\n"
