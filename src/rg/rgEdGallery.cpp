@@ -230,7 +230,7 @@ void rgDlgEditGallery::OnViewImage( wxCommandEvent& event )
         wxMessageBox( _( "Row not selected" ), _( "View Media" ) );
         return;
     }
-    rgViewMedia( this, m_gmms[row].GetMedID() );
+    rgViewMedia( this, "Main", m_gmms[row].GetMedID());
 }
 
 // End of src/rg/rgEdGallery.cpp

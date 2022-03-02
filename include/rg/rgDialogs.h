@@ -311,7 +311,7 @@ extern bool rgSetupDatabase( wxWindow* wind, const wxString& daname );
 extern idt rgGetRefSetupData( wxWindow* parent, idt assID );
 
 // See src/rg/rgViewMedia.cpp
-extern void rgViewMedia( wxWindow* wind, idt medID );
+extern void rgViewMedia( wxWindow* wind, const wxString& extdb, idt medID );
 extern void rgViewMedia( wxWindow* wind, idt mdID, idt assID );
 extern void rgViewMedia( wxWindow* wind, idt mdID, const wxString& dbname );
 

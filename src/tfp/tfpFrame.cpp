@@ -1648,7 +1648,7 @@ void TfpFrame::DoPopupViewer( const wxString& href )
     } else if ( href.StartsWith( "M" ) ) {
         idt medID = recGetID( href.substr( 1 ) );
         if ( medID ) {
-            rgViewMedia( this, medID );
+            rgViewMedia( this, m_dbname, medID );
             return;
         }
     }

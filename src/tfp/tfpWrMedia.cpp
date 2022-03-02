@@ -42,16 +42,21 @@
 #include <rec/recReference.h>
 
 
-wxString tfpWriteMediaPage( idt medID )
+wxString tfpWriteMediaPage( idt medID, const wxString& extdb )
 {
     wxString htm;
-    recMedia med( medID );
+    recMedia med( medID, extdb );
     if ( med.FGetID() == 0 ) {
         return htm;
     }
-    recAssociate ass( med.FGetAssID() );
-    recMediaData md( med.FGetDataID() );
-    wxString fn = tfpGetMediaDataFile( med.FGetDataID(), med.FGetAssID() );
+    wxString assdb = recAssociate::GetAttachedName( med.FGetAssID(), extdb);
+    if( assdb.empty() ) {
+        return htm;
+    }
+
+    recAssociate ass( med.FGetAssID(), extdb );
+    recMediaData md( med.FGetDataID(), assdb );
+    wxString fn = tfpGetMediaDataFile( med.FGetDataID(), med.FGetAssID(), extdb );
     wxString dataPath = ( med.FGetAssID() == 0 ) ? "main" : ass.FGetPath();
     dataPath += ": " + md.FGetFile();
     wxString dataIdStr = ass.GetIdStr() + ":" + md.GetIdStr();
@@ -202,7 +207,7 @@ wxString tfpWriteMediaDataPage( const wxString& link, const wxString& extdb )
     if( assdb.empty() ) {
         return tfpWrErrorPage( link );
     }
-    recMediaData md( assdb, mdID );
+    recMediaData md( mdID, assdb );
     wxString memoryfile = md.CreateMemoryFile();
 
     // Write page here

@@ -168,7 +168,7 @@ bool recMediaData::Equivalent( const recMediaData& r2 ) const
 
 // The link can be formatted in one of 2 ways,
 // 2)  MDnnn:Ann   Number follows by Associate id number.            recSplitStrRet::associate                   
-// 3)  MDnnn,aaaa  Number folloed by text name of attached database. recSplitStrRet::text
+// 3)  MDnnn,aaaa  Number followed by text name of attached database. recSplitStrRet::text
 wxString recMediaData::GetDbname( const wxString& extdb, const wxString& link, idt* mdID, idt* assID )
 {
     if( !link.StartsWith( "MD" ) ) {

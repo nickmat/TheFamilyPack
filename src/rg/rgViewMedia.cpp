@@ -41,10 +41,10 @@
 #include <wx/colour.h>
 
 
-void rgViewMedia( wxWindow* wind, idt medID )
+void rgViewMedia( wxWindow* wind, const wxString& extdb, idt medID )
 {
     wxASSERT( medID != 0 );
-    rgViewMediaFrame* frame = new rgViewMediaFrame( wind, medID );
+    rgViewMediaFrame* frame = new rgViewMediaFrame( wind, extdb, medID );
     frame->SetBackgroundColour( *wxWHITE );
     frame->Show();
 }
@@ -68,11 +68,11 @@ void rgViewMedia( wxWindow* wind, idt mdID, const wxString& dbname )
 //-------------------------[ rgViewMediaForm ]--------------------------------
 //============================================================================
 
-rgViewMediaFrame::rgViewMediaFrame( wxWindow* parent, idt medID )
-    : m_media(medID), m_scrollEnabled(false), m_upper(4), m_prevThumb(-1),
+rgViewMediaFrame::rgViewMediaFrame( wxWindow* parent, const wxString& extdb, idt medID )
+    : m_media( medID, extdb ), m_scrollEnabled(false), m_upper(4), m_prevThumb(-1),
     fbRgViewMedia( parent )
 {
-    m_mediadata.ReadID( m_media.FGetDataID(), m_media.FGetAssID() );
+    m_mediadata.ReadID( m_media.FGetDataID(), m_media.FGetAssID(), extdb );
     Bind( rgEVT_IMAGE_SCALE, &rgViewMediaFrame::OnChangeScale, this );
     m_lower = 1 / m_upper;
     m_b = m_upper * m_upper;

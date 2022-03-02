@@ -264,7 +264,7 @@ void rgDlgSetupReference::OnMediaViewButton( wxCommandEvent& event )
         wxMessageBox( _( "Row not selected" ), _( "View Media" ) );
         return;
     }
-    rgViewMedia( this, m_mediaIDs[row] );
+    rgViewMedia( this, "Main", m_mediaIDs[row]);
 }
 
 void rgDlgSetupReference::OnTemplateBrowse( wxCommandEvent& event )

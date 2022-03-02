@@ -36,7 +36,7 @@
 class rgViewMediaFrame : public fbRgViewMedia
 {
 public:
-    rgViewMediaFrame( wxWindow* parent, idt medID );
+    rgViewMediaFrame( wxWindow* parent, const wxString& extdb, idt medID );
     rgViewMediaFrame( wxWindow* parent, idt mdID, idt assID );
     rgViewMediaFrame( wxWindow* parent, idt mdID, const wxString& dbname );
 

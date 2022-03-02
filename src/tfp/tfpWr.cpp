@@ -417,7 +417,7 @@ wxString tfpGetDisplayText( const wxString& pagename, const wxString& dbname, Tf
             return tfpWriteMediaDataPage( name, dbname );
         }
         if( name.compare( 0, 1, "M" ) == 0 && success ) {
-            return tfpWriteMediaPage( num );
+            return tfpWriteMediaPage( num, dbname );
         }
         if( name.compare( "NI" ) == 0 ) {
             return tfpWriteSurnameIndex( recSG_Individual );

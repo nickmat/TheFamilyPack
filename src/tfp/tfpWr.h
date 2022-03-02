@@ -57,12 +57,12 @@ extern wxString tfpGetDisplayText( const wxString& pagename, const wxString& dbn
 extern wxString tfpWriteResearcherList();
 
 // See tfpWrArchive.cpp
-extern wxString tfpWriteArchiveIndex( const wxString& dbname = "Main" );
-extern wxString tfpWriteArchive( idt arcID, const wxString& dbname = "Main" );
+extern wxString tfpWriteArchiveIndex( const wxString& dbname );
+extern wxString tfpWriteArchive( idt arcID, const wxString& dbname );
 
 // See tfpWrChart.cpp
-extern wxString tfpCreatePedChart( idt indID, const wxString& dbname = "Main" );
-extern wxString tfpCreateDescChart( idt indID, const wxString& dbname = "Main" );
+extern wxString tfpCreatePedChart( idt indID, const wxString& dbname );
+extern wxString tfpCreateDescChart( idt indID, const wxString& dbname );
 
 // See tfpWrEvent.cpp
 extern wxString tfpWriteEventPage( idt eveID, TfpFrame* frame );
@@ -92,10 +92,10 @@ extern wxString tfpWriteGalleryPage( idt galID );
 extern wxString tfpWriteIndividualPage( idt indID, const wxString& extdb );
 
 // See tfpWrMedia.cpp
-extern wxString tfpWriteMediaPage( idt medID );
-extern wxString tfpWriteMediaIndex( const wxString& dbname );
-extern wxString tfpWriteMediaPagedIndex( idt begCnt, const wxString& dbname );
-extern wxString tfpWriteMediaDataPage( const wxString& href, const wxString& dbname );
+extern wxString tfpWriteMediaPage( idt medID, const wxString& extdb );
+extern wxString tfpWriteMediaIndex( const wxString& extdb );
+extern wxString tfpWriteMediaPagedIndex( idt begCnt, const wxString& extdb );
+extern wxString tfpWriteMediaDataPage( const wxString& href, const wxString& extdb );
 extern wxString tfpWriteMediaDataIndex( const wxString& extdb );
 
 // See tfpWrName.cpp
