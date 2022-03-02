@@ -45,12 +45,12 @@ public:
     static constexpr const char* s_tablename = "Researcher";
 
     recResearcher() : f_con_list_id(0) {}
-    recResearcher( idt id ) : recDbT(id) { Read(); }
+    recResearcher( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }
     recResearcher( const recResearcher& res );
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recResearcher& r2 ) const;
 
     wxString FGetName() const { return f_name; }
@@ -64,13 +64,14 @@ public:
     static wxString GetIdStr( idt resID ) { return wxString::Format( "Re" ID, resID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
-    static wxString GetNameStr( idt resID );
+    static wxString GetNameStr( idt resID, const wxString& dbname = "Main" );
 
-    idt GetUserID() const;
-    wxString GetUserIdStr() const;
-    recContactVec GetContacts() const { return recContactList::GetContacts( f_con_list_id ); }
+    idt GetUserID( const wxString& dbname = "Main" ) const;
+    wxString GetUserIdStr( const wxString& dbname = "Main" ) const;
+    recContactVec GetContacts( const wxString& dbname = "Main" ) const {
+        return recContactList::GetContacts( f_con_list_id, dbname ); }
 
-    static recResearcherVec GetResearchers( Coverage filter = Coverage::all );
+    static recResearcherVec GetResearchers( Coverage filter, const wxString& dbname = "Main" );
 
     static void Renumber( idt fromID, idt toID );
     static std::string CsvTitles();

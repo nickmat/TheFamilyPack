@@ -54,7 +54,7 @@ void recResearcher::Clear()
     f_con_list_id = 0;
 }
 
-void recResearcher::Save()
+void recResearcher::Save( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -63,9 +63,9 @@ void recResearcher::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO Researcher (name, comments, con_list_id)"
+            "INSERT INTO \"%s\".Researcher (name, comments, con_list_id)"
             " VALUES ('%q', NULLIF('%q', ''), NULLIF(" ID ", 0));",
-            UTF8_(f_name), UTF8_(f_comment), f_con_list_id
+            UTF8_( dbname ), UTF8_(f_name), UTF8_(f_comment), f_con_list_id
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -75,24 +75,24 @@ void recResearcher::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO Researcher (id, name, comments, con_list_id)"
+                "INSERT INTO \"%s\".Researcher (id, name, comments, con_list_id)"
                 " VALUES (" ID ", '%q', NULLIF('%q', ''), NULLIF(" ID ", 0));",
-                f_id, UTF8_(f_name), UTF8_(f_comment), f_con_list_id
+                UTF8_( dbname ), f_id, UTF8_(f_name), UTF8_(f_comment), f_con_list_id
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE Researcher SET name='%q', comments=NULLIF('%q', ''),"
+                "UPDATE \"%s\".Researcher SET name='%q', comments=NULLIF('%q', ''),"
                 " con_list_id=NULLIF(" ID ", 0)"
                 " WHERE id=" ID ";",
-                UTF8_(f_name), UTF8_(f_comment), f_con_list_id, f_id
+                UTF8_( dbname ), UTF8_(f_name), UTF8_(f_comment), f_con_list_id, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
     }
 }
 
-bool recResearcher::Read()
+bool recResearcher::Read( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -103,8 +103,8 @@ bool recResearcher::Read()
     }
 
     sql.Format(
-        "SELECT name, comments, con_list_id FROM Researcher WHERE id=" ID ";",
-        f_id
+        "SELECT name, comments, con_list_id FROM \"%s\".Researcher WHERE id=" ID ";",
+        UTF8_( dbname ), f_id
     );
     result = s_db->GetTable( sql );
 
@@ -128,33 +128,42 @@ bool recResearcher::Equivalent( const recResearcher& r2 ) const
         f_con_list_id == r2.f_con_list_id;
 }
 
-wxString recResearcher::GetNameStr( idt resID )
+wxString recResearcher::GetNameStr( idt resID, const wxString& dbname )
 {
-    return ExecuteStr( "SELECT name FROM Researcher WHERE id=" ID ";", resID );
+    return ExecuteStr(
+        "SELECT name FROM \"%s\".Researcher WHERE id=" ID ";",
+        UTF8_( dbname ), resID
+    );
 }
 
-idt recResearcher::GetUserID() const
+idt recResearcher::GetUserID( const wxString& dbname ) const
 {
-    return ExecuteID( "SELECT id FROM User WHERE res_id=" ID ";", f_id );
+    return ExecuteID(
+        "SELECT id FROM \"%s\".User WHERE res_id=" ID ";",
+        UTF8_( dbname ), f_id
+    );
 }
 
-wxString recResearcher::GetUserIdStr() const
+wxString recResearcher::GetUserIdStr( const wxString& dbname ) const
 {
-    idt uID = GetUserID();
+    idt uID = GetUserID( dbname );
     if( uID == 0 ) return wxEmptyString;
     return recUser::GetIdStr( uID );
 }
 
-recResearcherVec recResearcher::GetResearchers( Coverage filter )
+recResearcherVec recResearcher::GetResearchers( Coverage filter, const wxString& dbname )
 {
+    wxSQLite3StatementBuffer sql;
     recResearcherVec list;
     recResearcher res;
 
     if( filter == Coverage::all || filter == Coverage::user ) {
-        wxSQLite3ResultSet result = s_db->ExecuteQuery(
-            "SELECT id, name, comments, con_list_id FROM Researcher"
-            " WHERE id>0 ORDER BY id;"
+        sql.Format(
+            "SELECT id, name, comments, con_list_id FROM \"%s\".Researcher"
+            " WHERE id>0 ORDER BY id;",
+            UTF8_( dbname )
         );
+        wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
 
         while( result.NextRow() ) {
             res.FSetID( GET_ID( result.GetInt64( 0 ) ) );
@@ -165,10 +174,12 @@ recResearcherVec recResearcher::GetResearchers( Coverage filter )
         }
     }
     if( filter == Coverage::all || filter == Coverage::common ) {
-        wxSQLite3ResultSet result = s_db->ExecuteQuery(
-            "SELECT id, name, comments, con_list_id FROM Researcher"
-            " WHERE id<0 ORDER BY id;"
+        sql.Format(
+            "SELECT id, name, comments, con_list_id FROM \"%s\".Researcher"
+            " WHERE id<0 ORDER BY id;",
+            UTF8_( dbname )
         );
+        wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
 
         while( result.NextRow() ) {
             res.FSetID( GET_ID( result.GetInt64( 0 ) ) );
