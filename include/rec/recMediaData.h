@@ -40,7 +40,7 @@ public:
     recMediaData() : f_type(Mime::null_mime), f_privacy(0) {}
     recMediaData( idt id ) : recDbT( id ) { Read(); }
     recMediaData( idt id, idt assID ) { ReadID( id, assID ); }
-    recMediaData( const wxString dbname, idt id ) : recDbT( id ) { Read( dbname ); }
+    recMediaData( idt id, const wxString dbname ) : recDbT( id ) { Read( dbname ); }
     recMediaData( const recMediaData& md );
 
     void Clear() override;

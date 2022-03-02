@@ -128,7 +128,7 @@ void rgDlgEditMedia::OnImageLeftDClick( wxMouseEvent& event )
 //============================================================================
 
 rgDlgEditMediaData::rgDlgEditMediaData( wxWindow* parent, idt mdID, const wxString& dbname )
-    : m_md( dbname, mdID ), m_dbname( dbname ),
+    : m_md( mdID, dbname ), m_dbname( dbname ),
     fbRgEditMediaData( parent )
 {
     m_choiceFileType->Append( m_md.GetMimeList() );

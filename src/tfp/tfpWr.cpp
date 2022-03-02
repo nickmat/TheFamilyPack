@@ -287,7 +287,7 @@ wxString tfpGetMediaDataFile( idt mdID, idt assID, const wxString& extdb )
     wxString memfilename = "memory:" + filename;
     wxString fn = fs.FindFirst( memfilename );
     if ( fn.empty() ) {
-        recMediaData md( assDb, mdID );
+        recMediaData md( mdID, assDb );
         wxMemoryBuffer buf = md.FGetData();
         wxMemoryInputStream stream( buf.GetData(), buf.GetDataLen() );
         wxImage image( stream, wxBITMAP_TYPE_JPEG );

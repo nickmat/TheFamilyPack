@@ -95,7 +95,7 @@ rgViewMediaFrame::rgViewMediaFrame( wxWindow * parent, idt mdID, idt assID )
 }
 
 rgViewMediaFrame::rgViewMediaFrame( wxWindow* parent, idt mdID, const wxString& dbname )
-    : m_media(0), m_mediadata(dbname,mdID),
+    : m_media(0), m_mediadata(mdID,dbname),
     m_scrollEnabled( false ), m_upper( 4 ), m_prevThumb( -1 ),
     fbRgViewMedia( parent )
 {
