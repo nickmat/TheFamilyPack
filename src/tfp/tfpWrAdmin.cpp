@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     7 April 2012
- * Copyright:   Copyright (c) 2012..1022, Nick Matthews.
+ * Copyright:   Copyright (c) 2012..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -43,11 +43,11 @@
 #include <rec/recIndividual.h>
 
 
-wxString tfpWriteResearcherList()
+wxString tfpWriteResearcherList( const wxString& extdb )
 {
     wxString htm;
-    recResearcherVec list = recResearcher::GetResearchers();
-    idt curUserID = recGetCurrentUser();
+    recResearcherVec list = recResearcher::GetResearchers( recDb::Coverage::all, extdb );
+    idt curUserID = recGetCurrentUser( extdb );
 
     htm << 
         "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
@@ -61,10 +61,10 @@ wxString tfpWriteResearcherList()
     ;
 
     for( size_t i = 0 ; i < list.size() ; i++ ) {
-        size_t note = ( list[i].FGetComment().size() ) ? 1 : 0;
-        recContactList cl( list[i].FGetConListID() );
-        idt userID = list[i].GetUserID();
-        recContactVec contacts = list[i].GetContacts();
+        size_t note = ( list[i].FGetComment().empty() ) ? 0 : 1;
+        recContactList cl( list[i].FGetConListID(), extdb );
+        idt userID = list[i].GetUserID( extdb );
+        recContactVec contacts = list[i].GetContacts( extdb );
         size_t csize = contacts.size() + note;
 
         htm << 
@@ -88,7 +88,7 @@ wxString tfpWriteResearcherList()
                 htm <<
                     "<td><b><a href='tfpe:C" << contacts[j].FGetID() <<
                     "'>" << contacts[j].GetIdStr() <<
-                    "</a></b></td>\n<td>" << contacts[j].GetTypeStr() <<
+                    "</a></b></td>\n<td>" << contacts[j].GetTypeStr( extdb ) <<
                     "</td>\n<td>" << contacts[j].GetHtmlValue() <<
                     "</td>\n</tr>\n"
                 ;

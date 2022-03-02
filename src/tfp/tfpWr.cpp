@@ -453,7 +453,7 @@ wxString tfpGetDisplayText( const wxString& pagename, const wxString& dbname, Tf
             return tfpWriteReferencePage( num, dbname );
         }
         if( name.compare( "RE" ) == 0 ) {
-            return tfpWriteResearcherList();
+            return tfpWriteResearcherList( dbname );
         }
     }
     catch( wxSQLite3Exception& e ) {

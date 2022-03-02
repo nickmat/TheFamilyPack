@@ -54,7 +54,7 @@ extern wxString tfpNormalisePageName( const wxString& name );
 extern wxString tfpGetDisplayText( const wxString& pagename, const wxString& dbname, TfpFrame* frame = nullptr  );
 
 // See tfpWrAdmin.cpp
-extern wxString tfpWriteResearcherList();
+extern wxString tfpWriteResearcherList( const wxString& extdb );
 
 // See tfpWrArchive.cpp
 extern wxString tfpWriteArchiveIndex( const wxString& dbname );
