@@ -43,7 +43,7 @@ public:
     rgCompareEvent() {};
     ~rgCompareEvent();
 
-    void Reset( idt eveID );
+    void Reset( idt eveID, const wxString& dbname = "Main" );
 
     wxString GetRefDatesTable();
     wxString GetRefPlacesTable();
@@ -55,6 +55,7 @@ private:
     static void DrawDateImage(
         wxDC& dc, const recDate& date1, long start, double scale, const wxColour& color );
 
+    wxString  m_extdb;
     recEvent  m_event;
     recDate   m_date1;
     recDate   m_date2;

@@ -44,13 +44,14 @@ rgCompareEvent::~rgCompareEvent()
     UnloadFiles();
 }
 
-void rgCompareEvent::Reset( idt eveID )
+void rgCompareEvent::Reset( idt eveID, const wxString& extdb )
 {
+    m_extdb = extdb;
     UnloadFiles();
-    m_event.ReadID( eveID );
-    m_date1.ReadID( m_event.FGetDate1ID() );
-    m_date2.ReadID( m_event.FGetDate2ID() );
-    m_place.ReadID( m_event.FGetPlaceID() );
+    m_event.ReadID( eveID, extdb );
+    m_date1.ReadID( m_event.FGetDate1ID(), extdb );
+    m_date2.ReadID( m_event.FGetDate2ID(), extdb );
+    m_place.ReadID( m_event.FGetPlaceID(), extdb );
 
     m_ies.clear();
     m_individuals.clear();
@@ -63,25 +64,25 @@ void rgCompareEvent::Reset( idt eveID )
     m_rePlaces.clear();
 
     // The list of events we will be comparing with.
-    m_refEvents = m_event.GetEventasIncludeLower();
+    m_refEvents = m_event.GetEventasIncludeLower( extdb );
 
     for( size_t i = 0 ; i < m_refEvents.size() ; i++ ) {
         idt refID = m_refEvents[i].FGetRefID();
         m_refIDs.push_back( refID );
         // Get list of Persona's for this Reference.
-        recIdVec pIDs = recReference::GetPersonaList( refID );
+        recIdVec pIDs = recReference::GetPersonaList( refID, extdb );
         m_personaIDs.insert( m_personaIDs.end(), pIDs.begin(), pIDs.end() );
-        recDate date1( m_refEvents[i].FGetDate1ID() );
+        recDate date1( m_refEvents[i].FGetDate1ID(), extdb );
         m_reDate1s.push_back( date1 );
-        recDate date2( m_refEvents[i].FGetDate2ID() );
+        recDate date2( m_refEvents[i].FGetDate2ID(), extdb );
         m_reDate2s.push_back( date2 );
-        recPlace place( m_refEvents[i].FGetPlaceID() );
+        recPlace place( m_refEvents[i].FGetPlaceID(), extdb );
         m_rePlaces.push_back( place );
     }
 
     for( size_t i = 0 ; i < m_personaIDs.size() ; i++ ) {
         // Get a list of Individual's linked to this Persona.
-        recIdVec iIDs = recPersona::GetIndividualIDs( m_personaIDs[i] );
+        recIdVec iIDs = recPersona::GetIndividualIDs( m_personaIDs[i], extdb );
         for( size_t j = 0 ; j < iIDs.size() ; j++ ) {
             // Get current list of Persona's already linked to this Individual, if any.
             recIdVec ipIDs = m_indPerMap[iIDs[j]];
@@ -109,7 +110,7 @@ wxString rgCompareEvent::GetRefEventsTable()
                 "<tr>\n"
                 "<td><b><a href='tfp:R" << m_refIDs[i] <<
                 "'>" << recReference::GetIdStr( m_refIDs[i] ) << "</a></b></td>\n"
-                "<td>" << recReference::GetTitle( m_refIDs[i] ) << "</td>\n"
+                "<td>" << recReference::GetTitle( m_refIDs[i], m_extdb ) << "</td>\n"
                 "<td><b><a href='tfp:Ea" << m_refEvents[i].FGetID() <<
                 "'>" << m_refEvents[i].GetIdStr() << "</a></b></td>\n"
                 "<td>" << m_refEvents[i].FGetTitle() << "</td>\n"
@@ -148,7 +149,7 @@ wxString rgCompareEvent::GetRefDatesTable()
                 "'>" << recReference::GetIdStr( m_refIDs[i] ) <<
                 "</a>: <a href='tfp:Ea" << m_refEvents[i].FGetID() <<
                 "'>" << m_refEvents[i].GetIdStr() << "</a></b></td>\n"
-                "<td>" << recReference::GetTitle( m_refIDs[i] ) << "</td>\n"
+                "<td>" << recReference::GetTitle( m_refIDs[i], m_extdb ) << "</td>\n"
                 "</tr>\n"
             ;
         }
@@ -276,7 +277,7 @@ wxString rgCompareEvent::GetRefPlacesTable()
             "<th>Place</th>\n"
             "<th colspan='2'>Reference Document</th>\n"
             "</tr>\n<tr>\n"
-            "<td>" << m_place.GetAddressStr() << "</td>\n"
+            "<td>" << m_place.GetAddressStr( m_extdb ) << "</td>\n"
             "<td><b>" << m_event.GetIdStr() << "</b></td>\n"
             "<td>" << m_event.FGetTitle() << "</td>"
             "</tr>\n"
@@ -285,12 +286,12 @@ wxString rgCompareEvent::GetRefPlacesTable()
             if( m_rePlaces[i].FGetID() == 0 ) continue;
             htm <<
                 "<tr>\n"
-                "<td>" << m_rePlaces[i].GetAddressStr() << "</td>\n"
+                "<td>" << m_rePlaces[i].GetAddressStr( m_extdb ) << "</td>\n"
                 "<td><b><a href='tfp:R" << m_refIDs[i] <<
                 "'>" << recReference::GetIdStr( m_refIDs[i] ) <<
                 "</a>: <a href='tfp:Ea" << m_refEvents[i].FGetID() <<
                 "'>" << m_refEvents[i].GetIdStr() << "</a></b></td>\n"
-                "<td>" << recReference::GetTitle( m_refIDs[i] ) << "</td>\n"
+                "<td>" << recReference::GetTitle( m_refIDs[i], m_extdb ) << "</td>\n"
                 "</tr>\n"
             ;
         }

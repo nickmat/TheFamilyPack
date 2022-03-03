@@ -50,27 +50,28 @@ wxString tfpWriteEventPage( idt eventID, TfpFrame* frame )
     if( frame == nullptr ) {
         return "";
     }
+    const wxString& extdb = frame->GetDbName();
     rgCompareEvent& ce = frame->GetCompareEventData();
     wxString htm;
-    recEvent eve(eventID);
+    recEvent eve( eventID, extdb );
     if( eve.FGetID() == 0 ) return htm;
-    ce.Reset( eventID );
+    ce.Reset( eventID, extdb );
 
     htm <<
         tfpWrHeadTfp( "Event " + eve.GetIdStr() ) <<
 
-        "<h1>Event " << eve.GetIdStr() << ": " << eve.f_title << "</h1>\n"
+        "<h1>Event " << eve.GetIdStr() << ": " << eve.FGetTitle() << "</h1>\n"
         "<table class='data'>\n"
         "<tr>\n<td>"
-        "<b>Type:</b> " << eve.GetTypeStr() <<
-        " &nbsp; <b>Group:</b> " << recEventType::GetGroupStr( eve.FGetTypeID() ) <<
+        "<b>Type:</b> " << eve.GetTypeStr( extdb ) <<
+        " &nbsp; <b>Group:</b> " << recEventType::GetGroupStr( eve.FGetTypeID(), extdb ) <<
         "</td>\n</tr>\n"
         "<tr>\n<td>"
     ;
     if( eve.FGetDate1ID() ) {
         htm <<
             "<b><a href='tfpi:D" << eve.FGetDate1ID() <<
-            "'>Date</a>: </b>" << eve.GetDateStr()
+            "'>Date</a>: </b>" << eve.GetDateStr( extdb )
         ;
     } else {
         htm << "<b>Date:</b>";
@@ -79,7 +80,7 @@ wxString tfpWriteEventPage( idt eventID, TfpFrame* frame )
     if( eve.FGetPlaceID() ) {
         htm <<
             "<b><a href='tfpi:P" << eve.FGetPlaceID() <<
-            "'>Place</a>: </b>" << eve.GetAddressStr()
+            "'>Place</a>: </b>" << eve.GetAddressStr( extdb )
         ;
     } else {
         htm << "<b>Place:</b>";
@@ -89,7 +90,7 @@ wxString tfpWriteEventPage( idt eventID, TfpFrame* frame )
             "</td>\n</tr>\n<tr>\n"
             "<td><b><a href='tfp:E" << eve.FGetHigherID() <<
             "'>Part of: " << recEvent::GetIdStr( eve.FGetHigherID() ) <<
-            "</a></b> " << recEvent::GetTitle( eve.FGetHigherID() )
+            "</a></b> " << recEvent::GetTitle( eve.FGetHigherID(), extdb )
         ;
     }
     htm <<
@@ -99,17 +100,18 @@ wxString tfpWriteEventPage( idt eventID, TfpFrame* frame )
         "</table>\n"
     ;
 
-    recIndEventVec ies = eve.GetIndividualEvents();
+    recIndEventVec ies = eve.GetIndividualEvents( extdb );
     if( !ies.empty() ) {
         htm << "<table class='data'>\n<tr>\n"
                "<th>Role</th>\n<th colspan='2'>Individual</th>\n<th>Note</th>\n<th>Link</th>\n</tr>\n";
         for( size_t i = 0 ; i < ies.size() ; i++ ) {
-            recIndividual ind(ies[i].FGetIndID());
+            recIndividual ind( ies[i].FGetIndID(), extdb );
             htm
-                << "<tr>\n<td>" << recEventTypeRole::GetName( ies[i].FGetRoleID() )
+                << "<tr>\n<td>" << recEventTypeRole::GetName( ies[i].FGetRoleID(), extdb )
                 << "</td>\n<td><a href='tfp:I" << ind.FGetID()
                 << "'><b>" << ind.GetIdStr() 
-                << "</b></a></td>\n<td class='" << tfpGetIndSexClass( ind.FGetID() )
+                << "</b></a></td>\n<td class='" << 
+                tfpGetIndSexClass( ind.FGetID(), Sex::unknown, extdb )
                 << "'>\n<b><a href='tfp:F" << ind.FGetFamID()
                 << "'>" << ind.FGetName()
                 << "</a></b>"
@@ -119,7 +121,7 @@ wxString tfpWriteEventPage( idt eventID, TfpFrame* frame )
                 << "</td>\n"
             ;
             if( ies[i].FGetHigherID() != 0 ) {
-                recIndividualEvent higher_e( ies[i].FGetHigherID() );
+                recIndividualEvent higher_e( ies[i].FGetHigherID(), extdb );
                 htm
                     << "<td><a href='tfp:E" << higher_e.FGetEventID()
                     << "'><b>" << recEvent::GetIdStr( higher_e.FGetEventID() ) 
@@ -129,11 +131,11 @@ wxString tfpWriteEventPage( idt eventID, TfpFrame* frame )
                 htm << "<td> </td>\n";
             }
             htm << "</tr>\n";
-            recIndEventVec lower_ies = ies[i].GetLowerIndEvents();
+            recIndEventVec lower_ies = ies[i].GetLowerIndEvents( extdb );
             for( size_t j = 0 ; j < lower_ies.size() ; j++ ) {
-                recEvent lower_e(lower_ies[j].FGetEventID());
+                recEvent lower_e( lower_ies[j].FGetEventID(), extdb );
                 htm
-                    << "<tr>\n<td>" << recEventTypeRole::GetName( lower_ies[j].FGetRoleID() )
+                    << "<tr>\n<td>" << recEventTypeRole::GetName( lower_ies[j].FGetRoleID(), extdb )
                     << "</td>\n<td> </td>\n<td>" << lower_e.FGetTitle()
                     << "</td>\n<td>" << lower_e.FGetNote()
                     << "</td>\n<td><a href='tfp:E" << lower_e.FGetID()
@@ -145,7 +147,7 @@ wxString tfpWriteEventPage( idt eventID, TfpFrame* frame )
         htm << "</table>\n";
     }
 
-    recEventEventaVec eeas = eve.GetEventEventas();
+    recEventEventaVec eeas = eve.GetEventEventas( extdb );
     if( eeas.size() ) {
         htm <<
             "<table class='data'>\n<tr>\n"
@@ -155,8 +157,8 @@ wxString tfpWriteEventPage( idt eventID, TfpFrame* frame )
         ;
         for( size_t i = 0 ; i < eeas.size() ; i++ ) {
             idt eaID = eeas[i].FGetEventaID();
-            idt refID = recEventa::GetRefID( eaID );
-            wxString refTitle = recReference::GetTitle( refID );
+            idt refID = recEventa::GetRefID( eaID, extdb );
+            wxString refTitle = recReference::GetTitle( refID, extdb );
             htm <<
                 "<tr>\n"
                 "<td><b><a href='tfp:R" << refID <<
@@ -164,7 +166,7 @@ wxString tfpWriteEventPage( idt eventID, TfpFrame* frame )
                 "<td>" << refTitle << "</td>\n"
                 "<td><b><a href='tfp:Ea" << eaID <<
                 "'>" <<  recEventa::GetIdStr( eaID ) << "</a></b></td>\n"
-                "<td>" << recEventa::GetTitle( eaID ) << "</td>\n"
+                "<td>" << recEventa::GetTitle( eaID, extdb ) << "</td>\n"
                 "<td>" << eeas[i].FGetConf() << "</td>\n"
                 "</tr>\n"
             ;
@@ -173,7 +175,7 @@ wxString tfpWriteEventPage( idt eventID, TfpFrame* frame )
     }
 
     // List lower (included) events
-    recEventVec es = eve.GetLowerEvents();
+    recEventVec es = eve.GetLowerEvents( extdb );
     if( es.size() ) {
         htm <<
             "<table class='data'>\n<tr>\n"
@@ -204,7 +206,7 @@ wxString tfpWriteEventPage( idt eventID, TfpFrame* frame )
                 "</tr>\n<tr>\n" <<
                 "<td><b><a href='tfp:E" << es[i].FGetID() <<
                 "'>" << es[i].GetIdStr() <<
-                "</a></b></td>\n<td>" << es[i].GetTypeStr() <<
+                "</a></b></td>\n<td>" << es[i].GetTypeStr( extdb ) <<
                 "</td><td>" << es[i].FGetTitle() <<
                 cat1 << dStr << cat2 << pStr
             ;
