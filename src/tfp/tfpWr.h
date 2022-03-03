@@ -68,7 +68,7 @@ extern wxString tfpCreateDescChart( idt indID, const wxString& dbname );
 extern wxString tfpWriteEventPage( idt eveID, TfpFrame* frame );
 
 // See tfpWrEventa.cpp
-extern wxString tfpWriteEventaPage( idt erID );
+extern wxString tfpWriteEventaPage( idt erID, const wxString& dbname );
 
 // See tfpWrEventaIndex.cpp
 extern wxString tfpWriteEventaIndex();

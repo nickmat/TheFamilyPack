@@ -376,7 +376,7 @@ wxString tfpGetDisplayText( const wxString& pagename, const wxString& dbname, Tf
         //        return tfpWriteEventaSelection( m_erFilter );
         //    }
         if( name.compare( 0, 2, "EA" ) == 0 && success1 ) {
-            return tfpWriteEventaPage( num1 );
+            return tfpWriteEventaPage( num1, dbname );
         }
         if( name.compare( 0, 3, "EA," ) == 0 && success2 ) {
             return tfpWriteEventaPagedIndex( num2 );
