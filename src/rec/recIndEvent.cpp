@@ -210,14 +210,15 @@ bool recIndividualEvent::Find(
     return true;
 }
 
-recIdVec recIndividualEvent::GetLowerIndEventIDs( idt ieID )
+recIdVec recIndividualEvent::GetLowerIndEventIDs( idt ieID, const wxString& dbname )
 {
     return recDb::ExecuteIdVec(
-        "SELECT id FROM IndividualEvent WHERE higher_id=" ID ";", ieID
+        "SELECT id FROM \"%s\".IndividualEvent WHERE higher_id=" ID ";",
+        UTF8_( dbname ), ieID
     );
 }
 
-recIndEventVec recIndividualEvent::GetLowerIndEvents( idt ieID )
+recIndEventVec recIndividualEvent::GetLowerIndEvents( idt ieID, const wxString& dbname )
 {
     recIndEventVec vec;
     recIndividualEvent record;
@@ -225,10 +226,10 @@ recIndEventVec recIndividualEvent::GetLowerIndEvents( idt ieID )
 
     sql.Format(
         "SELECT IE.id, IE.ind_id, IE.event_id, IE.role_id, IE.note, IE.ind_seq"
-        " FROM IndividualEvent IE, Event E"
+        " FROM \"%s\".IndividualEvent IE, \"%s\".Event E"
         " WHERE IE.event_id=E.id AND IE.higher_id=" ID
         " ORDER BY E.date_pt;",
-        ieID
+        UTF8_( dbname ), UTF8_( dbname ), ieID
     );
     wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
 
@@ -245,14 +246,14 @@ recIndEventVec recIndividualEvent::GetLowerIndEvents( idt ieID )
     return vec;
 }
 
-wxString recIndividualEvent::GetRoleStr( idt indID, idt typeID )
+wxString recIndividualEvent::GetRoleStr( idt indID, idt typeID, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "SELECT ETR.name FROM IndividualEvent IE, EventTypeRole ETR"
+        "SELECT ETR.name FROM \"%s\".IndividualEvent IE, \"%s\".EventTypeRole ETR"
         " WHERE IE.role_id=ETR.id AND IE.ind_id=" ID " AND ETR.type_id=" ID
         " ORDER BY IE.ind_seq;",
-        indID, typeID
+        UTF8_( dbname ), UTF8_( dbname ), indID, typeID
     );
     return ExecuteStr( sql );
 }

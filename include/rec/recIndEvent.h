@@ -80,13 +80,16 @@ public:
 
     bool Find( idt indID, idt eveID, idt roleID = 0, const wxString& dbname = "Main" );
 
-    static recIdVec GetLowerIndEventIDs( idt ieID );
-    recIdVec GetLowerIndEventIDs() const { return GetLowerIndEventIDs( f_id ); }
-    static recIndEventVec GetLowerIndEvents( idt ieID );
-    recIndEventVec GetLowerIndEvents() const { return GetLowerIndEvents( f_id ); }
+    static recIdVec GetLowerIndEventIDs( idt ieID, const wxString& dbname = "Main" );
+    recIdVec GetLowerIndEventIDs( const wxString& dbname = "Main" ) const {
+        return GetLowerIndEventIDs( f_id, dbname ); }
+    static recIndEventVec GetLowerIndEvents( idt ieID, const wxString& dbname = "Main" );
+    recIndEventVec GetLowerIndEvents( const wxString& dbname = "Main" ) const {
+        return GetLowerIndEvents( f_id, dbname ); }
 
-    static wxString GetRoleStr( idt indID, idt typeID );
-    wxString GetRoleStr( idt typeID ) const { return GetRoleStr( f_ind_id, typeID ); }
+    static wxString GetRoleStr( idt indID, idt typeID, const wxString& dbname = "Main" );
+    wxString GetRoleStr( idt typeID, const wxString& dbname = "Main" ) const {
+        return GetRoleStr( f_ind_id, typeID, dbname ); }
 };
 
 inline bool recEquivalent( const recIndividualEvent& r1, const recIndividualEvent& r2 )
