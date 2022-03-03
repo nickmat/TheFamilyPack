@@ -71,8 +71,8 @@ extern wxString tfpWriteEventPage( idt eveID, TfpFrame* frame );
 extern wxString tfpWriteEventaPage( idt erID, const wxString& dbname );
 
 // See tfpWrEventaIndex.cpp
-extern wxString tfpWriteEventaIndex();
-extern wxString tfpWriteEventaPagedIndex( idt begCnt );
+extern wxString tfpWriteEventaIndex( const wxString& dbname );
+extern wxString tfpWriteEventaPagedIndex( idt begCnt, const wxString& dbname );
 
 // See tfpWrEventIndex.cpp
 extern wxString tfpWriteEventIndex();

@@ -369,7 +369,7 @@ wxString tfpGetDisplayText( const wxString& pagename, const wxString& dbname, Tf
             return tfpWriteEventSelection( frame );
         }
         if( name.compare( "EA" ) == 0 ) {
-            return tfpWriteEventaIndex();
+            return tfpWriteEventaIndex( dbname);
         }
         // We don't have a Eventa filter yet!
         //    if( name.compare( "EA$" ) == 0 ) {
@@ -379,7 +379,7 @@ wxString tfpGetDisplayText( const wxString& pagename, const wxString& dbname, Tf
             return tfpWriteEventaPage( num1, dbname );
         }
         if( name.compare( 0, 3, "EA," ) == 0 && success2 ) {
-            return tfpWriteEventaPagedIndex( num2 );
+            return tfpWriteEventaPagedIndex( num2, dbname );
         }
         if( name.compare( 0, 1, "E" ) == 0 && success ) {
             return tfpWriteEventPage( num, frame );

@@ -40,9 +40,9 @@
 #include <rec/recEventa.h>
 
 
-wxString tfpWriteEventaIndex()
+wxString tfpWriteEventaIndex( const wxString& extdb )
 {
-    wxSQLite3Table result = recEventa::GetTitleList();
+    wxSQLite3Table result = recEventa::GetTitleList( extdb );
     size_t size = (size_t) result.GetRowCount();
 
     wxString htm;
@@ -68,15 +68,15 @@ wxString tfpWriteEventaIndex()
     return htm;
 }
 
-wxString tfpWriteEventaPagedIndex( idt begCnt )
+wxString tfpWriteEventaPagedIndex( idt begCnt, const wxString& extdb )
 {
-    int maxsize = recEvent::UserCount();
+    int maxsize = recEventa::UserCount( extdb );
     if( maxsize <= tfpWR_PAGE_MAX ) {
-        return tfpWriteEventIndex();
+        return tfpWriteEventaIndex( extdb );
     }
     wxString pmenu = tfpWritePagedIndexMenu( begCnt, maxsize, "tfp:Ea" );
 
-    wxSQLite3Table result = recEventa::GetTitleList( begCnt, tfpWR_PAGE_MAX );
+    wxSQLite3Table result = recEventa::GetTitleList( begCnt, tfpWR_PAGE_MAX, extdb );
     size_t size = (size_t) result.GetRowCount();
     result.SetRow( 0 );
     idt beg = GET_ID( result.GetInt64( 0 ) );
