@@ -486,7 +486,7 @@ recEventaVec recEvent::FindEquivRefEvents( idt indEventID, const wxString& dbnam
     wxSQLite3ResultSet result;
 
     sql.Format(
-        "SELECT id, title, type_id, date1_id, date2_id, place_id, note, date_pt FROM "
+        "SELECT id, title, ref_id, type_id, date1_id, date2_id, place_id, note, date_pt FROM "
         "  \"%s\".Eventa "
         "JOIN "
         "   (SELECT EP.eventa_id FROM "
@@ -505,12 +505,13 @@ recEventaVec recEvent::FindEquivRefEvents( idt indEventID, const wxString& dbnam
         recEventa e(0);
         e.f_id       = GET_ID( result.GetInt64( 0 ) );
         e.f_title    = result.GetAsString( 1 );
-        e.f_type_id  = GET_ID( result.GetInt64( 2 ) );
-        e.f_date1_id = GET_ID( result.GetInt64( 3 ) );
-        e.f_date2_id = GET_ID( result.GetInt64( 4 ) );
-        e.f_place_id = GET_ID( result.GetInt64( 5 ) );
-        e.f_note     = result.GetAsString( 6 );
-        e.f_date_pt  = (long) result.GetInt( 7 );
+        e.f_ref_id   = GET_ID( result.GetInt64( 2 ) );
+        e.f_type_id  = GET_ID( result.GetInt64( 3 ) );
+        e.f_date1_id = GET_ID( result.GetInt64( 4 ) );
+        e.f_date2_id = GET_ID( result.GetInt64( 5 ) );
+        e.f_place_id = GET_ID( result.GetInt64( 6 ) );
+        e.f_note     = result.GetAsString( 7 );
+        e.f_date_pt  = (long) result.GetInt( 8 );
         vec.push_back( e );
     }
     return vec;
@@ -535,7 +536,7 @@ recEventaVec recEvent::GetEventasIncludeLower( idt eveID, const wxString& dbname
     wxSQLite3ResultSet result;
 
     sql.Format(
-        "SELECT DISTINCT EA.id, EA.title, EA.type_id,"
+        "SELECT DISTINCT EA.id, EA.title, EA.ref_id, EA.type_id,"
         " EA.date1_id, EA.date2_id, EA.place_id, EA.note, EA.date_pt"
         " FROM \"%s\".IndividualEvent IE, \"%s\".EventEventa EE, \"%s\".Eventa EA,"
         " (SELECT id FROM \"%s\".IndividualEvent WHERE event_id=" ID ") IE2"
@@ -550,12 +551,13 @@ recEventaVec recEvent::GetEventasIncludeLower( idt eveID, const wxString& dbname
         recEventa e(0);
         e.f_id       = GET_ID( result.GetInt64( 0 ) );
         e.f_title    = result.GetAsString( 1 );
-        e.f_type_id  = GET_ID( result.GetInt64( 2 ) );
-        e.f_date1_id = GET_ID( result.GetInt64( 3 ) );
-        e.f_date2_id = GET_ID( result.GetInt64( 4 ) );
-        e.f_place_id = GET_ID( result.GetInt64( 5 ) );
-        e.f_note     = result.GetAsString( 6 );
-        e.f_date_pt  = (long) result.GetInt( 7 );
+        e.f_ref_id   = GET_ID( result.GetInt64( 2 ) );
+        e.f_type_id  = GET_ID( result.GetInt64( 3 ) );
+        e.f_date1_id = GET_ID( result.GetInt64( 4 ) );
+        e.f_date2_id = GET_ID( result.GetInt64( 5 ) );
+        e.f_place_id = GET_ID( result.GetInt64( 6 ) );
+        e.f_note     = result.GetAsString( 7 );
+        e.f_date_pt  = (long) result.GetInt( 8 );
         vec.push_back( e );
     }
     return vec;
