@@ -224,7 +224,7 @@ wxString tfpWriteReferencePage( idt refID, const wxString& dbname )
             htm <<
                 "<tr><td><b><a href='tfp:Pa" << recGetStr( per.FGetID() ) <<
                 "'>" << per.GetIdStr() <<
-                "</a></b></td><td>" << per.GetNameStr() <<
+                "</a></b></td><td>" << per.GetNameStr( dbname ) <<
                 "</td><td>" << recGetSexStr( per.FGetSex() ) <<
                 "</td><td>" << per.FGetNote() <<
                 "</td><td><b>"
