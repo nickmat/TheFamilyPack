@@ -396,10 +396,10 @@ wxString tfpGetDisplayText( const wxString& pagename, const wxString& dbname, Tf
             return tfpWriteFamilyPage( name.Mid( 1 ), dbname );
         }
         if( name.compare( "G" ) == 0 ) {
-            return tfpWriteGalleryList();
+            return tfpWriteGalleryList( dbname );
         }
         if( name.compare( 0, 1, "G" ) == 0 && success ) {
-            return tfpWriteGalleryPage( num );
+            return tfpWriteGalleryPage( num, dbname );
         }
         if( name.compare( 0, 1, "I" ) == 0 && success ) {
             return tfpWriteIndividualPage( num, dbname );

@@ -85,8 +85,8 @@ extern wxString tfpWriteFamilyPage( const wxString& str, const wxString& extdb )
 extern wxString tfpWriteIndFamilyPage( idt indID, const wxString& extdb );
 
 // See tfpWrGallery.cpp
-extern wxString tfpWriteGalleryList();
-extern wxString tfpWriteGalleryPage( idt galID );
+extern wxString tfpWriteGalleryList( const wxString& dbname );
+extern wxString tfpWriteGalleryPage( idt galID, const wxString& dbname );
 
 // See tfpWrIndividual.cpp
 extern wxString tfpWriteIndividualPage( idt indID, const wxString& extdb );

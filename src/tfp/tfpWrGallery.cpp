@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     5th October 2018
- * Copyright:   Copyright (c) 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2018..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -44,9 +44,9 @@
 #include <rec/recReference.h>
 
 
-wxString tfpWriteGalleryList()
+wxString tfpWriteGalleryList( const wxString& extdb )
 {
-    recGalleryVec gals = recGallery::GetGalleries();
+    recGalleryVec gals = recGallery::GetGalleries( extdb );
 
     wxString htm = tfpWrHeadTfp( "Galleries" );
     if ( gals.empty() ) {
@@ -72,15 +72,15 @@ wxString tfpWriteGalleryList()
     return htm;
 }
 
-wxString tfpWriteGalleryPage( idt galID )
+wxString tfpWriteGalleryPage( idt galID, const wxString& extdb )
 {
     wxString htm;
-    recGallery gal( galID );
+    recGallery gal( galID, extdb );
     if ( gal.FGetID() == 0 ) {
         return htm;
     }
     
-    recGalleryMediaMediaVec gmms = gal.GetGalleryMediaMediaVec();
+    recGalleryMediaMediaVec gmms = gal.GetGalleryMediaMediaVec( extdb );
     bool started = false;
     htm << tfpWrHeadTfp( "Gallery " + gal.GetIdStr(), "tab" )
         << "<h1>" << gal.GetIdStr() << ": " << gal.FGetTitle() << "</h1>\n"
@@ -98,8 +98,8 @@ wxString tfpWriteGalleryPage( idt galID )
                 started = true;
             }
             recMedia& med = gmm.GetMedia();
-            wxString fn = tfpGetMediaDataFile( med.FGetDataID(), med.FGetAssID() );
-            recReference ref( med.FGetRefID() );
+            wxString fn = tfpGetMediaDataFile( med.FGetDataID(), med.FGetAssID(), extdb );
+            recReference ref( med.FGetRefID(), extdb );
             htm << "<tr>\n<td rowspan='2'>";                ;
             if( fn.empty() ) {
                 htm << med.GetDataIdStr() << " Not Found.";
