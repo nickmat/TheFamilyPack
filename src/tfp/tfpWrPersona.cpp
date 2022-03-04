@@ -99,7 +99,7 @@ wxString tfpWritePersonaPage( idt perID, const wxString& extdb )
         "<th colspan='4'>Eventa</th>\n";
     for( size_t i = 0 ; i < eps.size() ; i++ ) {
         idt eaID = eps[i].FGetEventaID();
-        recEventa ea( eaID );
+        recEventa ea( eaID, extdb );
         wxString cat1, cat2, dStr, pStr;
         if( ea.FGetDate1ID() || ea.FGetPlaceID() ) {
             cat1 = "<br>\n";
