@@ -363,7 +363,7 @@ wxString tfpGetDisplayText( const wxString& pagename, const wxString& dbname, Tf
             return tfpWriteDate( num, dbname );
         }
         if( name.compare( "E" ) == 0 ) {
-            return tfpWriteEventIndex();
+            return tfpWriteEventIndex( dbname );
         }
         if( name.compare( "E$") == 0 ) {
             return tfpWriteEventSelection( frame );
@@ -385,7 +385,7 @@ wxString tfpGetDisplayText( const wxString& pagename, const wxString& dbname, Tf
             return tfpWriteEventPage( num, frame );
         }
         if( name.compare( 0, 2, "E," ) == 0 && success1 ) {
-            return tfpWriteEventPagedIndex( num1 );
+            return tfpWriteEventPagedIndex( num1, dbname );
         }
         if( name.compare( 0, 2, "FI" ) == 0 && success1 ) {
             return tfpWriteIndFamilyPage( num1, dbname );

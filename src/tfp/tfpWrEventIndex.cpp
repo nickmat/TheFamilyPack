@@ -42,7 +42,7 @@
 #include <rec/recFilterEvent.h>
 
 
-wxString tfpWriteEventIndex()
+wxString tfpWriteEventIndex( const wxString& extdb )
 {
     static wxString htm;
     static long lastchange(0);
@@ -51,7 +51,7 @@ wxString tfpWriteEventIndex()
         return htm;
     }
 
-    wxSQLite3Table result = recEvent::GetTitleList();
+    wxSQLite3Table result = recEvent::GetTitleList( extdb );
     size_t size = (size_t) result.GetRowCount();
 
     htm =
@@ -83,15 +83,15 @@ wxString tfpWriteEventIndex()
     return htm;
 }
 
-wxString tfpWriteEventPagedIndex( idt begCnt )
+wxString tfpWriteEventPagedIndex( idt begCnt, const wxString& extdb )
 {
     int maxsize = recEvent::UserCount();
     if( maxsize <= tfpWR_PAGE_MAX ) {
-        return tfpWriteEventIndex();
+        return tfpWriteEventIndex( extdb );
     }
     wxString pmenu = tfpWritePagedIndexMenu( begCnt, maxsize, "tfp:E" );
 
-    wxSQLite3Table result = recEvent::GetTitleList( begCnt, tfpWR_PAGE_MAX );
+    wxSQLite3Table result = recEvent::GetTitleList( begCnt, tfpWR_PAGE_MAX, extdb );
     size_t size = (size_t) result.GetRowCount();
     result.SetRow( 0 );
     idt beg = GET_ID( result.GetInt64( 0 ) );
