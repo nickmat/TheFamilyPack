@@ -37,13 +37,14 @@ public:
     static constexpr const char* s_tablename = "GalleryMedia";
 
     recGalleryMedia() : f_gal_id(0), f_med_id(0), f_med_seq(0) {}
-    recGalleryMedia( idt id ) : recDbT( id ) { Read(); }
+    recGalleryMedia( idt id, const wxString& dbname = "Main" ) : recDbT( id ) { Read( dbname ); }
     recGalleryMedia( const recGalleryMedia& name );
-    recGalleryMedia( idt galID, idt medID ) { ReadGalleryMedia( galID, medID ); }
+    recGalleryMedia( idt galID, idt medID, const wxString& dbname = "Main" ) {
+        ReadGalleryMedia( galID, medID, dbname ); }
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recGalleryMedia& r2 ) const;
 
     wxString FGetTitle() const { return f_title; }
@@ -56,11 +57,11 @@ public:
     void FSetMedID( idt medID ) { f_med_id = medID; }
     void FSetMedSeq( int seq ) { f_med_seq = seq; }
 
-    bool ReadGalleryMedia( idt galID, idt medID );
+    bool ReadGalleryMedia( idt galID, idt medID, const wxString& dbname = "Main" );
 
-    void SetNextMedSequence( idt galID );
+    void SetNextMedSequence( idt galID, const wxString& dbname = "Main" );
 
-    static wxString GetTitle( idt galID, idt medID );
+    static wxString GetTitle( idt galID, idt medID, const wxString& dbname = "Main" );
 
 private:
     wxString f_title;
@@ -76,8 +77,8 @@ class recGalleryMediaMedia
 {
 public:
     recGalleryMediaMedia() : m_gm( 0 ), m_med( 0 ) {}
-    recGalleryMediaMedia( idt galID, idt medID )
-        : m_gm( galID, medID ), m_med( medID ) {}
+    recGalleryMediaMedia( idt galID, idt medID, const wxString& dbname = "Main" )
+        : m_gm( galID, medID, dbname ), m_med( medID, dbname ) {}
 
     recGalleryMedia& GetGalleryMedia() { return m_gm; }
     recMedia& GetMedia() { return m_med; }

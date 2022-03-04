@@ -42,12 +42,12 @@ public:
     static constexpr const char* s_tablename = "Gallery";
 
     recGallery() {}
-    recGallery( idt id ) : recDbT( id ) { Read(); }
+    recGallery( idt id, const wxString& dbname = "Main" ) : recDbT( id ) { Read( dbname ); }
     recGallery( const recGallery& source );
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recGallery& r2 ) const;
 
     wxString FGetTitle() const { return f_title; }
@@ -59,13 +59,17 @@ public:
     static wxString GetIdStr( idt galID ) { return wxString::Format( "G" ID, galID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
-    static recGalleryVec GetGalleries();
+    static recGalleryVec GetGalleries( const wxString& dbname = "Main" );
 
-    static recMediaVec GetMediaVec( idt galID );
-    recMediaVec GetMediaVec() const { return GetMediaVec( f_id ); }
+    static recMediaVec GetMediaVec( idt galID, const wxString& dbname = "Main" );
+    recMediaVec GetMediaVec( const wxString& dbname = "Main" ) const {
+        return GetMediaVec( f_id, dbname ); }
 
-    static recGalleryMediaMediaVec GetGalleryMediaMediaVec( idt galID );
-    recGalleryMediaMediaVec GetGalleryMediaMediaVec() const { return GetGalleryMediaMediaVec( f_id ); }
+    static recGalleryMediaMediaVec GetGalleryMediaMediaVec(
+        idt galID, const wxString& dbname = "Main" );
+    recGalleryMediaMediaVec GetGalleryMediaMediaVec(
+        const wxString& dbname = "Main" ) const {
+        return GetGalleryMediaMediaVec( f_id, dbname ); }
 
 private:
     wxString f_title;

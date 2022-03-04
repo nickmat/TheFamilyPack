@@ -56,7 +56,7 @@ void recGalleryMedia::Clear()
     f_med_seq = 0;
 }
 
-void recGalleryMedia::Save()
+void recGalleryMedia::Save( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -65,10 +65,10 @@ void recGalleryMedia::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO GalleryMedia (title, gal_id, med_id, med_seq)"
+            "INSERT INTO \"%s\".GalleryMedia (title, gal_id, med_id, med_seq)"
             " VALUES ('%q', " ID ", " ID ", %d);",
-            UTF8_( f_title ), f_gal_id, f_med_id, f_med_seq
-            );
+            UTF8_( dbname ), UTF8_( f_title ), f_gal_id, f_med_id, f_med_seq
+        );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
     } else {
@@ -77,23 +77,23 @@ void recGalleryMedia::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO GalleryMedia (id, title, gal_id, med_id, med_seq)"
+                "INSERT INTO \"%s\".GalleryMedia (id, title, gal_id, med_id, med_seq)"
                 " VALUES (" ID ", '%q', " ID ", " ID ", %d);",
-                f_id, UTF8_( f_title ), f_gal_id, f_med_id, f_med_seq
-                );
+                UTF8_( dbname ), f_id, UTF8_( f_title ), f_gal_id, f_med_id, f_med_seq
+            );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE GalleryMedia SET title='%q', gal_id=" ID ", med_id=" ID
+                "UPDATE \"%s\".GalleryMedia SET title='%q', gal_id=" ID ", med_id=" ID
                 ", med_seq=%d WHERE id=" ID ";",
-                UTF8_( f_title ), f_gal_id, f_med_id, f_med_seq, f_id
-                );
+                UTF8_( dbname ), UTF8_( f_title ), f_gal_id, f_med_id, f_med_seq, f_id
+            );
         }
         s_db->ExecuteUpdate( sql );
     }
 }
 
-bool recGalleryMedia::Read()
+bool recGalleryMedia::Read( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -105,8 +105,8 @@ bool recGalleryMedia::Read()
 
     sql.Format(
         "SELECT title, gal_id, med_id, med_seq"
-        " FROM GalleryMedia WHERE id=" ID ";",
-        f_id
+        " FROM \"%s\".GalleryMedia WHERE id=" ID ";",
+        UTF8_( dbname ), f_id
     );
     result = s_db->GetTable( sql );
 
@@ -132,14 +132,14 @@ bool recGalleryMedia::Equivalent( const recGalleryMedia& r2 ) const
         f_med_seq == r2.f_med_seq;
 }
 
-bool recGalleryMedia::ReadGalleryMedia( idt galID, idt medID )
+bool recGalleryMedia::ReadGalleryMedia( idt galID, idt medID, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
         "SELECT id, title, med_seq"
-        " FROM GalleryMedia WHERE gal_id=" ID " AND med_id=" ID ";",
-        galID, medID
+        " FROM \"%s\".GalleryMedia WHERE gal_id=" ID " AND med_id=" ID ";",
+        UTF8_( dbname ), galID, medID
     );
     wxSQLite3Table result = s_db->GetTable( sql );
 
@@ -157,18 +157,18 @@ bool recGalleryMedia::ReadGalleryMedia( idt galID, idt medID )
     return true;
 }
 
-void recGalleryMedia::SetNextMedSequence( idt galID )
+void recGalleryMedia::SetNextMedSequence( idt galID, const wxString& dbname )
 {
     f_med_seq = recDb::ExecuteInt(
-        "SELECT MAX(med_seq) FROM GalleryMedia WHERE gal_id=" ID ";", galID ) + 1;
+        "SELECT MAX(med_seq) FROM \"%s\".GalleryMedia WHERE gal_id=" ID ";", dbname, galID ) + 1;
 }
 
-wxString recGalleryMedia::GetTitle( idt galID, idt medID )
+wxString recGalleryMedia::GetTitle( idt galID, idt medID, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "SELECT title FROM GalleryMedia WHERE gal_id=" ID " AND med_id=" ID ";",
-        galID, medID
+        "SELECT title FROM \"%s\".GalleryMedia WHERE gal_id=" ID " AND med_id=" ID ";",
+        UTF8_( dbname ), galID, medID
     );
     return recDb::ExecuteStr( sql );
 }
