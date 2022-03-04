@@ -438,7 +438,7 @@ wxString tfpGetDisplayText( const wxString& pagename, const wxString& dbname, Tf
             return tfpWriteName( num, dbname );
         }
         if( name.compare( 0, 2, "PA" ) == 0 ) {
-            return tfpWritePersonaPage( num1 );
+            return tfpWritePersonaPage( num1, dbname );
         }
         if( name.compare( 0, 1, "P" ) == 0 && success ) {
             return tfpWritePlace( num, dbname );

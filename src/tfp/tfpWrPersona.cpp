@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     1 March 2015
- * Copyright:   Copyright (c) 2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2015..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -40,10 +40,10 @@
 #include <rec/recIndividual.h>
 #include <rec/recPersona.h>
 
-wxString tfpWritePersonaPage( idt perID )
+wxString tfpWritePersonaPage( idt perID, const wxString& extdb )
 {
     wxString htm;
-    recPersona per( perID );
+    recPersona per( perID, extdb );
 
     htm <<
         tfpWrHeadTfp( "Persona " + per.GetIdStr() ) <<
@@ -52,7 +52,7 @@ wxString tfpWritePersonaPage( idt perID )
         "<table class='data'>\n<tr>\n"
         "<th colspan='2'>Persona's Details</th>\n</tr>\n<tr>\n"
         "<td>Name:</td>\n<td class='subject " << tfpGetSexClass( per.FGetSex() ) <<
-        "'>" << per.GetNameStr() <<
+        "'>" << per.GetNameStr( extdb ) <<
         "</td>\n</tr>\n<tr>\n"
         "<td colspan='2'>ID: <b>" << per.GetIdStr() <<
         "</b> Sex: <b>" << recGetSexStr( per.FGetSex() ) <<
@@ -60,11 +60,11 @@ wxString tfpWritePersonaPage( idt perID )
         "<td>Note:</td><td>" << per.FGetNote() << "</td>\n</tr>\n<tr>\n"
         "<td><b><a href='tfp:R" << per.FGetRefID() <<
         "'>" << recReference::GetIdStr( per.FGetRefID() ) <<
-        "</a></b></td><td>" << recReference::GetTitle( per.FGetRefID() ) <<
+        "</a></b></td><td>" << recReference::GetTitle( per.FGetRefID(), extdb ) <<
         "</td></tr></table>\n"
     ;
     // Individual Links
-    recIdVec indIDs = per.GetIndividualIDs();
+    recIdVec indIDs = per.GetIndividualIDs( extdb );
     htm <<
         "<table class='data'>\n<tr>\n"
         "<th colspan='2'>Individual Links</th>";
@@ -72,13 +72,13 @@ wxString tfpWritePersonaPage( idt perID )
         htm << "</tr>\n<tr>\n"
             "<td><b><a href='tfp:I" << indIDs[i] <<
             "'>" << recIndividual::GetIdStr( indIDs[i] ) <<
-            "</a></b></td><td class='" << tfpGetIndSexClass( indIDs[i] ) <<
-            "'>" << recIndividual::GetDescriptionStr( indIDs[i] ) <<
+            "</a></b></td><td class='" << tfpGetIndSexClass( indIDs[i], Sex::unstated, extdb ) <<
+            "'>" << recIndividual::GetDescriptionStr( indIDs[i], extdb ) <<
             "</td>";
     }
     htm << "</tr>\n</table>\n";
     // Names
-    recNameVec names = per.ReadNames();
+    recNameVec names = per.ReadNames( extdb );
     htm <<
         "<table class='data'>\n<tr>\n"
         "<th colspan='3'>Names</th>";
@@ -86,14 +86,14 @@ wxString tfpWritePersonaPage( idt perID )
         htm << "</tr>\n<tr>\n"
             "<td><b><a href='tfpi:N" << names[i].FGetID() <<
             "'>" << names[i].GetIdStr() <<
-            "</a></b></td><td>" << recNameStyle::GetStyleStr( names[i].FGetTypeID() ) <<
-            "</td><td>" << names[i].GetNameStr() <<
+            "</a></b></td><td>" << recNameStyle::GetStyleStr( names[i].FGetTypeID(), extdb ) <<
+            "</td><td>" << names[i].GetNameStr( extdb ) <<
             "</td>";
     }
     htm << "</tr>\n</table>\n";
 
     // Eventa
-    recEventaPersonaVec eps = per.ReadEventaPersonas();
+    recEventaPersonaVec eps = per.ReadEventaPersonas( recEO_DatePt, extdb );
     htm <<
         "<table class='data'>\n<tr>\n"
         "<th colspan='4'>Eventa</th>\n";
@@ -110,14 +110,14 @@ wxString tfpWritePersonaPage( idt perID )
         if( ea.FGetDate1ID() ) {
             dStr <<
                 "<a href='tfpi:D" << ea.FGetDate1ID() <<
-                "'>" << ea.GetDateStr() <<
+                "'>" << ea.GetDateStr( extdb ) <<
                 "</a>"
             ;
         }
         if( ea.FGetPlaceID() ) {
             pStr <<
                 "<a href='tfpi:P" << ea.FGetPlaceID() <<
-                "'>" << ea.GetAddressStr() <<
+                "'>" << ea.GetAddressStr( extdb ) <<
                 "</a>"
             ;
         }
@@ -125,8 +125,8 @@ wxString tfpWritePersonaPage( idt perID )
             "</tr>\n<tr>\n" <<
             "<td><b><a href='tfp:Ea" << eaID <<
             "'>" << ea.GetIdStr() <<
-            "</a></b></td>\n<td>" << ea.GetTypeStr() <<
-            ":</td>\n<td>" << recEventTypeRole::GetName( eps[i].FGetRoleID() ) <<
+            "</a></b></td>\n<td>" << ea.GetTypeStr( extdb ) <<
+            ":</td>\n<td>" << recEventTypeRole::GetName( eps[i].FGetRoleID(), extdb ) <<
             "</td><td>" << ea.FGetTitle() <<
             cat1 << dStr << cat2 << pStr
         ;

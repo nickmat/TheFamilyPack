@@ -112,7 +112,7 @@ extern wxString tfpWriteName( idt nameID, const wxString& dbname );
 extern wxString tfpWriteAbout();
 
 // See tfpWrPersona.cpp
-extern wxString tfpWritePersonaPage( idt perID );
+extern wxString tfpWritePersonaPage( idt perID, const wxString& extdb );
 
 // See tfpWrReference.cpp
 extern wxString tfpWriteReferenceIndex( const wxString& dbname );
