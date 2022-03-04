@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     7 October 2010
- * Copyright:   Copyright (c) 2010 ~ 2017, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -118,19 +118,25 @@ static wxString WriteIndex( wxSQLite3ResultSet& table, recSurnameGroup sng )
     return htm;
 }
 
-wxString tfpWriteSurnameIndex( recSurnameGroup sng )
+wxString tfpWriteSurnameIndex( recSurnameGroup sng, const wxString& extdb )
 {
-    static wxString htm[recSG_MAX];
-    static long lastchange[recSG_MAX] = { 0, 0, 0, 0 };
-    if ( !htm[sng].empty() && recDb::GetChange() == lastchange[sng] ) {
+    // For now, we only cache the page for the main database
+    // TODO: Extend for external databases.
+    if( extdb.CmpNoCase( "Main" ) == 0 ) {
+        static wxString htm[recSG_MAX];
+        static long lastchange[recSG_MAX] = { 0, 0, 0, 0 };
+        if( !htm[sng].empty() && recDb::GetChange() == lastchange[sng] ) {
+            return htm[sng];
+        }
+
+        wxSQLite3ResultSet table = recName::GetSurnameIndex( sng, extdb );
+
+        htm[sng] = WriteIndex( table, sng );
+        lastchange[sng] = recDb::GetChange();
         return htm[sng];
     }
-
-    wxSQLite3ResultSet table = recName::GetSurnameIndex( sng );
-
-    htm[sng] = WriteIndex( table, sng );
-    lastchange[sng] = recDb::GetChange();
-    return htm[sng];
+    wxSQLite3ResultSet table = recName::GetSurnameIndex( sng, extdb );
+    return WriteIndex( table, sng );
 }
 
 struct NameEntry
@@ -153,22 +159,22 @@ struct NameEntry
     }
 };
 
-wxString tfpWriteNameList( const wxString& sname, recSurnameGroup sng )
+wxString tfpWriteNameList( const wxString& sname, recSurnameGroup sng, const wxString& extdb )
 {
-    recNameVec names = recName::GetNameList( sname, sng );
+    recNameVec names = recName::GetNameList( sname, sng, extdb );
     std::set<NameEntry> order;
     NameEntry ent;
-    for( auto name : names ) {
+    for( auto& name : names ) {
         if ( name.FGetIndID() != 0 ) {
             ent.m_id = name.FGetIndID();
-            ent.m_epitaph = recIndividual::GetEpitaph( ent.m_id );
+            ent.m_epitaph = recIndividual::GetEpitaph( ent.m_id, extdb );
         } else {
             ent.m_id = name.FGetPerID();
             ent.m_epitaph = "";
         }
         ent.m_id = ( name.FGetIndID() == 0 ) ? name.FGetPerID() : name.FGetIndID();
-        ent.m_surname = name.GetSurname();
-        ent.m_full = name.GetNameStr();
+        ent.m_surname = name.GetSurname( extdb );
+        ent.m_full = name.GetNameStr( extdb );
         ent.m_style_id = name.FGetTypeID();
         order.insert( ent );
     }
@@ -179,7 +185,7 @@ wxString tfpWriteNameList( const wxString& sname, recSurnameGroup sng )
 
     htm << "<table class='data'>\n";
     int row = 0;
-    for ( auto entry : order ) {
+    for ( auto& entry : order ) {
         wxString rowclass = tfpGetRowClass( ++row );
         wxString id_str = ( sng != recSG_Persona ) ?
             recIndividual::GetIdStr( entry.m_id ) : recPersona::GetIdStr( entry.m_id );
@@ -190,13 +196,13 @@ wxString tfpWriteNameList( const wxString& sname, recSurnameGroup sng )
             "</b></a></td>\n"
         ;
         if ( sng == recSG_Persona ) {
-            wxString ref_str = recReference::GetIdStr( recPersona::GetRefID( entry.m_id ) );
+            wxString ref_str = recReference::GetIdStr( recPersona::GetRefID( entry.m_id, extdb ) );
             htm <<
                 "<td class='" << rowclass <<
                 "'><a href='tfp:Pa" << entry.m_id <<
                 "'><b>" << entry.m_full <<
                 "</b></a></td>\n<td class='" << rowclass <<
-                "'>" << recNameStyle::GetStyleStr( entry.m_style_id ) <<
+                "'>" << recNameStyle::GetStyleStr( entry.m_style_id, extdb ) <<
                 "</td>\n<td class='" << rowclass <<
                 "'><a href='tfp:" << ref_str <<
                 "'><b>" << ref_str << "</b>"
@@ -210,7 +216,7 @@ wxString tfpWriteNameList( const wxString& sname, recSurnameGroup sng )
                 "&nbsp;&nbsp;\n<a href='tfpc:MR" << entry.m_id <<
                 "'><img src=memory:fam.png></a>"
                 "</td>\n<td class='" << rowclass <<
-                "'>" << recNameStyle::GetStyleStr( entry.m_style_id )
+                "'>" << recNameStyle::GetStyleStr( entry.m_style_id, extdb )
             ;
         }
         htm << "</td>\n</tr>\n";
@@ -221,12 +227,12 @@ wxString tfpWriteNameList( const wxString& sname, recSurnameGroup sng )
     return htm;
 }
 
-wxString tfpWriteIndividualList()
+wxString tfpWriteIndividualList( const wxString& extdb )
 {
     wxString htm = tfpWrHeadTfp( "Name List" );
     htm << "<h1>Individual List</h1>\n";
 
-    wxSQLite3ResultSet result = recIndividual::GetNameSet();
+    wxSQLite3ResultSet result = recIndividual::GetNameSet( extdb );
 
     int row = 0;
     if ( !result.Eof() )

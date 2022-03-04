@@ -420,19 +420,19 @@ wxString tfpGetDisplayText( const wxString& pagename, const wxString& dbname, Tf
             return tfpWriteMediaPage( num, dbname );
         }
         if( name.compare( "NI" ) == 0 ) {
-            return tfpWriteSurnameIndex( recSG_Individual );
+            return tfpWriteSurnameIndex( recSG_Individual, dbname );
         }
         if( name.compare( "NP" ) == 0 ) {
-            return tfpWriteSurnameIndex( recSG_Persona );
+            return tfpWriteSurnameIndex( recSG_Persona, dbname );
         }
         if( name.compare( "ND*" ) == 0 ) {
-            return tfpWriteIndividualList();
+            return tfpWriteIndividualList( dbname );
         }
         if( name.compare( 0, 3, "NI+" ) == 0 && !success2 ) {
-            return tfpWriteNameList( pagename.Mid( 3 ), recSG_Individual );
+            return tfpWriteNameList( pagename.Mid( 3 ), recSG_Individual, dbname );
         }
         if( name.compare( 0, 3, "NP+" ) == 0 && !success2 ) {
-            return tfpWriteNameList( pagename.Mid( 3 ), recSG_Persona );
+            return tfpWriteNameList( pagename.Mid( 3 ), recSG_Persona, dbname );
         }
         if( name.compare( 0, 1, "N" ) == 0 && success ) {
             return tfpWriteName( num, dbname );

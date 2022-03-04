@@ -99,9 +99,10 @@ extern wxString tfpWriteMediaDataPage( const wxString& href, const wxString& ext
 extern wxString tfpWriteMediaDataIndex( const wxString& extdb );
 
 // See tfpWrName.cpp
-extern wxString tfpWriteSurnameIndex( recSurnameGroup sng );
-extern wxString tfpWriteNameList( const wxString& sname, recSurnameGroup sng );
-extern wxString tfpWriteIndividualList();
+extern wxString tfpWriteSurnameIndex( recSurnameGroup sng, const wxString& extdb );
+extern wxString tfpWriteNameList(
+    const wxString& sname, recSurnameGroup sng, const wxString& extdb );
+extern wxString tfpWriteIndividualList( const wxString& extdb );
 
 // See tfpWrNote.cpp
 extern wxString tfpWriteCitation( idt citID, const wxString& dbname );
