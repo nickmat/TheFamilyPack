@@ -153,7 +153,8 @@ TfpFrame::TfpFrame(
     const wxSize& size,
     const wxString& dbfilename,
     const wxString& dbname )
-    : m_tfpApp(app), wxFrame( (wxFrame*) nullptr, wxID_ANY, "TFP", pos, size )
+    : m_tfpApp(app), m_selEvent(dbname),
+    wxFrame( (wxFrame*) nullptr, wxID_ANY, "TFP", pos, size )
 {
     app->AddFrame( this );
     m_dbname = dbname;
@@ -178,7 +179,7 @@ TfpFrame::TfpFrame(
     }
     else if( recDb::IsOpen() ) {
         wxString fname = recDb::GetFileName();
-        recDb::DbType type = recDb::GetDatabaseType( m_dbname );
+        recDb::DbType type = recDb::GetDatabaseType( dbname );
         SetDatabaseMenu( fname, type );
     }
 }
@@ -628,7 +629,7 @@ void TfpFrame::OnEditContext( wxCommandEvent& event )
             ret = rgEditEvent( this, m_editEventID );
             break;
         case tfpID_EDIT_EVENT_SELECT:
-            id = rgSelectEvent( this, rgSELSTYLE_None );
+            id = rgSelectEvent( this, m_dbname, rgSELSTYLE_None );
             if( id ) id = rgEditEvent( this, id );
             if( id ) ret = true;
             break;
@@ -824,11 +825,11 @@ void TfpFrame::OnFindIndividualID( wxCommandEvent& event )
     wxMessageBox( wxT("Not yet implimented"), wxT("OnFindIndividualID") );
 }
 
-/*! \brief Called on a Find Individual ID menu option event.
+/*! \brief Called on a Find Event menu option event.
  */
 void TfpFrame::OnFindEventID( wxCommandEvent& event )
 {
-    idt eveID = rgSelectEvent( this );
+    idt eveID = rgSelectEvent( this, m_dbname );
     if( eveID ) {
         DisplayHtmPage( "E"+recGetStr( eveID ) );
     }
@@ -907,7 +908,7 @@ void TfpFrame::OnListPagedEvents( wxCommandEvent& event )
  */
 void TfpFrame::OnListSelectedEvents( wxCommandEvent& event )
 {
-    if( rgSelectEventList( this, &m_selEvent ) ) {
+    if( rgSelectEventList( this, m_selEvent ) ) {
         DisplayHtmPage( "E$" );
     }
 }
@@ -1609,7 +1610,7 @@ void TfpFrame::DoSelectionUpdate( const wxString& display )
     try {
         bool ret = false;
         if( display == "E$" ) {
-            ret = rgSelectEventList( this, &m_selEvent );
+            ret = rgSelectEventList( this, m_selEvent );
         }
         if( ret == true ) {
             RefreshHtmPage();

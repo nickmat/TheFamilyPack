@@ -131,7 +131,7 @@ wxString tfpWriteEventSelection( TfpFrame* frame )
     recSelSetEvent& filter = frame->GetSelectedSetEvents();
     recFilterEvent fe( filter );
 
-    fe.CreateEventTable();
+    fe.CreateEventTable( filter.GetDbname() );
     wxSQLite3Table* result = fe.GetTable();
     size_t size = (size_t) result->GetRowCount();
 
