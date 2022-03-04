@@ -4,8 +4,8 @@
  * Purpose:     Declares class used to filter events.
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
- * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010-2014, Nick Matthews.
+ * Created:     3rd October 2010
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -41,11 +41,14 @@
 class recSelSetEvent
 {
 public:
-    recSelSetEvent() 
-      : m_grpsEnabled(recET_GRP_FILTER_AllValid), m_grpsChecked(0),
-        m_calScheme(CALENDAR_SCH_Gregorian)//, m_indID(0)
+    recSelSetEvent( const wxString& dbname = "Main" )
+        : m_dbname(dbname), m_grpsEnabled(recET_GRP_FILTER_AllValid),
+        m_grpsChecked(0), m_calScheme(CALENDAR_SCH_Gregorian)
     {}
 
+    void Reset( const wxString& dbname );
+
+    wxString GetDbname() const { return m_dbname; }
     unsigned GetGroupsEnabled() const { return m_grpsEnabled; }
     unsigned GetGroupsChecked() const { return m_grpsChecked; }
     bool IsTypeChecked( idt etID ) const;
@@ -66,6 +69,7 @@ public:
     void AddIndID( idt indID ) { m_indIDs.push_back( indID ); }
 
 private:
+    wxString m_dbname;
     unsigned m_grpsEnabled; // Collection of recET_FILTER_Grp* flags
     unsigned m_grpsChecked; 
     recIdVec m_typesChked;
@@ -113,7 +117,7 @@ public:
     void AddTypeIDs( idt typeID, bool chk = true );
     void ResetTypeIDs( bool chk );
 
-    void CreateEventTable();
+    void CreateEventTable( const wxString& dbname );
 
 private:
     wxString GetTypeCondition();
