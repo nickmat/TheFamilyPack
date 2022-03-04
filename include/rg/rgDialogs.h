@@ -297,12 +297,18 @@ extern idt rgSelectPersona(
 extern idt rgSelectEquivalentEventa( wxWindow* wind, idt eventID );
 
 // See src/rg/rgSelIndEvent.cpp
-extern bool rgSelectEventList( wxWindow* wind, recSelSetEvent* exfilter );
+extern bool rgSelectEventList( wxWindow* wind, recSelSetEvent& exfilter );
 extern idt rgSelectEvent(
     wxWindow* wind,
+    recSelSetEvent& filter,
     unsigned flag = rgSELSTYLE_None,
-    recSelSetEvent* filter = NULL,
-    unsigned* button = NULL );
+    unsigned* button = nullptr );
+extern idt rgSelectEvent(
+    wxWindow* wind,
+    const wxString& dbname,
+    unsigned flag = rgSELSTYLE_None,
+    unsigned* button = nullptr );
+
 
 // See scr/rg/rgSetupDatabase.cpp
 extern bool rgSetupDatabase( wxWindow* wind, const wxString& daname );

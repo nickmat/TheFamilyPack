@@ -113,7 +113,7 @@ idt rgFindOrCreateIndEvent(
             sse.AddIndID( id );
 
             unsigned button;
-            eID = rgSelectEvent( wind, rgSELSTYLE_Create, &sse, &button );
+            eID = rgSelectEvent( wind, sse, rgSELSTYLE_Create, &button );
             if( button == rgSELSTYLE_Create ) {
                 eID = recEvent::CreateFromEventa( eaID );
             }
@@ -134,7 +134,7 @@ idt rgFindOrCreateIndEvent(
                 sse.AddIndID( indIDs[i] );
             }
             unsigned button;
-            eID = rgSelectEvent( wind, rgSELSTYLE_Create, &sse, &button );
+            eID = rgSelectEvent( wind, sse, rgSELSTYLE_Create, &button );
             if( button == rgSELSTYLE_Create ) {
                 eID = recEvent::CreateFromEventa( eaID );
                 recFamilyEvent::Create( eID, id );

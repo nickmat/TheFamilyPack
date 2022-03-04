@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     5th December 2012
- * Copyright:   Copyright (c) 2012-2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2012..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -80,7 +80,7 @@ private:
     bool m_create;
     bool m_selList;
 
-    recSelSetEvent* m_sse;
+    recSelSetEvent& m_sse;
     recFilterEvent  m_fe;
     IntVec    m_grps;
     long      m_begDatePt;

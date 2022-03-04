@@ -39,10 +39,10 @@
 #include "rgSelEvent.h"
 #include "rg/rgDialogs.h"
 
-bool rgSelectEventList( wxWindow* wind, recSelSetEvent* evefilter )
+
+bool rgSelectEventList( wxWindow* wind, recSelSetEvent& evefilter )
 {
-    wxASSERT( evefilter != NULL );
-    idt ret = rgSelectEvent( wind, rgSELSTYLE_SelList, evefilter );
+    idt ret = rgSelectEvent( wind, evefilter, rgSELSTYLE_SelList );
     if( ret == 0 ) {
         return false;
     }
@@ -50,41 +50,52 @@ bool rgSelectEventList( wxWindow* wind, recSelSetEvent* evefilter )
 }
 
 idt rgSelectEvent(
-     wxWindow* wind, unsigned selstyle, recSelSetEvent* exfilter, 
-     unsigned* button )
+    wxWindow* wind,
+    recSelSetEvent& evefilter,
+    unsigned selstyle,
+    unsigned* button )
 {
     idt eveID = 0;
     bool cont = true;
-    recSelSetEvent* fe = exfilter;
-    if( fe == NULL ) {
-        fe = new recSelSetEvent;
-    }
     if( button ) *button = rgSELSTYLE_None;
 
-    rgDlgSelectEvent* dialog = new rgDlgSelectEvent( wind, selstyle, *fe );
-    if( dialog->ShowModal() == wxID_OK ) {
-        if( dialog->GetCreatePressed() ) {
+    rgDlgSelectEvent dialog( wind, selstyle, evefilter );
+    if( dialog.ShowModal() == wxID_OK ) {
+        if( dialog.GetCreatePressed() ) {
             if( button ) *button = rgSELSTYLE_Create;
-        } else if( dialog->GetUnknownPressed() ) {
-            if( button ) *button = rgSELSTYLE_Unknown;
-        } else {
-            eveID = dialog->GetID();
         }
-    }
-    dialog->Destroy();
-    if( exfilter == NULL ) {
-        delete fe;
+        else if( dialog.GetUnknownPressed() ) {
+            if( button ) *button = rgSELSTYLE_Unknown;
+        }
+        else {
+            eveID = dialog.GetID();
+        }
     }
     return eveID;
 }
+
+idt rgSelectEvent(
+    wxWindow* wind,
+    const wxString& dbname,
+    unsigned selstyle,
+    unsigned* button )
+{
+    idt eveID = 0;
+    bool cont = true;
+    recSelSetEvent evefilter(dbname);
+
+    return rgSelectEvent( wind, evefilter, selstyle, button );
+}
+
 
 //-------------------------------------------------------------------------------
 //-------------------[ rgDlgSelectEvent ]----------------------------------------
 //-------------------------------------------------------------------------------
 
-rgDlgSelectEvent::rgDlgSelectEvent( wxWindow* parent, unsigned selstyle, recSelSetEvent& sse )
+rgDlgSelectEvent::rgDlgSelectEvent( 
+    wxWindow* parent, unsigned selstyle, recSelSetEvent& sse )
     : m_create(false), m_selList(false),
-    m_sse(&sse), m_fe(sse),
+    m_sse(sse), m_fe(sse),
     m_begDatePt(0), m_endDatePt(0), fbRgSelectEvent( parent )
 {
     wxSize sz = m_listEvent->GetClientSize();
@@ -142,8 +153,8 @@ bool rgDlgSelectEvent::TransferDataToWindow()
 
     UpdateTypeCtrl();
     UpdateTypeList();
-    m_textCtrlBegDatePt->SetValue( m_sse->GetBegDateStr() );
-    m_textCtrlEndDatePt->SetValue( m_sse->GetEndDateStr() );
+    m_textCtrlBegDatePt->SetValue( m_sse.GetBegDateStr() );
+    m_textCtrlEndDatePt->SetValue( m_sse.GetEndDateStr() );
     m_indIDs = m_fe.GetIndIDs();
     if( m_indIDs.size() ) {
         m_textCtrlIndID->SetValue( recIdVecToStr<recIndividual>( m_indIDs ) );
@@ -154,16 +165,16 @@ bool rgDlgSelectEvent::TransferDataToWindow()
 
 bool rgDlgSelectEvent::TransferDataFromWindow()
 {
-    m_sse->SetGroupsChecked( m_fe.GetGroupsChecked() );
-    m_sse->ClearTypeChecked();
+    m_sse.SetGroupsChecked( m_fe.GetGroupsChecked() );
+    m_sse.ClearTypeChecked();
     for( size_t i = 0 ; i < m_fe.GetTypesSize() ; i++ ) {
         if( m_fe.GetTypeChecked( i ) ) {
-            m_sse->AddTypeChecked( m_fe.GetTypeID( i ) );
+            m_sse.AddTypeChecked( m_fe.GetTypeID( i ) );
         }
     }
-    m_sse->SetBegDateStr( m_textCtrlBegDatePt->GetValue() );
-    m_sse->SetEndDateStr( m_textCtrlEndDatePt->GetValue() );
-    m_sse->SetIndIDs( m_indIDs );
+    m_sse.SetBegDateStr( m_textCtrlBegDatePt->GetValue() );
+    m_sse.SetEndDateStr( m_textCtrlEndDatePt->GetValue() );
+    m_sse.SetIndIDs( m_indIDs );
     return true;
 }
 
@@ -333,7 +344,7 @@ void rgDlgSelectEvent::UpdateTypeCtrl()
     wxArrayString typeStrings;
     for( size_t i = 0 ; i < m_fe.GetTypesSize() ; i++ ) {
         idt typeID = m_fe.GetTypeID( i );
-        typeStrings.push_back( recEventType::GetName( typeID ) );
+        typeStrings.push_back( recEventType::GetName( typeID, m_sse.GetDbname() ) );
     }
     if( m_fe.GetTypesSize() ) {
         m_checkListType->Enable( true );
@@ -368,7 +379,7 @@ void rgDlgSelectEvent::Refresh()
         long row = m_listEvent->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
         m_listEvent->SetItemState( row, 0, wxLIST_STATE_SELECTED );
     }
-    m_fe.CreateEventTable();
+    m_fe.CreateEventTable( m_sse.GetDbname() );
     m_listEvent->SetTable( m_fe.GetTable() );
     m_listEvent->Refresh();
     m_staticEventCount->SetLabel( wxString::Format( "%d Events", m_fe.GetTableSize() ) );

@@ -4,8 +4,8 @@
  * Purpose:     Edit database Individual entity dialog.
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
- * Created:     9 October 2010
- * Copyright:   Copyright (c) 2010 - 2015, Nick Matthews.
+ * Created:     9th October 2010
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -297,7 +297,7 @@ void rgDlgEditIndividual::OnExistingEvent( wxCommandEvent& event )
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
 
-    idt eveID = rgSelectEvent( this );
+    idt eveID = rgSelectEvent( this, "Main" );
     if( eveID == 0 ) {
         recDb::Rollback( savepoint );
         return;

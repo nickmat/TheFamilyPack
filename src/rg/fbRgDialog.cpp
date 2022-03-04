@@ -2490,7 +2490,7 @@ fbRgSelectEvent::fbRgSelectEvent( wxWindow* parent, wxWindowID id, const wxStrin
 	bSizer11->Add( m_buttonClearGrp, 0, wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 
 
-	sbSizer1->Add( bSizer11, 1, wxEXPAND, 5 );
+	sbSizer1->Add( bSizer11, 0, wxEXPAND, 5 );
 
 
 	bSizer28->Add( sbSizer1, 0, wxEXPAND, 5 );
@@ -2547,10 +2547,10 @@ fbRgSelectEvent::fbRgSelectEvent( wxWindow* parent, wxWindowID id, const wxStrin
 	bSizer12->Add( m_buttonClearType, 0, wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 
 
-	sbSizer2->Add( bSizer12, 1, wxEXPAND, 0 );
+	sbSizer2->Add( bSizer12, 0, wxEXPAND, 0 );
 
 
-	bSizer124->Add( sbSizer2, 1, wxEXPAND|wxLEFT, 5 );
+	bSizer124->Add( sbSizer2, 1, wxEXPAND, 5 );
 
 	wxBoxSizer* bSizer125;
 	bSizer125 = new wxBoxSizer( wxHORIZONTAL );
@@ -2602,7 +2602,6 @@ fbRgSelectEvent::fbRgSelectEvent( wxWindow* parent, wxWindowID id, const wxStrin
 
 	this->SetSizer( bSizer1 );
 	this->Layout();
-	bSizer1->Fit( this );
 
 	this->Centre( wxBOTH );
 
