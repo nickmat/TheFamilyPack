@@ -48,12 +48,12 @@ public:
     static constexpr const char* s_tablename = "FamilyEventa";
 
     recFamilyEventa() : f_fam_id(0), f_eventa_id(0), f_conf(0.0) {}
-    recFamilyEventa( idt id ) : recDbT(id) { Read(); }
+    recFamilyEventa( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }
     recFamilyEventa( const recFamilyEventa& link );
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recFamilyEventa& r2 ) const;
 
     idt FGetFamID() const { return f_fam_id; }
@@ -71,8 +71,8 @@ public:
 
     static idt Create( idt famID, idt eaID, double conf = 0.999, const wxString& note = wxEmptyString );
 
-    bool Find();
-    static idt Find( idt famID, idt eaID );
+    bool Find( const wxString& dbname = "Main" );
+    static idt Find( idt famID, idt eaID, const wxString& dbname = "Main" );
 };
 
 

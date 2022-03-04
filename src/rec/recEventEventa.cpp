@@ -62,7 +62,7 @@ void recEventEventa::Clear()
     f_note         = "";
 }
 
-void recEventEventa::Save()
+void recEventEventa::Save( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -71,10 +71,10 @@ void recEventEventa::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO EventEventa "
+            "INSERT INTO \"%s\".EventEventa "
             "(event_id, eventa_id, conf, note) "
             "VALUES (" ID ", " ID ", %f, '%q');",
-            f_event_id, f_eventa_id, f_conf, UTF8_(f_note)
+            UTF8_( dbname ), f_event_id, f_eventa_id, f_conf, UTF8_(f_note)
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -84,18 +84,18 @@ void recEventEventa::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO EventEventa "
+                "INSERT INTO \"%s\".EventEventa "
                 "(id, event_id, eventa_id, conf, note) "
                 "VALUES (" ID ", " ID ", " ID ", %f, '%q');",
-                f_id, f_event_id, f_eventa_id, f_conf, UTF8_(f_note)
+                UTF8_( dbname ), f_id, f_event_id, f_eventa_id, f_conf, UTF8_(f_note)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE EventEventa SET event_id=" ID ", eventa_id=" ID ", "
+                "UPDATE \"%s\".EventEventa SET event_id=" ID ", eventa_id=" ID ", "
                 "conf=%f, note='%q' "
                 "WHERE id=" ID ";",
-                f_event_id, f_eventa_id, f_conf,
+                UTF8_( dbname ), f_event_id, f_eventa_id, f_conf,
                 UTF8_(f_note), f_id
             );
         }
@@ -103,7 +103,7 @@ void recEventEventa::Save()
     }
 }
 
-bool recEventEventa::Read()
+bool recEventEventa::Read( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -115,8 +115,8 @@ bool recEventEventa::Read()
 
     sql.Format(
         "SELECT event_id, eventa_id, conf, note "
-        "FROM EventEventa WHERE id=" ID ";",
-        f_id
+        "FROM \"%s\".EventEventa WHERE id=" ID ";",
+        UTF8_( dbname ), f_id
     );
     result = s_db->GetTable( sql );
 
@@ -143,21 +143,26 @@ bool recEventEventa::Equivalent( const recEventEventa& r2 ) const
     ;
 }
 
-idt recEventEventa::Create( idt eID, idt eaID, double conf, const wxString& note )
+idt recEventEventa::Create( 
+    idt eID, idt eaID, double conf, const wxString& note, const wxString& dbname )
 {
-    recEventEventa eea(eID, eaID, conf, note);
-    eea.Save();
+    recEventEventa eea( 0 );
+    eea.FSetEventID( eID );
+    eea.FSetEventaID( eaID );
+    eea.FSetConf( conf );
+    eea.FSetNote( note );
+    eea.Save( dbname );
     return eea.FGetID();
 }
 
-void recEventEventa::NormaliseIndEventLinks() const
+void recEventEventa::NormaliseIndEventLinks( const wxString& dbname ) const
 {
     wxASSERT( FGetID() != 0 );
 
-    recEventaPersonaVec eps = recEventa::GetEventaPersonas( FGetEventaID() );
-    recIndEventVec ies = recEvent::GetIndividualEvents( FGetEventID() );
+    recEventaPersonaVec eps = recEventa::GetEventaPersonas( FGetEventaID(),dbname );
+    recIndEventVec ies = recEvent::GetIndividualEvents( FGetEventID(), dbname );
     for( size_t i = 0 ; i < eps.size() ; i++ ) {
-        recIdVec indIDs = recPersona::GetIndividualIDs( eps[i].FGetPerID() );
+        recIdVec indIDs = recPersona::GetIndividualIDs( eps[i].FGetPerID(), dbname );
         for( size_t j = 0 ; j < indIDs.size() ; j++ ) {
             bool ok = false;
             for( size_t k = 0 ; k < ies.size() ; k++ ) {
@@ -176,8 +181,8 @@ void recEventEventa::NormaliseIndEventLinks() const
                 ie.FSetEventID( FGetEventID() );
                 ie.FSetRoleID( eps[i].FGetRoleID() );
                 ie.FSetNote( eps[i].FGetNote() );
-                ie.FSetIndSeq( recIndividual::GetMaxEventSeqNumber( indIDs[j] ) + 1 );
-                ie.Save();
+                ie.FSetIndSeq( recIndividual::GetMaxEventSeqNumber( indIDs[j], dbname ) + 1 );
+                ie.Save( dbname );
             }
         }
     }
@@ -186,7 +191,7 @@ void recEventEventa::NormaliseIndEventLinks() const
 /*! Given the per_id and ind_id settings, find the matching record
  *  and read in the full record.
  */
-bool recEventEventa::Find()
+bool recEventEventa::Find( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -194,9 +199,9 @@ bool recEventEventa::Find()
     if( f_event_id == 0 || f_eventa_id == 0 ) return false; // Only find single record
 
     sql.Format(
-        "SELECT id, conf, note FROM EventEventa "
+        "SELECT id, conf, note FROM \"%s\".EventEventa "
         "WHERE event_id=" ID " AND eventa_id=" ID ";",
-        f_event_id, f_eventa_id
+        UTF8_( dbname ), f_event_id, f_eventa_id
     );
     result = s_db->GetTable( sql );
 
@@ -210,7 +215,7 @@ bool recEventEventa::Find()
 
 /*! Given the Event id and Eventa id, find the matching record id.
  */
-idt recEventEventa::Find( idt eID, idt erID )
+idt recEventEventa::Find( idt eID, idt erID, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -218,9 +223,9 @@ idt recEventEventa::Find( idt eID, idt erID )
     if( eID == 0 || erID == 0 ) return 0; // Only find single record
 
     sql.Format(
-        "SELECT id FROM EventEventa "
+        "SELECT id FROM \"%s\".EventEventa "
         "WHERE event_id=" ID " AND eventa_id=" ID ";",
-        eID, erID
+        UTF8_( dbname ), eID, erID
     );
     result = s_db->GetTable( sql );
 

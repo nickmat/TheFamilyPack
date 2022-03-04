@@ -59,7 +59,7 @@ void recFamilyIndEventa::Clear()
     f_note         = wxEmptyString;
 }
 
-void recFamilyIndEventa::Save()
+void recFamilyIndEventa::Save( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -68,10 +68,10 @@ void recFamilyIndEventa::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO FamilyIndEventa "
+            "INSERT INTO \"%s\".FamilyIndEventa "
             "(fam_ind_id, eventa_id, conf, note) "
             "VALUES (" ID ", " ID ", %f, '%q');",
-            f_fam_ind_id, f_eventa_id, f_conf, UTF8_(f_note)
+            UTF8_( dbname ), f_fam_ind_id, f_eventa_id, f_conf, UTF8_(f_note)
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -81,18 +81,18 @@ void recFamilyIndEventa::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO FamilyIndEventa "
+                "INSERT INTO \"%s\".FamilyIndEventa "
                 "(id, fam_ind_id, eventa_id, conf, note) "
                 "VALUES (" ID ", " ID ", " ID ", %f, '%q');",
-                f_id, f_fam_ind_id, f_eventa_id, f_conf, UTF8_(f_note)
+                UTF8_( dbname ), f_id, f_fam_ind_id, f_eventa_id, f_conf, UTF8_(f_note)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE FamilyIndEventa SET fam_id=" ID ", eventa_id=" ID ", "
+                "UPDATE \"%s\".FamilyIndEventa SET fam_id=" ID ", eventa_id=" ID ", "
                 "conf=%f, note='%q' "
                 "WHERE id=" ID ";",
-                f_fam_ind_id, f_eventa_id, f_conf,
+                UTF8_( dbname ), f_fam_ind_id, f_eventa_id, f_conf,
                 UTF8_(f_note), f_id
             );
         }
@@ -100,7 +100,7 @@ void recFamilyIndEventa::Save()
     }
 }
 
-bool recFamilyIndEventa::Read()
+bool recFamilyIndEventa::Read( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -112,8 +112,8 @@ bool recFamilyIndEventa::Read()
 
     sql.Format(
         "SELECT fam_ind_id, eventa_id, conf, note "
-        "FROM FamilyIndEventa WHERE id=" ID ";",
-        f_id
+        "FROM \"%s\".FamilyIndEventa WHERE id=" ID ";",
+        UTF8_( dbname ), f_id
     );
     result = s_db->GetTable( sql );
 
@@ -157,7 +157,7 @@ idt recFamilyIndEventa::Create( idt fiID, idt eaID, double conf, const wxString&
 /*! Given the per_id and ind_id settings, find the matching record
  *  and read in the full record.
  */
-bool recFamilyIndEventa::Find()
+bool recFamilyIndEventa::Find( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -165,9 +165,9 @@ bool recFamilyIndEventa::Find()
     if( f_fam_ind_id == 0 || f_eventa_id == 0 ) return false; // Only find single record
 
     sql.Format(
-        "SELECT id, conf, note FROM FamilyIndEventa "
+        "SELECT id, conf, note FROM \"%s\".FamilyIndEventa "
         "WHERE fam_ind_id=" ID " AND eventa_id=" ID ";",
-        f_fam_ind_id, f_eventa_id
+        UTF8_( dbname ), f_fam_ind_id, f_eventa_id
     );
     result = s_db->GetTable( sql );
 
@@ -181,13 +181,13 @@ bool recFamilyIndEventa::Find()
 
 /*! Given the Event id and Eventa id, find the matching record id.
  */
-idt recFamilyIndEventa::Find( idt fiID, idt eaID )
+idt recFamilyIndEventa::Find( idt fiID, idt eaID, const wxString& dbname )
 {
     recFamilyIndEventa fiea(0);
 
     fiea.FSetFamIndID( fiID );
     fiea.FSetEventaID( eaID );
-    fiea.Find();
+    fiea.Find( dbname );
     return fiea.FGetID();
 }
 

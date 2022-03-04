@@ -66,7 +66,7 @@ void recEventaPersona::Clear()
     f_per_seq      = 0;
 }
 
-void recEventaPersona::Save()
+void recEventaPersona::Save( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -75,9 +75,9 @@ void recEventaPersona::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO EventaPersona (eventa_id, per_id, role_id, note, per_seq) "
+            "INSERT INTO \"%s\".EventaPersona (eventa_id, per_id, role_id, note, per_seq) "
             "VALUES (" ID ", " ID ", " ID ", '%q', %d);",
-            f_eventa_id, f_per_id, f_role_id, UTF8_(f_note), f_per_seq
+            UTF8_( dbname ), f_eventa_id, f_per_id, f_role_id, UTF8_(f_note), f_per_seq
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -87,24 +87,24 @@ void recEventaPersona::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO EventaPersona (id, eventa_id, per_id, role_id, note, per_seq) "
+                "INSERT INTO \"%s\".EventaPersona (id, eventa_id, per_id, role_id, note, per_seq) "
                 "VALUES (" ID ", " ID ", " ID ", " ID ", '%q', %d);",
-                f_id, f_eventa_id, f_per_id, f_role_id, UTF8_(f_note), f_per_seq
+                UTF8_( dbname ), f_id, f_eventa_id, f_per_id, f_role_id, UTF8_(f_note), f_per_seq
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE EventaPersona SET eventa_id=" ID ", per_id=" ID ", role_id=" ID ", "
+                "UPDATE \"%s\".EventaPersona SET eventa_id=" ID ", per_id=" ID ", role_id=" ID ", "
                 "note='%q', per_seq=%d "
                 "WHERE id=" ID ";",
-                f_eventa_id, f_per_id, f_role_id, UTF8_(f_note), f_per_seq, f_id
+                UTF8_( dbname ), f_eventa_id, f_per_id, f_role_id, UTF8_(f_note), f_per_seq, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
     }
 }
 
-bool recEventaPersona::Read()
+bool recEventaPersona::Read( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -116,8 +116,8 @@ bool recEventaPersona::Read()
 
     sql.Format(
         "SELECT id, eventa_id, per_id, role_id, note, per_seq "
-        "FROM EventaPersona WHERE id=" ID ";",
-        f_id
+        "FROM \"%s\".EventaPersona WHERE id=" ID ";",
+        UTF8_( dbname ), f_id
     );
     result = s_db->GetTable( sql );
 
@@ -168,19 +168,19 @@ void recEventaPersona::SetNextPerSequence( idt eaID )
     FSetPerSeq( seq + 1 );
 }
 
-wxString recEventaPersona::GetRoleStr( idt perID, idt typeID )
+wxString recEventaPersona::GetRoleStr( idt perID, idt typeID, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "SELECT ETR.name FROM EventaPersona EP, EventTypeRole ETR"
+        "SELECT ETR.name FROM \"%s\".EventaPersona EP, \"%s\".EventTypeRole ETR"
         " WHERE EP.role_id=ETR.id AND EP.per_id=" ID " AND ETR.type_id=" ID
         " ORDER BY EP.per_seq;",
-        perID, typeID
+        UTF8_( dbname ), UTF8_( dbname ), perID, typeID
     );
     return ExecuteStr( sql );
 }
 
-bool recEventaPersona::LinkExists() const
+bool recEventaPersona::LinkExists( const wxString& dbname ) const
 {
     if( f_per_id == 0 || f_eventa_id == 0 || f_role_id == 0 ) {
         return false;
@@ -188,9 +188,9 @@ bool recEventaPersona::LinkExists() const
 
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "SELECT COUNT(*) FROM EventaPersona "
+        "SELECT COUNT(*) FROM \"%s\".EventaPersona "
         "WHERE eventa_id=" ID " AND per_id=" ID " AND role_id=" ID ";",
-        f_eventa_id, f_per_id, f_role_id
+        UTF8_( dbname ), f_eventa_id, f_per_id, f_role_id
     );
 
     if( s_db->ExecuteScalar( sql ) == 0 ) {

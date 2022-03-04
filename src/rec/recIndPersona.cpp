@@ -60,7 +60,7 @@ void recIndividualPersona::Clear()
     f_note   = wxEmptyString;
 }
 
-void recIndividualPersona::Save()
+void recIndividualPersona::Save( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -69,10 +69,10 @@ void recIndividualPersona::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO IndividualPersona "
+            "INSERT INTO \"%s\".IndividualPersona "
             "(ind_id, per_id, conf, note) "
             "VALUES (" ID ", " ID ", %f, '%q');",
-            f_ind_id, f_per_id, f_conf, UTF8_(f_note)
+            UTF8_( dbname ), f_ind_id, f_per_id, f_conf, UTF8_(f_note)
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -82,26 +82,26 @@ void recIndividualPersona::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO IndividualPersona "
+                "INSERT INTO \"%s\".IndividualPersona "
                 "(id, ind_id, per_id, conf, note) "
                 "VALUES (" ID ", " ID ", " ID ", %f, '%q');",
-                f_id, f_ind_id, f_per_id, f_conf, UTF8_(f_note)
+                UTF8_( dbname ), f_id, f_ind_id, f_per_id, f_conf, UTF8_(f_note)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE IndividualPersona SET ind_id=" ID ", per_id=" ID ", "
+                "UPDATE \"%s\".IndividualPersona SET ind_id=" ID ", per_id=" ID ", "
                 "conf=%f, note='%q' "
                 "WHERE id=" ID ";",
                 f_ind_id, f_per_id, f_conf,
-                UTF8_(f_note), f_id
+                UTF8_( dbname ), UTF8_(f_note), f_id
             );
         }
         s_db->ExecuteUpdate( sql );
     }
 }
 
-bool recIndividualPersona::Read()
+bool recIndividualPersona::Read( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -113,8 +113,8 @@ bool recIndividualPersona::Read()
 
     sql.Format(
         "SELECT ind_id, per_id, conf, note"
-        " FROM IndividualPersona WHERE id=" ID ";",
-        f_id
+        " FROM \"%s\".IndividualPersona WHERE id=" ID ";",
+        UTF8_( dbname ), f_id
     );
     result = s_db->GetTable( sql );
 
@@ -144,7 +144,7 @@ bool recIndividualPersona::Equivalent( const recIndividualPersona& r2 ) const
 /*! Given the per_id and ind_id settings, find the matching record
  *  and read in the full record.
  */
-bool recIndividualPersona::Find()
+bool recIndividualPersona::Find( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -152,9 +152,9 @@ bool recIndividualPersona::Find()
     if( f_ind_id == 0 || f_per_id == 0 ) return false; // Only find single record
 
     sql.Format(
-        "SELECT id, conf, note FROM IndividualPersona "
+        "SELECT id, conf, note FROM \"%s\".IndividualPersona "
         "WHERE ind_id=" ID " AND per_id=" ID ";",
-        f_ind_id, f_per_id
+        UTF8_( dbname ), f_ind_id, f_per_id
     );
     result = s_db->GetTable( sql );
 

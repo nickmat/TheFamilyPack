@@ -46,12 +46,12 @@ public:
     wxString f_note;
 
     recIndividualPersona() : f_ind_id(0), f_per_id(0), f_conf(0.0) {}
-    recIndividualPersona( idt id ) : recDbT(id) { Read(); }
+    recIndividualPersona( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }
     recIndividualPersona( const recIndividualPersona& link );
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recIndividualPersona& r2 ) const;
 
     idt FGetIndID() const { return f_ind_id; }
@@ -64,7 +64,7 @@ public:
     void FSetConf( double conf ) { f_conf = conf; }
     void FSetNote( const wxString& note ) { f_note = note; }
 
-    bool Find();
+    bool Find( const wxString& dbname = "Main" );
 };
 
 #endif // REC_RECINDPERSONA_H

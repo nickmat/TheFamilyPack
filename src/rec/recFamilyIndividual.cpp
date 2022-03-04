@@ -57,7 +57,7 @@ void recFamilyIndividual::Clear()
     f_seq_parent = 0;
 }
 
-void recFamilyIndividual::Save()
+void recFamilyIndividual::Save( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -66,9 +66,9 @@ void recFamilyIndividual::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO FamilyIndividual (fam_id, ind_id, seq_child, seq_parent)"
+            "INSERT INTO \"%s\".FamilyIndividual (fam_id, ind_id, seq_child, seq_parent)"
             " VALUES (" ID ", " ID ", %d, %d);",
-            f_fam_id, f_ind_id, f_seq_child, f_seq_parent
+            UTF8_( dbname ), f_fam_id, f_ind_id, f_seq_child, f_seq_parent
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -78,24 +78,24 @@ void recFamilyIndividual::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO FamilyIndividual (id, fam_id, ind_id, seq_child, seq_parent)"
+                "INSERT INTO \"%s\".FamilyIndividual (id, fam_id, ind_id, seq_child, seq_parent)"
                 " VALUES (" ID ", " ID ", " ID ", %d, %d);",
-                f_id, f_fam_id, f_ind_id, f_seq_child, f_seq_parent
+                UTF8_( dbname ), f_id, f_fam_id, f_ind_id, f_seq_child, f_seq_parent
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE FamilyIndividual SET fam_id=" ID ", ind_id=" ID ","
+                "UPDATE \"%s\".FamilyIndividual SET fam_id=" ID ", ind_id=" ID ","
                 " seq_child=%d, seq_parent=%d"
                 " WHERE id=" ID ";",
-                f_fam_id, f_ind_id, f_seq_child, f_seq_parent, f_id
+                UTF8_( dbname ), f_fam_id, f_ind_id, f_seq_child, f_seq_parent, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
     }
 }
 
-bool recFamilyIndividual::Read()
+bool recFamilyIndividual::Read( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -106,8 +106,9 @@ bool recFamilyIndividual::Read()
     }
 
     sql.Format(
-        "SELECT ind_id, fam_id, seq_child, seq_parent FROM FamilyIndividual "
-        "WHERE id=" ID ";", f_id
+        "SELECT ind_id, fam_id, seq_child, seq_parent FROM \"%s\".FamilyIndividual "
+        "WHERE id=" ID ";",
+        UTF8_( dbname ), f_id
     );
     result = s_db->GetTable( sql );
 
@@ -134,7 +135,7 @@ bool recFamilyIndividual::Equivalent( const recFamilyIndividual& r2 ) const
     ;
 }
 
-bool recFamilyIndividual::Find()
+bool recFamilyIndividual::Find( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -142,9 +143,9 @@ bool recFamilyIndividual::Find()
     if( f_fam_id == 0 || f_ind_id == 0 ) return false; // Only find single record
 
     sql.Format(
-        "SELECT id, seq_child, seq_parent FROM FamilyIndividual "
+        "SELECT id, seq_child, seq_parent FROM \"%s\".FamilyIndividual "
         "WHERE fam_id=" ID " AND ind_id=" ID ";",
-        f_fam_id, f_ind_id
+        UTF8_( dbname ), f_fam_id, f_ind_id
     );
     result = s_db->GetTable( sql );
 

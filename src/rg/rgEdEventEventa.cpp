@@ -147,8 +147,8 @@ idt rgFindOrCreateIndEvent(
 
     if( eID ) {
         // Now we have an Event, create the Event Eventa links
-        recEventEventa eea( eID, eaID, conf );
-        eea.Save();
+        idt eeaID = recEventEventa::Create( eID, eaID, conf );
+        recEventEventa eea( eeaID );
         eea.NormaliseIndEventLinks();
     }
 

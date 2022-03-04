@@ -47,12 +47,12 @@ public:
 
     recEventaPersona() 
         : f_eventa_id(0), f_per_id(0), f_role_id(0), f_per_seq(0) {}
-    recEventaPersona( idt id ) : recDbT(id) { Read(); }
+    recEventaPersona( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read(dbname); }
     recEventaPersona( const recEventaPersona& pe );
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recEventaPersona& r2 ) const;
 
     idt FGetEventaID() const { return f_eventa_id; }
@@ -73,13 +73,14 @@ public:
     static wxString GetIdStr( idt epID ) { return wxString::Format( "EP" ID, epID ); }
     wxString GetIdStr() const { return GetIdStr( FGetID() ); }
 
-    static wxString GetRoleStr( idt perID, idt typeID );
-    wxString GetRoleStr( idt typeID ) const { return GetRoleStr( f_per_id, typeID ); }
+    static wxString GetRoleStr( idt perID, idt typeID, const wxString& dbname = "Main" );
+    wxString GetRoleStr( idt typeID, const wxString& dbname = "Main" ) const {
+        return GetRoleStr( f_per_id, typeID, dbname ); }
 
     /*! Return true if a record exists that matches the
      *  f_per_id, f_event_id and f_role_id.
      */
-    bool LinkExists() const;
+    bool LinkExists( const wxString& dbname = "Main" ) const;
 };
 
 typedef std::vector< recEventaPersona >   recEventaPersonaVec;

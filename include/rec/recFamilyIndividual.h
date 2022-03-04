@@ -54,12 +54,12 @@ public:
 
     recFamilyIndividual() : f_fam_id(0), f_ind_id(0),
         f_seq_child(0), f_seq_parent(0) {}
-    recFamilyIndividual( idt id ) : recDbT(id) { Read(); }
+    recFamilyIndividual( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }
     recFamilyIndividual( const recFamilyIndividual& fi );
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recFamilyIndividual& r2 ) const;
 
     idt FGetFamID() const { return f_fam_id; }
@@ -72,7 +72,7 @@ public:
     void FSetSeqChild( int seq ) { f_seq_child = seq; }
     void FSetSeqParent( int seq ) { f_seq_parent = seq; }
 
-    bool Find();
+    bool Find( const wxString& dbname = "Main" );
 };
 
 

@@ -46,12 +46,12 @@ public:
     int      f_fam_seq;
 
     recFamilyEvent() : f_fam_id(0), f_event_id(0), f_fam_seq(0) {}
-    recFamilyEvent( idt id ) : recDbT(id) { Read(); }
+    recFamilyEvent( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }
     recFamilyEvent( const recFamilyEvent& link );
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recFamilyEvent& r2 ) const;
 
     idt FGetFamID() const { return f_fam_id; }

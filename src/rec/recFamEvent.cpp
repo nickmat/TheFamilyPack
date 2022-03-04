@@ -62,7 +62,7 @@ void recFamilyEvent::Clear()
     f_fam_seq  = 0;
 }
 
-void recFamilyEvent::Save()
+void recFamilyEvent::Save( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -71,9 +71,9 @@ void recFamilyEvent::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO FamilyEvent (fam_id, event_id, note, fam_seq) "
+            "INSERT INTO \"%s\".FamilyEvent (fam_id, event_id, note, fam_seq) "
             "VALUES (" ID ", " ID ", '%q', %d);",
-            f_fam_id, f_event_id, UTF8_(f_note), f_fam_seq
+            UTF8_( dbname ), f_fam_id, f_event_id, UTF8_(f_note), f_fam_seq
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -83,23 +83,23 @@ void recFamilyEvent::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO FamilyEvent (id, fam_id, event_id, note, fam_seq) "
+                "INSERT INTO \"%s\".FamilyEvent (id, fam_id, event_id, note, fam_seq) "
                 "VALUES (" ID ", " ID ", " ID ", '%q', %d);",
-                f_id, f_fam_id, f_event_id, UTF8_(f_note), f_fam_seq
+                UTF8_( dbname ), f_id, f_fam_id, f_event_id, UTF8_(f_note), f_fam_seq
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE FamilyEvent SET fam_id=" ID ", event_id=" ID ", note='%q',"
+                "UPDATE \"%s\".FamilyEvent SET fam_id=" ID ", event_id=" ID ", note='%q',"
                 " fam_seq=%d WHERE id=" ID ";",
-                f_fam_id, f_event_id, UTF8_(f_note), f_fam_seq, f_id
+                UTF8_( dbname ), f_fam_id, f_event_id, UTF8_(f_note), f_fam_seq, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
     }
 }
 
-bool recFamilyEvent::Read()
+bool recFamilyEvent::Read( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -111,8 +111,8 @@ bool recFamilyEvent::Read()
 
     sql.Format(
         "SELECT fam_id, event_id, note, fam_seq"
-        " FROM FamilyEvent WHERE id=" ID ";",
-        f_id
+        " FROM \"%s\".FamilyEvent WHERE id=" ID ";",
+        UTF8_( dbname ), f_id
     );
     result = s_db->GetTable( sql );
 

@@ -46,14 +46,14 @@ public:
     static constexpr const char* s_tablename = "EventEventa";
 
     recEventEventa() : f_event_id(0), f_eventa_id(0), f_conf(0.0) {}
-    recEventEventa( idt id ) : recDbT(id) { Read(); }
+    recEventEventa( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read(dbname); }
     recEventEventa( const recEventEventa& link );
-    recEventEventa( idt eID, idt eaID, double conf = 0.999, const wxString& note = "" )
-        : recDbT(0), f_event_id(eID), f_eventa_id(eaID), f_conf(conf), f_note(note) {}
+//    recEventEventa( idt eID, idt eaID, double conf = 0.999, const wxString& note = "" )
+//        : recDbT(0), f_event_id(eID), f_eventa_id(eaID), f_conf(conf), f_note(note) {}
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recEventEventa& r2 ) const;
 
     idt FGetEventID() const { return f_event_id; }
@@ -69,13 +69,15 @@ public:
     static wxString GetIdStr( idt eerID ) { return wxString::Format( "EEa" ID, eerID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
-    static idt Create( idt eID, idt erID, double conf = 0.999, const wxString& note = wxEmptyString );
+    static idt Create( 
+        idt eID, idt erID, double conf = 0.999, const wxString& note = "",
+        const wxString& dbname = "Main" );
 
     // Ensure all corresponding IndividualEvent links exist, create if not. 
-    void NormaliseIndEventLinks() const;
+    void NormaliseIndEventLinks( const wxString& dbname = "Main" ) const;
 
-    bool Find();
-    static idt Find( idt eID, idt erID );
+    bool Find( const wxString& dbname = "Main" );
+    static idt Find( idt eID, idt erID, const wxString& dbname = "Main" );
 };
 
 typedef std::vector< recEventEventa > recEventEventaVec;
