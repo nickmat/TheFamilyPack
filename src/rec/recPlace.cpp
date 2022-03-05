@@ -55,7 +55,7 @@ void recPlace::Clear()
     f_date2_id = 0;
 }
 
-void recPlace::Save()
+void recPlace::Save( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -64,7 +64,7 @@ void recPlace::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO Place (date1_id, date2_id) VALUES (" ID ", " ID ");",
+            "INSERT INTO \"%s\".Place (date1_id, date2_id) VALUES (" ID ", " ID ");",
             f_date1_id, f_date2_id
         );
         s_db->ExecuteUpdate( sql );
@@ -75,14 +75,14 @@ void recPlace::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO Place (id, date1_id, date2_id)"
+                "INSERT INTO \"%s\".Place (id, date1_id, date2_id)"
                 "VALUES (" ID ", " ID ", " ID ");",
                 f_id, f_date1_id, f_date2_id
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE Place SET date1_id=" ID ", date2_id=" ID " WHERE id=" ID ";",
+                "UPDATE \"%s\".Place SET date1_id=" ID ", date2_id=" ID " WHERE id=" ID ";",
                 f_date1_id, f_date2_id, f_id
             );
         }

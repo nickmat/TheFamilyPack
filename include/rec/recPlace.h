@@ -54,7 +54,7 @@ public:
     recPlace( const recPlace& place );
 
     void Clear();
-    void Save();
+    void Save( const wxString& dbname = "Main" );
     bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recPlace& r2 ) const;
 
