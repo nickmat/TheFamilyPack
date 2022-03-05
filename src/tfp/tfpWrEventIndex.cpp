@@ -85,7 +85,7 @@ wxString tfpWriteEventIndex( const wxString& extdb )
 
 wxString tfpWriteEventPagedIndex( idt begCnt, const wxString& extdb )
 {
-    int maxsize = recEvent::UserCount();
+    int maxsize = recEvent::UserCount( extdb );
     if( maxsize <= tfpWR_PAGE_MAX ) {
         return tfpWriteEventIndex( extdb );
     }
