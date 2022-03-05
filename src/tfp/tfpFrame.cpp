@@ -62,6 +62,7 @@
 #include "img/ref.xpm"
 #include "img/event.xpm"
 #include "img/gallery.xpm"
+#include "img/transfer.xpm"
 
 #ifndef wxHAS_IMAGES_IN_RESOURCES
     #include "img/tfp.xpm"
@@ -135,6 +136,7 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_GOTO_HOME, TfpFrame::OnHome )
     EVT_TEXT_ENTER( tfpID_SHOW_PAGE, TfpFrame::OnShowPage )
     EVT_MENU( tfpID_PAGE_ITEM_EDIT, TfpFrame::OnPageItemEdit )
+    EVT_MENU( tfpID_PAGE_ITEM_TRANSFER, TfpFrame::OnPageItemTransfer )
     EVT_WEBVIEW_NAVIGATING( tfpID_BROWSER, TfpFrame::OnNavigationRequest )
     EVT_MENU_RANGE( tfpID_HCTXMENU_BEG, tfpID_HCTXMENU_END, TfpFrame::OnHtmCtxMenu )
     EVT_MENU_RANGE( tfpID_INDMENU_BEG, tfpID_INDMENU_END, TfpFrame::OnHtmIndMenu )
@@ -1224,6 +1226,11 @@ void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
     }
 }
 
+void TfpFrame::OnPageItemTransfer( wxCommandEvent& event )
+{
+    wxMessageBox( "Not yet implimented", "OnPageItemTransfer" );
+}
+
 void TfpFrame::OnNavigationRequest( wxWebViewEvent& evt )
 {
     if( m_webPageAllow ) {
@@ -1825,6 +1832,7 @@ void TfpFrame::SetNoDatabase()
     m_toolbar->EnableTool( tfpID_LIST_GALLERIES, false );
     m_toolbar->EnableTool( tfpID_GOTO_HOME, false );
     m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, false );
+    m_toolbar->EnableTool( tfpID_PAGE_ITEM_TRANSFER, false );
     m_showpage->Enable( false );
     m_back.clear();
     m_toolbar->EnableTool( tfpID_FIND_BACK, false );
@@ -1857,13 +1865,18 @@ wxString TfpFrame::GetCurrentName()
 void TfpFrame::RefreshEditMenu()
 {
     wxASSERT( m_back.size() > 0 );
+    wxString disp = GetDisplay();
+    wxUniChar uch = disp.GetChar( 0 );
+    m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, false );
+    m_toolbar->EnableTool( tfpID_PAGE_ITEM_TRANSFER, false );
     if( m_dbname.CmpNoCase( "Main" ) != 0 ) {
         m_menuOpenDB->EnableTop( 1/* Edit */, false);
+        if( uch == 'R' && recIsCharNumber( disp, 1 ) ) {
+            m_toolbar->EnableTool( tfpID_PAGE_ITEM_TRANSFER, true );
+        }
         return;
     }
     m_menuOpenDB->EnableTop( 1/* Edit */, true );
-    wxString disp = GetDisplay();
-    wxUniChar uch = disp.GetChar( 0 );
     wxUniChar uch1;
     wxString name;
     wxString noname = _("none");
@@ -1876,7 +1889,6 @@ void TfpFrame::RefreshEditMenu()
     m_menuEditInd->Enable( tfpID_EDIT_FAMILY_MENU, false );
     m_menuEditEvent->SetLabel( tfpID_EDIT_EVENT_CURRENT, noname );
     m_menuEditEvent->Enable( tfpID_EDIT_EVENT_CURRENT, false );
-    m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, false );
 
     switch( uch.GetValue() )
     {
@@ -2278,6 +2290,8 @@ void TfpFrame::CreateFullToolbar()
     wxBitmap bmpRefs( ref_xpm );
     wxBitmap bmpGalleries( gallery_xpm );
     wxBitmap bmpHome( home_xpm );
+    wxBitmap bmpTranfer( transfer_xpm );
+
     m_toolbar->AddTool( tfpID_FIND_BACK, _( "Back" ), bmpBack );
     m_toolbar->AddTool( tfpID_FIND_FORWARD, _( "Forward" ), bmpForward );
     m_toolbar->AddSeparator();
@@ -2291,6 +2305,7 @@ void TfpFrame::CreateFullToolbar()
     m_toolbar->AddControl( m_showpage );
     m_toolbar->AddSeparator();
     m_toolbar->AddTool( tfpID_PAGE_ITEM_EDIT, _( "Edit" ), *imgEditBitmap );
+    m_toolbar->AddTool( tfpID_PAGE_ITEM_TRANSFER, _( "Transfer" ), bmpTranfer );
     m_toolbar->Realize();
     SetToolBar( m_toolbar );
 }

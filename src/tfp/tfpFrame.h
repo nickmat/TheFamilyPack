@@ -174,6 +174,7 @@ private:
     void OnHome( wxCommandEvent& event );
     void OnShowPage( wxCommandEvent& event );
     void OnPageItemEdit( wxCommandEvent& event );
+    void OnPageItemTransfer( wxCommandEvent& event );
 
     void OnNavigationRequest( wxWebViewEvent& event );
     void OnHtmCtxMenu( wxCommandEvent& event );
@@ -343,6 +344,7 @@ enum
     tfpID_GOTO_HOME,
     tfpID_SHOW_PAGE,
     tfpID_PAGE_ITEM_EDIT,
+    tfpID_PAGE_ITEM_TRANSFER,
     tfpID_HCTXMENU_BEG,
     tfpID_HCTXMENU_EDIT_FAMILY,
     tfpID_HCTXMENU_EDIT_NEW_SON,
