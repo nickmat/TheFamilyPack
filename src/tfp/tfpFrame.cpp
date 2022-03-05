@@ -1894,7 +1894,7 @@ void TfpFrame::RefreshEditMenu()
     {
     case 'A':
         if( disp.size() >= 3 && disp.GetChar( 1 ) == 'r'
-            && wxIsdigit( disp.GetChar( 2 ) )
+            && recIsCharDigit( disp, 2 )
             ) { // Ar<number>
             m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
         }
@@ -1931,7 +1931,7 @@ void TfpFrame::RefreshEditMenu()
         }
         break;
     case 'I':
-        if( disp.size() >= 2 && wxIsdigit( disp.GetChar( 1 ) ) ) {
+        if( recIsCharDigit( disp, 1 ) ) {
             idt indID = recGetID( disp.Mid( 1 ) );
             name = recIndividual::GetName( indID );
             if( name.size() > 50 ) {
@@ -1943,44 +1943,42 @@ void TfpFrame::RefreshEditMenu()
         }
         break;
     case 'E':
-        if( disp.size() >= 2 && wxIsdigit( disp.GetChar( 1 ) ) ) {
+        if( recIsCharDigit( disp, 1 ) ) {
             m_editEventID = recGetID( disp.Mid( 1 ) );
             name = recEvent::GetTitle( m_editEventID );
             m_menuEditEvent->SetLabel( tfpID_EDIT_EVENT_CURRENT, name );
             m_menuEditEvent->Enable( tfpID_EDIT_EVENT_CURRENT, true );
             m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
         } else if( disp.size() >= 3 && (
-            ( disp.GetChar( 1 ) == 'a' && wxIsdigit( disp.GetChar( 2 ) ) )
+            ( disp.GetChar( 1 ) == 'a' && recIsCharDigit( disp, 2 ))
         ) ) { // Ea<number>
             m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
         }
         break;
     case 'R':
-        if( disp.size() >= 2 &&
-            ( wxIsdigit( disp.GetChar( 1 ) ) || disp.GetChar( 1 ) == '$' )
-        ) {
+        if( recIsCharDigit( disp, 1 ) ) {
             m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
         }
         break;
     case 'P':
         if( disp.size() >= 3 && disp.GetChar( 1 ) == 'a'
-            && wxIsdigit( disp.GetChar( 2 ) ) 
+            && recIsCharDigit( disp, 2 )
         ) { // Pa<number>
             m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
         }
         break;
     case 'G':
-        if( disp.size() >= 2 && wxIsdigit( disp.GetChar( 1 ) ) ) {
+        if( recIsCharDigit( disp, 1 ) ) {
             m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
         }
         break;
     case 'M':
         if( disp.size() >= 3 && disp.GetChar( 1 ) == 'D'
-            && wxIsdigit( disp.GetChar( 2 ) )
+            && recIsCharDigit( disp, 2 )
             ) { // MD<number>
             m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
         }
-        if( disp.size() >= 2 && wxIsdigit( disp.GetChar( 1 ) ) ) { // M<number>
+        if( recIsCharDigit( disp, 1 ) ) { // M<number>
             m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
         }
         break;

@@ -106,11 +106,15 @@ extern recSplitStrRet recSplitStr( const wxString& str, idt* id1, idt* id2, wxSt
 enum class Sex { unstated, male, female, unknown };
 extern wxString recGetSexStr( Sex sex );
 
+inline bool recIsCharDigit( const wxString& str, size_t pos ) {
+    return str.size() > pos && wxIsdigit( str.GetChar( pos ) );
+}
+
 inline bool recIsCharNumber( const wxString& str, size_t pos ) {
     return str.size() > pos && (wxIsdigit( str.GetChar( pos ) ) || str.GetChar( pos ) == '-');
 }
 
-// Surname grouping.
+// Surname grouping
 enum recSurnameGroup {
     recSG_DefaultInd, recSG_Individual, recSG_Persona, recSG_All, recSG_MAX
 };
