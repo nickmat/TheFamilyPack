@@ -95,6 +95,15 @@ void TfpApp::CloseFrame( TfpFrame* frame )
     }
 }
 
+void TfpApp::CloseDbnameFrames( const wxString& dbname )
+{
+    for( auto frame = m_frames.begin(); frame != m_frames.end(); frame++ ) {
+        if( dbname.CmpNoCase( (*frame)->GetDbName() ) == 0 ) {
+            (*frame)->Destroy();
+        }
+    }
+}
+
 TfpFrame* TfpApp::GetTfpFrame( size_t index ) const
 {
     if( index < m_frames.size() ) {

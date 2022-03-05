@@ -422,6 +422,7 @@ void TfpFrame::OnExternalCloseFile( wxCommandEvent& event )
 {
     wxString dbname = m_menuFileExternalClose->GetLabelText( event.GetId() );
     recDb::CloseExternalDb( dbname );
+    m_tfpApp->CloseDbnameFrames( dbname );
 }
 
 /*! \brief Called on a Inport GEDCOM File menu option event.

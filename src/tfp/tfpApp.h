@@ -53,6 +53,7 @@ public:
     size_t GetFramesSize() const { return m_frames.size(); }
     void CloseFrame( TfpFrame* frame );
     void CloseAll() { m_frames.clear(); }
+    void CloseDbnameFrames( const wxString& dbname );
     TfpFrame* GetTfpFrame( size_t index ) const;
 };
 
