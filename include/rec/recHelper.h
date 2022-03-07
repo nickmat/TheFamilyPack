@@ -215,4 +215,8 @@ std::ostream& recCsvWrite( std::ostream& out, idt id, char term = ',' );
 std::ostream& recCsvWrite( std::ostream& out, int num, char term = ',' );
 std::ostream& recCsvWrite( std::ostream& out, unsigned num, char term = ',' );
 
+// GEDCOM style UID's
+extern wxString recCreateUid();
+extern bool recCheckUid( const wxString& uid );
+
 #endif // REC_RECHELPER_H

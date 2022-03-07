@@ -39,6 +39,8 @@
 
 #include <rec/recHelper.h>
 
+#include <random>
+
 idt recGetID( const wxString& str )
 {
     idt id = 0;
@@ -331,6 +333,53 @@ std::ostream& recCsvWrite( std::ostream& out, unsigned num, char term )
 {
     out << num << term;
     return out;
+}
+
+static wxString ucharToHex( unsigned char num )
+{
+    return wxString::Format( "%02X", num );
+}
+
+wxString recCreateUid()
+{
+    wxString uid;
+    std::random_device rd;
+    std::mt19937 gen( rd() );
+    std::uniform_int_distribution<> dis( 0, 255 );
+    unsigned char num = 0;
+    unsigned char checkA = 0;
+    unsigned char checkB = 0;
+    for( auto i = 0; i < 16; i++ ) {
+        num = static_cast<unsigned char>(dis( gen ));
+        wxString hex = ucharToHex( num );
+        uid += hex;
+        checkA += num;
+        checkB += checkA;
+    }
+    uid += ucharToHex( checkA );
+    uid += ucharToHex( checkB );
+    return uid;
+}
+
+bool recCheckUid( const wxString& uid )
+{
+    if( uid.size() != 36 ) {
+        return false;
+    }
+    unsigned char num = 0;
+    unsigned char checkA = 0;
+    unsigned char checkB = 0;
+    long val = 0;
+    for( size_t pos = 0; pos < 32; pos++, pos++ ) {
+        uid.substr( pos, 2 ).ToLong( &val, 16 );
+        num = static_cast<unsigned char>( val );
+        checkA += num;
+        checkB += checkA;
+    }
+    wxString check = ucharToHex( checkA );
+    check += ucharToHex( checkB );
+    wxString uidcheck = uid.substr( 32, 4 );
+    return check.compare( uidcheck ) == 0;
 }
 
 // End of src/rec/recHelper.cpp file
