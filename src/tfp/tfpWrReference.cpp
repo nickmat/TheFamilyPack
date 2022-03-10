@@ -160,7 +160,10 @@ wxString tfpWriteReferencePage( idt refID, const wxString& dbname )
     }
 
     htm <<
-        "<div>\n<p><b>User Ref:</b> " << ref.FGetUserRef() << "</p>\n</div>\n"
+        "<div>\n"
+        "<p><b>User Ref:</b> " << ref.FGetUserRef() << "<br>\n"
+        "<b>Date Last Changed:</b> " << ref.GetChangedDate() << "<br>\n"
+        "<b>UID:</b> " << ref.FGetUid() << "</p></div>\n"
         "<hr>\n"
     ;
 
