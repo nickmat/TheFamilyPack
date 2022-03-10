@@ -310,6 +310,23 @@ wxString recReference::GetChangedDate( idt refID, const wxString& dbname )
     return calStrFromJdn( jdn, CALENDAR_SCH_Gregorian );
 }
 
+idt recReference::FindUid( idt refID, const wxString& source_db, const wxString& target_db )
+{
+    recReference ref( refID, source_db );
+    return ref.FindUid( target_db );
+}
+
+idt recReference::FindUid( const wxString& target_db ) const
+{
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "SELECT id FROM \"%s\".Reference WHERE uid='%q';",
+        UTF8_( target_db ), UTF8_( f_uid )
+    );
+    return ExecuteID( sql );
+}
+
 void recReference::Renumber( idt id, idt to_id )
 {
     if( id == 0 ) {
