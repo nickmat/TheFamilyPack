@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010 ~ 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -44,6 +44,10 @@
 #include <rec/recEventType.h>
 
 
+//============================================================================
+//------------------------------[ recReference ]------------------------------
+//============================================================================
+
 recReference::recReference( const recReference& r )
 {
     f_id        = r.f_id;
@@ -52,6 +56,8 @@ recReference::recReference( const recReference& r )
     f_statement = r.f_statement;
     f_res_id    = r.f_res_id;
     f_user_ref  = r.f_user_ref;
+    f_uid       = r.f_uid;
+    f_changed   = r.f_changed;
 }
 
 void recReference::Clear()
@@ -62,6 +68,8 @@ void recReference::Clear()
     f_statement.clear();
     f_res_id = 0;
     f_user_ref.clear();
+    f_uid.clear();
+    f_changed = 0;
 }
 
 void recReference::Save( const wxString& dbname )
@@ -72,9 +80,10 @@ void recReference::Save( const wxString& dbname )
     {
         // Add new record
         sql.Format(
-            "INSERT INTO \"%s\".Reference (higher_id, title, statement, res_id, user_ref)"
-            "VALUES (" ID ", '%q', '%q', " ID ", '%q');",
-            UTF8_( dbname ), f_higher_id, UTF8_(f_title), UTF8_(f_statement), f_res_id, UTF8_(f_user_ref)
+            "INSERT INTO \"%s\".Reference (higher_id, title, statement, res_id, user_ref, uid, changed)"
+            "VALUES (" ID ", '%q', '%q', " ID ", '%q', '%q', %ld);",
+            UTF8_( dbname ), f_higher_id, UTF8_(f_title), UTF8_(f_statement), f_res_id, UTF8_(f_user_ref),
+            UTF8_( f_uid ), f_changed
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -84,19 +93,19 @@ void recReference::Save( const wxString& dbname )
         {
             // Add new record
             sql.Format(
-                "INSERT INTO \"%s\".Reference (id, higher_id, title, statement, res_id, user_ref)"
-                " VALUES (" ID ", " ID ", '%q', '%q', " ID ", '%q');",
+                "INSERT INTO \"%s\".Reference (id, higher_id, title, statement, res_id, user_ref, uid, changed)"
+                " VALUES (" ID ", " ID ", '%q', '%q', " ID ", '%q', '%q', %ld);",
                 UTF8_( dbname ), f_id, f_higher_id, UTF8_(f_title), UTF8_(f_statement),
-                f_res_id, UTF8_(f_user_ref)
+                f_res_id, UTF8_(f_user_ref), UTF8_( f_uid ), f_changed
             );
         } else {
             // Update existing record
             sql.Format(
                 "UPDATE \"%s\".Reference SET higher_id=" ID ", title = '%q', statement = '%q',"
-                " res_id = " ID ", user_ref = '%q'"
+                " res_id = " ID ", user_ref = '%q', uid = '%q', changed = %ld"
                 " WHERE id=" ID ";",
                 UTF8_( dbname ), f_higher_id, UTF8_(f_title), UTF8_(f_statement),
-                f_res_id, UTF8_(f_user_ref), f_id
+                f_res_id, UTF8_(f_user_ref), UTF8_( f_uid ), f_changed, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -114,7 +123,7 @@ bool recReference::Read( const wxString& dbname )
     }
 
     sql.Format(
-        "SELECT higher_id, title, statement, res_id, user_ref"
+        "SELECT higher_id, title, statement, res_id, user_ref, uid, changed"
         " FROM \"%s\".Reference WHERE id=" ID ";",
         UTF8_( dbname ), f_id
     );
@@ -131,6 +140,8 @@ bool recReference::Read( const wxString& dbname )
     f_statement = result.GetAsString( 2 );
     f_res_id    = GET_ID( result.GetInt64( 3 ) );
     f_user_ref  = result.GetAsString( 4 );
+    f_uid       = result.GetAsString( 5 );
+    f_changed   = result.GetInt( 6 );
     return true;
 }
 
@@ -141,7 +152,9 @@ bool recReference::Equivalent( const recReference& r2 ) const
         f_title == r2.f_title &&
         f_statement == r2.f_statement &&
         f_res_id == r2.f_res_id &&
-        f_user_ref == r2.f_user_ref
+        f_user_ref == r2.f_user_ref &&
+        f_uid == r2.f_uid &&
+        f_changed == r2.f_changed
         ;
 }
 
@@ -328,7 +341,7 @@ void recReference::Renumber( idt id, idt to_id )
 
 std::string recReference::CsvTitles()
 {
-    return std::string( "ID, Higher ID, Title, Statement, Researcher ID, User Reference\n");
+    return std::string( "ID, Higher ID, Title, Statement, Researcher ID, User Reference, UID, Last Changed\n");
 }
 
 void recReference::CsvWrite( std::ostream& out, idt id )
@@ -339,7 +352,9 @@ void recReference::CsvWrite( std::ostream& out, idt id )
     recCsvWrite( out, ref.FGetTitle() );
     recCsvWrite( out, ref.FGetStatement() );
     recCsvWrite( out, ref.FGetResId() );
-    recCsvWrite( out, ref.FGetUserRef(), '\n' );
+    recCsvWrite( out, ref.FGetUserRef() );
+    recCsvWrite( out, ref.FGetUid() );
+    recCsvWrite( out, ref.FGetChanged(), '\n' );
 }
 
 bool recReference::CsvRead( std::istream& in )
@@ -350,10 +365,14 @@ bool recReference::CsvRead( std::istream& in )
     recCsvRead( in, f_statement );
     recCsvRead( in, f_res_id );
     recCsvRead( in, f_user_ref );
+    recCsvRead( in, f_uid );
+    recCsvRead( in, f_changed );
     return bool( in );
 }
 
-//----------------------------------------------------------
+//============================================================================
+//---------------------------[ recReferenceEntity ]---------------------------
+//============================================================================
 
 const wxString recReferenceEntity::sm_typeStr[recReferenceEntity::TYPE_MAX] = {
     _("Default"),      // TYPE_Unstated
@@ -552,5 +571,6 @@ void recReferenceEntity::DeleteType( Type type, idt entityID )
     );
     s_db->ExecuteUpdate( sql );
 }
+
 
 // End of recReference.cpp file

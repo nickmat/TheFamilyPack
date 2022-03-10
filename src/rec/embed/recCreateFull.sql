@@ -457,7 +457,9 @@ CREATE TABLE Reference (
   title TEXT NOT NULL,
   statement TEXT NOT NULL,
   res_id INTEGER NULL REFERENCES Researcher(id),
-  user_ref TEXT NULL
+  user_ref TEXT NULL,
+  uid TEXT NOT NULL,
+  changed INT NOT NULL
 );
 
 CREATE TABLE ReferenceEntity (
@@ -530,7 +532,7 @@ INSERT INTO System (id, val) VALUES(1, '1'); /* User U1 */
 INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 1, 1, 'NI');
 
 /* The Version table row 1 is the full TFPD database */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 26);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 27);
 
 COMMIT;
 

@@ -415,7 +415,9 @@ static const char* createFullDb =  /* recCreateFull.sql */
  "  title TEXT NOT NULL,\n"
  "  statement TEXT NOT NULL,\n"
  "  res_id INTEGER NULL REFERENCES Researcher(id),\n"
- "  user_ref TEXT NULL\n"
+ "  user_ref TEXT NULL,\n"
+ "  uid TEXT NOT NULL,\n"
+ "  changed INTEGER NOT NULL\n"
  ");\n"
  "CREATE TABLE ReferenceEntity (\n"
  "  id INTEGER PRIMARY KEY,\n"
@@ -471,7 +473,7 @@ static const char* createFullDb =  /* recCreateFull.sql */
  "INSERT INTO User (id, res_id) VALUES(1, -1);\n"
  "INSERT INTO System (id, val) VALUES(1, '1');\n"
  "INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 1, 1, 'NI');\n"
- "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 26);\n"
+ "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 27);\n"
  "COMMIT;\n";
 
 /* End of src/rec/embed/recDatabaseCreate.f2c */

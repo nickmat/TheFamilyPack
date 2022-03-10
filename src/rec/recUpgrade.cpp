@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3rd April 2013
- * Copyright:   Copyright (c) 2013 .. 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2013..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -41,8 +41,8 @@
 const int recVerMajor = 0;
 const int recVerMinor = 0;
 const int recVerRev = 10;
-const int recVerTest = 26;                       // <<======<<<<
-const char* recFullVersion = "TFPD-v0.0.10.26";  // <<======<<<<
+const int recVerTest = 27;                       // <<======<<<<
+const char* recFullVersion = "TFPD-v0.0.10.27";  // <<======<<<<
 
 // This is the database Media only version that this program can work with.
 // If the full version matches, then this is assumed to match as well.
@@ -1211,6 +1211,58 @@ void UpgradeTest0_0_10_25to0_0_10_26( const wxString& dbname )
     recDb::GetDb()->ExecuteUpdate( update );
 }
 
+void UpgradeTest0_0_10_26to0_0_10_27( const wxString& dbname )
+{
+    // Version 0.0.10.26 to 0.0.10.27
+
+    // Add new table ReferenceUid.
+    // Add field 'changed' to Reference.
+
+    wxString update = "BEGIN;\n";
+
+    update <<
+
+        // Add field 'changed' to Reference.
+        "CREATE TABLE \"" << dbname << "\".NewReference (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  higher_id INTEGER,\n"
+        "  title TEXT NOT NULL,\n"
+        "  statement TEXT NOT NULL,\n"
+        "  res_id INTEGER NULL REFERENCES Researcher(id),\n"
+        "  user_ref TEXT NULL,\n"
+        "  uid TEXT NOT NULL,\n"
+        "  changed INTEGER NOT NULL\n"
+        ");\n"
+
+
+        "INSERT INTO \"" << dbname << "\".NewReference"
+        " (id, higher_id, title, statement, res_id, user_ref, uid, changed)\n"
+        " SELECT id, higher_id, title, statement, res_id, user_ref, '', 2459647\n"
+        " FROM \"" << dbname << "\".Reference;\n"
+
+        "DROP TABLE \"" << dbname << "\".Reference;\n"
+        "ALTER TABLE \"" << dbname << "\".NewReference RENAME TO Reference;\n"
+        ;
+
+    // Fill Reference table uid field
+    wxString query = "SELECT id FROM \"" + dbname + "\".Reference;\n"; // Get refID list
+    wxSQLite3Table table = recDb::GetDb()->GetTable( query );
+    size_t size = (size_t) table.GetRowCount();
+    for( size_t i = 0; i < size; i++ ) {
+        table.SetRow( i );
+        update << "UPDATE \"" << dbname << "\".Reference"
+            " SET uid='" << recCreateUid() << "'"
+            " WHERE id=" << table.GetAsString( 0 ) << ";\n";
+    }
+
+    update <<
+        "UPDATE \"" << dbname << "\".Version SET test=27 WHERE id=1;\n"
+        "COMMIT;\n"
+        ;
+
+    recDb::GetDb()->ExecuteUpdate( update );
+}
+
 void UpgradeRev0_0_10toCurrent( int test, const wxString& dbname )
 {
     switch( test )
@@ -1241,6 +1293,7 @@ void UpgradeRev0_0_10toCurrent( int test, const wxString& dbname )
     case 23: UpgradeTest0_0_10_23to0_0_10_24( dbname );
     case 24: UpgradeTest0_0_10_24to0_0_10_25( dbname );
     case 25: UpgradeTest0_0_10_25to0_0_10_26( dbname );
+    case 26: UpgradeTest0_0_10_26to0_0_10_27( dbname );
     }
 }
 
