@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Oct 26 2018)
+// C++ code generated with wxFormBuilder (version 3.10.1-0-g8feb16b3)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -72,6 +72,28 @@ fbRgEditReference::fbRgEditReference( wxWindow* parent, wxWindowID id, const wxS
 
 
 	fgSizer20->Add( bSizer20, 1, wxEXPAND, 0 );
+
+	wxStaticText* m_staticText4;
+	m_staticText4 = new wxStaticText( this, wxID_ANY, _("UID:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText4->Wrap( -1 );
+	fgSizer20->Add( m_staticText4, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+
+	wxBoxSizer* bSizer21;
+	bSizer21 = new wxBoxSizer( wxHORIZONTAL );
+
+	m_textCtrlUdi = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+	bSizer21->Add( m_textCtrlUdi, 1, wxBOTTOM|wxRIGHT|wxALIGN_CENTER_VERTICAL, 5 );
+
+	wxStaticText* m_staticText6;
+	m_staticText6 = new wxStaticText( this, wxID_ANY, _("Last Changed:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText6->Wrap( -1 );
+	bSizer21->Add( m_staticText6, 0, wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+
+	m_textCtrlChanged = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+	bSizer21->Add( m_textCtrlChanged, 0, wxBOTTOM|wxRIGHT|wxALIGN_CENTER_VERTICAL, 5 );
+
+
+	fgSizer20->Add( bSizer21, 1, wxEXPAND, 5 );
 
 
 	bSizer49->Add( fgSizer20, 0, wxEXPAND, 5 );
@@ -380,7 +402,7 @@ fbRgEditReference::fbRgEditReference( wxWindow* parent, wxWindowID id, const wxS
 
 	m_staticRefID = new wxStaticText( this, wxID_ANY, _("R0"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticRefID->Wrap( -1 );
-	m_staticRefID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Times New Roman") ) );
+	m_staticRefID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxT("Times New Roman") ) );
 
 	bSizerDismiss->Add( m_staticRefID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 

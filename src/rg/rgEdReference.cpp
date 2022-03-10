@@ -82,8 +82,10 @@ idt rgCreateReference( wxWindow* parent )
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
 
-    recReference ref;
+    recReference ref(0);
     ref.FSetResId( recGetCurrentResearcher() );
+    ref.FSetUid( recCreateUid() );
+    ref.FSetChanged( calGetTodayJdn() );
     ref.Save();
     idt refID = ref.FGetID();
 
@@ -131,6 +133,9 @@ extern bool rgSelectDateFromReference(
     wxWindow* wind, idt* dateID, idt refID, const wxString& title, unsigned style )
 {
     wxASSERT( dateID );  // Can't handle NULL pointer
+    if( dateID == nullptr ) {
+        return false;
+    }
 
     unsigned retButton;
     *dateID = rgSelectDate( wind, style, &retButton, recD_FILTER_Reference, refID );
@@ -150,6 +155,9 @@ extern bool rgSelectPlaceFromReference(
     wxWindow* wind, idt* placeID, idt refID, const wxString& title, unsigned style )
 {
     wxASSERT( placeID );  // Can't handle NULL pointer
+    if( placeID == nullptr ) {
+        return false;
+    }
 
     unsigned retButton;
     *placeID = rgSelectPlace( wind, style, &retButton, recD_FILTER_Reference, refID );
@@ -203,6 +211,9 @@ bool rgDlgEditReference::TransferDataToWindow()
     m_textCtrlResearcher->SetValue( res.GetIdStr() + ": " + res.FGetName() );
     m_textCtrlUserRef->SetValue( m_reference.FGetUserRef() );
     m_textCtrlStatement->SetValue(  m_reference.FGetStatement() );
+    m_textCtrlUdi->SetValue( m_reference.FGetUid() );
+    wxString changed = calStrFromJdn( m_reference.FGetChanged(), CALENDAR_SCH_Gregorian );
+    m_textCtrlChanged->SetValue( changed );
 
     UpdateHtml();
     UpdateEntities();
@@ -214,6 +225,8 @@ bool rgDlgEditReference::TransferDataFromWindow()
     m_reference.FSetTitle( m_textCtrlTitle->GetValue() );
     m_reference.FSetUserRef( m_textCtrlUserRef->GetValue() );
     m_reference.FSetStatement( m_textCtrlStatement->GetValue() );
+    m_reference.FSetChanged( calGetTodayJdn() );
+
     m_reference.Save();
     return true;
 }

@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Oct 26 2018)
+// C++ code generated with wxFormBuilder (version 3.10.1-0-g8feb16b3)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -17,10 +17,10 @@
 #include <wx/colour.h>
 #include <wx/settings.h>
 #include <wx/textctrl.h>
+#include <wx/button.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
-#include <wx/button.h>
 #include <wx/sizer.h>
 #include <wx/toolbar.h>
 #include <wx/panel.h>
@@ -48,6 +48,8 @@ class fbRgEditReference : public wxDialog
 		wxButton* m_buttonResearcher;
 		wxTextCtrl* m_textCtrlResearcher;
 		wxTextCtrl* m_textCtrlUserRef;
+		wxTextCtrl* m_textCtrlUdi;
+		wxTextCtrl* m_textCtrlChanged;
 		wxSplitterWindow* m_splitter1;
 		wxPanel* m_panelTop;
 		wxNotebook* m_notebookTop;
@@ -102,7 +104,7 @@ class fbRgEditReference : public wxDialog
 		wxButton* m_buttonSave1;
 		wxButton* m_buttonCancel1;
 
-		// Virtual event handlers, overide them in your derived class
+		// Virtual event handlers, override them in your derived class
 		virtual void OnButtonHigherRef( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnButtonResearcher( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnStatementViewChanged( wxNotebookEvent& event ) { event.Skip(); }
@@ -158,6 +160,7 @@ class fbRgEditReference : public wxDialog
 	public:
 
 		fbRgEditReference( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Reference"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+
 		~fbRgEditReference();
 
 		void m_splitter1OnIdle( wxIdleEvent& )
