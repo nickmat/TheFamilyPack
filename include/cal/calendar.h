@@ -3,10 +3,8 @@
  * Project:     Cal: A general purpose calendar library.
  * Purpose:     Program interface functions.
  * Author:      Nick Matthews
- * Modified by:
  * Created:     28 September 2010
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -289,5 +287,10 @@ enum CalendarStructure {
 };
 
 extern const CalendarStructure CalendarStructs[CALENDAR_SCH_Max];
+
+/*! Return the julian day number for today
+ *  according to the operating system.
+ */
+extern long calGetTodayJdn();
 
 #endif // CALENDAR_H

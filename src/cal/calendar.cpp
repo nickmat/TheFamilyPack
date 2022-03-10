@@ -3,10 +3,8 @@
  * Project:     Cal: A general purpose calendar library.
  * Purpose:     Program interface functions.
  * Author:      Nick Matthews
- * Modified by:
  * Created:     28 September 2010
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2010, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -44,6 +42,8 @@
 #include "calFrench.h"
 #include "calIslamic.h"
 #include "calHebrew.h"
+
+#include <ctime>
 
 static bool s_initOk = false;
 
@@ -351,5 +351,22 @@ bool calAddToJdn(
     }
     return false;
 }
+
+long calGetTodayJdn()
+{
+    time_t now;
+    time( &now );
+#if defined(_MSC_VER)  
+    // Avoid MSC warning about localtime
+    struct tm tm_struct, * tp;
+    localtime_s( &tm_struct, &now );
+    tp = &tm_struct;
+#else
+    struct tm* tp = localtime( &now );
+#endif
+
+    return calGregorianToJdn( tp->tm_year + 1900, tp->tm_mon + 1, tp->tm_mday );
+}
+
 
 // End of calendar.cpp
