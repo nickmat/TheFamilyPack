@@ -184,6 +184,9 @@ public:
     recIdVec GetDateIdVec( const wxString& dbname = "Main" ) const {
         return GetDateIdVec( f_id, dbname ); }
 
+    wxString GetChangedDate() const;
+    static wxString GetChangedDate( idt refID, const wxString& dbname );
+
     static void Renumber( idt fromID, idt toID );
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );
