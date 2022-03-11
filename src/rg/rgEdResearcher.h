@@ -58,10 +58,34 @@ private:
     void OnButtonDelete( wxCommandEvent& event ) override;
 
     recResearcher  m_researcher;
+    wxString       m_original_uid;
     recContactList m_list;
     recContactVec  m_contacts;
     idt            m_userID;
     idt            m_currentUserID;
+};
+
+//============================================================================
+//------------------------[ rgDlgRecoverInvalidUid ]--------------------------
+//============================================================================
+
+class rgDlgRecoverInvalidUid : public fbRgInvalidUid
+{
+public:
+    rgDlgRecoverInvalidUid( wxWindow* parent ) : fbRgInvalidUid( parent ) {}
+
+private:
+    void OnButtonRestore( wxCommandEvent& event ) override {
+        EndModal( static_cast<int>( recCorrectUid::restore ) );
+    }
+
+    void OnButtonCreate( wxCommandEvent& event ) override {
+        EndModal( static_cast<int>( recCorrectUid::create ) );
+    }
+
+    void OnButtonCancel( wxCommandEvent& event ) override {
+        EndModal( static_cast<int>( recCorrectUid::cancel ) );
+    }
 };
 
 //============================================================================

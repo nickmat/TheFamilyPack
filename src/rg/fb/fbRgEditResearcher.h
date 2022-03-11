@@ -40,6 +40,7 @@ class fbRgEditResearcher : public wxDialog
 	protected:
 		wxTextCtrl* m_textCtrlName;
 		wxTextCtrl* m_textCtrlComment;
+		wxTextCtrl* m_textCtrlUid;
 		wxTextCtrl* m_textCtrlUser;
 		wxCheckBox* m_checkBoxCurrentUser;
 		wxButton* m_buttonIndividual;
@@ -67,6 +68,32 @@ class fbRgEditResearcher : public wxDialog
 		fbRgEditResearcher( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Researcher"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE );
 
 		~fbRgEditResearcher();
+
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class fbRgInvalidUid
+///////////////////////////////////////////////////////////////////////////////
+class fbRgInvalidUid : public wxDialog
+{
+	private:
+
+	protected:
+		wxButton* m_buttonRestore;
+		wxButton* m_buttonSave;
+		wxButton* m_buttonCancel;
+
+		// Virtual event handlers, override them in your derived class
+		virtual void OnButtonRestore( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonCreate( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonCancel( wxCommandEvent& event ) { event.Skip(); }
+
+
+	public:
+
+		fbRgInvalidUid( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Invalid UID"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE );
+
+		~fbRgInvalidUid();
 
 };
 

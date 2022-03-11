@@ -76,6 +76,7 @@ idt rgCreateResearcher( wxWindow* wind )
 
     recResearcher res(0);
     res.FSetConListID( list.FGetID() );
+    res.FSetUid( recCreateUid() );
     res.Save();
     idt resID = res.FGetID();
 
@@ -85,6 +86,12 @@ idt rgCreateResearcher( wxWindow* wind )
     }
     recDb::Rollback( savepoint );
     return 0;
+}
+
+recCorrectUid rgCorrectInvalidUid( wxWindow* wind )
+{
+    rgDlgRecoverInvalidUid dialog( wind );
+    return static_cast<recCorrectUid>(dialog.ShowModal());
 }
 
 idt rgSelectResearcher( wxWindow* wind, unsigned flag, unsigned* retbutton, const wxString& title )
@@ -139,6 +146,7 @@ idt rgSelectResearcher( wxWindow* wind, unsigned flag, unsigned* retbutton, cons
 rgDlgEditResearcher::rgDlgEditResearcher( wxWindow* parent, idt resID )
     : m_researcher(resID), fbRgEditResearcher( parent )
 {
+    m_original_uid = m_researcher.FGetUid();
     m_list.ReadID( m_researcher.FGetConListID() );
     m_contacts = m_researcher.GetContacts();
     m_userID = m_researcher.GetUserID();
@@ -159,6 +167,7 @@ bool rgDlgEditResearcher::TransferDataToWindow()
 
     m_textCtrlName->SetValue( m_researcher.FGetName() );
     m_textCtrlComment->SetValue( m_researcher.FGetComment() );
+    m_textCtrlUid->SetValue( m_researcher.FGetUid() );
 
     m_textCtrlUser->SetValue( recUser::GetIdStr( m_userID ) );
     m_checkBoxCurrentUser->SetValue( m_userID == m_currentUserID );
@@ -170,6 +179,21 @@ bool rgDlgEditResearcher::TransferDataToWindow()
 
 bool rgDlgEditResearcher::TransferDataFromWindow()
 {
+    wxString uid = m_textCtrlUid->GetValue();
+    if( !recCheckUid( uid ) ) {
+        recCorrectUid action = rgCorrectInvalidUid( this );
+        switch( action )
+        {
+        case recCorrectUid::restore:
+            m_researcher.FSetUid( m_original_uid );
+            break;
+        case recCorrectUid::create:
+            m_researcher.FSetUid( recCreateUid() );
+            break;
+        default: // recCorrectUid::cancel
+            return false;
+        }
+    }
     m_researcher.FSetName( m_textCtrlName->GetValue() );
     m_researcher.FSetComment( m_textCtrlComment->GetValue() );
     m_researcher.Save();
@@ -310,5 +334,6 @@ void rgDlgEditResearcher::OnButtonDelete( wxCommandEvent& event )
 wxString rgDlgSelectResearcher::sm_colHeaders[COL_MAX] = {
     _( "ID" ), _( "Name" ), _( "Comment" )
 };
+
 
 // End of src/rg/rgEdResearcher.cpp file

@@ -65,7 +65,7 @@ wxString tfpWriteResearcherList( const wxString& extdb )
         recContactList cl( list[i].FGetConListID(), extdb );
         idt userID = list[i].GetUserID( extdb );
         recContactVec contacts = list[i].GetContacts( extdb );
-        size_t csize = contacts.size() + note;
+        size_t csize = contacts.size() + note + 1;
 
         htm << 
             "<table class='data'>\n"
@@ -80,6 +80,10 @@ wxString tfpWriteResearcherList( const wxString& extdb )
                 "</td>\n</tr>\n"
             ;
         }
+        htm <<
+            "<td colspan='3'><b>UID:</b> " << list[i].FGetUid() <<
+            "</td>\n</tr>\n"
+            ;
         if( csize ) {
             for( size_t j = 0 ; j < contacts.size() ; j++ ) {
                 if( j > 0 || note == 1 ) {

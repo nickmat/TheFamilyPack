@@ -50,6 +50,14 @@ fbRgEditResearcher::fbRgEditResearcher( wxWindow* parent, wxWindowID id, const w
 	m_textCtrlComment = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_WORDWRAP );
 	fgSizer12->Add( m_textCtrlComment, 0, wxBOTTOM|wxRIGHT|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
 
+	wxStaticText* m_staticText5;
+	m_staticText5 = new wxStaticText( this, wxID_ANY, _("UID:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText5->Wrap( -1 );
+	fgSizer12->Add( m_staticText5, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+
+	m_textCtrlUid = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer12->Add( m_textCtrlUid, 0, wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT|wxEXPAND, 5 );
+
 	wxStaticText* m_staticText15;
 	m_staticText15 = new wxStaticText( this, wxID_ANY, _("User:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText15->Wrap( -1 );
@@ -152,5 +160,60 @@ fbRgEditResearcher::~fbRgEditResearcher()
 	m_buttonAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditResearcher::OnButtonAdd ), NULL, this );
 	m_buttonEdit->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditResearcher::OnButtonEdit ), NULL, this );
 	m_buttonDelete->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditResearcher::OnButtonDelete ), NULL, this );
+
+}
+
+fbRgInvalidUid::fbRgInvalidUid( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+
+	wxBoxSizer* bSizer5;
+	bSizer5 = new wxBoxSizer( wxVERTICAL );
+
+	wxStaticText* m_staticTextNotValid;
+	m_staticTextNotValid = new wxStaticText( this, wxID_ANY, _("UID Not Valid"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTER_HORIZONTAL );
+	m_staticTextNotValid->Wrap( -1 );
+	m_staticTextNotValid->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxEmptyString ) );
+
+	bSizer5->Add( m_staticTextNotValid, 0, wxALL|wxEXPAND, 5 );
+
+	wxStaticLine* m_staticline14;
+	m_staticline14 = new wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
+	bSizer5->Add( m_staticline14, 0, wxEXPAND | wxALL, 5 );
+
+	wxBoxSizer* bSizerDismiss;
+	bSizerDismiss = new wxBoxSizer( wxHORIZONTAL );
+
+	m_buttonRestore = new wxButton( this, wxID_ANY, _("&Restore UID"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizerDismiss->Add( m_buttonRestore, 0, wxTOP|wxBOTTOM|wxLEFT, 5 );
+
+	m_buttonSave = new wxButton( this, wxID_OK, _("Create &New UID"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizerDismiss->Add( m_buttonSave, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxLEFT, 5 );
+
+	m_buttonCancel = new wxButton( this, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizerDismiss->Add( m_buttonCancel, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+
+	bSizer5->Add( bSizerDismiss, 1, wxEXPAND, 5 );
+
+
+	this->SetSizer( bSizer5 );
+	this->Layout();
+	bSizer5->Fit( this );
+
+	this->Centre( wxBOTH );
+
+	// Connect Events
+	m_buttonRestore->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgInvalidUid::OnButtonRestore ), NULL, this );
+	m_buttonSave->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgInvalidUid::OnButtonCreate ), NULL, this );
+	m_buttonCancel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgInvalidUid::OnButtonCancel ), NULL, this );
+}
+
+fbRgInvalidUid::~fbRgInvalidUid()
+{
+	// Disconnect Events
+	m_buttonRestore->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgInvalidUid::OnButtonRestore ), NULL, this );
+	m_buttonSave->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgInvalidUid::OnButtonCreate ), NULL, this );
+	m_buttonCancel->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgInvalidUid::OnButtonCancel ), NULL, this );
 
 }
