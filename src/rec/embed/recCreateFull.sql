@@ -490,8 +490,9 @@ CREATE TABLE Repository (
 CREATE TABLE Researcher (  /* See System Settings below for initial entries */
   id INTEGER PRIMARY KEY,
   name TEXT NOT NULL,
-  comments TEXT,
-  con_list_id INTEGER REFERENCES ContactList(id)
+  comment TEXT,
+  con_list_id INTEGER REFERENCES ContactList(id),
+  uid TEXT NOT NULL
 );
 
 CREATE TABLE System (  /* See System Settings below for initial entries */
@@ -522,8 +523,10 @@ INSERT INTO ContactType (id, name) VALUES(-4, 'Email');
 INSERT INTO ContactType (id, name) VALUES(-5, 'Website');
 INSERT INTO ContactType (id, name) VALUES(-6, 'Fax');
 
-INSERT INTO Researcher (id, name, comments, con_list_id) VALUES(-1, 'Anonymous', NULL, NULL);
-INSERT INTO Researcher (id, name, comments, con_list_id) VALUES(0, '', NULL, NULL);
+INSERT INTO Researcher (id, name, comment, con_list_id, uid) VALUES
+  (0, '', NULL, NULL, '');
+INSERT INTO Researcher (id, name, comment, con_list_id, uid) VALUES
+  (-1, 'Anonymous', NULL, NULL, 'E16C3575699D77C1BABD0C582A44C6FA3E4A');
 
 INSERT INTO User (id, res_id) VALUES(1, -1); /* Set User U1 to Anomymous */
 
@@ -532,7 +535,7 @@ INSERT INTO System (id, val) VALUES(1, '1'); /* User U1 */
 INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 1, 1, 'NI');
 
 /* The Version table row 1 is the full TFPD database */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 27);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 28);
 
 COMMIT;
 

@@ -219,4 +219,6 @@ std::ostream& recCsvWrite( std::ostream& out, unsigned num, char term = ',' );
 extern wxString recCreateUid();
 extern bool recCheckUid( const wxString& uid );
 
+enum class recCorrectUid { restore, create, cancel };
+
 #endif // REC_RECHELPER_H

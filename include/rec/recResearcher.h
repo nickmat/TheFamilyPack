@@ -56,10 +56,12 @@ public:
     wxString FGetName() const { return f_name; }
     wxString FGetComment() const { return f_comment; }
     idt FGetConListID() const { return f_con_list_id; }
+    wxString FGetUid() const { return f_uid; }
 
     void FSetName( const wxString& name ) { f_name = name; }
     void FSetComment( const wxString& com ) { f_comment = com; }
     void FSetConListID( idt clID ) { f_con_list_id = clID; }
+    void FSetUid( const wxString& uid ) { f_uid = uid; }
 
     static wxString GetIdStr( idt resID ) { return wxString::Format( "Re" ID, resID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
@@ -82,6 +84,7 @@ private:
     wxString  f_name;
     wxString  f_comment;
     idt       f_con_list_id;
+    wxString  f_uid;
 };
 
 
