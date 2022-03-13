@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     17th March 2019
- * Copyright:   Copyright (c) 2019, Nick Matthews.
+ * Copyright:   Copyright (c) 2019..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -24,11 +24,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 */
 
-/* This pragma makes the database more efficient, but means the database
-   can only be used by tools created with SQLite version 3.3.0 or later
-   (released Jan 2006) */
-PRAGMA legacy_file_format=OFF;
-PRAGMA foreign_keys=ON;
+PRAGMA foreign_keys=OFF;
 
 BEGIN;
 

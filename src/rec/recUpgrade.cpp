@@ -41,17 +41,17 @@
 const int recVerMajor = 0;
 const int recVerMinor = 0;
 const int recVerRev = 10;
-const int recVerTest = 28;                       // <<======<<<<
-const char* recFullVersion = "TFPD-v0.0.10.28";  // <<======<<<<
+const int recVerTest = 29;                       // <<======<<<<
+const char* recFullVersion = "TFPD-v0.0.10.29";  // <<======<<<<
 
-// This is the database Media only version that this program can work with.
+// This is the database Media-only version that this program can work with.
 // If the full version matches, then this is assumed to match as well.
 // If one is full and one Media-only then these should match.
 const int recMediaVerMajor = 0;
 const int recMediaVerMinor = 0;
 const int recMediaVerRev = 0;
-const int recMediaVerTest = 2;                   // <<======<<<<
-const char* recMediaVersion = "MDD-v0.0.0.2";    // <<======<<<<
+const int recMediaVerTest = 3;                   // <<======<<<<
+const char* recMediaVersion = "MDD-v0.0.0.3";    // <<======<<<<
 
 wxString recGetCurrentVersionStr()
 {
@@ -84,25 +84,31 @@ namespace {
         wxString update = "BEGIN;\n";
 
         update <<
-            "CREATE TABLE " << dbname << ".NewMediaData (\n"
-            "  id INTEGER PRIMARY KEY NOT NULL,\n"
-            "  title TEXT NULL,\n"
-            "  data BLOB NOT NULL,\n"
-            "  type INT NOT NULL,\n"
-            "  privacy INT NOT NULL,\n"
-            "  copyright TEXT NULL,\n"
-            "  file TEXT NOT NULL\n"
-            ");\n"
-            "INSERT INTO " << dbname << ".NewMediaData"
-            " (id, title, data, type, privacy, copyright, file)"
-            " SELECT id, ' ', data, 1, privacy, copyright, file"
-            " FROM " << dbname << ".MediaData;\n"
-            "DROP TABLE " << dbname << ".MediaData;\n"
-            "ALTER TABLE " << dbname << ".NewMediaData RENAME TO MediaData;\n"
+            "INSERT INTO MediaData (id, data, type, privacy, file) VALUES(0, '', 0, 0, '');\n"
 
             "UPDATE " << dbname << ".Version SET test=2 WHERE id=2;\n"
             "COMMIT;\n"
             ;
+        recDb::GetDb()->ExecuteUpdate( update );
+    }
+
+    void mdUpgradeTest0_0_0_2to0_0_0_3( const wxString& dbname )
+    {
+        // MediaData Version 0.0.0.2 to 0.0.0.3
+        // Add record id=0
+
+        wxString update;
+
+        update <<
+            "PRAGMA foreign_keys=OFF;\n"
+            "BEGIN;\n"
+
+            "INSERT INTO \"" << dbname << "\".MediaData (id, data, type, privacy, file) VALUES(0, '', 0, 0, '');\n"
+
+            "UPDATE \"" << dbname << "\".Version SET test=3 WHERE id=2;\n"
+            "COMMIT;\n"
+            ;
+
         recDb::GetDb()->ExecuteUpdate( update );
     }
 
@@ -111,6 +117,7 @@ namespace {
         switch( test )
         {
         case 1: mdUpgradeTest0_0_0_1to0_0_0_2( dbname );  // Fall thru intended
+        case 2: mdUpgradeTest0_0_0_2to0_0_0_3( dbname );
         }
     }
 
@@ -1267,7 +1274,9 @@ void UpgradeTest0_0_10_27to0_0_10_28( const wxString& dbname )
     // Version 0.0.10.27 to 0.0.10.28
 
     // Add field 'uid' to Researcher.
-    wxString update = "BEGIN;\n";
+    wxString update =
+        "PRAGMA foreign_keys=OFF;\n"
+        "BEGIN;\n";
 
     update <<
         "CREATE TABLE \"" << dbname << "\".NewResearcher (\n"
@@ -1305,10 +1314,75 @@ void UpgradeTest0_0_10_27to0_0_10_28( const wxString& dbname )
     update <<
         "UPDATE \"" << dbname << "\".Version SET test=28 WHERE id=1;\n"
         "COMMIT;\n"
+        "PRAGMA foreign_keys=ON;\n"
         ;
 
     recDb::GetDb()->ExecuteUpdate( update );
 }
+
+void UpgradeTest0_0_10_28to0_0_10_29( const wxString& dbname )
+{
+    // Version 0.0.10.28 to 0.0.10.29
+
+    // Add field 'uid' to Researcher.
+    wxString update;
+
+    update <<
+        "PRAGMA foreign_keys=OFF;\n"
+        "BEGIN;\n"
+
+        "INSERT INTO \"" << dbname << "\".Citation (id, higher_id, ref_id, ref_seq, rep_id) VALUES(0,0,0,0,0);\n"
+        "INSERT INTO \"" << dbname << "\".CitationPart (id, cit_id, type_id, val, cit_seq) VALUES(0,0,0,'',0);\n"
+        "INSERT INTO \"" << dbname << "\".CitationPartType (id, name, style) VALUES(0,'',0);\n"
+        "INSERT INTO \"" << dbname << "\".Contact (id, type_id, list_id, val) VALUES(0,0,0,'');\n"
+        "INSERT INTO \"" << dbname << "\".Date (id) VALUES(0);\n"
+        "INSERT INTO \"" << dbname << "\".Event (\n"
+        "  id, title, higher_id, type_id, date1_id, date2_id, place_id, note, date_pt)\n"
+        "  VALUES(0,'',0,0,0,0,0,'',0);\n"
+        "INSERT INTO \"" << dbname << "\".Eventa (\n"
+        "  id, title, ref_id, type_id, date1_id, date2_id, place_id, note, date_pt)\n"
+        "  VALUES(0,'',0,0,0,0,0,'',0);\n"
+        "INSERT INTO \"" << dbname << "\".EventaPersona (\n"
+        "  id, eventa_id, per_id, role_id, note, per_seq)\n"
+        "  VALUES(0,0,0,0,'',0);\n"
+        "INSERT INTO \"" << dbname << "\".EventEventa (id, event_id, eventa_id, conf) VALUES(0,0,0,'');\n"
+        "INSERT INTO \"" << dbname << "\".Family (id) VALUES(0);\n"
+        "INSERT INTO \"" << dbname << "\".FamilyEvent (id, fam_id, event_id, fam_seq) VALUES(0,0,0,0);\n"
+        "INSERT INTO \"" << dbname << "\".FamilyEventa (id, fam_id, eventa_id, conf) VALUES(0,0,0,0);\n"
+        "INSERT INTO \"" << dbname << "\".FamilyIndEventa (id, fam_ind_id, eventa_id, conf) VALUES(0,0,0,0);\n"
+        "INSERT INTO \"" << dbname << "\".FamilyIndividual (\n"
+        "  id, fam_id, ind_id, seq_child,seq_parent) VALUES(0,0,0,0,0);\n"
+        "INSERT INTO \"" << dbname << "\".Gallery (id, title) VALUES(0,'');\n"
+        "INSERT INTO \"" << dbname << "\".GalleryMedia (id, gal_id, med_id, med_seq) VALUES(0,0,0,0);\n"
+        "INSERT INTO \"" << dbname << "\".Individual (id, sex, fam_id, note, privacy) VALUES(0,0,0,'',0);\n"
+        "INSERT INTO \"" << dbname << "\".IndividualEvent (\n"
+        "  id, higher_id, ind_id, event_id, role_id, note, ind_seq)\n"
+        "  VALUES(0,0,0,0,0,'',0);\n"
+        "INSERT INTO \"" << dbname << "\".IndividualPersona (id, ind_id, per_id, conf) VALUES(0,0,0,0);\n"
+        "INSERT INTO \"" << dbname << "\".Media (\n"
+        "  id, data_id, ass_id, ref_id, ref_seq, privacy)\n"
+        "  VALUES(0,0,0,0,0,0);\n"
+        "INSERT INTO \"" << dbname << "\".Name (id, ind_id, per_id, style_id) VALUES(0,0,0,0);\n"
+        "INSERT INTO \"" << dbname << "\".NamePart (id, name_id, type_id, sequence) VALUES(0,0,0,0);\n"
+        "INSERT INTO \"" << dbname << "\".Persona (id) VALUES(0);\n"
+        "INSERT INTO \"" << dbname << "\".Place (id) VALUES(0);\n"
+        "INSERT INTO \"" << dbname << "\".PlacePart (id) VALUES(0);\n"
+        "INSERT INTO \"" << dbname << "\".Reference (id, title, statement, uid, changed)\n"
+        "  VALUES(0,'','','',0);\n"
+        "INSERT INTO \"" << dbname << "\".ReferenceEntity (id) VALUES(0);\n"
+        "INSERT INTO \"" << dbname << "\".RelativeDate (id, base_id) VALUES(0,0);\n"
+        "INSERT INTO \"" << dbname << "\".Repository (id, name) VALUES(0,'');\n"
+
+        "UPDATE \"" << dbname << "\".Version SET test=29 WHERE id=1;\n"
+        "COMMIT;\n"
+        ;
+
+    recDb::GetDb()->ExecuteUpdate( update );
+
+    // Update to MediaData required as well.
+    mdUpgradeTest0_0_0_2to0_0_0_3( dbname );
+}
+
 
 void UpgradeRev0_0_10toCurrent( int test, const wxString& dbname )
 {
@@ -1342,6 +1416,7 @@ void UpgradeRev0_0_10toCurrent( int test, const wxString& dbname )
     case 25: UpgradeTest0_0_10_25to0_0_10_26( dbname );
     case 26: UpgradeTest0_0_10_26to0_0_10_27( dbname );
     case 27: UpgradeTest0_0_10_27to0_0_10_28( dbname );
+    case 28: UpgradeTest0_0_10_28to0_0_10_29( dbname );
     }
 }
 

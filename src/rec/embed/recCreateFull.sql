@@ -28,10 +28,11 @@
 
 /* Run recCreateCommon.sql and recCreateMedia.sql script first. */
 
+
 BEGIN;
 
 CREATE TABLE Associate (
-  id INTEGER PRIMARY KEY NOT NULL,
+  id INTEGER PRIMARY KEY,
   path TEXT NULL,
   comment TEXT NULL
 );
@@ -47,6 +48,8 @@ CREATE TABLE Citation (
   comment TEXT NULL
 );
 
+INSERT INTO Citation (id, higher_id, ref_id, ref_seq, rep_id) VALUES(0,0,0,0,0);
+
 CREATE TABLE CitationPart (
   id INTEGER PRIMARY KEY,
   cit_id INTEGER NOT NULL REFERENCES Citation(id),
@@ -56,6 +59,8 @@ CREATE TABLE CitationPart (
   comment TEXT NULL
 );
 
+INSERT INTO CitationPart (id, cit_id, type_id, val, cit_seq) VALUES(0,0,0,'',0);
+
 CREATE TABLE CitationPartType (
   id INTEGER PRIMARY KEY,
   name TEXT NOT NULL,
@@ -63,12 +68,16 @@ CREATE TABLE CitationPartType (
   comment TEXT NULL
 );
 
+INSERT INTO CitationPartType (id, name, style) VALUES(0,'',0);
+
 CREATE TABLE Contact (
   id INTEGER PRIMARY KEY,
   type_id INTEGER NOT NULL REFERENCES ContactType(id),
   list_id INTEGER NOT NULL REFERENCES ContactList(id),
   val TEXT NOT NULL
 );
+
+INSERT INTO Contact (id, type_id, list_id, val) VALUES(0,0,0,'');
 
 CREATE TABLE ContactList (
   id INTEGER PRIMARY KEY,
@@ -79,6 +88,7 @@ CREATE TABLE ContactType (
   id INTEGER PRIMARY KEY,
   name TEXT NOT NULL
 );
+/* See below for id=0 */
 
 CREATE TABLE Date (
   id INTEGER PRIMARY KEY,
@@ -90,6 +100,8 @@ CREATE TABLE Date (
   record_sch INTEGER,
   display_sch INTEGER
 );
+
+INSERT INTO Date (id) VALUES(0);
 
 CREATE TABLE Event (
   id INTEGER PRIMARY KEY,
@@ -104,6 +116,10 @@ CREATE TABLE Event (
   user_ref TEXT
 );
 
+INSERT INTO Event (
+    id, title, higher_id, type_id, date1_id, date2_id, place_id, note, date_pt)
+    VALUES(0,'',0,0,0,0,0,'',0);
+
 CREATE TABLE Eventa (
   id INTEGER PRIMARY KEY,
   title TEXT NOT NULL,
@@ -116,6 +132,10 @@ CREATE TABLE Eventa (
   date_pt INTEGER NOT NULL
 );
 
+INSERT INTO Eventa (
+    id, title, ref_id, type_id, date1_id, date2_id, place_id, note, date_pt)
+    VALUES(0,'',0,0,0,0,0,'',0);
+
 CREATE TABLE EventaPersona (
   id INTEGER PRIMARY KEY,
   eventa_id INTEGER NOT NULL REFERENCES Eventa(id),
@@ -125,6 +145,10 @@ CREATE TABLE EventaPersona (
   per_seq INTEGER NOT NULL
 );
 
+INSERT INTO EventaPersona (
+    id, eventa_id, per_id, role_id, note, per_seq)
+    VALUES(0,0,0,0,'',0);
+
 CREATE TABLE EventEventa (
   id INTEGER PRIMARY KEY,
   event_id INTEGER NOT NULL REFERENCES Event(id),
@@ -132,6 +156,8 @@ CREATE TABLE EventEventa (
   conf FLOAT NOT NULL,
   note TEXT
 );
+
+INSERT INTO EventEventa (id, event_id, eventa_id, conf) VALUES(0,0,0,'');
 
 CREATE TABLE EventType (
   id INTEGER PRIMARY KEY,
@@ -295,6 +321,8 @@ CREATE TABLE Family (
   wife_id INTEGER
 );
 
+INSERT INTO Family (id) VALUES(0);
+
 CREATE TABLE FamilyEvent (
   id INTEGER PRIMARY KEY,
   fam_id INTEGER NOT NULL REFERENCES Family(id),
@@ -302,6 +330,8 @@ CREATE TABLE FamilyEvent (
   note TEXT,
   fam_seq INTEGER NOT NULL
 );
+
+INSERT INTO FamilyEvent (id, fam_id, event_id, fam_seq) VALUES(0,0,0,0);
 
 CREATE TABLE FamilyEventa (
   id INTEGER PRIMARY KEY,
@@ -311,6 +341,8 @@ CREATE TABLE FamilyEventa (
   note TEXT
 );
 
+INSERT INTO FamilyEventa (id, fam_id, eventa_id, conf) VALUES(0,0,0,0);
+
 CREATE TABLE FamilyIndEventa (
   id INTEGER PRIMARY KEY,
   fam_ind_id INTEGER NOT NULL REFERENCES FamilyIndividual(id),
@@ -318,6 +350,8 @@ CREATE TABLE FamilyIndEventa (
   conf FLOAT NOT NULL,
   note TEXT
 );
+
+INSERT INTO FamilyIndEventa (id, fam_ind_id, eventa_id, conf) VALUES(0,0,0,0);
 
 CREATE TABLE FamilyIndividual (
   id INTEGER PRIMARY KEY,
@@ -327,19 +361,26 @@ CREATE TABLE FamilyIndividual (
   seq_parent INTEGER NOT NULL
 );
 
+INSERT INTO FamilyIndividual (
+    id, fam_id, ind_id, seq_child,seq_parent) VALUES(0,0,0,0,0);
+
 CREATE TABLE Gallery (
-  id INTEGER PRIMARY KEY NOT NULL,
+  id INTEGER PRIMARY KEY,
   title TEXT NOT NULL,
   note TEXT NULL
 );
 
+INSERT INTO Gallery (id, title) VALUES(0,'');
+
 CREATE TABLE GalleryMedia (
-  id INTEGER PRIMARY KEY NOT NULL,
+  id INTEGER PRIMARY KEY,
   title TEXT NULL,
   gal_id INT NOT NULL REFERENCES Gallery(id),
   med_id INT NOT NULL REFERENCES Media(id),
   med_seq INT NOT NULL
 );
+
+INSERT INTO GalleryMedia (id, gal_id, med_id, med_seq) VALUES(0,0,0,0);
 
 CREATE TABLE Individual (
   id INTEGER PRIMARY KEY,
@@ -352,6 +393,8 @@ CREATE TABLE Individual (
   epitaph TEXT
 );
 
+INSERT INTO Individual (id, sex, fam_id, note, privacy) VALUES(0,0,0,'',0);
+
 CREATE TABLE IndividualEvent (
   id INTEGER PRIMARY KEY,
   higher_id INTEGER NOT NULL,
@@ -362,6 +405,10 @@ CREATE TABLE IndividualEvent (
   ind_seq INTEGER NOT NULL
 );
 
+INSERT INTO IndividualEvent (
+    id, higher_id, ind_id, event_id, role_id, note, ind_seq)
+    VALUES(0,0,0,0,0,'',0);
+
 CREATE TABLE IndividualPersona (
   id INTEGER PRIMARY KEY,
   ind_id INTEGER NOT NULL REFERENCES Individual(id),
@@ -370,8 +417,10 @@ CREATE TABLE IndividualPersona (
   note TEXT
 );
 
+INSERT INTO IndividualPersona (id, ind_id, per_id, conf) VALUES(0,0,0,0);
+
 CREATE TABLE Media (
-  id INTEGER PRIMARY KEY NOT NULL,
+  id INTEGER PRIMARY KEY,
   data_id INT NOT NULL REFERENCES MediaData(id),
   ass_id INT NOT NULL REFERENCES Associate(id),
   ref_id INT NOT NULL REFERENCES Reference(id),
@@ -380,6 +429,10 @@ CREATE TABLE Media (
   title TEXT NULL,
   note, TEXT NULL
 );
+
+INSERT INTO Media (
+    id, data_id, ass_id, ref_id, ref_seq, privacy)
+    VALUES(0,0,0,0,0,0);
 
 /* Table MediaData created in recCreateMedia.sql */
 
@@ -391,6 +444,8 @@ CREATE TABLE Name (
   sequence INTEGER
 );
 
+INSERT INTO Name (id, ind_id, per_id, style_id) VALUES(0,0,0,0);
+
 CREATE TABLE NamePart (
   id INTEGER PRIMARY KEY,
   name_id INTEGER NOT NULL REFERENCES Name(id),
@@ -398,6 +453,8 @@ CREATE TABLE NamePart (
   val TEXT,
   sequence INTEGER NOT NULL
 );
+
+INSERT INTO NamePart (id, name_id, type_id, sequence) VALUES(0,0,0,0);
 
 CREATE TABLE NamePartType (
   id INTEGER PRIMARY KEY,
@@ -429,11 +486,15 @@ CREATE TABLE Persona (
   note TEXT
 );
 
+INSERT INTO Persona (id) VALUES(0);
+
 CREATE TABLE Place (
   id INTEGER PRIMARY KEY,
   date1_id INTEGER,
   date2_id INTEGER
 );
+
+INSERT INTO Place (id) VALUES(0);
 
 CREATE TABLE PlacePart (
   id INTEGER PRIMARY KEY,
@@ -442,6 +503,8 @@ CREATE TABLE PlacePart (
   val TEXT,
   sequence INTEGER
 );
+
+INSERT INTO PlacePart (id) VALUES(0);
 
 CREATE TABLE PlacePartType (
   id INTEGER PRIMARY KEY,
@@ -462,6 +525,9 @@ CREATE TABLE Reference (
   changed INT NOT NULL
 );
 
+INSERT INTO Reference (id, title, statement, uid, changed)
+    VALUES(0,'','','',0);
+
 CREATE TABLE ReferenceEntity (
   id INTEGER PRIMARY KEY,
   ref_id INTEGER,
@@ -469,6 +535,8 @@ CREATE TABLE ReferenceEntity (
   entity_id INTEGER,
   sequence INTEGER
 );
+
+INSERT INTO ReferenceEntity (id) VALUES(0);
 
 CREATE TABLE RelativeDate (
   id INTEGER PRIMARY KEY,
@@ -480,12 +548,16 @@ CREATE TABLE RelativeDate (
   scheme INTEGER
 );
 
+INSERT INTO RelativeDate (id, base_id) VALUES(0,0);
+
 CREATE TABLE Repository (
   id INTEGER PRIMARY KEY,
   name TEXT NOT NULL,
   note TEXT NULL,
   con_list_id INTEGER NULL REFERENCES ContactList(id)
 );
+
+INSERT INTO Repository (id, name) VALUES(0,'');
 
 CREATE TABLE Researcher (  /* See System Settings below for initial entries */
   id INTEGER PRIMARY KEY,
@@ -512,8 +584,6 @@ CREATE TABLE UserSetting (  /* See System Settings below for initial entries */
   val TEXT NOT NULL
 );
 
-/* Table Version created in recCreateCommon.sql */
-
 /* Create default settings */
 INSERT INTO ContactType (id, name) VALUES(0, '');
 INSERT INTO ContactType (id, name) VALUES(-1, 'Address');
@@ -533,6 +603,8 @@ INSERT INTO User (id, res_id) VALUES(1, -1); /* Set User U1 to Anomymous */
 INSERT INTO System (id, val) VALUES(1, '1'); /* User U1 */
 
 INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 1, 1, 'NI');
+
+/* Table Version created in recCreateCommon.sql */
 
 /* The Version table row 1 is the full TFPD database */
 INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 28);

@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     5th December 2018
- * Copyright:   Copyright (c) 2018 ~ 2019, Nick Matthews.
+ * Copyright:   Copyright (c) 2018..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -29,17 +29,20 @@
 BEGIN;
 
 CREATE TABLE MediaData (
-  id INTEGER PRIMARY KEY NOT NULL,
+  id INTEGER PRIMARY KEY,
   title TEXT NULL,
   data BLOB NOT NULL,
-  type INT NOT NULL,
-  privacy INT NOT NULL,
+  type INTEGER NOT NULL,
+  privacy INTEGER NOT NULL,
   copyright TEXT NULL,
   file TEXT NOT NULL
 );
 
+INSERT INTO MediaData (id, data, type, privacy, file) VALUES(0, '', 0, 0, '');
+
+
 /* The Version table id=2 for MediaData section of database */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(2, 0, 0, 0, 2);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(2, 0, 0, 0, 3);
 
 COMMIT;
 
