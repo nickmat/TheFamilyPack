@@ -261,7 +261,8 @@ wxSQLite3Table recMediaData::GetMediaDataList( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "SELECT id, title, type, privacy, copyright, file FROM \"%s\".MediaData ORDER BY file;", UTF8_( dbname )
+        "SELECT id, title, type, privacy, copyright, file FROM \"%s\".MediaData"
+        " WHERE NOT id=0 ORDER BY file;", UTF8_( dbname )
     );
     return s_db->GetTable( sql );
 }

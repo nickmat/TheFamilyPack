@@ -175,7 +175,8 @@ wxSQLite3Table recMedia::GetMediaList( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "SELECT id, ass_id, ref_id, title FROM \"%s\".Media ORDER BY id;",
+        "SELECT id, ass_id, ref_id, title FROM \"%s\".Media"
+        " WHERE NOT id=0 ORDER BY id;",
         UTF8_( dbname )
     );
     return s_db->GetTable( sql );
@@ -185,7 +186,8 @@ wxSQLite3Table recMedia::GetMediaList( idt offset, int limit, const wxString& db
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "SELECT id, ass_id, ref_id, title FROM \"%s\".Media ORDER BY id LIMIT " ID ", %d;",
+        "SELECT id, ass_id, ref_id, title FROM \"%s\".Media"
+        " WHERE NOT id=0 ORDER BY id LIMIT " ID ", %d;",
         UTF8_( dbname ), offset, limit
     );
     return s_db->GetTable( sql );

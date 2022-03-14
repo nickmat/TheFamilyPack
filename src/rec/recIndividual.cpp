@@ -606,7 +606,7 @@ wxSQLite3ResultSet recIndividual::GetNameSet( const wxString& dbname )
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "SELECT name, epitaph, id FROM \"%s\".Individual"
+        "SELECT name, epitaph, id FROM \"%s\".Individual WHERE NOT id=0"
         " ORDER BY surname, name, epitaph;", UTF8_( dbname )
     );
 

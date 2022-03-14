@@ -491,7 +491,8 @@ wxSQLite3Table recEventa::GetTitleList( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "SELECT id, title FROM \"%s\".Eventa ORDER BY id;", UTF8_( dbname )
+        "SELECT id, title FROM \"%s\".Eventa"
+        " WHERE NOT id=0 ORDER BY id;", UTF8_( dbname )
     );
     return s_db->GetTable( sql );
 }
@@ -500,7 +501,8 @@ wxSQLite3Table recEventa::GetTitleList( idt offset, int limit, const wxString& d
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "SELECT id, title FROM \"%s\".Eventa ORDER BY id LIMIT " ID ", %d;",
+        "SELECT id, title FROM \"%s\".Eventa"
+        " WHERE NOT id=0 ORDER BY id LIMIT " ID ", %d;",
         UTF8_( dbname ), offset, limit
     );
     return s_db->GetTable( sql );

@@ -128,7 +128,7 @@ recGalleryVec recGallery::GetGalleries( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "SELECT id, title, note FROM \"%s\".Gallery ORDER BY id",
+        "SELECT id, title, note FROM \"%s\".Gallery WHERE NOT id=0 ORDER BY id",
         UTF8_( dbname )
     );
     wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );

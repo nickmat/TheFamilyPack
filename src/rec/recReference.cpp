@@ -202,7 +202,7 @@ wxSQLite3Table recReference::GetTitleList( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "SELECT id, title FROM \"%s\".Reference ORDER BY id;",
+        "SELECT id, title FROM \"%s\".Reference WHERE NOT id=0 ORDER BY id;",
         UTF8_( dbname )
     );
     return s_db->GetTable( sql );
@@ -212,7 +212,7 @@ wxSQLite3Table recReference::GetTitleList( idt offset, int limit, const wxString
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "SELECT id, title FROM \"%s\".Reference ORDER BY id LIMIT " ID ", %d;",
+        "SELECT id, title FROM \"%s\".Reference WHERE NOT id=0 ORDER BY id LIMIT " ID ", %d;",
         UTF8_( dbname ), offset, limit
     );
     return s_db->GetTable( sql );

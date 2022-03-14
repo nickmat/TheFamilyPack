@@ -381,7 +381,7 @@ recRepositoryVec recRepository::GetFullList( const wxString& dbname )
 
     sql.Format(
         "SELECT id, name, note, con_list_id FROM \"%s\".Repository"
-        " ORDER BY id;", UTF8_( dbname )
+        " WHERE NOT id=0 ORDER BY id;", UTF8_( dbname )
     );
     wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
 

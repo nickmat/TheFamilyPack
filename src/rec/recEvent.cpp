@@ -687,7 +687,7 @@ wxSQLite3Table recEvent::GetTitleList( const wxString& dbname )
     wxSQLite3StatementBuffer sql;
     sql.Format(
         "SELECT id, title FROM \"%s\".Event"
-        " WHERE higher_id=0 ORDER BY id;",
+        " WHERE NOT id=0 AND higher_id=0 ORDER BY id;",
         UTF8_( dbname )
     );
     return s_db->GetTable( sql );
@@ -698,7 +698,7 @@ wxSQLite3Table recEvent::GetTitleList( idt offset, int limit, const wxString& db
     wxSQLite3StatementBuffer sql;
     sql.Format(
         "SELECT id, title FROM \"%s\".Event"
-        " WHERE higher_id=0"
+        " WHERE NOT id=0 AND higher_id=0"
         " ORDER BY id LIMIT " ID ", %d;",
         UTF8_( dbname ), offset, limit
     );
