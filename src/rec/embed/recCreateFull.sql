@@ -554,10 +554,12 @@ CREATE TABLE Repository (
   id INTEGER PRIMARY KEY,
   name TEXT NOT NULL,
   note TEXT NULL,
-  con_list_id INTEGER NULL REFERENCES ContactList(id)
+  con_list_id INTEGER NULL REFERENCES ContactList(id),
+  uid TEXT NOT NULL,
+  changed INT NOT NULL
 );
 
-INSERT INTO Repository (id, name) VALUES(0,'');
+INSERT INTO Repository (id, name, uid, changed) VALUES(0,'','',0);
 
 CREATE TABLE Researcher (  /* See System Settings below for initial entries */
   id INTEGER PRIMARY KEY,

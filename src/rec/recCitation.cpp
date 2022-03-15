@@ -34,6 +34,8 @@
 #include <rec/recCitation.h>
 #include <rec/recContact.h>
 
+#include <cal/calendar.h>
+
 
 //============================================================================
 //                 recCitation
@@ -289,6 +291,8 @@ recRepository::recRepository( const recRepository& cp )
     f_name = cp.f_name;
     f_note = cp.f_note;
     f_con_list_id = cp.f_con_list_id;
+    f_uid = cp.f_uid;
+    f_changed = cp.f_changed;
 }
 
 void recRepository::Clear()
@@ -297,6 +301,8 @@ void recRepository::Clear()
     f_name.clear();
     f_note.clear();
     f_con_list_id = 0;
+    f_uid.clear();
+    f_changed = 0;
 }
 
 void recRepository::Save( const wxString& dbname )
@@ -307,9 +313,10 @@ void recRepository::Save( const wxString& dbname )
     {
         // Add new record
         sql.Format(
-            "INSERT INTO \"%s\".Repository (name, note, con_list_id)"
-            " VALUES ('%q', '%q', " ID ");",
-            UTF8_( dbname ), UTF8_( f_name ), UTF8_( f_note ), f_con_list_id
+            "INSERT INTO \"%s\".Repository (name, note, con_list_id, uid, changed)"
+            " VALUES ('%q', '%q', " ID ", '%q', %ld);",
+            UTF8_( dbname ), UTF8_( f_name ), UTF8_( f_note ),
+            f_con_list_id, UTF8_( f_uid ), f_changed
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -320,17 +327,19 @@ void recRepository::Save( const wxString& dbname )
         {
             // Add new record
             sql.Format(
-                "INSERT INTO \"%s\".Repository (id, name, note, con_list_id)"
-                " VALUES (" ID ", '%q', '%q', " ID ");",
-                UTF8_( dbname ), f_id, UTF8_( f_name ), UTF8_( f_note ), f_con_list_id
+                "INSERT INTO \"%s\".Repository (id, name, note, con_list_id, uid, changed)"
+                " VALUES (" ID ", '%q', '%q', " ID ", '%q', %ld);",
+                UTF8_( dbname ), f_id, UTF8_( f_name ), UTF8_( f_note ),
+                f_con_list_id, UTF8_( f_uid ), f_changed
             );
         }
         else {
             // Update existing record
             sql.Format(
-                "UPDATE \"%s\".Repository SET name='%q', note='%q', con_list_id=" ID
-                " WHERE id=" ID ";",
-                UTF8_( dbname ), UTF8_( f_name ), UTF8_( f_note ), f_con_list_id, f_id
+                "UPDATE \"%s\".Repository SET name='%q', note='%q', con_list_id=" ID ","
+                " uid = '%q', changed = %ld WHERE id=" ID ";",
+                UTF8_( dbname ), UTF8_( f_name ), UTF8_( f_note ),
+                f_con_list_id, UTF8_( f_uid ), f_changed, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -348,7 +357,7 @@ bool recRepository::Read( const wxString& dbname )
     }
 
     sql.Format(
-        "SELECT name, note, con_list_id"
+        "SELECT name, note, con_list_id, uid, changed"
         " FROM \"%s\".Repository WHERE id=" ID ";",
         UTF8_( dbname ), f_id
     );
@@ -363,6 +372,8 @@ bool recRepository::Read( const wxString& dbname )
     f_name = result.GetAsString( 0 );
     f_note = result.GetAsString( 1 );
     f_con_list_id = GET_ID( result.GetInt64( 2 ) );
+    f_uid = result.GetAsString( 3 );
+    f_changed = result.GetInt( 4 );
     return true;
 }
 
@@ -371,7 +382,10 @@ bool recRepository::Equivalent( const recRepository& r2 ) const
     return
         f_name == r2.f_name &&
         f_note == r2.f_note &&
-        f_con_list_id == r2.f_con_list_id;
+        f_con_list_id == r2.f_con_list_id &&
+        f_uid == r2.f_uid &&
+        f_changed == r2.f_changed
+        ;
 }
 
 recRepositoryVec recRepository::GetFullList( const wxString& dbname )
@@ -380,7 +394,7 @@ recRepositoryVec recRepository::GetFullList( const wxString& dbname )
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "SELECT id, name, note, con_list_id FROM \"%s\".Repository"
+        "SELECT id, name, note, con_list_id, uid, changed FROM \"%s\".Repository"
         " WHERE NOT id=0 ORDER BY id;", UTF8_( dbname )
     );
     wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
@@ -391,9 +405,42 @@ recRepositoryVec recRepository::GetFullList( const wxString& dbname )
         arch.FSetName( result.GetAsString( 1 ) );
         arch.FSetNote( result.GetAsString( 2 ) );
         arch.FSetConListID( GET_ID( result.GetInt64( 3 ) ) );
+        arch.FSetUid( result.GetAsString( 4 ) );
+        arch.FSetChanged( result.GetInt( 5 ) );
         list.push_back( arch );
     }
     return list;
+}
+
+wxString recRepository::GetChangedDate() const
+{
+    return calStrFromJdn( f_changed, CALENDAR_SCH_Gregorian );
+}
+
+wxString recRepository::GetChangedDate( idt refID, const wxString& dbname )
+{
+    long jdn = recDb::ExecuteInt(
+        "SELECT changed FROM \"%s\".Repository WHERE id=" ID ";",
+        UTF8_( dbname ), refID
+    );
+    return calStrFromJdn( jdn, CALENDAR_SCH_Gregorian );
+}
+
+idt recRepository::FindUid( idt refID, const wxString& source_db, const wxString& target_db )
+{
+    recRepository ref( refID, source_db );
+    return ref.FindUid( target_db );
+}
+
+idt recRepository::FindUid( const wxString& target_db ) const
+{
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "SELECT id FROM \"%s\".Repository WHERE uid='%q';",
+        UTF8_( target_db ), UTF8_( f_uid )
+    );
+    return ExecuteID( sql );
 }
 
 void recRepository::Renumber( idt id, idt to_id )

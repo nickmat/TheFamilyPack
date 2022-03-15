@@ -104,7 +104,9 @@ class recRepository : public recDbT< recRepository>
 {
     wxString f_name;
     wxString f_note;
-    idt f_con_list_id;
+    idt      f_con_list_id;
+    wxString f_uid;
+    long     f_changed;
 
 public:
     static constexpr const char* s_tablename = "Repository";
@@ -121,15 +123,26 @@ public:
     wxString FGetName() const { return f_name; }
     wxString FGetNote() const { return f_note; }
     idt FGetConListID() const { return f_con_list_id; }
+    wxString FGetUid() const { return f_uid; }
+    long FGetChanged() const { return f_changed; }
 
     void FSetName( const wxString& name ) { f_name = name; }
     void FSetNote( const wxString& note ) { f_note = note; }
     void FSetConListID( idt clID ) { f_con_list_id = clID; }
+    void FSetUid( const wxString& uid ) { f_uid = uid; }
+    void FSetChanged( long jdn ) { f_changed = jdn; }
 
     static wxString GetIdStr( idt repID ) { return wxString::Format( "Ar" ID, repID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     static recRepositoryVec GetFullList( const wxString& dbname = "Main" );
+
+    wxString GetChangedDate() const;
+    static wxString GetChangedDate( idt refID, const wxString& dbname );
+
+    static idt FindUid(
+        idt refID, const wxString& source_db, const wxString& target_db = "Main" );
+    idt FindUid( const wxString& target_db = "Main" ) const;
 
     static void Renumber( idt fromID, idt toID );
     static std::string CsvTitles();

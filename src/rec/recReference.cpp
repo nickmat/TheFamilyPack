@@ -80,10 +80,11 @@ void recReference::Save( const wxString& dbname )
     {
         // Add new record
         sql.Format(
-            "INSERT INTO \"%s\".Reference (higher_id, title, statement, res_id, user_ref, uid, changed)"
+            "INSERT INTO \"%s\".Reference "
+            "(higher_id, title, statement, res_id, user_ref, uid, changed)"
             "VALUES (" ID ", '%q', '%q', " ID ", '%q', '%q', %ld);",
-            UTF8_( dbname ), f_higher_id, UTF8_(f_title), UTF8_(f_statement), f_res_id, UTF8_(f_user_ref),
-            UTF8_( f_uid ), f_changed
+            UTF8_( dbname ), f_higher_id, UTF8_(f_title), UTF8_(f_statement),
+            f_res_id, UTF8_(f_user_ref), UTF8_( f_uid ), f_changed
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -93,7 +94,8 @@ void recReference::Save( const wxString& dbname )
         {
             // Add new record
             sql.Format(
-                "INSERT INTO \"%s\".Reference (id, higher_id, title, statement, res_id, user_ref, uid, changed)"
+                "INSERT INTO \"%s\".Reference"
+                " (id, higher_id, title, statement, res_id, user_ref, uid, changed)"
                 " VALUES (" ID ", " ID ", '%q', '%q', " ID ", '%q', '%q', %ld);",
                 UTF8_( dbname ), f_id, f_higher_id, UTF8_(f_title), UTF8_(f_statement),
                 f_res_id, UTF8_(f_user_ref), UTF8_( f_uid ), f_changed
@@ -101,7 +103,8 @@ void recReference::Save( const wxString& dbname )
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE \"%s\".Reference SET higher_id=" ID ", title = '%q', statement = '%q',"
+                "UPDATE \"%s\".Reference SET"
+                " higher_id=" ID ", title = '%q', statement = '%q',"
                 " res_id = " ID ", user_ref = '%q', uid = '%q', changed = %ld"
                 " WHERE id=" ID ";",
                 UTF8_( dbname ), f_higher_id, UTF8_(f_title), UTF8_(f_statement),
