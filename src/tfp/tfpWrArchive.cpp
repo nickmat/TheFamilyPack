@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     12th November 2021
- * Copyright:   Copyright (c) 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2021..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -85,7 +85,11 @@ wxString tfpWriteArchive( idt arcID, const wxString& extdb )
             "</td></tr>\n"
             ;
     }
-    htm << "</table>\n" << tfpWrTailTfp();
+    htm <<
+        "<tr><td colspan='2'>Date Last Changed: " << arc.GetChangedDate() <<
+        " </td><td>UID: " << arc.FGetUid() <<
+        "</td></tr>\n"
+        "</table>\n" << tfpWrTailTfp();
     return htm;
 }
 
