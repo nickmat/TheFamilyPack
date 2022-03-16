@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     11th November 2021
- * Copyright:   Copyright (c) 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2021..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -31,11 +31,12 @@
 #include "wx/wx.h"
 #endif
 
-//#include <rec/recSystem.h>
 #include <rec/recCitation.h>
 
 #include <rg/rgDialogs.h>
 #include "rgEdCitation.h"
+
+#include <cal/calendar.h>
 
 
 bool rgEditCitation( wxWindow* wind, idt citID, const wxString& title )
@@ -94,6 +95,8 @@ idt rgCreateArchive( wxWindow* wind )
 
     recRepository arc(0);
     arc.FSetConListID( list.FGetID() );
+    arc.FSetUid( recCreateUid() );
+    arc.FSetChanged( calGetTodayJdn() );
     arc.Save();
     idt arcID = arc.FGetID();
 
@@ -369,6 +372,9 @@ bool rgDlgEditArchive::TransferDataToWindow()
 
     m_textCtrlName->SetValue( m_archive.FGetName() );
     m_textCtrlNote->SetValue( m_archive.FGetNote() );
+    m_textCtrlUid->SetValue( m_archive.FGetUid() );
+    wxString changed = calStrFromJdn( m_archive.FGetChanged(), CALENDAR_SCH_Gregorian );
+    m_textCtrlChanged->SetValue( changed );
 
     for( size_t i = 0 ; i < m_contacts.size() ; i++ ) {
         m_listContacts->InsertItem( i, m_contacts[i].GetIdStr() );
@@ -385,6 +391,7 @@ bool rgDlgEditArchive::TransferDataFromWindow()
 {
     m_archive.FSetName( m_textCtrlName->GetValue() );
     m_archive.FSetNote( m_textCtrlNote->GetValue() );
+    m_archive.FSetChanged( calGetTodayJdn() );
 
     m_archive.Save();
     return true;

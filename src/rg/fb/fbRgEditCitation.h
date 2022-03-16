@@ -84,6 +84,10 @@ class fbRgEditArchive : public wxDialog
 	protected:
 		wxTextCtrl* m_textCtrlName;
 		wxTextCtrl* m_textCtrlNote;
+		wxStaticText* m_staticText15;
+		wxTextCtrl* m_textCtrlUid;
+		wxStaticText* m_staticText16;
+		wxTextCtrl* m_textCtrlChanged;
 		wxListCtrl* m_listContacts;
 		wxButton* m_buttonAdd;
 		wxButton* m_buttonEdit;
