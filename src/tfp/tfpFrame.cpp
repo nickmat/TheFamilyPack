@@ -1865,6 +1865,10 @@ wxString TfpFrame::GetCurrentName()
 void TfpFrame::RefreshEditMenu()
 {
     wxASSERT( m_back.size() > 0 );
+    recDb::DbType type = recDb::GetDatabaseType( m_dbname );
+    if( type != recDb::DbType::full ) {
+        return;
+    }
     wxString disp = GetDisplay();
     wxUniChar uch = disp.GetChar( 0 );
     m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, false );
