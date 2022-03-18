@@ -48,7 +48,7 @@ class fbRgEditReference : public wxDialog
 		wxButton* m_buttonResearcher;
 		wxTextCtrl* m_textCtrlResearcher;
 		wxTextCtrl* m_textCtrlUserRef;
-		wxTextCtrl* m_textCtrlUdi;
+		wxTextCtrl* m_textCtrlUid;
 		wxTextCtrl* m_textCtrlChanged;
 		wxSplitterWindow* m_splitter1;
 		wxPanel* m_panelTop;

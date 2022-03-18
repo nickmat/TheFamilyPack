@@ -211,7 +211,7 @@ bool rgDlgEditReference::TransferDataToWindow()
     m_textCtrlResearcher->SetValue( res.GetIdStr() + ": " + res.FGetName() );
     m_textCtrlUserRef->SetValue( m_reference.FGetUserRef() );
     m_textCtrlStatement->SetValue(  m_reference.FGetStatement() );
-    m_textCtrlUdi->SetValue( m_reference.FGetUid() );
+    m_textCtrlUid->SetValue( m_reference.FGetUid() );
     wxString changed = calStrFromJdn( m_reference.FGetChanged(), CALENDAR_SCH_Gregorian );
     m_textCtrlChanged->SetValue( changed );
 

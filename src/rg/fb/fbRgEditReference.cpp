@@ -81,8 +81,8 @@ fbRgEditReference::fbRgEditReference( wxWindow* parent, wxWindowID id, const wxS
 	wxBoxSizer* bSizer21;
 	bSizer21 = new wxBoxSizer( wxHORIZONTAL );
 
-	m_textCtrlUdi = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
-	bSizer21->Add( m_textCtrlUdi, 1, wxBOTTOM|wxRIGHT|wxALIGN_CENTER_VERTICAL, 5 );
+	m_textCtrlUid = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+	bSizer21->Add( m_textCtrlUid, 1, wxBOTTOM|wxRIGHT|wxALIGN_CENTER_VERTICAL, 5 );
 
 	wxStaticText* m_staticText6;
 	m_staticText6 = new wxStaticText( this, wxID_ANY, _("Last Changed:"), wxDefaultPosition, wxDefaultSize, 0 );
