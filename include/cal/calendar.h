@@ -241,7 +241,7 @@ extern bool calYearFromJdn( int* year, long jdn, CalendarScheme scheme );
 /*! Returns a string representation of the julian day number for the given
  * calendar scheme. Returns a wxEmptyString on error.
  */
-extern wxString calStrFromJdn( long jdn, CalendarScheme scheme );
+extern wxString calStrFromJdn( long jdn, CalendarScheme scheme = CALENDAR_SCH_Gregorian );
 
 /*! Converts a string into a julian day number based on the given
  * calendar scheme. Returns zero if unable to parse string.
