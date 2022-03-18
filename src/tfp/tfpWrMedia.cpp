@@ -36,6 +36,8 @@
 
 #include "tfpWr.h"
 
+#include <cal/calendar.h>
+
 #include <rec/recAssociate.h>
 #include <rec/recMedia.h>
 #include <rec/recMediaData.h>
@@ -241,6 +243,16 @@ wxString tfpWriteMediaDataPage( const wxString& link, const wxString& extdb )
         "<td><b>" << md.FGetPrivacy() << "</b></td>\n"
         "</tr>\n"
 
+        "<tr>\n"
+        "<td>UID:</td>\n"
+        "<td><b>" << md.FGetUid() << "</b></td>\n"
+        "</tr>\n"
+
+        "<tr>\n"
+        "<td>Last Change:</td>\n"
+        "<td><b>" << calStrFromJdn( md.FGetChanged() ) << "</b></td>\n"
+        "</tr>\n"
+
         "</table>\n" << tfpWrTailTfp()
         ;
     return htm;
@@ -268,8 +280,8 @@ wxString tfpWriteMediaDataIndex( const wxString& extdb )
         attPostfix << "," << dbname;
         htm <<
             "<table class='data'>\n"
-            "<tr><th colspan='6'>" << dbname << assIdStr << "</th></tr>\n"
-            "<tr><th>ID</th><th>Title</th><th>File</th><th>Type</th><th>Privacy</th><th>Copyright</th></tr>\n"
+            "<tr><th colspan='7'>" << dbname << assIdStr << "</th></tr>\n"
+            "<tr><th>ID</th><th>Title</th><th>File</th><th>Type</th><th>Privacy</th><th>Copyright</th><th>Changed</th></tr>\n"
         ;
         for ( int i = 0; i < result.GetRowCount(); i++ ) {
             result.SetRow( i );
@@ -282,6 +294,7 @@ wxString tfpWriteMediaDataIndex( const wxString& extdb )
                 "</td><td>" << recMediaData::GetMimeStr( mime ) <<  // File Type
                 "</td><td>" << result.GetInt( 3 ) <<  // Privacy
                 "</td><td>" << result.GetAsString( 4 ) <<  // Copyright
+                "</td><td>" << calStrFromJdn( result.GetInt( 7 ) ) <<  // Changed
                 "</td></tr>\n"
             ;
         }
