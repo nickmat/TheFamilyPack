@@ -86,7 +86,7 @@ namespace {
         update <<
             "INSERT INTO MediaData (id, data, type, privacy, file) VALUES(0, '', 0, 0, '');\n"
 
-            "UPDATE " << dbname << ".Version SET test=2 WHERE id=2;\n"
+            "UPDATE \"" << dbname << "\".Version SET test=2 WHERE id=2;\n"
             "COMMIT;\n"
             ;
         recDb::GetDb()->ExecuteUpdate( update );
@@ -131,12 +131,12 @@ namespace {
             "  uid TEXT NOT NULL,\n"
             "  changed INTEGER NOT NULL\n"
             ");\n"
-            "INSERT INTO " << dbname << ".NewMediaData"
+            "INSERT INTO \"" << dbname << "\".NewMediaData"
             " (id, title, data, type, privacy, copyright, file, uid, changed)"
             " SELECT id, title, data, type, privacy, copyright, file, '', 2459655"
-            " FROM " << dbname << ".MediaData;\n"
-            "DROP TABLE " << dbname << ".MediaData;\n"
-            "ALTER TABLE " << dbname << ".NewMediaData RENAME TO MediaData;\n"
+            " FROM \"" << dbname << "\".MediaData;\n"
+            "DROP TABLE \"" << dbname << "\".MediaData;\n"
+            "ALTER TABLE \"" << dbname << "\".NewMediaData RENAME TO MediaData;\n"
             ;
 
         // Fill MediaData table uid field
@@ -153,7 +153,7 @@ namespace {
         }
 
         update <<
-            "UPDATE " << dbname << ".Version SET test=4 WHERE id=2;\n"
+            "UPDATE \"" << dbname << "\".Version SET test=4 WHERE id=2;\n"
             "COMMIT;\n"
             ;
         recDb::GetDb()->ExecuteUpdate( update );
