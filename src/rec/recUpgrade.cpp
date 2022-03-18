@@ -41,8 +41,8 @@
 const int recVerMajor = 0;
 const int recVerMinor = 0;
 const int recVerRev = 10;
-const int recVerTest = 30;                       // <<======<<<<
-const char* recFullVersion = "TFPD-v0.0.10.30";  // <<======<<<<
+const int recVerTest = 31;                       // <<======<<<<
+const char* recFullVersion = "TFPD-v0.0.10.31";  // <<======<<<<
 
 // This is the database Media-only version that this program can work with.
 // If the full version matches, then this is assumed to match as well.
@@ -50,8 +50,8 @@ const char* recFullVersion = "TFPD-v0.0.10.30";  // <<======<<<<
 const int recMediaVerMajor = 0;
 const int recMediaVerMinor = 0;
 const int recMediaVerRev = 0;
-const int recMediaVerTest = 3;                   // <<======<<<<
-const char* recMediaVersion = "MDD-v0.0.0.3";    // <<======<<<<
+const int recMediaVerTest = 4;                   // <<======<<<<
+const char* recMediaVersion = "MDD-v0.0.0.4";    // <<======<<<<
 
 wxString recGetCurrentVersionStr()
 {
@@ -112,12 +112,60 @@ namespace {
         recDb::GetDb()->ExecuteUpdate( update );
     }
 
+    void mdUpgradeTest0_0_0_3to0_0_0_4( const wxString& dbname )
+    {
+        // MediaData Version 0.0.0.3 to 0.0.0.4
+        // Add uid and changed fields to MediaData
+
+        wxString update = "BEGIN;\n";
+
+        update <<
+            "CREATE TABLE \"" << dbname << "\".NewMediaData (\n"
+            "  id INTEGER PRIMARY KEY,\n"
+            "  title TEXT NULL,\n"
+            "  data BLOB NOT NULL,\n"
+            "  type INTEGER NOT NULL,\n"
+            "  privacy INTEGER NOT NULL,\n"
+            "  copyright TEXT NULL,\n"
+            "  file TEXT NOT NULL,\n"
+            "  uid TEXT NOT NULL,\n"
+            "  changed INTEGER NOT NULL\n"
+            ");\n"
+            "INSERT INTO " << dbname << ".NewMediaData"
+            " (id, title, data, type, privacy, copyright, file, uid, changed)"
+            " SELECT id, title, data, type, privacy, copyright, file, '', 2459655"
+            " FROM " << dbname << ".MediaData;\n"
+            "DROP TABLE " << dbname << ".MediaData;\n"
+            "ALTER TABLE " << dbname << ".NewMediaData RENAME TO MediaData;\n"
+            ;
+
+        // Fill MediaData table uid field
+        wxString query = "SELECT id FROM \"" + dbname + "\".MediaData WHERE id>0;\n"; // Get mdID list
+        wxSQLite3Table table = recDb::GetDb()->GetTable( query );
+        size_t size = (size_t) table.GetRowCount();
+        for( size_t i = 0; i < size; i++ ) {
+            table.SetRow( i );
+            update <<
+                "UPDATE \"" << dbname << "\".MediaData"
+                " SET uid='" << recCreateUid() << "'"
+                " WHERE id=" << table.GetAsString( 0 ) << ";\n"
+            ;
+        }
+
+        update <<
+            "UPDATE " << dbname << ".Version SET test=4 WHERE id=2;\n"
+            "COMMIT;\n"
+            ;
+        recDb::GetDb()->ExecuteUpdate( update );
+    }
+
     void mdUpgradeRev0_0_0toCurrent( int test, const wxString& dbname )
     {
         switch( test )
         {
         case 1: mdUpgradeTest0_0_0_1to0_0_0_2( dbname );  // Fall thru intended
         case 2: mdUpgradeTest0_0_0_2to0_0_0_3( dbname );
+        case 3: mdUpgradeTest0_0_0_3to0_0_0_4( dbname );
         }
     }
 
@@ -1432,6 +1480,23 @@ void UpgradeTest0_0_10_29to0_0_10_30( const wxString& dbname )
     recDb::GetDb()->ExecuteUpdate( update );
 }
 
+void UpgradeTest0_0_10_30to0_0_10_31( const wxString& dbname )
+{
+    // Version 0.0.10.30 to 0.0.10.31
+    // Add uid and changed fields to MediaData.
+
+    wxString update; 
+    update <<
+        "BEGIN;\n"
+        "UPDATE \"" << dbname << "\".Version SET test=31 WHERE id=1;\n"
+        "COMMIT;\n"
+    ;
+    recDb::GetDb()->ExecuteUpdate( update );
+
+    // Update to MediaData.
+    mdUpgradeTest0_0_0_3to0_0_0_4( dbname );
+}
+
 
 void UpgradeRev0_0_10toCurrent( int test, const wxString& dbname )
 {
@@ -1467,6 +1532,7 @@ void UpgradeRev0_0_10toCurrent( int test, const wxString& dbname )
     case 27: UpgradeTest0_0_10_27to0_0_10_28( dbname );
     case 28: UpgradeTest0_0_10_28to0_0_10_29( dbname );
     case 29: UpgradeTest0_0_10_29to0_0_10_30( dbname );
+    case 30: UpgradeTest0_0_10_30to0_0_10_31( dbname );
     }
 }
 

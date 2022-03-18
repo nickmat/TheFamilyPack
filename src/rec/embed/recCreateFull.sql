@@ -556,7 +556,7 @@ CREATE TABLE Repository (
   note TEXT NULL,
   con_list_id INTEGER NULL REFERENCES ContactList(id),
   uid TEXT NOT NULL,
-  changed INT NOT NULL
+  changed INTEGER NOT NULL
 );
 
 INSERT INTO Repository (id, name, uid, changed) VALUES(0,'','',0);
@@ -609,7 +609,7 @@ INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 1, 1, 'NI');
 /* Table Version created in recCreateCommon.sql */
 
 /* The Version table row 1 is the full TFPD database */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 28);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 31);
 
 COMMIT;
 

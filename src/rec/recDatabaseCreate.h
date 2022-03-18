@@ -48,10 +48,12 @@ static const char* createMediaDb =  /* recCreateMedia.sql */
  "  type INTEGER NOT NULL,\n"
  "  privacy INTEGER NOT NULL,\n"
  "  copyright TEXT NULL,\n"
- "  file TEXT NOT NULL\n"
+ "  file TEXT NOT NULL,\n"
+ "  uid TEXT NOT NULL,\n"
+ "  changed INTEGER NOT NULL\n"
  ");\n"
- "INSERT INTO MediaData (id, data, type, privacy, file) VALUES(0, '', 0, 0, '');\n"
- "INSERT INTO Version (id, major, minor, revision, test) VALUES(2, 0, 0, 0, 3);\n"
+ "INSERT INTO MediaData (id, data, type, privacy, file) VALUES(0, '', 0, 0, '', '', 0);\n"
+ "INSERT INTO Version (id, major, minor, revision, test) VALUES(2, 0, 0, 0, 4);\n"
  "COMMIT;\n";
 
 static const char* createFullDb =  /* recCreateFull.sql */
@@ -481,7 +483,7 @@ static const char* createFullDb =  /* recCreateFull.sql */
  "  note TEXT NULL,\n"
  "  con_list_id INTEGER NULL REFERENCES ContactList(id),\n"
  "  uid TEXT NOT NULL,\n"
- "  changed INT NOT NULL\n"
+ "  changed INTEGER NOT NULL\n"
  ");\n"
  "INSERT INTO Repository (id, name, uid, changed) VALUES(0,'','',0);\n"
  "CREATE TABLE Researcher (\n"
@@ -519,7 +521,7 @@ static const char* createFullDb =  /* recCreateFull.sql */
  "INSERT INTO User (id, res_id) VALUES(1, -1);\n"
  "INSERT INTO System (id, val) VALUES(1, '1');\n"
  "INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 1, 1, 'NI');\n"
- "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 28);\n"
+ "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 31);\n"
  "COMMIT;\n";
 
 /* End of src/rec/embed/recDatabaseCreate.f2c */

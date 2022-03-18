@@ -35,14 +35,16 @@ CREATE TABLE MediaData (
   type INTEGER NOT NULL,
   privacy INTEGER NOT NULL,
   copyright TEXT NULL,
-  file TEXT NOT NULL
+  file TEXT NOT NULL,
+  uid TEXT NOT NULL,
+  changed INTEGER NOT NULL
 );
 
-INSERT INTO MediaData (id, data, type, privacy, file) VALUES(0, '', 0, 0, '');
+INSERT INTO MediaData (id, data, type, privacy, file) VALUES(0, '', 0, 0, '', '', 0);
 
 
 /* The Version table id=2 for MediaData section of database */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(2, 0, 0, 0, 3);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(2, 0, 0, 0, 4);
 
 COMMIT;
 

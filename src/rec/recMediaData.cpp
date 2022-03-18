@@ -40,6 +40,8 @@
 #include <rec/recAssociate.h>
 #include <rec/recMedia.h>
 
+#include <cal/calendar.h>
+
 #include <wx/file.h>
 #include <wx/filesys.h>
 #include <wx/fs_mem.h>
@@ -53,7 +55,9 @@ recMediaData::recMediaData( const recMediaData& n )
     f_type = n.f_type;
     f_privacy = n.f_privacy;
     f_copyright = n.f_copyright;
-    f_file = f_file;
+    f_file = n.f_file;
+    f_uid = n.f_uid;
+    f_changed = n.f_changed;
 }
 
 void recMediaData::Clear()
@@ -65,6 +69,8 @@ void recMediaData::Clear()
     f_privacy = 0;
     f_copyright.clear();
     f_file.clear();
+    f_uid.clear();
+    f_changed = 0;
 }
 
 void recMediaData::Save( const wxString & dbname )
@@ -76,10 +82,10 @@ void recMediaData::Save( const wxString & dbname )
     {
         // Add new record
         sql.Format(
-            "INSERT INTO \"%s\".MediaData (title, data, type, privacy, copyright, file)"
-            " VALUES ('%q', x'%q', %d, %d, '%q', '%q');",
+            "INSERT INTO \"%s\".MediaData (title, data, type, privacy, copyright, file, uid, changed)"
+            " VALUES ('%q', x'%q', %d, %d, '%q', '%q', '%q', %ld);",
             UTF8_( dbname ), UTF8_( f_title ), UTF8_( GetBlobFormatStr( f_data ) ),
-            f_type, f_privacy, UTF8_( f_copyright ), UTF8_( f_file )
+            f_type, f_privacy, UTF8_( f_copyright ), UTF8_( f_file ), UTF8_( f_uid ), f_changed
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -89,19 +95,20 @@ void recMediaData::Save( const wxString & dbname )
         {
             // Add new record
             sql.Format(
-                "INSERT INTO \"%s\".MediaData (id, title, data, type, privacy, copyright, file)"
-                " VALUES (" ID ", '%q', x'%q', %d, %d, '%q', '%q');",
+                "INSERT INTO \"%s\".MediaData (id, title, data, type, privacy, copyright, file, uid, changed)"
+                " VALUES (" ID ", '%q', x'%q', %d, %d, '%q', '%q', '%q', %ld);",
                 UTF8_( dbname ), f_id, UTF8_( f_title ), UTF8_( GetBlobFormatStr( f_data ) ),
-                f_type, f_privacy, UTF8_( f_copyright ), UTF8_( f_file )
+                f_type, f_privacy, UTF8_( f_copyright ), UTF8_( f_file ), UTF8_( f_uid ), f_changed
             );
         } else {
             // Update existing record
             sql.Format(
                 "UPDATE \"%s\".MediaData SET title='%q', data=x'%q', type=%d,"
-                " privacy=%d, copyright='%q', file='%q'"
+                " privacy=%d, copyright='%q', file='%q', uid='%q', changed=%ld"
                 " WHERE id=" ID ";",
                 UTF8_( dbname ), UTF8_( f_title ), UTF8_( GetBlobFormatStr( f_data ) ),
-                f_type, f_privacy, UTF8_( f_copyright ), UTF8_( f_file ), f_id
+                f_type, f_privacy, UTF8_( f_copyright ), UTF8_( f_file ), UTF8_( f_uid ),
+                f_changed, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -118,7 +125,7 @@ bool recMediaData::Read( const wxString & dbname )
     }
 
     sql.Format(
-        "SELECT title, data, type, privacy, copyright, file"
+        "SELECT title, data, type, privacy, copyright, file, uid, changed"
         " FROM \"%s\".MediaData WHERE id=" ID ";",
         UTF8_( dbname ), f_id
     );
@@ -136,6 +143,8 @@ bool recMediaData::Read( const wxString & dbname )
     f_privacy = result.GetInt( 3 );
     f_copyright = result.GetAsString( 4 );
     f_file = result.GetAsString( 5 );
+    f_uid = result.GetAsString( 6 );
+    f_changed = result.GetInt( 7 );
     return true;
 }
 
@@ -158,12 +167,15 @@ bool recMediaData::Equivalent( const recMediaData& r2 ) const
     wxASSERT( false ); 
     return
         f_title == r2.f_title &&
-//      TODO: write a wxMemoryBuffer compare function.
-//        f_data == r2.f_data   &&
+    //  TODO: write a wxMemoryBuffer compare function.
+    //  f_data == r2.f_data   &&
         f_type == r2.f_type &&
-        f_privacy == r2.f_privacy   &&
-        f_copyright == r2.f_copyright   &&
-        f_file == r2.f_file;
+        f_privacy == r2.f_privacy &&
+        f_copyright == r2.f_copyright &&
+        f_file == r2.f_file &&
+        f_uid == r2.f_uid &&
+        f_changed == r2.f_changed
+        ;
 }
 
 // The link can be formatted in one of 2 ways,
@@ -261,10 +273,41 @@ wxSQLite3Table recMediaData::GetMediaDataList( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "SELECT id, title, type, privacy, copyright, file FROM \"%s\".MediaData"
+        "SELECT id, title, type, privacy, copyright, file, uid, changed FROM \"%s\".MediaData"
         " WHERE NOT id=0 ORDER BY file;", UTF8_( dbname )
     );
     return s_db->GetTable( sql );
+}
+
+wxString recMediaData::GetChangedDate() const
+{
+    return calStrFromJdn( f_changed, CALENDAR_SCH_Gregorian );
+}
+
+wxString recMediaData::GetChangedDate( idt mdID, const wxString& dbname )
+{
+    long jdn = recDb::ExecuteInt(
+        "SELECT changed FROM \"%s\".MediaData WHERE id=" ID ";",
+        UTF8_( dbname ), mdID
+    );
+    return calStrFromJdn( jdn, CALENDAR_SCH_Gregorian );
+}
+
+idt recMediaData::FindUid( idt mdID, const wxString& source_db, const wxString& target_db )
+{
+    recMediaData md( mdID, source_db );
+    return md.FindUid( target_db );
+}
+
+idt recMediaData::FindUid( const wxString& target_db ) const
+{
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "SELECT id FROM \"%s\".MediaData WHERE uid='%q';",
+        UTF8_( target_db ), UTF8_( f_uid )
+    );
+    return ExecuteID( sql );
 }
 
 // End of recMediaData.cpp file
