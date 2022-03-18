@@ -146,6 +146,9 @@ bool rgDlgEditMediaData::TransferDataToWindow()
     m_imagePanel->SetScrollMode( false );
     m_imagePanel->SetImage( m_md.FGetData() );
     m_staticMediaDataID->SetLabel( m_md.GetIdStr() + "," + m_dbname );
+    m_textCtrlUid->SetValue( m_md.FGetUid() );
+    wxString changed = calStrFromJdn( m_md.FGetChanged() );
+    m_textCtrlChanged->SetValue( changed );
     return true;
 }
 

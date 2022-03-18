@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Oct 26 2018)
+// C++ code generated with wxFormBuilder (version 3.10.1-0-g8feb16b3)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -23,10 +23,10 @@
 #include <wx/splitter.h>
 #include <wx/spinctrl.h>
 #include <wx/statline.h>
+#include <wx/button.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
-#include <wx/button.h>
 #include <wx/dialog.h>
 #include <wx/choice.h>
 
@@ -57,13 +57,14 @@ class fbRgEditMedia : public wxDialog
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
 
-		// Virtual event handlers, overide them in your derived class
+		// Virtual event handlers, override them in your derived class
 		virtual void OnImageLeftDClick( wxMouseEvent& event ) { event.Skip(); }
 
 
 	public:
 
 		fbRgEditMedia( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Media"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+
 		~fbRgEditMedia();
 
 		void m_splitter1OnIdle( wxIdleEvent& )
@@ -87,19 +88,24 @@ class fbRgEditMediaData : public wxDialog
 		wxChoice* m_choiceFileType;
 		wxTextCtrl* m_textCtrlCopyright;
 		wxSpinCtrl* m_spinPrivacy;
+		wxStaticText* m_staticText151;
+		wxTextCtrl* m_textCtrlUid;
+		wxStaticText* m_staticText16;
+		wxTextCtrl* m_textCtrlChanged;
 		wxPanel* m_panelImage;
 		rgImagePanel* m_imagePanel;
 		wxStaticText* m_staticMediaDataID;
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
 
-		// Virtual event handlers, overide them in your derived class
+		// Virtual event handlers, override them in your derived class
 		virtual void OnImageLeftDClick( wxMouseEvent& event ) { event.Skip(); }
 
 
 	public:
 
 		fbRgEditMediaData( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Media Data"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+
 		~fbRgEditMediaData();
 
 };

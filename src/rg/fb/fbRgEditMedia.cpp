@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Oct 26 2018)
+// C++ code generated with wxFormBuilder (version 3.10.1-0-g8feb16b3)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -123,7 +123,7 @@ fbRgEditMedia::fbRgEditMedia( wxWindow* parent, wxWindowID id, const wxString& t
 
 	m_staticMediaID = new wxStaticText( this, wxID_ANY, _("M00"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticMediaID->Wrap( -1 );
-	m_staticMediaID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Times New Roman") ) );
+	m_staticMediaID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxT("Times New Roman") ) );
 
 	bSizerDismiss->Add( m_staticMediaID, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -221,6 +221,26 @@ fbRgEditMediaData::fbRgEditMediaData( wxWindow* parent, wxWindowID id, const wxS
 
 	bSizer8->Add( bSizer15, 0, wxEXPAND, 5 );
 
+	wxBoxSizer* bSizer12;
+	bSizer12 = new wxBoxSizer( wxHORIZONTAL );
+
+	m_staticText151 = new wxStaticText( this, wxID_ANY, _("UID:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText151->Wrap( -1 );
+	bSizer12->Add( m_staticText151, 0, wxALL, 5 );
+
+	m_textCtrlUid = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+	bSizer12->Add( m_textCtrlUid, 1, wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT, 5 );
+
+	m_staticText16 = new wxStaticText( this, wxID_ANY, _("Last Changed:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText16->Wrap( -1 );
+	bSizer12->Add( m_staticText16, 0, wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+
+	m_textCtrlChanged = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+	bSizer12->Add( m_textCtrlChanged, 0, wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT, 5 );
+
+
+	bSizer8->Add( bSizer12, 0, wxEXPAND, 5 );
+
 	m_panelImage = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer10;
 	bSizer10 = new wxBoxSizer( wxVERTICAL );
@@ -245,7 +265,7 @@ fbRgEditMediaData::fbRgEditMediaData( wxWindow* parent, wxWindowID id, const wxS
 
 	m_staticMediaDataID = new wxStaticText( this, wxID_ANY, _("A0:MD0"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticMediaDataID->Wrap( -1 );
-	m_staticMediaDataID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Times New Roman") ) );
+	m_staticMediaDataID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxT("Times New Roman") ) );
 
 	bSizerDismiss->Add( m_staticMediaDataID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
