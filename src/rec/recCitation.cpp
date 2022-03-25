@@ -426,23 +426,6 @@ wxString recRepository::GetChangedDate( idt refID, const wxString& dbname )
     return calStrFromJdn( jdn, CALENDAR_SCH_Gregorian );
 }
 
-idt recRepository::FindUid( idt refID, const wxString& source_db, const wxString& target_db )
-{
-    recRepository ref( refID, source_db );
-    return ref.FindUid( target_db );
-}
-
-idt recRepository::FindUid( const wxString& target_db ) const
-{
-    wxSQLite3StatementBuffer sql;
-
-    sql.Format(
-        "SELECT id FROM \"%s\".Repository WHERE uid='%q';",
-        UTF8_( target_db ), UTF8_( f_uid )
-    );
-    return ExecuteID( sql );
-}
-
 void recRepository::Renumber( idt id, idt to_id )
 {
     if( id == 0 ) {

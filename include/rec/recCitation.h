@@ -140,10 +140,6 @@ public:
     wxString GetChangedDate() const;
     static wxString GetChangedDate( idt refID, const wxString& dbname );
 
-    static idt FindUid(
-        idt refID, const wxString& source_db, const wxString& target_db = "Main" );
-    idt FindUid( const wxString& target_db = "Main" ) const;
-
     static void Renumber( idt fromID, idt toID );
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );
