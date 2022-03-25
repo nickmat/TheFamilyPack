@@ -93,6 +93,10 @@ public:
      */
     static recIdVec GetPositiveIDs( const char* table, const wxString& dbname );
 
+    /*! Only for records that have a 'uid' field. Other records will cause exception.
+     */
+    static idt DoFindUid( const wxString& uid, const char* table, const wxString& dbname );
+
     idt   f_id;
 
     /*! Default constructor, does nothing. */
@@ -276,6 +280,13 @@ public:
     }
     static recIdVec PositiveIDs( const wxString& dbname = "Main" ) {
         return GetPositiveIDs( T::s_tablename, dbname );
+    }
+    static idt FindUid( const wxString& uid, const wxString& dbname ) {
+        return DoFindUid( uid, T::s_tablename, dbname );
+    }
+    static idt FindUid( idt id, const wxString& source_db, const wxString& target_db ) {
+        T rec( id, source_db );
+        return DoFindUid( rec.FGetUid(), T::s_tablename, target_db );
     }
 
     virtual bool Equivalent( const T& ) const {

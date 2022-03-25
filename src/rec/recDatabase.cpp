@@ -532,6 +532,16 @@ recIdVec recDb::GetPositiveIDs( const char* table, const wxString& dbname )
     return ExecuteIdVec( sql );
 }
 
+idt recDb::DoFindUid( const wxString& uid, const char* table, const wxString& dbname )
+{
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT id FROM \"%s\".%s WHERE uid='%q';",
+        UTF8_( dbname ), table, UTF8_( uid )
+    );
+    return ExecuteID( sql );
+}
+
 int recDb::ExecuteInt( const wxSQLite3StatementBuffer& sql )
 {
     wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
