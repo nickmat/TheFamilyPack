@@ -111,11 +111,15 @@ public:
     void Clear();
     void Save( const wxString& dbname = "Main" );
     bool Read( const wxString& dbname = "Main" );
-    bool Equivalent( const recContactType& r2 ) const { return f_name == r2.f_name; };
+    bool Equivalent( const recContactType& r2 ) const;
 
     wxString FGetName() const { return f_name; }
+    wxString FGetUid() const { return f_uid; }
+    long FGetChanged() const { return f_changed; }
 
     void FSetName( const wxString name ) { f_name = name; }
+    void FSetUid( const wxString& uid ) { f_uid = uid; }
+    void FSetChanged( long jdn ) { f_changed = jdn; }
 
     static wxString GetIdStr( idt resID ) { return wxString::Format( "CT" ID, resID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
@@ -132,7 +136,9 @@ public:
     static void DeleteIfOrphaned( idt ctID, Coverage limit = Coverage::user );
 
 private:
-    wxString  f_name;
+    wxString f_name;
+    wxString f_uid;
+    long     f_changed;
 };
 
 

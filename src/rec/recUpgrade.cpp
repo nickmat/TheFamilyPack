@@ -41,8 +41,8 @@
 const int recVerMajor = 0;
 const int recVerMinor = 0;
 const int recVerRev = 10;
-const int recVerTest = 31;                       // <<======<<<<
-const char* recFullVersion = "TFPD-v0.0.10.31";  // <<======<<<<
+const int recVerTest = 32;                       // <<======<<<<
+const char* recFullVersion = "TFPD-v0.0.10.32";  // <<======<<<<
 
 // This is the database Media-only version that this program can work with.
 // If the full version matches, then this is assumed to match as well.
@@ -1497,6 +1497,65 @@ void UpgradeTest0_0_10_30to0_0_10_31( const wxString& dbname )
     mdUpgradeTest0_0_0_3to0_0_0_4( dbname );
 }
 
+void UpgradeTest0_0_10_31to0_0_10_32( const wxString& dbname )
+{
+    // Version 0.0.10.31 to 0.0.10.32
+
+    // Add field 'uid' to ContactType.
+    wxString update =
+        "BEGIN;\n";
+
+    update <<
+        "CREATE TABLE \"" << dbname << "\".NewContactType (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  name TEXT NOT NULL,\n"
+        "  uid TEXT NOT NULL,\n"
+        "  changed INTEGER NOT NULL\n"
+        ");\n"
+
+        "INSERT INTO \"" << dbname << "\".NewContactType"
+        " (id, name, uid, changed)\n"
+        " SELECT id, name, '', 2459664\n"
+        " FROM \"" << dbname << "\".ContactType;\n"
+
+        "DROP TABLE \"" << dbname << "\".ContactType;\n"
+        "ALTER TABLE \"" << dbname << "\".NewContactType RENAME TO ContactType;\n"
+        ;
+
+    // Fill ContactType table uid field
+    wxString query = "SELECT id FROM \"" + dbname + "\".ContactType WHERE id>0;\n"; // Get ctID list
+    wxSQLite3Table table = recDb::GetDb()->GetTable( query );
+    size_t size = (size_t) table.GetRowCount();
+    for( size_t i = 0; i < size; i++ ) {
+        table.SetRow( i );
+        update << "UPDATE \"" << dbname << "\".ContactType"
+            " SET uid='" << recCreateUid() << "'"
+            " WHERE id=" << table.GetAsString( 0 ) << ";\n"
+            ;
+    }
+    update <<
+        "UPDATE \"" << dbname << "\".ContactType"
+        " SET changed=0 WHERE id=0;\n"
+        "UPDATE \"" << dbname << "\".ContactType"
+        " SET uid='88815CB7641A5C15A6B47B40E69DE654DD52' WHERE id=-1;\n"
+        "UPDATE \"" << dbname << "\".ContactType"
+        " SET uid='7143E6D4D916C849F2B4FC6554AE5B421483' WHERE id=-2;\n"
+        "UPDATE \"" << dbname << "\".ContactType"
+        " SET uid='D5914CBACD1E86412EB4771C1E015BCBD882' WHERE id=-3;\n"
+        "UPDATE \"" << dbname << "\".ContactType"
+        " SET uid='2A56952B37D688AD0F795B059A82619E857A' WHERE id=-4;\n"
+        "UPDATE \"" << dbname << "\".ContactType"
+        " SET uid='0913E9393D6F676F74252E9F18516D201CFD' WHERE id=-5;\n"
+        "UPDATE \"" << dbname << "\".ContactType"
+        " SET uid='D717ACECD3D1DF6E663C9788BFB330350F50' WHERE id=-6;\n"
+
+        "UPDATE \"" << dbname << "\".Version SET test=32 WHERE id=1;\n"
+        "COMMIT;\n"
+        ;
+
+    recDb::GetDb()->ExecuteUpdate( update );
+}
+
 
 void UpgradeRev0_0_10toCurrent( int test, const wxString& dbname )
 {
@@ -1533,6 +1592,7 @@ void UpgradeRev0_0_10toCurrent( int test, const wxString& dbname )
     case 28: UpgradeTest0_0_10_28to0_0_10_29( dbname );
     case 29: UpgradeTest0_0_10_29to0_0_10_30( dbname );
     case 30: UpgradeTest0_0_10_30to0_0_10_31( dbname );
+    case 31: UpgradeTest0_0_10_31to0_0_10_32( dbname );
     }
 }
 

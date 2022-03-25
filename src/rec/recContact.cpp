@@ -369,16 +369,20 @@ bool recContactList::RemoveFromDatabase( idt clID, Coverage limit )
 //                 recContactType
 //============================================================================
 
-recContactType::recContactType( const recContactType& at )
+recContactType::recContactType( const recContactType& ct )
 {
-    f_id   = at.f_id;
-    f_name = at.f_name;
+    f_id = ct.f_id;
+    f_name = ct.f_name;
+    f_uid = ct.f_uid;
+    f_changed = ct.f_changed;
 }
 
 void recContactType::Clear()
 {
-    f_id   = 0;
-    f_name = wxEmptyString;
+    f_id = 0;
+    f_name.clear();
+    f_uid.clear();
+    f_changed = 0;
 }
 
 void recContactType::Save( const wxString& dbname )
@@ -390,8 +394,8 @@ void recContactType::Save( const wxString& dbname )
     {
         // Add new record
         sql.Format(
-            "INSERT INTO \"%s\".ContactType (name) VALUES ('%q');",
-            UTF8_( dbname ), UTF8_(f_name)
+            "INSERT INTO \"%s\".ContactType (name, uid, changed) VALUES ('%q', '%q', %ld);",
+            UTF8_( dbname ), UTF8_(f_name), UTF8_( f_uid ), f_changed
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -401,15 +405,16 @@ void recContactType::Save( const wxString& dbname )
         {
             // Add new record
             sql.Format(
-                "INSERT INTO \"%s\".ContactType (id, name) "
-                "VALUES (" ID ", '%q');",
-                UTF8_( dbname ), f_id, UTF8_(f_name)
+                "INSERT INTO \"%s\".ContactType (id, name, uid, changed) "
+                "VALUES (" ID ", '%q', '%q', %ld);",
+                UTF8_( dbname ), f_id, UTF8_(f_name), UTF8_( f_uid ), f_changed
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE \"%s\".ContactType SET name='%q' WHERE id=" ID ";",
-                UTF8_( dbname ), UTF8_(f_name), f_id
+                "UPDATE \"%s\".ContactType SET name='%q' uid='%q', changed=%ld"
+                " WHERE id=" ID ";",
+                UTF8_( dbname ), UTF8_(f_name), UTF8_( f_uid ), f_changed, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -426,7 +431,7 @@ bool recContactType::Read( const wxString& dbname )
         return false;
     }
 
-    sql.Format( "SELECT name FROM \"%s\".ContactType WHERE id=" ID ";", UTF8_( dbname ), f_id );
+    sql.Format( "SELECT name, uid, changed FROM \"%s\".ContactType WHERE id=" ID ";", UTF8_( dbname ), f_id );
     result = s_db->GetTable( sql );
 
     if( result.GetRowCount() != 1 )
@@ -436,7 +441,17 @@ bool recContactType::Read( const wxString& dbname )
     }
     result.SetRow( 0 );
     f_name = result.GetAsString( 0 );
+    f_uid = result.GetAsString( 1 );
+    f_changed = result.GetInt( 2 );
     return true;
+}
+
+bool recContactType::Equivalent( const recContactType& r2 ) const
+{
+    return f_name == r2.f_name &&
+        f_uid == r2.f_uid &&
+        f_changed == r2.f_changed
+        ;
 }
 
 wxString recContactType::GetTypeStr( idt typeID, const wxString& dbname )
@@ -455,7 +470,7 @@ recContactTypeVec recContactType::GetList( const wxString& dbname )
 
     // Put standard entries in list.
     sql.Format(
-        "SELECT id, name FROM \"%s\".ContactType"
+        "SELECT id, name, uid, changed FROM \"%s\".ContactType"
         " WHERE id<=0 ORDER BY id DESC;",
         UTF8_( dbname )
     );
@@ -465,12 +480,14 @@ recContactTypeVec recContactType::GetList( const wxString& dbname )
         result.SetRow( i );
         at.f_id = GET_ID( result.GetInt64( 0 ) );
         at.f_name = result.GetAsString( 1 );
+        at.f_uid = result.GetAsString( 2 );
+        at.f_changed = result.GetInt( 3 );
         list.push_back( at );
     }
 
     // Put user entries in list.
     sql.Format(
-        "SELECT id, name FROM \"%s\".ContactType "
+        "SELECT id, name, uid, changed FROM \"%s\".ContactType "
         "WHERE id>0 ORDER BY id ASC;",
         UTF8_( dbname )
     );
@@ -480,6 +497,8 @@ recContactTypeVec recContactType::GetList( const wxString& dbname )
         result.SetRow( i );
         at.f_id = GET_ID( result.GetInt64( 0 ) );
         at.f_name = result.GetAsString( 1 );
+        at.f_uid = result.GetAsString( 2 );
+        at.f_changed = result.GetInt( 3 );
         list.push_back( at );
     }
     return list;
@@ -505,7 +524,7 @@ void recContactType::Renumber( idt id, idt to_id )
 
 std::string recContactType::CsvTitles()
 {
-    return std::string( "ID, Name\n" );
+    return std::string( "ID, Name, UID, Last Changed\n" );
 }
 
 void recContactType::CsvWrite( std::ostream& out, idt id )
@@ -513,12 +532,16 @@ void recContactType::CsvWrite( std::ostream& out, idt id )
     recContactType ct( id );
     recCsvWrite( out, ct.FGetID() );
     recCsvWrite( out, ct.FGetName(), '\n' );
+    recCsvWrite( out, ct.FGetUid() );
+    recCsvWrite( out, ct.FGetChanged(), '\n' );
 }
 
 bool recContactType::CsvRead( std::istream& in )
 {
     recCsvRead( in, f_id );
     recCsvRead( in, f_name );
+    recCsvRead( in, f_uid );
+    recCsvRead( in, f_changed );
     return bool( in );
 }
 

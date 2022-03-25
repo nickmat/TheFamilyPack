@@ -86,7 +86,9 @@ CREATE TABLE ContactList (
 
 CREATE TABLE ContactType (
   id INTEGER PRIMARY KEY,
-  name TEXT NOT NULL
+  name TEXT NOT NULL,
+  uid TEXT NOT NULL,
+  changed INTEGER NOT NULL
 );
 /* See below for id=0 */
 
@@ -587,13 +589,20 @@ CREATE TABLE UserSetting (  /* See System Settings below for initial entries */
 );
 
 /* Create default settings */
-INSERT INTO ContactType (id, name) VALUES(0, '');
-INSERT INTO ContactType (id, name) VALUES(-1, 'Address');
-INSERT INTO ContactType (id, name) VALUES(-2, 'Telephone');
-INSERT INTO ContactType (id, name) VALUES(-3, 'Mobile');
-INSERT INTO ContactType (id, name) VALUES(-4, 'Email');
-INSERT INTO ContactType (id, name) VALUES(-5, 'Website');
-INSERT INTO ContactType (id, name) VALUES(-6, 'Fax');
+INSERT INTO ContactType (id, name, uid, changed)
+  VALUES(0, '', '', 0);
+INSERT INTO ContactType (id, name, uid, changed)
+  VALUES(-1, 'Address', '88815CB7641A5C15A6B47B40E69DE654DD52', 2459664);
+INSERT INTO ContactType (id, name, uid, changed)
+  VALUES(-2, 'Telephone', '7143E6D4D916C849F2B4FC6554AE5B421483', 2459664);
+INSERT INTO ContactType (id, name, uid, changed)
+  VALUES(-3, 'Mobile', 'D5914CBACD1E86412EB4771C1E015BCBD882', 2459664);
+INSERT INTO ContactType (id, name, uid, changed)
+  VALUES(-4, 'Email', '2A56952B37D688AD0F795B059A82619E857A', 2459664);
+INSERT INTO ContactType (id, name, uid, changed)
+  VALUES(-5, 'Website', '0913E9393D6F676F74252E9F18516D201CFD', 2459664);
+INSERT INTO ContactType (id, name, uid, changed)
+  VALUES(-6, 'Fax', 'D717ACECD3D1DF6E663C9788BFB330350F50', 2459664);
 
 INSERT INTO Researcher (id, name, comment, con_list_id, uid) VALUES
   (0, '', NULL, NULL, '');
@@ -609,7 +618,7 @@ INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 1, 1, 'NI');
 /* Table Version created in recCreateCommon.sql */
 
 /* The Version table row 1 is the full TFPD database */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 31);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 32);
 
 COMMIT;
 
