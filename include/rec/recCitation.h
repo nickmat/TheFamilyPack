@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     10th November 2021
- * Copyright:   Copyright (c) 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2021..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -111,7 +111,7 @@ class recRepository : public recDbT< recRepository>
 public:
     static constexpr const char* s_tablename = "Repository";
 
-    recRepository() : f_con_list_id(0) {}
+    recRepository() : f_con_list_id(0), f_changed(0) {}
     recRepository( idt id, const wxString& dbname = "Main" ) : recDbT( id ) { Read( dbname ); }
     recRepository( const recRepository& source );
 
