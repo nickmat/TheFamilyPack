@@ -412,7 +412,7 @@ void recContactType::Save( const wxString& dbname )
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE \"%s\".ContactType SET name='%q' uid='%q', changed=%ld"
+                "UPDATE \"%s\".ContactType SET name='%q', uid='%q', changed=%ld"
                 " WHERE id=" ID ";",
                 UTF8_( dbname ), UTF8_(f_name), UTF8_( f_uid ), f_changed, f_id
             );
