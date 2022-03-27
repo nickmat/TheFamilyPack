@@ -180,7 +180,10 @@ bool rgDlgEditResearcher::TransferDataToWindow()
 bool rgDlgEditResearcher::TransferDataFromWindow()
 {
     wxString uid = m_textCtrlUid->GetValue();
-    if( !recCheckUid( uid ) ) {
+    if( recCheckUid( uid ) ) {
+        m_researcher.FSetUid( uid );
+    }
+    else {
         recCorrectUid action = rgCorrectInvalidUid( this );
         switch( action )
         {
