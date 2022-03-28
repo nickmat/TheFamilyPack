@@ -41,6 +41,7 @@
 #include <rec/recIndividual.h>
 #include <rec/recMedia.h>
 #include <rec/recPersona.h>
+#include <rec/recResearcher.h>
 
 #include "tfpWr.h"
 
@@ -159,9 +160,18 @@ wxString tfpWriteReferencePage( idt refID, const wxString& dbname )
             << "</pre>";
     }
 
-    htm <<
-        "<div>\n"
-        "<p><b>User Ref:</b> " << ref.FGetUserRef() << "<br>\n"
+    htm << "<div>\n<p>";
+    if( ref.FGetHigherId() != 0 ) {
+        wxString higher = recReference::GetIdStr( ref.FGetHigherId() );
+        htm <<
+            "<b>Part of: <a href='tfp:" << higher << "'>" << higher <<
+            "</a></b> " << recReference::GetTitle( ref.FGetHigherId() ) << "<br>\n"
+        ;
+    }
+    htm<<
+        "<b>Researcher:</b> " << recResearcher::GetIdStr( ref.FGetResId() ) <<
+        ": " << recResearcher::GetNameStr( ref.FGetResId() ) << "<br>\n"
+        "<b>User Ref:</b> " << ref.FGetUserRef() << "<br>\n"
         "<b>Date Last Changed:</b> " << ref.GetChangedDate() << "<br>\n"
         "<b>UID:</b> " << ref.FGetUid() << "</p></div>\n"
         "<hr>\n"
