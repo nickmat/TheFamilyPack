@@ -179,7 +179,7 @@ extern bool rgSelectPlaceFromReference(
 
 
 rgDlgEditReference::rgDlgEditReference( wxWindow* parent, idt refID )
-    : m_reference(refID), fbRgEditReference( parent )
+    : m_reference(refID), m_resID(0), fbRgEditReference( parent )
 {
     m_listCitation->InsertColumn( CIT_COL_Number, _( "Number" ) );
     m_listCitation->InsertColumn( CIT_COL_Citation, _( "Citation" ) );
@@ -207,8 +207,8 @@ bool rgDlgEditReference::TransferDataToWindow()
     m_staticRefID->SetLabel( m_reference.GetIdStr()  );
     m_textCtrlTitle->SetValue( m_reference.FGetTitle() );
     m_textCtrlHigherRef->SetValue( recReference::GetTitle( m_reference.FGetHigherId() ) );
-    recResearcher res( m_reference.FGetResId() );
-    m_textCtrlResearcher->SetValue( res.GetIdStr() + ": " + res.FGetName() );
+    m_resID = m_reference.FGetResId();
+    UpdateResearcher();
     m_textCtrlUserRef->SetValue( m_reference.FGetUserRef() );
     m_textCtrlStatement->SetValue(  m_reference.FGetStatement() );
     m_textCtrlUid->SetValue( m_reference.FGetUid() );
@@ -225,10 +225,17 @@ bool rgDlgEditReference::TransferDataFromWindow()
     m_reference.FSetTitle( m_textCtrlTitle->GetValue() );
     m_reference.FSetUserRef( m_textCtrlUserRef->GetValue() );
     m_reference.FSetStatement( m_textCtrlStatement->GetValue() );
+    m_reference.FSetResId( m_resID );
     m_reference.FSetChanged( calGetTodayJdn() );
 
     m_reference.Save();
     return true;
+}
+
+void rgDlgEditReference::UpdateResearcher()
+{
+    recResearcher res( m_resID );
+    m_textCtrlResearcher->SetValue( res.GetIdStr() + ": " + res.FGetName() );
 }
 
 void rgDlgEditReference::UpdateHtml()
@@ -384,7 +391,12 @@ void rgDlgEditReference::OnButtonHigherRef( wxCommandEvent& event )
 
 void rgDlgEditReference::OnButtonResearcher( wxCommandEvent& event )
 {
-    wxMessageBox( _( "Not yet implimented" ), "OnButtonResearcher" );
+    idt resID = rgSelectResearcher( this );
+    if( resID == 0 ) {
+        return;
+    }
+    m_resID = resID;
+    UpdateResearcher();
 }
 
 void rgDlgEditReference::OnStatementViewChanged( wxBookCtrlEvent& event )
