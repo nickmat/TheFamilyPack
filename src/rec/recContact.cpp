@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     25 February 2011
- * Copyright:   Copyright (c) 2011 .. 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2011..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -531,7 +531,7 @@ void recContactType::CsvWrite( std::ostream& out, idt id )
 {
     recContactType ct( id );
     recCsvWrite( out, ct.FGetID() );
-    recCsvWrite( out, ct.FGetName(), '\n' );
+    recCsvWrite( out, ct.FGetName() );
     recCsvWrite( out, ct.FGetUid() );
     recCsvWrite( out, ct.FGetChanged(), '\n' );
 }
