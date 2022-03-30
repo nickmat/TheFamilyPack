@@ -40,7 +40,8 @@ CREATE TABLE MediaData (
   changed INTEGER NOT NULL
 );
 
-INSERT INTO MediaData (id, data, type, privacy, file) VALUES(0, '', 0, 0, '', '', 0);
+INSERT INTO MediaData (id, title, data, type, privacy, copyright, file, uid, changed)
+  VALUES(0,'',0,0,'','',0,'',0);
 
 
 /* The Version table id=2 for MediaData section of database */

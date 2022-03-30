@@ -52,7 +52,8 @@ static const char* createMediaDb =  /* recCreateMedia.sql */
  "  uid TEXT NOT NULL,\n"
  "  changed INTEGER NOT NULL\n"
  ");\n"
- "INSERT INTO MediaData (id, data, type, privacy, file) VALUES(0, '', 0, 0, '', '', 0);\n"
+ "INSERT INTO MediaData (id, title, data, type, privacy, copyright, file, uid, changed)\n"
+ "  VALUES(0,'',0,0,'','',0,'',0);\n"
  "INSERT INTO Version (id, major, minor, revision, test) VALUES(2, 0, 0, 0, 4);\n"
  "COMMIT;\n";
 
