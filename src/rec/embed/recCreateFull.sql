@@ -45,10 +45,13 @@ CREATE TABLE Citation (
   ref_id INTEGER NOT NULL REFERENCES Reference(id),
   ref_seq INTEGER NOT NULL,
   rep_id INTEGER NOT NULL REFERENCES Repository(id),
-  comment TEXT NULL
+  comment TEXT NULL,
+  uid TEXT NOT NULL,
+  changed INTEGER NOT NULL
 );
 
-INSERT INTO Citation (id, higher_id, ref_id, ref_seq, rep_id) VALUES(0,0,0,0,0);
+INSERT INTO Citation (id, higher_id, ref_id, ref_seq, rep_id, uid, changed)
+  VALUES(0,0,0,0,0,'',0);
 
 CREATE TABLE CitationPart (
   id INTEGER PRIMARY KEY,
@@ -618,7 +621,7 @@ INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 1, 1, 'NI');
 /* Table Version created in recCreateCommon.sql */
 
 /* The Version table row 1 is the full TFPD database */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 32);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 33);
 
 COMMIT;
 

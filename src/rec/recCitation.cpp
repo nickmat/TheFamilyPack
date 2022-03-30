@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     10th November 2021
- * Copyright:   Copyright (c) 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2021..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -49,6 +49,8 @@ recCitation::recCitation( const recCitation& cit )
     f_ref_seq = cit.f_ref_seq;
     f_rep_id = cit.f_rep_id;
     f_comment = cit.f_comment;
+    f_uid = cit.f_uid;
+    f_changed = cit.f_changed;
 }
 
 void recCitation::Clear()
@@ -59,6 +61,8 @@ void recCitation::Clear()
     f_ref_seq = 0;
     f_rep_id = 0;
     f_comment.clear();
+    f_uid.clear();
+    f_changed = 0;
 }
 
 void recCitation::Save( const wxString& dbname )
@@ -69,9 +73,10 @@ void recCitation::Save( const wxString& dbname )
     {
         // Add new record
         sql.Format(
-            "INSERT INTO \"%s\".Citation (higher_id, ref_id, ref_seq, rep_id, comment)"
-            " VALUES (" ID ", " ID ", %d, " ID ", '%q'); ",
-            UTF8_( dbname ), f_higher_id, f_ref_id, f_ref_seq, f_rep_id, UTF8_( f_comment )
+            "INSERT INTO \"%s\".Citation (higher_id, ref_id, ref_seq, rep_id, comment, uid, changed)"
+            " VALUES (" ID ", " ID ", %d, " ID ", '%q', '%q', %ld); ",
+            UTF8_( dbname ), f_higher_id, f_ref_id, f_ref_seq, f_rep_id, UTF8_( f_comment ),
+            UTF8_( f_uid ), f_changed
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -82,18 +87,20 @@ void recCitation::Save( const wxString& dbname )
         {
             // Add new record
             sql.Format(
-                "INSERT INTO \"%s\".Citation (id, higher_id, ref_id, ref_seq, rep_id, comment)"
-                " VALUES (" ID ", " ID ", " ID ", %d, " ID ", '%q');",
-                UTF8_( dbname ), f_id, f_higher_id, f_ref_id, f_ref_seq, f_rep_id, UTF8_( f_comment )
+                "INSERT INTO \"%s\".Citation (id, higher_id, ref_id, ref_seq, rep_id, comment, uid, changed)"
+                " VALUES (" ID ", " ID ", " ID ", %d, " ID ", '%q', '%q', %ld);",
+                UTF8_( dbname ), f_id, f_higher_id, f_ref_id, f_ref_seq, f_rep_id, UTF8_( f_comment ),
+                UTF8_( f_uid ), f_changed
             );
         }
         else {
             // Update existing record
             sql.Format(
                 "UPDATE \"%s\".Citation SET higher_id=" ID ", ref_id=" ID ", ref_seq=%d,"
-                " rep_id=" ID ", comment='%q'"
+                " rep_id=" ID ", comment='%q', uid = '%q', changed = %ld"
                 " WHERE id=" ID ";",
-                UTF8_( dbname ), f_higher_id, f_ref_id, f_ref_seq, f_rep_id, UTF8_( f_comment ), f_id
+                UTF8_( dbname ), f_higher_id, f_ref_id, f_ref_seq, f_rep_id, UTF8_( f_comment ),
+                UTF8_( f_uid ), f_changed, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -111,7 +118,7 @@ bool recCitation::Read( const wxString& dbname )
     }
 
     sql.Format(
-        "SELECT higher_id, ref_id, ref_seq, rep_id, comment"
+        "SELECT higher_id, ref_id, ref_seq, rep_id, comment, uid, changed"
         " FROM \"%s\".Citation WHERE id=" ID ";",
         UTF8_( dbname ), f_id
     );
@@ -128,6 +135,8 @@ bool recCitation::Read( const wxString& dbname )
     f_ref_seq = result.GetInt( 2 );
     f_rep_id = GET_ID( result.GetInt64( 3 ) );
     f_comment = result.GetAsString( 4 );
+    f_uid = result.GetAsString( 5 );
+    f_changed = result.GetInt( 6 );
     return true;
 }
 
@@ -138,7 +147,9 @@ bool recCitation::Equivalent( const recCitation& r2 ) const
         f_ref_id == r2.f_ref_id &&
         f_ref_seq == r2.f_ref_seq &&
         f_rep_id == r2.f_rep_id &&
-        f_comment == r2.f_comment
+        f_comment == r2.f_comment &&
+        f_uid == r2.f_uid &&
+        f_changed == r2.f_changed
         ;
 }
 
@@ -234,7 +245,7 @@ void recCitation::Renumber( idt id, idt to_id )
 std::string recCitation::CsvTitles()
 {
     return std::string(
-        "ID, Higher ID, Reference ID, Reference Sequence, Repository ID, Comment\n" );
+        "ID, Higher ID, Reference ID, Reference Sequence, Repository ID, Comment, UID, Last Changed\n" );
 }
 
 void recCitation::CsvWrite( std::ostream& out, idt id )
@@ -245,7 +256,9 @@ void recCitation::CsvWrite( std::ostream& out, idt id )
     recCsvWrite( out, cit.FGetRefID() );
     recCsvWrite( out, cit.FGetRefSeq() );
     recCsvWrite( out, cit.FGetRepID() );
-    recCsvWrite( out, cit.FGetComment(), '\n' );
+    recCsvWrite( out, cit.FGetComment() );
+    recCsvWrite( out, cit.FGetUid() );
+    recCsvWrite( out, cit.FGetChanged(), '\n' );
 }
 
 bool recCitation::CsvRead( std::istream& in )
@@ -256,6 +269,8 @@ bool recCitation::CsvRead( std::istream& in )
     recCsvRead( in, f_ref_seq );
     recCsvRead( in, f_rep_id );
     recCsvRead( in, f_comment );
+    recCsvRead( in, f_uid );
+    recCsvRead( in, f_changed );
     return bool( in );
 }
 

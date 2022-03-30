@@ -71,9 +71,12 @@ static const char* createFullDb =  /* recCreateFull.sql */
  "  ref_id INTEGER NOT NULL REFERENCES Reference(id),\n"
  "  ref_seq INTEGER NOT NULL,\n"
  "  rep_id INTEGER NOT NULL REFERENCES Repository(id),\n"
- "  comment TEXT NULL\n"
+ "  comment TEXT NULL,\n"
+ "  uid TEXT NOT NULL,\n"
+ "  changed INTEGER NOT NULL\n"
  ");\n"
- "INSERT INTO Citation (id, higher_id, ref_id, ref_seq, rep_id) VALUES(0,0,0,0,0);\n"
+ "INSERT INTO Citation (id, higher_id, ref_id, ref_seq, rep_id, uid, changed)\n"
+ "  VALUES(0,0,0,0,0,'',0);\n"
  "CREATE TABLE CitationPart (\n"
  "  id INTEGER PRIMARY KEY,\n"
  "  cit_id INTEGER NOT NULL REFERENCES Citation(id),\n"
@@ -531,7 +534,7 @@ static const char* createFullDb =  /* recCreateFull.sql */
  "INSERT INTO User (id, res_id) VALUES(1, -1);\n"
  "INSERT INTO System (id, val) VALUES(1, '1');\n"
  "INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 1, 1, 'NI');\n"
- "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 32);\n"
+ "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 33);\n"
  "COMMIT;\n";
 
 /* End of src/rec/embed/recDatabaseCreate.f2c */

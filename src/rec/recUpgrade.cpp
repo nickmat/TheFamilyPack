@@ -41,8 +41,8 @@
 const int recVerMajor = 0;
 const int recVerMinor = 0;
 const int recVerRev = 10;
-const int recVerTest = 32;                       // <<======<<<<
-const char* recFullVersion = "TFPD-v0.0.10.32";  // <<======<<<<
+const int recVerTest = 33;                       // <<======<<<<
+const char* recFullVersion = "TFPD-v0.0.10.33";  // <<======<<<<
 
 // This is the database Media-only version that this program can work with.
 // If the full version matches, then this is assumed to match as well.
@@ -1556,6 +1556,57 @@ void UpgradeTest0_0_10_31to0_0_10_32( const wxString& dbname )
     recDb::GetDb()->ExecuteUpdate( update );
 }
 
+void UpgradeTest0_0_10_32to0_0_10_33( const wxString& dbname )
+{
+    // Version 0.0.10.32 to 0.0.10.33
+
+    // Add field 'uid' to Citation.
+    wxString update =
+        "BEGIN;\n";
+
+    update <<
+        "CREATE TABLE \"" << dbname << "\".NewCitation (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  higher_id INTEGER NOT NULL,\n"
+        "  ref_id INTEGER NOT NULL REFERENCES Reference(id),\n"
+        "  ref_seq INTEGER NOT NULL,\n"
+        "  rep_id INTEGER NOT NULL REFERENCES Repository(id),\n"
+        "  comment TEXT NULL,\n"
+        "  uid TEXT NOT NULL,\n"
+        "  changed INTEGER NOT NULL\n"
+        ");\n"
+
+        "INSERT INTO \"" << dbname << "\".NewCitation"
+        " (id, higher_id, ref_id, ref_seq, rep_id, comment, uid, changed)\n"
+        " SELECT id, higher_id, ref_id, ref_seq, rep_id, comment, '', 2459669\n"
+        " FROM \"" << dbname << "\".Citation;\n"
+
+        "DROP TABLE \"" << dbname << "\".Citation;\n"
+        "ALTER TABLE \"" << dbname << "\".NewCitation RENAME TO Citation;\n"
+        ;
+
+    // Fill ContactType table uid field
+    wxString query = "SELECT id FROM \"" + dbname + "\".Citation WHERE id>0;\n"; // Get citID list
+    wxSQLite3Table table = recDb::GetDb()->GetTable( query );
+    size_t size = (size_t) table.GetRowCount();
+    for( size_t i = 0; i < size; i++ ) {
+        table.SetRow( i );
+        update << "UPDATE \"" << dbname << "\".Citation"
+            " SET uid='" << recCreateUid() << "'"
+            " WHERE id=" << table.GetAsString( 0 ) << ";\n"
+            ;
+    }
+    update <<
+        "UPDATE \"" << dbname << "\".Citation"
+        " SET changed=0 WHERE id=0;\n"
+
+        "UPDATE \"" << dbname << "\".Version SET test=33 WHERE id=1;\n"
+        "COMMIT;\n"
+        ;
+
+    recDb::GetDb()->ExecuteUpdate( update );
+}
+
 
 void UpgradeRev0_0_10toCurrent( int test, const wxString& dbname )
 {
@@ -1593,6 +1644,7 @@ void UpgradeRev0_0_10toCurrent( int test, const wxString& dbname )
     case 29: UpgradeTest0_0_10_29to0_0_10_30( dbname );
     case 30: UpgradeTest0_0_10_30to0_0_10_31( dbname );
     case 31: UpgradeTest0_0_10_31to0_0_10_32( dbname );
+    case 32: UpgradeTest0_0_10_32to0_0_10_33( dbname );
     }
 }
 
