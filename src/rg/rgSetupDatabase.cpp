@@ -81,6 +81,7 @@ bool rgDlgSetupDatabase::TransferDataToWindow()
     recResearcher res( 0 );
     res.FSetID( 1 );
     res.FSetConListID( clID );
+    res.FSetUid( recCreateUid() );
     res.Save();
     recUser user( 1 );
     user.FSetResID( res.FGetID() );
