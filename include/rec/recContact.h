@@ -78,7 +78,7 @@ public:
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
 
-    static void RemoveFromDatabase( idt clID );
+    static void RemoveFromDatabase( idt clID, const wxString& dbname );
 
 private:
     idt  f_ind_id;
@@ -133,7 +133,7 @@ public:
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
 
-    static void DeleteIfOrphaned( idt ctID );
+    static void DeleteIfOrphaned( idt ctID, const wxString& dbname );
 
 private:
     wxString f_name;
@@ -179,6 +179,9 @@ public:
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
+
+    static void RemoveFromDatabase( idt conID, const wxString& dbname );
+    void RemoveFromDatabase( const wxString& dbname );
 
 private:
     idt      f_type_id;

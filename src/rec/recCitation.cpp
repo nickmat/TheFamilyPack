@@ -274,24 +274,27 @@ bool recCitation::CsvRead( std::istream& in )
     return bool( in );
 }
 
-bool recCitation::RemoveFromDatabase( idt citID )
+bool recCitation::RemoveFromDatabase( idt citID, const wxString& dbname )
 {
     if( citID <= 0  ) return false; // Don't remove common data.
     
     wxSQLite3StatementBuffer sql;
 
     // Can't delete if it has children, delete them first.
-    sql.Format( "SELECT COUNT(*) FROM Citation WHERE higher_id=" ID ";", citID );
+    sql.Format(
+        "SELECT COUNT(*) FROM \"%s\".Citation WHERE higher_id=" ID ";",
+        UTF8_( dbname ), citID
+    );
     if( s_db->ExecuteScalar( sql ) > 0 ) return false;
 
-    recCitation cit( citID );
-    recCitationPartVec parts = GetPartList( citID );
-    Delete( citID );
+    recCitation cit( citID, dbname );
+    recCitationPartVec parts = GetPartList( citID, dbname );
+    Delete( citID, dbname );
     for( auto& part : parts ) {
-        part.Delete();
-        recCitationPartType::DeleteIfOrphaned( part.FGetTypeID() );
+        part.Delete( dbname );
+        recCitationPartType::DeleteIfOrphaned( part.FGetTypeID(), dbname );
     }
-    recRepository::DeleteIfOrphaned( cit.FGetRepID() );
+    recRepository::DeleteIfOrphaned( cit.FGetRepID(), dbname );
     return true;
 }
 
@@ -481,19 +484,21 @@ bool recRepository::CsvRead( std::istream& in )
     return bool( in );
 }
 
-void recRepository::DeleteIfOrphaned( idt repID )
+void recRepository::DeleteIfOrphaned( idt repID, const wxString& dbname )
 {
     if( repID <= 0 ) return;
 
     wxSQLite3StatementBuffer sql;
-
-    sql.Format( "SELECT COUNT(*) FROM Citation WHERE rep_id=" ID ";", repID );
+    sql.Format(
+        "SELECT COUNT(*) FROM \"%s\".Citation WHERE rep_id=" ID ";",
+        UTF8_( dbname ), repID
+    );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
 
-    recRepository rep( repID );
-    Delete( repID );
+    recRepository rep( repID, dbname );
+    Delete( repID, dbname );
 
-    recContactList::RemoveFromDatabase( rep.FGetConListID() );
+    recContactList::RemoveFromDatabase( rep.FGetConListID(), dbname );
 }
 
 //============================================================================
@@ -836,16 +841,19 @@ bool recCitationPartType::CsvRead( std::istream& in )
     return bool( in );
 }
 
-void recCitationPartType::DeleteIfOrphaned( idt cptID )
+void recCitationPartType::DeleteIfOrphaned( idt cptID, const wxString& dbname )
 {
     if( cptID <= 0 ) return;
 
     wxSQLite3StatementBuffer sql;
 
-    sql.Format( "SELECT COUNT(*) FROM CitationPart WHERE type_id=" ID ";", cptID );
+    sql.Format(
+        "SELECT COUNT(*) FROM \"%s\".CitationPart WHERE type_id=" ID ";",
+        UTF8_( dbname ), cptID
+    );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
 
-    Delete( cptID );
+    Delete( cptID, dbname );
 }
 
 // End of src/rec/recCitation.cpp file

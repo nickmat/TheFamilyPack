@@ -186,6 +186,21 @@ bool recContact::CsvRead( std::istream& in )
     return bool( in );
 }
 
+void recContact::RemoveFromDatabase( idt conID, const wxString& dbname )
+{
+    if( conID <= 0 ) return;
+    recContact con( conID, dbname );
+    con.RemoveFromDatabase( dbname );
+}
+
+void recContact::RemoveFromDatabase( const wxString& dbname )
+{
+    if( FGetID() <= 0 ) return;
+    Delete( FGetID(), dbname );
+    recContactType::DeleteIfOrphaned( FGetTypeID(), dbname );
+}
+
+
 //============================================================================
 //                 recContactList
 //============================================================================
@@ -350,14 +365,13 @@ bool recContactList::CsvRead( std::istream& in )
     return bool( in );
 }
 
-void recContactList::RemoveFromDatabase( idt clID )
+void recContactList::RemoveFromDatabase( idt clID, const wxString& dbname )
 {
     if( clID <= 0 ) return;
 
-    recContactVec contacts = recContactList::GetContacts( clID );
+    recContactVec contacts = recContactList::GetContacts( clID, dbname );
     for( auto& con : contacts ) {
-        con.Delete();
-        recContactType::DeleteIfOrphaned( con.FGetTypeID() );
+        con.RemoveFromDatabase( dbname );
     }
     recContactList::Delete( clID );
 }
@@ -542,16 +556,18 @@ bool recContactType::CsvRead( std::istream& in )
     return bool( in );
 }
 
-void recContactType::DeleteIfOrphaned( idt ctID )
+void recContactType::DeleteIfOrphaned( idt ctID, const wxString& dbname )
 {
     if( ctID <= 0 ) return;
 
     wxSQLite3StatementBuffer sql;
-
-    sql.Format( "SELECT COUNT(*) FROM Contact WHERE type_id=" ID ";", ctID );
+    sql.Format(
+        "SELECT COUNT(*) FROM \"%s\".Contact WHERE type_id=" ID ";",
+        UTF8_( dbname ), ctID
+    );
     if( s_db->ExecuteScalar( sql ) > 0 ) return;
 
-    Delete( ctID );
+    Delete( ctID, dbname );
 }
 
 

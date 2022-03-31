@@ -98,7 +98,7 @@ public:
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
 
-    static bool RemoveFromDatabase( idt citID );
+    static bool RemoveFromDatabase( idt citID, const wxString& dbname );
 };
 
 
@@ -151,7 +151,7 @@ public:
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
 
-    static void DeleteIfOrphaned( idt cptID );
+    static void DeleteIfOrphaned( idt cptID, const wxString& dbname );
 };
 
 
@@ -245,7 +245,7 @@ public:
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
 
-    static void DeleteIfOrphaned( idt cptID );
+    static void DeleteIfOrphaned( idt cptID, const wxString& dbname );
 };
 
 #endif // RECCITATION_H

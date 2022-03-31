@@ -527,7 +527,7 @@ void rgDlgEditReference::OnCitationDeleteButton( wxCommandEvent& event )
     if( dlg.ShowModal() != wxID_OK ) {
         return;
     }
-    recCitation::RemoveFromDatabase( citID );
+    recCitation::RemoveFromDatabase( citID, "Main" );
     UpdateCitations( citID );
 }
 
