@@ -350,19 +350,16 @@ bool recContactList::CsvRead( std::istream& in )
     return bool( in );
 }
 
-bool recContactList::RemoveFromDatabase( idt clID, Coverage limit )
+void recContactList::RemoveFromDatabase( idt clID )
 {
-    if( (clID < 0 && limit == Coverage::user) || (clID > 0 && limit == Coverage::common) ) {
-        return false;
-    }
+    if( clID <= 0 ) return;
 
     recContactVec contacts = recContactList::GetContacts( clID );
     for( auto& con : contacts ) {
         con.Delete();
-        recContactType::DeleteIfOrphaned( con.FGetTypeID(), Coverage::user );
+        recContactType::DeleteIfOrphaned( con.FGetTypeID() );
     }
     recContactList::Delete( clID );
-    return false;
 }
 
 //============================================================================
@@ -545,11 +542,9 @@ bool recContactType::CsvRead( std::istream& in )
     return bool( in );
 }
 
-void recContactType::DeleteIfOrphaned( idt ctID, Coverage limit )
+void recContactType::DeleteIfOrphaned( idt ctID )
 {
-    if( (ctID < 0 && limit == Coverage::user) || (ctID > 0 && limit == Coverage::common) ) {
-        return;
-    }
+    if( ctID <= 0 ) return;
 
     wxSQLite3StatementBuffer sql;
 

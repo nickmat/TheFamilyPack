@@ -274,11 +274,10 @@ bool recCitation::CsvRead( std::istream& in )
     return bool( in );
 }
 
-bool recCitation::RemoveFromDatabase( idt citID, Coverage limit )
+bool recCitation::RemoveFromDatabase( idt citID )
 {
-    if( (citID < 0 && limit == Coverage::user) || (citID > 0 && limit == Coverage::common) ) {
-        return false;
-    }
+    if( citID <= 0  ) return false; // Don't remove common data.
+    
     wxSQLite3StatementBuffer sql;
 
     // Can't delete if it has children, delete them first.
@@ -290,9 +289,9 @@ bool recCitation::RemoveFromDatabase( idt citID, Coverage limit )
     Delete( citID );
     for( auto& part : parts ) {
         part.Delete();
-        recCitationPartType::DeleteIfOrphaned( part.FGetTypeID(), limit );
+        recCitationPartType::DeleteIfOrphaned( part.FGetTypeID() );
     }
-    recRepository::DeleteIfOrphaned( cit.FGetRepID(), limit );
+    recRepository::DeleteIfOrphaned( cit.FGetRepID() );
     return true;
 }
 
@@ -482,11 +481,9 @@ bool recRepository::CsvRead( std::istream& in )
     return bool( in );
 }
 
-void recRepository::DeleteIfOrphaned( idt repID, Coverage limit )
+void recRepository::DeleteIfOrphaned( idt repID )
 {
-    if( (repID < 0 && limit == Coverage::user) || (repID > 0 && limit == Coverage::common) ) {
-        return;
-    }
+    if( repID <= 0 ) return;
 
     wxSQLite3StatementBuffer sql;
 
@@ -496,7 +493,7 @@ void recRepository::DeleteIfOrphaned( idt repID, Coverage limit )
     recRepository rep( repID );
     Delete( repID );
 
-    recContactList::RemoveFromDatabase( rep.FGetConListID(), limit );
+    recContactList::RemoveFromDatabase( rep.FGetConListID() );
 }
 
 //============================================================================
@@ -839,11 +836,9 @@ bool recCitationPartType::CsvRead( std::istream& in )
     return bool( in );
 }
 
-void recCitationPartType::DeleteIfOrphaned( idt cptID, Coverage limit )
+void recCitationPartType::DeleteIfOrphaned( idt cptID )
 {
-    if( (cptID < 0 && limit == Coverage::user) || (cptID > 0 && limit == Coverage::common) ) {
-        return;
-    }
+    if( cptID <= 0 ) return;
 
     wxSQLite3StatementBuffer sql;
 

@@ -98,7 +98,7 @@ public:
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
 
-    static bool RemoveFromDatabase( idt citID, Coverage limit = Coverage::user );
+    static bool RemoveFromDatabase( idt citID );
 };
 
 
@@ -151,7 +151,7 @@ public:
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
 
-    static void DeleteIfOrphaned( idt cptID, Coverage limit = Coverage::user );
+    static void DeleteIfOrphaned( idt cptID );
 };
 
 
@@ -245,7 +245,7 @@ public:
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
 
-    static void DeleteIfOrphaned( idt cptID, Coverage limit = Coverage::user );
+    static void DeleteIfOrphaned( idt cptID );
 };
 
 #endif // RECCITATION_H
