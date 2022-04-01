@@ -669,6 +669,8 @@ recCitationPartType::recCitationPartType( const recCitationPartType& cpt )
     f_name = cpt.f_name;
     f_style = cpt.f_style;
     f_comment = cpt.f_comment;
+    f_uid = cpt.f_uid;
+    f_changed = cpt.f_changed;
 }
 
 void recCitationPartType::Clear()
@@ -677,6 +679,8 @@ void recCitationPartType::Clear()
     f_name.clear();
     f_style = 0;
     f_comment.clear();
+    f_uid.clear();
+    f_changed = 0;
 }
 
 void recCitationPartType::Save( const wxString& dbname )
@@ -687,9 +691,9 @@ void recCitationPartType::Save( const wxString& dbname )
     {
         // Add new record
         sql.Format(
-            "INSERT INTO \"%s\".CitationPartType (name, style, comment)"
-            " VALUES ('%q', %d, '%q');",
-            UTF8_( dbname ), UTF8_(f_name), f_style, UTF8_( f_comment)
+            "INSERT INTO \"%s\".CitationPartType (name, style, comment, uid, changed)"
+            " VALUES ('%q', %d, '%q', '%q', %ld);",
+            UTF8_( dbname ), UTF8_(f_name), f_style, UTF8_( f_comment), UTF8_( f_uid ), f_changed
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -699,16 +703,17 @@ void recCitationPartType::Save( const wxString& dbname )
         {
             // Add new record
             sql.Format(
-                "INSERT INTO \"%s\".CitationPartType (id, name, style, comment) "
-                "VALUES (" ID ", '%q', %d, '%q');",
-                UTF8_( dbname ), f_id, UTF8_(f_name), f_style, UTF8_( f_comment )
+                "INSERT INTO \"%s\".CitationPartType (id, name, style, comment, uid, changed) "
+                "VALUES (" ID ", '%q', %d, '%q', '%q', %ld);",
+                UTF8_( dbname ), f_id, UTF8_(f_name), f_style, UTF8_( f_comment ), UTF8_( f_uid ), f_changed
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE \"%s\".CitationPartType SET name='%q', style=%d, comment='%q'"
+                "UPDATE \"%s\".CitationPartType"
+                " SET name='%q', style=%d, comment='%q', uid = '%q', changed = %ld"
                 " WHERE id=" ID ";",
-                UTF8_( dbname ), UTF8_(f_name), f_style, UTF8_( f_comment ), f_id
+                UTF8_( dbname ), UTF8_(f_name), f_style, UTF8_( f_comment ), UTF8_( f_uid ), f_changed, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -726,7 +731,7 @@ bool recCitationPartType::Read( const wxString& dbname )
     }
 
     sql.Format( 
-        "SELECT name, style, comment FROM \"%s\".CitationPartType WHERE id=" ID ";",
+        "SELECT name, style, comment, uid, changed FROM \"%s\".CitationPartType WHERE id=" ID ";",
         UTF8_( dbname ), f_id
     );
     result = s_db->GetTable( sql );
@@ -740,6 +745,8 @@ bool recCitationPartType::Read( const wxString& dbname )
     f_name = result.GetAsString( 0 );
     f_style = result.GetInt( 1 );
     f_comment = result.GetAsString( 2 );
+    f_uid = result.GetAsString( 3 );
+    f_changed = result.GetInt( 4 );
     return true;
 }
 
@@ -748,7 +755,9 @@ bool recCitationPartType::Equivalent( const recCitationPartType& r2 ) const
     return
         f_name == r2.f_name &&
         f_style == r2.f_style &&
-        f_comment == r2.f_comment
+        f_comment == r2.f_comment &&
+        f_uid == r2.f_uid &&
+        f_changed == r2.f_changed
         ;
 }
 
@@ -768,7 +777,7 @@ recCitationPartTypeVec recCitationPartType::GetList( const wxString& dbname )
 
     // Put standard entries in list.
     sql.Format(
-        "SELECT id, name, style, comment FROM \"%s\".CitationPartType "
+        "SELECT id, name, style, comment, uid, changed FROM \"%s\".CitationPartType "
         "WHERE id<=0 ORDER BY id DESC;", UTF8_( dbname )
     );
     result = s_db->GetTable( sql );
@@ -779,12 +788,14 @@ recCitationPartTypeVec recCitationPartType::GetList( const wxString& dbname )
         cpt.f_name = result.GetAsString( 1 );
         cpt.f_style = result.GetInt( 2 );
         cpt.f_comment = result.GetAsString( 3 );
+        cpt.f_uid = result.GetAsString( 4 );
+        cpt.f_changed = result.GetInt( 5 );
         list.push_back( cpt );
     }
 
     // Put user entries in list.
     sql.Format(
-        "SELECT id, name, style, comment FROM \"%s\".CitationPartType "
+        "SELECT id, name, style, comment, uid, changed FROM \"%s\".CitationPartType "
         "WHERE id>0 ORDER BY id ASC;", UTF8_( dbname )
     );
     result = s_db->GetTable( sql );
@@ -795,6 +806,8 @@ recCitationPartTypeVec recCitationPartType::GetList( const wxString& dbname )
         cpt.f_name = result.GetAsString( 1 );
         cpt.f_style = result.GetInt( 2 );
         cpt.f_comment = result.GetAsString( 3 );
+        cpt.f_uid = result.GetAsString( 4 );
+        cpt.f_changed = result.GetInt( 5 );
         list.push_back( cpt );
     }
     return list;
@@ -820,7 +833,7 @@ void recCitationPartType::Renumber( idt id, idt to_id )
 
 std::string recCitationPartType::CsvTitles()
 {
-    return std::string( "ID, Name, Style, Comment\n" );
+    return std::string( "ID, Name, Style, Comment, UID, Last Changed\n" );
 }
 
 void recCitationPartType::CsvWrite( std::ostream& out, idt id )
@@ -829,7 +842,9 @@ void recCitationPartType::CsvWrite( std::ostream& out, idt id )
     recCsvWrite( out, cipt.FGetID() );
     recCsvWrite( out, cipt.FGetName() );
     recCsvWrite( out, cipt.FGetStyle() );
-    recCsvWrite( out, cipt.FGetComment(), '\n' );
+    recCsvWrite( out, cipt.FGetComment() );
+    recCsvWrite( out, cipt.FGetUid() );
+    recCsvWrite( out, cipt.FGetChanged(), '\n' );
 }
 
 bool recCitationPartType::CsvRead( std::istream& in )
@@ -838,6 +853,8 @@ bool recCitationPartType::CsvRead( std::istream& in )
     recCsvRead( in, f_name );
     recCsvRead( in, f_style );
     recCsvRead( in, f_comment );
+    recCsvRead( in, f_uid );
+    recCsvRead( in, f_changed );
     return bool( in );
 }
 

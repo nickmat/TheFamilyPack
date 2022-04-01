@@ -209,9 +209,11 @@ public:
 
 class recCitationPartType : public recDbT< recCitationPartType>
 {
-    wxString  f_name;
-    int f_style;
+    wxString f_name;
+    int      f_style;
     wxString f_comment;
+    wxString f_uid;
+    long     f_changed;
 
 public:
     static constexpr const char* s_tablename = "CitationPartType";
@@ -228,10 +230,14 @@ public:
     wxString FGetName() const { return f_name; }
     int FGetStyle() const { return f_style; }
     wxString FGetComment() const { return f_comment; }
+    wxString FGetUid() const { return f_uid; }
+    long FGetChanged() const { return f_changed; }
 
     void FSetName( const wxString& name ) { f_name = name; }
     void FSetStyle( int style ) { f_style = style; }
     void FSetComment( const wxString& comment ) { f_comment = comment; }
+    void FSetUid( const wxString& uid ) { f_uid = uid; }
+    void FSetChanged( long jdn ) { f_changed = jdn; }
 
     static wxString GetIdStr( idt ciptID ) { return wxString::Format( "CiPT" ID, ciptID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
