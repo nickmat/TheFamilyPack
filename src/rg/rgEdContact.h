@@ -31,7 +31,7 @@
 
 #include <rec/recContact.h>
 
-#include "fbRgDialog.h"
+#include "fb/fbRgEditContact.h"
 
 class rgDlgEditContact : public fbRgEditContact
 {

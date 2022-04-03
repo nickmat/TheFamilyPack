@@ -12,8 +12,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
-    <ProjectName>calcalc</ProjectName>
-    <ProjectGuid>{7BE3D8D9-F9D1-5EDB-9425-F959CF820215}</ProjectGuid>
+    <ProjectName>doccore</ProjectName>
+    <ProjectGuid>{6E8A500C-82B9-57E4-80EA-49F1AA5C7DF4}</ProjectGuid>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -39,17 +39,17 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <_ProjectFileVersion>17.0.31919.74</_ProjectFileVersion>
+    <_ProjectFileVersion>17.0.32203.90</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)$(Configuration)\calcalc\</IntDir>
+    <IntDir>$(SolutionDir)$(Configuration)\doccore\</IntDir>
     <LinkIncremental>false</LinkIncremental>
     <GenerateManifest>true</GenerateManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)$(Configuration)\calcalc\</IntDir>
+    <IntDir>$(SolutionDir)$(Configuration)\doccore\</IntDir>
     <LinkIncremental>true</LinkIncremental>
     <GenerateManifest>true</GenerateManifest>
   </PropertyGroup>
@@ -66,8 +66,8 @@
       <ExceptionHandling>Sync</ExceptionHandling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <ObjectFileName>$(SolutionDir)$(Configuration)\calcalc\</ObjectFileName>
-      <ProgramDataBaseFileName>$(SolutionDir)$(Configuration)\calcalc.pdb</ProgramDataBaseFileName>
+      <ObjectFileName>$(SolutionDir)$(Configuration)\doccore\</ObjectFileName>
+      <ProgramDataBaseFileName>$(SolutionDir)$(Configuration)\doccore.pdb</ProgramDataBaseFileName>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat />
@@ -78,16 +78,16 @@
       <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_lib\mswu;$(WXWIN)\include;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>$(SolutionDir)$(Configuration)\calendaru.lib;wxbase31u.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;wxexpat.lib;kernel32.lib;user32.lib;gdi32.lib;comdlg32.lib;winspool.lib;winmm.lib;shell32.lib;comctl32.lib;ole32.lib;oleaut32.lib;uuid.lib;rpcrt4.lib;advapi32.lib;wsock32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(SolutionDir)$(Configuration)\calcalc.exe</OutputFile>
+      <AdditionalDependencies>$(SolutionDir)$(Configuration)\calendaru.lib;$(SolutionDir)$(Configuration)\wxsqlite3u.lib;$(SolutionDir)$(Configuration)\recu.lib;$(SolutionDir)$(Configuration)\recclu.lib;wxbase31u.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;wxexpat.lib;kernel32.lib;user32.lib;gdi32.lib;comdlg32.lib;winspool.lib;winmm.lib;shell32.lib;comctl32.lib;ole32.lib;oleaut32.lib;uuid.lib;rpcrt4.lib;advapi32.lib;wsock32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(SolutionDir)$(Configuration)\doccore.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>$(WXWIN)\lib\vc_lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <ProgramDatabaseFile>$(SolutionDir)$(Configuration)\calcalc.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>$(SolutionDir)$(Configuration)\doccore.pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <Bscmake>
-      <OutputFile>$(SolutionDir)$(Configuration)\tfp_calcalc.bsc</OutputFile>
+      <OutputFile>$(SolutionDir)$(Configuration)\tfp_doccore.bsc</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Bscmake>
   </ItemDefinitionGroup>
@@ -106,8 +106,8 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <ObjectFileName>$(SolutionDir)$(Configuration)\calcalc\</ObjectFileName>
-      <ProgramDataBaseFileName>$(SolutionDir)$(Configuration)\calcalc.pdb</ProgramDataBaseFileName>
+      <ObjectFileName>$(SolutionDir)$(Configuration)\doccore\</ObjectFileName>
+      <ProgramDataBaseFileName>$(SolutionDir)$(Configuration)\doccore.pdb</ProgramDataBaseFileName>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -118,26 +118,38 @@
       <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_lib\mswud;$(WXWIN)\include;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>$(SolutionDir)$(Configuration)\calendarud.lib;wxbase31ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;wxexpatd.lib;kernel32.lib;user32.lib;gdi32.lib;comdlg32.lib;winspool.lib;winmm.lib;shell32.lib;comctl32.lib;ole32.lib;oleaut32.lib;uuid.lib;rpcrt4.lib;advapi32.lib;wsock32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(SolutionDir)$(Configuration)\calcalc.exe</OutputFile>
+      <AdditionalDependencies>$(SolutionDir)$(Configuration)\calendarud.lib;$(SolutionDir)$(Configuration)\wxsqlite3ud.lib;$(SolutionDir)$(Configuration)\recud.lib;$(SolutionDir)$(Configuration)\recclud.lib;wxbase31ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;wxexpatd.lib;kernel32.lib;user32.lib;gdi32.lib;comdlg32.lib;winspool.lib;winmm.lib;shell32.lib;comctl32.lib;ole32.lib;oleaut32.lib;uuid.lib;rpcrt4.lib;advapi32.lib;wsock32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(SolutionDir)$(Configuration)\doccore.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>$(WXWIN)\lib\vc_lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(SolutionDir)$(Configuration)\calcalc.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>$(SolutionDir)$(Configuration)\doccore.pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <Bscmake>
-      <OutputFile>$(SolutionDir)$(Configuration)\tfp_calcalc.bsc</OutputFile>
+      <OutputFile>$(SolutionDir)$(Configuration)\tfp_doccore.bsc</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\utils\cal\calCalc.cpp" />
+    <ClCompile Include="..\..\utils\doccore\dcMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="tfp_calendar.vcxproj">
       <Project>{66f1bdf6-69b1-5480-909e-2e4bca59ed09}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="tfp_rec.vcxproj">
+      <Project>{1a037570-c3cc-5d6a-9c10-f55f1a29680c}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="tfp_reccl.vcxproj">
+      <Project>{0a017726-deb1-5261-a1e6-2aaa1988db2b}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="tfp_wxsqlite3.vcxproj">
+      <Project>{45d7308e-cffd-5887-8a1c-3d8f6e095c88}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>

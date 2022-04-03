@@ -106,31 +106,6 @@ class fbRgCreateName : public wxDialog
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class fbRgEditContact
-///////////////////////////////////////////////////////////////////////////////
-class fbRgEditContact : public wxDialog
-{
-	private:
-
-	protected:
-		wxStaticText* m_staticText3;
-		wxChoice* m_choiceType;
-		wxStaticText* m_staticText4;
-		wxTextCtrl* m_textCtrlValue;
-		wxStaticLine* m_staticline1;
-		wxStaticText* m_staticContactID;
-		wxButton* m_buttonSave1;
-		wxButton* m_buttonCancel1;
-
-	public:
-
-		fbRgEditContact( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Contact"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
-
-		~fbRgEditContact();
-
-};
-
-///////////////////////////////////////////////////////////////////////////////
 /// Class fbRgEditDate
 ///////////////////////////////////////////////////////////////////////////////
 class fbRgEditDate : public wxDialog

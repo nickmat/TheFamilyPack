@@ -12,8 +12,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
-    <ProjectName>doccore</ProjectName>
-    <ProjectGuid>{6E8A500C-82B9-57E4-80EA-49F1AA5C7DF4}</ProjectGuid>
+    <ProjectName>cdb</ProjectName>
+    <ProjectGuid>{F817EC6C-EAD8-5F24-9C52-AA3787A7291A}</ProjectGuid>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -39,17 +39,17 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <_ProjectFileVersion>17.0.31919.74</_ProjectFileVersion>
+    <_ProjectFileVersion>17.0.32203.90</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)$(Configuration)\doccore\</IntDir>
+    <IntDir>$(SolutionDir)$(Configuration)\cdb\</IntDir>
     <LinkIncremental>false</LinkIncremental>
     <GenerateManifest>true</GenerateManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)$(Configuration)\doccore\</IntDir>
+    <IntDir>$(SolutionDir)$(Configuration)\cdb\</IntDir>
     <LinkIncremental>true</LinkIncremental>
     <GenerateManifest>true</GenerateManifest>
   </PropertyGroup>
@@ -66,8 +66,8 @@
       <ExceptionHandling>Sync</ExceptionHandling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <ObjectFileName>$(SolutionDir)$(Configuration)\doccore\</ObjectFileName>
-      <ProgramDataBaseFileName>$(SolutionDir)$(Configuration)\doccore.pdb</ProgramDataBaseFileName>
+      <ObjectFileName>$(SolutionDir)$(Configuration)\cdb\</ObjectFileName>
+      <ProgramDataBaseFileName>$(SolutionDir)$(Configuration)\cdb.pdb</ProgramDataBaseFileName>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat />
@@ -79,15 +79,15 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>$(SolutionDir)$(Configuration)\calendaru.lib;$(SolutionDir)$(Configuration)\wxsqlite3u.lib;$(SolutionDir)$(Configuration)\recu.lib;$(SolutionDir)$(Configuration)\recclu.lib;wxbase31u.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;wxexpat.lib;kernel32.lib;user32.lib;gdi32.lib;comdlg32.lib;winspool.lib;winmm.lib;shell32.lib;comctl32.lib;ole32.lib;oleaut32.lib;uuid.lib;rpcrt4.lib;advapi32.lib;wsock32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(SolutionDir)$(Configuration)\doccore.exe</OutputFile>
+      <OutputFile>$(SolutionDir)$(Configuration)\cdb.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>$(WXWIN)\lib\vc_lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <ProgramDatabaseFile>$(SolutionDir)$(Configuration)\doccore.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>$(SolutionDir)$(Configuration)\cdb.pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <Bscmake>
-      <OutputFile>$(SolutionDir)$(Configuration)\tfp_doccore.bsc</OutputFile>
+      <OutputFile>$(SolutionDir)$(Configuration)\tfp_cdb.bsc</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Bscmake>
   </ItemDefinitionGroup>
@@ -106,8 +106,8 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <ObjectFileName>$(SolutionDir)$(Configuration)\doccore\</ObjectFileName>
-      <ProgramDataBaseFileName>$(SolutionDir)$(Configuration)\doccore.pdb</ProgramDataBaseFileName>
+      <ObjectFileName>$(SolutionDir)$(Configuration)\cdb\</ObjectFileName>
+      <ProgramDataBaseFileName>$(SolutionDir)$(Configuration)\cdb.pdb</ProgramDataBaseFileName>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -119,21 +119,21 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>$(SolutionDir)$(Configuration)\calendarud.lib;$(SolutionDir)$(Configuration)\wxsqlite3ud.lib;$(SolutionDir)$(Configuration)\recud.lib;$(SolutionDir)$(Configuration)\recclud.lib;wxbase31ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;wxexpatd.lib;kernel32.lib;user32.lib;gdi32.lib;comdlg32.lib;winspool.lib;winmm.lib;shell32.lib;comctl32.lib;ole32.lib;oleaut32.lib;uuid.lib;rpcrt4.lib;advapi32.lib;wsock32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(SolutionDir)$(Configuration)\doccore.exe</OutputFile>
+      <OutputFile>$(SolutionDir)$(Configuration)\cdb.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>$(WXWIN)\lib\vc_lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(SolutionDir)$(Configuration)\doccore.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>$(SolutionDir)$(Configuration)\cdb.pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <Bscmake>
-      <OutputFile>$(SolutionDir)$(Configuration)\tfp_doccore.bsc</OutputFile>
+      <OutputFile>$(SolutionDir)$(Configuration)\tfp_cdb.bsc</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\utils\doccore\dcMain.cpp" />
+    <ClCompile Include="..\..\utils\cdb\cdbMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="tfp_calendar.vcxproj">

@@ -12,8 +12,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
-    <ProjectName>reccl</ProjectName>
-    <ProjectGuid>{0A017726-DEB1-5261-A1E6-2AAA1988DB2B}</ProjectGuid>
+    <ProjectName>calendar</ProjectName>
+    <ProjectGuid>{66F1BDF6-69B1-5480-909E-2E4BCA59ED09}</ProjectGuid>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -39,31 +39,34 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <_ProjectFileVersion>17.0.31919.74</_ProjectFileVersion>
+    <_ProjectFileVersion>17.0.32203.90</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)$(Configuration)\reccl\</IntDir>
+    <IntDir>$(SolutionDir)$(Configuration)\calendar\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)$(Configuration)\reccl\</IntDir>
+    <IntDir>$(SolutionDir)$(Configuration)\calendar\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl>
       <PreprocessorDefinitions>WIN32;_LIB;_UNICODE;__WXMSW__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_lib\mswu;$(WXWIN)\include;..\..\include\rec;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_lib\mswu;$(WXWIN)\include;..\..\include\cal;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </Midl>
     <ClCompile>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>MaxSpeed</Optimization>
-      <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_lib\mswu;$(WXWIN)\include;..\..\include\rec;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_lib\mswu;$(WXWIN)\include;..\..\include\cal;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_LIB;_UNICODE;__WXMSW__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling>Sync</ExceptionHandling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <ObjectFileName>$(SolutionDir)$(Configuration)\reccl\</ObjectFileName>
-      <ProgramDataBaseFileName>$(SolutionDir)$(Configuration)\recclu.pdb</ProgramDataBaseFileName>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>wx/wxprec.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>$(SolutionDir)$(Configuration)\wxprec_calendar.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>$(SolutionDir)$(Configuration)\calendar\</ObjectFileName>
+      <ProgramDataBaseFileName>$(SolutionDir)$(Configuration)\calendaru.pdb</ProgramDataBaseFileName>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat />
@@ -71,34 +74,37 @@
     <ResourceCompile>
       <PreprocessorDefinitions>_UNICODE;__WXMSW__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
-      <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_lib\mswu;$(WXWIN)\include;..\..\include\rec;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_lib\mswu;$(WXWIN)\include;..\..\include\cal;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Lib>
-      <OutputFile>$(SolutionDir)$(Configuration)\recclu.lib</OutputFile>
+      <OutputFile>$(SolutionDir)$(Configuration)\calendaru.lib</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
     <Bscmake>
-      <OutputFile>$(SolutionDir)$(Configuration)\tfp_reccl.bsc</OutputFile>
+      <OutputFile>$(SolutionDir)$(Configuration)\tfp_calendar.bsc</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Midl>
       <PreprocessorDefinitions>WIN32;_LIB;_UNICODE;__WXDEBUG__;__WXMSW__;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_lib\mswud;$(WXWIN)\include;..\..\include\rec;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_lib\mswud;$(WXWIN)\include;..\..\include\cal;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </Midl>
     <ClCompile>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_lib\mswud;$(WXWIN)\include;..\..\include\rec;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_lib\mswud;$(WXWIN)\include;..\..\include\cal;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_LIB;_UNICODE;__WXDEBUG__;__WXMSW__;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling>Sync</ExceptionHandling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <ObjectFileName>$(SolutionDir)$(Configuration)\reccl\</ObjectFileName>
-      <ProgramDataBaseFileName>$(SolutionDir)$(Configuration)\recclud.pdb</ProgramDataBaseFileName>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>wx/wxprec.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>$(SolutionDir)$(Configuration)\wxprec_calendar.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>$(SolutionDir)$(Configuration)\calendar\</ObjectFileName>
+      <ProgramDataBaseFileName>$(SolutionDir)$(Configuration)\calendarud.pdb</ProgramDataBaseFileName>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -106,19 +112,45 @@
     <ResourceCompile>
       <PreprocessorDefinitions>_UNICODE;__WXDEBUG__;__WXMSW__;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
-      <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_lib\mswud;$(WXWIN)\include;..\..\include\rec;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_lib\mswud;$(WXWIN)\include;..\..\include\cal;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Lib>
-      <OutputFile>$(SolutionDir)$(Configuration)\recclud.lib</OutputFile>
+      <OutputFile>$(SolutionDir)$(Configuration)\calendarud.lib</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
     <Bscmake>
-      <OutputFile>$(SolutionDir)$(Configuration)\tfp_reccl.bsc</OutputFile>
+      <OutputFile>$(SolutionDir)$(Configuration)\tfp_calendar.bsc</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\rc\reccl.cpp" />
+    <ClCompile Include="..\..\src\cal\calAstro.cpp" />
+    <ClCompile Include="..\..\src\cal\calendar.cpp" />
+    <ClCompile Include="..\..\src\cal\calFrench.cpp" />
+    <ClCompile Include="..\..\src\cal\calGregorian.cpp" />
+    <ClCompile Include="..\..\src\cal\calHebrew.cpp" />
+    <ClCompile Include="..\..\src\cal\calIslamic.cpp" />
+    <ClCompile Include="..\..\src\cal\calJulian.cpp" />
+    <ClCompile Include="..\..\src\cal\calMath.cpp" />
+    <ClCompile Include="..\..\src\cal\calParse.cpp" />
+    <ClCompile Include="..\..\src\cal\calRecord.cpp" />
+    <ClCompile Include="..\..\src\dummy.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\cal\calendar.h" />
+    <ClInclude Include="..\..\src\cal\calAstro.h" />
+    <ClInclude Include="..\..\src\cal\calCommon.h" />
+    <ClInclude Include="..\..\src\cal\calFrench.h" />
+    <ClInclude Include="..\..\src\cal\calGregorian.h" />
+    <ClInclude Include="..\..\src\cal\calHebrew.h" />
+    <ClInclude Include="..\..\src\cal\calIslamic.h" />
+    <ClInclude Include="..\..\src\cal\calJulian.h" />
+    <ClInclude Include="..\..\src\cal\calMath.h" />
+    <ClInclude Include="..\..\src\cal\calParse.h" />
+    <ClInclude Include="..\..\src\cal\calRecord.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
