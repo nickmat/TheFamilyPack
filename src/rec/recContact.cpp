@@ -482,7 +482,7 @@ recContactTypeVec recContactType::GetList( const wxString& dbname )
     // Put standard entries in list.
     sql.Format(
         "SELECT id, name, uid, changed FROM \"%s\".ContactType"
-        " WHERE id<=0 ORDER BY id DESC;",
+        " WHERE id<0 ORDER BY id DESC;",
         UTF8_( dbname )
     );
     result = s_db->GetTable( sql );
