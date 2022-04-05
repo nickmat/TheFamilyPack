@@ -175,6 +175,8 @@ void rgDlgEditContact::OnAddType( wxCommandEvent& event )
 void rgDlgEditContact::OnEditType( wxCommandEvent& event )
 {
     int type = m_choiceType->GetSelection();
+    if( type == 0 ) return; // Nothing selected, silently ignore.
+
     idt ctID = m_types[type - 1].FGetID();
     rgEditContactType( this, ctID );
     UpdateTypeList( ctID );
