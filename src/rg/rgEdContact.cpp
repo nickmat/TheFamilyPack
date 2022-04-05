@@ -5,8 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     10th January 2013
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2013..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -38,6 +37,9 @@
 
 #include "rgEdContact.h"
 #include "rg/rgDialogs.h"
+
+#include <cal/calendar.h>
+
 
 bool rgEditContact( wxWindow* wind, idt conID )
 {
@@ -77,6 +79,42 @@ idt rgCreateContact( wxWindow* wind, idt clID )
     return 0;
 }
 
+static bool rgEditContactType( wxWindow* wind, idt ctID )
+{
+    wxASSERT( ctID != 0 );
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+
+    rgDlgEditContactType dialog( wind, ctID );
+
+    if( dialog.ShowModal() == wxID_OK ) {
+        recDb::ReleaseSavepoint( savepoint );
+        return true;
+    }
+    recDb::Rollback( savepoint );
+    return false;
+}
+
+static idt rgCreateContactType( wxWindow* wind )
+{
+    const wxString savepoint = recDb::GetSavepointStr();
+    recDb::Savepoint( savepoint );
+
+    recContactType ct( 0 );
+    ct.FSetUid( recCreateUid() );
+    ct.FSetChanged( calGetTodayJdn() );
+    ct.Save();
+
+    idt ctID = ct.FGetID();
+    if( rgEditContactType( wind, ctID ) ) {
+        recDb::ReleaseSavepoint( savepoint );
+        return ctID;
+    }
+    recDb::Rollback( savepoint );
+    return 0;
+}
+
+
 //============================================================================
 //-------------------------[ rgEditContact ]----------------------------------
 //============================================================================
@@ -86,23 +124,12 @@ bool rgDlgEditContact::TransferDataToWindow()
     wxASSERT( m_contact.FGetID() != 0 );
     wxASSERT( m_contact.FGetListID() != 0 );
 
-    m_types = recContactType::GetList();
-    for( size_t i = 0 ; i < m_types.size() ; i++ ) {
-        if( i == 0 ) {
-            m_choiceType->Append( _("<Select Type>") );
-        } else {
-            m_choiceType->Append( m_types[i].FGetName() );
-        }
-        if( m_contact.FGetTypeID() == m_types[i].FGetID() ) {
-            m_choiceType->SetSelection( (int) i );
-        }
-    }
 
     m_textCtrlValue->SetValue( m_contact.FGetValue() );
 
-//    m_staticContactListID->SetLabel( recContactList::GetIdStr( m_contact.FGetListID() ) );
     m_staticContactID->SetLabel( m_contact.GetIdStr() );
 
+    UpdateTypeList( m_contact.FGetTypeID() );
     return true;
 }
 
@@ -113,9 +140,66 @@ bool rgDlgEditContact::TransferDataFromWindow()
         wxMessageBox( _("Please select a Contact Type"), _("Contact Type Required") );
         return false;
     }
-    m_contact.FSetTypeID( m_types[type].FGetID() );
+    m_contact.FSetTypeID( m_types[type-1].FGetID() );
     m_contact.FSetValue( m_textCtrlValue->GetValue() );
     m_contact.Save();
+    return true;
+}
+
+void rgDlgEditContact::UpdateTypeList( idt ctID )
+{
+    m_types = recContactType::GetList();
+    m_choiceType->Clear();
+    m_choiceType->Append( _( "<Select Type>" ) );
+    m_choiceType->SetSelection( 0 );
+    for( size_t i = 0; i < m_types.size(); i++ ) {
+        m_choiceType->Append( m_types[i].FGetName() );
+        if( ctID == m_types[i].FGetID() ) {
+            m_choiceType->SetSelection( int( i + 1 ) );
+        }
+    }
+}
+
+void rgDlgEditContact::OnAddEditButton( wxCommandEvent& event )
+{
+    wxSize s = m_buttonAddType->GetSize();
+    m_buttonAddType->PopupMenu( m_menuAddEditType, 0, s.y );
+}
+
+void rgDlgEditContact::OnAddType( wxCommandEvent& event )
+{
+    idt ctID = rgCreateContactType( this );
+    UpdateTypeList( ctID );
+}
+
+void rgDlgEditContact::OnEditType( wxCommandEvent& event )
+{
+    int type = m_choiceType->GetSelection();
+    idt ctID = m_types[type - 1].FGetID();
+    rgEditContactType( this, ctID );
+    UpdateTypeList( ctID );
+}
+
+
+//============================================================================
+//-----------------------[ rgEditContactType ]--------------------------------
+//============================================================================
+
+bool rgDlgEditContactType::TransferDataToWindow()
+{
+    m_textCtrlName->SetValue( m_contacttype.FGetName() );
+    m_textCtrlUid->SetValue( m_contacttype.FGetUid() );
+    wxString changed = calStrFromJdn( m_contacttype.FGetChanged() );
+    m_textCtrlChanged->SetValue( changed );
+
+    m_staticContactTypeID->SetLabel( m_contacttype.GetIdStr() );
+    return true;
+}
+
+bool rgDlgEditContactType::TransferDataFromWindow()
+{
+    m_contacttype.FSetName( m_textCtrlName->GetValue() );
+    m_contacttype.Save();
     return true;
 }
 

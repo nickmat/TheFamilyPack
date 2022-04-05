@@ -5,8 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     10th January 2013
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2013..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -33,6 +32,10 @@
 
 #include "fb/fbRgEditContact.h"
 
+//============================================================================
+//-------------------------[ rgEditContact ]----------------------------------
+//============================================================================
+
 class rgDlgEditContact : public fbRgEditContact
 {
 public:
@@ -43,8 +46,31 @@ private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
 
+    void UpdateTypeList( idt ctID );
+
+    void OnAddEditButton( wxCommandEvent& event ) override;
+    void OnAddType( wxCommandEvent& event ) override;
+    void OnEditType( wxCommandEvent& event ) override;
+
     recContact         m_contact;
     recContactTypeVec  m_types;
+};
+
+//============================================================================
+//-----------------------[ rgEditContactType ]--------------------------------
+//============================================================================
+
+class rgDlgEditContactType : public fbRgEditContactType
+{
+public:
+    rgDlgEditContactType( wxWindow* parent, idt ctID )
+        : m_contacttype( ctID ), fbRgEditContactType( parent ) {}
+
+private:
+    bool TransferDataToWindow();
+    bool TransferDataFromWindow();
+
+    recContactType  m_contacttype;
 };
 
 #endif // RGEDCONTACT_H
