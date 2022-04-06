@@ -34,8 +34,6 @@
 #include <rec/recCitation.h>
 #include <rec/recContact.h>
 
-#include <cal/calendar.h>
-
 
 //============================================================================
 //                 recCitation
