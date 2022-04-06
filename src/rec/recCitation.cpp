@@ -659,6 +659,21 @@ bool recCitationPart::CsvRead( std::istream& in )
     return bool( in );
 }
 
+void recCitationPart::RemoveFromDatabase( idt cpID, const wxString& dbname )
+{
+    if( cpID <= 0 ) return;
+    recCitationPart cp( cpID, dbname );
+    cp.RemoveFromDatabase( dbname );
+}
+
+void recCitationPart::RemoveFromDatabase( const wxString& dbname )
+{
+    if( FGetID() <= 0 ) return;
+    Delete( FGetID(), dbname );
+    recCitationPartType::DeleteIfOrphaned( FGetTypeID(), dbname );
+}
+
+
 //============================================================================
 //                 recCitationPartType
 //============================================================================

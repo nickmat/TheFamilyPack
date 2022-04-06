@@ -200,6 +200,9 @@ public:
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
+
+    static void RemoveFromDatabase( idt conID, const wxString& dbname );
+    void RemoveFromDatabase( const wxString& dbname );
 };
 
 
