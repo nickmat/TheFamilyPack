@@ -184,9 +184,6 @@ public:
     recIdVec GetDateIdVec( const wxString& dbname = "Main" ) const {
         return GetDateIdVec( f_id, dbname ); }
 
-    wxString GetChangedDate() const;
-    static wxString GetChangedDate( idt refID, const wxString& dbname );
-
     static idt FindUid(
         idt refID, const wxString& source_db, const wxString& target_db = "Main" );
     idt FindUid( const wxString& target_db = "Main" ) const;

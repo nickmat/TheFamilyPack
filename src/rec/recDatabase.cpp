@@ -38,6 +38,8 @@
 
 #include <rec/recDatabase.h>
 
+#include <cal/calendar.h>
+
 #include <rec/recIndividual.h>
 #include <rec/recMediaData.h>
 #include <rec/recSystem.h>
@@ -86,6 +88,11 @@ wxString recGetHomeDisplay( const wxString& dbname )
     }
     // Give up.
     return "About";
+}
+
+wxString recGetDateStr( long jdn )
+{
+    return calStrFromJdn( jdn, CALENDAR_SCH_Gregorian );
 }
 
 
@@ -540,6 +547,17 @@ idt recDb::DoFindUid( const wxString& uid, const char* table, const wxString& db
         UTF8_( dbname ), table, UTF8_( uid )
     );
     return ExecuteID( sql );
+}
+
+wxString recDb::DoGetChangedDate( idt id, const char* table, const wxString& dbname )
+{
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT changed FROM \"%s\".%s WHERE id=" ID ";",
+        UTF8_( dbname ), table, id
+    );
+    long jdn = ExecuteInt( sql );
+    return recGetDateStr( jdn );
 }
 
 int recDb::ExecuteInt( const wxSQLite3StatementBuffer& sql )

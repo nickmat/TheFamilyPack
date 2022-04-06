@@ -37,6 +37,8 @@ extern void recUninitialize();
 extern wxString recGetHomeDisplay( const wxString& dbname );
 using stringmap = std::map<int, int>;
 
+extern wxString recGetDateStr( long jdn );
+
 class recDb
 {
 public:
@@ -96,6 +98,10 @@ public:
     /*! Only for records that have a 'uid' field. Other records will cause exception.
      */
     static idt DoFindUid( const wxString& uid, const char* table, const wxString& dbname );
+
+    /*! Only for records that have a 'changed' field. Return a string of the changed date.
+     */
+    static wxString DoGetChangedDate( idt id, const char* table, const wxString& dbname );
 
     idt   f_id;
 
@@ -287,6 +293,12 @@ public:
     static idt FindUid( idt id, const wxString& source_db, const wxString& target_db ) {
         T rec( id, source_db );
         return DoFindUid( rec.FGetUid(), T::s_tablename, target_db );
+    }
+    wxString GetChangedDate() const { 
+        return recGetDateStr( ( (T*) this )->FGetChanged() );
+    }
+    static wxString GetChangedDate_( idt refID, const wxString& dbname ) {
+        return DoGetChangedDate( idt id, T::s_tablename, dbname );
     }
 
     virtual bool Equivalent( const T& ) const {

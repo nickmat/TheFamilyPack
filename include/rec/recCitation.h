@@ -143,9 +143,6 @@ public:
 
     static recRepositoryVec GetFullList( const wxString& dbname = "Main" );
 
-    wxString GetChangedDate() const;
-    static wxString GetChangedDate( idt refID, const wxString& dbname );
-
     static void Renumber( idt fromID, idt toID );
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );

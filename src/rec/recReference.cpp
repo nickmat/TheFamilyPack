@@ -299,20 +299,6 @@ recIdVec recReference::GetIdVecForEntity(
     return ExecuteIdVec( sql );
 }
 
-wxString recReference::GetChangedDate() const
-{
-    return calStrFromJdn( f_changed, CALENDAR_SCH_Gregorian );
-}
-
-wxString recReference::GetChangedDate( idt refID, const wxString& dbname )
-{
-    long jdn = recDb::ExecuteInt(
-        "SELECT changed FROM \"%s\".Reference WHERE id=" ID ";",
-        UTF8_( dbname ), refID
-    );
-    return calStrFromJdn( jdn, CALENDAR_SCH_Gregorian );
-}
-
 idt recReference::FindUid( idt refID, const wxString& source_db, const wxString& target_db )
 {
     recReference ref( refID, source_db );

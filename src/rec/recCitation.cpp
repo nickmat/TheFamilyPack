@@ -429,20 +429,6 @@ recRepositoryVec recRepository::GetFullList( const wxString& dbname )
     return list;
 }
 
-wxString recRepository::GetChangedDate() const
-{
-    return calStrFromJdn( f_changed, CALENDAR_SCH_Gregorian );
-}
-
-wxString recRepository::GetChangedDate( idt refID, const wxString& dbname )
-{
-    long jdn = recDb::ExecuteInt(
-        "SELECT changed FROM \"%s\".Repository WHERE id=" ID ";",
-        UTF8_( dbname ), refID
-    );
-    return calStrFromJdn( jdn, CALENDAR_SCH_Gregorian );
-}
-
 void recRepository::Renumber( idt id, idt to_id )
 {
     if( id == 0 ) {
