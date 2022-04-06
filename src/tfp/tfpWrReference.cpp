@@ -161,16 +161,16 @@ wxString tfpWriteReferencePage( idt refID, const wxString& dbname )
     }
 
     htm << "<div>\n<p>";
-    if( ref.FGetHigherId() != 0 ) {
-        wxString higher = recReference::GetIdStr( ref.FGetHigherId() );
+    if( ref.FGetHigherID() != 0 ) {
+        wxString higher = recReference::GetIdStr( ref.FGetHigherID() );
         htm <<
             "<b>Part of: <a href='tfp:" << higher << "'>" << higher <<
-            "</a></b> " << recReference::GetTitle( ref.FGetHigherId() ) << "<br>\n"
+            "</a></b> " << recReference::GetTitle( ref.FGetHigherID() ) << "<br>\n"
         ;
     }
     htm<<
-        "<b>Researcher:</b> " << recResearcher::GetIdStr( ref.FGetResId() ) <<
-        ": " << recResearcher::GetNameStr( ref.FGetResId() ) << "<br>\n"
+        "<b>Researcher:</b> " << recResearcher::GetIdStr( ref.FGetResID() ) <<
+        ": " << recResearcher::GetNameStr( ref.FGetResID() ) << "<br>\n"
         "<b>User Ref:</b> " << ref.FGetUserRef() << "<br>\n"
         "<b>Date Last Changed:</b> " << ref.GetChangedDate() << "<br>\n"
         "<b>UID:</b> " << ref.FGetUid() << "</p></div>\n"

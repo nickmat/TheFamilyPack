@@ -351,10 +351,10 @@ void recReference::CsvWrite( std::ostream& out, idt id )
 {
     recReference ref( id );
     recCsvWrite( out, ref.FGetID() );
-    recCsvWrite( out, ref.FGetHigherId() );
+    recCsvWrite( out, ref.FGetHigherID() );
     recCsvWrite( out, ref.FGetTitle() );
     recCsvWrite( out, ref.FGetStatement() );
-    recCsvWrite( out, ref.FGetResId() );
+    recCsvWrite( out, ref.FGetResID() );
     recCsvWrite( out, ref.FGetUserRef() );
     recCsvWrite( out, ref.FGetUid() );
     recCsvWrite( out, ref.FGetChanged(), '\n' );

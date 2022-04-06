@@ -83,7 +83,7 @@ idt rgCreateReference( wxWindow* parent )
     recDb::Savepoint( savepoint );
 
     recReference ref(0);
-    ref.FSetResId( recGetCurrentResearcher() );
+    ref.FSetResID( recGetCurrentResearcher() );
     ref.FSetUid( recCreateUid() );
     ref.FSetChanged( calGetTodayJdn() );
     ref.Save();
@@ -206,8 +206,8 @@ bool rgDlgEditReference::TransferDataToWindow()
     wxASSERT( m_reference.FGetID() != 0 );
     m_staticRefID->SetLabel( m_reference.GetIdStr()  );
     m_textCtrlTitle->SetValue( m_reference.FGetTitle() );
-    m_textCtrlHigherRef->SetValue( recReference::GetTitle( m_reference.FGetHigherId() ) );
-    m_resID = m_reference.FGetResId();
+    m_textCtrlHigherRef->SetValue( recReference::GetTitle( m_reference.FGetHigherID() ) );
+    m_resID = m_reference.FGetResID();
     UpdateResearcher();
     m_textCtrlUserRef->SetValue( m_reference.FGetUserRef() );
     m_textCtrlStatement->SetValue(  m_reference.FGetStatement() );
@@ -225,7 +225,7 @@ bool rgDlgEditReference::TransferDataFromWindow()
     m_reference.FSetTitle( m_textCtrlTitle->GetValue() );
     m_reference.FSetUserRef( m_textCtrlUserRef->GetValue() );
     m_reference.FSetStatement( m_textCtrlStatement->GetValue() );
-    m_reference.FSetResId( m_resID );
+    m_reference.FSetResID( m_resID );
     m_reference.FSetChanged( calGetTodayJdn() );
 
     m_reference.Save();
