@@ -44,7 +44,7 @@ class recResearcher : public recDbT<recResearcher>
 public:
     static constexpr const char* s_tablename = "Researcher";
 
-    recResearcher() : f_con_list_id(0) {}
+    recResearcher() : f_con_list_id(0), f_changed(0) {}
     recResearcher( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }
     recResearcher( const recResearcher& res );
 
@@ -57,11 +57,13 @@ public:
     wxString FGetComment() const { return f_comment; }
     idt FGetConListID() const { return f_con_list_id; }
     wxString FGetUid() const { return f_uid; }
+    long FGetChanged() const { return f_changed; }
 
     void FSetName( const wxString& name ) { f_name = name; }
     void FSetComment( const wxString& com ) { f_comment = com; }
     void FSetConListID( idt clID ) { f_con_list_id = clID; }
     void FSetUid( const wxString& uid ) { f_uid = uid; }
+    void FSetChanged( long jdn ) { f_changed = jdn; }
 
     static wxString GetIdStr( idt resID ) { return wxString::Format( "Re" ID, resID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
@@ -85,6 +87,7 @@ private:
     wxString  f_comment;
     idt       f_con_list_id;
     wxString  f_uid;
+    long      f_changed;
 };
 
 

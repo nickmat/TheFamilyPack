@@ -40,11 +40,12 @@
 
 recResearcher::recResearcher( const recResearcher& res )
 {
-    f_id          = res.f_id;
-    f_name        = res.f_name;
-    f_comment     = res.f_comment;
+    f_id = res.f_id;
+    f_name = res.f_name;
+    f_comment = res.f_comment;
     f_con_list_id = res.f_con_list_id;
-    f_uid         = res.f_uid;
+    f_uid = res.f_uid;
+    f_changed = res.f_changed;
 }
 
 void recResearcher::Clear()
@@ -54,6 +55,7 @@ void recResearcher::Clear()
     f_comment.clear();
     f_con_list_id = 0;
     f_uid.clear();
+    f_changed = 0;
 }
 
 void recResearcher::Save( const wxString& dbname )
@@ -65,9 +67,10 @@ void recResearcher::Save( const wxString& dbname )
     {
         // Add new record
         sql.Format(
-            "INSERT INTO \"%s\".Researcher (name, comment, con_list_id, uid)"
-            " VALUES ('%q', NULLIF('%q', ''), NULLIF(" ID ", 0), '%q');",
-            UTF8_( dbname ), UTF8_(f_name), UTF8_(f_comment), f_con_list_id, UTF8_( f_uid )
+            "INSERT INTO \"%s\".Researcher (name, comment, con_list_id, uid, changed)"
+            " VALUES ('%q', NULLIF('%q', ''), NULLIF(" ID ", 0), '%q', %ld);",
+            UTF8_( dbname ), UTF8_(f_name), UTF8_(f_comment), f_con_list_id,
+            UTF8_( f_uid ), f_changed
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -77,17 +80,19 @@ void recResearcher::Save( const wxString& dbname )
         {
             // Add new record
             sql.Format(
-                "INSERT INTO \"%s\".Researcher (id, name, comment, con_list_id, uid)"
-                " VALUES (" ID ", '%q', NULLIF('%q', ''), NULLIF(" ID ", 0), '%q');",
-                UTF8_( dbname ), f_id, UTF8_(f_name), UTF8_(f_comment), f_con_list_id, UTF8_( f_uid )
+                "INSERT INTO \"%s\".Researcher (id, name, comment, con_list_id, uid, changed)"
+                " VALUES (" ID ", '%q', NULLIF('%q', ''), NULLIF(" ID ", 0), '%q', %ld);",
+                UTF8_( dbname ), f_id, UTF8_(f_name), UTF8_(f_comment), f_con_list_id,
+                UTF8_( f_uid ), f_changed
             );
         } else {
             // Update existing record
             sql.Format(
                 "UPDATE \"%s\".Researcher SET name='%q', comment=NULLIF('%q', ''),"
-                " con_list_id=NULLIF(" ID ", 0), uid='%q'"
+                " con_list_id=NULLIF(" ID ", 0), uid='%q', changed=%ld"
                 " WHERE id=" ID ";",
-                UTF8_( dbname ), UTF8_(f_name), UTF8_(f_comment), f_con_list_id, UTF8_( f_uid ), f_id
+                UTF8_( dbname ), UTF8_(f_name), UTF8_(f_comment), f_con_list_id,
+                UTF8_( f_uid ), f_changed, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -105,7 +110,7 @@ bool recResearcher::Read( const wxString& dbname )
     }
 
     sql.Format(
-        "SELECT name, comment, con_list_id, uid FROM \"%s\".Researcher WHERE id=" ID ";",
+        "SELECT name, comment, con_list_id, uid, changed FROM \"%s\".Researcher WHERE id=" ID ";",
         UTF8_( dbname ), f_id
     );
     result = s_db->GetTable( sql );
@@ -120,16 +125,19 @@ bool recResearcher::Read( const wxString& dbname )
     f_comment    = result.GetAsString( 1 );
     f_con_list_id = GET_ID( result.GetInt64( 2 ) );
     f_uid = result.GetAsString( 3 );
+    f_changed = result.GetInt( 4 );
     return true;
 }
 
 bool recResearcher::Equivalent( const recResearcher& r2 ) const
 {
     return
-        f_name        == r2.f_name     &&
-        f_comment     == r2.f_comment  &&
+        f_name == r2.f_name &&
+        f_comment == r2.f_comment &&
         f_con_list_id == r2.f_con_list_id &&
-        f_uid         == r2.f_uid;
+        f_uid == r2.f_uid &&
+        f_changed == r2.f_changed
+        ;
 }
 
 wxString recResearcher::GetNameStr( idt resID, const wxString& dbname )
@@ -163,7 +171,7 @@ recResearcherVec recResearcher::GetResearchers( Coverage filter, const wxString&
 
     if( filter == Coverage::all || filter == Coverage::user ) {
         sql.Format(
-            "SELECT id, name, comment, con_list_id, uid FROM \"%s\".Researcher"
+            "SELECT id, name, comment, con_list_id, uid, changed FROM \"%s\".Researcher"
             " WHERE id>0 ORDER BY id;",
             UTF8_( dbname )
         );
@@ -175,12 +183,13 @@ recResearcherVec recResearcher::GetResearchers( Coverage filter, const wxString&
             res.FSetComment( result.GetAsString( 2 ) );
             res.FSetConListID( GET_ID( result.GetInt64( 3 ) ) );
             res.FSetUid( result.GetAsString( 4 ) );
+            res.FSetChanged( result.GetInt( 5 ) );
             list.push_back( res );
         }
     }
     if( filter == Coverage::all || filter == Coverage::common ) {
         sql.Format(
-            "SELECT id, name, comment, con_list_id, uid FROM \"%s\".Researcher"
+            "SELECT id, name, comment, con_list_id, uid, changed FROM \"%s\".Researcher"
             " WHERE id<0 ORDER BY id;",
             UTF8_( dbname )
         );
@@ -192,6 +201,7 @@ recResearcherVec recResearcher::GetResearchers( Coverage filter, const wxString&
             res.FSetComment( result.GetAsString( 2 ) );
             res.FSetConListID( GET_ID( result.GetInt64( 3 ) ) );
             res.FSetUid( result.GetAsString( 4 ) );
+            res.FSetChanged( result.GetInt( 5 ) );
             list.push_back( res );
         }
     }
@@ -223,7 +233,7 @@ void recResearcher::Renumber( idt id, idt to_id )
 
 std::string recResearcher::CsvTitles()
 {
-    return std::string("ID, Name, Comment, Contact List ID, UID\n");
+    return std::string("ID, Name, Comment, Contact List ID, UID, Last Changed\n");
 }
 
 void recResearcher::CsvWrite( std::ostream& out, idt id )
@@ -233,7 +243,8 @@ void recResearcher::CsvWrite( std::ostream& out, idt id )
     recCsvWrite( out, res.FGetName() );
     recCsvWrite( out, res.FGetComment() );
     recCsvWrite( out, res.FGetConListID() );
-    recCsvWrite( out, res.FGetUid(), '\n' );
+    recCsvWrite( out, res.FGetUid() );
+    recCsvWrite( out, res.FGetChanged(), '\n' );
 }
 
 bool recResearcher::CsvRead( std::istream& in )
@@ -243,6 +254,7 @@ bool recResearcher::CsvRead( std::istream& in )
     recCsvRead( in, f_comment );
     recCsvRead( in, f_con_list_id );
     recCsvRead( in, f_uid );
+    recCsvRead( in, f_changed );
     return bool( in );
 }
 

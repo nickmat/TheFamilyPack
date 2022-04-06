@@ -574,7 +574,8 @@ CREATE TABLE Researcher (  /* See System Settings below for initial entries */
   name TEXT NOT NULL,
   comment TEXT,
   con_list_id INTEGER REFERENCES ContactList(id),
-  uid TEXT NOT NULL
+  uid TEXT NOT NULL,
+  changed INTEGER NOT NULL
 );
 
 CREATE TABLE System (  /* See System Settings below for initial entries */
@@ -610,10 +611,10 @@ INSERT INTO ContactType (id, name, uid, changed)
 INSERT INTO ContactType (id, name, uid, changed)
   VALUES(-6, 'Fax', 'D717ACECD3D1DF6E663C9788BFB330350F50', 2459664);
 
-INSERT INTO Researcher (id, name, comment, con_list_id, uid) VALUES
-  (0, '', NULL, NULL, '');
-INSERT INTO Researcher (id, name, comment, con_list_id, uid) VALUES
-  (-1, 'Anonymous', NULL, NULL, 'E16C3575699D77C1BABD0C582A44C6FA3E4A');
+INSERT INTO Researcher (id, name, comment, con_list_id, uid, changed) VALUES
+  (0, '', NULL, NULL, '', 0);
+INSERT INTO Researcher (id, name, comment, con_list_id, uid, changed) VALUES
+  (-1, 'Anonymous', NULL, NULL, 'E16C3575699D77C1BABD0C582A44C6FA3E4A', 2459675);
 
 INSERT INTO User (id, res_id) VALUES(1, -1); /* Set User U1 to Anomymous */
 
@@ -624,7 +625,7 @@ INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 1, 1, 'NI');
 /* Table Version created in recCreateCommon.sql */
 
 /* The Version table row 1 is the full TFPD database */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 34);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 35);
 
 COMMIT;
 
