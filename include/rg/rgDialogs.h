@@ -90,6 +90,7 @@ extern bool rgEditAssociate( wxWindow* wind, idt assID );
 extern idt rgCreateAssociate( wxWindow* wind );
 extern idt rgSelectAssociate(
     wxWindow* wind,
+    const wxString& dbname = "Main",
     unsigned flag = rgSELSTYLE_Create,
     unsigned* retbutton = NULL,
     const wxString& title = ""

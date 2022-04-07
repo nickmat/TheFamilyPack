@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     12th June 2019
- * Copyright:   Copyright (c) 2019..2021 Nick Matthews.
+ * Copyright:   Copyright (c) 2019..2022 Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -80,7 +80,7 @@ idt rgCreateAssociate( wxWindow* wind )
     return 0;
 }
 
-idt rgSelectAssociate( wxWindow* wind, unsigned flag, unsigned* retbutton, const wxString& title )
+idt rgSelectAssociate( wxWindow* wind, const wxString& dbname, unsigned flag, unsigned* retbutton, const wxString& title )
 {
     idt assID = 0;
     if ( retbutton ) *retbutton = rgSELSTYLE_None;
@@ -89,7 +89,7 @@ idt rgSelectAssociate( wxWindow* wind, unsigned flag, unsigned* retbutton, const
 
     bool cont = true;
     while ( cont ) {
-        recAssociateVec vec = recAssociate::GetList();
+        recAssociateVec vec = recAssociate::GetList( dbname );
         wxArrayString table;
         for ( auto ass : vec ) {
             table.push_back( ass.GetIdStr() );
