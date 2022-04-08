@@ -1228,7 +1228,40 @@ void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
 
 void TfpFrame::OnPageItemTransfer( wxCommandEvent& event )
 {
-    wxMessageBox( "Not yet implimented", "OnPageItemTransfer" );
+    wxString disp = GetDisplay();
+    if( disp.size() < 2 ) {
+        return;
+    }
+    wxString entity;
+    idt record = 0;
+    bool success = false;
+    if( disp.GetChar( 0 ) == 'R' && recIsCharNumber( disp, 1 ) ) {
+        entity = "Reference";
+        success = disp.Mid( 1 ).ToLongLong( &record );
+    }
+    if( !success ) {
+        return;
+    }
+    wxMessageDialog dlg(
+        this, _( "Transfer " + entity + " record " + recGetStr( record ) + " from " + m_dbname ),
+        "Transfer", wxOK | wxCANCEL | wxCENTRE
+    );
+    if( dlg.ShowModal() != wxID_OK ) {
+        return;
+    }
+    recDb::Begin();
+    try {
+        if( rgTransferReference( this, record, m_dbname, "Main" ) != 0 ) {
+            recDb::Commit();
+        }
+        else {
+            recDb::Rollback();
+        }
+    }
+    catch( wxSQLite3Exception& e ) {
+        recDb::ErrorMessage( e );
+        recDb::Rollback();
+    }
 }
 
 void TfpFrame::OnNavigationRequest( wxWebViewEvent& evt )
@@ -2330,6 +2363,4 @@ bool TfpFrame::SetDatabaseMenu( const wxString& dbfname, recDb::DbType type )
     return true;
 }
 
-
 // End of tfpFrame.cpp file
-

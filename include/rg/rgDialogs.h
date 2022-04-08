@@ -317,6 +317,11 @@ extern bool rgSetupDatabase( wxWindow* wind, const wxString& daname );
 // See scr/rg/rgSetupReference.cpp
 extern idt rgGetRefSetupData( wxWindow* parent, idt assID );
 
+
+// See src/rg/rgTransfer.cpp
+extern idt rgTransferReference(
+    wxWindow* wind, idt refID, const wxString& extdb, const wxString& todb );
+
 // See src/rg/rgViewMedia.cpp
 extern void rgViewMedia( wxWindow* wind, const wxString& extdb, idt medID );
 extern void rgViewMedia( wxWindow* wind, idt mdID, idt assID );
