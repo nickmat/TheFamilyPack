@@ -64,8 +64,9 @@ void recPlace::Save( const wxString& dbname )
     {
         // Add new record
         sql.Format(
-            "INSERT INTO \"%s\".Place (date1_id, date2_id) VALUES (" ID ", " ID ");",
-            f_date1_id, f_date2_id
+            "INSERT INTO \"%s\".Place (date1_id, date2_id)"
+            " VALUES (" ID ", " ID ");",
+            UTF8_( dbname ), f_date1_id, f_date2_id
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -76,14 +77,15 @@ void recPlace::Save( const wxString& dbname )
             // Add new record
             sql.Format(
                 "INSERT INTO \"%s\".Place (id, date1_id, date2_id)"
-                "VALUES (" ID ", " ID ", " ID ");",
-                f_id, f_date1_id, f_date2_id
+                " VALUES (" ID ", " ID ", " ID ");",
+                UTF8_( dbname ), f_id, f_date1_id, f_date2_id
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE \"%s\".Place SET date1_id=" ID ", date2_id=" ID " WHERE id=" ID ";",
-                f_date1_id, f_date2_id, f_id
+                "UPDATE \"%s\".Place SET date1_id=" ID ", date2_id=" ID
+                " WHERE id=" ID ";",
+                UTF8_( dbname ), f_date1_id, f_date2_id, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
