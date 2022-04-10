@@ -213,6 +213,7 @@ RECGUI_OBJECTS =  \
 	recgui_rgSetupDatabase.o \
 	recgui_rgSetupReference.o \
 	recgui_rgTableCtrl.o \
+	recgui_rgTransfer.o \
 	recgui_rgViewMedia.o
 
 ### Conditionally set variables: ###
@@ -668,6 +669,9 @@ recgui_rgSetupReference.o: ./../../src/rg/rgSetupReference.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgTableCtrl.o: ./../../src/rg/rgTableCtrl.cpp
+	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
+
+recgui_rgTransfer.o: ./../../src/rg/rgTransfer.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgViewMedia.o: ./../../src/rg/rgViewMedia.cpp

@@ -152,6 +152,9 @@
     <ClCompile Include="..\..\src\rg\rgTableCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\rg\rgTransfer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\rg\rgViewMedia.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

@@ -380,6 +380,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rg\rgTransfer.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rg\rgViewMedia.cpp"
 				>
 			</File>
