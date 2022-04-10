@@ -93,8 +93,8 @@ void recIndividualPersona::Save( const wxString& dbname )
                 "UPDATE \"%s\".IndividualPersona SET ind_id=" ID ", per_id=" ID ", "
                 "conf=%f, note='%q' "
                 "WHERE id=" ID ";",
-                f_ind_id, f_per_id, f_conf,
-                UTF8_( dbname ), UTF8_(f_note), f_id
+                UTF8_( dbname ), f_ind_id, f_per_id, f_conf,
+                UTF8_(f_note), f_id
             );
         }
         s_db->ExecuteUpdate( sql );
