@@ -138,11 +138,11 @@ void RecTestCase::AddTestData()
         " VALUES(19, 'Test 19', 0, -1, 0, 0, 0, '', 0);\n"
 
         "INSERT INTO Eventa"
-        " (id, title, type_id, date1_id, date2_id, place_id, note, date_pt)"
-        " VALUES(1, 'Test 1', -1, 0, 0, 0, '', 0);\n"
+        " (id, title, ref_id, type_id, date1_id, date2_id, place_id, note, date_pt)"
+        " VALUES(1, 'Test 1', 0, -1, 0, 0, 0, '', 0);\n"
         "INSERT INTO Eventa"
-        " (id, title, type_id, date1_id, date2_id, place_id, note, date_pt)"
-        " VALUES(19, 'Test 19', -1, 0, 0, 0, '', 0);\n"
+        " (id, title, ref_id, type_id, date1_id, date2_id, place_id, note, date_pt)"
+        " VALUES(19, 'Test 19', 0, -1, 0, 0, 0, '', 0);\n"
 
         "INSERT INTO Persona (id, sex, ref_id, note) VALUES(4, 0, 0, '');\n"
         "INSERT INTO Individual"
