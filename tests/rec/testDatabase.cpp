@@ -970,8 +970,8 @@ void RecTestCase::TestFamily()
     // f_id = 0 so create new record and set f_id to new value.
     record1.Save();
     id = record1.f_id;
-    // Database is created with initial default family, so this is 2.
-    CPPUNIT_ASSERT( id == 2 );
+    // Database is created empty, so this is 1.
+    CPPUNIT_ASSERT( id == 1 );
 
     recFamily record2;
     record2.f_id = record1.f_id;
