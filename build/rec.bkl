@@ -187,6 +187,7 @@
     <sources>$(LOCAL_SRC)/rg/rgSetupDatabase.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgSetupReference.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgTableCtrl.cpp</sources>
+    <sources>$(LOCAL_SRC)/rg/rgTransfer.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgViewMedia.cpp</sources>
 
     <headers>$(LOCAL_INC)/rg/rgCompareEvent.h</headers>
