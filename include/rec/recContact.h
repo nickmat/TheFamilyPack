@@ -78,7 +78,7 @@ public:
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
 
-    static void RemoveFromDatabase( idt clID, const wxString& dbname );
+    static bool RemoveFromDatabase( idt clID, const wxString& dbname );
 
 private:
     idt  f_ind_id;
@@ -104,7 +104,7 @@ public:
         CT_MAX = 7
     };
 
-    recContactType() {}
+    recContactType() : f_changed(0) {}
     recContactType( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }
     recContactType( const recContactType& at );
 
@@ -133,7 +133,7 @@ public:
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
 
-    static void DeleteIfOrphaned( idt ctID, const wxString& dbname );
+    static bool DeleteIfOrphaned( idt ctID, const wxString& dbname = "Main" );
 
 private:
     wxString f_name;
@@ -180,8 +180,8 @@ public:
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
 
-    static void RemoveFromDatabase( idt conID, const wxString& dbname );
-    void RemoveFromDatabase( const wxString& dbname );
+    static bool RemoveFromDatabase( idt conID, const wxString& dbname );
+    bool RemoveFromDatabase( const wxString& dbname );
 
 private:
     idt      f_type_id;

@@ -186,18 +186,19 @@ bool recContact::CsvRead( std::istream& in )
     return bool( in );
 }
 
-void recContact::RemoveFromDatabase( idt conID, const wxString& dbname )
+bool recContact::RemoveFromDatabase( idt conID, const wxString& dbname )
 {
-    if( conID <= 0 ) return;
+    if( conID <= 0 ) return false;
     recContact con( conID, dbname );
-    con.RemoveFromDatabase( dbname );
+    return con.RemoveFromDatabase( dbname );
 }
 
-void recContact::RemoveFromDatabase( const wxString& dbname )
+bool recContact::RemoveFromDatabase( const wxString& dbname )
 {
-    if( FGetID() <= 0 ) return;
+    if( FGetID() <= 0 ) return false;
     Delete( FGetID(), dbname );
     recContactType::DeleteIfOrphaned( FGetTypeID(), dbname );
+    return true;
 }
 
 
@@ -365,15 +366,15 @@ bool recContactList::CsvRead( std::istream& in )
     return bool( in );
 }
 
-void recContactList::RemoveFromDatabase( idt clID, const wxString& dbname )
+bool recContactList::RemoveFromDatabase( idt clID, const wxString& dbname )
 {
-    if( clID <= 0 ) return;
+    if( clID <= 0 ) return false;
 
     recContactVec contacts = recContactList::GetContacts( clID, dbname );
     for( auto& con : contacts ) {
         con.RemoveFromDatabase( dbname );
     }
-    recContactList::Delete( clID );
+    return recContactList::Delete( clID );
 }
 
 //============================================================================
@@ -556,18 +557,20 @@ bool recContactType::CsvRead( std::istream& in )
     return bool( in );
 }
 
-void recContactType::DeleteIfOrphaned( idt ctID, const wxString& dbname )
+bool recContactType::DeleteIfOrphaned( idt ctID, const wxString& dbname )
 {
-    if( ctID <= 0 ) return;
+    if( ctID <= 0 ) return false;
 
     wxSQLite3StatementBuffer sql;
     sql.Format(
         "SELECT COUNT(*) FROM \"%s\".Contact WHERE type_id=" ID ";",
         UTF8_( dbname ), ctID
     );
-    if( s_db->ExecuteScalar( sql ) > 0 ) return;
+    if( s_db->ExecuteScalar( sql ) > 0 ) {
+        return false;
+    }
 
-    Delete( ctID, dbname );
+    return Delete( ctID, dbname );
 }
 
 
