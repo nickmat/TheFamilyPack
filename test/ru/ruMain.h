@@ -1,10 +1,10 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        test/ru/ruTransfer.cpp
+ * Name:        test/ru/ruMain.h
  * Project:     recUnit: Unit test program for the rec library.
- * Purpose:     Test the tranfer of records from one database to another.
+ * Purpose:     Program main header.
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
- * Created:     10th April 2022
+ * Created:     11th April 2022
  * Copyright:   Copyright (c) 2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -25,12 +25,14 @@
 
 */
 
-#include "wx/wxprec.h"
+#ifndef TEST_RU_RUMAIN_H
+#define TEST_RU_RUMAIN_H
 
-#ifndef WX_PRECOMP
-#include "wx/wx.h"
-#endif
+extern const char* g_TestFileName;
+extern const char* g_OriginalExternalFileName1;
+extern const char* g_ExternalFileName1;
 
-#include <catch2/catch.hpp>
+extern const char* g_maindb;
+extern const char* g_extdb1;
 
-/* End of test/ru/ruTransfer.cpp file */
+#endif // TEST_RU_RUMAIN_H

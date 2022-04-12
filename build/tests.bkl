@@ -67,7 +67,9 @@
     <sources>$(LOCAL_TEST)/ru/ruMain.cpp</sources>
     <sources>$(LOCAL_TEST)/ru/ruTables.cpp</sources>
     <sources>$(LOCAL_TEST)/ru/ruTransfer.cpp</sources>
-    
+
+    <headers>$(LOCAL_TEST)/ru/ruMain.h</headers>
+
     <include>$(LOCAL_INC)</include>
 
     <library>calendar</library>

@@ -1,0 +1,14 @@
+    recUnit: Unit Test Program For The rec Library
+    ==============================================
+
+Run the test program with the current directory set to TFP_ROOT/test.
+The batch files runRecUnitD.bat and runRecUnitR.bat files can be used,
+or run the programs directly.
+
+The program runs tests on a newly created database "test.tfpd" in the
+current directory. If there is already a database there, it is deleted
+and a new one created. The tests are all designed to be neutral and leave
+the database in the same state as it started in.
+
+To test the transfer functions, the program copies the "recunit-1-org.tfpd"
+database to "recunit-1.tfpd" (replacing any previous copy) to use.

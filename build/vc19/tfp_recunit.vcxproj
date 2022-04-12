@@ -138,6 +138,9 @@
     <ClCompile Include="..\..\test\ru\ruTransfer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\test\ru\ruMain.h" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="tfp_calendar.vcxproj">
       <Project>{66f1bdf6-69b1-5480-909e-2e4bca59ed09}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>

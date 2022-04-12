@@ -25,7 +25,45 @@
 
 */
 
-#define CATCH_CONFIG_MAIN
+#include "wx/wxprec.h"
+
+#ifndef WX_PRECOMP
+#include "wx/wx.h"
+#endif
+
+#define CATCH_CONFIG_RUNNER
 #include <catch2/catch.hpp>
+
+#include "ruMain.h"
+
+#include <rec/recDatabase.h>
+
+const char* g_TestFileName = "test.tfpd";
+const char* g_OriginalExternalFileName1 = "recunit-1-org.tfpd";
+const char* g_ExternalFileName1 = "recunit-1.tfpd";
+
+const char* g_maindb = "Main";
+const char* g_extdb1 = "recunit-1";
+
+int main( int argc, char* argv[] ) {
+
+    wxInitializer initializer;
+    recInitialize();
+    // Program should be run from tfp/test directory
+    wxString fname = g_TestFileName;
+    if( wxFileExists( fname ) ) {
+        wxRemoveFile( fname );
+    }
+    recDb::CreateDb( fname, 0 );
+    wxCopyFile( g_OriginalExternalFileName1, g_ExternalFileName1 );
+    recDb::OpenExternalDb( g_ExternalFileName1, g_extdb1 );
+
+    int result = Catch::Session().run( argc, argv );
+
+    recDb::CloseDb();
+    recUninitialize();
+
+    return result;
+}
 
 /* End of test/ru/ruMain.cpp file */
