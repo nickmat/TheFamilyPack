@@ -539,29 +539,6 @@ recIdVec recDb::GetPositiveIDs( const char* table, const wxString& dbname )
     return ExecuteIdVec( sql );
 }
 
-#if 0
-idt recDb::DoFindUid_( const wxString& uid, const char* table, const wxString& dbname )
-{
-    wxSQLite3StatementBuffer sql;
-    sql.Format(
-        "SELECT id FROM \"%s\".%s WHERE uid='%q';",
-        UTF8_( dbname ), table, UTF8_( uid )
-    );
-    return ExecuteID( sql );
-}
-
-wxString recDb::DoGetChangedDate_( idt id, const char* table, const wxString& dbname )
-{
-    wxSQLite3StatementBuffer sql;
-    sql.Format(
-        "SELECT changed FROM \"%s\".%s WHERE id=" ID ";",
-        UTF8_( dbname ), table, id
-    );
-    long jdn = ExecuteInt( sql );
-    return recGetDateStr( jdn );
-}
-#endif
-
 int recDb::ExecuteInt( const wxSQLite3StatementBuffer& sql )
 {
     wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
