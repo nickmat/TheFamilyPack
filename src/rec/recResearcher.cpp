@@ -208,6 +208,25 @@ recResearcherVec recResearcher::GetResearchers( Coverage filter, const wxString&
     return list;
 }
 
+idt recResearcher::Transfer(
+    idt from_resID, const wxString& fromdb, const wxString& todb )
+{
+    if( from_resID == 0 ) return 0;
+    recResearcher from_res( from_resID, fromdb );
+    idt to_resID = recResearcher::FindUid( from_res.FGetUid(), todb );
+    recResearcher to_res( to_resID, todb );
+    if( to_resID == 0 || from_res.FGetChanged() > to_res.FGetChanged() ) {
+        idt to_clID = recContactList::Transfer( from_res.FGetConListID(), fromdb, to_res.FGetConListID(), todb );
+        recResearcher new_res( from_res );
+        new_res.FSetConListID( to_clID );
+        new_res.FSetID( to_resID );
+        new_res.Save( todb );
+        to_resID = new_res.FGetID();
+    }
+
+    return to_resID;
+}
+
 void recResearcher::Renumber( idt id, idt to_id )
 {
     if( id == 0 ) {

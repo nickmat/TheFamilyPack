@@ -73,6 +73,9 @@ public:
 
     static recResearcherVec GetResearchers( Coverage filter, const wxString& dbname = "Main" );
 
+    static idt recResearcher::Transfer(
+        idt from_resID, const wxString& fromdb, const wxString& todb );
+
     static void Renumber( idt fromID, idt toID );
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );
