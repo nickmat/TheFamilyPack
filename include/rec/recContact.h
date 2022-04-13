@@ -73,6 +73,9 @@ public:
     // Merge in Contacts from target ContactList and then delete it.
     void Assimilate( idt targetID, const wxString& dbname = "Main" ) const;
 
+    static idt recContactList::Transfer(
+        idt from_clID, const wxString& fromdb, idt to_clID, const wxString& todb );
+
     static void Renumber( idt fromID, idt toID );
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );
@@ -123,6 +126,8 @@ public:
     static wxString GetTypeStr( idt typeID, const wxString& dbname = "Main" );
 
     static recContactTypeVec GetList( const wxString& dbname = "Main" );
+
+    static idt Transfer( idt from_ctID, const wxString& fromdb, const wxString& todb );
 
     static void Renumber( idt fromID, idt toID );
     static std::string CsvTitles();

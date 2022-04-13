@@ -319,6 +319,47 @@ void recContactList::Assimilate( idt targetID, const wxString& dbname ) const
     Delete( targetID );
 }
 
+idt recContactList::Transfer(
+    idt from_clID, const wxString& fromdb, idt to_clID, const wxString& todb )
+{
+    if( from_clID == 0 ) {
+        return 0;
+    }
+    recContactList from_cl( from_clID, fromdb );
+    wxASSERT( from_cl.FGetIndID() == 0 ); // TODO: When Individuals get UID's we can find a new ind_id value.
+    recContactVec from_cons = from_cl.GetContacts( fromdb );
+    recContactList to_cl( to_clID, todb );
+    wxASSERT( to_cl.FGetIndID() == 0 ); // TODO: See above.
+    if( to_clID == 0 ) {
+        to_cl.Save( todb );
+        to_clID = to_cl.FGetID();
+    }
+    recContactVec to_cons = to_cl.GetContacts( todb );
+    size_t size = std::max( from_cons.size(), to_cons.size() );
+
+    for( size_t i = 0; i < size; i++ ) {
+        if( i >= from_cons.size() ) { // No more to copy.
+            to_cons[i].RemoveFromDatabase( todb );
+            continue;
+        }
+        if( i >= to_cons.size() ) {
+            from_cons[i].FSetID( 0 );
+            from_cons[i].FSetListID( to_clID );
+            idt to_ctID = recContactType::Transfer( from_cons[i].FGetTypeID(), fromdb, todb );
+            wxASSERT( to_ctID != 0 );
+            from_cons[i].FSetTypeID( to_ctID );
+            from_cons[i].Save( todb );
+            continue;
+        }
+        idt to_ctID = recContactType::Transfer( from_cons[i].FGetTypeID(), fromdb, todb );
+        wxASSERT( to_ctID != 0 );
+        to_cons[i].FSetTypeID( to_ctID );
+        to_cons[i].FSetValue( from_cons[i].FGetValue() );
+        to_cons[i].Save( todb );
+    }
+    return to_clID;
+}
+
 void recContactList::Renumber( idt id, idt to_id )
 {
     if( id == 0 ) {
@@ -514,6 +555,22 @@ recContactTypeVec recContactType::GetList( const wxString& dbname )
         list.push_back( at );
     }
     return list;
+}
+
+idt recContactType::Transfer(
+    idt from_ctID, const wxString& fromdb, const wxString& todb )
+{
+    if( from_ctID == 0 ) return 0;
+
+    recContactType from_ct( from_ctID, fromdb );
+    idt to_ctID = recContactType::FindUid( from_ct.FGetUid(), todb );
+    recContactType to_ct( to_ctID, todb );
+    if( to_ctID == 0 || from_ct.FGetChanged() > to_ct.FGetChanged() ) {
+        from_ct.FSetID( to_ctID );
+        from_ct.Save( todb );
+        to_ctID = from_ct.FGetID();
+    }
+    return to_ctID;
 }
 
 void recContactType::Renumber( idt id, idt to_id )
