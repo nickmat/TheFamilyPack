@@ -539,7 +539,8 @@ recIdVec recDb::GetPositiveIDs( const char* table, const wxString& dbname )
     return ExecuteIdVec( sql );
 }
 
-idt recDb::DoFindUid( const wxString& uid, const char* table, const wxString& dbname )
+#if 0
+idt recDb::DoFindUid_( const wxString& uid, const char* table, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
@@ -549,7 +550,7 @@ idt recDb::DoFindUid( const wxString& uid, const char* table, const wxString& db
     return ExecuteID( sql );
 }
 
-wxString recDb::DoGetChangedDate( idt id, const char* table, const wxString& dbname )
+wxString recDb::DoGetChangedDate_( idt id, const char* table, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
@@ -559,6 +560,7 @@ wxString recDb::DoGetChangedDate( idt id, const char* table, const wxString& dbn
     long jdn = ExecuteInt( sql );
     return recGetDateStr( jdn );
 }
+#endif
 
 int recDb::ExecuteInt( const wxSQLite3StatementBuffer& sql )
 {
@@ -655,5 +657,28 @@ wxString recDb::ExecuteStr( const char* format, const wxString& dbname, idt id )
     wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
     return result.GetAsString( 0 );
 }
+
+
+idt recUid::DoFindUid( const wxString& uid, const char* table, const wxString& dbname )
+{
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT id FROM \"%s\".%s WHERE uid='%q';",
+        UTF8_( dbname ), table, UTF8_( uid )
+    );
+    return recDb::ExecuteID( sql );
+}
+
+wxString recUid::DoGetChangedDate( idt id, const char* table, const wxString& dbname )
+{
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT changed FROM \"%s\".%s WHERE id=" ID ";",
+        UTF8_( dbname ), table, id
+    );
+    long jdn = recDb::ExecuteInt( sql );
+    return recGetDateStr( jdn );
+}
+
 
 // End of recDatabase.cpp file

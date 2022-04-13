@@ -102,7 +102,7 @@ public:
 //============================================================================
 
 
-class recReference : public recDbT<recReference>
+class recReference : public recDbT<recReference>, public recUidT<recReference>
 {
 public:
     static constexpr const char* s_tablename = "Reference";
@@ -112,10 +112,8 @@ public:
     wxString f_statement;
     idt      f_res_id;
     wxString f_user_ref;
-    wxString f_uid;
-    long     f_changed;
 
-    recReference() : f_higher_id(0), f_res_id(0), f_changed(0) {}
+    recReference() : f_higher_id(0), f_res_id(0) {}
     recReference( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }
     recReference( const recReference& ref );
 
@@ -129,16 +127,12 @@ public:
     wxString FGetStatement() const { return f_statement; }
     idt FGetResID() const { return f_res_id; }
     wxString FGetUserRef() const { return f_user_ref; }
-    wxString FGetUid() const { return f_uid; }
-    long FGetChanged() const { return f_changed; }
 
     void FSetHigherID( idt refID ) { f_higher_id = refID; }
     void FSetTitle( const wxString& title ) { f_title = title; }
     void FSetStatement( const wxString& statement ) { f_statement = statement; }
     void FSetResID( idt resID ) { f_res_id = resID; }
     void FSetUserRef( const wxString& ur ) { f_user_ref = ur; }
-    void FSetUid( const wxString& uid ) { f_uid = uid; }
-    void FSetChanged( long jdn ) { f_changed = jdn; }
 
     static wxString GetIdStr( idt refID ) { return wxString::Format( "R" ID, refID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }

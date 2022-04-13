@@ -43,20 +43,18 @@ typedef std::vector< recCitationPartType >  recCitationPartTypeVec;
 //                 recCitation
 //============================================================================
 
-class recCitation : public recDbT<recCitation>
+class recCitation : public recDbT<recCitation>, public recUidT<recCitation>
 {
     idt f_higher_id;
     idt f_ref_id;
     int f_ref_seq;
     idt f_rep_id;
     wxString f_comment;
-    wxString f_uid;
-    long f_changed;
 
 public:
     static constexpr const char* s_tablename = "Citation";
 
-    recCitation() : f_higher_id(0), f_ref_id(0), f_ref_seq(0), f_rep_id(0), f_changed(0) {}
+    recCitation() : f_higher_id(0), f_ref_id(0), f_ref_seq(0), f_rep_id(0) {}
     recCitation( idt id, const wxString& dbname = "Main" ) : recDbT( id ) { Read( dbname ); }
     recCitation( const recCitation& source );
 
@@ -70,16 +68,12 @@ public:
     idt FGetRefSeq() const { return f_ref_seq; }
     idt FGetRepID() const { return f_rep_id; }
     wxString FGetComment() const { return f_comment; }
-    wxString FGetUid() const { return f_uid; }
-    long FGetChanged() const { return f_changed; }
 
     void FSetHigherID( idt highID ) { f_higher_id = highID; }
     void FSetRefID( idt refID ) { f_ref_id = refID; }
     void FSetRefSeq( idt ref_seq ) { f_ref_seq = ref_seq; }
     void FSetRepID( idt repID ) { f_rep_id = repID; }
     void FSetComment( const wxString& comment ) { f_comment = comment; }
-    void FSetUid( const wxString& uid ) { f_uid = uid; }
-    void FSetChanged( long jdn ) { f_changed = jdn; }
 
     static wxString GetIdStr( idt citID ) { return wxString::Format( "Ci" ID, citID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
@@ -106,18 +100,16 @@ public:
 //                 recRepository
 //============================================================================
 
-class recRepository : public recDbT< recRepository>
+class recRepository : public recDbT< recRepository>, public recUidT<recRepository>
 {
     wxString f_name;
     wxString f_note;
     idt      f_con_list_id;
-    wxString f_uid;
-    long     f_changed;
 
 public:
     static constexpr const char* s_tablename = "Repository";
 
-    recRepository() : f_con_list_id(0), f_changed(0) {}
+    recRepository() : f_con_list_id(0) {}
     recRepository( idt id, const wxString& dbname = "Main" ) : recDbT( id ) { Read( dbname ); }
     recRepository( const recRepository& source );
 
@@ -129,14 +121,10 @@ public:
     wxString FGetName() const { return f_name; }
     wxString FGetNote() const { return f_note; }
     idt FGetConListID() const { return f_con_list_id; }
-    wxString FGetUid() const { return f_uid; }
-    long FGetChanged() const { return f_changed; }
 
     void FSetName( const wxString& name ) { f_name = name; }
     void FSetNote( const wxString& note ) { f_note = note; }
     void FSetConListID( idt clID ) { f_con_list_id = clID; }
-    void FSetUid( const wxString& uid ) { f_uid = uid; }
-    void FSetChanged( long jdn ) { f_changed = jdn; }
 
     static wxString GetIdStr( idt repID ) { return wxString::Format( "Ar" ID, repID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
@@ -207,13 +195,12 @@ public:
 //                 recCitationPartType
 //============================================================================
 
-class recCitationPartType : public recDbT< recCitationPartType>
+class recCitationPartType : public recDbT< recCitationPartType>,
+    public recUidT< recCitationPartType>
 {
     wxString f_name;
     int      f_style;
     wxString f_comment;
-    wxString f_uid;
-    long     f_changed;
 
 public:
     static constexpr const char* s_tablename = "CitationPartType";
@@ -230,14 +217,10 @@ public:
     wxString FGetName() const { return f_name; }
     int FGetStyle() const { return f_style; }
     wxString FGetComment() const { return f_comment; }
-    wxString FGetUid() const { return f_uid; }
-    long FGetChanged() const { return f_changed; }
 
     void FSetName( const wxString& name ) { f_name = name; }
     void FSetStyle( int style ) { f_style = style; }
     void FSetComment( const wxString& comment ) { f_comment = comment; }
-    void FSetUid( const wxString& uid ) { f_uid = uid; }
-    void FSetChanged( long jdn ) { f_changed = jdn; }
 
     static wxString GetIdStr( idt ciptID ) { return wxString::Format( "CiPT" ID, ciptID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }

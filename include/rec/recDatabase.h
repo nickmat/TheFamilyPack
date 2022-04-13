@@ -95,14 +95,6 @@ public:
      */
     static recIdVec GetPositiveIDs( const char* table, const wxString& dbname );
 
-    /*! Only for records that have a 'uid' field. Other records will cause exception.
-     */
-    static idt DoFindUid( const wxString& uid, const char* table, const wxString& dbname );
-
-    /*! Only for records that have a 'changed' field. Return a string of the changed date.
-     */
-    static wxString DoGetChangedDate( idt id, const char* table, const wxString& dbname );
-
     idt   f_id;
 
     /*! Default constructor, does nothing. */
@@ -287,20 +279,6 @@ public:
     static recIdVec PositiveIDs( const wxString& dbname = "Main" ) {
         return GetPositiveIDs( T::s_tablename, dbname );
     }
-    static idt FindUid( const wxString& uid, const wxString& dbname ) {
-        return DoFindUid( uid, T::s_tablename, dbname );
-    }
-    static idt FindUid( idt id, const wxString& source_db, const wxString& target_db ) {
-        T rec( id, source_db );
-        return DoFindUid( rec.FGetUid(), T::s_tablename, target_db );
-    }
-    wxString GetChangedDate() const { 
-        return recGetDateStr( ( (T*) this )->FGetChanged() );
-    }
-    static wxString GetChangedDate_( idt refID, const wxString& dbname ) {
-        return DoGetChangedDate( idt id, T::s_tablename, dbname );
-    }
-
     virtual bool Equivalent( const T& ) const {
         wxASSERT( false ); // Equivalent is not needed for all record types.
         return false;
@@ -311,6 +289,47 @@ public:
     }
     bool operator!=( const T& record ) const {
         return !Equivalent( record ) || !EqualID( record );
+    }
+};
+
+class recUid
+{
+protected:
+    wxString f_uid;
+    long f_changed;
+
+    static idt DoFindUid( const wxString& uid, const char* table, const wxString& dbname );
+    static wxString DoGetChangedDate( idt id, const char* table, const wxString& dbname );
+
+public:
+    recUid() : f_changed( 0 ) {}
+
+    wxString FGetUid() const { return f_uid; }
+    long FGetChanged() const { return f_changed; }
+
+    void FSetUid( const wxString& uid ) { f_uid = uid; }
+    void FSetChanged( long jdn ) { f_changed = jdn; }
+};
+
+template <class T>
+class recUidT : public recUid
+{
+public:
+    recUidT<T>() : recUid() {}
+
+    static idt FindUid( const wxString& uid, const wxString& dbname ) {
+        return DoFindUid( uid, T::s_tablename, dbname );
+    }
+    static idt FindUid( idt id, const wxString& source_db, const wxString& target_db ) {
+        T rec( id, source_db );
+        return DoFindUid( rec.FGetUid(), T::s_tablename, target_db );
+    }
+
+    wxString GetChangedDate() const {
+        return recGetDateStr( FGetChanged() );
+    }
+    static wxString GetChangedDate( idt id, const wxString& dbname ) {
+        return DoGetChangedDate( idt id, T::s_tablename, dbname );
     }
 };
 
