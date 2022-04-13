@@ -217,6 +217,59 @@ wxString recCitation::GetCitationStr( const wxString& dbname ) const
     return citation;
 }
 
+idt recCitation::Transfer(
+    idt from_citID, const wxString& fromdb, idt to_refID, const wxString& todb )
+{
+    if( from_citID == 0 ) return 0;
+    recCitation from_cit( from_citID, fromdb );
+    idt to_higherID = 0;
+    if( from_cit.FGetHigherID() ) {
+        recCitation from_higher( from_cit.FGetHigherID(), fromdb );
+        to_higherID = recCitation::FindUid( from_higher.FGetUid(), todb );
+        wxASSERT( to_higherID != 0 );
+        recCitation to_higher( to_higherID, todb );
+        to_higherID = recCitation::Transfer( from_cit.FGetHigherID(), fromdb, to_higher.FGetRefID(), todb );
+    }
+    idt to_repID = recRepository::Transfer( from_cit.FGetRepID(), fromdb, todb );
+
+    idt to_citID = recCitation::FindUid( from_cit.FGetUid(), todb );
+    recCitation to_cit( to_citID, todb );
+    if( to_citID == 0 || from_cit.FGetChanged() > to_cit.FGetChanged() ) {
+        recCitation new_cit( from_cit );
+        new_cit.FSetID( to_citID );
+        new_cit.FSetHigherID( to_higherID );
+        new_cit.FSetRefID( to_refID );
+        new_cit.FSetRepID( to_repID );
+        new_cit.Save( todb );
+        to_citID = new_cit.FGetID();
+    }
+
+    recCitationPartVec from_cps = recCitation::GetPartList( from_citID, fromdb );
+    recCitationPartVec to_cps = recCitation::GetPartList( to_citID, fromdb );
+    size_t size = std::max( from_cps.size(), to_cps.size() );
+    for( size_t i = 0; i < size; i++ ) {
+        if( i >= from_cps.size() ) { // No more to copy.
+            to_cps[i].RemoveFromDatabase( todb );
+            continue;
+        }
+        if( i >= to_cps.size() ) {
+            from_cps[i].FSetID( 0 );
+            from_cps[i].FSetCitID( to_citID );
+            idt to_cptID = recCitationPartType::Transfer( from_cps[i].FGetTypeID(), fromdb, todb );
+            wxASSERT( to_cptID != 0 );
+            from_cps[i].FSetTypeID( to_cptID );
+            from_cps[i].Save( todb );
+            continue;
+        }
+        idt to_cptID = recCitationPartType::Transfer( from_cps[i].FGetTypeID(), fromdb, todb );
+        wxASSERT( to_cptID != 0 );
+        to_cps[i].FSetTypeID( to_cptID );
+        to_cps[i].FSetValue( from_cps[i].FGetValue() );
+        to_cps[i].Save( todb );
+    }
+    return to_citID;
+}
+
 void recCitation::Renumber( idt id, idt to_id )
 {
     if( id == 0 ) {
@@ -425,6 +478,25 @@ recRepositoryVec recRepository::GetFullList( const wxString& dbname )
         list.push_back( arch );
     }
     return list;
+}
+
+idt recRepository::Transfer(
+    idt from_repID, const wxString& fromdb, const wxString& todb )
+{
+    if( from_repID == 0 ) return 0;
+    recRepository from_rep( from_repID, fromdb );
+    idt to_repID = recRepository::FindUid( from_rep.FGetUid(), todb );
+    recRepository to_rep( to_repID, todb );
+    if( to_repID == 0 || from_rep.FGetChanged() > to_rep.FGetChanged() ) {
+        idt to_clID = recContactList::Transfer( from_rep.FGetConListID(), fromdb, to_rep.FGetConListID(), todb );
+        recRepository new_rep( from_rep );
+        new_rep.FSetConListID( to_clID );
+        new_rep.FSetID( to_repID );
+        new_rep.Save( todb );
+        to_repID = new_rep.FGetID();
+    }
+
+    return to_repID;
 }
 
 void recRepository::Renumber( idt id, idt to_id )
@@ -811,6 +883,22 @@ recCitationPartTypeVec recCitationPartType::GetList( const wxString& dbname )
     }
     return list;
 }
+
+idt recCitationPartType::Transfer(
+    idt from_cptID, const wxString& fromdb, const wxString& todb )
+{
+    if( from_cptID == 0 ) return 0;
+    recCitationPartType from_cpt( from_cptID, fromdb );
+    idt to_cptID = recCitationPartType::FindUid( from_cpt.FGetUid(), todb );
+    recCitationPartType to_cpt( to_cptID, todb );
+    if( to_cptID == 0 || from_cpt.FGetChanged() > to_cpt.FGetChanged() ) {
+        from_cpt.FSetID( to_cptID );
+        from_cpt.Save( todb );
+        to_cptID = from_cpt.FGetID();
+    }
+    return to_cptID;
+}
+
 
 void recCitationPartType::Renumber( idt id, idt to_id )
 {
