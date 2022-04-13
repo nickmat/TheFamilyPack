@@ -178,6 +178,9 @@ public:
     recIdVec GetDateIdVec( const wxString& dbname = "Main" ) const {
         return GetDateIdVec( f_id, dbname ); }
 
+    static idt recReference::Transfer(
+        idt from_refID, const wxString& fromdb, const wxString& todb, idt to_assID );
+
     static void Renumber( idt fromID, idt toID );
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );

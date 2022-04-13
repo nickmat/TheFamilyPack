@@ -36,12 +36,15 @@
 #endif
 
 #include <rec/recReference.h>
-#include <rec/recName.h>
+
+#include <rec/recCitation.h>
 #include <rec/recDate.h>
-#include <rec/recPlace.h>
-#include <rec/recEventa.h>
 #include <rec/recEvent.h>
+#include <rec/recEventa.h>
 #include <rec/recEventType.h>
+#include <rec/recName.h>
+#include <rec/recPlace.h>
+#include <rec/recResearcher.h>
 
 
 //============================================================================
@@ -297,6 +300,55 @@ recIdVec recReference::GetIdVecForEntity(
         UTF8_( dbname ), (int) type, refID
     );
     return ExecuteIdVec( sql );
+}
+
+idt recReference::Transfer(
+    idt from_refID, const wxString& fromdb, const wxString& todb, idt to_assID )
+{
+    if( from_refID == 0 ) return 0;
+
+    recReference from_ref( from_refID, fromdb );
+    idt to_refID = recReference::FindUid( from_ref.FGetUid(), todb );
+    recReference to_ref( to_refID, todb );
+    if( to_refID != 0 && from_ref.FGetChanged() <= to_ref.FGetChanged() ) {
+        return to_refID; // Reference already exists and is up to date.
+    }
+
+    idt to_higherID = 0;
+    if( from_ref.FGetHigherID() ) {
+        recReference from_higher( from_ref.FGetHigherID(), fromdb );
+        to_higherID = recReference::FindUid( from_higher.FGetUid(), todb );
+        wxASSERT( to_higherID != 0 );
+        recReference to_higher( to_higherID, todb );
+        to_higherID = recReference::Transfer( from_ref.FGetHigherID(), fromdb, todb, to_assID );
+    }
+    idt to_resID = recResearcher::Transfer( from_ref.FGetResID(), fromdb, todb );
+
+    recReference new_ref( from_ref );
+    new_ref.FSetID( to_refID );
+    new_ref.FSetHigherID( to_higherID );
+    new_ref.FSetResID( to_refID );
+    new_ref.Save( todb );
+    to_refID = new_ref.FGetID();
+
+    // CitationTransfer
+    recIdVec from_IDs = recReference::GetCitationList( from_refID, fromdb );
+    recIdVec to_IDs = recReference::GetCitationList( to_refID, todb );
+    size_t size = std::max( from_IDs.size(), to_IDs.size() );
+    for( size_t i = 0; i < size; i++ ) {
+        if( i >= from_IDs.size() ) { // No more to copy.
+            recCitation::RemoveFromDatabase( to_IDs[i], todb );
+            continue;
+        }
+        recCitation::Transfer( from_IDs[i], fromdb, to_refID, todb );
+    }
+
+    // TODO: recMedia::Transfer(...)
+    // TODO: recPersona::Transfer(...)
+    // TODO: recEventa::Transfer(...)
+    // TODO: recEntities::Transfer(...)
+
+    return to_refID;
 }
 
 void recReference::Renumber( idt id, idt to_id )
