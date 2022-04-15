@@ -80,6 +80,21 @@
     <wx-lib>base</wx-lib>
   </exe>
 
+  <exe id="tdb" template="wxconsole,wxlike">
+    <app-type>console</app-type>
+    <runtime-libs>dynamic</runtime-libs>
+
+    <sources>$(LOCAL_TEST)/tdb/tdbMain.cpp</sources>
+    <include>$(LOCAL_INC)</include>
+
+    <library>calendar</library>
+    <library>wxsqlite3</library>
+    <library>rec</library>
+    <library>reccl</library>
+
+    <wx-lib>base</wx-lib>
+  </exe>
+
 
 </makefile>
 

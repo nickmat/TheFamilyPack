@@ -10,6 +10,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tests", "tfp_tests.vcxproj"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "recunit", "tfp_recunit.vcxproj", "{A16CE353-1667-5333-82CA-051A8AA3E0C2}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tdb", "tfp_tdb.vcxproj", "{F095D5AA-FBB7-5100-8841-300BBC60C7B0}"
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "calcalc", "tfp_calcalc.vcxproj", "{7BE3D8D9-F9D1-5EDB-9425-F959CF820215}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "doccore", "tfp_doccore.vcxproj", "{6E8A500C-82B9-57E4-80EA-49F1AA5C7DF4}"
@@ -50,6 +52,10 @@ Global
 		{A16CE353-1667-5333-82CA-051A8AA3E0C2}.Debug|Win32.Build.0 = Debug|Win32
 		{A16CE353-1667-5333-82CA-051A8AA3E0C2}.Release|Win32.ActiveCfg = Release|Win32
 		{A16CE353-1667-5333-82CA-051A8AA3E0C2}.Release|Win32.Build.0 = Release|Win32
+		{F095D5AA-FBB7-5100-8841-300BBC60C7B0}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F095D5AA-FBB7-5100-8841-300BBC60C7B0}.Debug|Win32.Build.0 = Debug|Win32
+		{F095D5AA-FBB7-5100-8841-300BBC60C7B0}.Release|Win32.ActiveCfg = Release|Win32
+		{F095D5AA-FBB7-5100-8841-300BBC60C7B0}.Release|Win32.Build.0 = Release|Win32
 		{7BE3D8D9-F9D1-5EDB-9425-F959CF820215}.Debug|Win32.ActiveCfg = Debug|Win32
 		{7BE3D8D9-F9D1-5EDB-9425-F959CF820215}.Debug|Win32.Build.0 = Debug|Win32
 		{7BE3D8D9-F9D1-5EDB-9425-F959CF820215}.Release|Win32.ActiveCfg = Release|Win32
@@ -91,6 +97,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {978111CD-D03A-4C56-BF30-3DD1444ADE61}
+		SolutionGuid = {988C790F-0A6D-46B3-8B96-ED3677C95141}
 	EndGlobalSection
 EndGlobal
