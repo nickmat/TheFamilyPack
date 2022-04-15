@@ -102,7 +102,7 @@ extern bool recGetIDs( const wxString& str, idt* id1, idt* id2, idt* id3 = nullp
 extern idt recIdFromStr( const wxString& prefix, const wxString idStr );
 
 inline wxString recGetStr( idt id ) { return wxString::Format( ID, id ); }
-inline wxString recGetIDStr( idt id ) { return id ? recGetStr( id ) : ""; }
+//inline wxString recGetIDStr( idt id ) { return id ? recGetStr( id ) : ""; }
 
 enum class recSplitStrRet { none, number, associate, text };
 extern recSplitStrRet recSplitStr( const wxString& str, idt* id1, idt* id2, wxString* dbname );

@@ -562,7 +562,7 @@ wxString recReferenceEntity::GetEntityIdStr() const
     case TYPE_Name:
         return recName::GetIdStr( f_entity_id );
     }
-    return recGetIDStr( f_entity_id );
+    return recGetStr( f_entity_id );
 }
 
 wxString recReferenceEntity::GetEntityStr( const wxString& dbname ) const
