@@ -91,12 +91,16 @@ extern bool recCheckIDsHaveAdditionalSecond( const recCheckIdVec& ids );
 
 // Convert the given string into an idt
 extern idt recGetID( const wxString& str );
+extern idt recGetID( const std::string& str );
+extern idt recGetID( const char* str );
+
+// Convert the given commer delimited string into two idt's
+// return false if id1 or id2 are nullptr.
+extern bool recGetIDs( const wxString& str, idt* id1, idt* id2, idt* id3 = nullptr );
+
 // Convert the given idStr into an idt if it has a matching prefix.
 extern idt recIdFromStr( const wxString& prefix, const wxString idStr );
 
-// Convert the given commer delimited string into two idt's
-// return true if both are non-zero.
-extern bool recGetIDs( const wxString& str, idt* id1, idt* id2, idt* id3 = NULL );
 inline wxString recGetStr( idt id ) { return wxString::Format( ID, id ); }
 inline wxString recGetIDStr( idt id ) { return id ? recGetStr( id ) : ""; }
 

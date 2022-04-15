@@ -44,13 +44,23 @@
 idt recGetID( const wxString& str )
 {
     idt id = 0;
-    str.ToLongLong( &id );  
+    str.ToLongLong( &id );
     return id;
+}
+
+idt recGetID( const std::string& str )
+{
+    return stoll( str );
+}
+
+idt recGetID( const char* str )
+{
+    return strtoll( str, nullptr, 10 );
 }
 
 bool recGetIDs( const wxString& str, idt* id1, idt* id2, idt* id3 )
 {
-    wxASSERT( id1 && id2 ); 
+    if( id1 == nullptr || id2 == nullptr ) return false;
     *id1 = recGetID( str );
     size_t pos = str.find( ',' );
     if( pos == wxString::npos ) {
@@ -69,7 +79,7 @@ bool recGetIDs( const wxString& str, idt* id1, idt* id2, idt* id3 )
             }
         }
     }
-    return *id1 != 0 && *id2 != 0;
+    return true;
 }
 
 // The string can be formatted in one of 3 ways,
