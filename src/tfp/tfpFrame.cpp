@@ -685,7 +685,7 @@ void TfpFrame::OnEditRefTemplate( wxCommandEvent& event )
 {
     idt refID = rgCreateReferenceFromTemplate( this );
     if( refID != 0 ) {
-        DisplayHtmPage( "R" + recGetIDStr( refID ) );
+        DisplayHtmPage( "R" + recGetStr( refID ) );
     }
 }
 
