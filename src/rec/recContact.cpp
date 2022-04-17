@@ -298,6 +298,26 @@ recContactVec recContactList::GetContacts( idt listID, const wxString& dbname )
     return list;
 }
 
+recIdVec recContactList::GetContactIDs( idt listID, const wxString& dbname )
+{
+    recIdVec list;
+
+    if( listID == 0 ) return list;
+
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT id FROM \"%s\".Contact WHERE list_id=" ID ";",
+        UTF8_( dbname ), listID
+    );
+    wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
+
+    while( result.NextRow() ) {
+        idt conID = GET_ID( result.GetInt64( 0 ) );
+        list.push_back( conID );
+    }
+    return list;
+}
+
 idt recContactList::FindIndID( idt indID, const wxString& dbname )
 {
     return ExecuteID( 

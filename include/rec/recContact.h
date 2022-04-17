@@ -68,6 +68,11 @@ public:
     recContactVec GetContacts( const wxString& dbname = "Main" ) const {
         return GetContacts( f_id, dbname ); }
 
+    static recIdVec GetContactIDs( idt listID, const wxString& dbname = "Main" );
+    recIdVec GetContactIDs( const wxString& dbname = "Main" ) const {
+        return GetContactIDs( f_id, dbname );
+    }
+
     static idt FindIndID( idt indID, const wxString& dbname = "Main" );
 
     // Merge in Contacts from target ContactList and then delete it.
