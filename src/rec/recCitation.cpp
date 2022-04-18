@@ -191,6 +191,26 @@ recCitationPartVec recCitation::GetPartList( idt citID, const wxString& dbname )
     return list;
 }
 
+recIdVec recCitation::GetCitationPartIDs( idt citID, const wxString& dbname )
+{
+    recIdVec list;
+
+    if( citID == 0 ) return list;
+
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT id FROM \"%s\".CitationPart WHERE cit_id=" ID ";",
+        UTF8_( dbname ), citID
+    );
+    wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
+
+    while( result.NextRow() ) {
+        idt cpID = GET_ID( result.GetInt64( 0 ) );
+        list.push_back( cpID );
+    }
+    return list;
+}
+
 wxString recCitation::GetCitationStr( idt citID, const wxString& dbname )
 {
     recCitation cit( citID, dbname );

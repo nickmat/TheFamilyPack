@@ -82,7 +82,13 @@ public:
 
     static recCitationPartVec GetPartList( idt citID, const wxString& dbname = "Main" );
     recCitationPartVec GetPartList( const wxString& dbname = "Main" ) const {
-        return GetPartList( f_id, dbname ); }
+        return GetPartList( f_id, dbname );
+    }
+
+    static recIdVec GetCitationPartIDs( idt citID, const wxString& dbname = "Main" );
+    recIdVec GetCitationPartIDs( const wxString& dbname = "Main" ) const {
+        return GetCitationPartIDs( f_id, dbname );
+    }
 
     static wxString GetCitationStr( idt citID, const wxString& dbname = "Main" );
     wxString GetCitationStr( const wxString& dbname = "Main" ) const;
