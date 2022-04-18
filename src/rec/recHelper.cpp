@@ -50,6 +50,9 @@ idt recGetID( const wxString& str )
 
 idt recGetID( const std::string& str )
 {
+    if( str.empty() ) {
+        return 0;
+    }
     return stoll( str );
 }
 
