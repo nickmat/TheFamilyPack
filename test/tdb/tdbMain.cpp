@@ -59,15 +59,19 @@ const char* g_title = PROGNAME " - Version " VERSION " Debug\n";
 #endif
 
 enum class Table {
-    t_null, t_Contact, t_ContactList, t_ContactType, t_Reference, t_Researcher
+    t_null, t_Citation, t_CitationPart, t_CitationPartType,
+    t_Contact, t_ContactList, t_ContactType,
+    t_Reference, t_Repository, t_Researcher
 };
 
 constexpr const char* TablePrefixes[] = {
-    "", "C", "CL", "CT", "R", "Re"
+    "", "Ci", "CiP", "CiPT", "C", "CL", "CT", "R", "Ar", "Re"
 };
 
 constexpr const char* TableNames[] = {
-    "null", "Contact", "ContactList", "ContactType", "Reference", "Researcher"
+    "null", "Citation", "CitationPart", "CitationPartType",
+    "Contact", "ContactList", "ContactType",
+    "Reference", "Repository", "Researcher"
 };
 
 constexpr size_t tables_size = sizeof( TableNames ) / sizeof( char* );
@@ -125,6 +129,15 @@ public:
         RecordId rid = GetRecordId( records );
         switch( rid.table )
         {
+        case Table::t_Citation:
+            InsertCitation( rid.id );
+            break;
+        case Table::t_CitationPart:
+            InsertCitationPart( rid.id );
+            break;
+        case Table::t_CitationPartType:
+            InsertCitationPartType( rid.id );
+            break;
         case Table::t_Contact:
             InsertContact( rid.id );
             break;
@@ -137,6 +150,9 @@ public:
         case Table::t_Reference:
             InsertReference( rid.id );
             break;
+        case Table::t_Repository:
+            InsertRepository( rid.id );
+            break;
         case Table::t_Researcher:
             InsertResearcher( rid.id );
             break;
@@ -145,14 +161,42 @@ public:
     bool WriteCsv( const string& folder ) {
         m_csv_folder = folder;
         bool ret = true;
+        ret = ret && WriteTable<recCitation>( m_citation );
+        ret = ret && WriteTable<recCitationPart>( m_citation_part );
+        ret = ret && WriteTable<recCitationPartType>( m_citation_part_type );
         ret = ret && WriteTable<recContact>( m_contact );
         ret = ret && WriteTable<recContactList>( m_contact_list );
         ret = ret && WriteTable<recContactType>( m_contact_type );
         ret = ret && WriteTable<recReference>( m_reference );
+        ret = ret && WriteTable<recRepository>( m_repository );
         ret = ret && WriteTable<recResearcher>( m_researcher );
         return ret;
     }
 
+    void InsertCitation( idt citID ) {
+        m_citation.insert( citID );
+        recCitation cit( citID );
+        idt higherID = cit.FGetHigherID();
+        if( higherID != 0 ) {
+            InsertCitation( higherID );
+        }
+        idt repID = cit.FGetRepID();
+        if( repID != 0 ) {
+            InsertRepository( repID );
+        }
+        recIdVec cpIDs = recCitation::GetCitationPartIDs( citID );
+        for( idt cpID : cpIDs ) {
+            InsertCitationPart( cpID );
+        }
+    }
+    void InsertCitationPart( idt cpID ) {
+        m_citation_part.insert( cpID );
+        recCitationPart cp( cpID );
+        InsertCitationPartType( cp.FGetTypeID() );
+    }
+    void InsertCitationPartType( idt cptID ) {
+        m_citation_part_type.insert( cptID );
+    }
     void InsertContact( idt conID ) {
         m_contact.insert( conID );
         recContact con( conID );
@@ -179,7 +223,19 @@ public:
         if( resID != 0 ) {
             InsertResearcher( resID );
         }
+        recIdVec citIDs = recReference::GetCitationList( refID );
+        for( idt citID : citIDs ) {
+            InsertCitation( citID );
+        }
         // TODO: A lot more records to add.
+    }
+    void InsertRepository( idt repID ) {
+        m_repository.insert( repID );
+        recRepository rep( repID );
+        idt clID = rep.FGetConListID();
+        if( clID != 0 ) {
+            InsertContactList( clID );
+        }
     }
     void InsertResearcher( int resID ) {
         m_researcher.insert( resID );
@@ -210,10 +266,14 @@ private:
     }
 
     string   m_csv_folder;
+    set<idt> m_citation;
+    set<idt> m_citation_part;
+    set<idt> m_citation_part_type;
     set<idt> m_contact;
     set<idt> m_contact_list;
     set<idt> m_contact_type;
     set<idt> m_reference;
+    set<idt> m_repository;
     set<idt> m_researcher;
 };
 
@@ -303,10 +363,14 @@ int main( int argc, char** argv )
         }
         bool ret = true;
         string folder = string( csvFolder );
+        ret = ret && EnterTable<recCitation>( folder );
+        ret = ret && EnterTable<recCitationPart>( folder );
+        ret = ret && EnterTable<recCitationPartType>( folder );
+        ret = ret && EnterTable<recContact>( folder );
         ret = ret && EnterTable<recContactList>( folder );
         ret = ret && EnterTable<recContactType>( folder );
-        ret = ret && EnterTable<recContact>( folder );
         ret = ret && EnterTable<recReference>( folder );
+        ret = ret && EnterTable<recRepository>( folder );
         ret = ret && EnterTable<recResearcher>( folder );
         if( !ret ) {
             std::cout << "Error entering output database.\n";
