@@ -1,0 +1,20 @@
+;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+;* Name:       test/csv1-test1.tdb
+;* Project:    tdb: Create and Manage Test Database.
+;* Purpose:    tdb Configuration File.
+;* Author:     Nick Matthews
+;* Website:    http://thefamilypack.org
+;* Created:    18th April 2022
+;* Copyright:  Copyright (c) 2022, Nick Matthews.
+;* Licence:    GNU GPLv3
+;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+[Input]
+
+[Csv]
+Folder = csv1
+
+[Output]
+Output-Database = test1.tfpd
+
+; End of test/csv1-test1.tdb file

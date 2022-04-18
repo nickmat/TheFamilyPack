@@ -1,0 +1,115 @@
+ID, Higher ID, Title, Statement, Researcher ID, User Reference, UID, Last Changed
+11,0,"1881 Census, John S and Mariannie Malings and family","<!-- HTML -->
+<div id=""census-tab"">
+<table border=""0"">
+ <!-- Table 02 Row 01 -->
+ <tr>
+  <td></td>
+  <td class=""hd"">Dwelling:</td>
+  <td><a href=""tfpi:P5401"">Blakeney St</a></td>
+ </tr>
+ <!-- Table 02 Row 02 -->
+ <tr>
+  <td></td>
+  <td class=""hd"">Census Place:</td>
+  <td>Awre, Gloucestershire</td>
+ </tr>
+ <!-- Table 02 Row 03 -->
+ <tr>
+  <td></td>
+  <td class=""hd"">Source:</td>
+  <td>
+    <span class=""hd"">FHL Film:</span> 1341608
+    <span class=""hd"">PRO Ref:</span> RG 11
+    <span class=""hd"">Piece:</span> 2521
+    <span class=""hd"">Folio:</span> 35
+    <span class=""hd"">Page:</span> 16
+    <span class=""hd"">Schedule:</span> 88<br/>
+    From Scan of Original on Ancestry.com
+    </td>
+ </tr>
+</table>
+<br/>
+
+<table width=""95%"" border=""0"">
+<!-- Table 03 Row 01 -->
+<tr class=""hd"">
+<td></td>
+<td>Relation</td>
+<td>Marr</td>
+<td>Age</td>
+<td>Sex</td>
+<td>Birthplace</td>
+</tr>
+
+<!-- Table 03 Row 02 -->
+<tr>
+<td><b><a href=""tfpr:Pa11"">John S Malings</a></b></td>
+<td><a href=""tfpr:Ea2""><b>Head</b></a></td>
+<td><a href=""tfpr:Ea3""><b>Mar</b></a></td>
+<td><a href=""tfpi:D5986""><b>26</b></a></td>
+<td><b>M</b></td>
+<td><a href=""tfpi:P5402""><a href=""tfpi:P5402""><b>Clifton Glous'shire</b></a></a></td>
+</tr>
+<!-- Table 03 Row 03 -->
+<tr>
+<td></td>
+<td colspan=""5"">
+ <span class=""hd"">Occ:</span>
+ <span class=""occ""><a href=""tfpr:Ea5"">Officer of Inland Revenue</a></span>
+</td>
+</tr>
+<tr><td colspan=""6""></td></tr>
+
+<!-- Table 03 Row 04 -->
+<tr>
+<td><b><a href=""tfpr:Pa12"">Mariannie Malings</a></b></td>
+<td><a href=""tfpr:Ea2"">Wife</a></td>
+<td><a href=""tfpr:Ea6"">Mar</a></td>
+<td><a href=""tfpi:D5990"">28</a></td>
+<td>F</td>
+<td><a href=""tfpi:P5403""><a href=""tfpi:P5403"">Lancaster, L'pool Everton</a></a></td>
+</tr>
+<!-- Table 03 Row 05 -->
+<tr>
+<td></td>
+<td colspan=""5"">
+ <span class=""hd"">Occ:</span>
+ <span class=""occ""><a href=""tfpr:Ea8"">Wife</a></span>
+</td>
+</tr>
+<tr><td colspan=""6""></td></tr>
+
+<!-- Table 03 Row 04 -->
+<tr>
+<td><b><a href=""tfpr:Pa13"">Horatio H G Malings</a></b></td>
+<td><a href=""tfpr:Ea2"">Son</a></td>
+<td> </td>
+<td><a href=""tfpi:D5995"">2</a></td>
+<td>M</td>
+<td><a href=""tfpi:P5404""><a href=""tfpi:P5404"">Cumberland, Carlisle</a></a></td>
+</tr>
+<tr><td colspan=""6""></td></tr>
+
+<!-- Table 03 Row 04 -->
+<tr>
+<td><b><a href=""tfpr:Pa14"">Ada A Groves</a></b></td>
+<td><a href=""tfpr:Ea2"">Sister in Law</a></td>
+<td> </td>
+<td><a href=""tfpi:D5996"">26</a></td>
+<td>F</td>
+<td><a href=""tfpi:P5405""><a href=""tfpi:P5405"">Salop Shrewsbury</a></a></td>
+</tr>
+<!-- Table 03 Row 05 -->
+<tr>
+<td></td>
+<td colspan=""5"">
+ <span class=""hd"">Occ:</span>
+ <span class=""occ""><a href=""tfpr:Ea11"">No Occupation</a></span>
+</td>
+</tr>
+<tr><td colspan=""6""></td></tr>
+
+</table>
+</div>
+",1,"RD11","6268F1363A9EAF9261FCC41AE8CC9D54EA36",2459667
