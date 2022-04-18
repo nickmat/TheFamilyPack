@@ -124,6 +124,8 @@ inline RecordId GetRecordId( const wxString& str )
 class DataSet
 {
 public:
+    void SetFolder( const string& folder ) { m_csv_folder = folder; }
+
     void Create( const wxString& records )
     {
         RecordId rid = GetRecordId( records );
@@ -158,21 +160,6 @@ public:
             break;
         }
     }
-    bool WriteCsv( const string& folder ) {
-        m_csv_folder = folder;
-        bool ret = true;
-        ret = ret && WriteTable<recCitation>( m_citation );
-        ret = ret && WriteTable<recCitationPart>( m_citation_part );
-        ret = ret && WriteTable<recCitationPartType>( m_citation_part_type );
-        ret = ret && WriteTable<recContact>( m_contact );
-        ret = ret && WriteTable<recContactList>( m_contact_list );
-        ret = ret && WriteTable<recContactType>( m_contact_type );
-        ret = ret && WriteTable<recReference>( m_reference );
-        ret = ret && WriteTable<recRepository>( m_repository );
-        ret = ret && WriteTable<recResearcher>( m_researcher );
-        return ret;
-    }
-
     void InsertCitation( idt citID ) {
         m_citation.insert( citID );
         recCitation cit( citID );
@@ -246,9 +233,37 @@ public:
         }
     }
 
+    bool WriteCsv() {
+        bool ret = true;
+        ret = ret && WriteTableCsv<recCitation>( m_citation );
+        ret = ret && WriteTableCsv<recCitationPart>( m_citation_part );
+        ret = ret && WriteTableCsv<recCitationPartType>( m_citation_part_type );
+        ret = ret && WriteTableCsv<recContact>( m_contact );
+        ret = ret && WriteTableCsv<recContactList>( m_contact_list );
+        ret = ret && WriteTableCsv<recContactType>( m_contact_type );
+        ret = ret && WriteTableCsv<recReference>( m_reference );
+        ret = ret && WriteTableCsv<recRepository>( m_repository );
+        ret = ret && WriteTableCsv<recResearcher>( m_researcher );
+        return ret;
+    }
+
+    bool WriteTfpd() {
+        bool ret = true;
+        ret = ret && EnterTable<recCitation>();
+        ret = ret && EnterTable<recCitationPart>();
+        ret = ret && EnterTable<recCitationPartType>();
+        ret = ret && EnterTable<recContact>();
+        ret = ret && EnterTable<recContactList>();
+        ret = ret && EnterTable<recContactType>();
+        ret = ret && EnterTable<recReference>();
+        ret = ret && EnterTable<recRepository>();
+        ret = ret && EnterTable<recResearcher>();
+        return ret;
+    }
+
 private:  
     template <class T>
-    bool WriteTable( const set<idt>& list )
+    bool WriteTableCsv( const set<idt>& list )
     {
         if( list.empty() ) {
             return true;
@@ -265,6 +280,29 @@ private:
         return true;
     }
 
+    template <class T>
+    bool EnterTable()
+    {
+        string fname = m_csv_folder + T::TableName() + ".csv";
+        std::ifstream ifile( fname );
+        if( !ifile ) {
+            return false;
+        }
+        std::string titles;
+        std::getline( ifile, titles ); // Get rid of the title line
+        // We could check titles here to detect change in format
+
+        bool ret = true;
+        while( ret ) {
+            T record( 0 );
+            ret = record.CsvRead( ifile );
+            if( ret ) {
+                record.Save();
+            }
+        }
+        return true;
+    }
+
     string   m_csv_folder;
     set<idt> m_citation;
     set<idt> m_citation_part;
@@ -277,28 +315,6 @@ private:
     set<idt> m_researcher;
 };
 
-template <class T>
-bool EnterTable( const std::string& folder )
-{
-    string fname = folder + T::TableName() + ".csv";
-    std::ifstream ifile( fname );
-    if( !ifile ) {
-        return false;
-    }
-    std::string titles;
-    std::getline( ifile, titles ); // Get rid of the title line
-    // We could check titles here to detect change in format
-
-    bool ret = true;
-    while( ret ) {
-        T record( 0 );
-        ret = record.CsvRead( ifile );
-        if( ret ) {
-            record.Save();
-        }
-    }
-    return true;
-}
 
 int main( int argc, char** argv )
 {
@@ -335,6 +351,7 @@ int main( int argc, char** argv )
     if( !csvFolder.empty() && *csvFolder.rbegin() != '/' ) {
         csvFolder += "/";
     }
+    dset.SetFolder( string( csvFolder ) );
     wxString outDbFile = conf.Read( "/Output/Output-Database" );
 
     if( recDb::OpenDb( inDbFile ) == recDb::DbType::full ) {
@@ -344,7 +361,7 @@ int main( int argc, char** argv )
         }
         wxDir::Make( csvFolder );
         wxDir csv( csvFolder );
-        dset.WriteCsv( string(csvFolder) );
+        dset.WriteCsv();
         recDb::CloseDb();
     }
     if( wxDir::Exists( csvFolder ) ) {
@@ -361,18 +378,7 @@ int main( int argc, char** argv )
             std::cout << "Error opening output database file\n";
             return EXIT_FAILURE;
         }
-        bool ret = true;
-        string folder = string( csvFolder );
-        ret = ret && EnterTable<recCitation>( folder );
-        ret = ret && EnterTable<recCitationPart>( folder );
-        ret = ret && EnterTable<recCitationPartType>( folder );
-        ret = ret && EnterTable<recContact>( folder );
-        ret = ret && EnterTable<recContactList>( folder );
-        ret = ret && EnterTable<recContactType>( folder );
-        ret = ret && EnterTable<recReference>( folder );
-        ret = ret && EnterTable<recRepository>( folder );
-        ret = ret && EnterTable<recResearcher>( folder );
-        if( !ret ) {
+        if( !dset.WriteTfpd() ) {
             std::cout << "Error entering output database.\n";
             return EXIT_FAILURE;
         }
