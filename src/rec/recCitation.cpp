@@ -539,7 +539,7 @@ void recRepository::Renumber( idt id, idt to_id )
 
 std::string recRepository::CsvTitles()
 {
-    return std::string( "ID, Name, Note, Contact List ID\n" );
+    return std::string( "ID, Name, Note, Contact List ID, UID, Last Changed\n" );
 }
 
 void recRepository::CsvWrite( std::ostream& out, idt id )
@@ -548,7 +548,9 @@ void recRepository::CsvWrite( std::ostream& out, idt id )
     recCsvWrite( out, rep.FGetID() );
     recCsvWrite( out, rep.FGetName() );
     recCsvWrite( out, rep.FGetNote() );
-    recCsvWrite( out, rep.FGetConListID(), '\n' );
+    recCsvWrite( out, rep.FGetConListID() );
+    recCsvWrite( out, rep.FGetUid() );
+    recCsvWrite( out, rep.FGetChanged(), '\n' );
 }
 
 bool recRepository::CsvRead( std::istream& in )
@@ -557,6 +559,8 @@ bool recRepository::CsvRead( std::istream& in )
     recCsvRead( in, f_name );
     recCsvRead( in, f_note );
     recCsvRead( in, f_con_list_id );
+    recCsvRead( in, f_uid );
+    recCsvRead( in, f_changed );
     return bool( in );
 }
 
