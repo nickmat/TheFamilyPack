@@ -33,4 +33,31 @@
 
 #include <catch2/catch.hpp>
 
+#include "ruMain.h"
+
+#include <rec/recDb.h>
+
+TEST_CASE( "Test recContactType::Transfer function", "[ContactType]" )
+{
+    int cnt_main = recContactType::Count( g_maindb );
+    int cnt_extdb = recContactType::Count( g_extdb1 );
+
+    REQUIRE( !recContactType::Exists( 1, g_maindb ) );
+    REQUIRE( recContactType::Exists( 2, g_extdb1 ) );
+    recContactType from_ct( 2, g_extdb1 );
+
+    idt to_id = recContactType::Transfer( 2, g_extdb1, g_maindb );
+    REQUIRE( to_id == 1 );
+    recContactType to_ct( 1, g_maindb );
+    REQUIRE( from_ct.Equivalent( to_ct ) );
+
+    to_id = recContactType::Transfer( -4, g_extdb1, g_maindb );
+    REQUIRE( to_id == -4 );
+
+    REQUIRE( recContactType::DeleteIfOrphaned( 1, g_maindb ) );
+
+    REQUIRE( recContactType::Count( g_maindb ) == cnt_main );
+    REQUIRE( recContactType::Count( g_extdb1 ) == cnt_extdb );
+}
+
 /* End of test/ru/ruTransfer.cpp file */
