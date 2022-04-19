@@ -39,11 +39,11 @@
 #include <rec/recDatabase.h>
 
 const char* g_TestFileName = "test.tfpd";
-const char* g_OriginalExternalFileName1 = "recunit-1-org.tfpd";
-const char* g_ExternalFileName1 = "recunit-1.tfpd";
+const char* g_OriginalExternalFileName1 = "test1-orig.tfpd";
+const char* g_ExternalFileName1 = "test1.tfpd";
 
 const char* g_maindb = "Main";
-const char* g_extdb1 = "recunit-1";
+const char* g_extdb1 = "Test1";
 
 int main( int argc, char* argv[] ) {
 

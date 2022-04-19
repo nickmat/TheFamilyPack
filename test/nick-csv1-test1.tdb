@@ -17,6 +17,6 @@ Records = R11
 Folder = csv1
 
 [Output]
-Output-Database = test1.tfpd
+Output-Database = test1-orig.tfpd
 
 ; End of test/nick-csv1-test1.tdb file

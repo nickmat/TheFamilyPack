@@ -1,6 +1,6 @@
 @echo off
 
-echo Create test1.tfpd with extracts from Matthews.tfpd
+echo Create test1-orig.tfpd with extracts from Matthews.tfpd
 ..\build\vc-working\Release\tdb.exe nick-csv1-test1.tdb
 echo.
 
