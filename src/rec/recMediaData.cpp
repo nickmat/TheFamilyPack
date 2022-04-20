@@ -279,35 +279,4 @@ wxSQLite3Table recMediaData::GetMediaDataList( const wxString& dbname )
     return s_db->GetTable( sql );
 }
 
-wxString recMediaData::GetChangedDate() const
-{
-    return calStrFromJdn( f_changed, CALENDAR_SCH_Gregorian );
-}
-
-wxString recMediaData::GetChangedDate( idt mdID, const wxString& dbname )
-{
-    long jdn = recDb::ExecuteInt(
-        "SELECT changed FROM \"%s\".MediaData WHERE id=" ID ";",
-        UTF8_( dbname ), mdID
-    );
-    return calStrFromJdn( jdn, CALENDAR_SCH_Gregorian );
-}
-
-idt recMediaData::FindUid( idt mdID, const wxString& source_db, const wxString& target_db )
-{
-    recMediaData md( mdID, source_db );
-    return md.FindUid( target_db );
-}
-
-idt recMediaData::FindUid( const wxString& target_db ) const
-{
-    wxSQLite3StatementBuffer sql;
-
-    sql.Format(
-        "SELECT id FROM \"%s\".MediaData WHERE uid='%q';",
-        UTF8_( target_db ), UTF8_( f_uid )
-    );
-    return ExecuteID( sql );
-}
-
 // End of recMediaData.cpp file

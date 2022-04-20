@@ -30,7 +30,7 @@
 
 #include <rec/recDatabase.h>
 
-class recMediaData : public recDbT<recMediaData>
+class recMediaData : public recDbT<recMediaData>, public recUidT<recMediaData>
 {
 public:
     static constexpr const char* s_tablename = "MediaData";
@@ -55,8 +55,6 @@ public:
     int FGetPrivacy() const { return f_privacy; }
     wxString FGetCopyright() const { return f_copyright; }
     wxString FGetFile() const { return f_file; }
-    wxString FGetUid() const { return f_uid; }
-    long FGetChanged() const { return f_changed; }
 
     void FSetTitle( const wxString& title ) { f_title = title; }
     void FSetData( const wxMemoryBuffer& data ) { f_data = data; }
@@ -64,8 +62,6 @@ public:
     void FSetPrivacy( int privacy ) { f_privacy = privacy; }
     void FSetCopyright( const wxString& copyright ) { f_copyright = copyright; }
     void FSetFile( const wxString& file ) { f_file = file; }
-    void FSetUid( const wxString& uid ) { f_uid = uid; }
-    void FSetChanged( long jdn ) { f_changed = jdn; }
 
     static wxString GetIdStr( idt medID ) { return wxString::Format( "MD" ID, medID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
@@ -83,13 +79,6 @@ public:
 
     static wxSQLite3Table GetMediaDataList( const wxString& dbname = "Main" );
 
-    wxString GetChangedDate() const;
-    static wxString GetChangedDate( idt refID, const wxString& dbname );
-
-    static idt FindUid(
-        idt refID, const wxString& source_db, const wxString& target_db = "Main" );
-    idt FindUid( const wxString& target_db = "Main" ) const;
-
 private:
     wxString       f_title;
     wxMemoryBuffer f_data;
@@ -97,8 +86,6 @@ private:
     int            f_privacy;
     wxString       f_copyright;
     wxString       f_file;
-    wxString       f_uid;
-    long           f_changed;
 };
 
 #endif // RECMEDIADATA_H
