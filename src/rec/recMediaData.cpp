@@ -240,7 +240,7 @@ StringVec recMediaData::GetMimeList()
     return types;
 }
 
-bool recMediaData::ImportData( wxString& filename )
+bool recMediaData::ImportData( const wxString& filename )
 {
     wxFile infile( filename );
     wxFileOffset fLen = infile.Length();

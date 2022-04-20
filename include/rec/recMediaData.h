@@ -74,7 +74,7 @@ public:
     static idt FindMedia( idt mdID, idt assID );
     idt FindMedia( idt assID ) const { return FindMedia( f_id, assID ); }
 
-    bool ImportData( wxString& filename );
+    bool ImportData( const wxString& filename );
     wxString CreateMemoryFile() const;
 
     static wxSQLite3Table GetMediaDataList( const wxString& dbname = "Main" );
