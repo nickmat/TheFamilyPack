@@ -60,4 +60,57 @@ TEST_CASE( "Test recContactType::Transfer function", "[ContactType]" )
     REQUIRE( recContactType::Count( g_extdb1 ) == cnt_extdb );
 }
 
+TEST_CASE( "Test recContactList::Transfer function", "[ContactList]" )
+{
+    int cnt_cl_main = recContactList::Count( g_maindb );
+    int cnt_c_main = recContact::Count( g_maindb );
+    int cnt_ct_main = recContactType::Count( g_maindb );
+    int cnt_cl_extdb = recContactList::Count( g_extdb1 );
+    int cnt_c_extdb = recContact::Count( g_extdb1 );
+    int cnt_ct_extdb = recContactType::Count( g_extdb1 );
+
+    REQUIRE( !recContactList::Exists( 1, g_maindb ) );
+    REQUIRE( recContactList::Exists( 2, g_extdb1 ) );
+    recContactList from_cl( 2, g_extdb1 );
+    recIdVec from_conIDs = from_cl.GetContactIDs( g_extdb1 );
+    REQUIRE( from_conIDs.size() == 3 );
+
+    idt to_id = recContactList::Transfer( 2, g_extdb1, 0, g_maindb );
+    REQUIRE( to_id == 1 );
+    recContactList to_cl( to_id, g_maindb );
+    REQUIRE( to_cl.Equivalent( from_cl ) );
+    recIdVec to_conIDs = to_cl.GetContactIDs( g_maindb );
+    REQUIRE( to_conIDs.size() == 3 );
+
+    // Add a new contact to extdb
+    recContact new_con( 0 );
+    new_con.FSetListID( 2 );
+    new_con.FSetTypeID( -2 );
+    new_con.FSetValue( "0123 456789" );
+    new_con.Save( g_extdb1 );
+    from_conIDs = from_cl.GetContactIDs( g_extdb1 );
+    REQUIRE( from_conIDs.size() == 4 );
+
+    recContactList::Transfer( 2, g_extdb1, 1, g_maindb );
+    to_conIDs = recContactList::GetContactIDs( to_id, g_maindb );
+    REQUIRE( to_conIDs.size() == 4 );
+
+    recContact::RemoveFromDatabase( new_con.FGetID(), g_extdb1 );
+    from_conIDs = from_cl.GetContactIDs( g_extdb1 );
+    REQUIRE( from_conIDs.size() == 3 );
+
+    recContactList::Transfer( 2, g_extdb1, 1, g_maindb );
+    to_conIDs = recContactList::GetContactIDs( to_id, g_maindb );
+    REQUIRE( to_conIDs.size() == 3 );
+
+    REQUIRE( recContactList::RemoveFromDatabase( to_id, g_maindb ) );
+
+    REQUIRE( recContactList::Count( g_maindb ) == cnt_cl_main );
+    REQUIRE( recContact::Count( g_maindb ) == cnt_c_main );
+    REQUIRE( recContactType::Count( g_maindb ) == cnt_ct_main );
+    REQUIRE( recContactList::Count( g_extdb1 ) == cnt_cl_extdb );
+    REQUIRE( recContact::Count( g_extdb1 ) == cnt_c_extdb );
+    REQUIRE( recContactType::Count( g_extdb1 ) == cnt_ct_extdb );
+}
+
 /* End of test/ru/ruTransfer.cpp file */
