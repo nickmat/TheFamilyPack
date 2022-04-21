@@ -250,6 +250,14 @@ bool recMediaData::ImportData( const wxString& filename )
     return !f_data.IsEmpty();
 }
 
+bool recMediaData::ExportData( const wxString& filename )
+{
+    wxMemoryBuffer& buf = FGetData();
+    wxMemoryInputStream stream( buf.GetData(), buf.GetDataLen() );
+    wxImage image( stream, wxBITMAP_TYPE_JPEG );
+    return image.SaveFile( filename, wxBITMAP_TYPE_JPEG );
+}
+
 wxString recMediaData::CreateMemoryFile() const
 {
     wxString filename = FGetFile() + ".bmp";
