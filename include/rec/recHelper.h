@@ -106,6 +106,14 @@ inline wxString recGetStr( idt id ) { return wxString::Format( ID, id ); }
 enum class recSplitStrRet { none, number, associate, text };
 extern recSplitStrRet recSplitStr( const wxString& str, idt* id1, idt* id2, wxString* dbname );
 
+// Make sure the string ends with a '/'.
+inline wxString recMakeDirectoryStr( const wxString& dir ) {
+    if( !dir.empty() && *dir.rbegin() != '/' ) {
+        return dir + "/";
+    }
+    return dir;
+}
+
 enum class Sex { unstated, male, female, unknown };
 extern wxString recGetSexStr( Sex sex );
 
