@@ -124,8 +124,6 @@ void rgViewMediaFrame::EnableScroll( bool enable )
     m_staticTextZoom->Enable( enable );
     m_textCtrlZoom->Enable( enable );
     m_button100Percent->Enable( enable );
-    m_buttonExport->Enable( enable );
-    m_buttonPrint->Enable( enable );
 }
 
 double rgViewMediaFrame::ThumbToScale( int thumb )
@@ -203,7 +201,21 @@ void rgViewMediaFrame::OnButton100Percent( wxCommandEvent& event )
 
 void rgViewMediaFrame::OnButtonExport( wxCommandEvent& event )
 {
-    wxMessageBox( _( "Not yet implimented" ), "OnButtonExport" );
+    wxString caption = _( "Save Image" );
+    wxString wildcard = _( "JPEG (*.jpg)|*." );
+    wxString defaultDir = ".";
+
+    wxFileName fn( m_mediadata.FGetFile() );
+    fn.SetExt( "jpg" );
+    wxString defaultFName = fn.GetFullName();
+
+    wxFileDialog dialog(
+        this, caption, defaultDir, defaultFName, wildcard,
+        wxFD_SAVE | wxFD_OVERWRITE_PROMPT
+    );
+    if( dialog.ShowModal() == wxID_OK ) {
+        m_mediadata.ExportData( dialog.GetPath() );
+    }
 }
 
 void rgViewMediaFrame::OnButtonPrint( wxCommandEvent& event )
