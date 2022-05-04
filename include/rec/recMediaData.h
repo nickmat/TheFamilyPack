@@ -80,6 +80,11 @@ public:
 
     static wxSQLite3Table GetMediaDataList( const wxString& dbname = "Main" );
 
+    static std::string CsvTitles();
+    static void CsvWrite( std::ostream& out, idt id );
+    void CsvWrite( std::ostream& out ) const;
+    bool CsvRead( std::istream& in );
+
 private:
     wxString       f_title;
     wxMemoryBuffer f_data;

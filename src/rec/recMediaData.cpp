@@ -38,7 +38,7 @@
 #include <rec/recMediaData.h>
 
 #include <rec/recAssociate.h>
-#include <rec/recMedia.h>
+//#include <rec/recMedia.h>
 
 #include <cal/calendar.h>
 
@@ -210,7 +210,7 @@ wxString recMediaData::GetFileName( const wxString& assDb, idt mdID )
 
 idt recMediaData::FindMedia( idt mdID, idt assID )
 {
-    if ( !recMedia::TableExists() ) {
+    if ( /*!recMedia::TableExists()*/true ) {
         return 0;
     }
     wxSQLite3StatementBuffer sql;
@@ -285,6 +285,48 @@ wxSQLite3Table recMediaData::GetMediaDataList( const wxString& dbname )
         " WHERE NOT id=0 ORDER BY file;", UTF8_( dbname )
     );
     return s_db->GetTable( sql );
+}
+
+std::string recMediaData::CsvTitles()
+{
+    return std::string(
+        "ID, Title, File Type, Privacy, Copyright, File, UID, Last Changed\n"
+    );
+}
+
+void recMediaData::CsvWrite( std::ostream& out, idt id )
+{
+    // Data blob not included (input image file)
+    recMediaData md( id );
+    md.CsvWrite( out );
+}
+
+void recMediaData::CsvWrite( std::ostream& out ) const
+{
+    // Data blob not included (output as image file)
+    recCsvWrite( out, FGetID() );
+    recCsvWrite( out, FGetTitle() );
+    recCsvWrite( out, int( FGetType() ) );
+    recCsvWrite( out, FGetPrivacy() );
+    recCsvWrite( out, FGetCopyright() );
+    recCsvWrite( out, FGetFile() );
+    recCsvWrite( out, FGetUid() );
+    recCsvWrite( out, FGetChanged(), '\n' );
+}
+
+bool recMediaData::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    recCsvRead( in, f_title );
+    int type;
+    recCsvRead( in, type );
+    f_type = Mime( type );
+    recCsvRead( in, f_privacy );
+    recCsvRead( in, f_copyright );
+    recCsvRead( in, f_file );
+    recCsvRead( in, f_uid );
+    recCsvRead( in, f_changed );
+    return bool( in );
 }
 
 // End of recMediaData.cpp file
