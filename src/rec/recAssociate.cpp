@@ -168,4 +168,25 @@ recAssociateVec recAssociate::GetList( const wxString& extdb )
     return vec;
 }
 
+std::string recAssociate::CsvTitles()
+{
+    return std::string( "ID, Path, Comment\n" );
+}
+
+void recAssociate::CsvWrite( std::ostream& out, idt id )
+{
+    recAssociate ass( id );
+    recCsvWrite( out, ass.FGetID() );
+    recCsvWrite( out, ass.FGetPath() );
+    recCsvWrite( out, ass.FGetComment(), '\n');
+}
+
+bool recAssociate::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    recCsvRead( in, f_path );
+    recCsvRead( in, f_comment );
+    return bool( in );
+}
+
 // End of recAssociate.cpp file

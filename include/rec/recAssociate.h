@@ -65,6 +65,10 @@ public:
 
     static recAssociateVec GetList( const wxString& extdb = "Main" );
 
+    static std::string CsvTitles();
+    static void CsvWrite( std::ostream& out, idt id );
+    bool CsvRead( std::istream& in );
+
 private:
     wxString f_path;
     wxString f_comment;
