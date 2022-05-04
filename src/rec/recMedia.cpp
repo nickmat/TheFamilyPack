@@ -193,4 +193,37 @@ wxSQLite3Table recMedia::GetMediaList( idt offset, int limit, const wxString& db
     return s_db->GetTable( sql );
 }
 
+std::string recMedia::CsvTitles()
+{
+    return std::string(
+        "ID, Data ID, Associate ID, Reference ID, Reference Sequence, Privacy, Title, Note\n"
+    );
+}
+
+void recMedia::CsvWrite( std::ostream& out, idt id )
+{
+    recMedia med( id );
+    recCsvWrite( out, med.FGetID() );
+    recCsvWrite( out, med.FGetDataID() );
+    recCsvWrite( out, med.FGetAssID() );
+    recCsvWrite( out, med.FGetRefID() );
+    recCsvWrite( out, med.FGetRefSeq() );
+    recCsvWrite( out, med.FGetPrivacy() );
+    recCsvWrite( out, med.FGetTitle() );
+    recCsvWrite( out, med.FGetNote(), '\n' );
+}
+
+bool recMedia::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    recCsvRead( in, f_data_id );
+    recCsvRead( in, f_ass_id );
+    recCsvRead( in, f_ref_id );
+    recCsvRead( in, f_ref_seq );
+    recCsvRead( in, f_privacy );
+    recCsvRead( in, f_title );
+    recCsvRead( in, f_note );
+    return bool( in );
+}
+
 // End of recMedia.cpp file
