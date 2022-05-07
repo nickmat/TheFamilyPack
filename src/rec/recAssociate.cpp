@@ -176,9 +176,14 @@ std::string recAssociate::CsvTitles()
 void recAssociate::CsvWrite( std::ostream& out, idt id )
 {
     recAssociate ass( id );
-    recCsvWrite( out, ass.FGetID() );
-    recCsvWrite( out, ass.FGetPath() );
-    recCsvWrite( out, ass.FGetComment(), '\n');
+    ass.CsvWrite( out );
+}
+
+void recAssociate::CsvWrite( std::ostream& out ) const
+{
+    recCsvWrite( out, FGetID() );
+    recCsvWrite( out, FGetPath() );
+    recCsvWrite( out, FGetComment(), '\n');
 }
 
 bool recAssociate::CsvRead( std::istream& in )
