@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     19th September 2018
- * Copyright:   Copyright (c) 2018 .. 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2018..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -204,7 +204,10 @@ wxString recMediaData::GetDbname( const wxString& extdb, const wxString& link, i
 wxString recMediaData::GetFileName( const wxString& assDb, idt mdID )
 {
     wxSQLite3StatementBuffer sql;
-    sql.Format( "SELECT file FROM %q.MediaData WHERE id=" ID ";", UTF8_( assDb ), mdID );
+    sql.Format(
+        "SELECT file FROM \"%s\".MediaData WHERE id=" ID ";",
+        UTF8_( assDb ), mdID
+    );
     return ExecuteStr( sql );
 }
 
