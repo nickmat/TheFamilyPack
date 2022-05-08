@@ -83,6 +83,11 @@ struct RecordId {
     idt id;
 };
 
+struct AssociateData {
+    string m_ass_filename;
+    set<idt> m_ass_media_data;
+};
+
 std::string TableName( Table table )
 {
     return TableNames[static_cast<size_t>(table)];
@@ -160,6 +165,16 @@ public:
             break;
         }
     }
+
+    void InsertAssociate( idt assID ) {
+        m_associate.insert( assID );
+    }
+    void InsertAssociatedMediaData( idt assID, idt mdID ) {
+        m_ads[assID].m_ass_media_data.insert(mdID);
+    }
+    void SetAssociatedFileName( idt assID, string fname ) {
+        m_ads[assID].m_ass_filename = fname;
+    }
     void InsertCitation( idt citID ) {
         m_citation.insert( citID );
         recCitation cit( citID );
@@ -199,6 +214,19 @@ public:
     void InsertContactType( idt ctID ) {
         m_contact_type.insert( ctID );
     }
+    void InsertMedia( idt medID ) {
+        m_media.insert( medID );
+        recMedia med( medID );
+        idt assID = med.FGetAssID();
+        if( assID ) {
+            InsertAssociate( assID );
+        }
+        idt mdID = med.FGetDataID();
+        if( mdID ) {
+            InsertAssociatedMediaData( assID, mdID );
+        }
+        // We don't normally include galleries.
+    }
     void InsertReference( idt refID ) {
         m_reference.insert( refID );
         recReference ref( refID );
@@ -213,6 +241,10 @@ public:
         recIdVec citIDs = recReference::GetCitationList( refID );
         for( idt citID : citIDs ) {
             InsertCitation( citID );
+        }
+        recIdVec medIDs = recReference::GetMediaList( refID );
+        for( idt medID : medIDs ) {
+            InsertMedia( medID );
         }
         // TODO: A lot more records to add.
     }
@@ -234,13 +266,15 @@ public:
     }
 
     bool WriteCsv() {
-        bool ret = true;
+        bool ret = WriteMediaData();
+        ret = ret && WriteTableCsv<recAssociate>( m_associate );
         ret = ret && WriteTableCsv<recCitation>( m_citation );
         ret = ret && WriteTableCsv<recCitationPart>( m_citation_part );
         ret = ret && WriteTableCsv<recCitationPartType>( m_citation_part_type );
         ret = ret && WriteTableCsv<recContact>( m_contact );
         ret = ret && WriteTableCsv<recContactList>( m_contact_list );
         ret = ret && WriteTableCsv<recContactType>( m_contact_type );
+        ret = ret && WriteTableCsv<recMedia>( m_media );
         ret = ret && WriteTableCsv<recReference>( m_reference );
         ret = ret && WriteTableCsv<recRepository>( m_repository );
         ret = ret && WriteTableCsv<recResearcher>( m_researcher );
@@ -248,20 +282,107 @@ public:
     }
 
     bool WriteTfpd() {
-        bool ret = true;
+        bool ret = EnterAssMediaData();
         ret = ret && EnterTable<recCitation>();
         ret = ret && EnterTable<recCitationPart>();
         ret = ret && EnterTable<recCitationPartType>();
         ret = ret && EnterTable<recContact>();
         ret = ret && EnterTable<recContactList>();
         ret = ret && EnterTable<recContactType>();
+        ret = ret && EnterTable<recMedia>();
         ret = ret && EnterTable<recReference>();
         ret = ret && EnterTable<recRepository>();
         ret = ret && EnterTable<recResearcher>();
         return ret;
     }
 
-private:  
+private:
+    bool WriteMediaData() {
+        if( m_ads.empty() ) {
+            return true;
+        }
+        string md_folder, image_folder, md_fname, image_fn;
+        for( auto& id_set : m_ads ) {
+            idt assID = id_set.first;
+            if( assID == 0 ) {
+                md_folder = m_csv_folder;
+            }
+            else {
+                md_folder = m_csv_folder + "ass" + recGetStr( assID ) + "/";
+                wxDir::Make( md_folder );
+            }
+            image_folder = md_folder + "image/";
+            wxDir::Make( image_folder );
+
+            md_fname = md_folder + recMediaData::TableName() + ".csv";
+            std::ofstream md_ofile( md_fname, std::ios::trunc );
+            if( !md_ofile ) {
+                return false;
+            }
+            md_ofile << recMediaData::CsvTitles();
+            for( idt mdID : id_set.second.m_ass_media_data ) {
+                recMediaData md( mdID, assID );
+                md.CsvWrite( md_ofile );
+                image_fn = image_folder + "md" + recGetStr( mdID ) + ".jpg";
+                md.ExportData( image_fn );
+            }
+        }
+        return true;
+    }
+
+    bool EnterAssMediaData() {
+        if( !EnterTable<recAssociate>() ) {
+            return false;
+        }
+        string md_folder, image_folder, md_fname, image_fn;
+        for( auto& ad : m_ads ) {
+            idt assID = ad.first;
+            if( assID ) {
+                if( !ad.second.m_ass_filename.empty() ) {
+                    recAssociate ass( assID );
+                    if( ass.FGetID() == 0 ) {
+                        return false;
+                    }
+                    ass.FSetPath( ad.second.m_ass_filename );
+                    ass.Save();
+                }
+                md_folder = m_csv_folder + "ass" + recGetStr( assID ) + "/";
+            }
+            else {
+                md_folder = m_csv_folder;
+            }
+            if( !EnterTableMediaData( assID, md_folder ) ) {
+                return false;
+            }
+        }
+        return true;
+    }
+    bool EnterTableMediaData( idt assID, const string& folder ) {
+        wxString assdb = recAssociate::GetAttachedName( assID, "Main");
+
+        string fname = folder + recMediaData::TableName() + ".csv";
+        std::ifstream ifile( fname );
+        if( !ifile ) {
+            return false;
+        }
+        std::string titles;
+        std::getline( ifile, titles ); // Get rid of the title line
+        // We could check titles here to detect change in format
+
+        bool ret = true;
+        while( ret ) {
+            recMediaData md( 0 );
+            ret = md.CsvRead( ifile );
+            if( ret ) {
+                idt mdID = md.FGetID();
+                wxString mdimage = folder + "image/md" + recGetStr( mdID ) + ".jpg";
+                md.ImportData( mdimage );
+                md.Save( assdb );
+            }
+        }
+        return true;
+    }
+
     template <class T>
     bool WriteTableCsv( const set<idt>& list )
     {
@@ -304,12 +425,15 @@ private:
     }
 
     string   m_csv_folder;
+    std::map<idt, AssociateData> m_ads;
+    set<idt> m_associate;
     set<idt> m_citation;
     set<idt> m_citation_part;
     set<idt> m_citation_part_type;
     set<idt> m_contact;
     set<idt> m_contact_list;
     set<idt> m_contact_type;
+    set<idt> m_media;
     set<idt> m_reference;
     set<idt> m_repository;
     set<idt> m_researcher;
@@ -333,6 +457,10 @@ int main( int argc, char** argv )
     }
 
     wxInitializer initializer;
+    wxImage::AddHandler( new wxPNGHandler );
+    wxImage::AddHandler( new wxJPEGHandler );
+    wxImage::AddHandler( new wxGIFHandler );
+    wxImage::AddHandler( new wxXPMHandler );
     recInitialize();
 
     DataSet dset;
@@ -353,6 +481,7 @@ int main( int argc, char** argv )
     }
     dset.SetFolder( string( csvFolder ) );
     wxString outDbFile = conf.Read( "/Output/Output-Database" );
+    wxString outDbAss1File = conf.Read( "/Output/Output-Ass1" );
 
     if( recDb::OpenDb( inDbFile ) == recDb::DbType::full ) {
         dset.Create( inRecords );
@@ -360,7 +489,6 @@ int main( int argc, char** argv )
             wxDir::Remove( csvFolder, wxPATH_RMDIR_RECURSIVE );
         }
         wxDir::Make( csvFolder );
-        wxDir csv( csvFolder );
         dset.WriteCsv();
         recDb::CloseDb();
     }
@@ -377,6 +505,19 @@ int main( int argc, char** argv )
         if( recDb::OpenDb( outDbFile ) != dbtype ) {
             std::cout << "Error opening output database file\n";
             return EXIT_FAILURE;
+        }
+        if( !outDbAss1File.empty() ) {
+            if( wxFileExists( outDbAss1File ) ) {
+                wxRemoveFile( outDbAss1File );
+            }
+            recDb::DbType dbtype = recDb::DbType::media_data_only;
+            recDb::CreateReturn create_ret = recDb::CreateDbFile( outDbAss1File, dbtype );
+            if( create_ret != recDb::CreateReturn::OK ) {
+                std::cout << "Unable to create Output Associate file \"" << outDbAss1File << "\"\n";
+                return EXIT_FAILURE;
+            }
+            wxFileName ass_fname( outDbAss1File );
+            dset.SetAssociatedFileName( 1, string( ass_fname.GetName() ) );
         }
         if( !dset.WriteTfpd() ) {
             std::cout << "Error entering output database.\n";
