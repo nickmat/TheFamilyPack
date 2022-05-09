@@ -181,7 +181,7 @@ idt rgSelectDate( wxWindow* wind, unsigned flag, unsigned* retbutton, unsigned f
         switch( filter )
         {
         case recD_FILTER_Reference:
-            dateIDs = recReference::GetDateIdVec( id );
+            dateIDs = recReference::GetDateList( id );
             break;
         default:
             wxASSERT( false ); // Shouldn't be here
@@ -245,7 +245,7 @@ idt rgSelectPlace(
         switch( filter )
         {
         case recP_FILTER_Reference:
-            placeIDs = recReference::GetPlaceIdVec( id );
+            placeIDs = recReference::GetPlaceList( id );
             break;
         default:
             wxASSERT( false ); // Shouldn't be here

@@ -173,15 +173,15 @@ public:
     static recIdVec GetIdVecForEntity(
         idt refID, recReferenceEntity::Type type, const wxString& dbname = "Main" );
 
-    static recIdVec GetPlaceIdVec( idt refID, const wxString& dbname = "Main" )
+    static recIdVec GetPlaceList( idt refID, const wxString& dbname = "Main" )
         { return GetIdVecForEntity( refID, recReferenceEntity::TYPE_Place, dbname ); }
-    recIdVec GetPlaceIdVec( const wxString& dbname = "Main" ) const {
-        return GetPlaceIdVec( f_id, dbname ); }
+    recIdVec GetPlaceList( const wxString& dbname = "Main" ) const {
+        return GetPlaceList( f_id, dbname ); }
 
-    static recIdVec GetDateIdVec( idt refID, const wxString& dbname = "Main" )
+    static recIdVec GetDateList( idt refID, const wxString& dbname = "Main" )
         { return GetIdVecForEntity( refID, recReferenceEntity::TYPE_Date, dbname ); }
-    recIdVec GetDateIdVec( const wxString& dbname = "Main" ) const {
-        return GetDateIdVec( f_id, dbname ); }
+    recIdVec GetDateList( const wxString& dbname = "Main" ) const {
+        return GetDateList( f_id, dbname ); }
 
     static idt recReference::Transfer(
         idt from_refID, const wxString& fromdb, const wxString& todb, idt to_assID );
