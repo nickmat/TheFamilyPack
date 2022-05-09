@@ -199,5 +199,34 @@ bool recEventaPersona::LinkExists( const wxString& dbname ) const
     return true;
 }
 
+std::string recEventaPersona::CsvTitles()
+{
+    return std::string(
+        "ID, Eventa ID, Persona ID, Role ID, Note, Persona Sequence\n"
+    );
+}
+
+void recEventaPersona::CsvWrite( std::ostream& out, idt id )
+{
+    recEventaPersona ep( id );
+    recCsvWrite( out, ep.FGetID() );
+    recCsvWrite( out, ep.FGetEventaID() );
+    recCsvWrite( out, ep.FGetPerID() );
+    recCsvWrite( out, ep.FGetRoleID() );
+    recCsvWrite( out, ep.FGetNote() );
+    recCsvWrite( out, ep.FGetPerSeq(), '\n' );
+}
+
+bool recEventaPersona::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    recCsvRead( in, f_eventa_id );
+    recCsvRead( in, f_per_id );
+    recCsvRead( in, f_role_id );
+    recCsvRead( in, f_note );
+    recCsvRead( in, f_per_seq );
+    return bool( in );
+}
+
 
 // End of recEventaPersona.cpp file

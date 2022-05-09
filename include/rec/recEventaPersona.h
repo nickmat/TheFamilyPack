@@ -81,6 +81,10 @@ public:
      *  f_per_id, f_event_id and f_role_id.
      */
     bool LinkExists( const wxString& dbname = "Main" ) const;
+
+    static std::string CsvTitles();
+    static void CsvWrite( std::ostream& out, idt id );
+    bool CsvRead( std::istream& in );
 };
 
 typedef std::vector< recEventaPersona >   recEventaPersonaVec;
