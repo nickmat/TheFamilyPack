@@ -227,6 +227,39 @@ public:
         }
         // We don't normally include galleries.
     }
+    void InsertName( idt namID ) {
+        m_name.insert( namID );
+        recName nam( namID );
+        idt nsID = nam.FGetTypeID();
+        if( nsID ) {
+            InsertNameStyle( nsID );
+        }
+        recIdVec npIDs = recName::GetNamePartListID( namID );
+        for( idt npID : npIDs ) {
+            InsertNamePart( npID );
+        }
+    }
+    void InsertNamePart( idt npID ) {
+        m_name_part.insert( npID );
+        recNamePart np( npID );
+        idt nptID = np.FGetTypeID();
+        if( nptID ) {
+            InsertNamePartType( nptID );
+        }
+    }
+    void InsertNamePartType( idt nptID ) {
+        m_name_part_type.insert( nptID );
+    }
+    void InsertNameStyle( idt nsID ) {
+        m_name_style.insert( nsID );
+    }
+    void InsertPersona( idt perID ) {
+        m_persona.insert( perID );
+        recIdVec namIDs = recPersona::GetNameListID( perID );
+        for( idt namID : namIDs ) {
+            InsertName( namID );
+        }
+    }
     void InsertReference( idt refID ) {
         m_reference.insert( refID );
         recReference ref( refID );
@@ -245,6 +278,10 @@ public:
         recIdVec medIDs = recReference::GetMediaList( refID );
         for( idt medID : medIDs ) {
             InsertMedia( medID );
+        }
+        recIdVec paIDs = recReference::GetPersonaList( refID );
+        for( idt paID : paIDs ) {
+            InsertPersona( paID );
         }
         // TODO: A lot more records to add.
     }
@@ -275,6 +312,11 @@ public:
         ret = ret && WriteTableCsv<recContactList>( m_contact_list );
         ret = ret && WriteTableCsv<recContactType>( m_contact_type );
         ret = ret && WriteTableCsv<recMedia>( m_media );
+        ret = ret && WriteTableCsv<recName>( m_name );
+        ret = ret && WriteTableCsv<recNamePart>( m_name_part );
+        ret = ret && WriteTableCsv<recNamePartType>( m_name_part_type );
+        ret = ret && WriteTableCsv<recNameStyle>( m_name_style );
+        ret = ret && WriteTableCsv<recPersona>( m_persona );
         ret = ret && WriteTableCsv<recReference>( m_reference );
         ret = ret && WriteTableCsv<recRepository>( m_repository );
         ret = ret && WriteTableCsv<recResearcher>( m_researcher );
@@ -290,6 +332,11 @@ public:
         ret = ret && EnterTable<recContactList>();
         ret = ret && EnterTable<recContactType>();
         ret = ret && EnterTable<recMedia>();
+        ret = ret && EnterTable<recName>();
+        ret = ret && EnterTable<recNamePart>();
+        ret = ret && EnterTable<recNamePartType>();
+        ret = ret && EnterTable<recNameStyle>();
+        ret = ret && EnterTable<recPersona>();
         ret = ret && EnterTable<recReference>();
         ret = ret && EnterTable<recRepository>();
         ret = ret && EnterTable<recResearcher>();
@@ -407,7 +454,7 @@ private:
         string fname = m_csv_folder + T::TableName() + ".csv";
         std::ifstream ifile( fname );
         if( !ifile ) {
-            return false;
+            return true; // Not an error if it doesn't exist
         }
         std::string titles;
         std::getline( ifile, titles ); // Get rid of the title line
@@ -434,6 +481,11 @@ private:
     set<idt> m_contact_list;
     set<idt> m_contact_type;
     set<idt> m_media;
+    set<idt> m_name;
+    set<idt> m_name_part;
+    set<idt> m_name_part_type;
+    set<idt> m_name_style;
+    set<idt> m_persona;
     set<idt> m_reference;
     set<idt> m_repository;
     set<idt> m_researcher;
