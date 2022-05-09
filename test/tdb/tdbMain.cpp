@@ -214,6 +214,14 @@ public:
     void InsertContactType( idt ctID ) {
         m_contact_type.insert( ctID );
     }
+    void InsertDate( idt dateID ) {
+        m_date.insert( dateID );
+        recDate date( dateID );
+        idt rdID = date.FGetRelID();
+        if( rdID ) {
+            InsertRelativeDate( rdID );
+        }
+    }
     void InsertMedia( idt medID ) {
         m_media.insert( medID );
         recMedia med( medID );
@@ -260,6 +268,33 @@ public:
             InsertName( namID );
         }
     }
+    void InsertPlace( idt placeID ) {
+        m_place.insert( placeID );
+        recPlace place( placeID );
+        idt date1ID = place.FGetDate1ID();
+        if( date1ID ) {
+            InsertDate( date1ID );
+        }
+        idt date2ID = place.FGetDate2ID();
+        if( date2ID ) {
+            InsertDate( date2ID );
+        }
+        recIdVec ppIDs = recPlace::GetPlacePartIDs( placeID );
+        for( idt ppID : ppIDs ) {
+            InsertPlacePart( ppID );
+        }
+    }
+    void InsertPlacePart( idt ppID ) {
+        m_place_part.insert( ppID );
+        recPlacePart pp( ppID );
+        idt pptID = pp.FGetTypeID();
+        if( pptID ) {
+            InsertPlacePartType( pptID );
+        }
+    }
+    void InsertPlacePartType( idt pptID ) {
+        m_place_part_type.insert( pptID );
+    }
     void InsertReference( idt refID ) {
         m_reference.insert( refID );
         recReference ref( refID );
@@ -283,7 +318,32 @@ public:
         for( idt paID : paIDs ) {
             InsertPersona( paID );
         }
-        // TODO: A lot more records to add.
+        recIdVec dateIDs = recReference::GetDateList( refID );
+        for( idt dateID : dateIDs ) {
+            InsertDate( dateID );
+        }
+        recIdVec placeIDs = recReference::GetPlaceList( refID );
+        for( idt placeID : placeIDs ) {
+            InsertPlace( placeID );
+        }
+        recIdVec entIDs = recReference::GetEntityList( refID );
+        for( idt entID : entIDs ) {
+            InsertReferenceEntity( entID );
+        }
+        // TODO: Add Eventa records.
+    }
+    void InsertReferenceEntity( idt entID ) {
+        m_reference_entity.insert( entID );
+        // Note, the entities referenced by this record have
+        // been inserted into their respective sets separately
+    }
+    void InsertRelativeDate( idt rdID ) {
+        m_relative_date.insert( rdID );
+        recRelativeDate rd( rdID );
+        idt baseID = rd.FGetBaseID();
+        if( baseID ) {
+            InsertDate( baseID );
+        }
     }
     void InsertRepository( idt repID ) {
         m_repository.insert( repID );
@@ -311,13 +371,19 @@ public:
         ret = ret && WriteTableCsv<recContact>( m_contact );
         ret = ret && WriteTableCsv<recContactList>( m_contact_list );
         ret = ret && WriteTableCsv<recContactType>( m_contact_type );
+        ret = ret && WriteTableCsv<recDate>( m_date );
         ret = ret && WriteTableCsv<recMedia>( m_media );
         ret = ret && WriteTableCsv<recName>( m_name );
         ret = ret && WriteTableCsv<recNamePart>( m_name_part );
         ret = ret && WriteTableCsv<recNamePartType>( m_name_part_type );
         ret = ret && WriteTableCsv<recNameStyle>( m_name_style );
         ret = ret && WriteTableCsv<recPersona>( m_persona );
+        ret = ret && WriteTableCsv<recPlace>( m_place );
+        ret = ret && WriteTableCsv<recPlacePart>( m_place_part );
+        ret = ret && WriteTableCsv<recPlacePartType>( m_place_part_type );
         ret = ret && WriteTableCsv<recReference>( m_reference );
+        ret = ret && WriteTableCsv<recReferenceEntity>( m_reference_entity );
+        ret = ret && WriteTableCsv<recRelativeDate>( m_relative_date );
         ret = ret && WriteTableCsv<recRepository>( m_repository );
         ret = ret && WriteTableCsv<recResearcher>( m_researcher );
         return ret;
@@ -331,13 +397,19 @@ public:
         ret = ret && EnterTable<recContact>();
         ret = ret && EnterTable<recContactList>();
         ret = ret && EnterTable<recContactType>();
+        ret = ret && EnterTable<recDate>();
         ret = ret && EnterTable<recMedia>();
         ret = ret && EnterTable<recName>();
         ret = ret && EnterTable<recNamePart>();
         ret = ret && EnterTable<recNamePartType>();
         ret = ret && EnterTable<recNameStyle>();
         ret = ret && EnterTable<recPersona>();
+        ret = ret && EnterTable<recPlace>();
+        ret = ret && EnterTable<recPlacePart>();
+        ret = ret && EnterTable<recPlacePartType>();
         ret = ret && EnterTable<recReference>();
+        ret = ret && EnterTable<recReferenceEntity>();
+        ret = ret && EnterTable<recRelativeDate>();
         ret = ret && EnterTable<recRepository>();
         ret = ret && EnterTable<recResearcher>();
         return ret;
@@ -480,13 +552,19 @@ private:
     set<idt> m_contact;
     set<idt> m_contact_list;
     set<idt> m_contact_type;
+    set<idt> m_date;
     set<idt> m_media;
     set<idt> m_name;
     set<idt> m_name_part;
     set<idt> m_name_part_type;
     set<idt> m_name_style;
     set<idt> m_persona;
+    set<idt> m_place;
+    set<idt> m_place_part;
+    set<idt> m_place_part_type;
     set<idt> m_reference;
+    set<idt> m_reference_entity;
+    set<idt> m_relative_date;
     set<idt> m_repository;
     set<idt> m_researcher;
 };
