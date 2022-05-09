@@ -290,4 +290,33 @@ idt recEventTypeRole::FindOrCreate( const wxString& name, idt type, Prime prime,
     return GET_ID( result.GetInt64( 0 ) );
 }
 
+std::string recEventTypeRole::CsvTitles()
+{
+    return std::string(
+        "ID, Event Type ID, Prime, Official, Name\n"
+    );
+}
+
+void recEventTypeRole::CsvWrite( std::ostream& out, idt id )
+{
+    recEventTypeRole etr( id );
+    recCsvWrite( out, etr.FGetID() );
+    recCsvWrite( out, etr.FGetTypeID() );
+    recCsvWrite( out, etr.FGetID() );
+    recCsvWrite( out, int( etr.FGetOfficial() ) );
+    recCsvWrite( out, etr.FGetName(), '\n');
+}
+
+bool recEventTypeRole::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    recCsvRead( in, f_type_id );
+    recCsvRead( in, f_prime );
+    int official;
+    recCsvRead( in, official );
+    f_official = official;
+    recCsvRead( in, f_name );
+    return bool( in );
+}
+
 // End of recEventTypeRole.cpp file
