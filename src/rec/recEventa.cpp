@@ -358,7 +358,7 @@ recEventaPersonaVec recEventa::GetEventaPersonas( idt eaID, const wxString& dbna
         "SELECT id, per_id, role_id, note, per_seq"
         " FROM \"%s\".EventaPersona WHERE eventa_id=" ID
         " ORDER BY per_seq;",
-        UTF8_( dbname ), UTF8_( dbname ), eaID
+        UTF8_( dbname ), eaID
     );
     wxSQLite3Table table = s_db->GetTable( sql );
 
