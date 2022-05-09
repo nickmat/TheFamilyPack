@@ -736,4 +736,49 @@ void recEventa::CreatePersonalEvent() const
     }
 }
 
+recIdVec recEventa::GetEventaPersonaIDs( idt eaID, const wxString& dbname )
+{
+    return ExecuteIdVec(
+        "SELECT id FROM \"%s\".EventaPersona WHERE eventa_id=" ID
+        " ORDER BY per_seq;",
+        UTF8_( dbname ), eaID
+    );
+}
+
+std::string recEventa::CsvTitles()
+{
+    return std::string(
+        "ID, Title, Reference ID, Event Type ID,"
+        "Date1 ID, Date2 ID, Place ID, Note, Date Point\n"
+    );
+}
+
+void recEventa::CsvWrite( std::ostream& out, idt id )
+{
+    recEventa ea( id );
+    recCsvWrite( out, ea.FGetID() );
+    recCsvWrite( out, ea.FGetTitle() );
+    recCsvWrite( out, ea.FGetRefID() );
+    recCsvWrite( out, ea.FGetTypeID() );
+    recCsvWrite( out, ea.FGetDate1ID() );
+    recCsvWrite( out, ea.FGetDate2ID() );
+    recCsvWrite( out, ea.FGetPlaceID() );
+    recCsvWrite( out, ea.FGetNote() );
+    recCsvWrite( out, ea.FGetDatePt(), '\n' );
+}
+
+bool recEventa::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    recCsvRead( in, f_title );
+    recCsvRead( in, f_ref_id );
+    recCsvRead( in, f_type_id );
+    recCsvRead( in, f_date1_id );
+    recCsvRead( in, f_date2_id );
+    recCsvRead( in, f_place_id );
+    recCsvRead( in, f_note );
+    recCsvRead( in, f_date_pt );
+    return bool( in );
+}
+
 // End of src/rec/recEventa.cpp file

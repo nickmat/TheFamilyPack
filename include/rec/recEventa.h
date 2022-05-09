@@ -153,6 +153,15 @@ public:
     void CreatePersonalEvent() const;
     static void CreatePersonalEvent( idt eaID ) { recEventa ea(eaID); ea.CreatePersonalEvent(); }
 
+    static recIdVec GetEventaPersonaIDs( idt eaID, const wxString& dbname = "Main" );
+    recIdVec GetEventaPersonaIDs( const wxString& dbname = "Main" ) const {
+        return GetEventaPersonaIDs( f_id, dbname );
+    }
+
+    static std::string CsvTitles();
+    static void CsvWrite( std::ostream& out, idt id );
+    bool CsvRead( std::istream& in );
+
     static void RemoveDates( idt dateID ); // removes date if found, replacing with 0
     static void RemovePlace( idt placeID ); // removes place if found, replacing with 0
 
