@@ -122,6 +122,10 @@ public:
         idt typeID, int prime = 0, const wxString& dbname = "Main" );
 
     static idt GetSummaryRole( idt typeID );
+
+    static std::string CsvTitles();
+    static void CsvWrite( std::ostream& out, idt id );
+    bool CsvRead( std::istream& in );
 };
 
 #endif // REC_RECEVENTTYPE_H

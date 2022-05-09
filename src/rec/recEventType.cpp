@@ -351,4 +351,27 @@ idt recEventType::GetSummaryRole( idt typeID )
     }
 }
 
+std::string recEventType::CsvTitles()
+{
+    return std::string( "ID, Group, Name\n" );
+}
+
+void recEventType::CsvWrite( std::ostream& out, idt id )
+{
+    recEventType et( id );
+    recCsvWrite( out, et.FGetID() );
+    recCsvWrite( out, int( et.FGetGrp() ) );
+    recCsvWrite( out, et.FGetName(), '\n' );
+}
+
+bool recEventType::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    int group;
+    recCsvRead( in, group );
+    f_grp = recEventTypeGrp( group );
+    recCsvRead( in, f_name );
+    return bool( in );
+}
+
 // End of src/rec/recEventType.cpp file
