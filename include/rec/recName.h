@@ -111,6 +111,11 @@ public:
     static wxString GetTypeStr( idt id, const wxString& dbname = "Main" );
     wxString GetTypeStr( const wxString& dbname = "Main" ) const;
 
+    static recIdVec GetNamePartListID( idt namID, const wxString& dbname = "Main" );
+    recIdVec GetNamePartListID( const wxString& dbname = "Main" ) const {
+        return GetNamePartListID( f_id, dbname );
+    }
+
     static wxString GetNamePartStr( idt nameID, idt partID, const wxString& dbname = "Main" );
     wxString GetNamePartStr( idt partID, const wxString& dbname = "Main" ) const
         { return GetNamePartStr( f_id, partID, dbname ); }
@@ -130,6 +135,10 @@ public:
     static recNamePartVec GetParts( idt nameID, const wxString& dbname = "Main" );
     recNamePartVec GetParts( const wxString& dbname = "Main" ) const {
         return GetParts( f_id, dbname ); }
+
+    static std::string CsvTitles();
+    static void CsvWrite( std::ostream& out, idt id );
+    bool CsvRead( std::istream& in );
 };
 
 
@@ -171,6 +180,10 @@ public:
 
     static wxString GetValue( idt id, const wxString& dbname = "Main" );
     static wxSQLite3ResultSet GetSurnameList( const wxString& dbname = "Main" );
+
+    static std::string CsvTitles();
+    static void CsvWrite( std::ostream& out, idt id );
+    bool CsvRead( std::istream& in );
 };
 
 
@@ -212,6 +225,10 @@ public:
     static wxString GetTypeStr( idt id, const wxString& dbname = "Main" );
 
     static recNamePartTypeVec GetTypeList( const wxString& dbname = "Main" );
+
+    static std::string CsvTitles();
+    static void CsvWrite( std::ostream& out, idt id );
+    bool CsvRead( std::istream& in );
 };
 
 
@@ -255,6 +272,10 @@ public:
     static wxString GetStyleStr( idt id, const wxString& dbname = "Main" );
 
     static recNameStyleVec GetStyleList( const wxString& dbname = "Main" );
+
+    static std::string CsvTitles();
+    static void CsvWrite( std::ostream& out, idt id );
+    bool CsvRead( std::istream& in );
 };
 
 #endif // RECNAME_H

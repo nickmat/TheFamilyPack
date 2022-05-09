@@ -317,6 +317,15 @@ wxString recName::GetTypeStr( const wxString& dbname ) const
     );
 }
 
+recIdVec recName::GetNamePartListID( idt namID, const wxString& dbname )
+{
+    return ExecuteIdVec(
+        "SELECT id FROM \"%s\".NamePart WHERE name_id=" ID
+        " ORDER BY sequence;",
+        UTF8_( dbname ), namID
+    );
+}
+
 wxString recName::GetTypeStr( idt id, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
@@ -499,6 +508,33 @@ recNamePartVec recName::GetParts( idt nameID, const wxString& dbname )
     return list;
 }
 
+std::string recName::CsvTitles()
+{
+    return std::string(
+        "ID, Individual ID, Persona ID, Style ID, Sequence\n"
+    );
+}
+
+void recName::CsvWrite( std::ostream& out, idt id )
+{
+    recName nam( id );
+    recCsvWrite( out, nam.FGetID() );
+    recCsvWrite( out, nam.FGetIndID() );
+    recCsvWrite( out, nam.FGetPerID() );
+    recCsvWrite( out, nam.FGetTypeID() );
+    recCsvWrite( out, nam.FGetSequence(), '\n');
+}
+
+bool recName::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    recCsvRead( in, f_ind_id );
+    recCsvRead( in, f_per_id );
+    recCsvRead( in, f_style_id );
+    recCsvRead( in, f_sequence );
+    return bool( in );
+}
+
 
 //============================================================================
 //-------------------------[ recNamePart ]------------------------------------
@@ -625,6 +661,33 @@ wxSQLite3ResultSet recNamePart::GetSurnameList( const wxString& dbname )
         UTF8_( dbname )
     );
     return s_db->ExecuteQuery( sql );
+}
+
+std::string recNamePart::CsvTitles()
+{
+    return std::string(
+        "ID, Name ID, Type ID, Value, Sequence\n"
+    );
+}
+
+void recNamePart::CsvWrite( std::ostream& out, idt id )
+{
+    recNamePart np( id );
+    recCsvWrite( out, np.FGetID() );
+    recCsvWrite( out, np.FGetNameID() );
+    recCsvWrite( out, np.FGetTypeID() );
+    recCsvWrite( out, np.FGetValue() );
+    recCsvWrite( out, np.FGetNameSeq(), '\n' );
+}
+
+bool recNamePart::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    recCsvRead( in, f_name_id );
+    recCsvRead( in, f_type_id );
+    recCsvRead( in, f_val );
+    recCsvRead( in, f_sequence );
+    return bool( in );
 }
 
 
@@ -765,6 +828,29 @@ recNamePartTypeVec recNamePartType::GetTypeList( const wxString& dbname )
     return list;
 }
 
+std::string recNamePartType::CsvTitles()
+{
+    return std::string("ID, Group, Name\n");
+}
+
+void recNamePartType::CsvWrite( std::ostream& out, idt id )
+{
+    recNamePartType npt( id );
+    recCsvWrite( out, npt.FGetID() );
+    recCsvWrite( out, npt.FGetGroup() );
+    recCsvWrite( out, npt.FGetName(), '\n' );
+}
+
+bool recNamePartType::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    int group;
+    recCsvRead( in, group );
+    f_grp = NTYPE_Grp( group );
+    recCsvRead( in, f_name );
+    return bool( in );
+}
+
 
 //============================================================================
 //-------------------------[ recNameStyle ]-----------------------------------
@@ -888,6 +974,25 @@ recNameStyleVec recNameStyle::GetStyleList( const wxString& dbname )
     }
 
     return list;
+}
+
+std::string recNameStyle::CsvTitles()
+{
+    return std::string( "ID, Name\n" );
+}
+
+void recNameStyle::CsvWrite( std::ostream& out, idt id )
+{
+    recNameStyle ns( id );
+    recCsvWrite( out, ns.FGetID() );
+    recCsvWrite( out, ns.FGetName(), '\n' );
+}
+
+bool recNameStyle::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    recCsvRead( in, f_name );
+    return bool( in );
 }
 
 
