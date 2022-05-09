@@ -290,6 +290,14 @@ int recReference::GetEventaCount( idt refID, const wxString& dbname )
     );
 }
 
+recIdVec recReference::GetEntityList( idt refID, const wxString& dbname )
+{
+    return ExecuteIdVec(
+        "SELECT id FROM \"%s\".ReferenceEntity WHERE ref_id=" ID ";",
+        UTF8_( dbname ), refID
+    );
+}
+
 recIdVec recReference::GetIdVecForEntity( 
     idt refID, recReferenceEntity::Type type, const wxString& dbname )
 {

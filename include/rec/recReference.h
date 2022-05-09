@@ -165,6 +165,11 @@ public:
         return GetEventaList( f_id, dbname ); }
     static int GetEventaCount( idt refID, const wxString& dbname = "Main" );
 
+    static recIdVec GetEntityList( idt refID, const wxString& dbname = "Main" );
+    recIdVec GetEntityList( const wxString& dbname = "Main" ) const {
+        return GetEntityList( f_id, dbname );
+    }
+
     static recIdVec GetIdVecForEntity(
         idt refID, recReferenceEntity::Type type, const wxString& dbname = "Main" );
 
