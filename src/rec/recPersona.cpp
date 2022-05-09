@@ -183,6 +183,14 @@ recNameVec recPersona::ReadNames( idt perID, const wxString& dbname )
     return list;
 }
 
+recIdVec recPersona::GetNameListID( idt perID, const wxString& dbname )
+{
+    return ExecuteIdVec(
+        "SELECT id FROM \"%s\".Name WHERE per_id=" ID ";",
+        UTF8_( dbname ), perID
+    );
+}
+
 recEventaPersonaVec recPersona::ReadEventaPersonas(
     idt perID, recEventOrder order, const wxString& dbname )
 {
@@ -294,6 +302,31 @@ recIdVec recPersona::FindIndividualReferenceLink(
         vec.push_back( GET_ID( result.GetInt64( 0 ) ) );
     }
     return vec;
+}
+
+std::string recPersona::CsvTitles()
+{
+    return std::string( "ID, Sex, Reference ID, Note\n" );
+}
+
+void recPersona::CsvWrite( std::ostream& out, idt id )
+{
+    recPersona pa( id );
+    recCsvWrite( out, pa.FGetID() );
+    recCsvWrite( out, int( pa.FGetSex() ) );
+    recCsvWrite( out, pa.FGetRefID() );
+    recCsvWrite( out, pa.FGetNote(), '\n' );
+}
+
+bool recPersona::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    int sex;
+    recCsvRead( in, sex );
+    f_sex = Sex( sex );
+    recCsvRead( in, f_ref_id );
+    recCsvRead( in, f_note );
+    return bool( in );
 }
 
 void recPersona::RemoveFromDatabase()

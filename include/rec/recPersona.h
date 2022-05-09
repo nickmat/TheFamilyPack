@@ -89,6 +89,11 @@ public:
     recNameVec ReadNames( const wxString& dbname = "Main" ) const {
         return ReadNames( f_id, dbname ); }
 
+    static recIdVec GetNameListID( idt perID, const wxString& dbname = "Main" );
+    recIdVec GetNameListID( const wxString& dbname = "Main" ) const {
+        return GetNameListID( f_id, dbname );
+    }
+
     static recEventaPersonaVec ReadEventaPersonas(
         idt perID, recEventOrder order = recEO_DatePt, const wxString& dbname = "Main" );
     recEventaPersonaVec ReadEventaPersonas(
@@ -110,6 +115,10 @@ public:
     // Find all Persona ID's that link an Individual to a Reference
     static recIdVec FindIndividualReferenceLink(
         idt indID, idt refID, const wxString& dbname = "Main" );
+
+    static std::string CsvTitles();
+    static void CsvWrite( std::ostream& out, idt id );
+    bool CsvRead( std::istream& in );
 
     // Delete Persona record and remove all records that reference it.
     void RemoveFromDatabase();
