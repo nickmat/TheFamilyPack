@@ -222,6 +222,34 @@ public:
             InsertRelativeDate( rdID );
         }
     }
+    void InsertEventa( idt eaID ) {
+        m_eventa.insert( eaID );
+        // Note dates and places are saved elsewhere
+        recEventa ea( eaID );
+        idt etID = ea.FGetTypeID();
+        if( etID ) {
+            InsertEventType( etID );
+        }
+        recIdVec epIDs = recEventa::GetEventaPersonaIDs( eaID );
+        for( idt epID : epIDs ) {
+            InsertEventaPersona( epID );
+        }
+    }
+    void InsertEventaPersona( idt epID ) {
+        m_eventa_persona.insert( epID );
+        recEventaPersona ep( epID );
+        idt etrID = ep.FGetRoleID();
+        if( etrID ) {
+            InsertEventTypeRole( etrID );
+        }
+    }
+    void InsertEventType( idt etID ) {
+        m_event_type.insert( etID );
+    }
+    void InsertEventTypeRole( idt etrID ) {
+        m_event_type_role.insert( etrID );
+        // EventType ID already included 
+    }
     void InsertMedia( idt medID ) {
         m_media.insert( medID );
         recMedia med( medID );
@@ -330,7 +358,10 @@ public:
         for( idt entID : entIDs ) {
             InsertReferenceEntity( entID );
         }
-        // TODO: Add Eventa records.
+        recIdVec eaIDs = recReference::GetEventaList( refID );
+        for( idt eaID : eaIDs ) {
+            InsertEventa( eaID );
+        }
     }
     void InsertReferenceEntity( idt entID ) {
         m_reference_entity.insert( entID );
@@ -372,6 +403,10 @@ public:
         ret = ret && WriteTableCsv<recContactList>( m_contact_list );
         ret = ret && WriteTableCsv<recContactType>( m_contact_type );
         ret = ret && WriteTableCsv<recDate>( m_date );
+        ret = ret && WriteTableCsv<recEventa>( m_eventa );
+        ret = ret && WriteTableCsv<recEventaPersona>( m_eventa_persona );
+        ret = ret && WriteTableCsv<recEventType>( m_event_type );
+        ret = ret && WriteTableCsv<recEventTypeRole>( m_event_type_role );
         ret = ret && WriteTableCsv<recMedia>( m_media );
         ret = ret && WriteTableCsv<recName>( m_name );
         ret = ret && WriteTableCsv<recNamePart>( m_name_part );
@@ -398,6 +433,10 @@ public:
         ret = ret && EnterTable<recContactList>();
         ret = ret && EnterTable<recContactType>();
         ret = ret && EnterTable<recDate>();
+        ret = ret && EnterTable<recEventa>();
+        ret = ret && EnterTable<recEventaPersona>();
+        ret = ret && EnterTable<recEventType>();
+        ret = ret && EnterTable<recEventTypeRole>();
         ret = ret && EnterTable<recMedia>();
         ret = ret && EnterTable<recName>();
         ret = ret && EnterTable<recNamePart>();
@@ -553,6 +592,10 @@ private:
     set<idt> m_contact_list;
     set<idt> m_contact_type;
     set<idt> m_date;
+    set<idt> m_eventa;
+    set<idt> m_eventa_persona;
+    set<idt> m_event_type;
+    set<idt> m_event_type_role;
     set<idt> m_media;
     set<idt> m_name;
     set<idt> m_name_part;
