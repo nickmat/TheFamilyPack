@@ -222,6 +222,15 @@ recPlacePartVec recPlace::GetPlaceParts(
     return ppList;
 }
 
+recIdVec recPlace::GetPlacePartIDs( idt placeID, const wxString& dbname )
+{
+    return ExecuteIdVec(
+        "SELECT id FROM \"%s\".PlacePart WHERE place_id=" ID
+        " ORDER BY sequence;",
+        UTF8_( dbname ), placeID
+    );
+}
+
 void recPlace::Renumber( idt id, idt to_id )
 {
     if( id == 0 ) {

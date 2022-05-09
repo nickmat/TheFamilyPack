@@ -82,6 +82,11 @@ public:
         return GetPlaceParts( f_id, dbname ); }
     static recPlacePartVec GetPlaceParts( idt placeID, const wxString& dbname = "Main" );
 
+    static recIdVec GetPlacePartIDs( idt placeID, const wxString& dbname = "Main" );
+    recIdVec GetPlacePartIDs( const wxString& dbname = "Main" ) const {
+        return GetPlacePartIDs( f_id, dbname );
+    }
+
     static void Renumber( idt fromID, idt toID );
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );
