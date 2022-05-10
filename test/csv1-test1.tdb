@@ -16,5 +16,6 @@ Folder = csv1
 
 [Output]
 Output-Database = test1-orig.tfpd
+Output-Ass1 = test1-ass1-orig.tfpd
 
 ; End of test/csv1-test1.tdb file
