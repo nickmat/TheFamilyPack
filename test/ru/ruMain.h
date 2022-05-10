@@ -31,6 +31,8 @@
 extern const char* g_TestFileName;
 extern const char* g_OriginalExternalFileName1;
 extern const char* g_ExternalFileName1;
+extern const char* g_OriginalAssociateFileName1;
+extern const char* g_AssociateFileName1;
 
 extern const char* g_maindb;
 extern const char* g_extdb1;

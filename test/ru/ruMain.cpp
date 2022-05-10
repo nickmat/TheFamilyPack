@@ -39,8 +39,11 @@
 #include <rec/recDatabase.h>
 
 const char* g_TestFileName = "test.tfpd";
+const char* g_AssociateFileName = "test-ass.tfpd";
 const char* g_OriginalExternalFileName1 = "test1-orig.tfpd";
 const char* g_ExternalFileName1 = "test1.tfpd";
+const char* g_OriginalAssociateFileName1 = "test1-ass1-orig.tfpd";
+const char* g_AssociateFileName1 = "test1-ass1.tfpd";
 
 const char* g_maindb = "Main";
 const char* g_extdb1 = "Test1";
@@ -50,12 +53,21 @@ int main( int argc, char* argv[] ) {
     wxInitializer initializer;
     recInitialize();
     // Program should be run from tfp/test directory
+
     wxString fname = g_TestFileName;
     if( wxFileExists( fname ) ) {
         wxRemoveFile( fname );
     }
     recDb::CreateDb( fname, 0 );
+
+    wxString afname = g_AssociateFileName;
+    if( wxFileExists( afname ) ) {
+        wxRemoveFile( afname );
+    }
+    recDb::CreateDbFile( afname, recDb::DbType::media_data_only );
+
     wxCopyFile( g_OriginalExternalFileName1, g_ExternalFileName1 );
+    wxCopyFile( g_OriginalAssociateFileName1, g_AssociateFileName1 );
     recDb::OpenExternalDb( g_ExternalFileName1, g_extdb1 );
 
     int result = Catch::Session().run( argc, argv );
