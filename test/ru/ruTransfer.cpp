@@ -37,6 +37,30 @@
 
 #include <rec/recDb.h>
 
+TEST_CASE( "Test recCitationPartType::Transfer function", "[CitationPartType]" )
+{
+    int cnt_main = recCitationPartType::Count( g_maindb );
+    int cnt_extdb = recCitationPartType::Count( g_extdb1 );
+
+    REQUIRE( !recCitationPartType::Exists( 1, g_maindb ) );
+    REQUIRE( recCitationPartType::Exists( 2, g_extdb1 ) );
+    recCitationPartType from_cpt( 2, g_extdb1 );
+
+    idt to_id = recCitationPartType::Transfer( 2, g_extdb1, g_maindb );
+    REQUIRE( to_id == 1 );
+    recCitationPartType to_cpt( 1, g_maindb );
+    REQUIRE( from_cpt.Equivalent( to_cpt ) );
+
+    // We don't have any common data for this yet.
+    // to_id = recCitationPartType::Transfer( -4, g_extdb1, g_maindb );
+    // REQUIRE( to_id == -4 );
+
+    REQUIRE( recCitationPartType::DeleteIfOrphaned( 1, g_maindb ) );
+
+    REQUIRE( recCitationPartType::Count( g_maindb ) == cnt_main );
+    REQUIRE( recCitationPartType::Count( g_extdb1 ) == cnt_extdb );
+}
+
 TEST_CASE( "Test recContactType::Transfer function", "[ContactType]" )
 {
     int cnt_main = recContactType::Count( g_maindb );
@@ -112,5 +136,6 @@ TEST_CASE( "Test recContactList::Transfer function", "[ContactList]" )
     REQUIRE( recContact::Count( g_extdb1 ) == cnt_c_extdb );
     REQUIRE( recContactType::Count( g_extdb1 ) == cnt_ct_extdb );
 }
+
 
 /* End of test/ru/ruTransfer.cpp file */
