@@ -249,7 +249,7 @@ public:
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
 
-    static void DeleteIfOrphaned( idt cptID, const wxString& dbname );
+    static bool DeleteIfOrphaned( idt cptID, const wxString& dbname );
 };
 
 #endif // RECCITATION_H

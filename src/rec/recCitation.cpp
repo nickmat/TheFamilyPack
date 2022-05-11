@@ -969,9 +969,9 @@ bool recCitationPartType::CsvRead( std::istream& in )
     return bool( in );
 }
 
-void recCitationPartType::DeleteIfOrphaned( idt cptID, const wxString& dbname )
+bool recCitationPartType::DeleteIfOrphaned( idt cptID, const wxString& dbname )
 {
-    if( cptID <= 0 ) return;
+    if( cptID <= 0 ) return false;
 
     wxSQLite3StatementBuffer sql;
 
@@ -979,9 +979,9 @@ void recCitationPartType::DeleteIfOrphaned( idt cptID, const wxString& dbname )
         "SELECT COUNT(*) FROM \"%s\".CitationPart WHERE type_id=" ID ";",
         UTF8_( dbname ), cptID
     );
-    if( s_db->ExecuteScalar( sql ) > 0 ) return;
+    if( s_db->ExecuteScalar( sql ) > 0 ) return false;
 
-    Delete( cptID, dbname );
+    return Delete( cptID, dbname );
 }
 
 // End of src/rec/recCitation.cpp file
