@@ -137,5 +137,25 @@ TEST_CASE( "Test recContactList::Transfer function", "[ContactList]" )
     REQUIRE( recContactType::Count( g_extdb1 ) == cnt_ct_extdb );
 }
 
+TEST_CASE( "Test recRepository::Transfer function", "[recRepository]" )
+{
+    int cnt_main = recRepository::Count( g_maindb );
+    int cnt_extdb = recRepository::Count( g_extdb1 );
+
+    REQUIRE( !recRepository::Exists( 1, g_maindb ) );
+    REQUIRE( recRepository::Exists( 1, g_extdb1 ) );
+    recRepository from_rep( 1, g_extdb1 );
+
+    idt to_id = recRepository::Transfer( 1, g_extdb1, g_maindb );
+    REQUIRE( to_id == 1 );
+    recRepository to_rep( 1, g_maindb );
+    REQUIRE( from_rep.CompareUID( to_rep ) == recMatchUID::equal );
+
+    REQUIRE( recRepository::DeleteIfOrphaned( 1, g_maindb ) );
+
+    REQUIRE( recRepository::Count( g_maindb ) == cnt_main );
+    REQUIRE( recRepository::Count( g_extdb1 ) == cnt_extdb );
+}
+
 
 /* End of test/ru/ruTransfer.cpp file */
