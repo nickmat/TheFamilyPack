@@ -331,6 +331,13 @@ public:
     static wxString GetChangedDate( idt id, const wxString& dbname ) {
         return DoGetChangedDate( idt id, T::s_tablename, dbname );
     }
+
+    recMatchUID CompareUID( const T& record ) const {
+        if( f_uid != record.f_uid ) return recMatchUID::unequal;
+        if( f_changed < record.f_changed ) return recMatchUID::older;
+        if( f_changed > record.f_changed ) return recMatchUID::younger;
+        return recMatchUID::equal;
+    }
 };
 
 #endif // RECDATABASE_H

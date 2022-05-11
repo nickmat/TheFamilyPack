@@ -232,4 +232,6 @@ extern bool recCheckUid( const wxString& uid );
 
 enum class recCorrectUid { restore, create, cancel };
 
+enum class recMatchUID { unequal, younger, older, equal };
+
 #endif // REC_RECHELPER_H
