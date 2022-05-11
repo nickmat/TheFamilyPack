@@ -564,21 +564,22 @@ bool recRepository::CsvRead( std::istream& in )
     return bool( in );
 }
 
-void recRepository::DeleteIfOrphaned( idt repID, const wxString& dbname )
+bool recRepository::DeleteIfOrphaned( idt repID, const wxString& dbname )
 {
-    if( repID <= 0 ) return;
+    if( repID <= 0 ) return false;
 
     wxSQLite3StatementBuffer sql;
     sql.Format(
         "SELECT COUNT(*) FROM \"%s\".Citation WHERE rep_id=" ID ";",
         UTF8_( dbname ), repID
     );
-    if( s_db->ExecuteScalar( sql ) > 0 ) return;
+    if( s_db->ExecuteScalar( sql ) > 0 ) return false;
 
     recRepository rep( repID, dbname );
-    Delete( repID, dbname );
+    if( !Delete( repID, dbname ) ) return false;
 
     recContactList::RemoveFromDatabase( rep.FGetConListID(), dbname );
+    return true;
 }
 
 //============================================================================
