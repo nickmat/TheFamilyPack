@@ -135,7 +135,7 @@ public:
     void FSetNote( const wxString& note ) { f_note = note; }
     void FSetConListID( idt clID ) { f_con_list_id = clID; }
 
-    static wxString GetIdStr( idt repID ) { return wxString::Format( "Ar" ID, repID ); }
+    static wxString GetIdStr( idt repID ) { return wxString::Format( "Rp" ID, repID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     static recRepositoryVec GetFullList( const wxString& dbname = "Main" );
