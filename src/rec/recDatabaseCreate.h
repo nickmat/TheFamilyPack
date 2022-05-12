@@ -100,9 +100,10 @@ static const char* createFullDb =  /* recCreateFull.sql */
  "  id INTEGER PRIMARY KEY,\n"
  "  type_id INTEGER NOT NULL REFERENCES ContactType(id),\n"
  "  list_id INTEGER NOT NULL REFERENCES ContactList(id),\n"
+ "  list_seq INTEGER NOT NULL,\n"
  "  val TEXT NOT NULL\n"
  ");\n"
- "INSERT INTO Contact (id, type_id, list_id, val) VALUES(0,0,0,'');\n"
+ "INSERT INTO Contact (id, type_id, list_id, list_seq, val) VALUES(0,0,0,0,'');\n"
  "CREATE TABLE ContactList (\n"
  "  id INTEGER PRIMARY KEY,\n"
  "  ind_id INTEGER REFERENCES Individual(id)\n"
@@ -538,7 +539,7 @@ static const char* createFullDb =  /* recCreateFull.sql */
  "INSERT INTO User (id, res_id) VALUES(1, -1);\n"
  "INSERT INTO System (id, val) VALUES(1, '1');\n"
  "INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 1, 1, 'NI');\n"
- "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 35);\n"
+ "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 36);\n"
  "COMMIT;\n";
 
 /* End of src/rec/embed/recDatabaseCreate.f2c */

@@ -155,7 +155,7 @@ class recContact : public recDbT<recContact>
 public:
     static constexpr const char* s_tablename = "Contact";
 
-    recContact() : f_type_id(0), f_list_id(0) {}
+    recContact() : f_type_id(0), f_list_id(0), f_list_seq(0) {}
     recContact( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }
     recContact( const recContact& source );
 
@@ -166,10 +166,12 @@ public:
 
     idt FGetTypeID() const { return f_type_id; }
     idt FGetListID() const { return f_list_id; }
+    int FGetListSeq() const { return f_list_seq; }
     wxString FGetValue() const { return f_val; }
 
     void FSetTypeID( idt typeID ) { f_type_id = typeID; }
     void FSetListID( idt listID ) { f_list_id = listID; }
+    void FSetListSeq( idt seq ) { f_list_seq = seq; }
     void FSetValue( const wxString& value ) { f_val = value; }
 
     static wxString GetIdStr( idt resID ) { return wxString::Format( "C" ID, resID ); }
@@ -190,6 +192,7 @@ public:
 private:
     idt      f_type_id;
     idt      f_list_id;
+    int      f_list_seq;
     wxString f_val;
 };
 

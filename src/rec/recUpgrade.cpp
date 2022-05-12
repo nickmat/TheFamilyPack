@@ -41,8 +41,8 @@
 const int recVerMajor = 0;
 const int recVerMinor = 0;
 const int recVerRev = 10;
-const int recVerTest = 35;                       // <<======<<<<
-const char* recFullVersion = "TFPD-v0.0.10.35";  // <<======<<<<
+const int recVerTest = 36;                       // <<======<<<<
+const char* recFullVersion = "TFPD-v0.0.10.36";  // <<======<<<<
 
 // This is the database Media-only version that this program can work with.
 // If the full version matches, then this is assumed to match as well.
@@ -1693,6 +1693,61 @@ void UpgradeTest0_0_10_34to0_0_10_35( const wxString& dbname )
     recDb::GetDb()->ExecuteUpdate( update );
 }
 
+void UpgradeTest0_0_10_35to0_0_10_36( const wxString& dbname )
+{
+    // Version 0.0.10.35 to 0.0.10.36
+
+    // Add field 'list_seq' to Contact
+    wxString update = "BEGIN;\n";
+
+    update <<
+        "CREATE TABLE \"" << dbname << "\".NewContact (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  type_id INTEGER NOT NULL REFERENCES ContactType(id),\n"
+        "  list_id INTEGER NOT NULL REFERENCES ContactList(id),\n"
+        "  list_seq INTEGER NOT NULL,\n"
+        "  val TEXT NOT NULL\n"
+        ");\n"
+
+        "INSERT INTO \"" << dbname << "\".NewContact\n"
+        " (id, type_id, list_id, list_seq, val)\n"
+        " SELECT id, type_id, list_id, 0, val\n"
+        " FROM \"" << dbname << "\".Contact;\n"
+
+        "DROP TABLE \"" << dbname << "\".Contact;\n"
+        "ALTER TABLE \"" << dbname << "\".NewContact RENAME TO Contact;\n"
+        ;
+
+    // Write in list_seq sequence numbers
+    wxString query = "SELECT id FROM \"" + dbname + "\".ContactList WHERE NOT id=0;\n"; // Get id list
+    wxSQLite3Table table1 = recDb::GetDb()->GetTable( query );
+    size_t size1 = (size_t) table1.GetRowCount();
+    for( size_t i = 0; i < size1; i++ ) {
+        table1.SetRow( i );
+        query =
+            "SELECT id FROM \"" + dbname + "\".Contact"
+            " WHERE list_id=" + table1.GetAsString( 0 ) +
+            " ORDER BY id;\n";
+        wxSQLite3Table table2 = recDb::GetDb()->GetTable( query );
+        size_t size2 = (size_t) table2.GetRowCount();
+        for( size_t j = 0; j < size2; j++ ) {
+            table2.SetRow( j );
+            update <<
+                "UPDATE \"" << dbname << "\".Contact"
+                " SET list_seq=" << (j + 1) <<
+                " WHERE id=" << table2.GetAsString( 0 ) << ";\n"
+                ;
+        }
+    }
+
+    update <<
+        "UPDATE \"" << dbname << "\".Version SET test=36 WHERE id=1;\n"
+        "COMMIT;\n"
+        ;
+
+    recDb::GetDb()->ExecuteUpdate( update );
+}
+
 
 void UpgradeRev0_0_10toCurrent( int test, const wxString& dbname )
 {
@@ -1733,6 +1788,7 @@ void UpgradeRev0_0_10toCurrent( int test, const wxString& dbname )
     case 32: UpgradeTest0_0_10_32to0_0_10_33( dbname );
     case 33: UpgradeTest0_0_10_33to0_0_10_34( dbname );
     case 34: UpgradeTest0_0_10_34to0_0_10_35( dbname );
+    case 35: UpgradeTest0_0_10_35to0_0_10_36( dbname );
     }
 }
 

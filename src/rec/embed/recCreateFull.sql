@@ -80,10 +80,11 @@ CREATE TABLE Contact (
   id INTEGER PRIMARY KEY,
   type_id INTEGER NOT NULL REFERENCES ContactType(id),
   list_id INTEGER NOT NULL REFERENCES ContactList(id),
+  list_seq INTEGER NOT NULL,
   val TEXT NOT NULL
 );
 
-INSERT INTO Contact (id, type_id, list_id, val) VALUES(0,0,0,'');
+INSERT INTO Contact (id, type_id, list_id, list_seq, val) VALUES(0,0,0,0,'');
 
 CREATE TABLE ContactList (
   id INTEGER PRIMARY KEY,
@@ -625,7 +626,7 @@ INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 1, 1, 'NI');
 /* Table Version created in recCreateCommon.sql */
 
 /* The Version table row 1 is the full TFPD database */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 35);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 36);
 
 COMMIT;
 

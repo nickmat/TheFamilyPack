@@ -47,6 +47,7 @@ recContact::recContact( const recContact& s )
     f_id       = s.f_id;
     f_type_id  = s.f_type_id;
     f_list_id  = s.f_list_id;
+    f_list_seq = s.f_list_seq;
     f_val      = s.f_val;
 }
 
@@ -55,7 +56,8 @@ void recContact::Clear()
     f_id       = 0;
     f_type_id  = 0;
     f_list_id  = 0;
-    f_val      = wxEmptyString;
+    f_list_seq = 0;
+    f_val.clear();
 }
 
 void recContact::Save( const wxString& dbname )
@@ -67,9 +69,9 @@ void recContact::Save( const wxString& dbname )
     {
         // Add new record
         sql.Format(
-            "INSERT INTO \"%s\".Contact (type_id, list_id, val) "
-            "VALUES (" ID ", " ID ", '%q');",
-            UTF8_( dbname ), f_type_id, f_list_id, UTF8_(f_val)
+            "INSERT INTO \"%s\".Contact (type_id, list_id, list_seq, val)"
+            " VALUES (" ID ", " ID ", %d, '%q');",
+            UTF8_( dbname ), f_type_id, f_list_id, f_list_seq, UTF8_(f_val)
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -79,16 +81,19 @@ void recContact::Save( const wxString& dbname )
         {
             // Add new record
             sql.Format(
-                "INSERT INTO \"%s\".Contact (id, type_id, list_id, val) "
-                "VALUES (" ID ", " ID ", " ID ", '%q');",
-                UTF8_( dbname ), f_id, f_type_id, f_list_id, UTF8_(f_val)
+                "INSERT INTO \"%s\".Contact (id, type_id, list_id, list_seq, val)"
+                " VALUES (" ID ", " ID ", " ID ", %d, '%q');",
+                UTF8_( dbname ), f_id, f_type_id, f_list_id, f_list_seq,
+                UTF8_(f_val)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE \"%s\".Contact SET type_id=" ID ", list_id=" ID ", val='%q' "
-                "WHERE id=" ID ";",
-                UTF8_( dbname ), f_type_id, f_list_id, UTF8_(f_val), f_id
+                "UPDATE \"%s\".Contact"
+                " SET type_id=" ID ", list_id=" ID ", list_seq=%d, val='%q'"
+                " WHERE id=" ID ";",
+                UTF8_( dbname ), f_type_id, f_list_id, f_list_seq,
+                UTF8_(f_val), f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -106,7 +111,7 @@ bool recContact::Read( const wxString& dbname )
     }
 
     sql.Format(
-        "SELECT type_id, list_id, val"
+        "SELECT type_id, list_id, list_seq, val"
         " FROM \"%s\".Contact WHERE id=" ID ";",
         UTF8_( dbname ), f_id
     );
@@ -118,18 +123,20 @@ bool recContact::Read( const wxString& dbname )
         return false;
     }
     result.SetRow( 0 );
-    f_type_id  = GET_ID( result.GetInt64( 0 ) );
-    f_list_id  = GET_ID( result.GetInt64( 1 ) );
-    f_val      = result.GetAsString( 2 );
+    f_type_id = GET_ID( result.GetInt64( 0 ) );
+    f_list_id = GET_ID( result.GetInt64( 1 ) );
+    f_list_seq = result.GetInt( 2 );
+    f_val = result.GetAsString( 3 );
     return true;
 }
 
 bool recContact::Equivalent( const recContact& r2 ) const 
 {
     return
-        f_type_id  == r2.f_type_id  &&
-        f_list_id  == r2.f_list_id  &&
-        f_val      == r2.f_val;
+        f_type_id == r2.f_type_id  &&
+        f_list_id == r2.f_list_id &&
+        f_list_seq == r2.f_list_seq &&
+        f_val == r2.f_val;
 }
 
 wxString recContact::GetHtmlValue( const wxString prefixHref ) const
@@ -165,7 +172,7 @@ void recContact::Renumber( idt id, idt to_id )
 
 std::string recContact::CsvTitles()
 {
-    return std::string( "ID, Contact Type ID, Contact List ID, Value\n" );
+    return std::string( "ID, Contact Type ID, Contact List ID, Sequence, Value\n" );
 }
 
 void recContact::CsvWrite( std::ostream& out, idt id )
@@ -174,6 +181,7 @@ void recContact::CsvWrite( std::ostream& out, idt id )
     recCsvWrite( out, con.FGetID() );
     recCsvWrite( out, con.FGetTypeID() );
     recCsvWrite( out, con.FGetListID() );
+    recCsvWrite( out, con.FGetListSeq() );
     recCsvWrite( out, con.FGetValue(), '\n' );
 }
 
@@ -182,6 +190,7 @@ bool recContact::CsvRead( std::istream& in )
     recCsvRead( in, f_id );
     recCsvRead( in, f_type_id );
     recCsvRead( in, f_list_id );
+    recCsvRead( in, f_list_seq );
     recCsvRead( in, f_val );
     return bool( in );
 }
@@ -281,8 +290,9 @@ recContactVec recContactList::GetContacts( idt listID, const wxString& dbname )
 
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "SELECT id, type_id, val"
-        " FROM \"%s\".Contact WHERE list_id=" ID ";",
+        "SELECT id, type_id, list_seq, val"
+        " FROM \"%s\".Contact WHERE list_id=" ID
+        " ORDER BY list_seq;",
         UTF8_( dbname ), listID
     );
     wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
@@ -292,7 +302,8 @@ recContactVec recContactList::GetContacts( idt listID, const wxString& dbname )
     while( result.NextRow() ) {
         con.FSetID( GET_ID( result.GetInt64( 0 ) ) );
         con.FSetTypeID( GET_ID( result.GetInt64( 1 ) ) );
-        con.FSetValue( result.GetAsString( 2 ) );
+        con.FSetListSeq( result.GetInt(2 ) );
+        con.FSetValue( result.GetAsString( 3 ) );
         list.push_back( con );
     }
     return list;
@@ -306,7 +317,8 @@ recIdVec recContactList::GetContactIDs( idt listID, const wxString& dbname )
 
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "SELECT id FROM \"%s\".Contact WHERE list_id=" ID ";",
+        "SELECT id FROM \"%s\".Contact WHERE list_id=" ID
+        " ORDER BY list_seq;",
         UTF8_( dbname ), listID
     );
     wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
