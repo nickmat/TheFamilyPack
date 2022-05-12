@@ -65,7 +65,7 @@ enum class Table {
 };
 
 constexpr const char* TablePrefixes[] = {
-    "", "Ci", "CiP", "CiPT", "C", "CL", "CT", "R", "Ar", "Re"
+    "", "Ci", "CiP", "CiPT", "C", "CL", "CT", "R", "Rp", "Re"
 };
 
 constexpr const char* TableNames[] = {

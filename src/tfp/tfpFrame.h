@@ -124,7 +124,7 @@ private:
     void OnEditReference( wxCommandEvent& event );
     void OnEditGallery( wxCommandEvent& event );
     void OnEditResearcher( wxCommandEvent& event );
-    void OnEditArchive( wxCommandEvent& event );
+    void OnEditRepository( wxCommandEvent& event );
     void OnEditAssociate( wxCommandEvent& event );
 
     void OnEditIndividual( wxCommandEvent& event );
@@ -151,7 +151,7 @@ private:
     void OnListPagedEventas( wxCommandEvent& event );
     void OnListSelectedEventas( wxCommandEvent& event );
     void OnListResearchers( wxCommandEvent& event );
-    void OnListArchives( wxCommandEvent& event );
+    void OnListRepositories( wxCommandEvent& event );
 
     void OnPedChart( wxCommandEvent& event );
     void OnDescChart( wxCommandEvent& event );
@@ -261,7 +261,7 @@ enum
     tfpID_EDIT_REF_TEMPLATE,
     tfpID_EDIT_GALLERY,
     tfpID_EDIT_RESEARCHER,
-    tfpID_EDIT_ARCHIVE,
+    tfpID_EDIT_REPOSITORY,
     tfpID_EDIT_CORE_MENU,
     tfpID_EDIT_ASSOCIATE,
 
@@ -318,7 +318,7 @@ enum
     tfpID_LIST_PAGED_EVENTUMS,
     tfpID_LIST_SELECTED_EVENTUMS,
     tfpID_LIST_RESEARCHERS,
-    tfpID_LIST_ARCHIVES,
+    tfpID_LIST_REPOSITORIES,
     tfpID_PED_CHART,
     tfpID_DESC_CHART,
     tfpID_SYSTEM_SETTING,

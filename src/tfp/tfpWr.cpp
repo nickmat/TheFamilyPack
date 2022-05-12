@@ -344,12 +344,6 @@ wxString tfpGetDisplayText( const wxString& pagename, const wxString& dbname, Tf
         if( name.compare( "START" ) == 0 ) {
             return tfpWrStartPage();
         }
-        if( name.compare( "AR" ) == 0 ) {
-            return tfpWriteArchiveIndex( dbname );
-        }
-        if( name.compare( 0, 2, "AR" ) == 0 && success1 ) {
-            return tfpWriteArchive( num1, dbname );
-        }
         if( name.compare( 0, 2, "CD" ) == 0 && success1 ) {
             return tfpCreateDescChart( num1, dbname );
         }
@@ -455,7 +449,13 @@ wxString tfpGetDisplayText( const wxString& pagename, const wxString& dbname, Tf
         if( name.compare( "RE" ) == 0 ) {
             return tfpWriteResearcherList( dbname );
         }
-    }
+        if( name.compare( "RP" ) == 0 ) {
+            return tfpWriteRepositoryIndex( dbname );
+        }
+        if( name.compare( 0, 2, "RP" ) == 0 && success1 ) {
+            return tfpWriteRepository( num1, dbname );
+        }
+}
     catch( wxSQLite3Exception& e ) {
         recDb::ErrorMessage( e );
         recDb::Rollback();

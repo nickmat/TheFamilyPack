@@ -97,7 +97,7 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_EDIT_REFERENCE, TfpFrame::OnEditReference )
     EVT_MENU( tfpID_EDIT_GALLERY, TfpFrame::OnEditGallery )
     EVT_MENU( tfpID_EDIT_RESEARCHER, TfpFrame::OnEditResearcher )
-    EVT_MENU( tfpID_EDIT_ARCHIVE, TfpFrame::OnEditArchive )
+    EVT_MENU( tfpID_EDIT_REPOSITORY, TfpFrame::OnEditRepository )
     EVT_MENU( tfpID_EDIT_ASSOCIATE, TfpFrame::OnEditAssociate )
     EVT_MENU( tfpID_FIND_FAMILY_ID, TfpFrame::OnFindFamilyID )
     EVT_MENU( tfpID_FIND_INDIVIDUAL_ID, TfpFrame::OnFindIndividualID )
@@ -118,7 +118,7 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_LIST_PAGED_EVENTUMS, TfpFrame::OnListPagedEventas )
     EVT_MENU( tfpID_LIST_SELECTED_EVENTUMS, TfpFrame::OnListSelectedEventas )
     EVT_MENU( tfpID_LIST_RESEARCHERS, TfpFrame::OnListResearchers )
-    EVT_MENU( tfpID_LIST_ARCHIVES, TfpFrame::OnListArchives )
+    EVT_MENU( tfpID_LIST_REPOSITORIES, TfpFrame::OnListRepositories )
     EVT_MENU( tfpID_PED_CHART, TfpFrame::OnPedChart )
     EVT_MENU( tfpID_DESC_CHART, TfpFrame::OnDescChart )
     EVT_MENU( tfpID_SYSTEM_SETTING, TfpFrame::OnSystemOptions )
@@ -776,7 +776,7 @@ void TfpFrame::OnEditResearcher( wxCommandEvent& event )
     }
 }
 
-void TfpFrame::OnEditArchive( wxCommandEvent& event )
+void TfpFrame::OnEditRepository( wxCommandEvent& event )
 {
     recDb::Begin();
     try {
@@ -947,9 +947,9 @@ void TfpFrame::OnListResearchers( wxCommandEvent& event )
     DisplayHtmPage( "Re" );
 }
 
-void TfpFrame::OnListArchives( wxCommandEvent& event )
+void TfpFrame::OnListRepositories( wxCommandEvent& event )
 {
-    DisplayHtmPage( "Ar" );
+    DisplayHtmPage( "Rp" );
 }
 
 /*! \brief Called on a Pedigree Chart menu option event.
@@ -2192,7 +2192,7 @@ void TfpFrame::CreateFullMenuRW()
     menuEdit->Append( tfpID_EDIT_REFERENCE_MENU, _( "&Reference" ), m_menuEditReference );
     menuEdit->Append( tfpID_EDIT_GALLERY, _( "&Gallery..." ) );
     menuEdit->Append( tfpID_EDIT_RESEARCHER, _( "R&esearcher..." ) );
-    menuEdit->Append( tfpID_EDIT_ARCHIVE, _( "Archi&ve..." ) );
+    menuEdit->Append( tfpID_EDIT_REPOSITORY, _( "Rep&ository..." ) );
     menuEdit->Append( tfpID_EDIT_CORE_MENU, _( "&Core Data" ), menuEdCore );
     menuEdit->Append( tfpID_EDIT_ASSOCIATE, _( "&Associate database..." ) );
 
@@ -2229,7 +2229,7 @@ void TfpFrame::CreateFullMenuRW()
     menuList->Append( tfpID_LIST_REFERENCE_MENU, _( "&References" ), menuListRef );
     menuList->Append( tfpID_LIST_EVENT_MENU, _( "&Events" ), menuListEvent );
     menuList->Append( tfpID_LIST_RESEARCHERS, _( "Resear&chers\tAlt-C" ) );
-    menuList->Append( tfpID_LIST_ARCHIVES, _( "&Archives\tAlt-A" ) );
+    menuList->Append( tfpID_LIST_REPOSITORIES, _( "Rep&ositories\tAlt-O" ) );
 
     wxMenu* menuChart = new wxMenu;
     menuChart->Append( tfpID_PED_CHART, _( "&Pedigree..." ) );

@@ -1,7 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Name:        src/tfp/tfpWrArchive.cpp
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Write screen Archive record functions.
+ * Purpose:     Write screen Repository record functions.
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     12th November 2021
@@ -36,20 +36,20 @@
 #include <rec/recContact.h>
 
 
-wxString tfpWriteArchiveIndex( const wxString& extdb )
+wxString tfpWriteRepositoryIndex( const wxString& extdb )
 {
-    wxString htm = tfpWrHeadTfp( "Archive Index" );
+    wxString htm = tfpWrHeadTfp( "Repository Index" );
     htm <<
-        "<h1>Archive List</h1>\n"
+        "<h1>Repository List</h1>\n"
         "<table class='data'>\n"
-        "<tr><th>ID</th><th>Archive</th><th>Note</th></tr>\n"
+        "<tr><th>ID</th><th>Repository</th><th>Note</th></tr>\n"
         ;
     recRepositoryVec list = recRepository::GetFullList( extdb );
-    for( auto arch : list ) {
+    for( auto rep : list ) {
         htm <<
-            "<tr><td><b><a href='tfp:" << arch.GetIdStr() << "'>" << arch.GetIdStr() <<
-            "</a></b></td><td>" << arch.FGetName() <<
-            "</td><td>" << arch.FGetNote() <<
+            "<tr><td><b><a href='tfp:" << rep.GetIdStr() << "'>" << rep.GetIdStr() <<
+            "</a></b></td><td>" << rep.FGetName() <<
+            "</td><td>" << rep.FGetNote() <<
             "</td></tr>\n"
             ;
     }
@@ -57,37 +57,37 @@ wxString tfpWriteArchiveIndex( const wxString& extdb )
     return htm;
 }
 
-wxString tfpWriteArchive( idt arcID, const wxString& extdb )
+wxString tfpWriteRepository( idt rpID, const wxString& extdb )
 {
     wxString htm;
-    recRepository arc( arcID, extdb );
-    if( arc.FGetID() == 0 ) {
+    recRepository rp( rpID, extdb );
+    if( rp.FGetID() == 0 ) {
         return htm;
     }
     htm <<
-        tfpWrHeadTfp( "Archive" ) <<
-        "<h1>Archive " << arc.GetIdStr() <<
-        "<br>\n" << arc.FGetName() <<
+        tfpWrHeadTfp( "Repository" ) <<
+        "<h1>Repository " << rp.GetIdStr() <<
+        "<br>\n" << rp.FGetName() <<
         "</h1>\n"
         "<table class='data'>\n"
         "<tr><th colspan='3'>Details</th></tr>\n"
-        "<tr><td colspan='3'>" << arc.FGetNote() <<
+        "<tr><td colspan='3'>" << rp.FGetNote() <<
         "</td></tr>\n"
         ;
     recContactVec contacts =
-        recContactList::GetContacts( arc.FGetConListID(), extdb );
+        recContactList::GetContacts( rp.FGetConListID(), extdb );
     for( auto cont : contacts ) {
         htm <<
             "<tr><td><b>" << cont.GetIdStr() <<
-            "</b></td><td>" << 
+            "</b></td><td>" <<
             recContactType::GetTypeStr( cont.FGetTypeID(), extdb ) <<
             "</td><td>" << cont.GetHtmlValue() <<
             "</td></tr>\n"
             ;
     }
     htm <<
-        "<tr><td colspan='2'>Date Last Changed: " << arc.GetChangedDate() <<
-        " </td><td>UID: " << arc.FGetUid() <<
+        "<tr><td colspan='2'>Date Last Changed: " << rp.GetChangedDate() <<
+        " </td><td>UID: " << rp.FGetUid() <<
         "</td></tr>\n"
         "</table>\n" << tfpWrTailTfp();
     return htm;

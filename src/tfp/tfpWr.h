@@ -57,8 +57,8 @@ extern wxString tfpGetDisplayText( const wxString& pagename, const wxString& dbn
 extern wxString tfpWriteResearcherList( const wxString& extdb );
 
 // See tfpWrArchive.cpp
-extern wxString tfpWriteArchiveIndex( const wxString& dbname );
-extern wxString tfpWriteArchive( idt arcID, const wxString& dbname );
+extern wxString tfpWriteRepositoryIndex( const wxString& dbname );
+extern wxString tfpWriteRepository( idt rpID, const wxString& dbname );
 
 // See tfpWrChart.cpp
 extern wxString tfpCreatePedChart( idt indID, const wxString& dbname );
