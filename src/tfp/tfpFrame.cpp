@@ -1171,14 +1171,8 @@ void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
         bool ret = false;
         switch( uch.GetValue() )
         {
-        case 'A':
-            ret = rgEditArchive( this, recGetID( display.Mid( 2 ) ) );
-            break;
         case 'F':
             ret = rgEditFamily( this, id );
-            break;
-        case 'R':
-            ret = rgEditReference( this, id );
             break;
         case 'E':
             if( uch1.GetValue() == 'a' ) {
@@ -1210,6 +1204,14 @@ void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
             }
             else {
                 ret = rgEditMedia( this, id );
+            }
+            break;
+        case 'R':
+            if( uch1.GetValue() == 'p' ) {
+                ret = rgEditArchive( this, recGetID( display.Mid( 2 ) ) );
+            }
+            else {
+                ret = rgEditReference( this, id );
             }
             break;
         }
@@ -1929,13 +1931,6 @@ void TfpFrame::RefreshEditMenu()
 
     switch( uch.GetValue() )
     {
-    case 'A':
-        if( disp.size() >= 3 && disp.GetChar( 1 ) == 'r'
-            && recIsCharDigit( disp, 2 )
-            ) { // Ar<number>
-            m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
-        }
-        break;
     case 'F': {
             recFamily fam(0);
             fam.Decode( disp );
@@ -1992,11 +1987,6 @@ void TfpFrame::RefreshEditMenu()
             m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
         }
         break;
-    case 'R':
-        if( recIsCharDigit( disp, 1 ) ) {
-            m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
-        }
-        break;
     case 'P':
         if( disp.size() >= 3 && disp.GetChar( 1 ) == 'a'
             && recIsCharDigit( disp, 2 )
@@ -2016,6 +2006,16 @@ void TfpFrame::RefreshEditMenu()
             m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
         }
         if( recIsCharDigit( disp, 1 ) ) { // M<number>
+            m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
+        }
+        break;
+    case 'R':
+        if( recIsCharDigit( disp, 1 ) ) { // R<number>
+            m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
+        }
+        if( disp.size() >= 3 && disp.GetChar( 1 ) == 'p'
+            && recIsCharDigit( disp, 2 )
+            ) { // Rp<number>
             m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
         }
         break;
