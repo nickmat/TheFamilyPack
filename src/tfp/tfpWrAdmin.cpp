@@ -42,85 +42,97 @@
 #include <rec/recSystem.h>
 #include <rec/recIndividual.h>
 
-
 wxString tfpWriteResearcherList( const wxString& extdb )
 {
-    wxString htm;
-    recResearcherVec list = recResearcher::GetResearchers( recDb::Coverage::all, extdb );
+    recResearcherVec list =
+        recResearcher::GetResearchers( recDb::Coverage::all, extdb );
     idt curUserID = recGetCurrentUser( extdb );
 
-    htm << 
-        "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
-        "\"http://www.w3.org/TR/html4/loose.dtd\">\n"
-        "<html>\n<head>\n"
-        "<title>Researchers</title>\n"
-        "<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>\n"
-        "<link rel='stylesheet' type='text/css' href='memory:tfp.css'>\n"
-        "</head>\n<body>\n<div class='tfp'>\n"
-        "<h1>Researchers</h1>\n"
-    ;
-
-    for( size_t i = 0 ; i < list.size() ; i++ ) {
-        size_t note = ( list[i].FGetComment().empty() ) ? 0 : 1;
-        recContactList cl( list[i].FGetConListID(), extdb );
-        idt userID = list[i].GetUserID( extdb );
-        recContactVec contacts = list[i].GetContacts( extdb );
-        size_t csize = contacts.size() + note + 1;
-
-        htm << 
-            "<table class='data'>\n"
-            "<tr><th>Name</th><th colspan='3'>Details</th></tr>\n"
-
-            "<tr>\n<td rowspan='" << csize << "'>" << list[i].FGetName() <<
-            "</td>\n"
+    wxString htm = tfpWrHeadTfp( "Researcher Index" );
+    htm <<
+        "<h1>Repository List</h1>\n"
+        "<table class='data'>\n"
+        "<tr><th>ID</th><th>Name</th><th>Comment</th><th>User</th></tr>\n"
         ;
-        if( note ) {
-            htm << 
-                "<td colspan='3'>" << list[i].FGetComment() <<
-                "</td>\n</tr>\n"
-            ;
-        }
+    for( auto res : list ) {
+        idt userID = res.GetUserID();
         htm <<
-            "<td colspan='3'><b>UID:</b> " << list[i].FGetUid() <<
+            "<tr><td><b><a href='tfp:" << res.GetIdStr() <<
+            "'>" << res.GetIdStr() <<
+            "</a></b></td><td>" << res.FGetName() <<
+            "</td><td>" << res.FGetComment() <<
+            "</td><td>"
+            ;
+        if( userID ) {
+            htm << recUser::GetIdStr( userID );
+            if( userID == curUserID ) {
+                htm << " [Current]";
+            }
+        }
+        htm << "</td></tr>\n";
+    }
+    htm << "</table>\n" << tfpWrTailTfp();
+    return htm;
+}
+
+wxString tfpWriteResearcher( idt reID, const wxString& extdb )
+{
+    recResearcher re( reID );
+    if( re.FGetID() == 0 ) {
+        return wxString();
+    }
+    size_t note = (re.FGetComment().empty()) ? 0 : 1;
+    recContactVec contacts = re.GetContacts( extdb );
+    size_t csize = contacts.size() + note + 1;
+    idt userID = re.GetUserID( extdb );
+    idt curUserID = recGetCurrentUser( extdb );
+
+    wxString htm;
+
+    htm <<
+        tfpWrHeadTfp( "Researcher" ) <<
+        "<h1>Reseacher " << re.GetIdStr() <<
+        "<br>\n" << re.FGetName() <<
+        "</h1>\n"
+        "<table class='data'>\n"
+        "<tr><th colspan='3'>Details</th></tr>\n"
+        ;
+    if( note ) {
+        htm <<
+            "<tr><td colspan='3'>" << re.FGetComment() <<
             "</td>\n</tr>\n"
             ;
-        if( csize ) {
-            for( size_t j = 0 ; j < contacts.size() ; j++ ) {
-                if( j > 0 || note == 1 ) {
-                    htm << "<tr>\n";
-                }
-                htm <<
-                    "<td><b><a href='tfpe:C" << contacts[j].FGetID() <<
-                    "'>" << contacts[j].GetIdStr() <<
-                    "</a></b></td>\n<td>" << contacts[j].GetTypeStr( extdb ) <<
-                    "</td>\n<td>" << contacts[j].GetHtmlValue() <<
-                    "</td>\n</tr>\n"
-                ;
-            }
-        } else {
-            htm << "<td colspan='3'></td>\n</tr>\n";
-        }
-        htm <<
-            "<tr>\n<td colspan='4' class='status'>\n"
-            "<b><a href='tfpe:Re" << list[i].FGetID() <<
-            "'>" << list[i].GetIdStr() << 
-            "</a></b>"
-        ;
-        if( userID ) {
-            htm << 
-                ", <b>" << recUser::GetIdStr( userID ) <<
-                "</b>"
-            ;
-            if( userID == curUserID ) {
-                htm << " [Current User]";
-            }
-        }
-        htm << "</td>\n</tr>\n</table>\n";
     }
-
-    htm << "</div></body></html>";
+    for( auto& con: contacts ) {
+        htm <<
+            "<tr><td><b><a href='tfpe:C" << con.FGetID() <<
+            "'>" << con.GetIdStr() <<
+            "</a></b></td>\n"
+            "<td>" << con.GetTypeStr( extdb ) <<
+            "</td>\n<td>" << con.GetHtmlValue() <<
+            "</td>\n</tr>\n"
+            ;
+    }
+    htm <<
+        "<tr><td colspan='2'>Date Last Changed: " << re.GetChangedDate() <<
+        " </td><td>UID: " << re.FGetUid() <<
+        "</td></tr>\n"
+        ;
+    if( userID ) {
+        htm <<
+            "<tr>\n<td colspan='3' class='status'>\n"
+            "<b>" << recUser::GetIdStr( userID ) <<
+            "</b>"
+            ;
+        if( userID == curUserID ) {
+            htm << " [Current User]";
+        }
+        htm << "</td>\n</tr>\n";
+    }
+    htm << "</table>\n" << tfpWrTailTfp();
 
     return htm;
 }
+
 
 // End of src/tfp/tfpWrAdmin.cpp Source

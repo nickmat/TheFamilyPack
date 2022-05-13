@@ -464,6 +464,9 @@ wxString tfpGetDisplayText( const wxString& pagename, const wxString& dbname, Tf
         if( name.compare( "RE" ) == 0 ) {
             return tfpWriteResearcherList( dbname );
         }
+        if( name.compare( 0, 2, "RE" ) == 0 && success1 ) {
+            return tfpWriteResearcher( num1, dbname );
+        }
         if( name.compare( "RP" ) == 0 ) {
             return tfpWriteRepositoryIndex( dbname );
         }

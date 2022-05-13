@@ -1207,7 +1207,10 @@ void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
             }
             break;
         case 'R':
-            if( uch1.GetValue() == 'p' ) {
+            if( uch1.GetValue() == 'e' ) {
+                ret = rgEditResearcher( this, recGetID( display.Mid( 2 ) ) );
+            }
+            else if( uch1.GetValue() == 'p' ) {
                 ret = rgEditArchive( this, recGetID( display.Mid( 2 ) ) );
             }
             else {
@@ -2011,6 +2014,11 @@ void TfpFrame::RefreshEditMenu()
         break;
     case 'R':
         if( recIsCharDigit( disp, 1 ) ) { // R<number>
+            m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
+        }
+        if( disp.size() >= 3 && disp.GetChar( 1 ) == 'e'
+            && recIsCharDigit( disp, 2 )
+            ) { // Re<number> 
             m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, true );
         }
         if( disp.size() >= 3 && disp.GetChar( 1 ) == 'p'
