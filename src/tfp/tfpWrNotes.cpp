@@ -39,6 +39,7 @@
 #include "tfpVersion.h"
 
 #include <rec/recCitation.h>
+#include <rec/recContact.h>
 #include <rec/recDate.h>
 #include <rec/recPersona.h>
 #include <rec/recPlace.h>
@@ -160,6 +161,27 @@ wxString tfpWriteName( idt nameID, const wxString& extdb )
     }
        
     htm << "</table>\n" << tfpWrTailTfp();
+
+    return htm;
+}
+
+wxString tfpWriteContact( idt conID, const wxString& extdb )
+{
+    recContact con( conID );
+    if( con.FGetID() == 0 ) return wxString();
+    recContactType ct( con.FGetTypeID() );
+
+    wxString htm = tfpWrHeadTfp( "Contact" );
+    htm <<
+        "<h1>Contact " << con.GetIdStr() <<
+        GetHtmEditLink( con.GetIdStr(), extdb ) <<
+        "</h1>\n"
+        "<p>\n" << tfpHtmlifyText( con.FGetValue() ) << "\n</p>\n"
+        "\n<p><b>Contact Type:</b> " << ct.FGetName() <<
+        "\n<br>Type Last Changed: " << ct.GetChangedDate() <<
+        "\n<br>Type UID: " << ct.FGetUid() <<
+        "\n</p>\n" << tfpWrTailTfp()
+        ;
 
     return htm;
 }

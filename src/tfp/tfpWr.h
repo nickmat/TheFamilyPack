@@ -47,6 +47,7 @@ extern wxString tfpGetSexClass( Sex sex, Sex pref = Sex::unknown );
 extern wxString tfpGetRowClass( int row );
 enum class GetEpitaphPrefix { none, spaces, newline };
 extern wxString tfpGetEpitaphPlus( idt indID, GetEpitaphPrefix prefix = GetEpitaphPrefix::none, const wxString& dbname = "Main" );
+extern wxString tfpHtmlifyText( const wxString& text );
 extern wxString tfpNormaliseSpaces( const wxString& str );
 extern wxString tfpGetMediaDataFile( idt mdID, idt assID, const wxString& dbname = "Main" );
 
@@ -109,6 +110,7 @@ extern wxString tfpWriteCitation( idt citID, const wxString& dbname );
 extern wxString tfpWriteDate( idt dateID, const wxString& dbname );
 extern wxString tfpWritePlace( idt placeID, const wxString& dbname );
 extern wxString tfpWriteName( idt nameID, const wxString& dbname );
+extern wxString tfpWriteContact( idt conID, const wxString& dbname );
 extern wxString tfpWriteAbout();
 
 // See tfpWrPersona.cpp

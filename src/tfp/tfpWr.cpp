@@ -262,6 +262,18 @@ wxString tfpGetEpitaphPlus(
     return ret;
 }
 
+wxString tfpHtmlifyText( const wxString& text )
+{
+    wxString str;
+    for( auto ch = text.begin(); ch != text.end(); ch++ ) {
+        if( *ch == '\n' ) {
+            str += "<br>";
+        }
+        str += *ch;
+    }
+    return str;
+}
+
 wxString tfpNormaliseSpaces( const wxString& str )
 {
     wxString out(str);
@@ -343,6 +355,9 @@ wxString tfpGetDisplayText( const wxString& pagename, const wxString& dbname, Tf
         }
         if( name.compare( "START" ) == 0 ) {
             return tfpWrStartPage();
+        }
+        if( name.compare( 0, 1, "C" ) == 0 && success ) {
+            return tfpWriteContact( num, dbname );
         }
         if( name.compare( 0, 2, "CD" ) == 0 && success1 ) {
             return tfpCreateDescChart( num1, dbname );

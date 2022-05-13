@@ -78,8 +78,9 @@ wxString tfpWriteRepository( idt rpID, const wxString& extdb )
         recContactList::GetContacts( rp.FGetConListID(), extdb );
     for( auto cont : contacts ) {
         htm <<
-            "<tr><td><b>" << cont.GetIdStr() <<
-            "</b></td><td>" <<
+            "<tr><td><b><a href='tfpi:" << cont.GetIdStr() <<
+            "'>" << cont.GetIdStr() <<
+            "</a></b></td><td>" <<
             recContactType::GetTypeStr( cont.FGetTypeID(), extdb ) <<
             "</td><td>" << cont.GetHtmlValue() <<
             "</td></tr>\n"

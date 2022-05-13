@@ -99,6 +99,9 @@ void dlgNote::OnNavigationRequest( wxWebViewEvent& evt )
         wxLaunchDefaultBrowser( url );
         return;
     }
+    if( !url.StartsWith( "tfpe:" ) ) {
+        return;
+    }
 
     recDb::Begin();
     try {
@@ -115,6 +118,9 @@ void dlgNote::OnNavigationRequest( wxWebViewEvent& evt )
         }
         else if( url.StartsWith( "tfpe:Ci" ) ) {
             ret = rgEditCitation( this, recGetID( url.Mid( 7 ) ) );
+        }
+        else if( url.StartsWith( "tfpe:C" ) ) {
+            ret = rgEditContact( this, recGetID( url.Mid( 6 ) ) );
         }
         if( ret == true ) {
             recDb::Commit();
