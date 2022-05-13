@@ -302,11 +302,11 @@ wxString tfpGetMediaDataFile( idt mdID, idt assID, const wxString& extdb )
 wxString tfpNormalisePageName( const wxString& name )
 {
     wxString uname = name.Upper();
-    if( uname.compare( 0, 2, "AR" ) == 0 ||
-        uname.compare( 0, 2, "CI" ) == 0 ||
+    if( uname.compare( 0, 2, "CI" ) == 0 ||
         uname.compare( 0, 2, "EA" ) == 0 ||
         uname.compare( 0, 2, "PA" ) == 0 ||
         uname.compare( 0, 2, "RE" ) == 0 ||
+        uname.compare( 0, 2, "RP" ) == 0 ||
         uname.compare( "ABOUT" ) == 0 ||
         uname.compare( "START" ) == 0 
         )
@@ -359,11 +359,11 @@ wxString tfpGetDisplayText( const wxString& pagename, const wxString& dbname, Tf
         if( name.compare( "E" ) == 0 ) {
             return tfpWriteEventIndex( dbname );
         }
-        if( name.compare( "E$") == 0 ) {
+        if( name.compare( "E$" ) == 0 ) {
             return tfpWriteEventSelection( frame );
         }
         if( name.compare( "EA" ) == 0 ) {
-            return tfpWriteEventaIndex( dbname);
+            return tfpWriteEventaIndex( dbname );
         }
         // We don't have a Eventa filter yet!
         //    if( name.compare( "EA$" ) == 0 ) {
@@ -455,7 +455,7 @@ wxString tfpGetDisplayText( const wxString& pagename, const wxString& dbname, Tf
         if( name.compare( 0, 2, "RP" ) == 0 && success1 ) {
             return tfpWriteRepository( num1, dbname );
         }
-}
+    }
     catch( wxSQLite3Exception& e ) {
         recDb::ErrorMessage( e );
         recDb::Rollback();
