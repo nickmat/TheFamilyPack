@@ -37,6 +37,66 @@
 
 #include <rec/recDb.h>
 
+struct RecordCounts
+{
+    const char* m_dbname;
+    size_t citation = 0;
+    size_t citationpart = 0;
+    size_t citationparttype = 0;
+    size_t contact = 0;
+    size_t contactlist = 0;
+    size_t contacttype = 0;
+    size_t repository = 0;
+
+    RecordCounts( const char* dbname ) : m_dbname( dbname ) { Reset(); }
+
+    void Reset() {
+        citation = recCitation::Count( m_dbname );
+        citationpart = recCitationPart::Count( m_dbname );
+        citationparttype = recCitationPartType::Count( m_dbname );
+        contact = recContact::Count( m_dbname );
+        contactlist = recContactList::Count( m_dbname );
+        contacttype = recContactType::Count( m_dbname );
+        repository = recRepository::Count( m_dbname );
+    }
+    bool Equal( const RecordCounts& rcs ) {
+        return
+            citation == rcs.citation &&
+            citationpart == rcs.citationpart &&
+            citationparttype == rcs.citationparttype &&
+            contact == rcs.contact &&
+            contactlist == rcs.contactlist &&
+            contacttype == rcs.contacttype &&
+            repository == rcs.repository
+            ;
+    }
+};
+
+TEST_CASE( "Test recCitation::Transfer function", "[Citation]" )
+{
+    // Also includes test for [CitationPart]
+    RecordCounts rc_main( g_maindb ), rc_extdb( g_extdb1 );
+
+    REQUIRE( !recCitation::Exists( 1, g_maindb ) );
+    REQUIRE( recCitation::Exists( 1, g_extdb1 ) );
+    recCitation from_cit( 1, g_extdb1 );
+
+    idt to_id = recCitation::Transfer( 1, g_extdb1, 0, g_maindb );
+    REQUIRE( to_id == 1 );
+    recCitation to_cit( 1, g_maindb );
+//    REQUIRE( from_cit.Equivalent( to_cit ) );
+
+    RecordCounts rcnew( g_maindb );
+    REQUIRE( rcnew.citation == rc_main.citation + 1 );
+    REQUIRE( rcnew.citationpart == rc_main.citationpart + 6 );
+    REQUIRE( rcnew.citationparttype == rc_main.citationparttype + 6 );
+    REQUIRE( rcnew.repository == rc_main.repository + 1 );
+
+    REQUIRE( recCitation::RemoveFromDatabase( to_id, g_maindb ) );
+    rcnew.Reset();
+    REQUIRE( rcnew.Equal( rc_main ) );
+}
+
 TEST_CASE( "Test recCitationPartType::Transfer function", "[CitationPartType]" )
 {
     int cnt_main = recCitationPartType::Count( g_maindb );
