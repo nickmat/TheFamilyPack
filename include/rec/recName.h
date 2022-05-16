@@ -191,7 +191,8 @@ public:
 //-------------------------[ recNamePartType ]--------------------------------
 //============================================================================
 
-class recNamePartType : public recDbT<recNamePartType>
+class recNamePartType 
+    : public recDbT<recNamePartType>, public recUidT<recNamePartType>
 {
 public:
     static constexpr const char* s_tablename = "NamePartType";
@@ -236,7 +237,7 @@ public:
 //-------------------------[ recNameStyle ]-----------------------------------
 //============================================================================
 
-class recNameStyle : public recDbT<recNameStyle>
+class recNameStyle : public recDbT<recNameStyle>, public recUidT<recNameStyle>
 {
 public:
     static constexpr const char* s_tablename = "NameStyle";

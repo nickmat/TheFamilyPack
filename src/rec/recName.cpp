@@ -697,16 +697,20 @@ bool recNamePart::CsvRead( std::istream& in )
 
 recNamePartType::recNamePartType( const recNamePartType& at )
 {
-    f_id   = at.f_id;
-    f_grp  = at.f_grp;
+    f_id = at.f_id;
+    f_grp = at.f_grp;
     f_name = at.f_name;
+    f_uid = at.f_uid;
+    f_changed = at.f_changed;
 }
 
 void recNamePartType::Clear()
 {
-    f_id   = 0;
-    f_grp  = NTYPE_Grp_Unstated;
-    f_name = wxEmptyString;
+    f_id = 0;
+    f_grp = NTYPE_Grp_Unstated;
+    f_name.clear();
+    f_uid.clear();
+    f_changed = 0;
 }
 
 void recNamePartType::Save( const wxString& dbname )
@@ -718,8 +722,8 @@ void recNamePartType::Save( const wxString& dbname )
     {
         // Add new record
         sql.Format(
-            "INSERT INTO \"%s\".NamePartType (grp, name) VALUES (%d, '%q');",
-            UTF8_( dbname ), f_grp, UTF8_(f_name)
+            "INSERT INTO \"%s\".NamePartType (grp, name, uid, changed) VALUES (%d, '%q', '%q', %ld);",
+            UTF8_( dbname ), f_grp, UTF8_(f_name), UTF8_( f_uid ), f_changed
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -729,15 +733,17 @@ void recNamePartType::Save( const wxString& dbname )
         {
             // Add new record
             sql.Format(
-                "INSERT INTO \"%s\".NamePartType (id, grp, name) "
-                "VALUES (" ID ", %d, '%q');",
-                UTF8_( dbname ), f_id, f_grp, UTF8_(f_name)
+                "INSERT INTO \"%s\".NamePartType (id, grp, name, uid, changed) "
+                "VALUES (" ID ", %d, '%q', '%q', %ld);",
+                UTF8_( dbname ), f_id, f_grp, UTF8_(f_name), UTF8_( f_uid ), f_changed
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE \"%s\".NamePartType SET grp=%d, name='%q' WHERE id=" ID ";",
-                UTF8_( dbname ), f_grp, UTF8_(f_name), f_id
+                "UPDATE \"%s\".NamePartType"
+                " SET grp=%d, name='%q', uid = '%q', changed = %ld"
+                " WHERE id=" ID ";",
+                UTF8_( dbname ), f_grp, UTF8_(f_name), UTF8_( f_uid ), f_changed, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -755,7 +761,7 @@ bool recNamePartType::Read( const wxString& dbname )
     }
 
     sql.Format( 
-        "SELECT grp, name FROM \"%s\".NamePartType WHERE id=" ID ";",
+        "SELECT grp, name, uid, changed FROM \"%s\".NamePartType WHERE id=" ID ";",
         UTF8_( dbname ), f_id
     );
     result = s_db->GetTable( sql );
@@ -768,6 +774,8 @@ bool recNamePartType::Read( const wxString& dbname )
     result.SetRow( 0 );
     f_grp  = (NTYPE_Grp) result.GetInt( 0 );
     f_name = result.GetAsString( 1 );
+    f_uid = result.GetAsString( 2 );
+    f_changed = result.GetInt( 3 );
     return true;
 }
 
@@ -775,7 +783,9 @@ bool recNamePartType::Equivalent( const recNamePartType& r2 ) const
 {
     return
         f_grp == r2.f_grp &&
-        f_name == r2.f_name
+        f_name == r2.f_name &&
+        f_uid == r2.f_uid &&
+        f_changed == r2.f_changed
     ;
 }
 
@@ -795,7 +805,7 @@ recNamePartTypeVec recNamePartType::GetTypeList( const wxString& dbname )
 
     // Put standard entries in list.
     sql.Format(
-        "SELECT id, grp, name FROM \"%s\".NamePartType "
+        "SELECT id, grp, name, uid, changed FROM \"%s\".NamePartType "
         "WHERE id<0 ORDER BY id DESC;",
         UTF8_( dbname )
     );
@@ -806,12 +816,14 @@ recNamePartTypeVec recNamePartType::GetTypeList( const wxString& dbname )
         at.f_id = GET_ID( result.GetInt64( 0 ) );
         at.f_grp = (NTYPE_Grp) result.GetInt( 1 );
         at.f_name = result.GetAsString( 2 );
+        at.f_uid = result.GetAsString( 3 );
+        at.f_changed = result.GetInt( 4 );
         list.push_back( at );
     }
 
     // Put user entries in list.
     sql.Format(
-        "SELECT id, grp, name FROM \"%s\".NamePartType "
+        "SELECT id, grp, name, uid, changed FROM \"%s\".NamePartType "
         "WHERE id>0 ORDER BY id ASC;",
         UTF8_( dbname )
     );
@@ -822,6 +834,8 @@ recNamePartTypeVec recNamePartType::GetTypeList( const wxString& dbname )
         at.f_id = GET_ID( result.GetInt64( 0 ) );
         at.f_grp = (NTYPE_Grp) result.GetInt( 1 );
         at.f_name = result.GetAsString( 2 );
+        at.f_uid = result.GetAsString( 3 );
+        at.f_changed = result.GetInt( 4 );
         list.push_back( at );
     }
 
@@ -830,7 +844,7 @@ recNamePartTypeVec recNamePartType::GetTypeList( const wxString& dbname )
 
 std::string recNamePartType::CsvTitles()
 {
-    return std::string("ID, Group, Name\n");
+    return std::string("ID, Group, Name, UID, Last Changed\n");
 }
 
 void recNamePartType::CsvWrite( std::ostream& out, idt id )
@@ -838,7 +852,9 @@ void recNamePartType::CsvWrite( std::ostream& out, idt id )
     recNamePartType npt( id );
     recCsvWrite( out, npt.FGetID() );
     recCsvWrite( out, npt.FGetGroup() );
-    recCsvWrite( out, npt.FGetName(), '\n' );
+    recCsvWrite( out, npt.FGetName() );
+    recCsvWrite( out, npt.FGetUid() );
+    recCsvWrite( out, npt.FGetChanged(), '\n' );
 }
 
 bool recNamePartType::CsvRead( std::istream& in )
@@ -848,6 +864,8 @@ bool recNamePartType::CsvRead( std::istream& in )
     recCsvRead( in, group );
     f_grp = NTYPE_Grp( group );
     recCsvRead( in, f_name );
+    recCsvRead( in, f_uid );
+    recCsvRead( in, f_changed );
     return bool( in );
 }
 
@@ -858,14 +876,18 @@ bool recNamePartType::CsvRead( std::istream& in )
 
 recNameStyle::recNameStyle( const recNameStyle& at )
 {
-    f_id   = at.f_id;
+    f_id = at.f_id;
     f_name = at.f_name;
+    f_uid = at.f_uid;
+    f_changed = at.f_changed;
 }
 
 void recNameStyle::Clear()
 {
     f_id   = 0;
-    f_name = wxEmptyString;
+    f_name.clear();
+    f_uid.clear();
+    f_changed = 0;
 }
 
 void recNameStyle::Save( const wxString& dbname )
@@ -877,8 +899,8 @@ void recNameStyle::Save( const wxString& dbname )
     {
         // Add new record
         sql.Format(
-            "INSERT INTO \"%s\".NameStyle (name) VALUES ('%q');",
-            UTF8_( dbname ), UTF8_(f_name)
+            "INSERT INTO \"%s\".NameStyle (name, uid, changed) VALUES ('%q', '%q', %ld);",
+            UTF8_( dbname ), UTF8_(f_name), UTF8_( f_uid ), f_changed
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -888,15 +910,17 @@ void recNameStyle::Save( const wxString& dbname )
         {
             // Add new record
             sql.Format(
-                "INSERT INTO \"%s\".NameStyle (id, name) "
-                "VALUES (" ID ", '%q');",
+                "INSERT INTO \"%s\".NameStyle (id, name, uid, changed) "
+                "VALUES (" ID ", '%q', '%q', %ld, UTF8_( f_uid ), f_changed);",
                 UTF8_( dbname ), f_id, UTF8_(f_name)
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE \"%s\".NameStyle SET name='%q' WHERE id=" ID ";",
-                UTF8_( dbname ), UTF8_(f_name), f_id
+                "UPDATE \"%s\".NameStyle"
+                " SET name='%q', uid = '%q', changed = %ld"
+                " WHERE id=" ID ";",
+                UTF8_( dbname ), UTF8_(f_name), UTF8_( f_uid ), f_changed, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -914,7 +938,7 @@ bool recNameStyle::Read( const wxString& dbname )
     }
 
     sql.Format( 
-        "SELECT name FROM \"%s\".NameStyle WHERE id=" ID ";",
+        "SELECT name, uid, changed FROM \"%s\".NameStyle WHERE id=" ID ";",
         UTF8_( dbname ), f_id
     );
     result = s_db->GetTable( sql );
@@ -926,6 +950,8 @@ bool recNameStyle::Read( const wxString& dbname )
     }
     result.SetRow( 0 );
     f_name = result.GetAsString( 0 );
+    f_uid = result.GetAsString( 1 );
+    f_changed = result.GetInt( 2 );
     return true;
 }
 
@@ -945,7 +971,7 @@ recNameStyleVec recNameStyle::GetStyleList( const wxString& dbname )
 
     // Put standard entries in list.
     sql.Format(
-        "SELECT id, name FROM \"%s\".NameStyle "
+        "SELECT id, name, uid, changed FROM \"%s\".NameStyle "
         "WHERE id<=0 ORDER BY id DESC;",
         UTF8_( dbname )
     );
@@ -955,12 +981,14 @@ recNameStyleVec recNameStyle::GetStyleList( const wxString& dbname )
         result.SetRow( i );
         at.f_id = GET_ID( result.GetInt64( 0 ) );
         at.f_name = result.GetAsString( 1 );
+        at.f_uid = result.GetAsString( 2 );
+        at.f_changed = result.GetInt( 3 );
         list.push_back( at );
     }
 
     // Put user entries in list.
     sql.Format(
-        "SELECT id, name FROM \"%s\".NameStyle "
+        "SELECT id, name, uid, changed FROM \"%s\".NameStyle "
         "WHERE id>0 ORDER BY id ASC;",
         UTF8_( dbname )
     );
@@ -970,6 +998,8 @@ recNameStyleVec recNameStyle::GetStyleList( const wxString& dbname )
         result.SetRow( i );
         at.f_id = GET_ID( result.GetInt64( 0 ) );
         at.f_name = result.GetAsString( 1 );
+        at.f_uid = result.GetAsString( 2 );
+        at.f_changed = result.GetInt( 3 );
         list.push_back( at );
     }
 
@@ -978,20 +1008,24 @@ recNameStyleVec recNameStyle::GetStyleList( const wxString& dbname )
 
 std::string recNameStyle::CsvTitles()
 {
-    return std::string( "ID, Name\n" );
+    return std::string( "ID, Name, UID, Last Changed\n" );
 }
 
 void recNameStyle::CsvWrite( std::ostream& out, idt id )
 {
     recNameStyle ns( id );
     recCsvWrite( out, ns.FGetID() );
-    recCsvWrite( out, ns.FGetName(), '\n' );
+    recCsvWrite( out, ns.FGetName() );
+    recCsvWrite( out, ns.FGetUid() );
+    recCsvWrite( out, ns.FGetChanged(), '\n' );
 }
 
 bool recNameStyle::CsvRead( std::istream& in )
 {
     recCsvRead( in, f_id );
     recCsvRead( in, f_name );
+    recCsvRead( in, f_uid );
+    recCsvRead( in, f_changed );
     return bool( in );
 }
 

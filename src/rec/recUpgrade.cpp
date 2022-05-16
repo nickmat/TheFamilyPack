@@ -41,8 +41,8 @@
 const int recVerMajor = 0;
 const int recVerMinor = 0;
 const int recVerRev = 10;
-const int recVerTest = 36;                       // <<======<<<<
-const char* recFullVersion = "TFPD-v0.0.10.36";  // <<======<<<<
+const int recVerTest = 37;                       // <<======<<<<
+const char* recFullVersion = "TFPD-v0.0.10.37";  // <<======<<<<
 
 // This is the database Media-only version that this program can work with.
 // If the full version matches, then this is assumed to match as well.
@@ -1656,7 +1656,6 @@ void UpgradeTest0_0_10_33to0_0_10_34( const wxString& dbname )
     recDb::GetDb()->ExecuteUpdate( update );
 }
 
-
 void UpgradeTest0_0_10_34to0_0_10_35( const wxString& dbname )
 {
     // Version 0.0.10.34 to 0.0.10.35
@@ -1748,6 +1747,105 @@ void UpgradeTest0_0_10_35to0_0_10_36( const wxString& dbname )
     recDb::GetDb()->ExecuteUpdate( update );
 }
 
+void UpgradeTest0_0_10_36to0_0_10_37( const wxString& dbname )
+{
+    // Version 0.0.10.36 to 0.0.10.37
+
+    // Add field 'uid' and 'changed' to NamePartType and NameStyle.
+    wxString update =
+        "BEGIN;\n";
+
+    // Add uid and changed fields to NamePartType table.
+    update <<
+        "CREATE TABLE \"" << dbname << "\".NewNamePartType (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  grp INTEGER NOT NULL,\n"
+        "  name TEXT NOT NULL,\n"
+        "  uid TEXT NOT NULL,\n"
+        "  changed INTEGER NOT NULL\n"
+        ");\n"
+
+        "INSERT INTO \"" << dbname << "\".NewNamePartType"
+        " (id, grp, name, uid, changed)\n"
+        " SELECT id, grp, name, '', 2459671\n"
+        " FROM \"" << dbname << "\".NamePartType;\n"
+
+        "DROP TABLE \"" << dbname << "\".NamePartType;\n"
+        "ALTER TABLE \"" << dbname << "\".NewNamePartType RENAME TO NamePartType;\n"
+        ;
+
+    // Fill NamePartType table uid field
+    // Do positive numbers
+    wxString query = "SELECT id FROM \"" + dbname + "\".NamePartType WHERE id>0;\n"; // Get nptID list
+    wxSQLite3Table table = recDb::GetDb()->GetTable( query );
+    size_t size = (size_t) table.GetRowCount();
+    for( size_t i = 0; i < size; i++ ) {
+        table.SetRow( i );
+        update << "UPDATE \"" << dbname << "\".ContactType"
+            " SET uid='" << recCreateUid() << "'"
+            " WHERE id=" << table.GetAsString( 0 ) << ";\n"
+            ;
+    }
+    // Do negative numbers
+    update <<
+        "UPDATE \"" << dbname << "\".NamePartType"
+        " SET changed=0 WHERE id=0;\n"
+        "UPDATE \"" << dbname << "\".NamePartType"
+        " SET uid='D078B79DEA7D7C5E6954D9BD9A3F77951583' WHERE id=-1;\n"
+        "UPDATE \"" << dbname << "\".NamePartType"
+        " SET uid='C8FA1239479F03CE5A4A9D9462DA1074599E' WHERE id=-2;\n"
+        "UPDATE \"" << dbname << "\".NamePartType"
+        " SET uid='B4FC970919A55CBD630EC6A9109F692342B8' WHERE id=-3;\n"
+        ;
+
+    // Add uid and changed fields to NameStyle table.
+    update <<
+        "CREATE TABLE \"" << dbname << "\".NewNameStyle (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  name TEXT NOT NULL,\n"
+        "  uid TEXT NOT NULL,\n"
+        "  changed INTEGER NOT NULL\n"
+        ");\n"
+
+        "INSERT INTO \"" << dbname << "\".NewNameStyle"
+        " (id, name, uid, changed)\n"
+        " SELECT id, name, '', 2459671\n"
+        " FROM \"" << dbname << "\".NameStyle;\n"
+
+        "DROP TABLE \"" << dbname << "\".NameStyle;\n"
+        "ALTER TABLE \"" << dbname << "\".NewNameStyle RENAME TO NameStyle;\n"
+        ;
+
+
+    // Fill NameStyle table uid field
+    // Do positive numbers
+    query = "SELECT id FROM \"" + dbname + "\".NameStyle WHERE id>0;\n"; // Get nptID list
+    table = recDb::GetDb()->GetTable( query );
+    size = (size_t) table.GetRowCount();
+    for( size_t i = 0; i < size; i++ ) {
+        table.SetRow( i );
+        update << "UPDATE \"" << dbname << "\".NameStyle"
+            " SET uid='" << recCreateUid() << "'"
+            " WHERE id=" << table.GetAsString( 0 ) << ";\n"
+            ;
+    }
+    // Do negative numbers
+    update <<
+        "UPDATE \"" << dbname << "\".NameStyle"
+        " SET changed=0 WHERE id=0;\n"
+        "UPDATE \"" << dbname << "\".NameStyle"
+        " SET uid='9E8D131956EFBA85EE89134A9EBD43004DF8' WHERE id=-1;\n"
+        "UPDATE \"" << dbname << "\".NameStyle"
+        " SET uid='CCEF089DAD05903B8825EF5FC8F5A5DA140B' WHERE id=-2;\n"
+        "UPDATE \"" << dbname << "\".NameStyle"
+        " SET uid='67F2C0CDB179EE99E6D3C4B82C9BAAAEEB5B' WHERE id=-3;\n"
+
+        "UPDATE \"" << dbname << "\".Version SET test=37 WHERE id=1;\n"
+        "COMMIT;\n"
+        ;
+
+    recDb::GetDb()->ExecuteUpdate( update );
+}
 
 void UpgradeRev0_0_10toCurrent( int test, const wxString& dbname )
 {
@@ -1789,6 +1887,7 @@ void UpgradeRev0_0_10toCurrent( int test, const wxString& dbname )
     case 33: UpgradeTest0_0_10_33to0_0_10_34( dbname );
     case 34: UpgradeTest0_0_10_34to0_0_10_35( dbname );
     case 35: UpgradeTest0_0_10_35to0_0_10_36( dbname );
+    case 36: UpgradeTest0_0_10_36to0_0_10_37( dbname );
     }
 }
 

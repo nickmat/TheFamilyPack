@@ -468,25 +468,29 @@ INSERT INTO NamePart (id, name_id, type_id, sequence) VALUES(0,0,0,0);
 CREATE TABLE NamePartType (
   id INTEGER PRIMARY KEY,
   grp INTEGER NOT NULL,
-  name TEXT NOT NULL
+  name TEXT NOT NULL,
+  uid TEXT NOT NULL,
+  changed INTEGER NOT NULL
 );
 
 /* matches enum StdNameType */
-INSERT INTO NamePartType (id, grp, name) VALUES( 0, 0, '');
-INSERT INTO NamePartType (id, grp, name) VALUES(-1, 1, 'Given name');
-INSERT INTO NamePartType (id, grp, name) VALUES(-2, 1, 'Surname');
-INSERT INTO NamePartType (id, grp, name) VALUES(-3, 1, 'Post name');
+INSERT INTO NamePartType (id, grp, name, uid, changed) VALUES( 0, 0, '', '', 0);
+INSERT INTO NamePartType (id, grp, name, uid, changed) VALUES(-1, 1, 'Given name', 'D078B79DEA7D7C5E6954D9BD9A3F77951583', 2459715);
+INSERT INTO NamePartType (id, grp, name, uid, changed) VALUES(-2, 1, 'Surname', 'C8FA1239479F03CE5A4A9D9462DA1074599E', 2459715 );
+INSERT INTO NamePartType (id, grp, name, uid, changed) VALUES(-3, 1, 'Post name', 'B4FC970919A55CBD630EC6A9109F692342B8', 2459715);
 
 CREATE TABLE NameStyle (
   id INTEGER PRIMARY KEY,
-  name TEXT NOT NULL
+  name TEXT NOT NULL,
+  uid TEXT NOT NULL,
+  changed INTEGER NOT NULL
 );
 
 /* matches enum recNameStyle::Style */
-INSERT INTO NameStyle (id, name) VALUES(0,'Default');
-INSERT INTO NameStyle (id, name) VALUES(-1,'Birth name');
-INSERT INTO NameStyle (id, name) VALUES(-2,'Married name');
-INSERT INTO NameStyle (id, name) VALUES(-3,'Alias');
+INSERT INTO NameStyle (id, name, uid, changed) VALUES(0, 'Default', '', 0);
+INSERT INTO NameStyle (id, name, uid, changed) VALUES(-1, 'Birth name', '9E8D131956EFBA85EE89134A9EBD43004DF8', 2459715);
+INSERT INTO NameStyle (id, name, uid, changed) VALUES(-2, 'Married name', 'CCEF089DAD05903B8825EF5FC8F5A5DA140B', 2459715);
+INSERT INTO NameStyle (id, name, uid, changed) VALUES(-3, 'Alias', '67F2C0CDB179EE99E6D3C4B82C9BAAAEEB5B', 2459715);
 
 CREATE TABLE Persona (
   id INTEGER PRIMARY KEY,
@@ -626,7 +630,7 @@ INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 1, 1, 'NI');
 /* Table Version created in recCreateCommon.sql */
 
 /* The Version table row 1 is the full TFPD database */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 36);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 37);
 
 COMMIT;
 

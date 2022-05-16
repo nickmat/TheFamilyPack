@@ -1,3 +1,3 @@
-ID, Group, Name
--2,1,"Surname"
--1,1,"Given name"
+ID, Group, Name, UID, Last Changed
+-2,1,"Surname","C8FA1239479F03CE5A4A9D9462DA1074599E",2459671
+-1,1,"Given name","D078B79DEA7D7C5E6954D9BD9A3F77951583",2459671
