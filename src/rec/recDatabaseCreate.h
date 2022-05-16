@@ -457,10 +457,12 @@ static const char* createFullDb =  /* recCreateFull.sql */
  "INSERT INTO PlacePart (id) VALUES(0);\n"
  "CREATE TABLE PlacePartType (\n"
  "  id INTEGER PRIMARY KEY,\n"
- "  name TEXT\n"
+ "  name TEXT NOT NULL,\n"
+ "  uid TEXT NOT NULL,\n"
+ "  changed INT NOT NULL\n"
  ");\n"
- "INSERT INTO PlacePartType (id) VALUES(0);\n"
- "INSERT INTO PlacePartType (id, name) VALUES(-1, 'Address');\n"
+ "INSERT INTO PlacePartType (id, name, uid, changed) VALUES(0, '', '', 0);\n"
+ "INSERT INTO PlacePartType (id, name, uid, changed) VALUES(-1, 'Address', '73D067F49E86C542C3E237AFC50BE77F8A11', 0);\n"
  "CREATE TABLE Reference (\n"
  "  id INTEGER PRIMARY KEY,\n"
  "  higher_id INTEGER,\n"
@@ -543,7 +545,7 @@ static const char* createFullDb =  /* recCreateFull.sql */
  "INSERT INTO User (id, res_id) VALUES(1, -1);\n"
  "INSERT INTO System (id, val) VALUES(1, '1');\n"
  "INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 1, 1, 'NI');\n"
- "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 37);\n"
+ "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 38);\n"
  "COMMIT;\n";
 
 /* End of src/rec/embed/recDatabaseCreate.f2c */

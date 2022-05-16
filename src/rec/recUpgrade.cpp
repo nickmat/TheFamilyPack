@@ -41,8 +41,8 @@
 const int recVerMajor = 0;
 const int recVerMinor = 0;
 const int recVerRev = 10;
-const int recVerTest = 37;                       // <<======<<<<
-const char* recFullVersion = "TFPD-v0.0.10.37";  // <<======<<<<
+const int recVerTest = 38;                       // <<======<<<<
+const char* recFullVersion = "TFPD-v0.0.10.38";  // <<======<<<<
 
 // This is the database Media-only version that this program can work with.
 // If the full version matches, then this is assumed to match as well.
@@ -1781,7 +1781,7 @@ void UpgradeTest0_0_10_36to0_0_10_37( const wxString& dbname )
     size_t size = (size_t) table.GetRowCount();
     for( size_t i = 0; i < size; i++ ) {
         table.SetRow( i );
-        update << "UPDATE \"" << dbname << "\".ContactType"
+        update << "UPDATE \"" << dbname << "\".NamePartType"
             " SET uid='" << recCreateUid() << "'"
             " WHERE id=" << table.GetAsString( 0 ) << ";\n"
             ;
@@ -1847,6 +1847,58 @@ void UpgradeTest0_0_10_36to0_0_10_37( const wxString& dbname )
     recDb::GetDb()->ExecuteUpdate( update );
 }
 
+void UpgradeTest0_0_10_37to0_0_10_38( const wxString& dbname )
+{
+    // Version 0.0.10.37 to 0.0.10.38
+
+    // Add field 'uid' and 'changed' to PlacePartType.
+    wxString update =
+        "BEGIN;\n";
+
+    // Add uid and changed fields to NamePartType table.
+    update <<
+        "CREATE TABLE \"" << dbname << "\".NewPlacePartType (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  name TEXT NOT NULL,\n"
+        "  uid TEXT NOT NULL,\n"
+        "  changed INT NOT NULL\n"
+        ");\n"
+
+        "INSERT INTO \"" << dbname << "\".NewPlacePartType"
+        " (id, name, uid, changed)\n"
+        " SELECT id, IFNULL(name,'') name, '', 2459716\n"
+        " FROM \"" << dbname << "\".PlacePartType;\n"
+
+        "DROP TABLE \"" << dbname << "\".PlacePartType;\n"
+        "ALTER TABLE \"" << dbname << "\".NewPlacePartType RENAME TO PlacePartType;\n"
+        ;
+
+    // Fill PlacePartType table uid field
+    // Do positive numbers
+    wxString query = "SELECT id FROM \"" + dbname + "\".PlacePartType WHERE id>0;\n"; // Get pptID list
+    wxSQLite3Table table = recDb::GetDb()->GetTable( query );
+    size_t size = (size_t) table.GetRowCount();
+    for( size_t i = 0; i < size; i++ ) {
+        table.SetRow( i );
+        update << "UPDATE \"" << dbname << "\".PlacePartType"
+            " SET uid='" << recCreateUid() << "'"
+            " WHERE id=" << table.GetAsString( 0 ) << ";\n"
+            ;
+    }
+    // Do negative numbers
+    update <<
+        "UPDATE \"" << dbname << "\".PlacePartType"
+        " SET changed=0 WHERE id=0;\n"
+        "UPDATE \"" << dbname << "\".PlacePartType"
+        " SET uid='73D067F49E86C542C3E237AFC50BE77F8A11' WHERE id=-1;\n"
+
+        "UPDATE \"" << dbname << "\".Version SET test=38 WHERE id=1;\n"
+        "COMMIT;\n"
+        ;
+
+    recDb::GetDb()->ExecuteUpdate( update );
+}
+
 void UpgradeRev0_0_10toCurrent( int test, const wxString& dbname )
 {
     switch( test )
@@ -1888,6 +1940,7 @@ void UpgradeRev0_0_10toCurrent( int test, const wxString& dbname )
     case 34: UpgradeTest0_0_10_34to0_0_10_35( dbname );
     case 35: UpgradeTest0_0_10_35to0_0_10_36( dbname );
     case 36: UpgradeTest0_0_10_36to0_0_10_37( dbname );
+    case 37: UpgradeTest0_0_10_37to0_0_10_38( dbname );
     }
 }
 

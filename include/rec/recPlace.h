@@ -112,12 +112,12 @@ public:
     int      f_sequence;
 
     recPlacePart() : f_type_id(0), f_place_id(0), f_sequence(0) {}
-    recPlacePart( idt id ) : recDbT(id) { Read(); }
+    recPlacePart( idt id, const wxString& dbname = "Main" ) : recDbT( id ) { Read( dbname ); }
     recPlacePart( const recPlacePart& pp );
 
     void Clear();
-    void Save();
-    bool Read();
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recPlacePart& r2 ) const;
 
     idt FGetTypeID() const { return f_type_id; }
@@ -139,7 +139,8 @@ public:
 
 //----------------------------------------------------------
 
-class recPlacePartType : public recDbT<recPlacePartType>
+class recPlacePartType
+    : public recDbT<recPlacePartType>, public recUidT<recPlacePartType>
 {
 public:
     static constexpr const char* s_tablename = "PlacePartType";
@@ -152,15 +153,13 @@ public:
     wxString f_name;
 
     recPlacePartType() {}
-    recPlacePartType( idt id ) : recDbT(id) { Read(); }
+    recPlacePartType( idt id, const wxString& dbname = "Main" ) : recDbT( id ) { Read( dbname ); }
     recPlacePartType( const recPlacePartType& ppt );
 
     void Clear();
-    void Save();
-    bool Read();
-    bool Equivalent( const recPlacePartType& r2 ) const {
-        return f_name == r2.f_name;
-    }
+    void Save( const wxString& dbname = "Main" );
+    bool Read( const wxString& dbname = "Main" );
+    bool Equivalent( const recPlacePartType& r2 ) const;
 
     wxString FGetName() const { return f_name; }
 

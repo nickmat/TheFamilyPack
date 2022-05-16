@@ -370,7 +370,7 @@ void recPlacePart::Clear()
     f_sequence = 0;
 }
 
-void recPlacePart::Save()
+void recPlacePart::Save( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -379,9 +379,9 @@ void recPlacePart::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO PlacePart (type_id, place_id, val, sequence) "
-            "VALUES (" ID ", " ID ", '%q', %u);",
-            f_type_id, f_place_id, UTF8_(f_val), f_sequence
+            "INSERT INTO \"%s\".PlacePart (type_id, place_id, val, sequence)"
+            " VALUES (" ID ", " ID ", '%q', %u);",
+            UTF8_( dbname ), f_type_id, f_place_id, UTF8_(f_val), f_sequence
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -391,23 +391,24 @@ void recPlacePart::Save()
         {
             // Add new record
             sql.Format(
-                "INSERT INTO PlacePart (id, type_id, place_id, val, sequence) "
-                "VALUES (" ID ", " ID ", " ID ", '%q', %u);",
-                f_id, f_type_id, f_place_id, UTF8_(f_val), f_sequence
+                "INSERT INTO \"%s\".PlacePart (id, type_id, place_id, val, sequence)"
+                " VALUES (" ID ", " ID ", " ID ", '%q', %u);",
+                UTF8_( dbname ), f_id, f_type_id, f_place_id, UTF8_(f_val), f_sequence
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE PlacePart SET type_id=" ID ", place_id=" ID ", val='%q', sequence=%u "
-                "WHERE id=" ID ";",
-                f_type_id, f_place_id, UTF8_(f_val), f_sequence, f_id
+                "UPDATE \"%s\".PlacePart"
+                " SET type_id=" ID ", place_id=" ID ", val='%q', sequence=%u"
+                " WHERE id=" ID ";",
+                UTF8_( dbname ), f_type_id, f_place_id, UTF8_(f_val), f_sequence, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
     }
 }
 
-bool recPlacePart::Read()
+bool recPlacePart::Read( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -417,7 +418,11 @@ bool recPlacePart::Read()
         return false;
     }
 
-    sql.Format( "SELECT * FROM PlacePart WHERE id=" ID ";", f_id );
+    sql.Format(
+        "SELECT type_id, place_id, val, sequence"
+        " FROM \"%s\".PlacePart WHERE id=" ID ";",
+        UTF8_( dbname ), f_id
+    );
     result = s_db->GetTable( sql );
 
     if( result.GetRowCount() != 1 )
@@ -426,10 +431,10 @@ bool recPlacePart::Read()
         return false;
     }
     result.SetRow( 0 );
-    f_type_id  = GET_ID( result.GetInt64( 1 ) );
-    f_place_id = GET_ID( result.GetInt64( 2 ) );
-    f_val      = result.GetAsString( 3 );
-    f_sequence = result.GetInt( 4 );
+    f_type_id  = GET_ID( result.GetInt64( 0 ) );
+    f_place_id = GET_ID( result.GetInt64( 1 ) );
+    f_val      = result.GetAsString( 2 );
+    f_sequence = result.GetInt( 3 );
     return true;
 }
 
@@ -487,15 +492,19 @@ recPlacePartType::recPlacePartType( const recPlacePartType& ppt )
 {
     f_id   = ppt.f_id;
     f_name = ppt.f_name;
+    f_uid = ppt.f_uid;
+    f_changed = ppt.f_changed;
 }
 
 void recPlacePartType::Clear()
 {
     f_id   = 0;
-    f_name = wxEmptyString;
+    f_name.clear();
+    f_uid.clear();
+    f_changed = 0;
 }
 
-void recPlacePartType::Save()
+void recPlacePartType::Save( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -504,33 +513,36 @@ void recPlacePartType::Save()
     {
         // Add new record
         sql.Format(
-            "INSERT INTO PlacePartType (name) VALUES ('%q');",
-            UTF8_(f_name)
+            "INSERT INTO \"%s\".PlacePartType (name, uid, changed) VALUES ('%q', '%q', %ld);",
+            UTF8_( dbname ), UTF8_( f_name ), UTF8_( f_uid ), f_changed
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
-    } else {
+    }
+    else {
         // Does record exist
         if( !Exists() )
         {
             // Add new record
             sql.Format(
-                "INSERT INTO PlacePartType (id, name)"
-                "VALUES (" ID ", '%q');",
-                f_id, UTF8_(f_name)
+                "INSERT INTO \"%s\".PlacePartType (id, name, uid, changed) "
+                "VALUES (" ID ", '%q', '%q', %ld);",
+                UTF8_( dbname ), f_id, UTF8_( f_name ), UTF8_( f_uid ), f_changed
             );
-        } else {
+        }
+        else {
             // Update existing record
             sql.Format(
-                "UPDATE PlacePartType SET name='%q' WHERE id=" ID ";",
-                UTF8_(f_name), f_id
+                "UPDATE \"%s\".PlacePartType SET name='%q', uid='%q', changed=%ld"
+                " WHERE id=" ID ";",
+                UTF8_( dbname ), UTF8_( f_name ), UTF8_( f_uid ), f_changed, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
     }
 }
 
-bool recPlacePartType::Read()
+bool recPlacePartType::Read( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     wxSQLite3Table result;
@@ -540,7 +552,10 @@ bool recPlacePartType::Read()
         return false;
     }
 
-    sql.Format( "SELECT * FROM PlacePartType WHERE id=" ID ";", f_id );
+    sql.Format(
+        "SELECT name, uid, changed FROM \"%s\".PlacePartType WHERE id=" ID ";",
+        UTF8_( dbname ), f_id
+    );
     result = s_db->GetTable( sql );
 
     if( result.GetRowCount() != 1 )
@@ -549,8 +564,19 @@ bool recPlacePartType::Read()
         return false;
     }
     result.SetRow( 0 );
-    f_name = result.GetAsString( 1 );
+    f_name = result.GetAsString( 0 );
+    f_uid = result.GetAsString( 1 );
+    f_changed = result.GetInt( 2 );
     return true;
+}
+
+bool recPlacePartType::Equivalent( const recPlacePartType& r2 ) const
+{
+    return
+        f_name == r2.f_name &&
+        f_uid == r2.f_uid &&
+        f_changed == r2.f_changed
+        ;
 }
 
 void recPlacePartType::Renumber( idt id, idt to_id )
@@ -573,20 +599,24 @@ void recPlacePartType::Renumber( idt id, idt to_id )
 
 std::string recPlacePartType::CsvTitles()
 {
-    return std::string("ID, Name\n");
+    return std::string( "ID, Name, UID, Last Changed\n" );
 }
 
 void recPlacePartType::CsvWrite( std::ostream& out, idt id )
 {
     recPlacePartType ppt( id );
     recCsvWrite( out, ppt.FGetID() );
-    recCsvWrite( out, ppt.FGetName(), '\n' );
+    recCsvWrite( out, ppt.FGetName() );
+    recCsvWrite( out, ppt.FGetUid() );
+    recCsvWrite( out, ppt.FGetChanged(), '\n' );
 }
 
 bool recPlacePartType::CsvRead( std::istream& in )
 {
     recCsvRead( in, f_id );
     recCsvRead( in, f_name );
+    recCsvRead( in, f_uid );
+    recCsvRead( in, f_changed );
     return bool( in );
 }
 

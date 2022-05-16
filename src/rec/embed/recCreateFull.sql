@@ -521,11 +521,13 @@ INSERT INTO PlacePart (id) VALUES(0);
 
 CREATE TABLE PlacePartType (
   id INTEGER PRIMARY KEY,
-  name TEXT
+  name TEXT NOT NULL,
+  uid TEXT NOT NULL,
+  changed INT NOT NULL
 );
 
-INSERT INTO PlacePartType (id) VALUES(0);
-INSERT INTO PlacePartType (id, name) VALUES(-1, 'Address');
+INSERT INTO PlacePartType (id, name, uid, changed) VALUES(0, '', '', 0);
+INSERT INTO PlacePartType (id, name, uid, changed) VALUES(-1, 'Address', '73D067F49E86C542C3E237AFC50BE77F8A11', 0);
 
 CREATE TABLE Reference (
   id INTEGER PRIMARY KEY,
@@ -630,7 +632,7 @@ INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 1, 1, 'NI');
 /* Table Version created in recCreateCommon.sql */
 
 /* The Version table row 1 is the full TFPD database */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 37);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 38);
 
 COMMIT;
 
