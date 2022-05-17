@@ -35,6 +35,8 @@
 #include "wx/wx.h"
 #endif
 
+#include <cal/calendar.h>
+
 #include <rec/recSystem.h>
 #include <rec/recIndividual.h>
 
@@ -172,6 +174,8 @@ bool rgDlgEditResearcher::TransferDataToWindow()
     m_textCtrlUser->SetValue( recUser::GetIdStr( m_userID ) );
     m_checkBoxCurrentUser->SetValue( m_userID == m_currentUserID );
     UpdateIndividual();
+    wxString changed = calStrFromJdn( m_researcher.FGetChanged() );
+    m_textCtrlChanged->SetValue( changed );
     m_staticResID->SetLabel( m_researcher.GetIdStr() );
     UpdateContacts( -1 );
     return true;
@@ -199,6 +203,7 @@ bool rgDlgEditResearcher::TransferDataFromWindow()
     }
     m_researcher.FSetName( m_textCtrlName->GetValue() );
     m_researcher.FSetComment( m_textCtrlComment->GetValue() );
+    m_researcher.FSetChanged( calGetTodayJdn() );
     m_researcher.Save();
 
     bool set_curr = m_checkBoxCurrentUser->GetValue();
@@ -276,10 +281,24 @@ void rgDlgEditResearcher::ContactButtonsEnable( int row )
     if( row < 0 ) {
         m_buttonEdit->Disable();
         m_buttonDelete->Disable();
+        m_buttonUp->Disable();
+        m_buttonDown->Disable();
         return;
     }
     m_buttonEdit->Enable();
     m_buttonDelete->Enable();
+    if( row == 0 ) {
+        m_buttonUp->Disable();
+    }
+    else {
+        m_buttonUp->Enable();
+    }
+    if( row == m_listContacts->GetItemCount() - 1 ) {
+        m_buttonDown->Disable();
+    }
+    else {
+        m_buttonDown->Enable();
+    }
 }
 
 void rgDlgEditResearcher::OnContactDeselected( wxListEvent& event )
@@ -328,6 +347,42 @@ void rgDlgEditResearcher::OnButtonDelete( wxCommandEvent& event )
         m_contacts[row].Delete();
         UpdateContacts( -1 );
     }
+}
+
+void rgDlgEditResearcher::OnButtonUp( wxCommandEvent& event )
+{
+    long row = m_listContacts->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row < 0 ) {
+        wxMessageBox( _( "No row selected" ), _( "Edit Entity" ) );
+        return;
+    }
+    if( row == 0 ) {
+        return; // Already at top
+    }
+    int seq = m_contacts[row].FGetListSeq();
+    m_contacts[row].FSetListSeq( m_contacts[row - 1].FGetListSeq() );
+    m_contacts[row].Save();
+    m_contacts[row - 1].FSetListSeq( seq );
+    m_contacts[row - 1].Save();
+    UpdateContacts( m_contacts[row].FGetID() );
+}
+
+void rgDlgEditResearcher::OnButtonDown( wxCommandEvent& event )
+{
+    long row = m_listContacts->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row < 0 ) {
+        wxMessageBox( _( "No row selected" ), _( "Edit Entity" ) );
+        return;
+    }
+    if( row == m_listContacts->GetItemCount() - 1 ) {
+        return; // Already at bottom
+    }
+    int seq = m_contacts[row].FGetListSeq();
+    m_contacts[row].FSetListSeq( m_contacts[row + 1].FGetListSeq() );
+    m_contacts[row].Save();
+    m_contacts[row + 1].FSetListSeq( seq );
+    m_contacts[row + 1].Save();
+    UpdateContacts( m_contacts[row].FGetID() );
 }
 
 //============================================================================

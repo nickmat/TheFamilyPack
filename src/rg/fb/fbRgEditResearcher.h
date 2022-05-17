@@ -45,10 +45,13 @@ class fbRgEditResearcher : public wxDialog
 		wxCheckBox* m_checkBoxCurrentUser;
 		wxButton* m_buttonIndividual;
 		wxTextCtrl* m_textCtrlIndivitual;
+		wxTextCtrl* m_textCtrlChanged;
 		wxListCtrl* m_listContacts;
 		wxButton* m_buttonAdd;
 		wxButton* m_buttonEdit;
 		wxButton* m_buttonDelete;
+		wxButton* m_buttonUp;
+		wxButton* m_buttonDown;
 		wxStaticText* m_staticResID;
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
@@ -61,6 +64,8 @@ class fbRgEditResearcher : public wxDialog
 		virtual void OnButtonAdd( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnButtonEdit( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnButtonDelete( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonUp( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonDown( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:

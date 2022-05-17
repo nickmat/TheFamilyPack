@@ -56,6 +56,8 @@ private:
     void OnButtonAdd( wxCommandEvent& event ) override;
     void OnButtonEdit( wxCommandEvent& event ) override;
     void OnButtonDelete( wxCommandEvent& event ) override;
+    void OnButtonUp( wxCommandEvent& event ) override;
+    void OnButtonDown( wxCommandEvent& event ) override;
 
     recResearcher  m_researcher;
     wxString       m_original_uid;
