@@ -473,13 +473,13 @@ void rgDlgEditReference::CitationButtonsEnable( long row )
         m_buttonCitationUp->Disable();
     }
     else {
-        m_buttonCitationDn->Enable();
+        m_buttonCitationUp->Enable();
     }
     if( row == m_listCitation->GetItemCount() - 1 ) {
         m_buttonCitationDn->Disable();
     }
     else {
-        m_buttonCitationUp->Enable();
+        m_buttonCitationDn->Enable();
     }
 }
 
@@ -558,13 +558,13 @@ void rgDlgEditReference::MediaButtonsEnable( long row )
         m_buttonMediaUp->Disable();
     }
     else {
-        m_buttonMediaDn->Enable();
+        m_buttonMediaUp->Enable();
     }
     if( row == m_listMedia->GetItemCount() - 1 ) {
         m_buttonMediaDn->Disable();
     }
     else {
-        m_buttonMediaUp->Enable();
+        m_buttonMediaDn->Enable();
     }
 }
 
@@ -809,13 +809,13 @@ void rgDlgEditReference::EntityButtonsEnable( long row )
         m_buttonUp->Disable();
     }
     else {
-        m_buttonDn->Enable();
+        m_buttonUp->Enable();
     }
     if( row == m_listEntities->GetItemCount() - 1 ) {
         m_buttonDn->Disable();
     }
     else {
-        m_buttonUp->Enable();
+        m_buttonDn->Enable();
     }
 }
 
