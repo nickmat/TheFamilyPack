@@ -874,7 +874,7 @@ recCitationPartTypeVec recCitationPartType::GetList( const wxString& dbname )
     // Put standard entries in list.
     sql.Format(
         "SELECT id, name, style, comment, uid, changed FROM \"%s\".CitationPartType "
-        "WHERE id<=0 ORDER BY id DESC;", UTF8_( dbname )
+        "WHERE id<0 ORDER BY id DESC;", UTF8_( dbname )
     );
     result = s_db->GetTable( sql );
 
