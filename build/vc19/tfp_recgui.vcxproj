@@ -124,6 +124,7 @@
     <ClCompile Include="..\..\src\rg\fb\fbRgEditContact.cpp" />
     <ClCompile Include="..\..\src\rg\fb\fbRgEditGallery.cpp" />
     <ClCompile Include="..\..\src\rg\fb\fbRgEditMedia.cpp" />
+    <ClCompile Include="..\..\src\rg\fb\fbRgEditName.cpp" />
     <ClCompile Include="..\..\src\rg\fb\fbRgEditReference.cpp" />
     <ClCompile Include="..\..\src\rg\fb\fbRgEditResearcher.cpp" />
     <ClCompile Include="..\..\src\rg\fb\fbRgSelect.cpp" />
@@ -179,6 +180,7 @@
     <ClInclude Include="..\..\src\rg\fb\fbRgEditDatabase.h" />
     <ClInclude Include="..\..\src\rg\fb\fbRgEditGallery.h" />
     <ClInclude Include="..\..\src\rg\fb\fbRgEditMedia.h" />
+    <ClInclude Include="..\..\src\rg\fb\fbRgEditName.h" />
     <ClInclude Include="..\..\src\rg\fb\fbRgEditReference.h" />
     <ClInclude Include="..\..\src\rg\fb\fbRgEditResearcher.h" />
     <ClInclude Include="..\..\src\rg\fb\fbRgSelect.h" />
