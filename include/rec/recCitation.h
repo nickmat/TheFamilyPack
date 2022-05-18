@@ -29,6 +29,7 @@
 #define RECCITATION_H
 
 #include <rec/recDatabase.h>
+#include <rec/recContact.h>
 
 class recRepository;
 using recRepositoryVec = std::vector<recRepository>;
@@ -137,6 +138,10 @@ public:
 
     static wxString GetIdStr( idt repID ) { return wxString::Format( "Rp" ID, repID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
+
+    recContactVec GetContacts( const wxString& dbname = "Main" ) const {
+        return recContactList::GetContacts( f_con_list_id, dbname );
+    }
 
     static recRepositoryVec GetFullList( const wxString& dbname = "Main" );
 
