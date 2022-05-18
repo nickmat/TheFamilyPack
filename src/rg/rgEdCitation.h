@@ -136,7 +136,9 @@ private:
     bool TransferDataFromWindow();
     void UpdatePartType( idt ciptID );
 
-    void OnButtonTypeAdd( wxCommandEvent& event ) override;
+    void OnAddEditButton( wxCommandEvent& event ) override;
+    void OnAddType( wxCommandEvent& event ) override;
+    void OnEditType( wxCommandEvent& event ) override;
 
     recCitationPart        m_part;
     recCitationPartTypeVec m_types;

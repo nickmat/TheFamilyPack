@@ -179,7 +179,7 @@ idt rgCreateCitationPart( wxWindow* wind, idt citID )
 
 bool rgEditCitationPartType( wxWindow* wind, idt cipID, const wxString& title )
 {
-    return rgEdit<rgDlgEditCitationPart>( wind, cipID, title );
+    return rgEdit<rgDlgEditCitationPartType>( wind, cipID, title );
 }
 
 idt rgCreateCitationPartType( wxWindow* wind )
@@ -568,10 +568,10 @@ bool rgDlgEditCitationPart::TransferDataFromWindow()
 
 void rgDlgEditCitationPart::UpdatePartType( idt ciptID )
 {
+    m_types = recCitationPartType::GetList();
     m_choiceType->Clear();
     m_choiceType->Append( _( "<Select Type>" ) );
     m_choiceType->SetSelection( 0 );
-    m_types = recCitationPartType::GetList();
     for( size_t i = 0; i < m_types.size(); i++ ) {
         m_choiceType->Append( m_types[i].FGetName() );
         if( ciptID == m_types[i].FGetID() ) {
@@ -580,13 +580,26 @@ void rgDlgEditCitationPart::UpdatePartType( idt ciptID )
     }
 }
 
-void rgDlgEditCitationPart::OnButtonTypeAdd( wxCommandEvent& event )
+void rgDlgEditCitationPart::OnAddEditButton( wxCommandEvent& event )
+{
+    wxSize s = m_buttonTypeAdd->GetSize();
+    m_buttonTypeAdd->PopupMenu( m_menuAddEditType, 0, s.y );
+}
+
+void rgDlgEditCitationPart::OnAddType( wxCommandEvent& event )
 {
     idt ciptID = rgCreateCitationPartType( this );
-    if( ciptID ) {
-        m_part.FSetTypeID( ciptID );
-        UpdatePartType( ciptID );
-    }
+    UpdatePartType( ciptID );
+}
+
+void rgDlgEditCitationPart::OnEditType( wxCommandEvent& event )
+{
+    int type = m_choiceType->GetSelection();
+    if( type == 0 ) return; // Nothing selected, silently ignore.
+
+    idt ciptID = m_types[type - 1].FGetID();
+    rgEditCitationPartType( this, ciptID );
+    UpdatePartType( ciptID );
 }
 
 

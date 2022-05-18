@@ -326,7 +326,18 @@ fbRgEditCitationPart::fbRgEditCitationPart( wxWindow* parent, wxWindowID id, con
 	m_choiceType->SetSelection( 0 );
 	bSizer14->Add( m_choiceType, 1, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxRIGHT, 5 );
 
-	m_buttonTypeAdd = new wxButton( this, wxID_ANY, _("&Add"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonTypeAdd = new wxButton( this, wxID_ANY, _("&Add/Edit"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_menuAddEditType = new wxMenu();
+	wxMenuItem* m_menuAddType;
+	m_menuAddType = new wxMenuItem( m_menuAddEditType, wxID_ANY, wxString( _("&Add Type") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menuAddEditType->Append( m_menuAddType );
+
+	wxMenuItem* m_menuEditType;
+	m_menuEditType = new wxMenuItem( m_menuAddEditType, wxID_ANY, wxString( _("&Edit Type") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menuAddEditType->Append( m_menuEditType );
+
+	m_buttonTypeAdd->Connect( wxEVT_RIGHT_DOWN, wxMouseEventHandler( fbRgEditCitationPart::m_buttonTypeAddOnContextMenu ), NULL, this );
+
 	bSizer14->Add( m_buttonTypeAdd, 0, wxTOP|wxBOTTOM|wxRIGHT, 5 );
 
 
@@ -384,14 +395,17 @@ fbRgEditCitationPart::fbRgEditCitationPart( wxWindow* parent, wxWindowID id, con
 	this->Centre( wxBOTH );
 
 	// Connect Events
-	m_buttonTypeAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditCitationPart::OnButtonTypeAdd ), NULL, this );
+	m_buttonTypeAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditCitationPart::OnAddEditButton ), NULL, this );
+	m_menuAddEditType->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbRgEditCitationPart::OnAddType ), this, m_menuAddType->GetId());
+	m_menuAddEditType->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbRgEditCitationPart::OnEditType ), this, m_menuEditType->GetId());
 }
 
 fbRgEditCitationPart::~fbRgEditCitationPart()
 {
 	// Disconnect Events
-	m_buttonTypeAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditCitationPart::OnButtonTypeAdd ), NULL, this );
+	m_buttonTypeAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditCitationPart::OnAddEditButton ), NULL, this );
 
+	delete m_menuAddEditType;
 }
 
 fbRgEditCitationPartType::fbRgEditCitationPartType( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )

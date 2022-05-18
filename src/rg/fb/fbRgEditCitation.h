@@ -27,6 +27,7 @@
 #include <wx/statline.h>
 #include <wx/dialog.h>
 #include <wx/choice.h>
+#include <wx/menu.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -124,6 +125,7 @@ class fbRgEditCitationPart : public wxDialog
 	protected:
 		wxChoice* m_choiceType;
 		wxButton* m_buttonTypeAdd;
+		wxMenu* m_menuAddEditType;
 		wxTextCtrl* m_textCtrlValue;
 		wxTextCtrl* m_textCtrlComment;
 		wxStaticText* m_staticCipID;
@@ -131,7 +133,9 @@ class fbRgEditCitationPart : public wxDialog
 		wxButton* m_buttonCancel;
 
 		// Virtual event handlers, override them in your derived class
-		virtual void OnButtonTypeAdd( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAddEditButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAddType( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEditType( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:
@@ -139,6 +143,11 @@ class fbRgEditCitationPart : public wxDialog
 		fbRgEditCitationPart( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Citation Part"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE );
 
 		~fbRgEditCitationPart();
+
+		void m_buttonTypeAddOnContextMenu( wxMouseEvent &event )
+		{
+			m_buttonTypeAdd->PopupMenu( m_menuAddEditType, event.GetPosition() );
+		}
 
 };
 
