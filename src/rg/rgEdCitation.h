@@ -72,25 +72,30 @@ private:
 
 
 //============================================================================
-//---------------------------[ rgDlgEditArchive ]-----------------------------
+//-------------------------[ rgDlgEditRepository ]----------------------------
 //============================================================================
 
-class rgDlgEditArchive : public fbRgEditArchive
+class rgDlgEditRepository : public fbRgEditRepository
 {
     enum Columns {
         COL_ConID, COL_Type, COL_Value, COL_MAX
     };
 public:
-    rgDlgEditArchive( wxWindow* parent, idt resID );
+    rgDlgEditRepository( wxWindow* parent, idt resID );
 
 private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
+    void UpdateContacts( idt conID );
 
+    void ContactButtonsEnable( int row );
+    void OnContactDeselected( wxListEvent& event ) override;
+    void OnContactSelected( wxListEvent& event ) override;
     void OnButtonAdd( wxCommandEvent& event ) override;
     void OnButtonEdit( wxCommandEvent& event ) override;
     void OnButtonDelete( wxCommandEvent& event ) override;
-
+    void OnButtonUp( wxCommandEvent& event ) override;
+    void OnButtonDown( wxCommandEvent& event ) override;
 
     recRepository  m_archive;
     recContactList m_list;

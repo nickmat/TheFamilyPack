@@ -71,7 +71,7 @@ bool rgEditArchive( wxWindow* wind, idt arcID, const wxString& title )
     recDb::Savepoint( savepoint );
     bool ret = false;
 
-    rgDlgEditArchive dialog( wind, arcID );
+    rgDlgEditRepository dialog( wind, arcID );
     if( !title.empty() ) {
         dialog.SetTitle( title );
     }
@@ -348,11 +348,11 @@ void rgDlgEditCitation::OnButtonDown( wxCommandEvent& event )
 }
 
 //============================================================================
-//---------------------------[ rgDlgEditArchive ]-----------------------------
+//-------------------------[ rgDlgEditRepository ]----------------------------
 //============================================================================
 
-rgDlgEditArchive::rgDlgEditArchive( wxWindow* parent, idt arcID )
-    : m_archive(arcID), fbRgEditArchive( parent )
+rgDlgEditRepository::rgDlgEditRepository( wxWindow* parent, idt arcID )
+    : m_archive(arcID), fbRgEditRepository( parent )
 {
     m_list.ReadID( m_archive.FGetConListID() );
     m_contacts = m_list.GetContacts();
@@ -366,7 +366,7 @@ rgDlgEditArchive::rgDlgEditArchive( wxWindow* parent, idt arcID )
     m_listContacts->InsertColumn( COL_Value, itemCol );
 }
 
-bool rgDlgEditArchive::TransferDataToWindow()
+bool rgDlgEditRepository::TransferDataToWindow()
 {
     wxASSERT( m_archive.FGetID() != 0 );
 
@@ -375,19 +375,12 @@ bool rgDlgEditArchive::TransferDataToWindow()
     m_textCtrlUid->SetValue( m_archive.FGetUid() );
     wxString changed = calStrFromJdn( m_archive.FGetChanged(), CALENDAR_SCH_Gregorian );
     m_textCtrlChanged->SetValue( changed );
-
-    for( size_t i = 0 ; i < m_contacts.size() ; i++ ) {
-        m_listContacts->InsertItem( i, m_contacts[i].GetIdStr() );
-        m_listContacts->SetItem( i, COL_Type, m_contacts[i].GetTypeStr() );
-        m_listContacts->SetItem( i, COL_Value, m_contacts[i].FGetValue() );
-    }
-
-    m_staticArcID->SetLabel( m_archive.GetIdStr() );
-
+    m_staticRepID->SetLabel( m_archive.GetIdStr() );
+    UpdateContacts( -1 );
     return true;
 }
 
-bool rgDlgEditArchive::TransferDataFromWindow()
+bool rgDlgEditRepository::TransferDataFromWindow()
 {
     m_archive.FSetName( m_textCtrlName->GetValue() );
     m_archive.FSetNote( m_textCtrlNote->GetValue() );
@@ -397,7 +390,64 @@ bool rgDlgEditArchive::TransferDataFromWindow()
     return true;
 }
 
-void rgDlgEditArchive::OnButtonAdd( wxCommandEvent& event )
+void rgDlgEditRepository::UpdateContacts( idt conID )
+{
+    m_contacts = m_archive.GetContacts();
+    m_listContacts->DeleteAllItems();
+    int row = -1;
+    for( size_t i = 0; i < m_contacts.size(); i++ ) {
+        m_listContacts->InsertItem( i, m_contacts[i].GetIdStr() );
+        m_listContacts->SetItem( i, COL_Type, m_contacts[i].GetTypeStr() );
+        m_listContacts->SetItem( i, COL_Value, m_contacts[i].FGetValue() );
+        if( conID == m_contacts[i].FGetID() ) {
+            m_listContacts->SetItemState( i, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+            row = i;
+        }
+    }
+    m_listContacts->SetColumnWidth( COL_Value, -1 );
+    if( row >= 0 ) {
+        m_listContacts->EnsureVisible( row );
+    }
+    ContactButtonsEnable( row );
+}
+
+void rgDlgEditRepository::ContactButtonsEnable( int row )
+{
+    if( row < 0 ) {
+        m_buttonEdit->Disable();
+        m_buttonDelete->Disable();
+        m_buttonUp->Disable();
+        m_buttonDown->Disable();
+        return;
+    }
+    m_buttonEdit->Enable();
+    m_buttonDelete->Enable();
+    if( row == 0 ) {
+        m_buttonUp->Disable();
+    }
+    else {
+        m_buttonUp->Enable();
+    }
+    if( row == m_listContacts->GetItemCount() - 1 ) {
+        m_buttonDown->Disable();
+    }
+    else {
+        m_buttonDown->Enable();
+    }
+}
+
+void rgDlgEditRepository::OnContactDeselected( wxListEvent& event )
+{
+    ContactButtonsEnable( -1 );
+}
+
+void rgDlgEditRepository::OnContactSelected( wxListEvent& event )
+{
+    long row = m_listContacts->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    ContactButtonsEnable( row );
+}
+
+void rgDlgEditRepository::OnButtonAdd( wxCommandEvent& event )
 {
     idt conID = rgCreateContact( this, m_list.FGetID() );
     if( conID ) {
@@ -410,7 +460,7 @@ void rgDlgEditArchive::OnButtonAdd( wxCommandEvent& event )
     }
 }
 
-void rgDlgEditArchive::OnButtonEdit( wxCommandEvent& event )
+void rgDlgEditRepository::OnButtonEdit( wxCommandEvent& event )
 {
     long row = m_listContacts->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
@@ -425,7 +475,7 @@ void rgDlgEditArchive::OnButtonEdit( wxCommandEvent& event )
     }
 }
 
-void rgDlgEditArchive::OnButtonDelete( wxCommandEvent& event )
+void rgDlgEditRepository::OnButtonDelete( wxCommandEvent& event )
 {
     long row = m_listContacts->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row >= 0 ) {
@@ -435,6 +485,42 @@ void rgDlgEditArchive::OnButtonDelete( wxCommandEvent& event )
     } else {
         wxMessageBox( _("No row selected"), _("Delete Contact") );
     }
+}
+
+void rgDlgEditRepository::OnButtonUp( wxCommandEvent& event )
+{
+    long row = m_listContacts->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row < 0 ) {
+        wxMessageBox( _( "No row selected" ), _( "Edit Entity" ) );
+        return;
+    }
+    if( row == 0 ) {
+        return; // Already at top
+    }
+    int seq = m_contacts[row].FGetListSeq();
+    m_contacts[row].FSetListSeq( m_contacts[row - 1].FGetListSeq() );
+    m_contacts[row].Save();
+    m_contacts[row - 1].FSetListSeq( seq );
+    m_contacts[row - 1].Save();
+    UpdateContacts( m_contacts[row].FGetID() );
+}
+
+void rgDlgEditRepository::OnButtonDown( wxCommandEvent& event )
+{
+    long row = m_listContacts->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row < 0 ) {
+        wxMessageBox( _( "No row selected" ), _( "Edit Entity" ) );
+        return;
+    }
+    if( row == m_listContacts->GetItemCount() - 1 ) {
+        return; // Already at bottom
+    }
+    int seq = m_contacts[row].FGetListSeq();
+    m_contacts[row].FSetListSeq( m_contacts[row + 1].FGetListSeq() );
+    m_contacts[row].Save();
+    m_contacts[row + 1].FSetListSeq( seq );
+    m_contacts[row + 1].Save();
+    UpdateContacts( m_contacts[row].FGetID() );
 }
 
 

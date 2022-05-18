@@ -75,24 +75,24 @@ class fbRgEditCitation : public wxDialog
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class fbRgEditArchive
+/// Class fbRgEditRepository
 ///////////////////////////////////////////////////////////////////////////////
-class fbRgEditArchive : public wxDialog
+class fbRgEditRepository : public wxDialog
 {
 	private:
 
 	protected:
 		wxTextCtrl* m_textCtrlName;
 		wxTextCtrl* m_textCtrlNote;
-		wxStaticText* m_staticText15;
 		wxTextCtrl* m_textCtrlUid;
-		wxStaticText* m_staticText16;
 		wxTextCtrl* m_textCtrlChanged;
 		wxListCtrl* m_listContacts;
 		wxButton* m_buttonAdd;
 		wxButton* m_buttonEdit;
 		wxButton* m_buttonDelete;
-		wxStaticText* m_staticArcID;
+		wxButton* m_buttonUp;
+		wxButton* m_buttonDown;
+		wxStaticText* m_staticRepID;
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
 
@@ -102,13 +102,15 @@ class fbRgEditArchive : public wxDialog
 		virtual void OnButtonAdd( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnButtonEdit( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnButtonDelete( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonUp( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonDown( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:
 
-		fbRgEditArchive( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Archive"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE );
+		fbRgEditRepository( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Repository"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE );
 
-		~fbRgEditArchive();
+		~fbRgEditRepository();
 
 };
 
