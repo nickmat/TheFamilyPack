@@ -773,7 +773,7 @@ void recCitationPartType::Clear()
 {
     f_id = 0;
     f_name.clear();
-    f_style = 0;
+    f_style = recTextStyle::normal;
     f_comment.clear();
     f_uid.clear();
     f_changed = 0;
@@ -839,7 +839,7 @@ bool recCitationPartType::Read( const wxString& dbname )
     }
     result.SetRow( 0 );
     f_name = result.GetAsString( 0 );
-    f_style = result.GetInt( 1 );
+    f_style = static_cast<recTextStyle>(result.GetInt( 1 ));
     f_comment = result.GetAsString( 2 );
     f_uid = result.GetAsString( 3 );
     f_changed = result.GetInt( 4 );
@@ -882,7 +882,7 @@ recCitationPartTypeVec recCitationPartType::GetList( const wxString& dbname )
         result.SetRow( i );
         cpt.f_id = GET_ID( result.GetInt64( 0 ) );
         cpt.f_name = result.GetAsString( 1 );
-        cpt.f_style = result.GetInt( 2 );
+        cpt.f_style = static_cast<recTextStyle>(result.GetInt( 2 ));
         cpt.f_comment = result.GetAsString( 3 );
         cpt.f_uid = result.GetAsString( 4 );
         cpt.f_changed = result.GetInt( 5 );
@@ -900,7 +900,7 @@ recCitationPartTypeVec recCitationPartType::GetList( const wxString& dbname )
         result.SetRow( i );
         cpt.f_id = GET_ID( result.GetInt64( 0 ) );
         cpt.f_name = result.GetAsString( 1 );
-        cpt.f_style = result.GetInt( 2 );
+        cpt.f_style = static_cast<recTextStyle>(result.GetInt( 2 ));
         cpt.f_comment = result.GetAsString( 3 );
         cpt.f_uid = result.GetAsString( 4 );
         cpt.f_changed = result.GetInt( 5 );
@@ -953,7 +953,7 @@ void recCitationPartType::CsvWrite( std::ostream& out, idt id )
     recCitationPartType cipt( id );
     recCsvWrite( out, cipt.FGetID() );
     recCsvWrite( out, cipt.FGetName() );
-    recCsvWrite( out, cipt.FGetStyle() );
+    recCsvWrite( out, static_cast<int>(cipt.FGetStyle()) );
     recCsvWrite( out, cipt.FGetComment() );
     recCsvWrite( out, cipt.FGetUid() );
     recCsvWrite( out, cipt.FGetChanged(), '\n' );
@@ -963,7 +963,9 @@ bool recCitationPartType::CsvRead( std::istream& in )
 {
     recCsvRead( in, f_id );
     recCsvRead( in, f_name );
-    recCsvRead( in, f_style );
+    int style;
+    recCsvRead( in, style );
+    f_style = static_cast<recTextStyle>(style);
     recCsvRead( in, f_comment );
     recCsvRead( in, f_uid );
     recCsvRead( in, f_changed );

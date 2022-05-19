@@ -117,6 +117,10 @@ inline wxString recMakeDirectoryStr( const wxString& dir ) {
 enum class Sex { unstated, male, female, unknown };
 extern wxString recGetSexStr( Sex sex );
 
+enum class recTextStyle : int { normal, bold, italic, bolditalic };
+extern wxString recGetTextStyleName( recTextStyle style );
+extern std::string recStyleHTMLifyStr( const wxString& str, recTextStyle style );
+
 extern std::string recHTMLifyStr( const wxString& str );
 
 inline bool recIsCharDigit( const wxString& str, size_t pos ) {
