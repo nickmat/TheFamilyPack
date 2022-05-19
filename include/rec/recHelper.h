@@ -117,6 +117,8 @@ inline wxString recMakeDirectoryStr( const wxString& dir ) {
 enum class Sex { unstated, male, female, unknown };
 extern wxString recGetSexStr( Sex sex );
 
+extern std::string recHTMLifyStr( const wxString& str );
+
 inline bool recIsCharDigit( const wxString& str, size_t pos ) {
     return str.size() > pos && wxIsdigit( str.GetChar( pos ) );
 }
@@ -190,8 +192,6 @@ enum recEntity {
 
 // Used for searching for records with binary fields
 enum TriLogic { TRILOGIC_false, TRILOGIC_true, TRILOGIC_both };
-
-extern wxString recHTMLifyStr( const wxString& str );
 
 // Create a string list of ID strings for a given record type
 // ie "Pa12, Pa34, Pa56" from a recIdVec

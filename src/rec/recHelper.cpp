@@ -117,32 +117,31 @@ recSplitStrRet recSplitStr( const wxString& str, idt* id1, idt* id2, wxString* d
 wxString recGetSexStr( Sex sex )
 {
     static wxString sexarray[] = {
-        _("Unstated"), _("Male"), _("Female"), _("Unknown")
+        _( "Unstated" ), _( "Male" ), _( "Female" ), _( "Unknown" )
     };
     return sexarray[static_cast<size_t>(sex)];
 }
 
-wxString recHTMLifyStr( const wxString& str )
+std::string recHTMLifyStr( const wxString& str )
 {
-    wxString htm;
-    wxString::const_iterator it;
-    for( it = str.begin() ; it != str.end() ; it++ ) {
+    std::string htm;
+    for( auto it = str.begin() ; it != str.end() ; it++ ) {
         switch( (*it).GetValue() )
         {
         case '\n':
-            htm << "<br>";
+            htm += "<br>";
             break;
         case '&':
-            htm << "&amp;";
+            htm += "&amp;";
             break;
         case '<':
-            htm << "&lt;";
+            htm += "&lt;";
             break;
         case '>':
-            htm << "&gt;";
+            htm += "&gt;";
             break;
         default:
-            htm << *it;
+            htm += *it;
         }
     }
     return htm;
