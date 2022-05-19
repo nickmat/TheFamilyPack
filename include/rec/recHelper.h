@@ -118,6 +118,7 @@ enum class Sex { unstated, male, female, unknown };
 extern wxString recGetSexStr( Sex sex );
 
 enum class recTextStyle : int { normal, bold, italic, bolditalic };
+constexpr int recTextStyleSize = 4;
 extern wxString recGetTextStyleName( recTextStyle style );
 extern std::string recStyleHTMLifyStr( const wxString& str, recTextStyle style );
 
