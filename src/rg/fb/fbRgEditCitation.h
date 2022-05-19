@@ -170,6 +170,9 @@ class fbRgEditCitationPartType : public wxDialog
 		wxTextCtrl* m_textCtrlName;
 		wxTextCtrl* m_textCtrlComment;
 		wxChoice* m_choiceStyle;
+		wxTextCtrl* m_textCtrlUid;
+		wxStaticText* m_staticText181;
+		wxTextCtrl* m_textCtrlChanged;
 		wxStaticLine* m_staticline9;
 		wxStaticText* m_staticCiPT_ID;
 		wxButton* m_buttonSave;

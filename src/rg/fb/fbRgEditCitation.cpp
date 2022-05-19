@@ -462,6 +462,21 @@ fbRgEditCitationPartType::fbRgEditCitationPartType( wxWindow* parent, wxWindowID
 	m_choiceStyle->SetSelection( 0 );
 	fgSizer4->Add( m_choiceStyle, 0, wxALIGN_CENTER_VERTICAL|wxEXPAND|wxBOTTOM|wxRIGHT, 5 );
 
+	wxStaticText* m_staticText17;
+	m_staticText17 = new wxStaticText( this, wxID_ANY, _("UID:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText17->Wrap( -1 );
+	fgSizer4->Add( m_staticText17, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+
+	m_textCtrlUid = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+	fgSizer4->Add( m_textCtrlUid, 0, wxALIGN_CENTER_VERTICAL|wxEXPAND|wxBOTTOM|wxRIGHT, 5 );
+
+	m_staticText181 = new wxStaticText( this, wxID_ANY, _("Changed:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText181->Wrap( -1 );
+	fgSizer4->Add( m_staticText181, 0, wxALIGN_RIGHT|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+
+	m_textCtrlChanged = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+	fgSizer4->Add( m_textCtrlChanged, 0, wxALIGN_CENTER_VERTICAL|wxEXPAND|wxBOTTOM|wxRIGHT, 5 );
+
 
 	bSizer12->Add( fgSizer4, 1, wxEXPAND, 5 );
 

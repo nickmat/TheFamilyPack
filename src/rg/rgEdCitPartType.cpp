@@ -66,6 +66,20 @@ bool rgDlgEditCitationPartType::TransferDataToWindow()
     m_staticCiPT_ID->SetLabel( m_type.GetIdStr() );
     m_textCtrlName->SetValue( m_type.FGetName() );
     m_textCtrlComment->SetValue( m_type.FGetComment() );
+
+    size_t style = static_cast<size_t>(m_type.FGetStyle());
+    m_choiceStyle->SetSelection( static_cast<int>(m_type.FGetStyle()) );
+    for( size_t i = 0; i < recTextStyleSize; i++ ) {
+        m_choiceStyle->Append( recGetTextStyleName( static_cast<recTextStyle>(i) ) );
+        if( style == i ) {
+            m_choiceStyle->SetSelection( static_cast<int>(i) );
+        }
+    }
+
+    m_textCtrlUid->SetValue( m_type.FGetUid() );
+    wxString changed = calStrFromJdn( m_type.FGetChanged() );
+    m_textCtrlChanged->SetValue( changed );
+
     return true;
 }
 
@@ -73,6 +87,10 @@ bool rgDlgEditCitationPartType::TransferDataFromWindow()
 {
     m_type.FSetName( m_textCtrlName->GetValue() );
     m_type.FSetComment( m_textCtrlComment->GetValue() );
+    int style = m_choiceStyle->GetSelection();
+    wxASSERT( style < recTextStyleSize );
+    m_type.FSetStyle( static_cast<recTextStyle>(style) );
+    m_type.FSetChanged( calGetTodayJdn() );
     m_type.Save();
     return true;
 }
