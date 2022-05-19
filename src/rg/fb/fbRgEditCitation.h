@@ -21,13 +21,13 @@
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
+#include <wx/menu.h>
 #include <wx/sizer.h>
 #include <wx/listctrl.h>
 #include <wx/statbox.h>
 #include <wx/statline.h>
 #include <wx/dialog.h>
 #include <wx/choice.h>
-#include <wx/menu.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -43,7 +43,8 @@ class fbRgEditCitation : public wxDialog
 		wxTextCtrl* m_textCtrlComment;
 		wxButton* m_buttonSelectExtends;
 		wxTextCtrl* m_textCtrlExtends;
-		wxButton* m_buttonSelectArchive;
+		wxButton* m_buttontRepository;
+		wxMenu* m_menuRepository;
 		wxTextCtrl* m_textCtrlArchive;
 		wxListCtrl* m_listParts;
 		wxButton* m_buttonAdd;
@@ -57,7 +58,9 @@ class fbRgEditCitation : public wxDialog
 
 		// Virtual event handlers, override them in your derived class
 		virtual void OnButtonSelectExtends( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnButtonSelectAchive( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonRepository( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSelectRepository( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEditRepository( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPartDeselect( wxListEvent& event ) { event.Skip(); }
 		virtual void OnPartSelect( wxListEvent& event ) { event.Skip(); }
 		virtual void OnButtonAdd( wxCommandEvent& event ) { event.Skip(); }
@@ -72,6 +75,11 @@ class fbRgEditCitation : public wxDialog
 		fbRgEditCitation( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Citation"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,350 ), long style = wxDEFAULT_DIALOG_STYLE );
 
 		~fbRgEditCitation();
+
+		void m_buttontRepositoryOnContextMenu( wxMouseEvent &event )
+		{
+			m_buttontRepository->PopupMenu( m_menuRepository, event.GetPosition() );
+		}
 
 };
 

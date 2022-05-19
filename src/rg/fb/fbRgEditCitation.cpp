@@ -56,8 +56,19 @@ fbRgEditCitation::fbRgEditCitation( wxWindow* parent, wxWindowID id, const wxStr
 	m_textCtrlExtends = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
 	fgSizer12->Add( m_textCtrlExtends, 1, wxEXPAND|wxBOTTOM|wxRIGHT, 5 );
 
-	m_buttonSelectArchive = new wxButton( this, wxID_ANY, _("A&rchive:"), wxDefaultPosition, wxDefaultSize, wxBU_RIGHT );
-	fgSizer12->Add( m_buttonSelectArchive, 0, wxBOTTOM|wxRIGHT, 5 );
+	m_buttontRepository = new wxButton( this, wxID_ANY, _("Reposi&tory"), wxDefaultPosition, wxDefaultSize, wxBU_RIGHT );
+	m_menuRepository = new wxMenu();
+	wxMenuItem* m_menuSelectRep;
+	m_menuSelectRep = new wxMenuItem( m_menuRepository, wxID_ANY, wxString( _("&Select") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menuRepository->Append( m_menuSelectRep );
+
+	wxMenuItem* m_menuEditRep;
+	m_menuEditRep = new wxMenuItem( m_menuRepository, wxID_ANY, wxString( _("&Edit") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menuRepository->Append( m_menuEditRep );
+
+	m_buttontRepository->Connect( wxEVT_RIGHT_DOWN, wxMouseEventHandler( fbRgEditCitation::m_buttontRepositoryOnContextMenu ), NULL, this );
+
+	fgSizer12->Add( m_buttontRepository, 0, wxBOTTOM|wxRIGHT, 5 );
 
 	m_textCtrlArchive = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
 	fgSizer12->Add( m_textCtrlArchive, 1, wxEXPAND|wxBOTTOM|wxRIGHT, 5 );
@@ -134,7 +145,9 @@ fbRgEditCitation::fbRgEditCitation( wxWindow* parent, wxWindowID id, const wxStr
 
 	// Connect Events
 	m_buttonSelectExtends->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditCitation::OnButtonSelectExtends ), NULL, this );
-	m_buttonSelectArchive->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditCitation::OnButtonSelectAchive ), NULL, this );
+	m_buttontRepository->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditCitation::OnButtonRepository ), NULL, this );
+	m_menuRepository->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbRgEditCitation::OnSelectRepository ), this, m_menuSelectRep->GetId());
+	m_menuRepository->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbRgEditCitation::OnEditRepository ), this, m_menuEditRep->GetId());
 	m_listParts->Connect( wxEVT_COMMAND_LIST_ITEM_DESELECTED, wxListEventHandler( fbRgEditCitation::OnPartDeselect ), NULL, this );
 	m_listParts->Connect( wxEVT_COMMAND_LIST_ITEM_SELECTED, wxListEventHandler( fbRgEditCitation::OnPartSelect ), NULL, this );
 	m_buttonAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditCitation::OnButtonAdd ), NULL, this );
@@ -148,7 +161,7 @@ fbRgEditCitation::~fbRgEditCitation()
 {
 	// Disconnect Events
 	m_buttonSelectExtends->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditCitation::OnButtonSelectExtends ), NULL, this );
-	m_buttonSelectArchive->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditCitation::OnButtonSelectAchive ), NULL, this );
+	m_buttontRepository->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditCitation::OnButtonRepository ), NULL, this );
 	m_listParts->Disconnect( wxEVT_COMMAND_LIST_ITEM_DESELECTED, wxListEventHandler( fbRgEditCitation::OnPartDeselect ), NULL, this );
 	m_listParts->Disconnect( wxEVT_COMMAND_LIST_ITEM_SELECTED, wxListEventHandler( fbRgEditCitation::OnPartSelect ), NULL, this );
 	m_buttonAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditCitation::OnButtonAdd ), NULL, this );
@@ -157,6 +170,7 @@ fbRgEditCitation::~fbRgEditCitation()
 	m_buttonUp->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditCitation::OnButtonUp ), NULL, this );
 	m_buttonDown->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditCitation::OnButtonDown ), NULL, this );
 
+	delete m_menuRepository;
 }
 
 fbRgEditRepository::fbRgEditRepository( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )

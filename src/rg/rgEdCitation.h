@@ -54,7 +54,9 @@ private:
 
     void PartsButtonsEnable( long row );
     void OnButtonSelectExtends( wxCommandEvent& event ) override;
-    void OnButtonSelectAchive( wxCommandEvent& event ) override;
+    void OnButtonRepository( wxCommandEvent& event ) override;
+    void OnSelectRepository( wxCommandEvent& event ) override;
+    void OnEditRepository( wxCommandEvent& event ) override;
     void OnPartDeselect( wxListEvent& event ) override;
     void OnPartSelect( wxListEvent& event ) override;
     void OnButtonAdd( wxCommandEvent& event ) override;

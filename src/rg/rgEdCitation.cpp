@@ -169,7 +169,18 @@ void rgDlgEditCitation::OnButtonSelectExtends( wxCommandEvent& event )
     wxMessageBox( _( "Not yet implimented" ), "OnButtonSelectExtends" );
 }
 
-void rgDlgEditCitation::OnButtonSelectAchive( wxCommandEvent& event )
+void rgDlgEditCitation::OnButtonRepository( wxCommandEvent& event )
+{
+    idt orig_arcID = m_archive.FGetID();
+    if( orig_arcID <= 0 ) {
+        OnSelectRepository( event );
+        return;
+    }
+    wxSize s = m_buttontRepository->GetSize();
+    m_buttontRepository->PopupMenu( m_menuRepository, 0, s.y );
+}
+
+void rgDlgEditCitation::OnSelectRepository( wxCommandEvent& event )
 {
     idt orig_arcID = m_archive.FGetID();
     idt arcID = rgSelectArchive( this, rgSELSTYLE_Create );
@@ -179,6 +190,15 @@ void rgDlgEditCitation::OnButtonSelectAchive( wxCommandEvent& event )
         UpdateArchive();
         UpdateCitation();
     }
+}
+
+void rgDlgEditCitation::OnEditRepository( wxCommandEvent& event )
+{
+    idt repID = m_archive.FGetID();
+    rgEditArchive( this, repID );
+    m_archive.ReadID( repID );
+    UpdateArchive();
+    UpdateCitation();
 }
 
 void rgDlgEditCitation::OnPartDeselect( wxListEvent& event )
