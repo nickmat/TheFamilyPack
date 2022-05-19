@@ -122,6 +122,29 @@ wxString recGetSexStr( Sex sex )
     return sexarray[static_cast<size_t>(sex)];
 }
 
+wxString recGetTextStyleName( recTextStyle style )
+{
+    static wxString stylearray[] = {
+        _( "Normal" ), _( "Bold" ), _( "Italic" ), _( "Bold Italic" )
+    };
+    return stylearray[static_cast<size_t>(style)];
+}
+
+std::string recStyleHTMLifyStr( const wxString& str, recTextStyle style )
+{
+    std::string htm = recHTMLifyStr( str );
+    switch( style )
+    {
+    case recTextStyle::bold:
+        return "<b>" + htm + "</b>";
+    case recTextStyle::italic:
+        return "<i>" + htm + "</i>";
+    case recTextStyle::bolditalic:
+        return "<b><i>" + htm + "</i></b>";
+    }
+    return htm;
+}
+
 std::string recHTMLifyStr( const wxString& str )
 {
     std::string htm;

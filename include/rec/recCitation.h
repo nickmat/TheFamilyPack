@@ -216,13 +216,13 @@ class recCitationPartType : public recDbT< recCitationPartType>,
     public recUidT< recCitationPartType>
 {
     wxString f_name;
-    int      f_style;
+    recTextStyle f_style;
     wxString f_comment;
 
 public:
     static constexpr const char* s_tablename = "CitationPartType";
 
-    recCitationPartType() : f_style(0) {}
+    recCitationPartType() : f_style(recTextStyle::normal) {}
     recCitationPartType( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }
     recCitationPartType( const recCitationPartType& at );
 
@@ -232,11 +232,11 @@ public:
     bool Equivalent( const recCitationPartType& r2 ) const;
 
     wxString FGetName() const { return f_name; }
-    int FGetStyle() const { return f_style; }
+    recTextStyle FGetStyle() const { return f_style; }
     wxString FGetComment() const { return f_comment; }
 
     void FSetName( const wxString& name ) { f_name = name; }
-    void FSetStyle( int style ) { f_style = style; }
+    void FSetStyle( recTextStyle style ) { f_style = style; }
     void FSetComment( const wxString& comment ) { f_comment = comment; }
 
     static wxString GetIdStr( idt ciptID ) { return wxString::Format( "CiPT" ID, ciptID ); }
