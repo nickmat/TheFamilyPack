@@ -183,7 +183,7 @@ void rgDlgEditCitation::OnButtonRepository( wxCommandEvent& event )
 void rgDlgEditCitation::OnSelectRepository( wxCommandEvent& event )
 {
     idt orig_arcID = m_archive.FGetID();
-    idt arcID = rgSelectArchive( this, rgSELSTYLE_Create );
+    idt arcID = rgSelectRepository( this, rgSELSTYLE_Create );
     if( arcID != orig_arcID ) {
         m_archive.ReadID( arcID );
         m_citation.FSetRepID( arcID );
@@ -195,7 +195,7 @@ void rgDlgEditCitation::OnSelectRepository( wxCommandEvent& event )
 void rgDlgEditCitation::OnEditRepository( wxCommandEvent& event )
 {
     idt repID = m_archive.FGetID();
-    rgEditArchive( this, repID );
+    rgEditRepository( this, repID );
     m_archive.ReadID( repID );
     UpdateArchive();
     UpdateCitation();

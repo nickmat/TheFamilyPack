@@ -99,16 +99,12 @@ extern idt rgSelectAssociate(
 // See src/rg/rgEdCitation.cpp
 extern bool rgEditCitation( wxWindow* wind, idt citID, const wxString& title = "" );
 extern idt rgCreateCitation( wxWindow* wind, idt refID );
-extern bool rgEditArchive( wxWindow* wind, idt citID, const wxString& title = "" );
-extern idt rgCreateArchive( wxWindow* wind );
-extern idt rgSelectArchive(
-    wxWindow* wind,
-    unsigned flag = rgSELSTYLE_Create,
-    unsigned* retbutton = NULL,
-    const wxString& title = ""
-);
+
+// See src/rg/rgEdCitPart.cpp
 extern bool rgEditCitationPart( wxWindow* wind, idt cipID, const wxString& title = "" );
 extern idt rgCreateCitationPart( wxWindow* wind, idt citID );
+
+// See src/rg/rgEdCitPatType.cpp
 extern bool rgEditCitationPartType( wxWindow* wind, idt ciptID, const wxString& title = "" );
 extern idt rgCreateCitationPartType( wxWindow* wind );
 
@@ -222,6 +218,18 @@ extern bool rgSelectPlaceFromReference(
 // See src/rg/rgEdRelDate.cpp
 extern bool rgEditRelativeDate( wxWindow* wind, idt dateID );
 extern idt rgCreateRelativeDate( wxWindow* wind, idt baseID, long value = 0 );
+
+
+// See src/rg/rgEdRepository.cpp
+extern bool rgEditRepository( wxWindow* wind, idt repID, const wxString& title = "" );
+extern idt rgCreateRepository( wxWindow* wind );
+extern idt rgSelectRepository(
+    wxWindow* wind,
+    unsigned flag = rgSELSTYLE_Create,
+    unsigned* retbutton = nullptr,
+    const wxString& title = ""
+);
+
 
 // See src/rg/rgEdResearcher.cpp
 extern bool rgEditResearcher( wxWindow* wind, idt conID );

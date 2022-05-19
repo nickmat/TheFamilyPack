@@ -39,7 +39,7 @@
 #include <cal/calendar.h>
 
 
-bool rgEditArchive( wxWindow* wind, idt arcID, const wxString& title )
+bool rgEditRepository( wxWindow* wind, idt arcID, const wxString& title )
 {
     wxASSERT( arcID != 0 );
 
@@ -62,7 +62,7 @@ bool rgEditArchive( wxWindow* wind, idt arcID, const wxString& title )
     return ret;
 }
 
-idt rgCreateArchive( wxWindow* wind )
+idt rgCreateRepository( wxWindow* wind )
 {
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
@@ -77,7 +77,7 @@ idt rgCreateArchive( wxWindow* wind )
     arc.Save();
     idt arcID = arc.FGetID();
 
-    if( rgEditArchive( wind, arcID, _( "Create Archive" ) ) ) {
+    if( rgEditRepository( wind, arcID, _( "Create Archive" ) ) ) {
         recDb::ReleaseSavepoint( savepoint );
         return arcID;
     }
@@ -85,7 +85,7 @@ idt rgCreateArchive( wxWindow* wind )
     return 0;
 }
 
-idt rgSelectArchive( wxWindow* wind, unsigned flag, unsigned* retbutton, const wxString& title )
+idt rgSelectRepository( wxWindow* wind, unsigned flag, unsigned* retbutton, const wxString& title )
 {
     idt arcID = 0;
     if( retbutton ) *retbutton = rgSELSTYLE_None;
@@ -106,7 +106,7 @@ idt rgSelectArchive( wxWindow* wind, unsigned flag, unsigned* retbutton, const w
         }
         if( dialog.ShowModal() == wxID_OK ) {
             if( dialog.GetCreatePressed() ) {
-                arcID = rgCreateArchive( wind );
+                arcID = rgCreateRepository( wind );
                 if( arcID ) {
                     if( retbutton ) *retbutton = rgSELSTYLE_Create;
                     break;

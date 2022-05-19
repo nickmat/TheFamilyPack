@@ -781,8 +781,8 @@ void TfpFrame::OnEditRepository( wxCommandEvent& event )
     recDb::Begin();
     try {
         unsigned retbutton = 0;
-        idt arcID = rgSelectArchive( this, rgSELSTYLE_Create, &retbutton );
-        if( arcID && ( retbutton || rgEditArchive( this, arcID ) ) ) {
+        idt arcID = rgSelectRepository( this, rgSELSTYLE_Create, &retbutton );
+        if( arcID && ( retbutton || rgEditRepository( this, arcID ) ) ) {
             recDb::Commit();
             RefreshHtmPage();
         }
@@ -1211,7 +1211,7 @@ void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
                 ret = rgEditResearcher( this, recGetID( display.Mid( 2 ) ) );
             }
             else if( uch1.GetValue() == 'p' ) {
-                ret = rgEditArchive( this, recGetID( display.Mid( 2 ) ) );
+                ret = rgEditRepository( this, recGetID( display.Mid( 2 ) ) );
             }
             else {
                 ret = rgEditReference( this, id );
