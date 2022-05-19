@@ -117,7 +117,7 @@ idt rgSelectResearcher( wxWindow* wind, unsigned flag, unsigned* retbutton, cons
         }
         if( dialog.ShowModal() == wxID_OK ) {
             if( dialog.GetCreatePressed() ) {
-                resID = rgCreateArchive( wind );
+                resID = rgCreateResearcher( wind );
                 if( resID ) {
                     if( retbutton ) *retbutton = rgSELSTYLE_Create;
                     break;
