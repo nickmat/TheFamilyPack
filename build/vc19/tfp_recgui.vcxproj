@@ -137,6 +137,8 @@
     <ClCompile Include="..\..\src\rg\rgCrIndividual.cpp" />
     <ClCompile Include="..\..\src\rg\rgCrName.cpp" />
     <ClCompile Include="..\..\src\rg\rgEdCitation.cpp" />
+    <ClCompile Include="..\..\src\rg\rgEdCitPart.cpp" />
+    <ClCompile Include="..\..\src\rg\rgEdCitPartType.cpp" />
     <ClCompile Include="..\..\src\rg\rgEdContact.cpp" />
     <ClCompile Include="..\..\src\rg\rgEdDate.cpp" />
     <ClCompile Include="..\..\src\rg\rgEdEvent.cpp" />
@@ -154,6 +156,7 @@
     <ClCompile Include="..\..\src\rg\rgEdPlace.cpp" />
     <ClCompile Include="..\..\src\rg\rgEdReference.cpp" />
     <ClCompile Include="..\..\src\rg\rgEdRelDate.cpp" />
+    <ClCompile Include="..\..\src\rg\rgEdRepository.cpp" />
     <ClCompile Include="..\..\src\rg\rgEdResearcher.cpp" />
     <ClCompile Include="..\..\src\rg\rgEdRole.cpp" />
     <ClCompile Include="..\..\src\rg\rgEdSystem.cpp" />
@@ -190,6 +193,8 @@
     <ClInclude Include="..\..\src\rg\rgCrIndividual.h" />
     <ClInclude Include="..\..\src\rg\rgCrName.h" />
     <ClInclude Include="..\..\src\rg\rgEdCitation.h" />
+    <ClInclude Include="..\..\src\rg\rgEdCitPart.h" />
+    <ClInclude Include="..\..\src\rg\rgEdCitPartType.h" />
     <ClInclude Include="..\..\src\rg\rgEdContact.h" />
     <ClInclude Include="..\..\src\rg\rgEdDate.h" />
     <ClInclude Include="..\..\src\rg\rgEdEvent.h" />
@@ -207,6 +212,7 @@
     <ClInclude Include="..\..\src\rg\rgEdPlace.h" />
     <ClInclude Include="..\..\src\rg\rgEdReference.h" />
     <ClInclude Include="..\..\src\rg\rgEdRelDate.h" />
+    <ClInclude Include="..\..\src\rg\rgEdRepository.h" />
     <ClInclude Include="..\..\src\rg\rgEdResearcher.h" />
     <ClInclude Include="..\..\src\rg\rgEdRole.h" />
     <ClInclude Include="..\..\src\rg\rgEdSystem.h" />

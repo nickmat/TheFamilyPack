@@ -185,6 +185,8 @@ RECGUI_OBJECTS =  \
 	recgui_rgCrIndividual.o \
 	recgui_rgCrName.o \
 	recgui_rgEdCitation.o \
+	recgui_rgEdCitPart.o \
+	recgui_rgEdCitPartType.o \
 	recgui_rgEdContact.o \
 	recgui_rgEdDate.o \
 	recgui_rgEdEvent.o \
@@ -202,6 +204,7 @@ RECGUI_OBJECTS =  \
 	recgui_rgEdPlace.o \
 	recgui_rgEdReference.o \
 	recgui_rgEdRelDate.o \
+	recgui_rgEdRepository.o \
 	recgui_rgEdResearcher.o \
 	recgui_rgEdRole.o \
 	recgui_rgEdSystem.o \
@@ -588,6 +591,12 @@ recgui_rgCrName.o: ./../../src/rg/rgCrName.cpp
 recgui_rgEdCitation.o: ./../../src/rg/rgEdCitation.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
+recgui_rgEdCitPart.o: ./../../src/rg/rgEdCitPart.cpp
+	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
+
+recgui_rgEdCitPartType.o: ./../../src/rg/rgEdCitPartType.cpp
+	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
+
 recgui_rgEdContact.o: ./../../src/rg/rgEdContact.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
@@ -637,6 +646,9 @@ recgui_rgEdReference.o: ./../../src/rg/rgEdReference.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgEdRelDate.o: ./../../src/rg/rgEdRelDate.cpp
+	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
+
+recgui_rgEdRepository.o: ./../../src/rg/rgEdRepository.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgEdResearcher.o: ./../../src/rg/rgEdResearcher.cpp

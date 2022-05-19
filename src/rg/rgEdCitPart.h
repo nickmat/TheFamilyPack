@@ -1,11 +1,11 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/rg/rgEdCitation.h
+ * Name:        src/rg/rgEdCitPart.h
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Edit Citation Record dialog header.
+ * Purpose:     Edit CitationPart dialog header.
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
- * Created:     11th November 2021
- * Copyright:   Copyright (c) 2021..2022 Nick Matthews.
+ * Created:     18th May 2022
+ * Copyright:   Copyright (c) 2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -25,8 +25,8 @@
 
 */
 
-#ifndef RGEDCITATION_H
-#define RGEDCITATION_H
+#ifndef RGEDCITPART_H
+#define RGEDCITPART_H
 
 #include "fb/fbRgEditCitation.h"
 
@@ -34,40 +34,26 @@
 
 
 //============================================================================
-//--------------------------[ rgDlgEditCitation ]-----------------------------
+//------------------------[ rgDlgEditCitationPart ]---------------------------
 //============================================================================
 
-class rgDlgEditCitation : public fbRgEditCitation
+class rgDlgEditCitationPart : public fbRgEditCitationPart
 {
-    enum PartColumns {
-        PC_citID, PC_value, PC_type, PC_comment, PC_MAX
-    };
 public:
-    rgDlgEditCitation( wxWindow* parent, idt citID );
+    rgDlgEditCitationPart( wxWindow* parent, idt cipID );
 
 private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
-    void UpdateCitation();
-    void UpdateArchive();
-    void UpdatePartList( idt cpID );
+    void UpdatePartType( idt ciptID );
 
-    void PartsButtonsEnable( long row );
-    void OnButtonSelectExtends( wxCommandEvent& event ) override;
-    void OnButtonSelectAchive( wxCommandEvent& event ) override;
-    void OnPartDeselect( wxListEvent& event ) override;
-    void OnPartSelect( wxListEvent& event ) override;
-    void OnButtonAdd( wxCommandEvent& event ) override;
-    void OnButtonEdit( wxCommandEvent& event ) override;
-    void OnButtonDelete( wxCommandEvent& event ) override;
-    void OnButtonUp( wxCommandEvent& event ) override;
-    void OnButtonDown( wxCommandEvent& event ) override;
+    void OnAddEditButton( wxCommandEvent& event ) override;
+    void OnAddType( wxCommandEvent& event ) override;
+    void OnEditType( wxCommandEvent& event ) override;
 
-    recCitation        m_citation;
-    recRepository      m_archive;
-    recCitationPartVec m_parts;
+    recCitationPart        m_part;
+    recCitationPartTypeVec m_types;
 };
 
 
-
-#endif // RGEDCITATION_H
+#endif // RGEDCITPART_H

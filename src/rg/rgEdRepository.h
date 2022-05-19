@@ -1,11 +1,11 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/rg/rgEdCitation.h
+ * Name:        src/rg/rgEdRepository.h
  * Project:     The Family Pack: Genealogy data storage and display program.
- * Purpose:     Edit Citation Record dialog header.
+ * Purpose:     Edit Repository dialog header.
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
- * Created:     11th November 2021
- * Copyright:   Copyright (c) 2021..2022 Nick Matthews.
+ * Created:     18th May 2022
+ * Copyright:   Copyright (c) 2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -25,49 +25,65 @@
 
 */
 
-#ifndef RGEDCITATION_H
-#define RGEDCITATION_H
+#ifndef RGEDREPOSITORY_H
+#define RGEDREPOSITORY_H
 
 #include "fb/fbRgEditCitation.h"
+#include "rgSelect.h"
 
 #include <rec/recCitation.h>
+#include <rec/recContact.h>
 
 
 //============================================================================
-//--------------------------[ rgDlgEditCitation ]-----------------------------
+//-------------------------[ rgDlgEditRepository ]----------------------------
 //============================================================================
 
-class rgDlgEditCitation : public fbRgEditCitation
+class rgDlgEditRepository : public fbRgEditRepository
 {
-    enum PartColumns {
-        PC_citID, PC_value, PC_type, PC_comment, PC_MAX
+    enum Columns {
+        COL_ConID, COL_Type, COL_Value, COL_MAX
     };
 public:
-    rgDlgEditCitation( wxWindow* parent, idt citID );
+    rgDlgEditRepository( wxWindow* parent, idt resID );
 
 private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
-    void UpdateCitation();
-    void UpdateArchive();
-    void UpdatePartList( idt cpID );
+    void UpdateContacts( idt conID );
 
-    void PartsButtonsEnable( long row );
-    void OnButtonSelectExtends( wxCommandEvent& event ) override;
-    void OnButtonSelectAchive( wxCommandEvent& event ) override;
-    void OnPartDeselect( wxListEvent& event ) override;
-    void OnPartSelect( wxListEvent& event ) override;
+    void ContactButtonsEnable( int row );
+    void OnContactDeselected( wxListEvent& event ) override;
+    void OnContactSelected( wxListEvent& event ) override;
     void OnButtonAdd( wxCommandEvent& event ) override;
     void OnButtonEdit( wxCommandEvent& event ) override;
     void OnButtonDelete( wxCommandEvent& event ) override;
     void OnButtonUp( wxCommandEvent& event ) override;
     void OnButtonDown( wxCommandEvent& event ) override;
 
-    recCitation        m_citation;
-    recRepository      m_archive;
-    recCitationPartVec m_parts;
+    recRepository  m_archive;
+    recContactList m_list;
+    recContactVec  m_contacts;
 };
 
 
+//============================================================================
+//--------------------------[ rgDlgSelectArchive ]----------------------------
+//============================================================================
 
-#endif // RGEDCITATION_H
+class rgDlgSelectArchive : public rgSelect
+{
+    enum {
+        COL_ID, COL_Name, COL_comment, COL_MAX
+    };
+    static wxString sm_colHeaders[COL_MAX];
+public:
+    rgDlgSelectArchive(
+        wxWindow* parent = NULL,
+        unsigned style = rgSELSTYLE_None,
+        const wxString& title = _( "Select Archive" )
+    ) : rgSelect( parent, sm_colHeaders, COL_MAX, style, title ) {}
+};
+
+
+#endif // RGEDREPOSITORY_H

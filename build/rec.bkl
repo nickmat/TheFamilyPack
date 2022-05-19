@@ -159,6 +159,8 @@
     <sources>$(LOCAL_SRC)/rg/rgCrIndividual.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgCrName.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdCitation.cpp</sources>
+    <sources>$(LOCAL_SRC)/rg/rgEdCitPart.cpp</sources>
+    <sources>$(LOCAL_SRC)/rg/rgEdCitPartType.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdContact.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdDate.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdEvent.cpp</sources>
@@ -176,6 +178,7 @@
     <sources>$(LOCAL_SRC)/rg/rgEdPlace.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdReference.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdRelDate.cpp</sources>
+    <sources>$(LOCAL_SRC)/rg/rgEdRepository.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdResearcher.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdRole.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdSystem.cpp</sources>
@@ -212,6 +215,8 @@
     <headers>$(LOCAL_SRC)/rg/rgCrIndividual.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgCrName.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdCitation.h</headers>
+    <headers>$(LOCAL_SRC)/rg/rgEdCitPart.h</headers>
+    <headers>$(LOCAL_SRC)/rg/rgEdCitPartType.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdContact.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdDate.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdEvent.h</headers>
@@ -229,6 +234,7 @@
     <headers>$(LOCAL_SRC)/rg/rgEdPlace.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdReference.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdRelDate.h</headers>
+    <headers>$(LOCAL_SRC)/rg/rgEdRepository.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdResearcher.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdRole.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdSystem.h</headers>

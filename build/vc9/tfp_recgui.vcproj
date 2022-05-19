@@ -264,6 +264,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rg\rgEdCitPart.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgEdCitPartType.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rg\rgEdCitation.cpp"
 				>
 			</File>
@@ -333,6 +341,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\rg\rgEdRelDate.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgEdRepository.cpp"
 				>
 			</File>
 			<File
@@ -470,6 +482,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rg\rgEdCitPart.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgEdCitPartType.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rg\rgEdCitation.h"
 				>
 			</File>
@@ -539,6 +559,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\rg\rgEdRelDate.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgEdRepository.h"
 				>
 			</File>
 			<File

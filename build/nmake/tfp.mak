@@ -251,6 +251,8 @@ RECGUI_OBJECTS =  \
 	recgui_rgCrIndividual.obj \
 	recgui_rgCrName.obj \
 	recgui_rgEdCitation.obj \
+	recgui_rgEdCitPart.obj \
+	recgui_rgEdCitPartType.obj \
 	recgui_rgEdContact.obj \
 	recgui_rgEdDate.obj \
 	recgui_rgEdEvent.obj \
@@ -268,6 +270,7 @@ RECGUI_OBJECTS =  \
 	recgui_rgEdPlace.obj \
 	recgui_rgEdReference.obj \
 	recgui_rgEdRelDate.obj \
+	recgui_rgEdRepository.obj \
 	recgui_rgEdResearcher.obj \
 	recgui_rgEdRole.obj \
 	recgui_rgEdSystem.obj \
@@ -864,6 +867,12 @@ recgui_rgCrName.obj: .\..\..\src\rg\rgCrName.cpp
 recgui_rgEdCitation.obj: .\..\..\src\rg\rgEdCitation.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdCitation.cpp
 
+recgui_rgEdCitPart.obj: .\..\..\src\rg\rgEdCitPart.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdCitPart.cpp
+
+recgui_rgEdCitPartType.obj: .\..\..\src\rg\rgEdCitPartType.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdCitPartType.cpp
+
 recgui_rgEdContact.obj: .\..\..\src\rg\rgEdContact.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdContact.cpp
 
@@ -914,6 +923,9 @@ recgui_rgEdReference.obj: .\..\..\src\rg\rgEdReference.cpp
 
 recgui_rgEdRelDate.obj: .\..\..\src\rg\rgEdRelDate.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdRelDate.cpp
+
+recgui_rgEdRepository.obj: .\..\..\src\rg\rgEdRepository.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdRepository.cpp
 
 recgui_rgEdResearcher.obj: .\..\..\src\rg\rgEdResearcher.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\rgEdResearcher.cpp
