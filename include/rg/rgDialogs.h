@@ -54,6 +54,10 @@ template<class R, class D> idt rgCreate( wxWindow* wind, const wxString& title )
     recDb::Savepoint( savepoint );
 
     R rec( 0 );
+    if( std::is_base_of<recUid, R>::value ) {
+        rec.FSetUid( recCreateUid() );
+        rec.FSetChanged( calGetTodayJdn() );
+    }
     rec.Save();
     idt recID = rec.FGetID();
 
