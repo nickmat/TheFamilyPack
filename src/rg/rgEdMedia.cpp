@@ -5,7 +5,7 @@
 * Author:      Nick Matthews
 * Website:     http://thefamilypack.org
 * Created:     2nd October 2018
-* Copyright:   Copyright (c) 2018 .. 2021, Nick Matthews.
+* Copyright:   Copyright (c) 2018..2022, Nick Matthews.
 * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -122,6 +122,11 @@ void rgDlgEditMedia::OnImageLeftDClick( wxMouseEvent& event )
     rgViewMedia( this, m_media.FGetDataID(), m_media.FGetAssID() );
 }
 
+void rgDlgEditMedia::OnButtonMediaData( wxCommandEvent& event )
+{
+    wxString db = recAssociate::GetAttachedName( m_media.FGetAssID(), "Main" );
+    rgEditMediaData( this, m_media.FGetID(), db );
+}
 
 //============================================================================
 //                 rgDlgEditMediaData dialog

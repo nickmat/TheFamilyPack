@@ -21,12 +21,12 @@
 #include <wx/panel.h>
 #include <rg/rgImagePanel.h>
 #include <wx/splitter.h>
-#include <wx/spinctrl.h>
-#include <wx/statline.h>
 #include <wx/button.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
+#include <wx/spinctrl.h>
+#include <wx/statline.h>
 #include <wx/dialog.h>
 #include <wx/choice.h>
 
@@ -48,7 +48,7 @@ class fbRgEditMedia : public wxDialog
 		wxTextCtrl* m_textCtrlNote;
 		wxPanel* m_panelImage;
 		rgImagePanel* m_imagePanel;
-		wxStaticText* m_staticText;
+		wxButton* m_buttonMediaData;
 		wxStaticText* m_staticText_mdID;
 		wxSpinCtrl* m_spinCtrlPrivacy;
 		wxStaticText* m_staticTextRefID;
@@ -59,6 +59,7 @@ class fbRgEditMedia : public wxDialog
 
 		// Virtual event handlers, override them in your derived class
 		virtual void OnImageLeftDClick( wxMouseEvent& event ) { event.Skip(); }
+		virtual void OnButtonMediaData( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:
@@ -88,9 +89,7 @@ class fbRgEditMediaData : public wxDialog
 		wxChoice* m_choiceFileType;
 		wxTextCtrl* m_textCtrlCopyright;
 		wxSpinCtrl* m_spinPrivacy;
-		wxStaticText* m_staticText151;
 		wxTextCtrl* m_textCtrlUid;
-		wxStaticText* m_staticText16;
 		wxTextCtrl* m_textCtrlChanged;
 		wxPanel* m_panelImage;
 		rgImagePanel* m_imagePanel;

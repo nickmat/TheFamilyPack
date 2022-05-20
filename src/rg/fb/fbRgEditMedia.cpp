@@ -31,7 +31,7 @@ fbRgEditMedia::fbRgEditMedia( wxWindow* parent, wxWindowID id, const wxString& t
 	bSizer2 = new wxBoxSizer( wxHORIZONTAL );
 
 	wxStaticText* m_staticText2;
-	m_staticText2 = new wxStaticText( this, wxID_ANY, _("Title:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText2 = new wxStaticText( this, wxID_ANY, _("&Title:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText2->Wrap( -1 );
 	bSizer2->Add( m_staticText2, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
@@ -49,7 +49,7 @@ fbRgEditMedia::fbRgEditMedia( wxWindow* parent, wxWindowID id, const wxString& t
 	wxBoxSizer* bSizer9;
 	bSizer9 = new wxBoxSizer( wxHORIZONTAL );
 
-	m_staticText7 = new wxStaticText( m_panelNote, wxID_ANY, _("Note:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText7 = new wxStaticText( m_panelNote, wxID_ANY, _("&Note:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText7->Wrap( -1 );
 	bSizer9->Add( m_staticText7, 0, wxALL, 5 );
 
@@ -79,23 +79,22 @@ fbRgEditMedia::fbRgEditMedia( wxWindow* parent, wxWindowID id, const wxString& t
 	wxBoxSizer* bSizer8;
 	bSizer8 = new wxBoxSizer( wxHORIZONTAL );
 
-	m_staticText = new wxStaticText( this, wxID_ANY, _("Media Data:"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText->Wrap( -1 );
-	bSizer8->Add( m_staticText, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	m_buttonMediaData = new wxButton( this, wxID_ANY, _("Media &Data"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer8->Add( m_buttonMediaData, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
 	m_staticText_mdID = new wxStaticText( this, wxID_ANY, _("A0:MD00"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText_mdID->Wrap( -1 );
-	bSizer8->Add( m_staticText_mdID, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	bSizer8->Add( m_staticText_mdID, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxRIGHT, 5 );
 
 
 	bSizer8->Add( 0, 0, 1, wxEXPAND, 5 );
 
-	m_staticText14 = new wxStaticText( this, wxID_ANY, _("Privacy:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText14 = new wxStaticText( this, wxID_ANY, _("&Privacy:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText14->Wrap( -1 );
 	bSizer8->Add( m_staticText14, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
-	m_spinCtrlPrivacy = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0 );
-	bSizer8->Add( m_spinCtrlPrivacy, 0, wxALL, 5 );
+	m_spinCtrlPrivacy = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 10, 0 );
+	bSizer8->Add( m_spinCtrlPrivacy, 0, wxTOP|wxBOTTOM|wxRIGHT|wxALIGN_CENTER_VERTICAL, 5 );
 
 
 	bSizer1->Add( bSizer8, 0, wxEXPAND, 5 );
@@ -148,12 +147,14 @@ fbRgEditMedia::fbRgEditMedia( wxWindow* parent, wxWindowID id, const wxString& t
 
 	// Connect Events
 	m_imagePanel->Connect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( fbRgEditMedia::OnImageLeftDClick ), NULL, this );
+	m_buttonMediaData->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditMedia::OnButtonMediaData ), NULL, this );
 }
 
 fbRgEditMedia::~fbRgEditMedia()
 {
 	// Disconnect Events
 	m_imagePanel->Disconnect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( fbRgEditMedia::OnImageLeftDClick ), NULL, this );
+	m_buttonMediaData->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditMedia::OnButtonMediaData ), NULL, this );
 
 }
 
@@ -224,6 +225,7 @@ fbRgEditMediaData::fbRgEditMediaData( wxWindow* parent, wxWindowID id, const wxS
 	wxBoxSizer* bSizer12;
 	bSizer12 = new wxBoxSizer( wxHORIZONTAL );
 
+	wxStaticText* m_staticText151;
 	m_staticText151 = new wxStaticText( this, wxID_ANY, _("UID:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText151->Wrap( -1 );
 	bSizer12->Add( m_staticText151, 0, wxALL, 5 );
@@ -231,6 +233,7 @@ fbRgEditMediaData::fbRgEditMediaData( wxWindow* parent, wxWindowID id, const wxS
 	m_textCtrlUid = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
 	bSizer12->Add( m_textCtrlUid, 1, wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT, 5 );
 
+	wxStaticText* m_staticText16;
 	m_staticText16 = new wxStaticText( this, wxID_ANY, _("Last Changed:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText16->Wrap( -1 );
 	bSizer12->Add( m_staticText16, 0, wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
