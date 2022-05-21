@@ -52,14 +52,19 @@ public:
 
 private:
     bool TransferDataToWindow();
-    void CreateRecords();
     bool TransferDataFromWindow();
+    void UpdateNameStyle( idt nsID );
+
+    void OnAddStyleButton( wxCommandEvent& event ) override;
+    void OnAddStyle( wxCommandEvent& event ) override;
+    void OnEditStyle( wxCommandEvent& event ) override;
+
 
     wxString  m_given;
     wxString  m_surname;
 
     recName          m_name;
-    recNameStyleVec  m_types;
+    recNameStyleVec  m_styles;
 
     bool m_editFullName;
     bool m_editExtend;

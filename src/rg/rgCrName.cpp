@@ -3,11 +3,9 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Create database Name entity dialog.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     12th December 2012
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2012, Nick Matthews.
+ * Copyright:   Copyright (c) 2012..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -112,13 +110,7 @@ bool rgDlgCreateName::TransferDataToWindow()
 {
     wxASSERT( m_name.FGetID() == 0 );
     m_name.Save();
-    m_types = recNameStyle::GetStyleList();
-    for( size_t i = 0 ; i < m_types.size() ; i++ ) {
-        m_choiceType->Append( m_types[i].f_name );
-        if( m_name.f_style_id == m_types[i].f_id ) {
-            m_choiceType->SetSelection( (int) i );
-        }
-    }
+    UpdateNameStyle( m_name.FGetStyleID() );
     m_textCtrlGiven->SetValue( m_given );
     m_textCtrlSurname->SetValue( m_surname );
     m_staticNameID->SetLabel( m_name.GetIdStr() );
@@ -133,8 +125,8 @@ bool rgDlgCreateName::TransferDataToWindow()
 
 bool rgDlgCreateName::TransferDataFromWindow()
 {
-    int i = m_choiceType->GetSelection();
-    m_name.f_style_id = m_types[i].f_id;
+    int i = m_choiceStyle->GetSelection();
+    m_name.FSetStyleID( m_styles[i].FGetID() );
     m_name.Save();
 
     int seq = m_name.AddNameParts( m_textCtrlGiven->GetValue(), NAME_TYPE_Given_name, 0 );
@@ -143,6 +135,41 @@ bool rgDlgCreateName::TransferDataFromWindow()
     m_editFullName = m_checkFullName->GetValue();
     m_editExtend = m_checkExtend->GetValue();
     return true;
+}
+
+void rgDlgCreateName::UpdateNameStyle( idt nsID )
+{
+    m_styles = recNameStyle::GetStyleList();
+    int i = 0;
+    for( auto& style : m_styles ) {
+        m_choiceStyle->Append( style.FGetName() );
+        if( nsID == style.FGetID() ) {
+            m_choiceStyle->SetSelection( i );
+        }
+        i++;
+    }
+}
+
+void rgDlgCreateName::OnAddStyleButton( wxCommandEvent& event )
+{
+    wxSize s = m_buttonAddStyle->GetSize();
+    m_buttonAddStyle->PopupMenu( m_menuAddEditStyle, 0, s.y );
+}
+
+void rgDlgCreateName::OnAddStyle( wxCommandEvent& event )
+{
+    idt nsID = rgCreateNameStyle( this );
+    UpdateNameStyle( nsID );
+}
+
+void rgDlgCreateName::OnEditStyle( wxCommandEvent& event )
+{
+    int type = m_choiceStyle->GetSelection();
+    if( type == 0 ) return; // Default can't be edited, silently ignore.
+
+    idt nsID = m_styles[type].FGetID();
+    rgEditNameStyle( this, nsID );
+    UpdateNameStyle( nsID );
 }
 
 // End of src/rg/rgCrName.cpp file

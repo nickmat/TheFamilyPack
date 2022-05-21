@@ -17,14 +17,15 @@
 #include <wx/colour.h>
 #include <wx/settings.h>
 #include <wx/choice.h>
-#include <wx/textctrl.h>
-#include <wx/sizer.h>
-#include <wx/statline.h>
-#include <wx/checkbox.h>
-#include <wx/button.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
+#include <wx/menu.h>
+#include <wx/button.h>
+#include <wx/sizer.h>
+#include <wx/textctrl.h>
+#include <wx/checkbox.h>
+#include <wx/statline.h>
 #include <wx/dialog.h>
 #include <wx/listctrl.h>
 
@@ -39,24 +40,37 @@ class fbRgCreateName : public wxDialog
 
 	protected:
 		wxStaticText* m_staticText1;
-		wxChoice* m_choiceType;
+		wxChoice* m_choiceStyle;
+		wxButton* m_buttonAddStyle;
+		wxMenu* m_menuAddEditStyle;
 		wxStaticText* m_staticText2;
 		wxTextCtrl* m_textCtrlGiven;
 		wxStaticText* m_staticText3;
 		wxTextCtrl* m_textCtrlSurname;
-		wxStaticLine* m_staticline1;
 		wxCheckBox* m_checkFullName;
-		wxStaticText* m_staticNameID;
 		wxCheckBox* m_checkExtend;
+		wxStaticLine* m_staticline1;
+		wxStaticText* m_staticNameID;
 		wxStaticText* m_staticPerIndID;
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
+
+		// Virtual event handlers, override them in your derived class
+		virtual void OnAddStyleButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAddStyle( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEditStyle( wxCommandEvent& event ) { event.Skip(); }
+
 
 	public:
 
 		fbRgCreateName( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Create Name"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
 
 		~fbRgCreateName();
+
+		void m_buttonAddStyleOnContextMenu( wxMouseEvent &event )
+		{
+			m_buttonAddStyle->PopupMenu( m_menuAddEditStyle, event.GetPosition() );
+		}
 
 };
 
