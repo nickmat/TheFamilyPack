@@ -75,12 +75,14 @@ public:
 
     idt FGetIndID() const { return f_ind_id; }
     idt FGetPerID() const { return f_per_id; }
-    idt FGetTypeID() const { return f_style_id; }
+    idt FGetTypeID() const { return f_style_id; } // Depreciated
+    idt FGetStyleID() const { return f_style_id; }
     int FGetSequence() const { return f_sequence; }
 
     void FSetIndID( idt indID ) { f_ind_id = indID; }
     void FSetPerID( idt perID ) { f_per_id = perID; }
-    void FSetTypeID( idt typeID ) { f_style_id = typeID; }
+    void FSetTypeID( idt typeID ) { f_style_id = typeID; }  // Depreciated
+    void FSetStyleID( idt typeID ) { f_style_id = typeID; }
     void FSetSequence( int seq ) { f_sequence = seq; }
 
     static wxString GetIdStr( idt nameID ) { return wxString::Format( "N" ID, nameID ); }
@@ -108,8 +110,17 @@ public:
     wxString GetNameStr( const wxString& dbname = "Main" ) const {
         return GetNameStr( f_id, dbname ); }
 
-    static wxString GetTypeStr( idt id, const wxString& dbname = "Main" );
-    wxString GetTypeStr( const wxString& dbname = "Main" ) const;
+    // Depreciated, use GetStyleStr
+    static wxString GetTypeStr( idt id, const wxString& dbname = "Main" ) {
+        return GetStyleStr( id, dbname );
+    }
+    // Depreciated, use GetStyleStr
+    wxString GetTypeStr( const wxString& dbname = "Main" ) const {
+        return GetStyleStr( dbname );
+    }
+ 
+    static wxString GetStyleStr( idt id, const wxString& dbname = "Main" );
+    wxString GetStyleStr( const wxString& dbname = "Main" ) const;
 
     static recIdVec GetNamePartListID( idt namID, const wxString& dbname = "Main" );
     recIdVec GetNamePartListID( const wxString& dbname = "Main" ) const {

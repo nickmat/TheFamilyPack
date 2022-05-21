@@ -309,7 +309,7 @@ wxString recName::GetNameStr( idt id, const wxString& dbname )
     return str;
 }
 
-wxString recName::GetTypeStr( const wxString& dbname ) const
+wxString recName::GetStyleStr( const wxString& dbname ) const
 {
     return ExecuteStr(
         "SELECT name FROM \"%s\".NameStyle WHERE id=" ID ";",
@@ -317,16 +317,7 @@ wxString recName::GetTypeStr( const wxString& dbname ) const
     );
 }
 
-recIdVec recName::GetNamePartListID( idt namID, const wxString& dbname )
-{
-    return ExecuteIdVec(
-        "SELECT id FROM \"%s\".NamePart WHERE name_id=" ID
-        " ORDER BY sequence;",
-        UTF8_( dbname ), namID
-    );
-}
-
-wxString recName::GetTypeStr( idt id, const wxString& dbname )
+wxString recName::GetStyleStr( idt id, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format( 
@@ -337,6 +328,15 @@ wxString recName::GetTypeStr( idt id, const wxString& dbname )
 
     wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
     return result.GetAsString( 0 );
+}
+
+recIdVec recName::GetNamePartListID( idt namID, const wxString& dbname )
+{
+    return ExecuteIdVec(
+        "SELECT id FROM \"%s\".NamePart WHERE name_id=" ID
+        " ORDER BY sequence;",
+        UTF8_( dbname ), namID
+    );
 }
 
 wxString recName::GetNamePartStr( idt nameID, idt partID, const wxString& dbname )
