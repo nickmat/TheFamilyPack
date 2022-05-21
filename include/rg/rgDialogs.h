@@ -190,6 +190,14 @@ extern bool rgEditName( wxWindow* wind, idt nameID );
 extern bool rgEditNamePart( wxWindow* wind, idt npID );
 extern idt rgCreateNamePart( wxWindow* wind, idt nameID, const wxString& npStr = wxEmptyString );
 
+// See src/rg/rgEdNamePartType.cpp
+extern bool rgEditNamePartType( wxWindow* wind, idt nptID );
+extern idt rgCreateNamePartType( wxWindow* wind );
+
+// See src/rg/rgEdNameStyle.cpp
+extern bool rgEditNameStyle( wxWindow* wind, idt npID );
+extern idt rgCreateNameStyle( wxWindow* wind );
+
 // See src/rg/rgEdPerIndEvent.cpp
 enum rgSHOWROLE {
     rgSHOWROLE_All,

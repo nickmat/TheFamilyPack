@@ -151,6 +151,8 @@
     <ClCompile Include="..\..\src\rg\rgEdMedia.cpp" />
     <ClCompile Include="..\..\src\rg\rgEdName.cpp" />
     <ClCompile Include="..\..\src\rg\rgEdNamePart.cpp" />
+    <ClCompile Include="..\..\src\rg\rgEdNamePartType.cpp" />
+    <ClCompile Include="..\..\src\rg\rgEdNameStyle.cpp" />
     <ClCompile Include="..\..\src\rg\rgEdPerIndEvent.cpp" />
     <ClCompile Include="..\..\src\rg\rgEdPersona.cpp" />
     <ClCompile Include="..\..\src\rg\rgEdPlace.cpp" />
@@ -207,6 +209,8 @@
     <ClInclude Include="..\..\src\rg\rgEdMedia.h" />
     <ClInclude Include="..\..\src\rg\rgEdName.h" />
     <ClInclude Include="..\..\src\rg\rgEdNamePart.h" />
+    <ClInclude Include="..\..\src\rg\rgEdNamePartType.h" />
+    <ClInclude Include="..\..\src\rg\rgEdNameStyle.h" />
     <ClInclude Include="..\..\src\rg\rgEdPerIndEvent.h" />
     <ClInclude Include="..\..\src\rg\rgEdPersona.h" />
     <ClInclude Include="..\..\src\rg\rgEdPlace.h" />

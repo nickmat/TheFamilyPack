@@ -173,6 +173,8 @@
     <sources>$(LOCAL_SRC)/rg/rgEdMedia.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdName.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdNamePart.cpp</sources>
+    <sources>$(LOCAL_SRC)/rg/rgEdNamePartType.cpp</sources>
+    <sources>$(LOCAL_SRC)/rg/rgEdNameStyle.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdPerIndEvent.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdPersona.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/rgEdPlace.cpp</sources>
@@ -229,6 +231,8 @@
     <headers>$(LOCAL_SRC)/rg/rgEdMedia.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdName.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdNamePart.h</headers>
+    <headers>$(LOCAL_SRC)/rg/rgEdNamePartType.h</headers>
+    <headers>$(LOCAL_SRC)/rg/rgEdNameStyle.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdPerIndEvent.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdPersona.h</headers>
     <headers>$(LOCAL_SRC)/rg/rgEdPlace.h</headers>

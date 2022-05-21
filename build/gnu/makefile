@@ -199,6 +199,8 @@ RECGUI_OBJECTS =  \
 	recgui_rgEdMedia.o \
 	recgui_rgEdName.o \
 	recgui_rgEdNamePart.o \
+	recgui_rgEdNamePartType.o \
+	recgui_rgEdNameStyle.o \
 	recgui_rgEdPerIndEvent.o \
 	recgui_rgEdPersona.o \
 	recgui_rgEdPlace.o \
@@ -631,6 +633,12 @@ recgui_rgEdName.o: ./../../src/rg/rgEdName.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgEdNamePart.o: ./../../src/rg/rgEdNamePart.cpp
+	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
+
+recgui_rgEdNamePartType.o: ./../../src/rg/rgEdNamePartType.cpp
+	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
+
+recgui_rgEdNameStyle.o: ./../../src/rg/rgEdNameStyle.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_rgEdPerIndEvent.o: ./../../src/rg/rgEdPerIndEvent.cpp

@@ -324,6 +324,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rg\rgEdNamePartType.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgEdNameStyle.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rg\rgEdPerIndEvent.cpp"
 				>
 			</File>
@@ -539,6 +547,14 @@
 			</File>
 			<File
 				RelativePath="..\..\src\rg\rgEdNamePart.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgEdNamePartType.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\rgEdNameStyle.h"
 				>
 			</File>
 			<File
