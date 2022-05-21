@@ -138,3 +138,28 @@ class fbRgEditNamePart : public wxDialog
 
 };
 
+///////////////////////////////////////////////////////////////////////////////
+/// Class fbRgEditNameStyle
+///////////////////////////////////////////////////////////////////////////////
+class fbRgEditNameStyle : public wxDialog
+{
+	private:
+
+	protected:
+		wxTextCtrl* m_textCtrlStyle;
+		wxTextCtrl* m_textCtrlUid;
+		wxStaticText* m_staticText161;
+		wxTextCtrl* m_textCtrlChanged;
+		wxStaticLine* m_staticline4;
+		wxStaticText* m_staticNameStyleID;
+		wxButton* m_buttonSave;
+		wxButton* m_buttonCancel;
+
+	public:
+
+		fbRgEditNameStyle( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Name Style"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE );
+
+		~fbRgEditNameStyle();
+
+};
+

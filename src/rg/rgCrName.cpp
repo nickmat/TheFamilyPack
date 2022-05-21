@@ -139,6 +139,7 @@ bool rgDlgCreateName::TransferDataFromWindow()
 
 void rgDlgCreateName::UpdateNameStyle( idt nsID )
 {
+    m_choiceStyle->Clear();
     m_styles = recNameStyle::GetStyleList();
     int i = 0;
     for( auto& style : m_styles ) {

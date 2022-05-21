@@ -32,21 +32,21 @@
 #endif
 
 #include <rg/rgDialogs.h>
-#include "rgEdNamePartType.h"
+#include "rgEdNameStyle.h"
 
 #include <cal/calendar.h>
 
 
 bool rgEditNameStyle( wxWindow* wind, idt nsID )
 {
-    wxMessageBox( _( "Not yet implimented" ), "rgEditNameStyle" );
-    return false;
+    return rgEdit<rgDlgEditNameStyle>( wind, nsID, _( "Edit Name Style" ) );
 }
 
 idt rgCreateNameStyle( wxWindow* wind )
 {
-    wxMessageBox( _( "Not yet implimented" ), "rgCreateNameStyle" );
-    return 0;
+    return rgCreate<recNameStyle, rgDlgEditNameStyle>(
+        wind, _( "Create Name Style" )
+    );
 }
 
 
@@ -54,6 +54,28 @@ idt rgCreateNameStyle( wxWindow* wind )
 //--------------------------[ rgDlgEditNameStyle ]----------------------------
 //============================================================================
 
+rgDlgEditNameStyle::rgDlgEditNameStyle( wxWindow* parent, idt nsID )
+    : m_style( nsID ), fbRgEditNameStyle( parent )
+{
+}
+
+bool rgDlgEditNameStyle::TransferDataToWindow()
+{
+    m_staticNameStyleID->SetLabel( m_style.GetIdStr() );
+    m_textCtrlStyle->SetValue( m_style.FGetName() );
+    m_textCtrlUid->SetValue( m_style.FGetUid() );
+    wxString changed = calStrFromJdn( m_style.FGetChanged() );
+    m_textCtrlChanged->SetValue( changed );
+    return true;
+}
+
+bool rgDlgEditNameStyle::TransferDataFromWindow()
+{
+    m_style.FSetName( m_textCtrlStyle->GetValue() );
+    m_style.FSetChanged( calGetTodayJdn() );
+    m_style.Save();
+    return true;
+}
 
 
 // End of src/rg/rgEdNameStyle.cpp file

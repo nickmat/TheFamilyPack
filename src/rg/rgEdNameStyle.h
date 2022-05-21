@@ -36,6 +36,17 @@
 //-------------------------[ rgDlgEditNameStyle ]-----------------------------
 //============================================================================
 
+class rgDlgEditNameStyle : public fbRgEditNameStyle
+{
+public:
+    rgDlgEditNameStyle( wxWindow* parent, idt nsID );
+
+private:
+    bool TransferDataToWindow();
+    bool TransferDataFromWindow();
+
+    recNameStyle  m_style;
+};
 
 
 #endif // RGEDNAMESTYLE_H
