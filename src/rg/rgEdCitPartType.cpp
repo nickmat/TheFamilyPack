@@ -46,8 +46,9 @@ bool rgEditCitationPartType( wxWindow* wind, idt cipID, const wxString& title )
 
 idt rgCreateCitationPartType( wxWindow* wind )
 {
+    recCitationPartType cpt( 0 );
     return rgCreate<recCitationPartType, rgDlgEditCitationPartType>(
-        wind, _( "Create Citation Part Type" )
+        wind, cpt, _( "Create Citation Part Type" )
     );
 }
 

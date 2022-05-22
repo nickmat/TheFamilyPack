@@ -44,8 +44,9 @@ bool rgEditNameStyle( wxWindow* wind, idt nsID )
 
 idt rgCreateNameStyle( wxWindow* wind )
 {
+    recNameStyle ns( 0 );
     return rgCreate<recNameStyle, rgDlgEditNameStyle>(
-        wind, _( "Create Name Style" )
+        wind, ns, _( "Create Name Style" )
     );
 }
 

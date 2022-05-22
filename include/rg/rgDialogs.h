@@ -48,12 +48,12 @@ template<class D> bool rgEdit( wxWindow* parent, idt id, const wxString& title )
     return false;
 }
 
-template<class R, class D> idt rgCreate( wxWindow* wind, const wxString& title )
+template<class R, class D> idt rgCreate( wxWindow* wind, R& rec, const wxString& title )
 {
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
 
-    R rec( 0 );
+    rec.FSetID( 0 );
     if( std::is_base_of<recUid, R>::value ) {
         rec.FSetUid( recCreateUid() );
         rec.FSetChanged( calGetTodayJdn() );
