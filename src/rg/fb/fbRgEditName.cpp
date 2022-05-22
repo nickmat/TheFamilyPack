@@ -280,21 +280,42 @@ fbRgEditNamePart::fbRgEditNamePart( wxWindow* parent, wxWindowID id, const wxStr
 	fgSizer7->SetFlexibleDirection( wxBOTH );
 	fgSizer7->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 
-	m_staticText1 = new wxStaticText( this, wxID_ANY, _("Type:"), wxDefaultPosition, wxDefaultSize, 0 );
+	wxStaticText* m_staticText1;
+	m_staticText1 = new wxStaticText( this, wxID_ANY, _("&Type:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText1->Wrap( -1 );
 	fgSizer7->Add( m_staticText1, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
+
+	wxBoxSizer* bSizer16;
+	bSizer16 = new wxBoxSizer( wxHORIZONTAL );
 
 	wxArrayString m_choiceTypeChoices;
 	m_choiceType = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceTypeChoices, 0 );
 	m_choiceType->SetSelection( 0 );
-	fgSizer7->Add( m_choiceType, 0, wxALL, 5 );
+	bSizer16->Add( m_choiceType, 1, wxTOP|wxBOTTOM|wxRIGHT, 5 );
 
-	m_staticText2 = new wxStaticText( this, wxID_ANY, _("Value:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonAddType = new wxButton( this, wxID_ANY, _("&Add/Edit"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_menuAddEditType = new wxMenu();
+	wxMenuItem* m_menuAddType;
+	m_menuAddType = new wxMenuItem( m_menuAddEditType, wxID_ANY, wxString( _("&Add Style") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menuAddEditType->Append( m_menuAddType );
+
+	wxMenuItem* m_menuEditType;
+	m_menuEditType = new wxMenuItem( m_menuAddEditType, wxID_ANY, wxString( _("&Edit Style") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menuAddEditType->Append( m_menuEditType );
+
+	m_buttonAddType->Connect( wxEVT_RIGHT_DOWN, wxMouseEventHandler( fbRgEditNamePart::m_buttonAddTypeOnContextMenu ), NULL, this );
+
+	bSizer16->Add( m_buttonAddType, 0, wxALL, 5 );
+
+
+	fgSizer7->Add( bSizer16, 1, wxEXPAND, 5 );
+
+	m_staticText2 = new wxStaticText( this, wxID_ANY, _("&Value:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText2->Wrap( -1 );
-	fgSizer7->Add( m_staticText2, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
+	fgSizer7->Add( m_staticText2, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 
 	m_textCtrlValue = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 250,-1 ), 0 );
-	fgSizer7->Add( m_textCtrlValue, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	fgSizer7->Add( m_textCtrlValue, 0, wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT, 5 );
 
 
 	bSizer1->Add( fgSizer7, 0, wxEXPAND, 5 );
@@ -329,10 +350,19 @@ fbRgEditNamePart::fbRgEditNamePart( wxWindow* parent, wxWindowID id, const wxStr
 	bSizer1->Fit( this );
 
 	this->Centre( wxBOTH );
+
+	// Connect Events
+	m_buttonAddType->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditNamePart::OnAddTypeButton ), NULL, this );
+	m_menuAddEditType->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbRgEditNamePart::OnAddType ), this, m_menuAddType->GetId());
+	m_menuAddEditType->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbRgEditNamePart::OnEditType ), this, m_menuEditType->GetId());
 }
 
 fbRgEditNamePart::~fbRgEditNamePart()
 {
+	// Disconnect Events
+	m_buttonAddType->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditNamePart::OnAddTypeButton ), NULL, this );
+
+	delete m_menuAddEditType;
 }
 
 fbRgEditNameStyle::fbRgEditNameStyle( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )

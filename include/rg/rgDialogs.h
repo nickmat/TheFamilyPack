@@ -188,7 +188,7 @@ extern bool rgEditName( wxWindow* wind, idt nameID );
 
 // See src/rg/rgEdNamePart.cpp
 extern bool rgEditNamePart( wxWindow* wind, idt npID );
-extern idt rgCreateNamePart( wxWindow* wind, idt nameID, const wxString& npStr = "" );
+extern idt rgCreateNamePart( wxWindow* wind, idt nameID );
 
 // See src/rg/rgEdNamePartType.cpp
 extern bool rgEditNamePartType( wxWindow* wind, idt nptID );

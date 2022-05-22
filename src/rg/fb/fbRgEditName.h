@@ -121,8 +121,9 @@ class fbRgEditNamePart : public wxDialog
 	private:
 
 	protected:
-		wxStaticText* m_staticText1;
 		wxChoice* m_choiceType;
+		wxButton* m_buttonAddType;
+		wxMenu* m_menuAddEditType;
 		wxStaticText* m_staticText2;
 		wxTextCtrl* m_textCtrlValue;
 		wxStaticLine* m_staticline1;
@@ -130,11 +131,22 @@ class fbRgEditNamePart : public wxDialog
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
 
+		// Virtual event handlers, override them in your derived class
+		virtual void OnAddTypeButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAddType( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEditType( wxCommandEvent& event ) { event.Skip(); }
+
+
 	public:
 
 		fbRgEditNamePart( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Name Part"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
 
 		~fbRgEditNamePart();
+
+		void m_buttonAddTypeOnContextMenu( wxMouseEvent &event )
+		{
+			m_buttonAddType->PopupMenu( m_menuAddEditType, event.GetPosition() );
+		}
 
 };
 

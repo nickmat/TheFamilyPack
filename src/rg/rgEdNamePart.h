@@ -46,6 +46,12 @@ public:
 private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
+    void UpdateTypeList( idt nptID );
+
+
+    void OnAddTypeButton( wxCommandEvent& event ) override;
+    virtual void OnAddType( wxCommandEvent& event ) override;
+    virtual void OnEditType( wxCommandEvent& event ) override;
 
     recNamePart         m_np;
     recNamePartTypeVec  m_types;
