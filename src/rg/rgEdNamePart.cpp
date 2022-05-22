@@ -38,42 +38,17 @@
 #include "rgEdNamePart.h"
 #include "rg/rgDialogs.h"
 
-bool rgEditNamePart( wxWindow* wind, idt npID )
+bool rgEditNamePart( wxWindow* wind, idt npID, const wxString& title )
 {
-    wxASSERT( npID != 0 );
-    const wxString savepoint = recDb::GetSavepointStr();
-    recDb::Savepoint( savepoint );
-    bool ret = false;
-
-    dlgEditNamePart* dialog = new dlgEditNamePart( wind, npID );
-
-    if( dialog->ShowModal() == wxID_OK ) {
-        recDb::ReleaseSavepoint( savepoint );
-        ret = true;
-    } else {
-        recDb::Rollback( savepoint );
-    }
-    dialog->Destroy();
-    return ret;
+    return rgEdit<dlgEditNamePart>( wind, npID, title );
 }
 
 idt rgCreateNamePart( wxWindow* wind, idt nameID )
 {
-    wxASSERT( nameID != 0 );
-    const wxString savepoint = recDb::GetSavepointStr();
-    recDb::Savepoint( savepoint );
-
-    recNamePart np(0);
+    recNamePart np( 0 );
     np.FSetNameID( nameID );
-    np.Save();
 
-    idt npID = np.FGetID();
-    if( rgEditNamePart( wind, npID ) ) {
-        recDb::ReleaseSavepoint( savepoint );
-        return npID;
-    }
-    recDb::Rollback( savepoint );
-    return 0;
+    return rgCreate< recNamePart, dlgEditNamePart>( wind, np, "Create Name Style" );
 }
 
 //============================================================================
