@@ -47,6 +47,8 @@ bool rgEditCitationPartType( wxWindow* wind, idt cipID, const wxString& title )
 idt rgCreateCitationPartType( wxWindow* wind )
 {
     recCitationPartType cpt( 0 );
+    cpt.FSetUid( recCreateUid() );
+    cpt.FSetChanged( calGetTodayJdn() );
     return rgCreate<recCitationPartType, rgDlgEditCitationPartType>(
         wind, cpt, _( "Create Citation Part Type" )
     );

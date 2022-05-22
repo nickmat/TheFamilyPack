@@ -54,10 +54,6 @@ template<class R, class D> idt rgCreate( wxWindow* wind, R& rec, const wxString&
     recDb::Savepoint( savepoint );
 
     rec.FSetID( 0 );
-    if( std::is_base_of<recUid, R>::value ) {
-        rec.FSetUid( recCreateUid() );
-        rec.FSetChanged( calGetTodayJdn() );
-    }
     rec.Save();
     idt recID = rec.FGetID();
 
@@ -187,7 +183,7 @@ extern bool rgEditMediaData( wxWindow* wind, idt mdID, const wxString& dbname );
 extern bool rgEditName( wxWindow* wind, idt nameID );
 
 // See src/rg/rgEdNamePart.cpp
-extern bool rgEditNamePart( wxWindow* wind, idt npID );
+extern bool rgEditNamePart( wxWindow* wind, idt npID, const wxString& title = "" );
 extern idt rgCreateNamePart( wxWindow* wind, idt nameID );
 
 // See src/rg/rgEdNamePartType.cpp

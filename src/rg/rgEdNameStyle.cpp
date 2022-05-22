@@ -45,6 +45,8 @@ bool rgEditNameStyle( wxWindow* wind, idt nsID )
 idt rgCreateNameStyle( wxWindow* wind )
 {
     recNameStyle ns( 0 );
+    ns.FSetUid( recCreateUid() );
+    ns.FSetChanged( calGetTodayJdn() );
     return rgCreate<recNameStyle, rgDlgEditNameStyle>(
         wind, ns, _( "Create Name Style" )
     );
