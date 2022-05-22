@@ -707,7 +707,7 @@ recNamePartType::recNamePartType( const recNamePartType& at )
 void recNamePartType::Clear()
 {
     f_id = 0;
-    f_grp = NTYPE_Grp_Unstated;
+    f_grp = NPTypeGrp::unstated;
     f_name.clear();
     f_uid.clear();
     f_changed = 0;
@@ -772,7 +772,7 @@ bool recNamePartType::Read( const wxString& dbname )
         return false;
     }
     result.SetRow( 0 );
-    f_grp  = (NTYPE_Grp) result.GetInt( 0 );
+    f_grp = NPTypeGrp( result.GetInt( 0 ) );
     f_name = result.GetAsString( 1 );
     f_uid = result.GetAsString( 2 );
     f_changed = result.GetInt( 3 );
@@ -787,6 +787,24 @@ bool recNamePartType::Equivalent( const recNamePartType& r2 ) const
         f_uid == r2.f_uid &&
         f_changed == r2.f_changed
     ;
+}
+
+wxString recNamePartType::GetGroupStr() const
+{
+    size_t i = static_cast<size_t>(f_grp);
+    if( i < s_grps_size ) {
+        return s_grps[i];
+    }
+    return wxString();
+}
+
+StringVec recNamePartType::GetGroupList()
+{
+    StringVec grps;
+    for( size_t i = 0; i < s_grps_size; i++ ) {
+        grps.push_back( s_grps[i] );
+    }
+    return grps;
 }
 
 wxString recNamePartType::GetTypeStr( idt id, const wxString& dbname )
@@ -814,7 +832,7 @@ recNamePartTypeVec recNamePartType::GetTypeList( const wxString& dbname )
     for( i = 0 ; i < result.GetRowCount() ; i++ ) {
         result.SetRow( i );
         at.f_id = GET_ID( result.GetInt64( 0 ) );
-        at.f_grp = (NTYPE_Grp) result.GetInt( 1 );
+        at.f_grp = (NPTypeGrp) result.GetInt( 1 );
         at.f_name = result.GetAsString( 2 );
         at.f_uid = result.GetAsString( 3 );
         at.f_changed = result.GetInt( 4 );
@@ -832,7 +850,7 @@ recNamePartTypeVec recNamePartType::GetTypeList( const wxString& dbname )
     for( i = 0 ; i < result.GetRowCount() ; i++ ) {
         result.SetRow( i );
         at.f_id = GET_ID( result.GetInt64( 0 ) );
-        at.f_grp = (NTYPE_Grp) result.GetInt( 1 );
+        at.f_grp = (NPTypeGrp) result.GetInt( 1 );
         at.f_name = result.GetAsString( 2 );
         at.f_uid = result.GetAsString( 3 );
         at.f_changed = result.GetInt( 4 );
@@ -851,7 +869,7 @@ void recNamePartType::CsvWrite( std::ostream& out, idt id )
 {
     recNamePartType npt( id );
     recCsvWrite( out, npt.FGetID() );
-    recCsvWrite( out, npt.FGetGroup() );
+    recCsvWrite( out, int( npt.FGetGroup() ) );
     recCsvWrite( out, npt.FGetName() );
     recCsvWrite( out, npt.FGetUid() );
     recCsvWrite( out, npt.FGetChanged(), '\n' );
@@ -862,7 +880,7 @@ bool recNamePartType::CsvRead( std::istream& in )
     recCsvRead( in, f_id );
     int group;
     recCsvRead( in, group );
-    f_grp = NTYPE_Grp( group );
+    f_grp = NPTypeGrp( group );
     recCsvRead( in, f_name );
     recCsvRead( in, f_uid );
     recCsvRead( in, f_changed );

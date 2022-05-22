@@ -207,16 +207,17 @@ class recNamePartType
 {
 public:
     static constexpr const char* s_tablename = "NamePartType";
+    static constexpr const char* s_grps[] = { "null", "Name", "Title", "Other" };
+    static constexpr size_t s_grps_size = sizeof( s_grps ) / sizeof( char* );
 
-    enum NTYPE_Grp {
-        NTYPE_Grp_Unstated, NTYPE_Grp_Name, NTYPE_Grp_Title,
-        NTYPE_Grp_Other
+    enum class NPTypeGrp {
+        unstated, name, title, other
     };
 
-    NTYPE_Grp f_grp;
+    NPTypeGrp f_grp;
     wxString  f_name;
 
-    recNamePartType() : f_grp( NTYPE_Grp_Unstated ) {}
+    recNamePartType() : f_grp( NPTypeGrp::unstated ) {}
     recNamePartType( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }
     recNamePartType( const recNamePartType& at );
 
@@ -225,14 +226,22 @@ public:
     bool Read( const wxString& dbname = "Main" );
     bool Equivalent( const recNamePartType& r2 ) const;
 
-    NTYPE_Grp FGetGroup() const { return f_grp; }
+    NPTypeGrp FGetGroup() const { return f_grp; }
     wxString FGetName() const { return f_name; }
 
-    void FSetGroup( NTYPE_Grp group ) { f_grp = group; }
+    void FSetGroup( NPTypeGrp group ) { f_grp = group; }
     void FSetName( const wxString& name ) { f_name = name; }
 
     static wxString GetIdStr( idt nptID ) { return wxString::Format( "NPT" ID, nptID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
+
+    wxString GetGroupStr() const;
+    static wxString GetGroupStr( idt id, const wxString& dbname = "Main" ) {
+        recNamePartType npt( id, dbname );
+        return npt.GetGroupStr();
+    }
+
+    static StringVec GetGroupList();
 
     static wxString GetTypeStr( idt id, const wxString& dbname = "Main" );
 
