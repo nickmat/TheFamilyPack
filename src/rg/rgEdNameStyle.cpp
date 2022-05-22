@@ -39,7 +39,7 @@
 
 bool rgEditNameStyle( wxWindow* wind, idt nsID )
 {
-    return rgEdit<rgDlgEditNameStyle>( wind, nsID, _( "Edit Name Style" ) );
+    return rgEdit<rgDlgEditNameStyle>( wind, nsID );
 }
 
 idt rgCreateNameStyle( wxWindow* wind )

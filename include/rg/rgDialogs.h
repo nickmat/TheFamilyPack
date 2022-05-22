@@ -30,7 +30,7 @@
 #include <rec/recFilterEvent.h>
 #include <rec/recIndividual.h>
 
-template<class D> bool rgEdit( wxWindow* parent, idt id, const wxString& title )
+template<class D> bool rgEdit( wxWindow* parent, idt id, const wxString& title = "" )
 {
     if( !id ) return false;
     const wxString savepoint = recDb::GetSavepointStr();
