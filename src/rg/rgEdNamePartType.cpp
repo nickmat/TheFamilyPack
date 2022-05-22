@@ -40,22 +40,64 @@
 
 bool rgEditNamePartType( wxWindow* wind, idt nptID )
 {
-    wxMessageBox( _( "Not yet implimented" ), "rgEditNameStyle" );
-    return false;
+    return rgEdit<rgDlgEditNamePartType>( wind, nptID );
 }
 
 idt rgCreateNamePartType( wxWindow* wind )
 {
-    wxMessageBox( _( "Not yet implimented" ), "rgCreateNameStyle" );
-    return 0;
+    recNamePartType npt( 0 );
+    npt.FSetUid( recCreateUid() );
+    npt.FSetChanged( calGetTodayJdn() );
+    return rgCreate<recNamePartType, rgDlgEditNamePartType>(
+        wind, npt, _( "Create Name Style" )
+    );
 }
-
 
 
 //============================================================================
 //------------------------[ rgDlgEditNamePartType ]---------------------------
 //============================================================================
 
+rgDlgEditNamePartType::rgDlgEditNamePartType( wxWindow* parent, idt nptID )
+    : m_type( nptID ), fbRgEditNamePartType( parent )
+{
+}
+
+bool rgDlgEditNamePartType::TransferDataToWindow()
+{
+    wxASSERT( m_type.FGetID() != 0 );
+
+    m_staticNPTypeID->SetLabel( m_type.GetIdStr() );
+    m_textCtrlType->SetValue( m_type.FGetName() );
+    size_t grp = static_cast<size_t>(m_type.FGetGroup());
+    StringVec grps = recNamePartType::GetGroupList();
+    m_choiceGroup->Append( "<Select Group>" );
+    m_choiceGroup->SetSelection( 0 );
+    for( size_t i = 1; i < grps.size(); i++ ) {
+        m_choiceGroup->Append( grps[i] );
+        if( i == grp ) {
+            m_choiceGroup->SetSelection( i );
+        }
+    }
+    m_textCtrlUid->SetValue( m_type.FGetUid() );
+    wxString changed = calStrFromJdn( m_type.FGetChanged() );
+    m_textCtrlChanged->SetValue( changed );
+
+    return true;
+}
+
+bool rgDlgEditNamePartType::TransferDataFromWindow()
+{
+    m_type.FSetName( m_textCtrlType->GetValue() );
+    int grp = m_choiceGroup->GetSelection();
+    if( grp == 0 ) {
+        grp = 1; // default to 1 "Name"
+    }
+    m_type.FSetGroup( static_cast<recNamePartType::NPTypeGrp>(grp) );
+    m_type.FSetChanged( calGetTodayJdn() );
+    m_type.Save();
+    return true;
+}
 
 
 // End of src/rg/rgEdNamePartType.cpp file

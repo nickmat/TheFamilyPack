@@ -36,6 +36,17 @@
 //------------------------[ rgDlgEditNamePartType ]---------------------------
 //============================================================================
 
+class rgDlgEditNamePartType : public fbRgEditNamePartType
+{
+public:
+    rgDlgEditNamePartType( wxWindow* parent, idt nptID );
+
+private:
+    bool TransferDataToWindow();
+    bool TransferDataFromWindow();
+
+    recNamePartType  m_type;
+};
 
 
 #endif // RGEDNAMEPARTTYPE_H
