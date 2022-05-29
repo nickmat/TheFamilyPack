@@ -277,4 +277,27 @@ bool recResearcher::CsvRead( std::istream& in )
     return bool( in );
 }
 
+bool recResearcher::DeleteIfOrphaned( idt resID, const wxString& dbname )
+{
+    if( resID <= 0 ) return false;
+
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT COUNT(*) FROM \"%s\".Reference WHERE res_id=" ID ";",
+        UTF8_( dbname ), resID
+    );
+    if( s_db->ExecuteScalar( sql ) > 0 ) return false;
+    sql.Format(
+        "SELECT COUNT(*) FROM \"%s\".User WHERE res_id=" ID ";",
+        UTF8_( dbname ), resID
+    );
+    if( s_db->ExecuteScalar( sql ) > 0 ) return false;
+
+    recResearcher res( resID, dbname );
+    if( !Delete( resID, dbname ) ) return false;
+
+    recContactList::RemoveFromDatabase( res.FGetConListID(), dbname );
+    return true;
+}
+
 // End of recContact.cpp file

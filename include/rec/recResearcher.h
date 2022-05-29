@@ -81,6 +81,8 @@ public:
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
 
+    static bool DeleteIfOrphaned( idt resID, const wxString& dbname );
+
 private:
     wxString  f_name;
     wxString  f_comment;
