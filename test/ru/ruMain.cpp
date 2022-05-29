@@ -37,6 +37,7 @@
 #include "ruMain.h"
 
 #include <rec/recDatabase.h>
+#include <rec/recAssociate.h>
 
 const char* g_TestFileName = "test.tfpd";
 const char* g_AssociateFileName = "test-ass.tfpd";
@@ -65,6 +66,10 @@ int main( int argc, char* argv[] ) {
         wxRemoveFile( afname );
     }
     recDb::CreateDbFile( afname, recDb::DbType::media_data_only );
+    recAssociate ass( 0 );
+    ass.FSetPath( "test-ass" );
+    ass.FSetComment( "Test file" );
+    ass.Save();
 
     wxCopyFile( g_OriginalExternalFileName1, g_ExternalFileName1 );
     wxCopyFile( g_OriginalAssociateFileName1, g_AssociateFileName1 );
