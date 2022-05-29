@@ -47,6 +47,7 @@ struct RecordCounts
     size_t contactlist = 0;
     size_t contacttype = 0;
     size_t repository = 0;
+    size_t researcher = 0;
 
     RecordCounts( const char* dbname ) : m_dbname( dbname ) { Reset(); }
 
@@ -58,6 +59,7 @@ struct RecordCounts
         contactlist = recContactList::Count( m_dbname );
         contacttype = recContactType::Count( m_dbname );
         repository = recRepository::Count( m_dbname );
+        researcher = recResearcher::Count( m_dbname );
     }
     bool Equal( const RecordCounts& rcs ) {
         return
@@ -67,7 +69,8 @@ struct RecordCounts
             contact == rcs.contact &&
             contactlist == rcs.contactlist &&
             contacttype == rcs.contacttype &&
-            repository == rcs.repository
+            repository == rcs.repository &&
+            researcher == rcs.researcher
             ;
     }
 };
@@ -217,5 +220,25 @@ TEST_CASE( "Test recRepository::Transfer function", "[recRepository]" )
     REQUIRE( recRepository::Count( g_extdb1 ) == cnt_extdb );
 }
 
+TEST_CASE( "Test recResearcher::Transfer function", "[recResearcher]" )
+{
+    RecordCounts rc_main( g_maindb ), rc_extdb( g_extdb1 );
+
+    REQUIRE( !recResearcher::Exists( 1, g_maindb ) );
+    REQUIRE( recResearcher::Exists( 1, g_extdb1 ) );
+    recResearcher from_res( 1, g_extdb1 );
+
+    idt to_id = recResearcher::Transfer( 1, g_extdb1, g_maindb );
+    REQUIRE( to_id == 1 );
+    recResearcher to_res( 1, g_maindb );
+    //    REQUIRE( from_res.Equivalent( to_res ) );
+
+    RecordCounts rcnew( g_maindb );
+    REQUIRE( rcnew.researcher == rc_main.researcher + 1 );
+
+    REQUIRE( recResearcher::DeleteIfOrphaned( to_id, g_maindb ) );
+    rcnew.Reset();
+    REQUIRE( rcnew.Equal( rc_main ) );
+}
 
 /* End of test/ru/ruTransfer.cpp file */
