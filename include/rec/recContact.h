@@ -78,7 +78,7 @@ public:
     // Merge in Contacts from target ContactList and then delete it.
     void Assimilate( idt targetID, const wxString& dbname = "Main" ) const;
 
-    static idt recContactList::Transfer(
+    static idt Transfer(
         idt from_clID, const wxString& fromdb, idt to_clID, const wxString& todb );
 
     static void Renumber( idt fromID, idt toID );

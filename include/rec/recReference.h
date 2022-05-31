@@ -183,7 +183,7 @@ public:
     recIdVec GetDateList( const wxString& dbname = "Main" ) const {
         return GetDateList( f_id, dbname ); }
 
-    static idt recReference::Transfer(
+    static idt Transfer(
         idt from_refID, const wxString& fromdb, const wxString& todb, idt to_assID );
 
     static void Renumber( idt fromID, idt toID );

@@ -94,7 +94,7 @@ public:
     static wxString GetCitationStr( idt citID, const wxString& dbname = "Main" );
     wxString GetCitationStr( const wxString& dbname = "Main" ) const;
 
-    static idt recCitation::Transfer(
+    static idt Transfer(
         idt from_citID, const wxString& fromdb, idt to_refID, const wxString& todb );
 
     static void Renumber( idt id, idt to_id );
@@ -145,7 +145,7 @@ public:
 
     static recRepositoryVec GetFullList( const wxString& dbname = "Main" );
 
-    static idt recRepository::Transfer(
+    static idt Transfer(
         idt from_repID, const wxString& fromdb, const wxString& todb );
 
     static void Renumber( idt fromID, idt toID );
@@ -246,7 +246,7 @@ public:
 
     static recCitationPartTypeVec GetList( const wxString& dbname = "Main" );
 
-    static idt recCitationPartType::Transfer(
+    static idt Transfer(
         idt from_cptID, const wxString& fromdb, const wxString& todb );
 
     static void Renumber( idt fromID, idt toID );
