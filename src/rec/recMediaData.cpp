@@ -290,6 +290,22 @@ wxSQLite3Table recMediaData::GetMediaDataList( const wxString& dbname )
     return s_db->GetTable( sql );
 }
 
+idt recMediaData::Transfer( idt from_mdID, const wxString& fromdb, const wxString& todb )
+{
+    if( from_mdID == 0 ) return 0;
+    recMediaData from_md( from_mdID, fromdb );
+    idt to_mdID = recMediaData::FindUid( from_md.FGetUid(), todb );
+    recMediaData to_md( to_mdID, todb );
+    recMatchUID match = from_md.CompareUID( to_md );
+    if( match == recMatchUID::unequal || match == recMatchUID::younger ) {
+        recMediaData new_md( from_md );
+        new_md.FSetID( to_mdID );
+        new_md.Save( todb );
+        to_mdID = new_md.FGetID();
+    }
+    return to_mdID;
+}
+
 std::string recMediaData::CsvTitles()
 {
     return std::string(

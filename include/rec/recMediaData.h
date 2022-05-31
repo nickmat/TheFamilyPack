@@ -80,6 +80,9 @@ public:
 
     static wxSQLite3Table GetMediaDataList( const wxString& dbname = "Main" );
 
+    static idt Transfer(
+        idt from_mdID, const wxString& fromdb, const wxString& todb );
+
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );
     void CsvWrite( std::ostream& out ) const;
