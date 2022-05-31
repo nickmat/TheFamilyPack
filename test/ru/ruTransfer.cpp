@@ -200,6 +200,29 @@ TEST_CASE( "Test recContactType::Transfer function", "[ContactType]" )
     REQUIRE( recContactType::Count( g_extdb1 ) == cnt_extdb );
 }
 
+TEST_CASE( "Test recMediaData::Transfer function", "[recMediaData]" )
+{
+    wxString todb = recAssociate::GetAttachedName( 1, g_maindb );
+    REQUIRE( !todb.empty() );
+    wxString fromdb = recAssociate::GetAttachedName( 1, g_extdb1 );
+    REQUIRE( !fromdb.empty() );
+
+    int to_count = recMediaData::Count( todb );
+
+    REQUIRE( !recMediaData::Exists( 1, todb ) );
+    REQUIRE( recMediaData::Exists( 2, fromdb ) );
+
+    wxSQLite3Table result = recMediaData::GetMediaDataList( todb );
+
+    idt to_mdID = recMediaData::Transfer( 2, fromdb, todb );
+    REQUIRE( to_mdID == 1 );
+    REQUIRE( recMediaData::Exists( 1, todb ) );
+
+    recMediaData::Delete( 1, todb );
+
+    REQUIRE( recMediaData::Count( todb ) == to_count );
+}
+
 TEST_CASE( "Test recRepository::Transfer function", "[recRepository]" )
 {
     int cnt_main = recRepository::Count( g_maindb );
