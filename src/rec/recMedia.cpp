@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     19th September 2018
- * Copyright:   Copyright (c) 2018 ~ 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2018..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -36,6 +36,8 @@
 #endif
 
 #include <rec/recMedia.h>
+
+#include <rec/recAssociate.h>
 #include <rec/recMediaData.h>
 
 recMedia::recMedia( const recMedia& n )
@@ -191,6 +193,28 @@ wxSQLite3Table recMedia::GetMediaList( idt offset, int limit, const wxString& db
         UTF8_( dbname ), offset, limit
     );
     return s_db->GetTable( sql );
+}
+
+idt recMedia::Transfer(
+    idt from_medID, const wxString& fromdb, idt to_refID, const wxString& todb, idt to_assID )
+{
+    if( from_medID == 0 ) return 0;
+    recMedia from_med( from_medID, fromdb );
+    wxString md_fromdb = recAssociate::GetAttachedName( from_med.FGetAssID(), fromdb );
+    wxString md_todb = recAssociate::GetAttachedName( to_assID, todb );
+    idt to_mdID = recMediaData::Transfer( from_med.FGetDataID(), md_fromdb, md_todb );
+    // Don't transfer just media record if we can't transfer the data.
+    if( to_mdID == 0 ) return 0;
+    recMedia to_med( from_med );
+    to_med.FSetDataID( to_mdID );
+    to_med.FSetAssID( to_assID );
+    to_med.FSetRefID( to_refID );
+    to_med.FSetRefSeq( recMedia::GetNextRefSeq( to_refID ) );
+    if( to_med.FGetID() > 0 ) {
+        to_med.FSetID( 0 );
+    }
+    to_med.Save( todb );
+    return to_med.FGetID();
 }
 
 std::string recMedia::CsvTitles()
