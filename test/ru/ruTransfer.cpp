@@ -46,6 +46,7 @@ struct RecordCounts
     size_t contact = 0;
     size_t contactlist = 0;
     size_t contacttype = 0;
+    size_t media = 0;
     size_t repository = 0;
     size_t researcher = 0;
 
@@ -58,6 +59,7 @@ struct RecordCounts
         contact = recContact::Count( m_dbname );
         contactlist = recContactList::Count( m_dbname );
         contacttype = recContactType::Count( m_dbname );
+        media = recMedia::Count( m_dbname );
         repository = recRepository::Count( m_dbname );
         researcher = recResearcher::Count( m_dbname );
     }
@@ -69,6 +71,7 @@ struct RecordCounts
             contact == rcs.contact &&
             contactlist == rcs.contactlist &&
             contacttype == rcs.contacttype &&
+            media == rcs.media &&
             repository == rcs.repository &&
             researcher == rcs.researcher
             ;
@@ -198,6 +201,27 @@ TEST_CASE( "Test recContactType::Transfer function", "[ContactType]" )
 
     REQUIRE( recContactType::Count( g_maindb ) == cnt_main );
     REQUIRE( recContactType::Count( g_extdb1 ) == cnt_extdb );
+}
+
+TEST_CASE( "Test recMedia::Transfer function", "[recMedia]" )
+{
+    RecordCounts rc_main( g_maindb ), rc_extdb( g_extdb1 );
+    wxString todb = recAssociate::GetAttachedName( 1, g_maindb );
+    REQUIRE( !todb.empty() );
+    int to_count = recMediaData::Count( todb );
+
+    idt to_medID = recMedia::Transfer( 56, g_extdb1, 0, g_maindb, 1 );
+    REQUIRE( to_medID == 1 );
+
+    RecordCounts rcnew( g_maindb );
+    REQUIRE( rcnew.media == rc_main.media + 1 );
+    REQUIRE( recMediaData::Count( todb ) == to_count + 1 );
+
+    REQUIRE( recMedia::RemoveFromDatabase( to_medID, recMedia::DataInc::always, g_maindb ) );
+
+    rcnew.Reset();
+    REQUIRE( rcnew.Equal( rc_main ) );
+    REQUIRE( recMediaData::Count( todb ) == to_count );
 }
 
 TEST_CASE( "Test recMediaData::Transfer function", "[recMediaData]" )
