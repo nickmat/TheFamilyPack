@@ -36,6 +36,11 @@ using  recMediaVec = std::vector< recMedia >;
 class recMedia : public recDbT<recMedia>
 {
 public:
+    enum class DataInc {
+        omit,    // Ignore the MediaData record.
+        always   // Always act on the MediaData record.
+    };
+
     static constexpr const char* s_tablename = "Media";
 
     recMedia() : f_data_id(0), f_ass_id(0), f_ref_id(0),
@@ -86,6 +91,8 @@ public:
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
+
+    static bool RemoveFromDatabase( idt medID, DataInc data, const wxString& dbname );
 
 private:
     idt      f_data_id;

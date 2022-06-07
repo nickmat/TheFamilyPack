@@ -250,4 +250,18 @@ bool recMedia::CsvRead( std::istream& in )
     return bool( in );
 }
 
+bool recMedia::RemoveFromDatabase( idt medID, DataInc data, const wxString& dbname )
+{
+    if( medID <= 0 ) return false;
+    if( data == DataInc::always ) {
+        recMedia med( medID, dbname );
+        idt mdID = med.FGetDataID();
+        if( mdID > 0 ) {
+            wxString datadb = recAssociate::GetAttachedName( med.FGetAssID(), dbname );
+            recMediaData::Delete( mdID, datadb );
+        }
+    }
+    return Delete( medID, dbname );
+}
+
 // End of recMedia.cpp file
