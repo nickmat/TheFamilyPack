@@ -49,6 +49,7 @@
     <library>rec</library>
     <library>reccl</library>
 
+    <wx-lib>core</wx-lib>
     <wx-lib>base</wx-lib>
   </exe>
 
@@ -64,6 +65,7 @@
     <library>rec</library>
     <library>reccl</library>
 
+    <wx-lib>core</wx-lib>
     <wx-lib>base</wx-lib>
   </exe>
 
@@ -79,6 +81,7 @@
     <library>rec</library>
     <library>reccl</library>
 
+    <wx-lib>core</wx-lib>
     <wx-lib>base</wx-lib>
   </exe>
 
