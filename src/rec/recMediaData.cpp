@@ -348,4 +348,23 @@ bool recMediaData::CsvRead( std::istream& in )
     return bool( in );
 }
 
+bool recMediaData::IsOrphaned( idt mdID, idt assID, const wxString& dbname )
+{
+    if( mdID <= 0 ) return false;
+
+    recDb::DbType dbtype = GetDatabaseType( dbname );
+    if( dbtype != recDb::DbType::full ) return true;
+
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT COUNT(*) FROM \"%s\".Media"
+        " WHERE data_id=" ID " AND ass_id=" ID ";",
+        UTF8_( dbname ), mdID, assID
+    );
+    if( s_db->ExecuteScalar( sql ) > 0 ) {
+        return false;
+    }
+    return true;
+}
+
 // End of recMediaData.cpp file

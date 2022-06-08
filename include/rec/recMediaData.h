@@ -88,6 +88,9 @@ public:
     void CsvWrite( std::ostream& out ) const;
     bool CsvRead( std::istream& in );
 
+    // Can record be safely deleted?
+    static bool IsOrphaned( idt mdID, idt assID, const wxString& dbname );
+
 private:
     wxString       f_title;
     wxMemoryBuffer f_data;
