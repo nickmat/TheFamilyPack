@@ -342,9 +342,11 @@ static const char* createFullDb =  /* recCreateFull.sql */
  "CREATE TABLE Gallery (\n"
  "  id INTEGER PRIMARY KEY,\n"
  "  title TEXT NOT NULL,\n"
- "  note TEXT NULL\n"
+ "  note TEXT NULL,\n"
+ "  uid TEXT NOT NULL,\n"
+ "  changed INTEGER NOT NULL\n"
  ");\n"
- "INSERT INTO Gallery (id, title) VALUES(0,'');\n"
+ "INSERT INTO Gallery (id, title, note, uid, changed) VALUES(0,'','','',0);\n"
  "CREATE TABLE GalleryMedia (\n"
  "  id INTEGER PRIMARY KEY,\n"
  "  title TEXT NULL,\n"
@@ -545,7 +547,7 @@ static const char* createFullDb =  /* recCreateFull.sql */
  "INSERT INTO User (id, res_id) VALUES(1, -1);\n"
  "INSERT INTO System (id, val) VALUES(1, '1');\n"
  "INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 1, 1, 'NI');\n"
- "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 38);\n"
+ "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 39);\n"
  "COMMIT;\n";
 
 /* End of src/rec/embed/recDatabaseCreate.f2c */

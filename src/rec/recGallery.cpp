@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     19th September 2018
- * Copyright:   Copyright (c) 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2018..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -40,18 +40,22 @@
 #include <rec/recGalleryMedia.h>
 
 
-recGallery::recGallery( const recGallery& at )
+recGallery::recGallery( const recGallery& gal )
 {
-    f_id = at.f_id;
-    f_title = at.f_title;
-    f_note = at.f_note;
+    f_id = gal.f_id;
+    f_title = gal.f_title;
+    f_note = gal.f_note;
+    f_uid = gal.f_uid;
+    f_changed = gal.f_changed;
 }
 
 void recGallery::Clear()
 {
     f_id = 0;
-    f_title = "";
-    f_note = "";
+    f_title.clear();
+    f_note.clear();
+    f_uid.clear();
+    f_changed = 0;
 }
 
 void recGallery::Save( const wxString& dbname )
@@ -63,8 +67,9 @@ void recGallery::Save( const wxString& dbname )
     {
         // Add new record
         sql.Format(
-            "INSERT INTO \"%s\".Gallery (title, note) VALUES ('%q', '%q');",
-            UTF8_( dbname ), UTF8_( f_title ), UTF8_( f_note )
+            "INSERT INTO \"%s\".Gallery (title, note, uid, changed)"
+            " VALUES ('%q', '%q', '%q', %ld);",
+            UTF8_( dbname ), UTF8_( f_title ), UTF8_( f_note ), UTF8_( f_uid ), f_changed
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -74,15 +79,18 @@ void recGallery::Save( const wxString& dbname )
         {
             // Add new record
             sql.Format(
-                "INSERT INTO \"%s\".Gallery (id, title, note) "
-                "VALUES (" ID ", '%q', '%q');",
-                UTF8_( dbname ), f_id, UTF8_( f_title ), UTF8_( f_note )
+                "INSERT INTO \"%s\".Gallery (id, title, note, uid, changed) "
+                "VALUES (" ID ", '%q', '%q', '%q', %ld);",
+                UTF8_( dbname ), f_id, UTF8_( f_title ), UTF8_( f_note ),
+                UTF8_( f_uid ), f_changed
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE \"%s\".Gallery SET title='%q', note='%q' WHERE id=" ID ";",
-                UTF8_( dbname ), UTF8_( f_title ), UTF8_( f_note ), f_id
+                "UPDATE \"%s\".Gallery SET title='%q', note='%q', uid='%q', changed=%ld"
+                " WHERE id=" ID ";",
+                UTF8_( dbname ), UTF8_( f_title ), UTF8_( f_note ),
+                UTF8_( f_uid ), f_changed, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -100,7 +108,7 @@ bool recGallery::Read( const wxString& dbname )
     }
 
     sql.Format(
-        "SELECT title, note FROM \"%s\".Gallery WHERE id=" ID ";",
+        "SELECT title, note, uid, changed FROM \"%s\".Gallery WHERE id=" ID ";",
         UTF8_( dbname ), f_id
     );
     result = s_db->GetTable( sql );
@@ -113,6 +121,8 @@ bool recGallery::Read( const wxString& dbname )
     result.SetRow( 0 );
     f_title = result.GetAsString( 0 );
     f_note = result.GetAsString( 1 );
+    f_uid = result.GetAsString( 2 );
+    f_changed = result.GetInt( 3 );
     return true;
 }
 
@@ -120,7 +130,9 @@ bool recGallery::Equivalent( const recGallery& r2 ) const
 {
     return
         f_title == r2.f_title &&
-        f_note == r2.f_note
+        f_note == r2.f_note &&
+        f_uid == r2.f_uid &&
+        f_changed == r2.f_changed
     ;
 }
 
@@ -128,7 +140,7 @@ recGalleryVec recGallery::GetGalleries( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "SELECT id, title, note FROM \"%s\".Gallery WHERE NOT id=0 ORDER BY id",
+        "SELECT id, title, note, uid, changed FROM \"%s\".Gallery WHERE NOT id=0 ORDER BY id",
         UTF8_( dbname )
     );
     wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
@@ -138,6 +150,8 @@ recGalleryVec recGallery::GetGalleries( const wxString& dbname )
         gal.FSetID( GET_ID( result.GetInt64( 0 ) ) );
         gal.FSetTitle( result.GetAsString( 1 ) );
         gal.FSetNote( result.GetAsString( 2 ) );
+        gal.FSetUid( result.GetAsString( 3 ) );
+        gal.FSetChanged( result.GetInt( 4 ) );
         gals.push_back( gal );
     }
     return gals;

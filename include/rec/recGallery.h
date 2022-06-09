@@ -36,7 +36,7 @@ using  recGalleryVec = std::vector< recGallery >;
 class recGalleryMediaMedia;
 using recGalleryMediaMediaVec = std::vector< recGalleryMediaMedia >;
 
-class recGallery : public recDbT<recGallery>
+class recGallery : public recDbT<recGallery>, public recUidT<recGallery>
 {
 public:
     static constexpr const char* s_tablename = "Gallery";

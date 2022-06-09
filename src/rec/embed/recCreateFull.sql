@@ -376,10 +376,12 @@ INSERT INTO FamilyIndividual (
 CREATE TABLE Gallery (
   id INTEGER PRIMARY KEY,
   title TEXT NOT NULL,
-  note TEXT NULL
+  note TEXT NULL,
+  uid TEXT NOT NULL,
+  changed INTEGER NOT NULL
 );
 
-INSERT INTO Gallery (id, title) VALUES(0,'');
+INSERT INTO Gallery (id, title, note, uid, changed) VALUES(0,'','','',0);
 
 CREATE TABLE GalleryMedia (
   id INTEGER PRIMARY KEY,
@@ -632,7 +634,7 @@ INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 1, 1, 'NI');
 /* Table Version created in recCreateCommon.sql */
 
 /* The Version table row 1 is the full TFPD database */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 38);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 39);
 
 COMMIT;
 
