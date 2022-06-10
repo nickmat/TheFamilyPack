@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Oct 26 2018)
+// C++ code generated with wxFormBuilder (version 3.10.1-0-g8feb16b3)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -27,19 +27,39 @@ fbRgEditGallery::fbRgEditGallery( wxWindow* parent, wxWindowID id, const wxStrin
 	wxBoxSizer* bSizer1;
 	bSizer1 = new wxBoxSizer( wxVERTICAL );
 
-	wxBoxSizer* bSizer2;
-	bSizer2 = new wxBoxSizer( wxHORIZONTAL );
+	wxFlexGridSizer* fgSizer1;
+	fgSizer1 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer1->AddGrowableCol( 1 );
+	fgSizer1->AddGrowableRow( 1 );
+	fgSizer1->SetFlexibleDirection( wxBOTH );
+	fgSizer1->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 
 	wxStaticText* m_staticText1;
 	m_staticText1 = new wxStaticText( this, wxID_ANY, _("&Title:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText1->Wrap( -1 );
-	bSizer2->Add( m_staticText1, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	fgSizer1->Add( m_staticText1, 0, wxALIGN_CENTER_VERTICAL|wxALL|wxALIGN_RIGHT, 5 );
 
 	m_textCtrlTitle = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer2->Add( m_textCtrlTitle, 1, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxRIGHT, 5 );
+	fgSizer1->Add( m_textCtrlTitle, 1, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxRIGHT|wxEXPAND, 5 );
+
+	wxStaticText* m_staticText3;
+	m_staticText3 = new wxStaticText( this, wxID_ANY, _("UID:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText3->Wrap( -1 );
+	fgSizer1->Add( m_staticText3, 0, wxBOTTOM|wxRIGHT|wxLEFT|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
+
+	m_textCtrlUid = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+	fgSizer1->Add( m_textCtrlUid, 0, wxBOTTOM|wxRIGHT|wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
+
+	wxStaticText* m_staticText4;
+	m_staticText4 = new wxStaticText( this, wxID_ANY, _("Changed:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText4->Wrap( -1 );
+	fgSizer1->Add( m_staticText4, 0, wxALIGN_RIGHT|wxBOTTOM|wxRIGHT|wxLEFT|wxALIGN_CENTER_VERTICAL, 5 );
+
+	m_textCtrlChanged = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+	fgSizer1->Add( m_textCtrlChanged, 0, wxBOTTOM|wxRIGHT|wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
 
 
-	bSizer1->Add( bSizer2, 0, wxEXPAND, 5 );
+	bSizer1->Add( fgSizer1, 0, wxEXPAND, 5 );
 
 	wxBoxSizer* bSizer3;
 	bSizer3 = new wxBoxSizer( wxVERTICAL );
@@ -96,7 +116,7 @@ fbRgEditGallery::fbRgEditGallery( wxWindow* parent, wxWindowID id, const wxStrin
 	bSizer7->Add( m_buttonImageUp, 1, wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 
 	m_buttonImageDn = new wxButton( m_panelMedia, wxID_ANY, _("&Down"), wxDefaultPosition, wxSize( 35,-1 ), 0 );
-	bSizer7->Add( m_buttonImageDn, 1, wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+	bSizer7->Add( m_buttonImageDn, 1, wxBOTTOM|wxRIGHT, 5 );
 
 
 	bSizer6->Add( bSizer7, 0, wxEXPAND, 5 );
@@ -127,7 +147,7 @@ fbRgEditGallery::fbRgEditGallery( wxWindow* parent, wxWindowID id, const wxStrin
 
 	m_staticGalID = new wxStaticText( this, wxID_ANY, _("G0"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticGalID->Wrap( -1 );
-	m_staticGalID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Times New Roman") ) );
+	m_staticGalID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxT("Times New Roman") ) );
 
 	bSizerDismiss->Add( m_staticGalID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -137,7 +157,7 @@ fbRgEditGallery::fbRgEditGallery( wxWindow* parent, wxWindowID id, const wxStrin
 	m_buttonSave = new wxButton( this, wxID_OK, _("&Save"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizerDismiss->Add( m_buttonSave, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxLEFT, 5 );
 
-	m_buttonCancel = new wxButton( this, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonCancel = new wxButton( this, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizerDismiss->Add( m_buttonCancel, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
 

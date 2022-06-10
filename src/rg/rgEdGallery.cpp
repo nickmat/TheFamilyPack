@@ -43,22 +43,65 @@
 #include <rec/recGalleryMedia.h>
 
 
-bool rgEditGallery( wxWindow* parent, idt galID  )
+bool rgEditGallery( wxWindow* parent, idt galID, const wxString& title )
 {
-    const wxString savepoint = recDb::GetSavepointStr();
-    recDb::Savepoint( savepoint );
-    bool ret = false;
-    rgDlgEditGallery dialog( parent, galID );
-
-    if ( dialog.IsGalIdOk( galID ) && dialog.ShowModal() == wxID_OK ) {
-        recDb::ReleaseSavepoint( savepoint );
-        ret = true;
-    } else {
-        recDb::Rollback( savepoint );
-    }
-    dialog.Destroy();
-    return ret;
+    return rgEdit<rgDlgEditGallery>( parent, galID, title );
 }
+
+idt rgCreateGallery( wxWindow* wind )
+{
+    recGallery gal( 0 );
+    gal.FSetUid( recCreateUid() );
+    gal.FSetChanged( calGetTodayJdn() );
+    return rgCreate<recGallery, rgDlgEditGallery>(
+        wind, gal, _( "Create Gallery" )
+    );
+}
+
+idt rgSelectGallery( wxWindow* wind, unsigned flag, unsigned* retbutton, const wxString& title )
+{
+    idt galID = 0;
+    if( retbutton ) *retbutton = rgSELSTYLE_None;
+    rgDlgSelectGallery dialog( wind, flag, title );
+
+    bool cont = true;
+    while( cont ) {
+        recGalleryVec vec = recGallery::GetGalleries();
+        wxArrayString table;
+        for( auto gal : vec ) {
+            table.push_back( gal.GetIdStr() );
+            table.push_back( gal.FGetTitle() );
+        }
+        dialog.SetTable( table );
+        if( vec.size() == 1 ) {
+            dialog.SetSelectedRow( 0 );
+        }
+        if( dialog.ShowModal() == wxID_OK ) {
+            if( dialog.GetCreatePressed() ) {
+                galID = rgCreateGallery( wind );
+                if( galID ) {
+                    if( retbutton ) *retbutton = rgSELSTYLE_Create;
+                    break;
+                }
+                else {
+                    dialog.SetCreatePressed( false );
+                    continue;
+                }
+            }
+            if( dialog.GetUnknownPressed() ) {
+                if( retbutton ) *retbutton = rgSELSTYLE_Unknown;
+                galID = 0;
+                break;
+            }
+            size_t item = (size_t) dialog.GetSelectedRow();
+            galID = vec[item].FGetID();
+        }
+        cont = false;
+    }
+
+    return galID;
+}
+
 
 //============================================================================
 //                 rgDlgEditGallery dialog
@@ -71,27 +114,18 @@ rgDlgEditGallery::rgDlgEditGallery( wxWindow* parent, idt galID )
     m_listImage->InsertColumn( IC_title, _( "Title" ) );
 }
 
-bool rgDlgEditGallery::IsGalIdOk( idt galID )
-{
-    if ( galID == 0 ) {
-        m_gallery.Save();
-        return true;
-    }
-    return ( galID == m_gallery.FGetID() );
-}
-
 bool rgDlgEditGallery::TransferDataToWindow()
 {
     wxASSERT( m_gallery.FGetID() != 0 );
 
     m_textCtrlTitle->SetValue( m_gallery.FGetTitle() );
+    m_textCtrlUid->SetValue( m_gallery.FGetUid() );
+    wxString changed = calStrFromJdn( m_gallery.FGetChanged() );
+    m_textCtrlChanged->SetValue( changed );
     m_textCtrlNote->SetValue( m_gallery.FGetNote() );
     m_staticGalID->SetLabel( m_gallery.GetIdStr() );
 
     UpdateMediaList();
-
-    m_notebook->SetSelection( PAGE_Note );
-    m_textCtrlNote->SetFocus();
     return true;
 }
 
@@ -99,6 +133,7 @@ bool rgDlgEditGallery::TransferDataFromWindow()
 {
     m_gallery.FSetTitle( m_textCtrlTitle->GetValue() );
     m_gallery.FSetNote( m_textCtrlNote->GetValue() );
+    m_gallery.FSetChanged( calGetTodayJdn() );
 
     for ( size_t i = 0; i < m_gmms.size(); i++ ) {
         recGalleryMedia& gm = m_gmms[i].GetGalleryMedia();
@@ -232,5 +267,14 @@ void rgDlgEditGallery::OnViewImage( wxCommandEvent& event )
     }
     rgViewMedia( this, "Main", m_gmms[row].GetMedID());
 }
+
+//============================================================================
+//--------------------------[ rgDlgSelectGallery ]----------------------------
+//============================================================================
+
+wxString rgDlgSelectGallery::sm_colHeaders[COL_MAX] = {
+    _( "ID" ), _( "Title" )
+};
+
 
 // End of src/rg/rgEdGallery.cpp

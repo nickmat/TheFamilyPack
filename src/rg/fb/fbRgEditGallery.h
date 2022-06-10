@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Oct 26 2018)
+// C++ code generated with wxFormBuilder (version 3.10.1-0-g8feb16b3)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -40,6 +40,8 @@ class fbRgEditGallery : public wxDialog
 
 	protected:
 		wxTextCtrl* m_textCtrlTitle;
+		wxTextCtrl* m_textCtrlUid;
+		wxTextCtrl* m_textCtrlChanged;
 		wxNotebook* m_notebook;
 		wxTextCtrl* m_textCtrlNote;
 		wxListCtrl* m_listImage;
@@ -54,7 +56,7 @@ class fbRgEditGallery : public wxDialog
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
 
-		// Virtual event handlers, overide them in your derived class
+		// Virtual event handlers, override them in your derived class
 		virtual void OnMediaAddButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAddNewMedia( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAddExistingMedia( wxCommandEvent& event ) { event.Skip(); }
@@ -68,6 +70,7 @@ class fbRgEditGallery : public wxDialog
 	public:
 
 		fbRgEditGallery( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Gallery"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+
 		~fbRgEditGallery();
 
 		void m_buttonImageAddOnContextMenu( wxMouseEvent &event )

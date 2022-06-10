@@ -170,7 +170,14 @@ extern idt rgCreatePersonalEventa( wxWindow* wind, idt refID, const wxString& ro
 extern bool rgEditFamily( wxWindow* wind, idt famID );
 
 // See src/rg/rgEdGallery.cpp
-extern bool rgEditGallery( wxWindow* parent, idt galID );
+extern bool rgEditGallery( wxWindow* parent, idt galID, const wxString& title = "" );
+extern idt rgCreateGallery( wxWindow* wind );
+extern idt rgSelectGallery(
+    wxWindow* wind,
+    unsigned flag = rgSELSTYLE_Create,
+    unsigned* retbutton = nullptr,
+    const wxString& title = ""
+);
 
 // See src/rg/rgEdIndividual.cpp
 extern bool rgEditIndividual( wxWindow* wind, idt indID );

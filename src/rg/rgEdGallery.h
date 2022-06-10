@@ -29,6 +29,7 @@
 #define SRC_RG_RGEDGALLERY_H
 
 #include "fb/fbRgEditGallery.h"
+#include "rgSelect.h"
 
 #include <rec/recGallery.h>
 #include <rec/recGalleryMedia.h>
@@ -39,17 +40,12 @@
 
 class rgDlgEditGallery : public fbRgEditGallery
 {
-    enum Page {
-        PAGE_Note, PAGE_Images
-    };
     enum ImageColumns {
         IC_id, IC_title, IC_MAX
     };
 
 public:
     rgDlgEditGallery( wxWindow* parent, idt galID );
-
-    bool IsGalIdOk( idt galID );
 
 private:
     bool TransferDataToWindow();
@@ -69,6 +65,25 @@ private:
 
     recGallery              m_gallery;
     recGalleryMediaMediaVec m_gmms;
+};
+
+
+//============================================================================
+//--------------------------[ rgDlgSelectGallery ]----------------------------
+//============================================================================
+
+class rgDlgSelectGallery : public rgSelect
+{
+    enum {
+        COL_ID, COL_Title, COL_MAX
+    };
+    static wxString sm_colHeaders[COL_MAX];
+public:
+    rgDlgSelectGallery(
+        wxWindow* parent = NULL,
+        unsigned style = rgSELSTYLE_None,
+        const wxString& title = _( "Select Gallery" )
+    ) : rgSelect( parent, sm_colHeaders, COL_MAX, style, title ) {}
 };
 
 #endif // SRC_RG_RGEDGALLERY_H
