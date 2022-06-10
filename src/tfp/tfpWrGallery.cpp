@@ -120,7 +120,12 @@ wxString tfpWriteGalleryPage( idt galID, const wxString& extdb )
     if ( !started ) {
         htm << "<tr>\n<td>Empty Gallery.</td>\n</tr>\n";
     }
-    htm << "</table>\n" << tfpWrTailTfp();
+    htm << "</table>\n"
+        "<p>\n"
+        "<b>UID:</b> " << gal.FGetUid() << "<br>\n"
+        "<b>Date Last Changed:</b> " << gal.GetChangedDate() << "\n"
+        "</p>\n"
+        << tfpWrTailTfp();
     return htm;
 }
 
