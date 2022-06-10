@@ -717,24 +717,19 @@ void TfpFrame::OnEditReference( wxCommandEvent& event )
 
 void TfpFrame::OnEditGallery( wxCommandEvent& event )
 {
-    long num = wxGetNumberFromUser(
-        _( "Enter the Gallery ID or 0 for new Gallery" ),
-        _( "Gallery ID:" ),
-        _( "Edit Gallery" ),
-        (long)0, (long)0, (long)INT_MAX
-        );
-    if ( num < 0 ) return;
-
     recDb::Begin();
     try {
-        if ( rgEditGallery( this, (idt)num ) ) {
+        unsigned retbutton = 0;
+        idt galID = rgSelectGallery( this, rgSELSTYLE_Create, &retbutton );
+        if( galID && (retbutton || rgEditGallery( this, galID )) ) {
             recDb::Commit();
             RefreshHtmPage();
-        } else {
+        }
+        else {
             recDb::Rollback();
         }
     }
-    catch ( wxSQLite3Exception& e ) {
+    catch( wxSQLite3Exception& e ) {
         recDb::ErrorMessage( e );
         recDb::Rollback();
     }
