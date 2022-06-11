@@ -83,6 +83,8 @@ struct RecordId {
     idt id;
 };
 
+using RecordIdVec = std::vector<RecordId>;
+
 struct AssociateData {
     string m_ass_filename;
     set<idt> m_ass_media_data;
@@ -105,12 +107,12 @@ Table TableFromName( const char* name )
 
 RecordId GetRecordId( const string& str )
 {
-    RecordId rid;
     size_t pos = 0;
     for( auto ch : str ) {
         if( isalpha( ch ) ) pos++;
         else break;
     }
+    RecordId rid;
     for( size_t i = 0; i < tables_size; i++ ) {
         if( str.compare( 0, pos, TablePrefixes[i] ) == 0 ) {
             rid.table = static_cast<Table>(i);
@@ -121,9 +123,22 @@ RecordId GetRecordId( const string& str )
     return rid;
 }
 
-inline RecordId GetRecordId( const wxString& str )
+RecordIdVec GetRecordIDs( const wxString& str )
 {
-    return GetRecordId( string( str ) );
+    RecordIdVec rids;
+    string records = string( str ) + ' ';
+    string s;
+    for( auto ch : records ) {
+        if( ch == ' ' ) {
+            RecordId rid = GetRecordId( s );
+            rids.push_back( rid );
+            s.clear();
+        }
+        else {
+            s += ch;
+        }
+    }
+    return rids;
 }
 
 class DataSet
@@ -133,36 +148,38 @@ public:
 
     void Create( const wxString& records )
     {
-        RecordId rid = GetRecordId( records );
-        switch( rid.table )
-        {
-        case Table::t_Citation:
-            InsertCitation( rid.id );
-            break;
-        case Table::t_CitationPart:
-            InsertCitationPart( rid.id );
-            break;
-        case Table::t_CitationPartType:
-            InsertCitationPartType( rid.id );
-            break;
-        case Table::t_Contact:
-            InsertContact( rid.id );
-            break;
-        case Table::t_ContactList:
-            InsertContactList( rid.id );
-            break;
-        case Table::t_ContactType:
-            InsertContactType( rid.id );
-            break;
-        case Table::t_Reference:
-            InsertReference( rid.id );
-            break;
-        case Table::t_Repository:
-            InsertRepository( rid.id );
-            break;
-        case Table::t_Researcher:
-            InsertResearcher( rid.id );
-            break;
+        RecordIdVec rids = GetRecordIDs( records );
+        for( RecordId& rid : rids ) {
+            switch( rid.table )
+            {
+            case Table::t_Citation:
+                InsertCitation( rid.id );
+                break;
+            case Table::t_CitationPart:
+                InsertCitationPart( rid.id );
+                break;
+            case Table::t_CitationPartType:
+                InsertCitationPartType( rid.id );
+                break;
+            case Table::t_Contact:
+                InsertContact( rid.id );
+                break;
+            case Table::t_ContactList:
+                InsertContactList( rid.id );
+                break;
+            case Table::t_ContactType:
+                InsertContactType( rid.id );
+                break;
+            case Table::t_Reference:
+                InsertReference( rid.id );
+                break;
+            case Table::t_Repository:
+                InsertRepository( rid.id );
+                break;
+            case Table::t_Researcher:
+                InsertResearcher( rid.id );
+                break;
+            }
         }
     }
 
