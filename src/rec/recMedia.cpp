@@ -195,6 +195,14 @@ wxSQLite3Table recMedia::GetMediaList( idt offset, int limit, const wxString& db
     return s_db->GetTable( sql );
 }
 
+recIdVec recMedia::GetGalleryMediaList( idt medID, const wxString& dbname )
+{
+    return ExecuteIdVec(
+        "SELECT id FROM \"%s\".GalleryMedia WHERE med_id=" ID ";",
+        UTF8_( dbname ), medID
+    );
+}
+
 idt recMedia::Transfer(
     idt from_medID, const wxString& fromdb, idt to_refID, const wxString& todb, idt to_assID )
 {
