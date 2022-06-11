@@ -267,6 +267,14 @@ public:
         m_event_type_role.insert( etrID );
         // EventType ID already included 
     }
+    void InsertGallery( idt galID ) {
+        m_gallery.insert( galID );
+    }
+    void InsertGalleryMedia( idt gmID ) {
+        m_gallery_media.insert( gmID );
+        recGalleryMedia gm( gmID );
+        InsertGallery( gm.FGetGalID() );
+    }
     void InsertMedia( idt medID ) {
         m_media.insert( medID );
         recMedia med( medID );
@@ -278,7 +286,10 @@ public:
         if( mdID ) {
             InsertAssociatedMediaData( assID, mdID );
         }
-        // We don't normally include galleries.
+        recIdVec gmIDs = recMedia::GetGalleryMediaList( medID );
+        for( idt gmID : gmIDs ) {
+            InsertGalleryMedia( gmID );
+        }
     }
     void InsertName( idt namID ) {
         m_name.insert( namID );
@@ -424,6 +435,8 @@ public:
         ret = ret && WriteTableCsv<recEventaPersona>( m_eventa_persona );
         ret = ret && WriteTableCsv<recEventType>( m_event_type );
         ret = ret && WriteTableCsv<recEventTypeRole>( m_event_type_role );
+        ret = ret && WriteTableCsv<recGallery>( m_gallery );
+        ret = ret && WriteTableCsv<recGalleryMedia>( m_gallery_media );
         ret = ret && WriteTableCsv<recMedia>( m_media );
         ret = ret && WriteTableCsv<recName>( m_name );
         ret = ret && WriteTableCsv<recNamePart>( m_name_part );
@@ -454,6 +467,8 @@ public:
         ret = ret && EnterTable<recEventaPersona>();
         ret = ret && EnterTable<recEventType>();
         ret = ret && EnterTable<recEventTypeRole>();
+        ret = ret && EnterTable<recGallery>();
+        ret = ret && EnterTable<recGalleryMedia>();
         ret = ret && EnterTable<recMedia>();
         ret = ret && EnterTable<recName>();
         ret = ret && EnterTable<recNamePart>();
@@ -613,6 +628,8 @@ private:
     set<idt> m_eventa_persona;
     set<idt> m_event_type;
     set<idt> m_event_type_role;
+    set<idt> m_gallery;
+    set<idt> m_gallery_media;
     set<idt> m_media;
     set<idt> m_name;
     set<idt> m_name_part;
