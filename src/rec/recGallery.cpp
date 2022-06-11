@@ -218,4 +218,29 @@ recGalleryMediaMediaVec recGallery::GetGalleryMediaMediaVec( idt galID, const wx
     return gmms;
 }
 
+std::string recGallery::CsvTitles()
+{
+    return std::string( "ID, Title, Note, UID, Changed\n" );
+}
+
+void recGallery::CsvWrite( std::ostream& out, idt id )
+{
+    recGallery gal( id );
+    recCsvWrite( out, gal.FGetID() );
+    recCsvWrite( out, gal.FGetTitle() );
+    recCsvWrite( out, gal.FGetNote() );
+    recCsvWrite( out, gal.FGetUid() );
+    recCsvWrite( out, gal.FGetChanged(), '\n' );
+}
+
+bool recGallery::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    recCsvRead( in, f_title );
+    recCsvRead( in, f_note );
+    recCsvRead( in, f_uid );
+    recCsvRead( in, f_changed );
+    return bool( in );
+}
+
 // End of src/rec/recGallery.cpp file

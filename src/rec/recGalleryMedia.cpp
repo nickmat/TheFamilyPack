@@ -173,6 +173,31 @@ wxString recGalleryMedia::GetTitle( idt galID, idt medID, const wxString& dbname
     return recDb::ExecuteStr( sql );
 }
 
+std::string recGalleryMedia::CsvTitles()
+{
+    return std::string( "ID, Title, Gallery ID, Media ID, Media Sequence\n" );
+}
+
+void recGalleryMedia::CsvWrite( std::ostream& out, idt id )
+{
+    recGalleryMedia gm( id );
+    recCsvWrite( out, gm.FGetID() );
+    recCsvWrite( out, gm.FGetTitle() );
+    recCsvWrite( out, gm.FGetGalID() );
+    recCsvWrite( out, gm.FGetMedID() );
+    recCsvWrite( out, gm.FGetMedSeq(), '\n' );
+}
+
+bool recGalleryMedia::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    recCsvRead( in, f_title );
+    recCsvRead( in, f_gal_id );
+    recCsvRead( in, f_med_id );
+    recCsvRead( in, f_med_seq );
+    return bool( in );
+}
+
 wxString recGalleryMediaMedia::GetTitle() const
 {
     if ( m_gm.FGetTitle().empty() ) {
