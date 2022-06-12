@@ -71,6 +71,9 @@ public:
         const wxString& dbname = "Main" ) const {
         return GetGalleryMediaMediaVec( f_id, dbname ); }
 
+    static idt Transfer(
+        idt from_repID, const wxString& fromdb, const wxString& todb );
+
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );

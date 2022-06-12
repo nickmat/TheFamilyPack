@@ -218,6 +218,23 @@ recGalleryMediaMediaVec recGallery::GetGalleryMediaMediaVec( idt galID, const wx
     return gmms;
 }
 
+idt recGallery::Transfer( idt from_galID, const wxString& fromdb, const wxString& todb )
+{
+    if( from_galID == 0 ) return 0;
+
+    recGallery from_gal( from_galID, fromdb );
+    idt to_galID = recGallery::FindUid( from_gal.FGetUid(), todb );
+    recGallery to_gal( to_galID, todb );
+    recMatchUID match = from_gal.CompareUID( to_gal );
+    if( match == recMatchUID::unequal || match == recMatchUID::younger ) {
+        recGallery new_gal( from_gal );
+        new_gal.FSetID( to_galID );
+        new_gal.Save( todb );
+        to_galID = new_gal.FGetID();
+    }
+    return to_galID;
+}
+
 std::string recGallery::CsvTitles()
 {
     return std::string( "ID, Title, Note, UID, Changed\n" );
