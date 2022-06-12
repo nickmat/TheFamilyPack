@@ -38,6 +38,8 @@
 #include <rec/recMedia.h>
 
 #include <rec/recAssociate.h>
+#include <rec/recGallery.h>
+#include <rec/recGalleryMedia.h>
 #include <rec/recMediaData.h>
 
 recMedia::recMedia( const recMedia& n )
@@ -261,15 +263,35 @@ bool recMedia::CsvRead( std::istream& in )
 bool recMedia::RemoveFromDatabase( idt medID, DataInc data, const wxString& dbname )
 {
     if( medID <= 0 ) return false;
-    if( data == DataInc::always ) {
-        recMedia med( medID, dbname );
+    recMedia med( medID, dbname );
+    bool ret = Delete( medID, dbname );
+    if( data != DataInc::omit ) {
         idt mdID = med.FGetDataID();
         if( mdID > 0 ) {
-            wxString datadb = recAssociate::GetAttachedName( med.FGetAssID(), dbname );
-            recMediaData::Delete( mdID, datadb );
+            idt assID = med.FGetAssID();
+            wxString datadb = recAssociate::GetAttachedName( assID, dbname );
+            if( data == DataInc::always ) {
+                recMediaData::Delete( mdID, datadb );
+            }
+            else if( data == DataInc::orphan ) {
+                if( recMediaData::IsOrphaned( mdID, assID, dbname ) &&
+                    recMediaData::IsOrphaned( mdID, 0, datadb ) )
+                {
+                    recMediaData::Delete( mdID, datadb );
+                }
+            }
+            else {
+                assert( false ); // Unknown DataInc. Should not be here!
+            }
         }
     }
-    return Delete( medID, dbname );
+    recIdVec gmIDs = GetGalleryMediaList( medID, dbname );
+    for( idt gmID : gmIDs ) {
+        recGalleryMedia gm( gmID );
+        gm.Delete( dbname );
+        recGallery::DeleteIfOrphaned( gm.FGetGalID(), dbname );
+    }
+    return ret;
 }
 
 // End of recMedia.cpp file

@@ -38,6 +38,7 @@ class recMedia : public recDbT<recMedia>
 public:
     enum class DataInc {
         omit,    // Ignore the MediaData record.
+        orphan,  // Act if orphaned from Media or MediaData databases
         always   // Always act on the MediaData record.
     };
 
