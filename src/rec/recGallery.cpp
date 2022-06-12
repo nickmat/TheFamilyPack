@@ -243,4 +243,20 @@ bool recGallery::CsvRead( std::istream& in )
     return bool( in );
 }
 
+bool recGallery::DeleteIfOrphaned( idt galID, const wxString& dbname )
+{
+    if( galID <= 0 ) return false;
+
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT COUNT(*) FROM \"%s\".GalleryMedia WHERE gal_id=" ID ";",
+        UTF8_( dbname ), galID
+    );
+    if( s_db->ExecuteScalar( sql ) > 0 ) return false;
+
+    if( !Delete( galID, dbname ) ) return false;
+
+    return true;
+}
+
 // End of src/rec/recGallery.cpp file

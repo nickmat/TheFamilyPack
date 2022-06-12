@@ -75,6 +75,8 @@ public:
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
 
+    static bool DeleteIfOrphaned( idt galID, const wxString& dbname );
+
 private:
     wxString f_title;
     wxString f_note;
