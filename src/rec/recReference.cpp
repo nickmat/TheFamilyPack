@@ -42,6 +42,7 @@
 #include <rec/recEvent.h>
 #include <rec/recEventa.h>
 #include <rec/recEventType.h>
+#include <rec/recMedia.h>
 #include <rec/recName.h>
 #include <rec/recPlace.h>
 #include <rec/recResearcher.h>
@@ -339,7 +340,7 @@ idt recReference::Transfer(
     new_ref.Save( todb );
     to_refID = new_ref.FGetID();
 
-    // CitationTransfer
+    // recCitation::Transfer
     recIdVec from_IDs = recReference::GetCitationList( from_refID, fromdb );
     recIdVec to_IDs = recReference::GetCitationList( to_refID, todb );
     size_t size = std::max( from_IDs.size(), to_IDs.size() );
@@ -350,8 +351,19 @@ idt recReference::Transfer(
         }
         recCitation::Transfer( from_IDs[i], fromdb, to_refID, todb );
     }
+    // recMedia::Transfer(...)
+    from_IDs = recReference::GetMediaList( from_refID, fromdb );
+    to_IDs = recReference::GetMediaList( to_refID, todb );
+    size = std::max( from_IDs.size(), to_IDs.size() );
+    for( size_t i = 0; i < size; i++ ) {
+        if( i >= from_IDs.size() ) { // No more to copy.
+            recMedia::RemoveFromDatabase(
+                to_IDs[i], recMedia::DataInc::orphan, todb );
+            continue;
+        }
+        recMedia::Transfer( from_IDs[i], fromdb, to_refID, todb, to_assID );
+    }
 
-    // TODO: recMedia::Transfer(...)
     // TODO: recPersona::Transfer(...)
     // TODO: recEventa::Transfer(...)
     // TODO: recEntities::Transfer(...)
