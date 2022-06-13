@@ -214,7 +214,9 @@ idt recMedia::Transfer(
     wxString md_todb = recAssociate::GetAttachedName( to_assID, todb );
     idt to_mdID = recMediaData::Transfer( from_med.FGetDataID(), md_fromdb, md_todb );
     // Don't transfer just media record if we can't transfer the data.
-    if( to_mdID == 0 ) return 0;
+    if( to_mdID == 0 ) {
+        return 0;
+    }
     recMedia to_med( from_med );
     to_med.FSetDataID( to_mdID );
     to_med.FSetAssID( to_assID );
@@ -224,6 +226,36 @@ idt recMedia::Transfer(
         to_med.FSetID( 0 );
     }
     to_med.Save( todb );
+    idt to_medID = to_med.FGetID();
+
+    // List GalleryMedia links and step thru them.
+    recIdVec from_gmIDs = recMedia::GetGalleryMediaList( from_medID, fromdb );
+    recIdVec to_gmIDs = recMedia::GetGalleryMediaList( to_medID, fromdb );
+    size_t size = std::max( from_gmIDs.size(), to_gmIDs.size() );
+    for( size_t i = 0; i < size; i++ ) {
+        if( i >= from_gmIDs.size() ) { // No more to copy.
+            recGalleryMedia gm( to_gmIDs[i], todb );
+            gm.Delete( todb );
+            recGallery::DeleteIfOrphaned( gm.FGetGalID(), todb );
+            continue;
+        }
+        if( i >= to_gmIDs.size() ) {
+            recGalleryMedia gm( from_gmIDs[i], fromdb );
+            gm.FSetMedID( to_medID );
+            idt to_gal = recGallery::Transfer( gm.FGetGalID(), fromdb, todb );
+            wxASSERT( to_gal != 0 );
+            gm.FSetGalID( to_gal );
+            gm.SetNextMedSequence( to_gal, todb );
+            gm.FSetID( 0 );
+            gm.Save( todb );
+            continue;
+        }
+        recGalleryMedia gm( to_gmIDs[i], todb );
+        idt to_gal = recGallery::Transfer( gm.FGetGalID(), fromdb, todb );
+        wxASSERT( to_gal != 0 );
+        gm.FSetGalID( to_gal );
+        gm.Save( todb );
+    }
     return to_med.FGetID();
 }
 
