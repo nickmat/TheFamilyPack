@@ -265,7 +265,7 @@ idt recCitation::Transfer(
     }
 
     recCitationPartVec from_cps = recCitation::GetPartList( from_citID, fromdb );
-    recCitationPartVec to_cps = recCitation::GetPartList( to_citID, fromdb );
+    recCitationPartVec to_cps = recCitation::GetPartList( to_citID, todb );
     size_t size = std::max( from_cps.size(), to_cps.size() );
     for( size_t i = 0; i < size; i++ ) {
         if( i >= from_cps.size() ) { // No more to copy.
