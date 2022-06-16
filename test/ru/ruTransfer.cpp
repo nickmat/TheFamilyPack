@@ -46,7 +46,10 @@ struct RecordCounts
     size_t contact = 0;
     size_t contactlist = 0;
     size_t contacttype = 0;
+    size_t gallery = 0;
+    size_t gallerymedia = 0;
     size_t media = 0;
+    size_t mediadata = 0;
     size_t repository = 0;
     size_t researcher = 0;
 
@@ -59,7 +62,10 @@ struct RecordCounts
         contact = recContact::Count( m_dbname );
         contactlist = recContactList::Count( m_dbname );
         contacttype = recContactType::Count( m_dbname );
+        gallery = recGallery::Count( m_dbname );
+        gallerymedia = recGalleryMedia::Count( m_dbname );
         media = recMedia::Count( m_dbname );
+        mediadata = recMediaData::Count( m_dbname );
         repository = recRepository::Count( m_dbname );
         researcher = recResearcher::Count( m_dbname );
     }
@@ -71,7 +77,10 @@ struct RecordCounts
             contact == rcs.contact &&
             contactlist == rcs.contactlist &&
             contacttype == rcs.contacttype &&
+            gallery == rcs.gallery &&
+            gallerymedia == rcs.gallerymedia &&
             media == rcs.media &&
+            mediadata == rcs.media &&
             repository == rcs.repository &&
             researcher == rcs.researcher
             ;
@@ -201,6 +210,27 @@ TEST_CASE( "Test recContactType::Transfer function", "[ContactType]" )
 
     REQUIRE( recContactType::Count( g_maindb ) == cnt_main );
     REQUIRE( recContactType::Count( g_extdb1 ) == cnt_extdb );
+}
+
+TEST_CASE( "Test Gallery::Transfer function", "[Gallery]" )
+{
+    RecordCounts rc_main( g_maindb ), rc_extdb( g_extdb1 );
+
+    REQUIRE( !recGallery::Exists( 1, g_maindb ) );
+    REQUIRE( recGallery::Exists( 1, g_extdb1 ) );
+    recGallery from_gal( 1, g_extdb1 );
+
+    idt to_id = recGallery::Transfer( 1, g_extdb1, g_maindb );
+    REQUIRE( to_id == 1 );
+    recGallery to_gal( 1, g_maindb );
+    REQUIRE( from_gal.Equivalent( to_gal ) );
+
+    RecordCounts rcnew( g_maindb );
+    REQUIRE( rcnew.gallery == rc_main.gallery + 1 );
+
+    REQUIRE( recGallery::DeleteIfOrphaned( to_id, g_maindb ) );
+    rcnew.Reset();
+    REQUIRE( rcnew.Equal( rc_main ) );
 }
 
 TEST_CASE( "Test recMedia::Transfer function", "[recMedia]" )
