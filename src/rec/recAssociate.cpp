@@ -124,6 +124,9 @@ idt recAssociate::Create( const wxString & path, const wxString& comment )
 
 wxString recAssociate::GetAttachedName( idt assID, const wxString& extdb )
 {
+    if( assID == 0 ) {
+        return extdb;
+    }
     if ( s_extdbs[extdb].assIdMap.count(assID) == 1 ) {
         return s_extdbs[extdb].assIdMap[assID];
     }
