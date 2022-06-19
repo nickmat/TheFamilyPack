@@ -233,7 +233,26 @@ TEST_CASE( "Test Gallery::Transfer function", "[Gallery]" )
     REQUIRE( rcnew.Equal( rc_main ) );
 }
 
-TEST_CASE( "Test recMedia::Transfer function", "[recMedia]" )
+TEST_CASE( "Test recMedia::Transfer function with Gallery", "[Media][Gallery]" )
+{
+    RecordCounts rc_main( g_maindb ), rc_extdb( g_extdb1 );
+
+    idt to_medID = recMedia::Transfer( 1, g_extdb1, 0, g_maindb, 0 );
+    REQUIRE( to_medID == 1 );
+
+    RecordCounts rcnew( g_maindb );
+    REQUIRE( rcnew.gallery == rc_main.gallery + 1 );
+    REQUIRE( rcnew.gallerymedia == rc_main.gallerymedia + 1 );
+    REQUIRE( rcnew.media == rc_main.media + 1 );
+    REQUIRE( rcnew.mediadata == rc_main.mediadata + 1 );
+
+    REQUIRE( recMedia::RemoveFromDatabase( to_medID, recMedia::DataInc::always, g_maindb ) );
+
+    rcnew.Reset();
+    REQUIRE( rcnew.Equal( rc_main ) );
+}
+
+TEST_CASE( "Test recMedia::Transfer function", "[Media]" )
 {
     RecordCounts rc_main( g_maindb ), rc_extdb( g_extdb1 );
     wxString todb = recAssociate::GetAttachedName( 1, g_maindb );
@@ -254,7 +273,7 @@ TEST_CASE( "Test recMedia::Transfer function", "[recMedia]" )
     REQUIRE( recMediaData::Count( todb ) == to_count );
 }
 
-TEST_CASE( "Test recMediaData::Transfer function", "[recMediaData]" )
+TEST_CASE( "Test recMediaData::Transfer function", "[MediaData]" )
 {
     wxString todb = recAssociate::GetAttachedName( 1, g_maindb );
     REQUIRE( !todb.empty() );
@@ -277,7 +296,7 @@ TEST_CASE( "Test recMediaData::Transfer function", "[recMediaData]" )
     REQUIRE( recMediaData::Count( todb ) == to_count );
 }
 
-TEST_CASE( "Test recRepository::Transfer function", "[recRepository]" )
+TEST_CASE( "Test recRepository::Transfer function", "[Repository]" )
 {
     int cnt_main = recRepository::Count( g_maindb );
     int cnt_extdb = recRepository::Count( g_extdb1 );
@@ -297,7 +316,7 @@ TEST_CASE( "Test recRepository::Transfer function", "[recRepository]" )
     REQUIRE( recRepository::Count( g_extdb1 ) == cnt_extdb );
 }
 
-TEST_CASE( "Test recResearcher::Transfer function", "[recResearcher]" )
+TEST_CASE( "Test recResearcher::Transfer function", "[Researcher]" )
 {
     RecordCounts rc_main( g_maindb ), rc_extdb( g_extdb1 );
 
