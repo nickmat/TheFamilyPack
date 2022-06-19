@@ -230,7 +230,7 @@ idt recMedia::Transfer(
 
     // List GalleryMedia links and step thru them.
     recIdVec from_gmIDs = recMedia::GetGalleryMediaList( from_medID, fromdb );
-    recIdVec to_gmIDs = recMedia::GetGalleryMediaList( to_medID, fromdb );
+    recIdVec to_gmIDs = recMedia::GetGalleryMediaList( to_medID, todb );
     size_t size = std::max( from_gmIDs.size(), to_gmIDs.size() );
     for( size_t i = 0; i < size; i++ ) {
         if( i >= from_gmIDs.size() ) { // No more to copy.
