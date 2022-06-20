@@ -860,6 +860,23 @@ recNamePartTypeVec recNamePartType::GetTypeList( const wxString& dbname )
     return list;
 }
 
+idt recNamePartType::Transfer( idt from_nptID, const wxString& fromdb, const wxString& todb )
+{
+    if( from_nptID == 0 ) return 0;
+
+    recNamePartType from_npt( from_nptID, fromdb );
+    idt to_nptID = recNamePartType::FindUid( from_npt.FGetUid(), todb );
+    recNamePartType to_npt( to_nptID, todb );
+    recMatchUID match = from_npt.CompareUID( to_npt );
+    if( match == recMatchUID::unequal || match == recMatchUID::younger ) {
+        recNamePartType new_npt( from_npt );
+        new_npt.FSetID( to_nptID );
+        new_npt.Save( todb );
+        to_nptID = new_npt.FGetID();
+    }
+    return to_nptID;
+}
+
 std::string recNamePartType::CsvTitles()
 {
     return std::string("ID, Group, Name, UID, Last Changed\n");
@@ -885,6 +902,22 @@ bool recNamePartType::CsvRead( std::istream& in )
     recCsvRead( in, f_uid );
     recCsvRead( in, f_changed );
     return bool( in );
+}
+
+bool recNamePartType::DeleteIfOrphaned( idt nptID, const wxString& dbname )
+{
+    if( nptID <= 0 ) return false;
+
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT COUNT(*) FROM \"%s\".NamePart WHERE type_id=" ID ";",
+        UTF8_( dbname ), nptID
+    );
+    if( s_db->ExecuteScalar( sql ) > 0 ) return false;
+
+    if( !Delete( nptID, dbname ) ) return false;
+
+    return true;
 }
 
 

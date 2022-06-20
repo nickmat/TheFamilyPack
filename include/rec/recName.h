@@ -247,9 +247,14 @@ public:
 
     static recNamePartTypeVec GetTypeList( const wxString& dbname = "Main" );
 
+    static idt Transfer(
+        idt from_nptID, const wxString& fromdb, const wxString& todb );
+
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
+
+    static bool DeleteIfOrphaned( idt nptID, const wxString& dbname );
 };
 
 
