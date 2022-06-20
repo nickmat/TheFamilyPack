@@ -299,9 +299,14 @@ public:
 
     static recNameStyleVec GetStyleList( const wxString& dbname = "Main" );
 
+    static idt Transfer(
+        idt from_nsID, const wxString& fromdb, const wxString& todb );
+
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
+
+    static bool DeleteIfOrphaned( idt nsID, const wxString& dbname );
 };
 
 #endif // RECNAME_H

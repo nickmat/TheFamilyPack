@@ -1057,6 +1057,23 @@ recNameStyleVec recNameStyle::GetStyleList( const wxString& dbname )
     return list;
 }
 
+idt recNameStyle::Transfer( idt from_nsID, const wxString& fromdb, const wxString& todb )
+{
+    if( from_nsID == 0 ) return 0;
+
+    recNameStyle from_ns( from_nsID, fromdb );
+    idt to_nsID = recNameStyle::FindUid( from_ns.FGetUid(), todb );
+    recNameStyle to_npt( to_nsID, todb );
+    recMatchUID match = from_ns.CompareUID( to_npt );
+    if( match == recMatchUID::unequal || match == recMatchUID::younger ) {
+        recNameStyle new_ns( from_ns );
+        new_ns.FSetID( to_nsID );
+        new_ns.Save( todb );
+        to_nsID = new_ns.FGetID();
+    }
+    return to_nsID;
+}
+
 std::string recNameStyle::CsvTitles()
 {
     return std::string( "ID, Name, UID, Last Changed\n" );
@@ -1078,6 +1095,22 @@ bool recNameStyle::CsvRead( std::istream& in )
     recCsvRead( in, f_uid );
     recCsvRead( in, f_changed );
     return bool( in );
+}
+
+bool recNameStyle::DeleteIfOrphaned( idt nsID, const wxString& dbname )
+{
+    if( nsID <= 0 ) return false;
+
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT COUNT(*) FROM \"%s\".Name WHERE style_id=" ID ";",
+        UTF8_( dbname ), nsID
+    );
+    if( s_db->ExecuteScalar( sql ) > 0 ) return false;
+
+    if( !Delete( nsID, dbname ) ) return false;
+
+    return true;
 }
 
 
