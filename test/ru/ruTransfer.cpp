@@ -342,6 +342,39 @@ TEST_CASE( "Test recNamePartType::Transfer function", "[NamePartType]" )
     REQUIRE( recNamePartType::Delete( 1, g_extdb1 ) );
 }
 
+TEST_CASE( "Test recNameStyle::Transfer function", "[NameStyle]" )
+{
+    // We only have core data entries for recNameStyle at this time
+    // so add a test record.
+    REQUIRE( !recNameStyle::Exists( 1, g_extdb1 ) );
+    recNameStyle ns( 0 );
+    ns.FSetName( "Test" );
+    ns.FSetUid( recCreateUid() );
+    ns.FSetChanged( calGetTodayJdn() );
+    ns.Save( g_extdb1 );
+
+    RecordCounts rc_main( g_maindb ), rc_extdb( g_extdb1 );
+
+    REQUIRE( !recNameStyle::Exists( 1, g_maindb ) );
+    REQUIRE( recNameStyle::Exists( 1, g_extdb1 ) );
+    recNameStyle from_ns( 1, g_extdb1 );
+
+    idt to_id = recNameStyle::Transfer( 1, g_extdb1, g_maindb );
+    REQUIRE( to_id == 1 );
+    recNameStyle to_ns( 1, g_maindb );
+    REQUIRE( from_ns.Equivalent( to_ns ) );
+
+    RecordCounts rcnew( g_maindb );
+    REQUIRE( rcnew.namestyle == rc_main.namestyle + 1 );
+
+    REQUIRE( recNameStyle::DeleteIfOrphaned( to_id, g_maindb ) );
+    rcnew.Reset();
+    REQUIRE( rcnew.Equal( rc_main ) );
+
+    // Remove test record.
+    REQUIRE( recNameStyle::Delete( 1, g_extdb1 ) );
+}
+
 TEST_CASE( "Test recRepository::Transfer function", "[Repository]" )
 {
     int cnt_main = recRepository::Count( g_maindb );
