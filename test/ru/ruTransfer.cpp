@@ -50,6 +50,10 @@ struct RecordCounts
     size_t gallerymedia = 0;
     size_t media = 0;
     size_t mediadata = 0;
+    size_t name = 0;
+    size_t namepart = 0;
+    size_t nameparttype = 0;
+    size_t namestyle = 0;
     size_t repository = 0;
     size_t researcher = 0;
 
@@ -66,6 +70,10 @@ struct RecordCounts
         gallerymedia = recGalleryMedia::Count( m_dbname );
         media = recMedia::Count( m_dbname );
         mediadata = recMediaData::Count( m_dbname );
+        name = recName::Count( m_dbname );
+        namepart = recNamePart::Count( m_dbname );
+        nameparttype = recNamePartType::Count( m_dbname );
+        namestyle = recNameStyle::Count( m_dbname );
         repository = recRepository::Count( m_dbname );
         researcher = recResearcher::Count( m_dbname );
     }
@@ -81,6 +89,10 @@ struct RecordCounts
             gallerymedia == rcs.gallerymedia &&
             media == rcs.media &&
             mediadata == rcs.media &&
+            name == rcs.name &&
+            namepart == rcs.namepart &&
+            nameparttype == rcs.nameparttype &&
+            namestyle == rcs.namestyle &&
             repository == rcs.repository &&
             researcher == rcs.researcher
             ;
@@ -212,7 +224,7 @@ TEST_CASE( "Test recContactType::Transfer function", "[ContactType]" )
     REQUIRE( recContactType::Count( g_extdb1 ) == cnt_extdb );
 }
 
-TEST_CASE( "Test Gallery::Transfer function", "[Gallery]" )
+TEST_CASE( "Test recGallery::Transfer function", "[Gallery]" )
 {
     RecordCounts rc_main( g_maindb ), rc_extdb( g_extdb1 );
 
@@ -294,6 +306,40 @@ TEST_CASE( "Test recMediaData::Transfer function", "[MediaData]" )
     recMediaData::Delete( 1, todb );
 
     REQUIRE( recMediaData::Count( todb ) == to_count );
+}
+
+TEST_CASE( "Test recNamePartType::Transfer function", "[NamePartType]" )
+{
+    // We only have core data entries for recNamePartType at this time
+    // so add a test record.
+    REQUIRE( !recNamePartType::Exists( 1, g_extdb1 ) );
+    recNamePartType npt( 0 );
+    npt.FSetGroup( recNamePartType::NPTypeGrp::other );
+    npt.FSetName( "Test" );
+    npt.FSetUid( recCreateUid() );
+    npt.FSetChanged( calGetTodayJdn() );
+    npt.Save( g_extdb1 );
+
+    RecordCounts rc_main( g_maindb ), rc_extdb( g_extdb1 );
+
+    REQUIRE( !recNamePartType::Exists( 1, g_maindb ) );
+    REQUIRE( recNamePartType::Exists( 1, g_extdb1 ) );
+    recNamePartType from_npt( 1, g_extdb1 );
+
+    idt to_id = recNamePartType::Transfer( 1, g_extdb1, g_maindb );
+    REQUIRE( to_id == 1 );
+    recNamePartType to_npt( 1, g_maindb );
+    REQUIRE( from_npt.Equivalent( to_npt ) );
+
+    RecordCounts rcnew( g_maindb );
+    REQUIRE( rcnew.nameparttype == rc_main.nameparttype + 1 );
+
+    REQUIRE( recNamePartType::DeleteIfOrphaned( to_id, g_maindb ) );
+    rcnew.Reset();
+    REQUIRE( rcnew.Equal( rc_main ) );
+
+    // Remove test record.
+    REQUIRE( recNamePartType::Delete( 1, g_extdb1 ) );
 }
 
 TEST_CASE( "Test recRepository::Transfer function", "[Repository]" )
