@@ -304,6 +304,27 @@ recIdVec recPersona::FindIndividualReferenceLink(
     return vec;
 }
 
+idt recPersona::Transfer( idt from_perID, const wxString& fromdb, idt to_refID, const wxString& todb )
+{
+    if( from_perID == 0 ) return 0;
+
+    recPersona from_per( from_perID, fromdb );
+    recPersona to_per( from_per );
+    if( to_per.FGetID() > 0 ) {
+        to_per.FSetID( 0 );
+    }
+    to_per.FSetRefID( to_refID );
+    to_per.Save( todb );
+    idt to_perID = to_per.FGetID();
+
+    recIdVec namIDs = from_per.GetNameListID( fromdb );
+    for( idt namID : namIDs ) {
+        recName::Transfer( namID, fromdb, 0, to_perID, todb );
+    }
+    // TODO: IndividualPersona and EventaPersona records should be included.
+    return to_perID;
+}
+
 std::string recPersona::CsvTitles()
 {
     return std::string( "ID, Sex, Reference ID, Note\n" );
