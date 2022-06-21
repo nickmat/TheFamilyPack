@@ -267,23 +267,6 @@ recNameVec recName::GetNames( idt indID, idt perID, const wxString& dbname )
     return list;
 }
 
-void recName::RemoveFromDatabase( idt id, const wxString& dbname )
-{
-    if( id == 0 ) return;
-
-    // TODO: Consider making 2 functions, one for reference, one for individual.
-    wxSQLite3StatementBuffer sql;
-
-    // TODO: Ensure Event is removed from reference statement.
-    sql.Format(
-        "DELETE FROM \"%s\".NamePart WHERE name_id=" ID ";"
-        "DELETE FROM \"%s\".ReferenceEntity "
-             "WHERE entity_type=7 AND entity_id=" ID ";"
-        "DELETE FROM \"%s\".Name WHERE id=" ID ";",
-        UTF8_( dbname ), id, UTF8_( dbname ), id, UTF8_( dbname ), id
-    );
-    s_db->ExecuteUpdate( sql );
-}
 
 wxString recName::GetNameStr( idt id, const wxString& dbname )
 {
@@ -508,6 +491,34 @@ recNamePartVec recName::GetParts( idt nameID, const wxString& dbname )
     return list;
 }
 
+idt recName::Transfer(
+    idt from_namID, const wxString& fromdb,
+    idt to_indID, idt to_perID, const wxString& todb )
+{
+    if( from_namID == 0 ) return 0;
+
+    recName from_nam( from_namID, fromdb );
+    idt to_nsID = recNameStyle::Transfer( from_nam.FGetStyleID(), fromdb, todb );
+
+    recName new_nam( 0 );
+    new_nam.FSetIndID( to_indID );
+    new_nam.FSetPerID( to_perID );
+    new_nam.FSetStyleID( to_nsID );
+    new_nam.SetNextSequence();
+    new_nam.Save( todb );
+    idt to_namID = new_nam.FGetID();
+
+    recNamePartVec from_nps = recName::GetParts( from_namID, fromdb );
+    for( auto& np : from_nps ) {
+        np.FSetID( 0 );
+        np.FSetNameID( to_namID );
+        idt to_nptID = recNamePartType::Transfer( np.FGetTypeID(), fromdb, todb );
+        np.FSetTypeID( to_nptID );
+        np.Save( todb );
+    }
+    return to_namID;
+}
+
 std::string recName::CsvTitles()
 {
     return std::string(
@@ -533,6 +544,36 @@ bool recName::CsvRead( std::istream& in )
     recCsvRead( in, f_style_id );
     recCsvRead( in, f_sequence );
     return bool( in );
+}
+
+bool recName::RemoveFromDatabase( idt namID, const wxString& dbname )
+{
+    if( namID <= 0 ) return false;
+    recName nam( namID, dbname );
+    return nam.RemoveFromDatabase( dbname );
+}
+
+bool recName::RemoveFromDatabase( const wxString& dbname )
+{
+    if( FGetID() <= 0 ) return false;
+
+    recNamePartVec nps = GetParts( dbname );
+    Delete( FGetID(), dbname );
+    recNameStyle::DeleteIfOrphaned( FGetStyleID(), dbname );
+    for( auto& np : nps ) {
+        np.RemoveFromDatabase( dbname );
+    }
+    if( FGetPerID() != 0 ) {
+        wxSQLite3StatementBuffer sql;
+
+        sql.Format(
+            "DELETE FROM \"%s\".ReferenceEntity"
+            " WHERE entity_type=7 AND entity_id=" ID ";",
+             UTF8_( dbname ), f_id
+        );
+        s_db->ExecuteUpdate( sql );
+    }
+    return true;
 }
 
 
@@ -688,6 +729,21 @@ bool recNamePart::CsvRead( std::istream& in )
     recCsvRead( in, f_val );
     recCsvRead( in, f_sequence );
     return bool( in );
+}
+
+bool recNamePart::RemoveFromDatabase( idt npID, const wxString& dbname )
+{
+    if( npID <= 0 ) return false;
+    recNamePart np( npID, dbname );
+    return np.RemoveFromDatabase( dbname );
+}
+
+bool recNamePart::RemoveFromDatabase( const wxString& dbname )
+{
+    if( FGetID() <= 0 ) return false;
+    Delete( FGetID(), dbname );
+    recNamePartType::DeleteIfOrphaned( FGetTypeID(), dbname );
+    return true;
 }
 
 

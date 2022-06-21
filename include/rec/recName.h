@@ -101,11 +101,6 @@ public:
     static wxString GetDefaultNameStr( idt indID, idt perID, const wxString& dbname = "Main" );
     static recNameVec GetNames( idt indID, idt perID, const wxString& dbname = "Main" );
 
-    // Delete Name and remove all references to it.
-    static void RemoveFromDatabase( idt id, const wxString& dbname = "Main" );
-    void RemoveFromDatabase( const wxString& dbname = "Main" ) {
-        RemoveFromDatabase( f_id, dbname ); Clear(); }
-
     static wxString GetNameStr( idt id, const wxString& dbname = "Main" );
     wxString GetNameStr( const wxString& dbname = "Main" ) const {
         return GetNameStr( f_id, dbname ); }
@@ -147,9 +142,16 @@ public:
     recNamePartVec GetParts( const wxString& dbname = "Main" ) const {
         return GetParts( f_id, dbname ); }
 
+    static idt Transfer(
+        idt from_namID, const wxString& fromdb,
+        idt to_indID, idt to_perID, const wxString& todb );
+
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
+
+    static bool RemoveFromDatabase( idt conID, const wxString& dbname = "Main" );
+    bool RemoveFromDatabase( const wxString& dbname = "Main" );
 };
 
 
@@ -167,8 +169,8 @@ public:
     wxString  f_val;
     int       f_sequence;
 
-    recNamePart() : f_name_id(0), f_type_id(0), f_sequence(0) {}
-    recNamePart( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }
+    recNamePart() : f_name_id( 0 ), f_type_id( 0 ), f_sequence( 0 ) {}
+    recNamePart( idt id, const wxString& dbname = "Main" ) : recDbT( id ) { Read( dbname ); }
     recNamePart( const recNamePart& attr );
 
     void Clear();
@@ -195,6 +197,9 @@ public:
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
+
+    static bool RemoveFromDatabase( idt conID, const wxString& dbname );
+    bool RemoveFromDatabase( const wxString& dbname );
 };
 
 
