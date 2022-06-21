@@ -308,6 +308,26 @@ TEST_CASE( "Test recMediaData::Transfer function", "[MediaData]" )
     REQUIRE( recMediaData::Count( todb ) == to_count );
 }
 
+TEST_CASE( "Test recName::Transfer function", "[Name]" )
+{
+    RecordCounts rc_main( g_maindb ), rc_extdb( g_extdb1 );
+
+    REQUIRE( !recName::Exists( 1, g_maindb ) );
+    REQUIRE( recName::Exists( 4217, g_extdb1 ) );
+
+    idt to_namID = recName::Transfer( 4217, g_extdb1, 0, 0, g_maindb );
+    REQUIRE( to_namID == 1 );
+
+    RecordCounts rcnew( g_maindb );
+    REQUIRE( rcnew.name == rc_main.name + 1 );
+    REQUIRE( rcnew.namepart == rc_main.namepart + 3 );
+
+    REQUIRE( recName::RemoveFromDatabase( to_namID, g_maindb ) );
+
+    rcnew.Reset();
+    REQUIRE( rcnew.Equal( rc_main ) );
+}
+
 TEST_CASE( "Test recNamePartType::Transfer function", "[NamePartType]" )
 {
     // We only have core data entries for recNamePartType at this time
