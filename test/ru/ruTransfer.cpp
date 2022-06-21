@@ -54,6 +54,7 @@ struct RecordCounts
     size_t namepart = 0;
     size_t nameparttype = 0;
     size_t namestyle = 0;
+    size_t persona = 0;
     size_t repository = 0;
     size_t researcher = 0;
 
@@ -74,6 +75,7 @@ struct RecordCounts
         namepart = recNamePart::Count( m_dbname );
         nameparttype = recNamePartType::Count( m_dbname );
         namestyle = recNameStyle::Count( m_dbname );
+        persona = recPersona::Count( m_dbname );
         repository = recRepository::Count( m_dbname );
         researcher = recResearcher::Count( m_dbname );
     }
@@ -93,6 +95,7 @@ struct RecordCounts
             namepart == rcs.namepart &&
             nameparttype == rcs.nameparttype &&
             namestyle == rcs.namestyle &&
+            persona == rcs.persona &&
             repository == rcs.repository &&
             researcher == rcs.researcher
             ;
@@ -393,6 +396,27 @@ TEST_CASE( "Test recNameStyle::Transfer function", "[NameStyle]" )
 
     // Remove test record.
     REQUIRE( recNameStyle::Delete( 1, g_extdb1 ) );
+}
+
+TEST_CASE( "Test recPersona::Transfer function", "[Persona]" )
+{
+    RecordCounts rc_main( g_maindb ), rc_extdb( g_extdb1 );
+
+    REQUIRE( !recPersona::Exists( 1, g_maindb ) );
+    REQUIRE( recPersona::Exists( 11, g_extdb1 ) );
+
+    idt to_perID = recPersona::Transfer( 11, g_extdb1, 0, g_maindb );
+    REQUIRE( to_perID == 1 );
+
+    RecordCounts rcnew( g_maindb );
+    REQUIRE( rcnew.name == rc_main.name + 1 );
+    REQUIRE( rcnew.namepart == rc_main.namepart + 3 );
+    REQUIRE( rcnew.persona == rc_main.persona + 1 );
+
+    REQUIRE( recPersona::RemoveFromDatabase( to_perID, g_maindb ) );
+
+    rcnew.Reset();
+    REQUIRE( rcnew.Equal( rc_main ) );
 }
 
 TEST_CASE( "Test recRepository::Transfer function", "[Repository]" )
