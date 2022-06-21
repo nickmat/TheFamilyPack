@@ -329,37 +329,36 @@ bool recPersona::CsvRead( std::istream& in )
     return bool( in );
 }
 
-void recPersona::RemoveFromDatabase()
+bool recPersona::RemoveFromDatabase( const wxString& dbname )
 {
     if( f_id <= 0 ) {
-        return;
+        return false;
+    }
+
+    recNameVec names = ReadNames( dbname );
+    for( size_t i = 0 ; i < names.size() ; i++ ) {
+        names[i].RemoveFromDatabase( dbname );
     }
     wxSQLite3StatementBuffer sql;
-
-    recNameVec names = ReadNames();
-    for( size_t i = 0 ; i < names.size() ; i++ ) {
-        names[i].RemoveFromDatabase();
-    }
     sql.Format(
-        "DELETE FROM EventaPersona WHERE per_id=" ID ";"
-        "DELETE FROM Relationship WHERE per1_id=" ID " OR per2_id=" ID ";",
-        f_id, f_id, f_id
+        "DELETE FROM \"%s\".EventaPersona WHERE per_id=" ID ";",
+        UTF8_( dbname ), f_id
     );
     s_db->ExecuteUpdate( sql );
-
 
     Delete();
     // TODO: Delete orphaned EventType and/or EventTypeRole
     Clear();
+    return true;
 }
 
-void recPersona::RemoveFromDatabase( idt id )
+bool recPersona::RemoveFromDatabase( idt id, const wxString& dbname )
 {
     if( id <= 0 ) {
-        return;
+        return false;
     }
     recPersona per(id);
-    per.RemoveFromDatabase();
+    return per.RemoveFromDatabase();
 }
 
 // End of recPersona.cpp file
