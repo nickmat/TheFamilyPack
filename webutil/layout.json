@@ -71,7 +71,18 @@
                         { "name": "gentech-gtdm", "label": "GenTech GDM", "subtitle": "Differences to GenTech GDM" },
                         { "name": "event-eventa", "label": "Event-Eventa", "subtitle": "Event-Eventa Relationship" }            
                     ]}
+                ]},
+                { "folder": "com", "name": "common", "label": "Common Data", "title": "Common Data", "subtitle": "Introduction", "content": [
+                    { "name": "manage", "label": "Data Management", "subtitle": "Common Data Management" },
+                    { "folder": "core", "name": "core", "label": "Core", "subtitle": "Core Data", "content": [
+                        { "name": "ets", "label": "Event Types", "subtitle": "Core Data: Event Types" }
+                    ]},
+                    { "folder": "place", "name": "places", "label": "Places", "subtitle": "Places - A Gazetteer" },
+                    { "folder": "history", "name": "history", "label": "History", "subtitle": "Historical Events" },
+                    { "folder": "source", "name": "sources", "label": "Sources", "subtitle": "Sources and Repositories" },
+                    { "folder": "name", "name": "names", "label": "Names", "subtitle": "Names" }
                 ]}
+        
             ]},
             { "name": "routemap", "label": "Route Map", "title": "Development" },
             { "name": "history", "label": "Release History", "title": "Development" },

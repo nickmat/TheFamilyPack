@@ -1,0 +1,221 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<head>
+ <title>TheFamilyPack - Event Types</title>
+ <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+ <link rel='icon' type='image/png' href='../../../../sys/logo32x32.png' />
+ <link rel='stylesheet' type='text/css' href='../../../../sys/livery.css' />
+ <link rel='stylesheet' type='text/css' href='../../../../sys/tfp.css' />
+</head>
+<body>
+
+ <div class='heading'>
+  <div class='logo'>
+   <a  href='http://thefamilypack.org'>
+    <img class='logo' src='../../../../sys/logo266x100.png' alt='Logo' />
+   </a>
+  </div>
+  TheFamilyPack - Common Data<br />Core Data: Event Types
+  <div class='clear'></div>
+ </div>
+
+ <div class="crumbs">
+  <div class='dmenu'>
+   <div class='dm-item m-item'>▼</div>
+   <div class='dm-content'>
+    <a href='../../../../index.htm' class='m-item'>Home</a>
+   </div>
+  </div> 
+  <a href='../../../../dev/develop.htm' class='m-item'>Development</a>
+  <a href='../../../../dev/man/index.htm' class='m-item'>V0.3.0.1.1 Manual</a>
+  <a href='../../../../dev/man/com/common.htm' class='m-item'>Common Data</a>
+  <a href='../../../../dev/man/com/core/core.htm' class='m-item'>Core</a>
+  <a href='ets.htm' class='m-item thispage'>Event Types</a>
+  <a href='../../../../dev/man/com/place/places.htm' class='m-item nav'>►</a>
+  <a href='../../../../dev/man/com/core/core.htm' class='m-item nav'>◄</a>
+ </div>
+
+<div id='content' class='nomenu'>
+
+<blockquote>
+<p>
+<!-- Quote -->
+</p>
+<p class='attribute'><!-- Attr --></p>
+</blockquote>
+
+<table class='basic core'>
+<tr><th colspan='4'>EventType Core Data</th></tr>
+<tr><th>[id]</th><th>[grp]</th><th>[name]</th><th></th></tr>
+<tr><td>0</td><td>NULL</td><td>NULL</td><td>Place holder for invalid Event Type.</td></tr>
+<tr><td>-1</td><td>1 "Birth"</td><td>Birth</td><td></td></tr>
+<tr><td>-4</td><td>2 "Near Birth"</td><td>Baptism</td><td></td></tr>
+<tr><td>-15</td><td>2</td><td>Register Birth</td><td></td></tr>
+<tr><td>-2</td><td>5 "Death"</td><td>Death</td><td></td></tr>
+<tr><td>-5</td><td>6 "Near Death"</td><td>Burial</td><td></td></tr>
+<tr><td>-16</td><td>6</td><td>Register Death</td><td></td></tr>
+<tr><td>-17</td><td>8 "Personal"</td><td>Residence</td><td></td></tr>
+<tr><td>-18</td><td>8</td><td>Occupation</td><td></td></tr>
+<tr><td>-19</td><td>8</td><td>Condition</td><td>Marital Status</td></tr>
+<tr><td>-21</td><td>9 "Relationship"</td><td>Relation</td><td></td></tr>
+<tr><td>-6</td><td>7 "Other"</td><td>Adult Baptism</td><td></td></tr>
+<tr><td>-7</td><td>7</td><td>Census</td><td></td></tr>
+<tr><td>-8</td><td>7</td><td>Confirmation</td><td></td></tr>
+<tr><td>-10</td><td>7</td><td>Emigration</td><td></td></tr>
+<tr><td>-11</td><td>7</td><td>Immigration</td><td></td></tr>
+<tr><td>-12</td><td>7</td><td>Graduation</td><td></td></tr>
+<tr><td>-13</td><td>7</td><td>Probate</td><td></td></tr>
+<tr><td>-14</td><td>7</td><td>Will</td><td></td></tr>
+<tr><td>-23</td><td>7</td><td>Media</td><td></td></tr>
+<tr><td>-3</td><td>3 "Family Union"</td><td>Marriage</td><td></td></tr>
+<tr><td>-20</td><td>3</td><td>Civl Partnership</td><td></td></tr>
+<tr><td>-22</td><td>10 "Family Relationship"</td><td>Family</td><td></td></tr>
+<tr><td>-9</td><td>4 "Other Family"</td><td>Divorce</td><td></td></tr>
+</table>
+<table class='basic core'>
+<tr><th colspan='5'>EventTypeRole Core Data</th></tr>
+<tr><th>[id]</th><th>[type_id]</th><th>[prime]</th><th>[official]</th><th>[name]</th></tr>
+<tr><td>0</td><td>NULL</td><td>NULL</td><td>NULL</td><td>NULL</td></tr>
+<tr><td>-1</td><td>-1 "Birth"</td><td>1</td><td></td><td>Born</td></tr>
+<tr><td>-2</td><td>-1</td><td>0</td><td></td><td>Mother</td></tr>
+<tr><td>-4</td><td>-1</td><td>0</td><td></td><td>Present</td></tr>
+<tr><td>-3</td><td>-1</td><td>0</td><td>Yes</td><td>Midwife</td></tr>
+<tr><td>-21</td><td>-4 "Baptism"</td><td>1</td><td></td><td>Baptised</td></tr>
+<tr><td>-23</td><td>-4</td><td>0</td><td></td><td>God Parent</td></tr>
+<tr><td>-22</td><td>-4</td><td>0</td><td></td><td>Parent</td></tr>
+<tr><td>-25</td><td>-4</td><td>0</td><td></td><td>Present</td></tr>
+<tr><td>-24</td><td>-4</td><td>0</td><td>Yes</td><td>Officiator</td></tr>
+<tr><td>-50</td><td>-15 "Register Birth"</td><td>1</td><td></td><td>Born</td></tr>
+<tr><td>-54</td><td>-15</td><td>0</td><td></td><td>Mentioned</td></tr>
+<tr><td>-60</td><td>-15</td><td>0</td><td></td><td>Mother</td></tr>
+<tr><td>-51</td><td>-15</td><td>0</td><td></td><td>Parent</td></tr>
+<tr><td>-52</td><td>-15</td><td>0</td><td></td><td>Registrant</td></tr>
+<tr><td>-53</td><td>-15</td><td>0</td><td>Yes</td><td>Registrar</td></tr>
+<tr><td>-5</td><td>-2 "Death"</td><td>1</td><td></td><td>Died</td></tr>
+<tr><td>-6</td><td>-2</td><td>0</td><td></td><td>Present</td></tr>
+<tr><td>-26</td><td>-5 "Burial"</td><td>1</td><td></td><td>Deceased</td></tr>
+<tr><td>-28</td><td>-5</td><td>0</td><td></td><td>Present</td></tr>
+<tr><td>-27</td><td>-5</td><td>0</td><td>Yes</td><td>Officiator</td></tr>
+<tr><td>-55</td><td>-16 "Register Death"</td><td>1</td><td></td><td>Died</td></tr>
+<tr><td>-58</td><td>-16</td><td>0</td><td></td><td>Mentioned</td></tr>
+<tr><td>-56</td><td>-16</td><td>0</td><td></td><td>Registrant</td></tr>
+<tr><td>-57</td><td>-16</td><td>0</td><td>Yes</td><td>Registrar</td></tr>
+<tr><td>-64</td><td>-17 "Residence"</td><td>1</td><td></td><td>Boarder</td></tr>
+<tr><td>-61</td><td>-17</td><td>1</td><td></td><td>Family</td></tr>
+<tr><td>-86</td><td>-17</td><td>1</td><td></td><td>Inmate</td></tr>
+<tr><td>-63</td><td>-17</td><td>1</td><td></td><td>Lodger</td></tr>
+<tr><td>-87</td><td>-17</td><td>1</td><td></td><td>Resident</td></tr>
+<tr><td>-85</td><td>-17</td><td>1</td><td></td><td>Staff</td></tr>
+<tr><td>-77</td><td>-17</td><td>1</td><td></td><td>Summary</td></tr>
+<tr><td>-62</td><td>-17</td><td>1</td><td></td><td>Visitor</td></tr>
+<tr><td>-65</td><td>-18 "Occupation"</td><td>1</td><td></td><td>Summary</td></tr>
+<tr><td>-66</td><td>-18</td><td>0</td><td></td><td>Employer</td></tr>
+<tr><td>-81</td><td>-19 "Condition"</td><td>1</td><td></td><td>Civil Partner</td></tr>
+<tr><td>-83</td><td>-19</td><td>1</td><td></td><td>Divorced</td></tr>
+<tr><td>-79</td><td>-19</td><td>1</td><td></td><td>Married</td></tr>
+<tr><td>-80</td><td>-19</td><td>1</td><td></td><td>Partner</td></tr>
+<tr><td>-84</td><td>-19</td><td>1</td><td></td><td>Separated</td></tr>
+<tr><td>-78</td><td>-19</td><td>1</td><td></td><td>Single</td></tr>
+<tr><td>-67</td><td>-19</td><td>1</td><td></td><td>Summary</td></tr>
+<tr><td>-82</td><td>-19</td><td>1</td><td></td><td>Widowed</td></tr>
+<tr><td>-72</td><td>-21 "Relation"</td><td>1</td><td></td><td>Subject</td></tr>
+<tr><td>-29</td><td>-6 "Adult Baptism"</td><td>1</td><td></td><td>Baptised</td></tr>
+<tr><td>-31</td><td>-6</td><td>0</td><td></td><td>Present</td></tr>
+<tr><td>-30</td><td>-6</td><td>0</td><td>Yes</td><td>Officiator</td></tr>
+<tr><td>-32</td><td>-7 "Census"</td><td>1</td><td></td><td>Listed</td></tr>
+<tr><td>-33</td><td>-8 "Confirmation"</td><td>1</td><td></td><td>Confirmed</td></tr>
+<tr><td>-35</td><td>-8</td><td>0</td><td></td><td>Present</td></tr>
+<tr><td>-34</td><td>-8</td><td>0</td><td>Yes</td><td>Officiator</td></tr>
+<tr><td>-38</td><td>-10 "Emigration"</td><td>1</td><td></td><td>Emigrant</td></tr>
+<tr><td>-39</td><td>-11 "Immigration"</td><td>1</td><td></td><td>Immigrant</td></tr>
+<tr><td>-40</td><td>-12 "Graduation"</td><td>1</td><td></td><td>Graduate</td></tr>
+<tr><td>-41</td><td>-12</td><td>0</td><td></td><td>Present</td></tr>
+<tr><td>-42</td><td>-13 "Probate"</td><td>1</td><td></td><td>Deceased</td></tr>
+<tr><td>-43</td><td>-13</td><td>0</td><td></td><td>Executor</td></tr>
+<tr><td>-44</td><td>-13</td><td>0</td><td>Yes</td><td>Adjudicator</td></tr>
+<tr><td>-45</td><td>-14 "Will"</td><td>1</td><td></td><td>Subject</td></tr>
+<tr><td>-47</td><td>-14</td><td>0</td><td></td><td>Beneficiary</td></tr>
+<tr><td>-46</td><td>-14</td><td>0</td><td></td><td>Executor</td></tr>
+<tr><td>-49</td><td>-14</td><td>0</td><td></td><td>Witness</td></tr>
+<tr><td>-48</td><td>-14</td><td>0</td><td>Yes</td><td>Solicitor</td></tr>
+<tr><td>-88</td><td>-23 "Media"</td><td>1</td><td></td><td>Subject</td></tr>
+<tr><td>-90</td><td>-23</td><td>0</td><td></td><td>Commentator</td></tr>
+<tr><td>-89</td><td>-23</td><td>0</td><td></td><td>Producer</td></tr>
+<tr><td>-59</td><td>-3 "Marriage"</td><td>3</td><td></td><td>Spouse</td></tr>
+<tr><td>-8</td><td>-3</td><td>2</td><td></td><td>Bride</td></tr>
+<tr><td>-7</td><td>-3</td><td>1</td><td></td><td>Groom</td></tr>
+<tr><td>-18</td><td>-3</td><td>0</td><td></td><td>Best Man</td></tr>
+<tr><td>-17</td><td>-3</td><td>0</td><td></td><td>Bridesmaid</td></tr>
+<tr><td>-13</td><td>-3</td><td>0</td><td></td><td>Father of Bride</td></tr>
+<tr><td>-11</td><td>-3</td><td>0</td><td></td><td>Father of Groom</td></tr>
+<tr><td>-15</td><td>-3</td><td>0</td><td></td><td>Give away Bride</td></tr>
+<tr><td>-16</td><td>-3</td><td>0</td><td></td><td>Maid of Honour</td></tr>
+<tr><td>-14</td><td>-3</td><td>0</td><td></td><td>Mother of Bride</td></tr>
+<tr><td>-12</td><td>-3</td><td>0</td><td></td><td>Mother of Groom</td></tr>
+<tr><td>-19</td><td>-3</td><td>0</td><td></td><td>Pageboy</td></tr>
+<tr><td>-20</td><td>-3</td><td>0</td><td></td><td>Present</td></tr>
+<tr><td>-10</td><td>-3</td><td>0</td><td></td><td>Witness</td></tr>
+<tr><td>-9</td><td>-3</td><td>0</td><td>Yes</td><td>Officiator</td></tr>
+<tr><td>-68</td><td>-20 "Civl Partnership"</td><td>3</td><td></td><td>Partner</td></tr>
+<tr><td>-71</td><td>-20</td><td>0</td><td></td><td>Present</td></tr>
+<tr><td>-70</td><td>-20</td><td>0</td><td></td><td>Witness</td></tr>
+<tr><td>-69</td><td>-20</td><td>0</td><td>Yes</td><td>Officiator</td></tr>
+<tr><td>-75</td><td>-22 "Family"</td><td>3</td><td></td><td>Partner</td></tr>
+<tr><td>-74</td><td>-22</td><td>2</td><td></td><td>Wife</td></tr>
+<tr><td>-73</td><td>-22</td><td>1</td><td></td><td>Husband</td></tr>
+<tr><td>-76</td><td>-22</td><td>0</td><td></td><td>Child</td></tr>
+<tr><td>-37</td><td>-9 "Divorce"</td><td>2</td><td></td><td>Wife</td></tr>
+<tr><td>-36</td><td>-9</td><td>1</td><td></td><td>Husband</td></tr>
+</table>
+</div><!--id=content-->
+
+ <div class="crumbs">
+  <div class='dmenu'>
+   <div class='dm-item m-item'>▼</div>
+   <div class='dm-content'>
+    <a href='../../../../index.htm' class='m-item'>Home</a>
+   </div>
+  </div> 
+  <a href='../../../../dev/develop.htm' class='m-item'>Development</a>
+  <a href='../../../../dev/man/index.htm' class='m-item'>V0.3.0.1.1 Manual</a>
+  <a href='../../../../dev/man/com/common.htm' class='m-item'>Common Data</a>
+  <a href='../../../../dev/man/com/core/core.htm' class='m-item'>Core</a>
+  <a href='ets.htm' class='m-item thispage'>Event Types</a>
+  <a href='../../../../dev/man/com/place/places.htm' class='m-item nav'>►</a>
+  <a href='../../../../dev/man/com/core/core.htm' class='m-item nav'>◄</a>
+ </div>
+
+ <div class='tail'></div>
+
+ <div id='valid'>
+  <p>
+   <a href='http://validator.w3.org/check?uri=referer'>
+    <img src='../../../../sys/valid-xhtml10.png' alt='Valid XHTML 1.0 Strict' height='31' width='88' />
+   </a>
+  </p>
+ </div>
+
+ <div id='create-date'><p>8<sup>th</sup> March 2015</p></div>
+
+<!-- Start of StatCounter Code for Default Guide -->
+<script type="text/javascript">
+/*<![CDATA[*/
+var sc_project=9849896;
+var sc_invisible=1;
+var sc_security="8230fdb2";
+var scJsHost = (("https:" == document.location.protocol) ?
+"https://secure." : "http://www.");
+document.write("<sc"+"ript type='text/javascript' src='" +
+scJsHost+
+"statcounter.com/counter/counter.js'></"+"script>");
+/*]]>*/
+</script>
+<noscript><div class="statcounter"><a title="free hit
+counters" href="http://statcounter.com/"
+target="_blank"><img class="statcounter"
+src="http://c.statcounter.com/9849896/0/8230fdb2/1/"
+alt="free hit counters" /></a></div></noscript>
+<!-- End of StatCounter Code for Default Guide -->
+
+</body>
+</html>

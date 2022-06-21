@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<head>
+ <title>TheFamilyPack - Data Management</title>
+ <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+ <link rel='icon' type='image/png' href='../../../sys/logo32x32.png' />
+ <link rel='stylesheet' type='text/css' href='../../../sys/livery.css' />
+ <link rel='stylesheet' type='text/css' href='../../../sys/tfp.css' />
+</head>
+<body>
+
+ <div class='heading'>
+  <div class='logo'>
+   <a  href='http://thefamilypack.org'>
+    <img class='logo' src='../../../sys/logo266x100.png' alt='Logo' />
+   </a>
+  </div>
+  TheFamilyPack - Common Data<br />Common Data Management
+  <div class='clear'></div>
+ </div>
+
+ <div class="crumbs">
+  <a href='../../../index.htm' class='m-item'>Home</a>
+  <a href='../../../dev/develop.htm' class='m-item'>Development</a>
+  <a href='../../../dev/man/index.htm' class='m-item'>V0.3.0.1.1 Manual</a>
+  <a href='../../../dev/man/com/common.htm' class='m-item'>Common Data</a>
+  <a href='manage.htm' class='m-item thispage'>Data Management</a>
+  <a href='../../../dev/man/com/core/core.htm' class='m-item nav'>►</a>
+  <a href='../../../dev/man/com/common.htm' class='m-item nav'>◄</a>
+ </div>
+
+<div id='content' class='nomenu'>
+
+<h2>Introduction</h2>
+<p>
+    The management of the common database will be carried out centrally
+    as part of The Family Pack project.
+    The actual data store will be in the form of csv (Comma Separated Values)
+    text files. This should provide the following advantages.
+    It will be more dense than an SQL database or a database dump.
+    It will allow flexability in how the data is grouped.
+    It is more frendly towards version control systems (git).
+</p>
+<p>
+    The process is as follows:
+</p>
+<ol>
+    <li>Create the data in a standard database using The Family Pack program.</li>
+    <li>Assign the unique (negative) Common Data ID numbers.</li>
+    <li>Add the data to the Common Data store in the form of csv text files.</li>
+    <li>Use the csv files to create standard database files which can be distributed.</li>
+</ol>
+
+<h2>Utility Programs</h2>
+<p>
+    A couple of utility programs will be developed
+    to assist in maintaining the common data database.
+    These programs will not be distributed
+    as they are only for use by the project maintainers,
+    but the code source will form part of The Family Pack repository.
+</p>
+<h3>File: "tables.csv"</h3>
+<p>
+    The tables.csv ensures unique negative ID numbers are issued
+    to the incoming common data records.
+    It holds a list of database tables and its next available ID number.
+</p>
+<h3>Program: Common Data Management (cdm)</h3>
+<p>
+    The cdm program accepts a standard database file,
+    and using the tables.csv file,
+    converts all the positive ID values to negative ID's.
+    It maintains all the internal links as it does this.
+    The tables.csv is then updated with new highest available negative ID's.
+</p>
+<p>
+    The program next writes out all the records it has just renumbered
+    to csv files. Each table will have its own file.
+</p>
+<p>
+    The collection of csv files form the definitive database of the common data.
+</p>
+<h3>Program: Common Database Builder (cdb)</h3>
+<p>
+    The cdb program will be used to read the csv files
+    and create standard The Family Pack database files.
+    Organizing the data into different sets is still a work in progress.
+</p>
+<p>
+    The common data .tfpd database files will be used to distributed
+    the data to the user.
+</p>
+
+<h2>Using the Common Data</h2>
+<p>
+    Part of the design of The Family Pack database is to allow two databases to be connected.
+    One of the databases will be read-only,
+    but it will be possible to transfer data from the read-only to the read-write database.
+    In the case of common data negative ID's, the ID numbers will remain unchanged.
+    Copying other, positive ID's, the data will be renumbered as it is transferred.
+</p>
+
+</div><!--id=content-->
+
+ <div class="crumbs">
+  <a href='../../../index.htm' class='m-item'>Home</a>
+  <a href='../../../dev/develop.htm' class='m-item'>Development</a>
+  <a href='../../../dev/man/index.htm' class='m-item'>V0.3.0.1.1 Manual</a>
+  <a href='../../../dev/man/com/common.htm' class='m-item'>Common Data</a>
+  <a href='manage.htm' class='m-item thispage'>Data Management</a>
+  <a href='../../../dev/man/com/core/core.htm' class='m-item nav'>►</a>
+  <a href='../../../dev/man/com/common.htm' class='m-item nav'>◄</a>
+ </div>
+
+ <div class='tail'></div>
+
+ <div id='valid'>
+  <p>
+   <a href='http://validator.w3.org/check?uri=referer'>
+    <img src='../../../sys/valid-xhtml10.png' alt='Valid XHTML 1.0 Strict' height='31' width='88' />
+   </a>
+  </p>
+ </div>
+
+ <div id='create-date'><p>12<sup>th</sup> January 2022</p></div>
+
+<!-- Start of StatCounter Code for Default Guide -->
+<script type="text/javascript">
+/*<![CDATA[*/
+var sc_project=9849896;
+var sc_invisible=1;
+var sc_security="8230fdb2";
+var scJsHost = (("https:" == document.location.protocol) ?
+"https://secure." : "http://www.");
+document.write("<sc"+"ript type='text/javascript' src='" +
+scJsHost+
+"statcounter.com/counter/counter.js'></"+"script>");
+/*]]>*/
+</script>
+<noscript><div class="statcounter"><a title="free hit
+counters" href="http://statcounter.com/"
+target="_blank"><img class="statcounter"
+src="http://c.statcounter.com/9849896/0/8230fdb2/1/"
+alt="free hit counters" /></a></div></noscript>
+<!-- End of StatCounter Code for Default Guide -->
+
+</body>
+</html>
