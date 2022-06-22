@@ -44,7 +44,7 @@
 
 #include <rec/recDb.h>
 
-#define VERSION   "0.2.1"
+#define VERSION   "0.2.2"
 #define PROGNAME  "doccore - Create core data html tables"
 
 const wxString g_version = VERSION;
@@ -52,10 +52,10 @@ const wxString g_progName = PROGNAME;
 
 #ifdef NDEBUG
 const wxString g_title = PROGNAME " - Version " VERSION "\n"
-                         "Copyright (c) 2012 ~ 2018 Nick Matthews\n\n";
+                         "Copyright (c) 2012..2022 Nick Matthews\n\n";
 #else
 const wxString g_title = PROGNAME " - Version " VERSION " Debug\n"
-                         "Copyright (c) 2012 ~ 2018 Nick Matthews\n\n";
+                         "Copyright (c) 2012..2022 Nick Matthews\n\n";
 #endif
 
 bool g_verbose = false;
@@ -64,9 +64,9 @@ bool g_quiet   = false;
 
 wxString GetFileContents( const wxString& filename )
 {
-    wxString text;
     wxTextFile file( filename );
     file.Open();
+    wxString text = file.GetFirstLine() + "\n";
     for ( ;;) {
         text += file.GetNextLine();
         if ( file.Eof() ) {
@@ -85,7 +85,7 @@ wxString GetHtmBeg( const wxString& existing )
     }
     wxString htm = existing.substr( 0, pos );
     htm <<
-        "<div id='content'>\n\n"
+        "<div id='content' class='nomenu'>\n\n"
         "<blockquote>\n"
         "<p>\n"
         "<!-- Quote -->\n"
@@ -110,9 +110,9 @@ wxString WrTblEventType( int* order )
     wxString htm;
     htm <<
         "<table class='basic core'>\n"
-        "<tr><th colspan='4'>EventType Core Data</th></tr>\n"
-        "<tr><th>[id]</th><th>[grp]</th><th>[name]</th><th></th></tr>\n"
-        "<tr><td>0</td><td>NULL</td><td>NULL</td><td>Place holder for invalid Event Type.</td></tr>\n"
+        "<tr><th colspan='6'>EventType Core Data</th></tr>\n"
+        "<tr><th>[id]</th><th>[grp]</th><th>[name]</th><th>[uid]</th><th>[changed]</th><th></th></tr>\n"
+        "<tr><td>0</td><td>0</td><td></td><td></td><td>0</td><td>Place holder for invalid Event Type.</td></tr>\n"
     ;
     for( size_t i = 0 ; order[i] != 0 ; i++ ) {
         unsigned flag = 0x0001 << order[i];
@@ -125,6 +125,8 @@ wxString WrTblEventType( int* order )
                 htm << " \"" << ets[0].GetGroupStr() << "\"";
             }
             htm << "</td><td>" << ets[j].FGetName()
+                << "</td><td>" << ets[j].FGetUid()
+                << "</td><td>" << ets[j].GetChangedDate()
                 << "</td><td>";
             if( etID == -19 ) {
                 htm << "Marital Status";
@@ -141,9 +143,9 @@ wxString WrTblEventTypeRole( int* order )
     wxString htm;
     htm <<
         "<table class='basic core'>\n"
-        "<tr><th colspan='5'>EventTypeRole Core Data</th></tr>\n"
-        "<tr><th>[id]</th><th>[type_id]</th><th>[prime]</th><th>[official]</th><th>[name]</th></tr>\n"
-        "<tr><td>0</td><td>NULL</td><td>NULL</td><td>NULL</td><td>NULL</td></tr>\n"
+        "<tr><th colspan='7'>EventTypeRole Core Data</th></tr>\n"
+        "<tr><th>[id]</th><th>[type_id]</th><th>[prime]</th><th>[official]</th><th>[name]</th><th>[uid]</th><th>[changed]</th></tr>\n"
+        "<tr><td>0</td><td>0</td><td>0</td><td>No</td><td></td><td></td><td>0</td></tr>\n"
     ;
     for( size_t i = 0 ; order[i] != 0 ; i++ ) {
         unsigned flag = 0x0001 << order[i];
@@ -161,6 +163,8 @@ wxString WrTblEventTypeRole( int* order )
                 htm << "</td><td>" << etrs[k].FGetPrime()
                     << "</td><td>" << ( etrs[k].FGetOfficial() ? "Yes" : "" )
                     << "</td><td>" << etrs[k].FGetName()
+                    << "</td><td>" << etrs[k].FGetUid()
+                    << "</td><td>" << etrs[k].GetChangedDate()
                     << "</td></tr>\n"
                 ;
             }
