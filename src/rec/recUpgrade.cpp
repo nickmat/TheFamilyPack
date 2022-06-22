@@ -41,8 +41,8 @@
 const int recVerMajor = 0;
 const int recVerMinor = 0;
 const int recVerRev = 10;
-const int recVerTest = 39;                       // <<======<<<<
-const char* recFullVersion = "TFPD-v0.0.10.39";  // <<======<<<<
+const int recVerTest = 40;                       // <<======<<<<
+const char* recFullVersion = "TFPD-v0.0.10.40";  // <<======<<<<
 
 // This is the database Media-only version that this program can work with.
 // If the full version matches, then this is assumed to match as well.
@@ -1947,6 +1947,207 @@ void UpgradeTest0_0_10_38to0_0_10_39( const wxString& dbname )
     recDb::GetDb()->ExecuteUpdate( update );
 }
 
+void UpgradeTest0_0_10_39to0_0_10_40( const wxString& dbname )
+{
+    // Version 0.0.10.39 to 0.0.10.40
+
+    // Add field 'uid' and 'changed' to EventType and EventTypeRole.
+    wxString update =
+        "BEGIN;\n";
+
+    update <<
+        "CREATE TABLE \"" << dbname << "\".NewEventType (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  grp INTEGER NOT NULL,\n"
+        "  name TEXT NOT NULL,\n"
+        "  uid TEXT NOT NULL,\n"
+        "  changed INTEGER NOT NULL\n"
+        ");\n"
+
+        // Remove null values on record 0.
+        "UPDATE \"" << dbname << "\".EventType SET grp=0, name='' WHERE id=0;\n"
+
+        "INSERT INTO \"" << dbname << "\".NewEventType"
+        " (id, grp, name, uid, changed)\n"
+        " SELECT id, grp, name, '', 2459752\n"
+        " FROM \"" << dbname << "\".EventType;\n"
+
+        "DROP TABLE \"" << dbname << "\".EventType;\n"
+        "ALTER TABLE \"" << dbname << "\".NewEventType RENAME TO EventType;\n"
+        ;
+
+    // Fill EventType table uid field
+    wxString query = "SELECT id FROM \"" + dbname + "\".EventType WHERE id>0;\n"; // Get id list
+    wxSQLite3Table table = recDb::GetDb()->GetTable( query );
+    size_t size = (size_t) table.GetRowCount();
+    for( size_t i = 0; i < size; i++ ) {
+        table.SetRow( i );
+        update << "UPDATE \"" << dbname << "\".EventType"
+            " SET uid='" << recCreateUid() << "'"
+            " WHERE id=" << table.GetAsString( 0 ) << ";\n"
+            ;
+    }
+    update <<
+        "UPDATE \"" << dbname << "\".EventType SET changed=0 WHERE id=0;\n"
+
+        "UPDATE \"" << dbname << "\".EventType SET uid='30AB007B03C8BF584A53124EB8D652697E84' WHERE id=-1;\n"
+        "UPDATE \"" << dbname << "\".EventType SET uid='9D456F509BCB5CBEFB891695B48FAB5E9C75' WHERE id=-2;\n"
+        "UPDATE \"" << dbname << "\".EventType SET uid='4C763908AD6A87F5453ADE212EAF8472E793' WHERE id=-3;\n"
+        "UPDATE \"" << dbname << "\".EventType SET uid='70933A4FE1C53D2726E2DDBE540D2C0BD1AC' WHERE id=-4;\n"
+        "UPDATE \"" << dbname << "\".EventType SET uid='B280BF2B8CE00795F1DF2572BB7BAB026E62' WHERE id=-5;\n"
+        "UPDATE \"" << dbname << "\".EventType SET uid='A2938143B96EDAE92E402CAECDE1FDCCA288' WHERE id=-6;\n"
+        "UPDATE \"" << dbname << "\".EventType SET uid='8B2158196ACCDF1AB4A438F6B97922193FF6' WHERE id=-7;\n"
+        "UPDATE \"" << dbname << "\".EventType SET uid='D749C38DB0A5B8862A7F67C71348A3825AC9' WHERE id=-8;\n"
+        "UPDATE \"" << dbname << "\".EventType SET uid='5F22AAF1C26A49037BC21DB918000317D900' WHERE id=-9;\n"
+        "UPDATE \"" << dbname << "\".EventType SET uid='188C09CBB315B850871C14E6E3167B91EA13' WHERE id=-10;\n"
+        "UPDATE \"" << dbname << "\".EventType SET uid='601CCC7985405F97C9405751B33F44DE4188' WHERE id=-11;\n"
+        "UPDATE \"" << dbname << "\".EventType SET uid='C9325D190689AB25609F681A3AFC3CD59873' WHERE id=-12;\n"
+        "UPDATE \"" << dbname << "\".EventType SET uid='A958ED4A33C1A8068631D92812401B2E2DB6' WHERE id=-13;\n"
+        "UPDATE \"" << dbname << "\".EventType SET uid='A43B77FAA6606717D17B864945ADB042D3D9' WHERE id=-14;\n"
+        "UPDATE \"" << dbname << "\".EventType SET uid='8C347D7CE909C4E123C578F3C1F934CA5BF9' WHERE id=-15;\n"
+        "UPDATE \"" << dbname << "\".EventType SET uid='45131053450AAFF043D1FFA2B57573DCD75C' WHERE id=-16;\n"
+        "UPDATE \"" << dbname << "\".EventType SET uid='904EB30BB56D46F20BF15D3BD1EC60D27932' WHERE id=-17;\n"
+        "UPDATE \"" << dbname << "\".EventType SET uid='7ACC2C0D44AB258632F2F7200B1ABEDD14C1' WHERE id=-18;\n"
+        "UPDATE \"" << dbname << "\".EventType SET uid='2B9BFD3E4222364938364518EACEF34BA58F' WHERE id=-19;\n"
+        "UPDATE \"" << dbname << "\".EventType SET uid='DEA4143114BEEC17045BBA744FBD1CBD0ED7' WHERE id=-20;\n"
+        "UPDATE \"" << dbname << "\".EventType SET uid='789B829792C6BF41E9E2DA2DADD73119249C' WHERE id=-21;\n"
+        "UPDATE \"" << dbname << "\".EventType SET uid='52EEDA65F1A6102CC9599D265B3C181A0046' WHERE id=-22;\n"
+        "UPDATE \"" << dbname << "\".EventType SET uid='C86CC13C6CCFDB2DB805A8AB0B3FC11FAE3A' WHERE id=-23;\n"
+
+        "CREATE TABLE \"" << dbname << "\".NewEventTypeRole (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  type_id INTEGER NOT NULL REFERENCES EventType(id),\n"
+        "  prime INTEGER NOT NULL,\n"
+        "  official INTEGER NOT NULL,\n"
+        "  name TEXT NOT NULL,\n"
+        "  uid TEXT NOT NULL,\n"
+        "  changed INTEGER NOT NULL\n"
+        ");\n"
+
+        // Remove null values on record 0.
+        "UPDATE \"" << dbname << "\".EventTypeRole SET type_id=0, prime=0, official=0, name='' WHERE id=0;\n"
+
+        "INSERT INTO \"" << dbname << "\".NewEventTypeRole"
+        " (id, type_id, prime, official, name, uid, changed)\n"
+        " SELECT id, type_id, prime, official, name, '', 2459752\n"
+        " FROM \"" << dbname << "\".EventTypeRole;\n"
+
+        "DROP TABLE \"" << dbname << "\".EventTypeRole;\n"
+        "ALTER TABLE \"" << dbname << "\".NewEventTypeRole RENAME TO EventTypeRole;\n"
+        ;
+
+    // Fill EventTypeRole table uid field
+    query = "SELECT id FROM \"" + dbname + "\".EventTypeRole WHERE id>0;\n"; // Get user id list
+    table = recDb::GetDb()->GetTable( query );
+    size = (size_t) table.GetRowCount();
+    for( size_t i = 0; i < size; i++ ) {
+        table.SetRow( i );
+        update << "UPDATE \"" << dbname << "\".EventTypeRole"
+            " SET uid='" << recCreateUid() << "'"
+            " WHERE id=" << table.GetAsString( 0 ) << ";\n"
+            ;
+    }
+    update <<
+        "UPDATE \"" << dbname << "\".EventTypeRole SET changed=0 WHERE id=0;\n"
+
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='6294C833BCF9D2E0F8DDDEC4946441F901B4' WHERE id=-1;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='59D8C78FC6E8102B214147C6A0A25012832F' WHERE id=-2;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='527A6A76412AFF9C8DE1ABA399D8304655AE' WHERE id=-3;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='3C0E358DFDDFF7989230FE002F9FC61AE523' WHERE id=-4;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='2753766036C229794AEE257200EA8DAEDECA' WHERE id=-5;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='3721F9AED08D02AB242268E6517D2EDB74A7' WHERE id=-6;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='EBBCF29CE75DEB1B57A2C0196245C14C0518' WHERE id=-7;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='370B504243943119A9A74C8B481A9CD2ECEA' WHERE id=-8;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='74B2CDEFCED43777C94C3DD493B37D0F2A7C' WHERE id=-9;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='BE6933D1F76F2CD6B62F4F0275A505B59D64' WHERE id=-10;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='047FB29EE359BE626B2F8ED84BDC3BC455EF' WHERE id=-11;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='1358514D43426F30E12BE41CF39C9FAD1453' WHERE id=-12;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='9C3E06785825611CD76CED8C310016348965' WHERE id=-13;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='D13491A16857D377E16AD3E3187D2063590A' WHERE id=-14;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='66C12CF765541AAA50FB4CED3C9BBE866681' WHERE id=-15;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='ADDBF1757B7C467F7C1B9305317B29B26070' WHERE id=-16;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='9D964DB5D4BB2BA65C4D23D8809EEE4F9488' WHERE id=-17;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='1E4068FB67D4DE9AB3171DC7CC0E14162677' WHERE id=-18;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='C56BCF2BBBBC3A8F1D10CAB43A33E746AF66' WHERE id=-19;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='5B1E1118786681C12A4C06EDF10AD1251C3F' WHERE id=-20;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='6B6CB578797164D8C2EA6809B94E261E9254' WHERE id=-21;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='D46C5E4B8857CEE439D11F1C69394B7F2BDD' WHERE id=-22;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='25E14F730376D3D6E86BAA72B1192AADFA15' WHERE id=-23;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='603C86B8542C0EA4C6E64D3EAD9663BAA3C8' WHERE id=-24;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='B7DDBF0EE6D66C6CA696FE1A2D68B9EB8292' WHERE id=-25;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='980587CF544175E55A02BA7C343E629CE49A' WHERE id=-26;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='86D47917CAB0A4836583EBC67ADD38B76A63' WHERE id=-27;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='3D79C782650F98F9C103D4D03289520A83AB' WHERE id=-28;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='2F802E3F827490E491ED7F022CD5F80D8B12' WHERE id=-29;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='8A152316FCA79A363BCC83E9F9682B6CB6B3' WHERE id=-30;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='53534D02E6C94872325323C5B09F6DFB828C' WHERE id=-31;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='45D36CC7EC0B39D46B9205885571883960F3' WHERE id=-32;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='AFFB9AFE5A2A54653A0752B2812A3FF19F2A' WHERE id=-33;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='30A9EDE2C9D197F2FA47498E6CCB3A217509' WHERE id=-34;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='06A3B3281C6E916F44A056F4D5E924F816F1' WHERE id=-35;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='722D3DC4759ECC67704C1F5305433BB249DC' WHERE id=-36;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='F50834023F0CBF1600EFFFD37C43A5FE7611' WHERE id=-37;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='F6CE7D384D38B6006131E3CF05029B1AB466' WHERE id=-38;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='38B130B59F7FC9F78E52235B2CC1F447328B' WHERE id=-39;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='D7F462E3E16E2FDCF54E7BB64D10AED8C149' WHERE id=-40;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='84100E33B6EBA4030BF2859F30569C2484FC' WHERE id=-41;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='1D27D815BDBE87F4DEE93921CC0A489C029E' WHERE id=-42;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='85A72F1867C30005C3E3C8AFC0CAF5BFFDB4' WHERE id=-43;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='23F148EE526D13BFFF0AA38DF2B066C6E28C' WHERE id=-44;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='3E937C13782A350FB56C12FCBF425DB18464' WHERE id=-45;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='6778DE2C39CA3D81399AD3861ED4C6B03EDB' WHERE id=-46;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='F2A598516179B89FBA44F72AD8D15BC59954' WHERE id=-47;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='0E0546B7FE61E3437C721612E1655E29780A' WHERE id=-48;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='1B7C454890F1695FF87CC63D098178B0962E' WHERE id=-49;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='81451C911D32C7F7AE4125C8F88565559382' WHERE id=-50;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='194C35B62D872374E52277B84817980ED69E' WHERE id=-51;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='5C7BA6874EF0DADD5600A8C1ACD90A6BB244' WHERE id=-52;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='1B380CD1A593F789B787103EB4619B1539FE' WHERE id=-53;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='7CEC5F925775C9847E3FE2E3A126565B6C2A' WHERE id=-54;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='0683188FDAB4D0DFC94FE19146ED05E514E5' WHERE id=-55;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='2E01C860F7DB33A2F192F3C6306F9F5CD429' WHERE id=-56;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='2C0354516E3368917EE7470E470CD49BEAD8' WHERE id=-57;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='E4EB7D2283DE5E6E569DB2BCA6FE2DFAC786' WHERE id=-58;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='ACFCFE744A4FC5CCEFDFD0B68B922513ED45' WHERE id=-59;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='1A7EFE1584ED9579D7A90B11AF44C8F67765' WHERE id=-60;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='40D36C4B1F763EAA61A334B78A4410374B93' WHERE id=-61;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='4658360D56D2A8225A4FFE76A69F63E47C4F' WHERE id=-62;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='071F0D3B669300A890AD29F5C19834C1B8E6' WHERE id=-63;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='E427AC312363F7B9CE2FC710764EE9711032' WHERE id=-64;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='26DD261E46203A04BAFC9DB4719C91AC3C49' WHERE id=-65;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='701D3345C19A06D5335E80EB9165D7AAAEED' WHERE id=-66;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='43EE52E796C6CD2A07D2F971BFDE0049E63F' WHERE id=-67;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='B3B8F286F54F9EF2609FFD1477A7391A3899' WHERE id=-68;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='DF91CF34FA1D3B04B1DA951605E1AE2EC179' WHERE id=-69;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='99555FED0E1A2E0F265AE943DF4CDA2A7A88' WHERE id=-70;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='36827CA6269ADED1C61EB60E58C2AE05BE32' WHERE id=-71;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='EACEDD6D072E2075FBE3797E2BB99AD9F839' WHERE id=-72;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='62ED6136546784602D2DD587186137C0ABE9' WHERE id=-73;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='AD2AC696CE92F21DE36A9D5527018955E77A' WHERE id=-74;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='7D21EC88162CAB80E13C536AC415E7F9126F' WHERE id=-75;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='0E4989ADFD94E53CED9BEED67C3D01BD0281' WHERE id=-76;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='FA93BB7BC8AF566CE5CA22698208154D22E1' WHERE id=-77;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='09231B6FAA16992813B9436123347E69E5B1' WHERE id=-78;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='74D4E342FA0DBFADBD9E8953F8574F2BE0FF' WHERE id=-79;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='2E6CF9CC1BEC5B1FE187F5F510336FE4C816' WHERE id=-80;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='07E388D822E3C225FF5E7608750D8A345118' WHERE id=-81;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='E07B5A82032DCC4B117EEA9807C76CF4BD14' WHERE id=-82;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='4288622410FBDDD10352C29510EC3B89759A' WHERE id=-83;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='08EDD626A4C65860FDC1D57897E4D3168250' WHERE id=-84;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='47C012FC3246F3ED916EBDDE8ECFC7ED1813' WHERE id=-85;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='2A91334CAF9E75291AEB13CDE2C7EC64038F' WHERE id=-86;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='44821AA9C75ED4ECC7F5DDDDDA615CE35E61' WHERE id=-87;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='A9C3A735798018D815129BFE7617F01F8D5E' WHERE id=-88;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='8D27BA1F504D7471241D7BD9DB27D3BE37B7' WHERE id=-89;\n"
+        "UPDATE \"" << dbname << "\".EventTypeRole SET uid='25A5B0991319C04ADE60A87908D1BF8BCBEA' WHERE id=-90;\n"
+
+        "UPDATE \"" << dbname << "\".Version SET test=40 WHERE id=1;\n"
+        "COMMIT;\n"
+        ;
+
+    recDb::GetDb()->ExecuteUpdate( update );
+}
+
 void UpgradeRev0_0_10toCurrent( int test, const wxString& dbname )
 {
     switch( test )
@@ -1990,6 +2191,7 @@ void UpgradeRev0_0_10toCurrent( int test, const wxString& dbname )
     case 36: UpgradeTest0_0_10_36to0_0_10_37( dbname );
     case 37: UpgradeTest0_0_10_37to0_0_10_38( dbname );
     case 38: UpgradeTest0_0_10_38to0_0_10_39( dbname );
+    case 39: UpgradeTest0_0_10_39to0_0_10_40( dbname );
     }
 }
 

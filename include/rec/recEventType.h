@@ -42,7 +42,7 @@ typedef std::vector< recEventa >    recEventaVec;
 //-------------------------[ recEventType ]-----------------------------------
 //============================================================================
 
-class recEventType : public recDbT<recEventType>
+class recEventType : public recDbT<recEventType>, public recUidT<recEventType>
 {
 public:
     static constexpr const char* s_tablename = "EventType";

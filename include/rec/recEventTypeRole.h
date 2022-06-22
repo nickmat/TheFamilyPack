@@ -34,7 +34,8 @@
 //-------------------------[ recEventTypeRole ]-------------------------------
 //============================================================================
 
-class recEventTypeRole : public recDbT<recEventTypeRole>
+class recEventTypeRole
+    : public recDbT<recEventTypeRole>, public recUidT<recEventTypeRole>
 {
 public:
     static constexpr const char* s_tablename = "EventTypeRole";
@@ -98,7 +99,7 @@ public:
     bool      f_official;
     wxString  f_name;
 
-    recEventTypeRole() : f_type_id(0), f_prime(false), f_official(false) {}
+    recEventTypeRole() : f_type_id(0), f_prime(PRIME_None), f_official(false) {}
     recEventTypeRole( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }
     recEventTypeRole( const recEventTypeRole& etr );
 

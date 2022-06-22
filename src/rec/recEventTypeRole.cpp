@@ -51,15 +51,19 @@ recEventTypeRole::recEventTypeRole( const recEventTypeRole& etr )
     f_prime    = etr.f_prime;
     f_official = etr.f_official;
     f_name     = etr.f_name;
+    f_uid = etr.f_uid;
+    f_changed = etr.f_changed;
 }
 
 void recEventTypeRole::Clear()
 {
     f_id       = 0;
     f_type_id  = 0;
-    f_prime    = false;
+    f_prime    = PRIME_None;
     f_official = false;
-    f_name     = wxEmptyString;
+    f_name.clear();
+    f_uid.clear();
+    f_changed = 0;
 }
 
 void recEventTypeRole::Save( const wxString& dbname )
@@ -71,9 +75,10 @@ void recEventTypeRole::Save( const wxString& dbname )
     {
         // Add new record
         sql.Format(
-            "INSERT INTO \"%s\".EventTypeRole (type_id, prime, official, name) "
-            "VALUES (" ID ", %d, %d, '%q');",
-            UTF8_( dbname ), f_type_id, f_prime, BOOL_(f_official), UTF8_(f_name)
+            "INSERT INTO \"%s\".EventTypeRole (type_id, prime, official, name, uid, changed) "
+            "VALUES (" ID ", %d, %d, '%q', '%q', %ld);",
+            UTF8_( dbname ), f_type_id, f_prime, BOOL_(f_official),
+            UTF8_(f_name), UTF8_( f_uid ), f_changed
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -83,17 +88,19 @@ void recEventTypeRole::Save( const wxString& dbname )
         {
             // Add new record
             sql.Format(
-                "INSERT INTO \"%s\".EventTypeRole (id, type_id, prime, official, name) "
-                "VALUES (" ID ", " ID ", %d, %d, '%q');",
-                UTF8_( dbname ), f_id, f_type_id, f_prime, BOOL_(f_official), UTF8_(f_name)
+                "INSERT INTO \"%s\".EventTypeRole (id, type_id, prime, official, name, uid, changed) "
+                "VALUES (" ID ", " ID ", %d, %d, '%q', '%q', %ld);",
+                UTF8_( dbname ), f_id, f_type_id, f_prime, BOOL_(f_official),
+                UTF8_(f_name), UTF8_( f_uid ), f_changed
             );
         } else {
             // Update existing record
             sql.Format(
                 "UPDATE \"%s\".EventTypeRole "
-                "SET type_id=" ID ", prime=%d, official=%d, name='%q' "
+                "SET type_id=" ID ", prime=%d, official=%d, name='%q', uid = '%q', changed = %ld "
                 "WHERE id=" ID ";",
-                UTF8_( dbname ), f_type_id, f_prime, BOOL_(f_official), UTF8_(f_name), f_id
+                UTF8_( dbname ), f_type_id, f_prime, BOOL_(f_official),
+                UTF8_(f_name), UTF8_( f_uid ), f_changed, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -111,7 +118,7 @@ bool recEventTypeRole::Read( const wxString& dbname )
     }
 
     sql.Format(
-        "SELECT type_id, prime, official, name "
+        "SELECT type_id, prime, official, name, uid, changed "
         "FROM \"%s\".EventTypeRole WHERE id=" ID ";",
         UTF8_( dbname ), f_id
     );
@@ -127,6 +134,8 @@ bool recEventTypeRole::Read( const wxString& dbname )
     f_prime = result.GetInt( 1 );
     f_official = result.GetBool( 2 );
     f_name = result.GetAsString( 3 );
+    f_uid = result.GetAsString( 4 );
+    f_changed = result.GetInt( 5 );
     return true;
 }
 
@@ -136,8 +145,10 @@ bool recEventTypeRole::Equivalent( const recEventTypeRole& r2 ) const
         f_type_id == r2.f_type_id &&
         f_prime == r2.f_prime &&
         f_official == r2.f_official &&
-        f_name == r2.f_name
-    ;
+        f_name == r2.f_name &&
+        f_uid == r2.f_uid &&
+        f_changed == r2.f_changed
+        ;
 }
 
 wxString recEventTypeRole::GetName( idt roleID, const wxString& dbname )
@@ -283,6 +294,8 @@ idt recEventTypeRole::FindOrCreate( const wxString& name, idt type, Prime prime,
         role.f_prime = prime;
         role.f_official = official;
         role.f_name = name;
+        role.f_uid = recCreateUid();
+        role.f_changed = calGetTodayJdn();
         role.Save();
         return role.f_id;
     }
@@ -293,7 +306,7 @@ idt recEventTypeRole::FindOrCreate( const wxString& name, idt type, Prime prime,
 std::string recEventTypeRole::CsvTitles()
 {
     return std::string(
-        "ID, Event Type ID, Prime, Official, Name\n"
+        "ID, Event Type ID, Prime, Official, Name, UID, Last Changed\n"
     );
 }
 
@@ -304,7 +317,9 @@ void recEventTypeRole::CsvWrite( std::ostream& out, idt id )
     recCsvWrite( out, etr.FGetTypeID() );
     recCsvWrite( out, etr.FGetID() );
     recCsvWrite( out, int( etr.FGetOfficial() ) );
-    recCsvWrite( out, etr.FGetName(), '\n');
+    recCsvWrite( out, etr.FGetName());
+    recCsvWrite( out, etr.FGetUid() );
+    recCsvWrite( out, etr.FGetChanged(), '\n' );
 }
 
 bool recEventTypeRole::CsvRead( std::istream& in )
@@ -316,6 +331,8 @@ bool recEventTypeRole::CsvRead( std::istream& in )
     recCsvRead( in, official );
     f_official = official;
     recCsvRead( in, f_name );
+    recCsvRead( in, f_uid );
+    recCsvRead( in, f_changed );
     return bool( in );
 }
 
