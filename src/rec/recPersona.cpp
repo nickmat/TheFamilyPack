@@ -316,24 +316,44 @@ recIdVec recPersona::FindIndividualReferenceLink(
     return vec;
 }
 
-idt recPersona::Transfer( idt from_perID, const wxString& fromdb, idt to_refID, const wxString& todb )
+idt recPersona::Transfer(
+    idt from_perID, const wxString& fromdb,
+    idt to_refID, const wxString& todb )
 {
     if( from_perID == 0 ) return 0;
 
     recPersona from_per( from_perID, fromdb );
-    recPersona to_per( from_per );
-    if( to_per.FGetID() > 0 ) {
-        to_per.FSetID( 0 );
+    idt to_perID = recPersona::FindUid( from_per.FGetUid(), todb );
+    recPersona to_per( to_perID, todb );
+    recMatchUID match = from_per.CompareUID( to_per );
+    if( match == recMatchUID::unequal || match == recMatchUID::younger ) {
+        recPersona new_per( from_per );
+        new_per.FSetID( to_perID );
+        new_per.FSetRefID( to_refID );
+        new_per.Save( todb );
+        to_perID = new_per.FGetID();
     }
-    to_per.FSetRefID( to_refID );
-    to_per.Save( todb );
-    idt to_perID = to_per.FGetID();
+    wxASSERT( to_perID != 0 );
 
-    recIdVec namIDs = from_per.GetNameListID( fromdb );
-    for( idt namID : namIDs ) {
-        recName::Transfer( namID, fromdb, 0, to_perID, todb );
+    recIdVec from_namIDs = recPersona::GetNameListID( from_perID, fromdb );
+    recIdVec to_namIDs = recPersona::GetNameListID( to_perID, todb );
+    size_t size = std::max( from_namIDs.size(), to_namIDs.size() );
+    for( size_t i = 0; i < size; i++ ) {
+        if( i >= from_namIDs.size() ) { // No more to copy, remove leftovers.
+            recName::RemoveFromDatabase( to_namIDs[i], todb );
+            continue;
+        }
+        if( i >= to_namIDs.size() ) { // No more to change, create new.
+            idt to_namID = recName::Transfer( from_namIDs[i], fromdb, 0, to_perID, 0, todb);
+            if( to_refID ) {
+                recReferenceEntity::Create( to_refID, recReferenceEntity::Type::TYPE_Name, to_namID );
+            }
+            continue;
+        }
+        // Update copy
+        recName::Transfer( from_namIDs[i], fromdb, 0, to_perID, to_namIDs[i], todb );
     }
-    // TODO: IndividualPersona and EventaPersona records should be included.
+
     return to_perID;
 }
 

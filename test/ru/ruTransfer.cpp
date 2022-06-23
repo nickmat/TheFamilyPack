@@ -318,7 +318,7 @@ TEST_CASE( "Test recName::Transfer function", "[Name]" )
     REQUIRE( !recName::Exists( 1, g_maindb ) );
     REQUIRE( recName::Exists( 4217, g_extdb1 ) );
 
-    idt to_namID = recName::Transfer( 4217, g_extdb1, 0, 0, g_maindb );
+    idt to_namID = recName::Transfer( 4217, g_extdb1, 0, 0, 0, g_maindb );
     REQUIRE( to_namID == 1 );
 
     RecordCounts rcnew( g_maindb );
