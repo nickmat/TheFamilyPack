@@ -493,28 +493,44 @@ recNamePartVec recName::GetParts( idt nameID, const wxString& dbname )
 
 idt recName::Transfer(
     idt from_namID, const wxString& fromdb,
-    idt to_indID, idt to_perID, const wxString& todb )
+    idt to_indID, idt to_perID, idt to_namID, const wxString& todb )
 {
     if( from_namID == 0 ) return 0;
 
     recName from_nam( from_namID, fromdb );
     idt to_nsID = recNameStyle::Transfer( from_nam.FGetStyleID(), fromdb, todb );
 
-    recName new_nam( 0 );
-    new_nam.FSetIndID( to_indID );
-    new_nam.FSetPerID( to_perID );
-    new_nam.FSetStyleID( to_nsID );
-    new_nam.SetNextSequence();
-    new_nam.Save( todb );
-    idt to_namID = new_nam.FGetID();
+    recName to_nam( to_namID, todb );
+    to_nam.FSetIndID( to_indID );
+    to_nam.FSetPerID( to_perID );
+    to_nam.FSetStyleID( to_nsID );
+    to_nam.SetNextSequence();
+    to_nam.Save( todb );
+    to_namID = to_nam.FGetID();
 
     recNamePartVec from_nps = recName::GetParts( from_namID, fromdb );
-    for( auto& np : from_nps ) {
-        np.FSetID( 0 );
-        np.FSetNameID( to_namID );
-        idt to_nptID = recNamePartType::Transfer( np.FGetTypeID(), fromdb, todb );
-        np.FSetTypeID( to_nptID );
-        np.Save( todb );
+    recNamePartVec to_nps = recName::GetParts( to_namID, todb );
+    size_t size = std::max( from_nps.size(), to_nps.size() );
+    for( size_t i = 0; i < size; i++ ) {
+        if( i >= from_nps.size() ) { // No more to copy, remove leftovers.
+            to_nps[i].RemoveFromDatabase( todb );
+            continue;
+        }
+        if( i >= to_nps.size() ) { // No more to change, create new.
+            recNamePart new_np( from_nps[i] );
+            new_np.FSetID( 0 );
+            new_np.FSetNameID( to_namID );
+            idt to_nptID = recNamePartType::Transfer( from_nps[i].FGetTypeID(), fromdb, todb );
+            new_np.FSetTypeID( to_nptID );
+            new_np.SetNextSequence( todb );
+            new_np.Save( todb );
+            continue;
+        }
+        // Update existing
+        idt to_nptID = recNamePartType::Transfer( from_nps[i].FGetTypeID(), fromdb, todb );
+        to_nps[i].FSetTypeID( to_nptID );
+        to_nps[i].FSetValue( from_nps[i].FGetValue() );
+        to_nps[i].Save( todb );
     }
     return to_namID;
 }
@@ -703,6 +719,19 @@ wxSQLite3ResultSet recNamePart::GetSurnameList( const wxString& dbname )
     );
     return s_db->ExecuteQuery( sql );
 }
+
+int recNamePart::SetNextSequence( const wxString& dbname )
+{
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT MAX(sequence) FROM \"%s\".NamePart WHERE name_id=" ID ";",
+        UTF8_( dbname ), f_name_id
+    );
+
+    f_sequence = s_db->ExecuteScalar( sql ) + 1;
+    return f_sequence;
+}
+
 
 std::string recNamePart::CsvTitles()
 {

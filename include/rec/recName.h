@@ -144,7 +144,7 @@ public:
 
     static idt Transfer(
         idt from_namID, const wxString& fromdb,
-        idt to_indID, idt to_perID, const wxString& todb );
+        idt to_indID, idt to_perID, idt to_namID, const wxString& todb );
 
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );
@@ -193,6 +193,8 @@ public:
 
     static wxString GetValue( idt id, const wxString& dbname = "Main" );
     static wxSQLite3ResultSet GetSurnameList( const wxString& dbname = "Main" );
+
+    int SetNextSequence( const wxString& dbname = "Main" );
 
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );
