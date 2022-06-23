@@ -144,18 +144,22 @@ void RecTestCase::AddTestData()
         " (id, title, ref_id, type_id, date1_id, date2_id, place_id, note, date_pt)"
         " VALUES(19, 'Test 19', 0, -1, 0, 0, 0, '', 0);\n"
 
-        "INSERT INTO Persona (id, sex, ref_id, note) VALUES(4, 0, 0, '');\n"
+        "INSERT INTO Persona (id, sex, ref_id, note, uid, changed)"
+        " VALUES(4, 0, 0, '', 'XXXX1', 2459754);\n"
         "INSERT INTO Individual"
         " (id, sex, fam_id, note, privacy, name, surname, epitaph)"
         " VALUES (3, 1, 0, 'Note', 0, 'Name', 'Surname', '');\n"
 
-        "INSERT INTO Persona (id, sex, ref_id, note) VALUES(19, 0, 0, '');\n"
+        "INSERT INTO Persona (id, sex, ref_id, note, uid, changed)"
+        " VALUES(19, 0, 0, '', 'XXXX2', 2459754);\n"
         "INSERT INTO Individual"
         " (id, sex, fam_id, note, privacy, name, surname, epitaph)"
         " VALUES (20, 1, 0, 'Note', 0, 'Name', 'Surname', '');\n"
 
-        "INSERT INTO Persona (id, sex, ref_id, note) VALUES(3, 0, 0, '');\n"
-        "INSERT INTO Persona (id, sex, ref_id, note) VALUES(20, 0, 0, '');\n"
+        "INSERT INTO Persona (id, sex, ref_id, note, uid, changed)"
+        " VALUES(3, 0, 0, '', 'XXXX3', 2459754);\n"
+        "INSERT INTO Persona (id, sex, ref_id, note, uid, changed)"
+        " VALUES(20, 0, 0, '', 'XXXX4', 2459754);\n"
         "COMMIT;\n"
     ;
     recDb::GetDb()->ExecuteUpdate( sql );
