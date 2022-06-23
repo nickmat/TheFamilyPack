@@ -499,12 +499,14 @@ INSERT INTO NameStyle (id, name, uid, changed) VALUES(-3, 'Alias', '67F2C0CDB179
 
 CREATE TABLE Persona (
   id INTEGER PRIMARY KEY,
-  sex INTEGER,
-  ref_id INTEGER,
-  note TEXT
+  sex INTEGER NOT NULL,
+  ref_id INTEGER NOT NULL REFERENCES Reference(id),
+  note TEXT,
+  uid TEXT NOT NULL,
+  changed INTEGER NOT NULL
 );
 
-INSERT INTO Persona (id) VALUES(0);
+INSERT INTO Persona (id, sex, ref_id, note, uid, changed) VALUES(0,0,0,'','',0);
 
 CREATE TABLE Place (
   id INTEGER PRIMARY KEY,
@@ -637,7 +639,7 @@ INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 1, 1, 'NI');
 /* Table Version created in recCreateCommon.sql */
 
 /* The Version table row 1 is the full TFPD database */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 40);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 41);
 
 COMMIT;
 

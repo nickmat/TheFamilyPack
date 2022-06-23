@@ -442,11 +442,13 @@ static const char* createFullDb =  /* recCreateFull.sql */
  "INSERT INTO NameStyle (id, name, uid, changed) VALUES(-3, 'Alias', '67F2C0CDB179EE99E6D3C4B82C9BAAAEEB5B', 2459715);\n"
  "CREATE TABLE Persona (\n"
  "  id INTEGER PRIMARY KEY,\n"
- "  sex INTEGER,\n"
- "  ref_id INTEGER,\n"
- "  note TEXT\n"
+ "  sex INTEGER NOT NULL,\n"
+ "  ref_id INTEGER NOT NULL REFERENCES Reference(id),\n"
+ "  note TEXT,\n"
+ "  uid TEXT NOT NULL,\n"
+ "  changed INTEGER NOT NULL\n"
  ");\n"
- "INSERT INTO Persona (id) VALUES(0);\n"
+ "INSERT INTO Persona (id, sex, ref_id, note, uid, changed) VALUES(0,0,0,'','',0);\n"
  "CREATE TABLE Place (\n"
  "  id INTEGER PRIMARY KEY,\n"
  "  date1_id INTEGER,\n"
@@ -551,7 +553,7 @@ static const char* createFullDb =  /* recCreateFull.sql */
  "INSERT INTO User (id, res_id) VALUES(1, -1);\n"
  "INSERT INTO System (id, val) VALUES(1, '1');\n"
  "INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 1, 1, 'NI');\n"
- "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 40);\n"
+ "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 41);\n"
  "COMMIT;\n";
 
 /* End of src/rec/embed/recDatabaseCreate.f2c */

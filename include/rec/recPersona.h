@@ -44,7 +44,7 @@ enum recEventOrder {
     recEO_FamSeq
 };
 
-class recPersona : public recDbT<recPersona>
+class recPersona : public recDbT<recPersona>, public recUidT<recPersona>
 {
 public:
     static constexpr const char* s_tablename = "Persona";

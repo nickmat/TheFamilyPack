@@ -46,6 +46,8 @@ recPersona::recPersona( const recPersona& p )
     f_sex     = p.f_sex;
     f_ref_id  = p.f_ref_id;
     f_note    = p.f_note;
+    f_uid = p.f_uid;
+    f_changed = p.f_changed;
 }
 
 void recPersona::Clear()
@@ -53,7 +55,9 @@ void recPersona::Clear()
     f_id      = 0;
     f_sex     = Sex::unstated;
     f_ref_id  = 0;
-    f_note    = wxEmptyString;
+    f_note.clear();
+    f_uid.clear();
+    f_changed = 0;
 }
 
 void recPersona::Save( const wxString& dbname )
@@ -65,8 +69,9 @@ void recPersona::Save( const wxString& dbname )
     {
         // Add new record
         sql.Format(
-            "INSERT INTO \"%s\".Persona (sex, ref_id, note) VALUES (%u, " ID ", '%q');",
-            UTF8_( dbname ), f_sex, f_ref_id, UTF8_(f_note)
+            "INSERT INTO \"%s\".Persona (sex, ref_id, note, uid, changed)"
+            " VALUES (%u, " ID ", '%q', '%q', %ld);",
+            UTF8_( dbname ), f_sex, f_ref_id, UTF8_(f_note), UTF8_( f_uid ), f_changed
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -76,15 +81,16 @@ void recPersona::Save( const wxString& dbname )
         {
             // Add new record
             sql.Format(
-                "INSERT INTO \"%s\".Persona (id, sex, ref_id, note) "
-                "VALUES (" ID ", %u, " ID ", '%q');",
-                UTF8_( dbname ), f_id, f_sex, f_ref_id, UTF8_(f_note)
+                "INSERT INTO \"%s\".Persona (id, sex, ref_id, note, uid, changed) "
+                "VALUES (" ID ", %u, " ID ", '%q', '%q', %ld);",
+                UTF8_( dbname ), f_id, f_sex, f_ref_id, UTF8_(f_note), UTF8_( f_uid ), f_changed
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE \"%s\".Persona SET sex=%u, ref_id=" ID ", note='%q' WHERE id=" ID ";",
-                UTF8_( dbname ), f_sex, f_ref_id, UTF8_(f_note), f_id
+                "UPDATE \"%s\".Persona SET sex=%u, ref_id=" ID ","
+                " note='%q', uid = '%q', changed = %ld WHERE id=" ID ";",
+                UTF8_( dbname ), f_sex, f_ref_id, UTF8_(f_note), UTF8_( f_uid ), f_changed, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -102,7 +108,7 @@ bool recPersona::Read( const wxString& dbname )
     }
 
     sql.Format(
-        "SELECT sex, ref_id, note FROM \"%s\".Persona WHERE id=" ID ";",
+        "SELECT sex, ref_id, note, uid, changed FROM \"%s\".Persona WHERE id=" ID ";",
         UTF8_( dbname ), f_id
     );
     result = s_db->GetTable( sql );
@@ -116,6 +122,8 @@ bool recPersona::Read( const wxString& dbname )
     f_sex  = (Sex) result.GetInt( 0 );
     f_ref_id = GET_ID( result.GetInt64( 1 ) );
     f_note = result.GetAsString( 2 );
+    f_uid = result.GetAsString( 3 );
+    f_changed = result.GetInt( 4 );
     return true;
 }
 
@@ -124,8 +132,10 @@ bool recPersona::Equivalent( const recPersona& r2 ) const
     return
         f_sex == r2.f_sex &&
         f_ref_id == r2.f_ref_id &&
-        f_note == r2.f_note
-    ;
+        f_note == r2.f_note &&
+        f_uid == r2.f_uid &&
+        f_changed == r2.f_changed
+        ;
 }
 
 idt recPersona::Create( idt refID, Sex sex )
@@ -133,6 +143,8 @@ idt recPersona::Create( idt refID, Sex sex )
     recPersona per(0);
     per.f_ref_id = refID;
     per.f_sex = sex;
+    per.f_uid = recCreateUid();
+    per.f_changed = calGetTodayJdn();
     per.Save();
     return per.f_id;
 }
@@ -327,16 +339,18 @@ idt recPersona::Transfer( idt from_perID, const wxString& fromdb, idt to_refID, 
 
 std::string recPersona::CsvTitles()
 {
-    return std::string( "ID, Sex, Reference ID, Note\n" );
+    return std::string( "ID, Sex, Reference ID, Note, UID, Last Changed\n" );
 }
 
 void recPersona::CsvWrite( std::ostream& out, idt id )
 {
     recPersona pa( id );
     recCsvWrite( out, pa.FGetID() );
-    recCsvWrite( out, int( pa.FGetSex() ) );
+    recCsvWrite( out, static_cast<int>( pa.FGetSex() ) );
     recCsvWrite( out, pa.FGetRefID() );
-    recCsvWrite( out, pa.FGetNote(), '\n' );
+    recCsvWrite( out, pa.FGetNote() );
+    recCsvWrite( out, pa.FGetUid() );
+    recCsvWrite( out, pa.FGetChanged(), '\n' );
 }
 
 bool recPersona::CsvRead( std::istream& in )
@@ -344,9 +358,11 @@ bool recPersona::CsvRead( std::istream& in )
     recCsvRead( in, f_id );
     int sex;
     recCsvRead( in, sex );
-    f_sex = Sex( sex );
+    f_sex = static_cast<Sex>( sex );
     recCsvRead( in, f_ref_id );
     recCsvRead( in, f_note );
+    recCsvRead( in, f_uid );
+    recCsvRead( in, f_changed );
     return bool( in );
 }
 
