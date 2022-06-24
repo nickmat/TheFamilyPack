@@ -41,8 +41,8 @@
 const int recVerMajor = 0;
 const int recVerMinor = 0;
 const int recVerRev = 10;
-const int recVerTest = 41;                       // <<======<<<<
-const char* recFullVersion = "TFPD-v0.0.10.41";  // <<======<<<<
+const int recVerTest = 42;                       // <<======<<<<
+const char* recFullVersion = "TFPD-v0.0.10.42";  // <<======<<<<
 
 // This is the database Media-only version that this program can work with.
 // If the full version matches, then this is assumed to match as well.
@@ -2199,6 +2199,59 @@ void UpgradeTest0_0_10_40to0_0_10_41( const wxString& dbname )
     recDb::GetDb()->ExecuteUpdate( update );
 }
 
+void UpgradeTest0_0_10_41to0_0_10_42( const wxString& dbname )
+{
+    // Version 0.0.10.41 to 0.0.10.42
+
+    // Add fields 'uid' and 'changed' to Eventa.
+    wxString update =
+        "BEGIN;\n";
+
+    update <<
+        "CREATE TABLE \"" << dbname << "\".NewEventa (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  title TEXT NOT NULL,\n"
+        "  ref_id INTEGER NOT NULL REFERENCES Reference(id),\n"
+        "  type_id INTEGER NOT NULL REFERENCES EventType(id),\n"
+        "  date1_id INTEGER NOT NULL REFERENCES Date(id),\n"
+        "  date2_id INTEGER NOT NULL REFERENCES Date(id),\n"
+        "  place_id INTEGER NOT NULL REFERENCES Place(id),\n"
+        "  note TEXT NOT NULL,\n"
+        "  date_pt INTEGER NOT NULL,\n"
+        "  uid TEXT NOT NULL,\n"
+        "  changed INTEGER NOT NULL\n"
+        ");\n"
+
+        "INSERT INTO \"" << dbname << "\".NewEventa"
+        " (id, title, ref_id, type_id, date1_id, date2_id, place_id, note, date_pt, uid, changed)\n"
+        " SELECT id, title, ref_id, type_id, date1_id, date2_id, place_id, note, date_pt, '', 2459755\n"
+        " FROM \"" << dbname << "\".Eventa;\n"
+
+        "DROP TABLE \"" << dbname << "\".Eventa;\n"
+        "ALTER TABLE \"" << dbname << "\".NewEventa RENAME TO Eventa;\n"
+        ;
+
+    // Fill EventType table uid field
+    wxString query = "SELECT id FROM \"" + dbname + "\".Eventa WHERE id>0;\n"; // Get id list
+    wxSQLite3Table table = recDb::GetDb()->GetTable( query );
+    size_t size = (size_t) table.GetRowCount();
+    for( size_t i = 0; i < size; i++ ) {
+        table.SetRow( i );
+        update << "UPDATE \"" << dbname << "\".Eventa"
+            " SET uid='" << recCreateUid() << "'"
+            " WHERE id=" << table.GetAsString( 0 ) << ";\n"
+            ;
+    }
+    update <<
+        "UPDATE \"" << dbname << "\".Eventa SET changed=0 WHERE id=0;\n"
+
+        "UPDATE \"" << dbname << "\".Version SET test=42 WHERE id=1;\n"
+        "COMMIT;\n"
+        ;
+
+    recDb::GetDb()->ExecuteUpdate( update );
+}
+
 void UpgradeRev0_0_10toCurrent( int test, const wxString& dbname )
 {
     switch( test )
@@ -2244,6 +2297,7 @@ void UpgradeRev0_0_10toCurrent( int test, const wxString& dbname )
     case 38: UpgradeTest0_0_10_38to0_0_10_39( dbname );
     case 39: UpgradeTest0_0_10_39to0_0_10_40( dbname );
     case 40: UpgradeTest0_0_10_40to0_0_10_41( dbname );
+    case 41: UpgradeTest0_0_10_41to0_0_10_42( dbname );
     }
 }
 

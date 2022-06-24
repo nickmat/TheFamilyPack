@@ -60,19 +60,23 @@ recEventa::recEventa( const recEventa& e )
     f_place_id = e.f_place_id;
     f_note     = e.f_note;
     f_date_pt  = e.f_date_pt;
+    f_uid      = e.f_uid;
+    f_changed  = e.f_changed;
 }
 
 void recEventa::Clear()
 {
     f_id       = 0;
-    f_title    = wxEmptyString;
+    f_title.clear();
     f_ref_id   = 0;
     f_type_id  = 0;
     f_date1_id = 0;
     f_date2_id = 0;
     f_place_id = 0;
-    f_note     = wxEmptyString;
+    f_note.clear();
     f_date_pt  = 0;
+    f_uid.clear();
+    f_changed  = 0;
 }
 
 void recEventa::Save( const wxString& dbname )
@@ -84,11 +88,11 @@ void recEventa::Save( const wxString& dbname )
     {
         // Add new record
         sql.Format(
-            "INSERT INTO \"%s\".Eventa "
-            "(title, ref_id, type_id, date1_id, date2_id, place_id, note, date_pt) "
-            "VALUES ('%q', " ID ", " ID ", " ID ", " ID ", " ID ", '%q', %ld);",
-            UTF8_( dbname ), UTF8_(f_title), f_ref_id, f_type_id,
-            f_date1_id, f_date2_id, f_place_id, UTF8_(f_note), f_date_pt
+            "INSERT INTO \"%s\".Eventa"
+            " (title, ref_id, type_id, date1_id, date2_id, place_id, note, date_pt, uid, changed)"
+            " VALUES ('%q', " ID ", " ID ", " ID ", " ID ", " ID ", '%q', %ld, '%q', %ld);",
+            UTF8_( dbname ), UTF8_(f_title), f_ref_id, f_type_id, f_date1_id, f_date2_id,
+            f_place_id, UTF8_(f_note), f_date_pt, UTF8_( f_uid ), f_changed
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -98,21 +102,21 @@ void recEventa::Save( const wxString& dbname )
         {
             // Add new record
             sql.Format(
-                "INSERT INTO \"%s\".Eventa "
-                "(id, title, ref_id, type_id, date1_id, date2_id, place_id, note, date_pt) "
-                "VALUES (" ID ", '%q', " ID ", " ID ", " ID ", " ID ", " ID ", '%q', %ld);",
-                UTF8_( dbname ), f_id, UTF8_(f_title), f_ref_id, f_type_id,
-                f_date1_id, f_date2_id, f_place_id, UTF8_(f_note), f_date_pt
+                "INSERT INTO \"%s\".Eventa"
+                " (id, title, ref_id, type_id, date1_id, date2_id, place_id, note, date_pt, uid, changed)"
+                " VALUES (" ID ", '%q', " ID ", " ID ", " ID ", " ID ", " ID ", '%q', %ld, '%q', %ld);",
+                UTF8_( dbname ), f_id, UTF8_(f_title), f_ref_id, f_type_id, f_date1_id, f_date2_id,
+                f_place_id, UTF8_(f_note), f_date_pt, UTF8_( f_uid ), f_changed
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE \"%s\".Eventa SET "
-                "title='%q', ref_id=" ID ", type_id=" ID ", date1_id=" ID ", date2_id=" ID ", place_id=" ID ", "
-                "note='%q', date_pt=%ld "
-                "WHERE id=" ID ";",
-                UTF8_( dbname ), UTF8_(f_title), f_ref_id, f_type_id,
-                f_date1_id, f_date2_id, f_place_id, UTF8_(f_note), f_date_pt, f_id
+                "UPDATE \"%s\".Eventa SET"
+                " title='%q', ref_id=" ID ", type_id=" ID ", date1_id=" ID ", date2_id=" ID ", place_id=" ID ","
+                " note='%q', date_pt=%ld, uid = '%q', changed = %ld"
+                " WHERE id=" ID ";",
+                UTF8_( dbname ), UTF8_(f_title), f_ref_id, f_type_id, f_date1_id, f_date2_id,
+                f_place_id, UTF8_(f_note), f_date_pt, UTF8_( f_uid ), f_changed, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -130,7 +134,7 @@ bool recEventa::Read( const wxString& dbname )
     }
 
     sql.Format(
-        "SELECT title, ref_id, type_id, date1_id, date2_id, place_id, note, date_pt"
+        "SELECT title, ref_id, type_id, date1_id, date2_id, place_id, note, date_pt, uid, changed"
         " FROM \"%s\".Eventa WHERE id=" ID ";",
         UTF8_( dbname ), f_id
     );
@@ -150,6 +154,8 @@ bool recEventa::Read( const wxString& dbname )
     f_place_id = GET_ID( result.GetInt64( 5 ) );
     f_note     = result.GetAsString( 6 );
     f_date_pt  = (long) result.GetInt( 7 );
+    f_uid = result.GetAsString( 8 );
+    f_changed = result.GetInt( 9 );
     return true;
 }
 
@@ -749,7 +755,7 @@ std::string recEventa::CsvTitles()
 {
     return std::string(
         "ID, Title, Reference ID, Event Type ID,"
-        "Date1 ID, Date2 ID, Place ID, Note, Date Point\n"
+        "Date1 ID, Date2 ID, Place ID, Note, Date Point, UID, Last Changed\n"
     );
 }
 
@@ -764,7 +770,9 @@ void recEventa::CsvWrite( std::ostream& out, idt id )
     recCsvWrite( out, ea.FGetDate2ID() );
     recCsvWrite( out, ea.FGetPlaceID() );
     recCsvWrite( out, ea.FGetNote() );
-    recCsvWrite( out, ea.FGetDatePt(), '\n' );
+    recCsvWrite( out, ea.FGetDatePt() );
+    recCsvWrite( out, ea.FGetUid() );
+    recCsvWrite( out, ea.FGetChanged(), '\n' );
 }
 
 bool recEventa::CsvRead( std::istream& in )
@@ -778,6 +786,8 @@ bool recEventa::CsvRead( std::istream& in )
     recCsvRead( in, f_place_id );
     recCsvRead( in, f_note );
     recCsvRead( in, f_date_pt );
+    recCsvRead( in, f_uid );
+    recCsvRead( in, f_changed );
     return bool( in );
 }
 

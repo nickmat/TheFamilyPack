@@ -42,7 +42,7 @@
 //--------------------------[ recEventa ]-------------------------------------
 //============================================================================
 
-class recEventa : public recDbT<recEventa>
+class recEventa : public recDbT<recEventa>, public recUidT<recEventa>
 {
 public:
     static constexpr const char* s_tablename = "Eventa";

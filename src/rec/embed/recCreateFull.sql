@@ -134,16 +134,18 @@ CREATE TABLE Eventa (
   title TEXT NOT NULL,
   ref_id INTEGER NOT NULL REFERENCES Reference(id),
   type_id INTEGER NOT NULL REFERENCES EventType(id),
-  date1_id INTEGER NOT NULL,
-  date2_id INTEGER NOT NULL,
-  place_id INTEGER NOT NULL,
+  date1_id INTEGER NOT NULL REFERENCES Date(id),
+  date2_id INTEGER NOT NULL REFERENCES Date(id),
+  place_id INTEGER NOT NULL REFERENCES Place(id),
   note TEXT NOT NULL,
-  date_pt INTEGER NOT NULL
+  date_pt INTEGER NOT NULL,
+  uid TEXT NOT NULL,
+  changed INTEGER NOT NULL
 );
 
 INSERT INTO Eventa (
-    id, title, ref_id, type_id, date1_id, date2_id, place_id, note, date_pt)
-    VALUES(0,'',0,0,0,0,0,'',0);
+    id, title, ref_id, type_id, date1_id, date2_id, place_id, note, date_pt, uid, changed)
+    VALUES(0,'',0,0,0,0,0,'',0,'',0);
 
 CREATE TABLE EventaPersona (
   id INTEGER PRIMARY KEY,
@@ -639,7 +641,7 @@ INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 1, 1, 'NI');
 /* Table Version created in recCreateCommon.sql */
 
 /* The Version table row 1 is the full TFPD database */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 41);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 42);
 
 COMMIT;
 
