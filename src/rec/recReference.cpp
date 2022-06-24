@@ -45,6 +45,7 @@
 #include <rec/recMedia.h>
 #include <rec/recName.h>
 #include <rec/recPlace.h>
+#include <rec/recPersona.h>
 #include <rec/recResearcher.h>
 
 
@@ -363,8 +364,18 @@ idt recReference::Transfer(
         }
         recMedia::Transfer( from_IDs[i], fromdb, to_refID, todb, to_assID );
     }
-
-    // TODO: recPersona::Transfer(...)
+    // recPersona::Transfer(...)
+    from_IDs = recReference::GetPersonaList( from_refID, fromdb );
+    to_IDs = recReference::GetPersonaList( to_refID, todb );
+    size = std::max( from_IDs.size(), to_IDs.size() );
+    for( size_t i = 0; i < size; i++ ) {
+        if( i >= from_IDs.size() ) { // No more to copy.
+            recPersona::RemoveFromDatabase( to_IDs[i], todb );
+            continue;
+        }
+        recPersona::Transfer( from_IDs[i], fromdb, to_refID, todb );
+    }
+    
     // TODO: recEventa::Transfer(...)
     // TODO: recEntities::Transfer(...)
 
