@@ -41,7 +41,7 @@ enum {
     recP_FILTER_Reference = 0x0001,
 };
 
-class recPlace : public recDbT<recPlace>
+class recPlace : public recDbT<recPlace>, public recUidT<recPlace>
 {
 public:
     static constexpr const char* s_tablename = "Place";

@@ -73,6 +73,8 @@ recDate::recDate( const recDate& d )
     f_descrip     = d.f_descrip;
     f_record_sch  = d.f_record_sch;
     f_display_sch = d.f_display_sch;
+    f_uid = d.f_uid;
+    f_changed = d.f_changed;
 }
 
 void recDate::Clear()
@@ -82,9 +84,11 @@ void recDate::Clear()
     f_range       = 0;
     f_rel_id      = 0;
     f_type        = FLG_NULL;
-    f_descrip     = wxEmptyString;
+    f_descrip.clear();
     f_record_sch  = CALENDAR_SCH_Unstated;
     f_display_sch = CALENDAR_SCH_Unstated;
+    f_uid.clear();
+    f_changed = 0;
 }
 
 void recDate::Save( const wxString& dbname )
@@ -96,11 +100,11 @@ void recDate::Save( const wxString& dbname )
     {
         // Add new record
         sql.Format(
-            "INSERT INTO \"%s\".Date "
-            "(jdn, range, rel_id, type, descrip, record_sch, display_sch) "
-            "VALUES (%ld, %ld, " ID ", %u, '%q', %d, %d);",
+            "INSERT INTO \"%s\".Date"
+            " (jdn, range, rel_id, type, descrip, record_sch, display_sch, uid, changed)"
+            " VALUES (%ld, %ld, " ID ", %u, '%q', %d, %d, '%q', %ld);",
             UTF8_( dbname ), f_jdn, f_range, f_rel_id, f_type, UTF8_(f_descrip),
-            f_record_sch, f_display_sch
+            f_record_sch, f_display_sch, UTF8_( f_uid ), f_changed
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -110,20 +114,20 @@ void recDate::Save( const wxString& dbname )
         {
             // Add new record
             sql.Format(
-                "INSERT INTO \"%s\".Date "
-                "(id, jdn, range, rel_id, type, descrip, record_sch, display_sch) "
-                "VALUES (" ID ", %ld, %ld, " ID ", %u, '%q', %d, %d);",
+                "INSERT INTO \"%s\".Date"
+                " (id, jdn, range, rel_id, type, descrip, record_sch, display_sch, uid, changed)"
+                " VALUES (" ID ", %ld, %ld, " ID ", %u, '%q', %d, %d, '%q', %ld);",
                 UTF8_( dbname ), f_id, f_jdn, f_range, f_rel_id, f_type, UTF8_(f_descrip),
-                f_record_sch, f_display_sch
+                f_record_sch, f_display_sch, UTF8_( f_uid ), f_changed
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE \"%s\".Date SET jdn=%ld, range=%ld, rel_id=" ID ", "
-                "type=%u, descrip='%q', record_sch=%d, display_sch=%d "
-                "WHERE id=" ID ";",
+                "UPDATE \"%s\".Date SET jdn=%ld, range=%ld, rel_id=" ID ","
+                " type=%u, descrip='%q', record_sch=%d, display_sch=%d, uid = '%q', changed = %ld"
+                " WHERE id=" ID ";",
                 UTF8_( dbname ), f_jdn, f_range, f_rel_id, f_type, UTF8_(f_descrip),
-                f_record_sch, f_display_sch, f_id
+                f_record_sch, f_display_sch, UTF8_( f_uid ), f_changed, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -141,8 +145,8 @@ bool recDate::Read( const wxString& dbname )
     }
 
     sql.Format(
-        "SELECT jdn, range, rel_id, type, descrip, record_sch, display_sch "
-        "FROM \"%s\".Date WHERE id=" ID ";",
+        "SELECT jdn, range, rel_id, type, descrip, record_sch, display_sch, uid, changed"
+        " FROM \"%s\".Date WHERE id=" ID ";",
         UTF8_( dbname ), f_id
     );
     result = s_db->GetTable( sql );
@@ -160,6 +164,8 @@ bool recDate::Read( const wxString& dbname )
     f_descrip     = result.GetAsString( 4 );
     f_record_sch  = (CalendarScheme) result.GetInt( 5 );
     f_display_sch = (CalendarScheme) result.GetInt( 6 );
+    f_uid = result.GetAsString( 7 );
+    f_changed = result.GetInt( 8 );
     return true;
 }
 
@@ -172,8 +178,10 @@ bool recDate::Equivalent( const recDate& r2 ) const
         f_type == r2.f_type &&
         f_descrip == r2.f_descrip &&
         f_record_sch == r2.f_record_sch &&
-        f_display_sch == r2.f_display_sch
-    ;
+        f_display_sch == r2.f_display_sch &&
+        f_uid == r2.f_uid &&
+        f_changed == r2.f_changed
+        ;
 }
 
 void recDate::SetDefaults()
@@ -190,6 +198,8 @@ idt recDate::Create( const wxString& str )
     recDate date;
     date.SetDefaults();
     date.SetDate( str );
+    date.f_uid = recCreateUid();
+    date.f_changed = calGetTodayJdn();
     date.Save();
     return date.f_id;
 }
@@ -201,6 +211,8 @@ idt recDate::Create( const recRelativeDate& rel )
     date.SetDefaults();
     date.f_rel_id = rel.f_id;
     rel.CalculateDate( &date );
+    date.f_uid = recCreateUid();
+    date.f_changed = calGetTodayJdn();
 
     date.Save();
     return date.f_id;
@@ -214,6 +226,8 @@ idt recDate::Create( idt dateID )
     recDate date(dateID);
     date.FSetID( 0 );
     date.FSetRelID( 0 );
+    date.f_uid = recCreateUid();
+    date.f_changed = calGetTodayJdn();
 
     date.Save();
     return date.FGetID();
@@ -551,7 +565,7 @@ std::string recDate::CsvTitles()
 {
     return std::string(
         "ID, Start Date, Range, Relative ID, Type Flags, Description,"
-        " Recorded Scheme, Display Scheme\n"
+        " Recorded Scheme, Display Scheme, UID, Last Changed\n"
     );
 }
 
@@ -565,7 +579,9 @@ void recDate::CsvWrite( std::ostream& out, idt id )
     recCsvWrite( out, date.FGetType() );
     recCsvWrite( out, date.FGetDescrip() );
     recCsvWrite( out, date.FGetRecordSch() );
-    recCsvWrite( out, date.FGetDisplaySch(), '\n' );
+    recCsvWrite( out, date.FGetDisplaySch() );
+    recCsvWrite( out, date.FGetUid() );
+    recCsvWrite( out, date.FGetChanged(), '\n' );
 }
 
 bool recDate::CsvRead( std::istream& in )
@@ -578,6 +594,8 @@ bool recDate::CsvRead( std::istream& in )
     recCsvRead( in, f_descrip );
     recCsvRead( in, (int&) f_record_sch );
     recCsvRead( in, (int&) f_display_sch );
+    recCsvRead( in, f_uid );
+    recCsvRead( in, f_changed );
     return bool( in );
 }
 

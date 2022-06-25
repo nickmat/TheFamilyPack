@@ -48,7 +48,7 @@ enum {
 //      recDate
 //-----------------------------------------------------
 
-class recDate : public recDbT<recDate>
+class recDate : public recDbT<recDate>, public recUidT<recDate>
 {
 public:
     static constexpr const char* s_tablename = "Date";

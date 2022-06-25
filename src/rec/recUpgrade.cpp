@@ -41,8 +41,8 @@
 const int recVerMajor = 0;
 const int recVerMinor = 0;
 const int recVerRev = 10;
-const int recVerTest = 42;                       // <<======<<<<
-const char* recFullVersion = "TFPD-v0.0.10.42";  // <<======<<<<
+const int recVerTest = 43;                       // <<======<<<<
+const char* recFullVersion = "TFPD-v0.0.10.43";  // <<======<<<<
 
 // This is the database Media-only version that this program can work with.
 // If the full version matches, then this is assumed to match as well.
@@ -2231,7 +2231,7 @@ void UpgradeTest0_0_10_41to0_0_10_42( const wxString& dbname )
         "ALTER TABLE \"" << dbname << "\".NewEventa RENAME TO Eventa;\n"
         ;
 
-    // Fill EventType table uid field
+    // Fill Eventa table uid field
     wxString query = "SELECT id FROM \"" + dbname + "\".Eventa WHERE id>0;\n"; // Get id list
     wxSQLite3Table table = recDb::GetDb()->GetTable( query );
     size_t size = (size_t) table.GetRowCount();
@@ -2246,6 +2246,97 @@ void UpgradeTest0_0_10_41to0_0_10_42( const wxString& dbname )
         "UPDATE \"" << dbname << "\".Eventa SET changed=0 WHERE id=0;\n"
 
         "UPDATE \"" << dbname << "\".Version SET test=42 WHERE id=1;\n"
+        "COMMIT;\n"
+        ;
+
+    recDb::GetDb()->ExecuteUpdate( update );
+}
+
+void UpgradeTest0_0_10_42to0_0_10_43( const wxString& dbname )
+{
+    // Version 0.0.10.42 to 0.0.10.43
+
+    // Add fields 'uid' and 'changed' to Date and Place.
+    wxString update =
+        "BEGIN;\n";
+
+    update <<
+        "CREATE TABLE \"" << dbname << "\".NewDate (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  jdn INTEGER NOT NULL,\n"
+        "  range INTEGER NOT NULL,\n"
+        "  rel_id INTEGER NOT NULL REFERENCES RelativeDate(id),\n"
+        "  type INTEGER NOT NULL,\n"
+        "  descrip TEXT NOT NULL,\n"
+        "  record_sch INTEGER NOT NULL,\n"
+        "  display_sch INTEGER NOT NULL,\n"
+        "  uid TEXT NOT NULL,\n"
+        "  changed INTEGER NOT NULL\n"
+        ");\n"
+
+        // Remove null values on record 0.
+        "UPDATE \"" << dbname << "\".Date SET jdn=0, range=0, rel_id=0,"
+        " type=0, descrip='', record_sch=0, display_sch=0"
+        " WHERE id=0;"
+
+        "INSERT INTO \"" << dbname << "\".NewDate"
+        " (id, jdn, range, rel_id, type, descrip, record_sch, display_sch, uid, changed)\n"
+        " SELECT id, jdn, range, rel_id, type, descrip, record_sch, display_sch, '', 2459756\n"
+        " FROM \"" << dbname << "\".Date;\n"
+
+        "DROP TABLE \"" << dbname << "\".Date;\n"
+        "ALTER TABLE \"" << dbname << "\".NewDate RENAME TO Date;\n"
+        ;
+
+    // Fill Date table uid field
+    wxString query = "SELECT id FROM \"" + dbname + "\".Date WHERE id>0;\n"; // Get id list
+    wxSQLite3Table table = recDb::GetDb()->GetTable( query );
+    size_t size = (size_t) table.GetRowCount();
+    for( size_t i = 0; i < size; i++ ) {
+        table.SetRow( i );
+        update << "UPDATE \"" << dbname << "\".Date"
+            " SET uid='" << recCreateUid() << "'"
+            " WHERE id=" << table.GetAsString( 0 ) << ";\n"
+            ;
+    }
+    update <<
+        "UPDATE \"" << dbname << "\".Date SET changed=0 WHERE id=0;\n"
+
+        "CREATE TABLE \"" << dbname << "\".NewPlace (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  date1_id INTEGER NOT NULL REFERENCES Date(id),\n"
+        "  date2_id INTEGER NOT NULL REFERENCES Date(id),\n"
+        "  uid TEXT NOT NULL,\n"
+        "  changed INT NOT NULL\n"
+        ");\n"
+
+        // Remove null values on record 0.
+        "UPDATE \"" << dbname << "\".Place SET date1_id=0, date2_id=0 WHERE id=0;"
+
+        "INSERT INTO \"" << dbname << "\".NewPlace"
+        " (id, date1_id, date2_id, uid, changed)\n"
+        " SELECT id, date1_id, date2_id, '', 2459755\n"
+        " FROM \"" << dbname << "\".Place;\n"
+
+        "DROP TABLE \"" << dbname << "\".Place;\n"
+        "ALTER TABLE \"" << dbname << "\".NewPlace RENAME TO Place;\n"
+        ;
+
+    // Fill Place table uid field
+    query = "SELECT id FROM \"" + dbname + "\".Place WHERE id>0;\n"; // Get id list
+    table = recDb::GetDb()->GetTable( query );
+    size = (size_t) table.GetRowCount();
+    for( size_t i = 0; i < size; i++ ) {
+        table.SetRow( i );
+        update << "UPDATE \"" << dbname << "\".Place"
+            " SET uid='" << recCreateUid() << "'"
+            " WHERE id=" << table.GetAsString( 0 ) << ";\n"
+            ;
+    }
+    update <<
+        "UPDATE \"" << dbname << "\".Place SET changed=0 WHERE id=0;\n"
+
+        "UPDATE \"" << dbname << "\".Version SET test=43 WHERE id=1;\n"
         "COMMIT;\n"
         ;
 
@@ -2298,6 +2389,7 @@ void UpgradeRev0_0_10toCurrent( int test, const wxString& dbname )
     case 39: UpgradeTest0_0_10_39to0_0_10_40( dbname );
     case 40: UpgradeTest0_0_10_40to0_0_10_41( dbname );
     case 41: UpgradeTest0_0_10_41to0_0_10_42( dbname );
+    case 42: UpgradeTest0_0_10_42to0_0_10_43( dbname );
     }
 }
 

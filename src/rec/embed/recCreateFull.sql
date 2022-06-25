@@ -101,16 +101,20 @@ CREATE TABLE ContactType (
 
 CREATE TABLE Date (
   id INTEGER PRIMARY KEY,
-  jdn INTEGER,
-  range INTEGER,
-  rel_id INTEGER,
-  type INTEGER,
-  descrip TEXT,
-  record_sch INTEGER,
-  display_sch INTEGER
+  jdn INTEGER NOT NULL,
+  range INTEGER NOT NULL,
+  rel_id INTEGER NOT NULL REFERENCES RelativeDate(id),
+  type INTEGER NOT NULL,
+  descrip TEXT NOT NULL,
+  record_sch INTEGER NOT NULL,
+  display_sch INTEGER NOT NULL,
+  uid TEXT NOT NULL,
+  changed INTEGER NOT NULL
 );
 
-INSERT INTO Date (id) VALUES(0);
+INSERT INTO Date (
+  id, jdn, range, rel_id, type, descrip, record_sch, display_sch, uid, changed)
+  VALUES(0,0,0,0,0,'',0,0,'',0);
 
 CREATE TABLE Event (
   id INTEGER PRIMARY KEY,
@@ -512,11 +516,14 @@ INSERT INTO Persona (id, sex, ref_id, note, uid, changed) VALUES(0,0,0,'','',0);
 
 CREATE TABLE Place (
   id INTEGER PRIMARY KEY,
-  date1_id INTEGER,
-  date2_id INTEGER
+  date1_id INTEGER NOT NULL REFERENCES Date(id),
+  date2_id INTEGER NOT NULL REFERENCES Date(id),
+  uid TEXT NOT NULL,
+  changed INT NOT NULL
 );
 
-INSERT INTO Place (id) VALUES(0);
+INSERT INTO Place (id, date1_id, date2_id, uid, changed)
+  VALUES(0,0,0,'',0);
 
 CREATE TABLE PlacePart (
   id INTEGER PRIMARY KEY,
@@ -641,7 +648,7 @@ INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 1, 1, 'NI');
 /* Table Version created in recCreateCommon.sql */
 
 /* The Version table row 1 is the full TFPD database */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 42);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 43);
 
 COMMIT;
 

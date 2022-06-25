@@ -46,6 +46,8 @@ recPlace::recPlace( const recPlace& p )
     f_id       = p.f_id;
     f_date1_id = p.f_date1_id;
     f_date2_id = p.f_date2_id;
+    f_uid = p.f_uid;
+    f_changed = p.f_changed;
 }
 
 void recPlace::Clear()
@@ -53,6 +55,8 @@ void recPlace::Clear()
     f_id       = 0;
     f_date1_id = 0;
     f_date2_id = 0;
+    f_uid.clear();
+    f_changed = 0;
 }
 
 void recPlace::Save( const wxString& dbname )
@@ -64,9 +68,9 @@ void recPlace::Save( const wxString& dbname )
     {
         // Add new record
         sql.Format(
-            "INSERT INTO \"%s\".Place (date1_id, date2_id)"
-            " VALUES (" ID ", " ID ");",
-            UTF8_( dbname ), f_date1_id, f_date2_id
+            "INSERT INTO \"%s\".Place (date1_id, date2_id, uid, changed)"
+            " VALUES (" ID ", " ID ", '%q', %ld);",
+            UTF8_( dbname ), f_date1_id, f_date2_id, UTF8_( f_uid ), f_changed
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -76,16 +80,16 @@ void recPlace::Save( const wxString& dbname )
         {
             // Add new record
             sql.Format(
-                "INSERT INTO \"%s\".Place (id, date1_id, date2_id)"
-                " VALUES (" ID ", " ID ", " ID ");",
-                UTF8_( dbname ), f_id, f_date1_id, f_date2_id
+                "INSERT INTO \"%s\".Place (id, date1_id, date2_id, uid, changed)"
+                " VALUES (" ID ", " ID ", " ID ", '%q', %ld);",
+                UTF8_( dbname ), f_id, f_date1_id, f_date2_id, UTF8_( f_uid ), f_changed
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE \"%s\".Place SET date1_id=" ID ", date2_id=" ID
+                "UPDATE \"%s\".Place SET date1_id=" ID ", date2_id=" ID ", uid = '%q', changed = %ld"
                 " WHERE id=" ID ";",
-                UTF8_( dbname ), f_date1_id, f_date2_id, f_id
+                UTF8_( dbname ), f_date1_id, f_date2_id, UTF8_( f_uid ), f_changed, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -103,7 +107,7 @@ bool recPlace::Read( const wxString& dbname )
     }
 
     sql.Format(
-        "SELECT * FROM \"%s\".Place WHERE id=" ID ";",
+        "SELECT date1_id, date2_id, uid, changed FROM \"%s\".Place WHERE id=" ID ";",
         UTF8_( dbname ), f_id
     );
     result = s_db->GetTable( sql );
@@ -114,8 +118,10 @@ bool recPlace::Read( const wxString& dbname )
         return false;
     }
     result.SetRow( 0 );
-    f_date1_id = GET_ID( result.GetInt64( 1 ) );
-    f_date2_id = GET_ID( result.GetInt64( 2 ) );
+    f_date1_id = GET_ID( result.GetInt64( 0 ) );
+    f_date2_id = GET_ID( result.GetInt64( 1 ) );
+    f_uid = result.GetAsString( 2 );
+    f_changed = result.GetInt( 3 );
     return true;
 }
 
@@ -123,8 +129,10 @@ bool recPlace::Equivalent( const recPlace& r2 ) const
 {
     return
         f_date1_id == r2.f_date1_id &&
-        f_date2_id == r2.f_date2_id
-    ;
+        f_date2_id == r2.f_date2_id &&
+        f_uid == r2.f_uid &&
+        f_changed == r2.f_changed
+        ;
 }
 
 void recPlace::SetAddress( idt placeID, const wxString& str )
@@ -153,6 +161,8 @@ idt recPlace::Create( const wxString& str )
     recPlace place(0);
     place.Save();
     place.SetAddress( str );
+    place.FSetUid( recCreateUid() );
+    place.FSetChanged( calGetTodayJdn() );
     return place.FGetID();
 }
 
@@ -268,7 +278,7 @@ void recPlace::Renumber( idt id, idt to_id )
 std::string recPlace::CsvTitles()
 {
     return std::string(
-        "ID, Start Date, End Date\n"
+        "ID, Start Date, End Date, UID, Last Changed\n"
     );
 }
 
@@ -277,7 +287,9 @@ void recPlace::CsvWrite( std::ostream& out, idt id )
     recPlace place( id );
     recCsvWrite( out, place.FGetID() );
     recCsvWrite( out, place.FGetDate1ID() );
-    recCsvWrite( out, place.FGetDate2ID(), '\n' );
+    recCsvWrite( out, place.FGetDate2ID() );
+    recCsvWrite( out, place.FGetUid() );
+    recCsvWrite( out, place.FGetChanged(), '\n' );
 }
 
 bool recPlace::CsvRead( std::istream& in )
@@ -285,6 +297,8 @@ bool recPlace::CsvRead( std::istream& in )
     recCsvRead( in, f_id );
     recCsvRead( in, f_date1_id );
     recCsvRead( in, f_date2_id );
+    recCsvRead( in, f_uid );
+    recCsvRead( in, f_changed );
     return bool( in );
 }
 
