@@ -186,6 +186,8 @@ public:
     bool IsUsedInPlace() const { return IsUsedInPlace( f_id ); }
     static bool IsUsedInPlace( idt dateID );
 
+    static idt Transfer( idt from_pID, const wxString& fromdb, const wxString& todb );
+
     static void Renumber( idt fromID, idt toID );
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );
@@ -258,12 +260,15 @@ public:
 
     bool CalculateDate( recDate* date ) const;
 
+    static idt Transfer(
+        idt from_rdID, const wxString& fromdb, idt to_rdID, const wxString& todb );
+
     static void Renumber( idt fromID, idt toID );
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
 
-    static void RemoveFromDatabase( idt rdID );
+    static void RemoveFromDatabase( idt rdID, const wxString& dbname = "Main" );
 };
 
 

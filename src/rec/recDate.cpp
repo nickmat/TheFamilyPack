@@ -519,6 +519,30 @@ bool recDate::IsUsedInPlace( idt id )
     return false;
 }
 
+idt recDate::Transfer( idt from_dID, const wxString& fromdb, const wxString& todb )
+{
+    if( from_dID == 0 ) return 0;
+
+    recDate from_date( from_dID, fromdb );
+    wxASSERT( from_date.FGetID() != 0 );
+
+    idt to_dateID = recDate::FindUid( from_date.FGetUid(), todb );
+    recDate to_date( to_dateID, todb );
+
+    idt to_rdID = recRelativeDate::Transfer( from_date.FGetRelID(), fromdb, to_date.FGetRelID(), todb);
+    if( to_date.FGetRelID() != 0 && to_rdID == 0 ) {
+        // No longer is a relative date
+        recRelativeDate::RemoveFromDatabase( to_date.FGetRelID(), todb );
+    }
+
+    recDate new_date( from_date );
+    new_date.FSetID( to_dateID );
+    new_date.FSetRelID( to_rdID );
+    new_date.Save( todb );
+
+    return new_date.FGetID();
+}
+
 void recDate::Renumber( idt id, idt to_id )
 {
     if( id == 0 ) {
@@ -858,6 +882,22 @@ bool recRelativeDate::CalculateDate( recDate* date ) const
     return true;
 }
 
+idt recRelativeDate::Transfer( idt from_rdID, const wxString& fromdb, idt to_rdID, const wxString& todb )
+{
+    if( from_rdID == 0 ) return 0;
+
+    recRelativeDate from_rd( from_rdID, fromdb );
+    wxASSERT( from_rd.FGetID() != 0 );
+    idt to_baseID = recDate::Transfer( from_rd.FGetBaseID(), fromdb, todb );
+
+    recRelativeDate to_rd( from_rd );
+    to_rd.FSetID( to_rdID );
+    to_rd.FSetBaseID( to_baseID );
+    to_rd.Save( todb );
+
+    return to_rd.FGetID();
+}
+
 void recRelativeDate::Renumber( idt id, idt to_id )
 {
     if( id == 0 ) {
@@ -905,9 +945,11 @@ bool recRelativeDate::CsvRead( std::istream& in )
     return bool( in );
 }
 
-void recRelativeDate::RemoveFromDatabase( idt rdID )
+void recRelativeDate::RemoveFromDatabase( idt rdID, const wxString& dbname )
 {
-    recDate::RemoveFromDatabase( GetParentDate( rdID ) );
+    recRelativeDate rd( rdID, dbname );
+    rd.Delete( dbname );
+    recDate::DeleteIfOrphaned( rd.FGetBaseID(), dbname );
 }
 
 
