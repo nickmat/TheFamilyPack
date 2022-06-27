@@ -241,6 +241,50 @@ recIdVec recPlace::GetPlacePartIDs( idt placeID, const wxString& dbname )
     );
 }
 
+idt recPlace::Transfer( idt from_placeID, const wxString& fromdb, const wxString& todb )
+{
+    if( from_placeID == 0 ) return 0;
+
+    recPlace from_place( from_placeID, fromdb );
+
+    idt to_placeID = recPlace::FindUid( from_place.FGetUid(), todb );
+    recPlace to_place( to_placeID, todb );
+
+    recPlace new_place( 0 );
+    new_place.FSetID( to_placeID );
+    new_place.FSetDate1ID( recDate::Transfer( from_place.FGetDate1ID(), fromdb, todb ) );
+    new_place.FSetDate2ID( recDate::Transfer( from_place.FGetDate2ID(), fromdb, todb ) );
+    new_place.FSetUid( from_place.FGetUid() );
+    recMatchUID match = from_place.CompareUID( to_place );
+    if( match == recMatchUID::unequal || match == recMatchUID::younger ) {
+        new_place.FSetChanged( from_place.FGetChanged() );
+    }
+    else {
+        new_place.FSetChanged( to_place.FGetChanged() );
+    }
+    new_place.Save( todb );
+    to_placeID = new_place.FGetID();
+
+    recDate::DeleteIfOrphaned( to_place.FGetDate1ID(), todb );
+    recDate::DeleteIfOrphaned( to_place.FGetDate2ID(), todb );
+
+    recIdVec from_ppIDs = recPlace::GetPlacePartIDs( from_placeID, fromdb );
+    recIdVec to_ppIDs = recPlace::GetPlacePartIDs( to_placeID, todb );
+    size_t size = std::max( from_ppIDs.size(), to_ppIDs.size() );
+    for( size_t i = 0; i < size; i++ ) {
+        if( i >= from_ppIDs.size() ) { // No more to copy.
+            recPlacePart::RemoveFromDatabase( to_ppIDs[i], todb );
+            continue;
+        }
+        if( i >= to_ppIDs.size() ) {
+            recPlacePart::Transfer( from_ppIDs[i], fromdb, to_placeID, 0, todb );
+            continue;
+        }
+        recPlacePart::Transfer( from_ppIDs[i], fromdb, to_placeID, to_ppIDs[i], todb);
+    }
+    return to_placeID;
+}
+
 void recPlace::Renumber( idt id, idt to_id )
 {
     if( id == 0 ) {
@@ -462,6 +506,41 @@ bool recPlacePart::Equivalent( const recPlacePart& r2 ) const
     ;
 }
 
+int recPlacePart::SetNextSequence( const wxString& dbname )
+{
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT MAX(sequence) FROM \"%s\".PlacePart WHERE place_id=" ID ";",
+        UTF8_( dbname ), f_place_id
+    );
+
+    f_sequence = s_db->ExecuteScalar( sql ) + 1;
+    return f_sequence;
+}
+
+idt recPlacePart::Transfer( idt from_ppID, const wxString& fromdb, idt to_placeID, idt to_ppID, const wxString& todb )
+{
+    if( from_ppID == 0 ) return 0;
+
+    recPlacePart from_pp( from_ppID, fromdb );
+    wxASSERT( from_pp.FGetID() != 0 );
+
+    recPlacePart to_pp( to_ppID, todb );
+    to_pp.Delete( todb );
+    
+    recPlacePart new_pp( 0 );
+    new_pp.FSetID( to_ppID );
+    new_pp.FSetTypeID( recPlacePartType::Transfer( from_pp.FGetTypeID(), fromdb, todb ) );
+    new_pp.FSetPlaceID( to_placeID );
+    new_pp.FSetValue( from_pp.FGetValue() );
+    new_pp.FSetSequence( from_pp.FGetSequence() );
+    new_pp.Save( todb );
+    to_ppID = new_pp.FGetID();
+
+    recPlacePartType::DeleteIfOrphaned( to_pp.FGetTypeID(), todb);
+    return to_ppID;
+}
+
 void recPlacePart::Renumber( idt id, idt to_id )
 {
     if( id == 0 ) {
@@ -498,6 +577,14 @@ bool recPlacePart::CsvRead( std::istream& in )
     recCsvRead( in, f_val );
     recCsvRead( in, f_sequence );
     return bool( in );
+}
+
+bool recPlacePart::RemoveFromDatabase( idt ppID, const wxString& dbname )
+{
+    recPlacePart pp( ppID, dbname );
+    bool ret = pp.Delete( dbname );
+    recPlacePartType::DeleteIfOrphaned( pp.FGetTypeID(), dbname );
+    return ret;
 }
 
 //----------------------------------------------------------
@@ -593,6 +680,24 @@ bool recPlacePartType::Equivalent( const recPlacePartType& r2 ) const
         ;
 }
 
+idt recPlacePartType::Transfer( idt from_pptID, const wxString& fromdb, const wxString& todb )
+{
+    if( from_pptID == 0 ) return 0;
+
+    recPlacePartType from_ppt( from_pptID, fromdb );
+    idt to_pptID = recPlacePartType::FindUid( from_ppt.FGetUid(), todb );
+
+    recPlacePartType to_ppt( to_pptID, todb );
+    recMatchUID match = from_ppt.CompareUID( to_ppt );
+    if( match == recMatchUID::unequal || match == recMatchUID::younger ) {
+        recPlacePartType new_ppt( from_ppt );
+        new_ppt.FSetID( to_pptID );
+        new_ppt.Save( todb );
+        to_pptID = new_ppt.FGetID();
+    }
+    return to_pptID;
+}
+
 void recPlacePartType::Renumber( idt id, idt to_id )
 {
     if( id == 0 ) {
@@ -632,6 +737,22 @@ bool recPlacePartType::CsvRead( std::istream& in )
     recCsvRead( in, f_uid );
     recCsvRead( in, f_changed );
     return bool( in );
+}
+
+bool recPlacePartType::DeleteIfOrphaned( idt pptID, const wxString& dbname )
+{
+    if( pptID <= 0 ) return false;
+
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT COUNT(*) FROM \"%s\".PlacePart WHERE type_id=" ID ";",
+        UTF8_( dbname ), pptID
+    );
+    if( s_db->ExecuteScalar( sql ) > 0 ) return false;
+
+    if( !Delete( pptID, dbname ) ) return false;
+
+    return true;
 }
 
 // End of recPlace.cpp file

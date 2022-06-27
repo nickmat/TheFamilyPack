@@ -87,6 +87,8 @@ public:
         return GetPlacePartIDs( f_id, dbname );
     }
 
+    static idt Transfer( idt from_pID, const wxString& fromdb, const wxString& todb );
+
     static void Renumber( idt fromID, idt toID );
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );
@@ -130,10 +132,18 @@ public:
     void FSetValue( const wxString& value ) { f_val = value; }
     void FSetSequence( int seq ) { f_sequence = seq; }
 
+    int SetNextSequence( const wxString& dbname = "Main" );
+
+    static idt Transfer(
+        idt from_ppID, const wxString& fromdb, idt to_placeID, idt to_ppID, const wxString& todb );
+
     static void Renumber( idt fromID, idt toID );
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
+
+    static bool RemoveFromDatabase( idt ppID, const wxString& dbname = "Main" );
+
 };
 
 
@@ -165,10 +175,14 @@ public:
 
     void FSetName( const wxString& name ) { f_name = name; }
 
+    static idt Transfer( idt from_pptID, const wxString& fromdb, const wxString& todb );
+
     static void Renumber( idt fromID, idt toID );
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
+
+    static bool DeleteIfOrphaned( idt pptID, const wxString& dbname = "Main" );
 };
 
 
