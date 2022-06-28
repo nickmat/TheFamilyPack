@@ -450,25 +450,25 @@ void recEventa::RemoveIncOrphansFromDatabase( idt id )
     // TODO: Delete orphaned EventType and/or EventTypeRole
 }
 
-void recEventa::RemoveDates( idt dateID )
+void recEventa::RemoveDates( idt dateID, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "UPDATE Eventa SET date1_id=0, date_pt=0 WHERE date1_id=" ID ";"
-        "UPDATE Eventa SET date2_id=0 WHERE date2_id=" ID ";",
-        dateID, dateID
+        "UPDATE \"%s\".Eventa SET date1_id=0, date_pt=0 WHERE date1_id=" ID ";"
+        "UPDATE \"%s\".Eventa SET date2_id=0 WHERE date2_id=" ID ";",
+        UTF8_( dbname ), dateID, UTF8_( dbname ), dateID
     );
     s_db->ExecuteUpdate( sql );
 }
 
-void recEventa::RemovePlace( idt placeID )
+void recEventa::RemovePlace( idt placeID, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "UPDATE Eventa SET place_id=0 WHERE place_id=" ID ";",
-        placeID
+        "UPDATE \"%s\".Eventa SET place_id=0 WHERE place_id=" ID ";",
+        UTF8_( dbname ), placeID
     );
     s_db->ExecuteUpdate( sql );
 }

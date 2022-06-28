@@ -162,8 +162,8 @@ public:
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
 
-    static void RemoveDates( idt dateID ); // removes date if found, replacing with 0
-    static void RemovePlace( idt placeID ); // removes place if found, replacing with 0
+    static void RemoveDates( idt dateID, const wxString& dbname = "Main" ); // removes date if found, replacing with 0
+    static void RemovePlace( idt placeID, const wxString& dbname = "Main" ); // removes place if found, replacing with 0
 
     // Delete Event and remove all references to it.
     void RemoveFromDatabase();
