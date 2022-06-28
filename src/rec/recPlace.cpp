@@ -346,14 +346,14 @@ bool recPlace::CsvRead( std::istream& in )
     return bool( in );
 }
 
-void recPlace::RemoveDates( idt dateID )
+void recPlace::RemoveDates( idt dateID, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "UPDATE Place SET date1_id=0 WHERE date1_id=" ID ";"
-        "UPDATE Place SET date2_id=0 WHERE date2_id=" ID ";",
-        dateID, dateID
+        "UPDATE \"%s\".Place SET date1_id=0 WHERE date1_id=" ID ";"
+        "UPDATE \"%s\".Place SET date2_id=0 WHERE date2_id=" ID ";",
+        UTF8_( dbname ), dateID, UTF8_( dbname ), dateID
     );
     s_db->ExecuteUpdate( sql );
 }
