@@ -82,7 +82,6 @@ public:
     void FSetSequence( int seq ) { f_sequence = seq; }
 
     static void Create( idt refID, Type type, idt entID, int* pseq = NULL );
-    static void DeleteType( Type type, idt entityID );
 
     wxString GetTypeStr() const { return sm_typeStr[f_entity_type]; }
     static wxString GetTypeStr( Type etype ) { return sm_typeStr[etype]; }
@@ -94,6 +93,8 @@ public:
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
+
+    static void DeleteType( Type type, idt entityID, const wxString& dbname = "Main" );
 };
 
 

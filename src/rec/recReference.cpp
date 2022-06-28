@@ -648,12 +648,12 @@ bool recReferenceEntity::CsvRead( std::istream& in )
     return bool( in );
 }
 
-void recReferenceEntity::DeleteType( Type type, idt entityID )
+void recReferenceEntity::DeleteType( Type type, idt entityID, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format(
-        "DELETE FROM ReferenceEntity WHERE entity_type=%d AND entity_id=" ID ";",
-        (int) type, entityID
+        "DELETE FROM \"%s\".ReferenceEntity WHERE entity_type=%d AND entity_id=" ID ";",
+        UTF8_( dbname ), static_cast<int>(type), entityID
     );
     s_db->ExecuteUpdate( sql );
 }
