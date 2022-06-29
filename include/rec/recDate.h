@@ -175,16 +175,14 @@ public:
     static bool IsConsistent( idt d1ID, idt d2ID ) { recDate date(d1ID); return date.IsConsistent(d2ID); }
 
     bool IsRelative() const { return ( f_rel_id != 0 ); }
-    static bool IsRelative( idt dateID ) { recDate date(dateID); return date.IsRelative(); }
-    bool IsUsedAsBase() const { return IsUsedAsBase( f_id ); }
-    static bool IsUsedAsBase( idt dateID );
-    static recIdVec GetRelativeIdList( idt id );
-    bool IsUsedInEvent() const { return IsUsedInEvent( f_id ); }
-    static bool IsUsedInEvent( idt dateID );
-    bool IsUsedInSource() const { return IsUsedInSource( f_id ); }
-    static bool IsUsedInSource( idt dateID );
-    bool IsUsedInPlace() const { return IsUsedInPlace( f_id ); }
-    static bool IsUsedInPlace( idt dateID );
+    static bool IsRelative( idt dateID, const wxString& dbname = "Main" );
+    bool IsUsedAsBase( const wxString& dbname = "Main" ) const { return IsUsedAsBase( f_id, dbname ); }
+    static bool IsUsedAsBase( idt dateID, const wxString& dbname = "Main" );
+    static recIdVec GetRelativeIdList( idt id, const wxString& dbname = "Main" );
+    bool IsUsedInEvent( const wxString& dbname = "Main" ) const { return IsUsedInEvent( f_id, dbname ); }
+    static bool IsUsedInEvent( idt dateID, const wxString& dbname = "Main" );
+    bool IsUsedInPlace( const wxString& dbname = "Main" ) const { return IsUsedInPlace( f_id, dbname ); }
+    static bool IsUsedInPlace( idt dateID, const wxString& dbname = "Main" );
 
     static idt Transfer( idt from_pID, const wxString& fromdb, const wxString& todb );
 
@@ -194,7 +192,7 @@ public:
     bool CsvRead( std::istream& in );
 
     static void DeleteIfOrphaned( idt dateID, const wxString& dbname = "Main" );
-    static void RemoveFromDatabase( idt dateID );
+    static void RemoveFromDatabase( idt dateID, const wxString& dbname = "Main" );
 };
 
 
@@ -251,7 +249,7 @@ public:
     void FSetType( Type type ) { f_type = type; }
     void FSetScheme( CalendarScheme sch ) { f_scheme = sch; } 
 
-    static idt GetParentDate( idt rdID );
+    static idt GetParentDate( idt rdID, const wxString& dbname = "Main" );
 
     void SetDefaults();
 

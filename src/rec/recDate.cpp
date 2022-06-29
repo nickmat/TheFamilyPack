@@ -450,11 +450,17 @@ bool recDate::IsConsistent( const recDate& date ) const
     return ( flags & recDate::CF_Overlap || flags & recDate::CF_WithinType ) != 0;
 }
 
-bool recDate::IsUsedAsBase( idt id )
+bool recDate::IsRelative( idt dateID, const wxString& dbname )
+{
+    recDate date( dateID, dbname );
+    return date.IsRelative();
+}
+
+bool recDate::IsUsedAsBase( idt id, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
 
-    sql.Format( "SELECT COUNT(*) FROM RelativeDate WHERE base_id=" ID ";", id );
+    sql.Format( "SELECT COUNT(*) FROM \"%s\".RelativeDate WHERE base_id=" ID ";", UTF8_( dbname ), id );
     if( s_db->ExecuteScalar( sql ) > 0 ) {
         return true;
     }
@@ -462,13 +468,13 @@ bool recDate::IsUsedAsBase( idt id )
 }
 
 // List of all relative dates using dateID as a base.
-recIdVec recDate::GetRelativeIdList( idt dateID )
+recIdVec recDate::GetRelativeIdList( idt dateID, const wxString& dbname )
 {
     recIdVec list;
     wxSQLite3StatementBuffer sql;
     wxSQLite3ResultSet result;
 
-    sql.Format( "SELECT id FROM RelativeDate WHERE base_id=" ID ";", dateID );
+    sql.Format( "SELECT id FROM \"%s\".RelativeDate WHERE base_id=" ID ";", UTF8_( dbname ), dateID );
     result = s_db->ExecuteQuery( sql );
 
     while( result.NextRow() ) {
@@ -477,13 +483,13 @@ recIdVec recDate::GetRelativeIdList( idt dateID )
     return list;
 }
 
-bool recDate::IsUsedInEvent( idt id )
+bool recDate::IsUsedInEvent( idt id, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "SELECT COUNT(*) FROM Event WHERE date1_id=" ID " OR date2_id=" ID ";",
-        id, id
+        "SELECT COUNT(*) FROM \"%s\".Event WHERE date1_id=" ID " OR date2_id=" ID ";",
+        UTF8_( dbname ), id, id
     );
     if( s_db->ExecuteScalar( sql ) > 0 ) {
         return true;
@@ -491,27 +497,13 @@ bool recDate::IsUsedInEvent( idt id )
     return false;
 }
 
-bool recDate::IsUsedInSource( idt id )
+bool recDate::IsUsedInPlace( idt id, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
 
     sql.Format(
-        "SELECT COUNT(*) FROM Source WHERE sub_date1_id=" ID " OR sub_date2_id=" ID ";",
-        id, id
-    );
-    if( s_db->ExecuteScalar( sql ) > 0 ) {
-        return true;
-    }
-    return false;
-}
-
-bool recDate::IsUsedInPlace( idt id )
-{
-    wxSQLite3StatementBuffer sql;
-
-    sql.Format(
-        "SELECT COUNT(*) FROM Place WHERE date1_id=" ID " OR date2_id=" ID ";",
-        id, id
+        "SELECT COUNT(*) FROM \"%s\".Place WHERE date1_id=" ID " OR date2_id=" ID ";",
+        UTF8_( dbname ), id, id
     );
     if( s_db->ExecuteScalar( sql ) > 0 ) {
         return true;
@@ -680,24 +672,26 @@ void recDate::DeleteIfOrphaned( idt id, const wxString& dbname )
     Delete( id, dbname );
 }
 
-void recDate::RemoveFromDatabase( idt id )
+void recDate::RemoveFromDatabase( idt id, const wxString& dbname )
 {
     if( id == 0 ) {
         return;
     }
-    if( IsUsedAsBase( id ) ) {
-        recIdVec rels = GetRelativeIdList( id );
+    if( IsUsedAsBase( id, dbname ) ) {
+        recIdVec rels = GetRelativeIdList( id, dbname );
         for( size_t i = 0; i < rels.size(); i++ ) {
-            recRelativeDate::RemoveFromDatabase( rels[i] );
+            idt dID = recRelativeDate::GetParentDate( rels[i], dbname );
+            recDate::RemoveFromDatabase( dID, dbname );
         }
     }
-    recEvent::RemoveDates( id );
-    recPlace::RemoveDates( id );
-    recReferenceEntity::DeleteType( recReferenceEntity::TYPE_Date, id );
+    recEvent::RemoveDates( id, dbname );
+    recEventa::RemoveDates( id, dbname );
+    recPlace::RemoveDates( id, dbname );
+    recReferenceEntity::DeleteType( recReferenceEntity::TYPE_Date, id, dbname );
     // If this is a relative date, remove the relative part.
-    recDate date( id );
-    Delete( date.FGetRelID() );
-    Delete( id );
+    recDate date( id, dbname );
+    recRelativeDate::Delete( date.FGetRelID(), dbname );
+    Delete( id, dbname );
 }
 
 
@@ -814,9 +808,12 @@ bool recRelativeDate::Equivalent( const recRelativeDate& r2 ) const
     ;
 }
 
-idt recRelativeDate::GetParentDate( idt rdID )
+idt recRelativeDate::GetParentDate( idt rdID, const wxString& dbname )
 {
-    return ExecuteID( "SELECT id FROM Date WHERE rel_id=" ID ";", rdID );
+    return ExecuteID(
+        "SELECT id FROM \"%s\".Date WHERE rel_id=" ID ";",
+        UTF8_( dbname ), rdID
+    );
 }
 
 void recRelativeDate::SetDefaults()
