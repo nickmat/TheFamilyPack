@@ -1,14 +1,14 @@
-ID, Title, Reference ID, Event Type ID,Date1 ID, Date2 ID, Place ID, Note, Date Point
-1,"1881 Census, John S and Mariannie Malings and family",11,-7,5982,0,5401,"",2408175
-2,"Household at Blakeney St, Awre, Gloucestershire",11,-17,5982,0,5401,"",2408175
-3,"Condition of John S Malings",11,-19,5982,0,0,"",2408175
-4,"Birth of John S Malings",11,-1,5986,0,5402,"",2398496
-5,"Occupation of John S Malings",11,-18,5982,0,0,"",2408175
-6,"Condition of Mariannie Malings",11,-19,5982,0,0,"",2408175
-7,"Birth of Mariannie Malings",11,-1,5990,0,5403,"",2397766
-8,"Occupation of Mariannie Malings",11,-18,5982,0,0,"",2408175
-9,"Birth of Horatio H G Malings",11,-1,5995,0,5404,"",2407262
-10,"Birth of Ada A Groves",11,-1,5996,0,5405,"",2398496
-11,"Occupation of Ada A Groves",11,-18,5982,0,0,"",2408175
-12,"Family of John S Malings",11,-22,5982,0,5401,"",2408175
-17594,"Photo of Jack Matthews",5264,-23,0,0,0,"",0
+ID, Title, Reference ID, Event Type ID,Date1 ID, Date2 ID, Place ID, Note, Date Point, UID, Last Changed
+1,"1881 Census, John S and Mariannie Malings and family",11,-7,5982,0,5401,"",2408175,"BE75577213D15B6EF844CB6DBD9B5CFDCE8B",2459755
+2,"Household at Blakeney St, Awre, Gloucestershire",11,-17,5982,0,5401,"",2408175,"10101BDA29D562DCEF5CC77A4428D2142F67",2459755
+3,"Condition of John S Malings",11,-19,5982,0,0,"",2408175,"97F3FACB9666F4263602A0765DF722759ECE",2459755
+4,"Birth of John S Malings",11,-1,5986,0,5402,"",2398496,"0CDEFC3FB21A56A31FEDA98297BFDC2D80BB",2459755
+5,"Occupation of John S Malings",11,-18,5982,0,0,"",2408175,"C22A85EE783994F066CC53103E960BC2CAD5",2459755
+6,"Condition of Mariannie Malings",11,-19,5982,0,0,"",2408175,"A50E19E6672F5C6D00C35BE6E3E5F4D3A45F",2459755
+7,"Birth of Mariannie Malings",11,-1,5990,0,5403,"",2397766,"CEA43252570AB1B73FCC160ABE280E765481",2459755
+8,"Occupation of Mariannie Malings",11,-18,5982,0,0,"",2408175,"7AC196AC3CC022A6A72DCC2997BA7673440A",2459755
+9,"Birth of Horatio H G Malings",11,-1,5995,0,5404,"",2407262,"D2757B8FD7C85EFA58B91207F448ADEF4A69",2459755
+10,"Birth of Ada A Groves",11,-1,5996,0,5405,"",2398496,"5B9B287B822E5856AAFFF76B6DEF9D1B16BC",2459755
+11,"Occupation of Ada A Groves",11,-18,5982,0,0,"",2408175,"85B2C787ED17B1FE00A200461A1891E4C7EE",2459755
+12,"Family of John S Malings",11,-22,5982,0,5401,"",2408175,"87E570B23F2AACD8664034FD8425040F0EC6",2459755
+17594,"Photo of Jack Matthews",5264,-23,0,0,0,"",0,"86A88DE95116EDFFD786AF9B3F6ACFACC2C1",2459755
