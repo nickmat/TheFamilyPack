@@ -56,6 +56,9 @@ struct RecordCounts
     size_t nameparttype = 0;
     size_t namestyle = 0;
     size_t persona = 0;
+    size_t place = 0;
+    size_t placepart = 0;
+    size_t placeparttype = 0;
     size_t relativedate = 0;
     size_t repository = 0;
     size_t researcher = 0;
@@ -79,6 +82,9 @@ struct RecordCounts
         nameparttype = recNamePartType::Count( m_dbname );
         namestyle = recNameStyle::Count( m_dbname );
         persona = recPersona::Count( m_dbname );
+        place = recPlace::Count( m_dbname );
+        placepart = recPlacePart::Count( m_dbname );
+        placeparttype = recPlacePartType::Count( m_dbname );
         relativedate = recRelativeDate::Count( m_dbname );
         repository = recRepository::Count( m_dbname );
         researcher = recResearcher::Count( m_dbname );
@@ -101,6 +107,9 @@ struct RecordCounts
             nameparttype == rcs.nameparttype &&
             namestyle == rcs.namestyle &&
             persona == rcs.persona &&
+            place == rcs.place &&
+            placepart == rcs.placepart &&
+            placeparttype == rcs.placeparttype &&
             relativedate == rcs.relativedate &&
             repository == rcs.repository &&
             researcher == rcs.researcher
@@ -450,6 +459,37 @@ TEST_CASE( "Test recPersona::Transfer function", "[Persona]" )
 
     REQUIRE( recPersona::RemoveFromDatabase( to_perID, g_maindb ) );
 
+    rcnew.Reset();
+    REQUIRE( rcnew.Equal( rc_main ) );
+}
+
+TEST_CASE( "Test recPlace::Transfer function", "[Place]" )
+{
+    const idt tplace = 5402;
+    const idt tpp = 5402;
+    RecordCounts rc_main( g_maindb ), rc_extdb( g_extdb1 );
+
+    REQUIRE( !recPlace::Exists( 1, g_maindb ) );
+    REQUIRE( !recPlacePart::Exists( 1, g_maindb ) );
+    REQUIRE( recPlace::Exists( tplace, g_extdb1 ) );
+    REQUIRE( recPlacePart::Exists( tpp, g_extdb1 ) );
+    recPlace from_place( tplace, g_extdb1 );
+    recPlacePart from_pp( tpp, g_extdb1 );
+
+    idt to_id = recPlace::Transfer( tplace, g_extdb1, g_maindb );
+    REQUIRE( to_id == 1 );
+    recPlace to_place( 1, g_maindb ); 
+    recPlacePart to_pp( 1, g_maindb );
+
+    REQUIRE( from_place.FGetUid() == to_place.FGetUid() );
+    REQUIRE( from_pp.FGetValue() == to_pp.FGetValue() );
+
+    RecordCounts rcnew( g_maindb );
+    REQUIRE( rcnew.place == rc_main.place + 1 );
+    REQUIRE( rcnew.placepart == rc_main.placepart + 1 );
+
+    // Remove Base date removes all relative dates
+    recPlace::DeleteIfOrphaned( 1, g_maindb );
     rcnew.Reset();
     REQUIRE( rcnew.Equal( rc_main ) );
 }
