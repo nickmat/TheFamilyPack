@@ -46,6 +46,7 @@ struct RecordCounts
     size_t contact = 0;
     size_t contactlist = 0;
     size_t contacttype = 0;
+    size_t date = 0;
     size_t gallery = 0;
     size_t gallerymedia = 0;
     size_t media = 0;
@@ -55,6 +56,7 @@ struct RecordCounts
     size_t nameparttype = 0;
     size_t namestyle = 0;
     size_t persona = 0;
+    size_t relativedate = 0;
     size_t repository = 0;
     size_t researcher = 0;
 
@@ -67,6 +69,7 @@ struct RecordCounts
         contact = recContact::Count( m_dbname );
         contactlist = recContactList::Count( m_dbname );
         contacttype = recContactType::Count( m_dbname );
+        date = recDate::Count( m_dbname );
         gallery = recGallery::Count( m_dbname );
         gallerymedia = recGalleryMedia::Count( m_dbname );
         media = recMedia::Count( m_dbname );
@@ -76,6 +79,7 @@ struct RecordCounts
         nameparttype = recNamePartType::Count( m_dbname );
         namestyle = recNameStyle::Count( m_dbname );
         persona = recPersona::Count( m_dbname );
+        relativedate = recRelativeDate::Count( m_dbname );
         repository = recRepository::Count( m_dbname );
         researcher = recResearcher::Count( m_dbname );
     }
@@ -87,6 +91,7 @@ struct RecordCounts
             contact == rcs.contact &&
             contactlist == rcs.contactlist &&
             contacttype == rcs.contacttype &&
+            date == rcs.date &&
             gallery == rcs.gallery &&
             gallerymedia == rcs.gallerymedia &&
             media == rcs.media &&
@@ -96,6 +101,7 @@ struct RecordCounts
             nameparttype == rcs.nameparttype &&
             namestyle == rcs.namestyle &&
             persona == rcs.persona &&
+            relativedate == rcs.relativedate &&
             repository == rcs.repository &&
             researcher == rcs.researcher
             ;
@@ -225,6 +231,35 @@ TEST_CASE( "Test recContactType::Transfer function", "[ContactType]" )
 
     REQUIRE( recContactType::Count( g_maindb ) == cnt_main );
     REQUIRE( recContactType::Count( g_extdb1 ) == cnt_extdb );
+}
+
+TEST_CASE( "Test recDate::Transfer function", "[Date]" )
+{
+    const idt tbase_date = 5982;
+    const idt t1_date = 5990;
+    RecordCounts rc_main( g_maindb ), rc_extdb( g_extdb1 );
+
+    REQUIRE( !recDate::Exists( 1, g_maindb ) );
+    REQUIRE( recDate::Exists( t1_date, g_extdb1 ) );
+    recDate from_date1( tbase_date, g_extdb1 );
+    recDate from_date2( t1_date, g_extdb1 );
+
+    idt to_id = recDate::Transfer( t1_date, g_extdb1, g_maindb );
+    REQUIRE( to_id == 2 );
+    recDate to_date1( 1, g_maindb ); // Base date
+    recDate to_date2( 2, g_maindb ); // t1 date
+
+    REQUIRE( from_date1.FGetJdn() == to_date1.FGetJdn() );
+    REQUIRE( from_date2.FGetJdn() == to_date2.FGetJdn() );
+
+    RecordCounts rcnew( g_maindb );
+    REQUIRE( rcnew.date == rc_main.date + 2 );
+    REQUIRE( rcnew.relativedate == rc_main.relativedate + 1 );
+
+    // Remove Base date removes all relative dates
+    recDate::RemoveFromDatabase( 1, g_maindb ); 
+    rcnew.Reset();
+    REQUIRE( rcnew.Equal( rc_main ) );
 }
 
 TEST_CASE( "Test recGallery::Transfer function", "[Gallery]" )
