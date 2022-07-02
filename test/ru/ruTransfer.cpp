@@ -304,6 +304,40 @@ TEST_CASE( "Test recEventTypeRole::Transfer function", "[EventTypeRole]" )
     REQUIRE( rcnew.Equal( rc_main ) );
 }
 
+TEST_CASE( "Test recEventType::Transfer function", "[EventType]" )
+{
+    // We only have core data entries for recEventType at this time
+    // so add a test record.
+    REQUIRE( !recEventType::Exists( 1, g_extdb1 ) );
+    recEventType et( 0 );
+    et.FSetGrp( recEventTypeGrp::other );
+    et.FSetName( "Test" );
+    et.FSetUid( recCreateUid() );
+    et.FSetChanged( calGetTodayJdn() );
+    et.Save( g_extdb1 );
+
+    RecordCounts rc_main( g_maindb ), rc_extdb( g_extdb1 );
+
+    REQUIRE( !recEventType::Exists( 1, g_maindb ) );
+    REQUIRE( recEventType::Exists( 1, g_extdb1 ) );
+    recEventType from_et( 1, g_extdb1 );
+
+    idt to_id = recEventType::Transfer( 1, g_extdb1, g_maindb );
+    REQUIRE( to_id == 1 );
+    recEventType to_et( 1, g_maindb );
+    REQUIRE( from_et.Equivalent( to_et ) );
+
+    RecordCounts rcnew( g_maindb );
+    REQUIRE( rcnew.eventtype == rc_main.eventtype + 1 );
+
+    REQUIRE( recEventType::DeleteIfOrphaned( to_id, g_maindb ) );
+    rcnew.Reset();
+    REQUIRE( rcnew.Equal( rc_main ) );
+
+    // Remove test record.
+    REQUIRE( recEventType::Delete( 1, g_extdb1 ) );
+}
+
 TEST_CASE( "Test recGallery::Transfer function", "[Gallery]" )
 {
     RecordCounts rc_main( g_maindb ), rc_extdb( g_extdb1 );
