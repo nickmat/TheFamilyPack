@@ -46,6 +46,10 @@ struct RecordCounts
     size_t contact = 0;
     size_t contactlist = 0;
     size_t contacttype = 0;
+    size_t eventa = 0;
+    size_t eventapersona = 0;
+    size_t eventtype = 0;
+    size_t eventtyperole = 0;
     size_t date = 0;
     size_t gallery = 0;
     size_t gallerymedia = 0;
@@ -73,6 +77,10 @@ struct RecordCounts
         contactlist = recContactList::Count( m_dbname );
         contacttype = recContactType::Count( m_dbname );
         date = recDate::Count( m_dbname );
+        eventa = recEventa::Count( m_dbname );
+        eventapersona = recEventaPersona::Count( m_dbname );
+        eventtype = recEventType::Count( m_dbname );
+        eventtyperole = recEventTypeRole::Count( m_dbname );
         gallery = recGallery::Count( m_dbname );
         gallerymedia = recGalleryMedia::Count( m_dbname );
         media = recMedia::Count( m_dbname );
@@ -98,6 +106,10 @@ struct RecordCounts
             contactlist == rcs.contactlist &&
             contacttype == rcs.contacttype &&
             date == rcs.date &&
+            eventa == rcs.eventa &&
+            eventapersona == rcs.eventapersona &&
+            eventtype == rcs.eventtype &&
+            eventtyperole == rcs.eventtyperole &&
             gallery == rcs.gallery &&
             gallerymedia == rcs.gallerymedia &&
             media == rcs.media &&
@@ -129,7 +141,6 @@ TEST_CASE( "Test recCitation::Transfer function", "[Citation]" )
     idt to_id = recCitation::Transfer( 1, g_extdb1, 0, g_maindb );
     REQUIRE( to_id == 1 );
     recCitation to_cit( 1, g_maindb );
-//    REQUIRE( from_cit.Equivalent( to_cit ) );
 
     RecordCounts rcnew( g_maindb );
     REQUIRE( rcnew.citation == rc_main.citation + 1 );
@@ -267,6 +278,28 @@ TEST_CASE( "Test recDate::Transfer function", "[Date]" )
 
     // Remove Base date removes all relative dates
     recDate::RemoveFromDatabase( 1, g_maindb ); 
+    rcnew.Reset();
+    REQUIRE( rcnew.Equal( rc_main ) );
+}
+
+TEST_CASE( "Test recEventTypeRole::Transfer function", "[EventTypeRole]" )
+{
+    const idt t1_role = 335;
+    RecordCounts rc_main( g_maindb ), rc_extdb( g_extdb1 );
+
+    REQUIRE( !recEventTypeRole::Exists( 1, g_maindb ) );
+    REQUIRE( recEventTypeRole::Exists( t1_role, g_extdb1 ) );
+    recEventTypeRole from_role( t1_role, g_extdb1 );
+
+    idt to_id = recEventTypeRole::Transfer( t1_role, g_extdb1, g_maindb );
+    REQUIRE( to_id == 1 );
+    recEventTypeRole to_role( 1, g_maindb );
+    REQUIRE( from_role.FGetName() == to_role.FGetName() );
+
+    RecordCounts rcnew( g_maindb );
+    REQUIRE( rcnew.eventtyperole == rc_main.eventtyperole + 1 );
+
+    REQUIRE( recEventTypeRole::DeleteIfOrphaned( to_id, g_maindb ) );
     rcnew.Reset();
     REQUIRE( rcnew.Equal( rc_main ) );
 }
