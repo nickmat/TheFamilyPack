@@ -117,7 +117,7 @@ public:
         idt indID, idt refID, const wxString& dbname = "Main" );
 
     static idt Transfer(
-        idt from_medID, const wxString& fromdb, idt to_refID, const wxString& todb );
+        idt from_perID, const wxString& fromdb, idt to_refID, const wxString& todb );
 
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );

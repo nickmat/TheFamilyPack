@@ -743,16 +743,13 @@ bool recPlacePartType::DeleteIfOrphaned( idt pptID, const wxString& dbname )
 {
     if( pptID <= 0 ) return false;
 
-    wxSQLite3StatementBuffer sql;
-    sql.Format(
+    int cnt = ExecuteInt(
         "SELECT COUNT(*) FROM \"%s\".PlacePart WHERE type_id=" ID ";",
-        UTF8_( dbname ), pptID
+        dbname, pptID
     );
-    if( s_db->ExecuteScalar( sql ) > 0 ) return false;
+    if( cnt > 0 ) return false;
 
-    if( !Delete( pptID, dbname ) ) return false;
-
-    return true;
+    return Delete( pptID, dbname );
 }
 
 // End of recPlace.cpp file
