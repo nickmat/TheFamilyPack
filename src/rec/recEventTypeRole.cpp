@@ -303,6 +303,24 @@ idt recEventTypeRole::FindOrCreate( const wxString& name, idt type, Prime prime,
     return GET_ID( result.GetInt64( 0 ) );
 }
 
+idt recEventTypeRole::Transfer( idt from_roleID, const wxString& fromdb, const wxString& todb )
+{
+    if( from_roleID == 0 ) return 0;
+
+    recEventTypeRole from_role( from_roleID, fromdb );
+    idt to_roleID = recEventTypeRole::FindUid( from_role.FGetUid(), todb );
+
+    recEventTypeRole to_role( to_roleID, todb );
+    recMatchUID match = from_role.CompareUID( to_role );
+    if( match == recMatchUID::unequal || match == recMatchUID::younger ) {
+        recEventTypeRole new_role( from_role );
+        new_role.FSetID( to_roleID );
+        new_role.Save( todb );
+        to_roleID = new_role.FGetID();
+    }
+    return to_roleID;
+}
+
 std::string recEventTypeRole::CsvTitles()
 {
     return std::string(
@@ -334,6 +352,21 @@ bool recEventTypeRole::CsvRead( std::istream& in )
     recCsvRead( in, f_uid );
     recCsvRead( in, f_changed );
     return bool( in );
+}
+
+bool recEventTypeRole::DeleteIfOrphaned( idt roleID, const wxString& dbname )
+{
+    if( roleID <= 0 ) return false;
+
+    int cnt = ExecuteInt( "SELECT COUNT(*) FROM \"%s\".EventaPersona WHERE role_id=" ID ";", dbname, roleID );
+    if( cnt > 0 ) return false;
+    cnt = ExecuteInt( "SELECT COUNT(*) FROM \"%s\".IndividualEvent WHERE role_id=" ID ";", dbname, roleID );
+    if( cnt > 0 ) return false;
+
+    recEventTypeRole role( roleID, dbname );
+    bool ret = role.Delete( dbname );
+    recEventType::DeleteIfOrphaned( role.FGetTypeID(), dbname );
+    return ret;
 }
 
 // End of recEventTypeRole.cpp file

@@ -130,9 +130,14 @@ public:
     static idt Find( const wxString& name, idt type, Prime prime = PRIME_Ignore, TriLogic official = TRILOGIC_both );
     static idt FindOrCreate( const wxString& name, idt type, Prime prime = PRIME_First, bool official = false );
 
+    static idt Transfer(
+        idt from_roleID, const wxString& fromdb, const wxString& todb );
+
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
+
+    static bool DeleteIfOrphaned( idt roleID, const wxString& dbname = "Main" );
 };
 
 typedef std::vector< recEventTypeRole >    recEventTypeRoleVec;
