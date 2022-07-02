@@ -373,6 +373,34 @@ idt recEventType::GetSummaryRole( idt typeID )
     }
 }
 
+idt recEventType::Transfer( idt from_etID, const wxString& fromdb, const wxString& todb )
+{
+    if( from_etID == 0 ) return 0;
+
+    recEventType from_et( from_etID, fromdb );
+
+    idt to_etID = recEventType::FindUid( from_et.FGetUid(), todb );
+    recEventType to_et( to_etID, todb );
+
+    recEventType new_et( 0 );
+    new_et.FSetID( to_etID );
+    new_et.FSetUid( from_et.FGetUid() );
+    recMatchUID match = from_et.CompareUID( to_et );
+    if( match == recMatchUID::unequal || match == recMatchUID::younger ) {
+        new_et.FSetGrp( from_et.FGetGrp() );
+        new_et.FSetName( from_et.FGetName() );
+        new_et.FSetChanged( from_et.FGetChanged() );
+    }
+    else {
+        new_et.FSetGrp( to_et.FGetGrp() );
+        new_et.FSetName( to_et.FGetName() );
+        new_et.FSetChanged( to_et.FGetChanged() );
+    }
+
+    new_et.Save( todb );
+    return new_et.FGetID();
+}
+
 std::string recEventType::CsvTitles()
 {
     return std::string( "ID, Group, Name, UID, Last Changed\n" );
@@ -398,6 +426,20 @@ bool recEventType::CsvRead( std::istream& in )
     recCsvRead( in, f_uid );
     recCsvRead( in, f_changed );
     return bool( in );
+}
+
+bool recEventType::DeleteIfOrphaned( idt etID, const wxString& dbname )
+{
+    if( etID <= 0 ) return false;
+
+    int cnt = ExecuteInt( "SELECT COUNT(*) FROM \"%s\".Event WHERE type_id=" ID ";", dbname, etID );
+    if( cnt > 0 ) return false;
+    cnt = ExecuteInt( "SELECT COUNT(*) FROM \"%s\".Eventa WHERE type_id=" ID ";", dbname, etID );
+    if( cnt > 0 ) return false;
+    cnt = ExecuteInt( "SELECT COUNT(*) FROM \"%s\".EventTypeRole WHERE type_id=" ID ";", dbname, etID );
+    if( cnt > 0 ) return false;
+
+    return Delete( etID, dbname );
 }
 
 // End of src/rec/recEventType.cpp file

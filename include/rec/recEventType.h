@@ -123,9 +123,13 @@ public:
 
     static idt GetSummaryRole( idt typeID );
 
+    static idt Transfer( idt from_etID, const wxString& fromdb, const wxString& todb );
+
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
+
+    static bool DeleteIfOrphaned( idt etID, const wxString& dbname = "Main" );
 };
 
 #endif // REC_RECEVENTTYPE_H
