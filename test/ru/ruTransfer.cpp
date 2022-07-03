@@ -282,6 +282,33 @@ TEST_CASE( "Test recDate::Transfer function", "[Date]" )
     REQUIRE( rcnew.Equal( rc_main ) );
 }
 
+TEST_CASE( "Test recEventaPersona::Transfer function", "[EventaPersona]" )
+{
+    const idt t1_eapa = 14;
+    RecordCounts rc_main( g_maindb ), rc_extdb( g_extdb1 );
+
+    REQUIRE( !recEventaPersona::Exists( 1, g_maindb ) );
+    REQUIRE( recEventaPersona::Exists( t1_eapa, g_extdb1 ) );
+    recEventaPersona from_eapa( t1_eapa, g_extdb1 );
+
+    idt to_id = recEventaPersona::Transfer( t1_eapa, g_extdb1, 0, 0, g_maindb );
+    REQUIRE( to_id == 1 );
+    recEventaPersona to_eapa( 1, g_maindb );
+    REQUIRE( from_eapa.FGetNote() == to_eapa.FGetNote() );
+
+    RecordCounts rcnew( g_maindb );
+    REQUIRE( rcnew.eventapersona == rc_main.eventapersona + 1 );
+    REQUIRE( rcnew.name == rc_main.name + 1 );
+    REQUIRE( rcnew.namepart == rc_main.namepart + 3 );
+    REQUIRE( rcnew.persona == rc_main.persona + 1 );
+
+    idt to_perID = to_eapa.FGetPerID();
+
+    REQUIRE( recPersona::RemoveFromDatabase( to_perID, g_maindb ) );
+    rcnew.Reset();
+    REQUIRE( rcnew.Equal( rc_main ) );
+}
+
 TEST_CASE( "Test recEventTypeRole::Transfer function", "[EventTypeRole]" )
 {
     const idt t1_role = 335;
