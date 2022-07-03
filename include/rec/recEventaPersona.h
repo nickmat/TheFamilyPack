@@ -82,9 +82,16 @@ public:
      */
     bool LinkExists( const wxString& dbname = "Main" ) const;
 
+    static idt Transfer(
+        idt from_eapaID, const wxString& fromdb,
+        idt to_eaID, idt to_eapaID, const wxString& todb
+    );
+
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
+
+    static bool RemoveFromDatabase( idt eapaID, const wxString& dbname = "Main" );
 };
 
 typedef std::vector< recEventaPersona >   recEventaPersonaVec;

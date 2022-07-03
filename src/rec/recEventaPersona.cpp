@@ -199,6 +199,35 @@ bool recEventaPersona::LinkExists( const wxString& dbname ) const
     return true;
 }
 
+idt recEventaPersona::Transfer( idt from_eapaID, const wxString& fromdb,
+    idt to_eaID, idt to_eapaID, const wxString& todb )
+{
+    if( from_eapaID == 0 ) return 0;
+
+    recEventaPersona from_eapa( from_eapaID, fromdb );
+    wxASSERT( from_eapa.FGetID() != 0 );
+
+    recEventaPersona to_eapa( to_eapaID, todb );
+    to_eapa.Delete( todb );
+
+    recEventaPersona new_eapa( 0 );
+    new_eapa.FSetID( to_eapaID );
+    new_eapa.FSetEventaID( to_eaID );
+    idt to_perID = recPersona::Transfer( from_eapa.FGetPerID(), fromdb, 0, todb );
+    wxASSERT( to_perID != 0 );
+    new_eapa.FSetPerID( to_perID );
+    idt to_roleID = recEventTypeRole::Transfer( from_eapa.FGetRoleID(), fromdb, todb );
+    wxASSERT( to_roleID != 0 );
+    new_eapa.FSetRoleID( to_roleID );
+    new_eapa.FSetNote( from_eapa.FGetNote() );
+    new_eapa.FSetPerSeq( from_eapa.FGetPerSeq() );
+    new_eapa.Save( todb );
+    to_eapaID = new_eapa.FGetID();
+
+    recEventTypeRole::DeleteIfOrphaned( to_eapaID, todb );
+    return to_eapaID;
+}
+
 std::string recEventaPersona::CsvTitles()
 {
     return std::string(
@@ -226,6 +255,14 @@ bool recEventaPersona::CsvRead( std::istream& in )
     recCsvRead( in, f_note );
     recCsvRead( in, f_per_seq );
     return bool( in );
+}
+
+bool recEventaPersona::RemoveFromDatabase( idt eapaID, const wxString& dbname )
+{
+    recEventaPersona eapa( eapaID, dbname );
+    bool ret = Delete( eapaID, dbname );
+    recEventTypeRole::DeleteIfOrphaned( eapa.FGetRoleID(), dbname );
+    return ret;
 }
 
 
