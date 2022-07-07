@@ -615,11 +615,11 @@ bool recDate::CsvRead( std::istream& in )
     return bool( in );
 }
 
-void recDate::DeleteIfOrphaned( idt id, const wxString& dbname )
+bool recDate::DeleteIfOrphaned( idt id, const wxString& dbname )
 {
     if( id <= 0 ) {
         // Don't delete universal dates.
-        return;
+        return false;
     }
     wxSQLite3StatementBuffer sql;
 
@@ -627,35 +627,35 @@ void recDate::DeleteIfOrphaned( idt id, const wxString& dbname )
         "SELECT COUNT(*) FROM \"%s\".RelativeDate WHERE base_id=" ID ";",
         UTF8_( dbname ), id
     );
-    if( s_db->ExecuteScalar( sql ) > 0 ) return;
+    if( s_db->ExecuteScalar( sql ) > 0 ) return false;
 
     sql.Format(
         "SELECT COUNT(*) FROM \"%s\".Event"
         " WHERE date1_id=" ID " OR date2_id=" ID ";",
         UTF8_( dbname ), id, id
     );
-    if( s_db->ExecuteScalar( sql ) > 0 ) return;
+    if( s_db->ExecuteScalar( sql ) > 0 ) return false;
 
     sql.Format(
         "SELECT COUNT(*) FROM \"%s\".Eventa"
         " WHERE date1_id=" ID " OR date2_id=" ID ";",
         UTF8_( dbname ), id, id
     );
-    if( s_db->ExecuteScalar( sql ) > 0 ) return;
+    if( s_db->ExecuteScalar( sql ) > 0 ) return false;
 
     sql.Format(
         "SELECT COUNT(*) FROM \"%s\".Place"
         " WHERE date1_id=" ID " OR date2_id=" ID ";",
         UTF8_( dbname ), id, id
     );
-    if( s_db->ExecuteScalar( sql ) > 0 ) return;
+    if( s_db->ExecuteScalar( sql ) > 0 ) return false;
 
     sql.Format(
         "SELECT COUNT(*) FROM \"%s\".ReferenceEntity"
         " WHERE entity_type=4 AND entity_id=" ID ";",
         UTF8_( dbname ), id
     );
-    if( s_db->ExecuteScalar( sql ) > 0 ) return;
+    if( s_db->ExecuteScalar( sql ) > 0 ) return false;
 
     idt relID = ExecuteID(
         "SELECT rel_id FROM \"%s\".Date WHERE id=" ID ";",
@@ -669,13 +669,13 @@ void recDate::DeleteIfOrphaned( idt id, const wxString& dbname )
         recRelativeDate::Delete( relID, dbname );
         DeleteIfOrphaned( baseID, dbname );
     }
-    Delete( id, dbname );
+    return Delete( id, dbname );
 }
 
-void recDate::RemoveFromDatabase( idt id, const wxString& dbname )
+bool recDate::RemoveFromDatabase( idt id, const wxString& dbname )
 {
-    if( id == 0 ) {
-        return;
+    if( id <= 0 ) { // Don't remove common dates
+        return false;
     }
     if( IsUsedAsBase( id, dbname ) ) {
         recIdVec rels = GetRelativeIdList( id, dbname );
@@ -691,7 +691,7 @@ void recDate::RemoveFromDatabase( idt id, const wxString& dbname )
     // If this is a relative date, remove the relative part.
     recDate date( id, dbname );
     recRelativeDate::Delete( date.FGetRelID(), dbname );
-    Delete( id, dbname );
+    return Delete( id, dbname );
 }
 
 

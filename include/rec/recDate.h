@@ -191,8 +191,8 @@ public:
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
 
-    static void DeleteIfOrphaned( idt dateID, const wxString& dbname = "Main" );
-    static void RemoveFromDatabase( idt dateID, const wxString& dbname = "Main" );
+    static bool DeleteIfOrphaned( idt dateID, const wxString& dbname = "Main" );
+    static bool RemoveFromDatabase( idt dateID, const wxString& dbname = "Main" );
 };
 
 
