@@ -158,6 +158,9 @@ public:
         return GetEventaPersonaIDs( f_id, dbname );
     }
 
+    static idt Transfer(
+        idt from_eaID, const wxString& fromdb, idt to_refID, const wxString& todb );
+
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
@@ -166,11 +169,10 @@ public:
     static void RemovePlace( idt placeID, const wxString& dbname = "Main" ); // removes place if found, replacing with 0
 
     // Delete Event and remove all references to it.
-    void RemoveFromDatabase();
-    static void RemoveFromDatabase( idt id );
-    static void RemoveIncOrphansFromDatabase( idt id );
+    bool RemoveFromDatabase( const wxString& dbname = "Main" );
+    static bool RemoveFromDatabase( idt id, const wxString& dbname = "Main" );
 
-    static void DeleteIfOrphaned( idt id );
+    static bool DeleteIfOrphaned( idt id, const wxString& dbname = "Main" );
 };
 
 #endif // REC_RECEVENTA_H

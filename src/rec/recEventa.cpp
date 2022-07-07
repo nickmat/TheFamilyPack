@@ -406,93 +406,6 @@ void recEventa::UpdateDatePoint( const wxString& dbname )
     f_date_pt = recDate::GetDatePoint( f_date1_id );
 }
 
-void recEventa::RemoveFromDatabase()
-{
-    if( f_id <= 0 ) {
-        // Don't delete universal events.
-        return;
-    }
-    wxSQLite3StatementBuffer sql;
-
-    // TODO: Ensure Event is removed from reference statement.
-    sql.Format(
-        "DELETE FROM EventaPersona WHERE eventa_id=" ID ";"
-        "DELETE FROM ReferenceEntity WHERE entity_type=2 AND entity_id=" ID ";",
-        f_id, f_id
-    );
-    s_db->ExecuteUpdate( sql );
-
-    Delete();
-    Clear();
-}
-
-void recEventa::RemoveFromDatabase( idt id )
-{
-    if( id <= 0 ) {
-        // Don't delete universal events.
-        return;
-    }
-    recEventa eve(id);
-    eve.RemoveFromDatabase();
-}
-
-void recEventa::RemoveIncOrphansFromDatabase( idt id )
-{
-    if( id <= 0 ) {
-        // Don't delete universal events.
-        return;
-    }
-    recEventa eve(id);
-    RemoveFromDatabase( eve.f_id );
-    recDate::DeleteIfOrphaned( eve.f_date1_id );
-    recDate::DeleteIfOrphaned( eve.f_date2_id );
-    recPlace::DeleteIfOrphaned( eve.f_place_id );
-    // TODO: Delete orphaned EventType and/or EventTypeRole
-}
-
-void recEventa::RemoveDates( idt dateID, const wxString& dbname )
-{
-    wxSQLite3StatementBuffer sql;
-
-    sql.Format(
-        "UPDATE \"%s\".Eventa SET date1_id=0, date_pt=0 WHERE date1_id=" ID ";"
-        "UPDATE \"%s\".Eventa SET date2_id=0 WHERE date2_id=" ID ";",
-        UTF8_( dbname ), dateID, UTF8_( dbname ), dateID
-    );
-    s_db->ExecuteUpdate( sql );
-}
-
-void recEventa::RemovePlace( idt placeID, const wxString& dbname )
-{
-    wxSQLite3StatementBuffer sql;
-
-    sql.Format(
-        "UPDATE \"%s\".Eventa SET place_id=0 WHERE place_id=" ID ";",
-        UTF8_( dbname ), placeID
-    );
-    s_db->ExecuteUpdate( sql );
-}
-
-void recEventa::DeleteIfOrphaned( idt id )
-{
-    if( id <= 0 ) {
-        // Don't delete universal dates.
-        return;
-    }
-    wxSQLite3StatementBuffer sql;
-
-    sql.Format( "SELECT COUNT(*) FROM EventaPersona WHERE eventa_id=" ID ";", id );
-    if( s_db->ExecuteScalar( sql ) > 0 ) return;
-    sql.Format( "SELECT COUNT(*) FROM EventEventa WHERE eventa_id=" ID ";", id );
-    if( s_db->ExecuteScalar( sql ) > 0 ) return;
-    sql.Format( "SELECT COUNT(*) FROM FamilyIndEventa WHERE event_id=" ID ";", id );
-    if ( s_db->ExecuteScalar( sql ) > 0 ) return;
-    sql.Format( "SELECT COUNT(*) FROM FamilyEventa WHERE event_id=" ID ";", id );
-    if ( s_db->ExecuteScalar( sql ) > 0 ) return;
-
-    RemoveFromDatabase( id );
-}
-
 wxSQLite3Table recEventa::GetTitleList( const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
@@ -751,6 +664,63 @@ recIdVec recEventa::GetEventaPersonaIDs( idt eaID, const wxString& dbname )
     );
 }
 
+idt recEventa::Transfer( idt from_eaID, const wxString& fromdb, idt to_refID, const wxString& todb )
+{
+    if( from_eaID == 0 ) return 0;
+
+    recEventa from_ea( from_eaID, fromdb );
+
+    idt to_eaID = recEventa::FindUid( from_ea.FGetUid(), todb );
+    recEventa to_ea( to_eaID, todb );
+
+    recEventa new_ea( 0 );
+    new_ea.FSetID( to_eaID );
+    new_ea.FSetRefID( to_refID );
+    new_ea.FSetTypeID( recEventType::Transfer( from_ea.FGetTypeID(), fromdb, todb ) );
+    new_ea.FSetDate1ID( recDate::Transfer( from_ea.FGetDate1ID(), fromdb, todb ) );
+    new_ea.FSetDate2ID( recDate::Transfer( from_ea.FGetDate2ID(), fromdb, todb ) );
+    new_ea.FSetPlaceID( recPlace::Transfer( from_ea.FGetPlaceID(), fromdb, todb ) );
+    new_ea.FSetUid( from_ea.FGetUid() );
+    recMatchUID match = from_ea.CompareUID( to_ea );
+    if( match == recMatchUID::unequal || match == recMatchUID::younger ) {
+        new_ea.FSetTitle( from_ea.FGetTitle() );
+        new_ea.FSetNote( from_ea.FGetNote() );
+        new_ea.FSetDatePt( from_ea.FGetDatePt() );
+        new_ea.FSetChanged( from_ea.FGetChanged() );
+    }
+    else {
+        new_ea.FSetTitle( to_ea.FGetTitle() );
+        new_ea.FSetNote( to_ea.FGetNote() );
+        new_ea.FSetDatePt( to_ea.FGetDatePt() );
+        new_ea.FSetChanged( to_ea.FGetChanged() );
+    }
+    new_ea.Save( todb );
+    to_eaID = new_ea.FGetID();
+    wxASSERT( to_eaID != 0 );
+
+    recEventType::DeleteIfOrphaned( to_ea.FGetTypeID(), todb );
+    recDate::DeleteIfOrphaned( to_ea.FGetDate1ID(), todb );
+    recDate::DeleteIfOrphaned( to_ea.FGetDate2ID(), todb );
+    recPlace::DeleteIfOrphaned( to_ea.FGetPlaceID(), todb );
+
+    recIdVec from_eapaIDs = recEventa::GetEventaPersonaIDs( from_eaID, fromdb );
+    recIdVec to_eapaIDs = recEventa::GetEventaPersonaIDs( to_eaID, todb );
+    size_t size = std::max( from_eapaIDs.size(), to_eapaIDs.size() );
+    for( size_t i = 0; i < size; i++ ) {
+        if( i >= from_eapaIDs.size() ) { // No more to copy.
+            recEventaPersona::RemoveFromDatabase( to_eapaIDs[i], todb );
+            continue;
+        }
+        if( i >= to_eapaIDs.size() ) {
+            recEventaPersona::Transfer( from_eapaIDs[i], fromdb, to_eaID, 0, todb );
+            continue;
+        }
+        recEventaPersona::Transfer( from_eapaIDs[i], fromdb, to_eaID, to_eapaIDs[i], todb );
+    }
+
+    return to_eaID;
+}
+
 std::string recEventa::CsvTitles()
 {
     return std::string(
@@ -789,6 +759,94 @@ bool recEventa::CsvRead( std::istream& in )
     recCsvRead( in, f_uid );
     recCsvRead( in, f_changed );
     return bool( in );
+}
+
+void recEventa::RemoveDates( idt dateID, const wxString& dbname )
+{
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "UPDATE \"%s\".Eventa SET date1_id=0, date_pt=0 WHERE date1_id=" ID ";"
+        "UPDATE \"%s\".Eventa SET date2_id=0 WHERE date2_id=" ID ";",
+        UTF8_( dbname ), dateID, UTF8_( dbname ), dateID
+    );
+    s_db->ExecuteUpdate( sql );
+}
+
+void recEventa::RemovePlace( idt placeID, const wxString& dbname )
+{
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "UPDATE \"%s\".Eventa SET place_id=0 WHERE place_id=" ID ";",
+        UTF8_( dbname ), placeID
+    );
+    s_db->ExecuteUpdate( sql );
+}
+
+bool recEventa::RemoveFromDatabase( const wxString& dbname )
+{
+    if( f_id <= 0 ) {
+        // Don't delete universal events.
+        return false;
+    }
+    wxSQLite3StatementBuffer sql;
+
+    // TODO: Ensure Event is removed from reference statement.
+    sql.Format(
+        "DELETE FROM \"%s\".FamilyIndEventa WHERE eventa_id=" ID ";",
+        UTF8_( dbname ), f_id
+    );
+    s_db->ExecuteUpdate( sql );
+    sql.Format(
+        "DELETE FROM \"%s\".FamilyEventa WHERE eventa_id=" ID ";",
+        UTF8_( dbname ), f_id
+    );
+    s_db->ExecuteUpdate( sql );
+    sql.Format(
+        "DELETE FROM \"%s\".EventEventa WHERE eventa_id=" ID ";",
+        UTF8_( dbname ), f_id
+    );
+    s_db->ExecuteUpdate( sql );
+    sql.Format(
+        "DELETE FROM \"%s\".EventaPersona WHERE eventa_id=" ID ";",
+        UTF8_( dbname ), f_id
+    );
+    s_db->ExecuteUpdate( sql );
+
+    bool ret = Delete();
+    recEventType::DeleteIfOrphaned( f_type_id, dbname );
+    return ret;
+}
+
+bool recEventa::RemoveFromDatabase( idt id, const wxString& dbname )
+{
+    if( id <= 0 ) {
+        // Don't delete universal events.
+        return false;
+    }
+    recEventa eve( id, dbname );
+    return eve.RemoveFromDatabase( dbname );
+}
+
+bool recEventa::DeleteIfOrphaned( idt id, const wxString& dbname )
+{
+    if( id <= 0 ) {
+        // Don't delete universal records.
+        return false;
+    }
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format( "SELECT COUNT(*) FROM EventaPersona WHERE eventa_id=" ID ";", id );
+    if( s_db->ExecuteScalar( sql ) > 0 ) return false;
+    sql.Format( "SELECT COUNT(*) FROM EventEventa WHERE eventa_id=" ID ";", id );
+    if( s_db->ExecuteScalar( sql ) > 0 ) return false;
+    sql.Format( "SELECT COUNT(*) FROM FamilyIndEventa WHERE event_id=" ID ";", id );
+    if( s_db->ExecuteScalar( sql ) > 0 ) return false;
+    sql.Format( "SELECT COUNT(*) FROM FamilyEventa WHERE event_id=" ID ";", id );
+    if( s_db->ExecuteScalar( sql ) > 0 ) return false;
+
+    return Delete( id );
 }
 
 // End of src/rec/recEventa.cpp file
