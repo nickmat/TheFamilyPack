@@ -282,6 +282,41 @@ TEST_CASE( "Test recDate::Transfer function", "[Date]" )
     REQUIRE( rcnew.Equal( rc_main ) );
 }
 
+TEST_CASE( "Test recEventa::Transfer function", "[Eventa]" )
+{
+    const idt t1_ea = 12;
+    RecordCounts rc_main( g_maindb ), rc_extdb( g_extdb1 );
+
+    REQUIRE( !recEventa::Exists( 1, g_maindb ) );
+    REQUIRE( recEventa::Exists( t1_ea, g_extdb1 ) );
+    recEventa from_ea( t1_ea, g_extdb1 );
+
+    idt to_id = recEventa::Transfer( t1_ea, g_extdb1, 0, g_maindb );
+    REQUIRE( to_id == 1 );
+    recEventa to_ea( 1, g_maindb );
+    REQUIRE( from_ea.FGetNote() == to_ea.FGetNote() );
+
+    RecordCounts rcnew( g_maindb );
+    REQUIRE( rcnew.eventa == rc_main.eventa + 1 );
+    REQUIRE( rcnew.date == rc_main.date + 1 );
+    REQUIRE( rcnew.place == rc_main.place + 1 );
+    REQUIRE( rcnew.placepart == rc_main.placepart + 1 );
+    REQUIRE( rcnew.eventapersona == rc_main.eventapersona + 3 );
+    REQUIRE( rcnew.persona == rc_main.persona + 3 );
+    REQUIRE( rcnew.name == rc_main.name + 3 );
+    REQUIRE( rcnew.namepart == rc_main.namepart + 9 );
+
+    recEventaPersonaVec eapas = recEventa::GetEventaPersonas( to_id, g_maindb );
+    for( auto& eapa : eapas ) {
+        recPersona::RemoveFromDatabase( eapa.FGetPerID(), g_maindb );
+    }
+    recDate::RemoveFromDatabase( to_ea.FGetDate1ID(), g_maindb );
+    recPlace::RemoveFromDatabase( to_ea.FGetPlaceID(), g_maindb );
+    REQUIRE( recEventa::RemoveFromDatabase( to_id, g_maindb ) );
+    rcnew.Reset();
+    REQUIRE( rcnew.Equal( rc_main ) );
+}
+
 TEST_CASE( "Test recEventaPersona::Transfer function", "[EventaPersona]" )
 {
     const idt t1_eapa = 14;
