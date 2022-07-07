@@ -95,8 +95,8 @@ public:
     bool CsvRead( std::istream& in );
 
     static void RemoveDates( idt dateID, const wxString& dbname = "Main" );
-    static void RemoveFromDatabase( idt placeID );
 
+    static bool RemoveFromDatabase( idt placeID, const wxString& dbname = "Main" );
     static void DeleteIfOrphaned( idt placeID, const wxString& dbname = "Main" );
 };
 

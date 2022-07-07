@@ -358,22 +358,24 @@ void recPlace::RemoveDates( idt dateID, const wxString& dbname )
     s_db->ExecuteUpdate( sql );
 }
 
-void recPlace::RemoveFromDatabase( idt placeID )
+bool recPlace::RemoveFromDatabase( idt placeID, const wxString& dbname )
 {
-    recEvent::RemovePlace( placeID );
-
-    recPlacePartVec parts = recPlace::GetPlaceParts( placeID );
-    for( size_t i = 0 ; i < parts.size() ; i++ ) {
-        parts[i].Delete();
+    if( placeID <= 0 ) { // Don't remove common places
+        return false;
     }
-    recReferenceEntity::DeleteType( recReferenceEntity::TYPE_Place, placeID );
-    Delete( placeID );
+    recPlacePartVec parts = recPlace::GetPlaceParts( placeID, dbname );
+    for( size_t i = 0 ; i < parts.size() ; i++ ) {
+        parts[i].Delete( dbname );
+    }
+    recEvent::RemovePlace( placeID, dbname );
+    recEventa::RemovePlace( placeID, dbname );
+    recReferenceEntity::DeleteType( recReferenceEntity::TYPE_Place, placeID, dbname );
+    return Delete( placeID, dbname );
 }
 
 void recPlace::DeleteIfOrphaned( idt id, const wxString& dbname )
 {
-    if( id <= 0 ) {
-        // Don't delete universal places.
+    if( id <= 0 ) { // Don't delete common places.
         return;
     }
     wxSQLite3StatementBuffer sql;
