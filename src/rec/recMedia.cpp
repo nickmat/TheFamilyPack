@@ -52,6 +52,8 @@ recMedia::recMedia( const recMedia& n )
     f_privacy = n.f_privacy;
     f_title = n.f_title;
     f_note = n.f_note;
+    f_uid = n.f_uid;
+    f_changed = n.f_changed;
 }
 
 void recMedia::Clear()
@@ -64,6 +66,8 @@ void recMedia::Clear()
     f_privacy = 0;
     f_title.clear();
     f_note.clear();
+    f_uid.clear();
+    f_changed = 0;
 }
 
 void recMedia::Save( const wxString& dbname )
@@ -75,9 +79,10 @@ void recMedia::Save( const wxString& dbname )
     {
         // Add new record
         sql.Format(
-            "INSERT INTO \"%s\".Media (data_id, ass_id, ref_id, ref_seq, privacy, title, note)"
-            " VALUES (" ID ", " ID ", " ID ", %d, %d, '%q', '%q');",
-            UTF8_( dbname ), f_data_id, f_ass_id, f_ref_id, f_ref_seq, f_privacy, UTF8_( f_title ), UTF8_( f_note )
+            "INSERT INTO \"%s\".Media (data_id, ass_id, ref_id, ref_seq, privacy, title, note, uid, changed)"
+            " VALUES (" ID ", " ID ", " ID ", %d, %d, '%q', '%q', '%q', %ld);",
+            UTF8_( dbname ), f_data_id, f_ass_id, f_ref_id, f_ref_seq, f_privacy,
+            UTF8_( f_title ), UTF8_( f_note ), UTF8_( f_uid ), f_changed
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -87,17 +92,19 @@ void recMedia::Save( const wxString& dbname )
         {
             // Add new record
             sql.Format(
-                "INSERT INTO \"%s\".Media (id, data_id, ass_id, ref_id, ref_seq, privacy, title, note)"
-                " VALUES (" ID ", " ID ", " ID ", " ID ", %d, %d, '%q', '%q');",
-                UTF8_( dbname ), f_id, f_data_id, f_ass_id, f_ref_id, f_ref_seq, f_privacy, UTF8_( f_title ), UTF8_( f_note )
+                "INSERT INTO \"%s\".Media (id, data_id, ass_id, ref_id, ref_seq, privacy, title, note, uid, changed)"
+                " VALUES (" ID ", " ID ", " ID ", " ID ", %d, %d, '%q', '%q', '%q', %ld);",
+                UTF8_( dbname ), f_id, f_data_id, f_ass_id, f_ref_id, f_ref_seq, f_privacy,
+                UTF8_( f_title ), UTF8_( f_note ), UTF8_( f_uid ), f_changed
             );
         } else {
             // Update existing record
             sql.Format(
                 "UPDATE \"%s\".Media"
                 " SET data_id=" ID ", ass_id=" ID ", ref_id=" ID ", ref_seq=%d, privacy=%d,"
-                " title='%q', note='%q' WHERE id=" ID ";",
-                UTF8_( dbname ), f_data_id, f_ass_id, f_ref_id, f_ref_seq, f_privacy, UTF8_( f_title ), UTF8_( f_note ), f_id
+                " title='%q', note='%q', uid = '%q', changed = %ld WHERE id=" ID ";",
+                UTF8_( dbname ), f_data_id, f_ass_id, f_ref_id, f_ref_seq, f_privacy,
+                UTF8_( f_title ), UTF8_( f_note ), UTF8_( f_uid ), f_changed, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -115,7 +122,7 @@ bool recMedia::Read( const wxString& dbname )
     }
 
     sql.Format(
-        "SELECT data_id, ass_id, ref_id, ref_seq, privacy, title, note"
+        "SELECT data_id, ass_id, ref_id, ref_seq, privacy, title, note, uid, changed"
         " FROM \"%s\".Media WHERE id=" ID ";",
         UTF8_( dbname ), f_id
     );
@@ -134,6 +141,8 @@ bool recMedia::Read( const wxString& dbname )
     f_privacy = result.GetInt( 4 );
     f_title = result.GetAsString( 5 );
     f_note = result.GetAsString( 6 );
+    f_uid = result.GetAsString( 7 );
+    f_changed = result.GetInt( 8 );
     return true;
 }
 
@@ -141,13 +150,15 @@ bool recMedia::Equivalent( const recMedia& r2 ) const
 {
     return
         f_data_id == r2.f_data_id &&
-        f_ass_id == r2.f_ass_id   &&
-        f_ref_id == r2.f_ref_id   &&
+        f_ass_id == r2.f_ass_id &&
+        f_ref_id == r2.f_ref_id &&
         f_ref_seq == r2.f_ref_seq &&
         f_privacy == r2.f_privacy &&
-        f_title == r2.f_title     &&
-        f_note == r2.f_note
-    ;
+        f_title == r2.f_title &&
+        f_note == r2.f_note &&
+        f_uid == r2.f_uid &&
+        f_changed == r2.f_changed
+        ;
 }
 
 idt recMedia::Create( idt mdID, idt assID, idt refID )
@@ -217,16 +228,33 @@ idt recMedia::Transfer(
     if( to_mdID == 0 ) {
         return 0;
     }
-    recMedia to_med( from_med );
-    to_med.FSetDataID( to_mdID );
-    to_med.FSetAssID( to_assID );
-    to_med.FSetRefID( to_refID );
-    to_med.FSetRefSeq( recMedia::GetNextRefSeq( to_refID ) );
-    if( to_med.FGetID() > 0 ) {
-        to_med.FSetID( 0 );
+
+    idt to_medID = recMedia::FindUid( from_med.FGetUid(), todb );
+    recMedia to_med( to_medID, todb );
+
+    recMedia new_med( 0 );
+    new_med.FSetID( to_medID );
+    new_med.FSetDataID( to_mdID );
+    new_med.FSetAssID( to_assID );
+    new_med.FSetRefID( to_refID );
+    new_med.FSetUid( from_med.FGetUid() );
+    recMatchUID match = from_med.CompareUID( to_med );
+    if( match == recMatchUID::unequal || match == recMatchUID::younger ) {
+        new_med.FSetRefSeq( from_med.FGetRefSeq() );
+        new_med.FSetPrivacy( from_med.FGetPrivacy() );
+        new_med.FSetTitle( from_med.FGetTitle() );
+        new_med.FSetNote( from_med.FGetNote() );
+        new_med.FSetChanged( from_med.FGetChanged() );
     }
-    to_med.Save( todb );
-    idt to_medID = to_med.FGetID();
+    else {
+        new_med.FSetRefSeq( recMedia::GetNextRefSeq( to_refID ) );
+        new_med.FSetPrivacy( to_med.FGetPrivacy() );
+        new_med.FSetTitle( to_med.FGetTitle() );
+        new_med.FSetNote( to_med.FGetNote() );
+        new_med.FSetChanged( to_med.FGetChanged() );
+    }
+    new_med.Save( todb );
+    to_medID = new_med.FGetID();
 
     // List GalleryMedia links and step thru them.
     recIdVec from_gmIDs = recMedia::GetGalleryMediaList( from_medID, fromdb );
@@ -256,13 +284,14 @@ idt recMedia::Transfer(
         gm.FSetGalID( to_gal );
         gm.Save( todb );
     }
-    return to_med.FGetID();
+    return to_medID;
 }
 
 std::string recMedia::CsvTitles()
 {
     return std::string(
-        "ID, Data ID, Associate ID, Reference ID, Reference Sequence, Privacy, Title, Note\n"
+        "ID, Data ID, Associate ID, Reference ID, Reference Sequence, Privacy,"
+        " Title, Note, UID, Last Changed\n"
     );
 }
 
@@ -276,7 +305,9 @@ void recMedia::CsvWrite( std::ostream& out, idt id )
     recCsvWrite( out, med.FGetRefSeq() );
     recCsvWrite( out, med.FGetPrivacy() );
     recCsvWrite( out, med.FGetTitle() );
-    recCsvWrite( out, med.FGetNote(), '\n' );
+    recCsvWrite( out, med.FGetNote() );
+    recCsvWrite( out, med.FGetUid() );
+    recCsvWrite( out, med.FGetChanged(), '\n' );
 }
 
 bool recMedia::CsvRead( std::istream& in )
@@ -289,6 +320,8 @@ bool recMedia::CsvRead( std::istream& in )
     recCsvRead( in, f_privacy );
     recCsvRead( in, f_title );
     recCsvRead( in, f_note );
+    recCsvRead( in, f_uid );
+    recCsvRead( in, f_changed );
     return bool( in );
 }
 

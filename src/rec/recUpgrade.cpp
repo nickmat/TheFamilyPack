@@ -41,8 +41,8 @@
 const int recVerMajor = 0;
 const int recVerMinor = 0;
 const int recVerRev = 10;
-const int recVerTest = 43;                       // <<======<<<<
-const char* recFullVersion = "TFPD-v0.0.10.43";  // <<======<<<<
+const int recVerTest = 44;                       // <<======<<<<
+const char* recFullVersion = "TFPD-v0.0.10.44";  // <<======<<<<
 
 // This is the database Media-only version that this program can work with.
 // If the full version matches, then this is assumed to match as well.
@@ -2343,6 +2343,62 @@ void UpgradeTest0_0_10_42to0_0_10_43( const wxString& dbname )
     recDb::GetDb()->ExecuteUpdate( update );
 }
 
+void UpgradeTest0_0_10_43to0_0_10_44( const wxString& dbname )
+{
+    // Version 0.0.10.43 to 0.0.10.44
+
+    // Add fields 'uid' and 'changed' to Media.
+    wxString update =
+        "BEGIN;\n";
+
+    update <<
+        "CREATE TABLE \"" << dbname << "\".NewMedia (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  data_id INT NOT NULL REFERENCES MediaData(id),\n"
+        "  ass_id INT NOT NULL REFERENCES Associate(id),\n"
+        "  ref_id INT NOT NULL REFERENCES Reference(id),\n"
+        "  ref_seq INT NOT NULL,\n"
+        "  privacy INT NOT NULL,\n"
+        "  title TEXT NULL,\n"
+        "  note, TEXT NULL,\n"
+        "  uid TEXT NOT NULL,\n"
+        "  changed INTEGER NOT NULL\n"
+        ");\n"
+
+        // Remove null values on record 0.
+        "UPDATE \"" << dbname << "\".Media SET title='', note=''"
+        " WHERE id=0;"
+
+        "INSERT INTO \"" << dbname << "\".NewMedia"
+        " (id, data_id, ass_id, ref_id, ref_seq, privacy, title, note, uid, changed)\n"
+        " SELECT id, data_id, ass_id, ref_id, ref_seq, privacy, title, note, '', 2459770\n"
+        " FROM \"" << dbname << "\".Media;\n"
+
+        "DROP TABLE \"" << dbname << "\".Media;\n"
+        "ALTER TABLE \"" << dbname << "\".NewMedia RENAME TO Media;\n"
+        ;
+
+    // Fill Media table uid field
+    wxString query = "SELECT id FROM \"" + dbname + "\".Media WHERE id>0;\n"; // Get id list
+    wxSQLite3Table table = recDb::GetDb()->GetTable( query );
+    size_t size = (size_t) table.GetRowCount();
+    for( size_t i = 0; i < size; i++ ) {
+        table.SetRow( i );
+        update << "UPDATE \"" << dbname << "\".Media"
+            " SET uid='" << recCreateUid() << "'"
+            " WHERE id=" << table.GetAsString( 0 ) << ";\n"
+            ;
+    }
+    update <<
+        "UPDATE \"" << dbname << "\".Media SET changed=0 WHERE id=0;\n"
+
+        "UPDATE \"" << dbname << "\".Version SET test=44 WHERE id=1;\n"
+        "COMMIT;\n"
+        ;
+
+    recDb::GetDb()->ExecuteUpdate( update );
+}
+
 void UpgradeRev0_0_10toCurrent( int test, const wxString& dbname )
 {
     switch( test )
@@ -2390,6 +2446,7 @@ void UpgradeRev0_0_10toCurrent( int test, const wxString& dbname )
     case 40: UpgradeTest0_0_10_40to0_0_10_41( dbname );
     case 41: UpgradeTest0_0_10_41to0_0_10_42( dbname );
     case 42: UpgradeTest0_0_10_42to0_0_10_43( dbname );
+    case 43: UpgradeTest0_0_10_43to0_0_10_44( dbname );
     }
 }
 

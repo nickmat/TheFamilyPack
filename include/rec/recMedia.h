@@ -33,7 +33,7 @@
 class recMedia;
 using  recMediaVec = std::vector< recMedia >;
 
-class recMedia : public recDbT<recMedia>
+class recMedia : public recDbT<recMedia>, public recUidT<recMedia>
 {
 public:
     enum class DataInc {

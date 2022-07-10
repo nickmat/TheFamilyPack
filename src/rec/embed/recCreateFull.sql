@@ -130,8 +130,8 @@ CREATE TABLE Event (
 );
 
 INSERT INTO Event (
-    id, title, higher_id, type_id, date1_id, date2_id, place_id, note, date_pt)
-    VALUES(0,'',0,0,0,0,0,'',0);
+  id, title, higher_id, type_id, date1_id, date2_id, place_id, note, date_pt)
+  VALUES(0,'',0,0,0,0,0,'',0);
 
 CREATE TABLE Eventa (
   id INTEGER PRIMARY KEY,
@@ -148,8 +148,8 @@ CREATE TABLE Eventa (
 );
 
 INSERT INTO Eventa (
-    id, title, ref_id, type_id, date1_id, date2_id, place_id, note, date_pt, uid, changed)
-    VALUES(0,'',0,0,0,0,0,'',0,'',0);
+  id, title, ref_id, type_id, date1_id, date2_id, place_id, note, date_pt, uid, changed)
+  VALUES(0,'',0,0,0,0,0,'',0,'',0);
 
 CREATE TABLE EventaPersona (
   id INTEGER PRIMARY KEY,
@@ -161,8 +161,8 @@ CREATE TABLE EventaPersona (
 );
 
 INSERT INTO EventaPersona (
-    id, eventa_id, per_id, role_id, note, per_seq)
-    VALUES(0,0,0,0,'',0);
+  id, eventa_id, per_id, role_id, note, per_seq)
+  VALUES(0,0,0,0,'',0);
 
 CREATE TABLE EventEventa (
   id INTEGER PRIMARY KEY,
@@ -380,7 +380,7 @@ CREATE TABLE FamilyIndividual (
 );
 
 INSERT INTO FamilyIndividual (
-    id, fam_id, ind_id, seq_child,seq_parent) VALUES(0,0,0,0,0);
+  id, fam_id, ind_id, seq_child,seq_parent) VALUES(0,0,0,0,0);
 
 CREATE TABLE Gallery (
   id INTEGER PRIMARY KEY,
@@ -426,8 +426,8 @@ CREATE TABLE IndividualEvent (
 );
 
 INSERT INTO IndividualEvent (
-    id, higher_id, ind_id, event_id, role_id, note, ind_seq)
-    VALUES(0,0,0,0,0,'',0);
+  id, higher_id, ind_id, event_id, role_id, note, ind_seq)
+  VALUES(0,0,0,0,0,'',0);
 
 CREATE TABLE IndividualPersona (
   id INTEGER PRIMARY KEY,
@@ -447,12 +447,14 @@ CREATE TABLE Media (
   ref_seq INT NOT NULL,
   privacy INT NOT NULL,
   title TEXT NULL,
-  note, TEXT NULL
+  note TEXT NULL,
+  uid TEXT NOT NULL,
+  changed INTEGER NOT NULL
 );
 
 INSERT INTO Media (
-    id, data_id, ass_id, ref_id, ref_seq, privacy)
-    VALUES(0,0,0,0,0,0);
+  id, data_id, ass_id, ref_id, ref_seq, privacy, title, note, uid, changed)
+  VALUES(0,0,0,0,0,0,'','','',0);
 
 /* Table MediaData created in recCreateMedia.sql */
 
@@ -557,7 +559,7 @@ CREATE TABLE Reference (
 );
 
 INSERT INTO Reference (id, title, statement, uid, changed)
-    VALUES(0,'','','',0);
+  VALUES(0,'','','',0);
 
 CREATE TABLE ReferenceEntity (
   id INTEGER PRIMARY KEY,
@@ -648,7 +650,7 @@ INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 1, 1, 'NI');
 /* Table Version created in recCreateCommon.sql */
 
 /* The Version table row 1 is the full TFPD database */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 43);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 44);
 
 COMMIT;
 
