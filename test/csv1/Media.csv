@@ -1,5 +1,5 @@
-ID, Data ID, Associate ID, Reference ID, Reference Sequence, Privacy, Title, Note
+ID, Data ID, Associate ID, Reference ID, Reference Sequence, Privacy, Title, Note, UID, Last Changed
 1,1,0,5264,1,0,"Jack Matthews","<!-- HTML -->
 <div class=""img-text""><p><b><a href=""tfpr:Pa11223"">Jack Ernest Matthews</a></b>.</p></div>
-"
-56,2,1,11,1,0,"1881 Census, John S and Mariannie Malings and family Original",""
+","56C1252C612DA1A6D391165B89481B7A7812",2459770
+56,2,1,11,1,0,"1881 Census, John S and Mariannie Malings and family Original","","3B6E4E792686AFC70159339A01EA63E4EB01",2459770
