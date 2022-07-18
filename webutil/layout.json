@@ -47,7 +47,7 @@
                     { "name": "family", "label": "Family", "subtitle": "Family Entries" },
                     { "name": "individual", "label": "Individual", "subtitle": "Individual Entries" }
                 ]},
-                { "folder": "db", "name": "database", "label": "Database", "title": "Database V0.0.10.26", "subtitle": "Introduction", "content": [
+                { "folder": "db", "name": "database", "label": "Database", "title": "Database V0.0.10.44", "subtitle": "Introduction", "content": [
                     { "name": "dbdesign", "label": "Definitions", "subtitle": "Design", "css": "big-list" },
                     { "name": "dbdiagram", "label": "Diagram" },
                     { "folder": "sub", "name": "subsystems", "label": "Sub-Systems", "subtitle": "Sub-Systems", "content": [
