@@ -75,7 +75,10 @@
 
 <h2>Subsystems</h2>
 <p>
- We can first divide the database design into three parts, Administration, Evidence and Conclusions. The Conclusions part can then further be divided into Interpretation, Results and Common for the elements common to both.
+  We first divide the database design into three parts,
+  Administration, Evidence and Conclusions.
+  The Conclusions part can then further be divided into Interpretation,
+  Results and Common for the elements shared between them.
 </p>
 
 <h3>Administration</h3>
@@ -95,23 +98,28 @@
 
 <h3>Evidence</h3>
 <p>
- The evidence section centres around the Reference table which is supported by the Source, Citation and Repository subsystems.
+ The evidence section centres around the Reference object which is supported by the Source, Citation and Repository subsystems.
 </p>
 <dl>
- <dt>Sources</dt>
- <dd>Covers Citations, Sources and Repositories.</dd>
- <dt>References</dt>
- <dd>Document transcriptions, descriptions and notes that make up the evidence.
+  <dt>References</dt>
+  <dd>Document transcriptions, descriptions and notes that make up the evidence.</dd>
+  <dt>Media</dt>
+  <dd>Digital media that supports the References. Currently scans and photos.</dd>
+  <dt>Citations</dt>
+  <dd>Covers Citations and Repositories. Still being developed.</dd>
 </dl>
 
 <h3>Conclusions</h3>
 <p>
- The information presented in the Evidence section is broken down into its constituent parts: Sources, Dates, Places, Personas, Names, Relationships and Eventas. Personas and Eventas are used to glue all these entities back together again and are linked to the Events, Individuals and Families that are the end results of the process.
+  The information presented in the Evidence section is broken down into its constituent parts:
+  Dates, Places, Personas, Names and Eventas.
+  Personas and Eventas are used to glue all these entities back together again and are linked to the Events,
+  Individuals and Families that are the end results of the process.
 </p>
 
 <h4>Common</h4>
 <p>
- These subsystems are used by both the Interpretation and Results.
+ These subsystems are shared by both the Interpretation and Results.
 </p>
 <dl>
  <dt>Dates</dt>
@@ -132,7 +140,7 @@
  <dt>Personas</dt>
  <dd>The Persona is the representation of a person as they appear in a reference document.</dd>
  <dt>Eventas</dt>
- <dd>The Eventa is the representation of an event as it appears in a reference document.</dd>
+ <dd>The Eventa is the representation of an event as described in a reference document.</dd>
 </dl>
 
 <h4>Results</h4>

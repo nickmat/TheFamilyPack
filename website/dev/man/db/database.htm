@@ -56,33 +56,86 @@
 
 <blockquote class="long">
 <p>
- To understand the mysteries of life you must look around and within. You will see patterns everywhere; patterns that seem to manifest themselves over and over again. These patterns exist intertwined within nature and man bridging the gap between the enigma of self and universe. You see them in spiraling galaxies and the Mandelbrot fractal of fossilized Ammonoidea; growing from the unknown to atoms to molecules to solar systems to galaxies to the paradoxical expanses of the universe with origins and destinations unknown; just like us in birth and death. The similarities of tree branches, rivers and blood veins. The power of cellular division and nuclear fission, the patterns of finger prints like endoplasmic reticulum, or a black opal's play of fire like the nebula of supernova. Moon shots are like protoplasmic lurches, while simple thoughts and observations of the nature around us take us beyond the unknown. The clues to the great mystery are all around us and deep within us.
+ To understand the mysteries of life you must look around and within.
+ You will see patterns everywhere; patterns that seem to manifest themselves over and over again.
+ These patterns exist intertwined within nature and man bridging the gap between the enigma of self and universe.
+ You see them in spiraling galaxies and the Mandelbrot fractal of fossilized Ammonoidea;
+ growing from the unknown to atoms to molecules to solar systems to galaxies to the paradoxical expanses of the universe
+ with origins and destinations unknown; just like us in birth and death.
+ The similarities of tree branches, rivers and blood veins. The power of cellular division and nuclear fission,
+ the patterns of finger prints like endoplasmic reticulum, or a black opal's play of fire like the nebula of supernova.
+ Moon shots are like protoplasmic lurches, while simple thoughts and observations of the nature around us take us beyond the unknown.
+ The clues to the great mystery are all around us and deep within us.
 </p>
 <p class="attribute">Bryant H McGill</p>
 </blockquote>
 
 <h2>Introduction</h2>
 <p>
- Whilst the starting point for this database was the <a href="http://www.ngsgenealogy.org/cs/GenTech_Projects">GenTech Genealogical Data Model</a>, significant changes have been made and with more to come, the TFP database should be treated in its own right as a separate design.
+  Whilst the starting point for this database was the
+  <a href="http://www.ngsgenealogy.org/cs/GenTech_Projects">GenTech Genealogical Data Model</a>,
+  significant changes have been made and with more to come,
+  the TFP database should be treated in its own right as a separate design.
 </p>
 <p>
- The current status of the database can best be described as experimental. Most of the entities in the diagram have been implemented in a test program, but some areas - such as data confidence (or Surety) are missing. Other areas, like the Places subsystem are in need of a major change. Whilst yet others like the Citation/Source entities are carried over wholesale from the GDM and have yet to be fully tested.
+  The current status of the database can best be described as experimental.
+  Most of the entities in the diagram have been implemented in a test program,
+  but some areas - such as data confidence (or Surety) are missing.
+  Other areas, like the Places subsystem are in need of a major change.
+  The Date entity is due to be replaced using the new
+<a href="http://historycal.org">HistoryCal library</a>
 </p>
 <p>
- The database is divided into three broad areas, Administration, Evidence and Conclusions. The administration area is the lest developed, but will be the area where overall genealogy project using the database is organised. The evidence section is where all the factual data is held and is probably the area that is most experimental. The conclusions area is where the collected facts are organised and turned into genealogy trees and is further divided into Interpretation and Results with a Common area supporting them.
+  As defined by the GenTech model, the database is divided into three broad areas,
+  Administration, Evidence and Conclusions.
+  The administration area is the lest developed,
+  but will be the area where overall genealogy project using the database is organised.
+  The evidence section is where all the factual data is held
+  and is probably the area that is most experimental.
+  The conclusions area is where the collected facts are organised
+  and turned into genealogy trees.
+  The conclusions can be further divided into Interpretation and Results
+  with a Common area shared between these sub-divisions.
 </p>
 <h2>General Principles</h2>
 <p>
- The data is held in a relational database using the SQL standard. Currently SQLite3 is used but other SQL systems may be used in the future.
+  The data is held in a relational database using the SQL standard.
+  Database files have the *.tfpd extension but are otherwise standard SQLite3 files.
 </p>
 <p>
- In describing the database TFP uses the following conventions. SQL keywords are written in UPPER CASE, table names in CamelCase and column names in lower_case with underscores as necessary. Table names are generally written in full whilst column names are often abbreviated.
+  In describing the database TFP uses the following conventions.
+  SQL keywords are written in UPPER CASE,
+  table names in CamelCase
+  and column names in lower_case with underscores as necessary.
+  Table names are singular and generally written in full
+  whilst column names are often abbreviated.
 </p>
 <p>
- All tables will include an explicit unique id key field, even when the field is not strictly needed. All user created records have a positive id's greater than zero. Zero id's are reserved, their meaning depending on the context. Negative id's are used for common data copied from the common database.
+  All tables will include an explicit unique id key field,
+  even when the field is not strictly needed.
+  All user created records have a positive id's greater than zero.
+  Zero id's are reserved, their meaning depending on the context.
+  Negative id's are used for common data and are issued centrally.
 </p>
 <p>
- First class objects are associated with a short alpha code - such as 'E' for Event and 'Ea' for Eventa. These codes may be combined the records id key and used as a unique identifier for that record. These codes, together with the closely linked display page codes, are listed on the "<a href='../dev/recprefix.htm'>Record Prefix</a>" page.
+  Records can be associated with a short alpha code
+  - such as 'E' for Event and 'Ea' for Eventa.
+  These codes are combined the records id number
+  and used as a unique identifier for that record.
+  These codes, together with the closely linked display page codes,
+  are listed on the "<a href='../../../dev/recprefix.htm'>Record Prefix</a>" page.
+</p>
+<h2>Database Types</h2>
+<p>
+  There are currently two types database files: a <b>full</b> database and a <b>media-data-only</b> database.
+</p>
+<p>
+  Media, currently consisting of scans and photos, are stored within the database.
+  Because there may be a large number of these, the database may become bloated
+  which, in turn, may compromise the program's performance.
+  To avoid this, the MediaData records may be stored in separate databases
+  which are attached to the main database as required.
+  They are known as associated databases and controlled with the Associate table.
 </p>
 </div><!--id=content-->
 
