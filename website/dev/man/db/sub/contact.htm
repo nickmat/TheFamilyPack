@@ -55,12 +55,6 @@
 </p>
 
 <h3>Contact List</h3>
-<table class="basic rfloat">
- <tr><th colspan="3">ContactList table Core Data</th></tr>
- <tr><th>[id]</th><th>[ind_id]</th><th> </th></tr>
- <tr><td>0</td><td>NULL</td><td>List associated with Unstated Reasearcher</td></tr>
- <tr><td>1</td><td>NULL</td><td>List associated with initial default Reasearcher</td></tr>
-</table>
 <p>
  This table is used to collect the various contact values available for a single entity.
  It is expected that most contact lists will be associated with Individuals
@@ -69,26 +63,29 @@
 </p>
 <p>
  The Contact List may also be pointed to by a Researcher entry
- (and thus indirectly by a User) and by a Repository.
+ and this is the means of connecting a Researcher's to an Individual in the database.
 </p>
-
+<p>
+  A Repository record can also point to a ContactList  to record its contact details.
+</p>
 <h3>Contact</h3>
 <p>
- The Contact value <span class="field">[val]</span> is normally a text string,
- but could in some cases be a number or ID.
+ The Contact value <span class="field">[val]</span> is a multi line text string.
+ A future version may use this for an ID number, to point to an Place record.
 </p>
 
 <h3>Contact Type</h3>
 
 <table class="basic rfloat">
- <tr><th colspan="3">ContactType table Core Data</th></tr>
- <tr><th>[id]</th><th>[name]</th><th> </th></tr>
- <tr><td>0</td><td> </td><td>Unstated type</td></tr>
- <tr><td>-1</td><td>Address</td><td></td></tr>
- <tr><td>-2</td><td>Telephone</td><td></td></tr>
- <tr><td>-3</td><td>Mobile</td><td></td></tr>
- <tr><td>-4</td><td>Email</td><td></td></tr>
- <tr><td>-5</td><td>Website</td><td></td></tr>
+ <tr><th colspan="5">ContactType table Core Data</th></tr>
+ <tr><th>[id]</th><th>[name]</th><th>[uid]</th><th>[changed]</th><th> </th></tr>
+ <tr><td>0</td><td> </td><td></td><td></td><td>Unstated type</td></tr>
+ <tr><td>-1</td><td>Address</td><td>88815CB7641A5C15A6B47B40E69DE654DD52</td><td>2459664</td><td></td></tr>
+ <tr><td>-2</td><td>Telephone</td><td>7143E6D4D916C849F2B4FC6554AE5B421483</td><td>2459664</td><td></td></tr>
+ <tr><td>-3</td><td>Mobile</td><td>D5914CBACD1E86412EB4771C1E015BCBD882</td><td>2459664</td><td></td></tr>
+ <tr><td>-4</td><td>Email</td><td>2A56952B37D688AD0F795B059A82619E857A</td><td>2459664</td><td></td></tr>
+ <tr><td>-5</td><td>Website</td><td>0913E9393D6F676F74252E9F18516D201CFD</td><td>2459664</td><td></td></tr>
+ <tr><td>-6</td><td>Fax</td><td>D717ACECD3D1DF6E663C9788BFB330350F50</td><td>2459664</td><td></td></tr>
 </table>
 
 <p>
