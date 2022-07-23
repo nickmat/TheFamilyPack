@@ -65,8 +65,8 @@
 
 <table class="basic core rfloat">
   <tr><th colspan="3">User table Core Data</th></tr>
-  <tr><th>[id] ID</th><th>[res_id] Researcher</th><th></th></tr>
-  <tr><td>1 (U1)</td><td>-1 (Re-1)</td><td>The initial User</td></tr>
+  <tr><th>[id]</th><th>[res_id]</th><th></th></tr>
+  <tr><td>1</td><td>-1</td><td>The initial User</td></tr>
 </table>
 <p>
   The User table is where settings that personalise the database and its display.
@@ -87,16 +87,16 @@
 
 <h3 class='clear'>User Settings</h3>
 
-<table class="basic lfloat" width="45%">
- <tr><th colspan="4">User Settings Properties</th></tr>
+<table class="basic lfloat">
+ <tr><th colspan="4">User Setting Properties</th></tr>
  <tr><th>Property</th><th>Description</th><th>Default Value</th><th>Notes</th></tr>
- <tr><td>1</td><td>Home Screen</td><td>'NI' (Name Index)</td>
+ <tr><td>1</td><td>Home Screen</td><td>"NI" (Name Index)</td>
   <td>The initial page displayed and the page<br>linked to the 'Home' button.</td></tr>
 </table>
-<table class="basic core rfloat">
+<table class="basic core lfloat">
  <tr><th colspan="4">UserSetting table Core Data</th></tr>
- <tr><th>[id] ID</th><th>[user_id] User</th><th>[property]</th><th>[val] Value</th></tr>
- <tr><td>1</td><td>1 (U1)</td><td>1</td><td>'NI'</td></tr>
+ <tr><th>[id]</th><th>[user_id]</th><th>[property]</th><th>[val]</th></tr>
+ <tr><td>1</td><td>1</td><td>1</td><td>"NI"</td></tr>
 </table>
 <p>
   The only user setting available so far, is the Home Page setting.
@@ -106,11 +106,11 @@
 
 <h3 class='clear'>Researcher</h3>
 
-<table class="basic core rfloat">
-  <tr><th colspan="5">Researcher table Core Data</th></tr>
-  <tr><th>[id] ID</th><th>[name]</th><th>[comments]</th><th>[con_list_id]</th><th></th></tr>
-  <tr><td>-1 (Re-1)</td><td>'Anonymous'</td><td>NULL</td><td>NULL</td><td>A general anonymous setting</td></tr>
-  <tr><td>0</td><td>''</td><td>NULL</td><td>NULL</td><td>Unstated</td></tr>
+<table class="basic core">
+  <tr><th colspan="7">Researcher table Core Data</th></tr>
+  <tr><th>[id]</th><th>[name]</th><th>[comment]</th><th>[con_list_id]</th><th>[uid]</th><th>[changed]</th><th></th></tr>
+  <tr><td>-1</td><td>Anonymous</td><td>NULL</td><td>NULL</td><td>E16C3575699D77C1BABD0C582A44C6FA3E4A</td><td>2459675</td><td>A general anonymous setting</td></tr>
+  <tr><td>0</td><td></td><td>NULL</td><td>NULL</td><td></td><td>0</td><td>Unstated</td></tr>
 </table>
 
 <p>
@@ -130,6 +130,13 @@
   This is achieved using the <b>Contact List</b> record's <b>ind_id</b> field.
 </p>
 
+<h2>Database Creation</h2>
+<p>
+  When the code library creates a new full database,
+  the initial values will be set as shown above.
+  However, when The Family Pack program creates a new full database a <b><a href="../../tutorial/index.htm">Setup Database</a></b>
+  dialog will be presented to allow for a custom <b>Researcher</b> and Home Page to be entered.
+</p>
 </div><!--id=content-->
 
  <div class="crumbs">
