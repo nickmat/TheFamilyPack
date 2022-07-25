@@ -51,21 +51,21 @@
                     { "name": "dbdesign", "label": "Definitions", "subtitle": "Design", "css": "big-list" },
                     { "name": "dbdiagram", "label": "Diagram" },
                     { "folder": "sub", "name": "subsystems", "label": "Sub-Systems", "subtitle": "Sub-Systems", "content": [
-                        { "name": "system", "label": "System", "subtitle": "System Settings" },
                         { "name": "version", "label": "Version", "subtitle": "Version Control" },
-                        { "name": "contact", "label": "Contact", "subtitle": "Contact Sub-System" },
+                        { "name": "system", "label": "System", "subtitle": "System Settings" },
                         { "name": "user", "label": "User", "subtitle": "User Sub-System" },
-                        { "name": "citations", "label": "Citations", "subtitle": "Citations Sub-System" },
+                        { "name": "contact", "label": "Contact", "subtitle": "Contact Sub-System" },
                         { "name": "references", "label": "References", "subtitle": "Reference Sub-System" },
+                        { "name": "citations", "label": "Citations", "subtitle": "Citations Sub-System" },
+                        { "name": "media", "label": "Media", "subtitle": "Media Sub-System" },
                         { "name": "dates", "label": "Dates", "subtitle": "Date Sub-System" },
                         { "name": "places", "label": "Places", "subtitle": "Place Sub-System" },
                         { "name": "names", "label": "Names", "subtitle": "Name Sub-System" },
-                        { "name": "eventtypes", "label": "Event Types", "subtitle": "Event Type Sub-System" },
                         { "name": "personas", "label": "Personas", "subtitle": "Persona Sub-System" },
                         { "name": "eventas", "label": "Eventas", "subtitle": "Eventa Sub-System" },
-                        { "name": "individuals", "label": "Individuals", "subtitle": "Individuals & Families" },
+                        { "name": "eventtypes", "label": "Event Types", "subtitle": "Event Type Sub-System" },
                         { "name": "events", "label": "Events", "subtitle": "Event Sub-System" },
-                        { "name": "media", "label": "Media", "subtitle": "Media Sub-System" }
+                        { "name": "individuals", "label": "Individuals", "subtitle": "Individuals & Families" }
                     ]},
                     { "folder": "ov", "name": "overview", "label": "Overview", "content": [
                         { "name": "gentech-gtdm", "label": "GenTech GDM", "subtitle": "Differences to GenTech GDM" },
