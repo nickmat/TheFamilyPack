@@ -45,9 +45,38 @@
 </blockquote>
 
 <div class="diag"><img src="tfp-reference.png" alt="Reference Subsystem" /></div>
-<h2>References</h2>
+<h2>Reference Document</h2>
 <p>
- The Reference Document is the at the centre of the evidence database. It consists of an id, title and statement - the statement being an XML document based on the TEI (Text Encoding Initiative) specification. The specification will be extended to enable words and phrases to be linked to a ReferenceEntity which in turn links to one of the following records: Source, Date, Place, Name, Relationship and Event. These records may, in turn, refer to a persona.
+ The Reference Document is the at the centre of the evidence database.
+ And the centre of Reference Document is the statement.
+</p>
+<p>
+ Reference records are currently organized as a tree structure
+ using the <b>higher_id</b> field. This may change in the future.
+</p>
+<p>
+ Each record is attributed to a researcher with the <b>res_id</b> field.
+ By default, this is the current user at the time the record is created.
+</p>
+
+<h3>Reference Statement</h3>
+<p>
+ The reference <b>statement</b> is a text field which describes some aspect of the
+ family history.
+ In may be a statement from the researcher, a transcription of a historical document,
+ a description of a family photograph, or a summary of other documents.
+</p>
+<p>
+ The format of the text either normal text or marked up html format.
+ In either case the text can be linked to other records
+ that have been created to support the document, using the &lt;a&gt; tag.
+ In the future, a mark-down dialect will be developed. 
+</p>
+<p>
+ A reference document for standard types of documents
+ (Census, Birth, deaths and Marriages etc.)
+ can be created from template documents,
+ which will do most of the work of entering the various records.
 </p>
 
 </div><!--id=content-->
