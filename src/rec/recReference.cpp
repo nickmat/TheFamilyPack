@@ -582,6 +582,28 @@ void recReferenceEntity::Create( idt refID, Type type, idt entID, int* pseq )
     re.Save();
 }
 
+bool recReferenceEntity::CreateIfNeeded( idt refID, Type type, idt entID, const wxString& dbname )
+{
+    wxSQLite3StatementBuffer sql;
+
+    sql.Format(
+        "SELECT COUNT(*) FROM \"%s\".ReferenceEntity"
+        " WHERE ref_id=" ID " AND entity_type=%u AND entity_id=" ID ";",
+        UTF8_( dbname ), refID, static_cast<unsigned>(type), entID
+    );
+    if( s_db->ExecuteScalar( sql ) > 0 ) {
+        return false;
+    }
+    recReferenceEntity re;
+    re.f_id = 0;
+    re.f_ref_id = refID;
+    re.f_entity_type = type;
+    re.f_entity_id = entID;
+    re.f_sequence = recReference::GetNextEntitySequence( refID );
+    re.Save();
+    return true;
+}
+
 wxString recReferenceEntity::GetEntityIdStr() const
 {
     switch( f_entity_type )

@@ -82,6 +82,7 @@ public:
     void FSetSequence( int seq ) { f_sequence = seq; }
 
     static void Create( idt refID, Type type, idt entID, int* pseq = NULL );
+    static bool CreateIfNeeded( idt refID, Type type, idt entID, const wxString& dbname = "Main" );
 
     wxString GetTypeStr() const { return sm_typeStr[f_entity_type]; }
     static wxString GetTypeStr( Type etype ) { return sm_typeStr[etype]; }
