@@ -169,7 +169,6 @@ public:
     static void RemovePlace( idt placeID, const wxString& dbname = "Main" ); // removes place if found, replacing with 0
 
     // Delete Event and remove all references to it.
-    bool RemoveFromDatabase( const wxString& dbname = "Main" );
     static bool RemoveFromDatabase( idt id, const wxString& dbname = "Main" );
 
     static bool DeleteIfOrphaned( idt id, const wxString& dbname = "Main" );

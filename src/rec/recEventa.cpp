@@ -784,49 +784,44 @@ void recEventa::RemovePlace( idt placeID, const wxString& dbname )
     s_db->ExecuteUpdate( sql );
 }
 
-bool recEventa::RemoveFromDatabase( const wxString& dbname )
-{
-    if( f_id <= 0 ) {
-        // Don't delete universal events.
-        return false;
-    }
-    wxSQLite3StatementBuffer sql;
-
-    // TODO: Ensure Event is removed from reference statement.
-    sql.Format(
-        "DELETE FROM \"%s\".FamilyIndEventa WHERE eventa_id=" ID ";",
-        UTF8_( dbname ), f_id
-    );
-    s_db->ExecuteUpdate( sql );
-    sql.Format(
-        "DELETE FROM \"%s\".FamilyEventa WHERE eventa_id=" ID ";",
-        UTF8_( dbname ), f_id
-    );
-    s_db->ExecuteUpdate( sql );
-    sql.Format(
-        "DELETE FROM \"%s\".EventEventa WHERE eventa_id=" ID ";",
-        UTF8_( dbname ), f_id
-    );
-    s_db->ExecuteUpdate( sql );
-    sql.Format(
-        "DELETE FROM \"%s\".EventaPersona WHERE eventa_id=" ID ";",
-        UTF8_( dbname ), f_id
-    );
-    s_db->ExecuteUpdate( sql );
-
-    bool ret = Delete();
-    recEventType::DeleteIfOrphaned( f_type_id, dbname );
-    return ret;
-}
-
 bool recEventa::RemoveFromDatabase( idt id, const wxString& dbname )
 {
     if( id <= 0 ) {
         // Don't delete universal events.
         return false;
     }
-    recEventa eve( id, dbname );
-    return eve.RemoveFromDatabase( dbname );
+    recEventa ea( id, dbname );
+    bool ret = Delete( id );
+
+    recEventType::DeleteIfOrphaned( ea.FGetTypeID(), dbname );
+    recDate::DeleteIfOrphaned( ea.FGetDate1ID(), dbname );
+    recDate::DeleteIfOrphaned( ea.FGetDate2ID(), dbname );
+    recPlace::DeleteIfOrphaned( ea.FGetPlaceID(), dbname );
+
+    // TODO: Ensure Event is removed from reference statement.
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "DELETE FROM \"%s\".FamilyIndEventa WHERE eventa_id=" ID ";",
+        UTF8_( dbname ), id
+    );
+    s_db->ExecuteUpdate( sql );
+    sql.Format(
+        "DELETE FROM \"%s\".FamilyEventa WHERE eventa_id=" ID ";",
+        UTF8_( dbname ), id
+    );
+    s_db->ExecuteUpdate( sql );
+    sql.Format(
+        "DELETE FROM \"%s\".EventEventa WHERE eventa_id=" ID ";",
+        UTF8_( dbname ), id
+    );
+    s_db->ExecuteUpdate( sql );
+
+    recIdVec eapaIDs = GetEventaPersonaIDs( id, dbname );
+    for( idt eapaID : eapaIDs ) {
+        recEventaPersona::RemoveFromDatabase( eapaID, dbname );
+    }
+
+    return ret;
 }
 
 bool recEventa::DeleteIfOrphaned( idt id, const wxString& dbname )
