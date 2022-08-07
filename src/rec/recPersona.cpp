@@ -316,6 +316,15 @@ recIdVec recPersona::FindIndividualReferenceLink(
     return vec;
 }
 
+recIdVec recPersona::GetEventaPersonaIDs( idt paID, const wxString& dbname )
+{
+    return ExecuteIdVec(
+        "SELECT id FROM \"%s\".EventaPersona WHERE per_id=" ID
+        " ORDER BY per_seq;",
+        UTF8_( dbname ), paID
+    );
+}
+
 idt recPersona::Transfer(
     idt from_perID, const wxString& fromdb,
     idt to_refID, const wxString& todb )

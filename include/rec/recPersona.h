@@ -116,6 +116,11 @@ public:
     static recIdVec FindIndividualReferenceLink(
         idt indID, idt refID, const wxString& dbname = "Main" );
 
+    static recIdVec GetEventaPersonaIDs( idt eaID, const wxString& dbname = "Main" );
+    recIdVec GetEventaPersonaIDs( const wxString& dbname = "Main" ) const {
+        return GetEventaPersonaIDs( f_id, dbname );
+    }
+
     static idt Transfer(
         idt from_perID, const wxString& fromdb, idt to_refID, const wxString& todb );
 
