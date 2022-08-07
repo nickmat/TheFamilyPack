@@ -192,6 +192,8 @@ public:
     static std::string CsvTitles();
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
+
+    static bool DeleteIfOrphaned( idt refID, const wxString& dbname = "Main" );
 };
 
 

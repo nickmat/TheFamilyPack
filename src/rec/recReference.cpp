@@ -456,6 +456,49 @@ bool recReference::CsvRead( std::istream& in )
     return bool( in );
 }
 
+bool recReference::DeleteIfOrphaned( idt refID, const wxString& dbname )
+{
+    if( refID <= 0 ) return false; // Don't remove common data.
+
+    int cnt = ExecuteInt(
+        "SELECT COUNT(*) FROM \"%s\".Reference WHERE higher_id=" ID ";",
+        dbname, refID
+    );
+    if( cnt > 0 ) return false;
+
+    recReference rec( refID, dbname );
+    bool ret = rec.Delete( dbname );
+
+    recResearcher::DeleteIfOrphaned( rec.FGetResID(), dbname );
+
+    recIdVec ids = recReference::GetCitationList( refID, dbname );
+    for( auto id : ids ) {
+        recCitation::RemoveFromDatabase( id, dbname );
+    }
+    ids = recReference::GetMediaList( refID, dbname );
+    recMedia::DataInc datainc = recMedia::DataInc::orphan;
+    for( auto id : ids ) {
+        recMedia::RemoveFromDatabase( id, datainc, dbname );
+    }
+    ids = recReference::GetDateList( refID, dbname );
+    for( auto id : ids ) {
+        recDate::RemoveFromDatabase( id, dbname );
+    }
+    ids = recReference::GetPlaceList( refID, dbname );
+    for( auto id : ids ) {
+        recPlace::RemoveFromDatabase( id, dbname );
+    }
+    ids = recReference::GetPersonaList( refID, dbname );
+    for( auto id : ids ) {
+        recPersona::RemoveFromDatabase( id, dbname );
+    }
+    ids = recReference::GetEventaList( refID, dbname );
+    for( auto id : ids ) {
+        recEventa::RemoveFromDatabase( id, dbname );
+    }
+    return ret;
+}
+
 //============================================================================
 //---------------------------[ recReferenceEntity ]---------------------------
 //============================================================================
