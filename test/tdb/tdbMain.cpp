@@ -738,9 +738,20 @@ int main( int argc, char** argv )
             wxFileName ass_fname( outDbAss1File );
             dset.SetAssociatedFileName( 1, string( ass_fname.GetName() ) );
         }
-        if( !dset.WriteTfpd() ) {
-            std::cout << "Error entering output database.\n";
-            return EXIT_FAILURE;
+        recDb::Begin();
+        try {
+            if( dset.WriteTfpd() ) {
+                recDb::Commit();
+            }
+            else {
+                recDb::Rollback();
+                std::cout << "Error entering output database.\n";
+                return EXIT_FAILURE;
+            }
+        }
+        catch( wxSQLite3Exception& e ) {
+            recDb::ErrorMessage( e );
+            recDb::Rollback();
         }
     }
 
