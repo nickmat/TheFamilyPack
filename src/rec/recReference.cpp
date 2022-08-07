@@ -337,7 +337,7 @@ idt recReference::Transfer(
     recReference new_ref( from_ref );
     new_ref.FSetID( to_refID );
     new_ref.FSetHigherID( to_higherID );
-    new_ref.FSetResID( to_refID );
+    new_ref.FSetResID( to_resID );
     new_ref.Save( todb );
     to_refID = new_ref.FGetID();
 
@@ -375,9 +375,44 @@ idt recReference::Transfer(
         }
         recPersona::Transfer( from_IDs[i], fromdb, to_refID, todb );
     }
-    
-    // TODO: recEventa::Transfer(...)
-    // TODO: recEntities::Transfer(...)
+    // recDate::Transfer(...)
+    from_IDs = recReference::GetDateList( from_refID, fromdb );
+    to_IDs = recReference::GetDateList( to_refID, todb );
+    size = std::max( from_IDs.size(), to_IDs.size() );
+    for( size_t i = 0; i < size; i++ ) {
+        if( i >= from_IDs.size() ) { // No more to copy.
+            recDate::RemoveFromDatabase( to_IDs[i], todb );
+            continue;
+        }
+        idt to_dateID = recDate::Transfer( from_IDs[i], fromdb, todb );
+        recReferenceEntity::Type date = recReferenceEntity::Type::TYPE_Date;
+        recReferenceEntity::CreateIfNeeded( to_refID, date, to_dateID, todb );
+    }
+    // recPlace::Transfer(...)
+    from_IDs = recReference::GetPlaceList( from_refID, fromdb );
+    to_IDs = recReference::GetPlaceList( to_refID, todb );
+    size = std::max( from_IDs.size(), to_IDs.size() );
+    for( size_t i = 0; i < size; i++ ) {
+        if( i >= from_IDs.size() ) { // No more to copy.
+            recPlace::RemoveFromDatabase( to_IDs[i], todb );
+            continue;
+        }
+        idt to_placeID = recPlace::Transfer( from_IDs[i], fromdb, todb );
+        recReferenceEntity::Type place = recReferenceEntity::Type::TYPE_Place;
+        recReferenceEntity::CreateIfNeeded( to_refID, place, to_placeID, todb );
+    }
+
+    // recEventa::Transfer(...)
+    from_IDs = recReference::GetEventaList( from_refID, fromdb );
+    to_IDs = recReference::GetEventaList( to_refID, todb );
+    size = std::max( from_IDs.size(), to_IDs.size() );
+    for( size_t i = 0; i < size; i++ ) {
+        if( i >= from_IDs.size() ) { // No more to copy.
+            recEventa::RemoveFromDatabase( to_IDs[i], todb );
+            continue;
+        }
+        recEventa::Transfer( from_IDs[i], fromdb, to_refID, todb );
+    }
 
     return to_refID;
 }
