@@ -63,6 +63,8 @@ struct RecordCounts
     size_t place = 0;
     size_t placepart = 0;
     size_t placeparttype = 0;
+    size_t reference = 0;
+    size_t referenceentity = 0;
     size_t relativedate = 0;
     size_t repository = 0;
     size_t researcher = 0;
@@ -93,6 +95,8 @@ struct RecordCounts
         place = recPlace::Count( m_dbname );
         placepart = recPlacePart::Count( m_dbname );
         placeparttype = recPlacePartType::Count( m_dbname );
+        reference = recReference::Count( m_dbname );
+        referenceentity = recReferenceEntity::Count( m_dbname );
         relativedate = recRelativeDate::Count( m_dbname );
         repository = recRepository::Count( m_dbname );
         researcher = recResearcher::Count( m_dbname );
@@ -122,6 +126,8 @@ struct RecordCounts
             place == rcs.place &&
             placepart == rcs.placepart &&
             placeparttype == rcs.placeparttype &&
+            reference == rcs.reference &&
+            referenceentity == rcs.referenceentity &&
             relativedate == rcs.relativedate &&
             repository == rcs.repository &&
             researcher == rcs.researcher
@@ -621,6 +627,52 @@ TEST_CASE( "Test recPlace::Transfer function", "[Place]" )
     recPlace::DeleteIfOrphaned( 1, g_maindb );
     rcnew.Reset();
     REQUIRE( rcnew.Equal( rc_main ) );
+}
+
+TEST_CASE( "Test recReference::Transfer function", "[Reference]" )
+{
+    const idt tref = 11;
+    RecordCounts rc_main( g_maindb ), rc_extdb( g_extdb1 );
+    const idt assID = 1;
+    wxString assdb = recAssociate::GetAttachedName( assID, g_maindb );
+    size_t md_count = recMediaData::Count( assdb );
+
+    REQUIRE( !recReference::Exists( 1, g_maindb ) );
+    REQUIRE( recReference::Exists( tref, g_extdb1 ) );
+    recReference from_ref( tref, g_extdb1 );
+
+    idt to_id = recReference::Transfer( tref, g_extdb1, g_maindb, assID );
+    REQUIRE( to_id == 1 );
+
+    RecordCounts rcnew( g_maindb );
+    REQUIRE( rcnew.citation == rc_main.citation + 1 );
+    REQUIRE( rcnew.citationpart == rc_main.citationpart + 6 );
+    REQUIRE( rcnew.citationparttype == rc_main.citationparttype + 6 );
+    REQUIRE( rcnew.contact == rc_main.contact + 7 );
+    REQUIRE( rcnew.contactlist == rc_main.contactlist + 2 );
+    REQUIRE( rcnew.contacttype == rc_main.contacttype + 2 );
+    REQUIRE( rcnew.date == rc_main.date + 5 );
+    REQUIRE( rcnew.eventa == rc_main.eventa + 12 );
+    REQUIRE( rcnew.eventapersona == rc_main.eventapersona + 20 );
+    REQUIRE( rcnew.eventtyperole == rc_main.eventtyperole + 3 );
+    REQUIRE( rcnew.media == rc_main.media + 1 );
+    REQUIRE( recMediaData::Count( assdb ) == md_count + 1 );
+    REQUIRE( rcnew.name == rc_main.name + 4 );
+    REQUIRE( rcnew.namepart == rc_main.namepart + 12 );
+    REQUIRE( rcnew.persona == rc_main.persona + 4 );
+    REQUIRE( rcnew.place == rc_main.place + 5 );
+    REQUIRE( rcnew.placepart == rc_main.placepart + 5 );
+    REQUIRE( rcnew.reference == rc_main.reference + 1 );
+    REQUIRE( rcnew.referenceentity == rc_main.referenceentity + 13 );
+    REQUIRE( rcnew.relativedate == rc_main.relativedate + 4 );
+    REQUIRE( rcnew.repository == rc_main.repository + 1 );
+    REQUIRE( rcnew.researcher == rc_main.researcher + 1 );
+
+    REQUIRE( recReference::DeleteIfOrphaned( to_id, g_maindb ) );
+
+    rcnew.Reset();
+    REQUIRE( rcnew.Equal( rc_main ) );
+    REQUIRE( recMediaData::Count( assdb ) == md_count );
 }
 
 TEST_CASE( "Test recRepository::Transfer function", "[Repository]" )
