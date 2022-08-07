@@ -393,8 +393,19 @@ public:
     }
     void InsertReferenceEntity( idt entID ) {
         m_reference_entity.insert( entID );
-        // Note, the entities referenced by this record have
-        // been inserted into their respective sets separately
+        recReferenceEntity re( entID );
+        switch( re.FGetEntityType() )
+        {
+        case recReferenceEntity::TYPE_Place:
+            InsertPlace( re.FGetEntityID() );
+            break;
+        case recReferenceEntity::TYPE_Date:
+            InsertDate( re.FGetEntityID() );
+            break;
+        case recReferenceEntity::TYPE_Name:
+            InsertName( re.FGetEntityID() );
+            break;
+        }
     }
     void InsertRelativeDate( idt rdID ) {
         m_relative_date.insert( rdID );
@@ -455,6 +466,7 @@ public:
     }
 
     bool WriteTfpd() {
+
         bool ret = EnterAssMediaData();
         ret = ret && EnterTable<recCitation>();
         ret = ret && EnterTable<recCitationPart>();
