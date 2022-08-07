@@ -395,36 +395,32 @@ bool recPersona::CsvRead( std::istream& in )
     return bool( in );
 }
 
-bool recPersona::RemoveFromDatabase( const wxString& dbname )
-{
-    if( f_id <= 0 ) {
-        return false;
-    }
-
-    recNameVec names = ReadNames( dbname );
-    for( size_t i = 0 ; i < names.size() ; i++ ) {
-        names[i].RemoveFromDatabase( dbname );
-    }
-    wxSQLite3StatementBuffer sql;
-    sql.Format(
-        "DELETE FROM \"%s\".EventaPersona WHERE per_id=" ID ";",
-        UTF8_( dbname ), f_id
-    );
-    s_db->ExecuteUpdate( sql );
-
-    Delete();
-    // TODO: Delete orphaned EventType and/or EventTypeRole
-    Clear();
-    return true;
-}
-
 bool recPersona::RemoveFromDatabase( idt id, const wxString& dbname )
 {
     if( id <= 0 ) {
         return false;
     }
-    recPersona per(id);
-    return per.RemoveFromDatabase();
+    recPersona per( id );
+    bool ret = Delete( id );
+
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "DELETE FROM \"%s\".IndividualPersona WHERE per_id=" ID ";",
+        UTF8_( dbname ), id
+    );
+    s_db->ExecuteUpdate( sql );
+
+    recIdVec names = GetNameListID( id, dbname );
+    for( idt nameID : names ) {
+        recName::RemoveFromDatabase( nameID, dbname );
+    }
+
+    recIdVec eapaIDs = GetEventaPersonaIDs( id, dbname );
+    for( idt eapaID : eapaIDs ) {
+        recEventaPersona::RemoveFromDatabase( eapaID, dbname );
+    }
+
+    return ret;
 }
 
 // End of recPersona.cpp file

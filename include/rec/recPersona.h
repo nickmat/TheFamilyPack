@@ -129,7 +129,6 @@ public:
     bool CsvRead( std::istream& in );
 
     // Delete Persona record and remove all records that reference it.
-    bool RemoveFromDatabase( const wxString& dbname = "Main" );
     static bool RemoveFromDatabase( idt id, const wxString& dbname = "Main" );
 };
 
