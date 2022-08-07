@@ -702,7 +702,7 @@ int main( int argc, char** argv )
     wxString outDbFile = conf.Read( "/Output/Output-Database" );
     wxString outDbAss1File = conf.Read( "/Output/Output-Ass1" );
 
-    if( recDb::OpenDb( inDbFile ) == recDb::DbType::full ) {
+    if( !inDbFile.empty() && recDb::OpenDb( inDbFile ) == recDb::DbType::full ) {
         dset.Create( inRecords );
         if( wxDir::Exists( csvFolder ) ) {
             wxDir::Remove( csvFolder, wxPATH_RMDIR_RECURSIVE );
