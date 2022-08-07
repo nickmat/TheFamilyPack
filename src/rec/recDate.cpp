@@ -617,12 +617,11 @@ bool recDate::CsvRead( std::istream& in )
 
 bool recDate::DeleteIfOrphaned( idt id, const wxString& dbname )
 {
-    if( id <= 0 ) {
-        // Don't delete universal dates.
+    if( id <= 0 ) { // Don't delete common dates.
         return false;
     }
-    wxSQLite3StatementBuffer sql;
 
+    wxSQLite3StatementBuffer sql;
     sql.Format(
         "SELECT COUNT(*) FROM \"%s\".RelativeDate WHERE base_id=" ID ";",
         UTF8_( dbname ), id
@@ -688,10 +687,12 @@ bool recDate::RemoveFromDatabase( idt id, const wxString& dbname )
     recEventa::RemoveDates( id, dbname );
     recPlace::RemoveDates( id, dbname );
     recReferenceEntity::DeleteType( recReferenceEntity::TYPE_Date, id, dbname );
-    // If this is a relative date, remove the relative part.
     recDate date( id, dbname );
-    recRelativeDate::Delete( date.FGetRelID(), dbname );
-    return Delete( id, dbname );
+    bool ret = Delete( id, dbname );
+    if( date.FGetRelID() != 0 ) {
+        recRelativeDate::RemoveFromDatabase( date.FGetRelID(), dbname );
+    }
+    return ret;
 }
 
 
@@ -944,6 +945,9 @@ bool recRelativeDate::CsvRead( std::istream& in )
 
 void recRelativeDate::RemoveFromDatabase( idt rdID, const wxString& dbname )
 {
+    if( rdID <= 0 ) { // Don't delete common dates.
+        return;
+    }
     recRelativeDate rd( rdID, dbname );
     rd.Delete( dbname );
     recDate::DeleteIfOrphaned( rd.FGetBaseID(), dbname );

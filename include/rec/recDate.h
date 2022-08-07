@@ -191,7 +191,13 @@ public:
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
 
+    // If no one is using this record, delete it.
+    // If sub Date's are orphaned as well, delete them too.
     static bool DeleteIfOrphaned( idt dateID, const wxString& dbname = "Main" );
+
+    // Remove all sub Date's found.
+    // For all user Date's, replace Date id with 0 in Event, Eventa and Place records.
+    // If date is relative and base Date is orphaned, delete it.
     static bool RemoveFromDatabase( idt dateID, const wxString& dbname = "Main" );
 };
 
@@ -266,6 +272,7 @@ public:
     static void CsvWrite( std::ostream& out, idt id );
     bool CsvRead( std::istream& in );
 
+    // Delete the RelativeDate and if the base Date is orphaned, delete that.
     static void RemoveFromDatabase( idt rdID, const wxString& dbname = "Main" );
 };
 
