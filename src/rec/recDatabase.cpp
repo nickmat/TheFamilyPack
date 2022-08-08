@@ -48,6 +48,9 @@
 
 #include <wx/filename.h>
 
+#include <iostream>
+#include <fstream>
+
 // SQL script to create new database
 #include "recDatabaseCreate.h"
 
@@ -462,6 +465,27 @@ wxString recDb::GetDatabaseTypeDesc( DbType type )
         return _("Media Data");
     }
     return _( "Unknown" );
+}
+
+bool recDb::WriteCreateScript( const std::string& fname, const wxString& dbname )
+{
+    std::ofstream ofile( fname, std::ios::app );
+    if( !ofile ) {
+        return false;
+    }
+    DbType type = GetDatabaseType( dbname );
+    switch( type ) {
+    case DbType::full:
+        ofile << createCommonDb;
+        ofile << createMediaDb;
+        ofile << createFullDb;
+        break;
+    case DbType::media_data_only:
+        ofile << createCommonDb;
+        ofile << createMediaDb;
+        break;
+    }
+    return false;
 }
 
 void recDb::ErrorMessage( wxSQLite3Exception& e )
