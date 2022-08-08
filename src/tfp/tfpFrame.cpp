@@ -123,6 +123,7 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_DESC_CHART, TfpFrame::OnDescChart )
     EVT_MENU( tfpID_SYSTEM_SETTING, TfpFrame::OnSystemOptions )
     EVT_MENU( tfpID_USER_SETTING, TfpFrame::OnUserOptions )
+    EVT_MENU( tfpID_TOOLS_COMPACT, TfpFrame::OnToolsCompact )
     EVT_MENU( tfpID_TOOL_SYSTEM_CHECK, TfpFrame::OnSystemCheck )
     EVT_MENU( tfpID_WINDOW_NEW, TfpFrame::OnWindowNew )
     EVT_MENU( tfpID_WINDOW_CLOSE, TfpFrame::OnWindowClose )
@@ -999,6 +1000,11 @@ void TfpFrame::OnUserOptions( wxCommandEvent& event )
         recDb::ErrorMessage( e );
         recDb::Rollback();
     }
+}
+
+void TfpFrame::OnToolsCompact( wxCommandEvent& event )
+{
+    recDb::Vacuum();
 }
 
 void TfpFrame::OnSystemCheck( wxCommandEvent& event )
@@ -2241,6 +2247,7 @@ void TfpFrame::CreateFullMenuRW()
     wxMenu* menuTools = new wxMenu;
     menuTools->Append( tfpID_SYSTEM_SETTING, _( "&System Options..." ) );
     menuTools->Append( tfpID_USER_SETTING, _( "&User Options..." ) );
+    menuTools->Append( tfpID_TOOLS_COMPACT, _( "Compact &Database" ) );
     menuTools->Append( tfpID_TOOL_SYSTEM_CHECK, _( "Systems &Check" ) );
 
     m_menuWindow = new wxMenu;

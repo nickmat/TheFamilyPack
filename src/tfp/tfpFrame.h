@@ -158,6 +158,7 @@ private:
 
     void OnSystemOptions( wxCommandEvent& event );
     void OnUserOptions( wxCommandEvent& event );
+    void OnToolsCompact( wxCommandEvent& event );
     void OnSystemCheck( wxCommandEvent& event );
 
     void OnWindowNew( wxCommandEvent& event );
@@ -323,6 +324,7 @@ enum
     tfpID_DESC_CHART,
     tfpID_SYSTEM_SETTING,
     tfpID_USER_SETTING,
+    tfpID_TOOLS_COMPACT,
     tfpID_TOOL_SYSTEM_CHECK,
     tfpID_WINDOW_NEW,
     tfpID_WINDOW_CLOSE,
