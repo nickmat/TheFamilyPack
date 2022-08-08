@@ -208,6 +208,7 @@ public:
     static void ReleaseSavepoint( const wxString& str )
         { s_db->ReleaseSavepoint( str ); }
     static void Rollback( const wxString& str ) { s_db->Rollback( str ); }
+    static void Vacuum() { s_db->Vacuum(); }
 
     /*! Clear all data to default values.
      */
