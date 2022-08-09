@@ -39,7 +39,9 @@
 
 #include <rec/recHelper.h>
 
+#include <fstream>
 #include <random>
+#include <sstream>
 
 idt recGetID( const wxString& str )
 {
@@ -249,6 +251,18 @@ wxString GetBlobFormatStr( const wxMemoryBuffer& buf )
     for ( size_t i = 0; i < buf.GetDataLen(); i++ ) {
         str += lut[cp[i] >> 4];
         str += lut[cp[i] & 15];
+    }
+    return str;
+}
+
+std::string recTextFileRead( std::string& filename )
+{
+    std::ifstream file( filename );
+    std::string str;
+    if( file ) {
+        std::ostringstream ss;
+        ss << file.rdbuf();
+        str = ss.str();
     }
     return str;
 }
