@@ -225,6 +225,7 @@ int main( int argc, char** argv )
         return EXIT_FAILURE;
     }
 
+    recDb::WriteCreateScript( "data/create.sql", "Main" );
     if( tables_out["Citation"] != tables["Citation"] ) {
         WriteTable<recCitation>( "data/Citation.csv", tables["Citation"] );
     }
