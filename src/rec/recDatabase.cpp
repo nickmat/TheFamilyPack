@@ -130,6 +130,8 @@ recDb::CreateReturn recDb::CreateDbFile( const wxString& fname, DbType type )
         db.ExecuteUpdate( createCommonDb );
         db.ExecuteUpdate( createMediaDb );
         break;
+    case DbType::db_null:
+        break;
     default:
         db.Close();
         return CreateReturn::UnknownType;
@@ -195,10 +197,6 @@ recDb::DbType recDb::OpenDb( const wxString& fname )
     }
 
     DbType type = recVersion::Manage();
-    if( type == DbType::db_null ) {
-        CloseDb();
-        return DbType::db_null;
-    }
     s_extdbs["Main"].dbfilename = s_db->GetDatabaseFilename( "main" );
     s_extdbs["Main"].assIdMap[0] = "Main";
     return type;
@@ -469,7 +467,7 @@ wxString recDb::GetDatabaseTypeDesc( DbType type )
 
 bool recDb::WriteCreateScript( const std::string& fname, const wxString& dbname )
 {
-    std::ofstream ofile( fname, std::ios::app );
+    std::ofstream ofile( fname, std::ios::trunc );
     if( !ofile ) {
         return false;
     }
