@@ -35,9 +35,9 @@
 #include "wx/wx.h"
 #endif
 
-#include <wx/tokenzr.h>
-
 #include <rec/recHelper.h>
+
+#include <wx/tokenzr.h>
 
 #include <fstream>
 #include <random>
@@ -255,7 +255,7 @@ wxString GetBlobFormatStr( const wxMemoryBuffer& buf )
     return str;
 }
 
-std::string recTextFileRead( std::string& filename )
+std::string recTextFileRead( const std::string& filename )
 {
     std::ifstream file( filename );
     std::string str;
