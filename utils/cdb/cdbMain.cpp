@@ -147,7 +147,7 @@ int main( int argc, char** argv )
         return EXIT_FAILURE;
     }
 
-    wxString filename = "cd-test.tfpd";
+    wxString filename = "cd-sources-uk.tfpd";
     recDb::DbType dbtype = recDb::DbType::db_null;
     recDb::CreateReturn ret = recDb::CreateDbFile( filename, dbtype );
     switch( ret )
