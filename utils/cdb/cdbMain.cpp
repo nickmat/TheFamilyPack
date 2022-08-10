@@ -138,8 +138,16 @@ int main( int argc, char** argv )
     }
 
     // Main prog
+
+    // Get the create.sql script.
+    std::string create_sql = recTextFileRead( "data/create.sql" );
+    if( create_sql.empty() ) {
+        std::cout << "Could not read create.sql file.";
+        return EXIT_FAILURE;
+    }
+
     wxString filename = "cd-test.tfpd";
-    recDb::DbType dbtype = recDb::DbType::full;
+    recDb::DbType dbtype = recDb::DbType::db_null;
     recDb::CreateReturn ret = recDb::CreateDbFile( filename, dbtype );
     switch( ret )
     {
@@ -159,6 +167,20 @@ int main( int argc, char** argv )
         std::cout << "Error opening database file\n";
         return EXIT_FAILURE;
     }
+    try {
+        recDb::GetDb()->ExecuteUpdate( create_sql.c_str() );
+        recDb::CloseDb();
+    }
+    catch( wxSQLite3Exception& e ) {
+        recDb::ErrorMessage( e );
+        return EXIT_FAILURE;
+    }
+    // Reopen to check version etc.
+    if( recDb::OpenDb( filename ) == recDb::DbType::db_null ) {
+        std::cout << "Error creating database file\n";
+        return EXIT_FAILURE;
+    }
+
     if( g_verbose ) {
         std::cout << "Created and opened \"" << filename << "\" database file\n";
     }
