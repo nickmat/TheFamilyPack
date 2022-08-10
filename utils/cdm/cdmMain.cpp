@@ -225,51 +225,52 @@ int main( int argc, char** argv )
         return EXIT_FAILURE;
     }
 
-    recDb::WriteCreateScript( "data/create.sql", "Main" );
+    std::string outputDir( "data/sources/uk/" );
+    recDb::WriteCreateScript( outputDir + "create.sql", "Main" );
     if( tables_out["Citation"] != tables["Citation"] ) {
-        WriteTable<recCitation>( "data/Citation.csv", tables["Citation"] );
+        WriteTable<recCitation>( outputDir + "Citation.csv", tables["Citation"] );
     }
     if( tables_out["CitationPartType"] != tables["CitationPartType"] ) {
-        WriteTable<recCitationPartType>( "data/CitationPartType.csv", tables["CitationPartType"] );
+        WriteTable<recCitationPartType>( outputDir + "CitationPartType.csv", tables["CitationPartType"] );
     }
     if( tables_out["CitationPart"] != tables["CitationPart"] ) {
-        WriteTable<recCitationPart>( "data/CitationPart.csv", tables["CitationPart"] );
+        WriteTable<recCitationPart>( outputDir + "CitationPart.csv", tables["CitationPart"] );
     }
     if( tables_out["Contact"] != tables["Contact"] ) {
-        WriteTable<recContact>( "data/Contact.csv", tables["Contact"] );
+        WriteTable<recContact>( outputDir + "Contact.csv", tables["Contact"] );
     }
     if( tables_out["ContactList"] != tables["ContactList"] ) {
-        WriteTable<recContactList>( "data/ContactList.csv", tables["ContactList"] );
+        WriteTable<recContactList>( outputDir + "ContactList.csv", tables["ContactList"] );
     }
     if( tables_out["ContactType"] != tables["ContactType"] ) {
-        WriteTable<recContactType>( "data/ContactType.csv", tables["ContactType"] );
+        WriteTable<recContactType>( outputDir + "ContactType.csv", tables["ContactType"] );
     }
     if( tables_out["Date"] != tables["Date"] ) {
-        WriteTable<recDate>( "data/Date.csv", tables["Date"] );
+        WriteTable<recDate>( outputDir + "Date.csv", tables["Date"] );
     }
     if( tables_out["Place"] != tables["Place"] ) {
-        WriteTable<recPlace>( "data/Place.csv", tables["Place"] );
+        WriteTable<recPlace>( outputDir + "Place.csv", tables["Place"] );
     }
     if( tables_out["PlacePart"] != tables["PlacePart"] ) {
-        WriteTable<recPlacePart>( "data/PlacePart.csv", tables["PlacePart"] );
+        WriteTable<recPlacePart>( outputDir + "PlacePart.csv", tables["PlacePart"] );
     }
     if( tables_out["PlacePartType"] != tables["PlacePartType"] ) {
-        WriteTable<recPlacePart>( "data/PlacePartType.csv", tables["PlacePartType"] );
+        WriteTable<recPlacePart>( outputDir + "PlacePartType.csv", tables["PlacePartType"] );
     }
     if( tables_out["Reference"] != tables["Reference"] ) {
-        WriteTable<recReference>( "data/Reference.csv", tables["Reference"] );
+        WriteTable<recReference>( outputDir + "Reference.csv", tables["Reference"] );
     }
     if( tables_out["ReferenceEntity"] != tables["ReferenceEntity"] ) {
-        WriteTable<recReferenceEntity>( "data/ReferenceEntity.csv", tables["ReferenceEntity"] );
+        WriteTable<recReferenceEntity>( outputDir + "ReferenceEntity.csv", tables["ReferenceEntity"] );
     }
     if( tables_out["RelativeDate"] != tables["RelativeDate"] ) {
-        WriteTable<recRelativeDate>( "data/RelativeDate.csv", tables["RelativeDate"] );
+        WriteTable<recRelativeDate>( outputDir + "RelativeDate.csv", tables["RelativeDate"] );
     }
     if( tables_out["Repository"] != tables["Repository"] ) {
-        WriteTable<recRepository>( "data/Repository.csv", tables["Repository"] );
+        WriteTable<recRepository>( outputDir + "Repository.csv", tables["Repository"] );
     }
     if( tables_out["Researcher"] != tables["Researcher"] ) {
-        WriteTable<recResearcher>( "data/Researcher.csv", tables["Researcher"] );
+        WriteTable<recResearcher>( outputDir + "Researcher.csv", tables["Researcher"] );
     }
 
     WriteMasterList( tables_out, titles );

@@ -138,9 +138,10 @@ int main( int argc, char** argv )
     }
 
     // Main prog
+    std::string dataDir( "data/sources/uk/" );
 
     // Get the create.sql script.
-    std::string create_sql = recTextFileRead( "data/create.sql" );
+    std::string create_sql = recTextFileRead( dataDir + "create.sql" );
     if( create_sql.empty() ) {
         std::cout << "Could not read create.sql file.";
         return EXIT_FAILURE;
@@ -186,49 +187,49 @@ int main( int argc, char** argv )
     }
 
     // Do all the clever stuff
-    if( EnterTable<recContactType>( "data/ContactType.csv" ) ) {
+    if( EnterTable<recContactType>( dataDir + "ContactType.csv" ) ) {
         std::cout << "Reading ContactType.csv\n";
     }
-    if( EnterTable<recContactList>( "data/ContactList.csv" ) ) {
+    if( EnterTable<recContactList>( dataDir + "ContactList.csv" ) ) {
         std::cout << "Reading ContactList.csv\n";
     }
-    if( EnterTable<recContact>( "data/Contact.csv" ) ) {
+    if( EnterTable<recContact>( dataDir + "Contact.csv" ) ) {
         std::cout << "Reading Contact.csv\n";
     }
-    if( EnterTable<recResearcher>( "data/Researcher.csv" ) ) {
+    if( EnterTable<recResearcher>( dataDir + "Researcher.csv" ) ) {
         std::cout << "Reading Researcher.csv\n";
     }
-    if( EnterTable<recRepository>( "data/Repository.csv" ) ) {
+    if( EnterTable<recRepository>( dataDir + "Repository.csv" ) ) {
         std::cout << "Reading Repository.csv\n";
     }
-    if( EnterTable<recCitationPartType>( "data/CitationPartType.csv" ) ) {
+    if( EnterTable<recCitationPartType>( dataDir + "CitationPartType.csv" ) ) {
         std::cout << "Reading CitationPartType.csv\n";
     }
-    if( EnterTable<recCitation>( "data/Citation.csv" ) ) {
+    if( EnterTable<recCitation>( dataDir + "Citation.csv" ) ) {
         std::cout << "Reading Citation.csv\n";
     }
-    if( EnterTable<recCitationPart>( "data/CitationPart.csv" ) ) {
+    if( EnterTable<recCitationPart>( dataDir + "CitationPart.csv" ) ) {
         std::cout << "Reading CitationPart.csv\n";
     }
-    if( EnterTable<recDate>( "data/Date.csv" ) ) {
+    if( EnterTable<recDate>( dataDir + "Date.csv" ) ) {
         std::cout << "Reading Date.csv\n";
     }
-    if( EnterTable<recRelativeDate>( "data/RelativeDate.csv" ) ) {
+    if( EnterTable<recRelativeDate>( dataDir + "RelativeDate.csv" ) ) {
         std::cout << "Reading RelativeDate.csv\n";
     }
-    if( EnterTable<recPlacePartType>( "data/PlacePartType.csv" ) ) {
+    if( EnterTable<recPlacePartType>( dataDir + "PlacePartType.csv" ) ) {
         std::cout << "Reading PlacePartType.csv\n";
     }
-    if( EnterTable<recPlace>( "data/Place.csv" ) ) {
+    if( EnterTable<recPlace>( dataDir + "Place.csv" ) ) {
         std::cout << "Reading Place.csv\n";
     }
-    if( EnterTable<recPlacePart>( "data/PlacePart.csv" ) ) {
+    if( EnterTable<recPlacePart>( dataDir + "PlacePart.csv" ) ) {
         std::cout << "Reading PlacePart.csv\n";
     }
-    if( EnterTable<recReference>( "data/Reference.csv" ) ) {
+    if( EnterTable<recReference>( dataDir + "Reference.csv" ) ) {
         std::cout << "Reading Reference.csv\n";
     }
-    if( EnterTable<recReferenceEntity>( "data/ReferenceEntity.csv" ) ) {
+    if( EnterTable<recReferenceEntity>( dataDir + "ReferenceEntity.csv" ) ) {
         std::cout << "Reading ReferenceEntity.csv\n";
     }
 
