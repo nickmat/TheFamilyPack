@@ -168,9 +168,14 @@ wxString tfpWriteReferencePage( idt refID, const wxString& dbname )
             "</a></b> " << recReference::GetTitle( ref.FGetHigherID() ) << "<br>\n"
         ;
     }
+    if( ref.FGetResID() != 0 ) {
+        wxString researcher = recResearcher::GetIdStr( ref.FGetResID() );
+        htm <<
+            "<b>Researcher: <a href='tfp:" << researcher << "'>" << researcher <<
+            ":</a></b> " << recResearcher::GetNameStr( ref.FGetResID() ) << "<br>\n"
+        ;
+    }
     htm<<
-        "<b>Researcher:</b> " << recResearcher::GetIdStr( ref.FGetResID() ) <<
-        ": " << recResearcher::GetNameStr( ref.FGetResID() ) << "<br>\n"
         "<b>User Ref:</b> " << ref.FGetUserRef() << "<br>\n"
         "<b>Date Last Changed:</b> " << ref.GetChangedDate() << "<br>\n"
         "<b>UID:</b> " << ref.FGetUid() << "</p></div>\n"
