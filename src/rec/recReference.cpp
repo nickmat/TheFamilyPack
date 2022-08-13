@@ -318,8 +318,12 @@ idt recReference::Transfer(
     if( from_refID == 0 ) return 0;
 
     recReference from_ref( from_refID, fromdb );
-    idt to_refID = recReference::FindUid( from_ref.FGetUid(), todb );
+    idt to_refID = from_refID;
+    if( from_refID > 0 ) {
+        to_refID = recReference::FindUid( from_ref.FGetUid(), todb );
+    }
     recReference to_ref( to_refID, todb );
+    to_ref.FSetID( to_refID ); 
     if( to_refID != 0 && from_ref.FGetChanged() <= to_ref.FGetChanged() ) {
         return to_refID; // Reference already exists and is up to date.
     }
