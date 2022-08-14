@@ -213,7 +213,10 @@ idt recResearcher::Transfer(
 {
     if( from_resID == 0 ) return 0;
     recResearcher from_res( from_resID, fromdb );
-    idt to_resID = recResearcher::FindUid( from_res.FGetUid(), todb );
+    idt to_resID = from_resID;
+    if( from_resID > 0 ) {
+        recResearcher::FindUid( from_res.FGetUid(), todb );
+    }
     recResearcher to_res( to_resID, todb );
     if( to_resID == 0 || from_res.FGetChanged() > to_res.FGetChanged() ) {
         idt to_clID = recContactList::Transfer( from_res.FGetConListID(), fromdb, to_res.FGetConListID(), todb );
