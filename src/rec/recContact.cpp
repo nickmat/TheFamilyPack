@@ -360,9 +360,13 @@ idt recContactList::Transfer(
     recContactList from_cl( from_clID, fromdb );
     wxASSERT( from_cl.FGetIndID() == 0 ); // TODO: When Individuals get UID's we can find a new ind_id value.
     recContactVec from_cons = from_cl.GetContacts( fromdb );
+    if( from_clID < 0 ) {
+        to_clID = from_clID;
+    }
     recContactList to_cl( to_clID, todb );
     wxASSERT( to_cl.FGetIndID() == 0 ); // TODO: See above.
-    if( to_clID == 0 ) {
+    if( to_cl.FGetID() == 0 ) {
+        to_cl.FSetID( to_clID );
         to_cl.Save( todb );
         to_clID = to_cl.FGetID();
     }
@@ -374,16 +378,17 @@ idt recContactList::Transfer(
             to_cons[i].RemoveFromDatabase( todb );
             continue;
         }
+        idt to_ctID = recContactType::Transfer( from_cons[i].FGetTypeID(), fromdb, todb );
         if( i >= to_cons.size() ) {
-            from_cons[i].FSetID( 0 );
+            if( from_cons[i].FGetID() > 0 ) {
+                from_cons[i].FSetID( 0 );
+            }
             from_cons[i].FSetListID( to_clID );
-            idt to_ctID = recContactType::Transfer( from_cons[i].FGetTypeID(), fromdb, todb );
             wxASSERT( to_ctID != 0 );
             from_cons[i].FSetTypeID( to_ctID );
             from_cons[i].Save( todb );
             continue;
         }
-        idt to_ctID = recContactType::Transfer( from_cons[i].FGetTypeID(), fromdb, todb );
         wxASSERT( to_ctID != 0 );
         to_cons[i].FSetTypeID( to_ctID );
         to_cons[i].FSetValue( from_cons[i].FGetValue() );
