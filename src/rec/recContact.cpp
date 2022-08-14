@@ -359,7 +359,6 @@ idt recContactList::Transfer(
     }
     recContactList from_cl( from_clID, fromdb );
     wxASSERT( from_cl.FGetIndID() == 0 ); // TODO: When Individuals get UID's we can find a new ind_id value.
-    recContactVec from_cons = from_cl.GetContacts( fromdb );
     if( from_clID < 0 ) {
         to_clID = from_clID;
     }
@@ -370,9 +369,10 @@ idt recContactList::Transfer(
         to_cl.Save( todb );
         to_clID = to_cl.FGetID();
     }
+
+    recContactVec from_cons = from_cl.GetContacts( fromdb );
     recContactVec to_cons = to_cl.GetContacts( todb );
     size_t size = std::max( from_cons.size(), to_cons.size() );
-
     for( size_t i = 0; i < size; i++ ) {
         if( i >= from_cons.size() ) { // No more to copy.
             to_cons[i].RemoveFromDatabase( todb );
@@ -600,7 +600,10 @@ idt recContactType::Transfer(
     if( from_ctID == 0 ) return 0;
 
     recContactType from_ct( from_ctID, fromdb );
-    idt to_ctID = recContactType::FindUid( from_ct.FGetUid(), todb );
+    idt to_ctID = from_ctID;
+    if( to_ctID > 0 ) {
+        to_ctID = recContactType::FindUid( from_ct.FGetUid(), todb );
+    }
     recContactType to_ct( to_ctID, todb );
     if( to_ctID == 0 || from_ct.FGetChanged() > to_ct.FGetChanged() ) {
         from_ct.FSetID( to_ctID );
