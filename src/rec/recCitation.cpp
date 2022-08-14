@@ -242,6 +242,11 @@ idt recCitation::Transfer(
 {
     if( from_citID == 0 ) return 0;
     recCitation from_cit( from_citID, fromdb );
+    idt to_citID = from_citID;
+    if( to_citID > 0 ) {
+        to_citID = recCitation::FindUid( from_cit.FGetUid(), todb );
+    }
+
     idt to_higherID = 0;
     if( from_cit.FGetHigherID() ) {
         recCitation from_higher( from_cit.FGetHigherID(), fromdb );
@@ -252,7 +257,6 @@ idt recCitation::Transfer(
     }
     idt to_repID = recRepository::Transfer( from_cit.FGetRepID(), fromdb, todb );
 
-    idt to_citID = recCitation::FindUid( from_cit.FGetUid(), todb );
     recCitation to_cit( to_citID, todb );
     if( to_citID == 0 || from_cit.FGetChanged() > to_cit.FGetChanged() ) {
         recCitation new_cit( from_cit );
@@ -272,16 +276,17 @@ idt recCitation::Transfer(
             to_cps[i].RemoveFromDatabase( todb );
             continue;
         }
+        idt to_cptID = recCitationPartType::Transfer( from_cps[i].FGetTypeID(), fromdb, todb );
         if( i >= to_cps.size() ) {
-            from_cps[i].FSetID( 0 );
+            if( from_cps[i].FGetID() > 0 ) {
+                from_cps[i].FSetID( 0 );
+            }
             from_cps[i].FSetCitID( to_citID );
-            idt to_cptID = recCitationPartType::Transfer( from_cps[i].FGetTypeID(), fromdb, todb );
             wxASSERT( to_cptID != 0 );
             from_cps[i].FSetTypeID( to_cptID );
             from_cps[i].Save( todb );
             continue;
         }
-        idt to_cptID = recCitationPartType::Transfer( from_cps[i].FGetTypeID(), fromdb, todb );
         wxASSERT( to_cptID != 0 );
         to_cps[i].FSetTypeID( to_cptID );
         to_cps[i].FSetValue( from_cps[i].FGetValue() );
@@ -505,7 +510,10 @@ idt recRepository::Transfer(
 {
     if( from_repID == 0 ) return 0;
     recRepository from_rep( from_repID, fromdb );
-    idt to_repID = recRepository::FindUid( from_rep.FGetUid(), todb );
+    idt to_repID = from_repID;
+    if( to_repID > 0 ) {
+        to_repID = recRepository::FindUid( from_rep.FGetUid(), todb );
+    }
     recRepository to_rep( to_repID, todb );
     if( to_repID == 0 || from_rep.FGetChanged() > to_rep.FGetChanged() ) {
         idt to_clID = recContactList::Transfer( from_rep.FGetConListID(), fromdb, to_rep.FGetConListID(), todb );
@@ -914,7 +922,10 @@ idt recCitationPartType::Transfer(
 {
     if( from_cptID == 0 ) return 0;
     recCitationPartType from_cpt( from_cptID, fromdb );
-    idt to_cptID = recCitationPartType::FindUid( from_cpt.FGetUid(), todb );
+    idt to_cptID = from_cptID;
+    if( to_cptID > 0 ) {
+        to_cptID = recCitationPartType::FindUid( from_cpt.FGetUid(), todb );
+    }
     recCitationPartType to_cpt( to_cptID, todb );
     if( to_cptID == 0 || from_cpt.FGetChanged() > to_cpt.FGetChanged() ) {
         from_cpt.FSetID( to_cptID );
