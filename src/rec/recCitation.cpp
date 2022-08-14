@@ -935,7 +935,6 @@ idt recCitationPartType::Transfer(
     return to_cptID;
 }
 
-
 void recCitationPartType::Renumber( idt id, idt to_id )
 {
     if( id == 0 ) {
