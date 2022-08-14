@@ -511,17 +511,24 @@ bool recDate::IsUsedInPlace( idt id, const wxString& dbname )
     return false;
 }
 
-idt recDate::Transfer( idt from_dID, const wxString& fromdb, const wxString& todb )
+idt recDate::Transfer( idt from_dateID, const wxString& fromdb, const wxString& todb )
 {
-    if( from_dID == 0 ) return 0;
+    if( from_dateID == 0 ) return 0;
 
-    recDate from_date( from_dID, fromdb );
+    recDate from_date( from_dateID, fromdb );
     wxASSERT( from_date.FGetID() != 0 );
 
-    idt to_dateID = recDate::FindUid( from_date.FGetUid(), todb );
+    idt to_dateID = from_dateID;
+    if( to_dateID > 0 ) {
+        to_dateID = recDate::FindUid( from_date.FGetUid(), todb );
+    }
     recDate to_date( to_dateID, todb );
 
-    idt to_rdID = recRelativeDate::Transfer( from_date.FGetRelID(), fromdb, to_date.FGetRelID(), todb);
+    idt to_rdID = from_date.FGetRelID();
+    if( to_rdID > 0 ) {
+        to_rdID = to_date.FGetRelID();
+    }
+    to_rdID = recRelativeDate::Transfer( from_date.FGetRelID(), fromdb, to_rdID, todb);
     if( to_date.FGetRelID() != 0 && to_rdID == 0 ) {
         // No longer is a relative date
         recRelativeDate::RemoveFromDatabase( to_date.FGetRelID(), todb );
