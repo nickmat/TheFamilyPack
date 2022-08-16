@@ -236,6 +236,14 @@ int recReference::GetNextEntitySequence( idt refID )
     return ExecuteInt( sql ) + 1;
 }
 
+recIdVec recReference::GetReferenceIDs( const wxString& dbname )
+{
+    return ExecuteIdVec(
+        "SELECT id FROM \"%s\".Reference WHERE NOT id=0 ORDER BY id;",
+        UTF8_( dbname )
+    );
+}
+
 recIdVec recReference::GetCitationList( idt refID, const wxString& dbname )
 {
     return ExecuteIdVec( 

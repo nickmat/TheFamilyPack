@@ -148,6 +148,8 @@ public:
     static int GetNextEntitySequence( idt refID );
     int GetNextEntitySequence() const { return GetNextEntitySequence( f_id ); }
 
+    static recIdVec GetReferenceIDs( const wxString& dbname = "Main" );
+
     static recIdVec GetCitationList( idt refID, const wxString& dbname = "Main" );
     recIdVec GetCitationList( const wxString& dbname = "Main" ) const {
         return GetCitationList( f_id, dbname ); }
