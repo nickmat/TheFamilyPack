@@ -567,6 +567,13 @@ int recDb::ExecuteInt( const wxSQLite3StatementBuffer& sql )
     return result.GetInt( 0 );
 }
 
+int recDb::ExecuteInt( const char* format, const wxString& dbname )
+{
+    wxSQLite3StatementBuffer sql;
+    sql.Format( format, UTF8_( dbname ) );
+    return ExecuteInt( sql );
+}
+
 int recDb::ExecuteInt( const char* format, idt id, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
@@ -585,6 +592,13 @@ idt recDb::ExecuteID( const wxSQLite3StatementBuffer& sql )
 {
     wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
     return GET_ID( result.GetInt64( 0 ) );
+}
+
+idt recDb::ExecuteID( const char* format, const wxString& dbname )
+{
+    wxSQLite3StatementBuffer sql;
+    sql.Format( format, UTF8_( dbname ) );
+    return ExecuteID( sql );
 }
 
 idt recDb::ExecuteID( const char* format, idt id, const wxString& dbname )
@@ -611,6 +625,13 @@ recIdVec recDb::ExecuteIdVec( const wxSQLite3StatementBuffer& sql )
     return ids;
 }
 
+recIdVec recDb::ExecuteIdVec( const char* format, const wxString& dbname )
+{
+    wxSQLite3StatementBuffer sql;
+    sql.Format( format, UTF8_( dbname ) );
+    return ExecuteIdVec( sql );
+}
+
 recIdVec recDb::ExecuteIdVec( const char* format, idt id, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
@@ -629,6 +650,13 @@ wxString recDb::ExecuteStr( const wxSQLite3StatementBuffer& sql )
 {
     wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
     return result.GetAsString( 0 );
+}
+
+wxString recDb::ExecuteStr( const char* format, const wxString& dbname )
+{
+    wxSQLite3StatementBuffer sql;
+    sql.Format( format, UTF8_( dbname ) );
+    return ExecuteStr( sql );
 }
 
 wxString recDb::ExecuteStr( const char* format, idt id, const wxString& dbname )
