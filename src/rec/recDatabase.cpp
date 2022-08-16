@@ -571,18 +571,14 @@ int recDb::ExecuteInt( const char* format, idt id, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format( format, id, UTF8_( dbname ) );
-
-    wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
-    return result.GetInt( 0 );
+    return ExecuteInt( sql );
 }
 
 int recDb::ExecuteInt( const char* format, const wxString& dbname, idt id )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format( format, UTF8_( dbname ), id );
-
-    wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
-    return result.GetInt( 0 );
+    return ExecuteInt( sql );
 }
 
 idt recDb::ExecuteID( const wxSQLite3StatementBuffer& sql )
@@ -595,18 +591,14 @@ idt recDb::ExecuteID( const char* format, idt id, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format( format, id, UTF8_( dbname ) );
-
-    wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
-    return GET_ID( result.GetInt64( 0 ) );
+    return ExecuteID( sql );
 }
 
 idt recDb::ExecuteID( const char* format, const wxString& dbname, idt id )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format( format, UTF8_( dbname ), id );
-
-    wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
-    return GET_ID( result.GetInt64( 0 ) );
+    return ExecuteID( sql );
 }
 
 recIdVec recDb::ExecuteIdVec( const wxSQLite3StatementBuffer& sql )
@@ -643,20 +635,15 @@ wxString recDb::ExecuteStr( const char* format, idt id, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format( format, id, UTF8_( dbname ) );
-
-    wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
-    return result.GetAsString( 0 );
+    return ExecuteStr( sql );
 }
 
 wxString recDb::ExecuteStr( const char* format, const wxString& dbname, idt id )
 {
     wxSQLite3StatementBuffer sql;
     sql.Format( format, UTF8_( dbname ), id );
-
-    wxSQLite3ResultSet result = s_db->ExecuteQuery( sql );
-    return result.GetAsString( 0 );
+    return ExecuteStr( sql );
 }
-
 
 idt recUid::DoFindUid( const wxString& uid, const char* table, const wxString& dbname )
 {
