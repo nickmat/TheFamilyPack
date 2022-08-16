@@ -247,7 +247,10 @@ idt recPlace::Transfer( idt from_placeID, const wxString& fromdb, const wxString
 
     recPlace from_place( from_placeID, fromdb );
 
-    idt to_placeID = recPlace::FindUid( from_place.FGetUid(), todb );
+    idt to_placeID = from_placeID;
+    if( to_placeID > 0 ) {
+        to_placeID = recPlace::FindUid( from_place.FGetUid(), todb );
+    }
     recPlace to_place( to_placeID, todb );
 
     recPlace new_place( 0 );
@@ -531,7 +534,12 @@ idt recPlacePart::Transfer( idt from_ppID, const wxString& fromdb, idt to_placeI
     to_pp.Delete( todb );
     
     recPlacePart new_pp( 0 );
-    new_pp.FSetID( to_ppID );
+    if( from_ppID > 0 ) {
+        new_pp.FSetID( to_ppID );
+    }
+    else {
+        new_pp.FSetID( from_ppID );
+    }
     new_pp.FSetTypeID( recPlacePartType::Transfer( from_pp.FGetTypeID(), fromdb, todb ) );
     new_pp.FSetPlaceID( to_placeID );
     new_pp.FSetValue( from_pp.FGetValue() );
@@ -687,7 +695,10 @@ idt recPlacePartType::Transfer( idt from_pptID, const wxString& fromdb, const wx
     if( from_pptID == 0 ) return 0;
 
     recPlacePartType from_ppt( from_pptID, fromdb );
-    idt to_pptID = recPlacePartType::FindUid( from_ppt.FGetUid(), todb );
+    idt to_pptID = from_pptID;
+    if( to_pptID > 0 ) {
+        to_pptID = recPlacePartType::FindUid( from_ppt.FGetUid(), todb );
+    }
 
     recPlacePartType to_ppt( to_pptID, todb );
     recMatchUID match = from_ppt.CompareUID( to_ppt );
