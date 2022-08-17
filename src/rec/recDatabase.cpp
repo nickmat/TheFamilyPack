@@ -694,5 +694,11 @@ wxString recUid::DoGetChangedDate( idt id, const char* table, const wxString& db
     return recGetDateStr( jdn );
 }
 
+void recUid::CreateUidChanged()
+{
+    FSetUid( recCreateUid() );
+    FSetChanged( calGetTodayJdn() );
+}
+
 
 // End of recDatabase.cpp file
