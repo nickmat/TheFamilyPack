@@ -317,7 +317,8 @@ public:
     void FSetUid( const wxString& uid ) { f_uid = uid; }
     void FSetChanged( long jdn ) { f_changed = jdn; }
 
-    void CreateUidChanged();};
+    void CreateUidChanged();
+};
 
 template <class T>
 class recUidT : public recUid
