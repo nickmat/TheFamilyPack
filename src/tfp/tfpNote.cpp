@@ -47,24 +47,19 @@
 #include <wx/webviewfshandler.h>
 
 
-dlgNote::dlgNote( TfpFrame* parent, const wxString& name )
-    : wxDialog(
-        (wxWindow*) parent, wxID_ANY, "Note "+name, wxDefaultPosition, wxSize( 450, 300 ),
+dlgNote::dlgNote( TfpFrame& parent, const wxString& name )
+    : m_frame( parent ), m_name( name ), m_cond( recDb::GetChange() ),
+    m_browser( wxWebView::New( this, tfpID_BROWSER ) ),
+    wxDialog(
+        (wxWindow*) &parent, wxID_ANY, "Note " + name, wxDefaultPosition, wxSize( 450, 300 ),
         wxCAPTION | wxCLOSE_BOX | wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER
     )
 {
-    m_frame = parent;
-
     wxBoxSizer* bSizer1 = new wxBoxSizer( wxVERTICAL );
-
-    m_browser = wxWebView::New( this, tfpID_BROWSER );
-    bSizer1->Add( m_browser, 1, wxALL|wxEXPAND, 0 );
-
+    bSizer1->Add( m_browser, 1, wxALL | wxEXPAND, 0 );
     SetSizer( bSizer1 );
     Layout();
 
-    m_name = name;
-    m_cond = recDb::GetChange();
     SetPosition( wxGetMousePosition() );
 
     // Connect Events
@@ -83,7 +78,7 @@ dlgNote::~dlgNote()
 
 bool dlgNote::TransferDataToWindow()
 {
-    m_browser->SetPage( tfpGetDisplayText( m_name, m_frame->GetDbName(), m_frame), "");
+    m_browser->SetPage( tfpGetDisplayText( m_name, m_frame ), "" );
     return true;
 }
 
@@ -124,7 +119,7 @@ void dlgNote::OnNavigationRequest( wxWebViewEvent& evt )
         }
         if( ret == true ) {
             recDb::Commit();
-            m_browser->SetPage( tfpGetDisplayText( m_name, m_frame->GetDbName(), m_frame ), "" );
+            m_browser->SetPage( tfpGetDisplayText( m_name, m_frame ), "" );
             m_cond = recDb::GetChange();
         } else {
             recDb::Rollback();
@@ -140,7 +135,7 @@ void dlgNote::OnIdle( wxIdleEvent& event )
 {
     if( m_cond != recDb::GetChange() ) {
         if( recDb::IsOpen() ) {
-            m_browser->SetPage( tfpGetDisplayText( m_name, m_frame->GetDbName(), m_frame ), "" );
+            m_browser->SetPage( tfpGetDisplayText( m_name, m_frame ), "" );
             m_cond = recDb::GetChange();
         } else {
             Close( true );

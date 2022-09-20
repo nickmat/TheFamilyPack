@@ -52,7 +52,7 @@ extern wxString tfpNormaliseSpaces( const wxString& str );
 extern wxString tfpGetMediaDataFile( idt mdID, idt assID, const wxString& dbname = "Main" );
 
 extern wxString tfpNormalisePageName( const wxString& name );
-extern wxString tfpGetDisplayText( const wxString& pagename, const wxString& dbname, TfpFrame* frame = nullptr  );
+extern wxString tfpGetDisplayText( const wxString& pagename, TfpFrame& frame );
 
 // See tfpWrAdmin.cpp
 extern wxString tfpWriteResearcherList( const wxString& extdb );
@@ -67,7 +67,7 @@ extern wxString tfpCreatePedChart( idt indID, const wxString& dbname );
 extern wxString tfpCreateDescChart( idt indID, const wxString& dbname );
 
 // See tfpWrEvent.cpp
-extern wxString tfpWriteEventPage( idt eveID, TfpFrame* frame );
+extern wxString tfpWriteEventPage( idt eveID, TfpFrame& frame );
 
 // See tfpWrEventa.cpp
 extern wxString tfpWriteEventaPage( idt erID, const wxString& dbname );
@@ -79,7 +79,7 @@ extern wxString tfpWriteEventaPagedIndex( idt begCnt, const wxString& dbname );
 // See tfpWrEventIndex.cpp
 extern wxString tfpWriteEventIndex( const wxString& dbname );
 extern wxString tfpWriteEventPagedIndex( idt begCnt, const wxString& dbname );
-extern wxString tfpWriteEventSelection( TfpFrame* frame );
+extern wxString tfpWriteEventSelection( TfpFrame& frame );
 
 // See tfpWrFamily.cpp
 extern wxString tfpWriteFamilyPage( idt famID, const wxString& extdb, size_t iL = 0, size_t iR = 0 );

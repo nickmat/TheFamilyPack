@@ -334,9 +334,10 @@ wxString tfpNormalisePageName( const wxString& name )
     return uname;
 }
 
-wxString tfpGetDisplayText( const wxString& pagename, const wxString& dbname, TfpFrame* frame )
+wxString tfpGetDisplayText( const wxString& pagename, TfpFrame& frame )
 {
     wxString name = pagename.Upper();
+    const wxString dbname = frame.GetDbName();
     wxASSERT( name.size() > 0 );
     wxLongLong_t num, num1 = 0, num2 = 0;
     bool success, success1 = false, success2 = false;

@@ -123,12 +123,9 @@ wxString tfpWriteEventPagedIndex( idt begCnt, const wxString& extdb )
     return htm;
 }
 
-wxString tfpWriteEventSelection( TfpFrame* frame )
+wxString tfpWriteEventSelection( TfpFrame& frame )
 {
-    if( frame == nullptr ) {
-        return "";
-    }
-    recSelSetEvent& filter = frame->GetSelectedSetEvents();
+    recSelSetEvent& filter = frame.GetSelectedSetEvents();
     recFilterEvent fe( filter );
 
     fe.CreateEventTable( filter.GetDbname() );

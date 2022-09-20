@@ -35,17 +35,17 @@ class wxWebViewEvent;
 class dlgNote : public wxDialog
 {
 public:
-    dlgNote( TfpFrame* parent, const wxString& name );
+    dlgNote( TfpFrame& parent, const wxString& name );
     ~dlgNote();
 
 private:
     bool TransferDataToWindow();
 
+    void OnNavigationRequest( wxWebViewEvent& event );
     void OnIdle( wxIdleEvent& event );
     void OnClose( wxCloseEvent& event );
-    void OnNavigationRequest( wxWebViewEvent& event );
 
-    TfpFrame*  m_frame;
+    TfpFrame&  m_frame;
     wxString   m_name;
     long       m_cond;
     wxWebView* m_browser;

@@ -45,13 +45,10 @@
 
 #include <rg/rgCompareEvent.h>
 
-wxString tfpWriteEventPage( idt eventID, TfpFrame* frame )
+wxString tfpWriteEventPage( idt eventID, TfpFrame& frame )
 {
-    if( frame == nullptr ) {
-        return "";
-    }
-    const wxString& extdb = frame->GetDbName();
-    rgCompareEvent& ce = frame->GetCompareEventData();
+    const wxString& extdb = frame.GetDbName();
+    rgCompareEvent& ce = frame.GetCompareEventData();
     wxString htm;
     recEvent eve( eventID, extdb );
     if( eve.FGetID() == 0 ) return htm;

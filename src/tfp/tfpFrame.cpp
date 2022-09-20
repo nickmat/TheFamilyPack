@@ -1670,7 +1670,7 @@ void TfpFrame::DoSelectionUpdate( const wxString& display )
 
 void TfpFrame::DoPopupNote( const wxString& ref )
 {
-    dlgNote* note = new dlgNote( this, ref );
+    dlgNote* note = new dlgNote( *this, ref );
     note->Show();
 }
 
@@ -1877,7 +1877,7 @@ void TfpFrame::SetNoDatabase()
     m_toolbar->EnableTool( tfpID_FIND_BACK, false );
     m_forward.clear();
     m_toolbar->EnableTool( tfpID_FIND_FORWARD, false );
-    m_browser->SetPage( tfpGetDisplayText( "start", m_dbname ), "" );
+    m_browser->SetPage( tfpGetDisplayText( "start", *this ), "" );
 }
 
 void TfpFrame::PushHtmName( const wxString& name )
@@ -2036,7 +2036,7 @@ bool TfpFrame::DisplayHtmPage( const wxString& name )
     wxBusyCursor wait;
 
     wxString norm = tfpNormalisePageName( name );
-    wxString text = tfpGetDisplayText( name, m_dbname, this );
+    wxString text = tfpGetDisplayText( name, *this );
     if( text.empty() ) {
         text = tfpWrErrorPage( norm );
         norm = "Error";
@@ -2079,7 +2079,7 @@ void TfpFrame::RefreshHtmPage()
     wxString name = GetCurrentName();
     SetTitle( wxString::Format( m_titleFmt, name ) );
     if( !name.empty() ) {
-        wxString text = tfpGetDisplayText( name, m_dbname, this );
+        wxString text = tfpGetDisplayText( name, *this );
         if( text.empty() ) {
             text = tfpWrErrorPage( name );
             m_back[m_back.size() - 1] = "Error";
