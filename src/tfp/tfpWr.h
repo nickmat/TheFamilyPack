@@ -31,6 +31,8 @@
 
 class TfpFrame;
 
+enum class tfpDisplay { frame, note };
+
 // See tfpWr.cpp
 extern wxString tfpWrHead( const wxString& title, const wxString& css = wxEmptyString );
 extern wxString tfpWrTail();
@@ -52,7 +54,8 @@ extern wxString tfpNormaliseSpaces( const wxString& str );
 extern wxString tfpGetMediaDataFile( idt mdID, idt assID, const wxString& dbname = "Main" );
 
 extern wxString tfpNormalisePageName( const wxString& name );
-extern wxString tfpGetDisplayText( const wxString& pagename, TfpFrame& frame );
+extern wxString tfpGetDisplayText(
+    const wxString& pagename, TfpFrame& frame, tfpDisplay display = tfpDisplay::frame );
 
 // See tfpWrAdmin.cpp
 extern wxString tfpWriteResearcherList( const wxString& extdb );
@@ -107,11 +110,11 @@ extern wxString tfpWriteNameList(
 extern wxString tfpWriteIndividualList( const wxString& extdb );
 
 // See tfpWrNote.cpp
-extern wxString tfpWriteCitation( idt citID, const wxString& dbname );
-extern wxString tfpWriteDate( idt dateID, const wxString& dbname );
-extern wxString tfpWritePlace( idt placeID, const wxString& dbname );
-extern wxString tfpWriteName( idt nameID, const wxString& dbname );
-extern wxString tfpWriteContact( idt conID, const wxString& dbname );
+extern wxString tfpWriteCitation( idt citID, TfpFrame& frame, tfpDisplay display );
+extern wxString tfpWriteDate( idt dateID, TfpFrame& frame, tfpDisplay display );
+extern wxString tfpWritePlace( idt placeID, TfpFrame& frame, tfpDisplay display );
+extern wxString tfpWriteName( idt nameID, TfpFrame& frame, tfpDisplay display );
+extern wxString tfpWriteContact( idt conID, TfpFrame& frame, tfpDisplay display );
 extern wxString tfpWriteAbout();
 
 // See tfpWrPersona.cpp

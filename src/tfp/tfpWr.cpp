@@ -334,7 +334,7 @@ wxString tfpNormalisePageName( const wxString& name )
     return uname;
 }
 
-wxString tfpGetDisplayText( const wxString& pagename, TfpFrame& frame )
+wxString tfpGetDisplayText( const wxString& pagename, TfpFrame& frame, tfpDisplay display )
 {
     wxString name = pagename.Upper();
     const wxString dbname = frame.GetDbName();
@@ -358,19 +358,19 @@ wxString tfpGetDisplayText( const wxString& pagename, TfpFrame& frame )
             return tfpWrStartPage();
         }
         if( name.compare( 0, 1, "C" ) == 0 && success ) {
-            return tfpWriteContact( num, dbname );
+            return tfpWriteContact( num, frame, display );
         }
         if( name.compare( 0, 2, "CD" ) == 0 && success1 ) {
             return tfpCreateDescChart( num1, dbname );
         }
         if( name.compare( 0, 2, "CI" ) == 0 && success1 ) {
-            return tfpWriteCitation( num1, dbname );
+            return tfpWriteCitation( num1, frame, display );
         }
         if( name.compare( 0, 2, "CP" ) == 0 && success1 ) {
             return tfpCreatePedChart( num1, dbname );
         }
         if( name.compare( 0, 1, "D" ) == 0 && success ) {
-            return tfpWriteDate( num, dbname );
+            return tfpWriteDate( num, frame, display );
         }
         if( name.compare( "E" ) == 0 ) {
             return tfpWriteEventIndex( dbname );
@@ -445,13 +445,13 @@ wxString tfpGetDisplayText( const wxString& pagename, TfpFrame& frame )
             return tfpWriteNameList( pagename.Mid( 3 ), recSG_Persona, dbname );
         }
         if( name.compare( 0, 1, "N" ) == 0 && success ) {
-            return tfpWriteName( num, dbname );
+            return tfpWriteName( num, frame, display );
         }
         if( name.compare( 0, 2, "PA" ) == 0 ) {
             return tfpWritePersonaPage( num1, dbname );
         }
         if( name.compare( 0, 1, "P" ) == 0 && success ) {
-            return tfpWritePlace( num, dbname );
+            return tfpWritePlace( num, frame, display );
         }
         if( name.compare( "R" ) == 0 ) {
             return tfpWriteReferenceIndex( dbname );

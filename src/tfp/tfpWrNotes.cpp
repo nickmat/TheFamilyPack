@@ -36,6 +36,7 @@
 
 #include "tfpWr.h"
 
+#include "tfpFrame.h"
 #include "tfpVersion.h"
 
 #include <rec/recCitation.h>
@@ -78,17 +79,22 @@ wxString GetHtmDateData( const recDate& date, const wxString& extdb )
 
 } // namespace
 
-wxString tfpWriteCitation( idt citID, const wxString& extdb )
+wxString tfpWriteCitation( idt citID, TfpFrame& frame, tfpDisplay display )
 {
-    wxString htm;
+    const wxString extdb = frame.GetDbName();
     recCitation cit( citID, extdb );
-    if( cit.FGetID() == 0 ) return htm;
+    if( cit.FGetID() == 0 ) return wxString();
     recRepository arc( cit.FGetRepID(), extdb );
 
+    wxString editbutton;
+    if( display == tfpDisplay::note ) {
+        editbutton = GetHtmEditLink( cit.GetIdStr(), extdb );
+    }
+    wxString htm;
     htm <<
         tfpWrHeadTfp( "Citation" ) <<
         "<h1>Citation " << cit.GetIdStr() <<
-        GetHtmEditLink( cit.GetIdStr(), extdb ) <<
+        editbutton <<
         "</h1>\n"
         "<p>" << cit.GetCitationStr( extdb ) << "</p>\n"
         "<p>Comment: " << cit.FGetComment() << "</p>\n"
@@ -97,34 +103,44 @@ wxString tfpWriteCitation( idt citID, const wxString& extdb )
     return htm;
 }
 
-wxString tfpWriteDate( idt dateID, const wxString& extdb )
+wxString tfpWriteDate( idt dateID, TfpFrame& frame, tfpDisplay display )
 {
+    const wxString extdb = frame.GetDbName();
     recDate date( dateID, extdb );
     if( date.FGetID() == 0 ) return wxEmptyString;
 
+    wxString editbutton;
+    if( display == tfpDisplay::note ) {
+        editbutton = GetHtmEditLink( date.GetIdStr(), extdb );
+    }
     wxString htm;
-    htm << 
+    htm <<
         tfpWrHeadTfp( "Date" ) <<
         "<h1>Date " << date.GetIdStr() <<
-        GetHtmEditLink( date.GetIdStr(), extdb ) <<
+        editbutton <<
         "</h1>\n" <<
         GetHtmDateData( date, extdb ) <<
         tfpWrTailTfp()
-    ;
+        ;
 
     return htm;
 }
 
-wxString tfpWritePlace( idt placeID, const wxString& extdb )
+wxString tfpWritePlace( idt placeID, TfpFrame& frame, tfpDisplay display )
 {
+    const wxString extdb = frame.GetDbName();
     recPlace place( placeID, extdb );
     if( place.FGetID() == 0 ) return wxEmptyString;
 
+    wxString editbutton;
+    if( display == tfpDisplay::note ) {
+        editbutton = GetHtmEditLink( place.GetIdStr(), extdb );
+    }
     wxString htm;
     htm <<
         tfpWrHeadTfp( "Place" ) <<
         "<h1>Place " << place.GetIdStr() <<
-        GetHtmEditLink( place.GetIdStr(), extdb ) <<
+        editbutton <<
         "</h1>\n" <<
         place.GetAddressStr( extdb ) << "\n" <<
         tfpWrTailTfp()
@@ -132,18 +148,23 @@ wxString tfpWritePlace( idt placeID, const wxString& extdb )
     return htm;
 }
 
-wxString tfpWriteName( idt nameID, const wxString& extdb )
+wxString tfpWriteName( idt nameID, TfpFrame& frame, tfpDisplay display )
 {
+    const wxString extdb = frame.GetDbName();
     recName name( nameID, extdb );
     if( name.FGetID() == 0 ) return wxEmptyString;
     recNamePartVec parts = name.GetParts( extdb );
 
+    wxString editbutton;
+    if( display == tfpDisplay::note ) {
+        editbutton = GetHtmEditLink( name.GetIdStr(), extdb );
+    }
     wxString htm;
     htm <<
         tfpWrHeadTfp( "Name" ) <<
         "<h1>Name " << name.GetIdStr() << "<br>\n" <<
         name.GetNameStr( extdb ) <<
-        GetHtmEditLink( name.GetIdStr(), extdb ) <<
+        editbutton <<
         "</h1>\n"
         "<p>Name Type: <b>" <<
         recNameStyle::GetStyleStr( name.FGetTypeID(), extdb ) <<
@@ -165,16 +186,21 @@ wxString tfpWriteName( idt nameID, const wxString& extdb )
     return htm;
 }
 
-wxString tfpWriteContact( idt conID, const wxString& extdb )
+wxString tfpWriteContact( idt conID, TfpFrame& frame, tfpDisplay display )
 {
+    const wxString extdb = frame.GetDbName();
     recContact con( conID );
     if( con.FGetID() == 0 ) return wxString();
     recContactType ct( con.FGetTypeID() );
 
+    wxString editbutton;
+    if( display == tfpDisplay::note ) {
+        editbutton = GetHtmEditLink( con.GetIdStr(), extdb );
+    }
     wxString htm = tfpWrHeadTfp( "Contact" );
     htm <<
         "<h1>Contact " << con.GetIdStr() <<
-        GetHtmEditLink( con.GetIdStr(), extdb ) <<
+        editbutton <<
         "</h1>\n"
         "<p>\n" << tfpHtmlifyText( con.FGetValue() ) << "\n</p>\n"
         "\n<p><b>Contact Type:</b> " << ct.FGetName() <<
