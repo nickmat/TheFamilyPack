@@ -1910,8 +1910,8 @@ void TfpFrame::RefreshEditMenu()
     }
     wxString disp = GetDisplay();
     wxUniChar uch = disp.GetChar( 0 );
-    m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, false );
-    m_toolbar->EnableTool( tfpID_PAGE_ITEM_TRANSFER, false );
+    m_toolbar->EnableTool( tfpID_PAGE_ITEM_EDIT, m_toolflags.GetFlag( tfpTool::edit ) );
+    m_toolbar->EnableTool( tfpID_PAGE_ITEM_TRANSFER, m_toolflags.GetFlag( tfpTool::transfer ) );
     if( m_dbname.CmpNoCase( "Main" ) != 0 ) {
         m_menuOpenDB->EnableTop( 1/* Edit */, false);
         if( uch == 'R' && recIsCharNumber( disp, 1 ) ) {

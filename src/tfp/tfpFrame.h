@@ -33,10 +33,30 @@
 #include <rg/rgCompareEvent.h>
 #include "tfpNote.h"
 
+#include <bitset>
+
 class TfpApp;
 class wxWebView;
 class wxWebViewEvent;
 
+enum class tfpTool { edit, transfer, tool_cnt };
+
+class TfpToolFlags {
+public:
+    TfpToolFlags() { Clear(); }
+
+    size_t Size() { return static_cast<size_t>(tfpTool::tool_cnt); }
+    void Clear() {
+        for( size_t i = 0; i < Size(); i++ ) {
+            m_flags[i] = false;
+        }
+    }
+    void SetFlag( tfpTool tool ) { m_flags[static_cast<size_t>(tool)] = true; }
+    bool GetFlag( tfpTool tool ) { return m_flags[static_cast<size_t>(tool)]; }
+
+private:
+    std::bitset<static_cast<size_t>(tfpTool::tool_cnt)> m_flags;
+};
 
 /*! \brief The main application frame.
  *
@@ -57,6 +77,7 @@ private:
     wxMenuBar*          m_menuMediaDB;
     wxMenuBar*          m_menuClosedDB;
     wxToolBar*          m_toolbar;
+    TfpToolFlags        m_toolflags;
     wxStatusBar*        m_statusbar;
     wxMenu*             m_menuFileAssociate;
     wxMenu*             m_menuFileAssociateClose;
@@ -92,6 +113,9 @@ public:
     virtual ~TfpFrame();
 
     const wxString& GetDbName() const { return m_dbname; }
+
+    void ClearToolFlags() { m_toolflags.Clear(); }
+    void SetToolFlag( tfpTool tool ) { m_toolflags.SetFlag( tool ); }
 
     rgCompareEvent& GetCompareEventData() { return m_compEvent; }
     recSelSetEvent& GetSelectedSetEvents() { return m_selEvent; }

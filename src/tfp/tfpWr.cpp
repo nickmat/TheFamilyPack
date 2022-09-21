@@ -338,6 +338,9 @@ wxString tfpGetDisplayText( const wxString& pagename, TfpFrame& frame, tfpDispla
 {
     wxString name = pagename.Upper();
     const wxString dbname = frame.GetDbName();
+    if( display == tfpDisplay::frame ) {
+        frame.ClearToolFlags();
+    }
     wxASSERT( name.size() > 0 );
     wxLongLong_t num, num1 = 0, num2 = 0;
     bool success, success1 = false, success2 = false;
