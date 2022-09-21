@@ -87,8 +87,13 @@ wxString tfpWriteCitation( idt citID, TfpFrame& frame, tfpDisplay display )
     recRepository arc( cit.FGetRepID(), extdb );
 
     wxString editbutton;
-    if( display == tfpDisplay::note ) {
-        editbutton = GetHtmEditLink( cit.GetIdStr(), extdb );
+    if( extdb == "Main" ) {
+        if( display == tfpDisplay::note ) {
+            editbutton = GetHtmEditLink( cit.GetIdStr(), extdb );
+        }
+        if( display == tfpDisplay::frame ) {
+            frame.SetToolFlag( tfpTool::edit );
+        }
     }
     wxString htm;
     htm <<
@@ -110,8 +115,13 @@ wxString tfpWriteDate( idt dateID, TfpFrame& frame, tfpDisplay display )
     if( date.FGetID() == 0 ) return wxEmptyString;
 
     wxString editbutton;
-    if( display == tfpDisplay::note ) {
-        editbutton = GetHtmEditLink( date.GetIdStr(), extdb );
+    if( extdb == "Main" ) {
+        if( display == tfpDisplay::note ) {
+            editbutton = GetHtmEditLink( date.GetIdStr(), extdb );
+        }
+        if( display == tfpDisplay::frame ) {
+            frame.SetToolFlag( tfpTool::edit );
+        }
     }
     wxString htm;
     htm <<
@@ -133,8 +143,13 @@ wxString tfpWritePlace( idt placeID, TfpFrame& frame, tfpDisplay display )
     if( place.FGetID() == 0 ) return wxEmptyString;
 
     wxString editbutton;
-    if( display == tfpDisplay::note ) {
-        editbutton = GetHtmEditLink( place.GetIdStr(), extdb );
+    if( extdb == "Main" ) {
+        if( display == tfpDisplay::note ) {
+            editbutton = GetHtmEditLink( place.GetIdStr(), extdb );
+        }
+        if( display == tfpDisplay::frame ) {
+            frame.SetToolFlag( tfpTool::edit );
+        }
     }
     wxString htm;
     htm <<
@@ -156,8 +171,13 @@ wxString tfpWriteName( idt nameID, TfpFrame& frame, tfpDisplay display )
     recNamePartVec parts = name.GetParts( extdb );
 
     wxString editbutton;
-    if( display == tfpDisplay::note ) {
-        editbutton = GetHtmEditLink( name.GetIdStr(), extdb );
+    if( extdb == "Main" ) {
+        if( display == tfpDisplay::note ) {
+            editbutton = GetHtmEditLink( name.GetIdStr(), extdb );
+        }
+        if( display == tfpDisplay::frame ) {
+            frame.SetToolFlag( tfpTool::edit );
+        }
     }
     wxString htm;
     htm <<
@@ -194,8 +214,13 @@ wxString tfpWriteContact( idt conID, TfpFrame& frame, tfpDisplay display )
     recContactType ct( con.FGetTypeID() );
 
     wxString editbutton;
-    if( display == tfpDisplay::note ) {
-        editbutton = GetHtmEditLink( con.GetIdStr(), extdb );
+    if( extdb == "Main" ) {
+        if( display == tfpDisplay::note ) {
+            editbutton = GetHtmEditLink( con.GetIdStr(), extdb );
+        }
+        if( display == tfpDisplay::frame && extdb == "Main" ) {
+            frame.SetToolFlag( tfpTool::edit );
+        }
     }
     wxString htm = tfpWrHeadTfp( "Contact" );
     htm <<
