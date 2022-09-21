@@ -218,7 +218,7 @@ wxString tfpWriteContact( idt conID, TfpFrame& frame, tfpDisplay display )
         if( display == tfpDisplay::note ) {
             editbutton = GetHtmEditLink( con.GetIdStr(), extdb );
         }
-        if( display == tfpDisplay::frame && extdb == "Main" ) {
+        if( display == tfpDisplay::frame ) {
             frame.SetToolFlag( tfpTool::edit );
         }
     }
