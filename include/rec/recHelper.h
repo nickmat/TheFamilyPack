@@ -241,4 +241,45 @@ enum class recCorrectUid { restore, create, cancel };
 
 enum class recMatchUID { unequal, younger, older, equal };
 
+
+enum class recTable {
+    null_table, Associate, Citation, CitationPart, CitationPartType,
+    Contact, ContactList, ContactType, Date, Event, Eventa,
+    EventaPersona, EventEventa, EventType, EventTypeRole, Family,
+    FamilyEvent, FamilyEventa, FamilyIndEventa, FamilyIndividual,
+    Gallery, GalleryMedia, Individual, IndividualEvent, IndividualPersona,
+    Media, MediaData, Name, NamePart, NamePartType, NameStyle, Persona,
+    Place, PlacePart, PlacePartType, Reference, ReferenceEntity,
+    RelativeDate, Repository, Researcher, /*System,*/ User, /*UserSetting,*/
+    /*Version,*/ max_table
+};
+
+constexpr const char* recTablePrefixes[] = {
+    "", "A", "Ci", "CiP", "CiPT", "C", "CL", "CT", "D", "E", "Ea",
+    "EP", "EEa", "ET", "Ro", "F", "FE", "FEa", "FIEa", "FIn",
+    "G", "GM", "I", "IE", "IP", "M", "MD", "N", "NP", "NPT", "NS", "Pa",
+    "P", "PP", "PPT", "R", "REn", "RD", "Rp", "Re", /*"Sy",*/ "U", /*"US",*/
+    /*"V",*/ ""
+};
+
+constexpr size_t recTablesSize = sizeof( recTablePrefixes ) / sizeof( char* );
+
+struct recRecordId {
+    recRecordId() : table( recTable::null_table ), id( 0 ) {}
+
+    recTable table;
+    idt id;
+};
+
+using recRecordIdVec = std::vector<recRecordId>;
+
+// Convert a Record string to a recRecordID struct.
+extern recRecordId recGetRecordId( const std::string& str );
+inline recRecordId recGetRecordId( const wxString& str ) {
+    return recGetRecordId( std::string( str ) );
+}
+// Convert a space separated list of Records to vector of recRecordID structs.
+extern recRecordIdVec recGetRecordIDs( const wxString& str );
+
+
 #endif // REC_RECHELPER_H

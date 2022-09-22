@@ -431,4 +431,41 @@ bool recCheckUid( const wxString& uid )
     return check.compare( uidcheck ) == 0;
 }
 
+recRecordId recGetRecordId( const std::string& str )
+{
+    size_t pos = 0;
+    for( auto ch : str ) {
+        if( isalpha( ch ) ) pos++;
+        else break;
+    }
+    recRecordId rid;
+    for( size_t i = 0; i < recTablesSize; i++ ) {
+        if( str.compare( 0, pos, recTablePrefixes[i] ) == 0 ) {
+            rid.table = static_cast<recTable>(i);
+            break;
+        }
+    }
+    rid.id = recGetID( str.substr( pos, std::string::npos ) );
+    return rid;
+}
+
+recRecordIdVec recGetRecordIDs( const wxString& str )
+{
+    recRecordIdVec rids;
+    std::string records = std::string( str ) + ' ';
+    std::string s;
+    for( auto ch : records ) {
+        if( ch == ' ' ) {
+            recRecordId rid = recGetRecordId( s );
+            rids.push_back( rid );
+            s.clear();
+        }
+        else {
+            s += ch;
+        }
+    }
+    return rids;
+}
+
+
 // End of src/rec/recHelper.cpp file
