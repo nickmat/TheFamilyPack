@@ -299,7 +299,7 @@ public:
 
     void FSetName( const wxString& name ) { f_name = name; }
 
-    static wxString GetIdStr( idt ntID ) { return wxString::Format( "NT" ID, ntID ); }
+    static wxString GetIdStr( idt nsID ) { return wxString::Format( "NS" ID, nsID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     static wxString GetStyleStr( idt id, const wxString& dbname = "Main" );
