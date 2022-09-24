@@ -45,6 +45,7 @@ class recPlace : public recDbT<recPlace>, public recUidT<recPlace>
 {
 public:
     static constexpr const char* s_tablename = "Place";
+    static constexpr recTable s_table = recTable::Place;
 
     idt  f_date1_id;
     idt  f_date2_id;
@@ -107,6 +108,7 @@ class recPlacePart : public recDbT<recPlacePart>
 {
 public:
     static constexpr const char* s_tablename = "PlacePart";
+    static constexpr recTable s_table = recTable::PlacePart;
 
     idt      f_type_id;
     idt      f_place_id;
@@ -154,6 +156,7 @@ class recPlacePartType
 {
 public:
     static constexpr const char* s_tablename = "PlacePartType";
+    static constexpr recTable s_table = recTable::PlacePartType;
 
     enum Type {
         TYPE_Address = -1,

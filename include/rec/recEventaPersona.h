@@ -38,6 +38,7 @@ class recEventaPersona : public recDbT<recEventaPersona>
 {
 public:
     static constexpr const char* s_tablename = "EventaPersona";
+    static constexpr recTable s_table = recTable::EventaPersona;
 
     idt      f_eventa_id;
     idt      f_per_id;

@@ -46,6 +46,7 @@ class recEventType : public recDbT<recEventType>, public recUidT<recEventType>
 {
 public:
     static constexpr const char* s_tablename = "EventType";
+    static constexpr recTable s_table = recTable::EventType;
 
     enum EType {  // predefined entries, match with recCreate.sql
         ET_Unstated     = 0,

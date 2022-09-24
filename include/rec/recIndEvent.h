@@ -41,6 +41,7 @@ class recIndividualEvent : public recDbT<recIndividualEvent>
 {
 public:
     static constexpr const char* s_tablename = "IndividualEvent";
+    static constexpr recTable s_table = recTable::IndividualEvent;
 
     idt      f_ind_id;
     idt      f_higher_id;

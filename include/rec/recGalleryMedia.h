@@ -35,6 +35,7 @@ class recGalleryMedia : public recDbT<recGalleryMedia>
 {
 public:
     static constexpr const char* s_tablename = "GalleryMedia";
+    static constexpr recTable s_table = recTable::GalleryMedia;
 
     recGalleryMedia() : f_gal_id(0), f_med_id(0), f_med_seq(0) {}
     recGalleryMedia( idt id, const wxString& dbname = "Main" ) : recDbT( id ) { Read( dbname ); }

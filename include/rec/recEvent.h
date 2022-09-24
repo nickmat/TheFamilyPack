@@ -44,6 +44,7 @@ class recEvent : public recDbT<recEvent>
 {
 public:
     static constexpr const char* s_tablename = "Event";
+    static constexpr recTable s_table = recTable::Event;
 
     wxString f_title;
     idt      f_higher_id;

@@ -44,6 +44,7 @@ class recUserSetting : public recDbT< recUserSetting>
 {
 public:
     static constexpr const char* s_tablename = "UserSetting";
+    static constexpr recTable s_table = recTable::UserSetting;
 
     enum class Property {
         unstated = 0,
@@ -85,6 +86,7 @@ class recUser : public recDbT< recUser>
 {
 public:
     static constexpr const char* s_tablename = "User";
+    static constexpr recTable s_table = recTable::User;
 
     recUser() : f_res_id(0) {}
     recUser( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }

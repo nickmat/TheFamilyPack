@@ -46,6 +46,7 @@ class recFamilyIndEventa : public recDbT<recFamilyIndEventa>
 
 public:
     static constexpr const char* s_tablename = "FamilyIndEventa";
+    static constexpr recTable s_table = recTable::FamilyIndEventa;
 
     recFamilyIndEventa() : f_fam_ind_id(0), f_eventa_id(0), f_conf(0.0) {}
     recFamilyIndEventa( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }

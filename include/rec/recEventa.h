@@ -46,6 +46,7 @@ class recEventa : public recDbT<recEventa>, public recUidT<recEventa>
 {
 public:
     static constexpr const char* s_tablename = "Eventa";
+    static constexpr recTable s_table = recTable::Eventa;
 
     wxString f_title;
     idt      f_ref_id;

@@ -54,6 +54,7 @@ class recCitation : public recDbT<recCitation>, public recUidT<recCitation>
 
 public:
     static constexpr const char* s_tablename = "Citation";
+    static constexpr recTable s_table = recTable::Citation;
 
     recCitation() : f_higher_id(0), f_ref_id(0), f_ref_seq(0), f_rep_id(0) {}
     recCitation( idt id, const wxString& dbname = "Main" ) : recDbT( id ) { Read( dbname ); }
@@ -118,6 +119,7 @@ class recRepository : public recDbT< recRepository>, public recUidT<recRepositor
 
 public:
     static constexpr const char* s_tablename = "Repository";
+    static constexpr recTable s_table = recTable::Repository;
 
     recRepository() : f_con_list_id(0) {}
     recRepository( idt id, const wxString& dbname = "Main" ) : recDbT( id ) { Read( dbname ); }
@@ -171,6 +173,7 @@ class recCitationPart : public recDbT< recCitationPart>
 
 public:
     static constexpr const char* s_tablename = "CitationPart";
+    static constexpr recTable s_table = recTable::CitationPart;
 
     recCitationPart() : f_cit_id(0), f_type_id(0), f_cit_seq(0) {}
     recCitationPart( idt id, const wxString& dbname = "Main" ) : recDbT( id ) { Read( dbname ); }
@@ -221,6 +224,7 @@ class recCitationPartType : public recDbT< recCitationPartType>,
 
 public:
     static constexpr const char* s_tablename = "CitationPartType";
+    static constexpr recTable s_table = recTable::CitationPartType;
 
     recCitationPartType() : f_style(recTextStyle::normal) {}
     recCitationPartType( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }

@@ -43,6 +43,7 @@ class recResearcher : public recDbT<recResearcher>, public recUidT<recResearcher
 {
 public:
     static constexpr const char* s_tablename = "Researcher";
+    static constexpr recTable s_table = recTable::Researcher;
 
     recResearcher() : f_con_list_id(0) {}
     recResearcher( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }

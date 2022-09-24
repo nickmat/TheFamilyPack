@@ -44,6 +44,7 @@ class recFamily : public recDbT<recFamily>
 {
 public:
     static constexpr const char* s_tablename = "Family";
+    static constexpr recTable s_table = recTable::Family;
 
     idt     f_husb_id;
     idt     f_wife_id;

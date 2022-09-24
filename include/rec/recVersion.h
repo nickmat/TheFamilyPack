@@ -55,6 +55,7 @@ class recVersion : public recDbT<recVersion>
 {
 public:
     static constexpr const char* s_tablename = "Version";
+    static constexpr recTable s_table = recTable::Version;
 
     recVersion() : f_major(0), f_minor(0), f_revision(0), f_test(0) {}
     recVersion( DbType id, const wxString& dbname ) : recDbT( idt( id ) ) { Read( dbname ); }

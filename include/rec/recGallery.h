@@ -40,6 +40,7 @@ class recGallery : public recDbT<recGallery>, public recUidT<recGallery>
 {
 public:
     static constexpr const char* s_tablename = "Gallery";
+    static constexpr recTable s_table = recTable::Gallery;
 
     recGallery() {}
     recGallery( idt id, const wxString& dbname = "Main" ) : recDbT( id ) { Read( dbname ); }

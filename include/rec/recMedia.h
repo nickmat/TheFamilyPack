@@ -43,6 +43,7 @@ public:
     };
 
     static constexpr const char* s_tablename = "Media";
+    static constexpr recTable s_table = recTable::Media;
 
     recMedia() : f_data_id(0), f_ass_id(0), f_ref_id(0),
         f_ref_seq(0), f_privacy(0) {}

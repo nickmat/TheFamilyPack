@@ -37,6 +37,7 @@ class recAssociate : public recDbT<recAssociate>
 {
 public:
     static constexpr const char* s_tablename = "Associate";
+    static constexpr recTable s_table = recTable::Associate;
 
     recAssociate() {}
     recAssociate( idt id, const wxString& extdb = "Main" ) : recDbT( id ) { Read( extdb ); }

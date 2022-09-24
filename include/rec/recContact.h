@@ -45,6 +45,7 @@ class recContactList : public recDbT<recContactList>
 {
 public:
     static constexpr const char* s_tablename = "ContactList";
+    static constexpr recTable s_table = recTable::ContactList;
 
     recContactList() : f_ind_id(0) {}
     recContactList( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname); }
@@ -100,6 +101,7 @@ class recContactType : public recDbT<recContactType>, public recUidT<recContactT
 {
 public:
     static constexpr const char* s_tablename = "ContactType";
+    static constexpr recTable s_table = recTable::ContactType;
 
     enum Type {
         CT_Unstated = 0,
@@ -154,6 +156,7 @@ class recContact : public recDbT<recContact>
 {
 public:
     static constexpr const char* s_tablename = "Contact";
+    static constexpr recTable s_table = recTable::Contact;
 
     recContact() : f_type_id(0), f_list_id(0), f_list_seq(0) {}
     recContact( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }

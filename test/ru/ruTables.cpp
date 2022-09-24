@@ -58,6 +58,7 @@ TEST_CASE( "Test recContactType table", "[ContactType]" )
     ct1.FSetChanged( 2459681 );
     ct1.Save();
     REQUIRE( ct1.GetIdStr() == "CT1" );
+    REQUIRE( ct1.PrefixId() == "CT1" );
 
     // recContactList( id )
     recContactType ct2( 1 );

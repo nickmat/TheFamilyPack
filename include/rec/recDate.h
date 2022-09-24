@@ -52,6 +52,7 @@ class recDate : public recDbT<recDate>, public recUidT<recDate>
 {
 public:
     static constexpr const char* s_tablename = "Date";
+    static constexpr recTable s_table = recTable::Date;
 
     enum TypeFlag {
         FLG_NULL   = 0x00,
@@ -210,6 +211,7 @@ class recRelativeDate : public recDbT<recRelativeDate>
 {
 public:
     static constexpr const char* s_tablename = "RelativeDate";
+    static constexpr recTable s_table = recTable::RelativeDate;
 
     enum Type {
         TYPE_Unstated,

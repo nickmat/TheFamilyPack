@@ -58,6 +58,7 @@ class recName : public recDbT<recName>
 {
 public:
     static constexpr const char* s_tablename = "Name";
+    static constexpr recTable s_table = recTable::Name;
 
     idt  f_ind_id;
     idt  f_per_id;
@@ -163,6 +164,7 @@ class recNamePart : public recDbT<recNamePart>
 {
 public:
     static constexpr const char* s_tablename = "NamePart";
+    static constexpr recTable s_table = recTable::NamePart;
 
     idt       f_name_id;
     idt       f_type_id;
@@ -214,6 +216,8 @@ class recNamePartType
 {
 public:
     static constexpr const char* s_tablename = "NamePartType";
+    static constexpr recTable s_table = recTable::NamePartType;
+
     static constexpr const char* s_grps[] = { "null", "Name", "Title", "Other" };
     static constexpr size_t s_grps_size = sizeof( s_grps ) / sizeof( char* );
 
@@ -273,6 +277,7 @@ class recNameStyle : public recDbT<recNameStyle>, public recUidT<recNameStyle>
 {
 public:
     static constexpr const char* s_tablename = "NameStyle";
+    static constexpr recTable s_table = recTable::NameStyle;
 
     enum Style {
         NS_Default = 0, // Recorded (ie Name as recorded in documents)

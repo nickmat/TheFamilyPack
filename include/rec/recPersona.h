@@ -48,6 +48,7 @@ class recPersona : public recDbT<recPersona>, public recUidT<recPersona>
 {
 public:
     static constexpr const char* s_tablename = "Persona";
+    static constexpr recTable s_table = recTable::Persona;
 
     Sex      f_sex;
     idt      f_ref_id;

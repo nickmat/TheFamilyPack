@@ -34,6 +34,7 @@ class recMediaData : public recDbT<recMediaData>, public recUidT<recMediaData>
 {
 public:
     static constexpr const char* s_tablename = "MediaData";
+    static constexpr recTable s_table = recTable::MediaData;
 
     enum class Mime { null_mime, image_jpeg, image_png, image_gif, max_mime };
 

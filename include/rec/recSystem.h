@@ -40,6 +40,7 @@ class recSystem : public recDbT<recSystem>
 {
 public:
     static constexpr const char* s_tablename = "System";
+    static constexpr recTable s_table = recTable::System;
 
     enum class Property {
         unstated = 0,

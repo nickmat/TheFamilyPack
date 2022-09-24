@@ -39,6 +39,7 @@ class recEventTypeRole
 {
 public:
     static constexpr const char* s_tablename = "EventTypeRole";
+    static constexpr recTable s_table = recTable::EventTypeRole;
 
     enum Role {  // predefined entries, only given if required by the program
         ROLE_Unstated               = 0,

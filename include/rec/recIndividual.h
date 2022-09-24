@@ -56,6 +56,7 @@ class recIndividual : public recDbT< recIndividual>
 {
 public:
     static constexpr const char* s_tablename = "Individual";
+    static constexpr recTable s_table = recTable::Individual;
 
     Sex      f_sex;
     idt      f_fam_id;

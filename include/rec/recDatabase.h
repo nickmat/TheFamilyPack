@@ -266,6 +266,13 @@ public:
     static const char* TableName() { return T::s_tablename; }
     const char* GetTableName() const { return T::s_tablename; }
 
+    static recTable Table() { return T::s_table; }
+
+    static std::string PrefixId( idt id ) {
+        return recTablePrefixes[static_cast<size_t>(T::s_table)] + std::to_string( id );
+    }
+    std::string PrefixId() const { return PrefixId( FGetID() ); }
+
     bool Delete( const wxString& dbname = "Main" )  { 
         return DeleteRecord( T::s_tablename, f_id, dbname ); }
     static bool Delete( idt id, const wxString& dbname = "Main" ) { 

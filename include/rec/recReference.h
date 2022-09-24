@@ -56,6 +56,7 @@ public:
     };
     static const wxString sm_typeStr[TYPE_MAX];
     static constexpr const char* s_tablename = "ReferenceEntity";
+    static constexpr recTable s_table = recTable::ReferenceEntity;
 
     idt      f_ref_id;
     Type     f_entity_type;
@@ -108,6 +109,7 @@ class recReference : public recDbT<recReference>, public recUidT<recReference>
 {
 public:
     static constexpr const char* s_tablename = "Reference";
+    static constexpr recTable s_table = recTable::Reference;
 
     idt      f_higher_id;
     wxString f_title;
