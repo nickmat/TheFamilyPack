@@ -250,16 +250,16 @@ enum class recTable {
     Gallery, GalleryMedia, Individual, IndividualEvent, IndividualPersona,
     Media, MediaData, Name, NamePart, NamePartType, NameStyle, Persona,
     Place, PlacePart, PlacePartType, Reference, ReferenceEntity,
-    RelativeDate, Repository, Researcher, /*System,*/ User, /*UserSetting,*/
-    /*Version,*/ max_table
+    RelativeDate, Repository, Researcher, System, User, UserSetting,
+    Version, max_table
 };
 
 constexpr const char* recTablePrefixes[] = {
     "", "A", "Ci", "CiP", "CiPT", "C", "CL", "CT", "D", "E", "Ea",
     "EP", "EEa", "ET", "Ro", "F", "FE", "FEa", "FIEa", "FIn",
     "G", "GM", "I", "IE", "IP", "M", "MD", "N", "NP", "NPT", "NS", "Pa",
-    "P", "PP", "PPT", "R", "REn", "RD", "Rp", "Re", /*"Sy",*/ "U", /*"US",*/
-    /*"V",*/ ""
+    "P", "PP", "PPT", "R", "REn", "RD", "Rp", "Re", "Sy", "U", "US",
+    "V", ""
 };
 
 constexpr size_t recTablesSize = sizeof( recTablePrefixes ) / sizeof( char* );
