@@ -1156,73 +1156,80 @@ void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
         DoSelectionUpdate( display );
         return;
     }
-    idt id;
-    wxUniChar uch = display.GetChar( 0 );
-    wxUniChar uch1 = display.size() > 1 ? display.GetChar( 1 ) : (wxUniChar) '\0';
-    if( display.StartsWith( "FI" ) ) {
-        idt indID = recGetID( display.Mid(2) );
-        id = recIndividual::GetFamilyID( indID );
-    } else if( display.StartsWith( "E^" ) || display.StartsWith( "Ea" ) ) {
-        id = recGetID( display.Mid(2) );
-    } else {
-        id = recGetID( display.Mid(1) );
+    recRecordId rid = recGetRecordId( display );
+    if( rid.table == recTable::null_table ) {
+        if( display.StartsWith( "FI" ) ) {
+            rid.table = recTable::Family;
+            rid.id = recIndividual::GetFamilyID( rid.id );
+        }
     }
     recDb::Begin();
     try {
         bool ret = false;
-        switch( uch.GetValue() )
+        switch( rid.table )
         {
-        case 'F':
-            ret = rgEditFamily( this, id );
+        case recTable::Citation:
+            ret = rgEditCitation( this, rid.id );
             break;
-        case 'E':
-            if( uch1.GetValue() == 'a' ) {
-                ret = rgEditEventa( this, id );
-            } else {
-                ret = rgEditEvent( this, id );
-            }
+        case recTable::Contact:
+            ret = rgEditContact( this, rid.id );
             break;
-        case 'I':
-            ret = rgEditIndividual( this, id );
+        case recTable::Date:
+            ret = rgEditDate( this, rid.id );
             break;
-        case 'P':
-            if( uch1.GetValue() == 'a' ) {
-                ret = rgEditPersona( this, recGetID( display.Mid(2) ) );
-            }
+        case recTable::Event:
+            ret = rgEditEvent( this, rid.id );
             break;
-        case 'G':
-            ret = rgEditGallery( this, id );
+        case recTable::Eventa:
+            ret = rgEditEventa( this, rid.id );
             break;
-        case 'M':
-            if( uch1.GetValue() == 'D' ) {
+        case recTable::Family:
+            ret = rgEditFamily( this, rid.id );
+            break;
+        case recTable::Gallery:
+            ret = rgEditGallery( this, rid.id );
+            break;
+        case recTable::Individual:
+            ret = rgEditIndividual( this, rid.id );
+            break;
+        case recTable::Media:
+            ret = rgEditMedia( this, rid.id );
+            break;
+        case recTable::MediaData: {
                 // MD<num>,<dbname>
                 size_t pos = display.find( ',' );
                 if( pos == wxString::npos || display.length() == pos ) {
                     break;
                 }
-                idt mdID = recGetID( display.substr( 2 ) );
-                ret = rgEditMediaData( this, mdID, display.substr( pos + 1 ) );
-            }
-            else {
-                ret = rgEditMedia( this, id );
+                ret = rgEditMediaData( this, rid.id, display.substr( pos + 1 ) );
             }
             break;
-        case 'R':
-            if( uch1.GetValue() == 'e' ) {
-                ret = rgEditResearcher( this, recGetID( display.Mid( 2 ) ) );
-            }
-            else if( uch1.GetValue() == 'p' ) {
-                ret = rgEditRepository( this, recGetID( display.Mid( 2 ) ) );
-            }
-            else {
-                ret = rgEditReference( this, id );
-            }
+        case recTable::Name:
+            ret = rgEditName( this, rid.id );
             break;
+        case recTable::Persona:
+            ret = rgEditPersona( this, rid.id );
+            break;
+        case recTable::Place:
+            ret = rgEditPlace( this, rid.id );
+            break;
+        case recTable::Reference:
+            ret = rgEditReference( this, rid.id );
+            break;
+        case recTable::Repository:
+            ret = rgEditRepository( this, recGetID( display.Mid( 2 ) ) );
+            break;
+        case recTable::Researcher:
+            ret = rgEditResearcher( this, recGetID( display.Mid( 2 ) ) );
+            break;
+        default:
+            wxMessageBox( "Record \"" + display + "\" not recognised.", "Edit Error" );
         }
         if( ret == true ) {
             recDb::Commit();
             RefreshHtmPage();
-        } else {
+        }
+        else {
             recDb::Rollback();
         }
     }
@@ -1230,6 +1237,7 @@ void TfpFrame::OnPageItemEdit( wxCommandEvent& event )
         recDb::ErrorMessage( e );
         recDb::Rollback();
     }
+
 }
 
 void TfpFrame::OnPageItemTransfer( wxCommandEvent& event )
