@@ -35,26 +35,23 @@
 
 #include <wx/wxsqlite3.h>
 
+using idt = long long;
+
 // Some helpful defines
-typedef wxLongLong_t    idt;
 #define ID              "%lld"
-#define GET_ID( id )    ((id).GetValue())
-#define UTF8_(s) ((const char*)(s).utf8_str())
-#define BOOL_(i) ( (i) ? 1 : 0 )
+#define GET_ID( id )    ((long long)(id).GetValue())
+#define UTF8_(s)        ((const char*)(s).utf8_str())
+#define BOOL_(i)        ( (i) ? 1 : 0 )
 
 // Useful defines placed here for convenience.
 using  StringVec = std::vector< wxString >;
 using  StringMap = std::map< wxString, wxString >;
+using  IntVec = std::vector< int >;
+using  DoubleVec = std::vector< double >;
+using  BoolVec = std::vector< bool >;
 
-typedef std::vector< int >  IntVec;
-typedef std::vector< wxLongLong_t > IntegerVec;
-typedef std::vector< double > DoubleVec;
-typedef std::vector< bool > BoolVec;
-
-typedef std::vector< idt >  recIdVec;
-typedef std::map< idt, wxString > recAssMap; // REMOVE
-
-using recIdStringMap = std::map< idt, wxString >;
+using  recIdStringMap = std::map< idt, wxString >;
+using  recIdVec = std::vector< idt >;
 
 struct recExternalDb
 {
