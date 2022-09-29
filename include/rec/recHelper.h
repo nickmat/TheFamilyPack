@@ -175,23 +175,6 @@ enum class recEventTypeGrp {
 
 inline recET_GRP_FILTER recEventTypeGrpToFilter( recEventTypeGrp grp ) { return  recET_GRP_FILTER(1 << unsigned(grp)); }
 
-enum recEntity {
-    recENT_NULL,
-    recENT_Individual,
-    recENT_Family,
-    recENT_Event,
-    recENT_Role,
-    recENT_Date,
-    recENT_Place,
-    recENT_Name,
-    recENT_Reference,
-    recENT_Persona,
-    recENT_Eventa,
-    recENT_Media,
-    recENT_Gallery,
-    recENT_MAX
-};
-
 // Used for searching for records with binary fields
 enum TriLogic { TRILOGIC_false, TRILOGIC_true, TRILOGIC_both };
 
