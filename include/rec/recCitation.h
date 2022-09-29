@@ -73,7 +73,7 @@ public:
 
     void FSetHigherID( idt highID ) { f_higher_id = highID; }
     void FSetRefID( idt refID ) { f_ref_id = refID; }
-    void FSetRefSeq( idt ref_seq ) { f_ref_seq = ref_seq; }
+    void FSetRefSeq( int ref_seq ) { f_ref_seq = ref_seq; }
     void FSetRepID( idt repID ) { f_rep_id = repID; }
     void FSetComment( const wxString& comment ) { f_comment = comment; }
 
