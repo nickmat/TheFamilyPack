@@ -181,7 +181,7 @@ extern bool rgSelectPlaceFromReference(
 
 
 rgDlgEditReference::rgDlgEditReference( wxWindow* parent, idt refID )
-    : m_reference(refID), m_resID(0), fbRgEditReference( parent )
+    : m_reference(refID), fbRgEditReference( parent )
 {
     m_listCitation->InsertColumn( CIT_COL_Number, _( "Number" ) );
     m_listCitation->InsertColumn( CIT_COL_Citation, _( "Citation" ) );
@@ -209,7 +209,6 @@ bool rgDlgEditReference::TransferDataToWindow()
     m_staticRefID->SetLabel( m_reference.GetIdStr()  );
     m_textCtrlTitle->SetValue( m_reference.FGetTitle() );
     UpdateHigherRef();
-    m_resID = m_reference.FGetResID();
     UpdateResearcher();
     m_textCtrlUserRef->SetValue( m_reference.FGetUserRef() );
     m_textCtrlStatement->SetValue(  m_reference.FGetStatement() );
@@ -227,7 +226,6 @@ bool rgDlgEditReference::TransferDataFromWindow()
     m_reference.FSetTitle( m_textCtrlTitle->GetValue() );
     m_reference.FSetUserRef( m_textCtrlUserRef->GetValue() );
     m_reference.FSetStatement( m_textCtrlStatement->GetValue() );
-    m_reference.FSetResID( m_resID );
     m_reference.FSetChanged( calGetTodayJdn() );
 
     m_reference.Save();
@@ -246,7 +244,7 @@ void rgDlgEditReference::UpdateHigherRef()
 
 void rgDlgEditReference::UpdateResearcher()
 {
-    recResearcher res( m_resID );
+    recResearcher res( m_reference.FGetResID() );
     m_textCtrlResearcher->SetValue( res.GetIdStr() + ": " + res.FGetName() );
 }
 
@@ -418,10 +416,13 @@ void rgDlgEditReference::OnButtonHigherRef( wxCommandEvent& event )
 void rgDlgEditReference::OnButtonResearcher( wxCommandEvent& event )
 {
     idt resID = rgSelectResearcher( this );
-    if( resID == 0 ) {
+    if( resID == 0 || !recResearcher::Exists( resID ) ) {
+        wxString mess;
+        mess << "Researcher Re" << resID << " Not available.";
+        wxMessageBox( mess, "Reference ID Error" );
         return;
     }
-    m_resID = resID;
+    m_reference.FSetResID( resID );
     UpdateResearcher();
 }
 

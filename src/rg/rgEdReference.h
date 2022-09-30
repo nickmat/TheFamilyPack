@@ -143,7 +143,6 @@ private:
     void InsertEntityListItem( size_t row );
 
     recReference  m_reference;
-    idt           m_resID;
     recIdVec      m_citationIDs;
     recIdVec      m_mediaIDs;
     recIdVec      m_personaIDs;
