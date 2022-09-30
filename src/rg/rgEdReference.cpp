@@ -35,6 +35,8 @@
 #include "wx/wx.h"
 #endif
 
+#include <wx/numdlg.h>
+
 #include "rgEdReference.h"
 
 #include <rg/rgDialogs.h>
@@ -206,7 +208,7 @@ bool rgDlgEditReference::TransferDataToWindow()
     wxASSERT( m_reference.FGetID() != 0 );
     m_staticRefID->SetLabel( m_reference.GetIdStr()  );
     m_textCtrlTitle->SetValue( m_reference.FGetTitle() );
-    m_textCtrlHigherRef->SetValue( recReference::GetTitle( m_reference.FGetHigherID() ) );
+    UpdateHigherRef();
     m_resID = m_reference.FGetResID();
     UpdateResearcher();
     m_textCtrlUserRef->SetValue( m_reference.FGetUserRef() );
@@ -230,6 +232,16 @@ bool rgDlgEditReference::TransferDataFromWindow()
 
     m_reference.Save();
     return true;
+}
+
+void rgDlgEditReference::UpdateHigherRef()
+{
+    idt hrefID = m_reference.FGetHigherID();
+    wxString title = recReference::GetTitle( hrefID );
+    if( !title.empty() ) {
+        title = recReference::GetIdStr( hrefID ) + ": " + title;
+    }
+    m_textCtrlHigherRef->SetValue( title );
 }
 
 void rgDlgEditReference::UpdateResearcher()
@@ -386,7 +398,21 @@ wxString rgDlgEditReference::GetSelectedText() const
 
 void rgDlgEditReference::OnButtonHigherRef( wxCommandEvent& event )
 {
-    wxMessageBox( _( "Not yet implimented" ), "OnButtonHigherRef" );
+    long num = wxGetNumberFromUser(
+        _( "Enter Higher Reference ID number" ),
+        _( "Reference ID:" ),
+        _( "Select Reference" ),
+        0L, LONG_MIN, LONG_MAX, this
+    );
+    idt id = static_cast<idt>(num);
+    if( id == 0 || !recReference::Exists( id ) ) {
+        wxString mess;
+        mess << "Reference R" << num << " Not available.";
+        wxMessageBox( mess, "Reference ID Error" );
+        return;
+    }
+    m_reference.FSetHigherID( id );
+    UpdateHigherRef();
 }
 
 void rgDlgEditReference::OnButtonResearcher( wxCommandEvent& event )

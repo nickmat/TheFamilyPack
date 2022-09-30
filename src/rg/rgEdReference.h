@@ -63,6 +63,7 @@ private:
 
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
+    void UpdateHigherRef();
     void UpdateResearcher();
     void UpdateHtml();
     void UpdateCitations( idt citID = 0 );
