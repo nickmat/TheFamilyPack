@@ -30,6 +30,7 @@
 #ifndef WX_PRECOMP
 #include "wx/wx.h"
 #endif
+#include <wx/numdlg.h>
 
 #include <rec/recCitation.h>
 
@@ -99,6 +100,13 @@ bool rgDlgEditCitation::TransferDataFromWindow()
 void rgDlgEditCitation::UpdateCitation()
 {
     m_textCtrlCitation->SetValue( m_citation.GetCitationStr() );
+    idt hCitID = m_citation.FGetHigherID();
+    wxString higher;
+    if( hCitID ) {
+        higher = recCitation::GetIdStr( hCitID ) + ": " +
+            recCitation::GetCitationStr( hCitID );
+    }
+    m_textCtrlExtends->SetValue( higher );
 }
 
 void rgDlgEditCitation::UpdateArchive()
@@ -166,7 +174,24 @@ void rgDlgEditCitation::PartsButtonsEnable( long row )
 
 void rgDlgEditCitation::OnButtonSelectExtends( wxCommandEvent& event )
 {
-    wxMessageBox( _( "Not yet implimented" ), "OnButtonSelectExtends" );
+    long num = wxGetNumberFromUser(
+        _( "Enter Higher Citation ID to extend" ),
+        _( "Citation ID:" ),
+        _( "Select Citaion" ),
+        0L, LONG_MIN, LONG_MAX, this
+    );
+    idt id = static_cast<idt>(num);
+    if( id == 0 ) {
+        wxMessageBox( "Citation Removed", "Higher Citation");
+    }
+    else if( !recCitation::Exists( id ) ) {
+        wxString mess;
+        mess << "Higher Citation Ci" << num << " Not available.";
+        wxMessageBox( mess, "Citation ID Error" );
+        return;
+    }
+    m_citation.FSetHigherID( id );
+    UpdateCitation();
 }
 
 void rgDlgEditCitation::OnButtonRepository( wxCommandEvent& event )
