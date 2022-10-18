@@ -143,6 +143,7 @@
     <sources>$(LOCAL_SRC)/rg/fb/fbRgEditAssociate.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/fb/fbRgEditCitation.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/fb/fbRgEditContact.cpp</sources>
+    <sources>$(LOCAL_SRC)/rg/fb/fbRgEditDate.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/fb/fbRgEditGallery.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/fb/fbRgEditMedia.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/fb/fbRgEditName.cpp</sources>
@@ -203,6 +204,7 @@
     <headers>$(LOCAL_SRC)/rg/fb/fbRgEditAssociate.h</headers>
     <headers>$(LOCAL_SRC)/rg/fb/fbRgEditCitation.h</headers>
     <headers>$(LOCAL_SRC)/rg/fb/fbRgEditContact.h</headers>
+    <headers>$(LOCAL_SRC)/rg/fb/fbRgEditDate.h</headers>
     <headers>$(LOCAL_SRC)/rg/fb/fbRgEditGallery.h</headers>
     <headers>$(LOCAL_SRC)/rg/fb/fbRgEditMedia.h</headers>
     <headers>$(LOCAL_SRC)/rg/fb/fbRgEditName.h</headers>

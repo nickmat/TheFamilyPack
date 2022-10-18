@@ -5,8 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     12th March 2013
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2013..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -34,7 +33,7 @@
 #include "rg/rgDialogs.h"
 #include "rgEdDate.h"
 
-#include "fbRgDialog.h"
+#include "fb/fbRgEditDate.h"
 
 //============================================================================
 //-------------------------[ rgDlgEditRelativeDate ]--------------------------

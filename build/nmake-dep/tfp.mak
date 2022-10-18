@@ -235,6 +235,7 @@ RECGUI_OBJECTS =  \
 	recgui_fbRgEditAssociate.obj \
 	recgui_fbRgEditCitation.obj \
 	recgui_fbRgEditContact.obj \
+	recgui_fbRgEditDate.obj \
 	recgui_fbRgEditGallery.obj \
 	recgui_fbRgEditMedia.obj \
 	recgui_fbRgEditName.obj \
@@ -830,6 +831,9 @@ recgui_fbRgEditCitation.obj: .\..\..\src\rg\fb\fbRgEditCitation.cpp
 
 recgui_fbRgEditContact.obj: .\..\..\src\rg\fb\fbRgEditContact.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\fb\fbRgEditContact.cpp
+
+recgui_fbRgEditDate.obj: .\..\..\src\rg\fb\fbRgEditDate.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\fb\fbRgEditDate.cpp
 
 recgui_fbRgEditGallery.obj: .\..\..\src\rg\fb\fbRgEditGallery.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(RECGUI_CXXFLAGS) .\..\..\src\rg\fb\fbRgEditGallery.cpp

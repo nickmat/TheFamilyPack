@@ -169,6 +169,7 @@ RECGUI_OBJECTS =  \
 	recgui_fbRgEditAssociate.o \
 	recgui_fbRgEditCitation.o \
 	recgui_fbRgEditContact.o \
+	recgui_fbRgEditDate.o \
 	recgui_fbRgEditGallery.o \
 	recgui_fbRgEditMedia.o \
 	recgui_fbRgEditName.o \
@@ -543,6 +544,9 @@ recgui_fbRgEditCitation.o: ./../../src/rg/fb/fbRgEditCitation.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_fbRgEditContact.o: ./../../src/rg/fb/fbRgEditContact.cpp
+	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
+
+recgui_fbRgEditDate.o: ./../../src/rg/fb/fbRgEditDate.cpp
 	$(CXX) -c -o $@ $(RECGUI_CXXFLAGS) $(CPPDEPS) $<
 
 recgui_fbRgEditGallery.o: ./../../src/rg/fb/fbRgEditGallery.cpp

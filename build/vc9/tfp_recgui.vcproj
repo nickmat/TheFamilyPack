@@ -208,6 +208,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rg\fb\fbRgEditDate.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rg\fb\fbRgEditGallery.cpp"
 				>
 			</File>
@@ -435,6 +439,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\rg\fb\fbRgEditDatabase.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\fb\fbRgEditDate.h"
 				>
 			</File>
 			<File

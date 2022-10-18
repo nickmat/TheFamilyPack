@@ -3,11 +3,9 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Edit database Date dialog header.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     28th November 2012
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2012-2013, Nick Matthews.
+ * Copyright:   Copyright (c) 2012..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -34,7 +32,7 @@
 
 #include "rg/rgDialogs.h"
 
-#include "fbRgDialog.h"
+#include "fb/fbRgEditDate.h"
 
 namespace rgDate
 {
