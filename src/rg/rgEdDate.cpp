@@ -40,47 +40,24 @@
 #include "rg/rgDialogs.h"
 #include "rgEdDate.h"
 
-bool rgEditDate( wxWindow* wind, idt dateID )
+
+bool rgEditDate( wxWindow* wind, idt dateID, const wxString& title )
 {
-    wxASSERT( dateID != 0 );
     if( recDate::IsRelative( dateID ) ) {
         return rgEditRelativeDate( wind, dateID );
     }
-    const wxString savepoint = recDb::GetSavepointStr();
-    recDb::Savepoint( savepoint );
-    bool ret = false;
-
-    rgDlgEditDate* dialog = new rgDlgEditDate( wind, dateID );
-
-    if( dialog->ShowModal() == wxID_OK ) {
-        recDb::ReleaseSavepoint( savepoint );
-        ret = true;
-    } else {
-        recDb::Rollback( savepoint );
-    }
-    dialog->Destroy();
-    return ret;
+    return rgEdit<rgDlgEditDate>( wind, dateID, title );
 }
 
 idt rgCreateDate( wxWindow* wind, const wxString& dateStr )
 {
-    const wxString savepoint = recDb::GetSavepointStr();
-    recDb::Savepoint( savepoint );
-
-    recDate date(0);
+    recDate date( 0 );
     date.SetDefaults();
-    if( dateStr.size() ) {
-        date.SetDate( dateStr );
-    }
-    date.Save();
-    idt dateID = date.FGetID();
-    if( rgEditDate( wind, dateID ) ) {
-        recDb::ReleaseSavepoint( savepoint );
-        return dateID;
-    }
-    recDb::Rollback( savepoint );
-    return 0;
+    date.SetDate( dateStr );
+    date.CreateUidChanged();
+    return rgCreate<recDate, rgDlgEditDate>( wind, date, _( "Create Date" ) );
 }
+
 
 CalendarScheme rgDate::scheme[] = {
     CALENDAR_SCH_Unstated,
@@ -179,6 +156,11 @@ bool rgDlgEditDate::TransferDataToWindow()
     m_textCtrlDate->SetValue( m_date.GetInputJdnStr() );
     m_output = m_date.GetStr();
     m_staticOutput->SetLabel( m_output );
+
+    m_textCtrlUid->SetValue( m_date.FGetUid() );
+    wxString changed = calStrFromJdn( m_date.FGetChanged() );
+    m_textCtrlChanged->SetValue( changed );
+
     return true;
 }
 

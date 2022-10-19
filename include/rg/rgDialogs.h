@@ -134,7 +134,7 @@ extern bool rgEditContact( wxWindow* wind, idt conID );
 extern idt rgCreateContact( wxWindow* wind, idt clID );
 
 // See src/rg/rgEdDate.cpp
-extern bool rgEditDate( wxWindow* wind, idt dateID );
+extern bool rgEditDate( wxWindow* wind, idt dateID, const wxString& title = "" );
 extern idt rgCreateDate( wxWindow* wind, const wxString& dateStr = wxEmptyString );
 
 // See src/rg/rgEdEvent.cpp
@@ -231,7 +231,7 @@ extern bool rgSelectPlaceFromReference(
     wxWindow* wind, idt* placeID, idt refID, const wxString& title, unsigned style );
 
 // See src/rg/rgEdRelDate.cpp
-extern bool rgEditRelativeDate( wxWindow* wind, idt dateID );
+extern bool rgEditRelativeDate( wxWindow* wind, idt dateID, const wxString& title = "" );
 extern idt rgCreateRelativeDate( wxWindow* wind, idt baseID, long value = 0 );
 
 

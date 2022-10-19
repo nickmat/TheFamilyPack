@@ -39,44 +39,31 @@
 #include "rg/rgDialogs.h"
 #include "rgEdRelDate.h"
 
-bool rgEditRelativeDate( wxWindow* wind, idt dateID )
+
+bool rgEditRelativeDate( wxWindow* wind, idt dateID, const wxString& title )
 {
-    wxASSERT( dateID != 0 );
-    const wxString savepoint = recDb::GetSavepointStr();
-    recDb::Savepoint( savepoint );
-    bool ret = false;
-
-    rgDlgEditRelativeDate* dialog = new rgDlgEditRelativeDate( wind, dateID );
-
-    if( dialog->ShowModal() == wxID_OK ) {
-        recDb::ReleaseSavepoint( savepoint );
-        ret = true;
-    } else {
-        recDb::Rollback( savepoint );
-    }
-    dialog->Destroy();
-    return ret;
+    return rgEdit<rgDlgEditRelativeDate>( wind, dateID, title );
 }
 
 idt rgCreateRelativeDate( wxWindow* wind, idt baseID, long value )
 {
-    wxASSERT( baseID != 0 );
-
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
 
-    recRelativeDate rel(0);
+    recRelativeDate rel( 0 );
     rel.SetDefaults();
     rel.FSetValue( value );
     rel.FSetBaseID( baseID );
     rel.Save();
 
-    recDate date(0);
+    recDate date( 0 );
     date.SetDefaults();
+    date.CreateUidChanged();
     date.FSetRelID( rel.FGetID() );
     date.Save();
     idt dateID = date.FGetID();
-    if( rgEditRelativeDate( wind, dateID ) ) {
+
+    if( rgEdit<rgDlgEditRelativeDate>( wind, dateID, _( "Create Relative Date" ) ) ) {
         recDb::ReleaseSavepoint( savepoint );
         return dateID;
     }
@@ -91,10 +78,11 @@ idt rgCreateRelativeDate( wxWindow* wind, idt baseID, long value )
 using namespace rgDate;
 
 rgDlgEditRelativeDate::rgDlgEditRelativeDate( wxWindow* parent, idt dateID )
-    : m_date(dateID),  fbRgEditRelativeDate( parent )
+    : m_date( dateID ), m_relative( m_date.FGetRelID() ),
+    m_base( m_relative.FGetBaseID() ),
+    m_scheme( CALENDAR_SCH_Unstated ), m_unitday( 0 ), m_unitdmy( 0 ),
+    fbRgEditRelativeDate(parent)
 {
-    m_relative.ReadID( m_date.FGetRelID() );
-    m_base.ReadID( m_relative.FGetBaseID() );
 }
 
 bool rgDlgEditRelativeDate::TransferDataToWindow()
@@ -120,6 +108,11 @@ bool rgDlgEditRelativeDate::TransferDataToWindow()
     SetUnitRadio();
     m_radioUnits->SetSelection( unit_list[m_relative.FGetUnit()] );
     m_staticDateID->SetLabel( m_date.GetIdStr() );
+
+    m_textCtrlUid->SetValue( m_date.FGetUid() );
+    wxString changed = calStrFromJdn( m_date.FGetChanged() );
+    m_textCtrlChanged->SetValue( changed );
+
     return true;
 }
 

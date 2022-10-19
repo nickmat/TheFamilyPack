@@ -37,16 +37,13 @@ class fbRgEditDate : public wxDialog
 	private:
 
 	protected:
-		wxStaticText* m_staticText1;
 		wxStaticText* m_staticOutput;
-		wxStaticText* m_staticText2;
 		wxChoice* m_choiceDisplay;
-		wxStaticText* m_staticText3;
 		wxChoice* m_choiceType;
-		wxStaticText* m_staticText4;
 		wxTextCtrl* m_textCtrlDate;
-		wxStaticText* m_staticText5;
 		wxChoice* m_choiceInput;
+		wxTextCtrl* m_textCtrlUid;
+		wxTextCtrl* m_textCtrlChanged;
 		wxStaticLine* m_staticline1;
 		wxStaticText* m_staticDateID;
 		wxButton* m_buttonSave;
@@ -87,7 +84,8 @@ class fbRgEditRelativeDate : public wxDialog
 		wxStaticText* m_staticText5;
 		wxChoice* m_choiceInput;
 		wxRadioBox* m_radioUnits;
-		wxStaticLine* m_staticline1;
+		wxTextCtrl* m_textCtrlUid;
+		wxTextCtrl* m_textCtrlChanged;
 		wxStaticText* m_staticDateID;
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
