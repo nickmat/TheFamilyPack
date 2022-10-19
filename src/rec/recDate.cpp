@@ -235,6 +235,9 @@ idt recDate::Create( idt dateID )
 
 bool recDate::SetDate( const wxString& str, CalendarScheme scheme )
 {
+    if( str.empty() ) {
+        return false;
+    }
     wxString lstr = str.Lower();
     lstr.Trim(true);
     lstr.Trim(false);
