@@ -94,7 +94,11 @@ bool rgDlgEditRelativeDate::TransferDataToWindow()
     m_staticOutput->SetLabel( m_date.GetStr() );
     m_choiceDisplay->Set( GetCalendarList() );
     m_choiceDisplay->SetSelection( sch_list[m_date.FGetDisplaySch()] );
-    m_choiceCalc->SetSelection( m_relative.FGetType() );
+    int calc_type = static_cast<int>(m_relative.FGetType());
+    if( calc_type < 1 || calc_type >= static_cast<int>(recRelativeDate::TYPE_Max) ) {
+        calc_type = static_cast<int>(recRelativeDate::TYPE_Duration);
+    }
+    m_choiceCalc->SetSelection( calc_type - 1 );
     m_textCtrlBase->SetValue( m_base.GetStr() );
     m_choicePrecision->SetSelection( m_date.FGetType() - 1 );
     wxString age = wxString::Format( "%ld", m_relative.FGetValue() );
