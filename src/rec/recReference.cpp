@@ -168,8 +168,16 @@ bool recReference::Equivalent( const recReference& r2 ) const
 
 wxString recReference::GetTitle( idt refID, const wxString& dbname )
 {
-    return ExecuteStr( 
+    return ExecuteStr(
         "SELECT title FROM \"%s\".Reference WHERE id=" ID ";",
+        UTF8_( dbname ), refID
+    );
+}
+
+idt recReference::GetHigherRef( idt refID, const wxString& dbname )
+{
+    return ExecuteID(
+        "SELECT higher_id FROM \"%s\".Reference WHERE id=" ID ";",
         UTF8_( dbname ), refID
     );
 }
@@ -311,13 +319,20 @@ recIdVec recReference::GetEntityList( idt refID, const wxString& dbname )
 recIdVec recReference::GetIdVecForEntity( 
     idt refID, recReferenceEntity::Type type, const wxString& dbname )
 {
+    recIdVec higher_entIDs;
+    idt higher_refID = GetHigherRef( refID, dbname );
+    if( higher_refID != 0 ) {
+        higher_entIDs = GetIdVecForEntity( higher_refID, type, dbname );
+    }
+
     wxSQLite3StatementBuffer sql;
     sql.Format(
         "SELECT entity_id FROM \"%s\".ReferenceEntity"
         " WHERE entity_type=%d AND ref_id=" ID ";",
         UTF8_( dbname ), (int) type, refID
     );
-    return ExecuteIdVec( sql );
+    recIdVec entIDs = ExecuteIdVec( sql );
+    return recVecAppend( higher_entIDs, entIDs );
 }
 
 idt recReference::Transfer(

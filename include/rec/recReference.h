@@ -142,6 +142,7 @@ public:
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     static wxString GetTitle( idt refID, const wxString& dbname = "Main" );
+    static idt GetHigherRef( idt refID, const wxString& dbname = "Main" );
 
     recRefEntVec ReadReferenceEntitys( const wxString& dbname = "Main" );
     static wxSQLite3Table GetTitleList( const wxString& dbname = "Main" );
