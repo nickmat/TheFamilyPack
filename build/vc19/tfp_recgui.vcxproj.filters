@@ -35,6 +35,9 @@
     <ClCompile Include="..\..\src\rg\fb\fbRgEditName.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\rg\fb\fbRgEditPlace.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\rg\fb\fbRgEditReference.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -206,6 +209,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\rg\fb\fbRgEditName.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\rg\fb\fbRgEditPlace.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\rg\fb\fbRgEditReference.h">

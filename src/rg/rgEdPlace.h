@@ -32,7 +32,7 @@
 
 #include <rec/recPlace.h>
 
-#include "fbRgDialog.h"
+#include "fb/fbRgEditPlace.h"
 
 class rgDlgEditPlace : public fbRgEditPlace
 {

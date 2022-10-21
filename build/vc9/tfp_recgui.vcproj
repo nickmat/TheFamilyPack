@@ -224,6 +224,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rg\fb\fbRgEditPlace.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rg\fb\fbRgEditReference.cpp"
 				>
 			</File>
@@ -455,6 +459,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\rg\fb\fbRgEditName.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\fb\fbRgEditPlace.h"
 				>
 			</File>
 			<File
