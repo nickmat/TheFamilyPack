@@ -218,8 +218,8 @@ extern bool rgEditPersona( wxWindow* wind, idt perID );
 extern idt rgCreateNamedPersona( wxWindow* parent, idt refID );
 
 // See src/rg/rgEdPlace.cpp
-extern bool rgEditPlace( wxWindow* wind, idt placeID );
-extern idt rgCreatePlace( wxWindow* wind, const wxString& placeStr = wxEmptyString );
+extern bool rgEditPlace( wxWindow* wind, idt placeID, const wxString& title = "" );
+extern idt rgCreatePlace( wxWindow* wind, const wxString& placeStr = "" );
 
 // See src/rg/rgEdReference.cpp
 extern bool rgEditReference( wxWindow* wind, idt refID );
