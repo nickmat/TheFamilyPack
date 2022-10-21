@@ -35,8 +35,9 @@ class fbRgEditPlace : public wxDialog
 	private:
 
 	protected:
-		wxStaticText* m_staticText1;
 		wxTextCtrl* m_textCtrlAddr;
+		wxTextCtrl* m_textCtrlUid;
+		wxTextCtrl* m_textCtrlChanged;
 		wxStaticLine* m_staticline1;
 		wxStaticText* m_staticPlaceID;
 		wxButton* m_buttonSave;

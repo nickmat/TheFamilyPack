@@ -40,23 +40,10 @@
 #include "rg/rgDialogs.h"
 #include "rgEdPlace.h"
 
-bool rgEditPlace( wxWindow* wind, idt placeID )
+
+bool rgEditPlace( wxWindow* wind, idt placeID, const wxString& title )
 {
-    wxASSERT( placeID != 0 );
-    const wxString savepoint = recDb::GetSavepointStr();
-    recDb::Savepoint( savepoint );
-    bool ret = false;
-
-    rgDlgEditPlace* dialog = new rgDlgEditPlace( wind, placeID );
-
-    if( dialog->ShowModal() == wxID_OK ) {
-        recDb::ReleaseSavepoint( savepoint );
-        ret = true;
-    } else {
-        recDb::Rollback( savepoint );
-    }
-    dialog->Destroy();
-    return ret;
+    return rgEdit<rgDlgEditPlace>( wind, placeID, title );
 }
 
 idt rgCreatePlace( wxWindow* wind, const wxString& placeStr )
@@ -64,24 +51,25 @@ idt rgCreatePlace( wxWindow* wind, const wxString& placeStr )
     const wxString savepoint = recDb::GetSavepointStr();
     recDb::Savepoint( savepoint );
 
-    recPlace place(0);
+    recPlace place( 0 );
+    place.CreateUidChanged();
     place.Save();
     idt placeID = place.FGetID();
-    recPlacePart pp(0);
+
+    recPlacePart pp( 0 );
     pp.FSetPlaceID( placeID );
     pp.FSetTypeID( recPlacePartType::TYPE_Address );
     pp.FSetValue( placeStr );
     pp.FSetSequence( 1 );
     pp.Save();
 
-    if( rgEditPlace( wind, placeID ) ) {
+    if( rgEdit<rgDlgEditPlace>( wind, placeID, _( "Create Place" ) ) ) {
         recDb::ReleaseSavepoint( savepoint );
         return placeID;
     }
     recDb::Rollback( savepoint );
     return 0;
 }
-
 
 // NOTE We are using a simplified place model where the only PlaceTypePart is
 // "Address" and there is one, and only one, PlacePart per Place.
@@ -101,6 +89,11 @@ bool rgDlgEditPlace::TransferDataToWindow()
 
     m_staticPlaceID->SetLabel( m_place.GetIdStr() );
     m_textCtrlAddr->SetValue( m_pp.FGetValue() );
+
+    m_textCtrlUid->SetValue( m_place.FGetUid() );
+    wxString changed = calStrFromJdn( m_place.FGetChanged() );
+    m_textCtrlChanged->SetValue( changed );
+
     return true;
 }
 
