@@ -147,6 +147,7 @@
     <sources>$(LOCAL_SRC)/rg/fb/fbRgEditGallery.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/fb/fbRgEditMedia.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/fb/fbRgEditName.cpp</sources>
+    <sources>$(LOCAL_SRC)/rg/fb/fbRgEditPersona.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/fb/fbRgEditPlace.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/fb/fbRgEditReference.cpp</sources>
     <sources>$(LOCAL_SRC)/rg/fb/fbRgEditResearcher.cpp</sources>
@@ -209,6 +210,7 @@
     <headers>$(LOCAL_SRC)/rg/fb/fbRgEditGallery.h</headers>
     <headers>$(LOCAL_SRC)/rg/fb/fbRgEditMedia.h</headers>
     <headers>$(LOCAL_SRC)/rg/fb/fbRgEditName.h</headers>
+    <headers>$(LOCAL_SRC)/rg/fb/fbRgEditPersona.h</headers>
     <headers>$(LOCAL_SRC)/rg/fb/fbRgEditPlace.h</headers>
     <headers>$(LOCAL_SRC)/rg/fb/fbRgEditDatabase.h</headers>
     <headers>$(LOCAL_SRC)/rg/fb/fbRgEditReference.h</headers>

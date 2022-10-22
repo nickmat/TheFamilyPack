@@ -30,7 +30,7 @@
 
 #include <rec/recPersona.h>
 
-#include "fbRgDialog.h"
+#include "fb/fbRgEditPersona.h"
 
 
 //============================================================================
