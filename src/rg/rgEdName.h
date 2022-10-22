@@ -44,34 +44,17 @@ class rgDlgEditName : public fbRgEditName
 public:
     rgDlgEditName( wxWindow* parent, idt nameID );
 
-//    void SetData( idt nameID = 0 ) { m_name.f_id = nameID; }
-//    void SetDefault( wxString& name ) {
-//        m_haveName = true; m_nameStr = name;
-//    }
-
-//    void SetID( idt nameID ) { m_name.f_id = nameID; }
-//    void SetPersonaID( idt perID ) { m_name.f_per_id = perID; }
-//    void CreateName( const wxString name ) {
-//        m_haveName = true; m_nameStr = name;
-//    }
-
-//    recName* GetName() { return &m_name; }
-
 private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
 
     void UpdateName();
 
-//    void OnPersonaButton( wxCommandEvent& event );
     void OnPartAddButton( wxCommandEvent& event );
     void OnPartEditButton( wxCommandEvent& event );
     void OnPartDeleteButton( wxCommandEvent& event );
     void OnPartUpButton( wxCommandEvent& event );
     void OnPartDownButton( wxCommandEvent& event );
-
-//    bool              m_haveName; // was m_defaultAttr
-//    wxString          m_nameStr;
 
     recName           m_name;
     recNamePartVec    m_parts;

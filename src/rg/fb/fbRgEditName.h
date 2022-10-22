@@ -82,10 +82,9 @@ class fbRgEditName : public wxDialog
 	private:
 
 	protected:
-		wxStaticText* m_staticText1;
 		wxStaticText* m_staticName;
-		wxStaticText* m_staticText2;
 		wxChoice* m_choiceType;
+		wxTextCtrl* m_textCtrlPer_Ind;
 		wxListCtrl* m_listNamePart;
 		wxButton* m_buttonPartAdd;
 		wxButton* m_buttonPartEdit;

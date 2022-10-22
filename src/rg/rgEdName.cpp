@@ -3,11 +3,9 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Edit database Name entity dialog.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     12th December 2012
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2012, Nick Matthews.
+ * Copyright:   Copyright (c) 2012..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -45,21 +43,7 @@
 
 bool rgEditName( wxWindow* wind, idt nameID )
 {
-    wxASSERT( nameID != 0 );
-    const wxString savepoint = recDb::GetSavepointStr();
-    recDb::Savepoint( savepoint );
-    bool ret = false;
-
-    rgDlgEditName* dialog = new rgDlgEditName( wind, nameID );
-
-    if( dialog->ShowModal() == wxID_OK ) {
-        recDb::ReleaseSavepoint( savepoint );
-        ret = true;
-    } else {
-        recDb::Rollback( savepoint );
-    }
-    dialog->Destroy();
-    return ret;
+    return rgEdit<rgDlgEditName>( wind, nameID );
 }
 
 //============================================================================
@@ -84,12 +68,20 @@ bool rgDlgEditName::TransferDataToWindow()
     wxASSERT( m_name.FGetID() != 0 );
 
     m_types = recNameStyle::GetStyleList();
-    for( size_t i = 0 ; i < m_types.size() ; i++ ) {
+    for( size_t i = 0; i < m_types.size(); i++ ) {
         m_choiceType->Append( m_types[i].FGetName() );
         if( m_name.FGetTypeID() == m_types[i].FGetID() ) {
             m_choiceType->SetSelection( (int) i );
         }
     }
+    wxString per_ind;
+    if( m_name.FGetIndID() != 0 ) {
+        per_ind = recIndividual::GetIdStr( m_name.FGetIndID() );
+    }
+    else if( m_name.FGetPerID() != 0 ) {
+        per_ind = recPersona::GetIdStr( m_name.FGetPerID() );
+    }
+    m_textCtrlPer_Ind->SetValue( per_ind );
 
     m_parts = m_name.GetParts();
     for( size_t i = 0 ; i < m_parts.size() ; i++ ) {
