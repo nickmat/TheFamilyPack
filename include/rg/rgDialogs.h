@@ -214,7 +214,7 @@ extern bool rgEditPerEventRole( wxWindow* wind, idt epID, rgSHOWROLE filter = rg
 extern bool rgCreatePerEventRole( wxWindow* wind, idt perID, idt eveID, idt roleID );
 
 // See src/rg/rgEdPersona.cpp
-extern bool rgEditPersona( wxWindow* wind, idt perID );
+extern bool rgEditPersona( wxWindow* wind, idt perID, const wxString& title = "" );
 extern idt rgCreateNamedPersona( wxWindow* parent, idt refID );
 
 // See src/rg/rgEdPlace.cpp

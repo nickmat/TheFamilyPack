@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     9 October 2010
- * Copyright:   Copyright (c) 2010 ~ 2018, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -44,23 +44,9 @@
 #include "rgEdReference.h"
 #include "rgEdPersona.h"
 
-bool rgEditPersona( wxWindow* parent, idt perID )
+bool rgEditPersona( wxWindow* parent, idt perID, const wxString& title )
 {
-    wxASSERT( perID != 0 );
-    const wxString savepoint = recDb::GetSavepointStr();
-    recDb::Savepoint( savepoint );
-    bool ret = false;
-
-    rgDlgEditPersona* dialog = new rgDlgEditPersona( parent, perID );
-
-    if( dialog->ShowModal() == wxID_OK ) {
-        recDb::ReleaseSavepoint( savepoint );
-        ret = true;
-    } else {
-        recDb::Rollback( savepoint );
-    }
-    dialog->Destroy();
-    return ret;
+    return rgEdit<rgDlgEditPersona>( parent, perID, title );
 }
 
 idt rgCreateNamedPersona( wxWindow* wind, idt refID )
@@ -77,7 +63,7 @@ idt rgCreateNamedPersona( wxWindow* wind, idt refID )
     }
     recReferenceEntity::Create( refID, recReferenceEntity::TYPE_Name, nameID );
 
-    if( ! rgEditPersona( wind, perID ) ) {
+    if( !rgEditPersona( wind, perID, "Create Persona" ) ) {
         recDb::Rollback( savepoint );
         return 0;
     }
@@ -90,37 +76,48 @@ idt rgCreateNamedPersona( wxWindow* wind, idt refID )
 //============================================================================
 
 rgDlgEditPersona::rgDlgEditPersona( wxWindow* parent, idt perID )
-    : m_persona(perID), m_order(recEO_DatePt),
+    : m_persona(perID), m_order(recEO_PerSeq),
     fbRgEditPersona( parent )
 {
-    m_refID = m_persona.FGetRefID();
-    wxASSERT( m_refID != 0 );
+    wxASSERT( m_persona.FGetRefID() != 0 );
 
     m_listName->InsertColumn( NC_Number, _("Number") );
     m_listName->InsertColumn( NC_Type, _("Type") );
     m_listName->InsertColumn( NC_Name, _("Name") );
 
-    m_listEvent->InsertColumn( EV_COL_Number, _("Number") );
-    m_listEvent->InsertColumn( EV_COL_Role, _("Role") );
-    m_listEvent->InsertColumn( EV_COL_Title, _("Title") );
-    m_listEvent->InsertColumn( EV_COL_Date, _("Date") );
-    m_listEvent->InsertColumn( EV_COL_Place, _("Place") );
+    m_listEventa->InsertColumn( EV_COL_Number, _("Number") );
+    m_listEventa->InsertColumn( EV_COL_Role, _("Role") );
+    m_listEventa->InsertColumn( EV_COL_Title, _("Title") );
+    m_listEventa->InsertColumn( EV_COL_Date, _("Date") );
+    m_listEventa->InsertColumn( EV_COL_Place, _("Place") );
+
+    m_listIndividual->InsertColumn( IC_Number, _( "Number" ) );
+    m_listIndividual->InsertColumn( IC_Conf, _( "Conf" ) );
+    m_listIndividual->InsertColumn( IC_Name, _( "Name" ) );
+    m_listIndividual->InsertColumn( IC_Link_Note, _( "Link Note" ) );
 }
 
 bool rgDlgEditPersona::TransferDataToWindow()
 {
-    m_nameStr = m_persona.GetNameStr();
-    m_staticPerName->SetLabel( m_nameStr );
+    m_staticPerName->SetLabel( m_persona.GetNameStr() );
     m_staticPerID->SetLabel( m_persona.GetIdStr() );
 
     m_choiceSex->SetSelection( (int) m_persona.f_sex );
+
+    idt refID = m_persona.FGetRefID();
+    wxString reference = recReference::GetIdStr( refID ) + ": "
+        + recReference::GetTitle( refID );
+    m_textCtrlRef->SetValue( reference );
+
+    m_textCtrlUid->SetValue( m_persona.FGetUid() );
+    wxString changed = calStrFromJdn( m_persona.FGetChanged() );
+    m_textCtrlChanged->SetValue( changed );
+
     m_textCtrlNote->SetValue(  m_persona.f_note );
 
-    m_indLinks = m_persona.GetIndividualIDs();
-    m_staticIndId->SetLabel( GetIndLinksString() );
-
     UpdateNameList();
-    UpdateEventList();
+    UpdateEventaList();
+    UpdateIndividualList();
     return true;
 }
 
@@ -130,19 +127,6 @@ bool rgDlgEditPersona::TransferDataFromWindow()
     m_persona.f_note = m_textCtrlNote->GetValue();
     m_persona.Save();
     return true;
-}
-
-wxString rgDlgEditPersona::GetIndLinksString() const
-{
-    wxString txt;
-
-    for( size_t i = 0 ; i < m_indLinks.size() ; i++ ) {
-        if( i > 0 ) {
-            txt << wxT(", ");
-        }
-        txt << wxT("I ") << m_indLinks[i];
-    }
-    return txt;
 }
 
 void rgDlgEditPersona::UpdateNameList( idt nameID )
@@ -165,21 +149,22 @@ void rgDlgEditPersona::UpdateNameList( idt nameID )
     if( row >= 0 ) {
         m_listName->EnsureVisible( row );
     }
+    NameButtonsEnable( row );
 }
 
-void rgDlgEditPersona::UpdateEventList( idt eveID )
+void rgDlgEditPersona::UpdateEventaList( idt eveID )
 {
     m_evpers = m_persona.ReadEventaPersonas( m_order );
-    m_listEvent->DeleteAllItems();
+    m_listEventa->DeleteAllItems();
     int row = -1;
     for( size_t i = 0 ; i < m_evpers.size() ; i++ ) {
-        m_listEvent->InsertItem( i, recEvent::GetIdStr( m_evpers[i].f_eventa_id ) );
-        m_listEvent->SetItem( i, EV_COL_Role, recEventTypeRole::GetName( m_evpers[i].f_role_id ) );
-        m_listEvent->SetItem( i, EV_COL_Title, recEvent::GetTitle( m_evpers[i].f_eventa_id ) );
-        m_listEvent->SetItem( i, EV_COL_Date, recEvent::GetDateStr( m_evpers[i].f_eventa_id ) );
-        m_listEvent->SetItem( i, EV_COL_Place, recEvent::GetAddressStr( m_evpers[i].f_eventa_id ) );
+        m_listEventa->InsertItem( i, recEventa::GetIdStr( m_evpers[i].f_eventa_id ) );
+        m_listEventa->SetItem( i, EV_COL_Role, recEventTypeRole::GetName( m_evpers[i].f_role_id ) );
+        m_listEventa->SetItem( i, EV_COL_Title, recEventa::GetTitle( m_evpers[i].f_eventa_id ) );
+        m_listEventa->SetItem( i, EV_COL_Date, recEventa::GetDateStr( m_evpers[i].f_eventa_id ) );
+        m_listEventa->SetItem( i, EV_COL_Place, recEventa::GetAddressStr( m_evpers[i].f_eventa_id ) );
         if( eveID == m_evpers[i].FGetEventaID() ) {
-            m_listEvent->SetItemState( i, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+            m_listEventa->SetItemState( i, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
             row = i;
         }
         // Correct errors and gaps in sequence numbers.
@@ -189,8 +174,39 @@ void rgDlgEditPersona::UpdateEventList( idt eveID )
         }
     }
     if( row >= 0 ) {
-        m_listEvent->EnsureVisible( row );
+        m_listEventa->EnsureVisible( row );
     }
+    EventaButtonsEnable( row );
+}
+
+void rgDlgEditPersona::UpdateIndividualList( idt indID )
+{
+    m_indLinks = m_persona.GetIndividualIDs();
+    m_listIndividual->DeleteAllItems();
+    int row = -1;
+    for( size_t i = 0; i < m_indLinks.size(); i++ ) {
+        recIndividualPersona ipa( 0 );
+        ipa.FSetIndID( m_indLinks[i] );
+        ipa.FSetPerID( m_persona.FGetID() );
+        ipa.Find();
+        if( ipa.FGetID() == 0 ) continue;
+
+        m_listIndividual->InsertItem( i, recIndividual::GetIdStr( m_indLinks[i] ) );
+        m_listIndividual->SetItem( i, IC_Conf, std::to_string( ipa.FGetConf() ) );
+        m_listIndividual->SetItem( i, IC_Name, recIndividual::GetName( m_indLinks[i] ) );
+        m_listIndividual->SetItem( i, IC_Link_Note, ipa.FGetNote() );
+
+        if( indID == m_indLinks[i] ) {
+            m_listIndividual->SetItemState( i, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+            row = i;
+        }
+        // Correct errors and gaps in sequence numbers.
+        // TODO: requires recIndividualPersona ind_seq field added
+    }
+    if( row >= 0 ) {
+        m_listIndividual->EnsureVisible( row );
+    }
+    IndButtonsEnable( row );
 }
 
 void rgDlgEditPersona::OnPageChanged( wxBookCtrlEvent& event )
@@ -198,39 +214,68 @@ void rgDlgEditPersona::OnPageChanged( wxBookCtrlEvent& event )
     Page page = (Page) m_notebook->GetSelection();
     switch( page )
     {
-    case PAGE_Persona:
+    case PAGE_Details:
         break;
-    case PAGE_Name:
+    case PAGE_Note:
+        break;
+    case PAGE_Names:
         UpdateNameList();
         break;
-    case PAGE_Event:
-        UpdateEventList();
+    case PAGE_Eventa:
+        UpdateEventaList();
+        break;
+    case PAGE_Individual:
+        UpdateIndividualList();
         break;
     default:
         wxASSERT( false );
     }
+
     PostSizeEvent();
 }
 
-void rgDlgEditPersona::OnIndLinkButton( wxCommandEvent& event )
+void rgDlgEditPersona::NameButtonsEnable( long row )
 {
-    idt indID = rgSelectIndividual( this );
-    if( indID == 0 ) return;
+    if( row < 0 ) {
+        m_buttonNameEdit->Disable();
+        m_buttonNameDel->Disable();
+        m_buttonNameUp->Disable();
+        m_buttonNameDn->Disable();
+        return;
+    }
+    m_buttonNameEdit->Enable();
+    m_buttonNameDel->Enable();
+    if( row == 0 ) {
+        m_buttonNameUp->Disable();
+    }
+    else {
+        m_buttonNameUp->Enable();
+    }
+    if( row == m_listName->GetItemCount() - 1 ) {
+        m_buttonNameDn->Disable();
+    }
+    else {
+        m_buttonNameDn->Enable();
+    }
+}
 
-    recIndividualPersona lp(0);
-    lp.f_ind_id = indID;
-    lp.f_per_id = m_persona.f_id;
-    lp.f_conf = 0.999;
-    lp.Save();
+void rgDlgEditPersona::OnNameDeselect( wxListEvent& event )
+{
+    NameButtonsEnable( -1 );
+}
 
-    m_staticIndId->SetLabel( recIndividual::GetIdStr( indID ) );
+void rgDlgEditPersona::OnNameSelect( wxListEvent& event )
+{
+    long row = m_listName->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    NameButtonsEnable( row );
 }
 
 void rgDlgEditPersona::OnNameAddButton( wxCommandEvent& event )
 {
     idt nameID = rgCreatePersonaName( this, m_persona.FGetID() );
     if( nameID ) {
-        recReferenceEntity::Create( m_refID, recReferenceEntity::TYPE_Name, nameID );
+        idt refID = m_persona.FGetRefID();
+        recReferenceEntity::Create( refID, recReferenceEntity::TYPE_Name, nameID );
         UpdateNameList( nameID );
     }
 }
@@ -305,30 +350,66 @@ void rgDlgEditPersona::OnNameDownButton( wxCommandEvent& event )
     UpdateNameList( m_names[row].FGetID() );
 }
 
-void rgDlgEditPersona::OnEventAddButton( wxCommandEvent& event )
+void rgDlgEditPersona::EventaButtonsEnable( long row )
 {
-    idt eaID = rgCreateEventa( this, m_refID );
-    if( eaID ) {
-        UpdateEventList( eaID );
+    if( row < 0 ) {
+        m_buttonEventaEdit->Disable();
+        m_buttonEventaDel->Disable();
+        m_buttonEventaUp->Disable();
+        m_buttonEventaDn->Disable();
+        return;
+    }
+    m_buttonEventaEdit->Enable();
+    m_buttonEventaDel->Enable();
+    if( row == 0 ) {
+        m_buttonEventaUp->Disable();
+    }
+    else {
+        m_buttonEventaUp->Enable();
+    }
+    if( row == m_listEventa->GetItemCount() - 1 ) {
+        m_buttonEventaDn->Disable();
+    }
+    else {
+        m_buttonEventaDn->Enable();
     }
 }
 
-void rgDlgEditPersona::OnEventEditButton( wxCommandEvent& event )
+void rgDlgEditPersona::OnEventaDeselect( wxListEvent& event )
 {
-    long row = m_listEvent->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    EventaButtonsEnable( -1 );
+}
+
+void rgDlgEditPersona::OnEventaSelect( wxListEvent& event )
+{
+    long row = m_listEventa->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    EventaButtonsEnable( row );
+}
+
+void rgDlgEditPersona::OnEventaAddButton( wxCommandEvent& event )
+{
+    idt eaID = rgCreateEventa( this, m_persona.FGetRefID() );
+    if( eaID ) {
+        UpdateEventaList( eaID );
+    }
+}
+
+void rgDlgEditPersona::OnEventaEditButton( wxCommandEvent& event )
+{
+    long row = m_listEventa->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
         wxMessageBox( _("No row selected"), _("Edit Event"), wxOK | wxCENTRE, this );
         return;
     }
     idt eventID = m_evpers[row].FGetEventaID();
     if( rgEditEventa( this, eventID ) ) {
-        UpdateEventList( eventID );
+        UpdateEventaList( eventID );
     }
 }
 
-void rgDlgEditPersona::OnEventDeleteButton( wxCommandEvent& event )
+void rgDlgEditPersona::OnEventaDeleteButton( wxCommandEvent& event )
 {
-    long row = m_listEvent->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    long row = m_listEventa->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
         wxMessageBox( _("No row selected"), _("Delete From Event") );
         return;
@@ -344,12 +425,12 @@ void rgDlgEditPersona::OnEventDeleteButton( wxCommandEvent& event )
         return;
     }
     m_evpers[row].Delete();
-    UpdateEventList();
+    UpdateEventaList();
 }
 
-void rgDlgEditPersona::OnEventUpButton( wxCommandEvent& event )
+void rgDlgEditPersona::OnEventaUpButton( wxCommandEvent& event )
 {
-    long row = m_listEvent->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    long row = m_listEventa->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
         wxMessageBox( _("Row not selected"), _("Name Up") );
         return;
@@ -362,17 +443,17 @@ void rgDlgEditPersona::OnEventUpButton( wxCommandEvent& event )
     m_evpers[row].Save();
     m_evpers[row-1].FSetPerSeq( seq );
     m_evpers[row-1].Save();
-    UpdateEventList( m_evpers[row].FGetEventaID() );
+    UpdateEventaList( m_evpers[row].FGetEventaID() );
 }
 
-void rgDlgEditPersona::OnEventDownButton( wxCommandEvent& event )
+void rgDlgEditPersona::OnEventaDownButton( wxCommandEvent& event )
 {
-    long row = m_listEvent->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    long row = m_listEventa->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     if( row < 0 ) {
         wxMessageBox( _("Row not selected"), _("Name Down") );
         return;
     }
-    if( row == m_listEvent->GetItemCount() - 1 ) {
+    if( row == m_listEventa->GetItemCount() - 1 ) {
         return; // Already at bottom
     }
     int seq = m_evpers[row].FGetPerSeq();
@@ -380,29 +461,92 @@ void rgDlgEditPersona::OnEventDownButton( wxCommandEvent& event )
     m_evpers[row].Save();
     m_evpers[row+1].FSetPerSeq( seq );
     m_evpers[row+1].Save();
-    UpdateEventList( m_evpers[row].FGetEventaID() );
+    UpdateEventaList( m_evpers[row].FGetEventaID() );
 }
 
-void rgDlgEditPersona::OnOrderBy( wxCommandEvent& event )
+void rgDlgEditPersona::OnEventaOrderBy( wxCommandEvent& event )
 {
     switch( event.GetSelection() )
     {
     case 0:
-        m_order = recEO_DatePt;
-        m_buttonEventUp->Enable( false );
-        m_buttonEventDn->Enable( false );
+        m_order = recEO_PerSeq;
+        m_buttonEventaUp->Enable( true );
+        m_buttonEventaDn->Enable( true );
         break;
     case 1:
-        m_order = recEO_PerSeq;
-        m_buttonEventUp->Enable( true );
-        m_buttonEventDn->Enable( true );
+        m_order = recEO_DatePt;
+        m_buttonEventaUp->Enable( false );
+        m_buttonEventaDn->Enable( false );
         break;
     default:
         return;
     }
-    long row = m_listEvent->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    long row = m_listEventa->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
     idt eveID = ( row >= 0 ) ? m_evpers[row].FGetEventaID() : 0;
-    UpdateEventList( eveID );
+    UpdateEventaList( eveID );
+}
+
+void rgDlgEditPersona::IndButtonsEnable( long row )
+{
+    if( row < 0 ) {
+        m_buttonIndEdit->Disable();
+        m_buttonIndDel->Disable();
+        m_buttonIndUp->Disable();
+        m_buttonIndDn->Disable();
+        return;
+    }
+    m_buttonIndEdit->Enable();
+    m_buttonIndDel->Enable();
+    if( row == 0 ) {
+        m_buttonIndUp->Disable();
+    }
+    else {
+        m_buttonIndUp->Enable();
+    }
+    if( row == m_listIndividual->GetItemCount() - 1 ) {
+        m_buttonIndDn->Disable();
+    }
+    else {
+        m_buttonIndDn->Enable();
+    }
+}
+
+void rgDlgEditPersona::OnIndDeselect( wxListEvent& event )
+{
+    IndButtonsEnable( -1 );
+}
+
+void rgDlgEditPersona::OnIndSelect( wxListEvent& event )
+{
+    long row = m_listIndividual->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    IndButtonsEnable( row );
+}
+
+void rgDlgEditPersona::OnIndAddButton( wxCommandEvent& event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnIndAddButton" );
+}
+
+void rgDlgEditPersona::OnIndEditButton( wxCommandEvent& event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnIndEditButton" );
+}
+
+void rgDlgEditPersona::OnEventDeleteButton( wxCommandEvent& event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnEventDeleteButton" );
+}
+
+void rgDlgEditPersona::OnIndUpButton( wxCommandEvent& event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnIndUpButton" );
+    // TODO: requires recIndividualPersona ind_seq field added
+}
+
+void rgDlgEditPersona::OnIndDownButton( wxCommandEvent& event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnIndDownButton" );
+    // TODO: requires recIndividualPersona ind_seq field added
 }
 
 // End of dlgEdPersona.cpp file

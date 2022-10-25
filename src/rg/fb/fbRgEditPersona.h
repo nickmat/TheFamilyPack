@@ -17,14 +17,14 @@
 #include <wx/colour.h>
 #include <wx/settings.h>
 #include <wx/sizer.h>
-#include <wx/textctrl.h>
 #include <wx/choice.h>
-#include <wx/button.h>
+#include <wx/textctrl.h>
+#include <wx/panel.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
-#include <wx/panel.h>
 #include <wx/listctrl.h>
+#include <wx/button.h>
 #include <wx/radiobox.h>
 #include <wx/notebook.h>
 #include <wx/statline.h>
@@ -40,51 +40,65 @@ class fbRgEditPersona : public wxDialog
 	private:
 
 	protected:
-		wxStaticText* m_staticText1;
 		wxStaticText* m_staticPerName;
 		wxNotebook* m_notebook;
-		wxPanel* m_panel1;
-		wxStaticText* m_staticText12;
-		wxTextCtrl* m_textCtrlNote;
-		wxStaticText* m_staticText11;
+		wxPanel* m_panelDetail;
 		wxChoice* m_choiceSex;
-		wxButton* m_buttonIndLink;
-		wxStaticText* m_staticText13;
-		wxStaticText* m_staticIndId;
-		wxPanel* m_panel2;
+		wxTextCtrl* m_textCtrlRef;
+		wxTextCtrl* m_textCtrlUid;
+		wxTextCtrl* m_textCtrlChanged;
+		wxPanel* m_panelNote;
+		wxTextCtrl* m_textCtrlNote;
+		wxPanel* m_panelName;
 		wxListCtrl* m_listName;
 		wxButton* m_buttonNameAdd;
 		wxButton* m_buttonNameEdit;
 		wxButton* m_buttonNameDel;
 		wxButton* m_buttonNameUp;
 		wxButton* m_buttonNameDn;
-		wxPanel* m_panel21;
-		wxListCtrl* m_listEvent;
-		wxButton* m_buttonEventAdd;
-		wxButton* m_buttonEventEdit;
-		wxButton* m_buttonEventDel;
-		wxButton* m_buttonEventUp;
-		wxButton* m_buttonEventDn;
-		wxRadioBox* m_radioBox3;
-		wxStaticLine* m_staticline1;
+		wxPanel* m_panelEventa;
+		wxListCtrl* m_listEventa;
+		wxButton* m_buttonEventaAdd;
+		wxButton* m_buttonEventaEdit;
+		wxButton* m_buttonEventaDel;
+		wxButton* m_buttonEventaUp;
+		wxButton* m_buttonEventaDn;
+		wxRadioBox* m_radioBoxEventaOrder;
+		wxPanel* m_panelIndividual;
+		wxListCtrl* m_listIndividual;
+		wxButton* m_buttonIndAdd;
+		wxButton* m_buttonIndEdit;
+		wxButton* m_buttonIndDel;
+		wxButton* m_buttonIndUp;
+		wxButton* m_buttonIndDn;
 		wxStaticText* m_staticPerID;
-		wxButton* m_buttonSave1;
-		wxButton* m_buttonCancel1;
+		wxButton* m_buttonSave;
+		wxButton* m_buttonCancel;
 
 		// Virtual event handlers, override them in your derived class
 		virtual void OnPageChanged( wxNotebookEvent& event ) { event.Skip(); }
-		virtual void OnIndLinkButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnNameDeselect( wxListEvent& event ) { event.Skip(); }
+		virtual void OnNameSelect( wxListEvent& event ) { event.Skip(); }
 		virtual void OnNameAddButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnNameEditButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnNameDeleteButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnNameUpButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnNameDownButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnEventAddButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnEventEditButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEventaDeselect( wxListEvent& event ) { event.Skip(); }
+		virtual void OnEventaSelect( wxListEvent& event ) { event.Skip(); }
+		virtual void OnEventaAddButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEventaEditButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEventaDeleteButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEventaUpButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEventaDownButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEventaOrderBy( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnIndDeselect( wxListEvent& event ) { event.Skip(); }
+		virtual void OnIndSelect( wxListEvent& event ) { event.Skip(); }
+		virtual void OnIndAddButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnIndEditButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnEventDeleteButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnEventUpButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnEventDownButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnOrderBy( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnIndUpButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnIndDownButton( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:

@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     9 October 2010
- * Copyright:   Copyright (c) 2010 - 2015, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -40,13 +40,16 @@
 class rgDlgEditPersona : public fbRgEditPersona
 {
     enum Page {
-        PAGE_Persona, PAGE_Name, PAGE_Event
+        PAGE_Details, PAGE_Note, PAGE_Names, PAGE_Eventa, PAGE_Individual
     };
     enum NameColumns {
         NC_Number, NC_Type, NC_Name, NC_MAX
     };
     enum EventColumns {
         EV_COL_Number, EV_COL_Role, EV_COL_Title, EV_COL_Date, EV_COL_Place, EV_COL_MAX
+    };
+    enum IndColumns {
+        IC_Number, IC_Conf, IC_Name, IC_Link_Note, IC_MAX
     };
 public:
     rgDlgEditPersona( wxWindow* parent, idt perID );
@@ -59,36 +62,45 @@ private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
 
-    wxString GetIndLinksString() const;
     void UpdateNameList( idt nameID = 0 );
-    void UpdateEventList( idt eveID = 0 );
+    void UpdateEventaList( idt eveID = 0 );
+    void UpdateIndividualList( idt indID = 0 );
 
-    void OnPageChanged( wxBookCtrlEvent& event );
+    void OnPageChanged( wxBookCtrlEvent& event ) override;
 
-    void OnIndLinkButton( wxCommandEvent& event );
+    void NameButtonsEnable( long row );
+    void OnNameDeselect( wxListEvent& event ) override;
+    void OnNameSelect( wxListEvent& event ) override;
+    void OnNameAddButton( wxCommandEvent& event ) override;
+    void OnNameEditButton( wxCommandEvent& event ) override;
+    void OnNameDeleteButton( wxCommandEvent& event ) override;
+    void OnNameUpButton( wxCommandEvent& event ) override;
+    void OnNameDownButton( wxCommandEvent& event ) override;
 
-    void OnNameAddButton( wxCommandEvent& event );
-    void OnNameEditButton( wxCommandEvent& event );
-    void OnNameDeleteButton( wxCommandEvent& event );
-    void OnNameUpButton( wxCommandEvent& event );
-    void OnNameDownButton( wxCommandEvent& event );
+    void EventaButtonsEnable( long row );
+    void OnEventaDeselect( wxListEvent& event ) override;
+    void OnEventaSelect( wxListEvent& event ) override;
+    void OnEventaAddButton( wxCommandEvent& event ) override;
+    void OnEventaEditButton( wxCommandEvent& event ) override;
+    void OnEventaDeleteButton( wxCommandEvent& event ) override;
+    void OnEventaUpButton( wxCommandEvent& event ) override;
+    void OnEventaDownButton( wxCommandEvent& event ) override;
+    void OnEventaOrderBy( wxCommandEvent& event ) override;
 
-    void OnEventAddButton( wxCommandEvent& event );
-    void OnEventEditButton( wxCommandEvent& event );
-    void OnEventDeleteButton( wxCommandEvent& event );
-    void OnEventUpButton( wxCommandEvent& event );
-    void OnEventDownButton( wxCommandEvent& event );
-    void OnOrderBy( wxCommandEvent& event );
-
-    idt                 m_refID;
+    void IndButtonsEnable( long row );
+    void OnIndDeselect( wxListEvent& event ) override;
+    void OnIndSelect( wxListEvent& event ) override;
+    void OnIndAddButton( wxCommandEvent& event ) override;
+    void OnIndEditButton( wxCommandEvent& event ) override;
+    void OnEventDeleteButton( wxCommandEvent& event ) override;
+    void OnIndUpButton( wxCommandEvent& event ) override;
+    void OnIndDownButton( wxCommandEvent& event ) override;
 
     recPersona          m_persona;
-    recIdVec            m_indLinks;
     recNameVec          m_names;
     recEventaPersonaVec m_evpers;
     recEventOrder       m_order;
-
-    wxString            m_nameStr;
+    recIdVec            m_indLinks;
 };
 
 #endif // RGEDPERSONA_H
