@@ -214,6 +214,13 @@ idt recIdFromStr( const wxString& prefix, const wxString idStr )
     return recGetID( idStr.substr( psize ) );
 }
 
+wxString recGetConfStr( double dbl )
+{
+    wxString str;
+    str << (dbl * 100) << "%";
+    return str;
+}
+
 recIdVec recIdVecFromStr( const wxString& prefix, const wxString list )
 {
     recIdVec vec;
