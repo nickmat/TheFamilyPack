@@ -65,6 +65,9 @@ public:
     void FSetConf( double conf ) { f_conf = conf; }
     void FSetNote( const wxString& note ) { f_note = note; }
 
+    static wxString GetIdStr( idt ipaID ) { return PrefixId( ipaID ); }
+    wxString GetIdStr() const { return GetIdStr( FGetID() ); }
+
     bool Find( const wxString& dbname = "Main" );
 };
 

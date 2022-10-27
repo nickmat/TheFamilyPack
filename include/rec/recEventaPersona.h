@@ -71,7 +71,7 @@ public:
     static idt CreateLink( idt eaID, idt perID, idt roleID, const wxString& note = "" );
     void SetNextPerSequence( idt eaID );
 
-    static wxString GetIdStr( idt epID ) { return wxString::Format( "EP" ID, epID ); }
+    static wxString GetIdStr( idt epID ) { return PrefixId( epID ); }
     wxString GetIdStr() const { return GetIdStr( FGetID() ); }
 
     static wxString GetRoleStr( idt perID, idt typeID, const wxString& dbname = "Main" );

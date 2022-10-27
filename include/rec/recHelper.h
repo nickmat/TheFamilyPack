@@ -237,8 +237,8 @@ enum class recTable {
 
 constexpr const char* recTablePrefixes[] = {
     "", "A", "Ci", "CiP", "CiPT", "C", "CL", "CT", "D", "E", "Ea",
-    "EP", "EEa", "ET", "Ro", "F", "FE", "FEa", "FIEa", "FIn",
-    "G", "GM", "I", "IE", "IP", "M", "MD", "N", "NP", "NPT", "NS", "Pa",
+    "EaPa", "EEa", "ET", "Ro", "F", "FE", "FEa", "FIEa", "FIn",
+    "G", "GM", "I", "IE", "IPa", "M", "MD", "N", "NP", "NPT", "NS", "Pa",
     "P", "PP", "PPT", "R", "REn", "RD", "Rp", "Re", "Sy", "U", "US",
     "V", ""
 };
