@@ -69,6 +69,7 @@ public:
     wxString GetIdStr() const { return GetIdStr( FGetID() ); }
 
     bool Find( const wxString& dbname = "Main" );
+    static idt Find( idt indID, idt perID, const wxString& dbname = "Main" );
 };
 
 #endif // REC_RECINDPERSONA_H

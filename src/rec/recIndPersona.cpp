@@ -166,4 +166,17 @@ bool recIndividualPersona::Find( const wxString& dbname )
     return true;
 }
 
+idt recIndividualPersona::Find( idt indID, idt perID, const wxString& dbname )
+{
+    if( indID == 0 || perID == 0 ) return 0;
+
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT id FROM \"%s\".IndividualPersona "
+        "WHERE ind_id=" ID " AND per_id=" ID ";",
+        UTF8_( dbname ), indID, perID
+    );
+    return ExecuteID( sql );
+}
+
 // End of recLink.cpp file
