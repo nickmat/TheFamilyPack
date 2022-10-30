@@ -42,6 +42,7 @@
 #include <fstream>
 #include <random>
 #include <sstream>
+#include <iomanip>
 
 idt recGetID( const wxString& str )
 {
@@ -214,11 +215,19 @@ idt recIdFromStr( const wxString& prefix, const wxString idStr )
     return recGetID( idStr.substr( psize ) );
 }
 
-wxString recGetConfStr( double dbl )
+std::string recConfToStr( double conf )
 {
-    wxString str;
-    str << (dbl * 100) << "%";
-    return str;
+    std::stringstream ss, ss2;
+    double d = conf * 100.0;
+    ss2 << d;
+    ss << std::setprecision(4) << d << "%";
+    return ss.str();
+}
+
+double recConfFromStr( const std::string& str )
+{
+    double conf = std::stod( str );
+    return conf / 100;
 }
 
 recIdVec recIdVecFromStr( const wxString& prefix, const wxString list )

@@ -99,7 +99,8 @@ extern bool recGetIDs( const wxString& str, idt* id1, idt* id2, idt* id3 = nullp
 extern idt recIdFromStr( const wxString& prefix, const wxString idStr );
 
 inline wxString recGetStr( idt id ) { return wxString::Format( ID, id ); }
-extern wxString recGetConfStr( double dbl );
+extern std::string recConfToStr( double conf );
+extern double recConfFromStr( const std::string& str );
 
 enum class recSplitStrRet { none, number, associate, text };
 extern recSplitStrRet recSplitStr( const wxString& str, idt* id1, idt* id2, wxString* dbname );
