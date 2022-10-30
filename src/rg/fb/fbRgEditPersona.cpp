@@ -295,7 +295,7 @@ fbRgEditPersona::fbRgEditPersona( wxWindow* parent, wxWindowID id, const wxStrin
 	m_listIndividual->Connect( wxEVT_COMMAND_LIST_ITEM_SELECTED, wxListEventHandler( fbRgEditPersona::OnIndSelect ), NULL, this );
 	m_buttonIndAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditPersona::OnIndAddButton ), NULL, this );
 	m_buttonIndEdit->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditPersona::OnIndEditButton ), NULL, this );
-	m_buttonIndDel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditPersona::OnEventDeleteButton ), NULL, this );
+	m_buttonIndDel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditPersona::OnIndDeleteButton ), NULL, this );
 	m_buttonIndUp->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditPersona::OnIndUpButton ), NULL, this );
 	m_buttonIndDn->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditPersona::OnIndDownButton ), NULL, this );
 }
@@ -323,8 +323,101 @@ fbRgEditPersona::~fbRgEditPersona()
 	m_listIndividual->Disconnect( wxEVT_COMMAND_LIST_ITEM_SELECTED, wxListEventHandler( fbRgEditPersona::OnIndSelect ), NULL, this );
 	m_buttonIndAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditPersona::OnIndAddButton ), NULL, this );
 	m_buttonIndEdit->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditPersona::OnIndEditButton ), NULL, this );
-	m_buttonIndDel->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditPersona::OnEventDeleteButton ), NULL, this );
+	m_buttonIndDel->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditPersona::OnIndDeleteButton ), NULL, this );
 	m_buttonIndUp->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditPersona::OnIndUpButton ), NULL, this );
 	m_buttonIndDn->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditPersona::OnIndDownButton ), NULL, this );
 
+}
+
+fbRgLinkIndPersona::fbRgLinkIndPersona( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+
+	wxBoxSizer* bSizer15;
+	bSizer15 = new wxBoxSizer( wxVERTICAL );
+
+	wxFlexGridSizer* fgSizer2;
+	fgSizer2 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer2->AddGrowableCol( 1 );
+	fgSizer2->SetFlexibleDirection( wxBOTH );
+	fgSizer2->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+
+	wxStaticText* m_staticText10;
+	m_staticText10 = new wxStaticText( this, wxID_ANY, _("Individual:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText10->Wrap( -1 );
+	fgSizer2->Add( m_staticText10, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
+
+	m_textCtrlInd = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( -1,-1 ), wxTE_READONLY );
+	fgSizer2->Add( m_textCtrlInd, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxRIGHT|wxEXPAND, 5 );
+
+	wxStaticText* m_staticText11;
+	m_staticText11 = new wxStaticText( this, wxID_ANY, _("Persona:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText11->Wrap( -1 );
+	fgSizer2->Add( m_staticText11, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+
+	m_textCtrlPersona = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+	fgSizer2->Add( m_textCtrlPersona, 0, wxALIGN_CENTER_VERTICAL|wxEXPAND|wxBOTTOM|wxRIGHT, 5 );
+
+	wxStaticText* m_staticText12;
+	m_staticText12 = new wxStaticText( this, wxID_ANY, _("Reference:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText12->Wrap( -1 );
+	fgSizer2->Add( m_staticText12, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+
+	m_textCtrlReference = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+	fgSizer2->Add( m_textCtrlReference, 0, wxBOTTOM|wxRIGHT|wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
+
+	wxStaticText* m_staticText13;
+	m_staticText13 = new wxStaticText( this, wxID_ANY, _("Confidence:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText13->Wrap( -1 );
+	fgSizer2->Add( m_staticText13, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+
+	m_textCtrlConf = new wxTextCtrl( this, wxID_ANY, _("99.9%"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer2->Add( m_textCtrlConf, 0, wxBOTTOM|wxRIGHT, 5 );
+
+	wxStaticText* m_staticText14;
+	m_staticText14 = new wxStaticText( this, wxID_ANY, _("Note:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText14->Wrap( -1 );
+	fgSizer2->Add( m_staticText14, 0, wxALIGN_RIGHT|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+
+	m_textCtrlNote = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 300,50 ), wxTE_MULTILINE|wxTE_WORDWRAP );
+	fgSizer2->Add( m_textCtrlNote, 0, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT, 5 );
+
+
+	bSizer15->Add( fgSizer2, 1, wxEXPAND, 5 );
+
+	wxStaticLine* m_staticline1;
+	m_staticline1 = new wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
+	bSizer15->Add( m_staticline1, 0, wxEXPAND | wxALL, 0 );
+
+	wxBoxSizer* bSizerDismiss;
+	bSizerDismiss = new wxBoxSizer( wxHORIZONTAL );
+
+	m_staticIndPerID = new wxStaticText( this, wxID_ANY, _("IPa0"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticIndPerID->Wrap( -1 );
+	m_staticIndPerID->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
+
+	bSizerDismiss->Add( m_staticIndPerID, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+
+	bSizerDismiss->Add( 0, 0, 1, wxEXPAND, 5 );
+
+	m_buttonSave = new wxButton( this, wxID_OK, _("Save"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizerDismiss->Add( m_buttonSave, 0, wxTOP|wxBOTTOM|wxLEFT|wxALIGN_CENTER_VERTICAL, 5 );
+
+	m_buttonCancel = new wxButton( this, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizerDismiss->Add( m_buttonCancel, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+
+	bSizer15->Add( bSizerDismiss, 0, wxEXPAND, 5 );
+
+
+	this->SetSizer( bSizer15 );
+	this->Layout();
+	bSizer15->Fit( this );
+
+	this->Centre( wxBOTH );
+}
+
+fbRgLinkIndPersona::~fbRgLinkIndPersona()
+{
 }

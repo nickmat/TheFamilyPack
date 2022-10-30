@@ -92,7 +92,7 @@ private:
     void OnIndSelect( wxListEvent& event ) override;
     void OnIndAddButton( wxCommandEvent& event ) override;
     void OnIndEditButton( wxCommandEvent& event ) override;
-    void OnEventDeleteButton( wxCommandEvent& event ) override;
+    void OnIndDeleteButton( wxCommandEvent& event ) override;
     void OnIndUpButton( wxCommandEvent& event ) override;
     void OnIndDownButton( wxCommandEvent& event ) override;
 
@@ -102,5 +102,23 @@ private:
     recEventOrder       m_order;
     recIdVec            m_indLinks;
 };
+
+//============================================================================
+//---------------------------[ rgDlgLinkIndPersona ]--------------------------
+//============================================================================
+
+class rgDlgLinkIndPersona : public fbRgLinkIndPersona
+{
+public:
+    rgDlgLinkIndPersona( wxWindow* parent, idt ipaID )
+        : m_ipa( ipaID ), fbRgLinkIndPersona( parent ) {}
+
+private:
+    bool TransferDataToWindow();
+    bool TransferDataFromWindow();
+
+    recIndividualPersona m_ipa;
+};
+
 
 #endif // RGEDPERSONA_H

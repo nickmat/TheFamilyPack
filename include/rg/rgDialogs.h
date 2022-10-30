@@ -216,6 +216,8 @@ extern bool rgCreatePerEventRole( wxWindow* wind, idt perID, idt eveID, idt role
 // See src/rg/rgEdPersona.cpp
 extern bool rgEditPersona( wxWindow* wind, idt perID, const wxString& title = "" );
 extern idt rgCreateNamedPersona( wxWindow* parent, idt refID );
+extern bool rgEditIndividualPersona( wxWindow* parent, idt ipaID, const wxString& title = "" );
+extern idt rgCreateIndividualPersona( wxWindow* wind, idt indID, idt perID );
 
 // See src/rg/rgEdPlace.cpp
 extern bool rgEditPlace( wxWindow* wind, idt placeID, const wxString& title = "" );

@@ -71,6 +71,22 @@ idt rgCreateNamedPersona( wxWindow* wind, idt refID )
     return perID;
 }
 
+bool rgEditIndividualPersona( wxWindow* parent, idt ipaID, const wxString& title )
+{
+    return rgEdit<rgDlgLinkIndPersona>( parent, ipaID, title );
+}
+
+idt rgCreateIndividualPersona( wxWindow* wind, idt indID, idt perID )
+{
+    recIndividualPersona ipa( 0 );
+    ipa.FSetIndID( indID );
+    ipa.FSetPerID( perID );
+    ipa.FSetConf( 0.999 );
+    wxString title = "Create Individual to Persona Link";
+    return rgCreate< recIndividualPersona, rgDlgLinkIndPersona>( wind, ipa, title );
+}
+
+
 //============================================================================
 //-------------------------[ rgDlgEditPersona ]-------------------------------
 //============================================================================
@@ -184,15 +200,18 @@ void rgDlgEditPersona::UpdateIndividualList( idt indID )
     m_indLinks = m_persona.GetIndividualIDs();
     m_listIndividual->DeleteAllItems();
     int row = -1;
+    double total = 0.0;
     for( size_t i = 0; i < m_indLinks.size(); i++ ) {
         recIndividualPersona ipa( 0 );
         ipa.FSetIndID( m_indLinks[i] );
         ipa.FSetPerID( m_persona.FGetID() );
-        ipa.Find();
-        if( ipa.FGetID() == 0 ) continue;
+        if( !ipa.Find() ) {
+            continue;
+        }
+        total += ipa.FGetConf();
 
         m_listIndividual->InsertItem( i, recIndividual::GetIdStr( m_indLinks[i] ) );
-        m_listIndividual->SetItem( i, IC_Conf, std::to_string( ipa.FGetConf() ) );
+        m_listIndividual->SetItem( i, IC_Conf, recConfToStr( ipa.FGetConf() ) );
         m_listIndividual->SetItem( i, IC_Name, recIndividual::GetName( m_indLinks[i] ) );
         m_listIndividual->SetItem( i, IC_Link_Note, ipa.FGetNote() );
 
@@ -202,6 +221,12 @@ void rgDlgEditPersona::UpdateIndividualList( idt indID )
         }
         // Correct errors and gaps in sequence numbers.
         // TODO: requires recIndividualPersona ind_seq field added
+    }
+    if( !m_indLinks.empty() ) {
+        double remain = 1 - total;
+        m_listIndividual->InsertItem( m_indLinks.size(), "" );
+        m_listIndividual->SetItem( m_indLinks.size(), IC_Conf, recConfToStr( remain ) );
+        m_listIndividual->SetItem( m_indLinks.size(), IC_Name, "Other" );
     }
     if( row >= 0 ) {
         m_listIndividual->EnsureVisible( row );
@@ -488,7 +513,9 @@ void rgDlgEditPersona::OnEventaOrderBy( wxCommandEvent& event )
 
 void rgDlgEditPersona::IndButtonsEnable( long row )
 {
-    if( row < 0 ) {
+    // Note, there is an extra row for "Other" confidence value
+    // which should be ignored for editing if selected.
+    if( row < 0 || row == m_listIndividual->GetItemCount() - 1 ) {
         m_buttonIndEdit->Disable();
         m_buttonIndDel->Disable();
         m_buttonIndUp->Disable();
@@ -497,13 +524,13 @@ void rgDlgEditPersona::IndButtonsEnable( long row )
     }
     m_buttonIndEdit->Enable();
     m_buttonIndDel->Enable();
-    if( row == 0 ) {
+    if( row == 0 || row == m_listIndividual->GetItemCount() - 1 ) {
         m_buttonIndUp->Disable();
     }
     else {
         m_buttonIndUp->Enable();
     }
-    if( row == m_listIndividual->GetItemCount() - 1 ) {
+    if( row >= m_listIndividual->GetItemCount() - 2 ) {
         m_buttonIndDn->Disable();
     }
     else {
@@ -524,29 +551,102 @@ void rgDlgEditPersona::OnIndSelect( wxListEvent& event )
 
 void rgDlgEditPersona::OnIndAddButton( wxCommandEvent& event )
 {
-    wxMessageBox( _( "Not yet implimented" ), "OnIndAddButton" );
+    unsigned sexfilter = 0;
+    if( m_persona.FGetSex() == Sex::male ) {
+        sexfilter |= recInd_FILTER_SexMalePlus;
+    }
+    if( m_persona.FGetSex() == Sex::female ) {
+        sexfilter |= recInd_FILTER_SexFemalePlus;
+    }
+    idt indID = rgSelectIndividual( this, rgSELSTYLE_Create, nullptr, sexfilter );
+    if( rgCreateIndividualPersona( this, indID, m_persona.FGetID() ) ) {
+        UpdateIndividualList( indID );
+    }
 }
 
 void rgDlgEditPersona::OnIndEditButton( wxCommandEvent& event )
 {
-    wxMessageBox( _( "Not yet implimented" ), "OnIndEditButton" );
+    long row = m_listIndividual->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row < 0 ) {
+        wxMessageBox( _( "No row selected" ), _( "Edit Individual" ) );
+        return;
+    }
+    idt indID = m_indLinks[row];
+    idt ipaID = recIndividualPersona::Find( indID, m_persona.FGetID() );
+    if( rgEditIndividualPersona( this, ipaID ) ) {
+        UpdateIndividualList( indID );
+    }
 }
 
-void rgDlgEditPersona::OnEventDeleteButton( wxCommandEvent& event )
+void rgDlgEditPersona::OnIndDeleteButton( wxCommandEvent& event )
 {
-    wxMessageBox( _( "Not yet implimented" ), "OnEventDeleteButton" );
+    long row = m_listIndividual->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+    if( row < 0 ) {
+        wxMessageBox( _( "No row selected" ), _( "Delete Individual Link" ) );
+        return;
+    }
+    idt indID = m_indLinks[row];
+    idt perID = m_persona.FGetID();
+    idt ipaID = recIndividualPersona::Find( indID, perID );
+    wxString mess = wxString::Format(
+        "Remove Link %s from Database?\nIndividual %s: %s\nPersona %s: %s",
+        recIndividualPersona::GetIdStr( ipaID),
+        recIndividual::GetIdStr( indID ),
+        recIndividual::GetNameStr( indID ),
+        recPersona::GetIdStr( perID ),
+        recPersona::GetNameStr( perID )
+        );
+    int ans = wxMessageBox( mess, _( "Delete Individual Link" ), wxYES_NO | wxCANCEL, this );
+    if( ans != wxYES ) {
+        return;
+    }
+    recIndividualPersona::Delete( ipaID );
+    UpdateIndividualList();
 }
 
 void rgDlgEditPersona::OnIndUpButton( wxCommandEvent& event )
 {
-    wxMessageBox( _( "Not yet implimented" ), "OnIndUpButton" );
     // TODO: requires recIndividualPersona ind_seq field added
+    wxMessageBox( _( "Not yet implimented" ), "OnIndUpButton" );
 }
 
 void rgDlgEditPersona::OnIndDownButton( wxCommandEvent& event )
 {
-    wxMessageBox( _( "Not yet implimented" ), "OnIndDownButton" );
     // TODO: requires recIndividualPersona ind_seq field added
+    wxMessageBox( _( "Not yet implimented" ), "OnIndDownButton" );
 }
+
+
+//============================================================================
+//---------------------------[ rgDlgLinkIndPersona ]--------------------------
+//============================================================================
+
+bool rgDlgLinkIndPersona::TransferDataToWindow()
+{
+    m_staticIndPerID->SetLabel( m_ipa.GetIdStr() );
+    wxString indStr = recIndividual::GetIdStr( m_ipa.FGetIndID() ) + ": " +
+        recIndividual::GetName( m_ipa.FGetIndID() );
+    m_textCtrlInd->SetValue( indStr );
+    wxString perStr = recPersona::GetIdStr( m_ipa.FGetPerID() ) + ": " +
+        recPersona::GetNameStr( m_ipa.FGetPerID() );
+    m_textCtrlPersona->SetValue( perStr );
+    idt refID = recPersona::GetRefID( m_ipa.FGetPerID() );
+    wxString refStr = recReference::GetIdStr( refID ) + ": " +
+        recReference::GetTitle( refID );
+    m_textCtrlReference->SetValue( refStr );
+    m_textCtrlConf->SetValue( recConfToStr( m_ipa.FGetConf() ) );
+    m_textCtrlNote->SetValue( m_ipa.FGetNote() );
+    return true;
+}
+
+bool rgDlgLinkIndPersona::TransferDataFromWindow()
+{
+    wxString conf = m_textCtrlConf->GetValue();
+    m_ipa.FSetConf( recConfFromStr( conf.ToStdString() ) );   
+    m_ipa.FSetNote( m_textCtrlNote->GetValue() );
+    m_ipa.Save();
+    return true;
+}
+
 
 // End of dlgEdPersona.cpp file

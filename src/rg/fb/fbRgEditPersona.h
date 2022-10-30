@@ -96,7 +96,7 @@ class fbRgEditPersona : public wxDialog
 		virtual void OnIndSelect( wxListEvent& event ) { event.Skip(); }
 		virtual void OnIndAddButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnIndEditButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnEventDeleteButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnIndDeleteButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnIndUpButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnIndDownButton( wxCommandEvent& event ) { event.Skip(); }
 
@@ -106,6 +106,31 @@ class fbRgEditPersona : public wxDialog
 		fbRgEditPersona( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Persona"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
 
 		~fbRgEditPersona();
+
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class fbRgLinkIndPersona
+///////////////////////////////////////////////////////////////////////////////
+class fbRgLinkIndPersona : public wxDialog
+{
+	private:
+
+	protected:
+		wxTextCtrl* m_textCtrlInd;
+		wxTextCtrl* m_textCtrlPersona;
+		wxTextCtrl* m_textCtrlReference;
+		wxTextCtrl* m_textCtrlConf;
+		wxTextCtrl* m_textCtrlNote;
+		wxStaticText* m_staticIndPerID;
+		wxButton* m_buttonSave;
+		wxButton* m_buttonCancel;
+
+	public:
+
+		fbRgLinkIndPersona( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Individual to Persona Link"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE );
+
+		~fbRgLinkIndPersona();
 
 };
 
