@@ -97,14 +97,19 @@ bool rgDlgEditMedia::TransferDataToWindow()
     m_staticMediaID->SetLabel( m_media.GetIdStr() );
     m_textCtrlTitle->SetValue( m_media.FGetTitle() );
     m_textCtrlNote->SetValue( m_media.FGetNote() );
+    m_textCtrlUid->SetValue( m_media.FGetUid() );
+    m_textCtrlChanged->SetValue( m_media.GetChangedDate() );
     m_imagePanel->SetScrollMode( false );
     m_imagePanel->SetImage( m_md.FGetData() );
     m_staticText_mdID->SetLabel(
         recAssociate::GetIdStr( m_media.FGetAssID() ) + ":" +
         recMediaData::GetIdStr( m_media.FGetDataID() ) );
     m_spinCtrlPrivacy->SetValue( m_media.FGetPrivacy() );
-    m_staticTextRefID->SetLabel( recReference::GetIdStr( refID ) );
-    m_staticTextRefTitle->SetLabel( recReference::GetTitle( refID ) );
+    if( refID != 0 ) {
+        wxString refstr = recReference::GetIdStr( refID ) + ": " +
+            recReference::GetTitle( refID );
+        m_textCtrlRef->SetValue( refstr );
+    }
     return true;
 }
 

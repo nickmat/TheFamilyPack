@@ -46,13 +46,15 @@ class fbRgEditMedia : public wxDialog
 		wxPanel* m_panelNote;
 		wxStaticText* m_staticText7;
 		wxTextCtrl* m_textCtrlNote;
+		wxTextCtrl* m_textCtrlUid;
+		wxTextCtrl* m_textCtrlChanged;
 		wxPanel* m_panelImage;
 		rgImagePanel* m_imagePanel;
 		wxButton* m_buttonMediaData;
 		wxStaticText* m_staticText_mdID;
 		wxSpinCtrl* m_spinCtrlPrivacy;
-		wxStaticText* m_staticTextRefID;
-		wxStaticText* m_staticTextRefTitle;
+		wxStaticText* m_staticText24;
+		wxTextCtrl* m_textCtrlRef;
 		wxStaticText* m_staticMediaID;
 		wxButton* m_buttonSave;
 		wxButton* m_buttonCancel;
