@@ -31,7 +31,7 @@
 #include <rec/recEventa.h>
 #include <rec/recReference.h>
 
-#include "fbRgDialog.h"
+#include "fb/fbRgEditEventa.h"
 
 //============================================================================
 //--------------------------[ rgDlgEditEventa]--------------------------------

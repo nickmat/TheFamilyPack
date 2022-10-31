@@ -29,7 +29,7 @@
 
 #include <rec/recEventa.h>
 
-#include "fbRgDialog.h"
+#include "fb/fbRgEditEventa.h"
 
 //============================================================================
 //--------------------------[ rgDlgEditEventEventa ]--------------------------
