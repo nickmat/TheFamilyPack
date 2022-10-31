@@ -308,14 +308,16 @@ rgDlgEditEventa::rgDlgEditEventa( wxWindow* parent, idt erID )
 bool rgDlgEditEventa::TransferDataToWindow()
 {
     wxASSERT( m_event.FGetID() != 0 );
-    m_staticType->SetLabel( m_event.GetTypeStr() );
     m_textCtrlTitle->SetValue( m_event.FGetTitle() );
-    m_staticDate1->SetLabel( recDate::GetStr( m_date1ID ) );
-    m_staticDate2->SetLabel( recDate::GetStr( m_date2ID ) );
+    m_textCtrlType->SetValue( m_event.GetTypeStr() );
+    m_textCtrlDate1->SetValue( recDate::GetStr( m_date1ID ) );
+    m_textCtrlDate2->SetValue( recDate::GetStr( m_date2ID ) );
     if( ! recEventType::HasDateSpan( m_event.FGetTypeID() ) ) {
         m_buttonDate2->Enable( false );
     }
-    m_staticPlace->SetLabel( recPlace::GetAddressStr( m_placeID ) );
+    m_textCtrlPlace->SetValue( recPlace::GetAddressStr( m_placeID ) );
+    m_textCtrlUid->SetValue( m_event.FGetUid() );
+    m_textCtrlChanged->SetValue( m_event.GetChangedDate() );
     m_textCtrlNote->SetValue( m_event.f_note );
     ListLinkedPersona();
     ListEvents();
@@ -416,19 +418,19 @@ void rgDlgEditEventa::OnOptnEdit( wxCommandEvent& event )
         if( !rgEditDate( this, m_date1ID ) ) {
             return;
         }
-        m_staticDate1->SetLabel( recDate::GetStr( m_date1ID ) );
+        m_textCtrlDate1->SetValue( recDate::GetStr( m_date1ID ) );
         break;
     case EEEB_Date2:
         if( !rgEditDate( this, m_date2ID ) ) {
             return;
         }
-        m_staticDate2->SetLabel( recDate::GetStr( m_date2ID ) );
+        m_textCtrlDate2->SetValue( recDate::GetStr( m_date2ID ) );
         break;
     case EEEB_Place:
         if( !rgEditPlace( this, m_placeID ) ) {
             return;
         }
-        m_staticPlace->SetLabel( recPlace::GetAddressStr( m_placeID ) );
+        m_textCtrlPlace->SetValue( recPlace::GetAddressStr( m_placeID ) );
         break;
     }
 }
@@ -440,17 +442,17 @@ void rgDlgEditEventa::OnOptnUnlink( wxCommandEvent& event )
     case EEEB_Date1:
         m_event.FSetDate1ID( 0 );
         m_date1ID = 0;
-        m_staticDate1->SetLabel( "" );
+        m_textCtrlDate1->SetValue( "" );
         break;
     case EEEB_Date2:
         m_event.FSetDate2ID( 0 );
         m_date2ID = 0;
-        m_staticDate2->SetLabel( "" );
+        m_textCtrlDate2->SetValue( "" );
         break;
     case EEEB_Place:
         m_event.FSetPlaceID( 0 );
         m_placeID = 0;
-        m_staticPlace->SetLabel( "" );
+        m_textCtrlPlace->SetValue( "" );
         break;
     }
     m_event.Save();
@@ -466,7 +468,7 @@ void rgDlgEditEventa::OnOptnCreate( wxCommandEvent& event )
         ) ) {
             return;
         }
-        m_staticDate1->SetLabel( recDate::GetStr( m_date1ID ) );
+        m_textCtrlDate1->SetValue( recDate::GetStr( m_date1ID ) );
         m_event.FSetDate1ID( m_date1ID );
         break;
     case EEEB_Date2:
@@ -475,7 +477,7 @@ void rgDlgEditEventa::OnOptnCreate( wxCommandEvent& event )
         ) ) {
             return;
         }
-        m_staticDate2->SetLabel( recDate::GetStr( m_date2ID ) );
+        m_textCtrlDate2->SetValue( recDate::GetStr( m_date2ID ) );
         m_event.FSetDate2ID( m_date2ID );
         break;
     case EEEB_Place:
@@ -484,7 +486,7 @@ void rgDlgEditEventa::OnOptnCreate( wxCommandEvent& event )
         ) ) {
             return;
         }
-        m_staticPlace->SetLabel( recPlace::GetAddressStr( m_placeID ) );
+        m_textCtrlPlace->SetValue( recPlace::GetAddressStr( m_placeID ) );
         m_event.FSetPlaceID( m_placeID );
         break;
     }
@@ -509,7 +511,7 @@ void rgDlgEditEventa::OnOptnCreateRel( wxCommandEvent& event )
         }
         m_event.FSetDate1ID( m_date1ID );
         recReferenceEntity::Create( m_refID, recReferenceEntity::TYPE_Date, m_date1ID );
-        m_staticDate1->SetLabel( recDate::GetStr( m_date1ID ) );
+        m_textCtrlDate1->SetValue( recDate::GetStr( m_date1ID ) );
         break;
     case EEEB_Date2:
         if( ! rgSelectDateFromReference(
@@ -524,7 +526,7 @@ void rgDlgEditEventa::OnOptnCreateRel( wxCommandEvent& event )
         }
         m_event.FSetDate2ID( m_date2ID );
         recReferenceEntity::Create( m_refID, recReferenceEntity::TYPE_Date, m_date2ID );
-        m_staticDate2->SetLabel( recDate::GetStr( m_date2ID ) );
+        m_textCtrlDate2->SetValue( recDate::GetStr( m_date2ID ) );
         break;
     case EEEB_Place:
         wxASSERT( false ); // No such thing as relative place

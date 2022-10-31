@@ -146,34 +146,50 @@ fbRgEditEventa::fbRgEditEventa( wxWindow* parent, wxWindowID id, const wxString&
 
 	m_staticText1 = new wxStaticText( m_panel1, wxID_ANY, _("Event Type:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText1->Wrap( -1 );
-	fgSizer10->Add( m_staticText1, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
+	fgSizer10->Add( m_staticText1, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-	m_staticType = new wxStaticText( m_panel1, wxID_ANY, _("Birth"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticType->Wrap( -1 );
-	m_staticType->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
-
-	fgSizer10->Add( m_staticType, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	m_textCtrlType = new wxTextCtrl( m_panel1, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+	fgSizer10->Add( m_textCtrlType, 0, wxEXPAND|wxTOP|wxBOTTOM|wxRIGHT, 5 );
 
 	m_buttonDate1 = new wxButton( m_panel1, wxID_ANY, _("Date:"), wxDefaultPosition, wxDefaultSize, wxBU_RIGHT );
-	fgSizer10->Add( m_buttonDate1, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
+	fgSizer10->Add( m_buttonDate1, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 
-	m_staticDate1 = new wxStaticText( m_panel1, wxID_ANY, _("Date1"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticDate1->Wrap( -1 );
-	fgSizer10->Add( m_staticDate1, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	wxBoxSizer* bSizer67;
+	bSizer67 = new wxBoxSizer( wxHORIZONTAL );
+
+	m_textCtrlDate1 = new wxTextCtrl( m_panel1, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+	bSizer67->Add( m_textCtrlDate1, 1, wxEXPAND|wxBOTTOM|wxRIGHT, 5 );
 
 	m_buttonDate2 = new wxButton( m_panel1, wxID_ANY, _("End Date:"), wxDefaultPosition, wxDefaultSize, wxBU_RIGHT );
-	fgSizer10->Add( m_buttonDate2, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
+	bSizer67->Add( m_buttonDate2, 0, wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxLEFT|wxRIGHT, 5 );
 
-	m_staticDate2 = new wxStaticText( m_panel1, wxID_ANY, _("Date2"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticDate2->Wrap( -1 );
-	fgSizer10->Add( m_staticDate2, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	m_textCtrlDate2 = new wxTextCtrl( m_panel1, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+	bSizer67->Add( m_textCtrlDate2, 1, wxEXPAND|wxBOTTOM|wxRIGHT, 5 );
+
+
+	fgSizer10->Add( bSizer67, 1, wxEXPAND, 5 );
 
 	m_buttonPlace = new wxButton( m_panel1, wxID_ANY, _("Place:"), wxDefaultPosition, wxDefaultSize, wxBU_RIGHT );
-	fgSizer10->Add( m_buttonPlace, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
+	fgSizer10->Add( m_buttonPlace, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 
-	m_staticPlace = new wxStaticText( m_panel1, wxID_ANY, _("Place"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticPlace->Wrap( -1 );
-	fgSizer10->Add( m_staticPlace, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	m_textCtrlPlace = new wxTextCtrl( m_panel1, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+	fgSizer10->Add( m_textCtrlPlace, 0, wxBOTTOM|wxRIGHT|wxEXPAND, 5 );
+
+	wxStaticText* m_staticText69;
+	m_staticText69 = new wxStaticText( m_panel1, wxID_ANY, _("UID:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText69->Wrap( -1 );
+	fgSizer10->Add( m_staticText69, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+
+	m_textCtrlUid = new wxTextCtrl( m_panel1, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+	fgSizer10->Add( m_textCtrlUid, 0, wxBOTTOM|wxRIGHT|wxEXPAND, 5 );
+
+	wxStaticText* m_staticText70;
+	m_staticText70 = new wxStaticText( m_panel1, wxID_ANY, _("Changed:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText70->Wrap( -1 );
+	fgSizer10->Add( m_staticText70, 0, wxBOTTOM|wxRIGHT|wxLEFT|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
+
+	m_textCtrlChanged = new wxTextCtrl( m_panel1, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+	fgSizer10->Add( m_textCtrlChanged, 0, wxBOTTOM|wxRIGHT, 5 );
 
 
 	m_panel1->SetSizer( fgSizer10 );
