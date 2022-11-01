@@ -64,14 +64,17 @@ wxString GetHtmDateData( const recDate& date, const wxString& extdb )
 {
     wxString htm;
         
-    htm << date.GetStr() << "<br><br>"
-           "Original Scheme: " << CalendarSchemeName[date.f_record_sch] << "<br>"
-           "Display Scheme: " << CalendarSchemeName[date.f_display_sch] << "<br>";
+    htm << date.GetStr() << "\n<br><br>"
+        "\nOriginal Scheme: " << CalendarSchemeName[date.f_record_sch] << "<br>"
+        "\nDisplay Scheme: " << CalendarSchemeName[date.f_display_sch] <<
+        "\n\n<br><br>Last Changed: " << date.GetChangedDate() <<
+        "\n<br>UID: " << date.FGetUid() << "<br>"
+        ;
 
     if( date.f_rel_id ) {
         recRelativeDate rel( date.f_rel_id, extdb );
         recDate base( rel.f_base_id, extdb );
-        htm << "<br>Base on " << base.GetIdStr() << "<br>"
+        htm << "\n<br>Base on " << base.GetIdStr() << "<br>"
             << GetHtmDateData( base, extdb );
     }
     return htm;
@@ -103,6 +106,8 @@ wxString tfpWriteCitation( idt citID, TfpFrame& frame, tfpDisplay display )
         "</h1>\n"
         "<p>" << cit.GetCitationStr( extdb ) << "</p>\n"
         "<p>Comment: " << cit.FGetComment() << "</p>\n"
+        "<p>\nLast Changed: " << cit.GetChangedDate() <<
+        "<br>\nUID: " << cit.FGetUid() << "\n</p>\n"
         << tfpWrTailTfp()
     ;
     return htm;
@@ -156,9 +161,11 @@ wxString tfpWritePlace( idt placeID, TfpFrame& frame, tfpDisplay display )
         tfpWrHeadTfp( "Place" ) <<
         "<h1>Place " << place.GetIdStr() <<
         editbutton <<
-        "</h1>\n" <<
-        place.GetAddressStr( extdb ) << "\n" <<
-        tfpWrTailTfp()
+        "</h1>\n<p>" <<
+        place.GetAddressStr( extdb ) << "</p>\n" <<
+        "<p>\nLast Changed: " << place.GetChangedDate() <<
+        "<br>\nUID: " << place.FGetUid() << "\n</p>\n"
+        << tfpWrTailTfp()
     ;
     return htm;
 }
@@ -229,7 +236,7 @@ wxString tfpWriteContact( idt conID, TfpFrame& frame, tfpDisplay display )
         "</h1>\n"
         "<p>\n" << tfpHtmlifyText( con.FGetValue() ) << "\n</p>\n"
         "\n<p><b>Contact Type:</b> " << ct.FGetName() <<
-        "\n<br>Type Last Changed: " << ct.GetChangedDate() <<
+        "\n<\n><br><br>Type Last Changed: " << ct.GetChangedDate() <<
         "\n<br>Type UID: " << ct.FGetUid() <<
         "\n</p>\n" << tfpWrTailTfp()
         ;
