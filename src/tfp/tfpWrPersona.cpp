@@ -61,8 +61,13 @@ wxString tfpWritePersonaPage( idt perID, const wxString& extdb )
         "<td><b><a href='tfp:R" << per.FGetRefID() <<
         "'>" << recReference::GetIdStr( per.FGetRefID() ) <<
         "</a></b></td><td>" << recReference::GetTitle( per.FGetRefID(), extdb ) <<
-        "</td></tr></table>\n"
-    ;
+        "</td>\n</tr>\n<tr>\n"
+        "<td>Changed:</td><td>" << recGetDateStr( per.FGetChanged() ) << "</td>\n"
+        "</tr>\n<tr>\n"
+        "<td>UID:</td><td>" << per.FGetUid() << "</td>\n"
+        "</tr>\n"
+        "</table>\n"
+        ;
     // Individual Links
     recIdVec indIDs = per.GetIndividualIDs( extdb );
     htm <<
