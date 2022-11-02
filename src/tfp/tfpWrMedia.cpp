@@ -68,14 +68,20 @@ wxString tfpWriteMediaPage( idt medID, const wxString& extdb )
     }
 
     htm << tfpWrHeadTfp( "Media " + med.GetIdStr(), "tab" ) <<
+        "<h1>Media " << med.GetIdStr() << ": " << med.FGetTitle() << "</h1>\n"
+
         "<table class='data'>\n"
         "<tr>\n"
         "<th colspan='2'>Media Details</th>\n"
         "</tr>\n"
+
         "<tr>\n"
-        "<td>Title:</td>\n"
-        "<td>" << med.FGetTitle() << "</td>\n"
+        "<td>Data:</td>\n"
+        "<td><b><a href='tfp:MD" << md.FGetID() << "," << assdb <<
+        "'>" << md.GetIdStr() << ":" << recAssociate::GetIdStr( med.FGetAssID() ) <<
+        "</a>:</b> " << ass.FGetComment() << " (" << ass.FGetPath() << " database) </td>\n"
         "</tr>\n"
+
         "<tr>\n"
         "<td colspan='2' class='media'>"
     ;
@@ -88,34 +94,82 @@ wxString tfpWriteMediaPage( idt medID, const wxString& extdb )
     }
     htm << "</td>\n"
         "</tr>\n"
-        "<tr>\n"
-        "<td colspan='2'>ID: <b>" << med.GetIdStr() << "</b>"
-        " Privacy: <b>" << med.FGetPrivacy() << "</b></td>\n"
-        "</tr>\n"
+
         "<tr>\n"
         "<td>Note:</td>\n"
         "<td>" << med.FGetNote() << "</td>\n"
         "</tr>\n"
+
         "<tr>\n"
         "<td>Reference:</td>\n"
         "<td><b><a href='tfp:R" << med.FGetRefID() <<
         "'>" << recReference::GetIdStr( med.FGetRefID() ) <<
-        "</a></b> " << recReference::GetTitle( med.FGetRefID() ) << "</td>\n"
+        "</a>:</b> " << recReference::GetTitle( med.FGetRefID() ) << "</td>\n"
         "</tr>\n"
+
         "<tr>\n"
-        "<th colspan='2'>Media Data Details</th>\n"
+        "<td>Privacy:</td>\n"
+        "<td>" << med.FGetPrivacy() << "</td>\n"
         "</tr>\n"
+
         "<tr>\n"
-        "<td>Path:</td>\n"
-        "<td><b>" << dataPath << "</b></td>\n"
+        "<td>UID:</td>\n"
+        "<td>" << med.FGetUid() << "</td>\n"
         "</tr>\n"
+
         "<tr>\n"
-        "<td colspan='2'>ID: <b>" << dataIdStr << "</b>"
-        " Privacy: <b>" << md.FGetPrivacy() << "</b>"
-        " Copyright: <b>" << copyright << "</b></td>\n"
+        "<td>Changed:</td>\n"
+        "<td>" << recGetDateStr( med.FGetChanged() ) << "</td>\n"
         "</tr>\n"
-        "</table>\n" << tfpWrTailTfp()
-    ;
+
+        "</table>\n"
+        ;
+    if( md.FGetID() != 0 ) {
+        htm <<
+            "<table class='data'>\n"
+            "<tr>\n"
+            "<th colspan='2'>Media Data Details</th>\n"
+            "</tr>\n"
+
+            "<tr>\n"
+            "<td>Title:</td>\n"
+            "<td>" << md.FGetTitle() << "</td>\n"
+            "</tr>\n"
+
+            "<tr>\n"
+            "<td>Path:</td>\n"
+            "<td>" << md.FGetFile() << "</td>\n"
+            "</tr>\n"
+
+            "<tr>\n"
+            "<td>Type:</td>\n"
+            "<td>" << recMediaData::GetMimeStr( md.FGetType() ) << "</td>\n"
+            "</tr>\n"
+
+            "<tr>\n"
+            "<td>Copyright:</td>\n"
+            "<td>" << md.FGetCopyright() << "</td>\n"
+            "</tr>\n"
+
+            "<tr>\n"
+            "<td>Privacy:</td>\n"
+            "<td>" << md.FGetPrivacy() << "</td>\n"
+            "</tr>\n"
+
+            "<tr>\n"
+            "<td>UID:</td>\n"
+            "<td>" << md.FGetUid() << "</td>\n"
+            "</tr>\n"
+
+            "<tr>\n"
+            "<td>Last Change:</td>\n"
+            "<td>" << calStrFromJdn( md.FGetChanged() ) << "</td>\n"
+            "</tr>\n"
+
+            "</table>\n"
+            ;
+    }
+    htm << tfpWrTailTfp();
     return htm;
 }
 
@@ -201,7 +255,7 @@ wxString tfpWriteMediaPagedIndex( idt begCnt, const wxString& extdb )
 wxString tfpWriteMediaDataPage( const wxString& link, const wxString& extdb )
 {
     wxString htm;
-    // Note, format MDn,Am then n is MDataID and m is AssID.
+    // Note, format MDn:Am then n is MDataID and m is AssID.
     // m can be zero ("main" database).
     // format MDn,dbname then dname is a currently attached database
     idt mdID = 0, assID = 0;
@@ -225,32 +279,32 @@ wxString tfpWriteMediaDataPage( const wxString& link, const wxString& extdb )
 
         "<tr>\n"
         "<td>Path:</td>\n"
-        "<td><b>" << md.FGetFile() << "</b></td>\n"
+        "<td>" << md.FGetFile() << "</td>\n"
         "</tr>\n"
 
         "<tr>\n"
         "<td>Type:</td>\n"
-        "<td><b>" << recMediaData::GetMimeStr( md.FGetType() ) << "</b></td>\n"
+        "<td>" << recMediaData::GetMimeStr( md.FGetType() ) << "</td>\n"
         "</tr>\n"
 
         "<tr>\n"
         "<td>Copyright:</td>\n"
-        "<td><b>" << md.FGetCopyright() << "</b></td>\n"
+        "<td>" << md.FGetCopyright() << "</td>\n"
         "</tr>\n"
 
         "<tr>\n"
         "<td>Privacy:</td>\n"
-        "<td><b>" << md.FGetPrivacy() << "</b></td>\n"
+        "<td>" << md.FGetPrivacy() << "</td>\n"
         "</tr>\n"
 
         "<tr>\n"
         "<td>UID:</td>\n"
-        "<td><b>" << md.FGetUid() << "</b></td>\n"
+        "<td>" << md.FGetUid() << "</td>\n"
         "</tr>\n"
 
         "<tr>\n"
         "<td>Last Change:</td>\n"
-        "<td><b>" << calStrFromJdn( md.FGetChanged() ) << "</b></td>\n"
+        "<td>" << calStrFromJdn( md.FGetChanged() ) << "</td>\n"
         "</tr>\n"
 
         "</table>\n" << tfpWrTailTfp()
