@@ -172,6 +172,10 @@ wxString tfpWriteEventaPage( idt erID, const wxString& extdb )
         "<td><b><a href='tfp:R" << refID <<
         "'>Reference: " << recReference::GetIdStr( refID ) <<
         "</a></b> " << recReference::GetTitle( refID, extdb ) << "</td>\n"
+        "</tr>\n<tr>\n"
+        "<td><b>Changed: </b>" << recGetDateStr( er.FGetChanged() ) << "</td>\n"
+        "</tr>\n<tr>\n"
+        "<td><b>UID: </b>" << er.FGetUid() << "</td>\n"
         "</tr>\n</table>\n"
     ;
 
