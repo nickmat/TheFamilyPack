@@ -6,7 +6,7 @@ Welcome to the current version of The Family Pack,
 an ambitious multi-platform genealogy program
 with a new evidence based database.
 
-**THIS PROGRAM IS NOT FOR PRODUCTIVE USE - EXPECT BUGS!**
+**THIS PROGRAM IS NOT FOR PRODUCTIVE USE**
 
 The documentation for the program
 will be added to the manual as it is developed,
