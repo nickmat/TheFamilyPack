@@ -1,16 +1,13 @@
             TFP Release Check List
             ~~~~~~~~~~~~~~~~~~~~~~
 
-Note, the version numbers used in the svn-trunk refer to the proposed future release number. The definitive version reference will include the svn version number in brackets (without a + suffix). This means the version numbers are incremented immediately after the release.
-
-
 Check the program release version running on Windows, Ubuntu (Unity and Mint) and Mac.
 
--) Edit the src/tfp/tfpVersion.cpp file. Replace "Actitive" with the date for the current version.
+-) Edit the src/tfp/tfpVersion.cpp file. Replace "Active" with the date for the current version.
+
+-) Check and update readme.md file
 
 -) Do a final release build and check startup page version number and About Box text (version & (c) date).
-
--) Tag the svn rep.
 
 -) Check pack/win/tfp.nsi for version number, copyright date and sample files.
 
@@ -22,12 +19,10 @@ Check the program release version running on Windows, Ubuntu (Unity and Mint) an
 
 -) Check pack/tfp_*_src.gz by compiling on Unbuntu/Mac (as per build/build.txt).
 
--) Upload to sourceforge.
+-) Tag the github rep.
 
--) Post on thefamilypack_announce.
+-) Upload to sourceforge and github.
 
--) Increment the version numbers on svn-trunk 
+-) Post on thefamilypack_announce and add to Website news.
 
-<>
-
-
+-) Increment the version numbers on tfp\src\tfp\tfpVersion.cpp
