@@ -101,7 +101,13 @@ const char* tfpTitle = "The Family Pack - Version " VERSION "\n"
 
 23jan22  v0.3.0.1.1 R3  Fix problems opening databases and new windows.
 
-active   v0.3.0.1.1 R4  Compare and copy records between databases.
+ 4nov22  v0.3.0.1.1 R4  Add 'Windows' menu to main menu to handle multiple open
+                    windows onto the database or attached databases.
+                    Display attached (External) databases.
+                    Compare and transfer records between databases.
+                    Improve the consistant removal of records.
+                    Add uid and changed fields to Reference and subordinate
+                    tables.
 
  See also webpage http://thefamilypack.org/dev/routemap.htm
 
