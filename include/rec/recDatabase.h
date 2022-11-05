@@ -35,7 +35,6 @@ extern void recInitialize();
 extern void recUninitialize();
 
 extern wxString recGetHomeDisplay( const wxString& dbname );
-using stringmap = std::map<int, int>;
 
 extern wxString recGetDateStr( long jdn );
 
