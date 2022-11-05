@@ -80,8 +80,10 @@ BEGIN_EVENT_TABLE(TfpFrame, wxFrame)
     EVT_MENU( tfpID_FILE_EXTERNAL_OPEN, TfpFrame::OnExternalOpenFile )
     EVT_MENU_RANGE( tfpID_FILE_EXTERNAL_CLOSE_0, tfpID_FILE_EXTERNAL_CLOSE_LAST, TfpFrame::OnExternalCloseFile )
     EVT_MENU( tfpID_IMPORT_GEDCOM, TfpFrame::OnImportGedcom )
+    EVT_MENU( tfpID_IMPORT_CSV_BACKUP, TfpFrame::OnImportCsv )
     EVT_MENU( tfpID_EXPORT_GEDCOM, TfpFrame::OnExportGedcom )
     EVT_MENU( tfpID_EXPORT_HTML, TfpFrame::OnExportHtml )
+    EVT_MENU( tfpID_EXPORT_CSV_BACKUP, TfpFrame::OnExportCsv )
     EVT_MENU( tfpID_PRINT, TfpFrame::OnPrint )
     EVT_MENU( tfpID_PREVIEW, TfpFrame::OnPreview )
     EVT_MENU( tfpID_PAGE_SETUP, TfpFrame::OnPageSetup )
@@ -440,6 +442,11 @@ void TfpFrame::OnImportGedcom( wxCommandEvent& event )
     }
 }
 
+void TfpFrame::OnImportCsv( wxCommandEvent& event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnImportCsv" );
+}
+
 /*! \brief Called on a Export GEDCOM menu option event.
  */
 void TfpFrame::OnExportGedcom( wxCommandEvent& event )
@@ -467,6 +474,11 @@ void TfpFrame::OnExportGedcom( wxCommandEvent& event )
 void TfpFrame::OnExportHtml( wxCommandEvent& event )
 {
     wxMessageBox( _("Not yet implimented"), "OnExportHtml" );
+}
+
+void TfpFrame::OnExportCsv( wxCommandEvent& event )
+{
+    wxMessageBox( _( "Not yet implimented" ), "OnExportCsv" );
 }
 
 /*! \brief Called on a Print menu option event.
@@ -2117,27 +2129,34 @@ void TfpFrame::CreateFullMenuRW()
     m_menuFileAssociateClose = new wxMenu;
 
     m_menuFileAssociate = new wxMenu;
-    m_menuFileAssociate->Append( tfpID_FILE_ATTACH_NEW, _( "&New" ), menuFileAttachNew );
-    m_menuFileAssociate->Append( tfpID_FILE_ATTACH_OPEN, _( "&Open" ) );
+    m_menuFileAssociate->Append( tfpID_FILE_ATTACH_NEW, _( "&New..." ), menuFileAttachNew );
+    m_menuFileAssociate->Append( tfpID_FILE_ATTACH_OPEN, _( "&Open..." ) );
     m_menuFileAssociate->Append( tfpID_FILE_ATTACH_CLOSE, _( "&Close" ), m_menuFileAssociateClose );
 
     m_menuFileExternalClose = new wxMenu;
 
     m_menuFileExternal = new wxMenu;
-    m_menuFileExternal->Append( tfpID_FILE_EXTERNAL_OPEN, _( "&Open" ) );
+    m_menuFileExternal->Append( tfpID_FILE_EXTERNAL_OPEN, _( "&Open..." ) );
     m_menuFileExternal->Append( tfpID_FILE_EXTERNAL_CLOSE, _( "&Close" ), m_menuFileExternalClose );
 
+    wxMenu* menuFileImport = new wxMenu;
+    menuFileImport->Append( tfpID_IMPORT_GEDCOM, _( "&GEDCOM file..." ) );
+    menuFileImport->Append( tfpID_IMPORT_CSV_BACKUP, _( "&CSV Backup..." ) );
+
+    wxMenu* menuFileExport = new wxMenu;
+    menuFileExport->Append( tfpID_EXPORT_GEDCOM, _( "&GEDCOM file..." ) );
+    menuFileExport->Append( tfpID_EXPORT_HTML, _( "&HTML files..." ) );
+    menuFileExport->Append( tfpID_EXPORT_CSV_BACKUP, _( "&CSV Backup..." ) );
+
     wxMenu* menuFile = new wxMenu;
-    menuFile->Append( tfpID_NEW_FILE, _( "&New Database\tCtrl-N" ) );
-    menuFile->Append( tfpID_OPEN_FILE, _( "&Open Database\tCtrl-O" ) );
+    menuFile->Append( tfpID_NEW_FILE, _( "&New Database...\tCtrl-N" ) );
+    menuFile->Append( tfpID_OPEN_FILE, _( "&Open Database...\tCtrl-O" ) );
     menuFile->Append( tfpID_CLOSE_FILE, _( "&Close Database" ) );
     menuFile->Append( tfpID_FILE_ATTACH_MENU, _( "&Associate Database" ), m_menuFileAssociate );
     menuFile->Append( tfpID_FILE_EXTERNAL_MENU, _( "&External Database" ), m_menuFileExternal );
     menuFile->AppendSeparator();
-    menuFile->Append( tfpID_IMPORT_GEDCOM, _( "&Import GEDCOM file" ) );
-    menuFile->AppendSeparator();
-    menuFile->Append( tfpID_EXPORT_GEDCOM, _( "Export &GEDCOM file" ) );
-    menuFile->Append( tfpID_EXPORT_HTML, _( "Export &HTML files" ) );
+    menuFile->Append( tfpID_FILE_IMPORT_MENU, _( "&Import" ), menuFileImport );
+    menuFile->Append( tfpID_FILE_EXPORT_MENU, _( "Expor&t" ), menuFileExport );
     menuFile->AppendSeparator();
     menuFile->Append( tfpID_PRINT, _( "&Print...\tCtrl-P" ) );
     menuFile->Append( tfpID_PREVIEW, _( "Pre&view\tCtrl-Shift-P" ) );

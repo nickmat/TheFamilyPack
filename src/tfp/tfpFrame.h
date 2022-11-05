@@ -135,8 +135,10 @@ private:
     void OnExternalOpenFile( wxCommandEvent& event );
     void OnExternalCloseFile( wxCommandEvent& event );
     void OnImportGedcom( wxCommandEvent& event );
+    void OnImportCsv( wxCommandEvent& event );
     void OnExportGedcom( wxCommandEvent& event );
     void OnExportHtml( wxCommandEvent& event );
+    void OnExportCsv( wxCommandEvent& event );
     void OnPrint( wxCommandEvent& event );
     void OnPreview( wxCommandEvent& event );
     void OnPageSetup( wxCommandEvent& event );
@@ -266,9 +268,16 @@ enum
     tfpID_FILE_EXTERNAL_CLOSE,
     tfpID_FILE_EXTERNAL_CLOSE_0,
     tfpID_FILE_EXTERNAL_CLOSE_LAST = tfpID_FILE_EXTERNAL_CLOSE_0 + 10,
+
+    tfpID_FILE_IMPORT_MENU,
     tfpID_IMPORT_GEDCOM,
+    tfpID_IMPORT_CSV_BACKUP,
+
+    tfpID_FILE_EXPORT_MENU,
     tfpID_EXPORT_GEDCOM,
     tfpID_EXPORT_HTML,
+    tfpID_EXPORT_CSV_BACKUP,
+
     tfpID_PRINT,
     tfpID_PREVIEW,
     tfpID_PAGE_SETUP,
