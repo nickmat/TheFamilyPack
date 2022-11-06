@@ -42,9 +42,11 @@
 #include <wx/numdlg.h>
 
 #include <rec/recCitation.h>
+#include <rec/recCsv.h>
 #include <rec/recFamily.h>
 #include <rec/recIndividual.h>
 #include <rec/recVersion.h>
+
 #include <rg/rgDialogs.h>
 
 #include "tfpApp.h"
@@ -478,7 +480,22 @@ void TfpFrame::OnExportHtml( wxCommandEvent& event )
 
 void TfpFrame::OnExportCsv( wxCommandEvent& event )
 {
-    wxMessageBox( _( "Not yet implimented" ), "OnExportCsv" );
+    wxString caption = _( "Create or Select Directory" );
+    wxString defaultDir = ".";
+
+    wxDirDialog dialog( this, caption, defaultDir );
+    if( dialog.ShowModal() == wxID_OK )
+    {
+        wxString path = dialog.GetPath();
+        wxString caption = "Export CSV";
+        wxString message = "CSV \"" + path + "\"";
+        if( recExportCsv( path.ToStdString() ) ) {
+            wxMessageBox( message + " Saved OK", caption );
+        }
+        else {
+            wxMessageBox( "Error Saving " + message, caption );
+        }
+    }
 }
 
 /*! \brief Called on a Print menu option event.
