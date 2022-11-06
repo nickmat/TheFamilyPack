@@ -230,6 +230,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rec\recCsv.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rec\recDatabase.cpp"
 				>
 			</File>
@@ -377,6 +381,10 @@
 			</File>
 			<File
 				RelativePath="..\..\include\rec\recContact.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\rec\recCsv.h"
 				>
 			</File>
 			<File

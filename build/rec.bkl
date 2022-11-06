@@ -47,6 +47,7 @@
     <sources>$(LOCAL_SRC)/rec/recAssociate.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recCitation.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recContact.cpp</sources>
+    <sources>$(LOCAL_SRC)/rec/recCsv.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recDatabase.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recDate.cpp</sources>
     <sources>$(LOCAL_SRC)/rec/recEvent.cpp</sources>
@@ -84,6 +85,7 @@
     <headers>$(LOCAL_INC)/rec/recAssociate.h</headers>
     <headers>$(LOCAL_INC)/rec/recCitation.h</headers>
     <headers>$(LOCAL_INC)/rec/recContact.h</headers>
+    <headers>$(LOCAL_INC)/rec/recCsv.h</headers>
     <headers>$(LOCAL_INC)/rec/recDatabase.h</headers>
     <headers>$(LOCAL_SRC)/rec/recDatabaseCreate.h</headers>
     <headers>$(LOCAL_INC)/rec/recDb.h</headers>

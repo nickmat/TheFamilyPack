@@ -131,6 +131,7 @@
     <ClCompile Include="..\..\src\rec\recAssociate.cpp" />
     <ClCompile Include="..\..\src\rec\recCitation.cpp" />
     <ClCompile Include="..\..\src\rec\recContact.cpp" />
+    <ClCompile Include="..\..\src\rec\recCsv.cpp" />
     <ClCompile Include="..\..\src\rec\recDatabase.cpp" />
     <ClCompile Include="..\..\src\rec\recDate.cpp" />
     <ClCompile Include="..\..\src\rec\recEvent.cpp" />
@@ -169,6 +170,7 @@
     <ClInclude Include="..\..\include\rec\recAssociate.h" />
     <ClInclude Include="..\..\include\rec\recCitation.h" />
     <ClInclude Include="..\..\include\rec\recContact.h" />
+    <ClInclude Include="..\..\include\rec\recCsv.h" />
     <ClInclude Include="..\..\include\rec\recDatabase.h" />
     <ClInclude Include="..\..\include\rec\recDate.h" />
     <ClInclude Include="..\..\include\rec\recDb.h" />

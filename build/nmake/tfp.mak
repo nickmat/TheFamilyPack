@@ -184,6 +184,7 @@ REC_OBJECTS =  \
 	rec_recAssociate.obj \
 	rec_recCitation.obj \
 	rec_recContact.obj \
+	rec_recCsv.obj \
 	rec_recDatabase.obj \
 	rec_recDate.obj \
 	rec_recEvent.obj \
@@ -710,6 +711,9 @@ rec_recCitation.obj: .\..\..\src\rec\recCitation.cpp
 
 rec_recContact.obj: .\..\..\src\rec\recContact.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recContact.cpp
+
+rec_recCsv.obj: .\..\..\src\rec\recCsv.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recCsv.cpp
 
 rec_recDatabase.obj: .\..\..\src\rec\recDatabase.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(REC_CXXFLAGS) .\..\..\src\rec\recDatabase.cpp

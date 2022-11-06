@@ -124,6 +124,7 @@ REC_OBJECTS =  \
 	rec_recAssociate.o \
 	rec_recCitation.o \
 	rec_recContact.o \
+	rec_recCsv.o \
 	rec_recDatabase.o \
 	rec_recDate.o \
 	rec_recEvent.o \
@@ -433,6 +434,9 @@ rec_recCitation.o: ./../../src/rec/recCitation.cpp
 	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
 
 rec_recContact.o: ./../../src/rec/recContact.cpp
+	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
+
+rec_recCsv.o: ./../../src/rec/recCsv.cpp
 	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<
 
 rec_recDatabase.o: ./../../src/rec/recDatabase.cpp
