@@ -236,4 +236,31 @@ idt recEventEventa::Find( idt eID, idt erID, const wxString& dbname )
     return GET_ID( result.GetInt64( 0 ) );
 }
 
+std::string recEventEventa::CsvTitles()
+{
+    return std::string(
+        "ID, Event ID, Eventa ID, Confidence, Note\n"
+    );
+}
+
+void recEventEventa::CsvWrite( std::ostream& out, idt id )
+{
+    recEventEventa eea( id );
+    recCsvWrite( out, eea.FGetID() );
+    recCsvWrite( out, eea.FGetEventID() );
+    recCsvWrite( out, eea.FGetEventaID() );
+    recCsvWrite( out, eea.FGetConf() );
+    recCsvWrite( out, eea.FGetNote(), '\n' );
+}
+
+bool recEventEventa::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    recCsvRead( in, f_event_id );
+    recCsvRead( in, f_eventa_id );
+    recCsvRead( in, f_conf );
+    recCsvRead( in, f_note );
+    return bool( in );
+}
+
 // End of recEvent.cpp file
