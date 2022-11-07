@@ -69,6 +69,10 @@ public:
     wxString GetIdStr() const { return GetIdStr( FGetID() ); }
 
     static idt Create( idt eveID, idt famID, const wxString& note = wxEmptyString );
+
+    static std::string CsvTitles();
+    static void CsvWrite( std::ostream& out, idt id );
+    bool CsvRead( std::istream& in );
 };
 
 typedef std::vector< recFamilyEvent >      recFamilyEventVec;

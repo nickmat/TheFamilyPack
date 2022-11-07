@@ -150,4 +150,31 @@ idt recFamilyEvent::Create( idt eveID, idt famID, const wxString& note )
     return fe.FGetID();
 }
 
+std::string recFamilyEvent::CsvTitles()
+{
+    return std::string(
+        "ID, Family ID, Event ID, Note, Family Sequence\n"
+    );
+}
+
+void recFamilyEvent::CsvWrite( std::ostream& out, idt id )
+{
+    recFamilyEvent fe( id );
+    recCsvWrite( out, fe.FGetID() );
+    recCsvWrite( out, fe.FGetFamID() );
+    recCsvWrite( out, fe.FGetEventID() );
+    recCsvWrite( out, fe.FGetNote() );
+    recCsvWrite( out, fe.FGetFamSeq(), '\n' );
+}
+
+bool recFamilyEvent::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    recCsvRead( in, f_fam_id );
+    recCsvRead( in, f_event_id );
+    recCsvRead( in, f_note );
+    recCsvRead( in, f_fam_seq );
+    return bool( in );
+}
+
 // End of recEvent.cpp file
