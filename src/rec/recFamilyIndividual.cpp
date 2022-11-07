@@ -163,4 +163,31 @@ bool recFamilyIndividual::Find( const wxString& dbname )
     return true;
 }
 
+std::string recFamilyIndividual::CsvTitles()
+{
+    return std::string(
+        "ID, Family ID, Individual ID, Child Sequence, Parent Sequence\n"
+    );
+}
+
+void recFamilyIndividual::CsvWrite( std::ostream& out, idt id )
+{
+    recFamilyIndividual fi( id );
+    recCsvWrite( out, fi.FGetID() );
+    recCsvWrite( out, fi.FGetFamID() );
+    recCsvWrite( out, fi.FGetIndID() );
+    recCsvWrite( out, fi.FGetSeqChild() );
+    recCsvWrite( out, fi.FGetSeqParent(), '\n' );
+}
+
+bool recFamilyIndividual::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    recCsvRead( in, f_fam_id );
+    recCsvRead( in, f_ind_id );
+    recCsvRead( in, f_seq_child );
+    recCsvRead( in, f_seq_parent );
+    return bool( in );
+}
+
 // End of src/rec/recFamilyIndividual.cpp file

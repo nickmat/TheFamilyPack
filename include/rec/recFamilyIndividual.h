@@ -74,6 +74,10 @@ public:
     void FSetSeqParent( int seq ) { f_seq_parent = seq; }
 
     bool Find( const wxString& dbname = "Main" );
+
+    static std::string CsvTitles();
+    static void CsvWrite( std::ostream& out, idt id );
+    bool CsvRead( std::istream& in );
 };
 
 
