@@ -208,12 +208,14 @@ std::istream& recCsvRead( std::istream& in, idt& id );
 std::istream& recCsvRead( std::istream& in, int& num );
 std::istream& recCsvRead( std::istream& in, unsigned& num );
 std::istream& recCsvRead( std::istream& in, long& num );
+std::istream& recCsvRead( std::istream& in, double& num );
 
 std::ostream& recCsvWrite( std::ostream& out, const std::string& str, char term = ',' );
 std::ostream& recCsvWrite( std::ostream& out, const wxString& str, char term = ',' );
 std::ostream& recCsvWrite( std::ostream& out, idt id, char term = ',' );
 std::ostream& recCsvWrite( std::ostream& out, int num, char term = ',' );
 std::ostream& recCsvWrite( std::ostream& out, unsigned num, char term = ',' );
+std::ostream& recCsvWrite( std::ostream& out, double num, char term = ',' );
 
 // GEDCOM style UID's
 extern wxString recCreateUid();

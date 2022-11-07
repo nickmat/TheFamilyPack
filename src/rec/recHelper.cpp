@@ -363,6 +363,21 @@ std::istream& recCsvRead( std::istream& in, long& num )
     return in;
 }
 
+std::istream& recCsvRead( std::istream& in, double& dbl )
+{
+    std::string str;
+    char ch;
+    for( ;;) {
+        in.get( ch );
+        if( ch == ',' || ch == '\n' || in.eof() || !in ) {
+            break;
+        }
+        str.push_back( ch );
+    }
+    dbl = recConfFromStr( str );
+    return in;
+}
+
 std::ostream& recCsvWrite( std::ostream& out, const std::string& str, char term )
 {
     out.put( '"' );
@@ -395,6 +410,12 @@ std::ostream& recCsvWrite( std::ostream& out, int num, char term )
 }
 
 std::ostream& recCsvWrite( std::ostream& out, unsigned num, char term )
+{
+    out << num << term;
+    return out;
+}
+
+std::ostream& recCsvWrite( std::ostream& out, double num, char term )
 {
     out << num << term;
     return out;
