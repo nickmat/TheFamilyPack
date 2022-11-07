@@ -66,7 +66,7 @@ public:
     idt FGetFamID() const { return f_fam_id; }
     idt FGetIndID() const { return f_ind_id; }
     int FGetSeqChild() const { return f_seq_child; }
-    int FSetSeqParent() const { return f_seq_parent; }
+    int FGetSeqParent() const { return f_seq_parent; }
 
     void FSetFamID( idt famID ) { f_fam_id = famID; }
     void FSetIndID( idt indID ) { f_ind_id = indID; }
