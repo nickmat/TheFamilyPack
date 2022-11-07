@@ -74,6 +74,10 @@ public:
 
     bool Find( const wxString& dbname = "Main" );
     static idt Find( idt famID, idt eaID, const wxString& dbname = "Main" );
+
+    static std::string CsvTitles();
+    static void CsvWrite( std::ostream& out, idt id );
+    bool CsvRead( std::istream& in );
 };
 
 

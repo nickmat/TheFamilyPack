@@ -192,5 +192,32 @@ idt recFamilyEventa::Find( idt famID, idt eaID, const wxString& dbname )
     return fea.FGetID();
 }
 
+std::string recFamilyEventa::CsvTitles()
+{
+    return std::string(
+        "ID, Family ID, Eventa ID, Confidence, Note\n"
+    );
+}
+
+void recFamilyEventa::CsvWrite( std::ostream& out, idt id )
+{
+    recFamilyEventa fea( id );
+    recCsvWrite( out, fea.FGetID() );
+    recCsvWrite( out, fea.FGetFamID() );
+    recCsvWrite( out, fea.FGetEventaID() );
+    recCsvWrite( out, fea.FGetConf() );
+    recCsvWrite( out, fea.FGetNote(), '\n' );
+}
+
+bool recFamilyEventa::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    recCsvRead( in, f_fam_id );
+    recCsvRead( in, f_eventa_id );
+    recCsvRead( in, f_conf );
+    recCsvRead( in, f_note );
+    return bool( in );
+}
+
 
 // End of include/rec/recFamEventa.cpp file
