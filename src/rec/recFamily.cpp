@@ -537,6 +537,29 @@ idt recFamily::FindOrCreate( idt ind1ID, idt ind2ID, const wxString& dbname )
     return 0;
 }
 
+std::string recFamily::CsvTitles()
+{
+    return std::string(
+        "ID, Huband ID, Wife ID\n"
+    );
+}
+
+void recFamily::CsvWrite( std::ostream& out, idt id )
+{
+    recFamily fam( id );
+    recCsvWrite( out, fam.FGetID() );
+    recCsvWrite( out, fam.FGetHusbID() );
+    recCsvWrite( out, fam.FGetWifeID(), '\n' );
+}
+
+bool recFamily::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    recCsvRead( in, f_husb_id );
+    recCsvRead( in, f_wife_id );
+    return bool( in );
+}
+
 void recFamily::RemoveFromEvents( idt famID, idt indID, const wxString& dbname )
 {
     if( famID == 0 || indID == 0 ) return;
