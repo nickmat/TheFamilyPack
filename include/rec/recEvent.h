@@ -149,6 +149,10 @@ public:
     static wxSQLite3Table GetTitleList( const wxString& dbname = "Main" );
     static wxSQLite3Table GetTitleList( idt offset, int limit, const wxString& dbname = "Main" );
 
+    static std::string CsvTitles();
+    static void CsvWrite( std::ostream& out, idt id );
+    bool CsvRead( std::istream& in );
+
     static void RemoveDates( idt dateID, const wxString& dbname = "Main" ); // removes date if found, replacing with 0
     static void RemovePlace( idt placeID, const wxString& dbname = "Main" ); // removes place if found, replacing with 0
 

@@ -631,6 +631,44 @@ void recEvent::RemoveIncOrphansFromDatabase( idt id, const wxString& dbname )
     // TODO: Delete orphaned EventType and/or EventTypeRole
 }
 
+std::string recEvent::CsvTitles()
+{
+    return std::string(
+        "ID, Title, Higher ID, Event Type ID,"
+        "Date1 ID, Date2 ID, Place ID, Note, Date Point, User Reference\n"
+    );
+}
+
+void recEvent::CsvWrite( std::ostream& out, idt id )
+{
+    recEvent eve( id );
+    recCsvWrite( out, eve.FGetID() );
+    recCsvWrite( out, eve.FGetTitle() );
+    recCsvWrite( out, eve.FGetHigherID() );
+    recCsvWrite( out, eve.FGetTypeID() );
+    recCsvWrite( out, eve.FGetDate1ID() );
+    recCsvWrite( out, eve.FGetDate2ID() );
+    recCsvWrite( out, eve.FGetPlaceID() );
+    recCsvWrite( out, eve.FGetNote() );
+    recCsvWrite( out, eve.FGetDatePt() );
+    recCsvWrite( out, eve.FGetUserRef() );
+}
+
+bool recEvent::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    recCsvRead( in, f_title );
+    recCsvRead( in, f_higher_id );
+    recCsvRead( in, f_type_id );
+    recCsvRead( in, f_date1_id );
+    recCsvRead( in, f_date2_id );
+    recCsvRead( in, f_place_id );
+    recCsvRead( in, f_note );
+    recCsvRead( in, f_date_pt );
+    recCsvRead( in, f_user_ref );
+    return bool( in );
+}
+
 void recEvent::RemoveDates( idt dateID, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;
