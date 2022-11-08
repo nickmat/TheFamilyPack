@@ -71,6 +71,10 @@ public:
 
     void Find( idt userID, recUserSetting::Property prop, const wxString& dbname = "Main" );
 
+    static std::string CsvTitles();
+    static void CsvWrite( std::ostream& out, idt id );
+    bool CsvRead( std::istream& in );
+
 private:
     idt      f_user_id;
     Property f_property;
@@ -117,6 +121,10 @@ public:
     static wxString GetSetting( const wxString& dbname, idt userID, recUserSetting::Property prop );
     wxString GetSetting( const wxString& dbname, recUserSetting::Property prop ) const {
         return GetSetting( dbname, f_id, prop ); }
+
+    static std::string CsvTitles();
+    static void CsvWrite( std::ostream& out, idt id );
+    bool CsvRead( std::istream& in );
 
 private:
     idt  f_res_id;

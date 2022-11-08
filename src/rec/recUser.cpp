@@ -166,6 +166,25 @@ wxString recUser::GetSetting( const wxString& dbname, idt userID, recUserSetting
     return result.GetAsString( 0 );
 }
 
+std::string recUser::CsvTitles()
+{
+    return std::string("ID, Researcher ID\n");
+}
+
+void recUser::CsvWrite( std::ostream& out, idt id )
+{
+    recUser user( id );
+    recCsvWrite( out, user.FGetID() );
+    recCsvWrite( out, user.FGetResID(), '\n' );
+}
+
+bool recUser::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    recCsvRead( in, f_res_id );
+    return bool( in );
+}
+
 //============================================================================
 //                 recUserSetting
 //============================================================================
@@ -271,6 +290,31 @@ void recUserSetting::Find( idt userID, recUserSetting::Property prop, const wxSt
     }
     f_id = GET_ID( result.GetInt64( 0 ) );
     f_val = result.GetAsString( 1 );
+}
+
+std::string recUserSetting::CsvTitles()
+{
+    return std::string("ID, User ID, Property, Value\n");
+}
+
+void recUserSetting::CsvWrite( std::ostream& out, idt id )
+{
+    recUserSetting us( id );
+    recCsvWrite( out, us.FGetID() );
+    recCsvWrite( out, us.FGetUserID() );
+    recCsvWrite( out, static_cast<int>(us.FGetProperty()) );
+    recCsvWrite( out, us.FGetValue(), '\n' );
+}
+
+bool recUserSetting::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    recCsvRead( in, f_user_id );
+    int property;
+    recCsvRead( in, property );
+    f_property = static_cast<Property>(property);
+    recCsvRead( in, f_val );
+    return bool( in );
 }
 
 // End of recUser.cpp file
