@@ -195,6 +195,10 @@ public:
 
     static bool CreateMissingFamilies( const wxString& dbname = "Main" );
 
+    static std::string CsvTitles();
+    static void CsvWrite( std::ostream& out, idt id );
+    bool CsvRead( std::istream& in );
+
     // Delete Individual and remove all references to it.
     void RemoveFromDatabase( const wxString& dbname = "Main" ) {
         RemoveFromDatabase( f_id, dbname ); }

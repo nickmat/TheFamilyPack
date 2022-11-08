@@ -651,6 +651,41 @@ bool recIndividual::CreateMissingFamilies( const wxString& dbname )
     return true;
 }
 
+std::string recIndividual::CsvTitles()
+{
+    return std::string(
+        "ID, Sex, Family ID, Note, Privacy, Name, Surname, Epitaph\n"
+    );
+}
+
+void recIndividual::CsvWrite( std::ostream& out, idt id )
+{
+    recIndividual ind( id );
+    recCsvWrite( out, ind.FGetID() );
+    recCsvWrite( out, static_cast<int>(ind.FGetSex()) );
+    recCsvWrite( out, ind.FGetFamID() );
+    recCsvWrite( out, ind.FGetNote() );
+    recCsvWrite( out, ind.FGetPrivacy() );
+    recCsvWrite( out, ind.FGetName() );
+    recCsvWrite( out, ind.FGetSurname() );
+    recCsvWrite( out, ind.FGetEpitaph(), '\n' );
+}
+
+bool recIndividual::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    int sex;
+    recCsvRead( in, sex );
+    f_sex = static_cast<Sex>(sex);
+    recCsvRead( in, f_fam_id );
+    recCsvRead( in, f_note );
+    recCsvRead( in, f_privacy );
+    recCsvRead( in, f_name );
+    recCsvRead( in, f_surname );
+    recCsvRead( in, f_epitaph );
+    return bool( in );
+}
+
 void recIndividual::RemoveFromDatabase( idt indID, const wxString& dbname )
 {
     // TODO: Delete orphaned EventType and/or EventTypeRole
