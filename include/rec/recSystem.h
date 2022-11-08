@@ -67,6 +67,10 @@ public:
     static void SetProperyValue( Property sp, const wxString& value );
     static void SetProperyValue( Property sp, idt id );
 
+    static std::string CsvTitles();
+    static void CsvWrite( std::ostream& out, idt id );
+    bool CsvRead( std::istream& in );
+
 private:
     wxString f_val;
 };

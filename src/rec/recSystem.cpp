@@ -141,4 +141,23 @@ void recSystem::SetProperyValue( Property sp, idt id )
     sys.Save();
 }
 
+std::string recSystem::CsvTitles()
+{
+    return std::string( "ID, Value\n" );
+}
+
+void recSystem::CsvWrite( std::ostream& out, idt id )
+{
+    recSystem sys( id );
+    recCsvWrite( out, sys.FGetID() );
+    recCsvWrite( out, sys.FGetValue(), '\n' );
+}
+
+bool recSystem::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    recCsvRead( in, f_val );
+    return bool( in );
+}
+
 // End of recSystem.cpp file
