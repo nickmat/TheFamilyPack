@@ -179,4 +179,31 @@ idt recIndividualPersona::Find( idt indID, idt perID, const wxString& dbname )
     return ExecuteID( sql );
 }
 
+std::string recIndividualPersona::CsvTitles()
+{
+    return std::string(
+        "ID, Individual ID, Persona ID, Confidence, Note\n"
+    );
+}
+
+void recIndividualPersona::CsvWrite( std::ostream& out, idt id )
+{
+    recIndividualPersona ipa( id );
+    recCsvWrite( out, ipa.FGetID() );
+    recCsvWrite( out, ipa.FGetIndID() );
+    recCsvWrite( out, ipa.FGetPerID() );
+    recCsvWrite( out, ipa.FGetConf() );
+    recCsvWrite( out, ipa.FGetNote(), '\n' );
+}
+
+bool recIndividualPersona::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    recCsvRead( in, f_ind_id );
+    recCsvRead( in, f_per_id );
+    recCsvRead( in, f_conf );
+    recCsvRead( in, f_note );
+    return bool( in );
+}
+
 // End of recLink.cpp file
