@@ -93,27 +93,4 @@ public:
         return GetRoleStr( f_ind_id, typeID, dbname ); }
 };
 
-inline bool recEquivalent( const recIndividualEvent& r1, const recIndividualEvent& r2 )
-{
-    return
-        r1.f_higher_id == r2.f_higher_id &&
-        r1.f_ind_id    == r2.f_ind_id    &&
-        r1.f_event_id  == r2.f_event_id  &&
-        r1.f_role_id   == r2.f_role_id   &&
-        r1.f_note      == r2.f_note      &&
-        r1.f_ind_seq   == r2.f_ind_seq
-    ;
-}
-
-inline bool operator==( const recIndividualEvent& r1, const recIndividualEvent& r2 )
-{
-    return recEquivalent( r1, r2 ) && r1.f_id == r2.f_id;
-}
-
-inline bool operator!=( const recIndividualEvent& r1, const recIndividualEvent& r2 )
-{
-    return !(r1 == r2);
-}
-
-
 #endif // REC_RECINDEVENT_H
