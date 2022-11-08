@@ -91,6 +91,10 @@ public:
     static wxString GetRoleStr( idt indID, idt typeID, const wxString& dbname = "Main" );
     wxString GetRoleStr( idt typeID, const wxString& dbname = "Main" ) const {
         return GetRoleStr( f_ind_id, typeID, dbname ); }
+
+    static std::string CsvTitles();
+    static void CsvWrite( std::ostream& out, idt id );
+    bool CsvRead( std::istream& in );
 };
 
 #endif // REC_RECINDEVENT_H

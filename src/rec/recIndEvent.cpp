@@ -258,4 +258,35 @@ wxString recIndividualEvent::GetRoleStr( idt indID, idt typeID, const wxString& 
     return ExecuteStr( sql );
 }
 
+std::string recIndividualEvent::CsvTitles()
+{
+    return std::string(
+        "ID, Individual ID, Higher ID, Event ID, Role ID, Note, Individual Sequence\n"
+    );
+}
+
+void recIndividualEvent::CsvWrite( std::ostream& out, idt id )
+{
+    recIndividualEvent ie( id );
+    recCsvWrite( out, ie.FGetID() );
+    recCsvWrite( out, ie.FGetIndID() );
+    recCsvWrite( out, ie.FGetHigherID() );
+    recCsvWrite( out, ie.FGetEventID() );
+    recCsvWrite( out, ie.FGetRoleID() );
+    recCsvWrite( out, ie.FGetNote() );
+    recCsvWrite( out, ie.FGetIndSeq(), '\n' );
+}
+
+bool recIndividualEvent::CsvRead( std::istream& in )
+{
+    recCsvRead( in, f_id );
+    recCsvRead( in, f_ind_id );
+    recCsvRead( in, f_higher_id );
+    recCsvRead( in, f_event_id );
+    recCsvRead( in, f_role_id );
+    recCsvRead( in, f_note );
+    recCsvRead( in, f_ind_seq );
+    return bool( in );
+}
+
 // End of recIndEvent.cpp file
