@@ -58,7 +58,11 @@ public:
         CREATE_DB_ENUM_FN = 0x0002
     };
     enum class Coverage {
-        user, common, all
+        user,      // Positive IDs
+        common,    // Negative IDs
+        notzero,   // Neg + Pos IDs
+        posfirst,  // Pos + Neg IDs
+        all        // Neg Zero Pos IDs
     };
 
 protected:

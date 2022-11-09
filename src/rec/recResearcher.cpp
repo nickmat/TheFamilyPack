@@ -165,11 +165,12 @@ wxString recResearcher::GetUserIdStr( const wxString& dbname ) const
 
 recResearcherVec recResearcher::GetResearchers( Coverage filter, const wxString& dbname )
 {
+    wxASSERT( filter != Coverage::all && filter != Coverage::notzero );
     wxSQLite3StatementBuffer sql;
     recResearcherVec list;
     recResearcher res;
 
-    if( filter == Coverage::all || filter == Coverage::user ) {
+    if( filter == Coverage::posfirst || filter == Coverage::user ) {
         sql.Format(
             "SELECT id, name, comment, con_list_id, uid, changed FROM \"%s\".Researcher"
             " WHERE id>0 ORDER BY id;",
@@ -187,7 +188,7 @@ recResearcherVec recResearcher::GetResearchers( Coverage filter, const wxString&
             list.push_back( res );
         }
     }
-    if( filter == Coverage::all || filter == Coverage::common ) {
+    if( filter == Coverage::posfirst || filter == Coverage::common ) {
         sql.Format(
             "SELECT id, name, comment, con_list_id, uid, changed FROM \"%s\".Researcher"
             " WHERE id<0 ORDER BY id;",
