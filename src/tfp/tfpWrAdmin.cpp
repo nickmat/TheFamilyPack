@@ -45,7 +45,7 @@
 wxString tfpWriteResearcherList( const wxString& extdb )
 {
     recResearcherVec list =
-        recResearcher::GetResearchers( recDb::Coverage::posfirst, extdb );
+        recResearcher::GetResearchers( recDb::Coverage::userfirst, extdb );
     idt curUserID = recGetCurrentUser( extdb );
 
     wxString htm = tfpWrHeadTfp( "Researcher Index" );

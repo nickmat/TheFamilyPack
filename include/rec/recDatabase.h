@@ -61,7 +61,7 @@ public:
         user,      // Positive IDs
         common,    // Negative IDs
         notzero,   // Neg + Pos IDs
-        posfirst,  // Pos + Neg IDs
+        userfirst, // Pos + Neg IDs
         all        // Neg Zero Pos IDs
     };
 

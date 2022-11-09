@@ -170,7 +170,7 @@ recResearcherVec recResearcher::GetResearchers( Coverage filter, const wxString&
     recResearcherVec list;
     recResearcher res;
 
-    if( filter == Coverage::posfirst || filter == Coverage::user ) {
+    if( filter == Coverage::userfirst || filter == Coverage::user ) {
         sql.Format(
             "SELECT id, name, comment, con_list_id, uid, changed FROM \"%s\".Researcher"
             " WHERE id>0 ORDER BY id;",
@@ -188,7 +188,7 @@ recResearcherVec recResearcher::GetResearchers( Coverage filter, const wxString&
             list.push_back( res );
         }
     }
-    if( filter == Coverage::posfirst || filter == Coverage::common ) {
+    if( filter == Coverage::userfirst || filter == Coverage::common ) {
         sql.Format(
             "SELECT id, name, comment, con_list_id, uid, changed FROM \"%s\".Researcher"
             " WHERE id<0 ORDER BY id;",

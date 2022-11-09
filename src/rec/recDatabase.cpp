@@ -575,7 +575,7 @@ recIdVec recDb::GetIdVec( Coverage cover, const char* table, const wxString& dbn
     case Coverage::notzero:
         filter = "WHERE NOT id=0";
         break;
-    case Coverage::posfirst:
+    case Coverage::userfirst:
         {
             recIdVec result1 = GetIdVec( Coverage::user, table, dbname );
             recIdVec result2 = GetIdVec( Coverage::common, table, dbname );
