@@ -561,10 +561,33 @@ recIdVec recDb::GetPositiveIDs( const char* table, const wxString& dbname )
     return ExecuteIdVec( sql );
 }
 
-recIdVec recDb::GetAllIDs( const char* table, const wxString& dbname )
+recIdVec recDb::GetIdVec( Coverage cover, const char* table, const wxString& dbname )
 {
+    const char* filter;
+    switch( cover )
+    {
+    case Coverage::user:
+        filter = "WHERE id>0";
+        break;
+    case Coverage::common:
+        filter = "WHERE id<0";
+        break;
+    case Coverage::notzero:
+        filter = "WHERE NOT id=0";
+        break;
+    case Coverage::posfirst:
+        {
+            recIdVec result1 = GetIdVec( Coverage::user, table, dbname );
+            recIdVec result2 = GetIdVec( Coverage::common, table, dbname );
+            return recVecAppend( result1, result2 );
+        }
+    case Coverage::all:
+        filter = "";
+        break;
+    }
+
     wxSQLite3StatementBuffer sql;
-    sql.Format( "SELECT id FROM \"%s\".%q;", UTF8_( dbname ), table );
+    sql.Format( "SELECT id FROM \"%s\".%q %s;", UTF8_( dbname ), table, filter );
 
     return ExecuteIdVec( sql );
 }

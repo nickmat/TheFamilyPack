@@ -98,9 +98,9 @@ public:
      */
     static recIdVec GetPositiveIDs( const char* table, const wxString& dbname );
 
-    /*! Return a list of all (including 0) user id records in the given table.
+    /*! Return a list of id records in the given table.
      */
-    static recIdVec GetAllIDs( const char* table, const wxString& dbname );
+    static recIdVec GetIdVec( Coverage cover, const char* table, const wxString& dbname );
 
     idt   f_id;
 
@@ -300,9 +300,10 @@ public:
     static recIdVec PositiveIDs( const wxString& dbname = "Main" ) {
         return GetPositiveIDs( T::s_tablename, dbname );
     }
-    static recIdVec AllIDs( const wxString& dbname = "Main" ) {
-        return GetAllIDs( T::s_tablename, dbname );
+    static recIdVec IdVec( Coverage cover = Coverage::notzero, const wxString& dbname = "Main" ) {
+        return GetIdVec( cover, T::s_tablename, dbname );
     }
+
     virtual bool Equivalent( const T& ) const {
         wxASSERT( false ); // Equivalent is not needed for all record types.
         return false;
