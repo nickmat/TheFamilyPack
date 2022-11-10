@@ -77,6 +77,9 @@ wxString recGetHomeDisplay( const wxString& dbname )
     try {
         if( recUser::TableExists( dbname ) ) {
             idt userID = recGetCurrentUser( dbname );
+            if( userID == 0 ) {
+                return "NI";
+            }
             return recUser::GetSetting(
                 dbname, userID, recUserSetting::Property::home_screen
             );
