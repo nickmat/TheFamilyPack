@@ -561,7 +561,7 @@ static const char* createFullDb =  /* recCreateFull.sql */
  "  (0, '', NULL, NULL, '', 0);\n"
  "INSERT INTO Researcher (id, name, comment, con_list_id, uid, changed) VALUES\n"
  "  (-1, 'Anonymous', NULL, NULL, 'E16C3575699D77C1BABD0C582A44C6FA3E4A', 2459675);\n"
- "INSERT INTO User (id, res_id) VALUES(1, -1);\n"
+ "INSERT INTO User (id, res_id) VALUES(1, 0);\n"
  "INSERT INTO System (id, val) VALUES(1, '1');\n"
  "INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 1, 1, 'NI');\n"
  "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 44);\n"

@@ -641,7 +641,7 @@ INSERT INTO Researcher (id, name, comment, con_list_id, uid, changed) VALUES
 INSERT INTO Researcher (id, name, comment, con_list_id, uid, changed) VALUES
   (-1, 'Anonymous', NULL, NULL, 'E16C3575699D77C1BABD0C582A44C6FA3E4A', 2459675);
 
-INSERT INTO User (id, res_id) VALUES(1, -1); /* Set User U1 to Anomymous */
+INSERT INTO User (id, res_id) VALUES(1, 0); /* Set User U1 to unknown */
 
 INSERT INTO System (id, val) VALUES(1, '1'); /* User U1 */
 
