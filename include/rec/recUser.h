@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     25 February 2011
- * Copyright:   Copyright (c) 2011 .. 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2011..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -107,13 +107,6 @@ public:
 
     static wxString GetIdStr( idt userID ) { return wxString::Format( "U" ID, userID ); }
     wxString GetIdStr() const { return GetIdStr( f_id ); }
-
-    idt FindFirst( const wxString& dbname, idt resID )
-    {
-        return ExecuteID(
-            "SELECT id FROM \"%s\".User WHERE res_id=" ID " ORDER BY id;",
-            dbname, resID );
-    }
 
     static recUserVec GetUsers( const wxString& dbname = "Main");
 
