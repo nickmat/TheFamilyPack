@@ -578,6 +578,9 @@ recIdVec recDb::GetIdVec( Coverage cover, const char* table, const wxString& dbn
     case Coverage::notzero:
         filter = "WHERE NOT id=0";
         break;
+    case Coverage::rnotzero:
+        filter = "WHERE NOT id=0 ORDER BY id DESC";
+        break;
     case Coverage::userfirst:
         {
             recIdVec result1 = GetIdVec( Coverage::user, table, dbname );

@@ -60,7 +60,8 @@ public:
     enum class Coverage {
         user,      // Positive IDs
         common,    // Negative IDs
-        notzero,   // Neg + Pos IDs
+        notzero,   // All except zero IDs
+        rnotzero,  // All except zero in reverse order IDs
         userfirst, // Pos + Neg IDs
         all        // Neg Zero Pos IDs
     };
