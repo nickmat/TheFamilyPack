@@ -542,6 +542,38 @@ int recDb::GetCount( const char* name, const wxString& dbname )
     return s_db->ExecuteScalar( sql );
 }
 
+int recDb::GetCount( Coverage cover, const char* table, const wxString& dbname )
+{
+    const char* filter;
+    switch( cover )
+    {
+    case Coverage::user:
+        filter = "WHERE id>0";
+        break;
+    case Coverage::common:
+        filter = "WHERE id<0";
+        break;
+    case Coverage::notzero:
+    case Coverage::rnotzero:
+    case Coverage::userfirst:
+        filter = "WHERE NOT id=0";
+        break;
+    case Coverage::all:
+        filter = "";
+        break;
+    default:
+        return 0;
+    }
+
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT COUNT(*) FROM \"%s\".%q %s;",
+        UTF8_( dbname ), table, filter
+    );
+
+    return s_db->ExecuteScalar( sql );
+}
+
 bool recDb::DoesTableExist( const char* table, const wxString& dbname )
 {
     wxSQLite3StatementBuffer sql;

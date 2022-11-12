@@ -93,6 +93,10 @@ public:
      */
     static int GetCount( const char* table, const wxString& dbname = "Main" );
 
+    /*! Return the total number of records of type required by Coverage argument.
+     */
+    static int GetCount( Coverage cover, const char* table, const wxString& dbname = "Main" );
+
     static bool DoesTableExist( const char* table, const wxString& dbname );
 
     /*! Return a list of all user (positive) id records in the given table.
@@ -294,7 +298,11 @@ public:
     static int UserCount( const wxString& dbname = "Main" ) {
         return GetUserCount( T::s_tablename, dbname ); }
     static int Count( const wxString& dbname = "Main" ) {
-        return GetCount( T::s_tablename, dbname ); }
+        return GetCount( T::s_tablename, dbname );
+    }
+    static int Count( Coverage cover, const wxString& dbname = "Main" ) {
+        return GetCount( cover, T::s_tablename, dbname );
+    }
     static bool TableExists( const wxString& dbname = "Main" ) {
         return DoesTableExist( T::s_tablename, dbname );
     }
