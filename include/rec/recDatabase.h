@@ -324,6 +324,37 @@ public:
     bool operator!=( const T& record ) const {
         return !Equivalent( record ) || !EqualID( record );
     }
+
+    static bool CsvReadTable( std::istream& in, const wxString& dbname = "Main" )
+    {
+        std::string titles;
+        std::getline( ifile, titles ); // Get rid of the title line
+        // We could check titles here to detect change in format
+
+        bool ret = true;
+        while( ret ) {
+            T record( 0 );
+            ret = record.CsvRead( in );
+            if( ret ) {
+                record.Save( dbname );
+            }
+        }
+        return true;
+    }
+
+    static void CsvWriteTable(
+        std::ostream& out,
+        Coverage cover = Coverage::rnotzero,
+        const wxString& dbname = "Main" )
+    {
+        recIdVec list = T::IdVec( cover, dbname );
+        if( !list.empty() ) {
+            out << T::CsvTitles();
+            for( idt id : list ) {
+                T::CsvWrite( out, id );
+            }
+        }
+    }
 };
 
 class recUid
