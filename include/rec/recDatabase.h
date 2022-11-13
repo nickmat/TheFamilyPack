@@ -341,6 +341,20 @@ public:
         }
         return true;
     }
+    static bool CsvReadTableFile( const std::string& path, const wxString& dbname = "Main" )
+    {
+        std::string fname = recEndWithFileSep( path ) + T::s_tablename + ".csv";
+        std::ifstream ifile( fname );
+        if( !ifile ) {
+            return true; // Not an error if it doesn't exist
+        }
+        return T::CvsReadTable( in, dbname );
+    }
+    static bool CsvReadTableString( const char* str, const wxString& dbname = "Main" )
+    {
+        std::istringstream in( str );
+        return T::CvsReadTable( in, dbname );
+    }
 
     static void CsvWriteTable(
         std::ostream& out,
@@ -354,6 +368,22 @@ public:
                 T::CsvWrite( out, id );
             }
         }
+    }
+    static bool CsvWriteTableFile(
+        const std::string& path,
+        Coverage cover = Coverage::rnotzero,
+        const wxString& dbname = "Main" )
+    {
+        if( T::Count( cover, dbname ) == 0 ) {
+            return true;
+        }
+        std::string fname = recEndWithFileSep( path ) + T::s_tablename + ".csv";
+        std::ofstream ofile( fname, std::ios::trunc );
+        if( !ofile ) {
+            return false;
+        }
+        T::CsvWriteTable( ofile, cover, dbname );
+        return true;
     }
 };
 
