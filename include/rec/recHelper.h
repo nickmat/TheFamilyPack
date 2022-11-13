@@ -105,12 +105,20 @@ extern double recConfFromStr( const std::string& str );
 enum class recSplitStrRet { none, number, associate, text };
 extern recSplitStrRet recSplitStr( const wxString& str, idt* id1, idt* id2, wxString* dbname );
 
+inline const char* recFileSep() { return
+#ifdef _WIN32
+    "\\";
+#else
+    "/";
+#endif
+}
+
 // Make sure the string ends with a '/'.
-inline wxString recMakeDirectoryStr( const wxString& dir ) {
-    if( !dir.empty() && *dir.rbegin() != '/' ) {
-        return dir + "/";
+inline std::string recEndWithFileSep( const std::string& path ) {
+    if( !path.empty() && *path.rbegin() != *recFileSep() ) {
+        return path + recFileSep();
     }
-    return dir;
+    return path;
 }
 
 enum class Sex { unstated, male, female, unknown };
