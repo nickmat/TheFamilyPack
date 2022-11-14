@@ -328,7 +328,7 @@ public:
     static bool CsvReadTable( std::istream& in, const wxString& dbname = "Main" )
     {
         std::string titles;
-        std::getline( ifile, titles ); // Get rid of the title line
+        std::getline( in, titles ); // Get rid of the title line
         // We could check titles here to detect change in format
 
         bool ret = true;
@@ -353,7 +353,7 @@ public:
     static bool CsvReadTableString( const char* str, const wxString& dbname = "Main" )
     {
         std::istringstream in( str );
-        return T::CvsReadTable( in, dbname );
+        return T::CsvReadTable( in, dbname );
     }
 
     static void CsvWriteTable(
