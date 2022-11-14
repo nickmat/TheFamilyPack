@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     10th April 2008
- * Copyright:   Copyright (c) 2008 ~ 2019, Nick Matthews.
+ * Copyright:   Copyright (c) 2008..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -30,5 +30,19 @@ static const char* createCommonDb = @(cr.c)"recCreateCommon.sql";
 static const char* createMediaDb = @(cr.c)"recCreateMedia.sql";
 
 static const char* createFullDb = @(cr.c)"recCreateFull.sql";
+
+static const char* CsvContactType = @"../../../common/data/core/ContactType.csv";
+
+static const char* CsvEventType = @"../../../common/data/core/EventType.csv";
+
+static const char* CsvEventTypeRole = @"../../../common/data/core/EventTypeRole.csv";
+
+static const char* CsvNamePartType = @"../../../common/data/core/NamePartType.csv";
+
+static const char* CsvNameStyle = @"../../../common/data/core/NameStyle.csv";
+
+static const char* CsvPlacePartType = @"../../../common/data/core/PlacePartType.csv";
+
+static const char* CsvResearcher = @"../../../common/data/core/Researcher.csv";
 
 /* End of src/rec/embed/recDatabaseCreate.f2c */

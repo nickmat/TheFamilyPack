@@ -40,8 +40,14 @@
 
 #include <cal/calendar.h>
 
+#include <rec/recContact.h>
+#include <rec/recEventType.h>
+#include <rec/recEventTypeRole.h>
 #include <rec/recIndividual.h>
 #include <rec/recMediaData.h>
+#include <rec/recName.h>
+#include <rec/recPlace.h>
+#include <rec/recResearcher.h>
 #include <rec/recSystem.h>
 #include <rec/recUser.h>
 #include <rec/recVersion.h>
@@ -176,9 +182,34 @@ bool recDb::CreateDb( const wxString& fname, unsigned flags )
     CreateReturn ret = CreateDbFile( dbfname, DbType::full );
     if ( ret == CreateReturn::OK ) {
         s_db->Open( dbfname );
+        AddCommonCoreData();
         return true;
     }
     return false;
+}
+
+bool recDb::AddCommonCoreData( const wxString& dbname )
+{
+    // Test if records already exist by checking for Re-1
+    if( recResearcher::Exists( -1, dbname ) ) {
+        recMessage( _( "Core Data already added." ), _( "Create Database" ) );
+        return false;
+    }
+    bool ret = true;
+    try {
+        ret = ret && recContactType::CsvReadTableString( CsvContactType, dbname );
+        ret = ret && recEventType::CsvReadTableString( CsvEventType, dbname );
+        ret = ret && recEventTypeRole::CsvReadTableString( CsvEventTypeRole, dbname );
+        ret = ret && recNamePartType::CsvReadTableString( CsvNamePartType, dbname );
+        ret = ret && recNameStyle::CsvReadTableString( CsvNameStyle, dbname );
+        ret = ret && recPlacePartType::CsvReadTableString( CsvPlacePartType, dbname );
+        ret = ret && recResearcher::CsvReadTableString( CsvResearcher, dbname );
+    }
+    catch( wxSQLite3Exception& e ) {
+        recDb::ErrorMessage( e );
+        return false;
+    }
+    return ret;
 }
 
 recDb::DbType recDb::OpenDb( const wxString& fname )

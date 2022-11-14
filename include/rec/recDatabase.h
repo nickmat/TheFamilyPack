@@ -132,6 +132,10 @@ public:
     */
     static bool CreateDb( const wxString& fname, unsigned flags );
 
+    /*! Add all core data records to database
+    */
+    static bool AddCommonCoreData( const wxString& dbname = "Main" );
+
     /*! Opens an existing database file, providing there is not an existing
      *  database open and the file exists.
      */
