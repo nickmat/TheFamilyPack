@@ -1047,8 +1047,8 @@ void recNameStyle::Save( const wxString& dbname )
             // Add new record
             sql.Format(
                 "INSERT INTO \"%s\".NameStyle (id, name, uid, changed) "
-                "VALUES (" ID ", '%q', '%q', %ld, UTF8_( f_uid ), f_changed);",
-                UTF8_( dbname ), f_id, UTF8_(f_name)
+                "VALUES (" ID ", '%q', '%q', %ld);",
+                UTF8_( dbname ), f_id, UTF8_(f_name), UTF8_( f_uid ), f_changed
             );
         } else {
             // Update existing record
