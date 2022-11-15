@@ -446,7 +446,22 @@ void TfpFrame::OnImportGedcom( wxCommandEvent& event )
 
 void TfpFrame::OnImportCsv( wxCommandEvent& event )
 {
-    wxMessageBox( _( "Not yet implimented" ), "OnImportCsv" );
+    wxString caption = _( "Select CSV Directory" );
+    wxString defaultDir = ".";
+
+    wxDirDialog dialog( this, caption, defaultDir );
+    if( dialog.ShowModal() == wxID_OK )
+    {
+        wxString path = dialog.GetPath();
+        wxString caption = "Import CSV";
+        wxString message = "CSV \"" + path + "\"";
+        if( recImportCsv( path.ToStdString() ) ) {
+            wxMessageBox( message + " Imported OK", caption );
+        }
+        else {
+            wxMessageBox( "Error Importing " + message, caption );
+        }
+    }
 }
 
 /*! \brief Called on a Export GEDCOM menu option event.
