@@ -83,6 +83,10 @@ namespace {
 
 } // namespace
 
+bool recImportCsv( const string& path )
+{
+    return false;
+}
 
 bool recExportCsv( const string& path )
 {
