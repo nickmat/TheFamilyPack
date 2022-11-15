@@ -2371,6 +2371,7 @@ void TfpFrame::CreateClosedMenu()
     menuInitFile->Append( tfpID_OPEN_FILE, _( "&Open File\tCtrl-O" ) );
     menuInitFile->AppendSeparator();
     menuInitFile->Append( tfpID_IMPORT_GEDCOM, _( "&Import GEDCOM file" ) );
+    menuInitFile->Append( tfpID_IMPORT_CSV_BACKUP, _( "Import &CSV Backup..." ) );
     menuInitFile->AppendSeparator();
     menuInitFile->Append( wxID_EXIT, _( "E&xit" ) );
 
