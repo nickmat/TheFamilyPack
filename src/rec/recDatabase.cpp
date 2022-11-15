@@ -499,13 +499,12 @@ wxString recDb::GetDatabaseTypeDesc( DbType type )
     return _( "Unknown" );
 }
 
-bool recDb::WriteCreateScript( const std::string& fname, const wxString& dbname )
+bool recDb::WriteCreateScript( const std::string& fname, DbType type )
 {
     std::ofstream ofile( fname, std::ios::trunc );
     if( !ofile ) {
         return false;
     }
-    DbType type = GetDatabaseType( dbname );
     switch( type ) {
     case DbType::full:
         ofile << createCommonDb;
@@ -518,6 +517,12 @@ bool recDb::WriteCreateScript( const std::string& fname, const wxString& dbname 
         break;
     }
     return false;
+}
+
+bool recDb::WriteCreateScript( const std::string& fname, const wxString& dbname )
+{
+    DbType type = GetDatabaseType( dbname );
+    return WriteCreateScript( fname, type );
 }
 
 void recDb::ErrorMessage( wxSQLite3Exception& e )

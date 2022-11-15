@@ -211,6 +211,7 @@ public:
     */
     static wxString GetDatabaseTypeDesc( DbType type );
 
+    static bool WriteCreateScript( const std::string& fname, DbType type );
     static bool WriteCreateScript( const std::string& fname, const wxString& dbname = "Main" );
 
     /*! Returns the current change value.
