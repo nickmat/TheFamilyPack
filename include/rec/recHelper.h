@@ -28,11 +28,11 @@
 #ifndef REC_RECHELPER_H
 #define REC_RECHELPER_H
 
+#include <fstream>
+#include <map>
 #include <string>
 #include <sstream>
-#include <map>
 #include <vector>
-#include <iostream>
 
 #include <wx/wxsqlite3.h>
 
