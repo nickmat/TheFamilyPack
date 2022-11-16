@@ -114,13 +114,25 @@ inline const char* recFileSep() { return
 #endif
 }
 
-// Make sure the string ends with a '/'.
+// Make sure the string ends with a '/' or '\\'.
 inline std::string recEndWithFileSep( const std::string& path ) {
     if( !path.empty() && *path.rbegin() != *recFileSep() ) {
         return path + recFileSep();
     }
     return path;
 }
+
+// Make sure the string does not ends with a '/' or \\.
+inline std::string recEndWithoutFileSep( const std::string& path ) {
+    if( !path.empty() ) {
+        std::string ch = path.substr( path.length() - 1 );
+        if( ch == "/" || ch == "\\" ) {
+            return path.substr( 0, path.length() - 1 );
+        }
+    }
+    return path;
+}
+
 
 enum class Sex { unstated, male, female, unknown };
 extern wxString recGetSexStr( Sex sex );
