@@ -651,7 +651,7 @@ void recEvent::CsvWrite( std::ostream& out, idt id )
     recCsvWrite( out, eve.FGetPlaceID() );
     recCsvWrite( out, eve.FGetNote() );
     recCsvWrite( out, eve.FGetDatePt() );
-    recCsvWrite( out, eve.FGetUserRef() );
+    recCsvWrite( out, eve.FGetUserRef(), '\n' );
 }
 
 bool recEvent::CsvRead( std::istream& in )
