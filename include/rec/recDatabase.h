@@ -336,10 +336,9 @@ public:
         std::getline( in, titles ); // Get rid of the title line
         // We could check titles here to detect change in format
 
-        bool ret = true;
-        while( ret ) {
+        while( in.peek() != EOF ) {
             T record( 0 );
-            ret = record.CsvRead( in );
+            bool ret = record.CsvRead( in );
             if( ret ) {
                 record.Save( dbname );
             }
@@ -353,7 +352,7 @@ public:
         if( !ifile ) {
             return true; // Not an error if it doesn't exist
         }
-        return T::CvsReadTable( in, dbname );
+        return T::CsvReadTable( ifile, dbname );
     }
     static bool CsvReadTableString( const char* str, const wxString& dbname = "Main" )
     {
