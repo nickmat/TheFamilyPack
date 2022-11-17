@@ -333,7 +333,7 @@ void recEventTypeRole::CsvWrite( std::ostream& out, idt id )
     recEventTypeRole etr( id );
     recCsvWrite( out, etr.FGetID() );
     recCsvWrite( out, etr.FGetTypeID() );
-    recCsvWrite( out, etr.FGetID() );
+    recCsvWrite( out, etr.FGetPrime() );
     recCsvWrite( out, int( etr.FGetOfficial() ) );
     recCsvWrite( out, etr.FGetName());
     recCsvWrite( out, etr.FGetUid() );
