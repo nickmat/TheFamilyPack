@@ -30,7 +30,7 @@
 
 #include <string>
 
-extern bool recImportCsv( const std::string& dir );
+extern bool recImportCsv( const std::string& csv_dir, const std::string& dbfname );
 
 extern bool recExportCsv( const std::string& dir );
 

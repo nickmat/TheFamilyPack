@@ -36,7 +36,7 @@
 #include <rec/recDb.h>
 
 #include <wx/dir.h>
-
+#include <wx/filename.h>
 
 using std::string;
 
@@ -83,9 +83,78 @@ namespace {
 
 } // namespace
 
-bool recImportCsv( const string& path )
+bool recImportCsv( const string& csv_dir, const std::string& dbfname )
 {
-    return false;
+    string path = recEndWithFileSep( csv_dir );
+
+    // Get the create.sql script.
+    std::string create_sql = recTextFileRead( path + "create.sql" );
+    if( create_sql.empty() ) {
+        return false;
+    }
+
+    recDb::DbType dbtype = recDb::DbType::db_null;
+    recDb::CreateReturn dbret = recDb::CreateDbFile( dbfname, dbtype );
+    if( dbret != recDb::CreateReturn::OK ) {
+        return false;
+    }
+    wxSQLite3Database db;
+    db.Open( dbfname );
+    if( !db.IsOpen() ) {
+        return false;
+    }
+    db.ExecuteUpdate( create_sql );
+    db.Close();
+
+    // Reopen to check version etc.
+    if( recDb::OpenDb( dbfname ) != recDb::DbType::full ) {
+        return false;
+    }
+
+    // TODO: Import MediaData files
+    bool ret = true;
+    ret = ret && recAssociate::CsvReadTableFile( path );
+    ret = ret && recCitation::CsvReadTableFile( path );
+    ret = ret && recRepository::CsvReadTableFile( path );
+    ret = ret && recCitationPart::CsvReadTableFile( path );
+    ret = ret && recCitationPartType::CsvReadTableFile( path );
+    ret = ret && recContactList::CsvReadTableFile( path );
+    ret = ret && recContactType::CsvReadTableFile( path );
+    ret = ret && recContact::CsvReadTableFile( path );
+    ret = ret && recDate::CsvReadTableFile( path );
+    ret = ret && recRelativeDate::CsvReadTableFile( path );
+    ret = ret && recEvent::CsvReadTableFile( path );
+    ret = ret && recEventa::CsvReadTableFile( path );
+    ret = ret && recEventaPersona::CsvReadTableFile( path );
+    ret = ret && recEventEventa::CsvReadTableFile( path );
+    ret = ret && recEventType::CsvReadTableFile( path );
+    ret = ret && recEventTypeRole::CsvReadTableFile( path );
+    ret = ret && recFamilyEvent::CsvReadTableFile( path );
+    ret = ret && recFamilyEventa::CsvReadTableFile( path );
+    ret = ret && recFamily::CsvReadTableFile( path );
+    ret = ret && recFamilyIndividual::CsvReadTableFile( path );
+    ret = ret && recFamilyIndEventa::CsvReadTableFile( path );
+    ret = ret && recGallery::CsvReadTableFile( path );
+    ret = ret && recGalleryMedia::CsvReadTableFile( path );
+    ret = ret && recIndividualEvent::CsvReadTableFile( path );
+    ret = ret && recIndividual::CsvReadTableFile( path );
+    ret = ret && recIndividualPersona::CsvReadTableFile( path );
+    ret = ret && recMedia::CsvReadTableFile( path );
+    ret = ret && recName::CsvReadTableFile( path );
+    ret = ret && recNamePart::CsvReadTableFile( path );
+    ret = ret && recNamePartType::CsvReadTableFile( path );
+    ret = ret && recNameStyle::CsvReadTableFile( path );
+    ret = ret && recPersona::CsvReadTableFile( path );
+    ret = ret && recPlace::CsvReadTableFile( path );
+    ret = ret && recPlacePart::CsvReadTableFile( path );
+    ret = ret && recPlacePartType::CsvReadTableFile( path );
+    ret = ret && recReferenceEntity::CsvReadTableFile( path );
+    ret = ret && recReference::CsvReadTableFile( path );
+    ret = ret && recResearcher::CsvReadTableFile( path );
+    ret = ret && recSystem::CsvReadTableFile( path );
+    ret = ret && recUserSetting::CsvReadTableFile( path );
+    ret = ret && recUser::CsvReadTableFile( path );
+    return ret;
 }
 
 bool recExportCsv( const string& path )

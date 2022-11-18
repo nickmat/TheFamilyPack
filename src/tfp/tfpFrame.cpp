@@ -455,8 +455,11 @@ void TfpFrame::OnImportCsv( wxCommandEvent& event )
         wxString path = dialog.GetPath();
         wxString caption = "Import CSV";
         wxString message = "CSV \"" + path + "\"";
-        if( recImportCsv( path.ToStdString() ) ) {
-            wxMessageBox( message + " Imported OK", caption );
+        std::string pathsep = recEndWithFileSep( path.ToStdString() );
+        std::string dbfname = recEndWithoutFileSep( path.ToStdString() ) + ".tfpd";
+        if( recImportCsv( pathsep, dbfname ) ) {
+            SetDatabaseOpen( dbfname );
+            DisplayHomePage();
         }
         else {
             wxMessageBox( "Error Importing " + message, caption );
