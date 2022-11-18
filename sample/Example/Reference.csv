@@ -1,0 +1,180 @@
+ID, Higher ID, Title, Statement, Researcher ID, User Reference, UID, Last Changed
+2,0,"1926 Q2 GRO Birth Index Entry for Elizabeth A M Windsor","GRO Entry <a href='tfpi:D7'>1926 Apr - Jun</a> (Q2)
+
+Surname  First names     Mother      District     Vol Page
+
+Windsor, <a href='tfp:I1'>Elizabeth A M</a>,  <a href='tfp:I26'>Bowes-Lyon</a>, <a href='tfpi:P5'>St Geo H Sq</a>, 1a  583",0,"","5EE70ECB2088EA950A4FC4F6FDF14013996E",2459647
+1,0,"20 Nov 1947 Marriage Certificate, Phillip Mountbatten and Elizabeth Windsor","<!-- HTML -->
+[EXAMPLE]
+<div id=""marr-tab"">
+
+<center>
+
+<table border=""0"" width=""100%"">
+<!-- Table 01 Row 01 -->
+<tr>
+<td align=""left""><b><big>CERTIFIED COPY OF AN ENTRY OF MARRIAGE</big></b></td>
+<td> </td>
+<td align=""right""><big>Given at the GENERAL REGISTER OFFICE</big></td>
+</tr>
+<!-- Table 01 Row 02 -->
+<tr>
+<td></td>
+<td></td>
+<td align=""right""><span class=""app-num""><i>Application Number</i></span> <b><u> B002151 </u></b></td>
+</tr>
+</table>
+
+<br/>
+<table border=""1"" cellpadding=""0"" cellspacing=""0"">
+ <!-- Table 02 Row 01 -->
+ <tr>
+  <td>
+   <table class=""entry"" border=""1"" cellpadding=""5"" cellspacing=""0"" width=""100%"">
+    <!-- Table 02a Row 01 -->
+    <tr align=""center"">
+     <td colspan=""9"">
+      Registration District <u><i> Westminster </i></u>
+     </td>
+    </tr>
+    <tr align=""center"">
+     <td colspan=""9"">
+      <u><i> 1947 </i></u>. Marriage solemnized at <u><i> Westminster Abbey </i></u><br/>
+      in the  <u><i> Parish </i></u> of <u><i> <a href=""tfpi:P3"">Westminster </i></u>
+      in the <u><i> County of London</a> </i></u>
+     </td>
+    </tr>
+    <!-- Table 02a Row 02 -->
+    <tr class=""hd"" align=""center"">
+     <td>Columns:-</td>
+     <td>1</td>
+     <td>2</td>
+     <td>3</td>
+     <td>4</td>
+     <td>5</td>
+     <td>6</td>
+     <td>7</td>
+     <td>8</td>
+    </tr>
+    <!-- Table 02a Row 03 -->
+    <tr class=""hd"" align=""center"">
+     <td>No.</td>
+     <td>When Married.</td>
+     <td>Name and Surname.</td>
+     <td>Age.</td>
+     <td>Condition.</td>
+     <td>Rank or Profession.</td>
+     <td>Residence at Time of Marriage.</td>
+     <td>Father's Name and Surname.</td>
+     <td>Rank or Profession of Father.</td>
+    </tr>
+    <!-- Table 02a Row 04 -->
+    <tr align=""center"">
+     <td><!-- Number -->
+      <i>123</i>
+     </td>
+     <td><!-- Date -->
+      <i><a href=""tfpi:D3"">November<br/>20th<br/>1947</a></i>
+     </td>
+     <td><!-- Groom -->
+      <b><i><a href=""tfp:I2"">Phillip Mountbatten</a></i></b><br/>
+      <br/><!-- Bride -->
+      <b><i><a href=""tfp:I1"">Elizabeth Windsor</a></i></b>
+     </td>
+     <td><!-- Groom age -->
+      <i><a href=""tfpi:D4"">26</a></i><br/>
+      <br/><!-- Bride age -->
+      <i><a href=""tfpi:D5"">21</a></i>
+     </td>
+     <td><!-- Groom condition -->
+      <i><a href='tfp:E17'>Batchelor</a></i><br/>
+      <br/><!-- Bride condition -->
+      <i><a href='tfp:E18'>Spinster</a></i>
+     </td>
+     <td><!-- Groom profession -->
+      <i><a href=""tfp:E8"">Navel Officer</a></i><br/>
+      <br/><!-- Bride profession -->
+      -----
+     </td>
+     <td><!-- Groom address -->
+      <i><a href='tfpi:P6'>Kensington Palace</a></i><br/>
+      <br/><!-- Bride address -->
+      <i><a href='tfpi:P7'>Buckingham Palace</a></i>
+     </td>
+     <td><!-- Groom's Father -->
+      <b><i><a href=""tfp:I29"">Andrew Glucksburg</a></i></b><br/>
+      <br/><!-- Bride's Father -->
+      <b><i><a href=""tfp:I25"">George Windsor</a></i></b>
+     </td>
+     <td><!-- Groom's Father's profession -->
+      <i><a href=""tfp:E10"">Army Officer</a><br/>(Deceased)</i><br/>
+      <br/><!-- Bride's Father's profession -->
+      <i><a href=""tfp:E11"">Head of State</a></i>
+     </td>
+    </tr>
+    <!-- Table 02a Row 06 -->
+    <tr align=""center"">
+     <td colspan=""9"">
+      <table border=""0"" cellpadding=""0"" cellspacing=""0"">
+       <!-- Table 02aa Row 01 -->
+       <tr>
+        <td colspan=""9"" align=""right"">
+         <span class=""hd2""> Married in</span>
+         <u><i> Wesminster Abbey </i></u>
+         <span class=""hd2"">according to the</span>
+         <u><i> Rites and Ceremonies </i></u>
+         <span class=""hd2"">of the Established Church by</span>
+         <u><i> license </i></u>
+         <span class=""hd2"">by me,</span>
+        </td>
+       </tr>
+       <!-- Table 02aa Row 02 -->
+       <tr>
+        <td rowspan=""3"" class=""hd"" align=""center"">This Marriage<br/>was solemnized<br/>between us</td>
+        <td rowspan=""2"" class=""brace"">{</td>
+        <td><!-- Groom -->
+         <u><i><b> <a href=""tfp:I2"">Phillip Mountbatten</a> </b></i></u>
+        </td>
+        <td rowspan=""2"" class=""brace"">}</td>
+        <td rowspan=""2"" class=""hd"" align=""center"">In the<br/>Presence<br/>of us,</td>
+        <td rowspan=""2"" class=""brace"">{</td>
+        <td><!-- 1st Witness -->
+         <u><i><b> <a href=""tfp:I25"">George Windsor</a>  <a href=""tfp:I26"">Elizabeth Bowes-Lyon</a> </b></i></u>
+        </td>
+        <td rowspan=""2""></td>
+        <td align=""right""><!-- Priest -->
+         <u><i> Geoffrey Fisher </i></u>
+        </td>
+       </tr>
+       <!-- Table 02aa Row 03 -->
+       <tr>
+        <td><!-- Bride -->
+         <u><i><b> <a href=""tfp:I1"">Elizabeth Windsor</a> </b></i></u>
+        </td>
+        <td><!-- 2nd Witness -->
+         <u><i><b> <a href=""tfp:I30"">Alice Glucksburg</a> </b></i></u>
+        </td>
+        <td align=""right""><!-- op 2nd Priest -->
+         <u><i> <a href=""tfp:E12"">Archbishop</a> </i></u>
+        </td>
+       </tr>
+      </table>
+     </td>
+    </tr>
+   </table>
+  </td>
+ </tr>
+</table>
+</center>
+<br/><br/>
+
+[Example] Given at the GENERAL REGISTER OFFICE, under Seal of the said Office, the
+<span class=""nowrap""> <b>20th</b>  day of  <b>November  1999</b></span><br/>
+
+<br/>
+<span class=""gro-ref"">
+ <b>MB</b>  487839
+</span>
+
+</div>
+",0,"","D581503D14F20F83944AE0DF2565ECB54370",2459647
