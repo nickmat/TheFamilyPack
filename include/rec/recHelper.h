@@ -100,6 +100,7 @@ extern bool recGetIDs( const wxString& str, idt* id1, idt* id2, idt* id3 = nullp
 extern idt recIdFromStr( const wxString& prefix, const wxString idStr );
 
 inline wxString recGetStr( idt id ) { return wxString::Format( ID, id ); }
+inline std::string recIdToStr( idt id ) { return std::to_string( id ); }
 extern std::string recConfToStr( double conf );
 extern double recConfFromStr( const std::string& str );
 
