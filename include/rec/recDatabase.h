@@ -369,7 +369,7 @@ public:
         if( !list.empty() ) {
             out << T::CsvTitles();
             for( idt id : list ) {
-                T::CsvWrite( out, id );
+                T::CsvWrite( out, id, dbname );
             }
         }
     }
