@@ -146,9 +146,9 @@ std::string recSystem::CsvTitles()
     return std::string( "ID, Value\n" );
 }
 
-void recSystem::CsvWrite( std::ostream& out, idt id )
+void recSystem::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recSystem sys( id );
+    recSystem sys( id, dbname );
     recCsvWrite( out, sys.FGetID() );
     recCsvWrite( out, sys.FGetValue(), '\n' );
 }

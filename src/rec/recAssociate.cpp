@@ -176,9 +176,9 @@ std::string recAssociate::CsvTitles()
     return std::string( "ID, Path, Comment\n" );
 }
 
-void recAssociate::CsvWrite( std::ostream& out, idt id )
+void recAssociate::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recAssociate ass( id );
+    recAssociate ass( id, dbname );
     ass.CsvWrite( out );
 }
 

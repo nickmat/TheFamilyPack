@@ -42,7 +42,62 @@ using std::string;
 
 namespace {
 
-    bool csvWriteMediaData( const string& csv_dir ) {
+    // Note, both csv_dir and tfpd_dir can be assumed to end with file separators.
+    bool csvImportMediaData( const string& csv_dir, const string& tfpd_dir )
+    {
+        if( !recAssociate::CsvReadTableFile( csv_dir ) ) {
+            return false;
+        }
+        recIdVec assIDs = recAssociate::IdVec( recDb::Coverage::all );
+        string md_dir, md_db;
+        for( idt assID : assIDs ) {
+            if( assID == 0 ) {
+                md_dir = csv_dir;
+                md_db = "Main";
+            }
+            else {
+                md_dir = csv_dir + "ass" + recGetStr( assID ) + recFileSep();
+                recAssociate ass( assID );
+                wxFileName tfpd_file( wxString( tfpd_dir ) + ass.FGetPath() + ".tfpd" );
+                wxString tfpd_fn = tfpd_file.GetFullPath();
+                recDb::DbType dbtype = recDb::DbType::db_null;
+                recDb::CreateReturn create_ret;
+                create_ret = recDb::CreateDbFile( tfpd_fn, dbtype );
+                if( create_ret != recDb::CreateReturn::OK ) {
+                    wxString message = "Unable to create database \"" + tfpd_fn + "\"";
+                    recMessage( message, "ImportMediaData" );
+                    continue;
+                }
+                std::string create_sql = recTextFileRead( md_dir + "create.sql" );
+                if( create_sql.empty() ) {
+                    recMessage( "Unable to read create file", "ImportMediaData");
+                    continue;
+                }
+                wxSQLite3Database db;
+                db.Open( tfpd_fn );
+                if( !db.IsOpen() ) {
+                    continue;
+                }
+                db.ExecuteUpdate( create_sql );
+                db.Close();
+                md_db = recDb::OpenAssociateDb( "Main", tfpd_fn, tfpd_file.GetName() );
+            }
+            bool ret = recMediaData::CsvReadTableFile( md_dir, md_db );
+            recIdVec mdIDs = recMediaData::IdVec( recDb::Coverage::notzero, md_db );
+            string image_dir = md_dir + "image" + recFileSep();
+            for( idt mdID : mdIDs ) {
+                recMediaData md( mdID, md_db );
+                string filename = image_dir + "md" + recIdToStr( mdID ) + ".jpg";
+                if( md.ImportData( filename ) ) {
+                    md.Save( md_db );
+                }
+            }
+        }
+        return true;
+    }
+
+    bool csvExportMediaData( const string& csv_dir )
+    {
         string md_dir, image_dir, md_fname, image_fn;
         recIdVec assIDs = recAssociate::IdVec( recDb::Coverage::all );
         for( idt assID : assIDs ) {
@@ -111,9 +166,11 @@ bool recImportCsv( const string& csv_dir, const std::string& dbfname )
         return false;
     }
 
-    // TODO: Import MediaData files
-    bool ret = true;
-    ret = ret && recAssociate::CsvReadTableFile( path );
+    wxFileName tfpd_fn( dbfname.c_str() );
+    string tfpd_dir = tfpd_fn.GetPathWithSep();
+ 
+    bool ret = csvImportMediaData( path, tfpd_dir );
+//    ret = ret && recAssociate::CsvReadTableFile( path );
     ret = ret && recCitation::CsvReadTableFile( path );
     ret = ret && recRepository::CsvReadTableFile( path );
     ret = ret && recCitationPart::CsvReadTableFile( path );
@@ -166,7 +223,7 @@ bool recExportCsv( const string& path )
     string pathsep = dir.GetNameWithSep();
     recDb::WriteCreateScript( pathsep + "create.sql", "Main" );
 
-    bool ret = csvWriteMediaData( pathsep );
+    bool ret = csvExportMediaData( pathsep );
     ret = ret && recAssociate::CsvWriteTableFile( path );
     ret = ret && recCitation::CsvWriteTableFile( path );
     ret = ret && recRepository::CsvWriteTableFile( path );

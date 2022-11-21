@@ -243,9 +243,9 @@ std::string recEventEventa::CsvTitles()
     );
 }
 
-void recEventEventa::CsvWrite( std::ostream& out, idt id )
+void recEventEventa::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recEventEventa eea( id );
+    recEventEventa eea( id, dbname );
     recCsvWrite( out, eea.FGetID() );
     recCsvWrite( out, eea.FGetEventID() );
     recCsvWrite( out, eea.FGetEventaID() );

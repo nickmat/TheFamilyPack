@@ -93,7 +93,7 @@ public:
         return GetRoleStr( f_ind_id, typeID, dbname ); }
 
     static std::string CsvTitles();
-    static void CsvWrite( std::ostream& out, idt id );
+    static void CsvWrite( std::ostream& out, idt id, const wxString& dbname = "Main" );
     bool CsvRead( std::istream& in );
 };
 

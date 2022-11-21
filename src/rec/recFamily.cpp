@@ -544,9 +544,9 @@ std::string recFamily::CsvTitles()
     );
 }
 
-void recFamily::CsvWrite( std::ostream& out, idt id )
+void recFamily::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recFamily fam( id );
+    recFamily fam( id, dbname );
     recCsvWrite( out, fam.FGetID() );
     recCsvWrite( out, fam.FGetHusbID() );
     recCsvWrite( out, fam.FGetWifeID(), '\n' );

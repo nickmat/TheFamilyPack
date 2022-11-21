@@ -178,9 +178,9 @@ std::string recGalleryMedia::CsvTitles()
     return std::string( "ID, Title, Gallery ID, Media ID, Media Sequence\n" );
 }
 
-void recGalleryMedia::CsvWrite( std::ostream& out, idt id )
+void recGalleryMedia::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recGalleryMedia gm( id );
+    recGalleryMedia gm( id, dbname );
     recCsvWrite( out, gm.FGetID() );
     recCsvWrite( out, gm.FGetTitle() );
     recCsvWrite( out, gm.FGetGalID() );

@@ -265,9 +265,9 @@ std::string recIndividualEvent::CsvTitles()
     );
 }
 
-void recIndividualEvent::CsvWrite( std::ostream& out, idt id )
+void recIndividualEvent::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recIndividualEvent ie( id );
+    recIndividualEvent ie( id, dbname );
     recCsvWrite( out, ie.FGetID() );
     recCsvWrite( out, ie.FGetIndID() );
     recCsvWrite( out, ie.FGetHigherID() );

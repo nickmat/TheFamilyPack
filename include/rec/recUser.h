@@ -72,7 +72,7 @@ public:
     void Find( idt userID, recUserSetting::Property prop, const wxString& dbname = "Main" );
 
     static std::string CsvTitles();
-    static void CsvWrite( std::ostream& out, idt id );
+    static void CsvWrite( std::ostream& out, idt id, const wxString& dbname = "Main" );
     bool CsvRead( std::istream& in );
 
 private:
@@ -116,7 +116,7 @@ public:
         return GetSetting( dbname, f_id, prop ); }
 
     static std::string CsvTitles();
-    static void CsvWrite( std::ostream& out, idt id );
+    static void CsvWrite( std::ostream& out, idt id, const wxString& dbname = "Main" );
     bool CsvRead( std::istream& in );
 
 private:

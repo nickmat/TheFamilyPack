@@ -163,7 +163,7 @@ public:
         idt from_eaID, const wxString& fromdb, idt to_refID, const wxString& todb );
 
     static std::string CsvTitles();
-    static void CsvWrite( std::ostream& out, idt id );
+    static void CsvWrite( std::ostream& out, idt id, const wxString& dbname = "Main" );
     bool CsvRead( std::istream& in );
 
     static void RemoveDates( idt dateID, const wxString& dbname = "Main" ); // removes date if found, replacing with 0

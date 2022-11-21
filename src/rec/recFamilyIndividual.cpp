@@ -170,9 +170,9 @@ std::string recFamilyIndividual::CsvTitles()
     );
 }
 
-void recFamilyIndividual::CsvWrite( std::ostream& out, idt id )
+void recFamilyIndividual::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recFamilyIndividual fi( id );
+    recFamilyIndividual fi( id, dbname );
     recCsvWrite( out, fi.FGetID() );
     recCsvWrite( out, fi.FGetFamID() );
     recCsvWrite( out, fi.FGetIndID() );

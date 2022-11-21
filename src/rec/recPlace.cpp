@@ -329,9 +329,9 @@ std::string recPlace::CsvTitles()
     );
 }
 
-void recPlace::CsvWrite( std::ostream& out, idt id )
+void recPlace::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recPlace place( id );
+    recPlace place( id, dbname );
     recCsvWrite( out, place.FGetID() );
     recCsvWrite( out, place.FGetDate1ID() );
     recCsvWrite( out, place.FGetDate2ID() );
@@ -569,9 +569,9 @@ std::string recPlacePart::CsvTitles()
     return std::string( "ID, Type ID, Place ID, Value, Sequence\n" );
 }
 
-void recPlacePart::CsvWrite( std::ostream& out, idt id )
+void recPlacePart::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recPlacePart pp( id );
+    recPlacePart pp( id, dbname );
     recCsvWrite( out, pp.FGetID() );
     recCsvWrite( out, pp.FGetTypeID() );
     recCsvWrite( out, pp.FGetPlaceID() );
@@ -734,9 +734,9 @@ std::string recPlacePartType::CsvTitles()
     return std::string( "ID, Name, UID, Last Changed\n" );
 }
 
-void recPlacePartType::CsvWrite( std::ostream& out, idt id )
+void recPlacePartType::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recPlacePartType ppt( id );
+    recPlacePartType ppt( id, dbname );
     recCsvWrite( out, ppt.FGetID() );
     recCsvWrite( out, ppt.FGetName() );
     recCsvWrite( out, ppt.FGetUid() );

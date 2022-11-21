@@ -121,7 +121,7 @@ public:
     static idt FindOrCreate( idt ind1ID, idt ind2ID, const wxString& dbname = "Main" );
 
     static std::string CsvTitles();
-    static void CsvWrite( std::ostream& out, idt id );
+    static void CsvWrite( std::ostream& out, idt id, const wxString& dbname = "Main" );
     bool CsvRead( std::istream& in );
 
     static void RemoveFromEvents( idt famID, idt indID, const wxString& dbname = "Main" );

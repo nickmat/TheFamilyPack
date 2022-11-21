@@ -175,9 +175,9 @@ std::string recContact::CsvTitles()
     return std::string( "ID, Contact Type ID, Contact List ID, Sequence, Value\n" );
 }
 
-void recContact::CsvWrite( std::ostream& out, idt id )
+void recContact::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recContact con( id );
+    recContact con( id, dbname );
     recCsvWrite( out, con.FGetID() );
     recCsvWrite( out, con.FGetTypeID() );
     recCsvWrite( out, con.FGetListID() );
@@ -430,9 +430,9 @@ std::string recContactList::CsvTitles()
     return std::string("ID, Individual ID\n");
 }
 
-void recContactList::CsvWrite( std::ostream& out, idt id )
+void recContactList::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recContactList cl( id );
+    recContactList cl( id, dbname );
     recCsvWrite( out, cl.FGetID() );
     recCsvWrite( out, cl.FGetIndID(), '\n' );
 }
@@ -636,9 +636,9 @@ std::string recContactType::CsvTitles()
     return std::string( "ID, Name, UID, Last Changed\n" );
 }
 
-void recContactType::CsvWrite( std::ostream& out, idt id )
+void recContactType::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recContactType ct( id );
+    recContactType ct( id, dbname );
     recCsvWrite( out, ct.FGetID() );
     recCsvWrite( out, ct.FGetName() );
     recCsvWrite( out, ct.FGetUid() );

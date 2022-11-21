@@ -324,9 +324,9 @@ std::string recCitation::CsvTitles()
         "ID, Higher ID, Reference ID, Reference Sequence, Repository ID, Comment, UID, Last Changed\n" );
 }
 
-void recCitation::CsvWrite( std::ostream& out, idt id )
+void recCitation::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recCitation cit( id );
+    recCitation cit( id, dbname );
     recCsvWrite( out, cit.FGetID() );
     recCsvWrite( out, cit.FGetHigherID() );
     recCsvWrite( out, cit.FGetRefID() );
@@ -550,9 +550,9 @@ std::string recRepository::CsvTitles()
     return std::string( "ID, Name, Note, Contact List ID, UID, Last Changed\n" );
 }
 
-void recRepository::CsvWrite( std::ostream& out, idt id )
+void recRepository::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recRepository rep( id );
+    recRepository rep( id, dbname );
     recCsvWrite( out, rep.FGetID() );
     recCsvWrite( out, rep.FGetName() );
     recCsvWrite( out, rep.FGetNote() );
@@ -726,9 +726,9 @@ std::string recCitationPart::CsvTitles()
         "ID, Citation ID, Citation Part Type, Value, Citation Sequence, Comment\n" );
 }
 
-void recCitationPart::CsvWrite( std::ostream& out, idt id )
+void recCitationPart::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recCitationPart cip( id );
+    recCitationPart cip( id, dbname );
     recCsvWrite( out, cip.FGetID() );
     recCsvWrite( out, cip.FGetCitID() );
     recCsvWrite( out, cip.FGetTypeID() );
@@ -958,9 +958,9 @@ std::string recCitationPartType::CsvTitles()
     return std::string( "ID, Name, Style, Comment, UID, Last Changed\n" );
 }
 
-void recCitationPartType::CsvWrite( std::ostream& out, idt id )
+void recCitationPartType::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recCitationPartType cipt( id );
+    recCitationPartType cipt( id, dbname );
     recCsvWrite( out, cipt.FGetID() );
     recCsvWrite( out, cipt.FGetName() );
     recCsvWrite( out, static_cast<int>(cipt.FGetStyle()) );

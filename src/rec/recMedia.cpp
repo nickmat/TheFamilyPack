@@ -295,9 +295,9 @@ std::string recMedia::CsvTitles()
     );
 }
 
-void recMedia::CsvWrite( std::ostream& out, idt id )
+void recMedia::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recMedia med( id );
+    recMedia med( id, dbname );
     recCsvWrite( out, med.FGetID() );
     recCsvWrite( out, med.FGetDataID() );
     recCsvWrite( out, med.FGetAssID() );

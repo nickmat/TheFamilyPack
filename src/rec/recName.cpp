@@ -542,9 +542,9 @@ std::string recName::CsvTitles()
     );
 }
 
-void recName::CsvWrite( std::ostream& out, idt id )
+void recName::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recName nam( id );
+    recName nam( id, dbname );
     recCsvWrite( out, nam.FGetID() );
     recCsvWrite( out, nam.FGetIndID() );
     recCsvWrite( out, nam.FGetPerID() );
@@ -740,9 +740,9 @@ std::string recNamePart::CsvTitles()
     );
 }
 
-void recNamePart::CsvWrite( std::ostream& out, idt id )
+void recNamePart::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recNamePart np( id );
+    recNamePart np( id, dbname );
     recCsvWrite( out, np.FGetID() );
     recCsvWrite( out, np.FGetNameID() );
     recCsvWrite( out, np.FGetTypeID() );
@@ -967,9 +967,9 @@ std::string recNamePartType::CsvTitles()
     return std::string("ID, Group, Name, UID, Last Changed\n");
 }
 
-void recNamePartType::CsvWrite( std::ostream& out, idt id )
+void recNamePartType::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recNamePartType npt( id );
+    recNamePartType npt( id, dbname );
     recCsvWrite( out, npt.FGetID() );
     recCsvWrite( out, int( npt.FGetGroup() ) );
     recCsvWrite( out, npt.FGetName() );
@@ -1164,9 +1164,9 @@ std::string recNameStyle::CsvTitles()
     return std::string( "ID, Name, UID, Last Changed\n" );
 }
 
-void recNameStyle::CsvWrite( std::ostream& out, idt id )
+void recNameStyle::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recNameStyle ns( id );
+    recNameStyle ns( id, dbname );
     recCsvWrite( out, ns.FGetID() );
     recCsvWrite( out, ns.FGetName() );
     recCsvWrite( out, ns.FGetUid() );

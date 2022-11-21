@@ -186,9 +186,9 @@ std::string recIndividualPersona::CsvTitles()
     );
 }
 
-void recIndividualPersona::CsvWrite( std::ostream& out, idt id )
+void recIndividualPersona::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recIndividualPersona ipa( id );
+    recIndividualPersona ipa( id, dbname );
     recCsvWrite( out, ipa.FGetID() );
     recCsvWrite( out, ipa.FGetIndID() );
     recCsvWrite( out, ipa.FGetPerID() );

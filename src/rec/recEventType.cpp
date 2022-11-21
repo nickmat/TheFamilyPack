@@ -406,9 +406,9 @@ std::string recEventType::CsvTitles()
     return std::string( "ID, Group, Name, UID, Last Changed\n" );
 }
 
-void recEventType::CsvWrite( std::ostream& out, idt id )
+void recEventType::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recEventType et( id );
+    recEventType et( id, dbname );
     recCsvWrite( out, et.FGetID() );
     recCsvWrite( out, static_cast<int>( et.FGetGrp() ) );
     recCsvWrite( out, et.FGetName() );

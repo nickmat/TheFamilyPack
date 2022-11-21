@@ -729,9 +729,9 @@ std::string recEventa::CsvTitles()
     );
 }
 
-void recEventa::CsvWrite( std::ostream& out, idt id )
+void recEventa::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recEventa ea( id );
+    recEventa ea( id, dbname );
     recCsvWrite( out, ea.FGetID() );
     recCsvWrite( out, ea.FGetTitle() );
     recCsvWrite( out, ea.FGetRefID() );

@@ -658,9 +658,9 @@ std::string recIndividual::CsvTitles()
     );
 }
 
-void recIndividual::CsvWrite( std::ostream& out, idt id )
+void recIndividual::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recIndividual ind( id );
+    recIndividual ind( id, dbname );
     recCsvWrite( out, ind.FGetID() );
     recCsvWrite( out, static_cast<int>(ind.FGetSex()) );
     recCsvWrite( out, ind.FGetFamID() );

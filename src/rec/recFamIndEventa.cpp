@@ -198,9 +198,9 @@ std::string recFamilyIndEventa::CsvTitles()
     );
 }
 
-void recFamilyIndEventa::CsvWrite( std::ostream& out, idt id )
+void recFamilyIndEventa::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recFamilyIndEventa fie( id );
+    recFamilyIndEventa fie( id, dbname );
     recCsvWrite( out, fie.FGetID() );
     recCsvWrite( out, fie.FGetFamIndID() );
     recCsvWrite( out, fie.FGetEventaID() );

@@ -313,10 +313,10 @@ std::string recMediaData::CsvTitles()
     );
 }
 
-void recMediaData::CsvWrite( std::ostream& out, idt id )
+void recMediaData::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
     // Data blob not included (input image file)
-    recMediaData md( id );
+    recMediaData md( id, dbname );
     md.CsvWrite( out );
 }
 

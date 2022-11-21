@@ -148,7 +148,7 @@ public:
         idt to_indID, idt to_perID, idt to_namID, const wxString& todb );
 
     static std::string CsvTitles();
-    static void CsvWrite( std::ostream& out, idt id );
+    static void CsvWrite( std::ostream& out, idt id, const wxString& dbname = "Main" );
     bool CsvRead( std::istream& in );
 
     static bool RemoveFromDatabase( idt conID, const wxString& dbname = "Main" );
@@ -199,7 +199,7 @@ public:
     int SetNextSequence( const wxString& dbname = "Main" );
 
     static std::string CsvTitles();
-    static void CsvWrite( std::ostream& out, idt id );
+    static void CsvWrite( std::ostream& out, idt id, const wxString& dbname = "Main" );
     bool CsvRead( std::istream& in );
 
     static bool RemoveFromDatabase( idt conID, const wxString& dbname );
@@ -262,7 +262,7 @@ public:
         idt from_nptID, const wxString& fromdb, const wxString& todb );
 
     static std::string CsvTitles();
-    static void CsvWrite( std::ostream& out, idt id );
+    static void CsvWrite( std::ostream& out, idt id, const wxString& dbname = "Main" );
     bool CsvRead( std::istream& in );
 
     static bool DeleteIfOrphaned( idt nptID, const wxString& dbname );
@@ -315,7 +315,7 @@ public:
         idt from_nsID, const wxString& fromdb, const wxString& todb );
 
     static std::string CsvTitles();
-    static void CsvWrite( std::ostream& out, idt id );
+    static void CsvWrite( std::ostream& out, idt id, const wxString& dbname = "Main" );
     bool CsvRead( std::istream& in );
 
     static bool DeleteIfOrphaned( idt nsID, const wxString& dbname );

@@ -639,9 +639,9 @@ std::string recEvent::CsvTitles()
     );
 }
 
-void recEvent::CsvWrite( std::ostream& out, idt id )
+void recEvent::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recEvent eve( id );
+    recEvent eve( id, dbname );
     recCsvWrite( out, eve.FGetID() );
     recCsvWrite( out, eve.FGetTitle() );
     recCsvWrite( out, eve.FGetHigherID() );

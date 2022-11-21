@@ -189,7 +189,7 @@ public:
 
     static void Renumber( idt fromID, idt toID );
     static std::string CsvTitles();
-    static void CsvWrite( std::ostream& out, idt id );
+    static void CsvWrite( std::ostream& out, idt id, const wxString& dbname = "Main" );
     bool CsvRead( std::istream& in );
 
     // If no one is using this record, delete it.
@@ -271,7 +271,7 @@ public:
 
     static void Renumber( idt fromID, idt toID );
     static std::string CsvTitles();
-    static void CsvWrite( std::ostream& out, idt id );
+    static void CsvWrite( std::ostream& out, idt id, const wxString& dbname = "Main" );
     bool CsvRead( std::istream& in );
 
     // Delete the RelativeDate and if the base Date is orphaned, delete that.

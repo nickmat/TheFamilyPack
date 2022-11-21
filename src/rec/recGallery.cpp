@@ -240,9 +240,9 @@ std::string recGallery::CsvTitles()
     return std::string( "ID, Title, Note, UID, Changed\n" );
 }
 
-void recGallery::CsvWrite( std::ostream& out, idt id )
+void recGallery::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recGallery gal( id );
+    recGallery gal( id, dbname );
     recCsvWrite( out, gal.FGetID() );
     recCsvWrite( out, gal.FGetTitle() );
     recCsvWrite( out, gal.FGetNote() );

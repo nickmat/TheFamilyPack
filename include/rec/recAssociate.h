@@ -67,7 +67,7 @@ public:
     static recAssociateVec GetList( const wxString& extdb = "Main" );
 
     static std::string CsvTitles();
-    static void CsvWrite( std::ostream& out, idt id );
+    static void CsvWrite( std::ostream& out, idt id, const wxString& dbname = "Main" );
     void CsvWrite( std::ostream& out ) const;
     bool CsvRead( std::istream& in );
 

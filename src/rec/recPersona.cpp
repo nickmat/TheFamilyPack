@@ -371,9 +371,9 @@ std::string recPersona::CsvTitles()
     return std::string( "ID, Sex, Reference ID, Note, UID, Last Changed\n" );
 }
 
-void recPersona::CsvWrite( std::ostream& out, idt id )
+void recPersona::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recPersona pa( id );
+    recPersona pa( id, dbname );
     recCsvWrite( out, pa.FGetID() );
     recCsvWrite( out, static_cast<int>( pa.FGetSex() ) );
     recCsvWrite( out, pa.FGetRefID() );

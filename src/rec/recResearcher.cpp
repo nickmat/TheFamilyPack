@@ -259,9 +259,9 @@ std::string recResearcher::CsvTitles()
     return std::string("ID, Name, Comment, Contact List ID, UID, Last Changed\n");
 }
 
-void recResearcher::CsvWrite( std::ostream& out, idt id )
+void recResearcher::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recResearcher res( id );
+    recResearcher res( id, dbname );
     recCsvWrite( out, res.FGetID() );
     recCsvWrite( out, res.FGetName() );
     recCsvWrite( out, res.FGetComment() );

@@ -328,9 +328,9 @@ std::string recEventTypeRole::CsvTitles()
     );
 }
 
-void recEventTypeRole::CsvWrite( std::ostream& out, idt id )
+void recEventTypeRole::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recEventTypeRole etr( id );
+    recEventTypeRole etr( id, dbname );
     recCsvWrite( out, etr.FGetID() );
     recCsvWrite( out, etr.FGetTypeID() );
     recCsvWrite( out, etr.FGetPrime() );

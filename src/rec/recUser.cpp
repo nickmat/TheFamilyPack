@@ -171,9 +171,9 @@ std::string recUser::CsvTitles()
     return std::string("ID, Researcher ID\n");
 }
 
-void recUser::CsvWrite( std::ostream& out, idt id )
+void recUser::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recUser user( id );
+    recUser user( id, dbname );
     recCsvWrite( out, user.FGetID() );
     recCsvWrite( out, user.FGetResID(), '\n' );
 }
@@ -297,9 +297,9 @@ std::string recUserSetting::CsvTitles()
     return std::string("ID, User ID, Property, Value\n");
 }
 
-void recUserSetting::CsvWrite( std::ostream& out, idt id )
+void recUserSetting::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recUserSetting us( id );
+    recUserSetting us( id, dbname );
     recCsvWrite( out, us.FGetID() );
     recCsvWrite( out, us.FGetUserID() );
     recCsvWrite( out, static_cast<int>(us.FGetProperty()) );

@@ -100,7 +100,7 @@ public:
 
     static void Renumber( idt id, idt to_id );
     static std::string CsvTitles();
-    static void CsvWrite( std::ostream& out, idt id );
+    static void CsvWrite( std::ostream& out, idt id, const wxString& dbname = "Main" );
     bool CsvRead( std::istream& in );
 
     static bool RemoveFromDatabase( idt citID, const wxString& dbname );
@@ -152,7 +152,7 @@ public:
 
     static void Renumber( idt fromID, idt toID );
     static std::string CsvTitles();
-    static void CsvWrite( std::ostream& out, idt id );
+    static void CsvWrite( std::ostream& out, idt id, const wxString& dbname = "Main" );
     bool CsvRead( std::istream& in );
 
     static bool DeleteIfOrphaned( idt cptID, const wxString& dbname );
@@ -203,7 +203,7 @@ public:
 
     static void Renumber( idt fromID, idt toID );
     static std::string CsvTitles();
-    static void CsvWrite( std::ostream& out, idt id );
+    static void CsvWrite( std::ostream& out, idt id, const wxString& dbname = "Main" );
     bool CsvRead( std::istream& in );
 
     static void RemoveFromDatabase( idt conID, const wxString& dbname );
@@ -255,7 +255,7 @@ public:
 
     static void Renumber( idt fromID, idt toID );
     static std::string CsvTitles();
-    static void CsvWrite( std::ostream& out, idt id );
+    static void CsvWrite( std::ostream& out, idt id, const wxString& dbname = "Main" );
     bool CsvRead( std::istream& in );
 
     static bool DeleteIfOrphaned( idt cptID, const wxString& dbname );

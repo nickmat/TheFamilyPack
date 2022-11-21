@@ -492,9 +492,9 @@ std::string recReference::CsvTitles()
     return std::string( "ID, Higher ID, Title, Statement, Researcher ID, User Reference, UID, Last Changed\n");
 }
 
-void recReference::CsvWrite( std::ostream& out, idt id )
+void recReference::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recReference ref( id );
+    recReference ref( id, dbname );
     recCsvWrite( out, ref.FGetID() );
     recCsvWrite( out, ref.FGetHigherID() );
     recCsvWrite( out, ref.FGetTitle() );
@@ -755,9 +755,9 @@ std::string recReferenceEntity::CsvTitles()
     return std::string( "ID, Reference ID, Entity Type, Entity ID, Sequence\n" );
 }
 
-void recReferenceEntity::CsvWrite( std::ostream& out, idt id )
+void recReferenceEntity::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recReferenceEntity re( id );
+    recReferenceEntity re( id, dbname );
     recCsvWrite( out, re.FGetID() );
     recCsvWrite( out, re.FGetRefID() );
     recCsvWrite( out, re.FGetEntityType() );

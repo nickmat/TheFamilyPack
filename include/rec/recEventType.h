@@ -127,7 +127,7 @@ public:
     static idt Transfer( idt from_etID, const wxString& fromdb, const wxString& todb );
 
     static std::string CsvTitles();
-    static void CsvWrite( std::ostream& out, idt id );
+    static void CsvWrite( std::ostream& out, idt id, const wxString& dbname = "Main" );
     bool CsvRead( std::istream& in );
 
     static bool DeleteIfOrphaned( idt etID, const wxString& dbname = "Main" );

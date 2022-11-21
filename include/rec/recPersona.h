@@ -126,7 +126,7 @@ public:
         idt from_perID, const wxString& fromdb, idt to_refID, const wxString& todb );
 
     static std::string CsvTitles();
-    static void CsvWrite( std::ostream& out, idt id );
+    static void CsvWrite( std::ostream& out, idt id, const wxString& dbname = "Main" );
     bool CsvRead( std::istream& in );
 
     // Delete Persona record and remove all records that reference it.

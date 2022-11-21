@@ -595,9 +595,9 @@ std::string recDate::CsvTitles()
     );
 }
 
-void recDate::CsvWrite( std::ostream& out, idt id )
+void recDate::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recDate date( id );
+    recDate date( id, dbname );
     recCsvWrite( out, date.FGetID() );
     recCsvWrite( out, date.FGetJdn() );
     recCsvWrite( out, date.FGetRange() );
@@ -929,9 +929,9 @@ std::string recRelativeDate::CsvTitles()
     return std::string( "ID, Value, Range, Unit, Base ID, Type, Scheme\n" );
 }
 
-void recRelativeDate::CsvWrite( std::ostream& out, idt id )
+void recRelativeDate::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
 {
-    recRelativeDate rel( id );
+    recRelativeDate rel( id, dbname );
     recCsvWrite( out, rel.FGetID() );
     recCsvWrite( out, rel.FGetVal() );
     recCsvWrite( out, rel.FGetRange() );
