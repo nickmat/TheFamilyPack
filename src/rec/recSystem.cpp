@@ -71,7 +71,7 @@ void recSystem::Save( const wxString& dbname )
             // Add new record
             sql.Format(
                 "INSERT INTO \"%s\".System (id, val)"
-                " VALUES (" ID " '%q');",
+                " VALUES (" ID ", '%q');",
                 UTF8_( dbname ), f_id, UTF8_(f_val)
             );
         } else {
