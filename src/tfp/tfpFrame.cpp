@@ -457,7 +457,18 @@ void TfpFrame::OnImportCsv( wxCommandEvent& event )
         wxString message = "CSV \"" + path + "\"";
         std::string pathsep = recEndWithFileSep( path.ToStdString() );
         std::string dbfname = recEndWithoutFileSep( path.ToStdString() ) + ".tfpd";
-        if( recImportCsv( pathsep, dbfname ) ) {
+        bool ret = false;
+        recDb::Begin();
+        try {
+            ret = recImportCsv( pathsep, dbfname );
+            recDb::Commit();
+            recDb::Vacuum();
+        }
+        catch( wxSQLite3Exception& e ) {
+            recDb::ErrorMessage( e );
+            recDb::Rollback();
+        }
+        if( ret ) {
             SetDatabaseOpen( dbfname );
             DisplayHomePage();
         }
@@ -507,7 +518,15 @@ void TfpFrame::OnExportCsv( wxCommandEvent& event )
         wxString path = dialog.GetPath();
         wxString caption = "Export CSV";
         wxString message = "CSV \"" + path + "\"";
-        if( recExportCsv( path.ToStdString() ) ) {
+        bool ret = false;
+        try {
+            ret = recExportCsv( path.ToStdString() );
+        }
+        catch( wxSQLite3Exception& e ) {
+            recDb::ErrorMessage( e );
+            recDb::Rollback();
+        }
+        if( ret ) {
             wxMessageBox( message + " Saved OK", caption );
         }
         else {
