@@ -169,8 +169,8 @@ bool recImportCsv( const string& csv_dir, const std::string& dbfname )
     wxFileName tfpd_fn( dbfname.c_str() );
     string tfpd_dir = tfpd_fn.GetPathWithSep();
  
-    bool ret = csvImportMediaData( path, tfpd_dir );
-//    ret = ret && recAssociate::CsvReadTableFile( path );
+    bool ret = true;
+    ret = ret && csvImportMediaData( path, tfpd_dir );
     ret = ret && recCitation::CsvReadTableFile( path );
     ret = ret && recRepository::CsvReadTableFile( path );
     ret = ret && recCitationPart::CsvReadTableFile( path );
