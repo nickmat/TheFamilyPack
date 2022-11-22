@@ -426,9 +426,6 @@ static const char* createFullDb =  /* recCreateFull.sql */
  "  property INTEGER NOT NULL,\n"
  "  val TEXT NOT NULL\n"
  ");\n"
- "INSERT INTO User (id, res_id) VALUES(1, 0);\n"
- "INSERT INTO System (id, val) VALUES(1, '1');\n"
- "INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 1, 1, 'NI');\n"
  "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 44);\n"
  "COMMIT;\n";
 

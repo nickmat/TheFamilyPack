@@ -480,14 +480,6 @@ CREATE TABLE UserSetting (  /* See System Settings below for initial entries */
   val TEXT NOT NULL
 );
 
-/* Insert Fixed records */
-
-INSERT INTO User (id, res_id) VALUES(1, 0); /* Set User U1 to unknown */
-
-INSERT INTO System (id, val) VALUES(1, '1'); /* User U1 */
-
-INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 1, 1, 'NI');
-
 /* Table Version created in recCreateCommon.sql */
 
 /* The Version table row 1 is the full TFPD database */
