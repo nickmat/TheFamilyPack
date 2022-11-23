@@ -392,8 +392,5 @@ CREATE TABLE UserSetting (
   property INTEGER NOT NULL,
   val TEXT NOT NULL
 );
-INSERT INTO User (id, res_id) VALUES(1, 0);
-INSERT INTO System (id, val) VALUES(1, '1');
-INSERT INTO UserSetting (id, user_id, property, val) VALUES(1, 1, 1, 'NI');
 INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 44);
 COMMIT;
