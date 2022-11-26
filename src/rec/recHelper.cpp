@@ -283,6 +283,16 @@ std::string recTextFileRead( const std::string& filename )
     return str;
 }
 
+bool recTextFileWrite( const std::string& filename, std::string& content )
+{
+    std::ofstream ofile( filename, std::ios::trunc );
+    if( !ofile ) {
+        return false;
+    }
+    ofile << content;
+    return true;
+}
+
 std::istream& recCsvRead( std::istream& in, std::string& str )
 {
     str.clear();

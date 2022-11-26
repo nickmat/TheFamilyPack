@@ -221,6 +221,7 @@ extern void recIdVecAddIfUnique( recIdVec& vec, idt id );
 extern wxString GetBlobFormatStr( const wxMemoryBuffer& buf );
 
 extern std::string recTextFileRead( const std::string& filename );
+extern bool recTextFileWrite( const std::string& filename, std::string& content );
 
 // Read/Write CSV files
 
