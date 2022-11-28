@@ -42,6 +42,36 @@ using std::string;
 
 namespace {
 
+    bool EmptyDirectory( const string& path )
+    {
+        wxDir dir( path );
+        if( !dir.IsOpened() ) {
+            return false;
+        }
+        wxString file;
+        bool cont = dir.GetFirst( &file );
+        while( cont )
+        {
+            file = dir.GetNameWithSep() + file;
+            if( wxFileName::FileExists( file ) ) {
+                if( !wxRemoveFile( file ) ) {
+                    return false;
+                }
+            }
+            if( wxFileName::DirExists( file ) ) {
+                EmptyDirectory( file.ToStdString() );
+                if( !wxRmdir( file ) ) {
+                    return false;
+                }
+            }
+            cont = dir.GetNext( &file );
+        }
+        if( dir.HasFiles() || dir.HasSubDirs() ) {
+            return false;
+        }
+        return true;
+    }
+
     // Note, both csv_dir and tfpd_dir can be assumed to end with file separators.
     bool csvImportMediaData( const string& csv_dir, const string& tfpd_dir )
     {
@@ -217,12 +247,21 @@ bool recImportCsv( const string& csv_dir, const std::string& dbfname )
 bool recExportCsv( const string& path )
 {
     wxDir dir( path );
-    if( dir.HasFiles() || dir.HasSubDirs() ) {
-        return false;
-    }
     string pathsep = dir.GetNameWithSep();
     string sig_fname = pathsep + recSigFileName;
     string sig_content = string(recSignature) + "\n";
+    if( dir.HasFiles() || dir.HasSubDirs() ) {
+        string sig = recTextFileRead( sig_fname );
+        if( sig == sig_content ) {
+            // We have selected an existing CSV directory
+            if( !EmptyDirectory( path ) ) {
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
+    }
     if( !recTextFileWrite( sig_fname, sig_content ) ) {
         return false;
     }
