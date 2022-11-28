@@ -55,6 +55,7 @@ using  recIdStringMap = std::map< idt, wxString >;
 using  recIdVec = std::vector< idt >;
 
 constexpr const char* recSignature = "96C989E14A00AA57E7406F3BC36063F45FDC";
+constexpr const char* recSigFileName = "thefamilypack.txt";
 
 struct recExternalDb
 {

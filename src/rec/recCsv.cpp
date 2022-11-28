@@ -221,7 +221,7 @@ bool recExportCsv( const string& path )
         return false;
     }
     string pathsep = dir.GetNameWithSep();
-    string sig_fname = pathsep + "thefamilypack.txt";
+    string sig_fname = pathsep + recSigFileName;
     string sig_content = string(recSignature) + "\n";
     if( !recTextFileWrite( sig_fname, sig_content ) ) {
         return false;
