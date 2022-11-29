@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     22 October 2012
- * Copyright:   Copyright (c) 2012..2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2012..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -30,6 +30,12 @@
 /*! Output a message for the correct environment.
  */
 extern void recMessage( const wxString& mess, const wxString& func );
+
+/*! Ask a Yes/No question for the correct environment.
+ *  Return true for Yes, false for No or default_val if neither given.
+ */
+extern bool recPromptYesNo(
+    const std::string& prompt, const std::string& title, bool default_val = false );
 
 /*! On GUI, display and update a progress bar.
  */

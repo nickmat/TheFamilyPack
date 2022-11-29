@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     22 October 2012
- * Copyright:   Copyright (c) 2012 .. 2021, Nick Matthews.
+ * Copyright:   Copyright (c) 2012..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -41,6 +41,15 @@
 void recMessage( const wxString& mess, const wxString& func )
 {
     wxMessageBox( mess, func );
+}
+
+bool recPromptYesNo(
+    const std::string& prompt, const std::string& title, bool default_val )
+{
+    int rep = wxMessageBox( prompt, title, wxYES_NO | wxCANCEL );
+    if( rep == wxYES ) return true;
+    if( rep == wxNO ) return false;
+    return default_val;
 }
 
 void* recGetProgressDlg( const wxString& title, const wxString& message, int style )
