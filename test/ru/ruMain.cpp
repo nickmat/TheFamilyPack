@@ -59,7 +59,7 @@ int main( int argc, char* argv[] ) {
     if( wxFileExists( fname ) ) {
         wxRemoveFile( fname );
     }
-    recDb::CreateDb( fname, 0 );
+    recDb::CreateDb( fname, recDb::DbType::full, 0 );
 
     wxString afname = g_AssociateFileName;
     if( wxFileExists( afname ) ) {

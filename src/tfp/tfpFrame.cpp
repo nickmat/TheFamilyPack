@@ -1512,7 +1512,7 @@ bool TfpFrame::NewFile()
         wxString path = dialog.GetPath();
         wxString fname = dialog.GetFilename();
         unsigned flags = recDb::CREATE_DB_STD_EXT | recDb::CREATE_DB_ENUM_FN;
-        if( recDb::CreateDb( path, flags ) == true ) {
+        if( recDb::CreateDb( path, recDb::DbType::full, flags ) == true ) {
             recDb::Begin();
             try {
                 rgSetupDatabase( this, fname );

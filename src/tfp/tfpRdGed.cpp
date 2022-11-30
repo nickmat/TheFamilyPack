@@ -43,7 +43,7 @@
 bool tfpReadGedcom( wxString& path )
 {
     unsigned flags = recDb::CREATE_DB_STD_EXT | recDb::CREATE_DB_ENUM_FN;
-    if( recDb::CreateDb( path, flags ) == false ) return false;
+    if( recDb::CreateDb( path, recDb::DbType::full, flags ) == false ) return false;
 
     try {
         recGedParse ged( path );

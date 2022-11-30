@@ -149,43 +149,65 @@ recDb::CreateReturn recDb::CreateDbFile( const wxString& fname, DbType type )
     return CreateReturn::OK;
 }
 
-bool recDb::CreateDb( const wxString& fname, unsigned flags )
+bool recDb::CreateDb( const wxString& fname, DbType type, unsigned flags )
 {
-    wxFileName dbfile( fname );
+    std::string title = "Create Database";
 
-    if( flags & CREATE_DB_STD_EXT ) {
-        dbfile.SetExt( "tfpd" );
-    }
-
-    if( flags & CREATE_DB_ENUM_FN ) {
-        wxString fn = dbfile.GetName();
-        wxString nfn;
-
-        for( int i = 2 ; dbfile.FileExists() == true ; i++ ) {
-            nfn.Printf( "%s(%d)", fn.c_str(), i );
-            dbfile.SetName( nfn );
-        }
-    } else {
-        if( dbfile.FileExists() == true ) {
-            recMessage( _("File already exists"), _("Create Database") );
-            // TODO: replace existing file
+    if( s_db->IsOpen() ) {
+        std::string prompt = "Database already open.\nClose database?";
+        bool close = recPromptYesNo( prompt, title, false );
+        if( !close ) {
             return false;
         }
     }
 
-    if( s_db->IsOpen() ) {
-        recMessage( _("Database already open"), _("Create Database") );
-        return false;
+    wxFileName dbfile( fname );
+    dbfile.SetExt( "tfpd" ); // If ever we don't want this - add a new flag.
+    wxString filename = dbfile.GetFullPath();
+
+    if( dbfile.FileExists() == true ) {
+        if( flags & CREATE_DB_ASK_REPLACE ) {
+            std::string prompt = "Replace \"" + filename + "\" database?";
+            bool replace = recPromptYesNo( prompt, title, false );
+            if( !replace ) {
+                return false;
+            }
+            if( !wxRemoveFile( filename ) ) {
+                recMessage( "Unable to remove database", title );
+                return false;
+            }
+        }
+        else if( flags & CREATE_DB_ENUM_FN ) {
+            wxString fn = dbfile.GetName();
+            wxString nfn;
+            for( int i = 2; dbfile.FileExists() == true; i++ ) {
+                nfn.Printf( "%s(%d)", fn.c_str(), i );
+                dbfile.SetName( nfn );
+            }
+        }
+        else {
+            std::string mes = "Database \"" + filename + "\" already exists";
+            recMessage( mes, title );
+            return false;
+        }
     }
 
     wxString dbfname = dbfile.GetFullPath();
-    CreateReturn ret = CreateDbFile( dbfname, DbType::full );
-    if ( ret == CreateReturn::OK ) {
-        s_db->Open( dbfname );
-        AddCommonCoreData();
-        return true;
+    CreateReturn ret = CreateDbFile( dbfname, type );
+    if( ret != CreateReturn::OK ) {
+        return false;
     }
-    return false;
+    if( s_db->IsOpen() ) {
+        CloseDb(); // Already confirmed this is ok.
+    }
+    s_db->Open( dbfname, "", WXSQLITE_OPEN_READWRITE );
+    s_extdbs["Main"].dbfilename = s_db->GetDatabaseFilename( "main" );
+    s_extdbs["Main"].assIdMap[0] = "Main";
+
+    if( type == DbType::full ) {
+        AddCommonCoreData();
+    }
+    return true;
 }
 
 bool recDb::AddCommonCoreData( const wxString& dbname )

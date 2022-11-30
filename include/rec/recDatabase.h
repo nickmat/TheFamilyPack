@@ -53,9 +53,10 @@ public:
         CannotOpen,
         UnknownType
     };
-    enum CreateFlags {
-        CREATE_DB_STD_EXT = 0x0001,
-        CREATE_DB_ENUM_FN = 0x0002
+    enum CreateFlags : unsigned {
+        CREATE_DB_STD_EXT = 0x0001, // Redundant, we always force .tfpd extention
+        CREATE_DB_ENUM_FN    = 0x0002,
+        CREATE_DB_ASK_REPLACE = 0x0004
     };
     enum class Coverage {
         user,      // Positive IDs
@@ -123,14 +124,13 @@ public:
     */
     static CreateReturn CreateDbFile( const wxString& fname, DbType type );
 
-    /*! Creates a new database with the given filename. If the flag
-    *  CREATE_DB_STD_EXT is set, the standard file extension ".tfpd"
-    *  is used. If CREATE_DB_ENUM_FN is set, then if the filename
-    *  already exists then a new name is created by appending (n) to
-    *  the name, where n is the lowest number (starting from 2) that
-    *  gives a unique name.
+    /*! Creates a new database with the given filename.
+    The standard extension ".tfpd" is always forced.
+    If the filename already exists and neither the flags CREATE_DB_ASK_REPLACE
+    nor CREATE_DB_ENUM_FN are set, the function returns false;
+    Returns true if a database is created.
     */
-    static bool CreateDb( const wxString& fname, unsigned flags );
+    static bool CreateDb( const wxString& fname, DbType type, unsigned flags );
 
     /*! Add all core data records to database
     */

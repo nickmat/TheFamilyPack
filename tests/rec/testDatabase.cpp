@@ -117,7 +117,7 @@ void RecTestCase::setUp()
     recInitialize();
     wxString fname = TEST_FILENAME;
     wxRemoveFile( fname );
-    recDb::CreateDb( fname, 0 );
+    recDb::CreateDb( fname, recDb::DbType::full, 0 );
 }
 
 void RecTestCase::tearDown()
@@ -173,7 +173,7 @@ void RecTestCase::TestDbCreate()
     wxString fname = "./Temp.tfpd";
     wxRemoveFile( fname );
 
-    bool ret = recDb::CreateDb( fname, 0 );
+    bool ret = recDb::CreateDb( fname, recDb::DbType::full, 0 );
     CPPUNIT_ASSERT( ret == true );
 }
 

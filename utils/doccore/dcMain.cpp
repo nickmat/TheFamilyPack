@@ -188,7 +188,7 @@ void CreateNewDatabase()
 {
     wxString fname = "./CoreDb.tfpd";
     wxRemoveFile( fname );
-    bool ret = recDb::CreateDb( fname, 0 );
+    bool ret = recDb::CreateDb( fname, recDb::DbType::full, 0 );
     wxASSERT( ret == true );
 }
 
