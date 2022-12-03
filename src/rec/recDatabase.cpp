@@ -78,35 +78,6 @@ extern void recUninitialize()
     calUninit();
 }
 
-wxString recGetHomeDisplay( const wxString& dbname )
-{
-    try {
-        if( recUser::TableExists( dbname ) ) {
-            idt userID = recGetCurrentUser( dbname );
-            if( userID == 0 ) {
-                return "NI";
-            }
-            return recUser::GetSetting(
-                dbname, userID, recUserSetting::Property::home_screen
-            );
-        }
-        // Test for MediaData Only database.
-        if( recMediaData::TableExists( dbname ) ) {
-            return "MD";
-        }
-    }
-    catch( wxSQLite3Exception& e ) {
-        recDb::ErrorMessage( e );
-    }
-    // Give up.
-    return "About";
-}
-
-wxString recGetDateStr( long jdn )
-{
-    return calStrFromJdn( jdn, CALENDAR_SCH_Gregorian );
-}
-
 
 wxSQLite3Database*  recDb::s_db = NULL;
 recDb::DbType       recDb::s_dbtype = DbType::db_null;
@@ -825,6 +796,41 @@ void recUid::CreateUidChanged()
 {
     FSetUid( recCreateUid() );
     FSetChanged( calGetTodayJdn() );
+}
+
+wxString recGetHomeDisplay( const wxString& dbname )
+{
+    try {
+        if( recUser::TableExists( dbname ) ) {
+            idt userID = recGetCurrentUser( dbname );
+            if( userID == 0 ) {
+                return "NI";
+            }
+            return recUser::GetSetting(
+                dbname, userID, recUserSetting::Property::home_screen
+            );
+        }
+        // Test for MediaData Only database.
+        if( recMediaData::TableExists( dbname ) ) {
+            return "MD";
+        }
+    }
+    catch( wxSQLite3Exception& e ) {
+        recDb::ErrorMessage( e );
+    }
+    // Give up.
+    return "About";
+}
+
+recDb::CreateProtocol recGetCreateProtocol()
+{
+    // TODO: This should be made into a User setting
+    return recDb::CreateProtocol::rename; // Note, this is the safest option.
+}
+
+wxString recGetDateStr( long jdn )
+{
+    return calStrFromJdn( jdn, CALENDAR_SCH_Gregorian );
 }
 
 

@@ -34,10 +34,6 @@
 extern void recInitialize();
 extern void recUninitialize();
 
-extern wxString recGetHomeDisplay( const wxString& dbname );
-
-extern wxString recGetDateStr( long jdn );
-
 class recDb
 {
 public:
@@ -46,6 +42,13 @@ public:
         full,
         media_data_only,
         db_max
+    };
+    // The actions allowed when creating a new database
+    // and a filename clash occurs.
+    enum class CreateProtocol {
+        disallow,
+        ask,
+        rename
     };
     enum class CreateReturn {
         OK,
@@ -440,5 +443,10 @@ public:
         return recMatchUID::equal;
     }
 };
+
+extern wxString recGetHomeDisplay( const wxString& dbname );
+extern recDb::CreateProtocol recGetCreateProtocol();
+
+extern wxString recGetDateStr( long jdn );
 
 #endif // RECDATABASE_H
