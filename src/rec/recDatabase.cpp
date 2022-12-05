@@ -828,6 +828,19 @@ recDb::CreateProtocol recGetCreateProtocol()
     return recDb::CreateProtocol::rename; // Note, this is the safest option.
 }
 
+unsigned recGetCreateProtocolFlag()
+{
+    switch( recGetCreateProtocol() )
+    {
+    case recDb::CreateProtocol::ask:
+        return recDb::CREATE_DB_ASK_REPLACE;
+    case recDb::CreateProtocol::rename:
+        return recDb::CREATE_DB_ENUM_FN;
+    }
+    return 0;
+}
+
+
 wxString recGetDateStr( long jdn )
 {
     return calStrFromJdn( jdn, CALENDAR_SCH_Gregorian );

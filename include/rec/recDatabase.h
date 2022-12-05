@@ -446,6 +446,7 @@ public:
 
 extern wxString recGetHomeDisplay( const wxString& dbname );
 extern recDb::CreateProtocol recGetCreateProtocol();
+extern unsigned recGetCreateProtocolFlag();
 
 extern wxString recGetDateStr( long jdn );
 
