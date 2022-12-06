@@ -261,7 +261,7 @@ wxString recIndividualEvent::GetRoleStr( idt indID, idt typeID, const wxString& 
 std::string recIndividualEvent::CsvTitles()
 {
     return std::string(
-        "ID, Individual ID, Higher ID, Event ID, Role ID, Note, Individual Sequence\n"
+        "id, higher_id, ind_id, event_id, role_id, 'note', ind_seq\n"
     );
 }
 

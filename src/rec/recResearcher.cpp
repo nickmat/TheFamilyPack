@@ -256,7 +256,7 @@ void recResearcher::Renumber( idt id, idt to_id )
 
 std::string recResearcher::CsvTitles()
 {
-    return std::string("ID, Name, Comment, Contact List ID, UID, Last Changed\n");
+    return std::string( "id, 'name', 'comment', con_list_id, 'uid', changed\n" );
 }
 
 void recResearcher::CsvWrite( std::ostream& out, idt id, const wxString& dbname )

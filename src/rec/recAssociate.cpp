@@ -173,7 +173,7 @@ recAssociateVec recAssociate::GetList( const wxString& extdb )
 
 std::string recAssociate::CsvTitles()
 {
-    return std::string( "ID, Path, Comment\n" );
+    return std::string( "id, 'path', 'comment'\n" );
 }
 
 void recAssociate::CsvWrite( std::ostream& out, idt id, const wxString& dbname )

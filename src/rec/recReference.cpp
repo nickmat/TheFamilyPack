@@ -489,7 +489,9 @@ void recReference::Renumber( idt id, idt to_id )
 
 std::string recReference::CsvTitles()
 {
-    return std::string( "ID, Higher ID, Title, Statement, Researcher ID, User Reference, UID, Last Changed\n");
+    return std::string( 
+        "id, higher_id, 'title', 'statement', res_id, 'user_ref', 'uid', changed\n"
+    );
 }
 
 void recReference::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
@@ -752,7 +754,7 @@ void recReferenceEntity::Renumber( idt id, idt to_id )
 
 std::string recReferenceEntity::CsvTitles()
 {
-    return std::string( "ID, Reference ID, Entity Type, Entity ID, Sequence\n" );
+    return std::string( "id, ref_id, entity_type, entity_id, sequence\n" );
 }
 
 void recReferenceEntity::CsvWrite( std::ostream& out, idt id, const wxString& dbname )

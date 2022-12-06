@@ -175,7 +175,7 @@ wxString recGalleryMedia::GetTitle( idt galID, idt medID, const wxString& dbname
 
 std::string recGalleryMedia::CsvTitles()
 {
-    return std::string( "ID, Title, Gallery ID, Media ID, Media Sequence\n" );
+    return std::string( "id, 'title', gal_id, med_id, med_seq\n" );
 }
 
 void recGalleryMedia::CsvWrite( std::ostream& out, idt id, const wxString& dbname )

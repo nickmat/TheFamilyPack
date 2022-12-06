@@ -237,7 +237,7 @@ idt recGallery::Transfer( idt from_galID, const wxString& fromdb, const wxString
 
 std::string recGallery::CsvTitles()
 {
-    return std::string( "ID, Title, Note, UID, Changed\n" );
+    return std::string( "id, 'title', 'note', 'uid', changed\n" );
 }
 
 void recGallery::CsvWrite( std::ostream& out, idt id, const wxString& dbname )

@@ -168,7 +168,7 @@ wxString recUser::GetSetting( const wxString& dbname, idt userID, recUserSetting
 
 std::string recUser::CsvTitles()
 {
-    return std::string("ID, Researcher ID\n");
+    return std::string("id, res_id\n");
 }
 
 void recUser::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
@@ -294,7 +294,7 @@ void recUserSetting::Find( idt userID, recUserSetting::Property prop, const wxSt
 
 std::string recUserSetting::CsvTitles()
 {
-    return std::string("ID, User ID, Property, Value\n");
+    return std::string("id, user_id, property, 'val'\n");
 }
 
 void recUserSetting::CsvWrite( std::ostream& out, idt id, const wxString& dbname )

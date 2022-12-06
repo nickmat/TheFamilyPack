@@ -654,7 +654,7 @@ bool recIndividual::CreateMissingFamilies( const wxString& dbname )
 std::string recIndividual::CsvTitles()
 {
     return std::string(
-        "ID, Sex, Family ID, Note, Privacy, Name, Surname, Epitaph\n"
+        "id, sex, fam_id, 'note', privacy, 'name', 'surname', 'epitaph'\n"
     );
 }
 

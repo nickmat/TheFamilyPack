@@ -634,8 +634,8 @@ void recEvent::RemoveIncOrphansFromDatabase( idt id, const wxString& dbname )
 std::string recEvent::CsvTitles()
 {
     return std::string(
-        "ID, Title, Higher ID, Event Type ID,"
-        "Date1 ID, Date2 ID, Place ID, Note, Date Point, User Reference\n"
+        "id, 'title', higher_id, type_id, date1_id, date2_id, place_id,"
+        " 'note', date_pt, 'user_ref'\n"
     );
 }
 

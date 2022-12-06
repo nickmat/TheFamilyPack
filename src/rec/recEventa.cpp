@@ -724,8 +724,8 @@ idt recEventa::Transfer( idt from_eaID, const wxString& fromdb, idt to_refID, co
 std::string recEventa::CsvTitles()
 {
     return std::string(
-        "ID, Title, Reference ID, Event Type ID,"
-        "Date1 ID, Date2 ID, Place ID, Note, Date Point, UID, Last Changed\n"
+        "id, 'title', ref_id, type_id, date1_id, date2_id, place_id,"
+        " 'note', date_pt, 'uid', changed\n"
     );
 }
 

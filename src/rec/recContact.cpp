@@ -172,7 +172,7 @@ void recContact::Renumber( idt id, idt to_id )
 
 std::string recContact::CsvTitles()
 {
-    return std::string( "ID, Contact Type ID, Contact List ID, Sequence, Value\n" );
+    return std::string( "id, type_id, list_id, list_seq, 'val'\n" );
 }
 
 void recContact::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
@@ -427,7 +427,7 @@ void recContactList::Renumber( idt id, idt to_id )
 
 std::string recContactList::CsvTitles()
 {
-    return std::string("ID, Individual ID\n");
+    return std::string("id, ind_id\n");
 }
 
 void recContactList::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
@@ -633,7 +633,7 @@ void recContactType::Renumber( idt id, idt to_id )
 
 std::string recContactType::CsvTitles()
 {
-    return std::string( "ID, Name, UID, Last Changed\n" );
+    return std::string( "id, 'name', 'uid', changed\n" );
 }
 
 void recContactType::CsvWrite( std::ostream& out, idt id, const wxString& dbname )

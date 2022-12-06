@@ -403,7 +403,7 @@ idt recEventType::Transfer( idt from_etID, const wxString& fromdb, const wxStrin
 
 std::string recEventType::CsvTitles()
 {
-    return std::string( "ID, Group, Name, UID, Last Changed\n" );
+    return std::string( "id, grp, 'name', 'uid', changed\n" );
 }
 
 void recEventType::CsvWrite( std::ostream& out, idt id, const wxString& dbname )

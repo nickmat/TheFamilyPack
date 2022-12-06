@@ -540,7 +540,7 @@ idt recFamily::FindOrCreate( idt ind1ID, idt ind2ID, const wxString& dbname )
 std::string recFamily::CsvTitles()
 {
     return std::string(
-        "ID, Huband ID, Wife ID\n"
+        "id, husb_id, wife_id\n"
     );
 }
 

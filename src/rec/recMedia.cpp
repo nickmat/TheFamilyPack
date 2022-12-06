@@ -290,8 +290,7 @@ idt recMedia::Transfer(
 std::string recMedia::CsvTitles()
 {
     return std::string(
-        "ID, Data ID, Associate ID, Reference ID, Reference Sequence, Privacy,"
-        " Title, Note, UID, Last Changed\n"
+        "id, data_id, ass_id, ref_id, ref_seq, privacy, 'title', 'note', 'uid', changed\n"
     );
 }
 

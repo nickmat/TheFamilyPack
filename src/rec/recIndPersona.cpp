@@ -182,7 +182,7 @@ idt recIndividualPersona::Find( idt indID, idt perID, const wxString& dbname )
 std::string recIndividualPersona::CsvTitles()
 {
     return std::string(
-        "ID, Individual ID, Persona ID, Confidence, Note\n"
+        "id, ind_id, per_id, conf., 'note'\n"
     );
 }
 

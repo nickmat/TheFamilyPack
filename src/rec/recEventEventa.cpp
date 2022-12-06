@@ -239,7 +239,7 @@ idt recEventEventa::Find( idt eID, idt erID, const wxString& dbname )
 std::string recEventEventa::CsvTitles()
 {
     return std::string(
-        "ID, Event ID, Eventa ID, Confidence, Note\n"
+        "id, event_id, eventa_id, conf., 'note'\n"
     );
 }
 

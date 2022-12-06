@@ -308,9 +308,8 @@ idt recMediaData::Transfer( idt from_mdID, const wxString& fromdb, const wxStrin
 
 std::string recMediaData::CsvTitles()
 {
-    return std::string(
-        "ID, Title, File Type, Privacy, Copyright, File, UID, Last Changed\n"
-    );
+    // Note, data BLOB field handled separately.
+    return std::string( "id, title, type, privacy, 'copyright', 'file', 'uid', changed\n" );
 }
 
 void recMediaData::CsvWrite( std::ostream& out, idt id, const wxString& dbname )

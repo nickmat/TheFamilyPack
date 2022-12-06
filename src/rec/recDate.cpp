@@ -590,8 +590,7 @@ void recDate::Renumber( idt id, idt to_id )
 std::string recDate::CsvTitles()
 {
     return std::string(
-        "ID, Start Date, Range, Relative ID, Type Flags, Description,"
-        " Recorded Scheme, Display Scheme, UID, Last Changed\n"
+        "id, jdn, range, rel_id, type, 'descrip', record_sch, display_sch, 'uid', changed\n"
     );
 }
 
@@ -926,7 +925,7 @@ void recRelativeDate::Renumber( idt id, idt to_id )
 
 std::string recRelativeDate::CsvTitles()
 {
-    return std::string( "ID, Value, Range, Unit, Base ID, Type, Scheme\n" );
+    return std::string( "id, val, range, unit, base_id, type, scheme\n" );
 }
 
 void recRelativeDate::CsvWrite( std::ostream& out, idt id, const wxString& dbname )

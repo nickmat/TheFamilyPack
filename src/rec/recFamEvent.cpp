@@ -153,7 +153,7 @@ idt recFamilyEvent::Create( idt eveID, idt famID, const wxString& note )
 std::string recFamilyEvent::CsvTitles()
 {
     return std::string(
-        "ID, Family ID, Event ID, Note, Family Sequence\n"
+        "id, fam_id, event_id, 'note', fam_seq\n"
     );
 }
 

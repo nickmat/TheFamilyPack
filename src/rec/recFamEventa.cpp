@@ -195,7 +195,7 @@ idt recFamilyEventa::Find( idt famID, idt eaID, const wxString& dbname )
 std::string recFamilyEventa::CsvTitles()
 {
     return std::string(
-        "ID, Family ID, Eventa ID, Confidence, Note\n"
+        "id, fam_id, eventa_id, conf., 'note'\n"
     );
 }
 

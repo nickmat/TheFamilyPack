@@ -324,7 +324,7 @@ idt recEventTypeRole::Transfer( idt from_roleID, const wxString& fromdb, const w
 std::string recEventTypeRole::CsvTitles()
 {
     return std::string(
-        "ID, Event Type ID, Prime, Official, Name, UID, Last Changed\n"
+        "id, type_id, prime, official, 'name', 'uid', changed\n"
     );
 }
 

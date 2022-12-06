@@ -325,7 +325,7 @@ void recPlace::Renumber( idt id, idt to_id )
 std::string recPlace::CsvTitles()
 {
     return std::string(
-        "ID, Start Date, End Date, UID, Last Changed\n"
+        "id, date1_id, date2_id, 'uid', changed\n"
     );
 }
 
@@ -566,7 +566,7 @@ void recPlacePart::Renumber( idt id, idt to_id )
 
 std::string recPlacePart::CsvTitles()
 {
-    return std::string( "ID, Type ID, Place ID, Value, Sequence\n" );
+    return std::string( "id, type_id, place_id, 'val', sequence\n" );
 }
 
 void recPlacePart::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
@@ -731,7 +731,7 @@ void recPlacePartType::Renumber( idt id, idt to_id )
 
 std::string recPlacePartType::CsvTitles()
 {
-    return std::string( "ID, Name, UID, Last Changed\n" );
+    return std::string( "id, 'name', 'uid', changed\n" );
 }
 
 void recPlacePartType::CsvWrite( std::ostream& out, idt id, const wxString& dbname )

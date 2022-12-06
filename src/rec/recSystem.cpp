@@ -143,7 +143,7 @@ void recSystem::SetProperyValue( Property sp, idt id )
 
 std::string recSystem::CsvTitles()
 {
-    return std::string( "ID, Value\n" );
+    return std::string( "id, 'val'\n" );
 }
 
 void recSystem::CsvWrite( std::ostream& out, idt id, const wxString& dbname )

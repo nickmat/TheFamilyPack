@@ -321,7 +321,8 @@ void recCitation::Renumber( idt id, idt to_id )
 std::string recCitation::CsvTitles()
 {
     return std::string(
-        "ID, Higher ID, Reference ID, Reference Sequence, Repository ID, Comment, UID, Last Changed\n" );
+        "id, higher_id, ref_id, ref_seq, rep_id, 'comment', 'uid', changed\n"
+    );
 }
 
 void recCitation::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
@@ -547,7 +548,7 @@ void recRepository::Renumber( idt id, idt to_id )
 
 std::string recRepository::CsvTitles()
 {
-    return std::string( "ID, Name, Note, Contact List ID, UID, Last Changed\n" );
+    return std::string( "id, 'name', 'note', con_list_id, 'uid', changed\n" );
 }
 
 void recRepository::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
@@ -722,8 +723,7 @@ void recCitationPart::Renumber( idt id, idt to_id )
 
 std::string recCitationPart::CsvTitles()
 {
-    return std::string(
-        "ID, Citation ID, Citation Part Type, Value, Citation Sequence, Comment\n" );
+    return std::string( "id, cit_id, type_id, 'val', cit_seq, 'comment'\n" );
 }
 
 void recCitationPart::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
@@ -955,7 +955,7 @@ void recCitationPartType::Renumber( idt id, idt to_id )
 
 std::string recCitationPartType::CsvTitles()
 {
-    return std::string( "ID, Name, Style, Comment, UID, Last Changed\n" );
+    return std::string( "id, 'name', style, 'comment', 'uid', changed\n" );
 }
 
 void recCitationPartType::CsvWrite( std::ostream& out, idt id, const wxString& dbname )

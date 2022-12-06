@@ -368,7 +368,7 @@ idt recPersona::Transfer(
 
 std::string recPersona::CsvTitles()
 {
-    return std::string( "ID, Sex, Reference ID, Note, UID, Last Changed\n" );
+    return std::string( "id, sex, ref_id, 'note', 'uid', changed\n" );
 }
 
 void recPersona::CsvWrite( std::ostream& out, idt id, const wxString& dbname )

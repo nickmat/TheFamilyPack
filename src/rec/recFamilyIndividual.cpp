@@ -165,9 +165,7 @@ bool recFamilyIndividual::Find( const wxString& dbname )
 
 std::string recFamilyIndividual::CsvTitles()
 {
-    return std::string(
-        "ID, Family ID, Individual ID, Child Sequence, Parent Sequence\n"
-    );
+    return std::string( "id, fam_id, ind_id, seq_child, seq_parent\n" );
 }
 
 void recFamilyIndividual::CsvWrite( std::ostream& out, idt id, const wxString& dbname )

@@ -537,9 +537,7 @@ idt recName::Transfer(
 
 std::string recName::CsvTitles()
 {
-    return std::string(
-        "ID, Individual ID, Persona ID, Style ID, Sequence\n"
-    );
+    return std::string( "id, ind_id, per_id, style_id, sequence\n" );
 }
 
 void recName::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
@@ -735,9 +733,7 @@ int recNamePart::SetNextSequence( const wxString& dbname )
 
 std::string recNamePart::CsvTitles()
 {
-    return std::string(
-        "ID, Name ID, Type ID, Value, Sequence\n"
-    );
+    return std::string( "id, name_id, type_id, 'val', sequence\n" );
 }
 
 void recNamePart::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
@@ -964,7 +960,7 @@ idt recNamePartType::Transfer( idt from_nptID, const wxString& fromdb, const wxS
 
 std::string recNamePartType::CsvTitles()
 {
-    return std::string("ID, Group, Name, UID, Last Changed\n");
+    return std::string("id, grp, 'name', 'uid', changed\n");
 }
 
 void recNamePartType::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
@@ -1161,7 +1157,7 @@ idt recNameStyle::Transfer( idt from_nsID, const wxString& fromdb, const wxStrin
 
 std::string recNameStyle::CsvTitles()
 {
-    return std::string( "ID, Name, UID, Last Changed\n" );
+    return std::string( "id, 'name', 'uid', changed\n" );
 }
 
 void recNameStyle::CsvWrite( std::ostream& out, idt id, const wxString& dbname )

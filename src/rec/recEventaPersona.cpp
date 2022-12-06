@@ -231,7 +231,7 @@ idt recEventaPersona::Transfer( idt from_eapaID, const wxString& fromdb,
 std::string recEventaPersona::CsvTitles()
 {
     return std::string(
-        "ID, Eventa ID, Persona ID, Role ID, Note, Persona Sequence\n"
+        "id, eventa_id, per_id, role_id, 'note', per_seq\n"
     );
 }
 
