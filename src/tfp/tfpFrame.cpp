@@ -466,7 +466,7 @@ void TfpFrame::OnImportCsv( wxCommandEvent& event )
             recDb::Rollback();
         }
         if( ret ) {
-            SetDatabaseOpen( dbfname );
+            SetDatabaseOpen( recDb::GetFileName() );
             DisplayHomePage();
         }
         else {
