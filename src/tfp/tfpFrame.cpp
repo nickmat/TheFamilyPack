@@ -458,11 +458,8 @@ void TfpFrame::OnImportCsv( wxCommandEvent& event )
         std::string pathsep = recEndWithFileSep( path.ToStdString() );
         std::string dbfname = recEndWithoutFileSep( path.ToStdString() ) + ".tfpd";
         bool ret = false;
-        recDb::Begin();
         try {
             ret = recImportCsv( pathsep, dbfname );
-            recDb::Commit();
-            recDb::Vacuum();
         }
         catch( wxSQLite3Exception& e ) {
             recDb::ErrorMessage( e );
