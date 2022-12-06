@@ -179,24 +179,14 @@ bool recImportCsv( const string& csv_dir, const std::string& dbfname )
     }
 
     recDb::DbType dbtype = recDb::DbType::db_null;
-    recDb::CreateReturn dbret = recDb::CreateDbFile( dbfname, dbtype );
-    if( dbret != recDb::CreateReturn::OK ) {
+    unsigned flags = recGetCreateProtocolFlag();
+    if( !recDb::CreateDb( dbfname, dbtype, flags ) ) {
         return false;
     }
-    wxSQLite3Database db;
-    db.Open( dbfname );
-    if( !db.IsOpen() ) {
-        return false;
-    }
-    db.ExecuteUpdate( create_sql );
-    db.Close();
+    string actual_dbfname = recDb::GetFileName();
+    recDb::GetDb()->ExecuteUpdate( create_sql );
 
-    // Reopen to check version etc.
-    if( recDb::OpenDb( dbfname ) != recDb::DbType::full ) {
-        return false;
-    }
-
-    wxFileName tfpd_fn( dbfname.c_str() );
+    wxFileName tfpd_fn( actual_dbfname.c_str() );
     string tfpd_dir = tfpd_fn.GetPathWithSep();
  
     bool ret = true;
@@ -241,7 +231,16 @@ bool recImportCsv( const string& csv_dir, const std::string& dbfname )
     ret = ret && recSystem::CsvReadTableFile( path );
     ret = ret && recUserSetting::CsvReadTableFile( path );
     ret = ret && recUser::CsvReadTableFile( path );
-    return ret;
+
+    // Close and reopen to check version etc.
+    recDb::CloseDb();
+    if( ret == false ) {
+        return false;
+    }
+    if( recDb::OpenDb( actual_dbfname ) != recDb::DbType::full ) {
+        return false;
+    }
+    return true;
 }
 
 bool recExportCsv( const string& path )
