@@ -1,4 +1,4 @@
-ID, Name ID, Type ID, Value, Sequence
+id, name_id, type_id, 'val', sequence
 102,50,-2,"Mountbatten-Windsor",2
 101,50,-1,"Lilibet",1
 100,49,-2,"Mountbatten-Windsor",2

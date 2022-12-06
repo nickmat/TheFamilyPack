@@ -1,4 +1,4 @@
-ID, Title, Reference ID, Event Type ID,Date1 ID, Date2 ID, Place ID, Note, Date Point, UID, Last Changed
+id, 'title', ref_id, type_id, date1_id, date2_id, place_id, 'note', date_pt, 'uid', changed
 18,"Condition of Elizabeth Windsor",1,-19,3,0,0,"",2432510,"26CDC608299588AB791AE4A9029096F2EC3E",2459755
 17,"Condition of Phillip Mountbatten",1,-19,3,0,0,"",2432510,"64506592DBC77D95E38B13BC5BCB46BFC7EB",2459755
 16,"Residence of Elizabeth Windsor",1,-17,3,0,7,"",2432510,"EC4D8742BB0E8574EECC755255F946310AFB",2459755

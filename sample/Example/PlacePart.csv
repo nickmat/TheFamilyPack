@@ -1,4 +1,4 @@
-ID, Type ID, Place ID, Value, Sequence
+id, type_id, place_id, 'val', sequence
 23,-1,23,"Santa Barbara Cottage Hospital, Santa Barbara, California, USA",0
 22,-1,22,"Portland Hospital, London",0
 21,-1,21,"King's College Hospital, London",0

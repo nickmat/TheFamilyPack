@@ -1,4 +1,4 @@
-ID, Sex, Family ID, Note, Privacy, Name, Surname, Epitaph
+id, sex, fam_id, 'note', privacy, 'name', 'surname', 'epitaph'
 39,2,27,"",0,"Lilibet Mountbatten-Windsor","Mountbatten-Windsor","(2021 -  )"
 38,1,26,"",0,"Archie Mountbatten-Windsor","Mountbatten-Windsor","(2019 -  )"
 37,2,9,"",0,"Meghan Markle","Markle","(1981 -  )"

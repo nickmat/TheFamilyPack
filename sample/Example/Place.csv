@@ -1,4 +1,4 @@
-ID, Start Date, End Date, UID, Last Changed
+id, date1_id, date2_id, 'uid', changed
 23,0,0,"",0
 22,0,0,"",0
 21,0,0,"",0

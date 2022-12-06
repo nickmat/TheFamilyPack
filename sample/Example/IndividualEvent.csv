@@ -1,4 +1,4 @@
-ID, Individual ID, Higher ID, Event ID, Role ID, Note, Individual Sequence
+id, higher_id, ind_id, event_id, role_id, 'note', ind_seq
 24,39,0,29,-1,"",1
 23,38,0,28,-1,"",1
 22,8,0,27,-1,"",1

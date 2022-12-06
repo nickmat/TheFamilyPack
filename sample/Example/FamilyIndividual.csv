@@ -1,4 +1,4 @@
-ID, Family ID, Individual ID, Child Sequence, Parent Sequence
+id, fam_id, ind_id, seq_child, seq_parent
 24,9,39,2,1
 23,9,38,1,1
 22,8,36,3,1

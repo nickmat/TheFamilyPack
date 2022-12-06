@@ -1,4 +1,4 @@
-ID, Eventa ID, Persona ID, Role ID, Note, Persona Sequence
+id, eventa_id, per_id, role_id, 'note', per_seq
 20,18,26,-67,"Stated as: Spinster",1
 19,17,25,-67,"Stated as: Batchelor",1
 18,16,26,-61,"Stated as: Buckingham Palace",1

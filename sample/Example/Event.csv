@@ -1,4 +1,4 @@
-ID, Title, Higher ID, Event Type ID,Date1 ID, Date2 ID, Place ID, Note, Date Point, User Reference
+id, 'title', higher_id, type_id, date1_id, date2_id, place_id, 'note', date_pt, 'user_ref'
 29,"Birth of Lilibet Mountbatten-Windsor",0,-1,25,0,23,"",2459370,""
 28,"Birth of Archie Mountbatten-Windsor",0,-1,24,0,22,"",2458610,""
 27,"Birth of Camilla Shand",0,-1,23,0,21,"",2432384,""
