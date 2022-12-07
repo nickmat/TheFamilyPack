@@ -1,4 +1,4 @@
-ID, Type ID, Place ID, Value, Sequence
+id, type_id, place_id, 'val', sequence
 -1,-1,-1,"England, Wales, Isle of Man and Channel Islands",1
 -2,-1,-2,"England, Wales, Isle of Man and Channel Islands",1
 -3,-1,-3,"England, Wales, Isle of Man and Channel Islands",1

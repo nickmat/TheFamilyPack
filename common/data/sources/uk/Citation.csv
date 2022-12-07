@@ -1,4 +1,4 @@
-ID, Higher ID, Reference ID, Reference Sequence, Repository ID, Comment, UID, Last Changed
+id, higher_id, ref_id, ref_seq, rep_id, 'comment', 'uid', changed
 -1,0,-1,1,-1,"","39FB8FC97D1D4FB72B89B2358E8DAE46D6B9",2459669
 -2,0,-2,1,-1,"","7F7B7A5AA584A92C9C964980EB0D6D81AD4F",2459669
 -3,0,-3,1,-1,"","3B29D9CBBFC026894610CBF57A1B66E229D7",2459669

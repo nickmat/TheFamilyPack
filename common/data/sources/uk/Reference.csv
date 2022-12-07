@@ -1,4 +1,4 @@
-ID, Higher ID, Title, Statement, Researcher ID, User Reference, UID, Last Changed
+id, higher_id, 'title', 'statement', res_id, 'user_ref', 'uid', changed
 -1,0,"1841 Census, England and Wales.","Population census for England, Wales, Isle of Man and Channel Islands.
 
 Record of the the population on 6 June 1841.

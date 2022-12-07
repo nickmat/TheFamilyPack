@@ -1,4 +1,4 @@
-ID, Contact Type ID, Contact List ID, Sequence, Value
+id, type_id, list_id, list_seq, 'val'
 -1,-5,-1,1,"thefamilypack.org"
 -2,-1,-2,1,"The National Archives
 Kew, Richmond

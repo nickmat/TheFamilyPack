@@ -1,4 +1,4 @@
-ID, Citation ID, Citation Part Type, Value, Citation Sequence, Comment
+id, cit_id, type_id, 'val', cit_seq, 'comment'
 -1,-1,-3,"HO",1,"Home Office"
 -2,-1,-4,"107",2,""
 -3,-2,-3,"HO",1,"Home Office"

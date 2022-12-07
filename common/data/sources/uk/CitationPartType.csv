@@ -1,4 +1,4 @@
-ID, Name, Style, Comment, UID, Last Changed
+id, 'name', style, 'comment', 'uid', changed
 -1,"Institution",0,"","E66CA5956E82BA619D1A24A807EF2ACB057C",2459671
 -2,"Body",0,"","1DC3CDCC0AD4C1B0BE2FF39554D5409B41DB",2459671
 -3,"Department",0,"","207718701FCAC6A498756E9BFE326B052892",2459671
