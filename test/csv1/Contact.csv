@@ -1,4 +1,4 @@
-ID, Contact Type ID, Contact List ID, Sequence, Value
+id, type_id, list_id, list_seq, 'val'
 1,-1,1,1,"Kizzy Cottage
 Sussex
 UK"

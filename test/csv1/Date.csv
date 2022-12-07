@@ -1,4 +1,4 @@
-ID, Start Date, Range, Relative ID, Type Flags, Description, Recorded Scheme, Display Scheme, UID, Last Changed
+id, jdn, range, rel_id, type, 'descrip', record_sch, display_sch, 'uid', changed
 5982,2408175,0,0,2,"",8,8,"F4907ED1BB9C9BFD50FB7116656668B07753",2459756
 5986,2398314,364,1,2,"",8,8,"9FCEB59314A984159C429E4670C4CF1AEAFB",2459756
 5990,2397584,364,2,2,"",8,8,"0E8045D847F6EB529A38F2469A544AB1181F",2459756

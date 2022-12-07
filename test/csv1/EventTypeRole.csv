@@ -1,4 +1,4 @@
-ID, Event Type ID, Prime, Official, Name, UID, Last Changed
+id, type_id, prime, official, 'name', 'uid', changed
 -88,-23,1,0,"Subject","A9C3A735798018D815129BFE7617F01F8D5E",2459752
 -79,-19,1,0,"Married","74D4E342FA0DBFADBD9E8953F8574F2BE0FF",2459752
 -76,-22,0,0,"Child","0E4989ADFD94E53CED9BEED67C3D01BD0281",2459752

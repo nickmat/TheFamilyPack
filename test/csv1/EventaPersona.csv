@@ -1,4 +1,4 @@
-ID, Eventa ID, Persona ID, Role ID, Note, Persona Sequence
+id, eventa_id, per_id, role_id, 'note', per_seq
 1,1,11,-32,"Head",1
 2,2,11,-61,"Head",1
 3,3,11,-79,"",1

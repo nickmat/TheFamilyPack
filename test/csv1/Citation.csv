@@ -1,2 +1,2 @@
-ID, Higher ID, Reference ID, Reference Sequence, Repository ID, Comment, UID, Last Changed
+id, higher_id, ref_id, ref_seq, rep_id, 'comment', 'uid', changed
 1,0,11,1,1,"","E150F2FF570BB36AF81D22D94DE6A1DB60CB",2459669

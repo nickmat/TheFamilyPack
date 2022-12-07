@@ -1,4 +1,4 @@
-ID, Name ID, Type ID, Value, Sequence
+id, name_id, type_id, 'val', sequence
 10685,4217,-1,"John",1
 10686,4217,-1,"S",2
 10687,4217,-2,"Malings",3

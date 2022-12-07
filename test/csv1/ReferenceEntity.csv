@@ -1,4 +1,4 @@
-ID, Reference ID, Entity Type, Entity ID, Sequence
+id, ref_id, entity_type, entity_id, sequence
 11,11,3,5401,1
 12,11,4,5986,2
 13,11,7,4217,3
