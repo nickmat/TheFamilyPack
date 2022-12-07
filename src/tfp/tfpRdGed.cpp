@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     19 September 2011
- * Copyright:   Copyright (c) 2011, Nick Matthews.
+ * Copyright:   Copyright (c) 2011..2022, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -42,9 +42,10 @@
 
 bool tfpReadGedcom( wxString& path )
 {
-    unsigned flags = recDb::CREATE_DB_STD_EXT | recDb::CREATE_DB_ENUM_FN;
-    if( recDb::CreateDb( path, recDb::DbType::full, flags ) == false ) return false;
-
+    unsigned flags = recGetCreateProtocolFlag();
+    if( recDb::CreateDb( path, recDb::DbType::full, flags ) == false ) {
+        return false;
+    }
     try {
         recGedParse ged( path );
         if( !ged.Import() ) {

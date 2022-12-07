@@ -1598,7 +1598,7 @@ bool TfpFrame::ImportGedcom()
             wxString path = dialog.GetPath();
             if( tfpReadGedcom( path ) )
             {
-                SetDatabaseOpen( path );
+                SetDatabaseOpen( recDb::GetFileName() );
                 DisplayHomePage();
                 ret = true;
             }
