@@ -1,4 +1,4 @@
-ID, Event Type ID, Prime, Official, Name, UID, Last Changed
+id, type_id, prime, official, 'name', 'uid', changed
 -1,-1,1,0,"Born","6294C833BCF9D2E0F8DDDEC4946441F901B4",2459752
 -2,-1,0,0,"Mother","59D8C78FC6E8102B214147C6A0A25012832F",2459752
 -3,-1,0,1,"Midwife","527A6A76412AFF9C8DE1ABA399D8304655AE",2459752
