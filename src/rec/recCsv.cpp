@@ -42,6 +42,130 @@ using std::string;
 
 namespace {
 
+    enum class DbFieldType { integer, real, text };
+    struct DbField {
+        DbField( DbFieldType t, const string& c )
+            : type( t ), column( c ) {}
+
+        DbFieldType type;
+        string column;
+    };
+    using DbFieldVec = std::vector<DbField>;
+
+    DbFieldVec csvParseTitles( const string& titles )
+    {
+        DbFieldVec fields;
+        bool inquote = false;
+        DbField field( DbFieldType::integer, "" );
+        for( auto ch : titles ) {
+            if( ch == ' ' ) continue;
+            if( ch == '\'' ) {
+                inquote = true;
+                field.type = DbFieldType::text;
+                continue;
+            }
+            if( ch == ',' || ch == '\n' ) {
+                inquote = false;
+                fields.push_back( field );
+                field.type = DbFieldType::integer;
+                field.column.clear();
+                continue;
+            }
+            if( ch == '.' ) {
+                field.type = DbFieldType::real;
+                continue;
+            }
+            field.column += ch;
+        }
+        return fields;
+    }
+
+    string csvMakeStatement( const string& table, const DbFieldVec& fields )
+    {
+        string insert, value;
+        bool first = true;
+        for( auto field : fields ) {
+            if( !first ) {
+                insert += ", ";
+                value += ", ";
+            }
+            insert += field.column;
+            value += "?";
+            first = false;
+        }
+        string stmt =
+            "INSERT INTO " + table + " (" + insert + ")"
+            " VALUES (" + value + ");"
+            ;
+        return stmt;
+    }
+
+    bool csvInsertRecords( std::istream& in, const string& table )
+    {
+        string titles;
+        std::getline( in, titles );
+        DbFieldVec fields = csvParseTitles( titles + "\n" );
+        string sql = csvMakeStatement( table, fields );
+
+        recDb::Begin();
+        wxSQLite3Statement stmt = recDb::GetDb()->PrepareStatement( sql );
+
+        idt id = 0;
+        string text;
+        double real = 0.0;
+        while( in.peek() != EOF ) {
+            int i = 1;
+            for( auto field : fields ) {
+                switch( field.type )
+                {
+                case DbFieldType::integer:
+                    recCsvRead( in, id );
+                    stmt.Bind( i, wxLongLong( id ) );
+                    break;
+                case DbFieldType::text:
+                    recCsvRead( in, text );
+                    stmt.Bind( i, text );
+                    break;
+                case DbFieldType::real:
+                    recCsvRead( in, real );
+                    stmt.Bind( i, real );
+                    break;
+                }
+                i++;
+            }
+            stmt.ExecuteUpdate();
+            stmt.Reset();
+        }
+        recDb::Commit();
+        return true;
+    }
+
+    bool csvReadFile( const wxString& fname )
+    {
+        wxFileName fn( fname );
+        string table = fn.GetName();
+        string filename = fn.GetFullPath();
+        std::ifstream ifile( filename );
+        if( !ifile ) {
+            return false;
+        }
+        return csvInsertRecords( ifile, table );
+    }
+
+    bool csvImportFiles( const string& csv_dir )
+    {
+        wxDir dir( csv_dir );
+        wxString filename;
+        bool cont = dir.GetFirst( &filename, "*.csv", wxDIR_FILES );
+        while( cont ) {
+            if( !csvReadFile( csv_dir + filename ) ) {
+                return false;
+            }
+            cont = dir.GetNext( &filename );
+        }
+        return true;
+    }
+
     bool EmptyDirectory( const string& path )
     {
         wxDir dir( path );
@@ -188,50 +312,10 @@ bool recImportCsv( const string& csv_dir, const std::string& dbfname )
 
     wxFileName tfpd_fn( actual_dbfname.c_str() );
     string tfpd_dir = tfpd_fn.GetPathWithSep();
- 
-    bool ret = true;
-    ret = ret && csvImportMediaData( path, tfpd_dir );
-    ret = ret && recCitation::CsvReadTableFile( path );
-    ret = ret && recRepository::CsvReadTableFile( path );
-    ret = ret && recCitationPart::CsvReadTableFile( path );
-    ret = ret && recCitationPartType::CsvReadTableFile( path );
-    ret = ret && recContactList::CsvReadTableFile( path );
-    ret = ret && recContactType::CsvReadTableFile( path );
-    ret = ret && recContact::CsvReadTableFile( path );
-    ret = ret && recDate::CsvReadTableFile( path );
-    ret = ret && recRelativeDate::CsvReadTableFile( path );
-    ret = ret && recEvent::CsvReadTableFile( path );
-    ret = ret && recEventa::CsvReadTableFile( path );
-    ret = ret && recEventaPersona::CsvReadTableFile( path );
-    ret = ret && recEventEventa::CsvReadTableFile( path );
-    ret = ret && recEventType::CsvReadTableFile( path );
-    ret = ret && recEventTypeRole::CsvReadTableFile( path );
-    ret = ret && recFamilyEvent::CsvReadTableFile( path );
-    ret = ret && recFamilyEventa::CsvReadTableFile( path );
-    ret = ret && recFamily::CsvReadTableFile( path );
-    ret = ret && recFamilyIndividual::CsvReadTableFile( path );
-    ret = ret && recFamilyIndEventa::CsvReadTableFile( path );
-    ret = ret && recGallery::CsvReadTableFile( path );
-    ret = ret && recGalleryMedia::CsvReadTableFile( path );
-    ret = ret && recIndividualEvent::CsvReadTableFile( path );
-    ret = ret && recIndividual::CsvReadTableFile( path );
-    ret = ret && recIndividualPersona::CsvReadTableFile( path );
-    ret = ret && recMedia::CsvReadTableFile( path );
-    ret = ret && recName::CsvReadTableFile( path );
-    ret = ret && recNamePart::CsvReadTableFile( path );
-    ret = ret && recNamePartType::CsvReadTableFile( path );
-    ret = ret && recNameStyle::CsvReadTableFile( path );
-    ret = ret && recPersona::CsvReadTableFile( path );
-    ret = ret && recPlace::CsvReadTableFile( path );
-    ret = ret && recPlacePart::CsvReadTableFile( path );
-    ret = ret && recPlacePartType::CsvReadTableFile( path );
-    ret = ret && recReferenceEntity::CsvReadTableFile( path );
-    ret = ret && recReference::CsvReadTableFile( path );
-    ret = ret && recResearcher::CsvReadTableFile( path );
-    ret = ret && recSystem::CsvReadTableFile( path );
-    ret = ret && recUserSetting::CsvReadTableFile( path );
-    ret = ret && recUser::CsvReadTableFile( path );
 
+    bool ret = csvImportMediaData( path, tfpd_dir );
+
+    ret = ret && csvImportFiles( path );
     // Close and reopen to check version etc.
     recDb::CloseDb();
     if( ret == false ) {
