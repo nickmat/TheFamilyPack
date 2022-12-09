@@ -309,7 +309,7 @@ idt recMediaData::Transfer( idt from_mdID, const wxString& fromdb, const wxStrin
 std::string recMediaData::CsvTitles()
 {
     // Note, data BLOB field handled separately.
-    return std::string( "id, title, type, privacy, 'copyright', 'file', 'uid', changed\n" );
+    return std::string( "id, 'title', 'data', type, privacy, 'copyright', 'file', 'uid', changed\n" );
 }
 
 void recMediaData::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
@@ -324,6 +324,7 @@ void recMediaData::CsvWrite( std::ostream& out ) const
     // Data blob not included (output as image file)
     recCsvWrite( out, FGetID() );
     recCsvWrite( out, FGetTitle() );
+    recCsvWrite( out, wxString("") ); // Empty data
     recCsvWrite( out, int( FGetType() ) );
     recCsvWrite( out, FGetPrivacy() );
     recCsvWrite( out, FGetCopyright() );
@@ -336,6 +337,9 @@ bool recMediaData::CsvRead( std::istream& in )
 {
     recCsvRead( in, f_id );
     recCsvRead( in, f_title );
+    wxString empty;
+    recCsvRead( in, empty );
+    f_data.Clear();
     int type;
     recCsvRead( in, type );
     f_type = Mime( type );
