@@ -90,7 +90,7 @@ namespace {
         return fields;
     }
 
-    string csvMakeStatement( const string& table, const DbFieldVec& fields )
+    string csvMakeStatement( const string& table, const DbFieldVec& fields, const string& dbname )
     {
         string insert, value;
         bool first = true;
@@ -104,18 +104,18 @@ namespace {
             first = false;
         }
         string stmt =
-            "INSERT INTO " + table + " (" + insert + ")"
+            "INSERT INTO \"" + dbname + "\"." + table + " (" + insert + ")"
             " VALUES (" + value + ");"
             ;
         return stmt;
     }
 
-    bool csvInsertRecords( std::istream& in, const string& table )
+    bool csvInsertRecords( std::istream& in, const string& table, const string& dbname )
     {
         string titles;
         std::getline( in, titles );
         DbFieldVec fields = csvParseTitles( titles + "\n" );
-        string sql = csvMakeStatement( table, fields );
+        string sql = csvMakeStatement( table, fields, dbname );
 
         recDb::Begin();
         wxSQLite3Statement stmt = recDb::GetDb()->PrepareStatement( sql );
@@ -150,7 +150,7 @@ namespace {
         return true;
     }
 
-    bool csvReadFile( const wxString& fname )
+    bool csvReadFile( const wxString& fname, const string& dbname )
     {
         wxFileName fn( fname );
         string table = fn.GetName();
@@ -159,16 +159,16 @@ namespace {
         if( !ifile ) {
             return false;
         }
-        return csvInsertRecords( ifile, table );
+        return csvInsertRecords( ifile, table, dbname );
     }
 
-    bool csvImportFiles( const string& csv_dir )
+    bool csvImportFiles( const string& csv_dir, const string& dbname )
     {
         wxDir dir( csv_dir );
         wxString filename;
         bool cont = dir.GetFirst( &filename, "*.csv", wxDIR_FILES );
         while( cont ) {
-            if( !csvReadFile( csv_dir + filename ) ) {
+            if( !csvReadFile( csv_dir + filename, dbname ) ) {
                 return false;
             }
             cont = dir.GetNext( &filename );
@@ -240,7 +240,7 @@ namespace {
             else {
                 // We need to create a new media-only database without using record classes
                 md_dir = csv_dir + "ass" + recGetStr( assID ) + recFileSep();
-                string path = recDb::ExecuteStr( "SELECT path FROM \"%s\".Associate WHERE id=" ID ";", md_dir, assID );
+                string path = recDb::ExecuteStr( "SELECT path FROM \"%s\".Associate WHERE id=" ID ";", "Main", assID);
                 wxFileName tfpd_file( wxString( tfpd_dir ) + path + ".tfpd" );
                 wxString tfpd_fn = tfpd_file.GetFullPath();
                 recDb::DbType dbtype = recDb::DbType::db_null;
@@ -264,6 +264,8 @@ namespace {
                 db.ExecuteUpdate( create_sql );
                 db.Close();
                 md_db = recDb::OpenAssociateDb( "Main", tfpd_fn, tfpd_file.GetName() );
+                if( md_db.empty() ) return false;
+                if( !csvImportFiles( md_dir, md_db ) ) return false;  // Read in MediaData files
             }
             recIdVec mdIDs = recMediaData::IdVec( recDb::Coverage::notzero, md_db );
             string image_dir = md_dir + "image" + recFileSep();
@@ -340,7 +342,7 @@ bool recImportCsv( const string& csv_dir, const std::string& dbfname )
     wxFileName tfpd_fn( actual_dbfname.c_str() );
     string tfpd_dir = tfpd_fn.GetPathWithSep();
 
-    bool ret = csvImportFiles( path );
+    bool ret = csvImportFiles( path, "Main" );
     ret = ret && csvImportMediaData( path, tfpd_dir );
 
     // Close and reopen to check version etc.
