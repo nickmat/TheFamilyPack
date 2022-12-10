@@ -384,7 +384,7 @@ std::istream& recCsvRead( std::istream& in, double& dbl )
         }
         str.push_back( ch );
     }
-    dbl = recConfFromStr( str );
+    dbl = std::stod( str );
     return in;
 }
 
