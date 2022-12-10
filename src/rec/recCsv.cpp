@@ -52,6 +52,16 @@ namespace {
     };
     using DbFieldVec = std::vector<DbField>;
 
+    bool csvReadMediaFile( const string& filename, wxMemoryBuffer buf )
+    {
+        wxFile infile( filename );
+        wxFileOffset fLen = infile.Length();
+        void* tmp = buf.GetAppendBuf( fLen );
+        size_t iRead = infile.Read( tmp, fLen );
+        buf.UngetAppendBuf( iRead );
+        return !buf.IsEmpty();
+    }
+
     DbFieldVec csvParseTitles( const string& titles )
     {
         DbFieldVec fields;
@@ -196,23 +206,42 @@ namespace {
         return true;
     }
 
+    bool csvImportMediaData( idt mdID, const string& fname, const string& dbname )
+    {
+        wxMemoryBuffer buf;
+        wxFile infile( fname );
+        wxFileOffset fLen = infile.Length();
+        void* tmp = buf.GetAppendBuf( fLen );
+        size_t iRead = infile.Read( tmp, fLen );
+        buf.UngetAppendBuf( iRead );
+        if( buf.IsEmpty() ) {
+            return false;
+        }
+        wxSQLite3StatementBuffer sql;
+        sql.Format(
+            "UPDATE \"%s\".MediaData SET data=x'%q' WHERE id=" ID ";",
+            dbname.c_str(), UTF8_( GetBlobFormatStr( buf ) ), mdID
+        );
+        recDb::GetDb()->ExecuteUpdate( sql );
+        return true;
+    }
+
     // Note, both csv_dir and tfpd_dir can be assumed to end with file separators.
     bool csvImportMediaData( const string& csv_dir, const string& tfpd_dir )
     {
-        if( !recAssociate::CsvReadTableFile( csv_dir ) ) {
-            return false;
-        }
         recIdVec assIDs = recAssociate::IdVec( recDb::Coverage::all );
-        string md_dir, md_db;
+        string md_dir; // CSV directory
+        string md_db;  // MediaData database attached name 
         for( idt assID : assIDs ) {
             if( assID == 0 ) {
                 md_dir = csv_dir;
                 md_db = "Main";
             }
             else {
+                // We need to create a new media-only database without using record classes
                 md_dir = csv_dir + "ass" + recGetStr( assID ) + recFileSep();
-                recAssociate ass( assID );
-                wxFileName tfpd_file( wxString( tfpd_dir ) + ass.FGetPath() + ".tfpd" );
+                string path = recDb::ExecuteStr( "SELECT path FROM \"%s\".Associate WHERE id=" ID ";", md_dir, assID );
+                wxFileName tfpd_file( wxString( tfpd_dir ) + path + ".tfpd" );
                 wxString tfpd_fn = tfpd_file.GetFullPath();
                 recDb::DbType dbtype = recDb::DbType::db_null;
                 recDb::CreateReturn create_ret;
@@ -236,16 +265,14 @@ namespace {
                 db.Close();
                 md_db = recDb::OpenAssociateDb( "Main", tfpd_fn, tfpd_file.GetName() );
             }
-            bool ret = recMediaData::CsvReadTableFile( md_dir, md_db );
             recIdVec mdIDs = recMediaData::IdVec( recDb::Coverage::notzero, md_db );
             string image_dir = md_dir + "image" + recFileSep();
+            recDb::Begin();
             for( idt mdID : mdIDs ) {
-                recMediaData md( mdID, md_db );
                 string filename = image_dir + "md" + recIdToStr( mdID ) + ".jpg";
-                if( md.ImportData( filename ) ) {
-                    md.Save( md_db );
-                }
+                csvImportMediaData( mdID, filename, md_db );
             }
+            recDb::Commit();
         }
         return true;
     }
@@ -313,9 +340,9 @@ bool recImportCsv( const string& csv_dir, const std::string& dbfname )
     wxFileName tfpd_fn( actual_dbfname.c_str() );
     string tfpd_dir = tfpd_fn.GetPathWithSep();
 
-    bool ret = csvImportMediaData( path, tfpd_dir );
+    bool ret = csvImportFiles( path );
+    ret = ret && csvImportMediaData( path, tfpd_dir );
 
-    ret = ret && csvImportFiles( path );
     // Close and reopen to check version etc.
     recDb::CloseDb();
     if( ret == false ) {
