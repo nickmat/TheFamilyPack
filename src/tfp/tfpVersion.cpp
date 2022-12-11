@@ -45,7 +45,7 @@
 #define VERSION_CONFIG   ""
 #endif
 
-#define RELEASE_NUM   " R5"
+#define RELEASE_NUM   " R6"
 #define VERSION_NUM   "0.3.0.1.1" RELEASE_NUM
 
 
@@ -111,6 +111,8 @@ const char* tfpTitle = "The Family Pack - Version " VERSION "\n"
 
  11dec22  v0.3.0.1.1 R5  Add Export/Import as csv and image files (for use as backup
                     and git friendly format).
+
+  active  v0.3.0.1.1 R6
 
  See also webpage http://thefamilypack.org/dev/routemap.htm
 
