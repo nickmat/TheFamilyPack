@@ -109,7 +109,7 @@ const char* tfpTitle = "The Family Pack - Version " VERSION "\n"
                     Add uid and changed fields to Reference and subordinate
                     tables.
 
- active  v0.3.0.1.1 R5  Add Export/Import as csv and image files (for use as backup
+ 11dec22  v0.3.0.1.1 R5  Add Export/Import as csv and image files (for use as backup
                     and git friendly format).
 
  See also webpage http://thefamilypack.org/dev/routemap.htm
