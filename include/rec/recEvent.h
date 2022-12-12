@@ -118,6 +118,8 @@ public:
     static void UpdateDatePoint( idt evID, const wxString& dbname = "Main" );
     void UpdateDatePoint( const wxString& dbname = "Main" );
 
+    static recIdVec GetTypeOfIDs( idt etID, const wxString& dbname = "Main" );
+
     static recEventVec GetLowerEvents( idt eventID, const wxString& dbname = "Main" );
     recEventVec GetLowerEvents( const wxString& dbname = "Main" ) const {
         return GetLowerEvents( f_id, dbname ); }

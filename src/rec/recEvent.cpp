@@ -447,6 +447,13 @@ void recEvent::UpdateDatePoint( const wxString& dbname )
     f_date_pt = recDate::GetDatePoint( f_date1_id, recDate::DatePoint::mid, dbname );
 }
 
+recIdVec recEvent::GetTypeOfIDs( idt etID, const wxString& dbname )
+{
+    return ExecuteIdVec(
+        "SELECT id FROM \"%s\".Event WHERE type_id=" ID ";", dbname, etID
+    );
+}
+
 recEventVec recEvent::GetLowerEvents( idt eventID, const wxString& dbname )
 {
     recEventVec vec;
