@@ -426,11 +426,11 @@ static const char* createFullDb =  /* recCreateFull.sql */
  "  property INTEGER NOT NULL,\n"
  "  val TEXT NOT NULL\n"
  ");\n"
- "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 44);\n"
+ "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 45);\n"
  "COMMIT;\n";
 
 static const char* CsvContactType =  /* ../../../common/data/core/ContactType.csv */
- "ID, Name, UID, Last Changed\n"
+ "id, 'name', 'uid', changed\n"
  "-1,\"Address\",\"88815CB7641A5C15A6B47B40E69DE654DD52\",2459664\n"
  "-2,\"Telephone\",\"7143E6D4D916C849F2B4FC6554AE5B421483\",2459664\n"
  "-3,\"Mobile\",\"D5914CBACD1E86412EB4771C1E015BCBD882\",2459664\n"
@@ -439,7 +439,7 @@ static const char* CsvContactType =  /* ../../../common/data/core/ContactType.cs
  "-6,\"Fax\",\"D717ACECD3D1DF6E663C9788BFB330350F50\",2459664\n";
 
 static const char* CsvEventType =  /* ../../../common/data/core/EventType.csv */
- "ID, Group, Name, UID, Last Changed\n"
+ "id, grp, 'name', 'uid', changed\n"
  "-1,1,\"Birth\",\"30AB007B03C8BF584A53124EB8D652697E84\",2459752\n"
  "-2,5,\"Death\",\"9D456F509BCB5CBEFB891695B48FAB5E9C75\",2459752\n"
  "-3,3,\"Marriage\",\"4C763908AD6A87F5453ADE212EAF8472E793\",2459752\n"
@@ -465,7 +465,7 @@ static const char* CsvEventType =  /* ../../../common/data/core/EventType.csv */
  "-23,7,\"Media\",\"C86CC13C6CCFDB2DB805A8AB0B3FC11FAE3A\",2459752\n";
 
 static const char* CsvEventTypeRole =  /* ../../../common/data/core/EventTypeRole.csv */
- "ID, Event Type ID, Prime, Official, Name, UID, Last Changed\n"
+ "id, type_id, prime, official, 'name', 'uid', changed\n"
  "-1,-1,1,0,\"Born\",\"6294C833BCF9D2E0F8DDDEC4946441F901B4\",2459752\n"
  "-2,-1,0,0,\"Mother\",\"59D8C78FC6E8102B214147C6A0A25012832F\",2459752\n"
  "-3,-1,0,1,\"Midwife\",\"527A6A76412AFF9C8DE1ABA399D8304655AE\",2459752\n"
@@ -555,26 +555,36 @@ static const char* CsvEventTypeRole =  /* ../../../common/data/core/EventTypeRol
  "-87,-17,1,0,\"Resident\",\"44821AA9C75ED4ECC7F5DDDDDA615CE35E61\",2459752\n"
  "-88,-23,1,0,\"Subject\",\"A9C3A735798018D815129BFE7617F01F8D5E\",2459752\n"
  "-89,-23,0,0,\"Producer\",\"8D27BA1F504D7471241D7BD9DB27D3BE37B7\",2459752\n"
- "-90,-23,0,0,\"Commentator\",\"25A5B0991319C04ADE60A87908D1BF8BCBEA\",2459752\n";
+ "-90,-23,0,0,\"Commentator\",\"25A5B0991319C04ADE60A87908D1BF8BCBEA\",2459752\n"
+ "-91,-18,1,0,\"Dependant\",\"CDC91B8A51F44B724E4D0C35115C538962AE\",2459927\n"
+ "-92,-18,1,0,\"Student\",\"9AF00DC6BBD5F78F425BF9F29667CDA76CF7\",2459927\n"
+ "-93,-18,1,0,\"Employed\",\"C23BFFA5949C73D1615D3B0A1EB1AD5FF3CE\",2459927\n"
+ "-94,-18,1,0,\"Self-employed\",\"FC6CBE97647F3A21F62400FD4E45E20C9329\",2459927\n"
+ "-95,-18,1,0,\"Retired\",\"111FD7C3FF61C7C9A565E4C1D94C0012A0E2\",2459927\n"
+ "-96,-18,1,0,\"Independent means\",\"75E0460AF1E541CB8ACAD21E70BAD1773DF5\",2459927\n"
+ "-97,-18,1,0,\"Tradesman\",\"1335786356DCD9EC8911F16008B056E5F82A\",2459927\n"
+ "-98,-18,1,0,\"Labourer\",\"ECDDA27D9D53FA506FE0791AB0EDFB57F32D\",2459927\n"
+ "-99,-18,1,0,\"Servant\",\"B35C8B4318A5C6EDD2A8EB2391EABDD1DE83\",2459927\n"
+ "-100,-18,1,0,\"Other\",\"EBCDE69308FDB2619AC1BEC93100ACCCD4BA\",2459927\n";
 
 static const char* CsvNamePartType =  /* ../../../common/data/core/NamePartType.csv */
- "ID, Group, Name, UID, Last Changed\n"
+ "id, grp, 'name', 'uid', changed\n"
  "-1,1,\"Given name\",\"D078B79DEA7D7C5E6954D9BD9A3F77951583\",2459715\n"
  "-2,1,\"Surname\",\"C8FA1239479F03CE5A4A9D9462DA1074599E\",2459715\n"
  "-3,1,\"Post name\",\"B4FC970919A55CBD630EC6A9109F692342B8\",2459715\n";
 
 static const char* CsvNameStyle =  /* ../../../common/data/core/NameStyle.csv */
- "ID, Name, UID, Last Changed\n"
+ "id, 'name', 'uid', changed\n"
  "-1,\"Birth name\",\"9E8D131956EFBA85EE89134A9EBD43004DF8\",2459715\n"
  "-2,\"Married name\",\"CCEF089DAD05903B8825EF5FC8F5A5DA140B\",2459715\n"
  "-3,\"Alias\",\"67F2C0CDB179EE99E6D3C4B82C9BAAAEEB5B\",2459715\n";
 
 static const char* CsvPlacePartType =  /* ../../../common/data/core/PlacePartType.csv */
- "ID, Name, UID, Last Changed\n"
+ "id, 'name', 'uid', changed\n"
  "-1,\"Address\",\"73D067F49E86C542C3E237AFC50BE77F8A11\",0\n";
 
 static const char* CsvResearcher =  /* ../../../common/data/core/Researcher.csv */
- "ID, Name, Comment, Contact List ID, UID, Last Changed\n"
+ "id, 'name', 'comment', con_list_id, 'uid', changed\n"
  "-1,\"Anonymous\",\"\",0,\"E16C3575699D77C1BABD0C582A44C6FA3E4A\",2459675\n";
 
 /* End of src/rec/embed/recDatabaseCreate.f2c */

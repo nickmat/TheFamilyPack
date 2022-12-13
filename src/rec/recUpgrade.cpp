@@ -41,8 +41,8 @@
 const int recVerMajor = 0;
 const int recVerMinor = 0;
 const int recVerRev = 10;
-const int recVerTest = 44;                       // <<======<<<<
-const char* recFullVersion = "TFPD-v0.0.10.44";  // <<======<<<<
+const int recVerTest = 45;                       // <<======<<<<
+const char* recFullVersion = "TFPD-v0.0.10.45";  // <<======<<<<
 
 // This is the database Media-only version that this program can work with.
 // If the full version matches, then this is assumed to match as well.
@@ -2399,6 +2399,43 @@ void UpgradeTest0_0_10_43to0_0_10_44( const wxString& dbname )
     recDb::GetDb()->ExecuteUpdate( update );
 }
 
+void UpgradeTest0_0_10_44to0_0_10_45( const wxString& dbname )
+{
+    // Version 0.0.10.44 to 0.0.10.45
+
+    // Add field 'uid' and 'changed' to EventType and EventTypeRole.
+    wxString update =
+        "BEGIN;\n";
+
+    update <<
+        "INSERT INTO \"" << dbname << "\".EventTypeRole (id, type_id, prime, official, name, uid, changed)"
+        " VALUES (-91, -18, 1, 0, 'Dependant', 'CDC91B8A51F44B724E4D0C35115C538962AE', 2459927);\n"
+        "INSERT INTO \"" << dbname << "\".EventTypeRole (id, type_id, prime, official, name, uid, changed)"
+        " VALUES (-92, -18, 1, 0, 'Student', '9AF00DC6BBD5F78F425BF9F29667CDA76CF7', 2459927);\n"
+        "INSERT INTO \"" << dbname << "\".EventTypeRole (id, type_id, prime, official, name, uid, changed)"
+        " VALUES (-93, -18, 1, 0, 'Employed', 'C23BFFA5949C73D1615D3B0A1EB1AD5FF3CE', 2459927);\n"
+        "INSERT INTO \"" << dbname << "\".EventTypeRole (id, type_id, prime, official, name, uid, changed)"
+        " VALUES (-94, -18, 1, 0, 'Self-employed', 'FC6CBE97647F3A21F62400FD4E45E20C9329', 2459927);\n"
+        "INSERT INTO \"" << dbname << "\".EventTypeRole (id, type_id, prime, official, name, uid, changed)"
+        " VALUES (-95, -18, 1, 0, 'Retired', '111FD7C3FF61C7C9A565E4C1D94C0012A0E2', 2459927);\n"
+        "INSERT INTO \"" << dbname << "\".EventTypeRole (id, type_id, prime, official, name, uid, changed)"
+        " VALUES (-96, -18, 1, 0, 'Independent means', '75E0460AF1E541CB8ACAD21E70BAD1773DF5', 2459927);\n"
+        "INSERT INTO \"" << dbname << "\".EventTypeRole (id, type_id, prime, official, name, uid, changed)"
+        " VALUES (-97, -18, 1, 0, 'Tradesman', '1335786356DCD9EC8911F16008B056E5F82A', 2459927);\n"
+        "INSERT INTO \"" << dbname << "\".EventTypeRole (id, type_id, prime, official, name, uid, changed)"
+        " VALUES (-98, -18, 1, 0, 'Labourer', 'ECDDA27D9D53FA506FE0791AB0EDFB57F32D', 2459927);\n"
+        "INSERT INTO \"" << dbname << "\".EventTypeRole (id, type_id, prime, official, name, uid, changed)"
+        " VALUES (-99, -18, 1, 0, 'Servant', 'B35C8B4318A5C6EDD2A8EB2391EABDD1DE83', 2459927);\n"
+        "INSERT INTO \"" << dbname << "\".EventTypeRole (id, type_id, prime, official, name, uid, changed)"
+        " VALUES (-100, -18, 1, 0, 'Other', 'EBCDE69308FDB2619AC1BEC93100ACCCD4BA', 2459927);\n"
+
+        "UPDATE \"" << dbname << "\".Version SET test=45 WHERE id=1;\n"
+        "COMMIT;\n"
+        ;
+
+    recDb::GetDb()->ExecuteUpdate( update );
+}
+
 void UpgradeRev0_0_10toCurrent( int test, const wxString& dbname )
 {
     switch( test )
@@ -2447,6 +2484,7 @@ void UpgradeRev0_0_10toCurrent( int test, const wxString& dbname )
     case 41: UpgradeTest0_0_10_41to0_0_10_42( dbname );
     case 42: UpgradeTest0_0_10_42to0_0_10_43( dbname );
     case 43: UpgradeTest0_0_10_43to0_0_10_44( dbname );
+    case 44: UpgradeTest0_0_10_44to0_0_10_45( dbname );
     }
 }
 
