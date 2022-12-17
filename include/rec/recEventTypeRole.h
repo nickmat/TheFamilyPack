@@ -30,6 +30,7 @@
 
 #include <rec/recDatabase.h>
 
+
 //============================================================================
 //-------------------------[ recEventTypeRole ]-------------------------------
 //============================================================================
@@ -41,7 +42,7 @@ public:
     static constexpr const char* s_tablename = "EventTypeRole";
     static constexpr recTable s_table = recTable::EventTypeRole;
 
-    enum Role {  // predefined entries, only given if required by the program
+    enum Role : idt {  // predefined entries, only given if required by the program
         ROLE_Unstated               = 0,
         ROLE_Birth_Born             = -1,
         ROLE_Birth_Mother           = -2,
@@ -78,7 +79,16 @@ public:
         ROLE_Media_Subject          = -88,
         ROLE_Media_Producer         = -89,
         ROLE_Media_Commentator      = -90,
-        ROLE_MAX                    = 36 // size of list
+        ROLE_Occ_Dependant          = -91,
+        ROLE_Occ_Student            = -92,
+        ROLE_Occ_Employed           = -93,
+        ROLE_Occ_Self_employed      = -94,
+        ROLE_Occ_Retired            = -95,
+        ROLE_Occ_Independent_means  = -96,
+        ROLE_Occ_Tradesman          = -97,
+        ROLE_Occ_Labourer           = -98,
+        ROLE_Occ_Service            = -99,
+        ROLE_Occupation_Other       = -100
     };
     enum Prime {
         PRIME_Ignore = -1,
