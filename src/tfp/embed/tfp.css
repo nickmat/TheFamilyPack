@@ -92,6 +92,12 @@ div.tfp td {
     text-align: left;
 }
 
+div.tfp td.title {
+    background-color: #eee1e3;
+    text-align: center;
+    font: bold 1.4em "Times New Roman", serif;    
+}
+
 div.tfp td.male {
     background-color: #d0fdff;
     text-align: center;
