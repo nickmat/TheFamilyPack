@@ -372,7 +372,7 @@ wxString tfpWriteFamilyPage( idt famID, const wxString& extdb, size_t iL, size_t
         recIndividualEvent ie(ieID, extdb );
         htm << 
             "<tr>\n<td><b><a href='tfp:E" << ie.FGetEventID() <<
-            "'>Occ:</a>: </b>" << recEventTypeRole::GetName( ie.FGetRoleID(), extdb ) <<
+            "'>Occ:</a>: </b>" << ie.FGetNote() <<
             "</td>\n"
         ;
     } else if( fam.FGetHusbID() ) {
@@ -388,7 +388,7 @@ wxString tfpWriteFamilyPage( idt famID, const wxString& extdb, size_t iL, size_t
         recIndividualEvent ie( ieID, extdb );
         htm << 
             "<td><b><a href='tfp:E" << ie.FGetEventID() <<
-            "'>Occ:</a>: </b>" << recEventTypeRole::GetName( ie.FGetRoleID(), extdb ) <<
+            "'>Occ:</a>: </b>" << ie.FGetNote() <<
             "</td>\n</tr>\n"
         ;
     } else if( fam.FGetWifeID() ) {
