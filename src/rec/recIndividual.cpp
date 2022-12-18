@@ -414,7 +414,7 @@ idt recIndividual::FindGroupEvent( idt indID, recEventTypeGrp grp, const wxStrin
         "  INNER JOIN "
         "  \"%s\".EventType T ON R.type_id=T.id "
         "  WHERE T.grp=%d AND R.prime=1) "
-        "ON rid=IE.role_id WHERE IE.ind_id=" ID " "
+        "ON rid=IE.role_id WHERE IE.ind_id=" ID " AND IE.higher_id=0 "
         "ORDER BY IE.ind_seq;",
         UTF8_( dbname ), UTF8_( dbname ), UTF8_( dbname ), grp, indID
     );
