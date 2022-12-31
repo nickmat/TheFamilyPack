@@ -57,92 +57,108 @@ wxString tfpWriteEventPage( idt eventID, TfpFrame& frame )
     htm <<
         tfpWrHeadTfp( "Event " + eve.GetIdStr() ) <<
 
-        "<h1>Event " << eve.GetIdStr() << ": " << eve.FGetTitle() << "</h1>\n"
+        // Add a higher Event record here.
+
         "<table class='data'>\n"
+
+        "<tr>\n<td class='status'>\n"
+        "<b>Event: " << eve.GetIdStr() << "</b>"
+        "</td>\n</tr>\n"
+
+        "<tr>\n<td class='title'>\n" << eve.FGetTitle() << "\n</td>\n</tr>\n"
         "<tr>\n<td>"
         "<b>Type:</b> " << eve.GetTypeStr( extdb ) <<
         " &nbsp; <b>Group:</b> " << recEventType::GetGroupStr( eve.FGetTypeID(), extdb ) <<
-        "</td>\n</tr>\n"
-        "<tr>\n<td>"
-    ;
+        "</td>\n</tr>\n";
+
     if( eve.FGetDate1ID() ) {
         htm <<
+            "<tr>\n<td>"
             "<b><a href='tfpi:D" << eve.FGetDate1ID() <<
-            "'>Date</a>: </b>" << eve.GetDateStr( extdb )
+            "'>Date</a>: </b>" << eve.GetDateStr( extdb ) <<
+            "</td>\n</tr>\n"
         ;
-    } else {
-        htm << "<b>Date:</b>";
     }
-    htm << "</td>\n</tr>\n<tr>\n<td>";
     if( eve.FGetPlaceID() ) {
         htm <<
+            "<tr>\n<td>"
             "<b><a href='tfpi:P" << eve.FGetPlaceID() <<
-            "'>Place</a>: </b>" << eve.GetAddressStr( extdb )
+            "'>Place</a>: </b>" << eve.GetAddressStr( extdb ) <<
+            "</td>\n</tr>\n"
         ;
-    } else {
-        htm << "<b>Place:</b>";
     }
-    if( eve.FGetHigherID() ) {
+    if( !eve.FGetNote().empty() ) {
         htm <<
-            "</td>\n</tr>\n<tr>\n"
-            "<td><b><a href='tfp:E" << eve.FGetHigherID() <<
-            "'>Part of: " << recEvent::GetIdStr( eve.FGetHigherID() ) <<
-            "</a></b> " << recEvent::GetTitle( eve.FGetHigherID(), extdb )
+            "<tr>\n<td><b>Note: </b>" << eve.FGetNote() << "</td>\n</tr>\n"
         ;
     }
-    htm <<
-        "</td>\n</tr>\n"
-        "<tr>\n<td><b>Note: </b>" << eve.FGetNote() << "</td>\n</tr>\n"
-        "<tr>\n<td><b>User Ref: </b>" << eve.FGetUserRef() << "</td>\n</tr>\n"
-        "</table>\n"
-    ;
+    if( !eve.FGetUserRef().empty() ) {
+        htm <<
+            "<tr>\n<td><b>User Ref: </b>" << eve.FGetUserRef() << "</td>\n</tr>\n"
+        ;
+    }
+    htm << "</table>\n";
+
 
     recIndEventVec ies = eve.GetIndividualEvents( extdb );
-    if( !ies.empty() ) {
-        htm << "<table class='data'>\n<tr>\n"
-               "<th>Role</th>\n<th colspan='2'>Individual</th>\n<th>Note</th>\n<th>Link</th>\n</tr>\n";
-        for( size_t i = 0 ; i < ies.size() ; i++ ) {
-            recIndividual ind( ies[i].FGetIndID(), extdb );
-            htm
-                << "<tr>\n<td>" << recEventTypeRole::GetName( ies[i].FGetRoleID(), extdb )
-                << "</td>\n<td><a href='tfp:I" << ind.FGetID()
-                << "'><b>" << ind.GetIdStr() 
-                << "</b></a></td>\n<td class='" << 
-                tfpGetIndSexClass( ind.FGetID(), Sex::unknown, extdb )
-                << "'>\n<b><a href='tfp:F" << ind.FGetFamID()
-                << "'>" << ind.FGetName()
-                << "</a></b>"
-                << " <a href='tfpc:MR" << ind.FGetID()
-                << "'><img src='memory:fam.png' alt='Family'></a>"
-                << "</td>\n<td>" << ies[i].FGetNote()
-                << "</td>\n"
-            ;
-            if( ies[i].FGetHigherID() != 0 ) {
-                recIndividualEvent higher_e( ies[i].FGetHigherID(), extdb );
-                htm
-                    << "<td><a href='tfp:E" << higher_e.FGetEventID()
-                    << "'><b>" << recEvent::GetIdStr( higher_e.FGetEventID() ) 
-                    << "</b></a></td>\n"
+    for( auto& ie : ies ) {
+        idt indID = ie.FGetIndID();
+        wxASSERT( indID != 0 );
+        recIndividual ind( indID, extdb );
+        htm << "<table class='data'>";
+        if( ie.FGetHigherID() != 0 ) {
+            recIndividualEvent hi_ie( ie.FGetHigherID(), extdb );
+            std::string hi_eaStr = recEvent::PrefixId( hi_ie.FGetEventID() );
+            htm <<
+                "\n<th colspan='4'>Higher Linked Individual Event</th>"
+                "\n<tr><td>\n" << ind.FGetName() <<
+                "\n</td><td>\n" << recEventTypeRole::GetName( hi_ie.FGetRoleID(), extdb ) <<
+                "\n</td><td>\n" << hi_ie.FGetNote() <<
+                "\n</td><td>\n<a href='tfp:" << hi_eaStr << "'><b>" << hi_eaStr << "</b></a>"
+                "\n</td></tr>\n"
                 ;
-            } else {
-                htm << "<td> </td>\n";
-            }
-            htm << "</tr>\n";
-            recIndEventVec lower_ies = ies[i].GetLowerIndEvents( extdb );
-            for( size_t j = 0 ; j < lower_ies.size() ; j++ ) {
-                recEvent lower_e( lower_ies[j].FGetEventID(), extdb );
-                htm
-                    << "<tr>\n<td>" << recEventTypeRole::GetName( lower_ies[j].FGetRoleID(), extdb )
-                    << "</td>\n<td> </td>\n<td>" << lower_e.FGetTitle()
-                    << "</td>\n<td>" << lower_e.FGetNote()
-                    << "</td>\n<td><a href='tfp:E" << lower_e.FGetID()
-                    << "'><b>" << lower_e.GetIdStr() 
-                    << "</b></a></td>\n</tr>\n"
-                ;
-            }
         }
+        htm <<
+            "\n<tr><td  colspan='4' class='status'>\n"
+            "<b>Individual: " << ind.PrefixId() << "</b>"
+            "\n</td></tr>\n"
+            "\n<tr><td class='" << tfpGetIndSexClass( indID, Sex::unknown, extdb ) << "'>\n"
+            "<b><a href='tfp:" << ind.PrefixId() << "'>" << ind.FGetName() <<
+            "</a></b> " << ind.FGetEpitaph() << " <a href='tfpc:MR" << indID <<
+            "'><img src='memory:fam.png' alt='Family'></a>"
+            "\n</td><td>\n" << recEventTypeRole::GetName( ie.FGetRoleID(), extdb ) <<
+            "\n</td><td>\n" << ie.FGetNote() <<
+            "\n</td><td>\n"
+            "\n</td></tr>\n"
+            ;
+
+        recIndEventVec low_ies = ie.GetLowerIndEvents( extdb );
+        if( !low_ies.empty() ) {
+            htm << "<th colspan='4'>Linked Individual Events</th>\n";
+        }
+        for( auto& low_ie : low_ies ) {
+            if( low_ie.FGetIndID() != indID ) {
+                htm <<
+                    "<tr><td colspan='4'>\nERROR! linked to individual " <<
+                    recIndividual::PrefixId( low_ie.FGetIndID() ) <<
+                    "\n</td></tr>\n"
+                    ;
+                continue;
+            }
+            std::string low_eaStr = recEvent::PrefixId( low_ie.FGetEventID() );
+            htm <<
+                "\n<tr><td>\n" << ind.FGetName() <<
+                "\n</td><td>\n" << recEventTypeRole::GetName( low_ie.FGetRoleID(), extdb ) <<
+                "\n</td><td>\n" << low_ie.FGetNote() <<
+                "\n</td><td>\n<a href='tfp:" << low_eaStr << "'><b>" << low_eaStr << "</b></a>"
+                "\n</td></tr>\n"
+                ;
+        }
+
         htm << "</table>\n";
     }
+
+    htm << "<hr>\n";
 
     recEventEventaVec eeas = eve.GetEventEventas( extdb );
     if( eeas.size() ) {
