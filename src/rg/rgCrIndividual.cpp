@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     9 October 2010
- * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2023, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -113,7 +113,11 @@ bool rgDlgCreateIndividual::TransferDataFromWindow()
     m_individual.FSetNote( m_textNote->GetValue() );
 
     int seq = m_name.AddNameParts( m_textGiven->GetValue(), NAME_TYPE_Given_name, 0 );
-    m_name.AddNamePart( m_textSurname->GetValue(), NAME_TYPE_Surname, seq );
+    wxString surname = m_textSurname->GetValue();
+    if( surname.empty() ) {
+        surname = "?";
+    }
+    m_name.AddNamePart( surname, NAME_TYPE_Surname, seq );
 
     m_individual.UpdateNames();
     m_individual.Save();
