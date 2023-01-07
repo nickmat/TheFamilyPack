@@ -3,8 +3,9 @@
  * Project:     Cal: A general purpose calendar library.
  * Purpose:     Class to parse a date string into tokens.
  * Author:      Nick Matthews
+ * Website:     http://thefamilypack.org
  * Created:     20th December 2012
- * Copyright:   Copyright (c) 2012, Nick Matthews.
+ * Copyright:   Copyright (c) 2012, 2023 Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -27,7 +28,7 @@
 #define CALPARSE_H
 
 #include <map>
-#include "calendar.h"
+#include "cal/calendar.h"
 
 
 class calToken;

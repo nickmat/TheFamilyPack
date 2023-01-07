@@ -33,7 +33,7 @@
 #include "wx/wx.h"
 #endif
 
-#include "calendar.h"
+#include "cal/calendar.h"
 #include "calCommon.h"
 #include "calParse.h"
 #include "calRecord.h"

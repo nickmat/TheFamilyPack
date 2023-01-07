@@ -3,9 +3,8 @@
  * Project:     Cal: A general purpose calendar library.
  * Purpose:     Class to hold date as separarate fields.
  * Author:      Nick Matthews
- * Modified by:
+ * Website:     http://thefamilypack.org
  * Created:     20th December 2012
- * RCS-ID:      $Id$
  * Copyright:   Copyright (c) 2012, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -28,7 +27,7 @@
 #ifndef CALRECORD_H
 #define CALRECORD_H
 
-#include "calendar.h"
+#include "cal/calendar.h"
 
 class calToken;
 
