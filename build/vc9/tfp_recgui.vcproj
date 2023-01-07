@@ -450,10 +450,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\rg\fb\fbRgEditDatabase.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\rg\fb\fbRgEditDate.h"
 				>
 			</File>
@@ -491,6 +487,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\rg\fb\fbRgSelect.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\fb\fbRgSetupDatabase.h"
 				>
 			</File>
 			<File

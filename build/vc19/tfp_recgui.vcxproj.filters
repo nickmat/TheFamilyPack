@@ -202,9 +202,6 @@
     <ClInclude Include="..\..\src\rg\fb\fbRgEditContact.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\rg\fb\fbRgEditDatabase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\rg\fb\fbRgEditDate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -233,6 +230,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\rg\fb\fbRgSelect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\rg\fb\fbRgSetupDatabase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\rg\fb\fbRgSetupReference.h">

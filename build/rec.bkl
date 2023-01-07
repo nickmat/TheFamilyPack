@@ -216,10 +216,10 @@
     <headers>$(LOCAL_SRC)/rg/fb/fbRgEditName.h</headers>
     <headers>$(LOCAL_SRC)/rg/fb/fbRgEditPersona.h</headers>
     <headers>$(LOCAL_SRC)/rg/fb/fbRgEditPlace.h</headers>
-    <headers>$(LOCAL_SRC)/rg/fb/fbRgEditDatabase.h</headers>
     <headers>$(LOCAL_SRC)/rg/fb/fbRgEditReference.h</headers>
     <headers>$(LOCAL_SRC)/rg/fb/fbRgEditResearcher.h</headers>
     <headers>$(LOCAL_SRC)/rg/fb/fbRgSelect.h</headers>
+    <headers>$(LOCAL_SRC)/rg/fb/fbRgSetupDatabase.h</headers>
     <headers>$(LOCAL_SRC)/rg/fb/fbRgSetupReference.h</headers>
     <headers>$(LOCAL_SRC)/rg/fb/fbRgViewMedia.h</headers>
     <headers>$(LOCAL_SRC)/rg/fbRgDialog.h</headers>
