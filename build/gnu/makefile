@@ -113,11 +113,10 @@ WXSQLITE3_CXXFLAGS = $(VAR) $(VAR_5) -DSQLITE_ENABLE_RTREE -I../../include \
 WXSQLITE3_OBJECTS =  \
 	wxsqlite3_sqlite3mc_amalgamation.o \
 	wxsqlite3_wxsqlite3.o
-HXML5_CXXFLAGS = $(VAR) $(VAR_5) -I../../include -I../../include/hxml5 \
-	$(CPPFLAGS) $(CXXFLAGS)
-HXML5_OBJECTS =  \
-	hxml5_hxml5.o \
-	hxml5_pugixml.o
+PUGIXML_CXXFLAGS = $(VAR) $(VAR_5) -I../../include/pugixml $(CPPFLAGS) \
+	$(CXXFLAGS)
+PUGIXML_OBJECTS =  \
+	pugixml_pugixml.o
 REC_CXXFLAGS = $(VAR) $(VAR_5) -I../../include/rec -I../../include `$(WX_CONFIG) \
 	--cxxflags $(WX_CONFIG_FLAGS)` $(CPPFLAGS) $(CXXFLAGS)
 REC_OBJECTS =  \
@@ -257,7 +256,7 @@ endif
 
 ### Targets: ###
 
-all: test_for_selected_wxbuild tfp libcalendar.a libwxsqlite3.a libhxml5.a librec.a libreccl.a librecgui.a
+all: test_for_selected_wxbuild tfp libcalendar.a libwxsqlite3.a libpugixml.a librec.a libreccl.a librecgui.a
 
 install: 
 
@@ -269,7 +268,7 @@ clean:
 	rm -f tfp
 	rm -f libcalendar.a
 	rm -f libwxsqlite3.a
-	rm -f libhxml5.a
+	rm -f libpugixml.a
 	rm -f librec.a
 	rm -f libreccl.a
 	rm -f librecgui.a
@@ -277,8 +276,8 @@ clean:
 test_for_selected_wxbuild: 
 	@$(WX_CONFIG) $(WX_CONFIG_FLAGS)
 
-tfp: $(TFP_OBJECTS) librecgui.a librec.a libcalendar.a libwxsqlite3.a libhxml5.a
-	$(CXX) -o $@ $(TFP_OBJECTS)  $(VAR_5)  $(LDFLAGS)  librecgui.a librec.a libcalendar.a libwxsqlite3.a libhxml5.a `$(WX_CONFIG) $(WX_CONFIG_FLAGS) --libs webview,adv,core,base`
+tfp: $(TFP_OBJECTS) librecgui.a librec.a libcalendar.a libwxsqlite3.a
+	$(CXX) -o $@ $(TFP_OBJECTS)  $(VAR_5)  $(LDFLAGS)  librecgui.a librec.a libcalendar.a libwxsqlite3.a `$(WX_CONFIG) $(WX_CONFIG_FLAGS) --libs webview,adv,core,base`
 
 libcalendar.a: $(CALENDAR_OBJECTS)
 	rm -f $@
@@ -290,9 +289,9 @@ libwxsqlite3.a: $(WXSQLITE3_OBJECTS)
 	$(AR) rcu $@ $(WXSQLITE3_OBJECTS)
 	$(RANLIB) $@
 
-libhxml5.a: $(HXML5_OBJECTS)
+libpugixml.a: $(PUGIXML_OBJECTS)
 	rm -f $@
-	$(AR) rcu $@ $(HXML5_OBJECTS)
+	$(AR) rcu $@ $(PUGIXML_OBJECTS)
 	$(RANLIB) $@
 
 librec.a: $(REC_OBJECTS)
@@ -305,7 +304,7 @@ libreccl.a: $(RECCL_OBJECTS)
 	$(AR) rcu $@ $(RECCL_OBJECTS)
 	$(RANLIB) $@
 
-librecgui.a: $(RECGUI_OBJECTS) libhxml5.a
+librecgui.a: $(RECGUI_OBJECTS) libpugixml.a
 	rm -f $@
 	$(AR) rcu $@ $(RECGUI_OBJECTS)
 	$(RANLIB) $@
@@ -421,11 +420,8 @@ wxsqlite3_sqlite3mc_amalgamation.o: ./../../3rdparty/wxsqlite3/sqlite3mc_amalgam
 wxsqlite3_wxsqlite3.o: ./../../3rdparty/wxsqlite3/wxsqlite3.cpp
 	$(CXX) -c -o $@ $(WXSQLITE3_CXXFLAGS) $(CPPDEPS) $<
 
-hxml5_hxml5.o: ./../../src/hxml5/hxml5.cpp
-	$(CXX) -c -o $@ $(HXML5_CXXFLAGS) $(CPPDEPS) $<
-
-hxml5_pugixml.o: ./../../src/hxml5/pugixml.cpp
-	$(CXX) -c -o $@ $(HXML5_CXXFLAGS) $(CPPDEPS) $<
+pugixml_pugixml.o: ./../../3rdparty/pugixml/pugixml.cpp
+	$(CXX) -c -o $@ $(PUGIXML_CXXFLAGS) $(CPPDEPS) $<
 
 rec_recAssociate.o: ./../../src/rec/recAssociate.cpp
 	$(CXX) -c -o $@ $(REC_CXXFLAGS) $(CPPDEPS) $<

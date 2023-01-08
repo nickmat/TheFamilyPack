@@ -35,7 +35,6 @@
 
 #include <rg/rgDialogs.h>
 
-#include <hxml5/pugixml.hpp>
 
 using namespace pugi;
 using std::string;

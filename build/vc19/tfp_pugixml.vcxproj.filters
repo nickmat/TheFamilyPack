@@ -11,21 +11,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\hxml5\hxml5.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\hxml5\pugixml.cpp">
+    <ClCompile Include="..\..\3rdparty\pugixml\pugixml.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\hxml5\hxml5.h">
+    <ClInclude Include="..\..\include\pugixml\pugiconfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\hxml5\pugiconfig.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\hxml5\pugixml.h">
+    <ClInclude Include="..\..\include\pugixml\pugixml.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -32,7 +32,7 @@
 #include <wx/statline.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
-#include <hxml5/pugixml.hpp>
+#include <pugixml/pugixml.hpp>
 
 #include <rec/recReference.h>
 

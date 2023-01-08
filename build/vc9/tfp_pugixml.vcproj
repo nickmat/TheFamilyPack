@@ -9,8 +9,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="hxml5"
-	ProjectGUID="{F25250B6-FCD0-5E43-B5E4-0C36EC0392C7}"
+	Name="pugixml"
+	ProjectGUID="{5FF08768-6D75-5DB9-8D0C-70F89966E66B}"
 	>
 	<Platforms>
 		<Platform
@@ -24,7 +24,7 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(SolutionDir)$(ConfigurationName)\hxml5"
+			IntermediateDirectory="$(SolutionDir)$(ConfigurationName)\pugixml"
 			ConfigurationType="4"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -44,19 +44,19 @@
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="WIN32;_LIB"
-				AdditionalIncludeDirectories="..\..\include;..\..\include\hxml5"
+				AdditionalIncludeDirectories="..\..\include\pugixml"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/MP"
 				Optimization="2"
-				AdditionalIncludeDirectories="..\..\include;..\..\include\hxml5"
+				AdditionalIncludeDirectories="..\..\include\pugixml"
 				PreprocessorDefinitions="WIN32;_LIB"
 				ExceptionHandling="1"
 				RuntimeLibrary="2"
 				RuntimeTypeInfo="true"
-				ObjectFile="$(SolutionDir)$(ConfigurationName)\hxml5\"
-				ProgramDataBaseFileName="$(SolutionDir)$(ConfigurationName)\hxml5u.pdb"
+				ObjectFile="$(SolutionDir)$(ConfigurationName)\pugixml\"
+				ProgramDataBaseFileName="$(SolutionDir)$(ConfigurationName)\pugixmlu.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="0"
@@ -68,14 +68,14 @@
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions=""
 				Culture="1033"
-				AdditionalIncludeDirectories="..\..\include;..\..\include\hxml5"
+				AdditionalIncludeDirectories="..\..\include\pugixml"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(SolutionDir)$(ConfigurationName)\hxml5u.lib"
+				OutputFile="$(SolutionDir)$(ConfigurationName)\pugixmlu.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -89,7 +89,7 @@
 			/>
 			<Tool
 				Name="VCBscMakeTool"
-				OutputFile="$(SolutionDir)$(ConfigurationName)\tfp_hxml5.bsc"
+				OutputFile="$(SolutionDir)$(ConfigurationName)\tfp_pugixml.bsc"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -102,7 +102,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(SolutionDir)$(ConfigurationName)\hxml5"
+			IntermediateDirectory="$(SolutionDir)$(ConfigurationName)\pugixml"
 			ConfigurationType="4"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -122,21 +122,21 @@
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="WIN32;_LIB;_DEBUG"
-				AdditionalIncludeDirectories="..\..\include;..\..\include\hxml5"
+				AdditionalIncludeDirectories="..\..\include\pugixml"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/MP"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\include;..\..\include\hxml5"
+				AdditionalIncludeDirectories="..\..\include\pugixml"
 				PreprocessorDefinitions="WIN32;_LIB;_DEBUG"
 				ExceptionHandling="1"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				BufferSecurityCheck="true"
 				RuntimeTypeInfo="true"
-				ObjectFile="$(SolutionDir)$(ConfigurationName)\hxml5\"
-				ProgramDataBaseFileName="$(SolutionDir)$(ConfigurationName)\hxml5ud.pdb"
+				ObjectFile="$(SolutionDir)$(ConfigurationName)\pugixml\"
+				ProgramDataBaseFileName="$(SolutionDir)$(ConfigurationName)\pugixmlud.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
@@ -148,14 +148,14 @@
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_DEBUG"
 				Culture="1033"
-				AdditionalIncludeDirectories="..\..\include;..\..\include\hxml5"
+				AdditionalIncludeDirectories="..\..\include\pugixml"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(SolutionDir)$(ConfigurationName)\hxml5ud.lib"
+				OutputFile="$(SolutionDir)$(ConfigurationName)\pugixmlud.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -169,7 +169,7 @@
 			/>
 			<Tool
 				Name="VCBscMakeTool"
-				OutputFile="$(SolutionDir)$(ConfigurationName)\tfp_hxml5.bsc"
+				OutputFile="$(SolutionDir)$(ConfigurationName)\tfp_pugixml.bsc"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -190,11 +190,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\src\hxml5\hxml5.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\hxml5\pugixml.cpp"
+				RelativePath="..\..\3rdparty\pugixml\pugixml.cpp"
 				>
 			</File>
 		</Filter>
@@ -204,15 +200,11 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\..\include\hxml5\hxml5.h"
+				RelativePath="..\..\include\pugixml\pugiconfig.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\hxml5\pugiconfig.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\hxml5\pugixml.h"
+				RelativePath="..\..\include\pugixml\pugixml.h"
 				>
 			</File>
 		</Filter>

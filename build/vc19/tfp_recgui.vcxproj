@@ -238,8 +238,8 @@
     <ClInclude Include="..\..\src\rg\rgViewMedia.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="tfp_hxml5.vcxproj">
-      <Project>{f25250b6-fcd0-5e43-b5e4-0c36ec0392c7}</Project>
+    <ProjectReference Include="tfp_pugixml.vcxproj">
+      <Project>{5ff08768-6d75-5db9-8d0c-70f89966e66b}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>

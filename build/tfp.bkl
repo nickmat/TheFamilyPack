@@ -133,7 +133,6 @@
     <library>rec</library>
     <library>calendar</library>
     <library>wxsqlite3</library>
-    <library>hxml5</library>
     <wx-lib>webview</wx-lib>
     <wx-lib>adv</wx-lib>
     <wx-lib>core</wx-lib>
@@ -146,7 +145,7 @@
     <include file="utils.bkl"/>
   </if>
   <include file="wxsqlite3_tfp.bkl"/>
-  <include file="hxml5.bkl"/>
+  <include file="pugixml.bkl"/>
   <include file="rec.bkl"/>
 
   <if cond="INC_NON_SVN=='1'">

@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.3.32901.215
+VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tfp", "tfp_tfp.vcxproj", "{8BCB6856-802F-5FF6-8D8C-DB72222DF9DF}"
 EndProject
@@ -22,7 +22,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cdb", "tfp_cdb.vcxproj", "{
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "wxsqlite3", "tfp_wxsqlite3.vcxproj", "{45D7308E-CFFD-5887-8A1C-3D8F6E095C88}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hxml5", "tfp_hxml5.vcxproj", "{F25250B6-FCD0-5E43-B5E4-0C36EC0392C7}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pugixml", "tfp_pugixml.vcxproj", "{5FF08768-6D75-5DB9-8D0C-70F89966E66B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rec", "tfp_rec.vcxproj", "{1A037570-C3CC-5D6A-9C10-F55F1A29680C}"
 EndProject
@@ -76,10 +76,10 @@ Global
 		{45D7308E-CFFD-5887-8A1C-3D8F6E095C88}.Debug|Win32.Build.0 = Debug|Win32
 		{45D7308E-CFFD-5887-8A1C-3D8F6E095C88}.Release|Win32.ActiveCfg = Release|Win32
 		{45D7308E-CFFD-5887-8A1C-3D8F6E095C88}.Release|Win32.Build.0 = Release|Win32
-		{F25250B6-FCD0-5E43-B5E4-0C36EC0392C7}.Debug|Win32.ActiveCfg = Debug|Win32
-		{F25250B6-FCD0-5E43-B5E4-0C36EC0392C7}.Debug|Win32.Build.0 = Debug|Win32
-		{F25250B6-FCD0-5E43-B5E4-0C36EC0392C7}.Release|Win32.ActiveCfg = Release|Win32
-		{F25250B6-FCD0-5E43-B5E4-0C36EC0392C7}.Release|Win32.Build.0 = Release|Win32
+		{5FF08768-6D75-5DB9-8D0C-70F89966E66B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5FF08768-6D75-5DB9-8D0C-70F89966E66B}.Debug|Win32.Build.0 = Debug|Win32
+		{5FF08768-6D75-5DB9-8D0C-70F89966E66B}.Release|Win32.ActiveCfg = Release|Win32
+		{5FF08768-6D75-5DB9-8D0C-70F89966E66B}.Release|Win32.Build.0 = Release|Win32
 		{1A037570-C3CC-5D6A-9C10-F55F1A29680C}.Debug|Win32.ActiveCfg = Debug|Win32
 		{1A037570-C3CC-5D6A-9C10-F55F1A29680C}.Debug|Win32.Build.0 = Debug|Win32
 		{1A037570-C3CC-5D6A-9C10-F55F1A29680C}.Release|Win32.ActiveCfg = Release|Win32
@@ -97,6 +97,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {0B21C66F-6A6E-4CF0-A2BC-1742D66E989E}
+		SolutionGuid = {44FE81D8-94B1-4AC1-A973-6EBCD976EF52}
 	EndGlobalSection
 EndGlobal
