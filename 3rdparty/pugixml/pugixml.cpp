@@ -178,7 +178,6 @@ namespace pugi
 #else
 #	include <stdint.h>
 #endif
-#include <compare>
 
 // Memory allocation
 PUGI__NS_BEGIN
