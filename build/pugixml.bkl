@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<makefile>
+
+  <lib id="pugixml" template="wxlike">
+    <libname>pugixml$(WXLIBPOSTFIX)</libname>
+
+    <sources>$(REL_ROOT)/3rdparty/pugixml/pugixml.cpp</sources>
+
+    <headers>$(LOCAL_INC)/pugixml/pugiconfig.h</headers>
+    <headers>$(LOCAL_INC)/pugixml/pugixml.h</headers>
+
+    <include>$(LOCAL_INC)/pugixml</include>
+  </lib>
+
+</makefile>
