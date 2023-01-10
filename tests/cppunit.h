@@ -247,6 +247,7 @@ inline std::ostream& operator<<(std::ostream& o, const wxString& s)
   #pragma warning(default:4702)
 #endif // _MSC_VER
 
+#ifndef WITH_CMAKE
 // for VC++ automatically link in cppunit library
 #ifdef __VISUALC__
   #ifdef NDEBUG
@@ -254,6 +255,7 @@ inline std::ostream& operator<<(std::ostream& o, const wxString& s)
   #else // Debug
     #pragma comment(lib, "cppunitd.lib")
   #endif // Release/Debug
+#endif
 #endif
 
 #endif // _WX_CPPUNIT_H_
