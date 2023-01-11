@@ -1,0 +1,4 @@
+[submodule "3rdparty/CppUnit"]
+	path = 3rdparty/CppUnit
+	url = https://github.com/nickmat/CppUnit.git
+	branch = TFP
