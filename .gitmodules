@@ -2,3 +2,7 @@
 	path = 3rdparty/CppUnit
 	url = https://github.com/nickmat/CppUnit.git
 	branch = TFP
+[submodule "3rdparty/wxWidgets"]
+	path = 3rdparty/wxWidgets
+	url = https://github.com/nickmat/wxWidgets.git
+	branch = 3.2
