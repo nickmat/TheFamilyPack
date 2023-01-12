@@ -264,6 +264,9 @@ wxString tfpWriteMediaDataPage( const wxString& link, const wxString& extdb )
         return tfpWrErrorPage( link );
     }
     recMediaData md( mdID, assdb );
+    if( md.FGetID() == 0 ) {
+        return htm;
+    }
     wxString memoryfile = md.CreateMemoryFile();
 
     // Write page here
