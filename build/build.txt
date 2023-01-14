@@ -4,6 +4,10 @@ Build Instructions
 The tfp build system is based on the bakefile program used by the wxWidgets
 library.
 
+The Bakefile system is being replaced with a CMake system. Currently
+the is working for the Windows version only (see below). Still working on
+on the Gnu/Linux and OSX versions.
+
 The build is slightly complicated because of the use of a custom utility
 "file2cpp" which is used to embed text files into the program. (It was also
 used for image files, but these are now in xpm format.) As both the input and
@@ -17,6 +21,10 @@ details are coming shortly.
 The build process is currently being modified to allow for the c++11 standard.
 
 The Gnu/Linux build has been tested on Linux Mint 14 and Ubuntu 11.10
+
+
+Bakefile Build Systems
+~~~~~~~~~~~~~~~~~~~~~~
 
 Windows Build
 ~~~~~~~~~~~~~
@@ -82,6 +90,26 @@ Mac/OSX Build
 
 Note the the developer is completely new to the mac system and this is his
 first attempt at creating a mac app.
+
+
+CMake Build Systems
+~~~~~~~~~~~~~~~~~~~
+
+Windows Build
+~~~~~~~~~~~~~
+
+1) Download the source files with the command:-
+    git clone https://github.com/nickmat/TheFamilyPack.git --recurse-submodules
+    cd TheFamilyPack\build
+    cmake-vc-working.bat
+    cd vc-working
+    tfp.sln
+
+   An alternative build directory can be created with the 
+    cmake-msvc.bat
+   file which creates a build directory 'msvc'. Use this if you want to
+   experiment without disturbing the working directory.
+
 
 Other Systems
 ~~~~~~~~~~~~~
