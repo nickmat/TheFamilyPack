@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3rd April 2013
- * Copyright:   Copyright (c) 2013..2022, Nick Matthews.
+ * Copyright:   Copyright (c) 2013..2023, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -41,8 +41,8 @@
 const int recVerMajor = 0;
 const int recVerMinor = 0;
 const int recVerRev = 10;
-const int recVerTest = 45;                       // <<======<<<<
-const char* recFullVersion = "TFPD-v0.0.10.45";  // <<======<<<<
+const int recVerTest = 46;                       // <<======<<<<
+const char* recFullVersion = "TFPD-v0.0.10.46";  // <<======<<<<
 
 // This is the database Media-only version that this program can work with.
 // If the full version matches, then this is assumed to match as well.
@@ -2436,6 +2436,47 @@ void UpgradeTest0_0_10_44to0_0_10_45( const wxString& dbname )
     recDb::GetDb()->ExecuteUpdate( update );
 }
 
+void UpgradeTest0_0_10_45to0_0_10_46( const wxString& dbname )
+{
+    // Version 0.0.10.45 to 0.0.10.46
+
+    // Add field 'sig' to EventType.
+    wxString update =
+        "BEGIN;\n";
+
+    update <<
+        "CREATE TABLE \"" << dbname << "\".NewEventType (\n"
+        "  id INTEGER PRIMARY KEY,\n"
+        "  grp INTEGER NOT NULL,\n"
+        "  sig INTEGER NOT NULL,\n"
+        "  name TEXT NOT NULL,\n"
+        "  uid TEXT NOT NULL,\n"
+        "  changed INTEGER NOT NULL\n"
+        ");\n"
+
+        "INSERT INTO \"" << dbname << "\".NewEventType"
+        " (id, grp, sig, name, uid, changed)\n"
+        " SELECT id, grp, 50, name, uid, changed\n"
+        " FROM \"" << dbname << "\".EventType;\n"
+
+        "DROP TABLE \"" << dbname << "\".EventType;\n"
+        "ALTER TABLE \"" << dbname << "\".NewEventType RENAME TO EventType;\n"
+
+        "UPDATE \"" << dbname << "\".EventType SET sig=0 WHERE id=0;\n"
+        "UPDATE \"" << dbname << "\".EventType SET sig=25 WHERE id=-15;\n"
+        "UPDATE \"" << dbname << "\".EventType SET sig=25 WHERE id=-16;\n"
+
+// Save this for its own update
+//        "INSERT INTO \"" << dbname << "\".NameStyle (id, name, uid, changed)"
+//        " VALUES(-4, 'As Recorded', 'A21CAF5064B552FB6833E335D3D61396286E', 2459961);\n"
+
+        "UPDATE \"" << dbname << "\".Version SET test=46 WHERE id=1;\n"
+        "COMMIT;\n"
+        ;
+
+    recDb::GetDb()->ExecuteUpdate( update );
+}
+
 void UpgradeRev0_0_10toCurrent( int test, const wxString& dbname )
 {
     switch( test )
@@ -2485,6 +2526,7 @@ void UpgradeRev0_0_10toCurrent( int test, const wxString& dbname )
     case 42: UpgradeTest0_0_10_42to0_0_10_43( dbname );
     case 43: UpgradeTest0_0_10_43to0_0_10_44( dbname );
     case 44: UpgradeTest0_0_10_44to0_0_10_45( dbname );
+    case 45: UpgradeTest0_0_10_45to0_0_10_46( dbname );
     }
 }
 

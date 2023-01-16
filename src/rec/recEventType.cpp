@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     20th April 2013
- * Copyright:   Copyright (c) 2013..2022, Nick Matthews.
+ * Copyright:   Copyright (c) 2013..2023, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -46,6 +46,7 @@ recEventType::recEventType( const recEventType& et )
 {
     f_id   = et.f_id;
     f_grp  = et.f_grp;
+    f_sig = et.f_sig;
     f_name = et.f_name;
     f_uid = et.f_uid;
     f_changed = et.f_changed;
@@ -55,6 +56,7 @@ void recEventType::Clear()
 {
     f_id   = 0;
     f_grp  = recEventTypeGrp::unstated;
+    f_sig = 50;
     f_name.clear();
     f_uid.clear();
     f_changed = 0;
@@ -69,9 +71,9 @@ void recEventType::Save( const wxString& dbname )
     {
         // Add new record
         sql.Format(
-            "INSERT INTO \"%s\".EventType (grp, name, uid, changed)"
-            " VALUES (%d, '%q', '%q', %ld);",
-            UTF8_( dbname ), f_grp, UTF8_(f_name), UTF8_( f_uid ), f_changed
+            "INSERT INTO \"%s\".EventType (grp, sig, name, uid, changed)"
+            " VALUES (%d, %d, '%q', '%q', %ld);",
+            UTF8_( dbname ), f_grp, f_sig, UTF8_(f_name), UTF8_( f_uid ), f_changed
         );
         s_db->ExecuteUpdate( sql );
         f_id = GET_ID( s_db->GetLastRowId() );
@@ -81,16 +83,17 @@ void recEventType::Save( const wxString& dbname )
         {
             // Add new record
             sql.Format(
-                "INSERT INTO \"%s\".EventType (id, grp, name, uid, changed)"
-                " VALUES (" ID ", %d, '%q', '%q', %ld);",
-                UTF8_( dbname ), f_id, f_grp, UTF8_(f_name), UTF8_( f_uid ), f_changed
+                "INSERT INTO \"%s\".EventType (id, grp, sig, name, uid, changed)"
+                " VALUES (" ID ", %d, %d, '%q', '%q', %ld);",
+                UTF8_( dbname ), f_id, f_grp, f_sig, UTF8_(f_name), UTF8_( f_uid ), f_changed
             );
         } else {
             // Update existing record
             sql.Format(
-                "UPDATE \"%s\".EventType SET grp=%d, name='%q', uid = '%q', changed = %ld"
+                "UPDATE \"%s\".EventType SET grp=%d, sig=%d, name='%q',"
+                " uid = '%q', changed = %ld"
                 " WHERE id=" ID ";",
-                UTF8_( dbname ), f_grp, UTF8_(f_name), UTF8_( f_uid ), f_changed, f_id
+                UTF8_( dbname ), f_grp, f_sig, UTF8_(f_name), UTF8_( f_uid ), f_changed, f_id
             );
         }
         s_db->ExecuteUpdate( sql );
@@ -108,7 +111,7 @@ bool recEventType::Read( const wxString& dbname )
     }
 
     sql.Format( 
-        "SELECT grp, name, uid, changed FROM \"%s\".EventType WHERE id=" ID ";",
+        "SELECT grp, sig, name, uid, changed FROM \"%s\".EventType WHERE id=" ID ";",
         UTF8_( dbname ), f_id
     );
     result = s_db->GetTable( sql );
@@ -120,9 +123,10 @@ bool recEventType::Read( const wxString& dbname )
     }
     result.SetRow( 0 );
     f_grp = recEventTypeGrp( result.GetInt( 0 ) );
-    f_name = result.GetAsString( 1 );
-    f_uid = result.GetAsString( 2 );
-    f_changed = result.GetInt( 3 );
+    f_sig = result.GetInt( 1 );
+    f_name = result.GetAsString( 2 );
+    f_uid = result.GetAsString( 3 );
+    f_changed = result.GetInt( 4 );
     return true;
 }
 
@@ -130,6 +134,7 @@ bool recEventType::Equivalent( const recEventType& r2 ) const
 {
     return
         f_grp == r2.f_grp &&
+        f_sig == r2.f_sig &&
         f_name == r2.f_name &&
         f_uid == r2.f_uid &&
         f_changed == r2.f_changed
@@ -221,7 +226,7 @@ recEventTypeVec recEventType::ReadVec( unsigned filter, const wxString& dbname )
         return vec;
     }
     wxString query;
-    query << "SELECT id, grp, name, uid, changed FROM " << dbname << ".EventType WHERE ";
+    query << "SELECT id, grp, sig, name, uid, changed FROM " << dbname << ".EventType WHERE ";
     if( filter == recET_GRP_FILTER_All ) {
         query << "NOT grp=0 ";
     } else {
@@ -278,9 +283,10 @@ recEventTypeVec recEventType::ReadVec( unsigned filter, const wxString& dbname )
     while( result.NextRow() ) {
         et.FSetID( GET_ID( result.GetInt64( 0 ) ) );
         et.FSetGrp( recEventTypeGrp( result.GetInt( 1 ) ) );
-        et.FSetName( result.GetAsString( 2 ) );
-        et.FSetUid( result.GetAsString( 3 ) );
-        et.FSetChanged( result.GetInt( 4 ) );
+        et.FSetSig( result.GetInt( 2 ) );
+        et.FSetName( result.GetAsString( 3 ) );
+        et.FSetUid( result.GetAsString( 4 ) );
+        et.FSetChanged( result.GetInt( 5 ) );
         vec.push_back( et );
     }
     return vec;
@@ -388,11 +394,13 @@ idt recEventType::Transfer( idt from_etID, const wxString& fromdb, const wxStrin
     recMatchUID match = from_et.CompareUID( to_et );
     if( match == recMatchUID::unequal || match == recMatchUID::younger ) {
         new_et.FSetGrp( from_et.FGetGrp() );
+        new_et.FSetSig( from_et.FGetSig() );
         new_et.FSetName( from_et.FGetName() );
         new_et.FSetChanged( from_et.FGetChanged() );
     }
     else {
         new_et.FSetGrp( to_et.FGetGrp() );
+        new_et.FSetSig( to_et.FGetSig() );
         new_et.FSetName( to_et.FGetName() );
         new_et.FSetChanged( to_et.FGetChanged() );
     }
@@ -403,7 +411,7 @@ idt recEventType::Transfer( idt from_etID, const wxString& fromdb, const wxStrin
 
 std::string recEventType::CsvTitles()
 {
-    return std::string( "id, grp, 'name', 'uid', changed\n" );
+    return std::string( "id, grp, sig, 'name', 'uid', changed\n" );
 }
 
 void recEventType::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
@@ -411,6 +419,7 @@ void recEventType::CsvWrite( std::ostream& out, idt id, const wxString& dbname )
     recEventType et( id, dbname );
     recCsvWrite( out, et.FGetID() );
     recCsvWrite( out, static_cast<int>( et.FGetGrp() ) );
+    recCsvWrite( out, et.FGetSig() );
     recCsvWrite( out, et.FGetName() );
     recCsvWrite( out, et.FGetUid() );
     recCsvWrite( out, et.FGetChanged(), '\n' );
@@ -422,6 +431,7 @@ bool recEventType::CsvRead( std::istream& in )
     int group;
     recCsvRead( in, group );
     f_grp = static_cast<recEventTypeGrp>( group );
+    recCsvRead( in, f_sig );
     recCsvRead( in, f_name );
     recCsvRead( in, f_uid );
     recCsvRead( in, f_changed );

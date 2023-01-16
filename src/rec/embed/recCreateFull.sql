@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     22nd March 2008
- * Copyright:   Copyright (c) 2008..2022, Nick Matthews.
+ * Copyright:   Copyright (c) 2008..2023, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -178,12 +178,13 @@ INSERT INTO EventEventa (id, event_id, eventa_id, conf) VALUES(0,0,0,'');
 CREATE TABLE EventType (
   id INTEGER PRIMARY KEY,
   grp INTEGER NOT NULL,
+  sig INTEGER NOT NULL,
   name TEXT NOT NULL,
   uid TEXT NOT NULL,
   changed INTEGER NOT NULL
 );
 
-INSERT INTO EventType (id, grp, name, uid, changed) VALUES(0,0,'','',0);
+INSERT INTO EventType (id, grp, sig, name, uid, changed) VALUES(0,0,0,'','',0);
 
 CREATE TABLE EventTypeRole (
   id INTEGER PRIMARY KEY,
@@ -483,7 +484,7 @@ CREATE TABLE UserSetting (  /* See System Settings below for initial entries */
 /* Table Version created in recCreateCommon.sql */
 
 /* The Version table row 1 is the full TFPD database */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 45);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 46);
 
 COMMIT;
 

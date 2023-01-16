@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     20th April 2013
- * Copyright:   Copyright (c) 2013..2022, Nick Matthews.
+ * Copyright:   Copyright (c) 2013..2023, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -77,9 +77,10 @@ public:
     };
 
     recEventTypeGrp f_grp;
+    int             f_sig;
     wxString        f_name;
 
-    recEventType() : f_grp( recEventTypeGrp::unstated ) {}
+    recEventType() : f_grp( recEventTypeGrp::unstated ), f_sig( 50 ) {}
     recEventType( idt id, const wxString& dbname = "Main" ) : recDbT(id) { Read( dbname ); }
     recEventType( const recEventType& et );
 
@@ -92,9 +93,11 @@ public:
     wxString GetIdStr() const { return GetIdStr( f_id ); }
 
     recEventTypeGrp FGetGrp() const { return f_grp; }
+    int FGetSig() const { return f_sig; }
     wxString FGetName() const { return f_name; }
 
     void FSetGrp( recEventTypeGrp grp ) { f_grp = grp; }
+    void FSetSig( int sig ) { f_sig = sig; }
     void FSetName( wxString name ) { f_name = name; }
 
     static wxString GetName( idt typeID, const wxString& dbname = "Main" );
