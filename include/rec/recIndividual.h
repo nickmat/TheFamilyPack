@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2023, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -138,6 +138,15 @@ public:
     static idt FindGroupEvent( idt indID, recEventTypeGrp grp, const wxString& dbname = "Main" );
     idt FindGroupEvent( recEventTypeGrp grp, const wxString& dbname = "Main" ) const {
         return FindGroupEvent( f_id, grp, dbname ); }
+
+    static idt GetNrBirthEventID( idt indID, const wxString& dbname = "Main" );
+    idt GetNrBirthEventID( const wxString& dbname = "Main" ) const {
+        return GetNrBirthEventID( f_id, dbname );
+    }
+    static idt GetNrDeathEventID( idt indID, const wxString& dbname = "Main" );
+    idt GetNrDeathEventID( const wxString& dbname = "Main" ) const {
+        return GetNrDeathEventID( f_id, dbname );
+    }
 
     static recIdVec FindEvents( idt indID, idt roleID, const wxString& dbname = "Main" );
     recIdVec FindEvents( idt roleID, const wxString& dbname = "Main" ) const {

@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     7 October 2010
- * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2023, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -268,7 +268,7 @@ wxString tfpWriteFamilyPage( idt famID, const wxString& extdb, size_t iL, size_t
         htm << "<td><b>Birth:</b></td>\n</tr>\n";
     }
 
-    eveID = husb.GetNrBirthEvent( extdb );
+    eveID = husb.GetNrBirthEventID( extdb );
     if( eveID ) {
         htm << 
             "<tr>\n<td><b><a href='tfp:E" << eveID <<
@@ -284,7 +284,7 @@ wxString tfpWriteFamilyPage( idt famID, const wxString& extdb, size_t iL, size_t
     } else {
         htm << "<tr>\n<td><b>Baptism:</b></td>\n";
     }
-    eveID = wife.GetNrBirthEvent( extdb );
+    eveID = wife.GetNrBirthEventID( extdb );
     if( eveID ) {
         htm << 
             "<td><b><a href='tfp:E" << eveID <<
@@ -334,7 +334,7 @@ wxString tfpWriteFamilyPage( idt famID, const wxString& extdb, size_t iL, size_t
         htm << "<td><b>Death:</b></td>\n</tr>\n";
     }
 
-    eveID = husb.GetNrDeathEvent( extdb );
+    eveID = husb.GetNrDeathEventID( extdb );
     if( eveID ) {
         htm << 
             "<tr>\n<td><b><a href='tfp:E" << eveID <<
@@ -350,7 +350,7 @@ wxString tfpWriteFamilyPage( idt famID, const wxString& extdb, size_t iL, size_t
     } else {
         htm << "<tr>\n<td><b>Burial:</b></td>\n";
     }
-    eveID = wife.GetNrDeathEvent( extdb );
+    eveID = wife.GetNrDeathEventID( extdb );
     if( eveID ) {
         htm << 
             "<td><b><a href='tfp:E" << eveID <<

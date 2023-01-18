@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     3 October 2010
- * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2023, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -419,6 +419,30 @@ idt recIndividual::FindGroupEvent( idt indID, recEventTypeGrp grp, const wxStrin
         UTF8_( dbname ), UTF8_( dbname ), UTF8_( dbname ), grp, indID
     );
     return ExecuteID( sql );
+}
+
+idt recIndividual::GetNrBirthEventID( idt indID, const wxString& dbname )
+{
+    return ExecuteID(
+        "SELECT E.id"
+        " FROM \"" + dbname + "\".IndividualEvent IE, \""
+        + dbname + "\".Event E, \"" + dbname + "\".EventType ET"
+        " WHERE ind_id=" ID " AND IE.event_id=E.id AND E.type_id=ET.id"
+        " AND ET.grp=2 AND ET.sig>25 ORDER BY ET.sig DESC, E.date_pt;",
+        indID, dbname
+    );
+}
+
+idt recIndividual::GetNrDeathEventID( idt indID, const wxString& dbname )
+{
+    return ExecuteID(
+        "SELECT E.id"
+        " FROM \"" + dbname + "\".IndividualEvent IE, \""
+        + dbname + "\".Event E, \"" + dbname + "\".EventType ET"
+        " WHERE ind_id=" ID " AND IE.event_id=E.id AND E.type_id=ET.id"
+        " AND ET.grp=6 AND ET.sig>25 ORDER BY ET.sig DESC, E.date_pt DESC;",
+        indID, dbname
+    );
 }
 
 recIdVec recIndividual::FindEvents( idt indID, idt roleID, const wxString& dbname )
