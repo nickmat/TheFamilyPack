@@ -212,6 +212,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\rg\fb\fbRgEditEventRole.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\rg\fb\fbRgEditEventa.cpp"
 				>
 			</File>
@@ -451,6 +455,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\rg\fb\fbRgEditDate.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\rg\fb\fbRgEditEventRole.h"
 				>
 			</File>
 			<File

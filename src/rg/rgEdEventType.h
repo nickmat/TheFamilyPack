@@ -31,7 +31,7 @@
 
 #include <rec/recEvent.h>
 
-#include "fbRgDialog.h"
+#include "fb/fbRgEditEventRole.h"
 
 //============================================================================
 //-------------------------[ rgDlgEditEventType ]-----------------------------

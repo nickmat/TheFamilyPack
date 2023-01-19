@@ -32,7 +32,6 @@ class rgRecEventTableCtrl;
 #include <wx/listctrl.h>
 #include <wx/notebook.h>
 #include <wx/radiobox.h>
-#include <wx/checkbox.h>
 #include <wx/checklst.h>
 #include <wx/statbox.h>
 
@@ -128,41 +127,6 @@ class fbRgEditEvent : public wxDialog
 		fbRgEditEvent( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Event"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
 
 		~fbRgEditEvent();
-
-};
-
-///////////////////////////////////////////////////////////////////////////////
-/// Class fbRgEditEventType
-///////////////////////////////////////////////////////////////////////////////
-class fbRgEditEventType : public wxDialog
-{
-	private:
-
-	protected:
-		wxStaticText* m_staticText4;
-		wxChoice* m_choiceGroup;
-		wxStaticText* m_staticText3;
-		wxTextCtrl* m_textCtrlValue;
-		wxListCtrl* m_listRole;
-		wxButton* m_buttonRoleAdd;
-		wxButton* m_buttonRoleEdit;
-		wxButton* m_buttonRoleDelete;
-		wxStaticLine* m_staticline1;
-		wxStaticText* m_staticTypeID;
-		wxButton* m_buttonSave;
-		wxButton* m_buttonCancel;
-
-		// Virtual event handlers, override them in your derived class
-		virtual void OnButtonRoleAdd( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnButtonRoleEdit( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnButtonRoleDelete( wxCommandEvent& event ) { event.Skip(); }
-
-
-	public:
-
-		fbRgEditEventType( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Event Type"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
-
-		~fbRgEditEventType();
 
 };
 
@@ -289,41 +253,6 @@ class fbRgEditIndividual : public wxDialog
 		fbRgEditIndividual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Individual"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
 
 		~fbRgEditIndividual();
-
-};
-
-///////////////////////////////////////////////////////////////////////////////
-/// Class fbRgEditRole
-///////////////////////////////////////////////////////////////////////////////
-class fbRgEditRole : public wxDialog
-{
-	private:
-
-	protected:
-		wxStaticText* m_staticText1;
-		wxStaticText* m_staticEventType;
-		wxStaticText* m_staticEventTypeID;
-		wxStaticText* m_staticText2;
-		wxStaticText* m_staticTypeGroup;
-		wxStaticText* m_staticText3;
-		wxTextCtrl* m_textCtrlValue;
-		wxStaticText* m_staticText4;
-		wxChoice* m_choicePrime;
-		wxCheckBox* m_checkOfficial;
-		wxStaticLine* m_staticline1;
-		wxStaticText* m_staticRoleID;
-		wxButton* m_buttonSave;
-		wxButton* m_buttonCancel;
-
-		// Virtual event handlers, override them in your derived class
-		virtual void OnChoicePrime( wxCommandEvent& event ) { event.Skip(); }
-
-
-	public:
-
-		fbRgEditRole( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Edit Role"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 300,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
-
-		~fbRgEditRole();
 
 };
 

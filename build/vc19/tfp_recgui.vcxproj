@@ -124,6 +124,7 @@
     <ClCompile Include="..\..\src\rg\fb\fbRgEditContact.cpp" />
     <ClCompile Include="..\..\src\rg\fb\fbRgEditDate.cpp" />
     <ClCompile Include="..\..\src\rg\fb\fbRgEditEventa.cpp" />
+    <ClCompile Include="..\..\src\rg\fb\fbRgEditEventRole.cpp" />
     <ClCompile Include="..\..\src\rg\fb\fbRgEditGallery.cpp" />
     <ClCompile Include="..\..\src\rg\fb\fbRgEditMedia.cpp" />
     <ClCompile Include="..\..\src\rg\fb\fbRgEditName.cpp" />
@@ -188,6 +189,7 @@
     <ClInclude Include="..\..\src\rg\fb\fbRgEditContact.h" />
     <ClInclude Include="..\..\src\rg\fb\fbRgEditDate.h" />
     <ClInclude Include="..\..\src\rg\fb\fbRgEditEventa.h" />
+    <ClInclude Include="..\..\src\rg\fb\fbRgEditEventRole.h" />
     <ClInclude Include="..\..\src\rg\fb\fbRgEditGallery.h" />
     <ClInclude Include="..\..\src\rg\fb\fbRgEditMedia.h" />
     <ClInclude Include="..\..\src\rg\fb\fbRgEditName.h" />

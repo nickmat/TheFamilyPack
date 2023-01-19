@@ -14,6 +14,7 @@ set( SRC_RG_FILES
     fb/fbRgEditContact.cpp
     fb/fbRgEditDate.cpp
     fb/fbRgEditEventa.cpp
+    fb/fbRgEditEventRole.cpp
     fb/fbRgEditGallery.cpp
     fb/fbRgEditMedia.cpp
     fb/fbRgEditName.cpp
@@ -80,6 +81,7 @@ set( SRC_RG_HEADERS
     fb/fbRgEditContact.h
     fb/fbRgEditDate.h
     fb/fbRgEditEventa.h
+    fb/fbRgEditEventRole.h
     fb/fbRgEditGallery.h
     fb/fbRgEditMedia.h
     fb/fbRgEditName.h
