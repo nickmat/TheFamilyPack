@@ -17,8 +17,9 @@
 #include <wx/colour.h>
 #include <wx/settings.h>
 #include <wx/choice.h>
-#include <wx/textctrl.h>
+#include <wx/spinctrl.h>
 #include <wx/sizer.h>
+#include <wx/textctrl.h>
 #include <wx/listctrl.h>
 #include <wx/button.h>
 #include <wx/bitmap.h>
@@ -38,10 +39,11 @@ class fbRgEditEventType : public wxDialog
 	private:
 
 	protected:
-		wxStaticText* m_staticText4;
 		wxChoice* m_choiceGroup;
-		wxStaticText* m_staticText3;
+		wxSpinCtrl* m_spinCtrlSig;
 		wxTextCtrl* m_textCtrlValue;
+		wxTextCtrl* m_textCtrlUid;
+		wxTextCtrl* m_textCtrlChanged;
 		wxListCtrl* m_listRole;
 		wxButton* m_buttonRoleAdd;
 		wxButton* m_buttonRoleEdit;

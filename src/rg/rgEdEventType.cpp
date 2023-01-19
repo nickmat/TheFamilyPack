@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     21 November 2012
- * Copyright:   Copyright (c) 2012..2022, Nick Matthews.
+ * Copyright:   Copyright (c) 2012..2023, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -62,6 +62,7 @@ idt rgCreateEventType( wxWindow* wind )
     recDb::Savepoint( savepoint );
 
     recEventType et(0);
+    et.CreateUidChanged();
     et.Save();
     idt etID = et.FGetID();
     if( rgEditEventType( wind, etID ) ) {
@@ -93,7 +94,9 @@ bool rgDlgEditEventType::TransferDataToWindow()
 {
     wxArrayString groupList = recEventType::GetGroupStrings();
     m_choiceGroup->Set( groupList );
-    m_choiceGroup->SetSelection( int( recEventTypeGrp::other ) );
+    m_choiceGroup->SetSelection( int( m_et.FGetGrp() ) );
+
+    m_spinCtrlSig->SetValue( m_et.FGetSig() );
 
     for( size_t i = 0 ; i < m_roles.size() ; i++ ) {
         m_listRole->InsertItem( i, m_roles[i].GetIdStr() );
@@ -103,6 +106,9 @@ bool rgDlgEditEventType::TransferDataToWindow()
     }
 
     m_textCtrlValue->SetValue( m_et.FGetName() );
+    m_textCtrlUid->SetValue( m_et.FGetUid() );
+    wxString changed = calStrFromJdn( m_et.FGetChanged() );
+    m_textCtrlChanged->SetValue( changed );
 
     m_staticTypeID->SetLabel( m_et.GetIdStr() );
     return true;
@@ -111,6 +117,7 @@ bool rgDlgEditEventType::TransferDataToWindow()
 bool rgDlgEditEventType::TransferDataFromWindow()
 {
     m_et.FSetGrp( recEventTypeGrp( m_choiceGroup->GetSelection() ) );
+    m_et.FSetSig( m_spinCtrlSig->GetValue() );
     m_et.FSetName( m_textCtrlValue->GetValue() );
     m_et.Save();
     return true;
