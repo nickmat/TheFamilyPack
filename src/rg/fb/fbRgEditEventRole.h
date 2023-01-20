@@ -21,6 +21,7 @@
 #include <wx/sizer.h>
 #include <wx/textctrl.h>
 #include <wx/listctrl.h>
+#include <wx/statbox.h>
 #include <wx/button.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
@@ -54,6 +55,8 @@ class fbRgEditEventType : public wxDialog
 		wxButton* m_buttonCancel;
 
 		// Virtual event handlers, override them in your derived class
+		virtual void OnRoleDeselect( wxListEvent& event ) { event.Skip(); }
+		virtual void OnRoleSelect( wxListEvent& event ) { event.Skip(); }
 		virtual void OnButtonRoleAdd( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnButtonRoleEdit( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnButtonRoleDelete( wxCommandEvent& event ) { event.Skip(); }

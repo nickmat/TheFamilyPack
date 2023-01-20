@@ -34,7 +34,7 @@ fbRgEditEventType::fbRgEditEventType( wxWindow* parent, wxWindowID id, const wxS
 	fgSizer11->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 
 	wxStaticText* m_staticText4;
-	m_staticText4 = new wxStaticText( this, wxID_ANY, _("Group:"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT );
+	m_staticText4 = new wxStaticText( this, wxID_ANY, _("&Group:"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT );
 	m_staticText4->Wrap( -1 );
 	fgSizer11->Add( m_staticText4, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT, 5 );
 
@@ -47,7 +47,7 @@ fbRgEditEventType::fbRgEditEventType( wxWindow* parent, wxWindowID id, const wxS
 	bSizer8->Add( m_choiceGroup, 1, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxRIGHT, 5 );
 
 	wxStaticText* m_staticText12;
-	m_staticText12 = new wxStaticText( this, wxID_ANY, _("Significance:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText12 = new wxStaticText( this, wxID_ANY, _("S&ignificance:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText12->Wrap( -1 );
 	bSizer8->Add( m_staticText12, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -58,7 +58,7 @@ fbRgEditEventType::fbRgEditEventType( wxWindow* parent, wxWindowID id, const wxS
 	fgSizer11->Add( bSizer8, 1, wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
 
 	wxStaticText* m_staticText3;
-	m_staticText3 = new wxStaticText( this, wxID_ANY, _("Name:"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT );
+	m_staticText3 = new wxStaticText( this, wxID_ANY, _("&Name:"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT );
 	m_staticText3->Wrap( -1 );
 	fgSizer11->Add( m_staticText3, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 
@@ -84,19 +84,25 @@ fbRgEditEventType::fbRgEditEventType( wxWindow* parent, wxWindowID id, const wxS
 
 	bSizer1->Add( fgSizer11, 0, wxEXPAND, 5 );
 
-	m_listRole = new wxListCtrl( this, wxID_ANY, wxDefaultPosition, wxSize( 300,150 ), wxLC_HRULES|wxLC_REPORT|wxLC_SINGLE_SEL );
-	bSizer1->Add( m_listRole, 1, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+	wxStaticBoxSizer* sbSizer1;
+	sbSizer1 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("&Roles") ), wxVERTICAL );
+
+	m_listRole = new wxListCtrl( sbSizer1->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxSize( 300,150 ), wxLC_HRULES|wxLC_REPORT|wxLC_SINGLE_SEL );
+	sbSizer1->Add( m_listRole, 1, wxEXPAND, 5 );
+
+
+	bSizer1->Add( sbSizer1, 1, wxEXPAND, 5 );
 
 	wxBoxSizer* bSizer16;
 	bSizer16 = new wxBoxSizer( wxHORIZONTAL );
 
-	m_buttonRoleAdd = new wxButton( this, wxID_ANY, _("Add"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonRoleAdd = new wxButton( this, wxID_ANY, _("&Add"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer16->Add( m_buttonRoleAdd, 0, wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 
-	m_buttonRoleEdit = new wxButton( this, wxID_ANY, _("Edit"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonRoleEdit = new wxButton( this, wxID_ANY, _("&Edit"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer16->Add( m_buttonRoleEdit, 0, wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT, 5 );
 
-	m_buttonRoleDelete = new wxButton( this, wxID_ANY, _("Delete"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonRoleDelete = new wxButton( this, wxID_ANY, _("&Delete"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer16->Add( m_buttonRoleDelete, 0, wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT, 5 );
 
 
@@ -117,10 +123,10 @@ fbRgEditEventType::fbRgEditEventType( wxWindow* parent, wxWindowID id, const wxS
 
 	bSizerDismiss->Add( 0, 0, 1, wxEXPAND, 5 );
 
-	m_buttonSave = new wxButton( this, wxID_OK, _("Save"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonSave = new wxButton( this, wxID_OK, _("&Save"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizerDismiss->Add( m_buttonSave, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxLEFT, 5 );
 
-	m_buttonCancel = new wxButton( this, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonCancel = new wxButton( this, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizerDismiss->Add( m_buttonCancel, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
 
@@ -132,6 +138,8 @@ fbRgEditEventType::fbRgEditEventType( wxWindow* parent, wxWindowID id, const wxS
 	bSizer1->Fit( this );
 
 	// Connect Events
+	m_listRole->Connect( wxEVT_COMMAND_LIST_ITEM_DESELECTED, wxListEventHandler( fbRgEditEventType::OnRoleDeselect ), NULL, this );
+	m_listRole->Connect( wxEVT_COMMAND_LIST_ITEM_SELECTED, wxListEventHandler( fbRgEditEventType::OnRoleSelect ), NULL, this );
 	m_buttonRoleAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventType::OnButtonRoleAdd ), NULL, this );
 	m_buttonRoleEdit->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventType::OnButtonRoleEdit ), NULL, this );
 	m_buttonRoleDelete->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventType::OnButtonRoleDelete ), NULL, this );
@@ -140,6 +148,8 @@ fbRgEditEventType::fbRgEditEventType( wxWindow* parent, wxWindowID id, const wxS
 fbRgEditEventType::~fbRgEditEventType()
 {
 	// Disconnect Events
+	m_listRole->Disconnect( wxEVT_COMMAND_LIST_ITEM_DESELECTED, wxListEventHandler( fbRgEditEventType::OnRoleDeselect ), NULL, this );
+	m_listRole->Disconnect( wxEVT_COMMAND_LIST_ITEM_SELECTED, wxListEventHandler( fbRgEditEventType::OnRoleSelect ), NULL, this );
 	m_buttonRoleAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventType::OnButtonRoleAdd ), NULL, this );
 	m_buttonRoleEdit->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventType::OnButtonRoleEdit ), NULL, this );
 	m_buttonRoleDelete->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbRgEditEventType::OnButtonRoleDelete ), NULL, this );

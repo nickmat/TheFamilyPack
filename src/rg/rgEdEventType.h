@@ -3,11 +3,9 @@
  * Project:     The Family Pack: Genealogy data storage and display program.
  * Purpose:     Edit an EventType record dialog header, GUI only.
  * Author:      Nick Matthews
- * Modified by:
  * Website:     http://thefamilypack.org
  * Created:     21 November 2012
- * RCS-ID:      $Id$
- * Copyright:   Copyright (c) 2012, Nick Matthews.
+ * Copyright:   Copyright (c) 2012..2023, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -50,9 +48,14 @@ private:
     bool TransferDataToWindow();
     bool TransferDataFromWindow();
 
-	void OnButtonRoleAdd( wxCommandEvent& event );
-	void OnButtonRoleEdit( wxCommandEvent& event );
-	void OnButtonRoleDelete( wxCommandEvent& event );
+    void UpdateRoleList( idt roleID );
+
+    void RoleButtonsEnable( long row );
+    void OnRoleSelect( wxListEvent& event ) override;
+    void OnRoleDeselect( wxListEvent& event ) override;
+    void OnButtonRoleAdd( wxCommandEvent& event ) override;
+	void OnButtonRoleEdit( wxCommandEvent& event ) override;
+	void OnButtonRoleDelete( wxCommandEvent& event ) override;
 
     recEventType        m_et;
     recEventTypeRoleVec m_roles;
