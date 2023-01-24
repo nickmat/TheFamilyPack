@@ -53,9 +53,20 @@
  <a href='../ov/event-eventa.htm'>Event - Eventa overview</a> page.
 </p>
 
-<h3>Event Types</h3>
+<h2>Event Types</h2>
 
-<table class='basic lfloat' width='50%'>
+<p>
+ A list of Event Types and the Roles normally associated with them is maintained as part of the core data
+ - see the <a href='../../com/core/ets.htm'>Core Data: EventTypes</a> page for the current list.
+ The user is free to extend this list as required.
+</p>
+
+<h3>Event Type Groups</h3>
+<p>
+ All Types are categorized into one of the groups shown below.
+ This list cannot be extended by the user, although it may be extended by a future database version.
+</p>
+<table class='basic'>
 <tr><th colspan='3'>EventType Groups</th></tr>
 <tr><th>Group</th><th>Name</th><th>Description</th></tr>
 <tr><td>0</td><td>Unstated</td><td>Normally an invalid value.</td></tr>
@@ -63,24 +74,69 @@
 <tr><td>2</td><td>Near&nbsp;Birth</td><td>ie Baptism or Birth registration. If the date of birth is not known, then the date of this event can be used as an approimation</td></tr>
 <tr><td>5</td><td>Death</td><td>The single death event for an individual.</td></tr>
 <tr><td>6</td><td>Near&nbsp;Death</td><td>ie Burial or Death registration. If the date of death is not known, then the date of this event can be used as an approimation</td></tr>
-<tr><td>10</td><td>Family</td><td>Relationship within a family. Used by an Eventa record only, they can be converted to Family records on the conclusion side.</td></tr>
-<tr><td>9</td><td>Relation</td><td>Relationship outside of a family. Used by an Eventa record only, These can be converted to multiple Family Eventa.</td></tr>
+<tr><td>8</td><td>Personal</td><td>These are events which last the lifetime of an individual. Although the details may change over time, at any given time they normally have a single state. ie Occupation, Physical appearance or Residency</td></tr>
 <tr><td>3</td><td>Family&nbsp;Union</td><td>Normally a Marriage, but can be any event which signifies the official start of the relationship.</td></tr>
 <tr><td>4</td><td>Other&nbsp;Family</td><td>Any family event in which both partners are equally equally prime, other than a official union event. It may occur before (engagment) or after (divorce) the union event.</td></tr>
-<tr><td>8</td><td>Personal</td><td>These are events which last the lifetime of an individual. Although the details may change over time, at any given time they normally have a single state. ie Occupation, Physical appearance or Residency</td></tr>
+<tr><td>10</td><td>Family</td><td>Relationship within a family. Used by an Eventa record only, they can be converted to Family records on the conclusion side.</td></tr>
+<tr><td>9</td><td>Relation</td><td>Relationship outside of a family. Used by an Eventa record only, These can be converted to multiple Family Eventa.</td></tr>
 <tr><td>7</td><td>Other</td><td>Anything which does not fit into the other Groups</td></tr>
 </table>
 
 <p>
- A list of Event Types and the Roles normally associated with them is maintained as part of the core data
- - see the <a href='../../com/core/ets.htm'>Core Data: EventTypes</a> page for a current list.
- The user is free to extend this list as required.
- All Types are categorised into one of the groups shown opposite.
- This list cannot be extended by the user, although a future database version may.
-</p>
-<p>
  The Group designated for an EventType has a significant effect on the way the Event is handled by the application.
 </p>
+
+<h4>Births and Deaths Events</h4>
+<p>
+ It is safe to say that for any individual, they have one, and only one,
+ Birth and Death event.
+ There may be conflicting evidence about the circumstances of the events,
+ but there is only one true account of the event.
+ Even if we cannot always be certain which it is.
+</p>
+<p>
+ In an attempt to model this, these two events have a single event each
+ known as a summary event.
+ This event details our current conclusions.
+ Attached to this are the events we have gathered from records, these
+ are Event/Eventa pairs that link reference records to the conclusion event.
+</p>
+
+<h4>Near Birth and Near Death Events</h4>
+<p>
+ There may be events close to and connected with the Birth and Death events.
+ These can often be used as an approximation for the main events
+ when the precise details are not known.
+</p>
+<p>
+ These events are not automatically structured like the Birth and Death events.
+ They can be manually assembled as required.
+</p>
+
+<h4>Personal Events</h4>
+<p>
+ Personal events plot the changes of certain attributes over an Individuals lifetime.
+ Generally, there is a summary event for each attribute (occupation, residency etc.).
+ Two types of Event/Eventa pairs may be linked to the summary event,
+ a snapshot event which gives details of the attribute at a particular date
+ (ie a census or pop book) or a change event which records a change in a particular attribute
+ (ie a change in employment).
+</p>
+
+<h4>Family Union and Other Family Events</h4>
+<p>
+ These family events are any which affect a significant two person relationship.
+ Normally this would be a standard nuclear family,
+ but the system should be flexible enough to cover other relationships.
+</p>
+
+<h4>Family and Relation Events</h4>
+<p>
+ Unlike the other event groups, these groups are only used for Eventa records.
+ This is because the Family records are a specialised Conclusion Event
+ but optimised to enable family trees to be created.
+</p>
+
 
 </div><!--id=content-->
 
