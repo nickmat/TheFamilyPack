@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     30th April 2013
- * Copyright:   Copyright (c) 2013..2022, Nick Matthews.
+ * Copyright:   Copyright (c) 2013..2023, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -56,7 +56,7 @@ idt recGetID( const std::string& str )
     if( str.empty() ) {
         return 0;
     }
-    return stoll( str );
+    return strtoll( str.c_str(), nullptr, 10 );
 }
 
 idt recGetID( const char* str )
