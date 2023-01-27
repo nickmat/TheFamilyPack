@@ -95,6 +95,14 @@ extern idt recGetID( const wxString& str );
 extern idt recGetID( const std::string& str );
 extern idt recGetID( const char* str );
 
+// Return a lower case version of the given string
+// This only converts the upper case ascii characters, does not know about UTF-8
+extern std::string stdStr_tolower( const std::string& str );
+
+// Return a upper case version of the given string
+// This only converts the lower case ascii characters, does not know about UTF-8
+extern std::string stdStr_toupper( const std::string& str );
+
 // Convert the given commer delimited string into two idt's
 // return false if id1 or id2 are nullptr.
 extern bool recGetIDs( const wxString& str, idt* id1, idt* id2, idt* id3 = nullptr );

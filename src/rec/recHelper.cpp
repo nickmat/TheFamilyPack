@@ -64,6 +64,26 @@ idt recGetID( const char* str )
     return strtoll( str, nullptr, 10 );
 }
 
+std::string stdStr_tolower( const std::string& str )
+{
+    std::string s( str );
+    std::transform(
+        s.begin(), s.end(), s.begin(),
+        []( unsigned char c ) { return std::tolower( c ); }
+    );
+    return s;
+}
+
+std::string stdStr_toupper( const std::string& str )
+{
+    std::string s( str );
+    std::transform(
+        s.begin(), s.end(), s.begin(),
+        []( unsigned char c ) { return std::toupper( c ); }
+    );
+    return s;
+}
+
 bool recGetIDs( const wxString& str, idt* id1, idt* id2, idt* id3 )
 {
     if( id1 == nullptr || id2 == nullptr ) return false;
