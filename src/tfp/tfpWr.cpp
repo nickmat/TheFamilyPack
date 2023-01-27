@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     21st January 2013
- * Copyright:   Copyright (c) 2013..2022, Nick Matthews.
+ * Copyright:   Copyright (c) 2013..2023, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -336,21 +336,25 @@ wxString tfpNormalisePageName( const wxString& name )
 
 wxString tfpGetDisplayText( const wxString& pagename, TfpFrame& frame, tfpDisplay display )
 {
-    wxString name = pagename.Upper();
+    std::string name = pagename.Upper();
     const wxString dbname = frame.GetDbName();
     if( display == tfpDisplay::frame ) {
         frame.ClearToolFlags();
     }
     wxASSERT( name.size() > 0 );
-    wxLongLong_t num, num1 = 0, num2 = 0;
+    idt num, num1 = 0, num2 = 0;
     bool success, success1 = false, success2 = false;
 
-    success = name.Mid( 1 ).ToLongLong( &num );
+    num = recGetID( name.substr( 1 ) );
+    success = num;
+
     if( name.size() > 1 ) {
-        success1 = name.Mid( 2 ).ToLongLong( &num1 );
+        num1 = recGetID( name.substr( 2 ) );
+        success1 = num1;
     }
     if( name.size() > 2 ) {
-        success2 = name.Mid( 3 ).ToLongLong( &num2 );
+        num2 = recGetID( name.substr( 3 ) );
+        success2 = num2;
     }
 
     try {
@@ -406,7 +410,7 @@ wxString tfpGetDisplayText( const wxString& pagename, TfpFrame& frame, tfpDispla
         if( name.compare( 0, 1, "F" ) == 0 ) {
             // Note, Family Page may have alternate parents
             // so name string requires further decoding.
-            return tfpWriteFamilyPage( name.Mid( 1 ), dbname );
+            return tfpWriteFamilyPage( name.substr( 1 ), dbname );
         }
         if( name.compare( "G" ) == 0 ) {
             return tfpWriteGalleryList( dbname );
@@ -442,10 +446,10 @@ wxString tfpGetDisplayText( const wxString& pagename, TfpFrame& frame, tfpDispla
             return tfpWriteIndividualList( dbname );
         }
         if( name.compare( 0, 3, "NI+" ) == 0 && !success2 ) {
-            return tfpWriteNameList( pagename.Mid( 3 ), recSG_Individual, dbname );
+            return tfpWriteNameList( pagename.substr( 3 ), recSG_Individual, dbname );
         }
         if( name.compare( 0, 3, "NP+" ) == 0 && !success2 ) {
-            return tfpWriteNameList( pagename.Mid( 3 ), recSG_Persona, dbname );
+            return tfpWriteNameList( pagename.substr( 3 ), recSG_Persona, dbname );
         }
         if( name.compare( 0, 1, "N" ) == 0 && success ) {
             return tfpWriteName( num, frame, display );
