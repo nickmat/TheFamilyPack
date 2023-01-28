@@ -341,20 +341,16 @@ wxString tfpGetDisplayText( const wxString& pagename, TfpFrame& frame, tfpDispla
     if( display == tfpDisplay::frame ) {
         frame.ClearToolFlags();
     }
-    wxASSERT( name.size() > 0 );
+    wxASSERT( !name.empty() );
     idt num, num1 = 0, num2 = 0;
     bool success, success1 = false, success2 = false;
 
-    num = recGetID( name.substr( 1 ) );
-    success = num;
-
+    success = recGetID( name.substr( 1 ), &num );
     if( name.size() > 1 ) {
-        num1 = recGetID( name.substr( 2 ) );
-        success1 = num1;
+        success1 = recGetID( name.substr( 2 ), &num1 );
     }
     if( name.size() > 2 ) {
-        num2 = recGetID( name.substr( 3 ) );
-        success2 = num2;
+        success2 = recGetID( name.substr( 3 ), &num2 );
     }
 
     try {
