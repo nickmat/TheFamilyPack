@@ -1,13 +1,14 @@
 /* XPM */
 static char* event_xpm[] = {
 /* columns rows colors chars-per-pixel */
-"16 16 4 1 ",
+"16 15 4 1 ",
 "B c black",
 "r c red",
 "b c blue",
 "  c None",
 /* pixels */
-"        b       ",
+"        bb      ",
+"        bbbbb   ",
 "        bbbb    ",
 "       BB       ",
 "     BBrrBB     ",
@@ -20,7 +21,5 @@ static char* event_xpm[] = {
 "  BrrrrrrrrrrB  ",
 "  BrrrBBBBrrrB  ",
 "  BrrrB  BrrrB  ",
-"  BBBBB  BBBBB  ",
-"                ",
-"                "
+"  BBBBB  BBBBB  "
 };

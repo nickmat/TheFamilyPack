@@ -173,19 +173,17 @@ wxString tfpWriteFamilyPage( idt famID, const wxString& extdb, size_t iL, size_t
    }
 
     htm << "</tr>\n</table>\n"
-           "</td>\n</tr>\n";
-
-    // Family status bar
-    if( fam.FGetID() ) {
-        htm <<
-            "<tr>\n<td colspan='2' class='both status'>\n"
-            "<b>" << fam.GetIdStr() << "&nbsp;&nbsp;</b>"
-            "<a href='tfpc:MF" << fam.FGetID() <<
-            "," << fam.FGetHusbID() << "," << fam.FGetWifeID() <<
-            "'><img src='memory:menu.png' alt='Edit family'></a>\n"
-            "</td>\n</tr>\n"
-        ;
-    }
+        "</td>\n</tr>\n"
+        // Family status bar
+        "<tr>\n<td colspan='2' class='both status'>\n"
+        "<b>" << fam.GetIdStr() << "&nbsp;&nbsp;</b>\n"
+        "<a href='tfpc:MF" << fam.FGetID() <<
+        "," << fam.FGetHusbID() << "," << fam.FGetWifeID() <<
+        "'><img src='memory:menu.png' alt='Edit family'></a>&nbsp;&nbsp;\n"
+        "<a href='tfp:F" << famID << "E'>"
+        "<img src='memory:eve.png' alt='View as Event'></a>&nbsp;&nbsp;\n"
+        "</td>\n</tr>\n"
+    ;
 
     // Marriage event
     idt eveID = fam.GetUnionEvent();
