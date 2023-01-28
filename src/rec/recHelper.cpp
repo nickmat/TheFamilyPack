@@ -64,6 +64,22 @@ idt recGetID( const char* str )
     return strtoll( str, nullptr, 10 );
 }
 
+bool recGetID( const std::string& str, idt* id )
+{
+    if( id == nullptr ) {
+        return false;
+    }
+    if( !str.empty() ) {
+        char ch = *str.begin();
+        if( isdigit( ch ) || ch == '-' ) {
+            *id = strtoll( str.c_str(), nullptr, 10 );
+            return true;
+        }
+    }
+    *id = 0;
+    return false;
+}
+
 std::string stdStr_tolower( const std::string& str )
 {
     std::string s( str );

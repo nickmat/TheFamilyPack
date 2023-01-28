@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     30th April 2013
- * Copyright:   Copyright (c) 2013..2022, Nick Matthews.
+ * Copyright:   Copyright (c) 2013..2023, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -94,6 +94,7 @@ extern bool recCheckIDsHaveAdditionalSecond( const recCheckIdVec& ids );
 extern idt recGetID( const wxString& str );
 extern idt recGetID( const std::string& str );
 extern idt recGetID( const char* str );
+extern bool recGetID( const std::string& str, idt* id );
 
 // Return a lower case version of the given string
 // This only converts the upper case ascii characters, does not know about UTF-8
