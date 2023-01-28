@@ -34,14 +34,17 @@
 #include "wx/wx.h"
 #endif
 
-#include <wx/tokenzr.h>
+#include "tfpWr.h"
+
+#include "tfpFrame.h"
 
 #include <rec/recEvent.h>
 #include <rec/recFamily.h>
 #include <rec/recIndividual.h>
 #include <rec/recPersona.h>
 
-#include "tfpWr.h"
+#include <wx/tokenzr.h>
+
 
 #define BIRTH    recEventTypeRole::ROLE_Birth_Born
 #define NR_BIRTH recEventType::ETYPE_Grp_Nr_Birth
@@ -620,6 +623,42 @@ wxString tfpWriteFamilyPage( const wxString& str, const wxString& extdb )
     token = tokenizer.GetNextToken();
     token.ToCULong( &iR );
     return tfpWriteFamilyPage( famID, extdb, iL, iR );
+}
+
+wxString tfpWriteFamilyPageAsEvent( idt famID, TfpFrame& frame )
+{
+    const wxString& extdb = frame.GetDbName();
+    wxString htm;
+
+    recFamily fam( famID, extdb );
+    if( fam.FGetID() == 0 ) return htm;
+    recIndividual left( fam.FGetHusbID(), extdb );
+    recIndividual right( fam.FGetWifeID(), extdb );
+
+    wxString title;
+    if( left.FGetID() && right.FGetID() ) {
+        title = left.FGetName() + " and " + right.FGetName() + " Family";
+    }
+    else {
+        title = left.FGetName() + right.FGetName() + " Family";
+    }
+
+    htm <<
+        tfpWrHeadTfp( "Family " + fam.GetIdStr() ) <<
+
+        "<table class='data'>\n"
+
+        "<tr>\n<td class='status'>\n"
+        "<b>Family: " << fam.GetIdStr() << "</b>"
+        "</td>\n</tr>\n"
+
+        "<tr>\n<td class='title'>\n" << title << "\n</td>\n</tr>\n"
+        "</table>\n"
+        ;
+
+    htm << tfpWrTailTfp();
+
+    return htm;
 }
 
 wxString tfpWriteIndFamilyPage( idt indID, const wxString& extdb )

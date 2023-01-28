@@ -403,7 +403,10 @@ wxString tfpGetDisplayText( const wxString& pagename, TfpFrame& frame, tfpDispla
         if( name.compare( 0, 2, "FI" ) == 0 && success1 ) {
             return tfpWriteIndFamilyPage( num1, dbname );
         }
-        if( name.compare( 0, 1, "F" ) == 0 ) {
+        if( name.compare( 0, 1, "F" ) == 0 && success ) {
+            if( *name.rbegin() == 'E' ) {
+                return tfpWriteFamilyPageAsEvent( num, frame );
+            }
             // Note, Family Page may have alternate parents
             // so name string requires further decoding.
             return tfpWriteFamilyPage( name.substr( 1 ), dbname );

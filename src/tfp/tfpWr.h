@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     7th October 2010
- * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2023, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -87,6 +87,7 @@ extern wxString tfpWriteEventSelection( TfpFrame& frame );
 // See tfpWrFamily.cpp
 extern wxString tfpWriteFamilyPage( idt famID, const wxString& extdb, size_t iL = 0, size_t iR = 0 );
 extern wxString tfpWriteFamilyPage( const wxString& str, const wxString& extdb );
+extern wxString tfpWriteFamilyPageAsEvent( idt famID, TfpFrame& frame );
 extern wxString tfpWriteIndFamilyPage( idt indID, const wxString& extdb );
 
 // See tfpWrGallery.cpp
