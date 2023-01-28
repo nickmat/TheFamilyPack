@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     5th December 2012
- * Copyright:   Copyright (c) 2012..2022, Nick Matthews.
+ * Copyright:   Copyright (c) 2012..2023, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -382,7 +382,7 @@ void rgDlgSelectEvent::Refresh()
     m_fe.CreateEventTable( m_sse.GetDbname() );
     m_listEvent->SetTable( m_fe.GetTable() );
     m_listEvent->Refresh();
-    m_staticEventCount->SetLabel( wxString::Format( "%d Events", m_fe.GetTableSize() ) );
+    m_staticEventCount->SetLabel( wxString::Format( "%zu Events", m_fe.GetTableSize() ) );
     if( !m_selList ) {
         m_buttonSelect->Enable( false );
     }
