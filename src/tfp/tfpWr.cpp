@@ -364,12 +364,14 @@ wxString tfpGetDisplayText( const wxString& pagename, TfpFrame& frame, tfpDispla
             return tfpWriteContact( num, frame, display );
         }
         if( name.compare( 0, 2, "CD" ) == 0 && success1 ) {
+            // Pagename deprecated, use I<id>D
             return tfpCreateDescChart( num1, dbname );
         }
         if( name.compare( 0, 2, "CI" ) == 0 && success1 ) {
             return tfpWriteCitation( num1, frame, display );
         }
         if( name.compare( 0, 2, "CP" ) == 0 && success1 ) {
+            // Pagename deprecated, use I<id>P
             return tfpCreatePedChart( num1, dbname );
         }
         if( name.compare( 0, 1, "D" ) == 0 && success ) {
@@ -401,6 +403,7 @@ wxString tfpGetDisplayText( const wxString& pagename, TfpFrame& frame, tfpDispla
             return tfpWriteEventPagedIndex( num1, dbname );
         }
         if( name.compare( 0, 2, "FI" ) == 0 && success1 ) {
+            // Pagename deprecated, use I<id>F
             return tfpWriteIndFamilyPage( num1, dbname );
         }
         if( name.compare( 0, 1, "F" ) == 0 && success ) {
@@ -418,6 +421,15 @@ wxString tfpGetDisplayText( const wxString& pagename, TfpFrame& frame, tfpDispla
             return tfpWriteGalleryPage( num, dbname );
         }
         if( name.compare( 0, 1, "I" ) == 0 && success ) {
+            if( *name.rbegin() == 'D' ) {
+                return tfpCreateDescChart( num, dbname );
+            }
+            if( *name.rbegin() == 'F' ) {
+                return tfpWriteIndFamilyPage( num, dbname );
+            }
+            if( *name.rbegin() == 'P' ) {
+                return tfpCreatePedChart( num, dbname );
+            }
             return tfpWriteIndividualPage( num, dbname );
         }
         if( name.compare( "M" ) == 0 ) {
