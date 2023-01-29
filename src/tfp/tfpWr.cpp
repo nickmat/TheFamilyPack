@@ -352,145 +352,173 @@ wxString tfpGetDisplayText( const wxString& pagename, TfpFrame& frame, tfpDispla
     if( name.size() > 2 ) {
         success2 = recGetID( name.substr( 3 ), &num2 );
     }
+    char ch_first = *name.begin();
+    char ch_last = *name.rbegin();
 
     try {
-        if( name.compare( "ABOUT" ) == 0 ) {
-            return tfpWriteAbout();
-        }
-        if( name.compare( "START" ) == 0 ) {
-            return tfpWrStartPage();
-        }
-        if( name.compare( 0, 1, "C" ) == 0 && success ) {
-            return tfpWriteContact( num, frame, display );
-        }
-        if( name.compare( 0, 2, "CD" ) == 0 && success1 ) {
-            // Pagename deprecated, use I<id>D
-            return tfpCreateDescChart( num1, dbname );
-        }
-        if( name.compare( 0, 2, "CI" ) == 0 && success1 ) {
-            return tfpWriteCitation( num1, frame, display );
-        }
-        if( name.compare( 0, 2, "CP" ) == 0 && success1 ) {
-            // Pagename deprecated, use I<id>P
-            return tfpCreatePedChart( num1, dbname );
-        }
-        if( name.compare( 0, 1, "D" ) == 0 && success ) {
-            return tfpWriteDate( num, frame, display );
-        }
-        if( name.compare( "E" ) == 0 ) {
-            return tfpWriteEventIndex( dbname );
-        }
-        if( name.compare( "E$" ) == 0 ) {
-            return tfpWriteEventSelection( frame );
-        }
-        if( name.compare( "EA" ) == 0 ) {
-            return tfpWriteEventaIndex( dbname );
-        }
-        // We don't have a Eventa filter yet!
-        //    if( name.compare( "EA$" ) == 0 ) {
-        //        return tfpWriteEventaSelection( m_erFilter );
-        //    }
-        if( name.compare( 0, 2, "EA" ) == 0 && success1 ) {
-            return tfpWriteEventaPage( num1, dbname );
-        }
-        if( name.compare( 0, 3, "EA," ) == 0 && success2 ) {
-            return tfpWriteEventaPagedIndex( num2, dbname );
-        }
-        if( name.compare( 0, 1, "E" ) == 0 && success ) {
-            return tfpWriteEventPage( num, frame );
-        }
-        if( name.compare( 0, 2, "E," ) == 0 && success1 ) {
-            return tfpWriteEventPagedIndex( num1, dbname );
-        }
-        if( name.compare( 0, 2, "FI" ) == 0 && success1 ) {
-            // Pagename deprecated, use I<id>F
-            return tfpWriteIndFamilyPage( num1, dbname );
-        }
-        if( name.compare( 0, 1, "F" ) == 0 && success ) {
-            if( *name.rbegin() == 'E' ) {
-                return tfpWriteFamilyPageAsEvent( num, frame );
+        switch( ch_first ) {
+        case 'A':
+            if( name == "ABOUT" ) {
+                return tfpWriteAbout();
             }
-            // Note, Family Page may have alternate parents
-            // so name string requires further decoding.
-            return tfpWriteFamilyPage( name.substr( 1 ), dbname );
-        }
-        if( name.compare( "G" ) == 0 ) {
-            return tfpWriteGalleryList( dbname );
-        }
-        if( name.compare( 0, 1, "G" ) == 0 && success ) {
-            return tfpWriteGalleryPage( num, dbname );
-        }
-        if( name.compare( 0, 1, "I" ) == 0 && success ) {
-            if( *name.rbegin() == 'D' ) {
-                return tfpCreateDescChart( num, dbname );
+            break;
+        case 'C':
+            if( success ) { // name == C<num>
+                return tfpWriteContact( num, frame, display );
             }
-            if( *name.rbegin() == 'F' ) {
-                return tfpWriteIndFamilyPage( num, dbname );
+            if( name.compare( 0, 2, "CD" ) == 0 && success1 ) {
+                // Pagename deprecated, use I<id>D
+                return tfpCreateDescChart( num1, dbname );
             }
-            if( *name.rbegin() == 'P' ) {
-                return tfpCreatePedChart( num, dbname );
+            if( name.compare( 0, 2, "CI" ) == 0 && success1 ) {
+                return tfpWriteCitation( num1, frame, display );
             }
-            return tfpWriteIndividualPage( num, dbname );
-        }
-        if( name.compare( "M" ) == 0 ) {
-            return tfpWriteMediaIndex( dbname );
-        }
-        if( name.compare( "MD" ) == 0 ) {
-            return tfpWriteMediaDataIndex( dbname );
-        }
-        if( name.compare( 0, 2, "M," ) == 0 && success1 ) {
-            return tfpWriteMediaPagedIndex( num1, dbname );
-        }
-        if( name.compare( 0, 2, "MD" ) == 0 ) {
-            return tfpWriteMediaDataPage( name, dbname );
-        }
-        if( name.compare( 0, 1, "M" ) == 0 && success ) {
-            return tfpWriteMediaPage( num, dbname );
-        }
-        if( name.compare( "NI" ) == 0 ) {
-            return tfpWriteSurnameIndex( recSG_Individual, dbname );
-        }
-        if( name.compare( "NP" ) == 0 ) {
-            return tfpWriteSurnameIndex( recSG_Persona, dbname );
-        }
-        if( name.compare( "ND*" ) == 0 ) {
-            return tfpWriteIndividualList( dbname );
-        }
-        if( name.compare( 0, 3, "NI+" ) == 0 && !success2 ) {
-            return tfpWriteNameList( pagename.substr( 3 ), recSG_Individual, dbname );
-        }
-        if( name.compare( 0, 3, "NP+" ) == 0 && !success2 ) {
-            return tfpWriteNameList( pagename.substr( 3 ), recSG_Persona, dbname );
-        }
-        if( name.compare( 0, 1, "N" ) == 0 && success ) {
-            return tfpWriteName( num, frame, display );
-        }
-        if( name.compare( 0, 2, "PA" ) == 0 ) {
-            return tfpWritePersonaPage( num1, dbname );
-        }
-        if( name.compare( 0, 1, "P" ) == 0 && success ) {
-            return tfpWritePlace( num, frame, display );
-        }
-        if( name.compare( "R" ) == 0 ) {
-            return tfpWriteReferenceIndex( dbname );
-        }
-        if( name.compare( 0, 2, "R," ) == 0 && success1 ) {
-            return tfpWriteReferencePagedIndex( num1, dbname );
-        }
-        if( name.compare( 0, 1, "R" ) == 0 && success ) {
-            return tfpWriteReferencePage( num, dbname );
-        }
-        if( name.compare( "RE" ) == 0 ) {
-            return tfpWriteResearcherList( dbname );
-        }
-        if( name.compare( 0, 2, "RE" ) == 0 && success1 ) {
-            return tfpWriteResearcher( num1, dbname );
-        }
-        if( name.compare( "RP" ) == 0 ) {
-            return tfpWriteRepositoryIndex( dbname );
-        }
-        if( name.compare( 0, 2, "RP" ) == 0 && success1 ) {
-            return tfpWriteRepository( num1, dbname );
+            if( name.compare( 0, 2, "CP" ) == 0 && success1 ) {
+                // Pagename deprecated, use I<id>P
+                return tfpCreatePedChart( num1, dbname );
+            }
+            break;
+        case 'D':
+            if( success ) { // name == D<num>
+                return tfpWriteDate( num, frame, display );
+            }
+            break;
+        case 'E':
+            if( name == "E" ) {
+                return tfpWriteEventIndex( dbname );
+            }
+            if( name == "E$" ) {
+                return tfpWriteEventSelection( frame );
+            }
+            if( name == "EA" ) {
+                return tfpWriteEventaIndex( dbname );
+            }
+            // We don't have a Eventa filter yet!
+            //    if( name == "EA$" ) {
+            //        return tfpWriteEventaSelection( m_erFilter );
+            //    }
+            if( name.compare( 0, 2, "EA" ) == 0 && success1 ) {
+                return tfpWriteEventaPage( num1, dbname );
+            }
+            if( name.compare( 0, 3, "EA," ) == 0 && success2 ) {
+                return tfpWriteEventaPagedIndex( num2, dbname );
+            }
+            if( success ) { // name == E<num>
+                return tfpWriteEventPage( num, frame );
+            }
+            if( name.compare( 0, 2, "E," ) == 0 && success1 ) {
+                return tfpWriteEventPagedIndex( num1, dbname );
+            }
+            break;
+        case 'F':
+            if( name.compare( 0, 2, "FI" ) == 0 && success1 ) {
+                // Pagename deprecated, use I<id>F
+                return tfpWriteIndFamilyPage( num1, dbname );
+            }
+            if(  success ) { // name == F<num>[E]
+                if( ch_last == 'E' ) {
+                    return tfpWriteFamilyPageAsEvent( num, frame );
+                }
+                // Note, Family Page may have alternate parents
+                // so name string requires further decoding.
+                return tfpWriteFamilyPage( name.substr( 1 ), dbname );
+            }
+            break;
+        case 'G':
+            if( name == "G" ) {
+                return tfpWriteGalleryList( dbname );
+            }
+            if( success ) { // name == G<num>
+                return tfpWriteGalleryPage( num, dbname );
+            }
+            break;
+        case 'I':
+            if( success ) { // name == I<num>[*]
+                switch( ch_last )
+                {
+                case 'D':
+                    return tfpCreateDescChart( num, dbname );
+                case 'F':
+                    return tfpWriteIndFamilyPage( num, dbname );
+                case'P':
+                    return tfpCreatePedChart( num, dbname );
+                }
+                return tfpWriteIndividualPage( num, dbname );
+            }
+            break;
+        case 'M':
+            if( name == "M" ) {
+                return tfpWriteMediaIndex( dbname );
+            }
+            if( success ) { // name == M<num>
+                return tfpWriteMediaPage( num, dbname );
+            }
+            if( name.compare( 0, 2, "M," ) == 0 && success1 ) {
+                return tfpWriteMediaPagedIndex( num1, dbname );
+            }
+            if( name == "MD" ) {
+                return tfpWriteMediaDataIndex( dbname );
+            }
+            if( name.compare( 0, 2, "MD" ) == 0 ) { // name needs further decoding
+                return tfpWriteMediaDataPage( name, dbname );
+            }
+            break;
+        case 'N':
+            if( name == "NI" ) {
+                return tfpWriteSurnameIndex( recSG_Individual, dbname );
+            }
+            if( name == "NP" ) {
+                return tfpWriteSurnameIndex( recSG_Persona, dbname );
+            }
+            if( name == "ND*" ) {
+                return tfpWriteIndividualList( dbname );
+            }
+            if( success ) { // name == N<num>
+                return tfpWriteName( num, frame, display );
+            }
+            if( name.compare( 0, 3, "NI+" ) == 0 && !success2 ) {
+                return tfpWriteNameList( pagename.substr( 3 ), recSG_Individual, dbname );
+            }
+            if( name.compare( 0, 3, "NP+" ) == 0 && !success2 ) {
+                return tfpWriteNameList( pagename.substr( 3 ), recSG_Persona, dbname );
+            }
+            break;
+        case 'P':
+            if( success ) {  // name == P<num>
+                return tfpWritePlace( num, frame, display );
+            }
+            if( name.compare( 0, 2, "PA" ) == 0 && success1 ) {
+                return tfpWritePersonaPage( num1, dbname );
+            }
+            break;
+        case 'R':
+            if( name.compare( "R" ) == 0 ) {
+                return tfpWriteReferenceIndex( dbname );
+            }
+            if( success ) { // name == R<num>
+                return tfpWriteReferencePage( num, dbname );
+            }
+            if( name.compare( 0, 2, "R," ) == 0 && success1 ) {
+                return tfpWriteReferencePagedIndex( num1, dbname );
+            }
+            if( name == "RE" ) {
+                return tfpWriteResearcherList( dbname );
+            }
+            if( name.compare( 0, 2, "RE" ) == 0 && success1 ) {
+                return tfpWriteResearcher( num1, dbname );
+            }
+            if( name == "RP" ) {
+                return tfpWriteRepositoryIndex( dbname );
+            }
+            if( name.compare( 0, 2, "RP" ) == 0 && success1 ) {
+                return tfpWriteRepository( num1, dbname );
+            }
+            break;
+        case 'S':
+            if( name == "START" ) {
+                return tfpWrStartPage();
+            }
+            break;
         }
     }
     catch( wxSQLite3Exception& e ) {
