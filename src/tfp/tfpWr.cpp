@@ -459,7 +459,8 @@ wxString tfpGetDisplayText( const wxString& pagename, TfpFrame& frame, tfpDispla
             if( name == "MD" ) {
                 return tfpWriteMediaDataIndex( dbname );
             }
-            if( name.compare( 0, 2, "MD" ) == 0 ) { // name needs further decoding
+            if( name.compare( 0, 2, "MD" ) == 0 && success1 ) {
+                // name needs further decoding
                 return tfpWriteMediaDataPage( name, dbname );
             }
             break;
