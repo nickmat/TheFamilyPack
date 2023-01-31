@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     8th January 2022
- * Copyright:   Copyright (c) 2022, Nick Matthews.
+ * Copyright:   Copyright (c) 2022..2023, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -133,6 +133,32 @@ bool recFamilyIndividual::Equivalent( const recFamilyIndividual& r2 ) const
         f_seq_child == r2.f_seq_child &&
         f_seq_parent == r2.f_seq_parent
     ;
+}
+
+recFamilyIndEventaVec recFamilyIndividual::GetFamilyIndEventas(
+    idt fiID, const wxString& dbname )
+{
+    recFamilyIndEventaVec vec;
+    wxSQLite3StatementBuffer sql;
+    wxSQLite3ResultSet result;
+
+    sql.Format(
+        "SELECT id, eventa_id, conf, note FROM "
+        "  \"%s\".FamilyIndEventa WHERE fam_ind_id=" ID ";",
+        UTF8_( dbname ), fiID
+    );
+    result = s_db->ExecuteQuery( sql );
+
+    recFamilyIndEventa fiea( 0 );
+    fiea.FSetFamIndID( fiID );
+    while( result.NextRow() ) {
+        fiea.FSetID( GET_ID( result.GetInt64( 0 ) ) );
+        fiea.FSetEventaID( GET_ID( result.GetInt64( 1 ) ) );
+        fiea.FSetConf( result.GetDouble( 2 ) );
+        fiea.FSetNote( result.GetAsString( 3 ) );
+        vec.push_back( fiea );
+    }
+    return vec;
 }
 
 bool recFamilyIndividual::Find( const wxString& dbname )

@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     8th January 2022
- * Copyright:   Copyright (c) 2022, Nick Matthews.
+ * Copyright:   Copyright (c) 2022..2023, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -72,6 +72,11 @@ public:
     void FSetIndID( idt indID ) { f_ind_id = indID; }
     void FSetSeqChild( int seq ) { f_seq_child = seq; }
     void FSetSeqParent( int seq ) { f_seq_parent = seq; }
+
+    static recFamilyIndEventaVec GetFamilyIndEventas( idt fiID, const wxString& dbname = "Main" );
+    recFamilyIndEventaVec GetFamilyIndEventas( const wxString& dbname = "Main" ) const {
+        return GetFamilyIndEventas( f_id, dbname );
+    }
 
     bool Find( const wxString& dbname = "Main" );
 
