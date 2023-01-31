@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     8th January 2022
- * Copyright:   Copyright (c) 2022, Nick Matthews.
+ * Copyright:   Copyright (c) 2022..2023, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -475,6 +475,33 @@ recIdVec recFamily::GetEventIDs( idt famID, const wxString& dbname )
         " ORDER BY fam_seq;"
     ;
     return ExecuteIdVec( fmt, UTF8_( dbname ), famID );
+}
+
+recFamilyEventaVec recFamily::GetEventas( idt famID, const wxString& dbname )
+{
+    recFamilyEventaVec feas;
+    if( famID == 0 ) return feas;
+
+    wxSQLite3StatementBuffer sql;
+    sql.Format(
+        "SELECT id, eventa_id, conf, note FROM \"%s\".FamilyEventa"
+        " WHERE fam_id=" ID ";",
+        UTF8_( dbname ), famID
+    );
+    wxSQLite3Table result = s_db->GetTable( sql );
+
+    recFamilyEventa fea;
+    fea.FSetFamID( famID );
+    for( int i = 0; i < result.GetRowCount(); i++ )
+    {
+        result.SetRow( i );
+        fea.FSetID( GET_ID( result.GetInt64( 0 ) ) );
+        fea.FSetEventaID( GET_ID( result.GetInt64( 1 ) ) );
+        fea.FSetConf( result.GetDouble( 2 ) );
+        fea.FSetNote( result.GetAsString( 3 ) );
+        feas.push_back( fea );
+    }
+    return feas;
 }
 
 int recFamily::GetMaxEventSeqNumber( idt famID, const wxString& dbname )

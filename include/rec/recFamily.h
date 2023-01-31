@@ -5,7 +5,7 @@
  * Author:      Nick Matthews
  * Website:     http://thefamilypack.org
  * Created:     8th January 2022
- * Copyright:   Copyright (c) 2022, Nick Matthews.
+ * Copyright:   Copyright (c) 2022..2023, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  The Family Pack is free software: you can redistribute it and/or modify
@@ -101,12 +101,18 @@ public:
     recFamIndVec GetChildLinks( const wxString& dbname = "Main" ) {
         return GetChildLinks( f_id, dbname ); }
     static recFamIndVec GetChildLinks( idt famID, const wxString& dbname = "Main" );
+
     static recFamilyEventVec GetEvents( idt famID, const wxString& dbname = "Main" );
     recFamilyEventVec GetEvents( const wxString& dbname = "Main" ) const {
         return GetEvents( f_id, dbname ); }
     static recIdVec GetEventIDs( idt famID, const wxString& dbname = "Main" );
     recIdVec GetEventIDs( const wxString& dbname = "Main" ) const {
         return GetEventIDs( f_id, dbname ); }
+
+    static recFamilyEventaVec GetEventas( idt famID, const wxString& dbname = "Main" );
+    recFamilyEventaVec GetEventas( const wxString& dbname = "Main" ) const {
+        return GetEventas( f_id, dbname );
+    }
 
     static int GetMaxEventSeqNumber( idt famID, const wxString& dbname = "Main" );
     int GetMaxEventSeqNumber( const wxString& dbname = "Main" ) const {
