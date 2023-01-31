@@ -631,7 +631,9 @@ wxString tfpWriteFamilyPageAsEvent( idt famID, TfpFrame& frame )
     recFamily fam( famID, extdb );
     if( fam.FGetID() == 0 ) return htm;
     recIndividual left( fam.FGetHusbID(), extdb );
+    idt leftID = left.FGetID();
     recIndividual right( fam.FGetWifeID(), extdb );
+    idt rightID = right.FGetID();
 
     wxString title;
     if( left.FGetID() && right.FGetID() ) {
@@ -646,13 +648,169 @@ wxString tfpWriteFamilyPageAsEvent( idt famID, TfpFrame& frame )
 
         "<table class='data'>\n"
 
-        "<tr>\n<td class='status'>\n"
+        "<tr>\n<td  colspan='4' class='status'>\n"
         "<b>Family: " << fam.GetIdStr() << "</b>"
         "</td>\n</tr>\n"
 
-        "<tr>\n<td class='title'>\n" << title << "\n</td>\n</tr>\n"
-        "</table>\n"
+        "<tr>\n<td  colspan='4' class='title'>\n" << title << "\n</td>\n</tr>\n"
+        "<tr>\n<td  colspan='4' class='status'>\n<b>Individuals</b>\n</td>\n</tr>\n"
         ;
+
+    if( leftID ) {
+        std::string famIdStr = recFamily::PrefixId( left.FGetFamID() );
+        htm <<
+            "</tr>\n"
+            "<td>\n"
+            " <b><a href='tfp:" << left.PrefixId() <<
+            "'>" << left.PrefixId() << "\n"
+            "</td>\n"
+            "<td class='" << tfpGetIndSexClass( leftID, Sex::unknown, extdb ) << "'>\n"
+            " <b><a href='tfp:" << famIdStr << "'>" << left.FGetName() <<
+            "</a></b> " << left.FGetEpitaph() << "\n <a href='tfpc:MR" << leftID <<
+            "'><img src='memory:fam.png' alt='Family'></a>\n"
+            "</td>\n"
+            "<td>" << "Husband" << "</td>\n"
+            "<td>" << "" << "</td>\n"
+            "</tr>\n"
+            ;
+    }
+    if( rightID ) {
+        std::string famIdStr = recFamily::PrefixId( right.FGetFamID() );
+        htm <<
+            "</tr>\n"
+            "<td>\n"
+            " <b><a href='tfp:" << right.PrefixId() <<
+            "'>" << right.PrefixId() << "\n"
+            "</td>\n"
+            "<td class='" << tfpGetIndSexClass( rightID, Sex::unknown, extdb ) << "'>\n"
+            " <b><a href='tfp:" << famIdStr << "'>" << right.FGetName() <<
+            "</a></b> " << right.FGetEpitaph() << "\n <a href='tfpc:MR" << rightID <<
+            "'><img src='memory:fam.png' alt='Family'></a>\n"
+            "</td>\n"
+            "<td>" << "Wife" << "</td>\n"
+            "<td>" << "" << "</td>\n"
+            "</tr>\n"
+            ;
+    }
+    recFamilyEventVec fes = fam.GetEvents( extdb );
+    if( !fes.empty() ) {
+        htm <<
+            "<tr>\n"
+            "<td  colspan='4' class='status'>\n"
+            " <b>Family Events</b>\n"
+            "</td>\n"
+            "</tr>\n"
+            ;
+    }
+    for( recFamilyEvent fe : fes ) {
+        recEvent eve( fe.FGetEventID(), extdb );
+        htm <<
+            "<tr>\n"
+            "<td>\n"
+            " <b><a href='tfp:" << eve.PrefixId() <<
+            "'>" << eve.PrefixId() << "</b>\n"
+            "</td>\n"
+            "<td>" << eve.FGetTitle() << "</td>\n"
+            "<td>\n"
+            " " << recEventType::GetTypeStr( eve.FGetTypeID(), extdb ) <<
+            "</td>\n"
+            "<td>" << fe.FGetNote() << "</td>\n"
+            "</tr>\n"
+            ;
+    }
+
+    recFamilyEventaVec feas = fam.GetEventas( extdb );
+    if( !feas.empty() ) {
+        htm <<
+            "<tr>\n"
+            "<td  colspan='4' class='status'>\n"
+            " <b>Family Eventas</b>\n"
+            "</td>\n"
+            "</tr>\n"
+            ;
+    }
+    for( recFamilyEventa fea : feas ) {
+        recEventa ea( fea.FGetEventaID(), extdb );
+        std::string eaIdStr = ea.PrefixId();
+        std::string refIdStr = recReference::PrefixId( ea.FGetRefID() );
+        htm <<
+            "<tr>\n"
+            "<td>\n"
+            " <b><a href='tfp:" << refIdStr << "'>" << refIdStr <<
+            "</a>: <a href='tfp:" << eaIdStr << "'>" << eaIdStr << "</a></b>\n"
+            "</td>\n"
+            "<td>" << ea.FGetTitle() << "</td>\n"
+            "<td>\n"
+            " " << recEventType::GetTypeStr( ea.FGetTypeID(), extdb ) <<
+            "</td>\n"
+            "<td>" << fea.FGetNote() << "</td>\n"
+            "</tr>\n"
+            ;
+    }
+
+    htm << "</table>\n";
+
+    recFamIndVec fis = fam.GetChildLinks( extdb );
+    for( auto& fi : fis ) {
+        idt kidID = fi.FGetIndID();
+        recIndividual kid( kidID, extdb );
+        std::string kidIdStr = kid.PrefixId();
+        std::string kidFamIdStr = recFamily::PrefixId( kid.FGetFamID() );
+        htm <<
+            "<table class='data'>\n"
+            "<tr>\n"
+            "<td  colspan='4' class='status'>\n"
+            " <b>Individual: " << kidIdStr << "</b>\n"
+            "</td>\n"
+            "</tr>\n"
+            "<tr>\n"
+
+            "<td>\n"
+            " <b><a href='tfp:" << kidIdStr <<
+            "'>" << kidIdStr << "\n"
+            "</td>\n"
+
+            "<td class='" << tfpGetIndSexClass( kidID, Sex::unknown, extdb ) << "'>\n"
+            " <b><a href='tfp:" << kidFamIdStr << "'>" << kid.FGetName() <<
+            "</a></b> " << kid.FGetEpitaph() << "\n <a href='tfpc:MR" << kidID <<
+            "'><img src='memory:fam.png' alt='Family'></a>\n"
+            "</td>\n"
+            "<td>" << "Child" << "</td>\n"
+            "<td>" << "" << "</td>\n"
+            "</tr>\n"
+            ;
+
+        recFamilyIndEventaVec fieas = fi.GetFamilyIndEventas( extdb );
+        if( !fieas.empty() ) {
+            htm <<
+                "<tr>\n"
+                "<td  colspan='4' class='status'>\n"
+                " <b>Family Individual Eventas</b>\n"
+                "</td>\n"
+                "</tr>\n"
+                ;
+        }
+        for( auto& fiea : fieas ) {
+            recEventa ea( fiea.FGetEventaID(), extdb );
+            std::string eaIdStr = ea.PrefixId();
+            std::string refIdStr = recReference::PrefixId( ea.FGetRefID() );
+            htm <<
+                "<tr>\n"
+                "<td>\n"
+                " <b><a href='tfp:" << refIdStr << "'>" << refIdStr <<
+                "</a>: <a href='tfp:" << eaIdStr << "'>" << eaIdStr << "</a></b>\n"
+                "</td>\n"
+                "<td>" << ea.FGetTitle() << "</td>\n"
+                "<td>\n"
+                " " << recEventType::GetTypeStr( ea.FGetTypeID(), extdb ) <<
+                "</td>\n"
+                "<td>" << fiea.FGetNote() << "</td>\n"
+                "</tr>\n"
+                ;
+        }
+
+        htm << "</table>\n";
+    }
 
     htm << tfpWrTailTfp();
 
