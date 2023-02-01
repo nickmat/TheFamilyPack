@@ -737,11 +737,11 @@ wxString tfpWriteFamilyPageAsEvent( idt famID, TfpFrame& frame )
             "<tr>\n"
             "<td>\n"
             " <b><a href='tfp:" << refIdStr << "'>" << refIdStr <<
-            "</a>: <a href='tfp:" << eaIdStr << "'>" << eaIdStr << "</a></b>\n"
+            "</a></b>\n"
             "</td>\n"
-            "<td>" << ea.FGetTitle() << "</td>\n"
+            "<td>" << recReference::GetTitle( ea.FGetRefID() ) << "</td>\n"
             "<td>\n"
-            " " << recEventType::GetTypeStr( ea.FGetTypeID(), extdb ) <<
+            " <b><a href='tfp:" << eaIdStr << "'>" << eaIdStr << "</a></b>\n"
             "</td>\n"
             "<td>" << fea.FGetNote() << "</td>\n"
             "</tr>\n"
@@ -794,17 +794,18 @@ wxString tfpWriteFamilyPageAsEvent( idt famID, TfpFrame& frame )
             recEventa ea( fiea.FGetEventaID(), extdb );
             std::string eaIdStr = ea.PrefixId();
             std::string refIdStr = recReference::PrefixId( ea.FGetRefID() );
+
             htm <<
                 "<tr>\n"
                 "<td>\n"
                 " <b><a href='tfp:" << refIdStr << "'>" << refIdStr <<
-                "</a>: <a href='tfp:" << eaIdStr << "'>" << eaIdStr << "</a></b>\n"
+                "</a></b>\n"
                 "</td>\n"
-                "<td>" << ea.FGetTitle() << "</td>\n"
+                "<td>" << recReference::GetTitle( ea.FGetRefID() ) << "</td>\n"
                 "<td>\n"
-                " " << recEventType::GetTypeStr( ea.FGetTypeID(), extdb ) <<
+                " <b><a href='tfp:" << eaIdStr << "'>" << eaIdStr << "</a></b>\n"
                 "</td>\n"
-                "<td>" << fiea.FGetNote() << "</td>\n"
+                "<td>" << ea.FGetNote() << "</td>\n"
                 "</tr>\n"
                 ;
         }
