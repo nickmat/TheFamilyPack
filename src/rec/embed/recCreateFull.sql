@@ -362,7 +362,7 @@ CREATE TABLE NameStyle (
 );
 
 /* matches enum recNameStyle::Style */
-INSERT INTO NameStyle (id, name, uid, changed) VALUES(0, 'Default', '', 0);
+INSERT INTO NameStyle (id, name, uid, changed) VALUES(0, 'Unstated', '', 0);
 
 CREATE TABLE Persona (
   id INTEGER PRIMARY KEY,
@@ -484,7 +484,7 @@ CREATE TABLE UserSetting (  /* See System Settings below for initial entries */
 /* Table Version created in recCreateCommon.sql */
 
 /* The Version table row 1 is the full TFPD database */
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 46);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 47);
 
 COMMIT;
 

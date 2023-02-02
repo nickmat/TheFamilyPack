@@ -41,8 +41,8 @@
 const int recVerMajor = 0;
 const int recVerMinor = 0;
 const int recVerRev = 10;
-const int recVerTest = 46;                       // <<======<<<<
-const char* recFullVersion = "TFPD-v0.0.10.46";  // <<======<<<<
+const int recVerTest = 47;                       // <<======<<<<
+const char* recFullVersion = "TFPD-v0.0.10.47";  // <<======<<<<
 
 // This is the database Media-only version that this program can work with.
 // If the full version matches, then this is assumed to match as well.
@@ -2466,11 +2466,32 @@ void UpgradeTest0_0_10_45to0_0_10_46( const wxString& dbname )
         "UPDATE \"" << dbname << "\".EventType SET sig=25 WHERE id=-15;\n"
         "UPDATE \"" << dbname << "\".EventType SET sig=25 WHERE id=-16;\n"
 
-// Save this for its own update
-//        "INSERT INTO \"" << dbname << "\".NameStyle (id, name, uid, changed)"
-//        " VALUES(-4, 'As Recorded', 'A21CAF5064B552FB6833E335D3D61396286E', 2459961);\n"
-
         "UPDATE \"" << dbname << "\".Version SET test=46 WHERE id=1;\n"
+        "COMMIT;\n"
+        ;
+
+    recDb::GetDb()->ExecuteUpdate( update );
+}
+
+void UpgradeTest0_0_10_46to0_0_10_47( const wxString& dbname )
+{
+    // Version 0.0.10.46 to 0.0.10.47
+
+    // Add core data to NameStyle.
+    wxString update =
+        "BEGIN;\n";
+
+    update <<
+        "UPDATE \"" << dbname << "\".NameStyle SET name='Unstated' WHERE id=0;\n"
+
+        "INSERT INTO \"" << dbname << "\".NameStyle (id, name, uid, changed)"
+        " VALUES(-4, 'Pseudonym', '2314579D4BCCA9F35F5C384C82FA12731E59', 2459978);\n"
+        "INSERT INTO \"" << dbname << "\".NameStyle (id, name, uid, changed)"
+        " VALUES(-5, 'Nickname', '35B4F9A09BE7700B74ED08E9A3389EE731BD', 2459978);\n"
+        "INSERT INTO \"" << dbname << "\".NameStyle (id, name, uid, changed)"
+        " VALUES(-6, 'As recorded', '62BD89FFA11832089CE2D9CFD8A378D98CB5', 2459978);\n"
+
+        "UPDATE \"" << dbname << "\".Version SET test=47 WHERE id=1;\n"
         "COMMIT;\n"
         ;
 
@@ -2527,6 +2548,7 @@ void UpgradeRev0_0_10toCurrent( int test, const wxString& dbname )
     case 43: UpgradeTest0_0_10_43to0_0_10_44( dbname );
     case 44: UpgradeTest0_0_10_44to0_0_10_45( dbname );
     case 45: UpgradeTest0_0_10_45to0_0_10_46( dbname );
+    case 46: UpgradeTest0_0_10_46to0_0_10_47( dbname );
     }
 }
 

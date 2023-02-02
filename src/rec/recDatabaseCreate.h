@@ -330,7 +330,7 @@ static const char* createFullDb =  /* recCreateFull.sql */
  "  uid TEXT NOT NULL,\n"
  "  changed INTEGER NOT NULL\n"
  ");\n"
- "INSERT INTO NameStyle (id, name, uid, changed) VALUES(0, 'Default', '', 0);\n"
+ "INSERT INTO NameStyle (id, name, uid, changed) VALUES(0, 'Unstated', '', 0);\n"
  "CREATE TABLE Persona (\n"
  "  id INTEGER PRIMARY KEY,\n"
  "  sex INTEGER NOT NULL,\n"
@@ -427,7 +427,7 @@ static const char* createFullDb =  /* recCreateFull.sql */
  "  property INTEGER NOT NULL,\n"
  "  val TEXT NOT NULL\n"
  ");\n"
- "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 46);\n"
+ "INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 47);\n"
  "COMMIT;\n";
 
 static const char* CsvContactType =  /* ../../../common/data/core/ContactType.csv */
@@ -578,7 +578,10 @@ static const char* CsvNameStyle =  /* ../../../common/data/core/NameStyle.csv */
  "id, 'name', 'uid', changed\n"
  "-1,\"Birth name\",\"9E8D131956EFBA85EE89134A9EBD43004DF8\",2459715\n"
  "-2,\"Married name\",\"CCEF089DAD05903B8825EF5FC8F5A5DA140B\",2459715\n"
- "-3,\"Alias\",\"67F2C0CDB179EE99E6D3C4B82C9BAAAEEB5B\",2459715\n";
+ "-3,\"Alias\",\"67F2C0CDB179EE99E6D3C4B82C9BAAAEEB5B\",2459715\n"
+ "-4,\"Pseudonym\",\"2314579D4BCCA9F35F5C384C82FA12731E59\",2459978\n"
+ "-5,\"Nickname\",\"35B4F9A09BE7700B74ED08E9A3389EE731BD\",2459978\n"
+ "-6,\"As recorded\",\"62BD89FFA11832089CE2D9CFD8A378D98CB5\",2459978\n";
 
 static const char* CsvPlacePartType =  /* ../../../common/data/core/PlacePartType.csv */
  "id, 'name', 'uid', changed\n"

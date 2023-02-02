@@ -280,11 +280,14 @@ public:
     static constexpr recTable s_table = recTable::NameStyle;
 
     enum Style {
-        NS_Default = 0, // Recorded (ie Name as recorded in documents)
+        NS_Default = 0, // Unstated
         NS_Birth   = -1,
         NS_Married = -2,
         NS_Alias   = -3,
-        NS_MAX     = 4
+        NS_Pseudonym = -4,
+        NS_Nickname = -5,
+        NS_Recorded = -6, // ie Name as recorded in documents.
+        NS_MAX     = 7
     };
 
     wxString  f_name;
