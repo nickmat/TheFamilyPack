@@ -149,11 +149,12 @@ INSERT INTO EventEventa (id, event_id, eventa_id, conf) VALUES(0,0,0,'');
 CREATE TABLE EventType (
   id INTEGER PRIMARY KEY,
   grp INTEGER NOT NULL,
+  sig INTEGER NOT NULL,
   name TEXT NOT NULL,
   uid TEXT NOT NULL,
   changed INTEGER NOT NULL
 );
-INSERT INTO EventType (id, grp, name, uid, changed) VALUES(0,0,'','',0);
+INSERT INTO EventType (id, grp, sig, name, uid, changed) VALUES(0,0,0,'','',0);
 CREATE TABLE EventTypeRole (
   id INTEGER PRIMARY KEY,
   type_id INTEGER NOT NULL REFERENCES EventType(id),
@@ -295,7 +296,7 @@ CREATE TABLE NameStyle (
   uid TEXT NOT NULL,
   changed INTEGER NOT NULL
 );
-INSERT INTO NameStyle (id, name, uid, changed) VALUES(0, 'Default', '', 0);
+INSERT INTO NameStyle (id, name, uid, changed) VALUES(0, 'Unstated', '', 0);
 CREATE TABLE Persona (
   id INTEGER PRIMARY KEY,
   sex INTEGER NOT NULL,
@@ -392,5 +393,5 @@ CREATE TABLE UserSetting (
   property INTEGER NOT NULL,
   val TEXT NOT NULL
 );
-INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 44);
+INSERT INTO Version (id, major, minor, revision, test) VALUES(1, 0, 0, 10, 47);
 COMMIT;
