@@ -28,18 +28,14 @@
 #ifndef REC_RECHELPER_H
 #define REC_RECHELPER_H
 
+#include <rec/recDefs.h>
+
 #include <fstream>
-#include <map>
-#include <string>
 #include <sstream>
-#include <vector>
 
 #include <wx/wxsqlite3.h>
 
-using idt = long long;
-
 // Some helpful defines
-#define ID              "%lld"
 #define GET_ID( id )    ((long long)(id).GetValue())
 #define UTF8_(s)        ((const char*)(s).utf8_str())
 #define BOOL_(i)        ( (i) ? 1 : 0 )
@@ -47,9 +43,6 @@ using idt = long long;
 // Useful defines placed here for convenience.
 using  StringVec = std::vector< wxString >;
 using  StringMap = std::map< wxString, wxString >;
-using  IntVec = std::vector< int >;
-using  DoubleVec = std::vector< double >;
-using  BoolVec = std::vector< bool >;
 
 using  recIdStringMap = std::map< idt, wxString >;
 using  recIdVec = std::vector< idt >;
