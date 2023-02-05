@@ -55,8 +55,9 @@ set( SRC_REC_HEADERS
     ../../include/rec/recContact.h
     ../../include/rec/recCsv.h
     ../../include/rec/recDatabase.h
-    ../../include/rec/recDb.h
     ../../include/rec/recDate.h
+    ../../include/rec/recDb.h
+    ../../include/rec/recDefs.h
     ../../include/rec/recEvent.h
     ../../include/rec/recEventa.h
     ../../include/rec/recEventaPersona.h
