@@ -29,6 +29,7 @@
 #define INCLUDE_REC_RECDEFS_H
 
 #include <cstdint>
+#include <cstdlib>
 #include <cinttypes>
 #include <map>
 #include <string>
@@ -46,5 +47,14 @@ using  BoolVec = std::vector< bool >;
 
 using  IdStringMap = std::map< idt, std::string >;
 using  IdVec = std::vector< idt >;
+
+inline idt GetID( const std::string& str )
+{
+    if( str.empty() ) {
+        return 0;
+    }
+    return strtoll( str.c_str(), nullptr, 10 );
+}
+
 
 #endif // INCLUDE_REC_RECDEFS_H
