@@ -4,7 +4,7 @@
  * Purpose:     Version constants, functions and revision history.
  * Author:      Nick Matthews
  * Created:     24 September 2010
- * Copyright:   Copyright (c) 2010..2022, Nick Matthews.
+ * Copyright:   Copyright (c) 2010..2023, Nick Matthews.
  * Website:     http://thefamilypack.org
  * Licence:     GNU GPLv3
  *
@@ -112,7 +112,8 @@ const char* tfpTitle = "The Family Pack - Version " VERSION "\n"
  11dec22  v0.3.0.1.1 R5  Add Export/Import as csv and image files (for use as backup
                     and git friendly format).
 
-  active  v0.3.0.1.1 R6
+ 11feb23  v0.3.0.1.1 R6  Add new "Family as an Event" page to show evidence links.
+                    Update the CMake build system files and use them for Windows.
 
  See also webpage http://thefamilypack.org/dev/routemap.htm
 

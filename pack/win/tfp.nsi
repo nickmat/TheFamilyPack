@@ -5,7 +5,7 @@
 ;* Author:      Nick Matthews
 ;* Website:     http://thefamilypack.org
 ;* Created:     18th March 2012
-;* Copyright:   Copyright (c) 2012..2022, Nick Matthews.
+;* Copyright:   Copyright (c) 2012..2023, Nick Matthews.
 ;* Licence:     GNU GPLv3
 ;*
 ;*  The Family Pack is free software: you can redistribute it and/or modify
@@ -33,10 +33,10 @@
 !define APP_EXE       "tfp03.exe"
 !define VERSION_DOT   "0.3.0.1.1"
 ;!define VERSION_UND   "0_3_0_1_0"
-!define VERSION_TXT   "V${VERSION_DOT} R5 pre-alpha"
+!define VERSION_TXT   "V${VERSION_DOT} R6 pre-alpha"
 !define LICENSE       "license.txt"
 !define DESCRIPTION   "The Family Pack Application Installer"
-!define COPYRIGHT     "2013 .. 2022 @ Nick Matthews"
+!define COPYRIGHT     "2013 .. 2023 @ Nick Matthews"
 
 !define DOC_PATH      "$DOCUMENTS\${TFPNAME}"
 !define EXAMPLE_PATH  "$DOCUMENTS\${TFPNAME}\Examples"
@@ -57,7 +57,7 @@ VIAddVersionKey "FileVersion" "${VERSION_DOT}"
 VIAddVersionKey "ProductVersion" "${VERSION_TXT}"
 
 ;Default installation folder
-InstallDir "$PROGRAMFILES\${TFPNAME}"
+InstallDir "$PROGRAMFILES64\${TFPNAME}"
 
 ;Get installation folder from registry if available
 InstallDirRegKey ${HIVE} "${REG_APP}" ""

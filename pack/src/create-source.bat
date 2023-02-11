@@ -97,10 +97,10 @@ copy ..\..\utils\cdb\*.* tfp\utils\cdb > nul
 copy ..\..\utils\cdm\*.* tfp\utils\cdm > nul
 copy ..\..\utils\doccore\dcMain.cpp tfp\utils\doccore > nul
 
-7za a -r tfp.zip tfp > ziplist.txt
+7zr a -r tfp.zip tfp > ziplist.txt
 dtou -v -I tfp -E .;c;ci;cpp;css;f2c;fbp;h;htm;sql;txt;xpm > convert-rpt.txt
-7za a -r tfp.tar tfp > nul
-7za a -r tfp.gz tfp.tar > nul
+7zr a -r tfp.tar tfp > nul
+7zr a -r tfp.gz tfp.tar > nul
 del tfp.tar
 rmdir /S /Q tfp
 
