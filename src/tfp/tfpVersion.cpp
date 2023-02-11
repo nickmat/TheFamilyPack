@@ -45,7 +45,7 @@
 #define VERSION_CONFIG   ""
 #endif
 
-#define RELEASE_NUM   " R6"
+#define RELEASE_NUM   " R7"
 #define VERSION_NUM   "0.3.0.1.1" RELEASE_NUM
 
 
@@ -63,7 +63,7 @@ const char* tfpHtmVersion =
 /*! A string containing a long hand version name and copyright message.
  */
 const char* tfpTitle = "The Family Pack - Version " VERSION "\n"
-                         "Copyright (c) 2010..2022 Nick Matthews\n\n";
+                         "Copyright (c) 2010..2023 Nick Matthews\n\n";
 
 /*************************************************************************//**
 
@@ -114,6 +114,8 @@ const char* tfpTitle = "The Family Pack - Version " VERSION "\n"
 
  11feb23  v0.3.0.1.1 R6  Add new "Family as an Event" page to show evidence links.
                     Update the CMake build system files and use them for Windows.
+
+  active  v0.3.0.1.1 R7 Add HistoryGen script language (based on Glich).
 
  See also webpage http://thefamilypack.org/dev/routemap.htm
 
